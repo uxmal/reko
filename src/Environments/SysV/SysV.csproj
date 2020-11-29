@@ -14,18 +14,8 @@
     <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
     <ProjectReference Include="..\..\Core\Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <TranslateHeader Include="lp32.inc" />
-    <TranslateHeader Include="libc.so.inc" />
-    <TranslateHeader Include="Xlib.inc" />
-    <TranslateHeader Include="opengl.inc" />
-  </ItemGroup>
 
   <Target Name="RunC2Xml" AfterTargets="CoreBuild">
-    <Msbuild Projects="$(ProjectDir)..\..\tools\c2xml\C2Xml.csproj" RemoveProperties="TargetFramework" />
-    <Copy SkipUnchangedFiles="true" SourceFiles="$(ProjectDir)$(OutDir)\Reko.Environments.SysV.dll" DestinationFolder="$(SolutionDir)tools" />
-    <Copy SkipUnchangedFiles="true" SourceFiles="$(SolutionDir)Arch\X86\bin\$(Configuration)\netstandard2.1\Reko.Arch.X86.dll" DestinationFolder="$(SolutionDir)tools" />
-    <Exec Condition=" '$(OS)' == 'Unix' " Command="dotnet &quot;$(SolutionDir)tools/c2xml.dll&quot; -a x86-protected-32 -e elf-neutral -d gcc %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
-    <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(SolutionDir)tools\c2xml.exe&quot; -a x86-protected-32 -e elf-neutral -d gcc %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
+    <MSBuild Projects="$(ProjDir)..\..\BuildTargets\BuildTargets.csproj" Targets="gen_c2xml_sysv" />
   </Target>
 </Project>

@@ -17,14 +17,8 @@
     <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\..\Libraries\Libc\Libc.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <TranslateHeader Include="msvcrt.inc" />
-  </ItemGroup>
+  
   <Target Name="RunC2Xml" AfterTargets="CoreBuild">
-    <Msbuild Projects="$(ProjectDir)..\..\tools\c2xml\C2Xml.csproj" RemoveProperties="TargetFramework" />
-    <Copy SkipUnchangedFiles="true" SourceFiles="$(ProjectDir)$(OutDir)Reko.Environments.Windows.dll" DestinationFolder="$(ProjectDir)..\..\tools" />
-    <Copy SkipUnchangedFiles="true" SourceFiles="$(ProjectDir)..\..\Arch\X86\bin\$(Configuration)\netstandard2.1\Reko.Arch.X86.dll" DestinationFolder="$(ProjectDir)..\..\tools" />
-    <Exec Condition=" '$(OS)' == 'Unix' " Command="dotnet &quot;$(ProjectDir)../../tools/c2xml.dll&quot; -a x86-protected-32 -e win32 -d msvc %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
-    <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(PRojectDir)..\..\tools\c2xml.exe&quot; -a x86-protected-32 -e win32 -d msvc %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
+    <MSBuild Projects="$(ProjDir)..\..\BuildTargets\BuildTargets.csproj" Targets="gen_c2xml_windows" />
   </Target>
 </Project>

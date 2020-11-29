@@ -12,21 +12,15 @@
     </NuGetPackageImportStamp>
   </PropertyGroup>
 
-  <Target Name="CleanCMake" AfterTargets="Clean">
-    <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake.exe -DACTION=clean -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -DIS_MSYS=FALSE -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
-    <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake -DACTION=clean -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
-  </Target>
-  
-  <Target Name="InvokeCMake" AfterTargets="CoreBuild">
-    <Exec Condition="$(Platform) != 'AnyCPU'"
-          Command="dotnet run -c $(Configuration) -p $(ProjectDir)..\tools\hdrgen\hdrgen.csproj -- &quot;$(SolutionDir)Core\bin\$(Configuration)\Reko.Core.dll&quot; &quot;$(ProjectDir)include\reko.h&quot;"
-          WorkingDirectory="$(ProjectDir)" />
-
-    <!-- FIXME: not all C# configurations are valid CMake configurations -->
-    <Exec Condition=" '$(OS)' != 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake.exe -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DREKO_COMPILER=&quot;$(CmakeCompiler)&quot; -DREKO_PLATFORM=$(Platform) -DCMAKE_BUILD_TYPE=$(Configuration) -DIS_MSYS=FALSE -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
-    <Exec Condition=" '$(OS)' == 'Unix' AND $(Platform) != 'AnyCPU'" Command="cmake -DREKO_PATH=&quot;$(SolutionDir)../&quot; -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -P &quot;$(SolutionDir)Native\reko.cmake&quot;" WorkingDirectory="$(SolutionDir)Native" />
-  </Target>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
+
+  <Target Name="CleanCMake" AfterTargets="Clean">
+    <MSBuild Projects="$(ProjDir)..\BuildTargets\BuildTargets.csproj" Targets="nativeproxy_clean" />
+  </Target>
+
+  <Target Name="InvokeCMake" AfterTargets="CoreBuild">
+    <MSBuild Projects="$(ProjDir)..\BuildTargets\BuildTargets.csproj" Targets="nativeproxy_build" />
+  </Target>
 </Project>

@@ -25,13 +25,8 @@
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Decompiler\Decompiler.csproj" />
   </ItemGroup>
-  <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
-    <Message Importance="high" Text="Generating C# files for Gui.csproj" />
-    <!--
-        It seems we can't rely on xslt.exe / xslt.dll (netcoreapp3.1 or netcoreapp20)
-        have been built, despite all efforts to express this in the SLN file.
-        Thanks, build system.
-    -->
-    <Exec Command="dotnet run -c $(Configuration) -p $(ProjectDir)..\tools\xslt\xslt.csproj -- $(ProjectDir)cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)CmdIds.cs" />
+
+  <Target Name="GenerateCsFiles" BeforeTargets="CoreBuild">
+    <MSBuild Projects="$(ProjDir)..\BuildTargets\BuildTargets.csproj" Targets="gen_decompiler_menus" />
   </Target>
 </Project>
