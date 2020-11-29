@@ -2,8 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <AssemblyName>Reko.Decompiler</AssemblyName>
-    <RootNamespace>Reko.Decompiler</RootNamespace>
+    <AssemblyName>Reko</AssemblyName>
+    <RootNamespace>Reko</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
