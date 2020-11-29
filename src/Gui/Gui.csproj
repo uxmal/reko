@@ -27,6 +27,6 @@
   </ItemGroup>
 
   <Target Name="GenerateCsFiles" BeforeTargets="CoreBuild">
-    <MSBuild Projects="$(ProjDir)..\BuildTargets\BuildTargets.csproj" Targets="gen_decompiler_menus" />
+    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Targets="gen_decompiler_menus" />
   </Target>
 </Project>

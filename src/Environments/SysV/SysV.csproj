@@ -16,6 +16,6 @@
   </ItemGroup>
 
   <Target Name="RunC2Xml" AfterTargets="CoreBuild">
-    <MSBuild Projects="$(ProjDir)..\..\BuildTargets\BuildTargets.csproj" Targets="gen_c2xml_sysv" />
+    <MSBuild Projects="$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj" Targets="gen_c2xml_sysv" />
   </Target>
 </Project>
