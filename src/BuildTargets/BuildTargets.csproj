@@ -6,30 +6,30 @@
 
 
   <Target Name="gen_decompiler_menus">
-    <Exec Command="cmake -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=gen_decompiler_menus -P $(ProjectDir)..\reko.cmake" />
+    <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=gen_decompiler_menus -P $(ProjectDir)..\reko.cmake" />
   </Target>
 
   <Target Name="gen_decompiler_menus_winforms">
-    <Exec Command="cmake -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=gen_decompiler_menus_winforms -P $(ProjectDir)..\reko.cmake" />
+    <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=gen_decompiler_menus_winforms -P $(ProjectDir)..\reko.cmake" />
   </Target>
 
   <Target Name="gen_c2xml_os2">
-    <Exec Command="cmake -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=gen_c2xml_os2 -P $(ProjectDir)..\reko.cmake" />
+    <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=gen_c2xml_os2 -P $(ProjectDir)..\reko.cmake" />
   </Target>
 
   <Target Name="gen_c2xml_sysv">
-    <Exec Command="cmake -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=gen_c2xml_sysv -P $(ProjectDir)..\reko.cmake" />
+    <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=gen_c2xml_sysv -P $(ProjectDir)..\reko.cmake" />
   </Target>
 
   <Target Name="gen_c2xml_windows">
-    <Exec Command="cmake -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=gen_c2xml_windows -P $(ProjectDir)..\reko.cmake" />
+    <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=gen_c2xml_windows -P $(ProjectDir)..\reko.cmake" />
   </Target>
 
   <Target Name="nativeproxy_clean">
-    <Exec Command="cmake -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=nativeproxy_clean -P $(ProjectDir)..\reko.cmake" />
+    <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=nativeproxy_clean -P $(ProjectDir)..\reko.cmake" />
   </Target>
 
   <Target Name="nativeproxy_build">
-    <Exec Command="cmake -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=nativeproxy_build -P $(ProjectDir)..\reko.cmake" />
+    <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=nativeproxy_build -P $(ProjectDir)..\reko.cmake" />
   </Target>
 </Project>

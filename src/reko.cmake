@@ -38,7 +38,9 @@ function(invoke_cmake)
 
 	# set default generator for win32
 	if(NOT proj_GENERATOR AND WIN32)
-		check_msys(IS_MSYS)
+		if(NOT DEFINED IS_MSYS)
+			check_msys(IS_MSYS)
+		endif()
 		message(STATUS "IS_MSYS: ${IS_MSYS}")
 		if(IS_MSYS)
 			set(proj_GENERATOR "MSYS Makefiles")
