@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<library xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Decompiler">
+<library xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Decompiler">
   <Types>
     <typedef name="ULONG">
       <prim domain="UnsignedInt" size="4" />
@@ -10,11 +10,6 @@
     <typedef name="BOOLEAN">
       <prim domain="SignedInt" size="4" />
     </typedef>
-    <typedef name="PVOID">
-      <ptr>
-        <void />
-      </ptr>
-    </typedef>
     <typedef name="DEVICE_TYPE">
       <prim domain="SignedInt" size="4" />
     </typedef>
@@ -23,7 +18,7 @@
       <struct name="_EPROCESS" />
     </typedef>
     <typedef name="PEPROCESS">
-      <ptr>
+      <ptr size="4">
         <struct name="_EPROCESS" />
       </ptr>
     </typedef>
@@ -32,13 +27,13 @@
       <struct name="_KTHREAD" />
     </typedef>
     <typedef name="PKTHREAD">
-      <ptr>
+      <ptr size="4">
         <struct name="_KTHREAD" />
       </ptr>
     </typedef>
     <typedef name="PUNICODE_STRING">
-      <ptr>
-        <prim domain="Character" size="2" />
+      <ptr size="4">
+        <prim domain="Character" size="1" />
       </ptr>
     </typedef>
     <struct name="_DEVICE_OBJECT" />
@@ -46,7 +41,7 @@
       <struct name="_DEVICE_OBJECT" />
     </typedef>
     <typedef name="PDEVICE_OBJECT">
-      <ptr>
+      <ptr size="4">
         <struct name="_DEVICE_OBJECT" />
       </ptr>
     </typedef>
@@ -55,7 +50,7 @@
       <struct name="_DRIVER_OBJECT" />
     </typedef>
     <typedef name="PDRIVER_OBJECT">
-      <ptr>
+      <ptr size="4">
         <struct name="_DRIVER_OBJECT" />
       </ptr>
     </typedef>
@@ -66,7 +61,7 @@
         <type>ULONG</type>
       </return>
       <arg name="format">
-        <ptr>
+        <ptr size="4">
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -111,7 +106,7 @@
         <type>BOOLEAN</type>
       </arg>
       <arg name="DeviceObject">
-        <ptr>
+        <ptr size="4">
           <type>PDEVICE_OBJECT</type>
         </ptr>
       </arg>
@@ -127,26 +122,6 @@
       </arg>
       <arg name="DeviceName">
         <type>PUNICODE_STRING</type>
-      </arg>
-    </signature>
-  </procedure>
-
-  <procedure name="NtSetInformationProcess">
-    <signature>
-      <return>
-        <type>NTSTATUS</type>
-      </return>
-      <arg name="ProcessHandle">
-        <type>HANDLE</type>
-      </arg>
-      <arg name="ProcessInformationClass">
-        <type>PROCESS_INFORMATION_CLASS</type>
-      </arg>
-      <arg name="ProcessInformation">
-        <type>PVOID</type>
-      </arg>
-      <arg name="ProcessInformation">
-        <type>ULONG</type>
       </arg>
     </signature>
   </procedure>

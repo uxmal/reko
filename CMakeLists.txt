@@ -1,0 +1,12 @@
+cmake_minimum_required ( VERSION 3.10 FATAL_ERROR )
+
+list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake")
+
+FIND_PACKAGE(Dotnet 2.0 REQUIRED)
+
+project(Reko)
+
+set(REKO_LIB_FRAMEWORK "netstandard2.1")
+set(REKO_EXE_FRAMEWORK "netcoreapp3.1")
+
+add_subdirectory(src)

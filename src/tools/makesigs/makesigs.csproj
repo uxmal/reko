@@ -14,11 +14,6 @@
     </NuGetPackageImportStamp>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
-  <!-- Copy dependencies to the `tools` directory.-->
-  <Target Name="CopyToTools" AfterTargets="CopyFilesToOutputDirectory">
-    <Message Text="Project dir = $(ProjectDir)" />
-    <Copy SkipUnchangedFiles="true" SourceFiles="$(ProjectDir)$(OutDir)$(TargetFileName)" DestinationFolder="$(ProjectDir).." />
-  </Target>
   <ItemGroup>
     <Compile Remove="fixwild.cs" />
     <Compile Remove="makedsig.cs" />

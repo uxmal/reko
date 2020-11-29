@@ -34,21 +34,6 @@
   </ItemGroup>
 
 
-  <!-- Copy dependencies to the `tools` directory.-->
-
-  <Target Name="CopyToToolsDir" AfterTargets="CoreBuild">
-    <Message Text="Copy $(ProjectDir)$(OutputPath)$(TargetFileName) to $(ProjectDir)..\..\tools" Importance="High" />
-    <Copy SkipUnchangedFiles="true" SourceFiles="$(ProjectDir)$(OutputPath)$(TargetFileName)" DestinationFolder="$(ProjectDir)..\..\tools" />
-    <Copy SkipUnchangedFiles="true" Condition="$(OS)!='Unix'" SourceFiles="$(ProjectDir)$(OutputPath)c2xml.exe" DestinationFolder="$(ProjectDir)..\..\tools" />
-    <Copy SkipUnchangedFiles="true" Condition="$(OS)=='Unix'" SourceFiles="$(ProjectDir)$(OutputPath)c2xml.dll" DestinationFolder="$(ProjectDir)..\..\tools" />
-    <Copy SkipUnchangedFiles="true" SourceFiles="@(C2xmlExtraFiles)" DestinationFolder="$(ProjectDir)..\..\tools" />
-
-    <Copy SkipUnchangedFiles="true" SourceFiles="$(ProjectDir)$(OutputPath)$(TargetFileName).config" DestinationFolder="$(ProjectDir)..\..\tools" />
-    <Copy SkipUnchangedFiles="true" SourceFiles="$(ProjectDir)$(OutputPath)Reko.Core.dll" DestinationFolder=".." />
-    <Copy SkipUnchangedFiles="true" SourceFiles="$(ProjectDir)..\..\..\external\docopt.net-0.6.1.4\DocoptNet.dll" DestinationFolder=".." />
-    <Copy SkipUnchangedFiles="true" SourceFiles="@(ConfigurationFiles)" DestinationFolder=".." />
-  </Target>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />
   </ItemGroup>

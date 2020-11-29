@@ -11,11 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Core.csproj" />
     <Content Include="$(SolutionDir)tools\genPICdb\picdb.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Newer</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <Target Name="BeforeBuild" BeforeTargets="CoreBuild">
-    <Message Importance="high" Text="Copying PIC Database to $(TargetDir)" />
-    <Copy SkipUnchangedFiles="true" SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" />
-  </Target>
 </Project>
