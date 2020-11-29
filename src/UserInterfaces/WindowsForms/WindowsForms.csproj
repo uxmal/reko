@@ -31,4 +31,8 @@
     <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\..\Gui\Gui.csproj" />
   </ItemGroup>
+
+  <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
+    <MSBuild Projects="$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj" Targets="gen_decompiler_menus_winforms" />
+  </Target>
 </Project>

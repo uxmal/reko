@@ -151,6 +151,8 @@ function(add_c2xml_target)
 endfunction()
 
 set(GUI_BASEDIR ${REKO_SRC}/Gui)
+set(WINFORMS_BASEDIR ${REKO_SRC}/UserInterfaces/WindowsForms)
+
 RUN_DOTNET(${REKO_SRC}/tools/xslt/xslt.csproj
 	NO_RESTORE_PRE
 	NO_CLEAN
@@ -166,6 +168,23 @@ RUN_DOTNET(${REKO_SRC}/tools/xslt/xslt.csproj
 	OUTPUT
 		${GUI_BASEDIR}/CmdIds.cs
 	TARGET_NAME "gen_decompiler_menus"
+)
+
+RUN_DOTNET(${REKO_SRC}/tools/xslt/xslt.csproj
+	NO_RESTORE_PRE
+	NO_CLEAN
+	CONFIG ${CMAKE_BUILD_TYPE}
+	PLATFORM ${REKO_PLATFORM}
+	ARGUMENTS
+		${WINFORMS_BASEDIR}/Forms/decompiler-menus.xslt
+		${GUI_BASEDIR}/decompiler-menus.xml
+		${WINFORMS_BASEDIR}/Forms/DecompilerMenus.cs
+	SOURCES
+		${WINFORMS_BASEDIR}/Forms/decompiler-menus.xslt
+		${GUI_BASEDIR}/decompiler-menus.xml
+	OUTPUT
+		${WINFORMS_BASEDIR}/Forms/DecompilerMenus.cs
+	TARGET_NAME "gen_decompiler_menus_winforms"
 )
 
 csproj_output_path(

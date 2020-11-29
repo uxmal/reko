@@ -9,6 +9,10 @@
     <Exec Command="cmake -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=gen_decompiler_menus -P $(ProjectDir)..\reko.cmake" />
   </Target>
 
+  <Target Name="gen_decompiler_menus_winforms">
+    <Exec Command="cmake -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=gen_decompiler_menus_winforms -P $(ProjectDir)..\reko.cmake" />
+  </Target>
+
   <Target Name="gen_c2xml_os2">
     <Exec Command="cmake -DCMAKE_BUILD_TYPE=$(Configuration) -DTARGET=gen_c2xml_os2 -P $(ProjectDir)..\reko.cmake" />
   </Target>
