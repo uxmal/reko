@@ -32,6 +32,11 @@ namespace Reko.Arch.X86
         {
         }
 
+        public override Address AddressFromWord(ulong word)
+        {
+            return Address.Ptr32((uint)word);
+        }
+
         protected override void Call(MachineOperand op)
         {
             Push((uint) InstructionPointer.ToLinear() + (uint) dasm.Current.Length, PrimitiveType.Word32);   // Push return value on stack

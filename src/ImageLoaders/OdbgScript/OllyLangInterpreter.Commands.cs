@@ -3487,7 +3487,6 @@ string param;
             return false;
         }
 
-
         // Olly only
         private bool DoREF(Expression[] args)
         {
@@ -4177,6 +4176,19 @@ string filename, data;
                     GetRulong(args[1], out ulong seg))
                 {
                     Host.AddSegmentReference(addr, (ushort) seg);
+                    return true;
+                }
+            }
+            else if (args.Length == 1)
+            {
+                if (GetRulong(args[0], out ulong uSeg))
+                {
+                    var addrSeg = Address.SegPtr((ushort) uSeg, 0);
+                    if (this.Host.SegmentMap.TryFindSegment(addrSeg, out var seg))
+                    {
+                        var mem = seg.MemoryArea;
+                        this.Host.SegmentMap.AddOverlappingSegment($"seg{uSeg:X4}", mem, addrSeg, AccessMode.ReadWriteExecute);
+                    }
                     return true;
                 }
             }

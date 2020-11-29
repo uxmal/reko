@@ -97,7 +97,7 @@ namespace Reko.Core
         /// <param name="addr">The address at which the segment starts.</param>
         /// <param name="mode">The access mode of the segment.</param>
         /// <returns>The resulting image segment.</returns>
-        public ImageSegment AddOverlappingSegment(string segmentName, ByteMemoryArea mem, Address addr, AccessMode mode)
+        public ImageSegment AddOverlappingSegment(string segmentName, MemoryArea mem, Address addr, AccessMode mode)
         {
             var segment = new ImageSegment(
                     segmentName,

@@ -1,0 +1,35 @@
+; Reko script for unpacking files packed with Exepack 3.60 - 5.00
+var selector
+; Run until the retf that calls the unpacker and step into the retf
+bp cs:0031
+run
+sti
+
+;; Now inside the unpacker code. Execute the unpacking and intercept
+;; the relocations.
+
+; Break at the instructions after a relocation is done.
+bp cs:00B8 
+bp cs:00D1
+
+; Break at the far JMP into the original code.
+bp cs:00F6
+
+relocation_loop:
+run
+
+cmp ip,00F6
+je relocation_done
+
+; Read the relocation
+mov selector,[es:di],2
+; msg $"Relocation at {es}:{di} = {selector}"
+reko.addseg es:di,selector
+jmp relocation_loop
+
+relocation_done:
+; Single step into the original code.
+sti
+msg $"Entry point at {cs}:{ip}"
+dpe "dontcare",cs:ip
+ret

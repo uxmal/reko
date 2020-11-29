@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Reko.Arch.X86
 {
@@ -33,6 +34,13 @@ namespace Reko.Arch.X86
         public X86RealModeEmulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator) 
             : base(arch, segmentMap, envEmulator, X86.Registers.ip, X86.Registers.cx)
         {
+        }
+
+        public override Address AddressFromWord(ulong word)
+        {
+            var off = (ushort) word;
+            var seg = (ushort) (word >> 16);
+            return Address.SegPtr(seg, off);
         }
 
         protected override void Call(MachineOperand op)
@@ -97,7 +105,7 @@ namespace Reko.Arch.X86
             var di = (uint) ReadRegister(X86.Registers.di);
             var value = ReadMemory(ToLinear(es, di), dt) & mask.value;
             var delta = dt.Size * (((Flags & Dmask) != 0) ? -1 : 1);
-            di +=  (uint) delta;
+            di += (uint) delta;
             WriteRegister(X86.Registers.di, di);
             Flags &= ~Zmask;
             Flags |= (a == value ? Zmask : 0u);
@@ -173,8 +181,8 @@ namespace Reko.Arch.X86
             }
             return string.Join(" ",
                 D(Omask, "OV", "NV"),
-                D(Dmask, "UP", "DN"),
-                D(Dmask, "EI", "EI"),
+                D(Dmask, "DN", "UP"),
+                D(Imask, "EI", "EI"),
                 D(Smask, "PL", "NG"),
                 D(Zmask, "ZR", "NZ"),
                 D(Cmask, "--", "--"),
@@ -187,6 +195,7 @@ namespace Reko.Arch.X86
             return $"{instr.Address} XX {instr.ToString().ToUpper()}";
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static ulong ToLinear(uint seg, uint off)
         {
             return (((ulong) seg) << 4) + off;

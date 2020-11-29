@@ -1,5 +1,3 @@
-var addrFarjmp
-var addrUnpacker
 var selector
 
 ; Run until the RETF.

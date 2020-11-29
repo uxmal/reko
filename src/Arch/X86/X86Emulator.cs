@@ -79,9 +79,9 @@ namespace Reko.Arch.X86
 
 #nullable disable
         public X86Emulator(
-            IntelArchitecture arch, 
-            SegmentMap segmentMap, 
-            IPlatformEmulator envEmulator, 
+            IntelArchitecture arch,
+            SegmentMap segmentMap,
+            IPlatformEmulator envEmulator,
             RegisterStorage ipReg,
             RegisterStorage cxReg)
             : base(segmentMap)
@@ -103,6 +103,8 @@ namespace Reko.Arch.X86
             get { return this.Registers[iFlags]; }
             set { this.Registers[iFlags] = value; }
         }
+
+        public abstract Address AddressFromWord(ulong word);
 
         /// <summary>
         /// The current instruction pointer of the emulator.
@@ -184,6 +186,7 @@ namespace Reko.Arch.X86
                     // repne
                     switch (instr.Mnemonic)
                     {
+                    case Mnemonic.cmpsb: Repne(); return;
                     case Mnemonic.scasb: Repne(); return;
                     }
                     throw new NotImplementedException();
@@ -193,10 +196,12 @@ namespace Reko.Arch.X86
                     // rep / repe
                     switch (instr.Mnemonic)
                     {
+                    case Mnemonic.cmpsb: Repe(); return;
                     case Mnemonic.lods: Rep(); return;
                     case Mnemonic.lodsb: Rep(); return;
                     case Mnemonic.movs: Rep(); return;
                     case Mnemonic.movsb: Rep(); return;
+                    case Mnemonic.scasb: Repe(); return;
                     case Mnemonic.stosb: Rep(); return;
                     }
                     throw new NotImplementedException();
@@ -236,6 +241,7 @@ namespace Reko.Arch.X86
             case Mnemonic.movs: Movs(instr.dataWidth); return;
             case Mnemonic.movsb: Movs(PrimitiveType.Byte); return;
             case Mnemonic.nop: return;
+            case Mnemonic.not: Not(instr.Operands[0]); return;
             case Mnemonic.or: Or(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.pop: Write(instr.Operands[0], Pop(instr.Operands[0].Width)); return;
             case Mnemonic.popa: Popa(); return;
@@ -357,9 +363,8 @@ namespace Reko.Arch.X86
             }
             else
             {
-                //$BUG: not correct for x86-real
                 TWord l = Read(op);
-                return Address.Ptr32(l);
+                return AddressFromWord(l);
             }
         }
 
@@ -412,6 +417,25 @@ namespace Reko.Arch.X86
                 Execute(strInstr);
                 --c;
                 WriteRegister(cxReg, c);
+            }
+            this.ignoreRep = false;
+        }
+
+        // Repeat while Z flag is set.
+        private void Repe()
+        {
+            var strInstr = dasm.Current;
+            this.ignoreRep = true;
+            var c = ReadRegister(cxReg);
+            while (c != 0)
+            {
+                // A faithful simulation would handle 
+                // pending interrupts.
+                Execute(strInstr);
+                --c;
+                WriteRegister(cxReg, c);
+                if ((Flags & Zmask) == 0)
+                    break;
             }
             this.ignoreRep = false;
         }
@@ -489,13 +513,13 @@ namespace Reko.Arch.X86
         {
             TWord l = Read(dst);
             byte sh = (byte) Read(src);
-            var mask = masks[dst.Width.Size];
-            TWord r = (l << sh) & mask.value;
+            var (value, hibit) = masks[dst.Width.Size];
+            TWord r = (l << sh) & value;
             Write(dst, r);
             Flags &= ~(Cmask | Zmask | Smask | Omask);
             Flags |=
                 (r == 0 ? Zmask : 0u) |                 // Zero
-                ((r & mask.hibit) != 0 ? Smask : 0u);   // Sign
+                ((r & hibit) != 0 ? Smask : 0u);   // Sign
         }
 
         private void Shr(MachineOperand dst, MachineOperand src)
@@ -592,6 +616,15 @@ namespace Reko.Arch.X86
                 (and == 0 ? Zmask : 0u) |    // Zero
                 ((and & mask.hibit) != 0 ? Smask : 0u) | // Sign
                 0;                          // Clear Overflow
+        }
+
+        private void Not(MachineOperand op)
+        {
+            TWord v = Read(op);
+            var mask = masks[op.Width.Size];
+            var not = (~v) & mask.value;
+            Write(op, not);
+            // Flags are not affected according to Intel docs.
         }
 
         private void Or(MachineOperand dst, MachineOperand src)

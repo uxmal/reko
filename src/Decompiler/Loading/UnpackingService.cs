@@ -109,12 +109,15 @@ namespace Reko.Loading
             var le = Services.RequireService<IConfigurationService>().GetImageLoader(signature.Name);  //$REVIEW: all of themn?
             if (le == null || le.TypeName == null)
             {
-                listener.Warn("Unable to unpack executable file packed with '{0}'.", signature.Name);
                 return loader;
             }
             var unpacker = Loader.CreateOuterImageLoader<ImageLoader>(le.TypeName, loader);
             if (unpacker == null)
+            {
+                listener.Warn("Unable to create loader for '{0}'.", signature.Name);
                 return loader;
+            }
+            listener.Info("Using loader for '{0}'.", signature.Name);
             unpacker.Argument = le.Argument;
             return unpacker;
         }

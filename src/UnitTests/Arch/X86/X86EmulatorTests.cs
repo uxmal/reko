@@ -564,8 +564,8 @@ namespace Reko.UnitTests.Arch.X86
             emu.Start();
 
             Assert.AreEqual(0x0010000A, emu.Registers[Registers.edi.Number]);
-
         }
+
 
         [Test]
         public void X86Emu_cld()

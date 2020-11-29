@@ -117,7 +117,7 @@ namespace Reko.ImageLoaders.MzExe
         private ImageSegment AddSegmentReference(ulong linAddr, ushort seg)
         {
             var relocations = imgLoaded.Relocations;
-            relocations.AddSegmentReference(linAddr, seg);
+                relocations.AddSegmentReference(linAddr, seg);
 
             var addrSeg = Address.SegPtr(seg, 0);
             return segmentMap.AddOverlappingSegment(
@@ -210,7 +210,7 @@ namespace Reko.ImageLoaders.MzExe
         {
             var state = arch.CreateProcessorState();
             state.InstructionPointer = addrStart;
-            state.SetRegister(Registers.cs, Constant.UInt16(addrLoad.Selector.Value));
+            state.SetRegister(Registers.cs, Constant.UInt16((ushort) (ExeLoader.e_cs + addrLoad.Selector.Value)));
             state.SetRegister(Registers.ss, Constant.UInt16((ushort) addrStackTop.Selector.Value));
             state.SetRegister(Registers.sp, Constant.UInt16((ushort) addrStackTop.Offset));
             state.SetRegister(Registers.ds, Constant.UInt16(segPsp));
