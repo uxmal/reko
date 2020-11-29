@@ -20,7 +20,7 @@
     <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Targets="nativeproxy_clean" />
   </Target>
 
-  <Target Name="InvokeCMake" AfterTargets="CoreBuild">
+  <Target Name="InvokeCMake" AfterTargets="CoreCompile">
     <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Targets="nativeproxy_build" />
   </Target>
 </Project>

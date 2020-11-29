@@ -18,7 +18,7 @@
     <ProjectReference Include="..\..\Libraries\Libc\Libc.csproj" />
   </ItemGroup>
   
-  <Target Name="RunC2Xml" AfterTargets="CoreBuild">
+  <Target Name="RunC2Xml" AfterTargets="CoreCompile">
     <MSBuild Projects="$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj" Targets="gen_c2xml_windows" />
   </Target>
 </Project>
