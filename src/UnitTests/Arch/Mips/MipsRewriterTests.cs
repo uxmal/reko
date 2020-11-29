@@ -468,7 +468,7 @@ namespace Reko.UnitTests.Arch.Mips
             // Test only the known ones, we'll have to see how this changes things later on with dynamic custom registers
             Given_BitStrings("011111 00000 00110 00000 00000 111011");   // CPU number
             AssertCode("0|L--|00100000(4): 1 instructions",
-                       "1|L--|r6 = __read_hardware_register(0<8>)");
+                       "1|L--|r6 = __read_cpu_number()");
 
             Given_BitStrings("011111 00000 01000 00001 00000 111011");   // SYNCI step size
             AssertCode("0|L--|00100000(4): 1 instructions",
@@ -484,7 +484,7 @@ namespace Reko.UnitTests.Arch.Mips
 
             Given_BitStrings("011111 00000 00111 11101 00000 111011");   // OS-specific, thread local pointer on Linux
             AssertCode("0|L--|00100000(4): 1 instructions",
-                       "1|L--|r7 = __read_hardware_register(0x1D<8>)");
+                       "1|L--|r7 = __read_user_local()");
         }
 
         [Test]
@@ -1093,7 +1093,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("3810");
             AssertCode(   // balc	080485E2
                 "0|T--|00100000(2): 1 instructions",
-                "1|T--|goto 00100012");
+                "1|T--|call 00100012 (0)");
         }
 
         [Test]

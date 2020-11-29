@@ -281,12 +281,11 @@ namespace Reko.Arch.Mips
                 case Mnemonic.wait: RewriteWait(instr); break;
                 case Mnemonic.xor:
                 case Mnemonic.xori: RewriteXor(instr); break;
-                case Mnemonic.rdhwr: RewriteReadHardwareRegister(instr); break;
 
                 // Nano instructions
                 case Mnemonic.addiupc: RewriteAddiupc(instr); break;
                 case Mnemonic.aluipc: RewriteAluipc(instr); break;
-                case Mnemonic.balc: RewriteJump(instr); break;
+                case Mnemonic.balc: RewriteBalc(instr); break;
                 case Mnemonic.bbeqzc: RewriteBb(instr, e => e); break;
                 case Mnemonic.bbnezc: RewriteBb(instr, m.Not); break;
                 case Mnemonic.bc: RewriteJump(instr); break;
@@ -323,6 +322,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.muh: RewriteMuh(instr, PrimitiveType.Int64, m.SMul); break;
                 case Mnemonic.muhu: RewriteMuh(instr, PrimitiveType.UInt64, m.UMul); break;
                 case Mnemonic.not: RewriteNot(instr); break;
+                case Mnemonic.rdhwr: RewriteReadHardwareRegister(instr); break;
                 case Mnemonic.restore: RewriteRestore(instr, false); break;
                 case Mnemonic.restore_jrc: RewriteRestore(instr, true); break;
                 case Mnemonic.rotx: RewriteRotx(instr); break;

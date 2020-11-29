@@ -147,8 +147,21 @@ namespace Reko.Arch.Mips
 
         private void RewriteReadHardwareRegister(MipsInstruction instr)
         {
-            var rdhwr = host.Intrinsic("__read_hardware_register", false, PrimitiveType.UInt32, this.RewriteOperand0(instr.Operands[1]));
-            m.Assign(this.RewriteOperand0(instr.Operands[0]), rdhwr);
+            var hs = ((ImmediateOperand) instr.Operands[1]).Value;
+            Expression value;
+            switch (hs.ToInt32())
+            {
+            case 0:
+                value = host.Intrinsic("__read_cpu_number", false, PrimitiveType.UInt32);
+                break;
+            case 0x1D:
+                value = host.Intrinsic("__read_user_local", false, PrimitiveType.Int32);
+                break;
+            default:
+                value = host.Intrinsic("__read_hardware_register", false, PrimitiveType.UInt32, this.RewriteOperand0(instr.Operands[1]));
+                break;
+            }
+            m.Assign(this.RewriteOperand0(instr.Operands[0]), value);
         }
 
         private void RewriteSyscall(MipsInstruction instr)

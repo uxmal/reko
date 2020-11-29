@@ -181,7 +181,7 @@ namespace Reko.Environments.SysV
 
         public override ProcedureBase_v1 SignatureFromName(string fnName)
         {
-            StructField_v1 field = null;
+            StructField_v1 field;
             try
             {
                 var gcc = new GccMangledNameParser(fnName, this.PointerType.Size);
@@ -192,9 +192,7 @@ namespace Reko.Environments.SysV
                 Debug.Print("*** Error parsing {0}. {1}", fnName, ex.Message);
                 return null;
             }
-            if (field == null)
-                return null;
-            if (field.Type is SerializedSignature sproc)
+            if (field != null && field.Type is SerializedSignature sproc)
             {
                 return new Procedure_v1
                 {

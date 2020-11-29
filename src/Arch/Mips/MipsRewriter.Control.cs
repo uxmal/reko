@@ -34,6 +34,11 @@ namespace Reko.Arch.Mips
 {
     public partial class MipsRewriter
     {
+        private void RewriteBalc(MipsInstruction instr)
+        {
+            m.Call(RewriteOperand0(instr.Operands[0]), 0);
+        }
+
         private void RewriteBgezal(MipsInstruction instr)
         {
             // The bgezal r0,XXXX instruction is aliased to bal (branch and link, or fn call)

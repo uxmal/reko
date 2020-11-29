@@ -32,7 +32,7 @@ using System.Diagnostics;
 
 namespace Reko.Arch.Mips
 {
-    using Decoder = Reko.Core.Machine.Decoder<MipsDisassembler, Mnemonic, MipsInstruction>;
+    using Decoder = Decoder<MipsDisassembler, Mnemonic, MipsInstruction>;
 
     public partial class MipsDisassembler : DisassemblerBase<MipsInstruction, Mnemonic>
     {

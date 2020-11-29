@@ -820,7 +820,7 @@ namespace Reko.Arch.Mips
                 Instr(Mnemonic.sub, R11,R16,R21),
                 Instr(Mnemonic.divu, R11,R16,R21),
 
-                Instr(Mnemonic.rdhwr, R21,R16,U(11,5)),
+                Instr(Mnemonic.rdhwr, R21,U(16,5),U(11,5)),
                 invalid,
                 Instr(Mnemonic.subu, R11,R16,R21),
                 Instr(Mnemonic.modu, R11,R16,R21),
