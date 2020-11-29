@@ -31,47 +31,43 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 {
 					fn04B9(&g_tFFFF8000);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80CE;
-					cui16 gp2_n = (word16) gp0_gp1_gp2_n;
-					fn01E6(gp0_gp1_gp2_n, gp2_n);
+					Eq_n gp0_gp1_n = <invalid>;
 					word16 gp8_n;
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp11_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_gp2_n, gp2_n, out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn01E6(gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF800D);
 					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80CE + 3);
-					cui16 gp2_n = (word16) gp0_gp1_gp2_n;
-					fn01E6(gp0_gp1_gp2_n, gp2_n);
+					Eq_n gp0_gp1_n = <invalid>;
 					word16 gp8_n;
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp11_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_gp2_n, gp2_n, out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn01E6(gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF801A);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80D4;
-					cui16 gp2_n = (word16) gp0_gp1_gp2_n;
-					fn01E6(gp0_gp1_gp2_n, gp2_n);
+					Eq_n gp0_gp1_n = <invalid>;
 					word16 gp8_n;
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp11_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_gp2_n, gp2_n, out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn01E6(gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF8027);
 					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80D4 + 3);
-					cui16 gp2_n = (word16) gp0_gp1_gp2_n;
-					fn01E6(gp0_gp1_gp2_n, gp2_n);
+					Eq_n gp0_gp1_n = <invalid>;
 					struct Eq_n * gp11_n;
 					word16 gp8_n;
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp14_n;
-					cui16 gp3_n = fn04AE(gp0_gp1_gp2_n, gp2_n, out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					cui16 gp3_n = fn04AE(gp0_gp1_n, fn01E6(gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF8036);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80DA;
@@ -94,7 +90,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp14_n;
-					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, *((word48) gp15_n + 66), *((word48) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, *((word32) gp15_n + 66), *((word32) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF804F);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80E0;
@@ -106,7 +102,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp14_n;
-					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, *((word48) gp15_n + 66), *((word48) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, *((word32) gp15_n + 66), *((word32) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF805C);
 					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80E0 + 3);
@@ -118,7 +114,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp14_n;
-					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, *((word48) gp15_n + 66), *((word48) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, *((word32) gp15_n + 66), *((word32) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF806B);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80E6;
@@ -130,7 +126,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp14_n;
-					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, *((word48) gp15_n + 66), *((word48) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, *((word32) gp15_n + 66), *((word32) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF8076);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80CE;
@@ -142,7 +138,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, *((word48) gp15_n + 66), *((word48) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, *((word32) gp15_n + 66), *((word32) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF8082);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80DA;
@@ -154,7 +150,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word48) gp15_n + 100), *((word48) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word32) gp15_n + 100), *((word32) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF808E);
 					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80DA + 3);
@@ -166,7 +162,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word48) gp15_n + 0x0066), *((word48) gp15_n + 0x00C6)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word32) gp15_n + 0x0066), *((word32) gp15_n + 0x00C6)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF809B);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80E0;
@@ -178,7 +174,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word48) gp15_n + 0x0066), *((word48) gp15_n + 0x00C6)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word32) gp15_n + 0x0066), *((word32) gp15_n + 0x00C6)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF80A8);
 					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80E0 + 3);
@@ -190,7 +186,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word48) gp15_n + 0x0066), *((word48) gp15_n + 0x00C6)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word32) gp15_n + 0x0066), *((word32) gp15_n + 0x00C6)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF80B7);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80E6;
@@ -202,7 +198,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word48) gp15_n + 0x0066), *((word48) gp15_n + 0x00C6)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word32) gp15_n + 0x0066), *((word32) gp15_n + 0x00C6)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF80C2);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80CE;
@@ -214,22 +210,33 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp10_n;
 					word16 gp11_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word48) gp15_n + 0x0066), *((word48) gp15_n + 0x00C6)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word32) gp15_n + 0x0066), *((word32) gp15_n + 0x00C6)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 }
 
-// 01E6: void fn01E6(Sequence Eq_n gp0_gp1, Register cui16 gp2)
+// 01E6: Register word16 fn01E6(Sequence Eq_n gp0_gp1, Register word16 gp2)
 // Called from:
 //      fn0111
-void fn01E6(Eq_n gp0_gp1, cui16 gp2)
+word16 fn01E6(Eq_n gp0_gp1, word16 gp2)
 {
+					word16 gp0 = SLICE(gp0_gp1, word16, 16);
 					int16 gp1 = (word16) gp0_gp1;
 					real48 gp0_gp1_gp2_n = SEQ(gp0_gp1, gp2);
 					if (gp0_gp1_gp2_n == g_r05AB)
-						return;
+						return gp2;
 					if (gp0_gp1_gp2_n < g_r05AB)
 						__bpt();
-					__xbr(gp1);
+					Eq_n gp6_n = __xbr(gp1);
+					real48 gp0_gp1_gp2_n = SEQ(gp0, gp1 & 0xFF00, gp2) * g_r05AE + g_r05B1;
+					real48 gp0_gp1_gp2_n = gp0_gp1_gp2_n + SEQ(gp0, gp1 & 0xFF00, gp2) / gp0_gp1_gp2_n;
+					real48 gp0_gp1_gp2_n = SEQ(SLICE(gp0_gp1_gp2_n, word16, 32), SLICE(gp0_gp1_gp2_n, word16, 16) & 0xFF00 | 0xFE, 0xFE) + SEQ(gp0, gp1 & 0xFF00, gp2) / gp0_gp1_gp2_n;
+					real48 gp0_gp1_gp2_n = gp0_gp1_gp2_n + SEQ(gp0, gp1 & 0xFF00, gp2) / gp0_gp1_gp2_n;
+					word16 gp0_n = SLICE(gp0_gp1_gp2_n, word16, 32);
+					word16 gp2_n = (word16) gp0_gp1_gp2_n;
+					cui16 gp1_n = SLICE(gp0_gp1_gp2_n, word16, 16) & 0xFF00 | 0xFF;
+					if (Test(NE,(gp6_n >> 0x08 & 0x8000) == 0x00))
+						gp2_n = (word16) (SEQ(gp0_n, gp1_n, gp2_n) * g_r05B4);
+					return gp2_n;
 }
 
 // 02BF: Register word16 fn02BF(Register ci16 gp1, Stack cui16 wArgC8, Register out ptr16 gp1Out, Register out ptr16 gp14Out)
@@ -728,6 +735,9 @@ void fn04B9(struct Eq_n * gp0)
 }
 
 real48 g_r05AB = ;
+real48 g_r05AE = ;
+real48 g_r05B1 = ;
+real48 g_r05B4 = ;
 Eq_n g_t060A = // 060A
 					{
 						;

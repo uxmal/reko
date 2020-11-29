@@ -582,13 +582,13 @@ T_102: (in r2_16 >> 0x10<8> : word32)
   OrigDataType: uint32
 T_103: (in 0xFFFF<32> : word32)
   Class: Eq_103
-  DataType: word32
-  OrigDataType: word32
-T_104: (in r2_16 + 0xFFFF<32> : word32)
+  DataType: ui32
+  OrigDataType: ui32
+T_104: (in r2_16 & 0xFFFF<32> : word32)
   Class: Eq_104
-  DataType: word32
-  OrigDataType: word32
-T_105: (in r2_16 >> 0x10<8> ^ r2_16 + 0xFFFF<32> : word32)
+  DataType: ui32
+  OrigDataType: ui32
+T_105: (in r2_16 >> 0x10<8> ^ r2_16 & 0xFFFF<32> : word32)
   Class: Eq_92
   DataType: ui32
   OrigDataType: ui32

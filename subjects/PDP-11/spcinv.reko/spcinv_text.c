@@ -423,13 +423,12 @@ bool fn05D4(Eq_n r0, Eq_n r3, byte * r4, Eq_n r5, struct Eq_n * pc, union Eq_n &
 		byte * r4_n;
 		Eq_n r5_n;
 		fn0A7C(fn0AB6(r0, r4, r5, out r4_n, out r5_n), r4_n, r5_n, out r4_n, out r5_n);
-		fn0A94();
-		ui16 r3_n = __rol(0x00, 0x00);
-		ui16 r3_n = __rol(r3_n, r3_n);
+		ui16 r0_n = fn0A94();
+		ui16 r3_n = __rcl(__rcl(0x00, 1, (bool) cond(r0_n << 1)), 1, (bool) cond(r0_n << 2));
 		Eq_n r0_n = g_a0F2A[r3_n];
-		Eq_n v23_n = pc->t090A >> 1;
-		pc->t090A = v23_n;
-		if (v23_n >= 0x00)
+		Eq_n v26_n = pc->t090A >> 1;
+		pc->t090A = v26_n;
+		if (v26_n >= 0x00)
 			r0_n = (word32) r0_n + 200;
 		pc->w054A = (word16) ((word32) r0_n + pc->w054A);
 		byte * r4_n;
@@ -699,9 +698,9 @@ Eq_n fn07A6(byte * r4, struct Eq_n * pc, byte & r4Out, union Eq_n & r5Out)
 				if (r5 == 0x00)
 					r2_n->t0DB8.u0 = 0x00;
 			}
-			ci16 v75_n = pc->w06AE - 0x02;
-			pc->w06AE = v75_n;
-			if (v75_n < 0x00)
+			ci16 v78_n = pc->w06AE - 0x02;
+			pc->w06AE = v78_n;
+			if (v78_n < 0x00)
 			{
 				g_w0F1C = 0x0A;
 				g_w0DAA = ~g_w0DA8;
@@ -737,13 +736,17 @@ l08B2:
 						Eq_n r0_n = fn0A94() & g_w0F0E;
 						if (r0_n != 0x00)
 							goto l093A;
-						cui16 r0_n = fn0A94();
+						ui16 r0_n = fn0A94();
 						struct Eq_n * r1_n = g_ptr0F08;
-						if (r1_n >= null && (r1_n->w0DC4 > 0x00 && r0_n << 1 < 0x00))
-							break;
-						ui16 r1_n = __rol(0x00, 0x00);
-						ui16 r1_n = __rol(r1_n, r1_n);
-						ui16 r1_n = __rol(r1_n, r1_n);
+						if (r1_n >= null && r1_n->w0DC4 > 0x00)
+						{
+							r0_n <<= 1;
+							if (r0_n << 1 < 0x00)
+								break;
+						}
+						ui32 v113_n = (uint32) r0_n << 0x01;
+						cui16 r0_n = (word16) v113_n;
+						ui16 r1_n = __rcl(__rcl(SLICE(v113_n, word16, 16), 1, (bool) cond(r0_n << 1)), 1, (bool) cond(r0_n << 2));
 						r1_n = r1_n << 1;
 					} while (g_a0DC4[r1_n * 0x02] <= 0x00);
 					r0_n.u0 = 0x0DB8;
@@ -841,7 +844,7 @@ Eq_n fn0998(Eq_n r0, byte * r4, Eq_n r5, struct Eq_n * pc, byte & r4Out, union E
 		g_w0F20 = 100;
 		g_w0F12 = 0x01;
 		g_w0A6A = 4404;
-		cui16 r0_n = fn0A94();
+		ui16 r0_n = fn0A94();
 		r2_n.u0 = 0x01;
 		word16 r1_n = 0x00;
 		r0 = r0_n << 1;
@@ -1354,7 +1357,7 @@ byte g_a0EE0[] = // 0EE0
 Eq_n g_a0EE6[] = // 0EE6
 	{
 	};
-Eq_n g_a0EE9[] = // 0EE9
+byte g_a0EE9[] = // 0EE9
 	{
 	};
 ci8 g_a0EEC[] = // 0EEC

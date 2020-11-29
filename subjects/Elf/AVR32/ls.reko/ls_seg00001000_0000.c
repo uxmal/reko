@@ -16862,7 +16862,6 @@ Eq_n __avr32_f64_mul(Eq_n r8, Eq_n r9, Eq_n r10, Eq_n r11, union Eq_n & r11Out)
 	Eq_n r6_n = SLICE(r9, word11, 20);
 	if (r6_n != 0x00)
 	{
-		__rcl(r9, 1, (bool) cond(r8 << 1));
 		r8_n = r8 << 1;
 		r9_n.u0 = 0;
 		goto l0000F300;

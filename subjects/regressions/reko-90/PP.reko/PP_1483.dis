@@ -51,7 +51,6 @@ l1483_0C53_thunk_fn1483_0C55:
 l1483_0C1B:
 	branch al - 0x8C<8> - (al <u Mem11[ss:si:byte]) != 0<8> && cx != 1<16> l1483_0C6C
 l1483_0C6C:
-	__daa(0x55<8>, &0x55<8>)
 	word16 dx_57 = <invalid>
 	word16 bx_54
 	word16 di_55
@@ -473,7 +472,7 @@ l1483_0E35:
 	byte ah_243 = ah_212 ^ Mem242[bx_199:(bx_199 + 2<16>) + (si_159 + 1<i16>):byte]
 	Mem253[bx_199:si_159 + 0x6347<16>:byte] = Mem249[bx_199:si_159 + 0x6347<16>:byte] ^ cl_251
 	ui16 v57_v56_500 = SEQ(bArg02C1, bArg0FA0) + SEQ(0xE8<8>, dl_479)
-	word16 si_228 = si_159 + 1<i16>
+	word16 si_228 = si_159 + 1<i16> + 2<i16>
 	word16 di_230 = 0<16>
 	byte v56_234 = SLICE(v57_v56_500, byte, 0)
 	byte v57_241 = SLICE(v57_v56_500, byte, 8)
@@ -492,8 +491,7 @@ l1483_0EEE:
 		uses: ax:Mem274[bx_199:si_267:word16],bh:bh_490,bl:bl_219,cx:cx_262,dx:dx_480,Stack +0000:wArg02,Stack +0002:wArg02,Stack +0004:wArg06,Stack +0006:wArg06,Stack +000A:wArg0C,Stack +000C:wArg0C,Stack +02BF:v57_241,Stack +0F9E:v56_234
 	return
 l1483_0EDB:
-	__aad(Mem266[bx_199:si_228:word16] + dx_480)
-	word16 si_297 = si_228 + 2<i16>
+	word16 si_297 = si_228 + 0<i16>
 	ah_243 = 0<8>
 	word16 cx_318 = SEQ(0x2A<8>, cl_496)
 l1483_0EE4:

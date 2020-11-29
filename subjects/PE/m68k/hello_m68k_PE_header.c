@@ -7,6 +7,5 @@
 // 00001004: void Win32CrtStartup()
 void Win32CrtStartup()
 {
-	__btst(d0, d1);
 }
 

@@ -58,7 +58,7 @@ void fn000111C4()
 	{
 		uint32 r2_n;
 		COREDLL.dll!Ordinal_n();
-		ui32 r8_n = r2_n >> 0x10 ^ r2_n + 0xFFFF;
+		ui32 r8_n = r2_n >> 0x10 ^ r2_n & 0xFFFF;
 		ui32 dwLoc0C_n = r8_n;
 		if (r8_n == 0x00)
 			dwLoc0C_n = 0xB064;

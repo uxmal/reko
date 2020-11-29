@@ -1495,7 +1495,7 @@ l0040100C:
 l00400FF8_ds_t:
 l00401024:
 	word32 r2_527 = Mem524[dwLoc0150_1300:word32]
-	Mem544[fp + -304<i32> + ((r2_527 >>u 5<8>) << 2<8>):word32] = Mem524[fp + -304<i32> + ((r2_527 >>u 5<8>) << 2<8>):word32] | 1<i32> << Mem524[dwLoc0150_1300:word32] + 0x1F<32>
+	Mem544[fp + -304<i32> + ((r2_527 >>u 5<8>) << 2<8>):word32] = Mem524[fp + -304<i32> + ((r2_527 >>u 5<8>) << 2<8>):word32] | 1<i32> << (Mem524[dwLoc0150_1300:word32] & 0x1F<32>)
 	branch CONVERT(dwLoc0160_1284 < Mem544[dwLoc0150_1300:word32], bool, word32) == 0<32> l00401024_ds_t
 l00401024_ds_t:
 l00401024_ds_f:
@@ -1525,11 +1525,11 @@ l00401140:
 l00401140_ds_t:
 l004011BC:
 	word32 r2_577 = Mem573[dwLoc0158_1311:word32]
-	Mem594[fp + -176<i32> + ((r2_577 >>u 5<8>) << 2<8>):word32] = Mem573[fp + -176<i32> + ((r2_577 >>u 5<8>) << 2<8>):word32] | 1<i32> << Mem573[dwLoc0158_1311:word32] + 0x1F<32>
+	Mem594[fp + -176<i32> + ((r2_577 >>u 5<8>) << 2<8>):word32] = Mem573[fp + -176<i32> + ((r2_577 >>u 5<8>) << 2<8>):word32] | 1<i32> << (Mem573[dwLoc0158_1311:word32] & 0x1F<32>)
 l00401140_ds_f:
 l00401158:
 	word32 r2_596 = Mem573[dwLoc0158_1311:word32]
-	Mem613[fp + -304<i32> + ((r2_596 >>u 5<8>) << 2<8>):word32] = Mem573[fp + -304<i32> + ((r2_596 >>u 5<8>) << 2<8>):word32] | 1<i32> << Mem573[dwLoc0158_1311:word32] + 0x1F<32>
+	Mem613[fp + -304<i32> + ((r2_596 >>u 5<8>) << 2<8>):word32] = Mem573[fp + -304<i32> + ((r2_596 >>u 5<8>) << 2<8>):word32] | 1<i32> << (Mem573[dwLoc0158_1311:word32] & 0x1F<32>)
 l0040121C:
 	branch Mem615[dwLoc0158_1311 + 4<32>:word32] < 0<32> l0040121C_ds_t
 l0040121C_ds_t:
@@ -1545,11 +1545,11 @@ l00401264:
 l00401264_ds_t:
 l004012E0:
 	word32 r2_630 = Mem626[dwLoc0158_1311 + 4<32>:word32]
-	Mem647[fp + -176<i32> + ((r2_630 >>u 5<8>) << 2<8>):word32] = Mem626[fp + -176<i32> + ((r2_630 >>u 5<8>) << 2<8>):word32] | 1<i32> << Mem626[dwLoc0158_1311 + 4<32>:word32] + 0x1F<32>
+	Mem647[fp + -176<i32> + ((r2_630 >>u 5<8>) << 2<8>):word32] = Mem626[fp + -176<i32> + ((r2_630 >>u 5<8>) << 2<8>):word32] | 1<i32> << (Mem626[dwLoc0158_1311 + 4<32>:word32] & 0x1F<32>)
 l00401264_ds_f:
 l0040127C:
 	word32 r2_649 = Mem626[dwLoc0158_1311 + 4<32>:word32]
-	Mem666[fp + -304<i32> + ((r2_649 >>u 5<8>) << 2<8>):word32] = Mem626[fp + -304<i32> + ((r2_649 >>u 5<8>) << 2<8>):word32] | 1<i32> << Mem626[dwLoc0158_1311 + 4<32>:word32] + 0x1F<32>
+	Mem666[fp + -304<i32> + ((r2_649 >>u 5<8>) << 2<8>):word32] = Mem626[fp + -304<i32> + ((r2_649 >>u 5<8>) << 2<8>):word32] | 1<i32> << (Mem626[dwLoc0158_1311 + 4<32>:word32] & 0x1F<32>)
 l00401340:
 	dwLoc0158_1311 = Mem668[dwLoc0158_1311 + 0x17B8<32>:word32]
 l004010CC_ds_f:
@@ -1569,7 +1569,7 @@ l00401468:
 	branch dwLoc0150_1341 != 0<32> l00401454_ds_t
 l00401454_ds_t:
 l00401480:
-	branch Mem795[fp + -304<i32> + ((Mem795[dwLoc0150_1341:word32] >>u 5<8>) << 2<8>):word32] >> Mem795[dwLoc0150_1341:word32] + 0x1F<32> == 1<32> l00401480_ds_t
+	branch (Mem795[fp + -304<i32> + ((Mem795[dwLoc0150_1341:word32] >>u 5<8>) << 2<8>):word32] >> (Mem795[dwLoc0150_1341:word32] & 0x1F<32>) & 1<32>) == 0<32> l00401480_ds_t
 l00401480_ds_t:
 l00401480_ds_f:
 l004014CC:
@@ -1613,7 +1613,7 @@ l004015F0:
 l004015F0_ds_t:
 l004015F0_ds_f:
 l00401608:
-	branch Mem878[fp + -304<i32> + ((Mem878[dwLoc0158_1348:word32] >>u 5<8>) << 2<8>):word32] >> Mem878[dwLoc0158_1348:word32] + 0x1F<32> == 1<32> l00401608_ds_t
+	branch (Mem878[fp + -304<i32> + ((Mem878[dwLoc0158_1348:word32] >>u 5<8>) << 2<8>):word32] >> (Mem878[dwLoc0158_1348:word32] & 0x1F<32>) & 1<32>) == 0<32> l00401608_ds_t
 l00401608_ds_t:
 l00401608_ds_f:
 l00401654:
@@ -1649,7 +1649,7 @@ l00401734:
 l00401734_ds_t:
 l00401734_ds_f:
 l0040174C:
-	branch Mem952[fp + -304<i32> + ((Mem952[dwLoc0158_1348 + 4<32>:word32] >>u 5<8>) << 2<8>):word32] >> Mem952[dwLoc0158_1348 + 4<32>:word32] + 0x1F<32> == 1<32> l0040174C_ds_t
+	branch (Mem952[fp + -304<i32> + ((Mem952[dwLoc0158_1348 + 4<32>:word32] >>u 5<8>) << 2<8>):word32] >> (Mem952[dwLoc0158_1348 + 4<32>:word32] & 0x1F<32>) & 1<32>) == 0<32> l0040174C_ds_t
 l0040174C_ds_t:
 l0040174C_ds_f:
 l00401798:
@@ -1685,7 +1685,7 @@ l0040185C:
 l0040185C_ds_t:
 l0040185C_ds_f:
 l00401874:
-	branch Mem1015[fp + -176<i32> + ((Mem1015[dwLoc0158_1348:word32] >>u 5<8>) << 2<8>):word32] >> Mem1015[dwLoc0158_1348:word32] + 0x1F<32> == 1<32> l00401874_ds_t
+	branch (Mem1015[fp + -176<i32> + ((Mem1015[dwLoc0158_1348:word32] >>u 5<8>) << 2<8>):word32] >> (Mem1015[dwLoc0158_1348:word32] & 0x1F<32>) & 1<32>) == 0<32> l00401874_ds_t
 l00401874_ds_t:
 l00401874_ds_f:
 l004018C0:
@@ -1704,7 +1704,7 @@ l00401900:
 l00401900_ds_t:
 l00401900_ds_f:
 l00401918:
-	branch Mem1049[fp + -176<i32> + ((Mem1049[dwLoc0158_1348 + 4<32>:word32] >>u 5<8>) << 2<8>):word32] >> Mem1049[dwLoc0158_1348 + 4<32>:word32] + 0x1F<32> == 1<32> l00401918_ds_t
+	branch (Mem1049[fp + -176<i32> + ((Mem1049[dwLoc0158_1348 + 4<32>:word32] >>u 5<8>) << 2<8>):word32] >> (Mem1049[dwLoc0158_1348 + 4<32>:word32] & 0x1F<32>) & 1<32>) == 0<32> l00401918_ds_t
 l00401918_ds_t:
 l00401918_ds_f:
 l00401964:
@@ -3810,7 +3810,7 @@ l00406070:
 	branch r2_247 == 2<i32> l00406070_ds_t
 l00406070_ds_t:
 l00406150:
-	Mem324[Mem248[r28_125 - 0x7E20<32>:word32] + 4<i32> + ((dwLoc24_383 * 0x14<32> - dwLoc24_383 << 3<8>) + 144<i32>):word32] = CONVERT(Mem248[(CONVERT(bLoc1C_368, byte, word32) << 1<8>) + Mem248[Mem248[r28_125 - 0x7DF4<32>:word32]:word32]:uint16], uint16, word32) + 0x10000<32>
+	Mem324[Mem248[r28_125 - 0x7E20<32>:word32] + 4<i32> + ((dwLoc24_383 * 0x14<32> - dwLoc24_383 << 3<8>) + 144<i32>):word32] = CONVERT(Mem248[(CONVERT(bLoc1C_368, byte, word32) << 1<8>) + Mem248[Mem248[r28_125 - 0x7DF4<32>:word32]:word32]:uint16], uint16, word32) & 1<32> & 0xFFFF<32>
 	dwLoc28_364 = dwLoc28_364 + -1<i32>
 l00406070_ds_f:
 l00406084:
@@ -3868,7 +3868,7 @@ l00406530:
 	printf(0x40A6D8<32>, 0<32>)
 l00406374_ds_f:
 l004063B4:
-	branch CONVERT(Mem48[(CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + ((dwLoc18_226 * 0x14<32> - dwLoc18_226 << 3<8>) + 8<i32>) + 4<32>:int8], int8, word32) << 1<8>) + Mem48[Mem48[0x10000A6C<32>:word32]:word32]:uint16], uint16, word32) == 0x10000<32> l004063B4_ds_t
+	branch (CONVERT(Mem48[(CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + ((dwLoc18_226 * 0x14<32> - dwLoc18_226 << 3<8>) + 8<i32>) + 4<32>:int8], int8, word32) << 1<8>) + Mem48[Mem48[0x10000A6C<32>:word32]:word32]:uint16], uint16, word32) & 1<32> & 0xFFFF<32>) == 0<32> l004063B4_ds_t
 l004063B4_ds_t:
 l00406474:
 	word32 r2_136 = CONVERT(Mem48[Mem48[0x10000A40<32>:word32] + ((dwLoc18_226 * 0x14<32> - dwLoc18_226 << 3<8>) + 8<i32>) + 4<32>:int8], int8, word32)
@@ -4536,7 +4536,7 @@ l004078F0:
 	word32 r7_44 = r8_27 - r7_179
 l004078F4:
 	word32 r3_46 = r9_31 >>u 1<8>
-	word32 r2_47 = r9_31 + 1<32>
+	word32 r2_47 = r9_31 & 1<32>
 	r7_44 = r7_44 + -1<i32>
 	branch r7_44 != 0<32> l004078F4_ds_t
 l004078F4_ds_t:
@@ -4553,7 +4553,7 @@ l00407910_ds_f:
 l0040791C:
 	r8_27 = r8_27 + 1<i32>
 	word32 r2_59 = r10_29 >>u 1<8>
-	word32 r3_60 = r10_29 + 1<32>
+	word32 r3_60 = r10_29 & 1<32>
 	branch CONVERT(r8_27 < r7_179, bool, word32) != 0<32> l0040791C_ds_t
 l0040791C_ds_t:
 	r10_29 = r3_60 | r2_59
@@ -4615,7 +4615,7 @@ l004079F0_ds_f:
 	Mem147[r6:word32] = 3<i32>
 l00407A10:
 	word32 r2_148 = Mem147[r6 + 8<32>:word32]
-	Mem153[r6 + 0xC<32>:word32] = r7_102 + 1<32> | r7_102 >>u 1<8>
+	Mem153[r6 + 0xC<32>:word32] = r7_102 & 1<32> | r7_102 >>u 1<8>
 	Mem154[r6 + 8<32>:word32] = r2_148 + 1<i32>
 l00407A2C:
 l00407854_ds_f:
@@ -4630,7 +4630,7 @@ l0040786C:
 	Mem163[r6 + 4<32>:word32] = Mem160[r4 + 4<32>:word32]
 	Mem165[r6 + 8<32>:word32] = Mem163[r4 + 8<32>:word32]
 	Mem167[r6 + 0xC<32>:word32] = Mem165[r4 + 0xC<32>:word32]
-	Mem171[r6 + 4<32>:word32] = Mem167[r4 + 4<32>:word32] + Mem167[r5 + 4<32>:word32]
+	Mem171[r6 + 4<32>:word32] = Mem167[r4 + 4<32>:word32] & Mem167[r5 + 4<32>:word32]
 	return
 l00407818_ds_f:
 l00407824:
@@ -4730,7 +4730,7 @@ l00407CA8_ds_t:
 l00407CA8_ds_f:
 	r4_106 = lo_69
 l00407CF8:
-	word32 r2_78 = (hi_67 >> 0<8>) + 1<32>
+	word32 r2_78 = hi_67 >> 0<8> & 1<32>
 l00407D04:
 	branch r2_78 == 0<32> l00407CF8_ds_t
 l00407CF8_ds_t:
@@ -4742,7 +4742,7 @@ l00407D10:
 l00407D18:
 	branch r6_109 < 0<32> l00407D18_ds_t
 l00407D18_ds_t:
-	r2_78 = r6_109 + 1<32>
+	r2_78 = r6_109 & 1<32>
 l00407D18_ds_f:
 l00407D20:
 l00407D24:
@@ -4752,7 +4752,7 @@ l00407D24_ds_f:
 l00407D38:
 l00407D48:
 	r6_109 = r6_109 << 1<8>
-	branch r4_106 == 0x80000000<32> l00407D38_ds_t
+	branch (r4_106 & 0x80000000<32>) == 0<32> l00407D38_ds_t
 l00407D38_ds_t:
 l00407D38_ds_f:
 l00407D58:
@@ -4765,11 +4765,11 @@ l00407D5C_ds_f:
 	r4_106 = r4_106 << 1<8>
 l00407D68:
 l00407D6C:
-	branch r6_109 != 0x3F<32> l00407D6C_ds_t
+	branch (r6_109 & 0x7F<32>) != 64<i32> l00407D6C_ds_t
 l00407D6C_ds_t:
 l00407D6C_ds_f:
 l00407D7C:
-	branch r6_109 != 0x80<32> l00407D7C_ds_t
+	branch (r6_109 & 0x80<32>) != 0<32> l00407D7C_ds_t
 l00407D7C_ds_t:
 l00407D7C_ds_f:
 l00407D88:
@@ -4858,10 +4858,10 @@ l00407F00_ds_t:
 	r5_185 = CONVERT(r4_186 <u dwLoc1C, bool, word32)
 l00407F00_ds_f:
 l00407F10:
-	branch r6_77 != 0x3F<32> l00407F10_ds_t
+	branch (r6_77 & 0x7F<32>) != 64<i32> l00407F10_ds_t
 l00407F10_ds_t:
 l00407F10_ds_f:
-	word32 r2_96 = r6_77 + 0x80<32>
+	word32 r2_96 = r6_77 & 0x80<32>
 l00407F20:
 	branch r2_96 != 0<32> l00407F20_ds_t
 l00407F20_ds_t:
@@ -5062,9 +5062,9 @@ l004082B4:
 	word32 r7_53 = r12_136 - r7_268
 l004082C0:
 	word32 r5_60 = r9_109 >>u 1<8> | r8_124 << 0x1F<8>
-	word32 r3_62 = r9_109 + 1<i32>
+	word32 r3_62 = r9_109 & 1<i32>
 	r7_53 = r7_53 + -1<i32>
-	r8_124 = r8_124 | r8_124 >>u 1<8>
+	r8_124 = r8_124 >>u 1<8>
 	branch r7_53 != 0<32> l004082C0_ds_t
 l004082C0_ds_t:
 	r9_109 = r3_62 | r5_60
@@ -5081,8 +5081,8 @@ l004082FC:
 l00408304:
 	r12_136 = r12_136 + 1<i32>
 	word32 r5_81 = r11_113 >>u 1<8> | r10_120 << 0x1F<8>
-	word32 r3_86 = r11_113 + 1<i32>
-	r10_120 = r10_120 | r10_120 >>u 1<8>
+	word32 r3_86 = r11_113 & 1<i32>
+	r10_120 = r10_120 >>u 1<8>
 	branch CONVERT(r12_136 < r7_268, bool, word32) != 0<32> l00408304_ds_t
 l00408304_ds_t:
 	r11_113 = r3_86 | r5_81
@@ -5179,8 +5179,8 @@ l004084AC:
 	word32 r4_221 = Mem220[r6 + 0x10<32>:word32]
 	word32 r5_222 = Mem220[r6 + 0x14<32>:word32]
 	word32 r6_230 = Mem220[r6 + 8<32>:word32]
-	Mem235[r6 + 0x10<32>:word32] = r4_221 | r4_221 >>u 1<8>
-	Mem236[r6 + 0x14<32>:word32] = r5_222 + 1<i32> | (r5_222 >>u 1<8> | r4_221 << 0x1F<8>)
+	Mem235[r6 + 0x10<32>:word32] = r4_221 >>u 1<8>
+	Mem236[r6 + 0x14<32>:word32] = r5_222 & 1<i32> | (r5_222 >>u 1<8> | r4_221 << 0x1F<8>)
 	Mem237[r6 + 8<32>:word32] = r6_230 + 1<i32>
 l004084F0:
 l00408460_ds_f:
@@ -5201,7 +5201,7 @@ l00408210:
 	Mem252[r6 + 0xC<32>:word32] = Mem250[r4 + 0xC<32>:word32]
 	Mem254[r6 + 0x10<32>:word32] = Mem252[r4 + 0x10<32>:word32]
 	Mem256[r6 + 0x14<32>:word32] = Mem254[r4 + 0x14<32>:word32]
-	Mem260[r6 + 4<32>:word32] = Mem256[r4 + 4<32>:word32] + Mem256[r5 + 4<32>:word32]
+	Mem260[r6 + 4<32>:word32] = Mem256[r4 + 4<32>:word32] & Mem256[r5 + 4<32>:word32]
 	return
 l004081BC_ds_f:
 l004081C8:
@@ -5291,27 +5291,26 @@ l004087C4:
 l004087C4_ds_t:
 l004087EC:
 	word32 r16_166
-	int64 hi_lo_116 = (dwLoc60 >>u 0<8>) *u (dwLoc74 + -1<i32>)
-	int64 hi_lo_122 = (dwLoc5C + -1<i32>) *u (dwLoc78 >>u 0<8>)
+	int64 hi_lo_116 = (dwLoc60 >>u 0<8>) *u dwLoc74
+	int64 hi_lo_122 = dwLoc5C *u (dwLoc78 >>u 0<8>)
 	word32 lo_119 = SLICE(hi_lo_116, word32, 0)
 	word32 lo_125 = SLICE(hi_lo_122, word32, 0)
 	word32 r21_136 = lo_119 + lo_125
-	word32 r24_131 = SLICE(hi_lo_116, word32, 32) + (dwLoc60 >>u 0<8>) *s dwLoc78 + (dwLoc74 + -1<i32>) *s 0<32>
-	int64 hi_lo_147 = (dwLoc5C + -1<i32>) *u (dwLoc74 + -1<i32>)
+	word32 r24_131 = SLICE(hi_lo_116, word32, 32) + (dwLoc60 >>u 0<8>) *s 0<i32> + dwLoc74 *s 0<32>
+	int64 hi_lo_147 = dwLoc5C *u dwLoc74
 	int64 hi_lo_153 = (dwLoc60 >>u 0<8>) *u (dwLoc78 >>u 0<8>)
 	word32 lo_160 = (dwLoc78 >>u 0<8>) *s 0<32>
-	word32 r20_140 = r24_131 + ((SLICE(hi_lo_122, word32, 32) + (dwLoc5C + -1<i32>) *s 0<32>) + (dwLoc78 >>u 0<8>) *s dwLoc60) + CONVERT(r21_136 <u lo_125, bool, word32)
+	word32 r20_140 = r24_131 + ((SLICE(hi_lo_122, word32, 32) + dwLoc5C *s 0<32>) + (dwLoc78 >>u 0<8>) *s 0<i32>) + CONVERT(r21_136 <u lo_125, bool, word32)
 	word32 dwLoc30_660 = 0<32>
 	word32 lo_150 = SLICE(hi_lo_147, word32, 0)
-	word32 r16_152 = SLICE(hi_lo_147, word32, 32) + (dwLoc5C + -1<i32>) *s dwLoc78
+	word32 r16_152 = SLICE(hi_lo_147, word32, 32) + dwLoc5C *s 0<i32>
 	word32 lo_156 = SLICE(hi_lo_153, word32, 0)
 	word32 r18_162 = SLICE(hi_lo_153, word32, 32) + (dwLoc60 >>u 0<8>) *s 0<32> + lo_160
-	word32 lo_164 = (dwLoc74 + -1<i32>) *s dwLoc60
 	branch CONVERT(r20_140 <u r24_131, bool, word32) != 0<32> l004087EC_ds_t
 l004087EC_ds_t:
-	r16_166 = r16_152 + lo_164
+	r16_166 = r16_152 + dwLoc74 *s 0<i32>
 l004087EC_ds_f:
-	r16_166 = r16_152 + lo_164
+	r16_166 = r16_152 + dwLoc74 *s 0<i32>
 l00408914:
 	branch r24_131 != r20_140 l00408914_ds_t
 l00408914_ds_t:
@@ -5324,7 +5323,7 @@ l0040891C_ds_f:
 l00408924:
 	dwLoc30_660 = 1<i32>
 l00408934:
-	word32 r10_189 = r16_166 + (lo_160 + -1<i32>) + CONVERT(lo_150 <u 0<i32>, bool, word32)
+	word32 r10_189 = r16_166 + lo_160 + CONVERT(lo_150 <u 0<32>, bool, word32)
 	word32 dwLoc2C_667 = 0<32>
 	branch CONVERT(r10_189 <u r16_166, bool, word32) != 0<32> l00408934_ds_t
 l00408934_ds_t:
@@ -5343,7 +5342,7 @@ l00408978:
 	dwLoc2C_667 = 1<i32>
 l00408998:
 	word32 r7_256
-	word32 r5_218 = (r20_140 >>u 0<8>) + -1<i32> + lo_156
+	word32 r5_218 = (r20_140 >>u 0<8>) + lo_156
 	word32 r13_237 = dwLoc2C_667 + r5_218
 	word32 r12_243 = dwLoc30_660 + (r18_162 + CONVERT(r5_218 <u lo_156, bool, word32)) + CONVERT(r13_237 <u r5_218, bool, word32)
 	word32 r6_253 = r10_189
@@ -5357,7 +5356,7 @@ l00408A38:
 	r12_243 = r12_243 >>u 1<8>
 	r13_237 = r13_237 >>u 1<8> | r12_243 << 0x1F<8>
 	word32 r4_275 = CONVERT(r12_243 >u 0x1FFFFFFF<32>, bool, word32)
-	branch r13_237 == 1<32> l00408A18_ds_t
+	branch (r13_237 & 1<i32>) == 0<32> l00408A18_ds_t
 l00408A18_ds_t:
 l00408A18_ds_f:
 l00408A58:
@@ -5376,7 +5375,7 @@ l00408A90:
 l00408AAC:
 	word32 r12_322 = r12_243 << 1<8> | r13_237 >>u 0x1F<8>
 	r13_237 = r13_237 << 1<8>
-	branch (r7_256 | r6_253 + 0x80000000<32>) == 0<32> l00408A90_ds_t
+	branch (r6_253 & 0x80000000<32>) == 0<32> l00408A90_ds_t
 l00408A90_ds_t:
 l00408A90_ds_f:
 l00408AD0:
@@ -5391,16 +5390,16 @@ l00408AD8_ds_f:
 	r7_256 = r7_256 << 1<8>
 l00408AF0:
 l00408AF4:
-	branch r12_243 != 0<32> l00408AF4_ds_t
+	branch false l00408AF4_ds_t
 l00408AF4_ds_t:
 l00408AF4_ds_f:
-	word32 r5_356 = r13_237 + 255<i32>
+	word32 r5_356 = r13_237 & 255<i32>
 l00408B08:
 	branch r5_356 != 128<i32> l00408B08_ds_t
 l00408B08_ds_t:
 l00408B08_ds_f:
 l00408B14:
-	branch (r13_237 + 256<i32> | r12_243) != 0<32> l00408B14_ds_t
+	branch (r13_237 & 256<i32>) != 0<32> l00408B14_ds_t
 l00408B14_ds_t:
 l00408B14_ds_f:
 	word32 r2_372 = r7_256 | r6_253
@@ -5487,7 +5486,6 @@ l00408CEC:
 l00408D08:
 	word32 r10_114 = 0x10000000<32>
 	word32 r11_115 = 0<i32>
-	word32 r12_116 = 0<32>
 	word32 r13_117 = 0<32>
 l00408D18:
 	branch r14_113 != 0<32> l00408D08_ds_t
@@ -5506,7 +5504,6 @@ l00408D2C_ds_f:
 	r2_123 = CONVERT(r5_109 <u dwLoc2C, bool, word32)
 l00408D38:
 	r5_109 = r5_109 - dwLoc2C
-	r12_116 = r12_116 | r10_114
 	r4_108 = r4_108 - dwLoc30 - r2_123
 	r13_117 = r13_117 | r11_115
 l00408D4C:
@@ -5521,16 +5518,16 @@ l00408D4C_ds_t:
 	r5_109 = r7_158
 l00408D4C_ds_f:
 l00408D80:
-	branch r12_116 != 0<32> l00408D80_ds_t
+	branch false l00408D80_ds_t
 l00408D80_ds_t:
 l00408D80_ds_f:
-	word32 r5_170 = r13_117 + 255<i32>
+	word32 r5_170 = r13_117 & 255<i32>
 l00408D94:
 	branch r5_170 != 128<i32> l00408D94_ds_t
 l00408D94_ds_t:
 l00408D94_ds_f:
 l00408DA0:
-	branch (r13_117 + 256<i32> | r12_116) != 0<32> l00408DA0_ds_t
+	branch (r13_117 & 256<i32>) != 0<32> l00408DA0_ds_t
 l00408DA0_ds_t:
 l00408DA0_ds_f:
 	word32 r2_178 = r7_158 | r6_156
@@ -5747,7 +5744,7 @@ void __truncdfsf2(word32 ra, word32 f12, word32 f13)
 __truncdfsf2_entry:
 l00409330:
 	__unpack_d(fp + -16<i32>, fp + -40<i32>)
-	branch (dwLoc14 + 0x3FFFFFFF<32> | dwLoc18) == 0<32> l00409330_ds_t
+	branch (dwLoc14 & 0x3FFFFFFF<32>) == 0<32> l00409330_ds_t
 l00409330_ds_t:
 l00409330_ds_f:
 l004093AC:
@@ -5797,13 +5794,13 @@ l004094B4:
 	branch r2_18 != 0<32> l004094B4_ds_t
 l004094B4_ds_t:
 l004094CC:
-	branch r4_22 != 0x3F<32> l004094CC_ds_t
+	branch (r4_22 & 0x7F<32>) != 64<i32> l004094CC_ds_t
 l004094CC_ds_t:
 l004094F0:
 	r4_22 = r4_22 + 63<i32>
 l004094CC_ds_f:
 l004094DC:
-	branch r4_22 == 0x80<32> l004094DC_ds_t
+	branch (r4_22 & 0x80<32>) == 0<32> l004094DC_ds_t
 l004094DC_ds_t:
 l004094DC_ds_f:
 l004094E8:
@@ -5820,7 +5817,7 @@ l00409434_ds_f:
 l00409448:
 	word32 r4_44
 	word32 r2_36 = -126<i32> - r5_16
-	word32 r3_41 = CONVERT(r4_22 + ((1<i32> << r2_36) + -1<i32>) >u 0<32>, bool, word32)
+	word32 r3_41 = CONVERT((r4_22 & (1<i32> << r2_36) + -1<i32>) >u 0<32>, bool, word32)
 	word32 r4_42 = r4_22 >>u r2_36
 	branch CONVERT(r2_36 < 26<i32>, bool, word32) != 0<32> l00409448_ds_t
 l00409448_ds_t:
@@ -5829,12 +5826,12 @@ l00409448_ds_f:
 l00409474:
 	r4_44 = 0<32>
 l00409478:
-	branch r4_44 != 0x3F<32> l00409478_ds_t
+	branch (r4_44 & 0x7F<32>) != 64<i32> l00409478_ds_t
 l00409478_ds_t:
 l0040949C:
 l00409478_ds_f:
 l00409488:
-	branch r4_44 == 0x80<32> l00409488_ds_t
+	branch (r4_44 & 0x80<32>) == 0<32> l00409488_ds_t
 l00409488_ds_t:
 l00409488_ds_f:
 l00409494:
@@ -5867,23 +5864,23 @@ __unpack_f_entry:
 l00409540:
 	word32 r3_6 = Mem0[r4:word32]
 	Mem14[r5 + 4<32>:word32] = r3_6 >>u 0x1F<8>
-	word32 r4_13 = (r3_6 >>u 0x17<8>) + 0xFF<32>
+	word32 r4_13 = r3_6 >>u 0x17<8> & 0xFF<32>
 	branch r4_13 != 0<32> l00409540_ds_t
 l00409540_ds_t:
 l004095C4:
 	branch r4_13 != 255<i32> l004095C4_ds_t
 l004095C4_ds_t:
 l00409604:
-	Mem22[r5 + 0xC<32>:word32] = r3_6 + 0x7FFFFF<32> << 7<8> | 0x40000000<32>
+	Mem22[r5 + 0xC<32>:word32] = (r3_6 & 0x7FFFFF<32>) << 7<8> | 0x40000000<32>
 	Mem23[r5 + 8<32>:word32] = r4_13 + -127<i32>
 	Mem24[r5:word32] = 3<i32>
 	return
 l004095C4_ds_f:
 l004095D0:
-	branch r3_6 != 0x7FFFFF<32> l004095D0_ds_t
+	branch (r3_6 & 0x7FFFFF<32>) != 0<32> l004095D0_ds_t
 l004095D0_ds_t:
 l004095E4:
-	branch r3_6 == 0x8FFFFF<32> l004095E4_ds_t
+	branch (r3_6 & 0x7FFFFF<32> & 0x100000<32>) == 0<32> l004095E4_ds_t
 l004095E4_ds_t:
 l004095F8:
 	Mem29[r5:word32] = 0<32>
@@ -5891,7 +5888,7 @@ l004095E4_ds_f:
 l004095F0:
 	Mem31[r5:word32] = 1<i32>
 l004095FC:
-	Mem34[r5 + 0xC<32>:word32] = r3_6 + 0x7FFFFF<32>
+	Mem34[r5 + 0xC<32>:word32] = r3_6 & 0x7FFFFF<32>
 	return
 l004095D0_ds_f:
 l004095D8:
@@ -5899,11 +5896,11 @@ l004095D8:
 	return
 l00409540_ds_f:
 l00409568:
-	branch r3_6 != 0x7FFFFF<32> l00409568_ds_t
+	branch (r3_6 & 0x7FFFFF<32>) != 0<32> l00409568_ds_t
 l00409568_ds_t:
 l0040957C:
 	Mem45[r5 + 8<32>:word32] = -126<i32>
-	word32 r5_40 = r3_6 + 0x7FFFFF<32> << 7<8>
+	word32 r5_40 = (r3_6 & 0x7FFFFF<32>) << 7<8>
 	branch CONVERT(r5_40 >u 0x3FFFFFFF<32>, bool, word32) != 0<32> l0040957C_ds_t
 l0040957C_ds_t:
 	Mem46[r5:word32] = 3<i32>
@@ -5988,17 +5985,17 @@ l00409808:
 	branch r2_20 != 0<32> l00409808_ds_t
 l00409808_ds_t:
 l00409824:
-	branch r10_10 != 0<32> l00409824_ds_t
+	branch false l00409824_ds_t
 l00409824_ds_t:
 l00409824_ds_f:
 l0040983C:
-	branch r11_11 != 127<i32> l0040983C_ds_t
+	branch (r11_11 & 255<i32>) != 128<i32> l0040983C_ds_t
 l0040983C_ds_t:
 l00409874:
 	r10_10 = r10_10 + CONVERT(r11_11 <u 0<i32>, bool, word32)
 l0040983C_ds_f:
 l00409848:
-	branch (r11_11 + 256<i32> | r10_10) == 0<32> l00409848_ds_t
+	branch (r11_11 & 256<i32>) == 0<32> l00409848_ds_t
 l00409848_ds_t:
 l00409848_ds_f:
 l00409864:
@@ -6021,7 +6018,7 @@ l00409704_ds_t:
 l00409724:
 	word32 r5_74
 	word32 r2_67 = 1<i32> << r4_64
-	branch (r11_11 + (r2_67 + -1<i32>) | r10_10 + (r2_67 + -1<i32> >> 0x1F<8>)) == 0<32> l00409724_ds_t
+	branch (r11_11 & r2_67 + -1<i32> | r10_10 & r2_67 + -1<i32> >> 0x1F<8>) == 0<32> l00409724_ds_t
 l00409724_ds_t:
 	r5_74 = 0<32>
 l00409724_ds_f:
@@ -6054,10 +6051,10 @@ l00409718:
 	r10_101 = 0<32>
 	r11_102 = 0<32>
 l00409794:
-	branch r10_101 != 0<32> l00409794_ds_t
+	branch false l00409794_ds_t
 l00409794_ds_t:
 l00409794_ds_f:
-	word32 r5_112 = r11_102 + 255<i32>
+	word32 r5_112 = r11_102 & 255<i32>
 l004097A8:
 	branch r5_112 != 128<i32> l004097A8_ds_t
 l004097A8_ds_t:
@@ -6065,7 +6062,7 @@ l004097E0:
 	r10_101 = r10_101 + CONVERT(r11_102 <u 0<i32>, bool, word32)
 l004097A8_ds_f:
 l004097B4:
-	branch (r11_102 + 256<i32> | r10_101) == 0<32> l004097B4_ds_t
+	branch (r11_102 & 256<i32>) == 0<32> l004097B4_ds_t
 l004097B4_ds_t:
 l004097B4_ds_f:
 l004097D0:
@@ -6108,25 +6105,25 @@ __unpack_d_entry:
 l00409930:
 	word32 r2_9 = Mem0[r4:word32]
 	word32 r3_10 = Mem0[r4 + 4<32>:word32]
-	Mem21[r5 + 4<32>:word32] = (r2_9 >>u 0x1F<8>) + 1<32>
-	word32 r7_17 = (r2_9 >>u 0x14<8>) + 0x7FF<32>
+	Mem21[r5 + 4<32>:word32] = r2_9 >>u 0x1F<8> & 1<32>
+	word32 r7_17 = r2_9 >>u 0x14<8> & 0x7FF<32>
 	branch r7_17 != 0<32> l00409930_ds_t
 l00409930_ds_t:
 l004099F8:
 	branch r7_17 != 2047<i32> l004099F8_ds_t
 l004099F8_ds_t:
 l00409A4C:
-	Mem35[r5 + 0x10<32>:word32] = r2_9 + 0xFFFFF<32> << 8<8> | r3_10 + -1<i32> >>u 0x18<8> | 0x10000000<32>
-	Mem36[r5 + 0x14<32>:word32] = r3_10 + -1<i32> << 8<8>
+	Mem35[r5 + 0x10<32>:word32] = (r2_9 & 0xFFFFF<32>) << 8<8> | r3_10 >>u 0x18<8> | 0x10000000<32>
+	Mem36[r5 + 0x14<32>:word32] = r3_10 << 8<8>
 	Mem37[r5 + 8<32>:word32] = r7_17 + -1023<i32>
 	Mem38[r5:word32] = 3<i32>
 	return
 l004099F8_ds_f:
 l00409A04:
-	branch (r3_10 + -1<i32> | r2_9 + 0xFFFFF<32>) != 0<32> l00409A04_ds_t
+	branch (r3_10 | r2_9 & 0xFFFFF<32>) != 0<32> l00409A04_ds_t
 l00409A04_ds_t:
 l00409A18:
-	branch (r3_10 + -1<i32> | r2_9 + 0x17FFFF<32>) == 0<32> l00409A18_ds_t
+	branch (r2_9 & 0xFFFFF<32> & 0x80000<32>) == 0<32> l00409A18_ds_t
 l00409A18_ds_t:
 l00409A3C:
 	Mem48[r5:word32] = 0<32>
@@ -6134,8 +6131,8 @@ l00409A18_ds_f:
 l00409A34:
 	Mem50[r5:word32] = 1<i32>
 l00409A40:
-	Mem53[r5 + 0x10<32>:word32] = r2_9 + 0xFFFFF<32>
-	Mem55[r5 + 0x14<32>:word32] = r3_10 + -1<i32>
+	Mem53[r5 + 0x10<32>:word32] = r2_9 & 0xFFFFF<32>
+	Mem55[r5 + 0x14<32>:word32] = r3_10
 	return
 l00409A04_ds_f:
 l00409A10:
@@ -6143,12 +6140,12 @@ l00409A10:
 	return
 l00409930_ds_f:
 l0040997C:
-	branch (r3_10 + -1<i32> | r2_9 + 0xFFFFF<32>) != 0<32> l0040997C_ds_t
+	branch (r3_10 | r2_9 & 0xFFFFF<32>) != 0<32> l0040997C_ds_t
 l0040997C_ds_t:
 l00409994:
 	Mem69[r5 + 8<32>:word32] = -1022<i32>
-	word32 r8_63 = r2_9 + 0xFFFFF<32> << 8<8> | r3_10 + -1<i32> >>u 0x18<8>
-	word32 r9_64 = r3_10 + -1<i32> << 8<8>
+	word32 r8_63 = (r2_9 & 0xFFFFF<32>) << 8<8> | r3_10 >>u 0x18<8>
+	word32 r9_64 = r3_10 << 8<8>
 	branch CONVERT(r8_63 >u 0xFFFFFFF<32>, bool, word32) != 0<32> l00409994_ds_t
 l00409994_ds_t:
 	Mem70[r5:word32] = 3<i32>

@@ -94,7 +94,7 @@ l0001120C:
 	call COREDLL.dll!Ordinal_2696 (retsize: 0;)
 		uses: r2:r2_16
 		defs: r2:r2_16
-	word32 r8_24 = r2_16 >>u 0x10<8> ^ r2_16 + 0xFFFF<32>
+	word32 r8_24 = r2_16 >>u 0x10<8> ^ r2_16 & 0xFFFF<32>
 	word32 dwLoc0C_50 = r8_24
 	branch r8_24 != 0<32> l0001120C_ds_t
 l0001120C_ds_t:

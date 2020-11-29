@@ -594,30 +594,28 @@ l00000542:
 xQueueReceiveFromISR_exit:
 
 
-void xQueueIsQueueEmptyFromISR(word32 r0)
+void xQueueIsQueueEmptyFromISR()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: NZC r0
 // Preserved: sp
 xQueueIsQueueEmptyFromISR_entry:
 l00000594:
-	__clz(Mem0[r0 + 56<i32>:word32])
 	return
 xQueueIsQueueEmptyFromISR_exit:
 
 
-void xQueueIsQueueFullFromISR(word32 r0)
+void xQueueIsQueueFullFromISR()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  r0:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed: NZC r0 r3
 // Preserved: sp
 xQueueIsQueueFullFromISR_entry:
 l000005A0:
-	__clz(Mem0[r0 + 60<i32>:word32] - Mem0[r0 + 56<i32>:word32])
 	return
 xQueueIsQueueFullFromISR_exit:
 

@@ -70,7 +70,7 @@ word16 fn03CB(Eq_n c)
 Eq_n fn03E6(Eq_n c)
 {
 	g_t1659 = c;
-	cu8 a_n;
+	byte a_n;
 	if (__rcr(a_n, 0x01, fn03BB(g_t1659, out a_n)) >= 0x00)
 		return g_t1659;
 	return (word16) g_t1659 + 95;
@@ -534,22 +534,22 @@ byte fn082F(byte f, byte b, Eq_n c, byte e, word16 wArg02, word16 wArg04)
 	g_b168F = 0x00;
 	g_b1690 = 0x00;
 	g_b1691 = 0x00;
-	cu8 a_n = __rol(g_b168D, 0x01);
+	byte a_n = __rol(g_b168D, 0x01);
 	if (__rcr(a_n, 0x01, cond(a_n)) < 0x00)
 		g_b1690 = 0x01;
 	else
 	{
-		cu8 a_n = __rol(g_b168D, 0x02);
+		byte a_n = __rol(g_b168D, 0x02);
 		if (__rcr(a_n, 0x01, cond(a_n)) < 0x00)
 			g_b1691 = 0x01;
 		else
 		{
-			cu8 a_n = __rol(g_b168D, 0x03);
+			byte a_n = __rol(g_b168D, 0x03);
 			if (__rcr(a_n, 0x01, cond(a_n)) < 0x00)
 				g_b168F = 0x01;
 		}
 	}
-	cu8 a_n = __rol(g_b168D, 0x04);
+	byte a_n = __rol(g_b168D, 0x04);
 	if (__rcr(a_n, 0x01, cond(a_n)) < 0x00)
 		g_b168E = 0x01;
 	g_b168D += 0x0F;
@@ -897,7 +897,7 @@ void fn0D6F()
 // 0D84: void fn0D84()
 void fn0D84()
 {
-	cu8 a_n;
+	byte a_n;
 	if (__rcr(a_n, 0x01, fn0D64(out a_n)) < 0x00)
 		fn075C(0x00, 0x02, 0x00, 0x00);
 	Eq_n hl_n = g_t1521;
@@ -907,10 +907,6 @@ void fn0D84()
 // 0DB9: void fn0DB9()
 void fn0DB9()
 {
-	bcu8 a_n = *((word16) g_t1521 + 9);
-	cu8 a_n = __rcr(a_n + 252, 0x01, (bool) cond(a_n + 252));
-	cu8 a_n = __rcr(a_n, 0x01, cond(a_n));
-	__rcr(a_n, 0x01, cond(a_n));
 }
 
 // 0DCB: void fn0DCB()
@@ -935,7 +931,7 @@ void fn0E63(byte c)
 			break;
 		if (g_b16A6 == *((word16) g_t1521 + 2))
 		{
-			cu8 a_n;
+			byte a_n;
 			if (__rcr(a_n, 0x01, fn0EAB(out a_n)) < 0x00)
 				return;
 		}
@@ -1274,7 +1270,7 @@ byte g_b14F5 = 0x00; // 14F5
 cu8 g_b14F6 = 0x01; // 14F6
 cu8 g_b14F7 = 66; // 14F7
 byte g_b14F8 = 0x50; // 14F8
-cu8 g_b14F9 = 0x00; // 14F9
+byte g_b14F9 = 0x00; // 14F9
 byte g_b14FA = 0x00; // 14FA
 byte g_b14FB = 0x00; // 14FB
 byte g_b14FC = 0x00; // 14FC
@@ -1429,7 +1425,7 @@ Eq_n g_t1678 = // 1678
 	};
 byte g_b1679 = 0x1A; // 1679
 cu8 g_b167A = 0x1A; // 167A
-cu8 g_b167B = 0x1A; // 167B
+byte g_b167B = 0x1A; // 167B
 byte g_b167C = 0x1A; // 167C
 Eq_n g_t167D = // 167D
 	{
@@ -1465,9 +1461,9 @@ Eq_n g_t168B = // 168B
 byte g_b168C = ~0x14; // 168C
 byte g_b168D = 0x3E; // 168D
 byte g_b168E = 0x82; // 168E
-cu8 g_b168F = ~0x48; // 168F
-cu8 g_b1690 = 55; // 1690
-cu8 g_b1691 = 0xC3; // 1691
+byte g_b168F = ~0x48; // 168F
+byte g_b1690 = 55; // 1690
+byte g_b1691 = 0xC3; // 1691
 Eq_n g_t1692 = // 1692
 	{
 		0x2A

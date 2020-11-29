@@ -584,16 +584,14 @@ l00000542:
 	}
 }
 
-// 00000594: void xQueueIsQueueEmptyFromISR(Register (ptr32 Eq_n) r0)
-void xQueueIsQueueEmptyFromISR(struct Eq_n * r0)
+// 00000594: void xQueueIsQueueEmptyFromISR()
+void xQueueIsQueueEmptyFromISR()
 {
-	__clz(r0->dw0038);
 }
 
-// 000005A0: void xQueueIsQueueFullFromISR(Register (ptr32 Eq_n) r0)
-void xQueueIsQueueFullFromISR(struct Eq_n * r0)
+// 000005A0: void xQueueIsQueueFullFromISR()
+void xQueueIsQueueFullFromISR()
 {
-	__clz(r0->dw003C - r0->dw0038);
 }
 
 // 000005B0: void uxQueueMessagesWaitingFromISR()

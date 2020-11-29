@@ -1182,10 +1182,6 @@ void fn0DB9()
 // Preserved: sp
 fn0DB9_entry:
 l0DB9:
-	byte a_7 = Mem0[Mem0[0x1521<16>:word16] + 9<16>:byte]
-	byte a_11 = __rcr(a_7 + 0xFC<8>, 1<8>, SLICE(cond(a_7 + 0xFC<8>), bool, 0))
-	byte a_13 = __rcr(a_11, 1<8>, cond(a_11))
-	__rcr(a_13, 1<8>, cond(a_13))
 	return
 fn0DB9_exit:
 

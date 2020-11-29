@@ -28,205 +28,202 @@ fn0111_entry:
 l0111:
 	fn04B9(0x8000<16>)
 	real48 gp0_gp1_gp2_12 = Mem0[0x80CE<p16>:real48]
-	word16 gp2_15 = SLICE(gp0_gp1_gp2_12, word16, 0)
-	fn01E6(gp0_gp1_gp2_12, gp2_15)
-	word16 gp8_875
-	word16 gp9_876
-	word16 gp10_877
-	word16 gp11_878
-	word16 gp14_879
-	fn04AE(gp0_gp1_gp2_12, gp2_15, out gp8_875, out gp9_876, out gp10_877, out gp11_878, out gp14_879)
+	word32 gp0_gp1_907 = <invalid>
+	word16 gp8_935
+	word16 gp9_936
+	word16 gp10_937
+	word16 gp11_938
+	word16 gp14_939
+	fn04AE(gp0_gp1_907, fn01E6(gp0_gp1_gp2_12, SLICE(gp0_gp1_gp2_12, word16, 0)), out gp8_935, out gp9_936, out gp10_937, out gp11_938, out gp14_939)
 	fn045A(0xA<16>)
 	fn04B9(0x800D<16>)
-	real48 gp0_gp1_gp2_52 = Mem0[0x80D1<p16>:real48]
-	word16 gp2_55 = SLICE(gp0_gp1_gp2_52, word16, 0)
-	fn01E6(gp0_gp1_gp2_52, gp2_55)
-	word16 gp8_880
-	word16 gp9_881
-	word16 gp10_882
-	word16 gp11_883
-	word16 gp14_884
-	fn04AE(gp0_gp1_gp2_52, gp2_55, out gp8_880, out gp9_881, out gp10_882, out gp11_883, out gp14_884)
+	real48 gp0_gp1_gp2_66 = Mem0[0x80D1<p16>:real48]
+	word32 gp0_gp1_908 = <invalid>
+	word16 gp8_940
+	word16 gp9_941
+	word16 gp10_942
+	word16 gp11_943
+	word16 gp14_944
+	fn04AE(gp0_gp1_908, fn01E6(gp0_gp1_gp2_66, SLICE(gp0_gp1_gp2_66, word16, 0)), out gp8_940, out gp9_941, out gp10_942, out gp11_943, out gp14_944)
 	fn045A(0xA<16>)
 	fn04B9(0x801A<16>)
-	real48 gp0_gp1_gp2_92 = Mem0[0x80D4<p16>:real48]
-	word16 gp2_95 = SLICE(gp0_gp1_gp2_92, word16, 0)
-	fn01E6(gp0_gp1_gp2_92, gp2_95)
-	word16 gp8_885
-	word16 gp9_886
-	word16 gp10_887
-	word16 gp11_888
-	word16 gp14_889
-	fn04AE(gp0_gp1_gp2_92, gp2_95, out gp8_885, out gp9_886, out gp10_887, out gp11_888, out gp14_889)
+	real48 gp0_gp1_gp2_120 = Mem0[0x80D4<p16>:real48]
+	word32 gp0_gp1_909 = <invalid>
+	word16 gp8_945
+	word16 gp9_946
+	word16 gp10_947
+	word16 gp11_948
+	word16 gp14_949
+	fn04AE(gp0_gp1_909, fn01E6(gp0_gp1_gp2_120, SLICE(gp0_gp1_gp2_120, word16, 0)), out gp8_945, out gp9_946, out gp10_947, out gp11_948, out gp14_949)
 	fn045A(0xA<16>)
 	fn04B9(0x8027<16>)
-	real48 gp0_gp1_gp2_132 = Mem0[0x80D7<p16>:real48]
-	word16 gp2_135 = SLICE(gp0_gp1_gp2_132, word16, 0)
-	fn01E6(gp0_gp1_gp2_132, gp2_135)
-	word16 gp11_147
-	word16 gp8_890
-	word16 gp9_891
-	word16 gp10_892
-	word16 gp14_893
-	word16 gp3_152 = fn04AE(gp0_gp1_gp2_132, gp2_135, out gp8_890, out gp9_891, out gp10_892, out gp11_147, out gp14_893)
+	real48 gp0_gp1_gp2_174 = Mem0[0x80D7<p16>:real48]
+	word32 gp0_gp1_910 = <invalid>
+	word16 gp11_203
+	word16 gp8_950
+	word16 gp9_951
+	word16 gp10_952
+	word16 gp14_953
+	word16 gp3_208 = fn04AE(gp0_gp1_910, fn01E6(gp0_gp1_gp2_174, SLICE(gp0_gp1_gp2_174, word16, 0)), out gp8_950, out gp9_951, out gp10_952, out gp11_203, out gp14_953)
 	fn045A(0xA<16>)
 	fn04B9(0x8036<16>)
-	real48 gp0_gp1_gp2_172 = Mem0[0x80DA<p16>:real48]
-	word32 gp12_gp13_851 = <invalid>
-	word32 gp0_gp1_852 = <invalid>
-	word16 gp11_203
-	word16 gp8_894
-	word16 gp9_895
-	word16 gp10_896
-	word16 gp14_897
-	word16 gp3_208 = fn04AE(gp0_gp1_852, fn032A(gp0_gp1_gp2_172, gp12_gp13_851, SLICE(gp0_gp1_gp2_172, word16, 0), gp3_152, gp11_147, wArg42, wArgC4), out gp8_894, out gp9_895, out gp10_896, out gp11_203, out gp14_897)
+	real48 gp0_gp1_gp2_228 = Mem0[0x80DA<p16>:real48]
+	word32 gp12_gp13_911 = <invalid>
+	word32 gp0_gp1_912 = <invalid>
+	word16 gp11_259
+	word16 gp8_954
+	word16 gp9_955
+	word16 gp10_956
+	word16 gp14_957
+	word16 gp3_264 = fn04AE(gp0_gp1_912, fn032A(gp0_gp1_gp2_228, gp12_gp13_911, SLICE(gp0_gp1_gp2_228, word16, 0), gp3_208, gp11_203, wArg42, wArgC4), out gp8_954, out gp9_955, out gp10_956, out gp11_259, out gp14_957)
 	fn045A(0xA<16>)
 	fn04B9(0x8042<16>)
-	real48 gp0_gp1_gp2_228 = Mem0[0x80DD<p16>:real48]
-	word16 gp15_194 = <invalid>
-	word32 gp12_gp13_853 = <invalid>
-	word32 gp0_gp1_854 = <invalid>
-	word16 gp11_259
-	word16 gp8_898
-	word16 gp9_899
-	word16 gp10_900
-	word16 gp14_901
-	word16 gp3_264 = fn04AE(gp0_gp1_854, fn032A(gp0_gp1_gp2_228, gp12_gp13_853, SLICE(gp0_gp1_gp2_228, word16, 0), gp3_208, gp11_203, Mem0[gp15_194 + 66<i16>:word16], Mem0[gp15_194 + 196<i16>:word16]), out gp8_898, out gp9_899, out gp10_900, out gp11_259, out gp14_901)
+	real48 gp0_gp1_gp2_284 = Mem0[0x80DD<p16>:real48]
+	word16 gp15_250 = <invalid>
+	word32 gp12_gp13_913 = <invalid>
+	word32 gp0_gp1_914 = <invalid>
+	word16 gp11_315
+	word16 gp8_958
+	word16 gp9_959
+	word16 gp10_960
+	word16 gp14_961
+	word16 gp3_320 = fn04AE(gp0_gp1_914, fn032A(gp0_gp1_gp2_284, gp12_gp13_913, SLICE(gp0_gp1_gp2_284, word16, 0), gp3_264, gp11_259, Mem0[gp15_250 + 66<i16>:word16], Mem0[gp15_250 + 196<i16>:word16]), out gp8_958, out gp9_959, out gp10_960, out gp11_315, out gp14_961)
 	fn045A(0xA<16>)
 	fn04B9(0x804F<16>)
-	real48 gp0_gp1_gp2_284 = Mem0[0x80E0<p16>:real48]
-	word16 gp15_250 = <invalid>
-	word32 gp12_gp13_855 = <invalid>
-	word32 gp0_gp1_856 = <invalid>
-	word16 gp11_315
-	word16 gp8_902
-	word16 gp9_903
-	word16 gp10_904
-	word16 gp14_905
-	word16 gp3_320 = fn04AE(gp0_gp1_856, fn032A(gp0_gp1_gp2_284, gp12_gp13_855, SLICE(gp0_gp1_gp2_284, word16, 0), gp3_264, gp11_259, Mem0[gp15_250 + 66<i16>:word16], Mem0[gp15_250 + 196<i16>:word16]), out gp8_902, out gp9_903, out gp10_904, out gp11_315, out gp14_905)
+	real48 gp0_gp1_gp2_340 = Mem0[0x80E0<p16>:real48]
+	word16 gp15_306 = <invalid>
+	word32 gp12_gp13_915 = <invalid>
+	word32 gp0_gp1_916 = <invalid>
+	word16 gp11_371
+	word16 gp8_962
+	word16 gp9_963
+	word16 gp10_964
+	word16 gp14_965
+	word16 gp3_376 = fn04AE(gp0_gp1_916, fn032A(gp0_gp1_gp2_340, gp12_gp13_915, SLICE(gp0_gp1_gp2_340, word16, 0), gp3_320, gp11_315, Mem0[gp15_306 + 66<i16>:word16], Mem0[gp15_306 + 196<i16>:word16]), out gp8_962, out gp9_963, out gp10_964, out gp11_371, out gp14_965)
 	fn045A(0xA<16>)
 	fn04B9(0x805C<16>)
-	real48 gp0_gp1_gp2_340 = Mem0[0x80E3<p16>:real48]
-	word16 gp15_306 = <invalid>
-	word32 gp12_gp13_857 = <invalid>
-	word32 gp0_gp1_858 = <invalid>
-	word16 gp11_371
-	word16 gp8_906
-	word16 gp9_907
-	word16 gp10_908
-	word16 gp14_909
-	word16 gp3_376 = fn04AE(gp0_gp1_858, fn032A(gp0_gp1_gp2_340, gp12_gp13_857, SLICE(gp0_gp1_gp2_340, word16, 0), gp3_320, gp11_315, Mem0[gp15_306 + 66<i16>:word16], Mem0[gp15_306 + 196<i16>:word16]), out gp8_906, out gp9_907, out gp10_908, out gp11_371, out gp14_909)
+	real48 gp0_gp1_gp2_396 = Mem0[0x80E3<p16>:real48]
+	word16 gp15_362 = <invalid>
+	word32 gp12_gp13_917 = <invalid>
+	word32 gp0_gp1_918 = <invalid>
+	word16 gp11_427
+	word16 gp8_966
+	word16 gp9_967
+	word16 gp10_968
+	word16 gp14_969
+	word16 gp3_432 = fn04AE(gp0_gp1_918, fn032A(gp0_gp1_gp2_396, gp12_gp13_917, SLICE(gp0_gp1_gp2_396, word16, 0), gp3_376, gp11_371, Mem0[gp15_362 + 66<i16>:word16], Mem0[gp15_362 + 196<i16>:word16]), out gp8_966, out gp9_967, out gp10_968, out gp11_427, out gp14_969)
 	fn045A(0xA<16>)
 	fn04B9(0x806B<16>)
-	real48 gp0_gp1_gp2_396 = Mem0[0x80E6<p16>:real48]
-	word16 gp15_362 = <invalid>
-	word32 gp12_gp13_859 = <invalid>
-	word32 gp0_gp1_860 = <invalid>
-	word16 gp11_427
-	word16 gp8_910
-	word16 gp9_911
-	word16 gp10_912
-	word16 gp14_913
-	word16 gp3_432 = fn04AE(gp0_gp1_860, fn032A(gp0_gp1_gp2_396, gp12_gp13_859, SLICE(gp0_gp1_gp2_396, word16, 0), gp3_376, gp11_371, Mem0[gp15_362 + 66<i16>:word16], Mem0[gp15_362 + 196<i16>:word16]), out gp8_910, out gp9_911, out gp10_912, out gp11_427, out gp14_913)
+	real48 gp0_gp1_gp2_452 = Mem0[0x80E6<p16>:real48]
+	word16 gp15_418 = <invalid>
+	word32 gp12_gp13_919 = <invalid>
+	word32 gp0_gp1_920 = <invalid>
+	word16 gp11_483
+	word16 gp8_970
+	word16 gp9_971
+	word16 gp10_972
+	word16 gp14_973
+	word16 gp3_488 = fn04AE(gp0_gp1_920, fn032A(gp0_gp1_gp2_452, gp12_gp13_919, SLICE(gp0_gp1_gp2_452, word16, 0), gp3_432, gp11_427, Mem0[gp15_418 + 66<i16>:word16], Mem0[gp15_418 + 196<i16>:word16]), out gp8_970, out gp9_971, out gp10_972, out gp11_483, out gp14_973)
 	fn045A(0xA<16>)
 	fn04B9(0x8076<16>)
-	real48 gp0_gp1_gp2_452 = Mem0[0x80CE<p16>:real48]
-	word16 gp15_418 = <invalid>
-	word32 gp12_gp13_861 = <invalid>
-	word32 gp0_gp1_862 = <invalid>
-	word16 gp10_482
-	word16 gp11_483
-	word16 gp8_493
-	word16 gp9_494
-	word16 gp14_914
-	fn04AE(gp0_gp1_862, fn032A(gp0_gp1_gp2_452, gp12_gp13_861, SLICE(gp0_gp1_gp2_452, word16, 0), gp3_432, gp11_427, Mem0[gp15_418 + 66<i16>:word16], Mem0[gp15_418 + 196<i16>:word16]), out gp8_493, out gp9_494, out gp10_482, out gp11_483, out gp14_914)
+	real48 gp0_gp1_gp2_508 = Mem0[0x80CE<p16>:real48]
+	word16 gp15_474 = <invalid>
+	word32 gp12_gp13_921 = <invalid>
+	word32 gp0_gp1_922 = <invalid>
+	word16 gp10_538
+	word16 gp11_539
+	word16 gp8_549
+	word16 gp9_550
+	word16 gp14_974
+	fn04AE(gp0_gp1_922, fn032A(gp0_gp1_gp2_508, gp12_gp13_921, SLICE(gp0_gp1_gp2_508, word16, 0), gp3_488, gp11_483, Mem0[gp15_474 + 66<i16>:word16], Mem0[gp15_474 + 196<i16>:word16]), out gp8_549, out gp9_550, out gp10_538, out gp11_539, out gp14_974)
 	fn045A(0xA<16>)
 	fn04B9(0x8082<16>)
-	real48 gp0_gp1_gp2_508 = Mem0[0x80DA<p16>:real48]
-	word16 gp15_474 = <invalid>
-	word32 gp12_gp13_863 = <invalid>
-	word32 gp0_gp1_864 = <invalid>
-	word16 gp10_539
-	word16 gp11_540
-	word16 gp8_550
-	word16 gp9_551
-	word16 gp14_915
-	fn04AE(gp0_gp1_864, fn034E(gp0_gp1_gp2_508, gp12_gp13_863, SLICE(gp0_gp1_gp2_508, word16, 0), gp8_493, gp9_494, gp10_482, gp11_483, Mem0[gp15_474 + 100<i16>:word16], Mem0[gp15_474 + 196<i16>:word16]), out gp8_550, out gp9_551, out gp10_539, out gp11_540, out gp14_915)
+	real48 gp0_gp1_gp2_564 = Mem0[0x80DA<p16>:real48]
+	word16 gp15_530 = <invalid>
+	word32 gp12_gp13_923 = <invalid>
+	word32 gp0_gp1_924 = <invalid>
+	word16 gp10_595
+	word16 gp11_596
+	word16 gp8_606
+	word16 gp9_607
+	word16 gp14_975
+	fn04AE(gp0_gp1_924, fn034E(gp0_gp1_gp2_564, gp12_gp13_923, SLICE(gp0_gp1_gp2_564, word16, 0), gp8_549, gp9_550, gp10_538, gp11_539, Mem0[gp15_530 + 100<i16>:word16], Mem0[gp15_530 + 196<i16>:word16]), out gp8_606, out gp9_607, out gp10_595, out gp11_596, out gp14_975)
 	fn045A(0xA<16>)
 	fn04B9(0x808E<16>)
-	real48 gp0_gp1_gp2_565 = Mem0[0x80DD<p16>:real48]
-	word16 gp15_530 = <invalid>
-	word32 gp12_gp13_865 = <invalid>
-	word32 gp0_gp1_866 = <invalid>
-	word16 gp10_596
-	word16 gp11_597
-	word16 gp8_607
-	word16 gp9_608
-	word16 gp14_916
-	fn04AE(gp0_gp1_866, fn034E(gp0_gp1_gp2_565, gp12_gp13_865, SLICE(gp0_gp1_gp2_565, word16, 0), gp8_550, gp9_551, gp10_539, gp11_540, Mem0[gp15_530 + 0x66<16>:word16], Mem0[gp15_530 + 0xC6<16>:word16]), out gp8_607, out gp9_608, out gp10_596, out gp11_597, out gp14_916)
+	real48 gp0_gp1_gp2_621 = Mem0[0x80DD<p16>:real48]
+	word16 gp15_586 = <invalid>
+	word32 gp12_gp13_925 = <invalid>
+	word32 gp0_gp1_926 = <invalid>
+	word16 gp10_652
+	word16 gp11_653
+	word16 gp8_663
+	word16 gp9_664
+	word16 gp14_976
+	fn04AE(gp0_gp1_926, fn034E(gp0_gp1_gp2_621, gp12_gp13_925, SLICE(gp0_gp1_gp2_621, word16, 0), gp8_606, gp9_607, gp10_595, gp11_596, Mem0[gp15_586 + 0x66<16>:word16], Mem0[gp15_586 + 0xC6<16>:word16]), out gp8_663, out gp9_664, out gp10_652, out gp11_653, out gp14_976)
 	fn045A(0xA<16>)
 	fn04B9(0x809B<16>)
-	real48 gp0_gp1_gp2_622 = Mem0[0x80E0<p16>:real48]
-	word16 gp15_587 = <invalid>
-	word32 gp12_gp13_867 = <invalid>
-	word32 gp0_gp1_868 = <invalid>
-	word16 gp10_653
-	word16 gp11_654
-	word16 gp8_664
-	word16 gp9_665
-	word16 gp14_917
-	fn04AE(gp0_gp1_868, fn034E(gp0_gp1_gp2_622, gp12_gp13_867, SLICE(gp0_gp1_gp2_622, word16, 0), gp8_607, gp9_608, gp10_596, gp11_597, Mem0[gp15_587 + 0x66<16>:word16], Mem0[gp15_587 + 0xC6<16>:word16]), out gp8_664, out gp9_665, out gp10_653, out gp11_654, out gp14_917)
+	real48 gp0_gp1_gp2_678 = Mem0[0x80E0<p16>:real48]
+	word16 gp15_643 = <invalid>
+	word32 gp12_gp13_927 = <invalid>
+	word32 gp0_gp1_928 = <invalid>
+	word16 gp10_709
+	word16 gp11_710
+	word16 gp8_720
+	word16 gp9_721
+	word16 gp14_977
+	fn04AE(gp0_gp1_928, fn034E(gp0_gp1_gp2_678, gp12_gp13_927, SLICE(gp0_gp1_gp2_678, word16, 0), gp8_663, gp9_664, gp10_652, gp11_653, Mem0[gp15_643 + 0x66<16>:word16], Mem0[gp15_643 + 0xC6<16>:word16]), out gp8_720, out gp9_721, out gp10_709, out gp11_710, out gp14_977)
 	fn045A(0xA<16>)
 	fn04B9(0x80A8<16>)
-	real48 gp0_gp1_gp2_679 = Mem0[0x80E3<p16>:real48]
-	word16 gp15_644 = <invalid>
-	word32 gp12_gp13_869 = <invalid>
-	word32 gp0_gp1_870 = <invalid>
-	word16 gp10_710
-	word16 gp11_711
-	word16 gp8_721
-	word16 gp9_722
-	word16 gp14_918
-	fn04AE(gp0_gp1_870, fn034E(gp0_gp1_gp2_679, gp12_gp13_869, SLICE(gp0_gp1_gp2_679, word16, 0), gp8_664, gp9_665, gp10_653, gp11_654, Mem0[gp15_644 + 0x66<16>:word16], Mem0[gp15_644 + 0xC6<16>:word16]), out gp8_721, out gp9_722, out gp10_710, out gp11_711, out gp14_918)
+	real48 gp0_gp1_gp2_735 = Mem0[0x80E3<p16>:real48]
+	word16 gp15_700 = <invalid>
+	word32 gp12_gp13_929 = <invalid>
+	word32 gp0_gp1_930 = <invalid>
+	word16 gp10_766
+	word16 gp11_767
+	word16 gp8_777
+	word16 gp9_778
+	word16 gp14_978
+	fn04AE(gp0_gp1_930, fn034E(gp0_gp1_gp2_735, gp12_gp13_929, SLICE(gp0_gp1_gp2_735, word16, 0), gp8_720, gp9_721, gp10_709, gp11_710, Mem0[gp15_700 + 0x66<16>:word16], Mem0[gp15_700 + 0xC6<16>:word16]), out gp8_777, out gp9_778, out gp10_766, out gp11_767, out gp14_978)
 	fn045A(0xA<16>)
 	fn04B9(0x80B7<16>)
-	real48 gp0_gp1_gp2_736 = Mem0[0x80E6<p16>:real48]
-	word16 gp15_701 = <invalid>
-	word32 gp12_gp13_871 = <invalid>
-	word32 gp0_gp1_872 = <invalid>
-	word16 gp10_767
-	word16 gp11_768
-	word16 gp8_778
-	word16 gp9_779
-	word16 gp14_919
-	fn04AE(gp0_gp1_872, fn034E(gp0_gp1_gp2_736, gp12_gp13_871, SLICE(gp0_gp1_gp2_736, word16, 0), gp8_721, gp9_722, gp10_710, gp11_711, Mem0[gp15_701 + 0x66<16>:word16], Mem0[gp15_701 + 0xC6<16>:word16]), out gp8_778, out gp9_779, out gp10_767, out gp11_768, out gp14_919)
+	real48 gp0_gp1_gp2_792 = Mem0[0x80E6<p16>:real48]
+	word16 gp15_757 = <invalid>
+	word32 gp12_gp13_931 = <invalid>
+	word32 gp0_gp1_932 = <invalid>
+	word16 gp10_823
+	word16 gp11_824
+	word16 gp8_834
+	word16 gp9_835
+	word16 gp14_979
+	fn04AE(gp0_gp1_932, fn034E(gp0_gp1_gp2_792, gp12_gp13_931, SLICE(gp0_gp1_gp2_792, word16, 0), gp8_777, gp9_778, gp10_766, gp11_767, Mem0[gp15_757 + 0x66<16>:word16], Mem0[gp15_757 + 0xC6<16>:word16]), out gp8_834, out gp9_835, out gp10_823, out gp11_824, out gp14_979)
 	fn045A(0xA<16>)
 	fn04B9(0x80C2<16>)
-	real48 gp0_gp1_gp2_793 = Mem0[0x80CE<p16>:real48]
-	word16 gp15_758 = <invalid>
-	word32 gp12_gp13_873 = <invalid>
-	word32 gp0_gp1_874 = <invalid>
-	word16 gp8_920
-	word16 gp9_921
-	word16 gp10_922
-	word16 gp11_923
-	word16 gp14_924
-	fn04AE(gp0_gp1_874, fn034E(gp0_gp1_gp2_793, gp12_gp13_873, SLICE(gp0_gp1_gp2_793, word16, 0), gp8_778, gp9_779, gp10_767, gp11_768, Mem0[gp15_758 + 0x66<16>:word16], Mem0[gp15_758 + 0xC6<16>:word16]), out gp8_920, out gp9_921, out gp10_922, out gp11_923, out gp14_924)
+	real48 gp0_gp1_gp2_849 = Mem0[0x80CE<p16>:real48]
+	word16 gp15_814 = <invalid>
+	word32 gp12_gp13_933 = <invalid>
+	word32 gp0_gp1_934 = <invalid>
+	word16 gp8_980
+	word16 gp9_981
+	word16 gp10_982
+	word16 gp11_983
+	word16 gp14_984
+	fn04AE(gp0_gp1_934, fn034E(gp0_gp1_gp2_849, gp12_gp13_933, SLICE(gp0_gp1_gp2_849, word16, 0), gp8_834, gp9_835, gp10_823, gp11_824, Mem0[gp15_814 + 0x66<16>:word16], Mem0[gp15_814 + 0xC6<16>:word16]), out gp8_980, out gp9_981, out gp10_982, out gp11_983, out gp14_984)
 	fn045A(0xA<16>)
 	return
 fn0111_exit:
 
 
-void fn01E6(word32 gp0_gp1, word16 gp2)
+word16 fn01E6(word32 gp0_gp1, word16 gp2)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      fn0111
 // MayUse:  gp2:[0..15] Sequence gp0:gp1:[0..31]
-// LiveOut:
-// Trashed: PZN gp3 gp4 gp5
+// LiveOut: gp2
+// Trashed: CPZN gp0 gp1 gp10 gp11 gp12 gp13 gp14 gp2 gp3 gp4 gp5 gp6 gp7 gp8 gp9
 // Preserved: gp15
 fn01E6_entry:
+	word16 gp0 = SLICE(gp0_gp1, word16, 16)
 	word16 gp1 = SLICE(gp0_gp1, word16, 0)
 	real48 gp0_gp1_gp2_9 = SEQ(gp0_gp1, gp2)
 l01E6:
@@ -236,9 +233,21 @@ l000001EC:
 l000001ED:
 	__bpt()
 l000001EE:
-	__xbr(gp1)
+	word16 gp6_17 = __xbr(gp1)
+	real48 gp0_gp1_gp2_32 = SEQ(gp0, gp1 & 0xFF00<16>, gp2) * Mem0[0x05AE<p16>:real48] + Mem0[0x05B1<p16>:real48]
+	real48 gp0_gp1_gp2_52 = gp0_gp1_gp2_32 + SEQ(gp0, gp1 & 0xFF00<16>, gp2) / gp0_gp1_gp2_32
+	real48 gp0_gp1_gp2_72 = SEQ(SLICE(gp0_gp1_gp2_52, word16, 32), SLICE(gp0_gp1_gp2_52, word16, 16) & 0xFF00<16> | 0xFE<16>, 0xFE<16>) + SEQ(gp0, gp1 & 0xFF00<16>, gp2) / gp0_gp1_gp2_52
+	real48 gp0_gp1_gp2_86 = gp0_gp1_gp2_72 + SEQ(gp0, gp1 & 0xFF00<16>, gp2) / gp0_gp1_gp2_72
+	word16 gp0_96 = SLICE(gp0_gp1_gp2_86, word16, 32)
+	word16 gp2_143 = SLICE(gp0_gp1_gp2_86, word16, 0)
+	word16 gp1_92 = SLICE(gp0_gp1_gp2_86, word16, 16) & 0xFF00<16> | 0xFF<16>
+	branch Test(EQ,(gp6_17 >> 8<16> & 0x8000<u16>) == 0<16>) l00000218
+l00000215:
+	gp2_143 = SLICE(SEQ(gp0_96, gp1_92, gp2_143) * Mem0[0x05B4<p16>:real48], word16, 0) (alias)
+l00000218:
+	return gp2_143
 l000001EB:
-	return
+	return gp2
 fn01E6_exit:
 
 

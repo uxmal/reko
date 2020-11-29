@@ -1,7 +1,7 @@
 void Win32CrtStartup()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  d0:[0..31] d1:[0..31]
+// MayUse: 
 // LiveOut:
 // Trashed:
 // Preserved: a7
@@ -9,6 +9,5 @@ void Win32CrtStartup()
 Win32CrtStartup_exit:
 Win32CrtStartup_entry:
 l00001004:
-	__btst(d0, d1)
 
 

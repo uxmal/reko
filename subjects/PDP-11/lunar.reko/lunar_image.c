@@ -143,7 +143,6 @@ void fn0242(word16 r0, word16 * r1)
 			wLoc02_n = 0x2000;
 		}
 		cu16 r2_n = __swab(r2_n & ~~0x3F);
-		cu16 r2_n = __ror(r2_n, r2_n);
 		g_w0080 = r2_n;
 		ci16 r3_n = r3_n - g_ptr0082;
 		if (r3_n <= 0x00)
@@ -155,7 +154,7 @@ void fn0242(word16 r0, word16 * r1)
 		cui16 r3_n = r3_n & ~~0x3F;
 		if (g_ptr0086 - r3_n < 0x00)
 			g_ptr0086 = r3_n;
-		*r5_n = r3_n | r2_n | wLoc02_n;
+		*r5_n = r3_n | r2_n >> 1 | wLoc02_n;
 		++r5_n;
 	}
 }
@@ -574,12 +573,13 @@ void fn0A0A()
 	else
 	{
 		Eq_n r4_n = g_t0064;
-		if (r4_n < 0x3F)
+		ci16 v15_n = 0x3F - r4_n;
+		bool C_n = (bool) cond(v15_n);
+		if (v15_n > 0x00)
 			r4_n.u0 = 0x3F;
-		Eq_n r4_n = __rol(r4_n, r4_n);
-		Eq_n r4_n = __rol(r4_n, r4_n);
-		Eq_n r4_n = __rol(r4_n, r4_n);
-		g_w35CA = __rol(r4_n, r4_n) & ~~0x0380 | 0x9C50;
+		Eq_n r4_n = __rcl(r4_n, 1, C_n);
+		Eq_n r4_n = __rcl(r4_n, 1, (r4_n & 0x8000) != 0x00);
+		g_w35CA = __rcl(__rcl(r4_n, 1, (r4_n & 0x8000) != 0x00), 1, (r4_n & 0x8000) != 0x00) & ~~0x0380 | 0x9C50;
 		if (g_w0046 < 0x2D)
 			g_w34D2 = 0x00;
 		else if (g_w0046 > ~0x2C)
@@ -633,17 +633,16 @@ void fn0A94(int16 r3, Eq_n r4, word16 * r5)
 		{
 			struct Eq_n * r2_n = (char *) (r2_n + g_w0070 / 0x00002767) + 1 & ~~0x3F;
 			r2_n = r2_n + Mem29[0x0052<p16>:word16] & ~~0x3F;
-			cu16 r0_n = __swab((int16) r2_n->b2766 & ~~0x3F);
 			cui16 r4_n = ~r4 & ~~0x2000;
-			cui16 r0_n = __ror(r0_n, r0_n) | (r4_n | 0x4000) | (int16) r2_n->b2766 & ~~0x3F;
+			cui16 r0_n = __swab((int16) r2_n->b2766 & ~~0x3F) >> 1 | (r4_n | 0x4000) | (int16) r2_n->b2766 & ~~0x3F;
 			*r5 = r0_n;
 			struct Eq_n * r5_n = r5 + 1;
 			r5_n->w0000 = r0_n + 0x2040 & ~0xC000;
-			int16 v24_n = wLoc02_n - 0x01;
+			int16 v25_n = wLoc02_n - 0x01;
 			r4 = r4_n | 0x4000;
 			r5 = &r5_n->w0002;
-			wLoc02_n = v24_n;
-		} while (v24_n > 0x00);
+			wLoc02_n = v25_n;
+		} while (v25_n > 0x00);
 		r5_n->w0002 = 0xF700;
 		r5_n->w0004 = 0x00;
 		g_ptr00B0 = r2_n;
@@ -698,10 +697,9 @@ l0BD0:
 	sp_n->t0000.u1 = 0x01;
 	sp_n->wFFFFFFFE = g_w0078;
 	fn0C90(sp_n->wFFFFFFFE, sp_n->t0000);
-	cu16 r5_n = g_w0070;
 	struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 	word16 * r3_n = &g_w0030;
-	if (__ror(r5_n, r5_n) < 0x00)
+	if ((g_w0070 & 0x01) == 0x00)
 		r3_n = -0x30;
 	sp_n->ptrFFFFFFFE = r3_n;
 	fn0C36(~0x17, r3_n);
@@ -909,8 +907,7 @@ word16 fn0E32()
 	*(word16 *) 62466 = *(word16 *) 62466;
 	do
 	{
-		cu16 r4_n = __swab(g_w00AC + 0x01);
-		g_w35CA = __ror(r4_n, r4_n) + g_w35CA & ~~0x0380 | 0x9C50;
+		g_w35CA = (__swab(g_w00AC + 0x01) >> 1) + g_w35CA & ~~0x0380 | 0x9C50;
 		struct Eq_n * r5_n;
 		fn0E98(&g_w35CC, out r5_n);
 		*(word16 *) 62466 = *(word16 *) 62466;
@@ -1085,6 +1082,7 @@ bool fn114A(Eq_n r0, Eq_n r1, union Eq_n & r2Out, union Eq_n & r3Out)
 		if (r1 == 0x00)
 			goto l119E;
 		r1 = r0;
+		C_n = false;
 	}
 	else
 	{
@@ -1092,6 +1090,20 @@ bool fn114A(Eq_n r0, Eq_n r1, union Eq_n & r2Out, union Eq_n & r3Out)
 		if (r0 == 0x00)
 			goto l119E;
 	}
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
 	Eq_n r2_n;
 	Eq_n r2_n;
 	Eq_n r2_n;
@@ -1106,50 +1118,64 @@ bool fn114A(Eq_n r0, Eq_n r1, union Eq_n & r2Out, union Eq_n & r3Out)
 	Eq_n r2_n;
 	Eq_n r2_n;
 	Eq_n r2_n;
-	Eq_n r2_n = __rol(r2_n, r2_n);
-	if (r2_n >= 0x00)
+	Eq_n r2_n = __rcl(r2_n, 1, C_n);
+	bool C_n = (r2_n & 0x8000) != 0x00;
+	if ((r2_n & 0x8000) == 0x00)
 	{
-		r2_n = __rol(r2_n, r2_n);
-		if (r2_n >= 0x00)
+		r2_n = __rcl(r2_n, 1, C_n);
+		bool C_n = (r2_n & 0x8000) != 0x00;
+		if ((r2_n & 0x8000) == 0x00)
 		{
-			r2_n = __rol(r2_n, r2_n);
-			if (r2_n >= 0x00)
+			r2_n = __rcl(r2_n, 1, C_n);
+			bool C_n = (r2_n & 0x8000) != 0x00;
+			if ((r2_n & 0x8000) == 0x00)
 			{
-				r2_n = __rol(r2_n, r2_n);
-				if (r2_n >= 0x00)
+				r2_n = __rcl(r2_n, 1, C_n);
+				bool C_n = (r2_n & 0x8000) != 0x00;
+				if ((r2_n & 0x8000) == 0x00)
 				{
-					r2_n = __rol(r2_n, r2_n);
-					if (r2_n >= 0x00)
+					r2_n = __rcl(r2_n, 1, C_n);
+					bool C_n = (r2_n & 0x8000) != 0x00;
+					if ((r2_n & 0x8000) == 0x00)
 					{
-						r2_n = __rol(r2_n, r2_n);
-						if (r2_n >= 0x00)
+						r2_n = __rcl(r2_n, 1, C_n);
+						bool C_n = (r2_n & 0x8000) != 0x00;
+						if ((r2_n & 0x8000) == 0x00)
 						{
-							r2_n = __rol(r2_n, r2_n);
-							if (r2_n >= 0x00)
+							r2_n = __rcl(r2_n, 1, C_n);
+							bool C_n = (r2_n & 0x8000) != 0x00;
+							if ((r2_n & 0x8000) == 0x00)
 							{
-								r2_n = __rol(r2_n, r2_n);
-								if (r2_n >= 0x00)
+								r2_n = __rcl(r2_n, 1, C_n);
+								bool C_n = (r2_n & 0x8000) != 0x00;
+								if ((r2_n & 0x8000) == 0x00)
 								{
-									r2_n = __rol(r2_n, r2_n);
-									if (r2_n >= 0x00)
+									r2_n = __rcl(r2_n, 1, C_n);
+									bool C_n = (r2_n & 0x8000) != 0x00;
+									if ((r2_n & 0x8000) == 0x00)
 									{
-										r2_n = __rol(r2_n, r2_n);
-										if (r2_n >= 0x00)
+										r2_n = __rcl(r2_n, 1, C_n);
+										bool C_n = (r2_n & 0x8000) != 0x00;
+										if ((r2_n & 0x8000) == 0x00)
 										{
-											r2_n = __rol(r2_n, r2_n);
-											if (r2_n >= 0x00)
+											r2_n = __rcl(r2_n, 1, C_n);
+											bool C_n = (r2_n & 0x8000) != 0x00;
+											if ((r2_n & 0x8000) == 0x00)
 											{
-												r2_n = __rol(r2_n, r2_n);
-												if (r2_n >= 0x00)
+												r2_n = __rcl(r2_n, 1, C_n);
+												bool C_n = (r2_n & 0x8000) != 0x00;
+												if ((r2_n & 0x8000) == 0x00)
 												{
-													r2_n = __rol(r2_n, r2_n);
-													if (r2_n >= 0x00)
+													r2_n = __rcl(r2_n, 1, C_n);
+													bool C_n = (r2_n & 0x8000) != 0x00;
+													if ((r2_n & 0x8000) == 0x00)
 													{
-														r2_n = __rol(r2_n, r2_n);
-														if (r2_n >= 0x00)
+														r2_n = __rcl(r2_n, 1, C_n);
+														bool C_n = (r2_n & 0x8000) != 0x00;
+														if ((r2_n & 0x8000) == 0x00)
 														{
-															r2_n = __rol(r2_n, r2_n);
-															if (r2_n >= 0x00)
+															r2_n = __rcl(r2_n, 1, C_n);
+															if ((r2_n & 0x8000) == 0x00)
 															{
 																r2_n.u0 = 0x00;
 																C_n = false;
@@ -1188,83 +1214,99 @@ l119E:
 	}
 	else
 	{
-		r3_n = r1 << 1;
-		r2_n = __rol(r2_n, r2_n);
-		if (r2_n >= 0x00)
+		r2_r3_n = SEQ(r2_n, r1) << 0x01;
+		r3_n = (word16) r2_r3_n;
+		r2_n = SLICE(r2_r3_n, word16, 16);
+		if ((r2_n & 0x8000) != 0x00)
 			goto l11AC;
 	}
-	r3_n += r1;
-	r2_n += r3_n <u 0x00;
+	word16 r3_n = r3_n + r1;
+	r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
 l11AC:
-	r3_n <<= 1;
-	r2_n = __rol(r2_n, r2_n);
-	if (r2_n >= 0x00)
+	r2_r3_n = r2_r3_n << 0x01;
+	r3_n = (word16) r2_r3_n;
+	r2_n = SLICE(r2_r3_n, word16, 16);
+	if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
 	{
 l11B6:
-		r3_n <<= 1;
-		r2_n = __rol(r2_n, r2_n);
-		if (r2_n >= 0x00)
+		r2_r3_n = r2_r3_n << 0x01;
+		r3_n = (word16) r2_r3_n;
+		r2_n = SLICE(r2_r3_n, word16, 16);
+		if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
 		{
 l11C0:
-			r3_n <<= 1;
-			r2_n = __rol(r2_n, r2_n);
-			if (r2_n >= 0x00)
+			r2_r3_n = r2_r3_n << 0x01;
+			r3_n = (word16) r2_r3_n;
+			r2_n = SLICE(r2_r3_n, word16, 16);
+			if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
 			{
 l11CA:
-				r3_n <<= 1;
-				r2_n = __rol(r2_n, r2_n);
-				if (r2_n >= 0x00)
+				r2_r3_n = r2_r3_n << 0x01;
+				r3_n = (word16) r2_r3_n;
+				r2_n = SLICE(r2_r3_n, word16, 16);
+				if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
 				{
 l11D4:
-					r3_n <<= 1;
-					r2_n = __rol(r2_n, r2_n);
-					if (r2_n >= 0x00)
+					r2_r3_n = r2_r3_n << 0x01;
+					r3_n = (word16) r2_r3_n;
+					r2_n = SLICE(r2_r3_n, word16, 16);
+					if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
 					{
 l11DE:
-						r3_n <<= 1;
-						r2_n = __rol(r2_n, r2_n);
-						if (r2_n >= 0x00)
+						r2_r3_n = r2_r3_n << 0x01;
+						r3_n = (word16) r2_r3_n;
+						r2_n = SLICE(r2_r3_n, word16, 16);
+						if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
 						{
 l11E8:
-							r3_n <<= 1;
-							r2_n = __rol(r2_n, r2_n);
-							if (r2_n >= 0x00)
+							r2_r3_n = r2_r3_n << 0x01;
+							r3_n = (word16) r2_r3_n;
+							r2_n = SLICE(r2_r3_n, word16, 16);
+							if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
 							{
 l11F2:
-								r3_n <<= 1;
-								r2_n = __rol(r2_n, r2_n);
-								if (r2_n >= 0x00)
+								r2_r3_n = r2_r3_n << 0x01;
+								r3_n = (word16) r2_r3_n;
+								r2_n = SLICE(r2_r3_n, word16, 16);
+								if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
 								{
 l11FC:
-									r3_n <<= 1;
-									r2_n = __rol(r2_n, r2_n);
-									if (r2_n >= 0x00)
+									r2_r3_n = r2_r3_n << 0x01;
+									r3_n = (word16) r2_r3_n;
+									r2_n = SLICE(r2_r3_n, word16, 16);
+									if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
 									{
 l1206:
-										r3_n <<= 1;
-										r2_n = __rol(r2_n, r2_n);
-										if (r2_n >= 0x00)
+										r2_r3_n = r2_r3_n << 0x01;
+										r3_n = (word16) r2_r3_n;
+										r2_n = SLICE(r2_r3_n, word16, 16);
+										if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
 										{
 l1210:
-											r3_n <<= 1;
-											r2_n = __rol(r2_n, r2_n);
-											if (r2_n >= 0x00)
+											r2_r3_n = r2_r3_n << 0x01;
+											r3_n = (word16) r2_r3_n;
+											r2_n = SLICE(r2_r3_n, word16, 16);
+											if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
 											{
 l121A:
-												r3_n <<= 1;
-												r2_n = __rol(r2_n, r2_n);
-												if (r2_n >= 0x00)
+												r2_r3_n = r2_r3_n << 0x01;
+												r3_n = (word16) r2_r3_n;
+												r2_n = SLICE(r2_r3_n, word16, 16);
+												if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
 												{
 l1224:
-													r3_n <<= 1;
-													r2_n = __rol(r2_n, r2_n);
-													if (r2_n >= 0x00)
+													r2_r3_n = r2_r3_n << 0x01;
+													r3_n = (word16) r2_r3_n;
+													r2_n = SLICE(r2_r3_n, word16, 16);
+													if ((SLICE(r2_r3_n, word16, 16) & 0x8000) != 0x00)
 													{
 l122E:
-														Eq_n r2_n = __rol(r2_n, r2_n);
-														Eq_n r3_n = r3_n << 1;
-														bool C_n = (bool) cond(r2_n);
-														if (r2_n < 0x00)
+														ui32 v89_n = r2_r3_n << 0x01;
+														cui16 r2_n = SLICE(r2_r3_n, word16, 16);
+														Eq_n r3_n = (word16) v89_n;
+														Eq_n r2_n = SLICE(v89_n, word16, 16);
+														bool C_n = (r2_n & 0x8000) != 0x00;
+														if ((r2_n & 0x8000) == 0x00)
 														{
 															r3_n += r1;
 															r2_n += r3_n <u 0x00;
@@ -1275,68 +1317,68 @@ l122E:
 														return C_n;
 													}
 l122A:
-													r3_n += r1;
-													r2_n += r3_n <u 0x00;
+													word16 r3_n = r3_n + r1;
+													r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
 													goto l122E;
 												}
 l1220:
-												r3_n += r1;
-												r2_n += r3_n <u 0x00;
+												word16 r3_n = r3_n + r1;
+												r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
 												goto l1224;
 											}
 l1216:
-											r3_n += r1;
-											r2_n += r3_n <u 0x00;
+											word16 r3_n = r3_n + r1;
+											r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
 											goto l121A;
 										}
 l120C:
-										r3_n += r1;
-										r2_n += r3_n <u 0x00;
+										word16 r3_n = r3_n + r1;
+										r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
 										goto l1210;
 									}
 l1202:
-									r3_n += r1;
-									r2_n += r3_n <u 0x00;
+									word16 r3_n = r3_n + r1;
+									r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
 									goto l1206;
 								}
 l11F8:
-								r3_n += r1;
-								r2_n += r3_n <u 0x00;
+								word16 r3_n = r3_n + r1;
+								r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
 								goto l11FC;
 							}
 l11EE:
-							r3_n += r1;
-							r2_n += r3_n <u 0x00;
+							word16 r3_n = r3_n + r1;
+							r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
 							goto l11F2;
 						}
 l11E4:
-						r3_n += r1;
-						r2_n += r3_n <u 0x00;
+						word16 r3_n = r3_n + r1;
+						r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
 						goto l11E8;
 					}
 l11DA:
-					r3_n += r1;
-					r2_n += r3_n <u 0x00;
+					word16 r3_n = r3_n + r1;
+					r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
 					goto l11DE;
 				}
 l11D0:
-				r3_n += r1;
-				r2_n += r3_n <u 0x00;
+				word16 r3_n = r3_n + r1;
+				r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
 				goto l11D4;
 			}
 l11C6:
-			r3_n += r1;
-			r2_n += r3_n <u 0x00;
+			word16 r3_n = r3_n + r1;
+			r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
 			goto l11CA;
 		}
 l11BC:
-		r3_n += r1;
-		r2_n += r3_n <u 0x00;
+		word16 r3_n = r3_n + r1;
+		r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
 		goto l11C0;
 	}
 l11B2:
-	r3_n += r1;
-	r2_n += r3_n <u 0x00;
+	word16 r3_n = r3_n + r1;
+	r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
 	goto l11B6;
 }
 
@@ -1382,10 +1424,9 @@ l1246:
 Eq_n fn125E(Eq_n r0, Eq_n r1, union Eq_n & r2Out)
 {
 	Eq_n r2_n;
-	word16 r3_n;
+	cui16 r3_n;
 	Eq_n r0_n = fn123A(r0, r1, out r2_n, out r3_n);
-	Eq_n r2_n = __rol(r2_n, r2_n);
-	r2Out = __rol(r2_n, r2_n);
+	r2Out = __rcl(__rcl(r2_n, 1, (bool) cond(r3_n << 1)), 1, (bool) cond(r3_n << 2));
 	return r0_n;
 }
 
@@ -1400,10 +1441,22 @@ Eq_n fn125E(Eq_n r0, Eq_n r1, union Eq_n & r2Out)
 //      fn15F2
 Eq_n fn126C(Eq_n r0, Eq_n r2, wchar_t r3, union Eq_n & r3Out)
 {
-	Eq_n r2_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
+	ui32 r2_r3_n;
 	Eq_n r3_n;
 	Eq_n r2_n;
-	ui16 r3_n;
 	Eq_n r2_n;
 	ui16 r3_n;
 	Eq_n r2_n;
@@ -1430,81 +1483,111 @@ Eq_n fn126C(Eq_n r0, Eq_n r2, wchar_t r3, union Eq_n & r3Out)
 	ui16 r3_n;
 	Eq_n r2_n;
 	ui16 r3_n;
-	Eq_n r2_n = __rol(r2, r2) - r0;
+	Eq_n r2_n;
+	ui16 r3_n;
+	Eq_n r2_n = __rcl(r2, 1, (bool) cond(r3 << 1)) - r0;
 	if (r2_n <= 0x00)
 	{
+		r2_n = __rcl(r2_n, 1, (bool) cond(r3 << 2)) + r0;
 		r3_n = r3 << 2;
-		r2_n = __rol(r2_n, r2_n) + r0;
+		r2_r3_n = SEQ(r2_n, r3 << 2);
 		if (r2_n <= 0x00)
 		{
 l127C:
-			r3_n = r3_n << 1;
-			r2_n = __rol(r2_n, r2_n) + r0;
+			ui32 v43_n = r2_r3_n << 0x01;
+			r3_n = (word16) v43_n;
+			r2_n = (word16) r0 + SLICE(v43_n, word16, 16);
+			r2_r3_n = SEQ(r2_n, r3_n);
 			if (r2_n <= 0x00)
 			{
 l1284:
-				r3_n = r3_n << 1;
-				r2_n = __rol(r2_n, r2_n) + r0;
+				ui32 v46_n = r2_r3_n << 0x01;
+				r3_n = (word16) v46_n;
+				r2_n = (word16) r0 + SLICE(v46_n, word16, 16);
+				r2_r3_n = SEQ(r2_n, r3_n);
 				if (r2_n <= 0x00)
 				{
 l128C:
-					r3_n = r3_n << 1;
-					r2_n = __rol(r2_n, r2_n) + r0;
+					ui32 v49_n = r2_r3_n << 0x01;
+					r3_n = (word16) v49_n;
+					r2_n = (word16) r0 + SLICE(v49_n, word16, 16);
+					r2_r3_n = SEQ(r2_n, r3_n);
 					if (r2_n <= 0x00)
 					{
 l1294:
-						r3_n = r3_n << 1;
-						r2_n = __rol(r2_n, r2_n) + r0;
+						ui32 v52_n = r2_r3_n << 0x01;
+						r3_n = (word16) v52_n;
+						r2_n = (word16) r0 + SLICE(v52_n, word16, 16);
+						r2_r3_n = SEQ(r2_n, r3_n);
 						if (r2_n <= 0x00)
 						{
 l129C:
-							r3_n = r3_n << 1;
-							r2_n = __rol(r2_n, r2_n) + r0;
+							ui32 v55_n = r2_r3_n << 0x01;
+							r3_n = (word16) v55_n;
+							r2_n = (word16) r0 + SLICE(v55_n, word16, 16);
+							r2_r3_n = SEQ(r2_n, r3_n);
 							if (r2_n <= 0x00)
 							{
 l12A4:
-								r3_n = r3_n << 1;
-								r2_n = __rol(r2_n, r2_n) + r0;
+								ui32 v58_n = r2_r3_n << 0x01;
+								r3_n = (word16) v58_n;
+								r2_n = (word16) r0 + SLICE(v58_n, word16, 16);
+								r2_r3_n = SEQ(r2_n, r3_n);
 								if (r2_n <= 0x00)
 								{
 l12AC:
-									r3_n = r3_n << 1;
-									r2_n = __rol(r2_n, r2_n) + r0;
+									ui32 v61_n = r2_r3_n << 0x01;
+									r3_n = (word16) v61_n;
+									r2_n = (word16) r0 + SLICE(v61_n, word16, 16);
+									r2_r3_n = SEQ(r2_n, r3_n);
 									if (r2_n <= 0x00)
 									{
 l12B4:
-										r3_n = r3_n << 1;
-										r2_n = __rol(r2_n, r2_n) + r0;
+										ui32 v64_n = r2_r3_n << 0x01;
+										r3_n = (word16) v64_n;
+										r2_n = (word16) r0 + SLICE(v64_n, word16, 16);
+										r2_r3_n = SEQ(r2_n, r3_n);
 										if (r2_n <= 0x00)
 										{
 l12BC:
-											r3_n = r3_n << 1;
-											r2_n = __rol(r2_n, r2_n) + r0;
+											ui32 v67_n = r2_r3_n << 0x01;
+											r3_n = (word16) v67_n;
+											r2_n = (word16) r0 + SLICE(v67_n, word16, 16);
+											r2_r3_n = SEQ(r2_n, r3_n);
 											if (r2_n <= 0x00)
 											{
 l12C4:
-												r3_n = r3_n << 1;
-												r2_n = __rol(r2_n, r2_n) + r0;
+												ui32 v70_n = r2_r3_n << 0x01;
+												r3_n = (word16) v70_n;
+												r2_n = (word16) r0 + SLICE(v70_n, word16, 16);
+												r2_r3_n = SEQ(r2_n, r3_n);
 												if (r2_n <= 0x00)
 												{
 l12CC:
-													r3_n = r3_n << 1;
-													r2_n = __rol(r2_n, r2_n) + r0;
+													ui32 v73_n = r2_r3_n << 0x01;
+													r3_n = (word16) v73_n;
+													r2_n = (word16) r0 + SLICE(v73_n, word16, 16);
+													r2_r3_n = SEQ(r2_n, r3_n);
 													if (r2_n <= 0x00)
 													{
 l12D4:
-														r3_n = r3_n << 1;
-														r2_n = __rol(r2_n, r2_n) + r0;
+														ui32 v76_n = r2_r3_n << 0x01;
+														r3_n = (word16) v76_n;
+														r2_n = (word16) r0 + SLICE(v76_n, word16, 16);
+														r2_r3_n = SEQ(r2_n, r3_n);
 														if (r2_n <= 0x00)
 														{
 l12DC:
-															r3_n = r3_n << 1;
-															r2_n = __rol(r2_n, r2_n) + r0;
+															ui32 v79_n = r2_r3_n << 0x01;
+															r3_n = (word16) v79_n;
+															r2_n = (word16) r0 + SLICE(v79_n, word16, 16);
+															r2_r3_n = SEQ(r2_n, r3_n);
 															if (r2_n <= 0x00)
 															{
 l12E4:
-																r3_n = r3_n << 1;
-																r2_n = __rol(r2_n, r2_n) + r0;
+																ui32 v82_n = r2_r3_n << 0x01;
+																r3_n = (word16) v82_n;
+																r2_n = (word16) r0 + SLICE(v82_n, word16, 16);
 																if (r2_n <= 0x00)
 																{
 l12EC:
@@ -1517,92 +1600,117 @@ l1386:
 																return r2_n;
 															}
 l137C:
-															r3_n = r3_n + 0x01 << 1;
-															r2_n = __rol(r2_n, r2_n) - r0;
+															ui16 r3_n = r3_n + 0x01;
+															r3_n = r3_n << 1;
+															r2_n = __rcl(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
 															if (r2_n < 0x00)
 																goto l12EC;
 															goto l1386;
 														}
 l1372:
-														r3_n = r3_n + 0x01 << 1;
-														r2_n = __rol(r2_n, r2_n) - r0;
+														ui16 r3_n = r3_n + 0x01;
+														r2_n = __rcl(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+														r3_n = r3_n << 1;
+														r2_r3_n = SEQ(r2_n, r3_n << 1);
 														if (r2_n < 0x00)
 															goto l12E4;
 														goto l137C;
 													}
 l1368:
-													r3_n = r3_n + 0x01 << 1;
-													r2_n = __rol(r2_n, r2_n) - r0;
+													ui16 r3_n = r3_n + 0x01;
+													r2_n = __rcl(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+													r3_n = r3_n << 1;
+													r2_r3_n = SEQ(r2_n, r3_n << 1);
 													if (r2_n < 0x00)
 														goto l12DC;
 													goto l1372;
 												}
 l135E:
-												r3_n = r3_n + 0x01 << 1;
-												r2_n = __rol(r2_n, r2_n) - r0;
+												ui16 r3_n = r3_n + 0x01;
+												r2_n = __rcl(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+												r3_n = r3_n << 1;
+												r2_r3_n = SEQ(r2_n, r3_n << 1);
 												if (r2_n < 0x00)
 													goto l12D4;
 												goto l1368;
 											}
 l1354:
-											r3_n = r3_n + 0x01 << 1;
-											r2_n = __rol(r2_n, r2_n) - r0;
+											ui16 r3_n = r3_n + 0x01;
+											r2_n = __rcl(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+											r3_n = r3_n << 1;
+											r2_r3_n = SEQ(r2_n, r3_n << 1);
 											if (r2_n < 0x00)
 												goto l12CC;
 											goto l135E;
 										}
 l134A:
-										r3_n = r3_n + 0x01 << 1;
-										r2_n = __rol(r2_n, r2_n) - r0;
+										ui16 r3_n = r3_n + 0x01;
+										r2_n = __rcl(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+										r3_n = r3_n << 1;
+										r2_r3_n = SEQ(r2_n, r3_n << 1);
 										if (r2_n < 0x00)
 											goto l12C4;
 										goto l1354;
 									}
 l1340:
-									r3_n = r3_n + 0x01 << 1;
-									r2_n = __rol(r2_n, r2_n) - r0;
+									ui16 r3_n = r3_n + 0x01;
+									r2_n = __rcl(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+									r3_n = r3_n << 1;
+									r2_r3_n = SEQ(r2_n, r3_n << 1);
 									if (r2_n < 0x00)
 										goto l12BC;
 									goto l134A;
 								}
 l1336:
-								r3_n = r3_n + 0x01 << 1;
-								r2_n = __rol(r2_n, r2_n) - r0;
+								ui16 r3_n = r3_n + 0x01;
+								r2_n = __rcl(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+								r3_n = r3_n << 1;
+								r2_r3_n = SEQ(r2_n, r3_n << 1);
 								if (r2_n < 0x00)
 									goto l12B4;
 								goto l1340;
 							}
 l132C:
-							r3_n = r3_n + 0x01 << 1;
-							r2_n = __rol(r2_n, r2_n) - r0;
+							ui16 r3_n = r3_n + 0x01;
+							r2_n = __rcl(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+							r3_n = r3_n << 1;
+							r2_r3_n = SEQ(r2_n, r3_n << 1);
 							if (r2_n < 0x00)
 								goto l12AC;
 							goto l1336;
 						}
 l1322:
-						r3_n = r3_n + 0x01 << 1;
-						r2_n = __rol(r2_n, r2_n) - r0;
+						ui16 r3_n = r3_n + 0x01;
+						r2_n = __rcl(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+						r3_n = r3_n << 1;
+						r2_r3_n = SEQ(r2_n, r3_n << 1);
 						if (r2_n < 0x00)
 							goto l12A4;
 						goto l132C;
 					}
 l1318:
-					r3_n = r3_n + 0x01 << 1;
-					r2_n = __rol(r2_n, r2_n) - r0;
+					ui16 r3_n = r3_n + 0x01;
+					r2_n = __rcl(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+					r3_n = r3_n << 1;
+					r2_r3_n = SEQ(r2_n, r3_n << 1);
 					if (r2_n < 0x00)
 						goto l129C;
 					goto l1322;
 				}
 l130E:
-				r3_n = r3_n + 0x01 << 1;
-				r2_n = __rol(r2_n, r2_n) - r0;
+				ui16 r3_n = r3_n + 0x01;
+				r2_n = __rcl(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+				r3_n = r3_n << 1;
+				r2_r3_n = SEQ(r2_n, r3_n << 1);
 				if (r2_n < 0x00)
 					goto l1294;
 				goto l1318;
 			}
 l1304:
-			r3_n = r3_n + 0x01 << 1;
-			r2_n = __rol(r2_n, r2_n) - r0;
+			ui16 r3_n = r3_n + 0x01;
+			r2_n = __rcl(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+			r3_n = r3_n << 1;
+			r2_r3_n = SEQ(r2_n, r3_n << 1);
 			if (r2_n < 0x00)
 				goto l128C;
 			goto l130E;
@@ -1610,13 +1718,17 @@ l1304:
 	}
 	else
 	{
-		r3_n = (r3 << 1) + 0x01 << 1;
-		r2_n = __rol(r2_n, r2_n) - r0;
+		ui16 r3_n = (r3 << 1) + 0x01;
+		r2_n = __rcl(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+		r3_n = r3_n << 1;
+		r2_r3_n = SEQ(r2_n, r3_n << 1);
 		if (r2_n < 0x00)
 			goto l127C;
 	}
-	r3_n = r3_n + 0x01 << 1;
-	r2_n = __rol(r2_n, r2_n) - r0;
+	ui16 r3_n = r3_n + 0x01;
+	r2_n = __rcl(r2_n, 1, (bool) cond(r3_n << 1)) - r0;
+	r3_n = r3_n << 1;
+	r2_r3_n = SEQ(r2_n, r3_n << 1);
 	if (r2_n < 0x00)
 		goto l1284;
 	goto l1304;

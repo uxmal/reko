@@ -194,8 +194,12 @@ l000001EE:
 	orr	gp1,gp3
 	tbr	#0xF,gp6
 	bez	00000218
+
+l00000215:
 	efm	gp0,0x5B4
 	aisp	gp6,#1
+
+l00000218:
 	disp	gp6,#2
 	lr	gp3,gp1
 	andr	gp1,gp13
@@ -205,134 +209,8 @@ l000001EE:
 	andr	gp3,gp14
 	orr	gp1,gp3
 	urs	gp15
-	sisp	gp15,#3
-	pshm	gp14,gp14
-	lr	gp14,gp15
-	efst	gp0,1,gp14
-	lr	gp7,gp2
-	dlr	gp5,gp0
-	efm	gp5,1,gp14
-	lr	gp13,gp7
-	dlr	gp11,gp5
-	efm	gp11,0x80E9
-	lr	gp10,gp7
-	dlr	gp8,gp5
-	efa	gp8,0x80EC
-	efa	gp5,0x80EF
-	efl	gp2,0x80F2
-	efdr	gp2,gp5
-	efar	gp8,gp2
-	efdr	gp11,gp8
-	efa	gp11,0x80F5
-	efl	gp0,1,gp14
-	efmr	gp0,gp11
-	lr	gp15,gp14
-	popm	gp14,gp14
-	aisp	gp15,#3
-	urs	gp15
-	sisp	gp15,#1
-	pshm	gp14,gp14
-	lr	gp14,gp15
-	lr	gp7,gp2
-	dlr	gp5,gp0
-	efl	gp8,0x80F8
-	stc	#0,1,gp14
-	lr	gp4,gp7
-	dlr	gp2,gp5
-	jc	#6,000002AD
-	lb	gp14,#0x52
-	lr	gp4,gp10
-	dlr	gp2,gp8
-	efsr	gp2,gp5
-	efc	gp2,0x80FB
-	jc	#4,00000294
-	lb	gp14,#0x89
-	dlr	gp5,gp5
-	jc	#6,000002B7
-	lb	gp14,#0x60
-	efl	gp2,0x80F8
-	efsr	gp2,gp5
-	lr	gp7,gp4
-	dlr	gp5,gp2
-	stc	#1,1,gp14
-	efc	gp5,0x80FE
-	jc	#4,000002A2
-	lb	gp14,#0x6C
-	lr	gp2,gp7
-	dlr	gp0,gp5
-	sjs	gp15,0221
-	lr	gp10,gp2
-	dlr	gp8,gp0
-	jc	#0xF,0000025A
-	lb	gp14,#0x80
-	efl	gp2,0x80FB
-	efsr	gp2,gp5
-	dlr	gp0,gp2
-	lr	gp2,gp4
-	dlr	gp0,gp0
-	efm	gp0,0x80FE
-	sjs	gp15,01E6
-	sjs	gp15,0221
-	lr	gp7,gp2
-	dlr	gp5,gp0
-	efar	gp5,gp0
-	efl	gp2,0x8101
-	lr	gp10,gp4
-	dlr	gp8,gp2
-	efsr	gp8,gp5
-	l	gp11,1,gp14
-	jc	#2,000002A2
-	lb	gp14,#0x89
-	efl	gp2,0x80F8
-	efsr	gp2,gp8
-	lr	gp10,gp4
-	dlr	gp8,gp2
-	lr	gp2,gp10
-	dlr	gp0,gp8
-	lr	gp15,gp14
-	popm	gp14,gp14
-	aisp	gp15,#1
-	urs	gp15
-	pshm	gp14,gp14
-	lr	gp14,gp15
-	lr	gp10,gp2
-	dlr	gp8,gp0
-	lr	gp7,gp10
-	dlr	gp5,gp8
-	efmr	gp5,gp8
-	lr	gp4,gp7
-	dlr	gp2,gp5
-	efm	gp2,0x8104
-	efa	gp2,0x8107
-	efmr	gp2,gp5
-	efa	gp2,0x810A
-	efmr	gp2,gp5
-	efa	gp2,0x810D
-	efmr	gp8,gp2
-	lr	gp2,gp10
-	dlr	gp0,gp8
-	lr	gp15,gp14
-	popm	gp14,gp14
-	urs	gp15
-	pshm	gp14,gp14
-	lr	gp14,gp15
-	lr	gp7,gp2
-	dlr	gp5,gp0
-	efmr	gp5,gp0
-	lr	gp4,gp7
-	dlr	gp2,gp5
-	efm	gp2,0x8110
-	efa	gp2,0x8113
-	efmr	gp2,gp5
-	efa	gp2,0x8116
-	efmr	gp2,gp5
-	dlr	gp0,gp2
-	lr	gp2,gp4
-	dlr	gp0,gp0
-	efa	gp0,0x8119
-	lr	gp15,gp14
-	popm	gp14,gp14
-	urs	gp15
+
+;;; ...end of image
 
 ;; fn02BF: 02BF
 ;;   Called from:

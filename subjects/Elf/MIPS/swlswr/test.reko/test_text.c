@@ -7,7 +7,13 @@
 // 00000610: void __start(Register word32 r2, Stack word32 dwArg00)
 void __start(word32 r2, word32 dwArg00)
 {
+	word32 r4_n = *(word32 *) 133736;
+	struct Eq_n * sp_n = (fp & -8) + -32;
+	word32 r7_n = *(word32 *) 133732;
 	word32 r8_n = *(word32 *) 0x00020A60;
+	sp_n->dw0010 = r8_n;
+	sp_n->dw0014 = r2;
+	sp_n->ptr0018 = sp_n;
 	(*(<anonymous> **) 0x00020A24)();
 	while (true)
 		;

@@ -56,10 +56,19 @@ l0041016E:
 ;; __floatsidf: 00410170
 ;;   Called from:
 ;;     0040B5A2 (in decfloat)
+;;     0040B5EC (in decfloat)
 ;;     0040B828 (in decfloat)
+;;     0040BB1A (in decfloat)
 ;;     0040BBC6 (in decfloat)
+;;     0040BC04 (in decfloat)
+;;     0040BD14 (in decfloat)
+;;     0040C1C0 (in __floatscan)
 ;;     0040C3C4 (in __floatscan)
 ;;     0040C432 (in __floatscan)
+;;     0040C52E (in __floatscan)
+;;     0040C566 (in __floatscan)
+;;     0040C5AA (in __floatscan)
+;;     0040C654 (in __floatscan)
 __floatsidf proc
 	beqzc	r4,004101C4
 
@@ -106,6 +115,14 @@ l004101C4:
 004101CE                                           00 00               ..
 
 ;; __floatunsidf: 004101D0
+;;   Called from:
+;;     0040B5F2 (in decfloat)
+;;     0040B994 (in decfloat)
+;;     0040B9CE (in decfloat)
+;;     0040BBCC (in decfloat)
+;;     0040BCF8 (in decfloat)
+;;     0040BD24 (in decfloat)
+;;     0040C3D8 (in __floatscan)
 __floatunsidf proc
 	beqzc	r4,00410218
 
@@ -146,6 +163,8 @@ l00410218:
 	bc	004101F6
 
 ;; __truncdfsf2: 00410220
+;;   Called from:
+;;     00409FAC (in strtof_l)
 __truncdfsf2 proc
 	ext	r9,r5,00000000,00000014
 	ext	r10,r5,00000004,0000000B
