@@ -36,7 +36,12 @@ function(csproj_output_path)
 	endif()
 
 	set(asm_filename ${asm_OUTPUT_PREFIX}${asm_PROJECT_NAME}${asm_OUTPUT_SUFFIX})
-	set(asm_path ${asm_basedir}/${asm_PROJECT_NAME}/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${asm_FRAMEWORK})
+
+	set(asm_path ${asm_basedir}/${asm_PROJECT_NAME}/bin)
+	if(NOT REKO_PLATFORM STREQUAL "")
+		set(asm_path ${asm_path}/${REKO_PLATFORM})
+	endif()
+	set(asm_path ${asm_path}/${CMAKE_BUILD_TYPE}/${asm_FRAMEWORK})
 
 	set(${asm_RESULT} ${asm_path}/${asm_filename} PARENT_SCOPE)
 endfunction()
