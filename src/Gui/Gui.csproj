@@ -8,6 +8,7 @@
     <RootNamespace>Reko.Gui</RootNamespace>
     <AssemblyName>Reko.Gui</AssemblyName>
     <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU;x86;x64</Platforms>
   </PropertyGroup>
   <!-- 
       The file CmdIds.cs is generated from decompiler-menus.xml and is not committed to the
@@ -27,6 +28,6 @@
   </ItemGroup>
 
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
-    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Targets="gen_decompiler_menus" />
+    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="gen_decompiler_menus" />
   </Target>
 </Project>

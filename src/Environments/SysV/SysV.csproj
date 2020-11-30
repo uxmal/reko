@@ -9,6 +9,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU;x86;x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
@@ -16,6 +17,6 @@
   </ItemGroup>
 
   <Target Name="RunC2Xml" AfterTargets="CoreCompile">
-    <MSBuild Projects="$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj" Targets="gen_c2xml_sysv" />
+    <MSBuild Projects="$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="gen_c2xml_sysv" />
   </Target>
 </Project>
