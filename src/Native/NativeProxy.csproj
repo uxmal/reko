@@ -17,10 +17,14 @@
   </ItemGroup>
 
   <Target Name="CleanCMake" AfterTargets="Clean">
-    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Targets="nativeproxy_clean" />
+    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj"
+            Properties="Configuration=$(Configuration);Platform=$(Platform)"
+            Targets="nativeproxy_clean" />
   </Target>
 
   <Target Name="InvokeCMake" AfterTargets="CoreCompile">
-    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Targets="nativeproxy_build" />
+    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj"
+            Properties="Configuration=$(Configuration);Platform=$(Platform)"
+            Targets="nativeproxy_build" />
   </Target>
 </Project>

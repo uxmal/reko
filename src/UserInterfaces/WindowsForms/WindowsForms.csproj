@@ -9,6 +9,7 @@
     <RootNamespace>Reko.UserInterfaces.WindowsForms</RootNamespace>
     <AssemblyName>Reko.UserInterfaces.WindowsForms</AssemblyName>
     <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU;x86;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,6 +34,6 @@
   </ItemGroup>
 
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
-    <MSBuild Projects="$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj" Targets="gen_decompiler_menus_winforms" />
+    <MSBuild Projects="$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="gen_decompiler_menus_winforms" />
   </Target>
 </Project>

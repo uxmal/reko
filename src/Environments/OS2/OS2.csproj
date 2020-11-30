@@ -6,6 +6,7 @@
     <AssemblyName>Reko.Environments.OS2</AssemblyName>
     <RootNamespace>Reko.Environments.OS2</RootNamespace>
     <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
