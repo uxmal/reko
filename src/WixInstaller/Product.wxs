@@ -289,9 +289,9 @@
 <File Source="$(var.OS2.ProjectDir)16\SESMGR.def" Id="File_Os2_16_SESMGR" />
 <File Source="$(var.OS2.ProjectDir)16\SPOOLCP.def" Id="File_Os2_16_SPOOLCP" />
 <File Source="$(var.OS2.ProjectDir)16\VIOCALLS.def" Id="File_Os2_16_VIOCALLS" />
-<File Source="$(var.OS2.ProjectDir)fsd.xml" />
-<File Source="$(var.OS2.ProjectDir)fsh.xml" />
-<File Source="$(var.OS2.ProjectDir)fsu.xml" />
+<File Source="$(var.OS2.ProjectDir)16\fsd.xml" />
+<File Source="$(var.OS2.ProjectDir)16\fsh.xml" />
+<File Source="$(var.OS2.ProjectDir)16\fsu.xml" />
 
     </Component>
 
