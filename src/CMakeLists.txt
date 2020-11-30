@@ -90,9 +90,9 @@ function(add_c2xml_target)
 	#)
 	#get_filename_component(c2xml_dir ${c2xml_exe} DIRECTORY)
 
-	set(c2xml_dir ${CMAKE_BINARY_DIR}/C2Xml/${REKO_EXE_FRAMEWORK})
+	set(c2xml_dir ${CMAKE_BINARY_DIR}/c2xml/${REKO_EXE_FRAMEWORK})
 
-	RUN_DOTNET(${REKO_SRC}/tools/c2xml/C2Xml.csproj
+	RUN_DOTNET(${REKO_SRC}/tools/c2xml/c2xml.csproj
 		NO_RESTORE_PRE
 		NO_CLEAN
 		CONFIG ${CMAKE_BUILD_TYPE}
