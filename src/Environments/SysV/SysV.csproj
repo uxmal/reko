@@ -16,7 +16,7 @@
     <ProjectReference Include="..\..\Core\Core.csproj" />
   </ItemGroup>
 
-  <Target Name="AfterBuild">
+  <Target Name="RunC2Xml" AfterTargets="CoreCompile">
     <MSBuild Projects="$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="gen_c2xml_sysv" />
   </Target>
 </Project>
