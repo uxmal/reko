@@ -26,6 +26,10 @@
     <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -DTARGET=gen_c2xml_windows -P $(ProjectDir)..\reko.cmake" />
   </Target>
 
+  <Target Name="run_hdrgen">
+    <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -DTARGET=run_hdrgen -P $(ProjectDir)..\reko.cmake" />
+  </Target>
+
   <Target Name="nativeproxy_clean">
     <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -DTARGET=nativeproxy_clean -P $(ProjectDir)..\reko.cmake" />
   </Target>
