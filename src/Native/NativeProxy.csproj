@@ -22,6 +22,10 @@
             Targets="nativeproxy_clean" />
   </Target>
 
+  <Target Name="RunHdrGen" BeforeTargets="CoreCompile">
+    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="run_hdrgen" />
+  </Target>
+
   <Target Name="InvokeCMake" AfterTargets="CoreCompile">
     <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj"
             Properties="Configuration=$(Configuration);Platform=$(Platform)"
