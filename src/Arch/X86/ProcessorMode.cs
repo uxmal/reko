@@ -199,7 +199,10 @@ namespace Reko.Arch.X86
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotSupportedException("Must pass segment:offset to make a segmented address.");
+            var uAddr = c.ToUInt32();
+            var off = (ushort) uAddr;
+            var seg = (ushort) (uAddr >> 16);
+            return Address.SegPtr(seg, off);
         }
 
         public override bool TryReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState? state, out Address addr)
