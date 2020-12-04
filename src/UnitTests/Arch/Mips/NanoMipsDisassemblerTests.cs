@@ -83,8 +83,6 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode("addiu\tr2,r0,000007FF", "004007FF");
         }
 
-
-
         [Test]
         public void NanoMipsDis_addiu_gp_w()
         {
@@ -174,6 +172,12 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsDis_balrsc()
+        {
+            AssertCode("balrsc\tr10,r14", "494E 8454");
+        }
+
+        [Test]
         public void NanoMipsDis_bbeqzc()
         {
             AssertCode("bbeqzc\tr4,00000017,00100072", "C884B86E");
@@ -255,6 +259,18 @@ namespace Reko.UnitTests.Arch.Mips
         public void NanoMipsDis_bnezc_16()
         {
             AssertCode("bnezc\tr4,0010000A", "BA08");
+        }
+
+        [Test]
+        public void NanoMipsDis_break_32()
+        {
+            AssertCode("break\t0004AAC4", "0014AAC4");
+        }
+
+        [Test]
+        public void NanoMipsDis_cachee()
+        {
+            AssertCode("cachee\t0000000E,-00F6(r14)", "A5CEBA0A");
         }
 
         [Test]
@@ -368,7 +384,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void NanoMipsDis_addiupc()
         {
-            AssertCode("addiupc\tr5,FFF28028", "04A50051");
+            AssertCode("addiupc\tr5,FFE50050", "04A50051");
         }
 
         [Test]
@@ -570,6 +586,12 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsDis_sdbbp()
+        {
+            AssertCode("sdbbp\t000135B5", "001935B5");
+        }
+
+        [Test]
         public void NanoMipsDis_seb()
         {
             AssertCode("seb\tr7,r7", "20E70008");
@@ -763,6 +785,5 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("xori\tr0,r8,00000142", "80081142");
         }
-
     }
 }

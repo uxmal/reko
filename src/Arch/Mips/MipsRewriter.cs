@@ -125,7 +125,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.c_lt_s: RewriteFpuCmpD(instr, Operator.Flt); break;
                 case Mnemonic.c_eq_d: RewriteFpuCmpD(instr, Operator.Feq); break;
                 case Mnemonic.c_eq_s: RewriteFpuCmpD(instr, Operator.Feq); break;
-                case Mnemonic.cache: RewriteCache(instr); break;
+                case Mnemonic.cache: RewriteCache(instr, "__cache"); break;
                 case Mnemonic.cfc1: RewriteCfc1(instr); break;
                 case Mnemonic.ctc1: RewriteCtc1(instr); break;
                 case Mnemonic.clo: RewriteClo(instr); break;
@@ -286,6 +286,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.addiupc: RewriteAddiupc(instr); break;
                 case Mnemonic.aluipc: RewriteAluipc(instr); break;
                 case Mnemonic.balc: RewriteBalc(instr); break;
+                case Mnemonic.balrsc: RewriteBalrsc(instr); break;
                 case Mnemonic.bbeqzc: RewriteBb(instr, e => e); break;
                 case Mnemonic.bbnezc: RewriteBb(instr, m.Not); break;
                 case Mnemonic.bc: RewriteJump(instr); break;
@@ -303,10 +304,13 @@ namespace Reko.Arch.Mips
                 case Mnemonic.bnec: RewriteBranch(instr, m.Ne, false); break;
                 case Mnemonic.bneiuc: RewriteBranchImm(instr, m.Ne, false); break;
                 case Mnemonic.bnezc: RewriteBranch0(instr, m.Ne, false); break;
+                case Mnemonic.cachee: RewriteCache(instr, "__cache_EVA"); break;
                 case Mnemonic.ext: RewriteExt(instr); break;
                 case Mnemonic.ins: RewriteIns(instr); break;
                 case Mnemonic.jalrc: RewriteJalr(instr); break;
+                case Mnemonic.jalrc_hb: RewriteJalr_hb(instr); break;
                 case Mnemonic.jrc: RewriteJr(instr); break;
+                case Mnemonic.lbue: RewriteLe(instr, PrimitiveType.Byte, "__load_ub_EVA"); break;
                 case Mnemonic.lbux: RewriteLx(instr, PrimitiveType.Byte, 1); break;
                 case Mnemonic.lwx: RewriteLx(instr, PrimitiveType.Word32, 1); break;
                 case Mnemonic.lwpc: RewriteLwpc(instr); break;
@@ -325,8 +329,10 @@ namespace Reko.Arch.Mips
                 case Mnemonic.rdhwr: RewriteReadHardwareRegister(instr); break;
                 case Mnemonic.restore: RewriteRestore(instr, false); break;
                 case Mnemonic.restore_jrc: RewriteRestore(instr, true); break;
+                case Mnemonic.rotr: RewriteRotr(instr); break;
                 case Mnemonic.rotx: RewriteRotx(instr); break;
                 case Mnemonic.save: RewriteSave(instr); break;
+                case Mnemonic.sdbbp: RewriteSdbbp(instr); break;
                 case Mnemonic.sigrie: RewriteSigrie(instr); break;
                 case Mnemonic.swm: RewriteSwm(instr); break;
                 case Mnemonic.swpc: RewriteSwpc(instr); break;

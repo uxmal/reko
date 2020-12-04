@@ -35,8 +35,18 @@ namespace Reko.Arch.Mips
     {
         private void RewriteAdd(MipsInstruction instr, PrimitiveType size)
         {
-            var opLeft = RewriteOperand0(instr.Operands[1]);
-            var opRight = RewriteOperand0(instr.Operands[2]);
+            Expression opLeft;
+            Expression opRight;
+            if (instr.Operands.Length == 3)
+            {
+                opLeft = RewriteOperand0(instr.Operands[1]);
+                opRight = RewriteOperand0(instr.Operands[2]);
+            }
+            else
+            {
+                opLeft = RewriteOperand0(instr.Operands[0]);
+                opRight = RewriteOperand0(instr.Operands[1]);
+            }
             Expression opSrc;
             if (opLeft.IsZero)
                 opSrc = opRight;
@@ -78,11 +88,11 @@ namespace Reko.Arch.Mips
             m.Assign(opDst, opSrc);
         }
 
-        private void RewriteCache(MipsInstruction instr)
+        private void RewriteCache(MipsInstruction instr, string intrinsic)
         {
             var op1 = RewriteOperand(instr.Operands[0]);
-            var opMem = RewriteOperand(instr.Operands[1]);
-            m.SideEffect(host.Intrinsic("__cache", false, VoidType.Instance, op1, opMem));
+            var opMem = m.AddrOf(arch.PointerType, RewriteOperand(instr.Operands[1]));
+            m.SideEffect(host.Intrinsic(intrinsic, false, VoidType.Instance, op1,  opMem), iclass);
         }
 
         private void RewriteClo(MipsInstruction instr)
@@ -283,6 +293,20 @@ namespace Reko.Arch.Mips
                 opSrcMem));
         }
 
+        private void RewriteLe(MipsInstruction instr, PrimitiveType dt, string name)
+        {
+            var src = host.Intrinsic(name, false, dt, m.AddrOf(arch.PointerType, RewriteOperand(instr.Operands[1])));
+            var dst = binder.EnsureRegister(((RegisterOperand) instr.Operands[0]).Register);
+            if (dst.DataType.Size != dt.Size)
+            {
+                // If the source is smaller than the destination register,
+                // perform a sign/zero extension.
+                src.DataType = dt;
+                src = m.Convert(src, src.DataType, dst.DataType);
+            }
+            m.Assign(dst, src);
+        }
+
         private void RewriteLwm(MipsInstruction instr)
         {
             int i = 0;
@@ -319,6 +343,8 @@ namespace Reko.Arch.Mips
             var idIndex = binder.EnsureRegister(idx.Index);
             m.Assign(opDst, m.Mem32(m.IAdd(idBase, m.IMul(idIndex, 4))));
         }
+
+
 
         private void RewriteLx(MipsInstruction instr, PrimitiveType dt, int scale)
         {
@@ -549,6 +575,14 @@ namespace Reko.Arch.Mips
                 ++i;
             }
             m.Assign(sp, m.ISubS(sp, u));
+        }
+
+        private void RewriteRotr(MipsInstruction instr)
+        {
+            var arg1 = RewriteOperand(instr.Operands[1]);
+            var arg2 = RewriteOperand(instr.Operands[2]);
+            var dst = RewriteOperand(instr.Operands[0]);
+            m.Assign(dst, host.Intrinsic(IntrinsicProcedure.Ror, true, dst.DataType, arg1, arg2));
         }
 
         private void RewriteRotx(MipsInstruction instr)

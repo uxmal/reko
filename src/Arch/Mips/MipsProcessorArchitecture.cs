@@ -86,15 +86,6 @@ namespace Reko.Arch.Mips
                 .ToDictionary(k => k.Name);
         }
 
-        /// <summary>
-        /// If the architecture name contains "v6" we are a MIPS v6, which
-        /// has different instruction encodings.
-        /// </summary>
-        private bool IsVersion6OrLater
-        {
-            get { return this.Name.Contains("v6"); }
-        }
-
         public RegisterStorage FCSR { get; private set; }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)

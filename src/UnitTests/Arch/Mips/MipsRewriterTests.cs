@@ -975,6 +975,7 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+
         public void MipsRw_bbeqzc()
         {
             Given_NanoDecoder();
@@ -1096,15 +1097,6 @@ namespace Reko.UnitTests.Arch.Mips
                 "1|T--|call 00100012 (0)");
         }
 
-        [Test]
-        public void MipsRw_bltc()
-        {
-            Given_NanoDecoder();
-            Given_HexString("A9AA806C");   // bltc	r10,r13,080485E2
-            AssertCode(
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|if (r10 < r13) branch 00100070");
-        }
 
         [Test]
         public void MipsRw_bgeiuc()
@@ -1283,7 +1275,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0xBCC80000,   // cache	08,0000(r6)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__cache(8<8>, Mem0[r6:word32])");
+                "1|L--|__cache(8<8>, &Mem0[r6:word32])");
         }
 
         [Test]

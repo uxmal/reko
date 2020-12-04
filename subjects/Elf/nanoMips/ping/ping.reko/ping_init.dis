@@ -1,19 +1,15 @@
-// _init
-// Return size: 0
-define _init
+void _init()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      __libc_start_init
+// MayUse: 
+// LiveOut:
+// Trashed: r25 r7
+// Preserved: sp
 _init_entry:
-	sp = fp
-	r25 = 0x4000D4<32>
-	// succ:  l004000D4
 l004000D4:
-	sp = sp + 0xFFFFFFE0<32>
-	Mem0[sp + 0x18<32>:word32] = r28
-	Mem0[sp + 0x1C<32>:word32] = ra
-	r7 = Mem0[sp + 0x18<32>:word32]
-	r7 = Mem0[sp + 0x1C<32>:word32]
-	sp = sp + 0x20<32>
 	return
-	// succ:  _init_exit
 _init_exit:
 
 

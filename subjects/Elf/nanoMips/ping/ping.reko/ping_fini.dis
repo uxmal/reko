@@ -1,19 +1,15 @@
-// _fini
-// Return size: 0
-define _fini
+void _fini()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      __libc_exit_fini
+// MayUse: 
+// LiveOut:
+// Trashed: r25 r7
+// Preserved: sp
 _fini_entry:
-	sp = fp
-	r25 = 0x410340<32>
-	// succ:  l00410340
 l00410340:
-	sp = sp + 0xFFFFFFE0<32>
-	Mem0[sp + 0x18<32>:word32] = r28
-	Mem0[sp + 0x1C<32>:word32] = ra
-	r7 = Mem0[sp + 0x18<32>:word32]
-	r7 = Mem0[sp + 0x1C<32>:word32]
-	sp = sp + 0x20<32>
 	return
-	// succ:  _fini_exit
 _fini_exit:
 
 

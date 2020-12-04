@@ -54,10 +54,6 @@ namespace Reko.Core.Machine
                .ToArray();
             foreach (var (value, decoder) in decoders)
             {
-                this.decoders[value] = decoder;
-            }
-            foreach (var (value, decoder) in decoders)
-            {
                 Debug.Assert(this.decoders[value] == null, $"Duplicate value {value}");
                 this.decoders[value] = decoder;
             }

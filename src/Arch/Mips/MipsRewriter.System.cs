@@ -164,6 +164,12 @@ namespace Reko.Arch.Mips
             m.Assign(this.RewriteOperand0(instr.Operands[0]), value);
         }
 
+        private void RewriteSdbbp(MipsInstruction instr)
+        {
+            var arg = RewriteOperand(instr.Operands[0]);
+            m.SideEffect(host.Intrinsic("__software_debug_breakpoint", false, VoidType.Instance, arg), iclass);
+        }
+        
         private void RewriteSyscall(MipsInstruction instr)
         {
             m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, this.RewriteOperand0(instr.Operands[0])));

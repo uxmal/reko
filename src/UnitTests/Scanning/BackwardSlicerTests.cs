@@ -860,6 +860,41 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual("1[0,3]", bwslc.JumpTableIndexInterval.ToString());
         }
 
+        [Test(Description = "MIPS switches are guarded by have explicit comparisons")]
+        [Ignore("Get this working soon")]
+        public void Bwslc_MipsBranch()
+        {
+            /*
+            00404786 F3FC andi r7,r7,000000FF
+            00404788 C8EC 57C7 bgeiuc r7,0000000A,00404752
+            0040478C 04C0 DBB0 addiupc r6,00006DD8
+            00404790 537F lwxs r7,r7(r6)
+            00404792 D8E0 jrc r7
+*/
+                        var l00404786 = Given_Block(0x00404786);
+                        Given_Instrs(l00404786, m =>
+                        {
+                            //m.Assign(r7, m.Assign)
+                        });
+                        var l0040478C = Given_Block(0x0040478C);
+                        Given_Instrs(l0040478C, m =>
+                        {
+                        });
+                        /*
+                         */
+            //            +       [1] { r7 = r7 & 0xFF < 32 >}
+            //            Reko.Core.Statement
+            //+       [2] { branch r7 >= u 0xA < 32 > l00404752}
+            //            Reko.Core.Statement
+
+
+            //+       [0] { r6 = 0x0040B568 < p32 >}
+            //            Reko.Core.Statement
+            //+       [1] { r7 = Mem0[r6 + r7 * 4 < 32 >:word32]}
+            //            Reko.Core.Statement
+            //            { goto r7}
+
+        }
 
         // Test cases
         // A one-level jump table from MySQL. JTT represents the jump table.

@@ -39,6 +39,16 @@ namespace Reko.Arch.Mips
             m.Call(RewriteOperand0(instr.Operands[0]), 0);
         }
 
+        private void RewriteBalrsc(MipsInstruction instr)
+        {
+            var rs = RewriteOperand0(instr.Operands[1]);
+            var rt = RewriteOperand0(instr.Operands[0]);
+            var addrNext = instr.Address + instr.Length;
+            var ea = m.IAdd(addrNext, m.IMul(rs, 2));
+            m.Assign(rt, addrNext);
+            m.Call(ea, 0);
+        }
+
         private void RewriteBgezal(MipsInstruction instr)
         {
             // The bgezal r0,XXXX instruction is aliased to bal (branch and link, or fn call)
@@ -204,6 +214,12 @@ namespace Reko.Arch.Mips
                 m.Assign(binder.EnsureRegister(lr), instr.Address + 8);
                 m.Goto(dst, instr.InstructionClass & ~InstrClass.Call);
             }
+        }
+
+        private void RewriteJalr_hb(MipsInstruction instr)
+        {
+            m.SideEffect(host.Intrinsic("__clear_hazard_barrier", false, VoidType.Instance));
+            RewriteJalr(instr);
         }
 
         private void RewriteJr(MipsInstruction instr)
