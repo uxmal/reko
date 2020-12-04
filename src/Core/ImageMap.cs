@@ -157,7 +157,7 @@ namespace Reko.Core
                     }
                 }
                 Items.Remove(item.Address);
-                if (item.Size > 0)
+                if (item.Size > 0 && itemNew.Size < item.Size)
                 {
                     item.Address += itemNew.Size;
                     item.Size -= itemNew.Size;
