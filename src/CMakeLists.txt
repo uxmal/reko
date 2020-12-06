@@ -6,7 +6,7 @@ set(REKO_SRC ${CMAKE_CURRENT_LIST_DIR})
 
 
 function(csproj_output_path)
-	cmake_parse_arguments(asm "LIB;EXE" "PROJECT_SUBDIR;PROJECT_NAME;FRAMEWORK;OUTPUT_PREFIX;OUTPUT_SUFFIX;RESULT" "" ${ARGN})
+	cmake_parse_arguments(asm "LIB;EXE;ANYCPU" "PROJECT_SUBDIR;PROJECT_NAME;FRAMEWORK;OUTPUT_PREFIX;OUTPUT_SUFFIX;RESULT" "" ${ARGN})
 
 	set(asm_basedir ${REKO_SRC})
 	if(asm_PROJECT_SUBDIR)
@@ -38,7 +38,7 @@ function(csproj_output_path)
 	set(asm_filename ${asm_OUTPUT_PREFIX}${asm_PROJECT_NAME}${asm_OUTPUT_SUFFIX})
 
 	set(asm_path ${asm_basedir}/${asm_PROJECT_NAME}/bin)
-	if(NOT REKO_PLATFORM STREQUAL "")
+	if(NOT asm_ANYCPU)
 		set(asm_path ${asm_path}/${REKO_PLATFORM})
 	endif()
 	set(asm_path ${asm_path}/${CMAKE_BUILD_TYPE}/${asm_FRAMEWORK})
@@ -114,7 +114,7 @@ function(add_c2xml_target)
 	## collect arch dlls
 	foreach(arch ${c2xml_REQUIRED_ARCHITECTURES})
 		csproj_output_path(
-			LIB
+			LIB ANYCPU
 			PROJECT_SUBDIR "Arch"
 			PROJECT_NAME "${arch}"
 			OUTPUT_PREFIX "Reko.Arch."
@@ -127,7 +127,7 @@ function(add_c2xml_target)
 	## collect env dlls
 	foreach(env ${c2xml_REQUIRED_ENVIRONMENTS})
 		csproj_output_path(
-			LIB
+			LIB ANYCPU
 			PROJECT_SUBDIR "Environments"
 			PROJECT_NAME "${env}"
 			OUTPUT_PREFIX "Reko.Environments."
@@ -193,7 +193,7 @@ RUN_DOTNET(${REKO_SRC}/tools/xslt/xslt.csproj
 )
 
 csproj_output_path(
-	LIB
+	LIB ANYCPU
 	PROJECT_NAME "Core"
 	OUTPUT_PREFIX "Reko."
 	RESULT reko_core_dll
