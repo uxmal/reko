@@ -12,7 +12,9 @@
   </ItemGroup>
 
   <PropertyGroup>
+    <!-- this is needed to have a consistent and normalized path (or it will not work on Unix) -->
     <RekoCMake>$([System.IO.Path]::Combine($(ProjectDir), ..\reko.cmake))</RekoCMake>
+    <!-- build the arguments string by joining <CMakeFlags> items by space -->
     <CMakeArguments>@(CMakeFlags -> '%(Identity)', ' ')</CMakeArguments>
   </PropertyGroup>
 
