@@ -5,40 +5,46 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
+  <ItemGroup>
+    <CMakeFlags Include="-DIS_MSYS=FALSE" />
+    <CMakeFlags Include="-DCMAKE_BUILD_TYPE=$(Configuration)" />
+    <CMakeFlags Include="-DREKO_PLATFORM=$(Platform)" />
+  </ItemGroup>
+
   <PropertyGroup>
     <RekoCMake>$([System.IO.Path]::Combine($(ProjectDir), ..\reko.cmake))</RekoCMake>
+    <CMakeArguments>@(CMakeFlags -> '%(Identity)', ' ')</CMakeArguments>
   </PropertyGroup>
 
-
   <Target Name="gen_decompiler_menus">
-    <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -DTARGET=gen_decompiler_menus -P $(RekoCMake)" />
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_decompiler_menus -P $(RekoCMake)" />
   </Target>
 
   <Target Name="gen_decompiler_menus_winforms">
-    <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -DTARGET=gen_decompiler_menus_winforms -P $(RekoCMake)" />
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_decompiler_menus_winforms -P $(RekoCMake)" />
   </Target>
 
   <Target Name="gen_c2xml_os2">
-    <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -DTARGET=gen_c2xml_os2 -P $(RekoCMake)" />
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_c2xml_os2 -P $(RekoCMake)" />
   </Target>
 
   <Target Name="gen_c2xml_sysv">
-    <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -DTARGET=gen_c2xml_sysv -P $(RekoCMake)" />
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_c2xml_sysv -P $(RekoCMake)" />
   </Target>
 
   <Target Name="gen_c2xml_windows">
-    <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -DTARGET=gen_c2xml_windows -P $(RekoCMake)" />
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_c2xml_windows -P $(RekoCMake)" />
   </Target>
 
   <Target Name="run_hdrgen">
-    <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -DTARGET=run_hdrgen -P $(RekoCMake)" />
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=run_hdrgen -P $(RekoCMake)" />
   </Target>
 
   <Target Name="nativeproxy_clean">
-    <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -DTARGET=nativeproxy_clean -P $(RekoCMake)" />
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=nativeproxy_clean -P $(RekoCMake)" />
   </Target>
 
   <Target Name="nativeproxy_build">
-    <Exec Command="cmake -DIS_MSYS=FALSE -DCMAKE_BUILD_TYPE=$(Configuration) -DREKO_PLATFORM=$(Platform) -DTARGET=nativeproxy_build -P $(RekoCMake)" />
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=nativeproxy_build -P $(RekoCMake)" />
   </Target>
 </Project>
