@@ -62,7 +62,7 @@ function(add_copy_target)
 		return()
 	endif()
 	
-	get_filename_component(dest_dir ${src_path} DIRECTORY)
+	get_filename_component(dest_dir ${copy_SRC_PATH} DIRECTORY)
 
 	# create a command that will copy this file
 	add_custom_command(
