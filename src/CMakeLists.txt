@@ -229,78 +229,6 @@ function(add_c2xml_target)
 	endforeach()
 endfunction()
 
-set(GUI_BASEDIR ${REKO_SRC}/Gui)
-set(WINFORMS_BASEDIR ${REKO_SRC}/UserInterfaces/WindowsForms)
-
-#
-# Create a new target to generate CmdIds.cs
-#
-RUN_DOTNET(${REKO_SRC}/tools/xslt/xslt.csproj
-	NO_RESTORE
-	NO_CLEAN
-	CONFIG ${CMAKE_BUILD_TYPE}
-	PLATFORM ${REKO_PLATFORM}
-	ARGUMENTS
-		${GUI_BASEDIR}/cmdids.xslt
-		${GUI_BASEDIR}/decompiler-menus.xml
-		${GUI_BASEDIR}/CmdIds.cs
-	SOURCES
-		${GUI_BASEDIR}/cmdids.xslt
-		${GUI_BASEDIR}/decompiler-menus.xml
-	OUTPUT
-		${GUI_BASEDIR}/CmdIds.cs
-	TARGET_NAME "gen_decompiler_menus"
-)
-
-#
-# Create a new target to generate DecompilerMenus.cs (WinForms specific)
-#
-RUN_DOTNET(${REKO_SRC}/tools/xslt/xslt.csproj
-	NO_RESTORE
-	NO_CLEAN
-	CONFIG ${CMAKE_BUILD_TYPE}
-	PLATFORM ${REKO_PLATFORM}
-	ARGUMENTS
-		${WINFORMS_BASEDIR}/Forms/decompiler-menus.xslt
-		${GUI_BASEDIR}/decompiler-menus.xml
-		${WINFORMS_BASEDIR}/Forms/DecompilerMenus.cs
-	SOURCES
-		${WINFORMS_BASEDIR}/Forms/decompiler-menus.xslt
-		${GUI_BASEDIR}/decompiler-menus.xml
-	OUTPUT
-		${WINFORMS_BASEDIR}/Forms/DecompilerMenus.cs
-	TARGET_NAME "gen_decompiler_menus_winforms"
-)
-
-# 
-# we need to obtain the path where Reko.Core.dll will be built, 
-# since it's a dependency to 'hdrgen'
-#
-csproj_output_path(
-	LIB ANYCPU
-	PROJECT_NAME "Core"
-	OUTPUT_PREFIX "Reko."
-	RESULT reko_core_dll
-)
-
-#
-# Create a new target to generate NativeProxy header files
-#
-RUN_DOTNET(${REKO_SRC}/tools/hdrgen/hdrgen.csproj
-	NO_RESTORE
-	NO_CLEAN
-	CONFIG ${CMAKE_BUILD_TYPE}
-	PLATFORM ${REKO_PLATFORM}
-	ARGUMENTS
-		${reko_core_dll}
-		${REKO_SRC}/Native/include/reko.h
-	SOURCES
-		${reko_core_dll}
-	OUTPUT
-		${REKO_SRC}/Native/include/reko.h
-	TARGET_NAME "run_hdrgen"
-)
-
 #
 # This function is used to simplify the generation of Windows metadata
 # It will create a new target for the given `header`, and append it to `main_target`
@@ -367,121 +295,198 @@ function(add_c2xml_target_sysv main_target header)
 	add_dependencies(${main_target} ${target_name})
 endfunction()
 
-add_custom_target(gen_c2xml_windows)
-add_c2xml_target_windows(gen_c2xml_windows msvcrt)
-add_c2xml_target_windows(gen_c2xml_windows ntoskrnl)
 
-add_custom_target(gen_c2xml_os2)
-add_c2xml_target_os2(gen_c2xml_os2 os2-16)
-add_c2xml_target_os2(gen_c2xml_os2 16/fsu)
-add_c2xml_target_os2(gen_c2xml_os2 16/fsh)
-add_c2xml_target_os2(gen_c2xml_os2 16/fsd)
+set(GUI_BASEDIR ${REKO_SRC}/Gui)
 
-add_custom_target(gen_c2xml_sysv)
-add_c2xml_target_sysv(gen_c2xml_sysv lp32)
-add_c2xml_target_sysv(gen_c2xml_sysv libc.so)
-add_c2xml_target_sysv(gen_c2xml_sysv Xlib)
-add_c2xml_target_sysv(gen_c2xml_sysv opengl)
+if("${TARGET}" STREQUAL "gen_decompiler_menus")
+	#
+	# Create a new target to generate CmdIds.cs
+	#
+	RUN_DOTNET(${REKO_SRC}/tools/xslt/xslt.csproj
+		NO_RESTORE
+		NO_CLEAN
+		CONFIG ${CMAKE_BUILD_TYPE}
+		PLATFORM ${REKO_PLATFORM}
+		ARGUMENTS
+			${GUI_BASEDIR}/cmdids.xslt
+			${GUI_BASEDIR}/decompiler-menus.xml
+			${GUI_BASEDIR}/CmdIds.cs
+		SOURCES
+			${GUI_BASEDIR}/cmdids.xslt
+			${GUI_BASEDIR}/decompiler-menus.xml
+		OUTPUT
+			${GUI_BASEDIR}/CmdIds.cs
+		TARGET_NAME "gen_decompiler_menus"
+	)
+elseif("${TARGET}" STREQUAL "gen_decompiler_menus_winforms")
+	#
+	# Create a new target to generate DecompilerMenus.cs (WinForms specific)
+	#
+	set(WINFORMS_BASEDIR ${REKO_SRC}/UserInterfaces/WindowsForms)
+	RUN_DOTNET(${REKO_SRC}/tools/xslt/xslt.csproj
+		NO_RESTORE
+		NO_CLEAN
+		CONFIG ${CMAKE_BUILD_TYPE}
+		PLATFORM ${REKO_PLATFORM}
+		ARGUMENTS
+			${WINFORMS_BASEDIR}/Forms/decompiler-menus.xslt
+			${GUI_BASEDIR}/decompiler-menus.xml
+			${WINFORMS_BASEDIR}/Forms/DecompilerMenus.cs
+		SOURCES
+			${WINFORMS_BASEDIR}/Forms/decompiler-menus.xslt
+			${GUI_BASEDIR}/decompiler-menus.xml
+		OUTPUT
+			${WINFORMS_BASEDIR}/Forms/DecompilerMenus.cs
+		TARGET_NAME "gen_decompiler_menus_winforms"
+	)
+elseif("${TARGET}" STREQUAL "run_hdrgen")
+	# 
+	# we need to obtain the path where Reko.Core.dll will be built, 
+	# since it's a dependency to 'hdrgen'
+	#
+	csproj_output_path(
+		LIB ANYCPU
+		PROJECT_NAME "Core"
+		OUTPUT_PREFIX "Reko."
+		RESULT reko_core_dll
+	)
 
-#
-# Create a new target to clean NativeProxy
-#
-add_custom_target(nativeproxy_clean
-	COMMENT "Cleaning NativeProxy..."
-	WORKING_DIRECTORY ${REKO_SRC}/Native
-	COMMAND ${CMAKE_COMMAND}
-		-DREKO_ROOT=${REKO_SRC}/../
-		-DREKO_PLATFORM=${REKO_PLATFORM}
-		-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-		-DACTION=clean
-		-P ${REKO_SRC}/Native/reko.cmake
-)
+	#
+	# Create a new target to generate NativeProxy header files
+	#
+	RUN_DOTNET(${REKO_SRC}/tools/hdrgen/hdrgen.csproj
+		NO_RESTORE
+		NO_CLEAN
+		CONFIG ${CMAKE_BUILD_TYPE}
+		PLATFORM ${REKO_PLATFORM}
+		ARGUMENTS
+			${reko_core_dll}
+			${REKO_SRC}/Native/include/reko.h
+		SOURCES
+			${reko_core_dll}
+		OUTPUT
+			${REKO_SRC}/Native/include/reko.h
+		TARGET_NAME "run_hdrgen"
+	)
+elseif("${TARGET}" STREQUAL "gen_c2xml_windows")
+	add_custom_target(gen_c2xml_windows)
+	add_c2xml_target_windows(gen_c2xml_windows msvcrt)
+	add_c2xml_target_windows(gen_c2xml_windows ntoskrnl)
+elseif("${TARGET}" STREQUAL "gen_c2xml_os2")
+	add_custom_target(gen_c2xml_os2)
+	add_c2xml_target_os2(gen_c2xml_os2 os2-16)
+	add_c2xml_target_os2(gen_c2xml_os2 16/fsu)
+	add_c2xml_target_os2(gen_c2xml_os2 16/fsh)
+	add_c2xml_target_os2(gen_c2xml_os2 16/fsd)
+elseif("${TARGET}" STREQUAL "gen_c2xml_sysv")
+	add_custom_target(gen_c2xml_sysv)
+	add_c2xml_target_sysv(gen_c2xml_sysv lp32)
+	add_c2xml_target_sysv(gen_c2xml_sysv libc.so)
+	add_c2xml_target_sysv(gen_c2xml_sysv Xlib)
+	add_c2xml_target_sysv(gen_c2xml_sysv opengl)
+elseif("${TARGET}" STREQUAL "nativeproxy_clean")
+	#
+	# Create a new target to clean NativeProxy
+	#
+	add_custom_target(nativeproxy_clean
+		COMMENT "Cleaning NativeProxy..."
+		WORKING_DIRECTORY ${REKO_SRC}/Native
+		COMMAND ${CMAKE_COMMAND}
+			-DREKO_ROOT=${REKO_SRC}/../
+			-DREKO_PLATFORM=${REKO_PLATFORM}
+			-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+			-DACTION=clean
+			-P ${REKO_SRC}/Native/reko.cmake
+	)
+elseif("${TARGET}" STREQUAL "nativeproxy_build")
+	#
+	# Create a new target to build NativeProxy
+	#
+	add_custom_target(nativeproxy_build
+		COMMENT "Building NativeProxy..."
+		WORKING_DIRECTORY ${REKO_SRC}/Native
+		COMMAND ${CMAKE_COMMAND}
+			-DIS_MSYS=${IS_MSYS}
+			-DREKO_SRC=${REKO_SRC}
+			-DREKO_ROOT=${REKO_SRC}/../
+			-DREKO_PLATFORM=${REKO_PLATFORM}
+			-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+			-P ${REKO_SRC}/Native/reko.cmake
+	)
+elseif("${TARGET}" STREQUAL "build_solution")	
+	#
+	# Create a target to build the main solution
+	#
+	add_custom_target(build_solution
+		COMMENT "Building solution..."
+		WORKING_DIRECTORY ${REKO_SRC}
+		COMMAND ${DOTNET_EXE} build
+				${REKO_SRC}/Reko-decompiler.sln
+				-c ${CMAKE_BUILD_TYPE} /p:Platform=${REKO_PLATFORM}
+	)
+elseif("${TARGET}" STREQUAL "run_unit_tests")
+	TEST_DOTNET(${REKO_SRC}/UnitTests/UnitTests.csproj
+		ARGUMENTS
+			--filter
+			"(TestCategory!=FailedTests)&(TestCategory!=DotNetBug)&(TestCategory!=UserInterface)"
+	)
 
-#
-# Create a new target to build NativeProxy
-#
-add_custom_target(nativeproxy_build
-	COMMENT "Building NativeProxy..."
-	WORKING_DIRECTORY ${REKO_SRC}/Native
-	COMMAND ${CMAKE_COMMAND}
-		-DIS_MSYS=${IS_MSYS}
-		-DREKO_SRC=${REKO_SRC}
-		-DREKO_ROOT=${REKO_SRC}/../
-		-DREKO_PLATFORM=${REKO_PLATFORM}
-		-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-		-P ${REKO_SRC}/Native/reko.cmake
-)
-
-TEST_DOTNET(${REKO_SRC}/UnitTests/UnitTests.csproj
-	ARGUMENTS
-		--filter
-		"(TestCategory!=FailedTests)&(TestCategory!=DotNetBug)&(TestCategory!=UserInterface)"
-)
-
-#
-# Create a target to build the main solution
-#
-add_custom_target(build_solution
-       COMMENT "Building solution..."
-       WORKING_DIRECTORY ${REKO_SRC}
-       COMMAND ${DOTNET_EXE} build
-               ${REKO_SRC}/Reko-decompiler.sln
-               -c ${CMAKE_BUILD_TYPE} /p:Platform=${REKO_PLATFORM}
-)
-
-#
-# Create a target to run unit tests
-#
-add_custom_target(run_unit_tests
-	COMMENT "Running Unit Tests..."
-	WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-	COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE} -R UnitTests
-)
-
-#
-# Create a new target to run regression tests
-#
-RUN_DOTNET(${REKO_SRC}/tools/regressionTests/regressionTests.csproj
-	NO_RESTORE
-	NO_CLEAN
-	CONFIG ${CMAKE_BUILD_TYPE}
-	PLATFORM ${REKO_PLATFORM}
-	ARGUMENTS
-		${REKO_SRC} > ${REKO_SRC}/../subjects/regression.log
-	OUTPUT
-		# This file is expected to be produced by this target, but it never is
-		# we use this trick so that this target is always marked outdated and will always run
-		# however, we can also use this as a skip switch. the target won't run if this file exists
-		${REKO_SRC}/../subjects/.skipregressions
-	TARGET_NAME "run_regressions"
-)
-
-#
-# Create a new target to create the Runtime nupkg
-#
-add_custom_target(create_runtime_nupkg
-	COMMENT "Creating Runtime nupkg..."
-	COMMAND ${DOTNET_EXE} pack
-		--no-build
-		-c ${CMAKE_BUILD_TYPE}
-		${REKO_SRC}/Drivers/Runtime/Runtime.csproj
-)
-
-#
-# Create a new target to update the Runtime nuspec
-#
-set(RUNTIME_OUTDIR ${REKO_SRC}/Drivers/Runtime/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_LIB_FRAMEWORK})
-RUN_DOTNET(${REKO_SRC}/tools/nugetSpecGen/nugetSpecGen.csproj
-	NO_RESTORE
-	NO_CLEAN
-	CONFIG ${CMAKE_BUILD_TYPE}
-	PLATFORM ${REKO_PLATFORM}
-	ARGUMENTS 
-		${REKO_SRC}/Drivers/Runtime
-		${RUNTIME_OUTDIR}
-		${REKO_LIB_FRAMEWORK}
-		${REKO_SRC}/Drivers/Runtime/Runtime.nuspec.template
-	OUTPUT
-		${REKO_SRC}/Drivers/Runtime/Runtime.nuspec
-	TARGET_NAME "update_runtime_nuspec"
-)
+	#
+	# Create a target to run unit tests
+	#
+	add_custom_target(run_unit_tests
+		COMMENT "Running Unit Tests..."
+		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+		COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE} -R UnitTests
+	)
+elseif("${TARGET}" STREQUAL "run_regressions")
+	#
+	# Create a new target to run regression tests
+	#
+	RUN_DOTNET(${REKO_SRC}/tools/regressionTests/regressionTests.csproj
+		NO_RESTORE
+		NO_CLEAN
+		CONFIG ${CMAKE_BUILD_TYPE}
+		PLATFORM ${REKO_PLATFORM}
+		ARGUMENTS
+			${REKO_SRC} > ${REKO_SRC}/../subjects/regression.log
+		OUTPUT
+			# This file is expected to be produced by this target, but it never is
+			# we use this trick so that this target is always marked outdated and will always run
+			# however, we can also use this as a skip switch. the target won't run if this file exists
+			${REKO_SRC}/../subjects/.skipregressions
+		TARGET_NAME "run_regressions"
+	)
+elseif("${TARGET}" STREQUAL "create_runtime_nupkg")
+	#
+	# Create a new target to create the Runtime nupkg
+	#
+	add_custom_target(create_runtime_nupkg
+		COMMENT "Creating Runtime nupkg..."
+		COMMAND ${DOTNET_EXE} pack
+			--no-build
+			-c ${CMAKE_BUILD_TYPE}
+			${REKO_SRC}/Drivers/Runtime/Runtime.csproj
+	)
+elseif("${TARGET}" STREQUAL "update_runtime_nuspec")
+	#
+	# Create a new target to update the Runtime nuspec
+	#
+	set(RUNTIME_OUTDIR ${REKO_SRC}/Drivers/Runtime/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_LIB_FRAMEWORK})
+	RUN_DOTNET(${REKO_SRC}/tools/nugetSpecGen/nugetSpecGen.csproj
+		NO_RESTORE
+		NO_CLEAN
+		CONFIG ${CMAKE_BUILD_TYPE}
+		PLATFORM ${REKO_PLATFORM}
+		ARGUMENTS 
+			${REKO_SRC}/Drivers/Runtime
+			${RUNTIME_OUTDIR}
+			${REKO_LIB_FRAMEWORK}
+			${REKO_SRC}/Drivers/Runtime/Runtime.nuspec.template
+		OUTPUT
+			${REKO_SRC}/Drivers/Runtime/Runtime.nuspec
+		TARGET_NAME "update_runtime_nuspec"
+	)
+elseif(NOT "${TARGET}" STREQUAL "")
+	message(FATAL_ERROR "Unknown target ${TARGET}")
+endif()
