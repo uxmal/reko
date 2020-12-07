@@ -91,19 +91,6 @@ function(csproj_output_path)
 endfunction()
 
 #
-# This function converts the path specified by `path`
-# into a suitable target name
-# this is done by erasing the top level directory from that path
-# and by converting all '/' with '_'
-# the resulting name is stored in the variable specified by `output`
-#
-function(targetname_from_path path output)
-	string(REPLACE "${REKO_SRC}" "" path "${path}")
-	string(REPLACE "/" "_" path "${path}")
-	set(${output} ${path} PARENT_SCOPE)
-endfunction()
-
-#
 # This function creates a new target that will copy (at build time)
 # the file specified by `SRC_PATH` to a destination specified by `DEST_PATH`
 # the target name is generated automatically from `SRC_PATH`,
@@ -112,7 +99,7 @@ endfunction()
 function(add_copy_target)
 	cmake_parse_arguments(copy "" "SRC_PATH;DEST_PATH;OUT_TARGET_NAME" "" ${ARGN})
 
-	targetname_from_path(${copy_SRC_PATH} copy_TARGET_NAME)
+	string(MD5 copy_TARGET_NAME "${copy_SRC_PATH}_${copy_DEST_PATH}")
 	set(${copy_OUT_TARGET_NAME} ${copy_TARGET_NAME} PARENT_SCOPE)
 
 	if(TARGET ${copy_TARGET_NAME})
@@ -132,6 +119,7 @@ function(add_copy_target)
 	# create a target that will run the copy command if the destination file is out of date
 	add_custom_target(
 		${copy_TARGET_NAME}
+		COMMENT "Copying ${copy_SRC_PATH} -> ${copy_DEST_PATH}"
 		DEPENDS ${copy_DEST_PATH}
 	)
 endfunction()
