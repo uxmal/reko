@@ -10,9 +10,6 @@ platform: x64
 
 configuration: Release
 
-before_build:
-- dotnet restore src/Reko-decompiler.sln
-
 # If you want more build spew, change the verbosity below
 build:
   project: src/Reko-decompiler.sln
@@ -20,6 +17,9 @@ build:
 
 environment:
   artifacts_dir: bin
+
+build_script:
+  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:build_solution ./src/BuildTargets/BuildTargets.csproj
 
 # //$HACK: we've had to hard-wire the 'netcoreapp3.1' here.
 after_build:
@@ -43,8 +43,8 @@ after_build:
         mv $filePath $newPath;
 
 test_script:
-  - cmd: dotnet test ./src/UnitTests/bin/%PLATFORM%/%CONFIGURATION%/netcoreapp3.1/Reko.UnitTests.dll --filter "(TestCategory!=FailedTests)&(TestCategory!=DotNetBug)&(TestCategory!=UserInterface)"
-  - cmd: python ./subjects/regressionTests.py --check-output --configuration=%CONFIGURATION% --platform=%PLATFORM%
+  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:run_unit_tests ./src/BuildTargets/BuildTargets.csproj
+  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:run_regressions ./src/BuildTargets/BuildTargets.csproj
 
 artifacts:
   - path: bin/*.msi

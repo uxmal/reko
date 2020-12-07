@@ -411,15 +411,26 @@ add_custom_target(nativeproxy_build
 		-P ${REKO_SRC}/Native/reko.cmake
 )
 
-#
-# Create a target to run unit tests
-#
 TEST_DOTNET(${REKO_SRC}/UnitTests/UnitTests.csproj
 	ARGUMENTS
 		--filter
 		"(TestCategory!=FailedTests)&(TestCategory!=DotNetBug)&(TestCategory!=UserInterface)"
 )
 
+#
+# Create a target to build the main solution
+#
+add_custom_target(build_solution
+       COMMENT "Building solution..."
+       WORKING_DIRECTORY ${REKO_SRC}
+       COMMAND ${DOTNET_EXE} build
+               ${REKO_SRC}/Reko-decompiler.sln
+               -c ${CMAKE_BUILD_TYPE} /p:Platform=${REKO_PLATFORM}
+)
+
+#
+# Create a target to run unit tests
+#
 add_custom_target(run_unit_tests
 	COMMENT "Running Unit Tests..."
 	WORKING_DIRECTORY ${CMAKE_BINARY_DIR}

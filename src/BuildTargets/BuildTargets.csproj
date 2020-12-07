@@ -18,6 +18,18 @@
     <CMakeArguments>@(CMakeFlags -> '%(Identity)', ' ')</CMakeArguments>
   </PropertyGroup>
 
+  <Target Name="build_solution">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=build_solution -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="run_unit_tests">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=run_unit_tests -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="run_regressions">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=run_regressions -P $(RekoCMake)" />
+  </Target>
+
   <Target Name="gen_decompiler_menus">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_decompiler_menus -P $(RekoCMake)" />
   </Target>

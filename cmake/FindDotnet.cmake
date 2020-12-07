@@ -170,7 +170,7 @@ FUNCTION(DOTNET_GET_DEPS _DN_PROJECT arguments)
         # prefix
         _DN 
         # options (flags)
-        "RELEASE;DEBUG;X86;X64;ANYCPU;NETCOREAPP;NO_RESTORE_PRE;NO_CLEAN" 
+        "RELEASE;DEBUG;X86;X64;ANYCPU;NETCOREAPP;NO_RESTORE;NO_CLEAN" 
         # oneValueArgs
         "CONFIG;PLATFORM;VERSION;OUTPUT_PATH;TARGET_NAME"
         # multiValueArgs
@@ -251,7 +251,7 @@ FUNCTION(DOTNET_GET_DEPS _DN_PROJECT arguments)
     SET(_DN_XPLAT_LIB_DIR ${CMAKE_BINARY_DIR})
 
     set(DOTNET_NO_CLEAN ${_DN_NO_CLEAN} PARENT_SCOPE)
-    set(DOTNET_NO_RESTORE_PRE ${_DN_NO_RESTORE_PRE} PARENT_SCOPE)
+    set(DOTNET_NO_RESTORE ${_DN_NO_RESTORE} PARENT_SCOPE)
     SET(DOTNET_PACKAGES ${_DN_PACKAGE}  PARENT_SCOPE)
     SET(DOTNET_CONFIG   ${_DN_CONFIG}   PARENT_SCOPE)
     SET(DOTNET_PLATFORM ${_DN_PLATFORM} PARENT_SCOPE)
@@ -349,7 +349,7 @@ MACRO(DOTNET_BUILD_COMMANDS)
         )
 
         set(restore_arg "")
-        if(NOT DOTNET_NO_RESTORE_PRE)
+        if(NOT DOTNET_NO_RESTORE)
             list(APPEND build_dotnet_cmds
                 COMMAND ${DOTNET_EXE} restore ${DOTNET_PROJPATH} ${DOTNET_IMPORT_PROPERTIES}
             )
@@ -392,9 +392,10 @@ MACRO(DOTNET_BUILD_COMMANDS)
         OUTPUT ${DOTNET_OUTPUTS}
         DEPENDS ${DOTNET_deps}
         ${build_dotnet_cmds}
-        )
+    )
+
     ADD_CUSTOM_TARGET(
-        BUILD_${DOTNET_PROJNAME} ALL
+        ${DOTNET_TARGETNAME} ALL
         DEPENDS ${DOTNET_OUTPUTS})
 
 ENDMACRO()
@@ -426,7 +427,7 @@ FUNCTION(RUN_DOTNET DOTNET_PROJECT)
     set(dotnet_run_cmds "")
     set(dotnet_restore_arg "")
 
-    if(NOT DOTNET_NO_RESTORE_PRE)
+    if(NOT DOTNET_NO_RESTORE)
         list(APPEND dotnet_run_cmds
             COMMAND ${DOTNET_EXE} restore ${DOTNET_PROJPATH} ${DOTNET_IMPORT_PROPERTIES}
         )
