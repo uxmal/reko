@@ -194,7 +194,7 @@ function(add_c2xml_target)
 			OUTPUT_PREFIX "Reko.Arch."
 			RESULT arch_dll
 		)
-		message("[arch] ${arch} => ${arch_dll}")
+		message(DEBUG "[arch] ${arch} => ${arch_dll}")
 		list(APPEND file_list ${arch_dll})
 	endforeach()
 
@@ -207,7 +207,7 @@ function(add_c2xml_target)
 			OUTPUT_PREFIX "Reko.Environments."
 			RESULT env_dll
 		)
-		message("[env] ${env} => ${env_dll}")
+		message(DEBUG "[env] ${env} => ${env_dll}")
 		list(APPEND file_list ${env_dll})
 	endforeach()
 
