@@ -3,7 +3,7 @@ list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake")
 
 FIND_PACKAGE(Dotnet 2.0 REQUIRED)
 
-project(Reko)
+project(Reko NONE)
 enable_testing()
 
 set(REKO_LIB_FRAMEWORK "netstandard2.1")
