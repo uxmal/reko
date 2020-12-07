@@ -390,7 +390,7 @@ add_custom_target(nativeproxy_clean
 	COMMENT "Cleaning NativeProxy..."
 	WORKING_DIRECTORY ${REKO_SRC}/Native
 	COMMAND ${CMAKE_COMMAND}
-		-DREKO_PATH=${REKO_SRC}/../
+		-DREKO_ROOT=${REKO_SRC}/../
 		-DREKO_PLATFORM=${REKO_PLATFORM}
 		-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
 		-DACTION=clean
@@ -405,7 +405,8 @@ add_custom_target(nativeproxy_build
 	WORKING_DIRECTORY ${REKO_SRC}/Native
 	COMMAND ${CMAKE_COMMAND}
 		-DIS_MSYS=${IS_MSYS}
-		-DREKO_PATH=${REKO_SRC}/../
+		-DREKO_SRC=${REKO_SRC}
+		-DREKO_ROOT=${REKO_SRC}/../
 		-DREKO_PLATFORM=${REKO_PLATFORM}
 		-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
 		-P ${REKO_SRC}/Native/reko.cmake

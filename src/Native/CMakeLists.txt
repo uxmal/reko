@@ -10,13 +10,13 @@ set(CMAKE_C_STANDARD 11)
 # No library prefix for consistent naming (Windows has no lib prefix)
 # set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
-if(NOT REKO_PATH)
+if(NOT REKO_ROOT)
 	get_filename_component(
-		REKO_PATH "../../"
+		REKO_ROOT "../../"
 		REALPATH
 		BASE_DIR "${CMAKE_SOURCE_DIR}"
 	)
-	message(STATUS "Reko directory: ${REKO_PATH}")
+	message(STATUS "Reko directory: ${REKO_ROOT}")
 endif()
 
 include (CheckSymbolExists)
@@ -32,9 +32,9 @@ set(REKO_BUNDLED_LIBDIRS "")
 
 if(MSVC)
 	if(REKO_PLATFORM_X64)
-		list(APPEND REKO_BUNDLED_LIBDIRS "${REKO_PATH}/external/Capstone/X64")
+		list(APPEND REKO_BUNDLED_LIBDIRS "${REKO_ROOT}/external/Capstone/X64")
 	else()
-		list(APPEND REKO_BUNDLED_LIBDIRS "${REKO_PATH}/external/Capstone/X86")
+		list(APPEND REKO_BUNDLED_LIBDIRS "${REKO_ROOT}/external/Capstone/X86")
 	endif()
 endif()
 
