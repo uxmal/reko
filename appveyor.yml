@@ -19,7 +19,7 @@ environment:
   artifacts_dir: bin
 
 build_script:
-  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:build_solution ./src/BuildTargets/BuildTargets.csproj
+  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
 
 # //$HACK: we've had to hard-wire the 'netcoreapp3.1' here.
 after_build:
@@ -43,8 +43,8 @@ after_build:
         mv $filePath $newPath;
 
 test_script:
-  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:run_unit_tests ./src/BuildTargets/BuildTargets.csproj
-  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:run_regressions ./src/BuildTargets/BuildTargets.csproj
+  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
+  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
 
 artifacts:
   - path: bin/*.msi
