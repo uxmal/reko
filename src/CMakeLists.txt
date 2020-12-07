@@ -410,3 +410,31 @@ add_custom_target(nativeproxy_build
 		-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
 		-P ${REKO_SRC}/Native/reko.cmake
 )
+
+#
+# Create a target to run unit tests
+#
+TEST_DOTNET(${REKO_SRC}/UnitTests/UnitTests.csproj
+	ARGUMENTS
+		--filter
+		"(TestCategory!=FailedTests)&(TestC7tegory!=DotNetBug)&(TestCategory!=UserInterface)"
+	TARGET_NAME "run_unit_tests"
+)
+
+#
+# Create a new target to run regression tests
+#
+RUN_DOTNET(${REKO_SRC}/tools/regressionTests/regressionTests.csproj
+	NO_RESTORE_PRE
+	NO_CLEAN
+	CONFIG ${CMAKE_BUILD_TYPE}
+	PLATFORM ${REKO_PLATFORM}
+	ARGUMENTS
+		${REKO_SRC} > ${REKO_SRC}/../subjects/regressions.log
+	SOURCES
+		# This file is expected to be required by this target, but it doesn't exist
+		# we use this trick so that this target is always marked outdated and will always run
+		# however, we can also use this as a skip switch. the target won't run if this file exists
+		${REKO_SRC}/../subjects/.skipregressions
+	TARGET_NAME "run_regressions"
+)
