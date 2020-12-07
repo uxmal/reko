@@ -5,7 +5,7 @@ include(msbuild2cmake)
 
 invoke_cmake(
 	QUICK_CONFIGURE
-	BUILD_DIR ${CMAKE_BINARY_DIR}/build
+	BUILD_DIR ${CMAKE_BINARY_DIR}/build/${TARGET}
 	DIRECTORY ${REKO_SRC}/../
 	TARGET ${TARGET}
 	PASS_VARIABLES
