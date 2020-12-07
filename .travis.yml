@@ -30,6 +30,6 @@ before_install:
 # If you want more build spew, change the /verbosity:minimal below
 script:
   - source .travis_env
-  - dotnet build -p:Configuration=UnixRelease -p:Platform=x64 -v:m -m src/Reko-decompiler.sln
-  - dotnet test ./src/UnitTests/bin/x64/UnixRelease/netcoreapp3.1/Reko.UnitTests.dll --filter "(TestCategory!=FailedTests)&(TestC7tegory!=DotNetBug)&(TestCategory!=UserInterface)"
-  - python ./subjects/regressionTests.py --check-output --platform=x64 --configuration=UnixRelease --framework netcoreapp3.1
+  - dotnet msbuild -p:Configuration=UnixRelease -p:Platform=x64 -v:m -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
+  - dotnet msbuild -p:Configuration=UnixRelease -p:Platform=x64 -v:m -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
+  - dotnet msbuild -p:Configuration=UnixRelease -p:Platform=x64 -v:m -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
