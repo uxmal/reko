@@ -23,6 +23,14 @@
     <Exec Command="cmake $(CMakeArguments) -DTARGET=build_solution -P $(RekoCMake)" />
   </Target>
 
+  <Target Name="update_runtime_nuspec">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=update_runtime_nuspec -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="create_runtime_nupkg">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=create_runtime_nupkg -P $(RekoCMake)" />
+  </Target>
+
   <Target Name="run_unit_tests">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=run_unit_tests -P $(RekoCMake)" />
   </Target>

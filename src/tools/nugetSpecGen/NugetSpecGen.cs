@@ -7,6 +7,29 @@ using System.Xml;
 
 namespace Reko.Tools.nugetSpecGen
 {
+    internal static class StringExtensions
+    {
+        public static string NormalizePath(this string path)
+        {
+            path = path.Replace('\\', Path.DirectorySeparatorChar);
+            path = path.Replace('/', Path.DirectorySeparatorChar);
+            return path;
+        }
+
+        public static string TrimTrailingSlash(this string path){
+            return path.TrimEnd('/', '\\');
+        }
+
+        public static string EnsureTrailingSlash(this string path)
+        {
+            if(!path.EndsWith(Path.DirectorySeparatorChar))
+            {
+                path += Path.DirectorySeparatorChar;
+            }
+            return path;
+        }
+    }
+
     public class NugetSpecGen
     {
         private readonly string pathPrefix;
@@ -18,11 +41,11 @@ namespace Reko.Tools.nugetSpecGen
         public NugetSpecGen(
             string projectDir, string outDir, string targetFramework, string nuspecTemplatePath
         ){
-            this.outDir = Path.Combine(projectDir, outDir.TrimEnd('/', '\\'));
+            this.outDir = outDir.NormalizePath().TrimTrailingSlash();
             this.targetFramework = targetFramework;
             this.nuspecTemplatePath = nuspecTemplatePath;
 
-            this.pathPrefix = projectDir;
+            this.pathPrefix = projectDir.NormalizePath().EnsureTrailingSlash();
         }
 
         public void Generate()
@@ -43,7 +66,7 @@ namespace Reko.Tools.nugetSpecGen
             foreach (var f in files)
             {
                 var relaPath = f.Replace(pathPrefix, "");
-                var relaDir = Path.GetDirectoryName(f).Replace(outDir, "").TrimStart('/', '\\');
+                var relaDir = Path.GetDirectoryName(f).Replace(outDir, "").TrimTrailingSlash();
 
                 var extension = Path.GetExtension(f) ?? "";
                 var basename = Path.GetFileName(f);
@@ -66,7 +89,11 @@ namespace Reko.Tools.nugetSpecGen
 
             dom.DocumentElement.AppendChild(filesNode);
 
-            var nuspecOutputPath = Path.GetFileNameWithoutExtension(nuspecTemplatePath);
+            var nuspecOutputPath = Path.Combine(
+                Path.GetDirectoryName(nuspecTemplatePath),
+                Path.GetFileNameWithoutExtension(nuspecTemplatePath)
+            );
+            Console.WriteLine($"Writing to '{nuspecOutputPath}'");
             dom.Save(nuspecOutputPath);
         }
     }

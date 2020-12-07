@@ -180,6 +180,6 @@
 
   <Target Name="SetNuspecFiles" BeforeTargets="GenerateNuspec">
     <Message Importance="high" Text="Updating nuspec &quot;$(NuspecFile)&quot;..." />
-    <Exec Command="dotnet run -c $(Configuration) -p $(ProjectDir)..\..\tools\nugetSpecGen\nugetSpecGen.csproj -- $(MSBuildThisFileDirectory) $(OutDir) $(TargetFramework) $(NuspecFile).template" />
+    <MSBuild Projects="$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="update_runtime_nuspec" />
   </Target>
 </Project>

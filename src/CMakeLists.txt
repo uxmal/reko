@@ -167,7 +167,7 @@ function(add_c2xml_target)
 	set(c2xml_dir ${CMAKE_BINARY_DIR}/c2xml/${REKO_EXE_FRAMEWORK})
 
 	RUN_DOTNET(${REKO_SRC}/tools/c2xml/c2xml.csproj
-		NO_RESTORE_PRE
+		NO_RESTORE
 		NO_CLEAN
 		CONFIG ${CMAKE_BUILD_TYPE}
 		PLATFORM ${REKO_PLATFORM}
@@ -236,7 +236,7 @@ set(WINFORMS_BASEDIR ${REKO_SRC}/UserInterfaces/WindowsForms)
 # Create a new target to generate CmdIds.cs
 #
 RUN_DOTNET(${REKO_SRC}/tools/xslt/xslt.csproj
-	NO_RESTORE_PRE
+	NO_RESTORE
 	NO_CLEAN
 	CONFIG ${CMAKE_BUILD_TYPE}
 	PLATFORM ${REKO_PLATFORM}
@@ -256,7 +256,7 @@ RUN_DOTNET(${REKO_SRC}/tools/xslt/xslt.csproj
 # Create a new target to generate DecompilerMenus.cs (WinForms specific)
 #
 RUN_DOTNET(${REKO_SRC}/tools/xslt/xslt.csproj
-	NO_RESTORE_PRE
+	NO_RESTORE
 	NO_CLEAN
 	CONFIG ${CMAKE_BUILD_TYPE}
 	PLATFORM ${REKO_PLATFORM}
@@ -287,7 +287,7 @@ csproj_output_path(
 # Create a new target to generate NativeProxy header files
 #
 RUN_DOTNET(${REKO_SRC}/tools/hdrgen/hdrgen.csproj
-	NO_RESTORE_PRE
+	NO_RESTORE
 	NO_CLEAN
 	CONFIG ${CMAKE_BUILD_TYPE}
 	PLATFORM ${REKO_PLATFORM}
@@ -442,7 +442,7 @@ add_custom_target(run_unit_tests
 # Create a new target to run regression tests
 #
 RUN_DOTNET(${REKO_SRC}/tools/regressionTests/regressionTests.csproj
-	NO_RESTORE_PRE
+	NO_RESTORE
 	NO_CLEAN
 	CONFIG ${CMAKE_BUILD_TYPE}
 	PLATFORM ${REKO_PLATFORM}
@@ -454,4 +454,34 @@ RUN_DOTNET(${REKO_SRC}/tools/regressionTests/regressionTests.csproj
 		# however, we can also use this as a skip switch. the target won't run if this file exists
 		${REKO_SRC}/../subjects/.skipregressions
 	TARGET_NAME "run_regressions"
+)
+
+#
+# Create a new target to create the Runtime nupkg
+#
+add_custom_target(create_runtime_nupkg
+	COMMENT "Creating Runtime nupkg..."
+	COMMAND ${DOTNET_EXE} pack
+		--no-build
+		-c ${CMAKE_BUILD_TYPE}
+		${REKO_SRC}/Drivers/Runtime/Runtime.csproj
+)
+
+#
+# Create a new target to update the Runtime nuspec
+#
+set(RUNTIME_OUTDIR ${REKO_SRC}/Drivers/Runtime/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_LIB_FRAMEWORK})
+RUN_DOTNET(${REKO_SRC}/tools/nugetSpecGen/nugetSpecGen.csproj
+	NO_RESTORE
+	NO_CLEAN
+	CONFIG ${CMAKE_BUILD_TYPE}
+	PLATFORM ${REKO_PLATFORM}
+	ARGUMENTS 
+		${REKO_SRC}/Drivers/Runtime
+		${RUNTIME_OUTDIR}
+		${REKO_LIB_FRAMEWORK}
+		${REKO_SRC}/Drivers/Runtime/Runtime.nuspec.template
+	OUTPUT
+		${REKO_SRC}/Drivers/Runtime/Runtime.nuspec
+	TARGET_NAME "update_runtime_nuspec"
 )
