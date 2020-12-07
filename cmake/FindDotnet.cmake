@@ -474,8 +474,7 @@ FUNCTION(TEST_DOTNET DOTNET_PROJECT)
     ENDIF()
 
     ADD_TEST(NAME              ${DOTNET_PROJNAME}
-             COMMAND           ${DOTNET_EXE} test ${test_framework_args} --results-directory "${CMAKE_BINARY_DIR}" --logger trx ${DOTNET_ARGUMENTS}
-             WORKING_DIRECTORY ${DOTNET_OUTPUT_PATH})
+             COMMAND           ${DOTNET_EXE} test ${DOTNET_PROJECT} ${test_framework_args} --results-directory "${CMAKE_BINARY_DIR}" --logger trx ${DOTNET_ARGUMENTS})
 
 ENDFUNCTION()
 
