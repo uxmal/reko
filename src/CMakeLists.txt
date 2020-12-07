@@ -466,6 +466,7 @@ elseif("${TARGET}" STREQUAL "create_runtime_nupkg")
 		COMMAND ${DOTNET_EXE} pack
 			--no-build
 			-c ${CMAKE_BUILD_TYPE}
+			-p:Platform=${REKO_PLATFORM}
 			${REKO_SRC}/Drivers/Runtime/Runtime.csproj
 	)
 elseif("${TARGET}" STREQUAL "update_runtime_nuspec")
@@ -484,7 +485,7 @@ elseif("${TARGET}" STREQUAL "update_runtime_nuspec")
 			${REKO_LIB_FRAMEWORK}
 			${REKO_SRC}/Drivers/Runtime/Runtime.nuspec.template
 		OUTPUT
-			${REKO_SRC}/Drivers/Runtime/Runtime.nuspec
+			${REKO_SRC}/Drivers/Runtime/.skipnuspecupdate
 		TARGET_NAME "update_runtime_nuspec"
 	)
 elseif(NOT "${TARGET}" STREQUAL "")
