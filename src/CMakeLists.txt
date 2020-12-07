@@ -417,7 +417,7 @@ add_custom_target(nativeproxy_build
 TEST_DOTNET(${REKO_SRC}/UnitTests/UnitTests.csproj
 	ARGUMENTS
 		--filter
-		"(TestCategory!=FailedTests)&(TestC7tegory!=DotNetBug)&(TestCategory!=UserInterface)"
+		"(TestCategory!=FailedTests)&(TestCategory!=DotNetBug)&(TestCategory!=UserInterface)"
 	TARGET_NAME "run_unit_tests"
 )
 
