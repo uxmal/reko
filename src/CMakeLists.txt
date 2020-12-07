@@ -448,8 +448,8 @@ RUN_DOTNET(${REKO_SRC}/tools/regressionTests/regressionTests.csproj
 	PLATFORM ${REKO_PLATFORM}
 	ARGUMENTS
 		${REKO_SRC} > ${REKO_SRC}/../subjects/regression.log
-	SOURCES
-		# This file is expected to be required by this target, but it doesn't exist
+	OUTPUT
+		# This file is expected to be produced by this target, but it never is
 		# we use this trick so that this target is always marked outdated and will always run
 		# however, we can also use this as a skip switch. the target won't run if this file exists
 		${REKO_SRC}/../subjects/.skipregressions
