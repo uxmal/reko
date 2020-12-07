@@ -16,8 +16,18 @@ namespace Reko.Tools.nugetSpecGen
             return path;
         }
 
-        public static string TrimTrailingSlash(this string path){
+        public static string TrimHeadingSlash(this string path)
+        {
+            return path.TrimStart('/', '\\');
+        }
+
+        public static string TrimTrailingSlash(this string path)
+        {
             return path.TrimEnd('/', '\\');
+        }
+
+        public static string TrimSlashes(this string path){
+            return path.TrimHeadingSlash().TrimTrailingSlash();
         }
 
         public static string EnsureTrailingSlash(this string path)
@@ -41,7 +51,7 @@ namespace Reko.Tools.nugetSpecGen
         public NugetSpecGen(
             string projectDir, string outDir, string targetFramework, string nuspecTemplatePath
         ){
-            this.outDir = outDir.NormalizePath().TrimTrailingSlash();
+            this.outDir = outDir.NormalizePath();
             this.targetFramework = targetFramework;
             this.nuspecTemplatePath = nuspecTemplatePath;
 
@@ -66,7 +76,9 @@ namespace Reko.Tools.nugetSpecGen
             foreach (var f in files)
             {
                 var relaPath = f.Replace(pathPrefix, "");
-                var relaDir = Path.GetDirectoryName(f).Replace(outDir, "").TrimTrailingSlash();
+                var relaDir = Path.GetDirectoryName(f)
+                                  .Replace(outDir, "")
+                                  .TrimSlashes();
 
                 var extension = Path.GetExtension(f) ?? "";
                 var basename = Path.GetFileName(f);
