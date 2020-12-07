@@ -430,7 +430,7 @@ RUN_DOTNET(${REKO_SRC}/tools/regressionTests/regressionTests.csproj
 	CONFIG ${CMAKE_BUILD_TYPE}
 	PLATFORM ${REKO_PLATFORM}
 	ARGUMENTS
-		${REKO_SRC} > ${REKO_SRC}/../subjects/regressions.log
+		${REKO_SRC} > ${REKO_SRC}/../subjects/regression.log
 	SOURCES
 		# This file is expected to be required by this target, but it doesn't exist
 		# we use this trick so that this target is always marked outdated and will always run
