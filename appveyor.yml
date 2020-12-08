@@ -21,26 +21,8 @@ environment:
 build_script:
   - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
 
-# //$HACK: we've had to hard-wire the 'netcoreapp3.1' here.
 after_build:
-  - ps : >-
-        $shortHash = $env:APPVEYOR_REPO_COMMIT.Substring(0, 10);
-        $version = ls ./src/Drivers/WindowsDecompiler/bin/$env:PLATFORM/$env:CONFIGURATION/netcoreapp3.1/Reko.Core.dll | % VersionInfo | % ProductVersion;
-        mkdir $env:artifacts_dir;
-        ;
-        <# zip WindowsDecompiler and CmdLine, append version and short hash #>;
-        "[after_build] compressing WindowsDecompiler...";
-        7z a $env:artifacts_dir/WindowsDecompiler-$version-$shortHash.zip ./src/Drivers/WindowsDecompiler/bin/$env:PLATFORM/$env:CONFIGURATION/netcoreapp3.1/.;
-        "[after_build] compressing CmdLine...";
-        7z a $env:artifacts_dir/CmdLine-$version-$shortHash.zip ./src/Drivers/CmdLine/bin/$env:PLATFORM/$env:CONFIGURATION/netcoreapp3.1/.;
-        mv ./src/WixInstaller/bin/$env:PLATFORM/$env:CONFIGURATION/*.msi ./$env:artifacts_dir/;
-        ;
-        <# Append the short hash to the .msi setup #>;
-        $filePath = $env:artifacts_dir + "/*.msi";
-        $item = Get-Item $filePath;
-        $newPath = $item.DirectoryName + "/" + $item.BaseName + "-" + $shortHash + ".msi";
-        "[after_build] renaming $filePath -> $newPath";
-        mv $filePath $newPath;
+  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:appveyor_release -m ./src/BuildTargets/BuildTargets.csproj
 
 test_script:
   - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
