@@ -486,7 +486,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{9626EFDC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nugetSpecGen", "tools\nugetSpecGen\nugetSpecGen.csproj", "{0F071898-E2F3-4C84-A9A2-54F5DDA84150}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "regressionTests", "tools\regressionTests\regressionTests.csproj", "{E5A881F7-C1F4-4DA0-B0B1-EE790BB0A77D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "regressionTests", "tools\regressionTests\regressionTests.csproj", "{E5A881F7-C1F4-4DA0-B0B1-EE790BB0A77D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1953,9 +1953,7 @@ Global
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.Debug|x86.ActiveCfg = Debug|x86
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.Release|Any CPU.ActiveCfg = Release|x86
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.Release|x64.ActiveCfg = Release|x64
-		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.Release|x64.Build.0 = Release|x64
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.Release|x86.ActiveCfg = Release|x86
-		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.Release|x86.Build.0 = Release|x86
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.UnixDebug|Any CPU.ActiveCfg = Debug|x86
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.UnixDebug|x64.ActiveCfg = Debug|x64
 		{B1916638-EF20-4692-8C95-1C5AD6C67D30}.UnixDebug|x86.ActiveCfg = Debug|x86
