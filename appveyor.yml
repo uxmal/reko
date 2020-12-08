@@ -29,11 +29,11 @@ test_script:
   - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
 
 artifacts:
-  - path: bin/*.msi
+  - path: src/BuildTargets/build/appveyor_release/release/*.msi
     name: Reko installer
-  - path: bin/WindowsDecompiler-*.zip
+  - path: src/BuildTargets/build/appveyor_release/release/WindowsDecompiler-*.zip
     name: Reko WinForms driver
-  - path: bin/CmdLine-*.zip
+  - path: src/BuildTargets/build/appveyor_release/release/CmdLine-*.zip
     name: Reko CmdLine driver
 
 #on_finish:
