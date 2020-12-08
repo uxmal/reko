@@ -437,6 +437,9 @@ elseif("${TARGET}" STREQUAL "run_regressions")
 		CONFIG ${CMAKE_BUILD_TYPE}
 		PLATFORM ${REKO_PLATFORM}
 		ARGUMENTS
+			-c ${CMAKE_BUILD_TYPE}
+			-p ${REKO_PLATFORM}
+			--check-output
 			${REKO_SRC} > ${REKO_SRC}/../subjects/regression.log
 		OUTPUT
 			# This file is expected to be produced by this target, but it never is
