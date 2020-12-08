@@ -32,5 +32,5 @@ before_install:
 script:
   - source .travis_env
   - dotnet msbuild -p:Configuration=UnixRelease -p:Platform=x64 -v:m -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
-  - dotnet msbuild -p:Configuration=UnixRelease -p:Platform=x64 -v:m -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
-  - dotnet msbuild -p:Configuration=UnixRelease -p:Platform=x64 -v:m -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
+  - dotnet msbuild -p:Configuration=Release -p:Platform=x64 -v:m -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
+  - dotnet msbuild -p:Configuration=Release -p:Platform=x64 -v:m -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
