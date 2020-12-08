@@ -144,31 +144,42 @@ endfunction()
 function(add_c2xml_target)
 	cmake_parse_arguments(c2xml "" "REKO_ARCH;REKO_ENV;DIALECT;OUTPUT;TARGET_NAME;HEADER" "REQUIRED_ARCHITECTURES;REQUIRED_ENVIRONMENTS" ${ARGN})
 
-	#csproj_output_path(
-	#	EXE
-	#	PROJECT_SUBDIR "tools"
-	#	PROJECT_NAME "c2xml"
-	#	RESULT c2xml_exe
-	#)
-	#get_filename_component(c2xml_dir ${c2xml_exe} DIRECTORY)
-
 	set(c2xml_dir ${CMAKE_BINARY_DIR}/c2xml/${REKO_EXE_FRAMEWORK})
+	set(c2xml_exe ${c2xml_dir}/c2xml)
 
-	RUN_DOTNET(${REKO_SRC}/tools/c2xml/c2xml.csproj
-		NO_RESTORE
-		NO_CLEAN
-		CONFIG ${CMAKE_BUILD_TYPE}
-		PLATFORM ${REKO_PLATFORM}
-		ARGUMENTS
+	# 
+	# To speedup c2xml invocations, we use "dotnet" just once
+	# for subsequent runs, we'll reuse the path of the previously built binary
+	#
+	if(NOT TARGET build_c2xml)
+		ADD_DOTNET(${REKO_SRC}/tools/c2xml/c2xml.csproj
+			NO_RESTORE
+			NO_CLEAN
+			CONFIG ${CMAKE_BUILD_TYPE}
+			PLATFORM ${REKO_PLATFORM}
+			SOURCES ${c2xml_HEADER}
+			TARGET_NAME "build_c2xml"
+		)
+	endif()
+
+	add_custom_command(
+		OUTPUT ${c2xml_OUTPUT}
+		COMMAND ${c2xml_exe}
 			-a "${c2xml_REKO_ARCH}"
 			-e "${c2xml_REKO_ENV}"
 			-d "${c2xml_DIALECT}"
 			${c2xml_HEADER}
 			${c2xml_OUTPUT}
-		SOURCES ${c2xml_HEADER}
-		OUTPUT ${c2xml_OUTPUT}
-		TARGET_NAME ${c2xml_TARGET_NAME}
 	)
+
+	add_custom_target(
+		${c2xml_TARGET_NAME}
+		COMMENT "c2xml ${c2xml_HEADER} -> ${c2xml_OUTPUT}"
+		DEPENDS ${c2xml_OUTPUT}
+	)
+
+	# run c2xml only after it has been built
+	add_dependencies(${c2xml_TARGET_NAME} build_c2xml)
 
 	## start off with reko.config
 	set(file_list "${REKO_SRC}/Drivers/reko.config")
@@ -488,9 +499,7 @@ elseif("${TARGET}" STREQUAL "appveyor_release")
 	set(artifacts_dir ${REKO_SRC}/../bin)
 	file(MAKE_DIRECTORY ${artifacts_dir})
 
-	add_custom_target(appveyor_release
-		COMMENT "Creating Appveyor release..."
-	)
+	add_custom_target(appveyor_release)
 
 	add_custom_target(appveyor_zip_windowsdecompiler
 		COMMENT "Compressing WindowsDecompiler..."
