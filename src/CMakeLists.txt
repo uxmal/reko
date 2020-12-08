@@ -481,6 +481,7 @@ elseif("${TARGET}" STREQUAL "appveyor_release")
 	set(build_version "$ENV{APPVEYOR_BUILD_VERSION}")
 
 	set(artifacts_dir ${CMAKE_CURRENT_BINARY_DIR}/release)
+	file(MAKE_DIRECTORY ${artifacts_dir})
 
 	add_custom_target(appveyor_release
 		COMMENT "Creating Appveyor release..."
