@@ -480,7 +480,7 @@ elseif("${TARGET}" STREQUAL "appveyor_release")
 	string(SUBSTRING "$ENV{APPVEYOR_REPO_COMMIT}" 0 10 build_shorthash)
 	set(build_version "$ENV{APPVEYOR_BUILD_VERSION}")
 
-	set(artifacts_dir ${CMAKE_CURRENT_BINARY_DIR}/release)
+	set(artifacts_dir ${REKO_SRC}/../bin)
 	file(MAKE_DIRECTORY ${artifacts_dir})
 
 	add_custom_target(appveyor_release
