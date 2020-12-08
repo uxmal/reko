@@ -476,6 +476,38 @@ elseif("${TARGET}" STREQUAL "update_runtime_nuspec")
 			${REKO_SRC}/Drivers/Runtime/.skipnuspecupdate
 		TARGET_NAME "update_runtime_nuspec"
 	)
+elseif("${TARGET}" STREQUAL "appveyor_release")
+	string(SUBSTRING "$ENV{APPVEYOR_REPO_COMMIT}" 0 10 build_shorthash)
+	set(build_version "$ENV{APPVEYOR_BUILD_VERSION}")
+
+	set(artifacts_dir ${CMAKE_CURRENT_BINARY_DIR}/release)
+
+	add_custom_target(appveyor_release
+		COMMENT "Creating Appveyor release..."
+	)
+
+	add_custom_target(appveyor_zip_windowsdecompiler
+		COMMENT "Compressing WindowsDecompiler..."
+		COMMAND 7z a ${artifacts_dir}/WindowsDecompiler-${build_version}-${build_shorthash}.zip
+			${REKO_SRC}/Drivers/WindowsDecompiler/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_EXE_FRAMEWORK}/.
+	)
+
+	add_custom_target(appveyor_zip_cmdline
+		COMMENT "Compressing CmdLine..."
+		COMMAND 7z a ${artifacts_dir}/CmdLine-${build_version}-${build_shorthash}.zip
+			${REKO_SRC}/Drivers/CmdLine/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_EXE_FRAMEWORK}/.
+	)
+
+	add_custom_target(appveyor_msi
+		COMMAND ${CMAKE_COMMAND} -E copy
+			${REKO_SRC}/WixInstaller/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/reko-${build_version}.msi
+			${REKO_SRC}/WixInstaller/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/reko-${build_version}-${build_shorthash}.msi
+	)
+
+	add_dependencies(appveyor_release appveyor_zip_windowsdecompiler)
+	add_dependencies(appveyor_release appveyor_zip_cmdline)
+	# $TODO: WiX
+	#add_dependencies(appveyor_release appveyor_msi)
 elseif(NOT "${TARGET}" STREQUAL "")
 	message(FATAL_ERROR "Unknown target ${TARGET}")
 endif()
