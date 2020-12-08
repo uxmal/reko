@@ -353,10 +353,9 @@ MACRO(DOTNET_BUILD_COMMANDS)
             list(APPEND build_dotnet_cmds
                 COMMAND ${DOTNET_EXE} restore ${DOTNET_PROJPATH} ${DOTNET_IMPORT_PROPERTIES}
             )
-        else()
-            # if we skip the preliminar restore phase, we run it while building
             set(restore_arg "--no-restore")
         endif()
+
         if(NOT DOTNET_NO_CLEAN)
             list(APPEND build_dotnet_cmds
                 COMMAND ${DOTNET_EXE} clean ${DOTNET_PROJPATH} ${DOTNET_BUILD_PROPERTIES}
