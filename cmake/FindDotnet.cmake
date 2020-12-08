@@ -430,7 +430,6 @@ FUNCTION(RUN_DOTNET DOTNET_PROJECT)
         list(APPEND dotnet_run_cmds
             COMMAND ${DOTNET_EXE} restore ${DOTNET_PROJPATH} ${DOTNET_IMPORT_PROPERTIES}
         )
-    else()
         set(dotnet_restore_arg "--no-restore")
     endif()
 
