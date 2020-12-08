@@ -425,7 +425,7 @@ elseif("${TARGET}" STREQUAL "run_unit_tests")
 	add_custom_target(run_unit_tests
 		COMMENT "Running Unit Tests..."
 		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-		COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE} -R UnitTests
+		COMMAND ${CMAKE_CTEST_COMMAND} -C ${CMAKE_BUILD_TYPE} -VV -R UnitTests
 	)
 elseif("${TARGET}" STREQUAL "run_regressions")
 	#
