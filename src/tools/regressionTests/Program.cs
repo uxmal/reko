@@ -224,11 +224,14 @@ namespace regressionTests
             {
                 FileName = "git",
                 Arguments = "diff --stat --exit-code",
-                // redirect (and ignore) stderr
+                WorkingDirectory = reko_src,
+                RedirectStandardOutput = true,
+                // capture stderr, as we're going to silence it
                 RedirectStandardError = true
             });
 
-            git.StandardError.ReadToEndAsync();
+            // pipe stdout to stderr (to show it on-screen, since stdout is going to regression.log)
+            git.StandardOutput.BaseStream.CopyTo(Console.OpenStandardError());
 
             git.WaitForExit();
             return git.ExitCode;
