@@ -153,6 +153,7 @@ function(add_c2xml_target)
 	#
 	if(NOT TARGET build_c2xml)
 		ADD_DOTNET(${REKO_SRC}/tools/c2xml/c2xml.csproj
+			NETCOREAPP
 			CONFIG ${CMAKE_BUILD_TYPE}
 			PLATFORM ${REKO_PLATFORM}
 			SOURCES ${c2xml_HEADER}
