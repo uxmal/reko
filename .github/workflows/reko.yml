@@ -1,0 +1,23 @@
+name: Reko
+
+on:
+  push:
+    branches: [ netStandard-ex2 ]
+  pull_request:
+    branches: [ netStandard-ex2 ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    - name: Build
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=UnixRelease -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
+    - name: Unit Tests
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
+    - name: Regression Tests
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
