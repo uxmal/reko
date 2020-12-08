@@ -275,8 +275,8 @@ FUNCTION(DOTNET_GET_DEPS _DN_PROJECT arguments)
         SET(_DN_PACK_OPTIONS /p:TargetFrameworks=netcoreapp3.1)
     ELSEIF(UNIX)
         # Unix builds default to netstandard2.0
-        SET(_DN_BUILD_OPTIONS -f netstandard2.0)
-        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=netstandard2.0)
+        SET(_DN_BUILD_OPTIONS -f netstandard2.2)
+        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=netstandard2.2)
     ENDIF()
 
     SET(_DN_IMPORT_PROP ${CMAKE_CURRENT_BINARY_DIR}/${_DN_projname}.imports.props)
