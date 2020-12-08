@@ -415,6 +415,8 @@ elseif("${TARGET}" STREQUAL "build_solution")
 elseif("${TARGET}" STREQUAL "run_unit_tests")
 	TEST_DOTNET(${REKO_SRC}/UnitTests/UnitTests.csproj
 		ARGUMENTS
+			-c ${CMAKE_BUILD_TYPE}
+			-p:Platform=${REKO_PLATFORM}
 			--filter
 			"(TestCategory!=FailedTests)&(TestCategory!=DotNetBug)&(TestCategory!=UserInterface)"
 	)
