@@ -218,6 +218,22 @@ namespace regressionTests
             return numJobs;
         }
 
+        private int RunGitDiff()
+        {
+            var git = Process.Start(new ProcessStartInfo()
+            {
+                FileName = "git",
+                Arguments = "diff --stat --exit-code",
+                // redirect (and ignore) stderr
+                RedirectStandardError = true
+            });
+
+            git.StandardError.ReadToEndAsync();
+
+            git.WaitForExit();
+            return git.ExitCode;
+        }
+
         private int CollectJobs()
         {
             int numJobs = 0;
@@ -271,6 +287,19 @@ namespace regressionTests
                     text = Regex.Replace(text, @"(\w+)_\d+", "$1_n");
                     File.WriteAllText(f, text, new UTF8Encoding(false));
                 }
+            }
+
+            if (check_output)
+            {
+                int exitCode = RunGitDiff();
+                if(exitCode == 0){
+                    Console.WriteLine("Output files are the same as in repository");
+                } else
+                {
+                    Console.WriteLine("Output files differ from repository");
+                }
+
+                Environment.Exit(exitCode);
             }
         }
 
