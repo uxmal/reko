@@ -46,7 +46,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
             this.writer = null;
             this.exeLoader = null;
             this.offNames = -1;
-            this.arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
+            this.arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16", new Dictionary<string, object>());
         }
 
         private void Given_MzExeProgram(uint size)

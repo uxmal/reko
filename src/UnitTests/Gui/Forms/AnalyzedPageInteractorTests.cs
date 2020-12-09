@@ -29,6 +29,7 @@ using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.UnitTests.Mocks;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 
@@ -62,7 +63,7 @@ namespace Reko.UnitTests.Gui.Forms
 
             form.Setup(f => f.Show());
 
-            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             var platform = new Mock<IPlatform>();
             platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
             platform.Setup(p => p.Architecture).Returns(arch);

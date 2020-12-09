@@ -29,6 +29,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
@@ -143,7 +144,7 @@ namespace Reko.UnitTests.Scanning
         protected void Given_x86_32()
         {
             var sc = new ServiceContainer();
-            program.Architecture = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            program.Architecture = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             program.Platform = new DefaultPlatform(sc, program.Architecture);
             program.Platform.Heuristics.ProcedurePrologs = new MaskedPattern[] {
                 new MaskedPattern
@@ -156,7 +157,7 @@ namespace Reko.UnitTests.Scanning
 
         internal void Given_x86_16()
         {
-            program.Architecture = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
+            program.Architecture = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16", new Dictionary<string, object>());
         }
 
         internal void Given_ImageSeg(ushort seg, ushort offset, string sBytes)

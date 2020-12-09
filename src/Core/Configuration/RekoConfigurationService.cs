@@ -38,27 +38,30 @@ namespace Reko.Core.Configuration
     /// </summary>
     public interface IConfigurationService
     {
-         ICollection<LoaderDefinition> GetImageLoaders();
-         ICollection<ArchitectureDefinition> GetArchitectures();
-         ICollection<PlatformDefinition> GetEnvironments();
-         ICollection<SignatureFileDefinition> GetSignatureFiles();
-         ICollection<RawFileDefinition> GetRawFiles();
+        ICollection<LoaderDefinition> GetImageLoaders();
+        ICollection<ArchitectureDefinition> GetArchitectures();
+        ICollection<PlatformDefinition> GetEnvironments();
+        ICollection<SignatureFileDefinition> GetSignatureFiles();
+        ICollection<RawFileDefinition> GetRawFiles();
 
-         PlatformDefinition GetEnvironment(string envName);
-         IProcessorArchitecture? GetArchitecture(string archLabel);
-         ICollection<SymbolSourceDefinition> GetSymbolSources();
-         RawFileDefinition? GetRawFile(string rawFileFormat);
+        PlatformDefinition GetEnvironment(string envName);
+        IProcessorArchitecture? GetArchitecture(string archLabel);
+        IProcessorArchitecture? GetArchitecture(string archLabel, string modelName);
+        IProcessorArchitecture? GetArchitecture(string archLabel, Dictionary<string, object> options);
 
-         IEnumerable<UiStyleDefinition> GetDefaultPreferences ();
+        ICollection<SymbolSourceDefinition> GetSymbolSources();
+        RawFileDefinition? GetRawFile(string rawFileFormat);
 
-         /// <summary>
-         /// Given a relative path with respect to the installation directory, 
-         /// returns the absolute path.
-         /// </summary>
-         /// <param name="path"></param>
-         /// <returns></returns>
-         string GetInstallationRelativePath(params string [] pathComponents);
-         LoaderDefinition? GetImageLoader(string loader);
+        IEnumerable<UiStyleDefinition> GetDefaultPreferences();
+
+        /// <summary>
+        /// Given a relative path with respect to the installation directory, 
+        /// returns the absolute path.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        string GetInstallationRelativePath(params string[] pathComponents);
+        LoaderDefinition? GetImageLoader(string loader);
     }
 
     public class RekoConfigurationService : IConfigurationService
@@ -339,6 +342,19 @@ namespace Reko.Core.Configuration
 
         public IProcessorArchitecture? GetArchitecture(string archLabel)
         {
+            return GetArchitecture(archLabel, new Dictionary<string, object>());
+        }
+
+        public IProcessorArchitecture? GetArchitecture(string archLabel, string modelName)
+        {
+            return GetArchitecture(archLabel, new Dictionary<string, object>
+            {
+                { ProcessorArchitecture.OptionModel, modelName }
+            });
+        }
+
+        public IProcessorArchitecture? GetArchitecture(string archLabel, Dictionary<string, object> options)
+        {
             var elem = GetArchitectures()
                 .Where(e => e.Name == archLabel).SingleOrDefault();
             if (elem == null)
@@ -347,10 +363,11 @@ namespace Reko.Core.Configuration
             Type t = Type.GetType(elem.TypeName, false);
             if (t == null)
                 return null;
-            var arch = (IProcessorArchitecture)Activator.CreateInstance(t, this.services, elem.Name);
+            var arch = (IProcessorArchitecture)Activator.CreateInstance(t, this.services, elem.Name, options);
             arch.Description = elem.Description;
             return arch;
         }
+
 
         public PlatformDefinition GetEnvironment(string envName)
         {

@@ -151,7 +151,7 @@ namespace Reko.UnitTests.Scanning
         public void Setup()
         {
             sc = new ServiceContainer();
-            arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             m = new ProcedureBuilder();
             var map = new SegmentMap(Address.Ptr32(0x10000000));
             state = arch.CreateProcessorState();
@@ -168,7 +168,7 @@ namespace Reko.UnitTests.Scanning
             var el = new FakeDecompilerEventListener();
             sc.AddService<IFileSystemService>(fsSvc);
             sc.AddService<DecompilerEventListener>(el);
-            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             var asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
@@ -363,7 +363,7 @@ namespace Reko.UnitTests.Scanning
             //m.Label("dummy");
             //m.Dd(0);
 
-            RunTest(new X86ArchitectureFlat32(sc, "x86-protected-32"),
+            RunTest(new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>()),
                 new RtlGoto(m.Mem32(m.IAdd(m.IMul(edx, 4), 0x10010)), InstrClass.Transfer),
                 "Scanning/BwSwitch32.txt");
         }
@@ -392,7 +392,7 @@ namespace Reko.UnitTests.Scanning
             m.Assign(bx, m.IAdd(bx, bx));
             m.Assign(SCZO, new ConditionOf(bx));
 
-            RunTest(new X86ArchitectureReal(sc, "x86-real-16"),
+            RunTest(new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>()),
                 new RtlGoto(m.Mem16(m.IAdd(bx, 0x1234)), InstrClass.Transfer),
                 "Scanning/BwSwitch16.txt");
         }

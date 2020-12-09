@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Memory;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
 
@@ -45,7 +46,10 @@ namespace Reko.WindowsItp
                 imgMap.AddItemWithSize(Address.Ptr32(0x00100000), new ImageMapBlock(Address.Ptr32(0x00100000)) { Size = 30 });
                 imgMap.AddItemWithSize(Address.Ptr32(0x00100100), new ImageMapBlock(Address.Ptr32(0x00100100)) { Size = 300 });
                 imgMap.AddItemWithSize(Address.Ptr32(0x00100500), new ImageMapBlock(Address.Ptr32(0x00100500)) { Size = 600 });
-                memoryControl1.Architecture = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
+                memoryControl1.Architecture = new X86ArchitectureFlat32(
+                    new ServiceContainer(), 
+                    "x86-protected-32",
+                    new Dictionary<string, object>());
 
                 imageMapView1.ImageMap = imgMap;
             }

@@ -36,7 +36,8 @@ namespace Reko.Arch.Mos6502
     {
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Mos6502Architecture(IServiceProvider services, string archId) : base(services, archId)
+        public Mos6502Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             CarryFlagMask = (uint)FlagM.CF;
             Endianness = EndianServices.Little;

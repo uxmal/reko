@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.M68k
     [TestFixture]
     public class RewriterTests : RewriterTestBase
     {
-        private readonly M68kArchitecture arch = new M68kArchitecture(CreateServiceContainer(), "m68k");
+        private readonly M68kArchitecture arch = new M68kArchitecture(CreateServiceContainer(), "m68k", new Dictionary<string, object>());
         private readonly Address addrBase = Address.Ptr32(0x00010000);
 
         public override IProcessorArchitecture Architecture => arch;

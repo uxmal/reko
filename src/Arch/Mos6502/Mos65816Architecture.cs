@@ -40,7 +40,8 @@ namespace Reko.Arch.Mos6502
         public static readonly RegisterStorage B;
         public static readonly PrimitiveType Word24;
 
-        public Mos65816Architecture(IServiceProvider services, string archId) : base(services, archId)
+        public Mos65816Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
         }
 

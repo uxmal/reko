@@ -351,7 +351,7 @@ namespace Reko.UnitTests.Typing
             Identifier bx = m.Local16("bx");
             Expression e = m.SegMem(bx.DataType, ds, m.IAdd(bx, 4));
             var sc = new ServiceContainer();
-            var arch = new Reko.Arch.X86.X86ArchitectureReal(sc, "x86-real-16");
+            var arch = new Reko.Arch.X86.X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             Program program = new Program
             {
                 Architecture = arch,
@@ -378,7 +378,7 @@ namespace Reko.UnitTests.Typing
         {
             ProcedureBuilder m = new ProcedureBuilder();
             var sc = new ServiceContainer();
-            var arch = new Reko.Arch.X86.X86ArchitectureReal(sc, "x86-real-16");
+            var arch = new Reko.Arch.X86.X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             var program = new Program
             {
                 Architecture = arch,

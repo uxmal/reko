@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Arm
     [TestFixture]
     public class A64RewriterTests : RewriterTestBase
     {
-        private readonly Arm64Architecture arch = new Arm64Architecture(CreateServiceContainer(), "aarch64");
+        private readonly Arm64Architecture arch = new Arm64Architecture(CreateServiceContainer(), "aarch64", new Dictionary<string, object>());
         private readonly Address baseAddress = Address.Ptr64(0x00100000);
 
         public override IProcessorArchitecture Architecture => arch;

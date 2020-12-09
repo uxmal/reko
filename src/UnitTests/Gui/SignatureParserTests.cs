@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Gui
     class SignatureParserTests
     {
         private SignatureParser sp;
-        private IntelArchitecture arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
+        private IntelArchitecture arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
 
         [SetUp]
         public void Setup()

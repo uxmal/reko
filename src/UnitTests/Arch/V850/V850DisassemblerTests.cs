@@ -25,9 +25,6 @@ using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.V850
 {
@@ -39,7 +36,7 @@ namespace Reko.UnitTests.Arch.V850
 
         public V850DisassemblerTests()
         {
-            this.arch = new V850Architecture(base.CreateServiceContainer(), "v850");
+            this.arch = new V850Architecture(base.CreateServiceContainer(), "v850", new Dictionary<string, object>());
             this.addr = Address.Ptr32(0x00100000);
         }
 

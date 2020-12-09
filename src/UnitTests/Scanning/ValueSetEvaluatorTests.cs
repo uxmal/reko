@@ -240,7 +240,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Vse_segmented_addrs()
         {
-            program.Architecture = new Reko.Arch.X86.X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
+            program.Architecture = new Reko.Arch.X86.X86ArchitectureReal(new ServiceContainer(), "x86-real-16", new Dictionary<string, object>());
             Given_UInt16Array(Address.SegPtr(0xC00, 4), new ushort[] {
                 0x1234,
                 0x0C00,

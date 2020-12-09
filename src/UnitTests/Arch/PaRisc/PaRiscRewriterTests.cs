@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Arch.PaRisc
 
         public PaRiscRewriterTests()
         {
-            this.arch = new PaRiscArchitecture(CreateServiceContainer(), "parisc");
+            this.arch = new PaRiscArchitecture(CreateServiceContainer(), "parisc", new Dictionary<string, object>());
         }
 
         public override IProcessorArchitecture Architecture => arch;

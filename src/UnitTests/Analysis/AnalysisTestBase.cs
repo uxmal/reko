@@ -137,7 +137,7 @@ namespace Reko.UnitTests.Analysis
         protected static Program RewriteMsdosAssembler(string relativePath, string configFile)
         {
             var sc = new ServiceContainer();
-            var arch = new X86ArchitectureReal(sc, "x86-real-16");
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             var cfgSvcMock = new Mock<IConfigurationService>();
             var envMock = new Mock<PlatformDefinition>();
             var tlSvcMock = new Mock<ITypeLibraryLoaderService>();
@@ -161,7 +161,7 @@ namespace Reko.UnitTests.Analysis
 
         protected Program RewriteMsdosAssembler(string relativePath, Action<Program> postLoad)
         {
-            var arch = new X86ArchitectureReal(sc, "x86-real-16");
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             var cfgSvc = new Mock<IConfigurationService>();
             var env = new Mock<PlatformDefinition>();
             var tlSvc = new Mock<ITypeLibraryLoaderService>();
@@ -190,7 +190,7 @@ namespace Reko.UnitTests.Analysis
         {
             Program program;
             var services = new ServiceContainer();
-            var arch = new X86ArchitectureFlat32(services, "x86-protected-32");
+            var arch = new X86ArchitectureFlat32(services, "x86-protected-32", new Dictionary<string, object>());
             var asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
@@ -216,7 +216,7 @@ namespace Reko.UnitTests.Analysis
         protected Program RewriteCodeFragment(string s)
         {
             var services = new ServiceContainer();
-            var arch = new X86ArchitectureReal(services, "x86-real-16");
+            var arch = new X86ArchitectureReal(services, "x86-real-16", new Dictionary<string, object>());
             IAssembler asm = new X86TextAssembler(arch);
             var program = asm.AssembleFragment(Address.SegPtr(0xC00, 0), s);
             program.Platform = new MsdosPlatform(services, arch);
@@ -227,7 +227,7 @@ namespace Reko.UnitTests.Analysis
         protected Program RewriteCodeFragment32(string s)
         {
             var services = new ServiceContainer();
-            var arch = new X86ArchitectureFlat32(services, "x86-protected-32");
+            var arch = new X86ArchitectureFlat32(services, "x86-protected-32", new Dictionary<string, object>());
             IAssembler asm = new X86TextAssembler(arch);
             var program = asm.AssembleFragment(Address.Ptr32(0x00400000), s);
             program.Platform = new DefaultPlatform(services, arch);

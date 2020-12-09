@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Arch.Mos6502
         public EmulatorTests()
         {
             this.sc = new ServiceContainer();
-            this.arch = new Mos6502Architecture(sc, "mos6502");
+            this.arch = new Mos6502Architecture(sc, "mos6502", new Dictionary<string, object>());
         }
 
         private void Given_Code(Action<Assembler> p)

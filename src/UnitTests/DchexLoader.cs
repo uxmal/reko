@@ -79,7 +79,7 @@ namespace Reko.UnitTests
         {
             switch (archName)
             {
-            case "m68k": return new Reko.Arch.M68k.M68kArchitecture(Services, "m68k");
+            case "m68k": return new Reko.Arch.M68k.M68kArchitecture(Services, "m68k", new Dictionary<string, object>());
             default: throw new NotImplementedException();
             }
         }

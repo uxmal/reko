@@ -32,7 +32,8 @@ namespace Reko.Arch.LatticeMico
 {
     public class LatticeMico32Architecture : ProcessorArchitecture
     {
-        public LatticeMico32Architecture(IServiceProvider services, string archId) : base(services, archId)
+        public LatticeMico32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr32;

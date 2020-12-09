@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Arch.X86
             sc = new ServiceContainer();
             sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            var arch = new X86ArchitectureReal(sc, "x86-real-16");
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             program = new Program() { Architecture = arch };
             asm = new X86TextAssembler(arch);
 			configFile = null;

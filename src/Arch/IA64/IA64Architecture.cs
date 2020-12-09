@@ -32,7 +32,8 @@ namespace Reko.Arch.IA64
 {
     public class IA64Architecture : ProcessorArchitecture
     {
-        public IA64Architecture(IServiceProvider services, string archId) : base(services, archId)
+        public IA64Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr64;

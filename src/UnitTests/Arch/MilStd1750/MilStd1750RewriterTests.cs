@@ -17,7 +17,7 @@ namespace Reko.UnitTests.Arch.MilStd1750
 
         public MilStd1750RewriterTests()
         {
-            this.arch = new MilStd1750Architecture(CreateServiceContainer(), "mil-std-1750a");
+            this.arch = new MilStd1750Architecture(CreateServiceContainer(), "mil-std-1750a", new Dictionary<string, object>());
         }
         public override IProcessorArchitecture Architecture => arch;
 

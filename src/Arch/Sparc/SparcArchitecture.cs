@@ -39,7 +39,8 @@ namespace Reko.Arch.Sparc
     {
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public SparcArchitecture(IServiceProvider services, string archId, Registers registers, Decoder rootDecoder, PrimitiveType wordWidth) : base(services, archId)
+        public SparcArchitecture(IServiceProvider services, string archId, Registers registers, Decoder rootDecoder, PrimitiveType wordWidth, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             this.Registers = registers;
             this.Decoder = rootDecoder;
@@ -235,8 +236,8 @@ namespace Reko.Arch.Sparc
         private static readonly Registers registers = new Registers(PrimitiveType.Word32);
         private static readonly Decoder rootDecoder = InstructionSet.Create32BitDecoder();
 
-        public SparcArchitecture32(IServiceProvider services, string archId) :
-            base(services, archId, registers, rootDecoder, PrimitiveType.Word32)
+        public SparcArchitecture32(IServiceProvider services, string archId, Dictionary<string, object> options) :
+            base(services, archId, registers, rootDecoder, PrimitiveType.Word32, options)
         {
         }
     }
@@ -246,8 +247,8 @@ namespace Reko.Arch.Sparc
         private static readonly Registers registers = new Registers(PrimitiveType.Word64);
         private static readonly Decoder rootDecoder = InstructionSet.Create64BitDecoder();
 
-        public SparcArchitecture64(IServiceProvider services, string archId) : 
-            base(services, archId, registers, rootDecoder, PrimitiveType.Word64)
+        public SparcArchitecture64(IServiceProvider services, string archId, Dictionary<string, object> options) : 
+            base(services, archId, registers, rootDecoder, PrimitiveType.Word64, options)
         {
         }
     }

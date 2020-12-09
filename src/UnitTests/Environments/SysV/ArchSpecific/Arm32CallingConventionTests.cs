@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         [SetUp]
         public void Setup()
         {
-            arch = new Arm32Architecture(new ServiceContainer(), "arm32");
+            arch = new Arm32Architecture(new ServiceContainer(), "arm32", new Dictionary<string, object>());
         }
 
         private Pointer Ptr(DataType dt)

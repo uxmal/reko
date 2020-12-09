@@ -43,12 +43,14 @@ namespace Reko.UnitTests.Arch.RiscV
         [SetUp]
         public void Setup()
         {
-            this.arch = new RiscVArchitecture(new ServiceContainer(), "riscV");
-            arch.LoadUserOptions(new Dictionary<string, object>
-            {
-                { "WordSize", "64" },
-                { "FloatAbi", 64 }
-            });
+            this.arch = new RiscVArchitecture(
+                new ServiceContainer(),
+                "riscV", 
+                new Dictionary<string, object>
+                {
+                    { "WordSize", "64" },
+                    { "FloatAbi", 64 }
+                });
             this.addrLoad = Address.Ptr32(0x00100000);
         }
 

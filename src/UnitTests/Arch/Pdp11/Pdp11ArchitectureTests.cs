@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Arch.Pdp11
         [SetUp]
         public void Setup()
         {
-            this.arch = new Pdp11Architecture(new ServiceContainer(), "pdp11");
+            this.arch = new Pdp11Architecture(new ServiceContainer(), "pdp11", new Dictionary<string, object>());
         }
 
         [Test]

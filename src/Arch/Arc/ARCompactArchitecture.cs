@@ -35,7 +35,8 @@ namespace Reko.Arch.Arc
     {
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public ARCompactArchitecture(IServiceProvider services, string archId) : base(services, archId)
+        public ARCompactArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             base.Endianness = EndianServices.Little;
             base.FramePointerType = PrimitiveType.Ptr32;
@@ -44,6 +45,7 @@ namespace Reko.Arch.Arc
             base.StackRegister = Registers.Sp;
             base.WordWidth = PrimitiveType.Word32;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
+            LoadUserOptions(options);
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)

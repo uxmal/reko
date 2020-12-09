@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
     {
         private void AssertSignature(string sExp, DataType dtRet, params DataType[] args)
         {
-            var arch = new XtensaArchitecture(new ServiceContainer(), "xtensa");
+            var arch = new XtensaArchitecture(new ServiceContainer(), "xtensa", new Dictionary<string, object>());
             var cc = new XtensaCallingConvention(arch);
             var ccr = new CallingConventionEmitter();
             cc.Generate(ccr, dtRet, null, args.ToList());

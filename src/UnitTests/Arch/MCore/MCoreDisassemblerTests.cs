@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.H8
 
         public MCoreDisassemblerTests()
         {
-            this.arch = new MCoreArchitecture(CreateServiceContainer(), "mcore");
+            this.arch = new MCoreArchitecture(CreateServiceContainer(), "mcore", new Dictionary<string, object>());
             this.addrLoad = Address.Ptr32(0x8000);
         }
 

@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Environments.Windows
         [SetUp]
         public void Setup()
         {
-            var arch = new AlphaArchitecture(new ServiceContainer(), "alpha");
+            var arch = new AlphaArchitecture(new ServiceContainer(), "alpha", new Dictionary<string, object>());
             this.cc = new AlphaCallingConvention(arch);
             this.ccr = new CallingConventionEmitter();
         }

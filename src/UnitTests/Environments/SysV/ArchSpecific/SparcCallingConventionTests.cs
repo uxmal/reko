@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         [SetUp]
         public void Setup()
         {
-            arch = new SparcArchitecture32(new ServiceContainer(), "sparc");
+            arch = new SparcArchitecture32(new ServiceContainer(), "sparc", new Dictionary<string, object>());
         }
 
         private void Given_CallingConvention()

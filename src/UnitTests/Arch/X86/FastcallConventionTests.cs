@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Arch.X86
         {
             mockFactory = new CommonMockFactory();
             var sc = new ServiceContainer();
-            arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             platform = new Win32Platform(sc, arch);
         }
 

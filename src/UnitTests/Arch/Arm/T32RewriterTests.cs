@@ -5433,7 +5433,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void Setup()
         {
             baseAddress = Address.Ptr32(0x00100000);
-            arch = new ThumbArchitecture(CreateServiceContainer(), "arm-thumb");
+            arch = new ThumbArchitecture(CreateServiceContainer(), "arm-thumb", new Dictionary<string, object>());
         }
 
         private void Given_Address(uint uAddr)

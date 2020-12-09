@@ -1171,13 +1171,13 @@ namespace Reko.Arch.X86.Assembler
 
         public void i386()
         {
-            arch = new X86ArchitectureFlat32(arch.Services, "x86-protected-32");
+            arch = new X86ArchitectureFlat32(arch.Services, "x86-protected-32", new Dictionary<string, object>());
             SetDefaultWordWidth(PrimitiveType.Word32);
         }
 
         public void i86()
         {
-            arch = new X86ArchitectureReal(arch.Services, "x86-real-16");
+            arch = new X86ArchitectureReal(arch.Services, "x86-real-16", new Dictionary<string, object>());
             SetDefaultWordWidth(PrimitiveType.Word16);
         }
 

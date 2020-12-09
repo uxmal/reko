@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.H8
 
         public H8DisassemblerTests()
         {
-            this.arch = new H8Architecture(CreateServiceContainer(), "h8");
+            this.arch = new H8Architecture(CreateServiceContainer(), "h8", new Dictionary<string, object>());
             this.addrLoad = Address.Ptr16(0x8000);
         }
 

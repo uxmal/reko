@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.i8051
 
         public i8051DisassemblerTests()
         {
-            this.arch = new i8051Architecture(new ServiceContainer(), "8051");
+            this.arch = new i8051Architecture(new ServiceContainer(), "8051", new Dictionary<string, object>());
         }
 
         public override IProcessorArchitecture Architecture

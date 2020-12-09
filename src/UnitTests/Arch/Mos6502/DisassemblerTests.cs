@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Arch.Mos6502
         {
             this.sc = new ServiceContainer();
             this.sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
-            this.arch = new Mos6502Architecture(sc, "mos6502");
+            this.arch = new Mos6502Architecture(sc, "mos6502", new Dictionary<string, object>());
         }
 
         private MachineInstruction RunTest(params byte[] bytes)

@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Avr
     {
         public Avr32RewriterTests()
         {
-            this.Architecture = new Avr32Architecture(CreateServiceContainer(), "avr32");
+            this.Architecture = new Avr32Architecture(CreateServiceContainer(), "avr32", new Dictionary<string, object>());
             this.LoadAddress = Address.Ptr32(0x00100000);
         }
 

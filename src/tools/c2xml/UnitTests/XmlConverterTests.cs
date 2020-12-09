@@ -40,7 +40,7 @@ namespace Reko.Tools.C2Xml.UnitTests
     {
         public class FakeArchitecture : ProcessorArchitecture
         {
-            public FakeArchitecture(IServiceProvider services) : base(services, "fake")
+            public FakeArchitecture(IServiceProvider services) : base(services, "fake", new Dictionary<string, object>())
             {
                 base.PointerType = PrimitiveType.Ptr32;
             }

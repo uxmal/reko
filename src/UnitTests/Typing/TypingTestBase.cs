@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Typing
 		{
             var sc = new ServiceContainer();
             PopulateServiceContainer(sc);
-            var arch = new X86ArchitectureReal(sc, "x86-real-16");
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             ILoader ldr = new Loader(sc);
             var program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(relativePath),

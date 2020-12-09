@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.X86
 
 		public IntelRegisterTests()
 		{
-			arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
+			arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
 		}
 
 		[Test]

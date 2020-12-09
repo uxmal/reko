@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class Tlcs90RewriterTests : RewriterTestBase
     {
-        private readonly Tlcs90Architecture arch = new Tlcs90Architecture(new ServiceContainer(), "tlcs90");
+        private readonly Tlcs90Architecture arch = new Tlcs90Architecture(new ServiceContainer(), "tlcs90", new Dictionary<string, object>());
         private readonly Address baseAddr = Address.Ptr16(0x0100);
 
         public override IProcessorArchitecture Architecture => arch;

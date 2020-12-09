@@ -35,12 +35,14 @@ namespace Reko.UnitTests.Arch.Mips
     [TestFixture]
     public class Mips16eDisassemblerTests : DisassemblerTestBase<MipsInstruction>
     {
-        private MipsProcessorArchitecture arch;
+        private readonly MipsProcessorArchitecture arch;
 
         public Mips16eDisassemblerTests()
         {
-            this.arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-32");
-            arch.LoadUserOptions(new Dictionary<string, object> { { "decoder", "mips16e" } });
+            this.arch = new MipsBe32Architecture(
+                CreateServiceContainer(),
+                "mips-be-32",
+                new Dictionary<string, object> { { "decoder", "mips16e" } });
             this.LoadAddress = Address.Ptr32(0x00100000);
         }
 

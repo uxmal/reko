@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Environments.Windows
         [SetUp]
         public void Setup()
         {
-            this.arch = new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64");
+            this.arch = new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64", new Dictionary<string, object>());
             this.frame = arch.CreateFrame();
         }
         

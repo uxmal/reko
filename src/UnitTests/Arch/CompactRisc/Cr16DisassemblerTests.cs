@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Arch.CompactRisc
 
         public Cr16DisassemblerTests()
         {
-            this.arch = new Cr16Architecture(CreateServiceContainer(), "cr16c");
+            this.arch = new Cr16Architecture(CreateServiceContainer(), "cr16c", new Dictionary<string, object>());
             this.addrLoad = Address.Ptr16(0x8000);
         }
 

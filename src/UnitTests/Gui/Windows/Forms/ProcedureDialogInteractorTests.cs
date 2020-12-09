@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Environments.Windows;
 using Reko.UserInterfaces.WindowsForms.Forms;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             proc = new Procedure_v1();
             var sc = new ServiceContainer();
-            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             var platform = new Win32Platform(sc, arch);
             var program = new Program
             {

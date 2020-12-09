@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.Mips
     [TestFixture]
     public class MipsRewriterTests : RewriterTestBase
     {
-        private MipsProcessorArchitecture arch = new MipsBe32Architecture(CreateServiceContainer(), "mips-be-32");
+        private MipsProcessorArchitecture arch = new MipsBe32Architecture(CreateServiceContainer(), "mips-be-32", new Dictionary<string, object>());
         private Func<EndianImageReader, IEnumerable<MachineInstruction>> mkDasm;
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Arch.Mips
         [SetUp]
         public void Setup()
         {
-            this.arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-32");
+            this.arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-32", new Dictionary<string, object>());
             this.mkDasm = rdr => arch.CreateDisassembler(rdr);
         }
 
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Arch.Mips
 
         private void Given_Mips64_Architecture()
         {
-            arch = new MipsBe64Architecture(new ServiceContainer(), "mips-be-64");
+            arch = new MipsBe64Architecture(new ServiceContainer(), "mips-be-64", new Dictionary<string, object>());
             mkDasm = rdr => arch.CreateDisassembler(rdr);
         }
 

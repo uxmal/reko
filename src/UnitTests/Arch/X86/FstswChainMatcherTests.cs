@@ -47,7 +47,7 @@ namespace Reko.UnitTests.Arch.X86
         [SetUp]
         public void Fstsw_Setup()
         {
-            arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
+            arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
             asm = new X86Assembler(arch, Address.Ptr32(0x10000), new List<ImageSymbol>());
             Procedure proc = new Procedure(arch, "test", Address.Ptr32(0x00123400), arch.CreateFrame());
             orw = new OperandRewriter32(arch, new ExpressionEmitter(), proc.Frame, null);

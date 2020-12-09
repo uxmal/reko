@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
     [TestFixture]
     public class LatticeMico32RewriterTests : RewriterTestBase
     {
-        private readonly LatticeMico32Architecture arch = new LatticeMico32Architecture(CreateServiceContainer(), "latticeMico32");
+        private readonly LatticeMico32Architecture arch = new LatticeMico32Architecture(CreateServiceContainer(), "latticeMico32", new Dictionary<string, object>());
         private readonly Address addrLoad = Address.Ptr32(0x00100000);
 
         public override IProcessorArchitecture Architecture => arch;

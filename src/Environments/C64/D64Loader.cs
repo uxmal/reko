@@ -142,7 +142,7 @@ namespace Reko.Environments.C64
                     return program;
                 }
             }
-            var arch = new Mos6502Architecture(Services, "mos6502");
+            var arch = new Mos6502Architecture(Services, "mos6502", new Dictionary<string, object>());
             var mem = new ByteMemoryArea(Address.Ptr16(0), RawImage);
             var segmentMap = new SegmentMap(mem.BaseAddress);
             segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
@@ -182,7 +182,7 @@ namespace Reko.Environments.C64
         public static Program LoadSeq(IServiceProvider services, Address addrPreferred, byte[] imageBytes)
         {
             var mem = new ByteMemoryArea(addrPreferred, imageBytes);
-            var arch = new Mos6502Architecture(services, "mos6502");
+            var arch = new Mos6502Architecture(services, "mos6502", new Dictionary<string, object>());
             return new Program(
                 new SegmentMap(
                     mem.BaseAddress,

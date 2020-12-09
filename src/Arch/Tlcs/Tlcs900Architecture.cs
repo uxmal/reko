@@ -40,7 +40,8 @@ namespace Reko.Arch.Tlcs
     // https://toshiba.semicon-storage.com/product/micro/900H1_CPU_BOOK_CP3_CPU_en.pdf
     public class Tlcs900Architecture : ProcessorArchitecture
     {
-        public Tlcs900Architecture(IServiceProvider services, string archId) : base(services, archId)
+        public Tlcs900Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             this.CarryFlagMask = Registers.C.FlagGroupBits;
             this.Endianness = EndianServices.Little;

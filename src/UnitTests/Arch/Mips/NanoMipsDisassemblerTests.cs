@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch.Mips
 
         public NanoMipsDisassemblerTests()
         {
-            this.arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-micro");
+            this.arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-micro", new Dictionary<string, object>());
             this.LoadAddress = Address.Ptr32(0x00100000);
         }
 
@@ -57,11 +57,6 @@ namespace Reko.UnitTests.Arch.Mips
         {
             this.instr = DisassembleHexBytes(hexInstr);
             Assert.AreEqual(expectedAsm, instr.ToString());
-        }
-
-        private void Given_Mips64Architecture()
-        {
-            this.arch = new MipsBe64Architecture(new ServiceContainer(), "mips-be-micro");
         }
 
         public void NanoMipsDis_Generate()

@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         [SetUp]
         public void Setup()
         {
-            arch = new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64");
+            arch = new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64", new Dictionary<string, object>());
         }
 
         private void Given_CallingConvention()

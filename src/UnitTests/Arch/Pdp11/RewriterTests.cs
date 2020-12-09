@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.Pdp11
     [TestFixture]
     public class RewriterTests : RewriterTestBase
     {
-        private Pdp11Architecture arch = new Pdp11Architecture(CreateServiceContainer(), "pdp11");
+        private Pdp11Architecture arch = new Pdp11Architecture(CreateServiceContainer(), "pdp11", new Dictionary<string, object>());
         private Address addrBase = Address.Ptr16(0x0200);
 
         public override IProcessorArchitecture Architecture

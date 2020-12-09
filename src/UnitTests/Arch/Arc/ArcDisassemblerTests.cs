@@ -43,8 +43,7 @@ namespace Reko.UnitTests.Arch.Arc
         [SetUp]
         public void Setup()
         {
-            this.arch = new ARCompactArchitecture(new ServiceContainer(), "arc");
-            arch.LoadUserOptions(new Dictionary<string, object>
+            this.arch = new ARCompactArchitecture(new ServiceContainer(), "arc", new Dictionary<string, object>
             {
                 { "Endianness", "be" }
             });

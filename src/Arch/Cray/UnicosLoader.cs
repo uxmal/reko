@@ -142,7 +142,8 @@ struct exec {
             default:
                 throw new NotImplementedException($"Architecture {machineType} not implemented.");
             }
-            return cfgSvc.GetArchitecture(sArch);
+            //$REFACTOR: don't need the dict.
+            return cfgSvc.GetArchitecture(sArch, new Dictionary<string,object>());
         }
 
         private ushort[] ReadWords16(EndianImageReader rdr, ulong count)

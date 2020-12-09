@@ -20,16 +20,12 @@
 
 using NUnit.Framework;
 using Reko.Arch.Xtensa;
+using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Reko.Core;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Diagnostics;
 using System.ComponentModel.Design;
-using Reko.Core.Memory;
+using System.Linq;
 
 namespace Reko.UnitTests.Arch.Xtensa
 {
@@ -40,7 +36,7 @@ namespace Reko.UnitTests.Arch.Xtensa
 
         public XtensaDisassemblerTests()
         {
-            this.arch = new XtensaArchitecture(new ServiceContainer(), "xtensa");
+            this.arch = new XtensaArchitecture(new ServiceContainer(), "xtensa", new Dictionary<string, object>());
         }
 
         public override IProcessorArchitecture Architecture

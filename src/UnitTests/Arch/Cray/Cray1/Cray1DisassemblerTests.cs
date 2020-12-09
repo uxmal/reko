@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Arch.Cray.Cray1
         [SetUp]
         public void Setup()
         {
-            this.arch = new Cray1Architecture(new ServiceContainer(), "cray1");
+            this.arch = new Cray1Architecture(new ServiceContainer(), "cray1", new Dictionary<string, object>());
             this.addr = Address.Ptr32(0x00100000);
         }
 

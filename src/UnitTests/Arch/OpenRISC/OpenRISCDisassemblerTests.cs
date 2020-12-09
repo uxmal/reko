@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
     {
         public OpenRISCDisassemblerTests()
         {
-            this.Architecture = new OpenRISCArchitecture(new ServiceContainer(), "openRisc");
+            this.Architecture = new OpenRISCArchitecture(new ServiceContainer(), "openRisc", new Dictionary<string, object>());
             this.LoadAddress = Address.Ptr32(0x00100000);
         }
 

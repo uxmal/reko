@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     {
         public SuperHDisassemblerTests()
         {
-            this.Architecture = new SuperHLeArchitecture(new ServiceContainer(), "superH");
+            this.Architecture = new SuperHLeArchitecture(new ServiceContainer(), "superH", new Dictionary<string, object>());
             this.LoadAddress = Address.Ptr32(0x00010000);
         }
 

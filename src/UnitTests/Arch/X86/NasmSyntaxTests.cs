@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.X86
     [TestFixture]
     public class NasmSyntaxTests
     {
-        private readonly X86ArchitectureFlat32 arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
+        private readonly X86ArchitectureFlat32 arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
 
         private X86Instruction Disassemble32(params byte[] bytes)
         {

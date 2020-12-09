@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
         [SetUp]
         public void Setup()
         {
-            this.arch = new CrayYmpArchitecture(new ServiceContainer(), "crayYmp");
+            this.arch = new CrayYmpArchitecture(new ServiceContainer(), "crayYmp", new Dictionary<string, object>());
             this.addr = Address.Ptr32(0x00100000);
         }
 

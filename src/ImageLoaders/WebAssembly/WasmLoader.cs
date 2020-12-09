@@ -52,7 +52,7 @@ namespace Reko.ImageLoaders.WebAssembly
             var rdr = LoadHeader();
             var sections = LoadSections(rdr);
             var segmentMap = BuildSegmentMap(sections);
-            var arch = new WasmArchitecture(Services, "wasm");
+            var arch = new WasmArchitecture(Services, "wasm", new Dictionary<string, object>());
             var platform = new DefaultPlatform(Services, arch);
             return new Program()
             {

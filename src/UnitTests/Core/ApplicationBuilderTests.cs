@@ -18,19 +18,18 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
-using Reko.Analysis;
-using NUnit.Framework;
-using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Core
 {
-	[TestFixture]
+    [TestFixture]
 	public class ApplicationBuilderTests
 	{
 		private IntelArchitecture arch;
@@ -45,7 +44,7 @@ namespace Reko.UnitTests.Core
 
 		public ApplicationBuilderTests()
 		{
-			arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
+			arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
             frame = arch.CreateFrame();
 			ret = frame.EnsureRegister(Registers.eax);
 			arg04 = new Identifier("arg04",   PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32));

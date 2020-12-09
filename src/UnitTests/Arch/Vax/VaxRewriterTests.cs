@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Vax
     [TestFixture]
     public class VaxRewriterTests : RewriterTestBase
     {
-        private readonly VaxArchitecture arch = new VaxArchitecture(CreateServiceContainer(), "vax");
+        private readonly VaxArchitecture arch = new VaxArchitecture(CreateServiceContainer(), "vax", new Dictionary<string, object>());
         private readonly Address baseAddr = Address.Ptr32(0x0010000);
         private VaxProcessorState state;
 

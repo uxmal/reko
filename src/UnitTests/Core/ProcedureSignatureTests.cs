@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.ComponentModel.Design;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Core
 {
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Core
 		{
 			using (FileUnitTester fut = new FileUnitTester("Core/PsigArguments.txt"))
 			{
-				IntelArchitecture arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
+				IntelArchitecture arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16", new Dictionary<string, object>());
 				uint f = (uint)(FlagM.CF|FlagM.ZF);
 				Identifier argF = new Identifier(arch.GetFlagGroup("CZ").ToString(), PrimitiveType.Bool, new FlagGroupStorage(Registers.eflags, f, "CZ", PrimitiveType.Byte));
 				Identifier argR = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);

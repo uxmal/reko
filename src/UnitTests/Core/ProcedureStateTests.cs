@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Core
 
         public class FakeArchitecture : ProcessorArchitecture
         {
-            public FakeArchitecture(IServiceProvider services) : base(services, "fake")
+            public FakeArchitecture(IServiceProvider services) : base(services, "fake", new Dictionary<string, object>())
             {
                 this.Endianness = EndianServices.Little;
                 this.InstructionBitSize = 32;

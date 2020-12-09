@@ -27,6 +27,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Xml;
@@ -45,7 +46,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            var arch = new X86ArchitectureReal(sc, "x86-real-16");
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             this.platform = new MsdosPlatform(sc, arch);
         }
 

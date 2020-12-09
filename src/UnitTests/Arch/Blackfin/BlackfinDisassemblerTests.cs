@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.Blackfin
 
         public BlackfinDisassemblerTests()
         {
-            this.arch = new BlackfinArchitecture(new ServiceContainer(), "blackfin");
+            this.arch = new BlackfinArchitecture(new ServiceContainer(), "blackfin", new Dictionary<string, object>());
         }
 
         public override IProcessorArchitecture Architecture => arch;

@@ -27,6 +27,7 @@ using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.UnitTests.Mocks;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Gui.Forms
@@ -52,7 +53,7 @@ namespace Reko.UnitTests.Gui.Forms
 
             form = new Mock<IMainForm>();
 
-            var arch = new X86ArchitectureReal(sc, "x86-real-16");
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             var platform = new Mock<IPlatform>();
             platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
             platform.Setup(p => p.Architecture).Returns(arch);

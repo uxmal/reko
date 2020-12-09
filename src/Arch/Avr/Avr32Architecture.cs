@@ -36,7 +36,8 @@ namespace Reko.Arch.Avr
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Avr32Architecture(IServiceProvider services, string archId) : base(services, archId)
+        public Avr32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             this.CarryFlagMask = (uint) FlagM.CF;
             this.Endianness = EndianServices.Big;

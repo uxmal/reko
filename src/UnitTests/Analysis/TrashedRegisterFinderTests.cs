@@ -230,7 +230,7 @@ namespace Reko.UnitTests.Analysis
         [Test(Description = "Tests that constants are discovered")]
         public void TrfConstants()
         {
-            Given_Architecture(new Reko.Arch.X86.X86ArchitectureReal(new ServiceContainer(), "x86-real-16"));
+            Given_Architecture(new Reko.Arch.X86.X86ArchitectureReal(new ServiceContainer(), "x86-real-16", new Dictionary<string, object>()));
             Expect("TrfConstants", "Preserved: sp", "Trashed: ds", "Constants: ds:0xC00<16>");
             builder.Add("TrfConstants", m =>
             {
@@ -249,7 +249,7 @@ namespace Reko.UnitTests.Analysis
         [Test(Description = "Constant in one branch, not constant in the other")]
         public void TrfConstNonConst()
         {
-            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32"));
+            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>()));
             Expect("TrfConstNonConst", "Preserved: esp", "Trashed: cx", "");
             builder.Add("TrfConstNonConst", m =>
             {
@@ -577,7 +577,7 @@ Constants: cl:0x00
         [Test]
         public void TrfRecursive_duplicate_tails()
         {
-            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32"));
+            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>()));
             Given_PlatformTrashedRegisters();
             Expect(
                 "recursive",
@@ -615,7 +615,7 @@ Constants: cl:0x00
         [Test]
         public void TrfFibonacci()
         {
-            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32"));
+            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>()));
             Given_PlatformTrashedRegisters();
             Expect(
                 "recursive",
@@ -725,7 +725,7 @@ Constants: cl:0x00
         [Category(Categories.UnitTests)]
         public void TrfSaveRegistersOnStack_TwoExits()
         {
-            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32"));
+            Given_Architecture(new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>()));
             Expect("main", "Preserved: ebp,esp", "Trashed: eax", "");
             builder.Add("main", m =>
             {
@@ -845,7 +845,7 @@ Constants: cl:0x00
         [Test(Description = "Part of handling x86 and Z80 sub-registers.")]
         public void TrfDpb()
         {
-            var arch = new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
+            var arch = new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
             Given_Architecture(arch);
             Expect("main", "Preserved: esp", "Trashed: ecx", "");
             builder.Add("main", m =>
@@ -865,7 +865,7 @@ Constants: cl:0x00
         [Category(Categories.UnitTests)]
         public void TrfWideThenNarrow()
         {
-            var arch = new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
+            var arch = new Reko.Arch.X86.X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
             Given_Architecture(arch);
             Expect("main", "Preserved: esp", "Trashed: ecx", "");
             builder.Add("main", m =>

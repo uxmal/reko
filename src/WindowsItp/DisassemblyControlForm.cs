@@ -33,7 +33,10 @@ namespace Reko.WindowsItp
                 new CoreProgram
                 {
                     //new Decompiler.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
-                    Architecture = new Reko.Arch.PowerPC.PowerPcBe32Architecture(new ServiceContainer(), "ppc-be-32"),
+                    Architecture = new Reko.Arch.PowerPC.PowerPcBe32Architecture(
+                        new ServiceContainer(), 
+                        "ppc-be-32",
+                        new Dictionary<string, object>()),
                     SegmentMap = segmentMap
                 },
                 seg);

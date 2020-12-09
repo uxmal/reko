@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 
         public Arm64CallingConventionTests()
         {
-            this.arch = new Arm64Architecture(new ServiceContainer(), "aarch64");
+            this.arch = new Arm64Architecture(new ServiceContainer(), "aarch64", new Dictionary<string, object>());
         }
 
         [SetUp]

@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Scanning
                 })
                 .SelectMany(w => w)
                 .ToArray());
-            var arch = new MipsLe32Architecture(new ServiceContainer(), "mips-le-32");
+            var arch = new MipsLe32Architecture(new ServiceContainer(), "mips-le-32", new Dictionary<string, object>());
             CreateProgram(image, arch);
         }
 
@@ -122,14 +122,14 @@ namespace Reko.UnitTests.Scanning
                 Address.Ptr32(0x10000),
                 bytes);
             this.rd = image.Relocations;
-            var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
+            var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string,object>());
             CreateProgram(image, arch);
         }
 
         private void Given_x86_Image(Action<X86Assembler> asm)
         {
             var addrBase = Address.Ptr32(0x100000);
-            var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
+            var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
             var entry = ImageSymbol.Procedure(arch, addrBase);
             var m = new X86Assembler(arch, addrBase, new List<ImageSymbol> { entry });
             asm(m);
@@ -142,7 +142,7 @@ namespace Reko.UnitTests.Scanning
             var bmem = new ByteMemoryArea(
                 Address.Ptr64(0x0100000000000000),
                 bytes);
-            var arch = new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64");
+            var arch = new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64", new Dictionary<string, object>());
             CreateProgram(bmem, arch);
         }
 

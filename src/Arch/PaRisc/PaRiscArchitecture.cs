@@ -34,17 +34,15 @@ namespace Reko.Arch.PaRisc
 {
     public class PaRiscArchitecture : ProcessorArchitecture
     {
-        public PaRiscArchitecture(IServiceProvider services, string archId) : base(services, archId)
+        public PaRiscArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             InstructionBitSize = 32;
             StackRegister = Registers.GpRegs[30];
             Endianness = EndianServices.Big;
-            Options = new Dictionary<string, object>();
             SetOptionDependentProperties();
+            LoadUserOptions(options);
         }
-
-        public Dictionary<string, object> Options { get; }
-
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
@@ -134,7 +132,7 @@ namespace Reko.Arch.PaRisc
         {
             if (options == null)
                 return;
-            foreach (var option in options)
+            foreach (var option in options.ToList())
             {
                 this.Options[option.Key] = option.Value;
             }

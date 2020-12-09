@@ -52,10 +52,10 @@ namespace Reko.Arch.Mips
         public RegisterStorage pc;
         private string instructionSetEncoding;
         private Dictionary<string, RegisterStorage> mpNameToReg;
-        private Dictionary<string, object> options;
         private Decoder<MipsDisassembler, Mnemonic, MipsInstruction> rootDecoder;
 
-        public MipsProcessorArchitecture(IServiceProvider services, string archId, EndianServices endianness, PrimitiveType wordSize, PrimitiveType ptrSize) : base(services, archId)
+        public MipsProcessorArchitecture(IServiceProvider services, string archId, EndianServices endianness, PrimitiveType wordSize, PrimitiveType ptrSize, Dictionary<string, object> options) 
+            : base(services, archId, options)
         {
             this.Endianness = endianness;
             this.WordWidth = wordSize;
@@ -84,6 +84,8 @@ namespace Reko.Arch.Mips
                 .Concat(ccRegs)
                 .Concat(new[] { hi, lo })
                 .ToDictionary(k => k.Name);
+
+            LoadUserOptions(options);
         }
 
         public RegisterStorage FCSR { get; private set; }
@@ -212,7 +214,7 @@ namespace Reko.Arch.Mips
 
         public override void LoadUserOptions(Dictionary<string, object> options)
         {
-            this.options = options;
+            this.Options = options;
             if (options.TryGetValue("decoder", out var oDecoderName) && 
                 oDecoderName is string decoderName)
             {
@@ -309,7 +311,10 @@ namespace Reko.Arch.Mips
 
     public class MipsBe32Architecture : MipsProcessorArchitecture
     {
-        public MipsBe32Architecture(IServiceProvider services, string archId) : base(services, archId, EndianServices.Big,  PrimitiveType.Word32, PrimitiveType.Ptr32) { }
+        public MipsBe32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options) 
+            : base(services, archId, EndianServices.Big,  PrimitiveType.Word32, PrimitiveType.Ptr32, options) 
+        {
+        }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
@@ -322,7 +327,10 @@ namespace Reko.Arch.Mips
 
     public class MipsLe32Architecture : MipsProcessorArchitecture
     {
-        public MipsLe32Architecture(IServiceProvider services, string archId) : base(services, archId, EndianServices.Little, PrimitiveType.Word32, PrimitiveType.Ptr32) { }
+        public MipsLe32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, EndianServices.Little, PrimitiveType.Word32, PrimitiveType.Ptr32, options) 
+        {
+        }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
@@ -335,8 +343,10 @@ namespace Reko.Arch.Mips
 
     public class MipsBe64Architecture : MipsProcessorArchitecture
     {
-        public MipsBe64Architecture(IServiceProvider services, string archId) : base(services, archId, EndianServices.Big, PrimitiveType.Word64, PrimitiveType.Ptr64)
-        { }
+        public MipsBe64Architecture(IServiceProvider services, string archId, Dictionary<string, object> options) 
+            : base(services, archId, EndianServices.Big, PrimitiveType.Word64, PrimitiveType.Ptr64, options)
+        { 
+        }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
@@ -349,7 +359,8 @@ namespace Reko.Arch.Mips
 
     public class MipsLe64Architecture : MipsProcessorArchitecture
     {
-        public MipsLe64Architecture(IServiceProvider services, string archId) : base(services, archId, EndianServices.Little, PrimitiveType.Word64, PrimitiveType.Ptr64)
+        public MipsLe64Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, EndianServices.Little, PrimitiveType.Word64, PrimitiveType.Ptr64, options)
         {
         }
 

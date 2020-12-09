@@ -50,7 +50,7 @@ namespace Reko.Assemblers.Pdp11
 
         public Program Assemble(Address addrBase, TextReader reader)
         {
-            arch = new Pdp11Architecture(new ServiceContainer(), "pdp11");
+            arch = new Pdp11Architecture(new ServiceContainer(), "pdp11", new Dictionary<string, object>());
             Assembler = new Pdp11Assembler(arch, addrBase, emitter);
             lexer = new Lexer(reader);
 

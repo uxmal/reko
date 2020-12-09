@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Arch.X86
         public void Setup()
         {
             var services = new ServiceContainer();
-            arch = new X86ArchitectureFlat32(services, "x86-protected-32");
+            arch = new X86ArchitectureFlat32(services, "x86-protected-32", new Dictionary<string, object>());
             services.AddService<IFileSystemService>(new FileSystemServiceImpl());
             asm = new X86Assembler(arch, loadAddress, new List<ImageSymbol>());
         }

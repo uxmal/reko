@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Arch.M68k
         [SetUp]
         public void Setup()
         {
-            this.arch = new M68kArchitecture(new ServiceContainer(), "m68k");
+            this.arch = new M68kArchitecture(new ServiceContainer(), "m68k", new Dictionary<string, object>());
             this.addrInstr = Address.Ptr32(0x0012340C);
         }
 

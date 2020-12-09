@@ -39,7 +39,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
 
         public WasmRewriterTests()
         {
-            this.arch = new WasmArchitecture(CreateServiceContainer(), "wasm");
+            this.arch = new WasmArchitecture(CreateServiceContainer(), "wasm", new Dictionary<string, object>());
         }
 
         public override IProcessorArchitecture Architecture => arch;

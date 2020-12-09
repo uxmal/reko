@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.Rl78
 
         public Rl78DisassemblerTests()
         {
-            this.arch = new Rl78Architecture(new ServiceContainer(), "rl78");
+            this.arch = new Rl78Architecture(new ServiceContainer(), "rl78", new Dictionary<string, object>());
             this.addr = Address.Ptr32(0x1000);
         }
 

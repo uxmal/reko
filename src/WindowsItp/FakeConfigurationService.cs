@@ -55,7 +55,17 @@ namespace Reko.WindowsItp
             throw new NotImplementedException();
         }
 
-        public IProcessorArchitecture GetArchitecture(string archLabel)
+        public IProcessorArchitecture GetArchitecture(string sArch)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IProcessorArchitecture GetArchitecture(string sArch, string modelName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IProcessorArchitecture GetArchitecture(string sArch, Dictionary<string, object> options)
         {
             throw new NotImplementedException();
         }

@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86St_OnBeforeCall_DecrementStackRegister()
         {
-            var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
+            var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
             var state = new X86State(arch);
             var esp = CreateId(Registers.esp);
             state.SetRegister(Registers.esp, Constant.Word32(-4));
@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86St_Simple()
         {
-            var arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
+            var arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16", new Dictionary<string, object>());
 
             X86State st = new X86State(arch);
             st.SetRegister(Registers.cs, Constant.Word16(0xC00));
@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86St_SetAhRegisterFileValue()
         {
-            var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64"));
+            var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64", new Dictionary<string, object>()));
             state.SetRegister(Registers.ah, Constant.Byte(0x3A));
             Assert.IsFalse(state.IsValid(Registers.ax));
             Assert.IsTrue(state.IsValid(Registers.ah));
@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86St_SetAhThenAl()
         {
-            var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64"));
+            var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64", new Dictionary<string, object>()));
             state.SetRegister(Registers.ah, Constant.Byte(0x12));
             state.SetRegister(Registers.al, Constant.Byte(0x34));
             Assert.IsTrue(state.IsValid(Registers.ax));
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86St_SetBp()
         {
-            var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64"));
+            var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64", new Dictionary<string, object>()));
             state.SetRegister(Registers.bp, Constant.Word16(0x1234));
             Assert.IsFalse(state.IsValid(Registers.ebp));
             Assert.IsTrue(state.IsValid(Registers.bp));
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86St_SetCx()
         {
-            var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64"));
+            var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64", new Dictionary<string, object>()));
             state.SetRegister(Registers.cx, Constant.Word16(0x1234));
             Assert.AreEqual(0x1234, (int)state.GetRegister(Registers.cx).ToUInt16());
             Assert.AreEqual(0x34, (int)state.GetRegister(Registers.cl).ToByte());
@@ -113,7 +113,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86St_SetEsi()
         {
-            var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64"));
+            var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64", new Dictionary<string, object>()));
             state.SetRegister(Registers.esi, Constant.Word32(0x12345678));
             Assert.AreEqual(0x12345678, (long)state.GetRegister(Registers.esi).ToUInt64());
             Assert.AreEqual(0x5678, (int)state.GetRegister(Registers.si).ToUInt32());
@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86St_SetEdx()
         {
-            var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64"));
+            var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64", new Dictionary<string, object>()));
             state.SetRegister(Registers.edx, Constant.Word32(0x12345678));
             Assert.AreEqual(0x12345678, (long)state.GetRegister(Registers.edx).ToUInt64());
             Assert.AreEqual(0x5678, (int)state.GetRegister(Registers.dx).ToUInt32());
@@ -136,7 +136,7 @@ namespace Reko.UnitTests.Arch.X86
             var ctx = new Dictionary<Storage, Expression> {
                 { Registers.cl, Constant.Byte(0) }
             };
-            var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64"));
+            var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64", new Dictionary<string, object>()));
             state.SetRegister(Registers.cx, Constant.Invalid);
             Assert.IsFalse(state.IsValid(Registers.cx));
             Assert.IsFalse(state.IsValid(Registers.cl));
@@ -150,7 +150,7 @@ namespace Reko.UnitTests.Arch.X86
             var ctx = new Dictionary<Storage, Expression> {
                 { Registers.dl, Constant.Byte(3) }
             };
-            var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64"));
+            var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64", new Dictionary<string, object>()));
             state.SetRegister(Registers.dh, Constant.Invalid);
             Assert.IsFalse(state.IsValid(Registers.dh));
             Assert.IsFalse(state.IsValid(Registers.dx));

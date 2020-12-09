@@ -35,7 +35,8 @@ namespace Reko.Arch.H8
     {
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public H8Architecture(IServiceProvider services, string archId) : base(services, archId)
+        public H8Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             this.CarryFlagMask = (uint) FlagM.CF;
             this.Endianness = EndianServices.Big;

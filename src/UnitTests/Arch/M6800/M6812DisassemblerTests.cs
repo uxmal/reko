@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch.M6800
 
         public M6812DisassemblerTests()
         {
-            this.arch = new M6812Architecture(new ServiceContainer(), "m6812");
+            this.arch = new M6812Architecture(new ServiceContainer(), "m6812", new Dictionary<string, object>());
             this.addrLoad = Address.Ptr16(0);
         }
 

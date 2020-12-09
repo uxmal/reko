@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.XCore
 
         public XCore200DisassemblerTests()
         {
-            this.arch = new XCore200Architecture(CreateServiceContainer(), "xcore");
+            this.arch = new XCore200Architecture(CreateServiceContainer(), "xcore", new Dictionary<string, object>());
             this.addr = Address.Ptr32(0x00100000);
         }
 

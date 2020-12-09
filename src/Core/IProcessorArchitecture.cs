@@ -399,13 +399,29 @@ namespace Reko.Core
     [Designer("Reko.Gui.Design.ArchitectureDesigner,Reko.Gui")]
     public abstract class ProcessorArchitecture : IProcessorArchitecture
     {
+        public const string OptionModel = "Model";
+        public const string OptionEndianness = "Endianness";
+        public const string OptionWordSize = "WordSize";
+
         private RegisterStorage? regStack;
 
+        /// <summary>
+        /// Create an instance of the class.
+        /// </summary>
+        /// <param name="services">Object that provides services available in the execution environment.</param>
+        /// <param name="archId">Short string identifier for the processor architecture.</param>
+        /// <param name="options">A dictionary of architecture options to apply (e.g. processor endianness,
+        /// word size, or processor features.)
+        /// </param>
 #nullable disable
-        public ProcessorArchitecture(IServiceProvider services, string archId)
+        public ProcessorArchitecture(
+            IServiceProvider services,
+            string archId, 
+            Dictionary<string, object> options)
         {
             this.Services = services;
             this.Name = archId;
+            this.Options = options;
             this.MemoryGranularity = 8; // Most architectures are byte-addressable.
             this.DefaultBase = 16;      // Most architectures display hexadecimal.
         }
@@ -420,6 +436,9 @@ namespace Reko.Core
         public int MemoryGranularity { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }
         public PrimitiveType WordWidth { get; protected set; }
+
+        public Dictionary<string, object> Options { get; protected set; }
+
         /// <summary>
         /// The size of the return address (in bytes) if pushed on stack.
         /// </summary>

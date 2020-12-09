@@ -32,7 +32,8 @@ namespace Reko.Arch.XCore
 {
     public class XCore200Architecture : ProcessorArchitecture
     {
-        public XCore200Architecture(IServiceProvider services, string moniker) : base(services, moniker)
+        public XCore200Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr32;

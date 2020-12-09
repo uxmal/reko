@@ -20,12 +20,8 @@
 
 using NUnit.Framework;
 using Reko.Arch.Z80;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.Z80
 {
@@ -37,7 +33,7 @@ namespace Reko.UnitTests.Arch.Z80
         [SetUp]
         public void Setup()
         {
-            this.arch = new Z80ProcessorArchitecture(new ServiceContainer(), "z80");
+            this.arch = new Z80ProcessorArchitecture(new ServiceContainer(), "z80", new Dictionary<string, object>());
         }
 
         [Test]

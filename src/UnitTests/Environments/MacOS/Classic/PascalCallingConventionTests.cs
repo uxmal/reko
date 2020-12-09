@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
 
         public PascalCallingConventionTests()
         {
-            this.arch = new M68kArchitecture(new ServiceContainer(), "m68k");
+            this.arch = new M68kArchitecture(new ServiceContainer(), "m68k", new Dictionary<string, object>());
         }
 
         [SetUp]

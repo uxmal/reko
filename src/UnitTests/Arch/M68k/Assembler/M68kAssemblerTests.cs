@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Arch.M68k.Assembler
         {
             var sc = new ServiceContainer();
             sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
-            arch = new M68kArchitecture(sc, "m68k");
+            arch = new M68kArchitecture(sc, "m68k", new Dictionary<string, object>());
             asm = new M68kAssembler(arch, Address.Ptr32(0x00010000), new List<ImageSymbol>());
         }
 

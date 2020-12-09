@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Arch.Avr
         [Test]
         public void Avr8_arch_AliasZRegister()
         {
-            var arch = new Avr8Architecture(new ServiceContainer(), "avr8");
+            var arch = new Avr8Architecture(new ServiceContainer(), "avr8", new Dictionary<string, object>());
             var r30 = arch.GetRegister(30);
             var r31 = arch.GetRegister(31);
             var z = Avr8Architecture.z;

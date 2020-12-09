@@ -39,7 +39,10 @@ namespace Reko.UnitTests.Arch.X86.Assembler
         public new void Setup()
         {
             base.Setup();
-            m = new X86Assembler(new X86ArchitectureReal(sc, "x86-real-16"), Address.SegPtr(0x100, 0x0100), new List<ImageSymbol>());
+            m = new X86Assembler(
+                new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>()),
+                Address.SegPtr(0x100, 0x0100),
+                new List<ImageSymbol>());
         }
 
         private byte[] GetBytes(X86Assembler m)

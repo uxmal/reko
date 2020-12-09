@@ -26,7 +26,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
-using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Text;
@@ -35,7 +35,7 @@ using System.Xml.Serialization;
 
 namespace Reko.UnitTests.Core.Serialization
 {
-	[TestFixture]
+    [TestFixture]
 	public class SerializedServiceTests
 	{
 		private IProcessorArchitecture arch;
@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Core.Serialization
 		{
             this.sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            this.arch = new X86ArchitectureReal(sc, "x86-real-16");
+            this.arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             this.platform = new MsdosPlatform(sc, arch);
 
             ArgumentSerializer argSer = new ArgumentSerializer(arch);

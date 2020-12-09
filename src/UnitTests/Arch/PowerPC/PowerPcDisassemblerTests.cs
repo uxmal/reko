@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         [SetUp]
         public void Setup()
         {
-            this.arch = new PowerPcBe32Architecture(new ServiceContainer(), "ppc-be-32");
+            this.arch = new PowerPcBe32Architecture(new ServiceContainer(), "ppc-be-32", new Dictionary<string, object>());
         }
 
         public override IProcessorArchitecture Architecture => arch;
@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         private void Given_PowerPcBe64()
         {
-            this.arch = new PowerPcBe64Architecture(new ServiceContainer(), "ppc-be-64");
+            this.arch = new PowerPcBe64Architecture(new ServiceContainer(), "ppc-be-64", new Dictionary<string, object>());
         }
 
         private void Given_ProcessorModel_750cl()

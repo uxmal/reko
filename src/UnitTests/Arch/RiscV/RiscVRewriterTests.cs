@@ -31,7 +31,7 @@ namespace Reko.UnitTests.Arch.RiscV
     [TestFixture]
     public class RiscVRewriterTests : RewriterTestBase
     {
-        private RiscVArchitecture arch = new RiscVArchitecture(CreateServiceContainer(), "riscV");
+        private RiscVArchitecture arch = new RiscVArchitecture(CreateServiceContainer(), "riscV", new Dictionary<string, object>());
         private Address baseAddr = Address.Ptr64(0x0010000);
 
         public override IProcessorArchitecture Architecture => arch;
@@ -46,12 +46,14 @@ namespace Reko.UnitTests.Arch.RiscV
 
         private void Given_32bit()
         {
-            arch = new RiscVArchitecture(CreateServiceContainer(), "riscV");
-            arch.LoadUserOptions(new Dictionary<string, object>
-            {
-                { "WordSize" , "32" },
-                { "FloatAbi", 32 },
-            });
+            arch = new RiscVArchitecture(
+                CreateServiceContainer(), 
+                "riscV",
+                new Dictionary<string, object>
+                {
+                    { "WordSize" , "32" },
+                    { "FloatAbi", 32 },
+                });
             baseAddr = Address.Ptr32(0x0010000);
         }
 

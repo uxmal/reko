@@ -218,7 +218,7 @@ namespace Reko.Environments.Snes
                 props["checksum"] = String.Format("{0:X4}", data[header + 46] + (data[header + 47] << 8));
                 props["checksum_complement"] = String.Format("{0:X4}", data[header + 44] + (data[header + 45] << 8));
 
-                var arch = new Mos65816Architecture(Services, "m65816");
+                var arch = new Mos65816Architecture(Services, "m65816", new Dictionary<string, object>());
                 return new Program
                 {
                     Platform = new SnesPlatform(Services, arch, "snes"),

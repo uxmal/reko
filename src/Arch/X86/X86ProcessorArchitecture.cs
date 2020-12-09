@@ -60,7 +60,8 @@ namespace Reko.Arch.X86
 		private ProcessorMode mode;
         private Dictionary<uint, FlagGroupStorage> flagGroupCache;
 
-        public IntelArchitecture(IServiceProvider services, string archId, ProcessorMode mode) : base(services, archId)
+        public IntelArchitecture(IServiceProvider services, string archId, ProcessorMode mode, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             this.mode = mode;
             this.flagGroupCache = new Dictionary<uint, FlagGroupStorage>();
@@ -365,7 +366,7 @@ namespace Reko.Arch.X86
 			get { return mode; }
 		}
 
-        public X86Options Options { get; set; }
+        public new X86Options Options { get; set; }
 
         public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
@@ -375,32 +376,32 @@ namespace Reko.Arch.X86
 
     public class X86ArchitectureReal : IntelArchitecture
     {
-        public X86ArchitectureReal(IServiceProvider services, string archId)
-            : base(services, archId, ProcessorMode.Real)
+        public X86ArchitectureReal(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, ProcessorMode.Real, options)
         {
         }
     }
 
     public class X86ArchitectureProtected16 : IntelArchitecture
     {
-        public X86ArchitectureProtected16(IServiceProvider services, string archId)
-            : base(services, archId, ProcessorMode.ProtectedSegmented)
+        public X86ArchitectureProtected16(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, ProcessorMode.ProtectedSegmented, options)
         {
         }
     }
 
     public class X86ArchitectureFlat32 : IntelArchitecture
     {
-        public X86ArchitectureFlat32(IServiceProvider services, string archId)
-            : base(services, archId, ProcessorMode.Protected32)
+        public X86ArchitectureFlat32(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, ProcessorMode.Protected32, options)
         {
         }
     }
 
     public class X86ArchitectureFlat64 : IntelArchitecture
     {
-        public X86ArchitectureFlat64(IServiceProvider services, string archId)
-            : base(services, archId, ProcessorMode.Protected64)
+        public X86ArchitectureFlat64(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, ProcessorMode.Protected64, options)
         {
         }
     }

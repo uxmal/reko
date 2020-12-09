@@ -54,13 +54,13 @@ namespace Reko.UnitTests.Scanning
 
         private void BuildTest32(Action<M68kAssembler> asmProg)
         {
-            arch = new M68kArchitecture(sc, "m68k");
+            arch = new M68kArchitecture(sc, "m68k", new Dictionary<string, object>());
             BuildTest(Address.Ptr32(0x00100000), new DefaultPlatform(sc, arch), asmProg);
         }
 
         private void BuildTest32(Address addrBase, params byte[] bytes)
         {
-            arch = new M68kArchitecture(sc, "m68k");
+            arch = new M68kArchitecture(sc, "m68k", new Dictionary<string, object>());
             var mem = new ByteMemoryArea(addrBase, bytes);
             program = new Program(
                 new SegmentMap(

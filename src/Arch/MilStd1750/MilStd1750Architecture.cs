@@ -41,7 +41,8 @@ namespace Reko.Arch.MilStd1750
 
         public static PrimitiveType Real48 { get; } 
 
-        public MilStd1750Architecture(IServiceProvider services, string archId) : base(services, archId)
+        public MilStd1750Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             this.Endianness = EndianServices.Big;
             this.FramePointerType = PrimitiveType.Ptr16;

@@ -42,15 +42,17 @@ namespace Reko.UnitTests.Arch.PaRisc
 
         private void AssertCode(string sExp, string hexBytes)
         {
-            this.arch = new PaRiscArchitecture(new ServiceContainer(), "paRisc");
+            this.arch = new PaRiscArchitecture(new ServiceContainer(), "paRisc", new Dictionary<string, object>());
             var i = DisassembleHexBytes(hexBytes);
             Assert.AreEqual(sExp, i.ToString());
         }
 
         private void AssertCode64(string sExp, string hexBytes)
         {
-            this.arch = new PaRiscArchitecture(new ServiceContainer(), "paRisc");
-            arch.Options["WordSize"] = "64";
+            this.arch = new PaRiscArchitecture(new ServiceContainer(), "paRisc", new Dictionary<string, object>
+            {
+                { ProcessorArchitecture.OptionWordSize, "64" }
+            });
             var i = DisassembleHexBytes(hexBytes);
             Assert.AreEqual(sExp, i.ToString());
         }

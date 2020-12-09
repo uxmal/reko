@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Arch.X86
         [OneTimeSetUp]
 		public void GlobalSetup()
 		{
-			arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
+			arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
 		}
 
 		[SetUp]

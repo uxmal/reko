@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [SetUp]
         public void Setup()
         {
-            this.arch = new OpenRISCArchitecture(CreateServiceContainer(), "openRisc");
+            this.arch = new OpenRISCArchitecture(CreateServiceContainer(), "openRisc", new Dictionary<string, object>());
             this.addr = Address.Ptr32(0x00100000);
         }
 

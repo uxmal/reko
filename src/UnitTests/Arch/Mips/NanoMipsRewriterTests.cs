@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Arch.Mips
 
         public NanoMipsRewriterTests()
         {
-            this.arch = new MipsLe32Architecture(CreateServiceContainer(), "nano-mips");
+            this.arch = new MipsLe32Architecture(CreateServiceContainer(), "nano-mips", new Dictionary<string, object>());
             this.addr = Address.Ptr32(0x0010_0000);
         }
 

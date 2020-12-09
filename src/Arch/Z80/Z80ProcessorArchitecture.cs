@@ -36,7 +36,8 @@ namespace Reko.Arch.Z80
     {
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Z80ProcessorArchitecture(IServiceProvider services, string archId) : base(services, archId)
+        public Z80ProcessorArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 8;

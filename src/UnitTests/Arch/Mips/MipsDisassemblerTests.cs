@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.Mips
         [SetUp]
         public void Setup()
         {
-            this.arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-32");
+            this.arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-32", new Dictionary<string, object>());
             Registers = this;
         }
 
@@ -69,19 +69,26 @@ namespace Reko.UnitTests.Arch.Mips
 
         private void Given_Mips_v6_Architecture()
         {
-            arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-32");
-            arch.LoadUserOptions(new Dictionary<string, object> { { "decoder", "v6" } });
+            arch = new MipsBe32Architecture(
+                new ServiceContainer(), 
+                "mips-be-32",
+                new Dictionary<string, object> { { "decoder", "v6" } });
         }
 
         private void Given_Mips64_Architecture()
         {
-            arch = new MipsBe64Architecture(new ServiceContainer(), "mips-be-64");
+            arch = new MipsBe64Architecture(
+                new ServiceContainer(),
+                "mips-be-64",
+                new Dictionary<string, object>());
         }
 
         private void Given_Mips64_v6_Architecture()
         {
-            arch = new MipsBe64Architecture(new ServiceContainer(), "mips-be-32");
-            arch.LoadUserOptions(new Dictionary<string, object> { { "decoder", "v6" } });
+            arch = new MipsBe64Architecture(
+                new ServiceContainer(), 
+                "mips-be-32",
+                new Dictionary<string, object> { { "decoder", "v6" } });
         }
 
         private void VerifyRegisterOperand(MachineOperand op, RegisterStorage reg, PrimitiveType type)

@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Arch.X86
             sc = new ServiceContainer();
             importReferences = new Dictionary<Address, ImportReference>();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
         }
 
         private void Given_RegValue(RegisterStorage reg, uint value)
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private void Given_MsdosCode(Action<X86Assembler> coder)
         {
-            arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16");
+            arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16", new Dictionary<string, object>());
             var asm = new X86Assembler(arch, Address.SegPtr(0x07F0, 0), new List<ImageSymbol>());
             asm.Segment("PSP");
             asm.Repeat(0x100, m => m.Db(0));

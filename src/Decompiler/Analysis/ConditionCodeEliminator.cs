@@ -400,9 +400,6 @@ namespace Reko.Analysis
             // block.Statements.Remove(sidCarry.DefStatement!);
             //ssaIds.Remove(sidCarry);
 
-            ssa.Write(Console.Out);
-            Console.WriteLine("=========");
-
             var expNewLo = m.Slice(
                 PrimitiveType.CreateWord(tmpHi.DataType.BitSize),
                 sidTmp.Identifier,

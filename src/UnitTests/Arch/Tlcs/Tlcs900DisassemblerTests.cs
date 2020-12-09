@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Arch.Tlcs
     {
         public Tlcs900DisassemblerTests()
         {
-            this.Architecture = new Tlcs900Architecture(new ServiceContainer(), "tlcs900");
+            this.Architecture = new Tlcs900Architecture(new ServiceContainer(), "tlcs900", new Dictionary<string, object>());
             this.LoadAddress = Address.Ptr32(0x00010000);
         }
 

@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Arch.M68k
 
         public M68kDisassemblerTests()
         {
-            arch = new M68kArchitecture(CreateServiceContainer(), "m68k");
+            arch = new M68kArchitecture(CreateServiceContainer(), "m68k", new Dictionary<string, object>());
         }
 
         private IEnumerator<M68kInstruction> CreateDasm(byte[] bytes, uint address)

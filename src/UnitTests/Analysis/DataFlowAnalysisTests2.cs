@@ -225,7 +225,7 @@ test_exit:
         [Category(Categories.FailedTests)]
         public void Dfa2_UserDefinedStackArgs()
         {
-            var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
+            var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32",  new Dictionary<string, object>());
             var pb = new ProgramBuilder(arch);
             var test = pb.Add(
                 new Procedure_v1

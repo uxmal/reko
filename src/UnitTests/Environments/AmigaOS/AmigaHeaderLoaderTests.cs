@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
         public void Ahl_ParseSimpleDef()
         {
             var sc = new ServiceContainer();
-            var arch = new M68kArchitecture(sc, "m68k");
+            var arch = new M68kArchitecture(sc, "m68k", new Dictionary<string, object>());
             var platform = new AmigaOSPlatform(sc, arch);
             var ahl = new AmigaHeaderLoader(sc, "", Encoding.UTF8.GetBytes(
                 "[[reko::amiga_function_vector(ExecLibrary, -432)]] [[reko::returns(register,\"A0\")]] " +
@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
         public void Ahl_ParseSimpleDef_voidfn()
         {
             var sc = new ServiceContainer();
-            var arch = new M68kArchitecture(sc, "m68k");
+            var arch = new M68kArchitecture(sc, "m68k", new Dictionary<string, object>());
             var platform = new AmigaOSPlatform(sc, arch);
             var ahl = new AmigaHeaderLoader(sc, "", Encoding.UTF8.GetBytes(
                 "[[reko::amiga_function_vector(ExecLibrary, -432)]]  " +

@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Mocks
             mockPlatform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.LongDouble)).Returns(64);
             mockPlatform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Int64)).Returns(64);
             mockPlatform.Setup(p => p.CreateMetadata()).Returns(() => this.platformMetadata.Clone());
-            var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32");
+            var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
             mockPlatform.Setup(p => p.Architecture).Returns(arch);
             mockPlatform.Setup(p => p.DefaultCallingConvention).Returns("__cdecl");
             var ccStdcall = new X86CallingConvention(4, 4, 4, false, false);

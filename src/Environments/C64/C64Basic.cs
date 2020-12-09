@@ -46,7 +46,8 @@ namespace Reko.Environments.C64
         private readonly SortedList<ushort, C64BasicInstruction> program;
         private readonly BTreeDictionary<Address, C64BasicInstruction> mpAddrToInstr;
 
-        public C64Basic(IServiceProvider services, string archId) : base(services, archId)
+        public C64Basic(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             this.Description = "Commodore 64 Basic";
             this.Endianness = EndianServices.Little;
@@ -58,7 +59,7 @@ namespace Reko.Environments.C64
             mpAddrToInstr = new BTreeDictionary<Address, C64BasicInstruction>();
         }
 
-        public C64Basic(IServiceProvider services, SortedList<ushort, C64BasicInstruction> program) : this(services, "c64Basic")
+        public C64Basic(IServiceProvider services, SortedList<ushort, C64BasicInstruction> program) : this(services, "c64Basic", new Dictionary<string, object>())
         {
             this.program = program;
             foreach (var instr in program.Values)

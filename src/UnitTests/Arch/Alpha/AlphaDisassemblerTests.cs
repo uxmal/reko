@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch.Alpha
         [SetUp]
         public void Setup()
         {
-            this.arch = new AlphaArchitecture(new ServiceContainer(), "alpha");
+            this.arch = new AlphaArchitecture(new ServiceContainer(), "alpha", new Dictionary<string, object>());
             this.addrLoad = Address.Ptr64(0x00100000);
 
         }

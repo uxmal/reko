@@ -32,6 +32,7 @@ using Reko.Gui.Forms;
 using Reko.UnitTests.Mocks;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
 
@@ -64,7 +65,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var mem = new ByteMemoryArea(Address.Ptr32(0x10), new byte[40]);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
             var segmentMap = new SegmentMap(Address.Ptr32(0x05), seg);
-            var arch = new X86ArchitectureFlat32(services, "x86-protected-32");
+            var arch = new X86ArchitectureFlat32(services, "x86-protected-32", new Dictionary<string, object>());
             var platform = new Win32Platform(services, arch);
             program = new Program(segmentMap, arch, platform);
             program.ImageMap = segmentMap.CreateImageMap();

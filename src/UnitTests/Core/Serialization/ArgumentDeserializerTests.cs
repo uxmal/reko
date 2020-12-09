@@ -18,17 +18,15 @@
  */
 #endregion
 
-using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
-using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Core.Serialization
@@ -46,7 +44,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            arch = new X86ArchitectureReal(sc, "x86-real-16");
+            arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             platform = new MsdosPlatform(sc, arch);
             sigser = new ProcedureSerializer(
                 platform,

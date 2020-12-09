@@ -45,17 +45,15 @@ namespace Reko.UnitTests.Arch.PowerPC
         public PowerPcRewriterTests()
         {
             var sc = CreateServiceContainer();
-            this.archBe32 = new PowerPcBe32Architecture(sc, "ppc-be-32");
-            this.archBe64 = new PowerPcBe64Architecture(sc, "ppc-be-64");
+            this.archBe32 = new PowerPcBe32Architecture(sc, "ppc-be-32", new Dictionary<string, object>());
+            this.archBe64 = new PowerPcBe64Architecture(sc, "ppc-be-64", new Dictionary<string, object>());
 
-            this.arch750 = new PowerPcBe32Architecture(sc, "ppc-be-32");
-            this.arch750.LoadUserOptions(new Dictionary<string, object>
+            this.arch750 = new PowerPcBe32Architecture(sc, "ppc-be-32", new Dictionary<string, object>
             {
                 { "Model", "750cl" }
             });
 
-            this.archXenon = new PowerPcBe32Architecture(sc, "ppc-be-32");
-            archXenon.LoadUserOptions(new Dictionary<string, object>
+            this.archXenon = new PowerPcBe32Architecture(sc, "ppc-be-32", new Dictionary<string, object>
             {
                 { "Model", "Xenon" }
             });

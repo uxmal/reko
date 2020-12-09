@@ -220,7 +220,7 @@ namespace Reko.WindowsItp
 
         private IEnumerable<RtlInstructionCluster> CreateT32Rewriter(ByteMemoryArea mem)
         {
-            var arch = new ThumbArchitecture(sc, "arm-thumb");
+            var arch = new ThumbArchitecture(sc, "arm-thumb", new Dictionary<string, object>());
             var rdr = new LeImageReader(mem, mem.BaseAddress);
             var rw = arch.CreateRewriter(rdr, arch.CreateProcessorState(), new StorageBinder(), new RewriterHost(new Dictionary<Address, ImportReference>()));
             return rw;
@@ -228,7 +228,7 @@ namespace Reko.WindowsItp
 
         private IEnumerable<RtlInstructionCluster> CreateA32Rewriter(ByteMemoryArea mem)
         {
-            var arch = new Arm32Architecture(sc, "arm");
+            var arch = new Arm32Architecture(sc, "arm", new Dictionary<string, object>());
             var rdr = new LeImageReader(mem, mem.BaseAddress);
             var rw = arch.CreateRewriter(rdr, arch.CreateProcessorState(), new StorageBinder(), new RewriterHost(new Dictionary<Address, ImportReference>()));
             return rw;
@@ -236,7 +236,7 @@ namespace Reko.WindowsItp
 
         private IEnumerable<AArch32Instruction> CreateA32Disassembler(ByteMemoryArea mem)
         {
-            var arch = new Arm32Architecture(sc, "arm");
+            var arch = new Arm32Architecture(sc, "arm", new Dictionary<string, object>());
             var rdr = new LeImageReader(mem, mem.BaseAddress);
             var dasm = new A32Disassembler(arch, rdr);
             return dasm;

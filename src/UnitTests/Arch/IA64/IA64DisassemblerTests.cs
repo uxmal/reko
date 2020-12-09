@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.IA64
 
         public IA64DisassemblerTests()
         {
-            this.arch = new IA64Architecture(CreateServiceContainer(), "ia64");
+            this.arch = new IA64Architecture(CreateServiceContainer(), "ia64", new Dictionary<string, object>());
             this.addrLoad = Address.Ptr64(0x10_0000_0000);
         }
 

@@ -45,7 +45,8 @@ namespace Reko.Arch.Arm
         private readonly Dictionary<int, RegisterStorage> regsByNumber;
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public ThumbArchitecture(IServiceProvider services, string archId) : base(services, archId)
+        public ThumbArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr32;

@@ -18,17 +18,15 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.Z80;
 using Reko.Core;
 using Reko.Core.Machine;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel.Design;
-using Reko.Core.Services;
 using Reko.Core.Memory;
+using Reko.Core.Services;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
 
 namespace Reko.UnitTests.Arch.Z80
 {
@@ -42,7 +40,7 @@ namespace Reko.UnitTests.Arch.Z80
         {
             this.sc = new ServiceContainer();
             sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
-            this.arch = new Z80ProcessorArchitecture(sc, "z80");
+            this.arch = new Z80ProcessorArchitecture(sc, "z80", new Dictionary<string, object>());
         }
 
         private MachineInstruction RunTest(params byte [] bytes)

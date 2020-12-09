@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Scanning
 		private Program AssembleFile(string sourceFile, Address addr)
 		{
             var ldr = new Loader(sc);
-            var arch = new X86ArchitectureReal(sc, "x86-real-16");
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             Program program = ldr.AssembleExecutable(
                  FileUnitTester.MapTestPath(sourceFile),
                  new X86TextAssembler(arch),

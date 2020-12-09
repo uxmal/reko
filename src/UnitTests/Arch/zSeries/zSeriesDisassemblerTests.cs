@@ -23,12 +23,8 @@
 using NUnit.Framework;
 using Reko.Arch.zSeries;
 using Reko.Core;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.zSeries
 {
@@ -45,7 +41,7 @@ namespace Reko.UnitTests.Arch.zSeries
         [SetUp]
         public void Setup()
         {
-            this.arch = new zSeriesArchitecture(new ServiceContainer(), "zSeries");
+            this.arch = new zSeriesArchitecture(new ServiceContainer(), "zSeries", new Dictionary<string, object>());
         }
 
         public override IProcessorArchitecture Architecture { get { return arch; } }

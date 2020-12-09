@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Arch.Pdp11
             }
             var image = new ByteMemoryArea(Address.Ptr16(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
-            var arch = new Pdp11Architecture(new ServiceContainer(), "pdp11");
+            var arch = new Pdp11Architecture(new ServiceContainer(), "pdp11", new Dictionary<string, object>());
             var dasm = new Pdp11Disassembler(rdr, arch);
             return dasm.ToArray();
         }

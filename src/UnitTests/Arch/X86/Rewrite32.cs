@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Arch.X86
             services.AddService(typeof(DecompilerEventListener), eventListener);
             services.AddService(typeof(CancellationTokenSource), new CancellationTokenSource());
             services.AddService(typeof(IFileSystemService),new FileSystemServiceImpl());
-            arch = new X86ArchitectureFlat32(services, "x86-protected-32");
+            arch = new X86ArchitectureFlat32(services, "x86-protected-32", new Dictionary<string, object>());
             win32 = new Win32Platform(services, arch);
         }
 
@@ -156,7 +156,7 @@ namespace Reko.UnitTests.Arch.X86
         private void RunTest(string sourceFile, string outputFile)
 		{
 			Program program;
-            var asm = new X86TextAssembler(new X86ArchitectureFlat32(services, "x86-protected-32"));
+            var asm = new X86TextAssembler(new X86ArchitectureFlat32(services, "x86-protected-32", new Dictionary<string, object>()));
             using (StreamReader rdr = new StreamReader(FileUnitTester.MapTestPath(sourceFile)))
             {
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);

@@ -37,7 +37,8 @@ namespace Reko.Arch.Rl78
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Rl78Architecture(IServiceProvider services, string archId) : base(services, archId)
+        public Rl78Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             InstructionBitSize = 8;
             FramePointerType = PrimitiveType.Ptr32;

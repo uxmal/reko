@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.Sparc;
 using Reko.Core;
 using Reko.Core.Memory;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 
@@ -49,7 +50,7 @@ namespace Reko.UnitTests.Arch.Sparc
         private static SparcInstruction Disassemble(ByteMemoryArea bmem)
         {
             var sc = new ServiceContainer();
-            var arch = new SparcArchitecture32(sc, "sparc");
+            var arch = new SparcArchitecture32(sc, "sparc", new Dictionary<string, object>());
             var dasm = new SparcDisassembler(arch, arch.Decoder, bmem.CreateBeReader(0U));
             return dasm.First();
         }
@@ -57,7 +58,7 @@ namespace Reko.UnitTests.Arch.Sparc
         private static SparcInstruction Disassemble64(ByteMemoryArea bmem)
         {
             var sc = new ServiceContainer();
-            var arch = new SparcArchitecture64(sc, "sparc");
+            var arch = new SparcArchitecture64(sc, "sparc", new Dictionary<string, object>());
             var dasm = new SparcDisassembler(arch, arch.Decoder, bmem.CreateBeReader(0U));
             return dasm.First();
         }

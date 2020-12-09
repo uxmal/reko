@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.WE32100
 
         public WE32100DisassemblerTests()
         {
-            this.arch = new WE32100Architecture(new ServiceContainer(), "we32100");
+            this.arch = new WE32100Architecture(new ServiceContainer(), "we32100", new Dictionary<string, object>());
             this.addr = Address.Ptr32(0x00100000);
         }
 

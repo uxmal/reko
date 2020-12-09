@@ -24,13 +24,12 @@ using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Environments.SysV;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Core
 {
-	[TestFixture]
+    [TestFixture]
 	public class SignatureLibraryTests
 	{
 		private void EmitSignature(TypeLibrary lib, string fnName, System.IO.TextWriter tw)
@@ -52,7 +51,7 @@ namespace Reko.UnitTests.Core
                 }
             };
             var sc = new ServiceContainer();
-            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             var platform = new SysVPlatform(null, arch);
             var tldser = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             var lib = tldser.Load(slib);

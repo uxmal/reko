@@ -28,6 +28,7 @@ using Reko.Arch.MicrochipPIC.PIC18;
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
 {
     using Common;
+    using System.Collections.Generic;
     using System.ComponentModel.Design;
     using static Common.Sample;
 
@@ -37,7 +38,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
 
         private PICArchitecture GetArch(string picName, PICExecMode mode = PICExecMode.Traditional)
         {
-            var arch = new PICArchitecture(new ServiceContainer(), "pic") { Options = new PICArchitectureOptions(picName, mode) };
+            var arch = new PICArchitecture(new ServiceContainer(), "pic", new Dictionary<string, object>()) { Options = new PICArchitectureOptions(picName, mode) };
             Assert.NotNull(arch);
             arch.CreatePICProcessorModel();
             return arch;

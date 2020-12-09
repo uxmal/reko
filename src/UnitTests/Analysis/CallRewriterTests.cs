@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Analysis
         {
             program = new Program();
             sc = new ServiceContainer();
-            program.Architecture = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            program.Architecture = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             program.Platform = new DefaultPlatform(sc, program.Architecture);
             crw = new CallRewriter(program.Platform, new ProgramDataFlow(), new FakeDecompilerEventListener());
             proc = new Procedure(program.Architecture, "foo", Address.Ptr32(0x00123400), program.Architecture.CreateFrame());

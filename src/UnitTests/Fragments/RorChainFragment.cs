@@ -23,13 +23,14 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Fragments
 {
     public class RorChainFragment : ProcedureBuilder
     {
-        public RorChainFragment() : base(new Z80ProcessorArchitecture(new ServiceContainer(), "z80")) { }
+        public RorChainFragment() : base(new Z80ProcessorArchitecture(new ServiceContainer(), "z80", new Dictionary<string, object>())) { }
 
         protected override void BuildBody()
         {

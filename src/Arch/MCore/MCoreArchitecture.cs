@@ -32,7 +32,8 @@ namespace Reko.Arch.MCore
 {
     public class MCoreArchitecture : ProcessorArchitecture
     {
-        public MCoreArchitecture(IServiceProvider services, string archId) : base(services, archId)
+        public MCoreArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             //this.CarryFlagMask = ???
             this.Endianness = EndianServices.Big;

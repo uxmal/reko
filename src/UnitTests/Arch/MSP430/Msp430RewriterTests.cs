@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.Msp430
 
         public Msp430RewriterTests()
         {
-            this.arch = new Msp430Architecture(CreateServiceContainer(), "msp430");
+            this.arch = new Msp430Architecture(CreateServiceContainer(), "msp430", new Dictionary<string, object>());
         }
 
         public override IProcessorArchitecture Architecture => arch;

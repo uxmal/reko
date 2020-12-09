@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Arch.Arm
         protected static MachineInstruction Disassemble(byte[] bytes)
         {
             var image = new ByteMemoryArea(Address.Ptr32(0x00100000), bytes);
-            var dasm = new Arm32Architecture(new ServiceContainer(), "arm32").CreateDisassembler(image.CreateLeReader(0));
+            var dasm = new Arm32Architecture(new ServiceContainer(), "arm32", new Dictionary<string, object>()).CreateDisassembler(image.CreateLeReader(0));
             return dasm.First();
         }
 
@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Arch.Arm
         private const string ArmObsolete = "Obsolete instrction? can't find it in ARM Architecture Reference Manual - ARMv8, for ARMv8";
         protected override IProcessorArchitecture CreateArchitecture()
         {
-            return new Arm32Architecture(new ServiceContainer(), "arm32");
+            return new Arm32Architecture(new ServiceContainer(), "arm32", new Dictionary<string, object>());
         }
 
         private void Expect_Code(string sExp)

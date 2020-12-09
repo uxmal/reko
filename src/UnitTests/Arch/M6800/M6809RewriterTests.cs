@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Arch.M6800
         [SetUp]
         public void Setup()
         {
-            this.arch = new M6809Architecture(CreateServiceContainer(), "m6809");
+            this.arch = new M6809Architecture(CreateServiceContainer(), "m6809", new Dictionary<string, object>());
             this.addr = Address.Ptr16(0x0100);
         }
 

@@ -328,7 +328,7 @@ namespace Reko.UnitTests.Analysis
         public void UrfDpb2()
         {
             var sExp = "Used: [bx, [0..15]],[cl, [0..7]]";
-            RunTest(sExp, new X86ArchitectureFlat32(new ServiceContainer(), ""), m =>
+            RunTest(sExp, new X86ArchitectureFlat32(new ServiceContainer(), "", new Dictionary<string, object>()), m =>
             {
                 var bx = m.Frame.EnsureRegister(Registers.bx);
                 var cx = m.Frame.EnsureRegister(Registers.cx);

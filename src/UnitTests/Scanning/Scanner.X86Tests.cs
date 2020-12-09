@@ -46,14 +46,14 @@ namespace Reko.UnitTests.Scanning
         {
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            arch = new X86ArchitectureReal(sc, "x86-real-16");
+            arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             BuildTest(Address.SegPtr(0x0C00, 0x0000), new MsdosPlatform(sc, arch), asmProg);
         }
 
         private void BuildTest32(Action<X86Assembler> asmProg)
         {
             sc = new ServiceContainer();
-            arch = new X86ArchitectureFlat32(sc, "x86-protected-32");
+            arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             BuildTest(Address.Ptr32(0x00100000), new FakePlatform(sc, null), asmProg);
         }
 

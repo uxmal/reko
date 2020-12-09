@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_X86_32_Architecture()
         {
-            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>()));
         }
 
         private void Given_BigEndianArchitecture()
@@ -1487,7 +1487,7 @@ proc1_exit:
 ";
             #endregion
 
-            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16", new Dictionary<string, object>()));
             RunTestOld(sExp, m =>
             {
                 var ecx = m.Register(Registers.ecx);
@@ -1977,7 +1977,7 @@ proc1_exit:
 ";
             #endregion
 
-            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>()));
 
             RunTest_FrameAccesses(sExp, m =>
             {
@@ -2097,7 +2097,7 @@ proc1_exit:
 ======
 ";
             #endregion
-            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16", new Dictionary<string, object>()));
             RunTestOld(sExp, m =>
             {
                 var bx = m.Frame.EnsureRegister(Registers.bx);
@@ -2170,7 +2170,7 @@ proc1_exit:
 ";
             #endregion
 
-            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16", new Dictionary<string, object>()));
 
             RunTest_FrameAccesses(sExp, m =>
             {
@@ -2247,7 +2247,7 @@ proc1_exit:
 ";
             #endregion
 
-            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16", new Dictionary<string, object>()));
             RunTestOld(sExp, m =>
             {
                 var bl = m.Register(Registers.bl);
@@ -2473,7 +2473,7 @@ proc1_exit:
 ";
             #endregion
 
-            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16", new Dictionary<string, object>()));
             RunTest(sExp, m =>
             {
                 var al = m.Register(Registers.al);
@@ -3143,7 +3143,7 @@ proc1_exit:
 ======
 ";
             #endregion
-            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16", new Dictionary<string, object>()));
 
             RunTest_FrameAccesses(sExp, m =>
             {
@@ -3765,7 +3765,7 @@ Ssa96BitStackLocal_exit:
         [Test]
         public void SsaDpb()
         {
-            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-real-16", new Dictionary<string, object>()));
             var proc = Given_Procedure(nameof(SsaDpb), m =>
             {
                 var bx = m.Register(Registers.bx);
@@ -4535,7 +4535,7 @@ proc1_exit:
 ======
 ";
             #endregion
-            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>()));
             RunTestOld(sExp, m =>
             {
                 var ax = m.Register(arch.GetRegister("ax"));
@@ -4574,7 +4574,7 @@ proc1_exit:
 ======
 ";
             #endregion
-            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32"));
+            Given_Architecture(new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>()));
             RunTest(sExp, m =>
             {
                 var eax = m.Register(arch.GetRegister("eax"));

@@ -26,6 +26,7 @@ using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Libraries.Microchip;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 
@@ -65,7 +66,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
         protected void SetPICModel(string picName, PICExecMode mode = PICExecMode.Traditional)
         {
-            arch = new PICArchitecture(new ServiceContainer(), "pic") { Options = new PICArchitectureOptions(picName, mode) };
+            arch = new PICArchitecture(new ServiceContainer(), "pic", new Dictionary<string, object>()) { Options = new PICArchitectureOptions(picName, mode) };
             picModel = arch.ProcessorModel;
             arch.CreatePICProcessorModel();
             PICMemoryDescriptor.ExecMode = mode;

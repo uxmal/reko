@@ -50,18 +50,17 @@ namespace Reko.Arch.RiscV
         private Dictionary<string, RegisterStorage> regsByName;
 
 #nullable disable
-        public RiscVArchitecture(IServiceProvider services, string archId) : base(services, archId)
+        public RiscVArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 16;
             Csrs = new Dictionary<uint, RegisterStorage>();
-            Options = new Dictionary<string, object>();
             SetOptionDependentProperties();
         }
 #nullable enable
 
         public Dictionary<uint, RegisterStorage> Csrs { get; }
-        public Dictionary<string,object> Options { get; }
         public RegisterStorage[] GpRegs { get; private set; }
         public RegisterStorage[] FpRegs { get; private set; }
         public RegisterStorage LinkRegister { get; private set; }

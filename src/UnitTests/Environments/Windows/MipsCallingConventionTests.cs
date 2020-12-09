@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Environments.Windows
         [SetUp]
         public void Setup()
         {
-            this.arch = new MipsLe32Architecture(new ServiceContainer(), "mips-le-32");
+            this.arch = new MipsLe32Architecture(new ServiceContainer(), "mips-le-32", new Dictionary<string, object>());
         }
 
         private Pointer Ptr(DataType dt)

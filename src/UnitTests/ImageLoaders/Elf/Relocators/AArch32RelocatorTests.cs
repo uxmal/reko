@@ -45,7 +45,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
 
         protected override IProcessorArchitecture GetArchitecture()
         {
-            return new Reko.Arch.Arm.Arm32Architecture(new ServiceContainer(), "arm32");
+            return new Reko.Arch.Arm.Arm32Architecture(new ServiceContainer(), "arm32", new Dictionary<string, object>());
         }
 
         protected override Address GetLoadAddress()

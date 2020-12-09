@@ -119,8 +119,8 @@ namespace Reko.UnitTests.Environments.C64
         {
             lines = new SortedList<ushort, C64BasicInstruction>();
             sc = CreateServiceContainer();
-            arch = new C64Basic(sc, "c64");
-            arch6502 = new Mos6502Architecture(sc, "m6502");
+            arch = new C64Basic(sc, "c64", new Dictionary<string, object>());
+            arch6502 = new Mos6502Architecture(sc, "m6502", new Dictionary<string, object>());
             m = new BasicProcessor(lines);
             host = new Mock<RewriterHost>(arch) { CallBase = true };
             host.Setup(h => h.GetArchitecture("m6502"))

@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
 
         private PICArchitecture GetArch(string picName, PICExecMode mode = PICExecMode.Traditional)
         {
-            var arch = new PICArchitecture(new ServiceContainer(), "pic") { Options = new PICArchitectureOptions(picName, mode) };
+            var arch = new PICArchitecture(new ServiceContainer(), "pic", new Dictionary<string, object>()) { Options = new PICArchitectureOptions(picName, mode) };
             Assert.NotNull(arch);
             arch.CreatePICProcessorModel();
             return arch;

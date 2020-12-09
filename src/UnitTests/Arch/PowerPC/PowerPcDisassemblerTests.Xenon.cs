@@ -36,8 +36,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         public PowerPcXenonDisassemblerTests()
         {
-            this.arch = new PowerPcBe32Architecture(new ServiceContainer(), "ppc-be-32");
-            this.arch.LoadUserOptions(new Dictionary<string, object>
+            this.arch = new PowerPcBe32Architecture(CreateServiceContainer(), "ppc-be-32", new Dictionary<string, object>
             {
                 { "Model", "Xenon" }
             });
@@ -172,18 +171,11 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         ///////////////////////////////////////////////
 
-
-
-
         [Test]
         public void PPCDis_Xenon_vcfpsxws128()
         {
             AssertCode(0x1BC5A215, "vcfpsxws128\tv62,v52,+00000005");
         }
-
-
-
-
 
         [Test]
         public void PPCDis_vcuxwfp128()
@@ -191,23 +183,11 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x1AE1D2D5, "vcuxwfp128\tv55,v58,01");
         }
 
-
-
-
-
-
-
-
         [Test]
         public void PPCDis_vupkd3d128()
         {
             AssertCode(0x18ADA3D1, "vupkd3d128\tv5,v52,0D");
         }
-
-
-
-
-
 
         [Test]
         public void PPCDis_vrfip128()

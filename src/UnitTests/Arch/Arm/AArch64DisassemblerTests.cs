@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.Arm;
 using Reko.Arch.Arm.AArch64;
 using Reko.Core;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Arch.Arm
 {
@@ -34,7 +35,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         public Arm64DisassemblerTests()
         {
-            this.arch = new Arm64Architecture(CreateServiceContainer(), "aarch64");
+            this.arch = new Arm64Architecture(CreateServiceContainer(), "aarch64", new Dictionary<string, object>());
             this.baseAddress = Address.Ptr64(0x00100000);
         }
 

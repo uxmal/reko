@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Arch.M68k
         [SetUp]
         public void Setup()
         {
-            arch = new M68kArchitecture(new ServiceContainer(), "m68k");
+            arch = new M68kArchitecture(new ServiceContainer(), "m68k", new Dictionary<string, object>());
             state = new M68kState(arch);
         }
 

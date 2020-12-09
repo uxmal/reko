@@ -25,6 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Environments.MacOS.Classic;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Environments.MacOS.Classic
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
         public void MacOS_ResolveIndirectCall()
         {
             var sc = new ServiceContainer();
-            var macOS = new MacOSClassic(sc, new M68kArchitecture(sc, "m68k"));
+            var macOS = new MacOSClassic(sc, new M68kArchitecture(sc, "m68k", new Dictionary<string, object>()));
             var a5 = new Identifier(Registers.a5.Name, Registers.a5.DataType, Registers.a5);
 
             var a5world = new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[0x0300]);

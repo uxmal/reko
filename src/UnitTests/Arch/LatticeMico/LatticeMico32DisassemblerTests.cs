@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
 
         public LatticeMico32DisassemblerTests()
         {
-            this.arch = new LatticeMico32Architecture(new ServiceContainer(), "latticeMico32");
+            this.arch = new LatticeMico32Architecture(new ServiceContainer(), "latticeMico32", new Dictionary<string, object>());
         }
 
         public override IProcessorArchitecture Architecture => arch;

@@ -82,6 +82,16 @@ namespace Reko.UnitTests.Mocks
         {
             throw new NotImplementedException();
         }
+        public IProcessorArchitecture GetArchitecture(string sArch, string modelName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IProcessorArchitecture GetArchitecture(string sArch, Dictionary<string, object> options)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public PlatformDefinition GetEnvironment(string envName)
         {

@@ -32,7 +32,8 @@ namespace Reko.Arch.WE32100
 {
     public class WE32100Architecture : ProcessorArchitecture
     {
-        public WE32100Architecture(IServiceProvider services, string archId) : base(services, archId)
+        public WE32100Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Word32;

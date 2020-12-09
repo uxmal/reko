@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
 
         public HexagonRewriterTests()
         {
-            this.arch = new HexagonArchitecture(CreateServiceContainer(), "hexagon");
+            this.arch = new HexagonArchitecture(CreateServiceContainer(), "hexagon", new Dictionary<string, object>());
             this.addrLoad = Address.Ptr32(0x00100000);
         }
 

@@ -47,7 +47,7 @@ namespace Reko.WindowsItp
             Func<long> test;
             if (rdbRealDasm.Checked)
             {
-                var arch = new Reko.Arch.Arm.Arm32Architecture(sc, "arm32");
+                var arch = new Reko.Arch.Arm.Arm32Architecture(sc, "arm32", new Dictionary<string, object>());
                 //var arch = new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
 
                 if (rewriter)

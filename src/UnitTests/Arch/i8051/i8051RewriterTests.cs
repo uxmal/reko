@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Arch.i8051
 
         public i8051RewriterTests()
         {
-            this.arch = new i8051Architecture(CreateServiceContainer(), "8051");
+            this.arch = new i8051Architecture(CreateServiceContainer(), "8051", new Dictionary<string, object>());
         }
 
         public override IProcessorArchitecture Architecture => arch;

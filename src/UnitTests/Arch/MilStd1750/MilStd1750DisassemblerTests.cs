@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.MilStd1750
 
         public MilStd1750DisassemblerTests()
         {
-            this.arch = new MilStd1750Architecture(CreateServiceContainer(), "mil-std-1750a");
+            this.arch = new MilStd1750Architecture(CreateServiceContainer(), "mil-std-1750a", new Dictionary<string, object>());
             this.addrLoad = Address.Ptr16(0x0100);
         }
 
