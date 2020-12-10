@@ -36,6 +36,7 @@ namespace Reko.Gui.Forms
         IServiceProvider Services { get; set; }
         IComboBox RawFileTypes { get; }
         IComboBox Architectures { get; }
+        IComboBox ArchitectureModels { get;  }
         IComboBox Platforms { get; }
         IPropertyGrid PropertyGrid { get; }
         IButton BrowseButton { get; }
@@ -44,6 +45,7 @@ namespace Reko.Gui.Forms
         Dictionary<string, object> ArchitectureOptions { get; set; }
 
         ArchitectureDefinition GetSelectedArchitecture();
+        ModelDefinition GetSelectedArchitectureModel();
         PlatformDefinition GetSelectedEnvironment();
         void SetPropertyGrid(Dictionary<string, object> architectureOptions, List<PropertyOption> options);
     }

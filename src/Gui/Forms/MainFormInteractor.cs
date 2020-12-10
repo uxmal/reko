@@ -385,7 +385,7 @@ namespace Reko.Gui.Forms
                     EntryPoint = entry,
                 };
 
-                OpenBinary(dlg.FileName.Text, (f) =>pageInitial.OpenBinaryAs(f, details), f => false);
+                OpenBinary(dlg.FileName.Text, (f) => pageInitial.OpenBinaryAs(f, details), f => false);
             }
             catch (Exception ex)
             {

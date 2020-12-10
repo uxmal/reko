@@ -43,6 +43,8 @@
             this.ddlRawFileTypes = new System.Windows.Forms.ComboBox();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
             this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.ddlModels = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -80,7 +82,7 @@
             this.label2.Location = new System.Drawing.Point(8, 154);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(117, 13);
-            this.label2.TabIndex = 3;
+            this.label2.TabIndex = 7;
             this.label2.Text = "&Processor Architecture:";
             // 
             // label3
@@ -89,7 +91,7 @@
             this.label3.Location = new System.Drawing.Point(8, 114);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(118, 13);
-            this.label3.TabIndex = 6;
+            this.label3.TabIndex = 5;
             this.label3.Text = "Operating &Environment:";
             // 
             // ddlEnvironments
@@ -99,7 +101,7 @@
             this.ddlEnvironments.Location = new System.Drawing.Point(8, 130);
             this.ddlEnvironments.Name = "ddlEnvironments";
             this.ddlEnvironments.Size = new System.Drawing.Size(284, 21);
-            this.ddlEnvironments.TabIndex = 3;
+            this.ddlEnvironments.TabIndex = 6;
             // 
             // ddlArchitectures
             // 
@@ -108,7 +110,7 @@
             this.ddlArchitectures.Location = new System.Drawing.Point(8, 170);
             this.ddlArchitectures.Name = "ddlArchitectures";
             this.ddlArchitectures.Size = new System.Drawing.Size(284, 21);
-            this.ddlArchitectures.TabIndex = 5;
+            this.ddlArchitectures.TabIndex = 8;
             // 
             // btnOk
             // 
@@ -117,7 +119,7 @@
             this.btnOk.Location = new System.Drawing.Point(412, 285);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
-            this.btnOk.TabIndex = 7;
+            this.btnOk.TabIndex = 15;
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
             // 
@@ -128,25 +130,25 @@
             this.btnCancel.Location = new System.Drawing.Point(493, 285);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 8;
+            this.btnCancel.TabIndex = 16;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(8, 194);
+            this.label4.Location = new System.Drawing.Point(8, 240);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(117, 13);
-            this.label4.TabIndex = 9;
+            this.label4.TabIndex = 11;
             this.label4.Text = "Load binary at &address:";
             // 
             // txtAddress
             // 
-            this.txtAddress.Location = new System.Drawing.Point(8, 210);
+            this.txtAddress.Location = new System.Drawing.Point(8, 256);
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.Size = new System.Drawing.Size(166, 20);
-            this.txtAddress.TabIndex = 10;
+            this.txtAddress.TabIndex = 12;
             // 
             // label5
             // 
@@ -154,7 +156,7 @@
             this.label5.Location = new System.Drawing.Point(8, 73);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(71, 13);
-            this.label5.TabIndex = 11;
+            this.label5.TabIndex = 3;
             this.label5.Text = "Raw file &type:";
             // 
             // ddlRawFileTypes
@@ -164,7 +166,7 @@
             this.ddlRawFileTypes.Location = new System.Drawing.Point(8, 90);
             this.ddlRawFileTypes.Name = "ddlRawFileTypes";
             this.ddlRawFileTypes.Size = new System.Drawing.Size(283, 21);
-            this.ddlRawFileTypes.TabIndex = 12;
+            this.ddlRawFileTypes.TabIndex = 4;
             // 
             // propertyGrid
             // 
@@ -175,7 +177,7 @@
             this.propertyGrid.Name = "propertyGrid";
             this.propertyGrid.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
             this.propertyGrid.Size = new System.Drawing.Size(253, 181);
-            this.propertyGrid.TabIndex = 13;
+            this.propertyGrid.TabIndex = 14;
             this.propertyGrid.ToolbarVisible = false;
             // 
             // label6
@@ -184,8 +186,26 @@
             this.label6.Location = new System.Drawing.Point(311, 72);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(46, 13);
-            this.label6.TabIndex = 14;
+            this.label6.TabIndex = 13;
             this.label6.Text = "Op&tions:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(8, 198);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(89, 13);
+            this.label7.TabIndex = 9;
+            this.label7.Text = "Processor &Model:";
+            // 
+            // ddlModels
+            // 
+            this.ddlModels.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlModels.FormattingEnabled = true;
+            this.ddlModels.Location = new System.Drawing.Point(8, 214);
+            this.ddlModels.Name = "ddlModels";
+            this.ddlModels.Size = new System.Drawing.Size(284, 21);
+            this.ddlModels.TabIndex = 10;
             // 
             // OpenAsDialog
             // 
@@ -194,6 +214,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(580, 319);
+            this.Controls.Add(this.ddlModels);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.propertyGrid);
             this.Controls.Add(this.ddlRawFileTypes);
@@ -239,5 +261,7 @@
         private System.Windows.Forms.ComboBox ddlRawFileTypes;
         private System.Windows.Forms.PropertyGrid propertyGrid;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox ddlModels;
     }
 }
