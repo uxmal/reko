@@ -20,36 +20,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    public class ArchitectureDefinition
+    public class ModelDefinition
     {
-        /// <summary>
-        /// Short abbreviation for the architecture.
-        /// </summary>
         public string? Name { get; set; }
 
-        /// <summary>
-        /// Human-readable description of the processor architecture
-        /// </summary>
-        public string? Description { get; set; }
-
-        /// <summary>
-        /// .NET type name for the architecture.
-        /// </summary>
-        public string? TypeName { get; set; }
-
-        /// <summary>
-        /// Available property options.
-        /// </summary>
-        public List<PropertyOption> Options { get; set; } = new List<PropertyOption>();
-
-        /// <summary>
-        /// Available processor models.
-        /// </summary>
-        public Dictionary<string, ModelDefinition> Models { get; set; } = new Dictionary<string, ModelDefinition>();
+        public List<ListOption_v1> Options { get; set; } = new List<ListOption_v1>();
     }
 }

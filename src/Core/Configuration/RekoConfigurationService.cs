@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Assemblers;
+using Reko.Core.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -46,8 +47,8 @@ namespace Reko.Core.Configuration
 
         PlatformDefinition GetEnvironment(string envName);
         IProcessorArchitecture? GetArchitecture(string archLabel);
-        IProcessorArchitecture? GetArchitecture(string archLabel, string modelName);
-        IProcessorArchitecture? GetArchitecture(string archLabel, Dictionary<string, object> options);
+        IProcessorArchitecture? GetArchitecture(string archLabel, string? modelName);
+        IProcessorArchitecture? GetArchitecture(string archLabel, Dictionary<string, object>? options);
 
         ICollection<SymbolSourceDefinition> GetSymbolSources();
         RawFileDefinition? GetRawFile(string rawFileFormat);
@@ -125,6 +126,7 @@ namespace Reko.Core.Configuration
                 Name = sArch.Name,
                 TypeName = sArch.Type,
                 Options = LoadCollection(sArch.Options, LoadPropertyOption),
+                Models = LoadDictionary(sArch.Models, m => m.Name!, LoadModelDefinition)
             };
         }
 
@@ -138,6 +140,17 @@ namespace Reko.Core.Configuration
                 Required = sOption.Required,
                 TypeName = sOption.TypeName,
                 Choices = sOption.Choices ?? new ListOption_v1[0]
+            };
+        }
+
+        private ModelDefinition LoadModelDefinition(ModelDefinition_v1 sModel)
+        {
+            return new ModelDefinition
+            {
+                Name = sModel.Name,
+                Options = sModel.Options != null
+                    ? sModel.Options.ToList()
+                    : new List<ListOption_v1>()
             };
         }
 
@@ -263,6 +276,17 @@ namespace Reko.Core.Configuration
                 return sItems.Select(fn).ToList();
         }
 
+        private Dictionary<string, TValue> LoadDictionary<TSrc, TValue>(
+            TSrc[]? sItems, 
+            Func<TSrc, string> fnKey, 
+            Func<TSrc, TValue> fnValue)
+        {
+            if (sItems == null)
+                return new Dictionary<string, TValue>();
+            else
+                return sItems.ToDictionary(fnKey, fnValue);
+        }
+
         /// <summary>
         /// Load the reko.config file.
         /// </summary>
@@ -345,25 +369,59 @@ namespace Reko.Core.Configuration
             return GetArchitecture(archLabel, new Dictionary<string, object>());
         }
 
-        public IProcessorArchitecture? GetArchitecture(string archLabel, string modelName)
+        public IProcessorArchitecture? GetArchitecture(string archLabel, string? modelName)
         {
-            return GetArchitecture(archLabel, new Dictionary<string, object>
+            if (modelName is null)
+                return GetArchitecture(archLabel, new Dictionary<string, object>());
+            var elem = GetArchitectures()
+                .Where(e => e.Name == archLabel).SingleOrDefault();
+            if (elem == null)
+                return null;
+            ModelDefinition? model;
+            if (elem.Models is null)
             {
-                { ProcessorArchitecture.OptionModel, modelName }
-            });
+                model = null;
+            }
+            else
+            {
+                elem.Models.TryGetValue(modelName, out model);
+            }
+            var options = new Dictionary<string, object>();
+            if (model is null)
+            {
+                var listener = services.GetService<DecompilerEventListener>() ??
+                    new NullDecompilerEventListener();
+                listener.Warn($"Model '{modelName}' is not defined for architecture '{archLabel}'.");
+            }
+            else if (model.Options != null)
+            {
+                foreach (var opt in model.Options)
+                {
+                    if (opt.Text != null && opt.Value != null)
+                    {
+                        options[opt.Text] = opt.Value;
+                    }
+                }
+            }
+            options[ProcessorArchitecture.OptionModel] = modelName;
+            return GetArchitecture(archLabel, options);
         }
 
-        public IProcessorArchitecture? GetArchitecture(string archLabel, Dictionary<string, object> options)
+        public IProcessorArchitecture? GetArchitecture(string archLabel, Dictionary<string, object>? options)
         {
             var elem = GetArchitectures()
                 .Where(e => e.Name == archLabel).SingleOrDefault();
             if (elem == null)
                 return null;
-
+            options ??= new Dictionary<string, object>();
             Type t = Type.GetType(elem.TypeName, false);
             if (t == null)
                 return null;
-            var arch = (IProcessorArchitecture)Activator.CreateInstance(t, this.services, elem.Name, options);
+            var arch = (IProcessorArchitecture)Activator.CreateInstance(
+                t, 
+                this.services, 
+                elem.Name, 
+                options ?? new Dictionary<string, object>());
             arch.Description = elem.Description;
             return arch;
         }

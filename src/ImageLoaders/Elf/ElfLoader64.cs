@@ -105,8 +105,7 @@ namespace Reko.ImageLoaders.Elf
                 return base.CreateArchitecture(endianness);
             }
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch = cfgSvc.GetArchitecture(archName);
-            arch.LoadUserOptions(options);
+            var arch = cfgSvc.GetArchitecture(archName, options);
             return arch;
         }
 

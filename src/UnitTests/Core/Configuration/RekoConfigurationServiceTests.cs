@@ -19,7 +19,10 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Services;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -31,6 +34,17 @@ namespace Reko.UnitTests.Core.Configuration
     [TestFixture]
     public class RekoConfigurationServiceTests
     {
+        private ServiceContainer sc;
+        private FakeDecompilerEventListener listener;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.sc = new ServiceContainer();
+            this.listener = new FakeDecompilerEventListener();
+            sc.AddService<DecompilerEventListener>(listener);
+        }
+
         [Test]
         public void Rcfg_LoadOperatingEnvironment()
         {
@@ -93,7 +107,7 @@ namespace Reko.UnitTests.Core.Configuration
         [Test]
         public void Rcfg_LoadLoader()
         {
-            var cfgSvc = new RekoConfigurationService(new ServiceContainer(), "reko.config", new RekoConfiguration_v1
+            var cfgSvc = new RekoConfigurationService(sc, "reko.config", new RekoConfiguration_v1
             {
                 Loaders = new[]
                 {
@@ -133,6 +147,66 @@ namespace Reko.UnitTests.Core.Configuration
             Assert.AreEqual("bok", ldrs[1].Argument);
             Assert.AreEqual("bullet", ldrs[1].Label);
             Assert.AreEqual("bar.Loader,bar", ldrs[1].TypeName);
+        }
+
+        [Test]
+        public void Rcfg_LoadArchitectureModel()
+        {
+            var cfgSvc = new RekoConfigurationService(sc, "reko.config", new RekoConfiguration_v1
+            {
+                Architectures = new[]{
+                    new Architecture_v1
+                    {
+                        Name = "fake",
+                        Type = typeof(FakeArchitecture).AssemblyQualifiedName,
+                        Models = new[]
+                        {
+                            new ModelDefinition_v1
+                            {
+                                Name = "Fake-2000",
+                                Options = new[]
+                                {
+                                    new ListOption_v1 { Text=ProcessorArchitecture.OptionWordSize, Value="32" }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            var arch = cfgSvc.GetArchitecture("fake", "Fake-2000");
+            var options = arch.SaveUserOptions();
+            Assert.AreEqual("Fake-2000", options[ProcessorArchitecture.OptionModel]);
+            Assert.AreEqual("32", options[ProcessorArchitecture.OptionWordSize]);
+        }
+
+        [Test]
+        public void Rcfg_LoadArchitecture_UnknownModel()
+        {
+            var cfgSvc = new RekoConfigurationService(sc, "reko.config", new RekoConfiguration_v1
+            {
+                Architectures = new[]{
+                    new Architecture_v1
+                    {
+                        Name = "fake",
+                        Type = typeof(FakeArchitecture).AssemblyQualifiedName,
+                        Models = new[]
+                        {
+                            new ModelDefinition_v1
+                            {
+                                Name = "Fake-2000",
+                                Options = new[]
+                                {
+                                    new ListOption_v1 { Text=ProcessorArchitecture.OptionWordSize, Value="32" }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            var arch = cfgSvc.GetArchitecture("fake", "Unknown Model");
+            Assert.AreEqual("WarningDiagnostic -  - Model 'Unknown Model' is not defined for architecture 'fake'.", listener.LastDiagnostic);
         }
     }
 }

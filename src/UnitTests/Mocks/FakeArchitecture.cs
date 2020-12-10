@@ -56,7 +56,14 @@ namespace Reko.UnitTests.Mocks
 		private const int iReturnRegister = 62;
         private bool ignoreUnknownTraces;
 
-        public FakeArchitecture(IServiceProvider services) : base(services, "fake", new Dictionary<string, object>())
+        public FakeArchitecture(IServiceProvider services)
+            : this(services, "fake", new Dictionary<string, object>())
+        {
+        }
+
+
+        public FakeArchitecture(IServiceProvider services, string archId, Dictionary<string,object> options) 
+            : base(services, archId, options)
         {
             this.CarryFlagMask = (uint)StatusFlags.C;
             this.Description = "Fake Architecture for testing";
@@ -345,7 +352,7 @@ namespace Reko.UnitTests.Mocks
 
         public override Dictionary<string, object> SaveUserOptions()
         {
-            throw new NotImplementedException();
+            return new Dictionary<string, object>(base.Options);
         }
 
         public override SortedList<string, int> GetMnemonicNames()
