@@ -36,6 +36,8 @@ using Reko.Core.Memory;
 
 namespace Reko.Arch.X86
 {
+    using Decoder = X86Disassembler.Decoder;
+
 	// X86 flag masks.
 
 	[Flags]
@@ -57,8 +59,9 @@ namespace Reko.Arch.X86
     [Designer("Reko.Arch.X86.Design.X86ArchitectureDesigner,Reko.Arch.X86.Design")]
 	public class IntelArchitecture : ProcessorArchitecture
 	{
-		private ProcessorMode mode;
+        private ProcessorMode mode;
         private Dictionary<uint, FlagGroupStorage> flagGroupCache;
+        private Decoder[]? rootDecoders;
 
         public IntelArchitecture(IServiceProvider services, string archId, ProcessorMode mode, Dictionary<string, object> options)
             : base(services, archId, options)
@@ -73,7 +76,8 @@ namespace Reko.Arch.X86
             this.FramePointerType = mode.FramePointerType;
             this.StackRegister = mode.StackRegister;
             this.FpuStackRegister = Registers.Top;
-            this.Options = new X86Options();
+            this.Options = options;
+            this.LoadUserOptions(options);
         }
 
         public override IAssembler CreateAssembler(string? asmDialect)
@@ -83,7 +87,7 @@ namespace Reko.Arch.X86
 
         public X86Disassembler CreateDisassemblerImpl(EndianImageReader imageReader)
         {
-            return mode.CreateDisassembler(this.Services, imageReader, Options);
+            return mode.CreateDisassembler(this.Services, EnsureRootDecoders(), imageReader, Options);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -161,6 +165,15 @@ namespace Reko.Arch.X86
                 e = new BinaryExpression(op, e.DataType, e, Constant.Create(e.DataType, offset));
             }
             return new MemoryAccess(Registers.ST, e, dataType);
+        }
+
+        private Decoder[] EnsureRootDecoders()
+        {
+            if (this.rootDecoders is null)
+            {
+                rootDecoders = mode.CreateRootDecoders(Options);
+            }
+            return rootDecoders;
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
@@ -297,17 +310,16 @@ namespace Reko.Arch.X86
 
         public override List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
         {
-            return this.mode.InlineCall(this.Services, addrCallee, addrContinuation, rdr, binder);
+            var dasm = mode.CreateDisassembler(Services, EnsureRootDecoders(), rdr, this.Options);
+            return this.mode.InlineCall(this.Services, dasm, addrCallee, addrContinuation, binder);
         }
 
         public override void LoadUserOptions(Dictionary<string, object>? options)
         {
             if (options != null)
             {
-                this.Options = new X86Options
-                {
-                    Emulate8087 = options.ContainsKey("Emulate8087") && (string)options["Emulate8087"] == "true"
-                };
+                this.rootDecoders = null;
+                this.Options = options;
             }
         }
 
@@ -315,11 +327,7 @@ namespace Reko.Arch.X86
         {
             if (Options == null)
                 return null;
-            var dict = new Dictionary<string, object>();
-            if (Options.Emulate8087)
-            {
-                dict["Emulate8087"] = "true";
-            }
+            var dict = new Dictionary<string, object>(Options);
             return dict;
         }
 
@@ -365,8 +373,6 @@ namespace Reko.Arch.X86
 		{
 			get { return mode; }
 		}
-
-        public new X86Options Options { get; set; }
 
         public override bool TryParseAddress(string? txtAddress, out Address addr)
         {

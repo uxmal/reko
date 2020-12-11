@@ -268,6 +268,7 @@ namespace Reko.Arch.X86
         }
 
         private readonly IServiceProvider services;
+        private readonly Decoder[] rootDecoders;
         private readonly ProcessorMode mode;
 		private readonly PrimitiveType defaultDataWidth;
 		private readonly PrimitiveType defaultAddressWidth;
@@ -286,6 +287,7 @@ namespace Reko.Arch.X86
         /// 16-bit operation, PrimitiveType.Word32 for 32-bit operation.</param>
 		public X86Disassembler(
             IServiceProvider services,
+            Decoder[] rootDecoders,
             ProcessorMode mode,
             EndianImageReader rdr,
             PrimitiveType defaultWordSize,
@@ -293,6 +295,8 @@ namespace Reko.Arch.X86
             bool useRexPrefix)
 		{
             this.services = services;
+            this.rootDecoders = rootDecoders;
+            Debug.Assert(rootDecoders != null);
             this.mode = mode;
 			this.rdr = rdr;
             this.addr = rdr.Address;
@@ -325,7 +329,7 @@ namespace Reko.Arch.X86
             this.decodingContext.iWidth = defaultDataWidth;
 
             X86Instruction instr;
-            if (s_rootDecoders[op].Decode(this, op))
+            if (rootDecoders[op].Decode(this, op))
             {
                 instr = decodingContext.MakeInstruction();
             }
@@ -1164,48 +1168,11 @@ namespace Reko.Arch.X86
             return new Alternative64Decoder(legacy, amd64);
         }
 
-        public static VexInstructionDecoder VexInstr(Mnemonic legacy, Mnemonic vex, params Mutator<X86Disassembler> [] mutators)
-        {
-            var legDec = legacy != Mnemonic.illegal
-                    ? Instr(legacy, mutators)
-                    : s_invalid;
-            var vexDec = Instr(vex, mutators);
-            return new VexInstructionDecoder(legDec, vexDec);
-        }
 
-        public static VexInstructionDecoder VexInstr(Mnemonic vex, params Mutator<X86Disassembler>[] mutators)
-        {
-            var legDec = s_invalid;
-            var vexDec = Instr(vex, mutators);
-            return new VexInstructionDecoder(legDec, vexDec);
-        }
 
-        public static VexInstructionDecoder VexInstr(Decoder legacy, Decoder vex)
-        {
-            return new VexInstructionDecoder(legacy, vex);
-        }
 
-        public static AddrWidthDecoder AddrWidthDependent(
-            Decoder? bit16 = null,
-            Decoder? bit32 = null, 
-            Decoder? bit64 = null)
-        {
-            return new AddrWidthDecoder(
-                bit16 ?? s_invalid,
-                bit32 ?? s_invalid,
-                bit64 ?? s_invalid);
-        }
 
-        public static DataWidthDecoder DataWidthDependent(
-            Decoder? bit16 = null,
-            Decoder? bit32 = null,
-            Decoder? bit64 = null)
-        {
-            return new DataWidthDecoder(
-                bit16 ?? s_invalid,
-                bit32 ?? s_invalid,
-                bit64 ?? s_invalid);
-        }
+
 
         public static MemRegDecoder MemReg(Decoder mem, Decoder reg)
         {
@@ -1519,46 +1486,9 @@ namespace Reko.Arch.X86
             };
 		}
 
-        private static readonly Decoder s_invalid;
-        private static readonly Decoder s_nyi;
-		private static readonly Decoder [] s_rootDecoders;
-		private static readonly Decoder [] s_decoders0F;
-		private static readonly Decoder [] s_decoders0F38;
-		private static readonly Decoder [] s_decoders0F3A;
-        private static Decoder [] Grp1;
-        private static Decoder [] Grp1A;
-        private static Decoder [] Grp2;
-        private static Decoder [] Grp3;
-        private static Decoder [] Grp4;
-        private static Decoder [] Grp5;
-        private static Decoder [] Grp6;
-        private static Decoder [] Grp7;
-        private static Decoder [] Grp8;
-        private static Decoder [] Grp9;
-        private static Decoder [] Grp10;
-        private static Decoder [] Grp11b;
-        private static Decoder [] Grp11z;
-        private static Decoder [] Grp12;
-        private static Decoder [] Grp13;
-        private static Decoder [] Grp14;
-        private static Decoder [] Grp15;
-        private static Decoder [] Grp16;
-        private static Decoder [] Grp17;
-        private static Decoder [] s_fpuDecoders;
-
 #nullable disable
         static X86Disassembler()
 		{
-            s_invalid = Instr(Mnemonic.illegal, InstrClass.Invalid);
-            s_nyi = nyi("This could be invalid or it could be not yet implemented");
-            CreateGroupDecoders();
-            s_rootDecoders = CreateOnebyteDecoders();
-            s_decoders0F = CreateTwobyteDecoders();
-            s_decoders0F38 = Create0F38Decoders();
-            s_decoders0F3A = Create0F3ADecoders();
-
-            s_fpuDecoders = CreateFpuDecoders();
-            Debug.Assert(s_fpuDecoders.Length == 8 * 0x48);
 		}
 #nullable enable
     }

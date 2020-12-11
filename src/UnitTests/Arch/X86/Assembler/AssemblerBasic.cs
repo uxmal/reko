@@ -359,8 +359,10 @@ foo		endp
             Address addr = Address.SegPtr(0x0C00, 0);
             var program = asm.AssembleFragment(addr, "mov [0x400],0x1234\n");
             var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
+            var decoders = ProcessorMode.Real.CreateRootDecoders(new Dictionary<string, object>());
             var dasm = new X86Disassembler(
                 sc,
+                decoders,
                 ProcessorMode.Real,
                 mem.CreateLeReader(addr),
                 PrimitiveType.Word16,

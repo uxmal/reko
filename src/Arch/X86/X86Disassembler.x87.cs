@@ -144,6 +144,8 @@ namespace Reko.Arch.X86
             }
         }
 
+        partial class InstructionSet
+        { 
         private static Decoder[] CreateFpuDecoders()
         {
             return new Decoder[]  
@@ -842,4 +844,5 @@ namespace Reko.Arch.X86
             };
         }
     }
+}
 }

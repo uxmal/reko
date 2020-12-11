@@ -29,379 +29,380 @@ namespace Reko.Arch.X86
 {
     public partial class X86Disassembler
     {
-        private static Decoder[] CreateOnebyteDecoders()
+        public partial class InstructionSet 
         {
-            return new Decoder[] { 
+            private void CreateOnebyteDecoders(Decoder[] decoders0F)
+            {
+                var d = this.rootDecoders;
 				// 00
-				Instr(Mnemonic.add, InstrClass.Linear|InstrClass.Zero, Eb,Gb),
-				Instr(Mnemonic.add, Ev,Gv),
-				Instr(Mnemonic.add, Gb,Eb),
-				Instr(Mnemonic.add, Gv,Ev),
-				Instr(Mnemonic.add, AL,Ib),
-				Instr(Mnemonic.add, rAX,Iz),
-				Amd64Instr(
+				d[0x00] = Instr(Mnemonic.add, InstrClass.Linear|InstrClass.Zero, Eb,Gb);
+				d[0x01] = Instr(Mnemonic.add, Ev,Gv);
+				d[0x02] = Instr(Mnemonic.add, Gb,Eb);
+				d[0x03] = Instr(Mnemonic.add, Gv,Ev);
+				d[0x04] = Instr(Mnemonic.add, AL,Ib);
+				d[0x05] = Instr(Mnemonic.add, rAX,Iz);
+				d[0x06] = Amd64Instr(
                     Instr(Mnemonic.push, s0),
-                    s_invalid),
-				Amd64Instr(
+                    s_invalid);
+				d[0x07] = Amd64Instr(
                     Instr(Mnemonic.pop, s0),
-                    s_invalid),
+                    s_invalid);
 
-				Instr(Mnemonic.or, Eb,Gb),
-				Instr(Mnemonic.or, Ev,Gv),
-				Instr(Mnemonic.or, Gb,Eb),
-				Instr(Mnemonic.or, Gv,Ev),
-				Instr(Mnemonic.or, AL,Ib),
-				Instr(Mnemonic.or, rAX,Iz),
-				Amd64Instr(
+				d[0x08] = Instr(Mnemonic.or, Eb,Gb);
+				d[0x09] = Instr(Mnemonic.or, Ev,Gv);
+				d[0x0A] = Instr(Mnemonic.or, Gb,Eb);
+				d[0x0B] = Instr(Mnemonic.or, Gv,Ev);
+				d[0x0C] = Instr(Mnemonic.or, AL,Ib);
+				d[0x0D] = Instr(Mnemonic.or, rAX,Iz);
+				d[0x0E] = Amd64Instr(
                     Instr(Mnemonic.push, s1),
-                    s_invalid),
-				new AdditionalByteDecoder(),
+                    s_invalid);
+				d[0x0F] = new AdditionalByteDecoder(decoders0F);
 
 				// 10
-				Instr(Mnemonic.adc, Eb,Gb),
-				Instr(Mnemonic.adc, Ev,Gv),
-				Instr(Mnemonic.adc, Gb,Eb),
-				Instr(Mnemonic.adc, Gv,Ev),
-				Instr(Mnemonic.adc, AL,Ib),
-				Instr(Mnemonic.adc, rAX,Iz),
-				Amd64Instr(
+				d[0x10] = Instr(Mnemonic.adc, Eb,Gb);
+				d[0x11] = Instr(Mnemonic.adc, Ev,Gv);
+				d[0x12] = Instr(Mnemonic.adc, Gb,Eb);
+				d[0x13] = Instr(Mnemonic.adc, Gv,Ev);
+				d[0x14] = Instr(Mnemonic.adc, AL,Ib);
+				d[0x15] = Instr(Mnemonic.adc, rAX,Iz);
+				d[0x16] = Amd64Instr(
                     Instr(Mnemonic.push, s2),
-                    s_invalid),
-				Amd64Instr(
+                    s_invalid);
+				d[0x17] = Amd64Instr(
                     Instr(Mnemonic.pop, s2),
-                    s_invalid),
+                    s_invalid);
 
-				Instr(Mnemonic.sbb, Eb,Gb),
-				Instr(Mnemonic.sbb, Ev,Gv),
-				Instr(Mnemonic.sbb, Gb,Eb),
-				Instr(Mnemonic.sbb, Gv,Ev),
-				Instr(Mnemonic.sbb, AL,Ib),
-				Instr(Mnemonic.sbb, rAX,Iz),
-				Amd64Instr(
+				d[0x18] = Instr(Mnemonic.sbb, Eb,Gb);
+				d[0x19] = Instr(Mnemonic.sbb, Ev,Gv);
+				d[0x1A] = Instr(Mnemonic.sbb, Gb,Eb);
+				d[0x1B] = Instr(Mnemonic.sbb, Gv,Ev);
+				d[0x1C] = Instr(Mnemonic.sbb, AL,Ib);
+				d[0x1D] = Instr(Mnemonic.sbb, rAX,Iz);
+				d[0x1E] = Amd64Instr(
                     Instr(Mnemonic.push, s3),
-                    s_invalid),
-				Amd64Instr(
+                    s_invalid);
+				d[0x1F] = Amd64Instr(
                     Instr(Mnemonic.pop, s3),
-                    s_invalid),
+                    s_invalid);
 
 				// 20
-				Instr(Mnemonic.and, Eb,Gb), 
-				Instr(Mnemonic.and, Ev,Gv),
-				Instr(Mnemonic.and, Gb,Eb),
-				Instr(Mnemonic.and, Gv,Ev),
-				Instr(Mnemonic.and, AL,Ib),
-				Instr(Mnemonic.and, rAX,Iz),
-				new SegmentOverrideDecoder(0),
-				Amd64Instr(
+				d[0x20] = Instr(Mnemonic.and, Eb,Gb); 
+				d[0x21] = Instr(Mnemonic.and, Ev,Gv);
+				d[0x22] = Instr(Mnemonic.and, Gb,Eb);
+				d[0x23] = Instr(Mnemonic.and, Gv,Ev);
+				d[0x24] = Instr(Mnemonic.and, AL,Ib);
+				d[0x25] = Instr(Mnemonic.and, rAX,Iz);
+				d[0x26] = new SegmentOverrideDecoder(0);
+				d[0x27] = Amd64Instr(
                     Instr(Mnemonic.daa),
-                    s_invalid),
+                    s_invalid);
 
-				Instr(Mnemonic.sub, Eb,Gb),
-				Instr(Mnemonic.sub, Ev,Gv),
-				Instr(Mnemonic.sub, Gb,Eb),
-				Instr(Mnemonic.sub, Gv,Ev),
-				Instr(Mnemonic.sub, AL,Ib),
-				Instr(Mnemonic.sub, rAX,Iz),
-                new SegmentOverrideDecoder(1),
-				Amd64Instr(
+				d[0x28] = Instr(Mnemonic.sub, Eb,Gb);
+				d[0x29] = Instr(Mnemonic.sub, Ev,Gv);
+				d[0x2A] = Instr(Mnemonic.sub, Gb,Eb);
+				d[0x2B] = Instr(Mnemonic.sub, Gv,Ev);
+				d[0x2C] = Instr(Mnemonic.sub, AL,Ib);
+				d[0x2D] = Instr(Mnemonic.sub, rAX,Iz);
+                d[0x2E] = new SegmentOverrideDecoder(1);
+				d[0x2F] = Amd64Instr(
                     Instr(Mnemonic.das),
-                    s_invalid),
+                    s_invalid);
 
 				// 30
-				Instr(Mnemonic.xor, Eb,Gb),
-				Instr(Mnemonic.xor, Ev,Gv),
-				Instr(Mnemonic.xor, Gb,Eb),
-				Instr(Mnemonic.xor, Gv,Ev),
-				Instr(Mnemonic.xor, AL,Ib),
-				Instr(Mnemonic.xor, rAX,Iz),
-                new SegmentOverrideDecoder(2),
-				Amd64Instr(
+				d[0x30] = Instr(Mnemonic.xor, Eb,Gb);
+				d[0x31] = Instr(Mnemonic.xor, Ev,Gv);
+				d[0x32] = Instr(Mnemonic.xor, Gb,Eb);
+				d[0x33] = Instr(Mnemonic.xor, Gv,Ev);
+				d[0x34] = Instr(Mnemonic.xor, AL,Ib);
+				d[0x35] = Instr(Mnemonic.xor, rAX,Iz);
+                d[0x36] = new SegmentOverrideDecoder(2);
+				d[0x37] = Amd64Instr(
                     Instr(Mnemonic.aaa),
-                    s_invalid),
+                    s_invalid);
 
-				Instr(Mnemonic.cmp, Eb,Gb),
-				Instr(Mnemonic.cmp, Ev,Gv),
-				Instr(Mnemonic.cmp, Gb,Eb),
-				Instr(Mnemonic.cmp, Gv,Ev),
-				Instr(Mnemonic.cmp, AL,Ib),
-				Instr(Mnemonic.cmp, rAX,Iz),
-                new SegmentOverrideDecoder(3),
-				Amd64Instr(
+				d[0x38] = Instr(Mnemonic.cmp, Eb,Gb);
+				d[0x39] = Instr(Mnemonic.cmp, Ev,Gv);
+				d[0x3A] = Instr(Mnemonic.cmp, Gb,Eb);
+				d[0x3B] = Instr(Mnemonic.cmp, Gv,Ev);
+				d[0x3C] = Instr(Mnemonic.cmp, AL,Ib);
+				d[0x3D] = Instr(Mnemonic.cmp, rAX,Iz);
+                d[0x3E] = new SegmentOverrideDecoder(3);
+				d[0x3F] = Amd64Instr(
                     Instr(Mnemonic.aas),
-                    s_invalid),
+                    s_invalid);
 
 				// 40
-				new Rex_or_InstructionDecoder(Mnemonic.inc, rv),
-				new Rex_or_InstructionDecoder(Mnemonic.inc, rv),
-				new Rex_or_InstructionDecoder(Mnemonic.inc, rv),
-				new Rex_or_InstructionDecoder(Mnemonic.inc, rv),
-				new Rex_or_InstructionDecoder(Mnemonic.inc, rv),
-				new Rex_or_InstructionDecoder(Mnemonic.inc, rv),
-				new Rex_or_InstructionDecoder(Mnemonic.inc, rv),
-				new Rex_or_InstructionDecoder(Mnemonic.inc, rv),
+				d[0x40] = RexInstr(Mnemonic.inc, rv);
+				d[0x41] = RexInstr(Mnemonic.inc, rv);
+				d[0x42] = RexInstr(Mnemonic.inc, rv);
+				d[0x43] = RexInstr(Mnemonic.inc, rv);
+				d[0x44] = RexInstr(Mnemonic.inc, rv);
+				d[0x45] = RexInstr(Mnemonic.inc, rv);
+				d[0x46] = RexInstr(Mnemonic.inc, rv);
+				d[0x47] = RexInstr(Mnemonic.inc, rv);
 
-				new Rex_or_InstructionDecoder(Mnemonic.dec, rv),
-				new Rex_or_InstructionDecoder(Mnemonic.dec, rv),
-				new Rex_or_InstructionDecoder(Mnemonic.dec, rv),
-				new Rex_or_InstructionDecoder(Mnemonic.dec, rv),
-				new Rex_or_InstructionDecoder(Mnemonic.dec, rv),
-				new Rex_or_InstructionDecoder(Mnemonic.dec, rv),
-				new Rex_or_InstructionDecoder(Mnemonic.dec, rv),
-				new Rex_or_InstructionDecoder(Mnemonic.dec, rv),
+				d[0x48] = RexInstr(Mnemonic.dec, rv);
+				d[0x49] = RexInstr(Mnemonic.dec, rv);
+				d[0x4A] = RexInstr(Mnemonic.dec, rv);
+				d[0x4B] = RexInstr(Mnemonic.dec, rv);
+				d[0x4C] = RexInstr(Mnemonic.dec, rv);
+				d[0x4D] = RexInstr(Mnemonic.dec, rv);
+				d[0x4E] = RexInstr(Mnemonic.dec, rv);
+				d[0x4F] = RexInstr(Mnemonic.dec, rv);
 
 				// 50
-                Instr(Mnemonic.push, rV),
-                Instr(Mnemonic.push, rV),
-                Instr(Mnemonic.push, rV),
-                Instr(Mnemonic.push, rV),
-                Instr(Mnemonic.push, rV),
-                Instr(Mnemonic.push, rV),
-                Instr(Mnemonic.push, rV),
-                Instr(Mnemonic.push, rV),
+                d[0x50] = Instr(Mnemonic.push, rV);
+                d[0x51] = Instr(Mnemonic.push, rV);
+                d[0x52] = Instr(Mnemonic.push, rV);
+                d[0x53] = Instr(Mnemonic.push, rV);
+                d[0x54] = Instr(Mnemonic.push, rV);
+                d[0x55] = Instr(Mnemonic.push, rV);
+                d[0x56] = Instr(Mnemonic.push, rV);
+                d[0x57] = Instr(Mnemonic.push, rV);
 
-                Instr(Mnemonic.pop, rV),
-                Instr(Mnemonic.pop, rV),
-                Instr(Mnemonic.pop, rV),
-                Instr(Mnemonic.pop, rV),
-                Instr(Mnemonic.pop, rV),
-                Instr(Mnemonic.pop, rV),
-                Instr(Mnemonic.pop, rV),
-                Instr(Mnemonic.pop, rV),
+                d[0x58] = Instr(Mnemonic.pop, rV);
+                d[0x59] = Instr(Mnemonic.pop, rV);
+                d[0x5A] = Instr(Mnemonic.pop, rV);
+                d[0x5B] = Instr(Mnemonic.pop, rV);
+                d[0x5C] = Instr(Mnemonic.pop, rV);
+                d[0x5D] = Instr(Mnemonic.pop, rV);
+                d[0x5E] = Instr(Mnemonic.pop, rV);
+                d[0x5F] = Instr(Mnemonic.pop, rV);
 
 				// 60
-				Amd64Instr(
+				d[0x60] = Amd64Instr(
                     Instr(Mnemonic.pusha),
-                    s_invalid),
-				Amd64Instr(
+                    s_invalid);
+                d[0x61] = Amd64Instr(
                     Instr(Mnemonic.popa),
-                    s_invalid),
-				Amd64Instr(
+                    s_invalid);
+                d[0x62] = Amd64Instr(
                     Instr(Mnemonic.bound, Gv,Mv),
-                    new EvexDecoder()),
-                Amd64Instr(
+                    new EvexDecoder(this.s_decoders0F, s_decoders0F38, s_decoders0F3A));
+                d[0x63] = Amd64Instr(
     				Instr(Mnemonic.arpl, Ew,rw),
-    				Instr(Mnemonic.movsxd, Gv,Ed)),
-				new SegmentOverrideDecoder(4),
-				new SegmentOverrideDecoder(5),
-				new ChangeDataWidth(),
-				new ChangeAddressWidth(),
+    				Instr(Mnemonic.movsxd, Gv,Ed));
+				d[0x64] = new SegmentOverrideDecoder(4);
+				d[0x65] = new SegmentOverrideDecoder(5);
+				d[0x66] = new ChangeDataWidth(this.rootDecoders);
+				d[0x67] = new ChangeAddressWidth(this.rootDecoders);
 
-				Instr(Mnemonic.push, Iz),
-				Instr(Mnemonic.imul, Gv,Ev,Iz),
-				Instr(Mnemonic.push, Ib),
-				Instr(Mnemonic.imul, Gv,Ev,Ib),
-				Instr(Mnemonic.insb, b),
-				Instr(Mnemonic.ins),
-				Instr(Mnemonic.outsb, b),
-				Instr(Mnemonic.outs),
+				d[0x68] = Instr(Mnemonic.push, Iz);
+				d[0x69] = Instr(Mnemonic.imul, Gv,Ev,Iz);
+				d[0x6A] = Instr(Mnemonic.push, Ib);
+				d[0x6B] = Instr(Mnemonic.imul, Gv,Ev,Ib);
+				d[0x6C] = Instr(Mnemonic.insb, b);
+				d[0x6D] = Instr(Mnemonic.ins);
+				d[0x6E] = Instr(Mnemonic.outsb, b);
+				d[0x6F] = Instr(Mnemonic.outs);
 
 				// 70
-				Instr(Mnemonic.jo, InstrClass.Transfer|InstrClass.Conditional, Jb),
-				Instr(Mnemonic.jno, InstrClass.Transfer|InstrClass.Conditional, Jb),
-				Instr(Mnemonic.jc, InstrClass.Transfer|InstrClass.Conditional, Jb),
-				Instr(Mnemonic.jnc, InstrClass.Transfer|InstrClass.Conditional, Jb),
-				Instr(Mnemonic.jz, InstrClass.Transfer|InstrClass.Conditional, Jb),
-				Instr(Mnemonic.jnz, InstrClass.Transfer|InstrClass.Conditional, Jb),
-				Instr(Mnemonic.jbe, InstrClass.Transfer|InstrClass.Conditional, Jb),
-				Instr(Mnemonic.ja, InstrClass.Transfer|InstrClass.Conditional, Jb),
+				d[0x70] = Instr(Mnemonic.jo, InstrClass.Transfer|InstrClass.Conditional, Jb);
+				d[0x71] = Instr(Mnemonic.jno, InstrClass.Transfer|InstrClass.Conditional, Jb);
+				d[0x72] = Instr(Mnemonic.jc, InstrClass.Transfer|InstrClass.Conditional, Jb);
+				d[0x73] = Instr(Mnemonic.jnc, InstrClass.Transfer|InstrClass.Conditional, Jb);
+				d[0x74] = Instr(Mnemonic.jz, InstrClass.Transfer|InstrClass.Conditional, Jb);
+				d[0x75] = Instr(Mnemonic.jnz, InstrClass.Transfer|InstrClass.Conditional, Jb);
+				d[0x76] = Instr(Mnemonic.jbe, InstrClass.Transfer|InstrClass.Conditional, Jb);
+				d[0x77] = Instr(Mnemonic.ja, InstrClass.Transfer|InstrClass.Conditional, Jb);
 
-				Instr(Mnemonic.js, InstrClass.Transfer|InstrClass.Conditional, Jb),
-				Instr(Mnemonic.jns, InstrClass.Transfer|InstrClass.Conditional, Jb),
-				Instr(Mnemonic.jpe, InstrClass.Transfer|InstrClass.Conditional, Jb),
-				Instr(Mnemonic.jpo, InstrClass.Transfer|InstrClass.Conditional, Jb),
-				Instr(Mnemonic.jl, InstrClass.Transfer|InstrClass.Conditional, Jb),
-				Instr(Mnemonic.jge, InstrClass.Transfer|InstrClass.Conditional, Jb),
-				Instr(Mnemonic.jle, InstrClass.Transfer|InstrClass.Conditional, Jb),
-				Instr(Mnemonic.jg, InstrClass.Transfer|InstrClass.Conditional, Jb),
+				d[0x78] = Instr(Mnemonic.js, InstrClass.Transfer|InstrClass.Conditional, Jb);
+				d[0x79] = Instr(Mnemonic.jns, InstrClass.Transfer|InstrClass.Conditional, Jb);
+				d[0x7A] = Instr(Mnemonic.jpe, InstrClass.Transfer|InstrClass.Conditional, Jb);
+				d[0x7B] = Instr(Mnemonic.jpo, InstrClass.Transfer|InstrClass.Conditional, Jb);
+				d[0x7C] = Instr(Mnemonic.jl, InstrClass.Transfer|InstrClass.Conditional, Jb);
+				d[0x7D] = Instr(Mnemonic.jge, InstrClass.Transfer|InstrClass.Conditional, Jb);
+				d[0x7E] = Instr(Mnemonic.jle, InstrClass.Transfer|InstrClass.Conditional, Jb);
+				d[0x7F] = Instr(Mnemonic.jg, InstrClass.Transfer|InstrClass.Conditional, Jb);
 
 				// 80
-				new GroupDecoder(Grp1, Eb,Ib),
-				new GroupDecoder(Grp1, Ev,Iz),
-				Amd64Instr(
+				d[0x80] = new GroupDecoder(Grp1, Eb,Ib);
+				d[0x81] = new GroupDecoder(Grp1, Ev,Iz);
+				d[0x82] = Amd64Instr(
                     new GroupDecoder(Grp1, Eb,Ib),
-                    s_invalid),
-				new GroupDecoder(Grp1, Ev,Ib),
-				Instr(Mnemonic.test, Eb,Gb),
-				Instr(Mnemonic.test, Ev,Gv),
-				Instr(Mnemonic.xchg, Eb,Gb),
-				Instr(Mnemonic.xchg, Ev,Gv),
+                    s_invalid);
+				d[0x83] = new GroupDecoder(Grp1, Ev,Ib);
+				d[0x84] = Instr(Mnemonic.test, Eb,Gb);
+				d[0x85] = Instr(Mnemonic.test, Ev,Gv);
+				d[0x86] = Instr(Mnemonic.xchg, Eb,Gb);
+				d[0x87] = Instr(Mnemonic.xchg, Ev,Gv);
 
-				Instr(Mnemonic.mov, Eb,Gb),
-				Instr(Mnemonic.mov, Ev,Gv),
-				Instr(Mnemonic.mov, Gb,Eb),
-				Instr(Mnemonic.mov, Gv,Ev),
-
-				Instr(Mnemonic.mov, Ewv,Sw),
-				Instr(Mnemonic.lea, Gv,Mv),
-				Instr(Mnemonic.mov, Sw,Ew),
-				Amd64Instr(
+				d[0x88] = Instr(Mnemonic.mov, Eb,Gb);
+				d[0x89] = Instr(Mnemonic.mov, Ev,Gv);
+				d[0x8A] = Instr(Mnemonic.mov, Gb,Eb);
+				d[0x8B] = Instr(Mnemonic.mov, Gv,Ev);
+				d[0x8C] = Instr(Mnemonic.mov, Ewv,Sw);
+				d[0x8D] = Instr(Mnemonic.lea, Gv,Mv);
+				d[0x8E] = Instr(Mnemonic.mov, Sw,Ew);
+				d[0x8F] = Amd64Instr(
                     Instr(Mnemonic.pop, Ev),
-                    new GroupDecoder(Grp1A)),
+                    new GroupDecoder(Grp1A));
 
 				// 90
-				new PrefixedDecoder(
+				d[0x90] = new PrefixedDecoder(
                     iclass:InstrClass.Linear|InstrClass.Padding,
                     dec:Instr(Mnemonic.nop),
                     dec66:Instr(Mnemonic.nop),
-                    decF3:Instr(Mnemonic.pause)),
-				Instr(Mnemonic.xchg, rv,rAX),
-				Instr(Mnemonic.xchg, rv,rAX),
-				Instr(Mnemonic.xchg, rv,rAX),
-				Instr(Mnemonic.xchg, rv,rAX),
-				Instr(Mnemonic.xchg, rv,rAX),
-				Instr(Mnemonic.xchg, rv,rAX),
-				Instr(Mnemonic.xchg, rv,rAX),
+                    decF3:Instr(Mnemonic.pause));
+				d[0x91] = Instr(Mnemonic.xchg, rv,rAX);
+				d[0x92] = Instr(Mnemonic.xchg, rv,rAX);
+				d[0x93] = Instr(Mnemonic.xchg, rv,rAX);
+				d[0x94] = Instr(Mnemonic.xchg, rv,rAX);
+				d[0x95] = Instr(Mnemonic.xchg, rv,rAX);
+				d[0x96] = Instr(Mnemonic.xchg, rv,rAX);
+				d[0x97] = Instr(Mnemonic.xchg, rv,rAX);
 
-				DataWidthDependent(
+				d[0x98] = DataWidthDependent(
                     bit16:Instr(Mnemonic.cbw),
                     bit32:Instr(Mnemonic.cwde),
-                    bit64:Instr(Mnemonic.cdqe)),
-				DataWidthDependent(
+                    bit64:Instr(Mnemonic.cdqe));
+                d[0x99] = DataWidthDependent(
                     bit16:Instr(Mnemonic.cwd),
                     bit32:Instr(Mnemonic.cdq),
-                    bit64:Instr(Mnemonic.cqo)),
-				Amd64Instr(
+                    bit64:Instr(Mnemonic.cqo));
+                d[0x9A] = Amd64Instr(
                     Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Ap),
-                    s_invalid),
-				Instr(Mnemonic.wait),
-				Instr(Mnemonic.pushf),
-				Instr(Mnemonic.popf),
-				Instr(Mnemonic.sahf),
-				Instr(Mnemonic.lahf),
+                    s_invalid);
+				d[0x9B] = Instr(Mnemonic.wait);
+				d[0x9C] = Instr(Mnemonic.pushf);
+				d[0x9D] = Instr(Mnemonic.popf);
+				d[0x9E] = Instr(Mnemonic.sahf);
+				d[0x9F] = Instr(Mnemonic.lahf);
 
 				// A0
-				Instr(Mnemonic.mov, AL,Ob),
-				Instr(Mnemonic.mov, rAX,Ov),
-				Instr(Mnemonic.mov, Ob,AL),
-				Instr(Mnemonic.mov, Ov,rAX),
-				Instr(Mnemonic.movsb, b),
-				Instr(Mnemonic.movs),
-				Instr(Mnemonic.cmpsb, b),
-				Instr(Mnemonic.cmps),
+				d[0xA0] = Instr(Mnemonic.mov, AL,Ob);
+				d[0xA1] = Instr(Mnemonic.mov, rAX,Ov);
+				d[0xA2] = Instr(Mnemonic.mov, Ob,AL);
+				d[0xA3] = Instr(Mnemonic.mov, Ov,rAX);
+				d[0xA4] = Instr(Mnemonic.movsb, b);
+				d[0xA5] = Instr(Mnemonic.movs);
+				d[0xA6] = Instr(Mnemonic.cmpsb, b);
+				d[0xA7] = Instr(Mnemonic.cmps);
 
-				Instr(Mnemonic.test, AL,Ib),
-				Instr(Mnemonic.test, rAX,Iz),
-				Instr(Mnemonic.stosb, b),
-				Instr(Mnemonic.stos),
-				Instr(Mnemonic.lodsb, b),
-				Instr(Mnemonic.lods),
-				Instr(Mnemonic.scasb, b),
-				Instr(Mnemonic.scas),
+				d[0xA8] = Instr(Mnemonic.test, AL,Ib);
+				d[0xA9] = Instr(Mnemonic.test, rAX,Iz);
+				d[0xAA] = Instr(Mnemonic.stosb, b);
+				d[0xAB] = Instr(Mnemonic.stos);
+				d[0xAC] = Instr(Mnemonic.lodsb, b);
+				d[0xAD] = Instr(Mnemonic.lods);
+				d[0xAE] = Instr(Mnemonic.scasb, b);
+				d[0xAF] = Instr(Mnemonic.scas);
 
 				// B0
-				Instr(Mnemonic.mov, rb,Ib),
-				Instr(Mnemonic.mov, rb,Ib),
-				Instr(Mnemonic.mov, rb,Ib),
-				Instr(Mnemonic.mov, rb,Ib),
-				Instr(Mnemonic.mov, rb,Ib),
-				Instr(Mnemonic.mov, rb,Ib),
-				Instr(Mnemonic.mov, rb,Ib),
-				Instr(Mnemonic.mov, rb,Ib),
+				d[0xB0] = Instr(Mnemonic.mov, rb,Ib);
+				d[0xB1] = Instr(Mnemonic.mov, rb,Ib);
+				d[0xB2] = Instr(Mnemonic.mov, rb,Ib);
+				d[0xB3] = Instr(Mnemonic.mov, rb,Ib);
+				d[0xB4] = Instr(Mnemonic.mov, rb,Ib);
+				d[0xB5] = Instr(Mnemonic.mov, rb,Ib);
+				d[0xB6] = Instr(Mnemonic.mov, rb,Ib);
+				d[0xB7] = Instr(Mnemonic.mov, rb,Ib);
 
-				Instr(Mnemonic.mov, rv,Iv),
-				Instr(Mnemonic.mov, rv,Iv),
-				Instr(Mnemonic.mov, rv,Iv),
-				Instr(Mnemonic.mov, rv,Iv),
-				Instr(Mnemonic.mov, rv,Iv),
-				Instr(Mnemonic.mov, rv,Iv),
-				Instr(Mnemonic.mov, rv,Iv),
-				Instr(Mnemonic.mov, rv,Iv),
+				d[0xB8] = Instr(Mnemonic.mov, rv,Iv);
+				d[0xB9] = Instr(Mnemonic.mov, rv,Iv);
+				d[0xBA] = Instr(Mnemonic.mov, rv,Iv);
+				d[0xBB] = Instr(Mnemonic.mov, rv,Iv);
+				d[0xBC] = Instr(Mnemonic.mov, rv,Iv);
+				d[0xBD] = Instr(Mnemonic.mov, rv,Iv);
+				d[0xBE] = Instr(Mnemonic.mov, rv,Iv);
+				d[0xBF] = Instr(Mnemonic.mov, rv,Iv);
 
 				// C0
-				new GroupDecoder(Grp2, Eb,Ib),
-				new GroupDecoder(Grp2, Ev,Ib),
-				Instr(Mnemonic.ret, InstrClass.Transfer, Iw),
-				Instr(Mnemonic.ret, InstrClass.Transfer),
-				Amd64Instr(
+				d[0xC0] = new GroupDecoder(Grp2, Eb,Ib);
+				d[0xC1] = new GroupDecoder(Grp2, Ev,Ib);
+				d[0xC2] = Instr(Mnemonic.ret, InstrClass.Transfer, Iw);
+				d[0xC3] = Instr(Mnemonic.ret, InstrClass.Transfer);
+				d[0xC4] = Amd64Instr(
                     Instr(Mnemonic.les,	Gv,Mp),
-                    new VexDecoder3()),
-				Amd64Instr(
+                    new VexDecoder3(decoders0F, s_decoders0F38, s_decoders0F3A));
+				d[0xC5] = Amd64Instr(
                     Instr(Mnemonic.lds,	Gv,Mp),
-                    new VexDecoder2()),
-                Amd64Instr(
+                    new VexDecoder2(decoders0F));
+                d[0xC6] = Amd64Instr(
                     Instr(Mnemonic.mov, Eb,Ib),
-                    new GroupDecoder(Grp11b)),
-                Amd64Instr(
+                    new GroupDecoder(Grp11b));
+                d[0xC7] = Amd64Instr(
                     Instr(Mnemonic.mov, Ev,Iz),
-                    new GroupDecoder(Grp11z)),
+                    new GroupDecoder(Grp11z));
 
-                Instr(Mnemonic.enter, Iw,Ib),
-				Instr(Mnemonic.leave),
-				Instr(Mnemonic.retf, InstrClass.Transfer, Iw),
-				Instr(Mnemonic.retf, InstrClass.Transfer),
-				Instr(Mnemonic.@int, InstrClass.Linear|InstrClass.Padding, n3),
-				new InterruptDecoder(Mnemonic.@int, Ib),
-				Amd64Instr(
+                d[0xC8] = Instr(Mnemonic.enter, Iw, Ib);
+				d[0xC9] = Instr(Mnemonic.leave);
+				d[0xCA] = Instr(Mnemonic.retf, InstrClass.Transfer, Iw);
+				d[0xCB] = Instr(Mnemonic.retf, InstrClass.Transfer);
+				d[0xCC] = Instr(Mnemonic.@int, InstrClass.Linear|InstrClass.Padding, n3);
+				d[0xCD] = new InterruptDecoder(Mnemonic.@int, Ib);
+				d[0xCE] = Amd64Instr(
                     Instr(Mnemonic.into),
-                    s_invalid),
-				Instr(Mnemonic.iret, InstrClass.Transfer),
+                    s_invalid);
+				d[0xCF] = Instr(Mnemonic.iret, InstrClass.Transfer);
 
 				// D0
-				new GroupDecoder(Grp2, Eb,n1),
-				new GroupDecoder(Grp2, Ev,n1),
-				new GroupDecoder(Grp2, Eb,c),
-				new GroupDecoder(Grp2, Ev,c),
-				Amd64Instr(
+				d[0xD0] = new GroupDecoder(Grp2, Eb,n1);
+				d[0xD1] = new GroupDecoder(Grp2, Ev,n1);
+				d[0xD2] = new GroupDecoder(Grp2, Eb,c);
+				d[0xD3] = new GroupDecoder(Grp2, Ev,c);
+				d[0xD4] = Amd64Instr(
                     Instr(Mnemonic.aam, Ib),
-                    s_invalid),
-				Amd64Instr(
+                    s_invalid);
+				d[0xD5] = Amd64Instr(
                     Instr(Mnemonic.aad, Ib),
-				    s_invalid),
-				s_invalid,
-				Instr(Mnemonic.xlat, b),
+				    s_invalid);
+                d[0xD6] = s_invalid;
+				d[0xD7] = Instr(Mnemonic.xlat, b);
 
-				new X87Decoder(),
-				new X87Decoder(),
-				new X87Decoder(),
-				new X87Decoder(),
-				new X87Decoder(),
-				new X87Decoder(),
-				new X87Decoder(),
-				new X87Decoder(),
+				d[0xD8] = X87Instr();
+				d[0xD9] = X87Instr();
+				d[0xDA] = X87Instr();
+				d[0xDB] = X87Instr();
+				d[0xDC] = X87Instr();
+				d[0xDD] = X87Instr();
+				d[0xDE] = X87Instr();
+				d[0xDF] = X87Instr();
 
 				// E0
-				Instr(Mnemonic.loopne, InstrClass.ConditionalTransfer, Jb),
-				Instr(Mnemonic.loope, InstrClass.ConditionalTransfer, Jb),
-				Instr(Mnemonic.loop, InstrClass.ConditionalTransfer, Jb),
-				AddrWidthDependent(
+				d[0xE0] = Instr(Mnemonic.loopne, InstrClass.ConditionalTransfer, Jb);
+				d[0xE1] = Instr(Mnemonic.loope, InstrClass.ConditionalTransfer, Jb);
+				d[0xE2] = Instr(Mnemonic.loop, InstrClass.ConditionalTransfer, Jb);
+				d[0xE3] = AddrWidthDependent(
                     bit16:Instr(Mnemonic.jcxz, InstrClass.ConditionalTransfer, Jb),
                     bit32:Instr(Mnemonic.jecxz, InstrClass.ConditionalTransfer, Jb),
-                    bit64:Instr(Mnemonic.jrcxz, InstrClass.ConditionalTransfer, Jb)),
-                Instr(Mnemonic.@in, AL,Ib),
-				Instr(Mnemonic.@in, eAX,Ib),
-				Instr(Mnemonic.@out, Ib,AL),
-				Instr(Mnemonic.@out, Ib,eAX),
+                    bit64:Instr(Mnemonic.jrcxz, InstrClass.ConditionalTransfer, Jb));
+                d[0xE4] = Instr(Mnemonic.@in, AL,Ib);
+				d[0xE5] = Instr(Mnemonic.@in, eAX,Ib);
+				d[0xE6] = Instr(Mnemonic.@out, Ib,AL);
+				d[0xE7] = Instr(Mnemonic.@out, Ib,eAX);
 
-				Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Jv),
-				Instr(Mnemonic.jmp, InstrClass.Transfer, Jv),
-				Amd64Instr(
+				d[0xE8] = Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Jv);
+				d[0xE9] = Instr(Mnemonic.jmp, InstrClass.Transfer, Jv);
+				d[0xEA] = Amd64Instr(
                     Instr(Mnemonic.jmp, InstrClass.Transfer, Ap),
-                    s_invalid),
-				Instr(Mnemonic.jmp, InstrClass.Transfer, Jb),
-				Instr(Mnemonic.@in, AL,DX),
-				Instr(Mnemonic.@in, eAX,DX),
-				Instr(Mnemonic.@out, DX,AL),
-				Instr(Mnemonic.@out, DX,eAX),
+                    s_invalid);
+				d[0xEB] = Instr(Mnemonic.jmp, InstrClass.Transfer, Jb);
+				d[0xEC] = Instr(Mnemonic.@in, AL,DX);
+				d[0xED] = Instr(Mnemonic.@in, eAX,DX);
+				d[0xEE] = Instr(Mnemonic.@out, DX,AL);
+				d[0xEF] = Instr(Mnemonic.@out, DX,eAX);
 
 				// F0
-				Instr(Mnemonic.@lock),
-				Instr(Mnemonic.icebp, InstrClass.Invalid),
-				new F2PrefixDecoder(),
-				new F3PrefixDecoder(),
-				Instr(Mnemonic.hlt, InstrClass.Terminates),
-				Instr(Mnemonic.cmc),
-				new GroupDecoder(Grp3, Eb),
-				new GroupDecoder(Grp3, Ev),
+				d[0xF0] = Instr(Mnemonic.@lock);
+				d[0xF1] = Instr(Mnemonic.icebp, InstrClass.Invalid);
+				d[0xF2] = new F2PrefixDecoder(rootDecoders);
+				d[0xF3] = new F3PrefixDecoder(rootDecoders);
+				d[0xF4] = Instr(Mnemonic.hlt, InstrClass.Terminates);
+				d[0xF5] = Instr(Mnemonic.cmc);
+				d[0xF6] = new GroupDecoder(Grp3, Eb);
+				d[0xF7] = new GroupDecoder(Grp3, Ev);
 
-				Instr(Mnemonic.clc),
-				Instr(Mnemonic.stc),
-				Instr(Mnemonic.cli),
-				Instr(Mnemonic.sti),
-				Instr(Mnemonic.cld),
-				Instr(Mnemonic.std),
-				new GroupDecoder(Grp4),
-				new GroupDecoder(Grp5)
-			};
+				d[0xF8] = Instr(Mnemonic.clc);
+				d[0xF9] = Instr(Mnemonic.stc);
+				d[0xFA] = Instr(Mnemonic.cli);
+				d[0xFB] = Instr(Mnemonic.sti);
+				d[0xFC] = Instr(Mnemonic.cld);
+				d[0xFD] = Instr(Mnemonic.std);
+				d[0xFE] = new GroupDecoder(Grp4);
+                d[0xFF] = new GroupDecoder(Grp5);
+            }
         }
     }
 }

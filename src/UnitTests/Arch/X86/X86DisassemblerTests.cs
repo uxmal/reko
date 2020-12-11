@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Arch.X86
     {
         private ServiceContainer sc;
         private X86Disassembler dasm;
-        private X86Options options;
+        private Dictionary<string,object> options;
 
         public X86DisassemblerTests()
         {
@@ -50,12 +50,13 @@ namespace Reko.UnitTests.Arch.X86
 
         private X86Instruction Disassemble16(params byte[] bytes)
         {
-            ByteMemoryArea img = new ByteMemoryArea(Address.SegPtr(0xC00, 0), bytes);
-            EndianImageReader rdr = img.CreateLeReader(img.BaseAddress);
-            var dasm =  ProcessorMode.Real.CreateDisassembler(sc, rdr, options);
-            if (options != null)
+            ByteMemoryArea mem = new ByteMemoryArea(Address.SegPtr(0xC00, 0), bytes);
+            EndianImageReader rdr = mem.CreateLeReader(mem.BaseAddress);
+            var decoders = ProcessorMode.Real.CreateRootDecoders(options);
+            var dasm = ProcessorMode.Real.CreateDisassembler(sc, decoders, rdr, options);
+            if (options.ContainsKey("Emuate8087"))
             {
-                dasm.Emulate8087 = options.Emulate8087;
+                dasm.Emulate8087 = true;
             }
             return dasm.First();
         }
@@ -64,7 +65,8 @@ namespace Reko.UnitTests.Arch.X86
         {
             var img = new ByteMemoryArea(Address.Ptr32(0x10000), bytes);
             var rdr = img.CreateLeReader(img.BaseAddress);
-            var dasm = new X86Disassembler(sc, ProcessorMode.Protected32, rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
+            var decoders = ProcessorMode.Protected32.CreateRootDecoders(options);
+            var dasm = new X86Disassembler(sc, decoders, ProcessorMode.Protected32, rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
             return dasm.First();
         }
 
@@ -72,8 +74,10 @@ namespace Reko.UnitTests.Arch.X86
         {
             var img = new ByteMemoryArea(Address.Ptr64(0x10000), bytes);
             var rdr = img.CreateLeReader(img.BaseAddress);
+            var decoders = ProcessorMode.Protected64.CreateRootDecoders(options);
             var dasm = new X86Disassembler(
                 sc,
+                decoders,
                 ProcessorMode.Protected64,
                 rdr,
                 PrimitiveType.Word32,
@@ -90,23 +94,27 @@ namespace Reko.UnitTests.Arch.X86
 
         private void CreateDisassembler16(MemoryArea mem)
         {
+            var decoders = ProcessorMode.Real.CreateRootDecoders(options);
             dasm = new X86Disassembler(
                 sc,
+                decoders,
                 ProcessorMode.Real,
                 mem.CreateLeReader(mem.BaseAddress),
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
                 false);
-            if (options != null)
+            if (options!= null && options.ContainsKey("Emulate8087"))
             {
-                dasm.Emulate8087 = options.Emulate8087;
+                dasm.Emulate8087 = true;
             }
         }
 
         private void CreateDisassembler32(MemoryArea mem)
         {
+            var decoders = ProcessorMode.Protected32.CreateRootDecoders(options);
             dasm = new X86Disassembler(
                 sc,
+                decoders,
                 ProcessorMode.Protected32,
                 mem.CreateLeReader(mem.BaseAddress),
                 PrimitiveType.Word32,
@@ -116,8 +124,10 @@ namespace Reko.UnitTests.Arch.X86
 
         private void CreateDisassembler16(EndianImageReader rdr)
         {
+            var decoders = ProcessorMode.Real.CreateRootDecoders(options);
             dasm = new X86Disassembler(
                 sc,
+                decoders,
                 ProcessorMode.Real,
                 rdr,
                 PrimitiveType.Word16,
@@ -165,7 +175,7 @@ namespace Reko.UnitTests.Arch.X86
         [SetUp]
         public void Setup()
         {
-            options = null;
+            options = new Dictionary<string, object>();
         }
 
         [Test]
@@ -410,8 +420,10 @@ movzx	ax,byte ptr [bp+4h]
             ByteMemoryArea img = new ByteMemoryArea(Address.Ptr32(0x00100000), image);
             img.Relocations.AddPointerReference(0x00100001ul, 0x12345678);
             EndianImageReader rdr = img.CreateLeReader(img.BaseAddress);
+            var decoders = ProcessorMode.Protected32.CreateRootDecoders(new Dictionary<string, object>());
             X86Disassembler dasm = new X86Disassembler(
                 sc,
+                decoders,
                 ProcessorMode.Protected32,
                 rdr,
                 PrimitiveType.Word32,
@@ -781,7 +793,7 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_emulate_x87_int_39()
         {
-            options = new X86Options { Emulate8087 = true };
+            options = new Dictionary<string, object> { { "Emulate8087", "true" } };
             CreateDisassembler16(0xCD, 0x39, 0x5E, 0xEA);
             var instrs = dasm.Take(2)
                 .Select(i => i.ToString())
@@ -793,7 +805,7 @@ movzx	ax,byte ptr [bp+4h]
         [Test]
         public void X86Dis_emulate_x87_int_3C()
         {
-            options = new X86Options { Emulate8087 = true };
+            options = new Dictionary<string, object> { { "Emulate8087", "true" } };
             CreateDisassembler16(0xCD, 0x3C, 0xDD, 0x06, 0x8B, 0x04);
             var instrs = dasm.Take(2)
                 .Select(i => i.ToString())
