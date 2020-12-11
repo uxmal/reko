@@ -63,6 +63,7 @@ namespace Reko.Arch.X86
             private readonly Decoder[] Grp17;
             private readonly Decoder[] s_fpuDecoders;
             private Func<Mnemonic, InstrClass, Mutator<X86Disassembler>[], Decoder> rexInstr;
+            private Func<Mnemonic, InstrClass, Mutator<X86Disassembler>[], Decoder> instr186;
             private Func<Mnemonic, InstrClass, Mutator<X86Disassembler>[], Decoder> instr286;
             private Func<Mnemonic, InstrClass, Mutator<X86Disassembler>[], Decoder> instr386;
             private Func<Mnemonic, InstrClass, Mutator<X86Disassembler>[], Decoder> instr486;
@@ -83,12 +84,16 @@ namespace Reko.Arch.X86
                 {
                     switch (oIsa.ToString())
                     {
-                    case "80386":
-                        isa.instr486 = MakeInvalid; goto case "80286";
-                    case "80286":
-                        isa.instr386 = MakeInvalid; goto case "8086";
                     case "8086":
-                        isa.instr286 = MakeInvalid;
+                        isa.instr186 = MakeInvalid; goto case "80186";
+                    case "80186":
+                        isa.instr286 = MakeInvalid; goto case "80286";
+                    case "80286":
+                        isa.instr386 = MakeInvalid; goto case "80386";
+                    case "80386":
+                        isa.instr486 = MakeInvalid; goto case "80486";
+                    case "80486":
+                        //$TODO: Pentium support.
                         break;
                     }
                 }
@@ -123,6 +128,7 @@ namespace Reko.Arch.X86
                 this.Grp17 = new Decoder[8];
                 this.s_fpuDecoders = CreateFpuDecoders();
                 x87instr = () => new X87Decoder(s_fpuDecoders);
+                instr186 = Instr;
                 instr286 = Instr;
                 instr386 = Instr;
                 instr486 = Instr;
