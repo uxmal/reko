@@ -31,6 +31,7 @@ TestResults
 /src/Arch/ArmNative/Release
 /src/Debug
 /src/Release
+/src/BuildTargets/build
 /src/Native/build
 /src/Native/include/reko.h
 /src/Native/out
