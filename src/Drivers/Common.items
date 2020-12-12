@@ -10,7 +10,7 @@ by the PreBuild.targets file.
     <UnixDllExt Condition="$(IsMac)">dylib</UnixDllExt>
     <UnixDllExt Condition="!$(IsMac)">so</UnixDllExt>
     <!-- Use this for assemblies that are targetting the  .NET Standard profile -->
-    <StandardOutputDir>$(Configuration)\netstandard2.0</StandardOutputDir>
+    <StandardOutputDir>$(Configuration)\netstandard2.1</StandardOutputDir>
   </PropertyGroup>
   <ItemGroup>
     <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
