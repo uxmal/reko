@@ -35,6 +35,9 @@ namespace Reko.ImageLoaders.OdbgScript
 {
     public class OdbgScriptHost : IOdbgScriptHost
     {
+        public const int Cancel = 0;
+        public const int OK = 1;
+
         private readonly OdbgScriptLoader loader;
         private readonly Program program;
         private ImageSegment heap;

@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>Reko.ImageLoaders.Srec</RootNamespace>
     <AssemblyName>Reko.ImageLoaders.Srec</AssemblyName>
     <LangVersion>8.0</LangVersion>
     <nullable>enable</nullable>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

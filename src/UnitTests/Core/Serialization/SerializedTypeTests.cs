@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,6 +55,7 @@ namespace Reko.UnitTests.Core.Serialization
 		}
 
 		[Test]
+        [Ignore(Categories.DotNetBug)]
 		public void StReadStruct()
 		{
 			StructType_v1 str = new StructType_v1
@@ -85,11 +86,12 @@ namespace Reko.UnitTests.Core.Serialization
 		}
 
 		[Test]
+        [Ignore(Categories.DotNetBug)]
 		public void StWritePrimitive()
 		{
 			SerializedType st = new PointerType_v1(new PrimitiveType_v1(Domain.SignedInt, 4));
 			StringWriter writer = new StringWriter();
-			XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(st.GetType());
+			XmlSerializer ser = SerializedLibrary.CreateSerializer_v4(st.GetType());
 			ser.Serialize(writer, st);
 			string s = writer.ToString();
 			int b = s.IndexOf("<prim");

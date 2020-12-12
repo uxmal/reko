@@ -20,6 +20,8 @@
 
 #nullable enable
 
+using Reko.Core;
+using Reko.Core.Services;
 using Reko.Gui.Controls;
 using System;
 using System.Collections;
@@ -127,13 +129,20 @@ namespace Reko.Gui
                 var attr = o.GetType().GetCustomAttributes(typeof(DesignerAttribute), true);
                 if (attr.Length > 0)
                 {
-                    var desType = Type.GetType(
-                        ((DesignerAttribute) attr[0]).DesignerTypeName,
-                        false);
-                    if (desType != null)
-                        des = (TreeNodeDesigner) Activator.CreateInstance(desType);
-                    else
+                    var svc = Services.RequireService<IPluginLoaderService>();
+                    try
+                    {
+                        var desType = svc.GetType(
+                            ((DesignerAttribute) attr[0]).DesignerTypeName);
+                        if (desType != null)
+                            des = (TreeNodeDesigner) Activator.CreateInstance(desType);
+                        else
+                            des = new TreeNodeDesigner();
+                    }
+                    catch
+                    {
                         des = new TreeNodeDesigner();
+                    }
                 }
                 else
                 {

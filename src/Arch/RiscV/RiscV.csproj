@@ -5,10 +5,11 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.Arch.RiscV</RootNamespace>
     <AssemblyName>Reko.Arch.RiscV</AssemblyName>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>8.0</LangVersion>
     <nullable>enable</nullable>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />

@@ -54,8 +54,16 @@ namespace Reko.Loading
 
         public ISymbolSource? LoadSymbolSource(SymbolSourceDefinition symSrcDef, byte [] bytes, string filename)
         {
-            var type = Type.GetType(symSrcDef.TypeName, false);
-            if (type is null)
+            if (symSrcDef.TypeName is null)
+                return null;
+            var svc = services.RequireService<IPluginLoaderService>();
+            //$TODO: fail softly here.
+            Type type;
+            try
+            {
+                type = svc.GetType(symSrcDef.TypeName);
+            }
+            catch
             {
                 var eventListener = services.RequireService<DecompilerEventListener>();
                 eventListener.Error("Symbol source {0} in the Reko configuration failed to load.", symSrcDef.Name!);

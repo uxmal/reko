@@ -5,8 +5,9 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.Environments.RT11</RootNamespace>
     <AssemblyName>Reko.Environments.RT11</AssemblyName>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Pdp11\Pdp11.csproj" />

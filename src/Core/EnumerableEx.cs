@@ -82,7 +82,7 @@ namespace Reko.Core
             }
             return list;
         }
-
+        /*
         // The big .NET Core messup.
         // This extension method was added before .NET Core existed. 
         // In their wisdom, Microsoft added Enumerable.ToHashSet<T> to the
@@ -104,17 +104,13 @@ namespace Reko.Core
         {
             return new HashSet<TElement>(source);
         }
+        */
 
         public static SortedSet<TElement> ToSortedSet<TElement>(
             this IEnumerable<TElement> source)
         {
-            SortedSet<TElement> set = new SortedSet<TElement>();
-            foreach (var element in source)
-            {
-                set.Add(element);
+            return new SortedSet<TElement>(source);
             }
-            return set;
-        }
 
         public static IEnumerable<IEnumerable<T>> Chunks<T>(
             this IEnumerable<T> enumerable,

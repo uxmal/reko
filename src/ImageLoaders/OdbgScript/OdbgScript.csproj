@@ -5,9 +5,10 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.ImageLoaders.OdbgScript</RootNamespace>
     <AssemblyName>Reko.ImageLoaders.OdbgScript</AssemblyName>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>8.0</LangVersion>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\X86\X86.csproj" />

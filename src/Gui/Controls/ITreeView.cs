@@ -21,9 +21,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
-using DragEventHandler = System.Windows.Forms.DragEventHandler;
-using MouseEventHandler = System.Windows.Forms.MouseEventHandler;
 
 namespace Reko.Gui.Controls
 {
@@ -45,7 +44,7 @@ namespace Reko.Gui.Controls
         bool ShowRootLines { get; set; }
 
         ITreeNodeCollection Nodes { get; }
-        object ContextMenu { get; set; }
+        object ContextMenuStrip { get; set; }
 
         void CollapseAll();
         ITreeNode CreateNode();
@@ -70,5 +69,68 @@ namespace Reko.Gui.Controls
         void Expand();
         void Invoke(Action action);
         void Remove();
+    }
+
+    public delegate void DragEventHandler(object sender, DragEventArgs e);
+    public delegate void MouseEventHandler(object sender, MouseEventArgs e);
+
+    public class DragEventArgs : EventArgs
+    {
+        public DragEventArgs(object data, int keyState, int x, int y, DragDropEffects allowedEffect, DragDropEffects effect)
+        {
+            this.Data = data;
+            this.KeyState = keyState;
+            this.X = x;
+            this.Y = y;
+            this.AllowedEffect = allowedEffect;
+            this.Effect = effect;
+        }
+
+        public object Data { get; }
+        public int KeyState { get; }
+        public int X { get; }
+        public int Y { get; }
+        public DragDropEffects AllowedEffect { get; }
+        public DragDropEffects Effect { get; set; }
+    }
+
+    [Flags]
+    public enum DragDropEffects
+    {
+        Scroll = int.MinValue,
+        All = -2147483645,
+        None = 0,
+        Copy = 1,
+        Move = 2,
+        Link = 4
+    }
+
+    public class MouseEventArgs : EventArgs
+    {
+        public MouseEventArgs(MouseButtons button, int clicks, int x, int y, int delta)
+        {
+            this.Button = button;
+            this.Clicks = clicks;
+            this.X = x;
+            this.Y = y;
+            this.Delta = delta;
+        }
+
+        public MouseButtons Button { get; }
+        public int Clicks { get; }
+        public int X { get; }
+        public int Y { get; }
+        public int Delta { get; }
+    }
+
+    [Flags]
+    public enum MouseButtons
+    {
+        None = 0,
+        Left = 1048576,
+        Right = 2097152,
+        Middle = 4194304,
+        XButton1 = 8388608,
+        XButton2 = 16777216
     }
 }

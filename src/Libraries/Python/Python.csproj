@@ -5,8 +5,9 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.Libraries.Python</RootNamespace>
     <AssemblyName>Reko.Libraries.Python</AssemblyName>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />

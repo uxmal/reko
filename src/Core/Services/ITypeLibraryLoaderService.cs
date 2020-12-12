@@ -93,7 +93,8 @@ namespace Reko.Core.Services
                 var ldrElement = cfgSvc.GetImageLoader(tlElement.Loader!);
                 if (ldrElement != null && !string.IsNullOrEmpty(ldrElement.TypeName)) 
                 {
-                    loaderType = Type.GetType(ldrElement.TypeName, false);
+                    var svc = services.RequireService<IPluginLoaderService>();
+                    loaderType = svc.GetType(ldrElement.TypeName);
                 }
                 if (loaderType == null)
                 {

@@ -5,8 +5,9 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.ImageLoaders.MachO</RootNamespace>
     <AssemblyName>Reko.ImageLoaders.MachO</AssemblyName>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />

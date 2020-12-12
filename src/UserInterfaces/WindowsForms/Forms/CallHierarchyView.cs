@@ -31,10 +31,11 @@ using Reko.Gui;
 using System.Collections;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.Gui.Controls;
+using Reko.Gui.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
 {
-    public partial class CallHierarchyView : UserControl
+    public partial class CallHierarchyView : UserControl, ICallHierarchyView
     {
         public CallHierarchyView()
         {
@@ -43,7 +44,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.DeleteButton = new ToolStripButtonWrapper(this.btnDelete);
         }
 
-        public IServiceProvider Services { get; internal set; }
+        public IServiceProvider Services { get; set; }
         public ITreeView CallTree { get; }
         public IButton DeleteButton { get; }
     }

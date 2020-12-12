@@ -39,9 +39,9 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
     {
 <for-each select="c:menu">
         <choose>
-			<when test="@type='ContextMenu'">	public readonly System.Windows.Forms.ContextMenu <value-of select="@id"/>;
+			<when test="@type='ContextMenu'">	public readonly System.Windows.Forms.ContextMenuStrip <value-of select="@id"/>;
 </when>
-			<when test="@type='MainMenu'">	public readonly System.Windows.Forms.MainMenu <value-of select="@id"/>;
+			<when test="@type='MainMenu'">	public readonly System.Windows.Forms.MenuStrip <value-of select="@id"/>;
 </when>
           <when test="@type='ToolStrip'">	public readonly System.Windows.Forms.ToolStrip <value-of select="@id"/>;
 </when>
@@ -91,25 +91,28 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
     <for-each select="c:menu">
 		<choose>
 			<when test="@container">
-			BuildMenu(sl<value-of select="@id"/>, mi<value-of select="@id"/>.MenuItems);
+			BuildMenu(sl<value-of select="@id"/>, mi<value-of select="@id"/>.DropDownItems);
 			</when>
       <when test="@type='ContextMenu'">
 				<call-template name="build-menu">
-					<with-param name="menuType" select="'System.Windows.Forms.ContextMenu'"/>
+          <with-param name="methodName" select="'BuildMenu'" />
+          <with-param name="menuType" select="'System.Windows.Forms.ContextMenuStrip'"/>
           <with-param name="menuName" select="@id"/>
-          <with-param name="itemCollectionName" select="'MenuItems'"/>
+          <with-param name="itemCollectionName" select="'Items'"/>
         </call-template>
-        this.<value-of select="@id"/>.Popup += subMenu_Popup;
+        this.<value-of select="@id"/>.Opening += ctxMenu_Popup;
       </when>
       <when test="@type='MainMenu'">
 				<call-template name="build-menu">
-					<with-param name="menuType" select="'System.Windows.Forms.MainMenu'"/>
+          <with-param name="methodName" select="'BuildMenu'" />
+          <with-param name="menuType" select="'System.Windows.Forms.MenuStrip'"/>
 					<with-param name="menuName" select="@id"/>
-          <with-param name="itemCollectionName" select="'MenuItems'"/>
+          <with-param name="itemCollectionName" select="'Items'"/>
         </call-template>
       </when>
       <when test="@type='ToolStrip'">
           <call-template name="build-menu">
+            <with-param name="methodName" select="'BuildToolMenu'" />
             <with-param name="menuType" select="'System.Windows.Forms.ToolStrip'"/>
             <with-param name="menuName" select="@id"/>
             <with-param name="itemCollectionName" select="'Items'"/>
@@ -119,7 +122,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 	</for-each>
 		}
 		
-		public override Menu GetMenu(int menuId)
+		public override MenuStrip GetMenu(int menuId)
 		{	<if test="count(c:menu[@type='MainMenu'])">
 			switch (menuId)
 			{<for-each select="c:menu[@type='MainMenu']">
@@ -129,7 +132,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 			
 		}
 		
-		public override ContextMenu GetContextMenu(int menuId)
+		public override ContextMenuStrip GetContextMenu(int menuId)
 		{
 			<if test="count(c:menu[@type='ContextMenu'])">
 			switch (menuId)
@@ -154,11 +157,12 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
   </template>
   
   <template name="build-menu">
+  <param name="methodName" />
 	<param name="menuType"/>
 	<param name="menuName"/>
     <param name="itemCollectionName"/>
 			this.<value-of select="$menuName"/> = new <value-of select="$menuType"/>();
-			BuildMenu(sl<value-of select="$menuName"/>, <value-of select="$menuName"/>.<value-of select="$itemCollectionName"/>);
+			<value-of select="$methodName"/>(sl<value-of select="$menuName"/>, <value-of select="$menuName"/>.<value-of select="$itemCollectionName"/>);
   </template>
   
   <template name="priority">

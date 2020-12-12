@@ -48,7 +48,8 @@ namespace Reko.UnitTests.Core.Configuration
         [Test]
         public void Rcfg_LoadOperatingEnvironment()
         {
-            var cfgSvc = new RekoConfigurationService(new ServiceContainer(), "reko.config", new RekoConfiguration_v1
+            var sc = new ServiceContainer();
+            var cfgSvc = new RekoConfigurationService(sc, "reko.config", new RekoConfiguration_v1
             {
                 Environments = new []
                 {

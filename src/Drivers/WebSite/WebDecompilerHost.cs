@@ -25,11 +25,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Web;
-using System.Web.UI.WebControls;
 
 namespace Reko.WebSite
 {
-	public class WebDecompilerHost : IDecompiledFileService
+#if WEB_FORMS
+    public class WebDecompilerHost : IDecompiledFileService
 	{
 		private StringWriter assembler;
 		private StringWriter writer; 
@@ -126,4 +126,5 @@ namespace Reko.WebSite
             throw new NotImplementedException();
         }
     }
+#endif
 }

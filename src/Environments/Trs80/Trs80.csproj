@@ -6,7 +6,8 @@
     <RootNamespace>Reko.Environments.Trs80</RootNamespace>
     <AssemblyName>Reko.Environments.Trs80</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Z80\Z80.csproj" />

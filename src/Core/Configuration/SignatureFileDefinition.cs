@@ -32,6 +32,6 @@ namespace Reko.Core.Configuration
 
         public string? Label { get; set; }
 
-        public string? Type { get; set; }
+        public string? TypeName { get; set; }
     }
 }

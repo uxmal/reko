@@ -1,2 +1,4 @@
+*.dll
 *.exe
-*.exe.config
+*.config
+*.json

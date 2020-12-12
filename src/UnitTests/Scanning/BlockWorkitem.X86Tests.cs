@@ -218,9 +218,9 @@ namespace Reko.UnitTests.Scanning
             var asm = new X86Assembler(arch, addr, new List<ImageSymbol>());
             scanner = new Mock<IScanner>();
             scanner.Setup(s => s.Services).Returns(sc);
+            this.state = arch.CreateProcessorState();
             m(asm);
             lr = asm.GetImage();
-            this.state = arch.CreateProcessorState();
             host = new RewriterHost(
                 asm.ImportReferences,
                 new Dictionary<string, FunctionType>

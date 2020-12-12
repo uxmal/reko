@@ -1,323 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{197A1FBD-B56C-4CB4-93DE-B908D63E52BA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
+    <UseWindowsForms>true</UseWindowsForms>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reko.WindowsItp</RootNamespace>
     <AssemblyName>Reko.WindowsItp</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;ARRAY_OPERANDS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|AnyCPU'">
-    <OutputPath>bin\UnixRelease\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <WarningLevel>4</WarningLevel>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ActiveControlForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ActiveControlForm.Designer.cs">
-      <DependentUpon>ActiveControlForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ByteMapDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ByteMapDialog.Designer.cs">
-      <DependentUpon>ByteMapDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DecoderPerformanceDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DecoderPerformanceDialog.Designer.cs">
-      <DependentUpon>DecoderPerformanceDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Decoders\Decoder.cs" />
-    <Compile Include="Decoders\DecoderBuilder.cs" />
-    <Compile Include="Decoders\Disassembler.cs" />
-    <Compile Include="Decoders\TestInstruction.cs" />
-    <Compile Include="DisassemblyControlForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DisassemblyControlForm.Designer.cs">
-      <DependentUpon>DisassemblyControlForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FakeConfigurationService.cs" />
-    <Compile Include="FakeDecompilerShellUiService.cs" />
-    <Compile Include="FakeSettingsService.cs" />
-    <Compile Include="FakeUiPreferencesService.cs" />
-    <Compile Include="ItpForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ItpForm.Designer.cs">
-      <DependentUpon>ItpForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MemoryControlDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MemoryControlDialog.Designer.cs">
-      <DependentUpon>MemoryControlDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProcedureOptionsDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProcedureOptionsDialog.Designer.cs">
-      <DependentUpon>ProcedureOptionsDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProcedurePropertiesDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProcedurePropertiesDialog.Designer.cs">
-      <DependentUpon>ProcedurePropertiesDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="ProjectBrowserDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProjectBrowserDialog.Designer.cs">
-      <DependentUpon>ProjectBrowserDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ActiveControlForm.resx">
-      <DependentUpon>ActiveControlForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DecoderPerformanceDialog.resx">
-      <DependentUpon>DecoderPerformanceDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DisassemblyControlForm.resx">
-      <DependentUpon>DisassemblyControlForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ItpForm.resx">
-      <DependentUpon>ItpForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MemoryControlDialog.resx">
-      <DependentUpon>MemoryControlDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProcedureOptionsDialog.resx">
-      <DependentUpon>ProcedureOptionsDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProcedurePropertiesDialog.resx">
-      <DependentUpon>ProcedurePropertiesDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProjectBrowserDialog.resx">
-      <DependentUpon>ProjectBrowserDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RewriterPerformanceDialog.resx">
-      <DependentUpon>RewriterPerformanceDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RtfDialog.resx">
-      <DependentUpon>RtfDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StructureFieldPerformanceDialog.resx">
-      <DependentUpon>StructureFieldPerformanceDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SuffixArrayPerformanceDialog.resx">
-      <DependentUpon>SuffixArrayPerformanceDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TextViewDialog.resx">
-      <DependentUpon>TextViewDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TreeViewDialog.resx">
-      <DependentUpon>TreeViewDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WebDialog.resx">
-      <DependentUpon>WebDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="RewriterPerformanceDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RewriterPerformanceDialog.Designer.cs">
-      <DependentUpon>RewriterPerformanceDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="RtfDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RtfDialog.Designer.cs">
-      <DependentUpon>RtfDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="StructureFieldPerformanceDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="StructureFieldPerformanceDialog.Designer.cs">
-      <DependentUpon>StructureFieldPerformanceDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SuffixArrayPerformanceDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SuffixArrayPerformanceDialog.Designer.cs">
-      <DependentUpon>SuffixArrayPerformanceDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TextViewDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TextViewDialog.Designer.cs">
-      <DependentUpon>TextViewDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TreeViewDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TreeViewDialog.Designer.cs">
-      <DependentUpon>TreeViewDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WebDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WebDialog.Designer.cs">
-      <DependentUpon>WebDialog.cs</DependentUpon>
-    </Compile>
+    <Reference Include="System.Resources.Extensions" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arch\Arm\Arm.csproj">
-      <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
-      <Name>Arm</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\PowerPC\PowerPC.csproj">
-      <Project>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</Project>
-      <Name>PowerPC</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\X86\X86.csproj">
-      <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
-      <Name>X86</Name>
     </ProjectReference>
     <ProjectReference Include="..\Decompiler\Decompiler.csproj">
-      <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
-      <Name>Decompiler</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Core.csproj">
-      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
-      <Name>Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\Windows\Windows.csproj">
-      <Project>{4A298321-9855-43DE-AA9C-79E4EFA0AE56}</Project>
-      <Name>Windows</Name>
     </ProjectReference>
     <ProjectReference Include="..\Gui\Gui.csproj">
-      <Project>{1ca14c64-92e8-452e-a380-637f3dbb4d28}</Project>
-      <Name>Gui</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\MzExe\MzExe.csproj">
-      <Project>{0A1B3397-06E3-4C23-A667-FCCC19DC7D12}</Project>
-      <Name>MzExe</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\OdbgScript\OdbgScript.csproj">
-      <Project>{2882376F-663A-4FC8-842C-B0300A6829E8}</Project>
-      <Name>OdbgScript</Name>
     </ProjectReference>
     <ProjectReference Include="..\UserInterfaces\WindowsForms\WindowsForms.csproj">
-      <Project>{60cc0c65-e629-4923-9112-2a46371c90af}</Project>
-      <Name>WindowsForms</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

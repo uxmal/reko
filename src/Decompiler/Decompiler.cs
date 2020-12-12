@@ -224,7 +224,8 @@ namespace Reko
             try
             {
                 //$TODO: should be in the config file, yeah.
-                var type = Type.GetType("Reko.ImageLoaders.OdbgScript.OllyLang,Reko.ImageLoaders.OdbgScript");
+                var svc = services.RequireService<IPluginLoaderService>();
+                var type = svc.GetType("Reko.ImageLoaders.OdbgScript.OllyLang,Reko.ImageLoaders.OdbgScript");
                 interpreter = (IScriptInterpreter)Activator.CreateInstance(type, services);
             }
             catch (Exception ex)

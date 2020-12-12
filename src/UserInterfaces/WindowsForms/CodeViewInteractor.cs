@@ -46,7 +46,6 @@ namespace Reko.UserInterfaces.WindowsForms
         private SortedList<Address, MixedCodeDataModel.DataItemNode> nodeByAddress;
         private NestedTextModel nestedTextModel;
         private GViewer gViewer;
-
         private DeclarationFormInteractor declarationFormInteractor;
 
         //private ImageSegment segment;
@@ -157,7 +156,7 @@ namespace Reko.UserInterfaces.WindowsForms
             uiSvc.SetContextMenu(this.gViewer, MenuIds.CtxCodeView);
             this.gViewer.MouseUp += GViewer_MouseUp;
             this.gViewer.DrawingPanel.MouseUp += GViewer_MouseUp;
-            var iViewer = (IViewer)gViewer;
+            var iViewer = (IViewer) gViewer;
             iViewer.MouseUp += IViewer_MouseUp;
             iViewer.MouseDown += IViewer_MouseDown;
 
@@ -348,7 +347,7 @@ namespace Reko.UserInterfaces.WindowsForms
             using (var g = codeView.CreateGraphics())
             {
                 var uiPreferences = services.RequireService<IUiPreferencesService>();
-                gViewer.Graph = CfgGraphGenerator.Generate(uiPreferences, proc, g, codeView.Font);
+                //gViewer.Graph = CfgGraphGenerator.Generate(uiPreferences, proc, g, codeView.Font);
             }
             codeView.Visible = false;
             gViewer.Visible = true;
@@ -357,7 +356,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void ViewCode()
         {
-            gViewer.Graph = null;
+            //gViewer.Graph = null;
             gViewer.Visible = false;
             codeView.Visible = true;
             codeView.BringToFront();
@@ -382,12 +381,12 @@ namespace Reko.UserInterfaces.WindowsForms
             Debug.Print("{0} {1:X} {2}", e.KeyCode, e.KeyValue, e.KeyData);
             if (e.KeyCode == Keys.Add || e.KeyCode == Keys.Oemplus)
             {
-                gViewer.ZoomF *= 1.2;
+                //gViewer.ZoomF *= 1.2;
                 e.Handled = true;
             }
             else if (e.KeyCode == Keys.Subtract || e.KeyCode == Keys.OemMinus)
             {
-                gViewer.ZoomF /= 1.2;
+                //gViewer.ZoomF /= 1.2;
                 e.Handled = true;
             }
         }

@@ -6,7 +6,8 @@
     <RootNamespace>Reko.Environments.Wii</RootNamespace>
     <AssemblyName>Reko.Environments.Wii</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\PowerPC\PowerPC.csproj" />

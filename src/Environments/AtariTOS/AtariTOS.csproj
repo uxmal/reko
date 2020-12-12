@@ -6,8 +6,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reko.Environments.AtariTOS</RootNamespace>
     <AssemblyName>Reko.Environments.AtariTOS</AssemblyName>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\M68k\M68k.csproj" />

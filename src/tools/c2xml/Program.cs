@@ -26,7 +26,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Xml;
 
@@ -49,16 +48,17 @@ Options:
   -d <dialect>     Dialect of C/C++ used to parse
 ";
 
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
             return new Program().Execute(args);
         }
 
         public int Execute(string [] args)
         {
-            TextReader input = Console.In;
+            TextReader input;
             Stream output = Console.OpenStandardOutput();
             var sc = new ServiceContainer();
+            sc.AddService(typeof(IPluginLoaderService), new PluginLoaderService());
             var rekoCfg = RekoConfigurationService.Load(sc);
             sc.AddService<IConfigurationService>(rekoCfg);
 
@@ -80,6 +80,7 @@ Options:
                     options["-a"]);
                 return -1;
             }
+            
             var envElem = rekoCfg.GetEnvironment(options["-e"].ToString());
             if (envElem == null)
             {
@@ -88,8 +89,8 @@ Options:
                    options["-e"]);
                 return -1;
             }
-
             var platform = envElem.Load(sc, arch);
+            
             try
             {
                 input = new StreamReader(options["<inputfile>"].ToString());
@@ -113,7 +114,7 @@ Options:
                 }
             }
             string dialect = null;
-            if (options.TryGetValue("-d", out var optDialect))
+            if (options.TryGetValue("-d", out var optDialect) && optDialect != null)
             {
                 dialect = (string) optDialect.Value;
             }

@@ -69,7 +69,7 @@ function(invoke_cmake name path build_dir)
 		list(APPEND CMAKE_ARGS "-DREKO_PATH=${REKO_PATH}")
 	endif()
 
-	if(REKO_PLATFORM)
+	if(WIN32 AND REKO_PLATFORM)
 		list(APPEND CMAKE_ARGS "-DREKO_PLATFORM=${REKO_PLATFORM}")
 		if(NOT IS_MSYS AND NOT MINGW)
 			if(REKO_PLATFORM STREQUAL "x86")

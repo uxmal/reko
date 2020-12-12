@@ -18,16 +18,13 @@
  */
 #endregion
 
-using Reko.Core.Assemblers;
+using Reko.Core.Services;
 using Reko.Core.Services;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -39,30 +36,30 @@ namespace Reko.Core.Configuration
     /// </summary>
     public interface IConfigurationService
     {
-        ICollection<LoaderDefinition> GetImageLoaders();
-        ICollection<ArchitectureDefinition> GetArchitectures();
-        ICollection<PlatformDefinition> GetEnvironments();
-        ICollection<SignatureFileDefinition> GetSignatureFiles();
-        ICollection<RawFileDefinition> GetRawFiles();
+         ICollection<LoaderDefinition> GetImageLoaders();
+         ICollection<ArchitectureDefinition> GetArchitectures();
+         ICollection<PlatformDefinition> GetEnvironments();
+         ICollection<SignatureFileDefinition> GetSignatureFiles();
+         ICollection<RawFileDefinition> GetRawFiles();
 
-        PlatformDefinition GetEnvironment(string envName);
-        IProcessorArchitecture? GetArchitecture(string archLabel);
+         PlatformDefinition GetEnvironment(string envName);
+         IProcessorArchitecture? GetArchitecture(string archLabel);
         IProcessorArchitecture? GetArchitecture(string archLabel, string? modelName);
         IProcessorArchitecture? GetArchitecture(string archLabel, Dictionary<string, object>? options);
 
-        ICollection<SymbolSourceDefinition> GetSymbolSources();
-        RawFileDefinition? GetRawFile(string rawFileFormat);
+         ICollection<SymbolSourceDefinition> GetSymbolSources();
+         RawFileDefinition? GetRawFile(string rawFileFormat);
 
         IEnumerable<UiStyleDefinition> GetDefaultPreferences();
 
-        /// <summary>
-        /// Given a relative path with respect to the installation directory, 
-        /// returns the absolute path.
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
+         /// <summary>
+         /// Given a relative path with respect to the installation directory, 
+         /// returns the absolute path.
+         /// </summary>
+         /// <param name="path"></param>
+         /// <returns></returns>
         string GetInstallationRelativePath(params string[] pathComponents);
-        LoaderDefinition? GetImageLoader(string loader);
+         LoaderDefinition? GetImageLoader(string loader);
     }
 
     public class RekoConfigurationService : IConfigurationService
@@ -114,7 +111,7 @@ namespace Reko.Core.Configuration
             {
                 Filename = sSig.Filename,
                 Label = sSig.Label,
-                Type = sSig.Type,
+                TypeName = sSig.TypeName,
             };
         }
 
@@ -290,22 +287,23 @@ namespace Reko.Core.Configuration
         /// <summary>
         /// Load the reko.config file.
         /// </summary>
+        /// <remarks>
+        /// For now, we assume the config file is called "reko.config" located in the same directory as the assembly we're executing.
+        /// It's possible that on Un*x systems, the Reko binary could be installed in /usr/bin, while 
+        /// </remarks>
         /// <returns></returns>
         public static RekoConfigurationService Load(IServiceProvider services)
         {
-            return Load(services, "reko.config");
-        }
-
-        public static RekoConfigurationService Load(IServiceProvider services, string configFileName)
-        {
+            string configFileName = "reko.config";
             var appDir = AppDomain.CurrentDomain.BaseDirectory;
             configFileName = Path.Combine(appDir, configFileName);
 
             using var stm = File.Open(configFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-            var ser = new XmlSerializer(typeof(RekoConfiguration_v1));
-            var sConfig = (RekoConfiguration_v1) ser.Deserialize(stm);
-            return new RekoConfigurationService(services, configFileName, sConfig);
-        }
+                var ser = new XmlSerializer(typeof(RekoConfiguration_v1));
+                var sConfig = (RekoConfiguration_v1)ser.Deserialize(stm);
+                var cfg = new RekoConfigurationService(services, configFileName, sConfig);
+                return cfg;
+            }
 
         private long ConvertNumber(string? sNumber)
         {
@@ -411,10 +409,11 @@ namespace Reko.Core.Configuration
         {
             var elem = GetArchitectures()
                 .Where(e => e.Name == archLabel).SingleOrDefault();
-            if (elem == null)
+            if (elem == null || elem.TypeName == null)
                 return null;
             options ??= new Dictionary<string, object>();
-            Type t = Type.GetType(elem.TypeName, false);
+            var svc = services.RequireService<IPluginLoaderService>();
+            var t = svc.GetType(elem.TypeName);
             if (t == null)
                 return null;
             var arch = (IProcessorArchitecture)Activator.CreateInstance(
@@ -425,7 +424,6 @@ namespace Reko.Core.Configuration
             arch.Description = elem.Description;
             return arch;
         }
-
 
         public PlatformDefinition GetEnvironment(string envName)
         {

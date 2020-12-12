@@ -72,6 +72,7 @@ namespace Reko.UnitTests.Loading
             listener = new Mock<DecompilerEventListener>();
             sc.AddService<IFileSystemService>(fsSvc.Object);
             sc.AddService<DecompilerEventListener>(listener.Object);
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
         }
 
         void Given_File(string name, byte[] content)

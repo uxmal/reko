@@ -6,7 +6,7 @@
         <var id="var.Core.TargetPath">../Core/$TargetDir$/Reko.Core.dll</var>
         <var id="var.Decompiler.ProjectDir">../Decompiler/</var>
         <var id="var.Decompiler.TargetPath">../Decompiler/$TargetDir$/Reko.dll</var>
-        <var id="var.Gui.TargetPath">../Gui/$TargetFwkDir$/Reko.Gui.dll</var>
+        <var id="var.Gui.TargetPath">../Gui/$TargetDir$/Reko.Gui.dll</var>
         <var id="var.CmdLine.TargetPath">../Drivers/CmdLine/$TargetDir_x64$/decompile.exe</var>
         <var id="var.WindowsDecompiler.ProjectDir">../Drivers/WindowsDecompiler/</var>
         <var id="var.WindowsDecompiler.TargetPath">../Drivers/WindowsDecompiler/$TargetDir_x64$/WindowsDecompiler.exe</var>
@@ -268,9 +268,9 @@
 
         <!-- External files -->
         <File Source="$(var.SolutionDir)..\external\Capstone\$(var.Platform)\capstone.dll" />
-        <File Source="$(var.WindowsForms.ProjectDir)bin\$(var.Configuration)\AutomaticGraphLayout.dll" />
-        <File Source="$(var.WindowsForms.ProjectDir)bin\$(var.Configuration)\AutomaticGraphLayout.Drawing.dll" />
-        <File Source="$(var.WindowsForms.ProjectDir)bin\$(var.Configuration)\Microsoft.Msagl.GraphViewerGdi.dll" />
+        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.dll" />
+        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.Drawing.dll" />
+        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Msagl.GraphViewerGdi.dll" />
         <File Source="$(var.CmdLine.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\K4os.Compression.LZ4.dll" />
         
         <File Source="$(var.SolutionDir)..\external\reactos\coredll.def" nuget_target="c:" />

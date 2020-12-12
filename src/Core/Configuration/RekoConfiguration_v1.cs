@@ -273,7 +273,7 @@ namespace Reko.Core.Configuration
         public string? Label;
 
         [XmlAttribute("Type")]
-        public string? Type;
+        public string? TypeName;
     }
 
     public partial class RekoUiPreferences

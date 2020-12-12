@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using Reko.Gui;
-using ContextMenu = System.Windows.Forms.ContextMenu;
+using ContextMenuStrip = System.Windows.Forms.ContextMenuStrip;
 using Form = System.Windows.Forms.Form;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 namespace Reko.WindowsItp

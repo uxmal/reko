@@ -39,10 +39,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public event EventHandler AfterSelect;
         public event EventHandler<Gui.Controls.TreeViewEventArgs> AfterExpand;
         public event EventHandler<Gui.Controls.TreeViewEventArgs> BeforeExpand;
-        public event DragEventHandler DragEnter;
-        public event DragEventHandler DragOver;
-        public event DragEventHandler DragDrop;
-        public event MouseEventHandler MouseWheel;
+        public event Gui.Controls.DragEventHandler DragEnter;
+        public event Gui.Controls.DragEventHandler DragOver;
+        public event Gui.Controls.DragEventHandler DragDrop;
+        public event Gui.Controls.MouseEventHandler MouseWheel;
         public event EventHandler DragLeave;
 
         private readonly TreeView treeView;
@@ -65,7 +65,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         }
 
 
-        public object ContextMenu { get { return treeView.ContextMenu; } set { treeView.ContextMenu = (ContextMenu) value; } }
+        public object ContextMenuStrip { get { return treeView.ContextMenuStrip; } set { treeView.ContextMenuStrip = (ContextMenuStrip) value; } }
         public bool Focused { get { return treeView.Focused; } } 
         public ITreeNodeCollection Nodes { get; private set; }
         public bool ShowLines { get { return treeView.ShowLines; } set { treeView.ShowLines = value; } }
@@ -99,14 +99,20 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             this.BeforeExpand?.Invoke(this, new Gui.Controls.TreeViewEventArgs((ITreeNode) e.Node));
         }
 
-        void treeView_DragDrop(object sender, DragEventArgs e)
+        void treeView_DragDrop(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            DragDrop?.Invoke(this, e);
+            DragDrop?.Invoke(this, new Gui.Controls.DragEventArgs(
+                e.Data, e.KeyState, e.X, e.Y,
+                (Gui.Controls.DragDropEffects) e.AllowedEffect,
+                (Gui.Controls.DragDropEffects) e.Effect));
         }
 
-        void treeView_DragOver(object sender, DragEventArgs e)
+        void treeView_DragOver(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            DragOver?.Invoke(this, e);
+            DragOver?.Invoke(this, new Gui.Controls.DragEventArgs(
+                e.Data, e.KeyState, e.X, e.Y,
+                (Gui.Controls.DragDropEffects) e.AllowedEffect,
+                (Gui.Controls.DragDropEffects) e.Effect));
         }
 
         void treeView_DragLeave(object sender, EventArgs e)
@@ -114,17 +120,25 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             DragLeave?.Invoke(this, e);
         }
 
-        void treeView_DragEnter(object sender, DragEventArgs e)
+        void treeView_DragEnter(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            DragEnter?.Invoke(this, e);
+            DragEnter?.Invoke(this, new Gui.Controls.DragEventArgs(
+                e.Data, e.KeyState, e.X, e.Y,
+                (Gui.Controls.DragDropEffects) e.AllowedEffect,
+                (Gui.Controls.DragDropEffects) e.Effect));
         }
 
-        void treeView_MouseWheel(object sender, MouseEventArgs e)
+        void treeView_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            MouseWheel?.Invoke(this, e);
+            MouseWheel?.Invoke(this, new Gui.Controls.MouseEventArgs(
+                (Gui.Controls.MouseButtons) e.Button,
+                e.Clicks,
+                e.X,
+                e.Y,
+                e.Delta));
         }
 
-        private void TreeView_MouseDown(object sender, MouseEventArgs e)
+        private void TreeView_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             var pt = new Point(e.X, e.Y);
             var hit = treeView.HitTest(pt);
@@ -284,6 +298,27 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 return GetEnumerator();
             }
+        }
+
+        public static Gui.Controls.DragEventArgs Convert(System.Windows.Forms.DragEventArgs e)
+        {
+            return new Gui.Controls.DragEventArgs(
+                e.Data,
+                e.KeyState,
+                e.X,
+                e.Y,
+                (Gui.Controls.DragDropEffects) (int)e.AllowedEffect,
+                (Gui.Controls.DragDropEffects) (int)e.Effect);
+        }
+
+        public static Gui.Controls.MouseEventArgs Convert(System.Windows.Forms.MouseEventArgs e)
+        {
+            return new Gui.Controls.MouseEventArgs(
+                (Gui.Controls.MouseButtons) (int)e.Button,
+                e.Clicks,
+                e.X,
+                e.Y,
+                e.Delta);
         }
     }
 }

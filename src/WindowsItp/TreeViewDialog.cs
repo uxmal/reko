@@ -1,4 +1,4 @@
-﻿using Reko.Gui;
+using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
@@ -107,10 +107,11 @@ namespace Reko.WindowsItp
                 .Select(o =>
                 {
                     var tyName = ((DesignerAttribute) o.dd.First()).DesignerTypeName;
-                    var des = Type.GetType(tyName, true).CreateInstance<TreeNodeDesigner>();
+                    throw new NotImplementedException("Services need to be introduced into WindowsItp");
+                    //var des = Type.GetType(tyName, true).CreateInstance<TreeNodeDesigner>();
                     var node = wrappedTree.CreateNode();
-                    des.TreeNode = node;
-                    des.Initialize(o.o);
+                    //des.TreeNode = node;
+                    //des.Initialize(o.o);
                     return node;
                 })
                 .ToArray();

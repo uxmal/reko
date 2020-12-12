@@ -30,7 +30,7 @@ public const short LF_FACESIZE		   = 32;
 public const short MAX_PATH			   = 260; // max. length of full pathname
 public const short MAX_EXT			   = 256;
 public const short ANSI_CHARSET		   = 0;
-public const short FF_DONTCARE		   = 0; // Don't care or don't know.
+public const short FF_DONTCARE		   = 0; // Don//t care or don't know.
 public const short FW_DONTCARE		   = 0;
 public const short FW_NORMAL			   = 400;
 public const short LOGPIXELSY			   = 90; // Logical pixels/inch in Y
@@ -80,10 +80,10 @@ public const short BS_BITMAP				   = 0x80&
 public const short DM_SETDEFID			   = %WM_USER + 1
 
 public const short DS_3DLOOK				   = 0x0004&
-public const short DS_MODALFRAME			   = 0x0080& ' Can be combined with WS_CAPTION
+public const short DS_MODALFRAME			   = 0x0080& // Can be combined with WS_CAPTION
 public const short DS_NOFAILCREATE		   = 0x0010&
-public const short DS_SETFONT				   = 0x0040& ' User specified font for Dlg controls
-public const short DS_SETFOREGROUND		   = 0x0200& ' not in win3.1
+public const short DS_SETFONT				   = 0x0040& // User specified font for Dlg controls
+public const short DS_SETFOREGROUND		   = 0x0200& // not in win3.1
 
 public const short ES_LEFT		 = 0x0&
 public const short ES_MULTILINE	 = 0x4&
@@ -131,7 +131,7 @@ public const short IDTRYAGAIN					  = 10
 public const short IDCONTINUE					  = 11
 public const short SW_SHOW					  = 5
 
-'-----------------------------------------------------------------
+//-----------------------------------------------------------------
 public const short LOAD_LIBRARY_AS_DATAFILE  = 0x00000002
 public const short RT_CURSOR				   = 1
 public const short RT_BITMAP				   = 2
@@ -166,7 +166,7 @@ public const short HKEY_CURRENT_USER			 = 0x80000001
 public const short ERROR_SUCCESS				 = 0&
 
 
-'**************************************
+//**************************************
 
 public class LOGFONT
 
@@ -188,27 +188,27 @@ public class LOGFONT
 
 
 
-'**************************************
-'	PE format UDTs
-'**************************************
+//**************************************
+//	PE format UDTs
+//**************************************
 
-' For resource directory entries that have actual string names, the Name
-' field of the directory entry points to an object of the following type.
-' All of these string objects are stored together after the last resource
-' directory entry and before the first resource data object.  This minimizes
-' the impact of these variable length objects on the alignment of the fixed
-' size directory entry objects.
+// For resource directory entries that have actual string names, the Name
+// field of the directory entry points to an object of the following type.
+// All of these string objects are stored together after the last resource
+// directory entry and before the first resource data object.  This minimizes
+// the impact of these variable length objects on the alignment of the fixed
+// size directory entry objects.
 
 public class IMAGE_RESOURCE_DIRECTORY_STRING
 {
 	Length		As Word
-	NameString  As Byte 'ASCII string
+	NameString  As Byte //ASCII string
 }
 
 public class IMAGE_RESOURCE_DIRECTORY_ENTRY
 
-{	NameID  As Dword	'if bit 31 is set, the name is a string
-	Offset  As Dword	'if bit 31 is set, the data is a directory
+{	NameID  As Dword	//if bit 31 is set, the name is a string
+	Offset  As Dword	//if bit 31 is set, the data is a directory
 }
 
 public class IMAGE_RESOURCE_DIRECTORY
@@ -219,7 +219,7 @@ public class IMAGE_RESOURCE_DIRECTORY
 	MinorVersion		As Word
 	NumberOfNamedEntries As Word
 	NumberOfIdEntries   As Word
-	'DirectoryEntries(0) As IMAGE_RESOURCE_DIRECTORY_ENTRY
+	//DirectoryEntries(0) As IMAGE_RESOURCE_DIRECTORY_ENTRY
 }
 
 public class IMAGE_RESOURCE_DATA_ENTRY
@@ -235,8 +235,8 @@ public class SectionInfo
 
 {	SectName			As String * %SizeOfShortName
 	VirtSize			As Dword
-	dRVA				As Dword	'RVA to specific data within section
-	dSize				As Dword	'size of specific data within section
+	dRVA				As Dword	//RVA to specific data within section
+	dSize				As Dword	//size of specific data within section
 	RVA					As Dword
 	RamAdd				As Dword
 	SizeOfRawData		As Dword
@@ -245,59 +245,59 @@ public class SectionInfo
 	EndPos				As Dword
 	Delta				As Dword
 	Characteristics		As Dword
-} 'SectionHeader
+} //SectionHeader
 
 
-public class DosHeader Byte			'DOS stub in EXE file
+public class DosHeader Byte			//DOS stub in EXE file
 
-{	Magic		As Word		'Magic number
-	cBlp		As Word		'Bytes on last page of file
-	cP			As Word		'Pages in file
-	cRlc		As Word		'Relocations
-	cParHdr		As Word		'Size of header in paragraphs
-	MinAlloc	As Word		'Minimum extra paragraphs needed
-	MaxAlloc	As Word		'Maximum extra paragraphs needed
-	ss			As Word		'Initial (relative) SS value
-	sp			As Word		'Initial SP value
-	csum		As Word		'Checksum
-	ip			As Word		'Initial IP value
-	cs			As Word		'Initial (relative) CS value
-	lfaRlc		As Word		'File address of relocation table
-	OvNo		As Word		'Overlay number
-	Res4		As Asciz * 8 '4 Reserved words
-	OemId		As Word		'OEM identifier (for oeminfo)
-	OemInfo		As Word		'OEM information oemid specific
-	Res10		As Asciz * 20 '10 Reserved words
-	lfaNew		As Long  'always at 0x3C and contains the offset of PE signature
+{	Magic		As Word		//Magic number
+	cBlp		As Word		//Bytes on last page of file
+	cP			As Word		//Pages in file
+	cRlc		As Word		//Relocations
+	cParHdr		As Word		//Size of header in paragraphs
+	MinAlloc	As Word		//Minimum extra paragraphs needed
+	MaxAlloc	As Word		//Maximum extra paragraphs needed
+	ss			As Word		//Initial (relative) SS value
+	sp			As Word		//Initial SP value
+	csum		As Word		//Checksum
+	ip			As Word		//Initial IP value
+	cs			As Word		//Initial (relative) CS value
+	lfaRlc		As Word		//File address of relocation table
+	OvNo		As Word		//Overlay number
+	Res4		As Asciz * 8 //4 Reserved words
+	OemId		As Word		//OEM identifier (for oeminfo)
+	OemInfo		As Word		//OEM information oemid specific
+	Res10		As Asciz * 20 //10 Reserved words
+	lfaNew		As Long  //always at 0x3C and contains the offset of PE signature
 
-} 'DosHeader
+} //DosHeader
 
 
-public class PEHeader Byte  'officially "IMAGEFILEHEADER"
+public class PEHeader Byte  //officially "IMAGEFILEHEADER"
 
-{	Machine					As Word  'machine type
+{	Machine					As Word  //machine type
 	NumberOfSections		As Word
-	TimeDateStamp			As Dword 'Number of seconds since December 31st, 1969, at 4:00 P.M
+	TimeDateStamp			As Dword //Number of seconds since December 31st, 1969, at 4:00 P.M
 	PointerToSymbolTable	As Dword
 	NumberOfSymbols			As Dword
 	SizeOfOptionalHeader	As Word
 	Characteristics			As Word
-} 'PEHeader
+} //PEHeader
 
 
-public class DataDir			Byte	'IMAGE_DATA_DIRECTORY
+public class DataDir			Byte	//IMAGE_DATA_DIRECTORY
 
 {	RVA					As Dword
 	DirSize				As Dword
-} 'DataDir
+} //DataDir
 
 
-'Optional header format ("IMAGE_OPTIONAL_HEADER32").
-'this is not as "optional" as its name suggests
+//Optional header format ("IMAGE_OPTIONAL_HEADER32").
+//this is not as "optional" as its name suggests
 public class OptHeader			Byte
 
-{	'Standard fields.
-	Magic				As Word  '"Magic number": 0x10B = PE32, 0x20B = PE32+, 0x107 = ROM image
+{	//Standard fields.
+	Magic				As Word  //"Magic number": 0x10B = PE32, 0x20B = PE32+, 0x107 = ROM image
 	MajLinkerVer		As Byte
 	MinLinkerVer		As Byte
 	SizeOfCode			As Dword
@@ -307,10 +307,10 @@ public class OptHeader			Byte
 	BaseOfCode			As Dword
 	BaseOfData			As Dword
 
-	'NT additional fields.
-	ImageBase			As Dword 'defaults: DLL = 0x10000000, EXE = 0x400000
-	SectionAlign		As Dword 'must be => file alignment
-	FileAlign			As Dword 'alignment of raw data of sections. value should be a power of 2, => 512 and <= 64K ( default = 512)
+	//NT additional fields.
+	ImageBase			As Dword //defaults: DLL = 0x10000000, EXE = 0x400000
+	SectionAlign		As Dword //must be => file alignment
+	FileAlign			As Dword //alignment of raw data of sections. value should be a power of 2, => 512 and <= 64K ( default = 512)
 	MajOSVer			As Word
 	MinOSVer			As Word
 	MajImageVer			As Word
@@ -318,8 +318,8 @@ public class OptHeader			Byte
 	MajSubsysVer		As Word
 	MinSubsysVer		As Word
 	Win32VerValue		As Dword
-	SizeOfImage			As Dword 'size of image, including headers. must be a multiple of SectionAlign
-	SizeOfHeaders		As Dword 'size of: stub + PE Header + section headers rounded up to multiple of FileAlign
+	SizeOfImage			As Dword //size of image, including headers. must be a multiple of SectionAlign
+	SizeOfHeaders		As Dword //size of: stub + PE Header + section headers rounded up to multiple of FileAlign
 	CheckSum			As Dword
 	Subsystem			As Word
 	DllCharacteristics  As Word
@@ -327,20 +327,20 @@ public class OptHeader			Byte
 	SizeOfStackCommit   As Dword
 	SizeOfHeapReserve   As Dword
 	SizeOfHeapCommit	As Dword
-	LoaderFlags			As Dword 'obsolete
-	NumberOfRvaAndSizes As Dword 'Number of data-directory entries in the remainder of Optional Header
-	'DataDirectory( %NumberOfDirectoryEntries ) As DataDir
+	LoaderFlags			As Dword //obsolete
+	NumberOfRvaAndSizes As Dword //Number of data-directory entries in the remainder of Optional Header
+	//DataDirectory( %NumberOfDirectoryEntries ) As DataDir
 
-} 'OptionalHeader
+} //OptionalHeader
 
 
-'Section header format.
-'Borland calls its code sections "CODE", rather than ".text".
-public class SectionHeader		Byte	 ' _IMAGE_SECTION_HEADER
+//Section header format.
+//Borland calls its code sections "CODE", rather than ".text".
+public class SectionHeader		Byte	 // _IMAGE_SECTION_HEADER
 
 {	SectName			As String * %SizeOfShortName
 	VirtSize			As Dword
-	'VirtualAddress		 As Dword	 'changed from "RVA"
+	//VirtualAddress		 As Dword	 //changed from "RVA"
 	RVA					As Dword
 	SizeOfRawData		As Dword
 	PtrToRawData		As Dword
@@ -349,12 +349,12 @@ public class SectionHeader		Byte	 ' _IMAGE_SECTION_HEADER
 	NumberOfRelocations As Word
 	NumberOfLineNums	As Word
 	Characteristics		As Dword
-} 'SectionHeader
+} //SectionHeader
 
 
-'**************************************
-'	Declares
-'**************************************
+//**************************************
+//	Declares
+//**************************************
 Declare Function CreateFontIndirect Lib "GDI32.DLL" Alias "CreateFontIndirectA" (lpLogFont As LOGFONT) As Dword
 Declare Function DeleteObject Lib "GDI32.DLL" Alias "DeleteObject" (ByVal hObject As Dword) As Long
 Declare Function GetDeviceCaps Lib "GDI32.DLL" Alias "GetDeviceCaps" (ByVal hdc As Dword, ByVal nIndex As Long) As Long
@@ -372,6 +372,6 @@ Declare Function GetFocus Lib "USER32.DLL" Alias "GetFocus" () As Dword
 Declare Function ReleaseDC Lib "USER32.DLL" Alias "ReleaseDC" (ByVal hWnd As Dword, ByVal hDC As Dword) As Long
 Declare Function SetFocus Lib "USER32.DLL" Alias "SetFocus" (ByVal hWnd As Dword) As Long
 
-'**************************************
+//**************************************
 
 #endif

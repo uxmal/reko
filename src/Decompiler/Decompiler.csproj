@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>Reko</AssemblyName>
     <RootNamespace>Reko</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -10,6 +10,7 @@
     <LangVersion>8.0</LangVersion>
     <nullable>enable</nullable>
     <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8604;CS8610;CS8613;CS8618;CS8619;CS8623;CS8625</WarningsAsErrors>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Scanning\BapScanner.cs" />

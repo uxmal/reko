@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -126,7 +126,6 @@ namespace Reko.UserInterfaces.WindowsForms
         }
 
         static internal PointF PointF(P2 p) { return new PointF((float)p.X, (float)p.Y); }
-
 
     }
 

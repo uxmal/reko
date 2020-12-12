@@ -1409,7 +1409,7 @@ namespace Reko.UnitTests.Arch.Vax
             Given_Bytes(0x50, 0x8F, 0x43, 0x00, 0x00, 0x00, 0x57);	// movf	#4.76441477870438E-44,r7
             AssertCode(
                 "0|L--|00010000(7): 4 instructions",
-                "1|L--|r7 = 4.764415e-44F",
+                "1|L--|r7 = 4.8e-44F",
                 "2|L--|ZN = cond(r7)",
                 "3|L--|C = false",
                 "4|L--|V = false");

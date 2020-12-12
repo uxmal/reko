@@ -31,11 +31,8 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Memory;
 using Reko.Core.Services;
-using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
 

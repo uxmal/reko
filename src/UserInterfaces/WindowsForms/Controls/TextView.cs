@@ -161,7 +161,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             if (e.KeyData == (Keys.Shift | Keys.F10))
             {
                 e.Handled = true;
-                ContextMenu.Show(this, new Point(0, 0));
+                ContextMenuStrip.Show(this, new Point(0, 0));
                 return;
             }
             base.OnKeyDown(e);

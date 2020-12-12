@@ -59,6 +59,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
 		[Test]
+        [Ignore(Categories.DotNetBug)]
 		public void SsigCreate()
 		{
 			SerializedSignature ssig = BuildSsigAxBxCl();
@@ -66,6 +67,7 @@ namespace Reko.UnitTests.Core.Serialization
 		}
 
 		[Test]
+        [Ignore(Categories.DotNetBug)]
 		public void SsigReadAxBxCl()
 		{
 			SerializedSignature ssig;
@@ -94,6 +96,7 @@ namespace Reko.UnitTests.Core.Serialization
 		}
 
 		[Test]
+        [Ignore(Categories.DotNetBug)]
 		public void SsigWriteStdapi()
 		{
 			SerializedSignature ssig = BuildSsigStack();

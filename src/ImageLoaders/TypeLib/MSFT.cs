@@ -24,7 +24,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Decompiler.TypeLib
+namespace Reko.ImageLoaders.TypeLib
 {
     public class MSFT
     {

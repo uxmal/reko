@@ -105,7 +105,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 item.SubItems.Add(nam.ImportName);
                 break;
             }
-            item.SubItems[0].ForeColor = uiPrefsSvc.Styles["link"].Foreground.Color;
+            item.SubItems[0].ForeColor = ((SolidBrush)uiPrefsSvc.Styles["link"].Foreground).Color;
             return item;
         }
 

@@ -18,6 +18,7 @@
  */
 #endregion
 
+#if WEB_FORMS
 using Reko.Core;
 using Reko.Core.Serialization;
 using System;
@@ -188,3 +189,4 @@ namespace Reko.WebSite
 		}
 	}
 }
+#endif

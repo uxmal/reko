@@ -5,18 +5,34 @@
     <AssemblyName>Reko.Core</AssemblyName>
     <RootNamespace>Reko.Core</RootNamespace>
     <OutputType>Library</OutputType>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>8.0</LangVersion>
     <nullable>enable</nullable>
     <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8604;CS8610;CS8613;CS8618;CS8619;CS8623;CS8625</WarningsAsErrors>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;ALWAYS_SHOW_SIGIL</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UnixDebug|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Serialization\DecompilerDiscoveries.cs" />
     <Compile Remove="Serialization\EnumType_v1.cs" />
     <Compile Remove="Serialization\SignatureSerializer.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
+  </ItemGroup>
+  <!--
+  <ItemGroup>
+    <ToolProjects Include="../tools/xslt/xslt.csproj" />
+    <ToolProjects Include="../tools/c2xml/c2xml.csproj" />
+  </ItemGroup>
+  <Target Name="BuildTools" AfterTargets="AfterBuild">
+    <MSBuild Projects="$(ToolProjects)" Properties="Configuration=$(Configuration)" Targets="Build" />
+  </Target>
+  -->
 </Project>

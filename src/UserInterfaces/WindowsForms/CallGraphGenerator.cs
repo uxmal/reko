@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Microsoft.Msagl.Drawing;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -29,6 +28,8 @@ using C2 = Microsoft.Msagl.Drawing.Color;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
+    using Microsoft.Msagl.Drawing;
+
     public class CallGraphGenerator
     {
         private Graph graph;

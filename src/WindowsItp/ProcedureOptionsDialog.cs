@@ -1,6 +1,7 @@
-﻿using Reko.Core;
+using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Gui;
+using Reko.UserInterfaces.WindowsForms;
 using System;
 using System.Collections;
 using System.Collections.Generic;

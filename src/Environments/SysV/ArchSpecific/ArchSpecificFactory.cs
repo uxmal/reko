@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,12 +30,14 @@ namespace Reko.Environments.SysV.ArchSpecific
 {
     public class ArchSpecificFactory
     {
-        private IProcessorArchitecture arch;
+        private readonly IServiceProvider services;
+        private readonly IProcessorArchitecture arch;
         private CallingConvention ccX86;
         private CallingConvention ccRiscV;
 
-        public ArchSpecificFactory(IProcessorArchitecture arch)
+        public ArchSpecificFactory(IServiceProvider services, IProcessorArchitecture arch)
         {
+            this.services = services;
             this.arch = arch;
         }
 
@@ -76,8 +79,9 @@ namespace Reko.Environments.SysV.ArchSpecific
             case "x86-protected-32":
                 if (this.ccX86 == null)
                 {
-                    var t = Type.GetType("Reko.Arch.X86.X86CallingConvention,Reko.Arch.X86", true);
-                    this.ccX86 = (CallingConvention) Activator.CreateInstance(
+                    var svc = services.RequireService<IPluginLoaderService>();
+                    var t = svc.GetType("Reko.Arch.X86.X86CallingConvention,Reko.Arch.X86");
+                    this.ccX86 = (CallingConvention)Activator.CreateInstance(
                         t,
                         4,      // retAddressOnStack,
                         4,      // stackAlignment,

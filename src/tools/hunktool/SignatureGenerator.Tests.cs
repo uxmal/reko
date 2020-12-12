@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2020 John Källén.
  *
@@ -31,7 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace hunktool
+namespace Reko.Tools.HunkTool
 {
 	[TestFixture]
     public class SignatureGeneratorTests

@@ -3,9 +3,10 @@
 Custom target that copies outputs from Reko projects that are always
 loaded dynamically (using the services provided by IConfigurationService).
 -->
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
-  <Target Name="AfterBuild">
+<Project>
+  <Target Name="CopyAllTheFiles" AfterTargets="CopyFilesToOutputDirectory">
+    <Message Importance="high" Text="Copying configuration files @(ConfigurationFiles) to $(TargetDir)" />
+    <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />
     <Copy SourceFiles="@(DecompilerMetadata)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying OS/2 16-bit metadata files to $(TargetDir)os2-16" />
@@ -24,8 +25,6 @@ loaded dynamically (using the services provided by IConfigurationService).
     <Copy SourceFiles="@(OdbgScripts)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying external binaries to $(TargetDir)" />
     <Copy SourceFiles="@(ExternalComponents)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
-    <Message Importance="high" Text="Copying configuration files @(ConfigurationFiles) to $(TargetDir)" />
-    <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
   </Target>
 
 </Project>

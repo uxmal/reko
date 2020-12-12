@@ -29,6 +29,7 @@ using Reko.Gui;
 using Reko.Gui.Visualizers;
 using Reko.ImageLoaders.MzExe;
 using Reko.ImageLoaders.OdbgScript;
+using Reko.UserInterfaces.WindowsForms;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;

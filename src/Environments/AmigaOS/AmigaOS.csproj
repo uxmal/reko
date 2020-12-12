@@ -5,8 +5,9 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.Environments.AmigaOS</RootNamespace>
     <AssemblyName>Reko.Environments.AmigaOS</AssemblyName>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\M68k\M68k.csproj" />

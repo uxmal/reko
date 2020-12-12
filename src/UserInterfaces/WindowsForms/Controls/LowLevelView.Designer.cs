@@ -1,4 +1,4 @@
-﻿namespace Reko.UserInterfaces.WindowsForms.Controls
+namespace Reko.UserInterfaces.WindowsForms.Controls
 {
     partial class LowLevelView
     {
@@ -168,7 +168,7 @@
             this.memCtrl.Architecture = null;
             this.memCtrl.BytesPerRow = ((uint)(16u));
             this.memCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.memCtrl.Encoding = ((System.Text.Encoding)(resources.GetObject("memCtrl.Encoding")));
+            //this.memCtrl.Encoding = ((System.Text.Encoding)(resources.GetObject("memCtrl.Encoding")));
             this.memCtrl.ImageMap = null;
             this.memCtrl.Location = new System.Drawing.Point(0, 18);
             this.memCtrl.Name = "memCtrl";

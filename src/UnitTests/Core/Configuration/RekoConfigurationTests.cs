@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Core.Configuration
                     new SignatureFile_v1
                     {
                         Filename="IMAGE_FILE_MACHINE_I386.xml",
-                        Type ="Reko.Loading.UnpackerSignatureLoader,Reko"
+                        TypeName="Reko.Loading.UnpackerSignatureLoader,Reko"
                     }
                 },
                 Environments = new []

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2020 John Kï¿½llï¿½n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,22 +26,20 @@ using System.Windows.Forms;
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
 	/// <summary>
-	/// Extends MenuItems to contain a MenuCommand.
+	/// Extends ToolStripMenuItem to contain a MenuCommand.
 	/// </summary>
-	public class CommandMenuItem : MenuItem
+	public class CommandMenuItem : ToolStripMenuItem
 	{
 		public new event CommandMenuEventHandler Click;
 
 		private MenuCommand cmd;
 		private bool isDynamic;
 		private bool isTemp;
-        private int imgIndex;
-        private string imgKey;
 
 		public CommandMenuItem()
 		{
-            this.imgIndex = -1;
-            this.imgKey = null;
+            this.ImageIndex = -1;
+            this.ImageKey = null;
 		}
 
 		public CommandMenuItem(string text)
@@ -64,18 +62,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 			cmd = new MenuCommand(null, new CommandID(cmdSet, cmdId));
 		}
 
-        public int ImageIndex
-        {
-            get { return imgIndex; }
-            set { imgIndex = value; }
-        }
-
-        public string ImageKey
-        {
-            get { return imgKey; }
-            set { imgKey = value; }
-        }
-
 		public bool IsDynamic
 		{
 			get { return isDynamic; }
@@ -87,8 +73,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 			get { return isTemp; }
 			set { isTemp = value; }
 		}
-
-        public string ToolTipText { get; set; }
 
         public override string ToString()
         {

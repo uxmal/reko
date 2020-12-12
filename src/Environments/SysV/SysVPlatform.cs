@@ -24,6 +24,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Environments.SysV.ArchSpecific;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace Reko.Environments.SysV
             : base(services, arch, "elf-neutral")
         {
             LoadTrashedRegisters();
-            archSpecificFactory = new ArchSpecificFactory(arch);
+            archSpecificFactory = new ArchSpecificFactory(services, arch);
         }
 
         public override string DefaultCallingConvention
@@ -59,13 +60,13 @@ namespace Reko.Environments.SysV
         {
             var Architecture = this.Architecture;
             return archSpecificFactory.CreateCallingConverion(Architecture);
-        }
+                }
 
 
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
-            return this.trashedRegs.ToHashSet();
+            return new HashSet<RegisterStorage>(this.trashedRegs);
         }
 
         public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
@@ -98,16 +99,16 @@ namespace Reko.Environments.SysV
             var target = finder(Architecture, addrInstr, rw, host);
             if (target is ProcedureConstant pc)
             {
-                return pc.Procedure;
+                    return pc.Procedure;
             }
             else if (target is Address addrTarget)
-            {
-                var arch = this.Architecture;
-                ProcedureBase proc = host.GetImportedProcedure(arch, addrTarget, addrInstr);
-                if (proc != null)
-                    return proc;
-                return host.GetInterceptedCall(arch, addrTarget);
-            }
+                {
+            var arch = this.Architecture;
+            ProcedureBase proc = host.GetImportedProcedure(arch, addrTarget, addrInstr);
+            if (proc != null)
+                return proc;
+            return host.GetInterceptedCall(arch, addrTarget);
+        }
             else
                 return null;
         }

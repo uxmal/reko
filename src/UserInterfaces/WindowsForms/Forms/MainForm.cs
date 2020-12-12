@@ -56,11 +56,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.Menu = dm.MainMenu;
             this.dm.MainToolbar.Text = "";
             this.dm.MainToolbar.ImageList = this.ImageList;
             this.dm.ProjectBrowserToolbar.ImageList = this.ImageList;
             this.AddToolbar(dm.MainToolbar);
+            this.AddMenuStrip(dm.MainMenu);
             this.AddProjectBrowserToolbar(dm.ProjectBrowserToolbar);
 
             this.ToolBar.ItemClicked += toolBar_ItemClicked;
@@ -105,6 +105,12 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             get { return Text; }
             set { Text = value; }
+        }
+
+        public void AddMenuStrip(MenuStrip menu)
+        {
+            this.Controls.Add(menu);
+            this.MainMenuStrip = menu;
         }
 
         public void AddToolbar(ToolStrip toolBar)

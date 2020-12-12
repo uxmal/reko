@@ -423,7 +423,8 @@ namespace Reko.Loading
         /// </summary>
         public static T CreateImageLoader<T>(IServiceProvider services, string typeName, string filename, byte[] bytes)
         {
-            Type t = Type.GetType(typeName);
+            var svc = services.RequireService<IPluginLoaderService>();
+            var t = svc.GetType(typeName);
             if (t == null)
                 throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
             return (T) Activator.CreateInstance(t, services, filename, bytes);
@@ -432,12 +433,13 @@ namespace Reko.Loading
         /// <summary>
         /// Creates an <see cref="ImageLoader"/> that wraps an existing ImageLoader.
         /// </summary>
-        public static T CreateOuterImageLoader<T>(string typeName, ImageLoader innerLoader)
+        public static T CreateOuterImageLoader<T>(IServiceProvider services, string typeName, ImageLoader innerLoader)
         {
-            Type t = Type.GetType(typeName);
-            if (t == null)
+            var svc = services.RequireService<IPluginLoaderService>();
+            var type = svc.GetType(typeName);
+            if (type == null)
                 throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
-            return (T) Activator.CreateInstance(t, innerLoader);
+            return (T) Activator.CreateInstance(type, innerLoader);
         }
 
         /// <summary>

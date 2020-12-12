@@ -5,11 +5,11 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.ImageLoaders.Coff</RootNamespace>
     <AssemblyName>Reko.ImageLoaders.Coff</AssemblyName>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
     <ProjectReference Include="..\..\Core\Core.csproj" />
   </ItemGroup>
 </Project>

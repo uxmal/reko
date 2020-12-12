@@ -223,9 +223,9 @@
 
         <!-- External files -->
 <File Source="$(var.SolutionDir)..\external\Capstone\$(var.Platform)\capstone.dll" />
-<File Source="$(var.WindowsForms.ProjectDir)bin\$(var.Configuration)\AutomaticGraphLayout.dll" />
-<File Source="$(var.WindowsForms.ProjectDir)bin\$(var.Configuration)\AutomaticGraphLayout.Drawing.dll" />
-<File Source="$(var.WindowsForms.ProjectDir)bin\$(var.Configuration)\Microsoft.Msagl.GraphViewerGdi.dll" />
+<File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.dll" />
+<File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.Drawing.dll" />
+<File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Msagl.GraphViewerGdi.dll" />
 <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\K4os.Compression.LZ4.dll" />
         
 <File Source="$(var.SolutionDir)..\external\reactos\coredll.def" />

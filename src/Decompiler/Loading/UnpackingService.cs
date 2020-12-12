@@ -60,11 +60,13 @@ namespace Reko.Loading
                 return;
             foreach (SignatureFileDefinition sfe in cfgSvc.GetSignatureFiles())
             {
-                if (sfe.Filename is null)
+                if (sfe.Filename is null || sfe.TypeName is null)
                     continue;
                 try
                 {
-                    var ldr = CreateSignatureLoader(sfe);
+                    var ldr = CreateSignatureLoader(sfe.TypeName);
+                    if (ldr is null)
+                        continue;
                     Signatures.AddRange(ldr.Load(cfgSvc.GetInstallationRelativePath(sfe.Filename)));
                 }
                 catch (Exception ex)
@@ -72,15 +74,17 @@ namespace Reko.Loading
                     Services.RequireService<DecompilerEventListener>().Error(
                         new NullCodeLocation(sfe.Filename),
                         ex,
-                        "Unable to load signatures from {0} with loader {1}.", sfe.Filename, sfe.Type!);
+                        "Unable to load signatures from {0} with loader {1}.", sfe.Filename, sfe.TypeName);
                 }
             }
         }
 
         // This method is virtual so that it can be overload in unit tests.
-        public virtual SignatureLoader CreateSignatureLoader(SignatureFileDefinition sfe)
+        public virtual SignatureLoader CreateSignatureLoader(string typeName)
         {
-            Type t = Type.GetType(sfe.Type, true);
+            var svc = Services.RequireService<IPluginLoaderService>();
+            Type t = svc.GetType(typeName);
+
             var ldr = (SignatureLoader)Activator.CreateInstance(t);
             return ldr;
         }
@@ -111,7 +115,7 @@ namespace Reko.Loading
             {
                 return loader;
             }
-            var unpacker = Loader.CreateOuterImageLoader<ImageLoader>(le.TypeName, loader);
+            var unpacker = Loader.CreateOuterImageLoader<ImageLoader>(Services, le.TypeName, loader);
             if (unpacker == null)
             {
                 listener.Warn("Unable to create loader for '{0}'.", signature.Name);

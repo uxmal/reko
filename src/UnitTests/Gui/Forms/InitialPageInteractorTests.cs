@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Gui.Forms
     {
         private Mock<IMainForm> form;
 		private TestInitialPageInteractor i;
-        private FakeUiService uiSvc;
+        private Mock<IDecompilerShellUiService> uiSvc;
         private ServiceContainer sc;
         private Mock<IProjectBrowserService> browserSvc;
         private Mock<ILoader> loader;
@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Gui.Forms
             loader = new Mock<ILoader>();
             dec = new Mock<IDecompiler>();
             sc = new ServiceContainer();
-            uiSvc = new FakeShellUiService();
+            uiSvc = new Mock<IDecompilerShellUiService>();
             host = new Mock<IDecompiledFileService>();
             memSvc = new Mock<ILowLevelViewService>();
             fsSvc = new Mock<IFileSystemService>();
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Gui.Forms
 
             browserSvc = new Mock<IProjectBrowserService>();
 
-            sc.AddService<IDecompilerUIService>(uiSvc);
+            sc.AddService<IDecompilerUIService>(uiSvc.Object);
             sc.AddService<IDecompilerShellUiService>(new Mock<IDecompilerShellUiService>().Object);
             sc.AddService<IDecompilerService>(new DecompilerService());
             sc.AddService<IWorkerDialogService>(new FakeWorkerDialogService());

@@ -86,7 +86,7 @@ namespace Reko.Scanning
             var format = ReadVarargsFormat(addrInstr, callee, sig);
             if (format == null)
                 return false;
-            var argTypes = ParseVarargsFormat(addrInstr, chr, format);
+            var argTypes = ParseVarargsFormat(chr.VarargsParserClass!, addrInstr, chr, format);
             this.expandedSig = ReplaceVarargs(program.Platform, sig, argTypes);
             return true;
         }
@@ -165,11 +165,13 @@ namespace Reko.Scanning
         }
 
         private IEnumerable<DataType> ParseVarargsFormat(
+            string varargsParserTypename,
             Address addrInstr,
             ProcedureCharacteristics chr,
             string format)
         {
-            var type = Type.GetType(chr.VarargsParserClass);
+            var svc = services.RequireService<IPluginLoaderService>();
+            var type = svc.GetType(varargsParserTypename);
             if (type == null)
                 throw new TypeLoadException(
                     string.Format(

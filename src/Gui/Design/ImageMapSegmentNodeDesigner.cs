@@ -86,7 +86,7 @@ namespace Reko.Gui.Design
             var program = GetProgram();
             if (program == null)
                 return;
-            var eps = program.EntryPoints.Keys.ToSet();
+            var eps = program.EntryPoints.Keys.ToHashSet();
             var globals = GetGlobalVariables(program.ImageMap, segment);
             var desDictionary =
                 globals.Concat(

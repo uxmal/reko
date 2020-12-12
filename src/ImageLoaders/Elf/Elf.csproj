@@ -5,9 +5,10 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.ImageLoaders.Elf</RootNamespace>
     <AssemblyName>Reko.ImageLoaders.Elf</AssemblyName>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>8.0</LangVersion>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Relocator.cs" />

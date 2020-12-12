@@ -615,8 +615,8 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_trunc_l_d()
         {
             AssertCode(0x46200049, // trunc.l.d $f1,$f0
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = f0",
+            "0|L--|00100000(4): 2 instructions",
+            "1|L--|v2 = f0",
                 "2|L--|f1 = CONVERT(trunc(v2), real64, int64)");
         }
 
@@ -625,7 +625,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             Given_Mips64_Architecture();
             AssertCode(0xf7a10018, // sdc1 $f1,24(sp)
-                "0|L--|00100000(4): 1 instructions",
+            "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem0[sp + 0x18<64>:word64] = f1");
         }
 
@@ -633,16 +633,16 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_mov_d()
         {
             AssertCode(0x46200806, // mov.d $f0,$f1
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|f0 = f1");
+            "0|L--|00100000(4): 1 instructions",
+            "1|L--|f0 = f1");
         }
 
         [Test]
         public void MipsRw_div_d()
         {
             AssertCode(0x46220003, // div.d $f0,$f0,$f2
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|f0_f1 = f0_f1 / f2_f3");
+            "0|L--|00100000(4): 1 instructions",
+            "1|L--|f0_f1 = f0_f1 / f2_f3");
         }
 
         [Test]
@@ -650,16 +650,16 @@ namespace Reko.UnitTests.Arch.Mips
         {
             Given_Mips64_Architecture();
             AssertCode(0x00221016, // dsrlv v0, v0, at
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = r2 >>u r1");
+            "0|L--|00100000(4): 1 instructions",
+            "1|L--|r2 = r2 >>u r1");
         }
 
         [Test]
         public void MipsRw_lwc1()
         {
             AssertCode(0xc4240000, // lwc1 $f4,0(at)
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|f4 = Mem0[r1:word32]");
+            "0|L--|00100000(4): 1 instructions",
+            "1|L--|f4 = Mem0[r1:word32]");
         }
 
         [Test]

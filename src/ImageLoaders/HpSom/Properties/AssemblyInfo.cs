@@ -6,8 +6,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("HP SOM")]
-[assembly: AssemblyDescription("Reko decompiler support for the HP SOM binary file format.")]
+[assembly: AssemblyTitle("HPSom")]
+[assembly: AssemblyDescription("Reko decompiler support for HP SOM binary file format.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany(AssemblyMetadata.Company)]
 [assembly: AssemblyProduct("Elf")]

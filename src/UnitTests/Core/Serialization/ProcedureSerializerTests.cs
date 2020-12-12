@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 XmlTextWriter x = new FilteringXmlWriter(fut.TextWriter);
                 x.Formatting = Formatting.Indented;
-                XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(ssig.GetType());
+                XmlSerializer ser = SerializedLibrary.CreateSerializer_v5(ssig.GetType());
                 ser.Serialize(x, ssig);
                 fut.AssertFilesEqual();
             }
@@ -90,6 +90,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
+        [Ignore(Categories.DotNetBug)]
         public void X86ps_SerializeAxBxCl()
         {
             Given_ProcedureSerializer("stdapi");
@@ -98,6 +99,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
+        [Ignore(Categories.DotNetBug)]
         public void X86ps_SerializeSequence()
         {
             Identifier seq = new Identifier("es_bx", PrimitiveType.Word32,

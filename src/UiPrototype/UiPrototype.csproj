@@ -1,201 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{D4EA1BCE-B797-4249-BCE0-77B7CA6FC776}</ProjectGuid>
     <OutputType>WinExe</OutputType>
+    <UseWindowsForms>true</UseWindowsForms>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Decompiler.UiPrototype</RootNamespace>
     <AssemblyName>Decompiler.UiPrototype</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>7</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x86'">
-    <OutputPath>bin\x86\UnixRelease\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixRelease|x64'">
-    <OutputPath>bin\x64\UnixRelease\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="WindowsFormsIntegration" />
+    <PackageReference Include="System.Resources.Extensions" Version="4.7.1" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ui\MainFormInteractor.cs" />
-    <Compile Include="WinForms\DataType.cs" />
-    <Compile Include="WinForms\Project.cs" />
-    <Compile Include="WinForms\StringSearcher.cs" />
-    <Compile Include="WinForms\SearchHit.cs" />
-    <Compile Include="WinForms\PatternSearchDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WinForms\PatternSearchDialog.Designer.cs">
-      <DependentUpon>PatternSearchDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WinForms\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WinForms\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WinForms\MemoryView.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WinForms\MemoryView.Designer.cs">
-      <DependentUpon>MemoryView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WinForms\MemoryTyperControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="WinForms\MemoryTyperControl.Designer.cs">
-      <DependentUpon>MemoryTyperControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WinForms\TypeDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WinForms\TypeDialog.Designer.cs">
-      <DependentUpon>TypeDialog.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="WinForms\PatternSearchDialog.resx">
-      <DependentUpon>PatternSearchDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WinForms\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WinForms\MemoryView.resx">
-      <DependentUpon>MemoryView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <EmbeddedResource Include="WinForms\MemoryTyperControl.resx">
-      <DependentUpon>MemoryTyperControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WinForms\TypeDialog.resx">
-      <DependentUpon>TypeDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\Back.bmp" />
-    <Content Include="Resources\Forward.bmp" />
-    <Content Include="Resources\Forward.ico" />
-    <Content Include="Resources\Binary.ico" />
-    <Content Include="Resources\Data.ico" />
-    <Content Include="Resources\Back.ico" />
-    <Content Include="Resources\Header.ico" />
-    <Content Include="Resources\Code.ico" />
+    <Reference Include="System.Resources.Extensions" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
-      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
-      <Name>Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Decompiler\Decompiler.csproj">
-      <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
-      <Name>Decompiler</Name>
     </ProjectReference>
     <ProjectReference Include="..\Gui\Gui.csproj">
-      <Project>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</Project>
-      <Name>Gui</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

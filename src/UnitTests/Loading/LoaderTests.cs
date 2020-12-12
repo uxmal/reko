@@ -51,6 +51,7 @@ namespace Reko.UnitTests.Loading
             signatureFiles = new List<SignatureFileDefinition>();
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<IConfigurationService>(cfgSvc.Object);
+            sc.AddService<IPluginLoaderService>(new PluginLoaderService());
             cfgSvc.Setup(d => d.GetSignatureFiles()).Returns(signatureFiles);
         }
 
@@ -222,7 +223,7 @@ namespace Reko.UnitTests.Loading
             cfgSvc.Setup(s => s.GetArchitecture("mmix")).Returns(arch.Object);
             cfgSvc.Setup(s => s.GetEnvironment(It.IsAny<string>())).Returns(openv.Object);
             cfgSvc.Setup(s => s.GetImageLoader("zlorgo")).Returns(new LoaderDefinition {
-                TypeName = typeof(NullImageLoader).FullName,
+                TypeName = $"{typeof(NullImageLoader).FullName},{typeof(NullImageLoader).Assembly.FullName}",
             });
             openv.Setup(o => o.Load(
                 It.IsAny<IServiceProvider>(),

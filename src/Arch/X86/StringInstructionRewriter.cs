@@ -72,7 +72,7 @@ namespace Reko.Arch.X86
 				case Mnemonic.movs:
 				case Mnemonic.movsb:
 				{
-					Identifier tmp = frame.CreateTemporary(instrCur.dataWidth);
+					Identifier tmp = emitter.Frame.CreateTemporary(instrCur.dataWidth);
 					emitter.Assign(tmp, MemSi());
 					emitter.Store(MemDi(), tmp);
 					incSi = true;
@@ -83,7 +83,7 @@ namespace Reko.Arch.X86
 				case Mnemonic.insb:
 				{
 					Identifier regDX = orw.AluRegister(Registers.edx, instrCur.addrWidth);
-					emitter.Store(MemDi(), emitter.PseudoProc("__in", instrCur.dataWidth, regDX));
+					emitter.Store(MemDi(), host.PseudoProc("__in", instrCur.dataWidth, regDX));
 					incDi = true;
 					break;
 				}

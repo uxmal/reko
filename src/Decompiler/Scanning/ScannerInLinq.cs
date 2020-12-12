@@ -203,7 +203,7 @@ namespace Reko.Scanning
             while (e.MoveNext())
             {
                 var next = e.Current;
-                yield return (prev!, item, next!);
+                yield return (prev!, item, next);
                 prev = item;
                 item = next;
             }
@@ -409,10 +409,10 @@ namespace Reko.Scanning
         {
             // Find transitive closure of bad instructions 
 
-            var bad_blocks =
+            var bad_blocks = new HashSet<Address>(
                 (from i in sr.FlatInstructions.Values
                  where i.type == (ushort)InstrClass.Invalid
-                 select i.block_id).ToHashSet();
+                 select i.block_id));
             var new_bad = bad_blocks;
             var preds = sr.FlatEdges.ToLookup(e => e.second);
             //Debug.Print("Bad {0}",
@@ -428,14 +428,13 @@ namespace Reko.Scanning
                 // that already are known to be "bad", but that don't
                 // end in a call.
                 //$TODO: delay slots. @#$#@
-                new_bad = new_bad
+                new_bad = new HashSet<Address>(new_bad
                     .SelectMany(bad => preds[bad])
-                    .Where(l => 
+                    .Where(l =>
                         !bad_blocks.Contains(l.first)
                         &&
                         !BlockEndsWithCall(blocks[l.first]))
-                    .Select(l => l.first)
-                    .ToHashSet();
+                    .Select(l => l.first));
 
                 if (new_bad.Count == 0)
                     break;

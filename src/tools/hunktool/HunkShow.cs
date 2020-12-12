@@ -8,7 +8,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
-namespace hunktool
+namespace Reko.Tools.HunkTool
 {
     public class HunkShow
     {

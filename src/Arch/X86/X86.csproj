@@ -5,10 +5,11 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Reko.Arch.X86</AssemblyName>
     <RootNamespace>Reko.Arch.X86</RootNamespace>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>8.0</LangVersion>
     <nullable>enable</nullable>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="StringInstructionRewriter.cs" />

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
 * Copyright (C) 1999-2020 John Källén.
 *
@@ -37,6 +37,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             InitializeComponent();
         }
 
-        public Image Image { get { return imageCtrl.Image; } set { imageCtrl.Image = value; } }
+        public object Image { get { return imageCtrl.Image; } set { imageCtrl.Image = (Image) value; } }
     }
 }

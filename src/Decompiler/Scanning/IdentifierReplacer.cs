@@ -95,8 +95,8 @@ namespace Reko.Scanning
         public Identifier VisitSequenceStorage(SequenceStorage seq)
         {
             var idSeq = id;
-            var newElems = seq.Elements.Select(e => e.Accept(this).Storage);
-            return frame.EnsureSequence(idSeq.DataType, newElems.ToArray());
+            var newElems = seq.Elements.Select(e => e.Accept(this).Storage).ToArray();
+            return frame.EnsureSequence(idSeq.DataType, newElems);
         }
 
         public Identifier VisitOutArgumentStorage(OutArgumentStorage ost)

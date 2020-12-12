@@ -29,6 +29,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System;
+using Microsoft.Msagl.GraphViewerGdi;
 using C2 = Microsoft.Msagl.Drawing.Color;
 
 namespace Reko.UserInterfaces.WindowsForms
@@ -110,6 +111,7 @@ namespace Reko.UserInterfaces.WindowsForms
             }
             else
             {
+                node.Attr.FillColor = new C2(0xFF, 0xE0, 0xE0);
                 node.Label.FontName = "Lucida Console";
                 node.Label.FontSize = 10f;
                 node.Attr.FillColor = fillColor;

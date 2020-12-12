@@ -197,7 +197,7 @@ namespace Reko.Scanning
         /// </summary>
         public List<Cluster> FindClusters()
         {
-            var nodesLeft = sr.ICFG.Nodes.ToHashSet();
+            var nodesLeft = new HashSet<RtlBlock>(sr.ICFG.Nodes);
             var clusters = new List<Cluster>();
             int totalCount = nodesLeft.Count;
             if (totalCount > 0)
