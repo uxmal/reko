@@ -2,9 +2,9 @@ name: Reko
 
 on:
   push:
-    branches: [ netStandard-ex2 ]
+    branches: [ netStandard ]
   pull_request:
-    branches: [ netStandard-ex2 ]
+    branches: [ netStandard ]
 
 jobs:
   build:
