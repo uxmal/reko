@@ -399,10 +399,6 @@ namespace Reko.Core
     [Designer("Reko.Gui.Design.ArchitectureDesigner,Reko.Gui")]
     public abstract class ProcessorArchitecture : IProcessorArchitecture
     {
-        public const string OptionModel = "Model";
-        public const string OptionEndianness = "Endianness";
-        public const string OptionWordSize = "WordSize";
-
         private RegisterStorage? regStack;
 
         /// <summary>

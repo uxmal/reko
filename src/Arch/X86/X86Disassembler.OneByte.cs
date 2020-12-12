@@ -57,7 +57,7 @@ namespace Reko.Arch.X86
 				d[0x0E] = Amd64Instr(
                     Instr(Mnemonic.push, s1),
                     s_invalid);
-				d[0x0F] = new AdditionalByteDecoder(decoders0F);
+				d[0x0F] = instr286(new AdditionalByteDecoder(decoders0F));
 
 				// 10
 				d[0x10] = Instr(Mnemonic.adc, Eb,Gb);
@@ -172,30 +172,30 @@ namespace Reko.Arch.X86
 
 				// 60
 				d[0x60] = Amd64Instr(
-                    Instr(Mnemonic.pusha),
+                    Instr186(Mnemonic.pusha),
                     s_invalid);
                 d[0x61] = Amd64Instr(
-                    Instr(Mnemonic.popa),
+                    Instr186(Mnemonic.popa),
                     s_invalid);
                 d[0x62] = Amd64Instr(
-                    Instr(Mnemonic.bound, Gv,Mv),
+                    Instr186(Mnemonic.bound, Gv,Mv),
                     new EvexDecoder(this.s_decoders0F, s_decoders0F38, s_decoders0F3A));
                 d[0x63] = Amd64Instr(
-    				Instr(Mnemonic.arpl, Ew,rw),
+    				Instr286(Mnemonic.arpl, Ew,rw),
     				Instr(Mnemonic.movsxd, Gv,Ed));
-				d[0x64] = new SegmentOverrideDecoder(4);
-				d[0x65] = new SegmentOverrideDecoder(5);
-				d[0x66] = new ChangeDataWidth(this.rootDecoders);
-				d[0x67] = new ChangeAddressWidth(this.rootDecoders);
+				d[0x64] = Instr386(new SegmentOverrideDecoder(4));
+				d[0x65] = Instr386(new SegmentOverrideDecoder(5));
+				d[0x66] = Instr386(new ChangeDataWidth(this.rootDecoders));
+				d[0x67] = Instr386(new ChangeAddressWidth(this.rootDecoders));
 
-				d[0x68] = Instr(Mnemonic.push, Iz);
-				d[0x69] = Instr(Mnemonic.imul, Gv,Ev,Iz);
-				d[0x6A] = Instr(Mnemonic.push, Ib);
-				d[0x6B] = Instr(Mnemonic.imul, Gv,Ev,Ib);
-				d[0x6C] = Instr(Mnemonic.insb, b);
-				d[0x6D] = Instr(Mnemonic.ins);
-				d[0x6E] = Instr(Mnemonic.outsb, b);
-				d[0x6F] = Instr(Mnemonic.outs);
+				d[0x68] = Instr186(Mnemonic.push, Iz);
+				d[0x69] = Instr186(Mnemonic.imul, Gv,Ev,Iz);
+				d[0x6A] = Instr186(Mnemonic.push, Ib);
+				d[0x6B] = Instr186(Mnemonic.imul, Gv,Ev,Ib);
+				d[0x6C] = Instr186(Mnemonic.insb, b);
+				d[0x6D] = Instr186(Mnemonic.ins);
+				d[0x6E] = Instr186(Mnemonic.outsb, b);
+				d[0x6F] = Instr186(Mnemonic.outs);
 
 				// 70
 				d[0x70] = Instr(Mnemonic.jo, InstrClass.Transfer|InstrClass.Conditional, Jb);
@@ -243,7 +243,7 @@ namespace Reko.Arch.X86
 				d[0x90] = new PrefixedDecoder(
                     iclass:InstrClass.Linear|InstrClass.Padding,
                     dec:Instr(Mnemonic.nop),
-                    dec66:Instr(Mnemonic.nop),
+                    dec66:Instr386(Mnemonic.nop),
                     decF3:Instr(Mnemonic.pause));
 				d[0x91] = Instr(Mnemonic.xchg, rv,rAX);
 				d[0x92] = Instr(Mnemonic.xchg, rv,rAX);
@@ -309,8 +309,8 @@ namespace Reko.Arch.X86
 				d[0xBF] = Instr(Mnemonic.mov, rv,Iv);
 
 				// C0
-				d[0xC0] = new GroupDecoder(Grp2, Eb,Ib);
-				d[0xC1] = new GroupDecoder(Grp2, Ev,Ib);
+				d[0xC0] = Instr286(new GroupDecoder(Grp2, Eb,Ib));
+				d[0xC1] = Instr286(new GroupDecoder(Grp2, Ev,Ib));
 				d[0xC2] = Instr(Mnemonic.ret, InstrClass.Transfer, Iw);
 				d[0xC3] = Instr(Mnemonic.ret, InstrClass.Transfer);
 				d[0xC4] = Amd64Instr(
@@ -326,8 +326,8 @@ namespace Reko.Arch.X86
                     Instr(Mnemonic.mov, Ev,Iz),
                     new GroupDecoder(Grp11z));
 
-                d[0xC8] = Instr(Mnemonic.enter, Iw, Ib);
-				d[0xC9] = Instr(Mnemonic.leave);
+                d[0xC8] = Instr186(Mnemonic.enter, Iw, Ib);
+				d[0xC9] = Instr186(Mnemonic.leave);
 				d[0xCA] = Instr(Mnemonic.retf, InstrClass.Transfer, Iw);
 				d[0xCB] = Instr(Mnemonic.retf, InstrClass.Transfer);
 				d[0xCC] = Instr(Mnemonic.@int, InstrClass.Linear|InstrClass.Padding, n3);

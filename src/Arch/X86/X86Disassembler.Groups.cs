@@ -29,12 +29,12 @@ namespace Reko.Arch.X86
             private void CreateGroupDecoders()
             {
                 Grp1[0] = Instr(Mnemonic.add);
-                Grp1[1] = Instr(Mnemonic.or);
+                Grp1[1] = Instr386(Mnemonic.or);
                 Grp1[2] = Instr(Mnemonic.adc);
                 Grp1[3] = Instr(Mnemonic.sbb);
-                Grp1[4] = Instr(Mnemonic.and);
+                Grp1[4] = Instr386(Mnemonic.and);
                 Grp1[5] = Instr(Mnemonic.sub);
-                Grp1[6] = Instr(Mnemonic.xor);
+                Grp1[6] = Instr386(Mnemonic.xor);
                 Grp1[7] = Instr(Mnemonic.cmp);
 
                 Grp1A[0] = Instr(Mnemonic.pop, Ev);

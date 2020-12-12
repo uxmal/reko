@@ -1163,10 +1163,6 @@ namespace Reko.Arch.X86
             return new InstructionDecoder(op, iclass, mutators);
         }
 
-        public static Alternative64Decoder Amd64Instr(Decoder legacy, Decoder amd64)
-        {
-            return new Alternative64Decoder(legacy, amd64);
-        }
 
 
 

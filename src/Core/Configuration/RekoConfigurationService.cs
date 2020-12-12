@@ -403,7 +403,7 @@ namespace Reko.Core.Configuration
                     }
                 }
             }
-            options[ProcessorArchitecture.OptionModel] = modelName;
+            options[ProcessorOption.Model] = modelName;
             return GetArchitecture(archLabel, options);
         }
 

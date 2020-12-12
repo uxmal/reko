@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         {
             this.arch = new PaRiscArchitecture(new ServiceContainer(), "paRisc", new Dictionary<string, object>
             {
-                { ProcessorArchitecture.OptionWordSize, "64" }
+                { ProcessorOption.WordSize, "64" }
             });
             var i = DisassembleHexBytes(hexBytes);
             Assert.AreEqual(sExp, i.ToString());

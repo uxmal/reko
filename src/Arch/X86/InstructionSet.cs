@@ -64,23 +64,30 @@ namespace Reko.Arch.X86
             private readonly Decoder[] s_fpuDecoders;
             private Func<Mnemonic, InstrClass, Mutator<X86Disassembler>[], Decoder> rexInstr;
             private Func<Mnemonic, InstrClass, Mutator<X86Disassembler>[], Decoder> instr186;
-            private Func<Mnemonic, InstrClass, Mutator<X86Disassembler>[], Decoder> instr286;
-            private Func<Mnemonic, InstrClass, Mutator<X86Disassembler>[], Decoder> instr386;
+            private Func<Decoder, Decoder> instr286;
+            private Func<Decoder, Decoder> instr386;
             private Func<Mnemonic, InstrClass, Mutator<X86Disassembler>[], Decoder> instr486;
             private Func<Decoder> x87instr;
+            private Func<Decoder, Decoder, Decoder> amd64instr;
 
             public static InstructionSet Create(
+                bool x86_64,
                 bool useRexPrefix,
                 Dictionary<string, object> options)
             {
                 var isa = new InstructionSet();
+
+                if (x86_64)
+                    isa.amd64instr = (x86, x64) => x64;
+                else
+                    isa.amd64instr = (x86, x64) => x86;
 
                 if (useRexPrefix)
                     isa.rexInstr = isa.MakeRexDecoder;
                 else
                     isa.rexInstr = X86Disassembler.Instr;
 
-                if (options.TryGetValue("ISA", out var oIsa))
+                if (options.TryGetValue(ProcessorOption.InstructionSet, out var oIsa))
                 {
                     switch (oIsa.ToString())
                     {
@@ -129,11 +136,13 @@ namespace Reko.Arch.X86
                 this.s_fpuDecoders = CreateFpuDecoders();
                 x87instr = () => new X87Decoder(s_fpuDecoders);
                 instr186 = Instr;
-                instr286 = Instr;
-                instr386 = Instr;
+                instr286 = Identity;
+                instr386 = Identity;
                 instr486 = Instr;
             }
 #nullable enable
+
+            private static Decoder Identity(Decoder d) => d;
 
             private AddrWidthDecoder AddrWidthDependent(
                 Decoder? bit16 = null,
@@ -174,14 +183,34 @@ namespace Reko.Arch.X86
                 return s_invalid;
             }
 
+            private static Decoder MakeInvalid(Decoder decoder)
+            {
+                return s_invalid;
+            }
+
+            public Decoder Instr186(Mnemonic mnemonic, params Mutator<X86Disassembler>[] mutators)
+            {
+                return instr186(mnemonic, Core.InstrClass.Linear, mutators);
+            }
+
             public Decoder Instr286(Mnemonic mnemonic, params Mutator<X86Disassembler>[] mutators)
             {
-                return instr286(mnemonic, Core.InstrClass.Linear, mutators);
+                return instr286(Instr(mnemonic, Core.InstrClass.Linear, mutators));
+            }
+
+            public Decoder Instr286(Decoder decoder)
+            {
+                return instr286(decoder);
             }
 
             public Decoder Instr386(Mnemonic mnemonic, params Mutator<X86Disassembler>[] mutators)
             {
-                return instr386(mnemonic, Core.InstrClass.Linear, mutators);
+                return instr386(Instr(mnemonic, Core.InstrClass.Linear, mutators));
+            }
+
+            public Decoder Instr386(Decoder decoder)
+            {
+                return instr386(decoder);
             }
 
             public Decoder Instr486(Mnemonic mnemonic, params Mutator<X86Disassembler>[] mutators)
@@ -224,6 +253,12 @@ namespace Reko.Arch.X86
             {
                 return x87instr();
             }
+
+            public Decoder Amd64Instr(Decoder legacy, Decoder amd64)
+            {
+                return amd64instr(legacy, amd64);
+            }
+
 
             static InstructionSet()
             {

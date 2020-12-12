@@ -234,6 +234,7 @@
     <Compile Include="Arch\V850\V850DisassemblerTests.cs" />
     <Compile Include="Arch\WE32100\WE32100DisassemblerTests.cs" />
     <Compile Include="Arch\X86\NasmSyntaxTests.cs" />
+    <Compile Include="Arch\X86\X86Disassembler_8086_Tests.cs" />
     <Compile Include="Arch\XCore\XCoreDisassemblerTests.cs" />
     <Compile Include="Arch\XCore\XCoreRewriterTests.cs" />
     <Compile Include="Arch\zSeries\zSeriesDisassemblerTests.cs" />

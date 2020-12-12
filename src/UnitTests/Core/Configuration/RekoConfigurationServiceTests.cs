@@ -166,7 +166,7 @@ namespace Reko.UnitTests.Core.Configuration
                                 Name = "Fake-2000",
                                 Options = new[]
                                 {
-                                    new ListOption_v1 { Text=ProcessorArchitecture.OptionWordSize, Value="32" }
+                                    new ListOption_v1 { Text=ProcessorOption.WordSize, Value="32" }
                                 }
                             }
                         }
@@ -176,8 +176,8 @@ namespace Reko.UnitTests.Core.Configuration
 
             var arch = cfgSvc.GetArchitecture("fake", "Fake-2000");
             var options = arch.SaveUserOptions();
-            Assert.AreEqual("Fake-2000", options[ProcessorArchitecture.OptionModel]);
-            Assert.AreEqual("32", options[ProcessorArchitecture.OptionWordSize]);
+            Assert.AreEqual("Fake-2000", options[ProcessorOption.Model]);
+            Assert.AreEqual("32", options[ProcessorOption.WordSize]);
         }
 
         [Test]
@@ -197,7 +197,7 @@ namespace Reko.UnitTests.Core.Configuration
                                 Name = "Fake-2000",
                                 Options = new[]
                                 {
-                                    new ListOption_v1 { Text=ProcessorArchitecture.OptionWordSize, Value="32" }
+                                    new ListOption_v1 { Text=ProcessorOption.WordSize, Value="32" }
                                 }
                             }
                         }

@@ -172,7 +172,7 @@ namespace Reko.Arch.X86
 
         public override X86Disassembler.Decoder[] CreateRootDecoders(Dictionary<string, object> options)
         {
-            var isa = X86Disassembler.InstructionSet.Create(false, options);
+            var isa = X86Disassembler.InstructionSet.Create(false, false, options);
             return isa.CreateRootDecoders();
         }
 
@@ -256,7 +256,7 @@ namespace Reko.Arch.X86
 
         public override X86Disassembler.Decoder[] CreateRootDecoders(Dictionary<string, object> options)
         {
-            var isa = X86Disassembler.InstructionSet.Create(false, options);
+            var isa = X86Disassembler.InstructionSet.Create(false, false, options);
             return isa.CreateRootDecoders();
         }
 
@@ -369,7 +369,7 @@ namespace Reko.Arch.X86
 
         public override Decoder[] CreateRootDecoders(Dictionary<string, object> options)
         {
-            var isa = X86Disassembler.InstructionSet.Create(false, options);
+            var isa = X86Disassembler.InstructionSet.Create(false, false, options);
             return isa.CreateRootDecoders();
         }
 
@@ -455,7 +455,7 @@ namespace Reko.Arch.X86
 
         public override Decoder[] CreateRootDecoders(Dictionary<string, object> options)
         {
-            var isa = X86Disassembler.InstructionSet.Create(true, options);
+            var isa = X86Disassembler.InstructionSet.Create(true, true, options);
             return isa.CreateRootDecoders();
         }
 
