@@ -1,0 +1,20 @@
+// yyerror
+// Return size: 0
+define yyerror
+yyerror_entry:
+	r11 = fp
+	// succ:  l400000000002FF80
+l400000000002FF80:
+yyerror_exit:
+
+
+// yyparse
+// Return size: 0
+define yyparse
+yyparse_entry:
+	r11 = fp
+	// succ:  l4000000000037B00
+l4000000000037B00:
+yyparse_exit:
+
+

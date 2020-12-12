@@ -1,0 +1,480 @@
+// assign_in_env
+// Return size: 0
+define assign_in_env
+assign_in_env_entry:
+	r11 = fp
+	// succ:  l400000000006E100
+l400000000006E100:
+assign_in_env_exit:
+
+
+// reinit_special_variables
+// Return size: 0
+define reinit_special_variables
+reinit_special_variables_entry:
+	r11 = fp
+	// succ:  l400000000006E7C0
+l400000000006E7C0:
+reinit_special_variables_exit:
+
+
+// set_pipestatus_array
+// Return size: 0
+define set_pipestatus_array
+set_pipestatus_array_entry:
+	r11 = fp
+	// succ:  l400000000006E880
+l400000000006E880:
+set_pipestatus_array_exit:
+
+
+// save_pipestatus_array
+// Return size: 0
+define save_pipestatus_array
+save_pipestatus_array_entry:
+	r11 = fp
+	// succ:  l400000000006ED80
+l400000000006ED80:
+save_pipestatus_array_exit:
+
+
+// restore_pipestatus_array
+// Return size: 0
+define restore_pipestatus_array
+restore_pipestatus_array_entry:
+	r11 = fp
+	// succ:  l400000000006EE80
+l400000000006EE80:
+restore_pipestatus_array_exit:
+
+
+// set_pipestatus_from_exit
+// Return size: 0
+define set_pipestatus_from_exit
+set_pipestatus_from_exit_entry:
+	r11 = fp
+	// succ:  l400000000006EF80
+l400000000006EF80:
+set_pipestatus_from_exit_exit:
+
+
+// copy_word
+// Return size: 0
+define copy_word
+copy_word_entry:
+	r11 = fp
+	// succ:  l400000000006EFC0
+l400000000006EFC0:
+copy_word_exit:
+
+
+// copy_word_list
+// Return size: 0
+define copy_word_list
+copy_word_list_entry:
+	r11 = fp
+	// succ:  l400000000006F1C0
+l400000000006F1C0:
+copy_word_list_exit:
+
+
+// copy_redirect
+// Return size: 0
+define copy_redirect
+copy_redirect_entry:
+	r11 = fp
+	// succ:  l400000000006F300
+l400000000006F300:
+copy_redirect_exit:
+
+
+// copy_redirects
+// Return size: 0
+define copy_redirects
+copy_redirects_entry:
+	r11 = fp
+	// succ:  l400000000006F580
+l400000000006F580:
+copy_redirects_exit:
+
+
+// copy_command
+// Return size: 0
+define copy_command
+copy_command_entry:
+	r11 = fp
+	// succ:  l400000000006F6C0
+l400000000006F6C0:
+copy_command_exit:
+
+
+// copy_function_def_contents
+// Return size: 0
+define copy_function_def_contents
+copy_function_def_contents_entry:
+	r11 = fp
+	// succ:  l4000000000070440
+l4000000000070440:
+copy_function_def_contents_exit:
+
+
+// copy_function_def
+// Return size: 0
+define copy_function_def
+copy_function_def_entry:
+	r11 = fp
+	// succ:  l4000000000070580
+l4000000000070580:
+copy_function_def_exit:
+
+
+// get_name_for_error
+// Return size: 0
+define get_name_for_error
+get_name_for_error_entry:
+	r11 = fp
+	// succ:  l4000000000070600
+l4000000000070600:
+get_name_for_error_exit:
+
+
+// programming_error
+// Return size: 0
+define programming_error
+programming_error_entry:
+	r11 = fp
+	// succ:  l4000000000070A80
+l4000000000070A80:
+programming_error_exit:
+
+
+// report_error
+// Return size: 0
+define report_error
+report_error_entry:
+	r11 = fp
+	// succ:  l4000000000070D40
+l4000000000070D40:
+report_error_exit:
+
+
+// file_error
+// Return size: 0
+define file_error
+file_error_entry:
+	r11 = fp
+	// succ:  l4000000000070EC0
+l4000000000070EC0:
+file_error_exit:
+
+
+// fatal_error
+// Return size: 0
+define fatal_error
+fatal_error_entry:
+	r11 = fp
+	// succ:  l4000000000070F80
+l4000000000070F80:
+fatal_error_exit:
+
+
+// internal_error
+// Return size: 0
+define internal_error
+internal_error_entry:
+	r11 = fp
+	// succ:  l4000000000071080
+l4000000000071080:
+internal_error_exit:
+
+
+// internal_warning
+// Return size: 0
+define internal_warning
+internal_warning_entry:
+	r11 = fp
+	// succ:  l4000000000071180
+l4000000000071180:
+internal_warning_exit:
+
+
+// sys_error
+// Return size: 0
+define sys_error
+sys_error_entry:
+	r11 = fp
+	// succ:  l40000000000712C0
+l40000000000712C0:
+sys_error_exit:
+
+
+// parser_error
+// Return size: 0
+define parser_error
+parser_error_entry:
+	r11 = fp
+	// succ:  l4000000000071400
+l4000000000071400:
+parser_error_exit:
+
+
+// command_error
+// Return size: 0
+define command_error
+command_error_entry:
+	r11 = fp
+	// succ:  l4000000000071980
+l4000000000071980:
+command_error_exit:
+
+
+// command_errstr
+// Return size: 0
+define command_errstr
+command_errstr_entry:
+	r11 = fp
+	// succ:  l4000000000071A40
+l4000000000071A40:
+command_errstr_exit:
+
+
+// err_badarraysub
+// Return size: 0
+define err_badarraysub
+err_badarraysub_entry:
+	r11 = fp
+	// succ:  l4000000000071AC0
+l4000000000071AC0:
+err_badarraysub_exit:
+
+
+// err_unboundvar
+// Return size: 0
+define err_unboundvar
+err_unboundvar_entry:
+	r11 = fp
+	// succ:  l4000000000071B80
+l4000000000071B80:
+err_unboundvar_exit:
+
+
+// err_readonly
+// Return size: 0
+define err_readonly
+err_readonly_entry:
+	r11 = fp
+	// succ:  l4000000000071C00
+l4000000000071C00:
+err_readonly_exit:
+
+
+// evalexp
+// Return size: 0
+define evalexp
+evalexp_entry:
+	r11 = fp
+	// succ:  l4000000000076080
+l4000000000076080:
+evalexp_exit:
+
+
+// find_flag
+// Return size: 0
+define find_flag
+find_flag_entry:
+	r11 = fp
+	// succ:  l4000000000076340
+l4000000000076340:
+find_flag_exit:
+
+
+// change_flag
+// Return size: 0
+define change_flag
+change_flag_entry:
+	r11 = fp
+	// succ:  l4000000000076480
+l4000000000076480:
+change_flag_exit:
+
+
+// which_set_flags
+// Return size: 0
+define which_set_flags
+which_set_flags_entry:
+	r11 = fp
+	// succ:  l4000000000076800
+l4000000000076800:
+which_set_flags_exit:
+
+
+// reset_shell_flags
+// Return size: 0
+define reset_shell_flags
+reset_shell_flags_entry:
+	r11 = fp
+	// succ:  l40000000000769C0
+l40000000000769C0:
+reset_shell_flags_exit:
+
+
+// initialize_flags
+// Return size: 0
+define initialize_flags
+initialize_flags_entry:
+	r11 = fp
+	// succ:  l4000000000076B40
+l4000000000076B40:
+initialize_flags_exit:
+
+
+// init_job_stats
+// Return size: 0
+define init_job_stats
+init_job_stats_entry:
+	r11 = fp
+	// succ:  l400000000007AE80
+l400000000007AE80:
+init_job_stats_exit:
+
+
+// stop_making_children
+// Return size: 0
+define stop_making_children
+stop_making_children_entry:
+	r11 = fp
+	// succ:  l400000000007AF80
+l400000000007AF80:
+stop_making_children_exit:
+
+
+// cleanup_the_pipeline
+// Return size: 0
+define cleanup_the_pipeline
+cleanup_the_pipeline_entry:
+	r11 = fp
+	// succ:  l400000000007AFC0
+l400000000007AFC0:
+cleanup_the_pipeline_exit:
+
+
+// save_pipeline
+// Return size: 0
+define save_pipeline
+save_pipeline_entry:
+	r11 = fp
+	// succ:  l400000000007B100
+l400000000007B100:
+save_pipeline_exit:
+
+
+// restore_pipeline
+// Return size: 0
+define restore_pipeline
+restore_pipeline_entry:
+	r11 = fp
+	// succ:  l400000000007B180
+l400000000007B180:
+restore_pipeline_exit:
+
+
+// start_pipeline
+// Return size: 0
+define start_pipeline
+start_pipeline_entry:
+	r11 = fp
+	// succ:  l400000000007B240
+l400000000007B240:
+start_pipeline_exit:
+
+
+// making_children
+// Return size: 0
+define making_children
+making_children_entry:
+	r11 = fp
+	// succ:  l400000000007B380
+l400000000007B380:
+making_children_exit:
+
+
+// delete_job
+// Return size: 0
+define delete_job
+delete_job_entry:
+	r11 = fp
+	// succ:  l400000000007B400
+l400000000007B400:
+delete_job_exit:
+
+
+// nohup_job
+// Return size: 0
+define nohup_job
+nohup_job_entry:
+	r11 = fp
+	// succ:  l400000000007BE00
+l400000000007BE00:
+nohup_job_exit:
+
+
+// append_process
+// Return size: 0
+define append_process
+append_process_entry:
+	r11 = fp
+	// succ:  l400000000007BE80
+l400000000007BE80:
+append_process_exit:
+
+
+// terminate_current_pipeline
+// Return size: 0
+define terminate_current_pipeline
+terminate_current_pipeline_entry:
+	r11 = fp
+	// succ:  l400000000007C000
+l400000000007C000:
+terminate_current_pipeline_exit:
+
+
+// terminate_stopped_jobs
+// Return size: 0
+define terminate_stopped_jobs
+terminate_stopped_jobs_entry:
+	r11 = fp
+	// succ:  l400000000007C0C0
+l400000000007C0C0:
+terminate_stopped_jobs_exit:
+
+
+// hangup_all_jobs
+// Return size: 0
+define hangup_all_jobs
+hangup_all_jobs_entry:
+	r11 = fp
+	// succ:  l400000000007C240
+l400000000007C240:
+hangup_all_jobs_exit:
+
+
+// kill_current_pipeline
+// Return size: 0
+define kill_current_pipeline
+kill_current_pipeline_entry:
+	r11 = fp
+	// succ:  l400000000007C400
+l400000000007C400:
+kill_current_pipeline_exit:
+
+
+// get_job_by_pid
+// Return size: 0
+define get_job_by_pid
+get_job_by_pid_entry:
+	r11 = fp
+	// succ:  l400000000007C440
+l400000000007C440:
+get_job_by_pid_exit:
+
+

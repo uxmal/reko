@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Services;
-using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -434,7 +433,7 @@ namespace Reko.Core.Configuration
 
             return new PlatformDefinition
             {
-                TypeName = typeof(DefaultPlatform).FullName,
+                TypeName = typeof(DefaultPlatform).AssemblyQualifiedName,
             };
         }
 
