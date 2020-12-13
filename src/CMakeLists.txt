@@ -522,11 +522,16 @@ elseif("${TARGET}" STREQUAL "create_release")
 
 	add_custom_target(create_release)
 
-	add_custom_target(create_release_zip_windowsdecompiler
-		COMMENT "Compressing WindowsDecompiler..."
-		COMMAND ${SEVENZIP_BIN} a ${artifacts_dir}/WindowsDecompiler-${build_version}-${build_shorthash}.zip
-			${REKO_SRC}/Drivers/WindowsDecompiler/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_EXE_FRAMEWORK}/*
-	)
+	if(WIN32 AND NOT UNIX)
+		add_custom_target(create_release_zip_windowsdecompiler
+			COMMENT "Compressing WindowsDecompiler..."
+			COMMAND ${SEVENZIP_BIN} a ${artifacts_dir}/WindowsDecompiler-${build_version}-${build_shorthash}.zip
+				${REKO_SRC}/Drivers/WindowsDecompiler/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_EXE_FRAMEWORK}/*
+		)
+		add_dependencies(create_release create_release_zip_windowsdecompiler)
+		# $TODO: WiX
+		#add_dependencies(create_release appveyor_msi)
+	endif()
 
 	add_custom_target(create_release_zip_cmdline
 		COMMENT "Compressing CmdLine..."
@@ -539,18 +544,15 @@ elseif("${TARGET}" STREQUAL "create_release")
 			${REKO_SRC}/WixInstaller/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/reko-${build_version}.msi
 			${REKO_SRC}/WixInstaller/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/reko-${build_version}-${build_shorthash}.msi
 	)
+	add_dependencies(create_release create_release_zip_cmdline)
+
 
 	add_copy_target(
 		SRC_PATH ${REKO_SRC}/Drivers/Runtime/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/Reko.Runtime.${REKO_VERSION}.nupkg
 		DEST_PATH ${artifacts_dir}/Reko.Runtime.${build_version}-${build_shorthash}.nupkg
 		OUT_TARGET_NAME copy_runtime_nupkg_target
 	)
-
-	add_dependencies(create_release create_release_zip_windowsdecompiler)
-	add_dependencies(create_release create_release_zip_cmdline)
 	add_dependencies(create_release ${copy_runtime_nupkg_target})
-	# $TODO: WiX
-	#add_dependencies(create_release appveyor_msi)
 elseif("${TARGET}" STREQUAL "reko_all")
 	if(NOT WIN32 AND UNIX)
 		if(STREQUAL "${CMAKE_BUILD_TYPE}" "UnixDebug")
