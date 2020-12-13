@@ -144,6 +144,16 @@ namespace Reko.Tools.regressionTests
             return path;
         }
 
+        private static (string, string) GetPlatformInvocationCmdLine(string exeName, string argsString)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return ("dotnet", $"{exeName} {argsString}");
+            }
+
+            return (exeName, argsString);
+        }
+
         private void AddJob(string jobName, string workingDirectory, string argsString)
         {
             ThreadPool.QueueUserWorkItem((x) =>
@@ -154,10 +164,12 @@ namespace Reko.Tools.regressionTests
                 Console.Error.WriteLine($"{now}: Starting " + Path.GetRelativePath(subjects_dir, jobVirtualPath));
                 Console.Error.WriteLine($"{workingDirectory} :> {reko_cmdline_exe} {argsString}");
 
+                (string, string) cmdline = GetPlatformInvocationCmdLine(reko_cmdline_exe, argsString);
+
                 var proc = Process.Start(new ProcessStartInfo()
                 {
-                    FileName = reko_cmdline_exe,
-                    Arguments = argsString,
+                    FileName = cmdline.Item1,
+                    Arguments = cmdline.Item2,
                     WorkingDirectory = workingDirectory,
                     RedirectStandardOutput = true
                 });
@@ -336,7 +348,11 @@ namespace Reko.Tools.regressionTests
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 exeFileName += ".exe";
+            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)){
+                exeFileName += ".dll";
             }
+
+
             this.reko_cmdline_exe = Path.Combine(
                 reko_cmdline_dir, "bin",
                 this.platform, this.configuration, this.framework,
