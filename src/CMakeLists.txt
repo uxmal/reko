@@ -540,8 +540,15 @@ elseif("${TARGET}" STREQUAL "create_release")
 			${REKO_SRC}/WixInstaller/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/reko-${build_version}-${build_shorthash}.msi
 	)
 
+	add_copy_target(
+		SRC_PATH ${REKO_SRC}/Drivers/Runtime/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/Reko.Runtime.${REKO_VERSION}.nupkg
+		DEST_PATH ${artifacts_dir}/Reko.Runtime.${build_version}-${build_shorthash}.nupkg
+		OUT_TARGET_NAME copy_runtime_nupkg_target
+	)
+
 	add_dependencies(create_release create_release_zip_windowsdecompiler)
 	add_dependencies(create_release create_release_zip_cmdline)
+	add_dependencies(create_release ${copy_runtime_nupkg_target})
 	# $TODO: WiX
 	#add_dependencies(create_release appveyor_msi)
 elseif(NOT "${TARGET}" STREQUAL "")

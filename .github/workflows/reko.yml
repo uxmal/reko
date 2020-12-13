@@ -51,6 +51,11 @@ jobs:
       env:
         TEST_CONFIG: ${{ matrix.test_config }}
       run: dotnet msbuild -p:Platform=x64 -p:Configuration=$TEST_CONFIG -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
+    - name: Create Runtime nupkg
+      shell: bash
+      env:
+        BUILD_CONFIG: ${{ matrix.build_config }}
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=$BUILD_CONFIG -t:create_runtime_nupkg -m ./src/BuildTargets/BuildTargets.csproj
     - name: Create Release
       shell: bash
       env:
@@ -65,4 +70,5 @@ jobs:
           bin/WindowsDecompiler-*.zip
           bin/CmdLine-*.zip
           bin/*.msi
+          bin/*.nupkg
           src/BuildTargets/build/run_regressions/regression.log
