@@ -55,7 +55,7 @@ jobs:
       shell: bash
       env:
         BUILD_CONFIG: ${{ matrix.build_config }}
-      run: dotnet msbuild -p:Platform=x64 -p:Configuration=$TEST_CONFIG -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=$BUILD_CONFIG -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
