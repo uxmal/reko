@@ -31,7 +31,7 @@ jobs:
         if [ "$RUNNER_OS" == "Linux" ]; then
           sudo apt-get install libcapstone-dev
         elif [ "$RUNNER_OS" == "macOS" ]; then
-          sudo brew install capstone
+          brew install capstone
         fi
     - name: Build
       run: dotnet msbuild -p:Platform=x64 -p:Configuration=$BUILD_CONFIG -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
