@@ -9,11 +9,14 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Text;
 
-namespace regressionTests
+namespace Reko.Tools.regressionTests
 {
 	class Program
 	{
         private const int MaxDeleteAttempts = 20;
+        private const string EXE_NAME = "decompile";
+        private static readonly string[] OUTPUT_EXTENSIONS = new string[] { ".asm", ".c", ".dis", ".h" };
+        private static readonly string[] SOURCE_EXTENSIONS = new string[] { ".c" };
 
         bool TryTake(IEnumerator<string> it, out string? arg)
         {
@@ -33,17 +36,18 @@ namespace regressionTests
         private bool strip_suffixes = true;
         private string platform = "x64";
 
-        private List<string> dirs = new List<string>();
+        private readonly List<string> dirs;
         private readonly SortedList<string, string> allResults;
         private readonly object resultLock;
         private string reko_cmdline_exe;
-        private string script_dir;
+        private string subjects_dir;
 
         private int numCompleted = 0;
         private string reko_src;
 
         public Program()
         {
+            this.dirs = new List<string>();
             this.allResults = new SortedList<string, string>();
             this.resultLock = new object();
         }
@@ -80,10 +84,12 @@ namespace regressionTests
                     strip_suffixes = (opt == "yes");
                     break;
                 default:
+                    // first unparsed argument is the path to reko/src
                     if (unparsed_count++ == 0)
                     {
                         reko_src = arg;
                     } else
+                    // any other argument is a list of directories to scan
                     {
                         dirs.Add(arg);
                     }
@@ -97,10 +103,6 @@ namespace regressionTests
                 }
             }
         }
-
-        private const string EXE_NAME = "decompile";
-        private readonly string[] OUTPUT_EXTENSIONS = new string[] { ".asm", ".c", ".dis", ".h" };
-        private readonly string[] SOURCE_EXTENSIONS = new string[] { ".c" };
 
         private void ClearDir(string dir)
         {
@@ -149,7 +151,7 @@ namespace regressionTests
                 var now = DateTime.Now.ToString("HH:MM:ss.f");
                 string jobVirtualPath = Path.Combine(workingDirectory, jobName);
 
-                Console.Error.WriteLine($"{now}: Starting " + Path.GetRelativePath(script_dir, jobVirtualPath));
+                Console.Error.WriteLine($"{now}: Starting " + Path.GetRelativePath(subjects_dir, jobVirtualPath));
                 Console.Error.WriteLine($"{workingDirectory} :> {reko_cmdline_exe} {argsString}");
 
                 var proc = Process.Start(new ProcessStartInfo()
@@ -160,7 +162,7 @@ namespace regressionTests
                     RedirectStandardOutput = true
                 });
                 var output = proc.StandardOutput.ReadToEnd();
-                var relpath = Path.GetRelativePath(script_dir, jobVirtualPath);
+                var relpath = Path.GetRelativePath(subjects_dir, jobVirtualPath);
                 string testResult = FormatTestResult(jobName, relpath, output);
 
                 Interlocked.Increment(ref this.numCompleted);
@@ -194,6 +196,7 @@ namespace regressionTests
                 numJobs += HandleDir(subdir);
             }
 
+            // remove any .reko folder
             if (dir.EndsWith(".reko"))
             {
                 AttemptDeleteDirectory(dir);
@@ -205,13 +208,16 @@ namespace regressionTests
 
             bool hasSubjectCmd = File.Exists(subjectCmd);
 
+            // if there is no .dcproject and no subject.cmd, there's nothing to do
             if (dcProjects.Count() == 0 && !hasSubjectCmd)
             {
                 return numJobs;
             }
 
+            // clear output files outside of .reko (created by some .dcproject)
             ClearDir(dir);
             
+            // queue all .dcproject for execution
             foreach (var proj in dcProjects)
             {
                 AddJob(GetFilePrefix(proj), dir, proj);
@@ -220,6 +226,7 @@ namespace regressionTests
 
             if (hasSubjectCmd)
             {
+                // read subject.cmd and skip all comments
                 var lines = File.ReadAllLines(subjectCmd, new UTF8Encoding(false))
                     .Select(l => l.Trim())
                     .Where(l => !l.StartsWith('#'));
@@ -229,10 +236,13 @@ namespace regressionTests
                     string args = line;
                     if (line.StartsWith("decompile.exe"))
                     {
+                        // remove the exe name from the arguments string
                         args = args.Remove(0, "decompile.exe".Length + 1);
                     }
+
                     if (!string.IsNullOrWhiteSpace(args))
                     {
+                        // assume the last argument is going to be the name of the binary
                         string jobName = GetFilePrefix(
                             args
                             .Split(' ', StringSplitOptions.RemoveEmptyEntries)
@@ -240,6 +250,7 @@ namespace regressionTests
                             .Trim('"')
                         );
 
+                        // queue subject.cmd for execution
                         AddJob(jobName, dir, args);
                         numJobs++;
                     }
@@ -306,13 +317,20 @@ namespace regressionTests
             return numJobs;
         }
 
+        private static bool IsInSourceDirectory(string file)
+        {
+            var dirname = Path.GetDirectoryName(file);
+            var basename = Path.GetFileName(dirname);
+            return basename.Equals("src", StringComparison.InvariantCultureIgnoreCase);
+        }
+
         private void Run(string[] args)
         {
             ProcessArgs(args);
 
             string reko_cmdline_dir = Path.GetFullPath(Path.Combine(reko_src, "Drivers", "CmdLine"));
 
-            script_dir = Path.GetFullPath(Path.Combine(reko_src, "..", "subjects"));
+            subjects_dir = Path.GetFullPath(Path.Combine(reko_src, "..", "subjects"));
 
             string exeFileName = EXE_NAME;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -324,26 +342,26 @@ namespace regressionTests
                 this.platform, this.configuration, this.framework,
                 exeFileName);
 
+            // if no directory was specified, default to the subjects directory
             if (dirs.Count == 0)
             {
-                dirs.Add(script_dir);
+                dirs.Add(subjects_dir);
             }
 
             int numJobs = CollectJobs();
+
+            // wait for queued jobs to complete
             while (numCompleted < numJobs)
             {
                 Thread.Sleep(500);
             }
 
             // All jobs should have completed execution, display results.
-
             DisplayResults();
 
             if (strip_suffixes)
             {
-                bool IsInSourceDirectory(string file) =>
-                    Path.GetFileName(Path.GetDirectoryName(file)).Equals("src", StringComparison.InvariantCultureIgnoreCase);
-
+                // collect the list of files to be stripped (starting from the project directory)
                 var sources = dirs
                     .SelectMany(d => Directory.EnumerateFiles(d, "*.*", SearchOption.AllDirectories))
                     .Distinct()
@@ -364,10 +382,10 @@ namespace regressionTests
             {
                 int exitCode = RunGitDiff();
                 if(exitCode == 0){
-                    Console.WriteLine("Output files are the same as in repository");
+                    Console.Error.WriteLine("Output files are the same as in repository");
                 } else
                 {
-                    Console.WriteLine("Output files differ from repository");
+                    Console.Error.WriteLine("Output files differ from repository");
                 }
                 Environment.Exit(exitCode);
             }
@@ -383,7 +401,7 @@ namespace regressionTests
         private void Usage()
         {
             Console.Write(
-@"Usage: regressionTests [options]
+@"Usage: regressionTests [options] [path_to_reko/src] [dirs...]
 
 Options:
   -h, --help            show this help message and exit
