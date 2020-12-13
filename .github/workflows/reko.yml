@@ -8,7 +8,15 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: [ubuntu-latest, macos-latest]
+            build_config: UnixRelease
+          - os: [windows-latest]
+            build_config: Release
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -18,8 +26,8 @@ jobs:
     - name: Install dependencies
       run: sudo apt install libcapstone-dev
     - name: Build
-      run: dotnet msbuild -p:Platform=x64 -p:Configuration=UnixRelease -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=$BUILD_CONFIG -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
     - name: Unit Tests
-      run: dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=$BUILD_CONFIG -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
     - name: Regression Tests
-      run: dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=$BUILD_CONFIG -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
