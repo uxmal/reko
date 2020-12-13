@@ -476,6 +476,7 @@ elseif("${TARGET}" STREQUAL "create_runtime_nupkg")
 			--no-build
 			-c ${CMAKE_BUILD_TYPE}
 			-p:Platform=${REKO_PLATFORM}
+			-p:PackageVersion=${REKO_VERSION}
 			${REKO_SRC}/Drivers/Runtime/Runtime.csproj
 	)
 elseif("${TARGET}" STREQUAL "update_runtime_nuspec")
