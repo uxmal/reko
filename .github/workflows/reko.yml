@@ -57,7 +57,7 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: Reko
+        name: reko-${{ matrix.os }}
         if-no-files-found: warn
         path: |
           bin/WindowsDecompiler-*.zip
