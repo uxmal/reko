@@ -551,6 +551,59 @@ elseif("${TARGET}" STREQUAL "create_release")
 	add_dependencies(create_release ${copy_runtime_nupkg_target})
 	# $TODO: WiX
 	#add_dependencies(create_release appveyor_msi)
+elseif("${TARGET}" STREQUAL "reko_all")
+	if(NOT WIN32 AND UNIX)
+		if(STREQUAL "${CMAKE_BUILD_TYPE}" "UnixDebug")
+			set(TEST_CONFIG "Debug")
+		elseif(STREQUAL "${CMAKE_BUILD_TYPE}" "UnixRelease")
+			set(TEST_CONFIG "Release")
+		else()
+			set(TEST_CONFIG "${CMAKE_BUILD_TYPE}")
+		endif()
+	endif()
+
+	set(prop_config_build -p:Configuration=${CMAKE_BUILD_TYPE})
+	set(prop_config_test  -p:Configuration=${TEST_CONFIG})
+
+	set(invoke_buildtarget ${DOTNET_EXE} msbuild
+		-p:Platform=${REKO_PLATFORM}
+		-v:m -m
+	)
+
+	set(buildtarget_csproj ${REKO_SRC}/BuildTargets/BuildTargets.csproj)
+
+	add_custom_target(reko_all)
+
+	add_custom_target(reko_build_solution
+		COMMAND ${invoke_buildtarget} ${prop_config_build} -t:build_solution ${buildtarget_csproj}
+	)
+	
+	add_custom_target(reko_run_unit_tests
+		COMMAND ${invoke_buildtarget} ${prop_config_test} -t:run_unit_tests ${buildtarget_csproj}
+	)
+
+	add_custom_target(reko_run_regressions
+		COMMAND ${invoke_buildtarget} ${prop_config_test} -t:run_regressions ${buildtarget_csproj}
+	)
+
+	add_custom_target(reko_create_runtime_nupkg
+		COMMAND ${invoke_buildtarget} ${prop_config_build} -t:create_runtime_nupkg ${buildtarget_csproj}
+	)
+
+	add_custom_target(reko_create_release
+		COMMAND ${invoke_buildtarget} ${prop_config_build} -t:create_release ${buildtarget_csproj}
+	)
+
+	add_dependencies(reko_all reko_build_solution)
+	add_dependencies(reko_all reko_run_unit_tests)
+	add_dependencies(reko_all reko_run_regressions)
+	add_dependencies(reko_all reko_create_runtime_nupkg)
+	add_dependencies(reko_all reko_create_release)
+
+	add_dependencies(reko_create_release reko_create_runtime_nupkg)
+	add_dependencies(reko_create_runtime_nupkg reko_run_regressions)
+	add_dependencies(reko_run_regressions reko_run_unit_tests)
+	add_dependencies(reko_run_unit_tests reko_build_solution)
 elseif(NOT "${TARGET}" STREQUAL "")
 	message(FATAL_ERROR "Unknown target ${TARGET}")
 endif()

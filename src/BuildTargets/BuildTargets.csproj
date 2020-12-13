@@ -74,4 +74,8 @@
   <Target Name="create_release">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=create_release -P $(RekoCMake)" />
   </Target>
+
+  <Target Name="reko_all">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=reko_all -P $(RekoCMake)" />
+  </Target>
 </Project>
