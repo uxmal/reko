@@ -51,3 +51,18 @@ jobs:
       env:
         TEST_CONFIG: ${{ matrix.test_config }}
       run: dotnet msbuild -p:Platform=x64 -p:Configuration=$TEST_CONFIG -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
+    - name: Create Release
+      shell: bash
+      env:
+        BUILD_CONFIG: ${{ matrix.build_config }}
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=$TEST_CONFIG -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Reko
+        if-no-files-found: warn
+        path: |
+          bin/WindowsDecompiler-*.zip
+          bin/CmdLine-*.zip
+          bin/*.msi
+          src/BuildTargets/build/run_regressions/regression.log

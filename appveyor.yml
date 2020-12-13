@@ -22,7 +22,7 @@ build_script:
   - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
 
 after_build:
-  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:appveyor_release -m ./src/BuildTargets/BuildTargets.csproj
+  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
 
 test_script:
   - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj

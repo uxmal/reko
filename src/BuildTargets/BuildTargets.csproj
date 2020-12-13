@@ -71,7 +71,7 @@
     <Exec Command="cmake $(CMakeArguments) -DTARGET=nativeproxy_build -P $(RekoCMake)" />
   </Target>
 
-  <Target Name="appveyor_release">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=appveyor_release -P $(RekoCMake)" />
+  <Target Name="create_release">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=create_release -P $(RekoCMake)" />
   </Target>
 </Project>
