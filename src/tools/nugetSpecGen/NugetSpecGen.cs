@@ -72,6 +72,8 @@ namespace Reko.Tools.nugetSpecGen
             filesNode = dom.CreateElement("files");
             filesNode.AppendChild(dom.CreateTextNode(Environment.NewLine));
 
+            Console.Error.WriteLine($"Scanning files in '{outDir}'");
+
             var files = Directory.GetFiles(outDir, "*", SearchOption.AllDirectories);
             foreach (var f in files)
             {
@@ -90,6 +92,7 @@ namespace Reko.Tools.nugetSpecGen
                     ".dll" => $"lib/{targetFramework}/{relaDir}{separator}{basename}",
                     _ => $"contentFiles/any/any/reko/{relaDir}{separator}{basename}"
                 };
+                Console.Error.WriteLine($"Adding '{relaPath}' -> '{targetPath}'");
 
                 var fileNode = dom.CreateElement("file");
                 fileNode.SetAttribute("src", relaPath);
