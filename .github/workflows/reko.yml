@@ -11,11 +11,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         include:
-          - os: [ubuntu-latest]
+          - os: macos-latest
             build_config: UnixRelease
-          - os: [windows-latest]
+          - os: ubuntu-latest
+            build_config: UnixRelease
+          - os: windows-latest
             build_config: Release
     steps:
     - uses: actions/checkout@v2
