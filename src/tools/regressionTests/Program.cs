@@ -13,6 +13,8 @@ namespace regressionTests
 {
 	class Program
 	{
+        private const int MaxDeleteAttempts = 20;
+
         bool TryTake(IEnumerator<string> it, out string? arg)
         {
             if (!it.MoveNext())
@@ -32,12 +34,19 @@ namespace regressionTests
         private string platform = "x64";
 
         private List<string> dirs = new List<string>();
+        private readonly SortedList<string, string> allResults;
+        private readonly object resultLock;
         private string reko_cmdline_exe;
         private string script_dir;
 
         private int numCompleted = 0;
         private string reko_src;
 
+        public Program()
+        {
+            this.allResults = new SortedList<string, string>();
+            this.resultLock = new object();
+        }
         private void ProcessArgs(IEnumerable<string> args)
         {
             int unparsed_count = 0;
@@ -139,25 +148,47 @@ namespace regressionTests
             {
                 var now = DateTime.Now.ToString("HH:MM:ss.f");
                 string jobVirtualPath = Path.Combine(workingDirectory, jobName);
-                
+
                 Console.Error.WriteLine($"{now}: Starting " + Path.GetRelativePath(script_dir, jobVirtualPath));
                 Console.Error.WriteLine($"{workingDirectory} :> {reko_cmdline_exe} {argsString}");
+
                 var proc = Process.Start(new ProcessStartInfo()
                 {
                     FileName = reko_cmdline_exe,
                     Arguments = argsString,
-                    WorkingDirectory = workingDirectory
+                    WorkingDirectory = workingDirectory,
+                    RedirectStandardOutput = true
                 });
+                var output = proc.StandardOutput.ReadToEnd();
+                var relpath = Path.GetRelativePath(script_dir, jobVirtualPath);
+                string testResult = FormatTestResult(jobName, relpath, output);
 
-                proc.WaitForExit();
                 Interlocked.Increment(ref this.numCompleted);
+                lock (resultLock)
+                {
+                    allResults.Add(jobName + argsString, testResult);
+                }
             });
         }
 
-        private int HandleDir(string dir)
+        private static string FormatTestResult(string jobName, string relpath, string output)
+        {
+            var bannerPrefix = "=== ";
+            if (output.Contains("error", StringComparison.InvariantCultureIgnoreCase))
+            {
+                bannerPrefix = "*** ";
+            }
+            var testResult = $"{bannerPrefix}{relpath}{Environment.NewLine}{output}";
+            return testResult;
+        }
+
+        /// <summary>
+        /// Looks for subjects in the directory whose absolute path is <paramref name="dir"/>.
+        /// </summary>
+        /// <returns>The number of subjects found.</returns>
+        private int HandleDir(string dir) 
         {
             int numJobs = 0;
-
             foreach (var subdir in Directory.EnumerateDirectories(dir))
             {
                 numJobs += HandleDir(subdir);
@@ -165,7 +196,7 @@ namespace regressionTests
 
             if (dir.EndsWith(".reko"))
             {
-                Directory.Delete(dir, true);
+                AttemptDeleteDirectory(dir);
                 return numJobs;
             }
 
@@ -181,7 +212,7 @@ namespace regressionTests
 
             ClearDir(dir);
             
-            foreach(var proj in dcProjects)
+            foreach (var proj in dcProjects)
             {
                 AddJob(GetFilePrefix(proj), dir, proj);
                 numJobs++;
@@ -193,7 +224,7 @@ namespace regressionTests
                     .Select(l => l.Trim())
                     .Where(l => !l.StartsWith('#'));
 
-                foreach(var line in lines)
+                foreach (var line in lines)
                 {
                     string args = line;
                     if (line.StartsWith("decompile.exe"))
@@ -214,8 +245,36 @@ namespace regressionTests
                     }
                 }
             }
-
             return numJobs;
+        }
+
+        /// <summary>
+        /// Attempt to delete a directory a few times until a maximal number
+        /// of retries.
+        /// </summary>
+        /// <remarks>
+        /// The regrettable reality of the universe is that antivirus programs, 
+        /// Git, and various other processes could be sitting on the files we 
+        /// wish to delete. Sometimes, good enough needs to precede perfect.
+        /// </remarks>
+        private void AttemptDeleteDirectory(string dir)
+        {
+            Exception ex = null;
+            for (int i = 0; i < MaxDeleteAttempts; ++i)
+            {
+                try
+                {
+                    Directory.Delete(dir, true);
+                    return;
+                }
+                catch (Exception e)
+                {
+                    ex = e;
+                }
+                Thread.Sleep(100);
+            }
+            Console.Error.WriteLine("*** Unable to delete directory {0} after {1} attempts. {2}", dir, MaxDeleteAttempts, ex.Message);
+            Console.Error.WriteLine(ex.StackTrace);
         }
 
         private int RunGitDiff()
@@ -271,17 +330,26 @@ namespace regressionTests
             }
 
             int numJobs = CollectJobs();
-            while(numCompleted < numJobs)
+            while (numCompleted < numJobs)
             {
                 Thread.Sleep(500);
             }
 
+            // All jobs should have completed execution, display results.
+
+            DisplayResults();
+
             if (strip_suffixes)
             {
+                bool IsInSourceDirectory(string file) =>
+                    Path.GetFileName(Path.GetDirectoryName(file)).Equals("src", StringComparison.InvariantCultureIgnoreCase);
+
                 var sources = dirs
                     .SelectMany(d => Directory.EnumerateFiles(d, "*.*", SearchOption.AllDirectories))
                     .Distinct()
+                    .Where(f => !IsInSourceDirectory(f))
                     .Where(f => SOURCE_EXTENSIONS.Any(f.EndsWith));
+
 
                 foreach (var f in sources)
                 {
@@ -301,11 +369,17 @@ namespace regressionTests
                 {
                     Console.WriteLine("Output files differ from repository");
                 }
-
                 Environment.Exit(exitCode);
             }
         }
 
+        private void DisplayResults()
+        {
+            foreach (var result in this.allResults.Values)
+            {
+                Console.WriteLine(result);
+            }
+        }
         private void Usage()
         {
             Console.Write(

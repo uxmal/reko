@@ -452,7 +452,7 @@ elseif("${TARGET}" STREQUAL "run_regressions")
 			-c ${CMAKE_BUILD_TYPE}
 			-p ${REKO_PLATFORM}
 			--check-output
-			${REKO_SRC} > ${REKO_SRC}/../subjects/regression.log
+			${REKO_SRC}
 		OUTPUT
 			# This file is expected to be produced by this target, but it never is
 			# we use this trick so that this target is always marked outdated and will always run
