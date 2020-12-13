@@ -163,7 +163,7 @@ function(add_c2xml_target)
 
 	# for some reason, dotnet build doesn't seem to produce a native executable on macOS
 	if(APPLE)
-		set(c2xml_exe "dotnet ${c2xml_exe}.dll")
+		set(c2xml_exe dotnet ${c2xml_exe}.dll)
 	endif()
 
 	add_custom_command(
