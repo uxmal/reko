@@ -15,10 +15,13 @@ jobs:
         include:
           - os: macos-latest
             build_config: UnixRelease
+            test_config: Release
           - os: ubuntu-latest
             build_config: UnixRelease
+            test_config: Release
           - os: windows-latest
             build_config: Release
+            test_config: Release
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -34,8 +37,17 @@ jobs:
           brew install capstone
         fi
     - name: Build
+      shell: bash
+      env:
+        BUILD_CONFIG: ${{ matrix.build_config }}
       run: dotnet msbuild -p:Platform=x64 -p:Configuration=$BUILD_CONFIG -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
     - name: Unit Tests
-      run: dotnet msbuild -p:Platform=x64 -p:Configuration=$BUILD_CONFIG -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
+      shell: bash
+      env:
+        TEST_CONFIG: ${{ matrix.test_config }}
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=$TEST_CONFIG -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
     - name: Regression Tests
-      run: dotnet msbuild -p:Platform=x64 -p:Configuration=$BUILD_CONFIG -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
+      shell: bash
+      env:
+        TEST_CONFIG: ${{ matrix.test_config }}
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=$TEST_CONFIG -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
