@@ -19,14 +19,15 @@ environment:
   artifacts_dir: bin
 
 build_script:
-  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
+  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -v:m -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
 
 after_build:
-  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
+  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -v:m -t:create_runtime_nupkg -m ./src/BuildTargets/BuildTargets.csproj
+  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -v:m -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
 
 test_script:
-  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
-  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
+  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -v:m -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
+  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -v:m -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
 
 artifacts:
   - path: bin/*.msi
@@ -35,6 +36,8 @@ artifacts:
     name: Reko WinForms driver
   - path: bin/CmdLine-*.zip
     name: Reko CmdLine driver
+  - path: bin/*.nupkg
+    name: Reko Runtime (nuget package)
 
 #on_finish:
 # The commented out line below displays will keep the AppVeyor VM alive long enough for a RDP diagnostic

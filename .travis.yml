@@ -34,3 +34,5 @@ script:
   - dotnet msbuild -p:Configuration=UnixRelease -p:Platform=x64 -v:m -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
   - dotnet msbuild -p:Configuration=Release -p:Platform=x64 -v:m -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
   - dotnet msbuild -p:Configuration=Release -p:Platform=x64 -v:m -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
+  - dotnet msbuild -p:Configuration=Release -p:Platform=x64 -v:m -t:create_runtime_nupkg -m ./src/BuildTargets/BuildTargets.csproj
+  - dotnet msbuild -p:Configuration=Release -p:Platform=x64 -v:m -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
