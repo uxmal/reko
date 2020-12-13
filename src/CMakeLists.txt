@@ -556,16 +556,16 @@ elseif("${TARGET}" STREQUAL "create_release")
 elseif("${TARGET}" STREQUAL "reko_all")
 	if(NOT WIN32 AND UNIX)
 		if(STREQUAL "${CMAKE_BUILD_TYPE}" "UnixDebug")
-			set(TEST_CONFIG "Debug")
+			set(GENERIC_CONFIG "Debug")
 		elseif(STREQUAL "${CMAKE_BUILD_TYPE}" "UnixRelease")
-			set(TEST_CONFIG "Release")
+			set(GENERIC_CONFIG "Release")
 		else()
-			set(TEST_CONFIG "${CMAKE_BUILD_TYPE}")
+			set(GENERIC_CONFIG "${CMAKE_BUILD_TYPE}")
 		endif()
 	endif()
 
 	set(prop_config_build -p:Configuration=${CMAKE_BUILD_TYPE})
-	set(prop_config_test  -p:Configuration=${TEST_CONFIG})
+	set(prop_config_generic  -p:Configuration=${GENERIC_CONFIG})
 
 	set(invoke_buildtarget ${DOTNET_EXE} msbuild
 		-p:Platform=${REKO_PLATFORM}
@@ -581,19 +581,19 @@ elseif("${TARGET}" STREQUAL "reko_all")
 	)
 	
 	add_custom_target(reko_run_unit_tests
-		COMMAND ${invoke_buildtarget} ${prop_config_test} -t:run_unit_tests ${buildtarget_csproj}
+		COMMAND ${invoke_buildtarget} ${prop_config_generic} -t:run_unit_tests ${buildtarget_csproj}
 	)
 
 	add_custom_target(reko_run_regressions
-		COMMAND ${invoke_buildtarget} ${prop_config_test} -t:run_regressions ${buildtarget_csproj}
+		COMMAND ${invoke_buildtarget} ${prop_config_generic} -t:run_regressions ${buildtarget_csproj}
 	)
 
 	add_custom_target(reko_create_runtime_nupkg
-		COMMAND ${invoke_buildtarget} ${prop_config_build} -t:create_runtime_nupkg ${buildtarget_csproj}
+		COMMAND ${invoke_buildtarget} ${prop_config_generic} -t:create_runtime_nupkg ${buildtarget_csproj}
 	)
 
 	add_custom_target(reko_create_release
-		COMMAND ${invoke_buildtarget} ${prop_config_build} -t:create_release ${buildtarget_csproj}
+		COMMAND ${invoke_buildtarget} ${prop_config_generic} -t:create_release ${buildtarget_csproj}
 	)
 
 	add_dependencies(reko_all reko_build_solution)
