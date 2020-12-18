@@ -381,7 +381,7 @@ namespace Reko.Structure
             if (regionGraph.Predecessors(s).Count == 1)
             {
                 // Sequence!
-                trace.Verbose("Concatenated {0} and {1}", n.Block.Name, s.Block.Name);
+                Debug.Print("Concatenated {0} and {1}", n.Block.DisplayName, s.Block.DisplayName);
                 n.Type = s.Type;
                 n.Expression = s.Expression;
                 n.Statements.AddRange(s.Statements);
@@ -785,7 +785,7 @@ all other cases, together they constitute a Switch[].
 
         private void RemoveRegion(Region n)
         {
-            trace.Verbose("Removing region {0} from graph", n.Block.Name);
+            trace.Verbose("Removing region {0} from graph", n.Block.DisplayName);
             regionGraph.Nodes.Remove(n);
             Probe();
         }
@@ -845,8 +845,8 @@ all other cases, together they constitute a Switch[].
         [Conditional("DEBUG")]
         private void DumpRegion(Region n)
         {
-            Debug.Print("Node: {0} ({1})", n.Block.Name, n.Type);
-            Debug.Print("  Pred: {0}", string.Join(" ", regionGraph.Predecessors(n).Select(p => p.Block.Name)));
+            Debug.Print("Node: {0} ({1})", n.Block.DisplayName, n.Type);
+            Debug.Print("  Pred: {0}", string.Join(" ", regionGraph.Predecessors(n).Select(p => p.Block.DisplayName)));
             var sb = new StringWriter();
             n.Write(sb);
             Debug.Write(sb.ToString());
@@ -854,7 +854,7 @@ all other cases, together they constitute a Switch[].
             {
                 Debug.Print("    Condition: {0}", n.Expression);
             }
-            Debug.Print("  Succ: {0}", string.Join(" ", regionGraph.Successors(n).Select(s => s.Block.Name)));
+            Debug.Print("  Succ: {0}", string.Join(" ", regionGraph.Successors(n).Select(s => s.Block.DisplayName)));
             Debug.WriteLine("");
         }
 
@@ -925,10 +925,10 @@ doing future pattern matches.
                 case VirtualEdgeType.Continue: stm = new AbsynContinue(); break;
                 case VirtualEdgeType.Break: stm = new AbsynBreak(); break;
                 case VirtualEdgeType.Goto:
-                    stm = new AbsynGoto(vEdge.To.Block.Name);
+                    stm = new AbsynGoto(vEdge.To.Block.DisplayName);
                     if (vEdge.To.Statements.Count == 0 || !(vEdge.To.Statements[0] is AbsynLabel))
                     {
-                        vEdge.To.Statements.Insert(0, new AbsynLabel(vEdge.To.Block.Name));
+                        vEdge.To.Statements.Insert(0, new AbsynLabel(vEdge.To.Block.DisplayName));
                     }
                     break;
                 default:
@@ -946,8 +946,8 @@ doing future pattern matches.
                         eventListener.CreateProcedureNavigator(program, proc),
                         string.Format(
                             "Removing edge ({0}, {1}) caused loss of some code blocks",
-                            vEdge.From.Block.Name,
-                            vEdge.To.Block.Name));
+                            vEdge.From.Block.DisplayName,
+                            vEdge.To.Block.DisplayName));
 
                 Probe();
             }
@@ -985,7 +985,7 @@ doing future pattern matches.
                 break;
             default:
                 DumpGraph();
-                throw new NotImplementedException(string.Format("Can't collapse {0} ({1}) => {2}) in procedure {3}", from.Block.Name, from.Type, to.Block.Name, proc.Name));
+                throw new NotImplementedException(string.Format("Can't collapse {0} ({1}) => {2}) in procedure {3}", from.Block.DisplayName, from.Type, to.Block.DisplayName, proc.Name));
             }
         }
 
@@ -1561,7 +1561,7 @@ refinement on the loop body, which we describe below.
 
             public override string ToString()
             {
-                return $"{{{From.Block.Name} {Type} {To.Block.Name}}}";
+                return $"{{{From.Block.DisplayName} {Type} {To.Block.DisplayName}}}";
             }
         }
     }

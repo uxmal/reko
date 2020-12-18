@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Analysis
             SsaIdentifier i_1 = ssa.Identifiers.Where(s => s.Identifier.Name == "i_1").Single();
             SsaIdentifier i_3 = ssa.Identifiers.Where(s => s.Identifier.Name == "i_3").Single();
 			Assert.IsFalse(sla.IsLiveOut(i.Identifier, i_1.DefStatement));
-            var block1 = proc.ControlGraph.Blocks.Where(b => b.Name =="loop").Single();
+            var block1 = proc.ControlGraph.Blocks.Where(b => b.DisplayName == "loop").Single();
 			Assert.AreEqual("branch Mem0[i_3:byte] != 0<i8> loop", block1.Statements[2].Instruction.ToString());
 			Assert.IsTrue(sla.IsLiveOut(i_1.Identifier, block1.Statements[2]), "i_1 should be live at the end of block 1");
 			Assert.IsTrue(sla.IsLiveOut(i_3.Identifier, block1.Statements[2]),"i_3 should be live at the end of block 1");

@@ -492,8 +492,8 @@ namespace Reko.UnitTests.Scanning
             });
             follow.Procedure = proc;
             wi.Process();
-            Assert.AreEqual("l0C00_0000_1", block.Succ[0].Name, "block should loop back onto itself");
-            Assert.AreEqual("follow", block.Succ[1].Name, "block should terminate if cx == 0 check is true");
+            Assert.AreEqual("l0C00_0000_1", block.Succ[0].DisplayName, "block should loop back onto itself");
+            Assert.AreEqual("follow", block.Succ[1].DisplayName, "block should terminate if cx == 0 check is true");
         }
 
         [Test]

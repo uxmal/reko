@@ -297,6 +297,14 @@ namespace Reko.UnitTests.Core.Serialization
                                 }
                             },
                             OutputFilePolicy = Program.SegmentFilePolicy,
+                            BlockLabels =
+                            {
+                                new BlockLabel_v1
+                                {
+                                    Location = "115252",
+                                    Name = "errorExit",
+                                }
+                            }
                         }
                     }
                 }
@@ -318,6 +326,9 @@ namespace Reko.UnitTests.Core.Serialization
             var indJump = inputFile.User.IndirectJumps[Address.Ptr32(0x00113800)];
             Assert.AreSame(jumpTable, indJump.Table);
 
+            Assert.AreEqual(1, inputFile.User.BlockLabels.Count);
+            var blockLabel = inputFile.User.BlockLabels["115252"];
+            Assert.AreEqual("errorExit", blockLabel);
             Assert.AreEqual(Program.SegmentFilePolicy, inputFile.User.OutputFilePolicy);
         }
 
@@ -333,7 +344,7 @@ namespace Reko.UnitTests.Core.Serialization
                         User = new UserData_v4 {
                             Heuristics = {
                                 new Heuristic_v3 { Name = "shingle" }
-                            }
+                            },
                         }
                     },
                     new AssemblerFile_v3 { Filename="foo.asm", Assembler="x86-att" }

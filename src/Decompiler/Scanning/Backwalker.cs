@@ -369,7 +369,7 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         public void DumpBlock(RegisterStorage regIdx, Block block)
         {
-            Debug.Print("Backwalking register {0} through block: {1}", regIdx, block.Name);
+            Debug.Print("Backwalking register {0} through block: {1}", regIdx, block.DisplayName);
             foreach (var stm in block.Statements  )
             {
                 Debug.Print("    {0}", stm.Instruction);
@@ -445,8 +445,7 @@ namespace Reko.Scanning
                 Stride = 1;
                 return RegisterOf(id);
             }
-            var bin = mem.EffectiveAddress as BinaryExpression;
-            if (bin == null)
+            if (!(mem.EffectiveAddress is BinaryExpression bin))
                 return null;
 
             var idLeft = bin.Left as Identifier;
@@ -504,8 +503,7 @@ namespace Reko.Scanning
 
         private void DetermineVector(MemoryAccess mem, Expression possibleVector)
         {
-            var vector = possibleVector as Constant;
-            if (vector == null)
+            if (!(possibleVector is Constant vector))
                 return;
             if (vector.DataType is PrimitiveType pt && pt.Domain == Domain.SignedInt)
                 return;

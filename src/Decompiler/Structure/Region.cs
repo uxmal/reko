@@ -73,7 +73,7 @@ namespace Reko.Structure
 
         public override string ToString()
         {
-            return Block.Name + (IsSwitchPad ? $" ({SwitchPredecessor})" : "");
+            return Block.DisplayName + (IsSwitchPad ? "_$sw" : "");
         }
 
         public virtual void Write(StringWriter sb)

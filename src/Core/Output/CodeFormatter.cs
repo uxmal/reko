@@ -486,7 +486,7 @@ namespace Reko.Core.Output
                 InnerFormatter.Write("(");
                 arg.Value.Accept(this);
                 InnerFormatter.Write(", ");
-                InnerFormatter.Write(arg.Block.Name);
+                InnerFormatter.Write(arg.Block.DisplayName);
                 InnerFormatter.Write(")");
             }
             InnerFormatter.Write(")");
@@ -557,7 +557,7 @@ namespace Reko.Core.Output
             InnerFormatter.Write(" ");
 			b.Condition.Accept(this);
             InnerFormatter.Write(" ");
-            InnerFormatter.Write(b.Target.Name);
+            InnerFormatter.Write(b.Target.DisplayName);
 			InnerFormatter.Terminate();
 		}
 
@@ -732,7 +732,7 @@ namespace Reko.Core.Output
 			InnerFormatter.Write(") { ");
 			foreach (Block b in si.Targets)
 			{
-				InnerFormatter.Write("{0} ", b.Name);
+				InnerFormatter.Write("{0} ", b.DisplayName);
 			}
 			InnerFormatter.Write("}");
 			InnerFormatter.Terminate();

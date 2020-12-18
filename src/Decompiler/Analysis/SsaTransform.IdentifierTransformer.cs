@@ -68,7 +68,7 @@ namespace Reko.Analysis
             /// <returns>The SSA name of the identifier that was read.</returns>
             public virtual SsaIdentifier ReadVariable(SsaBlockState bs)
             {
-                trace.Verbose("ReadVariable {0} in block {1}", this.id, bs.Block.Name);
+                trace.Verbose("ReadVariable {0} in block {1}", this.id, bs.Block.DisplayName);
                 if (bs.Terminates)
                 {
                     // Reko has determined that this block diverges. We fall back to 
@@ -91,7 +91,7 @@ namespace Reko.Analysis
                     bs.Block.Procedure.Dump(true);
                     foreach (var block in bloxx)
                     {
-                        Debug.Print("  {0}", block.Name);
+                        Debug.Print("  {0}", block.DisplayName);
                     }
                     throw new StackOverflowException($"Boundless recursion in {bs.Block.Procedure.Name}.");
                 }
@@ -497,7 +497,7 @@ namespace Reko.Analysis
             /// <returns>The new SSA identifier</returns>
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid)
             {
-                trace.Verbose("  WriteBlockLocalVariable: ({0}, {1}, ({2})", bs.Block.Name, id, this.liveBits);
+                trace.Verbose("  WriteBlockLocalVariable: ({0}, {1}, ({2})", bs.Block.DisplayName, id, this.liveBits);
                 if (!bs.currentDef.TryGetValue(id.Storage.Domain, out var aliasState))
                 {
                     aliasState = new AliasState();
@@ -537,7 +537,7 @@ namespace Reko.Analysis
 
             public override SsaIdentifier? ReadBlockLocalVariable(SsaBlockState bs)
             {
-                trace.Verbose("  ReadBlockLocalVariable: ({0}, {1}, ({2})", bs.Block.Name, id, this.liveBits);
+                trace.Verbose("  ReadBlockLocalVariable: ({0}, {1}, ({2})", bs.Block.DisplayName, id, this.liveBits);
                 if (!bs.currentDef.TryGetValue(id.Storage.Domain, out var alias))
                     return null;
 
@@ -545,7 +545,7 @@ namespace Reko.Analysis
                 // Has an exact alias already been calculated?
                 if (alias.ExactAliases.TryGetValue(id.Storage, out var sid))
                 {
-                    trace.Verbose("    found alias ({0}, {1})", bs.Block.Name, sid.Identifier.Name);
+                    trace.Verbose("    found alias ({0}, {1})", bs.Block.DisplayName, sid.Identifier.Name);
                     return sid;
                 }
 
@@ -688,7 +688,7 @@ namespace Reko.Analysis
             /// <returns>The new SSA identifier</returns>
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid)
             {
-                trace.Verbose("  WriteBlockLocalVariable: ({0}, {1}, ({2:X8})", bs.Block.Name, id, this.flagMask);
+                trace.Verbose("  WriteBlockLocalVariable: ({0}, {1}, ({2:X8})", bs.Block.DisplayName, id, this.flagMask);
                 if (!bs.currentFlagDef.TryGetValue(id.Storage.Domain, out var aliasState))
                 {
                     aliasState = new FlagAliasState();

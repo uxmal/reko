@@ -534,6 +534,11 @@ namespace Reko.Core.Serialization
                     .Where(s => s != null)
                     .ToList();
             }
+            if (sUser.BlockLabels != null)
+            {
+                program.User.BlockLabels = sUser.BlockLabels
+                    .ToDictionary(u => u.Location, u => u.Name);
+            }
             program.User.ShowAddressesInDisassembly = sUser.ShowAddressesInDisassembly;
             program.User.ShowBytesInDisassembly = sUser.ShowBytesInDisassembly;
             program.User.ExtractResources = sUser.ExtractResources;

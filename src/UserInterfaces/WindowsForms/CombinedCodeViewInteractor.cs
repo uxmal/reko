@@ -671,12 +671,10 @@ namespace Reko.UserInterfaces.WindowsForms
             Debug.Print("Mouseup");
             if (gViewer.PanButtonPressed)
                 return;
-            var userObj = gViewer.SelectedObject as Node;
-            if (userObj == null)
+            if (!(gViewer.SelectedObject is Node userObj))
                 return;
             var blockData = userObj.UserData as CfgBlockNode;
-			Debug.Print("Node: {0}", blockData.Block.Name);
+			Debug.Print("Node: {0}", blockData.Block.DisplayName);
         }
-
     }
 }

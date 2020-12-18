@@ -81,7 +81,7 @@ namespace Reko.Core.Output
         {
             w.WriteStartObject();
             w.WritePropertyName("name");
-            w.Write(b.Name);
+            w.Write(b.DisplayName);
             w.WritePropertyName("stms");
 
             w.WriteStartArray();

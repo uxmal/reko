@@ -416,7 +416,7 @@ namespace Reko.UserInterfaces.WindowsForms
             if (userObj == null)
                 return;
             var blockData = userObj.UserData as CfgBlockNode;
-            Debug.Print("Node: {0}", blockData.Block.Name);
+            Debug.Print("Node: {0}", blockData.Block.DisplayName);
         }
 
     }

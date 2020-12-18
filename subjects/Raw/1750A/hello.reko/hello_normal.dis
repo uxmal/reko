@@ -1,53 +1,55 @@
-void fn0100()
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed: PZN gp0 gp1
-// Preserved: gp15
+// fn0100
+// Return size: 2
+define fn0100
 fn0100_entry:
+	gp15 = fp
+	// succ:  l0100
 l0100:
-	fn0105(0x111<16>)
+	gp0 = 0x111<16>
+	PZN = cond(gp0)
+	call fn0105 (retsize: 2;)
 	return
+	// succ:  fn0100_exit
 fn0100_exit:
 
 
-void fn0105(word16 gp0)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// Called from:
-//      fn0100
-// MayUse:  gp0:[0..15]
-// LiveOut:
-// Trashed: PZN gp0 gp1
-// Preserved: C gp15
+// fn0105
+// Return size: 2
+define fn0105
 fn0105_entry:
+	gp15 = fp
+	// succ:  l0105
 l0105:
-	word16 gp1_11 = gp0
+	gp1 = gp0
+	PZN = cond(gp1)
+	// succ:  l0106
 l0106:
-	word16 gp0_8 = Mem0[gp1_11:word16]
-	branch gp0_8 == 0<16> l010D
+	gp0 = Mem0[gp1:word16]
+	PZN = cond(gp0)
+	branch Test(EQ,Z) l010D
+	// succ:  l0109 l010D
+l0109:
+	call fn010E (retsize: 2;)
+	gp1 = gp1 + 1<16>
+	CPZN = cond(gp1)
+	goto l0106
+	// succ:  l0106
 l010D:
 	return
+	// succ:  fn0105_exit
 fn0105_exit:
-l0109:
-	fn010E(gp0_8)
-	gp1_11 = gp1_11 + 1<16>
 
 
-void fn010E(word16 gp0)
-// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-
-// Called from:
-//      fn0105
-// MayUse:  gp0:[0..15]
-// LiveOut:
-// Trashed:
-// Preserved: gp15
+// fn010E
+// Return size: 2
+define fn010E
 fn010E_entry:
+	gp15 = fp
+	// succ:  l010E
 l010E:
 	__console_output(gp0)
 	return
+	// succ:  fn010E_exit
 fn010E_exit:
 
 

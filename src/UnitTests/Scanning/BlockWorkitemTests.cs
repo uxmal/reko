@@ -625,7 +625,7 @@ testProc_exit:
             Assert.AreEqual("r0 = r1", block.Statements[0].ToString());
             Assert.AreEqual("goto 0x00100100<p32>", block.Statements[1].ToString());
 
-            Assert.AreEqual("l00101000", block.Succ[0].Name);
+            Assert.AreEqual("l00101000", block.Succ[0].DisplayName);
             scanner.Verify();
         }
 
@@ -660,17 +660,17 @@ testProc_exit:
             Assert.AreEqual("branch r1 l00100000_ds_t", block.Statements[0].ToString());
             var blFalse = block.ElseBlock;
             var blTrue = block.ThenBlock;
-            Assert.AreEqual("l00100000_ds_f", blFalse.Name);     // delay-slot-false
+            Assert.AreEqual("l00100000_ds_f", blFalse.DisplayName);     // delay-slot-false
             Assert.AreEqual(1, blFalse.Statements.Count);
             Assert.AreEqual("r0 = r1", blFalse.Statements[0].ToString());
             Assert.AreEqual(1, blFalse.Succ.Count);
-            Assert.AreEqual("l00100008", blFalse.Succ[0].Name);
+            Assert.AreEqual("l00100008", blFalse.Succ[0].DisplayName);
 
-            Assert.AreEqual("l00100000_ds_t", blTrue.Name);      // delay-slot-true
+            Assert.AreEqual("l00100000_ds_t", blTrue.DisplayName);      // delay-slot-true
             Assert.AreEqual(1, blTrue.Statements.Count);
             Assert.AreEqual("r0 = r1", blTrue.Statements[0].ToString());
             Assert.AreEqual(1, blTrue.Succ.Count);
-            Assert.AreEqual("l00101000", blTrue.Succ[0].Name);
+            Assert.AreEqual("l00101000", blTrue.Succ[0].DisplayName);
         }
 
         [Test]
@@ -769,15 +769,15 @@ testProc_exit:
             Assert.AreEqual("branch r1 l00100000_ds_t", block.Statements[0].ToString());
             var blFalse = block.ElseBlock;
             var blTrue = block.ThenBlock;
-            Assert.AreEqual("l00100008", blFalse.Name);     // delay-slot was anulled.
+            Assert.AreEqual("l00100008", blFalse.DisplayName);     // delay-slot was anulled.
             Assert.AreEqual(1, blFalse.Statements.Count);
             Assert.AreEqual("r2 = r1", blFalse.Statements[0].ToString());
 
-            Assert.AreEqual("l00100000_ds_t", blTrue.Name);      // delay-slot-true
+            Assert.AreEqual("l00100000_ds_t", blTrue.DisplayName);      // delay-slot-true
             Assert.AreEqual(1, blTrue.Statements.Count);
             Assert.AreEqual("r0 = r1", blTrue.Statements[0].ToString());
             Assert.AreEqual(1, blTrue.Succ.Count);
-            Assert.AreEqual("l00101000", blTrue.Succ[0].Name);
+            Assert.AreEqual("l00101000", blTrue.Succ[0].DisplayName);
         }
 
 

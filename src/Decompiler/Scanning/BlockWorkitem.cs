@@ -275,6 +275,8 @@ namespace Reko.Scanning
             {
                 var label = program.NamingPolicy.BlockName(ric.Address) + "_then";
                 blockThen = proc.AddBlock((Address)b.Target, label);
+                if (program.User.BlockLabels.TryGetValue(label, out var userLabel))
+                    blockThen.UserLabel = userLabel;
                 var jmpSite = state.OnBeforeCall(stackReg!, arch.PointerType.Size);
                 GenerateCallToOutsideProcedure(jmpSite, (Address)b.Target);
                 Emit(new ReturnInstruction());
@@ -304,7 +306,7 @@ namespace Reko.Scanning
                 {
                     var blockDsF = proc.AddSyntheticBlock(
                         ricDelayed.Address,
-                        branchingBlock.Name + "_ds_f");
+                        branchingBlock.Id + "_ds_f");
                     blockCur = blockDsF;
                     ProcessRtlCluster(ricDelayed);
                     EnsureEdge(proc, blockDsF, blockElse);
@@ -313,7 +315,7 @@ namespace Reko.Scanning
 
                 var blockDsT = proc.AddSyntheticBlock(
                     ricDelayed.Address,
-                    branchingBlock.Name + "_ds_t");
+                    branchingBlock.Id + "_ds_t");
                 blockCur = blockDsT;
                 ProcessRtlCluster(ricDelayed);
                 EnsureEdge(proc, blockDsT, blockThen);
@@ -1120,7 +1122,10 @@ namespace Reko.Scanning
         {
             ++extraLabels;
             var label = program.NamingPolicy.BlockName(ric!.Address);
-            return proc.AddSyntheticBlock(ric.Address, $"{label}_{extraLabels}");
+            var block = proc.AddSyntheticBlock(ric.Address, $"{label}_{extraLabels}");
+            if (program.User.BlockLabels.TryGetValue(label, out var userLabel))
+                block.UserLabel = userLabel;
+            return block;
         }
 
         /// <summary>
@@ -1175,17 +1180,17 @@ namespace Reko.Scanning
         {
             foreach (Block block in blockCur!.Procedure.ControlGraph.Blocks)
             {
-                Console.WriteLine("block: {0}", block.Name);
+                Console.WriteLine("block: {0}", block.Id);
                 Console.Write("\tpred:");
                 foreach (var p in block.Procedure.ControlGraph.Predecessors(block))
                 {
-                    Console.Write(" {0}", p.Name);
+                    Console.Write(" {0}", p.Id);
                 }
                 Console.WriteLine();
                 Console.Write("\tsucc:");
                 foreach (var s in block.Procedure.ControlGraph.Successors(block))
                 {
-                    Console.Write(" {0}", s.Name);
+                    Console.Write(" {0}", s.Id);
                 }
                 Console.WriteLine();
             }

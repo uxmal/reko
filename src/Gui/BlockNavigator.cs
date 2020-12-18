@@ -49,7 +49,7 @@ namespace Reko.Gui
 
         public string Text
         {
-            get { return Block.Name; }
+            get { return Block.DisplayName; }
         }
 
         public void NavigateTo()

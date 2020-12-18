@@ -123,7 +123,7 @@ namespace Reko.Analysis
                 if (b != b.Procedure.EntryBlock && b.Pred.Count == 0)
                     continue;
 
-                trace.Verbose("SsaTransform:   {0} ({1} statements)", b.Name, b.Statements.Count);
+                trace.Verbose("SsaTransform:   {0} ({1} statements)", b.DisplayName, b.Statements.Count);
                 this.block = b;
                 blockstates[b].Terminates = false;
                 foreach (var s in b.Statements.ToList())
@@ -1223,7 +1223,7 @@ namespace Reko.Analysis
             public override string ToString()
             {
                 var sb = new StringBuilder();
-                sb.AppendFormat("BlockState {0}", Block.Name);
+                sb.AppendFormat("BlockState {0}", Block.DisplayName);
                 sb.AppendLine();
                 sb.AppendFormat("    {0}",
                     string.Join(",", currentDef.Keys.Select(k => ((int)k).ToString())));

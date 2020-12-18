@@ -68,7 +68,7 @@ namespace Reko.Core.Output
                         var ret = block.Statements.Count > 0 && (block.Statements.Last!.Instruction is ReturnInstruction);
                         if (!ret && (i == blocks.Length - 1 || succ[0] != blocks[i + 1]))
                         {
-                            WriteGoto(succ[0] != null ? succ[0].Name : "(null)");
+                            WriteGoto(succ[0] != null ? succ[0].DisplayName : "(null)");
                         }
                     }
                     else if (succ.Count == 2 && block.Statements.Count > 0)
@@ -76,7 +76,7 @@ namespace Reko.Core.Output
                         var br = block.Statements.Last!.Instruction is Branch;
                         if (br && (i == blocks.Length - 1 || succ[0] != blocks[i + 1]))
                         {
-                            WriteGoto(succ[0].Name);
+                            WriteGoto(succ[0].DisplayName);
                         }
                     }
                 }
@@ -98,9 +98,9 @@ namespace Reko.Core.Output
 
         public void WriteBlock(Block block, CodeFormatter writer)
         {
-            if (!string.IsNullOrEmpty(block.Name))
+            if (!string.IsNullOrEmpty(block.DisplayName))
             {
-                writer.InnerFormatter.Write(block.Name);
+                writer.InnerFormatter.Write(block.DisplayName);
                 writer.InnerFormatter.Write(":");
                 writer.InnerFormatter.WriteLine();
             }

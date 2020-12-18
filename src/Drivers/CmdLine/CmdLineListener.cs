@@ -50,7 +50,7 @@ namespace Reko.CmdLine
 
         public ICodeLocation CreateBlockNavigator(Program program, Block block)
         {
-            return new NullCodeLocation(block.Name);
+            return new NullCodeLocation(block.Id);
         }
 
         public ICodeLocation CreateStatementNavigator(Program program, Statement stm)

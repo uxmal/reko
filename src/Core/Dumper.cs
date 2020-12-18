@@ -89,7 +89,7 @@ namespace Reko.Core
                 }
                 else
                 {
-                    formatter.Write(block.Block.Name);
+                    formatter.Write(block.Block.DisplayName);
                     formatter.Write(":");
                     formatter.WriteLine();
                 }

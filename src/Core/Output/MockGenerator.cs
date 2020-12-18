@@ -228,7 +228,7 @@ namespace Reko.Core.Output
         private void EmitLabel(Block block)
         {
             Method("Label");
-            writer.WriteLine("\"{0}\");", block.Name);
+            writer.WriteLine("\"{0}\");", block.DisplayName);
         }
 
         #region InstructionVisitor Members
@@ -246,7 +246,7 @@ namespace Reko.Core.Output
             Method("BranchIf");
             b.Condition.Accept(this);
             writer.Write(", \"");
-            writer.Write(b.Target.Name);
+            writer.Write(b.Target.DisplayName);
             writer.WriteLine("\");");
         }
 
@@ -318,7 +318,7 @@ namespace Reko.Core.Output
                 writer.Write("(");
                 arg.Value.Accept(this);
                 writer.Write(",");
-                writer.Write("\"{0}\"", arg.Block.Name);
+                writer.Write("\"{0}\"", arg.Block.DisplayName);
                 writer.Write(")");
             }
             writer.WriteLine(");");

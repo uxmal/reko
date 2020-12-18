@@ -213,7 +213,7 @@ namespace Reko.UnitTests.Mocks
 
         public ICodeLocation CreateBlockNavigator(Program program, Block block)
         {
-            return new NullCodeLocation(block.Name);
+            return new NullCodeLocation(block.DisplayName);
         }
 
         public ICodeLocation CreateStatementNavigator(Program program, Statement stm)
