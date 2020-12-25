@@ -125,6 +125,7 @@
   <cmd id="OpenInNewTab" cmdSet="Reko" container="GrpCodeView" priority="0">Open in new tab</cmd>
   <cmd id="EditDeclaration" cmdSet="Reko" container="GrpCodeView" priority="1">Edit declaration</cmd>
   <cmd id="EditComment" cmdSet="Reko" container="GrpCodeView" priority="2">Edit comment</cmd>
+  <cmd id="EditLabel" cmdSet="Reko" container="GrpCodeView" priority="2">Edit label</cmd>
 
   <cmd id="ActionNextSearchHit" cmdSet="Reko" key1="F8" />
   <cmd id="ActionPrevSearchHit" cmdSet="Reko" key1="F8" alt1="Shift" />

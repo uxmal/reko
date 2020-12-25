@@ -212,5 +212,10 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             return new TestGenerationService(services);
         }
+
+        public IUserEventService CreateUserEventService()
+        {
+            return new UserEventService();
+        }
     }
 }

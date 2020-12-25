@@ -100,7 +100,7 @@ namespace Reko.Core.Output
         {
             if (!string.IsNullOrEmpty(block.DisplayName))
             {
-                writer.InnerFormatter.Write(block.DisplayName);
+                writer.InnerFormatter.WriteLabel(block.DisplayName, block);
                 writer.InnerFormatter.Write(":");
                 writer.InnerFormatter.WriteLine();
             }

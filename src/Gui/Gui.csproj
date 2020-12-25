@@ -130,11 +130,13 @@
     <Compile Include="Design\PlatformDesigner.cs" />
     <Compile Include="Design\ProgramResourceGroupDesigner.cs" />
     <Compile Include="Design\ProgramResourceInstanceDesigner.cs" />
+    <Compile Include="Forms\BlockNameInteractor.cs" />
     <Compile Include="Forms\CallSiteInteractor.cs" />
     <Compile Include="Forms\FormWindowState.cs" />
     <Compile Include="Forms\IAboutDialog.cs" />
     <Compile Include="Forms\IArchiveBrowserDialog.cs" />
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
+    <Compile Include="Forms\IBlockNameDialog.cs" />
     <Compile Include="Forms\IDeclarationForm.cs" />
     <Compile Include="Forms\IJumpTableDialog.cs" />
     <Compile Include="Forms\IKeyBindingsDialog.cs" />
@@ -156,6 +158,7 @@
     <Compile Include="IResourceEditorService.cs" />
     <Compile Include="Forms\IWorkerDialog.cs" />
     <Compile Include="Forms\ITextEncodingDialog.cs" />
+    <Compile Include="IUserEventService.cs" />
     <Compile Include="IViewImportsService.cs" />
     <Compile Include="JumpVectorNavigator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

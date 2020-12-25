@@ -35,7 +35,7 @@ namespace Reko.Core
 		public Block(Procedure proc, Address addr, string id)
 		{
             if (string.IsNullOrEmpty(id))
-                throw new ArgumentException("Blocks must have a valid name.", nameof(id));
+                throw new ArgumentException("Blocks must have a valid id.", nameof(id));
 			this.Procedure = proc;
             this.Address = addr;
 			this.Id = id;
@@ -66,7 +66,7 @@ namespace Reko.Core
         public string? UserLabel { get; set; }
 
         /// <summary>
-        /// This label is used when rendering the block.
+        /// This string is used when rendering the block.
         /// </summary>
         public string DisplayName => UserLabel ?? Id;
 

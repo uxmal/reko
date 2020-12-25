@@ -179,6 +179,12 @@
       <DependentUpon>AssumedRegisterValuesDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\AssumedRegisterValuesInteractor.cs" />
+    <Compile Include="Forms\BlockNameDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BlockNameDialog.Designer.cs">
+      <DependentUpon>BlockNameDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\CallHierarchyInteractor.cs" />
     <Compile Include="Forms\CallHierarchyView.cs">
       <SubType>UserControl</SubType>
@@ -365,6 +371,7 @@
     <Compile Include="ToolStripButtonWrapper.cs" />
     <Compile Include="ToolStripItemAdapter.cs" />
     <Compile Include="ToolStripTextBoxWrapper.cs" />
+    <Compile Include="UserEventService.cs" />
     <Compile Include="ViewImportsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -420,6 +427,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AssumedRegisterValuesDialog.resx">
       <DependentUpon>AssumedRegisterValuesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BlockNameDialog.resx">
+      <DependentUpon>BlockNameDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CallHierarchyView.resx">
       <DependentUpon>CallHierarchyView.cs</DependentUpon>

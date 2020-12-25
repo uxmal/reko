@@ -104,6 +104,8 @@ namespace Reko.Core.Output
 
         public abstract void WriteLine();
 
+        public abstract void WriteLabel(string label, object block);
+
         public abstract void WriteLine(string s);
 
         public void Write(object o)
@@ -157,6 +159,10 @@ namespace Reko.Core.Output
         }
 
         public override void WriteKeyword(string keyword)
+        {
+        }
+
+        public override void WriteLabel(string label, object block)
         {
         }
 

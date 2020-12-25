@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -150,7 +150,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public abstract string GetText();
         public string Style { get; set; }
-        public object Tag { get; set; }
+        public object tag;
+        public object Tag { get { return tag; } set { tag = value; if (value is Reko.Core.Address) value.ToString(); } }
         public int ContextMenuID { get; set; }
 
         public virtual SizeF GetSize(string text, Font font, Graphics g)

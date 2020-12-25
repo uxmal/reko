@@ -489,6 +489,12 @@ namespace Reko.Core
                 w.WriteHyperlink(text, href);
             }
 
+            public override void WriteLabel(string label, object block)
+            {
+                WritePrefix();
+                w.Write(label);
+            }
+
             public override void WriteKeyword(string keyword)
             {
                 WritePrefix();

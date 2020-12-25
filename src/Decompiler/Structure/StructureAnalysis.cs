@@ -512,21 +512,11 @@ all other cases, together they constitute a Switch[].
         private bool VirtualizeIrregularSwitchEntries(Region n)
         {
             var vEdges = new List<VirtualEdge>();
-            trace.Verbose("    Virtualizing switch node {0}", n.Block!.Name);
+            trace.Verbose("    Virtualizing switch node {0}", n.Block!.DisplayName);
             foreach (var s in regionGraph.Successors(n).Distinct())
             {
                 var pp = n;
                 var ss = s;
-                //if (s.IsSwitchPad && regionGraph.Successors(s).Count == 1)
-                //{
-                //    pp = s;
-                //    ss = regionGraph.Successors(s).First();
-                //    //if (IsBackEdge(pp, ss))
-                //    //{
-                //    //    vEdges.Add(new VirtualEdge(s, ss, VirtualEdgeType.Goto));
-                //    //    continue;
-                //    //}
-                //}
                 trace.Verbose("       Examining {0} which has {1} predecessors", ss, regionGraph.Predecessors(ss).Count);
                 foreach (var sp in regionGraph.Predecessors(ss))
                 {

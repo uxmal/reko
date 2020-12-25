@@ -226,6 +226,12 @@ namespace Reko.UserInterfaces.WindowsForms
             };
             return dlg;
         }
+
+        public IBlockNameDialog CreateBlockNameDialog(Procedure proc, Block block)
+        {
+            var dlg = new BlockNameDialog(proc, block);
+            return dlg;
+        }
     }
 }
 
