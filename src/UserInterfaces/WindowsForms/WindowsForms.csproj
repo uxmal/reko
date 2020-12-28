@@ -9,17 +9,12 @@
     <RootNamespace>Reko.UserInterfaces.WindowsForms</RootNamespace>
     <AssemblyName>Reko.UserInterfaces.WindowsForms</AssemblyName>
     <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU;x86;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="System.Resources.Extensions" />
   </ItemGroup>
-
-  <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
-    <Msbuild Projects="$(ProjectDir)..\..\tools\xslt\xslt.csproj" RemoveProperties="TargetFramework" />
-    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="dotnet &quot;$(ProjectDir)../../tools/xslt.dll&quot; &quot;$(ProjectDir)Forms/decompiler-menus.xslt&quot; &quot;$(ProjectDir)../../Gui/decompiler-menus.xml&quot; &quot;$(ProjectDir)Forms/DecompilerMenus.cs&quot;" />
-    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../../tools/xslt.exe')" Command="&quot;$(ProjectDir)..\..\tools\xslt.exe&quot; &quot;$(ProjectDir)Forms\decompiler-menus.xslt&quot; &quot;$(ProjectDir)..\..\Gui\decompiler-menus.xml&quot; &quot;$(ProjectDir)Forms\DecompilerMenus.cs&quot;" />
-  </Target>
 
   <ItemGroup>
     <Compile Include="Forms/DecompilerMenus.cs" Condition="!Exists('Forms/DecompilerMenus.cs')" />
@@ -37,4 +32,8 @@
     <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\..\Gui\Gui.csproj" />
   </ItemGroup>
+
+  <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
+    <MSBuild Projects="$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="gen_decompiler_menus_winforms" />
+  </Target>
 </Project>

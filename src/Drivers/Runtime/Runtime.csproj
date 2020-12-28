@@ -8,6 +8,7 @@
     <AssemblyName>Reko.Runtime</AssemblyName>
     <Platforms>x86;x64</Platforms>
     <Configurations>Debug;Release</Configurations>
+    <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Alpha\Alpha.csproj" />
@@ -166,4 +167,19 @@
     <ProjectReference Include="..\..\Symbols\LGSymLoader\LGSymLoader.csproj" />
   </ItemGroup>
   <Import Project="$(ProjectDir)..\PreBuild.targets" />
+
+  <Target Name="SetNuspecProperties" BeforeTargets="GenerateNuspec">
+    <PropertyGroup>
+      <NuspecProperties>$(NuspecProperties);id=$(AssemblyName)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);config=$(Configuration)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);version=$(PackageVersion)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);authors=$(Authors)</NuspecProperties>
+    </PropertyGroup>
+    <Message Importance="high" Text="NuspecProperties: $(NuspecProperties)" />
+  </Target>
+
+  <Target Name="SetNuspecFiles" BeforeTargets="GenerateNuspec">
+    <Message Importance="high" Text="Updating nuspec &quot;$(NuspecFile)&quot;..." />
+    <MSBuild Projects="$(ProjectDir)..\..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="update_runtime_nuspec" />
+  </Target>
 </Project>

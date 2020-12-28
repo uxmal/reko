@@ -1,0 +1,81 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Configurations>Debug;Release</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <CMakeFlags Include="-DIS_MSYS=FALSE" />
+    <CMakeFlags Include="-DCMAKE_BUILD_TYPE=$(Configuration)" />
+    <CMakeFlags Include="-DREKO_PLATFORM=$(Platform)" />
+    <CMakeFlags Include="-DREKO_SRC=$(ProjectDir)../" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <!-- this is needed to have a consistent and normalized path (or it will not work on Unix) -->
+    <RekoCMake>$([System.IO.Path]::Combine($(ProjectDir), ..\reko.cmake))</RekoCMake>
+    <!-- build the arguments string by joining <CMakeFlags> items by space -->
+    <CMakeArguments>@(CMakeFlags -> '%(Identity)', ' ')</CMakeArguments>
+  </PropertyGroup>
+
+  <Target Name="build_solution">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=build_solution -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="update_runtime_nuspec">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=update_runtime_nuspec -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="create_runtime_nupkg">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=create_runtime_nupkg -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="run_unit_tests">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=run_unit_tests -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="run_regressions">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=run_regressions -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="gen_decompiler_menus">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_decompiler_menus -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="gen_decompiler_menus_winforms">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_decompiler_menus_winforms -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="gen_c2xml_os2">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_c2xml_os2 -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="gen_c2xml_sysv">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_c2xml_sysv -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="gen_c2xml_windows">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_c2xml_windows -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="run_hdrgen">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=run_hdrgen -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="nativeproxy_clean">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=nativeproxy_clean -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="nativeproxy_build">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=nativeproxy_build -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="create_release">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=create_release -P $(RekoCMake)" />
+  </Target>
+
+  <Target Name="reko_all">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=reko_all -P $(RekoCMake)" />
+  </Target>
+</Project>

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
@@ -36,13 +37,16 @@ namespace Reko.UnitTests.Core.Configuration
     {
         private ServiceContainer sc;
         private FakeDecompilerEventListener listener;
+        private Mock<IPluginLoaderService> pluginSvc;
 
         [SetUp]
         public void Setup()
         {
             this.sc = new ServiceContainer();
             this.listener = new FakeDecompilerEventListener();
+            this.pluginSvc = new Mock<IPluginLoaderService>();
             sc.AddService<DecompilerEventListener>(listener);
+            sc.AddService<IPluginLoaderService>(pluginSvc.Object);
         }
 
         [Test]
@@ -174,6 +178,8 @@ namespace Reko.UnitTests.Core.Configuration
                     }
                 }
             });
+            pluginSvc.Setup(p => p.GetType(It.IsAny<string>()))
+                .Returns(typeof(FakeArchitecture));
 
             var arch = cfgSvc.GetArchitecture("fake", "Fake-2000");
             var options = arch.SaveUserOptions();
@@ -205,6 +211,8 @@ namespace Reko.UnitTests.Core.Configuration
                     }
                 }
             });
+            pluginSvc.Setup(p => p.GetType(It.IsAny<string>()))
+                .Returns(typeof(FakeArchitecture));
 
             var arch = cfgSvc.GetArchitecture("fake", "Unknown Model");
             Assert.AreEqual("WarningDiagnostic -  - Model 'Unknown Model' is not defined for architecture 'fake'.", listener.LastDiagnostic);

@@ -1,7 +1,8 @@
 language: csharp
 dotnet: 3.1.404
 solution: src/Reko-decompiler.sln
-sudo: required
+dist: xenial
+os: linux
 
 # This script builds the Mono version of Reko in the Un*x environment 
 # of Travis-CI. When building the SLN file, we therefore use the "Release"
@@ -30,6 +31,8 @@ before_install:
 # If you want more build spew, change the /verbosity:minimal below
 script:
   - source .travis_env
-  - dotnet build -p:Configuration=UnixRelease -p:Platform=x64 -v:m -m src/Reko-decompiler.sln
-  - dotnet test ./src/UnitTests/bin/x64/UnixRelease/netcoreapp3.1/Reko.UnitTests.dll --filter "(TestCategory!=FailedTests)&(TestC7tegory!=DotNetBug)&(TestCategory!=UserInterface)"
-  - python ./subjects/regressionTests.py --check-output --platform=x64 --configuration=UnixRelease --framework netcoreapp3.1
+  - dotnet msbuild -p:Configuration=UnixRelease -p:Platform=x64 -v:m -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
+  - dotnet msbuild -p:Configuration=Release -p:Platform=x64 -v:m -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
+  - dotnet msbuild -p:Configuration=Release -p:Platform=x64 -v:m -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
+  - dotnet msbuild -p:Configuration=Release -p:Platform=x64 -v:m -t:create_runtime_nupkg -m ./src/BuildTargets/BuildTargets.csproj
+  - dotnet msbuild -p:Configuration=Release -p:Platform=x64 -v:m -t:create_release -m ./src/BuildTargets/BuildTargets.csproj

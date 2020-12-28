@@ -1,0 +1,67 @@
+name: Reko
+
+on:
+  push:
+    branches: [ netStandard ]
+  pull_request:
+    branches: [ netStandard ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: macos-latest
+            build_config: UnixRelease
+          - os: ubuntu-latest
+            build_config: UnixRelease
+          - os: windows-latest
+            build_config: Release
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.404
+    - name: Install dependencies
+      shell: bash
+      run: |
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          sudo apt-get install libcapstone-dev
+        elif [ "$RUNNER_OS" == "macOS" ]; then
+          brew install capstone
+        fi
+    - name: Build
+      shell: bash
+      env:
+        BUILD_CONFIG: ${{ matrix.build_config }}
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=$BUILD_CONFIG -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
+    - name: Unit Tests
+      shell: bash
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
+    - name: Regression Tests
+      shell: bash
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
+    - name: Create Runtime nupkg
+      shell: bash
+      env:
+        BUILD_CONFIG: ${{ matrix.build_config }}
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_runtime_nupkg -m ./src/BuildTargets/BuildTargets.csproj
+    - name: Create Release
+      shell: bash
+      env:
+        BUILD_CONFIG: ${{ matrix.build_config }}
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: reko-${{ matrix.os }}
+        if-no-files-found: warn
+        path: |
+          bin/WindowsDecompiler-*.zip
+          bin/CmdLine-*.zip
+          bin/*.msi
+          bin/*.nupkg
+          src/BuildTargets/build/run_regressions/regression.log

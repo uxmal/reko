@@ -10,7 +10,7 @@ by the PreBuild.targets file.
     <UnixDllExt Condition="$(IsMac)">dylib</UnixDllExt>
     <UnixDllExt Condition="!$(IsMac)">so</UnixDllExt>
     <!-- Use this for assemblies that are targetting the  .NET Standard profile -->
-    <StandardOutputDir>$(Configuration)\netstandard2.0</StandardOutputDir>
+    <StandardOutputDir>$(Configuration)\netstandard2.1</StandardOutputDir>
   </PropertyGroup>
   <ItemGroup>
     <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
@@ -119,9 +119,9 @@ by the PreBuild.targets file.
     <DecompilerMetadataOs2_16 Include="$(SolutionDir)Environments\OS2\16\SESMGR.def" />
     <DecompilerMetadataOs2_16 Include="$(SolutionDir)Environments\OS2\16\SPOOLCP.def" />
     <DecompilerMetadataOs2_16 Include="$(SolutionDir)Environments\OS2\16\VIOCALLS.def" />
-    <DecompilerMetadataOs2_16 Include="$(SolutionDir)Environments\OS2\fsd.xml" />
-    <DecompilerMetadataOs2_16 Include="$(SolutionDir)Environments\OS2\fsh.xml" />
-    <DecompilerMetadataOs2_16 Include="$(SolutionDir)Environments\OS2\fsu.xml" />
+    <DecompilerMetadataOs2_16 Include="$(SolutionDir)Environments\OS2\16\fsd.xml" />
+    <DecompilerMetadataOs2_16 Include="$(SolutionDir)Environments\OS2\16\fsh.xml" />
+    <DecompilerMetadataOs2_16 Include="$(SolutionDir)Environments\OS2\16\fsu.xml" />
     <DecompilerMetadataOs2_16 Include="$(SolutionDir)Environments\OS2\os2-16.xml" />
     
     <DecompilerMetadataOs2_32 Include="$(SolutionDir)Environments\OS2\32\bdcalls.def" />
@@ -195,6 +195,7 @@ by the PreBuild.targets file.
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\bin\$(StandardOutputDir)\Reko.ImageLoaders.OdbgScript.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Omf\bin\$(StandardOutputDir)\Reko.ImageLoaders.Omf.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Srec\bin\$(StandardOutputDir)\Reko.ImageLoaders.Srec.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\TekHex\bin\$(StandardOutputDir)\Reko.ImageLoaders.TekHex.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\VmsExe\bin\$(StandardOutputDir)\Reko.ImageLoaders.VmsExe.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\WebAssembly\bin\$(StandardOutputDir)\Reko.ImageLoaders.WebAssembly.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Xbe\bin\$(StandardOutputDir)\Reko.ImageLoaders.Xbe.*" />

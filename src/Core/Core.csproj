@@ -26,13 +26,4 @@
   <ItemGroup>
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
-  <!--
-  <ItemGroup>
-    <ToolProjects Include="../tools/xslt/xslt.csproj" />
-    <ToolProjects Include="../tools/c2xml/c2xml.csproj" />
-  </ItemGroup>
-  <Target Name="BuildTools" AfterTargets="AfterBuild">
-    <MSBuild Projects="$(ToolProjects)" Properties="Configuration=$(Configuration)" Targets="Build" />
-  </Target>
-  -->
 </Project>

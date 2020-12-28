@@ -8,6 +8,7 @@
     <RootNamespace>Reko.Gui</RootNamespace>
     <AssemblyName>Reko.Gui</AssemblyName>
     <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU;x86;x64</Platforms>
   </PropertyGroup>
   <!-- 
       The file CmdIds.cs is generated from decompiler-menus.xml and is not committed to the
@@ -25,16 +26,8 @@
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Decompiler\Decompiler.csproj" />
   </ItemGroup>
+
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">
-    <Msbuild Projects="$(ProjectDir)..\tools\xslt\xslt.csproj" RemoveProperties="TargetFramework" />
-    <Message Importance="high" Text="Generating C# files for Gui.csproj" />
-    <Message Importance="high" Text="xslt.exe exists" Condition="Exists('$(ProjectDir)../tools/xslt.exe')" />
-    <!--
-        It seems we can't rely on xslt.exe / xslt.dll (netcoreapp3.1 or netcoreapp20)
-        have been built, despite all efforts to express this in the SLN file.
-        Thanks, build system.
-    -->
-    <Exec Condition=" '$(OS)' == 'Unix' And Exists('$(ProjectDir)../tools/xslt.dll') " Command="dotnet $(ProjectDir)../tools/xslt.dll $(ProjectDir)cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)CmdIds.cs" />
-    <Exec Condition=" '$(OS)' != 'Unix' And Exists('$(ProjectDir)../tools/xslt.exe') " Command="$(ProjectDir)..\tools\xslt.exe $(ProjectDir)cmdids.xslt $(ProjectDir)decompiler-menus.xml $(ProjectDir)CmdIds.cs" />
+    <MSBuild Projects="$(ProjectDir)..\BuildTargets\BuildTargets.csproj" Properties="Configuration=$(Configuration);Platform=$(Platform)" Targets="gen_decompiler_menus" />
   </Target>
 </Project>

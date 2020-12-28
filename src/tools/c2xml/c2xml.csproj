@@ -34,21 +34,6 @@
   </ItemGroup>
 
 
-  <!-- Copy dependencies to the `tools` directory.-->
-
-  <Target Name="CopyToToolsDir" AfterTargets="CoreBuild">
-    <Message Text="Copy $(ProjectDir)$(OutputPath)$(TargetFileName) to $(ProjectDir)..\..\tools" Importance="High" />
-    <Copy SourceFiles="$(ProjectDir)$(OutputPath)$(TargetFileName)" DestinationFolder="$(ProjectDir)..\..\tools" />
-    <Copy Condition="$(OS)!='Unix'" SourceFiles="$(ProjectDir)$(OutputPath)c2xml.exe" DestinationFolder="$(ProjectDir)..\..\tools" />
-    <Copy Condition="$(OS)=='Unix'" SourceFiles="$(ProjectDir)$(OutputPath)c2xml.dll" DestinationFolder="$(ProjectDir)..\..\tools" />
-    <Copy SourceFiles="@(C2xmlExtraFiles)" DestinationFolder="$(ProjectDir)..\..\tools" />
-
-    <Copy SourceFiles="$(ProjectDir)$(OutputPath)$(TargetFileName).config" DestinationFolder="$(ProjectDir)..\..\tools" />
-    <Copy SourceFiles="$(ProjectDir)$(OutputPath)Reko.Core.dll" DestinationFolder=".." />
-    <Copy SourceFiles="$(ProjectDir)..\..\..\external\docopt.net-0.6.1.4\DocoptNet.dll" DestinationFolder=".." />
-    <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder=".." SkipUnchangedFiles="true" />
-  </Target>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />
   </ItemGroup>
