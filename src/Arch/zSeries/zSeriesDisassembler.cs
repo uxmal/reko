@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -159,6 +160,13 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
+        public static bool I(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var i = ImmediateOperand.Byte((byte) uInstr);
+            dasm.ops.Add(i);
+            return true;
+        }
+
         public static bool MII(ulong uInstr, zSeriesDisassembler dasm)
         {
             var m1 = (byte)((uInstr >> 36) & 0xF);
@@ -212,6 +220,77 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
+        private static bool RIEb(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var r1 = new RegisterOperand(Registers.GpRegisters[(uInstr >> 36) & 0xF]);
+            var r2 = new RegisterOperand(Registers.GpRegisters[(uInstr >> 32) & 0xF]);
+            var m3 = (byte) ((uInstr >> 12) & 0xF);
+            var addr = dasm.addr + 2 * (short) Bits.SignExtend(uInstr >> 16, 16);
+            dasm.ops.Add(r1);
+            dasm.ops.Add(r2);
+            dasm.ops.Add(ImmediateOperand.Byte(m3));
+            dasm.ops.Add(AddressOperand.Create(addr));
+            return true;
+        }
+
+        private static bool RIEc(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var r1 = new RegisterOperand(Registers.GpRegisters[(uInstr >> 36) & 0xF]);
+            var i2 = Constant.SByte((sbyte)Bits.SignExtend(uInstr >> 8, 8));
+            var m3 = (byte) ((uInstr >> 32) & 0xF);
+            var addr = dasm.addr + 2 * (short) Bits.SignExtend(uInstr >> 16, 16);
+            dasm.ops.Add(r1);
+            dasm.ops.Add(new ImmediateOperand(i2));
+            dasm.ops.Add(ImmediateOperand.Byte(m3));
+            dasm.ops.Add(AddressOperand.Create(addr));
+            return true;
+        }
+
+        private static bool RIEd(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var r1 = new RegisterOperand(Registers.GpRegisters[(uInstr >> 36) & 0xF]);
+            var i2 = ImmediateOperand.Int16((short)(uInstr >> 16));
+            var r3 = new RegisterOperand(Registers.GpRegisters[(uInstr >> 32) & 0xF]);
+            dasm.ops.Add(r1);
+            dasm.ops.Add(i2);
+            dasm.ops.Add(r3);
+            return true;
+        }
+
+        private static bool RIEe(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var r1 = new RegisterOperand(Registers.GpRegisters[(uInstr >> 36) & 0xF]);
+            var ri2 = AddressOperand.Create(dasm.addr + 2 * (int) Bits.SignExtend(uInstr, 32));
+            var r3 = new RegisterOperand(Registers.GpRegisters[(uInstr >> 32) & 0xF]);
+            dasm.ops.Add(r1);
+            dasm.ops.Add(r3);
+            dasm.ops.Add(ri2);
+            return true;
+        }
+
+        private static bool RIEf(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var r1 = new RegisterOperand(Registers.GpRegisters[(uInstr >> 36) & 0xF]);
+            var r2 = new RegisterOperand(Registers.GpRegisters[(uInstr >> 32) & 0xF]);
+            var i3 = ImmediateOperand.Byte((byte) (uInstr >> 24));
+            var i4 = ImmediateOperand.Byte((byte) (uInstr >> 16));
+            var i5 = ImmediateOperand.Byte((byte) (uInstr >> 8));
+            dasm.ops.Add(r1);
+            dasm.ops.Add(r2);
+            dasm.ops.Add(i3);
+            dasm.ops.Add(i4);
+            dasm.ops.Add(i5);
+            return true;
+        }
+
+        public static bool RILa(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            dasm.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr >> 36) & 0xF]));
+            var i2 = ImmediateOperand.Word32((uint) Bits.SignExtend(uInstr, 32));
+            dasm.ops.Add(i2);
+            return true;
+        }
+
         public static bool RILb(ulong uInstr, zSeriesDisassembler dasm)
         {
             dasm.ops.Add(new RegisterOperand(Registers.GpRegisters[(uInstr >> 36) & 0xF]));
@@ -224,6 +303,18 @@ namespace Reko.Arch.zSeries
         {
             var offset = 2 * (int)Bits.SignExtend(uInstr, 32);
             dasm.ops.Add(AddressOperand.Create(dasm.addr + offset));
+            return true;
+        }
+
+        public static bool RSI(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var r1 = new RegisterOperand(Registers.GpRegisters[(uInstr >> 20) & 0xF]);
+            var offset = 2 * (short) uInstr;
+            var ri2 = AddressOperand.Create(dasm.addr + offset);
+            var r3 = new RegisterOperand(Registers.GpRegisters[(uInstr >> 16) & 0xF]);
+            dasm.ops.Add(r1);
+            dasm.ops.Add(r3);
+            dasm.ops.Add(ri2);
             return true;
         }
 
@@ -247,11 +338,52 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
+        public static bool RXE(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var f1 = Registers.FpRegisters[(uInstr >> 36) & 0xF];
+            var x2 = Registers.GpRegisters[(uInstr >> 32) & 0xF];
+            var b2 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            var d2 = (int) Bits.SignExtend(uInstr >> 16, 12);
+            dasm.ops.Add(new RegisterOperand(f1));
+            dasm.ops.Add(dasm.CreateAccess(b2, x2, d2));
+            return true;
+        }
+
+        public static bool RXF(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var f1 = Registers.FpRegisters[(uInstr >> 12) & 0xF];
+            var x2 = Registers.GpRegisters[(uInstr >> 32) & 0xF];
+            var b2 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            var d2 = (int) Bits.SignExtend(uInstr >> 16, 12);
+            var f3 = Registers.FpRegisters[(uInstr >> 36) & 0xF];
+            dasm.ops.Add(new RegisterOperand(f1));
+            dasm.ops.Add(dasm.CreateAccess(b2, x2, d2));
+            dasm.ops.Add(new RegisterOperand(f3));
+            return true;
+        }
+
         public static bool S(ulong uInstr, zSeriesDisassembler dasm)
         {
             var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
             var d2 = (int)Bits.SignExtend(uInstr, 12);
             dasm.ops.Add(dasm.CreateAccess(b2, d2));
+            return true;
+        }
+        
+        public static bool SMI(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var m1 = ImmediateOperand.Byte((byte) (uInstr >> 36 & 0xF));
+            var addr = dasm.addr + 2 * (int) Bits.SignExtend(uInstr, 16);
+            var b3 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            var d3 = (int) Bitfield.ReadSignedFields(siyDisplacement, uInstr);
+            dasm.ops.Add(m1);
+            dasm.ops.Add(AddressOperand.Create(addr));
+            dasm.ops.Add(new MemoryOperand(dasm.arch.WordWidth)
+            {
+                Base = b3,
+                Offset = d3,
+            });
+
             return true;
         }
 
@@ -386,6 +518,21 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
+        private static readonly Bitfield[] siyDisplacement = Bf((8, 8), (16, 12));
+        private static bool SIY(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var b1 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            var d1 = (int) Bitfield.ReadSignedFields(siyDisplacement, uInstr);
+            var i2 = ImmediateOperand.Byte((byte) (uInstr >> 32));
+            dasm.ops.Add(new MemoryOperand(dasm.arch.WordWidth)
+            {
+                Base = b1,
+                Offset = d1,
+            });
+            dasm.ops.Add(i2);
+            return true;
+        }
+
         private static bool RSYb(ulong uInstr, zSeriesDisassembler dasm)
         {
             var r1 = Registers.GpRegisters[(uInstr >> 36) & 0xF];
@@ -411,6 +558,17 @@ namespace Reko.Arch.zSeries
             var b2 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
             var d2 = Bitfield.ReadSignedFields(rxya_offset, (uint)uInstr);
             dasm.ops.Add(r1);
+            dasm.ops.Add(dasm.CreateAccess(b2, x2, d2));
+            return true;
+        }
+
+        private static bool FXYa(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var f1 = new RegisterOperand(Registers.GpRegisters[(uInstr >> 36) & 0xF]);
+            var x2 = Registers.GpRegisters[(uInstr >> 32) & 0xF];
+            var b2 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            var d2 = Bitfield.ReadSignedFields(rxya_offset, (uint) uInstr);
+            dasm.ops.Add(f1);
             dasm.ops.Add(dasm.CreateAccess(b2, x2, d2));
             return true;
         }
@@ -609,6 +767,11 @@ namespace Reko.Arch.zSeries
             return new ExtendDecoder48(InstrClass.Linear, mnemonic, mutators);
         }
 
+        public static ExtendDecoder48 Instr48(Mnemonic mnemonic, InstrClass iclass, params WideMutator<zSeriesDisassembler>[] mutators)
+        {
+            return new ExtendDecoder48(iclass, mnemonic, mutators);
+        }
+
         public static MaskDecoder Mask(int pos, int len, params Decoder[] decoders)
         {
             return new MaskDecoder(pos, len, decoders);
@@ -655,6 +818,7 @@ namespace Reko.Arch.zSeries
                 (0xCD, Instr(Mnemonic.lgdr, RRE)));
 
             var b9_decoders = ExtendMask32(16, 8,
+                (0x00, Instr(Mnemonic.lpgr, RRE)),
                 (0x02, Instr(Mnemonic.ltgr, RRE)),
                 (0x04, Instr(Mnemonic.lgr, RRE)),
                 (0x08, Instr(Mnemonic.agr, RRE)),
@@ -665,7 +829,7 @@ namespace Reko.Arch.zSeries
                 (0x21, Instr(Mnemonic.clgr, RRE)),
                 (0x80, Instr(Mnemonic.ngr, RRE)),
                 (0xE2, Mask(12, 4,
-                    Instr(Mnemonic.locgr, RR),
+                    Instr(Mnemonic.locgrnv, RR),
                     Instr(Mnemonic.locgro, RR),
                     Instr(Mnemonic.locgrh, RR),
                     Instr(Mnemonic.locgrnle, RR),
@@ -681,6 +845,42 @@ namespace Reko.Arch.zSeries
                     Instr(Mnemonic.locgrnh, RR),
                     Instr(Mnemonic.locgrno, RR),
                     Instr(Mnemonic.locgr, RR))));
+
+            var c2_decoders = ExtendMask48(32, 4,
+                (0x0, Instr(Mnemonic.msgfi, RILa)),
+                (0x1, Instr(Mnemonic.msfi, RILa)),
+                (0x2, invalid),
+                (0x3, invalid),
+
+                (0x4, Instr(Mnemonic.slgfi, RILa)),
+                (0x5, Instr(Mnemonic.slfi, RILa)),
+                (0x6, invalid),
+                (0x7, invalid),
+
+                (0x8, Instr(Mnemonic.agfi, RILa)),
+                (0x9, Instr(Mnemonic.afi, RILa)),
+                (0xA, Instr(Mnemonic.algfi, RILa)),
+                (0xB, Instr(Mnemonic.alfi, RILa)),
+
+                (0xC, Instr(Mnemonic.cgfi, RILa)),
+                (0xD, Instr(Mnemonic.cfi, RILa)),
+                (0xE, Instr(Mnemonic.clgfi, RILa)),
+                (0xF, Instr(Mnemonic.clfi, RILa)));
+
+            var c6_decoders = ExtendMask48(32, 4,
+                (~0u, invalid),
+                (0x0, Instr(Mnemonic.exrl, RILb)),
+                (0x2, Instr(Mnemonic.pfdrl, RILb)),
+                (0x4, Instr(Mnemonic.cghrl, RILb)),
+                (0x5, Instr(Mnemonic.chrl, RILb)),
+                (0x6, Instr(Mnemonic.clghrl, RILb)),
+                (0x7, Instr(Mnemonic.clhrl, RILb)),
+                (0x8, Instr(Mnemonic.cgrl, RILb)),
+                (0xA, Instr(Mnemonic.clgrl, RILb)),
+                (0xC, Instr(Mnemonic.cgfrl, RILb)),
+                (0xD, Instr(Mnemonic.crl, RILb)),
+                (0xE, Instr(Mnemonic.clgfrl, RILb)),
+                (0xF, Instr(Mnemonic.clrl, RILb)));
 
             var e3_decoders = ExtendMask48(0, 8,
                 (0x02, Instr(Mnemonic.ltg, RXYa)),
@@ -704,9 +904,76 @@ namespace Reko.Arch.zSeries
                 (0x0B, Instr(Mnemonic.slag, RSYa)),
                 (0x0C, Instr(Mnemonic.srlg, RSYa)),
                 (0x0D, Instr(Mnemonic.sllg, RSYa)),
+                (0x1C, Instr(Mnemonic.rllg, RSYa)),
+                (0x1D, Instr(Mnemonic.rll, RSYa)),
                 (0x20, Instr(Mnemonic.clmh, RSYb)),
                 (0x24, Instr(Mnemonic.stmg, RSYa)),
-                (0xDF, Instr(Mnemonic.sllk, RSYa)));
+                (0x30, Instr(Mnemonic.csg, RSYa)),
+                (0x4C, Instr(Mnemonic.ecag, RSYa)),
+                (0x51, Instr(Mnemonic.tmy, SIY)),
+                (0x52, Instr(Mnemonic.mviy, SIY)),
+                (0x55, Instr(Mnemonic.cliy, SIY)),
+                (0x6A, Instr(Mnemonic.asi, SIY)),
+                (0x7A, Instr(Mnemonic.agsi, SIY)),
+                (0xDC, Instr(Mnemonic.srak, RSYa)),
+                (0xDE, Instr(Mnemonic.srlk, RSYa)),
+                (0xDF, Instr(Mnemonic.sllk, RSYa)),
+                (0xE2, Instr(Mnemonic.locg, InstrClass.Linear|InstrClass.Conditional, RSYb)),
+                (0xE3, Instr(Mnemonic.stocg, InstrClass.Linear|InstrClass.Conditional, RSYb)),
+                (0xE4, Instr(Mnemonic.lang, RSYa)),
+                (0xE8, Instr(Mnemonic.laag, RSYa)),
+                (0xF2, Instr(Mnemonic.loc, RSYb)),
+                (0xF3, Instr(Mnemonic.stoc, RSYb)),
+                (0xF4, Instr(Mnemonic.lan, RSYa)),
+                (0xF8, Instr(Mnemonic.laa, RSYa)));
+
+            var ec_decoders = ExtendMask48(0, 8,
+                (~0u, Nyi("*")),
+                (0x44, Instr(Mnemonic.brxhg, InstrClass.ConditionalTransfer, RIEe)),
+                (0x45, Instr(Mnemonic.brxlg, InstrClass.ConditionalTransfer, RIEe)),
+                (0x55, Instr(Mnemonic.risbg, RIEf)),
+                (0x56, Instr(Mnemonic.rosbg, RIEf)),
+                (0x57, Instr(Mnemonic.rxsbg, RIEf)),
+                (0x59, Instr(Mnemonic.risbgn, RIEf)),
+                (0x64, Instr(Mnemonic.cgrj, InstrClass.ConditionalTransfer, RIEb)),
+                (0x65, Instr(Mnemonic.clgrj, InstrClass.ConditionalTransfer, RIEb)),
+                (0x76, Instr(Mnemonic.crj, InstrClass.ConditionalTransfer, RIEb)),
+                (0x77, Instr(Mnemonic.clrj, InstrClass.ConditionalTransfer, RIEb)),
+                (0x7C, Instr(Mnemonic.cgij, InstrClass.ConditionalTransfer, RIEc)),
+                (0x7D, Instr(Mnemonic.clgij, InstrClass.ConditionalTransfer, RIEc)),
+                (0x7E, Instr(Mnemonic.cij,  InstrClass.ConditionalTransfer, RIEc)),
+                (0x7F, Instr(Mnemonic.clij, InstrClass.ConditionalTransfer, RIEc)),
+                (0xD8, Instr(Mnemonic.ahik, RIEd)),
+                (0xD9, Instr(Mnemonic.aghik, RIEd)));
+
+            var ed_decoders = ExtendMask48(0, 8,
+                (~0u, Nyi("*")),
+                (0x04, Instr(Mnemonic.ldeb, RXE)),
+                (0x05, Instr(Mnemonic.lxdb, RXE)),
+                (0x06, Instr(Mnemonic.lxeb, RXE)),
+                (0x07, Instr(Mnemonic.mxdb, RXE)),
+                (0x09, Instr(Mnemonic.ceb, RXE)),
+                (0x0A, Instr(Mnemonic.aeb, RXE)),
+                (0x0B, Instr(Mnemonic.seb, RXE)),
+                (0x0C, Instr(Mnemonic.mdeb, RXE)),
+                (0x0D, Instr(Mnemonic.deb, RXE)),
+                (0x0E, Instr(Mnemonic.maeb, RXF)),
+                (0x0F, Instr(Mnemonic.mseb, RXF)),
+                (0x10, Instr(Mnemonic.tceb, RXE)),
+                (0x11, Instr(Mnemonic.tcdb, RXE)),
+                (0x12, Instr(Mnemonic.tcxb, RXE)),
+                (0x16, Instr(Mnemonic.meeb, RXE)),
+                (0x17, Instr(Mnemonic.meeb, RXE)),
+                (0x19, Instr(Mnemonic.cdb, RXE)),
+                (0x1A, Instr(Mnemonic.adb, RXE)),
+                (0x1B, Instr(Mnemonic.sdb, RXE)),
+                (0x1C, Instr(Mnemonic.mdb, RXE)),
+                (0x1D, Instr(Mnemonic.ddb, RXE)),
+                (0x1E, Instr(Mnemonic.madb, RXE)),
+                (0x57, Instr(Mnemonic.rxsbg, RIEf)),
+                (0x65, Instr(Mnemonic.ldy, FXYa)),
+                (0x67, Instr(Mnemonic.stdy, FXYa))
+                );
 
             decoders = new Decoder[256]
             {
@@ -717,32 +984,32 @@ namespace Reko.Arch.zSeries
                 invalid,
 
                 Instr(Mnemonic.spm, RR),
-                Instr(Mnemonic.balr, RR),
-                Instr(Mnemonic.bctr, RR),
+                Instr(Mnemonic.balr, InstrClass.Transfer|InstrClass.Call, RR),
+                Instr(Mnemonic.bctr, InstrClass.ConditionalTransfer, RR),
                 Mask(4, 4,
-                    Instr(Mnemonic.nopr, R),
-                    Instr(Mnemonic.bor, R),
-                    Instr(Mnemonic.bhr, R),
-                    Instr(Mnemonic.bnler, R),
-                    Instr(Mnemonic.blr, R),
-                    Instr(Mnemonic.bnher, R),
-                    Instr(Mnemonic.blhr, R),
-                    Instr(Mnemonic.bner, R),
-                    Instr(Mnemonic.ber, R),
-                    Instr(Mnemonic.bnlhr, R),
-                    Instr(Mnemonic.bher, R),
-                    Instr(Mnemonic.bnlr, R),
-                    Instr(Mnemonic.bler, R),
-                    Instr(Mnemonic.bnhr, R),
-                    Instr(Mnemonic.bnor, R),
-                    Instr(Mnemonic.br, R)),
+                    Instr(Mnemonic.nopr, InstrClass.Linear|InstrClass.Padding, R),
+                    Instr(Mnemonic.bor, InstrClass.ConditionalTransfer, R),
+                    Instr(Mnemonic.bhr, InstrClass.ConditionalTransfer, R),
+                    Instr(Mnemonic.bnler, InstrClass.ConditionalTransfer, R),
+                    Instr(Mnemonic.blr, InstrClass.ConditionalTransfer, R),
+                    Instr(Mnemonic.bnher, InstrClass.ConditionalTransfer, R),
+                    Instr(Mnemonic.blhr, InstrClass.ConditionalTransfer, R),
+                    Instr(Mnemonic.bner, InstrClass.ConditionalTransfer, R),
+                    Instr(Mnemonic.ber, InstrClass.ConditionalTransfer, R),
+                    Instr(Mnemonic.bnlhr, InstrClass.ConditionalTransfer, R),
+                    Instr(Mnemonic.bher, InstrClass.ConditionalTransfer, R),
+                    Instr(Mnemonic.bnlr, InstrClass.ConditionalTransfer, R),
+                    Instr(Mnemonic.bler, InstrClass.ConditionalTransfer, R),
+                    Instr(Mnemonic.bnhr, InstrClass.ConditionalTransfer, R),
+                    Instr(Mnemonic.bnor, InstrClass.ConditionalTransfer, R),
+                    Instr(Mnemonic.br, InstrClass.Transfer, R)),
                 invalid,
                 invalid,
-                Nyi("*"),
-                Instr(Mnemonic.bsm, RR),
+                Instr(Mnemonic.svc, InstrClass.Transfer|InstrClass.Call, I),
+                Instr(Mnemonic.bsm, InstrClass.Transfer, RR),
 
-                Instr(Mnemonic.bassm, RR),
-                Instr(Mnemonic.basr, RR),
+                Instr(Mnemonic.bassm, InstrClass.Transfer|InstrClass.Call, RR),
+                Instr(Mnemonic.basr, InstrClass.Transfer|InstrClass.Call, RR),
                 Instr(Mnemonic.mvcl, RR),
                 Instr(Mnemonic.clcl, RR),
                 // 10
@@ -766,15 +1033,15 @@ namespace Reko.Arch.zSeries
                 Instr(Mnemonic.alr, RR),
                 Instr(Mnemonic.slr, RR),
                 // 20
-                Instr(Mnemonic.lpdr, RR),
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                Instr(Mnemonic.lpdr, FF),
+                Instr(Mnemonic.lndr, FF),
+                Instr(Mnemonic.ltdr, FF),
+                Instr(Mnemonic.lcdr, FF),
 
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                Instr(Mnemonic.hdr, FF),
+                Instr(Mnemonic.ldxr, FF),
+                Instr(Mnemonic.mxr, FF),
+                Instr(Mnemonic.mxdr, FF),
 
                 Instr(Mnemonic.ldr, FF),
                 Instr(Mnemonic.cdr, FF),
@@ -786,25 +1053,26 @@ namespace Reko.Arch.zSeries
                 Instr(Mnemonic.awr, FF),
                 Instr(Mnemonic.swr, FF),
                 // 30
-                Instr(Mnemonic.lper, RR),
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                Instr(Mnemonic.lper, FF),
+                Instr(Mnemonic.lner, FF),
+                Instr(Mnemonic.lter, FF),
+                Instr(Mnemonic.lcer, FF),
 
-                Instr(Mnemonic.her, RR),
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                Instr(Mnemonic.her, FF),
+                Instr(Mnemonic.ledr, FF),
+                Instr(Mnemonic.axr, FF),
+                Instr(Mnemonic.sxr, FF),
 
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                Instr(Mnemonic.ler, RR),
+                Instr(Mnemonic.cer, FF),
+                Instr(Mnemonic.aer, FF),
+                Instr(Mnemonic.ser, FF),
 
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                Instr(Mnemonic.mer, FF),
+                Instr(Mnemonic.der, FF),
+                Instr(Mnemonic.aur, FF),
+                Instr(Mnemonic.sur, FF),
+
                 // 40
                 Instr32(Mnemonic.sth, RXa),
                 Instr32(Mnemonic.la, RXa),
@@ -815,22 +1083,22 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
                 Nyi("*"),
                 ExtendMask32(20, 4,
-                    Instr(Mnemonic.nop),
-                    Instr(Mnemonic.bo, RXb),
-                    Instr(Mnemonic.bh, RXb),
-                    Instr(Mnemonic.bnle, RXb),
-                    Instr(Mnemonic.bl, RXb),
-                    Instr(Mnemonic.bnhe, RXb),
-                    Instr(Mnemonic.blh, RXb),
-                    Instr(Mnemonic.bne, RXb),
-                    Instr(Mnemonic.be, RXb),
-                    Instr(Mnemonic.bnlh, RXb),
-                    Instr(Mnemonic.bhe, RXb),
-                    Instr(Mnemonic.bnl, RXb),
-                    Instr(Mnemonic.ble, RXb),
-                    Instr(Mnemonic.bnh, RXb),
-                    Instr(Mnemonic.bno, RXb),
-                    Instr(Mnemonic.b, RXb),
+                    Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding),
+                    Instr(Mnemonic.bo, InstrClass.ConditionalTransfer, RXb),
+                    Instr(Mnemonic.bh, InstrClass.ConditionalTransfer, RXb),
+                    Instr(Mnemonic.bnle, InstrClass.ConditionalTransfer, RXb),
+                    Instr(Mnemonic.bl, InstrClass.ConditionalTransfer, RXb),
+                    Instr(Mnemonic.bnhe, InstrClass.ConditionalTransfer, RXb),
+                    Instr(Mnemonic.blh, InstrClass.ConditionalTransfer, RXb),
+                    Instr(Mnemonic.bne, InstrClass.ConditionalTransfer, RXb),
+                    Instr(Mnemonic.be, InstrClass.ConditionalTransfer, RXb),
+                    Instr(Mnemonic.bnlh, InstrClass.ConditionalTransfer, RXb),
+                    Instr(Mnemonic.bhe, InstrClass.ConditionalTransfer, RXb),
+                    Instr(Mnemonic.bnl, InstrClass.ConditionalTransfer, RXb),
+                    Instr(Mnemonic.ble, InstrClass.ConditionalTransfer, RXb),
+                    Instr(Mnemonic.bnh, InstrClass.ConditionalTransfer, RXb),
+                    Instr(Mnemonic.bno, InstrClass.ConditionalTransfer, RXb),
+                    Instr(Mnemonic.b, InstrClass.Transfer, RXb),
                     Nyi("*")),
 
                 Instr32(Mnemonic.lh, RXa),
@@ -860,8 +1128,9 @@ namespace Reko.Arch.zSeries
 
                 Instr32(Mnemonic.m, RXa),
                 Instr32(Mnemonic.d, RXa),
-                Nyi("*"),
-                Nyi("*"),
+                Instr32(Mnemonic.al, RXa),
+                Instr32(Mnemonic.sl, RXa),
+
                 // 60
                 Instr32(Mnemonic.std, FXa),
                 invalid,
@@ -884,57 +1153,57 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
                 // 70
                 Instr32(Mnemonic.ste, FXa),
-                Instr32(Mnemonic.ms, RXa),
+                Instr32(Mnemonic.ms, FXa),
                 invalid,
                 invalid,
 
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                invalid,
+                invalid,
+                invalid,
+                invalid,
 
-                Nyi("*"),
+                Instr32(Mnemonic.le, FXa),
                 Nyi("*"),
                 Instr32(Mnemonic.ae, FXa),
                 Instr32(Mnemonic.se, FXa),
 
-                Nyi("*"),
-                Nyi("*"),
+                Instr32(Mnemonic.me, FXa),
+                Instr32(Mnemonic.de, FXa),
                 Instr32(Mnemonic.au, FXa),
                 Instr32(Mnemonic.su, FXa),
                 // 80
                 Instr32(Mnemonic.ssm, S),
                 Nyi("*"),
-                Nyi("*"),
+                Instr32(Mnemonic.lpsw, InstrClass.System|InstrClass.Linear, S),
                 Nyi("*"),
 
-                Nyi("*"),
-                Nyi("*"),
-                Instr32(Mnemonic.sra, RSa),
-                Nyi("*"),
+                Instr32(Mnemonic.brxh, InstrClass.ConditionalTransfer, RSI),
+                Instr32(Mnemonic.brxle, InstrClass.ConditionalTransfer, RSI),
+                Instr32(Mnemonic.bxh, InstrClass.ConditionalTransfer, RSa),
+                Instr32(Mnemonic.bxle, InstrClass.ConditionalTransfer, RSa),
 
                 Instr32(Mnemonic.srl, RSa),
                 Instr32(Mnemonic.sll, RSa),
                 Instr32(Mnemonic.sra, RSa),
                 Instr32(Mnemonic.sla, RSa),
 
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                Instr32(Mnemonic.srdl, RSa),
+                Instr32(Mnemonic.sldl, RSa),
+                Instr32(Mnemonic.srda, RSa),
+                Instr32(Mnemonic.slda, RSa),
                 // 90
                 Instr32(Mnemonic.stm, RSa3),
-                Nyi("*"),
+                Instr32(Mnemonic.tm, SI),
                 Instr32(Mnemonic.mvi, SI),
-                Nyi("*"),
+                Instr32(Mnemonic.ts, S),
 
-                Nyi("*"),
+                Instr32(Mnemonic.ni, SI),
                 Instr32(Mnemonic.cli, SI),
                 Instr32(Mnemonic.oi, SI),
                 Instr32(Mnemonic.xi, SI),
 
                 Instr32(Mnemonic.lm, RSa3),
-                Nyi("*"),
+                Instr32(Mnemonic.trace, RSa3),
                 Instr32(Mnemonic.lam, RSa3),
                 Instr32(Mnemonic.stam, RSa3),
 
@@ -962,22 +1231,22 @@ namespace Reko.Arch.zSeries
                 Nyi("*"),
                 ExtendMask32(16, 4,
                     (0x04, Mask(20, 4,
-                        Instr(Mnemonic.brc, RIc),
-                        Instr(Mnemonic.jo, RIc),
-                        Instr(Mnemonic.jh, RIc),
-                        Instr(Mnemonic.jnle, RIc),
-                        Instr(Mnemonic.jl, RIc),
-                        Instr(Mnemonic.jnhe, RIc),
-                        Instr(Mnemonic.jlh, RIc),
-                        Instr(Mnemonic.jne, RIc),
-                        Instr(Mnemonic.je, RIc),
-                        Instr(Mnemonic.jnlh, RIc),
-                        Instr(Mnemonic.jhe, RIc),
-                        Instr(Mnemonic.jnl, RIc),
-                        Instr(Mnemonic.jle, RIc),
-                        Instr(Mnemonic.jnh, RIc),
-                        Instr(Mnemonic.jno, RIc),
-                        Instr(Mnemonic.j, RIc))),
+                        Instr(Mnemonic.brc, InstrClass.ConditionalTransfer, RIc),
+                        Instr(Mnemonic.jo, InstrClass.ConditionalTransfer, RIc),
+                        Instr(Mnemonic.jh, InstrClass.ConditionalTransfer, RIc),
+                        Instr(Mnemonic.jnle, InstrClass.ConditionalTransfer, RIc),
+                        Instr(Mnemonic.jl, InstrClass.ConditionalTransfer, RIc),
+                        Instr(Mnemonic.jnhe, InstrClass.ConditionalTransfer, RIc),
+                        Instr(Mnemonic.jlh, InstrClass.ConditionalTransfer, RIc),
+                        Instr(Mnemonic.jne, InstrClass.ConditionalTransfer, RIc),
+                        Instr(Mnemonic.je, InstrClass.ConditionalTransfer, RIc),
+                        Instr(Mnemonic.jnlh, InstrClass.ConditionalTransfer, RIc),
+                        Instr(Mnemonic.jhe, InstrClass.ConditionalTransfer, RIc),
+                        Instr(Mnemonic.jnl, InstrClass.ConditionalTransfer, RIc),
+                        Instr(Mnemonic.jle, InstrClass.ConditionalTransfer, RIc),
+                        Instr(Mnemonic.jnh, InstrClass.ConditionalTransfer, RIc),
+                        Instr(Mnemonic.jno, InstrClass.ConditionalTransfer, RIc),
+                        Instr(Mnemonic.j, InstrClass.Transfer, RIc))),
                     (0x7, Instr(Mnemonic.brctg, RIb)),
                     (0x8, Instr(Mnemonic.lhi, RIa)),
                     (0x9, Instr(Mnemonic.lghi, RIa)),
@@ -1002,43 +1271,44 @@ namespace Reko.Arch.zSeries
                 b2_decoders,
                 b3_decoders,
 
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                invalid,
+                invalid,
+                Instr32(Mnemonic.stctl, RSa),
+                Instr32(Mnemonic.lctl, RSa),
 
-                Nyi("*"),
+                invalid,
                 b9_decoders,
-                Nyi("*"),
-                Nyi("*"),
+                Instr32(Mnemonic.cs, RSa3),
+                Instr32(Mnemonic.cds, RSa3),
 
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                invalid,
+                Instr32(Mnemonic.clm, RSb),
+                Instr32(Mnemonic.stcm, RSb),
                 Instr32(Mnemonic.icm, RSb),
+
                 // C0
                 ExtendMask48(32, 4,
                     (0x0, Instr(Mnemonic.larl, RILb)),
                     (0x4, Mask(36, 4,
-                        Instr(Mnemonic.brcl, RILc),
-                        Instr(Mnemonic.jgo, RILc),
-                        Instr(Mnemonic.jgh, RILc),
-                        Instr(Mnemonic.jgnle, RILc),
-                        Instr(Mnemonic.jgl, RILc),
-                        Instr(Mnemonic.jgnhe, RILc),
-                        Instr(Mnemonic.jglh, RILc),
-                        Instr(Mnemonic.jgne, RILc),
-                        Instr(Mnemonic.jge, RILc),
-                        Instr(Mnemonic.jgnlh, RILc),
-                        Instr(Mnemonic.jghe, RILc),
-                        Instr(Mnemonic.jgnl, RILc),
-                        Instr(Mnemonic.jgle, RILc),
-                        Instr(Mnemonic.jgnh, RILc),
-                        Instr(Mnemonic.jgno, RILc),
-                        Instr(Mnemonic.jg, RILc))),
-                    (0x5, Instr(Mnemonic.brasl, RILb))),
+                        Instr(Mnemonic.brcl, InstrClass.ConditionalTransfer,  RILc),
+                        Instr(Mnemonic.jgo, InstrClass.ConditionalTransfer, RILc),
+                        Instr(Mnemonic.jgh, InstrClass.ConditionalTransfer, RILc),
+                        Instr(Mnemonic.jgnle, InstrClass.ConditionalTransfer, RILc),
+                        Instr(Mnemonic.jgl, InstrClass.ConditionalTransfer, RILc),
+                        Instr(Mnemonic.jgnhe, InstrClass.ConditionalTransfer, RILc),
+                        Instr(Mnemonic.jglh, InstrClass.ConditionalTransfer, RILc),
+                        Instr(Mnemonic.jgne, InstrClass.ConditionalTransfer, RILc),
+                        Instr(Mnemonic.jge, InstrClass.ConditionalTransfer, RILc),
+                        Instr(Mnemonic.jgnlh, InstrClass.ConditionalTransfer, RILc),
+                        Instr(Mnemonic.jghe, InstrClass.ConditionalTransfer, RILc),
+                        Instr(Mnemonic.jgnl, InstrClass.ConditionalTransfer, RILc),
+                        Instr(Mnemonic.jgle, InstrClass.ConditionalTransfer, RILc),
+                        Instr(Mnemonic.jgnh, InstrClass.ConditionalTransfer, RILc),
+                        Instr(Mnemonic.jgno, InstrClass.ConditionalTransfer, RILc),
+                        Instr(Mnemonic.jg, InstrClass.ConditionalTransfer, RILc))),
+                    (0x5, Instr(Mnemonic.brasl, InstrClass.Transfer|InstrClass.Call,  RILb))),
                 Nyi("*"),
-                Nyi("*"),
+                c2_decoders,
                 Nyi("*"),
 
                 ExtendMask48(32, 4,
@@ -1054,18 +1324,18 @@ namespace Reko.Arch.zSeries
                     (0xE, Instr(Mnemonic.llgfrl, RILb)),
                     (0xF, Instr(Mnemonic.strl, RILb))),
                 Instr48(Mnemonic.bprp, MII),
-                Nyi("*"),
-                Nyi("*"),
+                c6_decoders,
+                Instr48(Mnemonic.bpp, SMI),
 
                 Nyi("*"),
                 invalid,
-                Nyi("*"),
-                Nyi("*"),
+                invalid,
+                invalid,
 
                 Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+                invalid,
+                invalid,
+                invalid,
 
                 // D0
                 Instr48(Mnemonic.trtr, SSa),
@@ -1080,11 +1350,11 @@ namespace Reko.Arch.zSeries
 
                 Nyi("*"),
                 Nyi("*"),
-                Nyi("*"),
-                Instr48(Mnemonic.mvcs, SSd),
+                Instr48(Mnemonic.mvcp, InstrClass.Linear|InstrClass.System, SSd),
+                Instr48(Mnemonic.mvcs, InstrClass.Linear|InstrClass.System, SSd),
 
                 Nyi("*"),
-                Nyi("*"),
+                Instr48(Mnemonic.trt, SSa),
                 Nyi("*"),
                 Instr48(Mnemonic.edmk, SSa),
 
@@ -1104,15 +1374,16 @@ namespace Reko.Arch.zSeries
                 Instr48(Mnemonic.unpka, SSa),
                 eb_decoders,
 
+                ec_decoders,
+                ed_decoders,
                 Nyi("*"),
                 Nyi("*"),
-                Nyi("*"),
-                Nyi("*"),
+
                 // F0
                 Instr48(Mnemonic.srp, SSc),
                 Instr48(Mnemonic.mvo, SSb),
-                Nyi("*"),
-                Nyi("*"),
+                Instr48(Mnemonic.pack, SSb),
+                Instr48(Mnemonic.unpk, SSb),
 
                 invalid,
                 invalid,

@@ -41,14 +41,11 @@ namespace Reko.Arch.zSeries
         {
             this.Endianness = EndianServices.Big;
             this.InstructionBitSize = 16;
-            Options = new Dictionary<string, object>();
             SetOptionDependentProperties();
         }
 
         // zSeries uses a link register
         public override int ReturnAddressOnStack => 0;
-
-        public Dictionary<string, object> Options { get; private set;  }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {

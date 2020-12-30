@@ -261,7 +261,7 @@ namespace Reko.Core.Expressions
         /// <remarks>
         /// The method expects 
         /// </remarks>
-        public Expression Dpb(Expression dst, Expression src, int offset)
+        public MkSequence Dpb(Expression dst, Expression src, int offset)
         {
             Debug.Assert(dst is Identifier || dst is Constant);
             var exps = new List<Expression>();
