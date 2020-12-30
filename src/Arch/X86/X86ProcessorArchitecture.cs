@@ -359,9 +359,9 @@ namespace Reko.Arch.X86
                     if ((fr.FlagGroupBits & grf) != 0) s.Append(fr.Name);
                 }
             }
-            if (flagregister == Registers.FPUF)
+            else if (flagregister == Registers.FPUF)
             {
-                foreach (var fr in Registers.EflagsBits)
+                foreach (var fr in Registers.FpuFlagsBits)
                 {
                     if ((fr.FlagGroupBits & grf) != 0) s.Append(fr.Name);
                 }
