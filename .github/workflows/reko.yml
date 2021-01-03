@@ -33,6 +33,9 @@ jobs:
         elif [ "$RUNNER_OS" == "macOS" ]; then
           brew install capstone
         fi
+    - name: Clear Nuget Cache
+      shell: bash
+      run: dotnet nuget locals all --clear
     - name: Build
       shell: bash
       env:
