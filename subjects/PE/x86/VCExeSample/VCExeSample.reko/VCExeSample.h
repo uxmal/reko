@@ -181,13 +181,13 @@ Eq_260: (fn void ((ptr32 Eq_242)))
 	T_261 (in signature of nested_structs_test12 : void)
 Eq_265: nested_structs_type
 	T_265 (in 0040301C : ptr32)
-Eq_268: nested_struct
+Eq_268: (struct "struct_0" 0008 (0 int32 b) (4 int32 c))
 	T_268 (in 00403020 : ptr32)
-Eq_319: (struct "nested_struct" (0 int32 b) (4 int32 c))
+Eq_319: (struct "struct_0" 0008 (0 int32 b) (4 int32 c))
 	T_319
-Eq_320: (struct "nested_structs_type" 0010 (0 int32 a) (4 nested_struct str) (C int32 d))
+Eq_320: (struct "nested_structs_type" 0010 (0 int32 a) (4 Eq_319 str) (C int32 d))
 	T_320
-Eq_321: (struct "nested_struct" (0 int32 b) (4 int32 c))
+Eq_321: (struct "struct_0" 0008 (0 int32 b) (4 int32 c))
 	T_321
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
@@ -1261,7 +1261,7 @@ T_267: (in 6<32> : word32)
 T_268: (in 00403020 : ptr32)
   Class: Eq_268
   DataType: (ptr32 Eq_268)
-  OrigDataType: (ptr32 (union (nested_struct u1)))
+  OrigDataType: (ptr32 (struct "struct_0" 0008))
 T_269: (in Mem8[0x00403020<p32>:word32] : word32)
   Class: Eq_267
   DataType: int32
@@ -1730,20 +1730,23 @@ typedef void (Eq_260)(nested_structs_type *);
 
 typedef nested_structs_type Eq_265;
 
-typedef nested_struct Eq_268;
+typedef struct struct_0 {	// size: 8 8
+	int32 b;	// 0
+	int32 c;	// 4
+} Eq_268;
 
-typedef struct nested_struct {
+typedef struct struct_0 {	// size: 8 8
 	int32 b;	// 0
 	int32 c;	// 4
 } Eq_319;
 
 typedef struct nested_structs_type {	// size: 16 10
 	int32 a;	// 0
-	nested_struct str;	// 4
+	Eq_319 str;	// 4
 	int32 d;	// C
 } Eq_320;
 
-typedef struct nested_struct {
+typedef struct struct_0 {	// size: 8 8
 	int32 b;	// 0
 	int32 c;	// 4
 } Eq_321;

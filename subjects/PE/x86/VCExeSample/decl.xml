@@ -116,30 +116,5 @@
         </ptr>
       </field>
     </struct>
-    <typedef name="nested_struct">
-      <struct name="nested_struct" />
-    </typedef>
-    <struct name="nested_struct">
-      <field offset="0" name="b">
-        <prim domain="SignedInt" size="4" />
-      </field>
-      <field offset="4" name="c">
-        <prim domain="SignedInt" size="4" />
-      </field>
-    </struct>
-    <typedef name="nested_structs_type">
-      <struct name="nested_structs_type" />
-    </typedef>
-    <struct name="nested_structs_type" size="16">
-      <field offset="0" name="a">
-        <prim domain="SignedInt" size="4" />
-      </field>
-      <field offset="4" name="str">
-        <type>nested_struct</type>
-      </field>
-      <field offset="12" name="d">
-        <prim domain="SignedInt" size="4" />
-      </field>
-    </struct>
   </Types>
 </library>

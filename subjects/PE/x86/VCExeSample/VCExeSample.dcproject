@@ -96,6 +96,9 @@
     </user>
   </input>
   <metadata>
+    <filename>nested_struct.inc</filename>
+  </metadata>
+  <metadata>
     <filename>decl.xml</filename>
   </metadata>
 </project>

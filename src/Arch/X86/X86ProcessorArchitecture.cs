@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -359,9 +359,9 @@ namespace Reko.Arch.X86
                     if ((fr.FlagGroupBits & grf) != 0) s.Append(fr.Name);
                 }
             }
-            if (flagregister == Registers.FPUF)
+            else if (flagregister == Registers.FPUF)
             {
-                foreach (var fr in Registers.EflagsBits)
+                foreach (var fr in Registers.FpuFlagsBits)
                 {
                     if ((fr.FlagGroupBits & grf) != 0) s.Append(fr.Name);
                 }
