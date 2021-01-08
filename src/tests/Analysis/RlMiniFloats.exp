@@ -62,7 +62,7 @@ fn0C00_0032_entry:
 	def cl
 	def ch
 l0C00_0032:
-	dx_ax_6 = bx *s ax
+	dx_ax_6 = bx *s32 ax
 	ax_11 = SLICE(dx_ax_6, word16, 0) (alias)
 	cl_9 = cl + ch
 	return

@@ -185,7 +185,7 @@ namespace Reko.UnitTests.Arch.M68k
             AssertCode(
                 "0|L--|00010000(2): 4 instructions",
                 "1|L--|a3 = a3 - 2<i32>",
-                "2|L--|d0 = d0 *s Mem0[a3:word16]",
+                "2|L--|d0 = d0 *s32 Mem0[a3:word16]",
                 "3|L--|VZN = cond(d0)",
                 "4|L--|C = false");
         }
@@ -1316,7 +1316,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0xF22E, 0x5423, 0x0008); // fmul.d $0008(a6),fp0
             AssertCode(
                "0|L--|00010000(6): 2 instructions",
-               "1|L--|fp0 = fp0 * Mem0[a6 + 8<i32>:real64]",
+               "1|L--|fp0 = fp0 *96 Mem0[a6 + 8<i32>:real64]",
                "2|L--|FPUFLAGS = cond(fp0)");
         }
 

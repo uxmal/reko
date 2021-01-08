@@ -2163,7 +2163,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("F1D8269B");
             AssertCode(     // smsubl	x17,w7,w6,x22
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|x17 = x22 - w7 * w6");
+                "1|L--|x17 = x22 - w7 *64 w6");
         }
 
         [Test]
@@ -2172,7 +2172,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("407C409B");
             AssertCode(     // smulh	x0,w2,w0
                 "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|x0 = SLICE(x2 *s x0, int64, 64)");
+                "1|L--|x0 = SLICE(x2 *s128 x0, int64, 64)");
         }
 
         [Test]

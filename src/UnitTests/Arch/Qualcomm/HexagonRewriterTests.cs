@@ -496,7 +496,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
             AssertCode(     // { r5 = add(r16,00000009); r4 = mpy(r16,r0) }
                 "0|L--|00100000(8): 2 instructions",
                 "1|L--|r5 = r16 + 9<32>",
-                "2|L--|r4 = SLICE(r16 * r0, word32, 32)");
+                "2|L--|r4 = SLICE(r16 *64 r0, word32, 32)");
         }
 
         [Test]
@@ -557,7 +557,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
             AssertCode(     // { r5:r4 = insert(r8,00000002,0000003A); r7:r6 = mpyu(r4,r13) }
                 "0|L--|00100000(8): 2 instructions",
                 "1|L--|r5_r4 = insert(r8, 2<32>, 0x3A<32>)",
-                "2|L--|r7_r6 = r4 *u r13");
+                "2|L--|r7_r6 = r4 *u64 r13");
         }
 
         [Test]

@@ -496,7 +496,7 @@ namespace Reko.UnitTests.Arch.Avr
             Given_UInt16s(0x02E2);	// muls	r30,r18
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|r1_r0 = r30 *s r18",
+                "1|L--|r1_r0 = r30 *s16 r18",
                 "2|L--|C = r1_r0 < 0<16>",
                 "3|L--|Z = r1_r0 == 0<16>");
         }

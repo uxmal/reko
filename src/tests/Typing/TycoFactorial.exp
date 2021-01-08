@@ -19,7 +19,7 @@ l0C00_000F:
 	branch wArg02 == 1<16> l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
-	ax_13 = SLICE(wArg02 *s fn0C00_000F(wArg02 - 1<16>), word16, 0) (alias)
+	ax_13 = SLICE(wArg02 *s32 fn0C00_000F(wArg02 - 1<16>), word16, 0) (alias)
 	goto l0C00_0029
 	// succ:  l0C00_0029
 l0C00_0026:
@@ -100,11 +100,11 @@ T_17: (in fn0C00_000F(wArg02 - 1<16>) : word16)
   Class: Eq_17
   DataType: int16
   OrigDataType: int16
-T_18: (in wArg02 *s fn0C00_000F(wArg02 - 1<16>) : int32)
+T_18: (in wArg02 *s32 fn0C00_000F(wArg02 - 1<16>) : int32)
   Class: Eq_18
   DataType: int32
   OrigDataType: int32
-T_19: (in SLICE(wArg02 *s fn0C00_000F(wArg02 - 1<16>), word16, 0) : word16)
+T_19: (in SLICE(wArg02 *s32 fn0C00_000F(wArg02 - 1<16>), word16, 0) : word16)
   Class: Eq_10
   DataType: word16
   OrigDataType: word16

@@ -764,7 +764,7 @@ namespace Reko.UnitTests.Arch.X86
             });
             AssertCode(
                 "0|L--|0C00:0000(2): 2 instructions",
-                "1|L--|dx_ax = cx *s ax",
+                "1|L--|dx_ax = cx *s32 ax",
                 "2|L--|SCZO = cond(dx_ax)");
         }
 
@@ -777,7 +777,7 @@ namespace Reko.UnitTests.Arch.X86
             });
             AssertCode(
                 "0|L--|0C00:0000(2): 2 instructions",
-                "1|L--|dx_ax = cx *u ax",
+                "1|L--|dx_ax = cx *u32 ax",
                 "2|L--|SCZO = cond(dx_ax)");
         }
 
@@ -1704,7 +1704,7 @@ namespace Reko.UnitTests.Arch.X86
             Run64bitTest("C442FBF6E2");
             AssertCode(     // mulx	r12,rax,rdx,r10
                 "0|L--|0000000140000000(5): 1 instructions",
-                "1|L--|r12_rax = rdx *u r10");
+                "1|L--|r12_rax = rdx *u128 r10");
         }
 
         [Test]

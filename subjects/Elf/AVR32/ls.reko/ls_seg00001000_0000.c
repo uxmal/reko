@@ -10396,7 +10396,7 @@ l0000A60E:
 			r7_n.u0 = 0x30;
 l0000A52E:
 			r10_n = sp_n->t0000;
-			if (r10_n == 0x00 || (0x01 << r7_n & *((word32) r10_n + SLICE(r7_n, byte, 5) * 0x04)) == 0x00)
+			if (r10_n == 0x00 || (0x01 << r7_n & *((word32) r10_n + SLICE(r7_n, byte, 5) *8 0x04)) == 0x00)
 				goto l0000A558;
 l0000A546:
 			if (r2_n != 0x00)

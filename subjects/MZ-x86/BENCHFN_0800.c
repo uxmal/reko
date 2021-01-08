@@ -1937,8 +1937,8 @@ l0800_nE6:
 					wLoc24_n = wLoc24_n;
 					if (wLoc24_n >= 0x00)
 					{
-						dx = SLICE(wLoc24_n * 0x0A, word16, 16);
-						wLoc24_n = ax_n - 0x30 + SLICE(wLoc24_n *u 0x0A, word16, 0);
+						dx = SLICE(wLoc24_n *32 0x0A, word16, 16);
+						wLoc24_n = ax_n - 0x30 + SLICE(wLoc24_n *u32 0x0A, word16, 0);
 					}
 					break;
 				case 0x06:
@@ -2645,7 +2645,7 @@ l0800_nD0F:
 							}
 							goto l0800_nD1F;
 						}
-						uint32 di_si_n = di_ax_n + wArg08 * si_n;
+						uint32 di_si_n = di_ax_n + wArg08 *32 si_n;
 						si_n = (word16) di_si_n;
 						di_n = SLICE(di_si_n, word16, 16);
 						if (di_n != 0x00)
@@ -2666,8 +2666,8 @@ l0800_nD0F:
 								ax_n = ax_n;
 								if (!fn0800-1B9E((byte) wArg08, ax_n))
 									goto l0800_nD03;
-								Eq_n dx_ax_n = wArg08 * di_n;
-								uint32 ax_si_n = SEQ((word16) dx_ax_n, ax_n) + wArg08 * si_n;
+								Eq_n dx_ax_n = wArg08 *32 di_n;
+								uint32 ax_si_n = SEQ((word16) dx_ax_n, ax_n) + wArg08 *32 si_n;
 								Eq_n ax_n = SLICE(ax_si_n, word16, 16);
 								si_n = (word16) ax_si_n;
 								di_n = ax_n;

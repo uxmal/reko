@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("2821D850");
             AssertCode(     // muhu	r10,r8,r9
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r10 = SLICE(r8 *u r9, word32, 32)");
+                "1|L--|r10 = SLICE(r8 *u64 r9, word32, 32)");
         }
 
         [Test]

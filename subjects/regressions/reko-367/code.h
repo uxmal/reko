@@ -159,7 +159,7 @@ T_32: (in CONVERT(CONVERT(dwLoc14_52, word32, real96), real96, real80) : real80)
   Class: Eq_32
   DataType: real80
   OrigDataType: real80
-T_33: (in rLoc10_64 * (real80) ((real96) dwLoc14_52) : real96)
+T_33: (in rLoc10_64 *96 (real80) ((real96) dwLoc14_52) : real96)
   Class: Eq_23
   DataType: real96
   OrigDataType: real96

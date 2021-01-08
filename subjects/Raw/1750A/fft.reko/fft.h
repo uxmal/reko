@@ -1227,7 +1227,7 @@ T_233: (in Mem0[0x8057<p16>:real48] : real48)
   Class: Eq_233
   DataType: real48
   OrigDataType: real48
-T_234: (in (SEQ((word32) gp2_gp3_gp4_42, (word16) gp2_gp3_gp4_42) - SEQ(gp0_gp1, gp2)) * *((char *) (&g_rFFFF8054) + 3<i32>) : real48)
+T_234: (in (SEQ((word32) gp2_gp3_gp4_42, (word16) gp2_gp3_gp4_42) - SEQ(gp0_gp1, gp2)) *48 *((char *) (&g_rFFFF8054) + 3<i32>) : real48)
   Class: Eq_226
   DataType: real48
   OrigDataType: real48
@@ -1547,7 +1547,7 @@ T_313: (in Mem0[0x8064<p16>:real48] : real48)
   Class: Eq_313
   DataType: real48
   OrigDataType: real48
-T_314: (in SEQ((word32) gp2_gp3_gp4_48, (word16) gp2_gp3_gp4_48) * *((char *) (&g_rFFFF8061) + 3<i32>) : real48)
+T_314: (in SEQ((word32) gp2_gp3_gp4_48, (word16) gp2_gp3_gp4_48) *48 *((char *) (&g_rFFFF8061) + 3<i32>) : real48)
   Class: Eq_308
   DataType: real48
   OrigDataType: real48

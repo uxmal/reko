@@ -424,7 +424,7 @@ namespace Reko.UnitTests.Arch.M6800
             Given_HexString("3D"); // mul
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|d = a *u b",
+                "1|L--|d = a *u16 b",
                 "2|L--|ZC = cond(d)");
         }
 

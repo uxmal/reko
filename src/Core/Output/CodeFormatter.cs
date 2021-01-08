@@ -198,7 +198,7 @@ namespace Reko.Core.Output
 		{
 			int prec = SetPrecedence((int) precedences[binExp.Operator]);
 			binExp.Left.Accept(this);
-			InnerFormatter.Write(binExp.Operator.ToString());
+            FormatOperator(binExp);
             var old = forceParensIfSamePrecedence;
             forceParensIfSamePrecedence = true;
             binExp.Right.Accept(this);
@@ -206,7 +206,27 @@ namespace Reko.Core.Output
 			ResetPresedence(prec);
 		}
 
-		public void VisitCast(Cast cast)
+        private void FormatOperator(BinaryExpression binExp)
+        {
+            var sOperator = binExp.Operator.ToString();
+            var resultSize = binExp.DataType.BitSize;
+            if (binExp.Operator is IMulOperator || binExp.Operator is FMulOperator)
+            {
+                // Multiplication is peculiar on many processors because the product
+                // may be different size from either of the operands. It's unclear what
+                // the C/C++ standards say about this.
+                if (resultSize != binExp.Left.DataType.BitSize ||
+                    resultSize != binExp.Right.DataType.BitSize)
+                {
+                    InnerFormatter.Write(sOperator.TrimEnd());
+                    InnerFormatter.Write($"{resultSize} ");
+                    return;
+                }
+            }
+            InnerFormatter.Write(sOperator);
+        }
+
+        public void VisitCast(Cast cast)
 		{
 			int prec = SetPrecedence(PrecedenceCase);
 			InnerFormatter.Write("(");

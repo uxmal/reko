@@ -44,7 +44,7 @@ real96 fn8000018E(real96 rArg04)
 		real96 rLoc10_n = SEQ((word32) fp0_n, SLICE(fp0_n, word32, 32), SLICE(fp0_n, word32, 64));
 		if ((real96) dwLoc14_n > rArg04)
 			break;
-		fp0_n = rLoc10_n * (real80) ((real96) dwLoc14_n);
+		fp0_n = rLoc10_n *96 (real80) ((real96) dwLoc14_n);
 		++dwLoc14_n;
 	}
 	return fp0_n;

@@ -1069,7 +1069,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("2F840000"); // mul64	r7,r0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|mhi_mlo = r7 *s r0");
+                "1|L--|mhi_mlo = r7 *s64 r0");
         }
 
         [Test]
@@ -1078,7 +1078,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("790C"); // mul64_s	r1,r0
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|mhi_mlo = r1 *s r0");
+                "1|L--|mhi_mlo = r1 *s64 r0");
         }
 
         [Test]
@@ -1087,7 +1087,7 @@ namespace Reko.UnitTests.Arch.Arc
             Given_HexString("2845007E"); // mulu64	r0,r1
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|mhi_mlo = r0 *u r1");
+                "1|L--|mhi_mlo = r0 *u64 r1");
         }
 
         [Test]

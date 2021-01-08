@@ -39,7 +39,7 @@ l00100068:
 	word32 esi_19 = dwArg04
 	// succ:  l00100073
 l00100073:
-	word32 edx_23 = SLICE(esi_19 *u 0xCCCCCCCD<32>, word32, 32)
+	word32 edx_23 = SLICE(esi_19 *u64 0xCCCCCCCD<32>, word32, 32)
 	Mem33[ecx_32 + 0<32>:byte] = SLICE(esi_19 - ((edx_23 >>u 3<32>) + (edx_23 >>u 3<32>) * 4<32>) * 2<32>, byte, 0) + 0x30<8>
 	ecx_32 = ecx_32 + 1<32>
 	esi_19 = edx_23 >>u 3<32>
@@ -239,11 +239,11 @@ T_46: (in 0xCCCCCCCD<32> : word32)
   Class: Eq_46
   DataType: uint32
   OrigDataType: uint32
-T_47: (in esi_19 *u 0xCCCCCCCD<32> : uint64)
+T_47: (in esi_19 *u64 0xCCCCCCCD<32> : uint64)
   Class: Eq_47
   DataType: uint64
   OrigDataType: uint64
-T_48: (in SLICE(esi_19 *u 0xCCCCCCCD<32>, word32, 32) : word32)
+T_48: (in SLICE(esi_19 *u64 0xCCCCCCCD<32>, word32, 32) : word32)
   Class: Eq_45
   DataType: word32
   OrigDataType: word32

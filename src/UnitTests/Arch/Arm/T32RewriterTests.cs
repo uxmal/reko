@@ -6199,7 +6199,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("57FB0021");	// smmla r1, r7, r0, r2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = CONVERT(r7 *s r0 >> 32<i32>, int64, int32) + r2");
+                "1|L--|r1 = CONVERT(r7 *s64 r0 >> 32<i32>, int64, int32) + r2");
         }
 
         [Test]
@@ -6208,7 +6208,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("62FB0646");	// smmls r6, r2, r6, r4
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r6 = CONVERT(r2 *s r6 >> 32<i32>, int64, int32) - r4");
+                "1|L--|r6 = CONVERT(r2 *s64 r6 >> 32<i32>, int64, int32) - r4");
         }
 
         [Test]
@@ -6358,10 +6358,11 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ThumbRw_smladx()
         {
+            //$TODO: use slices instead of >>
             Given_HexString("20FB1EB0");	// smladx r0, r0, pc, fp
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = r0 + (CONVERT(r0, word32, int16) *s (lr >> 16<i32>) + (r0 >> 16<i32>) *s CONVERT(lr, word32, int16))");
+                "1|L--|r0 = r0 + (CONVERT(r0, word32, int16) *s16 (lr >> 16<i32>) + (r0 >> 16<i32>) *s32 CONVERT(lr, word32, int16))");
         }
 
 
@@ -6576,7 +6577,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("32FB0020");	// smlawb r0, r2, r0, r2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = (r2 *s CONVERT(r0, word32, int16) >> 16<i32>) + r2");
+                "1|L--|r0 = (r2 *s32 CONVERT(r0, word32, int16) >> 16<i32>) + r2");
         }
 
 
@@ -7336,7 +7337,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("34FB1020");	// smlawt r0, r4, r0, r2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r0 = (r4 *s CONVERT(r0 >> 16<i32>, word32, int16) >> 16<i32>) + r2");
+                "1|L--|r0 = (r4 *s32 CONVERT(r0 >> 16<i32>, word32, int16) >> 16<i32>) + r2");
         }
 
  
@@ -7705,10 +7706,11 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ThumbRw_smlsdx()
         {
+            //$REVIEW: shouldn't those CONVERTs be slices?
             Given_HexString("4CFB143D");	// smlsdx sp, ip, r4, r3
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|sp = sp + (CONVERT(ip, word32, int16) *s (r4 >> 16<i32>) - (ip >> 16<i32>) *s CONVERT(r4, word32, int16))");
+                "1|L--|sp = sp + (CONVERT(ip, word32, int16) *s16 (r4 >> 16<i32>) - (ip >> 16<i32>) *s32 CONVERT(r4, word32, int16))");
         }
 
         [Test]
@@ -7755,7 +7757,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("D2FBDD28");	// smlsldx r2, r8, r2, sp
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8_r2 = r8_r2 + (CONVERT(r2, word32, int16) *s (sp >> 16<i32>) - (r2 >> 16<i32>) *s CONVERT(sp, word32, int16))");
+                "1|L--|r8_r2 = r8_r2 + (CONVERT(r2, word32, int16) *s16 (sp >> 16<i32>) - (r2 >> 16<i32>) *s32 CONVERT(sp, word32, int16))");
         }
 
         [Test]
@@ -7764,7 +7766,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("5AFB04F1");	// smmul r1, r10, r4
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = CONVERT(r10 *s r4 >> 32<i32>, int64, int32)");
+                "1|L--|r1 = CONVERT(r10 *s64 r4 >> 32<i32>, int64, int32)");
         }
 
         [Test]
@@ -7810,7 +7812,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("C6FBDE4B");	// smlaldx r4, fp, r6, lr
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|fp_r4 = fp_r4 + (CONVERT(r6, word32, int16) *s (lr >> 16<i32>) + (r6 >> 16<i32>) *s CONVERT(lr, word32, int16))");
+                "1|L--|fp_r4 = fp_r4 + (CONVERT(r6, word32, int16) *s16 (lr >> 16<i32>) + (r6 >> 16<i32>) *s32 CONVERT(lr, word32, int16))");
         }
 
         [Test]

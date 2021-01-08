@@ -54,7 +54,7 @@ Eq_63: (union "Eq_63" (int32 u0) (uint64 u1) (up32 u2))
 	T_441 (in CONVERT(SLICE(CONVERT(eax_49, word32, uint64), word32, 0), word32, uint64) : uint64)
 Eq_86: (struct "Eq_86" (0 byte b0000) (1 byte b0001))
 	T_86 (in v16_67 : (ptr64 Eq_86))
-	T_110 (in rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) >> 6<32>)) *s r8d)) *s ecx))) << 3<64>) + (uint64) ((word32) ((uint64) ((word32) ((uint64) eax_52) >> 3<32>))) : word64)
+	T_110 (in rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) >> 6<32>)) *s r8d)) *s32 ecx))) << 3<64>) + (uint64) ((word32) ((uint64) ((word32) ((uint64) eax_52) >> 3<32>))) : word64)
 Eq_113: (fn int32 ((ptr64 Eq_115), (ptr64 char), uint64))
 	T_113 (in fprintf : ptr64)
 	T_114 (in signature of fprintf : void)
@@ -508,15 +508,15 @@ T_82: (in SLICE(CONVERT(edx + SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(esi, wor
   Class: Eq_82
   DataType: int32
   OrigDataType: int32
-T_83: (in (word32) (uint64) (edx + (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) & 0x3F<32>)) *s r8d))) *s ecx : int32)
+T_83: (in (word32) (uint64) (edx + (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) & 0x3F<32>)) *s r8d))) *s32 ecx : int32)
   Class: Eq_83
   DataType: int32
   OrigDataType: int32
-T_84: (in CONVERT(SLICE(CONVERT(edx + SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0) & 0x3F<32>, word32, uint64), word32, 0) *s r8d, int32, uint64), word32, 0), word32, uint64), word32, 0) *s ecx, int32, uint64) : uint64)
+T_84: (in CONVERT(SLICE(CONVERT(edx + SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0) & 0x3F<32>, word32, uint64), word32, 0) *s r8d, int32, uint64), word32, 0), word32, uint64), word32, 0) *s32 ecx, int32, uint64) : uint64)
   Class: Eq_84
   DataType: uint64
   OrigDataType: uint64
-T_85: (in SLICE(CONVERT(SLICE(CONVERT(edx + SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0) & 0x3F<32>, word32, uint64), word32, 0) *s r8d, int32, uint64), word32, 0), word32, uint64), word32, 0) *s ecx, int32, uint64), word32, 0) : word32)
+T_85: (in SLICE(CONVERT(SLICE(CONVERT(edx + SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0) & 0x3F<32>, word32, uint64), word32, 0) *s r8d, int32, uint64), word32, 0), word32, uint64), word32, 0) *s32 ecx, int32, uint64), word32, 0) : word32)
   Class: Eq_70
   DataType: ui32
   OrigDataType: word32
@@ -560,19 +560,19 @@ T_95: (in SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(esi, word32, uint64), word32
   Class: Eq_95
   DataType: int32
   OrigDataType: int32
-T_96: (in (word32) (uint64) ((word32) (uint64) ((word32) (uint64) esi >> 6<32>) *s r8d) *s ecx : int32)
+T_96: (in (word32) (uint64) ((word32) (uint64) ((word32) (uint64) esi >> 6<32>) *s r8d) *s32 ecx : int32)
   Class: Eq_96
   DataType: int32
   OrigDataType: int32
-T_97: (in CONVERT(SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0) >>u 6<32>, word32, uint64), word32, 0) *s r8d, int32, uint64), word32, 0) *s ecx, int32, uint64) : uint64)
+T_97: (in CONVERT(SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0) >>u 6<32>, word32, uint64), word32, 0) *s r8d, int32, uint64), word32, 0) *s32 ecx, int32, uint64) : uint64)
   Class: Eq_97
   DataType: uint64
   OrigDataType: uint64
-T_98: (in SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0) >>u 6<32>, word32, uint64), word32, 0) *s r8d, int32, uint64), word32, 0) *s ecx, int32, uint64), word32, 0) : word32)
+T_98: (in SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0) >>u 6<32>, word32, uint64), word32, 0) *s r8d, int32, uint64), word32, 0) *s32 ecx, int32, uint64), word32, 0) : word32)
   Class: Eq_98
   DataType: word32
   OrigDataType: word32
-T_99: (in CONVERT(SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0) >>u 6<32>, word32, uint64), word32, 0) *s r8d, int32, uint64), word32, 0) *s ecx, int32, uint64), word32, 0), word32, uint64) : uint64)
+T_99: (in CONVERT(SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0) >>u 6<32>, word32, uint64), word32, 0) *s r8d, int32, uint64), word32, 0) *s32 ecx, int32, uint64), word32, 0), word32, uint64) : uint64)
   Class: Eq_99
   DataType: uint64
   OrigDataType: uint64
@@ -580,11 +580,11 @@ T_100: (in 3<64> : word64)
   Class: Eq_100
   DataType: word64
   OrigDataType: word64
-T_101: (in (uint64) (word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) esi >> 6<32>) *s r8d) *s ecx) << 3<64> : word64)
+T_101: (in (uint64) (word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) esi >> 6<32>) *s r8d) *s32 ecx) << 3<64> : word64)
   Class: Eq_101
   DataType: ui64
   OrigDataType: ui64
-T_102: (in rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) >> 6<32>)) *s r8d)) *s ecx))) << 3<64>) : word64)
+T_102: (in rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) >> 6<32>)) *s r8d)) *s32 ecx))) << 3<64>) : word64)
   Class: Eq_102
   DataType: word64
   OrigDataType: word64
@@ -616,7 +616,7 @@ T_109: (in CONVERT(SLICE(CONVERT(SLICE(CONVERT(eax_52, word32, uint64), word32, 
   Class: Eq_109
   DataType: uint64
   OrigDataType: uint64
-T_110: (in rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) >> 6<32>)) *s r8d)) *s ecx))) << 3<64>) + (uint64) ((word32) ((uint64) ((word32) ((uint64) eax_52) >> 3<32>))) : word64)
+T_110: (in rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) >> 6<32>)) *s r8d)) *s32 ecx))) << 3<64>) + (uint64) ((word32) ((uint64) ((word32) ((uint64) eax_52) >> 3<32>))) : word64)
   Class: Eq_86
   DataType: (ptr64 Eq_86)
   OrigDataType: word64

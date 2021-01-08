@@ -12,7 +12,7 @@ T_3: (in idRight : word64)
   Class: Eq_3
   DataType: real64
   OrigDataType: real64
-T_4: (in idLeft * idRight : real96)
+T_4: (in idLeft *96 idRight : real96)
   Class: Eq_4
   DataType: real96
   OrigDataType: real96

@@ -4866,7 +4866,7 @@ l000000000040ABE0:
 l000000000040AC48:
 	rcx_17 = 3<u64>
 l000000000040ABE6:
-	word64 rdx_21 = SLICE(rdi_11 *u 0xAAAAAAAAAAAAAAAB<64>, word64, 64)
+	word64 rdx_21 = SLICE(rdi_11 *u128 0xAAAAAAAAAAAAAAAB<64>, word64, 64)
 	branch rdi_11 == (rdx_21 >>u 1<64>) + (rdx_21 >>u 1<64>) * 2<64> l000000000040AC3A
 l000000000040ABF8:
 	word64 r8_27 = 0x10<u64>
@@ -5817,7 +5817,7 @@ l000000000040C577:
 l000000000040C5A0:
 	r12_1154 = r8_1160
 l000000000040C5B0:
-	word64 rdx_565 = SLICE(r10_133 *u 0xCCCCCCCCCCCCCCCD<64>, word64, 64)
+	word64 rdx_565 = SLICE(r10_133 *u128 0xCCCCCCCCCCCCCCCD<64>, word64, 64)
 	word64 rax_567 = (rdx_565 >>u 3<64>) + (rdx_565 >>u 3<64>) * 4<64>
 	r12_1154 = r12_1154 - 1<64>
 	Mem576[r12_1154:byte] = SLICE(CONVERT(SLICE(r10_133 - rax_567 * 2<64>, word32, 0) + 0x30<32>, word32, uint64), byte, 0)
@@ -6337,7 +6337,7 @@ l000000000040CCD0:
 	branch rdi < 0<64> l000000000040CD28
 l000000000040CD28:
 l000000000040CD30:
-	word64 rdx_25 = (SLICE(rdi *s 0x6666666666666667<64>, word64, 64) >> 2<64>) - (rdi >> 0x3F<64>)
+	word64 rdx_25 = (SLICE(rdi *s128 0x6666666666666667<64>, word64, 64) >> 2<64>) - (rdi >> 0x3F<64>)
 	rcx_17 = rcx_17 - 1<64>
 	Mem38[rcx_17:byte] = SLICE(CONVERT(SLICE(CONVERT(SLICE(rdx_25 * 0xA<64> + 0x30<u64>, word32, 0), word32, uint64) - rdi, word32, 0), word32, uint64), byte, 0)
 	rdi = rdx_25
@@ -6347,7 +6347,7 @@ l000000000040CD5B:
 	return rcx_17 - 1<64>
 l000000000040CCE7:
 l000000000040CCF0:
-	word64 rdx_55 = (SLICE(rdi *s 0x6666666666666667<64>, word64, 64) >> 2<64>) - (rdi >> 0x3F<64>)
+	word64 rdx_55 = (SLICE(rdi *s128 0x6666666666666667<64>, word64, 64) >> 2<64>) - (rdi >> 0x3F<64>)
 	rcx_17 = rcx_17 - 1<64>
 	Mem65[rcx_17:byte] = SLICE(CONVERT(SLICE(rdi - rdx_55 * 0xA<64>, word32, 0) + 0x30<32>, word32, uint64), byte, 0)
 	rdi = rdx_55
@@ -6374,7 +6374,7 @@ l000000000040CD70:
 	Mem6[rsi + 0x14<64>:byte] = 0<8>
 	word64 rcx_10 = rsi + 0x14<64>
 l000000000040CD88:
-	word64 rdx_14 = SLICE(rdi *u 0xCCCCCCCCCCCCCCCD<64>, word64, 64)
+	word64 rdx_14 = SLICE(rdi *u128 0xCCCCCCCCCCCCCCCD<64>, word64, 64)
 	rcx_10 = rcx_10 - 1<64>
 	Mem25[rcx_10:byte] = SLICE(CONVERT(SLICE(rdi - ((rdx_14 >>u 3<64>) + (rdx_14 >>u 3<64>) * 4<64>) * 2<64>, word32, 0) + 0x30<32>, word32, uint64), byte, 0)
 	rdi = rdx_14 >>u 3<64>

@@ -60,8 +60,8 @@ void frame_dummy()
 word32 component(Eq_n ecx, word32 edx, word32 esi, word64 rdi, int32 r8d)
 {
 	Eq_n ecx = (word32) rcx;
-	ui32 eax_n = (word32) (uint64) ((word32) (uint64) (edx + (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) & 0x3F)) *s r8d))) *s ecx);
-	struct Eq_n * v16_n = rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) >> 0x06)) *s r8d)) *s ecx))) << 0x03) + (uint64) ((word32) ((uint64) ((word32) ((uint64) eax_n) >> 0x03)));
+	ui32 eax_n = (word32) (uint64) ((word32) (uint64) (edx + (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) & 0x3F)) *s r8d))) *s32 ecx);
+	struct Eq_n * v16_n = rdi + ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) esi) >> 0x06)) *s r8d)) *s32 ecx))) << 0x03) + (uint64) ((word32) ((uint64) ((word32) ((uint64) eax_n) >> 0x03)));
 	if (ecx > 0x10)
 		goto l0000000000400EC1;
 	uint64 rax_n;

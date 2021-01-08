@@ -134,7 +134,7 @@ Eq_n msp430_compute_modulator_bits(Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15)
 		r10_n += r8_n;
 		uint20 r14_n = (r14 ^ ~0x00) + 0x01;
 		r11_n = r11_n + r9_n + (r10_n <u 0x00);
-		if (r11_n * 0x02 + (r10_n * 0x02 < 0x00) - ((r15 ^ ~0x00) + (r14_n < 0x00)) - (r10_n * 0x02 - r14_n < 0x00) < 0x00)
+		if (r11_n *20 0x02 + (r10_n *20 0x02 < 0x00) - ((r15 ^ ~0x00) + (r14_n < 0x00)) - (r10_n *20 0x02 - r14_n < 0x00) < 0x00)
 		{
 			r10_n += r14;
 			r11_n = r11_n + r15 + (r10_n <u 0x00);
@@ -314,7 +314,7 @@ ui20 xTaskCreate(ui20 sr, Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r
 	if (r15_n != null)
 	{
 		prvInitialiseTCBVariables(v15_n, r14, r13, r15_n);
-		r15_n->ptr0000 = (struct Eq_n *) pxPortInitialiseStack(r12, r15, *((char *) &r15_n->ptr0000 + 2) + ((&r15_n->w001A)[5] * 0x02) / 28 - 0x02);
+		r15_n->ptr0000 = (struct Eq_n *) pxPortInitialiseStack(r12, r15, *((char *) &r15_n->ptr0000 + 2) + ((&r15_n->w001A)[5] *20 0x02) / 28 - 0x02);
 		++usCriticalNesting;
 		++uxCurrentNumberOfTasks;
 		sr_n &= ~0x08;
@@ -336,7 +336,7 @@ ui20 xTaskCreate(ui20 sr, Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r
 		r15_n->t0008 = 0x00;
 		if (uxTopReadyPriority >= v31_n)
 			uxTopReadyPriority = v31_n;
-		vListInsertEnd(&r15_n->t0008, v31_n * 0x10 + 0x0222);
+		vListInsertEnd(&r15_n->t0008, v31_n *20 0x10 + 0x0222);
 		r10_n.u0 = 0x01;
 		if (usCriticalNesting != 0x00)
 		{
@@ -567,7 +567,7 @@ ui20 xTaskResumeAll(ui20 sr, union Eq_n & r15Out)
 			Eq_n v19_n = *((word16) r11_n.u0 + 6);
 			if (uxTopReadyPriority >= v19_n)
 				uxTopReadyPriority = v19_n;
-			vListInsertEnd(r10_n, v19_n * 0x10 + 0x0222);
+			vListInsertEnd(r10_n, v19_n *20 0x10 + 0x0222);
 			if (pxCurrentTCB->t0006 >= *((word16) r11_n.u0 + 6))
 				r9_n.u1 = 0x01;
 		}
@@ -672,7 +672,7 @@ void vTaskIncrementTick()
 			Eq_n v27_n = *((word24) r11_n + 6);
 			if (uxTopReadyPriority >= v27_n)
 				uxTopReadyPriority = v27_n;
-			vListInsertEnd(r10_n, v27_n * 0x10 + 0x0222);
+			vListInsertEnd(r10_n, v27_n *20 0x10 + 0x0222);
 		}
 	}
 	else
@@ -726,7 +726,7 @@ Eq_n xTaskRemoveFromEventList(Eq_n r15)
 		Eq_n v14_n = *((word24) r10_n + 6);
 		if (uxTopReadyPriority >= v14_n)
 			uxTopReadyPriority = v14_n;
-		r15_n = v14_n * 0x10 + 0x0222;
+		r15_n = v14_n *20 0x10 + 0x0222;
 		r14_n = (word24) r10_n + 8;
 	}
 	else
@@ -787,7 +787,7 @@ void prvInitialiseTaskLists()
 	Eq_n r11_n = 0x00;
 	do
 	{
-		vListInitialise(r11_n * 0x10 + 0x0222);
+		vListInitialise(r11_n *20 0x10 + 0x0222);
 		r11_n = (word24) r11_n + 1;
 	} while (r11_n >= 0x04);
 	vListInitialise(0x0262);
@@ -847,7 +847,7 @@ ui20 prvAllocateTCBAndStack(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 	if (r15_n != 0x00)
 	{
 		Eq_n r15_n;
-		sr_n = pvPortMalloc(sr_n, r15 * 0x02, out r15_n);
+		sr_n = pvPortMalloc(sr_n, r15 *20 0x02, out r15_n);
 		*((word24) r15_n + 2) = r15_n;
 		if (r15_n == 0x00)
 		{
@@ -855,7 +855,7 @@ ui20 prvAllocateTCBAndStack(ui20 sr, Eq_n r15, union Eq_n & r15Out)
 			r11_n.u0 = 0x00;
 		}
 		else
-			sr_n = memset(sr_n, r15 * 0x02, 0xA5, r15_n);
+			sr_n = memset(sr_n, r15 *20 0x02, 0xA5, r15_n);
 	}
 	r15Out = r11_n;
 	return sr_n;
@@ -878,11 +878,11 @@ void vTaskSwitchContext()
 {
 	if (uxSchedulerSuspended == 0x00)
 	{
-		while ((&g_w0222)[uxTopReadyPriority * 0x10] == 0x00)
+		while ((&g_w0222)[uxTopReadyPriority *16 0x10] == 0x00)
 			uxTopReadyPriority = (word24) uxTopReadyPriority + 0x0000FFFF;
 		Eq_n r13_n = 0x0222;
-		(word24) r13_n + uxTopReadyPriority * 0x10 + 4 = (ui20) ((word24) r13_n + uxTopReadyPriority * 0x10 + 4 + 2);
-		if ((word24) r13_n + uxTopReadyPriority * 0x10 + 4 == ((word24) r13_n + uxTopReadyPriority * 0x10) + 2)
+		(word24) r13_n + uxTopReadyPriority *20 0x10 + 4 = (ui20) ((word24) r13_n + uxTopReadyPriority *20 0x10 + 4 + 2);
+		if ((word24) r13_n + uxTopReadyPriority *20 0x10 + 4 == ((word24) r13_n + uxTopReadyPriority *20 0x10) + 2)
 			g_a0226[uxTopReadyPriority] = (struct Eq_n) g_a0226[uxTopReadyPriority].ptr0000->w0002;
 		pxCurrentTCB = (struct Eq_n *) (&g_a0226[uxTopReadyPriority].ptr0000->w0002)[2];
 	}
@@ -1672,8 +1672,8 @@ l58A8:
 					Eq_n r13_n = 0x00;
 					do
 					{
-						ui20 r14_n = r13_n * 0x02;
-						ui20 r13_n = r13_n * 0x04 + r14_n + r14_n + r14_n + (int16) ((byte) r7_n);
+						ui20 r14_n = r13_n *20 0x02;
+						ui20 r13_n = r13_n *20 0x04 + r14_n + r14_n + r14_n + (int16) ((byte) r7_n);
 						Eq_n v68_n = *r6_n;
 						r13_n = r13_n + ~0x2F;
 						r7_n = v68_n;
@@ -1715,7 +1715,7 @@ l57AE:
 						Eq_n v189_n = *r5_n;
 						r5_n += 0x02;
 						wLoc1C_n = v189_n;
-						wLoc1A_n = ~(0x00 - (v189_n * 0x02 < 0x00));
+						wLoc1A_n = ~(0x00 - (v189_n *16 0x02 < 0x00));
 					}
 					if (wLoc1A_n < 0x00)
 					{
@@ -1930,9 +1930,9 @@ l5576:
 			{
 				do
 				{
-					ui20 r14_n = r13_n * 0x02;
+					ui20 r14_n = r13_n *20 0x02;
 					Eq_n v63_n = *r6_n;
-					r13_n = r13_n * 0x04 + r14_n + r14_n + r14_n + (int16) ((byte) r7_n) + ~0x2F;
+					r13_n = r13_n *20 0x04 + r14_n + r14_n + r14_n + (int16) ((byte) r7_n) + ~0x2F;
 					r7_n = v63_n;
 					++r6_n;
 				} while (v63_n >= ~0x39);
@@ -2206,15 +2206,15 @@ bool fn00005B4E(Eq_n r8, Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13, union Eq_n & r8
 	while (true)
 	{
 		r12 *= 0x02;
-		r13 = r13 * 0x02 + (r12 < 0x00);
+		r13 = r13 *20 0x02 + (r12 < 0x00);
 		--r9_n;
-		Eq_n r8_n = r8 * 0x02 + (r13 < 0x00);
+		Eq_n r8_n = r8 *20 0x02 + (r13 < 0x00);
 		bool C_n = (bool) cond(r9_n);
 		if (r9_n == 0x00)
 			break;
 		r8 = __rcr(r8_n, 0x01, C_n);
-		r14_n = r14_n * 0x02 + (r8 < 0x00);
-		r15_n = r15_n * 0x02 + (r14_n < 0x00);
+		r14_n = r14_n *20 0x02 + (r8 < 0x00);
+		r15_n = r15_n *20 0x02 + (r14_n < 0x00);
 		if (r15_n < r11 && (r15_n != r11 || r14_n < r10))
 		{
 			r14_n -= r10;
