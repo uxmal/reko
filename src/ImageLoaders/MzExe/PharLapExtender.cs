@@ -72,7 +72,10 @@ namespace Reko.ImageLoaders.MzExe
             if ((fileHeader.flags & FlagImagePacked) != 0)
             {
                 UnpackImage(fileHeader, image);
+            } else {
+                LoadImage(fileHeader, image);
             }
+            
             var loadseg = new ImageSegment("DOSX_PROG", image, AccessMode.ReadWriteExecute);
             this.segmentMap = new SegmentMap(addrLoad);
             var seg = this.segmentMap.AddSegment(loadseg);
@@ -86,9 +89,22 @@ namespace Reko.ImageLoaders.MzExe
         }
 
         /// <summary>
-        /// Unpacks the packed raw image into <paramref name="image" />.
+        /// Loads unpacked phar lap exp image into <paramref name="image" />.
         /// </summary>
-        private void UnpackImage(FileHeader fileHeader, ByteMemoryArea image)
+        private void LoadImage(FileHeader fileHeader, ByteMemoryArea image)
+        {
+            var w = new LeImageWriter(image.Bytes);
+            var rdr = new LeImageReader(RawImage, FileHeaderOffset + fileHeader.offset_load_image);
+            while (w.Position < fileHeader.memory_requirements)
+            {
+                byte aByte = rdr.ReadByte();
+                w.WriteByte(aByte);
+            }
+        }
+            /// <summary>
+            /// Unpacks the packed raw image into <paramref name="image" />.
+            /// </summary>
+            private void UnpackImage(FileHeader fileHeader, ByteMemoryArea image)
         {
             var w = new LeImageWriter(image.Bytes);
             //
