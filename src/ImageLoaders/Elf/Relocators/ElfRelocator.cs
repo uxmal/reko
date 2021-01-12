@@ -537,7 +537,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
         [Conditional("DEBUG")]
         protected void DumpRela64(ElfLoader64 loader)
         {
-            foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
+            foreach (var section in loader.Sections.Where(s => 
+                s.Type == SectionHeaderType.SHT_RELA &&
+                s.LinkedSection != null && 
+                s.LinkedSection.FileOffset != 0))
             {
                 Debug.Print("RELA: offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
