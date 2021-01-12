@@ -83,40 +83,78 @@ namespace Reko.Arch.zSeries
                     iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
+                case Mnemonic.a: RewriteA(PrimitiveType.Int32); break;
                 case Mnemonic.aghi: RewriteAhi2(PrimitiveType.Word64); break;
                 case Mnemonic.aghik: RewriteAhi3(PrimitiveType.Word64); break;
                 case Mnemonic.ahi: RewriteAhi2(PrimitiveType.Word32); break;
                 case Mnemonic.ahik: RewriteAhi3(PrimitiveType.Word32); break;
                 case Mnemonic.agr: RewriteAgr(); break;
-                case Mnemonic.al: RewriteAl(PrimitiveType.Word32); break;
+                case Mnemonic.agsi: RewriteAsi(PrimitiveType.Int64); break;
+                case Mnemonic.al: RewriteA(PrimitiveType.Word32); break;
                 case Mnemonic.ar: RewriteAr(); break;
+                case Mnemonic.asi: RewriteAsi(PrimitiveType.Int32); break;
+
+                case Mnemonic.b:   RewriteUnconditionalBranch(); break;
+                case Mnemonic.bh:  RewriteBranchEa(ConditionCode.UGT); break;
+                case Mnemonic.bnl: RewriteBranchEa(ConditionCode.GE); break;
+                case Mnemonic.bl:  RewriteBranchEa(ConditionCode.LT); break;
+                case Mnemonic.blh: RewriteBranchEa(ConditionCode.NE); break;    //$REVIEW where are these mnemonics defined?
+                case Mnemonic.bne: RewriteBranchEa(ConditionCode.NE); break;
+                case Mnemonic.bnh: RewriteBranchEa(ConditionCode.ULE); break;
+                case Mnemonic.be:  RewriteBranchEa(ConditionCode.EQ); break;
+                case Mnemonic.bnle: RewriteBranchEa(ConditionCode.GT); break;
+                case Mnemonic.bhe: RewriteBranchEa(ConditionCode.UGE); break;
+                case Mnemonic.bnlh: RewriteBranchEa(ConditionCode.NE); break;
+                case Mnemonic.ble: RewriteBranchEa(ConditionCode.LE); break;
+                case Mnemonic.bnhe: RewriteBranchEa(ConditionCode.ULT); break;
+                case Mnemonic.bno: RewriteBranchEa(ConditionCode.NO); break;
+                case Mnemonic.bo: RewriteBranchEa(ConditionCode.OV); break;
+
                 case Mnemonic.basr: RewriteBasr(); break;
+                case Mnemonic.bassm: RewriteBassm(); break;
                 case Mnemonic.ber: RewriteBranch(ConditionCode.EQ); break;
                 case Mnemonic.bler: RewriteBranch(ConditionCode.LE); break;
                 case Mnemonic.bner: RewriteBranch(ConditionCode.NE); break;
+                case Mnemonic.bprp: RewriteBprp(); break;
                 case Mnemonic.br: RewriteBr(); break;
                 case Mnemonic.brasl: RewriteBrasl(); break;
                 case Mnemonic.brctg: RewriteBrctg(); break;
+                case Mnemonic.c: RewriteC(PrimitiveType.Int32); break;
+                case Mnemonic.cdb: RewriteCmpFloatMem(PrimitiveType.Real64); break;
+                case Mnemonic.cdr: RewriteCmpFloat(PrimitiveType.Real64); break;
+                case Mnemonic.ceb: RewriteCmpFloatMem(PrimitiveType.Real32); break;
+                case Mnemonic.cer: RewriteCmpFloat(PrimitiveType.Real32); break;
                 case Mnemonic.cghi: RewriteCghi(); break;
                 case Mnemonic.cgij: RewriteCij(PrimitiveType.Int64); break;
-                case Mnemonic.cgr: RewriteCgr(); break;
+                case Mnemonic.cgr: RewriteCr(PrimitiveType.Int64); break;
                 case Mnemonic.cgrj: RewriteCrj(PrimitiveType.Int64); break;
                 case Mnemonic.chi: RewriteChi(); break;
                 case Mnemonic.cij: RewriteCij(PrimitiveType.Int32); break;
+                case Mnemonic.cl: RewriteCl(PrimitiveType.Word32); break;
                 case Mnemonic.clc: RewriteClc(); break;
-                case Mnemonic.clg: RewriteClg(); break;
+                case Mnemonic.clcl: RewriteClcl(PrimitiveType.Word128); break;
+                case Mnemonic.clg: RewriteCl(PrimitiveType.Word64); break;
                 case Mnemonic.clgij: RewriteClij(PrimitiveType.Word64); break;
-                case Mnemonic.clgr: RewriteClgr(); break;
+                case Mnemonic.clgr: RewriteCr(PrimitiveType.Word64); break;
                 case Mnemonic.clgrl: RewriteClgr(); break;
                 case Mnemonic.clgrj: RewriteClrj(PrimitiveType.Word64); break;
                 case Mnemonic.clfi: RewriteClfi(PrimitiveType.UInt32); break;
                 case Mnemonic.cli: RewriteCli(); break;
                 case Mnemonic.clij: RewriteClij(PrimitiveType.Word32); break;
+                case Mnemonic.cliy: RewriteCli(); break;
+                case Mnemonic.clrj: RewriteClrj(PrimitiveType.Word32); break;
+                case Mnemonic.cr: RewriteCr(PrimitiveType.Int32); break;
+                case Mnemonic.crj: RewriteCrj(PrimitiveType.Int32); break;
                 case Mnemonic.cs: RewriteCs(PrimitiveType.Word32); break;
                 case Mnemonic.csg: RewriteCs(PrimitiveType.Word64); break;
+                case Mnemonic.ddr: RewriteFDiv(PrimitiveType.Real64); break;
+                case Mnemonic.der: RewriteFDiv(PrimitiveType.Real32); break;
                 case Mnemonic.dp: RewriteDp(); break;
+                case Mnemonic.dr: RewriteDr(); break;
                 case Mnemonic.ex: RewriteEx(); break;
                 case Mnemonic.exrl: RewriteEx(); break;
+                case Mnemonic.hdr: RewriteHalveR(PrimitiveType.Real64, Constant.Real64(2)); break;
+                case Mnemonic.her: RewriteHalveR(PrimitiveType.Real32, Constant.Real32(2)); break;
                 case Mnemonic.ic: RewriteIc(); break;
                 case Mnemonic.j: RewriteJ(); break;
                 case Mnemonic.je: RewriteJcc(ConditionCode.EQ); break;
@@ -126,12 +164,18 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.jle: RewriteJcc(ConditionCode.LE); break;
                 case Mnemonic.jhe: RewriteJcc(ConditionCode.UGE); break;
                 case Mnemonic.jne: RewriteJcc(ConditionCode.NE); break;
+                case Mnemonic.jnl: RewriteJcc(ConditionCode.GE); break;
+                case Mnemonic.jo: RewriteJcc(ConditionCode.OV); break;
                 case Mnemonic.la: RewriteLa(); break;
                 case Mnemonic.larl: RewriteLarl(); break;
                 case Mnemonic.l: RewriteL(PrimitiveType.Word32); break;
                 case Mnemonic.lay: RewriteLay(); break;
-                case Mnemonic.lcer: RewriteLcr(ShortHexFloat); break;
+                case Mnemonic.lcer: RewriteLcr(ShortHexFloat, m.FNeg); break;
+                case Mnemonic.lcr: RewriteLcr(PrimitiveType.Int32, m.Neg); break;
                 case Mnemonic.ld: RewriteL(PrimitiveType.Word64); break;
+                case Mnemonic.ldr: RewriteLreg(PrimitiveType.Word64); break;
+                case Mnemonic.le: RewriteL(PrimitiveType.Real32); break;
+                case Mnemonic.ler: RewriteLreg(PrimitiveType.Real32); break;
                 case Mnemonic.ldgr: RewriteLdgr(); break;
                 case Mnemonic.lg: RewriteL(PrimitiveType.Word64); break;
                 case Mnemonic.lgfrl: RewriteL(PrimitiveType.Int32, PrimitiveType.Int64); break;
@@ -141,23 +185,35 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.lgf: RewriteLgf(); break;
                 case Mnemonic.lgfr: RewriteLgfr(); break;
                 case Mnemonic.lghi: RewriteLghi(); break;
-                case Mnemonic.lgr: RewriteLgr(); break;
+                case Mnemonic.lgr: RewriteLreg(PrimitiveType.Word64); break;
                 case Mnemonic.lgrl: RewriteLgrl(); break;
                 case Mnemonic.lhi: RewriteLhi(); break;
+                case Mnemonic.llgfrl: RewriteLl(PrimitiveType.Word32); break;
+                case Mnemonic.llill: RewriteLli(PrimitiveType.Word16, 0); break;
                 case Mnemonic.lmg: RewriteLmg(); break;
                 case Mnemonic.lnr: RewriteLnr(PrimitiveType.Int32); break;
                 case Mnemonic.locg: RewriteLoc(PrimitiveType.Word64, ConditionCode.ALWAYS); break;
                 case Mnemonic.locgre: RewriteLoc(PrimitiveType.Word64, ConditionCode.EQ); break;
+                case Mnemonic.locgrh: RewriteLoc(PrimitiveType.Word64, ConditionCode.UGT); break;
                 case Mnemonic.locgrne: RewriteLoc(PrimitiveType.Word64, ConditionCode.NE); break;
+                case Mnemonic.locgrnl: RewriteLoc(PrimitiveType.Word64, ConditionCode.GE); break;
+                case Mnemonic.locgrnle: RewriteLoc(PrimitiveType.Word64, ConditionCode.GT); break;
                 case Mnemonic.lpdr: RewriteLpr("fabs", LongHexFloat); break;
                 case Mnemonic.lper: RewriteLpr("fabsf", ShortHexFloat); break;
+                case Mnemonic.lpgr: RewriteLpr("abs", PrimitiveType.Int64); break;
                 case Mnemonic.lpr: RewriteLpr("abs", PrimitiveType.Int32); break;
                 case Mnemonic.lr: RewriteLr(); break;
                 case Mnemonic.lrl: RewriteL(PrimitiveType.Word32); break;
                 case Mnemonic.lt: RewriteLt(PrimitiveType.Word32); break;
+                case Mnemonic.ltdr: RewriteLtdr(PrimitiveType.Real64, Constant.Real64(0.0)); break;
+                case Mnemonic.lter: RewriteLtdr(PrimitiveType.Real32, Constant.Real32(0.0F)); break;
                 case Mnemonic.ltg: RewriteLt(PrimitiveType.Word64); break;
                 case Mnemonic.ltgr: RewriteLtr(PrimitiveType.Word64); break;
                 case Mnemonic.ltr: RewriteLtr(PrimitiveType.Word32); break;
+                case Mnemonic.mdr: RewriteMedr(LongHexFloat, LongHexFloat); break;
+                case Mnemonic.medr: RewriteMedr(ShortHexFloat, LongHexFloat); break;
+                case Mnemonic.meer: RewriteMedr(ShortHexFloat, ShortHexFloat); break;
+                case Mnemonic.mh: RewriteAluH(m.SMul, PrimitiveType.Int32, PrimitiveType.Int16); break;
                 case Mnemonic.mvcle: RewriteMvcle(); break;
                 case Mnemonic.mvhi: RewriteMvi(PrimitiveType.Word16); break;
                 case Mnemonic.mvi: RewriteMvi(PrimitiveType.Byte); break;
@@ -167,32 +223,41 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.ni: RewriteNi(); break;
                 case Mnemonic.nopr: m.Nop(); break;
                 case Mnemonic.oi: RewriteOi(); break;
-                case Mnemonic.or: RewriteOr(PrimitiveType.Word32); break;
+                case Mnemonic.or: RewriteLogicR(PrimitiveType.Word32, m.Or); break;
                 case Mnemonic.risbg: RewriteRisbg("__risbg"); break;
                 case Mnemonic.risbgn: RewriteRisbg("__risbgn"); break;
                 case Mnemonic.s: RewriteS(PrimitiveType.Int32); break;
+                case Mnemonic.sh: RewriteAluH(m.ISub, PrimitiveType.Int32, PrimitiveType.Int16); break;
                 case Mnemonic.sl: RewriteS(PrimitiveType.Word32); break;
                 case Mnemonic.sdr: RewriteSdr(LongHexFloat); break;
+                case Mnemonic.ser: RewriteSdr(ShortHexFloat); break;
+                case Mnemonic.sr: RewriteSub2(PrimitiveType.Int32); break;
                 case Mnemonic.sgr: RewriteSub2(PrimitiveType.Int64); break;
                 case Mnemonic.sla: RewriteShift2(PrimitiveType.Int32, m.Shl); break;
                 case Mnemonic.sll: RewriteShift2(PrimitiveType.Word32, m.Shl); break;  //$TODO: CC's are handled unsigned.
                 case Mnemonic.slr: RewriteSub2(PrimitiveType.Word32); break;
                 case Mnemonic.sllg: RewriteShift3(PrimitiveType.Word64, m.Shl); break;
                 case Mnemonic.sllk: RewriteShift3(PrimitiveType.Word32, m.Shl); break;
+                case Mnemonic.sra: RewriteShift2(PrimitiveType.Int32, m.Sar); break;
                 case Mnemonic.srag: RewriteShift3(PrimitiveType.Int64, m.Sar); break;
                 case Mnemonic.srl: RewriteShift2(PrimitiveType.Word32, m.Shr); break;
+                case Mnemonic.srlk: RewriteShift2(PrimitiveType.Word32, m.Shr); break;
                 case Mnemonic.srlg: RewriteShift3(PrimitiveType.Word64, m.Shr); break;
                 case Mnemonic.srp: RewriteSrp(); break;
+                case Mnemonic.st: RewriteSt(PrimitiveType.Word32); break;
+                case Mnemonic.stc: RewriteSt(PrimitiveType.Byte); break;
+                case Mnemonic.stctl: RewriteStctl(PrimitiveType.Word32); break;
                 case Mnemonic.std: RewriteSt(PrimitiveType.Word64); break;
                 case Mnemonic.ste: RewriteSt(PrimitiveType.Word32); break;
-                case Mnemonic.st: RewriteSt(PrimitiveType.Word32); break;
                 case Mnemonic.stg: RewriteSt(PrimitiveType.Word64); break;
                 case Mnemonic.sth: RewriteSt(PrimitiveType.Word16); break;
+                case Mnemonic.strl: RewriteSt(PrimitiveType.Word32); break;
                 case Mnemonic.stgrl: RewriteSt(PrimitiveType.Word64); break;
                 case Mnemonic.stmg: RewriteStmg(); break;
                 case Mnemonic.sur: RewriteSur(ShortHexFloat); break;
                 case Mnemonic.svc: RewriteSvc(); break;
                 case Mnemonic.x: RewriteXor2(PrimitiveType.Word32); break;
+                case Mnemonic.xr: RewriteLogicR(PrimitiveType.Word32, m.Xor); break;
                 case Mnemonic.xc: RewriteXc(); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
@@ -236,9 +301,9 @@ namespace Reko.Arch.zSeries
             }
         }
 
-        private Constant Const(MachineOperand op)
+        private Constant Const(int iop)
         {
-            return ((ImmediateOperand)op).Value;
+            return ((ImmediateOperand)instr.Operands[iop]).Value;
         }
 
         private Expression EffectiveAddress(int iop)
@@ -303,6 +368,12 @@ namespace Reko.Arch.zSeries
             var c = ((ImmediateOperand) instr.Operands[iop]).Value;
             return Constant.Create(dt, c.ToUInt64());
         }
+
+        private RegisterStorage NextGpReg(RegisterStorage reg)
+        {
+            var n = (reg.Number + 1) & 0xF;
+            return Registers.GpRegisters[n];
+;        }
 
         private Address PcRel(int iOp)
         {

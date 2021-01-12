@@ -359,6 +359,19 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generate a floating point multiplication where the product differs
+        /// in size from the operands.
+        /// </summary>
+        /// <param name="dtProduct">Datatype of the result.</param>
+        /// <param name="a">Multiplicand.</param>
+        /// <param name="b">Multiplier.</param>
+        /// <returns>A floating point multiplication expression.</returns>
+        public Expression FMul(DataType dtProduct, Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.FMul, dtProduct, a, b);
+        }
+
+        /// <summary>
         /// Generates a floating point unary negation (implicit subtraction
         /// from floating point zero).
         /// </summary>
@@ -907,8 +920,7 @@ namespace Reko.Core.Expressions
         /// <returns>A signed division expression.</returns>
         public BinaryExpression SDiv(Expression a, Expression b)
         {
-            return new BinaryExpression(
-                Operator.SDiv, b.DataType, a, b);
+            return new BinaryExpression(Operator.SDiv, b.DataType, a, b);
         }
 
         /// <summary>

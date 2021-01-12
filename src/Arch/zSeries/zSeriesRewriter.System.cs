@@ -27,9 +27,31 @@ namespace Reko.Arch.zSeries
 {
     public partial class zSeriesRewriter
     {
+        private void RewriteBprp()
+        {
+            m.SideEffect(host.Intrinsic(
+                "__branch_prediction_relative_preload",
+                false,
+                VoidType.Instance,
+                Op(0),
+                Op(1),
+                Op(2)));
+        }
+
         private void RewriteEx()
         {
             SetCc(host.Intrinsic("__execute", false, PrimitiveType.Byte, Reg(0), Op(1)));
+        }
+
+        private void RewriteStctl(PrimitiveType dt) {
+            var op1 = Reg(0);
+            var op2 = m.AddrOf(new Pointer(dt, arch.PointerType.BitSize), m.Mem(dt, EffectiveAddress(1)));
+            m.SideEffect(host.Intrinsic(
+                "__store_control",
+                false,
+                VoidType.Instance,
+                op1,
+                op2));
         }
     }
 }

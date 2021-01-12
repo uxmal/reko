@@ -18,20 +18,54 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Arch.zSeries
 {
     public partial class zSeriesRewriter
     {
-        private void RewriteLcr(PrimitiveType dt)
+
+        private void RewriteCmpFloat(PrimitiveType dt)
+        {
+            var src1 = Reg(0, dt);
+            var src2 = Reg(1, dt);
+            SetCc(m.Cond(m.FSub(src1, src2)));
+        }
+
+        private void RewriteCmpFloatMem(PrimitiveType dt)
+        {
+            var src1 = Reg(0, dt);
+            var src2 = m.Mem(dt, EffectiveAddress(1));
+            SetCc(m.Cond(m.FSub(src1, src2)));
+        }
+
+        private void RewriteFDiv(PrimitiveType dt)
+        {
+            var left = Reg(0, dt);
+            var right = Reg(1, dt);
+            var dst = Assign(Reg(0), m.FDiv(left, right));
+            SetCc(m.Cond(dst));
+        }
+
+        private void RewriteHalveR(PrimitiveType dt, Constant c)
         {
             var src = Reg(1, dt);
-            var dst = Assign(Reg(0), m.FNeg(src));
-            SetCc(m.Cond(dst));
+            Assign(Reg(0), m.FDiv(src, c));
+        }
+
+        private void RewriteLtdr(PrimitiveType dt, Constant zero)
+        {
+            var src = Reg(1, dt);
+            var dst = Assign(Reg(0), src);
+            SetCc(m.Cond(m.FSub(dst, zero)));
+        }
+
+        private void RewriteMedr(PrimitiveType dtFrom, PrimitiveType dtTo)
+        {
+            var left = Reg(0, dtFrom);
+            var right = Reg(1, dtFrom);
+            var dst = Assign(Reg(0), m.FMul(dtTo, left, right));
         }
 
         private void RewriteSdr(PrimitiveType dt)

@@ -42,17 +42,34 @@ namespace Reko.Arch.zSeries
             m.Call(dst, 0);
         }
 
+        private void RewriteBassm()
+        {
+            this.iclass = InstrClass.Transfer | InstrClass.Call;
+            var lr = Reg(0);
+            m.Assign(lr, instr.Address + instr.Length);
+            var dst = Reg(1);
+            m.Call(dst, 0);
+        }
+
         private void RewriteBr()
         {
             this.iclass = InstrClass.Transfer;
-            var dst = Reg(0);
+            var dst = Op(0);
             m.Goto(dst);
         }
 
         private void RewriteBranch(ConditionCode condCode)
         {
             this.iclass = InstrClass.ConditionalTransfer;
-            var dst = Reg(0);
+            var dst = Op(0);
+            var cc = binder.EnsureFlagGroup(Registers.CC);
+            m.BranchInMiddleOfInstruction(m.Test(condCode, cc).Invert(), instr.Address + instr.Length, iclass);
+            m.Goto(dst);
+        }
+
+        private void RewriteBranchEa(ConditionCode condCode)
+        {
+            var dst = EffectiveAddress(0);
             var cc = binder.EnsureFlagGroup(Registers.CC);
             m.BranchInMiddleOfInstruction(m.Test(condCode, cc).Invert(), instr.Address + instr.Length, iclass);
             m.Goto(dst);
@@ -134,6 +151,12 @@ namespace Reko.Arch.zSeries
         {
             var svcNo = ((ImmediateOperand) instr.Operands[0]).Value;
             m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, svcNo));
+        }
+
+        private void RewriteUnconditionalBranch()
+        {
+            var dst = EffectiveAddress(0);
+            m.Goto(dst);
         }
     }
 }

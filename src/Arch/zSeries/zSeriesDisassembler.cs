@@ -149,6 +149,13 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
+        public static bool FFE(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            dasm.ops.Add(new RegisterOperand(Registers.FpRegisters[(uInstr >> 4) & 0xF]));
+            dasm.ops.Add(new RegisterOperand(Registers.FpRegisters[(uInstr) & 0xF]));
+            return true;
+        }
+
         public static bool FXa(ulong uInstr, zSeriesDisassembler dasm)
         {
             var f1 = new RegisterOperand(Registers.FpRegisters[(uInstr >> 20) & 0xF]);
@@ -814,6 +821,7 @@ namespace Reko.Arch.zSeries
                 );
 
             var b3_decoders = ExtendMask32(16, 8,
+                (0x37, Instr(Mnemonic.meer, FFE)),
                 (0xC1, Instr(Mnemonic.ldgr, RRE)),
                 (0xCD, Instr(Mnemonic.lgdr, RRE)));
 
@@ -1063,12 +1071,12 @@ namespace Reko.Arch.zSeries
                 Instr(Mnemonic.axr, FF),
                 Instr(Mnemonic.sxr, FF),
 
-                Instr(Mnemonic.ler, RR),
+                Instr(Mnemonic.ler, FF),
                 Instr(Mnemonic.cer, FF),
                 Instr(Mnemonic.aer, FF),
                 Instr(Mnemonic.ser, FF),
 
-                Instr(Mnemonic.mer, FF),
+                Instr(Mnemonic.medr, FF),
                 Instr(Mnemonic.der, FF),
                 Instr(Mnemonic.aur, FF),
                 Instr(Mnemonic.sur, FF),
@@ -1087,19 +1095,21 @@ namespace Reko.Arch.zSeries
                     Instr(Mnemonic.bo, InstrClass.ConditionalTransfer, RXb),
                     Instr(Mnemonic.bh, InstrClass.ConditionalTransfer, RXb),
                     Instr(Mnemonic.bnle, InstrClass.ConditionalTransfer, RXb),
+
                     Instr(Mnemonic.bl, InstrClass.ConditionalTransfer, RXb),
                     Instr(Mnemonic.bnhe, InstrClass.ConditionalTransfer, RXb),
                     Instr(Mnemonic.blh, InstrClass.ConditionalTransfer, RXb),
                     Instr(Mnemonic.bne, InstrClass.ConditionalTransfer, RXb),
+
                     Instr(Mnemonic.be, InstrClass.ConditionalTransfer, RXb),
                     Instr(Mnemonic.bnlh, InstrClass.ConditionalTransfer, RXb),
                     Instr(Mnemonic.bhe, InstrClass.ConditionalTransfer, RXb),
                     Instr(Mnemonic.bnl, InstrClass.ConditionalTransfer, RXb),
+
                     Instr(Mnemonic.ble, InstrClass.ConditionalTransfer, RXb),
                     Instr(Mnemonic.bnh, InstrClass.ConditionalTransfer, RXb),
                     Instr(Mnemonic.bno, InstrClass.ConditionalTransfer, RXb),
-                    Instr(Mnemonic.b, InstrClass.Transfer, RXb),
-                    Nyi("*")),
+                    Instr(Mnemonic.b, InstrClass.Transfer, RXb)),
 
                 Instr32(Mnemonic.lh, RXa),
                 Instr32(Mnemonic.ch, RXa),

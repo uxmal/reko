@@ -858,7 +858,7 @@ namespace Reko.UnitTests.Arch.zSeries
         [Test]
         public void zSerDasm_lpdr()
         {
-            AssertCode("lpdr\tr0,r0", "2000");
+            AssertCode("lpdr\tf0,f0", "2000");
         }
 
         [Test]
