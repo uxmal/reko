@@ -323,7 +323,6 @@ namespace Reko.Arch.zSeries
         iihl,
         iilh,
         iill,
-        invalid,
         ipk,
         ipm,
         ipte,
