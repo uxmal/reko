@@ -314,7 +314,7 @@ ui20 xTaskCreate(ui20 sr, Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15, union Eq_n & r
 	if (r15_n != null)
 	{
 		prvInitialiseTCBVariables(v15_n, r14, r13, r15_n);
-		r15_n->ptr0000 = (struct Eq_n *) pxPortInitialiseStack(r12, r15, *((char *) &r15_n->ptr0000 + 2) + ((&r15_n->w001A)[5] *20 0x02) / 28 - 0x02);
+		r15_n->ptr0000 = (struct Eq_n *) pxPortInitialiseStack(r12, r15, *((char *) &r15_n->ptr0000 + 2) + ((&r15_n->w001A)[5] *20 0x02) /20 28 - 0x02);
 		++usCriticalNesting;
 		++uxCurrentNumberOfTasks;
 		sr_n &= ~0x08;

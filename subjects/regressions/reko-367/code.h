@@ -275,19 +275,19 @@ T_61: (in CONVERT(fn8000018E((real96) dwLoc20_119), real96, real80) : real80)
   Class: Eq_61
   DataType: real80
   OrigDataType: real80
-T_62: (in (real96) (real80) fn80000132(rArg04, (real96) dwLoc20_119) / (real80) fn8000018E((real96) dwLoc20_119) : real96)
+T_62: (in (real96) (real80) fn80000132(rArg04, (real96) dwLoc20_119) /96 (real80) fn8000018E((real96) dwLoc20_119) : real96)
   Class: Eq_62
   DataType: real96
   OrigDataType: real96
-T_63: (in CONVERT(CONVERT(CONVERT(fn80000132(rArg04, (real96) dwLoc20_119), real96, real80), real80, real96) / CONVERT(fn8000018E((real96) dwLoc20_119), real96, real80), real96, real80) : real80)
+T_63: (in CONVERT(CONVERT(CONVERT(fn80000132(rArg04, (real96) dwLoc20_119), real96, real80), real80, real96) /96 CONVERT(fn8000018E((real96) dwLoc20_119), real96, real80), real96, real80) : real80)
   Class: Eq_63
   DataType: real80
   OrigDataType: real80
-T_64: (in CONVERT(CONVERT(CONVERT(CONVERT(fn80000132(rArg04, (real96) dwLoc20_119), real96, real80), real80, real96) / CONVERT(fn8000018E((real96) dwLoc20_119), real96, real80), real96, real80), real80, real96) : real96)
+T_64: (in CONVERT(CONVERT(CONVERT(CONVERT(fn80000132(rArg04, (real96) dwLoc20_119), real96, real80), real80, real96) /96 CONVERT(fn8000018E((real96) dwLoc20_119), real96, real80), real96, real80), real80, real96) : real96)
   Class: Eq_64
   DataType: real96
   OrigDataType: real96
-T_65: (in (real96) (real80) ((real96) (real80) fn80000132(rArg04, (real96) dwLoc20_119) / (real80) fn8000018E((real96) dwLoc20_119)) * rLoc1C_114 : real96)
+T_65: (in (real96) (real80) ((real96) (real80) fn80000132(rArg04, (real96) dwLoc20_119) /96 (real80) fn8000018E((real96) dwLoc20_119)) * rLoc1C_114 : real96)
   Class: Eq_44
   DataType: real96
   OrigDataType: real96
@@ -415,19 +415,19 @@ T_96: (in CONVERT(fn8000018E((real96) dwLoc20_118), real96, real80) : real80)
   Class: Eq_96
   DataType: real80
   OrigDataType: real80
-T_97: (in (real96) (real80) fn80000132(rArg04, (real96) dwLoc20_118) / (real80) fn8000018E((real96) dwLoc20_118) : real96)
+T_97: (in (real96) (real80) fn80000132(rArg04, (real96) dwLoc20_118) /96 (real80) fn8000018E((real96) dwLoc20_118) : real96)
   Class: Eq_97
   DataType: real96
   OrigDataType: real96
-T_98: (in CONVERT(CONVERT(CONVERT(fn80000132(rArg04, (real96) dwLoc20_118), real96, real80), real80, real96) / CONVERT(fn8000018E((real96) dwLoc20_118), real96, real80), real96, real80) : real80)
+T_98: (in CONVERT(CONVERT(CONVERT(fn80000132(rArg04, (real96) dwLoc20_118), real96, real80), real80, real96) /96 CONVERT(fn8000018E((real96) dwLoc20_118), real96, real80), real96, real80) : real80)
   Class: Eq_98
   DataType: real80
   OrigDataType: real80
-T_99: (in CONVERT(CONVERT(CONVERT(CONVERT(fn80000132(rArg04, (real96) dwLoc20_118), real96, real80), real80, real96) / CONVERT(fn8000018E((real96) dwLoc20_118), real96, real80), real96, real80), real80, real96) : real96)
+T_99: (in CONVERT(CONVERT(CONVERT(CONVERT(fn80000132(rArg04, (real96) dwLoc20_118), real96, real80), real80, real96) /96 CONVERT(fn8000018E((real96) dwLoc20_118), real96, real80), real96, real80), real80, real96) : real96)
   Class: Eq_99
   DataType: real96
   OrigDataType: real96
-T_100: (in (real96) (real80) ((real96) (real80) fn80000132(rArg04, (real96) dwLoc20_118) / (real80) fn8000018E((real96) dwLoc20_118)) * rLoc1C_113 : real96)
+T_100: (in (real96) (real80) ((real96) (real80) fn80000132(rArg04, (real96) dwLoc20_118) /96 (real80) fn8000018E((real96) dwLoc20_118)) * rLoc1C_113 : real96)
   Class: Eq_82
   DataType: real96
   OrigDataType: real96

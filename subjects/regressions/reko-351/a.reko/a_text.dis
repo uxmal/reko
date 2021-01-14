@@ -280,7 +280,7 @@ l800004DE:
 	word32 dwLoc20_115 = 2<32>
 	real64 rLoc14_117 = 0x3FF0000000000000<64>
 l8000051A:
-	branch CONVERT(CONVERT(rLoc0C_109, real64, real96) / rLoc14_117, real96, real64) < rArg0C l8000060E
+	branch CONVERT(CONVERT(rLoc0C_109, real64, real96) /96 rLoc14_117, real96, real64) < rArg0C l8000060E
 l8000060E:
 	return
 _Z4_sinddRi_exit:

@@ -599,7 +599,7 @@ void fn054C(Eq_n r0, struct Eq_n * r3)
 {
 	r3->t00A0 = r0;
 	r3->b00A1 = r3->b00A2;
-	struct Eq_n * r0_n = r3 + (r0 >> 3 & ~0x01) / 0x00A3;
+	struct Eq_n * r0_n = r3 + (r0 >> 3 & ~0x01) /16 0x00A3;
 	ci16 r2_n = r0 & ~~0x0F;
 	Eq_n wLoc02_n = 0x00;
 	bool C_n = true;
@@ -1171,7 +1171,7 @@ l0BC6:
 		sp_n->ptrFFFFFFFE = r3_n;
 		sp_n->ptrFFFFFFFC = r0_n;
 		struct Eq_n * r3_n = g_ptr5424;
-		r3_n->ptr0044 += (int16) r3_n->b0053 / 166;
+		r3_n->ptr0044 += (int16) r3_n->b0053 /16 166;
 		struct Eq_n * v36_n = sp_n->ptrFFFFFFFC;
 		word16 v38_n = r3_n->w005A - 0x01;
 		r3_n->w005A = v38_n;

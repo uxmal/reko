@@ -143,9 +143,9 @@ l00000000004005EE:
 	branch SLICE(CONVERT(SLICE(CONVERT(edi, word32, uint64), word32, 0) << 2<32>, word32, uint64), word32, 0) >= SLICE(CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0) << 2<32>, word32, uint64), word32, 0) l000000000040064F
 l0000000000400602:
 	word64 rax_77 = CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0), word32, uint64)
-	word32 eax_84 = CONVERT(CONVERT(SLICE(rax_77, word32, 0), word32, int64) / 2<32>, word32, int32)
+	word32 eax_84 = CONVERT(CONVERT(SLICE(rax_77, word32, 0), word32, int64) /32 2<32>, word32, int32)
 	word64 rax_105 = SEQ(SLICE(rax_77, word32, 32), eax_84)
-	branch SLICE(CONVERT(CONVERT(CONVERT(SLICE(CONVERT(SLICE(CONVERT(edi, word32, uint64), word32, 0), word32, uint64), word32, 0), word32, int64) / 2<32>, word32, int32), int32, uint64), word32, 0) >= eax_84 l000000000040064F
+	branch SLICE(CONVERT(CONVERT(CONVERT(SLICE(CONVERT(SLICE(CONVERT(edi, word32, uint64), word32, 0), word32, uint64), word32, 0), word32, int64) /32 2<32>, word32, int32), int32, uint64), word32, 0) >= eax_84 l000000000040064F
 l000000000040064F:
 l000000000040062B:
 	my1(SLICE(CONVERT(esi, word32, uint64), word32, 0), SLICE(CONVERT(edi, word32, uint64), word32, 0))

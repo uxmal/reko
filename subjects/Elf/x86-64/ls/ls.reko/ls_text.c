@@ -5776,7 +5776,7 @@ l000000000040BE7D:
 			rLoc3_n = rLoc4_n;
 		}
 		Eq_n rLoc2_n;
-		Eq_n rLoc1_n = rLoc1_n / rLoc3_n;
+		Eq_n rLoc1_n = rLoc1_n /64 rLoc3_n;
 		if (eax_n != 0x01)
 		{
 			if ((real64) g_r415F90 > rLoc1_n)
@@ -7463,7 +7463,7 @@ void fn000000000040E650(word32 edx, int32 esi, struct Eq_n * rdi)
 	ui32 ecx_n = (word32) (uint64) esi;
 	if (rdi != null)
 		rax_n = rdi;
-	struct Eq_n * rsi_n = rax_n + ((uint64) ((word32) (sil_n >> 0x05)) * 0x04) / 52;
+	struct Eq_n * rsi_n = rax_n + ((uint64) ((word32) (sil_n >> 0x05)) * 0x04) /64 52;
 	word32 edi_n = (word32) (uint64) rsi_n->dw0008;
 	byte cl_n = (byte) (uint64) (ecx_n & 0x1F);
 	rsi_n->dw0008 = (word32) (uint64) ((word32) (uint64) ((word32) (uint64) ((word32) (uint64) (edx ^ (word32) ((uint64) ((word32) ((uint64) edi_n) >> cl_n))) & 0x01) << cl_n) ^ edi_n);

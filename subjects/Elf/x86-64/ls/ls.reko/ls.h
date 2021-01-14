@@ -5120,7 +5120,7 @@ Eq_12019: (union "Eq_12019" (int32 u0) (uint32 u1))
 Eq_12028: (union "Eq_12028" (real64 u0) (up64 u1))
 	T_12028 (in rLoc2_1734 : Eq_12028)
 	T_12029 (in rLoc1_1730 : Eq_12028)
-	T_12030 (in rLoc1_1663 / rLoc3_1713 : real64)
+	T_12030 (in rLoc1_1663 /64 rLoc3_1713 : real64)
 	T_12058 (in CONVERT(Mem612[0x0000000000415F90<p64>:real80], real80, real64) : real64)
 	T_12060 (in rLoc1_1745 : Eq_12028)
 	T_12062 (in rLoc2_1739 : Eq_12028)
@@ -53935,7 +53935,7 @@ T_12029: (in rLoc1_1730 : Eq_12028)
   Class: Eq_12028
   DataType: Eq_12028
   OrigDataType: (union (real64 u0) (up64 u1))
-T_12030: (in rLoc1_1663 / rLoc3_1713 : real64)
+T_12030: (in rLoc1_1663 /64 rLoc3_1713 : real64)
   Class: Eq_12028
   DataType: Eq_12028
   OrigDataType: real64

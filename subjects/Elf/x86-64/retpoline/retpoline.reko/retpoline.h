@@ -524,11 +524,11 @@ T_115: (in 2<32> : word32)
   Class: Eq_115
   DataType: int32
   OrigDataType: int32
-T_116: (in (int64) (word32) rax_77 / 2<32> : word32)
+T_116: (in (int64) (word32) rax_77 /32 2<32> : word32)
   Class: Eq_116
   DataType: int32
   OrigDataType: int32
-T_117: (in CONVERT(CONVERT(SLICE(rax_77, word32, 0), word32, int64) / 2<32>, word32, int32) : int32)
+T_117: (in CONVERT(CONVERT(SLICE(rax_77, word32, 0), word32, int64) /32 2<32>, word32, int32) : int32)
   Class: Eq_112
   DataType: int32
   OrigDataType: int32
@@ -568,23 +568,23 @@ T_126: (in 2<32> : word32)
   Class: Eq_126
   DataType: int32
   OrigDataType: int32
-T_127: (in (int64) (word32) (uint64) (word32) (uint64) edi / 2<32> : word32)
+T_127: (in (int64) (word32) (uint64) (word32) (uint64) edi /32 2<32> : word32)
   Class: Eq_127
   DataType: int32
   OrigDataType: int32
-T_128: (in CONVERT(CONVERT(SLICE(CONVERT(SLICE(CONVERT(edi, word32, uint64), word32, 0), word32, uint64), word32, 0), word32, int64) / 2<32>, word32, int32) : int32)
+T_128: (in CONVERT(CONVERT(SLICE(CONVERT(SLICE(CONVERT(edi, word32, uint64), word32, 0), word32, uint64), word32, 0), word32, int64) /32 2<32>, word32, int32) : int32)
   Class: Eq_128
   DataType: int32
   OrigDataType: int32
-T_129: (in CONVERT(CONVERT(CONVERT(SLICE(CONVERT(SLICE(CONVERT(edi, word32, uint64), word32, 0), word32, uint64), word32, 0), word32, int64) / 2<32>, word32, int32), int32, uint64) : uint64)
+T_129: (in CONVERT(CONVERT(CONVERT(SLICE(CONVERT(SLICE(CONVERT(edi, word32, uint64), word32, 0), word32, uint64), word32, 0), word32, int64) /32 2<32>, word32, int32), int32, uint64) : uint64)
   Class: Eq_129
   DataType: uint64
   OrigDataType: uint64
-T_130: (in SLICE(CONVERT(CONVERT(CONVERT(SLICE(CONVERT(SLICE(CONVERT(edi, word32, uint64), word32, 0), word32, uint64), word32, 0), word32, int64) / 2<32>, word32, int32), int32, uint64), word32, 0) : word32)
+T_130: (in SLICE(CONVERT(CONVERT(CONVERT(SLICE(CONVERT(SLICE(CONVERT(edi, word32, uint64), word32, 0), word32, uint64), word32, 0), word32, int64) /32 2<32>, word32, int32), int32, uint64), word32, 0) : word32)
   Class: Eq_112
   DataType: int32
   OrigDataType: int32
-T_131: (in (word32) (uint64) (int32) ((int64) (word32) (uint64) (word32) (uint64) edi / 2<32>) >= eax_84 : bool)
+T_131: (in (word32) (uint64) (int32) ((int64) (word32) (uint64) (word32) (uint64) edi /32 2<32>) >= eax_84 : bool)
   Class: Eq_131
   DataType: bool
   OrigDataType: bool

@@ -650,7 +650,7 @@ Eq_1074: (struct "Eq_1074" (2766 byte b2766))
 	T_1151 (in Mem66[0x00B0<p16>:word16] : word16)
 Eq_1078: (struct "Eq_1078" (2766 byte b2766))
 	T_1078 (in r2_33 : (ptr16 Eq_1078))
-	T_1086 (in (char *) (r2_24 + g_w0070 / 10087<i32>) + 1<i32> & ~0xFFC0<16> : word16)
+	T_1086 (in (char *) (r2_24 + g_w0070 /16 10087<i32>) + 1<i32> & ~0xFFC0<16> : word16)
 Eq_1124: (struct "Eq_1124" (0 cui16 w0000) (2 word16 w0002) (4 word16 w0004))
 	T_1124 (in r5_52 : (ptr16 Eq_1124))
 	T_1126 (in r5 + 2<16> : word16)
@@ -5191,7 +5191,7 @@ T_1085: (in ~0xFFC0<16> : word16)
   Class: Eq_1085
   DataType: cui16
   OrigDataType: cui16
-T_1086: (in (char *) (r2_24 + g_w0070 / 10087<i32>) + 1<i32> & ~0xFFC0<16> : word16)
+T_1086: (in (char *) (r2_24 + g_w0070 /16 10087<i32>) + 1<i32> & ~0xFFC0<16> : word16)
   Class: Eq_1078
   DataType: (ptr16 Eq_1078)
   OrigDataType: cui16

@@ -633,7 +633,7 @@ void fn0000000140001AC0()
 	Eq_n rax_n = GetModuleHandleW(null);
 	if (rax_n == null || rax_n->unused != 23117)
 		return;
-	struct Eq_n * rax_n = rax_n + (int64) rax_n->dw003C / 64;
+	struct Eq_n * rax_n = rax_n + (int64) rax_n->dw003C /64 64;
 	if (rax_n->dw0000 != 0x4550 || (rax_n->w0018 != 0x020B || rax_n->dw0084 <= 0x0E))
 		;
 }

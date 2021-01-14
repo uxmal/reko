@@ -850,12 +850,12 @@ Eq_652: (fn Eq_668 (Eq_196, Eq_199, (ptr20 Eq_656)))
 	T_653 (in signature of pxPortInitialiseStack : void)
 Eq_656: (struct "Eq_656" (FFFFFFE4 word16 wFFFFFFE4) (FFFFFFE6 Eq_196 tFFFFFFE6) (FFFFFFE8 word16 wFFFFFFE8) (FFFFFFEA word16 wFFFFFFEA) (FFFFFFEC word16 wFFFFFFEC) (FFFFFFEE word16 wFFFFFFEE) (FFFFFFF0 word16 wFFFFFFF0) (FFFFFFF2 word16 wFFFFFFF2) (FFFFFFF4 word16 wFFFFFFF4) (FFFFFFF6 word16 wFFFFFFF6) (FFFFFFF8 word16 wFFFFFFF8) (FFFFFFFA word16 wFFFFFFFA) (FFFFFFFC word16 wFFFFFFFC) (FFFFFFFE word16 wFFFFFFFE) (0 Eq_199 t0000))
 	T_656 (in r15 : (ptr20 Eq_656))
-	T_667 (in *((char *) &r15_45->ptr0000 + 2<i32>) + ((&r15_45->w001A)[5<i32>] *20 2<20>) / 28<i32> - 2<16> : word20)
+	T_667 (in *((char *) &r15_45->ptr0000 + 2<i32>) + ((&r15_45->w001A)[5<i32>] *20 2<20>) /20 28<i32> - 2<16> : word20)
 	T_2879 (in r15 - 0x1C<16> : word20)
 Eq_666: (union "Eq_666" (ui20 u0) (word16 u1))
 	T_666 (in 2<16> : word16)
 Eq_668: (union "Eq_668" (word20 u0) (word16 u1))
-	T_668 (in pxPortInitialiseStack(r12, r15, *((char *) &r15_45->ptr0000 + 2<i32>) + ((&r15_45->w001A)[5<i32>] *20 2<20>) / 28<i32> - 2<16>) : word20)
+	T_668 (in pxPortInitialiseStack(r12, r15, *((char *) &r15_45->ptr0000 + 2<i32>) + ((&r15_45->w001A)[5<i32>] *20 2<20>) /20 28<i32> - 2<16>) : word20)
 	T_671 (in Mem81[r15_45 + 0<20>:word16] : word16)
 Eq_685: (union "Eq_685" (ui20 u0) (word16 u1))
 	T_685 (in ~8<16> : word16)
@@ -4789,11 +4789,11 @@ T_666: (in 2<16> : word16)
   Class: Eq_666
   DataType: ui20
   OrigDataType: (union (ui20 u0) (word16 u1))
-T_667: (in *((char *) &r15_45->ptr0000 + 2<i32>) + ((&r15_45->w001A)[5<i32>] *20 2<20>) / 28<i32> - 2<16> : word20)
+T_667: (in *((char *) &r15_45->ptr0000 + 2<i32>) + ((&r15_45->w001A)[5<i32>] *20 2<20>) /20 28<i32> - 2<16> : word20)
   Class: Eq_656
   DataType: (ptr20 Eq_656)
   OrigDataType: ui20
-T_668: (in pxPortInitialiseStack(r12, r15, *((char *) &r15_45->ptr0000 + 2<i32>) + ((&r15_45->w001A)[5<i32>] *20 2<20>) / 28<i32> - 2<16>) : word20)
+T_668: (in pxPortInitialiseStack(r12, r15, *((char *) &r15_45->ptr0000 + 2<i32>) + ((&r15_45->w001A)[5<i32>] *20 2<20>) /20 28<i32> - 2<16>) : word20)
   Class: Eq_668
   DataType: Eq_668
   OrigDataType: word20

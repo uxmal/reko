@@ -222,7 +222,7 @@ Eq_n fn1483-0CFC(struct Eq_n * ds_di, Eq_n ss_bp, byte al, byte ah, Eq_n cx, ui1
 	struct Eq_n * ds = SLICE(ds_di, selector, 16);
 	Eq_n di = (word16) ds_di;
 	int16 bx_n = SEQ(bh, bl ^ al);
-	byte al_n = ds_di[bx_n / 46];
+	byte al_n = ds_di[bx_n /16 46];
 	Mem63[ss_bp + si:word16] = ~0x2E00;
 	Eq_n ax_n = SEQ(ah, al_n);
 	if (cx == 0x00)
@@ -515,7 +515,7 @@ void fn1483-1104(cup16 ax, byte dl, struct Eq_n Eq_n::* bx, struct Eq_n Eq_n::* 
 		Eq_n es_bx_n = ds->t9F59;
 		Top_n = (word32) Top_n + 1;
 		*Top_n = scalbn(*Top_n, *((word32) Top_n + 1));
-		(ss->*bp).w1EC4 = bp + (ss->*bp).w1EC4 / 0x00004511;
+		(ss->*bp).w1EC4 = bp + (ss->*bp).w1EC4 /16 0x00004511;
 		sp_n = sp_n;
 		si = ~0x60A6;
 		es = SLICE(es_bx_n, selector, 16);

@@ -948,15 +948,15 @@ T_226: (in CONVERT(rLoc0C_109, real64, real96) : real96)
   Class: Eq_226
   DataType: real96
   OrigDataType: real96
-T_227: (in (real96) rLoc0C_109 / rLoc14_117 : real96)
+T_227: (in (real96) rLoc0C_109 /96 rLoc14_117 : real96)
   Class: Eq_227
   DataType: real96
   OrigDataType: real96
-T_228: (in CONVERT(CONVERT(rLoc0C_109, real64, real96) / rLoc14_117, real96, real64) : real64)
+T_228: (in CONVERT(CONVERT(rLoc0C_109, real64, real96) /96 rLoc14_117, real96, real64) : real64)
   Class: Eq_165
   DataType: real64
   OrigDataType: real64
-T_229: (in (real64) ((real96) rLoc0C_109 / rLoc14_117) < rArg0C : bool)
+T_229: (in (real64) ((real96) rLoc0C_109 /96 rLoc14_117) < rArg0C : bool)
   Class: Eq_229
   DataType: bool
   OrigDataType: bool
