@@ -114,9 +114,7 @@ namespace Reko.Structure
             {
                 var caseReg = btor[caseBlock];
                 var switchPredecessors = caseBlock.Pred
-                    .Where(p => p != switchBlock && 
-                                p.Statements.Count > 0 &&
-                                p.Statements.Last!.Instruction is SwitchInstruction)
+                    .Where(p => p != switchBlock)
                     .ToArray();
                 if (switchPredecessors.Length > 0)
                 {
@@ -128,7 +126,6 @@ namespace Reko.Structure
                     if (!sws.TryGetValue(caseBlock, out var pad))
                     {
                         pad = new Region(caseBlock) { IsSwitchPad = true };
-                        pad.SwitchPredecessor = switchBlock.Name.ToString() + $"_{caseBlock.Name}";    //$DEBUG
                         sws.Add(caseBlock, pad);
                         graph.AddNode(pad);
                         graph.AddEdge(pad, caseReg);

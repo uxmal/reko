@@ -106,509 +106,510 @@ l0000000000402AB1:
 		}
 		byte r13b_n = 0x00;
 		Eq_n r12_n = 0x00;
-		while (true)
+l0000000000402B30:
+		((byte) rsp_n.u0 + 56)->u0 = ~0x00;
+		int32 eax_n = getopt_long((uint64) ebx_n, rbp_n, "abcdfghiklmnopqrstuvw:xABCDFGHI:LNQRST:UXZ1", &g_t413080, (byte) rsp_n.u0 + 56);
+		if (eax_n != ~0x00)
 		{
-			((byte) rsp_n.u0 + 56)->u0 = ~0x00;
-			int32 eax_n = getopt_long((uint64) ebx_n, rbp_n, "abcdfghiklmnopqrstuvw:xABCDFGHI:LNQRST:UXZ1", &g_t413080, (byte) rsp_n.u0 + 56);
-			if (eax_n == ~0x00)
-				break;
 			uint64 rax_n = (uint64) (eax_n + 131);
 			up32 eax_n = (word32) rax_n;
 			word32 rax_32_32_n = SLICE(rax_n, word32, 32);
-			if (eax_n > 0x0112)
-				goto l00000000004031F9;
-			switch (eax_n)
+			if (eax_n <= 0x0112)
 			{
-			case 0x00:
-				uint64 rsi_n;
-				word32 eax_n = (word32) (uint64) g_dw61A56C;
-				uint64 rcx_n = g_qw61A570;
-				if (eax_n != 0x01)
+				switch (eax_n)
 				{
-					rsi_n = 4274191;
-					if (eax_n != 0x02)
-						rsi_n = 0x0041380E;
-				}
-				else
-					rsi_n = 0x00413807;
-				FILE * rdi_n = stdout;
-				rsp_n.u0->u0 = 0x00;
-				fn0000000000410B30(0x00, rcx_n, rsi_n, rdi_n);
-				exit(0x00);
-			case 0x01:
-				fn0000000000409750(0x00);
-			case 0x02:
-			case 0x03:
-			case 0x04:
-			case 0x05:
-			case 0x06:
-			case 0x07:
-			case 0x08:
-			case 0x09:
-			case 0x0A:
-			case 11:
-			case 0x0C:
-			case 0x0D:
-			case 0x0E:
-			case 0x0F:
-			case 0x10:
-			case 0x11:
-			case 0x12:
-			case 0x13:
-			case 0x14:
-			case 0x15:
-			case 22:
-			case 0x17:
-			case 0x18:
-			case 0x19:
-			case 0x1A:
-			case 0x1B:
-			case 0x1C:
-			case 0x1D:
-			case 0x1E:
-			case 0x1F:
-			case 0x20:
-			case 33:
-			case 0x22:
-			case 0x23:
-			case 0x24:
-			case 0x25:
-			case 0x26:
-			case 0x27:
-			case 0x28:
-			case 0x29:
-			case 0x2A:
-			case 0x2B:
-			case 44:
-			case 0x2D:
-			case 0x2E:
-			case 0x2F:
-			case 0x30:
-			case 0x31:
-			case 0x32:
-			case 0x33:
-			case 0x34:
-			case 0x35:
-			case 0x36:
-			case 55:
-			case 0x38:
-			case 0x39:
-			case 0x3A:
-			case 0x3B:
-			case 0x3C:
-			case 0x3D:
-			case 0x3E:
-			case 0x3F:
-			case 0x40:
-			case 0x41:
-			case 66:
-			case 0x43:
-			case 0x44:
-			case 0x45:
-			case 0x46:
-			case 0x47:
-			case 0x48:
-			case 0x49:
-			case 0x4A:
-			case 0x4B:
-			case 0x4C:
-			case 77:
-			case 0x4E:
-			case 0x4F:
-			case 0x50:
-			case 0x51:
-			case 0x52:
-			case 0x53:
-			case 0x54:
-			case 0x55:
-			case 0x56:
-			case 0x57:
-			case 88:
-			case 0x59:
-			case 0x5A:
-			case 0x5B:
-			case 0x5C:
-			case 0x5D:
-			case 0x5E:
-			case 0x5F:
-			case 0x60:
-			case 0x61:
-			case 0x62:
-			case 99:
-			case 100:
-			case 101:
-			case 0x66:
-			case 0x67:
-			case 0x68:
-			case 0x69:
-			case 0x6A:
-			case 0x6B:
-			case 0x6C:
-			case 0x6D:
-			case 110:
-			case 111:
-			case 0x70:
-			case 113:
-			case 114:
-			case 115:
-			case 116:
-			case 117:
-			case 118:
-			case 0x77:
-			case 0x78:
-			case 121:
-			case 122:
-			case 0x7B:
-			case 0x7C:
-			case 0x7D:
-			case 0x7E:
-			case 0x7F:
-			case 0x80:
-			case 0x81:
-			case 0x82:
-			case 131:
-			case 0x84:
-			case 133:
-			case 0x86:
-			case 0x87:
-			case 0x88:
-			case 0x89:
-			case 0x8A:
-			case 0x8B:
-			case 0x8C:
-			case 141:
-			case 0x8E:
-			case 0x8F:
-			case 0x90:
-			case 0x91:
-			case 0x92:
-			case 0x93:
-			case 0x94:
-			case 0x95:
-			case 0x96:
-			case 151:
-			case 0x98:
-			case 0x99:
-			case 0x9A:
-			case 155:
-			case 0x9C:
-			case 0x9D:
-			case 0x9E:
-			case 0x9F:
-			case 0xA0:
-			case 161:
-			case 0xA2:
-			case 0xA3:
-			case 0xA4:
-			case 0xA5:
-			case 166:
-			case 0xA7:
-			case 0xA8:
-			case 0xA9:
-			case 0xAA:
-			case 171:
-			case 0xAC:
-			case 0xAD:
-			case 0xAE:
-			case 0xAF:
-			case 0xB0:
-			case 177:
-			case 0xB2:
-			case 0xB3:
-			case 181:
-			case 0xB6:
-			case 0xB7:
-			case 0xB8:
-			case 0xB9:
-			case 0xBA:
-			case 0xBB:
-			case 188:
-			case 0xBD:
-			case 0xBE:
-			case 191:
-			case 0xC0:
-			case 0xC1:
-			case 0xC2:
-			case 0xC3:
-			case 200:
-			case 0xCD:
-			case 0xCE:
-			case 0xD0:
-			case 0xD2:
-			case 211:
-			case 0xD9:
-			case 0xDA:
-			case 220:
-			case 222:
-			case 223:
-			case 0xE0:
-			case 225:
-			case 226:
-			case 227:
-			case 232:
-			case 0xED:
-			case 252:
-			case 0xFD:
-			case 0xFE:
-			case 0xFF:
-			case 0x0100:
-			case 0x0101:
-			case 0x0102:
-l00000000004031F9:
-				fn0000000000409750(0x02);
-			case 0xB4:
-				if (g_dw61B150 != 0x00)
-					g_dw61B150 = 0x01;
-				break;
-			case 0xC4:
-				if (g_dw61B108 == 0x00)
-					g_dw61B108 = 0x01;
-				break;
-			case 0xC5:
-				Eq_n rax_n = fn0000000000410C40(0x10);
-				Eq_n rdx_n = g_t61B100;
-				rax_n->u0 = 4274276;
-				g_t61B100 = rax_n;
-				*((word32) rax_n + 8) = rdx_n;
-				Eq_n rax_n = fn0000000000410C40(0x10);
-				Eq_n rdx_n = g_t61B100;
-				rax_n->u0 = 4274275;
-				*((word32) rax_n + 8) = rdx_n;
-				g_t61B100 = rax_n;
-				break;
-			case 0xC6:
-				g_dw61B150 = 0x02;
-				break;
-			case 199:
-				g_b61B130 = 0x01;
-				break;
-			case 0xC9:
-				g_dw61B12C = 0x03;
-				break;
-			case 202:
-				g_b61A568 = 0x00;
-				break;
-			case 0xCB:
-				g_dw61B110 = 0x03;
-				break;
-			case 0xCC:
-				Eq_n r15_n = optarg;
-				Eq_n rax_n = fn0000000000410C40(0x10);
-				Eq_n rdx_n = g_t61B100;
-				*rax_n = r15_n;
-				*((word32) rax_n + 8) = rdx_n;
-				g_t61B100 = rax_n;
-				break;
-			case 0xCF:
-				g_dw61B110 = 0x05;
-				break;
-			case 0xD1:
-				fn000000000040E640(0x00, null);
-				break;
-			case 212:
-				fn000000000040E640(0x03, null);
-				break;
-			case 0xD5:
-				g_b61B10E = 0x01;
-				break;
-			case 0xD6:
-				g_dw61B148 = 0x02;
-				r13b_n = 0x01;
-				break;
-			case 0xD7:
-				Eq_n rbx_n = <invalid>;
-				Eq_n r13_n = <invalid>;
-				rsp_n.u0 = <invalid>;
-				ebx_n = (word32) rbx_n;
-				r13b_n = (byte) r13_n;
-				word32 ebx_n;
-				byte r13b_n;
-				if ((word32) (uint64) fn0000000000410E90(*((byte) rsp_n.u0 + 32), 0x00, null, optarg, 0x00, out ebx_n, out rbp_n, out r12_n, out r13b_n) != 0x00)
-				{
-					fn000000000040E930(optarg, fs);
-					error(0x02, 0x00, dcgettext(null, 4274279, 0x05), 0x00);
-				}
-				g_t61B0D8 = *((byte) rsp_n.u0 + 64);
-				break;
-			case 0xD8:
-				g_dw61B148 = ~0x00;
-				r13b_n = 0x01;
-				break;
-			case 0xDB:
-				g_dw61B148 = 0x01;
-				r13b_n = 0x01;
-				break;
-			case 0xDD:
-				g_b61B17D = 0x01;
-				break;
-			case 228:
-				g_dw61B108 = 0x02;
-				break;
-			case 229:
-				fn000000000040E640(0x05, null);
-				break;
-			case 0xE6:
-				g_dw61B14C = 0x01;
-				break;
-			case 0xE7:
-				g_b61B10D = 0x01;
-				break;
-			case 233:
-				g_dw61B108 = 0x02;
-				g_dw61B148 = ~0x00;
-				if (g_dw61B150 == 0x00)
-					g_dw61B150 = (word32) (uint64) ((word32) (uint64) (0x00 - (isatty(0x01) < 0x01)) + 0x02);
-				g_b61B144 = 0x00;
-				g_b61B129 = 0x00;
-				r13b_n = 0x01;
-				break;
-			case 0xEA:
-				g_dw61B150 = 0x00;
-				g_b61A569 = 0x00;
-				break;
-			case 0xEB:
-				g_dw61B140 = 0xB0;
-				g_dw61B134 = 0xB0;
-				g_t61B138.u0 = 0x01;
-				g_t61A560.u0 = 0x01;
-				break;
-			case 0xEC:
-				g_b61B114 = 0x01;
-				break;
-			case 0xEE:
-				break;
-			case 0xEF:
-l0000000000402B78:
-				g_dw61B150 = 0x00;
-				break;
-			case 0xF0:
-				g_dw61B150 = 0x04;
-				break;
-			case 0xF1:
-				g_b61B145 = 0x01;
-				goto l0000000000402B78;
-			case 242:
-				g_dw61B150 = 0x00;
-				g_b61A568 = 0x00;
-				break;
-			case 0xF3:
-				g_dw61B12C = 0x01;
-				break;
-			case 244:
-				g_b61B0F0 = 0x01;
-				break;
-			case 0xF5:
-				g_b61B147 = 0x01;
-				break;
-			case 0xF6:
-				g_b61B144 = 0x01;
-				break;
-			case 0xF7:
-				g_dw61B148 = 0x04;
-				r13b_n = 0x01;
-				break;
-			case 0xF8:
-				g_dw61B14C = 0x02;
-				break;
-			case 0xF9:
-				g_dw61B148 = 0x03;
-				r13b_n = 0x01;
-				break;
-			case 0xFA:
-				Eq_n rbx_n = <invalid>;
-				Eq_n r13_n = <invalid>;
-				rsp_n.u0 = <invalid>;
-				ebx_n = (word32) rbx_n;
-				r13b_n = (byte) r13_n;
-				word32 ebx_n;
-				byte r13b_n;
-				if ((word32) (uint64) fn0000000000410E90(*((byte) rsp_n.u0 + 32), 0x00, null, optarg, 0x00, out ebx_n, out rbp_n, out r12_n, out r13b_n) != 0x00 || *((byte) rsp_n.u0 + 64) == 0x00)
-				{
-					fn000000000040E930(optarg, fs);
-					error(0x02, 0x00, dcgettext(null, 4274252, 0x05), 0x00);
-				}
-				g_t61B0C8 = *((byte) rsp_n.u0 + 64);
-				break;
-			case 0xFB:
-				g_dw61B150 = 0x03;
-				break;
-			case 0x0103:
-				g_b61B146 = 0x01;
-				break;
-			case 0x0104:
-				word64 r15_n;
-				byte r14b_n;
-				word32 eax_n = (word32) (uint64) fn000000000040C810(rax_32_32_n, &g_t61B138, &g_dw61B140, optarg, out r14b_n, out r15_n);
-				if (eax_n != 0x00)
-					fn00000000004112D0((word32) (uint64) *((byte) rsp_n.u0 + 56), (word32) (uint64) eax_n);
-				g_dw61B134 = (word32) (uint64) g_dw61B140;
-				g_t61A560 = g_t61B138;
-				break;
-			case 0x0105:
-				Eq_n rsi_n = optarg;
-				if (rsi_n != 0x00)
-				{
-					word32 eax_n = (word32) (uint64) g_a412EC0[fn000000000040A120(rax_32_32_n, 0x00412EC0, g_a412F00, rsi_n, 4274323, 0x04, g_ptr61A578, fs) * 0x04];
-					if (eax_n == 0x01 || eax_n == 0x02 && isatty(0x01) != 0x00)
-						goto l0000000000403A7C;
+				case 0x00:
+					uint64 rsi_n;
+					word32 eax_n = (word32) (uint64) g_dw61A56C;
+					uint64 rcx_n = g_qw61A570;
+					if (eax_n != 0x01)
+					{
+						rsi_n = 4274191;
+						if (eax_n != 0x02)
+							rsi_n = 0x0041380E;
+					}
+					else
+						rsi_n = 0x00413807;
+					FILE * rdi_n = stdout;
+					rsp_n.u0->u0 = 0x00;
+					fn0000000000410B30(0x00, rcx_n, rsi_n, rdi_n);
+					exit(0x00);
+				case 0x01:
+					fn0000000000409750(0x00);
+				case 0x02:
+				case 0x03:
+				case 0x04:
+				case 0x05:
+				case 0x06:
+				case 0x07:
+				case 0x08:
+				case 0x09:
+				case 0x0A:
+				case 11:
+				case 0x0C:
+				case 0x0D:
+				case 0x0E:
+				case 0x0F:
+				case 0x10:
+				case 0x11:
+				case 0x12:
+				case 0x13:
+				case 0x14:
+				case 0x15:
+				case 22:
+				case 0x17:
+				case 0x18:
+				case 0x19:
+				case 0x1A:
+				case 0x1B:
+				case 0x1C:
+				case 0x1D:
+				case 0x1E:
+				case 0x1F:
+				case 0x20:
+				case 33:
+				case 0x22:
+				case 0x23:
+				case 0x24:
+				case 0x25:
+				case 0x26:
+				case 0x27:
+				case 0x28:
+				case 0x29:
+				case 0x2A:
+				case 0x2B:
+				case 44:
+				case 0x2D:
+				case 0x2E:
+				case 0x2F:
+				case 0x30:
+				case 0x31:
+				case 0x32:
+				case 0x33:
+				case 0x34:
+				case 0x35:
+				case 0x36:
+				case 55:
+				case 0x38:
+				case 0x39:
+				case 0x3A:
+				case 0x3B:
+				case 0x3C:
+				case 0x3D:
+				case 0x3E:
+				case 0x3F:
+				case 0x40:
+				case 0x41:
+				case 66:
+				case 0x43:
+				case 0x44:
+				case 0x45:
+				case 0x46:
+				case 0x47:
+				case 0x48:
+				case 0x49:
+				case 0x4A:
+				case 0x4B:
+				case 0x4C:
+				case 77:
+				case 0x4E:
+				case 0x4F:
+				case 0x50:
+				case 0x51:
+				case 0x52:
+				case 0x53:
+				case 0x54:
+				case 0x55:
+				case 0x56:
+				case 0x57:
+				case 88:
+				case 0x59:
+				case 0x5A:
+				case 0x5B:
+				case 0x5C:
+				case 0x5D:
+				case 0x5E:
+				case 0x5F:
+				case 0x60:
+				case 0x61:
+				case 0x62:
+				case 99:
+				case 100:
+				case 101:
+				case 0x66:
+				case 0x67:
+				case 0x68:
+				case 0x69:
+				case 0x6A:
+				case 0x6B:
+				case 0x6C:
+				case 0x6D:
+				case 110:
+				case 111:
+				case 0x70:
+				case 113:
+				case 114:
+				case 115:
+				case 116:
+				case 117:
+				case 118:
+				case 0x77:
+				case 0x78:
+				case 121:
+				case 122:
+				case 0x7B:
+				case 0x7C:
+				case 0x7D:
+				case 0x7E:
+				case 0x7F:
+				case 0x80:
+				case 0x81:
+				case 0x82:
+				case 131:
+				case 0x84:
+				case 133:
+				case 0x86:
+				case 0x87:
+				case 0x88:
+				case 0x89:
+				case 0x8A:
+				case 0x8B:
+				case 0x8C:
+				case 141:
+				case 0x8E:
+				case 0x8F:
+				case 0x90:
+				case 0x91:
+				case 0x92:
+				case 0x93:
+				case 0x94:
+				case 0x95:
+				case 0x96:
+				case 151:
+				case 0x98:
+				case 0x99:
+				case 0x9A:
+				case 155:
+				case 0x9C:
+				case 0x9D:
+				case 0x9E:
+				case 0x9F:
+				case 0xA0:
+				case 161:
+				case 0xA2:
+				case 0xA3:
+				case 0xA4:
+				case 0xA5:
+				case 166:
+				case 0xA7:
+				case 0xA8:
+				case 0xA9:
+				case 0xAA:
+				case 171:
+				case 0xAC:
+				case 0xAD:
+				case 0xAE:
+				case 0xAF:
+				case 0xB0:
+				case 177:
+				case 0xB2:
+				case 0xB3:
+				case 181:
+				case 0xB6:
+				case 0xB7:
+				case 0xB8:
+				case 0xB9:
+				case 0xBA:
+				case 0xBB:
+				case 188:
+				case 0xBD:
+				case 0xBE:
+				case 191:
+				case 0xC0:
+				case 0xC1:
+				case 0xC2:
+				case 0xC3:
+				case 200:
+				case 0xCD:
+				case 0xCE:
+				case 0xD0:
+				case 0xD2:
+				case 211:
+				case 0xD9:
+				case 0xDA:
+				case 220:
+				case 222:
+				case 223:
+				case 0xE0:
+				case 225:
+				case 226:
+				case 227:
+				case 232:
+				case 0xED:
+				case 252:
+				case 0xFD:
+				case 0xFE:
+				case 0xFF:
+				case 0x0100:
+				case 0x0101:
+				case 0x0102:
+					goto l00000000004031F9;
+				case 0xB4:
+					if (g_dw61B150 != 0x00)
+						g_dw61B150 = 0x01;
+					break;
+				case 0xC4:
+					if (g_dw61B108 == 0x00)
+						g_dw61B108 = 0x01;
+					break;
+				case 0xC5:
+					Eq_n rax_n = fn0000000000410C40(0x10);
+					Eq_n rdx_n = g_t61B100;
+					rax_n->u0 = 4274276;
+					g_t61B100 = rax_n;
+					*((word32) rax_n + 8) = rdx_n;
+					Eq_n rax_n = fn0000000000410C40(0x10);
+					Eq_n rdx_n = g_t61B100;
+					rax_n->u0 = 4274275;
+					*((word32) rax_n + 8) = rdx_n;
+					g_t61B100 = rax_n;
+					break;
+				case 0xC6:
+					g_dw61B150 = 0x02;
+					break;
+				case 199:
+					g_b61B130 = 0x01;
+					break;
+				case 0xC9:
+					g_dw61B12C = 0x03;
+					break;
+				case 202:
+					g_b61A568 = 0x00;
+					break;
+				case 0xCB:
+					g_dw61B110 = 0x03;
+					break;
+				case 0xCC:
+					Eq_n r15_n = optarg;
+					Eq_n rax_n = fn0000000000410C40(0x10);
+					Eq_n rdx_n = g_t61B100;
+					*rax_n = r15_n;
+					*((word32) rax_n + 8) = rdx_n;
+					g_t61B100 = rax_n;
+					break;
+				case 0xCF:
+					g_dw61B110 = 0x05;
+					break;
+				case 0xD1:
+					fn000000000040E640(0x00, null);
+					break;
+				case 212:
+					fn000000000040E640(0x03, null);
+					break;
+				case 0xD5:
+					g_b61B10E = 0x01;
+					break;
+				case 0xD6:
+					g_dw61B148 = 0x02;
+					r13b_n = 0x01;
+					break;
+				case 0xD7:
+					Eq_n rbx_n = <invalid>;
+					Eq_n r13_n = <invalid>;
+					rsp_n.u0 = <invalid>;
+					ebx_n = (word32) rbx_n;
+					r13b_n = (byte) r13_n;
+					word32 ebx_n;
+					byte r13b_n;
+					if ((word32) (uint64) fn0000000000410E90(*((byte) rsp_n.u0 + 32), 0x00, null, optarg, 0x00, out ebx_n, out rbp_n, out r12_n, out r13b_n) != 0x00)
+					{
+						fn000000000040E930(optarg, fs);
+						error(0x02, 0x00, dcgettext(null, 4274279, 0x05), 0x00);
+					}
+					g_t61B0D8 = *((byte) rsp_n.u0 + 64);
+					break;
+				case 0xD8:
+					g_dw61B148 = ~0x00;
+					r13b_n = 0x01;
+					break;
+				case 0xDB:
+					g_dw61B148 = 0x01;
+					r13b_n = 0x01;
+					break;
+				case 0xDD:
+					g_b61B17D = 0x01;
+					break;
+				case 228:
+					g_dw61B108 = 0x02;
+					break;
+				case 229:
+					fn000000000040E640(0x05, null);
+					break;
+				case 0xE6:
+					g_dw61B14C = 0x01;
+					break;
+				case 0xE7:
+					g_b61B10D = 0x01;
+					break;
+				case 233:
+					g_dw61B108 = 0x02;
+					g_dw61B148 = ~0x00;
+					if (g_dw61B150 == 0x00)
+						g_dw61B150 = (word32) (uint64) ((word32) (uint64) (0x00 - (isatty(0x01) < 0x01)) + 0x02);
+					g_b61B144 = 0x00;
 					g_b61B129 = 0x00;
-				}
-				else
-				{
+					r13b_n = 0x01;
+					break;
+				case 0xEA:
+					g_dw61B150 = 0x00;
+					g_b61A569 = 0x00;
+					break;
+				case 0xEB:
+					g_dw61B140 = 0xB0;
+					g_dw61B134 = 0xB0;
+					g_t61B138.u0 = 0x01;
+					g_t61A560.u0 = 0x01;
+					break;
+				case 0xEC:
+					g_b61B114 = 0x01;
+					break;
+				case 0xEE:
+					break;
+				case 0xEF:
+					goto l0000000000402B78;
+				case 0xF0:
+					g_dw61B150 = 0x04;
+					break;
+				case 0xF1:
+					g_b61B145 = 0x01;
+l0000000000402B78:
+					g_dw61B150 = 0x00;
+					break;
+				case 242:
+					g_dw61B150 = 0x00;
+					g_b61A568 = 0x00;
+					break;
+				case 0xF3:
+					g_dw61B12C = 0x01;
+					break;
+				case 244:
+					g_b61B0F0 = 0x01;
+					break;
+				case 0xF5:
+					g_b61B147 = 0x01;
+					break;
+				case 0xF6:
+					g_b61B144 = 0x01;
+					break;
+				case 0xF7:
+					g_dw61B148 = 0x04;
+					r13b_n = 0x01;
+					break;
+				case 0xF8:
+					g_dw61B14C = 0x02;
+					break;
+				case 0xF9:
+					g_dw61B148 = 0x03;
+					r13b_n = 0x01;
+					break;
+				case 0xFA:
+					Eq_n rbx_n = <invalid>;
+					Eq_n r13_n = <invalid>;
+					rsp_n.u0 = <invalid>;
+					ebx_n = (word32) rbx_n;
+					r13b_n = (byte) r13_n;
+					word32 ebx_n;
+					byte r13b_n;
+					if ((word32) (uint64) fn0000000000410E90(*((byte) rsp_n.u0 + 32), 0x00, null, optarg, 0x00, out ebx_n, out rbp_n, out r12_n, out r13b_n) != 0x00 || *((byte) rsp_n.u0 + 64) == 0x00)
+					{
+						fn000000000040E930(optarg, fs);
+						error(0x02, 0x00, dcgettext(null, 4274252, 0x05), 0x00);
+					}
+					g_t61B0C8 = *((byte) rsp_n.u0 + 64);
+					break;
+				case 0xFB:
+					g_dw61B150 = 0x03;
+					break;
+				case 0x0103:
+					g_b61B146 = 0x01;
+					break;
+				case 0x0104:
+					word64 r15_n;
+					byte r14b_n;
+					word32 eax_n = (word32) (uint64) fn000000000040C810(rax_32_32_n, &g_t61B138, &g_dw61B140, optarg, out r14b_n, out r15_n);
+					if (eax_n != 0x00)
+						fn00000000004112D0((word32) (uint64) *((byte) rsp_n.u0 + 56), (word32) (uint64) eax_n);
+					g_dw61B134 = (word32) (uint64) g_dw61B140;
+					g_t61A560 = g_t61B138;
+					break;
+				case 0x0105:
+					Eq_n rsi_n = optarg;
+					if (rsi_n != 0x00)
+					{
+						word32 eax_n = (word32) (uint64) g_a412EC0[fn000000000040A120(rax_32_32_n, 0x00412EC0, g_a412F00, rsi_n, 4274323, 0x04, g_ptr61A578, fs) * 0x04];
+						if (eax_n == 0x01 || eax_n == 0x02 && isatty(0x01) != 0x00)
+							goto l0000000000403A7C;
+						g_b61B129 = 0x00;
+					}
+					else
+					{
 l0000000000403A7C:
-					g_b61B129 = 0x01;
-					g_t61B0D8.u0 = 0x00;
+						g_b61B129 = 0x01;
+						g_t61B0D8.u0 = 0x00;
+					}
+					break;
+				case 262:
+					g_dw61B110 = 0x04;
+					break;
+				case 0x0107:
+					g_dw61B12C = 0x02;
+					break;
+				case 0x0108:
+					g_dw61B150 = (word32) (uint64) g_a413010[fn000000000040A120(rax_32_32_n, 0x00413010, g_a413040, optarg, 4274314, 0x04, g_ptr61A578, fs) * 0x04];
+					break;
+				case 0x0109:
+					g_dw61B150 = 0x00;
+					r12_n.u0 = 0x00413813;
+					break;
+				case 266:
+					g_b61B10C = 0x01;
+					break;
+				case 0x010B:
+					Eq_n rax_n = fn0000000000410C40(0x10);
+					*rax_n = optarg;
+					Eq_n rdx_n = g_t61B0F8;
+					g_t61B0F8 = rax_n;
+					*((word32) rax_n + 8) = rdx_n;
+					break;
+				case 0x010C:
+					g_dw61B12C = (word32) (uint64) g_a4136B0[fn000000000040A120(rax_32_32_n, 0x004136B0, g_a4136C0, optarg, 4274331, 0x04, g_ptr61A578, fs) * 0x04];
+					break;
+				case 0x010D:
+					fn000000000040E640((word32) (uint64) g_a416460[fn000000000040A120(rax_32_32_n, 0x00416460, g_a416480, optarg, 4274349, 0x04, g_ptr61A578, fs) * 0x04], null);
+					break;
+				case 0x010E:
+					g_b61B0F0 = 0x00;
+					break;
+				case 0x010F:
+					g_dw61B140 = 0x90;
+					g_dw61B134 = 0x90;
+					g_t61B138.u0 = 0x01;
+					g_t61A560.u0 = 0x01;
+					break;
+				case 0x0110:
+					g_dw61B148 = (word32) (uint64) g_a412FB0[fn000000000040A120(rax_32_32_n, 4272048, g_a412FE0, optarg, 4274300, 0x04, g_ptr61A578, fs) * 0x04];
+					r13b_n = 0x01;
+					break;
+				case 0x0111:
+					g_dw61B14C = (word32) (uint64) g_a412F50[fn000000000040A120(rax_32_32_n, 0x00412F50, g_a412F80, optarg, 0x00413883, 0x04, g_ptr61A578, fs) * 0x04];
+					break;
+				case 0x0112:
+					r12_n = optarg;
+					break;
 				}
-				break;
-			case 262:
-				g_dw61B110 = 0x04;
-				break;
-			case 0x0107:
-				g_dw61B12C = 0x02;
-				break;
-			case 0x0108:
-				g_dw61B150 = (word32) (uint64) g_a413010[fn000000000040A120(rax_32_32_n, 0x00413010, g_a413040, optarg, 4274314, 0x04, g_ptr61A578, fs) * 0x04];
-				break;
-			case 0x0109:
-				g_dw61B150 = 0x00;
-				r12_n.u0 = 0x00413813;
-				break;
-			case 266:
-				g_b61B10C = 0x01;
-				break;
-			case 0x010B:
-				Eq_n rax_n = fn0000000000410C40(0x10);
-				*rax_n = optarg;
-				Eq_n rdx_n = g_t61B0F8;
-				g_t61B0F8 = rax_n;
-				*((word32) rax_n + 8) = rdx_n;
-				break;
-			case 0x010C:
-				g_dw61B12C = (word32) (uint64) g_a4136B0[fn000000000040A120(rax_32_32_n, 0x004136B0, g_a4136C0, optarg, 4274331, 0x04, g_ptr61A578, fs) * 0x04];
-				break;
-			case 0x010D:
-				fn000000000040E640((word32) (uint64) g_a416460[fn000000000040A120(rax_32_32_n, 0x00416460, g_a416480, optarg, 4274349, 0x04, g_ptr61A578, fs) * 0x04], null);
-				break;
-			case 0x010E:
-				g_b61B0F0 = 0x00;
-				break;
-			case 0x010F:
-				g_dw61B140 = 0x90;
-				g_dw61B134 = 0x90;
-				g_t61B138.u0 = 0x01;
-				g_t61A560.u0 = 0x01;
-				break;
-			case 0x0110:
-				g_dw61B148 = (word32) (uint64) g_a412FB0[fn000000000040A120(rax_32_32_n, 4272048, g_a412FE0, optarg, 4274300, 0x04, g_ptr61A578, fs) * 0x04];
-				r13b_n = 0x01;
-				break;
-			case 0x0111:
-				g_dw61B14C = (word32) (uint64) g_a412F50[fn000000000040A120(rax_32_32_n, 0x00412F50, g_a412F80, optarg, 0x00413883, 0x04, g_ptr61A578, fs) * 0x04];
-				break;
-			case 0x0112:
-				r12_n = optarg;
-				break;
+				goto l0000000000402B30;
 			}
+			goto l00000000004031F9;
 		}
 		if (g_t61B138 == 0x00)
 		{
@@ -737,7 +738,8 @@ l00000000004038A8:
 							++rbx_n;
 						}
 						fputs_unlocked(dcgettext(null, 4283384, 0x05), stderr);
-						goto l00000000004031F9;
+l00000000004031F9:
+						fn0000000000409750(0x02);
 					}
 					if (rax_n != 0x01)
 					{
@@ -821,7 +823,10 @@ l0000000000403301:
 							up32 edx_n = 0x00;
 l000000000040451F:
 							if (edx_n > 0x05)
-								goto l0000000000402985;
+							{
+l0000000000402985:
+								abort();
+							}
 							while (true)
 							{
 								switch (edx_n)
@@ -917,8 +922,7 @@ l0000000000404857:
 									}
 									break;
 								case 0x04:
-l0000000000402985:
-									abort();
+									goto l0000000000402985;
 								case 0x05:
 									error(0x00, 0x00, dcgettext(null, 4283800, 0x05), 0x00);
 									free(g_t61B118);

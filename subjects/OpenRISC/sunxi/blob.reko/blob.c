@@ -1159,32 +1159,36 @@ word32 fn000062BC(struct Eq_n * r3, Eq_n r15)
 {
 	word32 r4_n;
 	uint32 r3_n = r3->t005C >> 0x14 & 0x07;
-	if (r3_n > 0x05)
-		goto l00006324;
-	switch (g_a12478[r3_n * 0x04])
+	if (r3_n <= 0x05)
 	{
-	case 0x00:
-		return dwLoc18;
-	case 0x01:
-		r4_n = 0xE486CCCC;
-		break;
-	case 0x02:
-		r4_n = 0xE9069999;
-		break;
-	case 0x03:
-		r4_n = ~0x12799999;
-		break;
-	case 0x04:
+		switch (g_a12478[r3_n * 0x04])
+		{
+		case 0x00:
+			return dwLoc18;
+		case 0x01:
+			r4_n = 0xE486CCCC;
+			break;
+		case 0x02:
+			r4_n = 0xE9069999;
+			break;
+		case 0x03:
+			r4_n = ~0x12799999;
+			break;
+		case 0x04:
+			goto l00006324;
+		case 0x05:
+			r4_n = 0xF5860000;
+			break;
+		case 0x06:
+			return fn0000AF54();
+		case 0x07:
+			return fn0000AF4C();
+		}
+	}
+	else
+	{
 l00006324:
 		r4_n = 0xF2063333;
-		break;
-	case 0x05:
-		r4_n = 0xF5860000;
-		break;
-	case 0x06:
-		return fn0000AF54();
-	case 0x07:
-		return fn0000AF4C();
 	}
 	*(word32 *) 0x01C20290 = r4_n;
 	*(union Eq_n *) 0x01C20020 |= 0x01000000;

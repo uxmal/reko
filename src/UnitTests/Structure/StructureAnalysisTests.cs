@@ -785,15 +785,15 @@ case_2:
     {
     case 0x00:
     case 0x03:
-target_2:
-        r1 = 0x02;
-        break;
+        goto target_2;
     case 0x01:
         r1 = 0x00;
         break;
     case 0x02:
         r1 = 0x01;
-        goto target_2;
+target_2:
+        r1 = 0x02;
+        break;
     }
     return r1;
 ";
@@ -857,18 +857,19 @@ case_1:
             m.Return(m.IMul(r1, 4));
 
             var sExp =
-@"    if (check())
-        goto case_0;
-    switch (r1)
+@"    if (!check())
     {
-    case 0x00:
-case_0:
-        r1 = 0x02;
-        return r1 * 0x03;
-    case 0x01:
-        r1 = 0x01;
-        return r1 * 0x04;
+        switch (r1)
+        {
+        case 0x00:
+            break;
+        case 0x01:
+            r1 = 0x01;
+            return r1 * 0x04;
+        }
     }
+    r1 = 0x02;
+    return r1 * 0x03;
 ";
             RunTest(sExp, m.Procedure);
         }
@@ -1483,16 +1484,17 @@ m.Label("l0800_0585");
             r2 = ""dcase 0"";
             break;
         case 0x01:
-dcase_1:
-            r2 = ""dcase 1"";
-            break;
+            goto dcase_1;
         case 0x02:
             r2 = ""dcase 2"";
             break;
         }
-        break;
+        goto inner_done;
     case 0x02:
-        goto dcase_1;
+dcase_1:
+        r2 = ""dcase 1"";
+inner_done:
+        break;
     }
     return r2;
 ";
@@ -1544,17 +1546,18 @@ dcase_1:
         {
         case 0x00:
         case 0x01:
-dcase_1:
-            r2 = ""dcase 1"";
-            break;
+            goto dcase_1;
         case 0x02:
             r2 = ""dcase 2"";
             break;
         }
-        break;
+        goto inner_done;
     case 0x02:
     case 0x03:
-        goto dcase_1;
+dcase_1:
+        r2 = ""dcase 1"";
+inner_done:
+        break;
     }
     return r2;
 ";
@@ -1562,5 +1565,82 @@ dcase_1:
             RunTest(sExp, m.Procedure);
         }
 
+        [Test]
+        public void StrAnls_Switch_Breaking_IntoLoop()
+        {
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
+            var r3 = m.Reg32("r3", 2);
+
+            m.Label("m1loopHead");
+            m.BranchIf(m.Eq0(r1), "mexit");
+
+            m.Label("m2switch");
+            m.BranchIf(m.Cor(m.Lt0(r1), m.Gt(r1, 2)), "m4advance");
+
+            m.Switch(r2, "m3_case0", "m1loophead", "m3_case2");
+
+            m.Label("m3_case0");
+            m.Assign(r2, Sz("m3_case0"));
+            m.Goto("m4advance");
+
+            m.Label("m3_case2");
+            m.Assign(r2, Sz("m3_case2"));
+            m.Goto("m4advance");
+
+            m.Label("m4advance");
+            m.Assign(r1, m.Mem32(m.IAdd(r1, 4)));
+            m.Goto("m1loopHead");
+
+            m.Label("mexit");
+            m.Return(r2);
+            m.Assign(r1, m.Mem32(m.Word32(0x00123400)));
+
+            m.Switch(r1, "case_0", "case_1", "dcase_1", "dcase_1", "case_1");
+
+            m.Label("case_0");
+            m.Assign(r2, Sz("case 0"));
+            m.Goto("done");
+
+            m.Label("case_1");
+            m.Switch(r1, "dcase_1", "dcase_1", "dcase_2");
+
+            m.Label("dcase_1");
+            m.Assign(r2, Sz("dcase 1"));
+            m.Goto("inner_done");
+
+            m.Label("dcase_2");
+            m.Assign(r2, Sz("dcase 2"));
+            m.Goto("inner_done");
+
+            m.Label("inner_done");
+            m.Goto("done");
+
+            m.Label("done");
+            m.Return(r2);
+
+            var sExp =
+@"    while (r1 != 0x00)
+    {
+        if (r1 >= 0x00 && r1 <= 2)
+        {
+            switch (r2)
+            {
+            case 0x00:
+                r2 = ""m3_case0"";
+                break;
+            case 0x01:
+            case 0x02:
+                r2 = ""m3_case2"";
+                break;
+            }
+        }
+        r1 = Mem0[r1 + 0x04:word32];
+    }
+    return r2;
+";
+
+            RunTest(sExp, m.Procedure);
+        }
     }
 }

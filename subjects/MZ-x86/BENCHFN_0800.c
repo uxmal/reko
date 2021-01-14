@@ -1285,31 +1285,7 @@ l0800_nDA:
 						ch_n = 0x04;
 						break;
 					case 0x05:
-l0800_n:
-						dx = bx;
-						Eq_n ax_n = (int16) ((byte) ax_n - 0x30);
-						if (ch_n <= 0x02)
-						{
-							ch_n = 0x02;
-							wLoc94_n = ax_n;
-							if (wLoc94_n < 0x00)
-								goto l0800_nE5;
-							wLoc94_n = (word16) ax_n + ((wLoc94_n << 0x03) + (wLoc94_n << 0x01));
-						}
-						else
-						{
-							cx = SEQ(ch_n, 0x00);
-							if (ch_n != 0x04)
-							{
-l0800_nCE:
-								goto l0800_n;
-							}
-							wLoc92_n = ax_n;
-							if (wLoc92_n < 0x00)
-								goto l0800_nE5;
-							wLoc92_n = (word16) ax_n + ((wLoc92_n << 0x03) + (wLoc92_n << 0x01));
-						}
-						break;
+						goto l0800_n;
 					case 0x06:
 						wLoc9A_n |= 0x10;
 						ch_n = 0x05;
@@ -1323,16 +1299,42 @@ l0800_nCE:
 						ch_n = 0x05;
 						break;
 					case 0x09:
-						if (ch_n > 0x00)
-							goto l0800_n;
-						if ((wLoc9A_n & 0x02) == 0x00)
+						if (ch_n <= 0x00)
 						{
+							if ((wLoc9A_n & 0x02) != 0x00)
+								goto l0800_nE5;
 							wLoc9A_n |= 0x08;
 							ch_n = 0x01;
 						}
 						else
 						{
+l0800_n:
+							dx = bx;
+							Eq_n ax_n = (int16) ((byte) ax_n - 0x30);
+							if (ch_n <= 0x02)
+							{
+								ch_n = 0x02;
+								wLoc94_n = ax_n;
+								if (wLoc94_n < 0x00)
+									goto l0800_nE5;
+								wLoc94_n = (word16) ax_n + ((wLoc94_n << 0x03) + (wLoc94_n << 0x01));
+							}
+							else
+							{
+								cx = SEQ(ch_n, 0x00);
+								if (ch_n != 0x04)
+								{
+l0800_nCE:
+									goto l0800_n;
+								}
+								wLoc92_n = ax_n;
+								if (wLoc92_n >= 0x00)
+									wLoc92_n = (word16) ax_n + ((wLoc92_n << 0x03) + (wLoc92_n << 0x01));
+								else
+								{
 l0800_nE5:
+								}
+							}
 						}
 						break;
 					case 0x0A:
@@ -1665,17 +1667,6 @@ l0800_nB5:
 					case 0x13:
 					case 0x14:
 					case 0x15:
-l0800_n:
-						Eq_n si_n = si_n;
-						byte al_n = 0x25;
-						do
-						{
-							di_n = fn0800-1099(SEQ(ds, di_n), SEQ(ss, fp - 2), al_n, cx, dx, bx);
-							byte al_n = ds->*si_n;
-							sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 0x0000FFFE);
-							si_n = (word16) si_n + 1;
-							al_n = al_n;
-						} while (al_n != 0x00);
 						goto l0800_n;
 					case 22:
 						wLoc9A_n &= ~0x20;
@@ -1690,7 +1681,18 @@ l0800_n:
 					si_n = (word16) si_n + 1;
 				}
 l0800_n:
-				goto l0800_n;
+l0800_n:
+				Eq_n si_n = si_n;
+				byte al_n = 0x25;
+				do
+				{
+					di_n = fn0800-1099(SEQ(ds, di_n), SEQ(ss, fp - 2), al_n, cx, dx, bx);
+					byte al_n = ds->*si_n;
+					sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 0x0000FFFE);
+					si_n = (word16) si_n + 1;
+					al_n = al_n;
+				} while (al_n != 0x00);
+				break;
 			}
 		}
 		ds->*di_n = al_n;
@@ -1700,7 +1702,6 @@ l0800_n:
 		if (v15_n <= 0x00)
 			di_n = fn0800-10A1(SEQ(ss, fp - 2), cx, dx, bx, di_n);
 	}
-l0800_n:
 	if (bLoc57_n < 0x50)
 		fn0800-10A1(SEQ(ss, fp - 2), cx, dx, bx, di_n);
 	word16 Eq_n::* sp_n = (char *) &sp_n->t0000 + 2;
@@ -1909,11 +1910,16 @@ l0800_n:
 				wArg08 = si_n;
 				di = ax_n;
 				if (ax_n < 0x00)
-					goto l0800_nE6;
+					break;
 				Eq_n bx_n = (uint16) (ds->*((word16) ax_n + 0x055A));
 				al_n = (byte) bx_n;
 				if (bx_n > 0x15)
-					break;
+				{
+					ptr16 bp_n = fn0800-1AEB(fp - 2);
+					bxOut = bx_n;
+					bpOut = bp_n;
+					return dx;
+				}
 				word16 ax_n;
 				uint16 si_n;
 				bx = bx_n << 0x01;
@@ -1922,11 +1928,7 @@ l0800_n:
 				case 0x00:
 				case 0x01:
 				case 0x02:
-l0800_nE6:
-					ptr16 bp_n = fn0800-1AEB(fp - 2);
-					bxOut = bx;
-					bpOut = bp_n;
-					return dx;
+					goto l0800_nE6;
 				case 0x03:
 					goto l0800_nF;
 				case 0x04:
@@ -2231,8 +2233,9 @@ l0800_nE:
 					break;
 				}
 			}
+l0800_nE6:
 			ptr16 bp_n = fn0800-1AEB(fp - 2);
-			bxOut = bx_n;
+			bxOut = bx;
 			bpOut = bp_n;
 			return dx;
 		}

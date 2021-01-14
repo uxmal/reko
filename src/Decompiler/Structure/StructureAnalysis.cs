@@ -48,7 +48,7 @@ namespace Reko.Structure
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(StructureAnalysis), "Control flow structuring")
         {
-            Level = TraceLevel.Verbose,
+            Level = TraceLevel.Warning,
         };
 
         private readonly Program program;
@@ -138,22 +138,13 @@ namespace Reko.Structure
                     DumpGraph();
                     break;
                 }
-                if (proc.Name == "add_label")
-                {
-                    //$DEBUG
-                    Debug.WriteLine("== Iteration {0} ===================================", iterations);
-                    DumpGraph();
-                    trace.Level = TraceLevel.Verbose;
-                }
-                else
-                {
-                    trace.Level = TraceLevel.Warning;
-                }
+
                 oldCount = regionGraph.Nodes.Count;
                 this.doms = new DominatorGraph<Region>(this.regionGraph, this.entry);
                 this.unresolvedCycles = new Queue<(Region, ISet<Region>)>();
                 this.unresolvedSwitches = new Queue<Region>();
                 var postOrder = new DfsIterator<Region>(regionGraph).PostOrder(entry).ToList();
+
                 foreach (var n in postOrder)
                 {
                     Probe();
@@ -256,14 +247,14 @@ namespace Reko.Structure
             return didReduce;
         }
 
-        private void EnqueueUnresolvedRegion(Region switchHead)
+        private void EnqueueUnresolvedSwitch(Region switchHead)
         {
             // Do not refine switch region if there are unresolved cycles
             if (unresolvedCycles.Count == 0)
                 this.unresolvedSwitches.Enqueue(switchHead);
         }
 
-        private void EnqueueUnresolvedRegion(Region head, ISet<Region> loop)
+        private void EnqueueUnresolvedLoop(Region head, ISet<Region> loop)
         {
             // Do not refine cycle if there are unresolved switches
             if (unresolvedSwitches.Count == 0)
@@ -420,12 +411,9 @@ namespace Reko.Structure
             // It's a switch region, but we are unable to collapse it.
             // Schedule it for refinement after the whole graph has been
             // traversed.
-            EnqueueUnresolvedRegion(n);
+            EnqueueUnresolvedSwitch(n);
             return false;
         }
-
-
-
 
 #if NILZ
 3.4  Switch Refinement
@@ -529,20 +517,21 @@ all other cases, together they constitute a Switch[].
             {
                 var pp = n;
                 var ss = s;
-                if (s.IsSwitchPad)
-                {
-                    Debug.Assert(regionGraph.Successors(s).Count == 1);
-                    pp = s;
-                    ss = regionGraph.Successors(s).First();
-                }
+                //if (s.IsSwitchPad && regionGraph.Successors(s).Count == 1)
+                //{
+                //    pp = s;
+                //    ss = regionGraph.Successors(s).First();
+                //    //if (IsBackEdge(pp, ss))
+                //    //{
+                //    //    vEdges.Add(new VirtualEdge(s, ss, VirtualEdgeType.Goto));
+                //    //    continue;
+                //    //}
+                //}
                 trace.Verbose("       Examining {0} which has {1} predecessors", ss, regionGraph.Predecessors(ss).Count);
                 foreach (var sp in regionGraph.Predecessors(ss))
                 {
                     if (sp != pp)
-                    {
-                        trace.Verbose("            Virtualized ({0} -> {1}", sp, ss);
                         vEdges.Add(new VirtualEdge(sp, ss, VirtualEdgeType.Goto));
-                    }
                 }
             }
             if (vEdges.Count == 0)
@@ -803,8 +792,6 @@ all other cases, together they constitute a Switch[].
 
         private void RemoveEdge(Region from, Region to)
         {
-            if (from.ToString() == "add_label_entry" && to.ToString() == "l0010F398")
-                from.ToString();//$DEBUG
             trace.Verbose("Removing edge {0} -> {1} from graph", from, to);
             regionGraph.RemoveEdge(from, to);
         }
@@ -1125,7 +1112,7 @@ are added during loop refinement, which we discuss next.
                     RemoveEdge(n, s);
                     RemoveEdge(s, n);
                     RemoveRegion(s);
-            Probe();
+                    Probe();
                     return true;
                 }
             }
@@ -1133,7 +1120,7 @@ are added during loop refinement, which we discuss next.
             // It's a cyclic region, but we are unable to collapse it.
             // Schedule it for refinement after the whole graph has been 
             // traversed.
-            EnqueueUnresolvedRegion(n, loopNodes);
+            EnqueueUnresolvedLoop(n, loopNodes);
             return didReduce;
         }
 #if NILZ
