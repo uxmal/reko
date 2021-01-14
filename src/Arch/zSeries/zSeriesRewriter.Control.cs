@@ -67,12 +67,73 @@ namespace Reko.Arch.zSeries
             m.Goto(dst);
         }
 
+        private void RewriteBranchAndLink()
+        {
+            m.Assign(Reg(0), instr.Address + instr.Length);
+            m.Call(m.Mem(arch.PointerType, EffectiveAddress(1)), 0);
+        }
+
+        private void RewriteBranchAndLinkReg()
+        {
+            m.Assign(Reg(0), instr.Address + instr.Length);
+            m.Call(Reg(1), 0);
+        }
+
         private void RewriteBranchEa(ConditionCode condCode)
         {
             var dst = EffectiveAddress(0);
             var cc = binder.EnsureFlagGroup(Registers.CC);
             m.BranchInMiddleOfInstruction(m.Test(condCode, cc).Invert(), instr.Address + instr.Length, iclass);
             m.Goto(dst);
+        }
+
+        private void RewriteBranchOnCount(PrimitiveType dt)
+        {
+            var index = Reg(0,dt);
+            var dst = EffectiveAddress(1);
+            m.Assign(index, m.ISub(index, 1));
+            if (dst is Address addr)
+            {
+                m.Branch(m.Ne0(index), addr);
+            }
+            else
+            {
+                m.BranchInMiddleOfInstruction(m.Eq0(index), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
+                m.Goto(dst);
+            }
+        }
+
+        private void RewriteBranchOnIndex(Func<Expression, Expression, Expression> cmp)
+        {
+            var index = Reg(0);
+            var addr = EffectiveAddress(2);
+            // How's this for CISC:
+            // "When the R3 field is even, it designates a pair of registers; the contents of the even
+            // " and odd registers of the pair are used as the increment and the compare value, respectively.
+            // When the R3 field is odd, it designates a single register, the contents of which are
+            // used as both the increment and the compare value
+            var r3 = ((RegisterOperand) instr.Operands[1]).Register;
+            Identifier inc = binder.EnsureRegister(r3);
+            Identifier val;
+            if ((r3.Number & 1) == 0)
+            {
+                val = binder.EnsureRegister(NextGpReg(r3));
+            }
+            else
+            {
+                val = inc; 
+            }
+            m.Assign(index, m.IAdd(index, inc));
+            var condition = cmp(index, val);
+            if (addr is Address a)
+            {
+                m.Branch(condition, a);
+            }
+            else
+            {
+                m.BranchInMiddleOfInstruction(condition.Invert(), instr.Address + instr.Length, iclass);
+                m.Goto(addr);
+            }
         }
 
         private void RewriteBrasl()
@@ -98,6 +159,12 @@ namespace Reko.Arch.zSeries
                 EmitUnitTest();
                 m.Invalid();
             }
+        }
+
+        private void RewriteBsm()
+        {
+            m.Assign(Reg(0), instr.Address + instr.Length);
+            m.Goto(Reg(1));
         }
 
         private void RewriteCij(PrimitiveType dt)

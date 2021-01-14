@@ -87,6 +87,8 @@ namespace Reko.Core
         /// </summary>
         public Address Address { get; private set; }
 
+        public ulong FileOffset { get; set; }
+
         /// <summary>
         /// Size of the segment address space (content may be smaller)
         /// </summary>

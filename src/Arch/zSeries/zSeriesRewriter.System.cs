@@ -43,6 +43,15 @@ namespace Reko.Arch.zSeries
             SetCc(host.Intrinsic("__execute", false, PrimitiveType.Byte, Reg(0), Op(1)));
         }
 
+        private void RewriteLra()
+        {
+            var r = Reg(0);
+            SetCc(host.Intrinsic("__load_real_address", false,
+                PrimitiveType.Byte,
+                EffectiveAddress(1),
+                m.Out(r.DataType, r)));
+        }
+
         private void RewriteStctl(PrimitiveType dt) {
             var op1 = Reg(0);
             var op2 = m.AddrOf(new Pointer(dt, arch.PointerType.BitSize), m.Mem(dt, EffectiveAddress(1)));

@@ -184,7 +184,6 @@ namespace Reko.Arch.zSeries
                 this.WordWidth = PrimitiveType.Word32;
                 this.PointerType = PrimitiveType.Ptr32;
                 this.FramePointerType = PrimitiveType.Ptr32;
-
             }
             //$REVIEW: is this architectural?
             this.StackRegister = Registers.GpRegisters[15];

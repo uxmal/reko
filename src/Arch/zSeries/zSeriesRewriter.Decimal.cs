@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,6 +27,22 @@ namespace Reko.Arch.zSeries
 {
     public partial class zSeriesRewriter
     {
+        private void RewriteCvb(PrimitiveType dt) {
+            Assign(Reg(0), host.Intrinsic($"__convert_decimal_to_int{dt.BitSize}", false,
+                dt,
+                m.AddrOf(arch.PointerType,
+                    m.Mem8(EffectiveAddress(1)))));
+        }
+
+        private void RewriteCvd(PrimitiveType dt)
+        {
+            m.SideEffect(host.Intrinsic($"__convert_int{dt.BitSize}_to_decimal", false,
+                dt,
+                Reg(0, dt),
+                m.AddrOf(arch.PointerType,
+                    m.Mem8(EffectiveAddress(1)))));
+        }
+
         private void RewriteSrp()
         {
 
