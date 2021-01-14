@@ -210,10 +210,12 @@ namespace Reko.Core.Output
         {
             var sOperator = binExp.Operator.ToString();
             var resultSize = binExp.DataType.BitSize;
-            if (binExp.Operator is IMulOperator || binExp.Operator is FMulOperator)
+            if (binExp.Operator is IMulOperator || binExp.Operator is FMulOperator ||
+                binExp.Operator is SDivOperator || binExp.Operator is SDivOperator ||
+                binExp.Operator is FDivOperator)
             {
-                // Multiplication is peculiar on many processors because the product
-                // may be different size from either of the operands. It's unclear what
+                // Multiplication and division are peculiar on many processors because the product/
+                // quotient may be different size from either of the operands. It's unclear what
                 // the C/C++ standards say about this.
                 if (resultSize != binExp.Left.DataType.BitSize ||
                     resultSize != binExp.Right.DataType.BitSize)

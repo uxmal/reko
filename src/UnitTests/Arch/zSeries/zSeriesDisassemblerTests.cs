@@ -85,6 +85,12 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSerDasm_agrk()
+        {
+            AssertCode("agrk\tr1,r2,r1", "B9E81012");
+        }
+
+        [Test]
         public void zSerDasm_ahi()
         {
             AssertCode("ahi\tr1,-00000002", "a71afffe");
@@ -115,15 +121,51 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSerDasm_algrk()
+        {
+            AssertCode("algrk\tr10,r9,r1", "B9EA10A9");
+        }
+
+        [Test]
         public void zSerDasm_ar()
         {
             AssertCode("ar\tr1,r2", "1A12");
         }
 
         [Test]
+        public void zSerDasm_ark()
+        {
+            AssertCode("ark\tr5,r1,r3", "B9F83051");
+        }
+
+        [Test]
         public void zSerDasm_au()
         {
             AssertCode("au\tf2,292(r1)", "7E210124");
+        }
+
+        [Test]
+        public void zSerDasm_aw()
+        {
+            AssertCode("aw\tf9,578(r2,r4)", "6E924242");
+        }
+
+        [Test]
+        public void zSerDasm_awr()
+        {
+            AssertCode("awr\tf3,f1", "2E31");
+        }
+
+        [Test]
+        public void zSerDasm_bal()
+        {
+            AssertCode("bal\tr1,578(r1,r4)", "45114242");
+        }
+
+        [Test]
+        public void zSerDasm_bl()
+        {
+            AssertCode("bl\t(r14,r15)", "474EF000");
         }
 
         [Test]
@@ -212,6 +254,12 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSerDasm_ce()
+        {
+            AssertCode("ce\tf4,578(r12,r4)", "794C4242");
+        }
+
+        [Test]
         public void zSerDasm_cfi()
         {
             AssertCode("cfi\tr4,6474E551", "C24D6474E551");
@@ -263,6 +311,18 @@ namespace Reko.UnitTests.Arch.zSeries
         public void zSerDasm_cl()
         {
             AssertCode("cl\tr0,4(r1)", "55001004");
+        }
+
+        [Test]
+        public void zSerDasm_clc()
+        {
+            AssertCode("clc\t(8,r13),(r1)", "d507d0001000");
+        }
+
+        [Test]
+        public void zSerDasm_clcle()
+        {
+            AssertCode("clcle\tr10,r15,578(r4)", "A9AF4242");
         }
 
         [Test]
@@ -332,6 +392,12 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSerDasm_cp()
+        {
+            AssertCode("cp\t291(6,r0),1383(9,r4)", "F95801234567");
+        }
+
+        [Test]
         public void zSerDasm_csg()
         {
             AssertCode("csg\tr1,r3,(r2)", "EB1320000030");
@@ -356,9 +422,21 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSerDasm_ed()
+        {
+            AssertCode("ed\t291(48,r0),1383(r4)", "DE2F01234567");
+        }
+
+        [Test]
         public void zSerDasm_edmk()
         {
             AssertCode("edmk\t1638(87,r6),1638(r6)", "DF5666666666");
+        }
+
+        [Test]
+        public void zSerDasm_ex()
+        {
+            AssertCode("ex\tr12,1072(r4)", "44C04430");
         }
 
         [Test]
@@ -452,6 +530,12 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSerDasm_lmg()
+        {
+            AssertCode("lmg\tr6,r15,208(r15)", "eb6ff0d00004");
+        }
+
+        [Test]
         public void zSerDasm_locg()
         {
             //$TODO: locgh
@@ -480,36 +564,6 @@ namespace Reko.UnitTests.Arch.zSeries
         public void zSerDasm_lxdb()
         {
             AssertCode("lxdb\tf0,240(r15)", "ED00F0F00005");
-        }
-
-        [Test]
-        public void zSerDasm_mvcs()
-        {
-            AssertCode("mvcs\t-292(r11,r15),-1384(r11),r2", "DBB2FEDCBA98");
-        }
-
-        [Test]
-        public void zSerDasm_icm()
-        {
-            AssertCode("icm\tr1,578(r4),0F", "BF1F4242");
-        }
-
-        [Test]
-        public void zSerDasm_jh()
-        {
-            AssertCode("jh\t0010000C", "a7240006");
-        }
-
-        [Test]
-        public void zSerDasm_jne()
-        {
-            AssertCode("jne\t00100010", "a7740008");
-        }
-
-        [Test]
-        public void zSerDasm_je()
-        {
-            AssertCode("je\t00100016", "a784000b");
         }
 
         [Test]
@@ -591,6 +645,18 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSerDasm_mc()
+        {
+            AssertCode("mc\t578(r4),FF", "AFFF4242");
+        }
+
+        [Test]
+        public void zSerDasm_mc_1()
+        {
+            AssertCode("mc\t00000001,FF", "AFFF0001");
+        }
+
+        [Test]
         public void zSerDasm_mdb()
         {
             AssertCode("mdb\tf0,8(r13)", "ED00D008001C");
@@ -633,6 +699,30 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSerDasm_mvck()
+        {
+            AssertCode("mvck\t578(r6,r4),578(r4),r2", "D96242424242");
+        }
+
+        [Test]
+        public void zSerDasm_mvcle()
+        {
+            AssertCode("mvcle\tr4,r10,-1216(r1)", "A84A1B40");
+        }
+
+        [Test]
+        public void zSerDasm_mvcos()
+        {
+            AssertCode("mvcos\t2036(r10),-312(r15),r6", "C860A7F4FEC8");
+        }
+
+        [Test]
+        public void zSerDasm_mvcs()
+        {
+            AssertCode("mvcs\t-292(r11,r15),-1384(r11),r2", "DBB2FEDCBA98");
+        }
+
+        [Test]
         public void zSerDasm_mvhi()
         {
             AssertCode("mvhi\t(r1),0000", "E54C 1000 0000");
@@ -663,9 +753,21 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSerDasm_nrk()
+        {
+            AssertCode("nrk\tr1,r5,r1", "B9F41015");
+        }
+
+        [Test]
         public void zSerDasm_ngr_rr()
         {
             AssertCode("ngr\tr15,r0", "B980 00F0");
+        }
+
+        [Test]
+        public void zSerDasm_ngrk()
+        {
+            AssertCode("ngrk\tr0,r3,r1", "B9E41003");
         }
 
         [Test]
@@ -674,12 +776,30 @@ namespace Reko.UnitTests.Arch.zSeries
             AssertCode("nopr\tr7", "0707");
         }
 
+        [Test]
+        public void zSerDasm_ogrk()
+        {
+            AssertCode("ogrk\tr1,r2,r3", "B9E63012");
+        }
+
+        [Test]
+        public void zSerDasm_oi()
+        {
+            AssertCode("oi\t000000FF,04", "960400FF");
+        }
 
         [Test]
         public void zSerDasm_or()
         {
             AssertCode("or\tr4,r2", "1642");
         }
+
+        [Test]
+        public void zSerDasm_pfd()
+        {
+            AssertCode("pfd\t02,1024(r4)", "E32044000036");
+        }
+
 
         [Test]
         public void zSerDasm_risbg()
@@ -694,23 +814,21 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
-        public void zSerDasm_jg()
-        {
-            AssertCode("jg\t000FFF3A", "c0f4ffffff9d");
-        }
-
-        [Test]
-        public void zSerDasm_clc()
-        {
-            AssertCode("clc\t(8,r13),(r1)", "d507d0001000");
-        }
-
-
-
-        [Test]
         public void zSerDasm_stg()
         {
             AssertCode("stg\tr3,160(r11)", "e330b0a00024");
+        }
+
+        [Test]
+        public void zSerDasm_stnsm()
+        {
+            AssertCode("stnsm\t578(r4),D7", "ACD74242");
+        }
+
+        [Test]
+        public void zSerDasm_stosm()
+        {
+            AssertCode("stosm\t578(r4),F5", "ADF54242");
         }
 
         [Test]
@@ -726,6 +844,12 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSerDasm_srk()
+        {
+            AssertCode("srk\tr2,r4,r1", "B9F91024");
+        }
+
+        [Test]
         public void zSerDasm_srlg()
         {
             AssertCode("srlg\tr1,r3,0000003F", "eb13003f000c");
@@ -735,12 +859,6 @@ namespace Reko.UnitTests.Arch.zSeries
         public void zSerDasm_srlk()
         {
             AssertCode("srlk\tr2,r1,0000001F", "EB21001F00DE");
-        }
-
-        [Test]
-        public void zSerDasm_lmg()
-        {
-            AssertCode("lmg\tr6,r15,208(r15)", "eb6ff0d00004");
         }
 
         [Test]
@@ -762,15 +880,40 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
-        public void zSerDasm_awr()
+        public void zSerDasm_icm()
         {
-            AssertCode("awr\tf3,f1", "2E31");
+            AssertCode("icm\tr1,578(r4),0F", "BF1F4242");
         }
 
         [Test]
-        public void zSerDasm_bl()
+        public void zSerDasm_iilh()
         {
-            AssertCode("bl\t(r14,r15)", "474EF000");
+            AssertCode("iilh\tr1,+00004242", "A5124242");
+        }
+
+        [Test]
+        public void zSerDasm_jh()
+        {
+            AssertCode("jh\t0010000C", "a7240006");
+        }
+
+        [Test]
+        public void zSerDasm_jne()
+        {
+            AssertCode("jne\t00100010", "a7740008");
+        }
+
+        [Test]
+        public void zSerDasm_je()
+        {
+            AssertCode("je\t00100016", "a784000b");
+        }
+
+
+        [Test]
+        public void zSerDasm_jg()
+        {
+            AssertCode("jg\t000FFF3A", "c0f4ffffff9d");
         }
 
         [Test]
@@ -822,18 +965,10 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
-        public void zSerDasm_iilh()
-        {
-            AssertCode("iilh\tr1,+00004242", "A5124242");
-        }
-
-        [Test]
         public void zSerDasm_stc()
         {
             AssertCode("stc\tr12,578(r4)", "42C04242");
         }
-
-
 
         [Test]
         public void zSerDasm_sra()
@@ -842,7 +977,11 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
 
-
+        [Test]
+        public void zSerDasm_pka()
+        {
+            AssertCode("pka\t578(r4),578(112,r4)", "E96F42424242");
+        }
         [Test]
         public void zSerDasm_pku()
         {
@@ -859,12 +998,6 @@ namespace Reko.UnitTests.Arch.zSeries
         public void zSerDasm_lpdr()
         {
             AssertCode("lpdr\tf0,f0", "2000");
-        }
-
-        [Test]
-        public void zSerDasm_ex()
-        {
-            AssertCode("ex\tr12,1072(r4)", "44C04430");
         }
 
         [Test]
@@ -892,27 +1025,21 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
-        public void zSerDasm_mvcle()
-        {
-            AssertCode("mvcle\tr4,r10,-1216(r1)", "A84A1B40");
-        }
-
-        [Test]
         public void zSerDasm_sr()
         {
             AssertCode("sr\tr4,r7", "1B47");
         }
 
         [Test]
-        public void zSerDasm_oi()
-        {
-            AssertCode("oi\t000000FF,04", "960400FF");
-        }
-
-        [Test]
         public void zSerDasm_sgr()
         {
             AssertCode("sgr\tr1,r2", "b9090012");
+        }
+
+        [Test]
+        public void zSerDasm_sgrk()
+        {
+            AssertCode("sgrk\tr5,r1,r0", "B9E90051");
         }
 
         [Test]
@@ -943,6 +1070,12 @@ namespace Reko.UnitTests.Arch.zSeries
         public void zSerDasm_slgfi()
         {
             AssertCode("slgfi\tr3,00015180", "C23400015180");
+        }
+
+        [Test]
+        public void zSerDasm_slgrk()
+        {
+            AssertCode("slgrk\tr1,r2,r1", "B9EB1012");
         }
 
         [Test]
@@ -988,6 +1121,12 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSerDasm_stmh()
+        {
+            AssertCode("stmh\tr14,r5,2308(r11)", "EBE5B9040026");
+        }
+
+        [Test]
         public void zSerDasm_stm()
         {
             AssertCode("stm\tr0,r0,1092(r4)", "90004444");
@@ -1012,6 +1151,12 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSerDasm_sw()
+        {
+            AssertCode("sw\tf13,578(r5,r4)", "6FD54242");
+        }
+
+        [Test]
         public void zSerDasm_tcxb()
         {
             AssertCode("tcxb\tf8,00000555", "ED8005550012");
@@ -1021,6 +1166,18 @@ namespace Reko.UnitTests.Arch.zSeries
         public void zSerDasm_tmy()
         {
             AssertCode("tmy\t-29(r12),01", "EB01CFE3FF51");
+        }
+
+        [Test]
+        public void zSerDasm_tr()
+        {
+            AssertCode("tr\t578(240,r4),578(r4)", "DCEF42424242");
+        }
+
+        [Test]
+        public void zSerDasm_tragc()
+        {
+            AssertCode("tracg\tr9,r1,3096(r14)", "EB91EC18000F");
         }
 
         [Test]
@@ -1036,6 +1193,36 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSerDasm_vclgd()
+        {
+            AssertCode("vclgd\tv16,v8", "E7085820A2C0");
+        }
+
+        [Test]
+        public void zSerDasm_vl()
+        {
+            AssertCode("vl\tv8,88(r15)", "E780F0580806");
+        }
+
+        [Test]
+        public void zSerDasm_vlm()
+        {
+            AssertCode("vlm\tv24,v31,160(r15)", "E78FF0A00C36");
+        }
+
+        [Test]
+        public void zSerDasm_vst()
+        {
+            AssertCode("vst\tv8,88(r12)", "E780C058080E");
+        }
+
+        [Test]
+        public void zSerDasm_vstm()
+        {
+            AssertCode("vstm\tv24,v31,160(r15)", "E78FF0A00C3E");
+        }
+
+        [Test]
         public void zSerDasm_x()
         {
             AssertCode("x\tr1,801(r4)", "57104321");
@@ -1046,5 +1233,18 @@ namespace Reko.UnitTests.Arch.zSeries
         {
             AssertCode("xc\t(8,r15),(r15)", "D707 F000 F000");
         }
+
+        [Test]
+        public void zSerDasm_xgrk()
+        {
+            AssertCode("xgrk\tr1,r7,r1", "B9E71017");
+        }
+
+        [Test]
+        public void zSerDasm_zap()
+        {
+            AssertCode("zap\t578(16,r4),578(7,r4)", "F8F642424242");
+        }
+
     }
 }
