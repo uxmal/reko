@@ -46,6 +46,7 @@ namespace Reko.Structure
         public RegionType Type { get; set; }
         public List<AbsynStatement> Statements { get; set; }
         public Expression? Expression { get; set; }
+        public bool IsSwitchPad { get; set; }
 
         /// <summary>
         /// Return true if region consists of a single AbsynReturn statement.
@@ -57,6 +58,8 @@ namespace Reko.Structure
                 return Statements.Count == 1 && Statements[0] is AbsynReturn;
             }
         }
+
+        public string SwitchPredecessor { get; set; } = "";
 
         public Region(Block block) : this(block, new List<AbsynStatement>())
         {
@@ -70,14 +73,16 @@ namespace Reko.Structure
 
         public override string ToString()
         {
-            return Block.Name;
+            return Block.Name + (IsSwitchPad ? $" ({SwitchPredecessor})" : "");
         }
 
         public virtual void Write(StringWriter sb)
         {
             var f = new AbsynCodeFormatter(new TextFormatter(sb));
             foreach (var stm in Statements)
+            {
                 stm.Accept(f);
+            }
         }
     }
 

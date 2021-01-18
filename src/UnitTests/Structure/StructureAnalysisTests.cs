@@ -47,6 +47,11 @@ namespace Reko.UnitTests.Structure
             ccc = new CompoundConditionCoalescer(proc);
         }
 
+        private static Constant Sz(string str)
+        {
+            return Constant.String(str, StringType.NullTerminated(PrimitiveType.Char));
+        }
+
         private void RunTest(string sExp, Procedure proc)
         {
             var cfgc = new ControlFlowGraphCleaner(proc);
@@ -1396,7 +1401,7 @@ m.Label("l0800_0585");
             m.Switch(r1, "m4case0", "m1Loop", "m1Loop", "m1Loop");
 
             m.Label("m4case0");
-            m.Assign(r2, Constant.String("case 0", StringType.NullTerminated(PrimitiveType.Char)));
+            m.Assign(r2, Sz("case 0"));
             m.Goto("m1Loop");
 
             m.Label("m4SwitchDone");
@@ -1427,5 +1432,135 @@ m.Label("l0800_0585");
 ";
             RunTest(sExp, m.Procedure);
         }
+
+
+        [Test]
+        public void StrAnls_NestedSwitch()
+        {
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
+
+            m.Assign(r1, m.Mem32(m.Word32(0x00123400)));
+
+            m.Switch(r1, "case_0", "case_1", "dcase_1");
+
+            m.Label("case_0");
+            m.Assign(r2, Sz("case 0"));
+            m.Goto("done");
+
+            m.Label("case_1");
+            m.Switch(r1, "dcase_0", "dcase_1", "dcase_2");
+
+                m.Label("dcase_0");
+                m.Assign(r2, Sz("dcase 0"));
+                m.Goto("inner_done");
+
+                m.Label("dcase_1");
+                m.Assign(r2, Sz("dcase 1"));
+                m.Goto("inner_done");
+
+                m.Label("dcase_2");
+                m.Assign(r2, Sz("dcase 2"));
+                m.Goto("inner_done");
+
+                m.Label("inner_done");
+                m.Goto("done");
+
+            m.Label("done");
+            m.Return(r2);
+
+            var sExp = 
+@"    r1 = Mem0[0x00123400:word32];
+    switch (r1)
+    {
+    case 0x00:
+        r2 = ""case 0"";
+        break;
+    case 0x01:
+        switch (r1)
+        {
+        case 0x00:
+            r2 = ""dcase 0"";
+            break;
+        case 0x01:
+dcase_1:
+            r2 = ""dcase 1"";
+            break;
+        case 0x02:
+            r2 = ""dcase 2"";
+            break;
+        }
+        break;
+    case 0x02:
+        goto dcase_1;
+    }
+    return r2;
+";
+
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
+        public void StrAnls_NestedSwitch_DuplicateCases()
+        {
+            var r1 = m.Reg32("r1", 1);
+            var r2 = m.Reg32("r2", 2);
+
+            m.Assign(r1, m.Mem32(m.Word32(0x00123400)));
+
+            m.Switch(r1, "case_0", "case_1",  "dcase_1", "dcase_1", "case_1");
+
+            m.Label("case_0");
+            m.Assign(r2, Sz("case 0"));
+            m.Goto("done");
+
+            m.Label("case_1");
+            m.Switch(r1, "dcase_1", "dcase_1", "dcase_2");
+
+            m.Label("dcase_1");
+            m.Assign(r2, Sz("dcase 1"));
+            m.Goto("inner_done");
+
+            m.Label("dcase_2");
+            m.Assign(r2, Sz("dcase 2"));
+            m.Goto("inner_done");
+
+            m.Label("inner_done");
+            m.Goto("done");
+
+            m.Label("done");
+            m.Return(r2);
+
+            var sExp =
+@"    r1 = Mem0[0x00123400:word32];
+    switch (r1)
+    {
+    case 0x00:
+        r2 = ""case 0"";
+        break;
+    case 0x01:
+    case 0x04:
+        switch (r1)
+        {
+        case 0x00:
+        case 0x01:
+dcase_1:
+            r2 = ""dcase 1"";
+            break;
+        case 0x02:
+            r2 = ""dcase 2"";
+            break;
+        }
+        break;
+    case 0x02:
+    case 0x03:
+        goto dcase_1;
+    }
+    return r2;
+";
+
+            RunTest(sExp, m.Procedure);
+        }
+
     }
 }
