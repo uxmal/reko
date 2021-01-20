@@ -46,7 +46,15 @@ namespace Reko.ImageLoaders.Elf
             this.rawImage = rawImage ?? throw new ArgumentNullException("rawImage");
         }
 
-        public abstract Program LinkObject(IPlatform platform, Address addrLoad, byte[] rawImage);
+        public abstract Program LinkObject(IPlatform platform, Address? addrLoad, byte[] rawImage);
+
+        protected Address ComputeBaseAddressFromSections(IEnumerable<ElfSection> sections)
+        {
+            return sections.Where(s => s.Address != null && (s.Flags & ElfLoader.SHF_ALLOC) != 0)
+                .OrderBy(s => s.Address)
+                .Select(s => s.Address)
+                .First();
+        }
     }
 
     public class ElfObjectLinker64 : ElfObjectLinker
@@ -55,7 +63,7 @@ namespace Reko.ImageLoaders.Elf
             : base(loader, arch, rawImage)
         { }
 
-        public override Program LinkObject(IPlatform platform, Address addrLoad, byte[] rawImage)
+        public override Program LinkObject(IPlatform platform, Address? addrLoad, byte[] rawImage)
         {
             throw new NotImplementedException();
         }
@@ -74,10 +82,11 @@ namespace Reko.ImageLoaders.Elf
 
         public List<Elf32_PHdr> Segments { get; private set; }
 
-        public override Program LinkObject(IPlatform platform, Address addrLoad, byte[] rawImage)
+        public override Program LinkObject(IPlatform platform, Address? addrLoad, byte[] rawImage)
         {
+            var addrBase = addrLoad ?? ComputeBaseAddressFromSections(loader.Sections);
             var segments = ComputeSegmentSizes();
-            var imageMap = CreateSegments(addrLoad, segments);
+            var imageMap = CreateSegments(addrBase, segments);
             var program = new Program(imageMap, platform.Architecture, platform);
             LoadExternalProcedures(program.InterceptedCalls);
             return program;
@@ -208,6 +217,7 @@ namespace Reko.ImageLoaders.Elf
 
         public SegmentMap CreateSegments(Address addrBase, Dictionary<ElfSection, Elf32_PHdr> mpSections)
         {
+            if (addrBase == null) throw new ArgumentNullException(nameof(addrBase));
             var addr = addrBase;
             foreach (var segment in Segments)
             {
@@ -249,6 +259,7 @@ namespace Reko.ImageLoaders.Elf
                     .ToArray());
             return imageMap;
         }
+
 
         public void LoadExternalProcedures(Dictionary<Address, ExternalProcedure> interceptedCalls)
         {
