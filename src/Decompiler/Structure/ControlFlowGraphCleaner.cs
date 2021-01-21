@@ -131,7 +131,8 @@ namespace Reko.Structure
                     if (EndsInJump(block))
                     {
                         Block next = block.Succ[0];
-                        if (next.Pred.Count == 1 && next != proc.ExitBlock)
+                        if (next.Pred.Count == 1 && next != proc.ExitBlock &&
+                            block != next)
                         {
                             Coalesce(block, next);
                         }
