@@ -757,6 +757,7 @@ namespace Reko.Arch.Xtensa
             {
                 return new XtensaInstruction
                 {
+                    InstructionClass = InstrClass.Linear,
                     Mnemonic = Mnemonic.extui,
                     Operands = new MachineOperand[]
                     {
