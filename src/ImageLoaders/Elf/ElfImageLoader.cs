@@ -91,6 +91,10 @@ namespace Reko.ImageLoaders.Elf
             }
             else
             {
+                if (addrLoad != null)
+                {
+                    addrLoad = innerLoader.CreateAddress(addrLoad.ToLinear());
+                }
                 // The file we're loading is an object file, and needs to be 
                 // linked before we can load it.
                 var linker = innerLoader.CreateLinker();

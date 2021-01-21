@@ -448,7 +448,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             dcSvc.Setup(d => d.Decompiler).Returns(decompiler.Object);
             dcSvc.Setup(d => d.ProjectName).Returns("foo.exe");
             decompiler.Setup(d => d.Project).Returns(project);
-            decompiler.Setup(d => d.Load(It.IsNotNull<string>(), null)).Returns(false);
+            decompiler.Setup(d => d.Load(It.IsNotNull<string>(), null, null)).Returns(false);
         }
 
         private void Given_NoDecompilerInstance()

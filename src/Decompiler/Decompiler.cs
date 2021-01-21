@@ -179,8 +179,10 @@ namespace Reko
         /// <param name="fileName">The filename to load.</param>
         /// <param name="loaderName">Optional .NET class name of a custom
         /// image loader</param>
+        /// <param name="addrLoad">Optional address at which to load the image.
+        /// </param>
         /// <returns>True if the file could be loaded.</returns>
-        public bool Load(string fileName, string? loaderName = null)
+        public bool Load(string fileName, string? loaderName = null, Address? addrLoad = null)
         {
             eventListener.ShowStatus("Loading source program.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
@@ -189,7 +191,7 @@ namespace Reko
             this.Project = projectLoader.LoadProject(fileName, image);
             if (Project == null)
             {
-                var program = loader.LoadExecutable(fileName, image, loaderName, null);
+                var program = loader.LoadExecutable(fileName, image, loaderName, addrLoad);
                 if (program == null)
                     return false;
                 this.Project = AddProgramToProject(fileName, program);
