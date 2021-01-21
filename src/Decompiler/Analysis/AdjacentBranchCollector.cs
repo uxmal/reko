@@ -174,7 +174,7 @@ namespace Reko.Analysis
             if (BlockTrashesIdentifier(predCond, v))
                 return null;
 
-            DebugEx.Verbose(trace, "ABC: Candidate pred: {0}, block {1}", pred.Name, block.Name);
+            trace.Verbose("ABC: Candidate pred: {0}, block {1}", pred.Name, block.Name);
             return new Candidate
             {
                 Predecessor = pred,

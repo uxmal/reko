@@ -249,7 +249,7 @@ namespace Reko.Typing
                         DateTime end = DateTime.Now;
                         if (eq.DataType is UnionType ut)
                         {
-                            //DebugEx.Verbose(trace, "= TT: took {2,4} msec to simplify {0} ({1})", tv.DataType, eq.DataType, (end - start).Milliseconds);
+                            //trace.Verbose("= TT: took {2,4} msec to simplify {0} ({1})", tv.DataType, eq.DataType, (end - start).Milliseconds);
                         }
                     }
                     if (tv.DataType != null)
