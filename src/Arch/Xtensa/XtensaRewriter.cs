@@ -67,9 +67,9 @@ namespace Reko.Arch.Xtensa
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
                 var rtlInstructions = new List<RtlInstruction>();
-                iclass = InstrClass.Linear;
                 m = new RtlEmitter(rtlInstructions);
                 this.instr = dasm.Current;
+                this.iclass = instr.InstructionClass;
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -263,6 +263,8 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.mulsh: RewriteMulh("__mulsh", PrimitiveType.Int32); break;
                 case Mnemonic.muluh: RewriteMulh("__muluh", PrimitiveType.UInt32); break;
                 case Mnemonic.neg: RewriteUnaryOp(m.Neg); break;
+                case Mnemonic.nop: m.Nop(); break;
+                case Mnemonic.nop_n: m.Nop(); break;
                 case Mnemonic.nsa: RewriteIntrinsicFn("__nsa", false); break;
                 case Mnemonic.nsau: RewriteIntrinsicFn("__nsau", false); break;
                 case Mnemonic.oeq_s: RewriteBinOp(m.FEq); break;    //$REVIEW: what to do about 'ordered' and 'unordered'
