@@ -76,7 +76,7 @@ namespace Reko.Core
 
 		public static void Coalesce(Block block, Block next)
 		{
-			foreach (Statement stm in next.Statements)
+			foreach (Statement stm in next.Statements.ToArray())
 			{
 				block.Statements.Add(stm);
 			}
@@ -115,7 +115,7 @@ namespace Reko.Core
 		public static bool ReplaceJumpsTo(Block block, Block next)
 		{
 			bool change = false;
-			foreach (Block p in block.Pred)
+			foreach (Block p in block.Pred.ToArray())
 			{
 				for (int i = 0; i < p.Succ.Count; ++i)
 				{

@@ -54,9 +54,9 @@ Error: An error occurred during decompilation.
    at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in D:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 65
    at Reko.Scanning.Scanner.ShingleScanProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1035
    at Reko.Scanning.Scanner.ScanImage() in D:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 775
-   at Reko.Decompiler.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 586
-   at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 574
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 203
+   at Reko.Decompiler.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 588
+   at Reko.Decompiler.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 576
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 204
 === Elf\MIPS\redir\redir
 === Elf\MIPS\swlswr\test
 === Elf\Msp430\a.out
@@ -94,8 +94,8 @@ Parameter name: index
    at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 69
    at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
    at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 78
-   at Reko.Decompiler.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 652
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
+   at Reko.Decompiler.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 654
 00017540: warning: Expected sizes of arrays to have been determined by now
 0002B411: warning: Expected sizes of arrays to have been determined by now
 00017540: warning: Expected sizes of arrays to have been determined by now
@@ -259,18 +259,18 @@ Error: An error occurred during decompilation.
     Missing PIC model user options.
        at Reko.Arch.MicrochipPIC.Common.PICArchitecture.LoadUserOptions(Dictionary`2 options) in D:\dev\uxmal\reko\master\src\Arch\Microchip\Common\PICArchitecture.cs:line 307
    at Reko.Loading.Loader.LoadRawImage(String filename, Byte[] image, Address addrLoad, LoadDetails details) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 165
-   at Reko.Decompiler.LoadRawImage(String fileName, LoadDetails raw) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 268
-   at Reko.CmdLine.CmdLineDriver.LoadProgram(Dictionary`2 pArgs, LoadDetails loadDetails) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 279
-   at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 246
+   at Reko.Decompiler.LoadRawImage(String fileName, LoadDetails raw) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 270
+   at Reko.CmdLine.CmdLineDriver.LoadProgram(Dictionary`2 pArgs, LoadDetails loadDetails) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 294
+   at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 261
 === Microchip\C18\PIC18\PIC18Legacy.hex
 *** Microchip\C18\PIC18\PIC18Legacy.hex
 Error: An error occurred during decompilation.
     Missing PIC model user options.
        at Reko.Arch.MicrochipPIC.Common.PICArchitecture.LoadUserOptions(Dictionary`2 options) in D:\dev\uxmal\reko\master\src\Arch\Microchip\Common\PICArchitecture.cs:line 307
    at Reko.Loading.Loader.LoadRawImage(String filename, Byte[] image, Address addrLoad, LoadDetails details) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 165
-   at Reko.Decompiler.LoadRawImage(String fileName, LoadDetails raw) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 268
-   at Reko.CmdLine.CmdLineDriver.LoadProgram(Dictionary`2 pArgs, LoadDetails loadDetails) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 279
-   at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 246
+   at Reko.Decompiler.LoadRawImage(String fileName, LoadDetails raw) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 270
+   at Reko.CmdLine.CmdLineDriver.LoadProgram(Dictionary`2 pArgs, LoadDetails loadDetails) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 294
+   at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 261
 === OpenRISC\sunxi\blob.dcproject
 === PDP-11\lunar.lda
 === PDP-11\space.dcproject
@@ -948,7 +948,7 @@ Error: An error occurred during decompilation.
    at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 169
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 130
    at Reko.Decompiler.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 110
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 206
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 207
 === TLCS\900\ngp_iq\NGP_IQ.NGP
 *** TLCS\900\ngp_iq\NGP_IQ.NGP
 Error: An error occurred during decompilation.
@@ -962,7 +962,7 @@ Error: An error occurred during decompilation.
    at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 84
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 155
    at Reko.Decompiler.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 110
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 206
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 207
 === TLCS\90\TLCS-90.corpus
 === VMS-vax\unzip.dcproject
 *** VMS-vax\unzip.dcproject
@@ -1434,4 +1434,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === wasm\nbody.wasm
 === wasm\sample.wasm
 Stripping SSA identifier numbers
-Decompiled 74 binaries in 73.81 seconds ---
+Decompiled 74 binaries in 80.01 seconds ---
