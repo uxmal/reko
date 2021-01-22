@@ -17,7 +17,7 @@ namespace Reko.Tools.regressionTests
 	class Program
     {
         private const int MaxDeleteAttempts = 5;
-        private const string EXE_NAME = "decompile";
+        private const string DecompilerExecutableName = "decompile";
         private static readonly string[] OUTPUT_EXTENSIONS = new string[] { ".asm", ".c", ".dis", ".h" };
         private static readonly string[] SOURCE_EXTENSIONS = new string[] { ".c" };
         private const string WeightsFilename = "subject_weights.txt";
@@ -57,22 +57,11 @@ namespace Reko.Tools.regressionTests
         private void Run(string[] args)
         {
             ProcessArgs(args);
-            var dirs = this.dirs;
-
-            string reko_cmdline_dir = Path.GetFullPath(Path.Combine(reko_src, "Drivers", "CmdLine"));
 
             subjects_dir = Path.GetFullPath(Path.Combine(reko_src, "..", "subjects"));
+            this.reko_cmdline_exe = DetermineDecompilerPath();
 
-            string exeFileName = EXE_NAME;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                exeFileName += ".exe";
-            }
-            this.reko_cmdline_exe = Path.Combine(
-                reko_cmdline_dir, "bin",
-                this.platform, this.configuration, this.framework,
-                exeFileName);
-
+            // if no directory was specified, default to the subjects directory
             if (dirs.Count == 0)
             {
                 // if no directory was specified, default to the subjects directory
@@ -84,7 +73,6 @@ namespace Reko.Tools.regressionTests
             var jobs = CollectJobs(dirs);
             ExecuteJobs(jobs);
             watch.Stop();
-
             DisplayResults(jobs.Count, watch.Elapsed);
 
             if (stripSuffixes)
@@ -107,6 +95,24 @@ namespace Reko.Tools.regressionTests
             }
         }
 
+        private string DetermineDecompilerPath()
+        {
+            string reko_cmdline_dir = Path.GetFullPath(Path.Combine(reko_src, "Drivers", "CmdLine"));
+            string exeFileName = DecompilerExecutableName;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                exeFileName += ".exe";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                exeFileName += ".dll";
+            }
+            var s = Path.Combine(
+                reko_cmdline_dir, "bin",
+                this.platform, this.configuration, this.framework,
+                exeFileName);
+            return s;
+        }
 
         private bool TryTake(IEnumerator<string> it, out string? arg)
         {
