@@ -11,46 +11,113 @@ using System.Text;
 
 namespace Reko.Tools.regressionTests
 {
+    /// <summary>
+    /// This program runs the Reko regression tests.
+    /// </summary>
 	class Program
 	{
-        private const int MaxDeleteAttempts = 20;
+        private const int MaxDeleteAttempts = 5;
         private const string EXE_NAME = "decompile";
         private static readonly string[] OUTPUT_EXTENSIONS = new string[] { ".asm", ".c", ".dis", ".h" };
         private static readonly string[] SOURCE_EXTENSIONS = new string[] { ".c" };
 
-        bool TryTake(IEnumerator<string> it, out string? arg)
+        private string configuration = "Debug";
+        private bool checkOutput = false;
+        private string framework = "netcoreapp3.1";
+        private bool stripSuffixes = true;
+        private string platform = "x64";
+
+        private readonly List<string> dirs;
+        private readonly SortedList<string, string> allResults;
+        private readonly Dictionary<string, TimeSpan> executionTimes;
+        private CountdownEvent? jobsRemaining; 
+        private readonly object resultLock;
+        private string reko_src;
+        private string reko_cmdline_exe;
+        private string subjects_dir;
+        private bool verbose;
+
+        static void Main(string[] args)
+        {
+            new Program().Run(args);
+        }
+
+        public Program()
+        {
+            this.dirs = new List<string>();
+            this.allResults = new SortedList<string, string>();
+            this.executionTimes = new Dictionary<string, TimeSpan>();
+            this.resultLock = new object();
+            this.reko_src = "";
+            this.reko_cmdline_exe = "";
+            this.subjects_dir = "";
+        }
+
+        private void Run(string[] args)
+        {
+            ProcessArgs(args);
+            var dirs = this.dirs;
+
+            string reko_cmdline_dir = Path.GetFullPath(Path.Combine(reko_src, "Drivers", "CmdLine"));
+
+            subjects_dir = Path.GetFullPath(Path.Combine(reko_src, "..", "subjects"));
+
+            string exeFileName = EXE_NAME;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                exeFileName += ".exe";
+            }
+            this.reko_cmdline_exe = Path.Combine(
+                reko_cmdline_dir, "bin",
+                this.platform, this.configuration, this.framework,
+                exeFileName);
+
+            if (dirs.Count == 0)
+            {
+               // if no directory was specified, default to the subjects directory
+               dirs.Add(subjects_dir);
+            }
+
+            var watch = new Stopwatch();
+            watch.Start();
+            var jobs = CollectJobs(dirs);
+            ExecuteJobs(jobs);
+            watch.Stop();
+
+            DisplayResults(jobs.Count, watch.Elapsed);
+
+            if (stripSuffixes)
+            {
+                StripSuffixes(dirs);
+            }
+
+            if (checkOutput)
+            {
+                int exitCode = RunGitDiff();
+                if (exitCode == 0)
+                {
+                    Console.WriteLine("Output files are the same as in repository");
+                }
+                else
+                {
+                    Console.WriteLine("Output files differ from repository");
+                }
+                Environment.Exit(exitCode);
+            }
+        }
+
+
+        private bool TryTake(IEnumerator<string> it, out string? arg)
         {
             if (!it.MoveNext())
             {
                 arg = null;
                 return false;
             }
-
             arg = it.Current;
             return true;
         }
 
-        private string configuration = "Debug";
-        private bool check_output = false;
-        private string framework = "netcoreapp3.1";
-        private bool strip_suffixes = true;
-        private string platform = "x64";
-
-        private readonly List<string> dirs;
-        private readonly SortedList<string, string> allResults;
-        private readonly object resultLock;
-        private string reko_cmdline_exe;
-        private string subjects_dir;
-
-        private int numCompleted = 0;
-        private string reko_src;
-
-        public Program()
-        {
-            this.dirs = new List<string>();
-            this.allResults = new SortedList<string, string>();
-            this.resultLock = new object();
-        }
         private void ProcessArgs(IEnumerable<string> args)
         {
             int unparsed_count = 0;
@@ -65,30 +132,35 @@ namespace Reko.Tools.regressionTests
                 {
                 case "-c":
                 case "--configuration":
-                    res = TryTake(it, out configuration);
+                    res = TryTake(it, out configuration!);
                     break;
                 case "-o":
                 case "--check-output":
-                    check_output = true;
+                    checkOutput = true;
                     break;
                 case "-p":
                 case "--platform":
-                    res = TryTake(it, out platform);
+                    res = TryTake(it, out platform!);
                     break;
                 case "-f":
                 case "--framework":
-                    res = TryTake(it, out framework);
+                    res = TryTake(it, out framework!);
                     break;
                 case "--strip-suffixes":
-                    res = TryTake(it, out string opt);
-                    strip_suffixes = (opt == "yes");
+                    res = TryTake(it, out string? opt);
+                    stripSuffixes = (opt == "yes");
+                    break;
+                case "-v":
+                case "--verbose":
+                    this.verbose = true;
                     break;
                 default:
                     // first unparsed argument is the path to reko/src
                     if (unparsed_count++ == 0)
                     {
                         reko_src = arg;
-                    } else
+                    }
+                    else
                     // any other argument is a list of directories to scan
                     {
                         dirs.Add(arg);
@@ -108,26 +180,26 @@ namespace Reko.Tools.regressionTests
         {
             var failed = new List<string>();
 
-            foreach(var f in Directory.EnumerateFiles(dir).Where(f => OUTPUT_EXTENSIONS.Any(f.EndsWith)))
+            foreach (var f in Directory.EnumerateFiles(dir).Where(f => OUTPUT_EXTENSIONS.Any(f.EndsWith)))
             {
                 try
                 {
                     File.Delete(f);
-                } catch(IOException)
+                }
+                catch (IOException)
                 {
                     failed.Add(f);
                 }
             }
 
-            if(failed.Count > 0)
+            if (failed.Count > 0)
             {
                 Thread.Sleep(2000);
-                foreach(var f in failed)
+                foreach (var f in failed)
                 {
                     File.Delete(f);
                 }
             }
-
         }
 
         private static string GetFilePrefix(string path)
@@ -137,7 +209,7 @@ namespace Reko.Tools.regressionTests
 
             // remove any previous path component
             int pos = path.LastIndexOf(Path.DirectorySeparatorChar);
-            if(pos > -1)
+            if (pos > -1)
             {
                 path = path.Substring(pos + 1);
             }
@@ -150,38 +222,76 @@ namespace Reko.Tools.regressionTests
             {
                 return ("dotnet", $"{exeName} {argsString}");
             }
-
             return (exeName, argsString);
         }
 
-        private void AddJob(string jobName, string workingDirectory, string argsString)
+        public class Job
         {
-            ThreadPool.QueueUserWorkItem((x) =>
+            public Job(string name, string workdir, string args)
             {
-                var now = DateTime.Now.ToString("HH:MM:ss.f");
-                string jobVirtualPath = Path.Combine(workingDirectory, jobName);
+                this.Name = name;
+                this.WorkingDirectory = workdir;
+                this.Arguments = args;
+                this.Key = this.Name + this.Arguments;
+            }
 
-                Console.Error.WriteLine($"{now}: Starting " + Path.GetRelativePath(subjects_dir, jobVirtualPath));
-                Console.Error.WriteLine($"{workingDirectory} :> {reko_cmdline_exe} {argsString}");
+            public string Name { get; }
+            public string WorkingDirectory { get; }
+            public string Arguments { get; }
+            public string Key { get; }
+        }
 
-                (string, string) cmdline = GetPlatformInvocationCmdLine(reko_cmdline_exe, argsString);
+        /// <summary>
+        /// Enqueue the job in the thread pool.
+        /// </summary>
+        /// <param name="job"></param>
+        private void StartJob(Job job)
+        {
+            (string, string) cmdline = GetPlatformInvocationCmdLine(reko_cmdline_exe, job.Arguments);
+            ThreadPool.QueueUserWorkItem(x =>
+            {
+                var now = DateTime.Now;
+                var sNow = now.ToString("HH:MM:ss.f");
+                string jobVirtualPath = Path.Combine(job.WorkingDirectory, job.Name);
 
-                var proc = Process.Start(new ProcessStartInfo()
+                Console.Error.WriteLine($"{sNow}: Starting " + Path.GetRelativePath(subjects_dir, jobVirtualPath));
+                if (verbose)
                 {
-                    FileName = cmdline.Item1,
-                    Arguments = cmdline.Item2,
-                    WorkingDirectory = workingDirectory,
-                    RedirectStandardOutput = true
-                });
-                var output = proc.StandardOutput.ReadToEnd();
-                var relpath = Path.GetRelativePath(subjects_dir, jobVirtualPath);
-                string testResult = FormatTestResult(jobName, relpath, output);
+                    Console.Error.WriteLine($"{job.WorkingDirectory} :> {reko_cmdline_exe} {job.Arguments}");
+                }
+                string output;
+                try
+                {
+                    var proc = Process.Start(new ProcessStartInfo()
+                    {
+                        FileName = reko_cmdline_exe,
+                        Arguments = job.Arguments,
+                        WorkingDirectory = job.WorkingDirectory,
+                        RedirectStandardOutput = true
+                    });
+                    output = proc.StandardOutput.ReadToEnd();
+                }
+                catch (Exception)
+                {
+                    Console.Error.WriteLine("== Failed to start a decompiler process.{0}  {1}{0}  {2}",
+                        Environment.NewLine,
+                        job.Arguments,
+                        job.Name);
+                    this.jobsRemaining!.Signal();
+                    return;
+                }
 
-                Interlocked.Increment(ref this.numCompleted);
+                var elapsedTime = DateTime.Now - now;
+                var relpath = Path.GetRelativePath(subjects_dir, jobVirtualPath);
+                string testResult = FormatTestResult(job.Name, relpath, output);
+
                 lock (resultLock)
                 {
-                    allResults.Add(jobName + argsString, testResult);
+                    var key = job.Key;
+                    allResults.Add(key, testResult);
+                    executionTimes.Add(key, elapsedTime);
                 }
+                this.jobsRemaining!.Signal();
             });
         }
 
@@ -197,48 +307,52 @@ namespace Reko.Tools.regressionTests
         }
 
         /// <summary>
-        /// Looks for subjects in the directory whose absolute path is <paramref name="dir"/>.
+        /// Looks recursibely in the filesystem for subjects in the directory whose
+        /// absolute path is <paramref name="dir"/>.
         /// </summary>
-        /// <returns>The number of subjects found.</returns>
-        private int HandleDir(string dir) 
+        /// <param name="dir">Directory in which a test may be located.</param>
+        /// <param name="jobs">List of <see cref="Job"/>s that are collected by the recursion</param>
+        private void HandleDir(string dir, List<Job> jobs)
         {
-            int numJobs = 0;
             foreach (var subdir in Directory.EnumerateDirectories(dir))
             {
-                numJobs += HandleDir(subdir);
+                HandleDir(subdir, jobs);
             }
 
             // remove any .reko folder
             if (dir.EndsWith(".reko"))
             {
                 AttemptDeleteDirectory(dir);
-                return numJobs;
+                return;
             }
 
-            var dcProjects = Directory.GetFiles(dir).Where(f => f.EndsWith(".dcproject"));
+            var dcProjects = Directory.GetFiles(dir, "*.dcproject");
             var subjectCmd = Path.Combine(dir, "subject.cmd");
-
             bool hasSubjectCmd = File.Exists(subjectCmd);
 
             // if there is no .dcproject and no subject.cmd, there's nothing to do
-            if (dcProjects.Count() == 0 && !hasSubjectCmd)
+            if (dcProjects.Length == 0 && !hasSubjectCmd)
             {
-                return numJobs;
+                return;
             }
 
             // clear output files outside of .reko (created by some .dcproject)
             ClearDir(dir);
-            
+
             // queue all .dcproject for execution
             foreach (var proj in dcProjects)
             {
-                AddJob(GetFilePrefix(proj), dir, proj);
-                numJobs++;
+                jobs.Add(new Job(GetFilePrefix(proj), dir, proj));
             }
 
             if (hasSubjectCmd)
             {
-                // read subject.cmd and skip all comments
+                ProcessSubjectCmdFile(dir, jobs, subjectCmd);
+            }
+        }
+
+        private void ProcessSubjectCmdFile(string dir, List<Job> jobs, string subjectCmd)
+        {
                 var lines = File.ReadAllLines(subjectCmd, new UTF8Encoding(false))
                     .Select(l => l.Trim())
                     .Where(l => !l.StartsWith('#'));
@@ -261,15 +375,10 @@ namespace Reko.Tools.regressionTests
                             .Last()
                             .Trim('"')
                         );
-
-                        // queue subject.cmd for execution
-                        AddJob(jobName, dir, args);
-                        numJobs++;
+                    jobs.Add(new Job(jobName, dir, args));
                     }
                 }
             }
-            return numJobs;
-        }
 
         /// <summary>
         /// Attempt to delete a directory a few times until a maximal number
@@ -282,8 +391,9 @@ namespace Reko.Tools.regressionTests
         /// </remarks>
         private void AttemptDeleteDirectory(string dir)
         {
-            Exception ex = null;
-            for (int i = 0; i < MaxDeleteAttempts; ++i)
+            Exception? ex = null;
+            int msecSleep = 100;
+            for (int i = 0; i < MaxDeleteAttempts; ++i, msecSleep *= 2)
             {
                 try
                 {
@@ -294,9 +404,9 @@ namespace Reko.Tools.regressionTests
                 {
                     ex = e;
                 }
-                Thread.Sleep(100);
+                Thread.Sleep(msecSleep);
             }
-            Console.Error.WriteLine("*** Unable to delete directory {0} after {1} attempts. {2}", dir, MaxDeleteAttempts, ex.Message);
+            Console.Error.WriteLine("*** Unable to delete directory {0} after {1} attempts. {2}", dir, MaxDeleteAttempts, ex!.Message);
             Console.Error.WriteLine(ex.StackTrace);
         }
 
@@ -319,101 +429,60 @@ namespace Reko.Tools.regressionTests
             return git.ExitCode;
         }
 
-        private int CollectJobs()
+        private List<Job> CollectJobs(List<string> dirs)
         {
-            int numJobs = 0;
-            foreach(var dir in dirs)
+            var jobs = new List<Job>();
+            foreach (var dir in dirs)
             {
-                numJobs += HandleDir(dir);
+                HandleDir(dir, jobs);
             }
-            return numJobs;
+            return jobs;
         }
 
         private static bool IsInSourceDirectory(string file)
         {
             var dirname = Path.GetDirectoryName(file);
             var basename = Path.GetFileName(dirname);
-            return basename.Equals("src", StringComparison.InvariantCultureIgnoreCase);
+            return basename!.Equals("src", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private void Run(string[] args)
+        private void ExecuteJobs(List<Job> jobs)
         {
-            ProcessArgs(args);
-
-            string reko_cmdline_dir = Path.GetFullPath(Path.Combine(reko_src, "Drivers", "CmdLine"));
-
-            subjects_dir = Path.GetFullPath(Path.Combine(reko_src, "..", "subjects"));
-
-            string exeFileName = EXE_NAME;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            this.jobsRemaining = new CountdownEvent(jobs.Count);
+            foreach (var job in jobs)
             {
-                exeFileName += ".exe";
-            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)){
-                exeFileName += ".dll";
+                StartJob(job);
             }
+            jobsRemaining.Wait();
+        }
+
+        private void StripSuffixes(List<string> dirs)
+        {
+            var sources = dirs
+                .SelectMany(d => Directory.EnumerateFiles(d, "*.*", SearchOption.AllDirectories))
+                .Distinct()
+                .Where(f => !IsInSourceDirectory(f))
+                .Where(f => SOURCE_EXTENSIONS.Any(f.EndsWith));
 
 
-            this.reko_cmdline_exe = Path.Combine(
-                reko_cmdline_dir, "bin",
-                this.platform, this.configuration, this.framework,
-                exeFileName);
-
-            // if no directory was specified, default to the subjects directory
-            if (dirs.Count == 0)
+            foreach (var f in sources)
             {
-                dirs.Add(subjects_dir);
-            }
-
-            int numJobs = CollectJobs();
-
-            // wait for queued jobs to complete
-            while (numCompleted < numJobs)
-            {
-                Thread.Sleep(500);
-            }
-
-            // All jobs should have completed execution, display results.
-            DisplayResults();
-
-            if (strip_suffixes)
-            {
-                // collect the list of files to be stripped (starting from the project directory)
-                var sources = dirs
-                    .SelectMany(d => Directory.EnumerateFiles(d, "*.*", SearchOption.AllDirectories))
-                    .Distinct()
-                    .Where(f => !IsInSourceDirectory(f))
-                    .Where(f => SOURCE_EXTENSIONS.Any(f.EndsWith));
-
-
-                foreach (var f in sources)
-                {
-                    var text = File.ReadAllText(f, new UTF8Encoding(false));
-                    text = Regex.Replace(text, @"(fn\w+)_(\d+)", "$1-$2");
-                    text = Regex.Replace(text, @"(\w+)_\d+", "$1_n");
-                    File.WriteAllText(f, text, new UTF8Encoding(false));
-                }
-            }
-
-            if (check_output)
-            {
-                int exitCode = RunGitDiff();
-                if(exitCode == 0){
-                    Console.Error.WriteLine("Output files are the same as in repository");
-                } else
-                {
-                    Console.Error.WriteLine("Output files differ from repository");
-                }
-                Environment.Exit(exitCode);
+                var text = File.ReadAllText(f, new UTF8Encoding(false));
+                text = Regex.Replace(text, @"(fn\w+)_(\d+)", "$1-$2");
+                text = Regex.Replace(text, @"(\w+)_\d+", "$1_n");
+                File.WriteAllText(f, text, new UTF8Encoding(false));
             }
         }
 
-        private void DisplayResults()
+        private void DisplayResults(int cJobs, TimeSpan elapsedTime)
         {
             foreach (var result in this.allResults.Values)
             {
                 Console.WriteLine(result);
             }
+            Console.WriteLine("Decompiled {0} binaries in {1:0.00} seconds.", cJobs, elapsedTime.TotalSeconds);
         }
+
         private void Usage()
         {
             Console.Write(
@@ -430,12 +499,9 @@ Options:
                         define .NET framework (netcoreapp3.1)
   --strip-suffixes=STRIP_SUFFIXES
                         strip number suffixes from SSA identifiers (yes, no)
+  -v, --verbose         produce verbose output
 ");
         }
 
-        static void Main(string[] args)
-        {
-            new Program().Run(args);
 		}
-	}
 }
