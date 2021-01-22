@@ -271,8 +271,8 @@ namespace Reko.Tools.regressionTests
                 {
                     var proc = Process.Start(new ProcessStartInfo()
                     {
-                        FileName = reko_cmdline_exe,
-                        Arguments = job.Arguments,
+                        FileName = cmdline.Item1,
+                        Arguments = cmdline.Item2,
                         WorkingDirectory = job.WorkingDirectory,
                         RedirectStandardOutput = true
                     });
@@ -280,7 +280,8 @@ namespace Reko.Tools.regressionTests
                 }
                 catch (Exception)
                 {
-                    Console.Error.WriteLine("== Failed to start a decompiler process.{0}  {1}{0}  {2}",
+                    Console.Error.WriteLine("== Failed to start a decompiler process.{0}  {1}{0}  {2}{0} {3}",
+                        reko_cmdline_exe,
                         Environment.NewLine,
                         job.Arguments,
                         job.Name);
