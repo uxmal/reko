@@ -15,11 +15,12 @@ namespace Reko.Tools.regressionTests
     /// This program runs the Reko regression tests.
     /// </summary>
 	class Program
-	{
+    {
         private const int MaxDeleteAttempts = 5;
         private const string EXE_NAME = "decompile";
         private static readonly string[] OUTPUT_EXTENSIONS = new string[] { ".asm", ".c", ".dis", ".h" };
         private static readonly string[] SOURCE_EXTENSIONS = new string[] { ".c" };
+        private const string WeightsFilename = "subject_weights.txt";
 
         private string configuration = "Debug";
         private bool checkOutput = false;
@@ -30,7 +31,7 @@ namespace Reko.Tools.regressionTests
         private readonly List<string> dirs;
         private readonly SortedList<string, string> allResults;
         private readonly Dictionary<string, TimeSpan> executionTimes;
-        private CountdownEvent? jobsRemaining; 
+        private CountdownEvent? jobsRemaining;
         private readonly object resultLock;
         private string reko_src;
         private string reko_cmdline_exe;
@@ -74,8 +75,8 @@ namespace Reko.Tools.regressionTests
 
             if (dirs.Count == 0)
             {
-               // if no directory was specified, default to the subjects directory
-               dirs.Add(subjects_dir);
+                // if no directory was specified, default to the subjects directory
+                dirs.Add(subjects_dir);
             }
 
             var watch = new Stopwatch();
@@ -353,32 +354,32 @@ namespace Reko.Tools.regressionTests
 
         private void ProcessSubjectCmdFile(string dir, List<Job> jobs, string subjectCmd)
         {
-                var lines = File.ReadAllLines(subjectCmd, new UTF8Encoding(false))
-                    .Select(l => l.Trim())
-                    .Where(l => !l.StartsWith('#'));
+            var lines = File.ReadAllLines(subjectCmd, new UTF8Encoding(false))
+                .Select(l => l.Trim())
+                .Where(l => !l.StartsWith('#'));
 
-                foreach (var line in lines)
+            foreach (var line in lines)
+            {
+                string args = line;
+                if (line.StartsWith("decompile.exe"))
                 {
-                    string args = line;
-                    if (line.StartsWith("decompile.exe"))
-                    {
-                        // remove the exe name from the arguments string
-                        args = args.Remove(0, "decompile.exe".Length + 1);
-                    }
+                    // remove the exe name from the arguments string
+                    args = args.Remove(0, "decompile.exe".Length + 1);
+                }
 
-                    if (!string.IsNullOrWhiteSpace(args))
-                    {
-                        // assume the last argument is going to be the name of the binary
-                        string jobName = GetFilePrefix(
-                            args
-                            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
-                            .Last()
-                            .Trim('"')
-                        );
+                if (!string.IsNullOrWhiteSpace(args))
+                {
+                    // assume the last argument is going to be the name of the binary
+                    string jobName = GetFilePrefix(
+                        args
+                        .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                        .Last()
+                        .Trim('"')
+                    );
                     jobs.Add(new Job(jobName, dir, args));
-                    }
                 }
             }
+        }
 
         /// <summary>
         /// Attempt to delete a directory a few times until a maximal number
@@ -448,12 +449,33 @@ namespace Reko.Tools.regressionTests
 
         private void ExecuteJobs(List<Job> jobs)
         {
+            var orderedJobs = OrderJobsByWeight(jobs);
             this.jobsRemaining = new CountdownEvent(jobs.Count);
-            foreach (var job in jobs)
+            foreach (var job in orderedJobs)
             {
                 StartJob(job);
             }
             jobsRemaining.Wait();
+            var weights = ComputeWeights(this.executionTimes);
+            SaveWeights(weights);
+        }
+
+        private List<Job> OrderJobsByWeight(List<Job> jobs)
+        {
+            var weights = LoadWeights();
+            var orderedJobs =
+                from job in jobs
+                join weight in weights on job.Key equals weight.Key into ws
+                from weight in ws.DefaultIfEmpty()
+                orderby weight.Key != null ? weight.Value : 0 descending
+                select job;
+            return orderedJobs.ToList();
+        }
+
+        private Dictionary<string, double> ComputeWeights(Dictionary<string, TimeSpan> executionTimes)
+        {
+            return executionTimes
+                .ToDictionary(de => de.Key, de => de.Value.TotalMilliseconds);
         }
 
         private void StripSuffixes(List<string> dirs)
@@ -483,6 +505,43 @@ namespace Reko.Tools.regressionTests
             Console.WriteLine("Decompiled {0} binaries in {1:0.00} seconds.", cJobs, elapsedTime.TotalSeconds);
         }
 
+        private Dictionary<string, double> LoadWeights()
+        {
+            var weights = new Dictionary<string, double>();
+            try
+            {
+                var path = Path.Combine(this.subjects_dir, WeightsFilename);
+                foreach (var line in File.ReadAllLines(path))
+                {
+                    if (line.Length < 3)
+                        continue;
+                    var elems = line.Split('|');
+                    if (elems.Length != 2)
+                        continue;
+                    var key = elems[0];
+                    if (double.TryParse(elems[1], out var weight))
+                    {
+                        weights[key] = weight;
+                    }
+                }
+            }
+            catch
+            {
+                // Ignore errors; the weights are "nice-to-have".
+            }
+            return weights;
+        }
+
+        private void SaveWeights(Dictionary<string, double> weights)
+        {
+            var path = Path.Combine(this.subjects_dir, WeightsFilename);
+            using var file = File.CreateText(path);
+            foreach (var kv in weights)
+            {
+                file.WriteLine("{0}|{1}", kv.Key, kv.Value);
+            }
+        }
+
         private void Usage()
         {
             Console.Write(
@@ -503,5 +562,5 @@ Options:
 ");
         }
 
-		}
+    }
 }
