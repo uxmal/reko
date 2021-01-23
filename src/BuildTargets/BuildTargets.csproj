@@ -19,34 +19,45 @@
     <CMakeArguments>@(CMakeFlags -> '%(Identity)', ' ')</CMakeArguments>
   </PropertyGroup>
 
+  <!-- Builds the whole Reko solution (the ~/src/Reko-decompiler.sln) -->
   <Target Name="build_solution">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=build_solution -P $(RekoCMake)" />
   </Target>
 
+  <!-- Updates the NuSpec file to contain all the build outputs. This must be done after the build_solution build
+       or no files will be found. -->
   <Target Name="update_runtime_nuspec">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=update_runtime_nuspec -P $(RekoCMake)" />
   </Target>
 
+  <!-- This actually build the nupkg, requiring the `update_runtime_spec` step above. -->
   <Target Name="create_runtime_nupkg">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=create_runtime_nupkg -P $(RekoCMake)" />
   </Target>
 
+  <!-- Builds and runs the Reko unit test. This may build Reko twice. -->
   <Target Name="run_unit_tests">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=run_unit_tests -P $(RekoCMake)" />
   </Target>
 
+  <!-- This runs the regressionTests tool to execute reko on all the binaries in the 
+    ~/subjects directory. 
+  -->
   <Target Name="run_regressions">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=run_regressions -P $(RekoCMake)" />
   </Target>
 
+  <!-- Executes the xslt tool to generate the C# code for the reko menus in ~/src/Gui -->
   <Target Name="gen_decompiler_menus">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_decompiler_menus -P $(RekoCMake)" />
   </Target>
 
+  <!-- Executes the xslt tool to generate the C# code for the reko menus in ~/src/UserInterfaces/WindowsForms -->
   <Target Name="gen_decompiler_menus_winforms">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_decompiler_menus_winforms -P $(RekoCMake)" />
   </Target>
 
+  <!-- Preprocesses the C header files to XML -->
   <Target Name="gen_c2xml_os2">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_c2xml_os2 -P $(RekoCMake)" />
   </Target>
@@ -59,22 +70,30 @@
     <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_c2xml_windows -P $(RekoCMake)" />
   </Target>
 
+  <!-- Runs the hdrgen tool to generate the C interop file 'reko.h'from the C# types that have been 
+   marked with [NativeInteropAttribute]
+  -->
+
   <Target Name="run_hdrgen">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=run_hdrgen -P $(RekoCMake)" />
   </Target>
 
+  <!-- Deletes any cmake and build process junk in the native directory. -->
   <Target Name="nativeproxy_clean">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=nativeproxy_clean -P $(RekoCMake)" />
   </Target>
 
+  <!-- Builds the native code components of Reko -->
   <Target Name="nativeproxy_build">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=nativeproxy_build -P $(RekoCMake)" />
   </Target>
 
+  <!-- Deploys ZIP files containing all the build outputs (including executables, metadata files, and nupkg)-->
   <Target Name="create_release">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=create_release -P $(RekoCMake)" />
   </Target>
 
+  <!-- Convenience target that performs all the above steps in the correct order -->
   <Target Name="reko_all">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=reko_all -P $(RekoCMake)" />
   </Target>

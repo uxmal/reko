@@ -226,7 +226,7 @@
 <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.dll" />
 <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.Drawing.dll" />
 <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Msagl.GraphViewerGdi.dll" />
-<File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\K4os.Compression.LZ4.dll" />
+<File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\K4os.Compression.LZ4.dll" />
         
 <File Source="$(var.SolutionDir)..\external\reactos\coredll.def" />
 <File Source="$(var.SolutionDir)..\external\wine\commdlg.dll16.spec" />

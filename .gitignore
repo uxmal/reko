@@ -50,3 +50,5 @@ TestResults
 /subjects/regressionTests.pyc
 /subjects/**/*.tests
 
+# Generated files
+/src/Drivers/Runtime/Runtime.nuspec
