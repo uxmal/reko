@@ -43,6 +43,12 @@ namespace Reko.Core
             this.Items = new ConcurrentBTreeDictionary<Address, ImageMapItem>(new ItemComparer());
         }
 
+        public ImageMap(ImageMap that)
+        {
+            this.BaseAddress = that.BaseAddress;
+            this.Items = new ConcurrentBTreeDictionary<Address, ImageMapItem>(that.Items);
+        }
+
         public Address BaseAddress { get; }
 
         public ConcurrentBTreeDictionary<Address, ImageMapItem> Items { get; }
@@ -174,6 +180,11 @@ namespace Reko.Core
                 }
             }
             FireMapChanged();
+        }
+
+        public ImageMap Clone()
+        {
+            return new ImageMap(this);
         }
 
         private DataType ChopAfter(DataType type, int offset)
