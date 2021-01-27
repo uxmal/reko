@@ -118,6 +118,9 @@ namespace Reko.Arch.Xtensa
         private static readonly RegisterStorage[] allRegs =
             aregs.Concat(bregs).Concat(fregs).ToArray();
 
+        private static readonly Dictionary<string, RegisterStorage> regsByName =
+            allRegs.ToDictionary(r => r.Name);
+
         private static readonly Dictionary<int, RegisterStorage> sregs = new Dictionary<int, RegisterStorage>
         {
             { 0x00, Registers.LBEG },
@@ -288,7 +291,7 @@ namespace Reko.Arch.Xtensa
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return regsByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
