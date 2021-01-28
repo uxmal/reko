@@ -286,6 +286,12 @@ namespace Reko.Arch.X86
                 SrcOp(0)));
         }
 
+        private void RewriteFninit()
+        {
+            var intrinsic = host.Intrinsic("__fninit", false, VoidType.Instance);
+            m.SideEffect(intrinsic);
+        }
+
         private void RewriteFstenv()
         {
             m.SideEffect(host.Intrinsic(
@@ -679,6 +685,11 @@ namespace Reko.Arch.X86
         private void RewriteFxrstor()
         {
             m.SideEffect(host.Intrinsic("__fxrstor", false, VoidType.Instance));
+        }
+
+        private void RewriteFxsave()
+        {
+            m.SideEffect(host.Intrinsic("__fxsave", false, VoidType.Instance));
         }
 
         private void RewriteFxtract()

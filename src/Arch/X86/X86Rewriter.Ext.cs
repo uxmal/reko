@@ -189,5 +189,11 @@ namespace Reko.Arch.X86
             var ecx = binder.EnsureRegister(Registers.ecx);
             m.SideEffect(host.Intrinsic("__wrmsr", false, VoidType.Instance, ecx, edx_eax));
         }
+
+        private void RewriteXsaveopt()
+        {
+            m.SideEffect(host.Intrinsic("__xsaveopt", false, VoidType.Instance, m.AddrOf(arch.PointerType, SrcOp(0))));
+        }
+
     }
 }

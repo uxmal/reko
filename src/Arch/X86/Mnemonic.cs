@@ -904,6 +904,8 @@ namespace Reko.Arch.X86
         vunpcklps,
         vxorpd,
         vxorps,
+        vzeroall,
+        vzeroupper,
         wait,
         wbinvd,
         wrmsr,

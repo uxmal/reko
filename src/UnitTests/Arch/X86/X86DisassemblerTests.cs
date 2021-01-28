@@ -1128,6 +1128,18 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
+        public void X86Dis_64_vzeroall()
+        {
+            AssertCode64("vzeroall", "C5FC77");
+        }
+
+        [Test]
+        public void X86Dis_64_vzeroupper()
+        {
+            AssertCode64("vzeroupper", "C5F877");
+        }
+
+        [Test]
         public void X86dis_wbinvd()
         {
             AssertCode32("wbinvd", 0x0F, 0x09);
@@ -2415,11 +2427,9 @@ movzx	ax,byte ptr [bp+4h]
         }
 
         [Test]
-        [Ignore("Intel opcode map _appears_ to imply that 0x66 prefix is required, but none seen.")]
         public void X86Dis_vmaskmovps_2()
         {
-            var instr = Disassemble64(0xc4, 0x02, 0x75, 0x2e, 0x80, 0xcc, 0x02);
-            Assert.AreEqual("vmaskmovps\tymmword ptr [r8-0x76befd34<32>],ymm1,ymm8", instr.ToString());
+            AssertCode64("vmaskmovps\t[r8-0F734h],ymm1,ymm8", "C402752E80CC08FFFF");
         }
 
         [Test]
@@ -2502,14 +2512,6 @@ movzx	ax,byte ptr [bp+4h]
         {
             var instr = Disassemble64(0xc4, 0x02, 0x75, 0xdc, 0x43, 0xe0, 0xf7, 0x00);
             Assert.AreEqual("vaesenc\txmm8,xmm1,[r11-20h]", instr.ToString());
-        }
-
-        [Test]
-        [Ignore("Intel opcode map _appears_ to imply that 0x66 prefix is required, but none seen.")]
-        public void X86Dis_vaesenc_2()
-        {
-            var instr = Disassemble64(0xc4, 0x02, 0x75, 0xdc, 0x83, 0xe0, 0xf7, 0x00);
-            Assert.AreEqual("vaesenc\tymm8,ymm1,YMMWORD PTR [r11-76bb0820h]", instr.ToString());
         }
 
         [Test]

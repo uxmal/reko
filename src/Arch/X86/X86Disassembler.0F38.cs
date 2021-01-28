@@ -32,10 +32,10 @@ namespace Reko.Arch.X86
         {
             private void Create0F38Decoders(Decoder[] d)
             {
-                    // 0F 38 00
+                // 0F 38 00
                 d[0x00] = new PrefixedDecoder(
                         Instr(Mnemonic.pshufb, Pq,Qq),
-                        Instr(Mnemonic.vpshufb, Vx,Hx,Wx));
+                        VexInstr(Mnemonic.pshufb, Mnemonic.vpshufb, Vx,Hx,Wx));
                 d[0x01] = new PrefixedDecoder(
                         Instr(Mnemonic.phaddw, Pq,Qq),
                         Instr(Mnemonic.vphaddw, Vx,Hx,Wx));

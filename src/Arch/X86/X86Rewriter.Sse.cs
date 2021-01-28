@@ -46,11 +46,12 @@ namespace Reko.Arch.X86
             m.Assign(dst, host.Intrinsic("__andps", true, dst.DataType, dst, src));
         }
 
-        private void RewriteCmpp(string name, PrimitiveType element)
+        private void RewriteCmpp(bool isVex, string name, PrimitiveType element)
         {
             var dst = this.SrcOp(0);
             var src = this.SrcOp(1);
             RewritePackedTernaryop(
+                isVex,
                 name,
                 element,
                 CreatePackedArrayType(
@@ -206,12 +207,12 @@ namespace Reko.Arch.X86
             m.Assign(dst, src);
         }
 
-        private void RewriteMaskmovq()
+        private void RewriteMaskmov(bool isVex, string fnName)
         {
             var src = SrcOp(1);
             var dst = SrcOp(0);
-            m.Assign(dst,
-                host.Intrinsic("__maskmovq", false, dst.DataType,
+            VexAssign(isVex, dst,
+                host.Intrinsic(fnName, false, dst.DataType,
                     dst, src));
         }
 
@@ -256,7 +257,7 @@ namespace Reko.Arch.X86
                 m.Array(PrimitiveType.Real32, src, Constant.Int32(1)));
         }
 
-        private void RewriteMovmsk(string fnName, PrimitiveType elemType)
+        private void RewriteMovmsk(bool isVex, string fnName, PrimitiveType elemType)
         {
             var srcType = CreatePackedArrayType(elemType, instrCur.Operands[1].Width);
             var src = SrcOp(1, srcType);
@@ -281,6 +282,15 @@ namespace Reko.Arch.X86
             var tmp1 = binder.CreateTemporary(arrayType);
             m.Assign(tmp1, src);
             m.Assign(dst, host.Intrinsic(fnName, true, arrayType, tmp1));
+        }
+
+        private void RewritePbroadcast(bool isVex, string fname, PrimitiveType elementType)
+        {
+            var src = SrcOp(1);
+            var dst = SrcOp(0);
+            ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
+            var tmp = binder.CreateTemporary(arrayType);
+            VexAssign(isVex, dst, host.Intrinsic(fname, true, arrayType, src));
         }
 
         private void RewritePcmp(string fnName, PrimitiveType elementType)
@@ -309,7 +319,7 @@ namespace Reko.Arch.X86
                 host.Intrinsic("__pextrw", true, dst.DataType, dst, src1, src2));
         }
 
-        private void RewritePinsrw()
+        private void RewritePinsr(bool isVex, string fnName, PrimitiveType dtElem)
         {
             Expression dst;
             Expression src1;
@@ -326,9 +336,10 @@ namespace Reko.Arch.X86
                 src1 = SrcOp(0);
                 src2 = SrcOp(1);
             }
-            m.Assign(
+            VexAssign(
+                isVex,
                 dst,
-                host.Intrinsic("__pinsrw", true, dst.DataType, dst, src1, src2));
+                host.Intrinsic(fnName, true, dst.DataType, dst, src1, src2));
         }
 
         private void RewritePackedLogical(string intrinsicName)
@@ -337,6 +348,21 @@ namespace Reko.Arch.X86
             var src = this.SrcOp(1);
             m.Assign(dst, host.Intrinsic(intrinsicName, true, dst.DataType, dst, src));
         }
+
+        private void RewritePor()
+        {
+            if (instrCur.Operands.Length > 2)
+            {
+                // DEST←SRC1 OR SRC2
+                m.Assign(SrcOp(0), m.Or(SrcOp(1), SrcOp(2)));
+            }
+            else
+            {
+                // DEST←DEST OR SRC
+                m.Assign(SrcOp(0), m.Or(SrcOp(0), SrcOp(1)));
+            }
+        }
+
 
         private void RewritePshuf(string intrinsicName, PrimitiveType dt)
         {
@@ -566,6 +592,21 @@ namespace Reko.Arch.X86
             VexAssign(isVex, dst, host.Intrinsic(fnName, true, arrayType, tmp1, tmp2));
         }
 
+        private void RewritePmaddUbSw(bool isVex, string fnName)
+        {
+            var src1 = SrcOp(0);
+            var dtSrc1 = CreatePackedArrayType(PrimitiveType.UInt8, src1.DataType);
+            var src2 = SrcOp(1);
+            var dtSrc2 = CreatePackedArrayType(PrimitiveType.Int8, src1.DataType);
+            var tmp1 = binder.CreateTemporary(dtSrc1);
+            var tmp2 = binder.CreateTemporary(dtSrc2);
+            m.Assign(tmp1, src1);
+            m.Assign(tmp2, src2);
+            var dst = SrcOp(0);
+            var dtDst = CreatePackedArrayType(PrimitiveType.Int16, dst.DataType);
+            VexAssign(isVex, dst, host.Intrinsic(fnName, true, dtDst, tmp1, tmp2));
+        }
+
         private void RewritePackedShift(string fnName, PrimitiveType elementType, DataType? dstType = null)
         {
             var dst = SrcOp(0);
@@ -589,7 +630,7 @@ namespace Reko.Arch.X86
             m.Assign(dst, host.Intrinsic(fnName, true, arrayType, tmp1, src2));
         }
 
-        private void RewritePackedTernaryop(string fnName, PrimitiveType elementType, DataType? dstType = null)
+        private void RewritePackedTernaryop(bool isVex, string fnName, PrimitiveType elementType, DataType? dstType = null)
         {
             var dst = SrcOp(0);
             ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
@@ -614,7 +655,7 @@ namespace Reko.Arch.X86
             var tmp2 = binder.CreateTemporary(arrayType);
             m.Assign(tmp1, src1);
             m.Assign(tmp2, src2);
-            m.Assign(dst, host.Intrinsic(fnName, true, arrayType, tmp1, tmp2, src3));
+            VexAssign(isVex, dst, host.Intrinsic(fnName, true, arrayType, tmp1, tmp2, src3));
         }
 
         private void RewritePackedUnaryop(string fnName, PrimitiveType elementType, DataType? dstType = null)

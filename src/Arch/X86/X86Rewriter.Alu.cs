@@ -1062,6 +1062,21 @@ namespace Reko.Arch.X86
             m.Assign(sp, m.IAddS(sp, width.Size));
         }
 
+        private void RewritePopcnt()
+        {
+            var src = SrcOp(1);
+            if (src is MemoryAccess)
+            {
+                var tmp = binder.CreateTemporary(src.DataType);
+                m.Assign(tmp, src);
+                src = tmp;
+            }
+            var dst = (Identifier) SrcOp(0);
+            var dt = PrimitiveType.Create(Domain.SignedInt, dst.DataType.BitSize);
+            AssignToRegister(dst, host.Intrinsic("__popcnt", true, dt, src));
+            m.Assign(orw.FlagGroup(FlagM.ZF), m.Eq0(src));
+        }
+
         private void RewritePush(DataType dataWidth, Expression expr)
         {
             if (expr is Constant c && c.DataType != dataWidth)
