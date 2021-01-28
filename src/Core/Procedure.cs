@@ -213,6 +213,7 @@ namespace Reko.Core
                 foreach (var p in b.Pred)
                     writer.Write(" {0}", p.DisplayName);
                 writer.WriteLine();
+                b.WriteStatements(writer);
                 writer.Write("    Succ:");
                 foreach (var s in b.Succ)
                     writer.Write(" {0}", s.DisplayName);

@@ -450,7 +450,7 @@ namespace Reko.Arch.Sparc
                     Instr(Mnemonic.wrwim, nyi)),
                 Instr64(
                     invalid,
-                    Instr(Mnemonic.wrtbr, nyi)),
+                    Instr(Mnemonic.wrtbr, InstrClass.System, r14, R0)),
 
                 SparcDisassembler.Sparse(5, 9, "  FOp1", invalid, fpDecoders),
                 SparcDisassembler.Sparse(5, 9, "  FOp2", invalid, fpDecoders),
@@ -655,8 +655,5 @@ namespace Reko.Arch.Sparc
                 return instr;
             }
         }
-
     }
-
-
 }

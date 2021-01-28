@@ -248,5 +248,11 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             AssertInstruction64(0x837E2401, "movrz\t%i0,+00000001,%g1");
         }
+
+        [Test]
+        public void SparcDasm_wrtbr()
+        {
+            AssertInstruction(0x9999999A, "wrtbr\t%g6,%i2");
+        }
     }
 }
