@@ -35,16 +35,27 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteSimdBinary(string simdFormat, Domain domain, Action<Expression> setFlags = null)
         {
             var arrayLeft = MakeArrayType(instr.Operands[1], domain);
-            var arrayRight = MakeArrayType(instr.Operands[2], domain);
-            var arrayDst = MakeArrayType(instr.Operands[0], domain);
             var tmpLeft = binder.CreateTemporary(arrayLeft);
-            var tmpRight = binder.CreateTemporary(arrayRight);
+            Expression tmpRight = null;
+            if (!(instr.Operands[2] is ImmediateOperand imm))
+            {
+                var arrayRight = MakeArrayType(instr.Operands[2], domain);
+                tmpRight = binder.CreateTemporary(arrayRight);
+            }
+            var arrayDst = MakeArrayType(instr.Operands[0], domain);
             var left = RewriteOp(instr.Operands[1], true);
             var right = RewriteOp(instr.Operands[2], true);
             var dst = RewriteOp(instr.Operands[0]);
             var name = GenerateSimdIntrinsicName(simdFormat, (PrimitiveType)arrayLeft.ElementType);
             m.Assign(tmpLeft, left);
-            m.Assign(tmpRight, right);
+            if (tmpRight != null)
+            {
+                m.Assign(tmpRight, right);
+            }
+            else
+            {
+                tmpRight = right;
+            }
             m.Assign(dst, host.Intrinsic(name, false, arrayDst, tmpLeft, tmpRight));
             setFlags?.Invoke(dst);
         }
@@ -110,16 +121,14 @@ namespace Reko.Arch.Arm.AArch64
             return string.Format(simdFormat, $"{prefix}{elementType.BitSize}");
         }
 
-
         private void RewriteAddv()
         {
             RewriteSimdReduce("__sum_{0}", Domain.Integer);
         }
 
-
-        private void RewriteCmeq()
+        private void RewriteCm(string name)
         {
-            RewriteSimdBinary("__cmeq", Domain.None);
+            RewriteSimdBinary(name, Domain.None);
         }
 
         private void RewriteDup()

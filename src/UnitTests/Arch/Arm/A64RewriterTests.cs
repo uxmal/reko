@@ -213,6 +213,18 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_ldnp()
+        {
+            Given_HexString("48656C6C");
+            AssertCode(     // ldnp	d8,d25,[x10,#-&140]
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v5 = x10 + -320<i64>",
+                "2|L--|d8 = Mem0[v5:word64]",
+                "3|L--|v5 = v5 + 8<i64>",
+                "4|L--|d25 = Mem0[v5:word64]");
+        }
+
+        [Test]
         public void AArch64Rw_ldp()
         {
             Given_Instruction(0x2D646C2F);
@@ -597,6 +609,8 @@ namespace Reko.UnitTests.Arch.Arm
                 "3|L--|v5 = v5 + 8<i64>",
                 "4|L--|x26 = Mem0[v5:word64]");
         }
+
+
 
         [Test]
         public void AArch64Rw_ldp_post()
@@ -1099,6 +1113,16 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode( // eon
                 "0|L--|0000000000100000(4): 1 instructions",
                 "1|L--|w0 = w0 ^ ~(w1 << 3<i32>)");
+        }
+
+        [Test]
+        [Ignore("Not yet")]
+        public void AArch64Rw_ext()
+        {
+            Given_HexString("0240016E");
+            AssertCode(     // ext	v2.16b,v0.16b,v1.16b,#8
+                "0|L--|0000000000000C9C(4): 1 instructions",
+                "1|L--|@@@");
         }
 
         [Test]
@@ -1921,6 +1945,18 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        [Ignore("Not yet")]
+        public void AArch64Rw_cmhs()
+        {
+            Given_HexString("233C236E");
+            AssertCode(     // cmhs	v3.16b,v1.16b,v3.16b,#0
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|v3 = q3",
+                "3|L--|q3 = __cmhs(v2, v3)");
+        }
+
+        [Test]
         public void AArch64Rw_st1()
         {
             Given_Instruction(0x0D0041B5);	// st1	{v21.h}[0],[x13]
@@ -1946,6 +1982,16 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|w11 = __ubfm(w11, 2<i32>, 2<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_ushr()
+        {
+            Given_HexString("63043F6F");
+            AssertCode(     // ushr	v3.4s,v3.4s,#1
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q3",
+                "2|L--|q3 = __ushr_u32(v2, 1<i32>)");
         }
 
         [Test]
