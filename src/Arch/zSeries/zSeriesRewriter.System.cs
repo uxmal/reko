@@ -33,14 +33,14 @@ namespace Reko.Arch.zSeries
                 "__branch_prediction_relative_preload",
                 false,
                 VoidType.Instance,
-                Op(0),
-                Op(1),
-                Op(2)));
+                Op(0, arch.WordWidth),
+                Op(1, arch.WordWidth),
+                Op(2, arch.WordWidth)));
         }
 
         private void RewriteEx()
         {
-            SetCc(host.Intrinsic("__execute", false, PrimitiveType.Byte, Reg(0), Op(1)));
+            SetCc(host.Intrinsic("__execute", false, PrimitiveType.Byte, Reg(0), Op(1, arch.WordWidth)));
         }
 
         private void RewriteLra()

@@ -72,7 +72,7 @@ namespace Reko.Arch.Sparc
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
                 var rtlInstructions = new List<RtlInstruction>();
-                iclass = InstrClass.Linear;
+                iclass = instrCur.InstructionClass;
                 m = new RtlEmitter(rtlInstructions);
                 switch (instrCur.Mnemonic)
                 {
@@ -163,6 +163,7 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.fitoq: RewriteFitoq(); break;
                 case Mnemonic.fitos: RewriteFitos(); break;
                 case Mnemonic.fmovs: RewriteFmovs(); break;
+                case Mnemonic.fmuld: RewriteFmuld(); break;
                 case Mnemonic.fmuls: RewriteFmuls(); break;
                 case Mnemonic.fnegs: RewriteFmovs(); break;
                 case Mnemonic.fstod: RewriteFstod(); break;

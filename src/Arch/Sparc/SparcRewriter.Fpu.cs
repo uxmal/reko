@@ -131,9 +131,9 @@ namespace Reko.Arch.Sparc
 
         private void RewriteFdtos()
         {
+            var src = RewriteDoubleRegister(instrCur.Operands[0]);
             var fpDst = RewriteOp(instrCur.Operands[1]);
-            var dt = PrimitiveType.Real32;
-            m.Assign(fpDst, m.Convert(RewriteOp(instrCur.Operands[0]), PrimitiveType.Real64, dt));
+            m.Assign(fpDst, m.Convert(src, PrimitiveType.Real64, PrimitiveType.Real32));
         }
 
         private void RewriteFstod()
@@ -170,6 +170,14 @@ namespace Reko.Arch.Sparc
             var fdst = binder.EnsureRegister(arch.Registers.GetFpuRegister(dst.Register.Number));
             var fsrc = binder.EnsureRegister(arch.Registers.GetFpuRegister(src.Register.Number));
             m.Assign(fdst, fsrc);
+        }
+
+        private void RewriteFmuld()
+        {
+            var src1 = RewriteDoubleRegister(instrCur.Operands[0]);
+            var src2 = RewriteDoubleRegister(instrCur.Operands[1]);
+            var dst = RewriteDoubleRegister(instrCur.Operands[2]);
+            m.Assign(dst, m.FMul(src1, src2));
         }
 
         private void RewriteFmuls()

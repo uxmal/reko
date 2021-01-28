@@ -299,6 +299,17 @@ namespace Reko.Arch.zSeries
             Assign(Reg(0), m.Convert(src, ptFrom, ptTo));
         }
 
+        private void RewriteLaa(Func<Expression,Expression,Expression> fn, PrimitiveType dt)
+        {
+            var src1 = Reg(1);
+            var tmp = binder.CreateTemporary(src1.DataType);
+            var ea = EffectiveAddress(2);
+            m.Assign(tmp, src1);
+            Assign(src1, m.IAdd(src1, m.Mem(dt, ea)));
+            Assign(Reg(0), tmp);
+            this.SetCc(m.Cond(src1));
+        }
+
         private void RewriteLay()
         {
             var ea = EffectiveAddress(1);
@@ -419,7 +430,7 @@ namespace Reko.Arch.zSeries
                 var cc = binder.EnsureFlagGroup(Registers.CC);
                 m.Branch(m.Test(ccode.Invert(), cc), instr.Address + instr.Length);
             }
-            var src = Op(2);
+            var src = Op(2, dt);
             src.DataType = dt;
             Assign(Reg(0), src);
         }
@@ -578,7 +589,8 @@ namespace Reko.Arch.zSeries
 
         private void RewriteRisbg(string intrinsic)
         {
-            var e = host.Intrinsic(intrinsic, true, PrimitiveType.Word64, Op(1), Op(2), Op(3), Op(4));
+            var dt = PrimitiveType.Word64;
+            var e = host.Intrinsic(intrinsic, true, dt, Op(1, dt), Op(2, dt), Op(3, dt), Op(4, dt));
             var dst = Assign(Reg(0), e);
             SetCc(m.Cond(dst));
         }
@@ -591,7 +603,7 @@ namespace Reko.Arch.zSeries
         private void RewriteS(PrimitiveType dt)
         {
             var src1 = Reg(0, dt);
-            var diff = m.ISub(src1, Op(1));
+            var diff = m.ISub(src1, Op(1, dt));
             diff.DataType = dt;
             var dst = Assign(Reg(0), diff);
             SetCc(m.Cond(dst));
@@ -600,7 +612,7 @@ namespace Reko.Arch.zSeries
         private void RewriteSub2(PrimitiveType dt)
         {
             var src1 = Reg(0, dt);
-            var src2 = Reg(1, dt);
+            var src2 = Op(1, dt);
             var diff = m.ISub(src1, src2);
             var dst = Assign(Reg(0), diff);
             SetCc(m.Cond(dst));
@@ -687,7 +699,7 @@ namespace Reko.Arch.zSeries
         private void RewriteXor2(PrimitiveType dt)
         {
             var left = Reg(0, dt);
-            var right = Op(1);
+            var right = Op(1, dt);
             var dst = Assign(Reg(0), m.Xor(left, right));
             SetCc(m.Cond(dst));
         }

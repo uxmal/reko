@@ -54,14 +54,14 @@ namespace Reko.Arch.zSeries
         private void RewriteBr()
         {
             this.iclass = InstrClass.Transfer;
-            var dst = Op(0);
+            var dst = Op(0, arch.PointerType);
             m.Goto(dst);
         }
 
         private void RewriteBranch(ConditionCode condCode)
         {
             this.iclass = InstrClass.ConditionalTransfer;
-            var dst = Op(0);
+            var dst = Op(0, arch.PointerType);
             var cc = binder.EnsureFlagGroup(Registers.CC);
             m.BranchInMiddleOfInstruction(m.Test(condCode, cc).Invert(), instr.Address + instr.Length, iclass);
             m.Goto(dst);

@@ -204,6 +204,7 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.la: RewriteLa(); break;
                 case Mnemonic.larl: RewriteLarl(); break;
                 case Mnemonic.l: RewriteL(PrimitiveType.Word32); break;
+                case Mnemonic.laa: RewriteLaa(m.IAdd, PrimitiveType.Int32); break;
                 case Mnemonic.lay: RewriteLay(); break;
                 case Mnemonic.lbr: RewriteLr(PrimitiveType.SByte, PrimitiveType.Int32); break;
                 case Mnemonic.lcdr: RewriteLcr(LongHexFloat, m.FNeg); break;
@@ -310,6 +311,7 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.sla: RewriteShift2(PrimitiveType.Int32, m.Shl); break;
                 case Mnemonic.slgfr: RewriteAlugfr(m.USub, PrimitiveType.Word32, PrimitiveType.Word64); break;
                 case Mnemonic.slgr: RewriteSub2(PrimitiveType.Word64); break;
+                case Mnemonic.slfi: RewriteSub2(PrimitiveType.Word32); break;
                 case Mnemonic.sll: RewriteShift2(PrimitiveType.Word32, m.Shl); break;  //$TODO: CC's are handled unsigned.
                 case Mnemonic.slr: RewriteSub2(PrimitiveType.Word32); break;
                 case Mnemonic.slrk: RewriteAlu3(m.USub, PrimitiveType.Word32); break;
@@ -423,16 +425,26 @@ namespace Reko.Arch.zSeries
             return ea;
         }
 
-        private Expression Op(int iop)
+        private Expression Op(int iop, PrimitiveType dt)
         {
             switch (instr.Operands[iop])
             {
             case RegisterOperand reg:
-                return binder.EnsureRegister(reg.Register);
+                var r =  binder.EnsureRegister(reg.Register);
+                if (r.DataType.BitSize > dt.BitSize)
+                {
+                    var tmp = binder.CreateTemporary(dt);
+                    m.Assign(tmp, m.Slice(r, dt, 0));
+                    return tmp;
+                }
+                else
+                {
+                    return r;
+                }
             case ImmediateOperand imm:
                 return imm.Value;
             case MemoryOperand mem:
-                return new MemoryAccess(EffectiveAddress(mem), mem.Width);
+                return new MemoryAccess(EffectiveAddress(mem), dt);
             case AddressOperand addr:
                 return addr.Address;
             default:

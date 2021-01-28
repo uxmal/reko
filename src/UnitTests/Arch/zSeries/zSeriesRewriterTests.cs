@@ -965,7 +965,7 @@ namespace Reko.UnitTests.Arch.zSeries
             Given_HexString("44405000");
             AssertCode(     // ex	r4,(r5)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|CC = __execute(r4, Mem0[r5:word32])");
+                "1|L--|CC = __execute(r4, Mem0[r5:word64])");
         }
 
         [Test]
@@ -1113,7 +1113,6 @@ namespace Reko.UnitTests.Arch.zSeries
                 "1|T--|if (Test(OV,CC)) branch 000FFFFC");
         }
 
-
         [Test]
         public void zSeriesRw_la()
         {
@@ -1124,13 +1123,15 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
-        [Ignore("S390 instr")]
         public void zSeriesRw_laa()
         {
-            Given_HexString("EB11400000F8");
-            AssertCode(     // laa	r1,r1,(r4)
-                "0|L--|00100000(6): 1 instructions",
-                "1|L--|@@@");
+            Given_HexString("EB12400000F8");
+            AssertCode(     // laa	r1,r2,(r4)
+                "0|L--|00100000(6): 4 instructions",
+                "1|L--|v3 = r2",
+                "2|L--|r2 = r2 + Mem0[r4:int32]",
+                "3|L--|r1 = v3",
+                "4|L--|CC = cond(r2)");
         }
 
         [Test]
@@ -2309,7 +2310,7 @@ namespace Reko.UnitTests.Arch.zSeries
             AssertCode(     // s	r2,16(r3)
                 "0|L--|00100000(4): 4 instructions",
                 "1|L--|v3 = SLICE(r2, int32, 0)",
-                "2|L--|v5 = v3 - Mem0[r3 + 16<i64>:word32]",
+                "2|L--|v5 = v3 - Mem0[r3 + 16<i64>:int32]",
                 "3|L--|r2 = SEQ(SLICE(r2, word32, 32), v5)",
                 "4|L--|CC = cond(v5)");
         }
@@ -2485,7 +2486,7 @@ namespace Reko.UnitTests.Arch.zSeries
             Given_HexString("C2257FF00000");
             AssertCode(     // slfi	r2,7FF00000
                 "0|L--|00100000(6): 1 instructions",
-                "1|L--|@@@");
+                "1|L--|r2 = r2 - 0x7FF00000<32>");
         }
 
         [Test]
