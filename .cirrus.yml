@@ -1,0 +1,25 @@
+env:
+  CIRRUS_CLONE_DEPTH: 1
+
+linux_x64_task:
+  container:
+    cpu: 8
+    memory: 4G
+    image: mcr.microsoft.com/dotnet/sdk:3.1
+
+  install_script:
+    - apt-get update -qq
+    - apt-get install -y build-essential gcc g++ cmake libcapstone-dev pkg-config p7zip-full
+
+  prepare_script:
+    - dotnet nuget locals all --clear
+  build_script:
+    - dotnet msbuild -p:Platform=x64 -p:Configuration=UnixRelease -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
+  test_script:
+    - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
+  regressions_script:
+    - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
+  nupkg_script:
+    - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_runtime_nupkg -m ./src/BuildTargets/BuildTargets.csproj
+  release_script:
+    - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
