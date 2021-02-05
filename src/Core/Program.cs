@@ -580,7 +580,7 @@ namespace Reko.Core
         /// <param name="addr">The address at which there must be a procedure after 
         /// this method returns.
         /// </param>
-        /// <param name="procedureName">The name of the procedure. If null,
+        /// <param name="procedureName">The name of the procedure. If null or empty,
         /// this method will synthesize a new name.</param>
         /// <returns>
         /// The procedure, located at address <paramref name="addr"/>.
@@ -590,11 +590,13 @@ namespace Reko.Core
             if (this.Procedures.TryGetValue(addr, out Procedure proc))
                 return proc;
 
-            bool deduceSignatureFromName = procedureName != null;
+            bool deduceSignatureFromName = !string.IsNullOrEmpty(procedureName);
             if (this.ImageSymbols.TryGetValue(addr, out ImageSymbol sym))
             {
-                deduceSignatureFromName |= sym.Name != null;
+                deduceSignatureFromName |= !string.IsNullOrEmpty(procedureName);
                 var generatedName = procedureName ?? sym.Name ?? this.NamingPolicy.ProcedureName(addr);
+                if (generatedName.Length == 0)
+                    generatedName = this.NamingPolicy.ProcedureName(addr);
                 proc = Procedure.Create(arch, generatedName, addr, arch.CreateFrame());
                 if (sym.Signature != null)
                 {

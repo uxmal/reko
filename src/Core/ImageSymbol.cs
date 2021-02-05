@@ -139,7 +139,7 @@ namespace Reko.Core
             {
                 Type = type,
                 Architecture = arch,
-                Address = address!,
+                Address = address,
                 Name = name,
                 DataType = dataType ?? new UnknownType(),
                 NoDecompile = !decompile,

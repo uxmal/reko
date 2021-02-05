@@ -485,6 +485,8 @@ namespace Reko.Scanning
 
         public void ScanImageSymbol(ImageSymbol sym, bool isEntryPoint)
         {
+            if (sym.Name != null && sym.Name == "")
+                sym.ToString();
             try
             {
                 Address addr = sym.Address!;
@@ -499,7 +501,7 @@ namespace Reko.Scanning
                     var sser = Program.CreateProcedureSerializer();
                     proc.Signature = sser.Deserialize(sym.Signature, proc.Frame)!;
                 }
-                else if (sym.Name != null)
+                else if (!string.IsNullOrEmpty(sym.Name))
                 {
                     var sProc = Program.Platform.SignatureFromName(sym.Name);
                     if (sProc != null)
