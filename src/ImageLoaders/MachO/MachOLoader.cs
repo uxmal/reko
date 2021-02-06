@@ -43,14 +43,14 @@ namespace Reko.ImageLoaders.MachO
 
         internal static readonly TraceSwitch trace = new TraceSwitch(nameof(MachOLoader), "Trace loading of MachO binaries") { Level = TraceLevel.Verbose };
 
-        private Parser parser;
+        private Parser? parser;
         internal List<MachOSection> sections;
         internal Dictionary<string, MachOSection> sectionsByName;
         internal Dictionary<MachOSection, ImageSegment> imageSections;
         internal List<MachOSymbol> machoSymbols;
         internal SortedList<Address, ImageSymbol> imageSymbols;
         internal List<ImageSymbol> entryPoints;
-        internal Program program;
+        internal Program? program;
 
         public MachOLoader(IServiceProvider services, string filename, byte[] rawImg)
             : base(services, filename, rawImg)
@@ -74,8 +74,8 @@ namespace Reko.ImageLoaders.MachO
         {
             this.program = new Program();
             parser = CreateParser();
-            var hdr = parser.ParseHeader(addrLoad);
-            this.program = parser.ParseLoadCommands(hdr, addrLoad);
+            var (hdr, specific) = parser.ParseHeader(addrLoad);
+            this.program = parser.ParseLoadCommands(hdr, specific.Architecture, addrLoad);
             return this.program;
         }
 
@@ -95,7 +95,9 @@ namespace Reko.ImageLoaders.MachO
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            CollectSymbolStubs(machoSymbols, imageSymbols);
+            if (parser is null)
+                throw new InvalidOperationException();
+            CollectSymbolStubs(parser!, machoSymbols, imageSymbols);
             var imgSymbols = new SortedList<Address, ImageSymbol>();
             foreach (var de in imageSymbols)
             {
@@ -110,14 +112,14 @@ namespace Reko.ImageLoaders.MachO
         /// </summary>
         /// <param name="machoSymbols"></param>
         /// <param name="imageSymbols"></param>
-        private void CollectSymbolStubs(List<MachOSymbol> machoSymbols, SortedList<Address, ImageSymbol> imageSymbols)
+        private void CollectSymbolStubs(Parser parser, List<MachOSymbol> machoSymbols, SortedList<Address, ImageSymbol> imageSymbols)
         {
             var msec = this.sections.FirstOrDefault(s => (s.Flags & SectionFlags.SECTION_TYPE) == SectionFlags.S_SYMBOL_STUBS);
             if (msec == null)
                 return;
             if (parser.dysymtab == null)
                 return;
-            var indirectSymRdr = program.Architecture.Endianness.CreateImageReader(RawImage, parser.dysymtab.indirectsymoff);
+            var indirectSymRdr = program!.Architecture.Endianness.CreateImageReader(RawImage, parser.dysymtab.indirectsymoff);
             var sec = this.imageSections[msec];
             trace.Inform("MachO: Found {0} import stubs", sec.Size / msec.Reserved2);
             for (uint off = 0; off < sec.Size; off += msec.Reserved2)
@@ -239,15 +241,15 @@ static const byte NO_SECT = 0;
     {
         public string Name;
         public byte n_type;
-//        public MachOSection msec;         // Symbol section appears not to be used by binary loader.
+        public byte n_sect;
         public ushort n_desc;
         public ulong n_value;
 
-        public MachOSymbol(string name, byte n_type, ushort n_desc, ulong n_value)
+        public MachOSymbol(string name, byte n_type, byte n_sect, ushort n_desc, ulong n_value)
         {
             this.Name = name;
             this.n_type = n_type;
-            //this.msec = msec;
+            this.n_sect = n_sect;
             this.n_desc = n_desc;
             this.n_value = n_value;
         }

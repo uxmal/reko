@@ -503,7 +503,7 @@ namespace Reko.Scanning
                 }
                 else if (!string.IsNullOrEmpty(sym.Name))
                 {
-                    var sProc = Program.Platform.SignatureFromName(sym.Name);
+                    var sProc = Program.Platform.SignatureFromName(sym.Name!);
                     if (sProc != null)
                     {
                         var loader = Program.CreateTypeLibraryDeserializer();
@@ -517,7 +517,7 @@ namespace Reko.Scanning
                     }
                     else
                     {
-                        proc.Name = sym.Name;
+                        proc.Name = sym.Name!;
                     }
                 }
 
