@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -128,9 +128,15 @@ namespace Reko.Gui
         {
             int cItems = listProcedures.SelectedItems.Count;
             var singleItemSelected = cItems == 1;
-            if (cmdId.Guid == CmdSets.GuidReko)
+            ProgramProcedure pp = default;
+            if (singleItemSelected)
             {
-                switch (cmdId.ID) {
+                pp = (ProgramProcedure) listProcedures.SelectedItems[0].Tag;
+            }
+            if (cmdId.Guid == CmdSets.GuidReko) 
+            {
+                switch (cmdId.ID)
+                {
                 case CmdIds.ActionEditSignature:
                 case CmdIds.ViewGoToAddress:
                 case CmdIds.ShowProcedureCallHierarchy:
@@ -138,6 +144,19 @@ namespace Reko.Gui
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : MenuStatus.Visible;
                     return true;
+#if DEBUG
+                case CmdIds.ProcedureDebugTrace:
+                    var st = MenuStatus.Visible;
+                    if (singleItemSelected)
+                    {
+                        if (pp.Program.User.DebugTraceProcedures.Contains(pp.Procedure.Name))
+                            st |= MenuStatus.Checked;
+                        if (singleItemSelected)
+                            st |= MenuStatus.Enabled;
+                    }
+                    status.Status = st;
+                    return true;
+#endif
                 }
             }
             return false;
@@ -158,6 +177,12 @@ namespace Reko.Gui
                 case CmdIds.ShowProcedureCallHierarchy:
                     ShowProcedureCallHierarchy();
                     return true;
+#if DEBUG
+                case CmdIds.ProcedureDebugTrace:
+                    DebugTraceSelectedProcedure();
+                    return true;
+#endif
+
                 }
             }
             return false;
@@ -171,23 +196,32 @@ namespace Reko.Gui
         private void EditProcedureSignature()
         {
             var item = listProcedures.SelectedItems[0];
-            var pp = (ProgramProcedure) item.Tag;
-            services.RequireService<ICommandFactory>().EditSignature(pp.Program, pp.Procedure, pp.Procedure.EntryAddress).Do();
-            UpdateItem(item);
+            if (item.Tag != null)
+            {
+                var pp = (ProgramProcedure) item.Tag;
+                services.RequireService<ICommandFactory>().EditSignature(pp.Program, pp.Procedure, pp.Procedure.EntryAddress).Do();
+                UpdateItem(item);
+            }
         }
 
         private void GotoProcedureAddress()
         {
             var item = listProcedures.SelectedItems[0];
-            var pp = (ProgramProcedure) item.Tag;
-            services.RequireService<ILowLevelViewService>().ShowMemoryAtAddress(pp.Program, pp.Procedure.EntryAddress);
+            if (item.Tag != null)
+            {
+                var pp = (ProgramProcedure) item.Tag;
+                services.RequireService<ILowLevelViewService>().ShowMemoryAtAddress(pp.Program, pp.Procedure.EntryAddress);
+            }
         }
 
         private void ShowProcedureCallHierarchy()
         {
             var item = listProcedures.SelectedItems[0];
-            var pp = (ProgramProcedure) item.Tag;
-            services.RequireService<ICallHierarchyService>().Show(pp.Program, pp.Procedure);
+            if (item.Tag != null)
+            {
+                var pp = (ProgramProcedure) item.Tag;
+                services.RequireService<ICallHierarchyService>().Show(pp.Program, pp.Procedure);
+            }
         }
 
         private IEnumerable<ProgramProcedure> SelectedItems()
@@ -197,8 +231,28 @@ namespace Reko.Gui
                 .Select(i => (ProgramProcedure)i.Tag);
         }
 
-        private void UpdateItem(ListViewItem item)
+#if DEBUG
+        private void DebugTraceSelectedProcedure()
         {
+            var item = listProcedures.SelectedItems[0];
+            if (item.Tag != null)
+            {
+                var pp = (ProgramProcedure) item.Tag;
+                var name = pp.Procedure.Name;
+                var procs = pp.Program.User.DebugTraceProcedures;
+                if (procs.Contains(name))
+                    procs.Remove(name);
+                else
+                    procs.Add(name);
+            }
+        }
+#endif
+
+            private void UpdateItem(ListViewItem item)
+        {
+            if (item.Tag == null)
+                return;
+
             var subItems = CreateListItemTexts((ProgramProcedure) item.Tag);
             for (int i = 0; i < subItems.Length; ++i)
             {

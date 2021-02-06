@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2019 John Källén.
+* Copyright (C) 1999-2021 John Kï¿½llï¿½n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -132,9 +132,9 @@ void ArmRewriter::RewriteLogical(HExpr(*cons)(INativeRtlEmitter & m, HExpr a, HE
 void ArmRewriter::RewriteRev()
 {
 	auto opDst = this->Operand(Dst(), BaseType::Word32, true);
-	auto ppp = host->EnsurePseudoProcedure("__rev", BaseType::Word32, 1);
+	auto intrinsic = host->EnsureIntrinsicProcedure("__rev", true, BaseType::Word32, 1);
 	m.AddArg(this->Operand(Src1()));
-	m.Assign(opDst, m.Fn(ppp));
+	m.Assign(opDst, m.Fn(intrinsic));
 }
 
 void ArmRewriter::RewriteRevBinOp(BinOpEmitter op, bool setflags)
@@ -172,9 +172,9 @@ void ArmRewriter::RewriteClz()
 {
 	auto opDst = this->Operand(Dst(), BaseType::Word32, true);
 	auto opSrc = this->Operand(Src1());
-	auto ppp = host->EnsurePseudoProcedure("__clz", BaseType::Int32, 1);
+	auto intrinsic = host->EnsureIntrinsicProcedure("__clz", true, BaseType::Int32, 1);
 	m.AddArg(opSrc);
-	m.Assign(opDst, m.Fn(ppp));
+	m.Assign(opDst, m.Fn(intrinsic));
 }
 
 void ArmRewriter::RewriteCmp(BinOpEmitter op)
@@ -293,8 +293,8 @@ void ArmRewriter::RewriteStrd()
 
 void ArmRewriter::RewriteStrex()
 {
-	auto ppp = host->EnsurePseudoProcedure("__strex", BaseType::Void, 0);
-	m.SideEffect(m.Fn(ppp));
+	auto intrinsic = host->EnsureIntrinsicProcedure("__strex", false, BaseType::Void, 0);
+	m.SideEffect(m.Fn(intrinsic));
 }
 
 void ArmRewriter::RewriteSubw()
@@ -320,9 +320,9 @@ void ArmRewriter::RewriteMultiplyAccumulate(BinOpEmitter op)
 
 void ArmRewriter::RewriteHint()
 {
-	auto ppp = host->EnsurePseudoProcedure("__ldrex", BaseType::Void, 1);
+	auto intrinsic = host->EnsureIntrinsicProcedure("__ldrex", false, BaseType::Void, 1);
 	m.AddArg(Operand(Dst()));
-	m.SideEffect(m.Fn(ppp));
+	m.SideEffect(m.Fn(intrinsic));
 }
 
 void ArmRewriter::RewriteLdm(int initialOffset, BinOpEmitter op)
@@ -370,8 +370,8 @@ void ArmRewriter::RewriteLdm(HExpr dst, int skip, int offset, BinOpEmitter op, b
 
 void ArmRewriter::RewriteLdrex()
 {
-	auto ppp = host->EnsurePseudoProcedure("__ldrex", BaseType::Void, 0);
-	m.SideEffect(m.Fn(ppp));
+	auto intrinsic = host->EnsureIntrinsicProcedure("__ldrex", false, BaseType::Void, 0);
+	m.SideEffect(m.Fn(intrinsic));
 }
 
 void ArmRewriter::RewriteShift(HExpr(*ctor)(INativeRtlEmitter & m, HExpr, HExpr))
@@ -500,7 +500,7 @@ void ArmRewriter::RewriteQAddSub(BinOpEmitter op)
 	auto src1 = Operand(Src1());
 	auto src2 = Operand(Src2());
 	auto sum = (m.*op)(src1, src2);
-	auto sat = host->EnsurePseudoProcedure("__signed_sat_32", BaseType::Int32, 1);
+	auto sat = host->EnsureIntrinsicProcedure("__signed_sat_32", true, BaseType::Int32, 1);
 	m.AddArg(sum);
 	m.Assign(dst, m.Fn(sat));
 	m.Assign(
@@ -510,7 +510,7 @@ void ArmRewriter::RewriteQAddSub(BinOpEmitter op)
 
 void ArmRewriter::RewriteQDAddSub(BinOpEmitter op)
 {
-	auto sat = host->EnsurePseudoProcedure("__signed_sat_32", BaseType::Int32, 1);
+	auto sat = host->EnsureIntrinsicProcedure("__signed_sat_32", true, BaseType::Int32, 1);
 	auto dst = Operand(Dst(), BaseType::Word32, true);
 	auto src1 = m.SMul(Operand(Src1()), m.Int32(2));
 	m.AddArg(src1);
@@ -723,8 +723,8 @@ void ArmRewriter::RewriteXtb(BaseType dtSrc, BaseType dtDst)
 void ArmRewriter::RewriteYield()
 {
 	auto opDst = this->Operand(Dst(), BaseType::Word32, true);
-	auto ppp = host->EnsurePseudoProcedure("__yield", BaseType::Word32, 0);
-	m.Assign(opDst, m.Fn(ppp));
+	auto intrinsic = host->EnsureIntrinsicProcedure("__yield", false, BaseType::Word32, 0);
+	m.Assign(opDst, m.Fn(intrinsic));
 
 }
 

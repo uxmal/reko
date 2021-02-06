@@ -5,17 +5,17 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	word16 di_3 = 0x5388
+	word16 di_3 = 0x5388<16>
 	goto lupe
 	// succ:  lupe
 l2:
 	return
 	// succ:  proc1_exit
 lupe:
-	Mem6[ds:di_3 + 0x0000:word16] = 0x0000
-	di_3 = di_3 + 0x0002
-	cx = cx - 0x0001
-	branch cx != 0x0000 lupe
+	Mem6[ds:di_3 + 0<16>:word16] = 0<16>
+	di_3 = di_3 + 2<16>
+	cx = cx - 1<16>
+	branch cx != 0<16> lupe
 	goto l2
 	// succ:  l2 lupe
 proc1_exit:
@@ -34,10 +34,10 @@ l2:
 	return
 	// succ:  proc1_exit
 lupe:
-	ds->*di_3 = 0x0000
-	di_3 = di_3 + 1
-	cx = cx - 0x0001
-	branch cx != 0x0000 lupe
+	ds->*di_3 = 0<16>
+	di_3 = di_3 + 1<i32>
+	cx = cx - 1<16>
+	branch cx != 0<16> lupe
 	goto l2
 	// succ:  l2 lupe
 proc1_exit:
@@ -56,11 +56,11 @@ T_2: (in di_3 : (memptr (ptr16 Eq_5) word16))
   Class: Eq_2
   DataType: (memptr (ptr16 Eq_5) word16)
   OrigDataType: (memptr T_5 (struct 0002 (0 word16 w0000)))
-T_3: (in 0x5388 : word16)
+T_3: (in 0x5388<16> : word16)
   Class: Eq_2
   DataType: (memptr (ptr16 Eq_5) word16)
   OrigDataType: word16
-T_4: (in 0x0000 : word16)
+T_4: (in 0<16> : word16)
   Class: Eq_4
   DataType: word16
   OrigDataType: word16
@@ -68,23 +68,23 @@ T_5: (in ds : word16)
   Class: Eq_5
   DataType: (ptr16 Eq_5)
   OrigDataType: (ptr16 (segment (5388 (arr T_16) a5388)))
-T_6: (in 0x0000 : word16)
+T_6: (in 0<16> : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_7: (in di_3 + 0x0000 : word16)
+T_7: (in di_3 + 0<16> : word16)
   Class: Eq_7
   DataType: word16
   OrigDataType: word16
-T_8: (in Mem6[ds:di_3 + 0x0000:word16] : word16)
+T_8: (in Mem6[ds:di_3 + 0<16>:word16] : word16)
   Class: Eq_4
   DataType: word16
   OrigDataType: word16
-T_9: (in 0x0002 : word16)
+T_9: (in 2<16> : word16)
   Class: Eq_9
   DataType: int16
   OrigDataType: int16
-T_10: (in di_3 + 0x0002 : word16)
+T_10: (in di_3 + 2<16> : word16)
   Class: Eq_2
   DataType: (memptr (ptr16 Eq_5) word16)
   OrigDataType: (memptr T_5 (struct 0002 (0 word16 w0000)))
@@ -92,19 +92,19 @@ T_11: (in cx : word16)
   Class: Eq_11
   DataType: word16
   OrigDataType: word16
-T_12: (in 0x0001 : word16)
+T_12: (in 1<16> : word16)
   Class: Eq_12
   DataType: word16
   OrigDataType: word16
-T_13: (in cx - 0x0001 : word16)
+T_13: (in cx - 1<16> : word16)
   Class: Eq_11
   DataType: word16
   OrigDataType: word16
-T_14: (in 0x0000 : word16)
+T_14: (in 0<16> : word16)
   Class: Eq_11
   DataType: word16
   OrigDataType: word16
-T_15: (in cx != 0x0000 : bool)
+T_15: (in cx != 0<16> : bool)
   Class: Eq_15
   DataType: bool
   OrigDataType: bool

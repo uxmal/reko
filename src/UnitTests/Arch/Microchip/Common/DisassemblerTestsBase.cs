@@ -1,8 +1,8 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 2017-2020 Christian Hostelet.
+ * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work of:
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,10 @@ using NUnit.Framework;
 using Reko.Arch.MicrochipPIC.Common;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Libraries.Microchip;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 
 namespace Reko.UnitTests.Arch.Microchip.Common
@@ -42,7 +45,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
                 (byte) w,
                 (byte) (w >> 8),
             }).ToArray();
-            var image = new MemoryArea(baseAddr, bytes);
+            var image = new ByteMemoryArea(baseAddr, bytes);
             var rdr = new LeImageReader(image, 0);
             var dasm = picModel.CreateDisassembler(arch, rdr);
             return dasm.First();
@@ -63,7 +66,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
         protected void SetPICModel(string picName, PICExecMode mode = PICExecMode.Traditional)
         {
-            arch = new PICArchitecture("pic") { Options = new PICArchitectureOptions(picName, mode) };
+            arch = new PICArchitecture(new ServiceContainer(), "pic", new Dictionary<string, object>()) { Options = new PICArchitectureOptions(picName, mode) };
             picModel = arch.ProcessorModel;
             arch.CreatePICProcessorModel();
             PICMemoryDescriptor.ExecMode = mode;

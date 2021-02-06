@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,6 +52,12 @@ namespace Reko.Arch.Arm.AArch32
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
+        public override Address InstructionPointer
+        {
+            get { return Address.Ptr32((uint) regData[pc.Number]); }
+            set { regData[pc.Number] = value.ToUInt32(); }
+        }
+
         public override ProcessorState Clone()
         {
             var state = new AArch32ProcessorState(this);
@@ -76,11 +82,6 @@ namespace Reko.Arch.Arm.AArch32
             {
                 regData.Remove(r.Number);
             }
-        }
-
-        public override void SetInstructionPointer(Address addr)
-        {
-            regData[pc.Number] = addr.ToUInt32();
         }
 
         public override void OnProcedureEntered()

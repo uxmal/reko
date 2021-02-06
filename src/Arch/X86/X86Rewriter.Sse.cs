@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,25 +32,26 @@ namespace Reko.Arch.X86
 {
     public partial class X86Rewriter
     {
-        public void RewriteAndnps()
+        public void RewriteAndnp_(string fnName)
         {
-            var dst = this.SrcOp(instrCur.Operands[0]);
-            var src = this.SrcOp(instrCur.Operands[1]);
-            m.Assign(dst, host.PseudoProcedure("__andnps", dst.DataType, dst, src));
+            var dst = this.SrcOp(0);
+            var src = this.SrcOp(1);
+            m.Assign(dst, host.Intrinsic(fnName, true, dst.DataType, dst, src));
         }
 
         public void RewriteAndps()
         {
-            var dst = this.SrcOp(instrCur.Operands[0]);
-            var src = this.SrcOp(instrCur.Operands[1]);
-            m.Assign(dst, host.PseudoProcedure("__andps", dst.DataType, dst, src));
+            var dst = this.SrcOp(0);
+            var src = this.SrcOp(1);
+            m.Assign(dst, host.Intrinsic("__andps", true, dst.DataType, dst, src));
         }
 
-        private void RewriteCmpp(string name, PrimitiveType element)
+        private void RewriteCmpp(bool isVex, string name, PrimitiveType element)
         {
-            var dst = this.SrcOp(instrCur.Operands[0]);
-            var src = this.SrcOp(instrCur.Operands[1]);
+            var dst = this.SrcOp(0);
+            var src = this.SrcOp(1);
             RewritePackedTernaryop(
+                isVex,
                 name,
                 element,
                 CreatePackedArrayType(
@@ -62,50 +63,92 @@ namespace Reko.Arch.X86
         {
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ZCP"));
             m.Assign(grf, m.Cond(m.FSub(
-                m.Cast(size, SrcOp(instrCur.Operands[0])),
-                SrcOp(instrCur.Operands[1]))));
+                MaybeSlice(size, SrcOp(0)),
+                MaybeSlice(size, SrcOp(1)))));
             m.Assign(orw.FlagGroup(FlagM.OF), Constant.False());
             m.Assign(orw.FlagGroup(FlagM.SF), Constant.False());
+        }
+
+
+        private void RewriteCmpsd(PrimitiveType size)
+        {
+            var fourOps = instrCur.Operands.Length == 4;
+            var op1 = MaybeSlice(size, SrcOp(fourOps ? 1 : 0));
+            var op2 = MaybeSlice(size, SrcOp(fourOps ? 2 : 1));
+            var opc = ((ImmediateOperand) instrCur.Operands[fourOps ? 3 : 2]).Value.ToUInt32();
+            var dst = SrcOp(0);
+            Expression cmp;
+            switch (opc)
+            {
+            case 0: cmp = m.FEq(op1, op2); break;
+            case 1: cmp = m.FLt(op1, op2); break;
+            case 2: cmp = m.FLe(op1, op2); break;
+            case 3: cmp = host.Intrinsic("isunordered", true, PrimitiveType.Bool, op1, op2); break;
+            case 4: cmp = m.FNe(op1, op2); break;
+            case 5: cmp = m.FGe(op1, op2); break;
+            case 6: cmp = m.FGt(op1, op2); break;
+            case 7: cmp = m.Not(host.Intrinsic("isunordered", true, PrimitiveType.Bool, op1, op2)); break;
+            default: EmitUnitTest(); iclass = InstrClass.Invalid; m.Invalid(); return;
+            }
+            m.Assign(dst, m.Conditional(
+                dst.DataType, 
+                cmp,
+                Constant.Create(dst.DataType, -1), 
+                Constant.Zero(dst.DataType)));
         }
 
         private void RewriteCvtPackedToReal(PrimitiveType type)
         {
             var dtSrc = PrimitiveType.Int32;
             var dtDst = PrimitiveType.Real32;
-            var src = SrcOp(instrCur.Operands[1]);
+            var src = SrcOp(1);
 
             var tmp1 = binder.CreateTemporary(dtSrc);
-            m.Assign(tmp1, m.Cast(dtDst, m.Slice(dtSrc, src, 0)));
+            m.Assign(tmp1, m.Convert(m.Slice(dtSrc, src, 0), dtSrc, dtDst));
 
             var tmp2 = binder.CreateTemporary(dtSrc);
-            m.Assign(tmp2, m.Cast(dtDst, m.Slice(dtSrc, src, 32)));
+            m.Assign(tmp2, m.Convert(m.Slice(dtSrc, src, 32), dtSrc, dtDst));
 
-            m.Assign(SrcOp(instrCur.Operands[0]), m.Seq(tmp2, tmp1));
+            m.Assign(SrcOp(0), m.Seq(tmp2, tmp1));
         }
-
 
         private void RewriteCvts2si(PrimitiveType floatType)
         {
             instrCur.Operands[0].Width = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
             var src = SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]);
-            m.Assign(SrcOp(instrCur.Operands[0]), m.Cast(instrCur.Operands[0].Width, src));
+            if (src.DataType.BitSize != floatType.BitSize)
+            {
+                src = m.Slice(floatType, src, 0);
+            }
+            m.Assign(SrcOp(0), m.Convert(src, floatType, instrCur.Operands[0].Width));
         }
 
         private void RewriteCvtts2si(PrimitiveType floatType)
         {
             instrCur.Operands[0].Width = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
-            var src = SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]);
-            m.Assign(SrcOp(instrCur.Operands[0]), m.Cast(instrCur.Operands[0].Width, src));
+            var src = MaybeSlice(floatType, SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]));
+            m.Assign(SrcOp(0), m.Convert(src, floatType, instrCur.Operands[0].Width));
         }
 
-        private void RewriteCvtToReal(PrimitiveType size)
+        private void RewriteCvtToReal(PrimitiveType dtFrom, PrimitiveType dtTo)
         {
-            var src = SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]);
-            var dst = SrcOp(instrCur.Operands[0]);
-            var tmp = binder.CreateTemporary(size);
-            m.Assign(tmp, m.Cast(size, src));
+            var src = MaybeSlice(dtFrom, SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]));
+            var dst = (Identifier) SrcOp(0);
+            var tmp = binder.CreateTemporary(dtTo);
+            m.Assign(tmp, m.Convert(src, dtFrom, dtTo));
             m.Assign(dst, m.Dpb(dst, tmp, 0));
         }
+
+        private void RewriteCvtIntToReal(PrimitiveType dtDst)
+        {
+            var src = SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]);
+            var dst = (Identifier) SrcOp(0);
+            var tmp = binder.CreateTemporary(dtDst);
+            var dtSrc = PrimitiveType.Create(Domain.SignedInt, src.DataType.BitSize);
+            m.Assign(tmp, m.Convert(src, dtSrc, dtDst));
+            m.Assign(dst, m.Dpb(dst, tmp, 0));
+        }
+
 
         private void RewriteCvtps2pi(string fnName, DataType dtSrcElem, DataType dtDstElem)
         {
@@ -119,8 +162,8 @@ namespace Reko.Arch.X86
             m.Assign(tmp1, src);
 
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                host.PseudoProcedure(fnName, dtDst, tmp1));
+                SrcOp(0),
+                host.Intrinsic(fnName, false, dtDst, tmp1));
         }
 
         private void RewriteCvttps2pi(string fnName, DataType dtSrcElem, DataType dtDstElem)
@@ -133,9 +176,8 @@ namespace Reko.Arch.X86
             m.Assign(tmp1, src);
 
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                host.PseudoProcedure(fnName, dtDst, 
-                    host.PseudoProcedure("trunc", tmp1.DataType, tmp1)));
+                SrcOp(0),
+                host.Intrinsic(fnName, false, dtDst, tmp1));
         }
 
         private void RewriteCvttps2pi()
@@ -145,34 +187,56 @@ namespace Reko.Arch.X86
             var src = SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]);
 
             var tmp1 = binder.CreateTemporary(dtDst);
-            m.Assign(tmp1, m.Cast(dtDst, m.Slice(dtSrc, src, 0)));
+            m.Assign(tmp1, m.Convert(m.Slice(dtSrc, src, 0), dtSrc, dtDst));
 
             var tmp2 = binder.CreateTemporary(dtDst);
-            m.Assign(tmp2, m.Cast(dtDst, m.Slice(dtSrc, src, 32)));
+            m.Assign(tmp2, m.Convert(m.Slice(dtSrc, src, 32), dtSrc, dtDst));
 
-            m.Assign(SrcOp(instrCur.Operands[0]), m.Seq(tmp2, tmp1));
+            m.Assign(SrcOp(0), m.Seq(tmp2, tmp1));
+        }
+
+        private void RewriteFemms()
+        {
+            m.SideEffect(host.Intrinsic("__femms", false, VoidType.Instance));
         }
 
         private void RewriteLdmxcsr()
         {
-            var src = SrcOp(instrCur.Operands[0]);
+            var src = SrcOp(0);
             var dst = binder.EnsureRegister(Registers.mxcsr);
             m.Assign(dst, src);
         }
 
-        private void RewriteMaskmovq()
+        private void RewriteMaskmov(bool isVex, string fnName)
         {
-            var src = SrcOp(instrCur.Operands[1]);
-            var dst = SrcOp(instrCur.Operands[0]);
-            m.Assign(dst,
-                host.PseudoProcedure("__maskmovq", dst.DataType,
+            var src = SrcOp(1);
+            var dst = SrcOp(0);
+            VexAssign(isVex, dst,
+                host.Intrinsic(fnName, false, dst.DataType,
                     dst, src));
+        }
+
+        private void RewriteMaxMinsd(string fnName, PrimitiveType size, bool zeroExtend)
+        {
+            Expression src1;
+            Expression src2;
+            if (instrCur.Operands.Length == 3)
+            {
+                src1 = MaybeSlice(size, SrcOp(1));
+                src2 = MaybeSlice(size, SrcOp(2));
+            }
+            else
+            {
+                src1 = MaybeSlice(size, SrcOp(0));
+                src2 = MaybeSlice(size, SrcOp(1));
+            }
+            VexAssign(zeroExtend, SrcOp(0), host.Intrinsic(fnName, false, size, src1, src2));
         }
 
         private void RewriteMovlps()
         {
-            var src = SrcOp(instrCur.Operands[1]);
-            var dst = SrcOp(instrCur.Operands[0]);
+            var src = SrcOp(1);
+            var dst = SrcOp(0);
             m.Assign(
                 m.Array(PrimitiveType.Real32, dst, Constant.Int32(2)),
                 m.Array(PrimitiveType.Real32, src, Constant.Int32(0)));
@@ -183,8 +247,8 @@ namespace Reko.Arch.X86
 
         private void RewriteMovlhps()
         {
-            var src = SrcOp(instrCur.Operands[1]);
-            var dst = SrcOp(instrCur.Operands[0]);
+            var src = SrcOp(1);
+            var dst = SrcOp(0);
             m.Assign(
                 m.Array(PrimitiveType.Real32, dst, Constant.Int32(2)),
                 m.Array(PrimitiveType.Real32, src, Constant.Int32(0)));
@@ -193,314 +257,425 @@ namespace Reko.Arch.X86
                 m.Array(PrimitiveType.Real32, src, Constant.Int32(1)));
         }
 
-        private void RewriteMovmsk(string fnName, PrimitiveType elemType)
+        private void RewriteMovmsk(bool isVex, string fnName, PrimitiveType elemType)
         {
             var srcType = CreatePackedArrayType(elemType, instrCur.Operands[1].Width);
-            var src = SrcOp(instrCur.Operands[1], srcType);
-            var dst = SrcOp(instrCur.Operands[0]);
+            var src = SrcOp(1, srcType);
+            var dst = (Identifier) SrcOp(0);
             var ret = binder.CreateTemporary(PrimitiveType.Byte);
-            m.Assign(ret, host.PseudoProcedure(fnName, ret.DataType, src));
+            m.Assign(ret, host.Intrinsic(fnName, false, ret.DataType, src));
             m.Assign(dst, m.Dpb(dst, ret, 0));
         }
 
         private void RewriteOrps()
         {
-            var dst = this.SrcOp(instrCur.Operands[0]);
-            var src = this.SrcOp(instrCur.Operands[1]);
-            m.Assign(dst, host.PseudoProcedure("__orps", dst.DataType, dst, src));
+            var dst = this.SrcOp(0);
+            var src = this.SrcOp(1);
+            m.Assign(dst, host.Intrinsic("__orps", true, dst.DataType, dst, src));
         }
 
         private void RewritePavg(string fnName, PrimitiveType elementType)
         {
-            var dst = SrcOp(instrCur.Operands[0]);
+            var dst = SrcOp(0);
             ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
-            var src = SrcOp(instrCur.Operands[1], arrayType);
+            var src = SrcOp(1, arrayType);
             var tmp1 = binder.CreateTemporary(arrayType);
             m.Assign(tmp1, src);
-            m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1));
+            m.Assign(dst, host.Intrinsic(fnName, true, arrayType, tmp1));
+        }
+
+        private void RewritePbroadcast(bool isVex, string fname, PrimitiveType elementType)
+        {
+            var src = SrcOp(1);
+            var dst = SrcOp(0);
+            ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
+            var tmp = binder.CreateTemporary(arrayType);
+            VexAssign(isVex, dst, host.Intrinsic(fname, true, arrayType, src));
         }
 
         private void RewritePcmp(string fnName, PrimitiveType elementType)
         {
-            var dst = SrcOp(instrCur.Operands[0]);
+            var dst = SrcOp(0);
             ArrayType srcType = CreatePackedArrayType(elementType, dst.DataType);
             ArrayType dstType = new ArrayType(
                 PrimitiveType.CreateWord(srcType.ElementType.BitSize), 
                 srcType.Length);
-            var src1 = SrcOp(instrCur.Operands[0], srcType);
-            var src2 = SrcOp(instrCur.Operands[1], srcType);
+            var src1 = SrcOp(0, srcType);
+            var src2 = SrcOp(1, srcType);
             var tmp1 = binder.CreateTemporary(srcType);
             var tmp2 = binder.CreateTemporary(srcType);
             m.Assign(tmp1, src1);
             m.Assign(tmp2, src2);
-            m.Assign(dst, host.PseudoProcedure(fnName, dstType, tmp1, tmp2));
+            m.Assign(dst, host.Intrinsic(fnName, true, dstType, tmp1, tmp2));
         }
 
         private void RewritePextrw()
         {
-            var dst = SrcOp(instrCur.Operands[0]);
-            var src1 = SrcOp(instrCur.Operands[1]);
-            var src2 = SrcOp(instrCur.Operands[2]);
+            var src1 = SrcOp(1);
+            var src2 = SrcOp(2);
+            var dst = SrcOp(0);
             m.Assign(
                 dst,
-                host.PseudoProcedure("__pextrw", dst.DataType, dst, src1, src2));
+                host.Intrinsic("__pextrw", true, dst.DataType, dst, src1, src2));
         }
 
-        private void RewritePinsrw()
+        private void RewritePinsr(bool isVex, string fnName, PrimitiveType dtElem)
         {
             Expression dst;
             Expression src1;
             Expression src2;
             if (instrCur.Operands.Length == 3)
             {
-                dst = SrcOp(instrCur.Operands[0]);
-                src1 = SrcOp(instrCur.Operands[1]);
-                src2 = SrcOp(instrCur.Operands[2]);
+                dst = SrcOp(0);
+                src1 = SrcOp(1);
+                src2 = SrcOp(2);
             }
             else
             {
-                dst = SrcOp(instrCur.Operands[0]);
-                src1 = SrcOp(instrCur.Operands[0]);
-                src2 = SrcOp(instrCur.Operands[1]);
+                dst = SrcOp(0);
+                src1 = SrcOp(0);
+                src2 = SrcOp(1);
             }
-            m.Assign(
+            VexAssign(
+                isVex,
                 dst,
-                host.PseudoProcedure("__pinsrw", dst.DataType, dst, src1, src2));
+                host.Intrinsic(fnName, true, dst.DataType, dst, src1, src2));
         }
 
         private void RewritePackedLogical(string intrinsicName)
         {
-            var dst = this.SrcOp(instrCur.Operands[0]);
-            var src = this.SrcOp(instrCur.Operands[1]);
-            m.Assign(dst, host.PseudoProcedure(intrinsicName, dst.DataType, dst, src));
+            var dst = this.SrcOp(0);
+            var src = this.SrcOp(1);
+            m.Assign(dst, host.Intrinsic(intrinsicName, true, dst.DataType, dst, src));
         }
+
+        private void RewritePor()
+        {
+            if (instrCur.Operands.Length > 2)
+            {
+                // DEST←SRC1 OR SRC2
+                m.Assign(SrcOp(0), m.Or(SrcOp(1), SrcOp(2)));
+            }
+            else
+            {
+                // DEST←DEST OR SRC
+                m.Assign(SrcOp(0), m.Or(SrcOp(0), SrcOp(1)));
+            }
+        }
+
 
         private void RewritePshuf(string intrinsicName, PrimitiveType dt)
         {
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                host.PseudoProcedure(
+                SrcOp(0),
+                host.Intrinsic(
                     intrinsicName,
+                    true,
                     instrCur.Operands[0].Width,
-                    SrcOp(instrCur.Operands[0]),
-                    SrcOp(instrCur.Operands[1]),
-                    SrcOp(instrCur.Operands[2])));
+                    SrcOp(0),
+                    SrcOp(1),
+                    SrcOp(2)));
         }
 
         private void RewritePunpckhbw()
         {
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                host.PseudoProcedure(
+                SrcOp(0),
+                host.Intrinsic(
                     "__punpckhbw",
+                    true,
                     instrCur.Operands[0].Width,
-                    SrcOp(instrCur.Operands[0]),
-                    SrcOp(instrCur.Operands[1])));
+                    SrcOp(0),
+                    SrcOp(1)));
         }
 
         private void RewritePunpckhdq()
         {
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                host.PseudoProcedure(
+                SrcOp(0),
+                host.Intrinsic(
                     "__punpckhdq",
+                    true,
                     instrCur.Operands[0].Width,
-                    SrcOp(instrCur.Operands[0]),
-                    SrcOp(instrCur.Operands[1])));
+                    SrcOp(0),
+                    SrcOp(1)));
         }
-
 
         private void RewritePunpckhwd()
         {
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                host.PseudoProcedure(
+                SrcOp(0),
+                host.Intrinsic(
                     "__punpckhwd",
+                    true,
                     instrCur.Operands[0].Width,
-                    SrcOp(instrCur.Operands[0]),
-                    SrcOp(instrCur.Operands[1])));
+                    SrcOp(0),
+                    SrcOp(1)));
         }
 
         private void RewritePunpcklbw()
         {
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                host.PseudoProcedure(
+                SrcOp(0),
+                host.Intrinsic(
                     "__punpcklbw",
+                    true,
                     instrCur.Operands[0].Width,
-                    SrcOp(instrCur.Operands[0]),
-                    SrcOp(instrCur.Operands[1])));
+                    SrcOp(0),
+                    SrcOp(1)));
         }
 
         private void RewritePunpckldq()
         {
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                host.PseudoProcedure(
+                SrcOp(0),
+                host.Intrinsic(
                     "__punpckldq",
+                    true,
                     instrCur.Operands[0].Width,
-                    SrcOp(instrCur.Operands[0]),
-                    SrcOp(instrCur.Operands[1])));
+                    SrcOp(0),
+                    SrcOp(1)));
+        }
+
+        private void RewritePunpcklqdq()
+        {
+            m.Assign(
+                SrcOp(0),
+                host.Intrinsic(
+                    "__punpcklqdq",
+                    true,
+                    instrCur.Operands[0].Width,
+                    SrcOp(0),
+                    SrcOp(1)));
         }
 
         private void RewritePunpcklwd()
         {
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                host.PseudoProcedure(
+                SrcOp(0),
+                host.Intrinsic(
                     "__punpcklwd",
+                    true,
                     instrCur.Operands[0].Width,
-                    SrcOp(instrCur.Operands[0]),
-                    SrcOp(instrCur.Operands[1])));
+                    SrcOp(0),
+                    SrcOp(1)));
         }
 
         private void RewritePalignr()
         {
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                host.PseudoProcedure(
+                SrcOp(0),
+                host.Intrinsic(
                     "__palignr",
+                    true,
                     instrCur.Operands[0].Width,
-                    SrcOp(instrCur.Operands[0]),
-                    SrcOp(instrCur.Operands[1]),
-                    SrcOp(instrCur.Operands[2])));
+                    SrcOp(0),
+                    SrcOp(1),
+                    SrcOp(2)));
         }
 
-        private void RewriteScalarBinop(Func<Expression, Expression, Expression> fn, PrimitiveType size)
+        private static readonly string[] roundingIntrinsics32 =
         {
-            var dst = SrcOp(instrCur.Operands[0]);
+            "roundf", "floorf", "ceilf", "truncf"
+        };
+        private static readonly string[] roundingIntrinsics64 =
+        {
+            "round", "floor", "ceil", "trunc"
+        };
+
+        private void RewriteRoundsx(bool isVex, PrimitiveType dt)
+        {
+            var mode = ((Constant) SrcOp(isVex ? 3 : 2)).ToInt32() & 0b11;
+            string intrinsic = dt.BitSize == 32
+                ? roundingIntrinsics32[mode]
+                : roundingIntrinsics64[mode];
+            var src = SrcOp(1);
+            var dst = SrcOp(0);
+            VexAssign(isVex, dst, host.Intrinsic(intrinsic, false, dt, m.Slice(dt, src, 0)));
+        }
+
+        private void RewriteScalarBinop(Func<Expression, Expression, Expression> fn, PrimitiveType size, bool zeroExtend)
+        {
+            var dst = SrcOp(0);
             var tmp = binder.CreateTemporary(size);
+            Expression src1;
+            Expression src2;
             if (instrCur.Operands.Length == 3)
             {
-                var src1 = SrcOp(instrCur.Operands[1]);
-                var src2 = SrcOp(instrCur.Operands[2]);
-                src1 = m.Cast(size, src1);
-                src2 = m.Cast(size, src2);
-                m.Assign(tmp, fn(src1, src2));
-                m.Assign(dst, m.Dpb(dst, tmp, 0));
+                src1 = SrcOp(1);
+                src2 = SrcOp(2);
             }
             else
             {
-                m.Assign(tmp, fn(m.Cast(size, dst), SrcOp(instrCur.Operands[1])));
-                m.Assign(dst, m.Dpb(dst, tmp, 0));
+                src1 = dst;
+                src2 = SrcOp(1);
+            }
+            if (src1.DataType.BitSize != size.BitSize)
+                src1 = m.Slice(size, src1, 0);
+            if (src2.DataType.BitSize != size.BitSize)
+                src2 = m.Slice(size, src2, 0);
+            m.Assign(tmp, fn(src1, src2));
+
+            //$REVIEW: this does a DPB-ish operation.
+            var highBits = dst.DataType.BitSize - size.BitSize;
+            if (highBits > 0)
+            {
+                var dtHighPart = PrimitiveType.CreateWord(highBits);
+                Expression hi;
+                if (zeroExtend)
+                {
+                    hi = Constant.Zero(dtHighPart);
+                }
+                else
+                {
+                    hi = binder.CreateTemporary(dtHighPart);
+                    m.Assign(hi, m.Slice(dtHighPart, dst, size.BitSize));
+                }
+                m.Assign(dst, m.Seq(hi, tmp));
+            }
+            else
+            {
+                m.Assign(dst, tmp);
             }
         }
 
         private void RewriteSha1msg2()
         {
-            var src = SrcOp(instrCur.Operands[1]);
-            var dst = SrcOp(instrCur.Operands[0]);
+            var src = SrcOp(1);
+            var dst = SrcOp(0);
             var tmpSrc = binder.CreateTemporary(PrimitiveType.Word128);
             var tmpDst = binder.CreateTemporary(PrimitiveType.Word128);
             m.Assign(tmpSrc, src);
             m.Assign(tmpDst, dst);
-            m.Assign(dst, host.PseudoProcedure("__sha1msg2", PrimitiveType.Word128, tmpDst, tmpSrc));
+            m.Assign(dst, host.Intrinsic("__sha1msg2", false, PrimitiveType.Word128, tmpDst, tmpSrc));
         }
 
 
-        private void RewriteSqrtsd()
+        private void RewriteSqrtsd(string fnName, PrimitiveType dt)
         {
-            var src = SrcOp(instrCur.Operands[1]);
-            var dst = SrcOp(instrCur.Operands[0]);
-            var tmp = binder.CreateTemporary(PrimitiveType.Real64);
-            m.Assign(tmp, host.PseudoProcedure("__sqrt", PrimitiveType.Real64, src));
+            var src = SrcOp(1);
+            var dst = (Identifier) SrcOp(0);
+            var tmp = binder.CreateTemporary(dt);
+            m.Assign(tmp, host.Intrinsic(fnName, false, dt, src));
             m.Assign(dst, m.Dpb(dst, tmp, 0));
         }
 
         private void RewriteStmxcsr()
         {
             var src = binder.EnsureRegister(Registers.mxcsr);
-            var dst = SrcOp(instrCur.Operands[0]);
+            var dst = SrcOp(0);
             m.Assign(dst, src);
         }
 
-        private void RewritePackedBinop(string fnName, PrimitiveType elementType, DataType dstType = null)
+        private void RewritePackedBinop(bool isVex, string fnName, PrimitiveType elementType, DataType? dstType = null)
         {
-            var dst = SrcOp(instrCur.Operands[0]);
+            var dst = SrcOp(0);
             ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
-            if (dstType == null)
+            if (dstType is null)
                 dstType = arrayType;
             Expression src1;
             Expression src2;
             if (instrCur.Operands.Length == 3)
             {
-                src1 = SrcOp(instrCur.Operands[1]);
-                src2 = SrcOp(instrCur.Operands[2]);
+                src1 = SrcOp(1);
+                src2 = SrcOp(2);
             }
             else
             {
-                src1 = SrcOp(instrCur.Operands[0]);
-                src2 = SrcOp(instrCur.Operands[1]);
+                src1 = SrcOp(0);
+                src2 = SrcOp(1);
             }
             var tmp1 = binder.CreateTemporary(arrayType);
             var tmp2 = binder.CreateTemporary(arrayType);
             m.Assign(tmp1, src1);
             m.Assign(tmp2, src2);
-            m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, tmp2));
+            VexAssign(isVex, dst, host.Intrinsic(fnName, true, arrayType, tmp1, tmp2));
         }
 
-        private void RewritePackedShift(string fnName, PrimitiveType elementType, DataType dstType = null)
+        private void RewritePmaddUbSw(bool isVex, string fnName)
         {
-            var dst = SrcOp(instrCur.Operands[0]);
+            var src1 = SrcOp(0);
+            var dtSrc1 = CreatePackedArrayType(PrimitiveType.UInt8, src1.DataType);
+            var src2 = SrcOp(1);
+            var dtSrc2 = CreatePackedArrayType(PrimitiveType.Int8, src1.DataType);
+            var tmp1 = binder.CreateTemporary(dtSrc1);
+            var tmp2 = binder.CreateTemporary(dtSrc2);
+            m.Assign(tmp1, src1);
+            m.Assign(tmp2, src2);
+            var dst = SrcOp(0);
+            var dtDst = CreatePackedArrayType(PrimitiveType.Int16, dst.DataType);
+            VexAssign(isVex, dst, host.Intrinsic(fnName, true, dtDst, tmp1, tmp2));
+        }
+
+        private void RewritePackedShift(string fnName, PrimitiveType elementType, DataType? dstType = null)
+        {
+            var dst = SrcOp(0);
             ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
-            if (dstType == null)
+            if (dstType is null)
                 dstType = arrayType;
             Expression src1;
             Expression src2;
             if (instrCur.Operands.Length == 3)
             {
-                src1 = SrcOp(instrCur.Operands[1]);
-                src2 = SrcOp(instrCur.Operands[2]);
+                src1 = SrcOp(1);
+                src2 = SrcOp(2);
             }
             else
             {
-                src1 = SrcOp(instrCur.Operands[0]);
-                src2 = SrcOp(instrCur.Operands[1]);
+                src1 = SrcOp(0);
+                src2 = SrcOp(1);
             }
             var tmp1 = binder.CreateTemporary(arrayType);
             m.Assign(tmp1, src1);
-            m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, src2));
+            m.Assign(dst, host.Intrinsic(fnName, true, arrayType, tmp1, src2));
         }
 
-        private void RewritePackedTernaryop(string fnName, PrimitiveType elementType, DataType dstType = null)
+        private void RewritePackedTernaryop(bool isVex, string fnName, PrimitiveType elementType, DataType? dstType = null)
         {
-            var dst = SrcOp(instrCur.Operands[0]);
+            var dst = SrcOp(0);
             ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
-            if (dstType == null)
+            if (dstType is null)
                 dstType = arrayType;
             Expression src1;
             Expression src2;
             Expression src3;
+            if (instrCur.Operands.Length == 3)
             {
-                src1 = SrcOp(instrCur.Operands[0]);
-                src2 = SrcOp(instrCur.Operands[1]);
-                src3 = SrcOp(instrCur.Operands[2]);
+                src1 = SrcOp(0);
+                src2 = SrcOp(1);
+                src3 = SrcOp(2);
+            }
+            else
+            {
+                src1 = SrcOp(0);
+                src2 = src1;
+                src3 = SrcOp(1);
             }
             var tmp1 = binder.CreateTemporary(arrayType);
             var tmp2 = binder.CreateTemporary(arrayType);
             m.Assign(tmp1, src1);
             m.Assign(tmp2, src2);
-            m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1, tmp2, src3));
+            VexAssign(isVex, dst, host.Intrinsic(fnName, true, arrayType, tmp1, tmp2, src3));
         }
 
-        private void RewritePackedUnaryop(string fnName, PrimitiveType elementType, DataType dstType = null)
+        private void RewritePackedUnaryop(string fnName, PrimitiveType elementType, DataType? dstType = null)
         {
-            var dst = SrcOp(instrCur.Operands[0]);
+            var dst = SrcOp(0);
             ArrayType arrayType = CreatePackedArrayType(elementType, dst.DataType);
             if (dstType == null)
                 dstType = arrayType;
             Expression src1;
             if (instrCur.Operands.Length > 1)
             {
-                src1 = SrcOp(instrCur.Operands[1]);
+                src1 = SrcOp(1);
             }
             else
             {
-                src1 = SrcOp(instrCur.Operands[0]);
+                src1 = SrcOp(0);
             }
             var tmp1 = binder.CreateTemporary(arrayType);
             m.Assign(tmp1, src1);
-            m.Assign(dst, host.PseudoProcedure(fnName, arrayType, tmp1));
+            m.Assign(dst, host.Intrinsic(fnName, true, arrayType, tmp1));
         }
 
         private ArrayType CreatePackedArrayType(DataType elementType, DataType dtArrayType)
@@ -510,18 +685,43 @@ namespace Reko.Arch.X86
             return arrayType;
         }
 
+        private void RewritePsrldq(bool isVex)
+        {
+            bool has3Ops = instrCur.Operands.Length == 3;
+            var src1 = SrcOp(has3Ops ? 1 : 0);
+            var src2 = SrcOp(has3Ops ? 2 : 1);
+            var dst = SrcOp(0);
+            var tmp = binder.CreateTemporary(PrimitiveType.Word128);
+            m.Assign(tmp, m.Slice(tmp.DataType, src1, 0));  // Low 128 bits
+            VexAssign(isVex, dst, tmp);
+        }
+
         public void RewritePxor()
         {
-            var rdst = instrCur.Operands[0] as RegisterOperand;
-            var rsrc = instrCur.Operands[1] as RegisterOperand;
-            if (rdst != null && rsrc != null && rdst.Register.Number == rsrc.Register.Number)
+            if (instrCur.Operands[0] is RegisterOperand rdst &&
+                instrCur.Operands[1] is RegisterOperand rsrc &&
+                rdst.Register.Number == rsrc.Register.Number)
             { // selfie!
-                m.Assign(orw.AluRegister(rdst), m.Cast(rdst.Width, Constant.Int32(0)));
+                m.Assign(orw.AluRegister(rdst), Constant.Zero(rdst.Width));
                 return;
             }
-            var dst = this.SrcOp(instrCur.Operands[0]);
-            var src = this.SrcOp(instrCur.Operands[1]);
-            m.Assign(dst, host.PseudoProcedure("__pxor", dst.DataType, dst, src));
+            var dst = this.SrcOp(0);
+            var src = this.SrcOp(1);
+            m.Assign(dst, host.Intrinsic("__pxor", true, dst.DataType, dst, src));
+        }
+
+        private void RewriteUnpckhps()
+        {
+            var bitsize = instrCur.Operands[0].Width.BitSize;
+            RewritePackedBinop(false, $"__unpckhps{bitsize}", PrimitiveType.Real32);
+        }
+
+        private void RewriteAesenc(bool isVex)
+        {
+            var state = SrcOp(isVex ? 1 : 0);
+            var roundKey = SrcOp(isVex ? 2 : 1);
+            var newState = SrcOp(0);
+            VexAssign(isVex, newState, host.Intrinsic("__aesenc", false, newState.DataType, state, roundKey));
         }
     }
 }

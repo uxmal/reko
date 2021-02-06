@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,12 +34,12 @@ namespace Reko.Core.Emulation
     /// </summary>
     public abstract class EmulatorBase : IProcessorEmulator
     {
-        public event EventHandler BeforeStart;
-        public event EventHandler<EmulatorExceptionEventArgs>  ExceptionRaised;
+        public event EventHandler? BeforeStart;
+        public event EventHandler<EmulatorExceptionEventArgs>? ExceptionRaised;
 
         private readonly SegmentMap map;
         private readonly Dictionary<ulong, Action> bpExecute;
-        private Action stepAction;
+        private Action? stepAction;
         private bool stepInto;
         private ulong stepOverAddress;
 
@@ -57,7 +57,7 @@ namespace Reko.Core.Emulation
         public void Start()
         {
             IsRunning = true;
-            BeforeStart.Fire(this);
+            BeforeStart?.Fire(this);
             try
             {
                 Run();
@@ -133,14 +133,14 @@ namespace Reko.Core.Emulation
                 stepInto = false;
                 var s = stepAction;
                 stepAction = null;
-                s();
+                s?.Invoke();
             }
             else if (stepOverAddress == linAddrInstr)
             {
                 stepOverAddress = 0;
                 var s = stepAction;
                 stepAction = null;
-                s();
+                s?.Invoke();
             }
             return IsRunning;
         }
@@ -160,7 +160,9 @@ namespace Reko.Core.Emulation
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
             var off = ea - mem.BaseAddress.ToLinear();
-            return mem.ReadLeUInt16((uint) off);
+            if (!mem.TryReadLeUInt16((uint) off, out ushort retvalue))
+                throw new AccessViolationException();
+            return retvalue;
         }
 
         public uint ReadLeUInt32(ulong ea)
@@ -169,7 +171,9 @@ namespace Reko.Core.Emulation
                 throw new AccessViolationException();
             var mem = segment.MemoryArea;
             var off = ea - mem.BaseAddress.ToLinear();
-            return mem.ReadLeUInt32((uint) off);
+            if (!mem.TryReadLeUInt32((uint) off, out var retvalue))
+                throw new AccessViolationException();
+            return retvalue;
         }
 
         public void WriteByte(ulong ea, byte value)

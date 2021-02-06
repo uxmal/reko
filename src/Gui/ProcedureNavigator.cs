@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -30,8 +32,8 @@ namespace Reko.Gui
     /// </summary>
     public class ProcedureNavigator : ICodeLocation
     {
-        private IServiceProvider sp;
-        private Program program;
+        private readonly IServiceProvider sp;
+        private readonly Program program;
 
         public ProcedureNavigator(Program program, Procedure proc, IServiceProvider sp)
         {

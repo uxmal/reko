@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,11 +95,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private void LoadArchitectureNames()
         {
-            dlg.Architectures.Items.Add(new ListOption { Text = "(None)", Value = "" });
+            dlg.Architectures.Items.Add(new ListOption("(None)", ""));
             dlg.Architectures.Items.AddRange(
                 dlg.Services.RequireService<IConfigurationService>()
                     .GetArchitectures()
-                    .Select(a => (object)new ListOption { Text = a.Name, Value = a.Name })
+                    .Select(a => (object)new ListOption(a.Name, a.Name))
                     .ToArray());
         }
 

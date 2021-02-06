@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
@@ -130,8 +131,6 @@ namespace Reko.Gui.Forms
 
         private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc)
         {
-            sc.AddService<IDecompiledFileService>(svcFactory.CreateDecompiledFileService());
-
             config = svcFactory.CreateDecompilerConfiguration();
             sc.AddService(typeof(IConfigurationService), config);
 
@@ -158,7 +157,9 @@ namespace Reko.Gui.Forms
             var del = svcFactory.CreateDecompilerEventListener();
             workerDlgSvc = (IWorkerDialogService)del;
             sc.AddService(typeof(IWorkerDialogService), workerDlgSvc);
-            sc.AddService(typeof(DecompilerEventListener), del);
+            sc.AddService<DecompilerEventListener>(del);
+
+            sc.AddService<IDecompiledFileService>(svcFactory.CreateDecompiledFileService());
 
             loader = svcFactory.CreateLoader();
             sc.AddService<ILoader>(loader);
@@ -204,6 +205,12 @@ namespace Reko.Gui.Forms
 
             var selSvc = svcFactory.CreateSelectionService();
             sc.AddService<ISelectionService>(selSvc);
+
+            var testGenSvc = svcFactory.CreateTestGenerationService();
+            sc.AddService<ITestGenerationService>(testGenSvc);
+
+            var userEventSvc = svcFactory.CreateUserEventService();
+            sc.AddService<IUserEventService>(userEventSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -320,10 +327,9 @@ namespace Reko.Gui.Forms
                 if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return true;
 
-                var typeName = dlg.SelectedArchitectureTypeName;
-                var t = Type.GetType(typeName, true);
-                var asm = (Assembler) t.GetConstructor(Type.EmptyTypes).Invoke(null);
-                OpenBinary(dlg.FileName.Text, (f) => pageInitial.Assemble(f, asm), f => false);
+                var arch = this.config.GetArchitecture(dlg.SelectedArchitectureName);
+                var asm = arch.CreateAssembler(null);
+                OpenBinary(dlg.FileName.Text, (f) => pageInitial.Assemble(f, asm, null), f => false);
                 RememberFilenameInMru(dlg.FileName.Text);
             }
             catch (Exception e)
@@ -382,7 +388,7 @@ namespace Reko.Gui.Forms
                     EntryPoint = entry,
                 };
 
-                OpenBinary(dlg.FileName.Text, (f) =>pageInitial.OpenBinaryAs(f, details), f => false);
+                OpenBinary(dlg.FileName.Text, (f) => pageInitial.OpenBinaryAs(f, details), f => false);
             }
             catch (Exception ex)
             {
@@ -559,21 +565,33 @@ namespace Reko.Gui.Forms
                         .SelectMany(program => 
                             program.SegmentMap.Segments.Values.SelectMany(seg =>
                             {
-                                var linBaseAddr = seg.MemoryArea.BaseAddress.ToLinear();
-                                return re.GetMatches(
-                                        seg.MemoryArea.Bytes,
-                                        0,
-                                        (int)seg.MemoryArea.Length)
-                                    .Where(o => filter(o, program))
-                                    .Select(offset => new AddressSearchHit
-                                    {
-                                        Program = program,
-                                        Address = program.SegmentMap.MapLinearAddressToAddress(
-                                            linBaseAddr + (ulong)offset)
-                                    });
+                                return ReMatches(program, seg, filter, re);
                             }));
                     srSvc.ShowAddressSearchResults(hits, new CodeSearchDetails());
                 }
+            }
+        }
+
+        private static IEnumerable<AddressSearchHit> ReMatches(Program program, ImageSegment seg, Func<int, Program, bool> filter, Core.Dfa.Automaton re)
+        {
+            if (seg.MemoryArea is ByteMemoryArea mem)
+            {
+                //$REVIEW: only support byte granularity searches.
+                var linBaseAddr = seg.MemoryArea.BaseAddress.ToLinear();
+                return re.GetMatches(
+                        mem.Bytes,
+                        0,
+                        (int) seg.MemoryArea.Length)
+                    .Where(o => filter(o, program))
+                    .Select(offset => new AddressSearchHit(
+                        program,
+                        program.SegmentMap.MapLinearAddressToAddress(
+                            linBaseAddr + (ulong) offset),
+                        0));
+            }
+            else
+            {
+                return new AddressSearchHit[0];
             }
         }
 
@@ -661,14 +679,15 @@ namespace Reko.Gui.Forms
 
         public void ViewCallGraph()
         {
-            var brSvc = sc.RequireService<IProjectBrowserService>();
-            var program = brSvc.CurrentProgram;
-            if (program != null)
-            {
-                var cgvSvc = sc.RequireService<ICallGraphViewService>();
-                var title = string.Format("{0} {1}", program.Name, Resources.CallGraphTitle);
-                cgvSvc.ShowCallgraph(program, title);
-            }
+            var project = decompilerSvc.Decompiler.Project;
+            //$TODO: what about mutiple programs in project?
+            if (project is null || project.Programs.Count != 1)
+                return;
+
+            var program = project.Programs[0];
+            var cgvSvc = sc.RequireService<ICallGraphViewService>();
+            var title = string.Format("{0} {1}", program.Name, Resources.CallGraphTitle);
+            cgvSvc.ShowCallgraph(program, title);
         }
 
         public void ToolsOptions()
@@ -687,7 +706,6 @@ namespace Reko.Gui.Forms
 
         public void ToolsKeyBindings()
         {
-            
             using (var dlg = dlgFactory.CreateKeyBindingsDialog(uiSvc.KeyBindings))
             {
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
@@ -719,10 +737,11 @@ namespace Reko.Gui.Forms
             }
 
             var fsSvc = Services.RequireService<IFileSystemService>();
+            var saver = new ProjectSaver(sc);
+            var sProject = saver.Serialize(ProjectFileName, decompilerSvc.Decompiler.Project);
+
             using (var xw = fsSvc.CreateXmlWriter(ProjectFileName))
             {
-                var saver = new ProjectSaver(sc);
-                var sProject = saver.Serialize(ProjectFileName, decompilerSvc.Decompiler.Project);
                 saver.Save(sProject, xw);
             }
             return true;

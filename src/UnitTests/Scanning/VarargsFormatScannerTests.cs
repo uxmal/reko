@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 Pavel Tomin.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -68,9 +69,9 @@ namespace Reko.UnitTests.Scanning
             cfg.Setup(c => c.GetEnvironment(It.IsAny<string>())).Returns(env.Object);
             env.Setup(e => e.Architectures).Returns(new List<PlatformArchitectureDefinition>());
             sc.AddService<IConfigurationService>(cfg.Object);
-            this.win32 = new Win32Platform(sc, new X86ArchitectureFlat32("x86-protected-32"));
-            this.win_x86_64 = new Win_x86_64_Platform(sc, new X86ArchitectureFlat64("x86-protected-64"));
-            this.sysV_ppc = new SysVPlatform(sc, new PowerPcBe32Architecture("ppc-be-32"));
+            this.win32 = new Win32Platform(sc, new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>()));
+            this.win_x86_64 = new Win_x86_64_Platform(sc, new X86ArchitectureFlat64(sc, "x86-protected-64", new Dictionary<string, object>()));
+            this.sysV_ppc = new SysVPlatform(sc, new PowerPcBe32Architecture(sc, "ppc-be-32", new Dictionary<string, object>()));
             this.m = new ProcedureBuilder();
             this.printfChr = new ProcedureCharacteristics()
             {
@@ -79,21 +80,17 @@ namespace Reko.UnitTests.Scanning
             };
             this.x86PrintfSig = new FunctionType(
                 null,
-                StackId(null,   4, CStringType32()),
-                StackId("...",  8, new UnknownType()));
+                StackId(null, 4, CStringType32())) { IsVariadic = true };
             this.x86SprintfSig = new FunctionType(
                 null,
                 StackId(null,   4, CStringType32()),
-                StackId(null,   8, CStringType32()),
-                StackId("...", 12, new UnknownType()));
+                StackId(null,   8, CStringType32())) { IsVariadic = true };
             this.win_x86_64PrintfSig = new FunctionType(
                 null,
-                RegId(null, win_x86_64, "rcx", CStringType64()),
-                RegId("...", win_x86_64, "rdx", new UnknownType()));
+                RegId(null, win_x86_64, "rcx", CStringType64())) { IsVariadic = true };
             this.ppcPrintfSig = new FunctionType(
                 null,
-                RegId(null,  sysV_ppc, "r3", CStringType32()),
-                RegId("...", sysV_ppc, "r4", new UnknownType()));
+                RegId(null,  sysV_ppc, "r3", CStringType32())) { IsVariadic = true };
             this.addrInstr = Address.Ptr32(0x123400);
             this.listener = new FakeDecompilerEventListener();
             sc.AddService<DecompilerEventListener>(listener);
@@ -102,7 +99,7 @@ namespace Reko.UnitTests.Scanning
 
         private SegmentMap CreateSegmentMap(uint uiAddr, uint size)
         {
-            var mem = new MemoryArea(Address.Ptr32(uiAddr), new byte[size]);
+            var mem = new ByteMemoryArea(Address.Ptr32(uiAddr), new byte[size]);
             var seg = new ImageSegment(".data", mem, AccessMode.ReadWrite);
             return new SegmentMap(Address.Ptr32(uiAddr), seg);
         }
@@ -236,8 +233,8 @@ namespace Reko.UnitTests.Scanning
             var c = Constant.Word32(666);
             var instr = vafs.BuildInstruction(c, new CallSite(4, 0), printfChr);
             Assert.AreEqual(
-                "0x0000029A(Mem0[esp:(ptr32 char)], Mem0[esp + 4:int32], " +
-                           "Mem0[esp + 8:real64])",
+                "0x29A<32>(Mem0[esp:(ptr32 char)], Mem0[esp + 4<i32>:int32], " +
+                           "Mem0[esp + 8<i32>:real64])",
                 instr.ToString());
         }
 
@@ -251,8 +248,8 @@ namespace Reko.UnitTests.Scanning
             var pc = new ProcedureConstant(new CodeType(), ep);
             var instr = vafs.BuildInstruction(pc, new CallSite(4, 0), printfChr);
             Assert.AreEqual(
-                "sprintf(Mem0[esp:(ptr32 char)], Mem0[esp + 4:(ptr32 char)], " +
-                        "Mem0[esp + 8:char])",
+                "sprintf(Mem0[esp:(ptr32 char)], Mem0[esp + 4<i32>:(ptr32 char)], " +
+                        "Mem0[esp + 8<i32>:char])",
                 instr.ToString());
             var appl = (Application)((SideEffect)instr).Expression;
             var sig = ((ProcedureConstant)appl.Procedure).Procedure.Signature;
@@ -270,7 +267,7 @@ namespace Reko.UnitTests.Scanning
             var c = Constant.Word32(666);
             var instr = vafs.BuildInstruction(c, new CallSite(8, 0), printfChr);
             Assert.AreEqual(
-                "0x0000029A(rcx, rdx, xmm2, r9, Mem0[rsp + 32:uint64], Mem0[rsp + 40:uint64])",
+                "0x29A<32>(rcx, rdx, xmm2, r9, Mem0[rsp + 32<i64>:uint64], Mem0[rsp + 40<i64>:uint64])",
                 instr.ToString());
         }
 
@@ -283,7 +280,7 @@ namespace Reko.UnitTests.Scanning
             var c = Constant.Word32(0x123);
             var instr = vafs.BuildInstruction(c, new CallSite(4, 0), printfChr);
             Assert.AreEqual(
-                "0x00000123(r3, r4, r5)",
+                "0x123<32>(r3, r4, r5)",
                 instr.ToString());
         }
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -180,8 +180,8 @@ namespace Reko.Core.Code
 
 		public Expression VisitConditionOf(ConditionOf cof)
 		{
-			cof.Expression = cof.Expression.Accept(this);
-			return cof;
+			var e = cof.Expression.Accept(this);
+			return new ConditionOf(e);
 		}
 
 		public virtual Expression VisitConstant(Constant c)
@@ -189,17 +189,16 @@ namespace Reko.Core.Code
 			return c;
 		}
 
-		public virtual Expression VisitDepositBits(DepositBits d)
-		{
-			var src = d.Source.Accept(this);
-			var bits = d.InsertedBits.Accept(this);
-            return new DepositBits(src, bits, d.BitPosition);
-		}
+        public virtual Expression VisitConversion(Conversion conversion)
+        {
+            var e = conversion.Expression.Accept(this);
+            return new Conversion(e, conversion.SourceDataType, conversion.DataType);
+        }
 
 		public virtual Expression VisitDereference(Dereference deref)
 		{
-			deref.Expression = deref.Expression.Accept(this);
-			return deref;
+			var e = deref.Expression.Accept(this);
+            return new Dereference(deref.DataType, e);
 		}
 
 		public virtual Expression VisitFieldAccess(FieldAccess acc)
@@ -290,8 +289,8 @@ namespace Reko.Core.Code
 
 		public virtual Expression VisitUnaryExpression(UnaryExpression unary)
 		{
-			unary.Expression = unary.Expression.Accept(this);
-			return unary;
+			var e = unary.Expression.Accept(this);
+			return new UnaryExpression(unary.Operator, unary.DataType, e);
 		}
 
 		#endregion

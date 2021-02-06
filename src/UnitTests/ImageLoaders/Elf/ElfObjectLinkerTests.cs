@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.ImageLoaders.Elf
 {
@@ -44,17 +45,17 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_BeArchitecture();
         }
 
-
-
         private void Given_Linker(bool big_endian)
         {
-            BuildObjectFile32();
-
+            BuildObjectFile32(big_endian);
             var eil = new ElfImageLoader(sc, "foo.o", rawBytes);
             eil.LoadElfIdentification();
-            var eh = Elf32_EHdr.Load(new BeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET));
-            var el = new ElfLoader32(eil, eh, rawBytes, big_endian ? ElfLoader.ELFDATA2MSB : ElfLoader.ELFDATA2LSB);
-            el.LoadSectionHeaders();
+            var rdr = big_endian
+                ? new BeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET)
+                : (EndianImageReader) new LeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET);
+            var eh = Elf32_EHdr.Load(rdr);
+            var el = new ElfLoader32(sc, eh, 0, big_endian ? EndianServices.Big: EndianServices.Little, rawBytes);
+            el.Sections.AddRange(el.LoadSectionHeaders());
             el.LoadSymbolsFromSections();
             this.linker = new ElfObjectLinker32(el, arch.Object, rawBytes);
         }
@@ -99,10 +100,11 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var segmentMap = linker.CreateSegments(Address.Ptr32(0x00800000), segs);
             Assert.AreEqual(3, segmentMap.Segments.Count);
             Assert.AreEqual("00800000", segmentMap.Segments.ElementAt(0).Value.MemoryArea.BaseAddress.ToString());
-            Assert.AreEqual("00800001", segmentMap.Segments.ElementAt(0).Value.MemoryArea.EndAddress.ToString());
+            Assert.AreEqual("00000001", segmentMap.Segments.ElementAt(0).Value.MemoryArea.Length.ToString("X8"));
             Assert.AreEqual("00801000", segmentMap.Segments.ElementAt(1).Value.MemoryArea.BaseAddress.ToString());
-            Assert.AreEqual("00801004", segmentMap.Segments.ElementAt(1).Value.MemoryArea.EndAddress.ToString());
-            Assert.AreEqual(0x1, segmentMap.Segments.ElementAt(1).Value.MemoryArea.Bytes[0]);
+            Assert.AreEqual("00000004", segmentMap.Segments.ElementAt(1).Value.MemoryArea.Length.ToString("X8"));
+            var bmem1 = (ByteMemoryArea) segmentMap.Segments.ElementAt(1).Value.MemoryArea;
+            Assert.AreEqual(0x1, bmem1.Bytes[0]);
         }
 
         [Test(Description = "SHN_COMMON symbols should be added to the rw segment")]

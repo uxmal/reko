@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,19 +42,6 @@ namespace Reko.Core.Code
         public abstract T Accept<T>(InstructionVisitor<T> visitor);
 
 		public abstract bool IsControlFlow { get; }
-
-        /// <summary>
-        /// Utility function to simplify code that first checks the type of an instruction
-        /// and then casts to it.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="ass"></param>
-        /// <returns></returns>
-        public bool As<T>(out T value) where T : Instruction
-        {
-            value = this as T;
-            return value != null;
-        }
 
 		public override string ToString()
 		{
@@ -112,12 +99,12 @@ namespace Reko.Core.Code
         {
         }
 
-        public ReturnInstruction(Expression exp)
+        public ReturnInstruction(Expression? exp)
         {
             this.Expression = exp;
         }
 
-        public Expression Expression { get; set; }
+        public Expression? Expression { get; set; }
         public override bool IsControlFlow { get { return true; } }
 
 		public override Instruction Accept(InstructionTransformer xform)
@@ -155,7 +142,7 @@ namespace Reko.Core.Code
 
         public Expression Expression { get;  set; }
         public override bool IsControlFlow { get { return false; } }
-        public Identifier OutArgument { get; set; }
+        public Identifier? OutArgument { get; set; }
 
 		public override Instruction Accept(InstructionTransformer xform)
 		{

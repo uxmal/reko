@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@ using System.Diagnostics;
 using System.Linq;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
+using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.Vax
 {
@@ -40,7 +42,7 @@ namespace Reko.Arch.Vax
         private readonly ProcessorState state;
         private readonly VaxArchitecture arch;
         private readonly IEnumerator<VaxInstruction> dasm;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private VaxInstruction instr;
         private RtlEmitter m;
         private List<RtlInstruction> rtlInstructions;
@@ -63,12 +65,13 @@ namespace Reko.Arch.Vax
                 var addr = this.instr.Address;
                 var len = this.instr.Length;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = this.instr.InstructionClass;
+                this.iclass = this.instr.InstructionClass;
                 this.m = new RtlEmitter(rtlInstructions);
                 switch (this.instr.Mnemonic)
                 {
                 default:
-                    //EmitUnitTest();
+                    EmitUnitTest();
+
                     //emitter.SideEffect(Constant.String(
                     //    this.instr.ToString(),
                     //    StringType.NullTerminated(PrimitiveType.Char)));
@@ -78,8 +81,8 @@ namespace Reko.Arch.Vax
                     //    this.instr.Mnemonic);
                     m.Invalid();
                     break;
-                case Mnemonic.Invalid: rtlc = InstrClass.Invalid; m.Invalid(); break;
-                case Mnemonic.Reserved: rtlc = InstrClass.Invalid; m.Invalid(); break;
+                case Mnemonic.Invalid: iclass = InstrClass.Invalid; m.Invalid(); break;
+                case Mnemonic.Reserved: iclass = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.acbb: RewriteAcbi(PrimitiveType.Byte); break;
                 case Mnemonic.acbd: RewriteAcbf(PrimitiveType.Real64); break;
                 case Mnemonic.acbf: RewriteAcbf(PrimitiveType.Real32); break;
@@ -465,46 +468,19 @@ namespace Reko.Arch.Vax
                 case Mnemonic.bugl: goto default;
                 case Mnemonic.bugw: goto default;
                 }
-                yield return new RtlInstructionCluster(
-                    addr,
-                    len, 
-                    rtlInstructions.ToArray())
-                {
-                    Class = rtlc
-                };
+                yield return m.MakeCluster(addr, len, iclass);
             }
-        }
-
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
-        [Conditional("DEBUG")]
-        private void EmitUnitTest()
-        {
-            if (seen.Contains(this.instr.Mnemonic))
-                return;
-            seen.Add(this.instr.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= this.instr.Length;
-            var bytes = r2.ReadBytes(this.instr.Length);
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void VaxRw_" + this.instr.Mnemonic + "()");
-            Debug.WriteLine("        {");
-            Debug.Write("            BuildTest(");
-            Debug.Write(string.Join(
-                ", ",
-                bytes.Select(b => string.Format("0x{0:X2}", (int)b))));
-            Debug.WriteLine(");\t// " + this.instr.ToString());
-            Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|00100000(2): 1 instructions\",");
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private void EmitUnitTest()
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("VaxRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Expression RewriteSrcOp(int iOp, PrimitiveType width)
@@ -540,7 +516,7 @@ namespace Reko.Arch.Vax
                 }
                 else
                 {
-                    return m.Cast(width, reg);
+                    return m.Slice(width, reg, 0);
                 }
 
             case ImmediateOperand immOp:
@@ -564,7 +540,14 @@ namespace Reko.Arch.Vax
                     ea = reg;
                     if (memOp.Offset != null)
                     {
-                        ea = m.IAdd(ea, memOp.Offset);
+                        if (memOp.Offset.DataType.BitSize < ea.DataType.BitSize)
+                        {
+                            ea = m.IAddS(ea, memOp.Offset.ToInt32());
+                        }
+                        else
+                        {
+                            ea = m.IAdd(ea, memOp.Offset);
+                        }
                     }
                     if (memOp.Index != null)
                     {
@@ -619,7 +602,7 @@ namespace Reko.Arch.Vax
                 {
                     var tmp = binder.CreateTemporary(width);
                     var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(32 - width.BitSize));
-                    m.Assign(tmp, fn(m.Cast(width, reg)));
+                    m.Assign(tmp, fn(m.Slice(width, reg, 0)));
                     m.Assign(tmpHi, m.Slice(tmpHi.DataType, reg, width.BitSize));
                     m.Assign(reg, m.Seq(tmpHi, tmp));
                     return tmp;
@@ -650,8 +633,7 @@ namespace Reko.Arch.Vax
                 // Can't assign to an immediate.
                 return null;
             }
-            var memOp = op as MemoryOperand;
-            if (memOp != null)
+            if (op is MemoryOperand memOp)
             {
                 Expression ea;
                 Identifier reg = null;
@@ -665,7 +647,14 @@ namespace Reko.Arch.Vax
                     ea = reg;
                     if (memOp.Offset != null)
                     {
-                        ea = m.IAdd(ea, memOp.Offset);
+                        if (memOp.Offset.DataType.BitSize < ea.DataType.BitSize)
+                        {
+                            ea = m.IAddS(ea, memOp.Offset.ToInt32());
+                        }
+                        else
+                        {
+                            ea = m.IAdd(ea, memOp.Offset);
+                        }
                     }
                 }
                 else
@@ -674,7 +663,7 @@ namespace Reko.Arch.Vax
                 }
                 var tmp = binder.CreateTemporary(width);
                 m.Assign(tmp, fn(m.Mem(width, ea)));
-                Expression load; 
+                Expression load;
                 if (memOp.Deferred)
                     load = m.Mem(width, m.Mem32(ea));
                 else
@@ -693,7 +682,7 @@ namespace Reko.Arch.Vax
 
         private Identifier FlagGroup(FlagM flags)
         {
-            return binder.EnsureFlagGroup( arch.GetFlagGroup(Registers.psw, (uint)flags));
+            return binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.psw, (uint)flags));
         }
 
         private bool AllFlags(Expression dst)
@@ -768,7 +757,7 @@ namespace Reko.Arch.Vax
         private void EmitInvalid()
         {
             rtlInstructions.Clear();
-            rtlc = InstrClass.Invalid;
+            iclass = InstrClass.Invalid;
             m.Invalid();
         }
     }

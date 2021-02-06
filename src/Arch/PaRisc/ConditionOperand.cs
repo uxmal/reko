@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,9 +39,9 @@ namespace Reko.Arch.PaRisc
             this.Display = display;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString(Display);
+            renderer.WriteString(Display);
         }
 
         public static readonly ConditionOperand Never = new ConditionOperand(ConditionType.Never, "");

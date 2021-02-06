@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Evaluation
             IdConstant ic = new IdConstant(ctx.Object, new Unifier(null, null), listener);
             Assert.IsTrue(ic.Match(edx));
             Expression e = ic.Transform();
-            Assert.AreEqual("321", e.ToString());
+            Assert.AreEqual("321<i32>", e.ToString());
             Assert.AreEqual("DWORD", e.DataType.ToString());
         }
 
@@ -114,6 +114,21 @@ namespace Reko.UnitTests.Evaluation
             Expression e = ic.Transform();
             Assert.AreEqual("00123400", e.ToString());
             Assert.AreEqual("(ptr32 int32)", e.DataType.ToString());
+        }
+
+        [Test]
+        public void Idc_FloatingPointConstants()
+        {
+            Identifier edx = new Identifier("edx", PrimitiveType.Real32, Registers.edx);
+
+            var ctx = new Mock<EvaluationContext>();
+            ctx.Setup(c => c.GetValue(edx)).Returns(Constant.Word32(0x3E400000));
+
+            var ic = new IdConstant(ctx.Object, new Unifier(null, null), listener);
+            Assert.IsTrue(ic.Match(edx));
+            var e = ic.Transform();
+            Assert.AreEqual("0.1875F", e.ToString());
+            Assert.AreEqual("real32", e.DataType.ToString());
         }
     }
 }

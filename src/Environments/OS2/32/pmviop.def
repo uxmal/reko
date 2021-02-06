@@ -1,0 +1,7 @@
+LIBRARY PMVIOP
+EXPORTS
+    WIN16DEFAVIOWINDOWPROC                      @30
+    SeamlessRegisterObject                      @50
+    SeamlessActivateWindow                      @51
+    SeamlessRegisterAssocObj                    @55
+

@@ -4115,6 +4115,9 @@
     </signature>
   </procedure>
   <procedure name="PyArg_ParseTuple">
+    <characteristics>
+      <varargs>Reko.Libraries.Python.PyArgFormatParser,Reko.Libraries.Python</varargs>
+    </characteristics>
     <signature>
       <return>
         <prim domain="SignedInt" size="4" />
@@ -4167,6 +4170,9 @@
     </signature>
   </procedure>
   <procedure name="Py_BuildValue">
+    <characteristics>
+      <varargs>Reko.Libraries.Python.PyBuildValueFormatParser,Reko.Libraries.Python</varargs>
+    </characteristics>
     <signature>
       <return>
         <ptr size="4">

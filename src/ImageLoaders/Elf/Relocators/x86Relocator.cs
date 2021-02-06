@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,10 +65,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
+        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
-                return sym;
+                return (null,null);
             uint S = (uint)sym.Value;
             int A = 0;
             int sh = 0;
@@ -99,7 +99,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     // Broken GCC compilers generate relocations referring to symbols 
                     // whose value is 0 instead of the expected address of the PLT stub.
                     var gotEntry = relR.PeekLeUInt32(0);
-                    return CreatePltStubSymbolFromRelocation(sym, gotEntry, 6);
+                    var symNew = CreatePltStubSymbolFromRelocation(sym, gotEntry, 6);
+                    return (addr, symNew);
                 }
                 break;
             case i386Rt.R_386_32: // S + A
@@ -137,10 +138,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
             var w = relR.ReadLeUInt32();
             w += ((uint)(B + S + A + P) >> sh) & mask;
             relW.WriteLeUInt32(w);
-            return sym;
+            return (addr, sym);
         }
-
-
 
         public override string RelocationTypeToString(uint type)
         {

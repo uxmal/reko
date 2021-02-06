@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,9 +28,9 @@ namespace Reko.Core
 {
     public class AddressContext
     {
-        private Program program;
-        private Address addr;
-        private DecompilerEventListener decompilerEventListener;
+        private readonly Program program;
+        private readonly Address addr;
+        private readonly DecompilerEventListener decompilerEventListener;
 
         public AddressContext(Program program, Address addr, DecompilerEventListener decompilerEventListener)
         {

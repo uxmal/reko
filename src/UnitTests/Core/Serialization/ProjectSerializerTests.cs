@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -295,6 +295,15 @@ namespace Reko.UnitTests.Core.Serialization
                                         "11504F",
                                     }
                                 }
+                            },
+                            OutputFilePolicy = Program.SegmentFilePolicy,
+                            BlockLabels =
+                            {
+                                new BlockLabel_v1
+                                {
+                                    Location = "115252",
+                                    Name = "errorExit",
+                                }
                             }
                         }
                     }
@@ -316,6 +325,11 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual(1, inputFile.User.IndirectJumps.Count);
             var indJump = inputFile.User.IndirectJumps[Address.Ptr32(0x00113800)];
             Assert.AreSame(jumpTable, indJump.Table);
+
+            Assert.AreEqual(1, inputFile.User.BlockLabels.Count);
+            var blockLabel = inputFile.User.BlockLabels["115252"];
+            Assert.AreEqual("errorExit", blockLabel);
+            Assert.AreEqual(Program.SegmentFilePolicy, inputFile.User.OutputFilePolicy);
         }
 
 
@@ -330,7 +344,7 @@ namespace Reko.UnitTests.Core.Serialization
                         User = new UserData_v4 {
                             Heuristics = {
                                 new Heuristic_v3 { Name = "shingle" }
-                            }
+                            },
                         }
                     },
                     new AssemblerFile_v3 { Filename="foo.asm", Assembler="x86-att" }

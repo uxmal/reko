@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using System;
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Core
         {
             this.sw = new StringWriter();
             var fmt = new TextFormatter(sw);
-            var mem = new MemoryArea(Address.Ptr32(0x00123400), bytes);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00123400), bytes);
             var rdr = mem.CreateLeReader(0);
             this.tdd = new TypedDataDumper(rdr, (uint) mem.Length, fmt);
         }
@@ -69,6 +70,35 @@ namespace Reko.UnitTests.Core
             str.Accept(tdd);
 
             Assert.AreEqual("db\t0x0D,0x0A,'Hello',0x00" + cr, sw.ToString());
+        }
+
+        [Test]
+        public void Tdd_Word64()
+        {
+            var bytes = new byte[]
+            {
+                0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+            };
+            Given_TypedDataDumper(bytes);
+
+            PrimitiveType.Word64.Accept(tdd);
+
+            Assert.AreEqual("dq\t0x0807060504030201" + cr, sw.ToString());
+        }
+
+        [Test]
+        public void Tdd_Ptr64()
+        {
+            var bytes = new byte[]
+            {
+                0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+            };
+            Given_TypedDataDumper(bytes);
+
+            var ptr64 = new Pointer(VoidType.Instance, 64);
+            ptr64.Accept(tdd);
+
+            Assert.AreEqual("dq\t0x0807060504030201" + cr, sw.ToString());
         }
     }
 }

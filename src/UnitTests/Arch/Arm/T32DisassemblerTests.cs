@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,9 @@ using NUnit.Framework;
 using Reko.Arch.Arm;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.Arm
 {
@@ -34,7 +36,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected override IProcessorArchitecture CreateArchitecture()
         {
-            return new ThumbArchitecture("arm-thumb");
+            return new ThumbArchitecture(new ServiceContainer(), "arm-thumb", new Dictionary<string, object>());
         }
 
         protected MachineInstruction Disassemble16(params ushort[] instrs)
@@ -57,9 +59,9 @@ namespace Reko.UnitTests.Arch.Arm
             {
                 w.WriteLeUInt16(instr);
             }
-            var image = new MemoryArea(Address.Ptr32(0x00100000), w.ToArray());
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), w.ToArray());
             var arch = CreateArchitecture();
-            this.dasm = CreateDisassembler(arch, image.CreateLeReader(0));
+            this.dasm = CreateDisassembler(arch, mem.CreateLeReader(0));
         }
 
         private void AssertCode(string sExp, params ushort[] instrs)
@@ -859,7 +861,7 @@ namespace Reko.UnitTests.Arch.Arm
         //.data:00000016 ED04 E000  stc  0, cr14, [r4, #-0]
         //.data:0000001a ED24 E000  stc	0, cr14, [r4, #-0]
         //.data:0000001e ED9C E000  ldc	0, cr14, [r12]
-        //.data:00000022 F0F3 4770  ; <UNDEFINED> instruction: 0xf0f34770
+        //.data:00000022 F0F3 4770  ; <UNDEFINED> instruction: 0xf0f34770<32>
         //.data:00000026 F956 4C0F  ldr??.w r4, [r6, #-15]
         //.data:0000002a FDB2 2501  ldc2 5, cr2, [r2, #4]!
         //.data:0000002e FDE1 4631  stc2l	6, cr4, [r1, #196]!	; 0xc4

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.AmigaOS
 {
@@ -82,8 +83,7 @@ namespace Reko.Environments.AmigaOS
 
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var env = cfgSvc.GetEnvironment(this.PlatformIdentifier);
-            object option;
-            if (env.Options.TryGetValue("versionDependentLibraries", out option))
+            if (env.Options.TryGetValue("versionDependentLibraries", out object option))
             {
                 mapKickstartToListOfLibraries = (Dictionary<string, object>)option;
             }
@@ -104,7 +104,7 @@ namespace Reko.Environments.AmigaOS
                 Address.Ptr32(0),
                 new ImageSegment(
                     "interrupts",
-                    new MemoryArea(Address.Ptr32(0), new byte[0x100]),
+                    Architecture.CreateMemoryArea(Address.Ptr32(0), new byte[0x100]),
                     AccessMode.Read));
             //$TODO: once we're guaranteed the correct Kickstart version
             // has been loaded, we can execute the below.
@@ -136,12 +136,12 @@ namespace Reko.Environments.AmigaOS
             };
         }
 
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             return null;
         }
 
-        public override SystemService FindService(RtlInstruction rtl, ProcessorState state)
+        public override SystemService FindService(RtlInstruction rtl, ProcessorState state, SegmentMap segmentMap)
         {
             EnsureTypeLibraries(PlatformIdentifier);
             if (!a6Pattern.Match(rtl))
@@ -152,8 +152,7 @@ namespace Reko.Environments.AmigaOS
                 return null;
             if (funcs == null)
                 funcs = LoadLibraryDef("exec", 33, Metadata);
-            SystemService svc;
-            return funcs.TryGetValue(offset, out svc) ? svc : null;
+            return funcs.TryGetValue(offset, out SystemService svc) ? svc : null;
         }
 
         private string GetLibraryBaseName(string name_with_version) 
@@ -218,21 +217,21 @@ namespace Reko.Environments.AmigaOS
             get { return ""; }
         }
 
-        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        public override int GetBitSizeFromCBasicType(CBasicType cb)
         {
             switch (cb)
             {
-            case CBasicType.Bool: return 1;
-            case CBasicType.Char: return 1;
-            case CBasicType.WChar_t: return 2;  //$REVIEW: Does AmigaOS support wchar_t?
-            case CBasicType.Short: return 2;
-            case CBasicType.Int: return 4;
-            case CBasicType.Long: return 4;
-            case CBasicType.LongLong: return 8;
-            case CBasicType.Float: return 4;
-            case CBasicType.Double: return 8;
-            case CBasicType.LongDouble: return 8;
-            case CBasicType.Int64: return 8;
+            case CBasicType.Bool: return 8;
+            case CBasicType.Char: return 8;
+            case CBasicType.WChar_t: return 16;  //$REVIEW: Does AmigaOS support wchar_t?
+            case CBasicType.Short: return 16;
+            case CBasicType.Int: return 32;
+            case CBasicType.Long: return 32;
+            case CBasicType.LongLong: return 64;
+            case CBasicType.Float: return 32;
+            case CBasicType.Double: return 64;
+            case CBasicType.LongDouble: return 64;
+            case CBasicType.Int64: return 64;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
         }

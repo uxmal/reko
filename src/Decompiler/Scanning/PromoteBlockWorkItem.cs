@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,6 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
-using Reko.Core.Rtl;
-using Reko.Core.Operators;
-using Reko.Core.Types;
-using Reko.Evaluation;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -42,8 +36,17 @@ namespace Reko.Scanning
         public IScanner Scanner;
         public Program Program;
 
-        public PromoteBlockWorkItem(Address addr) : base(addr)
+        public PromoteBlockWorkItem(
+            Address addr,
+            IScanner scanner,
+            Program program,
+            Block  block,
+            Procedure procNew) : base(addr)
         {
+            Scanner = scanner;
+            Program = program;
+            Block = block;
+            ProcNew = procNew;
         }
 
         public override void Process()
@@ -51,7 +54,6 @@ namespace Reko.Scanning
             var movedBlocks = new HashSet<Block>();
             var stack = new Stack<IEnumerator<Block>>();
             stack.Push(new Block[] { Block }.Cast<Block>().GetEnumerator());
-            var replacer = new IdentifierRelocator(ProcNew.Frame);
             while (stack.Count != 0)
             {
                 DumpBlocks(Block.Procedure);
@@ -65,7 +67,8 @@ namespace Reko.Scanning
                 if (b.Procedure == ProcNew || b == b.Procedure.ExitBlock || b.Procedure.EntryBlock.Succ[0] == b)
                     continue;
 
-                DebugEx.Inform(trace, "PromoteBlock visiting block {0}, stack depth {1}", b.Name, stack.Count);
+                trace.Verbose("PBW:     Visiting block {0}, stack depth {1}", b.DisplayName, stack.Count);
+                var replacer = new IdentifierRelocator(b.Procedure.Frame, ProcNew.Frame);
                 b.Procedure.RemoveBlock(b);
                 ProcNew.AddBlock(b);
                 b.Procedure = ProcNew;
@@ -82,21 +85,30 @@ namespace Reko.Scanning
                 FixExitEdges(b);
                 FixInboundEdges(b);
                 FixOutboundEdges(b);
+               //  SanityCheck(b);
             }
         }
 
-        [Conditional("DEBU")]
+        [Conditional("DEBUG")]
+        public static void SanityCheck(Block block)
+        {
+         //   Debug.Assert(block.Pred.Count == 0 && block != block.Procedure.EntryBlock);
+        }
+
+        [Conditional("DEBUG")]
         private void DumpBlocks(Procedure procedure)
         {
-            DebugEx.Verbose(trace, "{0}", procedure.Name);
+            trace.Verbose("{0}", procedure.Name);
             foreach (var block in procedure.ControlGraph.Blocks)
             {
-                DebugEx.Verbose(trace, "  {0}; {1}", block.Name, block.Procedure.Name);
+                trace.Verbose("  {0}; {1}", block.DisplayName, block.Procedure.Name);
             }
         }
 
         public void FixInboundEdges(Block blockToPromote)
         {
+            trace.Verbose("PBW: Fixing inbound edges of {0}", blockToPromote.DisplayName);
+
             // Get all blocks that are from "outside" blocks.
             var inboundBlocks = blockToPromote.Pred.Where(p => p.Procedure != ProcNew).ToArray();
             foreach (var inb in inboundBlocks)
@@ -115,7 +127,7 @@ namespace Reko.Scanning
                         new CallInstruction(
                             new ProcedureConstant(Program.Platform.PointerType, ProcNew),
                             new CallSite(0, 0)));
-                    Program.CallGraph.AddEdge(inb.Statements.Last, ProcNew);
+                    Program.CallGraph.AddEdge(inb.Statements.Last!, ProcNew);
                     inb.Statements.Add(inb.Address.ToLinear(), new ReturnInstruction());
                     inb.Procedure.ControlGraph.AddEdge(inb, inb.Procedure.ExitBlock);
                 }
@@ -131,12 +143,13 @@ namespace Reko.Scanning
             if (inboundBlock.Statements.Count == 0)
                 return Program.Platform.MakeAddressFromLinear(0, true);
             return inboundBlock.Address != null
-                ? inboundBlock.Address + (inboundBlock.Statements.Last.LinearAddress - inboundBlock.Statements[0].LinearAddress)
-                : Program.Platform.MakeAddressFromLinear(inboundBlock.Statements.Last.LinearAddress, true);
+                ? inboundBlock.Address + (inboundBlock.Statements.Last!.LinearAddress - inboundBlock.Statements[0].LinearAddress)
+                : Program.Platform.MakeAddressFromLinear(inboundBlock.Statements.Last!.LinearAddress, true);
         }
 
         public void FixOutboundEdges(Block block)
         {
+            trace.Verbose("PBW: Fixing outbound edges of {0}", block.DisplayName);
             for (int i = 0; i < block.Succ.Count; ++i)
             {
                 var s = block.Succ[i];
@@ -165,6 +178,7 @@ namespace Reko.Scanning
 
         private void FixExitEdges(Block block)
         {
+            trace.Verbose("PBW: Fixing exit edges of {0}", block.DisplayName);
             for (int i = 0; i < block.Succ.Count; ++i)
             {
                 var s = block.Succ[i];

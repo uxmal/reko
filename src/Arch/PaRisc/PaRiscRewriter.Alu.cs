@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ namespace Reko.Arch.PaRisc
                 var zero = Constant.Zero(SizeFromCondition(instr.Condition.Type));
                 var c = RewriteCondition(dst, zero);
                 m.BranchInMiddleOfInstruction(c.Invert(), instr.Address + 4, InstrClass.ConditionalTransfer);
-                m.SideEffect(host.PseudoProcedure("__trap", VoidType.Instance));
+                m.SideEffect(host.Intrinsic("__trap", false, VoidType.Instance));
             }
             else
             {
@@ -96,15 +96,22 @@ namespace Reko.Arch.PaRisc
             var pos = RewriteOp(instr.Operands[1]);
             var len = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
             var dst = RewriteOp(instr.Operands[3]);
-            Expression orig = instr.Zero
-                ? Constant.Zero(dst.DataType)
-                : dst;
                  
             if (pos is Constant cpos)
             {
                 var dt = PrimitiveType.CreateWord(len);
+                var dtHi = PrimitiveType.CreateWord(32 - len);
+                var ins = Constant.Create(dt, imm);
                 var lePos = 31 - cpos.ToInt32();
-                m.Assign(dst, m.Dpb(orig, Constant.Create(dt, imm), lePos));
+                if (instr.Zero)
+                {
+                    m.Assign(dst, m.Dpb(Constant.Zero(dst.DataType), ins, lePos));
+                }
+                else
+                {
+                    m.Assign(dst, m.Dpb((Identifier)dst, ins, lePos));
+                }
+                m.Assign(dst,  lePos);
                 return;
             }
             throw new NotImplementedException("depwi sar not implemented yet.");
@@ -129,7 +136,7 @@ namespace Reko.Arch.PaRisc
             var dt = (instr.Sign == SignExtension.s)
                 ? PrimitiveType.Int32
                 : PrimitiveType.UInt32;
-            m.Assign(dst, m.Cast(dt, m.Slice(dtSlice, src, lePos)));
+            m.Assign(dst, m.Convert(m.Slice(dtSlice, src, lePos), dtSlice, dt));
         }
 
         private void RewriteLd(PrimitiveType size)
@@ -138,7 +145,7 @@ namespace Reko.Arch.PaRisc
             var dst = RewriteOp(instr.Operands[1]);
             if (src.DataType.BitSize < dst.DataType.BitSize)
             {
-                src = m.Cast(PrimitiveType.Create(Domain.UnsignedInt, dst.DataType.BitSize), src);
+                src = m.Convert(src, size, PrimitiveType.Create(Domain.UnsignedInt, dst.DataType.BitSize));
             }
             m.Assign(dst, src);
         }

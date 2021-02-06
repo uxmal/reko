@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,14 +26,14 @@ namespace Reko.Core.Absyn
 {
 	public class AbsynDeclaration : AbsynStatement
 	{
-		public AbsynDeclaration(Identifier id, Expression expr)
+		public AbsynDeclaration(Identifier id, Expression? expr)
 		{
 			this.Identifier = id;
 			this.Expression = expr;
 		}
 
         public Identifier Identifier { get; }
-        public Expression Expression { get; set; }
+        public Expression? Expression { get; set; }
         
         public override void Accept(IAbsynVisitor visitor)
 		{

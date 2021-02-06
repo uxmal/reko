@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,8 @@ namespace Reko.Arch.X86.Design
         public object CreateControl()
         {
             Control = new X86ArchitecturePanel();
-            Control.Emulate8087Checkbox.Checked = arch.Options.Emulate8087;
+            Control.Emulate8087Checkbox.Checked = arch.Options.ContainsKey("Emulate8087") &&
+                arch.Options["Emulate8087"].ToString() == "true";
             Control.Emulate8087Checkbox.CheckedChanged += Emulate8087Checkbox_CheckedChanged;
 
             return Control;
@@ -60,9 +61,8 @@ namespace Reko.Arch.X86.Design
 
         private void Emulate8087Checkbox_CheckedChanged(object sender, EventArgs e)
         {
-            if (arch.Options == null)
-                arch.Options = new X86Options();
-            arch.Options.Emulate8087 = Control.Emulate8087Checkbox.Checked;
+            arch.Options["Emulate8087"] = Control.Emulate8087Checkbox.Checked.ToString().ToLowerInvariant();
+            arch.LoadUserOptions(arch.Options);
         }
 
         public void Close()

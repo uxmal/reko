@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,13 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,11 +59,11 @@ namespace Reko.UnitTests.Scanning
                     Address.Ptr32(0x2000),
                     new ImageSegment(
                         "blob",
-                        new MemoryArea(addr, new byte[0x400]),
+                        new ByteMemoryArea(addr, new byte[0x400]),
                         AccessMode.ReadWriteExecute),
                     new ImageSegment(
                         "segmentedBlob",
-                        new MemoryArea(Address.SegPtr(0xC00, 0), new Byte[0x400]),
+                        new ByteMemoryArea(Address.SegPtr(0xC00, 0), new Byte[0x400]),
                         AccessMode.ReadWriteExecute))
             };
 
@@ -152,7 +154,7 @@ namespace Reko.UnitTests.Scanning
             Given_Evaluator();
 
             var vs = vse.Evaluate(m.Mem32(r1));
-            Assert.AreEqual("[0x00003000,0x00003028,0x00003008]", vs.Item1.ToString());
+            Assert.AreEqual("[0x3000<32>,0x3028<32>,0x3008<32>]", vs.Item1.ToString());
         }
 
         [Test]
@@ -184,7 +186,7 @@ namespace Reko.UnitTests.Scanning
             Given_ValueSet(r1, IVS(0, -0x43F, -0x43F));
             Given_Evaluator();
 
-            var vs = vse.Evaluate(m.Cast(PrimitiveType.Byte, r1));
+            var vs = vse.Evaluate(m.Convert(r1, r1.DataType, PrimitiveType.Byte));
             Assert.AreEqual("0[-3F,-3F]", vs.Item1.ToString());
         }
 
@@ -195,7 +197,7 @@ namespace Reko.UnitTests.Scanning
             Given_ValueSet(r1, IVS(4, -0x400, 0x400));
             Given_Evaluator();
 
-            var vs = vse.Evaluate(m.Cast(PrimitiveType.Byte, r1));
+            var vs = vse.Evaluate(m.Convert(r1, r1.DataType, PrimitiveType.Byte));
             Assert.AreEqual("4[0,FF]", vs.Item1.ToString());
         }
 
@@ -206,10 +208,11 @@ namespace Reko.UnitTests.Scanning
             Given_ValueSet(r1, CVS(0x1FF, 0x00, 0x7F));
             Given_Evaluator();
 
-            var vs = vse.Evaluate(m.Cast(
-                PrimitiveType.Int32,
-                m.Cast(PrimitiveType.Byte, r1)));
-            Assert.AreEqual("[-1,0,127]", vs.Item1.ToString());
+            var vs = vse.Evaluate(m.Convert(
+                m.Slice(PrimitiveType.Byte, r1, 0),
+                PrimitiveType.Byte,
+                PrimitiveType.Int32));
+            Assert.AreEqual("[-1<i32>,0<i32>,127<i32>]", vs.Item1.ToString());
         }
 
         [Test]
@@ -231,13 +234,13 @@ namespace Reko.UnitTests.Scanning
             Given_Evaluator();
 
             var vs = vse.Evaluate(m.IMul(r1, 4));
-            Assert.AreEqual("[0x0000000C,0x00000024,0x00000028]", vs.Item1.ToString());
+            Assert.AreEqual("[0xC<32>,0x24<32>,0x28<32>]", vs.Item1.ToString());
         }
 
         [Test]
         public void Vse_segmented_addrs()
         {
-            program.Architecture = new Reko.Arch.X86.X86ArchitectureReal("x86-real-16");
+            program.Architecture = new Reko.Arch.X86.X86ArchitectureReal(new ServiceContainer(), "x86-real-16", new Dictionary<string, object>());
             Given_UInt16Array(Address.SegPtr(0xC00, 4), new ushort[] {
                 0x1234,
                 0x0C00,
@@ -261,7 +264,7 @@ namespace Reko.UnitTests.Scanning
         public void Vse_NestedCasts()
         {
             // Extracted from:
-            // (int32) (int16) Mem0[(word32) (word16) ((word32) r0 * 0x00000002) + 0x0010EC32:word16] + 0x0010EC30
+            // (int32) (int16) Mem0[(word32) (word16) ((word32) r0 * 0x2<32>) + 0x10EC32<32>:word16] + 0x10EC30<32>
 
             var r0 = m.Reg32("r0", 0);
 
@@ -269,7 +272,7 @@ namespace Reko.UnitTests.Scanning
             Given_Evaluator();
 
             var exp = m.IAdd(
-                m.Cast(W32, m.Cast(W16, m.IMul(m.Cast(W32, r0), 2))),
+                m.Convert(m.Convert(m.IMul(m.Convert(r0, r0.DataType, W32), 2), W32, W16), W16, W32),
                 0x00100000);
             var vs = vse.Evaluate(exp);
             Assert.AreEqual("2[100000,100006]", vs.Item1.ToString());
@@ -285,7 +288,7 @@ namespace Reko.UnitTests.Scanning
 
             var exp = m.Mem32(m.IAdd(m.IMul(r0, 4), 0x2080));
             var (vs, reads) = vse.Evaluate(exp);
-            Assert.AreEqual("[0x00001100,0x00001060,0x00001800]", vs.ToString());
+            Assert.AreEqual("[0x1100<32>,0x1060<32>,0x1800<32>]", vs.ToString());
             Assert.AreEqual("([00002080, word32],[00002084, word32],[00002088, word32])", DumpReads(reads));
         }
 
@@ -298,8 +301,8 @@ namespace Reko.UnitTests.Scanning
             Given_ValueSet(r1, ValueSet.Any);
             Given_Evaluator();
 
-            var exp = m.Cast(PrimitiveType.Int16, m.Seq(r1, r0));
-            var (vs, reads) = vse.Evaluate(exp);
+            var exp = m.Convert(m.Slice(W16, m.Seq(r1, r0), 0), W16, PrimitiveType.Int16);
+            var (vs, _) = vse.Evaluate(exp);
             Assert.AreEqual("1[0,3]", vs.ToString());
         }
 
@@ -328,10 +331,11 @@ namespace Reko.UnitTests.Scanning
             Given_ValueSet(r2, ValueSet.Any);
             Given_Evaluator();
 
-            var exp = m.Cast(
-                PrimitiveType.Int16,
-                m.Seq(r2, m.Slice(m.IMul(m.Seq(r1, r0), 2), 0, 16)));
-            var (vs, reads) = vse.Evaluate(exp);
+            var exp = m.Convert(
+                m.Seq(r2, m.Slice(m.IMul(m.Seq(r1, r0), 2), 0, 16)),
+                PrimitiveType.Word32,
+                PrimitiveType.Int16);
+            var (vs, _) = vse.Evaluate(exp);
             Assert.AreEqual("2[0,6]", vs.ToString());
         }
     }

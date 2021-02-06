@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2019 John Källén.
+* Copyright (C) 1999-2021 John Kï¿½llï¿½n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ void ArmRewriter::RewriteVext()
 	auto src2 = Operand(Src2());
 	auto src3 = Operand(Src3());
 	auto dst = Operand(Dst(), BaseType::Word32, true);
-	auto intrinsic = host->EnsurePseudoProcedure("__vext", register_types[Dst().reg], 3);
+	auto intrinsic = host->EnsureIntrinsicProcedure("__vext", false, register_types[Dst().reg], 3);
 	m.AddArg(src1);
 	m.AddArg(src2);
 	m.AddArg(src3);
@@ -122,7 +122,7 @@ void ArmRewriter::RewriteVmov()
 
 		char fname[200];
 		snprintf(fname, sizeof(fname), "__vmov_%s", VectorElementType(instr->detail->arm.vector_data));
-		auto ppp = host->EnsurePseudoProcedure(fname, register_types[Dst().reg], 1);
+		auto ppp = host->EnsureIntrinsicProcedure(fname, false, register_types[Dst().reg], 1);
 		m.AddArg(src);
 		m.Assign(dst, m.Fn(ppp));
 	}
@@ -220,7 +220,7 @@ void ArmRewriter::RewriteVsqrt()
 	auto dt = instr->detail->arm.vector_data == ARM_VECTORDATA_F32 ? BaseType::Real32 : BaseType::Real64;
 	auto src = this->Operand(Src1());
 	auto dst = this->Operand(Dst(), BaseType::Word32, true);
-	auto ppp = host->EnsurePseudoProcedure(fnname, dt, 1);
+	auto ppp = host->EnsureIntrinsicProcedure(fnname, false, dt, 1);
 	m.AddArg(src);
 	m.Assign(dst, m.Fn(ppp));
 }
@@ -236,7 +236,7 @@ void ArmRewriter::RewriteVdup()
 	auto arrType = ntf.ArrayOf((HExpr)srcType, celem);
 	char fnName[20];
 	snprintf(fnName, sizeof(fnName), "__vdup_%d", instr->detail->arm.vector_size);
-	auto intrinsic = host->EnsurePseudoProcedure(fnName, (BaseType) (int)arrType, 1);
+	auto intrinsic = host->EnsureIntrinsicProcedure(fnName, false, (BaseType) (int)arrType, 1);
 	m.AddArg(src);
 	m.Assign(dst, m.Fn(intrinsic));
 }
@@ -255,7 +255,7 @@ void ArmRewriter::RewriteVmul()
 	auto arrDst = ntf.ArrayOf((HExpr)dstType, celemSrc);
 	char fnName[20];
 	snprintf(fnName, sizeof(fnName), "__vmul_%s", VectorElementType(instr->detail->arm.vector_data));
-	auto intrinsic = host->EnsurePseudoProcedure(fnName, (BaseType)(int)arrDst, 1);
+	auto intrinsic = host->EnsureIntrinsicProcedure(fnName, false, (BaseType)(int)arrDst, 1);
 	m.AddArg(src1);
 	m.AddArg(src2);
 	m.Assign(dst, m.Fn(intrinsic));
@@ -278,7 +278,7 @@ void ArmRewriter::RewriteVectorUnaryOp(const char * fnNameFormat, arm_vectordata
 	auto arrDst = ntf.ArrayOf((HExpr)dstType, celemSrc);
 	char fnName[20];
 	snprintf(fnName, sizeof(fnName), fnNameFormat, VectorElementType(elemType));
-	auto intrinsic = host->EnsurePseudoProcedure(fnName, (BaseType)(int)arrDst, 1);
+	auto intrinsic = host->EnsureIntrinsicProcedure(fnName, false, (BaseType)(int)arrDst, 1);
 	m.AddArg(src1);
 	m.Assign(dst, m.Fn(intrinsic));
 }
@@ -301,7 +301,7 @@ void ArmRewriter::RewriteVectorBinOp(const char * fnNameFormat, arm_vectordata_t
 	auto arrDst = ntf.ArrayOf((HExpr)dstType, celemSrc);
 	char fnName[20];
 	snprintf(fnName, sizeof(fnName), fnNameFormat, VectorElementType(elemType));
-	auto intrinsic = host->EnsurePseudoProcedure(fnName, (BaseType)(int)arrDst, 1);
+	auto intrinsic = host->EnsureIntrinsicProcedure(fnName, false, (BaseType)(int)arrDst, 1);
 	m.AddArg(src1);
 	m.AddArg(src2);
 	m.Assign(dst, m.Fn(intrinsic));

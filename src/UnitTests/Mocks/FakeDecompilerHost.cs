@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,19 +42,25 @@ namespace Reko.UnitTests.Mocks
         {
         }
 
+
+        public TextWriter CreateTextWriter(string file)
+        {
+            return TextWriter.Null; 
+        }
+
         public TextWriter CreateDecompiledCodeWriter(string file)
         {
             return decompiled;
         }
 
-        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
+        public void WriteDisassembly(Program program, Action<string, Dictionary<ImageSegment, List<ImageMapItem>>, Formatter> writer)
         {
-            writer("test.asm", new TextFormatter(disassembly));
+            writer("test.asm", new Dictionary<ImageSegment, List<ImageMapItem>>(), new TextFormatter(disassembly));
         }
 
-        public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
-            writer("test.dis", intermediate);
+            writer("test.dis", new Procedure[0], intermediate);
         }
 
         public void WriteTypes(Program program, Action<string, TextWriter> writer)
@@ -62,7 +68,7 @@ namespace Reko.UnitTests.Mocks
             writer("test.h", typesWriter);
         }
 
-        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
             writer("test.c", new Procedure[0], decompiled);
         }

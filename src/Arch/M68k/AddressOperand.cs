@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,9 +43,9 @@ namespace Reko.Arch.M68k
             return visitor.Visit(this);
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteAddress(string.Format("${0:X8}", Address.Offset), Address);
+            renderer.WriteAddress(string.Format("${0:X8}", Address.Offset), Address);
         }
     }
 }

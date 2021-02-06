@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Core.CLanguage
         public void Setup()
         {
             var platform = new Mock<IPlatform>();
-            platform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Int)).Returns(4);
+            platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Int)).Returns(32);
             constants = new Dictionary<string, int>();
             enev = new EnumEvaluator(new CConstantEvaluator(platform.Object, constants));
         }

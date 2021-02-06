@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,24 +28,24 @@ using System.Text;
 namespace Reko.ImageLoaders.Elf.Relocators
 {
     // https://docs.oracle.com/cd/E23824_01/html/819-0690/chapter6-1235.html
-    public class SparcRelocator : ElfRelocator32
+    public class Sparc32Relocator : ElfRelocator32
     {
         private Dictionary<Address,ImportReference> importReferences;
 
-        public SparcRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
+        public Sparc32Relocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
         }
 
         public override void Relocate(Program program)
         {
-            this.importReferences=  program.ImportReferences;
+            this.importReferences =  program.ImportReferences;
             base.Relocate(program);
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
+        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
-                return sym;
+                return (null, null);
             var rt = (SparcRt)(rela.Info & 0xFF);
             if (sym.SectionIndex == 0)
             {
@@ -59,7 +59,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     {
                         importReferences[addrPfn] = new NamedImportReference(addrPfn, null, sym.Name, st.Value);
                     }
-                    return sym;
+                    return (addrPfn, null);
                 }
             }
 
@@ -92,7 +92,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             switch (rt)
             {
             case 0:
-                return sym;
+                return (addr, null);
             case SparcRt.R_SPARC_HI22:
                 A = (int)rela.Addend;
                 sh = 10;
@@ -119,7 +119,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 break;
             case SparcRt.R_SPARC_COPY:
                 Debug.Print("Relocation type {0} not handled yet.", rt);
-                return sym;
+                return (addr, null);
             default:
                 throw new NotImplementedException(string.Format(
                     "SPARC ELF relocation type {0} not implemented yet.",
@@ -133,7 +133,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             w += ((uint)(B + S + A + P) >> sh) & mask;
             relW.WriteBeUInt32(w);
 
-            return sym;
+            return (addr, null);
         }
 
         private string LoadString(uint symtabOffset, uint sym)
@@ -201,5 +201,17 @@ namespace Reko.ImageLoaders.Elf.Relocators
         R_SPARC_L44 = 52,       // T-imm13      (S + A) & 0xfff
         R_SPARC_REGISTER = 53,  // V-word32     S + A
         R_SPARC_UA16 = 55,      // V-half16     S + A
+
+        // On Sparc64:
+        //R_SPARC_HI22 9 V-imm22 (S + A) >> 10
+        //R_SPARC_GLOB_DAT 20 V-xword64 S + A
+        //R_SPARC_RELATIVE 22 V-xword64 B + A
+        //R_SPARC_64 32 V-xword64 S + A
+        //R_SPARC_OLO10 33 V-simm13 ((S + A) & 0x3ff) + O
+        //R_SPARC_DISP64 46 V-xword64 S+A-P
+        //R_SPARC_PLT64 47 V-xword64 L + A
+        //R_SPARC_REGISTER 53 V-xword64 S + A
+        //R_SPARC_UA64 54 V-xword64 S + A
+        //R_SPARC_H34 85 V-imm22
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 
@@ -39,14 +41,17 @@ namespace Reko.Gui.Forms
             dlg.AddressTextBox.TextChanged += AddressTextBox_TextChanged;
             dlg.RawFileTypes.TextChanged += RawFileTypes_TextChanged;
             dlg.Architectures.TextChanged += Architectures_TextChanged;
+            dlg.Architectures.SelectedIndexChanged += Architectures_TextChanged;
+            dlg.ArchitectureModels.TextChanged += ArchitectureModels_TextChanged;
+            dlg.ArchitectureModels.SelectedIndexChanged += ArchitectureModels_TextChanged;
 
             dlg.AddressTextBox.GotFocus += AddressTextBox_GotFocus;
             dlg.RawFileTypes.GotFocus += RawFileTypes_GotFocus;
             dlg.Platforms.GotFocus += Platforms_GotFocus;
             dlg.Architectures.GotFocus += Architectures_GotFocus;
-        }
+            dlg.ArchitectureModels.GotFocus += ArchitectureModels_GotFocus;
 
-  
+        }
 
         private void dlg_Load(object sender, EventArgs e)
         {
@@ -81,18 +86,14 @@ namespace Reko.Gui.Forms
 
         private void PopulatePlatforms(IConfigurationService dcCfg)
         {
-            var noneOption = new ListOption
-            {
-                Text = "(None)",
-                Value = null,
-            };
+            var noneOption = new ListOption("(None)", null);
             var platforms = new ListOption[] { noneOption }
                 .Concat(
                     dcCfg.GetEnvironments()
                     .OfType<PlatformDefinition>()
                     .OrderBy(p => p.Description)
                     .Where(p => !string.IsNullOrEmpty(p.Name))
-                    .Select(p => new ListOption { Text = p.Description, Value = p }));
+                    .Select(p => new ListOption(p.Description, p)));
             dlg.Platforms.DataSource = new ArrayList(platforms.ToArray());
         }
 
@@ -102,7 +103,7 @@ namespace Reko.Gui.Forms
                     .OfType<RawFileDefinition>()
                     .OrderBy(p => p.Description)
                     .Where(p => !string.IsNullOrEmpty(p.Name))
-                    .Select(p => new ListOption { Text = p.Description, Value = p });
+                    .Select(p => new ListOption(p.Description, p));
             dlg.RawFileTypes.DataSource = new ArrayList(rawFiles.ToArray());
         }
 
@@ -111,14 +112,33 @@ namespace Reko.Gui.Forms
             var archs = dcCfg.GetArchitectures()
                 .OfType<ArchitectureDefinition>()
                 .OrderBy(a => a.Description)
-                .Select(a => new ListOption { Text = a.Description, Value = a });
+                .Select(a => new ListOption(a.Description, a));
             dlg.Architectures.DataSource = new ArrayList(archs.ToArray());
+        }
+
+        private void PopulateModels(ArchitectureDefinition arch)
+        {
+            var models = arch.Models.Values
+                .OrderBy(m => m.Name)
+                .Select(m => new ListOption(m.Name, m))
+                .ToArray();
+            Debug.Print("PopulateModels: models: {0}", models.Length);
+            if (models.Length > 0)
+            {
+                dlg.ArchitectureModels.Enabled = true;
+                dlg.ArchitectureModels.DataSource = new ArrayList(models);
+            }
+            else
+            {
+                dlg.ArchitectureModels.DataSource = null;
+                dlg.ArchitectureModels.Enabled = false;
+            }
         }
 
         private void BrowseButton_Click(object sender, EventArgs e)
         {
-           var uiSvc =  dlg.Services.RequireService<IDecompilerShellUiService>();
-           var fileName = uiSvc.ShowOpenFileDialog("");
+            var uiSvc = dlg.Services.RequireService<IDecompilerShellUiService>();
+            var fileName = uiSvc.ShowOpenFileDialog("");
             if (fileName != null)
             {
                 dlg.FileName.Text = fileName;
@@ -142,15 +162,29 @@ namespace Reko.Gui.Forms
             EnableControls();
         }
 
+        private void ArchitectureModels_TextChanged(object sender, EventArgs e)
+        {
+            OnArchitectureModelChanged();
+            EnableControls();
+        }
+
         private void Architectures_GotFocus(object sender, EventArgs e)
         {
             OnArchitectureChanged();
             EnableControls();
         }
 
+
+        private void ArchitectureModels_GotFocus(object sender, EventArgs e)
+        {
+            OnArchitectureModelChanged();
+            EnableControls();
+        }
+
         private void OnArchitectureChanged()
         {
             var arch = dlg.GetSelectedArchitecture();
+            PopulateModels(arch);
             if (arch != null && arch.Options?.Count > 0)
             {
                 dlg.SetPropertyGrid(dlg.ArchitectureOptions, arch.Options);
@@ -159,6 +193,26 @@ namespace Reko.Gui.Forms
             {
                 dlg.PropertyGrid.SelectedObject = null;
             }
+        }
+
+        private void OnArchitectureModelChanged()
+        {
+            var arch = dlg.GetSelectedArchitecture();
+            if (arch.Models.Count > 0)
+            {
+                var model = dlg.GetSelectedArchitectureModel();
+                if (model != null)
+                {
+                    dlg.ArchitectureOptions = new Dictionary<string, object>();
+                    foreach (var modelOption in model.Options)
+                    {
+                        dlg.ArchitectureOptions[modelOption.Text] = modelOption.Value;
+                    }
+                    dlg.SetPropertyGrid(dlg.ArchitectureOptions, arch.Options);
+                    return;
+                }
+            }
+            dlg.PropertyGrid.SelectedObject = null;
         }
 
         private void Platforms_GotFocus(object sender, EventArgs e)

@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyName>Reko.Environments.OS2</AssemblyName>
+    <RootNamespace>Reko.Environments.OS2</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <TranslateHeader Include="os2-16.inc" />
+    <TranslateHeader Include="16/fsu.inc" />
+    <TranslateHeader Include="16/fsh.inc" />
+    <TranslateHeader Include="16/fsd.inc" /> 
+  </ItemGroup>
+
+  <Target Name="RunC2Xml" AfterTargets="CoreBuild">
+    <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\netstandard2.0\Reko.Environments.OS2.dll" DestinationFolder="$(SolutionDir)tools" />
+    <Copy SourceFiles="$(SolutionDir)Arch\X86\bin\$(Configuration)\netstandard2.0\Reko.Arch.X86.dll" DestinationFolder="$(SolutionDir)tools" />
+    <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(SolutionDir)tools/c2xml.exe -a x86-protected-32 -e os2-16 -d msvc %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
+    <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(SolutionDir)tools\c2xml.exe&quot; -a x86-protected-32 -e os2-16 -d msvc %(TranslateHeader.Identity) %(TranslateHeader.Filename).xml" />
+  </Target>
+</Project>

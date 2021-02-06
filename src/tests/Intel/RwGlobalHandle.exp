@@ -11,35 +11,35 @@
 define fn10000000
 fn10000000_entry:
 	esp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l10000000
 l10000000:
-	esp = esp - 4
+	esp = esp - 4<i32>
 	Mem0[esp:word32] = esi
-	esi = Mem0[esp + 0x00000008:word32]
-	esp = esp - 4
+	esi = Mem0[esp + 8<32>:word32]
+	esp = esp - 4<i32>
 	Mem0[esp:word32] = edi
 	edi = GlobalHandle
-	esp = esp - 4
+	esp = esp - 4<i32>
 	Mem0[esp:word32] = esi
 	eax = GlobalHandle(Mem0[esp:LPCVOID])
-	esp = esp + 0x00000004
-	esp = esp - 4
+	esp = esp + 4<32>
+	esp = esp - 4<i32>
 	Mem0[esp:word32] = eax
 	eax = GlobalUnlock(Mem0[esp:HGLOBAL])
-	esp = esp + 0x00000004
-	esp = esp - 4
+	esp = esp + 4<32>
+	esp = esp - 4<i32>
 	Mem0[esp:word32] = esi
 	eax = GlobalHandle(Mem0[esp:LPCVOID])
-	esp = esp + 0x00000004
-	esp = esp - 4
+	esp = esp + 4<32>
+	esp = esp - 4<i32>
 	Mem0[esp:word32] = eax
 	eax = GlobalFree(Mem0[esp:HGLOBAL])
-	esp = esp + 0x00000004
+	esp = esp + 4<32>
 	edi = Mem0[esp:word32]
-	esp = esp + 4
+	esp = esp + 4<i32>
 	esi = Mem0[esp:word32]
-	esp = esp + 4
+	esp = esp + 4<i32>
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:

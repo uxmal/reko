@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,9 +33,9 @@ namespace Reko.Arch.M68k
     public class M68kState : ProcessorState
     {
         const int RegisterCount = 32;
-        private M68kArchitecture arch;
-        private Constant[] values;
-        private bool[] isValid;
+        private readonly M68kArchitecture arch;
+        private readonly Constant[] values;
+        private readonly bool[] isValid;
 
         public M68kState(M68kArchitecture arch)
         {
@@ -73,10 +73,6 @@ namespace Reko.Arch.M68k
             }
         }
 
-        public override void SetInstructionPointer(Address addr)
-        {
-        }
-
         public override Constant GetRegister(RegisterStorage r)
         {
             if (isValid[r.Number])
@@ -102,7 +98,7 @@ namespace Reko.Arch.M68k
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
 

@@ -20,17 +20,17 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	ds_si_6 = SEQ(ds, 0x0200) (alias)
+	ds_si_6 = SEQ(ds, 0x200<16>) (alias)
 	ax_7 = fn0C00_0015(ds_si_6)
-	Mem8[ds:0x0202:word16] = ax_7
-	ds_si_10 = SEQ(ds, 0x0300) (alias)
+	Mem8[ds:0x202<16>:word16] = ax_7
+	ds_si_10 = SEQ(ds, 0x300<16>) (alias)
 	ax_11 = fn0C00_0015(ds_si_10)
 	al_12 = SLICE(ax_11, byte, 0) (alias)
-	Mem13[ds:0x0302:byte] = al_12
+	Mem13[ds:0x302<16>:byte] = al_12
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-Register word16 fn0C00_0015(Sequence word32 ds_si)
+Register word16 fn0C00_0015(Sequence segptr32 ds_si)
 // MayUse:  Sequence ds:si:[0..31]
 // LiveOut: ax
 // Trashed: ax Top
@@ -46,7 +46,7 @@ Register word16 fn0C00_0015(Sequence word32 ds_si)
 // Top:Top
 // ds_si:Sequence ds:si
 // return address size: 2
-word16 fn0C00_0015(word32 ds_si)
+word16 fn0C00_0015(segptr32 ds_si)
 fn0C00_0015_entry:
 	def ds_si
 	def Mem0

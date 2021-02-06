@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,17 +45,17 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Creates an access to the memory whose effective address is <paramref name="ea"/>.
+        /// Creates an access to the memory whose effective address is <paramref name="effectiveAddress"/>.
         /// The data type of the accessed memory is <paramref name="dt"/>. The memory access
         /// takes place in the address space <paramref name="space"/>.
         /// </summary>
-        /// <param name="ea">Effective address of the access.</param>
+        /// <param name="effectiveAddress">Effective address of the access.</param>
         /// <param name="dt">Data type of the access.</param>
-        public MemoryAccess(MemoryIdentifier space, Expression ea, DataType dt)
+        public MemoryAccess(MemoryIdentifier space, Expression effectiveAddress, DataType dt)
             : base(dt)
         {
             this.MemoryId = space;
-            this.EffectiveAddress = ea;
+            this.EffectiveAddress = effectiveAddress ?? throw new ArgumentNullException(nameof(effectiveAddress));
         }
 
         public readonly MemoryIdentifier MemoryId;

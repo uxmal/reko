@@ -18,7 +18,7 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
 	ecx = ecx ^ ecx
@@ -26,13 +26,13 @@ l0C00_0000:
 	C = false
 	ax = ax - bx
 	SCZO = cond(ax)
-	cl = Test(EQ,Z)
-	Mem0[ds:0x0300:word32] = ecx
-	SCZO = cond(ax - 0x0030)
+	cl = CONVERT(Test(EQ,Z), bool, int8)
+	Mem0[ds:0x300<16>:word32] = ecx
+	SCZO = cond(ax - 0x30<16>)
 	branch Test(LT,SO) l0C00_0016
 	// succ:  l0C00_0012 l0C00_0016
 l0C00_0012:
-	Mem0[ds:0x0302:word16] = ax
+	Mem0[ds:0x302<16>:word16] = ax
 	// succ:  l0C00_0016
 l0C00_0016:
 	return

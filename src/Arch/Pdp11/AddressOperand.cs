@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,14 +38,14 @@ namespace Reko.Arch.Pdp11
             Address = a;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             string s;
             if (base.Width.Size == 2)
                 s = string.Format("{0:X4}", Address.ToLinear());
             else
                 s = Address.ToString();
-            writer.WriteAddress(s, Address);
+            renderer.WriteAddress(s, Address);
         }
     }
 }

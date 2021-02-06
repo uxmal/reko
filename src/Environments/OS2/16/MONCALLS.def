@@ -1,0 +1,7 @@
+LIBRARY MONCALLS
+EXPORTS
+    DOSMONWRITE                                 @1
+    DOSMONREAD                                  @2
+    DOSMONCLOSE                                 @3
+    DOSMONOPEN                                  @4
+    DOSMONREG                                   @5

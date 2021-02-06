@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ namespace Reko.Core
 	public class SignatureBuilder
 	{
 		private List<Identifier> args;
-		private Identifier ret = null;
+		private Identifier? ret = null;
 		private IStorageBinder binder;
 		private IProcessorArchitecture arch;
 
@@ -93,7 +93,7 @@ namespace Reko.Core
 
 		public FunctionType BuildSignature()
 		{
-			return new FunctionType(ret, args.ToArray());
+			return FunctionType.Create(ret, args.ToArray());
 		}
 
     }

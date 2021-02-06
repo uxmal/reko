@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,6 @@ namespace Reko.Core.Configuration
 {
     public class UiPreferencesConfiguration
     {
-        public List<UiStyleDefinition> Styles { get; internal set; }
+        public List<UiStyleDefinition> Styles { get; set; } = new List<UiStyleDefinition>();
     }
 }

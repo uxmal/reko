@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             AddressTextBox = new TextBoxWrapper(txtAddress);
             RawFileTypes = new ComboBoxWrapper(ddlRawFileTypes);
             Architectures = new ComboBoxWrapper(ddlArchitectures);
+            ArchitectureModels = new ComboBoxWrapper(ddlModels);
             Platforms = new ComboBoxWrapper(ddlEnvironments);
             FileName = new TextBoxWrapper(textBox1);
             PropertyGrid = new PropertyGridWrapper(propertyGrid);
@@ -58,6 +59,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public ITextBox AddressTextBox { get; private set; }
         public IComboBox RawFileTypes { get; private set; }
         public IComboBox Architectures { get; private set; }
+        public IComboBox ArchitectureModels { get; private set; }
         public IComboBox Platforms { get; private set; }
         public IPropertyGrid PropertyGrid { get; private set; }
         public IButton BrowseButton { get; private set; }
@@ -68,6 +70,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         public ArchitectureDefinition GetSelectedArchitecture()
         {
             return (ArchitectureDefinition)((ListOption)Architectures.SelectedValue).Value;
+        }
+
+        public ModelDefinition GetSelectedArchitectureModel()
+        {
+            return (ModelDefinition)((ListOption)ArchitectureModels.SelectedValue).Value;
         }
 
         public PlatformDefinition GetSelectedEnvironment()

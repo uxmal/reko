@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,9 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,75 +31,128 @@ using System.Threading.Tasks;
 namespace Reko.ImageLoaders.Omf
 {
     /// <summary>
-    /// Loads OMF object files.
+    /// Loads OMF object files and libraries
     /// </summary>
-    public class OmfLoader : ImageLoader
+    public class OmfLoader : MetadataLoader
     {
-        // http://www.azillionmonkeys.com/qed/Omfg.pdf
+        // http://www.azillionmonkeys.com/qed/Omfg.pdf "OMF: Relocatable Object Module Format
+        // http://www.bitsavers.org/pdf/intel/ISIS_II/121748-001_8086_Relocatable_Object_Module_Formats_Nov81.pdf 8086 Relocatable Object Module Formats (Intel ordr # 121748-001 )
+
+        private byte[] rawImage;
+
         public OmfLoader(IServiceProvider services, string filename, byte[] rawImage) : base(services, filename, rawImage)
         {
+            this.rawImage = rawImage;
         }
 
-        public override Address PreferredBaseAddress
+        public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
-            get
+            var loader = new TypeLibraryDeserializer(platform, true, dstLib);
+            var rdr = new LeImageReader(rawImage);
+            var (type, _) = ReadRecord(rdr);
+            if (type != RecordType.LibraryHeader)
             {
-                return Address.SegPtr(0x0800, 0);
+                return dstLib;
             }
 
-            set
+            (type, _) = ReadRecord(rdr);
+            if (type != RecordType.THEADR)
             {
-                throw new NotImplementedException();
+                return dstLib;
+            }
+            for (; ;)
+            {
+                byte[] data;
+                (type, data) = ReadRecord(rdr);
+                if (data == null)
+                    break;
+                switch (type)
+                {
+                default: throw new NotImplementedException($"OMF record type {type} ({(int) type:X} has not been implemented yet.");
+                case RecordType.THEADR:
+                    // Can't seem to do anything useful with THEADRs
+                    break;
+                case RecordType.COMENT:
+                    var rdrComent = new LeImageReader(data);
+                    if (!rdrComent.TryReadByte(out byte _)) // Ignore the comment type
+                        break;
+                    if (!rdrComent.TryReadByte(out byte cmtClass))
+                        break;
+                    if ((CommentClass) cmtClass != CommentClass.Extensions)
+                        break;
+                    if (!rdrComent.TryReadByte(out byte cmtExt))
+                        break;
+                    if ((CommentExtension) cmtExt == CommentExtension.IMPDEF)
+                    {
+                        ReadImpdef(rdrComent, loader);
+                    }
+                    else
+                    {
+                        throw new NotImplementedException($"OMF COMENT extension {(CommentExtension) cmtExt} (0x{cmtExt:X}) is not implemented yet.");
+                    }
+                    break;
+                case RecordType.MODEND:
+                    // Modend's seem to be followed by padding to a 16-byte boundary.
+                    while ((rdr.Offset & 0xF) != 0 && rdr.TryReadByte(out _))
+                        ;
+                    break;
+                case RecordType.LibraryEnd:
+                    return dstLib;
+                }
+            }
+            return dstLib;
+        }
+
+        private SystemService ReadImpdef(LeImageReader rdr, TypeLibraryDeserializer loader)
+        {
+            if (!rdr.TryReadByte(out byte useOrdinal))
+                return null;
+            var internalName = ReadString(rdr);
+            if (internalName == null)
+                return null;
+            var moduleName = ReadString(rdr);
+            if (moduleName == null)
+                return null;
+            if (useOrdinal != 0)
+            {
+                if (!rdr.TryReadLeInt16(out var ordinal))
+                    return null;
+                var svc = new SystemService
+                {
+                    ModuleName = moduleName,
+                    Name = internalName,
+                    SyscallInfo = new SyscallInfo
+                    {
+                        Vector = ordinal
+                    }
+                };
+                loader.LoadService(ordinal, svc);
+                return svc;
+            }
+            else
+            {
+                throw new NotImplementedException("non-ordinals");
             }
         }
 
-        public override Program Load(Address addrLoad)
+        private string ReadString(LeImageReader rdr)
         {
-            throw new NotImplementedException();
+            var cStr = rdr.ReadLengthPrefixedString(
+                PrimitiveType.Byte,
+                PrimitiveType.Char,
+                Encoding.ASCII);
+            return cStr?.ToString();
         }
 
-        private (byte, byte[]) ReadRecord(LeImageReader rdr)
+        private (RecordType, byte[]) ReadRecord(LeImageReader rdr)
         {
             if (!rdr.TryReadByte(out var type))
-                throw new BadImageFormatException();
+                return (0, null);
             if (!rdr.TryReadUInt16(out var length))
                 throw new BadImageFormatException();
+            //$PERF: use Span<T>
             var bytes = rdr.ReadBytes(length);
-            return (type, bytes);
+            return ((RecordType)type, bytes);
         }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            throw new NotImplementedException();
-        }
-
-        private const byte THEADR = 0x80;    // Translator Header Record
-        private const byte LHEADR = 0x82;    // Library Module Header Record
-        private const byte COMENT = 0x88;    // Comment Record(Including all comment class extensions)
-        private const byte MODEND = 0x8A/0x8B;    // Module End Record
-        private const byte EXTDEF = 0x8C;    // External Names Definition Record
-        private const byte PUBDEF = 0x90/0x91;    // Public Names Definition Record
-        private const byte LINNUM = 0x94/0x95;    // Line Numbers Record
-        private const byte LNAMES = 0x96;    // List of Names Record
-        private const byte SEGDEF = 0x98/0x99;    // Segment Definition Record
-        private const byte GRPDEF = 0x9A;    // Group Definition Record
-        private const byte FIXUPP = 0x9C/0x9D;    // Fixup Record
-        private const byte LEDATA = 0xA0/0xA1;    // Logical Enumerated Data Record
-        private const byte LIDATA = 0xA2/0xA3;    // Logical Iterated Data Record
-        private const byte COMDEF = 0xB0;    // Communal Names Definition Record
-        private const byte BAKPAT = 0xB2/0xB3;    // Backpatch Record
-        private const byte LEXTDEF = 0xB4;    // Local External Names Definition Record
-        private const byte LPUBDEF = 0xB6/0xB7;    // Local Public Names Definition Record
-        private const byte LCOMDEF = 0xB8;    // Local Communal Names Definition Record
-        private const byte CEXTDEF = 0xBC;    // COMDAT External Names Definition Record
-        private const byte COMDAT = 0xC2/0xC3;    // Initialized Communal Data Record
-        private const byte LINSYM = 0xC4/0xC5;    // Symbol Line Numbers Record
-        private const byte ALIAS = 0xC6;    // Alias Definition Record
-        private const byte NBKPAT = 0xC8/0xC9;    // Named Backpatch Record
-        private const byte LLNAMES = 0xCA;    // Local Logical Names Definition Record
-        private const byte VERNUM = 0xCC;    // OMF Version Number Record
-        private const byte VENDEXT = 0xCE;    // Vendor-specific OMF Extension Record
-        private const byte LibraryHeader = 0xF0;    // Header Record
-        private const byte LibraryEnd = 0xF1;    // End Record
     }
 }

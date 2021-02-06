@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,15 +32,11 @@ namespace Reko.Core.Types
     /// </remarks>
 	public class MemberPointer : DataType
 	{
-		private DataType pointee;
-		private DataType basePtr;
-		private int byteSize;
-
-		public MemberPointer(DataType basePtr, DataType pointee, int byteSize)
+		public MemberPointer(DataType basePtr, DataType pointee, int bitSize)
 		{
 			this.Pointee = pointee;
 			this.BasePointer = basePtr;
-			this.byteSize = byteSize;
+			this.BitSize = bitSize;
 		}
 
         public override void Accept(IDataTypeVisitor v)
@@ -53,46 +49,29 @@ namespace Reko.Core.Types
             return v.VisitMemberPointer(this);
         }
 
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+        public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
 		{
-            return new MemberPointer(BasePointer.Clone(clonedTypes), Pointee.Clone(clonedTypes), byteSize)
+            return new MemberPointer(BasePointer.Clone(clonedTypes), Pointee.Clone(clonedTypes), BitSize)
             {
                 Qualifier = this.Qualifier
             };
 		}
 
-		public override bool IsComplex
-		{
-			get { return true; }
-		}
+        public override int BitSize { get; }
+        
+        public override bool IsComplex => true;
 
 		/// <summary>
 		/// The offset part of a member pointer.
 		/// </summary>
-		public DataType Pointee
-		{
-			get { return pointee; }
-			set 
-			{
-				if (value == null) throw new ArgumentNullException("Pointee mustn't be null");
-				pointee = value; 
-			}
-		}
+		public DataType Pointee { get; set; }
 
 		public override int Size
 		{
-			get { return byteSize; }
-			set { ThrowBadSize(); }
+            get { return (BitSize + (BitsPerByte - 1)) / BitsPerByte; }
+            set { ThrowBadSize(); }
 		}
 
-		public DataType BasePointer
-		{
-			get { return basePtr; }
-			set 
-			{
-				if (value == null) throw new NullReferenceException(); 
-				basePtr = value;
-			}
-		}
+		public DataType BasePointer { get; set; }
 	}
 }

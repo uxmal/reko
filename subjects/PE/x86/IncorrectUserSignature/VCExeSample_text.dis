@@ -1,0 +1,19 @@
+void test6(cdecl_class * c, int32 a, int32 b)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31]
+// LiveOut:
+// Trashed:
+// Preserved:
+test6_entry:
+l00401120:
+	// Incorrect user-defined signature
+	// "void sum(int, int)" is set instead of "int sum(int, int)"
+	// Reko should emit code which gives chance for user to find this mistake
+	Mem19[Mem19[c:word32] + 8<32>:word32](c, a, b)
+	word32 eax_25 = <invalid>
+	Mem37[Mem37[c:word32] + 4<32>:word32](c, eax_25)
+	return
+test6_exit:
+
+

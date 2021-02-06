@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,8 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -34,9 +34,10 @@ namespace Reko.Arch.Z80
 {
     public class Z80ProcessorArchitecture : ProcessorArchitecture
     {
-        private Dictionary<uint, FlagGroupStorage> flagGroups;
+        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Z80ProcessorArchitecture(string archId) : base(archId)
+        public Z80ProcessorArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 8;
@@ -50,7 +51,7 @@ namespace Reko.Arch.Z80
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new Z80Disassembler(imageReader);
+            return new Z80Disassembler(this, imageReader);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -68,9 +69,10 @@ namespace Reko.Arch.Z80
             return new Z80ProcessorState(this);
         }
 
-        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            throw new NotImplementedException();
+            var knownLinAddresses = knownAddresses.Select(a => a.ToUInt16()).ToHashSet();
+            return new Z80PointerScanner(map, rdr, knownLinAddresses, flags).Select(li => Address.Ptr16(li));
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -101,14 +103,14 @@ namespace Reko.Arch.Z80
             return Registers.GetRegister(name);
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             return Registers.GetRegister(domain, range.BitMask());
         }
 
         public override RegisterStorage[] GetRegisters()
         {
-            return Registers.All;
+            return Registers.All!;
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
@@ -141,14 +143,13 @@ namespace Reko.Arch.Z80
             return result;
         }
 
-        public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
+        public override RegisterStorage? GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
         {
             ulong mask = regs.Where(b => b != null && b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
-            RegisterStorage[]  subregs;
             if ((mask & reg.BitMask) == reg.BitMask)
                 return reg;
-            RegisterStorage rMax = null;
-            if (Registers.SubRegisters.TryGetValue(reg.Domain, out subregs))
+            RegisterStorage? rMax = null;
+            if (Registers.SubRegisters.TryGetValue(reg.Domain, out RegisterStorage[] subregs))
             {
                 throw new NotImplementedException();
                 //foreach (var subreg in subregs.Values)
@@ -165,8 +166,7 @@ namespace Reko.Arch.Z80
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            FlagGroupStorage f;
-            if (flagGroups.TryGetValue(grf, out f))
+            if (flagGroups.TryGetValue(grf, out FlagGroupStorage f))
             {
                 return f;
             }
@@ -201,7 +201,7 @@ namespace Reko.Arch.Z80
             return Address.Ptr16(c.ToUInt16());
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             if (rdr.TryReadUInt16(out var uaddr))
             {
@@ -224,7 +224,7 @@ namespace Reko.Arch.Z80
 			return sb.ToString();
 		}
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
         }
@@ -264,14 +264,14 @@ namespace Reko.Arch.Z80
         public static readonly FlagGroupStorage N = new FlagGroupStorage(f, (uint)FlagM.NF, "N", PrimitiveType.Bool);
         public static readonly FlagGroupStorage C = new FlagGroupStorage(f, (uint)FlagM.CF, "C", PrimitiveType.Bool);
 
-        internal static RegisterStorage[] All;
+        internal static RegisterStorage?[] All;
         internal static Dictionary<StorageDomain, RegisterStorage[]> SubRegisters;
         internal static Dictionary<string, RegisterStorage> regsByName;
-        private static RegisterStorage[] regsByStorage;
+        private readonly static RegisterStorage?[] regsByStorage;
 
         static Registers()
         {
-            All = new RegisterStorage[] {
+            All = new RegisterStorage?[] {
              b ,
              c ,
              d ,
@@ -303,7 +303,7 @@ namespace Reko.Arch.Z80
 
             };
 
-            Registers.regsByName = All.Where(reg => reg != null).ToDictionary(reg => reg.Name);
+            Registers.regsByName = All.Where(reg => reg != null).ToDictionary(reg => reg!.Name, reg => reg!);
             regsByStorage = new[]
             {
                 af, bc,  de, hl, sp, ix, iy, null,
@@ -327,7 +327,7 @@ namespace Reko.Arch.Z80
             };
         }
 
-        internal static RegisterStorage GetRegister(int r)
+        internal static RegisterStorage? GetRegister(int r)
         {
             return All[r];
         }
@@ -337,12 +337,14 @@ namespace Reko.Arch.Z80
             return regsByName[name];
         }
 
-        internal static RegisterStorage GetRegister(StorageDomain domain, ulong mask)
+        internal static RegisterStorage? GetRegister(StorageDomain domain, ulong mask)
         {
             var iReg = domain - StorageDomain.Register;
             if (iReg < 0 || iReg >= regsByStorage.Length)
                 return null;
-            RegisterStorage regBest = regsByStorage[iReg];
+            RegisterStorage? regBest = regsByStorage[iReg];
+            if (regBest is null)
+                return null;
             if (SubRegisters.TryGetValue(domain, out var subregs))
             {
                 for (int i = 0; i < subregs.Length; ++i)

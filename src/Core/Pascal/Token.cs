@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,11 +29,11 @@ namespace Reko.Core.Pascal
     public class Token
     {
         public TokenType Type;
-        public object Value;
+        public object? Value;
 
         public override string ToString()
         {
-            if (Value == null)
+            if (Value is null)
                 return string.Format("{0}", Type);
             else
                 return string.Format("{0}:{1}", Type, Value);

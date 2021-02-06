@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -34,20 +35,26 @@ namespace Reko.ImageLoaders.Elf
     public abstract class ElfObjectLinker
     {
         protected IProcessorArchitecture arch;
-        private ElfLoader loader;
+        private readonly ElfLoader loader;
         protected byte[] rawImage;
         protected ElfSection rekoExtfn;
 
         public ElfObjectLinker(ElfLoader loader, IProcessorArchitecture arch, byte[] rawImage)
         {
-            if (rawImage == null)
-                throw new ArgumentNullException("rawImage");
             this.loader = loader;
             this.arch = arch;
-            this.rawImage = rawImage;
+            this.rawImage = rawImage ?? throw new ArgumentNullException("rawImage");
         }
 
-        public abstract Program LinkObject(IPlatform platform, Address addrLoad, byte[] rawImage);
+        public abstract Program LinkObject(IPlatform platform, Address? addrLoad, byte[] rawImage);
+
+        protected Address ComputeBaseAddressFromSections(IEnumerable<ElfSection> sections)
+        {
+            return sections.Where(s => s.Address != null && (s.Flags & ElfLoader.SHF_ALLOC) != 0)
+                .OrderBy(s => s.Address)
+                .Select(s => s.Address)
+                .First();
+        }
     }
 
     public class ElfObjectLinker64 : ElfObjectLinker
@@ -56,7 +63,7 @@ namespace Reko.ImageLoaders.Elf
             : base(loader, arch, rawImage)
         { }
 
-        public override Program LinkObject(IPlatform platform, Address addrLoad, byte[] rawImage)
+        public override Program LinkObject(IPlatform platform, Address? addrLoad, byte[] rawImage)
         {
             throw new NotImplementedException();
         }
@@ -64,7 +71,7 @@ namespace Reko.ImageLoaders.Elf
 
     public class ElfObjectLinker32 : ElfObjectLinker
     {
-        private ElfLoader32 loader;
+        private readonly ElfLoader32 loader;
 
         public ElfObjectLinker32(ElfLoader32 loader, IProcessorArchitecture arch, byte[] rawImage)
             : base(loader, arch, rawImage)
@@ -75,10 +82,11 @@ namespace Reko.ImageLoaders.Elf
 
         public List<Elf32_PHdr> Segments { get; private set; }
 
-        public override Program LinkObject(IPlatform platform, Address addrLoad, byte[] rawImage)
+        public override Program LinkObject(IPlatform platform, Address? addrLoad, byte[] rawImage)
         {
+            var addrBase = addrLoad ?? ComputeBaseAddressFromSections(loader.Sections);
             var segments = ComputeSegmentSizes();
-            var imageMap = CreateSegments(addrLoad, segments);
+            var imageMap = CreateSegments(addrBase, segments);
             var program = new Program(imageMap, platform.Architecture, platform);
             LoadExternalProcedures(program.InterceptedCalls);
             return program;
@@ -99,8 +107,7 @@ namespace Reko.ImageLoaders.Elf
             foreach (var section in loader.Sections
                 .Where(s => (s.Flags & ElfLoader.SHF_ALLOC) != 0))
             {
-                Elf32_PHdr segment;
-                if (!mpToSegment.TryGetValue(section.Flags, out segment))
+                if (!mpToSegment.TryGetValue(section.Flags, out Elf32_PHdr segment))
                 {
                     segment = new Elf32_PHdr();
                     segment.p_flags = SegmentAccess(section.Flags);
@@ -210,6 +217,7 @@ namespace Reko.ImageLoaders.Elf
 
         public SegmentMap CreateSegments(Address addrBase, Dictionary<ElfSection, Elf32_PHdr> mpSections)
         {
+            if (addrBase == null) throw new ArgumentNullException(nameof(addrBase));
             var addr = addrBase;
             foreach (var segment in Segments)
             {
@@ -222,8 +230,7 @@ namespace Reko.ImageLoaders.Elf
             var psegMem = Segments.ToDictionary(k => k, v => arch.CreateImageWriter());
             foreach (var section in loader.Sections)
             {
-                Elf32_PHdr segment;
-                if (!mpSections.TryGetValue(section, out segment))
+                if (!mpSections.TryGetValue(section, out Elf32_PHdr segment))
                     continue;
                 section.Address = Address.Ptr32(psegAlloc[segment]);
                 if (section.Type != SectionHeaderType.SHT_NOBITS)
@@ -239,7 +246,7 @@ namespace Reko.ImageLoaders.Elf
 
             var mpMemoryAreas = psegMem.ToDictionary(
                 k => k.Key,
-                v => new MemoryArea(
+                v => new ByteMemoryArea(
                     Address.Ptr32(v.Key.p_paddr),
                     v.Value.ToArray()));
             var imageMap = new SegmentMap(
@@ -252,6 +259,7 @@ namespace Reko.ImageLoaders.Elf
                     .ToArray());
             return imageMap;
         }
+
 
         public void LoadExternalProcedures(Dictionary<Address, ExternalProcedure> interceptedCalls)
         {

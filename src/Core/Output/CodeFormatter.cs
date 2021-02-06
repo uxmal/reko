@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,15 +42,16 @@ namespace Reko.Core.Output
 
 		private int precedenceCur = PrecedenceLeast;
         private bool forceParensIfSamePrecedence = false;
-        private Formatter writer;
+        private readonly TypeGraphWriter typeWriter;
 
         //$TODO: move this to a language-specific class.
-		private static Dictionary<Operator,int> precedences;
-        private static HashSet<Type> singleStatements;
+        private static readonly Dictionary<Operator,int> precedences;
+        private static readonly HashSet<Type> singleStatements;
+
         /// <summary>
         /// Maps # of nybbles to an appropriate format string.
         /// </summary>
-        private static string[] unsignedConstantFormatStrings; 
+        private static readonly string[] unsignedConstantFormatStrings; 
 
         private const int PrecedenceApplication = 1;
 		private const int PrecedenceArrayAccess = 1;
@@ -61,17 +62,13 @@ namespace Reko.Core.Output
         private const int PrecedenceConditional = 14;
         private const int PrecedenceLeast = 20;
 
-        private TypeGraphWriter typeWriter;
-
 		public CodeFormatter(Formatter writer)
 		{
-            this.writer = writer;
+            this.InnerFormatter = writer;
+            this.typeWriter = new TypeGraphWriter(writer);
 		}
 
-        public Formatter InnerFormatter
-        {
-            get { return writer; }
-        }
+        public Formatter InnerFormatter { get; }
 
 		static CodeFormatter()
 		{
@@ -134,7 +131,7 @@ namespace Reko.Core.Output
             };
 
             unsignedConstantFormatStrings = Enumerable.Range(0, 17)
-                .Select(n => $"0x{{0:X{n}}}")
+                .Select(n => $"0x{{0:X{n*2}}}")
                 .ToArray();
         }
 
@@ -143,7 +140,7 @@ namespace Reko.Core.Output
 			if (precedenceOld < precedenceCur ||
                 (forceParensIfSamePrecedence && precedenceCur == precedenceOld))
 			{
-				writer.Write(")");
+				InnerFormatter.Write(")");
 			}
 			precedenceCur = precedenceOld;
 		}
@@ -153,7 +150,7 @@ namespace Reko.Core.Output
 			if (precedenceCur < precedence ||
                 (forceParensIfSamePrecedence && precedenceCur == precedence))
 			{
-				writer.Write("(");
+				InnerFormatter.Write("(");
 			}
 			int precedenceOld = precedenceCur;
 			precedenceCur = precedence;
@@ -172,9 +169,11 @@ namespace Reko.Core.Output
             {
                 var s = addr.ToString();
                 if (!s.Contains(':'))
-                    s = string.Format("0x{0}", s);
-                writer.Write(s);
+                {
+                    s = string.Format("0x{0}<p{1}>", s, addr.DataType.BitSize);
             }
+                InnerFormatter.Write(s);
+        }
         }
 
 		public void VisitApplication(Application appl)
@@ -190,16 +189,16 @@ namespace Reko.Core.Output
 			int prec = SetPrecedence(PrecedenceArrayAccess);
 			acc.Array.Accept(this);
 			ResetPresedence(prec);
-			writer.Write("[");
+			InnerFormatter.Write("[");
 			WriteExpression(acc.Index);
-			writer.Write("]");
+			InnerFormatter.Write("]");
 		}
 
 		public void VisitBinaryExpression(BinaryExpression binExp)
 		{
 			int prec = SetPrecedence((int) precedences[binExp.Operator]);
 			binExp.Left.Accept(this);
-			writer.Write(binExp.Operator.ToString());
+            FormatOperator(binExp);
             var old = forceParensIfSamePrecedence;
             forceParensIfSamePrecedence = true;
             binExp.Right.Accept(this);
@@ -207,12 +206,34 @@ namespace Reko.Core.Output
 			ResetPresedence(prec);
 		}
 
-		public void VisitCast(Cast cast)
+        private void FormatOperator(BinaryExpression binExp)
+        {
+            var sOperator = binExp.Operator.ToString();
+            var resultSize = binExp.DataType.BitSize;
+            if (binExp.Operator is IMulOperator || binExp.Operator is FMulOperator ||
+                binExp.Operator is SDivOperator || binExp.Operator is SDivOperator ||
+                binExp.Operator is FDivOperator)
+            {
+                // Multiplication and division are peculiar on many processors because the product/
+                // quotient may be different size from either of the operands. It's unclear what
+                // the C/C++ standards say about this.
+                if (resultSize != binExp.Left.DataType.BitSize ||
+                    resultSize != binExp.Right.DataType.BitSize)
+                {
+                    InnerFormatter.Write(sOperator.TrimEnd());
+                    InnerFormatter.Write($"{resultSize} ");
+                    return;
+                }
+            }
+            InnerFormatter.Write(sOperator);
+        }
+
+        public void VisitCast(Cast cast)
 		{
 			int prec = SetPrecedence(PrecedenceCase);
-			writer.Write("(");
-            new TypeReferenceFormatter(writer).WriteTypeReference(cast.DataType);
-			writer.Write(") ");
+			InnerFormatter.Write("(");
+            new TypeReferenceFormatter(InnerFormatter).WriteTypeReference(cast.DataType);
+			InnerFormatter.Write(") ");
 			cast.Expression.Accept(this);
 			ResetPresedence(prec);
 		}
@@ -221,18 +242,18 @@ namespace Reko.Core.Output
         {
             int prec = SetPrecedence(PrecedenceConditional);
             cond.Condition.Accept(this);
-            writer.Write(" ? ");
+            InnerFormatter.Write(" ? ");
             cond.ThenExp.Accept(this);
-            writer.Write(" : ");
+            InnerFormatter.Write(" : ");
             cond.FalseExp.Accept(this);
             ResetPresedence(prec);
         }
 
         public void VisitConditionOf(ConditionOf cond)
 		{
-			writer.Write("cond(");
+			InnerFormatter.Write("cond(");
 			WriteExpression(cond.Expression);
-			writer.Write(")");
+			InnerFormatter.Write(")");
 		}
 
         private static readonly char[] nosuffixRequired = new[] { '.', 'E', 'e' };
@@ -241,54 +262,29 @@ namespace Reko.Core.Output
         {
             if (!c.IsValid)
             {
-                writer.Write("<invalid>");
+                InnerFormatter.Write("<invalid>");
                 return;
             }
             if (c is StringConstant s)
             {
-                writer.Write('"');
+                InnerFormatter.Write('"');
                 foreach (var ch in (string) s.GetValue())
                 {
-                    switch (ch)
-                    {
-                    case '\0': writer.Write("\\0"); break;
-                    case '\a': writer.Write("\\a"); break;
-                    case '\b': writer.Write("\\b"); break;
-                    case '\f': writer.Write("\\f"); break;
-                    case '\n': writer.Write("\\n"); break;
-                    case '\r': writer.Write("\\r"); break;
-                    case '\t': writer.Write("\\t"); break;
-                    case '\v': writer.Write("\\v"); break;
-                    case '\"': writer.Write("\\\""); break;
-                    case '\\': writer.Write("\\\\"); break;
-                    default:
-                        // The awful hack allows us to reuse .NET encodings
-                        // while encoding the original untranslateable 
-                        // code points into the Private use area.
-                        //$TODO: Clearly if the string was UTF8 or 
-                        // UTF-16 to begin with, we want to preserve the
-                        // private use area points.
-                        if (0xE000 <= ch && ch <= 0xE100)
-                            writer.Write("\\x{0:X2}", (ch - 0xE000));
-                        else if (0 <= ch && ch < ' ' || ch >= 0x7F)
-                            writer.Write("\\x{0:X2}", (int) ch);
-                        else
-                            writer.Write(ch);
-                        break;
-                    }
+                    WriteEscapedCharacter(ch);
                 }
-                writer.Write('"');
+                InnerFormatter.Write('"');
                 return;
             }
 
             var pt = c.DataType.ResolveAs<PrimitiveType>();
             if (pt != null)
             {
-                if (pt.Domain == Domain.Boolean)
+                switch (pt.Domain)
                 {
-                    writer.Write(Convert.ToBoolean(c.GetValue()) ? "true" : "false");
-                }
-                else if (pt.Domain == Domain.Real)
+                case Domain.Boolean:
+                    InnerFormatter.Write(Convert.ToBoolean(c.GetValue()) ? "true" : "false");
+                    break;
+                case Domain.Real:
                 {
                     string sr;
 
@@ -308,43 +304,80 @@ namespace Reko.Core.Output
                     {
                         sr += "F";
                     }
-                    writer.Write(sr);
+                    InnerFormatter.Write(sr);
+                    break;
                 }
-                else 
-                {
+                case Domain.Character:
+                    if (pt.Size == 1)
+                    {
+                        InnerFormatter.Write("'");
+                    }
+                    else
+                    {
+                        InnerFormatter.Write("L'"); 
+                    }
+                    WriteEscapedCharacter(Convert.ToChar(c.GetValue()));
+                    InnerFormatter.Write("'");
+                    break;
+                default:
                     object v = c.GetValue();
-                    writer.Write(FormatString(pt, v), v);
+                    var (fmtNumber, fmtSigil) = FormatStrings(pt, v);
+                    InnerFormatter.Write(fmtNumber, v);
+                    InnerFormatter.Write(fmtSigil, pt.BitSize);
+                    break;
                 }
                 return;
             }
         }
 
-		public void VisitDepositBits(DepositBits d)
-		{
-			writer.Write("DPB(");
-			WriteExpression(d.Source);
-			writer.Write(", ");
-			WriteExpression(d.InsertedBits);
-			writer.Write(", {0})", d.BitPosition);
-		}
 
-		public void VisitMkSequence(MkSequence seq)
-		{
-			writer.Write("SEQ(");
-            var sep = "";
-            foreach (var e in seq.Expressions)
+        private void WriteEscapedCharacter(char ch)
+        {
+            switch (ch)
             {
-                writer.Write(sep);
-                sep = ", ";
-                WriteExpression(e);
+            case '\0': InnerFormatter.Write("\\0"); break;
+            case '\a': InnerFormatter.Write("\\a"); break;
+            case '\b': InnerFormatter.Write("\\b"); break;
+            case '\f': InnerFormatter.Write("\\f"); break;
+            case '\n': InnerFormatter.Write("\\n"); break;
+            case '\r': InnerFormatter.Write("\\r"); break;
+            case '\t': InnerFormatter.Write("\\t"); break;
+            case '\v': InnerFormatter.Write("\\v"); break;
+            case '\"': InnerFormatter.Write("\\\""); break;
+            case '\\': InnerFormatter.Write("\\\\"); break;
+            default:
+                // The awful hack allows us to reuse .NET encodings
+                // while encoding the original untranslateable 
+                // code points into the Private use area.
+                //$TODO: Clearly if the string was UTF8 or 
+                // UTF-16 to begin with, we want to preserve the
+                // private use area points.
+                if (0xE000 <= ch && ch <= 0xE100)
+                    InnerFormatter.Write("\\x{0:X2}", (ch - 0xE000));
+                else if (0 <= ch && ch < ' ' || ch >= 0x7F)
+                    InnerFormatter.Write("\\x{0:X2}", (int) ch);
+                else
+                    InnerFormatter.Write(ch);
+                break;
             }
-			writer.Write(")");
+        }
+
+        public void VisitConversion(Conversion conversion)
+		{
+            InnerFormatter.Write("CONVERT(");
+            var trf = new TypeReferenceFormatter(InnerFormatter);
+            WriteExpression(conversion.Expression);
+            InnerFormatter.Write(", ");
+            trf.WriteTypeReference(conversion.SourceDataType);
+            InnerFormatter.Write(", ");
+            trf.WriteTypeReference(conversion.DataType);
+			InnerFormatter.Write(")");
 		}
 
 		public void VisitDereference(Dereference deref)
 		{
 			int prec = SetPrecedence(PrecedenceDereference);
-			writer.Write("*");
+			InnerFormatter.Write("*");
 			deref.Expression.Accept(this);
 			ResetPresedence(prec);
 		}
@@ -355,19 +388,19 @@ namespace Reko.Core.Output
             if (acc.Structure is Dereference d)
             {
                 d.Expression.Accept(this);
-                writer.Write("->{0}", acc.Field.Name);
+                InnerFormatter.Write("->{0}", acc.Field.Name);
             }
             else
             {
                 if (acc.Structure is ScopeResolution scope)
                 {
                     scope.Accept(this);
-                    writer.Write("::{0}", acc.Field.Name);
+                    InnerFormatter.Write("::{0}", acc.Field.Name);
                 }
                 else
                 {
                     acc.Structure.Accept(this);
-                    writer.Write(".{0}", acc.Field.Name);
+                    InnerFormatter.Write(".{0}", acc.Field.Name);
                 }
             }
             ResetPresedence(prec);
@@ -379,12 +412,12 @@ namespace Reko.Core.Output
             if (mps.BasePointer is Dereference d)
             {
                 d.Expression.Accept(this);
-                writer.Write("->*");
+                InnerFormatter.Write("->*");
             }
             else
             {
                 mps.BasePointer.Accept(this);
-                writer.Write(".*");
+                InnerFormatter.Write(".*");
             }
             var old = forceParensIfSamePrecedence;
             forceParensIfSamePrecedence = true;
@@ -395,92 +428,105 @@ namespace Reko.Core.Output
 
 		public void VisitIdentifier(Identifier id)
 		{
-			writer.Write(id.Name);
+			InnerFormatter.Write(id.Name);
 		}
 
 		public void VisitMemoryAccess(MemoryAccess access)
 		{
 			access.MemoryId.Accept(this);
-			writer.Write("[");
+			InnerFormatter.Write("[");
 			WriteExpression(access.EffectiveAddress);
-			writer.Write(":");
-			writer.Write(access.DataType.ToString());
-			writer.Write("]");
+			InnerFormatter.Write(":");
+			InnerFormatter.Write(access.DataType.ToString());
+			InnerFormatter.Write("]");
 		}
 
         public void VisitSegmentedAccess(SegmentedAccess access)
         {
             access.MemoryId.Accept(this);
-            writer.Write("[");
+            InnerFormatter.Write("[");
             WriteExpression(access.BasePointer);
-            writer.Write(":");
+            InnerFormatter.Write(":");
             WriteExpression(access.EffectiveAddress);
-            writer.Write(":");
+            InnerFormatter.Write(":");
             Debug.Assert(access.DataType != null);
-            writer.Write(access.DataType.ToString());
-            writer.Write("]");
+            InnerFormatter.Write(access.DataType?.ToString() ?? "");
+            InnerFormatter.Write("]");
+        }
+
+        public void VisitMkSequence(MkSequence seq)
+        {
+            InnerFormatter.Write("SEQ(");
+            var sep = "";
+            foreach (var e in seq.Expressions)
+            {
+                InnerFormatter.Write(sep);
+                sep = ", ";
+                WriteExpression(e);
+            }
+            InnerFormatter.Write(")");
         }
 
         public void VisitOutArgument(OutArgument outArg)
         {
-            writer.WriteKeyword("out");
-            writer.Write(" ");
+            InnerFormatter.WriteKeyword("out");
+            InnerFormatter.Write(" ");
             WriteExpression(outArg.Expression);
         }
 
 		public void VisitPhiFunction(PhiFunction phi)
 		{
-			writer.WriteKeyword("PHI");
-            writer.Write("(");
+			InnerFormatter.WriteKeyword("PHI");
+            InnerFormatter.Write("(");
             var sep = "";
             foreach (var arg in phi.Arguments)
             {
-                writer.Write(sep);
+                InnerFormatter.Write(sep);
                 sep = ", ";
-                writer.Write("(");
+                InnerFormatter.Write("(");
                 arg.Value.Accept(this);
-                writer.Write(", ");
-                writer.Write(arg.Block.Name);
-                writer.Write(")");
+                InnerFormatter.Write(", ");
+                InnerFormatter.Write(arg.Block.DisplayName);
+                InnerFormatter.Write(")");
             }
-            writer.Write(")");
+            InnerFormatter.Write(")");
         }
 
         public void VisitPointerAddition(PointerAddition pa)
 		{
-            writer.Write("PTRADD(");
+            InnerFormatter.Write("PTRADD(");
             WriteExpression(pa.Pointer);
-            writer.Write(",{0})", pa.Offset);
+            InnerFormatter.Write(",{0})", pa.Offset);
 		}
 
 		public virtual void VisitProcedureConstant(ProcedureConstant pc)
 		{
-			writer.WriteHyperlink(pc.Procedure.Name, pc.Procedure);
+			InnerFormatter.WriteHyperlink(pc.Procedure.Name, pc.Procedure);
 		}
 
 		public void VisitTestCondition(TestCondition tc)
 		{
-			writer.Write("Test({0},", tc.ConditionCode);
+			InnerFormatter.Write("Test({0},", tc.ConditionCode);
 			WriteExpression(tc.Expression);
-			writer.Write(")");
+			InnerFormatter.Write(")");
 		}
 
         public void VisitScopeResolution(ScopeResolution scope)
         {
-            writer.WriteType(scope.DataType.Name, scope.DataType);
+            InnerFormatter.WriteType(scope.DataType.Name, scope.DataType);
         }
 
 		public void VisitSlice(Slice slice)
 		{
-			writer.Write("SLICE(");
+			InnerFormatter.Write("SLICE(");
 			WriteExpression(slice.Expression);
-			writer.Write(", {0}, {1})", slice.DataType, slice.Offset);
+			InnerFormatter.Write(", {0}, {1})", slice.DataType, slice.Offset);
 		}
 
 		public void VisitUnaryExpression(UnaryExpression unary)
 		{
 			int prec = SetPrecedence((int) precedences[unary.Operator]);
-			writer.Write(unary.Operator.ToString());
+			InnerFormatter.Write(unary.Operator.ToString());
 			unary.Expression.Accept(this);
 			ResetPresedence(prec);
 		}
@@ -492,54 +538,54 @@ namespace Reko.Core.Output
 		
 		public void VisitAssignment(Assignment a)
 		{
-			writer.Indent();
+			InnerFormatter.Indent();
 			if (a.Dst != null)
 			{
 				a.Dst.Accept(this);
-				writer.Write(" = "); 
+				InnerFormatter.Write(" = "); 
 			}
 			a.Src.Accept(this);
 			if (a.IsAlias)
-				writer.Write(" (alias)");
-			writer.Terminate();
+				InnerFormatter.Write(" (alias)");
+			InnerFormatter.Terminate();
 		}
 
 		public void VisitBranch(Branch b)
 		{
-			writer.Indent();
-			writer.WriteKeyword("branch");
-            writer.Write(" ");
+			InnerFormatter.Indent();
+			InnerFormatter.WriteKeyword("branch");
+            InnerFormatter.Write(" ");
 			b.Condition.Accept(this);
-            writer.Write(" ");
-            writer.Write(b.Target.Name);
-			writer.Terminate();
+            InnerFormatter.Write(" ");
+            InnerFormatter.Write(b.Target.DisplayName);
+			InnerFormatter.Terminate();
 		}
 
 		public void VisitCallInstruction(CallInstruction ci)
 		{
-			writer.Indent();
-			writer.WriteKeyword("call");
-            writer.Write(" ");
+			InnerFormatter.Indent();
+			InnerFormatter.WriteKeyword("call");
+            InnerFormatter.Write(" ");
             ci.Callee.Accept(this);
-            writer.Write(" ({0})", ci.CallSite);
-			writer.Terminate();
+            InnerFormatter.Write(" ({0})", ci.CallSite);
+			InnerFormatter.Terminate();
             if (ci.Uses.Count > 0)
             {
-                writer.Indentation += writer.TabSize;
-                writer.Indent();
-                writer.Write("uses: ");
+                InnerFormatter.Indentation += InnerFormatter.TabSize;
+                InnerFormatter.Indent();
+                InnerFormatter.Write("uses: ");
                 WriteCallBindings(ci.Uses);
-                writer.Terminate();
-                writer.Indentation -= writer.TabSize;
+                InnerFormatter.Terminate();
+                InnerFormatter.Indentation -= InnerFormatter.TabSize;
             }
             if (ci.Definitions.Count > 0)
             {
-                writer.Indentation += writer.TabSize;
-                writer.Indent();
-                writer.Write("defs: ");
+                InnerFormatter.Indentation += InnerFormatter.TabSize;
+                InnerFormatter.Indent();
+                InnerFormatter.Write("defs: ");
                 WriteCallBindings(ci.Definitions);
-                writer.Terminate();
-                writer.Indentation -= writer.TabSize;
+                InnerFormatter.Terminate();
+                InnerFormatter.Indentation -= InnerFormatter.TabSize;
             }
 		}
 
@@ -548,10 +594,10 @@ namespace Reko.Core.Output
             var sep = "";
             foreach (var binding in bindings.OrderBy(b => b.Storage.ToString()))
             {
-                writer.Write(sep);
+                InnerFormatter.Write(sep);
                 sep = ",";
-                writer.Write(binding.Storage.ToString());
-                writer.Write(":");
+                InnerFormatter.Write(binding.Storage.ToString());
+                InnerFormatter.Write(":");
                 binding.Expression.Accept(this);
             }
         }
@@ -559,9 +605,9 @@ namespace Reko.Core.Output
         {
             foreach (var line in Lines(comment.Text))
             {
-                writer.Indent();
-                writer.WriteComment($"// {line}");
-                writer.Terminate();
+                InnerFormatter.Indent();
+                InnerFormatter.WriteComment($"// {line}");
+                InnerFormatter.Terminate();
             }
         }
 
@@ -572,9 +618,9 @@ namespace Reko.Core.Output
         /// <param name="compound"></param>
         public void VisitCompoundAssignment(AbsynCompoundAssignment compound)
         {
-            writer.Indent();
+            InnerFormatter.Indent();
             WriteCompoundAssignment(compound);
-            writer.Terminate(";");
+            InnerFormatter.Terminate(";");
         }
 
         public void WriteCompoundAssignment(AbsynCompoundAssignment compound)
@@ -584,129 +630,125 @@ namespace Reko.Core.Output
             {
                 if (compound.Src.Operator == Operator.IAdd)
                 {
-                    writer.Write("++");
+                    InnerFormatter.Write("++");
                     compound.Dst.Accept(this);
                     return;
                 } else if (compound.Src.Operator == Operator.ISub)
                 {
-                    writer.Write("--");
+                    InnerFormatter.Write("--");
                     compound.Dst.Accept(this);
                     return;
                 }
             }
             compound.Dst.Accept(this);
-            writer.Write(compound.Src.Operator.AsCompound());
+            InnerFormatter.Write(compound.Src.Operator.AsCompound());
             compound.Src.Right.Accept(this);
         }
 
         public void VisitDeclaration(Declaration decl)
 		{
-			writer.Indent();
+			InnerFormatter.Indent();
             Debug.Assert(decl.Identifier.DataType != null, "The DataType property can't ever be null");
 
-#if OLD
-            TypeFormatter tf = new TypeFormatter(writer, true);
-            tf.Write(decl.Identifier.DataType, decl.Identifier.Name);
-#else
-            TypeReferenceFormatter tf = new TypeReferenceFormatter(writer);
-            tf.WriteDeclaration(decl.Identifier.DataType, decl.Identifier.Name);
-#endif
+            var tf = new TypeReferenceFormatter(InnerFormatter);
+            tf.WriteDeclaration(decl.Identifier.DataType ?? new UnknownType(), decl.Identifier.Name);
+            
             if (decl.Expression != null)
 			{
-				writer.Write(" = ");
+				InnerFormatter.Write(" = ");
 				decl.Expression.Accept(this);
 			}
-			writer.Terminate();
+			InnerFormatter.Terminate();
 		}
 
 		public void VisitDefInstruction(DefInstruction def)
 		{
-			writer.Indent();
-            writer.WriteKeyword("def");
-            writer.Write(" ");
+			InnerFormatter.Indent();
+            InnerFormatter.WriteKeyword("def");
+            InnerFormatter.Write(" ");
 			def.Identifier.Accept(this);
-			writer.Terminate();
+			InnerFormatter.Terminate();
 		}
 
         public void VisitGotoInstruction(GotoInstruction g)
         {
-            writer.Indent();
+            InnerFormatter.Indent();
             if (!(g.Condition is Constant))
             {
-                writer.WriteKeyword("if");
-                writer.Write(" (");
+                InnerFormatter.WriteKeyword("if");
+                InnerFormatter.Write(" (");
                 g.Condition.Accept(this);
-                writer.Write(") ");
+                InnerFormatter.Write(") ");
             }
-            writer.WriteKeyword("goto");
-            writer.WriteKeyword(" ");
+            InnerFormatter.WriteKeyword("goto");
+            InnerFormatter.WriteKeyword(" ");
             g.Target.Accept(this);
-            writer.Terminate();
+            InnerFormatter.Terminate();
         }
 
 		public void VisitPhiAssignment(PhiAssignment phi)
 		{
-			writer.Indent();
+			InnerFormatter.Indent();
 			WriteExpression(phi.Dst);
-			writer.Write(" = ");
+			InnerFormatter.Write(" = ");
 			WriteExpression(phi.Src);
-			writer.Terminate();
+			InnerFormatter.Terminate();
 		}
 
 		public void VisitReturnInstruction(ReturnInstruction ret)
 		{
-			writer.Indent();
-			writer.WriteKeyword("return");
+			InnerFormatter.Indent();
+			InnerFormatter.WriteKeyword("return");
 			if (ret.Expression != null)
 			{
-				writer.Write(" ");
+				InnerFormatter.Write(" ");
 				WriteExpression(ret.Expression);
 			}
-			writer.Terminate();
+			InnerFormatter.Terminate();
 		}
 
 		public void VisitSideEffect(SideEffect side)
 		{
-			writer.Indent();
+			InnerFormatter.Indent();
 			side.Expression.Accept(this);
-			writer.Terminate();
+			InnerFormatter.Terminate();
 		}
 
 		public void VisitStore(Store store)
 		{
-			writer.Indent();
+			InnerFormatter.Indent();
 			WriteExpression(store.Dst);
-			writer.Write(" = ");
+			InnerFormatter.Write(" = ");
 			WriteExpression(store.Src);
-			writer.Terminate();
+			InnerFormatter.Terminate();
 		}
 
 		public void VisitSwitchInstruction(SwitchInstruction si)
 		{
-			writer.Indent();
-			writer.WriteKeyword("switch");
-            writer.Write(" (");
+			InnerFormatter.Indent();
+			InnerFormatter.WriteKeyword("switch");
+            InnerFormatter.Write(" (");
 			si.Expression.Accept(this);
-			writer.Write(") { ");
+			InnerFormatter.Write(") { ");
 			foreach (Block b in si.Targets)
 			{
-				writer.Write("{0} ", b.Name);
+				InnerFormatter.Write("{0} ", b.DisplayName);
 			}
-			writer.Write("}");
-			writer.Terminate();
+			InnerFormatter.Write("}");
+			InnerFormatter.Terminate();
 		}
 
 		public void VisitUseInstruction(UseInstruction u)
 		{
-			writer.Indent();
-			writer.WriteKeyword("use");
-            writer.Write(" ");
+			InnerFormatter.Indent();
+			InnerFormatter.WriteKeyword("use");
+            InnerFormatter.Write(" ");
 			WriteExpression(u.Expression);
 			if (u.OutArgument != null)
 			{
-				writer.Write(" (=> {0})", u.OutArgument);
+				InnerFormatter.Write(" (=> {0})", u.OutArgument);
 			}
-			writer.Terminate();
+			InnerFormatter.Terminate();
 		}
         #endregion
 
@@ -715,100 +757,100 @@ namespace Reko.Core.Output
 
         public void VisitAssignment(AbsynAssignment a)
         {
-            writer.Indent();
+            InnerFormatter.Indent();
             WriteAssignment(a);
-			writer.Terminate(";");
+			InnerFormatter.Terminate(";");
         }
 
         private void WriteAssignment(AbsynAssignment a)
         { 
 			a.Dst.Accept(this);
-			writer.Write(" = ");
+			InnerFormatter.Write(" = ");
 			a.Src.Accept(this);
 		}
 
 		public void VisitBreak(AbsynBreak brk)
 		{
-			writer.Indent();
-			writer.WriteKeyword("break");
-			writer.Terminate(";");
+			InnerFormatter.Indent();
+			InnerFormatter.WriteKeyword("break");
+			InnerFormatter.Terminate(";");
 		}
 
         public void VisitCase(AbsynCase c)
         {
-            writer.Indentation -= writer.TabSize;
-            writer.Indent();
-            writer.WriteKeyword("case");
-            writer.Write(" ");
+            InnerFormatter.Indentation -= InnerFormatter.TabSize;
+            InnerFormatter.Indent();
+            InnerFormatter.WriteKeyword("case");
+            InnerFormatter.Write(" ");
             c.Constant.Accept(this);
-            writer.Terminate(":");
-            writer.Indentation += writer.TabSize;
+            InnerFormatter.Terminate(":");
+            InnerFormatter.Indentation += InnerFormatter.TabSize;
         }
 
         public void VisitDefault(AbsynDefault d)
         {
-            writer.Indentation -= writer.TabSize;
-            writer.Indent();
-            writer.WriteKeyword("default");
-            writer.Terminate(":");
-            writer.Indentation += writer.TabSize;
+            InnerFormatter.Indentation -= InnerFormatter.TabSize;
+            InnerFormatter.Indent();
+            InnerFormatter.WriteKeyword("default");
+            InnerFormatter.Terminate(":");
+            InnerFormatter.Indentation += InnerFormatter.TabSize;
         }
 		
         public void VisitContinue(AbsynContinue cont)
 		{
-            writer.Indent();
-			writer.WriteKeyword("continue");
-            writer.Terminate(";");
+            InnerFormatter.Indent();
+			InnerFormatter.WriteKeyword("continue");
+            InnerFormatter.Terminate(";");
 		}
 
 		public void VisitDeclaration(AbsynDeclaration decl)
 		{
-			writer.Indent();
+			InnerFormatter.Indent();
 			if (decl.Identifier.DataType != null)
 			{
-                TypeReferenceFormatter tf = new TypeReferenceFormatter(writer);
+                TypeReferenceFormatter tf = new TypeReferenceFormatter(InnerFormatter);
                 tf.WriteDeclaration(decl.Identifier.DataType, decl.Identifier.Name);
 			}
 			else
 			{
-                writer.Write("?unknown?");
-                writer.Write(" ");
+                InnerFormatter.Write("?unknown?");
+                InnerFormatter.Write(" ");
                 decl.Identifier.Accept(this);
             }
 			if (decl.Expression != null)
 			{
-				writer.Write(" = ");
+				InnerFormatter.Write(" = ");
 				decl.Expression.Accept(this);
 			}
-			writer.Terminate(";");
+			InnerFormatter.Terminate(";");
 		}
 
 		public void VisitDoWhile(AbsynDoWhile loop)
 		{
-			writer.Indent();
-			writer.WriteKeyword("do");
-			writer.Terminate();
+			InnerFormatter.Indent();
+			InnerFormatter.WriteKeyword("do");
+			InnerFormatter.Terminate();
 			WriteIndentedStatements(loop.Body, true);
 			
 			if (HasSmallBody(loop.Body))
-                writer.Indent();
-			writer.WriteKeyword("while");
-            writer.Write(" (");
+                InnerFormatter.Indent();
+			InnerFormatter.WriteKeyword("while");
+            InnerFormatter.Write(" (");
 			WriteExpression(loop.Condition);
-			writer.Terminate(");");
+			InnerFormatter.Terminate(");");
 		}
 
         public void VisitFor(AbsynFor forLoop)
         {
-            writer.Indent();
-            writer.WriteKeyword("for");
-            writer.Write(" (");
+            InnerFormatter.Indent();
+            InnerFormatter.WriteKeyword("for");
+            InnerFormatter.Write(" (");
             MaybeWriteAssignment(forLoop.Initialization);
-            writer.Write("; ");
+            InnerFormatter.Write("; ");
             forLoop.Condition.Accept(this);
-            writer.Write("; ");
+            InnerFormatter.Write("; ");
             MaybeWriteAssignment(forLoop.Iteration);
-            writer.Terminate(")");
+            InnerFormatter.Terminate(")");
 
             WriteIndentedStatements(forLoop.Body, false);
         }
@@ -830,41 +872,41 @@ namespace Reko.Core.Output
 
         public void VisitGoto(AbsynGoto g)
 		{
-			writer.Indent();
-			writer.WriteKeyword("goto");
-            writer.Write(" ");
-			writer.Write(g.Label);
-			writer.Terminate(";");
+			InnerFormatter.Indent();
+			InnerFormatter.WriteKeyword("goto");
+            InnerFormatter.Write(" ");
+			InnerFormatter.Write(g.Label);
+			InnerFormatter.Terminate(";");
 		}
 
 		public void VisitIf(AbsynIf ifs)
 		{
-			writer.Indent();
+			InnerFormatter.Indent();
 			WriteIf(ifs);
 		}
 
 		private void WriteIf(AbsynIf ifs)
 		{
-			writer.WriteKeyword("if");
-            writer.Write(" (");
+			InnerFormatter.WriteKeyword("if");
+            InnerFormatter.Write(" (");
 			WriteExpression(ifs.Condition);
-			writer.Write(")");
-			writer.Terminate();
+			InnerFormatter.Write(")");
+			InnerFormatter.Terminate();
 
 			WriteIndentedStatements(ifs.Then, false);
 
 			if (ifs.Else != null && ifs.Else.Count > 0)
 			{
-				writer.Indent();
-				writer.WriteKeyword("else");
+				InnerFormatter.Indent();
+				InnerFormatter.WriteKeyword("else");
                 if (IsSingleIfStatement(ifs.Else, out AbsynIf elseIf))
                 {
-                    writer.Write(" ");
+                    InnerFormatter.Write(" ");
                     WriteIf(elseIf);
                 }
                 else
                 {
-                    writer.Terminate();
+                    InnerFormatter.Terminate();
                     WriteIndentedStatements(ifs.Else, false);
                 }
             }
@@ -872,11 +914,13 @@ namespace Reko.Core.Output
 
         protected virtual string UnsignedFormatString(PrimitiveType type, ulong value)
         {
+            if (value < 10)
+                return "{0}";
             var nybbles = Nybbles(type.BitSize);
             if (nybbles < unsignedConstantFormatStrings.Length)
                 return unsignedConstantFormatStrings[nybbles];
             else
-                return "0x{0:X16}";
+                return "0x{0}_";
         }
 
         private static int Nybbles(int bitSize)
@@ -884,13 +928,13 @@ namespace Reko.Core.Output
             return (bitSize + 3) / 4;
         }
 
-        private string FormatString(PrimitiveType type, object value)
+        private (string,string) FormatStrings(PrimitiveType type, object value)
         {
             string format;
             switch (type.Domain)
             {
             case Domain.SignedInt:
-                return "{0}";
+                return ("{0}","<i{0}>");
             case Domain.Character:
                 switch (type.Size)
                 {
@@ -900,76 +944,106 @@ namespace Reko.Core.Output
                 }
                 var ch = Convert.ToChar(value);
                 if (Char.IsControl(ch))
-                    return string.Format(format, string.Format("\\x{0:X2}", (int) ch));
+                    return (string.Format(format, string.Format("\\x{0:X2}", (int) ch)), "");
                 else if (ch == '\'' || ch == '\\')
-                    return string.Format(format, string.Format("\\{0}", ch));
-                return format;
+                    return (string.Format(format, string.Format("\\{0}", ch)), "");
+                return (format, "");
+            case Domain.UnsignedInt:
+                if (!(value is ulong n))
+                    n = Convert.ToUInt64(value);
+                if (n > 9)
+                {
+                    format = "0x{0:X}";
+                }
+                else
+                {
+                    format = "{0}";
+                }
+                return(format, "<u{0}>");
+            case Domain.Pointer:
+            case Domain.Offset:
+                return (unsignedConstantFormatStrings[type.Size], "<p{0}>");
+            case Domain.SegPointer:
+                 return ("{0:X}", "p{0}");
             default:
-                return UnsignedFormatString(type, Convert.ToUInt64(value));
+                if (!(value is ulong w))
+                {
+                    w = (ulong) Convert.ToInt64(value);
+                }
+                if (w > 9)
+                {
+                    format = "0x{0:X}";
+            }
+                else
+                {
+                    format = "{0}";
+        }
+                return (format, "<{0}>");
             }
         }
 
+        //$TODO: .NET 5 output parameter is non-null if the method returns true.
         private bool IsSingleIfStatement(List<AbsynStatement> stms, out AbsynIf elseIf)
         {
-            elseIf = null;
+            elseIf = default!;
             if (stms.Count != 1)
                 return false;
-            elseIf = stms[0] as AbsynIf;
+            elseIf = (stms[0] as AbsynIf)!;
             return elseIf != null;
         }
 
 		public void VisitLabel(AbsynLabel lbl)
 		{
-			writer.Write(lbl.Name);
-			writer.Terminate(":");
+			InnerFormatter.Write(lbl.Name);
+			InnerFormatter.Terminate(":");
 		}
 
         public void VisitLineComment(AbsynLineComment comment)
         {
             foreach (var line in Lines(comment.Comment))
             {
-                writer.Indent();
-                writer.WriteComment($"// {line}");
-                writer.Terminate();
+                InnerFormatter.Indent();
+                InnerFormatter.WriteComment($"// {line}");
+                InnerFormatter.Terminate();
             }
         }
 
 		public void VisitReturn(AbsynReturn ret)
 		{
-			writer.Indent();
-			writer.WriteKeyword("return");
+			InnerFormatter.Indent();
+			InnerFormatter.WriteKeyword("return");
 			if (ret.Value != null)
 			{
-				writer.Write(" ");
+				InnerFormatter.Write(" ");
 				WriteExpression(ret.Value);
 			}
-			writer.Terminate(";");
+			InnerFormatter.Terminate(";");
 		}
 
 		public void VisitSideEffect(AbsynSideEffect side)
 		{
-			writer.Indent();
+			InnerFormatter.Indent();
 			side.Expression.Accept(this);
-			writer.Terminate(";");
+			InnerFormatter.Terminate(";");
 		}
 
         public void VisitSwitch(AbsynSwitch s)
         {
-            writer.Indent();
-            writer.WriteKeyword("switch");
-            writer.Write(" (");
+            InnerFormatter.Indent();
+            InnerFormatter.WriteKeyword("switch");
+            InnerFormatter.Write(" (");
             WriteExpression(s.Expression);
-            writer.Terminate(")");
+            InnerFormatter.Terminate(")");
             WriteIndentedStatements(s.Statements, false);
         }
 
 		public void VisitWhile(AbsynWhile loop)
 		{
-			writer.Indent();
-			writer.WriteKeyword("while");
-            writer.Write(" (");
+			InnerFormatter.Indent();
+			InnerFormatter.WriteKeyword("while");
+            InnerFormatter.Write(" (");
 			WriteExpression(loop.Condition);
-			writer.Terminate(")");
+			InnerFormatter.Terminate(")");
 
 			WriteIndentedStatements(loop.Body, false);
 		}
@@ -978,10 +1052,10 @@ namespace Reko.Core.Output
 
 		public void Write(Procedure proc)
 		{
-			proc.Signature.Emit(proc.QualifiedName(), FunctionType.EmitFlags.None, writer, this, new TypeReferenceFormatter(writer));
-			writer.WriteLine();
-			writer.Write("{");
-            writer.WriteLine();
+			proc.Signature.Emit(proc.QualifiedName(), FunctionType.EmitFlags.None, InnerFormatter, this, new TypeReferenceFormatter(InnerFormatter));
+			InnerFormatter.WriteLine();
+			InnerFormatter.Write("{");
+            InnerFormatter.WriteLine();
 			if (proc.Body != null)
 			{
 				for (int i = 0; i < proc.Body.Count; ++i)
@@ -993,23 +1067,23 @@ namespace Reko.Core.Output
 			{
                 new ProcedureFormatter(proc, new BlockDecorator { ShowEdges=false }, this).WriteProcedureBlocks();
 			}
-			writer.Write("}");
-            writer.WriteLine();
+			InnerFormatter.Write("}");
+            InnerFormatter.WriteLine();
 		}
 
     	private void WriteActuals(Expression [] arguments)
 		{
-			writer.Write("(");
+			InnerFormatter.Write("(");
 			if (arguments.Length >= 1)
 			{
 				WriteExpression(arguments[0]);
 				for (int i = 1; i < arguments.Length; ++i)
 				{
-					writer.Write(", ");
+					InnerFormatter.Write(", ");
 					WriteExpression(arguments[i]);
 				}
 			}
-			writer.Write(")");
+			InnerFormatter.Write(")");
 		}
 
 		/// <summary>
@@ -1020,7 +1094,7 @@ namespace Reko.Core.Output
 		{
             if (expr == null)
             {
-                writer.Write("<NULL>");
+                InnerFormatter.Write("<NULL>");
                 return;
             }
 			int prec = precedenceCur;
@@ -1034,8 +1108,8 @@ namespace Reko.Core.Output
             if (writeStorage)
             {
                 WriteFormalArgumentType(arg, writeStorage);
-                writer.Write(" ");
-                writer.Write(arg.Name);
+                InnerFormatter.Write(" ");
+                InnerFormatter.Write(arg.Name);
             }
             else
             {
@@ -1056,67 +1130,66 @@ namespace Reko.Core.Output
             {
                 if (arg.Storage is OutArgumentStorage os)
                 {
-                    writer.Write(os.OriginalIdentifier.Storage.Kind);
-                    writer.Write(" out ");
+                    InnerFormatter.Write(os.OriginalIdentifier.Storage.Kind);
+                    InnerFormatter.Write(" out ");
                 }
                 else
                 {
-                    writer.Write(arg.Storage.Kind);
-                    writer.Write(" ");
+                    InnerFormatter.Write(arg.Storage.Kind);
+                    InnerFormatter.Write(" ");
                 }
             }
-            typeWriter = new TypeGraphWriter(writer);
             typeWriter.WriteReference(arg.DataType);
         }
 
 		public void WriteIndentedStatement(AbsynStatement stm)
 		{
-			writer.Indentation += writer.TabSize;
+			InnerFormatter.Indentation += InnerFormatter.TabSize;
 			if (stm != null)
 				stm.Accept(this);
 			else
 			{
-				writer.Indent();				
-				writer.Terminate(";");
+				InnerFormatter.Indent();				
+				InnerFormatter.Terminate(";");
 			}
-			writer.Indentation -= writer.TabSize;
+			InnerFormatter.Indentation -= InnerFormatter.TabSize;
 		}
 
         public void WriteIndentedStatements(List<AbsynStatement> stms, bool suppressNewline)
         {
             if (HasSmallBody(stms))
             {
-                writer.Indentation += writer.TabSize;
+                InnerFormatter.Indentation += InnerFormatter.TabSize;
                 if (stms.Count == 0)
                 {
-                    writer.Indent();
-                    writer.Terminate(";");
+                    InnerFormatter.Indent();
+                    InnerFormatter.Terminate(";");
                 }
                 else
                 {
                     stms[0].Accept(this);
                 }
-                writer.Indentation -= writer.TabSize;
+                InnerFormatter.Indentation -= InnerFormatter.TabSize;
             }
             else
             {
-                writer.Indent();
-                writer.Write("{");
-                writer.Terminate();
+                InnerFormatter.Indent();
+                InnerFormatter.Write("{");
+                InnerFormatter.Terminate();
 
-                writer.Indentation += writer.TabSize;
+                InnerFormatter.Indentation += InnerFormatter.TabSize;
                 foreach (AbsynStatement stm in stms)
                 {
                     stm.Accept(this);
                 }
-                writer.Indentation -= writer.TabSize;
+                InnerFormatter.Indentation -= InnerFormatter.TabSize;
 
-                writer.Indent();
-                writer.Write("}");
+                InnerFormatter.Indent();
+                InnerFormatter.Write("}");
                 if (suppressNewline)
-                    writer.Write(" ");
+                    InnerFormatter.Write(" ");
                 else
-                    writer.Terminate();
+                    InnerFormatter.Terminate();
             }
         }
 
@@ -1141,7 +1214,7 @@ namespace Reko.Core.Output
 
         public void WriteNull()
         {
-            writer.WriteKeyword("null");
+            InnerFormatter.WriteKeyword("null");
         }
 
         private static string[] Lines(string s)

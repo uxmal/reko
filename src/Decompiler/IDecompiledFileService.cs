@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,10 +36,19 @@ namespace Reko
     /// </summary>
     public interface IDecompiledFileService
     {
-        void WriteDisassembly(Program program, Action<string, Formatter> writer);
-        void WriteIntermediateCode(Program program, Action<string, TextWriter> writer);
+        /// <summary>
+        /// Creates a <see cref="TextWriter"/> given an absolute filename, creating
+        /// any intermediary directories if necessary. If the file already exists, 
+        /// it is overwritten.
+        /// </summary>
+        /// <param name="filename">Absolute path to the file being created.</param>
+        /// <returns>A <see cref="TextWriter"/> to the created file.
+        /// </returns>
+        TextWriter CreateTextWriter(string filename);
+        void WriteDisassembly(Program program, Action<string, Dictionary<ImageSegment, List<ImageMapItem>>, Formatter> writer);
+        void WriteIntermediateCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer);
         void WriteTypes(Program program, Action<string, TextWriter> writer);
-        void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer);
+        void WriteDecompiledCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer);
         void WriteGlobals(Program program, Action<string, TextWriter> writer);
     }
 
@@ -56,14 +65,19 @@ namespace Reko
 
 		#region DecompilerHost Members
 
-        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
+        public TextWriter CreateTextWriter(string path)
         {
-            writer("",new NullFormatter());
+            return TextWriter.Null;
         }
 
-        public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
+        public void WriteDisassembly(Program program, Action<string, Dictionary<ImageSegment, List<ImageMapItem>>, Formatter> writer)
         {
-            writer("", TextWriter.Null);
+            writer("", new Dictionary<ImageSegment, List<ImageMapItem>>(), new NullFormatter());
+        }
+
+        public void WriteIntermediateCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
+        {
+            writer("", program.Procedures.Values, TextWriter.Null);
         }
 
         public void WriteTypes(Program program, Action<string,TextWriter> writer)
@@ -71,7 +85,7 @@ namespace Reko
             writer("", TextWriter.Null);
         }
 
-        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
             writer("", program.Procedures.Values, TextWriter.Null);
         }
@@ -87,13 +101,15 @@ namespace Reko
     public class DecompiledFileService : IDecompiledFileService
     {
         private readonly IFileSystemService fsSvc;
+        private readonly DecompilerEventListener listener;
 
-        public DecompiledFileService(IFileSystemService fsSvc)
+        public DecompiledFileService(IFileSystemService fsSvc, DecompilerEventListener listener)
         {
             this.fsSvc = fsSvc;
+            this.listener = listener;
         }
 
-        private TextWriter CreateTextWriter(string filename)
+        public TextWriter CreateTextWriter(string filename)
         {
             if (string.IsNullOrEmpty(filename))
                 return StreamWriter.Null;
@@ -103,23 +119,33 @@ namespace Reko
             return new StreamWriter(fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
         }
 
-        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
+        public void WriteDisassembly(Program program, Action<string, Dictionary<ImageSegment, List<ImageMapItem>>, Formatter> writer)
         {
-            var dasmFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".asm");
-            var dasmPath = Path.Combine(program.DisassemblyDirectory, dasmFilename);
-            using (TextWriter output = CreateTextWriter(dasmPath))
+            var outputPolicy = program.CreateOutputPolicy();
+            foreach (var placement in outputPolicy.GetItemPlacements(".asm"))
             {
-                writer(dasmFilename, new TextFormatter(output));
+                var dasmFilename = Path.GetFileName(placement.Key);
+                var dasmPath = Path.Combine(program.DisassemblyDirectory, dasmFilename);
+                using (TextWriter output = CreateTextWriter(dasmPath))
+                {
+                    writer(dasmFilename, placement.Value, new TextFormatter(output));
+                }
             }
         }
 
-        public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
-            var irFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".dis");
-            var irPath = Path.Combine(program.SourceDirectory, irFilename);
-            using (TextWriter output = CreateTextWriter(irPath))
+            var outputPolicy = program.CreateOutputPolicy();
+            foreach (var placement in outputPolicy.GetObjectPlacements(".dis", listener))
             {
-                writer(irFilename, output);
+                var irFilename = Path.GetFileName(placement.Key);
+                var irPath = Path.Combine(program.SourceDirectory, irFilename);
+                var procs = placement.Value.Values.OfType<Procedure>().ToArray();
+                if (procs.Length > 0)
+                {
+                    using TextWriter output = CreateTextWriter(irPath);
+                    writer(irFilename, procs, output);
+                }
             }
         }
 
@@ -133,29 +159,15 @@ namespace Reko
             }
         }
 
-        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
-            var defaultFileName = Path.ChangeExtension(Path.GetFileName(program.Filename), ".c");
-            var defaultPath = Path.Combine(program.SourceDirectory, defaultFileName);
-            var procFiles =
-               (from proc in program.Procedures.Values
-                join file in program.User.ProcedureSourceFiles on proc.EntryAddress equals file.Key into files
-                from file in files.DefaultIfEmpty()
-                select new { file = file.Value ?? defaultPath, proc } into files
-                group files by files.file into g
-                select new {
-                    file = g.Key,
-                    procs = g
-                        .Select(gg => gg.proc)
-                        .OrderBy(gg => gg.EntryAddress)
-                }).ToList();
-
-            foreach (var item in procFiles)
+            var outputPolicy = program.CreateOutputPolicy();
+            foreach (var placement in outputPolicy.GetObjectPlacements(".c", listener))
             {
-                using (TextWriter output = CreateTextWriter(item.file))
-                {
-                    writer(defaultFileName, item.procs, output);
-                }
+                var filename = placement.Key;
+                var filePath = Path.Combine(program.SourceDirectory, filename);
+                using TextWriter output = CreateTextWriter(filePath);
+                writer(filename, placement.Value.Values, output);
             }
         }
 

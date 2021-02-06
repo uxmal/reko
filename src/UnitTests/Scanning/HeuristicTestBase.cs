@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,10 +24,13 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -48,14 +51,14 @@ namespace Reko.UnitTests.Scanning
         protected ImageSegment segment;
         protected Mock<IRewriterHost> host;
         protected Mock<DecompilerEventListener> eventListener;
-        private MemoryArea mem;
+        private ByteMemoryArea bmem;
 
         public virtual void Setup()
         {
             eventListener = new Mock<DecompilerEventListener>();
         }
 
-        protected MemoryArea CreateMemoryArea(Address addr, params uint[] opcodes)
+        protected ByteMemoryArea CreateMemoryArea(Address addr, params uint[] opcodes)
         {
             byte[] bytes = new byte[0x20];
             var writer = new LeImageWriter(bytes);
@@ -64,21 +67,22 @@ namespace Reko.UnitTests.Scanning
             {
                 writer.WriteLeUInt32(offset, opcodes[i]);
             }
-            return new MemoryArea(addr, bytes);
+            return new ByteMemoryArea(addr, bytes);
         }
 
         protected void Given_RewriterHost()
         {
             host = new Mock<IRewriterHost>();
-            host.Setup(h => h.PseudoProcedure(
+            host.Setup(h => h.Intrinsic(
                 It.IsAny<string>(),
+                It.IsAny<bool>(),
                 It.IsAny<DataType>(),
                 It.IsAny<Expression[]>()))
-               .Returns((string n, DataType dt, Expression[] a) =>
+               .Returns((string n, bool i, DataType dt, Expression[] a) =>
                 {
                     var fn = new FunctionType();
-                    var ppp = new PseudoProcedure(n, fn);
-                    return new Application(new ProcedureConstant(fn, ppp),
+                    var intrinsic = new IntrinsicProcedure(n, i, fn);
+                    return new Application(new ProcedureConstant(fn, intrinsic),
                         dt,
                         a);
             });
@@ -87,12 +91,12 @@ namespace Reko.UnitTests.Scanning
         protected void Given_Image32(uint addr, string sBytes)
         {
             var bytes = HexStringToBytes(sBytes);
-            mem = new MemoryArea(Address.Ptr32(addr), bytes);
+            bmem = new ByteMemoryArea(Address.Ptr32(addr), bytes);
             program = new Program
             {
                 SegmentMap = new SegmentMap(
-                    mem.BaseAddress,
-                    new ImageSegment("prôg", mem, AccessMode.ReadExecute))
+                    bmem.BaseAddress,
+                    new ImageSegment("prôg", bmem, AccessMode.ReadExecute))
             };
             program.ImageMap = program.SegmentMap.CreateImageMap();
             segment = program.SegmentMap.Segments.Values.First();
@@ -106,7 +110,7 @@ namespace Reko.UnitTests.Scanning
             w.WriteBytes(bytes);
             program.ImageMap.AddItemWithSize(
                 addr,
-                new ImageMapItem((uint)dt.Size)
+                new ImageMapItem(addr, (uint)dt.Size)
                 {
                     DataType = dt
                 });
@@ -139,8 +143,9 @@ namespace Reko.UnitTests.Scanning
 
         protected void Given_x86_32()
         {
-            program.Architecture = new X86ArchitectureFlat32("x86-protected-32");
-            program.Platform = new DefaultPlatform(null, program.Architecture);
+            var sc = new ServiceContainer();
+            program.Architecture = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
+            program.Platform = new DefaultPlatform(sc, program.Architecture);
             program.Platform.Heuristics.ProcedurePrologs = new MaskedPattern[] {
                 new MaskedPattern
                 {
@@ -152,18 +157,18 @@ namespace Reko.UnitTests.Scanning
 
         internal void Given_x86_16()
         {
-            program.Architecture = new X86ArchitectureReal("x86-real-16");
+            program.Architecture = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16", new Dictionary<string, object>());
         }
 
         internal void Given_ImageSeg(ushort seg, ushort offset, string sBytes)
         {
             var bytes = HexStringToBytes(sBytes);
-            mem = new MemoryArea(Address.SegPtr(seg, offset), bytes);
-            segment = new ImageSegment("prôg", mem, AccessMode.ReadExecute);
+            bmem = new ByteMemoryArea(Address.SegPtr(seg, offset), bytes);
+            segment = new ImageSegment("prôg", bmem, AccessMode.ReadExecute);
             program = new Program
             {
                 SegmentMap = new SegmentMap(
-                    mem.BaseAddress,
+                    bmem.BaseAddress,
                     segment)
             };
         }
@@ -181,7 +186,7 @@ namespace Reko.UnitTests.Scanning
                 sb.AppendLine();
                 var lastAddr = hblock.GetEndAddress();
                 var dasm = program.Architecture.CreateDisassembler(
-                    program.Architecture.CreateImageReader(mem, hblock.Address));
+                    program.Architecture.CreateImageReader(bmem, hblock.Address));
                 foreach (var instr in dasm.TakeWhile(i => i.Address < lastAddr))
                 {
                     sb.AppendFormat("    {0}", instr);

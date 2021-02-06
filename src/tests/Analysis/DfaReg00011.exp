@@ -27,14 +27,14 @@ void fn0C00_0004()
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:
-	word16 bx_36 = 0x0FFF
+	word16 bx_36 = 0xFFF<16>
 	// succ:  l0C00_000C
 l0C00_000C:
 	byte bl_10 = SLICE(bx_39, byte, 0)
-	Mem23[0x4DE1:bx_39:byte] = bl_10 & 0xF0 | SLICE((bl_10 & 0x0F) *u (SLICE(bx_39, byte, 8) + 0x01) << 0x0004, byte, 8) & 0x0F
-	bx_36 = bx_39 - 0x0001 (alias)
+	Mem23[0x4DE1<16>:bx_39:byte] = bl_10 & 0xF0<8> | SLICE((bl_10 & 0xF<8>) *u16 (SLICE(bx_39, byte, 8) + 1<8>) << 4<16>, byte, 8) & 0xF<8>
+	bx_36 = bx_39 - 1<16> (alias)
 	bx_39 = bx_36
-	branch bx_39 >= 0x0001 l0C00_000C
+	branch bx_39 >= 1<16> l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
 l0C00_0029:
 	return

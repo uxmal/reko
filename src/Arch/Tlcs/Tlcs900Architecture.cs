@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using Reko.Core.Lib;
 using Registers = Reko.Arch.Tlcs.Tlcs900.Tlcs900Registers;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.Tlcs
 {
@@ -39,7 +40,8 @@ namespace Reko.Arch.Tlcs
     // https://toshiba.semicon-storage.com/product/micro/900H1_CPU_BOOK_CP3_CPU_en.pdf
     public class Tlcs900Architecture : ProcessorArchitecture
     {
-        public Tlcs900Architecture(string archId) : base(archId)
+        public Tlcs900Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             this.CarryFlagMask = Registers.C.FlagGroupBits;
             this.Endianness = EndianServices.Little;
@@ -130,10 +132,11 @@ namespace Reko.Arch.Tlcs
         {
             if (!Registers.Subregisters.TryGetValue(regDomain, out var subs))
                 return null;
-            int key = (range.Extent << 4) | range.Lsb;
-            if (!subs.TryGetValue(key, out var subreg))
-                return null;
+            int key = (range.Extent * 4) + range.Lsb;
+            if (subs.TryGetValue(key, out var subreg))
             return subreg;
+            else
+                return Registers.regs[regDomain - StorageDomain.Register];
         }
 
         public override RegisterStorage[] GetRegisters()

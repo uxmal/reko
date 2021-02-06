@@ -1,8 +1,8 @@
 #region License
 /* 
- * Copyright (C) 2017-2020 Christian Hostelet.
+ * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using Reko.Libraries.Microchip;
@@ -47,7 +48,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Instantiates a new PIC architecture for the specified PIC generic family.
         /// </summary>
-        public PICArchitecture(string archId) : base(archId)
+        public PICArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             flagGroups = new Dictionary<uint, FlagGroupStorage>();
             Endianness = EndianServices.Little;
@@ -57,12 +59,13 @@ namespace Reko.Arch.MicrochipPIC.Common
             WordWidth = PrimitiveType.Byte;
         }
 
-        public PICArchitecture() : this("pic") { }
+        public PICArchitecture(IServiceProvider services, Dictionary<string, object> options)
+            : this(services, "pic", options) { }
 
         /// <summary>
         /// Gets or sets the PIC architecture options.
         /// </summary>
-        public PICArchitectureOptions Options { get; set; }
+        public new PICArchitectureOptions Options { get; set; }
 
         /// <summary>
         /// Gets the processor mode builders.

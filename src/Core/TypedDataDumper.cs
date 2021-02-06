@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,14 +22,15 @@ using System;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using System.Diagnostics;
+using Reko.Core.Memory;
 
 namespace Reko.Core
 {
     public class TypedDataDumper : IDataTypeVisitor
     {
-        private EndianImageReader rdr;
-        private uint cbSize;
-        private Formatter fmt;
+        private readonly EndianImageReader rdr;
+        private readonly uint cbSize;
+        private readonly Formatter fmt;
 
         public TypedDataDumper(EndianImageReader rdr, uint cbSize, Formatter stm) 
         {
@@ -98,7 +99,7 @@ namespace Reko.Core
             case 8:
                 fmt.WriteKeyword("dq");
                 fmt.Write("\t");
-                fmt.Write(string.Format("0x{0:X16}", rdr.ReadUInt32()));
+                fmt.Write(string.Format("0x{0:X16}", rdr.ReadUInt64()));
                 fmt.WriteLine();
                 return;
             }
@@ -129,7 +130,7 @@ namespace Reko.Core
             case 8:
                 fmt.WriteKeyword("dq");
                 fmt.Write("\t");
-                fmt.Write(string.Format("0x{0:X16}", rdr.ReadUInt32()));
+                fmt.Write(string.Format("0x{0:X16}", rdr.ReadUInt64()));
                 fmt.WriteLine();
                 return;
             default:
@@ -148,7 +149,6 @@ namespace Reko.Core
             {
                 if (newLine)
                 {
-                    newLine = false;
                     fmt.WriteLine();
                     fmt.Write("\t");
                     fmt.WriteKeyword("db");

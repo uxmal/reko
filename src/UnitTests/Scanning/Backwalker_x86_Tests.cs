@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Linq;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Collections.Generic;
@@ -43,6 +43,7 @@ namespace Reko.UnitTests.Scanning
 	[TestFixture]
 	public class Backwalker_x86_Tests
 	{
+        private IServiceContainer sc;
         private ProcedureBuilder m;
         private IProcessorArchitecture arch;
         private ProcessorState state;
@@ -149,7 +150,8 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            arch = new X86ArchitectureFlat32("x86-protected-32");
+            sc = new ServiceContainer();
+            arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             m = new ProcedureBuilder();
             var map = new SegmentMap(Address.Ptr32(0x10000000));
             state = arch.CreateProcessorState();
@@ -166,13 +168,14 @@ namespace Reko.UnitTests.Scanning
             var el = new FakeDecompilerEventListener();
             sc.AddService<IFileSystemService>(fsSvc);
             sc.AddService<DecompilerEventListener>(el);
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
-            var asm = new X86TextAssembler(sc, arch);
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
+            var asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 var platform = new DefaultPlatform(sc, arch);
-                asm.Platform = platform;
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
+                program.Platform = platform;
+
             }
             var scanner = new Scanner(program, null, sc);
             scanner.EnqueueImageSymbol(ImageSymbol.Procedure(arch, program.ImageMap.BaseAddress), true);
@@ -360,7 +363,7 @@ namespace Reko.UnitTests.Scanning
             //m.Label("dummy");
             //m.Dd(0);
 
-            RunTest(new X86ArchitectureFlat32("x86-protected-32"),
+            RunTest(new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>()),
                 new RtlGoto(m.Mem32(m.IAdd(m.IMul(edx, 4), 0x10010)), InstrClass.Transfer),
                 "Scanning/BwSwitch32.txt");
         }
@@ -389,7 +392,7 @@ namespace Reko.UnitTests.Scanning
             m.Assign(bx, m.IAdd(bx, bx));
             m.Assign(SCZO, new ConditionOf(bx));
 
-            RunTest(new X86ArchitectureReal("x86-real-16"),
+            RunTest(new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>()),
                 new RtlGoto(m.Mem16(m.IAdd(bx, 0x1234)), InstrClass.Transfer),
                 "Scanning/BwSwitch16.txt");
         }
@@ -402,7 +405,7 @@ namespace Reko.UnitTests.Scanning
             var di = new Identifier("di", Registers.di.DataType, Registers.di);
             var bw = new Backwalker<Block, Instruction>(host, new RtlGoto(new MemoryAccess(di, di.DataType), InstrClass.Transfer),
                 new ExpressionSimplifier(map, state, new FakeDecompilerEventListener()));
-            var instrs = new StatementList(new Block(null, "foo"));
+            var instrs = new StatementList(new Block(null, null, "foo"));
             bw.BackwalkInstructions(Registers.di, new Instruction[] {
                 new Assignment(di, new BinaryExpression(Operator.IAdd, di.DataType, di, Constant.Word16(1)))
                 });
@@ -440,14 +443,14 @@ namespace Reko.UnitTests.Scanning
             // jmp [eax + 0x12000]
 
             m.Assign(edx, m.Mem32(m.ISub(ebp, 0xC4)));
-            m.Assign(eax, m.Cast(PrimitiveType.Word32, m.Mem8(m.IAdd(edx, 0x10000))));
+            m.Assign(eax, m.Convert(m.Mem8(m.IAdd(edx, 0x10000)), PrimitiveType.Byte, PrimitiveType.Word32));
             var xfer = new RtlGoto(m.Mem32(m.IAdd(eax, 0x12000)), InstrClass.Transfer);
 
             var block1 = m.CurrentBlock;
             var bw = new Backwalker<Block,Instruction>(host, xfer, expSimp);
             var ret = bw.BackwalkInstructions(Registers.eax, block1);
             Assert.AreEqual("None", bw.Index.ToString());
-            Assert.AreEqual("Mem0[ebp - 0x000000C4:word32]", bw.IndexExpression.ToString());
+            Assert.AreEqual("Mem0[ebp - 0xC4<32>:word32]", bw.IndexExpression.ToString());
             Assert.AreEqual(4, bw.JumpSize);
             Assert.IsTrue(ret);
 

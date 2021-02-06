@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,17 +35,17 @@ namespace Reko.Core.CLanguage
     /// </summary>
     public class NamedDataTypeExtractor :
         DeclaratorVisitor<Func<NamedDataType,NamedDataType>>,
-        DeclSpecVisitor<SerializedType>
+        DeclSpecVisitor<SerializedType?>
     {
-        private IEnumerable<DeclSpec> specs;
-        private SymbolTable symbolTable;
-        private SerializedType dt;
+        private readonly IEnumerable<DeclSpec> specs;
+        private readonly SymbolTable symbolTable;
+        private readonly SerializedType? dt;
+        private readonly CConstantEvaluator eval;
+        private readonly IPlatform platform;
         private Domain domain;
         private int byteSize;
         private CTokenType callingConvention;
-        private CConstantEvaluator eval;
         private CBasicType basicType;
-        private IPlatform platform;
 
         public NamedDataTypeExtractor(IPlatform platform, IEnumerable<DeclSpec> specs, SymbolTable converter)
         {
@@ -181,7 +181,7 @@ namespace Reko.Core.CLanguage
                 if (FirstParameterVoid(parameters))
                     parameters = new Argument_v1[0];
 
-                Argument_v1 ret = null;
+                Argument_v1? ret = null;
                 if (nt.DataType != null)
                 {
                     ret = new Argument_v1
@@ -238,11 +238,11 @@ namespace Reko.Core.CLanguage
         /// </summary>
         /// <param name="attrs"></param>
         /// <returns></returns>
-        public SerializedKind GetArgumentKindFromAttributes(string paramType, List<CAttribute> attrs)
+        public SerializedKind? GetArgumentKindFromAttributes(string paramType, List<CAttribute> attrs)
         {
             if (attrs == null)
                 return null;
-            SerializedKind kind = null;
+            SerializedKind? kind = null;
             foreach (var attr in attrs)
             {
                 if (attr.Name.Components == null || attr.Name.Components.Length != 2 ||
@@ -251,12 +251,14 @@ namespace Reko.Core.CLanguage
                 if (attr.Tokens[0].Type == CTokenType.Register &&
                     attr.Tokens[1].Type == CTokenType.Comma)
                 {
-                    // We have a reko::arg(register, prefix; get the register.
-                    if (attr.Tokens.Count < 1 || attr.Tokens[2].Type != CTokenType.StringLiteral)
-                        throw new FormatException("[[reko::arg(register,<name>)]] attribute expects a register name.");
-                    kind = new Register_v1 { Name = (string)attr.Tokens[2].Value };
+                    // We have a reko::arg(register, value); get the register.
+                    if (attr.Tokens.Count < 1 ||
+                        attr.Tokens[2].Value is null ||
+                        attr.Tokens[2].Type != CTokenType.StringLiteral)
+                        throw new FormatException("[[reko::arg(register,<name>)]] attribute expects a register name and a value.");
+                    kind = new Register_v1 { Name = (string)attr.Tokens[2].Value! };
                 } else if (attr.Tokens[0].Type == CTokenType.Id &&
-                           (string)attr.Tokens[0].Value == "fpu")
+                           (string)attr.Tokens[0].Value! == "fpu")
                 {
                     // We have a reko::fpu prefix; mark as FPU
                     kind = new FpuStackVariable_v1();
@@ -301,12 +303,12 @@ namespace Reko.Core.CLanguage
 
         private void ApplyCallConvention(CTokenType convention)
         {
-            if (callingConvention != CTokenType.None)
+            if (callingConvention != CTokenType.None && callingConvention != convention)
                 throw new FormatException(string.Format("Unexpected extra calling convention specifier '{0}'.", callingConvention));
             callingConvention = convention;
         }
 
-        public SerializedType VisitSimpleType(SimpleTypeSpec simpleType)
+        public SerializedType? VisitSimpleType(SimpleTypeSpec simpleType)
         {
             switch (simpleType.Type)
             {
@@ -322,13 +324,11 @@ namespace Reko.Core.CLanguage
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Can't have 'signed' after '{0}'.", domain));
                 domain = Domain.SignedInt;
-                basicType = CBasicType.Int;
                 return CreatePrimitive();
             case CTokenType.Unsigned:
                 if (domain != Domain.None)
                     throw new FormatException(string.Format("Can't have 'unsigned' after '{0}'.", domain));
                 domain = Domain.UnsignedInt;
-                basicType = CBasicType.Int;
                 return CreatePrimitive();
             case CTokenType.Bool:
             case CTokenType._Bool:
@@ -397,12 +397,17 @@ namespace Reko.Core.CLanguage
 
         private PrimitiveType_v1 CreatePrimitive()
         {
-            byteSize = platform.GetByteSizeFromCBasicType(basicType);
-            if (domain == Domain.None)
-                domain = Domain.SignedInt;
+            if (domain != Domain.None && basicType == CBasicType.None)
+                basicType = CBasicType.Int;
+            var bitSize = platform.GetBitSizeFromCBasicType(basicType);
+            var memoryUnitBitSize = platform.Architecture.MemoryGranularity;
+            this.byteSize = (bitSize + (memoryUnitBitSize - 1)) / memoryUnitBitSize;
+            var d = domain;
+            if (d == Domain.None)
+                d = Domain.SignedInt;
             return new PrimitiveType_v1
             {
-                Domain = domain,
+                Domain = d,
                 ByteSize = byteSize
             };
         }
@@ -417,7 +422,7 @@ namespace Reko.Core.CLanguage
             if (!symbolTable.NamedTypes.TryGetValue(typeDefName.Name, out var type))
             {
                 throw new ApplicationException(string.Format(
-                        "error: type name {0} not defined.",
+                        "Type name {0} not defined.",
                         typeDefName.Name ?? "(null)"));
             }
             byteSize = type.Accept(symbolTable.Sizer);
@@ -430,8 +435,9 @@ namespace Reko.Core.CLanguage
             {
                 if (complexType.Name == null || symbolTable.StructsSeen.TryGetValue(complexType.Name, out var str))
                 {
-                    str = new StructType_v1 {
-                        Name = complexType.Name ?? string.Format("struct_{0}", symbolTable.StructsSeen.Count)
+                    str = new StructType_v1
+                    {
+                        Name = complexType.Name ?? $"struct_{symbolTable.StructsSeen.Count}"
                     };
                     symbolTable.StructsSeen.Add(str.Name, str);
                 }
@@ -476,9 +482,9 @@ namespace Reko.Core.CLanguage
 
         public SerializedType VisitEnum(EnumeratorTypeSpec e)
         {
-            if (e.Tag == null || !symbolTable.EnumsSeen.TryGetValue(e.Tag, out var en))
+            if (e.Tag == null || !symbolTable.EnumsSeen.TryGetValue(e.Tag, out var _))
             {
-                en = new SerializedEnumType {
+                var en = new SerializedEnumType {
                     Name = e.Tag ?? string.Format("enum_{0}", symbolTable.EnumsSeen.Count)
                 };
                 symbolTable.EnumsSeen.Add(en.Name, en);
@@ -496,13 +502,12 @@ namespace Reko.Core.CLanguage
                 }
                 en.Values = listMembers.ToArray();
                 symbolTable.Types.Add(en);
-                en = new SerializedEnumType { Name = en.Name };
+                return new SerializedEnumType { Name = en.Name };
             }
             else
             {
-                en = new SerializedEnumType { Name = e.Tag };
+                return new SerializedEnumType { Name = e.Tag };
             }
-            return en;
         }
 
         private IEnumerable<StructField_v1> ExpandStructFields(IEnumerable<StructDecl> decls)
@@ -514,7 +519,9 @@ namespace Reko.Core.CLanguage
                 foreach (var declarator in decl.FieldDeclarators)
                 {
                     var nt = ntde.GetNameAndType(declarator);
-                    var rawSize = nt.DataType.Accept(symbolTable.Sizer);
+                    var rawSize = (nt.DataType != null)
+                        ? nt.DataType.Accept(symbolTable.Sizer)
+                        : 0;
                     offset = Align(offset, rawSize, 8);     //$BUG: disregards temp. alignment changes. (__declspec(align))
                     yield return new StructField_v1
                     {
@@ -552,12 +559,13 @@ namespace Reko.Core.CLanguage
             return size * ((offset + (size - 1)) / size);
         }
 
-        public SerializedType VisitStorageClass(StorageClassSpec storageClassSpec)
+        public SerializedType? VisitStorageClass(StorageClassSpec storageClassSpec)
         {
             switch (storageClassSpec.Type)
             {
             case CTokenType.__Cdecl:
             case CTokenType.__Fastcall:
+            case CTokenType.__Pascal:
             case CTokenType.__Stdcall:
             case CTokenType.__Thiscall:
                 ApplyCallConvention(storageClassSpec.Type);
@@ -566,12 +574,12 @@ namespace Reko.Core.CLanguage
             return dt;       //$TODO make use of CDECL.
         }
 
-        public SerializedType VisitExtendedDeclspec(ExtendedDeclspec declspec)
+        public SerializedType? VisitExtendedDeclspec(ExtendedDeclspec declspec)
         {
             return null;
         }
 
-        public SerializedType VisitTypeQualifier(TypeQualifier typeQualifier)
+        public SerializedType? VisitTypeQualifier(TypeQualifier typeQualifier)
         {
             return dt;      //$TODO: Ignoring 'const' and 'volatile' for now.
         }

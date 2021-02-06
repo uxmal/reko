@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,15 @@ namespace Reko.Arch.Cray.Ymp
         public static readonly RegisterStorage[] ARegs;
         public static readonly RegisterStorage[] BRegs;
         public static readonly RegisterStorage[] VRegs;
+        public static readonly RegisterStorage[] STRegs;
+
+        public static readonly RegisterStorage sb;
+        public static readonly RegisterStorage sp;
+
+        public static readonly RegisterStorage st;
+        public static readonly RegisterStorage rt;  // Real time clock
+        public static readonly RegisterStorage sm;  // Semaphore register
+        public static readonly RegisterStorage vl;  // Vector length
 
         static Registers()
         {
@@ -42,6 +51,18 @@ namespace Reko.Arch.Cray.Ymp
             // but the Reko object model doesn't support it. This is cleaned
             // up in the rewriter.
             VRegs = factory.RangeOfReg(8, n => $"V{n}", PrimitiveType.Word64);
+
+            // Pseudo-registers
+            sb = factory.Reg64("SB");
+            st = factory.Reg64("ST");
+            sp = factory.Reg32("SP");   // There is no specific YMP stack register.
+
+            // System registers
+            var sysfactory = new StorageFactory(StorageDomain.SystemRegister);
+            STRegs = factory.RangeOfReg64(8, "ST{0}");
+            rt = sysfactory.Reg64("RT");
+            sm = sysfactory.Reg64("SM");
+            vl = sysfactory.Reg64("VL");
         }
     }
 }

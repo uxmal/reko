@@ -10,9 +10,9 @@ Z_9: orig: Z
 O_10: orig: O
 ds:ds
     def:  def ds
-    uses: Mem12[ds:0x0064:word16] = fn0C00_000B(0x0005)
+    uses: Mem12[ds:0x64<16>:word16] = fn0C00_000B(5<16>)
 Mem12: orig: Mem0
-    def:  Mem12[ds:0x0064:word16] = fn0C00_000B(0x0005)
+    def:  Mem12[ds:0x64<16>:word16] = fn0C00_000B(5<16>)
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)
@@ -20,7 +20,7 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem12[ds:0x0064:word16] = fn0C00_000B(0x0005)
+	Mem12[ds:0x64<16>:word16] = fn0C00_000B(5<16>)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -34,13 +34,13 @@ ss:ss
 Mem7: orig: Mem0
 cx:cx
     def:  def cx
-    uses: branch cx <= 0x0001 l0C00_001C
-          ax_22 = SLICE(cx *s fn0C00_000B(cx - 0x0001), word16, 0) (alias)
-          ax_22 = SLICE(cx *s fn0C00_000B(cx - 0x0001), word16, 0) (alias)
+    uses: branch cx <= 1<16> l0C00_001C
+          ax_22 = SLICE(cx *s32 fn0C00_000B(cx - 1<16>), word16, 0) (alias)
+          ax_22 = SLICE(cx *s32 fn0C00_000B(cx - 1<16>), word16, 0) (alias)
 SCZO_9: orig: SCZO
 SZO_10: orig: SZO
 ax_11: orig: ax
-    def:  ax_11 = 0x0001
+    def:  ax_11 = 1<16>
     uses: ax_31 = PHI((ax_22, l0C00_0011), (ax_11, l0C00_001C))
 si_12: orig: si
 cx_13: orig: cx
@@ -53,7 +53,7 @@ SCZO_19: orig: SCZO
 dx_ax_20: orig: dx_ax
 dx_21: orig: dx
 ax_22: orig: ax
-    def:  ax_22 = SLICE(cx *s fn0C00_000B(cx - 0x0001), word16, 0) (alias)
+    def:  ax_22 = SLICE(cx *s32 fn0C00_000B(cx - 1<16>), word16, 0) (alias)
     uses: ax_31 = PHI((ax_22, l0C00_0011), (ax_11, l0C00_001C))
 SCZO_23: orig: SCZO
 dx_30: orig: dx
@@ -89,14 +89,14 @@ fn0C00_000B_entry:
 	def cx
 	// succ:  l0C00_000B
 l0C00_000B:
-	branch cx <= 0x0001 l0C00_001C
+	branch cx <= 1<16> l0C00_001C
 	// succ:  l0C00_0011 l0C00_001C
 l0C00_0011:
-	ax_22 = SLICE(cx *s fn0C00_000B(cx - 0x0001), word16, 0) (alias)
+	ax_22 = SLICE(cx *s32 fn0C00_000B(cx - 1<16>), word16, 0) (alias)
 	goto l0C00_001F
 	// succ:  l0C00_001F
 l0C00_001C:
-	ax_11 = 0x0001
+	ax_11 = 1<16>
 	// succ:  l0C00_001F
 l0C00_001F:
 	ax_31 = PHI((ax_22, l0C00_0011), (ax_11, l0C00_001C))

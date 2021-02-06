@@ -12,17 +12,17 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
 	call fn0C00_000F (retsize: 2;)
-	sp = sp - 2
+	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = di
-	ax = 0x0100
+	ax = 0x100<16>
 	call fn0C00_0014 (retsize: 2;)
-	Mem0[ds:0x0300:word16] = ax
+	Mem0[ds:0x300<16>:word16] = ax
 	di = Mem0[ss:sp:word16]
-	sp = sp + 2
+	sp = sp + 2<i16>
 	// succ:  l0C00_000E_thunk_fn0C00_000F
 l0C00_000E_thunk_fn0C00_000F:
 	call fn0C00_000F (retsize: 0;)
@@ -41,10 +41,10 @@ fn0C00_0000_exit:
 define fn0C00_000F
 fn0C00_000F_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_000F
 l0C00_000F:
-	Mem0[ds:di:word16] = 0x0000
+	Mem0[ds:di:word16] = 0<16>
 	return
 	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:
@@ -62,13 +62,13 @@ fn0C00_000F_exit:
 define fn0C00_0014
 fn0C00_0014_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0014
 l0C00_0014:
 	di = di ^ di
 	SZO = cond(di)
 	C = false
-	ax = ax - 0x0001
+	ax = ax - 1<16>
 	SZO = cond(ax)
 	return
 	// succ:  fn0C00_0014_exit

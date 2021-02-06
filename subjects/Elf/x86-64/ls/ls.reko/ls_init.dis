@@ -1,0 +1,17 @@
+void _init()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO rax Top
+// Preserved: rsp
+_init_entry:
+l0000000000402168:
+	branch __gmon_start__ == 0<64> l000000000040217D
+l0000000000402178:
+	call __gmon_start__ (retsize: 8;)
+l000000000040217D:
+	return
+_init_exit:
+
+

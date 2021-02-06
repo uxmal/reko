@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ namespace Reko.UserInterfaces.WindowsForms
     /// <summary>
     /// Used to render TextSpans for use in the disassembly viewer.
     /// </summary>
-    public class DisassemblyFormatter : MachineInstructionWriter 
+    public class DisassemblyFormatter : MachineInstructionRenderer 
     {
         private readonly Program program;
         private readonly IProcessorArchitecture arch;
@@ -38,6 +38,8 @@ namespace Reko.UserInterfaces.WindowsForms
         private StringBuilder sb = new StringBuilder();
         private List<TextSpan> line;
         private List<string> annotations;
+        private string mnemonicStyle;
+        private Address addrInstr;
 
         public DisassemblyFormatter(Program program, IProcessorArchitecture arch, MachineInstruction instr, List<TextSpan> line)
         {
@@ -45,16 +47,35 @@ namespace Reko.UserInterfaces.WindowsForms
             this.arch = arch;
             this.instr = instr;
             this.line = line;
-            this.Platform = program.Platform;
             this.annotations = new List<string>();
+            this.mnemonicStyle = Gui.UiStyles.DisassemblerOpcode;
         }
 
-        public IPlatform Platform { get; private set; }
-        public Address Address { get; set; }
+        public Address Address => addrInstr;
+
+        public void BeginInstruction(Address addr)
+        {
+            this.addrInstr = addr;
+        }
+
+        public void EndInstruction()
+        {
+        }
+
+        public void BeginOperand()
+        {
+
+        }
+        public void EndOperand()
+        {
+
+        }
 
         public void WriteMnemonic(string sMnemonic)
         {
-            line.Add(new DisassemblyTextModel.InstructionTextSpan(instr, sMnemonic + " ", Gui.UiStyles.DisassemblerOpcode));
+            TerminateSpan();
+            line.Add(new DisassemblyTextModel.InstructionTextSpan(instr, sMnemonic + " ", this.mnemonicStyle));
+            TerminateSpan();
         }
 
         public void WriteAddress(string formattedAddress, Address addr)
@@ -80,6 +101,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public void Tab()
         {
             TerminateSpan();
+            this.mnemonicStyle = Gui.UiStyles.DisassemblerOpcodeColor;
         }
 
         private void TerminateSpan()

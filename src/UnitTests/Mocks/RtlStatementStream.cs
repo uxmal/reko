@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Mocks
         public RtlStatementStream(uint address, IStorageBinder binder)
         {
             this.linAddress = address;
-            this.arch = new FakeArchitecture();
+            this.arch = new FakeArchitecture(new ServiceContainer());
             this.binder = binder;
             this.stms = new List<RtlInstructionCluster>();   
         }
@@ -102,9 +103,9 @@ namespace Reko.UnitTests.Mocks
             return Emit(ret);
         }
 
-        public RtlInstruction SideEffect(Expression exp)
+        public RtlInstruction SideEffect(Expression exp, InstrClass iclass = InstrClass.Linear)
         {
-            var side = new RtlSideEffect(exp);
+            var side = new RtlSideEffect(exp, iclass);
             return Emit(side);
         }
     }

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 
 namespace Reko.ImageLoaders.Hunk
 {
@@ -68,7 +69,7 @@ namespace Reko.ImageLoaders.Hunk
             this.firstCodeHunk = parse.FindFirstCodeHunk();
             var platform = cfgSvc.GetEnvironment("amigaOS").Load(Services, arch);
             var imageMap = platform.CreateAbsoluteMemoryMap();
-            var mem = new MemoryArea(addrLoad, RelocateBytes(addrLoad));
+            var mem = new ByteMemoryArea(addrLoad, RelocateBytes(addrLoad));
             return new Program(
                 new SegmentMap(
                     mem.BaseAddress,

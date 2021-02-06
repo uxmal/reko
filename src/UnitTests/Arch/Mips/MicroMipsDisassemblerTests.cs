@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,16 @@
  */
 #endregion
 
+#pragma warning disable IDE1006
+
 using NUnit.Framework;
 using Reko.Arch.Mips;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +42,7 @@ namespace Reko.UnitTests.Arch.Mips
         [SetUp]
         public void Setup()
         {
-            this.arch = new MipsBe32Architecture("mips-be-micro");
+            this.arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-micro", new Dictionary<string, object>());
         }
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
@@ -58,7 +62,7 @@ namespace Reko.UnitTests.Arch.Mips
 
         private void Given_Mips64Architecture()
         {
-            this.arch = new MipsBe64Architecture("mips-be-micro");
+            this.arch = new MipsBe64Architecture(new ServiceContainer(), "mips-be-micro", new Dictionary<string, object>());
         }
 
         [Test]
@@ -67,7 +71,7 @@ namespace Reko.UnitTests.Arch.Mips
             var ab = new byte[1000];
             var rnd = new Random(0x4711);
             rnd.NextBytes(ab);
-            var mem = new MemoryArea(Address.Ptr32(0x00100000), ab);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), ab);
             var rdr = new BeImageReader(mem, 0);
             var dasm = new MicroMipsDisassembler(arch, rdr);
             foreach (var instr in dasm)

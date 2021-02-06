@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,16 +31,18 @@ namespace Reko.Arch.Mips
 
         public override int MnemonicAsInteger => (int)Mnemonic;
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        public override string MnemonicAsString => Mnemonic.ToString();
+
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            WriteMnemonic(writer);
-            RenderOperands(writer, options);
+            WriteMnemonic(renderer);
+            RenderOperands(renderer, options);
         }
 
-        private void WriteMnemonic(MachineInstructionWriter writer)
+        private void WriteMnemonic(MachineInstructionRenderer renderer)
         {
             var name = this.Mnemonic.ToString().Replace('_', '.');
-            writer.WriteMnemonic(name);
+            renderer.WriteMnemonic(name);
         }
     }
 }

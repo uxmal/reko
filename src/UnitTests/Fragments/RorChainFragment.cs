@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,12 +23,14 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Fragments
 {
     public class RorChainFragment : ProcedureBuilder
     {
-        public RorChainFragment() : base(new Z80ProcessorArchitecture("z80")) { }
+        public RorChainFragment() : base(new Z80ProcessorArchitecture(new ServiceContainer(), "z80", new Dictionary<string, object>())) { }
 
         protected override void BuildBody()
         {
@@ -41,8 +43,9 @@ namespace Reko.UnitTests.Fragments
             var Z = Frame.EnsureFlagGroup(Architecture.GetFlagGroup("Z"));
             var SZC = Frame.EnsureFlagGroup(Architecture.GetFlagGroup("SZC"));
             var SZP = Frame.EnsureFlagGroup(Architecture.GetFlagGroup("SZP"));
-            var rorc = new PseudoProcedure(
-                PseudoProcedure.RorC,
+            var rorc = new IntrinsicProcedure(
+                IntrinsicProcedure.RorC,
+                true,
                 PrimitiveType.Byte,
                 3);
             Assign(sp, Frame.FramePointer);

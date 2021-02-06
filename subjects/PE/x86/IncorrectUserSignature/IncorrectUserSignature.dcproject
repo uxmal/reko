@@ -70,14 +70,26 @@
         <address>00401360</address>
         <decompile>false</decompile>
       </procedure>
+      <procedure name="gbl_nested_structs_test14">
+        <characteristics />
+        <address>00401380</address>
+        <decompile>false</decompile>
+      </procedure>
+      <procedure name="double_return_test15">
+        <characteristics />
+        <address>004013B0</address>
+        <CSignature>double double_return_test15(double d)</CSignature>
+        <decompile>false</decompile>
+      </procedure>
       <procedure name="Win32CrtStartup">
         <characteristics />
-        <address>00401623</address>
+        <address>0040165F</address>
         <decompile>false</decompile>
       </procedure>
       <annotation addr="00401138">Incorrect user-defined signature
 "void sum(int, int)" is set instead of "int sum(int, int)"
 Reko should emit code which gives chance for user to find this mistake</annotation>
+      <outputFilePolicy>Segment</outputFilePolicy>
     </user>
   </input>
   <metadata>

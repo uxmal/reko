@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,8 @@ namespace Reko.Arch.Pdp11
     {
         private void RewriteStcdi()
         {
-            var src = m.Cast(PrimitiveType.Int32, RewriteSrc(instr.Operands[0]));
+            var src = RewriteSrc(instr.Operands[0]);
+            src = m.Convert(src, src.DataType, PrimitiveType.Int32);
             var dst = RewriteDst(instr.Operands[1], src, s => s);
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.CF, FlagM.VF, 0);
         }

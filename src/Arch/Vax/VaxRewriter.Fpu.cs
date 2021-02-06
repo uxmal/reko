@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Reko.Arch.Vax
             var nzv = FlagGroup(FlagM.NZV);
             m.Assign(
                 nzv,
-                host.PseudoProcedure(fnname, nzv.DataType, mulr, mulrx, muld,
+                host.Intrinsic(fnname, false, nzv.DataType, mulr, mulrx, muld,
                 m.Out(PrimitiveType.Word32, integral),
                 m.Out(floatType, frac)));
             m.Assign(FlagGroup(FlagM.CF), Constant.False());

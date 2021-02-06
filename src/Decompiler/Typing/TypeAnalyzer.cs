@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,9 @@ using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace Reko.Typing
 {
@@ -40,18 +43,18 @@ namespace Reko.Typing
 	{
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(TypeAnalyzer), "Traces the progress of the type analysis") { Level = TraceLevel.Verbose };
 
-        private DecompilerEventListener eventListener;
+        private readonly DecompilerEventListener eventListener;
 
-		private TypeFactory factory;
-		private TypeStore store;
-		private ExpressionNormalizer aen;
-		private EquivalenceClassBuilder eqb;
-        private TypeCollector tyco;
+		private TypeFactory? factory;
+		private TypeStore? store;
+		private ExpressionNormalizer? aen;
+		private EquivalenceClassBuilder? eqb;
+        private TypeCollector? tyco;
         //private DerivedPointerAnalysis dpa;
-        private TypeVariableReplacer tvr;
-		private TypeTransformer trans;
-		private ComplexTypeNamer ctn;
-		private TypedExpressionRewriter ter;
+        private TypeVariableReplacer? tvr;
+		private TypeTransformer? trans;
+		private ComplexTypeNamer? ctn;
+		private TypedExpressionRewriter? ter;
 
 		public TypeAnalyzer(DecompilerEventListener eventListener)
 		{
@@ -84,7 +87,7 @@ namespace Reko.Typing
             ctn = new ComplexTypeNamer();
             ter = new TypedExpressionRewriter(program, eventListener);
             
-            // RestrictProcedures(program, 0, 60, true); // Re-enable this for debugging
+            RestrictProcedures(program, 0, 0, false);
             Time("Normalizing expressions", () => aen.Transform(program));
             Time("Building equivalence classes", () => eqb.Build(program));
             Time("Collecting data types", tyco.CollectTypes);
@@ -95,42 +98,50 @@ namespace Reko.Typing
             eventListener.ShowStatus("Transforming datatypes.");
             Time("Replace primitive types", () =>
             {
-                var ppr = new PtrPrimitiveReplacer(factory, store, program);
-                ppr.ReplaceAll(eventListener);
+                var ppr = new PtrPrimitiveReplacer(factory, store, program, eventListener);
+                ppr.ReplaceAll();
             });
 
 			Time("Transforming data types", trans.Transform);
 			Time("Renaming data types", () => ctn.RenameAllTypes(store));
-			Time("Rewriting program with type information", () => ter.RewriteProgram(program));
+            Time("Rewriting program with type information", () => ter.RewriteProgram(program));
 		}
 
         private void Time(string message, Action action)
         {
             var timer = new Stopwatch();
-            DebugEx.Inform(trace, "== {0}: {1} ======", nameof(TypeAnalyzer), message);
+            trace.Inform("== {0}: {1} ======", nameof(TypeAnalyzer), message);
             timer.Start();
             action();
             timer.Stop();
-            DebugEx.Inform(trace, "   {0} msec", timer.Elapsed);
+            trace.Inform("   {0} msec", timer.Elapsed);
         }
+
         /// <summary>
         /// $DEBUG: for debugging only, only performs type analysis on the 
-        /// <param name="count"/> procedures starting at
-        /// procedure start.
+        /// procedures starting at index <paramref name="start" /> and ending at 
+        /// index <paramref name="end" />.
         /// </summary>
         [Conditional("DEBUG")]
-        private void RestrictProcedures(Program program, int start, int count, bool dumpProcedures)
+        private void RestrictProcedures(Program program, int start, int end, bool dumpProcedures)
         {
-            count = Math.Min(count, program.Procedures.Values.Count-start);
-            Procedure[] procs = new Procedure[count];
-            for (int i = 0; i < count; ++i)
+            if (program.DebugProcedureRange.Item1 != 0 || program.DebugProcedureRange.Item2 != 0)
             {
-                procs[i] = program.Procedures.Values[i + start];
+                (start, end) = program.DebugProcedureRange;
             }
+            if (start == 0 && end == 0)
+                return;
+
+            end = end != 0 ? end : program.Procedures.Count;
+            end = Math.Min(program.Procedures.Count, end);
+            int count = Math.Max(end - start, 0);
+            eventListener.Info(new NullCodeLocation("TypeAnalysis"), "Filtering procedures to {0}:{1}", start, end);
+            var procs = program.Procedures.Values.Skip(start).Take(count).ToArray();
+            
             program.Procedures.Clear();
-            for (uint i = 0; i < procs.Length; ++i)
+            for (int i = 0; i < procs.Length; ++i)
             {
-                program.Procedures[Address.Ptr32(i)] = procs[i];
+                program.Procedures[procs[i].EntryAddress] = procs[i];
                 if (dumpProcedures)
                 {
                     procs[i].Dump(true);

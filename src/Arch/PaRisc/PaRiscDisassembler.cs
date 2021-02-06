@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -33,6 +35,7 @@ using System.Threading.Tasks;
 namespace Reko.Arch.PaRisc
 {
     using Decoder = Decoder<PaRiscDisassembler, Mnemonic, PaRiscInstruction>;
+#pragma warning disable IDE1006
 
     public class PaRiscDisassembler : DisassemblerBase<PaRiscInstruction, Mnemonic>
     {
@@ -115,6 +118,13 @@ namespace Reko.Arch.PaRisc
             return invalid.Decode(0, this);
         }
 
+        public override PaRiscInstruction NotYetImplemented(string message)
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("PaRiscDis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
+        }
+
         /// <summary>
         /// Create a Reko bitfield using PA Risc bit position and bit length.
         /// </summary>
@@ -150,7 +160,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var v = field.Read(u);
-                Decoder.DumpMaskedInstruction(u, field.Mask << field.Position, "Unsigned immediate");
+                Decoder.DumpMaskedInstruction(32, u, field.Mask << field.Position, "Unsigned immediate");
                 d.ops.Add(new ImmediateOperand(Constant.Create(dt, v)));
                 return true;
             };
@@ -360,11 +370,11 @@ namespace Reko.Arch.PaRisc
                 return true;
             };
         }
-        private static Mutator<PaRiscDisassembler> fmo6 = fmo(6);
-        private static Mutator<PaRiscDisassembler> fmo11 = fmo(11);
-        private static Mutator<PaRiscDisassembler> fmo16 = fmo(16);
-        private static Mutator<PaRiscDisassembler> fmo21 = fmo(21);
-        private static Mutator<PaRiscDisassembler> fmo27 = fmo(27);
+        private static readonly Mutator<PaRiscDisassembler> fmo6 = fmo(6);
+        private static readonly Mutator<PaRiscDisassembler> fmo11 = fmo(11);
+        private static readonly Mutator<PaRiscDisassembler> fmo16 = fmo(16);
+        private static readonly Mutator<PaRiscDisassembler> fmo21 = fmo(21);
+        private static readonly Mutator<PaRiscDisassembler> fmo27 = fmo(27);
 
 
         /// <summary>
@@ -420,7 +430,7 @@ namespace Reko.Arch.PaRisc
             var field = BeField(bitPos, bitLen);
             return (u, d) =>
             {
-                Decoder.DumpMaskedInstruction(u, field.Mask << field.Position, "conditional field");
+                Decoder.DumpMaskedInstruction(32, u, field.Mask << field.Position, "conditional field");
                 var iCond = field.Read(u);
                 var cond = conds[iCond];
                 if (cond == null)
@@ -432,8 +442,9 @@ namespace Reko.Arch.PaRisc
                 return true;
             };
         }
+
         // Table D-3 in PA-RISC 2.0 Manual
-        private static Mutator<PaRiscDisassembler> cf16_cmpsub_32 = cf(16, 4, new[]
+        private static readonly Mutator<PaRiscDisassembler> cf16_cmpsub_32 = cf(16, 4, new[]
         {
             ConditionOperand.Never,
             ConditionOperand.Tr,
@@ -455,8 +466,9 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Odd,
             ConditionOperand.Even,
         });
+
         // Table D-4 in PA-RISC 2.0 Manual
-        private static Mutator<PaRiscDisassembler> cf16_cmpsub_64 = cf(16, 4, new[]
+        private static readonly Mutator<PaRiscDisassembler> cf16_cmpsub_64 = cf(16, 4, new[]
         {
             ConditionOperand.Never64,
             ConditionOperand.Tr64,
@@ -479,7 +491,7 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Even64,
         });
 
-        private static Mutator<PaRiscDisassembler> cf16_add_32 = cf(16, 4, new[]
+        private static readonly Mutator<PaRiscDisassembler> cf16_add_32 = cf(16, 4, new[]
         {
             ConditionOperand.Never,
             ConditionOperand.Tr,
@@ -501,7 +513,8 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Odd,
             ConditionOperand.Even,
         });
-        private static Mutator<PaRiscDisassembler> cf16_add_64 = cf(16, 4, new[]
+
+        private readonly static Mutator<PaRiscDisassembler> cf16_add_64 = cf(16, 4, new[]
         {
             ConditionOperand.Never64,
             ConditionOperand.Tr64,
@@ -523,7 +536,8 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Odd64,
             ConditionOperand.Even64,
         });
-        private static Mutator<PaRiscDisassembler> cf16_log_32 = cf(16, 4, new[]
+
+        private readonly static Mutator<PaRiscDisassembler> cf16_log_32 = cf(16, 4, new[]
         {
             ConditionOperand.Never,
             ConditionOperand.Tr,
@@ -545,7 +559,8 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Odd,
             ConditionOperand.Even,
         });
-        private static Mutator<PaRiscDisassembler> cf16_log_64 = cf(16, 4, new[]
+
+        private static readonly Mutator<PaRiscDisassembler> cf16_log_64 = cf(16, 4, new[]
         {
             ConditionOperand.Never64,
             ConditionOperand.Tr64,
@@ -596,7 +611,7 @@ namespace Reko.Arch.PaRisc
             };
         }
 
-        private static Mutator<PaRiscDisassembler> cf16_cmp32_t = cf(16, 3, new[]
+        private static readonly Mutator<PaRiscDisassembler> cf16_cmp32_t = cf(16, 3, new[]
         {
             ConditionOperand.Never,
             ConditionOperand.Eq,
@@ -608,7 +623,8 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Sv,
             ConditionOperand.Odd,
         });
-        private static Mutator<PaRiscDisassembler> cf16_cmp32_f = cf(16, 3, new[]
+
+        private static readonly Mutator<PaRiscDisassembler> cf16_cmp32_f = cf(16, 3, new[]
         {
             ConditionOperand.Tr,
             ConditionOperand.Ne,
@@ -620,8 +636,9 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Nsv,
             ConditionOperand.Even,
         });
-        private static Mutator<PaRiscDisassembler> cf16_cmp64_t = cf(16, 3, new[]
-{
+
+        private static readonly Mutator<PaRiscDisassembler> cf16_cmp64_t = cf(16, 3, new[]
+        {
             ConditionOperand.Never,
             ConditionOperand.Eq64,
             ConditionOperand.Lt64,
@@ -632,7 +649,8 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Sv64,
             ConditionOperand.Odd64,
         });
-        private static Mutator<PaRiscDisassembler> cf16_cmp64_f = cf(16, 3, new[]
+
+        private static readonly Mutator<PaRiscDisassembler> cf16_cmp64_f = cf(16, 3, new[]
         {
             ConditionOperand.Tr64,
             ConditionOperand.Ne64,
@@ -645,7 +663,7 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Even64,
         });
 
-        private static Mutator<PaRiscDisassembler> cf16_shext = cf(16, 3, new[]
+        private static readonly Mutator<PaRiscDisassembler> cf16_shext = cf(16, 3, new[]
         {
             ConditionOperand.Never,
             ConditionOperand.Eq,
@@ -658,7 +676,7 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Even,
         });
 
-        private static Mutator<PaRiscDisassembler> cf16_add_3 = cf(16, 3, new[]
+        private static readonly Mutator<PaRiscDisassembler> cf16_add_3 = cf(16, 3, new[]
         {
             ConditionOperand.Never,
             ConditionOperand.Eq,
@@ -670,7 +688,7 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Odd
         });
 
-        private static Mutator<PaRiscDisassembler> cf16_add_3_neg = cf(16, 3, new[]
+        private static readonly Mutator<PaRiscDisassembler> cf16_add_3_neg = cf(16, 3, new[]
         {
             ConditionOperand.Tr,
             ConditionOperand.Ne,
@@ -682,7 +700,7 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Even
         });
 
-        private static Mutator<PaRiscDisassembler> cf16_add_3_64 = cf(16, 3, new[]
+        private static readonly Mutator<PaRiscDisassembler> cf16_add_3_64 = cf(16, 3, new[]
         {
             ConditionOperand.Never,
             ConditionOperand.Eq,   
@@ -694,7 +712,7 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Le64, 
         });
 
-        private static Mutator<PaRiscDisassembler> cf16_add_3_neg_64 = cf(16, 3, new[]
+        private static readonly Mutator<PaRiscDisassembler> cf16_add_3_neg_64 = cf(16, 3, new[]
         {
             ConditionOperand.Tr,
             ConditionOperand.Ne,
@@ -1086,7 +1104,7 @@ namespace Reko.Arch.PaRisc
         {
             return (uint uInstr, PaRiscDisassembler dasm) =>
             {
-                Decoder.DumpMaskedInstruction(uInstr, field.Mask << field.Position, "FP format completer");
+                Decoder.DumpMaskedInstruction(32, uInstr, field.Mask << field.Position, "FP format completer");
                 var uFormat = field.Read(uInstr);
                 dasm.fpFormat = fpFormats[uFormat];
                 return dasm.fpFormat != FpFormat.None;
@@ -1100,7 +1118,7 @@ namespace Reko.Arch.PaRisc
         {
             return (uint uInstr, PaRiscDisassembler dasm) =>
             {
-                Decoder.DumpMaskedInstruction(uInstr, field.Mask << field.Position, "FP dst format completer");
+                Decoder.DumpMaskedInstruction(32, uInstr, field.Mask << field.Position, "FP dst format completer");
                 var uFormat = field.Read(uInstr);
                 dasm.fpFormatDst = fpFormats[uFormat];
                 return dasm.fpFormatDst != FpFormat.None;
@@ -1302,7 +1320,7 @@ namespace Reko.Arch.PaRisc
 
             public override PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm)
             {
-                DumpMaskedInstruction(uInstr, bitfield.Mask << bitfield.Position, "");
+                DumpMaskedInstruction(32, uInstr, bitfield.Mask << bitfield.Position, "");
                 uint code = bitfield.Read(uInstr);
                 return decoders[code].Decode(uInstr, dasm);
             }
@@ -1325,7 +1343,7 @@ namespace Reko.Arch.PaRisc
 
             public override PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm)
             {
-                DumpMaskedInstruction(uInstr, field.Mask << field.Position, "");
+                DumpMaskedInstruction(32, uInstr, field.Mask << field.Position, "");
                 var u = field.Read(uInstr);
                 var cond = predicate(u);
                 var decoder = cond ? trueDecoder : falseDecoder;
@@ -1346,24 +1364,7 @@ namespace Reko.Arch.PaRisc
 
             public override PaRiscInstruction Decode(uint uInstr, PaRiscDisassembler dasm)
             {
-                dasm.EmitUnitTest(
-                    dasm.arch.Name,
-                    uInstr.ToString("X8"),
-                    message,
-                    "PaRiscDis",
-                    dasm.addr,
-                    Console =>
-                    {
-                        Console.WriteLine($"    AssertCode(\"@@@\", 0x{uInstr:X8});");
-                        Console.WriteLine();
-                    });
-                return new PaRiscInstruction
-                {
-                    InstructionClass = 0,
-                    Coprocessor = -1,
-                    Mnemonic = mnemonic,
-                    Operands = new MachineOperand[0]
-                };
+                return dasm.NotYetImplemented(message);
             }
 
             [Conditional("DEBUG")]

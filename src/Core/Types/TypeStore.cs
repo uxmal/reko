@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Core.Types
 {
@@ -43,23 +44,30 @@ namespace Reko.Core.Types
 
     public class TypeStore : ITypeStore
     {
-        private SortedList<int, EquivalenceClass> usedClasses;
-        private Dictionary<TypeVariable, Expression> tvSources;
+        private readonly SortedList<int, EquivalenceClass> usedClasses;
+        private readonly Dictionary<TypeVariable, Expression> tvSources;
 
         public TypeStore()
         {
             TypeVariables = new List<TypeVariable>();
             usedClasses = new SortedList<int, EquivalenceClass>();
             tvSources = new Dictionary<TypeVariable, Expression>();
+            SegmentTypes = new Dictionary<ImageSegment, StructureType>();
         }
 
+        /// <summary>
+        /// All the <see cref="TypeVariable"/>s of the program.
+        /// </summary>
         public List<TypeVariable> TypeVariables { get; private set; }
+
+        public Dictionary<ImageSegment, StructureType> SegmentTypes { get; private set; }
 
         public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Expression e)
         {
             return EnsureExpressionTypeVariable(factory, e, null);
         }
 
+        //$TODO: pass dt and dtOriginal
         public TypeVariable CreateTypeVariable(TypeFactory factory)
         {
             TypeVariable tv = factory.CreateTypeVariable();
@@ -69,13 +77,13 @@ namespace Reko.Core.Types
             return tv;
         }
 
-        public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Expression e, string name)
+        public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Expression e, string? name)
         {
             if (e != null && e.TypeVariable != null)
                 return e.TypeVariable;
 
             TypeVariable tv = name != null ? factory.CreateTypeVariable(name) : factory.CreateTypeVariable();
-            AddDebugSource(tv, e);
+            AddDebugSource(tv, e!);
             tv.Class = new EquivalenceClass(tv);
             if (e != null)
                 e.TypeVariable = tv;
@@ -84,7 +92,7 @@ namespace Reko.Core.Types
             return tv;
         }
 
-        public void SetTypeVariableExpression(TypeVariable typeVariable, BinaryExpression binExp)
+        public void SetTypeVariableExpression(TypeVariable typeVariable, Expression binExp)
         {
             tvSources[typeVariable] = binExp;
         }
@@ -105,13 +113,15 @@ namespace Reko.Core.Types
                 DataType dtOld = c.DataType;
                 if (dtOld != null)
                 {
-                    dt = u.Unify(dt, dtOld);
+                    dt = u.Unify(dt, dtOld)!;
+                    if (tv.Class.ClassMembers.Count == 4)
+                        tv.ToString();
                 }
                 else if (dt != null)
                 {
                     dt = dt.Clone();        // why clone???
                 }
-                c.DataType = dt;
+                c.DataType = dt!;
             }
         }
 
@@ -128,10 +138,17 @@ namespace Reko.Core.Types
             Debug.WriteLine(sw.ToString());
         }
 
-        public Expression ExpressionOf(TypeVariable tv)
+        [Conditional("DEBUG")]
+        public void Dump(string dir, string filename)
         {
-            Expression e;
-            if (tvSources.TryGetValue(tv, out e))
+            using var w = new StreamWriter(Path.Combine(dir, filename));
+            Write(w);
+            Debug.WriteLine(w.ToString());
+        }
+
+        public Expression? ExpressionOf(TypeVariable tv)
+        {
+            if (tvSources.TryGetValue(tv, out Expression e))
                 return e;
             else
                 return null;
@@ -195,8 +212,7 @@ namespace Reko.Core.Types
 
         public void WriteExpressionOf(TypeVariable tvMember, Formatter writer)
         {
-            Expression e;
-            if (tvSources.TryGetValue(tvMember, out e) && e != null)
+            if (tvSources.TryGetValue(tvMember, out Expression e) && e != null)
             {
                 writer.Write(" (in {0}", e);
                 if (e.DataType != null)
@@ -238,12 +254,12 @@ namespace Reko.Core.Types
 
         public DataType GetDataTypeOf(Expression tField)
         {
-            return tField.TypeVariable.DataType;
+            return tField.TypeVariable!.DataType;
         }
 
         public void SetDataTypeOf(Expression expr, DataType dt)
         {
-            expr.TypeVariable.DataType = dt;
+            expr.TypeVariable!.DataType = dt;
             expr.TypeVariable.OriginalDataType = dt;
         }
 
@@ -252,8 +268,7 @@ namespace Reko.Core.Types
             foreach(var e in tvSources.Values)
             {
                 e.TypeVariable = null;
-                ProcedureConstant pc = e as ProcedureConstant;
-                if (pc != null)
+                if (e is ProcedureConstant pc)
                     pc.Procedure.Signature.TypeVariable = null;
             }
             TypeVariables.Clear();

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,27 +26,28 @@ using System.Text;
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 
 namespace Reko.Arch.Mos6502
 {
-    public class Assembler : Reko.Core.Assemblers.Assembler
+#pragma warning disable IDE1006
+
+    public class Assembler : IAssembler
     {
         private static readonly Dictionary<Mnemonic, InstrOpcodes> instrOpcodes;
 
-        private ServiceContainer sc;
-        private Mos6502Architecture arch;
-        private IPlatform platform;
-        private Address addrBase;
-        private Core.Assemblers.IEmitter m;
-        private List<ImageSymbol> symbols;
-        private SymbolTable symtab;
+        private readonly IServiceProvider services;
+        private readonly Mos6502Architecture arch;
+        private readonly Address addrBase;
+        private readonly IEmitter m;
+        private readonly List<ImageSymbol> symbols;
+        private readonly SymbolTable symtab;
 
-        public Assembler(ServiceContainer sc, IPlatform platform, Address addrBase, List<ImageSymbol> symbols)
+        public Assembler(IServiceProvider services, Mos6502Architecture arch, Address addrBase, List<ImageSymbol> symbols)
         {
-            this.sc = sc;
-            this.arch = new Mos6502Architecture("mos6502");
-            this.platform = platform;
+            this.services = services;
+            this.arch = arch;
             this.addrBase = addrBase;
             this.symbols = symbols;
             this.m = new Core.Assemblers.Emitter();
@@ -55,12 +56,15 @@ namespace Reko.Arch.Mos6502
 
         public Program GetImage()
         {
-            var mem = new MemoryArea(addrBase, m.GetBytes());
+            var mem = new ByteMemoryArea(addrBase, m.GetBytes());
             var seg = new ImageSegment("code", mem, AccessMode.ReadWriteExecute);
-            var program = new Program(
-                new SegmentMap(addrBase, seg),
-                arch,
-                platform);
+            var map = new SegmentMap(addrBase, seg);
+            var program = new Program
+            {
+                SegmentMap = map,
+                ImageMap = map.CreateImageMap(),
+                Architecture = arch,
+            };
             return program;
         }
 
@@ -86,25 +90,25 @@ namespace Reko.Arch.Mos6502
                 if (ops.Imm == 0)
                     break;
                 m.EmitByte(ops.Imm);
-                m.EmitByte(op.Offset.ToByte());
+                m.EmitByte(op.Offset!.ToByte());
                 return;
             case AddressMode.ZeroPage:
                 if (ops.Zp == 0)
                     break;
                 m.EmitByte(ops.Zp);
-                m.EmitByte(op.Offset.ToByte());
+                m.EmitByte(op.Offset!.ToByte());
                 return;
             case AddressMode.ZeroPageX:
                 if (ops.ZpX == 0)
                     break;
                 m.EmitByte(ops.ZpX);
-                m.EmitByte(op.Offset.ToByte());
+                m.EmitByte(op.Offset!.ToByte());
                 return;
             case AddressMode.AbsoluteY:
                 if (ops.AbsY == 0)
                     break;
                 m.EmitByte(ops.AbsY);
-                m.EmitLeUInt16(op.Offset.ToUInt16());
+                m.EmitLeUInt16(op.Offset!.ToUInt16());
                 return;
             }
             throw new NotSupportedException($"Instruction {mnemonic} does not support address mode {op.Mode}.");
@@ -116,11 +120,11 @@ namespace Reko.Arch.Mos6502
             int offBytes = dt.Size;
             switch (offBytes)
             {
-            case 1: m.EmitByte(-(m.Length + 1)); break;
-            case 2: m.EmitLeUInt16(-(m.Length + 2)); break;
+            case 1: m.EmitByte(-(m.Position + 1)); break;
+            case 2: m.EmitLeUInt16(-(m.Position + 2)); break;
             }
             var sym = symtab.CreateSymbol(target);
-            sym.ReferToLe(m.Length - offBytes, dt, m);
+            sym.ReferToLe(m.Position - offBytes, dt, m);
             return sym;
         }
 
@@ -163,7 +167,7 @@ namespace Reko.Arch.Mos6502
             m.EmitByte(0x4C);
             m.EmitLeUInt16(addrBase.ToUInt16());  // 6502 jmps are absolute.
             var sym = symtab.CreateSymbol(target);
-            sym.ReferToLe(m.Length - 2, PrimitiveType.Word16, m);
+            sym.ReferToLe(m.Position - 2, PrimitiveType.Word16, m);
         }
 
         public void Nop()
@@ -286,15 +290,26 @@ namespace Reko.Arch.Mos6502
             throw new NotImplementedException();
         }
 
+        public int AssembleAt(Program program, Address addr, TextReader asm)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int AssembleFragmentAt(Program program, Address addr, string asm)
+        {
+            throw new NotImplementedException();
+        }
 
 
         public class ParsedOperand
         {
             public Operand Operand;
+            public Symbol? Symbol;
 
-            public ParsedOperand(Operand op, Symbol sym)
+            public ParsedOperand(Operand op, Symbol? sym)
             {
                 this.Operand = op;
+                this.Symbol = sym;
             }
         }
 

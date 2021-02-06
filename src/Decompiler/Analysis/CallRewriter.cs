@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,7 +80,7 @@ namespace Reko.Analysis
                     return;
                 var proc = sst.SsaState.Procedure;
 				ProcedureFlow flow = crw.mpprocflow[proc];
-                flow.Dump(platform.Architecture);
+                flow.Dump(proc.Architecture);
 				crw.EnsureSignature(sst.SsaState, proc.Frame, flow);
 			}
 
@@ -169,7 +169,7 @@ namespace Reko.Analysis
 			}
 
             var liveOut = allLiveOut
-                .Select(de => (Key:de.Key as RegisterStorage, Value:de.Value))
+                .Select(de => (Key:de.Key as RegisterStorage, de.Value))
                 .Where(de =>
                 {
                     return de.Key != null 
@@ -177,9 +177,9 @@ namespace Reko.Analysis
                 })
                 .ToDictionary(
                      de => platform.Architecture.GetSubregister(
-                        de.Key,
+                        de.Key!,
                         de.Value.Lsb,
-                        de.Value.Extent) ?? de.Key,
+                        de.Value.Extent)! ?? de.Key!,
                     de => de.Value);
 
             // Sort the names in a stable way to avoid regression tests failing.
@@ -223,27 +223,27 @@ namespace Reko.Analysis
 
             var seqs = uses.Select(u => u.Storage as SequenceStorage)
                 .Where(s => s != null)
-                .OrderBy(s => s.Name);
+                .OrderBy(s => s!.Name);
             foreach (var seq in seqs)
             {
-                sb.AddSequenceArgument(seq);
+                sb.AddSequenceArgument(seq!);
             }
 
             //$TODO: sort these by some ABI order?
             var regs = uses.Select(u => u.Storage as RegisterStorage)
                 .Where(r => r != null && !implicitRegs.Contains(r))
-                .OrderBy(r => r.Number);
+                .OrderBy(r => r!.Number);
             foreach (var reg in regs)
             {
-                sb.AddRegisterArgument(reg);
+                sb.AddRegisterArgument(reg!);
             }
 
             var stargs = uses.Select(u => u.Storage as StackStorage)
                 .Where(s => s != null)
-                .OrderBy(r => r.StackOffset);
+                .OrderBy(r => r!.StackOffset);
             foreach (var arg in stargs)
             {
-                var id = frame.EnsureIdentifier(arg);
+                var id = frame.EnsureIdentifier(arg!);
                 sb.AddInParam(id);
             }
 
@@ -300,11 +300,11 @@ namespace Reko.Analysis
             return mayuse
                 .Select(kv => (stg: kv.Key as StackStorage, range: kv.Value))
                 .Where(item => item.stg != null)
-                .OrderBy(item => item.stg.StackOffset)
+                .OrderBy(item => item.stg!.StackOffset)
                 .Select(item =>
                 {
                     var id = frame.EnsureStackArgument(
-                        item.stg.StackOffset,
+                        item.stg!.StackOffset,
                         PrimitiveType.CreateWord(item.range.Extent));
                     return (item.stg.StackOffset - frame.ReturnAddressSize, id);
                 });
@@ -334,7 +334,7 @@ namespace Reko.Analysis
 
         private ApplicationBuilder CreateApplicationBuilder(SsaState ssaCaller, Statement stmCaller, CallInstruction call, Expression fn)
         {
-            return new CallApplicationBuilder(ssaCaller, stmCaller, call, fn);
+            return new CallApplicationBuilder(ssaCaller, stmCaller, call, fn, false);
         }
 
         public void RemoveStatementsFromExitBlock(SsaState ssa)
@@ -373,6 +373,7 @@ namespace Reko.Analysis
                     return false;
                 ApplicationBuilder ab = CreateApplicationBuilder(ssaCaller, stm, call, fn);
                 var instr = ab.CreateInstruction(sigCallee, procCallee.Characteristics);
+                var instrOld = stm.Instruction;
                 stm.Instruction = instr;
                 var ssam = new SsaMutator(ssaCaller);
                 ssam.AdjustSsa(stm, call);
@@ -476,9 +477,9 @@ namespace Reko.Analysis
                 var stm = block.Statements[i];
                 if (stm.Instruction is ReturnInstruction ret)
                 {
-                    if (idRet.DataType.BitSize < e.DataType.BitSize)
+                    if (idStg != null && idRet.DataType.BitSize < e.DataType.BitSize)
                     {
-                        int offset = idStg.Storage.OffsetOf(idRet.Storage);
+                        int offset = idStg!.Storage.OffsetOf(idRet.Storage);
                         e = new Slice(idRet.DataType, e, offset);
                     }
                     ret.Expression = e;

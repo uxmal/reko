@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -195,12 +195,13 @@ namespace Reko.ImageLoaders.Elf
                     { Mips.DT_MIPS_PERF_SUFFIX, new TagInfo { Name = "DT_MIPS_PERF_SUFFIX", Format = DtFormat.Hexadecimal } },
                     { Mips.DT_MIPS_COMPACT_SIZE, new TagInfo { Name = "DT_MIPS_COMPACT_SIZE", Format = DtFormat.Hexadecimal } },
                     { Mips.DT_MIPS_GP_VALUE, new TagInfo { Name = "DT_MIPS_GP_VALUE", Format = DtFormat.Hexadecimal } },
+
                     { Mips.DT_MIPS_AUX_DYNAMIC, new TagInfo { Name = "DT_MIPS_AUX_DYNAMIC", Format = DtFormat.Address } },
                     { Mips.DT_MIPS_PLTGOT, new TagInfo { Name = "DT_MIPS_PLTGOT", Format = DtFormat.Address } },
                     { Mips.DT_MIPS_RWPLT, new TagInfo { Name = "DT_MIPS_RWPLT", Format = DtFormat.Hexadecimal } },
                     { Mips.DT_MIPS_RLD_MAP_REL, new TagInfo { Name = "DT_MIPS_RLD_MAP_REL", Format = DtFormat.Hexadecimal } },
                 }
-            }
+            },
         };
 
         public static class Mips

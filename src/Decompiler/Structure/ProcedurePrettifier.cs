@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -196,7 +196,7 @@ namespace Reko.Structure
 
         public void Transform()
         {
-            for (int i = 0; i < proc.Body.Count; ++i)
+            for (int i = 0; i < proc.Body!.Count; ++i)
             {
                 proc.Body[i] = proc.Body[i].Accept(this);
             }

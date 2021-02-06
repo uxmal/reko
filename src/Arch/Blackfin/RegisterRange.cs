@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,13 +40,13 @@ namespace Reko.Arch.Blackfin
         public RegisterStorage MaxRegister { get; }
         public RegisterStorage MinRegister { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString("(");
-            writer.WriteString(MaxRegister.Name);
-            writer.WriteString(":");
-            writer.WriteString(MinRegister.Name);
-            writer.WriteString(")");
+            renderer.WriteString("(");
+            renderer.WriteString(MaxRegister.Name);
+            renderer.WriteString(":");
+            renderer.WriteString(MinRegister.Name);
+            renderer.WriteString(")");
         }
     }
 }

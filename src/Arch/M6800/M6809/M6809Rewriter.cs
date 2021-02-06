@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,9 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
@@ -191,8 +193,6 @@ namespace Reko.Arch.M6800.M6809
             }
         }
 
-        private static readonly HashSet<Mnemonic> seenMnemonics = new HashSet<Mnemonic>();
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -200,32 +200,8 @@ namespace Reko.Arch.M6800.M6809
 
         private void EmitUnitTest()
         {
-            m.Invalid();
-            iclass = InstrClass.Invalid;
-
-            if (seenMnemonics.Contains(instr.Mnemonic))
-                return;
-            seenMnemonics.Add(instr.Mnemonic);
-            host.Warn(
-                instr.Address,
-                "M6809 instruction '{0}' is not supported yet.",
-                instr.Mnemonic.ToString());
-
-            var r2 = rdr.Clone();
-            r2.Offset -= instr.Length;
-            var hexBytes = string.Join("", r2.ReadBytes(instr.Length).Select(b => $"{b:X2}"));
-
-            var sb = new StringBuilder();
-            sb.AppendLine($"        [Test]");
-            sb.AppendLine($"        public void M6809Rw_{instr.Mnemonic}()");
-            sb.AppendLine("        {");
-            sb.AppendLine($"            RewriteCode(\"{hexBytes}\"); // {instr}");
-            sb.AppendLine($"            AssertCode(");
-            sb.AppendLine($"                \"0|L--|0100({instr.Length}): 1 instructions\",");
-            sb.AppendLine($"                \"1|L--|@@@\");");
-            sb.AppendLine("        }");
-            Debug.WriteLine(sb.ToString());
-            Console.WriteLine(sb.ToString());
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("M6809Rw", this.instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Expression Clr(Expression e)
@@ -254,12 +230,12 @@ namespace Reko.Arch.M6800.M6809
 
         private Expression Dec(Expression e)
         {
-            return m.ISubS(e, 1);
+            return m.ISub(e, 1);
         }
 
         private Expression Inc(Expression e)
         {
-            return m.IAddS(e, 1);
+            return m.IAdd(e, 1);
         }
 
         private Expression Load(Expression d, Expression t)
@@ -292,12 +268,12 @@ namespace Reko.Arch.M6800.M6809
 
         private Expression Rol1(Expression e)
         {
-            return host.PseudoProcedure(PseudoProcedure.Rol, e.DataType, e, Constant.Byte(1));
+            return host.Intrinsic(IntrinsicProcedure.Rol, true, e.DataType, e, Constant.Byte(1));
         }
 
         private Expression Ror1(Expression e)
         {
-            return host.PseudoProcedure(PseudoProcedure.Ror, e.DataType, e, Constant.Byte(1));
+            return host.Intrinsic(IntrinsicProcedure.Ror, true, e.DataType, e, Constant.Byte(1));
         }
 
         private Expression Sbc(Expression a, Expression b)
@@ -475,7 +451,7 @@ namespace Reko.Arch.M6800.M6809
                     idx = binder.EnsureRegister(mem.Index);
                     if (idx.DataType.BitSize < ea.DataType.BitSize)
                     {
-                        idx = m.Cast(PrimitiveType.Int16, idx);
+                        idx = m.Convert(idx, idx.DataType, PrimitiveType.Int16);
                     }
                     ea = m.IAdd(ea, idx);
                     tmp = memFn(bin, dst, ea, mem);
@@ -497,7 +473,7 @@ namespace Reko.Arch.M6800.M6809
                     tmp = memFn(bin, dst, ea, mem);
                     break;
                 case MemoryOperand.Mode.Direct:
-                    ea = m.IAdd(binder.EnsureRegister(Registers.DP), Constant.Byte((byte) mem.Offset));
+                    ea = m.IAdd(binder.EnsureRegister(Registers.DP), Constant.Word16((byte) mem.Offset));
                     tmp = memFn(bin, dst, ea, mem);
                     break;
                 case MemoryOperand.Mode.PostInc1:
@@ -534,7 +510,7 @@ namespace Reko.Arch.M6800.M6809
         {
             var b = binder.EnsureRegister(Registers.B);
             var x = binder.EnsureRegister(Registers.X);
-            m.Assign(x, m.IAdd(x, m.Cast(PrimitiveType.UInt16, b)));
+            m.Assign(x, m.IAdd(x, m.Convert(b, b.DataType, PrimitiveType.UInt16)));
         }
 
         private void RewriteModifyCc(Func<Expression, Expression, Expression> fn)
@@ -577,7 +553,7 @@ namespace Reko.Arch.M6800.M6809
         private void RewriteDaa()
         {
             var a = binder.EnsureRegister(Registers.A);
-            m.Assign(a, host.PseudoProcedure("__daa", PrimitiveType.Byte, a));
+            m.Assign(a, host.Intrinsic("__daa", true, PrimitiveType.Byte, a));
             NZ_C(a);
         }
 
@@ -668,7 +644,7 @@ namespace Reko.Arch.M6800.M6809
         {
             var b = binder.EnsureRegister(Registers.B);
             var d = binder.EnsureRegister(Registers.D);
-            m.Assign(d, m.Cast(PrimitiveType.Int16, b));
+            m.Assign(d, m.Convert(b, PrimitiveType.Byte, PrimitiveType.Int16));
             NZ__(d);
         }
 
@@ -701,7 +677,7 @@ namespace Reko.Arch.M6800.M6809
 
         private void RewriteSync()
         {
-            m.SideEffect(host.PseudoProcedure("__sync", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__sync", false, VoidType.Instance));
         }
 
         private void RewriteTfr()

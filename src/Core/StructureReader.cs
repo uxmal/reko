@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Reko.Core.Types;
 using System.IO;
+using Reko.Core.Memory;
 
 namespace Reko.Core
 {
@@ -59,7 +60,7 @@ namespace Reko.Core
 		private Func<int, byte[]> readBytes;
 		private Endianness defaultEndianess = Endianness.LittleEndian;
 
-        public StructureReader(ImageReader reader) : this(reader.ReadBytes)
+        public StructureReader(ByteImageReader reader) : this(reader.ReadBytes)
         {
         }
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
@@ -47,7 +47,11 @@ namespace Reko.UnitTests.Typing
 	/// </summary>
 	public abstract class TypingTestBase
 	{
-        protected ServiceContainer sc;
+        private DecompilerEventListener eventListener;
+
+        public TypingTestBase()
+        {
+        }
 
         protected Program RewriteFile16(string relativePath) { return RewriteFile(relativePath, Address.SegPtr(0xC00, 0), (s, a) => new MsdosPlatform(s,a)); }
 
@@ -58,20 +62,17 @@ namespace Reko.UnitTests.Typing
             Address addrBase,
             Func<IServiceProvider, IProcessorArchitecture, IPlatform> mkPlatform)
 		{
-            sc = new ServiceContainer();
-            var config = new FakeDecompilerConfiguration();
-            var eventListener = new FakeDecompilerEventListener();
-            sc.AddService<IConfigurationService>(config);
-            sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
-            sc.AddService<DecompilerEventListener>(eventListener);
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            var arch = new X86ArchitectureReal("x86-real-16");
+            var sc = new ServiceContainer();
+            PopulateServiceContainer(sc);
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             ILoader ldr = new Loader(sc);
             var program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(relativePath),
-                new X86TextAssembler(sc, arch),
+                new X86TextAssembler(arch),
+                null,
                 addrBase);
             program.Platform = mkPlatform(sc, program.Architecture);
+
             var ep = ImageSymbol.Procedure(arch, program.SegmentMap.BaseAddress);
             var project = new Project { Programs = { program } };
             var scan = new Scanner(
@@ -82,10 +83,20 @@ namespace Reko.UnitTests.Typing
 			scan.ScanImage();
 
             var dynamicLinker = new DynamicLinker(project, program, eventListener);
-            var dfa = new DataFlowAnalysis(program, dynamicLinker, eventListener);
+            var dfa = new DataFlowAnalysis(program, dynamicLinker, sc);
 			dfa.AnalyzeProgram();
             return program;
 		}
+
+        protected virtual void PopulateServiceContainer(ServiceContainer sc)
+        {
+            var config = new FakeDecompilerConfiguration();
+            eventListener = new FakeDecompilerEventListener();
+            sc.AddService<IConfigurationService>(config);
+            sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
+            sc.AddService<DecompilerEventListener>(eventListener);
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+        }
 
         protected void RunHexTest(string hexFile, string outputFile)
         {
@@ -105,7 +116,7 @@ namespace Reko.UnitTests.Typing
             scan.EnqueueImageSymbol(ep, true);
             scan.ScanImage();
 
-            var dfa = new DataFlowAnalysis(program, null, eventListener);
+            var dfa = new DataFlowAnalysis(program, null, svc);
             dfa.AnalyzeProgram();
             RunTest(program, outputFile);
         }
@@ -122,9 +133,11 @@ namespace Reko.UnitTests.Typing
         
         protected void RunTest(ProgramBuilder mock, string outputFile)
         {
+            var sc = new ServiceContainer();
+            PopulateServiceContainer(sc);
             Program program = mock.BuildProgram();
             var dynamicLinker = new Mock<IDynamicLinker>();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker.Object, sc);
             dfa.UntangleProcedures();
             dfa.BuildExpressionTrees();
             RunTest(program, outputFile);

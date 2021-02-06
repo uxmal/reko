@@ -5,8 +5,8 @@ define PointerChainFragment
 PointerChainFragment_entry:
 	// succ:  l1
 l1:
-	r2 = (word32) Mem0[Mem0[Mem0[r1 + 0x00000004:word32] + 0x00000008:word32] + 0x00000010:byte]
-	r4 = (word32) Mem0[Mem0[Mem0[Mem0[r3:word32]:word32]:word32]:word16]
+	r2 = CONVERT(Mem0[Mem0[Mem0[r1 + 4<32>:word32] + 8<32>:word32] + 0x10<32>:byte], byte, word32)
+	r4 = CONVERT(Mem0[Mem0[Mem0[Mem0[r3:word32]:word32]:word32]:word16], word16, word32)
 	return
 	// succ:  PointerChainFragment_exit
 PointerChainFragment_exit:
@@ -30,9 +30,9 @@ Eq_1: (struct "Globals")
 Eq_2: (struct "Eq_2" (4 (ptr32 Eq_5) ptr0004))
 	T_2 (in r1 : word32)
 Eq_5: (struct "Eq_5" (8 (ptr32 Eq_8) ptr0008))
-	T_5 (in Mem0[r1 + 0x00000004:word32] : word32)
+	T_5 (in Mem0[r1 + 4<32>:word32] : word32)
 Eq_8: (struct "Eq_8" (10 byte b0010))
-	T_8 (in Mem0[Mem0[r1 + 0x00000004:word32] + 0x00000008:word32] : word32)
+	T_8 (in Mem0[Mem0[r1 + 4<32>:word32] + 8<32>:word32] : word32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -42,43 +42,43 @@ T_2: (in r1 : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: (ptr32 (struct (4 T_5 t0004)))
-T_3: (in 0x00000004 : word32)
+T_3: (in 4<32> : word32)
   Class: Eq_3
   DataType: word32
   OrigDataType: word32
-T_4: (in r1 + 0x00000004 : word32)
+T_4: (in r1 + 4<32> : word32)
   Class: Eq_4
   DataType: word32
   OrigDataType: word32
-T_5: (in Mem0[r1 + 0x00000004:word32] : word32)
+T_5: (in Mem0[r1 + 4<32>:word32] : word32)
   Class: Eq_5
   DataType: (ptr32 Eq_5)
   OrigDataType: (ptr32 (struct (8 T_8 t0008)))
-T_6: (in 0x00000008 : word32)
+T_6: (in 8<32> : word32)
   Class: Eq_6
   DataType: word32
   OrigDataType: word32
-T_7: (in Mem0[r1 + 0x00000004:word32] + 0x00000008 : word32)
+T_7: (in Mem0[r1 + 4<32>:word32] + 8<32> : word32)
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
-T_8: (in Mem0[Mem0[r1 + 0x00000004:word32] + 0x00000008:word32] : word32)
+T_8: (in Mem0[Mem0[r1 + 4<32>:word32] + 8<32>:word32] : word32)
   Class: Eq_8
   DataType: (ptr32 Eq_8)
   OrigDataType: (ptr32 (struct (10 T_11 t0010)))
-T_9: (in 0x00000010 : word32)
+T_9: (in 0x10<32> : word32)
   Class: Eq_9
   DataType: word32
   OrigDataType: word32
-T_10: (in Mem0[Mem0[r1 + 0x00000004:word32] + 0x00000008:word32] + 0x00000010 : word32)
+T_10: (in Mem0[Mem0[r1 + 4<32>:word32] + 8<32>:word32] + 0x10<32> : word32)
   Class: Eq_10
   DataType: word32
   OrigDataType: word32
-T_11: (in Mem0[Mem0[Mem0[r1 + 0x00000004:word32] + 0x00000008:word32] + 0x00000010:byte] : byte)
+T_11: (in Mem0[Mem0[Mem0[r1 + 4<32>:word32] + 8<32>:word32] + 0x10<32>:byte] : byte)
   Class: Eq_11
   DataType: byte
   OrigDataType: byte
-T_12: (in (word32) Mem0[Mem0[Mem0[r1 + 0x00000004:word32] + 0x00000008:word32] + 0x00000010:byte] : word32)
+T_12: (in CONVERT(Mem0[Mem0[Mem0[r1 + 4<32>:word32] + 8<32>:word32] + 0x10<32>:byte], byte, word32) : word32)
   Class: Eq_12
   DataType: word32
   OrigDataType: word32
@@ -90,55 +90,55 @@ T_14: (in r3 : word32)
   Class: Eq_14
   DataType: (ptr32 (ptr32 (ptr32 (ptr32 word16))))
   OrigDataType: (ptr32 (struct (0 T_17 t0000)))
-T_15: (in 0x00000000 : word32)
+T_15: (in 0<32> : word32)
   Class: Eq_15
   DataType: word32
   OrigDataType: word32
-T_16: (in r3 + 0x00000000 : word32)
+T_16: (in r3 + 0<32> : word32)
   Class: Eq_16
   DataType: word32
   OrigDataType: word32
-T_17: (in Mem0[r3 + 0x00000000:word32] : word32)
+T_17: (in Mem0[r3 + 0<32>:word32] : word32)
   Class: Eq_17
   DataType: (ptr32 (ptr32 (ptr32 word16)))
   OrigDataType: (ptr32 (struct (0 T_20 t0000)))
-T_18: (in 0x00000000 : word32)
+T_18: (in 0<32> : word32)
   Class: Eq_18
   DataType: word32
   OrigDataType: word32
-T_19: (in Mem0[r3 + 0x00000000:word32] + 0x00000000 : word32)
+T_19: (in Mem0[r3 + 0<32>:word32] + 0<32> : word32)
   Class: Eq_19
   DataType: word32
   OrigDataType: word32
-T_20: (in Mem0[Mem0[r3 + 0x00000000:word32] + 0x00000000:word32] : word32)
+T_20: (in Mem0[Mem0[r3 + 0<32>:word32] + 0<32>:word32] : word32)
   Class: Eq_20
   DataType: (ptr32 (ptr32 word16))
   OrigDataType: (ptr32 (struct (0 T_23 t0000)))
-T_21: (in 0x00000000 : word32)
+T_21: (in 0<32> : word32)
   Class: Eq_21
   DataType: word32
   OrigDataType: word32
-T_22: (in Mem0[Mem0[r3 + 0x00000000:word32] + 0x00000000:word32] + 0x00000000 : word32)
+T_22: (in Mem0[Mem0[r3 + 0<32>:word32] + 0<32>:word32] + 0<32> : word32)
   Class: Eq_22
   DataType: word32
   OrigDataType: word32
-T_23: (in Mem0[Mem0[Mem0[r3 + 0x00000000:word32] + 0x00000000:word32] + 0x00000000:word32] : word32)
+T_23: (in Mem0[Mem0[Mem0[r3 + 0<32>:word32] + 0<32>:word32] + 0<32>:word32] : word32)
   Class: Eq_23
   DataType: (ptr32 word16)
   OrigDataType: (ptr32 (struct (0 T_26 t0000)))
-T_24: (in 0x00000000 : word32)
+T_24: (in 0<32> : word32)
   Class: Eq_24
   DataType: word32
   OrigDataType: word32
-T_25: (in Mem0[Mem0[Mem0[r3 + 0x00000000:word32] + 0x00000000:word32] + 0x00000000:word32] + 0x00000000 : word32)
+T_25: (in Mem0[Mem0[Mem0[r3 + 0<32>:word32] + 0<32>:word32] + 0<32>:word32] + 0<32> : word32)
   Class: Eq_25
   DataType: word32
   OrigDataType: word32
-T_26: (in Mem0[Mem0[Mem0[Mem0[r3 + 0x00000000:word32] + 0x00000000:word32] + 0x00000000:word32] + 0x00000000:word16] : word16)
+T_26: (in Mem0[Mem0[Mem0[Mem0[r3 + 0<32>:word32] + 0<32>:word32] + 0<32>:word32] + 0<32>:word16] : word16)
   Class: Eq_26
   DataType: word16
   OrigDataType: word16
-T_27: (in (word32) Mem0[Mem0[Mem0[Mem0[r3 + 0x00000000:word32] + 0x00000000:word32] + 0x00000000:word32] + 0x00000000:word16] : word32)
+T_27: (in CONVERT(Mem0[Mem0[Mem0[Mem0[r3 + 0<32>:word32] + 0<32>:word32] + 0<32>:word32] + 0<32>:word16], word16, word32) : word32)
   Class: Eq_27
   DataType: word32
   OrigDataType: word32

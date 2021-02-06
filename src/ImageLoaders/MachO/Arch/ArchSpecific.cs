@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,6 @@ namespace Reko.ImageLoaders.MachO.Arch
         /// <param name="addrStub"></param>
         /// <param name="memoryArea"></param>
         /// <returns></returns>
-        public abstract Address ReadStub(Address addrStub, MemoryArea mem);
+        public abstract Address ReadStub(Address addrStub, ByteMemoryArea bmem);
     }
 }

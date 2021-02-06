@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,9 +64,27 @@ namespace Reko.Core.Lib
             return (int)s;
         }
 
+        public long ReadSigned(ulong u)
+        {
+            var v = (u >> Position) & Mask;
+            var m = 1ul << (Length - 1);
+            var s = (v ^ m) - m;
+            return (long) s;
+        }
+
         public static uint ReadFields(Bitfield[] bitfields, uint u)
         {
             uint n = 0;
+            foreach (var bitfield in bitfields)
+            {
+                n = n << bitfield.Length | ((u >> bitfield.Position) & bitfield.Mask);
+            }
+            return n;
+        }
+
+        public static ulong ReadFields(Bitfield[] bitfields, ulong u)
+        {
+            ulong n = 0;
             foreach (var bitfield in bitfields)
             {
                 n = n << bitfield.Length | ((u >> bitfield.Position) & bitfield.Mask);
@@ -83,22 +101,22 @@ namespace Reko.Core.Lib
                 n = n << bitfield.Length | (int)((u >> bitfield.Position) & bitfield.Mask);
                 bitsTotal += bitfield.Length;
             }
-            n = n << (32 - bitsTotal);
-            n = n >> (32 - bitsTotal);
+            n <<= (32 - bitsTotal);
+            n >>= (32 - bitsTotal);
             return n;
         }
 
-        public static int ReadSignedFields(Bitfield[] fields, ulong ul)
+        public static long ReadSignedFields(Bitfield[] fields, ulong ul)
         {
-            int n = 0;
+            long n = 0;
             int bitsTotal = 0;
             foreach (var bitfield in fields)
             {
-                n = n << bitfield.Length | (int) ((ul >> bitfield.Position) & bitfield.Mask);
+                n = n << bitfield.Length | (long) ((ul >> bitfield.Position) & bitfield.Mask);
                 bitsTotal += bitfield.Length;
             }
-            n = n << (32 - bitsTotal);
-            n = n >> (32 - bitsTotal);
+            n <<= (64 - bitsTotal);
+            n >>= (64 - bitsTotal);
             return n;
         }
 

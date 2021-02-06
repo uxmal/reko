@@ -1,0 +1,394 @@
+﻿; Original Xbox Kernel export definitions
+; Synthesized by John Källén (uxmal@github) from wiki page at
+; https://xboxdevwiki.net/Kernel
+
+LIBRARY xboxkrnl
+EXPORTS
+    AvGetSavedDataAddress @ 1               ; stdcall  
+    AvSendTVEncoderOption @ 2               ; stdcall  
+    AvSetDisplayMode @ 3                    ; stdcall  
+    AvSetSavedDataAddress @ 4               ; stdcall  
+    DbgBreakPoint @ 5                       ; stdcall  
+    DbgBreakPointWithStatus @ 6             ; stdcall  
+    DbgLoadImageSymbols @ 7                 ; stdcall  Devkits only!
+    DbgPrint @ 8                            ; stdcall  
+    HalReadSMCTrayState @ 9                 ; stdcall  
+    DbgPrompt @ 10                          ; stdcall  
+    DbgUnLoadImageSymbols @ 11              ; stdcall  Devkits only!
+    ExAcquireReadWriteLockExclusive @ 12    ; stdcall  
+    ExAcquireReadWriteLockShared @ 13       ; stdcall  
+    ExAllocatePool @ 14                     ; stdcall  
+    ExAllocatePoolWithTag @ 15              ; stdcall  
+
+    ExEventObjectType @ 16 DATA             ; OBJECT_TYPE
+    
+    ExFreePool @ 17                         ; stdcall  
+    ExInitializeReadWriteLock @ 18          ; stdcall  
+    ExInterlockedAddLargeInteger @ 19       ; stdcall  
+    ExInterlockedAddLargeStatistic @ 20     ; fastcall  
+    ExInterlockedCompareExchange64 @ 21     ; fastcall  
+
+    ExMutantObjectType @ 22 DATA            ; OBJECT_TYPE
+    
+    ExQueryPoolBlockSize @ 23               ; stdcall  
+    ExQueryNonVolatileSetting @ 24          ; stdcall  
+    ExReadWriteRefurbInfo @ 25              ; stdcall  
+    ExRaiseException @ 26                   ; stdcall  
+    ExRaiseStatus @ 27                      ; stdcall  
+    ExReleaseReadWriteLock @ 28            ; stdcall  
+    ExSaveNonVolatileSetting @ 29            ; stdcall 
+
+    ExSemaphoreObjectType @ 30 DATA        ; OBJECT_TYPE
+    ExTimerObjectType @ 31 DATA            ; OBJECT_TYPE
+    
+    ExfInterlockedInsertHeadList @ 32            ; stdcall  
+    ExfInterlockedInsertTailList @ 33            ; fastcall  
+    ExfInterlockedRemoveHeadList @ 34            ; fastcall  
+    FscGetCacheSize @ 35            ; stdcall  
+    FscInvalidateIdleBlocks @ 36            ; stdcall  
+    FscSetCacheSize @ 37            ; stdcall  
+    HalClearSoftwareInterrupt @ 38            ; fastcall  
+    HalDisableSystemInterrupt @ 39            ; stdcall  
+
+    HalDiskCachePartitionCount @ 40 DATA            ; ULONG
+
+    HalDiskModelNumber @ 41 DATA            ; STRING
+    HalDiskSerialNumber @ 42 DATA            ; STRING
+    HalEnableSystemInterrupt @ 43            ; stdcall  
+    HalGetInterruptVector @ 44            ; stdcall  
+    HalReadSMBusValue @ 45            ; stdcall  
+    HalReadWritePCISpace @ 46            ; stdcall  
+    HalRegisterShutdownNotification @ 47            ; stdcall  
+    HalRequestSoftwareInterrupt @ 48            ; fastcall  
+    HalReturnToFirmware @ 49            ; stdcall  
+    HalWriteSMBusValue @ 50            ; stdcall  
+    InterlockedCompareExchange @ 51         ; fastcall  
+    InterlockedDecrement @ 52               ; fastcall  
+    InterlockedIncrement @ 53               ; fastcall  
+    InterlockedExchange @ 54                ; fastcall  
+    InterlockedExchangeAdd @ 55             ; fastcall  
+    InterlockedFlushSList @ 56              ; fastcall  
+    InterlockedPopEntrySList @ 57           ; fastcall  
+    InterlockedPushEntrySList @ 58          ; fastcall  
+    IoAllocateIrp @ 59                      ; stdcall  
+    IoBuildAsynchronousFsdRequest @ 60      ; stdcall  
+    IoBuildDeviceIoControlRequest @ 61      ; stdcall  
+    IoBuildSynchronousFsdRequest @ 62       ; stdcall  
+    IoCheckShareAccess @ 63                 ; stdcall  
+    IoCompletionObjectType @ 64 DATA        ; OBJECT_TYPE
+    IoCreateDevice @ 65                     ; stdcall  
+    IoCreateFile @ 66                       ; stdcall  
+    IoCreateSymbolicLink @ 67               ; stdcall  
+    IoDeleteDevice @ 68                     ; stdcall  
+    IoDeleteSymbolicLink @ 69               ; stdcall  
+    IoDeviceObjectType @ 70 DATA            ; OBJECT_TYPE
+    IoFileObjectType @ 71 DATA            ; OBJECT_TYPE
+    IoFreeIrp @ 72            ; stdcall  
+    IoInitializeIrp @ 73            ; stdcall  
+    IoInvalidDeviceRequest @ 74            ; stdcall  
+    IoQueryFileInformation @ 75            ; stdcall  
+    IoQueryVolumeInformation @ 76            ; stdcall  
+    IoQueueThreadIrp @ 77            ; stdcall  
+    IoRemoveShareAccess @ 78            ; stdcall  
+    IoSetIoCompletion @ 79            ; stdcall  
+    IoSetShareAccess @ 80            ; stdcall  
+    IoStartNextPacket @ 81            ; stdcall  
+    IoStartNextPacketByKey @ 82            ; stdcall  
+    IoStartPacket @ 83            ; stdcall  
+    IoSynchronousDeviceIoControlRequest @ 84            ; stdcall  
+    IoSynchronousFsdRequest @ 85            ; stdcall  
+    IofCallDriver @ 86            ; fastcall  
+    IofCompleteRequest @ 87            ; fastcall  
+    KdDebuggerEnabled @ 88 DATA            ; BOOLEAN
+    KdDebuggerNotPresent @ 89 DATA            ; BOOLEAN
+    IoDismountVolume @ 90            ; stdcall  
+    IoDismountVolumeByName @ 91            ; stdcall  
+    KeAlertResumeThread @ 92            ; stdcall  
+    KeAlertThread @ 93            ; stdcall  
+    KeBoostPriorityThread @ 94            ; stdcall  
+    KeBugCheck @ 95            ; stdcall  
+    KeBugCheckEx @ 96            ; stdcall  
+    KeCancelTimer @ 97            ; stdcall  
+    KeConnectInterrupt @ 98            ; stdcall  
+    KeDelayExecutionThread @ 99            ; stdcall  
+    KeDisconnectInterrupt @ 100            ; stdcall  
+    KeEnterCriticalRegion @ 101            ; stdcall  
+    MmGlobalData @ 102 DATA            ; MMGLOBALDATA
+    KeGetCurrentIrql @ 103            ; stdcall  
+    KeGetCurrentThread @ 104            ; stdcall  
+    KeInitializeApc @ 105            ; stdcall  
+    KeInitializeDeviceQueue @ 106            ; stdcall  
+    KeInitializeDpc @ 107            ; stdcall  
+    KeInitializeEvent @ 108            ; stdcall  
+    KeInitializeInterrupt @ 109            ; stdcall  
+    KeInitializeMutant @ 110            ; stdcall  
+    KeInitializeQueue @ 111            ; stdcall  
+    KeInitializeSemaphore @ 112            ; stdcall  
+    KeInitializeTimerEx @ 113            ; stdcall  
+    KeInsertByKeyDeviceQueue @ 114            ; stdcall  
+    KeInsertDeviceQueue @ 115            ; stdcall  
+    KeInsertHeadQueue @ 116            ; stdcall  
+    KeInsertQueue @ 117            ; stdcall  
+    KeInsertQueueApc @ 118            ; stdcall  
+    KeInsertQueueDpc @ 119            ; stdcall  
+    KeInterruptTime @ 120 DATA            ; KSYSTEM_TIME
+    KeIsExecutingDpc @ 121            ; stdcall  
+    KeLeaveCriticalRegion @ 122            ; stdcall  
+    KePulseEvent @ 123            ; stdcall  
+    KeQueryBasePriorityThread @ 124            ; stdcall  
+    KeQueryInterruptTime @ 125            ; stdcall  
+    KeQueryPerformanceCounter @ 126            ; stdcall  
+    KeQueryPerformanceFrequency @ 127            ; stdcall  
+    KeQuerySystemTime @ 128            ; stdcall  
+    KeRaiseIrqlToDpcLevel @ 129            ; stdcall  
+    KeRaiseIrqlToSynchLevel @ 130            ; stdcall  
+    KeReleaseMutant @ 131            ; stdcall  
+    KeReleaseSemaphore @ 132            ; stdcall  
+    KeRemoveByKeyDeviceQueue @ 133            ; stdcall  
+    KeRemoveDeviceQueue @ 134            ; stdcall  
+    KeRemoveEntryDeviceQueue @ 135            ; stdcall  
+    KeRemoveQueue @ 136            ; stdcall  
+    KeRemoveQueueDpc @ 137            ; stdcall  
+    KeResetEvent @ 138            ; stdcall  
+    KeRestoreFloatingPointState @ 139            ; stdcall  
+    KeResumeThread @ 140            ; stdcall  
+    KeRundownQueue @ 141            ; stdcall  
+    KeSaveFloatingPointState @ 142            ; stdcall  
+    KeSetBasePriorityThread @ 143            ; stdcall  
+    KeSetDisableBoostThread @ 144            ; stdcall  
+    KeSetEvent @ 145            ; stdcall  
+    KeSetEventBoostPriority @ 146            ; stdcall  
+    KeSetPriorityProcess @ 147            ; stdcall  
+    KeSetPriorityThread @ 148            ; stdcall  
+    KeSetTimer @ 149            ; stdcall  
+    KeSetTimerEx @ 150            ; stdcall  
+    KeStallExecutionProcessor @ 151            ; stdcall  
+    KeSuspendThread @ 152            ; stdcall  
+    KeSynchronizeExecution @ 153            ; stdcall  
+    KeSystemTime @ 154 DATA            ; KSYSTEM_TIME
+    KeTestAlertThread @ 155            ; stdcall  
+    KeTickCount @ 156 DATA            ; ULONG
+    KeTimeIncrement @ 157 DATA            ; ULONG
+    KeWaitForMultipleObjects @ 158            ; stdcall  
+    KeWaitForSingleObject @ 159            ; stdcall  
+    KfRaiseIrql @ 160            ; fastcall  
+    KfLowerIrql @ 161            ; fastcall  
+    KiBugCheckData @ 162 DATA            ; ULONG_PTR[5]
+    KiUnlockDispatcherDatabase @ 163            ; fastcall  
+    LaunchDataPage @ 164 DATA            ; PLAUNCH_DATA_PAGE
+    MmAllocateContiguousMemory @ 165            ; stdcall  
+    MmAllocateContiguousMemoryEx @ 166            ; stdcall  
+    MmAllocateSystemMemory @ 167            ; stdcall  
+    MmClaimGpuInstanceMemory @ 168            ; stdcall  
+    MmCreateKernelStack @ 169            ; stdcall  
+    MmDeleteKernelStack @ 170            ; stdcall  
+    MmFreeContiguousMemory @ 171            ; stdcall  
+    MmFreeSystemMemory @ 172            ; stdcall  
+    MmGetPhysicalAddress @ 173            ; stdcall  
+    MmIsAddressValid @ 174            ; stdcall  
+    MmLockUnlockBufferPages @ 175            ; stdcall  
+    MmLockUnlockPhysicalPage @ 176            ; stdcall  
+    MmMapIoSpace @ 177            ; stdcall  
+    MmPersistContiguousMemory @ 178            ; stdcall  
+    MmQueryAddressProtect @ 179            ; stdcall  
+    MmQueryAllocationSize @ 180            ; stdcall  
+    MmQueryStatistics @ 181            ; stdcall  
+    MmSetAddressProtect @ 182            ; stdcall  
+    MmUnmapIoSpace @ 183            ; stdcall  
+    NtAllocateVirtualMemory @ 184            ; stdcall  
+    NtCancelTimer @ 185            ; stdcall  
+    NtClearEvent @ 186            ; stdcall  
+    NtClose @ 187            ; stdcall  
+    NtCreateDirectoryObject @ 188            ; stdcall  
+    NtCreateEvent @ 189            ; stdcall  
+    NtCreateFile @ 190            ; stdcall  
+    NtCreateIoCompletion @ 191            ; stdcall  
+    NtCreateMutant @ 192            ; stdcall  
+    NtCreateSemaphore @ 193            ; stdcall  
+    NtCreateTimer @ 194            ; stdcall  
+    NtDeleteFile @ 195            ; stdcall  
+    NtDeviceIoControlFile @ 196            ; stdcall  
+    NtDuplicateObject @ 197            ; stdcall  
+    NtFlushBuffersFile @ 198            ; stdcall  
+    NtFreeVirtualMemory @ 199            ; stdcall  
+    NtFsControlFile @ 200            ; stdcall  
+    NtOpenDirectoryObject @ 201            ; stdcall  
+    NtOpenFile @ 202            ; stdcall  
+    NtOpenSymbolicLinkObject @ 203            ; stdcall  
+    NtProtectVirtualMemory @ 204            ; stdcall  
+    NtPulseEvent @ 205            ; stdcall  
+    NtQueueApcThread @ 206            ; stdcall  
+    NtQueryDirectoryFile @ 207            ; stdcall  
+    NtQueryDirectoryObject @ 208            ; stdcall  
+    NtQueryEvent @ 209            ; stdcall  
+    NtQueryFullAttributesFile @ 210            ; stdcall  
+    NtQueryInformationFile @ 211            ; stdcall  
+    NtQueryIoCompletion @ 212            ; stdcall  
+    NtQueryMutant @ 213            ; stdcall  
+    NtQuerySemaphore @ 214            ; stdcall  
+    NtQuerySymbolicLinkObject @ 215            ; stdcall  
+    NtQueryTimer @ 216            ; stdcall  
+    NtQueryVirtualMemory @ 217            ; stdcall  
+    NtQueryVolumeInformationFile @ 218            ; stdcall  
+    NtReadFile @ 219            ; stdcall  
+    NtReadFileScatter @ 220            ; stdcall  
+    NtReleaseMutant @ 221            ; stdcall  
+    NtReleaseSemaphore @ 222            ; stdcall  
+    NtRemoveIoCompletion @ 223            ; stdcall  
+    NtResumeThread @ 224            ; stdcall  
+    NtSetEvent @ 225            ; stdcall  
+    NtSetInformationFile @ 226            ; stdcall  
+    NtSetIoCompletion @ 227            ; stdcall  
+    NtSetSystemTime @ 228            ; stdcall  
+    NtSetTimerEx @ 229            ; stdcall  
+    NtSignalAndWaitForSingleObjectEx @ 230            ; stdcall  
+    NtSuspendThread @ 231            ; stdcall  
+    NtUserIoApcDispatcher @ 232            ; stdcall  
+    NtWaitForSingleObject @ 233            ; stdcall  
+    NtWaitForSingleObjectEx @ 234            ; stdcall  
+    NtWaitForMultipleObjectsEx @ 235            ; stdcall  
+    NtWriteFile @ 236            ; stdcall  
+    NtWriteFileGather @ 237            ; stdcall  
+    NtYieldExecution @ 238            ; stdcall  
+    ObCreateObject @ 239            ; stdcall  
+    ObDirectoryObjectType @ 240 DATA            ; OBJECT_TYPE
+    ObInsertObject @ 241            ; stdcall  
+    ObMakeTemporaryObject @ 242            ; stdcall  
+    ObOpenObjectByName @ 243            ; stdcall  
+    ObOpenObjectByPointer @ 244            ; stdcall  
+    ObpObjectHandleTable @ 245 DATA            ; OBJECT_HANDLE_TABLE
+    ObReferenceObjectByHandle @ 246            ; stdcall  
+    ObReferenceObjectByName @ 247            ; stdcall  
+    ObReferenceObjectByPointer @ 248            ; stdcall  
+    ObSymbolicLinkObjectType @ 249 DATA            ; OBJECT_TYPE
+    ObfDereferenceObject @ 250            ; fastcall  
+    ObfReferenceObject @ 251            ; fastcall  
+    PhyGetLinkState @ 252            ; stdcall  
+    PhyInitialize @ 253            ; stdcall  
+    PsCreateSystemThread @ 254            ; stdcall  
+    PsCreateSystemThreadEx @ 255            ; stdcall  
+    PsQueryStatistics @ 256            ; stdcall  
+    PsSetCreateThreadNotifyRoutine @ 257            ; stdcall  
+    PsTerminateSystemThread @ 258            ; stdcall  
+    PsThreadObjectType @ 259 DATA            ; OBJECT_TYPE
+    RtlAnsiStringToUnicodeString @ 260            ; stdcall  
+    RtlAppendStringToString @ 261            ; stdcall  
+    RtlAppendUnicodeStringToString @ 262            ; stdcall  
+    RtlAppendUnicodeToString @ 263            ; stdcall  
+    RtlAssert @ 264            ; stdcall  
+    RtlCaptureContext @ 265            ; stdcall  
+    RtlCaptureStackBackTrace @ 266            ; stdcall  
+    RtlCharToInteger @ 267            ; stdcall  
+    RtlCompareMemory @ 268            ; stdcall  
+    RtlCompareMemoryUlong @ 269            ; stdcall  
+    RtlCompareString @ 270            ; stdcall  
+    RtlCompareUnicodeString @ 271            ; stdcall  
+    RtlCopyString @ 272            ; stdcall  
+    RtlCopyUnicodeString @ 273            ; stdcall  
+    RtlCreateUnicodeString @ 274            ; stdcall  
+    RtlDowncaseUnicodeChar @ 275            ; stdcall  
+    RtlDowncaseUnicodeString @ 276            ; stdcall  
+    RtlEnterCriticalSection @ 277            ; stdcall  
+    RtlEnterCriticalSectionAndRegion @ 278            ; stdcall  
+    RtlEqualString @ 279            ; stdcall  
+    RtlEqualUnicodeString @ 280            ; stdcall  
+    RtlExtendedIntegerMultiply @ 281            ; stdcall  
+    RtlExtendedLargeIntegerDivide @ 282            ; stdcall  
+    RtlExtendedMagicDivide @ 283            ; stdcall  
+    RtlFillMemory @ 284            ; stdcall  
+    RtlFillMemoryUlong @ 285            ; stdcall  
+    RtlFreeAnsiString @ 286            ; stdcall  
+    RtlFreeUnicodeString @ 287            ; stdcall  
+    RtlGetCallersAddress @ 288            ; stdcall  
+    RtlInitAnsiString @ 289            ; stdcall  
+    RtlInitUnicodeString @ 290            ; stdcall  
+    RtlInitializeCriticalSection @ 291      ; stdcall  
+    RtlIntegerToChar @ 292                  ; stdcall  
+    RtlIntegerToUnicodeString @ 293         ; stdcall  
+    RtlLeaveCriticalSection @ 294           ; stdcall  
+    RtlLeaveCriticalSectionAndRegion @ 295  ; stdcall  
+    RtlLowerChar @ 296                      ; stdcall  
+    RtlMapGenericMask @ 297                 ; stdcall  
+    RtlMoveMemory @ 298                     ; stdcall  
+    RtlMultiByteToUnicodeN @ 299            ; stdcall  
+    RtlMultiByteToUnicodeSize @ 300            ; stdcall  
+    RtlNtStatusToDosError @ 301            ; stdcall  
+    RtlRaiseException @ 302            ; stdcall  
+    RtlRaiseStatus @ 303            ; stdcall  
+    RtlTimeFieldsToTime @ 304            ; stdcall  
+    RtlTimeToTimeFields @ 305            ; stdcall  
+    RtlTryEnterCriticalSection @ 306            ; stdcall  
+    RtlUlongByteSwap @ 307            ; fastcall  
+    RtlUnicodeStringToAnsiString @ 308            ; stdcall  
+    RtlUnicodeStringToInteger @ 309            ; stdcall  
+    RtlUnicodeToMultiByteN @ 310            ; stdcall  
+    RtlUnicodeToMultiByteSize @ 311            ; stdcall  
+    RtlUnwind @ 312            ; stdcall  
+    RtlUpcaseUnicodeChar @ 313            ; stdcall  
+    RtlUpcaseUnicodeString @ 314            ; stdcall  
+    RtlUpcaseUnicodeToMultiByteN @ 315            ; stdcall  
+    RtlUpperChar @ 316            ; stdcall  
+    RtlUpperString @ 317            ; stdcall  
+    RtlUshortByteSwap @ 318            ; fastcall  
+    RtlWalkFrameChain @ 319            ; stdcall  
+    RtlZeroMemory @ 320            ; stdcall  
+    XboxEEPROMKey @ 321 DATA            ; XBOX_KEY_DATA
+    XboxHardwareInfo @ 322 DATA            ; XBOX_HARDWARE_INFO
+    XboxHDKey @ 323 DATA            ; XBOX_KEY_DATA
+    XboxKrnlVersion @ 324 DATA            ; XBOX_KRNL_VERSION
+    XboxSignatureKey @ 325 DATA            ; XBOX_KEY_DATA; modified by active XBE Certificate
+    XeImageFileName @ 326 DATA            ; OBJECT_STRING
+    XeLoadSection @ 327            ; stdcall  
+    XeUnloadSection @ 328            ; stdcall  
+    READ_PORT_BUFFER_UCHAR @ 329            ; stdcall  
+    READ_PORT_BUFFER_USHORT @ 330            ; stdcall  
+    READ_PORT_BUFFER_ULONG @ 331            ; stdcall  
+    WRITE_PORT_BUFFER_UCHAR @ 332            ; stdcall  
+    WRITE_PORT_BUFFER_USHORT @ 333            ; stdcall  
+    WRITE_PORT_BUFFER_ULONG @ 334            ; stdcall  
+    XcSHAInit @ 335            ; stdcall  
+    XcSHAUpdate @ 336            ; stdcall  
+    XcSHAFinal @ 337            ; stdcall  
+    XcRC4Key @ 338            ; stdcall  
+    XcRC4Crypt @ 339            ; stdcall  
+    XcHMAC @ 340            ; stdcall  
+    XcPKEncPublic @ 341            ; stdcall  
+    XcPKDecPrivate @ 342            ; stdcall  
+    XcPKGetKeyLen @ 343            ; stdcall  
+    XcVerifyPKCS1Signature @ 344            ; stdcall  
+    XcModExp @ 345            ; stdcall  
+    XcDESKeyParity @ 346            ; stdcall  
+    XcKeyTable @ 347            ; stdcall  
+    XcBlockCrypt @ 348            ; stdcall  
+    XcBlockCryptCBC @ 349            ; stdcall  
+    XcCryptService @ 350            ; stdcall  
+    XcUpdateCrypto @ 351            ; stdcall  
+    RtlRip @ 352                                    ; stdcall  
+
+    XboxLANKey @ 353 DATA                           ; XBOX_KEY_DATA; modified by active XBE Certificate
+    XboxAlternateSignatureKeys @ 354 DATA           ; XBOX_KEY_DATA[XBEIMAGE_ALTERNATE_TITLE_ID_COUNT]; modified by active XBE Certificate
+    XePublicKeyData @ 355 DATA                      ; UCHAR[XC_PUBLIC_KEYDATA_SIZE]
+    HalBootSMCVideoMode @ 356 DATA                  ; ULONG
+    IdexChannelObject @ 357 DATA                    ; IDE_CHANNEL_OBJECT
+
+    HalIsResetOrShutdownPending @ 358               ; stdcall  
+    IoMarkIrpMustComplete @ 359            ; stdcall  
+    HalInitiateShutdown @ 360            ; stdcall  
+    RtlSnprintf @ 361            ; stdcall  Unused?
+    RtlSprintf @ 362            ; stdcall  Unused?
+    RtlVsnprintf @ 363            ; stdcall  Unused?
+    RtlVsprintf @ 364            ; stdcall  Unused?
+    HalEnableSecureTrayEject @ 365            ; stdcall  
+    HalWriteSMCScratchRegister @ 366            ; stdcall  
+
+; 367-369 unused?
+    
+    XProfpControl @ 370             ; Profiling-enabled builds only!
+    XProfpGetData @ 371             ; Profiling-enabled builds only!
+    IrtClientInitFast @ 372             ; Profiling-enabled builds only!
+    IrtSweep @ 373             ; Profiling-enabled builds only!
+    MmDbgAllocateMemory @ 374            ; stdcall  Devkits only!
+    MmDbgFreeMemory @ 375            ; stdcall  Devkits only!
+    MmDbgQueryAvailablePages @ 376            ; stdcall  Devkits only!
+    MmDbgReleaseAddress @ 377            ; stdcall  Devkits only!
+    MmDbgWriteCheck @ 378                   ; stdcall Devkits only!

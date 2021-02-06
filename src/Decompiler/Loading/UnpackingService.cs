@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using Reko.Core.Lib;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -59,6 +60,8 @@ namespace Reko.Loading
                 return;
             foreach (SignatureFileDefinition sfe in cfgSvc.GetSignatureFiles())
             {
+                if (sfe.Filename is null)
+                    continue;
                 try
                 {
                     var ldr = CreateSignatureLoader(sfe);
@@ -66,10 +69,10 @@ namespace Reko.Loading
                 }
                 catch (Exception ex)
                 {
-                    Services.RequireService<IDiagnosticsService>().Error(
+                    Services.RequireService<DecompilerEventListener>().Error(
                         new NullCodeLocation(sfe.Filename),
                         ex,
-                        "Unable to load signatures from {0} with loader {1}.", sfe.Filename, sfe.Type);
+                        "Unable to load signatures from {0} with loader {1}.", sfe.Filename, sfe.Type!);
                 }
             }
         }
@@ -93,22 +96,28 @@ namespace Reko.Loading
         /// the original loader is returned.</returns>
         public ImageLoader FindUnpackerBySignature(ImageLoader loader, uint entryPointOffset)
         {
+            var listener = Services.RequireService<DecompilerEventListener>();
+
             // $TODO: the code below triggers the creation of the suffix array
             // The suffix array is currently unused but the algorithm that generates it scales poorly
             // making Reko unable to load certain EXE files (due to the endless wait times)
             // EnsureSuffixArray(filename + ".sufa-raw.ubj", image);
             var signature = Signatures.Where(s => Matches(s, loader.RawImage, entryPointOffset)).FirstOrDefault();
-            if (signature == null)
+            if (signature == null || signature.Name == null)
                 return loader;
+            listener.Info("Signature of '{0}' detected.", signature.Name);
             var le = Services.RequireService<IConfigurationService>().GetImageLoader(signature.Name);  //$REVIEW: all of themn?
-            if (le == null)
+            if (le == null || le.TypeName == null)
             {
-                //$TODO: warn if loader is missing?
                 return loader;
             }
             var unpacker = Loader.CreateOuterImageLoader<ImageLoader>(le.TypeName, loader);
             if (unpacker == null)
+            {
+                listener.Warn("Unable to create loader for '{0}'.", signature.Name);
                 return loader;
+            }
+            listener.Info("Using loader for '{0}'.", signature.Name);
             unpacker.Argument = le.Argument;
             return unpacker;
         }
@@ -125,7 +134,7 @@ namespace Reko.Loading
                     return false;
                 int iImage =  (int)entryPointOffset;
                 int iPattern = 0;
-                while (iPattern < sig.EntryPointPattern.Length - 1 && iImage < image.Length)
+                while (iPattern < sig.EntryPointPattern!.Length - 1 && iImage < image.Length)
                 {
                     var msn = sig.EntryPointPattern[iPattern];
                     var lsn = sig.EntryPointPattern[iPattern + 1];
@@ -150,8 +159,8 @@ namespace Reko.Loading
         private object EnsureSuffixArray(string filename, byte[] image)
         {
             var fsSvc = Services.RequireService<IFileSystemService>();
-            var diagSvc = Services.RequireService<IDiagnosticsService>();
-            Stream stm = null;
+            var listener = Services.RequireService<DecompilerEventListener>();
+            Stream? stm = null;
             try
             {
                 if (fsSvc.FileExists(filename))
@@ -159,12 +168,12 @@ namespace Reko.Loading
                     stm = fsSvc.CreateFileStream(filename, FileMode.Open, FileAccess.Read);
                     try
                     {
-                        var sSuffix = (int[])new UbjsonReader(stm).Read();
+                        var sSuffix = (int[])new UbjsonReader(stm).Read()!;
                         return SuffixArray.Load(image, sSuffix);
                     }
                     catch (Exception ex)
                     {
-                        diagSvc.Warn("Unable to load suffix array {0}. {1}", filename, ex.Message);
+                        listener.Warn("Unable to load suffix array {0}. {1}", filename, ex.Message);
                     } finally
                     {
                         stm.Close();

@@ -1,0 +1,26 @@
+LIBRARY KBDCALLS
+EXPORTS
+    KBDSETCUSTXT                                @1
+    KBDINIT                                     @2
+    KBDGETCP                                    @3
+    KBDCHARIN                                   @4
+    KBDSETCP                                    @5
+    KBDLOADINSTANCE                             @6
+    KBDSYNCH                                    @7
+    KBDREGISTER                                 @8
+    KBDSTRINGIN                                 @9
+    KBDGETSTATUS                                @10
+    KBDSETSTATUS                                @11
+    KBDGETFOCUS                                 @12
+    KBDFLUSHBUFFER                              @13
+    KBDXLATE                                    @14
+    KBDSWITCHFGND                               @15
+    KBDSHELLINIT                                @16
+    KBDCLOSE                                    @17
+    KBDFREEFOCUS                                @18
+    KBDFREE                                     @19
+    KBDDEREGISTER                               @20
+    KBDSETFGND                                  @21
+    KBDGETHWID                                  @24
+    KBDPEEK                                     @22
+    KBDOPEN                                     @23

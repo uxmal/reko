@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -124,7 +124,7 @@ namespace Reko.UnitTests.Core
             var c1 = Constant.Create(dt, 16);
             var c2 = Constant.Create(dt, 19);
             var sum = Operator.IAdd.ApplyConstants(c1, c2);
-            Assert.AreEqual("0x03", sum.ToString(), "Silent overflow is not working.");
+            Assert.AreEqual("3<u5>", sum.ToString(), "Silent overflow is not working.");
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace Reko.UnitTests.Core
         {
             var dt = PrimitiveType.Create(Domain.UnsignedInt, 24);
             var c = Constant.Create(dt, 42);
-            Assert.AreEqual("0x00002A", c.ToString());
+            Assert.AreEqual("0x2A<u24>", c.ToString());
         }
 
         [Test]
@@ -140,20 +140,35 @@ namespace Reko.UnitTests.Core
         {
             var dt = PrimitiveType.Create(Domain.UnsignedInt, 64);
             var c = Constant.Create(dt, 42);
-            Assert.AreEqual("0x000000000000002A", c.ToString());
+            Assert.AreEqual("0x2A<u64>", c.ToString());
         }
 
         [Test]
         public void ConComplement()
         {
-            Assert.AreEqual("-128", Constant.SByte(0x7F).Complement().ToString());
-            Assert.AreEqual("-32768", Constant.Int16(0x7FFF).Complement().ToString());
-            Assert.AreEqual("-2147483648", Constant.Int32(0x7FFFFFFF).Complement().ToString());
-            Assert.AreEqual("-9223372036854775808", Constant.Int64(0x7FFFFFFFFFFFFFFF).Complement().ToString());
-            Assert.AreEqual("0x80", Constant.Byte(0x7F).Complement().ToString());
-            Assert.AreEqual("0x8000", Constant.UInt16(0x7FFF).Complement().ToString());
-            Assert.AreEqual("0x80000000", Constant.UInt32(0x7FFFFFFF).Complement().ToString());
-            Assert.AreEqual("0x8000000000000000", Constant.UInt64(0x7FFFFFFFFFFFFFFF).Complement().ToString());
+            Assert.AreEqual("-128<i8>", Constant.SByte(0x7F).Complement().ToString());
+            Assert.AreEqual("-32768<i16>", Constant.Int16(0x7FFF).Complement().ToString());
+            Assert.AreEqual("-2147483648<i32>", Constant.Int32(0x7FFFFFFF).Complement().ToString());
+            Assert.AreEqual("-9223372036854775808<i64>", Constant.Int64(0x7FFFFFFFFFFFFFFF).Complement().ToString());
+            Assert.AreEqual("0x80<8>", Constant.Byte(0x7F).Complement().ToString());
+            Assert.AreEqual("0x8000<u16>", Constant.UInt16(0x7FFF).Complement().ToString());
+            Assert.AreEqual("0x80000000<u32>", Constant.UInt32(0x7FFFFFFF).Complement().ToString());
+            Assert.AreEqual("0x8000000000000000<u64>", Constant.UInt64(0x7FFFFFFFFFFFFFFF).Complement().ToString());
+        }
+
+        [Test]
+        public void ConIsMaxUnsigned()
+        {
+            Assert.IsTrue(Constant.SByte(-1).IsMaxUnsigned);
+            Assert.IsTrue(Constant.Byte(0xFF).IsMaxUnsigned);
+            Assert.IsTrue(Constant.Int16(-1).IsMaxUnsigned);
+            Assert.IsTrue(Constant.UInt16(0xFFFF).IsMaxUnsigned);
+            Assert.IsTrue(Constant.Int32(-1).IsMaxUnsigned);
+            Assert.IsTrue(Constant.UInt32(~0u).IsMaxUnsigned);
+            Assert.IsTrue(Constant.Int32(-1).IsMaxUnsigned);
+            Assert.IsTrue(Constant.UInt32(~0u).IsMaxUnsigned);
+            Assert.IsTrue(Constant.Int64(-1L).IsMaxUnsigned);
+            Assert.IsTrue(Constant.UInt64(~0UL).IsMaxUnsigned);
         }
 
     }

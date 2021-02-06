@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(a, 3);
             });
             string expected = ToExpectedString(
-                "a = 0x00000003"
+                "a = 3<32>"
             );
             Assert.AreEqual(expected, testResult);
         }
@@ -85,9 +85,9 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(a, 3);
             });
             string expected = ToExpectedString(
-                "a = 0x00000002",
+                "a = 2<32>",
                 "call <invalid> (retsize: 4;)",
-                "a = 0x00000003"
+                "a = 3<32>"
             );
 
             Assert.AreEqual(expected, testResult);
@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Analysis
                 m.BranchIf(m.Test(ConditionCode.LE, CN), "foo");
             });
             string expected = ToExpectedString(
-                "a = a + 0x00000003",
+                "a = a + 3<32>",
                 "a = a + a",
                 "N = cond(a)",
                 "branch Test(LE,CN) foo"
@@ -153,11 +153,11 @@ namespace Reko.UnitTests.Analysis
                 var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
                 var bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
                 var bl = m.Frame.EnsureRegister(new RegisterStorage("bl", 3, 0, PrimitiveType.Byte));
-                m.Assign(bx, m.Cast(PrimitiveType.Word16, al));
+                m.Assign(bx, m.Convert(al, al.DataType, PrimitiveType.Word16));
                 m.SideEffect(m.Fn("foo", bl));
             });
             string sExp = ToExpectedString(
-                "bx = (word16) al",
+                "bx = CONVERT(al, byte, word16)",
                 "foo(bl)");
             Assert.AreEqual(sExp, testResult);
         }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,9 +31,9 @@ namespace Reko.Scanning
         private readonly IScanner scanner;
         private readonly IProcessorArchitecture arch;
         private readonly Address addr;
-        private readonly string name;
+        private readonly string? name;
 
-        public ProcedureWorkItem(IScanner scanner, IProcessorArchitecture arch, Address addr, string name) : base(addr)
+        public ProcedureWorkItem(IScanner scanner, IProcessorArchitecture arch, Address addr, string? name) : base(addr)
         {
             this.scanner = scanner;
             this.arch = arch;

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,20 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Typing;
 using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
-using System.Diagnostics;
-using System.Collections.Generic;
-using Reko.Core.Serialization;
 
 namespace Reko.UnitTests.Typing
 {
@@ -111,7 +111,10 @@ namespace Reko.UnitTests.Typing
             eqb.Build(program);
             var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program, eventListener);
             coll.CollectTypes();
+            program.TypeStore.Dump();
+
             program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
+                program.TypeStore.Dump();
             tvr.ReplaceTypeVariables();
             trans.Transform();
             ctn.RenameAllTypes(program.TypeStore);
@@ -143,7 +146,7 @@ namespace Reko.UnitTests.Typing
         private ProgramBuilder CreateProgramBuilder(uint linearAddress, int size)
         {
             return new ProgramBuilder(
-                new MemoryArea(Address.Ptr32(linearAddress), new byte[size]));
+                new ByteMemoryArea(Address.Ptr32(linearAddress), new byte[size]));
         }
 
         private void DumpProgram(Program program, TextWriter tw)
@@ -212,7 +215,7 @@ namespace Reko.UnitTests.Typing
         {
             Program program = new Program();
             program.SegmentMap = new SegmentMap(Address.Ptr32(0x0010000));
-            program.Architecture = new FakeArchitecture();
+            program.Architecture = new FakeArchitecture(new ServiceContainer());
             program.Platform = new DefaultPlatform(null, program.Architecture);
             SetupPreStages(program);
             Identifier id = new Identifier("v0", PrimitiveType.Word32, null);
@@ -261,7 +264,7 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void TerConstants()
         {
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
             Program program = new Program(
                 new SegmentMap(Address.Ptr32(0x10000)),
                 arch,
@@ -605,8 +608,10 @@ namespace Reko.UnitTests.Typing
                     m.Assign(ebp, m.ISub(m.Frame.FramePointer, 4));
                     m.Assign(eax, m.Mem32(m.IAdd(ebp, 0x0C)));
                     m.Assign(ecx, m.Mem32(m.IAdd(ebp, 0x08)));
-                    m.Assign(eax, m.Cast(PrimitiveType.Int32, m.Mem(PrimitiveType.Int16,
-                        m.IAdd(ecx, m.IMul(eax, 2)))));
+                    m.Assign(eax, m.Convert(m.Mem(PrimitiveType.Int16,
+                        m.IAdd(ecx, m.IMul(eax, 2))),
+                        PrimitiveType.Int16,
+                        PrimitiveType.Int32));
                     m.MStore(m.Word32(0x1234), eax);
                 });
             RunTest(pm, "Typing/TerShortArray.txt");
@@ -626,13 +631,15 @@ namespace Reko.UnitTests.Typing
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Assign(
                     eax_2,
-                    m.Cast(PrimitiveType.Int32,
+                    m.Convert(
                     m.Mem(PrimitiveType.Int16,
                         m.IAdd(
                             ecx,
                             m.IAdd(
                                 m.IMul(eax, 2),
-                                100)))));
+                                100))),
+                    PrimitiveType.Int16,
+                    PrimitiveType.Int32));
                 m.MStore(m.Word32(0x010000), eax_2);
             });
             RunTest(pm, "Typing/TerArray.txt");
@@ -645,7 +652,7 @@ namespace Reko.UnitTests.Typing
             pm.Add("proc1", m =>
             {
                 var eax = m.Reg32("eax", 0);
-                m.MStore(m.Word32(0x01000), eax);
+                m.MStore(m.Ptr32(0x01000), eax);
             });
             var sExp =
             #region Expected String
@@ -656,7 +663,7 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	Mem0[0x00001000:word32] = eax
+	Mem0[0x00001000<p32>:word32] = eax
 proc1_exit:
 
 // After ///////
@@ -666,7 +673,7 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	globals->dw1000 = eax
+	g_dw1000 = eax
 proc1_exit:
 
 ";
@@ -692,7 +699,7 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	Mem0[0x00001000:word16] = Mem0[eax:word16]
+	Mem0[0x1000<32>:word16] = Mem0[eax:word16]
 proc1_exit:
 
 // After ///////
@@ -702,7 +709,7 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	globals->w1000 = *eax
+	g_w1000 = *eax
 proc1_exit:
 
 ";
@@ -718,8 +725,8 @@ proc1_exit:
             {
                 var eax = m.Reg32("eax", 0);
                 m.Declare(eax, null);
-                m.MStore(m.Word32(0x01000), m.Mem16(eax));
-                m.MStore(m.Word32(0x01002), m.Mem16(m.IAdd(eax, 2)));
+                m.MStore(m.Ptr32(0x01000), m.Mem16(eax));
+                m.MStore(m.Ptr32(0x01002), m.Mem16(m.IAdd(eax, 2)));
             });
             var sExp =
             #region Expected String
@@ -731,8 +738,8 @@ proc1_entry:
 	// succ:  l1
 l1:
 	word32 eax
-	Mem0[0x00001000:word16] = Mem0[eax:word16]
-	Mem0[0x00001002:word16] = Mem0[eax + 0x00000002:word16]
+	Mem0[0x00001000<p32>:word16] = Mem0[eax:word16]
+	Mem0[0x00001002<p32>:word16] = Mem0[eax + 2<32>:word16]
 proc1_exit:
 
 // After ///////
@@ -743,8 +750,8 @@ proc1_entry:
 	// succ:  l1
 l1:
 	struct Eq_2 * eax
-	globals->w1000 = eax->w0000
-	globals->w1002 = eax->w0002
+	g_w1000 = eax->w0000
+	g_w1002 = eax->w0002
 proc1_exit:
 
 ";
@@ -764,7 +771,7 @@ proc1_exit:
                 m.Declare(eax1, null);
                 m.Assign(eax2, m.Mem32(eax1));
                 m.Assign(eax3, m.Mem32(eax2));
-                m.MStore(m.Word32(0x01004), m.Mem(PrimitiveType.Real32, eax3));
+                m.MStore(m.Ptr32(0x01004), m.Mem(PrimitiveType.Real32, eax3));
             });
             var sExp =
             #region Expected String
@@ -778,7 +785,7 @@ l1:
 	word32 eax1
 	eax2 = Mem0[eax1:word32]
 	eax3 = Mem0[eax2:word32]
-	Mem0[0x00001004:real32] = Mem0[eax3:real32]
+	Mem0[0x00001004<p32>:real32] = Mem0[eax3:real32]
 proc1_exit:
 
 // After ///////
@@ -791,7 +798,7 @@ l1:
 	real32 *** eax1
 	eax2 = *eax1
 	eax3 = *eax2
-	globals->r1004 = *eax3
+	g_r1004 = *eax3
 proc1_exit:
 
 ";
@@ -808,7 +815,7 @@ proc1_exit:
                 var r1 = m.Reg32("r1", 1);
                 m.Declare(r1, null);
                 m.Assign(r1, m.Mem32(r1));
-                m.MStore(m.Word32(0x01004), m.Mem(
+                m.MStore(m.Ptr32(0x01004), m.Mem(
                     PrimitiveType.Char,
                     m.IAdd(
                         m.Mem32(
@@ -826,7 +833,7 @@ proc1_entry:
 l1:
 	word32 r1
 	r1 = Mem0[r1:word32]
-	Mem0[0x00001004:char] = Mem0[Mem0[Mem0[r1:word32]:word32] + 0x00000004:char]
+	Mem0[0x00001004<p32>:char] = Mem0[Mem0[Mem0[r1:word32]:word32] + 4<32>:char]
 proc1_exit:
 
 // After ///////
@@ -838,7 +845,7 @@ proc1_entry:
 l1:
 	struct Eq_2 * r1
 	r1 = r1->ptr0000
-	globals->b1004 = r1->ptr0000->ptr0000->b0004
+	g_b1004 = r1->ptr0000->ptr0000->b0004
 proc1_exit:
 
 ";
@@ -877,8 +884,8 @@ l1:
 	word32 r1
 	word32 r2
 	r1 = Mem0[r1:word32]
-	Mem0[0x00001004:char] = Mem0[Mem0[Mem0[r1:word32]:word32] + 0x00000004:char]
-	r2 = r1 + 0x00000004
+	Mem0[0x1004<32>:char] = Mem0[Mem0[Mem0[r1:word32]:word32] + 4<32>:char]
+	r2 = r1 + 4<32>
 proc1_exit:
 
 // After ///////
@@ -891,7 +898,7 @@ l1:
 	struct Eq_2 * r1
 	ptr32 r2
 	r1 = r1->ptr0000
-	globals->b1004 = r1->ptr0000->ptr0000->b0004
+	g_b1004 = r1->ptr0000->ptr0000->b0004
 	r2 = &r1->b0004
 proc1_exit:
 
@@ -912,9 +919,9 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	eax = Mem0[0x00001200:word32]
+	eax = Mem0[0x1200<32>:word32]
 	Mem0[eax:word32] = eax
-	Mem0[eax + 0x00000004:word32] = eax
+	Mem0[eax + 4<32>:word32] = eax
 test_exit:
 
 // After ///////
@@ -924,7 +931,7 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	eax = globals->ptr1200
+	eax = g_ptr1200
 	eax->ptr0000 = eax
 	eax->ptr0004 = eax
 test_exit:
@@ -951,7 +958,7 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	word32 foo = 0x00000001
+	word32 foo = 1<32>
 test_exit:
 
 // After ///////
@@ -961,7 +968,7 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	word32 foo = 0x00000001
+	word32 foo = 1<32>
 test_exit:
 
 ";
@@ -983,7 +990,7 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	func(0x00001000)
+	func(0x1000<32>)
 test_exit:
 
 // After ///////
@@ -993,7 +1000,7 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	func(globals->arrayBlobs)
+	func(arrayBlobs)
 test_exit:
 
 ";
@@ -1025,8 +1032,8 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	ds = 0x1234
-	Mem0[ds:0x0010:word32] = 0x00010004
+	ds = 0x1234<16>
+	Mem0[ds:0x10<16>:word32] = 0x10004<32>
 test_exit:
 
 // After ///////
@@ -1037,7 +1044,7 @@ test_entry:
 	// succ:  l1
 l1:
 	ds = seg1234
-	ds->dw0010 = 0x00010004
+	ds->dw0010 = 0x10004<32>
 test_exit:
 
 "
@@ -1046,7 +1053,7 @@ test_exit:
 
             var seg = new ImageSegment(
                 "1234",
-                new MemoryArea(Address.SegPtr(0x1234, 0), new byte[0x100]),
+                new ByteMemoryArea(Address.SegPtr(0x1234, 0), new byte[0x100]),
                 AccessMode.ReadWriteExecute);
             seg.Identifier = Identifier.CreateTemporary("seg1234", PrimitiveType.SegmentSelector);
             imageSegments.Add(seg.Address, seg);
@@ -1145,7 +1152,7 @@ test_exit:
                 //m.Assign(rsp, m.Frame.FramePointer);
                 m.Assign(rdi, 0x0000000000201028);
                 m.Assign(rsi, 0x0000000000201028);
-                //m.Assign(rsp, m.ISub(rsp, 0x0000000000000008));
+                //m.Assign(rsp, m.ISub(rsp, 0x0000000000000008<64>));
 
     
                 m.Assign(rsi, m.ISub(rsi, rdi));
@@ -1168,8 +1175,10 @@ test_exit:
             pb.Add("fn", m =>
             {
                 m.MStore(Address.Ptr32(0x001028),
-                    m.Cast(PrimitiveType.Real32,
-                    m.Mem(PrimitiveType.Real64, Address.Ptr32(0x001020))));
+                    m.Convert(
+                        m.Mem(PrimitiveType.Real64, Address.Ptr32(0x001020)),
+                        PrimitiveType.Real64,
+                        PrimitiveType.Real32));
                 m.Return();
             });
             var program = pb.BuildProgram();
@@ -1188,7 +1197,7 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	eax = Mem0[0x00001200:word32]
+	eax = Mem0[0x1200<32>:word32]
 	ax_1 = SLICE(eax, word16, 0)
 	return
 	// succ:  test_exit
@@ -1201,7 +1210,7 @@ define test
 test_entry:
 	// succ:  l1
 l1:
-	eax = globals->dw1200
+	eax = g_dw1200
 	ax_1 = (word16) eax
 	return
 	// succ:  test_exit
@@ -1217,6 +1226,179 @@ test_exit:
                 m.Assign(eax, m.Mem32(m.Word32(0x1200)));
                 m.Assign(ax_1, m.Slice(PrimitiveType.Word16, eax, 0));
                 m.Return();
+            }, sExp);
+        }
+
+        [Test]
+        public void TerArrayAssignment()
+        {
+            var sExp =
+            #region Expected
+@"// Before ///////
+// test
+// Return size: 0
+define test
+test_entry:
+	// succ:  l000000000040EC30
+l000000000040EC30:
+	word64 rbx_18 = rdx - 1<64>
+	branch rdx == 0<64> l000000000040EC69
+	// succ:  l000000000040EC40 l000000000040EC69
+l000000000040EC40:
+	word64 rax_22 = 0x10000040<64>
+	// succ:  l000000000040EC50
+l000000000040EC50:
+	Mem0[rdi + rbx_18:byte] = CONVERT(Mem0[Mem0[rax_22:word64] + CONVERT(CONVERT(Mem0[rsi + rbx_18:byte], byte, word32), word32, uint64) * 4<64>:word32], word32, byte)
+	rbx_18 = rbx_18 - 1<64>
+	branch rbx_18 != 0xFFFFFFFFFFFFFFFF<64> l000000000040EC50
+	// succ:  l000000000040EC69 l000000000040EC50
+l000000000040EC69:
+	return
+	// succ:  test_exit
+test_exit:
+
+// After ///////
+// test
+// Return size: 0
+define test
+test_entry:
+	// succ:  l000000000040EC30
+l000000000040EC30:
+	int64 rbx_18 = rdx - 1<64>
+	branch rdx == 0<64> l000000000040EC69
+	// succ:  l000000000040EC40 l000000000040EC69
+l000000000040EC40:
+	word32 (** rax_22)[] = (word32 (**)[]) 0x10000040<64>
+	// succ:  l000000000040EC50
+l000000000040EC50:
+	rdi[rbx_18] = (byte) *((char *) *rax_22 + (uint64) ((word32) (rsi + rbx_18)) * 4<64>)
+	rbx_18 = rbx_18 - 1<64>
+	branch rbx_18 != 0xFFFFFFFFFFFFFFFF<64> l000000000040EC50
+	// succ:  l000000000040EC69 l000000000040EC50
+l000000000040EC69:
+	return
+	// succ:  test_exit
+test_exit:
+
+";
+            #endregion
+
+            // fn000000000040EC30 //////////
+            RunStringTest(m =>
+            {
+                Identifier rbx_18 = m.Local(PrimitiveType.Word64, "rbx_18");
+                Identifier rdx = m.Local(PrimitiveType.Word64, "rdx");
+                Identifier rax_22 = m.Local(PrimitiveType.Word64, "rax_22");
+                Identifier rsi = m.Local(PrimitiveType.Word64, "rsi");
+                Identifier rdi = m.Local(PrimitiveType.Word64, "rdi");
+
+                m.Label("l000000000040EC30");
+                m.Declare(rbx_18, m.ISub(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x1)));
+                m.BranchIf(m.Eq(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x0)), "l000000000040EC69");
+
+                m.Label("l000000000040EC40");
+                m.Declare(rax_22, m.Word64(0x10000040));
+
+                m.Label("l000000000040EC50");
+                m.MStore(m.IAdd(rdi, rbx_18), m.Convert(
+                    m.Mem32(m.IAdd(m.Mem64(rax_22), m.IMul(m.Convert(
+                        m.Convert(
+                            m.Mem8(m.IAdd(rsi, rbx_18)),
+                            PrimitiveType.Byte,
+                            PrimitiveType.Word32),
+                        PrimitiveType.Word32,
+                        PrimitiveType.UInt64),
+                    Constant.Create(PrimitiveType.Word64, 0x4)))),
+                    PrimitiveType.Word32,
+                    PrimitiveType.Byte));
+                m.Assign(rbx_18, m.ISub(rbx_18, Constant.Create(PrimitiveType.Word64, 0x1)));
+                m.BranchIf(m.Ne(rbx_18, Constant.Create(PrimitiveType.Word64, 0xFFFFFFFFFFFFFFFF)), "l000000000040EC50");
+
+                m.Label("l000000000040EC69");
+                m.Return();
+            }, sExp);
+        }
+
+        [Test]
+        public void TerGithubIssue879()
+        {
+            var sExp =
+            #region Expected
+                @"// Before ///////
+// test
+// Return size: 0
+define test
+test_entry:
+	// succ:  l1
+l1:
+	Mem0[ds:0x118<16>:byte] = Mem0[ds:CONVERT(CONVERT(Mem0[ds:0x94<16>:byte], byte, uint8), uint8, word16) + 0x95<16>:byte]
+test_exit:
+
+// After ///////
+// test
+// Return size: 0
+define test
+test_entry:
+	// succ:  l1
+l1:
+	ds->b0118 = ds->a0095[(word16) (uint8) ds->b0094]
+test_exit:
+
+";
+            #endregion
+
+            RunStringTest(m =>
+            {
+                Identifier ds = m.Reg16("ds", 42);
+
+                m.SStore(ds, m.Word16(0x118),
+                    m.SegMem8(
+                        ds,
+                        m.IAdd(
+                            m.Convert(m.Convert(
+                                m.SegMem8(ds, m.Word16(0x94)),
+                                PrimitiveType.Byte,
+                                PrimitiveType.UInt8),
+                            PrimitiveType.UInt8,
+                            PrimitiveType.Word16),
+                            m.Word16(0x95))));
+            }, sExp);
+
+        }
+
+        [Test]
+        public void TerConvertToCast()
+        {
+            var sExp =
+            #region Expected
+@"// Before ///////
+// test
+// Return size: 0
+define test
+test_entry:
+	// succ:  l1
+l1:
+	Mem0[ptr:real32] = CONVERT(n, int16, real32)
+test_exit:
+
+// After ///////
+// test
+// Return size: 0
+define test
+test_entry:
+	// succ:  l1
+l1:
+	*ptr = (real32) n
+test_exit:
+
+";
+            #endregion
+
+            RunStringTest(m =>
+            {
+                Identifier n = m.Reg16("n", 42);
+                Identifier ptr = m.Reg32("ptr", 43);
+                m.MStore(ptr, m.Convert(n, PrimitiveType.Int16, PrimitiveType.Real32));
             }, sExp);
         }
     }

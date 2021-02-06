@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +55,6 @@ namespace Reko.UnitTests.Environments.AmigaOS
             this.services = new ServiceContainer();
             var cfgSvc = new Mock<IConfigurationService>();
             var env = new Mock<PlatformDefinition>();
-            this.arch = new M68kArchitecture("m68k");
             this.rtls = new List<RtlInstruction>();
             this.m = new RtlEmitter(rtls);
             cfgSvc.Setup(c => c.GetEnvironment("amigaOS")).Returns(env.Object);
@@ -73,6 +72,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             this.services.AddService(typeof(IConfigurationService), cfgSvc.Object);
             this.services.AddService(typeof(IFileSystemService), fsSvc.Object);
             this.services.AddService(typeof(ITypeLibraryLoaderService), tllSvc.Object);
+            this.arch = new M68kArchitecture(services, "m68k", new Dictionary<string, object>());
             this.binder = new Frame(arch.FramePointerType);
         }
 
@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             When_Create_Platform();
             m.Call(m.IAdd(binder.EnsureRegister(Registers.a6), -512), 4);
             var state = arch.CreateProcessorState();
-            var svc = platform.FindService(rtls.Last(), state);
+            var svc = platform.FindService(rtls.Last(), state, null);
 
             Assert.AreEqual("Allocate", svc.Name);
             Assert.AreEqual(2, svc.Signature.Parameters.Length);

@@ -16,5 +16,23 @@ namespace Reko.WindowsItp.Decoders
         public Mnemonic Mnemonic { get; set; }
 
         public override int MnemonicAsInteger => (int) Mnemonic;
+
+        public override string MnemonicAsString => Mnemonic.ToString();
+    }
+
+    public enum Mnemonic
+    {
+        Invalid,
+
+        add,
+        sub,
+        mul,
+        div,
+
+        and,
+        or,
+        xor,
+        not,
+
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,45 +29,66 @@ namespace Reko.Arch.Sparc
 {
     public class SparcInstruction : MachineInstruction
     {
-        public Mnemonic Mnemonic;
+        public SparcInstruction()
+        {
+        }//$DEBUG
+        public Mnemonic Mnemonic { get; set; }
 
-        public override int MnemonicAsInteger => (int)Mnemonic; 
+        public override int MnemonicAsInteger => (int) Mnemonic;
+
+        public override string MnemonicAsString => Mnemonic.ToString();
 
         public bool Annul => (InstructionClass & InstrClass.Annul) != 0;
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        public Prediction Prediction { get; set; }
+
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteMnemonic(
-                string.Format("{0}{1}",
-                Mnemonic.ToString(),
-                Annul ? ",a" : ""));
-            RenderOperands(writer, options);
+            RenderMnemonic(renderer);
+            if (Mnemonic == Mnemonic.@return)
+            {
+                renderer.Tab();
+                RenderOperand(Operands[0], renderer, options);
+                RenderOperand(Operands[1], renderer, options);
+            }
+            else
+            {
+                RenderOperands(renderer, options);
+            }
         }
 
-        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        private void RenderMnemonic(MachineInstructionRenderer renderer)
+        {
+            var sb = new StringBuilder();
+            sb.Append(Mnemonic.ToString());
+            if (Annul)
+                sb.Append(",a");
+            if (Prediction == Prediction.NotTaken)
+                sb.Append(",pn");
+            if (Prediction == Prediction.Taken)
+                sb.Append(",pt");
+            renderer.WriteMnemonic(sb.ToString());
+        }
+
+        protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch (op)
             {
             case RegisterOperand reg:
-                writer.WriteFormat("%{0}", reg.Register.Name);
+                renderer.WriteFormat("%{0}", reg.Register.Name);
                 return;
-            case ImmediateOperand imm:
-                writer.WriteString(imm.Value.ToString());
-                return;
-            case MemoryOperand mem:
-                mem.Write(writer, options);
-                return;
-            case IndexedMemoryOperand idx:
-                idx.Write(writer, options);
+            default:
+                op.Render(renderer, options);
                 return;
             }
-            writer.WriteString(op.ToString());
         }
+    }
 
-        [Flags]
-        public enum Flags
-        {
-            Annul = 1,
-        }
+    [Flags]
+    public enum Prediction
+    {
+        None = 0,
+        NotTaken = 1,
+        Taken = 2,
     }
 }

@@ -53,6 +53,12 @@ else()
 	find_library(CAPSTONE_LIBRARIES capstone PATHS ${REKO_BUNDLED_LIBDIRS})
 endif()
 
+if(MSVC)
+	include(ProcessorCount)
+	ProcessorCount(NUM_THREADS)
+	add_definitions("/MP${NUM_THREADS}")
+endif()
+
 add_subdirectory(common)
 add_subdirectory(ArmNative)
 

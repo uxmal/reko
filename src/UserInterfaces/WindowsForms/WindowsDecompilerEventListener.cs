@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -189,6 +189,16 @@ namespace Reko.UserInterfaces.WindowsForms
 
         #region DecompilerEventListener Members
 
+        public void Info(string message)
+        {
+            diagnosticSvc.Inform(new NullCodeLocation(""), message);
+        }
+
+        public void Info(string message, params object[] args)
+        {
+            diagnosticSvc.Inform(new NullCodeLocation(""), message, args);
+        }
+
         public void Info(ICodeLocation location, string message)
         {
             diagnosticSvc.Inform(location, message);
@@ -199,6 +209,16 @@ namespace Reko.UserInterfaces.WindowsForms
             diagnosticSvc.Inform(location, message, args);
         }
 
+        public void Warn(string message)
+        {
+            diagnosticSvc.Warn(new NullCodeLocation(""), message);
+        }
+
+        public void Warn(string message, params object[] args)
+        {
+            diagnosticSvc.Warn(new NullCodeLocation(""), message, args);
+        }
+
         public void Warn(ICodeLocation location, string message)
         {
             diagnosticSvc.Warn(location, message);
@@ -207,6 +227,26 @@ namespace Reko.UserInterfaces.WindowsForms
         public void Warn(ICodeLocation location, string message, params object[] args)
         {
             diagnosticSvc.Warn(location, message, args);
+        }
+
+        public void Error(string message)
+        {
+            diagnosticSvc.Error(new NullCodeLocation(""), message);
+        }
+
+        public void Error(string message, params object[] args)
+        {
+            diagnosticSvc.Error(new NullCodeLocation(""), message, args);
+        }
+
+        public void Error(Exception ex, string message)
+        {
+            diagnosticSvc.Error(ex, message);
+        }
+
+        public void Error(Exception ex, string message, params object[] args)
+        {
+            diagnosticSvc.Error(new NullCodeLocation(""), ex, message, args);
         }
 
         public void Error(ICodeLocation location, string message)
@@ -254,9 +294,9 @@ namespace Reko.UserInterfaces.WindowsForms
             return new StatementNavigator(program, stm, sp);
         }
 
-        ICodeLocation DecompilerEventListener.CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector, int stride)
+        ICodeLocation DecompilerEventListener.CreateJumpTableNavigator(Program program, IProcessorArchitecture arch, Address addrIndirectJump, Address addrVector, int stride)
         {
-            return new JumpVectorNavigator(program, addrIndirectJump, addrVector, stride, sp);
+            return new JumpVectorNavigator(program, arch, addrIndirectJump, addrVector, stride, sp);
         }
 
         private void ShowStatus(string newStatus)
@@ -291,7 +331,6 @@ namespace Reko.UserInterfaces.WindowsForms
             var percentDone = Math.Min(
                 100,
                 (int) ((position * 100L) / total));
-                        dlg.Worker.ReportProgress(percentDone);
             dlg.Worker.ReportProgress(percentDone);
         }
 

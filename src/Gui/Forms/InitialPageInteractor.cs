@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ namespace Reko.Gui.Forms
     {
         bool OpenBinary(string file);
         bool OpenBinaryAs(string file, LoadDetails details);
-        bool Assemble(string file, Assembler asm);
+        bool Assemble(string file, IAssembler asm, IPlatform platform );
     }
 
     /// <summary>
@@ -167,14 +167,14 @@ namespace Reko.Gui.Forms
             }
         }
 
-        public bool Assemble(string file, Assembler asm)
+        public bool Assemble(string file, IAssembler asm, IPlatform platform)
         {
             var ldr = Services.RequireService<ILoader>();
             this.Decompiler = CreateDecompiler(ldr);
             var svc = Services.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {
-                Decompiler.Assemble(file, asm);
+                Decompiler.Assemble(file, asm, platform);
             });
             if (Decompiler.Project == null)
                 return false;

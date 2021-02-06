@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.UnitTests.Mocks;
@@ -78,16 +79,18 @@ namespace Reko.UnitTests.Gui
             var host = new Mock<IDecompiledFileService>();
             var arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");
+            arch.Setup(a => a.MemoryGranularity).Returns(8);
             var platform = new Mock<IPlatform>();
             var fileName = OsPath.Relative("foo", "bar", "baz.exe");
             var bytes = new byte[100];
-            var mem = new MemoryArea(Address.Ptr32(0x1000), bytes);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x1000), bytes);
             var imageMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var program = new Program(imageMap, arch.Object, platform.Object);
             sc.AddService<IDecompiledFileService>(host.Object);
             platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
+            platform.Setup(p => p.Architecture).Returns(arch.Object);
             loader.Setup(l => l.LoadImageBytes(fileName, 0)).Returns(bytes);
             loader.Setup(l => l.LoadExecutable(fileName, bytes, null, null)).Returns(program);
             var dec = new Decompiler(loader.Object, sc);

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Services;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -81,7 +82,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 if (program != null)
                 {
-                    Model = new MixedCodeDataModel(program);
+                    Model = new MixedCodeDataModel(program, program.ImageMap.Clone());
                     var currentPos = Model.CurrentPosition;
                     addrTop = MixedCodeDataModel.PositionAddress(currentPos);
                     return;
@@ -124,7 +125,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private void RefreshModel()
         {
             var currentPos = Model.CurrentPosition;
-            var model = new MixedCodeDataModel(program);
+            var model = new MixedCodeDataModel(program, program.ImageMap.Clone());
             model.MoveToLine(currentPos, 0);
             currentPos = Model.CurrentPosition;
             this.addrTop = MixedCodeDataModel.PositionAddress(currentPos);

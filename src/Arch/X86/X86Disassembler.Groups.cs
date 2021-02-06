@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,274 +24,294 @@ namespace Reko.Arch.X86
 {
     public partial class X86Disassembler
     {
-        private static Decoder [] CreateGroupDecoders()
+        public partial class InstructionSet
         {
-            return new Decoder[]
+            private void CreateGroupDecoders()
             {
-				// group 1
-				Instr(Mnemonic.add),
-                Instr(Mnemonic.or),
-                Instr(Mnemonic.adc),
-                Instr(Mnemonic.sbb),
-                Instr(Mnemonic.and),
-                Instr(Mnemonic.sub),
-                Instr(Mnemonic.xor),
-                Instr(Mnemonic.cmp),
+                Grp1[0] = Instr(Mnemonic.add);
+                Grp1[1] = Instr386(Mnemonic.or);
+                Grp1[2] = Instr(Mnemonic.adc);
+                Grp1[3] = Instr(Mnemonic.sbb);
+                Grp1[4] = Instr386(Mnemonic.and);
+                Grp1[5] = Instr(Mnemonic.sub);
+                Grp1[6] = Instr386(Mnemonic.xor);
+                Grp1[7] = Instr(Mnemonic.cmp);
 
-				// group 2
-				Instr(Mnemonic.rol),
-                Instr(Mnemonic.ror),
-                Instr(Mnemonic.rcl),
-                Instr(Mnemonic.rcr),
-                Instr(Mnemonic.shl),
-                Instr(Mnemonic.shr),
-                Instr(Mnemonic.shl),
-                Instr(Mnemonic.sar),
+                Grp1A[0] = Instr(Mnemonic.pop, Ev);
+                Grp1A[1] = s_invalid;
+                Grp1A[2] = s_invalid;
+                Grp1A[3] = s_invalid;
+                Grp1A[4] = s_invalid;
+                Grp1A[5] = s_invalid;
+                Grp1A[6] = s_invalid;
+                Grp1A[7] = s_invalid;
 
-				// group 3
-				Instr(Mnemonic.test, Ix),
-                Instr(Mnemonic.test, Ix),
-                Instr(Mnemonic.not),
-                Instr(Mnemonic.neg),
-                Instr(Mnemonic.mul),
-                Instr(Mnemonic.imul),
-                Instr(Mnemonic.div),
-                Instr(Mnemonic.idiv),
-				
-				// group 4
-				Instr(Mnemonic.inc, Eb),
-                Instr(Mnemonic.dec, Eb),
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid, 
+                Grp2[0] = Instr(Mnemonic.rol);
+                Grp2[1] = Instr(Mnemonic.ror);
+                Grp2[2] = Instr(Mnemonic.rcl);
+                Grp2[3] = Instr(Mnemonic.rcr);
+                Grp2[4] = Instr(Mnemonic.shl);
+                Grp2[5] = Instr(Mnemonic.shr);
+                Grp2[6] = Instr(Mnemonic.shl);
+                Grp2[7] = Instr(Mnemonic.sar);
 
-				// group 5
-				Instr(Mnemonic.inc, Ev),
-                Instr(Mnemonic.dec, Ev),
-                new Alternative64Decoder(
-                    Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Ev),
-                    Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Eq)),
-                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Ep),
-                new Alternative64Decoder(
-                    Instr(Mnemonic.jmp, InstrClass.Transfer, Ev),
-                    Instr(Mnemonic.jmp, InstrClass.Transfer, Eq)),
-                Instr(Mnemonic.jmp, InstrClass.Transfer, Ep),
-                new Alternative64Decoder(
-                    Instr(Mnemonic.push, Ev),
-                    Instr(Mnemonic.push, Eq)),
-                s_invalid,
+                Grp3[0] = Instr(Mnemonic.test, Ix);
+                Grp3[1] = Instr(Mnemonic.test, Ix);
+                Grp3[2] = Instr(Mnemonic.not);
+                Grp3[3] = Instr(Mnemonic.neg);
+                Grp3[4] = Instr(Mnemonic.mul);
+                Grp3[5] = Instr(Mnemonic.imul);
+                Grp3[6] = Instr(Mnemonic.div);
+                Grp3[7] = Instr(Mnemonic.idiv);
 
-				// group 6
-				new Group6Decoder(
-                    Instr(Mnemonic.sldt, InstrClass.System, Ew),
-                    Instr(Mnemonic.sldt, InstrClass.System, Rv)),
-                new Group6Decoder(
-                    Instr(Mnemonic.str, Ew),
-                    Instr(Mnemonic.str, Rv)),
-                Instr(Mnemonic.lldt, InstrClass.System, Ms),
-                Instr(Mnemonic.ltr, Ew),
-                Instr(Mnemonic.verr, Ew),
-                Instr(Mnemonic.verw, Ew),
-                s_invalid,
-                s_invalid,
+                Grp4[0] = Instr(Mnemonic.inc, Eb);
+                Grp4[1] = Instr(Mnemonic.dec, Eb);
+                Grp4[2] = s_invalid;
+                Grp4[3] = s_invalid;
+                Grp4[4] = s_invalid;
+                Grp4[5] = s_invalid;
+                Grp4[6] = s_invalid;
+                Grp4[7] = s_invalid;
 
-				// group 7
-				new Group7Decoder(
-                    Instr(Mnemonic.sgdt, Ms),
-                    s_invalid,
-                    Instr(Mnemonic.vmcall),
-                    Instr(Mnemonic.vmlaunch),
-                    Instr(Mnemonic.vmresume),
-                    Instr(Mnemonic.vmxoff),
-                    s_invalid,
-                    s_invalid,
-                    s_invalid),
-                new Group7Decoder(
-                    Instr(Mnemonic.sidt, Ms),
-                    Instr(Mnemonic.monitor),
-                    Instr(Mnemonic.mwait),
-                    Instr(Mnemonic.clac),
-                    Instr(Mnemonic.stac),
-                    s_invalid,
-                    s_invalid,
-                    s_invalid,
-                    s_invalid),
-                new Group7Decoder(
-                    Instr(Mnemonic.lgdt, InstrClass.System, Ms),
 
-                    Instr(Mnemonic.xgetbv),
-                    Instr(Mnemonic.xsetbv),
-                    s_invalid,
-                    s_invalid,
+                Grp5[0] = Instr(Mnemonic.inc, Ev);
+                Grp5[1] = Instr(Mnemonic.dec, Ev);
+                Grp5[2] = Amd64Instr(
+                        Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Ev),
+                        Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Eq));
+                Grp5[3] = Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Ep);
+                Grp5[4] = Amd64Instr(
+                        Instr(Mnemonic.jmp, InstrClass.Transfer, Ev),
+                        Instr(Mnemonic.jmp, InstrClass.Transfer, Eq));
+                Grp5[5] = Instr(Mnemonic.jmp, InstrClass.Transfer, Ep);
+                Grp5[6] = Amd64Instr(
+                        Instr(Mnemonic.push, Ev),
+                        Instr(Mnemonic.push, Eq));
+                Grp5[7] = s_invalid;
 
-                    Instr(Mnemonic.vmfunc),
-                    Instr(Mnemonic.xend),
-                    Instr(Mnemonic.xtest),
-                    s_invalid),
-                new Group6Decoder(
-                    Instr(Mnemonic.lidt, InstrClass.System, Ms),
-                    s_invalid),
+                // 0F 00
+                Grp6[0] = MemReg(
+                        Instr(Mnemonic.sldt, InstrClass.System, Ew),
+                        Instr(Mnemonic.sldt, InstrClass.System, Rv));
+                Grp6[1] = MemReg(
+                        Instr(Mnemonic.str, InstrClass.System, Ew),
+                        Instr(Mnemonic.str, InstrClass.System, Rw));
+                Grp6[2] = MemReg(
+                        Instr(Mnemonic.lldt, InstrClass.System, Ms),
+                        Instr(Mnemonic.lldt, InstrClass.System, Rw));
+                Grp6[3] = Instr(Mnemonic.ltr, InstrClass.System, Ew);
+                Grp6[4] = Instr(Mnemonic.verr, Ew);
+                Grp6[5] = Instr(Mnemonic.verw, Ew);
+                Grp6[6] = s_invalid;
+                Grp6[7] = s_invalid;
 
-                new Group6Decoder(
-                    Instr(Mnemonic.smsw, Ew),
-                    Instr(Mnemonic.smsw, Rv)),
-                new Group7Decoder(
+                // 0F 01
+                Grp7[0] = new Group7Decoder(
+                        Instr(Mnemonic.sgdt, Ms),
+                        Instr(Mnemonic.monitor),
+                        Instr(Mnemonic.vmcall),
+                        Instr(Mnemonic.vmlaunch),
+                        Instr(Mnemonic.vmresume),
+                        Instr(Mnemonic.vmxoff),
+                        s_invalid,
+                        s_invalid,
+                        s_invalid);
+                Grp7[1] = new Group7Decoder(
+                        Instr(Mnemonic.sidt, Ms),
+                        Instr(Mnemonic.monitor),
+                        Instr(Mnemonic.mwait),
+                        Instr(Mnemonic.clac),
+                        Instr(Mnemonic.stac),
+                        s_invalid,
+                        s_invalid,
+                        s_invalid,
+                        s_invalid);
+                Grp7[2] = new Group7Decoder(
+                        Instr(Mnemonic.lgdt, InstrClass.System, Ms),
+
+                        Instr(Mnemonic.xgetbv),
+                        Instr(Mnemonic.xsetbv),
+                        s_invalid,
+                        s_invalid,
+
+                        Instr(Mnemonic.vmfunc),
+                        Instr(Mnemonic.xend),
+                        Instr(Mnemonic.xtest),
+                        s_invalid);
+                Grp7[3] = MemReg(
+                        Instr(Mnemonic.lidt, InstrClass.System, Ms),
+                        s_invalid);
+
+                Grp7[4] = MemReg(
+                        Instr(Mnemonic.smsw, Ew),
+                        Instr(Mnemonic.smsw, Rv));
+                Grp7[5] = new Group7Decoder(
+                        s_invalid,
+
+                        s_invalid,
+                        s_invalid,
+                        s_invalid,
+                        s_invalid,
+                        s_invalid,
+                        s_invalid,
+                        Instr(Mnemonic.rdpkru),
+                        Instr(Mnemonic.wrpkru));
+                Grp7[6] = Instr(Mnemonic.lmsw, InstrClass.System, Ew);
+                Grp7[7] = new Group7Decoder(
+                        Instr(Mnemonic.invlpg, InstrClass.System, Mb),
+
+                        Instr(Mnemonic.swapgs),
+                        Instr(Mnemonic.rdtscp),
+                        Instr(Mnemonic.monitorx),
+                        Instr(Mnemonic.mwaitx),
+
+                        s_invalid,
+                        s_invalid,
+                        s_invalid,
+                        s_invalid);
+
+                // 0F BA
+                Grp8[0] = s_invalid;
+                Grp8[1] = s_invalid;
+                Grp8[2] = s_invalid;
+                Grp8[3] = s_invalid;
+                Grp8[4] = Instr(Mnemonic.bt);
+                Grp8[5] = Instr(Mnemonic.bts);
+                Grp8[6] = Instr(Mnemonic.btr);
+                Grp8[7] = Instr(Mnemonic.btc);
+
+                // 0F C7
+                Grp9[0] = s_invalid;
+                Grp9[1] = MemReg(
+                        new PrefixedDecoder(
+                            Amd64Instr(
+                                Instr(Mnemonic.cmpxchg8b, Mq),
+                                Instr(Mnemonic.cmpxchg16b, Mdq))),
+                        s_invalid);
+                Grp9[2] = s_invalid;
+                Grp9[3] = s_invalid;
+
+                Grp9[4] = s_invalid;
+                Grp9[5] = s_invalid;
+                Grp9[6] = MemReg(
+                        new PrefixedDecoder(
+                            Instr(Mnemonic.vmptrld, Mq),
+                            dec66: Instr(Mnemonic.vmclear, Mq),
+                            decF3: Instr(Mnemonic.vmxon, Mq)),
+                        Instr(Mnemonic.rdrand, Rv));
+                Grp9[7] = MemReg(
+                        new PrefixedDecoder(
+                            dec:Instr(Mnemonic.vmptrst, Mq),
+                            decF3:Instr(Mnemonic.vmptrst, Mq)),
+                        Instr(Mnemonic.rdseed, Rv));
+
+                // 0F B9
+                Grp10[0] = Instr(Mnemonic.ud1, InstrClass.Invalid);
+                Grp10[1] = Instr(Mnemonic.ud1, InstrClass.Invalid);
+                Grp10[2] = Instr(Mnemonic.ud1, InstrClass.Invalid);
+                Grp10[3] = Instr(Mnemonic.ud1, InstrClass.Invalid);
+                Grp10[4] = Instr(Mnemonic.ud1, InstrClass.Invalid);
+                Grp10[5] = Instr(Mnemonic.ud1, InstrClass.Invalid);
+                Grp10[6] = Instr(Mnemonic.ud1, InstrClass.Invalid);
+                Grp10[7] = Instr(Mnemonic.ud1, InstrClass.Invalid);
+
+                // C6/C7
+                Grp11b[0] = Instr(Mnemonic.mov, Eb, Ib);
+                Grp11b[1] = s_invalid;
+                Grp11b[2] = s_invalid;      // Some of these appear to be "secret" instructions.
+                Grp11b[3] = s_invalid;
+                Grp11b[4] = s_invalid;
+                Grp11b[5] = s_invalid;
+                Grp11b[6] = s_invalid;
+                Grp11b[7] = new Group7Decoder(
                     s_invalid,
+                    Instr(Mnemonic.xabort, InstrClass.Terminates, Ib));
 
+                Grp11z[0] = Instr(Mnemonic.mov, Ev, Iz);
+                Grp11z[1] = s_invalid;
+                Grp11z[2] = s_invalid;
+                Grp11z[3] = s_invalid;      // Some of these appear to be "secret" instructions.
+                Grp11z[4] = s_invalid;
+                Grp11z[5] = s_invalid;
+                Grp11z[6] = s_invalid;
+                Grp11z[7] = new Group7Decoder(
                     s_invalid,
-                    s_invalid,
-                    s_invalid,
-                    s_invalid,
-                    s_invalid,
-                    s_invalid,
-                    Instr(Mnemonic.rdpkru),
-                    Instr(Mnemonic.wrpkru)),
-                Instr(Mnemonic.lmsw, Ew),
-                new Group7Decoder(
-                    Instr(Mnemonic.invlpg, Mb),
+                    Instr(Mnemonic.xabort, InstrClass.Terminates, Ib));
 
-                    Instr(Mnemonic.swapgs),
-                    Instr(Mnemonic.rdtscp),
-                    Instr(Mnemonic.monitorx),
-                    Instr(Mnemonic.mwaitx),
+                // 0F 71
+                Grp12[0] = s_invalid;
+                Grp12[1] = s_invalid;
+                Grp12[2] = new PrefixedDecoder(
+                        Instr(Mnemonic.psrlw, Nq, Ib),
+                        Instr(Mnemonic.vpsrlw, Hx, Ux, Ib));
+                Grp12[3] = s_invalid;
+                Grp12[4] = new PrefixedDecoder(
+                        Instr(Mnemonic.psraw, Nq, Ib),
+                        Instr(Mnemonic.vpsraw, Hx, Ux, Ib));
+                Grp12[5] = s_invalid;
+                Grp12[6] = new PrefixedDecoder(
+                        Instr(Mnemonic.psllw, Nq, Ib),
+                        Instr(Mnemonic.vpsllw, Hx, Ux, Ib));
+                Grp12[7] = s_invalid;
 
-                    s_invalid,
-                    s_invalid,
-                    s_invalid,
-                    s_invalid),
-
-				// group 8
-				s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                Instr(Mnemonic.bt),
-                Instr(Mnemonic.bts),
-                Instr(Mnemonic.btr),
-                Instr(Mnemonic.btc),
-
-				// group 9
-				s_invalid,
-                new Group6Decoder(
-                    new PrefixedDecoder(
-                        new Alternative64Decoder(
-                            Instr(Mnemonic.cmpxchg8b, Mq),
-                            Instr(Mnemonic.cmpxchg16b, Mdq))),
-                    s_invalid),
-                s_invalid,
-                s_invalid,
-
-                s_invalid,
-                s_invalid,
-                new Group6Decoder(
-                    new PrefixedDecoder(
-                        Instr(Mnemonic.vmptrld, Mq),
-                        dec66:Instr(Mnemonic.vmclear, Mq),
-                        decF3:Instr(Mnemonic.vmxon, Mq)),
-                    Instr(Mnemonic.rdrand, Rv)),
-                new Group6Decoder(
-                    new PrefixedDecoder(
-                        dec:Instr(Mnemonic.vmptrst, Mq),
-                        decF3:Instr(Mnemonic.vmptrst, Mq)),
-                    Instr(Mnemonic.rdseed, Rv)),
-
-				// group 10
-				s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-
-				// group 11
-				s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-                s_nyi,
-
-				// group 12
-				s_invalid,
-                s_invalid,
-                new PrefixedDecoder(
-                    Instr(Mnemonic.psrlw, Nq,Ib),
-                    Instr(Mnemonic.vpsrlw, Hx,Ux,Ib)),
-                s_invalid,
-                new PrefixedDecoder(
-                    Instr(Mnemonic.psraw, Nq,Ib),
-                    Instr(Mnemonic.vpsraw, Hx,Ux,Ib)),
-                s_invalid,
-                new PrefixedDecoder(
-                    Instr(Mnemonic.psllw, Nq,Ib),
-                    Instr(Mnemonic.vpsllw, Hx,Ux,Ib)),
-                s_invalid,
-
-				// group 13
-				s_invalid,
-                s_invalid,
-                new PrefixedDecoder(
+                // 0F 72
+                Grp13[0] = s_invalid;
+                Grp13[1] = s_invalid;
+                Grp13[2] = new PrefixedDecoder(
                     Instr(Mnemonic.psrld, Nq,Ib),
-                    Instr(Mnemonic.vpsrld, Hx,Ux,Ib)),
-                s_invalid,
+                    VexInstr(Mnemonic.psrld, Mnemonic.vpsrld, Hx,Ux,Ib));
+                Grp13[3] = s_invalid;
 
-                new PrefixedDecoder(
+                Grp13[4] = new PrefixedDecoder(
                     Instr(Mnemonic.psrad, Nq,Ib),
-                    Instr(Mnemonic.vpsrad, Hx,Ux,Ib)),
-                s_invalid,
-                new PrefixedDecoder(
+                    Instr(Mnemonic.vpsrad, Hx,Ux,Ib));
+                Grp13[5] = s_invalid;
+                Grp13[6] = new PrefixedDecoder(
                     Instr(Mnemonic.pslld, Nq,Ib),
-                    Instr(Mnemonic.vpslld, Hx,Ux,Ib)),
-                s_invalid,
+                    VexInstr(Mnemonic.pslld, Mnemonic.vpslld, Hx,Ux,Ib));
+                Grp13[7] = s_invalid;
 
-				// group 14
-				s_invalid,
-                s_invalid,
-                new PrefixedDecoder(
-                    Instr(Mnemonic.psrlq, Nq,Ib),
-                    Instr(Mnemonic.vpsrlq, Hx,Ux,Ib)),
-                new PrefixedDecoder(
-                    s_invalid,
-                    Instr(Mnemonic.vpsrldq, Hx,Ux,Ib)),
+                // 0F 73
+                Grp14[0] = s_invalid;
+                Grp14[1] = s_invalid;
+                Grp14[2] = new PrefixedDecoder(
+                        Instr(Mnemonic.psrlq, Nq,Ib),
+                        VexInstr(Mnemonic.psrlq, Mnemonic.vpsrlq, Hx,Ux,Ib));
+                Grp14[3] = new PrefixedDecoder(
+                        s_invalid,
+                        VexInstr(Mnemonic.psrldq, Mnemonic.vpsrldq, Hx,Ux,Ib));
 
-                s_invalid,
-                s_invalid,
-                new PrefixedDecoder(
+                Grp14[4] = s_invalid;
+                Grp14[5] = s_invalid;
+                Grp14[6] = new PrefixedDecoder(
                     Instr(Mnemonic.psllq, Nq,Ib),
-                    Instr(Mnemonic.vpsllq, Hx,Ux,Ib)),
-                new PrefixedDecoder(
-                    s_invalid,
-                    Instr(Mnemonic.vpslldq, Hx,Ux,Ib)),
+                    VexInstr(Mnemonic.psllq, Mnemonic.vpsllq, Hx,Ux,Ib));
+                Grp14[7] = new PrefixedDecoder(
+                        s_invalid,
+                        VexInstr(Mnemonic.pslldq, Mnemonic.vpslldq, Hx,Ux,Ib));
 
-				// group 15
-				new Group7Decoder(Instr(Mnemonic.fxsave)),
-                new Group7Decoder(Instr(Mnemonic.fxrstor)),
-                Instr(Mnemonic.ldmxcsr, Md),
-                Instr(Mnemonic.stmxcsr, Md),
+                // 0F AE
+                Grp15[0] = new Group7Decoder(Instr(Mnemonic.fxsave));
+                Grp15[1] = new Group7Decoder(Instr(Mnemonic.fxrstor));
+                Grp15[2] = Instr(Mnemonic.ldmxcsr, Md);
+                Grp15[3] = Instr(Mnemonic.stmxcsr, Md);
 
-                new Alternative64Decoder(
+                Grp15[4] = Amd64Instr(
                     Instr(Mnemonic.xsave, Mb),
-                    Instr(Mnemonic.xsave64, Mb)),
-				new Group7Decoder(
+                    Instr(Mnemonic.xsave64, Mb));
+                Grp15[5] = new Group7Decoder(
                     Instr(Mnemonic.xrstor, Md),
 
                     Instr(Mnemonic.lfence),
                     Instr(Mnemonic.lfence),
                     Instr(Mnemonic.lfence),
                     Instr(Mnemonic.lfence),
-
+                 
                     Instr(Mnemonic.lfence),
                     Instr(Mnemonic.lfence),
                     Instr(Mnemonic.lfence),
-                    Instr(Mnemonic.lfence)),
-                new Group7Decoder(
+                    Instr(Mnemonic.lfence));
+                Grp15[6] = new Group7Decoder(
                     Instr(Mnemonic.xsaveopt, Md),
 
                     Instr(Mnemonic.mfence),
@@ -302,8 +322,8 @@ namespace Reko.Arch.X86
                     Instr(Mnemonic.mfence),
                     Instr(Mnemonic.mfence),
                     Instr(Mnemonic.mfence),
-                    Instr(Mnemonic.mfence)),
-                new Group7Decoder(
+                    Instr(Mnemonic.mfence));
+                Grp15[7] = new Group7Decoder(
                     Instr(Mnemonic.clflush, Md),
 
                     Instr(Mnemonic.sfence),
@@ -314,28 +334,28 @@ namespace Reko.Arch.X86
                     Instr(Mnemonic.sfence),
                     Instr(Mnemonic.sfence),
                     Instr(Mnemonic.sfence),
-                    Instr(Mnemonic.sfence)),
+                    Instr(Mnemonic.sfence));
 
-				// group 16
-				Instr(Mnemonic.prefetchnta, Mb),
-				Instr(Mnemonic.prefetcht0, Mb),
-				Instr(Mnemonic.prefetcht1, Mb),
-				Instr(Mnemonic.prefetcht2, Mb),
-                s_invalid,
-                s_invalid,
-                s_invalid,
-                s_invalid,
+                // 0F 18
+                Grp16[0] = Instr(Mnemonic.prefetchnta, Mb);
+                Grp16[1] = Instr(Mnemonic.prefetcht0, Mb);
+                Grp16[2] = Instr(Mnemonic.prefetcht1, Mb);
+                Grp16[3] = Instr(Mnemonic.prefetcht2, Mb);
+                Grp16[4] = Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding);
+                Grp16[5] = Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding);
+                Grp16[6] = Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding);
+                Grp16[7] = Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding);
 
-				// group 17
-				s_invalid,
-				s_nyi,
-				s_nyi,
-				s_nyi,
-				s_invalid,
-				s_invalid,
-				s_invalid,
-				s_invalid,
-			};
+                // VEX.0F38 F3
+                Grp17[0] = s_invalid;
+                Grp17[1] = VexInstr(Mnemonic.illegal, Mnemonic.blsr, By, Ey);
+                Grp17[2] = VexInstr(Mnemonic.illegal, Mnemonic.blsmsk, By, Ey);
+                Grp17[3] = VexInstr(Mnemonic.illegal, Mnemonic.blsi, By, Ey);
+                Grp17[4] = s_invalid;
+                Grp17[5] = s_invalid;
+                Grp17[6] = s_invalid;
+                Grp17[7] = s_invalid;
+            }
         }
     }
 }

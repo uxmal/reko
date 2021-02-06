@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,6 @@ namespace Reko.Arch.Mos6502
         private Mos6502Architecture arch;
         private byte[] regs;
         private bool[] valid;
-        private Address ip;
 
         public Mos6502ProcessorState(Mos6502Architecture arch)
         {
@@ -48,7 +47,7 @@ namespace Reko.Arch.Mos6502
             this.arch = that.arch;
             regs = (byte[])that.regs.Clone();
             this.valid = (bool[])that.valid.Clone();
-            ip = that.ip;
+            this.InstructionPointer = that.InstructionPointer;
         }
 
         public override IProcessorArchitecture Architecture
@@ -82,11 +81,6 @@ namespace Reko.Arch.Mos6502
             }
         }
 
-        public override void SetInstructionPointer(Address addr)
-        {
-            this.ip = addr;
-        }
-
         public override void OnProcedureEntered()
         {
         }
@@ -100,7 +94,7 @@ namespace Reko.Arch.Mos6502
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
     }

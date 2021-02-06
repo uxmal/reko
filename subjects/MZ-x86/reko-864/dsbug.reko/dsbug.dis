@@ -1,0 +1,14 @@
+void function()
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+function_entry:
+l1000_0007:
+	Mem5[1046:0060:word16] = 0x1337<16>
+	return
+function_exit:
+
+

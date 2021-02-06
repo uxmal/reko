@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,17 @@
  */
 #endregion
 
+using Reko.Core.Assemblers;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text;
 
 namespace Reko.Core
 {
@@ -35,7 +38,7 @@ namespace Reko.Core
 	public interface IProcessorArchitecture
 	{
         /// <summary>
-        /// Creates an IEnumerable of disassembled MachineInstructions which consumes 
+        /// Creates an IEnumerable of disassembled <see cref="MachineInstruction" />s which consumes 
         /// its input from the provided <paramref name="imageReader"/>.
         /// </summary>
         /// <remarks>The IEnumerable lets us use Linq expressions
@@ -51,7 +54,6 @@ namespace Reko.Core
         /// Creates an instance of a ProcessorState appropriate for this
         /// processor.
         /// </summary>
-        /// <param name="map">Segment map with descriptions of segments</param>
         /// <returns>An instance of <see cref="ProcessorState"/>.</returns>
 		ProcessorState CreateProcessorState();
 
@@ -85,29 +87,30 @@ namespace Reko.Core
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred endianness of the processor.
         /// </summary>
-        /// <param name="img">Program image to read</param>
+        /// <param name="memoryArea">Memory area to read</param>
         /// <param name="addr">Address at which to start</param>
-        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
-        EndianImageReader CreateImageReader(MemoryArea img, Address addr);
+        /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
+        EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addr);
 
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred 
-        /// endianness of the processor, limited to the specified address
+        /// endianness of the processor, limited to the specified offset
         /// range.
         /// </summary>
-        /// <param name="img">Program image to read</param>
-        /// <param name="addr">Address at which to start</param>
-        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
-        EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addrBegin, Address addrEnd);
+        /// <param name="memoryArea">Memory area from which to read.</param>
+        /// <param name="offsetBegin">Starting offset within the memory area.</param>
+        /// <param name="offsetEnd">Ending offset within the memory area.</param>
+        /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
+        EndianImageReader CreateImageReader(MemoryArea memoryArea, long offsetBegin, long offsetEnd);
 
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred
         /// endianness of the processor.
         /// </summary>
-        /// <param name="img">Program image to read</param>
+        /// <param name="memoryArea">Program image to read</param>
         /// <param name="addr">offset from the start of the image</param>
-        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
-        EndianImageReader CreateImageReader(MemoryArea img, ulong off);
+        /// <returns>An <seealso cref="EndianImageReader"/> of the appropriate endianness</returns>
+        EndianImageReader CreateImageReader(MemoryArea memoryArea, long off);
 
         /// <summary>
         /// Creates an <see cref="ImageWriter" /> with the preferred 
@@ -125,6 +128,17 @@ namespace Reko.Core
         /// <param name="addr">Address to start writing at.</param>
         /// <returns>An <see cref="ImageWriter"/> of the appropriate endianness.</returns>
         ImageWriter CreateImageWriter(MemoryArea memoryArea, Address addr);
+        string RenderInstructionOpcode(MachineInstruction instr, EndianImageReader rdr);
+
+        /// <summary>
+        /// Creates an <see cref="IAssembler"/> instance which can be used to translate
+        /// assembly language to machine code for this processor architecture.
+        /// </summary>
+        /// <param name="asmDialect">On some processors there are many "dialects" of assembly
+        /// language. This parameter allows the caller to select a dialect. Passing null
+        /// uses the default, manufacturer dialect.</param>
+        /// <returns></returns>
+        IAssembler CreateAssembler(string? asmDialect);
 
         /// <summary>
         /// Reads a value from memory, respecting the processor's endianness. Use this
@@ -160,6 +174,19 @@ namespace Reko.Core
             Expression callee);
 
         /// <summary>
+        /// Create a <see cref="MemoryArea"/> appropriate for this processor.
+        /// </summary>
+        MemoryArea CreateMemoryArea(Address baseAddress, byte[] bytes);
+
+        /// <summary>
+        /// Reinterprets a string of raw bits as a floating point number appropriate
+        /// for the current architecture.
+        /// </summary>
+        /// <param name="rawBits">Raw bits to be interpreted.</param>
+        /// <returns></returns>
+        Constant ReinterpretAsFloat(Constant rawBits);
+
+        /// <summary>
         /// Creates a processor emulator for this architecture.
         /// </summary>
         /// <param name="segmentMap">The memory image containing the program 
@@ -178,14 +205,19 @@ namespace Reko.Core
         IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg);
 
         /// <summary>
+        /// Provide an architecture-defined CallingConvention.
+        /// </summary>
+        CallingConvention? GetCallingConvention(string? ccName);
+
+        /// <summary>
         /// Returns a list of all the available mnemonics as strings.
         /// </summary>
         /// <returns>
         /// A <see cref="Dictionary{TKey, TValue}"/> mapping mnemonic names to their 
         /// internal Reko numbers.
         /// </returns>
-        SortedList<string, int> GetMnemonicNames();         
-        
+        SortedList<string, int> GetMnemonicNames();
+
         /// <summary>
         /// Returns an internal Reko number for a given instruction mnemonic, or
         /// null if none is available.
@@ -195,7 +227,7 @@ namespace Reko.Core
         /// <summary>
         /// Returns register whose name is 'name'
         /// </summary>
-        RegisterStorage GetRegister(string name);
+        RegisterStorage? GetRegister(string name);
 
         /// <summary>
         /// Given a register, returns any sub register occupying the 
@@ -204,8 +236,8 @@ namespace Reko.Core
         /// <param name="reg">Register to examine</param>
         /// <param name="offset">Bit offset of expected subregister.</param>
         /// <param name="width">Bit size of subregister.</param>
-        /// <returns></returns>
-        RegisterStorage GetRegister(StorageDomain domain, BitRange range);  
+        /// <returns>If an invalid domain is passed, null is returned.</returns>
+        RegisterStorage? GetRegister(StorageDomain domain, BitRange range);  
 
         RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
         /// <summary>
@@ -226,7 +258,7 @@ namespace Reko.Core
         /// <param name="reg"></param>
         /// <param name="bits"></param>
         /// <returns></returns>
-        RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs);
+        RegisterStorage? GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs);
 
         /// <summary>
         /// Returns all registers of this architecture.
@@ -279,23 +311,31 @@ namespace Reko.Core
         /// </param>
         /// <returns>null if no inlining was performed, otherwise a list of the inlined
         /// instructions.</returns>
-        List<RtlInstruction> InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder);
+        List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder);
 
-        Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);
+        Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
         string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);                       // Converts a union of processor flag bits to its string representation
 
-        string Name { get; }                           // Short name used to refer to an architecture.
-        string Description { get; set; }                    // Longer description used to refer to architecture. Typically loaded from app.config
+        IServiceProvider Services { get; }                  // Access to services from the Reko process.
+        string Name { get; }                                // Short name used to refer to an architecture.
+        string? Description { get; set; }                    // Longer description used to refer to architecture. Typically loaded from app.config
         PrimitiveType FramePointerType { get; }             // Size of a pointer into the stack frame (near pointer in x86 real mode)
         PrimitiveType PointerType { get; }                  // Pointer size that reaches anywhere in the address space (far pointer in x86 real mode )
         PrimitiveType WordWidth { get; }                    // Processor's native word size
+        int DefaultBase { get; }                            // Base used to render numbers.
         /// <summary>
         /// The size of the return address (in bytes) if pushed on stack.
         /// </summary>
         int ReturnAddressOnStack { get; }
         int InstructionBitSize { get; }                     // Instruction "granularity" or alignment.
+        /// <summary>
+        /// Size of the smallest addressable memory unit, in bits
+        /// </summary>
+        /// <remarks>Most modern CPU:s have byte addressability, so this will typically be 8.
+        /// </remarks>
+        int MemoryGranularity { get; }
         RegisterStorage StackRegister { get; set;  }        // Stack pointer used by this machine.
         RegisterStorage FpuStackRegister { get; }           // FPU stack pointer used by this machine, or null if none exists.
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
@@ -308,7 +348,7 @@ namespace Reko.Core
         /// <param name="txtAddr"></param>
         /// <param name="addr"></param>
         /// <returns></returns>
-        bool TryParseAddress(string txtAddr, out Address addr);
+        bool TryParseAddress(string? txtAddr, out Address addr);
 
         /// <summary>
         /// Given a <see cref="Constant"/>, returns an Address of the correct size for this architecture.
@@ -331,14 +371,13 @@ namespace Reko.Core
         /// to customize the properties of the processor.
         /// </summary>
         /// <param name="options"></param>
-        void LoadUserOptions(Dictionary<string, object> options);
-
-        Dictionary<string, object> SaveUserOptions();
+        void LoadUserOptions(Dictionary<string, object>? options);
 
         /// <summary>
-        /// Provide an architecture-defined CallingConvention.
+        /// Retrieves any settings on the architecture that may need persisting.
         /// </summary>
-        CallingConvention GetCallingConvention(string ccName);
+        /// <returns></returns>
+        Dictionary<string, object>? SaveUserOptions();
     }
 
     /// <summary>
@@ -360,19 +399,42 @@ namespace Reko.Core
     [Designer("Reko.Gui.Design.ArchitectureDesigner,Reko.Gui")]
     public abstract class ProcessorArchitecture : IProcessorArchitecture
     {
-        private RegisterStorage regStack;
+        private RegisterStorage? regStack;
 
-        public ProcessorArchitecture(string archId)
+        /// <summary>
+        /// Create an instance of the class.
+        /// </summary>
+        /// <param name="services">Object that provides services available in the execution environment.</param>
+        /// <param name="archId">Short string identifier for the processor architecture.</param>
+        /// <param name="options">A dictionary of architecture options to apply (e.g. processor endianness,
+        /// word size, or processor features.)
+        /// </param>
+#nullable disable
+        public ProcessorArchitecture(
+            IServiceProvider services,
+            string archId, 
+            Dictionary<string, object> options)
         {
+            this.Services = services;
             this.Name = archId;
+            this.Options = options;
+            this.MemoryGranularity = 8; // Most architectures are byte-addressable.
+            this.DefaultBase = 16;      // Most architectures display hexadecimal.
         }
+#nullable enable
 
+        public IServiceProvider Services { get; }
         public string Name { get; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
+        public int DefaultBase { get; set; }
         public EndianServices Endianness { get; protected set; }
         public PrimitiveType FramePointerType { get; protected set; }
+        public int MemoryGranularity { get; protected set; }
         public PrimitiveType PointerType { get; protected set; }
         public PrimitiveType WordWidth { get; protected set; }
+
+        public Dictionary<string, object> Options { get; protected set; }
+
         /// <summary>
         /// The size of the return address (in bytes) if pushed on stack.
         /// </summary>
@@ -408,13 +470,14 @@ namespace Reko.Core
         public RegisterStorage FpuStackRegister { get; protected set; }
         public uint CarryFlagMask { get; protected set; }
 
+        public virtual IAssembler CreateAssembler(string? asmDialect) => throw new NotSupportedException("This architecture doesn't support assembly language.");
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader);
         public Frame CreateFrame() { return new Frame(FramePointerType); }
-        public EndianImageReader CreateImageReader(MemoryArea img, Address addr) => this.Endianness.CreateImageReader(img, addr);
-        public EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd) => Endianness.CreateImageReader(img, addrBegin, addrEnd);
-        public EndianImageReader CreateImageReader(MemoryArea img, ulong off) => Endianness.CreateImageReader(img, off);
+        public EndianImageReader CreateImageReader(MemoryArea mem, Address addr) => this.Endianness.CreateImageReader(mem, addr);
+        public EndianImageReader CreateImageReader(MemoryArea mem, long offsetBegin, long offsetEnd) => Endianness.CreateImageReader(mem, offsetBegin, offsetEnd);
+        public EndianImageReader CreateImageReader(MemoryArea mem, long off) => Endianness.CreateImageReader(mem, off);
         public ImageWriter CreateImageWriter() => Endianness.CreateImageWriter();
-        public ImageWriter CreateImageWriter(MemoryArea img, Address addr) => Endianness.CreateImageWriter(img, addr);
+        public ImageWriter CreateImageWriter(MemoryArea mem, Address addr) => Endianness.CreateImageWriter(mem, addr);
         public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value) => Endianness.TryRead(mem, addr, dt, out value);
 
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
@@ -425,16 +488,16 @@ namespace Reko.Core
 
         public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
 
-        public virtual CallingConvention GetCallingConvention(string name)
+        public virtual CallingConvention? GetCallingConvention(string? name)
         {
             // By default, there is no calling convention defined for architectures. Some
             // manufacturers however, define calling conventions.
             return null;
         }
 
-        public abstract RegisterStorage GetRegister(string name);
+        public abstract RegisterStorage? GetRegister(string name);
 
-        public abstract RegisterStorage GetRegister(StorageDomain domain, BitRange range);
+        public abstract RegisterStorage? GetRegister(StorageDomain domain, BitRange range);
 
         public abstract RegisterStorage[] GetRegisters();
 
@@ -444,6 +507,12 @@ namespace Reko.Core
             Expression callee)
         {
             return new FrameApplicationBuilder(this, binder, site, callee, false);
+        }
+
+        public virtual MemoryArea CreateMemoryArea(Address addr, byte[] bytes)
+        {
+            // Most CPU's -- but not all -- are byte-addressed.
+            return new ByteMemoryArea(addr, bytes);
         }
 
         /// <summary>
@@ -509,25 +578,66 @@ namespace Reko.Core
         }
 
 
-        public virtual RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs) { return (regs.Contains(reg)) ? reg : null; }
+        public virtual RegisterStorage? GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs) { return (regs.Contains(reg)) ? reg : null; }
         public virtual void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg) { ids.Remove(reg); }
 
+        public virtual string RenderInstructionOpcode(MachineInstruction instr, EndianImageReader rdr)
+        {
+            // Assumes byte granularity.
+            var bitSize = this.InstructionBitSize;
+            var instrSize = PrimitiveType.CreateWord(bitSize);
+            var sb = new StringBuilder();
+            var numBase = this.DefaultBase;
+            int digits = numBase switch
+            {
+                16 => (bitSize + 3) / 4,
+                8 => (bitSize + 2) / 3,
+                _ => throw new NotSupportedException($"Unsupported numeric base {this.DefaultBase}.")
+            };
+            var units = (instr.Length * this.MemoryGranularity) / this.InstructionBitSize;
+            for (int i = 0; i < units; ++i)
+            {
+                if (rdr.TryRead(instrSize, out var v))
+                {
+                    sb.Append(Convert.ToString((long) v.ToUInt64(), numBase)
+                        .PadLeft(digits, '0'));
+                    sb.Append(' ');
+                }
+            }
+            return sb.ToString().ToUpperInvariant();
+        }
+            
         public abstract bool TryGetRegister(string name, out RegisterStorage reg);
         public abstract FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf);
         public abstract FlagGroupStorage GetFlagGroup(string name);
         public abstract string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);
-        public virtual List<RtlInstruction> InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
+        public virtual List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
         {
             return null;
         }
 
-        public virtual void LoadUserOptions(Dictionary<string, object> options) { }
+        public virtual void LoadUserOptions(Dictionary<string, object>? options) { }
         public abstract Address MakeAddressFromConstant(Constant c, bool codeAlign);
         public virtual Address MakeSegmentedAddress(Constant seg, Constant offset) { throw new NotSupportedException("This architecture doesn't support segmented addresses."); }
         public virtual void PostprocessProgram(Program program) { }
-        public abstract Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state);
-        public virtual Dictionary<string, object> SaveUserOptions() { return null; }
+        public abstract Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state);
 
-        public abstract bool TryParseAddress(string txtAddr, out Address addr);
+        public virtual Constant ReinterpretAsFloat(Constant rawBits)
+        {
+            // Most platforms -- but certainly not all -- use IEEE 754 float representation.
+            if (rawBits.DataType.Size == 4)
+            {
+                return Constant.FloatFromBitpattern(rawBits.ToInt32());
+            }
+            else if (rawBits.DataType.Size == 8)
+            {
+                return Constant.FloatFromBitpattern(rawBits.ToInt64());
+            }
+            throw new NotImplementedException($"Unsupported IEEE floating point size {rawBits.DataType.BitSize}.");
+        }
+
+        public virtual Dictionary<string, object>? SaveUserOptions() { return null; }
+
+        public abstract bool TryParseAddress(string? txtAddr, out Address addr);
     }
 }

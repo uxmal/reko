@@ -8,11 +8,11 @@ T_2: (in ds : selector)
   Class: Eq_2
   DataType: selector
   OrigDataType: selector
-T_3: (in 0x0004 : word16)
+T_3: (in 4<16> : word16)
   Class: Eq_3
   DataType: word16
   OrigDataType: word16
-T_4: (in SEQ(ds, 0x0004) : ptr32)
+T_4: (in SEQ(ds, 4<16>) : ptr32)
   Class: Eq_4
   DataType: ptr32
   OrigDataType: ptr32

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Gui;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -38,12 +39,12 @@ namespace Reko.UnitTests.Gui
         public void Setup()
         {
             sc = new ServiceContainer();
-            var mem = new MemoryArea(Address.SegPtr(0xC00, 0), Enumerable.Range(0x0, 0x100).Select(b => (byte)b).ToArray());
+            var mem = new ByteMemoryArea(Address.SegPtr(0xC00, 0), Enumerable.Range(0x0, 0x100).Select(b => (byte)b).ToArray());
             var imageMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(
                         "code", mem, AccessMode.ReadWriteExecute));
-            var arch = new Mocks.FakeArchitecture();
+            var arch = new Mocks.FakeArchitecture(sc);
             this.program = new Program(imageMap, arch, new DefaultPlatform(sc, arch));
         }
 

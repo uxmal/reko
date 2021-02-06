@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@ using System;
 
 namespace Reko.Core.Code
 {
+#pragma warning disable IDE1006
+
     public interface InstructionVisitor
 	{
 		void VisitAssignment(Assignment ass);
@@ -186,11 +188,10 @@ namespace Reko.Core.Code
 		{
 		}
 
-		public virtual void VisitDepositBits(DepositBits d)
-		{
-			d.Source.Accept(this);
-			d.InsertedBits.Accept(this);
-		}
+        public virtual void VisitConversion(Conversion conversion)
+        {
+            conversion.Expression.Accept(this);
+        }
 
 		public virtual void VisitDereference(Dereference deref)
 		{

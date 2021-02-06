@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Evaluation
             Assert.IsTrue(instrmatcher.Match(
                 m.Assign(ax, m.IAdd(ax, m.Word16(42)))));
 
-            Assert.AreEqual("0x002A", instrmatcher.CapturedExpressions("c").ToString());
+            Assert.AreEqual("0x2A<16>", instrmatcher.CapturedExpressions("c").ToString());
         }
     }
 }

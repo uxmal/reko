@@ -1,0 +1,32 @@
+LIBRARY PMVIOP
+EXPORTS
+    WINCREATECONSOLE                            @1
+    WINDESTROYCONSOLE                           @2
+    WINSYNCWITHPS                               @3
+    WINCONSOLEOPENKBD                           @4
+    WINCONSOLECLOSEKBD                          @5
+    WINCONSOLESETSTATUS                         @6
+    WINCONSOLEGETSTATUS                         @7
+    WINCONSOLESETCP                             @8
+    WINCONSOLEGETCP                             @10
+    WINCONSOLEKBDXLATE                          @11
+    WINCONSOLESETCUSTXT                         @12
+    WINCONSOLEGETFOCUS                          @13
+    WINCONSOLEFREEFOCUS                         @14
+    WINCONSOLEREADKEYEVENT                      @15
+    WINCONSOLEFLUSHKEYEVENTS                    @16
+    WINCONSOLEQUEUEDPOINTEREVENTS               @17
+    WINCONSOLEREADPOINTEREVENT                  @18
+    WINCONSOLEFLUSHPOINTEREVENTS                @19
+    WINCONSOLEGETPOINTERFILTERMASK              @20
+    WINCONSOLESETPOINTERFILTERMASK              @21
+    WINCONSOLEGETPTRPOS                         @22
+    WINCONSOLESETPTRPOS                         @23
+    WINSHIELDABORT                              @24
+    LOCKVIOPS                                   @27
+    UNLOCKVIOPS                                 @28
+    WINDEFAVIOWINDOWPROC                        @30
+    WINCONSOLEGETKBDHANDLE                      @31
+    WINCONSOLEATTACHMOUSEUSER                   @32
+    WINCONSOLEDETACHMOUSEUSER                   @33
+    WININITSHIELD                               @36

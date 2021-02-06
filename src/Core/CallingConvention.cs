@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ namespace Reko.Core
     public interface CallingConvention
     {
 
-        void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams);
+        void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams);
 
         /// <summary>
         /// Can <paramref name="stg"/> be used as a parameter in this calling convention?
@@ -76,7 +76,7 @@ namespace Reko.Core
         /// stack) and the initial stack offset of the first parameter
         /// passed on the stack.
         /// </summary>
-        void LowLevelDetails(int stackAlignment, int initialStackOffset);
+        void LowLevelDetails(int stackAlignment, int parameterStackSaveOffset);
 
         /// <summary>
         /// Add a register parameter.
@@ -135,8 +135,8 @@ namespace Reko.Core
             this.Parameters = new List<Storage>();
         }
 
-        public Storage ImplicitThis { get; private set; }
-        public Storage Return { get; private set; }
+        public Storage? ImplicitThis { get; private set; }
+        public Storage? Return { get; private set; }
         public List<Storage> Parameters { get; private set; }
         public int StackDelta { get; private set; }
         public int FpuStackDelta { get; private set; }
@@ -230,7 +230,7 @@ namespace Reko.Core
 
         public void FpuReturn(int depth, DataType dt)
         {
-            this.Return = new FpuStackStorage(0, dt);
+            this.Return = new FpuStackStorage(depth, dt);
             this.FpuStackDelta = 1;
         }
 

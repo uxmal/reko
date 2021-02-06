@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,17 +26,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Design;
+using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Mos6502
 {
     [TestFixture]   
     public class DisassemblerTests
     {
+        private ServiceContainer sc;
+        private Mos6502Architecture arch;
+
+        public DisassemblerTests()
+        {
+            this.sc = new ServiceContainer();
+            this.sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
+            this.arch = new Mos6502Architecture(sc, "mos6502", new Dictionary<string, object>());
+        }
+
         private MachineInstruction RunTest(params byte[] bytes)
         {
-            var image = new MemoryArea(Address.Ptr32(0x200), bytes);
+            var image = new ByteMemoryArea(Address.Ptr32(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
-            var dasm = new Disassembler(rdr);
+            var dasm = new Disassembler(arch, rdr);
             return dasm.First();
         }
 

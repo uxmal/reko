@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -71,9 +71,9 @@ namespace Reko.ImageLoaders.Elf
 
     public class DynamicSectionRenderer32 : DynamicSectionRenderer
     {
-        private ElfLoader loader;
-        private ElfSection shdr;
-        private ElfMachine machine;
+        private readonly ElfLoader loader;
+        private readonly ElfSection shdr;
+        private readonly ElfMachine machine;
 
         private Dictionary<long, ElfDynamicEntry.TagInfo> machineSpecific;
 
@@ -177,11 +177,16 @@ namespace Reko.ImageLoaders.Elf
         private ElfLoader loader;
         private ElfSection shdr;
         private ElfSection strtabSection;
+        private readonly Dictionary<long, ElfDynamicEntry.TagInfo> machineSpecific;
 
-        public DynamicSectionRenderer64(ElfLoader loader, ElfSection shdr)
+        public DynamicSectionRenderer64(ElfLoader loader, ElfSection shdr, ElfMachine machine)
         {
             this.loader = loader;
             this.shdr = shdr;
+            if (!ElfDynamicEntry.MachineSpecificInfos.TryGetValue(machine, out machineSpecific))
+            {
+                machineSpecific = new Dictionary<long, ElfDynamicEntry.TagInfo>();
+            }
         }
 
         public override void Render(ImageSegment segment, Program program, Formatter formatter)
@@ -202,7 +207,8 @@ namespace Reko.ImageLoaders.Elf
             {
                 DtFormat fmt;
                 string entryName;
-                if (!ElfDynamicEntry.TagInfos.TryGetValue(entry.Tag, out var dser))
+                if (!machineSpecific.TryGetValue(entry.Tag, out var dser) &&
+                    !ElfDynamicEntry.TagInfos.TryGetValue(entry.Tag, out dser))
                 {
                     entryName = string.Format("{0:X8}    ", entry.Tag);
                     fmt = DtFormat.Hexadecimal;

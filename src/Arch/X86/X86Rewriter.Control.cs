@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Reko.Arch.X86
@@ -89,7 +90,7 @@ namespace Reko.Arch.X86
 
         private void RewriteCall(MachineOperand callTarget, PrimitiveType opsize)
         {
-            Address addr = OperandAsCodeAddress(callTarget);
+            Address? addr = OperandAsCodeAddress(callTarget);
             if (addr != null)
             {
                 if (addr.ToLinear() == (dasm.Current.Address + dasm.Current.Length).ToLinear())
@@ -114,7 +115,7 @@ namespace Reko.Arch.X86
                             m.Assign(r, addr);
                         }
                         this.len += 1;
-                        rtlc = InstrClass.Linear;
+                        iclass = InstrClass.Linear;
                         return;
                     }
                 }
@@ -128,28 +129,44 @@ namespace Reko.Arch.X86
                     if (arch.WordWidth.Size > 2)
                     {
                         // call bx doesn't work on 32- or 64-bit architectures.
-                        rtlc = InstrClass.Invalid;
+                        iclass = InstrClass.Invalid;
                         m.Invalid();
                         return;
                     }
-                    var seg = Constant.Create(PrimitiveType.SegmentSelector, instrCur.Address.Selector.Value);
+                    var seg = Constant.Create(PrimitiveType.SegmentSelector, instrCur.Address.Selector!.Value);
                     target = m.Seq(seg, target);
                 }
                 m.Call(target, (byte) opsize.Size);
             }
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
         }
 
         private void RewriteConditionalGoto(ConditionCode cc, MachineOperand op1)
         {
-            rtlc = InstrClass.ConditionalTransfer;
-            m.Branch(CreateTestCondition(cc, instrCur.Mnemonic), OperandAsCodeAddress(op1), InstrClass.ConditionalTransfer);
+            iclass = InstrClass.ConditionalTransfer;
+            m.Branch(CreateTestCondition(cc, instrCur.Mnemonic), OperandAsCodeAddress(op1)!, InstrClass.ConditionalTransfer);
+        }
+
+        private void RewriteEndbr()
+        {
+            // Endbr signals an indirect jump/call target, but is otherwise a NOP. We want to avoid fusing
+            // endbr's with other kinds of NOPs however, so we set the InstrClass to just linear.
+            m.Nop();
+            Debug.Assert(iclass == InstrClass.Linear);
         }
 
         private void RewriteInt()
         {
-            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, SrcOp(instrCur.Operands[0])));
-            rtlc |= InstrClass.Call | InstrClass.Transfer;
+            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, SrcOp(0)));
+            iclass |= InstrClass.Call | InstrClass.Transfer;
+        }
+
+        private void RewriteIcebp()
+        {
+            // This is not supposed to be executed, so we mark the cluster as invalid.
+            //$REVIEW: the new scanner being developed should make this less necessary.
+            this.iclass = InstrClass.Invalid;
+            m.Invalid();
         }
 
         private void RewriteInto()
@@ -159,14 +176,14 @@ namespace Reko.Arch.X86
                 instrCur.Address + instrCur.Length,
                 InstrClass.ConditionalTransfer);
             m.SideEffect(
-                    host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, Constant.Byte(4)));
+                    host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, Constant.Byte(4)));
         }
 
-        private void RewriteJcxz()
+        private void RewriteJcxz(RegisterStorage cx)
         {
             m.Branch(
-                m.Eq0(orw.AluRegister(Registers.rcx, instrCur.dataWidth)),
-                OperandAsCodeAddress(instrCur.Operands[0]),
+                m.Eq0(orw.AluRegister(cx)),
+                OperandAsCodeAddress(instrCur.Operands[0])!,
                 InstrClass.ConditionalTransfer);
         }
 
@@ -178,7 +195,7 @@ namespace Reko.Arch.X86
                 var reboot = new ExternalProcedure(
                     "__bios_reboot",
                     new FunctionType(
-                        new Identifier("", VoidType.Instance, null)))
+                        new Identifier("", VoidType.Instance, null!)))
                 {
                     Characteristics = new ProcedureCharacteristics
                     {
@@ -189,21 +206,26 @@ namespace Reko.Arch.X86
 				return;
 			}
 
-            rtlc = InstrClass.Transfer;
-			if (instrCur.Operands[0] is ImmediateOperand)
-			{
-				Address addr = OperandAsCodeAddress(instrCur.Operands[0]);
+            iclass = InstrClass.Transfer;
+			Address? addr = OperandAsCodeAddress(instrCur.Operands[0]);
+			if (addr != null)
+            {
                 m.Goto(addr);
 				return;
 			}
-            var target = SrcOp(instrCur.Operands[0]);
+            var target = SrcOp(0);
             if (target.DataType.Size == 2 && arch.WordWidth.Size > 2)
             {
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
             m.Goto(target);
+        }
+
+        private void RewriteJmpe()
+        {
+            m.SideEffect(host.Intrinsic("__jmpe", false, VoidType.Instance));
         }
 
         private void RewriteLoop(FlagM useFlags, ConditionCode cc)
@@ -216,13 +238,21 @@ namespace Reko.Arch.X86
                     m.Cand(
                         m.Test(cc, orw.FlagGroup(useFlags)),
                         m.Ne0(cx)),
-                    OperandAsCodeAddress(instrCur.Operands[0]),
+                    OperandAsCodeAddress(instrCur.Operands[0])!,
                     InstrClass.ConditionalTransfer);
             }
             else
             {
-                m.Branch(m.Ne0(cx), OperandAsCodeAddress(instrCur.Operands[0]), InstrClass.ConditionalTransfer);
+                m.Branch(m.Ne0(cx), OperandAsCodeAddress(instrCur.Operands[0])!, InstrClass.ConditionalTransfer);
             }
+        }
+
+        private void RewriteLtr()
+        {
+            m.SideEffect(host.Intrinsic("__load_task_register",
+                false,
+                VoidType.Instance,
+                SrcOp(0)));
         }
 
         public void RewriteRet()
@@ -233,7 +263,7 @@ namespace Reko.Arch.X86
             if ((extraBytesPopped & 1) == 1)
             {
                 // Unlikely that an odd number of bytes are pushed on the stack.
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
@@ -252,50 +282,79 @@ namespace Reko.Arch.X86
                 0);
         }
 
+        private void RewriteRsm()
+        {
+            m.Return(0, 0);
+        }
+
+        private void RewriteStr()
+        {
+            m.Assign(
+                SrcOp(0),
+                host.Intrinsic("__store_task_register", false,
+                    PrimitiveType.Word16));
+        }
+
         private void RewriteSyscall()
         {
-            m.SideEffect(host.PseudoProcedure("__syscall", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__syscall", false, VoidType.Instance));
         }
 
         private void RewriteSysenter()
         {
-            m.SideEffect(host.PseudoProcedure("__sysenter", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__sysenter", false, VoidType.Instance));
         }
 
         private void RewriteSysexit()
         {
-            m.SideEffect(host.PseudoProcedure("__sysexit", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__sysexit", false, VoidType.Instance));
             m.Return(0,0);
         }
 
         private void RewriteSysret()
         {
-            m.SideEffect(host.PseudoProcedure("__sysret", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__sysret", false, VoidType.Instance));
             m.Return(0,0);
         }
 
+        private void RewriteVerrw(string intrinsicName)
+        {
+            var z = orw.FlagGroup(FlagM.ZF);
+            m.Assign(z, host.Intrinsic(intrinsicName,
+                false,
+                z.DataType,
+                SrcOp(0)));
+        }
+
+        private void RewriteXabort()
+        {
+            var op = SrcOp(0);
+            m.SideEffect(host.Intrinsic("__xabort", false, VoidType.Instance, op),
+                InstrClass.Terminates);
+        }
 
         /// <summary>
         /// A jump to 0xFFFF:0x0000 in real mode is a reboot.
         /// </summary>
         /// <param name="instrCur"></param>
         /// <returns></returns>
+        //$TODO: this is a MS-DOS specific detail, and should be implemented as a system service.
         private bool IsRealModeReboot(X86Instruction instrCur)
         {
-            var addrOp = instrCur.Operands[0] as X86AddressOperand;
-            bool isRealModeReboot = addrOp != null && addrOp.Address.ToLinear() == 0xFFFF0;
+            bool isRealModeReboot = 
+                instrCur.Operands[0] is AddressOperand addrOp &&
+                addrOp.Address.ToLinear() == 0xFFFF0;
             return isRealModeReboot;
         }
 
-        public Address OperandAsCodeAddress(MachineOperand op)
+        public Address? OperandAsCodeAddress(MachineOperand op)
         {
-            if (op is AddressOperand ado)
-                return ado.Address;
-            if (op is ImmediateOperand imm)
+            return op switch
             {
-                return orw.ImmediateAsAddress(instrCur.Address, imm);
-            }
-            return null;
+                AddressOperand ado => ado.Address,
+                ImmediateOperand imm => orw.ImmediateAsAddress(instrCur.Address, imm),
+                _ => null
+            };
         }
     }
 }

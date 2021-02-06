@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,9 +19,13 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Services;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -30,10 +34,21 @@ namespace Reko.UnitTests.Core.Configuration
     [TestFixture]
     public class RekoConfigurationServiceTests
     {
+        private ServiceContainer sc;
+        private FakeDecompilerEventListener listener;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.sc = new ServiceContainer();
+            this.listener = new FakeDecompilerEventListener();
+            sc.AddService<DecompilerEventListener>(listener);
+        }
+
         [Test]
         public void Rcfg_LoadOperatingEnvironment()
         {
-            var cfgSvc = new RekoConfigurationService(new RekoConfiguration_v1
+            var cfgSvc = new RekoConfigurationService(new ServiceContainer(), "reko.config", new RekoConfiguration_v1
             {
                 Environments = new []
                 {
@@ -92,7 +107,7 @@ namespace Reko.UnitTests.Core.Configuration
         [Test]
         public void Rcfg_LoadLoader()
         {
-            var cfgSvc = new RekoConfigurationService(new RekoConfiguration_v1
+            var cfgSvc = new RekoConfigurationService(sc, "reko.config", new RekoConfiguration_v1
             {
                 Loaders = new[]
                 {
@@ -132,6 +147,66 @@ namespace Reko.UnitTests.Core.Configuration
             Assert.AreEqual("bok", ldrs[1].Argument);
             Assert.AreEqual("bullet", ldrs[1].Label);
             Assert.AreEqual("bar.Loader,bar", ldrs[1].TypeName);
+        }
+
+        [Test]
+        public void Rcfg_LoadArchitectureModel()
+        {
+            var cfgSvc = new RekoConfigurationService(sc, "reko.config", new RekoConfiguration_v1
+            {
+                Architectures = new[]{
+                    new Architecture_v1
+                    {
+                        Name = "fake",
+                        Type = typeof(FakeArchitecture).AssemblyQualifiedName,
+                        Models = new[]
+                        {
+                            new ModelDefinition_v1
+                            {
+                                Name = "Fake-2000",
+                                Options = new[]
+                                {
+                                    new ListOption_v1 { Text=ProcessorOption.WordSize, Value="32" }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            var arch = cfgSvc.GetArchitecture("fake", "Fake-2000");
+            var options = arch.SaveUserOptions();
+            Assert.AreEqual("Fake-2000", options[ProcessorOption.Model]);
+            Assert.AreEqual("32", options[ProcessorOption.WordSize]);
+        }
+
+        [Test]
+        public void Rcfg_LoadArchitecture_UnknownModel()
+        {
+            var cfgSvc = new RekoConfigurationService(sc, "reko.config", new RekoConfiguration_v1
+            {
+                Architectures = new[]{
+                    new Architecture_v1
+                    {
+                        Name = "fake",
+                        Type = typeof(FakeArchitecture).AssemblyQualifiedName,
+                        Models = new[]
+                        {
+                            new ModelDefinition_v1
+                            {
+                                Name = "Fake-2000",
+                                Options = new[]
+                                {
+                                    new ListOption_v1 { Text=ProcessorOption.WordSize, Value="32" }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            var arch = cfgSvc.GetArchitecture("fake", "Unknown Model");
+            Assert.AreEqual("WarningDiagnostic -  - Model 'Unknown Model' is not defined for architecture 'fake'.", listener.LastDiagnostic);
         }
     }
 }

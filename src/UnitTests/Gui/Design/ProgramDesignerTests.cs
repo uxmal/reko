@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -129,7 +129,7 @@ namespace Reko.UnitTests.Gui.Design
         private void Given_Program_NoSymbols()
         {
             this.program = new Program();
-            this.program.Architecture = new FakeArchitecture();
+            this.program.Architecture = new FakeArchitecture(new ServiceContainer());
             var addr = Address.Ptr32(0x00112200);
             this.program.ImageMap = new ImageMap(addr);
             this.program.SegmentMap = new SegmentMap(addr);

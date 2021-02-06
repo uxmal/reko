@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -364,7 +364,18 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public RectangleF PaddedExtent;
         public string Text;
         public string Style;
-        public object Tag;
+        public object Tag {
+            get { return tag; }
+            set
+            {
+                if (value is Reko.Core.Address)
+                    value.ToString();
+                if (value is Reko.Core.Block)
+                    value.ToString();
+                tag = value;
+            }
+        }
+        private object tag;
         public int ContextMenuID;
     }
 }

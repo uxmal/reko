@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 Pavel Tomin.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,9 +29,9 @@ namespace Reko.Core
 {
     public class AnnotationList : IEnumerable<Annotation>
     {
-        public event EventHandler AnnotationChanged;
+        public event EventHandler? AnnotationChanged;
 
-        private Dictionary<Address, string> annotations;
+        private readonly Dictionary<Address, string> annotations;
 
         public AnnotationList()
         {
@@ -44,7 +44,7 @@ namespace Reko.Core
                 this.annotations.Add(annotation.Address, annotation.Text);
         }
 
-        public string this[Address addr]
+        public string? this[Address addr]
         {
             get
             {
@@ -54,15 +54,18 @@ namespace Reko.Core
             }
             set
             {
-                this.annotations[addr] = value;
-                AnnotationChanged.Fire(this);
+                if (value == null)
+                    this.annotations.Remove(addr);
+                else 
+                    this.annotations[addr] = value;
+                AnnotationChanged?.Fire(this);
             }
         }
 
         public void Remove(Address addr)
         {
             this.annotations.Remove(addr);
-            AnnotationChanged.Fire(this);
+            AnnotationChanged?.Fire(this);
         }
 
         public IEnumerator<Annotation> GetEnumerator()

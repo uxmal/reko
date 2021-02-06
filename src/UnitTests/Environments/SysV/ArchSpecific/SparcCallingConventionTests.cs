@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 {
@@ -41,7 +42,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         [SetUp]
         public void Setup()
         {
-            arch = new SparcArchitecture32("sparc");
+            arch = new SparcArchitecture32(new ServiceContainer(), "sparc", new Dictionary<string, object>());
         }
 
         private void Given_CallingConvention()

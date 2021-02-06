@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,9 @@ using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.PaRisc
@@ -125,10 +127,7 @@ namespace Reko.Arch.PaRisc
                 case Mnemonic.sub: RewriteSub(); break;
                 case Mnemonic.subi: RewriteSubi(); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
-                {
-                    Class = iclass,
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 
@@ -137,29 +136,10 @@ namespace Reko.Arch.PaRisc
             return GetEnumerator();
         }
 
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
-        /// <summary>
-        /// Emits the text of a unit test that can be pasted into the unit tests 
-        /// for this rewriter.
-        /// </summary>
-        [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var bytes = rdr.PeekBeUInt32(-dasm.Current.Length);
-            Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void PaRiscRw_" + dasm.Current.Mnemonic + "()");
-            Console.WriteLine("        {");
-            Console.WriteLine("            BuildTest(\"{0:X8}\");\t// {1}", bytes, dasm.Current.ToString());
-            Console.WriteLine("            AssertCode(");
-            Console.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", dasm.Current.Length);
-            Console.WriteLine("                \"1|L--|@@@\");");
-            Console.WriteLine("        }");
-            Console.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("PaRiscRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private void MaybeAnnulNextInstruction(InstrClass iclass, Expression e)

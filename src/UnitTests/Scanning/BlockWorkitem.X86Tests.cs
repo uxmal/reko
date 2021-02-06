@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,11 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -73,19 +74,19 @@ namespace Reko.UnitTests.Scanning
 
         private void BuildTest32(Action<X86Assembler> m)
         {
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             BuildTest(arch, Address.Ptr32(0x10000), new FakePlatform(sc, arch), m);
         }
 
         private void BuildTest16(Action<X86Assembler> m)
         {
-            var arch = new X86ArchitectureReal("x86-real-16");
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             BuildTest(arch, Address.SegPtr(0x0C00, 0x000), new MsdosPlatform(sc, arch), m);
         }
 
         private class RewriterHost : IRewriterHost, IDynamicLinker
         {
-            Dictionary<string, PseudoProcedure> pprocs = new Dictionary<string, PseudoProcedure>();
+            Dictionary<string, IntrinsicProcedure> pprocs = new Dictionary<string, IntrinsicProcedure>();
             Dictionary<ulong, FunctionType> sigs = new Dictionary<ulong, FunctionType>();
             Dictionary<Address, ImportReference> importThunks;
             Dictionary<string, FunctionType> signatures;
@@ -101,21 +102,21 @@ namespace Reko.UnitTests.Scanning
                 this.globals = globals;
             }
 
-            public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
+            public IntrinsicProcedure EnsureIntrinsic(string name, bool isIdempotent, DataType returnType, int arity)
             {
-                if (!pprocs.TryGetValue(name, out PseudoProcedure p))
+                if (!pprocs.TryGetValue(name, out IntrinsicProcedure p))
                 {
-                    p = new PseudoProcedure(name, returnType, arity);
+                    p = new IntrinsicProcedure(name, isIdempotent, returnType, arity);
                     pprocs.Add(name, p);
                 }
                 return p;
             }
 
-            public Expression CallIntrinsic(string name, FunctionType fnType, params Expression[] args)
+            public Expression CallIntrinsic(string name, bool isIdempotent, FunctionType fnType, params Expression[] args)
             {
                 if (!pprocs.TryGetValue(name, out var intrinsic))
                 {
-                    intrinsic = new PseudoProcedure(name, fnType);
+                    intrinsic = new IntrinsicProcedure(name, isIdempotent, fnType);
                     pprocs.Add(name, intrinsic);
                 }
                 return new Application(
@@ -123,17 +124,17 @@ namespace Reko.UnitTests.Scanning
                     intrinsic.ReturnType, args);
             }
 
-            public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
+            public Expression Intrinsic(string name, bool isIdempotent, DataType returnType, params Expression[] args)
             {
-                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
-                return new Application(new ProcedureConstant(PrimitiveType.Ptr32, ppp), returnType, args);
+                var intrinsic = EnsureIntrinsic(name, isIdempotent, returnType, args.Length);
+                return new Application(new ProcedureConstant(PrimitiveType.Ptr32, intrinsic), returnType, args);
             }
 
-            public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+            public Expression Intrinsic(string name, bool isIdempotent, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
             {
-                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
-                ppp.Characteristics = c;
-                return new Application(new ProcedureConstant(PrimitiveType.Ptr32, ppp), returnType, args);
+                var intrinsic = EnsureIntrinsic(name, isIdempotent, returnType, args.Length);
+                intrinsic.Characteristics = c;
+                return new Application(new ProcedureConstant(PrimitiveType.Ptr32, intrinsic), returnType, args);
             }
 
             public void BwiX86_SetCallSignatureAdAddress(Address addrCallInstruction, FunctionType signature)
@@ -194,6 +195,11 @@ namespace Reko.UnitTests.Scanning
                 throw new NotImplementedException();
             }
 
+            public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value)
+            {
+                throw new NotImplementedException();
+            }
+
             public void Error(Address address, string format, params object[] args)
             {
                 throw new NotImplementedException();
@@ -208,8 +214,8 @@ namespace Reko.UnitTests.Scanning
         private void BuildTest(IntelArchitecture arch, Address addr, IPlatform platform, Action<X86Assembler> m)
         {
             proc = new Procedure(arch, "test", addr, arch.CreateFrame());
-            block = proc.AddBlock("testblock");
-            var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), addr, new List<ImageSymbol>());
+            block = proc.AddBlock(addr, "testblock");
+            var asm = new X86Assembler(arch, addr, new List<ImageSymbol>());
             scanner = new Mock<IScanner>();
             scanner.Setup(s => s.Services).Returns(sc);
             m(asm);
@@ -340,7 +346,7 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test]
-        public void BwiX86_PseudoProcsShouldNukeRecipientRegister()
+        public void BwiX86_IntrinsicsShouldNukeRecipientRegister()
         {
             BuildTest16(m =>
             {
@@ -372,7 +378,7 @@ namespace Reko.UnitTests.Scanning
             var sw = new StringWriter();
             block.WriteStatements(sw);
             string sExp =
-                "\tax = SEQ(0x0C00, Mem0[ds:bx + 0x0004:word16])(cx)" + nl;
+                "\tax = SEQ(0xC00<16>, Mem0[ds:bx + 4<16>:word16])(cx)" + nl;
             Assert.AreEqual(sExp, sw.ToString());
         }
 
@@ -411,8 +417,8 @@ namespace Reko.UnitTests.Scanning
                 scanner.Setup(x => x.FindContainingBlock(It.Is<Address>(addr => addr.Offset == 0x003A))).Returns(block123A);
             });
 
-            var mem = this.program.SegmentMap.Segments.Values.First().MemoryArea;
-            mem.WriteBytes(
+            var bmem = (ByteMemoryArea) this.program.SegmentMap.Segments.Values.First().MemoryArea;
+            bmem.WriteBytes(
                 new byte[] {
                     0x34, 0x00,
                     0x36, 0x00,
@@ -425,7 +431,7 @@ namespace Reko.UnitTests.Scanning
             wi.Process();
             var sw = new StringWriter();
             block.WriteStatements(sw);
-            string sExp = "\tbx = bx & 0x0003" + nl +
+            string sExp = "\tbx = bx & 3<16>" + nl +
                 "\tSZO = cond(bx)" + nl +
                 "\tC = false" + nl +
                 "\tbx = bx + bx" + nl + 
@@ -439,7 +445,7 @@ namespace Reko.UnitTests.Scanning
         private Block ExpectJumpTarget(ushort selector, ushort offset, string blockLabel)
         {
             var addr = Address.SegPtr(selector, offset);
-            var block = new Block(proc, blockLabel) { Address = Address.SegPtr(selector, offset) };
+            var block = new Block(proc, Address.SegPtr(selector, offset), blockLabel);
             scanner.Setup(s => s.EnqueueJumpTarget(
                 It.IsNotNull<Address>(),
                 addr,
@@ -453,7 +459,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_RepMovsw()
         {
-            var follow = new Block(proc, "follow"); // the code that follows the 'rep movsw'
+            var follow = new Block(proc, Address.SegPtr(0x0C00, 0), "follow"); // the code that follows the 'rep movsw'
             BuildTest16(m =>
             {
                 m.Rep();
@@ -486,8 +492,8 @@ namespace Reko.UnitTests.Scanning
             });
             follow.Procedure = proc;
             wi.Process();
-            Assert.AreEqual("l0C00_0000_1", block.Succ[0].Name, "block should loop back onto itself");
-            Assert.AreEqual("follow", block.Succ[1].Name, "block should terminate if cx == 0 check is true");
+            Assert.AreEqual("l0C00_0000_1", block.Succ[0].DisplayName, "block should loop back onto itself");
+            Assert.AreEqual("follow", block.Succ[1].DisplayName, "block should terminate if cx == 0 check is true");
         }
 
         [Test]
@@ -504,7 +510,7 @@ namespace Reko.UnitTests.Scanning
                     It.IsNotNull<Address>(),
                     It.Is<Address>(a => a.Offset == 0x0003),
                     proc,
-                    It.IsAny<ProcessorState>())).Returns(new Block(proc, "l0003"));
+                    It.IsAny<ProcessorState>())).Returns(new Block(proc, Address.Ptr16(0x3), "l0003"));
                 scanner.Setup(x => x.TerminateBlock(
                     It.IsAny<Block>(),
                     It.IsAny<Address>()));
@@ -523,7 +529,7 @@ namespace Reko.UnitTests.Scanning
                 "\tesi = esi ^ esi" + nl +
                 "\tSZO = cond(esi)" + nl +
                 "\tC = false" + nl + 
-                "\tesi = esi + 0x00000001" + nl +
+                "\tesi = esi + 1<32>" + nl +
                 "\tSZO = cond(esi)" + nl +
                  "\tgoto 0C00:0003" + nl;
             var sw = new StringWriter();
@@ -555,7 +561,7 @@ namespace Reko.UnitTests.Scanning
                 "testblock:" + nl +
                 "\tebx = GetDC" + nl +
                 "\teax = GetDC(Mem0[esp:HWND])" + nl +
-                "\tesp = esp + 0x00000004" + nl +
+                "\tesp = esp + 4<32>" + nl +
                 "\treturn" + nl;
             var sw = new StringWriter();
             block.Write(sw);

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,11 +42,6 @@ namespace Reko.Arch.i8051
             return new MemoryOperand { Register = reg };
         }
 
-        public static MemoryOperand Indexed(Expression @base, RegisterStorage idx)
-        {
-            return new MemoryOperand { DirectAddress = @base, Index = idx };
-        }
-
         public static MemoryOperand Indexed(Storage @base, RegisterStorage idx)
         {
             return new MemoryOperand { Register = @base, Index = idx };
@@ -56,21 +51,32 @@ namespace Reko.Arch.i8051
         public Storage Register { get; set; }
         public RegisterStorage Index { get; set; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Index != null)
             {
-                writer.WriteString("@");
-                writer.WriteString(Register.Name);
-                writer.WriteString("+");
-                writer.WriteString(Index.Name);
+                renderer.WriteString("@");
+                renderer.WriteString(Register.Name);
+                renderer.WriteString("+");
+                renderer.WriteString(Index.Name);
             }
             else
             {
                 if (DirectAddress != null)
-                    writer.WriteString($"[{DirectAddress}]");
+                {
+                    renderer.WriteString("[");
+                    if (DirectAddress is Constant c)
+                    {
+                        renderer.WriteString(c.ToUInt16().ToString("X4"));
+                    }
+                    else
+                    {
+                        renderer.WriteString(DirectAddress.ToString());
+                    }
+                    renderer.WriteString("]");
+                }
                 else
-                    writer.WriteString($"@{Register.Name}");
+                    renderer.WriteString($"@{Register.Name}");
             }
         }
     }

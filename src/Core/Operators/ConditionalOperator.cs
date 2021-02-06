@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,10 +39,12 @@ namespace Reko.Core.Operators
 
     public class CandOperator : BinaryOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
-		{
-			throw new NotImplementedException();
-		}
+        public override Constant ApplyConstants(Constant c1, Constant c2)
+        {
+            if (c1.IsZero)
+                return c1;
+            return c2;
+        }
 
 		public override string ToString()
 		{

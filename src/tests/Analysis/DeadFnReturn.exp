@@ -7,7 +7,7 @@ void foo()
 foo_entry:
 	// succ:  l1
 l1:
-	foo(0x00000001)
+	foo(1<32>)
 	return
 	// succ:  foo_exit
 foo_exit:

@@ -10,6 +10,8 @@ namespace Reko.ImageLoaders.OdbgScript
     using System.Text;
     using System.Linq;
     using Reko.Core.Lib;
+    using Reko.Core.Expressions;
+    using Reko.Core;
 
     public static class Helper
     {
@@ -271,6 +273,19 @@ namespace Reko.ImageLoaders.OdbgScript
         // A hex literal matches:
         // #(..)*#
         // where . is a hex wild character.
+        public static bool TryGetHexLiteral(Expression s, out string pattern)
+        {
+            if (s is Application a && a.Procedure is ProcedureConstant pc && 
+                pc.Procedure is IntrinsicProcedure intrinsic && 
+                intrinsic.Name == "HexString")
+            {
+                pattern = $"#{a.Arguments[0]}#";
+                return true;
+            }
+            pattern = null;
+            return false;
+        }
+
         public static bool IsHexLiteral(string s)
         {
             int len = s.Length;
@@ -430,26 +445,6 @@ namespace Reko.ImageLoaders.OdbgScript
                 @out = @out.Substring(p + 1);
 
             return @out;
-        }
-
-        public static List<string> ReadLinesFromFile(string file)
-        {
-            using (StreamReader hFile = new StreamReader(file, Encoding.UTF8))
-            {
-                return ReadLines(hFile);
-            }
-        }
-
-        public static List<string> ReadLines(TextReader content)
-        {
-            List<string> script = new List<string>();
-            string line = content.ReadLine();
-            while (line != null)
-            {
-                script.Add(line);
-                line = content.ReadLine();
-            }
-            return script;
         }
 
         // Misc functions

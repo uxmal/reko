@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2019 John Källén.
+* Copyright (C) 1999-2021 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -920,7 +920,7 @@ void ArmRewriter::RewriteSwp(BaseType type)
 	{
 		fnName = "std::atomic_exchange<int32_t>";
 	}
-	auto intrinsic = host->EnsurePseudoProcedure(fnName, type, 2);
+	auto intrinsic = host->EnsureIntrinsicProcedure(fnName, false, type, 2);
 	auto dst = Operand(Dst(), BaseType::Word32, true);
 	m.AddArg(Operand(Src1()));
 	m.AddArg(Operand(Src2()));

@@ -19,6 +19,7 @@
 #endregion
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -91,14 +92,14 @@ namespace Reko.ImageLoaders.Nro
 
         private void HandleSegment(NroSegmentType type, NroSegmentHeader nroSeg)
         {
-            MemoryArea mem = new MemoryArea(
+            ByteMemoryArea bmem = new ByteMemoryArea(
                 PreferredBaseAddress + nroSeg.file_offset,
                 rdr.ReadAt<byte[]>(nroSeg.file_offset, rdr => rdr.ReadBytes(nroSeg.size))
             );
 
             ImageSegment seg = new ImageSegment(
                 GetNroSegmentName(type),
-                mem,
+                bmem,
                 GetNroSegmentAccess(type)
             );
 

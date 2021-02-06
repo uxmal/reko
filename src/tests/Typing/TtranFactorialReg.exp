@@ -4,7 +4,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem12[ds:0x0064:word16] = fn0C00_000B(0x0005)
+	Mem12[ds:0x64<16>:word16] = fn0C00_000B(5<16>)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -16,14 +16,14 @@ fn0C00_000B_entry:
 	// succ:  l0C00_000B
 l0C00_000B:
 	word16 ax_11
-	branch cx <= 0x0001 l0C00_001C
+	branch cx <= 1<16> l0C00_001C
 	// succ:  l0C00_0011 l0C00_001C
 l0C00_0011:
-	ax_11 = SLICE(cx *s fn0C00_000B(cx - 0x0001), word16, 0) (alias)
+	ax_11 = SLICE(cx *s32 fn0C00_000B(cx - 1<16>), word16, 0) (alias)
 	goto l0C00_001F
 	// succ:  l0C00_001F
 l0C00_001C:
-	ax_11 = 0x0001
+	ax_11 = 1<16>
 	// succ:  l0C00_001F
 l0C00_001F:
 	return ax_11
@@ -60,19 +60,19 @@ T_5: (in cx : word16)
   Class: Eq_5
   DataType: int16
   OrigDataType: int16
-T_6: (in 0x0005 : word16)
+T_6: (in 5<16> : word16)
   Class: Eq_5
   DataType: int16
   OrigDataType: word16
-T_7: (in fn0C00_000B(0x0005) : word16)
+T_7: (in fn0C00_000B(5<16>) : word16)
   Class: Eq_7
   DataType: int16
   OrigDataType: word16
-T_8: (in 0x0064 : word16)
+T_8: (in 0x64<16> : word16)
   Class: Eq_8
   DataType: (memptr (ptr16 Eq_2) int16)
   OrigDataType: (memptr T_2 (struct (0 T_9 t0000)))
-T_9: (in Mem12[ds:0x0064:word16] : word16)
+T_9: (in Mem12[ds:0x64<16>:word16] : word16)
   Class: Eq_7
   DataType: int16
   OrigDataType: word16
@@ -84,15 +84,15 @@ T_11: (in ax_11 : word16)
   Class: Eq_10
   DataType: word16
   OrigDataType: word16
-T_12: (in 0x0001 : word16)
+T_12: (in 1<16> : word16)
   Class: Eq_5
   DataType: int16
   OrigDataType: ci16
-T_13: (in cx <= 0x0001 : bool)
+T_13: (in cx <= 1<16> : bool)
   Class: Eq_13
   DataType: bool
   OrigDataType: bool
-T_14: (in 0x0001 : word16)
+T_14: (in 1<16> : word16)
   Class: Eq_10
   DataType: word16
   OrigDataType: word16
@@ -100,23 +100,23 @@ T_15: (in fn0C00_000B : segptr32)
   Class: Eq_3
   DataType: (ptr32 Eq_3)
   OrigDataType: (ptr32 (fn T_18 (T_17)))
-T_16: (in 0x0001 : word16)
+T_16: (in 1<16> : word16)
   Class: Eq_16
   DataType: int16
   OrigDataType: int16
-T_17: (in cx - 0x0001 : word16)
+T_17: (in cx - 1<16> : word16)
   Class: Eq_5
   DataType: int16
   OrigDataType: ci16
-T_18: (in fn0C00_000B(cx - 0x0001) : word16)
+T_18: (in fn0C00_000B(cx - 1<16>) : word16)
   Class: Eq_7
   DataType: int16
   OrigDataType: int16
-T_19: (in cx *s fn0C00_000B(cx - 0x0001) : int32)
+T_19: (in cx *s32 fn0C00_000B(cx - 1<16>) : int32)
   Class: Eq_19
   DataType: int32
   OrigDataType: int32
-T_20: (in SLICE(cx *s fn0C00_000B(cx - 0x0001), word16, 0) : word16)
+T_20: (in SLICE(cx *s32 fn0C00_000B(cx - 1<16>), word16, 0) : word16)
   Class: Eq_10
   DataType: word16
   OrigDataType: word16

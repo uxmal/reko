@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 Pavel Tomin.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -445,7 +445,7 @@ trash = <invalid>
             var expected =
 @"
 FakeST_3[FakeTop_1] = fn()
-FakeTop_2 = FakeTop_1 - 5
+FakeTop_2 = FakeTop_1 - 5<i8>
 ";
             AssertProcedureCode(expected);
         }

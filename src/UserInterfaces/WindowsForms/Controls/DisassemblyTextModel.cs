@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -59,7 +60,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
             this.addrStart = Address.Max(segment.Address, mem.BaseAddress);
             this.position = addrStart;
-            this.addrEnd = Address.Min(segment.Address + segment.Size, mem.EndAddress);
+            //$BUG: the BaseAddress + length is unsafe! it will overflow!
+            this.addrEnd = Address.Min(segment.Address + segment.Size, mem.BaseAddress + mem.Length);
         }
 
         public object StartPosition { get { return addrStart; } }
@@ -83,10 +85,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     seg.MemoryArea != null &&
                     seg.MemoryArea.IsValidAddress(addr))
                 {
-                    var options = ShowPcRelative
-                        ? MachineInstructionWriterOptions.None
-                        : MachineInstructionWriterOptions.ResolvePcRelativeAddress;
-
+                    var options = new MachineInstructionRendererOptions(
+                        flags: ShowPcRelative
+                            ? MachineInstructionRendererFlags.None
+                            : MachineInstructionRendererFlags.ResolvePcRelativeAddress);
                     var arch = GetArchitectureForAddress(addr);
                     var dasm = program.CreateDisassembler(arch, Align(position)).GetEnumerator();
                     while (count != 0 && dasm.MoveNext())
@@ -122,14 +124,15 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             Program program,
             IProcessorArchitecture arch,
             MachineInstruction instr,
-            MachineInstructionWriterOptions options)
+            MachineInstructionRendererOptions options)
         {
             var line = new List<TextSpan>();
             var addr = instr.Address;
             line.Add(new AddressSpan(addr.ToString() + " ", addr, "link"));
-            line.Add(new InstructionTextSpan(instr, BuildBytes(program, arch, instr), "dasm-bytes"));
+            var rdr = program.CreateImageReader(arch, instr.Address);
+            var bytes = arch.RenderInstructionOpcode(instr, rdr);
+            line.Add(new InstructionTextSpan(instr, bytes, "dasm-bytes"));
             var dfmt = new DisassemblyFormatter(program, arch, instr, line);
-            dfmt.Address = instr.Address;
             instr.Render(dfmt, options);
             dfmt.NewLine();
             return new LineSpan(position, line.ToArray());
@@ -137,29 +140,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private Address Align(Address addr)
         {
-            uint byteAlign = (uint)program.Architecture.InstructionBitSize / 8u;
+            var arch = program.Architecture;
+            uint addrAlign = (uint)Math.Max(arch.InstructionBitSize / arch.MemoryGranularity, 1);
             ulong linear = addr.ToLinear();
-            var rem = linear % byteAlign;
+            var rem = linear % addrAlign;
             return addr - (int)rem;
-        }
-
-        private static string BuildBytes(Program program, IProcessorArchitecture arch, MachineInstruction instr)
-        {
-            //$REVIEW: these computations will be done a lot, but we need some place to store 
-            // them.
-            var bitSize = arch.InstructionBitSize;
-            var byteSize = (bitSize + 7) / 8;
-            var instrByteFormat = $"{{0:X{byteSize * 2}}} ";      // 2 characters for each byte
-            var instrByteSize = PrimitiveType.CreateWord(bitSize);
-
-            var sb = new StringBuilder();
-            var rdr = program.CreateImageReader(arch, instr.Address);
-            for (int i = 0; i < instr.Length; i += byteSize)
-            {
-                var v = rdr.Read(instrByteSize);
-                sb.AppendFormat(instrByteFormat, v.ToUInt64());
-            }
-            return sb.ToString();
         }
 
         public int MoveToLine(object basePosition, int offset)
@@ -204,10 +189,19 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             if (addrEnd.ToLinear() == 0)
                 byteOffset = Math.Abs(byteOffset);
-            int bitSize = program.Architecture != null
-                ? program.Architecture.InstructionBitSize
-                : 8;
-            return (int)(8 * byteOffset / bitSize);
+            int bitSize;
+            int unitSize;
+            if (program.Architecture != null)
+            {
+                bitSize = program.Architecture.InstructionBitSize;
+                unitSize = program.Architecture.MemoryGranularity;
+            }
+            else
+            {
+                bitSize = 8;
+                unitSize = 8;
+            }
+            return (int)(unitSize * byteOffset / bitSize);
         }
 
         /// <summary>
@@ -215,7 +209,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// </summary>
         public class InertTextSpan : TextSpan
         {
-            private string text;
+            private readonly string text;
 
             public InertTextSpan(string text, string style)
             {

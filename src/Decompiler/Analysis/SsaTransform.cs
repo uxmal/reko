@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,9 +60,10 @@ namespace Reko.Analysis
         private readonly HashSet<SsaIdentifier> incompletePhis;
         private readonly HashSet<Procedure> sccProcs;
         private readonly ExpressionEmitter m;
-        private HashSet<SsaIdentifier> sidsToRemove;
-        private Block block;
-        private Statement stmCur;
+        private readonly Dictionary<(SsaIdentifier, BitRange), SsaIdentifier> availableSlices;
+        private readonly HashSet<SsaIdentifier> sidsToRemove;
+        private Block? block;
+        private Statement? stmCur;
 
         public SsaTransform(
             Program program,
@@ -78,8 +79,10 @@ namespace Reko.Analysis
             this.sccProcs = sccProcs;
             this.ssa = new SsaState(proc);
             this.blockstates = ssa.Procedure.ControlGraph.Blocks.ToDictionary(k => k, v => new SsaBlockState(v));
+            this.availableSlices = new Dictionary<(SsaIdentifier, BitRange), SsaIdentifier>();
             this.factory = new TransformerFactory(this);
             this.incompletePhis = new HashSet<SsaIdentifier>();
+            this.sidsToRemove = new HashSet<SsaIdentifier>();
             this.m = new ExpressionEmitter();
         }
 
@@ -104,8 +107,8 @@ namespace Reko.Analysis
         /// <param name="proc"></param>
         public SsaState Transform()
         {
-            DebugEx.Inform(trace, "SsaTransform: {0}, rename frame accesses {1}", ssa.Procedure.Name, this.RenameFrameAccesses);
-            this.sidsToRemove = new HashSet<SsaIdentifier>();
+            trace.Inform("SsaTransform: {0}, rename frame accesses {1}", ssa.Procedure.Name, this.RenameFrameAccesses);
+            this.sidsToRemove.Clear();
             foreach (var bs in blockstates.Values)
             {
                 bs.Visited = false;
@@ -120,13 +123,13 @@ namespace Reko.Analysis
                 if (b != b.Procedure.EntryBlock && b.Pred.Count == 0)
                     continue;
 
-                DebugEx.Verbose(trace, "SsaTransform:   {0} ({1} statements)", b.Name, b.Statements.Count);
+                trace.Verbose("SsaTransform:   {0} ({1} statements)", b.DisplayName, b.Statements.Count);
                 this.block = b;
                 blockstates[b].Terminates = false;
                 foreach (var s in b.Statements.ToList())
                 {
                     this.stmCur = s;
-                    DebugEx.Verbose(trace, "SsaTransform:     {0:X4} {1}", s.LinearAddress, s);
+                    trace.Verbose("SsaTransform:     {0:X4} {1}", s.LinearAddress, s);
                     s.Instruction = s.Instruction.Accept(this);
                     if (blockstates[b].Terminates)
                     {
@@ -218,7 +221,7 @@ namespace Reko.Analysis
                         cfg.RemoveEdge(orphan, s);
                     }
                     orphan.Procedure.RemoveBlock(orphan);
-                    orphan.Procedure = null;
+                    orphan.Procedure = null!;
                 }
             }
             orphans.Count.ToString();
@@ -241,7 +244,7 @@ namespace Reko.Analysis
             // (e.g. eax, ax, al, ah) and render them as a single
             // register (eax).
             this.block = ssa.Procedure.ExitBlock;
-            DebugEx.Verbose(trace, "SsaTransform: AddUsesToExitBlock  {0}", this.block);
+            trace.Verbose("SsaTransform: AddUsesToExitBlock  {0}", this.block);
 
             // Compute the set of all blocks b such that there is a path from
             // b to the exit block.
@@ -249,7 +252,7 @@ namespace Reko.Analysis
             var existing = block.Statements
                 .Select(s => s.Instruction as UseInstruction)
                 .Where(u => u != null)
-                .Select(u => u.Expression)
+                .Select(u => u!.Expression)
                 .ToHashSet();
             var reachingIds = ssa.Identifiers
                 .Where(sid => sid.DefStatement != null &&
@@ -273,11 +276,11 @@ namespace Reko.Analysis
                     block))
                 .ToList();
             block.Statements.AddRange(stms);
-            DebugEx.Verbose(trace, "AddUsesToExitBlock");
+            trace.Verbose("AddUsesToExitBlock");
             stms.ForEach(u =>
             {
                 var use = (UseInstruction)u.Instruction;
-                DebugEx.Verbose(trace, "SsaTransform:   {0}", use);
+                trace.Verbose("SsaTransform:   {0}", use);
                 use.Expression = NewUse((Identifier)use.Expression, u, true);
             });
         }
@@ -289,14 +292,14 @@ namespace Reko.Analysis
         /// <remarks>
         /// Implements Algorithm 5 of the Braun et al. paper.
         /// </remarks>
-        private void RemoveRedundantPhis(PhiAssignment[] phis = null)
+        private void RemoveRedundantPhis(PhiAssignment[]? phis = null)
         {
             if (phis == null)
             {
                 phis = ssa.Procedure.Statements
                     .Select(stm => stm.Instruction as PhiAssignment)
                     .Where(p => p != null)
-                    .ToArray();
+                    .ToArray()!;
             }
 
             SccFinder<PhiAssignment> sccFinder = new SccFinder<PhiAssignment>(new PhiGraph(ssa, phis), processScc);
@@ -340,7 +343,7 @@ namespace Reko.Analysis
         {
             foreach (var phi in scc)
             {
-                var stm = ssa.Identifiers[phi.Dst].DefStatement;
+                var stm = ssa.Identifiers[phi.Dst].DefStatement!;
                 ssa.RemoveUses(stm);
                 stm.Instruction = new AliasAssignment(phi.Dst, value);
                 ssa.AddUses(stm);
@@ -532,12 +535,12 @@ namespace Reko.Analysis
         public override Instruction TransformCallInstruction(CallInstruction ci)
         {
             ci.Callee = ci.Callee.Accept(this);
-            ProcedureBase callee = GetCalleeProcedure(ci);
+            ProcedureBase? callee = GetCalleeProcedure(ci);
             if (callee != null && callee.Signature.ParametersValid)
             {
                 // Signature is known: build the application immediately,
                 // after removing all uses of the old call.
-                ssa.RemoveUses(stmCur);
+                ssa.RemoveUses(stmCur!);
                 var ab = CreateApplicationBuilder(ci.Callee.DataType, callee, ci);
                 var instr = ab.CreateInstruction(callee.Signature, callee.Characteristics);
                 return instr.Accept(this);
@@ -605,7 +608,7 @@ namespace Reko.Analysis
                 if (calleeFlow.TerminatesProcess)
                 {
                     // We just discovered this basic block doesn't terminate.
-                    this.blockstates[block].Terminates = true;
+                    this.blockstates[block!].Terminates = true;
                     return;
                 }
 
@@ -653,7 +656,7 @@ namespace Reko.Analysis
             {
                 var fpuStackReg = SsaState.Procedure.Frame.EnsureRegister(arch.FpuStackRegister);
                 var src = m.AddSubSignedInt(fpuStackReg, fpuStackDelta);
-                var iCur = stmCur.Block.Statements.IndexOf(stmCur);
+                var iCur = stmCur!.Block.Statements.IndexOf(stmCur);
                 stmCur = stmCur.Block.Statements.Insert(iCur + 1,
                     stmCur.LinearAddress,
                     new Assignment(fpuStackReg, src));
@@ -689,7 +692,7 @@ namespace Reko.Analysis
                     ssa.Procedure.Frame,
                     fpuStackStorage.FpuStackOffset,
                     PrimitiveType.Word64); //$TODO: datatype?
-                var iCur = stmCur.Block.Statements.IndexOf(stmCur);
+                var iCur = stmCur!.Block.Statements.IndexOf(stmCur);
                 stmCur = stmCur.Block.Statements.Insert(
                     iCur + 1,
                     stmCur.LinearAddress,
@@ -718,7 +721,7 @@ namespace Reko.Analysis
             // If the guess is wrong, the user can correct it with a 
             // decompilation directive.
 
-            var ids = GuessParameterIdentifiers(ci, stmCur, stackDepth)
+            var ids = GuessParameterIdentifiers(ci, stmCur!, stackDepth)
                 .Concat(ssa.Procedure.EntryBlock.Statements
                     .Select(s => s.Instruction)
                     .OfType<DefInstruction>()
@@ -739,7 +742,7 @@ namespace Reko.Analysis
                     (calleeStg is RegisterStorage ||
                      calleeStg is StackArgumentStorage))
                 {
-                    var idNew = NewUse(id, stmCur, true);
+                    var idNew = NewUse(id, stmCur!, true);
                     ci.Uses.Add(new CallBinding(calleeStg, idNew));
                     existingUses.Add(calleeStg);
                 }
@@ -794,10 +797,10 @@ namespace Reko.Analysis
                         continue;
                     switch (ass.Dst.Storage)
                     {
-                    case RegisterStorage reg:
+                    case RegisterStorage _:
                         ids.Add(ass.Dst);
                         break;
-                    case SequenceStorage seq:
+                    case SequenceStorage _:
                         ids.Add(ass.Dst);
                         break;
                     case StackStorage stk:
@@ -806,7 +809,7 @@ namespace Reko.Analysis
                         break;
                     }
                     break;
-                case Store store:
+                case Store _:
                     break;
                 default:
                     return ids;
@@ -863,7 +866,7 @@ namespace Reko.Analysis
             return trashedRegisters.Where(r => r.OverlapsWith(stg)).Any();
         }
 
-        private ProcedureBase GetCalleeProcedure(CallInstruction ci)
+        private ProcedureBase? GetCalleeProcedure(CallInstruction ci)
         {
             if (ci.Callee is Identifier id)
             {
@@ -903,12 +906,12 @@ namespace Reko.Analysis
             {
                 if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, acc.EffectiveAddress))
                 {
-                    if (acc is SegmentedAccess segacc)
+                    if (acc is SegmentedAccess segacc && segacc.BasePointer is Identifier idSeg)
                     {
-                        ssa.Identifiers[(Identifier)segacc.BasePointer].Uses.Remove(stmCur);
+                        ssa.Identifiers[idSeg].Uses.Remove(stmCur!);
                     }
-                    ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur);
-                    ssa.Identifiers[acc.MemoryId].Uses.Remove(stmCur);
+                    ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur!);
+                    ssa.Identifiers[acc.MemoryId].Uses.Remove(stmCur!);
                     ssa.Identifiers[acc.MemoryId].DefStatement = null;
                     var idFrame = EnsureStackVariable(ssa.Procedure, acc.EffectiveAddress, acc.DataType);
                     var idDst = NewDef(idFrame, src, false);
@@ -923,7 +926,7 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    Expression basePtr = null;
+                    Expression? basePtr = null;
                     if (acc is SegmentedAccess sa)
                     {
                         basePtr = sa.BasePointer.Accept(this);
@@ -976,7 +979,7 @@ namespace Reko.Analysis
             var proc = appl.Procedure.Accept(this);
             if (proc is ProcedureConstant pc)
             {
-                blockstates[block].Terminates |= ProcedureTerminates(pc.Procedure);
+                blockstates[block!].Terminates |= ProcedureTerminates(pc.Procedure);
             }
             return new Application(proc, appl.DataType, args);
         }
@@ -1008,7 +1011,7 @@ namespace Reko.Analysis
 
         public override Expression VisitIdentifier(Identifier id)
         {
-            return NewUse(id, stmCur, false);
+            return NewUse(id, stmCur!, false);
         }
 
         public override Expression VisitOutArgument(OutArgument outArg)
@@ -1034,7 +1037,7 @@ namespace Reko.Analysis
 
         public Identifier NewDef(Identifier idOld, Expression src, bool isSideEffect)
         {
-            if (idOld != null && ssa.Identifiers.TryGetValue(idOld, out var sidOld))
+            if (ssa.Identifiers.TryGetValue(idOld, out var sidOld))
             {
                 if (sidOld.OriginalIdentifier != sidOld.Identifier)
                 {
@@ -1043,8 +1046,8 @@ namespace Reko.Analysis
                 }
             }
             var sid = ssa.Identifiers.Add(idOld, stmCur, src, isSideEffect);
-            var bs = blockstates[block];
-            var x = factory.Create(idOld, stmCur);
+            var bs = blockstates[block!];
+            var x = factory.Create(idOld, stmCur!);
             return x.WriteVariable(bs, sid);
         }
 
@@ -1052,7 +1055,7 @@ namespace Reko.Analysis
         {
             if (RenameFrameAccesses && !force)
                 return id;
-            var bs = blockstates[block];
+            var bs = blockstates[block!];
             var x = factory.Create(id, stm);
             var sid = x.ReadVariable(bs);
             sid.Uses.Add(stm);
@@ -1065,18 +1068,18 @@ namespace Reko.Analysis
             {
                 if (IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
                 {
-                    ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur);
-                    ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur);
+                    ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur!);
+                    ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur!);
                     var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
-                    var idNew = NewUse(idFrame, stmCur, true);
+                    var idNew = NewUse(idFrame, stmCur!, true);
                     return idNew;
                 }
                 if (IsConstFpuStackAccess(access))
                 {
-                    ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur);
+                    ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur!);
                     var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(
                         ((Constant)access.EffectiveAddress).ToInt32(), access.DataType);
-                    var idNew = NewUse(idFrame, stmCur, true);
+                    var idNew = NewUse(idFrame, stmCur!, true);
                     return idNew;
                 }
             }
@@ -1091,23 +1094,23 @@ namespace Reko.Analysis
                 {
                     // Replace id + c  where id = cOther with c
                     c = bin.Operator.ApplyConstants(cOther, c);
-                    sid.Uses.Remove(stmCur);
+                    sid.Uses.Remove(stmCur!);
                 }
                 else
                 {
-                    c = null;
+                    c = null!;
                 }
             }
             else
             {
-                c = ea as Constant;
+                c = (ea as Constant)!;
             }
 
             if (c != null &&
                 // Search imported procedures only in Global Memory
                 access.MemoryId.Storage == MemoryStorage.Instance)
             {
-                var e = dynamicLinker.ResolveToImportedValue(stmCur, c);
+                var e = dynamicLinker.ResolveToImportedValue(stmCur!, c);
                 if (e != null)
                     return e;
                 ea = c;
@@ -1120,18 +1123,21 @@ namespace Reko.Analysis
         {
             if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
             {
-                ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur);
-                ssa.Identifiers[(Identifier)access.BasePointer].Uses.Remove(stmCur);
-                ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur);
+                ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur!);
+                if (access.BasePointer is Identifier idSeg)
+                {
+                    ssa.Identifiers[idSeg].Uses.Remove(stmCur!);
+                }
+                ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur!);
                 var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
-                var idNew = NewUse(idFrame, stmCur, true);
+                var idNew = NewUse(idFrame, stmCur!, true);
                 return idNew;
             }
             else
             {
                 var basePtr = access.BasePointer.Accept(this);
                 var ea = access.EffectiveAddress.Accept(this);
-                var memId = (MemoryIdentifier)NewUse(access.MemoryId, stmCur, false);
+                var memId = (MemoryIdentifier)NewUse(access.MemoryId, stmCur!, false);
                 return new SegmentedAccess(memId, basePtr, ea, access.DataType);
             }
         }
@@ -1140,9 +1146,9 @@ namespace Reko.Analysis
         {
             if (storing)
             {
-                var sid = ssa.Identifiers.Add(memId, this.stmCur, null, false);
-                var ss = new RegisterTransformer(memId, stmCur, this);
-                return (MemoryIdentifier)ss.WriteVariable(blockstates[block], sid);
+                var sid = ssa.Identifiers.Add(memId, this.stmCur!, null, false);
+                var ss = new RegisterTransformer(memId, stmCur!, this);
+                return (MemoryIdentifier)ss.WriteVariable(blockstates[block!], sid);
             }
             else
             {
@@ -1188,8 +1194,7 @@ namespace Reko.Analysis
                 incompletePhis.Clear();
                 foreach (var phi in work)
                 {
-                    var phiBlock = phi.DefStatement.Block;
-                    var x = factory.Create(phi.OriginalIdentifier, phi.DefStatement);
+                    var x = factory.Create(phi.OriginalIdentifier, phi.DefStatement!);
                     x.AddPhiOperands(phi);
                 }
             }
@@ -1198,7 +1203,7 @@ namespace Reko.Analysis
         public class SsaBlockState
         {
             public readonly Block Block;
-            public readonly Dictionary<StorageDomain, AliasState> currentDef;
+            public readonly Dictionary<StorageDomain, AliasState> currentDef;       // Identifiers defined in this block
             public readonly IntervalTree<int, Alias> currentStackDef;
             public readonly Dictionary<StorageDomain, FlagAliasState> currentFlagDef;
             public readonly Dictionary<Storage, SsaIdentifier> currentSimpleDef;
@@ -1218,7 +1223,7 @@ namespace Reko.Analysis
             public override string ToString()
             {
                 var sb = new StringBuilder();
-                sb.AppendFormat("BlockState {0}", Block.Name);
+                sb.AppendFormat("BlockState {0}", Block.DisplayName);
                 sb.AppendLine();
                 sb.AppendFormat("    {0}",
                     string.Join(",", currentDef.Keys.Select(k => ((int)k).ToString())));
@@ -1263,14 +1268,20 @@ namespace Reko.Analysis
 
         public class Alias
         {
-            public SsaIdentifier SsaId;
+            public Alias(SsaIdentifier sid)
+            {
+                this.SsaId = sid;
+            }
+
+            public SsaIdentifier SsaId { get; set; }
+
         }
 
         public class TransformerFactory : StorageVisitor<IdentifierTransformer>
         {
             private readonly SsaTransform transform;
-            private Identifier id;
-            private Statement stm;
+            private Identifier? id;
+            private Statement? stm;
 
             public TransformerFactory(SsaTransform transform)
             {
@@ -1286,17 +1297,17 @@ namespace Reko.Analysis
 
             public IdentifierTransformer VisitFlagGroupStorage(FlagGroupStorage grf)
             {
-                return new FlagGroupTransformer(id, grf, stm, transform);
+                return new FlagGroupTransformer(id!, grf, stm!, transform);
             }
 
             public IdentifierTransformer VisitFpuStackStorage(FpuStackStorage fpu)
             {
-                return new SimpleTransformer(id, fpu, stm, transform);
+                return new SimpleTransformer(id!, fpu, stm!, transform);
             }
 
             public IdentifierTransformer VisitMemoryStorage(MemoryStorage global)
             {
-                return new RegisterTransformer(id, stm, transform);
+                return new RegisterTransformer(id!, stm!, transform);
             }
 
             public IdentifierTransformer VisitOutArgumentStorage(OutArgumentStorage arg)
@@ -1306,27 +1317,27 @@ namespace Reko.Analysis
 
             public IdentifierTransformer VisitRegisterStorage(RegisterStorage reg)
             {
-                return new RegisterTransformer(id, stm, transform);
+                return new RegisterTransformer(id!, stm!, transform);
             }
 
             public IdentifierTransformer VisitSequenceStorage(SequenceStorage seq)
             {
-                return new SequenceTransformer(id, seq, stm, transform);
+                return new SequenceTransformer(id!, seq, stm!, transform);
             }
 
             public IdentifierTransformer VisitStackArgumentStorage(StackArgumentStorage stack)
             {
-                return new StackTransformer(id, stack.StackOffset, stm, transform);
+                return new StackTransformer(id!, stack.StackOffset, stm!, transform);
             }
 
             public IdentifierTransformer VisitStackLocalStorage(StackLocalStorage local)
             {
-                return new StackTransformer(id, local.StackOffset, stm, transform);
+                return new StackTransformer(id!, local.StackOffset, stm!, transform);
             }
 
             public IdentifierTransformer VisitTemporaryStorage(TemporaryStorage temp)
             {
-                return new SimpleTransformer(id, temp, stm, transform);
+                return new SimpleTransformer(id!, temp, stm!, transform);
             }
         }
     }

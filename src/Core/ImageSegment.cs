@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +19,11 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
+using Reko.Core.Types;
 using System;
 using System.ComponentModel;
+using System.Text;
 
 namespace Reko.Core
 {
@@ -44,28 +47,26 @@ namespace Reko.Core
         /// <param name="access"></param>
 		public ImageSegment(string name, Address addr, MemoryArea mem, AccessMode access) : base() 
 		{
-			if (name == null)
-				throw new ArgumentNullException(nameof(name), "Segments must have names.");
-			this.Name = name;
+            this.Name = name ?? throw new ArgumentNullException(nameof(name), "Segments must have names.");
             this.Address = addr ?? throw new ArgumentException(nameof(addr));
             this.MemoryArea = mem ?? throw new ArgumentNullException(nameof(mem));
 			this.Access = access;
+            this.Fields = CreateFields(0);
 		}
 
 		public ImageSegment(string name, Address addr, uint size, AccessMode access)
 		{
-			if (name == null)
-				throw new ArgumentNullException(nameof(name), "Segments must have names.");
-            this.Name = name;
+            this.Name = name ?? throw new ArgumentNullException(nameof(name), "Segments must have names.");
             this.Size = size;
             this.Address = addr ?? throw new ArgumentNullException(nameof(addr));
-            this.MemoryArea = new MemoryArea(addr, new byte[size]);
+            this.MemoryArea = new ByteMemoryArea(addr, new byte[size]);
 			this.Access = access;
+            this.Fields = CreateFields((int)size);
 		}
 
         /// <summary>
         /// Use this constructor when the segment's memory area is completely 
-        /// disjoint fromother segments. This is usually the case in PE or ELF
+        /// disjoint from other segments. This is usually the case in PE or ELF
         /// binaries.
         /// </summary>
         /// <param name="name"></param>
@@ -73,19 +74,20 @@ namespace Reko.Core
         /// <param name="access"></param>
         public ImageSegment(string name, MemoryArea mem, AccessMode access)
         {
-            if (name == null)
-                throw new ArgumentNullException(nameof(name), "Segments must have names.");
-            this.Name = name;
+            this.Name = name ?? throw new ArgumentNullException(nameof(name), "Segments must have names.");
             this.MemoryArea = mem ?? throw new ArgumentNullException(nameof(mem));
             this.Size = (uint)mem.Length;
             this.Address = mem.BaseAddress;
             this.Access = access;
+            this.Fields = CreateFields((int)mem.Length);
         }
 
         /// <summary>
         /// Start address of the segment
         /// </summary>
         public Address Address { get; private set; }
+
+        public ulong FileOffset { get; set; }
 
         /// <summary>
         /// Size of the segment address space (content may be smaller)
@@ -108,7 +110,15 @@ namespace Reko.Core
         /// </summary>
 		public AccessMode Access { get; set; }
 
-        public ImageSegmentRenderer Designer { get; set; }
+        /// <summary>
+        /// The layout of this segment.
+        /// </summary>
+        public StructureType Fields { get; }
+
+        /// <summary>
+        /// Optional designer
+        /// </summary>
+        public ImageSegmentRenderer? Designer { get; set; }
 
 		public string Name { get; set; }
 
@@ -139,9 +149,44 @@ namespace Reko.Core
         /// </summary>
         /// <remarks>
         /// Used primarily on architectures with segmented address spaces
-        /// like x86.
+        /// like x86. It is not necessarily the same as the segment name in the
+        /// image. In particular it has to be a valid C-like identifier, so 
+        /// leading '.' are illegal.
         /// </remarks>
-        public Identifier Identifier { get; set; }
+        //$TODO: this should be non-nullable: a segment should 
+        public Identifier? Identifier { get; set; }
+
+        private StructureType CreateFields(int size)
+        {
+            string name = GenerateTypeName();
+            var segType = new StructureType(name, size)
+            {
+                IsSegment = true
+            };
+            segType.IsSegment = true;
+            return segType;
+        }
+
+        private string GenerateTypeName()
+        {
+            var sb = new StringBuilder("seg");
+            if (this.Address.Selector.HasValue)
+            {
+                sb.AppendFormat("{0:X4}", Address.Selector.Value);
+            }
+            else
+            {
+                foreach (var ch in this.Name)
+                {
+                    if (char.IsDigit(ch) || char.IsLetter(ch) || ch == '_')
+                        sb.Append(ch);
+                    else
+                        sb.Append('_');
+                }
+            }
+            sb.Append("_t");
+            return sb.ToString();
+        }
 
         /// <summary>
         /// Creates an image reader that scans all available memory in the segment.
@@ -150,9 +195,9 @@ namespace Reko.Core
         /// <returns></returns>
         public EndianImageReader CreateImageReader(IProcessorArchitecture arch)
         {
-            var addrBegin = Address.Max(this.Address, this.MemoryArea.BaseAddress);
-            var addrEnd = Address.Min(this.Address + this.Size, this.MemoryArea.EndAddress);
-            return arch.CreateImageReader(this.MemoryArea, addrBegin, addrEnd);
+            var offsetBegin = Math.Max(this.Address - this.MemoryArea.BaseAddress, 0);
+            var offsetEnd = Math.Min(this.Size, this.MemoryArea.Length);
+            return arch.CreateImageReader(this.MemoryArea, offsetBegin, offsetEnd);
         }
 
         public bool IsInRange(Address addr)

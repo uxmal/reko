@@ -1,4 +1,6 @@
 language: csharp
+mono: 
+  - latest
 solution: src/Reko-decompiler.sln
 sudo: required
 dotnet: 2.0.0

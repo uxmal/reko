@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace Reko.Core
     /// variables, and types.
     /// </summary>
     /// <remarks>
-    /// The intent is that this class can be subclassed and  modified to suit
+    /// The intent is that this class can be subclassed and modified to suit
     /// the user's preferences.
     /// </remarks>
     public class NamingPolicy
@@ -44,32 +45,76 @@ namespace Reko.Core
 
         public TypeNamingPolicy Types { get; }
 
+        /// <summary>
+        /// Generates the name for a <see cref="Procedure"/> starting at address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr">Address of the procedure.</param>
+        /// <returns>Name for the procedure.</returns>
         public virtual string ProcedureName(Address addr)
         {
             return addr.GenerateName("fn", "");
         }
 
         /// <summary>
-        /// Generates the name for a block stating at address <paramref name="addr"/>.
+        /// Generates the name for a basic block starting at address <paramref name="addr"/>.
         /// </summary>
         /// <returns>The name as a string.</returns>
         public virtual string BlockName(Address addr)
         {
-            if (addr == null) throw new ArgumentNullException(nameof(addr));
+            if (addr is null) throw new ArgumentNullException(nameof(addr));
             return addr.GenerateName("l", "");
         }
 
-        public virtual string StackArgumentName(DataType type, int cbOffset, string nameOverride)
+        /// <summary>
+        /// Generates the name for a basic block based on its <see cref="RtlLocation"/>.
+        /// </summary>
+        /// <param name="loc">Location of the basic block.</param>
+        /// <returns>The name of the basic block as a string.</returns>
+        public virtual string BlockName(RtlLocation loc)
+        {
+            if (loc.Index == 0)
+                return BlockName(loc.Address);
+            return loc.Address.GenerateName("l", $"_{loc.Index}");
+        }
+
+        /// <summary>
+        /// Generates the name of a global variable.
+        /// </summary>
+        /// <param name="field">Global variable field.</param>
+        /// <returns></returns>
+        public virtual string GlobalName(StructureField field)
+        {
+            if (field.IsNameSet)
+                return field.Name;
+            var fieldName = Types.StructureFieldName(field, null);
+            return string.Format("g_{0}", fieldName);
+        }
+
+        /// <summary>
+        /// Generates the name of an argument to a procedure that is passed on the stack.
+        /// </summary>
+        /// <param name="type">Type of the argument.</param>
+        /// <param name="cbOffset">Offset from the top of the frame of the called procedure.</param>
+        /// <param name="nameOverride">If not null, use this string instead of synthesizing a name.</param>
+        /// <returns></returns>
+        public virtual string StackArgumentName(DataType type, int cbOffset, string? nameOverride)
         {
             return GenerateStackAccessName(type, "Arg", cbOffset, nameOverride);
         }
 
-        public virtual string StackLocalName(DataType type, int cbOffset, string nameOverride)
+        /// <summary>
+        /// Generates the name of a local stack-based variable in a procedure.
+        /// </summary>
+        /// <param name="type">Type of the argument.</param>
+        /// <param name="cbOffset">Offset from the top of the frame of the called procedure.</param>
+        /// <param name="nameOverride">If not null, use this string instead of synthesizing a name.</param>
+        /// <returns></returns>
+        public virtual string StackLocalName(DataType type, int cbOffset, string? nameOverride)
         {
             return GenerateStackAccessName(type, "Loc", cbOffset, nameOverride);
         }
 
-        private string GenerateStackAccessName(DataType type, string prefix, int cbOffset, string nameOverride)
+        private string GenerateStackAccessName(DataType type, string prefix, int cbOffset, string? nameOverride)
         {
             if (nameOverride != null)
                 return nameOverride;

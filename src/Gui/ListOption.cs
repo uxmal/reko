@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,8 +29,14 @@ namespace Reko.Gui
 {
     public class ListOption
     {
+        public ListOption(string text, object? value)
+        {
+            this.Text = text;
+            this.Value = value;
+        }
+
         public string Text { get; set; }
-        public object Value { get; set; }
+        public object? Value { get; set; }
 
         public override string ToString()
         {

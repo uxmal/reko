@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
@@ -103,12 +104,7 @@ namespace Reko.Gui.Forms
             var hits = Decompiler.Project.Programs
                 .SelectMany(p => p.ImageMap.Items
                         .Where(i => i.Value.DataType is UnknownType)
-                        .Select(i => new AddressSearchHit
-                        {
-                            Program = p,
-                            Address = i.Key,
-                            Length = 1
-                        }));
+                        .Select(i => new AddressSearchHit(p, i.Key, 1)));
             srSvc.ShowSearchResults(
                 new AddressSearchResult(
                     Services,

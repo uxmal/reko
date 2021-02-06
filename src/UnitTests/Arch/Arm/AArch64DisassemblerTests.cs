@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,15 +22,22 @@ using NUnit.Framework;
 using Reko.Arch.Arm;
 using Reko.Arch.Arm.AArch64;
 using Reko.Core;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
     public class Arm64DisassemblerTests : DisassemblerTestBase<AArch64Instruction>
     {
-        private IProcessorArchitecture arch = new Arm64Architecture("aarch64");
-        private Address baseAddress = Address.Ptr64(0x00100000);
+        private readonly IProcessorArchitecture arch;
+        private readonly Address baseAddress;
         private AArch64Instruction instr;
+
+        public Arm64DisassemblerTests()
+        {
+            this.arch = new Arm64Architecture(CreateServiceContainer(), "aarch64", new Dictionary<string, object>());
+            this.baseAddress = Address.Ptr64(0x00100000);
+        }
 
         public override IProcessorArchitecture Architecture
         {
@@ -50,6 +57,15 @@ namespace Reko.UnitTests.Arch.Arm
         private void Expect_Code(string sexp)
         {
             Assert.AreEqual(sexp, instr.ToString());
+        }
+
+        private void AssertCode(string sExpected, string hexBytes)
+        {
+            var instr = DisassembleHexBytes(hexBytes);
+            if (instr.ToString() != sExpected && instr.ToString().StartsWith("Nyi"))
+            {
+                Assert.AreEqual(sExpected, instr.ToString());
+            }
         }
 
         [Test]
@@ -130,6 +146,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_and_vector()
+        {
+            AssertCode("and\tv0.16b,v0.16b,v2.16b", "001C224E");
+        }
+
+        [Test]
         public void AArch64Dis_ands_Xn_imm()
         {
             var instr = DisassembleBits("111 100100 0 010101 010101 00100 00111");
@@ -143,6 +165,11 @@ namespace Reko.UnitTests.Arch.Arm
             Assert.AreEqual("movk\tx7,#&AAA4", instr.ToString());
         }
 
+        [Test]
+        public void AArch64Dis_tbl_1r()
+        {
+            AssertCode("tbl\tv0.8b,{v0.8b},v0.8b", "0000000E");
+        }
 
         [Test]
         public void AArch64Dis_tbz()
@@ -338,6 +365,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_ldxr()
+        {
+            AssertCode("@@@", "A1235D88");
+        }
+
+        [Test]
         public void AArch64Dis_cbnz_negative_offset()
         {
             Given_Instruction(0x35FFFE73);
@@ -508,7 +541,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_38018C14()
+        public void AArch64Dis_strb_preidx()
         {
             Given_Instruction(0x38018C14);
             Expect_Code("strb\tw20,[x0,#&18]!");
@@ -606,6 +639,18 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_cmeq()
+        {
+            AssertCode("cmeq\tv0.4s,v2.4s", "4098A04E");
+        }
+
+        [Test]
+        public void AArch64Dis_cmhs()
+        {
+            AssertCode("cmhs\tv1.16b,v1.16b,v2.16b,#0", "213C226E");
+        }
+
+        [Test]
         public void AArch64Dis_cmp_32_uxtb()
         {
             Given_Instruction(0x6B20001F);
@@ -692,12 +737,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("ldrh\tw0,[x0,w22,sxtw #1]");
         }
 
-        public void AArch64Dis_3873C800()
-        {
-            Given_Instruction(0x3873C800);
-            Expect_Code("@@@");
-        }
-
         [Test]
         public void AArch64Dis_ldrh_idx_sxtw()
         {
@@ -754,6 +793,12 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("sdiv\tx2,x3,x2");
         }
 
+
+        [Test]
+        public void AArch64Dis_eon_reg_32()
+        {
+            AssertCode("eon\tw0,w0,w1", "0000214A");
+        }
         [Test]
         public void AArch64Dis_eor_reg_32()
         {
@@ -776,17 +821,17 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_umulh()
-        {
-            Given_Instruction(0x9BC57C00);
-            Expect_Code("umulh\tx0,w0,w5");
-        }
-
-        [Test]
         public void AArch64Dis_lsrv()
         {
             Given_Instruction(0x1AC22462);
             Expect_Code("lsrv\tw2,w3,w2");
+        }
+
+        [Test]
+        public void AArch64Dis_umulh()
+        {
+            Given_Instruction(0x9BC57C00);
+            Expect_Code("umulh\tx0,w0,w5");
         }
 
         [Test]
@@ -839,10 +884,22 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_scvtf()
+        public void AArch64Dis_scvtf_x_to_s()
         {
             Given_Instruction(0x1E220120);
             Expect_Code("scvtf\ts0,w9");
+        }
+
+        [Test]
+        public void AArch64Dis_scvtf_x_to_d()
+        {
+            AssertCode("scvtf\td1,x0", "0100629E");
+        }
+
+        [Test]
+        public void AArch64Dis_scvtf_d_to_d()
+        {
+            AssertCode("scvtf\td16,d0", "10D8615E");
         }
 
         [Test]
@@ -857,6 +914,20 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x5E21D82F);
             Expect_Code("scvtf\ts15,s1");
+        }
+
+
+        [Test]
+        public void AArch64Dis_scvtf_i32_to_f32()
+        {
+            Given_Instruction(0x1E6202E0);
+            Expect_Code("scvtf\td0,w23");
+        }
+
+        [Test]
+        public void AArch64Dis_scvtf_i64_to_f64()
+        {
+            AssertCode("scvtf\td0,x0", "0000629E");
         }
 
         [Test]
@@ -888,6 +959,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_adcs_64()
+        {
+            Given_Instruction(0xBA020063); // 630002BA");
+            Expect_Code("adcs\tx3,x3,x2");
+        }
+
+        [Test]
         public void AArch64Dis_add_32_ext()
         {
             Given_Instruction(0x0B20A1EF);
@@ -901,12 +979,6 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("add\twsp,wsp,w0,sxth #0");
         }
 
-        [Test]
-        public void AArch64Dis_scvtf_i32_to_f32()
-        {
-            Given_Instruction(0x1E6202E0);
-            Expect_Code("scvtf\td0,w23");
-        }
 
         [Test]
         public void AArch64Dis_fmov_f64_to_i64()
@@ -919,8 +991,14 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_sxtl()
         {
             Given_Instruction(0x0F10A673);
-            Expect_Code("sxtl\tv19.8h,v19.4h");
+            Expect_Code("sxtl\tv19.4s,v19.4h");
         }
+        [Test]
+        public void AArch64Dis_sxtl_v()
+        {
+            AssertCode("sxtl\tv16.2d,v3.2s", "70A4200F");
+        }
+
 
         [Test]
         public void AArch64Dis_fadd_vector_real32()
@@ -930,10 +1008,22 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_fcvtzs_d_to_w()
+        {
+            AssertCode("fcvtzs\tw1,d0", "0100781E");
+        }
+
+        [Test]
         public void AArch64Dis_fcvtzs_vector_real32()
         {
             Given_Instruction(0x4EA1BAB5);
             Expect_Code("fcvtzs\tv21.4s,v21.4s");
+        }
+
+        [Test]
+        public void AArch64Dis_fcvtzu_scalar()
+        {
+            AssertCode("fcvtzu\td31,d31", "FFFF7F7F");
         }
 
         [Test]
@@ -948,6 +1038,18 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x1E380069);
             Expect_Code("fcvtzs\tw3,s9");
+        }
+
+        [Test]
+        public void AArch64Dis_fcvtzs_i32_from_f64()
+        {
+            AssertCode("fcvtzs\tw8,d8", "0801789E");
+        }
+
+        [Test]
+        public void AArch64Dis_fcvtzs_i32_from_f64_2()
+        {
+            AssertCode("fcvtzs\tw15,d0", "0F00781E");
         }
 
         [Test]
@@ -1072,6 +1174,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_fmov_f64_to_d64()
+        {
+            AssertCode("fmov\tx8,d8", "0801669E");
+        }
+
+        [Test]
         public void AArch64Dis_fcvt_f32_to_f64()
         {
             Given_Instruction(0x1E22C041);
@@ -1086,10 +1194,9 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_mov_w128()
+        public void AArch64Dis_ushr()
         {
-            Given_Instruction(0x4EA91D22);
-            Expect_Code("mov\tv2.16b,v9.16b");
+            AssertCode("ushr\tv5.4s,v0.4s,#1", "05043F6F");
         }
 
         [Test]
@@ -1119,6 +1226,12 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x4F03F600);
             Expect_Code("fmov\tv0.4s,#1.0F");
+        }
+
+        [Test]
+        public void AArch64Dis_fmov_vector_element()
+        {
+            AssertCode("fmov\tx1,v0.d[1]", "0100AE9E");
         }
 
         [Test]
@@ -1162,6 +1275,32 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x6E0A5633);
             Expect_Code("mov\tv19.h[2],v17.h[5]");
         }
+
+        [Test]
+        public void AArch64Dis_mov_vector_element_to_w()
+        {
+            AssertCode("mov\tw0,v0.s[0]", "003C040E");
+        }
+
+        [Test]
+        public void AArch64Dis_mov_vector_element_to_x()
+        {
+            AssertCode("mov\tx16,v31.d[1]", "F03F184E");
+        }
+
+        [Test]
+        public void AArch64Dis_mov_velement_to_velement()
+        {
+            AssertCode("mov\tv0.s[3],v3.s[0]", "60041C6E");
+        }
+
+        [Test]
+        public void AArch64Dis_mov_w128()
+        {
+            Given_Instruction(0x4EA91D22);
+            Expect_Code("mov\tv2.16b,v9.16b");
+        }
+
 
         [Test]
         public void AArch64Dis_add_vector_i32()
@@ -1284,6 +1423,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_bit_v()
+        {
+            AssertCode("bit\tv0.16b,v3.16b,v1.16b", "601CA16E");
+        }
+
+        [Test]
         public void AArch64Dis_mrs()
         {
             Given_Instruction(0xD538D081);
@@ -1362,6 +1507,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_bsl()
+        {
+            AssertCode("bsl\tv4.16b,v3.16b,v5.16b", "641C656E");
+        }
+
+        [Test]
         public void AArch64Dis_eret()
         {
             Given_Instruction(0xD69F03E0);
@@ -1383,17 +1534,23 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_ldxr()
+        public void AArch64Dis_ldaxr_64()
+        {
+            Given_Instruction(0xC85FFE80);
+            Expect_Code("ldaxr\tx0,[x20]");
+        }
+
+        [Test]
+        public void AArch64Dis_ldxr_64()
         {
             Given_Instruction(0xC85F7C81);
             Expect_Code("ldxr\tx1,[x4]");
         }
 
         [Test]
-        public void AArch64Dis_ldaxr()
+        public void AArch64Dis_ldxr_32()
         {
-            Given_Instruction(0xC85FFE80);
-            Expect_Code("ldaxr\tx0,[x20]");
+            AssertCode("ldxr\tw2,[x0]", "027C5F88");
         }
 
 
@@ -1426,13 +1583,17 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_ext()
+        {
+            AssertCode("ext\tv0.8b,v0.8b,v0.8b,#0", "0000002E");
+        }
+
+        [Test]
         public void AArch64Dis_ext_vb()
         {
             Given_Instruction(0x2E1B2138);
             Expect_Code("ext\tv24.8b,v9.8b,v27.8b,#4");
         }
-
-
 
         [Test]
         public void AArch64Dis_ext_v()
@@ -1473,10 +1634,28 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_movi_v()
+        public void AArch64Dis_movi_vs()
         {
             Given_Instruction(0x0F020508);
             Expect_Code("movi\tv8.2s,#&48");
+        }
+
+        [Test]
+        public void AArch64Dis_movi_vs_v2()
+        {
+            AssertCode("movi\tv1.4s,#4", "8104004F");
+        }
+
+        [Test]
+        public void AArch64Dis_movi_vb()
+        {
+            AssertCode("movi\tv2.16b,#&E0E0E0E0", "02E4074F");
+        }
+
+        [Test]
+        public void AArch64Dis_movi_vs_shift()
+        {
+            AssertCode("movi\tv1.2s,#&800000,lsl #&10", "0144040F");
         }
 
         [Test]
@@ -1542,7 +1721,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_08007E98()
+        public void AArch64Dis_strxb()
         {
             Given_Instruction(0x08007E98);
             Expect_Code("stxrb\tw0,w24,[x20]");
@@ -1555,14 +1734,30 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("stnp\tx11,x25,[x18,#&1A0]");
         }
 
+        [Test]
+        public void AArch64Dis_stnp_d()
+        {
+            AssertCode("stnp\td0,d0,[x0]", "0000006C");
+        }
 
+        [Test]
+        public void AArch64Dis_stnp_s()
+        {
+            AssertCode("stnp\ts0,s0,[x0]", "0000002C");
+        }
 
-        // Reko: a decoder for AArch64 instruction 1AC25463 at address 0000000000027A80 has not been implemented. (* Data Processing 2 source - sf:S=0:0 opcode=0101xx)
         [Test]
         public void AArch64Dis_crc32ch()
         {
             Given_Instruction(0x1AC25463);
             Expect_Code("crc32ch\tw3,w3,w2");
+        }
+
+        [Test]
+        public void AArch64Dis_ldarh()
+        {
+            Given_Instruction(0x48DFFC33);
+            Expect_Code("ldarh\tw19,[x1]");
         }
 
         [Test]
@@ -1580,17 +1775,23 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Dis_ldarh()
+        public void AArch64Dis_stxrh()
         {
-            Given_Instruction(0x48DFFC33);
-            Expect_Code("ldarh\tw19,[x1]");
+            AssertCode("stxrh\tw0,w5,[x0]", "05000048");
         }
+
 
         [Test]
         public void AArch64Dis_sshr_v()
         {
             Given_Instruction(0x4F09044A);
             Expect_Code("sshr\tv10.16b,v2.16b,#7");
+        }
+
+        [Test]
+        public void AArch64Dis_ldnp_D()
+        {
+            AssertCode("ldnp\td8,d25,[x10,#-&140]", "48656C6C");
         }
 
         [Test]
@@ -1620,6 +1821,51 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0xFA482002);
             Expect_Code("ccmp\tx0,x8,#2,HS");
         }
+
+        [Test]
+        public void AArch64Dis_uabd()
+        {
+            AssertCode("uabd\tv0.8h,v24.8h,v9.8h", "0077696E");
+        }
+
+        [Test]
+        public void AArch64Dis_GitHub_898()
+        {
+            AssertCode("umull\tx2,w2,w14", "427CAE9B");
+        }
+
+        [Test]
+        [Ignore("Advanced SIMD lanes")]
+        public void AArch64Dis_ld1_multireg()
+        {
+            AssertCode("ld1\t{v1.4s},[x2],#16", "4178DF4C");
+        }
+
+        [Test]
+        public void AArch64Dis_mov_simd()
+        {
+            AssertCode("mov\tv0.d[1],v0.d[0]", "0004186E");
+        }
+
+        [Test]
+        public void AArch64Dis_fmov()
+        {
+            AssertCode("fmov\tx3,v0.d[1]", "0300AE9E");
+        }
+
+        [Test]
+        public void AArch64Dis_fdiv()
+        {
+            AssertCode("fdiv\tv0.4s,v0.4s,v1.4s", "00FC216E");
+        }
+
+        [Test]
+        [Ignore("Advanced SIMD lanes")]
+        public void AArch64Dis_st4()
+        {
+            AssertCode("st4 {v0.8h-v3.8h},[x11], #64", "60059F4C");
+        }
+
 
         /*
          * //$BORED: amuse yourself by making these tests pass.

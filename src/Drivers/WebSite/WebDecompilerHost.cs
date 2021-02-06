@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,11 @@ namespace Reko.WebSite
 			writer = new StringWriter();
 			discard = new StringWriter();
 		}
+
+        public TextWriter CreateTextWriter(string path)
+        {
+            throw new NotImplementedException();
+        }
 
 		public string FetchSample(HttpServerUtility server, string file)
 		{
@@ -96,12 +101,12 @@ namespace Reko.WebSite
 			writer.WriteLine("<br />");
 		}
 
-        public void WriteDisassembly(Program program, Action<string, Formatter> writer)
+        public void WriteDisassembly(Program program, Action<string, Dictionary<ImageSegment, List<ImageMapItem>>, Formatter> writer)
         {
             throw new NotImplementedException();
         }
 
-        public void WriteIntermediateCode(Program program, Action<string, TextWriter> writer)
+        public void WriteIntermediateCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
             throw new NotImplementedException();
         }
@@ -111,7 +116,7 @@ namespace Reko.WebSite
             throw new NotImplementedException();
         }
 
-        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<Procedure>, TextWriter> writer)
+        public void WriteDecompiledCode(Program program, Action<string, IEnumerable<IAddressable>, TextWriter> writer)
         {
             throw new NotImplementedException();
         }

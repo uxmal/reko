@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using System.Text;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -120,12 +121,12 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public SystemService FindService(RtlInstruction call, ProcessorState state)
+        public SystemService FindService(RtlInstruction call, ProcessorState state, SegmentMap segmentMap)
         {
             throw new NotImplementedException();
         }
 
-        public SystemService FindService(int vector, ProcessorState state)
+        public SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -135,7 +136,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public int GetByteSizeFromCBasicType(CBasicType cb)
+        public int GetBitSizeFromCBasicType(CBasicType cb)
         {
             throw new NotImplementedException();
         }
@@ -145,7 +146,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public ProcedureBase GetTrampolineDestination(IEnumerable<RtlInstructionCluster> instrs, IRewriterHost host)
+        public ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             throw new NotImplementedException();
         }
@@ -163,6 +164,11 @@ namespace Reko.ImageLoaders.LLVM
         public ProcedureCharacteristics LookupCharacteristicsByName(string procName)
         {
             throw new NotImplementedException();
+        }
+
+        public ExternalProcedure LookupProcedureByAddress(Address addr)
+        {
+            return null;
         }
 
         public ExternalProcedure LookupProcedureByName(string moduleName, string procName)
@@ -213,6 +219,10 @@ namespace Reko.ImageLoaders.LLVM
         public bool TryParseAddress(string sAddress, out Address addr)
         {
             throw new NotImplementedException();
+        }
+
+        public void WriteMetadata(Program program, string path)
+        {
         }
     }
 }

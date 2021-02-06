@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,15 +32,15 @@ namespace Reko.Arch.Mos6502
     public class Operand : MachineOperand
     {
         public AddressMode Mode;
-        public RegisterStorage Register;
-        public Constant Offset;
+        public RegisterStorage? Register;
+        public Constant? Offset;
 
         public Operand(PrimitiveType size)
             : base(size)
         {
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             int o = Offset != null ? Offset.ToUInt16() : 0;
             string fmt;
@@ -60,7 +60,7 @@ namespace Reko.Arch.Mos6502
             case AddressMode.IndirectIndexed: fmt = "(${0:X2}),{1}"; break;
             default: throw new NotSupportedException();
             }
-            writer.WriteString(string.Format(fmt, o, Register));
+            renderer.WriteString(string.Format(fmt, o, Register));
         }
     }
 
@@ -78,5 +78,21 @@ namespace Reko.Arch.Mos6502
         IndexedIndirect,    // $(AA,x)
         IndirectIndexed,    // $(AA),y
         Accumulator,        // a
+
+        // New 65816 modes
+        DirectPage,                     // $AA
+        DirectPageX,                    // $AA,X
+        DirectPageY,                    // $AA,Y
+        DirectPageIndirect,             // ($AA)
+        DirectPageIndexedIndirectX,     // ($AA,X)
+        DirectPageIndirectIndexedY,     // ($AA),Y
+        DirectPageIndirectLong,         // [$AA]
+        DirectPageIndirectLongIndexedY, // [$AA],Y
+        AbsoluteLong,                   // $AABBCC
+        AbsoluteLongX,                  // $AABBCC,X
+        AbsoluteIndexedIndirect,        // $(AABB,X)
+        AbsoluteIndirectLong,           // [$AABBCC]
+        StackRelative,                  // $AA,S
+        StackRelativeIndirectIndexedY,  // ($AA,S),Y
     }
 }

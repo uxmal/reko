@@ -17,6 +17,7 @@
       <procedure>
         <address>0000C02A</address>
       </procedure>
+      <outputFilePolicy>Segment</outputFilePolicy>
     </user>
   </input>
 </project>

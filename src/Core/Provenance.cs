@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ namespace Reko.Core
     public class Provenance
     {
         public ProvenanceType ProvenanceType;
-        public string Comment;
+        public string? Comment;
     }
 
     public enum ProvenanceType
@@ -46,6 +46,11 @@ namespace Reko.Core
 
     public class Provenance<T> : Provenance
     {
-        public T ReachedFrom;
+        public readonly T ReachedFrom;
+
+        public Provenance(T from)
+        {
+            this.ReachedFrom = from;
+        }
     }
 }

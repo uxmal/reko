@@ -18,10 +18,10 @@ main_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax_7 = memfoo()
-	Mem9[ds:0x0302:word16] = ax_7
-	ax_10 = Mem9[ds:0x0300:word16]
+	Mem9[ds:0x302<16>:word16] = ax_7
+	ax_10 = Mem9[ds:0x300<16>:word16]
 	ax_11 = membar(ax_10)
-	Mem13[ds:0x0304:word16] = ax_11
+	Mem13[ds:0x304<16>:word16] = ax_11
 	return
 	// succ:  main_exit
 main_exit:
@@ -55,25 +55,25 @@ memfoo_entry:
 	def bx
 	def cx
 	sp_2 = fp
-	Top_3 = 0
+	Top_3 = 0<i8>
 	// succ:  l0C00_0017
 l0C00_0017:
-	Mem6[ds:0x0400:word16] = ax
-	Mem8[ds:0x0402:word16] = bx
-	Mem10[ds:0x0404:word16] = cx
-	bx_11 = Mem10[ds:0x0100:word16]
-	cl_12 = Mem10[ds:bx_11 + 0x0042:byte]
-	ax_13 = Mem10[ds:bx_11 + 0x0040:word16]
+	Mem6[ds:0x400<16>:word16] = ax
+	Mem8[ds:0x402<16>:word16] = bx
+	Mem10[ds:0x404<16>:word16] = cx
+	bx_11 = Mem10[ds:0x100<16>:word16]
+	cl_12 = Mem10[ds:bx_11 + 0x42<16>:byte]
+	ax_13 = Mem10[ds:bx_11 + 0x40<16>:word16]
 	ax_14 = ax_13 << cl_12
 	SCZO_15 = cond(ax_14)
 	C_20 = SLICE(SCZO_15, bool, 1) (alias)
 	O_21 = SLICE(SCZO_15, bool, 4) (alias)
 	S_22 = SLICE(SCZO_15, bool, 0) (alias)
 	Z_23 = SLICE(SCZO_15, bool, 2) (alias)
-	Mem16[ds:0x0102:word16] = ax_14
-	ax_17 = Mem16[ds:0x0400:word16]
-	bx_18 = Mem16[ds:0x0402:word16]
-	cx_19 = Mem16[ds:0x0404:word16]
+	Mem16[ds:0x102<16>:word16] = ax_14
+	ax_17 = Mem16[ds:0x400<16>:word16]
+	bx_18 = Mem16[ds:0x402<16>:word16]
+	cx_19 = Mem16[ds:0x404<16>:word16]
 	return ax_17
 	// succ:  memfoo_exit
 memfoo_exit:
@@ -103,20 +103,20 @@ membar_entry:
 	def ax
 	def ds
 	sp_2 = fp
-	Top_3 = 0
+	Top_3 = 0<i8>
 	// succ:  l0C00_0040
 l0C00_0040:
-	Mem7[ds:0x0500:word16] = ax
-	bx_8 = Mem7[ds:0x1000:word16]
+	Mem7[ds:0x500<16>:word16] = ax
+	bx_8 = Mem7[ds:0x1000<16>:word16]
 	ax_9 = Mem7[ds:bx_8:word16]
-	ax_10 = ax_9 + Mem7[ds:bx_8 + 0x0002:word16]
+	ax_10 = ax_9 + Mem7[ds:bx_8 + 2<16>:word16]
 	SCZO_11 = cond(ax_10)
 	C_14 = SLICE(SCZO_11, bool, 1) (alias)
 	O_15 = SLICE(SCZO_11, bool, 4) (alias)
 	S_16 = SLICE(SCZO_11, bool, 0) (alias)
 	Z_17 = SLICE(SCZO_11, bool, 2) (alias)
-	Mem12[ds:bx_8 + 0x0004:word16] = ax_10
-	ax_13 = Mem12[ds:0x0500:word16]
+	Mem12[ds:bx_8 + 4<16>:word16] = ax_10
+	ax_13 = Mem12[ds:0x500<16>:word16]
 	return ax_13
 	// succ:  membar_exit
 membar_exit:

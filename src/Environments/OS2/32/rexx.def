@@ -1,0 +1,14 @@
+LIBRARY REXX
+EXPORTS
+    RexxStart                                   @1
+    RexxVariablePool                            @2
+    RexxSetHalt                                 @3
+    RexxSetTrace                                @4
+    RexxResetTrace                              @5
+    REXXSAA                                     @6
+    RXTRACESET                                  @7
+    RXVAR                                       @8
+    RXBREAKCLEANUP                              @9
+    RXHALTSET                                   @10
+    RXTRACERESET                                @11
+

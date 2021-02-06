@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,8 +50,7 @@ namespace Reko.Arch.Arm.AArch32
 
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
-                Debug.Print("NYI: {0}", message);
-                return dasm.NotYetImplemented(message, wInstr);
+                return dasm.NotYetImplemented(message);
             }
 
             public override string ToString()
@@ -103,7 +102,7 @@ namespace Reko.Arch.Arm.AArch32
             public override AArch32Instruction Decode(uint wInstr, A32Disassembler dasm)
             {
                 var instr = base.Decode(wInstr, dasm);
-                instr.condition = (ArmCondition)(wInstr >> 28);
+                instr.Condition = (ArmCondition)(wInstr >> 28);
                 return instr;
             }
         }
@@ -142,7 +141,7 @@ namespace Reko.Arch.Arm.AArch32
             public void TraceMask(uint wInstr, string tag)
             {
                 var shMask = 0xFu << shift;
-                DumpMaskedInstruction(wInstr, shMask, tag);
+                DumpMaskedInstruction(32, wInstr, shMask, tag);
             }
         }
 
@@ -192,7 +191,7 @@ namespace Reko.Arch.Arm.AArch32
             private void TraceMask(uint wInstr)
             {
                 var uMask = mask << pos;
-                DumpMaskedInstruction(wInstr, uMask, tag);
+                DumpMaskedInstruction(32, wInstr, uMask, tag);
             }
         }
     }

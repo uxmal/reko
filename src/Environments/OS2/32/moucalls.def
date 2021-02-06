@@ -1,0 +1,29 @@
+LIBRARY MOUCALLS
+EXPORTS
+    MOU16GETPTRSHAPE                            @1
+    MOU16SETPTRSHAPE                            @2
+    MOU16GETNUMMICKEYS                          @3
+    MOU16GETHOTKEY                              @4
+    MOU16GETSCALEFACT                           @6
+    MOU16FLUSHQUE                               @7
+    MOU16GETNUMBUTTONS                          @8
+    MOU16CLOSE                                  @9
+    MOU16SETHOTKEY                              @10
+    MOU16SETSCALEFACT                           @11
+    MOU16GETNUMQUEEL                            @13
+    MOU16DEREGISTER                             @14
+    MOU16GETEVENTMASK                           @15
+    MOU16SETEVENTMASK                           @16
+    MOU16OPEN                                   @17
+    MOU16REMOVEPTR                              @18
+    MOU16GETPTRPOS                              @19
+    MOU16READEVENTQUE                           @20
+    MOU16SETPTRPOS                              @21
+    MOU16GETDEVSTATUS                           @22
+    MOU16SYNCH                                  @23
+    MOU16REGISTER                               @24
+    MOU16SETDEVSTATUS                           @25
+    MOU16DRAWPTR                                @26
+    MOU16INITREAL                               @27
+    MOU16GETTHRESHOLD                           @29
+    MOU16SETTHRESHOLD                           @30

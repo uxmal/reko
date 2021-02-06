@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
@@ -55,7 +56,14 @@ namespace Reko.UnitTests.Mocks
 		private const int iReturnRegister = 62;
         private bool ignoreUnknownTraces;
 
-        public FakeArchitecture() : base("fake")
+        public FakeArchitecture(IServiceProvider services)
+            : this(services, "fake", new Dictionary<string, object>())
+        {
+        }
+
+
+        public FakeArchitecture(IServiceProvider services, string archId, Dictionary<string,object> options) 
+            : base(services, archId, options)
         {
             this.CarryFlagMask = (uint)StatusFlags.C;
             this.Description = "Fake Architecture for testing";
@@ -344,7 +352,7 @@ namespace Reko.UnitTests.Mocks
 
         public override Dictionary<string, object> SaveUserOptions()
         {
-            throw new NotImplementedException();
+            return new Dictionary<string, object>(base.Options);
         }
 
         public override SortedList<string, int> GetMnemonicNames()
@@ -398,7 +406,7 @@ namespace Reko.UnitTests.Mocks
 
     public class FakeArchitecture64 : ProcessorArchitecture
     {
-        public FakeArchitecture64() : base("fakeArch64")
+        public FakeArchitecture64(IServiceProvider services) : base(services, "fakeArch64", new Dictionary<string, object>())
         {
             Endianness = EndianServices.Little;
             FramePointerType = PrimitiveType.Ptr64;
@@ -550,10 +558,6 @@ namespace Reko.UnitTests.Mocks
         public override void SetRegister(RegisterStorage r, Constant v)
 		{
             regValues[r] = v;
-		}
-
-        public override void SetInstructionPointer(Address addr)
-		{
 		}
 
         public override CallSite OnBeforeCall(Identifier sp, int returnAddressSize)

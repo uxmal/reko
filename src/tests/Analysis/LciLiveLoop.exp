@@ -11,9 +11,9 @@ l1:
 	// succ:  LiveLoopMock_exit
 loop:
 	i_1 = PHI((i, LiveLoopMock_entry), (i_3, loop))
-	i_3 = i_7 + 1
+	i_3 = i_7 + 1<i32>
 	i_7 = i_1
-	branch Mem0[i_3:byte] != 0 loop
+	branch Mem0[i_3:byte] != 0<i8> loop
 	goto l1
 	// succ:  l1 loop
 LiveLoopMock_exit:

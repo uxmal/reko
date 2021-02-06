@@ -8,18 +8,18 @@ done:
 	return
 	// succ:  ArrayLoopMock_exit
 l1:
-	ptr_3 = 0x04000000
+	ptr_3 = 0x4000000<32>
 	goto looptest
 	// succ:  looptest
 l2:
-	Mem5[ptr_4:word32] = 0x00000000
-	ptr_6 = ptr_4 + 0x00000004
+	Mem5[ptr_4:word32] = 0<32>
+	ptr_6 = ptr_4 + 4<32>
 	// succ:  looptest
 looptest:
 	ptr_4 = PHI((ptr_3, l1), (ptr_6, l2))
-	branch ptr_4 >=u 0x04001000 done
+	branch ptr_4 >=u 0x4001000<32> done
 	goto l2
 	// succ:  l2 done
 ArrayLoopMock_exit:
 
-(0x04000000 0x00000004 0x04001000)
+(0x4000000<32> 4<32> 0x4001000<32>)

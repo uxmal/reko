@@ -5,11 +5,22 @@
     <RootNamespace>Reko.Environments.Switch</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <nullable>enable</nullable>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="K4os.Compression.LZ4" Version="1.2.6" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Arm\Arm.csproj" />
     <ProjectReference Include="..\..\Core\Core.csproj" />
+    <ProjectReference Include="..\..\ImageLoaders\Elf\Elf.csproj" />
   </ItemGroup>
 
 </Project>

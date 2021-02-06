@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 
 namespace Reko.ImageLoaders.MachO.Arch
 {
@@ -34,7 +35,7 @@ namespace Reko.ImageLoaders.MachO.Arch
         {
         }
 
-        public override Address ReadStub(Address addrStub, MemoryArea mem)
+        public override Address ReadStub(Address addrStub, ByteMemoryArea mem)
         {
             var offsetInSection = (uint) (addrStub - mem.BaseAddress);
             var opcode = mem.ReadBeUInt16(offsetInSection);

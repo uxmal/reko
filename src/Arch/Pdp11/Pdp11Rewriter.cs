@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ namespace Reko.Arch.Pdp11
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private Pdp11Instruction instr;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
 
@@ -59,7 +59,7 @@ namespace Reko.Arch.Pdp11
             {
                 this.instr = dasm.Current;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = instr.InstructionClass;
+                this.iclass = instr.InstructionClass;
                 m = new RtlEmitter(this.rtlInstructions);
                 switch (instr.Mnemonic)
                 {
@@ -68,10 +68,10 @@ namespace Reko.Arch.Pdp11
                         instr.Address,
                         "PDP-11 instruction {0} is not supported yet.", 
                         instr.Mnemonic);
-                    rtlc = InstrClass.Invalid;
+                    iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
-                case Mnemonic.illegal: rtlc = InstrClass.Invalid; m.Invalid(); break;
+                case Mnemonic.illegal: iclass = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.adc: RewriteAdcSbc(m.IAdd); break;
                 case Mnemonic.add: RewriteAdd(); break;
                 case Mnemonic.addb: RewriteAdd(); break;
@@ -130,10 +130,10 @@ namespace Reko.Arch.Pdp11
                 case Mnemonic.negb: RewriteNeg(); break;
                 case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.reset: RewriteReset(); break;
-                case Mnemonic.rol: RewriteRotate(PseudoProcedure.Rol); break;
-                case Mnemonic.rolb: RewriteRotate(PseudoProcedure.Rol); break;
-                case Mnemonic.ror: RewriteRotate(PseudoProcedure.Ror); break;
-                case Mnemonic.rorb: RewriteRotate(PseudoProcedure.Ror); break;
+                case Mnemonic.rol: RewriteRotate(IntrinsicProcedure.RolC, 0x8000); break;
+                case Mnemonic.rolb: RewriteRotate(IntrinsicProcedure.RolC, 0x80); break;
+                case Mnemonic.ror: RewriteRotate(IntrinsicProcedure.RorC, 0x1); break;
+                case Mnemonic.rorb: RewriteRotate(IntrinsicProcedure.RorC, 0x1); break;
                 case Mnemonic.rti: RewriteRti(); break;
                 case Mnemonic.rts: RewriteRts(); break;
                 case Mnemonic.rtt: RewriteRtt(); break;
@@ -152,10 +152,7 @@ namespace Reko.Arch.Pdp11
                 case Mnemonic.wait: RewriteWait(); break;
                 case Mnemonic.xor: RewriteXor(); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, this.rtlInstructions.ToArray())
-                {
-                    Class = rtlc
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 
@@ -201,8 +198,7 @@ namespace Reko.Arch.Pdp11
 
         private Expression RewriteJmpSrc(MachineOperand op)
         {
-            var memOp = op as MemoryOperand;
-            if (memOp == null)
+            if (!(op is MemoryOperand memOp))
             {
                 // PDP-11 always has a memory reference 
                 // for the destination of a transfer instruction.
@@ -257,7 +253,7 @@ namespace Reko.Arch.Pdp11
                 {
                     var offset = (short)memOp.EffectiveAddress;
                     var addrBase = (long)instr.Address.ToLinear() + instr.Length;
-                    var addr = Constant.Word16((ushort) (addrBase + offset));
+                    var addr = m.Ptr16((ushort) (addrBase + offset));
                     return m.Mem(
                         PrimitiveType.Word16,
                         addr);
@@ -306,7 +302,9 @@ namespace Reko.Arch.Pdp11
             case AddressOperand addrOp:
                 return addrOp.Address;
             case MemoryOperand memOp:
-                var r = binder.EnsureRegister(memOp.Register);
+                var r = memOp.Register != null
+                    ? binder.EnsureRegister(memOp.Register)
+                    : null;
                 var tmp = binder.CreateTemporary(op.Width);
                 switch (memOp.Mode)
                 {
@@ -387,7 +385,9 @@ namespace Reko.Arch.Pdp11
                 m.Assign(dst, src);
                 return dst;
             case MemoryOperand memOp:
-                var r = binder.EnsureRegister(memOp.Register);
+                var r = memOp.Register != null
+                    ? binder.EnsureRegister(memOp.Register)
+                    : null;
                 Expression tmp = MaybeAssignTmp(gen(src));
                 switch (memOp.Mode)
                 {
@@ -495,7 +495,9 @@ namespace Reko.Arch.Pdp11
                 m.Assign(dst, gen(dst, src));
                 return dst;
             case MemoryOperand memOp:
-                var r = binder.EnsureRegister(memOp.Register);
+                var r = memOp.Register != null
+                    ? binder.EnsureRegister(memOp.Register)
+                    : null;
                 var tmp = binder.CreateTemporary(dasm.Current.DataWidth);
                 switch (memOp.Mode)
                 {
@@ -603,7 +605,7 @@ namespace Reko.Arch.Pdp11
         private void Invalid()
         {
             rtlInstructions.Clear();
-            rtlc = InstrClass.Invalid;
+            iclass = InstrClass.Invalid;
             m.Invalid();
         }
     }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -212,10 +212,14 @@ namespace Reko.ImageLoaders.Elf
         EM_CSR_KALIMBA = 219,    // CSR Kalimba architecture family
         EM_AMDGPU = 224,         // AMD GPU architecture
         EM_RISCV = 243,          // RISC-V
+        EM_LANAI = 244,          // Lanai 32-bit processor
         EM_BPF = 247,            // Linux BPF -- in-kernel virtual machine
+        EM_VE = 251,             // NEC SX-Aurora VE
 
         EM_NANOMIPS = 249,       //$REVIEW: a guess?
-
+        EM_MORPHOS_PPC = 8692,   //$REVIEW: a guess?
+        EM_AVR32a = 0x18AD,      // Atmel AVR32, according to https://sites.uclouvain.be/SystInfo/usr/include/linux/elf-em.h.html
+        EM_FRV = 0x5441,         // Fujitsu FR-V
         EM_ALPHA = 0x9026,       // Alpha (written in the absence of an ABI) 
     }
 }

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 
 namespace Reko.Scanning
@@ -44,11 +45,13 @@ namespace Reko.Scanning
         {
             foreach (var segment in program.SegmentMap.Segments.Values)
             {
+                if (!(segment.MemoryArea is ByteMemoryArea mem))
+                    continue; //$TODO: what to do with odd archs?
                 Address segEnd = Address.Min(
                     segment.Address + segment.Size,
-                    segment.MemoryArea.BaseAddress + segment.MemoryArea.Bytes.Length);
-                var rdr = criteria.CreateReader(segment.MemoryArea, segment.Address, segEnd);
-                Address addrStartRun = null;
+                    segment.MemoryArea.BaseAddress + mem.Bytes.Length);
+                var rdr = criteria.CreateReader(mem, segment.Address, segEnd);
+                Address? addrStartRun = null;
                 int cValid = 0;
                 var charType = (PrimitiveType)criteria.StringType.ElementType;
                 while (rdr.IsValid && rdr.TryRead(charType, out var c))
@@ -58,12 +61,7 @@ namespace Reko.Scanning
                     {
                         if (ch == 0 && cValid >= criteria.MinimumLength)
                         {
-                            yield return new AddressSearchHit
-                            {
-                                Program = program,
-                                Address = addrStartRun,
-                                Length = cValid * charType.Size,
-                            };
+                            yield return new AddressSearchHit(program, addrStartRun!, cValid * charType.Size);
                         }
                         addrStartRun = null;
                         cValid = 0;
@@ -86,11 +84,12 @@ namespace Reko.Scanning
         }
     }
 
+#nullable disable   //$C# 9.0 record
     public class StringFinderCriteria
     {
         public StringType StringType;
         public int MinimumLength;
-        public Func<MemoryArea, Address, Address, EndianImageReader> CreateReader;
+        public Func<ByteMemoryArea, Address, Address, EndianImageReader> CreateReader;
         public Encoding Encoding;
     }
 }

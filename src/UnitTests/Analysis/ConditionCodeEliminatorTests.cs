@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,9 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
+using System.ComponentModel.Design;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -54,7 +57,11 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_ConditionCodeEliminator()
         {
-            cce = new ConditionCodeEliminator(ssaState, new DefaultPlatform(null, new FakeArchitecture()));
+            var program = new Program
+            {
+                Platform = new DefaultPlatform(null, new FakeArchitecture(new ServiceContainer()))
+            };
+            cce = new ConditionCodeEliminator(program, ssaState, new FakeDecompilerEventListener());
         }
 
         protected Program CompileTest(Action<ProcedureBuilder> m)
@@ -91,7 +98,9 @@ namespace Reko.UnitTests.Analysis
         {
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
             var listener = new FakeDecompilerEventListener();
-            var dfa = new DataFlowAnalysis(program, dynamicLinker, listener);
+            var sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(listener);
+            var dfa = new DataFlowAnalysis(program, dynamicLinker, sc);
             foreach (var proc in program.Procedures.Values)
             {
                 var sst = new SsaTransform(
@@ -102,10 +111,10 @@ namespace Reko.UnitTests.Analysis
                     new ProgramDataFlow());
                 var ssa = sst.Transform();
 
-                var larw = new LongAddRewriter(ssa);
+                var larw = new LongAddRewriter(ssa, listener);
                 larw.Transform();
 
-                var cce = new ConditionCodeEliminator(ssa, program.Platform);
+                var cce = new ConditionCodeEliminator(program, ssa, listener);
                 cce.Transform();
                 ssa.Validate(s => { ssa.Dump(true); Assert.Fail(s); });
 
@@ -122,7 +131,6 @@ namespace Reko.UnitTests.Analysis
                 // are not testing interprocedural effects here.
                 DeadCode.Eliminate(ssa);
 
-                ssa.Write(writer);
                 ssa.Procedure.Write(false, writer);
                 writer.WriteLine();
 
@@ -191,7 +199,7 @@ namespace Reko.UnitTests.Analysis
                 fstsw   ax
                 test    bl,ah
                 jz      done
-                mov     byte ptr [0x0300],1
+                mov     byte ptr [0x0300<16>],1
 done:
                 ret
 ");
@@ -343,7 +351,7 @@ done:
 
             Given_ConditionCodeEliminator();
 			cce.Transform();
-			Assert.AreEqual("branch r == 0x00000000 foo", stmBr.Instruction.ToString());
+			Assert.AreEqual("branch r == 0<32> foo", stmBr.Instruction.ToString());
 		}
 
 		[Test]
@@ -362,7 +370,7 @@ done:
 
             Given_ConditionCodeEliminator();
 			cce.Transform();
-			Assert.AreEqual("f = r != 0x00000000", stmF.Instruction.ToString());
+			Assert.AreEqual("f = r != 0<32>", stmF.Instruction.ToString());
 		}
 
         [Test]
@@ -398,7 +406,7 @@ done:
                 new Identifier("a", w16, null),
                 new Identifier("b", w16, null));
             var b = (BinaryExpression)cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
-            Assert.AreEqual("a + b < 0x0000", b.ToString());
+            Assert.AreEqual("a + b < 0<16>", b.ToString());
             Assert.AreEqual("LtOperator", b.Operator.GetType().Name);
         }
 
@@ -411,7 +419,7 @@ done:
         [Category(Categories.IntegrationTests)]
         public void CceAddAdcPattern()
         {
-            var p = new ProgramBuilder(new FakeArchitecture());
+            var p = new ProgramBuilder(new FakeArchitecture(new ServiceContainer()));
             p.Add("main", (m) =>
             {
                 var r1 = m.Reg32("r1", 1);
@@ -436,7 +444,7 @@ done:
         [Category(Categories.IntegrationTests)]
         public void CceShrRcrPattern()
         {
-            var p = new ProgramBuilder(new FakeArchitecture());
+            var p = new ProgramBuilder(new FakeArchitecture(new ServiceContainer()));
             p.Add("main", (m) =>
             {
                 var C = m.Flags("C");
@@ -446,7 +454,7 @@ done:
                 m.Assign(r1, m.Shr(r1, 1));
                 m.Assign(C, m.Cond(r1));
                 m.Assign(r2, m.Fn(
-                    new PseudoProcedure(PseudoProcedure.RorC, r2.DataType, 2),
+                    new IntrinsicProcedure(IntrinsicProcedure.RorC, true, r2.DataType, 2),
                     r2, Constant.Byte(1), C));
                 m.Assign(C, m.Cond(r2));
                 m.MStore(m.Word32(0x3000), r2);
@@ -470,7 +478,7 @@ done:
                 m.Assign(r1, m.Shl(r1, 1));
                 m.Assign(C, m.Cond(r1));
                 m.Assign(r2, m.Fn(
-                    new PseudoProcedure(PseudoProcedure.RolC, r2.DataType, 2),
+                    new IntrinsicProcedure(IntrinsicProcedure.RolC, true, r2.DataType, 2),
                     r2, Constant.Byte(1), C));
                 m.Assign(C, m.Cond(r2));
                 m.MStore(m.Word32(0x3000), r1);
@@ -503,27 +511,17 @@ done:
         {
             var sExp =
             #region Expected
-@"r2:r2
-    def:  def r2
-    uses: Mem5[0x00123400:word32] = r2
-          branch r2 >u 0x00000007 || r2 <u 0x00000002 mElse
-          branch r2 >u 0x00000007 || r2 <u 0x00000002 mElse
-r1_2: orig: r1
-SCZ_3: orig: SCZ
-CZ_4: orig: CZ
-Mem5: orig: Mem0
-    def:  Mem5[0x00123400:word32] = r2
-// ProcedureBuilder
+@"// ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
 ProcedureBuilder_entry:
 	def r2
 	// succ:  l1
 l1:
-	branch r2 >u 0x00000007 || r2 <u 0x00000002 mElse
+	branch r2 >u 7<32> || r2 <u 2<32> mElse
 	// succ:  mDo mElse
 mDo:
-	Mem5[0x00123400:word32] = r2
+	Mem5[0x00123400<p32>:word32] = r2
 	// succ:  mElse
 mElse:
 	return
@@ -545,7 +543,7 @@ ProcedureBuilder_exit:
                 m.BranchIf(m.Test(ConditionCode.UGT, CZ), "mElse");
 
                 m.Label("mDo");
-                m.MStore(m.Word32(0x00123400), r2);
+                m.MStore(m.Ptr32(0x00123400), r2);
 
                 m.Label("mElse");
                 m.Return();
@@ -582,7 +580,7 @@ ProcedureBuilder_exit:
             Given_ConditionCodeEliminator();
             cce.Transform();
 
-            Assert.AreEqual("branch r1 <=u 0x00000000 yay", block.Statements.Last.Instruction.ToString());
+            Assert.AreEqual("branch r1 <=u 0<32> yay", block.Statements.Last.Instruction.ToString());
         }
 
         [Test]
@@ -591,26 +589,17 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"rax:rax
-    def:  def rax
-    uses: branch rax >u 0x1FFFFFFFFFFFFFFF || rax <u 0x0000000000000001 mElse
-          branch rax >u 0x1FFFFFFFFFFFFFFF || rax <u 0x0000000000000001 mElse
-rdx_2: orig: rdx
-rax_3: orig: rax
-CZ_4: orig: CZ
-Mem5: orig: Mem0
-    def:  Mem5[0x00123400:word64] = 0x1FFFFFFFFFFFFFFE
-// ProcedureBuilder
+@"// ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
 ProcedureBuilder_entry:
 	def rax
 	// succ:  l1
 l1:
-	branch rax >u 0x1FFFFFFFFFFFFFFF || rax <u 0x0000000000000001 mElse
+	branch rax >u 0x1FFFFFFFFFFFFFFF<64> || rax <u 1<64> mElse
 	// succ:  mDo mElse
 mDo:
-	Mem5[0x00123400:word64] = 0x1FFFFFFFFFFFFFFE
+	Mem5[0x00123400<p32>:word64] = 0x1FFFFFFFFFFFFFFE<64>
 	// succ:  mElse
 mElse:
 	return
@@ -632,7 +621,7 @@ ProcedureBuilder_exit:
                 m.BranchIf(m.Test(ConditionCode.UGT, CZ), "mElse");
 
                 m.Label("mDo");
-                m.MStore(m.Word32(0x00123400), rax);
+                m.MStore(m.Ptr32(0x00123400), rax);
 
                 m.Label("mElse");
                 m.Return();
@@ -645,63 +634,7 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"fp:fp
-sp_2: orig: sp
-h_3: orig: h
-    def:  h_3 = PHI((h, l1), (h_10, m1Loop))
-    uses: v13_27 = SEQ(h_3, l_11) >>u 0x01
-a_4: orig: a
-a_5: orig: a
-SZC_6: orig: SZC
-C_7: orig: C
-a_8: orig: a
-    def:  a_8 = SLICE(v13_27, byte, 8)
-    uses: h_10 = a_8
-          Mem21[0x00001001:byte] = a_8
-h_10: orig: h
-    def:  h_10 = a_8
-    uses: h_3 = PHI((h, l1), (h_10, m1Loop))
-l_11: orig: l
-    def:  l_11 = PHI((l, l1), (l_15, m1Loop))
-    uses: v13_27 = SEQ(h_3, l_11) >>u 0x01
-a_12: orig: a
-a_13: orig: a
-    def:  a_13 = (byte) v13_27
-    uses: l_15 = a_13
-          Mem20[0x00001000:byte] = a_13
-C_14: orig: C
-l_15: orig: l
-    def:  l_15 = a_13
-    uses: l_11 = PHI((l, l1), (l_15, m1Loop))
-c_16: orig: c
-    def:  c_16 = PHI((c, l1), (c_17, m1Loop))
-    uses: c_17 = c_16 - 0x01
-c_17: orig: c
-    def:  c_17 = c_16 - 0x01
-    uses: branch c_17 != 0x00 m1Loop
-          c_16 = PHI((c, l1), (c_17, m1Loop))
-SZP_18: orig: SZP
-Z_19: orig: Z
-Mem20: orig: Mem0
-    def:  Mem20[0x00001000:byte] = a_13
-Mem21: orig: Mem0
-    def:  Mem21[0x00001001:byte] = a_8
-h:h
-    def:  def h
-    uses: h_3 = PHI((h, l1), (h_10, m1Loop))
-l:l
-    def:  def l
-    uses: l_11 = PHI((l, l1), (l_15, m1Loop))
-c:c
-    def:  def c
-    uses: c_16 = PHI((c, l1), (c_17, m1Loop))
-v11_25: orig: v11
-v12_26: orig: v12
-v13_27: orig: v13
-    def:  v13_27 = SEQ(h_3, l_11) >>u 0x01
-    uses: a_8 = SLICE(v13_27, byte, 8)
-          a_13 = (byte) v13_27
-// RorChainFragment
+@"// RorChainFragment
 // Return size: 0
 define RorChainFragment
 RorChainFragment_entry:
@@ -716,16 +649,16 @@ m1Loop:
 	l_11 = PHI((l, l1), (l_15, m1Loop))
 	h_3 = PHI((h, l1), (h_10, m1Loop))
 	h_10 = a_8
-	v13_27 = SEQ(h_3, l_11) >>u 0x01
+	v13_27 = SEQ(h_3, l_11) >>u 1<8>
 	a_8 = SLICE(v13_27, byte, 8)
-	a_13 = (byte) v13_27
+	a_13 = SLICE(v13_27, byte, 0)
 	l_15 = a_13
-	c_17 = c_16 - 0x01
-	branch c_17 != 0x00 m1Loop
+	c_17 = c_16 - 1<8>
+	branch c_17 != 0<8> m1Loop
 	// succ:  m2Done m1Loop
 m2Done:
-	Mem20[0x00001000:byte] = a_13
-	Mem21[0x00001001:byte] = a_8
+	Mem20[0x1000<32>:byte] = a_13
+	Mem21[0x1001<32>:byte] = a_8
 	return
 	// succ:  RorChainFragment_exit
 RorChainFragment_exit:
@@ -741,16 +674,7 @@ RorChainFragment_exit:
         {
             var sExp =
             #region Expected
-@"rArg0:FPU +0
-    def:  def rArg0
-    uses: branch !isunordered(rArg0, rArg1) m3Done
-rArg1:FPU +1
-    def:  def rArg1
-    uses: branch !isunordered(rArg0, rArg1) m3Done
-C_3: orig: C
-r0_4: orig: r0
-r0_5: orig: r0
-// ProcedureBuilder
+@"// ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
 ProcedureBuilder_entry:
@@ -761,10 +685,10 @@ l1:
 	branch !isunordered(rArg0, rArg1) m3Done
 	// succ:  m1isNan m3Done
 m1isNan:
-	return 0x00000000
+	return 0<32>
 	// succ:  ProcedureBuilder_exit
 m3Done:
-	return 0x00000001
+	return 1<32>
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 
@@ -785,6 +709,119 @@ ProcedureBuilder_exit:
                 m.Label("m3Done");
                 m.Assign(r0, 1);
                 m.Return(r0);
+            });
+        }
+
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void CceMultibitCcFromPhiNode()
+        {
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	def r0
+	def r2
+	// succ:  l1
+l1:
+	branch r0 <= r2 m1
+	// succ:  m0 m1
+m0:
+	r0_5 = r0 + r2
+	v12_18 = r0_5 == 0<32>
+	v9_15 = r0_5 <=u 0<32>
+	v6_12 = r0_5 >u 0<32>
+	goto m2
+	// succ:  m2
+m1:
+	r0_3 = r2 - r0
+	v13_19 = r0_3 == 0<32>
+	v10_16 = r0_3 <=u 0<32>
+	v7_13 = r0_3 >u 0<32>
+	// succ:  m2
+m2:
+	v11_17 = PHI((v9_15, m0), (v10_16, m1))
+	v8_14 = PHI((v6_12, m0), (v7_13, m1))
+	v14_20 = PHI((v12_18, m0), (v13_19, m1))
+	Mem8[0x123400<32>:int8] = CONVERT(v8_14, bool, int8)
+	Mem9[0x123402<32>:int8] = CONVERT(v11_17, bool, int8)
+	Mem11[0x123404<32>:int8] = CONVERT(v14_20, bool, int8)
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
+            #endregion
+            RunStringTest(sExp, m =>
+            {
+                var r0 = m.Reg32("r0", 0);
+                var r2 = m.Reg32("r2", 2);
+                var CZ = m.Flags("CZ");
+                var Z = m.Flags("Z");
+                m.BranchIf(m.Le(r0, r2), "m1");
+
+                m.Label("m0");
+                m.Assign(r0, m.IAdd(r0, r2));
+                m.Assign(CZ, m.Cond(r0));
+                m.Goto("m2");
+
+                m.Label("m1");
+                m.Assign(r0, m.ISub(r2, r0));
+                m.Assign(CZ, m.Cond(r0));
+
+                m.Label("m2");
+                //m.Assign(tmp, m.Convert(m.Test(ConditionCode.UGT, CZ), PrimitiveType.Bool, PrimitiveType.SByte));
+                m.MStore(m.Word32(0x00123400), m.Convert(m.Test(ConditionCode.UGT, CZ), PrimitiveType.Bool, PrimitiveType.SByte));
+                m.MStore(m.Word32(0x00123402), m.Convert(m.Test(ConditionCode.ULE, CZ), PrimitiveType.Bool, PrimitiveType.SByte));
+                m.MStore(m.Word32(0x00123404), m.Convert(m.Test(ConditionCode.EQ, Z), PrimitiveType.Bool, PrimitiveType.SByte));
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void CceShlRcl_Through_Alias()
+        {
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	def r1
+	def r0
+	// succ:  l1
+l1:
+	v9_13 = SEQ(r0, r1) << 1<8>
+	r1_2 = SLICE(v9_13, word16, 0)
+	r0_7 = SLICE(v9_13, word16, 16)
+	Mem9[0x1234<16>:word16] = r0_7
+	Mem10[0x1236<16>:word16] = r1_2
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
+            #endregion
+            RunStringTest(sExp, m => {
+                var RolC = new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure(
+                    IntrinsicProcedure.RolC, true, PrimitiveType.Word16, 3));
+                var r1 = m.Reg16("r1", 1);
+                var r0 = m.Reg16("r0", 0);
+                var psw = new RegisterStorage("psw", 2, 0, PrimitiveType.Word16);
+                var C = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 1, "C", PrimitiveType.Bool));
+                var NZVC = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "NZVC", PrimitiveType.Word16));
+                var tmp = m.Frame.CreateTemporary("tmp", PrimitiveType.Word16);
+                m.Assign(r1, m.Shl(r1 , m.Int16(1)));
+                m.Assign(NZVC, m.Cond(r1));
+                m.Assign(tmp, r0);
+                m.Assign(r0, m.Fn(RolC, r0, m.Int16(1), C));
+                m.Assign(C, m.Ne0(m.And(tmp, m.Word16(0x8000))));
+                m.MStore(m.Word16(0x1234), r0);
+                m.MStore(m.Word16(0x1236), r1);
+                m.Return();
             });
         }
     }

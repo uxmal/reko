@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,7 +33,7 @@ namespace Reko.Loading
     public class NullImageLoader : ImageLoader
     {
         private Address baseAddr;
-        private byte[] imageBytes;
+        private readonly byte[] imageBytes;
 
         public NullImageLoader(IServiceProvider services, string filename, byte[] image) : base(services, filename, image)
         {
@@ -41,18 +42,20 @@ namespace Reko.Loading
             this.EntryPoints = new List<ImageSymbol>();
         }
 
-        public IProcessorArchitecture Architecture { get; set; }
+        public IProcessorArchitecture? Architecture { get; set; }
         public List<ImageSymbol> EntryPoints { get; private set; }
-        public IPlatform Platform { get; set; }
+        public IPlatform? Platform { get; set; }
         public override Address PreferredBaseAddress
         {
             get { return this.baseAddr; }
             set { this.baseAddr = value; }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
-            if (addrLoad == null)
+            if (Architecture is null)
+                throw new InvalidOperationException("A processor architecture must be specified.");
+            if (addrLoad is null)
                 addrLoad = PreferredBaseAddress;
             var platform = Platform ?? new DefaultPlatform(Services, Architecture);
             return Load(addrLoad, Architecture, platform);
@@ -75,15 +78,10 @@ namespace Reko.Loading
 
         public SegmentMap CreatePlatformSegmentMap(IPlatform platform, Address loadAddr, byte[] rawBytes)
         {
-            var segmentMap = platform.CreateAbsoluteMemoryMap();
-            if (segmentMap == null)
-            {
-                segmentMap = new SegmentMap(loadAddr);
-            }
-            var mem = new MemoryArea(loadAddr, rawBytes);
+            var segmentMap = platform.CreateAbsoluteMemoryMap() ?? new SegmentMap(loadAddr);
+            var mem = new ByteMemoryArea(loadAddr, rawBytes);
             segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
             return segmentMap;
         }
-
     }
 }

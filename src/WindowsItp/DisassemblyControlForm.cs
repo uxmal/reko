@@ -1,8 +1,10 @@
-﻿using Reko.Core;
+using Reko.Core;
+using Reko.Core.Memory;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -22,7 +24,7 @@ namespace Reko.WindowsItp
         private void DisassemblyControlForm_Load(object sender, EventArgs e)
         {
             var random = new Random(0x4711);
-            var mem =   new MemoryArea(Address.Ptr32(0x00100000),
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000),
                 Enumerable.Range(0, 10000)
                 .Select(i => (byte)random.Next(256)).ToArray());
             var seg = new ImageSegment(".text", mem, AccessMode.ReadExecute);
@@ -31,7 +33,10 @@ namespace Reko.WindowsItp
                 new CoreProgram
                 {
                     //new Decompiler.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
-                    Architecture = new Reko.Arch.PowerPC.PowerPcBe32Architecture("ppc-be-32"),
+                    Architecture = new Reko.Arch.PowerPC.PowerPcBe32Architecture(
+                        new ServiceContainer(), 
+                        "ppc-be-32",
+                        new Dictionary<string, object>()),
                     SegmentMap = segmentMap
                 },
                 seg);

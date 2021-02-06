@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,17 +40,17 @@ namespace Reko.Arch.Alpha
             this.Offset = offset;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             int offset = Offset;
             if (offset < 0)
             {
                 offset = -offset;
-                writer.WriteChar('-');
+                renderer.WriteChar('-');
             }
-            writer.WriteFormat("{0:X}(", offset);
-            writer.WriteString(this.Base.Name);
-            writer.WriteString(")");
+            renderer.WriteFormat("{0:X}(", offset);
+            renderer.WriteString(this.Base.Name);
+            renderer.WriteString(")");
         }
     }
 }

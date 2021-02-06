@@ -7,11 +7,10 @@
     <AssemblyName>Reko.ImageLoaders.OdbgScript</AssemblyName>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
     <ProjectReference Include="..\..\Core\Core.csproj" />
-    <ProjectReference Include="..\..\Environments\Windows\Windows.csproj" />
-    <ProjectReference Include="..\MzExe\MzExe.csproj" />
   </ItemGroup>
 </Project>

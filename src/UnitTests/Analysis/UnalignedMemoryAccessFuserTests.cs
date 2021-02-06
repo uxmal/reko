@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Analysis
             m.Assign(
                 reg,
                 m.Fn(
-                    new PseudoProcedure(PseudoProcedure.LwL, PrimitiveType.Word32, 2),
+                    new IntrinsicProcedure(IntrinsicProcedure.LwL, true, PrimitiveType.Word32, 2),
                     reg, mem));
         }
 
@@ -97,14 +97,14 @@ namespace Reko.UnitTests.Analysis
             m.Assign(
                 reg,
                 m.Fn(
-                    new PseudoProcedure(PseudoProcedure.LwR, PrimitiveType.Word32, 2),
+                    new IntrinsicProcedure(IntrinsicProcedure.LwR, true, PrimitiveType.Word32, 2),
                     reg, mem));
         }
 
         private void __swl(Expression mem, Expression reg)
         {
             var app = m.Fn(
-                    new PseudoProcedure(PseudoProcedure.SwL, PrimitiveType.Word32, 2),
+                    new IntrinsicProcedure(IntrinsicProcedure.SwL, false, PrimitiveType.Word32, 2),
                     mem, reg);
             if (mem is Identifier id)
             {
@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Analysis
         private void __swr(Expression mem, Expression reg)
         {
             var app = m.Fn(
-                    new PseudoProcedure(PseudoProcedure.SwR, PrimitiveType.Word32, 2),
+                    new IntrinsicProcedure(IntrinsicProcedure.SwR, true, PrimitiveType.Word32, 2),
                     mem, reg);
             if (mem is Identifier id)
             {
@@ -147,14 +147,14 @@ namespace Reko.UnitTests.Analysis
     uses: r8_4 = r8
 r4:r4
     def:  def r4
-    uses: r8_5 = Mem0[r4 + 0x00000028:word32]
+    uses: r8_5 = Mem0[r4 + 0x28<32>:word32]
 Mem0:Mem
     def:  def Mem0
-    uses: r8_5 = Mem0[r4 + 0x00000028:word32]
+    uses: r8_5 = Mem0[r4 + 0x28<32>:word32]
 r8_4: orig: r8
     def:  r8_4 = r8
 r8_5: orig: r8
-    def:  r8_5 = Mem0[r4 + 0x00000028:word32]
+    def:  r8_5 = Mem0[r4 + 0x28<32>:word32]
 // ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
@@ -164,7 +164,7 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	r8_5 = Mem0[r4 + 0x00000028:word32]
+	r8_5 = Mem0[r4 + 0x28<32>:word32]
 ProcedureBuilder_exit:
 ";
             #endregion 
@@ -227,14 +227,14 @@ ProcedureBuilder_exit:
     uses: r8_4 = r8
 r4:r4
     def:  def r4
-    uses: r8_5 = Mem0[r4 + 0x0000A5E4:word32]
+    uses: r8_5 = Mem0[r4 + 0xA5E4<32>:word32]
 Mem0:Mem
     def:  def Mem0
-    uses: r8_5 = Mem0[r4 + 0x0000A5E4:word32]
+    uses: r8_5 = Mem0[r4 + 0xA5E4<32>:word32]
 r8_4: orig: r8
     def:  r8_4 = r8
 r8_5: orig: r8
-    def:  r8_5 = Mem0[r4 + 0x0000A5E4:word32]
+    def:  r8_5 = Mem0[r4 + 0xA5E4<32>:word32]
 // ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
@@ -244,7 +244,7 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	r8_5 = Mem0[r4 + 0x0000A5E4:word32]
+	r8_5 = Mem0[r4 + 0xA5E4<32>:word32]
 ProcedureBuilder_exit:
 ";
             #endregion 
@@ -260,9 +260,9 @@ ProcedureBuilder_exit:
             m.Assign(
                 r8,
                 m.Fn(
-                    new PseudoProcedure(PseudoProcedure.LwR, PrimitiveType.Word32, 2),
+                    new IntrinsicProcedure(IntrinsicProcedure.LwR, true, PrimitiveType.Word32, 2),
                     m.Fn(
-                        new PseudoProcedure(PseudoProcedure.LwL, PrimitiveType.Word32, 2),
+                        new IntrinsicProcedure(IntrinsicProcedure.LwL, true, PrimitiveType.Word32, 2),
                         r8,
                         m.Mem32(m.IAdd(r4, 0x2B))),
                     m.Mem32(m.IAdd(r4, 0x28))));
@@ -273,12 +273,12 @@ ProcedureBuilder_exit:
     def:  def r8
 r4:r4
     def:  def r4
-    uses: r8_4 = Mem0[r4 + 0x00000028:word32]
+    uses: r8_4 = Mem0[r4 + 0x28<32>:word32]
 Mem0:Mem
     def:  def Mem0
-    uses: r8_4 = Mem0[r4 + 0x00000028:word32]
+    uses: r8_4 = Mem0[r4 + 0x28<32>:word32]
 r8_4: orig: r8
-    def:  r8_4 = Mem0[r4 + 0x00000028:word32]
+    def:  r8_4 = Mem0[r4 + 0x28<32>:word32]
 // ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
@@ -288,7 +288,7 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	r8_4 = Mem0[r4 + 0x00000028:word32]
+	r8_4 = Mem0[r4 + 0x28<32>:word32]
 ProcedureBuilder_exit:
 ";
             #endregion
@@ -310,15 +310,15 @@ ProcedureBuilder_exit:
             #region Expected
 @"r4:r4
     def:  def r4
-    uses: Mem5[r4 + 0x00000028:word32] = r8
+    uses: Mem5[r4 + 0x28<32>:word32] = r8
 Mem0:Mem
     def:  def Mem0
 r8:r8
     def:  def r8
-    uses: Mem5[r4 + 0x00000028:word32] = r8
+    uses: Mem5[r4 + 0x28<32>:word32] = r8
 Mem4: orig: Mem0
 Mem5: orig: Mem0
-    def:  Mem5[r4 + 0x00000028:word32] = r8
+    def:  Mem5[r4 + 0x28<32>:word32] = r8
 // ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
@@ -328,7 +328,7 @@ ProcedureBuilder_entry:
 	def r8
 	// succ:  l1
 l1:
-	Mem5[r4 + 0x00000028:word32] = r8
+	Mem5[r4 + 0x28<32>:word32] = r8
 ProcedureBuilder_exit:
 ";
             #endregion 
@@ -366,48 +366,48 @@ ProcedureBuilder_exit:
             #region Expected
 @"r8:r8
     def:  def r8
-    uses: r4_13 = r8 + 0x00000010
-          Mem14[r8 + 0x00000010:word32] = r14
-          Mem15[r8 + 0x00000014:word32] = r13
-          Mem16[r8 + 0x00000018:word32] = 0x00000000
-          Mem17[r8 + 0x0000001C:word32] = 0x00000000
-          Mem18[r8 + 0x00000028:word32] = 0x00000000
-          Mem19[r8 + 0x0000002C:word32] = r9
-          Mem20[r8 + 0x00000030:word32] = 0x00000000
+    uses: r4_13 = r8 + 0x10<32>
+          Mem14[r8 + 0x10<32>:word32] = r14
+          Mem15[r8 + 0x14<32>:word32] = r13
+          Mem16[r8 + 0x18<32>:word32] = 0<32>
+          Mem17[r8 + 0x1C<32>:word32] = 0<32>
+          Mem18[r8 + 0x28<32>:word32] = 0<32>
+          Mem19[r8 + 0x2C<32>:word32] = r9
+          Mem20[r8 + 0x30<32>:word32] = 0<32>
 Mem0:Mem
     def:  def Mem0
 r14:r14
     def:  def r14
-    uses: Mem14[r8 + 0x00000010:word32] = r14
+    uses: Mem14[r8 + 0x10<32>:word32] = r14
 Mem4: orig: Mem0
 r13:r13
     def:  def r13
-    uses: Mem15[r8 + 0x00000014:word32] = r13
+    uses: Mem15[r8 + 0x14<32>:word32] = r13
 Mem6: orig: Mem0
 Mem7: orig: Mem0
 Mem8: orig: Mem0
 Mem9: orig: Mem0
 r9:r9
     def:  def r9
-    uses: Mem19[r8 + 0x0000002C:word32] = r9
+    uses: Mem19[r8 + 0x2C<32>:word32] = r9
 Mem11: orig: Mem0
 Mem12: orig: Mem0
 r4_13: orig: r4
-    def:  r4_13 = r8 + 0x00000010
+    def:  r4_13 = r8 + 0x10<32>
 Mem14: orig: Mem0
-    def:  Mem14[r8 + 0x00000010:word32] = r14
+    def:  Mem14[r8 + 0x10<32>:word32] = r14
 Mem15: orig: Mem0
-    def:  Mem15[r8 + 0x00000014:word32] = r13
+    def:  Mem15[r8 + 0x14<32>:word32] = r13
 Mem16: orig: Mem0
-    def:  Mem16[r8 + 0x00000018:word32] = 0x00000000
+    def:  Mem16[r8 + 0x18<32>:word32] = 0<32>
 Mem17: orig: Mem0
-    def:  Mem17[r8 + 0x0000001C:word32] = 0x00000000
+    def:  Mem17[r8 + 0x1C<32>:word32] = 0<32>
 Mem18: orig: Mem0
-    def:  Mem18[r8 + 0x00000028:word32] = 0x00000000
+    def:  Mem18[r8 + 0x28<32>:word32] = 0<32>
 Mem19: orig: Mem0
-    def:  Mem19[r8 + 0x0000002C:word32] = r9
+    def:  Mem19[r8 + 0x2C<32>:word32] = r9
 Mem20: orig: Mem0
-    def:  Mem20[r8 + 0x00000030:word32] = 0x00000000
+    def:  Mem20[r8 + 0x30<32>:word32] = 0<32>
 // ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
@@ -419,14 +419,14 @@ ProcedureBuilder_entry:
 	def r9
 	// succ:  l1
 l1:
-	r4_13 = r8 + 0x00000010
-	Mem14[r8 + 0x00000010:word32] = r14
-	Mem15[r8 + 0x00000014:word32] = r13
-	Mem16[r8 + 0x00000018:word32] = 0x00000000
-	Mem17[r8 + 0x0000001C:word32] = 0x00000000
-	Mem18[r8 + 0x00000028:word32] = 0x00000000
-	Mem19[r8 + 0x0000002C:word32] = r9
-	Mem20[r8 + 0x00000030:word32] = 0x00000000
+	r4_13 = r8 + 0x10<32>
+	Mem14[r8 + 0x10<32>:word32] = r14
+	Mem15[r8 + 0x14<32>:word32] = r13
+	Mem16[r8 + 0x18<32>:word32] = 0<32>
+	Mem17[r8 + 0x1C<32>:word32] = 0<32>
+	Mem18[r8 + 0x28<32>:word32] = 0<32>
+	Mem19[r8 + 0x2C<32>:word32] = r9
+	Mem20[r8 + 0x30<32>:word32] = 0<32>
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -450,16 +450,16 @@ ProcedureBuilder_exit:
             #region Expected
 @"r8:r8
     def:  def r8
-    uses: Mem5[r8 + 0x00000010:word32] = 0x12345678
-          Mem6[r8 + 0x00000014:word32] = 0x9ABCDEF0
+    uses: Mem5[r8 + 0x10<32>:word32] = 0x12345678<32>
+          Mem6[r8 + 0x14<32>:word32] = 0x9ABCDEF0<32>
 Mem0:Mem
     def:  def Mem0
 Mem3: orig: Mem0
 Mem4: orig: Mem0
 Mem5: orig: Mem0
-    def:  Mem5[r8 + 0x00000010:word32] = 0x12345678
+    def:  Mem5[r8 + 0x10<32>:word32] = 0x12345678<32>
 Mem6: orig: Mem0
-    def:  Mem6[r8 + 0x00000014:word32] = 0x9ABCDEF0
+    def:  Mem6[r8 + 0x14<32>:word32] = 0x9ABCDEF0<32>
 // ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
@@ -468,8 +468,8 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	Mem5[r8 + 0x00000010:word32] = 0x12345678
-	Mem6[r8 + 0x00000014:word32] = 0x9ABCDEF0
+	Mem5[r8 + 0x10<32>:word32] = 0x12345678<32>
+	Mem6[r8 + 0x14<32>:word32] = 0x9ABCDEF0<32>
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:

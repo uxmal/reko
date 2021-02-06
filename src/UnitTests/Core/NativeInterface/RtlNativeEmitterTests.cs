@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Core.NativeInterface
     public class NativeRtlEmitterTests
     {
         private List<RtlInstruction> instrs;
-        private RtlInstructionCluster rtlc;
+        private RtlInstructionCluster cluster;
         private NativeRtlEmitter m;
         private NativeTypeFactory ntf;
 
@@ -46,15 +46,15 @@ namespace Reko.UnitTests.Core.NativeInterface
         public void Setup()
         {
             this.instrs = new List<RtlInstruction>();
-            this.rtlc = new RtlInstructionCluster(Address.Ptr32(0x00123400), 4);
+            this.cluster = new RtlInstructionCluster(Address.Ptr32(0x00123400), 4);
             this.ntf = new NativeTypeFactory();
             this.m = new NativeRtlEmitter(new RtlEmitter(instrs), ntf, null);
         }
 
-        private void AssertInstructions(string sExp, RtlInstructionCluster rtlc)
+        private void AssertInstructions(string sExp, RtlInstructionCluster cluster)
         {
             var sw = new StringWriter();
-            rtlc.Write(sw);
+            cluster.Write(sw);
             if (sw.ToString() != sExp)
             {
                 Debug.Print(sw.ToString());
@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Core.NativeInterface
             m.Assign(hDst, hSrc);
             try
             {
-                var rtlc = m.ExtractCluster();
+                var cluster = m.ExtractCluster();
                 Assert.Fail("Expected an exception because we forgot to set the InstrClass of the expression");
             }
             catch (InvalidOperationException)
@@ -106,12 +106,12 @@ namespace Reko.UnitTests.Core.NativeInterface
             var hSrc = m.UInt16(0x5678);
             m.Assign(hDst, hSrc);
             m.FinishCluster(InstrClass.Linear, 0x00111100, 4);
-            var rtlc = m.ExtractCluster();
+            var cluster = m.ExtractCluster();
             var sExp = 
 @"00111100(4):
-Mem0[0x00123400:word16] = 0x5678
+Mem0[0x00123400<p32>:word16] = 0x5678<u16>
 ";
-            AssertInstructions(sExp, rtlc);
+            AssertInstructions(sExp, cluster);
         }
 
         [Test]
@@ -122,12 +122,12 @@ Mem0[0x00123400:word16] = 0x5678
             var hRight = m.UInt16(0x5678);
             m.Assign(hDst, m.IAdd(hLeft,hRight));
             m.FinishCluster(InstrClass.Linear, 0x00111100, 4);
-            var rtlc = m.ExtractCluster();
+            var cluster = m.ExtractCluster();
             var sExp =
 @"00111100(4):
-Mem0[0x00123400:word16] = Mem0[0x00123400:word16] + 0x5678
+Mem0[0x00123400<p32>:word16] = Mem0[0x00123400<p32>:word16] + 0x5678<u16>
 ";
-            AssertInstructions(sExp, rtlc);
+            AssertInstructions(sExp, cluster);
         }
 
         [Test]
@@ -147,12 +147,12 @@ Mem0[0x00123400:word16] = Mem0[0x00123400:word16] + 0x5678
             m.SideEffect(m.Fn(fn));
 
             m.FinishCluster(InstrClass.Linear, 0x00111100, 4);
-            var rtlc = m.ExtractCluster();
+            var cluster = m.ExtractCluster();
             var sExp =
 @"00111100(4):
-RightTriangle(3, 4, 5)
+RightTriangle(3<i16>, 4<i16>, 5<i16>)
 ";
-            AssertInstructions(sExp, rtlc);
+            AssertInstructions(sExp, cluster);
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,9 +23,11 @@ using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Environments.SegaGenesis;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 
@@ -64,14 +66,14 @@ namespace Reko.UnitTests.Environments.SegaGenesis
             var sc = new ServiceContainer();
             var cfgSvc = new Mock<IConfigurationService>();
             var openv = new Mock<PlatformDefinition>();
-            var diagSvc = new Mock<IDiagnosticsService>();
-            var arch = new M68kArchitecture("m68k");
+            var listener = new Mock<DecompilerEventListener>();
+            var arch = new M68kArchitecture(sc, "m68k", new Dictionary<string, object>());
             var platform = new SegaGenesisPlatform(sc, arch);
             cfgSvc.Setup(c => c.GetArchitecture("m68k")).Returns(arch);
             cfgSvc.Setup(c => c.GetEnvironment("sega-genesis")).Returns(openv.Object);
             openv.Setup(o => o.Load(sc, arch)).Returns(platform);
             sc.AddService<IConfigurationService>(cfgSvc.Object);
-            sc.AddService<IDiagnosticsService>(diagSvc.Object);
+            sc.AddService<DecompilerEventListener>(listener.Object);
             Given_AbsoluteMemoryMap(platform);
 
             var rawBytes = new byte[0x300];
@@ -79,8 +81,9 @@ namespace Reko.UnitTests.Environments.SegaGenesis
             var program = sgrom.Load(Address.Ptr32(0));
 
             var romSegment = program.SegmentMap.Segments.Values.First();
+            var bmem = (ByteMemoryArea) romSegment.MemoryArea;
             Assert.IsNotNull(romSegment.MemoryArea, "ROM image should have been loaded into first segment");
-            Assert.AreSame(rawBytes, romSegment.MemoryArea.Bytes, "ROM image should have been loaded into first segment");
+            Assert.AreSame(rawBytes, bmem.Bytes, "ROM image should have been loaded into first segment");
             Assert.AreEqual(rawBytes.Length, romSegment.ContentSize);
             var ramSegment = program.SegmentMap.Segments.Values.First(s => s.Name == ".data");
             Assert.IsNotNull(ramSegment.MemoryArea, "RAM segment should have a MemoryArea");

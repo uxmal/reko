@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,10 +42,15 @@ namespace Reko.Arch.X86
         public const uint Cmask = 1u << 0;
         public const uint Zmask = 1u << 6;
         public const uint Smask = 1u << 7;
+        public const uint Imask = 1u << 9;
         public const uint Dmask = 1u << 10;
         public const uint Omask = 1u << 11;
 
-        protected static readonly TraceSwitch trace = new TraceSwitch(nameof(X86Emulator), "Trace execution of X86 Emulator") { Level = TraceLevel.Warning };
+        protected static readonly TraceSwitch trace = new TraceSwitch(nameof(X86Emulator), "Trace execution of X86 Emulator") 
+        { 
+            Level = TraceLevel.Warning 
+        };
+
         public static readonly (uint value, uint hibit)[] masks = new(uint, uint)[]{
                 (0, 0),
                 (0x0000_00FFu,  0x0000_0080),
@@ -72,10 +77,11 @@ namespace Reko.Arch.X86
         private Address ip;
         private bool ignoreRep;
 
+#nullable disable
         public X86Emulator(
-            IntelArchitecture arch, 
-            SegmentMap segmentMap, 
-            IPlatformEmulator envEmulator, 
+            IntelArchitecture arch,
+            SegmentMap segmentMap,
+            IPlatformEmulator envEmulator,
             RegisterStorage ipReg,
             RegisterStorage cxReg)
             : base(segmentMap)
@@ -88,6 +94,7 @@ namespace Reko.Arch.X86
             this.iFlags = X86.Registers.eflags.Number;
             this.envEmulator = envEmulator;
         }
+#nullable enable
 
         public override MachineInstruction CurrentInstruction => dasm.Current;
 
@@ -96,6 +103,8 @@ namespace Reko.Arch.X86
             get { return this.Registers[iFlags]; }
             set { this.Registers[iFlags] = value; }
         }
+
+        public abstract Address AddressFromWord(ulong word);
 
         /// <summary>
         /// The current instruction pointer of the emulator.
@@ -117,11 +126,11 @@ namespace Reko.Arch.X86
         private void UpdateIp(Address value)
         {
             this.ip = value;
-            WriteRegister(this.ipReg, (TWord)value.Offset);
+            WriteRegister(this.ipReg, (TWord) value.Offset);
             if (value.Selector.HasValue)
-        {
+            {
                 WriteRegister(X86.Registers.cs, value.Selector.Value);
-        }
+            }
         }
 
         private StringBuilder DumpRegs()
@@ -129,8 +138,15 @@ namespace Reko.Arch.X86
             var sb = new StringBuilder();
             for (int i = 0; i < 8; ++i)
             {
-                sb.AppendFormat(" {0} {1:X8}", arch.GetRegister(i + StorageDomain.Register, new BitRange(0, 64)).Name, Registers[i]);
+                sb.AppendFormat(" {0} {1:X8}", arch.GetRegister(i + StorageDomain.Register, new BitRange(0, 64))!.Name, Registers[i]);
             }
+            sb.Append(' ');
+            sb.Append((Flags & Cmask) != 0 ? 'C' : 'c');
+            sb.Append((Flags & Zmask) != 0 ? 'Z' : 'z');
+            sb.Append((Flags & Smask) != 0 ? 'S' : 's');
+            sb.Append((Flags & Imask) != 0 ? 'I' : 'i');
+            sb.Append((Flags & Dmask) != 0 ? 'D' : 'd');
+            sb.Append((Flags & Omask) != 0 ? 'O' : 'o');
             return sb;
         }
 
@@ -142,10 +158,10 @@ namespace Reko.Arch.X86
                 UpdateIp(dasm.Current.Address);
                 ulong eip = ip.ToLinear();
                 if (!TestForBreakpoint(eip))
-                            break;
-                    Execute(dasm.Current);
-                }
+                    break;
+                Execute(dasm.Current);
             }
+        }
 
         [Conditional("DEBUG")]
         private void TraceCurrentInstruction()
@@ -160,28 +176,32 @@ namespace Reko.Arch.X86
             Debug.Print("emu: {0} {1,-15} {2}", dasm.Current.Address, dasm.Current, DumpRegs());
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Execute(X86Instruction instr)
         {
             if (!ignoreRep)
             {
                 if (instr.repPrefix == 2)
                 {
-                // repne
-                switch (instr.Mnemonic)
-                {
-                case Mnemonic.scasb: Repne(); return;
+                    // repne
+                    switch (instr.Mnemonic)
+                    {
+                    case Mnemonic.cmpsb: Repne(); return;
+                    case Mnemonic.scasb: Repne(); return;
+                    }
+                    throw new NotImplementedException();
                 }
-                throw new NotImplementedException();
-            }
                 else if (instr.repPrefix == 3)
                 {
                     // rep / repe
-            switch (instr.Mnemonic)
-            {
+                    switch (instr.Mnemonic)
+                    {
+                    case Mnemonic.cmpsb: Repe(); return;
                     case Mnemonic.lods: Rep(); return;
                     case Mnemonic.lodsb: Rep(); return;
                     case Mnemonic.movs: Rep(); return;
                     case Mnemonic.movsb: Rep(); return;
+                    case Mnemonic.scasb: Repe(); return;
                     case Mnemonic.stosb: Rep(); return;
                     }
                     throw new NotImplementedException();
@@ -195,7 +215,10 @@ namespace Reko.Arch.X86
             case Mnemonic.add: Add(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.and: And(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.call: Call(instr.Operands[0]); return;
+            case Mnemonic.clc: Clc(); return;
             case Mnemonic.cld: Cld(); return;
+            case Mnemonic.cli: Flags &= ~Imask; return;
+            case Mnemonic.std: Std(); return;
             case Mnemonic.cmp: Cmp(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.dec: Dec(instr.Operands[0]); return;
             case Mnemonic.hlt: Stop(); return;
@@ -203,19 +226,22 @@ namespace Reko.Arch.X86
             case Mnemonic.ja: if ((Flags & (Cmask | Zmask)) == 0) Jump(instr.Operands[0]); return;
             case Mnemonic.jbe: if ((Flags & (Cmask | Zmask)) != 0) Jump(instr.Operands[0]); return;
             case Mnemonic.jc: if ((Flags & Cmask) != 0) Jump(instr.Operands[0]); return;
+            case Mnemonic.jcxz: Jcxz(instr.Operands[0]); return;
             case Mnemonic.jmp: Jump(instr.Operands[0]); return;
             case Mnemonic.jnc: if ((Flags & Cmask) == 0) Jump(instr.Operands[0]); return;
             case Mnemonic.jns: if ((Flags & Smask) == 0) Jump(instr.Operands[0]); return;
             case Mnemonic.jnz: if ((Flags & Zmask) == 0) Jump(instr.Operands[0]); return;
             case Mnemonic.js: if ((Flags & Smask) != 0) Jump(instr.Operands[0]); return;
             case Mnemonic.jz: if ((Flags & Zmask) != 0) Jump(instr.Operands[0]); return;
-            case Mnemonic.lea: Write(instr.Operands[0], GetEffectiveOffset((MemoryOperand) instr.Operands[1])); break;
-            case Mnemonic.lodsb: Lods(PrimitiveType.Byte); break;
-            case Mnemonic.lods: Lods(instr.dataWidth); break;
-            case Mnemonic.loop: Loop(instr.Operands[0]); break;
-            case Mnemonic.mov: Write(instr.Operands[0], Read(instr.Operands[1])); break;
-            case Mnemonic.movs: Movs(instr.dataWidth); break;
-            case Mnemonic.movsb: Movs(PrimitiveType.Byte); break;
+            case Mnemonic.lea: Write(instr.Operands[0], GetEffectiveOffset((MemoryOperand) instr.Operands[1])); return;
+            case Mnemonic.lodsb: Lods(PrimitiveType.Byte); return;
+            case Mnemonic.lods: Lods(instr.dataWidth); return;
+            case Mnemonic.loop: Loop(instr.Operands[0]); return;
+            case Mnemonic.mov: Write(instr.Operands[0], Read(instr.Operands[1])); return;
+            case Mnemonic.movs: Movs(instr.dataWidth); return;
+            case Mnemonic.movsb: Movs(PrimitiveType.Byte); return;
+            case Mnemonic.nop: return;
+            case Mnemonic.not: Not(instr.Operands[0]); return;
             case Mnemonic.or: Or(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.pop: Write(instr.Operands[0], Pop(instr.Operands[0].Width)); return;
             case Mnemonic.popa: Popa(); return;
@@ -226,12 +252,14 @@ namespace Reko.Arch.X86
             case Mnemonic.rcl: Rcl(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.rol: Rol(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.sar: Sar(instr.Operands[0], instr.Operands[1]); return;
-            case Mnemonic.scasb: Scasb(); return;
+            case Mnemonic.scasb: Scas(PrimitiveType.Byte); return;
             case Mnemonic.shl: Shl(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.shr: Shr(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.stc: Flags |= Cmask; break;
+            case Mnemonic.sti: Flags |= Imask; break;
             case Mnemonic.stosb: Stos(PrimitiveType.Byte); break;
             case Mnemonic.sub: Sub(instr.Operands[0], instr.Operands[1]); return;
+            case Mnemonic.test: Test(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.xor: Xor(instr.Operands[0], instr.Operands[1]); return;
             case Mnemonic.xchg: Xchg(instr.Operands[0], instr.Operands[1]); return;
             }
@@ -242,7 +270,7 @@ namespace Reko.Arch.X86
         protected TWord GetEffectiveOffset(MemoryOperand m)
         {
             TWord ea = 0;
-            if (m.Offset.IsValid)
+            if (m.Offset!.IsValid)
                 ea += m.Offset.ToUInt32();
             if (m.Index != RegisterStorage.None)
                 ea += (TWord)ReadRegister(m.Index) * m.Scale;
@@ -335,9 +363,8 @@ namespace Reko.Arch.X86
             }
             else
             {
-                //$BUG: not correct for x86-real
                 TWord l = Read(op);
-                return Address.Ptr32(l);
+                return AddressFromWord(l);
             }
         }
 
@@ -352,9 +379,11 @@ namespace Reko.Arch.X86
                 ((l & r) | ((l | r) & (~(sum)))) >> 31;
 
             uint ov = ((~(l ^ r) & (l ^ sum)) & 0x80000000u) >> 20;
-            Flags =
+            Flags &= ~(Cmask | Zmask | Smask | Omask);
+            Flags |=
                 (newCy) |       // Carry
                 (sum == 0 ? 1u << 6 : 0u) | // Zero
+                ((sum & mask.hibit) != 0 ? Smask : 0u) |    // Sign
                 (ov)                        // Overflow
                 ;
         }
@@ -369,7 +398,8 @@ namespace Reko.Arch.X86
             TWord sum = (l + r) & mask.value;
             Write(dst, sum);
             uint ov = ((~(l ^ r) & (l ^ sum)) & mask.hibit) >> 20;
-            Flags =
+            Flags &= ~(Cmask | Zmask | Smask | Omask);
+            Flags |=
                 (r > sum ? 1u : 0u) |     // Carry
                 (sum == 0 ? 1u << 6 : 0u) |                 // Zero
                 ((sum & mask.hibit) != 0 ? Smask : 0u) |    // Sign
@@ -387,6 +417,25 @@ namespace Reko.Arch.X86
                 Execute(strInstr);
                 --c;
                 WriteRegister(cxReg, c);
+            }
+            this.ignoreRep = false;
+        }
+
+        // Repeat while Z flag is set.
+        private void Repe()
+        {
+            var strInstr = dasm.Current;
+            this.ignoreRep = true;
+            var c = ReadRegister(cxReg);
+            while (c != 0)
+            {
+                // A faithful simulation would handle 
+                // pending interrupts.
+                Execute(strInstr);
+                --c;
+                WriteRegister(cxReg, c);
+                if ((Flags & Zmask) == 0)
+                    break;
             }
             this.ignoreRep = false;
         }
@@ -423,7 +472,8 @@ namespace Reko.Arch.X86
             TWord r = (l << sh) | (l >> (dst.Width.BitSize + 1 - sh));
             var mask = masks[dst.Width.Size];
             Write(dst, (r >> 1) & mask.value);
-            Flags =
+            Flags &= ~(Cmask | Zmask);
+            Flags |=
                 ((r & ~1) == 0 ? Zmask : 0u) |  // Zero
                 ((r & 1) != 0 ? Cmask : 0u);    // Carry
         }
@@ -434,27 +484,16 @@ namespace Reko.Arch.X86
             byte sh = (byte) Read(src);
             TWord r = (l << sh) | (l >> (32 - sh));
             Write(dst, r);
-            Flags =
+            Flags &= ~(Zmask);
+            Flags |=
                 (r == 0 ? Zmask : 0u);      // Zero
         }
 
         protected abstract void Lods(PrimitiveType dt);
         protected abstract void Movs(PrimitiveType dt);
-        protected abstract void Stos(PrimitiveType dt);
 
-        private void Scasb()
-        {
-            //$TODO repne
-            byte al = (byte) ReadRegister(X86.Registers.al);
-            var edi = ReadRegister(X86.Registers.edi);
-            var addr = Address.Ptr32((TWord)edi);
-            if (!map.TryFindSegment(addr, out ImageSegment seg))
-                throw new AccessViolationException();
-            byte mem = (byte) (al - seg.MemoryArea.Bytes[edi - (uint) seg.MemoryArea.BaseAddress.ToLinear()]);
-            WriteRegister(X86.Registers.edi, edi + 1);      //$BUG: Direction flag not respected
-            Flags =
-                (mem == 0 ? Zmask : 0u);
-        }
+        protected abstract void Scas(PrimitiveType dt);
+        protected abstract void Stos(PrimitiveType dt);
 
         private void Sar(MachineOperand dst, MachineOperand src)
         {
@@ -464,7 +503,8 @@ namespace Reko.Arch.X86
             var mask = masks[dst.Width.Size];
             TWord r = (TWord)((l >> sh) & mask.value);
             Write(dst, r);
-            Flags =
+            Flags &= ~(Cmask | Zmask | Smask | Omask);
+            Flags |=
                 (r == 0 ? Zmask : 0u) |                 // Zero
                 ((r & mask.hibit) != 0 ? Smask : 0u);   // Sign
         }
@@ -473,12 +513,13 @@ namespace Reko.Arch.X86
         {
             TWord l = Read(dst);
             byte sh = (byte) Read(src);
-            var mask = masks[dst.Width.Size];
-            TWord r = (l << sh) & mask.value;
+            var (value, hibit) = masks[dst.Width.Size];
+            TWord r = (l << sh) & value;
             Write(dst, r);
-            Flags =
+            Flags &= ~(Cmask | Zmask | Smask | Omask);
+            Flags |=
                 (r == 0 ? Zmask : 0u) |                 // Zero
-                ((r & mask.hibit) != 0 ? Smask : 0u);   // Sign
+                ((r & hibit) != 0 ? Smask : 0u);   // Sign
         }
 
         private void Shr(MachineOperand dst, MachineOperand src)
@@ -488,7 +529,8 @@ namespace Reko.Arch.X86
             var mask = masks[dst.Width.Size];
             TWord r = (l >> sh) & mask.value;
             Write(dst, r);
-            Flags =
+            Flags &= ~(Cmask | Zmask | Smask | Omask);
+            Flags |=
                 ((l >> (sh-1)) & 1) |                   // Carry
                 (r == 0 ? Zmask : 0u) |                 // Zero
                 ((r & mask.hibit) != 0 ? Smask : 0u);   // Sign
@@ -496,9 +538,23 @@ namespace Reko.Arch.X86
 
         protected abstract void Call(MachineOperand op);
 
+        private void Clc()
+        {
+            Flags &= ~Cmask;
+        }
+
         private void Cld()
         {
             Flags &= ~Dmask;
+        }
+
+        protected void Jcxz(MachineOperand op)
+        {
+            TWord cx = (TWord) ReadRegister(X86.Registers.cx);
+            if (cx == 0)
+            {
+                InstructionPointer = XferTarget(op);
+            }
         }
 
         protected void Jump(MachineOperand op)
@@ -516,7 +572,8 @@ namespace Reko.Arch.X86
             var mask = masks[dst.Width.Size];
             TWord diff = (l + r) & mask.value;
             uint ov = ((~(l ^ r) & (l ^ diff)) & mask.hibit) >> 20;
-            Flags =
+            Flags &= ~(Cmask | Zmask | Smask | Omask);
+            Flags |=
                 (l < diff ? 1u : 0u) |     // Carry
                 (diff == 0 ? Zmask : 0u) | // Zero
                 ((diff & mask.hibit) != 0 ? Smask : 0u) |   // Sign
@@ -535,7 +592,8 @@ namespace Reko.Arch.X86
             TWord diff = (l + r) & mask.value;
             Write(dst, diff);
             uint ov = ((~(l ^ r) & (l ^ diff)) & mask.hibit) >> 20;
-            Flags =
+            Flags &= ~(Cmask | Zmask | Smask | Omask);
+            Flags |=
                 (l < diff ? 1u : 0u) |     // Carry
                 (diff == 0 ? Zmask : 0u) | // Zero
                 ((diff & mask.hibit) != 0 ? Smask : 0u) |    // Sign
@@ -552,11 +610,21 @@ namespace Reko.Arch.X86
             var mask = masks[dst.Width.Size];
             var and = (l & r) & mask.value;
             Write(dst, and);
-            Flags =
+            Flags &= ~(Cmask | Zmask | Smask | Omask);
+            Flags |=
                 0 |                         // Clear Carry
                 (and == 0 ? Zmask : 0u) |    // Zero
                 ((and & mask.hibit) != 0 ? Smask : 0u) | // Sign
                 0;                          // Clear Overflow
+        }
+
+        private void Not(MachineOperand op)
+        {
+            TWord v = Read(op);
+            var mask = masks[op.Width.Size];
+            var not = (~v) & mask.value;
+            Write(op, not);
+            // Flags are not affected according to Intel docs.
         }
 
         private void Or(MachineOperand dst, MachineOperand src)
@@ -568,7 +636,8 @@ namespace Reko.Arch.X86
             var mask = masks[dst.Width.Size];
             var or = (l | r) & mask.value;
             Write(dst, or);
-            Flags =
+            Flags &= ~(Cmask | Zmask | Smask | Omask);
+            Flags |=
                 0 |                         // Clear Carry
                 (or == 0 ? Zmask : 0u) |    // Zero
                 ((or & mask.hibit) != 0 ? Smask : 0u) | // Sign
@@ -582,8 +651,8 @@ namespace Reko.Arch.X86
             TWord gnu = (old - 1) & mask.value;
             Write(op, gnu);
             uint ov = ((old ^ gnu) & ~gnu & mask.hibit) >> 20;
-            Flags =
-                Flags & Cmask |             // Carry preserved
+            Flags &= ~(Zmask | Smask | Omask);
+            Flags |=
                 (gnu == 0 ? Zmask : 0u) |   // Zero
                 ((gnu & mask.hibit) != 0 ? Smask : 0u) |    // Sign
                 ov;                          //$BUG:
@@ -596,8 +665,8 @@ namespace Reko.Arch.X86
             TWord gnu = (old + 1) & mask.value;
             Write(op, gnu);
             uint ov = ((old ^ gnu) & gnu & mask.hibit) >> 20;
-            Flags =
-                Flags & Cmask |             // Carry preserved
+            Flags &= ~(Zmask | Smask | Omask);
+            Flags |=
                 (gnu == 0 ? Zmask : 0u) |   // Zero
                 ((gnu & mask.hibit) != 0 ? Smask : 0u) |    // Sign
                 ov;                          //$BUG:
@@ -608,10 +677,10 @@ namespace Reko.Arch.X86
             var c = ReadRegister(cxReg) - 1u;
             WriteRegister(cxReg, c);
             if (c != 0)
-        {
+            {
                 InstructionPointer = XferTarget(op);
             }
-                }
+        }
 
         public void Popa()
         {
@@ -650,6 +719,32 @@ namespace Reko.Arch.X86
 
         protected abstract void Push(ulong dw, PrimitiveType dt);
 
+        private void Stc()
+        {
+            Flags |= Cmask;
+        }
+
+        private void Std()
+        {
+            Flags |= Dmask;
+        }
+
+        private void Test(MachineOperand op1, MachineOperand op2)
+        {
+            TWord l = Read(op1);
+            TWord r = Read(op2);
+            if (op2.Width.Size < op1.Width.Size)
+                r = (TWord) (sbyte) r;
+            var mask = masks[op1.Width.Size];
+            var test = (l & r) & mask.value;
+            Flags &= ~(Cmask | Zmask | Smask | Omask);      //$TODO: parity.
+            Flags |=
+                0 |                             // Clear carry
+                (test == 0 ? Zmask : 0u) |      // Zero
+                ((test & mask.hibit) != 0 ? Smask : 0u) | // Sign
+                0;                              // Clear overflow
+        }
+
         private void Xchg(MachineOperand op1, MachineOperand op2)
         {
             var tmp = Read(op1);
@@ -666,11 +761,12 @@ namespace Reko.Arch.X86
             var mask = masks[dst.Width.Size];
             var xor = (l ^ r) & mask.value;
             Write(dst, xor);
-            Flags =
+            Flags &= ~(Cmask | Zmask | Smask | Omask);
+            Flags |=
                 0 |                         // Carry
                 (xor == 0 ? Zmask : 0u) |   // Zero
                 ((xor & mask.hibit) != 0 ? Smask : 0u) |    // Sign
                 0;                          // Overflow
         }
-        }
+    }
 }

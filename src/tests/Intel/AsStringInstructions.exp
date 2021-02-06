@@ -4,20 +4,20 @@
 0B00:0030 F3 AE 89 3E 04 04 C3                            ...>...        
 
 0B00:0000 66 67 8D 04 80  	lea	eax,[eax+eax*4]
-0B00:0005 66 89 06 FC 02  	mov	[02FC],eax
+0B00:0005 66 89 06 FC 02  	mov	[02FCh],eax
 0B00:000A 66 AD           	lodsd
-0B00:000C 66 89 06 00 03  	mov	[0300],eax
+0B00:000C 66 89 06 00 03  	mov	[0300h],eax
 0B00:0011 66 AD           	lodsd
-0B00:0013 66 89 06 04 03  	mov	[0304],eax
+0B00:0013 66 89 06 04 03  	mov	[0304h],eax
 0B00:0018 AD              	lodsw
-0B00:0019 89 06 08 03     	mov	[0308],ax
+0B00:0019 89 06 08 03     	mov	[0308h],ax
 0B00:001D AD              	lodsw
-0B00:001E 89 06 0A 03     	mov	[030A],ax
-0B00:0022 E8 01 00        	call	0026
+0B00:001E 89 06 0A 03     	mov	[030Ah],ax
+0B00:0022 E8 01 00        	call	0026h
 0B00:0025 C3              	ret
-0B00:0026 8B 0E 00 04     	mov	cx,[0400]
-0B00:002A B0 00           	mov	al,00
-0B00:002C 8B 3E 02 04     	mov	di,[0402]
+0B00:0026 8B 0E 00 04     	mov	cx,[0400h]
+0B00:002A B0 00           	mov	al,0h
+0B00:002C 8B 3E 02 04     	mov	di,[0402h]
 0B00:0030 F3 AE           	rep scasb
-0B00:0032 89 3E 04 04     	mov	[0404],di
+0B00:0032 89 3E 04 04     	mov	[0404h],di
 0B00:0036 C3              	ret

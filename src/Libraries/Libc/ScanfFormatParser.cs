@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,8 +56,8 @@ namespace Reko.Libraries.Libc
             var platform = program.Platform;
 
             this.wordSize = platform.Architecture.WordWidth.BitSize;
-            this.longSize = platform.GetByteSizeFromCBasicType(CBasicType.Long) * DataType.BitsPerByte;
-            this.doubleSize = platform.GetByteSizeFromCBasicType(CBasicType.Double) * DataType.BitsPerByte;
+            this.longSize = platform.GetBitSizeFromCBasicType(CBasicType.Long);
+            this.doubleSize = platform.GetBitSizeFromCBasicType(CBasicType.Double);
             this.pointerSize = platform.PointerType.BitSize;
             this.services = services;
         }

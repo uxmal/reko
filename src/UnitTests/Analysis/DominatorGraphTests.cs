@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,12 +45,12 @@ namespace Reko.UnitTests.Analysis
                 writer.WriteLine("===========");
                 proc.Write(false, writer);
                 writer.WriteLine("== Predecessors");
-                foreach (var block in proc.ControlGraph.Blocks.OrderBy(block => block.Name))
+                foreach (var block in proc.ControlGraph.Blocks.OrderBy(block => block.DisplayName))
                 {
-                    writer.Write("  {0}:", block.Name);
+                    writer.Write("  {0}:", block.DisplayName);
                     foreach (var df in block.Pred)
                     {
-                        writer.Write(" {0}", df.Name);
+                        writer.Write(" {0}", df.DisplayName);
                     }
                     writer.WriteLine();
                 }
@@ -58,12 +58,12 @@ namespace Reko.UnitTests.Analysis
                 var gr = proc.CreateBlockDominatorGraph();
                 gr.Write(writer);
                 writer.WriteLine("== Dominance frontiers");
-                foreach (var block in proc.ControlGraph.Blocks.OrderBy(block => block.Name))
+                foreach (var block in proc.ControlGraph.Blocks.OrderBy(block => block.DisplayName))
                 {
-                    writer.Write("  {0}:", block.Name);
-                    foreach (var df in gr.DominatorFrontier(block).OrderBy(b => b.Name))
+                    writer.Write("  {0}:", block.DisplayName);
+                    foreach (var df in gr.DominatorFrontier(block).OrderBy(b => b.DisplayName))
                     {
-                        writer.Write(" {0}", df.Name);
+                        writer.Write(" {0}", df.DisplayName);
                     }
                     writer.WriteLine();
                 }

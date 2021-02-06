@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using System.Text;
 using Reko.Core;
 using NUnit.Framework;
 using Reko.Core.Types;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.Vax
 {
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Arch.Vax
 
         public VaxDisassemblerTests()
         {
-            this.arch = new VaxArchitecture("vax");
+            this.arch = new VaxArchitecture(new ServiceContainer(), "vax", new Dictionary<string, object>());
         }
 
         public override IProcessorArchitecture Architecture

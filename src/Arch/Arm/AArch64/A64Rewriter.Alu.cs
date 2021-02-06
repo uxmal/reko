@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,23 @@ namespace Reko.Arch.Arm.AArch64
 {
     public partial class A64Rewriter
     {
+        private void RewriteAdcSbc(Func<Expression,Expression,Expression> opr, Action<Expression> setFlags = null)
+        {
+            var opSrc1 = RewriteOp(instr.Operands[1]);
+            var opSrc2 = RewriteOp(instr.Operands[2]);
+            var opDst = RewriteOp(instr.Operands[0]);
+
+            // We do not take the trouble of widening the CF to the word size
+            // to simplify code analysis in later stages. 
+            var c = binder.EnsureFlagGroup(Registers.C);
+            m.Assign(
+                opDst,
+                opr(
+                    opr(opSrc1, opSrc2),
+                    c));
+            setFlags?.Invoke(m.Cond(opDst));
+        }
+
         private void RewriteAdrp()
         {
             var dst = RewriteOp(instr.Operands[0]);
@@ -99,6 +116,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.asr: right = m.Sar(right, amt); break;
                 case Mnemonic.lsl: right = m.Shl(right, amt); break;
                 case Mnemonic.lsr: right = m.Shr(right, amt); break;
+                case Mnemonic.ror: right = host.Intrinsic(IntrinsicProcedure.Ror, true, right.DataType, right, amt); break;
                 case Mnemonic.sxtb: right = SignExtend(toBitSize, PrimitiveType.SByte, right); break;
                 case Mnemonic.sxth: right = SignExtend(toBitSize, PrimitiveType.Int16, right); break;
                 case Mnemonic.sxtw: right = SignExtend(toBitSize, PrimitiveType.Int32, right); break;
@@ -120,7 +138,7 @@ namespace Reko.Arch.Arm.AArch64
             var src2 = RewriteOp(instr.Operands[2]);
             var src3 = RewriteOp(instr.Operands[3]);
             var dst = RewriteOp(instr.Operands[0]);
-            m.Assign(dst, host.PseudoProcedure("__bfm", dst.DataType, src1, src2, src3));
+            m.Assign(dst, host.Intrinsic("__bfm", true, dst.DataType, src1, src2, src3));
         }
 
         private void RewriteCcmn()
@@ -129,7 +147,8 @@ namespace Reko.Arch.Arm.AArch64
             var tmp = binder.CreateTemporary(PrimitiveType.Bool);
             var cond = Invert(((ConditionOperand) instr.Operands[3]).Condition);
             m.Assign(tmp, this.TestCond(cond));
-            m.Assign(nzcv, RewriteOp(instr.Operands[2]));
+            var c = ((ImmediateOperand) instr.Operands[2]).Value.ToUInt32();
+            m.Assign(nzcv, Constant.Word32(c << 28));
             m.BranchInMiddleOfInstruction(tmp, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
             var left = RewriteOp(instr.Operands[0]);
             var right = RewriteOp(instr.Operands[1]);
@@ -142,7 +161,8 @@ namespace Reko.Arch.Arm.AArch64
             var tmp = binder.CreateTemporary(PrimitiveType.Bool);
             var cond = Invert(((ConditionOperand)instr.Operands[3]).Condition);
             m.Assign(tmp, this.TestCond(cond));
-            m.Assign(nzcv, RewriteOp(instr.Operands[2]));
+            var c = ((ImmediateOperand) instr.Operands[2]).Value.ToUInt32();
+            m.Assign(nzcv, Constant.Word32(c << 28));
             m.BranchInMiddleOfInstruction(tmp, instr.Address + instr.Length, InstrClass.ConditionalTransfer);
             var left = RewriteOp(instr.Operands[0]);
             var right = RewriteOp(instr.Operands[1]);
@@ -153,7 +173,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             var src = RewriteOp(instr.Operands[1]);
             var dst = RewriteOp(instr.Operands[0]);
-            m.Assign(dst, host.PseudoProcedure("__clz", MakeInteger(Domain.SignedInt, dst.DataType), src));
+            m.Assign(dst, host.Intrinsic("__clz", true, MakeInteger(Domain.SignedInt, dst.DataType), src));
         }
 
         private void RewriteCmp()
@@ -181,12 +201,14 @@ namespace Reko.Arch.Arm.AArch64
             var rTrue = ((RegisterOperand)instr.Operands[1]).Register;
             var rFalse = ((RegisterOperand)instr.Operands[2]).Register;
             var cond = ((ConditionOperand)instr.Operands[3]).Condition;
+            Expression src;
             if (rTrue.Number == 31 && rFalse.Number == 31)
             {
-                m.Assign(dst, m.Cast(dst.DataType, TestCond(Invert(cond))));
+                src = TestCond(Invert(cond));
+                m.Assign(dst, m.Convert(src, src.DataType, dst.DataType));
                 return;
             }
-            var src = RewriteOp(instr.Operands[1]);
+            src = RewriteOp(instr.Operands[1]);
             if (rFalse.Number != 31 && rTrue == rFalse)
             {
                 m.BranchInMiddleOfInstruction(TestCond(Invert(cond)), instr.Address + instr.Length, InstrClass.ConditionalTransfer);
@@ -214,6 +236,28 @@ namespace Reko.Arch.Arm.AArch64
             var dst = RewriteOp(instr.Operands[0]);
             var cond = ((ConditionOperand)instr.Operands[3]).Condition;
             m.Assign(dst, m.Conditional(dst.DataType, TestCond(cond), srcTrue, m.Neg(srcFalse)));
+        }
+
+        private void RewriteDmb()
+        {
+            m.SideEffect(host.Intrinsic($"__dmb_{instr.Operands[0]}", false, VoidType.Instance));
+        }
+
+        private void RewriteLoadAcquire(string nameFormat, DataType dtDst)
+        {
+            var mem = (MemoryOperand) instr.Operands[1];
+            var ptr = new Pointer(dtDst, (int)mem.Base.BitSize);
+            var ea = m.AddrOf(ptr, m.Mem(dtDst, binder.EnsureRegister(mem.Base)));
+            var value = host.Intrinsic(string.Format(nameFormat, dtDst.Name), false, dtDst, ea);
+            var dst = RewriteOp(0);
+            if (dst.DataType.BitSize > dtDst.BitSize)
+            {
+                m.Assign(dst, m.Convert(value, value.DataType, dst.DataType));
+            }
+            else
+            {
+                m.Assign(dst, value);
+            }
         }
 
         private void RewriteLoadStorePair(bool load, DataType dtDst = null, DataType dtCast = null)
@@ -246,7 +290,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 Expression e = m.Mem(dtDst, ea);
                 if (dtCast != null)
-                    e = m.Cast(dtCast, e);
+                    e = m.Convert(e, e.DataType, dtCast);
                 m.Assign(reg1, e);
             }
             else
@@ -259,7 +303,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 Expression e = m.Mem(dtDst, ea);
                 if (dtCast != null)
-                    e = m.Cast(dtCast, e);
+                    e = m.Convert(e, e.DataType, dtCast);
                 m.Assign(reg2, e);
             }
             else
@@ -272,9 +316,10 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
-        private void RewriteLdr(DataType dt)
+        private void RewriteLdr(DataType dt, DataType dtDst = null)
         {
             var dst = RewriteOp(instr.Operands[0]);
+            dtDst = dtDst ?? dst.DataType;
             Expression ea;
             MemoryOperand mem = null;
             Identifier baseReg = null;
@@ -299,17 +344,35 @@ namespace Reko.Arch.Arm.AArch64
             }
             if (dt == null)
             {
-                m.Assign(dst, m.Mem(dst.DataType, ea));
+                m.Assign(dst, m.Mem(dtDst, ea));
             }
             else
             {
                 var tmp = binder.CreateTemporary(dt);
                 m.Assign(tmp, m.Mem(dt, ea));
-                m.Assign(dst, m.Cast(dst.DataType, tmp));
+                m.Assign(dst, m.Convert(tmp, tmp.DataType, dtDst));
             }
             if (postIndex != null)
             {
                 m.Assign(baseReg, postIndex);
+            }
+        }
+
+        private void RewriteLdx(PrimitiveType dt)
+        {
+            var src = RewriteOp(1);
+            var dst = RewriteOp(0);
+            dst.DataType = dt;
+            var tmp = binder.CreateTemporary(PrimitiveType.Create(Domain.Pointer, dst.DataType.BitSize));
+            m.Assign(tmp, m.AddrOf(tmp.DataType, src));
+            var value = host.Intrinsic($"__load_exclusive_{dt.Name}", false, dt, tmp);
+            if (value.DataType.BitSize < dst.DataType.BitSize)
+            {
+                m.Assign(dst, m.Convert(value, value.DataType, dst.DataType));
+            }
+            else
+            {
+                m.Assign(dst, value);
             }
         }
 
@@ -330,7 +393,8 @@ namespace Reko.Arch.Arm.AArch64
             var op3 = RewriteOp(instr.Operands[3]);
             var dst = RewriteOp(instr.Operands[0]);
 
-            m.Assign(dst, m.IAdd(op3, m.Cast(dt, mul(op1, op2))));
+            var product = mul(op1, op2);
+            m.Assign(dst, m.IAdd(op3, m.Convert(product, product.DataType, dt)));
         }
 
         private void RewriteMov()
@@ -340,7 +404,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteMovk()
         {
-            var dst = RewriteOp(instr.Operands[0]);
+            var dst = (Identifier)RewriteOp(instr.Operands[0]);
             var imm = ((ImmediateOperand)instr.Operands[1]).Value;
             var shift = ((ImmediateOperand)instr.shiftAmount).Value;
             m.Assign(dst, m.Dpb(dst, imm, shift.ToInt32()));
@@ -369,27 +433,39 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, Constant.Word(dst.DataType.BitSize, imm.ToInt64() << shift.ToInt32()));
         }
 
-        private void RewriteMulh(PrimitiveType dt, Func<Expression, Expression, Expression> mul)
+        private void RewriteMulh(PrimitiveType dtTo, Func<Expression, Expression, Expression> mul)
         {
             var op1 = RewriteOp(instr.Operands[1]);
             var op2 = RewriteOp(instr.Operands[2]);
             var dst = RewriteOp(instr.Operands[0]);
 
-            m.Assign(dst, m.Slice(dt, mul(op1, op2), 64));
+            m.Assign(dst, m.Slice(dtTo, mul(op1, op2), 64));
         }
 
-        private void RewriteMull(PrimitiveType dt, Func<Expression, Expression, Expression> mul)
+        private void RewriteMull(PrimitiveType dtFrom,  PrimitiveType dtTo, Func<Expression, Expression, Expression> mul)
         {
             if (instr.Operands[1] is VectorRegisterOperand)
             {
                 RewriteSimdBinary("__mull_{0}", Domain.Integer);
                 return;
             }
-            var op1 = RewriteOp(instr.Operands[1]);
-            var op2 = RewriteOp(instr.Operands[2]);
-            var dst = RewriteOp(instr.Operands[0]);
+            var op1 = RewriteOp(1);
+            var op2 = RewriteOp(2);
+            var dst = RewriteOp(0);
 
-            m.Assign(dst, m.Cast(dt, mul(op1, op2)));
+            var product = mul(op1, op2);
+            m.Assign(dst, m.Convert(product, dtFrom, dtTo));
+        }
+
+        private void RewriteMulh(PrimitiveType dtNarrow, PrimitiveType dtWide, Func<Expression, Expression, Expression> mul)
+        {
+            var op1 = RewriteOp(1);
+            var op2 = RewriteOp(2);
+            var dst = RewriteOp(0);
+
+            var product = mul(op1, op2);
+            product.DataType = dtWide;
+            m.Assign(dst, m.Slice(dtNarrow, product, dtWide.BitSize - dtNarrow.BitSize));
         }
 
         /// <summary>
@@ -462,13 +538,21 @@ namespace Reko.Arch.Arm.AArch64
         private Expression ZeroExtend(int bitsizeDst, PrimitiveType dtOrig, Expression e)
         {
             var dtUint = PrimitiveType.Create(Domain.UnsignedInt, bitsizeDst);
-            return m.Cast(dtUint, m.Cast(dtOrig, e));
+            if (e.DataType.BitSize > dtOrig.BitSize)
+            {
+                e = m.Slice(dtOrig, e, 0);
+            }
+            return m.Convert(e, dtOrig, dtUint);
         }
 
         private Expression SignExtend(int bitsizeDst, PrimitiveType dtOrig, Expression e)
         {
-            var dtUint = PrimitiveType.Create(Domain.SignedInt, bitsizeDst);
-            return m.Cast(dtUint, m.Cast(dtOrig, e));
+            var dtInt = PrimitiveType.Create(Domain.SignedInt, bitsizeDst);
+            if (e.DataType.BitSize > dtOrig.BitSize)
+            {
+                e = m.Slice(dtOrig, e, 0);
+            }
+            return m.Convert(e, dtOrig, dtInt);
         }
 
         private void RewritePrfm()
@@ -485,19 +569,42 @@ namespace Reko.Arch.Arm.AArch64
             }
             else
                 throw new AddressCorrelatedException(instr.Address, "Expected an address as the second operand of prfm.");
-            m.SideEffect(host.PseudoProcedure("__prfm", VoidType.Instance, imm, ea));
+            m.SideEffect(host.Intrinsic("__prfm", false, VoidType.Instance, imm, ea));
+        }
+
+        private void RewriteRbit()
+        {
+            var src = RewriteOp(1);
+            var dst = RewriteOp(0);
+            m.Assign(dst, host.Intrinsic($"__rbit_{dst.DataType.BitSize}", true, dst.DataType, src));
+        }
+
+        private void RewriteRev()
+        {
+            var src = RewriteOp(1);
+            var dst = RewriteOp(0);
+            var bitSize = dst.DataType.BitSize;
+            m.Assign(dst, host.Intrinsic($"__rev_{bitSize}", true, dst.DataType, src));
+        }
+
+
+        private void RewriteRev32()
+        {
+            var src = RewriteOp(1);
+            var dst = RewriteOp(0);
+            m.Assign(dst, host.Intrinsic($"__rev32", true, dst.DataType, src));
         }
 
         private void RewriteRev16()
         {
             RewriteMaybeSimdUnary(
-                n => host.PseudoProcedure("__rev16", n.DataType, n),
+                n => host.Intrinsic("__rev16", true, n.DataType, n),
                 "__rev16_{0}");
         }
 
         private void RewriteRor()
         {
-            RewriteBinary((a, b) => host.PseudoProcedure(PseudoProcedure.Ror, a.DataType, a, b));
+            RewriteBinary((a, b) => host.Intrinsic(IntrinsicProcedure.Ror, true, a.DataType, a, b));
         }
 
         private void RewriteSbfiz()
@@ -505,7 +612,7 @@ namespace Reko.Arch.Arm.AArch64
             var src1 = RewriteOp(instr.Operands[1], true);
             var src2 = RewriteOp(instr.Operands[2], true);
             var dst = RewriteOp(instr.Operands[0]);
-            m.Assign(dst, host.PseudoProcedure("__sbfiz", dst.DataType, src1, src2));
+            m.Assign(dst, host.Intrinsic("__sbfiz", false, dst.DataType, src1, src2));
         }
 
         private void RewriteUSbfm(string fnName)
@@ -514,7 +621,15 @@ namespace Reko.Arch.Arm.AArch64
             var src2 = RewriteOp(instr.Operands[2], true);
             var src3 = RewriteOp(instr.Operands[2], true);
             var dst = RewriteOp(instr.Operands[0]);
-            m.Assign(dst, host.PseudoProcedure(fnName, dst.DataType, src1, src2, src3));
+            m.Assign(dst, host.Intrinsic(fnName, true, dst.DataType, src1, src2, src3));
+        }
+
+        private void RewriteStlr(PrimitiveType dataType)
+        {
+            var src1 = RewriteOp(0, false);
+            var ea = binder.CreateTemporary(new Pointer(dataType, arch.PointerType.BitSize));
+            m.Assign(ea, m.AddrOf(ea.DataType, m.Mem(dataType, binder.EnsureRegister(((MemoryOperand) instr.Operands[1]).Base))));
+            m.SideEffect(host.Intrinsic($"__store_release_{dataType.BitSize}", false, VoidType.Instance, ea, src1));
         }
 
         private void RewriteStr(PrimitiveType dt)
@@ -540,7 +655,7 @@ namespace Reko.Arch.Arm.AArch64
             }
             else
             {
-                m.Assign(m.Mem(dt, ea), m.Cast(dt, src));
+                m.Assign(m.Mem(dt, ea), m.Slice(dt, src, 0));
             }
             if (postIndex != null)
             {
@@ -548,10 +663,21 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
+        private void RewriteStx(PrimitiveType dt)
+        {
+            var src = RewriteOp(1);
+            var dst = RewriteOp(2);
+            dst.DataType = dt;
+            var tmp = binder.CreateTemporary(PrimitiveType.Create(Domain.Pointer, dst.DataType.BitSize));
+            var success = RewriteOp(0);
+            m.Assign(tmp, m.AddrOf(tmp.DataType, dst));
+            m.Assign(success, host.Intrinsic($"__store_exclusive_{dt.Name}", false, success.DataType, tmp, src));
+        }
+
         private void RewriteTest()
         {
-            var op1 = RewriteOp(instr.Operands[0], true);
-            var op2 = RewriteOp(instr.Operands[1], true);
+            var op1 = RewriteOp(0, true);
+            var op2 = RewriteOp(1, true);
             NZ00(m.Cond(m.And(op1, op2)));
         }
 
@@ -567,8 +693,12 @@ namespace Reko.Arch.Arm.AArch64
             var src = RewriteOp(instr.Operands[1], true);
             var dst = RewriteOp(instr.Operands[0]);
             var dtSrc = PrimitiveType.Create(domDst, bitSize);
+            if (src.DataType.BitSize > bitSize)
+            {
+                src = m.Slice(dtSrc, src, 0);
+            }
             var dtDst = MakeInteger(domDst, dst.DataType);
-            m.Assign(dst, m.Cast(dtDst, m.Cast(dtSrc, src)));
+            m.Assign(dst, m.Convert(src, dtSrc, dtDst));
         }
     }
 }

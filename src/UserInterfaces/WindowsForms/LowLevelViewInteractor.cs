@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,13 +20,16 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Output;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.Gui.Visualizers;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.IO;
@@ -158,11 +161,11 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             //$REVIEW: load the visualizers from a config file?
             this.Control.VisualizerList.Items.Add(
-                new ListOption { Text = "ASCII strings", Value = new AsciiStringVisualizer() });
+                new ListOption("ASCII strings", new AsciiStringVisualizer()));
             this.control.VisualizerList.Items.Add(
-                new ListOption { Text = "Code and data", Value = new CodeDataVisualizer() });
+                new ListOption("Code and data", new CodeDataVisualizer()));
             this.Control.VisualizerList.Items.Add(
-                new ListOption { Text = "Heat map", Value = new HeatmapVisualizer() });
+                new ListOption("Heat map", new HeatmapVisualizer()));
         }
 
         private void UserNavigateToAddress(Address addrFrom, Address addrTo)
@@ -200,6 +203,7 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 var selAddress = Control.DisassemblyView.SelectedObject as Address;
                 var instr = Control.DisassemblyView.SelectedObject as MachineInstruction;
+                
                 if (cmdId.Guid == CmdSets.GuidReko)
                 {
                     switch (cmdId.ID)
@@ -214,6 +218,7 @@ namespace Reko.UserInterfaces.WindowsForms
                         status.Status = selAddress != null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
                         return true;
                     case CmdIds.EditAnnotation:
+                    case CmdIds.EditRegisterValues:
                         status.Status = instr != null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
                         return true;
                     case CmdIds.ActionCallTerminates:
@@ -271,6 +276,7 @@ namespace Reko.UserInterfaces.WindowsForms
                     {
                     case CmdIds.EditCopy: return CopyDisassemblerSelectionToClipboard();
                     case CmdIds.EditAnnotation: return EditDasmAnnotation();
+                    case CmdIds.EditRegisterValues: return EditRegisterValues();
                     case CmdIds.TextEncodingChoose: return ChooseTextEncoding();
                     case CmdIds.ActionCallTerminates: return EditCallSite();
                     case CmdIds.ViewPcRelative: return ToggleShowPcRelative();
@@ -295,7 +301,8 @@ namespace Reko.UserInterfaces.WindowsForms
             if (addrRange == null)
                 return;
             var rdr = program.CreateImageReader(program.Architecture, addrRange.Begin);
-            var addrDst = rdr.Read(program.Platform.PointerType);
+            if (!rdr.TryRead(program.Platform.PointerType, out var addrDst))
+                return;
             var txt = control.ToolBarAddressTextbox;
             txt.Text = addrDst.ToString();
             txt.SelectAll();
@@ -406,8 +413,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public ImageMapItem SetTypeAtAddressRange(Address address, string userText)
         {
-            var parser = new HungarianParser();
-            var dataType = parser.Parse(userText);
+            var dataType = HungarianParser.Parse(userText);
             if (dataType == null)
                 return null;
             if (dataType is ArrayType arr && arr.ElementType.Size != 0)
@@ -445,26 +451,31 @@ namespace Reko.UserInterfaces.WindowsForms
             var dlgFactory = services.RequireService<IDialogFactory>();
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
             var srSvc = services.RequireService<ISearchResultService>();
+
             using (ISearchDialog dlg = dlgFactory.CreateSearchDialog())
             {
                 dlg.InitialPattern = SelectionToHex(addrRange);
                 if (uiSvc.ShowModalDialog(dlg) == Gui.DialogResult.OK)
                 {
                     var re = Core.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
-                    var hits = 
+                    var hits =
                         //$BUG: wrong result
                         program.SegmentMap.Segments.Values
-                        .SelectMany(s => re.GetMatches(s.MemoryArea.Bytes, 0))
-                        .Select(offset => new AddressSearchHit
-                        {
-                            Program = program,
-                            Address = program.ImageMap.BaseAddress + offset,
-                            Length = 1
-                        });
+                        .SelectMany(s => GetMatches(s, re))
+                        .Select(offset => new AddressSearchHit(
+                            program,
+                            program.ImageMap.BaseAddress + offset,
+                            1));
                     srSvc.ShowAddressSearchResults(hits, new CodeSearchDetails());
                 }
             }
             return true;
+        }
+
+        private IEnumerable<int> GetMatches(ImageSegment s, Core.Dfa.Automaton re)
+        {
+            var mem = (ByteMemoryArea) s.MemoryArea;
+            return re.GetMatches(mem.Bytes, 0);
         }
 
         public bool ChooseTextEncoding()
@@ -494,6 +505,28 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public bool EditDasmAnnotation()
         {
+            return true;
+        }
+
+        public bool EditRegisterValues()
+        {
+            if (Control.DisassemblyView.SelectedObject is MachineInstruction instr)
+            {
+                if (!program.User.RegisterValues.TryGetValue(instr.Address, out var regValues))
+                {
+                    regValues = new List<UserRegisterValue>();
+                }
+                var dlgFactory = services.RequireService<IDialogFactory>();
+                var uiSvc = services.RequireService<IDecompilerShellUiService>();
+                using (var dlg = dlgFactory.CreateRegisterValuesDialog(this.program.Architecture, regValues))
+                {
+                    if (Gui.DialogResult.OK == uiSvc.ShowModalDialog(dlg))
+                    {
+                        regValues = dlg.RegisterValues;
+                        program.User.RegisterValues[instr.Address] = regValues;
+                    }
+                }
+            }
             return true;
         }
 

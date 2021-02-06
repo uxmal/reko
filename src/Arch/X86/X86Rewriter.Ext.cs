@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,21 +40,21 @@ namespace Reko.Arch.X86
     {
         public void RewriteAesimc()
         {
-            var dst = SrcOp(instrCur.Operands[0]);
-            var src = SrcOp(instrCur.Operands[1]);
-            m.Assign(dst, host.PseudoProcedure("__aesimc", dst.DataType, src));
+            var dst = SrcOp(0);
+            var src = SrcOp(1);
+            m.Assign(dst, host.Intrinsic("__aesimc", false, dst.DataType, src));
         }
 
         public void RewriteClts()
         {
-            rtlc = InstrClass.System;
-            var cr0 = binder.EnsureRegister(arch.GetControlRegister(0));
-            m.Assign(cr0, host.PseudoProcedure("__clts", cr0.DataType, cr0));
+            iclass = InstrClass.System;
+            var cr0 = binder.EnsureRegister(arch.GetControlRegister(0)!);
+            m.Assign(cr0, host.Intrinsic("__clts", false, cr0.DataType, cr0));
         }
 
         public void RewriteEmms()
         {
-            m.SideEffect(host.PseudoProcedure("__emms", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__emms", false, VoidType.Instance));
         }
 
         private void RewriteGetsec()
@@ -63,109 +63,137 @@ namespace Reko.Arch.X86
             // depends on EAX.
             var arg = binder.EnsureRegister(Registers.eax);
             var result = binder.EnsureSequence(PrimitiveType.Word64, Registers.edx, Registers.ebx);
-            m.Assign(result, host.PseudoProcedure("__getsec", result.DataType, arg));
+            m.Assign(result, host.Intrinsic("__getsec", false, result.DataType, arg));
         }
 
         private void RewriteInvd()
         {
-            m.SideEffect(host.PseudoProcedure("__invd", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__invd", false, VoidType.Instance));
+        }
+
+        private void RewriteInvlpg()
+        {
+            var op = SrcOp(0);
+            m.SideEffect(host.Intrinsic("__invlpg", false, VoidType.Instance,
+                op));
+
         }
 
         private void RewriteLar()
         {
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                host.PseudoProcedure(
+                SrcOp(0),
+                host.Intrinsic(
                     "__lar",
+                    false,
                     instrCur.Operands[0].Width,
-                    SrcOp(instrCur.Operands[1])));
+                    SrcOp(1)));
             m.Assign(
                 orw.FlagGroup(FlagM.ZF),
                 Constant.True());
         }
 
+        private void RewriteLmsw()
+        {
+            m.SideEffect(host.Intrinsic("__lmsw", false, VoidType.Instance, SrcOp(0)));
+        }
+
         private void RewriteLsl()
         {
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                host.PseudoProcedure(
+                SrcOp(0),
+                host.Intrinsic(
                     "__lsl",
+                    false,
                     instrCur.Operands[0].Width,
-                    SrcOp(instrCur.Operands[1])));
+                    SrcOp(1)));
         }
 
         private void RewriteLxdt(string intrinsicName)
         {
-            rtlc = InstrClass.System;
+            iclass = InstrClass.System;
             m.SideEffect(
-                host.PseudoProcedure(
+                host.Intrinsic(
                     intrinsicName,
+                    false,
                     VoidType.Instance,
-                    SrcOp(instrCur.Operands[0])));
+                    SrcOp(0)));
         }
 
         private void RewriteSxdt(string intrinsicName)
         {
-            rtlc = InstrClass.System;
+            iclass = InstrClass.System;
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                host.PseudoProcedure(
+                SrcOp(0),
+                host.Intrinsic(
                     intrinsicName,
+                    false,
                     instrCur.Operands[0].Width));
         }
 
         public void RewriteLfence()
         {
-            m.SideEffect(host.PseudoProcedure("__lfence", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__lfence", false, VoidType.Instance));
         }
 
         public void RewriteMfence()
         {
-            m.SideEffect(host.PseudoProcedure("__mfence", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__mfence", false, VoidType.Instance));
         }
 
         public void RewritePause()
         {
-            m.SideEffect(host.PseudoProcedure("__pause", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__pause", false, VoidType.Instance));
         }
 
         public void RewritePrefetch(string name)
         {
-            m.SideEffect(host.PseudoProcedure(name, VoidType.Instance, SrcOp(instrCur.Operands[0])));
+            m.SideEffect(host.Intrinsic(name, false, VoidType.Instance, SrcOp(0)));
         }
 
+        private void RewriteSmsw()
+        {
+            var dst = SrcOp(0);
+            m.Assign(dst, host.Intrinsic("__smsw", false, dst.DataType));
+        }
 
         public void RewriteSfence()
         {
-            m.SideEffect(host.PseudoProcedure("__sfence", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__sfence", false, VoidType.Instance));
         }
 
         public void RewriteVmread()
         {
             m.Assign(
-                SrcOp(instrCur.Operands[0]),
-                host.PseudoProcedure("__vmread", instrCur.Operands[0].Width, SrcOp(instrCur.Operands[1])));
+                SrcOp(0),
+                host.Intrinsic("__vmread", false, instrCur.Operands[0].Width, SrcOp(1)));
         }
 
         public void RewriteVmwrite()
         {
-            m.SideEffect(host.PseudoProcedure("__vmwrite", VoidType.Instance,
-                SrcOp(instrCur.Operands[0]),
-                SrcOp(instrCur.Operands[1])));
+            m.SideEffect(host.Intrinsic("__vmwrite", false, VoidType.Instance,
+                SrcOp(0),
+                SrcOp(1)));
         }
 
 
         private void RewriteWbinvd()
         {
-            rtlc = InstrClass.System;
-            m.SideEffect(host.PseudoProcedure("__wbinvd", VoidType.Instance));
+            iclass = InstrClass.System;
+            m.SideEffect(host.Intrinsic("__wbinvd", false, VoidType.Instance));
         }
 
         public void RewriteWrsmr()
         {
             var edx_eax = binder.EnsureSequence(PrimitiveType.Word64, Registers.edx, Registers.eax);
             var ecx = binder.EnsureRegister(Registers.ecx);
-            m.SideEffect(host.PseudoProcedure("__wrmsr", VoidType.Instance, ecx, edx_eax));
+            m.SideEffect(host.Intrinsic("__wrmsr", false, VoidType.Instance, ecx, edx_eax));
         }
+
+        private void RewriteXsaveopt()
+        {
+            m.SideEffect(host.Intrinsic("__xsaveopt", false, VoidType.Instance, m.AddrOf(arch.PointerType, SrcOp(0))));
+        }
+
     }
 }

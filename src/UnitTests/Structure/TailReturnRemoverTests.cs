@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ using Reko.Structure;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace Reko.UnitTests.Structure
     {
         private void RunTest(string sExp, Action<AbsynCodeEmitter> gen)
         {
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
             var proc = new Procedure(arch, "test", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
             proc.Body = new List<AbsynStatement>();
             var m = new AbsynCodeEmitter(proc.Body);
@@ -62,7 +63,7 @@ namespace Reko.UnitTests.Structure
             sw.WriteLine("{0}()", proc.Name);
             sw.WriteLine("{");
 
-            CodeFormatter cf = new CodeFormatter(new TextFormatter(sw) { UseTabs = false });
+            CodeFormatter cf = proc.CreateCodeFormatter(new TextFormatter(sw) { UseTabs = false });
             cf.WriteStatementList(proc.Body);
 
             sw.WriteLine("}");

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.PowerPC
 {
@@ -42,7 +44,7 @@ namespace Reko.Arch.PowerPC
         private readonly IEnumerator<PowerPcInstruction> dasm;
         private PowerPcInstruction instr;
         private RtlEmitter m;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private List<RtlInstruction> rtlInstructions;
 
         public PowerPcRewriter(PowerPcArchitecture arch, IEnumerable<PowerPcInstruction> instrs, IStorageBinder binder, IRewriterHost host)
@@ -69,7 +71,7 @@ namespace Reko.Arch.PowerPC
                 this.instr = dasm.Current;
                 var addr = this.instr.Address;
                 this.rtlInstructions = new List<RtlInstruction>();
-                this.rtlc = instr.InstructionClass;
+                this.iclass = instr.InstructionClass;
                 this.m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Mnemonic)
                 {
@@ -79,13 +81,14 @@ namespace Reko.Arch.PowerPC
                         string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
                     EmitUnitTest();
                     goto case Mnemonic.illegal;
-                case Mnemonic.illegal: rtlc = InstrClass.Invalid; m.Invalid(); break;
-                case Mnemonic.addi: RewriteAddi(); break;
+                case Mnemonic.illegal: iclass = InstrClass.Invalid; m.Invalid(); break;
+                case Mnemonic.add: RewriteAdd(); break;
                 case Mnemonic.addc: RewriteAddc(); break;
+                case Mnemonic.addco: RewriteAddc(); break;
+                case Mnemonic.adde: RewriteAdde(); break;
+                case Mnemonic.addi: RewriteAddi(); break;
                 case Mnemonic.addic: RewriteAddic(); break;
                 case Mnemonic.addis: RewriteAddis(); break;
-                case Mnemonic.add: RewriteAdd(); break;
-                case Mnemonic.adde: RewriteAdde(); break;
                 case Mnemonic.addme: RewriteAddme(); break;
                 case Mnemonic.addze: RewriteAddze(); break;
                 case Mnemonic.and: RewriteAnd(false); break;
@@ -95,6 +98,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.b: RewriteB(); break;
                 case Mnemonic.bc: RewriteBc(false); break;
                 case Mnemonic.bcctr: RewriteBcctr(false); break;
+                case Mnemonic.bcctrl: RewriteBcctr(true); break;
                 case Mnemonic.bctrl: RewriteBcctr(true); break;
                 case Mnemonic.bcdadd: RewriteBcdadd(); break;
                 case Mnemonic.bdnz: RewriteCtrBranch(false, false, m.Ne, false); break;
@@ -134,6 +138,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.bnsl: RewriteBranch(true, false, ConditionCode.NO); break;
                 case Mnemonic.bso: RewriteBranch(false, false, ConditionCode.OV); break;
                 case Mnemonic.bsol: RewriteBranch(true, false, ConditionCode.OV); break;
+                case Mnemonic.bsolr: RewriteBranch(false, true, ConditionCode.OV); break;
                 case Mnemonic.cmp: RewriteCmp(); break;
                 case Mnemonic.cmpi: RewriteCmpi(); break;
                 case Mnemonic.cmpl: RewriteCmpl(); break;
@@ -158,8 +163,8 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.divw: RewriteDivw(); break;
                 case Mnemonic.divwu: RewriteDivwu(); break;
                 case Mnemonic.eieio: RewriteEieio(); break;
-                case Mnemonic.evmhesmfaaw: RewriteVectorPairOp("__evmhesmfaaw", PrimitiveType.Word32); break;
-                case Mnemonic.evmhessfaaw: RewriteVectorPairOp("__evmhessfaaw", PrimitiveType.Word32); break;
+                case Mnemonic.evmhesmfaaw: RewriteVectorPairOp("__evmhesmfaaw", false, PrimitiveType.Word32); break;
+                case Mnemonic.evmhessfaaw: RewriteVectorPairOp("__evmhessfaaw", false, PrimitiveType.Word32); break;
                 case Mnemonic.eqv: RewriteXor(true); break;
                 case Mnemonic.extsb: RewriteExts(PrimitiveType.SByte); break;
                 case Mnemonic.extsh: RewriteExts(PrimitiveType.Int16); break;
@@ -170,6 +175,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.fcfid: RewriteFcfid(); break;
                 case Mnemonic.fctid: RewriteFctid(); break;
                 case Mnemonic.fctidz: RewriteFctidz(); break;
+                case Mnemonic.fctiw: RewriteFctiw(); break;
                 case Mnemonic.fctiwz: RewriteFctiwz(); break;
                 case Mnemonic.fcmpo: RewriteFcmpo(); break;
                 case Mnemonic.fcmpu: RewriteFcmpu(); break;
@@ -218,6 +224,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.lhbrx: RewriteLhbrx(); break;
                 case Mnemonic.lhz: RewriteLz(PrimitiveType.Word16, arch.WordWidth); break;
                 case Mnemonic.lhzu: RewriteLzu(PrimitiveType.Word16, arch.WordWidth); break;
+                case Mnemonic.lhzux: RewriteLzux(PrimitiveType.Word16, arch.WordWidth); break;
                 case Mnemonic.lhzx: RewriteLzx(PrimitiveType.Word16, arch.WordWidth); break;
                 case Mnemonic.lmw: RewriteLmw(); break;
                 case Mnemonic.lq: RewriteLq(); break;
@@ -260,7 +267,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.nand: RewriteAnd(true); break;
                 case Mnemonic.nor: RewriteOr(true); break;
                 case Mnemonic.or: RewriteOr(false); break;
-                case Mnemonic.orc: RewriteOrc(false); break;
+                case Mnemonic.orc: RewriteOrc(); break;
                 case Mnemonic.ori: RewriteOr(false); break;
                 case Mnemonic.oris: RewriteOris(); break;
                 case Mnemonic.ps_abs: RewritePairedInstruction_Src1("__ps_abs"); break;
@@ -296,6 +303,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.psq_stx: Rewrite_psq_st(false); break;
                 case Mnemonic.psq_stux: Rewrite_psq_st(true); break;
                 case Mnemonic.rfi: RewriteRfi(); break;
+                case Mnemonic.rfid: RewriteRfi(); break;
                 case Mnemonic.rldicl: RewriteRldicl(); break;
                 case Mnemonic.rldicr: RewriteRldicr(); break;
                 case Mnemonic.rldimi: RewriteRldimi(); break;
@@ -344,18 +352,21 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.stwx: RewriteStx(PrimitiveType.Word32); break;
                 case Mnemonic.subf: RewriteSubf(); break;
                 case Mnemonic.subfc: RewriteSubfc(); break;
+                case Mnemonic.subfco: RewriteSubfc(); break;
                 case Mnemonic.subfe: RewriteSubfe(); break;
                 case Mnemonic.subfic: RewriteSubfic(); break;
                 case Mnemonic.subfze: RewriteSubfze(); break;
                 case Mnemonic.sync: RewriteSync(); break;
                 case Mnemonic.td: RewriteTrap(PrimitiveType.Word64); break;
                 case Mnemonic.tdi: RewriteTrap(PrimitiveType.Word64); break;
+                case Mnemonic.tlbie: RewriteTlbie(); break;
+                case Mnemonic.tlbsync: RewriteTlbsync(); break;
                 case Mnemonic.tw: RewriteTrap(PrimitiveType.Word32); break;
                 case Mnemonic.twi: RewriteTrap(PrimitiveType.Word32); break;
                 case Mnemonic.vaddfp: RewriteVaddfp(); break;
-                case Mnemonic.vaddubm: RewriteVectorBinOp("__vaddubm", PrimitiveType.UInt8); break;
-                case Mnemonic.vaddubs: RewriteVectorBinOp("__vaddubs", PrimitiveType.UInt8); break;
-                case Mnemonic.vadduwm: RewriteVectorBinOp("__vadduwm", PrimitiveType.UInt32); break;
+                case Mnemonic.vaddubm: RewriteVectorBinOp("__vaddubm", false, PrimitiveType.UInt8); break;
+                case Mnemonic.vaddubs: RewriteVectorBinOp("__vaddubs", false, PrimitiveType.UInt8); break;
+                case Mnemonic.vadduwm: RewriteVectorBinOp("__vadduwm", false, PrimitiveType.UInt32); break;
                 case Mnemonic.vadduqm: RewriteAdd(); break;
                 case Mnemonic.vand:
                 case Mnemonic.vand128: RewriteAnd(false); break;
@@ -374,32 +385,35 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.vcmpequw: RewriteVcmpu("__vcmpequw", PrimitiveType.UInt32); break;
                 case Mnemonic.vcsxwfp128: RewriteVcsxwfp("__vcsxwfp"); break;
                 case Mnemonic.vctsxs: RewriteVct("__vctsxs", PrimitiveType.Int32); break;
-                case Mnemonic.vexptefp128: RewriteVectorUnary("__vexptefp"); break;
-                case Mnemonic.vlogefp128: RewriteVectorUnary("__vlogefp"); break;
+                case Mnemonic.vexptefp128: RewriteVectorUnary("__vexptefp", false); break;
+                case Mnemonic.vlogefp128: RewriteVectorUnary("__vlogefp", false); break;
                 case Mnemonic.vmaddfp: RewriteVmaddfp(); break;
-                case Mnemonic.vmaddcfp128: RewriteVectorBinOp("__vmaddcfp", PrimitiveType.Real32); break;
-                case Mnemonic.vmaxfp128: RewriteVectorBinOp("__vmaxfp", PrimitiveType.Real32); break;
-                case Mnemonic.vminfp128: RewriteVectorBinOp("__vminfp", PrimitiveType.Real32); break;
-                case Mnemonic.vmaxub: RewriteVectorBinOp("__vmaxub", PrimitiveType.UInt8); break;
-                case Mnemonic.vmaxuh: RewriteVectorBinOp("__vmaxuh", PrimitiveType.UInt16); break;
-                case Mnemonic.vmladduhm: RewriteVectorBinOp("__vmladduhm", PrimitiveType.UInt16); break;
+                case Mnemonic.vmaddcfp128: RewriteVectorBinOp("__vmaddcfp", false, PrimitiveType.Real32); break;
+                case Mnemonic.vmaxfp128: RewriteVectorBinOp("__vmaxfp", false, PrimitiveType.Real32); break;
+                case Mnemonic.vminfp128: RewriteVectorBinOp("__vminfp", false, PrimitiveType.Real32); break;
+                case Mnemonic.vmaxub: RewriteVectorBinOp("__vmaxub", false, PrimitiveType.UInt8); break;
+                case Mnemonic.vmaxuh: RewriteVectorBinOp("__vmaxuh", false, PrimitiveType.UInt16); break;
+                case Mnemonic.vmladduhm: RewriteVectorBinOp("__vmladduhm", false, PrimitiveType.UInt16); break;
                 case Mnemonic.vmrghw:
                 case Mnemonic.vmrghw128: RewriteVmrghw(); break;
                 case Mnemonic.vmrglw:
                 case Mnemonic.vmrglw128: RewriteVmrglw(); break;
-                case Mnemonic.vmsub3fp128: RewriteVectorBinOp("__vmsub3fp", PrimitiveType.Real32); break;
-                case Mnemonic.vmsub4fp128: RewriteVectorBinOp("__vmsub4fp", PrimitiveType.Real32); break;  //$REVIEW: is it correct?
-                case Mnemonic.vmulfp128: RewriteVectorBinOp("__vmulfp", PrimitiveType.Real32); break;         //$REVIEW: is it correct?
+                case Mnemonic.vmsub3fp128: RewriteVectorBinOp("__vmsub3fp", false, PrimitiveType.Real32); break;
+                case Mnemonic.vmsub4fp128: RewriteVectorBinOp("__vmsub4fp", false, PrimitiveType.Real32); break;  //$REVIEW: is it correct?
+                case Mnemonic.vmulfp128: RewriteVectorBinOp("__vmulfp", false, PrimitiveType.Real32); break;         //$REVIEW: is it correct?
                 case Mnemonic.vnmsubfp: RewriteVnmsubfp(); break;
+                case Mnemonic.vnor: RewriteOr(true); break;
                 case Mnemonic.vor:
                 case Mnemonic.vor128: RewriteVor(); break;
+                case Mnemonic.vorc: RewriteOrc();break;
                 case Mnemonic.vperm:
                 case Mnemonic.vperm128: RewriteVperm(); break;
                 case Mnemonic.vpkd3d128: RewriterVpkD3d(); break;
                 case Mnemonic.vrefp:
                 case Mnemonic.vrefp128: RewriteVrefp(); break;
-                case Mnemonic.vrfin128: RewriteVectorUnary("__vrfin"); break;
-                case Mnemonic.vrfiz128: RewriteVectorUnary("__vrfiz"); break;
+                case Mnemonic.vrfin128: RewriteVectorUnary("__vrfin", false); break;
+                case Mnemonic.vrfip128: RewriteVectorUnary("__vrfip", false); break;
+                case Mnemonic.vrfiz128: RewriteVectorUnary("__vrfiz", false); break;
                 case Mnemonic.vrlimi128: RewriteVrlimi(); break;
                 case Mnemonic.vrsqrtefp: 
                 case Mnemonic.vrsqrtefp128: RewriteVrsqrtefp(); break;
@@ -421,17 +435,19 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.xori: RewriteXor(false); break;
                 case Mnemonic.xoris: RewriteXoris(); break;
                 }
-                yield return new RtlInstructionCluster(addr, 4, this.rtlInstructions.ToArray())
-                {
-                    Class = rtlc
-                };
+                yield return m.MakeCluster(addr, 4, iclass);
             }
         }
 
         private Expression Shift16(MachineOperand machineOperand)
         {
             var imm = (ImmediateOperand)machineOperand;
-            return Constant.Word32(imm.Value.ToInt32() << 16);
+            return Constant.Create(arch.WordWidth, imm.Value.ToInt32() << 16);
+        }
+
+        private Expression ImmOperand(MachineOperand op)
+        {
+            return ((ImmediateOperand) op).Value;
         }
 
         private Expression RewriteOperand(MachineOperand op, bool maybe0 = false)
@@ -450,13 +466,39 @@ namespace Reko.Arch.PowerPC
                     return binder.EnsureRegister(rOp.Register);
                 }
             case ImmediateOperand iOp:
-                // Sign-extend the bastard.
-                return SignExtend(iOp.Value);
+                // Extend the immediate value to word size. If this is not wanted,
+                // convert the operand manually or use RewriteSignedOperand
+                return Constant.Create(arch.WordWidth, iOp.Value.ToUInt64());
             case AddressOperand aOp:
                 return aOp.Address;
             default:
-                throw new NotImplementedException(
-                    string.Format("RewriteOperand:{0} ({1}}}", op, op.GetType()));
+                throw new NotImplementedException($"RewriteOperand:{op} ({op.GetType()}");
+            }
+        }
+
+        private Expression RewriteSignedOperand(MachineOperand op, bool maybe0 = false)
+        {
+            switch (op)
+            {
+            case RegisterOperand rOp:
+                if (maybe0 && rOp.Register.Number == 0)
+                    return Constant.Zero(rOp.Register.DataType);
+                if (arch.IsCcField(rOp.Register))
+                {
+                    return binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(rOp.Register));
+                }
+                else
+                {
+                    return binder.EnsureRegister(rOp.Register);
+                }
+            case ImmediateOperand iOp:
+                // Extend the immediate value to word size. If this is not wanted,
+                // convert the operand manually or use RewriteSignedOperand
+                return Constant.Word(arch.WordWidth.BitSize, iOp.Value.ToInt64());
+            case AddressOperand aOp:
+                return aOp.Address;
+            default:
+                throw new NotImplementedException($"RewriteOperand:{op} ({op.GetType()}");
             }
         }
 
@@ -465,37 +507,18 @@ namespace Reko.Arch.PowerPC
             return GetEnumerator();
         }
 
-#if DEBUG
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-        
         private void EmitUnitTest()
         {
-            if (rdr == null || seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var uInstr = r2.ReadUInt32();
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void PPCRw_{0}()", dasm.Current.Mnemonic);
-            Debug.WriteLine("        {");
-            Debug.WriteLine("            AssertCode(0x{0:X8},   // {1}", uInstr, dasm.Current);
-            Debug.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", dasm.Current.Length);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("PPCRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
-#else
-        private void EmitUnitTest() { }
-#endif
 
         private Expression EffectiveAddress(MachineOperand operand, RtlEmitter emitter)
         {
             var mop = (MemoryOperand) operand;
             var reg = binder.EnsureRegister(mop.BaseRegister);
             var offset = mop.Offset;
-            return emitter.IAdd(reg, offset);
+            return emitter.IAddS(reg, offset);
         }
 
         private Expression EffectiveAddress_r0(MachineOperand operand, RtlEmitter emitter)
@@ -503,13 +526,16 @@ namespace Reko.Arch.PowerPC
             var mop = (MemoryOperand) operand;
             if (mop.BaseRegister.Number == 0)
             {
-                return Constant.Word32((int) mop.Offset.ToInt16());
+                return Constant.Word32(mop.Offset);
             }
             else
             {
                 var reg = binder.EnsureRegister(mop.BaseRegister);
                 var offset = mop.Offset;
-                return emitter.IAdd(reg, offset);
+                if (offset != 0)
+                    return emitter.IAddS(reg, offset);
+                else
+                    return reg;
             }
         }
 
@@ -521,23 +547,6 @@ namespace Reko.Arch.PowerPC
                 return e2;
             else
                 return m.IAdd(e1, e2);
-        }
-
-        private Expression SignExtend(Constant value)
-        {
-            PrimitiveType iType = (PrimitiveType)value.DataType;
-            if (arch.WordWidth.BitSize == 64)
-            {
-                return (iType.Domain == Domain.SignedInt)
-                    ? Constant.Int64(value.ToInt64())
-                    : Constant.Word64(value.ToUInt64());
-            }
-            else
-            {
-                return (iType.Domain == Domain.SignedInt)
-                    ? Constant.Int32(value.ToInt32())
-                    : Constant.Word32(value.ToUInt32());
-            }
         }
 
         private Expression UpdatedRegister(Expression effectiveAddress)

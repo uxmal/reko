@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,10 @@ using NUnit.Framework;
 using Reko.Arch.Cray;
 using Reko.Arch.Cray.Cray1;
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +41,7 @@ namespace Reko.UnitTests.Arch.Cray.Cray1
         [SetUp]
         public void Setup()
         {
-            this.arch = new Cray1Architecture("cray1");
+            this.arch = new Cray1Architecture(new ServiceContainer(), "cray1", new Dictionary<string, object>());
             this.addr = Address.Ptr32(0x00100000);
         }
 
@@ -55,7 +57,7 @@ namespace Reko.UnitTests.Arch.Cray.Cray1
 
         protected CrayInstruction DisassembleOctBytes(string octalBytes)
         {
-            var img = new MemoryArea(LoadAddress, new byte[256]);
+            var mem = new ByteMemoryArea(LoadAddress, new byte[256]);
             byte[] bytes = ParseOctPattern(octalBytes);
             return DisassembleBytes(bytes);
         }

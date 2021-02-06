@@ -2,9 +2,9 @@
 Eq_2: (ptr16 (struct (200 T_4 t0200)))
 	T_2 (in ds : word16)
 Eq_3: (memptr T_2 (struct (0 T_4 t0000)))
-	T_3 (in 0x0200 : word16)
+	T_3 (in 0x200<16> : word16)
 Eq_4: byte
-	T_4 (in Mem0[ds:0x0200:byte] : byte)
+	T_4 (in Mem0[ds:0x200<16>:byte] : byte)
 // Type Variables ////////////
 T_1: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -14,11 +14,11 @@ T_2: (in ds : word16)
   Class: Eq_2
   DataType: (ptr16 (struct (200 T_4 t0200)))
   OrigDataType: (ptr16 (struct (200 T_4 t0200)))
-T_3: (in 0x0200 : word16)
+T_3: (in 0x200<16> : word16)
   Class: Eq_3
   DataType: (memptr T_2 (struct (0 T_4 t0000)))
   OrigDataType: (memptr T_2 (struct (0 T_4 t0000)))
-T_4: (in Mem0[ds:0x0200:byte] : byte)
+T_4: (in Mem0[ds:0x200<16>:byte] : byte)
   Class: Eq_4
   DataType: byte
   OrigDataType: byte

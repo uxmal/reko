@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ namespace Reko.Core.NativeInterface
 
 	[ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    [Guid("56E6600F-619E-441F-A2C3-A37F07BA0DA0")]
+    [Guid("3C689ED3-AE3E-4DF3-A4BB-B91AD871CDDC")]
     [NativeInterop]
     [ComVisible(true)]
     public interface INativeRewriterHost
@@ -50,6 +50,6 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] HExpr EnsureFlagGroup(int baseReg, int bitmask, [MarshalAs(UnmanagedType.LPStr)] string name, BaseType size);
         [PreserveSig] HExpr CreateTemporary(BaseType type);
         [PreserveSig] void Error(ulong uAddress, [MarshalAs(UnmanagedType.LPStr)] string error);
-        [PreserveSig] HExpr EnsurePseudoProcedure([MarshalAs(UnmanagedType.LPStr)] string name, BaseType dt, int arity);
+        [PreserveSig] HExpr EnsureIntrinsicProcedure([MarshalAs(UnmanagedType.LPStr)] string name, int isIdempotent, BaseType dt, int arity);
     }
 }

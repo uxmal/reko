@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,12 @@
  */
 #endregion
 
-using Reko.Core.Code;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core.Expressions
 {
@@ -78,7 +77,7 @@ namespace Reko.Core.Expressions
         /// <param name="left">Augend</param>
         /// <param name="right">Addend</param>
         /// <returns>A binary expression for the sum.</returns>
-        public BinaryExpression IAddS(Expression left, int right)
+        public BinaryExpression IAddS(Expression left, long right)
         {
             return IAdd(left, Constant.Int(left.DataType, right));
         }
@@ -93,7 +92,7 @@ namespace Reko.Core.Expressions
         /// Return addition if <paramref name="c"/> is positive
         /// Return subtraction if <paramref name="c"/> is negative
         /// </returns>
-        public Expression AddSubSignedInt(Expression e, int c)
+        public Expression AddSubSignedInt(Expression e, long c)
         {
             if (c == 0)
             {
@@ -112,12 +111,12 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Takes the address of the expression (which must be an l-value).
         /// </summary>
-        /// <param name="e">L-value</param>
         /// <param name="ptType">Type of the resulting pointer.</param>
+        /// <param name="e">L-value</param>
         /// <returns>A unary expresssion representing the address-of operation.</returns>
         public UnaryExpression AddrOf(DataType ptType, Expression e)
         {
-            return new UnaryExpression(UnaryOperator.AddrOf, ptType, e);
+            return new UnaryExpression(Operator.AddrOf, ptType, e);
         }
 
         /// <summary>
@@ -166,18 +165,6 @@ namespace Reko.Core.Expressions
         public Expression Cand(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Cand, PrimitiveType.Bool, a, b);
-        }
-
-        /// <summary>
-        /// Generates a cast expression which coerces the <paramref name="expr"/> to
-        /// the data type <paramref name="dataType"/>.
-        /// </summary>
-        /// <param name="dataType">Type to coerce to.</param>
-        /// <param name="expr">Value to coerce.</param>
-        /// <returns>A cast expression.</returns>
-        public Cast Cast(DataType dataType, Expression expr)
-        {
-            return new Cast(dataType, expr);
         }
 
         /// <summary>
@@ -237,6 +224,20 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates a <see cref="Conversion"/> expression which converts the <paramref name="expr"/> from 
+        /// the data type <paramref name="dataTypeFrom" /> to the data type <paramref name="dataTypeTo"/>.
+        /// </summary>
+        /// <param name="expr">Value to convert.</param>
+        /// <param name="dataTypeFrom">Type to convert from.</param>
+        /// <param name="dataTypeTo">Type to convert to.</param>
+        /// <returns>A <see cref="Conversion"/> expression.</returns>
+        public Conversion Convert(Expression expr, DataType dataTypeFrom, DataType dataTypeTo)
+        {
+            return new Conversion(expr, dataTypeFrom, dataTypeTo);
+        }
+
+
+        /// <summary>
         /// Generates a simple Dereference operation ('*a' in the C language
         /// family). If you don't know the exact data type of <paramref name="a"/>,
         /// use one of the `Mem...` methods instead.
@@ -249,16 +250,41 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
-        /// Generate a deposit-bits expression, which models the act
-        /// of updating a subsequence of bits inside of a wider register.
+        /// Generate a sequence of expressions which model the act
+        /// of updating a subsequence of bits inside of a wider value.
         /// </summary>
-        /// <param name="dst">The wider register.</param>
+        /// <param name="dst">The wider value, expected to be a <see cref="Identifier"/> or a
+        /// <see cref="Constant"/>.</param>
         /// <param name="src">The smaller value to deposit.</param>
         /// <param name="offset">The bit offset at which to deposit the value.</param>
         /// <returns>A deposit-bits expression.</returns>
-        public DepositBits Dpb(Expression dst, Expression src, int offset)
+        /// <remarks>
+        /// The method expects 
+        /// </remarks>
+        public MkSequence Dpb(Expression dst, Expression src, int offset)
         {
-            return new DepositBits(dst, src, offset);
+            Debug.Assert(dst is Identifier || dst is Constant);
+            var exps = new List<Expression>();
+            if (offset > 0)
+            {
+                exps.Add(Slice(PrimitiveType.CreateWord(offset), dst, 0));
+            }
+            var msb = Math.Min(dst.DataType.BitSize, offset + src.DataType.BitSize);
+            var dtInserted = PrimitiveType.CreateWord(msb - offset);
+            if (dtInserted.BitSize < src.DataType.BitSize)
+            {
+                exps.Add(Slice(dtInserted, src, 0));
+            }
+            else
+            {
+                exps.Add(src);
+            }
+            if (msb < dst.DataType.BitSize)
+            {
+                exps.Add(Slice(PrimitiveType.CreateWord(dst.DataType.BitSize - msb), dst, msb));
+            }
+            exps.Reverse();
+            return new MkSequence(dst.DataType, exps.ToArray());
         }
 
         /// <summary>
@@ -330,6 +356,19 @@ namespace Reko.Core.Expressions
         {
             var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.BitSize);
             return new BinaryExpression(Operator.FMul, dtSum, a, b);
+        }
+
+        /// <summary>
+        /// Generate a floating point multiplication where the product differs
+        /// in size from the operands.
+        /// </summary>
+        /// <param name="dtProduct">Datatype of the result.</param>
+        /// <param name="a">Multiplicand.</param>
+        /// <param name="b">Multiplier.</param>
+        /// <returns>A floating point multiplication expression.</returns>
+        public Expression FMul(DataType dtProduct, Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.FMul, dtProduct, a, b);
         }
 
         /// <summary>
@@ -490,9 +529,9 @@ namespace Reko.Core.Expressions
         /// <param name="ep">The instrinsic function to apply.</param>
         /// <param name="args">The arguments of the function.</param>
         /// <returns>A function application</returns>
-        public Application Fn(PseudoProcedure ppp, params Expression[] args)
+        public Application Fn(IntrinsicProcedure intrinsic, params Expression[] args)
         {
-            return new Application(new ProcedureConstant(PrimitiveType.Ptr32, ppp), ppp.ReturnType, args);
+            return new Application(new ProcedureConstant(PrimitiveType.Ptr32, intrinsic), intrinsic.ReturnType, args);
         }
 
         /// <summary>
@@ -775,6 +814,19 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generate the integer modulus ('%' in the C language family) where the 
+        /// size of the modulus is not the same as the dividend.
+        /// </summary>
+        /// <param name="dt">Size of modulus.</param>
+        /// <param name="opLeft">Dividend.</param>
+        /// <param name="opRight">Divisor.</param>
+        /// <returns>A modulus expression.</returns>
+        public Expression Mod(DataType dt, Expression opLeft, Expression opRight)
+        {
+            return new BinaryExpression(Operator.IMod, dt, opLeft, opRight);
+        }
+
+        /// <summary>
         /// Generates an integer inequality comparison ('!=' in the C language family).
         /// </summary>
         /// <returns>An integer comparison expression.</returns>
@@ -830,6 +882,36 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generate a 16-bit pointer.
+        /// </summary>
+        /// <param name="ptr">Pointer value</param>
+        /// <returns>A 16-bit <see cref="Address"/> instance.</returns>
+        public Address Ptr16(ushort ptr)
+        {
+            return Address.Ptr16(ptr);
+        }
+
+        /// <summary>
+        /// Generate a 32-bit pointer.
+        /// </summary>
+        /// <param name="ptr">Pointer value</param>
+        /// <returns>A 32-bit <see cref="Address"/> instance.</returns>
+        public Address Ptr32(uint ptr)
+        {
+            return Address.Ptr32(ptr);
+        }
+
+        /// <summary>
+        /// Generate a 64-bit pointer.
+        /// </summary>
+        /// <param name="ptr">Pointer value</param>
+        /// <returns>A 64-bit <see cref="Address"/> instance.</returns>
+        public Address Ptr64(ulong ptr)
+        {
+            return Address.Ptr64(ptr);
+        }
+
+        /// <summary>
         /// Generate the integer remainder ('%' in the C language family).
         /// </summary>
         /// <param name="opLeft">Dividend.</param>
@@ -851,8 +933,7 @@ namespace Reko.Core.Expressions
         /// <returns>A signed division expression.</returns>
         public BinaryExpression SDiv(Expression a, Expression b)
         {
-            return new BinaryExpression(
-                Operator.SDiv, b.DataType, a, b);
+            return new BinaryExpression(Operator.SDiv, b.DataType, a, b);
         }
 
         /// <summary>
@@ -900,6 +981,19 @@ namespace Reko.Core.Expressions
         public MkSequence Seq(DataType dtSeq, params Expression [] exprs)
         {
             return new MkSequence(dtSeq, exprs);
+        }
+
+        /// <summary>
+        /// Generate a segmented access to memory, using <paramref name="basePtr"/>
+        /// as the base pointer and the <paramref name="offset"/> as the offset.
+        /// </summary>
+        /// <param name="dt">Data type of the memory access.</param>
+        /// <param name="basePtr">Base pointer or segment selector.</param>
+        /// <param name="offset">Offset from base pointer.</param>
+        /// <returns>A segmented memory access expression.</returns>
+        public virtual SegmentedAccess SegMem(MemoryIdentifier mid, DataType dt, Expression basePtr, Expression offset)
+        {
+            return new SegmentedAccess(mid, basePtr, offset, dt);
         }
 
         /// <summary>
@@ -977,6 +1071,18 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates a signed integer multiplication.
+        /// </summary>
+        /// <param name="dtProduct">Data type of product.</param>
+        /// <param name="left">Multiplicand.</param>
+        /// <param name="right">Multiplier.</param>
+        /// <returns>A signed integer multiplication expression</returns>
+        public Expression SMul(PrimitiveType dtProduct, Expression left, Expression right)
+        {
+            return new BinaryExpression(Operator.SMul, dtProduct, left, right);
+        }
+
+        /// <summary>
         /// Convenience method to generate a signed integer multiplication. The
         /// second parameter is converted to a signed integer constant.
         /// </summary>
@@ -1001,6 +1107,18 @@ namespace Reko.Core.Expressions
         public Expression UMul(Expression left, Expression right)
         {
             return new BinaryExpression(Operator.UMul, left.DataType, left, right);
+        }
+
+        /// <summary>
+        /// Generates an unsigned integer multiplication.
+        /// </summary>
+        /// <param name="dtProduct">Data type of product.</param>
+        /// <param name="left">Multiplicand.</param>
+        /// <param name="right">Multiplier.</param>
+        /// <returns>An unsigned integer multiplication expression</returns>
+        public Expression UMul(PrimitiveType dtProduct, Expression left, Expression right)
+        {
+            return new BinaryExpression(Operator.UMul, dtProduct, left, right);
         }
 
         /// <summary>
@@ -1187,7 +1305,7 @@ namespace Reko.Core.Expressions
         /// <param name="left">Minuend.</param>
         /// <param name="right">Subtrahend</param>
         /// <returns>An integer subtraction expression.</returns>
-        public BinaryExpression ISubS(Expression left, int right)
+        public BinaryExpression ISubS(Expression left, long right)
         {
             return ISub(left, Constant.Int(left.DataType, right));
         }
@@ -1202,6 +1320,11 @@ namespace Reko.Core.Expressions
         /// <param name="bitOffset">Slice offset from least significant bit.</param>
         /// <returns>A bit-slice expression.</returns>
         public Slice Slice(DataType dataType, Expression value, int bitOffset)
+        {
+            return new Slice(dataType, value, bitOffset);
+        }
+
+        public Slice Slice(Expression value, DataType dataType, int bitOffset)
         {
             return new Slice(dataType, value, bitOffset);
         }
@@ -1254,6 +1377,19 @@ namespace Reko.Core.Expressions
         {
             return new BinaryExpression(
                 Operator.UDiv, b.DataType, a, b);
+        }
+
+        /// <summary>
+        /// Generates an unsigned division expression where the quotient
+        /// has a different size than the dividend or divisor.
+        /// /// </summary>
+        /// <param name="dt">Quotient size</param>
+        /// <param name="a">Dividend</param>
+        /// <param name="b">Divisor</param>
+        /// <returns>An unsigned division expression.</returns>
+        public BinaryExpression UDiv(DataType dt, Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.UDiv, dt, a, b);
         }
 
         /// <summary>
@@ -1379,7 +1515,7 @@ namespace Reko.Core.Expressions
 
         /// <summary>
         /// Generates an bit-vector of length <paramref name="bitSize"> bits
-        /// from the bit patter <pararef name="n"/>.
+        /// from the bit pattern <pararef name="n"/>.
         /// </summary>
         /// <param name="b">32 bits</param>
         /// <returns>Bit vector constant</returns>

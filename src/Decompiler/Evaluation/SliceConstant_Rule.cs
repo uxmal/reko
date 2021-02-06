@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,27 +28,35 @@ namespace Reko.Evaluation
 {
 	public class SliceConstant_Rule
 	{
-		private Constant c;
-		private Slice slice;
+		private Constant? c;
+		private Slice? slice;
+        private PrimitiveType? pt;
 
 		public bool Match(Slice slice)
 		{
-            if (!(slice.DataType is PrimitiveType))//$TODO: remove this once varargs processing is complete.
+            var pt = slice.DataType.ResolveAs<PrimitiveType>();
+            if (pt is null)
                 return false;
 			this.slice = slice;
-			this.c = slice.Expression as Constant;
-            return c != null && c != Constant.Invalid;
-		}
+            if (slice.Expression is Constant c && c != Constant.Invalid)
+            {
+                var ct = c.DataType.ResolveAs<PrimitiveType>();
+                if (ct != null && pt.BitSize <= ct.BitSize)
+                {
+                    this.slice = slice;
+                    this.c = c;
+                    this.pt = pt;
+                    return true;
+                }
+            }
+            return false;
+        }
 
 		public Expression Transform()
 		{
-			return Constant.Create(slice.DataType, Slice(c.ToUInt64()));
-		}
-
-		public ulong Slice(ulong val)
-		{
-            ulong mask = Bits.Mask(slice.Offset, slice.DataType.BitSize);
-			return (val & mask) >> slice.Offset;
+            var cSliced = this.c!.Slice(pt!, slice!.Offset);
+            cSliced.DataType = slice.DataType;
+            return cSliced;
 		}
 	}
 }

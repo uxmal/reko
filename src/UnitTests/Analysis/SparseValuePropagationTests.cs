@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,15 +62,15 @@ namespace Reko.UnitTests.Analysis
         {
             var sExp =
             #region Expected
-@"r1_1: 0x00000042
-r2_2: 0x00000042
+@"r1_1: 0x42<32>
+r2_2: 0x42<32>
 // SsaProcedureBuilder
 // Return size: 0
 define SsaProcedureBuilder
 SsaProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	r1_1 = 0x00000042
+	r1_1 = 0x42<32>
 	r2_2 = r1_1
 	return
 	// succ:  SsaProcedureBuilder_exit
@@ -94,15 +94,15 @@ SsaProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"r1_1: 0x00000042
-r2_2: 0x00000042
+@"r1_1: 0x42<32>
+r2_2: 0x42<32>
 // SsaProcedureBuilder
 // Return size: 0
 define SsaProcedureBuilder
 SsaProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	r1_1 = 0x00000042
+	r1_1 = 0x42<32>
 	r2_2 = r1_1
 	return
 	// succ:  SsaProcedureBuilder_exit

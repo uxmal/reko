@@ -29,8 +29,8 @@ l0C00_0000:
 	branch C_8 l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
-	v6_12 = Mem0[ds:0x0300:word16] + ax_6
-	Mem13[ds:0x0300:word16] = v6_12
+	v6_12 = Mem0[ds:0x300<16>:word16] + ax_6
+	Mem13[ds:0x300<16>:word16] = v6_12
 	// succ:  l0C00_0009
 l0C00_0009:
 	return
@@ -65,12 +65,12 @@ fn0C00_000A_entry:
 	def ax
 	// succ:  l0C00_000A
 l0C00_000A:
-	si_6 = Mem0[ds:0x0100:word16]
-	branch si_6 == Mem0[ds:0x0102:word16] l0C00_001E
+	si_6 = Mem0[ds:0x100<16>:word16]
+	branch si_6 == Mem0[ds:0x102<16>:word16] l0C00_001E
 	// succ:  l0C00_0014 l0C00_001E
 l0C00_0014:
 	ax_10 = Mem0[ds:si_6:word16]
-	Mem15[ds:0x0100:word16] = si_6 + 0x0002
+	Mem15[ds:0x100<16>:word16] = si_6 + 2<16>
 	C_16 = false
 	axOut = ax_10
 	return C_16

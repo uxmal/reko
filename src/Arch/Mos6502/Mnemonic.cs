@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -87,5 +87,43 @@ namespace Reko.Arch.Mos6502
         tsx,
         txs,
         tya,
+        cop,
+        tsb,
+
+        // 65816 opcodes
+        bra,
+        brl,
+        eof,
+        mvn,
+        mvp,
+        phb,
+        pei,
+        pea,
+        per,
+        phd,
+        phk,
+        phx,
+        phy,
+        plb,
+        pld,
+        plx,
+        ply,
+        rep,
+        rtl,
+        sep,
+        stp,
+        stz,
+        tcd,
+        tcs,
+        tdc,
+        trb,
+        tsc,
+        txy,
+        tyx,
+        wai,
+        wdm,
+        xba,
+        xce,
+
     }
 }

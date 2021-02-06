@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -140,6 +140,11 @@ namespace Reko.Analysis
 			}
 		}
 
+        /// <summary>
+        /// Validates the SSA state for consistency. If found inconsisted, the <paramref name="error"/> 
+        /// callback is called, passing an error message suitable for a Debug.Assert call.
+        /// </summary>
+        /// <param name="error">Callback for raising errors.</param>
         public void Validate(Action<string> error)
         {
             ValidateUses(error);
@@ -256,7 +261,7 @@ namespace Reko.Analysis
             {
                 if (!actualDefs.TryGetValue(sid.Identifier, out var actualDef))
                 {
-                    actualDef = null;
+                    actualDef = null!;
                 }
                 if (sid.DefStatement != actualDef)
                 {
@@ -319,7 +324,7 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="stmOld"></param>
         /// <param name="stmNew"></param>
-		public void ReplaceDefinitions(Statement stmOld, Statement stmNew)
+		public void ReplaceDefinitions(Statement stmOld, Statement? stmNew)
 		{
 			foreach (var sid in Identifiers)
 			{

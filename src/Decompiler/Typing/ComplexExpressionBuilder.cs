@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Core.Operators;
 using System.Diagnostics;
+using Reko.Core;
 
 namespace Reko.Typing
 {
@@ -43,24 +44,26 @@ namespace Reko.Typing
     /// </remarks>
     public class ComplexExpressionBuilder : IDataTypeVisitor<Expression>
     {
-        private Expression expComplex;      // The expression we wish to convert to high-level code.
-        private Expression index;           // Optional index expression (like ptr + i). Should never be a constant (see "offset" member variable)
-        private Expression basePtr;         // Non-null if x86-style base segment present.
-        private DataType dtComplex;         // DataType inferred by reko
-        private DataType dtComplexOrig;     // DataType of only this expression.
-        private int offset;                 // constant offset from expComplex.
-        private DataType enclosingPtr;
+        private readonly Program program;
+        private Expression? expComplex;         // The expression we wish to convert to high-level code.
+        private Expression? index;              // Optional index expression (like ptr + i). Should never be a constant (see "offset" member variable)
+        private readonly Expression? basePtr;   // Non-null if x86-style base segment present.
+        private DataType? dtComplex;            // DataType inferred by reko
+        private DataType? dtComplexOrig;        // DataType of only this expression.
+        private int offset;                     // constant offset from expComplex.
+        private DataType? enclosingPtr;
         private bool dereferenced;          // True if expComplex was dereferenced (Mem0[expComplex])
-        private bool dereferenceGenerated;       // True if a dereferencing expression has been emitted (field access or the like.
+        private bool dereferenceGenerated;  // True if a dereferencing expression has been emitted (field access or the like.
         private int depth;
 
         public ComplexExpressionBuilder(
-            DataType dtResult,
-            Expression basePtr,
+            Program program,
+            Expression? basePtr,
             Expression complex,
-            Expression index,
+            Expression? index,
             int offset)
         {
+            this.program = program;
             this.basePtr = basePtr;
             this.expComplex = complex;
             this.index = index;
@@ -77,7 +80,7 @@ namespace Reko.Typing
         {
             depth = 0; //$DEBUG;
             this.enclosingPtr = null;
-            if (expComplex.TypeVariable != null)
+            if (expComplex!.TypeVariable != null)
             {
                 this.dtComplex = expComplex.TypeVariable.DataType;
                 this.dtComplexOrig = expComplex.TypeVariable.OriginalDataType;
@@ -92,7 +95,8 @@ namespace Reko.Typing
             var exp = this.dtComplex.Accept(this);
             if (!dereferenced && dereferenceGenerated)
             {
-                exp = new UnaryExpression(Operator.AddrOf, dtComplex, exp);
+                var ptr = new Pointer(exp.DataType, dtComplex.BitSize);
+                exp = new UnaryExpression(Operator.AddrOf, ptr, exp);
             }
             if (dereferenced && !dereferenceGenerated)
             {
@@ -113,14 +117,19 @@ namespace Reko.Typing
         private Expression FallbackExpression()
         {
             if (offset == 0 && index == null)
-                return expComplex;
-            var e = CreateAddressOf(expComplex);
+                return expComplex!;
+            var e = CreateAddressOf(expComplex!);
             DataType dt;
             if (enclosingPtr != null)
+            {
                 dt = new Pointer(PrimitiveType.Char, enclosingPtr.BitSize);
-            else
+                e = new Cast(dt, e);
+            }
+            else if (e.DataType.Size != 0)
+            {
                 dt = PrimitiveType.CreateWord(e.DataType.BitSize);
-            e = new Cast(dt, e);
+                e = new Cast(dt, e);
+            }
             var eOffset = CreateOffsetExpression(offset, index);
             var op = Operator.IAdd;
             if (eOffset is Constant cOffset && cOffset.IsNegative)
@@ -137,7 +146,7 @@ namespace Reko.Typing
                 return e;
 
             dereferenceGenerated = false;
-            return new UnaryExpression(Operator.AddrOf, dtComplex, e);
+            return new UnaryExpression(Operator.AddrOf, dtComplex!, e);
         }
 
         public Expression VisitArray(ArrayType at)
@@ -147,7 +156,7 @@ namespace Reko.Typing
             index = ScaleDownIndex(index, at.ElementType.Size);
             dtComplex = at.ElementType;
             dtComplexOrig = at.ElementType;
-            this.expComplex.DataType = at;
+            this.expComplex!.DataType = at;
             expComplex = CreateArrayAccess(at.ElementType, at, i, index);
             index = null;       // we've consumed the index.
             offset = r;
@@ -184,10 +193,10 @@ namespace Reko.Typing
         {
             if (enclosingPtr != null)
             {
-                return expComplex;
+                return expComplex!;
             }
             var pointee = memptr.Pointee;
-            var origMemptr = dtComplexOrig.ResolveAs<MemberPointer>();
+            var origMemptr = dtComplexOrig!.ResolveAs<MemberPointer>();
             if (origMemptr != null)
             {
                 pointee = origMemptr.Pointee;
@@ -202,7 +211,7 @@ namespace Reko.Typing
                 return FallbackExpression();
             }
             var pointee = ptr.Pointee;
-            var origPtr = dtComplexOrig.ResolveAs<Pointer>();
+            var origPtr = dtComplexOrig!.ResolveAs<Pointer>();
             if (origPtr != null)
             {
                 pointee = origPtr.Pointee;
@@ -215,7 +224,7 @@ namespace Reko.Typing
             if (++depth > 20)
             {
                 Debug.Print("*** Quitting; determine cause of recursion"); //$DEBUG
-                return expComplex;
+                return expComplex!;
             }
             enclosingPtr = ptr;
             this.dtComplex = dtPointee;
@@ -228,7 +237,7 @@ namespace Reko.Typing
             if (enclosingPtr == null)
             {
                 // We're not in a pointer context.
-                expComplex.DataType = dtComplex;
+                expComplex!.DataType = dtComplex!;
                 return FallbackExpression();
             }
             if (offset == 0 || pt.Size > 0 && offset % pt.Size == 0)
@@ -240,16 +249,16 @@ namespace Reko.Typing
                         if (!dereferenceGenerated)
                         {
                             dereferenceGenerated = true;
-                            return CreateDereference(pt, expComplex);
+                            return CreateDereference(pt, expComplex!);
                         }
                         else
                         {
-                            return expComplex;
+                            return expComplex!;
                         }
                     }
                     else
                     {
-                        return CreateUnreferenced(pt, expComplex);
+                        return CreateUnreferenced(pt, expComplex!);
                     }
                 }
                 else
@@ -267,7 +276,7 @@ namespace Reko.Typing
 
         public Expression VisitString(StringType str)
         {
-            return expComplex;
+            return expComplex!;
         }
 
         public Expression VisitStructure(StructureType str)
@@ -275,7 +284,7 @@ namespace Reko.Typing
             if (++depth > 20)
             {
                 Debug.Print("*** recursion too deep, quitting. Determine error then remove this"); //$DEBUG
-                return expComplex;
+                return expComplex!;
             }
             if (enclosingPtr != null)
             {
@@ -297,13 +306,13 @@ namespace Reko.Typing
                     return exp;
                 }
             }
-            StructureField field = str.Fields.LowerBound(this.offset);
+            StructureField? field = str.Fields.LowerBound(this.offset);
             if (field == null)
                 return FallbackExpression();
 
             dtComplex = field.DataType;
             dtComplexOrig = field.DataType.ResolveAs<DataType>();
-            this.expComplex = CreateFieldAccess(str, field.DataType, expComplex, field);
+            this.expComplex = CreateFieldAccess(str, field.DataType, expComplex!, field);
             offset -= field.Offset;
             var e = dtComplex.Accept(this);
             --depth;
@@ -322,7 +331,7 @@ namespace Reko.Typing
 
         public Expression VisitUnion(UnionType ut)
         {
-            UnionAlternative alt = ut.FindAlternative(dtComplexOrig);
+            UnionAlternative? alt = ut.FindAlternative(dtComplexOrig!);
             if (alt == null)
             {
                 Debug.Print("Unable to find {0} in {1} (offset {2}).", dtComplexOrig, ut, offset);          //$diagnostic service
@@ -333,11 +342,11 @@ namespace Reko.Typing
             dtComplexOrig = alt.DataType;
             if (ut.PreferredType != null)
             {
-                expComplex = new Cast(ut.PreferredType, expComplex);
+                expComplex = new Cast(ut.PreferredType, expComplex!);
             }
             else
             {
-                expComplex = CreateFieldAccess(ut, alt.DataType, expComplex, alt);
+                expComplex = CreateFieldAccess(ut, alt.DataType, expComplex!, alt);
             }
             return dtComplex.Accept(this);
         }
@@ -352,11 +361,11 @@ namespace Reko.Typing
             return FallbackExpression();
         }
 
-        private Expression CreateArrayAccess(DataType dtPointee, DataType dtPointer, int offset, Expression arrayIndex)
+        private Expression CreateArrayAccess(DataType dtPointee, DataType dtPointer, int offset, Expression? arrayIndex)
         {
             if (offset == 0 && arrayIndex == null && !dereferenced)
-                return expComplex;
-            var e = CreateAddressOf(expComplex);
+                return expComplex!;
+            var e = CreateAddressOf(expComplex!);
             arrayIndex = CreateOffsetExpression(offset, arrayIndex);
             if (dereferenced)
             {
@@ -373,7 +382,7 @@ namespace Reko.Typing
             }
         }
 
-        Expression CreateOffsetExpression(int offset, Expression index)
+        Expression CreateOffsetExpression(int offset, Expression? index)
         {
             if (index == null)
                 return Constant.Int32(offset); //$REVIEW: forcing 32-bit ints;
@@ -388,10 +397,9 @@ namespace Reko.Typing
         private Expression CreateDereference(DataType dt, Expression e)
         {
             this.dereferenceGenerated = true;
-            var unary = e as UnaryExpression;
             if (basePtr != null)
                 return new MemberPointerSelector(dt, new Dereference(dt, basePtr), e);
-            else if (unary != null && unary.Operator == Operator.AddrOf)
+            if (e is UnaryExpression unary && unary.Operator == Operator.AddrOf)
                 return unary.Expression;
             else if (e != null)
                 return new Dereference(dt, e);
@@ -410,7 +418,7 @@ namespace Reko.Typing
                 }
                 return new UnaryExpression(
                     Operator.AddrOf,
-                    new Pointer(dt, 32),         //$BUG: hardwired '4'.
+                    new Pointer(dt, program.Platform.PointerType.BitSize),
                     mps);
             }
             else if (e != null)
@@ -423,20 +431,41 @@ namespace Reko.Typing
 
         private Expression CreateFieldAccess(DataType dtStructure, DataType dtField, Expression exp, Field field)
         {
-            if (enclosingPtr != null && !dereferenceGenerated)
+            if (exp == program.Globals)
             {
-                dereferenceGenerated = true;
-                exp = CreateDereference(dtStructure, exp);
-                if (dtField.ResolveAs<ArrayType>() != null)
+                var name = GlobalFieldName(field);
+                var globalVar = Identifier.Global(name, field.DataType);
+                if (dtField.ResolveAs<ArrayType>() is null)
                 {
-                    dereferenceGenerated = false;
+                    dereferenceGenerated = true;
                 }
+                return globalVar;
             }
-            var fa = new FieldAccess(dtField, exp, field);
-            return fa;
+            else
+            {
+                if (enclosingPtr != null && !dereferenceGenerated)
+                {
+                    dereferenceGenerated = true;
+                    exp = CreateDereference(dtStructure, exp);
+                    if (dtField.ResolveAs<ArrayType>() != null)
+                    {
+                        dereferenceGenerated = false;
+                    }
+                }
+                var fa = new FieldAccess(dtField, exp, field);
+                return fa;
+            }
         }
 
-        private Expression ScaleDownIndex(Expression exp, int elementSize)
+        private string GlobalFieldName(Field field)
+        {
+            if (field is StructureField strField)
+                return program.NamingPolicy.GlobalName(strField);
+            else
+                return field.Name;
+        }
+
+        private Expression? ScaleDownIndex(Expression? exp, int elementSize)
         {
             if (exp == null || elementSize <= 1)
                 return exp;
@@ -452,7 +481,7 @@ namespace Reko.Typing
                     Constant.Int32(elementSize));
             }
 
-            // Expression is of the form (* x c) where c is a multuple of elementSize.
+            // Expression is of the form (* x c) where c is a multiple of elementSize.
 
             var scale = cRight.ToInt32() / elementSize;
             if (scale == 1)

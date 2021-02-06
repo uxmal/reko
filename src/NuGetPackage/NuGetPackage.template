@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Reko.Decompiler.Runtime</id>
+    <version>0.9.3-prerelease</version>
+    <title>Reko Decompiler Runtime</title>
+    <authors>Reko Decompiler contributors</authors>
+    <owners>John Källén</owners>
+    <license type="expression">GPL-2.0-only</license>
+    <projectUrl>https://github.com/uxmal/reko</projectUrl>
+    <icon>images\reko.png</icon>
+    <iconUrl>https://github.com/uxmal/reko/blob/master/web/images/reko.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Runtime components for the Reko decompiler toolchain</description>
+    <releaseNotes>First release of a NuGet package.</releaseNotes>
+    <copyright>Copyright (C) 1999-2021 John Källén</copyright>
+    <tags>decompiler disassembler</tags>
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+
+    <!-- Copy Reko metadata into output directory -->
+    <contentFiles>
+      <files include="any/any/reko/**/*" buildAction="None" copyToOutput="true" flatten="false"/>
+    </contentFiles>
+
+  </metadata>
+
+  <!-- These are the files that are packaged into the nupkg file -->
+  <files>
+  </files>
+</package>

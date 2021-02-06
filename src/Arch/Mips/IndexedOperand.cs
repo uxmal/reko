@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,12 +42,12 @@ namespace Reko.Arch.Mips
             this.Index = indexRegister;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString(Index.Name);
-            writer.WriteString("(");
-            writer.WriteString(Base.Name);
-            writer.WriteString(")");
+            renderer.WriteString(Index.Name);
+            renderer.WriteString("(");
+            renderer.WriteString(Base.Name);
+            renderer.WriteString(")");
         }
     }
 }

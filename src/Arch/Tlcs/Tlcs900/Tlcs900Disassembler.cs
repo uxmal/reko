@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -31,6 +33,7 @@ using Mnemonic = Reko.Arch.Tlcs.Tlcs900.Tlcs900Mnemonic;
 namespace Reko.Arch.Tlcs.Tlcs900
 {
     using Decoder = Decoder<Tlcs900Disassembler, Mnemonic, Tlcs900Instruction>;
+#pragma warning disable IDE1006
 
     /// <summary>
     /// Disassembler for the 32-bit Toshiba TLCS-900 processor.
@@ -38,12 +41,12 @@ namespace Reko.Arch.Tlcs.Tlcs900
     public partial class Tlcs900Disassembler : DisassemblerBase<Tlcs900Instruction, Mnemonic>
     {
         private readonly Tlcs900Architecture arch;
-        private readonly ImageReader rdr;
+        private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
         private Address addr;
         private PrimitiveType opSize;
 
-        public Tlcs900Disassembler(Tlcs900Architecture arch, ImageReader rdr)
+        public Tlcs900Disassembler(Tlcs900Architecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;
@@ -86,7 +89,13 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 Mnemonic = Mnemonic.invalid,
                 Operands = MachineInstruction.NoOperands
             };
+        }
 
+        public override Tlcs900Instruction NotYetImplemented(string message)
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("RiscV_dasm", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         #region Mutators 
@@ -554,7 +563,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private class MemDecoder : Decoder
         {
-            private Mutator<Tlcs900Disassembler> mutator;
+            private readonly Mutator<Tlcs900Disassembler> mutator;
 
             public MemDecoder(Mutator<Tlcs900Disassembler> mutator)
             {
@@ -571,7 +580,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private class DstDecoder : Decoder
         {
-            private Mutator<Tlcs900Disassembler> mutator;
+            private readonly Mutator<Tlcs900Disassembler> mutator;
 
             public DstDecoder(Mutator<Tlcs900Disassembler> mutator)
             {
@@ -598,8 +607,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private class SecondDecoder : Decoder
         {
-            private Mnemonic mnemonic;
-            private Mutator<Tlcs900Disassembler> mutator;
+            private readonly Mnemonic mnemonic;
+            private readonly Mutator<Tlcs900Disassembler> mutator;
 
             public SecondDecoder(Mnemonic mnemonic, Mutator<Tlcs900Disassembler> mutator = null)
             {
@@ -634,8 +643,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
         // Inverts the order of the decoded operands
         private class InvDecoder : Decoder
         {
-            private Mnemonic mnemonic;
-            private Mutator<Tlcs900Disassembler>[] mutators;
+            private readonly Mnemonic mnemonic;
+            private readonly Mutator<Tlcs900Disassembler>[] mutators;
 
             public InvDecoder(Mnemonic mnemonic, params Mutator<Tlcs900Disassembler>[]mutators)
             {
@@ -684,24 +693,24 @@ namespace Reko.Arch.Tlcs.Tlcs900
             return new InstrDecoder<Tlcs900Disassembler, Mnemonic, Tlcs900Instruction>(iclass, mnemonic, mutators);
         }
 
-        private static int[] imm3Const = new int[8]
+        private static readonly int[] imm3Const = new int[8]
         {
             0, 1, 2, 3, 4, 5, 6, 7,
         };
 
-        private static int[] imm3Const8 = new int[8]
+        private static readonly int[] imm3Const8 = new int[8]
         {
             8, 1, 2, 3, 4, 5, 6, 7,
         };
 
-        private static int[] incDecSize = new int[3]
+        private static readonly int[] incDecSize = new int[3]
         {
             1, 2, 4
         };
 
-        private static Decoder invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
+        private static readonly Decoder invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
 
-        private static Decoder[] rootDecoders = {
+        private static readonly Decoder[] rootDecoders = {
             // 00
             Instr(Mnemonic.nop, InstrClass.Padding|InstrClass.Zero),
             invalid,

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,9 @@ using Reko.UnitTests.Fragments;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.ComponentModel.Design;
+using Reko.Core.Services;
+using System.Runtime.InteropServices;
 
 namespace Reko.UnitTests.Typing
 {
@@ -260,12 +263,12 @@ namespace Reko.UnitTests.Typing
 
         private static Program CreateProgram()
         {
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
 
             return new Program
             {
                 Architecture = arch,
-                Platform = new DefaultPlatform(null, arch),
+                Platform = new DefaultPlatform(arch.Services, arch),
             };
         }
 
@@ -305,7 +308,9 @@ namespace Reko.UnitTests.Typing
 			ProgramBuilder m = new ProgramBuilder();
 			m.Add(new IntelIndexedAddressingMode());
 			Program program = m.BuildProgram();
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
+            var sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, sc);
 			dfa.AnalyzeProgram();
 			RunTest(program, "Typing/TrcoIntelIndexedAddressingMode.txt");
 		}
@@ -316,7 +321,9 @@ namespace Reko.UnitTests.Typing
 			ProgramBuilder m = new ProgramBuilder();
 			m.Add(new TreeFindMock());
 			Program program = m.BuildProgram();
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
+            var sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, sc);
 			dfa.AnalyzeProgram();
 			RunTest(program, "Typing/TrcoTreeFind.txt");
 		}
@@ -406,10 +413,10 @@ namespace Reko.UnitTests.Typing
 				"\ttrait_primitive(word16)" + nl +
 				"\ttrait_equal(T_2)" + nl +
 				"\ttrait_primitive(cupos16)" + nl +
-				"T_2 (in 0x0800 : word16)" + nl +
+				"T_2 (in 0x800<16> : word16)" + nl +
 				"\ttrait_primitive(word16)" + nl +
 				"\ttrait_primitive(cupos16)" + nl +
-				"T_3 (in ds >=u 0x0800 : bool)" + nl +
+				"T_3 (in ds >=u 0x800<16> : bool)" + nl +
 				"\ttrait_primitive(bool)" + nl;
 			Assert.AreEqual(exp, sb.ToString());
 		}
@@ -430,19 +437,19 @@ namespace Reko.UnitTests.Typing
                 "T_1 (in ds : selector)" + nl +
                 "\ttrait_primitive(selector)" + nl +
                 "\ttrait_mem_array(300, 8, 0, T_7)" + nl + 
-                "T_2 (in 0x0300 : word16)" + nl +
+                "T_2 (in 0x300<16> : word16)" + nl +
                 "	trait_primitive(word16)" + nl +
-                "T_3 (in SEQ(ds, 0x0300) : ptr32)" + nl +
+                "T_3 (in SEQ(ds, 0x300<16>) : ptr32)" + nl +
                 "	trait_primitive(ptr32)" + nl +
                 "T_4 (in bx : word16)" + nl +
                 "	trait_primitive(word16)" + nl +
                 "	trait_primitive(ui16)" + nl +
-                "T_5 (in 0x0008 : word16)" + nl +
+                "T_5 (in 8<16> : word16)" + nl +
                 "	trait_primitive(word16)" + nl +
                 "	trait_primitive(ui16)" + nl +
-                "T_6 (in bx * 0x0008 : word16)" + nl +
+                "T_6 (in bx * 8<16> : word16)" + nl +
                 "	trait_primitive(ui16)" + nl +
-                "T_7 (in SEQ(ds, 0x0300)[bx * 0x0008] : word32)" + nl +
+                "T_7 (in SEQ(ds, 0x300<16>)[bx * 8<16>] : word32)" + nl +
                 "	trait_primitive(word32)" + nl;
             Assert.AreEqual(sExp, sb.ToString());
         }
@@ -460,15 +467,18 @@ namespace Reko.UnitTests.Typing
             StringWriter sb = new StringWriter();
             handler.Traits.Write(sb);
             string exp =
-                "T_1 (in a : word32)" + nl +
-                "\ttrait_primitive(word32)" + nl +
-                "\ttrait_primitive(word32)" + nl +
-                "\ttrait_primitive(word32)" + nl +
-                "\ttrait_equal(T_3)" + nl +
-                "T_2 (in b : byte)" + nl +
-                "\ttrait_primitive(byte)" + nl +
-                "T_3 (in DPB(a, b, 0) : word32)" + nl +
-                "\ttrait_primitive(word32)" + nl;
+@"T_1 (in a : word32)
+	trait_primitive(word32)
+	trait_primitive(word32)
+	trait_primitive(word32)
+	trait_equal(T_4)
+T_2 (in SLICE(a, word24, 8) : word24)
+	trait_primitive(word24)
+T_3 (in b : byte)
+	trait_primitive(byte)
+T_4 (in SEQ(SLICE(a, word24, 8), b) : word32)
+	trait_primitive(word32)
+";
             Assert.AreEqual(exp, sb.ToString());
         }
 

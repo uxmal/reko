@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using Reko.Core.Types;
 using System;
@@ -129,14 +131,19 @@ Some examples:
         private string str;
         private int i;
 
-        public DataType Parse(string hungarianString)
+        private HungarianParser(string str)
+        {
+            //Debug.Print("Parsing " + hungarianString);
+            this.str = str;
+            this.i = 0;
+        }
+
+        public static DataType? Parse(string hungarianString)
         {
             if (hungarianString == null)
                 return null;
-            //Debug.Print("Parsing " + hungarianString);
-            this.str = hungarianString;
-            this.i = 0;
-            return Parse(PrimitiveType.Char);
+            var parser = new HungarianParser(hungarianString);
+            return parser.Parse(PrimitiveType.Char);
         }
 
         private DataType Parse(PrimitiveType charPrefix)

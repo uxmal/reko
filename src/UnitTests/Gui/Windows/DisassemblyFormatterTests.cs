@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ using System.Text;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.UserInterfaces.WindowsForms;
 using Reko.UnitTests.Mocks;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Gui
 {
@@ -41,7 +42,7 @@ namespace Reko.UnitTests.Gui
         {
             program = new Program
             {
-                Architecture = new FakeArchitecture()
+                Architecture = new FakeArchitecture(new ServiceContainer())
             };
         }
 

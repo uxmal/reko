@@ -4,8 +4,8 @@ void ArrayAccess()
 ArrayAccess_entry:
 	// succ:  l1
 l1:
-	(r + 0x00000014)[i * 0x0000000A] = 0
-	return (r + 0x00000010)[i * 0x0000000A]
+	(r + 0x14<32>)[i * 0xA<32>] = 0<i32>
+	return (r + 0x10<32>)[i * 0xA<32>]
 	// succ:  ArrayAccess_exit
 ArrayAccess_exit:
 
@@ -13,30 +13,30 @@ ArrayAccess_exit:
 Eq_1: (ptr32 (struct "Globals"))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: int32
-	T_2 (in 0 : int32)
-	T_9 (in (r + 0x00000014)[i * 0x0000000A] : int32)
+	T_2 (in 0<i32> : int32)
+	T_9 (in (r + 0x14<32>)[i * 0xA<32>] : int32)
 Eq_3: (ptr32 (struct (10 (arr T_16) a0010) (14 (arr T_15) a0014)))
 	T_3 (in r : word32)
 Eq_4: int32
-	T_4 (in 0x00000014 : word32)
+	T_4 (in 0x14<32> : word32)
 Eq_5: (ptr32 T_15)
-	T_5 (in r + 0x00000014 : word32)
+	T_5 (in r + 0x14<32> : word32)
 Eq_6: ui32
 	T_6 (in i : word32)
 Eq_7: ui32
-	T_7 (in 0x0000000A : word32)
+	T_7 (in 0xA<32> : word32)
 Eq_8: ui32
-	T_8 (in i * 0x0000000A : word32)
+	T_8 (in i * 0xA<32> : word32)
 Eq_10: int32
-	T_10 (in 0x00000010 : word32)
+	T_10 (in 0x10<32> : word32)
 Eq_11: (ptr32 T_16)
-	T_11 (in r + 0x00000010 : word32)
+	T_11 (in r + 0x10<32> : word32)
 Eq_12: ui32
-	T_12 (in 0x0000000A : word32)
+	T_12 (in 0xA<32> : word32)
 Eq_13: ui32
-	T_13 (in i * 0x0000000A : word32)
+	T_13 (in i * 0xA<32> : word32)
 Eq_14: word16
-	T_14 (in (r + 0x00000010)[i * 0x0000000A] : word16)
+	T_14 (in (r + 0x10<32>)[i * 0xA<32>] : word16)
 Eq_15: (struct 000A (0 T_9 t0000))
 	T_15
 Eq_16: (struct 000A (0 T_14 t0000))
@@ -46,7 +46,7 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 (struct "Globals"))
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in 0 : int32)
+T_2: (in 0<i32> : int32)
   Class: Eq_2
   DataType: int32
   OrigDataType: int32
@@ -54,11 +54,11 @@ T_3: (in r : word32)
   Class: Eq_3
   DataType: (ptr32 (struct (10 (arr T_16) a0010) (14 (arr T_15) a0014)))
   OrigDataType: (ptr32 (struct (10 (arr T_16) a0010) (14 (arr T_15) a0014)))
-T_4: (in 0x00000014 : word32)
+T_4: (in 0x14<32> : word32)
   Class: Eq_4
   DataType: int32
   OrigDataType: int32
-T_5: (in r + 0x00000014 : word32)
+T_5: (in r + 0x14<32> : word32)
   Class: Eq_5
   DataType: (ptr32 T_15)
   OrigDataType: (ptr32 T_15)
@@ -66,35 +66,35 @@ T_6: (in i : word32)
   Class: Eq_6
   DataType: ui32
   OrigDataType: ui32
-T_7: (in 0x0000000A : word32)
+T_7: (in 0xA<32> : word32)
   Class: Eq_7
   DataType: ui32
   OrigDataType: ui32
-T_8: (in i * 0x0000000A : word32)
+T_8: (in i * 0xA<32> : word32)
   Class: Eq_8
   DataType: ui32
   OrigDataType: ui32
-T_9: (in (r + 0x00000014)[i * 0x0000000A] : int32)
+T_9: (in (r + 0x14<32>)[i * 0xA<32>] : int32)
   Class: Eq_2
   DataType: int32
   OrigDataType: int32
-T_10: (in 0x00000010 : word32)
+T_10: (in 0x10<32> : word32)
   Class: Eq_10
   DataType: int32
   OrigDataType: int32
-T_11: (in r + 0x00000010 : word32)
+T_11: (in r + 0x10<32> : word32)
   Class: Eq_11
   DataType: (ptr32 T_16)
   OrigDataType: (ptr32 T_16)
-T_12: (in 0x0000000A : word32)
+T_12: (in 0xA<32> : word32)
   Class: Eq_12
   DataType: ui32
   OrigDataType: ui32
-T_13: (in i * 0x0000000A : word32)
+T_13: (in i * 0xA<32> : word32)
   Class: Eq_13
   DataType: ui32
   OrigDataType: ui32
-T_14: (in (r + 0x00000010)[i * 0x0000000A] : word16)
+T_14: (in (r + 0x10<32>)[i * 0xA<32>] : word16)
   Class: Eq_14
   DataType: word16
   OrigDataType: word16

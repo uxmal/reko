@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,11 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
@@ -49,13 +48,14 @@ namespace Reko.UnitTests.Analysis
 	{
         protected IPlatform platform;
         protected Mock<IPlatform> platformMock;
-        private ServiceContainer sc;
+        protected ServiceContainer sc;
 
         public AnalysisTestBase()
         {
             //$TODO: this is a hard dependency on the file system.
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
+            sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
         }
 
         protected void DumpProcedureFlows(Program program, DataFlowAnalysis dfa, TextWriter w)
@@ -136,8 +136,8 @@ namespace Reko.UnitTests.Analysis
 
         protected static Program RewriteMsdosAssembler(string relativePath, string configFile)
         {
-            var arch = new X86ArchitectureReal("x86-real-16");
             var sc = new ServiceContainer();
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             var cfgSvcMock = new Mock<IConfigurationService>();
             var envMock = new Mock<PlatformDefinition>();
             var tlSvcMock = new Mock<ITypeLibraryLoaderService>();
@@ -148,35 +148,34 @@ namespace Reko.UnitTests.Analysis
             sc.AddService<IConfigurationService>(cfgSvcMock.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvcMock.Object);
             Program program;
-            Assembler asm = new X86TextAssembler(sc, arch);
+            IAssembler asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 program = asm.Assemble(Address.SegPtr(0xC00, 0), rdr);
-                program.Platform = new MsdosPlatform(sc, program.Architecture);
+                program.Platform = new MsdosPlatform(sc, arch);
+                
             }
             Rewrite(program, asm, configFile);
             return program;
         }
 
-        protected static Program RewriteMsdosAssembler(string relativePath, Action<Program> postLoad)
+        protected Program RewriteMsdosAssembler(string relativePath, Action<Program> postLoad)
         {
-            var arch = new X86ArchitectureReal("x86-real-16");
-            var sc = new ServiceContainer();
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             var cfgSvc = new Mock<IConfigurationService>();
             var env = new Mock<PlatformDefinition>();
             var tlSvc = new Mock<ITypeLibraryLoaderService>();
             cfgSvc.Setup(c => c.GetEnvironment("ms-dos")).Returns(env.Object);
             env.Setup(e => e.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
             env.Setup(e => e.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
-            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<IConfigurationService>(cfgSvc.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
             Program program;
-            Assembler asm = new X86TextAssembler(sc, arch);
+            IAssembler asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
-                program = asm.Assemble(Address.SegPtr(0xC00, 0), rdr);
-                program.Platform = new MsdosPlatform(sc, program.Architecture);
+                program = asm.Assemble(Address.SegPtr(0xC00, 0),  rdr);
+                program.Platform = new MsdosPlatform(sc, arch);
             }
             Rewrite(program, asm, postLoad);
             return program;
@@ -190,16 +189,21 @@ namespace Reko.UnitTests.Analysis
         private Program RewriteFile32(string relativePath, string configFile)
         {
             Program program;
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
-            var asm = new X86TextAssembler(sc, arch);
+            var services = new ServiceContainer();
+            var arch = new X86ArchitectureFlat32(services, "x86-protected-32", new Dictionary<string, object>());
+            var asm = new X86TextAssembler(arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 if (this.platform == null)
                 {
                     this.platform = new Reko.Environments.Windows.Win32Platform(sc, arch);
                 }
-                asm.Platform = this.platform;
+                else if (this.platformMock.Object == platform)
+                {
+                    platformMock.Setup(p => p.Architecture).Returns(arch);
+                }
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
+                program.Platform = this.platform;
             }
             foreach (var item in asm.ImportReferences)
             {
@@ -211,29 +215,31 @@ namespace Reko.UnitTests.Analysis
 
         protected Program RewriteCodeFragment(string s)
         {
-            Assembler asm = new X86TextAssembler(sc, new X86ArchitectureReal("x86-real-16"));
+            var services = new ServiceContainer();
+            var arch = new X86ArchitectureReal(services, "x86-real-16", new Dictionary<string, object>());
+            IAssembler asm = new X86TextAssembler(arch);
             var program = asm.AssembleFragment(Address.SegPtr(0xC00, 0), s);
-            program.Platform = new MsdosPlatform(null, program.Architecture);
+            program.Platform = new MsdosPlatform(services, arch);
             Rewrite(program, asm, (string)null);
             return program;
         }
 
         protected Program RewriteCodeFragment32(string s)
         {
-            Assembler asm = new X86TextAssembler(sc, new X86ArchitectureFlat32("x86-protected-32"));
+            var services = new ServiceContainer();
+            var arch = new X86ArchitectureFlat32(services, "x86-protected-32", new Dictionary<string, object>());
+            IAssembler asm = new X86TextAssembler(arch);
             var program = asm.AssembleFragment(Address.Ptr32(0x00400000), s);
-            program.Platform = new DefaultPlatform(null, program.Architecture);
+            program.Platform = new DefaultPlatform(services, arch);
             Rewrite(program, asm, (string)null);
             return program;
         }
 
-        private static void Rewrite(Program program, Assembler asm, string configFile)
+        private static void Rewrite(Program program, IAssembler asm, string configFile)
         {
-            var fakeDiagnosticsService = new FakeDiagnosticsService();
             var fakeConfigService = new FakeDecompilerConfiguration();
             var eventListener = new FakeDecompilerEventListener();
             var sc = new ServiceContainer();
-            sc.AddService<IDiagnosticsService>(fakeDiagnosticsService);
             sc.AddService<IConfigurationService>(fakeConfigService);
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
@@ -258,16 +264,13 @@ namespace Reko.UnitTests.Analysis
             scan.ScanImage();
         }
 
-        private static void Rewrite(Program program, Assembler asm, Action<Program> postLoad)
+        private static void Rewrite(Program program, IAssembler asm, Action<Program> postLoad)
         {
-            var fakeDiagnosticsService = new FakeDiagnosticsService();
             var fakeConfigService = new FakeDecompilerConfiguration();
             var eventListener = new FakeDecompilerEventListener();
             var sc = new ServiceContainer();
-            sc.AddService<IDiagnosticsService>(fakeDiagnosticsService);
             sc.AddService<IConfigurationService>(fakeConfigService);
             sc.AddService<DecompilerEventListener>(eventListener);
-            //sc.AddService<IDecompiledFileService>(new FakeDecompilerHost());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var loader = new Loader(sc);
             var project = new Project
@@ -453,7 +456,8 @@ namespace Reko.UnitTests.Analysis
                          StackDelta = 4,
                      }));
             platformMock.Setup(p => p.GetTrampolineDestination(
-                It.IsNotNull<IEnumerable<RtlInstructionCluster>>(),
+                It.IsNotNull<Address>(),
+                It.IsNotNull<IEnumerable<RtlInstruction>>(),
                 It.IsNotNull<IRewriterHost>()))
                 .Returns((ProcedureBase)null);
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -112,7 +112,7 @@ namespace Reko.Arch.Alpha
             {
                 if (ret.Number == ReturnAddress)
                 {
-                    rtlc = InstrClass.Transfer | InstrClass.Call;
+                    iclass = InstrClass.Transfer | InstrClass.Call;
                     m.Call(dst, 0);
                 }
                 else

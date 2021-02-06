@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,22 +41,20 @@ namespace Reko.Arch.Cray
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            throw new System.NotImplementedException();
+            return Constant.Invalid;
         }
 
         public override void OnAfterCall(FunctionType sigCallee)
         {
-            throw new System.NotImplementedException();
         }
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            throw new System.NotImplementedException();
+            return new CallSite(0, 0);
         }
 
         public override void OnProcedureEntered()
         {
-            throw new System.NotImplementedException();
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
@@ -64,14 +62,8 @@ namespace Reko.Arch.Cray
             throw new System.NotImplementedException();
         }
 
-        public override void SetInstructionPointer(Address addr)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            throw new System.NotImplementedException();
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Reko.ImageLoaders.Elf;
 using Reko.ImageLoaders.Elf.Relocators;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,7 +45,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
 
         protected override IProcessorArchitecture GetArchitecture()
         {
-            return new Reko.Arch.Arm.Arm32Architecture("arm32");
+            return new Reko.Arch.Arm.Arm32Architecture(new ServiceContainer(), "arm32", new Dictionary<string, object>());
         }
 
         protected override Address GetLoadAddress()
@@ -64,9 +65,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
 
             Given_Relocator();
 
-            var symNew = relocator.RelocateEntry(program, sym, null, rel);
+            var (addrRelocation, symNew) = relocator.RelocateEntry(program, sym, null, rel);
 
-            Assert.AreEqual(0x4000, (uint) symNew.Value);
+            Assert.AreEqual(0x4008, addrRelocation.ToUInt32());
         }
     }
 }

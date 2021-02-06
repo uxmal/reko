@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,12 +33,6 @@ namespace Reko.Core.Absyn
         public abstract void Accept(IAbsynVisitor visitor);
 
         public abstract T Accept<T>(IAbsynVisitor<T> visitor);
-
-        public bool As<T>(out T t) where T : AbsynStatement
-        {
-            t = this as T;
-            return t != null;
-        }
 
 		public override sealed string ToString()
 		{

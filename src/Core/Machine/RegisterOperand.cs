@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,9 +40,9 @@ namespace Reko.Core.Machine
 
         public RegisterStorage Register { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString(Register.Name);
+            renderer.WriteString(Register.Name);
         }
     }
 
@@ -55,9 +55,9 @@ namespace Reko.Core.Machine
 
         public FlagGroupStorage FlagGroup { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString(FlagGroup.Name);
+            renderer.WriteString(FlagGroup.Name);
         }
     }
 
@@ -70,9 +70,9 @@ namespace Reko.Core.Machine
 
         public SequenceStorage Sequence { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString(Sequence.Name);
+            renderer.WriteString(Sequence.Name);
         }
     }
 

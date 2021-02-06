@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +22,12 @@ using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.UnitTests.Mocks;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Gui.Forms
@@ -51,12 +53,14 @@ namespace Reko.UnitTests.Gui.Forms
 
             form = new Mock<IMainForm>();
 
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             var platform = new Mock<IPlatform>();
             platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
+            platform.Setup(p => p.Architecture).Returns(arch);
             program = new Program();
-            program.Architecture = new X86ArchitectureReal("x86-real-16");
+            program.Architecture = arch;
             program.Platform = platform.Object;
-            var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[10000]);
+            var mem = new ByteMemoryArea(Address.SegPtr(0xC00, 0), new byte[10000]);
             program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute));
@@ -149,7 +153,7 @@ namespace Reko.UnitTests.Gui.Forms
             var decSvc = AddService<IDecompilerService>();
             var decompiler = new Mock<IDecompiler>();
             var program = new Program();
-            var mem = new MemoryArea(Address.Ptr32(0x3000), new byte[10]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x3000), new byte[10]);
             program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment(".text", mem, AccessMode.ReadWriteExecute));

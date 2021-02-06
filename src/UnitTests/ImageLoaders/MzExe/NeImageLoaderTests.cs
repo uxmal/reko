@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,10 +44,11 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
         public void Setup()
         {
             this.services = new ServiceContainer();
-            this.services.AddService<IDiagnosticsService>(new FakeDiagnosticsService());
+            this.services.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             this.bytes = new byte[4096];
             this.writer = new LeImageWriter(bytes);
         }
+
         private void Given_Bundle(byte nEntries, byte iSeg, params BundleEntry[] entries)
         {
             writer.WriteByte(nEntries);
@@ -119,7 +120,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                     { 2, "FN004B" },
                     { 3, "FN114B" }
                 },
-                new X86ArchitectureProtected16("x86-protected-16"));
+                new X86ArchitectureProtected16(services, "x86-protected-16", new Dictionary<string, object>()));
             Assert.AreEqual(3, syms.Count);
             Assert.AreEqual("FN0042 (0017:0042)", syms[0].ToString());
             Assert.AreEqual("FN004B (0017:004B)", syms[1].ToString());
@@ -155,11 +156,14 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                     { 5, "ORDINAL5" },
                     { 6, "ORDINAL6" },
                 },
-                new X86ArchitectureProtected16("x86-protected-16"));
-            Assert.AreEqual(3, syms.Count);
+                new X86ArchitectureProtected16(services, "x86-protected-16", new Dictionary<string, object>()));
+            Assert.AreEqual(6, syms.Count);
             Assert.AreEqual("ORDINAL1 (0017:0042)", syms[0].ToString());
-            Assert.AreEqual("ORDINAL5 (0017:004B)", syms[1].ToString());
-            Assert.AreEqual("ORDINAL6 (0017:003B)", syms[2].ToString());
+            Assert.IsNull(syms[1]);
+            Assert.IsNull(syms[2]);
+            Assert.IsNull(syms[3]);
+            Assert.AreEqual("ORDINAL5 (0017:004B)", syms[4].ToString());
+            Assert.AreEqual("ORDINAL6 (0017:003B)", syms[5].ToString());
         }
 
         [Test(Description = "Moveable entries")]
@@ -191,11 +195,14 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                     { 5, "ORDINAL5" },
                     { 6, "ORDINAL6" },
                 },
-                new X86ArchitectureProtected16("x86-protected-16"));
-            Assert.AreEqual(3, syms.Count);
+                new X86ArchitectureProtected16(services, "x86-protected-16", new Dictionary<string, object>()));
+            Assert.AreEqual(6, syms.Count);
             Assert.AreEqual("ORDINAL1 (0017:0042)", syms[0].ToString());
-            Assert.AreEqual("ORDINAL5 (0027:004B)", syms[1].ToString());
-            Assert.AreEqual("ORDINAL6 (0037:003B)", syms[2].ToString());
+            Assert.IsNull(syms[1]);
+            Assert.IsNull(syms[2]);
+            Assert.IsNull(syms[3]);
+            Assert.AreEqual("ORDINAL5 (0027:004B)", syms[4].ToString());
+            Assert.AreEqual("ORDINAL6 (0037:003B)", syms[5].ToString());
         }
 
         [Test(Description = "Moveable entries")]
@@ -210,7 +217,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
 
             Given_Bundle(1, 1,
                 Given_BundleEntry(2, 0x42));
-            Given_Bundle(7, 0x00);      // Skip 7 bundles.
+            Given_Bundle(7, 0x00);      // Skip 7 entries.
             Given_Bundle(2, 2,
                 Given_BundleEntry(3, 0x4B),
                 Given_BundleEntry(3, 0x3B));
@@ -226,11 +233,13 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                     { 9, "ORDINAL9" },
                     { 10, "ORDINAL10" },
                 },
-                new X86ArchitectureProtected16("x86-protected-16"));
-            Assert.AreEqual(3, syms.Count);
+                new X86ArchitectureProtected16(services, "x86-protected-16", new Dictionary<string, object>()));
+            Assert.AreEqual(10, syms.Count);
             Assert.AreEqual("ORDINAL1 (0017:0042)", syms[0].ToString());
-            Assert.AreEqual("ORDINAL9 (0027:004B)", syms[1].ToString());
-            Assert.AreEqual("ORDINAL10 (0027:003B)", syms[2].ToString());
+            Assert.IsNull(syms[1]);
+            Assert.IsNull(syms[7]);
+            Assert.AreEqual("ORDINAL9 (0027:004B)", syms[8].ToString());
+            Assert.AreEqual("ORDINAL10 (0027:003B)", syms[9].ToString());
         }
 
     }

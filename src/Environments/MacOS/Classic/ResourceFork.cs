@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 using Reko.Arch.M68k;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace Reko.Environments.MacOS.Classic
     /// </summary>
     public class ResourceFork
     {
-        private byte[]  image;
+        private byte[] image;
         private MacOSClassic platform;
         private IProcessorArchitecture arch;
         private ResourceTypeCollection rsrcTypes;
@@ -52,10 +53,10 @@ namespace Reko.Environments.MacOS.Classic
             this.platform = platform;
             this.arch = platform.Architecture;
 
-            rsrcDataOff = MemoryArea.ReadBeUInt32(bytes, 0);
-            rsrcMapOff = MemoryArea.ReadBeUInt32(bytes, 4);
-            dataSize = MemoryArea.ReadBeUInt32(bytes, 8);
-            mapSize = MemoryArea.ReadBeUInt32(bytes, 0x0C);
+            rsrcDataOff = ByteMemoryArea.ReadBeUInt32(bytes, 0);
+            rsrcMapOff = ByteMemoryArea.ReadBeUInt32(bytes, 4);
+            dataSize = ByteMemoryArea.ReadBeUInt32(bytes, 8);
+            mapSize = ByteMemoryArea.ReadBeUInt32(bytes, 0x0C);
 
             rsrcTypes = new ResourceTypeCollection(image, rsrcMapOff, mapSize);
         }
@@ -106,9 +107,9 @@ namespace Reko.Environments.MacOS.Classic
             public ResourceTypeCollection(byte [] bytes, uint offset, uint size)
             {
                 this.bytes = bytes;
-                rsrcTypeListOff = offset + MemoryArea.ReadBeUInt16(bytes, offset + 0x18) + 2u;
-                rsrcNameListOff = offset + MemoryArea.ReadBeUInt16(bytes, offset + 0x1A);
-                crsrcTypes = MemoryArea.ReadBeUInt16(bytes, offset + 0x1C) + 1;
+                rsrcTypeListOff = offset + ByteMemoryArea.ReadBeUInt16(bytes, offset + 0x18) + 2u;
+                rsrcNameListOff = offset + ByteMemoryArea.ReadBeUInt16(bytes, offset + 0x1A);
+                crsrcTypes = ByteMemoryArea.ReadBeUInt16(bytes, offset + 0x1C) + 1;
             }
 
             #region ICollection<ResourceType> Members
@@ -158,8 +159,8 @@ namespace Reko.Environments.MacOS.Classic
                 for (int i = 0; i < crsrcTypes; ++i)
                 {
                     string rsrcTypeName = Encoding.ASCII.GetString(bytes, (int)offset, 4);
-                    int crsrc = MemoryArea.ReadBeUInt16(bytes, offset + 4) + 1;
-                    uint rsrcReferenceListOffset = rsrcTypeListOff + MemoryArea.ReadBeUInt16(bytes, offset + 6) - 2;
+                    int crsrc = ByteMemoryArea.ReadBeUInt16(bytes, offset + 4) + 1;
+                    uint rsrcReferenceListOffset = rsrcTypeListOff + ByteMemoryArea.ReadBeUInt16(bytes, offset + 6) - 2;
                     yield return new ResourceType(bytes, rsrcTypeName, rsrcReferenceListOffset, rsrcNameListOff, crsrc);
                     offset += 8;
                 }
@@ -238,9 +239,9 @@ namespace Reko.Environments.MacOS.Classic
                 var offset = this.offset;
                 for (int i = 0; i < count; ++i)
                 {
-                    ushort rsrcID = MemoryArea.ReadBeUInt16(bytes, offset);
-                    string name = ReadName(MemoryArea.ReadBeUInt16(bytes, offset + 2));
-                    uint dataOff = MemoryArea.ReadBeUInt32(bytes, offset + 4) & 0x00FFFFFFU;
+                    ushort rsrcID = ByteMemoryArea.ReadBeUInt16(bytes, offset);
+                    string name = ReadName(ByteMemoryArea.ReadBeUInt16(bytes, offset + 2));
+                    uint dataOff = ByteMemoryArea.ReadBeUInt32(bytes, offset + 4) & 0x00FFFFFFU;
                     yield return new ResourceReference(rsrcID, name, dataOff);
 
                     offset += 0x0C;
@@ -285,7 +286,7 @@ namespace Reko.Environments.MacOS.Classic
 
         public void AddResourcesToImageMap(
             Address addrLoad, 
-            MemoryArea mem,
+            ByteMemoryArea mem,
             SegmentMap segmentMap, 
             List<ImageSymbol> entryPoints,
             SortedList<Address, ImageSymbol> symbols)
@@ -308,7 +309,7 @@ namespace Reko.Environments.MacOS.Classic
                     Array.Copy(mem.Bytes, uSegOffset + bytesToSkip, abSegment, 0, segmentSize);
 
                     Address addrSegment = addrLoad + uSegOffset + bytesToSkip;    //$TODO pad to 16-byte boundary?
-                    var memSeg = new MemoryArea(addrSegment, abSegment);
+                    var memSeg = new ByteMemoryArea(addrSegment, abSegment);
                     var segment = segmentMap.AddSegment(new ImageSegment(
                         ResourceDescriptiveName(type, rsrc),
                         memSeg,
@@ -322,7 +323,7 @@ namespace Reko.Environments.MacOS.Classic
                         else
                         {
                             codeSegs.Add(rsrc.ResourceID, segment);
-                            var macsBug = new MacsBugSymbolScanner(arch, segment.MemoryArea);
+                            var macsBug = new MacsBugSymbolScanner(arch, memSeg);
                             var mbSymbols = macsBug.ScanForSymbols();
                             foreach (var symbol in mbSymbols)
                             {
@@ -343,7 +344,6 @@ namespace Reko.Environments.MacOS.Classic
                 platform.A5Offset = jt.BelowA5Size;
                 segmentMap.AddSegment(a5world);
 
-
                 // Find first (and only!) segment containing the name %A5Init.
                 var a5dataSegment = segmentMap.Segments.Values.SingleOrDefault(SegmentNamedA5Init);
                 if (a5dataSegment == null)
@@ -354,6 +354,7 @@ namespace Reko.Environments.MacOS.Classic
                 if (a5dr == null)
                     return;
 
+                var a5hdroffset = a5dr.Offset;
                 var a5dbelow = a5dr.ReadBeUInt32();
                 var a5dbankSize = a5dr.ReadBeUInt32();
                 var a5doffset = a5dr.ReadBeUInt32();
@@ -365,13 +366,16 @@ namespace Reko.Environments.MacOS.Classic
                     return;
                 }
                 A5Expand(a5dr, a5dbelow);
+                a5dr.Seek(a5hdroffset + a5dreloc, System.IO.SeekOrigin.Begin);
+                var relocator = new A5Relocator(platform, a5dr, a5dbelow);
+                relocator.Relocate();
             }
         }
 
         private static BeImageReader GetA5InitImageReader(ImageSegment a5dataSegment)
         {
             var a5data = a5dataSegment.MemoryArea;
-            var a5dr = a5data.CreateBeReader(0);
+            var a5dr = new BeImageReader((ByteMemoryArea) a5data, 0);
             if (!a5dr.TryReadBeUInt32(out uint a5d0))
                 return null;
             if (!a5dr.TryReadBeUInt16(out ushort a5d1))
@@ -395,9 +399,9 @@ namespace Reko.Environments.MacOS.Classic
             return segment.Name.Length >= 12 && segment.Name.Substring(5, 7) == "%A5Init";
         }
 
-        private void A5Expand(BeImageReader a5dr, UInt32 a5dbelow)
+        public void A5Expand(BeImageReader a5dr, UInt32 a5dbelow)
         {
-            var a5belowWriter = new BeImageWriter(platform.A5World.MemoryArea, platform.A5Offset - a5dbelow);
+            var a5belowWriter = platform.A5World.MemoryArea.CreateBeWriter(platform.A5Offset - a5dbelow);
             int a5RunLengthToken = 0;
             int a5RunLengthCopySize = 0;
             int a5globalSkip = 0;
@@ -458,13 +462,13 @@ namespace Reko.Environments.MacOS.Classic
             } while (!a5dataEnd);
         }
 
-        private int GetRunLengthValue(BeImageReader a5dr, ref int a5repeat)
+        public static int GetRunLengthValue(BeImageReader a5dr, ref int a5repeat)
         {
             // Run length returned is in byte(s).
             // next byte read - see bit pattern from the following table for the return value
             // 0xxxxxxx - 0 - $7F
-            // 10xxxxxx - 0 - $3FFF(run length and $3F + next byte, 14 bits)
-            // 110xxxxx - 0 - $1FFFFF(run length and $1F + next two bytes, 21 bits)
+            // 10xxxxxx - 0 - $3FFF (run length and $3F + next byte, 14 bits)
+            // 110xxxxx - 0 - $1FFFFF (run length and $1F + next two bytes, 21 bits)
             // 1110xxxx - next 4 bytes, 32 bits
             // 1111xxxx - get both new runtime length copy in bytes and new runtime length repeat count
 
@@ -508,7 +512,7 @@ namespace Reko.Environments.MacOS.Classic
             SortedList<Address, ImageSymbol> symbols)
         {
             var size = jt.BelowA5Size + jt.AboveA5Size;
-            var mem = new MemoryArea(addr, new byte[size]);
+            var mem = new ByteMemoryArea(addr, new byte[size]);
             var w = new BeImageWriter(mem, jt.BelowA5Size + jt.JumpTableOffset);
             int i = 0;
             foreach (var entry in jt.Entries)
@@ -550,7 +554,7 @@ namespace Reko.Environments.MacOS.Classic
             }
         }
 
-        private JumpTable ProcessJumpTable(MemoryArea memJt, IDictionary<Address, ImageSymbol> symbols)
+        private JumpTable ProcessJumpTable(ByteMemoryArea memJt, IDictionary<Address, ImageSymbol> symbols)
         {
             var j = new JumpTable();
             var ir = memJt.CreateBeReader(0);

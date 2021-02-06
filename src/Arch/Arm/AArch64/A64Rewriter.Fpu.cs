@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,11 +32,6 @@ namespace Reko.Arch.Arm.AArch64
 {
     public partial class A64Rewriter
     {
-        private Expression Convert(DataType dtDst, DataType dtSrc, Expression src)
-        {
-            return m.Cast(dtDst, m.Cast(dtSrc, src));
-        }
-
         private static PrimitiveType MakeReal(DataType dt)
         {
             return PrimitiveType.Create(Domain.Real, dt.BitSize);
@@ -87,7 +82,7 @@ namespace Reko.Arch.Arm.AArch64
             var tmp = binder.CreateTemporary(dtSrc);
             m.Assign(tmp, src);
             var fn = dtSrc.BitSize == 32 ? "fabsf" : "fabs";
-            m.Assign(dst, host.PseudoProcedure(fn, dtDst, tmp));
+            m.Assign(dst, host.Intrinsic(fn, false, dtDst, tmp));
 
         }
 
@@ -122,7 +117,7 @@ namespace Reko.Arch.Arm.AArch64
             var src = RewriteOp(instr.Operands[1]);
             var dtDst = MakeReal(dst.DataType);
             var dtSrc = MakeReal(src.DataType);
-            m.Assign(dst, Convert(dtDst, dtSrc, src));
+            m.Assign(dst, m.Convert(src, dtSrc, dtDst));
         }
 
         private Expression RewriteFcvt(Expression src, Domain domain, string f32name, string f64name)
@@ -130,10 +125,9 @@ namespace Reko.Arch.Arm.AArch64
             //$TODO: #include <math.h>
             var dtSrc = MakeReal(src.DataType);
             var dtDst = MakeInteger(domain, instr.Operands[0].Width);
-            var tmp = binder.CreateTemporary(dtSrc);
-            m.Assign(tmp, src);
             var fn = dtSrc.BitSize == 32 ? f32name : f64name;
-            return m.Cast(dtDst, host.PseudoProcedure(fn, dtDst, tmp));
+            src = host.Intrinsic(fn, false, dtDst, src);
+            return m.Convert(src, dtSrc, dtDst);
         }
 
         private void RewriteFcvtms()
@@ -175,7 +169,7 @@ namespace Reko.Arch.Arm.AArch64
                         dt = PrimitiveType.Real32;
                         fname = name32;
                     }
-                    return host.PseudoProcedure(fname, dt, a, b);
+                    return host.Intrinsic(fname, true, dt, a, b);
                 },
                 "__max_{0}", Domain.Real);
         }
@@ -198,7 +192,7 @@ namespace Reko.Arch.Arm.AArch64
                 dt = PrimitiveType.Real32;
                 fname = name32;
             }
-            m.Assign(dst, host.PseudoProcedure(fname, dt, src1, src2, src3));
+            m.Assign(dst, host.Intrinsic(fname, false, dt, src1, src2, src3));
 
         }
         private void RewriteFmov()
@@ -223,7 +217,7 @@ namespace Reko.Arch.Arm.AArch64
             var dst = RewriteOp(instr.Operands[0]);
             m.Assign(src, RewriteOp(instr.Operands[1]));
             var fn = src.DataType.BitSize == 32 ? "sqrtf" : "sqrt";
-            m.Assign(dst, host.PseudoProcedure(fn, src.DataType, src));
+            m.Assign(dst, host.Intrinsic(fn, false, src.DataType, src));
         }
 
         private void RewriteIcvt(Domain domain)
@@ -238,7 +232,7 @@ namespace Reko.Arch.Arm.AArch64
                 var src = RewriteOp(instr.Operands[1]);
                 var dtSrc = MakeInteger(domain, src.DataType);
                 var dtDst = MakeReal(dst.DataType);
-                m.Assign(dst, Convert(dtDst, dtSrc, src));
+                m.Assign(dst, m.Convert(src, dtSrc, dtDst));
             }
         }
     }

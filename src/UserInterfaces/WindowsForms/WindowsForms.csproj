@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reko.UserInterfaces.WindowsForms</RootNamespace>
     <AssemblyName>Reko.UserInterfaces.WindowsForms</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -31,14 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Msagl">
-      <HintPath>..\..\..\external\Msagl\Microsoft.Msagl.dll</HintPath>
+    <Reference Include="AutomaticGraphLayout, Version=0.0.0.0, Culture=neutral, PublicKeyToken=6baa2c1345e83b6e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutomaticGraphLayout.1.1.11\lib\netstandard2.0\AutomaticGraphLayout.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Msagl.Drawing">
-      <HintPath>..\..\..\external\Msagl\Microsoft.Msagl.Drawing.dll</HintPath>
+    <Reference Include="AutomaticGraphLayout.Drawing, Version=0.0.0.0, Culture=neutral, PublicKeyToken=6baa2c1345e83b6e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutomaticGraphLayout.Drawing.1.1.11\lib\netstandard2.0\AutomaticGraphLayout.Drawing.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Msagl.GraphViewerGdi">
-      <HintPath>..\..\..\external\Msagl\Microsoft.Msagl.GraphViewerGdi.dll</HintPath>
+    <Reference Include="Microsoft.Msagl.GraphViewerGdi, Version=0.0.0.0, Culture=neutral, PublicKeyToken=6baa2c1345e83b6e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutomaticGraphLayout.GraphViewerGDI.1.1.11\lib\net472\Microsoft.Msagl.GraphViewerGdi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -179,6 +179,12 @@
       <DependentUpon>AssumedRegisterValuesDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\AssumedRegisterValuesInteractor.cs" />
+    <Compile Include="Forms\BlockNameDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BlockNameDialog.Designer.cs">
+      <DependentUpon>BlockNameDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\CallHierarchyInteractor.cs" />
     <Compile Include="Forms\CallHierarchyView.cs">
       <SubType>UserControl</SubType>
@@ -228,6 +234,13 @@
       <DependentUpon>FindStringsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FindStringsDialogInteractor.cs" />
+    <Compile Include="Forms\RegisterValuesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RegisterValuesDialog.Designer.cs">
+      <DependentUpon>RegisterValuesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RegisterValuesInteractor.cs" />
     <Compile Include="Forms\SegmentEditorDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -358,6 +371,7 @@
     <Compile Include="ToolStripButtonWrapper.cs" />
     <Compile Include="ToolStripItemAdapter.cs" />
     <Compile Include="ToolStripTextBoxWrapper.cs" />
+    <Compile Include="UserEventService.cs" />
     <Compile Include="ViewImportsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -414,6 +428,9 @@
     <EmbeddedResource Include="Forms\AssumedRegisterValuesDialog.resx">
       <DependentUpon>AssumedRegisterValuesDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BlockNameDialog.resx">
+      <DependentUpon>BlockNameDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\CallHierarchyView.resx">
       <DependentUpon>CallHierarchyView.cs</DependentUpon>
     </EmbeddedResource>
@@ -431,6 +448,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FindStringsDialog.resx">
       <DependentUpon>FindStringsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RegisterValuesDialog.resx">
+      <DependentUpon>RegisterValuesDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SegmentEditorDialog.resx">
       <DependentUpon>SegmentEditorDialog.cs</DependentUpon>
@@ -505,6 +525,9 @@
       <Project>{1CA14C64-92E8-452E-A380-637F3DBB4D28}</Project>
       <Name>Gui</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateCsFiles" BeforeTargets="CoreCompile">

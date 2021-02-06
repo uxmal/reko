@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Environments.Windows
 {
@@ -39,8 +40,9 @@ namespace Reko.UnitTests.Environments.Windows
 
         private void CreateDefFileLoader(string absPath, string contents)
         {
-            this.platform = new Win32Platform(null, new X86ArchitectureFlat32("x86-protected-32"));
-            dfl = new ModuleDefinitionLoader(null, absPath, Encoding.ASCII.GetBytes(contents));
+            var sc = new ServiceContainer();
+            this.platform = new Win32Platform(sc, new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>()));
+            dfl = new ModuleDefinitionLoader(sc, absPath, Encoding.ASCII.GetBytes(contents));
         }
 
         [Test]
@@ -96,6 +98,20 @@ namespace Reko.UnitTests.Environments.Windows
                 " _foo@12 @ 1" + nl);
             var lib = dfl.Load(platform, new TypeLibrary());
             Assert.IsTrue(lib.Modules.ContainsKey("BAR"));
+        }
+
+        // This is a Reko extension.
+        [Test]
+        public void DFL_HexadecimalOrdinal()
+        {
+            CreateDefFileLoader(
+                OsPath.Absolute("bar", "foo.def"),
+                " LIBRARY bar" + nl +
+                "EXPORTS" + nl +
+                " _testFn@12 @ 0x100" + nl);
+            var lib = dfl.Load(platform, new TypeLibrary());
+            var svc = lib.Modules["BAR"].ServicesByOrdinal[256];
+            Assert.AreEqual("testFn", svc.Name);
         }
     }
 }

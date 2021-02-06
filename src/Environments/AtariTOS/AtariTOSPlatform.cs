@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,7 +69,7 @@ namespace Reko.Environments.AtariTOS
             };
         }
 
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             if (Metadata == null)
             { }
@@ -83,7 +83,7 @@ namespace Reko.Environments.AtariTOS
             return null;
         }
 
-        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        public override int GetBitSizeFromCBasicType(CBasicType cb)
         {
             throw new NotImplementedException();
         }

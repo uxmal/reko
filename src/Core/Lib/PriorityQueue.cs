@@ -1,5 +1,5 @@
-﻿#region License
-/* Copyright (C) 1999-2020 John Källén.
+#region License
+/* Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Reko.Core.Lib
 
         public PriorityQueue()
         {
-            Clear();
+            heap = new HeapItem[4];
         }
 
         private void GrowHeap()
@@ -113,7 +113,7 @@ namespace Reko.Core.Lib
         {
             for (int i = 0; i < count; ++i)
             {
-                if (heap[i].Value.Equals(item))
+                if (heap[i].Value!.Equals(item))
                     return true;
             }
             return false;

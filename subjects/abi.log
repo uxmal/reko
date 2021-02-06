@@ -1,0 +1,40 @@
+!!! calls_mips64-linux-gnuabi64 timed out
+!!! calls_mips64el-linux-gnuabi64 timed out
+!!! calls_powerpc64-linux-gnu timed out
+!!! calls_powerpc64le-linux-gnu timed out
+!!! calls_sh4-linux-gnu timed out
+!!! calls_x86_64-linux-gnu timed out
+!!! calls_x86_64-w64-mingw32.exe timed out
+=== ABITests\ABITests\calls_aarch64-linux-gnu
+=== ABITests\ABITests\calls_alpha-linux-gnu
+=== ABITests\ABITests\calls_arm-linux-gnueabi
+=== ABITests\ABITests\calls_hppa-linux-gnu
+=== ABITests\ABITests\calls_i686-w64-mingw32.exe
+*** ABITests\ABITests\calls_i686-w64-mingw32.exe
+004028F7: warning: Unable to guess parameters of msvcrt.dll!_iob.
+0040281C: warning: Unable to resolve imported reference msvcrt.dll!vfprintf.
+00401C1E: warning: Procedure fn00401BB0 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+00401C4C: warning: Procedure fn00401BB0 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+00401C3E: warning: Procedure fn00401BB0 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+00401C1E: warning: Procedure fn00401BB0 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+004028D4: warning: Unable to guess parameters of msvcrt.dll!__p__acmdln.
+00401873: warning: Call target address 90909090 is invalid.
+00401364: warning: Unable to guess parameters of msvcrt.dll!__initenv.
+004028AC: warning: Unable to guess parameters of msvcrt.dll!_cexit.
+00401FC8: error: An error occurred while processing the statement ST83[Top_233 - 1 + 0x00:real64] = Mem69[esp_160 + 0x0000000C:real64].
+    Not handling (ptr8 (struct (0 T_1109 t0000))) and (union (8 u1) (int8 u0)) yet
+       at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 396
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 229
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 564
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 497
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 245
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 87
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 85
+l00401614: warning: Non-integral switch expression
+=== ABITests\ABITests\calls_m68k-linux-gnu
+=== ABITests\ABITests\calls_mips-linux-gnu
+=== ABITests\ABITests\calls_mipsel-linux-gnu
+Stripping SSA identifier numbers
+Decompiled 15 binaries in 4.85 seconds ---

@@ -1,0 +1,16 @@
+LIBRARY NAMPIPES
+EXPORTS
+    DOSMAKENMPIPE                               @1
+    DOSQNMPIPEINFO                              @2
+    DOSCONNECTNMPIPE                            @3
+    DOSDISCONNECTNMPIPE                         @4
+    DOSQNMPHANDSTATE                            @5
+    DOSSETNMPHANDSTATE                          @6
+    DOSPEEKNMPIPE                               @7
+    DOSWAITNMPIPE                               @8
+    DOSTRANSACTNMPIPE                           @9
+    DOSCALLNMPIPE                               @10
+    DOSRAWREADNMPIPE                            @11
+    DOSRAWWRITENMPIPE                           @12
+    DOSSETNMPIPESEM                             @13
+    DOSQNMPIPESEMSTATE                          @14

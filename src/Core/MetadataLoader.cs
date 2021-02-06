@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -46,7 +47,7 @@ namespace Reko.Core
         /// <returns></returns>
         public abstract TypeLibrary Load(IPlatform platform, TypeLibrary dstLib);
 
-        public virtual TypeLibrary Load(IPlatform platform, string moduleName, TypeLibrary dstLib)
+        public virtual TypeLibrary Load(IPlatform platform, string? moduleName, TypeLibrary dstLib)
         {
             return Load(platform, dstLib);
         }
@@ -55,7 +56,7 @@ namespace Reko.Core
     public class NullMetadataLoader : MetadataLoader
     {
         public NullMetadataLoader()
-            : base(null, "", new byte[0])
+            : base(new ServiceContainer(), "", new byte[0])
         {
         }
 

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +48,7 @@ namespace Reko.Core.Output
             {
                 StringBuilder sb = new StringBuilder("succ: ");
                 foreach (var s in block.Succ.Where(b => b != null))
-                    sb.AppendFormat(" {0}", s.Name);
+                    sb.AppendFormat(" {0}", s.DisplayName);
                 lines.Add(sb.ToString());
             }
         }

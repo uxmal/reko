@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,12 +32,13 @@ namespace Reko.Core
 	/// </summary>
 	public class Block
 	{
-		public Block(Procedure proc, string name)
+		public Block(Procedure proc, Address addr, string id)
 		{
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentException("Blocks must have a valid name.", nameof(name));
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentException("Blocks must have a valid id.", nameof(id));
 			this.Procedure = proc;
-			this.Name = name;
+            this.Address = addr;
+			this.Id = id;
 			this.Statements = new StatementList(this);
             // The great majority of blocks have at most two predecessors / successors.
             this.Pred = new List<Block>(2);
@@ -45,11 +46,33 @@ namespace Reko.Core
 		}
 
         /// <summary>
-        /// The starting address of the Block. Blocks are _not_ guaranteed 
+        /// The starting address of the block. Blocks are _not_ guaranteed 
         /// to have a starting address. 
         /// </summary>
         public Address Address { get; set; }
-        public string Name { get; }
+
+        /// <summary>
+        /// Unique identifier for the block. This identifier should be global across
+        /// the whole <see cref="Program" />.
+        /// </summary>
+        public string Id { get; }
+
+        /// <summary>
+        /// Optional user-supplied label. When rendering blocks, it takes 
+        /// precedence over the <see cref="Name"/> property, but should only 
+        /// be used for rendering purposes. It must not conflict with any
+        /// other UserLabel or Id of the blocks in the <see cref="Procedure" />.
+        /// </summary>
+        public string? UserLabel { get; set; }
+
+        /// <summary>
+        /// This string is used when rendering the block.
+        /// </summary>
+        public string DisplayName => UserLabel ?? Id;
+
+        /// <summary>
+        /// The <see cref="Procedure"/> this block belongs to.
+        /// </summary>
         public Procedure Procedure { get; set; }
 
         /// <summary>
@@ -72,10 +95,10 @@ namespace Reko.Core
         public List<Block> Pred { get; private set; }
         public List<Block> Succ { get; private set; }
         public StatementList Statements { get; private set; }
-        
+
 		public static void Coalesce(Block block, Block next)
 		{
-			foreach (Statement stm in next.Statements)
+			foreach (Statement stm in next.Statements.ToArray())
 			{
 				block.Statements.Add(stm);
 			}
@@ -114,7 +137,7 @@ namespace Reko.Core
 		public static bool ReplaceJumpsTo(Block block, Block next)
 		{
 			bool change = false;
-			foreach (Block p in block.Pred)
+			foreach (Block p in block.Pred.ToArray())
 			{
 				for (int i = 0; i < p.Succ.Count; ++i)
 				{
@@ -140,12 +163,12 @@ namespace Reko.Core
 
         public override string ToString()
         {
-            return Name;
+            return DisplayName;
         }
 
 		public void Write(TextWriter sb)
 		{
-			sb.WriteLine("{0}:", Name);
+			sb.WriteLine("{0}:", DisplayName);
 			WriteStatements(sb);
 		}
 

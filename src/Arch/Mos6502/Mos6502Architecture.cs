@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,25 +19,25 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Rtl;
-using Reko.Core.Lib;
-using Reko.Core.Machine;
-using Reko.Core.Types;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Operators;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core.Serialization;
-using Reko.Core.Operators;
 
 namespace Reko.Arch.Mos6502
 {
     public class Mos6502Architecture : ProcessorArchitecture
     {
-        private Dictionary<uint, FlagGroupStorage> flagGroups;
+        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Mos6502Architecture(string archId) : base(archId)
+        public Mos6502Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             CarryFlagMask = (uint)FlagM.CF;
             Endianness = EndianServices.Little;
@@ -51,7 +51,7 @@ namespace Reko.Arch.Mos6502
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new Disassembler((LeImageReader)imageReader);
+            return new Disassembler(this, (LeImageReader)imageReader);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -76,7 +76,11 @@ namespace Reko.Arch.Mos6502
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            throw new NotImplementedException();
+            var knownLinAddresses = knownAddresses
+                .Select(a => a.ToUInt16())
+                .ToHashSet();
+            return new Mos6502PointerScanner(rdr, knownLinAddresses, flags)
+                .Select(uAddr => Address.Ptr16(uAddr));
         }
 
         public override SortedList<string, int> GetMnemonicNames()
@@ -90,8 +94,7 @@ namespace Reko.Arch.Mos6502
 
         public override int? GetMnemonicNumber(string name)
         {
-            Mnemonic result;
-            if (!Enum.TryParse(name, true, out result))
+            if (!Enum.TryParse(name, true, out Mnemonic result))
                 return null;
             return (int)result;
         }
@@ -166,7 +169,7 @@ namespace Reko.Arch.Mos6502
             return Address.Ptr16(c.ToUInt16());
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             if (rdr.TryReadLeUInt16(out var uaddr))
             {
@@ -189,7 +192,7 @@ namespace Reko.Arch.Mos6502
             return sb.ToString();
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
         }

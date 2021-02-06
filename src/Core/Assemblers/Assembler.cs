@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,14 +24,33 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Assemblers
 {
-	public interface Assembler
+	public interface IAssembler
 	{
         Address StartAddress { get; }
         ICollection<ImageSymbol> EntryPoints { get; }
         ICollection<ImageSymbol> ImageSymbols { get; }
         Dictionary<Address, ImportReference> ImportReferences { get; }
 
+        /// <summary>
+        /// Assembles the provided assembly langugage program into a new
+        /// <see cref="Program"/>.
+        /// </summary>
         Program Assemble(Address baseAddress, TextReader reader);
-        Program AssembleFragment(Address baseAddress, string fragment);
+        Program AssembleFragment(Address baseAddress, string asmFragment);
+
+        /// <summary>
+        /// Assembles the assembly language program from <paramref name="reader"/> and mutates 
+        /// the provided <paramref name="program"/> starting at <paramref name="address"/>. 
+        /// </summary>
+        /// <param name="program">The program to mutate.</param>
+        /// <param name="baseAddress">Location at which to start writing machine code.</param>
+        /// <param name="reader">Assembly language source code.</param>
+        /// <returns>The number of machine code bytes written.</returns>
+        /// <remarks>
+        /// Side effects include: the memory areas of the program will be mutated, and <see cref="ImageSymbol"/>s
+        /// may be added to <see cref="Program.ImageSymbols"/>.
+        /// </remarks>
+        int AssembleAt(Program program, Address address, TextReader reader);
+        int AssembleFragmentAt(Program program, Address address, string asmFragment);
     }
 }

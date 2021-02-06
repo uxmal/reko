@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -44,26 +45,36 @@ namespace Reko.Core
         /// <param name="img">Program image to read</param>
         /// <param name="addr">Address at which to start</param>
         /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
-        public abstract EndianImageReader CreateImageReader(MemoryArea img, Address addr);
+        public abstract EndianImageReader CreateImageReader(MemoryArea mem, Address addr);
 
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred 
-        /// endianness of the processor, limited to the specified address
+        /// endianness of the processor, limited to the specified offset
         /// range.
         /// </summary>
-        /// <param name="img">Program image to read</param>
-        /// <param name="addr">Address at which to start</param>
+        /// <param name="memoryArea">Program image to read</param>
+        /// <param name="offsetBegin">Offset within the memory area which to begin reading.</param>
+        /// <param name="offsetEnd">Offset within the memory area at which to stop reading.</param>
         /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
-        public abstract EndianImageReader CreateImageReader(MemoryArea memoryArea, Address addrBegin, Address addrEnd);
+        public abstract EndianImageReader CreateImageReader(MemoryArea memoryArea, long offsetBegin, long offsetEnd);
+        
+        /// <summary>
+        /// Creates an <see cref="EndianImageReader" /> with the preferred
+        /// endianness of the processor.
+        /// </summary>
+        /// <param name="mem">Memory area to read</param>
+        /// <param name="addr">offset from the start of the image</param>
+        /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
+        public abstract EndianImageReader CreateImageReader(MemoryArea mem, long off);
 
         /// <summary>
         /// Creates an <see cref="EndianImageReader" /> with the preferred
         /// endianness of the processor.
         /// </summary>
-        /// <param name="img">Program image to read</param>
+        /// <param name="bytes">Memory area to read</param>
         /// <param name="addr">offset from the start of the image</param>
         /// <returns>An <seealso cref="ImageReader"/> of the appropriate endianness</returns>
-        public abstract EndianImageReader CreateImageReader(MemoryArea img, ulong off);
+        public abstract EndianImageReader CreateImageReader(byte[] bytes, long off);
 
         /// <summary>
         /// Creates an <see cref="ImageWriter" /> with the preferred 
@@ -81,6 +92,16 @@ namespace Reko.Core
         /// <param name="addr">Address to start writing at.</param>
         /// <returns>An <see cref="ImageWriter"/> of the appropriate endianness.</returns>
         public abstract ImageWriter CreateImageWriter(MemoryArea memoryArea, Address addr);
+
+        /// <summary>
+        /// Creates an <see cref="ImageWriter"/> with the preferred endianness, which will 
+        /// write into the given <paramref name="memoryArea"/>
+        /// starting at address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="bytes">Bytes to write to.</param>
+        /// <param name="addr">Address to start writing at.</param>
+        /// <returns>An <see cref="ImageWriter"/> of the appropriate endianness.</returns>
+        public abstract ImageWriter CreateImageWriter(byte [] bytes, long offset);
 
         /// <summary>
         /// Given a sequence of adjacent subexpressions, ordered by ascending memory access,
@@ -125,19 +146,24 @@ namespace Reko.Core
 
         private class LeServices : EndianServices
         {
-            public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
+            public override EndianImageReader CreateImageReader(MemoryArea mem, Address addr)
             {
-                return new LeImageReader(image, addr);
+                return mem.CreateLeReader(addr);
             }
 
-            public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+            public override EndianImageReader CreateImageReader(MemoryArea mem, long offsetBegin, long offsetEnd)
             {
-                return new LeImageReader(image, addrBegin, addrEnd);
+                return mem.CreateLeReader(offsetBegin, offsetEnd);
             }
 
-            public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
+            public override EndianImageReader CreateImageReader(MemoryArea mem, long offset)
             {
-                return new LeImageReader(image, offset);
+                return mem.CreateLeReader(offset);
+            }
+
+            public override EndianImageReader CreateImageReader(byte[] bytes, long off)
+            {
+                return new LeImageReader(bytes, off);
             }
 
             public override ImageWriter CreateImageWriter()
@@ -147,7 +173,12 @@ namespace Reko.Core
 
             public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
             {
-                return new LeImageWriter(mem, addr);
+                return mem.CreateLeWriter(addr);
+            }
+
+            public override ImageWriter CreateImageWriter(byte[] bytes, long offset)
+            {
+                return new LeImageWriter(bytes, (uint)offset);
             }
 
             public override MkSequence MakeSequence(DataType dataType, Expression[] accesses)
@@ -182,20 +213,26 @@ namespace Reko.Core
 
         private class BeServices : EndianServices
         {
-            public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
+            public override EndianImageReader CreateImageReader(MemoryArea mem, Address addr)
             {
-                return new BeImageReader(image, addr);
+                return mem.CreateBeReader(addr);
             }
 
-            public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+            public override EndianImageReader CreateImageReader(MemoryArea mem, long offsetBegin, long offsetEnd)
             {
-                return new BeImageReader(image, addrBegin, addrEnd);
+                return mem.CreateBeReader(offsetBegin, offsetEnd);
             }
 
-            public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
+            public override EndianImageReader CreateImageReader(MemoryArea mem, long offset)
             {
-                return new BeImageReader(image, offset);
+                return mem.CreateBeReader(offset);
             }
+
+            public override EndianImageReader CreateImageReader(byte[] bytes, long off)
+            {
+                return new BeImageReader(bytes, off);
+            }
+
 
             public override ImageWriter CreateImageWriter()
             {
@@ -204,7 +241,12 @@ namespace Reko.Core
 
             public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
             {
-                return new BeImageWriter(mem, addr);
+                return mem.CreateBeWriter(addr);
+            }
+
+            public override ImageWriter CreateImageWriter(byte[] bytes, long offset)
+            {
+                return new BeImageWriter(bytes, (uint)offset);
             }
 
             public override MkSequence MakeSequence(DataType dataType, Expression[] accesses)

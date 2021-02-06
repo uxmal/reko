@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,18 +35,18 @@ namespace Reko.Arch.WE32100
         public int Offset { get; set; }
         public bool Deferred { get; set; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Deferred)
-                writer.WriteChar('*');
+                renderer.WriteChar('*');
             if (Base == null)
             {
-                writer.WriteChar('$');
-                writer.WriteFormat("0x{0:X}", (uint) Offset);
+                renderer.WriteChar('$');
+                renderer.WriteFormat("0x{0:X}", (uint) Offset);
             }
             else
             {
-                writer.WriteFormat("{0}(%{1})", Offset, Base);
+                renderer.WriteFormat("{0}(%{1})", Offset, Base);
             }
         }
     }

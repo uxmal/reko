@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,21 @@ namespace Reko.Arch.Mips
 {
     public partial class MipsRewriter
     {
+        private void RewriteBalc(MipsInstruction instr)
+        {
+            m.Call(RewriteOperand0(instr.Operands[0]), 0);
+        }
+
+        private void RewriteBalrsc(MipsInstruction instr)
+        {
+            var rs = RewriteOperand0(instr.Operands[1]);
+            var rt = RewriteOperand0(instr.Operands[0]);
+            var addrNext = instr.Address + instr.Length;
+            var ea = m.IAdd(addrNext, m.IMul(rs, 2));
+            m.Assign(rt, addrNext);
+            m.Call(ea, 0);
+        }
+
         private void RewriteBgezal(MipsInstruction instr)
         {
             // The bgezal r0,XXXX instruction is aliased to bal (branch and link, or fn call)
@@ -64,7 +79,7 @@ namespace Reko.Arch.Mips
             var reg = RewriteOperand0(instr.Operands[0]);
             var bit = RewriteOperand(instr.Operands[1]);
             var addr = (Address) RewriteOperand0(instr.Operands[2]);
-            var test = condOp(host.PseudoProcedure("__bit", PrimitiveType.Bool, reg, bit));
+            var test = condOp(host.Intrinsic("__bit", true, PrimitiveType.Bool, reg, bit));
             m.Branch(test, addr, instr.InstructionClass);
         }
 
@@ -201,6 +216,12 @@ namespace Reko.Arch.Mips
             }
         }
 
+        private void RewriteJalr_hb(MipsInstruction instr)
+        {
+            m.SideEffect(host.Intrinsic("__clear_hazard_barrier", false, VoidType.Instance));
+            RewriteJalr(instr);
+        }
+
         private void RewriteJr(MipsInstruction instr)
         {
             var dst = RewriteOperand(instr.Operands[0]);
@@ -237,7 +258,7 @@ namespace Reko.Arch.Mips
             {
                 Terminates = true
             };
-            m.SideEffect(host.PseudoProcedure("__reserved_instruction", chr,
+            m.SideEffect(host.Intrinsic("__reserved_instruction", false, chr,
                 VoidType.Instance, RewriteOperand(instr.Operands[0])));
         }
     }

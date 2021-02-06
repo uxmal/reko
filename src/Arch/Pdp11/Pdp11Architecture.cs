@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
@@ -75,7 +76,8 @@ namespace Reko.Arch.Pdp11
         private FlagGroupStorage[] flagRegs;
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Pdp11Architecture(string archId) : base(archId)
+        public Pdp11Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             regs = new RegisterStorage[] { 
                 Registers.r0, Registers.r1, Registers.r2, Registers.r3, 

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,10 @@ using NUnit.Framework;
 using Reko.Arch.Pdp11;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,9 +42,9 @@ namespace Reko.UnitTests.Arch.Pdp11
             {
                 writer.WriteLeUInt16(word);
             }
-            var image = new MemoryArea(Address.Ptr16(0x200), bytes);
+            var image = new ByteMemoryArea(Address.Ptr16(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
-            var arch = new Pdp11Architecture("pdp11");
+            var arch = new Pdp11Architecture(new ServiceContainer(), "pdp11", new Dictionary<string, object>());
             var dasm = new Pdp11Disassembler(rdr, arch);
             return dasm.ToArray();
         }

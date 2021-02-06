@@ -1,8 +1,8 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 2017-2020 Christian Hostelet.
+ * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("C. Hostelet")]
 [assembly: AssemblyProduct(AssemblyMetadata.Product)]
-[assembly: AssemblyCopyright("Copyright © 2017-2020 Christian Hostelet - based on work from John Källén")]
+[assembly: AssemblyCopyright("Copyright © 2017-2021 Christian Hostelet - based on work from John Källén")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -45,15 +45,5 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("e75c3be2-0f98-48cd-943d-198159b57dc7")]
 
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Build and Revision Numbers
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion(AssemblyMetadata.AssemblyVersion)]
 [assembly: AssemblyFileVersion(AssemblyMetadata.AssemblyFileVersion)]

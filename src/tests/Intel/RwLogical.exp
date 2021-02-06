@@ -9,13 +9,15 @@
 // ebx:ebx
 // Z:Z
 // ds:ds
+// Top:Top
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax = ax & 0x000F
+	ax = ax & 0xF<16>
 	SZO = cond(ax)
 	C = false
 	ebx = ebx & ebx
@@ -24,7 +26,7 @@ l0C00_0000:
 	branch Test(EQ,Z) l0C00_000C
 	// succ:  l0C00_0008 l0C00_000C
 l0C00_0008:
-	Mem0[ds:0x0300:word16] = ax
+	Mem0[ds:0x300<16>:word16] = ax
 	// succ:  l0C00_000C
 l0C00_000C:
 	return

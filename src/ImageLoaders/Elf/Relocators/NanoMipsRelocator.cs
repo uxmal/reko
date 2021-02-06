@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,15 +33,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rel)
+        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rel)
         {
-            if (symbol == null)
-                return symbol;
-            if (loader.Sections.Count <= symbol.SectionIndex)
-                return symbol;
-            if (symbol.SectionIndex == 0)
-                return symbol;
-            var symSection = loader.Sections[(int) symbol.SectionIndex];
+            if (symbol == null ||
+                loader.Sections.Count <= symbol.SectionIndex)
+            {
+                return (null, null);
+            }
 
             Address addr;
             uint P;
@@ -67,7 +65,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             //{
 
             //}
-            return symbol;
+            return (addr, null);
         }
 
         public override string RelocationTypeToString(uint type)

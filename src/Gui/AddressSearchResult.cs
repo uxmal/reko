@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using Reko.Core;
 using Reko.Core.Types;
@@ -51,7 +53,7 @@ namespace Reko.Gui
             this.details = details;
         }
 
-        public ISearchResultView View { get; set; }
+        public ISearchResultView? View { get; set; }
 
         public int Count
         {
@@ -77,6 +79,8 @@ namespace Reko.Gui
 
         public void CreateColumns()
         {
+            if (View is null)
+                return;
             View.AddColumn("Program", 30);
             View.AddColumn("Address", 10);
             View.AddColumn("Type", 10);
@@ -194,7 +198,7 @@ namespace Reko.Gui
 
         public virtual bool Execute(CommandID cmdID)
         {
-            if (!View.IsFocused)
+            if (View is null || !View.IsFocused)
                 return false;
             switch (cmdID.ID)
             {
@@ -222,10 +226,11 @@ namespace Reko.Gui
 
         public void MarkType()
         {
+            if (View is null)
+                return;
             View.ShowTypeMarker(userText =>
             {
-                var parser = new HungarianParser();
-                var dataType = parser.Parse(userText);
+                var dataType = HungarianParser.Parse(userText);
                 if (dataType == null)
                     return;
                 foreach (var pa in SelectedHits())
@@ -252,7 +257,10 @@ namespace Reko.Gui
         /// <returns></returns>
         public IEnumerable<AddressSearchHit> SelectedHits()
         {
-            return View.SelectedIndices.Select(i => hits[i]);
+            if (View is null)
+                return new AddressSearchHit[0];
+            else 
+                return View.SelectedIndices.Select(i => hits[i]);
         }
 
         public void ViewFindWhatPointsHere()

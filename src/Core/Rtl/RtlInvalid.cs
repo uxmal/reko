@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,11 @@ namespace Reko.Core.Rtl
 {
     public sealed class RtlInvalid : RtlInstruction
     {
+        public RtlInvalid()
+        {
+            this.Class = InstrClass.Invalid;
+        }
+
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitInvalid(this);

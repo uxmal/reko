@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ namespace Reko.Arch.Arm.AArch32
                 if (!dasm.rdr.TryReadLeUInt16(out var wNext))
                     return null;
                 wInstr = (wInstr << 16) | wNext;
-                DumpMaskedInstruction(wInstr, 0xF << (9 + 16), "");
+                DumpMaskedInstruction(32, wInstr, 0xF << (9 + 16), "");
                 return decoders[SBitfield(wInstr, 9 + 16, 4)].Decode(wInstr, dasm);
             }
         }
@@ -213,13 +213,13 @@ namespace Reko.Arch.Arm.AArch32
                 {
                     Mnemonic = Mnemonic.it,
                     InstructionClass = InstrClass.Linear,
-                    condition = (ArmCondition)SBitfield(wInstr, 4, 4),
+                    Condition = (ArmCondition)SBitfield(wInstr, 4, 4),
                     itmask = (byte)SBitfield(wInstr, 0, 4),
                     Operands = MachineInstruction.NoOperands
                 };
                 // Add an extra bit for the 't' in 'it'.
                 dasm.itState = instr.itmask | (SBitfield(wInstr, 4, 1) << 4);
-                dasm.itCondition = instr.condition;
+                dasm.itCondition = instr.Condition;
                 return instr;
             }
         }

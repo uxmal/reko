@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2019 John Källén.
+* Copyright (C) 1999-2021 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 
 void ArmRewriter::RewriteCdp(const char *name)
 {
-	auto cdp = host->EnsurePseudoProcedure(name, BaseType::Void, instr->detail->arm.op_count);
+	auto cdp = host->EnsureIntrinsicProcedure(name, false, BaseType::Void, instr->detail->arm.op_count);
 	auto begin = &instr->detail->arm.operands[0];
 	auto end = begin + instr->detail->arm.op_count;
 	for (auto op = begin; op != end; ++op)
@@ -38,7 +38,7 @@ void ArmRewriter::RewriteCps()
 {
 	if (instr->detail->arm.cps_mode == ARM_CPSMODE_ID)
 	{
-		m.SideEffect(m.Fn(host->EnsurePseudoProcedure("__cps_id", BaseType::Void, 1)));
+		m.SideEffect(m.Fn(host->EnsureIntrinsicProcedure("__cps_id", false, BaseType::Void, 1)));
 		return;
 	}
 	NotImplementedYet();
@@ -49,7 +49,7 @@ void ArmRewriter::RewriteDmb()
 	auto memBarrier = MemBarrierName(instr->detail->arm.mem_barrier);
 	char name[100];
 	snprintf(name, sizeof(name), "__dmb_%s", memBarrier);
-	m.SideEffect(m.Fn(host->EnsurePseudoProcedure(name, BaseType::Void, 1)));
+	m.SideEffect(m.Fn(host->EnsureIntrinsicProcedure(name, false, BaseType::Void, 1)));
 }
 
 void ArmRewriter::RewriteLdc(const char * fnName)
@@ -57,7 +57,7 @@ void ArmRewriter::RewriteLdc(const char * fnName)
 	auto src2 = Operand(Src2());
 	auto tmp = host->CreateTemporary(BaseType::Word32);
 	m.Assign(tmp, src2);
-	auto intrinsic = host->EnsurePseudoProcedure(fnName, BaseType::Word32, 2);
+	auto intrinsic = host->EnsureIntrinsicProcedure(fnName, false, BaseType::Word32, 2);
 	m.AddArg(Operand(Src1()));
 	m.AddArg(tmp);
 	auto fn = m.Fn(intrinsic);
@@ -75,7 +75,7 @@ void ArmRewriter::RewriteMcr()
 		m.AddArg(Operand(*op));
 		++cArgs;
 	}
-	auto ppp = host->EnsurePseudoProcedure("__mcr", BaseType::Void, cArgs);
+	auto ppp = host->EnsureIntrinsicProcedure("__mcr", false, BaseType::Void, cArgs);
 	m.SideEffect(m.Fn(ppp));
 }
 
@@ -98,20 +98,20 @@ void ArmRewriter::RewriteMrc()
 		}
 		++cArgs;
 	}
-	auto ppp = host->EnsurePseudoProcedure("__mrc", BaseType::Void, cArgs-1);
+	auto ppp = host->EnsureIntrinsicProcedure("__mrc", false, BaseType::Void, cArgs-1);
 	m.Assign(regDst, m.Fn(ppp));
 }
 
 void ArmRewriter::RewriteMrs()
 {
-	auto ppp = host->EnsurePseudoProcedure("__mrs", BaseType::Word32, 1);
+	auto ppp = host->EnsureIntrinsicProcedure("__mrs", false, BaseType::Word32, 1);
 	m.AddArg(Operand(Src1()));
 	m.Assign(Operand(Dst()), m.Fn(ppp));
 }
 
 void ArmRewriter::RewriteMsr()
 {
-	auto ppp = host->EnsurePseudoProcedure("__msr", BaseType::Word32, 2);
+	auto ppp = host->EnsureIntrinsicProcedure("__msr", false, BaseType::Word32, 2);
 	m.AddArg(Operand(Dst()));
 	m.AddArg(Operand(Src1()));
 	m.SideEffect(m.Fn(ppp));
@@ -119,7 +119,7 @@ void ArmRewriter::RewriteMsr()
 
 void ArmRewriter::RewriteStc(const char * name)
 {
-	auto intrinsic = host->EnsurePseudoProcedure("__stc", BaseType::Word32, 3);
+	auto intrinsic = host->EnsureIntrinsicProcedure("__stc", false, BaseType::Word32, 3);
 	m.AddArg(Operand(Dst()));
 	m.AddArg(Operand(Src1()));
 	m.AddArg(Operand(Src2()));
@@ -129,7 +129,7 @@ void ArmRewriter::RewriteStc(const char * name)
 void ArmRewriter::RewriteSvc()
 {
 	this->rtlClass = InstrClass::Transfer | InstrClass::Call;
-	auto intrinsic = host->EnsurePseudoProcedure("__syscall", BaseType::Void, 1);
+	auto intrinsic = host->EnsureIntrinsicProcedure("__syscall", false, BaseType::Void, 1);
 	m.AddArg(Operand(Dst()));
 	m.SideEffect(m.Fn(intrinsic));
 }
@@ -137,7 +137,7 @@ void ArmRewriter::RewriteSvc()
 void ArmRewriter::RewriteTrap()
 {
 	auto trapNo = m.UInt32(instr->bytes[0]);
-	auto ppp = host->EnsurePseudoProcedure("__syscall", BaseType::Word32, 1);
+	auto ppp = host->EnsureIntrinsicProcedure("__syscall", false, BaseType::Word32, 1);
 	m.AddArg(trapNo);
 	m.SideEffect(m.Fn(ppp));
 }
@@ -145,7 +145,7 @@ void ArmRewriter::RewriteTrap()
 void ArmRewriter::RewriteUdf()
 {
 	auto trapNo = m.UInt32(instr->bytes[0]);
-	auto ppp = host->EnsurePseudoProcedure("__syscall", BaseType::Word32, 1);
+	auto ppp = host->EnsureIntrinsicProcedure("__syscall", false, BaseType::Word32, 1);
 	m.AddArg(trapNo);
 	m.SideEffect(m.Fn(ppp));
 }

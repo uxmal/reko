@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 
 namespace Reko.Arch.X86
@@ -30,7 +31,7 @@ namespace Reko.Arch.X86
             return (0x34 <= vectorNumber && vectorNumber <= 0x3E);
         }
 
-        private X86Instruction RewriteEmulated8087Instruction(byte vectorNumber)
+        private X86Instruction? RewriteEmulated8087Instruction(byte vectorNumber)
         {
             //$TODO: check for nulls.
             switch (vectorNumber)
@@ -50,14 +51,15 @@ namespace Reko.Arch.X86
             throw new InvalidOperationException();
         }
 
-        private X86Instruction Patchx87Instruction(byte op)
+        private X86Instruction? Patchx87Instruction(byte op)
         {
             long off = rdr.Offset - 2;
+            var bytes = ((ByteImageReader) rdr).Bytes;
             // On a real 8086, the NOP was a FWAIT, but
             // we violate this so that the resulting 
             // disassembled code is actually legible.
-            rdr.Bytes[off] = 0x90;      // NOP
-            rdr.Bytes[off + 1] = op;
+            bytes[off] = 0x90;      // NOP
+            bytes[off + 1] = op;
             rdr.Offset = off;
             return DisassembleInstruction();
         }
@@ -69,15 +71,16 @@ namespace Reko.Arch.X86
             0x26, // ES
         };  
 
-        private X86Instruction Patchx87InstructionSegPrefix()
+        private X86Instruction? Patchx87InstructionSegPrefix()
         {
-            var modifiedEscOp = rdr.Bytes[rdr.Offset];
+            var bytes = ((ByteImageReader) rdr).Bytes;
+            var modifiedEscOp = bytes[rdr.Offset];
             long off = rdr.Offset - 2;
-            rdr.Bytes[off] = 0x90;      // NOP
+            bytes[off] = 0x90;      // NOP
             // Segment override is encoded as the top two bits 
             // of modifiedEscOp.
-            rdr.Bytes[off + 1] = patchx87prefixes[modifiedEscOp >> 6];
-            rdr.Bytes[off + 2] = (byte)(modifiedEscOp | 0xC0);
+            bytes[off + 1] = patchx87prefixes[modifiedEscOp >> 6];
+            bytes[off + 2] = (byte)(modifiedEscOp | 0xC0);
             rdr.Offset = off;
             return DisassembleInstruction();
         }
@@ -87,9 +90,9 @@ namespace Reko.Arch.X86
         /// "short cuts". None of these correspond to a real x87
         /// instruction, so we have to simulate them.
         /// </summary>
-        private X86Instruction Emitx87BorlandShortcut()
+        private X86Instruction? Emitx87BorlandShortcut()
         {
-            byte b1 = rdr.Bytes[rdr.Offset];
+            byte b1 = ((ByteImageReader)rdr).Bytes[rdr.Offset];
             rdr.Offset += 2;    // Skip the two trailing bytes.
             switch (b1)
             {
@@ -141,6 +144,8 @@ namespace Reko.Arch.X86
             }
         }
 
+        partial class InstructionSet
+        { 
         private static Decoder[] CreateFpuDecoders()
         {
             return new Decoder[]  
@@ -299,14 +304,14 @@ namespace Reko.Arch.X86
 				// D9 F0
 				Instr(Mnemonic.f2xm1, F,f),
 				Instr(Mnemonic.fyl2x, F,f),
-				Instr(Mnemonic.fptan, F,f),
-				Instr(Mnemonic.fpatan, F,f),
+				Instr(Mnemonic.fptan),
+				Instr(Mnemonic.fpatan),
 				Instr(Mnemonic.fxtract, f),
-				Instr(Mnemonic.fprem1, F,f),
+				Instr(Mnemonic.fprem1),
 				Instr(Mnemonic.fdecstp, F,f),
 				Instr(Mnemonic.fincstp, F,f),
 						
-				Instr(Mnemonic.fprem, F,f),
+				Instr(Mnemonic.fprem),
 				Instr(Mnemonic.fyl2xp1, F,f),
 				Instr(Mnemonic.fsqrt),
 				Instr(Mnemonic.fsincos),
@@ -762,7 +767,7 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.fistp, Mq),
 
 				// DF C0
-				Instr(Mnemonic.ffreep, F),
+				Instr(Mnemonic.ffreep, F),  // ffreep is rarely used.
 				Instr(Mnemonic.ffreep, F),
 				Instr(Mnemonic.ffreep, F),
 				Instr(Mnemonic.ffreep, F),
@@ -800,7 +805,7 @@ namespace Reko.Arch.X86
 				s_invalid,
 						
 				// DF E0
-				Instr(Mnemonic.fstsw, aw),
+				Instr(Mnemonic.fstsw, AX),
 				s_invalid,
 				s_invalid,
 				s_invalid,
@@ -839,4 +844,5 @@ namespace Reko.Arch.X86
             };
         }
     }
+}
 }

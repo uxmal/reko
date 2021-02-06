@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.Structure
 	/// </summary>
 	public class ControlFlowGraphCleaner
 	{
-		private Procedure proc;
+		private readonly Procedure proc;
 		private bool dirty;
 
 		public ControlFlowGraphCleaner(Procedure proc)
@@ -59,7 +59,7 @@ namespace Reko.Structure
 				return false;
 			if (block.Statements.Count < 1)
 				return false;
-			return block.Statements.Last.Instruction is Branch;
+			return block.Statements.Last!.Instruction is Branch;
 		}
 
 		public bool EndsInJump(Block block)
@@ -68,17 +68,17 @@ namespace Reko.Structure
                 return false;
             if (block.Statements.Count < 1)
                 return true;
-            return !(block.Statements.Last.Instruction is SwitchInstruction);
+            return !(block.Statements.Last!.Instruction is SwitchInstruction);
 		}
 
 		private void ReplaceBranchWithJump(Block block)
 		{
             Debug.Assert(block.Statements.Count >= 1);
-            Debug.Assert(block.Statements.Last.Instruction is Branch);
+            Debug.Assert(block.Statements.Last!.Instruction is Branch);
             var branch = block.Statements.Last;
             var condition = ((Branch)branch.Instruction).Condition;
             block.Statements.Remove(branch);
-            if (IsCritical(condition))
+            if (CriticalInstruction.IsCritical(condition))
             {
                 var linearAddr = branch.LinearAddress;
                 block.Statements.Add(linearAddr, new SideEffect(condition));
@@ -89,7 +89,7 @@ namespace Reko.Structure
 
 		private void ReplaceJumpWithBranch(Block b1, Block b2)
 		{
-			Branch br = b2.Statements.Last.Instruction as Branch;
+            Branch br = (Branch) b2.Statements.Last!.Instruction;
             proc.ControlGraph.RemoveEdge(b1, b2);
 			b1.Statements.Add(b2.Statements.Last.LinearAddress, new Branch(br.Condition, b2.Succ[1]));
             proc.ControlGraph.AddEdge(b1, b2.Succ[0]);
@@ -158,11 +158,5 @@ namespace Reko.Structure
 
 			proc.Dump(true);
 		}
-
-        private bool IsCritical(Expression e)
-        {
-            var ci = new CriticalInstruction();
-            return ci.IsCritical(e);
-        }
 	}
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion 
+
+#nullable enable
 
 using Reko.Core.Operators;
 using Reko.Core.Types;
@@ -39,8 +41,8 @@ namespace Reko.Core.Expressions
 			this.Structure = expr; this.Field = field;
 		}
 
-        public Expression Structure { get; private set; }
-        public Field Field { get; private set; }
+        public Expression Structure { get; }
+        public Field Field { get; }
 
         public override IEnumerable<Expression> Children
         {

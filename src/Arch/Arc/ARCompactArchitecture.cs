@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -34,7 +35,8 @@ namespace Reko.Arch.Arc
     {
         private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public ARCompactArchitecture(string archId) : base(archId)
+        public ARCompactArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             base.Endianness = EndianServices.Little;
             base.FramePointerType = PrimitiveType.Ptr32;
@@ -43,6 +45,7 @@ namespace Reko.Arch.Arc
             base.StackRegister = Registers.Sp;
             base.WordWidth = PrimitiveType.Word32;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
+            LoadUserOptions(options);
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -33,7 +34,8 @@ namespace Reko.Arch.Blackfin
 {
     public class BlackfinArchitecture : ProcessorArchitecture
     {
-        public BlackfinArchitecture(string archId) : base(archId)
+        public BlackfinArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             Endianness = EndianServices.Little;
             PointerType = PrimitiveType.Ptr32;

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,11 @@ using System.Diagnostics;
 using System.Text;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.Mips
@@ -69,10 +72,10 @@ Architecture */
                 switch (instr.Mnemonic)
                 {
                 default:
-                    host.Error(
+                    host.Warn(
                         instr.Address,
                         string.Format("MIPS instruction '{0}' is not supported yet.", instr));
-                    EmitUnitTest();
+                    EmitUnitTest(instr);
                     goto case Mnemonic.illegal;
                 case Mnemonic.illegal:
                     iclass = InstrClass.Invalid; m.Invalid(); break;
@@ -89,6 +92,7 @@ Architecture */
                 case Mnemonic.lbu: RewriteLoad(instr, PrimitiveType.Byte); break;
                 case Mnemonic.lh: RewriteLoad(instr, PrimitiveType.Int16); break;
                 case Mnemonic.lhu: RewriteLoad(instr, PrimitiveType.UInt16); break;
+                case Mnemonic.la: RewriteMove(instr); break;
                 case Mnemonic.li: RewriteMove(instr); break;
                 case Mnemonic.lw: RewriteLoad(instr, PrimitiveType.Word32); break;
                 case Mnemonic.mfhi: RewriteMf(instr, arch.hi); break;
@@ -123,31 +127,11 @@ Architecture */
             return GetEnumerator();
         }
 
-#if DEBUG
-        private static readonly HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
-        protected void EmitUnitTest()
+        protected void EmitUnitTest(MipsInstruction instr)
         {
-            if (rdr == null || seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            int cbInstr = dasm.Current.Length;
-            r2.Offset -= cbInstr;
-            var uInstr = cbInstr == 2 ? r2.ReadUInt16() : r2.ReadUInt32();
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void Mips16eRw_{0}()", dasm.Current.Mnemonic);
-            Debug.WriteLine("        {");
-            Debug.WriteLine("            AssertCode(0x{0:X8},   // {1}", uInstr, dasm.Current);
-            Debug.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", cbInstr);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("Mips16eRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
-#else
-        private void EmitUnitTest() { }
-#endif
 
         private Expression Rewrite(MachineOperand op)
         {
@@ -157,6 +141,8 @@ Architecture */
                 return binder.EnsureRegister(rop.Register);
             case ImmediateOperand imm:
                 return imm.Value;
+            case AddressOperand addr:
+                return addr.Address;
             case IndirectOperand mem:
                 Expression ea;
                 if (mem.Base == arch.pc)
@@ -234,7 +220,7 @@ Architecture */
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
             var dst = ((AddressOperand) instr.Operands[0]).Address;
-            throw new NotImplementedException("m.CallXD(dst, 0, arch)");
+            m.CallXD(dst, 0, arch);
         }
 
         private void RewriteLoad(MipsInstruction instr, PrimitiveType dt)
@@ -246,7 +232,7 @@ Architecture */
             {
                 // If the source is smaller than the destination register,
                 // perform a sign/zero extension/conversion.
-                src = m.Cast(arch.WordWidth, src);
+                src = m.Convert(src, src.DataType, arch.WordWidth);
             }
             m.Assign(dst, src);
         }
@@ -264,9 +250,27 @@ Architecture */
             m.Assign(opDst, binder.EnsureRegister(reg));
         }
 
+        private static readonly int [] saveRegs = new [] { 31, 17, 16 };
+
         private void RewriteSave(MipsInstruction instr)
         {
+            var sp = binder.EnsureRegister(arch.StackRegister);
+            var mop = (MultiRegisterOperand) instr.Operands[0];
+            int decrement = 0;
 
+            foreach (var iReg in saveRegs)
+            {
+                var reg = arch.GeneralRegs[iReg];
+                if (Bits.IsBitSet(mop.Bitmask, iReg))
+                {
+                    decrement -= reg.DataType.Size;
+                    m.Assign(m.Mem(reg.DataType, m.AddSubSignedInt(sp, decrement)), binder.EnsureRegister(reg));
+                }
+            }
+            if (decrement != 0)
+            {
+                m.Assign(sp, m.AddSubSignedInt(sp, decrement));
+            }
         }
 
         private void RewriteScc(MipsInstruction instr, Func<Expression, Expression, Expression> fn)
@@ -282,7 +286,7 @@ Architecture */
             var src = Rewrite(instr.Operands[0]);
             var dst = Rewrite(instr.Operands[1]);
             if (dst.DataType.Size < src.DataType.Size)
-                src = m.Cast(dst.DataType, src);
+                src = m.Slice(dst.DataType, src, 0);
             m.Assign(dst, src);
         }
 

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Core.CLanguage
         {
             var dlexer = new CDirectiveLexer(
                 parserState, 
-                new CLexer(new StringReader(input)));
+                new CLexer(new StringReader(input), CLexer.GccKeywords));
             lexer = new LookAheadLexer(dlexer);
         }
 

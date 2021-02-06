@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -56,6 +57,21 @@ namespace Reko.Arch.Xtensa
             m.Assign(dst, m.IAdd(src2, m.IMul(src1, scale)));
         }
 
+        private void RewriteAll(int n, Func<Expression, Expression, Expression> fn)
+        {
+            var bReg = ((RegisterOperand) this.instr.Operands[1]).Register;
+            var bNumber = bReg.Number - Registers.b0.Number;
+            Debug.Assert(n >= 0);
+            Expression e = binder.EnsureRegister(bReg);
+            for (int i = 1; i < n; ++i)
+            {
+                bReg = arch.GetBoolRegister(bNumber + i);
+                e = fn(e, binder.EnsureRegister(bReg));
+            }
+            var dst = RewriteOp(this.instr.Operands[0]);
+            m.Assign(dst, e);
+        }
+
         private void RewriteSubx(int scale)
         {
             var src1 = RewriteOp(this.instr.Operands[1]);
@@ -67,33 +83,63 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteBinOp(Func<Expression, Expression, Expression> fn)
         {
-            var src1 = RewriteOp(dasm.Current.Operands[1]);
-            var src2 = RewriteOp(dasm.Current.Operands[2]);
-            var dst = RewriteOp(dasm.Current.Operands[0]);
+            var src1 = RewriteOp(instr.Operands[1]);
+            var src2 = RewriteOp(instr.Operands[2]);
+            var dst = RewriteOp(instr.Operands[0]);
             m.Assign(dst, fn(src1, src2));
         }
 
-        private void RewritePseudoFn(string name)
+        private void RewriteIntrinsicFn(string name, bool isIdempotent)
         {
             var aSrc = instr.Operands.Skip(1)
                 .Select(o => RewriteOp(o))
                 .ToArray();
-            var dst = RewriteOp(dasm.Current.Operands[0]);
-            m.Assign(dst, host.PseudoProcedure(name, dst.DataType, aSrc));
+            var dst = RewriteOp(instr.Operands[0]);
+            m.Assign(dst, host.Intrinsic(name, isIdempotent, dst.DataType, aSrc));
         }
 
-        private void RewritePseudoProc(string name)
+        private void RewriteIntrinsicProc(string name)
         {
             var aSrc = instr.Operands
                 .Select(o => RewriteOp(o))
                 .ToArray();
-            m.SideEffect(host.PseudoProcedure(name, VoidType.Instance, aSrc));
+            m.SideEffect(host.Intrinsic(name, false, VoidType.Instance, aSrc));
+        }
+
+        private void RewriteClamps()
+        {
+            var src = RewriteOp(instr.Operands[1]);
+            var clampSize = RewriteOp(instr.Operands[2]);
+            var dst = RewriteOp(instr.Operands[0]);
+            m.Assign(dst, host.Intrinsic("__clamps", true, PrimitiveType.Int32, src, clampSize));
         }
 
         private void RewriteCopy()
         {
             var src = RewriteOp(this.instr.Operands[1]);
             var dst = RewriteOp(this.instr.Operands[0]);
+            m.Assign(dst, src);
+        }
+
+        private void RewriteCvtFloatToIntegral(string fnName, PrimitiveType dtIntegral)
+        {
+            var src = RewriteOp(instr.Operands[1]);
+            var scale = (Constant) RewriteOp(instr.Operands[2]);
+            var dst = RewriteOp(instr.Operands[0]);
+            if (scale.GetValue() is float rScale && rScale != 1.0F)
+            {
+                src = m.FMul(src, scale);
+            }
+            m.Assign(dst, host.Intrinsic(fnName, true, dtIntegral, src));
+        }
+
+        /// <summary>
+        /// Generate a copy when the dst and src are reversed in the assembly language instruction.
+        /// </summary>
+        private void RewriteInverseCopy()
+        {
+            var src = RewriteOp(this.instr.Operands[0]);
+            var dst = RewriteOp(this.instr.Operands[1]);
             m.Assign(dst, src);
         }
 
@@ -114,6 +160,54 @@ namespace Reko.Arch.Xtensa
                 m.And(shifted, mask));
         }
 
+        private void RewriteEntry()
+        {
+            var frameSize = RewriteOp(this.instr.Operands[1]);
+            var reg = RewriteOp(this.instr.Operands[0]);
+            m.Assign(reg, m.ISub(reg, frameSize));
+        }
+
+        private void RewriteMax()
+        {
+            var src1 = RewriteOp(this.instr.Operands[1]);
+            var src2 = RewriteOp(this.instr.Operands[2]);
+            var dst = RewriteOp(this.instr.Operands[0]);
+            m.Assign(dst, host.Intrinsic("max", true, PrimitiveType.Int32, src1, src2));
+        }
+
+        private void RewriteMaxu()
+        {
+            var src1 = RewriteOp(this.instr.Operands[1]);
+            var src2 = RewriteOp(this.instr.Operands[2]);
+            var dst = RewriteOp(this.instr.Operands[0]);
+            m.Assign(dst, host.Intrinsic("__maxu", true, PrimitiveType.UInt32, src1, src2));
+        }
+
+        private void RewriteMin()
+        {
+            var src1 = RewriteOp(this.instr.Operands[1]);
+            var src2 = RewriteOp(this.instr.Operands[2]);
+            var dst = RewriteOp(this.instr.Operands[0]);
+            m.Assign(dst, host.Intrinsic("min", true, PrimitiveType.Int32, src1, src2));
+        }
+
+        private void RewriteMinu()
+        {
+            var src1 = RewriteOp(this.instr.Operands[1]);
+            var src2 = RewriteOp(this.instr.Operands[2]);
+            var dst = RewriteOp(this.instr.Operands[0]);
+            m.Assign(dst, host.Intrinsic("__minu", true, PrimitiveType.UInt32, src1, src2));
+        }
+
+        private void RewriteMovft(Func<Expression, Expression> fn)
+        {
+            var flag = RewriteOp(this.instr.Operands[2]);
+            var src = RewriteOp(this.instr.Operands[1]);
+            var dst = RewriteOp(this.instr.Operands[0]);
+            m.Branch(fn(flag), instr.Address + instr.Length);
+            m.Assign(dst, src);
+        }
+
         private void RewriteNop()
         {
             m.Nop();
@@ -121,9 +215,9 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteOr()
         {
-            var src1 = RewriteOp(dasm.Current.Operands[1]);
-            var src2 = RewriteOp(dasm.Current.Operands[2]);
-            var dst = RewriteOp(dasm.Current.Operands[0]);
+            var src1 = RewriteOp(instr.Operands[1]);
+            var src2 = RewriteOp(instr.Operands[2]);
+            var dst = RewriteOp(instr.Operands[0]);
             m.Assign(dst, m.Or(src1, src2));
         }
 
@@ -131,13 +225,21 @@ namespace Reko.Arch.Xtensa
         {
             var dst = RewriteOp(this.instr.Operands[0]);
             var offset = Constant.UInt32(
-                        ((ImmediateOperand)dasm.Current.Operands[2]).Value.ToUInt32());
+                        ((ImmediateOperand)instr.Operands[2]).Value.ToUInt32());
             m.Assign(
                 dst,
                 m.Mem32(
                     m.IAdd(
-                        RewriteOp(dasm.Current.Operands[1]),
+                        RewriteOp(instr.Operands[1]),
                         offset)));
+        }
+
+        private void RewriteLddecinc(Func<Expression, Expression, Expression> fn)
+        {
+            var ptr = RewriteOp(instr.Operands[1]);
+            m.Assign(ptr, fn(ptr, m.Int32(4)));
+            var dst = RewriteOp(instr.Operands[0]);
+            m.Assign(dst, m.Mem32(ptr));
         }
 
         private void RewriteLsi(DataType dt)
@@ -152,7 +254,7 @@ namespace Reko.Arch.Xtensa
                         RewriteOp(instr.Operands[1]),
                         Constant.UInt32(
                         ((ImmediateOperand)instr.Operands[2]).Value.ToUInt32()))));
-            m.Assign(dst, m.Cast(PrimitiveType.Int32, tmp));
+            m.Assign(dst, m.Convert(tmp, tmp.DataType, PrimitiveType.Int32));
         }
 
         private void RewriteLsiu()
@@ -190,7 +292,15 @@ namespace Reko.Arch.Xtensa
                         RewriteOp(instr.Operands[1]),
                         Constant.UInt32(
                         ((ImmediateOperand)instr.Operands[2]).Value.ToUInt32()))));
-            m.Assign(dst, m.Cast(PrimitiveType.UInt32, tmp));
+            m.Assign(dst, m.Convert(tmp, tmp.DataType, PrimitiveType.UInt32));
+        }
+
+        private void RewriteMaddSub(Func<Expression, Expression, Expression> fn)
+        {
+            var src1 = RewriteOp(this.instr.Operands[1]);
+            var src2 = RewriteOp(this.instr.Operands[2]);
+            var dst = RewriteOp(this.instr.Operands[0]);
+            m.Assign(dst, fn(dst, m.FMul(src1, src2)));
         }
 
         private void RewriteMovcc(Func<Expression,Expression,Expression> fn)
@@ -213,6 +323,47 @@ namespace Reko.Arch.Xtensa
             m.Assign(dst, src);
         }
 
+        private void RewriteMul(string fnName, PrimitiveType dtProduct)
+        {
+            var src1 = RewriteOp(instr.Operands[0]);
+            var src2 = RewriteOp(instr.Operands[1]);
+            var product = host.Intrinsic(fnName, true, dtProduct, src1, src2);
+            var dst = binder.EnsureSequence(PrimitiveType.CreateWord(40), Registers.ACCHI, Registers.ACCLO);
+            m.Assign(dst, product);
+        }
+
+        private void RewriteMula(string fnName, PrimitiveType dtProduct)
+        {
+            var src1 = RewriteOp(instr.Operands[0]);
+            var src2 = RewriteOp(instr.Operands[1]);
+            var product = host.Intrinsic(fnName, true, dtProduct, src1, src2);
+            var dst = binder.EnsureSequence(PrimitiveType.CreateWord(40), Registers.ACCHI, Registers.ACCLO);
+            m.Assign(dst, m.IAdd(dst, product));
+        }
+
+        private void RewriteMulaIncDec(string fnName, PrimitiveType dtProduct, int increment)
+        {
+            var addr = RewriteOp(instr.Operands[1]);
+            m.Assign(addr, m.AddSubSignedInt(addr, increment));
+            var src1 = RewriteOp(instr.Operands[2]);
+            var src2 = RewriteOp(instr.Operands[3]);
+            var product = host.Intrinsic(fnName, true, dtProduct, src1, src2);
+            var dst = binder.EnsureSequence(PrimitiveType.CreateWord(40), Registers.ACCHI, Registers.ACCLO);
+            m.Assign(dst, m.IAdd(dst, product));
+            m.Assign(RewriteOp(instr.Operands[0]), m.Mem32(addr));
+        }
+
+        private void RewriteMuls(string fnName, PrimitiveType dtProduct)
+        {
+            var src1 = RewriteOp(instr.Operands[0]);
+            var src2 = RewriteOp(instr.Operands[1]);
+            var product = host.Intrinsic(fnName, true, dtProduct, src1, src2);
+            var dst = binder.EnsureSequence(PrimitiveType.CreateWord(40), Registers.ACCHI, Registers.ACCLO);
+            m.Assign(dst, m.ISub(dst, product));
+        }
+
+
+
         private void RewriteMul16(Func<Expression, Expression, Expression> mul, Domain dom)
         {
             var src1 = RewriteOp(instr.Operands[1]);
@@ -220,17 +371,27 @@ namespace Reko.Arch.Xtensa
             var dst = RewriteOp(instr.Operands[0]);
             var tmp1 = binder.CreateTemporary(PrimitiveType.Create(dom, 16));
             var tmp2 = binder.CreateTemporary(PrimitiveType.Create(dom, 16));
-            m.Assign(tmp1, m.Cast(tmp1.DataType, src1));
-            m.Assign(tmp2, m.Cast(tmp2.DataType, src2));
+            m.Assign(tmp1, m.Convert(src1, src1.DataType, tmp1.DataType));
+            m.Assign(tmp2, m.Convert(src2, src2.DataType, tmp2.DataType));
             m.Assign(dst, mul(tmp1, tmp2));
+        }
+
+
+        private void RewriteMulh(string fnName, PrimitiveType dt)
+        {
+            var src1 = RewriteOp(instr.Operands[1]);
+            var src2 = RewriteOp(instr.Operands[2]);
+            var dst = RewriteOp(instr.Operands[0]);
+            var mul = host.Intrinsic(fnName, true, dt, src1, src2);
+            m.Assign(dst, mul);
         }
 
         private void RewriteSi(DataType dt)
         {
-            var src = RewriteOp(dasm.Current.Operands[0]);
-            var ea = RewriteOp(dasm.Current.Operands[1]);
+            var src = RewriteOp(instr.Operands[0]);
+            var ea = RewriteOp(instr.Operands[1]);
             var off = Constant.UInt32(
-                        ((ImmediateOperand)dasm.Current.Operands[2]).Value.ToUInt32());
+                        ((ImmediateOperand)instr.Operands[2]).Value.ToUInt32());
             if (!off.IsZero)
             {
                 ea = m.IAdd(ea, off);
@@ -240,21 +401,33 @@ namespace Reko.Arch.Xtensa
                 src);
         }
 
+        private void RewriteSext()
+        {
+            var src = RewriteOp(instr.Operands[1]);
+            var bits = RewriteOp(instr.Operands[2]);
+            var dst = RewriteOp(instr.Operands[0]);
+            m.Assign(dst, host.Intrinsic(
+                "__sext",
+                true,
+                PrimitiveType.Int32,
+                src, bits));
+        }
+
         private void RewriteShift(Func<Expression, Expression, Expression> fn)
         {
             //$REVIEW: the Xtensa spec is unclear on left shifts, shouild it be
             // a[0] = a[1] << (32 - SAR)?
-            var src1 = RewriteOp(dasm.Current.Operands[1]);
+            var src1 = RewriteOp(instr.Operands[1]);
             var sa = binder.EnsureRegister(Registers.SAR);
-            var dst = RewriteOp(dasm.Current.Operands[0]);
+            var dst = RewriteOp(instr.Operands[0]);
             m.Assign(dst, fn(src1, sa));
         }
 
         private void RewriteShiftI(Func<Expression,Expression,Expression> fn)
         {
-            var src1 = RewriteOp(dasm.Current.Operands[1]);
-            var src2 = RewriteSimm(dasm.Current.Operands[2]);
-            var dst = RewriteOp(dasm.Current.Operands[0]);
+            var src1 = RewriteOp(instr.Operands[1]);
+            var src2 = RewriteSimm(instr.Operands[2]);
+            var dst = RewriteOp(instr.Operands[0]);
             m.Assign(dst, fn(src1, src2));
         }
 
@@ -268,9 +441,10 @@ namespace Reko.Arch.Xtensa
                 PrimitiveType.CreateWord(src1.DataType.BitSize + src2.DataType.BitSize),
                 src1.Storage,
                 src2.Storage);
+            var shifted = m.Shr(cat, sa);
             m.Assign(
                 dst,
-                m.Cast(dst.DataType, m.Shr(cat, sa)));
+                m.Convert(shifted, shifted.DataType, dst.DataType));
         }
 
         private void RewriteSsa()
@@ -287,6 +461,13 @@ namespace Reko.Arch.Xtensa
             m.Assign(dst, m.ISub(Constant.Create(src.DataType, 32), src));
         }
 
+        private void RewriteSsa8b()
+        {
+            var src = RewriteOp(instr.Operands[0]);
+            var dst = binder.EnsureRegister(Registers.SAR);
+            m.Assign(dst, m.ISub(m.Int32(32), m.IMul(src, 8)));
+        }
+
         private void RewriteSsa8l()
         {
             var src = RewriteOp(instr.Operands[0]);
@@ -294,10 +475,26 @@ namespace Reko.Arch.Xtensa
             m.Assign(dst, m.IMul(src, 8));
         }
 
+        private void RewriteFloat_s(PrimitiveType dt)
+        {
+            var src = RewriteOp(instr.Operands[1]);
+            var scale = (Constant) RewriteOp(instr.Operands[2]);
+            var dst = RewriteOp(instr.Operands[0]);
+            var u = binder.CreateTemporary(dt);
+            m.Assign(u, src);
+
+            src = m.Convert(u, dt, PrimitiveType.Real32);
+            if (scale.GetValue() is float rScale && rScale != 1.0F)
+            {
+                src = m.FDiv(src, scale);
+            }
+            m.Assign(dst, src);
+        }
+
         private void RewriteUnaryOp(Func<Expression, Expression> fn)
         {
-            var src = RewriteOp(dasm.Current.Operands[1]);
-            var dst = RewriteOp(dasm.Current.Operands[0]);
+            var src = RewriteOp(instr.Operands[1]);
+            var dst = RewriteOp(instr.Operands[0]);
             m.Assign(dst, fn(src));
         }
 

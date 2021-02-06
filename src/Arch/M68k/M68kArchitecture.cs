@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
@@ -39,7 +40,8 @@ namespace Reko.Arch.M68k
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public M68kArchitecture(string archId) : base(archId)
+        public M68kArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             InstructionBitSize = 16;
             Endianness = EndianServices.Big;
@@ -53,7 +55,7 @@ namespace Reko.Arch.M68k
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return M68kDisassembler.Create68020(rdr);
+            return M68kDisassembler.Create68020(this.Services, rdr);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -63,7 +65,7 @@ namespace Reko.Arch.M68k
 
         public IEnumerable<M68kInstruction> CreateDisassemblerImpl(EndianImageReader rdr)
         {
-            return M68kDisassembler.Create68020(rdr);
+            return M68kDisassembler.Create68020(this.Services, rdr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -156,7 +158,7 @@ namespace Reko.Arch.M68k
                 case 'Z': grf |= FlagM.ZF; break;
                 case 'N': grf |= FlagM.NF; break;
                 case 'X': grf |= FlagM.XF; break;
-                default: return null;
+                default: throw new ArgumentException($"Flag bit '{name[i]}' is unrecognized.");
                 }
             }
             return GetFlagGroup(Registers.ccr, (uint)grf);
@@ -175,7 +177,7 @@ namespace Reko.Arch.M68k
             return Address.Ptr32(uAddr);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             if (rdr.TryReadBeUInt32(out var uaddr))
             {
@@ -210,7 +212,7 @@ namespace Reko.Arch.M68k
             return sb.ToString();
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }

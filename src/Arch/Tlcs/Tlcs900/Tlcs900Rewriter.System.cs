@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,13 +37,13 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private void RewriteDecf()
         {
             //$TODO: model this as an explicit bank switch?
-            m.SideEffect(host.PseudoProcedure("__decf", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__decf", false, VoidType.Instance));
         }
 
         private void RewriteEi()
         {
-            var ppp = host.PseudoProcedure("__ei", VoidType.Instance, RewriteSrc(instr.Operands[0]));
-            m.SideEffect(ppp);
+            var intrinsic = host.Intrinsic("__ei", false, VoidType.Instance, RewriteSrc(instr.Operands[0]));
+            m.SideEffect(intrinsic);
         }
 
         private void RewriteHalt()
@@ -52,19 +52,19 @@ namespace Reko.Arch.Tlcs.Tlcs900
             {
                 Terminates = true,
             };
-            m.SideEffect(host.PseudoProcedure("__halt", c, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__halt", false, c, VoidType.Instance));
         }
 
         private void RewriteIncf()
         {
             //$TODO: model this as an explicit bank switch?
-            m.SideEffect(host.PseudoProcedure("__incf", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__incf", false, VoidType.Instance));
         }
 
         private void RewriteLdf()
         {
             //$TODO: model this as an explicit bank switch?
-            m.SideEffect(host.PseudoProcedure("__ldf", VoidType.Instance, RewriteSrc(instr.Operands[0])));
+            m.SideEffect(host.Intrinsic("__ldf", false, VoidType.Instance, RewriteSrc(instr.Operands[0])));
         }
 
         private void RewriteSwi()

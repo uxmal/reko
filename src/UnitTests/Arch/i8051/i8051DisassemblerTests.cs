@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Reko.Arch.i8051;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Arch.i8051
 
         public i8051DisassemblerTests()
         {
-            this.arch = new i8051Architecture("8051");
+            this.arch = new i8051Architecture(new ServiceContainer(), "8051", new Dictionary<string, object>());
         }
 
         public override IProcessorArchitecture Architecture

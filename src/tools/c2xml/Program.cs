@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using DocoptNet;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -40,13 +41,12 @@ namespace Reko.Tools.C2Xml
         private const string usage = @"c2xml - Convert ANSI C to Reko XML
 
 Usage: 
-    c2xml -a <arch> 
-          -e <env>
-          <inputfile> [<outputfile>]
+    c2xml -a <arch> -e <env> [options] <inputfile> [<outputfile>]
 
 Options:
-  -a (x86|z80)     Processor architecture
-  -e (win32|sysV)  Operating environment
+  -a <arch>        Processor architecture
+  -e <env>         Operating environment
+  -d <dialect>     Dialect of C/C++ used to parse
 ";
 
         static int Main(string[] args)
@@ -59,7 +59,7 @@ Options:
             TextReader input = Console.In;
             Stream output = Console.OpenStandardOutput();
             var sc = new ServiceContainer();
-            var rekoCfg = RekoConfigurationService.Load();
+            var rekoCfg = RekoConfigurationService.Load(sc);
             sc.AddService<IConfigurationService>(rekoCfg);
 
             var docopt = new Docopt();
@@ -71,6 +71,7 @@ Options:
                 Console.Error.WriteLine(ex);
                 return 1;
             }
+
             var arch = rekoCfg.GetArchitecture(options["-a"].ToString());
             if (arch == null)
             {
@@ -99,8 +100,7 @@ Options:
                 return 1;
             }
 
-            if (options.ContainsKey("<outputfile>") &&  
-                options["<outputfile>"] != null)
+            if (options.ContainsKey("<outputfile>") && options["<outputfile>"] != null)
             {
                 try
                 {
@@ -112,12 +112,17 @@ Options:
                     return 1;
                 }
             }
-            var xWriter = new XmlTextWriter(new StreamWriter(output, new UTF8Encoding(false)))
+            string dialect = null;
+            if (options.TryGetValue("-d", out var optDialect))
+            {
+                dialect = (string) optDialect.Value;
+            }
+            var xWriter = new XmlTextWriter(output, new UTF8Encoding(false))
             {
                 Formatting = Formatting.Indented
             };
 
-            XmlConverter c = new XmlConverter(input, xWriter, platform);
+            XmlConverter c = new XmlConverter(input, xWriter, platform, dialect);
             c.Convert();
             output.Flush();
             output.Close();

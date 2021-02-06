@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -76,6 +78,13 @@ namespace Reko.Arch.Cray.Cray1
                 Mnemonic = Mnemonic.Invalid,
                 Operands = MachineInstruction.NoOperands
             };
+        }
+
+        public override CrayInstruction NotYetImplemented(string message)
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("Cray1dis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         #region Decoders

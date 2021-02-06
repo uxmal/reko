@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,12 +62,12 @@ namespace Reko.Core
             StringComparer comparer)
         {
             return elements.ToDictionary(
-                e => e.Attributes["key"]?.Value,
+                e => e.Attributes["key"]?.Value!,
                 e => ReadItem(e, comparer),
                 comparer);
         }
 
-        public static Dictionary<string, object> LoadIntoDictionary(XmlElement[] options, StringComparer comparer)
+        public static Dictionary<string, object> LoadIntoDictionary(XmlElement[]? options, StringComparer comparer)
         {
             if (options == null)
                 return new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);

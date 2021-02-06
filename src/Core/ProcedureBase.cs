@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,17 +33,18 @@ namespace Reko.Core
 	[DefaultProperty("Name")]
 	public abstract class ProcedureBase
 	{
-		public ProcedureBase(string name)
+		public ProcedureBase(string name, bool isIdempotent)
 		{
-			this.Name = name;
+			this.name = name;
+            this.IsIdempotent = isIdempotent;
 			this.Characteristics = DefaultProcedureCharacteristics.Instance;
 		}
 
         /// <summary>
         /// The name of the procedure.
         /// </summary>
-        public string Name { get { return name; } set { name = value; NameChanged.Fire(this); } }
-        public event EventHandler NameChanged;
+        public string Name { get { return name; } set { name = value; NameChanged?.Fire(this); } }
+        public event EventHandler? NameChanged;
         private string name;
 
 		public abstract FunctionType Signature { get; set; }
@@ -51,12 +52,20 @@ namespace Reko.Core
 		public ProcedureCharacteristics Characteristics { get; set; }
 
         /// <summary>
+        /// If a <see cref="ProcedureBase"/> is idempotent, calls to it can be removed
+        /// if the result of the call is never used. Idempotent procedures may not
+        /// have side effects, including but not limited to changing memory, modifying
+        /// device states, or raising exceptions.
+        /// </summary>
+        public bool IsIdempotent { get; }
+
+        /// <summary>
         /// If this is a member function of a class or struct, this property
         /// will be a reference to the enclosing type.
         /// </summary>
         //$TODO: all the infrastructure for class loading remains to be
         // implemented; for now we just store the class name.
-        public SerializedType EnclosingType { get; set; }
+        public SerializedType? EnclosingType { get; set; }
 
         public override string ToString()
         {

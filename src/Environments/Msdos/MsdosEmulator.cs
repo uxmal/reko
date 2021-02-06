@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,10 +49,12 @@ namespace Reko.Environments.Msdos
             var ss = ((Constant) state.GetValue(Registers.ss)).ToUInt16();
             var sp = ((Constant) state.GetValue(Registers.sp)).ToUInt16();
             var ds = ((Constant) state.GetValue(Registers.ds)).ToUInt16();
+            var es = ((Constant) state.GetValue(Registers.es)).ToUInt16();
             emulator.WriteRegister(Registers.cs, cs);
             emulator.WriteRegister(Registers.ss, ss);
             emulator.WriteRegister(Registers.sp, sp);
             emulator.WriteRegister(Registers.ds, ds);
+            emulator.WriteRegister(Registers.es, es);
             return null;
         }
 

@@ -16,6 +16,7 @@
 // 
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -132,8 +133,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         // ----------------------------------------
         // sstPublics
         // ----------------------------------------
-        public class sstPublics
-            : Subsection
+        public class sstPublics : Subsection
         {
 
             public List<PublicSymbol> symbols;

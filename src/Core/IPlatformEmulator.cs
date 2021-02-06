@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,8 +46,8 @@ namespace Reko.Core
         /// False otherwise.</returns>
         bool InterceptCall(IProcessorEmulator emulator, TWord calledAddress);
 
-        ImageSegment InitializeStack(IProcessorEmulator emulator, ProcessorState state);
+        ImageSegment? InitializeStack(IProcessorEmulator emulator, ProcessorState state);
 
-        void TearDownStack(ImageSegment stackSeg);
+        void TearDownStack(ImageSegment? stackSeg);
     }
 }

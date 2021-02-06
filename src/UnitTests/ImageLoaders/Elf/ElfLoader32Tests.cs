@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.ImageLoaders.Elf;
 using System;
@@ -117,10 +118,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             {
                 writer.WriteBeUInt32(ptr);
             }
-            var mem = new MemoryArea(Address.Ptr32(0x10000000), writer.ToArray());
+            var mem = new ByteMemoryArea(Address.Ptr32(0x10000000), writer.ToArray());
             program.SegmentMap.AddSegment(mem,  ".got", AccessMode.ReadWriteExecute);
             arch.Setup(a => a.CreateImageReader(
-                It.IsNotNull<MemoryArea>(),
+                It.IsNotNull<ByteMemoryArea>(),
                 mem.BaseAddress))
                 .Returns(new BeImageReader(mem, 0));
         }
@@ -136,7 +137,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         private void When_CreateLoader32(bool big_endian)
         {
             this.eil = new ElfImageLoader(sc, "foo", this.bytes);
-            this.el32 = new ElfLoader32(eil, eih, this.bytes, big_endian ? ElfLoader.ELFDATA2MSB : ElfLoader.ELFDATA2LSB);
+            this.el32 = new ElfLoader32(sc, eih, 0, big_endian ? EndianServices.Big: EndianServices.Little, this.bytes);
             this.el32.LoadArchitectureFromHeader();
             el32.Segments.AddRange(programHeaders);
             el32.Sections.AddRange(sections);

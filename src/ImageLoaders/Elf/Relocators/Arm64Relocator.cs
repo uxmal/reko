@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core;
+using Reko.Core.Services;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
@@ -33,10 +34,36 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation  rela)
+        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation  rela)
         {
-            //throw new NotImplementedException();
-            return symbol;
+            var addr = Address.Ptr64(rela.Offset);
+            var rt = (RtAarch64) (rela.Info & 0xFFFF);
+            ulong A = (ulong) rela.Addend;
+            ulong S = symbol.Value;
+
+            switch (rt)
+            {
+            case RtAarch64.R_AARCH64_RELATIVE:
+                A = S = 0;
+                break;
+            case RtAarch64.R_AARCH64_JUMP_SLOT: // A + S
+            case RtAarch64.R_AARCH64_GLOB_DAT:  // A + S
+                break;
+            default:
+                var listener = this.loader.Services.RequireService<DecompilerEventListener>();
+                var loc = listener.CreateAddressNavigator(program, addr);
+                listener.Warn(loc, $"Unimplemented PowerPC64 relocation type {rt}.");
+                return (addr, null);
+            }
+            var arch = program.Architecture;
+            var relR = program.CreateImageReader(arch, addr);
+            var relW = program.CreateImageWriter(arch, addr);
+
+            var w = relR.ReadUInt64();
+            w += (S + A);
+            relW.WriteUInt64(w);
+
+            return (addr, null);
         }
 
         public override string RelocationTypeToString(uint type)
@@ -44,5 +71,20 @@ namespace Reko.ImageLoaders.Elf.Relocators
             //throw new NotImplementedException();
             return "";
         }
+    }
+
+    public enum RtAarch64
+    {
+        R_AARCH64_COPY = 1024, //  	See note below.
+        R_AARCH64_GLOB_DAT = 1025, // S + A	See note below
+        R_AARCH64_JUMP_SLOT = 1026, // S + A	See note below
+        R_AARCH64_RELATIVE = 1027, // Delta(S) + A	See note below
+        R_AARCH64_TLS_IMPDEF1 = 1028, //  	See note below
+        R_AARCH64_TLS_IMPDEF2 = 1029, //  	See note below
+                                      //R_AARCH64_TLS_DTPREL	DTPREL(S+A)	See note below
+                                      //R_AARCH64_TLS_DTPMOD	LDM(S)	See note below
+        R_AARCH64_TLS_TPREL = 1030, // TPREL(S+A)	 
+        R_AARCH64_TLSDESC = 1031, // TLSDESC(S+A)	Identifies a TLS descriptor to be filled
+        R_AARCH64_IRELATIVE = 1032, // Indirect(Delta(S) + A)	See note below.
     }
 }

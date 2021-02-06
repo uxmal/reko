@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 
@@ -44,13 +45,14 @@ namespace Reko.UnitTests.Core
         {
             arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");
+            arch.Setup(a => a.MemoryGranularity).Returns(8);
             program.Architecture = arch.Object;
         }
 
         private void Given_Image(params byte[] bytes)
         {
             addrBase = Address.Ptr32(0x00010000);
-            var mem = new MemoryArea(addrBase, bytes);
+            var mem = new ByteMemoryArea(addrBase, bytes);
             program.SegmentMap = new SegmentMap(addrBase);
             program.SegmentMap.AddSegment(mem, ".text", AccessMode.ReadWriteExecute);
             program.ImageMap = program.SegmentMap.CreateImageMap();
@@ -62,9 +64,8 @@ namespace Reko.UnitTests.Core
         {
             this.program.ImageMap.AddItemWithSize(
                 address,
-                new ImageMapItem
+                new ImageMapItem(address)
                 {
-                    Address = address,
                     Size = (uint)dataType.Size,
                     DataType = dataType,
                 });
@@ -74,26 +75,25 @@ namespace Reko.UnitTests.Core
         {
             this.program.ImageMap.AddItemWithSize(
                 address,
-                new ImageMapBlock
+                new ImageMapBlock(address)
                 {
-                    Address = address,
                     Size = size,
                 });
         }
 
         [Test]
-		public void Prog_EnsurePseudoProc()
+		public void Prog_EnsureIntrinsic()
 		{
-			var ppp = program.EnsurePseudoProcedure("foo", VoidType.Instance, new Identifier("", PrimitiveType.Int32, null));
-			Assert.IsNotNull(ppp);
-			Assert.AreEqual("foo", ppp.Name);
-			Assert.AreEqual(1, program.PseudoProcedures.Count);
+			var intrinsic = program.EnsureIntrinsicProcedure("foo", false, VoidType.Instance, new Identifier("", PrimitiveType.Int32, null));
+			Assert.IsNotNull(intrinsic);
+			Assert.AreEqual("foo", intrinsic.Name);
+			Assert.AreEqual(1, program.Intrinsics.Count);
 
-            var ppp2 = program.EnsurePseudoProcedure("foo", VoidType.Instance, new Identifier("", PrimitiveType.Int32, null));
+            var ppp2 = program.EnsureIntrinsicProcedure("foo", false, VoidType.Instance, new Identifier("", PrimitiveType.Int32, null));
 			Assert.IsNotNull(ppp2);
-			Assert.AreSame(ppp, ppp2);
-			Assert.AreEqual("foo", ppp.Name);
-			Assert.AreEqual(1, program.PseudoProcedures.Count);
+			Assert.AreSame(intrinsic, ppp2);
+			Assert.AreEqual("foo", intrinsic.Name);
+			Assert.AreEqual(1, program.Intrinsics.Count);
 		}
 
         [Test]

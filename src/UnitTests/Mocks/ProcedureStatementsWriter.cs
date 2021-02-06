@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 Pavel Tomin.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Mocks
                 Indentation = 0,
             };
             textFormatter.WriteLine();
-            var codeFormatter = new CodeFormatter(textFormatter);
+            var codeFormatter = proc.CreateCodeFormatter(textFormatter);
             foreach (var stm in proc.Statements)
                 stm.Instruction.Accept(codeFormatter);
         }

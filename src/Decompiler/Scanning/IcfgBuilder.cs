@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,5 +33,12 @@ namespace Reko.Scanning
         public DiGraph<RtlBlock> Blocks;
         public List<Tuple<RtlBlock, Address>> Edges;
         public Dictionary<Address, RtlBlock> AddrToBlock;
+
+        public IcfgBuilder(List<Tuple<RtlBlock, Address>> edges, Dictionary<Address, RtlBlock> mpBlocks, DiGraph<RtlBlock> allBlocks)
+        {
+            Edges = edges;
+            AddrToBlock = mpBlocks;
+            Blocks = allBlocks;
+        }
     }
 }

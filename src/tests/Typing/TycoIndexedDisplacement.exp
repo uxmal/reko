@@ -4,8 +4,8 @@ define proc1
 proc1_entry:
 	// succ:  l1
 l1:
-	bx = Mem0[ds:0x0C00:word16]
-	Mem0[ds:bx + 0x000A + si:byte] = 0xF8
+	bx = Mem0[ds:0xC00<16>:word16]
+	Mem0[ds:bx + 0xA<16> + si:byte] = 0xF8<8>
 proc1_exit:
 
 // Equivalence classes ////////////
@@ -18,11 +18,11 @@ T_2: (in ds : selector)
   Class: Eq_2
   DataType: (ptr16 (segment (C00 T_4 t0C00)))
   OrigDataType: (ptr16 (segment (C00 T_4 t0C00)))
-T_3: (in 0x0C00 : word16)
+T_3: (in 0xC00<16> : word16)
   Class: Eq_3
   DataType: (memptr T_2 (struct (0 T_4 t0000)))
   OrigDataType: (memptr T_2 (struct (0 T_4 t0000)))
-T_4: (in Mem0[ds:0x0C00:word16] : word16)
+T_4: (in Mem0[ds:0xC00<16>:word16] : word16)
   Class: Eq_4
   DataType: word16
   OrigDataType: word16
@@ -30,15 +30,15 @@ T_5: (in bx : word16)
   Class: Eq_4
   DataType: (memptr T_2 (struct (A T_13 t000A)))
   OrigDataType: (memptr T_2 (struct (A T_13 t000A)))
-T_6: (in 0xF8 : byte)
+T_6: (in 0xF8<8> : byte)
   Class: Eq_6
   DataType: byte
   OrigDataType: byte
-T_7: (in 0x000A : word16)
+T_7: (in 0xA<16> : word16)
   Class: Eq_7
   DataType: int16
   OrigDataType: int16
-T_8: (in bx + 0x000A : word16)
+T_8: (in bx + 0xA<16> : word16)
   Class: Eq_8
   DataType: (memptr T_2 (struct (0 (arr T_12) a0000)))
   OrigDataType: (memptr T_2 (struct (0 (arr T_12) a0000)))
@@ -46,11 +46,11 @@ T_9: (in si : int16)
   Class: Eq_9
   DataType: int16
   OrigDataType: int16
-T_10: (in bx + 0x000A + si : word16)
+T_10: (in bx + 0xA<16> + si : word16)
   Class: Eq_10
   DataType: (memptr T_2 (struct (0 T_11 t0000)))
   OrigDataType: (memptr T_2 (struct (0 T_11 t0000)))
-T_11: (in Mem0[ds:bx + 0x000A + si:byte] : byte)
+T_11: (in Mem0[ds:bx + 0xA<16> + si:byte] : byte)
   Class: Eq_6
   DataType: byte
   OrigDataType: byte

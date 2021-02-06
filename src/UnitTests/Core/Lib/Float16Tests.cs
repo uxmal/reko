@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -93,14 +93,14 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test(Description = "2−14 - 2−24 ≈ 6.09756 × 10−5 (maximum subnormal)")]
-        [Ignore("Implement if needed")]
+        [Ignore("Reenable when ported to .NET 5")]
         public void F16_MaxSubnormal()
         {
             Assert.AreEqual("6.09E-05", F16(0b0_00000_1111111111));
         }
 
         [Test(Description = "2−24 ≈ 5.96046 × 10−8 (minimum positive subnormal)")]
-        [Ignore("Implement if needed")]
+        [Ignore("Reenable when ported to .NET 5")]
         public void F16_MinSubnormal()
         {
             Assert.AreEqual("@@@", F16(0b0_00000_0000000001));

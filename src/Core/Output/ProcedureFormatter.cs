@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,18 +65,18 @@ namespace Reko.Core.Output
                     var succ = block.Succ;
                     if (succ.Count == 1)
                     {
-                        var ret = block.Statements.Count > 0 && (block.Statements.Last.Instruction is ReturnInstruction);
+                        var ret = block.Statements.Count > 0 && (block.Statements.Last!.Instruction is ReturnInstruction);
                         if (!ret && (i == blocks.Length - 1 || succ[0] != blocks[i + 1]))
                         {
-                            WriteGoto(succ[0] != null ? succ[0].Name : "(null)");
+                            WriteGoto(succ[0] != null ? succ[0].DisplayName : "(null)");
                         }
                     }
                     else if (succ.Count == 2 && block.Statements.Count > 0)
                     {
-                        var br = block.Statements.Last.Instruction is Branch;
+                        var br = block.Statements.Last!.Instruction is Branch;
                         if (br && (i == blocks.Length - 1 || succ[0] != blocks[i + 1]))
                         {
-                            WriteGoto(succ[0].Name);
+                            WriteGoto(succ[0].DisplayName);
                         }
                     }
                 }
@@ -98,9 +98,9 @@ namespace Reko.Core.Output
 
         public void WriteBlock(Block block, CodeFormatter writer)
         {
-            if (!string.IsNullOrEmpty(block.Name))
+            if (!string.IsNullOrEmpty(block.DisplayName))
             {
-                writer.InnerFormatter.Write(block.Name);
+                writer.InnerFormatter.WriteLabel(block.DisplayName, block);
                 writer.InnerFormatter.Write(":");
                 writer.InnerFormatter.WriteLine();
             }

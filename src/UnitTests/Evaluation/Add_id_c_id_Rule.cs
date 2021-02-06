@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Evaluation
         /// (+ (* id c) id) => (* id (+ c 1))
         /// </summary>
         [Test]
-        public void Test1()
+        public void AddIdCId_Test1()
         {
             BinaryExpression b = m.IAdd(m.SMul(id, 4), id);
             Assignment ass = new Assignment(x, b);
@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Evaluation
             Assert.IsTrue(rule.Match(b));
             Assert.AreEqual(2, ssaIds[id].Uses.Count);
             ass.Src = rule.Transform();
-            Assert.AreEqual("x = id *s 0x00000005", ass.ToString());
+            Assert.AreEqual("x = id *s 5<32>", ass.ToString());
             Assert.AreEqual(1, ssaIds[id].Uses.Count);
         }
 
@@ -64,14 +64,14 @@ namespace Reko.UnitTests.Evaluation
         /// (+ (* c id) id) => (* id (+ c 1))
         /// </summary>
         [Test]
-        public void Test2()
+        public void AddIdCId_Test2()
         {
             BinaryExpression b = m.IAdd(id, m.UMul(id, 5));
             Assignment ass = new Assignment(x, b);
             var rule = new Add_mul_id_c_id_Rule(new SsaEvaluationContext(null, ssaIds, null));
             Assert.IsTrue(rule.Match(b));
             ass.Src = rule.Transform();
-            Assert.AreEqual("x = id *u 0x00000006", ass.ToString());
+            Assert.AreEqual("x = id *u 6<32>", ass.ToString());
         }
 
         [SetUp]

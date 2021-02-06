@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@ namespace Reko.Arch.PaRisc
         public static readonly Dictionary<int, RegisterStorage> ControlRegisters;
 
         public static readonly FlagGroupStorage CF;
+        public static Dictionary<StorageDomain, RegisterStorage> RegistersByStorageDomain { get; }
 
         static Registers()
         {
@@ -112,6 +113,8 @@ namespace Reko.Arch.PaRisc
 
             CF = new FlagGroupStorage(PSW, 0xF000, "C", PrimitiveType.Byte);
 
+            RegistersByStorageDomain =
+                GpRegs.ToDictionary(r => r.Domain);
         }
     }
 }

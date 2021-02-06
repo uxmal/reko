@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Output;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -32,37 +33,58 @@ namespace Reko.Core
     /// </summary>
     public class TypeLibrary
 	{
-		public TypeLibrary() : this(
+        private bool isCaseInsensitive;
+
+		public TypeLibrary(bool caseInsensitive = false) : this(
+            caseInsensitive,
             new Dictionary<string, DataType>(),
-            new Dictionary<string, FunctionType>(),
+            new Dictionary<string, FunctionType>(Comparer(caseInsensitive)),
+            new Dictionary<string, ProcedureCharacteristics>(
+                Comparer(caseInsensitive)),
             new Dictionary<string, DataType>())
         {
         }
 
+
         public TypeLibrary(
+            bool caseInsensitive,
             IDictionary<string,DataType> types,
             IDictionary<string, FunctionType> procedures,
+            IDictionary<string, ProcedureCharacteristics> characteristics,
             IDictionary<string, DataType> globals)
         {
+            this.isCaseInsensitive = caseInsensitive;
             this.Types = types;
             this.Signatures = procedures;
+            this.Characteristics = characteristics;
             this.Globals = globals;
             this.Modules = new Dictionary<string, ModuleDescriptor>();
         }
 
         public IDictionary<string, DataType> Types { get; private set; }
         public IDictionary<string, FunctionType> Signatures { get; private set; }
+        public IDictionary<string, ProcedureCharacteristics> Characteristics
+        {
+            get;
+            private set;
+        }
         public IDictionary<string, DataType> Globals { get; private set; }
         public IDictionary<string, ModuleDescriptor> Modules { get; private set; }
 
+        private static StringComparer Comparer(bool caseSensitive) =>
+            caseSensitive
+                ? StringComparer.InvariantCultureIgnoreCase
+                : StringComparer.InvariantCulture;
+
         public TypeLibrary Clone()
         {
-            var clone = new TypeLibrary
+            var clone = new TypeLibrary(false)
             {
                 Types = new Dictionary<string, DataType>(this.Types),
-                Signatures = new Dictionary<string, FunctionType>(this.Signatures),
+                Signatures = new Dictionary<string, FunctionType>(this.Signatures, Comparer(this.isCaseInsensitive)),
                 Globals = new Dictionary<string, DataType>(this.Globals),
-                Modules = this.Modules.ToDictionary(k => k.Key, v => v.Value.Clone(), StringComparer.InvariantCultureIgnoreCase)
+                Modules = this.Modules.ToDictionary(k => k.Key, v => v.Value.Clone(), StringComparer.InvariantCultureIgnoreCase),
+                isCaseInsensitive = this.isCaseInsensitive
             };
             return clone;
         }
@@ -84,14 +106,14 @@ namespace Reko.Core
             }
 		}
 
-		public FunctionType Lookup(string procedureName)
+		public FunctionType? Lookup(string procedureName)
 		{
             if (!Signatures.TryGetValue(procedureName, out FunctionType sig))
                 return null;
 			return sig;
 		}
 
-        public DataType LookupType(string typedefName)
+        public DataType? LookupType(string typedefName)
         {
             if (!Types.TryGetValue(typedefName, out DataType dt))
                 return null;

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,11 +38,11 @@ namespace Reko.Typing
     /// </remarks>
 	public class ConstantPointerAnalysis : InstructionVisitorBase
 	{
-		private TypeFactory factory;
-		private TypeStore store;
-		private Program program;
-		private Identifier globals;
-		private Unifier unifier;
+		private readonly TypeFactory factory;
+		private readonly TypeStore store;
+		private readonly Program program;
+		private Identifier? globals;
+		private readonly Unifier unifier;
 
 		public ConstantPointerAnalysis(TypeFactory factory, TypeStore store, Program program)
 		{
@@ -74,11 +74,11 @@ namespace Reko.Typing
 			}
 		}
 
-		private TypeVariable GetTypeVariableForField(DataType fieldType)
+		private TypeVariable? GetTypeVariableForField(DataType fieldType)
 		{
             if (fieldType is StructureType s)
             {
-                StructureField f = s.Fields.AtOffset(0);
+                StructureField? f = s.Fields.AtOffset(0);
                 if (f == null)
                     return null;
                 return f.DataType as TypeVariable;
@@ -104,15 +104,13 @@ namespace Reko.Typing
 			set { globals = value; }
 		}
 
-        public T ResolveAs<T>(DataType dt) where T : DataType
+        public T? ResolveAs<T>(DataType dt) where T : DataType
         {
             for (; ; )
             {
-                var t = dt as T;
-                if (t != null)
+                if (dt is T t)
                     return t;
-                var eq = dt as EquivalenceClass;
-                if (eq == null)
+                if (!(dt is EquivalenceClass eq))
                     return null;
                 dt = eq.DataType;   
             }
@@ -122,13 +120,15 @@ namespace Reko.Typing
 		{
             if (!c.IsValid)
                 return;
-			DataType dt = c.TypeVariable.DataType;
-            int offset = StructureField.ToOffset(c);
+			DataType dt = c.TypeVariable!.DataType;
+            int? offset = StructureField.ToOffset(c);
+            if (offset == null)
+                return;
             switch (dt)
             {
             case Pointer ptr:
 				// C is a constant pointer.
-				if (offset == 0)
+				if (offset.Value == 0)
 					return;				// null pointer is null (//$REVIEW: except for some platforms + archs)
 
                 var pointee = ptr.Pointee;
@@ -138,12 +138,13 @@ namespace Reko.Typing
                     //$TODO: these are getting merged earlier, perhaps this is the right place to do those merges?
                     return;
                 }
-                var strGlobals = Globals.TypeVariable.Class.ResolveAs<StructureType>();
-                if (strGlobals.Fields.AtOffset(offset) == null)
+                var strGlobals = Globals.TypeVariable!.Class.ResolveAs<StructureType>();
+                if (strGlobals!.Fields.AtOffset(offset.Value) == null)
                 {
-                    if (!IsInsideArray(strGlobals, offset, pointee))
+                    if (!IsInsideArray(strGlobals, offset.Value, pointee) &&
+                        !IsInsideStruct(strGlobals, offset.Value))
                     {
-                        strGlobals.Fields.Add(offset, pointee);
+                        strGlobals.Fields.Add(offset.Value, pointee);
                     }
                 }
 				return;
@@ -151,9 +152,9 @@ namespace Reko.Typing
                 // C is a constant offset into a segment.
                 var seg = ((Pointer) mptr.BasePointer).Pointee.ResolveAs<StructureType>();
                 if (seg != null && //$DEBUG
-                    seg.Fields.AtOffset(offset) == null)
+                    seg.Fields.AtOffset(offset.Value) == null)
                 {
-                    seg.Fields.Add(offset, mptr.Pointee);
+                    seg.Fields.Add(offset.Value, mptr.Pointee);
                 }
                 //				VisitConstantMemberPointer(offset, mptr);
                 return;
@@ -166,9 +167,23 @@ namespace Reko.Typing
             if (field == null)
                 return false;
             var array = field.DataType.ResolveAs<ArrayType>();
-            if (array == null)
+            if (array is null || array is StringType)
                 return false;
             return unifier.AreCompatible(array.ElementType, dt);
+        }
+
+        public bool IsInsideStruct(StructureType strGlobals, int offset)
+        {
+            //$PERF: LowerBound have a complexity of O(n^2)
+            var field = strGlobals.Fields.LowerBound(offset);
+            if (field == null)
+                return false;
+            var str = field.DataType.ResolveAs<StructureType>();
+            if (str == null)
+                return false;
+            return (
+                offset >= field.Offset &&
+                offset < field.Offset + str.GetInferredSize());
         }
 
         /// <summary>
@@ -178,18 +193,18 @@ namespace Reko.Typing
         /// <param name="mptr"></param>
         private void VisitConstantMemberPointer(int offset, MemberPointer mptr)
 		{
-			TypeVariable tvField = GetTypeVariableForField(mptr.Pointee);
+			TypeVariable? tvField = GetTypeVariableForField(mptr.Pointee);
 			if (tvField == null)
 				return;
 
 			TypeVariable tvBase = (TypeVariable) mptr.BasePointer;
 			Pointer ptr = CreatePointerToField(offset, tvField);
 			tvBase.OriginalDataType =
-				unifier.Unify(tvBase.OriginalDataType, ptr);
+				unifier.Unify(tvBase.OriginalDataType, ptr)!;
 
 			ptr = CreatePointerToField(offset, tvField);
 			tvBase.Class.DataType =
-				unifier.Unify(tvBase.Class.DataType, ptr);
+				unifier.Unify(tvBase.Class.DataType, ptr)!;
 		}
 	}
 }

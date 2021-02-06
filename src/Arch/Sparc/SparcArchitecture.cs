@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -32,14 +33,20 @@ using System.Text;
 
 namespace Reko.Arch.Sparc
 {
+    using Decoder = Decoder<SparcDisassembler, Mnemonic, SparcInstruction>;
+
     public class SparcArchitecture : ProcessorArchitecture
     {
-        private Dictionary<uint, FlagGroupStorage> flagGroups;
+        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public SparcArchitecture(string archId, PrimitiveType wordWidth) : base(archId)
+        public SparcArchitecture(IServiceProvider services, string archId, Registers registers, Decoder rootDecoder, PrimitiveType wordWidth, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
+            this.Registers = registers;
+            this.Decoder = rootDecoder;
             this.Endianness = EndianServices.Big;
             this.WordWidth = wordWidth;
+            this.SignedWord = PrimitiveType.Create(Domain.SignedInt, wordWidth.BitSize);
             this.PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.BitSize);
             this.StackRegister = Registers.sp;
             this.FramePointerType = PointerType;
@@ -47,11 +54,15 @@ namespace Reko.Arch.Sparc
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
+        public Registers Registers { get; }
+
+        public Decoder Decoder { get; }
+
         #region IProcessorArchitecture Members
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new SparcDisassembler(this, imageReader);
+            return new SparcDisassembler(this, Decoder, imageReader);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -81,6 +92,8 @@ namespace Reko.Arch.Sparc
 
         // Sparc uses a link register
         public override int ReturnAddressOnStack => 0;
+
+        public DataType SignedWord { get; }
 
         public override SortedList<string, int> GetMnemonicNames()
         {
@@ -220,14 +233,22 @@ namespace Reko.Arch.Sparc
 
     public class SparcArchitecture32 : SparcArchitecture
     {
-        public SparcArchitecture32(string archId) : base(archId, PrimitiveType.Word32)
+        private static readonly Registers registers = new Registers(PrimitiveType.Word32);
+        private static readonly Decoder rootDecoder = InstructionSet.Create32BitDecoder();
+
+        public SparcArchitecture32(IServiceProvider services, string archId, Dictionary<string, object> options) :
+            base(services, archId, registers, rootDecoder, PrimitiveType.Word32, options)
         {
         }
     }
 
     public class SparcArchitecture64 : SparcArchitecture
     {
-        public SparcArchitecture64(string archId) : base(archId, PrimitiveType.Word64)
+        private static readonly Registers registers = new Registers(PrimitiveType.Word64);
+        private static readonly Decoder rootDecoder = InstructionSet.Create64BitDecoder();
+
+        public SparcArchitecture64(IServiceProvider services, string archId, Dictionary<string, object> options) : 
+            base(services, archId, registers, rootDecoder, PrimitiveType.Word64, options)
         {
         }
     }

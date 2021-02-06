@@ -1,6 +1,6 @@
 #region License
 /*
- * Copyright (C) 1999-2020 Pavel Tomin.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Reko.Core.Types;
 using Reko.Core.Serialization;
 using System;
 using System.Diagnostics;
+using Reko.Core.Memory;
 
 namespace Reko.Scanning
 {
@@ -37,9 +38,9 @@ namespace Reko.Scanning
         private readonly Program program;
         private readonly DataType dt;
         private readonly EndianImageReader rdr;
-        private readonly string name;
+        private readonly string? name;
 
-        public GlobalDataWorkItem(IScannerQueue scanner, Program program, Address addr, DataType dt, string name) : base(addr)
+        public GlobalDataWorkItem(IScannerQueue scanner, Program program, Address addr, DataType dt, string? name) : base(addr)
         {
             this.scanner = scanner;
             this.program = program;
@@ -107,9 +108,9 @@ namespace Reko.Scanning
 
         public void VisitPointer(Pointer ptr)
         {
-            var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.BitSize));
+            if (!rdr.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))
+                return;
             var addr = Address.FromConstant(c);
-
             if (!program.SegmentMap.IsValidAddress(addr))
                 return;
 
@@ -139,9 +140,8 @@ namespace Reko.Scanning
 
                     var len = rdr.Offset - offsetStart;
                     program.ImageMap.AddItemWithSize(
-                        addr, new ImageMapItem((uint) len)
+                        addr, new ImageMapItem(addr, (uint) len)
                         {
-                            Address = addr,
                             DataType = str
                         });
                     return;

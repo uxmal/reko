@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,21 +43,23 @@ namespace Reko.Arch.PaRisc
 
         public override int MnemonicAsInteger => (int) Mnemonic;
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        public override string MnemonicAsString => Mnemonic.ToString();
+
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            WriteMnemonic(writer);
+            WriteMnemonic(renderer);
             if (Operands.Length == 0)
                 return;
-            writer.Tab();
-            Operands[0].Write(writer, options);
+            renderer.Tab();
+            Operands[0].Render(renderer, options);
             for (int i = 1; i < Operands.Length; ++i)
             {
-                writer.WriteChar(',');
-                Operands[i].Write(writer, options);
+                renderer.WriteChar(',');
+                Operands[i].Render(renderer, options);
             }
         }
 
-        private void WriteMnemonic(MachineInstructionWriter writer)
+        private void WriteMnemonic(MachineInstructionRenderer renderer)
         {
             var sb = new StringBuilder();
             sb.Append(Mnemonic.ToString().Replace('_',','));
@@ -79,7 +81,7 @@ namespace Reko.Arch.PaRisc
                 sb.AppendFormat(",{0}", CacheHint);
             if (Annul)
                 sb.Append(",n");
-            writer.WriteMnemonic(sb.ToString());
+            renderer.WriteMnemonic(sb.ToString());
         }
     }
 

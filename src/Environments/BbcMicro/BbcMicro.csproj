@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Reko.Environments.BbcMicro</AssemblyName>
+    <RootNamespace>Reko.Environments.BbcMicro</RootNamespace>
+    <LangVersion>8.0</LangVersion>
+    <nullable>enable</nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Arch\Mos6502\Mos6502.csproj" />
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+  </ItemGroup>
+
+</Project>

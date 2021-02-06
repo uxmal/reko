@@ -1,0 +1,14 @@
+LIBRARY UCONV
+EXPORTS
+    UniCreateUconvObject                        @1
+    UniUconvToUcs                               @2
+    UniUconvFromUcs                             @3
+    UniFreeUconvObject                          @4
+    UniQueryUconvObject                         @7
+    UniSetUconvObject                           @8
+    UniQueryUconvCp                             @9
+    UniMapCpToUcsCp                             @10
+    UniStrFromUcs                               @11
+    UniStrToUcs                                 @12
+    _UniMalloc                                  @13
+    _UniFree                                    @14

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,9 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
         {
             this.typelib = new TypeLibrary();
             this.platform = new Mock<IPlatform>();
+            var arch = new Mocks.FakeArchitecture(null);
             platform.Setup(p => p.PointerType).Returns(Reko.Core.Types.PrimitiveType.Ptr32);
+            platform.Setup(p => p.Architecture).Returns(arch);
         }
 
         /// <summary>
@@ -60,7 +62,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
                 new TypeDeclaration("GrafPort", new Record{
                     Fields = new List<Field>
                     {
-                        new Field(new List<string> { "test" }, new Primitive { Type = PrimitiveType_v1.Int32() })
+                        new Field(new List<string> { "test" }, new Primitive(PrimitiveType_v1.Int32()))
                     }
                 }),
                 new TypeDeclaration("DialogPtr", new TypeReference("WindowPtr")),
@@ -90,8 +92,8 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
                 new TypeDeclaration("Point", new Record{
                     Fields = new List<Field>
                     {
-                        new Field(new List<string> { "x" }, new Primitive { Type = PrimitiveType_v1.Int16() }),
-                        new Field(new List<string> { "y" }, new Primitive { Type = PrimitiveType_v1.Int16() })
+                        new Field(new List<string> { "x" }, new Primitive(PrimitiveType_v1.Int16())),
+                        new Field(new List<string> { "y" }, new Primitive(PrimitiveType_v1.Int16()))
                     }
                 }),
             };

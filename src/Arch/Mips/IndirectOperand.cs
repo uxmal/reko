@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ namespace Reko.Arch.Mips
             this.Base = baseReg;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             string fmt;
             int offset;
@@ -55,7 +55,7 @@ namespace Reko.Arch.Mips
                 fmt = "-{0:X4}({1})";
                 offset = -Offset;
             }
-            writer.WriteString(string.Format(fmt, offset, Base));
+            renderer.WriteString(string.Format(fmt, offset, Base));
         }
     }
 }

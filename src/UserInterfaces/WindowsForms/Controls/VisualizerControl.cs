@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Gui.Visualizers;
 using System;
 using System.ComponentModel.Design;
@@ -41,11 +42,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     /// </remarks>
     public class VisualizerControl : Control
     {
-        private static TraceSwitch trace = new TraceSwitch("VisualizerControl", "Trace events in VisualizerControl", "Warning");
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(VisualizerControl), "Trace events in VisualizerControl", "Warning");
 
         private Visualizer visualizer;
         private Program program;
-        private MemoryArea mem;
+        private ByteMemoryArea bmem;
         private VScrollBar vscroll;
         private int pixelSize;
         private IServiceProvider services;
@@ -145,6 +146,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            if (Width <= 0 || Height <= 0)
+                return;
             using (var bmp = new Bitmap(Width, Height, e.Graphics))
             using (var g = Graphics.FromImage(bmp))
             using (var bytesImage = RenderVisualization())
@@ -168,13 +171,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 this.LineLength,
                 this.LinesOnScreen,
                 PixelFormat.Format32bppArgb);
-            if (Visualizer == null || mem == null)
+            if (Visualizer == null || bmem == null)
                 return bmp;
 
             var bgPattern = new[] { Color.FromArgb(0x7F,0,0), Color.FromArgb(0x30,0x00,0x00) };
-            var addrStart = mem.BaseAddress + vscroll.Value;
+            var addrStart = bmem.BaseAddress + vscroll.Value;
             var bytesOnScreen = LinesOnScreen * LineLength;
-            var colors = visualizer.RenderBuffer(program, mem, addrStart, bytesOnScreen, null);
+            var colors = visualizer.RenderBuffer(program, bmem, addrStart, bytesOnScreen, null);
             int x = 0;
             int y = 0;
             foreach (var byteColor in colors)
@@ -209,9 +212,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private void RenderAnnotations(Graphics g)
         {
-            if (visualizer == null || mem == null)
+            if (visualizer == null || bmem == null)
                 return;
-            var addrStart = mem.BaseAddress + vscroll.Value;
+            var addrStart = bmem.BaseAddress + vscroll.Value;
             var bytesOnScreen = LinesOnScreen * LineLength;
             var annotations = visualizer.RenderAnnotations(program, addrStart, bytesOnScreen, null);
             if (annotations.Length == 0)
@@ -277,7 +280,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         protected virtual void OnProgramChanged()
         {
-            this.mem = Program?.SegmentMap.Segments.Values[0].MemoryArea;
+            //$TODO: what do do with non-byte-addressable memory areas?
+            this.bmem = Program?.SegmentMap.Segments.Values[0].MemoryArea as ByteMemoryArea;
             UpdateScrollbar();
             this.Invalidate();
         }
@@ -300,8 +304,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 return;
             }
-
-            this.mem = seg.MemoryArea;
+            //$TODO: what about non-byte-granularity.
+            this.bmem = seg.MemoryArea as ByteMemoryArea;
             UpdateScrollbar();
             Invalidate();
         }
@@ -310,8 +314,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             var bytesOnScreen = LineLength * LinesOnScreen;
             if (program == null ||
-                mem == null ||
-                bytesOnScreen >= mem.Bytes.Length ||
+                bmem == null ||
+                bytesOnScreen >= bmem.Bytes.Length ||
                 visualizer != null && !visualizer.ShowScrollbar)
             {
                 this.vscroll.Value = 0;
@@ -320,10 +324,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             else
             {
                 this.vscroll.Enabled = true;
-                this.vscroll.Maximum = mem.Bytes.Length;// - bytesOnScreen;
+                this.vscroll.Maximum = bmem.Bytes.Length;// - bytesOnScreen;
                 this.vscroll.LargeChange = bytesOnScreen;
                 this.vscroll.SmallChange = LineLength;
-                Debug.WriteLine(trace.TraceVerbose, $"VisCtrl: mem bytes {mem.Bytes.Length}, small = {LineLength}, large = {bytesOnScreen}, max={vscroll.Maximum}");
+                trace.Verbose($"VisCtrl: mem bytes {bmem.Bytes.Length}, small = {LineLength}, large = {bytesOnScreen}, max={vscroll.Maximum}");
             }
         }
 
@@ -335,7 +339,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// <returns></returns>
         private Point PositionFromAddress(Address addr)
         {
-            var offset = (addr - mem.BaseAddress) - vscroll.Value;
+            var offset = (addr - bmem.BaseAddress) - vscroll.Value;
             int x = (int)offset % this.LineLength;
             int y = (int)offset / this.LineLength;
             return new Point(x * pixelSize, y * pixelSize);
@@ -354,7 +358,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             int y = pt.Y / pixelSize;
             if (x < 0 || x >= this.LineLength)
                 return null;
-            return mem.BaseAddress + (vscroll.Value + y * LineLength + x);
+            return bmem.BaseAddress + (vscroll.Value + y * LineLength + x);
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #endregion
 
 using Reko.Core.Absyn;
-using Reko.Core.Code;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
@@ -29,18 +28,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Core
 {
-	/// <summary>
-	/// Represents a procedure that has been decompiled from machine code.
-	/// </summary>
-	public class Procedure : ProcedureBase
+    /// <summary>
+    /// Represents a procedure that has been decompiled from machine code.
+    /// </summary>
+    public class Procedure : ProcedureBase, IAddressable
 	{
-        private List<Block> blocks;
+        private readonly List<Block> blocks;
 
-		public Procedure(IProcessorArchitecture arch, string name, Address addrEntry, Frame frame) : base(name)
+		public Procedure(IProcessorArchitecture arch, string name, Address addrEntry, Frame frame) : base(name, false)
 		{
             this.EntryAddress = addrEntry;
             this.Architecture = arch ?? throw new ArgumentNullException(nameof(arch));
@@ -67,12 +65,14 @@ namespace Reko.Core
         public bool UserSpecified { get; set; }
 
         public IProcessorArchitecture Architecture { get; }
-        public List<AbsynStatement> Body { get; set; }
+        public List<AbsynStatement>? Body { get; set; }
         public BlockGraph ControlGraph { get; }
         public Block EntryBlock { get; }
         public Block ExitBlock { get; }
         public Frame Frame { get; }
         public Address EntryAddress { get; }
+
+        Address IAddressable.Address => EntryAddress;
 
         /// <summary>
         /// Returns all the statements of the procedure, in no particular order.
@@ -143,7 +143,7 @@ namespace Reko.Core
                 else if (y == ex)
                     return -1;
                     
-                return String.Compare(x.Name, y.Name);
+                return String.Compare(x.Id, y.Id);
             }
         }
 
@@ -183,7 +183,7 @@ namespace Reko.Core
 
         public void WriteBody(bool showEdges, TextWriter writer)
         {
-            var formatter = new CodeFormatter(new TextFormatter(writer));
+            var formatter = CreateCodeFormatter(new TextFormatter(writer));
             new ProcedureFormatter(this, new BlockDecorator { ShowEdges = showEdges }, formatter).WriteProcedureBlocks();
         }
 
@@ -195,22 +195,28 @@ namespace Reko.Core
             var formatter = new TextFormatter(writer);
             Signature.Emit(Name, FunctionType.EmitFlags.None, new TextFormatter(writer));
             writer.WriteLine();
-            var codeFormatter = new CodeFormatter(formatter);
+            var codeFormatter = CreateCodeFormatter(formatter);
             new ProcedureFormatter(this, decorator, codeFormatter).WriteProcedureBlocks();
+        }
+
+        public CodeFormatter CreateCodeFormatter(Formatter formatter)
+        {
+            return new CodeFormatter(formatter);
         }
 
         public void WriteGraph(TextWriter writer)
         {
             foreach (var b in SortBlocksByName())
             {
-                writer.WriteLine(b.Name);
+                writer.WriteLine(b.DisplayName);
                 writer.Write("    Pred:");
                 foreach (var p in b.Pred)
-                    writer.Write(" {0}", p.Name);
+                    writer.Write(" {0}", p.DisplayName);
                 writer.WriteLine();
+                b.WriteStatements(writer);
                 writer.Write("    Succ:");
                 foreach (var s in b.Succ)
-                    writer.Write(" {0}", s.Name);
+                    writer.Write(" {0}", s.DisplayName);
                 writer.WriteLine();
             }
         }
@@ -222,7 +228,7 @@ namespace Reko.Core
 
         public Block AddBlock(Address addr, string name)
         {
-            Block block = new Block(this, name) { Address = addr };
+            Block block = new Block(this, addr, name);
             blocks.Add(block);
             return block;
         }
@@ -231,13 +237,6 @@ namespace Reko.Core
         {
             var block = AddBlock(addr, name);
             block.IsSynthesized = true;
-            return block;
-        }
-
-        public Block AddBlock(string name)
-        {
-            Block block = new Block(this, name);
-            blocks.Add(block);
             return block;
         }
 

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
         {
             throw new NotImplementedException();
         }

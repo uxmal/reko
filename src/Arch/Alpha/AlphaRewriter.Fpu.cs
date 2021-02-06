@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
@@ -49,7 +50,7 @@ namespace Reko.Arch.Alpha
             }
             else
             {
-                RewriteInstrinsic(intrinsic);
+                RewriteInstrinsic(intrinsic, false);
             }
         }
 
@@ -92,7 +93,7 @@ namespace Reko.Arch.Alpha
             }
             else
             {
-                src = m.Cast(dtTo, Rewrite(instr.Operands[0]));
+                src = m.Convert(Rewrite(instr.Operands[0]), dtFrom, dtTo);
             }
             var dst = Rewrite(instr.Operands[1]);
             m.Assign(dst, src);

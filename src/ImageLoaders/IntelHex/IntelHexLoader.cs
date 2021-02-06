@@ -1,8 +1,8 @@
 #region License
 /* 
- * Copyright (C) 2017-2020 Christian Hostelet.
+ * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work of:
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
 using System.Collections;
@@ -204,7 +205,7 @@ namespace Reko.ImageLoaders.IntelHex
                 }
                 catch (IntelHexException ex)
                 {
-                    listener.Error(new NullCodeLocation(""), ex.Message);
+                    listener.Error(ex.Message);
                     return null;
                 }
             }
@@ -215,8 +216,9 @@ namespace Reko.ImageLoaders.IntelHex
             int i = 0;
             foreach (var mchk in memChunks)
             {
-                var mem = new MemoryArea(mchk.BaseAddress, mchk.Datum.ToArray());
-                var seg = new ImageSegment($"CODE_{i++:d2}", mem, AccessMode.ReadExecute);
+                var mem = arch.CreateMemoryArea(mchk.BaseAddress, mchk.Datum.ToArray());
+                var seg = new ImageSegment($"CODE_{i:d2}", mem, AccessMode.ReadExecute);
+                ++i;
                 segs.AddSegment(seg);
             }
 

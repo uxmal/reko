@@ -6,7 +6,7 @@ l1:		// block 1, pred: 0
 	di = 0x5388
 	// succ:  2
 lupe:		// block 2, pred: 1 2
-	Mem7[Mem7[ds:di + 0x0000:word16]:word32] = 0x00000000
+	Mem7[Mem7[ds:di + 0x0000:word16]:word32] = 0x00000000<32>
         di = di + 0x0002
 	cx = cx - 0x0001
 	branch cx != 0x0000 lupe
@@ -17,7 +17,7 @@ l2:		// block 3, pred: 2
 ProcedureMock_exit:		// block 4, pred: 3
 	// succ: 
 
-T_2 (in 0x00000000 : word32)
+T_2 (in 0x00000000<32> : word32)
 	trait_primitive(word32)
 T_3 (in ds : word16)
 	trait_primitive(word16)

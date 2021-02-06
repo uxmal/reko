@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Environments.Windows;
 using Reko.Gui;
@@ -210,7 +211,7 @@ namespace Reko.WindowsItp
         private void assumeRegistesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var dlg = new AssumedRegisterValuesDialog();
-            dlg.Architecture = new X86ArchitectureFlat64("x86-protected-64");
+            dlg.Architecture = new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64", new Dictionary<string, object>());
             dlg.ShowDialog(this);
         }
 
@@ -233,7 +234,7 @@ namespace Reko.WindowsItp
         private void byteMapViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             byte[] buf = GenerateImageData();
-            var mem = new MemoryArea(Address.Ptr32(0x0040000), buf);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x0040000), buf);
             var dlg = new ByteMapDialog();
             var ctrl = new ByteMapView();
             dlg.Controls.Add(ctrl);
@@ -310,6 +311,14 @@ namespace Reko.WindowsItp
         private void decoderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var dlg = new DecoderPerformanceDialog())
+            {
+                dlg.ShowDialog(this);
+            }
+        }
+
+        private void structureFieldsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new StructureFieldPerformanceDialog())
             {
                 dlg.ShowDialog(this);
             }

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using Reko.Environments.Windows;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -46,7 +47,7 @@ namespace Reko.UnitTests.Environments.Windows
         [SetUp]
         public void Setup()
         {
-            var arch = new AlphaArchitecture("alpha");
+            var arch = new AlphaArchitecture(new ServiceContainer(), "alpha", new Dictionary<string, object>());
             this.cc = new AlphaCallingConvention(arch);
             this.ccr = new CallingConventionEmitter();
         }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-#endregion
+#endregion 
 
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
@@ -25,9 +25,9 @@ using System;
 
 namespace Reko.Core
 {
-    public interface IRewriterHost 
+    public interface IRewriterHost
     {
-        PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity);
+        IntrinsicProcedure EnsureIntrinsic(string name, bool isIdempotent, DataType returnType, int arity);
         /// <summary>
         /// Generates a call to an intrinsic procedure named <paramref name="name"/>.
         /// </summary>
@@ -35,9 +35,9 @@ namespace Reko.Core
         /// <param name="returnType"></param>
         /// <param name="args"></param>
         /// <returns>An Application expression.</returns>
-        Expression PseudoProcedure(string name, DataType returnType, params Expression [] args);
-        Expression CallIntrinsic(string name, FunctionType fnType, params Expression [] args);
-        Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression [] args);
+        Expression Intrinsic(string name, bool isIdempotent, DataType returnType, params Expression [] args);
+        Expression CallIntrinsic(string name, bool isIdempotent, FunctionType fnType, params Expression [] args);
+        Expression Intrinsic(string name, bool isIdempotent, ProcedureCharacteristics c, DataType returnType, params Expression [] args);
 
 
         /// <summary>
@@ -54,12 +54,76 @@ namespace Reko.Core
         /// <param name="addrThunk"></param>
         /// <param name="addrInstr"></param>
         /// <returns></returns>
-        Expression GetImport(Address addrThunk, Address addrInstr);
-        ExternalProcedure GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr);
-        ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk);
+        Expression? GetImport(Address addrThunk, Address addrInstr);
+        ExternalProcedure? GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr);
+        ExternalProcedure? GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk);
+
+        /// <summary>
+        /// Read a value of size <paramref name="dt"/> from address <paramref name="addr"/>, 
+        /// using the endianness of the <paramref name="arch"/> processor architecture.
+        /// </summary>
+        public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value);
 
         void Error(Address address, string format, params object[] args);
         void Warn(Address address, string format, params object[] args);
+    }
+
+    public class NullRewriterHost : IRewriterHost
+    {
+        public Expression CallIntrinsic(string name, bool isIdempotent, FunctionType fnType, params Expression[] args)
+        {
+            throw new NotSupportedException();
+        }
+
+        public IntrinsicProcedure EnsureIntrinsic(string name, bool isIdempotent, DataType returnType, int arity)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void Error(Address address, string format, params object[] args)
+        {
+        }
+
+        public IProcessorArchitecture GetArchitecture(string archMoniker)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Expression? GetImport(Address addrThunk, Address addrInstr)
+        {
+            return null;
+        }
+
+        public ExternalProcedure? GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr)
+        {
+            return null;
+        }
+
+        public ExternalProcedure? GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
+        {
+            return null;
+        }
+
+        public Expression Intrinsic(string name, bool isIdempotent, DataType returnType, params Expression[] args)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Expression Intrinsic(string name, bool isIdempotent, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+        {
+            throw new NotSupportedException();
+            throw new NotImplementedException();
+        }
+
+        public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value)
+        {
+            value = null!;
+            return false;
+        }
+
+        public void Warn(Address address, string format, params object[] args)
+        {
+        }
     }
 }
 

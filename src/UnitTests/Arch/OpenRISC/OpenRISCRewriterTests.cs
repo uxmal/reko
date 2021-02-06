@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,11 @@
 using NUnit.Framework;
 using Reko.Arch.OpenRISC;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +41,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
         [SetUp]
         public void Setup()
         {
-            this.arch = new OpenRISCArchitecture("openRisc");
+            this.arch = new OpenRISCArchitecture(CreateServiceContainer(), "openRisc", new Dictionary<string, object>());
             this.addr = Address.Ptr32(0x00100000);
         }
 
@@ -82,7 +84,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("9C21FFF8");	// l.addi	r1,r1,-00000008
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r1 = r1 - 8",
+                "1|L--|r1 = r1 - 8<i32>",
                 "2|L--|CV = cond(r1)");
         }
 
@@ -92,7 +94,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("A021FFF8");	// l.addic	r1,r1,-00000008
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r1 = r1 + -8 + C",
+                "1|L--|r1 = r1 + -8<i32> + C",
                 "2|L--|CV = cond(r1)");
         }
 
@@ -120,7 +122,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("A4840001");	// l.andi	r4,r4,00000001
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r4 = r4 & 0x00000001");
+                "1|L--|r4 = r4 & 1<32>");
         }
 
         [Test]
@@ -210,7 +212,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("91610002");	// l.lbs	r11,2(r1)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r11 = (int32) Mem0[r1 + 2:int8]");
+                "1|L--|r11 = CONVERT(Mem0[r1 + 2<i32>:int8], int8, int32)");
         }
 
         [Test]
@@ -219,7 +221,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("8C620000");	// l.lbz	r3,0(r2)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = (word32) Mem0[r2:byte]");
+                "1|L--|r3 = CONVERT(Mem0[r2:byte], byte, word32)");
         }
 
         [Test]
@@ -228,7 +230,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("8C62FFFF");	// l.lbz	r3,-1(r2)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = (word32) Mem0[r2 - 1:byte]");
+                "1|L--|r3 = CONVERT(Mem0[r2 - 1<i32>:byte], byte, word32)");
         }
 
         [Test]
@@ -237,7 +239,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("69740A00");	// l.lf	r11,2560(r20)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r11 = Mem0[r20 + 2560:real32]");
+                "1|L--|r11 = Mem0[r20 + 2560<i32>:real32]");
         }
 
         [Test]
@@ -246,7 +248,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("97DC0018");	// l.lhz	r30,24(r28)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r30 = (word32) Mem0[r28 + 24:word16]");
+                "1|L--|r30 = CONVERT(Mem0[r28 + 24<i32>:word16], word16, word32)");
         }
 
         [Test]
@@ -255,7 +257,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("6E746572");	// l.lwa	r19,25970(r20)
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r19 = __atomic_load_w32(r20 + 25970)");
+                "1|L--|r19 = __atomic_load_w32(r20 + 25970<i32>)");
         }
 
         [Test]
@@ -273,7 +275,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("4D697373");	// l.maci	r9,+00007373
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = r9 * 29555",
+                "1|L--|v3 = r9 *64 29555<i32>",
                 "2|L--|MACHI_MACLO = MACHI_MACLO + v3");
         }
 
@@ -284,7 +286,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|r0 = MACLO",
-                "2|L--|MACHI_MACLO = 0x0000000000000000");
+                "2|L--|MACHI_MACLO = 0<64>");
         }
 
         [Test]
@@ -329,7 +331,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("A8A51540");	// l.ori	r5,r5,00001540
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = r5 | 0x00001540");
+                "1|L--|r5 = r5 | 0x1540<32>");
         }
 
         [Test]
@@ -365,7 +367,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("D7E14FFC");	// l.sw	-4(r1),r9
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[r1 - 4:word32] = r9");
+                "1|L--|Mem0[r1 - 4<i32>:word32] = r9");
         }
 
         [Test]
@@ -383,7 +385,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("BC050000");	// l.sfeqi	r5,00000000
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|F = r5 == 0x00000000");
+                "1|L--|F = r5 == 0<32>");
         }
 
         [Test]
@@ -401,7 +403,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("BD630000");	// l.sfgesi	r3,+00000000
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|F = r3 >= 0");
+                "1|L--|F = r3 >= 0<i32>");
         }
 
         [Test]
@@ -419,7 +421,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("BD460003");	// l.sfgtsi	r6,+00000003
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|F = r6 > 3");
+                "1|L--|F = r6 > 3<i32>");
         }
 
         [Test]
@@ -437,7 +439,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("BC580003");	// l.sfgtui	r24,00000003
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|F = r24 >u 0x00000003");
+                "1|L--|F = r24 >u 3<32>");
         }
 
         [Test]
@@ -455,7 +457,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("BDA80013");	// l.sflesi	r8,+00000013
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|F = r8 <= 19");
+                "1|L--|F = r8 <= 19<i32>");
         }
 
         [Test]
@@ -473,7 +475,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("BCA50001");	// l.sfleui	r5,00000001
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|F = r5 <=u 0x00000001");
+                "1|L--|F = r5 <=u 1<32>");
         }
 
         [Test]
@@ -482,7 +484,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("BD830000");	// l.sfltsi	r3,+00000000
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|F = r3 < 0");
+                "1|L--|F = r3 < 0<i32>");
         }
 
         [Test]
@@ -491,7 +493,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("E5850000");	// l.sflts	r5,r0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|F = r5 < 0x00000000");
+                "1|L--|F = r5 < 0<32>");
         }
 
         [Test]
@@ -509,7 +511,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("BC840055");	// l.sfltui	r4,00000055
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|F = r4 <u 0x00000055");
+                "1|L--|F = r4 <u 0x55<32>");
         }
 
         [Test]
@@ -527,7 +529,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("BC230000");	// l.sfnei	r3,00000000
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|F = r3 != 0x00000000");
+                "1|L--|F = r3 != 0<32>");
         }
 
         [Test]
@@ -536,7 +538,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("B8630004");	// l.slli	r3,r3,00000004
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r3 = r3 << 0x00000004");
+                "1|L--|r3 = r3 << 4<32>");
         }
 
         [Test]
@@ -545,7 +547,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("B8A50098");	// l.srai	r5,r5,00000018
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = r5 >> 0x00000018");
+                "1|L--|r5 = r5 >> 0x18<32>");
         }
 
         [Test]
@@ -554,7 +556,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("B8A30042");	// l.srli	r5,r3,00000002
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = r3 >>u 0x00000002");
+                "1|L--|r5 = r3 >>u 2<32>");
         }
 
         [Test]
@@ -563,7 +565,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("E0805802");	// l.sub	r4,r0,r11
             AssertCode(
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|r4 = 0x00000000 - r11",
+                "1|L--|r4 = 0<32> - r11",
                 "2|L--|CV = cond(r4)");
         }
 
@@ -573,7 +575,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("20006372");	// l.sys	00006372
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|__syscall(0x00006372)");
+                "1|L--|__syscall(0x6372<32>)");
         }
 
         [Test]
@@ -591,7 +593,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("ACC6FFFF");	// l.xori	r6,r6,0000FFFF
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r6 = r6 ^ 0x0000FFFF");
+                "1|L--|r6 = r6 ^ 0xFFFF<32>");
         }
 
         [Test]
@@ -647,6 +649,15 @@ namespace Reko.UnitTests.Arch.OpenRISC
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__psync()");
+        }
+
+        [Test]
+        public void OpenRiscRw_l_msync()
+        {
+            Given_HexString("22000000");	// l.msync
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__msync()");
         }
     }
 }

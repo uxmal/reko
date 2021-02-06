@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using Reko.Core.Memory;
 
 namespace Reko.Core
 {
@@ -75,7 +76,7 @@ namespace Reko.Core
         public override object ReadValue(FieldInfo f, EndianImageReader rdr, ReaderContext ctx)
         {
             int i = 0;
-            for (; rdr.PeekByte(i) != 0; ++i)
+            for (; rdr.TryPeekByte(i, out byte b) && b != 0; ++i)
             {
             }
             var s = Encoding.UTF8.GetString(rdr.ReadBytes(i));

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,24 +65,6 @@ namespace Reko.UnitTests.Core.Serialization
 			Assert.AreEqual("malloc", proc.Name);
 			Assert.AreEqual(1, proc.Signature.Arguments.Length);
 			Assert.AreEqual("int", proc.Signature.Arguments[0].Type.ToString());
-		}
-
-		[Test]
-        //$REVIEW: consider removing this unit test. It sole function is counting the
-        // number of reconstituted function. This changes each time msvcrt.xml is modified,
-        // and provides no value.
-		public void SlibReadMsvcrtXml()
-		{
-            XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedLibrary));
-			SerializedLibrary lib;
-			using (Stream stm = fsSvc.CreateFileStream(
-                FileUnitTester.MapTestPath("../Environments/Windows/msvcrt.xml"),
-                FileMode.Open,
-                FileAccess.Read))
-			{
-				lib = (SerializedLibrary) ser.Deserialize(stm);
-			}
-			Assert.AreEqual(68, lib.Procedures.Count);
 		}
 
         [Test(Description = "Validates that the realmodeintservices file (in format 1) can be read properly")]

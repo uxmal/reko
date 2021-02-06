@@ -22,21 +22,21 @@ fn04000000_frame_asgn:		// block 1, pred: 0
 	fp = &fn04000000_frame
 	// succ:  2
 l04000000:		// block 2, pred: 1
-	eax = 0x00000000
-	ecx = 0x00000000
+	eax = 0x00000000<32>
+	ecx = 0x00000000<32>
 	SCZO = cond(ecx)
-	Mem0[fp - 12:word32] = 0x00000001
-	Mem0[fp - 8:word32] = 0x00000002
-	Mem0[fp - 4:word32] = 0x00000003
+	Mem0[fp - 12:word32] = 0x00000001<32>
+	Mem0[fp - 8:word32] = 0x00000002<32>
+	Mem0[fp - 4:word32] = 0x00000003<32>
 	// succ:  3
 l04000027:		// block 3, pred: 2 4
-	SCZO = cond(ecx - 0x00000003)
+	SCZO = cond(ecx - 0x00000003<32>)
 	branch Test(LE,SZO)
 	// succ:  5 4
 l04000023:		// block 4, pred: 3
-	eax = eax + Mem0[fp + 0xFFFFFFF4 + ecx * 0x00000004:word32]
+	eax = eax + Mem0[fp + 0xFFFFFFF4<32> + ecx * 0x00000004<32>:word32]
 	SCZO = cond(eax)
-	ecx = ecx + 0x00000001
+	ecx = ecx + 0x00000001<32>
 	SZO = cond(ecx)
 	// succ:  3
 l0400002C:		// block 5, pred: 3
@@ -71,21 +71,21 @@ fn04000000_frame_asgn:		// block 1, pred: 0
 	fp = &fn04000000_frame
 	// succ:  2
 l04000000:		// block 2, pred: 1
-	eax = 0x00000000
-	ecx = 0x00000000
+	eax = 0x00000000<32>
+	ecx = 0x00000000<32>
 	SCZO = cond(ecx)
-	Mem0[fp - 12:word32] = 0x00000001
-	Mem0[fp - 8:word32] = 0x00000002
-	Mem0[fp - 4:word32] = 0x00000003
+	Mem0[fp - 12:word32] = 0x00000001<32>
+	Mem0[fp - 8:word32] = 0x00000002<32>
+	Mem0[fp - 4:word32] = 0x00000003<32>
 	// succ:  3
 l04000027:		// block 3, pred: 2 4
-	SCZO = cond(ecx - 0x00000003)
+	SCZO = cond(ecx - 0x00000003<32>)
 	branch Test(LE,SZO)
 	// succ:  5 4
 l04000023:		// block 4, pred: 3
-	eax = eax + Mem0[fp + 0xFFFFFFF4 + ecx * 0x00000004:word32]
+	eax = eax + Mem0[fp + 0xFFFFFFF4<32> + ecx * 0x00000004<32>:word32]
 	SCZO = cond(eax)
-	ecx = ecx + 0x00000001
+	ecx = ecx + 0x00000001<32>
 	SZO = cond(ecx)
 	// succ:  3
 l0400002C:		// block 5, pred: 3

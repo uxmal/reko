@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,13 +45,16 @@ namespace Reko.Core
             this.RegisterValues = new SortedList<Address, List<UserRegisterValue>>();
             this.Segments = new List<UserSegment>();
             this.ProcedureSourceFiles = new Dictionary<Address, string>();
+            this.Patches = new Dictionary<Address, CodePatch>();
+            this.DebugTraceProcedures = new HashSet<string>();
+            this.BlockLabels = new Dictionary<string, string>();
         }
 
         // 'Oracular' information provided by the user.
-        public string Loader { get; set; }
-        public string Processor { get; set; }
-        public string Environment { get; set; }
-        public Address LoadAddress { get; set; }
+        public string? Loader { get; set; }
+        public string? Processor { get; set; }
+        public string? Environment { get; set; }
+        public Address? LoadAddress { get; set; }
         public SortedList<Address, Serialization.Procedure_v1> Procedures { get; set; }
         public SortedList<Address, UserCallData> Calls { get; set; }
         public SortedList<Address, Serialization.GlobalDataItem_v2> Globals { get; set; }
@@ -59,11 +62,12 @@ namespace Reko.Core
         public SortedList<Address, ImageMapVectorTable> JumpTables { get; set; }
         public AnnotationList Annotations { get; set; }
         public List<UserSegment> Segments { get; set; }
-
+        public Dictionary<string, string> BlockLabels { get; set; }
+        
         /// <summary>
         /// A script to run after the image is loaded.
         /// </summary>
-        public Serialization.Script_v2 OnLoadedScript { get; set; }
+        public Serialization.Script_v2? OnLoadedScript { get; set; }
 
         /// <summary>
         /// Scanning heuristics to try.
@@ -71,9 +75,10 @@ namespace Reko.Core
         public SortedSet<string> Heuristics { get; set; }
 
         /// <summary>
-        /// Text encoding to use to interpret strings.
+        /// Text encoding to use to interpret strings. If none is specified,
+        /// use the host platform's encoding.
         /// </summary>
-        public Encoding TextEncoding { get; set; }
+        public Encoding? TextEncoding { get; set; }
 
         /// <summary>
         /// Users can set register values at any location.
@@ -103,6 +108,27 @@ namespace Reko.Core
         /// The source file names are absolute paths.
         /// </remarks>
         public Dictionary<Address, string> ProcedureSourceFiles { get; set; }
+
+        /// <summary>
+        /// Maps patches to addresses. When the scanner encounters a patched
+        /// address, it replaces the patch with the IR instructions in the patch.
+        /// </summary>
+        public Dictionary<Address, CodePatch> Patches { get; set; }
+
+        /// <summary>
+        /// Selects the policy to use when generating output files.
+        /// </summary>
+        public string? OutputFilePolicy { get; set; }
+
+        /// <summary>
+        /// Makes Reko more aggressive in removing unused branches (like if (false) ...)
+        /// </summary>
+        public bool AggressiveBranchRemoval { get; set; }
+        
+        /// <summary>
+        /// For Reko debugging: procedures with these names will be traced.
+        /// </summary>
+        public HashSet<string> DebugTraceProcedures { get; set; }
     }
 
     public class Annotation
@@ -122,22 +148,22 @@ namespace Reko.Core
     /// </summary>
     public class UserCallData
     {
-        public Address Address { get; set; } // The address of the call.
+        public Address? Address { get; set; } // The address of the call.
 
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
 
         public bool NoReturn { get; set; }
 
-        public FunctionType Signature { get; set; }
+        public FunctionType? Signature { get; set; }
     }
 
     public class UserIndirectJump
     {
-        public Address Address { get; set; } // the address of the jump
+        public Address? Address { get; set; } // the address of the jump
 
-        public RegisterStorage IndexRegister { get; set; }  // Index register used in jump
+        public RegisterStorage? IndexRegister { get; set; }  // Index register used in jump
 
-        public ImageMapVectorTable Table { get; set; } // Table of destinations
+        public ImageMapVectorTable? Table { get; set; } // Table of destinations
     }
 
     /// <summary>
@@ -145,15 +171,15 @@ namespace Reko.Core
     /// </summary>
     public class UserSegment
     {
-        public Address Address { get; set; } // the start address of the segment.
+        public Address? Address { get; set; } // the start address of the segment.
 
         public ulong Offset { get; set; }   // the file offset from which this segment was loaded.
 
         public uint Length { get; set; }    // The length of the segment in addressable units (bytes on a byte oriented machine)
 
-        public string Name { get; set; }    // User provided name
+        public string? Name { get; set; }    // User provided name
 
-        public IProcessorArchitecture Architecture { get; set; }
+        public IProcessorArchitecture? Architecture { get; set; }
 
         public AccessMode AccessMode { get; set; }
     }

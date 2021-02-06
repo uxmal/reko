@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ using Reko.Environments.Windows;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.UnitTests.Environments.Windows
 {
@@ -58,7 +59,7 @@ namespace Reko.UnitTests.Environments.Windows
                 It.IsNotNull<Address>())).Returns(new ExternalProcedure("foo", new FunctionType()));
 
             var platform = new Win32MipsPlatform(services.Object, arch.Object);
-            var result = platform.GetTrampolineDestination(rtl, host.Object);
+            var result = platform.GetTrampolineDestination(rtl.StartAddress, rtl.SelectMany(c => c.Instructions), host.Object);
             Assert.IsNotNull(result);
         }
     }

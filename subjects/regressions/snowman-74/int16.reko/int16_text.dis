@@ -1,0 +1,26 @@
+int32 get(int32 dwArg04)
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ecx:[0..31] Stack +0004:[0..31]
+// LiveOut: eax
+// Trashed: eax
+// Preserved:
+?get@A@@AAEHH@Z_entry:
+l10071000:
+	return Mem0[this:word32] + dwArg04
+?get@A@@AAEHH@Z_exit:
+
+
+BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
+// stackDelta: 16; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: eax
+// Trashed: eax
+// Preserved:
+DllMain_entry:
+l10071010:
+	return 1<32>
+DllMain_exit:
+
+

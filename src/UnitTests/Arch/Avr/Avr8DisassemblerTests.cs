@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,10 @@
 using NUnit.Framework;
 using Reko.Arch.Avr;
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -35,7 +37,7 @@ namespace Reko.UnitTests.Arch.Avr
 
         public Avr8DisassemblerTests()
         {
-            this.arch = new Avr8Architecture("avr8");
+            this.arch = new Avr8Architecture(new ServiceContainer(), "avr8", new Dictionary<string, object>());
         }
 
         public override IProcessorArchitecture Architecture
@@ -52,7 +54,7 @@ namespace Reko.UnitTests.Arch.Avr
             uInstrs.Select(u => new byte[] { (byte)u, (byte)(u >> 8) })
                 .SelectMany(b => b)
                 .ToArray();
-            var i = Disassemble(new MemoryArea(LoadAddress, bytes));
+            var i = Disassemble(new ByteMemoryArea(LoadAddress, bytes));
             Assert.AreEqual(sExp, i.ToString());
         }
 

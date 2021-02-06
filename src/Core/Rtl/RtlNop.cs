@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,11 @@ namespace Reko.Core.Rtl
 {
     public sealed class RtlNop : RtlInstruction
     {
+        public RtlNop(InstrClass iclass = 0)
+        {
+            base.Class = InstrClass.Padding | InstrClass.Linear | iclass;
+        }
+
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitNop(this);

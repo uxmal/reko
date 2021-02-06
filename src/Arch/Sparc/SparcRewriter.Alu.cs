@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ namespace Reko.Arch.Sparc
             var dst = RewriteRegister(instrCur.Operands[2]);
             var src1 = RewriteOp(instrCur.Operands[0]);
             var src2 = RewriteOp(instrCur.Operands[1]);
-            var C = binder.EnsureFlagGroup(Registers.C);
+            var C = binder.EnsureFlagGroup(arch.Registers.C);
             m.Assign(
                 dst,
                 op(op(src1, src2), C));
@@ -77,7 +77,7 @@ namespace Reko.Arch.Sparc
             var dst = RewriteOp(instrCur.Operands[1]);
             var bTmp = binder.CreateTemporary(PrimitiveType.Byte);
             var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(dst.DataType.BitSize - bTmp.DataType.BitSize));
-            var intrinsic = host.PseudoProcedure("__ldstub", bTmp.DataType, m.AddrOf(arch.PointerType, mem));
+            var intrinsic = host.Intrinsic("__ldstub", false, bTmp.DataType, m.AddrOf(arch.PointerType, mem));
             m.Assign(bTmp, intrinsic);
             m.Assign(tmpHi, m.Slice(tmpHi.DataType, dst, bTmp.DataType.BitSize));
             m.Assign(dst, m.Seq(tmpHi, bTmp));
@@ -89,8 +89,8 @@ namespace Reko.Arch.Sparc
             var src = RewriteMemOp(instrCur.Operands[0], size);
             if (size.Size < dst.DataType.Size)
             {
-                size = (size.Domain == Domain.SignedInt) ? PrimitiveType.Int32 : PrimitiveType.Word32;
-                src = m.Cast(size, src);
+                size = PrimitiveType.Create(size.Domain, dst.DataType.BitSize);
+                src = m.Convert(src, src.DataType, size);
             }
             m.Assign(dst, src);
         }
@@ -102,7 +102,7 @@ namespace Reko.Arch.Sparc
             var src2 = RewriteOp(instrCur.Operands[1]);
             m.Assign(
                 dst,
-                host.PseudoProcedure("__mulscc", PrimitiveType.Int32, src1, src2));
+                host.Intrinsic("__mulscc", true, PrimitiveType.Int32, src1, src2));
             EmitCc(dst);
         }
 
@@ -111,15 +111,20 @@ namespace Reko.Arch.Sparc
             var dst = RewriteOp(instrCur.Operands[2]);
             var src1 = RewriteOp(instrCur.Operands[0]);
             var src2 = RewriteOp(instrCur.Operands[1]);
+            RestoreRegisterWindow(dst, src1, src2);
+        }
+
+        private void RestoreRegisterWindow(Expression dst, Expression src1, Expression src2)
+        {
             Identifier tmp = null;
-            if (dst is Identifier && ((Identifier)dst).Storage != Registers.g0)
+            if (dst is Identifier identifier && identifier.Storage != arch.Registers.g0)
             {
                 tmp = binder.CreateTemporary(dst.DataType);
                 m.Assign(tmp, m.IAdd(src1, src2));
             }
-            for (int i = 0; i < Registers.OutRegisters.Length; ++i)
+            for (int i = 0; i < arch.Registers.OutRegisters.Length; ++i)
             {
-                Copy(Registers.InRegisters[i], Registers.OutRegisters[i]);
+                Copy(arch.Registers.InRegisters[i], arch.Registers.OutRegisters[i]);
             }
 
             if (tmp != null)
@@ -134,14 +139,14 @@ namespace Reko.Arch.Sparc
             var src1 = RewriteOp(instrCur.Operands[0]);
             var src2 = RewriteOp(instrCur.Operands[1]);
             Identifier tmp = null;
-            if (((Identifier)dst).Storage != Registers.g0)
+            if (((Identifier)dst).Storage != arch.Registers.g0)
             {
                 tmp = binder.CreateTemporary(dst.DataType);
                 m.Assign(tmp, m.IAdd(src1, src2));
             }
-            for (int i = 0; i < Registers.InRegisters.Length; ++i)
+            for (int i = 0; i < arch.Registers.InRegisters.Length; ++i)
             {
-                Copy(Registers.OutRegisters[i], Registers.InRegisters[i]);
+                Copy(arch.Registers.OutRegisters[i], arch.Registers.InRegisters[i]);
             }
             if (tmp != null)
             {
@@ -160,7 +165,7 @@ namespace Reko.Arch.Sparc
         private void RewriteSethi()
         {
             var rDst = (RegisterOperand)instrCur.Operands[1];
-            if (rDst.Register == Registers.g0)
+            if (rDst.Register == arch.Registers.g0)
             {
                 m.Nop();
             }
@@ -178,7 +183,9 @@ namespace Reko.Arch.Sparc
             var src = RewriteOp(instrCur.Operands[0]);
             var dst = RewriteMemOp(instrCur.Operands[1], size);
             if (size.Size < src.DataType.Size)
-                src = m.Cast(size, src);
+            {
+                src = m.Slice(size, src, 0);
+            }
             m.Assign(dst, src);
         }
     }

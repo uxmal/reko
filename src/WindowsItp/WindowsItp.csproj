@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reko.WindowsItp</RootNamespace>
     <AssemblyName>Reko.WindowsItp</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -63,6 +63,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -95,7 +98,6 @@
     <Compile Include="Decoders\Decoder.cs" />
     <Compile Include="Decoders\DecoderBuilder.cs" />
     <Compile Include="Decoders\Disassembler.cs" />
-    <Compile Include="Decoders\Mnemonic.cs" />
     <Compile Include="Decoders\TestInstruction.cs" />
     <Compile Include="DisassemblyControlForm.cs">
       <SubType>Form</SubType>
@@ -177,6 +179,9 @@
       <DependentUpon>RtfDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="StructureFieldPerformanceDialog.resx">
+      <DependentUpon>StructureFieldPerformanceDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SuffixArrayPerformanceDialog.resx">
       <DependentUpon>SuffixArrayPerformanceDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -216,6 +221,12 @@
     </Compile>
     <Compile Include="RtfDialog.Designer.cs">
       <DependentUpon>RtfDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StructureFieldPerformanceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StructureFieldPerformanceDialog.Designer.cs">
+      <DependentUpon>StructureFieldPerformanceDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="SuffixArrayPerformanceDialog.cs">
       <SubType>Form</SubType>

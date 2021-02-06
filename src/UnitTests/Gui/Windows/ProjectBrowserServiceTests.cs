@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Controls;
@@ -158,6 +159,11 @@ namespace Reko.UnitTests.Gui.Windows
             public ITreeNode CreateNode(string text)
             {
                 return new FakeTreeNode { Text = text };
+            }
+
+            public void PerformAfterExpand(Reko.Gui.Controls.TreeViewEventArgs e)
+            {
+                AfterExpand?.Invoke(this, e);
             }
 
             public void PerformBeforeExpand(Reko.Gui.Controls.TreeViewEventArgs e)
@@ -389,10 +395,10 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Given_ProgramWithOneSegment()
         {
-            var mem = new MemoryArea(Address.Ptr32(0x12340000), new byte[0x1000]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x12340000), new byte[0x1000]);
             var segmentMap = new SegmentMap(Address.Ptr32(0x12300000));
             segmentMap.AddSegment(mem, ".text", AccessMode.ReadExecute);
-            var arch = new Mock<ProcessorArchitecture>("mmix");
+            var arch = new Mock<ProcessorArchitecture>(sc, "mmix", new Dictionary<string, object>());
             arch.Object.Description = "Foo Processor";
             var platform = new DefaultPlatform(sc, arch.Object);
             this.program = new Program(segmentMap, arch.Object, platform);
@@ -411,9 +417,8 @@ namespace Reko.UnitTests.Gui.Windows
         {
             this.program.ImageMap.AddItemWithSize(
                 Address.Ptr32(address),
-                new ImageMapItem
+                new ImageMapItem(Address.Ptr32(address))
                 {
-                    Address = Address.Ptr32(address),
                     Size = 4,
                     DataType = PrimitiveType.Int32,
                 });
@@ -496,7 +501,7 @@ namespace Reko.UnitTests.Gui.Windows
 
             pbs.Load(project);
 
-            var mem = new MemoryArea(Address.Ptr32(0x1231300), new byte[128]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x1231300), new byte[128]);
             
             project.Programs.Add(new Program
             {

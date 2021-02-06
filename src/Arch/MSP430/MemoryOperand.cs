@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,38 +33,43 @@ namespace Reko.Arch.Msp430
 
         public MemoryOperand(PrimitiveType dataWidth) : base(dataWidth) { }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
+            if (Base == null)
+            {
+                renderer.WriteFormat("&{0:X4}", (ushort) this.Offset);
+                return;
+            }
             if (Offset > 0)
             {
-                if (Base == Registers.pc && (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                if (Base == Registers.pc && (options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)
                 {
-                    var addr = writer.Address + 4 + Offset;
-                    writer.WriteAddress(addr.ToString(), addr);
+                    var addr = renderer.Address + 4 + Offset;
+                    renderer.WriteAddress(addr.ToString(), addr);
                 }
                 else
                 {
-                    writer.WriteFormat("{0:X4}({1})", Offset, Base.Name);
+                    renderer.WriteFormat("{0:X4}({1})", Offset, Base.Name);
                 }
             }
             else if (Offset < 0)
             {
-                if (Base == Registers.pc && (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                if (Base == Registers.pc && (options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)
                 {
-                    var addr = writer.Address + 4 + Offset;
-                    writer.WriteAddress(addr.ToString(), addr);
+                    var addr = renderer.Address + 4 + Offset;
+                    renderer.WriteAddress(addr.ToString(), addr);
                 }
                 else
                 {
-                    writer.WriteFormat("-{0:X4}({1})", -Offset, Base.Name);
+                    renderer.WriteFormat("-{0:X4}({1})", -Offset, Base.Name);
                 }
             }
             else
             {
-                writer.WriteChar('@');
-                writer.WriteString(Base.Name);
+                renderer.WriteChar('@');
+                renderer.WriteString(Base.Name);
                 if (PostIncrement)
-                    writer.WriteChar('+');
+                    renderer.WriteChar('+');
             }
         }
     }

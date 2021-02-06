@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,35 +29,38 @@ using System.Text;
 
 namespace Reko.Arch.M68k
 {
+    /// <summary>
+    /// The Godzilla of address operands, supporting Indirect pre- and post-indexed operation.
+    /// </summary>
     public class IndexedOperand : MachineOperand, M68kOperand
     {
-        public Constant Base;
-        public Constant outer;
-        public RegisterStorage base_reg;
-        public RegisterStorage index_reg;
-        public PrimitiveType index_reg_width;
-        public int index_scale;
+        public Constant? BaseDisplacement;
+        public Constant? OuterDisplacement;
+        public RegisterStorage? Base;
+        public RegisterStorage? Index;
+        public PrimitiveType? index_reg_width;
+        public int IndexScale;
         public bool preindex;
         public bool postindex;
 
         public IndexedOperand(
             PrimitiveType width,
-            Constant baseReg,
-            Constant outer,
-            RegisterStorage base_reg,
-            RegisterStorage index_reg,
-            PrimitiveType index_reg_width,
+            Constant? baseReg,
+            Constant? outer,
+            RegisterStorage? base_reg,
+            RegisterStorage? index_reg,
+            PrimitiveType? index_reg_width,
             int index_scale,
             bool preindex,
             bool postindex)
             : base(width)
         {
-            this.Base = baseReg;
-            this.outer = outer;
-            this.base_reg = base_reg;
-            this.index_reg = index_reg;
+            this.BaseDisplacement = baseReg;
+            this.OuterDisplacement = outer;
+            this.Base = base_reg;
+            this.Index = index_reg;
             this.index_reg_width = index_reg_width;
-            this.index_scale = index_scale;
+            this.IndexScale = index_scale;
             this.preindex = preindex;
             this.postindex = postindex;
         }
@@ -67,7 +70,7 @@ namespace Reko.Arch.M68k
             return visitor.Visit(this);
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             //@base = EXT_BASE_DISPLACEMENT_PRESENT(extension) ? (EXT_BASE_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
             //outer = EXT_OUTER_DISPLACEMENT_PRESENT(extension) ? (EXT_OUTER_DISPLACEMENT_LONG(extension) ? read_imm_32() : read_imm_16()) : 0;
@@ -86,47 +89,53 @@ namespace Reko.Arch.M68k
             //preindex = (extension & 7) > 0 && (extension & 7) < 4;
             //postindex = (extension & 7) > 4;
 
-            writer.WriteString("(");
-            if (preindex || postindex)
-                writer.WriteString("[");
-            var sep = "";
-            if (Base != null)
+            renderer.WriteString("(");
+            var sep = (preindex || postindex) ? "[" : "";
+            if (BaseDisplacement != null)
             {
-                writer.WriteString(MachineOperand.FormatValue(Base));
+                renderer.WriteString(sep);
+                renderer.WriteString(FormatValue(BaseDisplacement));
                 sep = ",";
             }
-            if (base_reg != null)
+            if (Base != null)
             {
-                writer.WriteString(sep);
-                writer.WriteString(base_reg.ToString());
+                renderer.WriteString(sep);
+                renderer.WriteString(Base.ToString());
                 sep = ",";
             }
             if (postindex)
             {
-                writer.WriteString("]");
-                sep = ",";
+                if (BaseDisplacement != null || Base != null)
+                {
+                    renderer.WriteString("]");
+                    sep = ",";
+                }
+                else
+                {
+                    sep = "";
+                }
             }
-            if (index_reg != null)
+            if (Index != null)
             {
-                writer.WriteString(sep);
-                writer.WriteString(index_reg.Name);
-                if (index_reg_width.BitSize == 16)
-                    writer.WriteString(".w");
-                if (index_scale > 1)
-                    writer.WriteFormat("*{0}", index_scale);
+                renderer.WriteString(sep);
+                renderer.WriteString(Index.Name);
+                if (index_reg_width!.BitSize == 16)
+                    renderer.WriteString(".w");
+                if (IndexScale > 1)
+                    renderer.WriteFormat("*{0}", IndexScale);
                 sep = ",";
             }
             if (preindex)
             {
-                writer.WriteString("]");
+                renderer.WriteString("]");
                 sep = ",";
             }
-            if (outer != null)
+            if (OuterDisplacement != null)
             {
-                writer.WriteString(sep);
-                writer.WriteString(MachineOperand.FormatSignedValue(outer));
+                renderer.WriteString(sep);
+                renderer.WriteString(MachineOperand.FormatSignedValue(OuterDisplacement));
             }
-            writer.WriteString(")");
+            renderer.WriteString(")");
         }
     }
 }

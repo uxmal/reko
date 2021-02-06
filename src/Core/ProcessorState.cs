@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,9 +35,10 @@ namespace Reko.Core
     /// </summary>
     public abstract class ProcessorState : EvaluationContext
     {
-        private Dictionary<RegisterStorage, Expression> linearDerived;
-        private SortedList<int, Expression> stackState;
+        private readonly Dictionary<RegisterStorage, Expression> linearDerived;
+        private readonly SortedList<int, Expression> stackState;
 
+#nullable disable
         public ProcessorState()
         {
             this.linearDerived = new Dictionary<RegisterStorage, Expression>();
@@ -50,18 +51,26 @@ namespace Reko.Core
             this.stackState = new SortedList<int, Expression>(orig.stackState);
             this.ErrorListener = this.ErrorListener;
         }
+#nullable enable
+
+        public EndianServices Endianness => Architecture.Endianness;
 
         /// <summary>
         /// Method to call if an error occurs within the processor state object (such as stack over/underflows).
         /// </summary>
-        public Action<string> ErrorListener { get; set; }
+        public Action<string>? ErrorListener { get; set; }
 
         public abstract IProcessorArchitecture Architecture { get; }
+
+        /// <summary>
+        /// Current value of the instruction pointer.
+        /// </summary>
+        public virtual Address InstructionPointer { get; set; }
+
         public abstract ProcessorState Clone();
 
         public abstract Constant GetRegister(RegisterStorage r);
         public abstract void SetRegister(RegisterStorage r, Constant v);
-        public abstract void SetInstructionPointer(Address addr);
 
         public abstract void OnProcedureEntered();                 // Some registers need to be updated when a procedure is entered.
         public abstract void OnProcedureLeft(FunctionType procedureSignature);
@@ -79,17 +88,14 @@ namespace Reko.Core
         /// specified signature.
         /// </summary>
         /// <param name="sigCallee">The signature of the called procedure.</param>
-        public abstract void OnAfterCall(FunctionType sigCallee);
+        public abstract void OnAfterCall(FunctionType? sigCallee);
 
         private bool IsStackRegister(Expression ea)
         {
-            var id = ea as Identifier;
-            if (id == null)
-                return false;
-            var reg = id.Storage as RegisterStorage;
-            if (reg == null)
-                return false;
-            return (reg == Architecture.StackRegister);
+            return
+                ea is Identifier id &&
+                id.Storage is RegisterStorage reg &&
+                reg == Architecture.StackRegister;
         }
 
         private bool GetStackOffset(Expression ea, out int offset)
@@ -118,10 +124,8 @@ namespace Reko.Core
         {
             if (id.Storage is TemporaryStorage)
                 return Constant.Invalid;
-            var reg = id.Storage as RegisterStorage;
-            if (reg == null)
+            if (!(id.Storage is RegisterStorage reg))
                 return Constant.Invalid;
-
             return GetValue(reg);
         }
 
@@ -139,13 +143,13 @@ namespace Reko.Core
         {
             if (access.EffectiveAddress is Constant constAddr)
             {
+                // This can only happen on linear architectures.
                 if (constAddr == Constant.Invalid)
                     return constAddr;
-                var ea = Architecture.MakeAddressFromConstant(constAddr, false);
+                var ea = Architecture.MakeAddressFromConstant(constAddr, false)!;
                 return GetMemoryValue(ea, access.DataType, segmentMap);
             }
-            var addr = access.EffectiveAddress as Address;
-            if (addr != null)
+            if (access.EffectiveAddress is Address addr)
             {
                 return GetMemoryValue(addr, access.DataType, segmentMap);
             }
@@ -161,13 +165,14 @@ namespace Reko.Core
         {
             if (GetStackOffset(access.EffectiveAddress, out var stackOffset))
             {
-                if (stackState.TryGetValue(stackOffset, out var value))
+                if (stackState.TryGetValue(stackOffset, out var value) && 
+                    value.DataType.BitSize == access.DataType.BitSize)
                     return value;
             }
             return Constant.Invalid;
         }
 
-        private Expression GetMemoryValue(Address addr, DataType dt, SegmentMap segmentMap)
+        public Expression GetMemoryValue(Address addr, DataType dt, SegmentMap segmentMap)
         {
             if (!(dt is PrimitiveType pt))
                 return Constant.Invalid;
@@ -200,7 +205,7 @@ namespace Reko.Core
             return Constant.Invalid;
         }
 
-        public Expression GetDefiningExpression(Identifier id)
+        public Expression? GetDefiningExpression(Identifier id)
         {
             return null;
         }
@@ -213,6 +218,11 @@ namespace Reko.Core
         public Expression MakeSegmentedAddress(Constant seg, Constant off)
         {
             return Architecture.MakeSegmentedAddress(seg, off);
+        }
+
+        public Constant ReinterpretAsFloat(Constant rawBits)
+        {
+            return Architecture.ReinterpretAsFloat(rawBits);
         }
 
         public void RemoveIdentifierUse(Identifier id)
@@ -231,8 +241,7 @@ namespace Reko.Core
         {
             if (id.Storage is TemporaryStorage)
                 return;
-            var reg = id.Storage as RegisterStorage;
-            if (reg == null)
+            if (!(id.Storage is RegisterStorage reg))
                 return;
             SetValue(reg, value);
         }

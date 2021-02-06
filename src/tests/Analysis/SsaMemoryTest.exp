@@ -5,35 +5,35 @@ sp_2: orig: sp
     def:  sp_2 = fp
     uses: use sp_2
 Top_3: orig: Top
-    def:  Top_3 = 0
+    def:  Top_3 = 0<i8>
     uses: use Top_3
 ds:ds
     def:  def ds
-    uses: bx_7 = Mem0[ds:bx + 0x0004:word16]
-          cx_8 = Mem0[ds:bx_7 + 0x0002:word16]
-          Mem11[ds:bx_7 + 0x0006:word16] = 0x0001
+    uses: bx_7 = Mem0[ds:bx + 4<16>:word16]
+          cx_8 = Mem0[ds:bx_7 + 2<16>:word16]
+          Mem11[ds:bx_7 + 6<16>:word16] = 1<16>
           cx_13 = Mem11[ds:si:word16]
-          Mem14[ds:bx_7 + 0x0006:word16] = 0x0000
+          Mem14[ds:bx_7 + 6<16>:word16] = 0<16>
           cx_15 = Mem14[ds:si:word16]
-          Mem18[ds:0x012C:word16] = cx_16
+          Mem18[ds:0x12C<16>:word16] = cx_16
 bx:bx
     def:  def bx
-    uses: bx_7 = Mem0[ds:bx + 0x0004:word16]
+    uses: bx_7 = Mem0[ds:bx + 4<16>:word16]
 Mem0:Mem
     def:  def Mem0
-    uses: bx_7 = Mem0[ds:bx + 0x0004:word16]
-          cx_8 = Mem0[ds:bx_7 + 0x0002:word16]
+    uses: bx_7 = Mem0[ds:bx + 4<16>:word16]
+          cx_8 = Mem0[ds:bx_7 + 2<16>:word16]
 bx_7: orig: bx
-    def:  bx_7 = Mem0[ds:bx + 0x0004:word16]
-    uses: cx_8 = Mem0[ds:bx_7 + 0x0002:word16]
-          Mem11[ds:bx_7 + 0x0006:word16] = 0x0001
-          Mem14[ds:bx_7 + 0x0006:word16] = 0x0000
+    def:  bx_7 = Mem0[ds:bx + 4<16>:word16]
+    uses: cx_8 = Mem0[ds:bx_7 + 2<16>:word16]
+          Mem11[ds:bx_7 + 6<16>:word16] = 1<16>
+          Mem14[ds:bx_7 + 6<16>:word16] = 0<16>
           use bx_7
 cx_8: orig: cx
-    def:  cx_8 = Mem0[ds:bx_7 + 0x0002:word16]
-    uses: SCZO_9 = cond(cx_8 - 0x0000)
+    def:  cx_8 = Mem0[ds:bx_7 + 2<16>:word16]
+    uses: SCZO_9 = cond(cx_8 - 0<16>)
 SCZO_9: orig: SCZO
-    def:  SCZO_9 = cond(cx_8 - 0x0000)
+    def:  SCZO_9 = cond(cx_8 - 0<16>)
     uses: Z_10 = SLICE(SCZO_9, bool, 2) (alias)
           C_21 = SLICE(SCZO_9, bool, 1) (alias)
           O_23 = SLICE(SCZO_9, bool, 4) (alias)
@@ -43,7 +43,7 @@ Z_10: orig: Z
     uses: branch Test(NE,Z_10) l0C00_0015
           use Z_10
 Mem11: orig: Mem0
-    def:  Mem11[ds:bx_7 + 0x0006:word16] = 0x0001
+    def:  Mem11[ds:bx_7 + 6<16>:word16] = 1<16>
     uses: cx_13 = Mem11[ds:si:word16]
 si:si
     def:  def si
@@ -53,17 +53,17 @@ cx_13: orig: cx
     def:  cx_13 = Mem11[ds:si:word16]
     uses: cx_16 = PHI((cx_15, l0C00_000B), (cx_13, l0C00_0015))
 Mem14: orig: Mem0
-    def:  Mem14[ds:bx_7 + 0x0006:word16] = 0x0000
+    def:  Mem14[ds:bx_7 + 6<16>:word16] = 0<16>
     uses: cx_15 = Mem14[ds:si:word16]
 cx_15: orig: cx
     def:  cx_15 = Mem14[ds:si:word16]
     uses: cx_16 = PHI((cx_15, l0C00_000B), (cx_13, l0C00_0015))
 cx_16: orig: cx
     def:  cx_16 = PHI((cx_15, l0C00_000B), (cx_13, l0C00_0015))
-    uses: Mem18[ds:0x012C:word16] = cx_16
+    uses: Mem18[ds:0x12C<16>:word16] = cx_16
           use cx_16
 Mem18: orig: Mem0
-    def:  Mem18[ds:0x012C:word16] = cx_16
+    def:  Mem18[ds:0x12C<16>:word16] = cx_16
 C_21: orig: C
     def:  C_21 = SLICE(SCZO_9, bool, 1) (alias)
     uses: use C_21
@@ -83,12 +83,12 @@ fn0C00_0000_entry:
 	def Mem0
 	def si
 	sp_2 = fp
-	Top_3 = 0
+	Top_3 = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	bx_7 = Mem0[ds:bx + 0x0004:word16]
-	cx_8 = Mem0[ds:bx_7 + 0x0002:word16]
-	SCZO_9 = cond(cx_8 - 0x0000)
+	bx_7 = Mem0[ds:bx + 4<16>:word16]
+	cx_8 = Mem0[ds:bx_7 + 2<16>:word16]
+	SCZO_9 = cond(cx_8 - 0<16>)
 	Z_10 = SLICE(SCZO_9, bool, 2) (alias)
 	C_21 = SLICE(SCZO_9, bool, 1) (alias)
 	O_23 = SLICE(SCZO_9, bool, 4) (alias)
@@ -96,17 +96,17 @@ l0C00_0000:
 	branch Test(NE,Z_10) l0C00_0015
 	// succ:  l0C00_000B l0C00_0015
 l0C00_000B:
-	Mem14[ds:bx_7 + 0x0006:word16] = 0x0000
+	Mem14[ds:bx_7 + 6<16>:word16] = 0<16>
 	cx_15 = Mem14[ds:si:word16]
 	goto l0C00_001C
 	// succ:  l0C00_001C
 l0C00_0015:
-	Mem11[ds:bx_7 + 0x0006:word16] = 0x0001
+	Mem11[ds:bx_7 + 6<16>:word16] = 1<16>
 	cx_13 = Mem11[ds:si:word16]
 	// succ:  l0C00_001C
 l0C00_001C:
 	cx_16 = PHI((cx_15, l0C00_000B), (cx_13, l0C00_0015))
-	Mem18[ds:0x012C:word16] = cx_16
+	Mem18[ds:0x12C<16>:word16] = cx_16
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

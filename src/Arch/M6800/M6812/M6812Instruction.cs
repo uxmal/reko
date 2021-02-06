@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,25 +26,27 @@ namespace Reko.Arch.M6800.M6812
 {
     public class M6812Instruction : MachineInstruction
     {
-        public override int MnemonicAsInteger => (int) Mnemonic;
-
         public Mnemonic Mnemonic { get; set; }
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        public override int MnemonicAsInteger => (int) Mnemonic;
+
+        public override string MnemonicAsString => Mnemonic.ToString();
+
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteMnemonic(Mnemonic.ToString());
-            RenderOperands(writer, options);
+            renderer.WriteMnemonic(Mnemonic.ToString());
+            RenderOperands(renderer, options);
         }
 
-        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch (op)
             {
             case ImmediateOperand immOp:
-                writer.WriteString(MachineOperand.FormatUnsignedValue(immOp.Value, "#${1}"));
+                renderer.WriteString(MachineOperand.FormatUnsignedValue(immOp.Value, "#${1}"));
                 return;
             }
-            op.Write(writer, options);
+            op.Render(renderer, options);
         }
     }
 }

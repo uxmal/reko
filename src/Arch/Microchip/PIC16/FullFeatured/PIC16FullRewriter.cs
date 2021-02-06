@@ -1,8 +1,8 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 2017-2020 Christian Hostelet.
+ * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -146,27 +146,27 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_ASRF()
         {
             GetSrcAndDst(out var srcmem, out var dstmem);
-            m.Assign(dstmem, m.Fn(host.PseudoProcedure("__asrf", PrimitiveType.Byte, srcmem)));
+            m.Assign(dstmem, m.Fn(host.Intrinsic("__asrf", true, PrimitiveType.Byte, srcmem)));
             SetStatusFlags(dstmem);
         }
 
         private void Rewrite_BRA()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             var target = instrCurr.Operands[0] as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid program address operand: {instrCurr.Operands[0]}");
             m.Goto(target.CodeTarget);
         }
 
         private void Rewrite_BRW()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             Address nextAddr = instrCurr.Address + instrCurr.Length;
             m.Goto(m.IAdd(nextAddr, Wreg));
         }
 
         private void Rewrite_CALLW()
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
             var pclath = binder.EnsureRegister(PICRegisters.PCLATH);
             var target = m.IAdd(m.Shl(pclath, 8), Wreg);
             Address retaddr = instrCurr.Address + instrCurr.Length;
@@ -178,14 +178,14 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_LSLF()
         {
             GetSrcAndDst(out var srcmem, out var dstmem);
-            m.Assign(dstmem, m.Fn(host.PseudoProcedure("__lslf", PrimitiveType.Byte, srcmem)));
+            m.Assign(dstmem, m.Fn(host.Intrinsic("__lslf", true, PrimitiveType.Byte, srcmem)));
             SetStatusFlags(dstmem);
         }
 
         private void Rewrite_LSRF()
         {
             GetSrcAndDst(out var srcmem, out var dstmem);
-            m.Assign(dstmem, m.Fn(host.PseudoProcedure("__lsrf", PrimitiveType.Byte, srcmem)));
+            m.Assign(dstmem, m.Fn(host.Intrinsic("__lsrf", true, PrimitiveType.Byte, srcmem)));
             SetStatusFlags(dstmem);
         }
 

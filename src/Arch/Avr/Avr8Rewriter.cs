@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,8 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System.Diagnostics;
 using Reko.Core.Lib;
+using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.Avr
 {
@@ -43,11 +45,9 @@ namespace Reko.Arch.Avr
         private readonly ProcessorState state;
         private AvrInstruction instr;
         private RtlEmitter m;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private List<RtlInstruction> rtlInstructions;
         private List<RtlInstructionCluster> clusters;
-
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
 
         public Avr8Rewriter(Avr8Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -65,9 +65,9 @@ namespace Reko.Arch.Avr
             {
                 this.clusters = new List<RtlInstructionCluster>();
                 Rewrite(dasm.Current);
-                foreach (var rtlc in clusters)
+                foreach (var cluster in clusters)
                 {
-                    yield return rtlc;
+                    yield return cluster;
                 }
             }
         }
@@ -76,7 +76,7 @@ namespace Reko.Arch.Avr
         {
             this.instr = instr;
             this.rtlInstructions = new List<RtlInstruction>();
-            this.rtlc = instr.InstructionClass;
+            this.iclass = instr.InstructionClass;
             this.m = new RtlEmitter(rtlInstructions);
             switch (instr.Mnemonic)
             {
@@ -148,13 +148,7 @@ namespace Reko.Arch.Avr
                 m.Invalid();
                 break;
             }
-            clusters.Add(new RtlInstructionCluster(
-                instr.Address,
-                instr.Length,
-                rtlInstructions.ToArray())
-            {
-                Class = rtlc
-            });
+            clusters.Add(m.MakeCluster(instr.Address, instr.Length, iclass));
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -162,29 +156,10 @@ namespace Reko.Arch.Avr
             return GetEnumerator();
         }
 
-        [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var bytes = r2.ReadBytes(dasm.Current.Length);
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void Avr8_rw_" + dasm.Current.Mnemonic + "()");
-            Debug.WriteLine("        {");
-            Debug.Write("            Rewrite(");
-            Debug.Write(string.Join(
-                ", ",
-                bytes.Select(b => string.Format("0x{0:X2}", (int)b))));
-            Debug.WriteLine(");\t// " + dasm.Current.ToString());
-            Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|{0}(2): 1 instructions\",", dasm.Current.Address);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            var testGenSvc = arch.Services.RequireService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("Avr8_rw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private void EmitFlags(Expression e, FlagM mod = 0, FlagM clr = 0, FlagM set = 0)
@@ -253,34 +228,12 @@ namespace Reko.Arch.Avr
             }
             else if (read)
             {
-                m.Assign(reg, host.PseudoProcedure("__in", PrimitiveType.Byte, Constant.Byte(port)));
+                m.Assign(reg, host.Intrinsic("__in", false, PrimitiveType.Byte, Constant.Byte(port)));
             }
             else
             {
-                m.SideEffect(host.PseudoProcedure("__out", VoidType.Instance, Constant.Byte(port), reg));
+                m.SideEffect(host.Intrinsic("__out", false, VoidType.Instance, Constant.Byte(port), reg));
             }
-        }
-
-        private Identifier IndexRegPair(RegisterStorage reg)
-        {
-            int ireg;
-            if (reg == Avr8Architecture.x)
-            {
-                ireg = 26;
-            }
-            else if (reg == Avr8Architecture.y)
-            {
-                ireg = 28;
-            }
-            else if (reg == Avr8Architecture.z)
-            {
-                ireg = 30;
-            }
-            else
-                throw new AddressCorrelatedException(instr.Address, "Invalid index register '{0}'", reg);
-            var reglo = arch.GetRegister(ireg);
-            var reghi = arch.GetRegister(ireg + 1);
-            return binder.EnsureSequence(PrimitiveType.Ptr16, reghi, reglo);
         }
 
         private void RewriteBinOp(
@@ -389,7 +342,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteBranch(FlagM grfM, bool set)
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             Expression test = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)grfM));
             if (!set)
                 test = m.Not(test);
@@ -413,13 +366,13 @@ namespace Reko.Arch.Avr
 
         private void RewriteCall()
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
             m.Call(RewriteOp(0), 2);    //$TODO: 3-byte mode in architecture.
         }
 
         private void RewriteCli()
         {
-            m.SideEffect(host.PseudoProcedure("__cli", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__cli", false, VoidType.Instance));
         }
 
         private void RewriteCp()
@@ -441,12 +394,12 @@ namespace Reko.Arch.Avr
 
         private void SkipIf(Func<Expression, Expression,Expression> cond)
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             //$BUG: may boom if there is no next instruction.
             var nextInstr = dasm.Peek(1);
             var left = RewriteOp(0);
             var right = RewriteOp(1);
-            m.Branch(cond(left,right), nextInstr.Address + nextInstr.Length, rtlc);
+            m.Branch(cond(left,right), nextInstr.Address + nextInstr.Length, iclass);
 
         }
 
@@ -465,12 +418,12 @@ namespace Reko.Arch.Avr
         private void RewriteDes()
         {
             var h = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)FlagM.HF));
-            m.SideEffect(host.PseudoProcedure("__des", VoidType.Instance, RewriteOp(0), h));
+            m.SideEffect(host.Intrinsic("__des", false, VoidType.Instance, RewriteOp(0), h));
         }
 
         private void RewriteIcall()
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
             var z = binder.EnsureRegister(Avr8Architecture.z);
             m.Call(z, 2);
         }
@@ -482,7 +435,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteIjmp()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             var z = binder.EnsureRegister(Avr8Architecture.z);
             m.Goto(z);
         }
@@ -535,7 +488,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteJmp()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             var op = RewriteOp(0);
             if (op is Constant c)
             {
@@ -579,7 +532,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteRet()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Return(2, 0);
         }
 
@@ -587,14 +540,14 @@ namespace Reko.Arch.Avr
         {
             var c = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.sreg, (uint)FlagM.CF));
             var reg = RewriteOp(0);
-            m.Assign(reg, host.PseudoProcedure(PseudoProcedure.RorC, PrimitiveType.Byte, reg, m.Int32(1), c));
+            m.Assign(reg, host.Intrinsic(IntrinsicProcedure.RorC, true, PrimitiveType.Byte, reg, m.Int32(1), c));
             EmitFlags(reg, CmpFlags);
         }
 
         private void RewriteSbis()
         {
-            var io = host.PseudoProcedure("__in", PrimitiveType.Byte, RewriteOp(0));
-            var bis = host.PseudoProcedure("__bit_set", PrimitiveType.Bool, io, RewriteOp(1));
+            var io = host.Intrinsic("__in", false, PrimitiveType.Byte, RewriteOp(0));
+            var bis = host.Intrinsic("__bit_set", true, PrimitiveType.Bool, io, RewriteOp(1));
             if (!dasm.MoveNext())
             {
                 m.Invalid();
@@ -602,19 +555,13 @@ namespace Reko.Arch.Avr
             }
             var addrSkip = dasm.Current.Address + dasm.Current.Length;
             var branch = m.BranchInMiddleOfInstruction(bis, addrSkip, InstrClass.ConditionalTransfer);
-            clusters.Add(new RtlInstructionCluster(
-                this.instr.Address,
-                this.instr.Length,
-                this.rtlInstructions.ToArray())
-            {
-                Class = InstrClass.ConditionalTransfer,
-            });
+            clusters.Add(m.MakeCluster(this.instr.Address, this.instr.Length, InstrClass.ConditionalTransfer));
             Rewrite(dasm.Current);
         }
 
         private void RewriteSei()
         {
-            m.SideEffect(host.PseudoProcedure("__sei", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__sei", false, VoidType.Instance));
         }
 
         private void RewriteSetBit(FlagM grf, bool value)
@@ -636,7 +583,7 @@ namespace Reko.Arch.Avr
         private void RewriteSwap()
         {
             var reg = RewriteOp(0);
-            m.Assign(reg, host.PseudoProcedure("__swap", PrimitiveType.Byte, reg));
+            m.Assign(reg, host.Intrinsic("__swap", true, PrimitiveType.Byte, reg));
         }
 
     }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -191,7 +192,7 @@ namespace Reko.UnitTests.Analysis
             {
                 var r1 = m.Reg32("r1", 1);
                 var tmp = m.Temp(PrimitiveType.Word16, "tmp");
-                m.Assign(tmp, m.Cast(PrimitiveType.Word16, r1));
+                m.Assign(tmp, m.Slice(PrimitiveType.Word16, r1, 0));
                 m.MStore(m.Word32(0x2000), tmp);
                 m.Return();
             });
@@ -225,7 +226,7 @@ namespace Reko.UnitTests.Analysis
                 m.MStore(m.Word32(0x02004), r1);
                 m.Goto("mxit");
                 m.Label("mge");
-                m.MStore(m.Word32(0x02008), m.Cast(PrimitiveType.Word16, r1));
+                m.MStore(m.Word32(0x02008), m.Slice(PrimitiveType.Word16, r1, 0));
                 m.Label("mxit");
                 m.Return();
             });
@@ -327,7 +328,7 @@ namespace Reko.UnitTests.Analysis
         public void UrfDpb2()
         {
             var sExp = "Used: [bx, [0..15]],[cl, [0..7]]";
-            RunTest(sExp, new X86ArchitectureFlat32(""), m =>
+            RunTest(sExp, new X86ArchitectureFlat32(new ServiceContainer(), "", new Dictionary<string, object>()), m =>
             {
                 var bx = m.Frame.EnsureRegister(Registers.bx);
                 var cx = m.Frame.EnsureRegister(Registers.cx);

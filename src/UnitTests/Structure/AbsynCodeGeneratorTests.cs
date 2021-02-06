@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Structure
     [TestFixture]
     public class AbsynCodeGeneratorTests
     {
-        private string nl = Environment.NewLine;
+        private readonly string nl = Environment.NewLine;
         private Procedure proc;
         private StringWriter sb;
 
@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Structure
             sb.WriteLine("{0}()", proc.Name);
             sb.WriteLine("{");
 
-            CodeFormatter cf = new CodeFormatter(new TextFormatter(sb));
+            var cf = new AbsynCodeFormatter(new TextFormatter(sb));
             cf.WriteStatementList(proc.Body);
 
             sb.WriteLine("}");
@@ -144,14 +144,14 @@ namespace Reko.UnitTests.Structure
                 "	if (ax >= 0)" + nl +
                 "	{" + nl +
                 "		cl = 0x00;" + nl +
-                "		if (ax > 12)" + nl +
-                "			ax = 12;" + nl +
+                "		if (ax > 0x0C)" + nl +
+                "			ax = 0x0C;" + nl +
                 "	}" + nl +
                 "	else" + nl +
                 "	{" + nl +
                 "		cl = 0x01;" + nl +
-                "		if (ax < -12)" + nl +
-                "			ax = -12;" + nl +
+                "		if (ax < -0x0C)" + nl +
+                "			ax = -0x0C;" + nl +
                 "	}" + nl +
                 "}" + nl);
 
@@ -275,7 +275,7 @@ namespace Reko.UnitTests.Structure
                 "		r3 = Mem0[r1 + 4:word32];" + nl +
                 "		if (r3 == 0)" + nl +
                 "			return r2;" + nl +
-                "		r1 = Mem0[r1 + 12:word32];" + nl +
+                "		r1 = Mem0[r1 + 0x0C:word32];" + nl +
                 "	}" + nl +
                 "	return r2;" + nl +
                 "}" + nl);
@@ -293,13 +293,13 @@ namespace Reko.UnitTests.Structure
                 "	DoWorkBeforeSwitch();" + nl +
                 "	switch (n)" + nl +
                 "	{" + nl +
-                "	case 0x00000000:" + nl +
+                "	case 0x00:" + nl +
                 "		print(n);" + nl +
                 "		break;" + nl +
-                "	case 0x00000001:" + nl +
+                "	case 0x01:" + nl +
                 "		++n;" + nl +
                 "		goto JumpBack;" + nl +
-                "	case 0x00000002:" + nl +
+                "	case 0x02:" + nl +
                 "		print(n);" + nl +
                 "		break;" + nl +
                 "	}" + nl +
@@ -315,13 +315,13 @@ namespace Reko.UnitTests.Structure
                 "{" + nl +
                 "	switch (w)" + nl +
                 "	{" + nl +
-                "	case 0x0000:" + nl +
+                "	case 0x00:" + nl +
                 "		fn0();" + nl +
                 "		break;" + nl +
-                "	case 0x0001:" + nl +
+                "	case 0x01:" + nl +
                 "		fn1();" + nl +
                 "		break;" + nl +
-                "	case 0x0002:" + nl +
+                "	case 0x02:" + nl +
                 "		fn2();" + nl +
                 "		break;" + nl +
                 "	}" + nl +
@@ -336,11 +336,11 @@ namespace Reko.UnitTests.Structure
                 "MockNestedWhileLoops()" + nl +
                 "{" + nl +
                 "	int32 i;" + nl +
-                "	for (i = 0; i < 10; ++i)" + nl +
+                "	for (i = 0; i < 0x0A; ++i)" + nl +
                 "	{" + nl +
                 "		int32 j;" + nl +
-                "		for (j = 0; j < 10; ++j)" + nl +
-                "			Mem0[0x00001234:word32] = Mem0[0x00001234:int32] + j;" + nl +
+                "		for (j = 0; j < 0x0A; ++j)" + nl +
+                "			Mem0[0x00001234<p32>:word32] = Mem0[0x00001234<p32>:int32] + j;" + nl +
                 "	}" + nl +
                 "}" + nl);
         }
@@ -421,11 +421,11 @@ namespace Reko.UnitTests.Structure
 "ProcedureBuilder()" + nl +
 "{" + nl +
 "	a1 = fn0540();" + nl +
-"	tmp = Mem0[0x8416:word16];" + nl +
-"	if (tmp != 0x0000)" + nl +
+"	tmp = Mem0[33814:word16];" + nl +
+"	if (tmp != 0x00)" + nl +
 "		return a1;" + nl +
-"	Mem0[0x8414:word16] = 0x0000;" + nl +
-"	if (0x8414 == 0x0000)" + nl +
+"	Mem0[0x8414:word16] = 0x00;" + nl +
+"	if (0x8414 == 0x00)" + nl +
 "		return a1;" + nl +
 "	fn02A9(&ax_96);" + nl +
 "	return ax_96;" + nl +
@@ -452,10 +452,10 @@ namespace Reko.UnitTests.Structure
             CompileTest(m =>
             {
                 m.Label("Infinity");
-                m.BranchIf(m.Eq(m.Mem16(m.Word16(0x1234)), 0), "hop");
+                m.BranchIf(m.Eq(m.Mem16(m.Ptr16(0x1234)), 0), "hop");
                 m.SideEffect(m.Fn("foo"));
                 m.Label("hop");
-                m.BranchIf(m.Eq(m.Mem16(m.Word16(0x5123)), 1), "Infinity");
+                m.BranchIf(m.Eq(m.Mem16(m.Ptr16(0x5123)), 1), "Infinity");
                 m.SideEffect(m.Fn("bar"));
                 m.Goto("Infinity");
                 m.Return();
@@ -465,9 +465,9 @@ namespace Reko.UnitTests.Structure
                 "{" + nl +
                 "\twhile (true)" + nl +
                 "\t{" + nl + 
-                "\t\tif (Mem0[0x1234:word16] != 0x0000)" + nl +
+                "\t\tif (Mem0[0x1234<p16>:word16] != 0x00)" + nl +
                 "\t\t\tfoo();" + nl + 
-                "\t\tif (Mem0[0x5123:word16] != 0x0001)" + nl +
+                "\t\tif (Mem0[0x5123<p16>:word16] != 0x01)" + nl +
                 "\t\t\tbar();" +nl +
                 "\t}" + nl +
                 "}" + nl);

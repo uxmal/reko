@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Arch.Pdp11;
 using System.Collections.Generic;
 using Reko.Core.Types;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.RT11
 {
@@ -33,19 +34,16 @@ namespace Reko.Environments.RT11
             this.PreferredBaseAddress = Address.Ptr16(0);
         }
 
-        public override Address PreferredBaseAddress
-        {
-            get; set;
-        }
+        public override Address PreferredBaseAddress { get; set; }
 
         public override Program Load(Address addrLoad)
         {
-            var arch = new Pdp11Architecture("pdp11");
+            var arch = new Pdp11Architecture(Services, "pdp11", new Dictionary<string, object>());
 
             return new Program(
                 new SegmentMap(addrLoad,
                 new ImageSegment(".text",
-                        new MemoryArea(addrLoad, RawImage),
+                        new ByteMemoryArea(addrLoad, RawImage),
                         AccessMode.ReadWriteExecute)),
                 arch,
                 new RT11Platform(Services, arch));
@@ -54,7 +52,7 @@ namespace Reko.Environments.RT11
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             var header = CreateSavHeader(program.Architecture);
-            var uaddrEntry = MemoryArea.ReadLeUInt16(RawImage, 0x20);
+            var uaddrEntry = ByteMemoryArea.ReadLeUInt16(RawImage, 0x20);
             var entry = ImageSymbol.Procedure(program.Architecture, Address.Ptr16(uaddrEntry));
             return new RelocationResults(
                 new List<ImageSymbol> { entry },

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -38,10 +39,10 @@ namespace Reko.Scanning
     /// </summary>
     public class VectorBuilder : IBackWalkHost<Block,Instruction>
     {
-        private IServiceProvider services;
-        private Program program;
-        private Backwalker<Block,Instruction> bw;
-        private DirectedGraphImpl<object> jumpGraph;        //$TODO:
+        private readonly IServiceProvider services;
+        private readonly Program program;
+        private readonly DirectedGraphImpl<object> jumpGraph;        //$TODO:
+        private Backwalker<Block, Instruction>? bw;
 
         public VectorBuilder(IServiceProvider services, Program program, DirectedGraphImpl<object> jumpGraph)
         {
@@ -55,28 +56,25 @@ namespace Reko.Scanning
         public int TableByteSize { get; private set; }
         public Program Program => program;
 
-        public Tuple<Expression,Expression> AsAssignment(Instruction instr)
+        public Tuple<Expression,Expression>? AsAssignment(Instruction instr)
         {
-            var ass = instr as Assignment;
-            if (ass == null)
-                return null;
-            return Tuple.Create((Expression)ass.Dst, ass.Src);
+            if (instr is Assignment ass)
+                return Tuple.Create((Expression) ass.Dst, ass.Src);
+            return null;
         }
 
-        public Expression AsBranch(Instruction instr)
+        public Expression? AsBranch(Instruction instr)
         {
-            var bra = instr as Branch;
-            if (bra == null)
-                return null;
-            return bra.Condition;
+            if (instr is Branch bra)
+                return bra.Condition;
+            return null;
         }
 
         public List<Address> Build(Address addrTable, Address addrFrom, ProcessorState state)
         {
-            bw = new Backwalker<Block,Instruction>(this, null, null);
-            if (bw == null)
-                return null;
-            List<BackwalkOperation> operations = bw.BackWalk(null);
+            //$BUG: all these nulls!
+            bw = new Backwalker<Block,Instruction>(this, null!, null!);
+            List<BackwalkOperation>? operations = bw.BackWalk(null!);
             if (operations == null)
                 return PostError("Unable to determine limit", addrFrom, addrTable);
             return BuildAux(bw, addrFrom, state);
@@ -85,28 +83,26 @@ namespace Reko.Scanning
         public List<Address> BuildAux(Backwalker<Block, Instruction> bw, Address addrFrom, ProcessorState state)
         {
             int limit = 0;
-            int[] permutation = null;
+            int[]? permutation = null;
             foreach (BackwalkOperation op in bw.Operations)
             {
-                BackwalkError err = op as BackwalkError;
-                if (err != null)
+                if (op is BackwalkError err)
                 {
-                    return PostError(err.ErrorMessage, addrFrom, bw.VectorAddress);
+                    return PostError(err.ErrorMessage, addrFrom, bw.VectorAddress!);
                 }
-                var deref = op as BackwalkDereference;
-                if (deref != null)
+                if (op is BackwalkDereference deref)
                 {
                     permutation = BuildMapping(deref, limit);
                 }
                 limit = op.Apply(limit);
             }
             if (limit == 0)
-                return PostError("Unable to determine limit", addrFrom, bw.VectorAddress);
+                return PostError("Unable to determine limit", addrFrom, bw.VectorAddress!);
 
             return BuildTable(
-                bw.VectorAddress, 
+                bw.VectorAddress!, 
                 limit, 
-                permutation,
+                permutation!,
                 (bw.Stride == 1 || bw.Stride == 0) && bw.JumpSize > 1 
                     ? bw.JumpSize 
                     : bw.Stride,
@@ -170,7 +166,7 @@ namespace Reko.Scanning
                 for (int i = 0; i < cItems; ++i)
                 {
                     var entryAddr = program.Architecture.ReadCodeAddress(stride, rdr, state);
-                    if (entryAddr == null || !segmentMap.IsValidAddress(entryAddr))
+                    if (entryAddr is null || !segmentMap.IsValidAddress(entryAddr))
                     {
                         if (services != null)
                         {
@@ -203,15 +199,14 @@ namespace Reko.Scanning
             return block.Pred.ToList();
         }
 
-        public AddressRange GetSinglePredecessorAddressRange(Address addr)
+        public AddressRange? GetSinglePredecessorAddressRange(Address addr)
         {
-            ImageMapBlock block = null;
+            ImageMapBlock? block = null;
             foreach (Address addrPred in this.jumpGraph.Predecessors(addr))
             {
                 if (block != null)
                     return null;
-                ImageMapItem item;
-                if (!program.ImageMap.TryFindItem(addrPred, out item))
+                if (!program.ImageMap.TryFindItem(addrPred, out ImageMapItem item))
                     return null;
                 block = item as ImageMapBlock;
             }
@@ -221,15 +216,13 @@ namespace Reko.Scanning
                 return new AddressRange(block.Address, block.Address + block.Size);
         }
 
-        public Address GetBlockStartAddress(Address addr)
+        public Address? GetBlockStartAddress(Address addr)
         {
-            ImageMapItem item;
-            if (!program.ImageMap.TryFindItem(addr, out item))
+            if (!program.ImageMap.TryFindItem(addr, out ImageMapItem item))
                 return null;
-            ImageMapBlock block = item as ImageMapBlock;
-            if (block == null)
-                return null;
-            return block.Address;
+            if (item is ImageMapBlock block)
+                return block.Address;
+            return null;
         }
 
         public Address MakeAddressFromConstant(Constant c)
@@ -252,7 +245,7 @@ namespace Reko.Scanning
 
         public RegisterStorage IndexRegister
         {
-            get { return bw != null ? bw.Index: RegisterStorage.None; }
+            get { return bw != null ? bw.Index! : RegisterStorage.None; }
         }
 
         public bool IsStackRegister(Storage stg)

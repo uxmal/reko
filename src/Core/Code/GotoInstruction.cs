@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,9 +28,6 @@ namespace Reko.Core.Code
     /// </summary>
     public class GotoInstruction : Instruction
     {
-        private Expression condition;
-        private Expression target;
-
         /// <summary>
         /// Use this constructor to create an unconditional transfer instruction.
         /// </summary>
@@ -38,7 +35,7 @@ namespace Reko.Core.Code
         public GotoInstruction(Expression target)
         {
             this.Target = target;
-            this.condition = Constant.Invalid;
+            this.Condition = Constant.Invalid;
         }
 
         public override Instruction Accept(InstructionTransformer xform)
@@ -60,11 +57,7 @@ namespace Reko.Core.Code
 
         public override bool IsControlFlow { get { return true; } }
 
-        public Expression Condition
-        {
-            get { return condition; }
-            set { condition = value; }
-        }
+        public Expression Condition { get; set; }
 
         /// <summary>
         /// The target of the goto instruction. Either a Constant, in which case it should 

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,7 +81,7 @@ namespace Reko.Arch.PowerPC
             {
                 var memB = (MemoryOperand)opB;
                 return CompareRegisters(memA.BaseRegister, memB.BaseRegister) &&
-                    CompareValues(memB.Offset, memB.Offset);
+                    memB.Offset == memB.Offset;
             }
             var cA = opA as ConditionOperand;
             if (cA != null)
@@ -135,7 +135,7 @@ namespace Reko.Arch.PowerPC
                 if (!NormalizeRegisters)
                     h ^= GetRegisterHash(mem.BaseRegister);
                 if (!NormalizeConstants)
-                    h ^= GetConstantHash(mem.Offset);
+                    h ^= mem.Offset.GetHashCode();
                 return h;
             }
             var c = op as ConditionOperand;

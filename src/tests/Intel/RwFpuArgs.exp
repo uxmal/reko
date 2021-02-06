@@ -3,8 +3,8 @@
 // Mem0:Mem
 // fp:fp
 // sp:sp
-// Top:Top
 // ds:ds
+// Top:Top
 // ss:ss
 // ax:ax
 // SCZO:SCZO
@@ -12,27 +12,27 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	Top = Top - 1
-	ST[Top:real64] = (real64) Mem0[ds:0x0300:real32]
-	Top = Top - 1
-	ST[Top:real64] = (real64) Mem0[ds:0x0304:real32]
-	sp = sp - 2
-	Mem0[ss:sp:word16] = 0x0308
+	Top = Top - 1<i8>
+	ST[Top:real64] = CONVERT(Mem0[ds:0x300<16>:real32], real32, real64)
+	Top = Top - 1<i8>
+	ST[Top:real64] = CONVERT(Mem0[ds:0x304<16>:real32], real32, real64)
+	sp = sp - 2<i16>
+	Mem0[ss:sp:word16] = 0x308<16>
 	call fn0C00_0024 (retsize: 2;)
-	Top = Top - 1
+	Top = Top - 1<i8>
 	ST[Top:real64] = 0.0
-	Mem0[ds:0x030C:real32] = (real32) ST[Top:real64]
-	Top = Top + 1
-	ax = Mem0[ds:0x0308:word16]
-	sp = sp - 2
+	Mem0[ds:0x30C<16>:real32] = CONVERT(ST[Top:real64], real64, real32)
+	Top = Top + 1<i8>
+	ax = Mem0[ds:0x308<16>:word16]
+	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = ax
 	call fn0C00_0031 (retsize: 2;)
-	Mem0[ds:0x030C:real32] = (real32) ST[Top:real64]
-	Top = Top + 1
-	sp = sp + 0x0004
+	Mem0[ds:0x30C<16>:real32] = CONVERT(ST[Top:real64], real64, real32)
+	Top = Top + 1<i8>
+	sp = sp + 4<16>
 	SCZO = cond(sp)
 	return
 	// succ:  fn0C00_0000_exit
@@ -52,19 +52,19 @@ fn0C00_0000_exit:
 define fn0C00_0024
 fn0C00_0024_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0024
 l0C00_0024:
-	sp = sp - 2
+	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = bp
 	bp = sp
-	bx = Mem0[ss:bp + 0x0004:word16]
-	Mem0[ds:bx:real32] = (real32) ST[Top:real64]
-	Top = Top + 1
-	Mem0[ds:bx + 0x0004:real32] = (real32) ST[Top:real64]
-	Top = Top + 1
+	bx = Mem0[ss:bp + 4<16>:word16]
+	Mem0[ds:bx:real32] = CONVERT(ST[Top:real64], real64, real32)
+	Top = Top + 1<i8>
+	Mem0[ds:bx + 4<16>:real32] = CONVERT(ST[Top:real64], real64, real32)
+	Top = Top + 1<i8>
 	bp = Mem0[ss:sp:word16]
-	sp = sp + 2
+	sp = sp + 2<i16>
 	return
 	// succ:  fn0C00_0024_exit
 fn0C00_0024_exit:
@@ -77,23 +77,23 @@ fn0C00_0024_exit:
 // bp:bp
 // ss:ss
 // bx:bx
-// Top:Top
 // ds:ds
+// Top:Top
 // return address size: 2
 define fn0C00_0031
 fn0C00_0031_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0031
 l0C00_0031:
-	sp = sp - 2
+	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = bp
 	bp = sp
-	bx = Mem0[ss:bp + 0x0004:word16]
-	Top = Top - 1
-	ST[Top:real64] = (real64) Mem0[ds:bx:real32]
+	bx = Mem0[ss:bp + 4<16>:word16]
+	Top = Top - 1<i8>
+	ST[Top:real64] = CONVERT(Mem0[ds:bx:real32], real32, real64)
 	bp = Mem0[ss:sp:word16]
-	sp = sp + 2
+	sp = sp + 2<i16>
 	return
 	// succ:  fn0C00_0031_exit
 fn0C00_0031_exit:

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using Reko.Typing;
 using Reko.UnitTests.Mocks;
 using System;
 using NUnit.Framework;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Typing
 {
@@ -51,8 +52,8 @@ namespace Reko.UnitTests.Typing
 			TypeVariableReplacer tvr = new TypeVariableReplacer(store);
 			tvr.ReplaceTypeVariables();
 
-			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store, program);
-			ppr.ReplaceAll(listener);
+			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store, program, listener);
+			ppr.ReplaceAll();
 
 			Verify(program, outputFilename);
 		}
@@ -73,10 +74,11 @@ namespace Reko.UnitTests.Typing
 				fut.AssertFilesEqual();
 			}
 		}
+
 		[Test]
 		public void PprReplaceInts()
 		{
-            var arch = new FakeArchitecture(); 
+            var arch = new FakeArchitecture(new ServiceContainer()); 
             var program = new Program { Architecture = arch, Platform = new DefaultPlatform(null, arch) };
 
 			TypeFactory factory = new TypeFactory();
@@ -102,9 +104,8 @@ namespace Reko.UnitTests.Typing
 			TypeVariableReplacer tvr = new TypeVariableReplacer(store);
 			tvr.ReplaceTypeVariables();
 
-            var ppr = new PtrPrimitiveReplacer(factory, store, program);
-
-			ppr.ReplaceAll(new FakeDecompilerEventListener());
+            var ppr = new PtrPrimitiveReplacer(factory, store, program, new FakeDecompilerEventListener());
+			ppr.ReplaceAll();
 
 			Verify(null, "Typing/PprReplaceInts.txt");
 		}
@@ -159,7 +160,7 @@ namespace Reko.UnitTests.Typing
             var factory = new TypeFactory();
             var store = new TypeStore();
 
-            var ppr = new PtrPrimitiveReplacer(factory, store, program);
+            var ppr = new PtrPrimitiveReplacer(factory, store, program, new FakeDecompilerEventListener());
 
             var sExp = "(struct (0 (ptr32 (struct (0 (ptr32 (struct)) ptr0000))) ptr0000))";
 

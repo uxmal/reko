@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace Reko.Core.Machine
 {
     public abstract class InstructionComparer : IEqualityComparer<MachineInstruction>
     {
-        private  Normalize norm;
+        private readonly Normalize norm;
 
         public InstructionComparer(Normalize norm)
         {
@@ -37,7 +37,7 @@ namespace Reko.Core.Machine
 
         public abstract bool CompareOperands(MachineInstruction x, MachineInstruction y);
 
-        public bool CompareRegisters(RegisterStorage regA, RegisterStorage regB)
+        public bool CompareRegisters(RegisterStorage? regA, RegisterStorage? regB)
         {
             if (regA == null)
             {
@@ -50,15 +50,15 @@ namespace Reko.Core.Machine
             return NormalizeRegisters || regA == regB;
         }
 
-        public bool CompareValues(Constant constA, Constant constB)
+        public bool CompareValues(Constant? constA, Constant? constB)
         {
-            if (constA == null)
+            if (constA is null)
             {
-                return constB == null;
+                return constB is null;
             }
-            if (constB == null)
+            if (constB is null)
             {
-                return constA == null;
+                return constA is null;
             }
             return NormalizeConstants || constA.GetValue().Equals(constB.GetValue());
         }

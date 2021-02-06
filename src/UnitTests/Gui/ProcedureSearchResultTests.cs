@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
 using Reko.UnitTests.Mocks;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Gui
 {
@@ -43,7 +44,7 @@ namespace Reko.UnitTests.Gui
         {
             sc = new ServiceContainer();
             procs = new List<ProcedureSearchHit>();
-            program = new Program { Name = "Proggie", Architecture = new FakeArchitecture() };
+            program = new Program { Name = "Proggie", Architecture = new FakeArchitecture(sc) };
         }
 
         [Test]

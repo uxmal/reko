@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,7 +104,7 @@ namespace Reko.Tools.HdrGen
                     .Where(TypeHasInteropAttribute)
                     .OrderBy(t => t.Name)
                     .ToList();
-                Console.Error.WriteLine("There are {0} classes", list.Count);
+                Console.Error.WriteLine("hdrgen: there are {0} classes", list.Count);
                 return list;
             } catch (ReflectionTypeLoadException ex)
             {

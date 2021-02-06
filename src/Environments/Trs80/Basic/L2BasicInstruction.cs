@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,32 +39,31 @@ namespace Reko.Environments.Trs80.Basic
             this.InstructionClass = InstrClass.Linear;
         }
 
-        public override int MnemonicAsInteger
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public override int MnemonicAsInteger => throw new NotImplementedException();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        public override string MnemonicAsString => throw new NotImplementedException();
+
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteFormat("{0} ", Address.ToLinear());
+            renderer.WriteFormat("{0} ", Address.ToLinear());
             bool inString = false;
             for (int i = 0; i < Line.Length; ++i)
             {
                 int b = Line[i];
                 if (inString)
                 {
-                    writer.WriteString(Encoding.UTF8.GetString(Line, i, 1));
+                    renderer.WriteString(Encoding.UTF8.GetString(Line, i, 1));
                     inString = (b != 0x22);
                 }
                 else
                 {
                     if (TokenMin <= b && b < TokenMax)
                     {
-                        writer.WriteString(TokenStrs[b - TokenMin]);
+                        renderer.WriteString(TokenStrs[b - TokenMin]);
                     }
                     else
                     {
-                        writer.WriteString(Encoding.UTF8.GetString(Line, i, 1));
+                        renderer.WriteString(Encoding.UTF8.GetString(Line, i, 1));
                     }
                     inString = (b == 0x22);
                 }

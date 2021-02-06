@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2019 John Källén.
+* Copyright (C) 1999-2021 John Kï¿½llï¿½n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -79,12 +79,16 @@ STDMETHODIMP_(int32_t) Arm64Rewriter::Next()
 	// Most instructions are linear.
 	rtlClass = InstrClass::Linear;
 	
+#if 0
 	switch (instr->id)
 	{
 	default:
 		NotImplementedYet();
 		break;
 	}
+#else
+	NotImplementedYet();
+#endif
 	m.FinishCluster(rtlClass, addrInstr, instr->size);
 	return S_OK;
 }

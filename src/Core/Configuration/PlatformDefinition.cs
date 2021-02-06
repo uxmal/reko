@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +19,12 @@
 #endregion
 
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -36,17 +38,20 @@ namespace Reko.Core.Configuration
             this.CharacteristicsLibraries = new List<TypeLibraryDefinition>();
             this.SignatureFiles = new List<SignatureFileDefinition>();
             this.Architectures = new List<PlatformArchitectureDefinition>();
+            this.Options = new Dictionary<string, object>();
         }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
-        public PlatformHeuristics_v1 Heuristics { get; set; }
+        public PlatformHeuristics_v1? Heuristics { get; set; }
 
-        public string TypeName { get; set; }
+        public string? TypeName { get; set; }
 
-        public string MemoryMapFile { get; set; }
+        public string? MemoryMapFile { get; set; }
+
+        public bool CaseInsensitive { get; set; }
 
         public virtual List<TypeLibraryDefinition> TypeLibraries { get; internal set; }
         public virtual List<TypeLibraryDefinition> CharacteristicsLibraries { get; internal set; }
@@ -68,16 +73,29 @@ namespace Reko.Core.Configuration
 
         public void LoadSettingsFromConfiguration(IServiceProvider services, Platform platform)
         {
-            platform.Name = this.Name;
+            platform.Name = this.Name!;
             if (!string.IsNullOrEmpty(MemoryMapFile))
             {
-                platform.MemoryMap = MemoryMap_v1.LoadMemoryMapFromFile(services, MemoryMapFile, platform);
+                var cfgSvc = services.RequireService<IConfigurationService>();
+                var fsSvc = services.RequireService<IFileSystemService>();
+                var listener = services.RequireService<DecompilerEventListener>();
+                try
+                {
+                    var filePath = cfgSvc.GetInstallationRelativePath(MemoryMapFile!);
+                    using var stm = fsSvc.CreateFileStream(filePath, FileMode.Open, FileAccess.Read);
+                    platform.MemoryMap = MemoryMap_v1.Deserialize(stm);
+                }
+                catch (Exception ex)
+                {
+                    listener.Error(ex, "Unable to open memory map file '{0}.", MemoryMapFile!);
+                }
             }
-            platform.Description = this.Description;
+            platform.PlatformProcedures = LoadPlatformProcedures(platform);
+            platform.Description = this.Description!;
             platform.Heuristics = LoadHeuristics(this.Heuristics);
         }
 
-        private PlatformHeuristics LoadHeuristics(PlatformHeuristics_v1 heuristics)
+        private PlatformHeuristics LoadHeuristics(PlatformHeuristics_v1? heuristics)
         {
             if (heuristics == null)
             {
@@ -94,8 +112,8 @@ namespace Reko.Core.Configuration
             else
             {
                 prologs = heuristics.ProcedurePrologs
-                    .Select(p => LoadMaskedPattern(p))
-                    .Where(p => p.Bytes != null)
+                    .Select(p => LoadMaskedPattern(p)!)
+                    .Where(p => p != null && p.Bytes != null)
                     .ToArray();
             }
 
@@ -105,10 +123,10 @@ namespace Reko.Core.Configuration
             };
         }
 
-        public MaskedPattern LoadMaskedPattern(BytePattern_v1 sPattern)
+        public MaskedPattern? LoadMaskedPattern(BytePattern_v1 sPattern)
         {
-            List<byte> bytes = null;
-            List<byte> mask = null;
+            List<byte> bytes;
+            List<byte> mask;
             if (sPattern.Bytes == null)
                 return null;
             if (sPattern.Mask == null)
@@ -121,11 +139,10 @@ namespace Reko.Core.Configuration
                 for (int i = 0; i < sPattern.Bytes.Length; ++i)
                 {
                     char c = sPattern.Bytes[i];
-                    byte b;
-                    if (BytePattern.TryParseHexDigit(c, out b))
+                    if (BytePattern.TryParseHexDigit(c, out byte b))
                     {
-                        bb = bb | (b << shift);
-                        mm = mm | (0x0F << shift);
+                        bb |= (b << shift);
+                        mm |= (0x0F << shift);
                         shift -= 4;
                         if (shift < 0)
                         {
@@ -156,19 +173,41 @@ namespace Reko.Core.Configuration
             }
             if (bytes.Count == 0)
                 return null;
-            else
-                return new MaskedPattern
-                {
-                    Bytes = bytes.ToArray(),
-                    Mask = mask.ToArray()
-                };
-
+            return new MaskedPattern
+            {
+                Bytes = bytes.ToArray(),
+                Mask = mask.ToArray()
+            };
         }
 
+        private Dictionary<Address, ExternalProcedure> LoadPlatformProcedures(Platform platform)
+        {
+            if (platform.MemoryMap != null && platform.MemoryMap.Segments != null)
+            {
+                platform.EnsureTypeLibraries(platform.Name);
+                var tser = new TypeLibraryDeserializer(platform, true, platform.Metadata);
+                var sser = new ProcedureSerializer(platform, tser, platform.DefaultCallingConvention);
+                return platform.MemoryMap.Segments.SelectMany(s => s.Procedures)
+                    .OfType<Procedure_v1>()
+                    .Where(p => p.Name != null)
+                    .Select(p =>
+                        (addr: platform.Architecture.TryParseAddress(p.Address, out var addr) ? addr : null,
+                         ext:  new ExternalProcedure(
+                             p.Name!,
+                             sser.Deserialize(p.Signature, platform.Architecture.CreateFrame())
+                                ?? new Types.FunctionType())))
+                    .Where(p => p.addr != null)
+                    .ToDictionary(p => p.addr!, p => p.ext);
+            }
+            else
+            {
+                return new Dictionary<Address, ExternalProcedure>();
+            }
+        }
 
         public override string ToString()
         {
-            return Description;
+            return Description ?? "";
         }
     }
 }

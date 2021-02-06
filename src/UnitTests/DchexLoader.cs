@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
  
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.ImageLoaders;
 using System;
 using System.Collections.Generic;
@@ -65,7 +66,7 @@ namespace Reko.UnitTests
                     break;
                 ProcessLine(line);
             }
-            var mem = new MemoryArea(addrStart, memStm.ToArray());
+            var mem = new ByteMemoryArea(addrStart, memStm.ToArray());
             results = new Program(
                 new SegmentMap(
                     mem.BaseAddress,
@@ -78,7 +79,7 @@ namespace Reko.UnitTests
         {
             switch (archName)
             {
-            case "m68k": return new Reko.Arch.M68k.M68kArchitecture("m68k");
+            case "m68k": return new Reko.Arch.M68k.M68kArchitecture(Services, "m68k", new Dictionary<string, object>());
             default: throw new NotImplementedException();
             }
         }

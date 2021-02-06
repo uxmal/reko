@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2020 John Källén.
+* Copyright (C) 1999-2021 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,25 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Reko.Arch.Arm.AArch32
 {
     public partial class ArmRewriter
     {
+        private void RewriteVbic()
+        {
+            if (instr.Operands.Length == 3)
+            {
+                RewriteVectorBinOp("__vbic_{0}", instr.vector_data, Dst(), Src1(), Src2());
+            }
+            else
+            {
+                RewriteVectorBinOp("__vbic_{0}", instr.vector_data, Dst(), Dst(), Src1());
+            }
+        }
+
         private void RewriteVecBinOp(Func<Expression, Expression, Expression> fn)
         {
             if (instr.Operands.Length == 3)
@@ -58,14 +71,27 @@ namespace Reko.Arch.Arm.AArch32
             var src = Operand(Src1());
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
             DataType dstType;
+            DataType srcType;
             switch (instr.vector_data)
             {
-            case ArmVectorData.F32S32: dstType = PrimitiveType.Real32; break;
-            case ArmVectorData.F64S32: dstType = PrimitiveType.Real64; break;
-            case ArmVectorData.F64F32: dstType = PrimitiveType.Real64; break;
+            case ArmVectorData.F32S32: dstType = PrimitiveType.Real32; srcType = PrimitiveType.Int32; break;
+            case ArmVectorData.F64S32: dstType = PrimitiveType.Real64; srcType = PrimitiveType.Int32; break;
+            case ArmVectorData.F64F32: dstType = PrimitiveType.Real64; srcType = PrimitiveType.Real32; break;
             default: NotImplementedYet(); return;
             }
-            m.Assign(dst, m.Cast(dstType, src));
+            if (dst.DataType.BitSize == dstType.BitSize && src.DataType.BitSize == srcType.BitSize)
+            {
+                m.Assign(dst, m.Convert(src, srcType, dstType));
+            }
+            else
+            {
+                var cElems = dst.DataType.BitSize / dstType.BitSize;
+                var aSrc = new ArrayType(srcType, cElems);
+                var aDst = new ArrayType(dstType, cElems);
+                var tmpSrc = binder.CreateTemporary(aSrc);
+                m.Assign(tmpSrc, src);
+                m.Assign(dst, host.Intrinsic($"__vcvt_{vectorConversionNames[instr.vector_data]}", false, aDst, tmpSrc));
+            }
         }
 
         private void RewriteVcvtr()
@@ -78,7 +104,8 @@ namespace Reko.Arch.Arm.AArch32
             case ArmVectorData.S32F32: dstType = PrimitiveType.Int32; break;
             default: NotImplementedYet(); return;
             }
-            m.Assign(dst, m.Cast(dstType, host.PseudoProcedure("trunc", src.DataType, src)));
+            src = host.Intrinsic("trunc", false, src.DataType, src);
+            m.Assign(dst, m.Convert(src, src.DataType, dstType));
         }
 
         private void RewriteVext()
@@ -87,7 +114,7 @@ namespace Reko.Arch.Arm.AArch32
             var src2 = Operand(Src2());
             var src3 = Operand(Src3());
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
-            var intrinsic = host.PseudoProcedure("__vext", dst.DataType, src1, src2, src3);
+            var intrinsic = host.Intrinsic("__vext", false, dst.DataType, src1, src2, src3);
             m.Assign(dst, intrinsic);
         }
 
@@ -143,14 +170,14 @@ namespace Reko.Arch.Arm.AArch32
                 }
  
                 var fname = $"__vmov_{VectorElementType(instr.vector_data)}";
-                var ppp = host.PseudoProcedure(fname, Dst().Width, src);
-                m.Assign(dst, m.Fn(ppp));
+                var intrinsic = host.Intrinsic(fname,false,Dst().Width, src);
+                m.Assign(dst, m.Fn(intrinsic));
             }
             else
             {
                 if (dst.DataType.BitSize != src.DataType.BitSize)
                 {
-                    src = m.Cast(dst.DataType, src);
+                    src = m.Convert(src, src.DataType, dst.DataType);
                 }
                 m.Assign(dst, src);
             }
@@ -280,8 +307,8 @@ namespace Reko.Arch.Arm.AArch32
             var dt = instr.vector_data == ArmVectorData.F32 ? PrimitiveType.Real32 : PrimitiveType.Real64;
             var src = this.Operand(Src1());
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var ppp = host.PseudoProcedure(fnname, dt, src);
-            m.Assign(dst, ppp);
+            var intrinsic = host.Intrinsic(fnname, false, dt, src);
+            m.Assign(dst, intrinsic);
         }
 
         private void RewriteVdup()
@@ -294,7 +321,7 @@ namespace Reko.Arch.Arm.AArch32
             var celem = dstType.BitSize / elemBitSize;
             var arrType = new ArrayType(srcType, celem);
             var fnName = $"__vdup_{elemBitSize}";
-            var intrinsic = host.PseudoProcedure(fnName, arrType, src);
+            var intrinsic = host.Intrinsic(fnName, false, arrType, src);
             m.Assign(dst, intrinsic);
         }
 
@@ -310,7 +337,7 @@ namespace Reko.Arch.Arm.AArch32
             var arrSrc = new ArrayType(srcType, celemSrc);
             var arrDst = new ArrayType(dstType, celemSrc);
             var fnName = $"__vmul_{VectorElementType(instr.vector_data)}";
-            var intrinsic = host.PseudoProcedure(fnName, arrDst, src1, src2);
+            var intrinsic = host.Intrinsic(fnName, false, arrDst, src1, src2);
             m.Assign(dst, m.Fn(intrinsic));
         }
 
@@ -330,29 +357,39 @@ namespace Reko.Arch.Arm.AArch32
             var arrSrc = new ArrayType(srcType, celemSrc);
             var arrDst = new ArrayType(dstType, celemSrc);
             var fnName = string.Format(fnNameFormat, VectorElementType(elemType));
-            var intrinsic = host.PseudoProcedure(fnName, arrDst, src1);
+            var intrinsic = host.Intrinsic(fnName, false, arrDst, src1);
             m.Assign(dst, intrinsic);
         }
 
         private void RewriteVectorBinOp(string fnNameFormat)
         {
-            RewriteVectorBinOp(fnNameFormat, instr.vector_data);
+            RewriteVectorBinOp(fnNameFormat, instr.vector_data, Dst(), Src1(), Src2());
         }
 
         private void RewriteVectorBinOp(string fnNameFormat, ArmVectorData elemType)
         {
-            var src1 = this.Operand(Src1());
-            var src2 = this.Operand(Src2());
-            var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var dstType = Dst().Width;
-            var srcType = Src1().Width;
+            RewriteVectorBinOp(fnNameFormat, elemType, Dst(), Src1(), Src2());
+        }
+
+        private void RewriteVectorBinOp(
+            string fnNameFormat, 
+            ArmVectorData elemType, 
+            MachineOperand opDst, 
+            MachineOperand opSrc1, 
+            MachineOperand opSrc2)
+        {
+            var src1 = this.Operand(opSrc1);
+            var src2 = this.Operand(opSrc2);
+            var dst = this.Operand(opDst, PrimitiveType.Word32, true);
+            var dstType = opDst.Width;
+            var srcType = opSrc1.Width;
             var srcElemSize = Arm32Architecture.VectorElementDataType(elemType);
             //$BUG: some instructions are returned with srcElemnSize == 0!
             var celemSrc = srcType.BitSize / (srcElemSize.BitSize != 0 ? srcElemSize.BitSize : 8);
             var arrSrc = new ArrayType(srcType, celemSrc);
             var arrDst = new ArrayType(dstType, celemSrc);
             var fnName = string.Format(fnNameFormat, VectorElementType(elemType));
-            var intrinsic = host.PseudoProcedure(fnName, arrDst, src1, src2);
+            var intrinsic = host.Intrinsic(fnName, false, arrDst, src1, src2);
             m.Assign(dst, intrinsic);
         }
 
@@ -386,5 +423,34 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
+        private static readonly Dictionary<ArmVectorData, string> vectorConversionNames = new Dictionary<ArmVectorData, string>
+        {
+            { ArmVectorData.S16F16, "i16_f16" },
+            { ArmVectorData.S32F16, "i32_f16" },
+            { ArmVectorData.S32F32, "i32_f32" },
+            { ArmVectorData.S32F64, "i32_f64" },
+
+            { ArmVectorData.U16F16, "u16_f16" },
+            { ArmVectorData.U32F16, "u32_f16" },
+            { ArmVectorData.U32F32, "u32_f32" },
+            { ArmVectorData.U32F64, "u32_f64" },
+
+            { ArmVectorData.F16F32, "f16_f32" },
+            { ArmVectorData.F16F64, "f16_f64" },
+            { ArmVectorData.F16S16, "f16_i16" },
+            { ArmVectorData.F16S32, "f16_i32" },
+            { ArmVectorData.F16U16, "f16_i16" },
+            { ArmVectorData.F16U32, "f16_i32" },
+
+            { ArmVectorData.F32S32, "f32_i32" },
+            { ArmVectorData.F32F16, "f32_f16" },
+            { ArmVectorData.F32F64, "f32_f64" },
+            { ArmVectorData.F32U32, "f32_u32" },
+
+            { ArmVectorData.F64S32, "f64_i32" },
+            { ArmVectorData.F64U32, "f64_u32" },
+            { ArmVectorData.F64F16, "f64_f16" },
+            { ArmVectorData.F64F32, "f64_f32" },
+        };
     }
 }

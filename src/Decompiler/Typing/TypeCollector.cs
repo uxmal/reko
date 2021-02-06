@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,12 @@
  */
 #endregion
 
-using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Code;
-using Reko.Core.Expressions;
-using Reko.Core.Operators;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Reko.Typing
 {
@@ -35,14 +32,13 @@ namespace Reko.Typing
     /// </summary>
     public class TypeCollector : InstructionVisitor
     {
-        private TypeFactory factory;
-        private TypeStore store;
-        private Program program;
-        private Procedure proc;
-        private ExpressionTypeAscender asc;
-        private ExpressionTypeDescender desc;
-        private DecompilerEventListener eventListener;
-        private Statement stmCur;
+        private readonly TypeFactory factory;
+        private readonly TypeStore store;
+        private readonly Program program;
+        private readonly ExpressionTypeAscender asc;
+        private readonly ExpressionTypeDescender desc;
+        private readonly DecompilerEventListener eventListener;
+        private Statement? stmCur;
         private bool seenPhi;
 
         public TypeCollector(
@@ -54,28 +50,23 @@ namespace Reko.Typing
             this.factory = factory;
             this.store = store;
             this.program = program;
-            if (eventListener == null)
-                throw new ArgumentNullException("eventListener");
-            this.eventListener = eventListener;
+            this.eventListener = eventListener ?? throw new ArgumentNullException(nameof(eventListener));
             this.asc = new ExpressionTypeAscender(program, store, factory);
             this.desc = new ExpressionTypeDescender(program, store, factory);
         }
 
         public void CollectTypes()
         {
-            desc.MeetDataType(program.Globals, factory.CreatePointer(
-                factory.CreateStructureType(),
-                program.Platform.PointerType.BitSize));
-            CollectSegmentTypes();
+            CollectGlobalType();
             CollectUserGlobalVariableTypes();
+            CollectImageSymbols();
             int cProc = program.Procedures.Count;
             int i = 0;
-            foreach (Procedure p in program.Procedures.Values)
+            foreach (Procedure proc in program.Procedures.Values)
             {
                 eventListener.ShowProgress("Collecting data types.", i++, cProc);
-                proc = p;
-                CollectProcedureSignature(p);
-                foreach (Statement stm in p.Statements)
+                CollectProcedureSignature(proc);
+                foreach (Statement stm in proc.Statements)
                 {
                     if (eventListener.IsCanceled())
                         return;
@@ -96,27 +87,80 @@ namespace Reko.Typing
             }
         }
 
+        /// <summary>
+        /// Collect the type of the structure containing the global variables.
+        /// </summary>
+        public void CollectGlobalType()
+        {
+            desc.MeetDataType(program.Globals, factory.CreatePointer(
+                            factory.CreateStructureType(),
+                            program.Platform.PointerType.BitSize));
+        }
+
+        /// <summary>
+        /// Given a list of user-specified globals, make sure fields are present in
+        /// the program
+        /// </summary>
+        /// <param name="segmentTypes"></param>
         public void CollectUserGlobalVariableTypes()
         {
             var deser = program.CreateTypeLibraryDeserializer();
             foreach (var ud in program.User.Globals)
             {
-                var addr = ud.Key;
-                var dt = ud.Value.DataType.Accept(deser);
-                var offset = (int) (addr - program.SegmentMap.BaseAddress);
-                var f = new StructureField(offset, dt, ud.Value.Name);
-                program.GlobalFields.Fields.Add(f);
+                if (ud.Value.DataType != null)
+                {
+                    var dt = ud.Value.DataType.Accept(deser);
+                    AddGlobalField(dt, ud.Key, ud.Value.Name);
+                }
             }
         }
 
-        public void CollectSegmentTypes()
+
+        /// <subject>
+        /// Make sure fields are present for all the image symbols.
+        /// </subject>
+        public void CollectImageSymbols()
         {
-            foreach (var seg in program.SegmentMap.Segments.Values)
+            foreach (var sym in program.ImageSymbols.Values)
             {
-                if (seg.Identifier != null)
-                    desc.MeetDataType(seg.Identifier, factory.CreatePointer(
-                        factory.CreateStructureType(),
-                        seg.Identifier.DataType.BitSize));
+                if (sym != null && sym.DataType != null && sym.Address != null &&
+                    sym.Type == SymbolType.Data && !(sym.DataType is UnknownType))
+                {
+                    DataType dtField;
+                    if (sym.DataType.IsWord)
+                    {
+                        var tvField = store.CreateTypeVariable(factory);
+                        tvField.OriginalDataType = sym.DataType;
+                        tvField.DataType = sym.DataType;
+                        dtField = tvField;
+                    }
+                    else
+                    {
+                        dtField = sym.DataType;
+                    }
+
+                    AddGlobalField(dtField, sym.Address, sym.Name);
+                }
+            }
+        }
+
+        private void AddGlobalField(DataType dtField, Address address, string? name)
+        {
+            if (address.Selector.HasValue)
+            {
+                if (program.SegmentMap.TryFindSegment(address, out var seg) &&
+                    program.TypeStore.SegmentTypes.TryGetValue(seg, out var structureType))
+                {
+                    var f = new StructureField((int) address.Offset, dtField, name);
+                    structureType.Fields.Add(f);
+                }
+            }
+            else
+            {
+                var offset = (int) address.ToLinear();
+                var f = new StructureField(offset, dtField, name);
+                var ptrGlobals = (Pointer) program.Globals.TypeVariable!.OriginalDataType;
+                ((StructureType)ptrGlobals.Pointee).Fields.Add(f);
             }
         }
 
@@ -143,19 +187,19 @@ namespace Reko.Typing
         {
             var dtSrc = ass.Src.Accept(asc);
             desc.MeetDataType(ass.Src, dtSrc);
-            ass.Src.Accept(desc, ass.Src.TypeVariable);
+            ass.Src.Accept(desc, ass.Src.TypeVariable!);
 
             var dtDst = ass.Dst.Accept(asc);
             desc.MeetDataType(ass.Dst, dtDst);
             desc.MeetDataType(ass.Dst, dtSrc);
-            ass.Dst.Accept(desc, ass.Dst.TypeVariable);
+            ass.Dst.Accept(desc, ass.Dst.TypeVariable!);
         }
 
         public void VisitBranch(Branch branch)
         {
             branch.Condition.Accept(asc);
             desc.MeetDataType(branch.Condition, PrimitiveType.Bool);
-            branch.Condition.Accept(desc, branch.Condition.TypeVariable);
+            branch.Condition.Accept(desc, branch.Condition.TypeVariable!);
         }
 
         public void VisitCallInstruction(CallInstruction call)
@@ -166,7 +210,7 @@ namespace Reko.Typing
                           new Pointer(
                               new CodeType(),
                               program.Platform.PointerType.BitSize));
-            call.Callee.Accept(desc, call.Callee.TypeVariable);
+            call.Callee.Accept(desc, call.Callee.TypeVariable!);
         }
 
         public void VisitComment(CodeComment comment)
@@ -176,16 +220,16 @@ namespace Reko.Typing
         public void VisitDeclaration(Declaration decl)
         {
             // Pattern after VisitAssignment
-            DataType dtExp = null;
+            DataType? dtExp = null;
             if (decl.Expression != null)
             {
                 dtExp = decl.Expression.Accept(asc);
                 desc.MeetDataType(decl.Expression, dtExp);
-                decl.Expression.Accept(desc, decl.Expression.TypeVariable);
+                decl.Expression.Accept(desc, decl.Expression.TypeVariable!);
             }
             var dt = decl.Identifier.Accept(asc);
             desc.MeetDataType(decl.Identifier, dt);
-            decl.Identifier.Accept(desc, decl.Identifier.TypeVariable);
+            decl.Identifier.Accept(desc, decl.Identifier.TypeVariable!);
             if (dtExp != null)
             {
                 // OK to do this as this is the _declaration_
@@ -202,7 +246,7 @@ namespace Reko.Typing
         {
             var dt = g.Target.Accept(asc);
             desc.MeetDataType(g.Target, dt);
-            g.Target.Accept(desc, g.Target.TypeVariable);
+            g.Target.Accept(desc, g.Target.TypeVariable!);
         }
 
         public void VisitPhiAssignment(PhiAssignment phi)
@@ -211,7 +255,7 @@ namespace Reko.Typing
             {
                 seenPhi = true;
                 eventListener.Warn(
-                    eventListener.CreateBlockNavigator(this.program, stmCur.Block),
+                    eventListener.CreateBlockNavigator(this.program, stmCur!.Block),
                     "Phi functions will be ignored by type analysis. " +
                     "This may be caused by a failure in a previous stage of the decompilation.");
             }
@@ -223,7 +267,7 @@ namespace Reko.Typing
             {
                 var dt = ret.Expression.Accept(asc);
                 desc.MeetDataType(ret.Expression, dt);
-                ret.Expression.Accept(desc, ret.Expression.TypeVariable);
+                ret.Expression.Accept(desc, ret.Expression.TypeVariable!);
             }
         }
 
@@ -231,32 +275,32 @@ namespace Reko.Typing
         {
             var dt = side.Expression.Accept(asc);
             desc.MeetDataType(side.Expression, dt);
-            side.Expression.Accept(desc, side.Expression.TypeVariable);
+            side.Expression.Accept(desc, side.Expression.TypeVariable!);
         }
 
         public void VisitStore(Store store)
         {
             var dt = store.Src.Accept(asc);
             desc.MeetDataType(store.Src, dt);
-            store.Src.Accept(desc, store.Src.TypeVariable);
+            store.Src.Accept(desc, store.Src.TypeVariable!);
 
             dt = store.Dst.Accept(asc);
             desc.MeetDataType(store.Dst, dt);
-            store.Dst.Accept(desc, store.Dst.TypeVariable);
+            store.Dst.Accept(desc, store.Dst.TypeVariable!);
         }
 
         public void VisitSwitchInstruction(SwitchInstruction si)
         {
             var dt = si.Expression.Accept(asc);
             desc.MeetDataType(si.Expression, dt);
-            si.Expression.Accept(desc, si.Expression.TypeVariable);
+            si.Expression.Accept(desc, si.Expression.TypeVariable!);
         }
 
         public void VisitUseInstruction(UseInstruction use)
         {
             var dt = use.Expression.Accept(asc);
             desc.MeetDataType(use.Expression, dt);
-            use.Expression.Accept(desc, use.Expression.TypeVariable);
+            use.Expression.Accept(desc, use.Expression.TypeVariable!);
         }
     }
 }

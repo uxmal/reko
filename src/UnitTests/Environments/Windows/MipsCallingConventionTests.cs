@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using Reko.Core;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 
 namespace Reko.UnitTests.Environments.Windows
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Environments.Windows
         [SetUp]
         public void Setup()
         {
-            this.arch = new MipsLe32Architecture("mips-le-32");
+            this.arch = new MipsLe32Architecture(new ServiceContainer(), "mips-le-32", new Dictionary<string, object>());
         }
 
         private Pointer Ptr(DataType dt)

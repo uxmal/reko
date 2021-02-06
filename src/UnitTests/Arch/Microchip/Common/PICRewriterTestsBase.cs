@@ -1,8 +1,8 @@
 #region License
 /* 
- * Copyright (C) 2017-2020 Christian Hostelet.
+ * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work of:
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@ using Reko.Core;
 using Reko.Core.Rtl;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Microchip.Common
 {
@@ -35,13 +37,13 @@ namespace Reko.UnitTests.Arch.Microchip.Common
         protected IPICProcessorModel picModel;
         protected PICArchitecture arch;
         protected Address baseAddr = PICProgAddress.Ptr(0x200);
-        protected MemoryArea mem;
+        protected ByteMemoryArea bmem;
 
         public override IProcessorArchitecture Architecture => arch;
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder frame, IRewriterHost host)
         {
-            var disasm = picModel.CreateDisassembler(arch, new LeImageReader(mem, 0));
+            var disasm = picModel.CreateDisassembler(arch, arch.CreateImageReader(mem, 0));
             var rwtr = picModel.CreateRewriter(arch, disasm, (PICProcessorState)arch.CreateProcessorState(), frame, host);
             return rwtr;
         }
@@ -55,7 +57,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
                 (byte) w,
                 (byte) (w >> 8),
             }).ToArray();
-            this.mem = new MemoryArea(LoadAddress, bytes);
+            this.bmem = new ByteMemoryArea(LoadAddress, bytes);
         }
 
         protected string _fmtBinary(uint[] words)
@@ -70,7 +72,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
         protected void SetPICModel(string picName, PICExecMode mode = PICExecMode.Traditional)
         {
-            arch = new PICArchitecture("pic") { Options = new PICArchitectureOptions(picName, mode) };
+            arch = new PICArchitecture(new ServiceContainer(), "pic", new Dictionary<string, object>()) { Options = new PICArchitectureOptions(picName, mode) };
             picModel = arch.ProcessorModel;
             arch.CreatePICProcessorModel();
             PICMemoryDescriptor.ExecMode = mode;
@@ -81,7 +83,7 @@ namespace Reko.UnitTests.Arch.Microchip.Common
             int i = 0;
             var frame = Architecture.CreateFrame();
             var host = CreateRewriterHost();
-            var rewriter = GetRtlStream(mem, frame, host).GetEnumerator();
+            var rewriter = GetRtlStream(bmem, frame, host).GetEnumerator();
             while (i < expected.Length && rewriter.MoveNext())
             {
                 Assert.AreEqual(expected[i], $"{i}|{RtlInstruction.FormatClass(rewriter.Current.Class)}|{rewriter.Current}", mesg);

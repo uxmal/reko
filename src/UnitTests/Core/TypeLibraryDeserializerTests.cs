@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Expressions;
 using Reko.UnitTests.Mocks;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Core
 {
@@ -47,6 +48,7 @@ namespace Reko.UnitTests.Core
         private void Given_ArchitectureStub()
         {
             arch = new Mock<IProcessorArchitecture>();
+            arch.Setup(a => a.MemoryGranularity).Returns(8);
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
             arch.Setup(a => a.WordWidth).Returns(PrimitiveType.Ptr32);
             platform = new Mock<IPlatform>();
@@ -275,6 +277,7 @@ namespace Reko.UnitTests.Core
         {
             Given_ArchitectureStub();
             arch.Setup(a => a.GetRegister("r3")).Returns(new RegisterStorage("r3", 3, 0, PrimitiveType.Word32));
+            arch.Setup(a => a.MemoryGranularity).Returns(8);
             var r3 = new RegisterStorage("r3", 3, 0, PrimitiveType.Word32);
             Given_ProcedureSignature(FunctionType.Func(
                 new Identifier("", PrimitiveType.Int32, r3),
@@ -312,7 +315,7 @@ namespace Reko.UnitTests.Core
             var typelib = new TypeLibrary();
             platform = new Mock<IPlatform>();
             platform.Setup(p => p.DefaultCallingConvention).Returns("__cdecl");
-            platform.Setup(p => p.Architecture).Returns(new FakeArchitecture());
+            platform.Setup(p => p.Architecture).Returns(new FakeArchitecture(new ServiceContainer()));
 
             var tlldr = new TypeLibraryDeserializer(platform.Object, true, typelib);
             tlldr.Load(new SerializedLibrary
@@ -358,6 +361,40 @@ namespace Reko.UnitTests.Core
             var lib = tlLdr.Load(slib);
 
             Assert.AreEqual("(enum empty,())", lib.LookupType("empty_enum").ToString());
+        }
+
+        [Test(Description = "Keep size of forward declaration of a structure")]
+        public void Tlldr_typedef_forwarded_struct_size()
+        {
+            Given_ArchitectureStub();
+
+            var typelib = new TypeLibrary();
+            var tlldr = new TypeLibraryDeserializer(platform.Object, true, typelib);
+            new SerializedTypedef
+            {
+                Name = "_sized_struct",
+                DataType = new StructType_v1
+                {
+                    Name = "sized_struct",
+                }
+            }.Accept(tlldr);
+            new StructType_v1
+            {
+                Name = "sized_struct",
+                Fields = new StructField_v1[]
+                {
+                    new StructField_v1 {
+                        Name = "foo",
+                        Offset = 0,
+                        Type = PrimitiveType_v1.Int64(),
+                    }
+                },
+                ByteSize = 8,
+            }.Accept(tlldr);
+
+            var str = (StructureType) typelib.Types["_sized_struct"];
+            var expected = @"(struct ""sized_struct"" 0008 (0 int64 foo))";
+            Assert.AreEqual(expected, str.ToString());
         }
     }
 }

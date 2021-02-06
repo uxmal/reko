@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,14 +42,14 @@ namespace Reko.Arch.i8051
         public int Bit { get; }
         public bool Negated { get; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Negated)
             {
-                writer.WriteString("/");
+                renderer.WriteString("/");
             }
-            writer.WriteString(Register.Name);
-            writer.WriteString($".{Bit}");
+            renderer.WriteString(Register.Name);
+            renderer.WriteString($".{Bit}");
         }
     }
 }

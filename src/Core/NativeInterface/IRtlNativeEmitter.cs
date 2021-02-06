@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ namespace Reko.Core.NativeInterface
         [PreserveSig] HExpr Cast(BaseType type, HExpr a);
         [PreserveSig] HExpr Comp(HExpr a);
         [PreserveSig] HExpr Cond(HExpr a);
-        [PreserveSig] HExpr Dpb(HExpr dst, HExpr src, int pos);
+        [PreserveSig] HExpr Dpb(HExpr idDst, HExpr src, int pos);
         [PreserveSig] HExpr IAdc(HExpr a, HExpr b, HExpr c);
         [PreserveSig] HExpr IAdd(HExpr a, HExpr b);
         [PreserveSig] HExpr IMul(HExpr a, HExpr b);

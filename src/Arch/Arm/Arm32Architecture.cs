@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System.Runtime.InteropServices;
@@ -48,7 +49,8 @@ namespace Reko.Arch.Arm
 #endif
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Arm32Architecture(string archId) : base(archId)
+        public Arm32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             Endianness = EndianServices.Little;
             InstructionBitSize = 32;
@@ -154,21 +156,8 @@ namespace Reko.Arch.Arm
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
-            var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
-            if (flags != PointerScannerFlags.Calls)
-                throw new NotImplementedException(string.Format("Haven't implemented support for scanning for {0} yet.", flags));
-            while (rdr.IsValid)
-            {
-                uint linAddrCall =  rdr.Address.ToUInt32();
-                var wInstr = rdr.ReadLeUInt32();
-                if ((wInstr & 0x0F000000) == 0x0B000000)         // BL
-                {
-                    int offset = ((int)wInstr << 8) >> 6;
-                    uint target = (uint)(linAddrCall + 8 + offset);
-                    if (knownLinAddresses.Contains(target))
-                        yield return Address.Ptr32(linAddrCall);
-                }
-            }
+            return new Arm32PointerScanner(rdr, knownAddresses.Select(a => a.ToUInt32()).ToHashSet(), flags)
+                .Select(lin => Address.Ptr32(lin));
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)

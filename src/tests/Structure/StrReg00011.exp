@@ -2,8 +2,8 @@
 // Return size: 0
 define Reg00011Mock
 Reg00011Mock_entry:
-	Mem0[0x8416:word16] = Mem0[0x8416:word16] + 0x0001
-	loc02_26 = Mem0[0x53BA:word16]
+	Mem0[0x8416<16>:word16] = Mem0[0x8416<16>:word16] + 1<16>
+	loc02_26 = Mem0[0x53BA<16>:word16]
 	goto block2
 	// succ:  block2
 block11:
@@ -14,40 +14,40 @@ block2:
 	goto l2
 	// succ:  l2 block7
 block6:
-	Mem0[ax_36 *u 0x0002 + 0x841A:word16]()
-	loc04_63 = Mem0[0x0048:word16]
-	Mem0[0x004A:word16] = Mem0[0x004A:word16]
-	Mem0[0x0048:word16] = loc04_63
-	Mem0[0x8410:word16] = 0x0000
-	branch Mem0[0x8410:word16] == 0x0000 block2
+	Mem0[ax_36 *u 2<16> + 0x841A<16>:word16]()
+	loc04_63 = Mem0[0x48<16>:word16]
+	Mem0[0x4A<16>:word16] = Mem0[0x4A<16>:word16]
+	Mem0[0x48<16>:word16] = loc04_63
+	Mem0[0x8410<16>:word16] = 0<16>
+	branch Mem0[0x8410<16>:word16] == 0<16> block2
 	// succ:  block7 block2
 block7:
-	ax_80 = Mem0[0x840E:word16]
-	Mem0[0x8414:word16] = Mem0[0x8414:word16] | ax_80
-	branch ax_80 != 0x0000 block2
+	ax_80 = Mem0[0x840E<16>:word16]
+	Mem0[0x8414<16>:word16] = Mem0[0x8414<16>:word16] | ax_80
+	branch ax_80 != 0<16> block2
 	goto l5
 	// succ:  l5 block2
 l1:
 l2:
-	branch __bt(Mem0[0x8418:word16], ax_36) block2
+	branch __bt(Mem0[0x8418<16>:word16], ax_36) block2
 	// succ:  l3 block2
 l3:
-	fs_41 = Mem0[0x7E50:word16]
-	branch Mem0[0x7E50:word16] != Mem0[0x53C2:word16] block6
+	fs_41 = Mem0[0x7E50<16>:word16]
+	branch Mem0[0x7E50<16>:word16] != Mem0[0x53C2<16>:word16] block6
 	// succ:  l4 block6
 l4:
-	fn1B96_0540(Mem0[0x7E52:word16], ds, &dx_49, &bx_50)
+	fn1B96_0540(Mem0[0x7E52<16>:word16], ds, &dx_49, &bx_50)
 	goto block6
 	// succ:  block6
 l5:
 	ax_88 = fn1B96_0540(loc02_26, ds)
-	v19_89 = Mem0[0x8416:word16] - 0x0001
-	Mem0[0x8416:word16] = v19_89
-	branch v19_89 != 0x0000 block11
+	v19_89 = Mem0[0x8416<16>:word16] - 1<16>
+	Mem0[0x8416<16>:word16] = v19_89
+	branch v19_89 != 0<16> block11
 	// succ:  l6 block11
 l6:
-	Mem0[0x8414:word16] = 0x0000
-	branch Mem0[0x8414:word16] == 0x0000 block11
+	Mem0[0x8414<16>:word16] = 0<16>
+	branch Mem0[0x8414<16>:word16] == 0<16> block11
 	// succ:  l7 block11
 l7:
 	fn1B96_02A9(ds, &ax_96)
@@ -57,35 +57,35 @@ Reg00011Mock_exit:
 
 define Reg00011Mock
 {
-	++Mem0[0x8416:word16];
-	loc02_26 = Mem0[0x53BA:word16];
+	++Mem0[0x8416<16>:word16];
+	loc02_26 = Mem0[0x53BA<16>:word16];
 	do
 	{
 		if (!fn1B96_3CA2(&ax_36, &cx_37, &bx_38 ))
 		{
-			if (__bt(Mem0[0x8418:word16], ax_36))
+			if (__bt(Mem0[0x8418<16>:word16], ax_36))
 				continue;
-			fs_41 = Mem0[0x7E50:word16];
-			if (Mem0[0x7E50:word16] == Mem0[0x53C2:word16])
-				fn1B96_0540(Mem0[0x7E52:word16], ds, &dx_49, &bx_50);
-			Mem0[ax_36 *u 0x0002 + 0x841A:word16]();
-			loc04_63 = Mem0[0x0048:word16];
-			Mem0[0x004A:word16] = Mem0[0x004A:word16];
-			Mem0[0x0048:word16] = loc04_63;
-			Mem0[0x8410:word16] = 0x0000;
-			if (Mem0[0x8410:word16] == 0x0000)
+			fs_41 = Mem0[0x7E50<16>:word16];
+			if (Mem0[0x7E50<16>:word16] == Mem0[0x53C2<16>:word16])
+				fn1B96_0540(Mem0[0x7E52<16>:word16], ds, &dx_49, &bx_50);
+			Mem0[ax_36 *u 2<16> + 0x841A<16>:word16]();
+			loc04_63 = Mem0[0x48<16>:word16];
+			Mem0[0x4A<16>:word16] = Mem0[0x4A<16>:word16];
+			Mem0[0x48<16>:word16] = loc04_63;
+			Mem0[0x8410<16>:word16] = 0<16>;
+			if (Mem0[0x8410<16>:word16] == 0<16>)
 				continue;
 		}
-		ax_80 = Mem0[0x840E:word16];
-		Mem0[0x8414:word16] |= ax_80;
-	} while (ax_80 != 0x0000);
+		ax_80 = Mem0[0x840E<16>:word16];
+		Mem0[0x8414<16>:word16] |= ax_80;
+	} while (ax_80 != 0<16>);
 	ax_88 = fn1B96_0540(loc02_26, ds);
-	v19_89 = Mem0[0x8416:word16] - 0x0001;
-	Mem0[0x8416:word16] = v19_89;
-	if (v19_89 != 0x0000)
+	v19_89 = Mem0[0x8416<16>:word16] - 1<16>;
+	Mem0[0x8416<16>:word16] = v19_89;
+	if (v19_89 != 0<16>)
 		return ax_88;
-	Mem0[0x8414:word16] = 0x0000;
-	if (Mem0[0x8414:word16] == 0x0000)
+	Mem0[0x8414<16>:word16] = 0<16>;
+	if (Mem0[0x8414<16>:word16] == 0<16>)
 		return ax_88;
 	fn1B96_02A9(ds, &ax_96);
 	return ax_96;

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,8 @@ using System.Collections.Generic;
 using System.Text;
 using Reko.Core.Serialization;
 using System.Linq;
+using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Core
 {
@@ -47,7 +49,7 @@ namespace Reko.UnitTests.Core
         [SetUp]
         public void Setup()
         {
-            arch = new FakeArchitecture();
+            arch = new FakeArchitecture(new ServiceContainer());
             sp = new RegisterStorage("sp", 42, 0, PrimitiveType.Ptr32);
             arch.StackRegister = sp;
 
@@ -59,8 +61,8 @@ namespace Reko.UnitTests.Core
         {
             this.map = new SegmentMap(
                 Address.Ptr32(0x00100000),
-                new ImageSegment(".text", new MemoryArea(Address.Ptr32(0x00100000), new byte[0x100]), AccessMode.ReadExecute),
-                new ImageSegment(".data", new MemoryArea(Address.Ptr32(0x00101000), new byte[0x100]), AccessMode.ReadWriteExecute));
+                new ImageSegment(".text", new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[0x100]), AccessMode.ReadExecute),
+                new ImageSegment(".data", new ByteMemoryArea(Address.Ptr32(0x00101000), new byte[0x100]), AccessMode.ReadWriteExecute));
         }
 
         [Test]
@@ -70,7 +72,7 @@ namespace Reko.UnitTests.Core
 
             sce.SetValue(idSp, m.ISub(idSp, 4));
 
-            Assert.AreEqual("sp - 0x00000004", sce.GetValue(idSp).ToString());
+            Assert.AreEqual("sp - 4<32>", sce.GetValue(idSp).ToString());
         }
 
         [Test]
@@ -81,7 +83,7 @@ namespace Reko.UnitTests.Core
             sce.SetValue(idSp, m.ISub(idSp, 4));
             sce.SetValueEa(idSp, Constant.Word32(0x12345678));
 
-            Assert.AreEqual("0x12345678", sce.GetValue(m.Mem32(idSp), map).ToString());
+            Assert.AreEqual("0x12345678<32>", sce.GetValue(m.Mem32(idSp), map).ToString());
         }
 
         [Test]
@@ -95,12 +97,12 @@ namespace Reko.UnitTests.Core
             var access = new MemoryAccess(Constant.Word32(0x00100000), PrimitiveType.Word32);
             var c = sce.GetValue(access, map);
 
-            Assert.AreEqual("0x01234567", c.ToString());
+            Assert.AreEqual("0x1234567<32>", c.ToString());
         }
 
         public class FakeArchitecture : ProcessorArchitecture
         {
-            public FakeArchitecture() : base("fake")
+            public FakeArchitecture(IServiceProvider services) : base(services, "fake", new Dictionary<string, object>())
             {
                 this.Endianness = EndianServices.Little;
                 this.InstructionBitSize = 32;
@@ -302,11 +304,6 @@ namespace Reko.UnitTests.Core
             public override void SetRegister(RegisterStorage r, Constant v)
             {
                 regs[r] = v;
-            }
-
-            public override void SetInstructionPointer(Address addr)
-            {
-                throw new NotImplementedException();
             }
 
             public override void OnProcedureEntered()

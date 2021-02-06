@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,7 +57,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 
         public SuperHCallingConventionTests()
         {
-            this.arch = new SuperHLeArchitecture("superH-le");
+            this.arch = new SuperHLeArchitecture(new ServiceContainer(), "superH-le", new Dictionary<string, object>());
         }
 
         private void Given_CallingConvention()

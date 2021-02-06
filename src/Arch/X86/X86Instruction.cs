@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,6 @@
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Core.Machine;
-using System;
-using System.Text;
-using System.Collections.Generic;
 
 namespace Reko.Arch.X86
 {
@@ -32,11 +29,6 @@ namespace Reko.Arch.X86
     /// </summary>
     public class X86Instruction : MachineInstruction
 	{
-        private const InstrClass CondLinear = InstrClass.Conditional | InstrClass.Linear;
-        private const InstrClass CondTransfer = InstrClass.Conditional | InstrClass.Transfer;
-        private const InstrClass LinkTransfer = InstrClass.Call | InstrClass.Transfer;
-        private const InstrClass Transfer = InstrClass.Transfer;
-
 		public Mnemonic Mnemonic { get; set; }  // Instruction mnemonic.
         public int repPrefix;                   // 0 = no prefix, 2 = repnz, 3 = repz
 		public PrimitiveType dataWidth;	        // Width of the data (if it's a word).
@@ -52,101 +44,30 @@ namespace Reko.Arch.X86
 		}
 
         public override int MnemonicAsInteger => (int) Mnemonic;
+        public override string MnemonicAsString => Mnemonic.ToString();
 
-		private bool NeedsExplicitMemorySize()
-		{
-			if (Mnemonic == Mnemonic.movsx || Mnemonic == Mnemonic.movzx)
-				return true;
-            if (Mnemonic == Mnemonic.lea ||
-                Mnemonic == Mnemonic.lds ||
-                Mnemonic == Mnemonic.les ||
-                Mnemonic == Mnemonic.lfs || 
-                Mnemonic == Mnemonic.lgs || 
-                Mnemonic == Mnemonic.lss)
-                return false;
-            if (Operands.Length >= 2 && Operands[0].Width.Size != Operands[1].Width.Size)
-                return true;
-			return 
-				 (Operands.Length < 1 || !ImplicitWidth(Operands[0])) &&
-				 (Operands.Length < 2 || !ImplicitWidth(Operands[1])) &&
-				 (Operands.Length < 3 || !ImplicitWidth(Operands[2]));
+
+        public string ToString(string syntax)
+        {
+            var options = new MachineInstructionRendererOptions(syntax: syntax);
+            return base.ToString(options);
+        }
+
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            var syntax = ChooseSyntax(options);
+            syntax.Render(this, renderer, options);
 		}
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        private X86AssemblyRenderer ChooseSyntax(MachineInstructionRendererOptions options)
         {
-            if (repPrefix == 3)
+            if (string.IsNullOrEmpty(options.Syntax))
+                return X86AssemblyRenderer.Intel;
+            switch (options.Syntax![0])
             {
-                writer.WriteMnemonic("rep");
-                writer.WriteChar(' ');
-            }
-            else if (repPrefix == 2)
-            {
-                writer.WriteMnemonic("repne");
-                writer.WriteChar(' ');
-            }
-
-            string s = Mnemonic.ToString();
-			switch (Mnemonic)
-			{
-			case Mnemonic.cwd:
-				if (dataWidth == PrimitiveType.Word32)
-				{
-					s = "cdq";
-				}
-				break;
-			case Mnemonic.cbw:
-				if (dataWidth == PrimitiveType.Word32)
-				{
-					s = "cwde";
-				}
-				break;
-			case Mnemonic.ins:
-			case Mnemonic.outs:
-			case Mnemonic.movs:
-			case Mnemonic.cmps:
-			case Mnemonic.stos:
-			case Mnemonic.lods:
-			case Mnemonic.scas:
-				switch (dataWidth.Size)
-				{
-				case 1: s += 'b'; break;
-				case 2: s += 'w'; break;
-				case 4: s += 'd'; break;
-				case 8: s += 'q'; break;
-                default: throw new ArgumentOutOfRangeException();
-				}
-				break;
-			}
-			writer.WriteMnemonic(s);
-
-            if (NeedsExplicitMemorySize())
-            {
-                options |= MachineInstructionWriterOptions.ExplicitOperandSize;
-            }
-            RenderOperands(writer, options);
-		}
-
-        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
-        {
-            if (op is MemoryOperand memOp && memOp.Base == Registers.rip)
-            {
-                var addr = this.Address + this.Length + memOp.Offset.ToInt32();
-                if ((options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
-                {
-                    writer.WriteString("[");
-                    writer.WriteAddress(addr.ToString(), addr);
-                    writer.WriteString("]");
-                    writer.AddAnnotation(op.ToString());
-                }
-                else
-                {
-                    op.Write(writer, options);
-                    writer.AddAnnotation(addr.ToString());
-                }
-            }
-            else
-            {
-                op.Write(writer, options);
+            case 'I': case 'i': return X86AssemblyRenderer.Intel;
+            case 'N': case 'n': return X86AssemblyRenderer.Nasm;
+            default: return X86AssemblyRenderer.Intel;
             }
         }
 
@@ -159,10 +80,13 @@ namespace Reko.Arch.X86
 			{
 			case Mnemonic.aaa:
 			case Mnemonic.aas:
+            case Mnemonic.adcx:
 				return FlagM.CF;
 			case Mnemonic.aad:
 			case Mnemonic.aam:
 				return FlagM.SF|FlagM.ZF;
+            case Mnemonic.adox:
+                return FlagM.OF;
 			case Mnemonic.bt:
 			case Mnemonic.bts:
 			case Mnemonic.btc:
@@ -212,6 +136,7 @@ namespace Reko.Arch.X86
 			case Mnemonic.bsr:
 				return FlagM.ZF;
 			case Mnemonic.and:
+			case Mnemonic.andn:
 			case Mnemonic.or:
             case Mnemonic.sahf:
             case Mnemonic.test:
@@ -231,6 +156,7 @@ namespace Reko.Arch.X86
 			switch (mnemonic)
 			{
 			case Mnemonic.adc:
+			case Mnemonic.adcx:
 			case Mnemonic.sbb:
 				return FlagM.CF;
 			case Mnemonic.daa:
@@ -323,11 +249,6 @@ namespace Reko.Arch.X86
 			default:
 				return 0;
 			}
-		}
-
-		private bool ImplicitWidth(MachineOperand op)
-		{
-			return op is RegisterOperand || op is X86AddressOperand || op is FpuOperand;
 		}
 	}
 }

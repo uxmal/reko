@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,27 +16,21 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-#endregion
+#endregion 
 
+using Reko.Core;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Reko.Core;
-using Reko.Core.Rtl;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
-using Reko.Core.Services;
 
 namespace Reko.Scanning
 {
     public class DataScanner : ScannerBase, IScannerQueue
     {
-        private DecompilerEventListener listener;
-        private Queue<WorkItem> queue;
-        private ScanResults sr;
-        private Dictionary<Address, ImageSymbol> procedures;
+        private readonly DecompilerEventListener listener;
+        private readonly Queue<WorkItem> queue;
+        private readonly ScanResults sr;
 
         public DataScanner(Program program, ScanResults sr, DecompilerEventListener listener)
             :base(program, listener)
@@ -44,8 +38,10 @@ namespace Reko.Scanning
             this.sr = sr;
             this.listener = listener;
             this.queue = new Queue<WorkItem>();
-            this.procedures = new Dictionary<Address, ImageSymbol>();
+            this.Procedures = new Dictionary<Address, ImageSymbol>();
         }
+
+        public Dictionary<Address, ImageSymbol> Procedures { get; private set; }
 
         public void ProcessQueue()
         {
@@ -68,7 +64,7 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public void EnqueueUserGlobalData(Address addr, DataType dt, string name)
+        public void EnqueueUserGlobalData(Address addr, DataType dt, string? name)
         {
             if (Program.SegmentMap.IsValidAddress(addr))
             {
@@ -77,15 +73,15 @@ namespace Reko.Scanning
             }
         }
 
-        public void EnqueueUserProcedure(IProcessorArchitecture arch, Address addr, FunctionType sig, string name)
+        public void EnqueueUserProcedure(IProcessorArchitecture arch, Address addr, FunctionType sig, string? name)
         {
-            if (procedures.ContainsKey(addr))
+            if (Procedures.ContainsKey(addr))
                 return;
             if (IsNoDecompiledProcedure(addr))
                 return;
             //$BUG: this needs to be fixed. If in an ARM binary, we scan a code 
             // address that has an odd address, we need to make it Thumb.
-            procedures.Add(addr, ImageSymbol.Procedure(arch, addr, name, sig));
+            Procedures.Add(addr, ImageSymbol.Procedure(arch, addr, name, sig));
             sr.KnownProcedures.Add(addr);
             var proc = Program.EnsureProcedure(arch, addr, name);
             proc.Signature = sig;

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public IWindowFrame Frame { get; set; }
 
-        public ITreeNodeDesignerHost Host { get { return host ?? new TreeNodeDesignerHost(view.CallTree, Services); } }
+        public ITreeNodeDesignerHost Host { get { return host ?? (host = new TreeNodeDesignerHost(view.CallTree, Services)); } }
 
         public void Close()
         {

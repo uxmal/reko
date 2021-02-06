@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
@@ -59,7 +60,7 @@ namespace Reko.UnitTests.Gui.Forms
             host = new Mock<IDecompiledFileService>();
             memSvc = new Mock<ILowLevelViewService>();
             fsSvc = new Mock<IFileSystemService>();
-            var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[1000]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x10000), new byte[1000]);
             var imageMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
@@ -96,7 +97,7 @@ namespace Reko.UnitTests.Gui.Forms
         {
             Assert.IsFalse(i.CanAdvance);
 
-            dec.Setup(d => d.Load("floxe.exe", null)).Returns(false);
+            dec.Setup(d => d.Load("floxe.exe", null, null)).Returns(false);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
             memSvc.Setup(m => m.ViewImage(program));
@@ -113,7 +114,7 @@ namespace Reko.UnitTests.Gui.Forms
 
             Assert.IsFalse(i.CanAdvance, "Page should not be ready to advance");
 
-            dec.Setup(d => d.Load("floxe.exe", null)).Returns(false);
+            dec.Setup(d => d.Load("floxe.exe", null, null)).Returns(false);
             memSvc.Setup(m => m.ViewImage(program));
 
             i.OpenBinary("floxe.exe");
@@ -124,7 +125,7 @@ namespace Reko.UnitTests.Gui.Forms
         [Test]
         public void Ipi_OpenBinary_ShouldShowMemoryWindow()
         {
-            dec.Setup(d => d.Load("floxe.exe", null)).Returns(true);
+            dec.Setup(d => d.Load("floxe.exe", null, null)).Returns(true);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(d => d.Load(project));
             memSvc.Setup(s => s.ViewImage(program)).Verifiable();
@@ -137,7 +138,7 @@ namespace Reko.UnitTests.Gui.Forms
         [Test]
         public void Ipi_OpenBinary_ShouldBrowseProject()
         {
-            dec.Setup(d => d.Load("foo.exe", null)).Returns(true);
+            dec.Setup(d => d.Load("foo.exe", null, null)).Returns(true);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project)).Verifiable();
             memSvc.Setup(m => m.ViewImage(program));
@@ -150,7 +151,7 @@ namespace Reko.UnitTests.Gui.Forms
         [Test]
         public void Ipi_LeavePage()
         {
-            dec.Setup(d => d.Load("foo.exe", null)).Returns(false);
+            dec.Setup(d => d.Load("foo.exe", null, null)).Returns(false);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
             memSvc.Setup(m => m.ViewImage(program));
@@ -163,7 +164,7 @@ namespace Reko.UnitTests.Gui.Forms
         public void Ipi_NextPhaseButton_ScanningNotNeeded()
         {
             program.NeedsScanning = false;
-            dec.Setup(d => d.Load("foo.exe", null)).Returns(false);
+            dec.Setup(d => d.Load("foo.exe", null, null)).Returns(false);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
 
@@ -179,7 +180,7 @@ namespace Reko.UnitTests.Gui.Forms
         public void Ipi_FinishDecompilationButton()
         {
             program.NeedsScanning = false;
-            dec.Setup(d => d.Load("foo.exe", null)).Returns(false);
+            dec.Setup(d => d.Load("foo.exe", null, null)).Returns(false);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
             var status = new CommandStatus();

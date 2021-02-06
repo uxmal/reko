@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System.Collections.Generic;
 
@@ -86,16 +88,10 @@ namespace Reko.Arch.Arc
             };
         }
 
-        public override ArcInstruction NotYetImplemented(uint wInstr, string message)
+        public override ArcInstruction NotYetImplemented(string message)
         {
-            var len = rdr.Address - addr;
-            var hex = (len == 4)
-                ? $"{wInstr:X8}"
-                : $"{wInstr:X4}";
-            EmitUnitTest("ARCompact", hex, message, "ARCompactDis", this.addr, w =>
-            {
-                w.WriteLine("    AssertCode(\"@@@\", \"{0}\");", hex);
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("ARCompactDis", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 
@@ -865,7 +861,7 @@ namespace Reko.Arch.Arc
             {
                 if (Bits.IsBitSet(uInstr, 5))
                 {
-                    dasm.NotYetImplemented(uInstr, "Jcc u6");
+                    dasm.NotYetImplemented("Jcc u6");
                     return false;
                 }
                 var ireg = (int) Bits.ZeroExtend(uInstr >> 6, 6);

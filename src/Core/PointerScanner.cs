@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Memory;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,9 +37,9 @@ namespace Reko.Core
     /// </remarks>
     public abstract class PointerScanner<T> : IEnumerable<T>
     {
-        private EndianImageReader rdr;
-        private HashSet<T> knownLinAddresses;
-        private PointerScannerFlags flags;
+        private readonly EndianImageReader rdr;
+        private readonly HashSet<T> knownLinAddresses;
+        private readonly PointerScannerFlags flags;
 
         public PointerScanner(EndianImageReader rdr, HashSet<T> knownLinAddresses, PointerScannerFlags flags)
         {
@@ -54,30 +55,33 @@ namespace Reko.Core
 
         IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
 
-        private class Enumerator : IEnumerator<T>
+        private struct Enumerator : IEnumerator<T>
         {
-            private PointerScanner<T> scanner;
-            private EndianImageReader r;
+            private readonly PointerScanner<T> scanner;
+            private readonly EndianImageReader r;
+            private T current;
 
+#nullable disable
             public Enumerator(PointerScanner<T> scanner, EndianImageReader rdr)
             {
                 this.scanner = scanner;
                 this.r = rdr;
+                this.current = default;
             }
 
-            public T Current { get; set; }
+            public T Current => current;
 
-            object System.Collections.IEnumerator.Current { get { return Current; } }
+            object IEnumerator.Current => current;
+#nullable enable
 
             public bool MoveNext()
             {
                 while (r.IsValid)
                 {
                     var rdr = this.r;
-                    T linAddrInstr;
-                    if (scanner.ProbeForPointer(rdr, out linAddrInstr))
+                    if (scanner.ProbeForPointer(rdr, out T linAddrInstr))
                     {
-                        Current = linAddrInstr;
+                        current = linAddrInstr;
                         return true;
                     }
                 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -399,8 +399,8 @@ namespace Reko.UnitTests.Typing
 			TypeVariable tv = new TypeVariable(1);
 			TypeVariable tv2 = new TypeVariable(2);
 			TypeVariable tv3 = new TypeVariable(3);
-			MemberPointer mp2 = new MemberPointer(tv, tv2, 2);
-			MemberPointer mp3 = new MemberPointer(tv, tv3, 2);
+			MemberPointer mp2 = new MemberPointer(tv, tv2, 16);
+			MemberPointer mp3 = new MemberPointer(tv, tv3, 16);
 			UnionType ut = new UnionType(null, null);
 			un.UnifyIntoUnion(ut, mp2);
 			un.UnifyIntoUnion(ut, mp3);
@@ -546,7 +546,7 @@ namespace Reko.UnitTests.Typing
             var t2 = new MemberPointer(
                 new Pointer(new StructureType { IsSegment = true }, 16),
                 PrimitiveType.Word16,
-                2);
+                16);
             Assert.IsTrue(un.AreCompatible(t1, t2));
             Assert.AreEqual("(memptr (ptr16 (segment)) word16)", un.Unify(t1, t2).ToString());
         }
@@ -567,7 +567,7 @@ namespace Reko.UnitTests.Typing
             var t2 = new MemberPointer(
                 new Pointer(new StructureType { IsSegment = true }, 16),
                 PrimitiveType.Int32,
-                4);
+                32);
             Assert.IsTrue(un.AreCompatible(t1, t2));
             Assert.AreEqual("(memptr (ptr16 (segment)) int32)", un.Unify(t1, t2).ToString());
         }

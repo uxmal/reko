@@ -10,7 +10,7 @@ void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem10[ds:0x0306:word16] = fn0C00_0008(bx, ds)
+	Mem10[ds:0x306<16>:word16] = fn0C00_0008(bx, ds)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -27,10 +27,10 @@ word16 fn0C00_0008(word16 bx, selector ds)
 fn0C00_0008_entry:
 	// succ:  l0C00_0008
 l0C00_0008:
-	Mem5[ds:0x0300:word16] = fp
-	Mem7[ds:0x0302:word16] = ss
-	Mem9[ds:0x0308:word16] = bx
-	return Mem9[ds:0x0304:word16]
+	Mem5[ds:0x300<16>:word16] = fp
+	Mem7[ds:0x302<16>:word16] = ss
+	Mem9[ds:0x308<16>:word16] = bx
+	return Mem9[ds:0x304<16>:word16]
 	// succ:  fn0C00_0008_exit
 fn0C00_0008_exit:
 

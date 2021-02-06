@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,11 @@ namespace Reko.Arch.X86
         {
         }
 
+        public override Address AddressFromWord(ulong word)
+        {
+            return Address.Ptr32((uint)word);
+        }
+
         protected override void Call(MachineOperand op)
         {
             Push((uint) InstructionPointer.ToLinear() + (uint) dasm.Current.Length, PrimitiveType.Word32);   // Push return value on stack
@@ -56,6 +61,19 @@ namespace Reko.Arch.X86
         protected override void Movs(PrimitiveType dt)
         {
             throw new NotImplementedException();
+        }
+
+        protected override void Scas(PrimitiveType dt)
+        {
+            var mask = masks[dt.Size];
+            var a = ReadRegister(X86.Registers.eax) & mask.value;
+            var edi = ReadRegister(X86.Registers.edi);
+            var value = ReadMemory(edi, dt) & mask.value;
+            var delta = (long) dt.Size * (((Flags & Dmask) != 0) ? -1 : 1);
+            edi += (ulong) delta;
+            WriteRegister(X86.Registers.edi, edi);
+            Flags &= ~Zmask;
+            Flags |= (a == value ? Zmask : 0u);
         }
 
         protected override void Stos(PrimitiveType dt)

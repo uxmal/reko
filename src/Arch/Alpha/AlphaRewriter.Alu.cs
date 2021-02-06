@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ namespace Reko.Arch.Alpha
             var e = cmp(op1, op2);
             if (e.DataType == PrimitiveType.Bool)
             {
-                e = m.Cast(dst.DataType, e);
+                e = m.Convert(e, e.DataType, dst.DataType);
             }
             m.Assign(dst, e);
         }
@@ -55,31 +55,31 @@ namespace Reko.Arch.Alpha
             RewriteBin(fn);
             var dst = Rewrite(instr.Operands[2]);
             m.BranchInMiddleOfInstruction(
-                m.Not(host.PseudoProcedure("OV", PrimitiveType.Bool, dst)),
+                m.Not(host.Intrinsic("OV", true, PrimitiveType.Bool, dst)),
                 instr.Address + instr.Length, 
                 InstrClass.ConditionalTransfer);
             var ch = new ProcedureCharacteristics { Terminates = true };
             m.SideEffect(
-                host.PseudoProcedure("__trap_overflow", ch, VoidType.Instance),
+                host.Intrinsic("__trap_overflow", false, ch, VoidType.Instance),
                 InstrClass.Transfer|InstrClass.Call);
         }
 
-        private void RewriteInstrinsic(string instrinic)
+        private void RewriteInstrinsic(string instrinic, bool isIdempotent)
         {
             var op1 = Rewrite(instr.Operands[0]);
             var op2 = Rewrite(instr.Operands[1]);
             var dst = Rewrite(instr.Operands[2]);
             if (dst.IsZero)
             {
-                m.SideEffect(host.PseudoProcedure(instrinic, dst.DataType, op1, op2));
+                m.SideEffect(host.Intrinsic(instrinic, isIdempotent, dst.DataType, op1, op2));
             }
             else
             {
-                m.Assign(dst, host.PseudoProcedure(instrinic, dst.DataType, op1, op2));
+                m.Assign(dst, host.Intrinsic(instrinic, isIdempotent, dst.DataType, op1, op2));
             }
         }
 
-        private void RewriteLoadInstrinsic(string intrinsic, DataType dt)
+        private void RewriteLoadInstrinsic(string intrinsic,  bool isIdempotent, DataType dt)
         {
             var op1 = Rewrite(instr.Operands[0]);
             var op2 = Rewrite(instr.Operands[1]);
@@ -87,11 +87,11 @@ namespace Reko.Arch.Alpha
             if (op1.IsZero)
             {
                 // Discarding the result == side effect
-                m.SideEffect(host.PseudoProcedure(intrinsic, dt, op2));
+                m.SideEffect(host.Intrinsic(intrinsic, isIdempotent, dt, op2));
             }
             else
             {
-                m.Assign(op1, host.PseudoProcedure(intrinsic, dt, op2));
+                m.Assign(op1, host.Intrinsic(intrinsic, isIdempotent, dt, op2));
             }
         }
 
@@ -100,7 +100,7 @@ namespace Reko.Arch.Alpha
             var op1 = Rewrite(instr.Operands[0]);
             var op2 = Rewrite(instr.Operands[1]);
             op2.DataType = dt;
-            m.SideEffect(host.PseudoProcedure(intrinsic, dt, op2, op1));
+            m.SideEffect(host.Intrinsic(intrinsic, false, dt, op2, op1));
         }
 
         private void RewriteLd(PrimitiveType dtSrc, PrimitiveType dtDst)
@@ -109,7 +109,7 @@ namespace Reko.Arch.Alpha
             src.DataType = dtSrc;
             if (dtSrc != dtDst)
             {
-                src = m.Cast(dtDst, src);
+                src = m.Convert(src, src.DataType, dtDst);
             }
             var dst = Rewrite(instr.Operands[0]);
             m.Assign(dst, src);
@@ -140,30 +140,35 @@ namespace Reko.Arch.Alpha
             m.Assign(dst, src);
         }
 
-        private void RewriteSt(PrimitiveType dtDst)
+        private void RewriteSt(PrimitiveType dtFrom, PrimitiveType dtTo = null)
         {
             var src = Rewrite(instr.Operands[0]);
-            if (src.DataType != dtDst)
+            if (dtTo != null)
             {
-                src = m.Cast(dtDst, src);
+                src = m.Convert(src, dtFrom, dtTo);
+            }
+            else if (src.DataType != dtFrom)
+            {
+                src = m.Slice(dtFrom, src, 0);
             }
             var dst = Rewrite(instr.Operands[1]);
-            dst.DataType = dtDst;
+            dst.DataType = dtTo ?? dtFrom;
             m.Assign(dst, src);
         }
 
         private void RewriteTrapb()
         {
             m.SideEffect(
-                host.PseudoProcedure("__trap_barrier", VoidType.Instance),
+                host.Intrinsic("__trap_barrier", false, VoidType.Instance),
                 InstrClass.Transfer|InstrClass.Call);
         }
 
         private Expression addl(Expression a, Expression b)
         {
-            return m.Cast(
-                PrimitiveType.Word64,
-                m.Slice(PrimitiveType.Int32, m.IAdd(a, b), 0));
+            return m.Convert(
+                m.Slice(PrimitiveType.Int32, m.IAdd(a, b), 0),
+                PrimitiveType.Int32,
+                PrimitiveType.Int64);
         }
 
         private Expression addq(Expression a, Expression b)
@@ -210,9 +215,12 @@ namespace Reko.Arch.Alpha
             if (b.IsZero)
                 return b;
 
-            return m.Cast(
-                PrimitiveType.Word64,
-                m.Slice(PrimitiveType.Int32, m.IMul(a, b), 0));
+            return m.Convert(
+                m.IMul(
+                    m.Slice(PrimitiveType.Int32, a, 0),
+                    m.Slice(PrimitiveType.Int32, b, 0)),
+                PrimitiveType.Int32,
+                PrimitiveType.Int64);
         }
 
         private Expression mulq(Expression a, Expression b)
@@ -254,9 +262,10 @@ namespace Reko.Arch.Alpha
 
         private Expression SExtend(Expression e)
         {
-            return m.Cast(
-                PrimitiveType.Word64,
-                m.Slice(PrimitiveType.Int32, e, 0));
+            return m.Convert(
+                m.Slice(PrimitiveType.Int32, e, 0),
+                PrimitiveType.Int32,
+                PrimitiveType.Word64);
         }
 
         private Expression s4addl(Expression a, Expression b)

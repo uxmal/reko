@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteFid()
         {
-            m.SideEffect(host.PseudoProcedure("__fid", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__fid",false,VoidType.Instance));
         }
 
         private void RewriteFld(PrimitiveType dt)

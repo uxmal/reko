@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -30,15 +32,17 @@ namespace Reko.Gui
     {
         private readonly IServiceProvider services;
 
-        public JumpVectorNavigator(Program program, Address addrInstr, Address addrVector, int stride, IServiceProvider services)
+        public JumpVectorNavigator(Program program, IProcessorArchitecture arch, Address addrInstr, Address addrVector, int stride, IServiceProvider services)
         {
             this.Program = program;
+            this.Architecture = arch;
             this.IndirectJumpAddress = addrInstr;
             this.VectorAddress = addrVector;
             this.Stride = stride;
             this.services = services;
         }
 
+        public IProcessorArchitecture Architecture { get; }
         public Address IndirectJumpAddress { get; private set; }
         public Address VectorAddress { get; private set; }
         public Program Program { get; private set; }
@@ -54,12 +58,12 @@ namespace Reko.Gui
             var dlgSvc = services.RequireService<IDialogFactory>();
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
             var instr = Program.CreateDisassembler(Program.Architecture, IndirectJumpAddress).First();
-            using (var dlg = dlgSvc.CreateJumpTableDialog(Program, instr, VectorAddress, Stride))
+            using (var dlg = dlgSvc.CreateJumpTableDialog(Program, Architecture, instr, VectorAddress, Stride))
             {
                 if (DialogResult.OK == uiSvc.ShowModalDialog(dlg))
                 {
                     var ujmp = dlg.GetResults();
-                    this.Program.User.JumpTables[ujmp.Address] = ujmp.Table;
+                    this.Program.User.JumpTables[ujmp.Address!] = ujmp.Table!;
                     
                     ///$TODO: register
                     //$TODO: prevent user from proceeding, in effect forcing 

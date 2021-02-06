@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,7 +77,7 @@ namespace Reko.Scanning
             return block.Statements.Count;
         }
 
-        public IEnumerable<RtlInstruction> GetBlockInstructions(RtlBlock rtlBlock)
+        public IEnumerable<RtlInstruction?> GetBlockInstructions(RtlBlock rtlBlock)
         {
             var block = invCache[rtlBlock];
             var last = block.Statements.Last;
@@ -103,7 +103,7 @@ namespace Reko.Scanning
                     //$TODO: this is also a workaround; some blocks have
                     // no addresses because they are synthesized from thin air
                     // after conversion from "raw" RTL.
-                    if (branch.Target.Address == null)
+                    if (branch.Target.Address is null)
                         yield break;
                     yield return new RtlBranch(branch.Condition, branch.Target.Address, InstrClass.ConditionalTransfer);
                     break;
@@ -111,7 +111,7 @@ namespace Reko.Scanning
                     yield return new RtlCall(call.Callee, (byte)call.CallSite.SizeOfReturnAddressOnStack, InstrClass.Call);
                     break;
                 case SideEffect side:
-                    yield return new RtlSideEffect(side.Expression);
+                    yield return new RtlSideEffect(side.Expression, InstrClass.Linear);
                     break;
                 case GotoInstruction go:
                     yield return new RtlGoto(go.Target, InstrClass.Transfer);
@@ -167,7 +167,7 @@ namespace Reko.Scanning
         {
             if (!cache.TryGetValue(block, out var rtlBlock))
             {
-                rtlBlock = new RtlBlock(block.Address, block.Name);
+                rtlBlock = new RtlBlock(block.Address, block.Id);
                 cache.Add(block, rtlBlock);
                 invCache.Add(rtlBlock, block);
             }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,7 +65,8 @@ namespace Reko.UnitTests.Analysis
                 m.Ssa,
                 stmCall,
                 (CallInstruction) stmCall.Instruction,
-                callee);
+                callee, 
+                false);
             var instr = cab.CreateInstruction(sigCallee, null);
 
             Assert.AreEqual("callee(r2_r3_4)", instr.ToString());
@@ -97,11 +98,48 @@ namespace Reko.UnitTests.Analysis
                 m.Ssa,
                 stmCall,
                 (CallInstruction) stmCall.Instruction,
-                callee);
+                callee,
+                false);
             var instr = cab.CreateInstruction(sigCallee, null);
 
             Assert.AreEqual("callee(SEQ(r2_1, r3_2))", instr.ToString());
             m.Ssa.Validate(s => Assert.Fail(s)); 
+        }
+
+        [Test(Description = "Fixes GitHib #979")]
+        public void Cab_GuessStackParameter()
+        {
+            var m = new SsaProcedureBuilder(nameof(Cab_Sequence));
+            var sp = m.Reg("sp", m.Procedure.Architecture.StackRegister);
+            m.AddDefToEntryBlock(sp);
+            var r2_1 = m.Reg("r2_1", reg2);
+            var r3_2 = m.Reg("r3_2", reg3);
+            m.MStore(sp, m.Word32(0x0001234));
+            m.MStore(m.IAdd(sp, 4), m.Word32(0x5678ABCD));
+            var sigCallee = FunctionType.Action(
+                    new Identifier("arg04", PrimitiveType.Word32,
+                        new StackArgumentStorage(4, PrimitiveType.Word32)),
+                    new Identifier("arg08", PrimitiveType.Word32,
+                        new StackArgumentStorage(8, PrimitiveType.Word32)));
+            sigCallee.ReturnAddressOnStack = 4;
+            var callee = new ProcedureConstant(
+                PrimitiveType.Ptr32,
+                new ExternalProcedure("callee", sigCallee));
+            var stmCall = m.Call(callee, 0,
+                new Identifier[] { sp },
+                new Identifier[] { });
+            m.Return();
+
+            var cab = new CallApplicationBuilder(
+                m.Ssa,
+                stmCall,
+                (CallInstruction) stmCall.Instruction,
+                callee,
+                true);
+            var instr = cab.CreateInstruction(sigCallee, null);
+
+            Assert.AreEqual("callee(Mem4[sp:word32], Mem4[sp + 4<i32>:word32])", instr.ToString());
+            m.Ssa.Validate(s => Assert.Fail(s));
         }
     }
 }

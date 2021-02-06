@@ -1,7 +1,7 @@
 
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ namespace Reko.Arch.X86
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
-		public Address AddressFromSegOffset(RegisterStorage seg, uint offset)
+		public Address? AddressFromSegOffset(RegisterStorage seg, uint offset)
 		{
 			Constant c = GetRegister(seg);
 			if (c.IsValid)
@@ -73,7 +73,7 @@ namespace Reko.Arch.X86
 				return null;
 		}
 
-        public Address AddressFromSegReg(RegisterStorage seg, RegisterStorage reg)
+        public Address? AddressFromSegReg(RegisterStorage seg, RegisterStorage reg)
 		{
 			Constant c = GetRegister(reg);
 			if (c.IsValid)
@@ -118,10 +118,19 @@ namespace Reko.Arch.X86
 			}
 		}
 
-        public override void SetInstructionPointer(Address addr)
+        public override Address InstructionPointer
         {
-            if (addr.Selector.HasValue)
-                SetRegister(Registers.cs, Constant.Word16(addr.Selector.Value));
+            get
+            {
+                return base.InstructionPointer;
+            }
+
+            set
+            {
+                base.InstructionPointer = value;
+                if (value.Selector.HasValue)
+                    SetRegister(Registers.cs, Constant.Word16(value.Selector.Value));
+            }
         }
 
         public override void OnProcedureEntered()
@@ -144,7 +153,7 @@ namespace Reko.Arch.X86
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnAfterCall(FunctionType sig)
+        public override void OnAfterCall(FunctionType? sig)
         {
         }
 

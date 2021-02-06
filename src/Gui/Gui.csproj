@@ -15,12 +15,9 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Reko.Gui</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <LangVersion>8.0</LangVersion>
+    <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8604;CS8610;CS8613;CS8618;CS8619;CS8623;CS8625</WarningsAsErrors>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -57,7 +54,6 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
-    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -134,15 +130,18 @@
     <Compile Include="Design\PlatformDesigner.cs" />
     <Compile Include="Design\ProgramResourceGroupDesigner.cs" />
     <Compile Include="Design\ProgramResourceInstanceDesigner.cs" />
+    <Compile Include="Forms\BlockNameInteractor.cs" />
     <Compile Include="Forms\CallSiteInteractor.cs" />
     <Compile Include="Forms\FormWindowState.cs" />
     <Compile Include="Forms\IAboutDialog.cs" />
     <Compile Include="Forms\IArchiveBrowserDialog.cs" />
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
+    <Compile Include="Forms\IBlockNameDialog.cs" />
     <Compile Include="Forms\IDeclarationForm.cs" />
     <Compile Include="Forms\IJumpTableDialog.cs" />
     <Compile Include="Forms\IKeyBindingsDialog.cs" />
     <Compile Include="Forms\IProcedureDialog.cs" />
+    <Compile Include="Forms\IRegisterValuesDialog.cs" />
     <Compile Include="Forms\IResourceEditor.cs" />
     <Compile Include="Forms\ISegmentEditorDialog.cs" />
     <Compile Include="Forms\ISelectItemDialog.cs" />
@@ -153,11 +152,13 @@
     <Compile Include="ICallGraphViewService.cs" />
     <Compile Include="ICallHierarchyService.cs" />
     <Compile Include="ICommandFactory.cs" />
+    <Compile Include="IDiagnosticsService.cs" />
     <Compile Include="IFindStringsDialog.cs" />
     <Compile Include="IProcedureListService.cs" />
     <Compile Include="IResourceEditorService.cs" />
     <Compile Include="Forms\IWorkerDialog.cs" />
     <Compile Include="Forms\ITextEncodingDialog.cs" />
+    <Compile Include="IUserEventService.cs" />
     <Compile Include="IViewImportsService.cs" />
     <Compile Include="JumpVectorNavigator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -192,7 +193,6 @@
     <Compile Include="ICodeViewerService.cs" />
     <Compile Include="ICommandTarget.cs" />
     <Compile Include="IConsoleService.cs" />
-    <Compile Include="IDecompilerService.cs" />
     <Compile Include="IDecompilerShellUiService.cs" />
     <Compile Include="IDialog.cs" />
     <Compile Include="IDialogFactory.cs" />

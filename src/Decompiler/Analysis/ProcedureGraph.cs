@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,26 +22,20 @@ using Reko.Core;
 using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Analysis
 {
     public class ProcedureGraph : DirectedGraph<Procedure>
     {
-        private CallGraph cg;
-        private ICollection<Procedure> procs;
+        private readonly CallGraph cg;
 
         public ProcedureGraph(Program program)
         {
             this.cg = program.CallGraph;
-            this.procs = program.Procedures.Values;
+            this.Nodes = program.Procedures.Values;
         }
 
-        public ICollection<Procedure> Nodes
-        {
-            get { return procs; }
-        }
+        public ICollection<Procedure> Nodes { get; }
 
         public ICollection<Procedure> Predecessors(Procedure node)
         {

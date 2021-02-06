@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Services;
@@ -62,11 +62,11 @@ namespace Reko.UnitTests.Scanning
 		public void EarInsertFrameReference()
 		{
 			Procedure proc = new Procedure(null,"foo", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Word32));
-			Block b = new Block(proc, "foo_1");
+			Block b = new Block(proc, proc.EntryAddress, "foo_1");
 			proc.ControlGraph.AddEdge(proc.EntryBlock, b);
             proc.ControlGraph.AddEdge(b, proc.ExitBlock);
 			EscapedAccessRewriter ear = new EscapedAccessRewriter(proc);
-			ear.InsertFramePointerAssignment(new Mocks.FakeArchitecture());
+			ear.InsertFramePointerAssignment(new Mocks.FakeArchitecture(sc));
 			Block x = proc.EntryBlock.Succ[0];
 			Assert.AreEqual(1, x.Statements.Count);
 			Assert.AreEqual("fp = &foo_frame", x.Statements[0].Instruction.ToString());
@@ -74,11 +74,12 @@ namespace Reko.UnitTests.Scanning
 
 		private Program AssembleFile(string sourceFile, Address addr)
 		{
-            var ldr = new Loader(new ServiceContainer());
-            var arch = new X86ArchitectureReal("x86-real-16");
+            var ldr = new Loader(sc);
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             Program program = ldr.AssembleExecutable(
                  FileUnitTester.MapTestPath(sourceFile),
-                 new X86TextAssembler(sc, arch),
+                 new X86TextAssembler(arch),
+                 new DefaultPlatform(sc, arch),
                 addr);
             var project = new Project { Programs = { program } };
 			var scan = new Scanner(

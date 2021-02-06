@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,8 +47,8 @@ namespace Reko.UnitTests.Core.Analysis
             var platform = new Mock<IPlatform>();
             arch.Setup(a => a.WordWidth).Returns(PrimitiveType.Word32);
             platform.Setup(p => p.Architecture).Returns(arch.Object);
-            platform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Long)).Returns(4);
-            platform.Setup(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Returns(8);
+            platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Long)).Returns(32);
+            platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Double)).Returns(64);
             platform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
             this.program = new Program { Platform = platform.Object };
         }

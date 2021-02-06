@@ -1,0 +1,290 @@
+int32 main(int32 argc, char ** argv)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
+// LiveOut: eax
+// Trashed: eax
+// Preserved:
+main_entry:
+l00401000:
+	test1(Mem19[argv:word32], argc, 0x4020C8<32>, 1.0F)
+	return 0<32>
+main_exit:
+
+
+void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      main
+//      test2
+// MayUse:  Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31] Stack +0010:[0..31]
+// LiveOut:
+// Trashed:
+// Preserved:
+test1_entry:
+l00401030:
+	printf(0x4020D0<32>, arg1, arg2, arg3, CONVERT(arg4, real32, real64))
+	return
+test1_exit:
+
+
+void test2(word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Stack +0004:[0..31]
+// LiveOut:
+// Trashed: SCZO FPU -1 Top
+// Preserved: ebp esp
+test2_entry:
+l00401060:
+	test1(0x4020E0<32>, 2<32>, 0x4020DC<32>, Mem10[0x004020F0<p32>:real32])
+	branch dwArg04 != 0<32> l004010A5
+l00401087:
+	test1(0x4020E8<32>, 6<32>, 0x4020E4<32>, Mem25[0x004020EC<p32>:real32])
+l004010A5:
+	return
+test2_exit:
+
+
+void indirect_call_test3(cdecl_class * c)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Stack +0004:[0..31]
+// LiveOut:
+// Trashed:
+// Preserved:
+indirect_call_test3_entry:
+l004010B0:
+	Mem12[Mem12[c:word32] + 4<32>:word32](c, 0x3E8<32>)
+	return
+indirect_call_test3_exit:
+
+
+void test4()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO eax ecx edx Top
+// Preserved: ebp esp
+test4_entry:
+l004010D0:
+	Mem10[Mem10[Mem10[0x00403018<p32>:word32]:word32]:word32](Mem6[0x00403018<p32>:word32])
+	return
+test4_exit:
+
+
+void test5()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO eax ecx edx FPU -1 Top
+// Preserved: ebp esp
+test5_entry:
+l004010F0:
+	Mem18[Mem18[Mem18[0x00403018<p32>:word32]:word32] + 4<32>:word32](Mem15[0x00403018<p32>:word32], 0x3E7<32>, Mem9[0x004020F4<p32>:real32])
+	return
+test5_exit:
+
+
+void test6(cdecl_class * c, int32 a, int32 b)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      nested_if_blocks_test8
+// MayUse:  Stack +0004:[0..31] Stack +0008:[0..31] Stack +000C:[0..31]
+// LiveOut:
+// Trashed:
+// Preserved:
+test6_entry:
+l00401120:
+	Mem37[Mem37[c:word32] + 4<32>:word32](c, Mem19[Mem19[c:word32] + 8<32>:word32](c, a, b))
+	return
+test6_exit:
+
+
+void test7(real64 rArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Stack +0004:[0..63]
+// LiveOut:
+// Trashed: SCZO eax ecx edx FPU -1 FPUF Top
+// Preserved: ebp esp
+test7_entry:
+l00401160:
+	branch rArg04 <= 1.0 l00401189
+l0040116F:
+	Mem17[Mem17[Mem17[0x00403034<p32>:word32]:word32]:word32](Mem17[0x00403034<p32>:word32], rArg04)
+l00401189:
+	Mem40[Mem40[Mem40[0x00403034<p32>:word32]:word32] + 4<32>:word32](Mem40[0x00403034<p32>:word32], 0xD<32>, rArg04)
+	return
+test7_exit:
+
+
+void nested_if_blocks_test8(real64 rArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      loop_test11
+// MayUse:  Stack +0004:[0..63]
+// LiveOut:
+// Trashed: SCZO eax ecx edx FPU -1 FPUF Top
+// Preserved: ebp esp
+nested_if_blocks_test8_entry:
+l004011B0:
+	Mem15[Mem15[Mem15[0x00403034<p32>:word32]:word32] + 4<32>:word32](Mem15[0x00403034<p32>:word32], 0xFFFFFFFF<32>, rArg04)
+	branch Mem15[0x00402100<p32>:real64] == rArg04 l0040120D
+l004011E2:
+	branch Mem15[0x004020F8<p32>:real64] <= rArg04 l0040120D
+l004011F2:
+	Mem42[Mem42[Mem42[0x00403034<p32>:word32]:word32]:word32](Mem42[0x00403034<p32>:word32], rArg04)
+l0040120D:
+	test6(Mem58[0x00403018<p32>:word32], 6<32>, 7<32>)
+	return
+nested_if_blocks_test8_exit:
+
+
+void loop_test9(real32 rArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      loop_test11
+// MayUse:  Stack +0004:[0..31]
+// LiveOut:
+// Trashed: SCZO eax ecx edx FPU -1 FPU -2 FPUF Top
+// Preserved: ebp esp
+loop_test9_entry:
+l00401230:
+	word32 dwLoc08_65 = 0<32>
+l00401248:
+	branch Mem25[Mem25[Mem25[0x00403034<p32>:word32]:word32] + 4<32>:word32](Mem25[0x00403034<p32>:word32], dwLoc08_65, CONVERT(rArg04, real32, real64)) <= CONVERT(dwLoc08_65, word32, real64) l00401294
+l00401294:
+	return
+loop_test9_exit:
+l00401278:
+	Mem48[Mem48[Mem48[0x00403034<p32>:word32]:word32]:word32](Mem48[0x00403034<p32>:word32], CONVERT(rArg04, real32, real64))
+l0040123F:
+	dwLoc08_65 = dwLoc08_65 + 1<32>
+
+
+void const_div_test10(word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Stack +0004:[0..31]
+// LiveOut:
+// Trashed: SCZO eax ecx edx Top
+// Preserved: ebp esp
+const_div_test10_entry:
+l004012A0:
+	word32 eax_18 = 0xA<32>
+	word32 ecx_20 = 3<32>
+	branch dwArg04 == 0<32> l004012BA
+l004012B4:
+	eax_18 = 3<u32>
+	ecx_20 = 1<u32>
+l004012BA:
+	Mem22[0x0040302C<p32>:word32] = ecx_20
+	Mem24[0x00403030<p32>:word32] = eax_18
+	return
+const_div_test10_exit:
+
+
+void loop_test11(real64 rArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Stack +0004:[0..63]
+// LiveOut:
+// Trashed: SCZO Top
+// Preserved: eax ebp ecx edx esp FPU -1 FPUF
+loop_test11_entry:
+l004012D0:
+	word32 dwLoc08_100 = 5<32>
+l004012DD:
+	branch dwLoc08_100 <= 0<32> l00401329
+l00401329:
+	return
+loop_test11_exit:
+l004012E3:
+	word32 eax_19 = dwLoc08_100 & 0x80000001<32>
+	branch (dwLoc08_100 & 0x80000001<32>) >= 0<32> l004012F2
+l004012ED:
+	eax_19 = ((dwLoc08_100 & 0x80000001<32>) - 1<32> | 0xFFFFFFFE<32>) + 1<32>
+l004012F2:
+	branch eax_19 != 0<32> l0040130D
+l0040130D:
+	nested_if_blocks_test8(rArg04)
+l004012F6:
+	loop_test9(CONVERT(rArg04, real64, real32))
+l0040131E:
+	dwLoc08_100 = dwLoc08_100 - 1<32>
+
+
+void nested_structs_test12(word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      nested_structs_test13
+// MayUse:  Stack +0004:[0..31]
+// LiveOut:
+// Trashed: eax ecx edx Top
+// Preserved: ebp esp
+nested_structs_test12_entry:
+l00401330:
+	Mem9[dwArg04:word32] = 1<32>
+	Mem11[dwArg04 + 4<32>:word32] = 2<32>
+	Mem13[dwArg04 + 8<32>:word32] = 3<32>
+	Mem15[dwArg04 + 0xC<32>:word32] = 4<32>
+	return
+nested_structs_test12_exit:
+
+
+void nested_structs_test13(nested_structs_type * str)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  Stack +0004:[0..31]
+// LiveOut:
+// Trashed:
+// Preserved:
+nested_structs_test13_entry:
+l00401360:
+	nested_structs_test12(str)
+	return
+nested_structs_test13_exit:
+
+
+void gbl_nested_structs_test14()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: Top
+// Preserved: ebp esp
+gbl_nested_structs_test14_entry:
+l00401380:
+	// gbl_nested_structs.a = 5
+	Mem7[0x0040301C<p32>:word32] = 5<32>
+	// gbl_nested_structs.str.b = 6
+	Mem8[0x00403020<p32>:word32] = 6<32>
+	// gbl_nested_structs.str.c = 7
+	Mem9[0x00403024<p32>:word32] = 7<32>
+	// gbl_nested_structs.d = 8
+	Mem10[0x00403028<p32>:word32] = 8<32>
+	return
+gbl_nested_structs_test14_exit:
+
+
+real64 double_return_test15(real64 d)
+// stackDelta: 4; fpuStackDelta: 1; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: FPU -1
+// Trashed: FPU -1
+// Preserved:
+double_return_test15_entry:
+l004013B0:
+	return d
+double_return_test15_exit:
+
+

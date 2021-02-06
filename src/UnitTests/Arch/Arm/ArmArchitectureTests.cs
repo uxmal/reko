@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,8 @@ using System.Linq;
 using System.Text;
 using Reko.Core;
 using Reko.Arch.Arm.AArch32;
+using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Arm
 {
@@ -37,8 +39,8 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmArch_CreateDisassembler()
         {
-            this.arch = new Arm32Architecture("arm32");
-            var mem = new MemoryArea(Address.Ptr32(0x00123400), new byte[] { 0x03, 0x10, 0x12, 0xE0 });
+            this.arch = new Arm32Architecture(new ServiceContainer(), "arm32", new Dictionary<string, object>());
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00123400), new byte[] { 0x03, 0x10, 0x12, 0xE0 });
 
             var rdr = mem.CreateLeReader(0);
             var dasm = arch.CreateDisassembler(rdr);
@@ -49,8 +51,8 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmArch_CreateRewriter()
         {
-            this.arch = new Arm32Architecture("arm32");
-            var mem = new MemoryArea(Address.Ptr32(0x00123400), new byte[] { 0x03, 0x10, 0x12, 0xE0 });
+            this.arch = new Arm32Architecture(new ServiceContainer(), "arm32", new Dictionary<string, object>());
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00123400), new byte[] { 0x03, 0x10, 0x12, 0xE0 });
 
             var rdr = mem.CreateLeReader(0);
             var rw = arch.CreateRewriter(rdr, new AArch32ProcessorState(arch), new StorageBinder(), null);

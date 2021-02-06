@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,12 +28,12 @@ namespace Reko.Core.Configuration
 {
     public class TypeLibraryDefinition
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string Architecture { get; set; }
+        public string? Architecture { get; set; }
 
-        public string Module { get; set; }
+        public string? Module { get; set; }
 
-        public string Loader { get; set; }
+        public string? Loader { get; set; }
     }
 }

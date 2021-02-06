@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Arch.Arm.AArch64
@@ -32,7 +33,7 @@ namespace Reko.Arch.Arm.AArch64
             if (instr.Operands[0] is ConditionOperand cop)
             {
                 var cc = cop.Condition;
-                m.Branch(TestCond(cc), ((AddressOperand) instr.Operands[1]).Address, rtlc);
+                m.Branch(TestCond(cc), ((AddressOperand) instr.Operands[1]).Address, iclass);
             }
             else
             {
@@ -55,10 +56,26 @@ namespace Reko.Arch.Arm.AArch64
             m.Goto(RewriteOp(instr.Operands[0]));
         }
 
+        private void RewriteBrk()
+        {
+            m.SideEffect(host.Intrinsic("__brk", false, VoidType.Instance, RewriteOp(0)));
+        }
+
         private void RewriteCb(Func<Expression, Expression> fn)
         {
             var reg = binder.EnsureRegister(((RegisterOperand)instr.Operands[0]).Register);
-            m.Branch(fn(reg), ((AddressOperand)instr.Operands[1]).Address, rtlc);
+            m.Branch(fn(reg), ((AddressOperand)instr.Operands[1]).Address, iclass);
+        }
+
+        private void RewriteEret()
+        {
+            m.SideEffect(host.Intrinsic("__eret", false, VoidType.Instance));
+            m.Return(0, 0);
+        }
+
+        private void RewriteHlt()
+        {
+            m.SideEffect(host.Intrinsic("__hlt", false, VoidType.Instance, RewriteOp(0)));
         }
 
         private void RewriteRet()

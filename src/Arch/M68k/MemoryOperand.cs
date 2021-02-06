@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,8 @@ using System.Text;
 
 namespace Reko.Arch.M68k
 {
+#pragma warning disable IDE1006
+
     public interface M68kOperand
     {
         T Accept<T>(M68kOperandVisitor<T> visitor);
@@ -71,10 +73,10 @@ namespace Reko.Arch.M68k
             return visitor.Visit(this);
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString("#");
-            writer.WriteString(MachineOperand.FormatValue(Constant, false, M68kDisassembler.HexStringFormat));
+            renderer.WriteString("#");
+            renderer.WriteString(MachineOperand.FormatValue(Constant, false, M68kDisassembler.HexStringFormat));
         }
     }
 
@@ -94,9 +96,9 @@ namespace Reko.Arch.M68k
             return visitor.Visit(this);
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteFormat("{0},{1}", Register1.Name, Register2.Name);
+            renderer.WriteFormat("{0},{1}", Register1.Name, Register2.Name);
         }
     }
 
@@ -105,7 +107,7 @@ namespace Reko.Arch.M68k
         public const string HexStringFormat = "{0}${1}";
 
         public AddressRegister Base;
-        public Constant Offset;
+        public Constant? Offset;
 
         public MemoryOperand(PrimitiveType width, AddressRegister baseReg)
             : base(width)
@@ -145,15 +147,15 @@ namespace Reko.Arch.M68k
             return new PostIncrementMemoryOperand(dataWidth, baseReg);
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Offset != null)
             {
-                writer.WriteString(MachineOperand.FormatValue(Offset, false, M68kDisassembler.HexStringFormat));
+                renderer.WriteString(MachineOperand.FormatValue(Offset, false, M68kDisassembler.HexStringFormat));
             }
-            writer.WriteString("(");
-            writer.WriteString(Base.Name);
-            writer.WriteString(")");
+            renderer.WriteString("(");
+            renderer.WriteString(Base.Name);
+            renderer.WriteString(")");
         }
     }
 
@@ -172,11 +174,11 @@ namespace Reko.Arch.M68k
             return visitor.Visit(this);
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString("-(");
-            writer.WriteString(Register.Name);
-            writer.WriteString(")");
+            renderer.WriteString("-(");
+            renderer.WriteString(Register.Name);
+            renderer.WriteString(")");
         }
     }
 
@@ -195,11 +197,11 @@ namespace Reko.Arch.M68k
             return visitor.Visit(this);
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString("(");
-            writer.WriteString(Register.Name);
-            writer.WriteString(")+");
+            renderer.WriteString("(");
+            renderer.WriteString(Register.Name);
+            renderer.WriteString(")+");
         }
     }
 
@@ -226,28 +228,28 @@ namespace Reko.Arch.M68k
             return visitor.Visit(this);
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteString("(");
+            renderer.WriteString("(");
             if (Imm8 < 0)
             {
-                writer.WriteFormat("-${0:X2},", -Imm8);
+                renderer.WriteFormat("-${0:X2},", -Imm8);
             }
             else if (Imm8 > 0)
             {
-                writer.WriteFormat("${0:X2},", Imm8);
+                renderer.WriteFormat("${0:X2},", Imm8);
             }
-            writer.WriteString(ARegister.Name);
+            renderer.WriteString(ARegister.Name);
             if (XRegister != null)
             {
-                writer.WriteString(",");
-                writer.WriteString(XRegister.Name);
+                renderer.WriteString(",");
+                renderer.WriteString(XRegister.Name);
                 if (XWidth.Size == 2)
-                    writer.WriteString(".w");
+                    renderer.WriteString(".w");
                 if (Scale > 1)
-                    writer.WriteFormat("*{0}", Scale);
+                    renderer.WriteFormat("*{0}", Scale);
             }
-            writer.WriteString(")");
+            renderer.WriteString(")");
         }
     }
 }

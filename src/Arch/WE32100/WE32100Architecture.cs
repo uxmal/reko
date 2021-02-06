@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -31,7 +32,8 @@ namespace Reko.Arch.WE32100
 {
     public class WE32100Architecture : ProcessorArchitecture
     {
-        public WE32100Architecture(string archId) : base(archId)
+        public WE32100Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Word32;

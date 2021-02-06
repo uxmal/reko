@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,10 +23,12 @@ using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -91,16 +93,20 @@ namespace Reko.UnitTests.Analysis
 
 		protected override void RunTest(Program program, TextWriter writer)
 		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker.Object, new FakeDecompilerEventListener());
+            var listener = new FakeDecompilerEventListener();
+            var sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(listener);
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker.Object, sc);
 			var ssts = dfa.UntangleProcedures();
 			foreach (var sst in ssts)
 			{
 				SsaState ssa = sst.SsaState;
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
+				ConditionCodeEliminator cce = new ConditionCodeEliminator(program, ssa, listener);
 				cce.Transform();
 
 				DeadCode.Eliminate(ssa);
 				ssa.Write(writer);
+                ssa.Validate(s => writer.WriteLine("*** SSA state invalid: {0}", s));
 				ssa.Procedure.Write(false, writer);
 			}
 		}
@@ -111,7 +117,7 @@ namespace Reko.UnitTests.Analysis
             var proc = new Procedure(m.Architecture, name, Address.Ptr32(0x00123400), m.Architecture.CreateFrame());
             var flow = new ProcedureFlow(proc);
             flow.BitsUsed = uses.ToDictionary(u => u, u => new BitRange(0, (int)u.BitSize / 8));
-            flow.Trashed = defs.ToHashSet();
+            flow.Trashed = defs.ToSet();
             this.programDataFlow[proc] = flow;
             return proc;
         }
@@ -175,7 +181,7 @@ l1:
 	call foo (retsize: 4;)
 		uses: r1:r1
 		defs: r1:r1_2
-	Mem4[0x00123400:word32] = r1_2
+	Mem4[0x00123400<p32>:word32] = r1_2
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -193,7 +199,7 @@ ProcedureBuilder_exit:
                 var r1 = m.Frame.EnsureRegister(_r1);
                 var r2 = m.Frame.EnsureRegister(_r2);
                 var call = m.Call(foo, 4);
-                m.MStore(m.Word32(0x123400), r1);
+                m.MStore(m.Ptr32(0x123400), r1);
                 m.Return();
             });
         }
@@ -224,9 +230,44 @@ ProcedureBuilder_exit:
 
             var sExp =
 @"
-foo(0x00000001)
+foo(1<32>)
 ";
             AssertProcedureCode(sExp);
         }
- 	}
+
+        [Test]
+        public void DeadIdempotentIntrinsic()
+        {
+            var dead = m.Reg32("dead");
+            var intrinsic = new IntrinsicProcedure("useless", true, PrimitiveType.Int32, 0);
+            m.Assign(dead, m.Fn(intrinsic));
+            m.Return();
+
+            EliminateDeadCode();
+
+            var sExp = 
+@"
+return
+";
+            AssertProcedureCode(sExp);
+        }
+
+        [Test]
+        public void DeadIntrinsicWithSideEffect()
+        {
+            var dead = m.Reg32("dead");
+            var intrinsic = new IntrinsicProcedure("sideffector", false, PrimitiveType.Int32, 0);
+            m.Assign(dead, m.Fn(intrinsic));
+            m.Return();
+
+            EliminateDeadCode();
+
+            var sExp =
+@"
+sideffector()
+return
+";
+            AssertProcedureCode(sExp);
+        }
+    }
 }

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.Arch.Xtensa
     {
         private void RewriteBall()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var a = RewriteOp(instr.Operands[0]);
             var b = RewriteOp(instr.Operands[1]);
             var cond = m.Eq0(m.And(m.Comp(a), b));
@@ -47,7 +47,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteBany()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var a = RewriteOp(instr.Operands[0]);
             var b = RewriteOp(instr.Operands[1]);
             var cond = m.Ne0(m.And(a, b));
@@ -59,7 +59,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteBbx(Func<Expression, Expression> cmp0)
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var src = RewriteOp(instr.Operands[0]);
             var immOp = instr.Operands[1] as ImmediateOperand;
             Expression mask;
@@ -79,7 +79,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteBnall()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var a = RewriteOp(instr.Operands[0]);
             var b = RewriteOp(instr.Operands[1]);
             var cond = m.Ne0(m.And(m.Comp(a), b));
@@ -91,7 +91,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteBnone()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var a = RewriteOp(instr.Operands[0]);
             var b = RewriteOp(instr.Operands[1]);
             var cond = m.Eq0(m.And(a, b));
@@ -103,7 +103,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteBranch(Func<Expression,Expression,Expression> cmp)
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var left = RewriteOp(instr.Operands[0]);
             var right = RewriteOp(instr.Operands[1]);
             m.Branch(
@@ -114,7 +114,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteBranchZ(Func<Expression, Expression> cmp0)
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var src = RewriteOp(instr.Operands[0]);
             m.Branch(
                 cmp0(src),
@@ -124,7 +124,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteCall0()
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
             var dst = RewriteOp(instr.Operands[0]);
             var rDst = dst as Identifier;
             if (rDst != null && rDst.Storage == Registers.a0)
@@ -138,15 +138,82 @@ namespace Reko.Arch.Xtensa
             m.Call(dst, 0);
         }
 
+        private void RewriteCallW(int iReg)
+        {
+            void ShiftRegisters(int shift)
+            {
+                int iDst = 2;
+                for (int i = 0; i < 6; ++i)
+                {
+                    var iSrc = iDst + i + shift;
+                    if (iSrc < 16)
+                    {
+                        m.Assign(
+                            binder.EnsureRegister(arch.GetAluRegister(iDst + i)),
+                            binder.EnsureRegister(arch.GetAluRegister(iSrc)));
+                    }
+                }
+            }
+
+            void UnshiftRegisters(int shift)
+            {
+                int iDst = 2;
+                for (int i = 5; i >= 0; --i)
+                {
+                    var iSrc = iDst + i + shift;
+                    if (iSrc < 16)
+                    {
+                        m.Assign(
+                          binder.EnsureRegister(arch.GetAluRegister(iSrc)),
+                          binder.EnsureRegister(arch.GetAluRegister(iDst + i)));
+                    }
+                }
+            }
+
+            iclass = InstrClass.Transfer | InstrClass.Call;
+            ShiftRegisters(iReg);
+            var dst = RewriteOp(instr.Operands[0]);
+            var rDst = dst as Identifier;
+            if (rDst != null && rDst.Storage == Registers.a0)
+            {
+                var tmp = binder.CreateTemporary(rDst.DataType);
+                m.Assign(tmp, dst);
+                dst = tmp;
+            }
+            var cont = instr.Address + instr.Length;
+            m.Assign(binder.EnsureRegister(Registers.a0), cont);
+            m.Call(dst, 0);
+            UnshiftRegisters(iReg);
+        }
+
+
         private void RewriteJ()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Goto(RewriteOp(instr.Operands[0]));
+        }
+
+        private void RewriteLoop()
+        {
+            if (this.lend != null)
+            {
+                // Nested LOOPxx instructions are not valid according to the
+                // Xtensa instruction manual.
+                iclass = InstrClass.Invalid;
+                this.lbegin = null;
+                this.lend = null;
+                m.Invalid();
+                return;
+            }
+            this.lbegin = instr.Address + instr.Length;
+            this.lend = ((AddressOperand) instr.Operands[1]).Address;
+            var reg = RewriteOp(instr.Operands[0]);
+            m.Assign(binder.EnsureRegister(Registers.LCOUNT), m.ISub(reg, 1));
         }
 
         private void RewriteRet()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Return(0, 0);
         }
     }

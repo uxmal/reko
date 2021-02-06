@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using C2 = Microsoft.Msagl.Drawing.Color;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -32,6 +33,7 @@ namespace Reko.UserInterfaces.WindowsForms
     {
         private Graph graph;
         private HashSet<Procedure> visited;
+        private readonly C2 fillColor = new C2(0xFF, 0xE0, 0xE0);
 
         public CallGraphGenerator(Graph graph)
         {
@@ -47,7 +49,7 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 cfgGen.Traverse(program.CallGraph, rootProc);
             }
-            graph.Attr.LayerDirection = LayerDirection.TB;
+            graph.Attr.LayerDirection = LayerDirection.LR;
             return graph;
         }
 
@@ -80,6 +82,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             var node = graph.AddNode(proc.Name);
             node.Label.FontName = "Lucida Console";
+            node.Attr.FillColor = fillColor;
             node.Label.FontSize = 10f;
             node.Attr.LabelMargin = 5;
             node.LabelText = proc.Name;

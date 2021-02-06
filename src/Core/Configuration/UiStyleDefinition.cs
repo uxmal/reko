@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,26 +28,26 @@ namespace Reko.Core.Configuration
 {
     public class UiStyleDefinition
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public string FontName { get; set; }
+        public string? FontName { get; set; }
 
-        public string ForeColor { get; set; }
+        public string? ForeColor { get; set; }
 
-        public string BackColor { get; set; }
+        public string? BackColor { get; set; }
 
-        public string Cursor { get; set; }
+        public string? Cursor { get; set; }
 
-        public string Width { get; set; }
+        public string? Width { get; set; }
 
-        public string TextAlign { get; set; }
+        public string? TextAlign { get; set; }
 
-        public string PaddingTop { get; set; }
+        public string? PaddingTop { get; set; }
 
-        public string PaddingLeft { get; set; }
+        public string? PaddingLeft { get; set; }
 
-        public string PaddingBottom { get; set; }
+        public string? PaddingBottom { get; set; }
 
-        public string PaddingRight { get; set; }
+        public string? PaddingRight { get; set; }
     }
 }

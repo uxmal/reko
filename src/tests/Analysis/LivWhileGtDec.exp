@@ -5,21 +5,21 @@ WhileGtDecMock_entry:
 	def a
 	// succ:  l1
 l1:
-	i_1 = 0x00000064
+	i_1 = 0x64<32>
 	goto loopHdr
 	// succ:  loopHdr
 l2:
 	return
 	// succ:  WhileGtDecMock_exit
 loop:
-	i_3 = i_2 - 1
-	Mem5[a + i_3 * 0x00000004:word32] = 0x00000000
+	i_3 = i_2 - 1<i32>
+	Mem5[a + i_3 * 4<32>:word32] = 0<32>
 	// succ:  loopHdr
 loopHdr:
 	i_2 = PHI((i_1, l1), (i_3, loop))
-	branch i_2 > 0 loop
+	branch i_2 > 0<i32> loop
 	goto l2
 	// succ:  l2 loop
 WhileGtDecMock_exit:
 
-(0x00000063 -1 -1 signed)
+(0x63<32> -1<i32> -1<i32> signed)

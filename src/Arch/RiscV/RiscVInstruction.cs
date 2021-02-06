@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace Reko.Arch.RiscV
 {
     public class RiscVInstruction : MachineInstruction
     {
-        private static Dictionary<Mnemonic, string> mnemonicNames;
+        private static readonly Dictionary<Mnemonic, string> mnemonicNames;
 
         public Mnemonic Mnemonic;
 
@@ -88,38 +88,45 @@ namespace Reko.Arch.RiscV
 
         public override int MnemonicAsInteger => (int) Mnemonic;
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        public override string MnemonicAsString => Mnemonic.ToString();
+
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            RenderMnemonic(writer);
-            RenderOperands(writer, options);
+            RenderMnemonic(renderer);
+            RenderOperands(renderer, options);
         }
 
-        private void RenderMnemonic(MachineInstructionWriter writer)
+        private void RenderMnemonic(MachineInstructionRenderer renderer)
         {
             if (!mnemonicNames.TryGetValue(Mnemonic, out string name))
             {
                 name = Mnemonic.ToString();
                 name = name.Replace('_', '.');
             }
-            writer.WriteMnemonic(name);
+            renderer.WriteMnemonic(name);
         }
 
-        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch (op)
             {
             case RegisterOperand rop:
-                writer.WriteString(rop.Register.Name);
+                renderer.WriteString(rop.Register.Name);
                 return;
             case ImmediateOperand immop:
-                immop.Write(writer, options);
+                immop.Render(renderer, options);
                 return;
             case AddressOperand addrop:
                 //$TODO: 32-bit?
-                writer.WriteAddress(string.Format("{0:X16}", addrop.Address.ToLinear()), addrop.Address);
-                return;
+                if (addrop.Width.BitSize == 32)
+                {
+                    renderer.WriteAddress(string.Format("{0:X8}", addrop.Address.ToLinear()), addrop.Address);
+                } else {
+                    renderer.WriteAddress(string.Format("{0:X16}", addrop.Address.ToLinear()), addrop.Address);
+                }
+                    return;
             case MemoryOperand memop:
-                memop.Write(writer, options);
+                memop.Render(renderer, options);
                 return;
             }
             throw new NotImplementedException($"Risc-V operand type {op.GetType().Name} not implemented yet.");

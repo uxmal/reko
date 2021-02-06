@@ -4,6 +4,7 @@
     https://www.c64-wiki.com/wiki/Memory_Map 
     http://unusedino.de/ec64/technical/aay/c64/
     http://www.zimmers.net/anonftp/pub/cbm/c64/manuals/mapping-c64.txt.gz
+    https://www.pagetable.com/c64ref/c64disasm/
     -->
   <segment name="zero_page" addr="0000" size="0100">
     <description>Zero page</description>
@@ -398,4 +399,29 @@
   <segment name="os_data" addr="0200" size="0200"></segment>
   <segment name="screen" addr="0400" size="0400"></segment>
 
+  <segment name="basic_ROM" addr="A000" size="2000">
+
+    <procedure name="OMERR">   <address>A435</address><decompile>false</decompile></procedure>
+    <procedure name="SCRTCH">  <address>A644</address><decompile>false</decompile></procedure>  <!-- BASIC 'new' -->
+    <procedure name="RUNC">    <address>A659</address><decompile>false</decompile></procedure>  <!-- reset BASIC program ctr -->
+    <procedure name="TIME_FAC"><address>AF7B</address><decompile>false</decompile></procedure>  <!-- Copy real-time clock to FAC -->
+    <procedure name="BSERR">   <address>B245</address><decompile>false</decompile></procedure>  <!-- Bad subscript error -->
+    <procedure name="FCERR">   <address>B248</address><decompile>false</decompile></procedure>  <!-- Function call error -->
+    <procedure name="LSERR">   <address>B658</address><decompile>false</decompile></procedure>  <!-- Long string error -->
+    <procedure name="FADD">    <address>B867</address><decompile>false</decompile></procedure>  <!-- FADD -->
+    <procedure name="CONUPK">  <address>BA8C</address><decompile>false</decompile></procedure>  <!-- Unpack AY into FAC2 -->
+    <procedure name="FDIV">    <address>BB0F</address><decompile>false</decompile></procedure>  <!-- Divide AY / FAC1 -->
+    <procedure name="MOVFM">   <address>BBA2</address><decompile>false</decompile></procedure>  <!-- Upack AY into FAC1 -->
+    <procedure name="MOV2F">   <address>BBC7</address><decompile>false</decompile></procedure>  <!-- Pack FAC1 into memory-->
+    <procedure name="MOV1F">   <address>BBCA</address><decompile>false</decompile></procedure>  <!-- Move FAC1 ? -->
+    <procedure name="MOVMF">   <address>BBD4</address><decompile>false</decompile></procedure>  <!-- Pack FAC1 into XY -->
+    <procedure name="MOVAF">   <address>BC0C</address><decompile>false</decompile></procedure>  <!-- Move FAC into ARG -->
+    <procedure name="ROUND">   <address>BC1B</address><decompile>false</decompile></procedure>  <!-- Round FAC -->
+    <procedure name="SIGN">    <address>BC2B</address><decompile>false</decompile></procedure>  <!-- Sign of FAC into A -->
+
+  </segment>
+
+  <segment name="kernal_ROM" addr="E000" size="2000">
+    <procedure name="CLALL">   <address>FFE7</address><decompile>false</decompile></procedure> <!--Clear file table -->
+  </segment>
 </memory>

@@ -1,28 +1,28 @@
 esp:esp
     def:  def esp
-    uses: esp_2 = esp - 0x00000004
+    uses: esp_2 = esp - 4<32>
 esp_2: orig: esp
-    def:  esp_2 = esp - 0x00000004
+    def:  esp_2 = esp - 4<32>
     uses: Mem4[esp_2:word32] = ebp
           ebp_5 = esp_2
           ebp_7 = Mem4[esp_2:word32]
-          esp_8 = esp_2 + 0x00000004
+          esp_8 = esp_2 + 4<32>
 ebp:ebp
     def:  def ebp
     uses: Mem4[esp_2:word32] = ebp
 Mem4: orig: Mem0
     def:  Mem4[esp_2:word32] = ebp
-    uses: eax_6 = Mem4[ebp_5 + 0x00000008:word32]
+    uses: eax_6 = Mem4[ebp_5 + 8<32>:word32]
           ebp_7 = Mem4[esp_2:word32]
 ebp_5: orig: ebp
     def:  ebp_5 = esp_2
-    uses: eax_6 = Mem4[ebp_5 + 0x00000008:word32]
+    uses: eax_6 = Mem4[ebp_5 + 8<32>:word32]
 eax_6: orig: eax
-    def:  eax_6 = Mem4[ebp_5 + 0x00000008:word32]
+    def:  eax_6 = Mem4[ebp_5 + 8<32>:word32]
 ebp_7: orig: ebp
     def:  ebp_7 = Mem4[esp_2:word32]
 esp_8: orig: esp
-    def:  esp_8 = esp_2 + 0x00000004
+    def:  esp_8 = esp_2 + 4<32>
 // SsaPushAndPop
 // Return size: 0
 define SsaPushAndPop
@@ -31,12 +31,12 @@ SsaPushAndPop_entry:
 	def ebp
 	// succ:  l1
 l1:
-	esp_2 = esp - 0x00000004
+	esp_2 = esp - 4<32>
 	Mem4[esp_2:word32] = ebp
 	ebp_5 = esp_2
-	eax_6 = Mem4[ebp_5 + 0x00000008:word32]
+	eax_6 = Mem4[ebp_5 + 8<32>:word32]
 	ebp_7 = Mem4[esp_2:word32]
-	esp_8 = esp_2 + 0x00000004
+	esp_8 = esp_2 + 4<32>
 	return
 	// succ:  SsaPushAndPop_exit
 SsaPushAndPop_exit:

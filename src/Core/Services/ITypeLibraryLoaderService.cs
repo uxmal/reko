@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ namespace Reko.Core.Services
 
     public class TypeLibraryLoaderServiceImpl : ITypeLibraryLoaderService
     {
-        private IServiceProvider services;
+        private readonly IServiceProvider services;
 
         public TypeLibraryLoaderServiceImpl(IServiceProvider services)
         {
@@ -55,15 +55,17 @@ namespace Reko.Core.Services
         {
             var cfgSvc = services.RequireService<IConfigurationService>();
             var fsSvc = services.RequireService<IFileSystemService>();
-            var diagSvc = services.RequireService<IDiagnosticsService>();
+            var listener = services.RequireService<DecompilerEventListener>();
             try
             {
+                if (tlElement.Name == null)
+                    return libDst;
                 string libFileName = cfgSvc.GetInstallationRelativePath(tlElement.Name);
                 if (!fsSvc.FileExists(libFileName)) 
                     return libDst;
 
                 byte[] bytes = fsSvc.ReadAllBytes(libFileName);
-                MetadataLoader loader = CreateLoader(tlElement, libFileName, bytes);
+                MetadataLoader? loader = CreateLoader(tlElement, libFileName, bytes);
                 if (loader == null)
                     return libDst;
                 var lib = loader.Load(platform, tlElement.Module, libDst);
@@ -71,14 +73,14 @@ namespace Reko.Core.Services
             }
             catch (Exception ex)
             {
-                diagSvc.Error(ex, string.Format("Unable to load metadata file {0}.", tlElement.Name));
+                listener.Error(ex, string.Format("Unable to load metadata file {0}.", tlElement.Name));
                 return libDst;
             }
         }
 
-        public MetadataLoader CreateLoader(TypeLibraryDefinition tlElement, string filename, byte[] bytes)
+        public MetadataLoader? CreateLoader(TypeLibraryDefinition tlElement, string filename, byte[] bytes)
         {
-            Type loaderType = null;
+            Type? loaderType = null;
             if (string.IsNullOrEmpty(tlElement.Loader))
             {
                 // By default, assume TypeLibraryLoader is intended.
@@ -87,17 +89,17 @@ namespace Reko.Core.Services
             else
             {
                 var cfgSvc = services.RequireService<IConfigurationService>();
-                var diagSvc = services.RequireService<IDiagnosticsService>();
-                var ldrElement = cfgSvc.GetImageLoader(tlElement.Loader);
+                var listener = services.RequireService<DecompilerEventListener>();
+                var ldrElement = cfgSvc.GetImageLoader(tlElement.Loader!);
                 if (ldrElement != null && !string.IsNullOrEmpty(ldrElement.TypeName)) 
                 {
                     loaderType = Type.GetType(ldrElement.TypeName, false);
                 }
                 if (loaderType == null)
                 {
-                    diagSvc.Warn(
+                    listener.Warn(
                         "Metadata loader type '{0}' is unknown.", 
-                        tlElement.Loader);
+                        tlElement.Loader!);
                     return null;
                 }
             }

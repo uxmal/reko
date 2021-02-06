@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,9 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
-using Reko.Gui;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Gui.Design
 {
@@ -39,7 +35,7 @@ namespace Reko.Gui.Design
 
         public void SetTreeNodeProperties(SystemService svc)
         {
-            TreeNode.Text = svc.Name;
+            TreeNode!.Text = svc.Name;
             TreeNode.ImageName = "Binary.ico";
         }
     }

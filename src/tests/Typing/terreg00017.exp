@@ -5,8 +5,8 @@ void fn00100000()
 fn00100000_entry:
 	// succ:  l00100000
 l00100000:
-	word32 ebx_11 = 0x00100027
-	branch Mem10[0x00100027:word32] == 0xFFFFFFFF l00100020
+	word32 ebx_11 = 0x00100027<32>
+	branch Mem10[0x00100027<32>:word32] == 0xFFFFFFFF<32> l00100020
 	// succ:  l00100012 l00100020
 l00100012:
 	// succ:  l00100014
@@ -14,8 +14,8 @@ l00100014:
 	word32 eax_18 = Mem10[ebx_11:word32]
 	call eax_18 (retsize: 4;)
 		uses: eax:eax_18
-	ebx_11 = ebx_11 + 0xFFFFFFFC
-	branch Mem10[ebx_11:word32] != 0xFFFFFFFF l00100014
+	ebx_11 = ebx_11 + 0xFFFFFFFC<32>
+	branch Mem10[ebx_11:word32] != 0xFFFFFFFF<32> l00100014
 	// succ:  l00100020 l00100014
 l00100020:
 	return
@@ -30,7 +30,7 @@ fn00100000_entry:
 	// succ:  l00100000
 l00100000:
 	Eq_2 * ebx_11 = &globals->dw100027
-	branch globals->dw100027 == 0xFFFFFFFF l00100020
+	branch globals->dw100027 == 0xFFFFFFFF<32> l00100020
 	// succ:  l00100012 l00100020
 l00100012:
 	// succ:  l00100014
@@ -38,7 +38,7 @@ l00100014:
 	void (*eax_25)() = *ebx_24
 	eax_18()
 	ebx_11 = ebx_11 - 1
-	branch *ebx_11 != 0xFFFFFFFF l00100014
+	branch *ebx_11 != 0xFFFFFFFF<32> l00100014
 	// succ:  l00100020 l00100014
 l00100020:
 	return
@@ -57,23 +57,23 @@ T_2: (in ebx_24 : Eq_2)
   Class: Eq_2
   DataType: Eq_2
   OrigDataType: (union ((ptr32 (struct (0 T_8 t0000))) u0) ((memptr globals_t (struct 0004 (0 word32 dw0000))) u1))
-T_3: (in 0x00100027 : word32)
+T_3: (in 0x00100027<32> : word32)
   Class: Eq_2
   DataType: (ptr32 (ptr32 code))
   OrigDataType: word32
-T_4: (in 0x00100027 : ptr32)
+T_4: (in 0x00100027<32> : ptr32)
   Class: Eq_4
   DataType: (ptr32 word32)
   OrigDataType: (ptr32 (struct (0 T_5 t0000)))
-T_5: (in Mem0[0x00100027:word32] : word32)
+T_5: (in Mem0[0x00100027<32>:word32] : word32)
   Class: Eq_5
   DataType: word32
   OrigDataType: word32
-T_6: (in 0xFFFFFFFF : word32)
+T_6: (in 0xFFFFFFFF<32> : word32)
   Class: Eq_5
   DataType: word32
   OrigDataType: word32
-T_7: (in globals->dw100027 == 0xFFFFFFFF : bool)
+T_7: (in globals->dw100027 == 0xFFFFFFFF<32> : bool)
   Class: Eq_7
   DataType: bool
   OrigDataType: bool
@@ -81,43 +81,43 @@ T_8: (in eax_25 : (ptr32 code))
   Class: Eq_8
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
-T_9: (in 0x00000000 : word32)
+T_9: (in 0x00000000<32> : word32)
   Class: Eq_9
   DataType: word32
   OrigDataType: word32
-T_10: (in ebx_24 + 0x00000000 : word32)
+T_10: (in ebx_24 + 0x00000000<32> : word32)
   Class: Eq_10
   DataType: word32
   OrigDataType: word32
-T_11: (in Mem0[ebx_24 + 0x00000000:word32] : word32)
+T_11: (in Mem0[ebx_24 + 0x00000000<32>:word32] : word32)
   Class: Eq_8
   DataType: (ptr32 code)
   OrigDataType: word32
-T_12: (in 0xFFFFFFFC : word32)
+T_12: (in 0xFFFFFFFC<32> : word32)
   Class: Eq_12
   DataType: word32
   OrigDataType: word32
-T_13: (in ebx_24 + 0xFFFFFFFC : word32)
+T_13: (in ebx_24 + 0xFFFFFFFC<32> : word32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: word32
-T_14: (in 0x00000000 : word32)
+T_14: (in 0x00000000<32> : word32)
   Class: Eq_14
   DataType: word32
   OrigDataType: word32
-T_15: (in ebx_24 + 0x00000000 : word32)
+T_15: (in ebx_24 + 0x00000000<32> : word32)
   Class: Eq_15
   DataType: word32
   OrigDataType: word32
-T_16: (in Mem0[ebx_24 + 0x00000000:word32] : word32)
+T_16: (in Mem0[ebx_24 + 0x00000000<32>:word32] : word32)
   Class: Eq_8
   DataType: (ptr32 code)
   OrigDataType: word32
-T_17: (in 0xFFFFFFFF : word32)
+T_17: (in 0xFFFFFFFF<32> : word32)
   Class: Eq_8
   DataType: (ptr32 code)
   OrigDataType: word32
-T_18: (in Mem0[ebx_24 + 0x00000000:word32] != 0xFFFFFFFF : bool)
+T_18: (in Mem0[ebx_24 + 0x00000000<32>:word32] != 0xFFFFFFFF<32> : bool)
   Class: Eq_18
   DataType: bool
   OrigDataType: bool

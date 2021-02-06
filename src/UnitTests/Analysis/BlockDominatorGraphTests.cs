@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,9 +51,9 @@ namespace Reko.UnitTests.Analysis
             Block f = head.ElseBlock;
             Block t = head.ThenBlock;
             Block join = t.Succ[0];
-			Assert.AreEqual("false", f.Name);
-			Assert.AreEqual("true", t.Name);
-			Assert.AreEqual("join", join.Name);
+			Assert.AreEqual("false", f.DisplayName);
+			Assert.AreEqual("true", t.DisplayName);
+			Assert.AreEqual("join", join.DisplayName);
 			Assert.IsNull(doms.CommonDominator(null), "Common denominator of no items is null");
 			Assert.AreSame(head, doms.CommonDominator(new Block[] { head }), "Common dominator of single item is that item");
 			Assert.AreSame(head, doms.CommonDominator(new Block[] { head, t }), "head dom true");

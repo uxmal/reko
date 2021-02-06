@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -36,9 +37,12 @@ namespace Reko.ImageLoaders.MzExe
 	/// </summary>
 	public class MsdosImageLoader : ImageLoader
 	{
-        private IProcessorArchitecture arch;
-        private IPlatform platform;
-		private MemoryArea imgLoaded;
+        // "640k should be enough for anybody" -- consider making this configurable?
+        private const ushort segMemTop = 0xA000;
+
+        private readonly IProcessorArchitecture arch;
+        private readonly IPlatform platform;
+		private ByteMemoryArea imgLoaded;
         private SegmentMap segmentMap;
         private Address addrStackTop;
         private ushort segPsp;
@@ -63,22 +67,46 @@ namespace Reko.ImageLoaders.MzExe
 
         public override Program Load(Address addrLoad)
         {
-            //$TODO: no space allocated for the PSP!
-            this.segPsp = (ushort)(addrLoad.Selector.Value - 0x10);
+            this.segPsp = (ushort) (addrLoad.Selector.Value - 0x10);
             var ss = (ushort) (ExeLoader.e_ss + addrLoad.Selector.Value);
             this.addrStackTop = Address.SegPtr(ss, ExeLoader.e_sp);
 
             int iImageStart = (ExeLoader.e_cparHeader * 0x10);
             int cbImageSize = ExeLoader.e_cpImage * ExeImageLoader.CbPageSize - iImageStart;
             // The +4 is room for a far return address at the top of the stack.
-            int offsetStackTop = (int)(addrStackTop - addrLoad) + 4;
-            cbImageSize = Math.Max(cbImageSize, offsetStackTop);
+            int offsetStackTop = (int) (addrStackTop - addrLoad) + 4;
+            int cbExtraBytes = ExeLoader.e_minalloc * 0x10;
+            cbImageSize = Math.Max(cbImageSize + cbExtraBytes, offsetStackTop);
             byte[] bytes = new byte[cbImageSize];
             int cbCopy = Math.Min(cbImageSize, RawImage.Length - iImageStart);
             Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
-            imgLoaded = new MemoryArea(addrLoad, bytes);
-            this.segmentMap = new SegmentMap(addrLoad);
+            imgLoaded = new ByteMemoryArea(addrLoad, bytes);
+            var addrPsp = Address.SegPtr(segPsp, 0);
+            var psp = MakeProgramSegmentPrefix(addrPsp, segMemTop);
+            this.segmentMap = new SegmentMap(
+                addrPsp,
+                psp);
             return new Program(segmentMap, arch, platform);
+        }
+
+        /// <summary>
+        /// Create a segment for the MS-DOS program segment prefix (PSP).
+        /// </summary>
+        /// <param name="addrPsp">The address of the PSP</param>
+        /// <param name="segMemTop">The segment address (paragraph) of the first byte
+        /// beyond the image.</param>
+        /// <returns>
+        /// An <see cref="ImageSegment"/> that can be added to a <see cref="SegmentMap"/>.
+        /// </returns>
+        private ImageSegment MakeProgramSegmentPrefix(Address addrPsp, ushort segMemTop)
+        {
+            var mem = new ByteMemoryArea(addrPsp, new byte[0x100]);
+            var w = new LeImageWriter(mem, 0);
+            w.WriteByte(0xCD);
+            w.WriteByte(0x20);
+            w.WriteLeUInt16(segMemTop); // Some unpackers rely on this value.
+            
+            return new ImageSegment("PSP", mem, AccessMode.ReadWriteExecute);
         }
 
         public override ImageSegment AddSegmentReference(Address addr, ushort seg)
@@ -89,7 +117,7 @@ namespace Reko.ImageLoaders.MzExe
         private ImageSegment AddSegmentReference(ulong linAddr, ushort seg)
         {
             var relocations = imgLoaded.Relocations;
-            relocations.AddSegmentReference(linAddr, seg);
+                relocations.AddSegmentReference(linAddr, seg);
 
             var addrSeg = Address.SegPtr(seg, 0);
             return segmentMap.AddOverlappingSegment(
@@ -106,7 +134,15 @@ namespace Reko.ImageLoaders.MzExe
             int i = ExeLoader.e_cRelocations;
             var segments = new Dictionary<Address, ushort>();
             var linBase = addrLoad.ToLinear();
-			while (i != 0)
+
+            segmentMap.AddOverlappingSegment(
+                addrLoad.Selector.Value.ToString("X4"),
+                imgLoaded,
+                addrLoad,
+                AccessMode.ReadWriteExecute);
+            segments.Add(addrLoad, addrLoad.Selector.Value);
+
+            while (i != 0)
 			{
 				uint offset = rdr.ReadLeUInt16();
 				ushort segOffset = rdr.ReadLeUInt16();
@@ -173,11 +209,12 @@ namespace Reko.ImageLoaders.MzExe
         private ImageSymbol CreateEntryPointSymbol(Address addrLoad, Address addrStart, Address addrStackTop)
         {
             var state = arch.CreateProcessorState();
-            state.SetInstructionPointer(addrStart);
-            state.SetRegister(Registers.cs, Constant.UInt16(addrLoad.Selector.Value));
+            state.InstructionPointer = addrStart;
+            state.SetRegister(Registers.cs, Constant.UInt16((ushort) (ExeLoader.e_cs + addrLoad.Selector.Value)));
             state.SetRegister(Registers.ss, Constant.UInt16((ushort) addrStackTop.Selector.Value));
             state.SetRegister(Registers.sp, Constant.UInt16((ushort) addrStackTop.Offset));
             state.SetRegister(Registers.ds, Constant.UInt16(segPsp));
+            state.SetRegister(Registers.es, Constant.UInt16(segPsp));
             var ep = ImageSymbol.Procedure(arch, addrStart, state: state);
             return ep;
         }
@@ -204,7 +241,7 @@ namespace Reko.ImageLoaders.MzExe
                 foreach (var sym in syms)
                 {
                     symbols[sym.Key] = sym.Value;
-        }
+                }
             }
         }
 

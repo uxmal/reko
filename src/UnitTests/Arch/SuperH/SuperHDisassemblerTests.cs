@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Reko.Arch.SuperH;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -31,11 +32,9 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class SuperHDisassemblerTests : DisassemblerTestBase<SuperHInstruction>
     {
-        private SuperHArchitecture arch;
-
         public SuperHDisassemblerTests()
         {
-            this.Architecture = new SuperHLeArchitecture("superH");
+            this.Architecture = new SuperHLeArchitecture(new ServiceContainer(), "superH", new Dictionary<string, object>());
             this.LoadAddress = Address.Ptr32(0x00010000);
         }
 
@@ -704,15 +703,21 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
-        public void ShDis_fmov_d_idx()
+        public void ShDis_fmov_s_idx()
         {
-            AssertCode("fmov.d\t@(r0,r1),dr4", "46F1");
+            AssertCode("fmov.s\t@(r0,r1),fr4", "46F1");
+        }
+
+        [Test]
+        public void ShDis_fmov_s_indir()
+        {
+            AssertCode("fmov.s\tfr1,@r4", "1AF4");
         }
 
         [Test]
         public void ShDis_fadd_dr()
         {
-            AssertCode("fadd\tdr0,dr0", "10F0");
+            AssertCode("fadd\tfr1,fr3", "10F3");
         }
 
         [Test]
@@ -778,6 +783,63 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("ftrc\tdr2,fpul", "3DF2");
         }
+
+        [Test]
+        public void ShDis_fmov_s_predec()
+        {
+            AssertCode("fmov.s\tfr5,@-r1", "5BF1");
+        }
+
+        [Test]
+        public void ShDis_fmov_s_postinc()
+        {
+            AssertCode("fmov.s\t@r1+,fr3", "19F3");
+        }
+
+        [Test]
+        public void ShDis_fsts_fpul()
+        {
+            AssertCode("fsts\tfpul,fr1", "0DF1");
+        }
+
+        [Test]
+        [Ignore("Discovered by RekoSifter tool")]
+        public void ShDis_mov_l()
+        {
+            AssertCode("mov.l   r0,@(520,gbr)", "C282C304D9422CEDB0CA48A7FA1547");
+        }
+
+        /*
+        R:muls_w        r7,r6                             26 7F
+O:muls.w        r7,r6                             26 7F */
+
+
+        [Test]
+        [Ignore("Discovered by RekoSifter tool")]
+        public void ShDis_4D9E251060B73EE3A15B83FA3C394A()
+        {
+            AssertCode("ldc     r13,r1_bank", "4D9E251060B73EE3A15B83FA3C394A");
+        }
+
+
+        [Test]
+        [Ignore("Discovered by RekoSifter tool")]
+        public void ShDis_C3F8D3CBB6234F136439CEFC7E47D2()
+        {
+            AssertCode("trapa   #-8", "C3F8D3CBB6234F136439CEFC7E47D2");
+        }
+
+        [Test]
+        [Ignore("Discovered by RekoSifter tool")]
+        public void ShDis_CFF265B105DCCA3B1C9F2F70F45627()
+        {
+            AssertCode("or.b    #-14,@(r0,gbr)", "CFF265B105DCCA3B1C9F2F70F45627");
+        }
+
+    /* Verify that the rewriter is generating a sign-extended constant here
+R:add   #A6,r15                              7F A6
+O:add   #-90,r15                             7F A6
+     */
 
 #if NYI
         //$TODO: DSP instructions

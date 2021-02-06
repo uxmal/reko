@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,22 +18,22 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Rtl;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Core.Machine;
-using Reko.Core.Rtl;
-using Reko.Core.Types;
 
 namespace Reko.Arch.Blackfin
 {
     public class BlackfinRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private static HashSet<Mnemonic> seenMnemonics = new HashSet<Mnemonic>();
-
         private readonly BlackfinArchitecture arch;
         private readonly EndianImageReader rdr;
         private readonly ProcessorState state;
@@ -84,10 +84,7 @@ namespace Reko.Arch.Blackfin
                 case Mnemonic.sub3: RewriteBinop(m.ISub); break;
                 case Mnemonic.xor3: RewriteBinop(m.Xor); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, rtls.ToArray())
-                {
-                    Class = iclass
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 
@@ -96,33 +93,10 @@ namespace Reko.Arch.Blackfin
             return GetEnumerator();
         }
 
-        void EmitUnitTest(BlackfinInstruction instr)
+        private void EmitUnitTest(BlackfinInstruction instr)
         {
-            if (seenMnemonics.Contains(instr.Mnemonic))
-                return;
-            seenMnemonics.Add(instr.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= instr.Length;
-
-            Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void BlackfinRw_{0}()", instr.Mnemonic);
-            Console.WriteLine("        {");
-
-            if (instr.Length > 2)
-            {
-                var wInstr = r2.ReadBeUInt32();
-                Console.WriteLine($"            RewriteCode(\"{wInstr:X8}\");  // {instr}");
-            }
-            else
-            {
-                var wInstr = r2.ReadBeUInt16();
-                Console.WriteLine($"            RewriteCode(\"{wInstr:X4}\");  // {instr}");
-            }
-            Console.WriteLine("            AssertCode(");
-            Console.WriteLine($"                \"0|L--|00100000({instr.Length}): 1 instructions\",");
-            Console.WriteLine($"                \"1|L--|@@@\");");
-            Console.WriteLine("        }");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("BlackfinRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Address Addr(int iOperand)
@@ -150,7 +124,7 @@ namespace Reko.Arch.Blackfin
 
         private void RewriteCli()
         {
-            m.SideEffect(host.PseudoProcedure("__cli", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__cli", false, VoidType.Instance));
         }
 
         private void RewriteJump()
@@ -173,17 +147,17 @@ namespace Reko.Arch.Blackfin
         private void RewriteMovx()
         {
             var src = Operand(1);
-            m.Assign(Reg(0), m.Cast(PrimitiveType.Word32, src));
+            m.Assign(Reg(0), m.Convert(src, src.DataType, PrimitiveType.Word32));
         }
 
         private void RewriteMovxb()
         {
-            m.Assign(Reg(0), m.Cast(PrimitiveType.Int32, m.Slice(PrimitiveType.SByte, Reg(1), 0)));
+            m.Assign(Reg(0), m.Convert(m.Slice(PrimitiveType.SByte, Reg(1), 0), PrimitiveType.SByte, PrimitiveType.Int32));
         }
 
         private void RewriteMovzb()
         {
-            m.Assign(Reg(0), m.Cast(PrimitiveType.Word32, m.Slice(PrimitiveType.Byte, Reg(1), 0)));
+            m.Assign(Reg(0), m.Convert(m.Slice(PrimitiveType.Byte, Reg(1), 0), PrimitiveType.Byte, PrimitiveType.Word32));
         }
 
         private void RewriteMul()

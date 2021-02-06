@@ -10,11 +10,11 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
 	call fn0C00_0008 (retsize: 2;)
-	Mem0[ds:0x0306:word16] = ax
+	Mem0[ds:0x306<16>:word16] = ax
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -33,14 +33,14 @@ fn0C00_0000_exit:
 define fn0C00_0008
 fn0C00_0008_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0008
 l0C00_0008:
-	Mem0[ds:0x0300:word16] = sp
-	Mem0[ds:0x0302:word16] = ss
-	Mem0[ds:0x0308:word16] = bx
-	ax = Mem0[ds:0x0304:word16]
-	ss_sp = Mem0[ds:0x0300:segptr32]
+	Mem0[ds:0x300<16>:word16] = sp
+	Mem0[ds:0x302<16>:word16] = ss
+	Mem0[ds:0x308<16>:word16] = bx
+	ax = Mem0[ds:0x304<16>:word16]
+	ss_sp = Mem0[ds:0x300<16>:segptr32]
 	return
 	// succ:  fn0C00_0008_exit
 fn0C00_0008_exit:

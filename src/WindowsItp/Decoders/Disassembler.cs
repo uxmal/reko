@@ -1,6 +1,7 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections;

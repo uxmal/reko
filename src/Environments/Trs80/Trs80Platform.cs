@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,18 +35,12 @@ namespace Reko.Environments.Trs80
     // http://www.trs-80.com/trs80-zaps-internals.htm
     public class Trs80Platform : Platform
     {
-        public Trs80Platform(IServiceProvider services, IProcessorArchitecture arch) : base( services,  arch, "trs80")
+        public Trs80Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services,  arch, "trs80")
         {
         }
 
         // http://fjkraan.home.xs4all.nl/comp/trs80-4p/dmkeilImages/trstech.htm
-        public override string DefaultCallingConvention
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override string DefaultCallingConvention => "";
 
         public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
         {
@@ -69,25 +63,25 @@ namespace Reko.Environments.Trs80
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             throw new NotImplementedException();
         }
 
-        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        public override int GetBitSizeFromCBasicType(CBasicType cb)
         {
             switch (cb)
             {
-            case CBasicType.Bool: return 1;
-            case CBasicType.Char: return 1;
-            case CBasicType.Short: return 2;
-            case CBasicType.Int: return 2;
-            case CBasicType.Long: return 4;
-            case CBasicType.LongLong: return 8;
-            case CBasicType.Float: return 4;
-            case CBasicType.Double: return 8;
-            case CBasicType.LongDouble: return 8;
-            case CBasicType.Int64: return 8;
+            case CBasicType.Bool: return 8;
+            case CBasicType.Char: return 8;
+            case CBasicType.Short: return 16;
+            case CBasicType.Int: return 16;
+            case CBasicType.Long: return 32;
+            case CBasicType.LongLong: return 64;
+            case CBasicType.Float: return 32;
+            case CBasicType.Double: return 64;
+            case CBasicType.LongDouble: return 64;
+            case CBasicType.Int64: return 64;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
         }

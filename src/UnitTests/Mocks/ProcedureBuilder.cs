@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -43,12 +44,12 @@ namespace Reko.UnitTests.Mocks
 
         public ProcedureBuilder()
         {
-            Init(new FakeArchitecture(), this.GetType().Name, Address.Ptr32(0x00123400), null);
+            Init(new FakeArchitecture(new ServiceContainer()), this.GetType().Name, Address.Ptr32(0x00123400), null);
         }
 
         public ProcedureBuilder(string name)
         {
-            Init(new FakeArchitecture(), name, Address.Ptr32(0x00123400), null);
+            Init(new FakeArchitecture(new ServiceContainer()), name, Address.Ptr32(0x00123400), null);
         }
 
         public ProcedureBuilder(IProcessorArchitecture arch)
@@ -96,7 +97,7 @@ namespace Reko.UnitTests.Mocks
         {
             if (!blocks.TryGetValue(label, out Block b))
             {
-                b = Procedure.AddBlock(label);
+                b = Procedure.AddBlock(null, label);
                 blocks.Add(label, b);
             }
             return b;
@@ -220,8 +221,8 @@ namespace Reko.UnitTests.Mocks
 
         public Application Fn(string name, params Expression[] exps)
         {
-            Application appl = new Application(
-                new ProcedureConstant(PrimitiveType.Ptr32, new PseudoProcedure(name, VoidType.Instance, 0)),
+            var appl = new Application(
+                new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure(name, false, VoidType.Instance, 0)),
                 PrimitiveType.Word32, exps);
             unresolvedProcedures.Add(new ApplicationUpdater(name, appl));
             return appl;
@@ -362,7 +363,7 @@ namespace Reko.UnitTests.Mocks
             Block = null;
         }
 
-        public Identifier Reg64(string name, int number)
+        public virtual Identifier Reg64(string name, int number)
         {
             return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word64));
         }
@@ -372,24 +373,24 @@ namespace Reko.UnitTests.Mocks
             return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word32));
         }
 
-        public Identifier Reg32(string name)
+        public virtual Identifier Reg32(string name)
         {
             return Frame.EnsureRegister(Architecture.GetRegister(name));
         }
 
-        public Identifier Reg16(string name, int number)
+        public virtual Identifier Reg16(string name, int number)
         {
             return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Word16));
         }
 
-        public Identifier Reg8(string name, int number)
+        public virtual Identifier Reg8(string name, int number)
         {
             return Frame.EnsureRegister(new RegisterStorage(name, number, 0, PrimitiveType.Byte));
         }
 
         // Use this method to model the x86 "ah" or the z80 "h" registers which are 
         // offset from the start of their word registers.
-        public Identifier Reg8(string name, int number, uint bitOffset)
+        public virtual Identifier Reg8(string name, int number, uint bitOffset)
         {
             return Frame.EnsureRegister(new RegisterStorage(name, number, bitOffset, PrimitiveType.Byte));
         }

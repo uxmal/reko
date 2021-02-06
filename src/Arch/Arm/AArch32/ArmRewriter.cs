@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,9 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
@@ -44,7 +46,7 @@ namespace Reko.Arch.Arm.AArch32
         private readonly IEnumerator<AArch32Instruction> dasm;
         protected int pcValueOffset;        // The offset to add to the current instruction's address when reading the PC register. 
         protected AArch32Instruction instr;
-        protected InstrClass rtlClass;
+        protected InstrClass iclass;
         protected RtlEmitter m;
 
         public ArmRewriter(Arm32Architecture arch, EndianImageReader rdr, IRewriterHost host, IStorageBinder binder) : this(arch, rdr, host, binder, new A32Disassembler(arch, rdr).GetEnumerator())
@@ -76,7 +78,7 @@ namespace Reko.Arch.Arm.AArch32
                 this.instr = dasm.Current;
                 var addrInstr = instr.Address;
                 // Most instructions are linear.
-                this.rtlClass = instr.InstructionClass;
+                this.iclass = instr.InstructionClass;
                 var rtls = new List<RtlInstruction>();
                 this.m = new RtlEmitter(rtls);
                 // Most instructions have a conditional mode of operation.
@@ -462,10 +464,10 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vaddl: RewriteVectorBinOp("__vaddl_{0}"); break;
                 case Mnemonic.vaddw: RewriteVectorBinOp("__vaddw_{0}"); break;
                 case Mnemonic.vand: RewriteVecBinOp(m.And); break;
-                case Mnemonic.vbic: RewriteVectorBinOp("__vbic_{0}"); break;
+                case Mnemonic.vbic: RewriteVbic(); break;
                 case Mnemonic.vcmp: RewriteVcmp(); break;
-                case Mnemonic.vbif: RewriteIntrinsic("__vbif", Domain.UnsignedInt); break;
-                case Mnemonic.vbit: RewriteIntrinsic("__vbit", Domain.UnsignedInt); break;
+                case Mnemonic.vbif: RewriteIntrinsic("__vbif", true, Domain.UnsignedInt); break;
+                case Mnemonic.vbit: RewriteIntrinsic("__vbit", true, Domain.UnsignedInt); break;
                 case Mnemonic.vceq: RewriteVectorBinOp("__vceq_{0}"); break;
                 case Mnemonic.vcge: RewriteVectorBinOp("__vcge_{0}"); break;
                 case Mnemonic.vcgt: RewriteVectorBinOp("__vcgt_{0}"); break;
@@ -531,10 +533,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vsubw: RewriteVectorBinOp("__vsubw_{0}"); break;
                 case Mnemonic.vtst: RewriteVectorBinOp("__vtst_{0}"); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, rtls.ToArray())
-                {
-                    Class = rtlClass,
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 
@@ -545,7 +544,7 @@ namespace Reko.Arch.Arm.AArch32
 
         void Invalid()
         {
-            this.rtlClass = InstrClass.Invalid;
+            this.iclass = InstrClass.Invalid;
             m.Invalid();
         }
 
@@ -612,23 +611,23 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (link)
             {
-                rtlClass = InstrClass.Transfer | InstrClass.Call;
-                if (instr.condition == ArmCondition.AL)
+                iclass = InstrClass.Transfer | InstrClass.Call;
+                if (instr.Condition == ArmCondition.AL)
                 {
                     m.Call(dst, 0);
                 }
                 else
                 {
-                    rtlClass = InstrClass.ConditionalTransfer | InstrClass.Call;
+                    iclass = InstrClass.ConditionalTransfer | InstrClass.Call;
                     ConditionalSkip(true);
                     m.Call(dst, 0);
                 }
             }
             else
             {
-                if (instr.condition == ArmCondition.AL)
+                if (instr.Condition == ArmCondition.AL)
                 {
-                    rtlClass = InstrClass.Transfer;
+                    iclass = InstrClass.Transfer;
                     if (Dst() is RegisterOperand rop && rop.Register == Registers.lr)
                     {
                         //$TODO: cheating a little since
@@ -643,10 +642,10 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 else
                 {
-                    rtlClass = InstrClass.ConditionalTransfer;
+                    iclass = InstrClass.ConditionalTransfer;
                     if (dstIsAddress)
                     {
-                        m.Branch(TestCond(instr.condition), (Address) dst, rtlClass);
+                        m.Branch(TestCond(instr.Condition), (Address) dst, iclass);
                     }
                     else
                     {
@@ -659,7 +658,7 @@ namespace Reko.Arch.Arm.AArch32
 
         void RewriteCbnz(Func<Expression, Expression> ctor)
         {
-            rtlClass = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             var cond = Operand(Dst(), PrimitiveType.Word32, true);
             m.Branch(ctor(Operand(Dst())),
                     ((AddressOperand) Src1()).Address,
@@ -670,7 +669,7 @@ namespace Reko.Arch.Arm.AArch32
         // instruction to skip the remainder of the instruction cluster.
         protected virtual void ConditionalSkip(bool force)
         {
-            var cc = instr.condition;
+            var cc = instr.Condition;
             if (!force)
             {
                 if (cc == ArmCondition.AL)
@@ -790,11 +789,11 @@ namespace Reko.Arch.Arm.AArch32
                                 ea = m.IAdd(ea, m.Sar(ireg, Constant.Int32(mop.Shift)));
                                 break;
                             case Mnemonic.ror:
-                                var ix = host.PseudoProcedure(PseudoProcedure.Ror, ireg.DataType, ireg, Constant.Int32(mop.Shift));
+                                var ix = host.Intrinsic(IntrinsicProcedure.Ror, true, ireg.DataType, ireg, Constant.Int32(mop.Shift));
                                 ea = m.IAdd(ea, ix);
                                 break;
                             case Mnemonic.rrx:
-                                var rrx = host.PseudoProcedure(PseudoProcedure.RorC, ireg.DataType, ireg, Constant.Int32(mop.Shift), C());
+                                var rrx = host.Intrinsic(IntrinsicProcedure.RorC, true, ireg.DataType, ireg, Constant.Int32(mop.Shift), C());
                                 ea = m.IAdd(ea, rrx);
                                 break;
                             }
@@ -912,9 +911,9 @@ namespace Reko.Arch.Arm.AArch32
             case Mnemonic.asr: return m.Sar(exp, sh);
             case Mnemonic.lsl: return m.Shl(exp, sh);
             case Mnemonic.lsr: return m.Sar(exp, sh);
-            case Mnemonic.ror: return host.PseudoProcedure(PseudoProcedure.Ror, exp.DataType, exp, sh);
+            case Mnemonic.ror: return host.Intrinsic(IntrinsicProcedure.Ror, true, exp.DataType, exp, sh);
             case Mnemonic.rrx:
-                return host.PseudoProcedure(PseudoProcedure.RorC, exp.DataType, exp, sh, C());
+                return host.Intrinsic(IntrinsicProcedure.RorC, true, exp.DataType, exp, sh, C());
             default: return exp;
             }
         }
@@ -1033,7 +1032,7 @@ namespace Reko.Arch.Arm.AArch32
                 fnName = "std::atomic_exchange<int32_t>";
             }
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
-            var intrinsic = host.PseudoProcedure(fnName, type,
+            var intrinsic = host.Intrinsic(fnName, false, type,
                 Operand(Src1()),
                 Operand(Src2()));
             m.Assign(dst, intrinsic);
@@ -1046,44 +1045,19 @@ namespace Reko.Arch.Arm.AArch32
             return tmp;
         }
 
-        private void RewriteIntrinsic(string name, Domain returnDomain)
+        private void RewriteIntrinsic(string name, bool isIntrisic, Domain returnDomain)
         {
             var args = instr.Operands.Skip(1).Select(o => Operand(o)).ToArray();
             var dst = Operand(Dst());
             var dtRet = PrimitiveType.Create(returnDomain, Dst().Width.BitSize);
-            var intrinsic = host.PseudoProcedure(name, dtRet, args);
+            var intrinsic = host.Intrinsic(name, isIntrisic, dtRet, args);
             m.Assign(dst, intrinsic);
         }
 
-        private static HashSet<Mnemonic> seenMnemonics = new HashSet<Mnemonic>();
-
-        void EmitUnitTest(AArch32Instruction instr)
+        private void EmitUnitTest(AArch32Instruction instr)
         {
-            if (seenMnemonics.Contains(instr.Mnemonic))
-                return;
-            seenMnemonics.Add(instr.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= instr.Length;
-
-            Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void ArmRw_{0}()", instr.Mnemonic);
-            Console.WriteLine("        {");
-
-            if (instr.Length > 2)
-            {
-                var wInstr = r2.ReadBeUInt32();
-                Console.WriteLine($"            RewriteCode(\"{wInstr:X8}\");");
-            }
-            else
-            {
-                var wInstr = r2.ReadBeUInt16();
-                Console.WriteLine($"            RewriteCode(\"{wInstr:X4}\");");
-            }
-            Console.WriteLine("            AssertCode(");
-            Console.WriteLine($"                \"0|L--|00100000({instr.Length}): 1 instructions\",");
-            Console.WriteLine($"                \"1|L--|@@@\");");
-            Console.WriteLine("        }");
+            var testgenSvc = arch.Services.GetService<ITestGenerationService>();
+            testgenSvc?.ReportMissingRewriter("ArmRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
     }
 

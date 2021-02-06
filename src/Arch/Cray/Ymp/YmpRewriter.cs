@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,11 +22,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.Cray.Ymp
@@ -43,14 +47,14 @@ namespace Reko.Arch.Cray.Ymp
         private InstrClass iclass;
         private RtlEmitter m;
 
-        public YmpRewriter(CrayYmpArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
+        public YmpRewriter(CrayYmpArchitecture arch, Decoder<YmpDisassembler, Mnemonic, CrayInstruction> decoder, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
             this.rdr = rdr;
             this.state = state;
             this.binder = binder;
             this.host = host;
-            this.dasm = new YmpDisassembler(arch, rdr).GetEnumerator();
+            this.dasm = new YmpDisassembler(arch, decoder, rdr).GetEnumerator();
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -71,90 +75,167 @@ namespace Reko.Arch.Cray.Ymp
                     m.Invalid();
                     break;
                 case Mnemonic.j: RewriteJ(); break;
+                case Mnemonic.jan: RewriteJxx(Registers.ARegs[0], m.Ne0); break;
+                case Mnemonic.jam: RewriteJxx(Registers.ARegs[0], m.Lt0); break;
+                case Mnemonic.jap: RewriteJxx(Registers.ARegs[0], m.Ge0); break;
+                case Mnemonic.jaz: RewriteJxx(Registers.ARegs[0], m.Eq0); break;
+                case Mnemonic.jsn: RewriteJxx(Registers.SRegs[0], m.Ne0); break;
+                case Mnemonic.jsm: RewriteJxx(Registers.SRegs[0], m.Lt0); break;
+                case Mnemonic.jsp: RewriteJxx(Registers.SRegs[0], m.Ge0); break;
+                case Mnemonic.jsz: RewriteJxx(Registers.SRegs[0], m.Eq0); break;
+                case Mnemonic.r: RewriteR(); break;
                 case Mnemonic._and: Rewrite3(m.And); break;
-                case Mnemonic._mov: RewriteMov(); break;
+                case Mnemonic._clz: RewriteIntrinsic("__clz", true); break;
+                case Mnemonic._popcnt: RewriteIntrinsic("__popcnt", true); break;
                 case Mnemonic._fmul: Rewrite3(m.FMul); break;
+                case Mnemonic._iadd: Rewrite3(m.IAdd); break;
+                case Mnemonic._isub: Rewrite3(m.ISub); break;
+                case Mnemonic._mov: RewriteMov(); break;
+                case Mnemonic._movz: RewriteMovz(); break;
+                case Mnemonic._lmask: RewriteLmask(); break;
+                case Mnemonic._load: RewriteLoad(); break;
+                case Mnemonic._lsl: RewriteShift(m.Shl); break;
+                case Mnemonic._lsr: RewriteShift(m.Shr); break;
+                case Mnemonic._vor: Rewrite3(m.Or); break;
+                case Mnemonic._store: RewriteStore(); break;
+                case Mnemonic._xor: Rewrite3(m.Xor); break;
                 }
-                yield return new RtlInstructionCluster(instrCur.Address, instrCur.Length, instrs.ToArray())
-                {
-                    Class = this.iclass
-                };
+                yield return m.MakeCluster(instrCur.Address, instrCur.Length, iclass);
             }
         }
 
-
+        private void RewriteIntrinsic(string intrinsicName, bool isIntrinsic)
+        {
+            var dst = Op(0);
+            var args = Enumerable.Range(1, instrCur.Operands.Length - 1)
+                .Select(i => Op(i))
+                .ToArray();
+            m.Assign(dst, host.Intrinsic(intrinsicName, isIntrinsic, dst.DataType, args));
+        }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
         }
 
-        private static readonly HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
         private void EmitUnitTest()
         {
-            if (rdr == null || seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var sb = new StringBuilder();
-            while (r2.Offset < rdr.Offset)
-            {
-                var parcel = r2.ReadBeUInt16();
-                sb.Append(Convert.ToString(parcel, 8).PadLeft(6, '0'));
-            }
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void YmpRw_{0}()", dasm.Current.Mnemonic);
-            Debug.WriteLine("        {");
-            Debug.WriteLine("            RewriteCode(\"{0}\");   // {1}", sb.ToString(), dasm.Current);
-            Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", dasm.Current.Length);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("YmpRw", this.instrCur, instrCur.Mnemonic.ToString(), rdr, "", YmpDisassembler.Octize);
         }
 
-        private Expression Rewrite(MachineOperand mop)
+        private Expression Op(int iop)
         {
-            switch (mop)
+            switch (instrCur.Operands[iop])
             {
             case RegisterOperand rop:
                 var reg = this.binder.EnsureRegister(rop.Register);
                 return reg;
+            case ImmediateOperand imm:
+                return imm.Value;
+            case AddressOperand addr:
+                return addr.Address;
             default:
-                throw new NotImplementedException($"Unimplemented Cray operand {mop.GetType().Name}.");
+                throw new NotImplementedException($"Unimplemented Cray operand {instrCur.Operands[iop].GetType().Name}.");
             }
         }
 
         private void Rewrite3(Func<Expression, Expression, Expression> fn)
         {
-            var dst = Rewrite(instrCur.Operands[0]);
-            var src1 = Rewrite(instrCur.Operands[1]);
-            var src2 = Rewrite(instrCur.Operands[2]);
+            var dst = Op(0);
+            var src1 = Op(1);
+            var src2 = Op(2);
             m.Assign(dst, fn(src1, src2));
         }
 
         private void RewriteJ()
         {
-            var dst = Rewrite(instrCur.Operands[0]);
+            var dst = Op(0);
             m.Goto(dst);
+        }
+
+        private void RewriteJxx(RegisterStorage reg, Func<Expression, BinaryExpression> test)
+        {
+            m.Branch(test(binder.EnsureRegister(reg)), (Address)Op(0));
+        }
+
+        private void RewriteLmask()
+        {
+            var bits = ((ImmediateOperand) instrCur.Operands[1]).Value;
+            var mask = Bits.Mask(0, bits.ToInt32());
+            var dst = Op(0);
+            m.Assign(dst, Constant.Create(dst.DataType, mask));
+        }
+
+        private void RewriteLoad()
+        {
+            var ea = Op(1);
+            if (instrCur.Operands.Length == 3)
+            {
+                ea = m.IAdd(ea, Op(2));
+            }
+            var dst = Op(0);
+            m.Assign(dst, m.Mem(dst.DataType, ea));
+        }
+
+        private void RewriteShift(Func<Expression,Expression,Expression> shift)
+        {
+            Expression src;
+            if (instrCur.Operands.Length == 2)
+            {
+                src = shift(Op(0), Op(1));
+            }
+            else
+            {
+                src = shift(Op(1), Op(2));
+            }
+            var dst = Op(0);
+            m.Assign(dst, src);
         }
 
         private void RewriteMov()
         {
-            var dst = Rewrite(instrCur.Operands[0]);
-            var src1 = Rewrite(instrCur.Operands[1]);
+            var src1 = Op(1);
+            var dst = Op(0);
             if (instrCur.Operands.Length == 2)
             {
                 m.Assign(dst, src1);
             }
             else
             {
-                var src2 = Rewrite(instrCur.Operands[2]);
+                var src2 = Op(2);
                 m.Assign(dst, m.ARef(PrimitiveType.Word64, src1, src2));
             }
+        }
+
+        private void RewriteMovz()
+        {
+            var src = Op(1);
+            var dst = Op(0);
+            m.Assign(dst, m.Convert(src, src.DataType, dst.DataType));
+        }
+
+        private void RewriteR()
+        {
+            var dst = Op(0);
+            m.Call(dst, 0);
+        }
+
+        private void RewriteStore()
+        {
+            Expression ea;
+            Expression src;
+            if (instrCur.Operands.Length == 2)
+            {
+                src = Op(1);
+                ea = Op(0);
+            }
+            else
+            {
+                src = Op(2);
+                ea = m.IAdd(Op(1), Op(0));
+            }
+            m.Assign(m.Mem(src.DataType, ea), src);
         }
     }
 }

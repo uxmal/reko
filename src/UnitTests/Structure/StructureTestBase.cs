@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 using Moq;
 using Reko.Analysis;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
@@ -55,11 +55,12 @@ namespace Reko.UnitTests.Structure
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
             var ldr = new Loader(sc);
-            var arch = new X86ArchitectureReal("x86-real-16");
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
 
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),
-                new X86TextAssembler(sc, arch) { Platform = new MsdosPlatform(sc, arch) },
+                new X86TextAssembler(arch),
+                new MsdosPlatform(sc, arch),
                 addrBase);
             return RewriteProgram();
 		}
@@ -71,10 +72,11 @@ namespace Reko.UnitTests.Structure
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             var ldr = new Loader(sc);
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(sourceFilename),
-                new X86TextAssembler(sc, arch) { Platform = new DefaultPlatform(sc, arch) },
+                new X86TextAssembler(arch),
+                new DefaultPlatform(sc, arch),
                 addrBase);
             return RewriteProgram();
         }
@@ -83,9 +85,9 @@ namespace Reko.UnitTests.Structure
         {
             sc = new ServiceContainer();
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
-            var asm = new X86TextAssembler(sc, new X86ArchitectureReal("x86-real-16"));
+            var asm = new X86TextAssembler(new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>()));
             program = asm.AssembleFragment(addrBase, asmFragment);
-            program.Platform = new DefaultPlatform(null, program.Architecture);
+            program.Platform = new DefaultPlatform(sc, program.Architecture);
             program.EntryPoints.Add(
                 addrBase,
                 ImageSymbol.Procedure(program.Architecture,addrBase));
@@ -96,10 +98,10 @@ namespace Reko.UnitTests.Structure
         {
             sc = new ServiceContainer();
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
-            var asm = new X86TextAssembler(sc, arch);
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
+            var asm = new X86TextAssembler(arch);
             program = asm.AssembleFragment(addrBase, asmFragment);
-            program.Platform = new DefaultPlatform(null, program.Architecture);
+            program.Platform = new DefaultPlatform(sc, program.Architecture);
             program.EntryPoints.Add(
                 addrBase,
                 ImageSymbol.Procedure(arch, addrBase));
@@ -120,7 +122,7 @@ namespace Reko.UnitTests.Structure
             }
             scan.ScanImage();
 
-            var dfa = new DataFlowAnalysis(program, dynamicLinker.Object, eventListener);
+            var dfa = new DataFlowAnalysis(program, dynamicLinker.Object, sc);
             dfa.AnalyzeProgram();
 
             return program;

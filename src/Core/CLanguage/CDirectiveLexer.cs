@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,8 +33,8 @@ namespace Reko.Core.CLanguage
     /// </summary>
     public class CDirectiveLexer
     {
-        private CLexer lexer;
-        private ParserState state;
+        private readonly CLexer lexer;
+        private readonly ParserState state;
         private CToken tokenPrev;
 
         public CDirectiveLexer(ParserState state, CLexer lexer)
@@ -68,29 +70,26 @@ namespace Reko.Core.CLanguage
                 switch (state)
                 {
                 case State.Start:
-                    if (token.Type == CTokenType.LineDirective)
+                    switch (token.Type)
                     {
+                    case CTokenType.LineDirective:
                         Expect(CTokenType.NumericLiteral);
                         Expect(CTokenType.StringLiteral);
                         token = lexer.Read();
-                    }
-                    else if (token.Type == CTokenType.PragmaDirective)
-                    {
+                        break;
+                    case CTokenType.PragmaDirective:
                         token = ReadPragma((string) lexer.Read().Value);
-                    }
-                    else if (token.Type == CTokenType.__Pragma)
-                    {
+                        break;
+                    case CTokenType.__Pragma:
                         Expect(CTokenType.LParen);
-                        token = ReadPragma((string) lexer.Read().Value);
+                        ReadPragma((string) lexer.Read().Value);
                         token = lexer.Read();
-                    }
-                    else if (token.Type == CTokenType.StringLiteral)
-                    {
+                        break;
+                    case CTokenType.StringLiteral:
                         state = State.Strings;
                         lastString = (string) token.Value;
-                    }
-                    else
-                    {
+                        break;
+                    default:
                         return token;
                     }
                     break;
@@ -114,7 +113,6 @@ namespace Reko.Core.CLanguage
                         if (lastString != null)
                         {
                             var tok = new CToken(CTokenType.StringLiteral, lastString);
-                            lastString = null;
                             return tok;
                         }
                         else
@@ -137,7 +135,7 @@ namespace Reko.Core.CLanguage
             {
                 Expect(CTokenType.LParen);
                 var value = (string) Expect(CTokenType.Id);
-                if (value == "disable")
+                if (value == "disable" || value == "default")
                 {
                     Expect(CTokenType.Colon);
                     Expect(CTokenType.NumericLiteral);
@@ -170,7 +168,16 @@ namespace Reko.Core.CLanguage
             {
                 Expect(CTokenType.LParen);
                 Expect(CTokenType.Id);
-                Expect(CTokenType.RParen);
+                for (; ;)
+                {
+                    var tok = lexer.Read();
+                    if (tok.Type != CTokenType.Comma)
+                    {
+                        Expect(CTokenType.RParen, tok);
+                        break;
+                    }
+                    Expect(CTokenType.Id);
+                }
                 return lexer.Read();
             }
             else if (pragma == "pack")
@@ -190,9 +197,13 @@ namespace Reko.Core.CLanguage
                     var verb = (string) token.Value;
                     if (verb == "push")
                     {
-                        Expect(CTokenType.Comma);
-                        this.state.PushAlignment((int) Expect(CTokenType.NumericLiteral));
-                        Expect(CTokenType.RParen);
+                        token = lexer.Read();
+                        if (token.Type == CTokenType.Comma)
+                        {
+                            this.state.PushAlignment((int) Expect(CTokenType.NumericLiteral));
+                            token = lexer.Read();
+                        }
+                        Expect(CTokenType.RParen, token);
                     }
                     else if (verb == "pop")
                     {
@@ -228,9 +239,11 @@ namespace Reko.Core.CLanguage
                 lexer.SkipToNextLine();
                 return lexer.Read();
             }
-            else 
+            else
             {
-                throw new FormatException(string.Format("Unknown #pragma {0}.", pragma));
+                // Ignore unknown #pragmas
+                lexer.SkipToNextLine();
+                return lexer.Read();
             }
         }
 
@@ -244,7 +257,7 @@ namespace Reko.Core.CLanguage
         private object Expect(CTokenType expected, CToken actualToken)
         {
             if (actualToken.Type != expected)
-                throw new FormatException(string.Format("Expected '{0}' but got '{1}'.", expected, actualToken.Type));
+                throw new FormatException(string.Format("Expected '{0}' but got '{1}' on line {2}.", expected, actualToken.Type, lexer.LineNumber));
             return actualToken.Value;
         }
 

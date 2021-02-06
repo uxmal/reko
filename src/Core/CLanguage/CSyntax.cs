@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable disable
 
 using System;
 using System.Collections.Generic;
@@ -93,7 +95,7 @@ namespace Reko.Core.CLanguage
             return sb.ToString();
         }
     }
-   
+
     public interface DeclSpecVisitor<T>
     {
         T VisitSimpleType(SimpleTypeSpec simpleType);
@@ -338,10 +340,13 @@ namespace Reko.Core.CLanguage
                 sb.Append(string.Join(" ", Attributes));
                 sb.Append(" ");
             }
-            foreach (var declspec in DeclSpecs)
+            if (DeclSpecs != null)
             {
-                sb.Append(declspec);
-                sb.Append(" ");
+                foreach (var declspec in DeclSpecs)
+                {
+                    sb.Append(declspec);
+                    sb.Append(" ");
+                }
             }
             sb.Append(Declarator);
             sb.Append(")");
@@ -476,6 +481,7 @@ namespace Reko.Core.CLanguage
     {
         public List<DeclSpec> SpecQualifierList;
         public List<FieldDeclarator> FieldDeclarators;
+        public List<CAttribute> AttributeList;
 
         public override T Accept<T>(CSyntaxVisitor<T> visitor)
         {
@@ -500,6 +506,12 @@ namespace Reko.Core.CLanguage
                 sep = " ";
             }
             sb.Append(")");
+            if (AttributeList != null && AttributeList.Count > 0)
+            {
+                sb.Append(" (");
+                sb.Append(string.Join(" ", AttributeList));
+                sb.Append(")");
+            }
             return sb.ToString();
         }
     }
@@ -559,12 +571,17 @@ namespace Reko.Core.CLanguage
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.AppendFormat("(attr {0} (", Name);
-            foreach (var token in Tokens)
+            sb.AppendFormat("(attr {0}", Name);
+            if (Tokens != null && Tokens.Count > 0)
             {
-                sb.AppendFormat("{0} {1}", token.Type, token.Value);
+                sb.Append(" (");
+                foreach (var token in Tokens)
+                {
+                    sb.AppendFormat("{0} {1}", token.Type, token.Value);
+                }
+                sb.Append(")");
             }
-            sb.AppendFormat("))");
+            sb.Append(")");
             return sb.ToString();
         }
     }
@@ -638,13 +655,13 @@ namespace Reko.Core.CLanguage
         public string FieldName;
         public bool Dereference;
 
-                public override T Accept<T>(CExpressionVisitor<T> visitor)
+        public override T Accept<T>(CExpressionVisitor<T> visitor)
         {
             return visitor.VisitMember(this);
         }
 
         public override string ToString() { return string.Format("({0} {1} {2}",
-            Expression, 
+            Expression,
             Dereference ? "->" : ".",
             FieldName); }
     }
@@ -746,7 +763,23 @@ namespace Reko.Core.CLanguage
         public override string ToString()
         {
             return string.Format("(sizeof {0})",
-                Type != null ? (object)Type : (object)Expression);
+                Type != null ? (object) Type : (object) Expression);
+        }
+    }
+
+    public class CArrayAccess : CExpression
+    {
+        public CExpression Expression;
+        public CExpression Index;
+
+        public override T Accept<T>(CExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitArrayAccess(this);
+        }
+
+        public override string ToString()
+        {
+            return $"(aref {Expression} {Index})";
         }
     }
 
@@ -796,6 +829,13 @@ namespace Reko.Core.CLanguage
             else
                 return string.Format("(case {0})", Value);
         }
+    }
+
+    public class IfStat : Stat
+    {
+        public CExpression Expression;
+        public Stat Consequence;
+        public Stat Alternative;
     }
 
     public class WhileStat : Stat

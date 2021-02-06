@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,12 +45,12 @@ namespace Reko.Core.NativeInterface
     [ClassInterface(ClassInterfaceType.None)]
     public class NativeRtlEmitter : INativeRtlEmitter
     {
-        private RtlEmitter m;
-        private NativeTypeFactory ntf;
-        private IRewriterHost host;
-        private List<Expression> handles;
-        private List<Expression> args;
-        private Address address;
+        private readonly RtlEmitter m;
+        private readonly NativeTypeFactory ntf;
+        private readonly IRewriterHost host;
+        private readonly List<Expression> handles;
+        private readonly List<Expression> args;
+        private Address? address;
         private InstrClass rtlClass;
         private int instrLength;
 
@@ -96,18 +96,15 @@ namespace Reko.Core.NativeInterface
 
         public RtlInstructionCluster ExtractCluster()
         {
-            if (this.address == null || this.instrLength == 0)
+            if (this.address is null || this.instrLength == 0)
                 throw new InvalidOperationException();
 
-            var rtlc = new RtlInstructionCluster(address, instrLength, m.Instructions.ToArray());
-            rtlc.Class = this.rtlClass;
+            var cluster = m.MakeCluster(address, instrLength, this.rtlClass);
 
             address = null;
             instrLength = 0;
-
-            return rtlc;
+            return cluster;
         }
-
 
         #region Factory methods
 
@@ -171,7 +168,8 @@ namespace Reko.Core.NativeInterface
 
         public HExpr Cast(BaseType type, HExpr a)
         {
-            return MapToHandle(m.Cast(Interop.DataTypes[type], GetExpression(a)));
+            var src = GetExpression(a);
+            return MapToHandle(m.Convert(src, src.DataType, Interop.DataTypes[type]));
         }
 
         public HExpr Comp(HExpr a)
@@ -186,7 +184,8 @@ namespace Reko.Core.NativeInterface
 
         public HExpr Dpb(HExpr dst, HExpr src, int pos)
         {
-            return MapToHandle(m.Dpb(GetExpression(dst), GetExpression(src), pos));
+            var eDst = GetExpression(dst);
+            return MapToHandle(m.Dpb((Identifier)eDst, GetExpression(src), pos));
         }
 
         public HExpr IAdc(HExpr a, HExpr b, HExpr c)
@@ -269,14 +268,14 @@ namespace Reko.Core.NativeInterface
         {
             var aa = GetExpression(a);
             var bb = GetExpression(b);
-            return MapToHandle(host.PseudoProcedure(PseudoProcedure.Ror, PrimitiveType.Word32, aa, bb));
+            return MapToHandle(host.Intrinsic(IntrinsicProcedure.Ror, true, PrimitiveType.Word32, aa, bb));
         }
 
         public HExpr Rrc(HExpr a, HExpr b)
         {
             var aa = GetExpression(a);
             var bb = GetExpression(b);
-            return MapToHandle(host.PseudoProcedure(PseudoProcedure.Ror, PrimitiveType.Word32, aa, bb));
+            return MapToHandle(host.Intrinsic(IntrinsicProcedure.Ror, true, PrimitiveType.Word32, aa, bb));
         }
 
         public HExpr Sar(HExpr a, HExpr b)

@@ -2,32 +2,32 @@
 
 ;; get: 10071000
 get proc
-	mov	eax,[esp+04]
+	mov	eax,[esp+4h]
 	inc	eax
-	cmp	eax,03
-	ja	10071029
+	cmp	eax,3h
+	ja	10071029h
 
 l1007100A:
-	jmp	dword ptr [10071030+eax*4]
+	jmp	dword ptr [10071030h+eax*4]
 
 l10071011:
-	mov	eax,10072018
+	mov	eax,10072018h
 	ret
 
 l10071017:
-	mov	eax,10072014
+	mov	eax,10072014h
 	ret
 
 l1007101D:
-	mov	eax,10072010
+	mov	eax,10072010h
 	ret
 
 l10071023:
-	mov	eax,10072008
+	mov	eax,10072008h
 	ret
 
 l10071029:
-	mov	eax,10072000
+	mov	eax,10072000h
 	ret
 1007102F                                              90                .
 l10071030	dd	0x10071011
@@ -41,8 +41,8 @@ l1007103C	dd	0x10071023
 
 ;; DllMain: 10071080
 DllMain proc
-	mov	eax,00000001
-	ret	000C
+	mov	eax,1h
+	ret	0Ch
 ;;; Segment .rdata (10072000)
 10072000 6F 74 68 65 72 00 00 00 74 68 72 65 65 00 00 00 other...three...
 10072010 74 77 6F 00 6F 6E 65 00 7A 65 72 6F 00 00 00 00 two.one.zero....

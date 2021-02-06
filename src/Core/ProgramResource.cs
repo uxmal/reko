@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace Reko.Core
 {
     public class ProgramResource
     {
-        public string Name { get; set; }
+        public string? Name { get; set; }
     }
 
     [Designer("Reko.Gui.Design.ProgramResourceGroupDesigner,Reko.Gui")]
@@ -45,7 +45,7 @@ namespace Reko.Core
     [Designer("Reko.Gui.Design.ProgramResourceInstanceDesigner,Reko.Gui")]
     public class ProgramResourceInstance : ProgramResource
     {
-        public byte[] Bytes { get; set; }
-        public string Type { get; set; }
+        public byte[]? Bytes { get; set; }
+        public string? Type { get; set; }
     }
 }

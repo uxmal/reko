@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,13 +37,15 @@ namespace Reko.Arch.Arc
 
         public override int MnemonicAsInteger => (int) Mnemonic;
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        public override string MnemonicAsString => Mnemonic.ToString();
+
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            RenderMnemonic(writer);
-            RenderOperands(writer, options);
+            RenderMnemonic(renderer);
+            RenderOperands(renderer, options);
         }
 
-        private void RenderMnemonic(MachineInstructionWriter writer)
+        private void RenderMnemonic(MachineInstructionRenderer renderer)
         {
             var sb = new StringBuilder();
             sb.Append(Mnemonic.ToString());
@@ -71,7 +73,7 @@ namespace Reko.Arch.Arc
             {
                 sb.Append(".di");
             }
-            writer.WriteMnemonic(sb.ToString());
+            renderer.WriteMnemonic(sb.ToString());
         }
     }
 }

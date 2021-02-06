@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,10 +72,10 @@ namespace Reko.Core
         public static ImageSymbol Procedure(
             IProcessorArchitecture arch,
             Address address, 
-            string name=null, 
-            DataType dataType=null,
-            SerializedSignature signature=null,
-            ProcessorState state=null)
+            string? name=null, 
+            DataType? dataType=null,
+            SerializedSignature? signature=null,
+            ProcessorState? state=null)
         {
             return new ImageSymbol(arch)
             {
@@ -115,7 +115,7 @@ namespace Reko.Core
         /// <param name="address">Address of data object</param>
         /// <param name="name">Optional name of the object.</param>
         /// <param name="dataType">Optional size of the object.</param>
-        public static ImageSymbol DataObject(IProcessorArchitecture arch, Address address, string name = null, DataType dataType = null)
+        public static ImageSymbol DataObject(IProcessorArchitecture arch, Address address, string? name = null, DataType? dataType = null)
         {
             return new ImageSymbol(arch)
             {
@@ -130,9 +130,9 @@ namespace Reko.Core
         public static ImageSymbol Create(
             SymbolType type,
             IProcessorArchitecture arch,
-            Address address,
-            string name = null,
-            DataType dataType = null,
+            Address? address,
+            string? name = null,
+            DataType? dataType = null,
             bool decompile = true)
         {
             return new ImageSymbol(arch)
@@ -159,12 +159,12 @@ namespace Reko.Core
         /// <summary>
         /// The location of the object referred to by the symbol.
         /// </summary>
-        public Address Address { get; private set; }
+        public Address? Address { get; private set; }
 
         /// <summary>
         /// The name of the symbol if known, null or blank if unknown.
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// If set, Reko should just make note of the symbol and not 
@@ -176,14 +176,20 @@ namespace Reko.Core
         /// If non-null, the state of the processor at the time when
         /// the signature is referred.
         /// </summary>
-        public ProcessorState ProcessorState { get; set; }
+        public ProcessorState? ProcessorState { get; set; }
 
         /// <summary>
         /// If non-null, the signature of this symbol (if it is a function)
         /// </summary>
-        public SerializedSignature Signature { get; set; }
+        public SerializedSignature? Signature { get; set; }
 
-        public DataType DataType { get; set; }
+        public DataType? DataType { get; set; }
+
+        /// <summary>
+        /// If it makes sense in the current platform, an export ordinal
+        /// for this symbol.
+        /// </summary>
+        public int? Ordinal { get; set; }
 
         public override string ToString()
         {
@@ -200,6 +206,8 @@ namespace Reko.Core
         Code,               // executable code, not necessarily the entry point of a procedure.
         Data,               // non-executable data
         Procedure,          // Something that is called.
-        ExternalProcedure   // A procedure outside of the binary
+        ExternalProcedure,   // A procedure outside of the binary
+        AddressSpace,
+        Table
     }
 }

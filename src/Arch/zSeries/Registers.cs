@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,23 +32,32 @@ namespace Reko.Arch.zSeries
     {
         public static RegisterStorage[] GpRegisters;
         public static RegisterStorage[] FpRegisters;
-        public static Dictionary<string, RegisterStorage> RegistersByName;
-        public static FlagGroupStorage CC;
+        public static RegisterStorage[] VecRegisters;
+
+        public static readonly Dictionary<StorageDomain, RegisterStorage> RegistersByDomain;
+        public static readonly Dictionary<string, RegisterStorage> RegistersByName;
+        public static readonly FlagGroupStorage CC;
 
         static Registers()
         {
-            GpRegisters = Enumerable.Range(0, 16)
-                .Select(n => new RegisterStorage($"r{n}", n, 0, PrimitiveType.Word64))
-                .ToArray();
-            FpRegisters = Enumerable.Range(0, 16)
-                .Select(n => new RegisterStorage($"f{n}", n + 16, 0, PrimitiveType.Word64))
+            var factory = new StorageFactory();
+            GpRegisters = factory.RangeOfReg64(16, "r{0}");
+            VecRegisters = factory.RangeOfReg(32, n => $"v{n}", PrimitiveType.Word128);
+            FpRegisters = VecRegisters
+                .Take(16)
+                .Select((vr, i) => new RegisterStorage($"f{i}", vr.Number, 64, PrimitiveType.Word64))
                 .ToArray();
 
-            RegistersByName = GpRegisters.Concat(FpRegisters)
+            RegistersByDomain = GpRegisters
+                .Concat(VecRegisters)
+                .ToDictionary(r => r.Domain);
+            RegistersByName = GpRegisters
+                .Concat(FpRegisters)
+                .Concat(VecRegisters)
                 .ToDictionary(r => r.Name);
 
-            //$REVIEW: this is probably not correct, but close enough to get us started.
-            var ccReg = new RegisterStorage("ccReg", 40, 0, PrimitiveType.Byte);
+            //$REVIEW: this should be a PSW.
+            var ccReg = factory.Reg("ccReg", PrimitiveType.Byte);
             CC = new FlagGroupStorage(ccReg, 0xF, "CC", PrimitiveType.Byte);
         }
     }

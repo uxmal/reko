@@ -1,0 +1,6 @@
+LIBRARY NLS
+EXPORTS
+    DOSCASEMAP                                  @1
+    DOSGETCOLLATE                               @2
+    DOSGETCTRYINFO                              @3
+    DOSGETDBCSEV                                @4

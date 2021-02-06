@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,9 +25,9 @@ namespace Reko.Evaluation
 {
     public class IdProcConstRule
     {
-        private EvaluationContext ctx;
-        private Identifier id;
-        private ProcedureConstant pc;
+        private readonly EvaluationContext ctx;
+        private Identifier? id;
+        private ProcedureConstant? pc;
 
         public IdProcConstRule(EvaluationContext ctx)
         {
@@ -43,8 +43,8 @@ namespace Reko.Evaluation
 
         public ProcedureConstant Transform()
         {
-            ctx.RemoveIdentifierUse(id);
-            return pc;
+            ctx.RemoveIdentifierUse(id!);
+            return pc!;
         }
     }
 }

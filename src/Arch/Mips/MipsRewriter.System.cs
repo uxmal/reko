@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,8 +37,9 @@ namespace Reko.Arch.Mips
         private void RewriteBreak(MipsInstruction instr)
         {
             m.SideEffect(
-                host.PseudoProcedure(
+                host.Intrinsic(
                     "__break",
+                    false,
                     VoidType.Instance,
                     this.RewriteOperand0(instr.Operands[0])));
         }
@@ -70,7 +71,7 @@ namespace Reko.Arch.Mips
         private void RewritePrefx(MipsInstruction instr)
         {
             var opMem = (MemoryAccess)RewriteOperand(instr.Operands[1]);
-            var intrinsic = host.PseudoProcedure("__prefetch", VoidType.Instance, opMem.EffectiveAddress);
+            var intrinsic = host.Intrinsic("__prefetch", false, VoidType.Instance, opMem.EffectiveAddress);
             m.SideEffect(intrinsic);
         }
 
@@ -88,11 +89,11 @@ namespace Reko.Arch.Mips
             Expression trap;
             if (instr.Operands.Length == 3)
             {
-                trap = host.PseudoProcedure("__trap_code", VoidType.Instance, RewriteOperand(instr.Operands[2]));
+                trap = host.Intrinsic("__trap_code", false, VoidType.Instance, RewriteOperand(instr.Operands[2]));
             }
             else
             {
-                trap = host.PseudoProcedure("__trap", VoidType.Instance);
+                trap = host.Intrinsic("__trap", false, VoidType.Instance);
             }
             m.SideEffect(trap);
         }
@@ -103,11 +104,11 @@ namespace Reko.Arch.Mips
             var op2 = RewriteOperand(instr.Operands[1]);
 
             this.iclass = InstrClass.ConditionalTransfer;
-            m.BranchInMiddleOfInstruction(
+            m.Branch(
                         op(op1, op2).Invert(),
                         instr.Address + instr.Length,
                         InstrClass.ConditionalTransfer);
-            var trap = host.PseudoProcedure("__trap", VoidType.Instance);
+            var trap = host.Intrinsic("__trap", false, VoidType.Instance);
             m.SideEffect(trap);
         }
 
@@ -115,49 +116,68 @@ namespace Reko.Arch.Mips
         {
             //$REVIEW: MIPS documentation mentions 'EntryHi' and 'Index' registers. Contact
             // @uxmal if you care strongly about this.
-            m.SideEffect(host.PseudoProcedure("__tlbp", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__tlbp",  false, VoidType.Instance));
         }
 
         private void RewriteTlbr(MipsInstruction instr)
         {
             //$REVIEW: MIPS documentation mentions 'Index' register. Contact
             // @uxmal if you care strongly about this.
-            m.SideEffect(host.PseudoProcedure("__tlbr", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__tlbr", false, VoidType.Instance));
         }
 
         private void RewriteTlbwi(MipsInstruction instr)
         {
             //$REVIEW: MIPS documentation mentions 'Index' register. Contact
             // @uxmal if you care strongly about this.
-            m.SideEffect(host.PseudoProcedure("__tlbwi", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__tlbwi", false, VoidType.Instance));
         }
 
         private void RewriteTlbwr(MipsInstruction instr)
         {
             //$REVIEW: MIPS documentation mentions 'Index' register. Contact
             // @uxmal if you care strongly about this.
-            m.SideEffect(host.PseudoProcedure("__tlbwr", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__tlbwr", false, VoidType.Instance));
         }
 
         private void RewriteWait(MipsInstruction instr)
         {
-            m.SideEffect(host.PseudoProcedure("__wait", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__wait", false, VoidType.Instance));
         }
 
         private void RewriteReadHardwareRegister(MipsInstruction instr)
         {
-            var rdhwr = host.PseudoProcedure("__read_hardware_register", PrimitiveType.UInt32, this.RewriteOperand0(instr.Operands[1]));
-            m.Assign(this.RewriteOperand0(instr.Operands[0]), rdhwr);
+            var hs = ((ImmediateOperand) instr.Operands[1]).Value;
+            Expression value;
+            switch (hs.ToInt32())
+            {
+            case 0:
+                value = host.Intrinsic("__read_cpu_number", false, PrimitiveType.UInt32);
+                break;
+            case 0x1D:
+                value = host.Intrinsic("__read_user_local", false, PrimitiveType.Int32);
+                break;
+            default:
+                value = host.Intrinsic("__read_hardware_register", false, PrimitiveType.UInt32, this.RewriteOperand0(instr.Operands[1]));
+                break;
+            }
+            m.Assign(this.RewriteOperand0(instr.Operands[0]), value);
         }
 
+        private void RewriteSdbbp(MipsInstruction instr)
+        {
+            var arg = RewriteOperand(instr.Operands[0]);
+            m.SideEffect(host.Intrinsic("__software_debug_breakpoint", false, VoidType.Instance, arg), iclass);
+        }
+        
         private void RewriteSyscall(MipsInstruction instr)
         {
-            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, this.RewriteOperand0(instr.Operands[0])));
+            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, this.RewriteOperand0(instr.Operands[0])));
         }
 
         private void RewriteSync(MipsInstruction instr)
         {
-            m.SideEffect(host.PseudoProcedure("__sync", VoidType.Instance, this.RewriteOperand0(instr.Operands[0])));
+            m.SideEffect(host.Intrinsic("__sync", false, VoidType.Instance, this.RewriteOperand0(instr.Operands[0])));
         }
     }
 }

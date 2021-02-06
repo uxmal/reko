@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ using Reko.Core;
 using System.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Environments.Msdos
 {
@@ -66,7 +67,7 @@ namespace Reko.Environments.Msdos
         /// <returns></returns>
         public ImageSymbol FindMainAddress()
         {
-            var diagSvc = services.RequireService<IDiagnosticsService>();
+            var listener = services.RequireService<DecompilerEventListener>();
             Address addrEntry;
             /* This function checks the startup code for various compilers' way of
             loading DS. If found, it sets DS. This may not be needed in the future if
@@ -83,7 +84,7 @@ namespace Reko.Environments.Msdos
             char[] temp = new char[4];
 
             program.SegmentMap.TryFindSegment(start, out ImageSegment segment);
-            var image = segment.MemoryArea;
+            var image = (ByteMemoryArea) segment.MemoryArea;
             var startOff = (uint)(start - image.BaseAddress);   // Offset into the Image of the initial CS:IP
 
             // Check the Turbo Pascal signatures first, since they involve only the
@@ -98,7 +99,7 @@ namespace Reko.Environments.Msdos
                 if (locatePattern(image.Bytes, init, init + 26, pattBorl4Init, out i))
                 {
                     setState("ds", image.ReadLeUInt16(i + 1));
-                    Debug.Print("Borland Pascal v4 detected\n");
+                    listener.Info("Borland Pascal v4 detected\n");
                     chVendor = 't';                     /* Turbo */
                     chModel = 'p';						/* Pascal */
                     chVersion = '4';                    /* Version 4 */
@@ -109,7 +110,7 @@ namespace Reko.Environments.Msdos
                 else if (locatePattern(image.Bytes, init, init + 26, pattBorl5Init, out i))
                 {
                     setState("ds", image.ReadLeUInt16(i + 1));
-                    Debug.Print("Borland Pascal v5.0 detected");
+                    listener.Info("Borland Pascal v5.0 detected");
                     chVendor = 't';                     /* Turbo */
                     chModel = 'p';                      /* Pascal */
                     chVersion = '5';                    /* Version 5 */
@@ -119,7 +120,7 @@ namespace Reko.Environments.Msdos
                 else if (locatePattern(image.Bytes, init, init + 26, pattBorl7Init, out i))
                 {
                     setState("ds", image.ReadLeUInt16(i + 1));
-                    Debug.Print("Borland Pascal v7 detected");
+                    listener.Info("Borland Pascal v7 detected");
                     chVendor = 't';                     /* Turbo */
                     chModel = 'p';                      /* Pascal */
                     chVersion = '7';                    /* Version 7 */
@@ -158,7 +159,7 @@ namespace Reko.Environments.Msdos
                     addrEntry = image.BaseAddress + i + OFFMAINSMALL + 2 + srel;    /* Save absolute image offset */
                     chModel = 's';                          /* Small model */
                 }
-                else if (MemoryArea.CompareArrays(image.Bytes, (int)startOff, pattTPasStart, pattTPasStart.Length))
+                else if (ByteMemoryArea.CompareArrays(image.Bytes, (int)startOff, pattTPasStart, pattTPasStart.Length))
                 {
                     var srel = image.ReadLeInt16(startOff + 1);     /* Get the jump offset */
                     addrEntry = start + srel + 3;          /* Save absolute image offset */
@@ -166,7 +167,7 @@ namespace Reko.Environments.Msdos
                     chVendor = 't';                         /* Turbo.. */
                     chModel = 'p';                          /* ...Pascal... (only 1 model) */
                     chVersion = '3';                        /* 3.0 */
-                    Debug.Print("Turbo Pascal 3.0 detected");
+                    listener.Info("Turbo Pascal 3.0 detected");
                     Debug.Print("Main at {0}", addrEntry);
                     goto gotVendor;                         /* Already have vendor */
                 }
@@ -186,33 +187,33 @@ namespace Reko.Environments.Msdos
             //program.addressingMode = chModel;
 
             /* Now decide the compiler vendor and version number */
-            if (MemoryArea.CompareArrays(image.Bytes, (int)startOff, pattMsC5Start, pattMsC5Start.Length))
+            if (ByteMemoryArea.CompareArrays(image.Bytes, (int)startOff, pattMsC5Start, pattMsC5Start.Length))
             {
                 /* Yes, this is Microsoft startup code. The DS is sitting right here
                     in the next 2 bytes */
                 setState("ds", image.ReadLeUInt16((uint)(startOff + pattMsC5Start.Length)));
                 chVendor = 'm';                     /* Microsoft compiler */
                 chVersion = '5';                    /* Version 5 */
-                Debug.Print("MSC 5 detected");
+                listener.Info("MSC 5 detected");
             }
 
             /* The C8 startup pattern is different from C5's */
-            else if (MemoryArea.CompareArrays(image.Bytes, (int)startOff, pattMsC8Start, pattMsC8Start.Length))
+            else if (ByteMemoryArea.CompareArrays(image.Bytes, (int)startOff, pattMsC8Start, pattMsC8Start.Length))
             {
                 setState("ds", image.ReadLeUInt16((uint)(startOff + pattMsC8Start.Length)));
                 chVendor = 'm';                     /* Microsoft compiler */
                 chVersion = '8';                    /* Version 8 */
-                Debug.Print("MSC 8 detected");
+                listener.Info("MSC 8 detected");
             }
 
             /* The C8 .com startup pattern is different again! */
-            else if (MemoryArea.CompareArrays(
+            else if (ByteMemoryArea.CompareArrays(
                 image.Bytes,
                 (int)startOff,
                 pattMsC8ComStart,
                 pattMsC8ComStart.Length))
             {
-                Debug.Print("MSC 8 .com detected");
+                listener.Info("MSC 8 .com detected");
                 chVendor = 'm';                     /* Microsoft compiler */
                 chVersion = '8';                    /* Version 8 */
             }
@@ -222,7 +223,7 @@ namespace Reko.Environments.Msdos
             {
                 /* Borland startup. DS is at the second uint8_t (offset 1) */
                 setState("ds", image.ReadLeUInt16(i + 1));
-                Debug.Print("Borland v2 detected\n");
+                listener.Info("Borland v2 detected");
                 chVendor = 'b';                     /* Borland compiler */
                 chVersion = '2';                    /* Version 2 */
             }
@@ -232,7 +233,7 @@ namespace Reko.Environments.Msdos
             {
                 /* Borland startup. DS is at the second uint8_t (offset 1) */
                 setState("ds", image.ReadLeUInt16(i + 1));
-                diagSvc.Inform("Borland C v3 runtime detected");
+                listener.Info("Borland C v3 runtime detected");
                 chVendor = 'b';                     /* Borland compiler */
                 chVersion = '3';                    /* Version 3 */
             }
@@ -241,7 +242,7 @@ namespace Reko.Environments.Msdos
                                    out i))
             {
                 /* Logitech modula startup. DS is 0, despite appearances */
-                Debug.Print("Logitech modula detected");
+                listener.Info("Logitech modula detected");
                 chVendor = 'l';                     /* Logitech compiler */
                 chVersion = '1';                    /* Version 1 */
             }
@@ -249,24 +250,24 @@ namespace Reko.Environments.Msdos
             /* Other startup idioms would go here */
             else
             {
-                Debug.Print("Warning - compiler not recognised");
+                listener.Warn("Compiler not recognised");
                 return null;
             }
 
             gotVendor:
             ;
-            //sSigName = string.Format("dcc{0}{1}{2}.sig",
-            //        chVendor, /* Add vendor */
-            //        chVersion, /* Add version */
-            //        chModel); /* Add model */
-            //Debug.Print("Signature file: {0}", sSigName);
+            var sSigName = string.Format("dcc{0}{1}{2}.sig",
+                    chVendor, /* Add vendor */
+                    chVersion, /* Add version */
+                    chModel); /* Add model */
+            Debug.Print("Signature file: {0}", sSigName);
             return ImageSymbol.Procedure(arch, addrEntry, "main", state: this.state);
         }
 
-        private Address ReadSegPtr(MemoryArea mem, uint offset)
+        private Address ReadSegPtr(ByteMemoryArea bmem, uint offset)
         {
-            var off = mem.ReadLeUInt16(offset);
-            var seg = mem.ReadLeUInt16(offset + 2);
+            var off = bmem.ReadLeUInt16(offset);
+            var seg = bmem.ReadLeUInt16(offset + 2);
             return Address.SegPtr(seg, off);
         }
 

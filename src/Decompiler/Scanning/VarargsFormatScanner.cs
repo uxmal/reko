@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 Pavel Tomin.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,12 +39,12 @@ namespace Reko.Scanning
     /// </summary>
     public class VarargsFormatScanner
     {
-        private Program program;
-        private IProcessorArchitecture arch;
-        private Frame frame;
-        private ExpressionSimplifier eval;
-        private IServiceProvider services;
-        private FunctionType expandedSig;
+        private readonly Program program;
+        private readonly IProcessorArchitecture arch;
+        private readonly Frame frame;
+        private readonly ExpressionSimplifier eval;
+        private readonly IServiceProvider services;
+        private FunctionType? expandedSig;
 
         public VarargsFormatScanner(
             Program program,
@@ -65,18 +65,18 @@ namespace Reko.Scanning
         public Instruction BuildInstruction(
             Expression callee, 
             CallSite site,
-            ProcedureCharacteristics chr)
+            ProcedureCharacteristics? chr)
         {
             if (callee is ProcedureConstant pc)
-                pc.Procedure.Signature = this.expandedSig;
+                pc.Procedure.Signature = this.expandedSig!;
             var ab = arch.CreateFrameApplicationBuilder(frame, site, callee);
-            return ab.CreateInstruction(this.expandedSig, chr);
+            return ab.CreateInstruction(this.expandedSig!, chr);
         }
 
-        public bool TryScan(Address addrInstr, Expression callee, FunctionType sig, ProcedureCharacteristics chr)
+        public bool TryScan(Address addrInstr, Expression callee, FunctionType sig, ProcedureCharacteristics? chr)
         {
             if (
-                sig == null || !sig.IsVarargs() ||
+                sig == null || !sig.IsVariadic ||
                 chr == null || !VarargsParserSet(chr)
             )
             {
@@ -96,38 +96,40 @@ namespace Reko.Scanning
             return op.Accept<Expression>(eval);
         }
 
-        private string ReadVarargsFormat(Address addrInstr, Expression callee, FunctionType sig)
+        private string? ReadVarargsFormat(Address addrInstr, Expression callee, FunctionType sig)
         {
-            var formatIndex = sig.Parameters.Length - 2;
+            var formatIndex = sig.Parameters!.Length - 1;
             if (formatIndex < 0)
-                throw new ApplicationException(
-                    string.Format("Varargs: should be at least 2 parameters"));
+                throw new ApplicationException("Expected variadic function to take at least one parameter.");
             var formatParam = sig.Parameters[formatIndex];
             // $TODO: Issue #471: what about non-x86 architectures, like Sparc or PowerPC,
             // there can be varargs functions where the first N parameters are
             // passed in registers and the remaining are passed on the stack.
-            var stackStorage = formatParam.Storage as StackStorage;
-            if (stackStorage == null)
+            if (formatParam.Storage is StackStorage stackStorage)
+            {
+                var stackAccess = arch.CreateStackAccess(
+                    frame,
+                    stackStorage.StackOffset,
+                    stackStorage.DataType);
+                if (GetValue(stackAccess) is Constant c && c.IsValid)
+                {
+                    var str = ReadCString(c);
+                    if (str != null)
+                        return str;
+                }
+            }
+            else
             {
                 var reg = GetValue(formatParam) as Address;
                 if (reg != null)
                 {
-                    return ReadCString(reg);
+                    var str = ReadCString(reg);
+                    if (str != null)
+                        return str;
                 }
-                WarnUnableToDetermineFormatString(addrInstr, callee);
-                return null;
             }
-            var stackAccess = arch.CreateStackAccess(
-                frame,
-                stackStorage.StackOffset,
-                stackStorage.DataType);
-            var c = GetValue(stackAccess) as Constant;
-            if (c == null || !c.IsValid)
-            {
-                WarnUnableToDetermineFormatString(addrInstr, callee);
-                return null;
-            }
-            return ReadCString(c);
+            WarnUnableToDetermineFormatString(addrInstr, callee);
+            return null;
         }
 
         private void WarnUnableToDetermineFormatString(Address addrInstr, Expression callee)
@@ -140,17 +142,18 @@ namespace Reko.Scanning
                 callee);
         }
 
-        private string ReadCString(Constant cAddr)
+        private string? ReadCString(Constant cAddr)
         {
-            var addr = program.Platform.MakeAddressFromConstant(cAddr, false);
+            var addr = program.Platform.MakeAddressFromConstant(cAddr, false)!;
             return ReadCString(addr);
         }
 
-        private string ReadCString(Address addr)
+        private string? ReadCString(Address addr)
         {
             if (!program.SegmentMap.IsValidAddress(addr))
-                throw new ApplicationException(
-                    string.Format("Varargs: invalid address: {0}", addr));
+            {
+                return null;
+            }
             var rdr = program.CreateImageReader(program.Architecture, addr);
             var c = rdr.ReadCString(PrimitiveType.Char, program.TextEncoding);
             return c.ToString();
@@ -189,12 +192,13 @@ namespace Reko.Scanning
         {
             var fixedArgs = sig.Parameters.TakeWhile(p => p.Name != "...").ToList();
             var cc = platform.GetCallingConvention(""); //$REVIEW: default CC tends to be __cdecl.
+            //$BUG: what if platform returns null or throws?
             var allTypes = fixedArgs
                 .Select(p => p.DataType)
                 .Concat(argumentTypes)
                 .ToList();
             var ccr = new CallingConventionEmitter();
-            cc.Generate(
+            cc!.Generate(
                 ccr,
                 sig.ReturnValue.DataType,
                 null, //$TODO: what to do about implicit this?

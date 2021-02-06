@@ -1,0 +1,24 @@
+void abort()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+abort_exit:
+abort_entry:
+
+
+void __libc_start_main()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+__libc_start_main_exit:
+__libc_start_main_entry:
+
+

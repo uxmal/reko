@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2019 John Källén.
+* Copyright (C) 1999-2021 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 #include "NativeInstruction.h"
 #include "ArmArchitecture.h"
 
-class StringRenderer : public INativeInstructionWriter
+class StringRenderer : public INativeInstructionRenderer
 {
 public: 
 	StringRenderer(std::ostringstream & stm) : stm(stm) {}
@@ -80,35 +80,35 @@ STDMETHODIMP NativeInstruction::GetInfo(NativeInstructionInfo * info)
 	return S_OK;
 }
 
-STDMETHODIMP NativeInstruction::Render(INativeInstructionWriter * w, MachineInstructionWriterOptions options)
+STDMETHODIMP NativeInstruction::Render(INativeInstructionRenderer * r, MachineInstructionRendererFlags options)
 {
-	auto & writer = *w;
+	auto & renderer = *r;
 	if (this->instr == nullptr)
 	{
-		writer.WriteMnemonic("Invalid");
+		renderer.WriteMnemonic("Invalid");
 		return S_OK;
 	}
 	auto & instruction = *static_cast<cs_insn*>(this->instr);
-	writer.WriteMnemonic(instruction.mnemonic);
+	renderer.WriteMnemonic(instruction.mnemonic);
 	auto ops = instruction.detail->arm.operands;
 	if (instruction.detail->arm.op_count < 1)
 		return S_OK;
-	writer.Tab();
-	if (WriteRegisterSetInstruction(instruction, writer))
+	renderer.Tab();
+	if (WriteRegisterSetInstruction(instruction, renderer))
 		return S_OK;
-	Write(instruction, ops[0], writer, options);
+	Write(instruction, ops[0], renderer, options);
 	if (instruction.detail->arm.op_count < 2)
 		return S_OK;
-	writer.WriteString(",");
-	Write(instruction, ops[1], writer, options);
+	renderer.WriteString(",");
+	Write(instruction, ops[1], renderer, options);
 	if (instruction.detail->arm.op_count < 3)
 		return S_OK;
-	writer.WriteString(",");
-	Write(instruction, ops[2], writer, options);
+	renderer.WriteString(",");
+	Write(instruction, ops[2], renderer, options);
 	if (instruction.detail->arm.op_count < 4)
 		return S_OK;
-	writer.WriteString(",");
-	Write(instruction, ops[3], writer, options);
+	renderer.WriteString(",");
+	Write(instruction, ops[3], renderer, options);
 	return S_OK;
 }
 
@@ -117,7 +117,7 @@ const char * NativeInstruction::RegName(int reg)
 	return ArmArchitecture::aRegs[reg - ARM_REG_APSR].Name;
 }
 
-bool NativeInstruction::WriteRegisterSetInstruction(const cs_insn & instr, INativeInstructionWriter & writer)
+bool NativeInstruction::WriteRegisterSetInstruction(const cs_insn & instr, INativeInstructionRenderer & renderer)
 {
 	auto iStart = 0;
 	switch (instr.id)
@@ -128,17 +128,17 @@ bool NativeInstruction::WriteRegisterSetInstruction(const cs_insn & instr, INati
 	case ARM_INS_LDM:
 	case ARM_INS_STM:
 	case ARM_INS_STMDB:
-		Write(instr, instr.detail->arm.operands[0], writer, MachineInstructionWriterOptions::None);
+		Write(instr, instr.detail->arm.operands[0], renderer, MachineInstructionRendererFlags::None);
 		if (instr.detail->arm.writeback)
-			writer.WriteString("!");
+			renderer.WriteString("!");
 		iStart = 1;
-		writer.WriteString(",");
+		renderer.WriteString(",");
 		break;
 	default:
 		return false;
 	}
 
-	writer.WriteString("{");
+	renderer.WriteString("{");
 	auto sep = "";
 	auto regPrev = ARM_REG_INVALID;
 	auto reg = ARM_REG_INVALID;
@@ -147,8 +147,8 @@ bool NativeInstruction::WriteRegisterSetInstruction(const cs_insn & instr, INati
 		reg = static_cast<arm_reg>(instr.detail->arm.operands[i].reg);
 		if (regPrev == ARM_REG_INVALID)
 		{
-			writer.WriteString(sep);
-			writer.WriteString(RegName(reg));
+			renderer.WriteString(sep);
+			renderer.WriteString(RegName(reg));
 			sep = ",";
 		}
 		else if (static_cast<int>(regPrev) + 1 == static_cast<int>(reg))
@@ -159,28 +159,28 @@ bool NativeInstruction::WriteRegisterSetInstruction(const cs_insn & instr, INati
 		{
 			if (sep[0] == '-')
 			{
-				writer.WriteString(sep);
-				writer.WriteString(RegName(regPrev));
+				renderer.WriteString(sep);
+				renderer.WriteString(RegName(regPrev));
 				sep = ",";
 			}
-			writer.WriteString(sep);
-			writer.WriteString(RegName(reg));
+			renderer.WriteString(sep);
+			renderer.WriteString(RegName(reg));
 			sep = ",";
 		}
 		regPrev = reg;
 	}
 	if (sep[0] == '-')
 	{
-		writer.WriteChar('-');
-		writer.WriteString(RegName(reg));
+		renderer.WriteChar('-');
+		renderer.WriteString(RegName(reg));
 	}
-	writer.WriteString("}");
+	renderer.WriteString("}");
 	return true;
 }
 
 static const char *  nosuffixRequired = ".Ee";
 
-void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativeInstructionWriter & writer, MachineInstructionWriterOptions options)
+void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativeInstructionRenderer & renderer, MachineInstructionRendererFlags options)
 {
 	char risky[40];
 	switch (op.type)
@@ -190,78 +190,77 @@ void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativ
 			insn.id == ARM_INS_BL ||
 			insn.id == ARM_INS_BLX)
 		{
-			writer.WriteString("$");
+			renderer.WriteString("$");
 			snprintf(risky, sizeof(risky), "%08X", op.imm);
-			writer.WriteAddress(risky, static_cast<uint32_t>(op.imm));
+			renderer.WriteAddress(risky, static_cast<uint32_t>(op.imm));
 		}
 		else
 		{
-			writer.WriteString("#");
-			WriteImmediateValue(op.imm, writer);
+			renderer.WriteString("#");
+			WriteImmediateValue(op.imm, renderer);
 		}
 		break;
 	case ARM_OP_CIMM:
 		snprintf(risky, sizeof(risky), "c%d", op.imm);
-		writer.WriteString(risky);
+		renderer.WriteString(risky);
 		break;
 	case ARM_OP_PIMM:
 		snprintf(risky, sizeof(risky), "p%d", op.imm);
-		writer.WriteString(risky);
+		renderer.WriteString(risky);
 		break;
 	case ARM_OP_REG:
 		if (op.subtracted)
-			writer.WriteChar('-');
-		writer.WriteString(RegName(op.reg));
-		WriteShift(op, writer);
+			renderer.WriteChar('-');
+		renderer.WriteString(RegName(op.reg));
+		WriteShift(op, renderer);
 		break;
 	case ARM_OP_SYSREG:
-		writer.WriteString("$$ SYSREG NOT IMPLEMENTED YET");
+		renderer.WriteString("$$ SYSREG NOT IMPLEMENTED YET");
 		break;
 	case ARM_OP_MEM:
 		if (op.mem.base == ARM_REG_PC)
 		{
 			auto uAddr = static_cast<uint32_t>(insn.address + op.mem.disp) + 8u;
 			if (op.mem.index == ARM_REG_INVALID &&
-				((int)options & (int)MachineInstructionWriterOptions::ResolvePcRelativeAddress))
+				((int)options & (int)MachineInstructionRendererFlags::ResolvePcRelativeAddress))
 			{
 				snprintf(risky, sizeof(risky), "%08X", uAddr);
-				writer.WriteChar('[');
-				writer.WriteAddress(risky, uAddr);
-				writer.WriteChar(']');
+				renderer.WriteChar('[');
+				renderer.WriteAddress(risky, uAddr);
+				renderer.WriteChar(']');
 
 				std::ostringstream stm;
 				auto sr = StringRenderer(stm);
 				WriteMemoryOperand(insn, op, sr);
 				auto str = stm.str();
-				writer.AddAnnotation(str.c_str());
+				renderer.AddAnnotation(str.c_str());
 			}
 			else
 			{
-				WriteMemoryOperand(insn, op, writer);
+				WriteMemoryOperand(insn, op, renderer);
 				snprintf(risky, sizeof(risky), "%08X", uAddr);
-				writer.AddAnnotation(risky);
+				renderer.AddAnnotation(risky);
 			}
 			return;
 		}
-		WriteMemoryOperand(insn, op, writer);
+		WriteMemoryOperand(insn, op, renderer);
 		break;
 	case ARM_OP_SETEND:
 		if (this->instr->detail->arm.operands[0].setend == ARM_SETEND_BE)
-			writer.WriteString("be");
+			renderer.WriteString("be");
 		else 
-			writer.WriteString("le");
+			renderer.WriteString("le");
 		break;
 	case ARM_OP_FP:
-		snprintf(risky, sizeof(risky), "#%lf", op.fp);
-		if (strcspn(risky, nosuffixRequired) == strlen(risky))
 		{
-			strcat(risky, ".0");
+			auto suffix = (strcspn(risky, nosuffixRequired) == strlen(risky)) ? ".0" : "";
+			snprintf(risky, sizeof(risky), "#%lf%s", op.fp, suffix);
+			renderer.WriteString(risky);
 		}
-		writer.WriteString(risky);
 		break;
 	default:
 		snprintf(risky, sizeof(risky), "$$ UNSUPPORTED operand type %d (%x)", op.type, op.type);
-		writer.WriteString(risky);
+		renderer.WriteString(risky);
 		//throw new NotImplementedException(string.Format(
 		//	"Can't disassemble {0} {1}. Unknown operand type: {2}",
 		//	instruction.Mnemonic,
@@ -270,99 +269,99 @@ void NativeInstruction::Write(const cs_insn & insn, const cs_arm_op & op, INativ
 	}
 }
 
-void NativeInstruction::WriteShift(const cs_arm_op & op, INativeInstructionWriter & writer)
+void NativeInstruction::WriteShift(const cs_arm_op & op, INativeInstructionRenderer & renderer)
 {
 	switch (op.shift.type)
 	{
-	case ARM_SFT_ASR: WriteImmShift("asr", op.shift.value, writer); break;
-	case ARM_SFT_LSL: WriteImmShift("lsl", op.shift.value, writer); break;
-	case ARM_SFT_LSR: WriteImmShift("lsr", op.shift.value, writer); break;
-	case ARM_SFT_ROR: WriteImmShift("ror", op.shift.value, writer); break;
-	case ARM_SFT_RRX: writer.WriteString(",rrx"); break;
-	case ARM_SFT_ASR_REG: WriteRegShift("asr", op.shift.value, writer); break;
-	case ARM_SFT_LSL_REG: WriteRegShift("lsl", op.shift.value, writer); break;
-	case ARM_SFT_LSR_REG: WriteRegShift("lsr", op.shift.value, writer); break;
-	case ARM_SFT_ROR_REG: WriteRegShift("ror", op.shift.value, writer); break;
-	case ARM_SFT_RRX_REG: WriteRegShift("rrx", op.shift.value, writer); break;
+	case ARM_SFT_ASR: WriteImmShift("asr", op.shift.value, renderer); break;
+	case ARM_SFT_LSL: WriteImmShift("lsl", op.shift.value, renderer); break;
+	case ARM_SFT_LSR: WriteImmShift("lsr", op.shift.value, renderer); break;
+	case ARM_SFT_ROR: WriteImmShift("ror", op.shift.value, renderer); break;
+	case ARM_SFT_RRX: renderer.WriteString(",rrx"); break;
+	case ARM_SFT_ASR_REG: WriteRegShift("asr", op.shift.value, renderer); break;
+	case ARM_SFT_LSL_REG: WriteRegShift("lsl", op.shift.value, renderer); break;
+	case ARM_SFT_LSR_REG: WriteRegShift("lsr", op.shift.value, renderer); break;
+	case ARM_SFT_ROR_REG: WriteRegShift("ror", op.shift.value, renderer); break;
+	case ARM_SFT_RRX_REG: WriteRegShift("rrx", op.shift.value, renderer); break;
 	case ARM_SFT_INVALID: break;
 	}
 }
 
-void NativeInstruction::WriteMemoryOperand(const cs_insn & insn, const cs_arm_op & op, INativeInstructionWriter & writer)
+void NativeInstruction::WriteMemoryOperand(const cs_insn & insn, const cs_arm_op & op, INativeInstructionRenderer & renderer)
 {
-	writer.WriteString("[");
-	writer.WriteString(RegName(op.mem.base));
+	renderer.WriteString("[");
+	renderer.WriteString(RegName(op.mem.base));
 	int displacement = op.mem.disp;
 	if (displacement != 0)
 	{
 		if (true) // preincInternal.ArchitectureDetail)
 		{
-			writer.WriteString(",");
+			renderer.WriteString(",");
 			if (displacement < 0)
 			{
 				displacement = -displacement;
-				writer.WriteString("-");
+				renderer.WriteString("-");
 			}
-			writer.WriteString("#");
-			WriteImmediateValue(displacement, writer);
-			writer.WriteString("]");
+			renderer.WriteString("#");
+			WriteImmediateValue(displacement, renderer);
+			renderer.WriteString("]");
 			if (insn.detail->arm.writeback)
-				writer.WriteString("!");
+				renderer.WriteString("!");
 		}
 		else
 		{
-			writer.WriteString("],");
+			renderer.WriteString("],");
 			if (displacement < 0)
 			{
 				displacement = -displacement;
-				writer.WriteString("-");
+				renderer.WriteString("-");
 			}
-			WriteImmediateValue(displacement, writer);
+			WriteImmediateValue(displacement, renderer);
 		}
 	}
 	else
 	{
 		if (op.mem.index != ARM_REG_INVALID)
 		{
-			writer.WriteString(",");
+			renderer.WriteString(",");
 			if (op.subtracted)
-				writer.WriteString("-");
-			writer.WriteString(RegName(op.mem.index));
+				renderer.WriteString("-");
+			renderer.WriteString(RegName(op.mem.index));
 		}
 		if (op.shift.type != ARM_SFT_INVALID)
 		{
-			WriteShift(op, writer);
+			WriteShift(op, renderer);
 		}
-		writer.WriteChar(']');
+		renderer.WriteChar(']');
 		if (insn.detail->arm.writeback && IsLastOperand(insn, &op))
-			writer.WriteString("!");
+			renderer.WriteString("!");
 	}
 }
 
-void NativeInstruction::WriteImmShift(const char * op, int value, INativeInstructionWriter &writer)
+void NativeInstruction::WriteImmShift(const char * op, int value, INativeInstructionRenderer &renderer)
 {
-	writer.WriteString(",");
-	writer.WriteMnemonic(op);
-	writer.WriteString(" #");
-	WriteImmediateValue(value, writer);
+	renderer.WriteString(",");
+	renderer.WriteMnemonic(op);
+	renderer.WriteString(" #");
+	WriteImmediateValue(value, renderer);
 }
 
-void NativeInstruction::WriteRegShift(const char * op, int value, INativeInstructionWriter & writer)
+void NativeInstruction::WriteRegShift(const char * op, int value, INativeInstructionRenderer & renderer)
 {
-	writer.WriteString(",");
-	writer.WriteMnemonic(op);
-	writer.WriteChar(' ');
-	writer.WriteString(RegName(value));
+	renderer.WriteString(",");
+	renderer.WriteMnemonic(op);
+	renderer.WriteChar(' ');
+	renderer.WriteString(RegName(value));
 }
 
-void NativeInstruction::WriteImmediateValue(int imm8, INativeInstructionWriter & writer)
+void NativeInstruction::WriteImmediateValue(int imm8, INativeInstructionRenderer & renderer)
 {
 	if (imm8 > 256 && ((imm8 & (imm8 - 1)) == 0))
 	{
 		/* only one bit set, and that later than bit 8.
 		* Represent as 1<<... .
 		*/
-		writer.WriteString("1<<");
+		renderer.WriteString("1<<");
 		{
 			uint32_t n = 0;
 			while ((imm8 & 0x0F) == 0)
@@ -371,7 +370,7 @@ void NativeInstruction::WriteImmediateValue(int imm8, INativeInstructionWriter &
 			}
 			// Now imm8 is 1, 2, 4 or 8. 
 			n += (uint32_t)((0x30002010 >> (int)(4 * (imm8 - 1))) & 15);
-			writer.WriteUInt32(n);
+			renderer.WriteUInt32(n);
 		}
 	}
 	else
@@ -385,7 +384,7 @@ void NativeInstruction::WriteImmediateValue(int imm8, INativeInstructionWriter &
 		}
 		char risky[200];
 		snprintf(risky, sizeof(risky), fmt, sign, imm8);
-		writer.WriteString(risky);
+		renderer.WriteString(risky);
 	}
 }
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ namespace Reko.Core.Operators
 	{
 		public override Constant ApplyConstant(Constant c)
 		{
-			return Constant.Create(c.DataType, ~c.ToInt32());
+			return Constant.Create(c.DataType, ~c.ToInt64());
 		}
 
 		public override string ToString()

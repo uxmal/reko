@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,11 +28,11 @@ namespace Reko.Analysis
 {
 	public class SsaIdentifierCollection : IEnumerable<SsaIdentifier>
 	{
-        private Dictionary<Identifier, SsaIdentifier> sids =
+        private readonly Dictionary<Identifier, SsaIdentifier> sids =
             new Dictionary<Identifier, SsaIdentifier>();
         private int serialNumber = 0;
 
-		public SsaIdentifier Add(Identifier idOld, Statement stmDef, Expression exprDef, bool isSideEffect)
+		public SsaIdentifier Add(Identifier idOld, Statement? stmDef, Expression? exprDef, bool isSideEffect)
 		{
 			int i = ++serialNumber;
 			Identifier idNew;
@@ -94,26 +94,9 @@ namespace Reko.Analysis
             return sids.TryGetValue(id, out sid);
         }
 
-		private string FormatSsaName(Expression e, int v)
+		private string FormatSsaName(Identifier id, int v)
 		{
-            string prefix = null;
-            switch (e)
-            {
-            case Identifier id:
-                prefix = id.Name;
-                break;
-            case BinaryExpression bin:
-                ;
-                int offset = ((Constant)bin.Right).ToInt32();
-                if (offset < 0)
-                    prefix = "loc";
-                else
-                    prefix = "arg";
-                break;
-            default:
-                throw new NotImplementedException(e.ToString());
-            }
-            return string.Format("{0}_{1}", prefix, v);
+            return string.Format("{0}_{1}", id.Name, v);
 		}
 
         private static string ReplaceNumericSuffix(string str, int newSuffix)

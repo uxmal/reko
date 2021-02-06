@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,6 +90,13 @@ namespace Reko.UnitTests.Core.Lib
         public void Bits_Replicate_1_bit_pattern()
         {
             Assert.AreEqual(0b11111ul, Bits.Replicate64(3, 1, 5));
+        }
+
+        [Test]
+        public void Bits_RotateL64()
+        {
+            Assert.AreEqual("1234567800000000", Bits.RotateL64(0x12345678_00000000u, 0).ToString("X16"));
+            Assert.AreEqual("4567800000000123", Bits.RotateL64(0x12345678_00000000u, 12).ToString("X16"));
         }
     }
 }

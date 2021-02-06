@@ -1,0 +1,26 @@
+;;; Segment .dynamic (000001FC)
+; DT_NEEDED            libc.so.6
+; DT_INIT              00000588
+; DT_DEBUG             00000A10
+; DT_HASH              000002F4
+; DT_STRTAB            00000448
+; DT_SYMTAB            00000348
+; DT_STRSZ             000000DD
+; DT_SYMENT                  16
+; DT_MIPS_RLD_MAP_REL  00010844
+; DT_DEBUG             00000000
+; DT_PLTGOT            00010A90
+; DT_REL               00000578
+; DT_RELSZ                   16
+; DT_RELENT                   8
+; DT_MIPS_RLD_VERSION  00000001
+; DT_MIPS_FLAGS        00000002
+; DT_MIPS_BASE_ADDRESS 00000000
+; DT_MIPS_LOCAL_GOTNO        16
+; DT_MIPS_SYMTABNO           16
+; DT_MIPS_UNREFEXTNO         30
+; DT_MIPS_GOTSYM              9
+; DT_FLAGS_1           08000000
+; DT_VERNEED           00000548
+; DT_VERNEEDNUM               1
+; DT_VERSYM            00000526

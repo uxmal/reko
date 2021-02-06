@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Reko.ImageLoaders.Xbe</RootNamespace>
+    <AssemblyName>Reko.ImageLoaders.Xbe</AssemblyName>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Arch\X86\X86.csproj" />
+    <ProjectReference Include="..\..\Core\Core.csproj" />
+    <ProjectReference Include="..\..\Environments\Xbox\Xbox.csproj" />
+  </ItemGroup>
+
+</Project>

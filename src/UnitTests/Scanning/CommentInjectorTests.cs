@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Scanning
 @"ProcedureBuilder_entry:
 l1:
 	// This is a comment
-	Mem0[0x00123400:word32] = a
+	Mem0[0x123400<32>:word32] = a
 ProcedureBuilder_exit:
 ";
             #endregion
@@ -105,9 +105,9 @@ ProcedureBuilder_exit:
             Given_Comment(1, "This is a comment");
 
             var a = m.Reg32("a", 1);
-            m.MStore(m.Word32(0x00123400), a);  // addr 0
-            m.MStore(m.Word32(0x00123404), a);  // addr 1
-            m.MStore(m.Word32(0x00123408), a);  // addr 2
+            m.MStore(m.Ptr32(0x00123400), a);  // addr 0
+            m.MStore(m.Ptr32(0x00123404), a);  // addr 1
+            m.MStore(m.Ptr32(0x00123408), a);  // addr 2
 
             When_CreateInjector();
             cinj.InjectComments(m.Procedure);
@@ -116,10 +116,10 @@ ProcedureBuilder_exit:
             #region Expected
 @"ProcedureBuilder_entry:
 l1:
-	Mem0[0x00123400:word32] = a
+	Mem0[0x00123400<p32>:word32] = a
 	// This is a comment
-	Mem0[0x00123404:word32] = a
-	Mem0[0x00123408:word32] = a
+	Mem0[0x00123404<p32>:word32] = a
+	Mem0[0x00123408<p32>:word32] = a
 ProcedureBuilder_exit:
 ";
             #endregion

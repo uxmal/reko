@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,19 +39,19 @@ namespace Reko.Arch.LatticeMico
             Offset = offset;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteChar('(');
-            writer.WriteString(Base.Name);
+            renderer.WriteChar('(');
+            renderer.WriteString(Base.Name);
             if (Offset > 0)
             {
-                writer.WriteFormat("+{0}", Offset);
+                renderer.WriteFormat("+{0}", Offset);
             }
             else if (Offset < 0)
             {
-                writer.WriteFormat("-{0}", -Offset);
+                renderer.WriteFormat("-{0}", -Offset);
             }
-            writer.WriteChar(')');
+            renderer.WriteChar(')');
         }
     }
 }

@@ -6,7 +6,7 @@ SegmentedMemoryPointerMock2_entry:
 	// succ:  l1
 l1:
 	ax = Mem0[ds:bx:word16]
-	ax = Mem0[ds:bx + 0x0004:word16]
+	ax = Mem0[ds:bx + 4<16>:word16]
 SegmentedMemoryPointerMock2_exit:
 
 // After ///////
@@ -40,15 +40,15 @@ T_3: (in bx : word16)
   Class: Eq_3
   DataType: (memptr (ptr16 Eq_2) Eq_3)
   OrigDataType: (memptr T_2 (struct (0 T_6 t0000) (4 T_10 t0004)))
-T_4: (in 0x0000 : word16)
+T_4: (in 0<16> : word16)
   Class: Eq_4
   DataType: word16
   OrigDataType: word16
-T_5: (in bx + 0x0000 : word16)
+T_5: (in bx + 0<16> : word16)
   Class: Eq_5
   DataType: word16
   OrigDataType: word16
-T_6: (in Mem0[ds:bx + 0x0000:word16] : word16)
+T_6: (in Mem0[ds:bx + 0<16>:word16] : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
@@ -56,15 +56,15 @@ T_7: (in ax : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_8: (in 0x0004 : word16)
+T_8: (in 4<16> : word16)
   Class: Eq_8
   DataType: word16
   OrigDataType: word16
-T_9: (in bx + 0x0004 : word16)
+T_9: (in bx + 4<16> : word16)
   Class: Eq_9
   DataType: (memptr (ptr16 Eq_2) word16)
   OrigDataType: (memptr T_2 (struct (0 T_6 t0000)))
-T_10: (in Mem0[ds:bx + 0x0004:word16] : word16)
+T_10: (in Mem0[ds:bx + 4<16>:word16] : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16

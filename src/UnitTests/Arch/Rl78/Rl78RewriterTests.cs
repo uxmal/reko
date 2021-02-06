@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,11 @@ using NUnit.Framework;
 using Reko.Arch.Rl78;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +41,7 @@ namespace Reko.UnitTests.Arch.Rl78
 
         public Rl78RewriterTests()
         {
-            this.arch = new Rl78Architecture("rl78");
+            this.arch = new Rl78Architecture(CreateServiceContainer(), "rl78", new Dictionary<string, object>());
             this.addr = Address.Ptr32(0x01000);
         }
 
@@ -49,8 +51,8 @@ namespace Reko.UnitTests.Arch.Rl78
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            var state = (Rl78ProcessorState) arch.CreateProcessorState();
-            return new Rl78Rewriter(arch, new LeImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
+            var state = arch.CreateProcessorState();
+            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
         }
 
         [Test]
@@ -69,7 +71,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("C7");  // push hl
             AssertCode(
                 "0|L--|00001000(1): 2 instructions",
-                "1|L--|sp = sp - 2",
+                "1|L--|sp = sp - 2<i16>",
                 "2|L--|Mem0[sp:word16] = hl");
         }
 
@@ -79,7 +81,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("20 08");	// subw	sp,0x08
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|sp = sp - 8",
+                "1|L--|sp = sp - 8<i16>",
                 "2|L--|CZ = cond(sp)");
         }
 
@@ -98,7 +100,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("A1"); // incw ax
             AssertCode(
                 "0|L--|00001000(1): 1 instructions",
-                "1|L--|ax = ax + 1");
+                "1|L--|ax = ax + 1<i16>");
         }
 
         [Test]
@@ -107,7 +109,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("F7"); // clrw bc
             AssertCode(
                 "0|L--|00001000(1): 1 instructions",
-                "1|L--|bc = 0x0000");
+                "1|L--|bc = 0<16>");
         }
 
         [Test]
@@ -116,7 +118,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("49 10 20"); // mov a,[2010h+bc]
             AssertCode(
                 "0|L--|00001000(3): 1 instructions",
-                "1|L--|a = Mem0[0x00002010 + bc:byte]");
+                "1|L--|a = Mem0[0x00002010<p32> + bc:byte]");
         }
 
         [Test]
@@ -134,7 +136,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("51 04"); // mov a,0x04
             AssertCode(
                 "0|L--|00001000(2): 1 instructions",
-                "1|L--|a = 0x04");
+                "1|L--|a = 4<8>");
         }
 
         [Test]
@@ -162,16 +164,16 @@ namespace Reko.UnitTests.Arch.Rl78
             AssertCode(
                 "0|L--|00001000(1): 2 instructions",
                 "1|L--|hl = Mem0[sp:word16]",
-                "2|L--|sp = sp + 2");
+                "2|L--|sp = sp + 2<i16>");
         }
 
         [Test]
         public void Rl78Rw_movw_ax_000A()
         {
-            Given_HexString("30 0A 00"); // movw ax,0x000A
+            Given_HexString("30 0A 00"); // movw ax,0x000A<16>
             AssertCode(
                 "0|L--|00001000(3): 1 instructions",
-                "1|L--|ax = 0x000A");
+                "1|L--|ax = 0xA<16>");
         }
 
         [Test]
@@ -180,7 +182,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("E6"); // onew ax
             AssertCode(
                 "0|L--|00001000(1): 1 instructions",
-                "1|L--|ax = 0x0001");
+                "1|L--|ax = 1<16>");
         }
 
         [Test]
@@ -198,7 +200,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("10 08"); // addw sp,0x08
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|sp = sp + 8",
+                "1|L--|sp = sp + 8<i16>",
                 "2|L--|CZ = cond(sp)");
         }
 
@@ -208,7 +210,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("8F CB FC"); // mov a,[0FCCBh]
             AssertCode(
                 "0|L--|00001000(3): 1 instructions",
-                "1|L--|a = Mem0[0x0000FCCB:byte]");
+                "1|L--|a = Mem0[0x0000FCCB<p32>:byte]");
         }
 
         [Test]
@@ -217,7 +219,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("2C 13"); // sub a,0x13
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|a = a - 0x13",
+                "1|L--|a = a - 0x13<8>",
                 "2|L--|CZ = cond(a)");
         }
 
@@ -227,7 +229,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("92");	// dec	c
             AssertCode(
                 "0|L--|00001000(1): 2 instructions",
-                "1|L--|c = c - 1",
+                "1|L--|c = c - 1<i8>",
                 "2|L--|Z = cond(c)");
         }
 
@@ -237,7 +239,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("D5 DA F9");	// cmp0	[0F9DAh]
             AssertCode(
                 "0|L--|00001000(3): 1 instructions",
-                "1|L--|CZ = cond(Mem0[0x0000F9DA:byte] - 0x00)");
+                "1|L--|CZ = cond(Mem0[0x0000F9DA<p32>:byte] - 0<8>)");
         }
 
         [Test]
@@ -246,7 +248,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("61 49 0A");	// cmpw	ax,[hl+0Ah]
             AssertCode(
                 "0|L--|00001000(3): 1 instructions",
-                "1|L--|CZ = cond(ax - Mem0[hl + 10:word16])");
+                "1|L--|CZ = cond(ax - Mem0[hl + 10<i16>:word16])");
         }
 
         [Test]
@@ -264,7 +266,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("31 8E");   // shrw	ax,0x08
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|ax = ax >>u 0x08",
+                "1|L--|ax = ax >>u 8<8>",
                 "2|L--|C = cond(ax)");
         }
 
@@ -274,7 +276,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("71 00 8C 03");	// set1	[038Ch].0
             AssertCode(
                 "0|L--|00001000(4): 1 instructions",
-                "1|L--|__set_bit(Mem0[0x0000038C:byte], 0x00, true)");
+                "1|L--|__set_bit(Mem0[0x0000038C<p32>:byte], 0<8>, true)");
         }
 
         [Test]
@@ -283,7 +285,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("31 8F");	// sarw	ax,0x08
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|ax = ax >> 0x08",
+                "1|L--|ax = ax >> 8<8>",
                 "2|L--|C = cond(ax)");
         }
 
@@ -302,7 +304,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("5C FE");	// and	a,0xFE
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|a = a & 0xFE",
+                "1|L--|a = a & 0xFE<8>",
                 "2|L--|Z = cond(a)");
         }
 
@@ -330,7 +332,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("B1");	// decw	ax
             AssertCode(
                 "0|L--|00001000(1): 1 instructions",
-                "1|L--|ax = ax - 1");
+                "1|L--|ax = ax - 1<i16>");
         }
 
         [Test]
@@ -348,7 +350,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("E5 01 92");	// oneb	[9201h]
             AssertCode(
                 "0|L--|00001000(3): 1 instructions",
-                "1|L--|Mem0[0x00009201:byte] = 0x01");
+                "1|L--|Mem0[0x00009201<p32>:byte] = 1<8>");
         }
 
         [Test]
@@ -359,10 +361,10 @@ namespace Reko.UnitTests.Arch.Rl78
                 "0|T--|00001000(2): 1 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00001003",
                 "2|L--|00001002(1): 2 instructions",
-                "3|L--|a = a + 1",
+                "3|L--|a = a + 1<i8>",
                 "4|L--|Z = cond(a)",
                 "5|L--|00001003(1): 2 instructions",
-                "6|L--|b = b + 1",
+                "6|L--|b = b + 1<i8>",
                 "7|L--|Z = cond(b)");
 
         }
@@ -373,7 +375,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("1F D7 C1");	// addc	a,[0C1D7h]
             AssertCode(
                 "0|L--|00001000(3): 2 instructions",
-                "1|L--|a = a + Mem0[0x0000C1D7:byte] + C",
+                "1|L--|a = a + Mem0[0x0000C1D7<p32>:byte] + C",  //$LIT should be p16
                 "2|L--|CZ = cond(a)");
         }
 
@@ -394,8 +396,8 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("7A E8 04");	// xor	[0FFF08h],0x04
             AssertCode(
                 "0|L--|00001000(3): 3 instructions",
-                "1|L--|v2 = Mem0[0x000FFF08:byte] ^ 0x04",
-                "2|L--|Mem0[0x000FFF08:byte] = v2",
+                "1|L--|v2 = Mem0[0x000FFF08<p32>:byte] ^ 4<8>",
+                "2|L--|Mem0[0x000FFF08<p32>:byte] = v2",
                 "3|L--|Z = cond(v2)");
         }
 
@@ -414,7 +416,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("31 74 0D 05");	// bf	[0FFE2Dh].7,000000EA
             AssertCode(
                 "0|T--|00001000(4): 1 instructions",
-                "1|T--|if (!__bit(Mem0[0x000FFE2D:byte], 0x07)) branch 00001009");
+                "1|T--|if (!__bit(Mem0[0x000FFE2D<p32>:byte], 7<8>)) branch 00001009"); //$LIT
         }
 
         [Test]
@@ -423,7 +425,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("71 23 30");	// clr1	[0FFE50h].2
             AssertCode(
                 "0|L--|00001000(3): 1 instructions",
-                "1|L--|__set_bit(Mem0[0x000FFE50:byte], 0x02, false)");
+                "1|L--|__set_bit(Mem0[0x000FFE50<p32>:byte], 2<8>, false)");
         }
 
         [Test]
@@ -443,7 +445,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("84");	// inc	e
             AssertCode(
                 "0|L--|00001000(1): 2 instructions",
-                "1|L--|e = e + 1",
+                "1|L--|e = e + 1<i8>",      //$LIT: should be 1<8>
                 "2|L--|Z = cond(e)");
         }
 
@@ -453,7 +455,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("6B 00");	// or	a,[0FFE20h]
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|a = a | Mem0[0x000FFE20:byte]",
+                "1|L--|a = a | Mem0[0x000FFE20<p32>:byte]",
                 "2|L--|Z = cond(a)");
         }
 
@@ -473,7 +475,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("31 23 03");	// bt	a.2,000002FF
             AssertCode(
                 "0|T--|00001000(3): 1 instructions",
-                "1|T--|if (__bit(a, 0x02)) branch 00001006");
+                "1|T--|if (__bit(a, 2<8>)) branch 00001006");
         }
 
         [Test]
@@ -500,8 +502,8 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("31 00 FC D6");	// btclr	[0FFF1Ch].0,00000690
             AssertCode(
                 "0|T--|00001000(4): 3 instructions",
-                "1|T--|if (!__bit(Mem0[0x000FFF1C:byte], 0x00)) branch 00001004",
-                "2|L--|__set_bit(Mem0[0x000FFF1C:byte], 0x00, false)",
+                "1|T--|if (!__bit(Mem0[0x000FFF1C<p32>:byte], 0<8>)) branch 00001004",
+                "2|L--|__set_bit(Mem0[0x000FFF1C<p32>:byte], 0<8>, false)",
                 "3|T--|goto 00000FDA");
         }
 
@@ -511,7 +513,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("61 CF");	// sel	rb0
             AssertCode(
                 "0|L--|00001000(2): 1 instructions",
-                "1|L--|__select_register_bank(0x00)");
+                "1|L--|__select_register_bank(0<8>)");
         }
 
         [Test]
@@ -520,7 +522,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("71 8C");	// mov1	cy,a.0
             AssertCode(
                 "0|L--|00001000(2): 1 instructions",
-                "1|L--|cy = __bit(a, 0x00)");
+                "1|L--|cy = __bit(a, 0<8>)");
         }
 
         [Test]
@@ -529,7 +531,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("61 EE");	// rolwc	ax,0x01
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|ax = __rcl(ax, C, 0x01)",
+                "1|L--|ax = __rcl(ax, C, 1<8>)",
                 "2|L--|C = cond(ax)");
         }
 
@@ -539,7 +541,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("71 2E 8F");	// or1	cy,[0FFF8Fh].2
             AssertCode(
                 "0|L--|00001000(3): 1 instructions",
-                "1|L--|cy = cy | __bit(Mem0[0x000FFF8F:byte], 0x02)");
+                "1|L--|cy = cy | __bit(Mem0[0x000FFF8F<p32>:byte], 2<8>)");
         }
 
         [Test]
@@ -548,7 +550,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("71 2F EE");	// xor1	cy,[0FFFEEh].2
             AssertCode(
                 "0|L--|00001000(3): 1 instructions",
-                "1|L--|cy = cy ^ __bit(Mem0[0x000FFFEE:byte], 0x02)");
+                "1|L--|cy = cy ^ __bit(Mem0[0x000FFFEE<p32>:byte], 2<8>)");
         }
 
         [Test]
@@ -557,7 +559,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("31 69");	// shl	a,0x06
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|a = a << 0x06",
+                "1|L--|a = a << 6<8>",
                 "2|L--|C = cond(a)");
         }
 
@@ -567,7 +569,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("31 7A");	// shr	a,0x07
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|a = a >>u 0x07",
+                "1|L--|a = a >>u 7<8>",
                 "2|L--|C = cond(a)");
         }
 
@@ -577,7 +579,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("61 D5");	// callt	[009Ah]
             AssertCode(
                 "0|T--|00001000(2): 1 instructions",
-                "1|T--|call Mem0[0x0000009A:word16] (4)");
+                "1|T--|call Mem0[0x0000009A<p32>:word16] (4)");
         }
 
         [Test]
@@ -604,7 +606,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("61 DC");	// rolc	a,0x01
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|a = __rcl(a, C, 0x01)",
+                "1|L--|a = __rcl(a, C, 1<8>)",
                 "2|L--|C = cond(a)");
         }
 
@@ -623,7 +625,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("71 A5");	// and1	cy,[hl].2
             AssertCode(
                 "0|L--|00001000(2): 1 instructions",
-                "1|L--|cy = cy & __bit(Mem0[hl:byte], 0x02)");
+                "1|L--|cy = cy & __bit(Mem0[hl:byte], 2<8>)");
         }
 
         [Test]
@@ -632,7 +634,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("61 EB");	// rol	a,0x01
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|a = __rol(a, 0x01)",
+                "1|L--|a = __rol(a, 1<8>)",
                 "2|L--|C = cond(a)");
         }
 

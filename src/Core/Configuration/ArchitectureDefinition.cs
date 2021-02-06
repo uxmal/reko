@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,21 +30,26 @@ namespace Reko.Core.Configuration
         /// <summary>
         /// Short abbreviation for the architecture.
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Human-readable description of the processor architecture
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>
         /// .NET type name for the architecture.
         /// </summary>
-        public string TypeName { get; set; }
+        public string? TypeName { get; set; }
 
         /// <summary>
         /// Available property options.
         /// </summary>
-        public List<PropertyOption> Options{ get; set; }
+        public List<PropertyOption> Options { get; set; } = new List<PropertyOption>();
+
+        /// <summary>
+        /// Available processor models.
+        /// </summary>
+        public Dictionary<string, ModelDefinition> Models { get; set; } = new Dictionary<string, ModelDefinition>();
     }
 }

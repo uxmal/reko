@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,13 +83,14 @@ namespace Reko.Arch.Arm.AArch32
 
         public AArch32Instruction()
         {
-            this.condition = ArmCondition.AL;
+            this.Condition = ArmCondition.AL;
         }
 
         public Mnemonic Mnemonic { get; set; }
-        public ArmCondition condition { get; set; }
+        public ArmCondition Condition { get; set; }
 
         public override int MnemonicAsInteger => (int) Mnemonic;
+        public override string MnemonicAsString => Mnemonic.ToString();
 
         /// <summary>
         /// PC-relative addressing has an extra offset.This varies
@@ -98,31 +99,31 @@ namespace Reko.Arch.Arm.AArch32
         public abstract Address ComputePcRelativeAddress(MemoryOperand mem);
 
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Mnemonic == Mnemonic.it)
             {
                 var itMnemonic = RenderIt();
-                writer.WriteMnemonic(itMnemonic);
-                writer.Tab();
-                writer.WriteString(condition.ToString().ToLowerInvariant());
+                renderer.WriteMnemonic(itMnemonic);
+                renderer.Tab();
+                renderer.WriteString(Condition.ToString().ToLowerInvariant());
                 return;
             }
-            var (ops, writeback) = RenderMnemonic(writer);
+            var (ops, writeback) = RenderMnemonic(renderer);
             if (ops.Length > 0)
             {
-                writer.Tab();
-                RenderOperand(ops[0], writer, options);
+                renderer.Tab();
+                RenderOperand(ops[0], renderer, options);
                 if (writeback &&
                     blockDataXferMnemonics.Contains(Mnemonic) &&
                     ops[0] is RegisterOperand)
                 {
-                    writer.WriteChar('!');
+                    renderer.WriteChar('!');
                 }
                 for (int iOp = 1; iOp < ops.Length; ++iOp)
                 {
-                    writer.WriteChar(',');
-                    RenderOperand(ops[iOp], writer, options);
+                    renderer.WriteChar(',');
+                    RenderOperand(ops[iOp], renderer, options);
                 }
             }
     
@@ -132,18 +133,18 @@ namespace Reko.Arch.Arm.AArch32
                     !(ShiftValue is ImmediateOperand imm) ||
                     !imm.Value.IsZero)
                 {
-                    writer.WriteChar(',');
-                    writer.WriteMnemonic(ShiftType.ToString());
+                    renderer.WriteChar(',');
+                    renderer.WriteMnemonic(ShiftType.ToString());
                     if (ShiftType != Mnemonic.rrx)
                     {
-                        writer.WriteChar(' ');
-                        RenderOperand(ShiftValue, writer, options);
+                        renderer.WriteChar(' ');
+                        RenderOperand(ShiftValue, renderer, options);
                     }
                 }
             }
             if (UserStmLdm)
             {
-                writer.WriteChar('^');
+                renderer.WriteChar('^');
             }
         }
 
@@ -174,7 +175,7 @@ namespace Reko.Arch.Arm.AArch32
                 mem.Offset.ToInt32() == Operands[0].Width.Size;
         }
 
-        private (MachineOperand[], bool) RenderMnemonic(MachineInstructionWriter writer)
+        private (MachineOperand[], bool) RenderMnemonic(MachineInstructionRenderer renderer)
         {
             var sb = new StringBuilder();
             string sMnemonic;
@@ -190,7 +191,7 @@ namespace Reko.Arch.Arm.AArch32
                 sMnemonic = Mnemonic.ToString();
             }
             var sUpdate = SetFlags ? "s" : "";
-            var sCond = condition == ArmCondition.AL ? "" : condition.ToString().ToLowerInvariant();
+            var sCond = Condition == ArmCondition.AL ? "" : Condition.ToString().ToLowerInvariant();
             sb.Append(sMnemonic);
             if (Mnemonic != Mnemonic.Invalid)
             {
@@ -210,16 +211,16 @@ namespace Reko.Arch.Arm.AArch32
                     sb.Append(".w");
                 }
             }
-            writer.WriteMnemonic(sb.ToString());
+            renderer.WriteMnemonic(sb.ToString());
             return ops;
         }
 
         private string RenderIt()
         {
             var sb = new StringBuilder();
-            ;  sb.Append("it");
+            sb.Append("it");
             int mask = this.itmask;
-            var bit = (~(int)this.condition & 1) << 3;
+            var bit = (~(int)this.Condition & 1) << 3;
 
             while ((mask & 0xF) != 8)
             {
@@ -229,128 +230,128 @@ namespace Reko.Arch.Arm.AArch32
             return sb.ToString();
         }
 
-        protected override void RenderOperand(MachineOperand op, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             switch (op)
             {
             case ImmediateOperand imm:
                 if (imm.Value.IsReal)
                 {
-                    writer.WriteFormat("#{0}", imm.Value.ToString());
+                    renderer.WriteFormat("#{0}", imm.Value.ToString());
                 }
                 else
                 {
                     int v = imm.Value.ToInt32();
                     if (0 <= v && v <= 9)
-                        writer.WriteFormat($"#{imm.Value.ToInt32()}");
+                        renderer.WriteFormat($"#{imm.Value.ToInt32()}");
                     else
-                        writer.WriteFormat($"#&{imm.Value.ToUInt64():X}");
+                        renderer.WriteFormat($"#&{imm.Value.ToUInt64():X}");
                 }
                 break;
             case AddressOperand aop:
-                writer.WriteAddress($"${aop.Address}", aop.Address);
+                renderer.WriteAddress($"${aop.Address}", aop.Address);
                 break;
             case MemoryOperand mem:
                 if (mem.BaseRegister == Registers.pc)
                 {
-                    RenderPcRelativeAddressAnnotation(mem, writer, options);
+                    RenderPcRelativeAddressAnnotation(mem, renderer, options);
                 }
                 else
                 {
-                    RenderMemoryOperand(mem, writer);
+                    RenderMemoryOperand(mem, renderer);
                 }
                 break;
             default:
-                op.Write(writer, options);
+                op.Render(renderer, options);
                 break;
             }
         }
 
-        private void RenderMemoryOperand(MemoryOperand mem, MachineInstructionWriter writer)
+        private void RenderMemoryOperand(MemoryOperand mem, MachineInstructionRenderer renderer)
         {
-            writer.WriteChar('[');
-            writer.WriteString(mem.BaseRegister.Name);
+            renderer.WriteChar('[');
+            renderer.WriteString(mem.BaseRegister.Name);
             if (this.Writeback && !mem.PreIndex)
             {
                 // Post-indexed
                 if (mem.Alignment != 0)
                 {
-                    writer.WriteFormat(":{0}", mem.Alignment);
+                    renderer.WriteFormat(":{0}", mem.Alignment);
                 }
-                writer.WriteString("]");
+                renderer.WriteString("]");
                 if (mem.Offset != null && !mem.Offset.IsIntegerZero)
                 {
-                    writer.WriteChar(',');
+                    renderer.WriteChar(',');
                     if (!mem.Add)
-                        writer.WriteChar('-');
-                    writer.WriteString("#&");
-                    writer.WriteString(mem.Offset.ToUInt32().ToString("X"));
+                        renderer.WriteChar('-');
+                    renderer.WriteString("#&");
+                    renderer.WriteString(mem.Offset.ToUInt32().ToString("X"));
                 }
                 else if (mem.Index != null)
                 {
-                    writer.WriteChar(',');
+                    renderer.WriteChar(',');
                     if (!mem.Add)
-                        writer.WriteChar('-');
-                    writer.WriteString(mem.Index.Name);
+                        renderer.WriteChar('-');
+                    renderer.WriteString(mem.Index.Name);
                 }
             }
             else
             {
                 if (mem.Offset != null && !mem.Offset.IsIntegerZero)
                 {
-                    writer.WriteString(",");
+                    renderer.WriteString(",");
                     if (!mem.Add)
-                        writer.WriteChar('-');
-                    writer.WriteString("#&");
-                    writer.WriteString(mem.Offset.ToUInt32().ToString("X"));
+                        renderer.WriteChar('-');
+                    renderer.WriteString("#&");
+                    renderer.WriteString(mem.Offset.ToUInt32().ToString("X"));
                 }
                 else if (mem.Index != null)
                 {
-                    writer.WriteChar(',');
+                    renderer.WriteChar(',');
                     if (!mem.Add)
-                        writer.WriteChar('-');
-                    writer.WriteString(mem.Index.Name);
+                        renderer.WriteChar('-');
+                    renderer.WriteString(mem.Index.Name);
                     if (mem.ShiftType != Mnemonic.Invalid)
                     {
-                        writer.WriteChar(',');
-                        writer.WriteString(mem.ShiftType.ToString().ToLowerInvariant());
+                        renderer.WriteChar(',');
+                        renderer.WriteString(mem.ShiftType.ToString().ToLowerInvariant());
                         if (this.ShiftType != Mnemonic.rrx)
                         {
-                            writer.WriteFormat(" #{0}", mem.Shift);
+                            renderer.WriteFormat(" #{0}", mem.Shift);
                         }
                     }
                 }
                 if (mem.Alignment != 0)
                 {
-                    writer.WriteFormat(":{0}", mem.Alignment);
+                    renderer.WriteFormat(":{0}", mem.Alignment);
                 }
-                writer.WriteChar(']');
+                renderer.WriteChar(']');
                 if (this.Writeback)
                 {
-                    writer.WriteChar('!');
+                    renderer.WriteChar('!');
                 }
             }
         }
 
-        private void RenderPcRelativeAddressAnnotation(MemoryOperand mem, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        private void RenderPcRelativeAddressAnnotation(MemoryOperand mem, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             var addr = ComputePcRelativeAddress(mem);
             if (mem.Index == null &&
-                (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                (options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)
             {
-                writer.WriteChar('[');
-                writer.WriteAddress(addr.ToString(), addr);
-                writer.WriteChar(']');
+                renderer.WriteChar('[');
+                renderer.WriteAddress(addr.ToString(), addr);
+                renderer.WriteChar(']');
 
                 var sr = new StringRenderer();
                 RenderMemoryOperand(mem, sr);
                 var str = sr.ToString();
-                writer.AddAnnotation(str);
+                renderer.AddAnnotation(str);
             }
             else
             {
-                RenderMemoryOperand(mem, writer);
-                writer.AddAnnotation(addr.ToString());
+                RenderMemoryOperand(mem, renderer);
+                renderer.AddAnnotation(addr.ToString());
             }
         }
 

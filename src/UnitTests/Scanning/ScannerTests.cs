@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,13 +21,15 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
-using Reko.Assemblers.x86;
+using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Environments.Msdos;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
 using Reko.UnitTests.Scanning.Fragments;
@@ -52,7 +54,7 @@ namespace Reko.UnitTests.Scanning
         private IDictionary<Address, FunctionType> callSigs;
         private ServiceContainer sc;
         private Project project;
-        private MemoryArea mem;
+        private ByteMemoryArea bmem;
         private DecompilerEventListener eventListener;
 
         public class TestScanner : Scanner
@@ -77,14 +79,14 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            fakeArch = new FakeArchitecture();
+            this.sc = new ServiceContainer();
+            fakeArch = new FakeArchitecture(sc);
             dynamicLinker = new Mock<IDynamicLinker>();
             callSigs = new Dictionary<Address, FunctionType>();
             this.eventListener = new FakeDecompilerEventListener();
             arch = fakeArch;
             var r1 = fakeArch.GetRegister(1);
             reg1 = new Identifier(r1.Name, PrimitiveType.Word32, r1);
-            this.sc = new ServiceContainer();
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
@@ -105,10 +107,11 @@ namespace Reko.UnitTests.Scanning
         private void BuildX86RealTest(Action<X86Assembler> test)
         {
             var addr = Address.SegPtr(0x0C00, 0);
-            var arch = new X86ArchitectureReal("x86-real-16");
-            var m = new X86Assembler(sc, new FakePlatform(null, arch), addr, new List<ImageSymbol>());
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
+            var m = new X86Assembler(arch, addr, new List<ImageSymbol>());
             test(m);
             this.program = m.GetImage();
+            this.program.Platform = new MsdosPlatform(sc, arch);
             this.scan = this.CreateScanner(this.program);
             var sym = ImageSymbol.Procedure(arch, addr);
             scan.EnqueueImageSymbol(sym, true);
@@ -174,12 +177,12 @@ namespace Reko.UnitTests.Scanning
 
         private void Given_Program(Address address, byte[] bytes)
         {
-            var mem = new MemoryArea(address, bytes);
+            var mem = new ByteMemoryArea(address, bytes);
             var segmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("proggie", mem, AccessMode.ReadExecute));
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
-            var platform = new FakePlatform(null, arch);
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
+            var platform = new FakePlatform(sc, arch);
             platform.Test_DefaultCallingConvention = "__cdecl";
             this.program = new Program
             {
@@ -213,11 +216,11 @@ namespace Reko.UnitTests.Scanning
 
         private TestScanner CreateScanner(uint startAddress, int imageSize)
         {
-            mem = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
+            bmem = new ByteMemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
             program = new Program
             {
-                SegmentMap = new SegmentMap(mem.BaseAddress,
-                    new ImageSegment("progseg", mem, AccessMode.ReadExecute)),
+                SegmentMap = new SegmentMap(bmem.BaseAddress,
+                    new ImageSegment("progseg", bmem, AccessMode.ReadExecute)),
                 Architecture = arch,
                 Platform = new FakePlatform(null, arch)
             };
@@ -241,10 +244,10 @@ namespace Reko.UnitTests.Scanning
             this.program = program;
             program.Architecture = arch;
             program.Platform = new FakePlatform(null, arch);
-            this.mem = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
+            this.bmem = new ByteMemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
             program.SegmentMap = new SegmentMap(
-                mem.BaseAddress,
-                new ImageSegment("progseg", this.mem, AccessMode.ReadExecute));
+                bmem.BaseAddress,
+                new ImageSegment("progseg", this.bmem, AccessMode.ReadExecute));
             return new TestScanner(program, dynamicLinker.Object, sc);
         }
 
@@ -267,9 +270,9 @@ namespace Reko.UnitTests.Scanning
             Enqueue(Address.Ptr32(0x106), proc);
             Enqueue(Address.Ptr32(0x104), proc);
 
-            Assert.AreEqual("l00000101", scan.FindContainingBlock(Address.Ptr32(0x103)).Name);
-            Assert.AreEqual("l00000104", scan.FindContainingBlock(Address.Ptr32(0x105)).Name);
-            Assert.AreEqual("l00000106", scan.FindContainingBlock(Address.Ptr32(0x106)).Name);
+            Assert.AreEqual("l00000101", scan.FindContainingBlock(Address.Ptr32(0x103)).DisplayName);
+            Assert.AreEqual("l00000104", scan.FindContainingBlock(Address.Ptr32(0x105)).DisplayName);
+            Assert.AreEqual("l00000106", scan.FindContainingBlock(Address.Ptr32(0x106)).DisplayName);
         }
 
         private void Enqueue(Address addr, Procedure proc)
@@ -315,11 +318,11 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Scanner_CallGraphTree()
         {
-            var arch = new X86ArchitectureReal("x86-real-16");
+            var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             program = new Program();
             program.Architecture = arch;
             var addr = Address.SegPtr(0xC00, 0);
-            var m = new X86Assembler(sc, new DefaultPlatform(sc, arch), addr, new List<ImageSymbol>());
+            var m = new X86Assembler(arch, addr, new List<ImageSymbol>());
             m.i86();
 
             m.Proc("main");
@@ -377,16 +380,16 @@ namespace Reko.UnitTests.Scanning
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax = 0x0000
+	ax = 0<16>
 	// succ:  l0C00_0003
 l0C00_0003:
-	Mem0[ds:si + 0x0000:byte] = 0x00
-	si = si + 0x0001
+	Mem0[ds:si + 0<16>:byte] = 0<8>
+	si = si + 1<16>
 	SZO = cond(si)
-	cx = cx - 0x0001
+	cx = cx - 1<16>
 	SZO = cond(cx)
 	branch Test(NE,Z) l0C00_0003
 	// succ:  l0C00_000B l0C00_0003
@@ -402,7 +405,7 @@ fn0C00_0000_exit:
 
         private void Given_x86_Flat32()
         {
-            arch = new X86ArchitectureFlat32("x86-protected-32");
+            arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
         }
 
         [Test]
@@ -438,8 +441,9 @@ fn0C00_0000_exit:
         public void Scanner_IsLinearReturning_EmptyBlock()
         {
             var scanner = CreateScanner(0x1000, 0x1000);
-            var proc = new Procedure(program.Architecture, "fn1000", Address.Ptr32(0x00001000), arch.CreateFrame());
-            var block = new Block(proc, "l1000");
+            var addr = Address.Ptr32(0x00001000);
+            var proc = new Procedure(program.Architecture, "fn1000", addr, arch.CreateFrame());
+            var block = new Block(proc, addr, "l1000");
             Assert.IsFalse(scanner.IsLinearReturning(block));
         }
 
@@ -472,12 +476,12 @@ fn0C00_0000_exit:
             Given_Trace(new RtlTrace(0x1000)
             {
                 m => { m.Assign(reg1, m.Word32(0)); },
-                m => { m.Assign(m.Mem32(m.Word32(0x1800)), reg1); },
+                m => { m.Assign(m.Mem32(m.Ptr32(0x1800)), reg1); },
                 m => { m.Return(0, 0); }
             });
             Given_Trace(new RtlTrace(0x1004)
             {
-                m => { m.Assign(m.Mem32(m.Word32(0x1800)), reg1); },
+                m => { m.Assign(m.Mem32(m.Ptr32(0x1800)), reg1); },
                 m => { m.Return(0, 0); }
             });
             Given_Trace(new RtlTrace(0x1100)
@@ -498,9 +502,9 @@ define fn00001000
 fn00001000_entry:
 	r63 = fp
 l00001000:
-	r1 = 0x00000000
+	r1 = 0<32>
 l00001004:
-	Mem0[0x00001800:word32] = r1
+	Mem0[0x00001800<p32>:word32] = r1
 	return
 fn00001000_exit:
 
@@ -511,10 +515,10 @@ fn00001100_entry:
 	r63 = fp
 	goto l00001100
 l00001004_in_fn00001100:
-	Mem0[0x00001800:word32] = r1
+	Mem0[0x00001800<p32>:word32] = r1
 	return
 l00001100:
-	r1 = 0x00000001
+	r1 = 1<32>
 	goto l00001004_in_fn00001100
 fn00001100_exit:
 
@@ -528,16 +532,16 @@ fn00001100_exit:
             var scan = CreateScanner(0x1000, 0x2000);
             Given_Trace(new RtlTrace(0x1000)
             {
-                // 0x1000:
+                // 0x1000<16>:
                 m => { m.Assign(reg1, m.Word32(0)); },
-                // 0x1004:
+                // 0x1004<16>:
                 m => { m.Goto(Address.Ptr32(0x1100)); }
             });
             Given_Trace(new RtlTrace(0x1100)
             {
-                // 0x1100:
+                // 0x1100<16>:
                 m => { m.Assign(reg1, m.Word32(1)); },
-                // 0x1104:
+                // 0x1104<16>:
                 m => { m.Goto(Address.Ptr32(0x1004)); },
             });
             fakeArch.Test_IgnoreAllUnkownTraces();
@@ -555,12 +559,12 @@ fn00001000_entry:
 	r63 = fp
 	// succ:  l00001000
 l00001000:
-	r1 = 0x00000000
+	r1 = 0<32>
 	// succ:  l00001004
 l00001004:
 	// succ:  l00001100
 l00001100:
-	r1 = 0x00000001
+	r1 = 1<32>
 	goto l00001004
 	// succ:  l00001004
 fn00001000_exit:
@@ -575,7 +579,8 @@ fn00001000_exit:
             var scan = CreateScanner(0x1000, 0x2000);
             var platform = new Mock<IPlatform>();
             platform.Setup(p => p.GetTrampolineDestination(
-                It.IsAny<IEnumerable<RtlInstructionCluster>>(),
+                It.IsAny<Address>(),
+                It.IsAny<IEnumerable<RtlInstruction>>(),
                 It.IsAny<IRewriterHost>()))
                 .Returns(new ExternalProcedure("bar", new FunctionType()));
             platform.Setup(p => p.LookupProcedureByName("foo.dll", "bar")).Returns(
@@ -769,16 +774,16 @@ define fn1000
 fn1000_entry:
 	r63 = fp
 l00001000:
-	r1 = 0x00000003
-	r63 = r63 - 0x00000004
+	r1 = 3<32>
+	r63 = r63 - 4<32>
 	Mem0[r63:word32] = r1
 	call fn00001200 (retsize: 4;)
-	r63 = r63 + 0x00000008
-	r1 = 0x00000003
-	r63 = r63 - 0x00000004
+	r63 = r63 + 8<32>
+	r1 = 3<32>
+	r63 = r63 - 4<32>
 	Mem0[r63:word32] = r1
 	call fn00001100 (retsize: 4;)
-	r63 = r63 + 0x00000008
+	r63 = r63 + 8<32>
 	return
 fn1000_exit:
 
@@ -788,20 +793,20 @@ define fn00001100
 fn00001100_entry:
 	r63 = fp
 l00001100:
-	r1 = Mem0[r63 + 0x00000004:word32]
-	branch r1 == 0x00000000 l00001120
+	r1 = Mem0[r63 + 4<32>:word32]
+	branch r1 == 0<32> l00001120
 	goto l00001108
 l00001100:
 l00001108:
-	r1 = Mem0[r63 + 0x00000004:word32]
-	r1 = r1 - 0x00000001
-	Mem0[r63 + 0x00000004:word32] = r1
-	goto 0x00001200
+	r1 = Mem0[r63 + 4<32>:word32]
+	r1 = r1 - 1<32>
+	Mem0[r63 + 4<32>:word32] = r1
+	goto 0x00001200<p32>
 l00001114_thunk_fn00001200:
 	call fn00001200 (retsize: 0;)
 	return
 l00001120:
-	r1 = 0x00000000
+	r1 = 0<32>
 	return
 fn00001100_exit:
 
@@ -811,18 +816,18 @@ define fn00001200
 fn00001200_entry:
 	r63 = fp
 l00001200:
-	r1 = Mem0[r63 + 0x00000004:word32]
-	branch r1 == 0x00000000 l00001220
+	r1 = Mem0[r63 + 4<32>:word32]
+	branch r1 == 0<32> l00001220
 l00001208:
-	r1 = Mem0[r63 + 0x00000004:word32]
-	r1 = r1 - 0x00000001
-	Mem0[r63 + 0x00000004:word32] = r1
-	goto 0x00001100
+	r1 = Mem0[r63 + 4<32>:word32]
+	r1 = r1 - 1<32>
+	Mem0[r63 + 4<32>:word32] = r1
+	goto 0x00001100<p32>
 l00001214_thunk_fn00001100:
 	call fn00001100 (retsize: 0;)
 	return
 l00001220:
-	r1 = 0x00000001
+	r1 = 1<32>
 	return
 fn00001200_exit:
 
@@ -836,7 +841,7 @@ fn00001200_exit:
             var scanner = CreateScanner(0x1000, 0x2000);
             var addrEmulated = Address.Ptr32(0x5000);
             var addrThunk = Address.Ptr32(0x1800);
-            mem.WriteLeUInt32(addrThunk, addrEmulated.ToUInt32());
+            bmem.WriteLeUInt32(addrThunk, addrEmulated.ToUInt32());
             program.InterceptedCalls.Add(
                 addrEmulated,
                 new ExternalProcedure("Foo", new FunctionType()));
@@ -865,7 +870,7 @@ fn00001200_exit:
                 arch.CreateProcessorState());
 
             var r1 = proc.Frame.EnsureIdentifier(arch.GetRegister("r1"));
-            Assert.AreEqual("0x00000DC0", scanner.Test_State.GetValue(r1).ToString());
+            Assert.AreEqual("0xDC0<32>", scanner.Test_State.GetValue(r1).ToString());
         }
 
         [Test(Description = "EntryPoints with no discernible type should not crash")]

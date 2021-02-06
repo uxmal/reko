@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -36,34 +37,49 @@ namespace Reko.Core.Output
         private readonly Program program;
         private readonly IServiceProvider services;
         private readonly DataTypeComparer cmp;
-        private EndianImageReader rdr;
-        private CodeFormatter codeFormatter;
-        private StructureType globals;
-        private int recursionGuard;     //$REVIEW: remove this once deep recursion bugs have been flushed out.
-        private Formatter formatter;
-        private TypeReferenceFormatter tw;
+        private readonly CodeFormatter codeFormatter;
+        private readonly Formatter formatter;
+        private readonly TypeReferenceFormatter tw;
+        private readonly bool chasePointers;
+        private readonly bool showAddressInComment;
         private Queue<StructureField> queue;
+        private StructureType globals;
+        private EndianImageReader? rdr;
+        private int recursionGuard;     //$REVIEW: remove this once deep recursion bugs have been flushed out.
 
-        public GlobalDataWriter(Program program, IServiceProvider services)
+        public GlobalDataWriter(Program program, Formatter formatter, bool chasePointers, bool showAddressInComment, IServiceProvider services)
         {
             this.program = program;
+            this.formatter = formatter;
+            this.chasePointers = chasePointers;
+            this.showAddressInComment = showAddressInComment;
             this.services = services;
             this.cmp = new DataTypeComparer();
+            this.codeFormatter = new AbsynCodeFormatter(formatter);
+            this.tw = new TypeReferenceFormatter(formatter);
+            var eqGlobalStruct = program.Globals.TypeVariable?.Class;
+            if (eqGlobalStruct != null)
+            {
+                var globals = eqGlobalStruct.ResolveAs<StructureType>();
+                if (globals != null)
+                    this.globals = globals;
+                else
+                    this.globals = new StructureType();
+            }
+            else
+            {
+                this.globals = new StructureType();
+            }
+            this.queue = new Queue<StructureField>(globals.Fields);
         }
 
-        public void WriteGlobals(Formatter formatter)
+        public void Write()
         {
-            this.formatter = formatter;
-            this.codeFormatter = new CodeFormatter(formatter);
-            this.tw = new TypeReferenceFormatter(formatter);
-            var eqGlobalStruct = program.Globals.TypeVariable.Class;
-            this.globals = eqGlobalStruct.ResolveAs<StructureType>();
-            if (this.globals == null)
+            if (queue.Count == 0)
             {
                 Debug.Print("No global variables found.");
                 return;
             }
-            this.queue = new Queue<StructureField>(globals.Fields);
             while (queue.Count > 0)
             {
                 var field = queue.Dequeue();
@@ -73,14 +89,19 @@ namespace Reko.Core.Output
 
         private void WriteGlobalVariable(StructureField field)
         {
-            var name = string.Format("g_{0:X}", field.Name);
+            var name = program.NamingPolicy.GlobalName(field);
             var addr = Address.Ptr32((uint)field.Offset);  //$BUG: this is completely wrong; field.Offsets should be as wide as the platform permits.
+            var oneLineDeclaration = IsOneLineDeclaration(field.DataType);
             try
             {
                 tw.WriteDeclaration(field.DataType, name);
                 if (program.SegmentMap.IsValidAddress(addr))
                 {
                     formatter.Write(" = ");
+                    if (!oneLineDeclaration && showAddressInComment)
+                    {
+                        formatter.Write("// {0}", addr);
+                    }
                     this.rdr = program.CreateImageReader(program.Architecture, addr);
                     field.DataType.Accept(this);
                 }
@@ -92,23 +113,35 @@ namespace Reko.Core.Output
                     dc.CreateAddressNavigator(program, addr),
                     ex,
                     "Failed to write global variable {0}.", name);
+                formatter.Terminate(";");
+                return;
             }
+            if (oneLineDeclaration && showAddressInComment)
+            {
+                formatter.Write("; // {0}", addr);
+                formatter.Terminate();
+            }
+            else
+            {
             formatter.Terminate(";");
         }
+        }
 
-        public void WriteGlobalVariable(Address address, DataType dataType, string name, Formatter formatter)
+        public void WriteGlobalVariable(Address address, DataType dataType, string name)
         {
-            this.formatter = formatter;
-            this.codeFormatter = new CodeFormatter(formatter);
-            this.tw = new TypeReferenceFormatter(formatter);
             this.globals = new StructureType();
             this.queue = new Queue<StructureField>(globals.Fields);
+            var oneLineDeclaration = IsOneLineDeclaration(dataType);
             try
             {
                 tw.WriteDeclaration(dataType, name);
                 if (program.SegmentMap.IsValidAddress(address))
                 {
                     formatter.Write(" = ");
+                    if (!oneLineDeclaration && showAddressInComment)
+                    {
+                        formatter.Write("// {0}", address);
+                    }
                     this.rdr = program.CreateImageReader(program.Architecture, address);
                     dataType.Accept(this);
                 }
@@ -121,8 +154,36 @@ namespace Reko.Core.Output
                     ex,
                     "Failed to write global variable {0}.",
                     name);
+                formatter.Terminate(";");
+                return;
             }
-            formatter.Terminate(";");
+            if (oneLineDeclaration && showAddressInComment)
+            {
+                formatter.Write("; // {0}", address);
+                formatter.Terminate();
+            }
+            else
+            {
+                formatter.Terminate(";");
+            }
+        }
+
+        private bool IsOneLineDeclaration(DataType dataType)
+        {
+            var dt = dataType.ResolveAs<DataType>();
+            return dt switch
+            {
+                PrimitiveType pt => !IsLargeBlob(pt),
+                Pointer _ => true,
+                MemberPointer _ => true,
+                StringType _ => true,
+                VoidType _ => true,
+                EquivalenceClass eq => eq.DataType is null || IsOneLineDeclaration(eq.DataType),
+                TypeReference tr => tr.Referent is null || IsOneLineDeclaration(tr.Referent),
+                CodeType _ => true,
+                FunctionType _ => true,
+                _ => false,
+            };
         }
 
         public CodeFormatter VisitArray(ArrayType at)
@@ -131,7 +192,7 @@ namespace Reko.Core.Output
             {
                 var dc = services.RequireService<DecompilerEventListener>();
                 dc.Warn(
-                    dc.CreateAddressNavigator(program, rdr.Address),
+                    dc.CreateAddressNavigator(program, rdr!.Address),
                     "Expected sizes of arrays to have been determined by now");
             }
             var fmt = codeFormatter.InnerFormatter;
@@ -195,22 +256,35 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitFunctionType(FunctionType ft)
         {
-            codeFormatter.InnerFormatter.WriteLine("Unexpected function type {0}", ft);
+            codeFormatter.InnerFormatter.Write("??");
+            codeFormatter.InnerFormatter.Write("/* Unexpected function type {0} */ ", ft);
             return codeFormatter;
         }
 
         public CodeFormatter VisitPrimitive(PrimitiveType pt)
         {
-            if (pt.Size > 8)
+            if (IsLargeBlob(pt))
             {
-                var bytes = rdr.ReadBytes(pt.Size);
+                var bytes = rdr!.ReadBytes(pt.Size);
                 FormatRawBytes(bytes);
             }
             else
             {
-                rdr.Read(pt).Accept(codeFormatter);
+                if (rdr!.TryRead(pt, out var cValue))
+                {
+                    cValue.Accept(codeFormatter);
+                }
+                else
+                {
+                    codeFormatter.InnerFormatter.Write("?? /* Can't read address {0} */ ", rdr.Address);
+                }
             }
             return codeFormatter;
+        }
+
+        private static bool IsLargeBlob(PrimitiveType pt)
+        {
+            return pt.Size > 8;
         }
 
         private void FormatRawBytes(byte[] bytes)
@@ -222,7 +296,6 @@ namespace Reko.Core.Output
             fmt.Terminate();
             fmt.Indentation += fmt.TabSize;
 
-            var structOffset = rdr.Offset;
             for (int i = 0; i < bytes.Length;)
             {
                 fmt.Indent();
@@ -244,7 +317,8 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitPointer(Pointer ptr)
         {
-            var c = rdr.Read(PrimitiveType.Create(Domain.Pointer, ptr.BitSize));
+            if (!rdr!.TryRead(PrimitiveType.Create(Domain.Pointer, ptr.BitSize), out var c))
+                return codeFormatter;
             var addr = Address.FromConstant(c);
             // Check if it is pointer to function
             if (program.Procedures.TryGetValue(addr, out Procedure proc))
@@ -260,10 +334,10 @@ namespace Reko.Core.Output
             else
             {
                 var field = globals.Fields.AtOffset(offset);
-                if (field == null)
+                if (field is null)
                 {
                     // We've discovered a global variable! Create it!
-                    //$REVIEW: what about colissions and the usual merge crap?
+                    //$REVIEW: what about collisions and the usual merge crap?
                     var dt = ptr.Pointee;
                     //$REVIEW: that this is a pointer to a C-style null 
                     // terminated string is a wild-assed guess of course.
@@ -273,12 +347,13 @@ namespace Reko.Core.Output
                     {
                         dt = StringType.NullTerminated(pt);
                     }
-                    globals.Fields.Add(offset, dt);
-                    // add field to queue.
-                    field = globals.Fields.AtOffset(offset);
-                    queue.Enqueue(field);
+                    field = globals.Fields.Add(offset, dt);
+                    if (chasePointers)
+                    {
+                        queue.Enqueue(field);
+                    }
                 }
-                codeFormatter.InnerFormatter.Write("&g_{0}", field.Name);
+                codeFormatter.InnerFormatter.Write("&{0}", program.NamingPolicy.GlobalName(field));
             }
             return codeFormatter;
         }
@@ -290,7 +365,7 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitString(StringType str)
         {
-            var offset = rdr.Offset;
+            var offset = rdr!.Offset;
             var s = rdr.ReadCString(str.ElementType, program.TextEncoding);
             //$TODO: appropriate prefix for UTF16-encoded strings.
             codeFormatter.VisitConstant(s);
@@ -310,7 +385,7 @@ namespace Reko.Core.Output
             fmt.Terminate();
             fmt.Indentation += fmt.TabSize;
 
-            var structOffset = rdr.Offset;
+            var structOffset = rdr!.Offset;
             for (int i = 0; i < str.Fields.Count; ++i)
             {
                 fmt.Indent();
@@ -363,7 +438,7 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitUnknownType(UnknownType ut)
         {
-            throw new NotImplementedException();
+            return codeFormatter;
         }
 
         public CodeFormatter VisitVoidType(VoidType voidType)

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Reko.Arch.X86
 {
@@ -35,11 +36,18 @@ namespace Reko.Arch.X86
         {
         }
 
+        public override Address AddressFromWord(ulong word)
+        {
+            var off = (ushort) word;
+            var seg = (ushort) (word >> 16);
+            return Address.SegPtr(seg, off);
+        }
+
         protected override void Call(MachineOperand op)
         {
             if (op.Width.Size == 4)
             {
-                Push(InstructionPointer.Selector.Value, PrimitiveType.Word16);
+                Push(InstructionPointer.Selector!.Value, PrimitiveType.Word16);
             }
             var nextIp = InstructionPointer.Offset + (uint) dasm.Current.Length;   // Push return value on stack
             Push(nextIp, PrimitiveType.Word16);
@@ -87,6 +95,20 @@ namespace Reko.Arch.X86
             di += delta;
             WriteRegister(X86.Registers.si, si);
             WriteRegister(X86.Registers.di, di);
+        }
+
+        protected override void Scas(PrimitiveType dt)
+        {
+            var mask = masks[dt.Size];
+            var a = ReadRegister(X86.Registers.eax) & mask.value;
+            var es = (ushort) ReadRegister(X86.Registers.es);
+            var di = (uint) ReadRegister(X86.Registers.di);
+            var value = ReadMemory(ToLinear(es, di), dt) & mask.value;
+            var delta = dt.Size * (((Flags & Dmask) != 0) ? -1 : 1);
+            di += (uint) delta;
+            WriteRegister(X86.Registers.di, di);
+            Flags &= ~Zmask;
+            Flags |= (a == value ? Zmask : 0u);
         }
 
         protected override void Stos(PrimitiveType dt)
@@ -159,8 +181,8 @@ namespace Reko.Arch.X86
             }
             return string.Join(" ",
                 D(Omask, "OV", "NV"),
-                D(Dmask, "UP", "DN"),
-                D(Dmask, "EI", "EI"),
+                D(Dmask, "DN", "UP"),
+                D(Imask, "EI", "EI"),
                 D(Smask, "PL", "NG"),
                 D(Zmask, "ZR", "NZ"),
                 D(Cmask, "--", "--"),
@@ -173,6 +195,7 @@ namespace Reko.Arch.X86
             return $"{instr.Address} XX {instr.ToString().ToUpper()}";
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static ulong ToLinear(uint seg, uint off)
         {
             return (((ulong) seg) << 4) + off;

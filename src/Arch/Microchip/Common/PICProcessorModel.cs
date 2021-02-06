@@ -1,8 +1,8 @@
 #region License
 /* 
- * Copyright (C) 2017-2020 Christian Hostelet.
+ * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 {
     using PIC16;
     using PIC18;
+    using Reko.Core.Memory;
 
     public abstract class PICProcessorModel : IPICProcessorModel
     {

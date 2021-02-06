@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,14 +42,14 @@ namespace Reko.Scanning
     {
         private const int MaxTransferTableEntries = 2000;
 
-        private IProcessorArchitecture arch;
-        private SegmentMap segmentMap;
-        private Dictionary<Expression, ValueSet> context;
-        private ProcessorState state;
-        private ExpressionValueComparer cmp;
-        private Dictionary<Address, DataType> memAccesses;
+        private readonly IProcessorArchitecture arch;
+        private readonly SegmentMap segmentMap;
+        private readonly Dictionary<Expression, ValueSet> context;
+        private readonly ProcessorState? state;
+        private readonly ExpressionValueComparer cmp;
+        private readonly Dictionary<Address, DataType> memAccesses;
 
-        public ValueSetEvaluator(IProcessorArchitecture arch, SegmentMap segmentMap, Dictionary<Expression, ValueSet> context, ProcessorState state = null)
+        public ValueSetEvaluator(IProcessorArchitecture arch, SegmentMap segmentMap, Dictionary<Expression, ValueSet> context, ProcessorState? state = null)
         {
             this.arch = arch;
             this.segmentMap = segmentMap;
@@ -185,10 +185,28 @@ namespace Reko.Scanning
             return new ConcreteValueSet(c.DataType, c);
         }
 
-        public ValueSet VisitDepositBits(DepositBits d, BitRange bitRange)
+        public ValueSet VisitConversion(Conversion conversion, BitRange bitRange)
         {
-            throw new NotImplementedException();
+            if (this.context.TryGetValue(conversion, out ValueSet vs))
+                return vs;
+            var bitRangeNarrow = new BitRange(0, (short) conversion.DataType.BitSize);
+            vs = conversion.Expression.Accept(this, bitRangeNarrow);
+            if (conversion.DataType.BitSize == conversion.Expression.DataType.BitSize)
+            {
+                // no-op!
+                return vs;
+            }
+            if (conversion.DataType.BitSize < conversion.Expression.DataType.BitSize)
+            {
+                return vs.Truncate(conversion.DataType);
+            }
+            if (conversion.DataType is PrimitiveType pt && pt.Domain == Domain.SignedInt)
+            {
+                return vs.SignExtend(conversion.DataType);
+            }
+            return vs.ZeroExtend(conversion.DataType);
         }
+
 
         public ValueSet VisitDereference(Dereference deref, BitRange bitRange)
         {
@@ -240,7 +258,7 @@ namespace Reko.Scanning
         {
             if (eAddr is Constant cAddr)
             {
-                var addr = arch.MakeAddressFromConstant(cAddr, false);
+                var addr = arch.MakeAddressFromConstant(cAddr, false)!;
                 if (!segmentMap.TryFindSegment(addr, out ImageSegment seg))
                     return Constant.Invalid;
                 var rdr = arch.CreateImageReader(seg.MemoryArea, addr);
@@ -255,8 +273,7 @@ namespace Reko.Scanning
 
         private Expression ReadSegmentedValue(DataType dt, Constant seg, Expression eOff)
         {
-            var off = eOff as Constant;
-            if (eOff != null)
+            if (eOff is Constant off)
             {
                 var addr = arch.MakeSegmentedAddress(seg, off);
                 if (!segmentMap.TryFindSegment(addr, out ImageSegment segment))
@@ -278,7 +295,10 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    return rdr.Read((PrimitiveType)dt);
+                    if (!rdr.TryRead((PrimitiveType) dt, out var v))
+                        return Constant.Invalid;
+                    else
+                        return v;
                 }
             }
             throw new NotImplementedException();
@@ -390,8 +410,7 @@ namespace Reko.Scanning
             var segs = vaSeg.Values.ToArray();
             if (segs.Length != 1)
                 return ValueSet.Any;
-            var cSeg = segs[0] as Constant;
-            if (cSeg == null)
+            if (!(segs[0] is Constant cSeg))
                 return ValueSet.Any;
 
             var vsOff = access.EffectiveAddress.Accept(this, bitRange);

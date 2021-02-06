@@ -10,18 +10,18 @@
 define fn10000000
 fn10000000_entry:
 	esp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l10000000
 l10000000:
-	edi = 0x10001212
-	Top = Top - 1
-	ST[Top:real64] = Mem0[edi + 0x00000004:real64]
-	Top = Top - 1
-	ST[Top:real64] = Mem0[edi + 0x0000000C:real64]
+	edi = 0x10001212<32>
+	Top = Top - 1<i8>
+	ST[Top:real64] = Mem0[edi + 4<32>:real64]
+	Top = Top - 1<i8>
+	ST[Top:real64] = Mem0[edi + 0xC<32>:real64]
 	call not_found_import (retsize: 4;)
-	Mem0[edi + 0x00000014:word32] = eax
+	Mem0[edi + 0x14<32>:word32] = eax
 	call not_found_import (retsize: 4;)
-	Mem0[edi + 0x0000001C:word32] = eax
+	Mem0[edi + 0x1C<32>:word32] = eax
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:

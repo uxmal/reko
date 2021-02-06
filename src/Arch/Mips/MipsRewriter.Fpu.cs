@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -158,12 +158,22 @@ namespace Reko.Arch.Mips
                     RewriteOperand0(instr.Operands[0]));
         }
 
-        private void RewriteCvtD(MipsInstruction instr, DataType dt)
+        private void RewriteCvtFromD(MipsInstruction instr, DataType dt)
         {
             var regPair = GetFpuRegPair(instr.Operands[1]);
             m.Assign(
                 RewriteOperand0(instr.Operands[0]),
-                m.Cast(dt, regPair));
+                m.Convert(regPair, regPair.DataType, dt));
+        }
+
+        private void RewriteCvtToD(MipsInstruction instr, DataType dtSrc)
+        {
+            var regPair = GetFpuRegPair(instr.Operands[0]);
+            var opSrc = RewriteOperand0(instr.Operands[1]);
+            var dtDst = PrimitiveType.Create(Domain.Real, regPair.DataType.BitSize);
+            m.Assign(
+                regPair,
+                m.Convert(opSrc, dtSrc, dtDst));
         }
 
         private void RewriteMfc1(MipsInstruction instr)
@@ -180,10 +190,10 @@ namespace Reko.Arch.Mips
         {
             var tmp = binder.CreateTemporary(dtSrc);
             m.Assign(tmp, RewriteOperand(instr.Operands[1]));
-            var ppp = host.PseudoProcedure(fn, dtSrc, tmp);
+            var intrinsic = host.Intrinsic(fn, true, dtSrc, tmp);
             m.Assign(
                 RewriteOperand(instr.Operands[0]),
-                m.Cast(dtDst, ppp));
+                m.Convert(intrinsic, intrinsic.DataType, dtDst));
         }
     }
 }

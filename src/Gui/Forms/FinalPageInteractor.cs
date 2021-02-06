@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,8 +51,13 @@ namespace Reko.Gui.Forms
         {
             try
             {
+                var listener = Services.RequireService<DecompilerEventListener>();
+                if (listener.IsCanceled())
+                    return;
                 workerDialogSvc.SetCaption("Reconstructing datatypes.");
                 Decompiler.ReconstructTypes();
+                if (listener.IsCanceled())
+                    return;
                 workerDialogSvc.SetCaption("Structuring program.");
                 Decompiler.StructureProgram();
             }

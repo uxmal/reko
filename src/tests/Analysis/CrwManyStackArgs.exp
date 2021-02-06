@@ -26,8 +26,8 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax_11 = fn0C00_0011(0x0001, 0x0002, 0x0003)
-	Mem19[ds:0x1300:word16] = ax_11
+	ax_11 = fn0C00_0011(1<16>, 2<16>, 3<16>)
+	Mem19[ds:0x1300<16>:word16] = ax_11
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

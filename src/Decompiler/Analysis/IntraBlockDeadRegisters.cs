@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,8 +44,8 @@ namespace Reko.Analysis
         InstructionVisitor<bool>,
         StorageVisitor<bool, bool>
     {
-        private ExpVisitor expVisitor;
-        private HashSet<RegisterStorage> deadRegs;
+        private readonly ExpVisitor expVisitor;
+        private readonly HashSet<RegisterStorage> deadRegs;
         private uint deadFlags;
 
         public static void Apply(Program program, DecompilerEventListener eventListener)
@@ -89,7 +89,7 @@ namespace Reko.Analysis
 
         private class ExpVisitor : ExpressionVisitor<bool>
         {
-            private IntraBlockDeadRegisters outer;
+            private readonly IntraBlockDeadRegisters outer;
 
             public ExpVisitor(IntraBlockDeadRegisters outer)
             {
@@ -153,11 +153,9 @@ namespace Reko.Analysis
                 return true;
             }
 
-            public bool VisitDepositBits(DepositBits d)
+            public bool VisitConversion(Conversion conversion)
             {
-                var dead = d.InsertedBits.Accept(this);
-                dead &= d.Source.Accept(this);
-                return dead;
+                return conversion.Expression.Accept(this);
             }
 
             public bool VisitDereference(Dereference deref)
@@ -247,14 +245,12 @@ namespace Reko.Analysis
 
         private bool IsDead(Identifier id)
         {
-            var reg = id.Storage as RegisterStorage;
-            if (reg != null)
+            if (id.Storage is RegisterStorage reg)
             {
                 //Debug.Print("deadReg: {0}, F:{1}", reg, deadRegs.Contains(reg));
                 return deadRegs.Contains(reg);
             }
-            var flags = id.Storage as FlagGroupStorage;
-            if (flags != null)
+            if (id.Storage is FlagGroupStorage flags)
             {
                 //Debug.Print("deadFlags: {0}, F:{1}", deadFlags, flags.FlagGroupBits);
                 return (flags.FlagGroupBits & deadFlags) == flags.FlagGroupBits;

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace Reko.Arch.PowerPC
             //$TODO: require <math.h>
             var opS = RewriteOperand(instr.Operands[1]);
             var opD = RewriteOperand(instr.Operands[0]);
-            m.Assign(opD, host.PseudoProcedure("fabs", PrimitiveType.Real64, opS));
+            m.Assign(opD, host.Intrinsic("fabs", false, PrimitiveType.Real64, opS));
         }
 
         public void RewriteFadd()
@@ -58,7 +59,8 @@ namespace Reko.Arch.PowerPC
         {
             var dst = RewriteOperand(instr.Operands[0]);
             var src = RewriteOperand(instr.Operands[1]);
-            m.Assign(dst, m.Cast(PrimitiveType.Real64, src));
+            var dtSrc = PrimitiveType.Create(Domain.SignedInt, src.DataType.BitSize);
+            m.Assign(dst, m.Convert(src, dtSrc, PrimitiveType.Real64));
         }
 
         public void RewriteFcmpo()
@@ -85,7 +87,7 @@ namespace Reko.Arch.PowerPC
             //$TODO: require <math.h>
             var dst = RewriteOperand(instr.Operands[0]);
             var src = RewriteOperand(instr.Operands[1]);
-            m.Assign(dst, host.PseudoProcedure("round", PrimitiveType.Real64, src));
+            m.Assign(dst, host.Intrinsic("round", false, PrimitiveType.Real64, src));
         }
 
         private void RewriteFctidz()
@@ -93,14 +95,23 @@ namespace Reko.Arch.PowerPC
             //$TODO: require <math.h>
             var dst = RewriteOperand(instr.Operands[0]);
             var src = RewriteOperand(instr.Operands[1]);
-            m.Assign(dst, host.PseudoProcedure("trunc", PrimitiveType.Real64, src));
+            m.Assign(dst, host.Intrinsic("trunc", false, PrimitiveType.Real64, src));
+        }
+
+        private void RewriteFctiw()
+        {
+            var dst = RewriteOperand(instr.Operands[0]);
+            var src = RewriteOperand(instr.Operands[1]);
+            var tmp = binder.CreateTemporary(PrimitiveType.Real64);
+            m.Assign(tmp, src);
+            m.Assign(dst, host.Intrinsic("__fctiw", false, PrimitiveType.Int32, tmp));
         }
 
         private void RewriteFctiwz()
         {
             var dst = RewriteOperand(instr.Operands[0]);
             var src = RewriteOperand(instr.Operands[1]);
-            m.Assign(dst, m.Cast(PrimitiveType.Int32, src));
+            m.Assign(dst, m.Convert(src, PrimitiveType.Real64, PrimitiveType.Int32));
         }
 
         public void RewriteFdiv()
@@ -129,9 +140,9 @@ namespace Reko.Arch.PowerPC
             var opt = RewriteOperand(instr.Operands[0]);
             if (needsCast)
             {
-                opa = m.Cast(dt, opa);
-                opb = m.Cast(dt, opb);
-                opc = m.Cast(dt, opc);
+                opa = m.Slice(dt, opa, 0);
+                opb = m.Slice(dt, opb, 0);
+                opc = m.Slice(dt, opc, 0);
             }
 
             var exp = add(m.FMul(opa, opc), opb);
@@ -141,7 +152,7 @@ namespace Reko.Arch.PowerPC
             }
             if (needsCast)
             {
-                exp=m.Cast(PrimitiveType.Real64, exp);
+                exp = m.Convert(exp, dt, PrimitiveType.Real64);
             }
             m.Assign(opt, exp);
             MaybeEmitCr1(opt);
@@ -168,7 +179,7 @@ namespace Reko.Arch.PowerPC
         {
             var opS = RewriteOperand(instr.Operands[1]);
             var opD = RewriteOperand(instr.Operands[0]);
-            m.Assign(opD, m.Cast(PrimitiveType.Real32, opS));
+            m.Assign(opD, m.Convert(opS, PrimitiveType.Real64, PrimitiveType.Real32));
             MaybeEmitCr1(opD);
         }
 
@@ -194,7 +205,7 @@ namespace Reko.Arch.PowerPC
             var src = RewriteOperand(instr.Operands[1]);
             m.Assign(
                 dst,
-                host.PseudoProcedure("sqrt", PrimitiveType.Real64, src));
+                host.Intrinsic("sqrt", false, PrimitiveType.Real64, src));
         }
 
         private void RewriteFrsqrte()
@@ -203,7 +214,7 @@ namespace Reko.Arch.PowerPC
             var src = RewriteOperand(instr.Operands[1]);
             m.Assign(
                 dst,
-                host.PseudoProcedure("__frsqrte", PrimitiveType.Real64, src));
+                host.Intrinsic("__frsqrte", false, PrimitiveType.Real64, src));
         }
 
         public void RewriteFsub()
@@ -225,10 +236,11 @@ namespace Reko.Arch.PowerPC
 
         public void RewriteMtfsf()
         {
-            var op1 = RewriteOperand(instr.Operands[0]);
+            var op1 = ((ImmediateOperand)instr.Operands[0]).Value;
             var op2 = RewriteOperand(instr.Operands[1]);
             m.SideEffect(
-                host.PseudoProcedure("__mtfsf",
+                host.Intrinsic("__mtfsf",
+                    false,
                     VoidType.Instance,
                     op2,
                     op1));

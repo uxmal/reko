@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,11 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Typing;
 using Reko.UnitTests.Mocks;
+using System.ComponentModel.Design;
 using System.Text;
 
 namespace Reko.UnitTests.Typing
@@ -36,19 +38,19 @@ namespace Reko.UnitTests.Typing
 		private TypedConstantRewriter tcr;
 		private Identifier globals;
         private Program program;
-        private MemoryArea mem;
+        private ByteMemoryArea bmem;
 
         [SetUp]
 		public void Setup()
 		{
-            mem = new MemoryArea(Address.Ptr32(0x00100000), new byte[1024]);
-            var arch = new FakeArchitecture();
+            bmem = new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[1024]);
+            var arch = new FakeArchitecture(new ServiceContainer());
             this.program = new Program
             {
                 Architecture = arch,
                 SegmentMap = new SegmentMap(
-                    mem.BaseAddress,  
-                    new ImageSegment(".text", mem, AccessMode.ReadWriteExecute)),
+                    bmem.BaseAddress,  
+                    new ImageSegment(".text", bmem, AccessMode.ReadWriteExecute)),
                 Platform = new DefaultPlatform(null, arch),
             };
             store = program.TypeStore;
@@ -62,8 +64,10 @@ namespace Reko.UnitTests.Typing
 			TypeVariable tvGlobals = store.EnsureExpressionTypeVariable(factory, globals);
 			EquivalenceClass eqGlobals = new EquivalenceClass(tvGlobals);
 			eqGlobals.DataType = s;
-			globals.TypeVariable.DataType = new Pointer(eqGlobals, 32);
-			globals.DataType = globals.TypeVariable.DataType;
+            var globalsPtr = new Pointer(eqGlobals, 32);
+            globals.TypeVariable.DataType = globalsPtr;
+            globals.TypeVariable.OriginalDataType = globalsPtr;
+            globals.DataType = globalsPtr;
 		}
 
         private void Given_TypedConstantRewriter()
@@ -74,12 +78,12 @@ namespace Reko.UnitTests.Typing
         private void Given_Global(uint address, DataType dt)
         {
             var str = globals.DataType.ResolveAs<Pointer>().Pointee.ResolveAs<StructureType>();
-            str.Fields.Add((int)(address - 0x00100000u), dt);
+            str.Fields.Add((int)address, dt);
         }
 
         private void Given_Segment(ushort selector, string name)
         {
-            var seg = new ImageSegment(name, new MemoryArea(Address.SegPtr(selector, 0), new byte[100]), AccessMode.ReadWriteExecute);
+            var seg = new ImageSegment(name, new ByteMemoryArea(Address.SegPtr(selector, 0), new byte[100]), AccessMode.ReadWriteExecute);
             seg.Identifier = new Identifier(name, PrimitiveType.SegmentSelector, RegisterStorage.None);
             program.SegmentMap.AddSegment(seg);
 
@@ -101,8 +105,8 @@ namespace Reko.UnitTests.Typing
 			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.DataType = PrimitiveType.Word32;
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-			Expression e = tcr.Rewrite(c, false);
-			Assert.AreEqual("0x00131230" , e.ToString());
+			Expression e = tcr.Rewrite(c, null, false);
+			Assert.AreEqual("0x131230<32>" , e.ToString());
 		}
 
 		[Test]
@@ -113,7 +117,7 @@ namespace Reko.UnitTests.Typing
 			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.DataType = PrimitiveType.Real32;
 			c.TypeVariable.OriginalDataType = c.DataType;
-			Expression e = tcr.Rewrite(c, false);
+			Expression e = tcr.Rewrite(c, null, false);
 			Assert.AreEqual("1.0F", e.ToString());
 		}
 
@@ -125,8 +129,8 @@ namespace Reko.UnitTests.Typing
 			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-			Expression e = tcr.Rewrite(c, false);
-			Assert.AreEqual("&globals->dw100000", e.ToString());
+			Expression e = tcr.Rewrite(c, null, false);
+			Assert.AreEqual("&g_dw100000", e.ToString());
 		}
 
         [Test]
@@ -137,7 +141,7 @@ namespace Reko.UnitTests.Typing
             store.EnsureExpressionTypeVariable(factory, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-            Expression e = tcr.Rewrite(c, false);
+            Expression e = tcr.Rewrite(c, null, false);
             Assert.AreEqual("00000000", e.ToString());
         }
 
@@ -149,13 +153,55 @@ namespace Reko.UnitTests.Typing
             store.EnsureExpressionTypeVariable(factory, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-            Expression e = tcr.Rewrite(c, false);
-            Assert.AreEqual("(word32 *) 0xFFFFFFFF", e.ToString());
+            Expression e = tcr.Rewrite(c, null, false);
+            Assert.AreEqual("(word32 *) 0xFFFFFFFF<32>", e.ToString());
+        }
+
+        [Test]
+        public void Tcr_RewritePointerToStructField()
+        {
+            Given_TypedConstantRewriter();
+            var str = new StructureType
+            {
+                Fields =
+                {
+                    { 0, PrimitiveType.Int32 },
+                    { 4, PrimitiveType.Real32 },
+                },
+            };
+            Given_Global(0x00100100, str);
+            var c = Constant.Word32(0x00100104);
+            store.EnsureExpressionTypeVariable(factory, c);
+            c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
+            c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
+            var e = tcr.Rewrite(c, null, false);
+            Assert.AreEqual("&g_t100100.r0004", e.ToString());
+        }
+
+        [Test]
+        public void Tcr_RewriteDereferencedFirstStructField()
+        {
+            Given_TypedConstantRewriter();
+            var str = new StructureType
+            {
+                Fields =
+                {
+                    { 0, PrimitiveType.Int32 },
+                    { 4, PrimitiveType.Real32 },
+                },
+            };
+            Given_Global(0x00100100, str);
+            var c = Constant.Word32(0x00100100);
+            store.EnsureExpressionTypeVariable(factory, c);
+            c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
+            c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
+            var e = tcr.Rewrite(c, null, true);
+            Assert.AreEqual("g_t100100.dw0000", e.ToString());
         }
 
         private void Given_String(string str, uint addr)
         {
-            var w = new LeImageWriter(mem.Bytes, addr - (uint)mem.BaseAddress.ToLinear());
+            var w = new LeImageWriter(bmem.Bytes, addr - (uint)bmem.BaseAddress.ToLinear());
             w.WriteString(str, Encoding.ASCII);
         }
 
@@ -190,7 +236,7 @@ namespace Reko.UnitTests.Typing
             var charPtr = new Pointer(PrimitiveType.Char, 32);
             c.TypeVariable.DataType = charPtr;
             c.TypeVariable.OriginalDataType = charPtr;
-            var e = tcr.Rewrite(c, false);
+            var e = tcr.Rewrite(c, null, false);
             Assert.AreEqual("Hello", e.ToString());
             Assert.AreEqual(
                 "(struct (100000 (str char) str100000))",
@@ -212,7 +258,7 @@ namespace Reko.UnitTests.Typing
             var arrayCharPtr = new Pointer(new ArrayType(PrimitiveType.Char, 32), 6);
             c.TypeVariable.DataType = arrayCharPtr;
             c.TypeVariable.OriginalDataType = arrayCharPtr;
-            var e = tcr.Rewrite(c, false);
+            var e = tcr.Rewrite(c, null, false);
             Assert.AreEqual("Hello", e.ToString());
             Assert.AreEqual(
                 "(struct (100000 (str char) str100000))",
@@ -231,23 +277,23 @@ namespace Reko.UnitTests.Typing
             var charPtr = new Pointer(PrimitiveType.Char, 32);
             c.TypeVariable.DataType = charPtr;
             c.TypeVariable.OriginalDataType = charPtr;
-            var e = tcr.Rewrite(c, false);
-            Assert.AreEqual("&globals->dw100000", e.ToString());
+            var e = tcr.Rewrite(c, null, false);
+            Assert.AreEqual("&g_dw100000", e.ToString());
         }
 
         [Test(Description="Pointers to the end of arrays are well-defined.")]
         public void Tcr_ArrayEnd()
         {
             Given_TypedConstantRewriter();
-            Given_Global(0x00100000, new ArrayType(PrimitiveType.Real32, 16));
-            Given_Global(0x00100040, PrimitiveType.Word16);
+            Given_Global(0x00000000, new ArrayType(PrimitiveType.Real32, 16));
+            Given_Global(0x00000040, PrimitiveType.Word16);
             var c = Constant.Word32(0x00100040);
             store.EnsureExpressionTypeVariable(factory, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Real32, 32);
             c.TypeVariable.OriginalDataType = new Pointer(PrimitiveType.Real32, 32);
 
-            var e = tcr.Rewrite(c, false);
-            Assert.AreEqual("&globals->r100040", e.ToString());
+            var e = tcr.Rewrite(c, null, false);
+            Assert.AreEqual("&g_r100040", e.ToString());
         }
 
         [Test(Description = "Segmented pointers need to be properly handled")]
@@ -261,7 +307,7 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Char, 32);
             c.TypeVariable.OriginalDataType = new Pointer(PrimitiveType.Char, 32);
 
-            var e = tcr.Rewrite(c, false);
+            var e = tcr.Rewrite(c, null, false);
             Assert.AreEqual("&seg0C00->b0124", e.ToString());
         }
     }

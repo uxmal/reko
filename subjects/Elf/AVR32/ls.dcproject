@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>avr32</arch>
+  <platform>elf-neutral</platform>
+  <input>
+    <filename>ls</filename>
+    <asmDir>ls.reko</asmDir>
+    <srcDir>ls.reko</srcDir>
+    <includeDir>ls.reko</includeDir>
+    <resources>ls.reko\resources</resources>
+    <user>
+      <procedure name="fn000026C0">
+        <address>000026C0</address>
+      </procedure>
+      <heuristic name="shingle" />
+      <onLoad Enabled="false" />
+      <registerValues />
+      <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+</project>

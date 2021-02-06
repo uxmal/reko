@@ -1,0 +1,33 @@
+void foo(byte sil, word64 rdi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rdi:[0..63] sil:[0..7]
+// LiveOut:
+// Trashed: SCZO rax rcx
+// Preserved: rsp
+foo_entry:
+l0000000000000F9E:
+	branch (SLICE(CONVERT(SLICE(CONVERT(Mem0[rdi:word32], word32, uint64), word32, 0) >>u 0xA<32>, word32, uint64), byte, 0) ^ sil) == 0<8> l0000000000000FB4
+l0000000000000FA6_thunk_bar:
+	bar()
+	return
+l0000000000000FAC:
+	return
+foo_exit:
+
+
+void bar()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      foo
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO rax
+// Preserved: rsp
+bar_entry:
+l0000000000000FB4:
+	return
+bar_exit:
+
+

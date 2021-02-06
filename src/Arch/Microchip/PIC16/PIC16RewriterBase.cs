@@ -1,8 +1,8 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 2017-2020 Christian Hostelet.
+ * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -246,25 +246,25 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_BTFSC()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             GetSrc(out var srcMem);
             var mask = GetBitMask(instrCurr.Operands[1], false);
             var res = m.And(srcMem, mask);
-            m.Branch(m.Eq0(res), SkipToAddr(), rtlc);
+            m.Branch(m.Eq0(res), SkipToAddr(), iclass);
         }
 
         private void Rewrite_BTFSS()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             GetSrc(out var srcMem);
             var mask = GetBitMask(instrCurr.Operands[1], false);
             var res = m.And(srcMem, mask);
-            m.Branch(m.Ne0(res), SkipToAddr(), rtlc);
+            m.Branch(m.Ne0(res), SkipToAddr(), iclass);
         }
 
         private void Rewrite_CALL()
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
             var target = instrCurr.Operands[0] as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid program address operand: {instrCurr.Operands[0]}");
             Address retaddr = instrCurr.Address + instrCurr.Length;
             var dst = PushToHWStackAccess();
@@ -312,15 +312,15 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_DECFSZ()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.ISub(srcMem, Constant.Byte(1)));
-            m.Branch(m.Eq0(dstMem), SkipToAddr(), rtlc);
+            m.Branch(m.Eq0(dstMem), SkipToAddr(), iclass);
         }
 
         private void Rewrite_GOTO()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             var target = instrCurr.Operands[0] as PICOperandProgMemoryAddress ?? throw new InvalidOperationException($"Invalid program address operand: {instrCurr.Operands[0]}");
             m.Goto(target.CodeTarget);
         }
@@ -334,10 +334,10 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_INCFSZ()
         {
-            rtlc = InstrClass.ConditionalTransfer;
+            iclass = InstrClass.ConditionalTransfer;
             GetSrcAndDst(out var srcMem, out var dstMem);
             m.Assign(dstMem, m.IAdd(srcMem, Constant.Byte(1)));
-            m.Branch(m.Eq0(dstMem), SkipToAddr(), rtlc);
+            m.Branch(m.Eq0(dstMem), SkipToAddr(), iclass);
         }
 
         private void Rewrite_IORLW()
@@ -377,7 +377,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_RETFIE()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             PICRegisterBitFieldStorage gie = PIC16Registers.GIE;
             byte mask = (byte)(1 << gie.BitPos);
             var intcon = binder.EnsureRegister(PIC16Registers.INTCON);
@@ -388,7 +388,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_RETLW()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             var k = instrCurr.Operands[0] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[0]}");
             m.Assign(Wreg, k.ImmediateValue);
             PopFromHWStackAccess();
@@ -397,7 +397,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_RETURN()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             PopFromHWStackAccess();
             m.Return(0, 0);
         }
@@ -405,13 +405,13 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_RLF()
         {
             GetSrcAndDst(out var srcMem, out var dstMem);
-            m.Assign(dstMem, m.Fn(host.PseudoProcedure("__rlf", PrimitiveType.Byte, srcMem)));
+            m.Assign(dstMem, m.Fn(host.Intrinsic("__rlf", true, PrimitiveType.Byte, srcMem)));
         }
 
         private void Rewrite_RRF()
         {
             GetSrcAndDst(out var srcMem, out var dstMem);
-            m.Assign(dstMem, m.Fn(host.PseudoProcedure("__rrf", PrimitiveType.Byte, srcMem)));
+            m.Assign(dstMem, m.Fn(host.Intrinsic("__rrf", true, PrimitiveType.Byte, srcMem)));
         }
 
         private void Rewrite_SLEEP()
@@ -436,7 +436,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         private void Rewrite_SWAPF()
         {
             GetSrcAndDst(out var srcMem, out var dstMem);
-            m.Assign(dstMem, m.Fn(host.PseudoProcedure("__swapf", PrimitiveType.Byte, srcMem)));
+            m.Assign(dstMem, m.Fn(host.Intrinsic("__swapf", true, PrimitiveType.Byte, srcMem)));
         }
 
         private void Rewrite_XORLW()

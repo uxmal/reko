@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,11 +28,11 @@ namespace Reko.Core.Types
 {
     /// <summary>
     /// Generates a more compact and easily parsed string version
-    /// of a datatype. For final output, use Reko.Output.TypeFormatter
+    /// of a datatype. For final output, use <see cref="Reko.Output.TypeFormatter"/>.
     /// </summary>
     public class TypeGraphWriter : IDataTypeVisitor<Formatter>
     {
-        private HashSet<DataType> visited;
+        private HashSet<DataType>? visited;
         private Formatter writer;
         private bool reference;
         private int nesting;

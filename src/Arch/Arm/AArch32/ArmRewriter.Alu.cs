@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1999-2020 John Källén.
+* Copyright (C) 1999-2021 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -95,11 +95,11 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteBfi()
         {
-            var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var opSrc = this.Operand(Src1());
-            var tmp = binder.CreateTemporary(PrimitiveType.Word32);
+            var opDst = (Identifier) this.Operand(Dst(), PrimitiveType.Word32, true);
             var lsb = ((ImmediateOperand)instr.Operands[2]).Value.ToInt32();
             var bitsize = ((ImmediateOperand)instr.Operands[3]).Value.ToInt32();
+            var tmp = binder.CreateTemporary(PrimitiveType.CreateWord(bitsize));
             m.Assign(tmp, m.Slice(opSrc, 0, bitsize));
             m.Assign(opDst, m.Dpb(opDst, tmp, lsb));
         }
@@ -148,14 +148,17 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteRev()
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var intrinsic = host.PseudoProcedure("__rev", PrimitiveType.Word32, this.Operand(Src1()));
+            var intrinsic = host.Intrinsic("__rev", true, PrimitiveType.Word32, this.Operand(Src1()));
             m.Assign(opDst, intrinsic);
         }
 
         private void RewriteRevsh()
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var intrinsic = m.Cast(PrimitiveType.Int32, host.PseudoProcedure("__rev_16", PrimitiveType.Word16, m.Slice(PrimitiveType.Word16, this.Operand(Src1()), 0)));
+            var intrinsic = m.Convert(
+                host.Intrinsic("__rev_16", true, PrimitiveType.Word16, m.Slice(PrimitiveType.Word16, this.Operand(Src1()), 0)),
+                PrimitiveType.Word16,
+                PrimitiveType.Int32);
             m.Assign(opDst, intrinsic);
         }
 
@@ -189,8 +192,8 @@ namespace Reko.Arch.Arm.AArch32
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var opSrc = this.Operand(Src1());
-            var ppp = host.PseudoProcedure("__clz", PrimitiveType.Int32, opSrc);
-            m.Assign(opDst, ppp);
+            var intrinsic = host.Intrinsic("__clz", true, PrimitiveType.Int32, opSrc);
+            m.Assign(opDst, intrinsic);
         }
 
         private void RewriteCmp(Func<Expression, Expression, Expression> op)
@@ -211,7 +214,7 @@ namespace Reko.Arch.Arm.AArch32
                 src2 = EmitNarrowingSlice(src2, dt);
             }
             var dst = this.Operand(Dst());
-            var intrinsic = host.PseudoProcedure(fnName, PrimitiveType.UInt32, src1, src2);
+            var intrinsic = host.Intrinsic(fnName, true, PrimitiveType.UInt32, src1, src2);
             m.Assign(dst, intrinsic);
         }
 
@@ -226,7 +229,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteTableBranch(DataType elemSize)
         {
-            this.rtlClass = InstrClass.Transfer;
+            this.iclass = InstrClass.Transfer;
             var mem = (MemoryOperand) instr.Operands[0];
             Expression tableBase;
             if (mem.BaseRegister == Registers.pc)
@@ -248,7 +251,11 @@ namespace Reko.Arch.Arm.AArch32
             {
                 ea = m.IAdd(tableBase, idxReg);
             }
-            m.Goto(m.IAdd(instr.Address + this.pcValueOffset, m.IMul(m.Mem(elemSize, ea), 2)));
+            m.Goto(m.IAdd(
+                instr.Address + this.pcValueOffset,
+                m.IMul(
+                    m.Convert(m.Mem(elemSize, ea), elemSize, PrimitiveType.UInt32),
+                    2)));
         }
 
         private void RewriteTeq()
@@ -291,7 +298,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (dtDst != dtSrc)
             {
-                src = m.Cast(dtDst, src);
+                src = m.Convert(src, dtSrc, dtDst);
             }
             if (!mem.PreIndex && instr.Writeback)
             {
@@ -303,7 +310,7 @@ namespace Reko.Arch.Arm.AArch32
                     // something other than the LR (or continuation)
                     // of this procedure. That requires more advanced 
                     // analyses than Reko can manage presently.
-                    rtlClass = instr.condition == ArmCondition.AL
+                    iclass = instr.Condition == ArmCondition.AL
                         ? InstrClass.Transfer
                         : InstrClass.ConditionalTransfer;
                     m.Assign(baseReg, m.IAdd(baseReg, mem.Offset));
@@ -322,7 +329,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (isJump)
             {
-                rtlClass = InstrClass.Transfer;
+                iclass = InstrClass.Transfer;
                 m.Goto(src);
             }
             else
@@ -349,7 +356,7 @@ namespace Reko.Arch.Arm.AArch32
             var opDst = this.Operand(Src1());
             if (size != PrimitiveType.Word32)
             {
-                opSrc = m.Cast(size, opSrc);
+                opSrc = m.Slice(size, opSrc, 0);
             }
             m.Assign(opDst, opSrc);
             MaybePostOperand(Src1());
@@ -367,7 +374,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteStrex()
         {
-            var intrinsic = host.PseudoProcedure("__strex", VoidType.Instance);
+            var intrinsic = host.Intrinsic("__strex", false, VoidType.Instance);
             m.SideEffect(intrinsic);
         }
 
@@ -394,8 +401,8 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteHint()
         {
-            var ppp = host.PseudoProcedure("__ldrex", VoidType.Instance, Operand(Dst()));
-            m.SideEffect(m.Fn(ppp));
+            var ldrex = host.Intrinsic("__ldrex", false, VoidType.Instance, Operand(Dst()));
+            m.SideEffect(m.Fn(ldrex));
         }
 
         private void RewriteLdm(int initialOffset, Func<Expression, Expression, Expression> op)
@@ -430,7 +437,7 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (pcRestored)
             {
-                rtlClass = instr.condition == ArmCondition.AL
+                iclass = instr.Condition == ArmCondition.AL
                     ? InstrClass.Transfer
                     : InstrClass.ConditionalTransfer;
                 m.Return(0, 0);
@@ -439,7 +446,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteLdrex()
         {
-            var intrinsic = host.PseudoProcedure("__ldrex", VoidType.Instance);
+            var intrinsic = host.Intrinsic("__ldrex", true, VoidType.Instance);
             m.SideEffect(intrinsic);
         }
 
@@ -466,13 +473,13 @@ namespace Reko.Arch.Arm.AArch32
 
         private Expression Ror(Expression left, Expression right)
         {
-            var intrinsic = host.PseudoProcedure(PseudoProcedure.Ror, left.DataType, left, right);
+            var intrinsic = host.Intrinsic(IntrinsicProcedure.Ror, true, left.DataType, left, right);
             return intrinsic;
         }
 
         private Expression Rrx(Expression left, Expression right)
         {
-            var intrinsic = host.PseudoProcedure(PseudoProcedure.RorC, left.DataType, left, right, C());
+            var intrinsic = host.Intrinsic(IntrinsicProcedure.RorC, true, left.DataType, left, right, C());
             return intrinsic;
         }
 
@@ -482,11 +489,11 @@ namespace Reko.Arch.Arm.AArch32
 
             var left = Operand(Src1());
             left = hiLeft ? m.Sar(left, m.Int32(16)) : left;
-            left = m.Cast(dt, left);
+            left = m.Convert(left, left.DataType, dt);
 
             var right = Operand(Src2());
             right = hiRight ? m.Sar(right, m.Int32(16)) : right;
-            right = m.Cast(dt, right);
+            right = m.Convert(right, right.DataType, dt);
 
             m.Assign(dst, m.IAdd(op(left, right), Operand(Src3())));
             m.Assign(Q(), m.Cond(dst));
@@ -496,7 +503,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             if (Dst() is RegisterOperand rOp && rOp.Register == Registers.pc)
             {
-                rtlClass = InstrClass.Transfer;
+                iclass = InstrClass.Transfer;
                 if (Src1() is RegisterOperand ropSrc && ropSrc.Register == Registers.lr)
                 {
                     m.Return(0, 0);
@@ -522,8 +529,8 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteMovt()
         {
-            var opDst = Operand(Dst(), PrimitiveType.Word32, true);
             var iSrc = ((ImmediateOperand)Src1()).Value;
+            var opDst = (Identifier) Operand(Dst(), PrimitiveType.Word32, true);
             Debug.Assert(iSrc.DataType.BitSize == 16);
             var opSrc = m.Dpb(opDst, iSrc, 16);
             m.Assign(opDst, opSrc);
@@ -531,8 +538,8 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteMovw()
         {
-            var dst = Operand(Dst(), PrimitiveType.Word32, true);
             var src = m.Word32(((ImmediateOperand)Src1()).Value.ToUInt32());
+            var dst = Operand(Dst(), PrimitiveType.Word32, true);
             m.Assign(dst, src);
         }
 
@@ -542,11 +549,11 @@ namespace Reko.Arch.Arm.AArch32
 
             var left = Operand(Src1());
             left = hiLeft ? m.Sar(left, m.Int32(16)) : left;
-            left = m.Cast(dt, left);
+            left = m.Convert(left, left.DataType, dt);
 
             var right = Operand(Src2());
             right = hiRight ? m.Sar(right, m.Int32(16)) : right;
-            right = m.Cast(dt, right);
+            right = m.Convert(right, right.DataType, dt);
 
             m.Assign(dst, mul(left, right));
         }
@@ -571,14 +578,15 @@ namespace Reko.Arch.Arm.AArch32
             var src1 = Operand(Src1());
             var src2 = Operand(Src2());
             var dst = Operand(Dst());
-            m.Assign(dst, host.PseudoProcedure(name, dst.DataType, src1, src2));
+            m.Assign(dst, host.Intrinsic(name,true,dst.DataType, src1, src2));
         }
 
         private void RewritePld(string name)
         {
             var dst = ((MemoryAccess) this.Operand(Dst())).EffectiveAddress;
-               m.SideEffect(host.PseudoProcedure(
+               m.SideEffect(host.Intrinsic(
                    name,
+                   false,
                    VoidType.Instance,
                    dst));
         }
@@ -612,7 +620,7 @@ namespace Reko.Arch.Arm.AArch32
             var src1 = Operand(Src1());
             var src2 = Operand(Src2());
             var sum = op(src1, src2);
-            var sat = host.PseudoProcedure("__signed_sat_32", PrimitiveType.Int32, sum);
+            var sat = host.Intrinsic("__signed_sat_32", true, PrimitiveType.Int32, sum);
             m.Assign(dst, sat);
             m.Assign(
                 Q(),
@@ -625,7 +633,7 @@ namespace Reko.Arch.Arm.AArch32
             var src2 = Operand(Src2());
             var dst = Operand(Dst());
             var dtArray = new ArrayType(PrimitiveType.Int16, 2);
-            var qasx = host.PseudoProcedure(name, dtArray, src1, src2);
+            var qasx = host.Intrinsic(name, true, dtArray, src1, src2);
             m.Assign(dst, qasx);
         }
 
@@ -633,11 +641,11 @@ namespace Reko.Arch.Arm.AArch32
         {
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
             var src2 = m.SMul(Operand(Src2()), m.Int32(2));
-            var sat = host.PseudoProcedure("__signed_sat_32", PrimitiveType.Int32, src2);
+            var sat = host.Intrinsic("__signed_sat_32", true, PrimitiveType.Int32, src2);
             src2 = sat;
             var src1 = Operand(Src1());
             var sum = op(src1, src2);
-            sat = host.PseudoProcedure("__signed_sat_32", PrimitiveType.Int32, sum);
+            sat = host.Intrinsic("__signed_sat_32", true, PrimitiveType.Int32, sum);
             m.Assign(dst, sat);
             m.Assign(
                 Q(),
@@ -648,13 +656,11 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteSbfx()
         {
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var src = m.Cast(
-                PrimitiveType.Int32,
-                m.Slice(
+            var src = m.Slice(
                     this.Operand(Src1()),
-                    ((ImmediateOperand)Src2()).Value.ToInt32(),
-                    ((ImmediateOperand)Src3()).Value.ToInt32()));
-            m.Assign(dst, src);
+                    ((ImmediateOperand) Src2()).Value.ToInt32(),
+                    ((ImmediateOperand) Src3()).Value.ToInt32());
+            m.Assign(dst, m.Convert(src, src.DataType, PrimitiveType.Int32));
         }
 
 
@@ -676,11 +682,11 @@ namespace Reko.Arch.Arm.AArch32
 
             var left = Operand(Src2());
             left = hiLeft ? m.Sar(left, m.Int32(16)) : left;
-            left = m.Cast(dt, left);
+            left = m.Convert(left, left.DataType, dt);
 
             var right = Operand(Src3());
             right = hiRight ? m.Sar(right, m.Int32(16)) : right;
-            right = m.Cast(dt, right);
+            right = m.Convert(right, right.DataType, dt);
 
             m.Assign(dst, m.IAdd(op(left, right), dst));
         }
@@ -696,11 +702,11 @@ namespace Reko.Arch.Arm.AArch32
             var right = Operand(Src3());
 
             var product1 = mul(
-                m.Cast(dt, left),
-                swap ? m.Sar(right, m.Int32(16)) : (Expression)m.Cast(dt, right));
+                m.Convert(left, left.DataType, dt),
+                swap ? m.Sar(right, m.Int32(16)) : (Expression)m.Convert(right, right.DataType, dt));
             var product2 = mul(
                 m.Sar(left, m.Int32(16)),
-                swap ? m.Cast(dt, right) : (Expression)m.Sar(right, m.Int32(16)));
+                swap ? m.Convert(right, right.DataType, dt) : (Expression)m.Sar(right, m.Int32(16)));
 
             m.Assign(dst, m.IAdd(dst, addSub(product1, product2)));
         }
@@ -712,11 +718,11 @@ namespace Reko.Arch.Arm.AArch32
             var right = Operand(Src2());
 
             var product1 = mul(
-                m.Cast(dt, left),
-                swap ? m.Sar(right, m.Int32(16)) : (Expression)m.Cast(dt, right));
+                m.Convert(left, left.DataType, dt),
+                swap ? m.Sar(right, m.Int32(16)) : (Expression)m.Convert(right, right.DataType, dt));
             var product2 = mul(
                 m.Sar(left, m.Int32(16)),
-                swap ? m.Cast(dt, right) : (Expression)m.Sar(right, m.Int32(16)));
+                swap ? m.Convert(right, right.DataType, dt) : (Expression)m.Sar(right, m.Int32(16)));
 
             m.Assign(dst, m.IAdd(dst, addSub(product1, product2)));
         }
@@ -726,7 +732,8 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var fac1 = this.Operand(Src1());
             var fac2 = this.Operand(Src2());
-            fac2 = m.Cast(PrimitiveType.Int16, highPart ? m.Sar(fac2, m.Int32(16)) : fac2);
+            var src = highPart ? m.Sar(fac2, m.Int32(16)) : fac2;
+            fac2 = m.Convert(src, src.DataType, PrimitiveType.Int16); 
 
             var acc = this.Operand(Src3());
             m.Assign(dst, m.IAdd(
@@ -745,9 +752,8 @@ namespace Reko.Arch.Arm.AArch32
                 
             var mul = m.SMul(src1, src2);
             mul.DataType = PrimitiveType.Int64;
-            m.Assign(dst, fn(
-                m.Cast(PrimitiveType.Int32, m.Sar(mul, m.Int32(32))),
-                src3));
+            var src = m.Sar(mul, m.Int32(32));
+            m.Assign(dst, fn(m.Convert(src, src.DataType, PrimitiveType.Int32), src3));
         }
 
         private void RewriteSmmul()
@@ -758,7 +764,8 @@ namespace Reko.Arch.Arm.AArch32
 
             var mul = m.SMul(src1, src2);
             mul.DataType = PrimitiveType.Int64;
-            m.Assign(dst, m.Cast(PrimitiveType.Int32, m.Sar(mul, m.Int32(32))));
+            var src = m.Sar(mul, m.Int32(32));
+            m.Assign(dst, m.Convert(src, src.DataType, PrimitiveType.Int32));
         }
 
         private void RewriteSmusd()
@@ -779,7 +786,8 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var fac1 = this.Operand(Src1());
             var fac2 = this.Operand(Src2());
-            fac2 = m.Cast(PrimitiveType.Int16, highPart ? m.Sar(fac2, m.Int32(16)) : fac2);
+            var src = highPart ? m.Sar(fac2, m.Int32(16)) : fac2;
+            fac2 = m.Convert(src, src.DataType, PrimitiveType.Int16);
             m.Assign(dst, m.Sar(
                 m.SMul(fac1, fac2),
                 m.Int32(16)));
@@ -790,7 +798,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst());
             var src1 = this.Operand(Src1());
             var src2 = this.Operand(Src2());
-            var intrinsic = host.PseudoProcedure("__ssat", PrimitiveType.Int32, src1, src2);
+            var intrinsic = host.Intrinsic("__ssat", true, PrimitiveType.Int32, src1, src2);
             m.Assign(dst, intrinsic);
             m.Assign(Q(), m.Cond(dst));
         }
@@ -878,13 +886,11 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteUbfx()
         {
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var src = m.Cast(
-                PrimitiveType.UInt32,
-                m.Slice(
+            var src = m.Slice(
                     this.Operand(Src1()),
-                    ((ImmediateOperand)Src2()).Value.ToInt32(),
-                    ((ImmediateOperand)Src3()).Value.ToInt32()));
-            m.Assign(dst, src);
+                    ((ImmediateOperand) Src2()).Value.ToInt32(),
+                    ((ImmediateOperand) Src3()).Value.ToInt32());
+            m.Assign(dst, m.Convert(src, src.DataType, PrimitiveType.UInt32));
         }
 
         private void RewriteUmaal()
@@ -899,8 +905,8 @@ namespace Reko.Arch.Arm.AArch32
                 ((RegisterOperand)Src1()).Register,
                 ((RegisterOperand)Dst()).Register);
             m.Assign(tmp, m.UMul(rn, rm));
-            m.Assign(tmp, m.IAdd(tmp, m.Cast(PrimitiveType.UInt64, hi)));
-            m.Assign(dst, m.IAdd(tmp, m.Cast(PrimitiveType.UInt64, lo)));
+            m.Assign(tmp, m.IAdd(tmp, m.Convert(hi, hi.DataType, PrimitiveType.UInt64)));
+            m.Assign(dst, m.IAdd(tmp, m.Convert(lo, lo.DataType, PrimitiveType.UInt64)));
         }
 
         private void RewriteUmlal()
@@ -937,7 +943,7 @@ namespace Reko.Arch.Arm.AArch32
             var vSrc2 = binder.CreateTemporary(ab_4);
             m.Assign(vSrc1, opSrc1);
             m.Assign(vSrc2, opSrc2);
-            var intrinsic = host.PseudoProcedure("__usada8", PrimitiveType.Word32, vSrc1, vSrc2);
+            var intrinsic = host.Intrinsic("__usada8", true, PrimitiveType.Word32, vSrc1, vSrc2);
             m.Assign(opDst, intrinsic);
         }
 
@@ -946,7 +952,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst());
             var src1 = this.Operand(Src1());
             var src2 = this.Operand(Src2());
-            var intrinsic = host.PseudoProcedure("__usat", PrimitiveType.UInt32, src1, src2);
+            var intrinsic = host.Intrinsic("__usat", true, PrimitiveType.UInt32, src1, src2);
             m.Assign(dst, intrinsic);
             m.Assign(Q(), m.Cond(dst));
         }
@@ -959,7 +965,7 @@ namespace Reko.Arch.Arm.AArch32
             var arrSrc = new ArrayType(elemType, 2);
             var arrDst = new ArrayType(elemType, 2);
 
-            var intrinsic = host.PseudoProcedure(intrinsicName, arrDst, src1, src2);
+            var intrinsic = host.Intrinsic(intrinsicName, true, arrDst, src1, src2);
             m.Assign(dst, intrinsic);
             m.Assign(Q(), m.Cond(dst));
         }
@@ -986,7 +992,11 @@ namespace Reko.Arch.Arm.AArch32
             {
                 src = m.Shr(src, Operand(instr.ShiftValue));
             }
-            src = m.Cast(dt, src);
+            if (dt.BitSize < src.DataType.BitSize)
+            {
+                src = m.Slice(dt, src, 0);
+            }
+            src = m.Convert(src, src.DataType, dst.DataType);
             m.Assign(dst, m.IAdd(this.Operand(Src1()), src));
         }
 
@@ -998,14 +1008,17 @@ namespace Reko.Arch.Arm.AArch32
             {
                 src = m.Shr(src,Operand(instr.ShiftValue));
             }
-            src = m.Cast(dtSrc, src);
-            src = m.Cast(dtDst, src);
+            if (dtSrc.BitSize < src.DataType.BitSize)
+            {
+                src = m.Slice(dtSrc, src, 0);
+            }
+            src = m.Convert(src, dtSrc, dtDst);
             m.Assign(dst, src);
         }
 
         private void RewriteYield()
         {
-            var intrinsic = host.PseudoProcedure("__yield", VoidType.Instance);
+            var intrinsic = host.Intrinsic("__yield",  false,VoidType.Instance);
             m.SideEffect(intrinsic);
         }
     }

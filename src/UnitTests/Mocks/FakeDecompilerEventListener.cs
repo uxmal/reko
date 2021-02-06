@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,6 +52,16 @@ namespace Reko.UnitTests.Mocks
             Debug.WriteLine(lastDiagnostic);
         }
 
+        public void Info(string message)
+        {
+            AddDiagnostic(new NullCodeLocation(""), new InformationalDiagnostic(message));
+        }
+
+        public void Info(string message, params object[] args)
+        {
+            Info(string.Format(message, args));
+        }
+
         public void Info(ICodeLocation location, string message)
         {
             AddDiagnostic(location, new WarningDiagnostic(message));
@@ -62,6 +72,15 @@ namespace Reko.UnitTests.Mocks
             Warn(location, string.Format(message, args));
         }
 
+        public void Warn(string message)
+        {
+            AddDiagnostic(new NullCodeLocation(""), new WarningDiagnostic(message));
+        }
+
+        public void Warn(string message, params object[] args)
+        {
+            Warn(string.Format(message, args));
+        }
 
         public void Warn(ICodeLocation location, string message)
         {
@@ -71,6 +90,26 @@ namespace Reko.UnitTests.Mocks
         public void Warn(ICodeLocation location, string message, params object[] args)
         {
             Warn(location, string.Format(message, args));
+        }
+
+        public void Error(string message)
+        {
+            AddDiagnostic(new NullCodeLocation(""), new ErrorDiagnostic(message));
+        }
+
+        public void Error(string message, params object[] args)
+        {
+            Error(string.Format(message, args));
+        }
+
+        public void Error(Exception ex, string message)
+        {
+            AddDiagnostic(new NullCodeLocation(""), new ErrorDiagnostic(message, ex));
+        }
+
+        public void Error(Exception ex, string message, params object[] args)
+        {
+            Error(new NullCodeLocation(""), ex, string.Format(message, args));
         }
 
         public void Error(ICodeLocation location, string message)
@@ -174,7 +213,7 @@ namespace Reko.UnitTests.Mocks
 
         public ICodeLocation CreateBlockNavigator(Program program, Block block)
         {
-            return new NullCodeLocation(block.Name);
+            return new NullCodeLocation(block.DisplayName);
         }
 
         public ICodeLocation CreateStatementNavigator(Program program, Statement stm)
@@ -182,7 +221,7 @@ namespace Reko.UnitTests.Mocks
             return new NullCodeLocation(program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress).ToString());
         }
 
-        public ICodeLocation CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector, int stride)
+        public ICodeLocation CreateJumpTableNavigator(Program program, IProcessorArchitecture _, Address addrIndirectJump, Address addrVector, int stride)
         {
             return new NullCodeLocation(addrIndirectJump.ToString());
         }

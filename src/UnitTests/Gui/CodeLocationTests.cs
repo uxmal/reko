@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Gui;
 using Reko.UnitTests.Mocks;
 using System.ComponentModel.Design;
@@ -37,7 +38,7 @@ namespace Reko.UnitTests.Gui
         {
             this.program = new Program
             {
-                Architecture = new FakeArchitecture()
+                Architecture = new FakeArchitecture(new ServiceContainer())
             };
         }
 
@@ -82,7 +83,7 @@ namespace Reko.UnitTests.Gui
         public void NavigateToBlock()
         {
             var proc = new Procedure(program.Architecture, "foo", Address.Ptr32(0x00123400), null);
-            var block = new Block(proc, "foo_block");
+            var block = new Block(proc, proc.EntryAddress, "foo_block");
             var codeSvc = new Mock<ICodeViewerService>();
             codeSvc.Setup(x => x.DisplayProcedure(program, proc, true)).Verifiable();
 

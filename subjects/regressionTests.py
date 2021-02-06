@@ -4,7 +4,11 @@
 # Subject binaries in the directory are identified by either:
 # * having a dcproject file associated with them or
 # * a subject.cmd file containing reko command lines to execute.
+# For debugging purposes a file called trace.txt can be placed
+# in the same directory. It should contain the names of procedures
+# you wish to trace.
 
+from __future__ import print_function
 from optparse import OptionParser
 from threading import Thread
 from datetime import datetime
@@ -83,10 +87,22 @@ def cmdline_split(s):
 
 # Remove output files
 def clear_dir(dir_name, files):
+    failedFiles = []
     for pname in files:
         for ext in output_extensions:
             if pname.endswith(ext):
-                os.remove(os.path.join(dir_name, pname))
+                filename = os.path.join(dir_name, pname)
+                try:
+                    os.remove(filename)
+                except:
+                    # File may be held open by another program, try again later.
+                    failedFiles.append(filename)
+    # Retry all failed files with a delay. Let the error propagate if persists.
+    if failedFiles:
+        time.sleep(2)   # seconds
+        for filename in failedFiles:
+            if os.path.exists(filename):
+                os.remove(filename)
 
 def strip_id_nums(dirs):
     for dir in dirs:
@@ -103,15 +119,21 @@ numbered_id_regexp = re.compile('(?P<id_name>\w+)_\d+')
 fn_seg_name_regexp = re.compile('(?P<seg_name>fn\w+)_(?P<offset_name>\d+)')
 
 def strip_id_nums_for_file(file_name):
-    file = fileinput.FileInput(file_name, inplace=True)
-    for line in file:
-        #remove EOLN
-        line = line[:-1]
-        line = fn_seg_name_regexp.sub('\g<seg_name>-\g<offset_name>', line)
-        print(numbered_id_regexp.sub('\g<id_name>_n', line))
+    try:
+        file = fileinput.FileInput(file_name, inplace=True)
+        for line in file:
+            #remove EOLN
+            line = line[:-1]
+            line = fn_seg_name_regexp.sub('\g<seg_name>-\g<offset_name>', line)
+            print(numbered_id_regexp.sub('\g<id_name>_n', line))
+    except UnicodeDecodeError:
+        print("Unicode decoding error in "+ file_name, file=sys.stderr)
 
 def collect_jobs(dir_name, files, pool_state):
     needClear = True
+    if dir_name.endswith(".reko"):
+        clear_dir(dir_name, files)
+        needClear = False
     for pname in files:
         if pname.endswith(".dcproject"):
             if needClear:
@@ -133,7 +155,22 @@ def collect_job_in_dir(fn, dir, fname, pool_state):
     os.chdir(oldDir)
 
 def collect_reko_project(dir, pname, pool_state):
-    return collect_job([reko_cmdline, pname], dir, pname, pool_state)
+    exe_and_args = [reko_cmdline, pname]
+    exe_and_args = add_traces(dir, exe_and_args)
+    return collect_job(exe_and_args, dir, pname, pool_state)
+
+# Add procedures to be traced. If a file called 'trace.txt' is 
+# placed in the same directory as the binary, its contents are
+# assumed to be the names of procedures to be traced, single
+# procedure on each line.
+def add_traces(dir, exe_and_args):
+    if os.path.isfile("trace.txt"):
+        f = open("trace.txt")
+        lines = [line.rstrip() for line in f.readlines()]
+        f.close()
+        exe_and_args.insert(1, "--debug-trace-proc")
+        exe_and_args.insert(2, ",".join(lines))
+    return exe_and_args
 
 # Remove any comment on the line
 def strip_comment(line):
@@ -152,6 +189,7 @@ def collect_command_file(dir, scr_name, jobs):
         if len(exe_and_args) <= 1:
             continue
         exe_and_args[0] = reko_cmdline
+        exe_and_args = add_traces(dir, exe_and_args)
         # Assumes the binary's name is the last item on the command line.
         collect_job(exe_and_args, dir, exe_and_args[-1], jobs)
 
@@ -256,7 +294,7 @@ if __name__ == '__main__':
             new_weights[x[0]] = x[1]
             outputs.append(x[2])
         except:
-            outputs.append("!!! " + jobs[i].rel_pname + " timed out\n");
+            outputs.append("!!! " + jobs[i].rel_pname + " timed out\n")
     for output in sorted(outputs):
         sys.stdout.write(output)
 

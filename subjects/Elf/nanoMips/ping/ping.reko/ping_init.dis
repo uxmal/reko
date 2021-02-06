@@ -1,0 +1,15 @@
+void _init()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      __libc_start_init
+// MayUse: 
+// LiveOut:
+// Trashed: r25 r7
+// Preserved: sp
+_init_entry:
+l004000D4:
+	return
+_init_exit:
+
+

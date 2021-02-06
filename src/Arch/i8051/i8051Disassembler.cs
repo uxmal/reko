@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,9 @@ using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Services;
+using Reko.Core.Types;
 
 namespace Reko.Arch.i8051
 {
@@ -79,6 +82,13 @@ namespace Reko.Arch.i8051
             };
         }
 
+        public override i8051Instruction NotYetImplemented(string message)
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("i8051_dis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
+        }
+
         #region Mutators
         // An 11-bit address destination. This argument is used by ACALL and AJMP instructions. The target of the CALL or JMP must lie within the same 2K page as the first byte of the following instruction.
         private static bool j(uint uInstr, i8051Disassembler dasm)
@@ -122,7 +132,9 @@ namespace Reko.Arch.i8051
         {
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
-            dasm.ops.Add(MemoryOperand.Direct(Address.Ptr16(b)));
+            var offset = Constant.UInt16(b);
+            offset.DataType = PrimitiveType.Offset16;
+            dasm.ops.Add(MemoryOperand.Direct(offset));
             return true;
         }
 
@@ -230,18 +242,6 @@ namespace Reko.Arch.i8051
         {
             var reg = Registers.GetRegister(b & 0xF0);
             return new BitOperand(reg, b & 0x7, neg);
-        }
-
-        private void EmitUnitTest(Mnemonic mnemonic, byte uInstr)
-        {
-            Debug.Print(
-$@"    [Test]
-        public void I8051_dis_{mnemonic}()
-        {{
-            var instr = DisassembleBytes(0x{uInstr:X2});
-            Assert.AreEqual(""@@@"", instr.ToString());
-        }}
-");
         }
 
         private static Decoder Instr(Mnemonic mnemonic, params Mutator<i8051Disassembler>[] mutators)

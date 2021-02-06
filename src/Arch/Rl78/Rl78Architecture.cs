@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -36,7 +37,8 @@ namespace Reko.Arch.Rl78
     {
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
-        public Rl78Architecture(string archId) : base(archId)
+        public Rl78Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             InstructionBitSize = 8;
             FramePointerType = PrimitiveType.Ptr32;

@@ -13,16 +13,16 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	cx = 0x0064
-	sp = sp - 2
+	cx = 0x64<16>
+	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = cx
 	call fn0C00_000F (retsize: 2;)
-	sp = sp + 0x0002
+	sp = sp + 2<16>
 	SCZO = cond(sp)
-	Mem0[ds:0x0064:word16] = ax
+	Mem0[ds:0x64<16>:word16] = ax
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -44,36 +44,36 @@ fn0C00_0000_exit:
 define fn0C00_000F
 fn0C00_000F_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_000F
 l0C00_000F:
-	sp = sp - 2
+	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = bp
 	bp = sp
-	ax = Mem0[ss:bp + 0x0004:word16]
-	ax = ax - 0x0001
+	ax = Mem0[ss:bp + 4<16>:word16]
+	ax = ax - 1<16>
 	SZO = cond(ax)
 	branch Test(EQ,Z) l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
-	sp = sp - 2
+	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = ax
 	call fn0C00_000F (retsize: 2;)
-	sp = sp + 0x0001
+	sp = sp + 1<16>
 	SZO = cond(sp)
-	sp = sp + 0x0001
+	sp = sp + 1<16>
 	SZO = cond(sp)
-	dx = Mem0[ss:bp + 0x0004:word16]
-	dx_ax = dx *s ax
+	dx = Mem0[ss:bp + 4<16>:word16]
+	dx_ax = dx *s32 ax
 	SCZO = cond(dx_ax)
 	goto l0C00_0029
 	// succ:  l0C00_0029
 l0C00_0026:
-	ax = 0x0001
+	ax = 1<16>
 	// succ:  l0C00_0029
 l0C00_0029:
 	bp = Mem0[ss:sp:word16]
-	sp = sp + 2
+	sp = sp + 2<i16>
 	return
 	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:

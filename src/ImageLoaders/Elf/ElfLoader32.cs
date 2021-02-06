@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using Reko.ImageLoaders.Elf.Relocators;
 using System;
 using System.Collections.Generic;
@@ -34,11 +35,10 @@ namespace Reko.ImageLoaders.Elf
 
     public class ElfLoader32 : ElfLoader
     {
-        public ElfLoader32(ElfImageLoader imgLoader, Elf32_EHdr header32, byte[] rawImage, byte endianness)
-            : base(imgLoader, header32.e_machine, endianness)
+        public ElfLoader32(IServiceProvider services, Elf32_EHdr header32, byte osAbi, EndianServices endianness, byte[] rawImage)
+            : base(services, (ElfMachine) header32.e_machine, endianness, rawImage)
         {
             this.Header = header32 ?? throw new ArgumentNullException(nameof(header32));
-            this.rawImage = rawImage;
         }
 
         public ElfLoader32() : base() { }
@@ -58,7 +58,7 @@ namespace Reko.ImageLoaders.Elf
             foreach (var ph in Segments)
             {
                 if (ph.p_vaddr <= addr && addr < ph.p_vaddr + ph.p_filesz)
-                    return addr - ph.p_vaddr;
+                    return (addr - ph.p_vaddr) + ph.p_offset;
             }
             return ~0ul;
         }
@@ -79,7 +79,7 @@ namespace Reko.ImageLoaders.Elf
             return Address.Ptr32((uint) uAddr);
         }
 
-        protected override IProcessorArchitecture CreateArchitecture(byte endianness)
+        protected override IProcessorArchitecture CreateArchitecture(EndianServices endianness)
         {
             string arch;
             var options = new Dictionary<string, object>();
@@ -105,13 +105,13 @@ namespace Reko.ImageLoaders.Elf
                     options["decoder"] = "v6";
                     break;
                 }
-                if (endianness == ELFDATA2LSB)
+                if (endianness == EndianServices.Little)
                 {
                     arch = is64 
                         ? "mips-le-64"
                         : "mips-le-32";
                 }
-                else if (endianness == ELFDATA2MSB)
+                else if (endianness == EndianServices.Big)
                 {
                     arch = is64
                         ? "mips-be-64"
@@ -121,6 +121,11 @@ namespace Reko.ImageLoaders.Elf
                 {
                     throw new NotSupportedException(string.Format("The MIPS architecture does not support ELF endianness value {0}", endianness));
                 }
+                break;
+            case ElfMachine.EM_RISCV:
+                arch = "risc-v";
+                options["WordSize"] = "32";
+                RiscVElf.SetOptions((RiscVFlags) Header.e_flags, options);
                 break;
             default:
                return base.CreateArchitecture(endianness);
@@ -133,7 +138,6 @@ namespace Reko.ImageLoaders.Elf
                 a.StackRegister = a.GetRegister(stackRegName);
             }
             return a;
-
         }
 
         public override ElfObjectLinker CreateLinker()
@@ -145,19 +149,26 @@ namespace Reko.ImageLoaders.Elf
         {
             switch (machine)
             {
+            case ElfMachine.EM_68K: return new M68kRelocator(this, imageSymbols);
             case ElfMachine.EM_386: return new x86Relocator(this, imageSymbols);
             case ElfMachine.EM_ARM: return new ArmRelocator(this, imageSymbols);
+            case ElfMachine.EM_HEXAGON: return new HexagonRelocator(this, imageSymbols);
             case ElfMachine.EM_MIPS: return new MipsRelocator(this, imageSymbols);
             case ElfMachine.EM_NANOMIPS: return new NanoMipsRelocator(this, imageSymbols);
             case ElfMachine.EM_MSP430: return new Msp430Relocator(this, imageSymbols);
             case ElfMachine.EM_PPC: return new PpcRelocator(this, imageSymbols);
             case ElfMachine.EM_SPARC32PLUS:
-            case ElfMachine.EM_SPARC: return new SparcRelocator(this, imageSymbols);
+            case ElfMachine.EM_SPARC: return new Sparc32Relocator(this, imageSymbols);
             case ElfMachine.EM_XTENSA: return new XtensaRelocator(this, imageSymbols);
-            case ElfMachine.EM_68K: return new M68kRelocator(this, imageSymbols);
             case ElfMachine.EM_AVR: return new AvrRelocator(this, imageSymbols);
+            case ElfMachine.EM_AVR32:
+            case ElfMachine.EM_AVR32a: return new Avr32Relocator(this, imageSymbols);
             case ElfMachine.EM_SH: return new SuperHRelocator(this, imageSymbols);
             case ElfMachine.EM_BLACKFIN: return new BlackfinRelocator(this, imageSymbols);
+            case ElfMachine.EM_PARISC: return new PaRiscRelocator(this, imageSymbols);
+            case ElfMachine.EM_RISCV: return new RiscVRelocator32(this, imageSymbols);
+            // Support for 32-bit pointers.
+            case ElfMachine.EM_X86_64: return new x86Relocator(this, imageSymbols);
             }
             return base.CreateRelocator(machine, imageSymbols);
         }
@@ -185,7 +196,7 @@ namespace Reko.ImageLoaders.Elf
             writer.WriteLine("Sections:");
             foreach (var sh in Sections)
             {
-                writer.WriteLine("{0,-18} sh_type: {1,-12} sh_flags: {2,-4} sh_addr; {3:X8} sh_offset: {4:X8} sh_size: {5:X8} sh_link: {6,-18} sh_info: {7,-18} sh_addralign: {8:X8} sh_entsize: {9:X8}",
+                writer.WriteLine("{0,-18} sh_type: {1,-12} sh_flags: {2,-4} sh_addr: {3:X8} sh_offset: {4:X8} sh_size: {5:X8} sh_link: {6,-18} sh_info: {7,-18} sh_addralign: {8:X8} sh_entsize: {9:X8}",
                     sh.Name,
                     sh.Type,
                     DumpShFlags(sh.Flags),
@@ -232,7 +243,7 @@ namespace Reko.ImageLoaders.Elf
         {
             var entries = sh.Size / sh.EntrySize;
             var symtab = sh.LinkedSection;
-            var rdr = imgLoader.CreateReader(sh.FileOffset);
+            var rdr = CreateReader(sh.FileOffset);
             for (ulong i = 0; i < entries; ++i)
             {
                 if (!rdr.TryReadUInt32(out uint offset))
@@ -244,7 +255,7 @@ namespace Reko.ImageLoaders.Elf
 
                 uint sym = info >> 8;
                 string symStr = GetStrPtr(symtab, sym);
-                DebugEx.Verbose(ElfImageLoader.trace, "  RELA {0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
+                ElfImageLoader.trace.Verbose("  RELA {0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
             }
         }
 
@@ -253,9 +264,8 @@ namespace Reko.ImageLoaders.Elf
             return Dependencies;
         }
 
-        public override IEnumerable<ElfDynamicEntry> GetDynamicEntries(ulong offsetDynamic)
+        public override IEnumerable<ElfDynamicEntry> GetDynamicEntries(EndianImageReader rdr)
         {
-            var rdr = imgLoader.CreateReader(offsetDynamic);
             for (; ; )
             {
                 var dyn = new Elf32_Dyn();
@@ -291,20 +301,9 @@ namespace Reko.ImageLoaders.Elf
                 .FirstOrDefault();
         }
 
-        protected override int GetSectionNameOffset(uint idxString)
+        protected override int GetSectionNameOffset(List<ElfSection> sections, uint idxString)
         {
-            return (int) (Sections[Header.e_shstrndx].FileOffset + idxString);
-        }
-
-        public string GetStrPtr(int idx, uint offset)
-        {
-            if (idx < 0)
-            {
-                // Most commonly, this will be an index of -1, because a call to GetSectionIndexByName() failed
-                throw new ArgumentException(string.Format("GetStrPtr passed index of {0}.", idx));
-            }
-            // Get a pointer to the start of the string table and add the offset
-            return ReadAsciiString(Sections[idx].FileOffset + offset);
+            return (int) (sections[Header.e_shstrndx].FileOffset + idxString);
         }
 
         public string GetSymbolName(int iSymbolSection, uint symbolNo)
@@ -319,7 +318,7 @@ namespace Reko.ImageLoaders.Elf
             if (strSection == null)
                 return string.Format("null:{0:X8}", symbolNo);
             uint offset = (uint) (symSection.FileOffset + symbolNo * symSection.EntrySize);
-            var rdr = imgLoader.CreateReader(offset);
+            var rdr = CreateReader(offset);
             rdr.TryReadUInt32(out offset);
             return GetStrPtr(strSection, offset);
         }
@@ -329,13 +328,14 @@ namespace Reko.ImageLoaders.Elf
             var segMap = AllocateMemoryAreas(
                 Segments
                     .Where(p => IsLoadable(p.p_pmemsz, p.p_type))
+                    .OrderBy(p => p.p_vaddr)
                     .Select(p => Tuple.Create(
                         Address.Ptr32((uint) p.p_vaddr),
                         (uint) p.p_pmemsz)));
 
             foreach (var ph in Segments)
             {
-                DebugEx.Inform(ElfImageLoader.trace, "ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
+                ElfImageLoader.trace.Inform("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
                 if (!IsLoadable(ph.p_pmemsz, ph.p_type))
                     continue;
                 var vaddr = Address.Ptr32((uint) ph.p_vaddr);
@@ -357,7 +357,7 @@ namespace Reko.ImageLoaders.Elf
                         continue;
 
                     if (segMap.TryGetLowerBound(section.Address, out var mem) &&
-                        section.Address < mem.EndAddress)
+                        section.Address - mem.BaseAddress < mem.Length)
                     {
                         AccessMode mode = AccessModeOf(section.Flags);
                         var seg = segmentMap.AddSegment(new ImageSegment(
@@ -381,10 +381,14 @@ namespace Reko.ImageLoaders.Elf
                 // create a pseudo-section from the segMap.
                 foreach (var segment in segMap)
                 {
+                    var elfSegment = this.GetSegmentByAddress(segment.Value.BaseAddress.ToLinear());
                     var imgSegment = new ImageSegment(
                         segment.Value.BaseAddress.GenerateName("seg", ""),
                         segment.Value,
-                        AccessMode.ReadExecute)        //$TODO: writeable segments.
+                        elfSegment != null
+                            ? elfSegment.GetAccessMode()
+                            : AccessMode.ReadExecute) 
+                    
                     {
                         Size = (uint) segment.Value.Length,
                     };
@@ -397,7 +401,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override int LoadSegments()
         {
-            var rdr = imgLoader.CreateReader(Header.e_phoff);
+            var rdr = CreateReader(Header.e_phoff);
             for (int i = 0; i < Header.e_phnum; ++i)
             {
                 var sSeg = Elf32_PHdr.Load(rdr);
@@ -440,13 +444,14 @@ namespace Reko.ImageLoaders.Elf
             };
         }
 
-        public override void LoadSectionHeaders()
+        public override List<ElfSection> LoadSectionHeaders()
         {
             // Create the sections.
             var inames = new List<uint>();
             var links = new List<uint>();
             var infos = new List<uint>();
-            var rdr = imgLoader.CreateReader(Header.e_shoff);
+            var sections = new List<ElfSection>();
+            var rdr = CreateReader(Header.e_shoff);
             for (uint i = 0; i < Header.e_shnum; ++i)
             {
                 var shdr = Elf32_SHdr.Load(rdr);
@@ -463,7 +468,7 @@ namespace Reko.ImageLoaders.Elf
                     Alignment = shdr.sh_addralign,
                     EntrySize = shdr.sh_entsize,
                 };
-                Sections.Add(section);
+                sections.Add(section);
                 inames.Add(shdr.sh_name);
                 links.Add(shdr.sh_link);
                 infos.Add(shdr.sh_info);
@@ -471,10 +476,10 @@ namespace Reko.ImageLoaders.Elf
 
             // Get section names and crosslink sections.
 
-            for (int i = 0; i < Sections.Count; ++i)
+            for (int i = 0; i < sections.Count; ++i)
             {
-                var section = Sections[i];
-                section.Name = ReadSectionName(inames[i]);
+                var section = sections[i];
+                section.Name = ReadSectionName(sections, inames[i]);
 
                 ElfSection linkSection = null;
                 ElfSection relSection = null;
@@ -482,47 +487,56 @@ namespace Reko.ImageLoaders.Elf
                 {
                 case SectionHeaderType.SHT_REL:
                 case SectionHeaderType.SHT_RELA:
-                    linkSection = GetSectionByIndex(links[i]);
-                    relSection = GetSectionByIndex(infos[i]);
+                    linkSection = GetSectionByIndex(sections, links[i]);
+                    relSection = GetSectionByIndex(sections, infos[i]);
                     break;
                 case SectionHeaderType.SHT_DYNAMIC:
                 case SectionHeaderType.SHT_HASH:
                 case SectionHeaderType.SHT_SYMTAB:
                 case SectionHeaderType.SHT_DYNSYM:
-                    linkSection = GetSectionByIndex(links[i]);
+                    linkSection = GetSectionByIndex(sections, links[i]);
                     break;
                 }
                 section.LinkedSection = linkSection;
                 section.RelocatedSection = relSection;
             }
+            return sections;
         }
 
         public override ElfSymbol LoadSymbol(ulong offsetSymtab, ulong symbolIndex, ulong entrySize, ulong offsetStringTable)
         {
             var rdr = CreateReader(offsetSymtab + entrySize * symbolIndex);
-            var sym = Elf32_Sym.Load(rdr);
-            return new ElfSymbol
+            if (Elf32_Sym.TryLoad(rdr, out var sym))
             {
-                Name = RemoveModuleSuffix(ReadAsciiString(offsetStringTable + sym.st_name)),
-                Type = (ElfSymbolType) (sym.st_info & 0xF),
-                Bind = sym.st_info >> 4,
-                SectionIndex = sym.st_shndx,
-                Value = sym.st_value,
-                Size = sym.st_size,
-            };
+                return new ElfSymbol
+                {
+                    Name = RemoveModuleSuffix(ReadAsciiString(offsetStringTable + sym.st_name)),
+                    Type = (ElfSymbolType) (sym.st_info & 0xF),
+                    Bind = sym.st_info >> 4,
+                    SectionIndex = sym.st_shndx,
+                    Value = sym.st_value,
+                    Size = sym.st_size,
+                };
+            }
+            else
+                return null;
         }
 
         public override Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
-            DebugEx.Inform(ElfImageLoader.trace, "== Symbols from {0} ==", symSection.Name);
+            ElfImageLoader.trace.Inform("== Symbols from {0} ==", symSection.Name);
             var stringtableSection = symSection.LinkedSection;
             var rdr = CreateReader(symSection.FileOffset);
             var symbols = new Dictionary<int, ElfSymbol>();
             for (ulong i = 0; i < symSection.Size / symSection.EntrySize; ++i)
             {
-                var sym = Elf32_Sym.Load(rdr);
+                if (!Elf32_Sym.TryLoad(rdr, out var sym))
+                {
+                    ElfImageLoader.trace.Warn("Unable to load symbol entry {0} from {1}", i, symSection.Name);
+                    continue;
+                }
                 var symName = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name));
-                DebugEx.Verbose(ElfImageLoader.trace, "  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
+                ElfImageLoader.trace.Verbose("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
                     i,
                     string.IsNullOrWhiteSpace(symName) ? "<empty>" : symName,
                     (ElfSymbolType) (sym.st_info & 0xF),

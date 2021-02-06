@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -134,10 +134,11 @@ word32 foo(byte * arg0, word32 arg1)
 foo_entry:
 	// succ:  l2
 l2:
-	return 0x00000003
+	return 3<32>
 	// succ:  foo_exit
 foo_exit:
 ";
+            //$LIT: should be return 3<i32>? Is llvm i32 unsigned?
             AssertProc(sExp, proc);
         }
 
@@ -158,7 +159,7 @@ word32 foo(word32 arg0)
 foo_entry:
 	// succ:  l1
 l1:
-	loc2 = arg0 + 0x00000003
+	loc2 = arg0 + 3<32>
 	return loc2
 	// succ:  foo_exit
 foo_exit:
@@ -201,20 +202,20 @@ next_char_entry:
 	// succ:  l0
 l0:
 	loc1 = *curch
-	loc2 = (int32) loc1
-	loc3 = loc2 == 0x0000000A
+	loc2 = CONVERT(loc1, byte, int32)
+	loc3 = loc2 == 0xA<32>
 	branch loc3 l4
 	goto l7
 	// succ:  l7 l4
 l4:
 	loc5 = *curln
-	loc6 = loc5 + 0x00000001
+	loc6 = loc5 + 1<32>
 	*curln = loc6
 	// succ:  l7
 l7:
 	loc8 = *input
 	loc9 = fgetc(loc8)
-	loc10 = (byte) loc9
+	loc10 = CONVERT(loc9, word32, byte)
 	*curch = loc10
 	return loc10
 	// succ:  next_char_exit
@@ -243,9 +244,9 @@ word32 foo()
 foo_entry:
 	// succ:  l0
 l0:
-	loc1 = &(*msg)[0x0000000000000000]
+	loc1 = &(*msg)[0<64>]
 	puts(loc1)
-	return 0x00000000
+	return 0<32>
 	// succ:  foo_exit
 foo_exit:
 ";
@@ -274,16 +275,16 @@ word32 foo()
 foo_entry:
 	// succ:  l0
 l0:
-	loc1 = *0x00123400
-	loc2 = loc1 == 0x00000004
+	loc1 = *0x00123400<p32>
+	loc2 = loc1 == 4<32>
 	branch loc2 l5
 	// succ:  l3 l5
 l3:
-	loc4 = loc1 + 0x00000009
+	loc4 = loc1 + 9<32>
 	goto l7
 	// succ:  l7
 l5:
-	loc6 = loc1 + 0xFFFFFFFF
+	loc6 = loc1 + 0xFFFFFFFF<32>
 	// succ:  l7
 l7:
 	loc8 = PHI((loc4, l3), (loc6, l5))

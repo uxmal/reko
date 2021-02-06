@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,8 @@ using System.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.Tlcs.Tlcs90
 {
@@ -42,7 +44,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private readonly Tlcs90Architecture arch;
         private readonly IEnumerator<Tlcs90Instruction> dasm;
         private Tlcs90Instruction instr;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private RtlEmitter m;
 
         public Tlcs90Rewriter(Tlcs90Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -60,7 +62,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                rtlc = instr.InstructionClass;
+                iclass = instr.InstructionClass;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
                 switch (instr.Mnemonic)
@@ -114,10 +116,10 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 case Mnemonic.res: RewriteSetRes(false); break;
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.reti: RewriteReti(); break;
-                case Mnemonic.rl: RewriteRotation(PseudoProcedure.RolC, true); break;
-                case Mnemonic.rlc: RewriteRotation(PseudoProcedure.Rol, false); break;
-                case Mnemonic.rr: RewriteRotation(PseudoProcedure.RorC, true); break;
-                case Mnemonic.rrc: RewriteRotation(PseudoProcedure.Ror, false); break;
+                case Mnemonic.rl: RewriteRotation(IntrinsicProcedure.RolC, true); break;
+                case Mnemonic.rlc: RewriteRotation(IntrinsicProcedure.Rol, false); break;
+                case Mnemonic.rr: RewriteRotation(IntrinsicProcedure.RorC, true); break;
+                case Mnemonic.rrc: RewriteRotation(IntrinsicProcedure.Ror, false); break;
                 case Mnemonic.sbc: RewriteAdcSbc(m.ISub, "**-**V1*"); break;
                 case Mnemonic.scf: RewriteScf(); break;
                 case Mnemonic.set: RewriteSetRes(true); break;
@@ -130,10 +132,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 case Mnemonic.swi: RewriteSwi(); break;
                 case Mnemonic.xor: RewriteBinOp(m.Xor, "**-10*00"); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
-                {
-                    Class = rtlc,
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
 
@@ -149,7 +148,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                string.Format(
                    "Rewriting of TLCS-90 instruction '{0}' not implemented yet.",
                    instr.Mnemonic));
-            rtlc = InstrClass.Invalid;
+            iclass = InstrClass.Invalid;
             m.Invalid();
         }
 
@@ -214,7 +213,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                         var idx = binder.EnsureRegister(mem.Index);
                         ea = m.IAdd(
                             ea,
-                            m.Cast(PrimitiveType.Int16, idx));
+                            m.Convert(idx, idx.DataType, PrimitiveType.Int16));
                     }
                     else if (mem.Offset != null)
                     {
@@ -260,7 +259,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                         var idx = binder.EnsureRegister(mem.Index);
                         ea = m.IAdd(
                             ea,
-                            m.Cast(PrimitiveType.Int16, idx));
+                            m.Convert(idx, idx.DataType, PrimitiveType.Int16));
                     }
                     else if (mem.Offset != null)
                     {
@@ -315,34 +314,10 @@ namespace Reko.Arch.Tlcs.Tlcs90
             throw new ArgumentException();
         }
 
-
-        [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            EmitUnitTest("Tlcs90_rw_");
-        }
-
-        [Conditional("DEBUG")]
-        private void EmitUnitTest(string prefix)
-        {
-            //if (seen.Contains(dasm.Current.Mnemonic))
-            //    return;
-            //seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var bytes = r2.ReadBytes(dasm.Current.Length);
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void {0}{1}()", prefix, dasm.Current.Mnemonic);
-            Debug.WriteLine("        {");
-            Debug.Print("            RewriteCode(\"{0}\");  // {1}",
-                string.Join("", bytes.Select(b => string.Format("{0:X2}", (int)b))),
-                dasm.Current);
-            Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|{0}({1}): 1 instructions\",", instr.Address, bytes.Length);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("Tlcs90_rw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
     }
 }

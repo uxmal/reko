@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,18 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
-using Reko.Analysis;
-using NUnit.Framework;
-using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Core
 {
-	[TestFixture]
+    [TestFixture]
 	public class ApplicationBuilderTests
 	{
 		private IntelArchitecture arch;
@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Core
 
 		public ApplicationBuilderTests()
 		{
-			arch = new X86ArchitectureFlat32("x86-protected-32");
+			arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
             frame = arch.CreateFrame();
 			ret = frame.EnsureRegister(Registers.eax);
 			arg04 = new Identifier("arg04",   PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32));
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Core
 			Assert.IsTrue(sig.Parameters[3].Storage is OutArgumentStorage);
             ab = arch.CreateFrameApplicationBuilder(frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null));
             var instr = ab.CreateInstruction(sig, null);
-			Assert.AreEqual("eax = foo(Mem0[esp:word32], Mem0[esp + 4:word16], Mem0[esp + 8:byte], out edx)", instr.ToString());
+			Assert.AreEqual("eax = foo(Mem0[esp:word32], Mem0[esp + 4<i32>:word16], Mem0[esp + 8<i32>:byte], out edx)", instr.ToString());
 		}
 
         [Test]
@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Core
                 new Identifier("foo", PrimitiveType.Ptr32, null));
             var sig = FunctionType.Func(new Identifier("bRet", PrimitiveType.Byte, Registers.eax));
             var instr = ab.CreateInstruction(sig, null);
-            Assert.AreEqual("eax = SEQ(0x000000, foo())", instr.ToString());
+            Assert.AreEqual("eax = SEQ(0<24>, foo())", instr.ToString());
         }
 
         [Test(Description ="Variadic signature specified, but no way of parsing the parameters.")]
@@ -124,9 +124,10 @@ namespace Reko.UnitTests.Core
                 new CallSite(4, 0),
                 new ProcedureConstant(PrimitiveType.Ptr32, callee));
             var unk = new UnknownType();
-            var sig = FunctionType.Action(new Identifier("...", unk, new StackArgumentStorage(0, unk)));
+            var sig = FunctionType.Action();
+            sig.IsVariadic = true;
             var instr = ab.CreateInstruction(sig, null);
-            Assert.AreEqual("callee(0x00000000)", instr.ToString());//$BUG: obviously wrong
+            Assert.AreEqual("callee(0<32>)", instr.ToString());//$BUG: obviously wrong
         }
 
         [Test(Description = "Calling convention returns values in a reserved slot on the stack.")]
@@ -158,7 +159,7 @@ namespace Reko.UnitTests.Core
                     new Identifier("str", PrimitiveType.Ptr32, new StackArgumentStorage(8, PrimitiveType.Int32)),
                     new Identifier("stm", PrimitiveType.Ptr32, new StackArgumentStorage(4, PrimitiveType.Int32)));
             var instr = ab.CreateInstruction(sig, null);
-            Assert.AreEqual("Mem0[esp + 8:int32] = fputs(Mem0[esp + 4:int32], Mem0[esp:int32])", instr.ToString());
+            Assert.AreEqual("Mem0[esp + 8<i32>:int32] = fputs(Mem0[esp + 4<i32>:int32], Mem0[esp:int32])", instr.ToString());
         }
     }
 }

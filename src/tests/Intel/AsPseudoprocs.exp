@@ -2,16 +2,16 @@
 0B00:0010 0F A3 C1 0F BA E1 02 0F BD 0C 66 0F BD C8 C2 04 ..........f.....
 0B00:0020 00                                              .              
 
-0B00:0000 8D 76 0C        	lea	si,[bp+0C]
+0B00:0000 8D 76 0C        	lea	si,[bp+0Ch]
 0B00:0003 EE              	out	dx,al
-0B00:0004 D1 CB           	ror	bx,01
-0B00:0006 D1 D9           	rcr	cx,01
+0B00:0004 D1 CB           	ror	bx,1h
+0B00:0006 D1 D9           	rcr	cx,1h
 0B00:0008 42              	inc	dx
 0B00:0009 EC              	in	al,dx
 0B00:000A AA              	stosb
-0B00:000B 0F A3 06 00 30  	bt	[3000],ax
+0B00:000B 0F A3 06 00 30  	bt	[3000h],ax
 0B00:0010 0F A3 C1        	bt	cx,ax
-0B00:0013 0F BA E1 02     	bt	cx,02
+0B00:0013 0F BA E1 02     	bt	cx,2h
 0B00:0017 0F BD 0C        	bsr	cx,[si]
-0B00:001A 66 0F BD C8     	bsr	ecx,eax
-0B00:001E C2 04 00        	ret	0004
+0B00:001A 66 0F BD C8     	bsr	cx,ax
+0B00:001E C2 04 00        	ret	4h

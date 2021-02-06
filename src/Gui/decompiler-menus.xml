@@ -70,6 +70,7 @@
   <group id="GrpBrowserToolbar" cmdSet="Reko" container="ProjectBrowserToolbar"/>
 
   <group id="GrpProcedure" cmdSet="Reko" container="CtxProcedure "/>
+  <group id="GrpProcedureListDebug" cmdSet="Reko" container="CtxProcedureList "/>
 
   <group id="GrpAddressSearchView" cmdSet="Reko" container="CtxAddressSearch" />
   <group id="GrpAddressSearch" cmdSet="Reko" container="CtxAddressSearch" />
@@ -90,6 +91,7 @@
   <cmd id="EditCopy" cmdSet="Reko" container="EditCopy">_Copy</cmd>
   <cmd id="EditCopyAll" cmdSet="Reko" container="EditCopyAll">_Copy All</cmd>
   <cmd id="EditRename" cmdSet="Reko" container="GrpEdit">_Rename</cmd>
+  <cmd id="EditRegisterValues" cmdSet="Reko" container="GrpEdit">Re_gister Values</cmd>
   <cmd id="EditAnnotation" cmdSet="Reko" container="GrpEdit">Co_mment</cmd>
 
   <cmd id="EditSelectAll" cmdSet="Reko" container="GrpEdit">Select _all</cmd>
@@ -120,8 +122,10 @@
   <cmd id="ViewCfgCode" cmdSet="Reko" container="GrpCodeViewMode" priority="1">View _code</cmd>
   <cmd id="ViewCfgGraph" cmdSet="Reko" container="GrpCodeViewMode" priority="2">View control _graph</cmd>
   <cmd id="ViewPcRelative" cmdSet="Reko" container="GrpLowLevel">Show _PC relative addresses</cmd>
+  <cmd id="OpenInNewTab" cmdSet="Reko" container="GrpCodeView" priority="0">Open in new tab</cmd>
   <cmd id="EditDeclaration" cmdSet="Reko" container="GrpCodeView" priority="1">Edit declaration</cmd>
   <cmd id="EditComment" cmdSet="Reko" container="GrpCodeView" priority="2">Edit comment</cmd>
+  <cmd id="EditLabel" cmdSet="Reko" container="GrpCodeView" priority="2">Edit label</cmd>
 
   <cmd id="ActionNextSearchHit" cmdSet="Reko" key1="F8" />
   <cmd id="ActionPrevSearchHit" cmdSet="Reko" key1="F8" alt1="Shift" />
@@ -149,6 +153,7 @@
   <cmd id="HelpAbout" cmdSet="Reko" container="GrpHelp">_About Decompiler...</cmd>
 
   <cmd id="ShowProcedureCallHierarchy" cmdSet="Reko" container="GrpProcedure">Show Call _Hierarchy</cmd>
+  <cmd id="ProcedureDebugTrace" cmdSet="Reko" container="GrpProcedureListDebug">_Debug procedure decompilation</cmd>
 
   <cmd id="CollapseAllNodes" cmdSet="Reko" container="GrpBrowserToolbar" imageKey="Collapse.ico" tip="Collapse All"></cmd>
   <cmd id="CreateUserSegment" cmdSet="Reko" container="GrpBrowserToolbar" imageKey="CreateSegment.ico" tip="Create Segment"></cmd>
@@ -167,6 +172,7 @@
 
   <placement item="GrpBrowserProc" container="CtxBrowser" />
   <placement item="GrpBrowserProc" container="CtxProcedureList" />
+<!--  <placement item="GrpProcedureListDebug" container="CtxProcedureList" /> -->
 
   <placement item="FileOpen" container="GrpToolbarFileOps"/>
   <placement item="FileSave" container="GrpToolbarFileOps"/>
@@ -195,6 +201,7 @@
   <placement item="ViewPcRelative" container="GrpDisassemblerShow" />
   <placement item="EditCopy" container="GrpDisassemblerEdit" />
   <placement item="EditRename" container="GrpDisassemblerEdit" />
+  <placement item="EditRegisterValues" container="GrpDisassemblerEdit"/>
   <placement item="EditAnnotation" container="GrpDisassemblerEdit"/>
              
   <placement item="ActionEditSignature" container="GrpProcedure"/>

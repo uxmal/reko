@@ -1,6 +1,6 @@
 #region License
 /* 
-* Copyright (C) 1999-2020 John Källén.
+* Copyright (C) 1999-2021 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -177,12 +177,13 @@ namespace Reko.UserInterfaces.WindowsForms
             return new CommentForm();
         }
 
-        public IJumpTableDialog CreateJumpTableDialog(Program program, MachineInstruction instrIndirectJmp, Address addrVector, int stride)
+        public IJumpTableDialog CreateJumpTableDialog(Program program, IProcessorArchitecture arch,  MachineInstruction instrIndirectJmp, Address addrVector, int stride)
         {
             return new JumpTableDialog()
             {
                 Services = this.services,
                 Program = program,
+                Architecture = arch,
                 Instruction = instrIndirectJmp,
                 VectorAddress = addrVector,
                 Stride = stride
@@ -213,6 +214,22 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 Services = services,
             };
+            return dlg;
+        }
+
+        public IRegisterValuesDialog CreateRegisterValuesDialog(IProcessorArchitecture arch, List<UserRegisterValue> regValues)
+        {
+            var dlg = new RegisterValuesDialog
+            {
+                Architecture = arch,
+                RegisterValues = regValues,
+            };
+            return dlg;
+        }
+
+        public IBlockNameDialog CreateBlockNameDialog(Procedure proc, Block block)
+        {
+            var dlg = new BlockNameDialog(proc, block);
             return dlg;
         }
     }

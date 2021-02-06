@@ -1,0 +1,18 @@
+LIBRARY QUECALLS
+EXPORTS
+    DOS16READQUEUE                              @1 
+    DOS16PURGEQUEUE                             @2 
+    DOS16CLOSEQUEUE                             @3 
+    DOS16QUERYQUEUE                             @4 
+    DOS16PEEKQUEUE                              @5 
+    DOS16WRITEQUEUE                             @6 
+    DOS16OPENQUEUE                              @7 
+    DOS16CREATEQUEUE                            @8 
+    DosReadQueue                                @9 
+    DosPurgeQueue                               @10
+    DosCloseQueue                               @11
+    DosQueryQueue                               @12
+    DosPeekQueue                                @13
+    DosWriteQueue                               @14
+    DosOpenQueue                                @15
+    DosCreateQueue                              @16

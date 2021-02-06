@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,8 +43,7 @@ namespace Reko.Arch.M68k
 
         public override bool TryPeekOpcode(EndianImageReader rdr, out uint opcode)
         {
-            ushort wOpcode;
-            if (rdr.TryPeekBeUInt16(0, out wOpcode))
+            if (rdr.TryPeekBeUInt16(0, out ushort wOpcode))
             {
                 opcode = wOpcode;
                 return true;

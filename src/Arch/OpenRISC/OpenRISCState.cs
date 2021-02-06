@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ namespace Reko.Arch.OpenRISC
     public class OpenRISCState : ProcessorState
     {
         private OpenRISCArchitecture arch;
-        private Address pc;
 
         public OpenRISCState(OpenRISCArchitecture arch)
         {
@@ -66,11 +65,6 @@ namespace Reko.Arch.OpenRISC
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-        }
-
-        public override void SetInstructionPointer(Address addr)
-        {
-            this.pc = addr;
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)

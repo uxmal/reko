@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -43,8 +44,9 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            var arch = new FakeArchitecture();
-            var platform = new FakePlatform(null, arch);
+            var sc = new ServiceContainer();
+            var arch = new FakeArchitecture(sc);
+            var platform = new FakePlatform(sc, arch);
             this.program = new Program
             {
                 Architecture = arch,
@@ -66,7 +68,7 @@ namespace Reko.UnitTests.Analysis
 
         private void RunTest(SsaState ssa)
         {
-            var spbp = new StackPointerBackpropagator(ssa);
+            var spbp = new StackPointerBackpropagator(ssa, new FakeDecompilerEventListener());
             spbp.BackpropagateStackPointer();
             ssa.Validate(s => Assert.Fail(s));
         }
@@ -92,7 +94,7 @@ namespace Reko.UnitTests.Analysis
 
             m.Assign(sp_1, m.ISub(fp, m.Int32(4)));
             // Indirect call = hell node
-            var ci = m.Call(m.Mem32(m.Word32(0x2)), 4,
+            var ci = m.Call(m.Mem32(m.Ptr32(0x2)), 4,
                 new[] { sp_1 },
                 new[] { sp_2 });
             m.Assign(sp_3, m.IAdd(sp_2, m.Int32(4)));
@@ -107,10 +109,10 @@ namespace Reko.UnitTests.Analysis
 @"Spbp_LinearProcedure_entry:
 	def fp
 l1:
-	sp_1 = fp - 4
-	call Mem4[0x00000002:word32] (retsize: 4;)
+	sp_1 = fp - 4<i32>
+	call Mem4[0x00000002<p32>:word32] (retsize: 4;)
 		uses: sp:sp_1
-	sp_2 = fp - 4
+	sp_2 = fp - 4<i32>
 	sp_3 = fp
 	return
 Spbp_LinearProcedure_exit:
@@ -137,11 +139,11 @@ Spbp_LinearProcedure_exit:
             m.AddDefToEntryBlock(fp);
 
             m.Assign(sp_1, m.ISub(fp, m.Int32(4)));
-            m.BranchIf(m.Eq0(m.Mem32(m.Word32(0x1))), "m_eq0");
+            m.BranchIf(m.Eq0(m.Mem32(m.Ptr32(0x1))), "m_eq0");
 
             m.Label("m_ne0");
             // Indirect call = hell node
-            m.Call(m.Mem32(m.Word32(0x4)), 4,
+            m.Call(m.Mem32(m.Ptr32(0x4)), 4,
                 new[] { sp_1 },
                 new[] { sp_2 });
             m.Assign(sp_3, m.IAdd(sp_2, m.Int32(4)));
@@ -149,7 +151,7 @@ Spbp_LinearProcedure_exit:
 
             m.Label("m_eq0");
             // Indirect call = hell node
-            m.Call(m.Mem32(m.Word32(0x8)), 4,
+            m.Call(m.Mem32(m.Ptr32(0x8)), 4,
                 new[] { sp_1 },
                 new[] { sp_4 });
             m.Assign(sp_5, m.IAdd(sp_4, m.Int32(4)));
@@ -165,19 +167,19 @@ Spbp_LinearProcedure_exit:
 @"Spbp_TwoExits_entry:
 	def fp
 l1:
-	sp_1 = fp - 4
-	branch Mem7[0x00000001:word32] == 0x00000000 m_eq0
+	sp_1 = fp - 4<i32>
+	branch Mem7[0x00000001<p32>:word32] == 0<32> m_eq0
 	goto m_ne0
 m_eq0:
-	call Mem9[0x00000008:word32] (retsize: 4;)
+	call Mem9[0x00000008<p32>:word32] (retsize: 4;)
 		uses: sp:sp_1
-	sp_4 = fp - 4
+	sp_4 = fp - 4<i32>
 	sp_5 = fp
 	return
 m_ne0:
-	call Mem8[0x00000004:word32] (retsize: 4;)
+	call Mem8[0x00000004<p32>:word32] (retsize: 4;)
 		uses: sp:sp_1
-	sp_2 = fp - 4
+	sp_2 = fp - 4<i32>
 	sp_3 = fp
 	return
 Spbp_TwoExits_exit:
@@ -220,7 +222,7 @@ Spbp_TwoExits_exit:
             m.MStore(sp_3, b);
             m.Assign(sp_4, m.ISub(fp, 40)); // 40 bytes of stack space
             m.MStore(sp_4, m.Word32(0xDEADBABE));
-            m.Call(m.Mem32(m.Word32(0x00123400)), 4,
+            m.Call(m.Mem32(m.Ptr32(0x00123400)), 4,
                 new[] { sp_4 },
                 new[] { sp_5 });
             m.Assign(sp_6, m.IAdd(sp_5, 40));
@@ -238,18 +240,18 @@ Spbp_TwoExits_exit:
 @"Spbp_SpaceOnStack_entry:
 	def fp
 l1:
-	sp_2 = fp - 0x00000004
+	sp_2 = fp - 4<32>
 	Mem13[sp_2:word32] = a
-	sp_3 = fp - 0x00000004
+	sp_3 = fp - 4<32>
 	Mem14[sp_3:word32] = b
-	sp_4 = fp - 0x00000028
-	Mem15[sp_4:word32] = 0xDEADBABE
-	call Mem16[0x00123400:word32] (retsize: 4;)
+	sp_4 = fp - 0x28<32>
+	Mem15[sp_4:word32] = 0xDEADBABE<32>
+	call Mem16[0x00123400<p32>:word32] (retsize: 4;)
 		uses: sp:sp_4
-	sp_5 = fp - 48
-	sp_6 = fp - 8
+	sp_5 = fp - 48<i32>
+	sp_6 = fp - 8<i32>
 	b_1 = Mem17[sp_6:word32]
-	sp_7 = fp - 4
+	sp_7 = fp - 4<i32>
 	a_1 = Mem18[sp_7:word32]
 	sp_8 = fp
 	return

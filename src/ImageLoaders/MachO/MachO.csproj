@@ -7,6 +7,8 @@
     <AssemblyName>Reko.ImageLoaders.MachO</AssemblyName>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <nullable>enable</nullable>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />

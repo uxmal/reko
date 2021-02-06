@@ -12,10 +12,10 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	cx = 0x0014
+	cx = 0x14<16>
 	call fn0C00_0008 (retsize: 2;)
 	Mem0[ds:si:word16] = ax
 	// succ:  l0C00_0006_thunk_fn0C00_0008
@@ -43,32 +43,32 @@ fn0C00_0000_exit:
 define fn0C00_0008
 fn0C00_0008_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0008
 l0C00_0008:
-	sp = sp - 2
+	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = si
-	sp = sp - 2
+	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = di
-	si = 0x0000
+	si = 0<16>
 	// succ:  l0C00_000D
 l0C00_000D:
-	SCZO = cond(cx - 0x0000)
+	SCZO = cond(cx - 0<16>)
 	branch Test(EQ,Z) l0C00_001A
 	// succ:  l0C00_0012 l0C00_001A
 l0C00_0012:
 	si = si + Mem0[ds:di:word16]
 	SCZO = cond(si)
-	di = di + 0x0002
+	di = di + 2<16>
 	SCZO = cond(di)
 	goto l0C00_000D
 	// succ:  l0C00_000D
 l0C00_001A:
 	ax = si
 	di = Mem0[ss:sp:word16]
-	sp = sp + 2
+	sp = sp + 2<i16>
 	si = Mem0[ss:sp:word16]
-	sp = sp + 2
+	sp = sp + 2<i16>
 	return
 	// succ:  fn0C00_0008_exit
 fn0C00_0008_exit:

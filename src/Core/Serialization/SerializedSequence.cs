@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ namespace Reko.Core.Serialization
 	public class SerializedSequence : SerializedKind
 	{
 		[XmlElement("reg")]
-		public Register_v1 [] Registers;
+		public Register_v1[]? Registers;
 
 		public SerializedSequence()
 		{
@@ -44,7 +44,7 @@ namespace Reko.Core.Serialization
                 .ToArray();
 		}
 
-		public override Identifier Deserialize(ArgumentDeserializer sser)
+		public override Identifier? Deserialize(ArgumentDeserializer sser)
 		{
 			return sser.Deserialize(this);
 		}

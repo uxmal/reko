@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,14 +31,24 @@ namespace Reko.Core.Machine
     {
         public static readonly MachineOperand[] NoOperands = new MachineOperand[0];
 
+        private Address? addr;      //$REFACTOR: in C# 9, there will be 'init' properties.
+
+        public MachineInstruction()
+        {
+            this.Operands = NoOperands;
+        }
+
+        //$TODO: make MachineInstruction have a ctor with (Address, Length, Operands)
+        //$REFACTOR: in C# 9, there will be 'init' properties, then we won't need a nullable backing field.
         /// <summary>
         /// The address at which the instruction begins.
         /// </summary>
-        public Address Address;
+        public Address Address { get { return addr!; } set { addr = value; } }
 
         /// <summary>
-        /// The length of the entire instruction. Some architectures, e.g. M68k, x86, and most
-        /// 8-bit microprocessors, have variable length instructions.
+        /// The length of the entire instruction measured in storage units.
+        /// Some architectures, e.g. M68k, x86, and most 8-bit microprocessors, have
+        /// variable length instructions.
         /// </summary>
         public int Length;
 
@@ -68,7 +78,19 @@ namespace Reko.Core.Machine
             return ulInstr <= ulAddr && ulAddr < ulInstr + (uint)Length;
         }
 
-        public virtual void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        /// <summary>
+        /// Renders this instruction to the provided <see cref="MachineInstructionRenderer"/>.
+        /// </summary>
+        /// <param name="renderer"></param>
+        /// <param name="options"></param>
+        public void Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            renderer.BeginInstruction(Address);
+            DoRender(renderer, options);
+            renderer.EndInstruction();
+        }
+
+        protected virtual void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
         }
 
@@ -77,43 +99,47 @@ namespace Reko.Core.Machine
         /// </summary>
         public abstract int MnemonicAsInteger { get; }
 
+        /// <summary>
+        /// Generate a string for the mnemonic; this is only used for generation of unit tests, so use only
+        /// characters [a-z0-9_]
+        /// </summary>
+        public abstract string MnemonicAsString { get; }
+        
         public sealed override string ToString()
         {
             var renderer = new StringRenderer();
-            renderer.Address = Address;
-            this.Render(renderer, MachineInstructionWriterOptions.None);
+            this.DoRender(renderer, MachineInstructionRendererOptions.Default);
             return renderer.ToString();
         }
 
-        public string ToString(IPlatform platform)
+        public string ToString(MachineInstructionRendererOptions options)
         {
-            var renderer = new StringRenderer(platform);
-            renderer.Address = Address;
-            this.Render(renderer, MachineInstructionWriterOptions.None);
+            var renderer = new StringRenderer();
+            this.DoRender(renderer, options);
             return renderer.ToString();
         }
 
         /// <summary>
         /// Utility function to render the operands, separated by commas.
         /// </summary>
-        /// <param name="writer"></param>
+        /// <param name="renderer"></param>
         /// <param name="options"></param>
-        protected void RenderOperands(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected void RenderOperands(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (Operands.Length == 0)
+            if (Operands!.Length == 0)
                 return;
-            writer.Tab();
-            RenderOperand(Operands[0], writer, options);
+            renderer.Tab();
+            RenderOperand(Operands[0], renderer, options);
             for (int i = 1; i < Operands.Length; ++i)
             {
-                writer.WriteChar(',');
-                RenderOperand(Operands[i], writer, options);
+                renderer.WriteString(options.OperandSeparator ?? ",");
+                RenderOperand(Operands[i], renderer, options);
             }
         }
 
-        protected virtual void RenderOperand(MachineOperand operand, MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected virtual void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            operand.Write(writer, options);
+            operand.Render(renderer, options);
         }
     }
 }

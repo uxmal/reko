@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,23 +55,8 @@ namespace Reko.UserInterfaces.WindowsForms
             return dlgr == Gui.DialogResult.Yes;
         }
 
-        #if DEBUG
-        private Thread GetControlOwnerThread(Control ctrl)
-        {
-            if (ctrl.InvokeRequired)
-                return (Thread)ctrl.Invoke(new Func<Thread>(() => GetControlOwnerThread(ctrl)));
-            else
-                return System.Threading.Thread.CurrentThread;
-        }
-        #endif
-
         private Gui.DialogResult ShowModalDialog(Form dlg)
         {
-#if DEBUG
-            Thread ownthr = GetControlOwnerThread(dlg);
-#else
-            Thread ownthr = null;
-#endif
             return (Gui.DialogResult)
                 form.Invoke(new Func<Gui.DialogResult>(delegate()
                 {

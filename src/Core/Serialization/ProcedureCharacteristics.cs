@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ namespace Reko.Core.Serialization
             Allocator = old.Allocator;
             ArraySize = old.ArraySize;
             VarargsParserClass = old.VarargsParserClass;
+            ReturnAddressAdjustment = old.ReturnAddressAdjustment;
         }
 
 		[XmlElement("is-alloca")]
@@ -64,16 +65,31 @@ namespace Reko.Core.Serialization
         public bool Allocator { get; set; }
 
         [XmlElement("array-size")]
-        public ArraySizeCharacteristic ArraySize { get; set; }
+        public ArraySizeCharacteristic? ArraySize { get; set; }
 
         [XmlElement("varargs")]
-        public virtual string VarargsParserClass { get; set; }
+        public virtual string? VarargsParserClass { get; set; }
+
+        /// <summary>
+        /// After the call has returned, increment the instruction pointer
+        /// by this many bytes.
+        /// </summary>
+        /// <remarks>
+        /// This field is used to model VxD calls on 16-bit Windows, where an
+        /// `int 20h` instruction will be followed by a 4-byte value. The value
+        /// is used at runtime to resolve the dynamic call, and the `int` instruction
+        /// and the 4-byte value are replaced with a `call` statement. We model this
+        /// by injecting an RtlGoto right after the call, jumping over this many bytes.
+        /// </remarks>
+        [XmlElement("adjustRet")]
+        [DefaultValue(0)]
+        public int ReturnAddressAdjustment { get; set; }
 
         public void Write()
         {
             foreach (PropertyDescriptor prop in TypeDescriptor.GetProperties(this))
             {
-                DefaultValueAttribute dv = (DefaultValueAttribute)
+                var dv = (DefaultValueAttribute)
                     prop.Attributes[typeof(DefaultValueAttribute)];
             }
         }
@@ -105,7 +121,7 @@ namespace Reko.Core.Serialization
 		}
 
         [XmlElement("varargs")]
-        public override string VarargsParserClass { get { return ""; } set { throw Invalid(); } }
+        public override string? VarargsParserClass { get { return ""; } set { throw Invalid(); } }
 		
         private Exception Invalid()
 		{

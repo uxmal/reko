@@ -1,0 +1,65 @@
+// TtranGithubIssue879
+// Return size: 0
+define TtranGithubIssue879
+TtranGithubIssue879_entry:
+	// succ:  l1
+l1:
+	Mem0[ds:0x118<16>:byte] = Mem0[ds:(word16) (uint8) Mem0[ds:0x94<16>:byte] + 0x95<16>:byte]
+TtranGithubIssue879_exit:
+
+// Equivalence classes ////////////
+Eq_1: (struct "Globals")
+	globals_t (in globals : (ptr32 (struct "Globals")))
+Eq_2: (segment (94 byte b0094) (95 (arr byte) a0095) (118 byte b0118))
+	T_2 (in ds : word16)
+Eq_6: (struct (95 byte b0095))
+	T_6 (in (word16) (uint8) Mem0[ds:0x94<16>:byte] : word16)
+// Type Variables ////////////
+globals_t: (in globals : (ptr32 (struct "Globals")))
+  Class: Eq_1
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct "Globals"))
+T_2: (in ds : word16)
+  Class: Eq_2
+  DataType: (ptr16 Eq_2)
+  OrigDataType: (ptr16 (segment (94 T_4 t0094) (118 T_11 t0118)))
+T_3: (in 0x94<16> : word16)
+  Class: Eq_3
+  DataType: (memptr (ptr16 Eq_2) byte)
+  OrigDataType: (memptr T_2 (struct (0 T_4 t0000)))
+T_4: (in Mem0[ds:0x94<16>:byte] : byte)
+  Class: Eq_4
+  DataType: byte
+  OrigDataType: byte
+T_5: (in (uint8) Mem0[ds:0x94<16>:byte] : uint8)
+  Class: Eq_5
+  DataType: uint8
+  OrigDataType: uint8
+T_6: (in (word16) (uint8) Mem0[ds:0x94<16>:byte] : word16)
+  Class: Eq_6
+  DataType: (memptr (ptr16 Eq_2) Eq_6)
+  OrigDataType: (memptr T_2 (struct (95 T_9 t0095)))
+T_7: (in 0x95<16> : word16)
+  Class: Eq_7
+  DataType: (memptr (ptr16 Eq_2) byte)
+  OrigDataType: (memptr T_2 (struct (0 (arr T_12) a0000)))
+T_8: (in (word16) (uint8) Mem0[ds:0x94<16>:byte] + 0x95<16> : word16)
+  Class: Eq_8
+  DataType: word16
+  OrigDataType: word16
+T_9: (in Mem0[ds:(word16) (uint8) Mem0[ds:0x94<16>:byte] + 0x95<16>:byte] : byte)
+  Class: Eq_9
+  DataType: byte
+  OrigDataType: byte
+T_10: (in 0x118<16> : word16)
+  Class: Eq_10
+  DataType: (memptr (ptr16 Eq_2) byte)
+  OrigDataType: (memptr T_2 (struct (0 T_11 t0000)))
+T_11: (in Mem0[ds:0x118<16>:byte] : byte)
+  Class: Eq_9
+  DataType: byte
+  OrigDataType: byte
+T_12:
+  Class: Eq_12
+  DataType: byte
+  OrigDataType: (struct 0001 (0 T_9 t0000))

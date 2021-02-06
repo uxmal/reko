@@ -4,7 +4,7 @@ globals_t: (in globals : ptr32)
   Class: Eq_1
   DataType: 
   OrigDataType: 
-T_2: (in 3 : int32)
+T_2: (in 3<i32> : int32)
   Class: Eq_2
   DataType: int32
   OrigDataType: int32

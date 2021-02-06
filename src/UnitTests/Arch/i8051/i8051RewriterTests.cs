@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,11 @@
 using NUnit.Framework;
 using Reko.Arch.i8051;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +39,7 @@ namespace Reko.UnitTests.Arch.i8051
 
         public i8051RewriterTests()
         {
-            this.arch = new i8051Architecture("8051");
+            this.arch = new i8051Architecture(CreateServiceContainer(), "8051", new Dictionary<string, object>());
         }
 
         public override IProcessorArchitecture Architecture => arch;
@@ -47,7 +49,7 @@ namespace Reko.UnitTests.Arch.i8051
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            return new i8051Rewriter(arch, new BeImageReader(mem, 0), new i8051State(arch), binder, host);
+            return new i8051Rewriter(arch, mem.CreateBeReader(0), new i8051State(arch), binder, host);
         }
 
         [Test]
@@ -83,8 +85,8 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x10, 0x82, 0x0D); // jbc\tP0.2,0010
             AssertCode(
                 "0|T--|0000(3): 3 instructions",
-                "1|T--|if ((P0 >>u 0x02 & 0x01) == 0x00) branch 0003",
-                "2|L--|P0 = P0 & 0xFB | 0x00 << 0x02",
+                "1|T--|if ((P0 >>u 2<8> & 1<8>) == 0<8>) branch 0003",
+                "2|L--|P0 = P0 & 0xFB<8> | 0<8> << 2<8>",
                 "3|T--|goto 0010");
         }
 
@@ -94,18 +96,18 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x08); // inc\tR0
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|R0 = R0 + 0x01");
+                "1|L--|R0 = R0 + 1<8>");
 
             Given_Bytes(0x04); // inc\tA
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|A = A + 0x01",
+                "1|L--|A = A + 1<8>",
                 "2|L--|P = cond(A)");
 
             Given_Bytes(0x05, 0x88); // inc\t[0088]
             AssertCode(
                 "0|L--|0000(2): 1 instructions",
-                "1|L--|Mem0[0x0088:byte] = Mem0[0x0088:byte] + 0x01");
+                "1|L--|Mem0[__data:0x0088<p16>:byte] = Mem0[__data:0x0088<p16>:byte] + 1<8>");
         }
 
         [Test]
@@ -114,19 +116,19 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x24, 02); // add\tA,02
             AssertCode(
                 "0|L--|0000(2): 2 instructions",
-                "1|L--|A = A + 0x02",
+                "1|L--|A = A + 2<8>",
                 "2|L--|CAOP = cond(A)");
 
             Given_Bytes(0x25, 0x25); // add\tA,[0025]
             AssertCode(
                 "0|L--|0000(2): 2 instructions",
-                "1|L--|A = A + Mem0[0x0025:byte]",
+                "1|L--|A = A + Mem0[__data:0x0025<p16>:byte]",
                 "2|L--|CAOP = cond(A)");
 
             Given_Bytes(0x27); // add\tA,@R1
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|A = A + Mem0[R1:byte]",
+                "1|L--|A = A + Mem0[__data:R1:byte]",
                 "2|L--|CAOP = cond(A)");
 
             Given_Bytes(0x2B); // add\tA,R3
@@ -142,12 +144,12 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xB0, 0x93); // anl\tC,/P1.3
             AssertCode(
                 "0|L--|0000(2): 1 instructions",
-                "1|L--|C = C & !(P1 >>u 0x03 & 0x01)");
+                "1|L--|C = C & !(P1 >>u 3<8> & 1<8>)");
 
             Given_Bytes(0x56); // anl\tA,@R0
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|A = A & Mem0[R0:byte]",
+                "1|L--|A = A & Mem0[__data:R0:byte]",
                 "2|L--|P = cond(A)");
         }
 
@@ -157,37 +159,37 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x75, 0x42, 0x1); // mov\t[0042],01
             AssertCode(
                 "0|L--|0000(3): 1 instructions",
-                "1|L--|Mem0[0x0042:byte] = 0x01");
+                "1|L--|Mem0[__data:0x0042<p16>:byte] = 1<8>");
 
             Given_Bytes(0x79, 0x42); // mov\tR1,42
             AssertCode(
                 "0|L--|0000(2): 1 instructions",
-                "1|L--|R1 = 0x42");
+                "1|L--|R1 = 0x42<8>");
 
             Given_Bytes(0xA2, 0x84); // mov\tC,P0.4
             AssertCode(
                 "0|L--|0000(2): 1 instructions",
-                "1|L--|C = P0 >>u 0x04 & 0x01");
+                "1|L--|C = P0 >>u 4<8> & 1<8>");
 
             Given_Bytes(0x85, 0x90, 0x80); // mov\t[0090],[0080]
             AssertCode(
                 "0|L--|0000(3): 1 instructions",
-                "1|L--|Mem0[0x0090:byte] = Mem0[0x0080:byte]");
+                "1|L--|Mem0[__data:0x0090<p16>:byte] = Mem0[__data:0x0080<p16>:byte]");
 
             Given_Bytes(0x8A, 0x42); // mov\t[0042],R2
             AssertCode(
                 "0|L--|0000(2): 1 instructions",
-                "1|L--|Mem0[0x0042:byte] = R2");
+                "1|L--|Mem0[__data:0x0042<p16>:byte] = R2");
 
             Given_Bytes(0xAA, 0x42); // mov\tR2,[0042]
             AssertCode(
                 "0|L--|0000(2): 1 instructions",
-                "1|L--|R2 = Mem0[0x0042:byte]");
+                "1|L--|R2 = Mem0[__data:0x0042<p16>:byte]");
 
             Given_Bytes(0xE5, 0x42); // mov\tA,[0042]
             AssertCode(
                 "0|L--|0000(2): 1 instructions",
-                "1|L--|A = Mem0[0x0042:byte]");
+                "1|L--|A = Mem0[__data:0x0042<p16>:byte]");
 
             Given_Bytes(0xEC); // mov\tA,R4
             AssertCode(
@@ -197,7 +199,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xF5, 0x42); // mov\t[0042],A
             AssertCode(
                 "0|L--|0000(2): 1 instructions",
-                "1|L--|Mem0[0x0042:byte] = A");
+                "1|L--|Mem0[__data:0x0042<p16>:byte] = A");
 
             Given_Bytes(0xFF); // mov\tR7,A
             AssertCode(
@@ -220,7 +222,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xC2, 0x87); // clr\tP0.7
             AssertCode(
                 "0|L--|0000(2): 1 instructions",
-                "1|L--|P0 = P0 & 0x7F | 0x00 << 0x07");
+                "1|L--|P0 = P0 & 0x7F<8> | 0<8> << 7<8>");
 
             Given_Bytes(0xC3); // clr\tC
             AssertCode(
@@ -244,8 +246,8 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xD0, 0x82); // pop\t[0082]
             AssertCode(
                 "0|L--|0000(2): 2 instructions",
-                "1|L--|Mem0[0x0082:byte] = Mem0[SP:byte]",
-                "2|L--|SP = SP - 0x01");
+                "1|L--|DPL = Mem0[__data:SP:byte]",
+                "2|L--|SP = SP - 1<8>");
         }
 
         [Test]
@@ -254,12 +256,12 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xE0); // movx\tA,@DPTR
             AssertCode(
                 "0|L--|0000(1): 1 instructions",
-                "1|L--|A = Mem0[DPTR:byte]");
+                "1|L--|A = Mem0[__data:DPTR:byte]");
 
             Given_Bytes(0xF2); // movx\t@R0,A
             AssertCode(
                 "0|L--|0000(1): 1 instructions",
-                "1|L--|Mem0[R0:byte] = A");
+                "1|L--|Mem0[__data:R0:byte] = A");
         }
 
         [Test]
@@ -268,7 +270,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x67); // xrl\tA,@R1
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|A = A ^ Mem0[R1:byte]",
+                "1|L--|A = A ^ Mem0[__data:R1:byte]",
                 "2|L--|P = cond(A)");
         }
 
@@ -278,7 +280,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x34, 0x00); // addc\tA,00
             AssertCode(
                 "0|L--|0000(2): 2 instructions",
-                "1|L--|A = A + 0x00 + C",
+                "1|L--|A = A + 0<8> + C",
                 "2|L--|CAOP = cond(A)");
         }
 
@@ -288,7 +290,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xD2, 0x96); // setb\tP1.6
             AssertCode(
                 "0|L--|0000(2): 1 instructions",
-                "1|L--|P1 = P1 & 0xBF | true << 0x06");
+                "1|L--|P1 = P1 & 0xBF<8> | true << 6<8>");
         }
 
         [Test]
@@ -297,7 +299,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xBC, 0x09, 0x03); // cjne\tR4,09,0006
             AssertCode(
                 "0|T--|0000(3): 1 instructions",
-                "1|T--|if (R4 != 0x09) branch 0006");
+                "1|T--|if (R4 != 9<8>) branch 0006");
         }
 
         [Test]
@@ -306,7 +308,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x95, 0x42); // subb\tA,[0042]
             AssertCode(
                 "0|L--|0000(2): 2 instructions",
-                "1|L--|A = A - Mem0[0x0042:byte] - C",
+                "1|L--|A = A - Mem0[__data:0x0042<p16>:byte] - C",
                 "2|L--|CAOP = cond(A)");
         }
 
@@ -316,7 +318,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x40, 0x0E); // jc\t0010
             AssertCode(
                 "0|T--|0000(2): 1 instructions",
-                "1|T--|if (C) branch 0010");
+                "1|T--|if (Test(ULT,C)) branch 0010");
         }
 
         [Test]
@@ -336,7 +338,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x70, 0x2E); // jnz\t0030
             AssertCode(
                 "0|T--|0000(2): 1 instructions",
-                "1|T--|if (A != 0x00) branch 0030");
+                "1|T--|if (A != 0<8>) branch 0030");
         }
 
         [Test]
@@ -345,7 +347,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x30, 0x90, 0x3D); // jnb\tP1.0,0040
             AssertCode(
                 "0|T--|0000(3): 1 instructions",
-                "1|T--|if ((P1 & 0x01) == 0x00) branch 0040");
+                "1|T--|if ((P1 & 1<8>) == 0<8>) branch 0040");
         }
 
         [Test]
@@ -354,7 +356,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x44, 0x42); // orl\tA,42
             AssertCode(
                 "0|L--|0000(2): 2 instructions",
-                "1|L--|A = A | 0x42",
+                "1|L--|A = A | 0x42<8>",
                 "2|L--|P = cond(A)");
         }
 
@@ -364,7 +366,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x18); // dec\tR0
             AssertCode(
                 "0|L--|0000(1): 2 instructions",
-                "1|L--|R0 = R0 - 0x01");
+                "1|L--|R0 = R0 - 1<8>");
         }
 
         [Test]
@@ -373,8 +375,8 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xD9, 0x08); // djnz\tR1,000A
             AssertCode(
                 "0|T--|0000(2): 2 instructions",
-                "1|L--|R1 = R1 - 0x01",
-                "2|T--|if (R1 != 0x00) branch 000A");
+                "1|L--|R1 = R1 - 1<8>",
+                "2|T--|if (R1 != 0<8>) branch 000A");
         }
 
         [Test]
@@ -392,7 +394,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x23); // rl\tA
             AssertCode(
                 "0|L--|0000(1): 1 instructions",
-                "1|L--|A = __rol(A, 0x01)");
+                "1|L--|A = __rol(A, 1<8>)");
         }
 
         [Test]
@@ -401,7 +403,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x50, 0x1E); // jnc\t0020
             AssertCode(
                 "0|T--|0000(2): 1 instructions",
-                "1|T--|if (!C) branch 0020");
+                "1|T--|if (Test(UGE,C)) branch 0020");
         }
 
         [Test]
@@ -410,7 +412,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x20, 0x85, 0x6D); // jb\tP0.5,0070
             AssertCode(
                 "0|T--|0000(3): 1 instructions",
-                "1|T--|if ((P0 >>u 0x05 & 0x01) != 0x00) branch 0070");
+                "1|T--|if ((P0 >>u 5<8> & 1<8>) != 0<8>) branch 0070");
         }
 
         [Test]
@@ -419,7 +421,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x60, 0x6E); // jz\t0070
             AssertCode(
                 "0|T--|0000(2): 1 instructions",
-                "1|T--|if (A == 0x00) branch 0070");
+                "1|T--|if (A == 0<8>) branch 0070");
         }
 
         [Test]
@@ -428,8 +430,8 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xC0, 0x90); // push\t[0090]
             AssertCode(
                 "0|L--|0000(2): 2 instructions",
-                "1|L--|SP = SP + 0x01",
-                "2|L--|Mem0[SP:byte] = Mem0[0x0090:byte]");
+                "1|L--|SP = SP + 1<8>",
+                "2|L--|Mem0[__data:SP:byte] = Mem0[__data:0x0090<p16>:byte]");
         }
 
         [Test]
@@ -438,8 +440,8 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xC0, 0xE0); // push\t[00E0] = alias for ACC.
             AssertCode(
                 "0|L--|0000(2): 2 instructions",
-                "1|L--|SP = SP + 0x01",
-                "2|L--|Mem0[SP:byte] = A");
+                "1|L--|SP = SP + 1<8>",
+                "2|L--|Mem0[__data:SP:byte] = A");
         }
 
         [Test]
@@ -448,7 +450,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x90, 0x12, 0x34); // mov\tDPTR,1234
             AssertCode(
                 "0|L--|0000(3): 1 instructions",
-                "1|L--|DPTR = 0x1234");
+                "1|L--|DPTR = 0x1234<16>");
         }
 
         [Test]
@@ -466,7 +468,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x83); // movc\t@PC+A
             AssertCode(
                 "0|L--|0000(1): 1 instructions",
-                "1|L--|A = Mem0[0x0001 + A:byte]");
+                "1|L--|A = Mem0[0x0001<p16> + A:byte]");
         }
 
         [Test]
@@ -477,7 +479,7 @@ namespace Reko.UnitTests.Arch.i8051
                 "0|L--|0000(1): 4 instructions",
                 "1|L--|B_A = A *u B",
                 "2|L--|P = cond(B_A)",
-                "3|L--|O = B_A >u 0x00FF",
+                "3|L--|O = B_A >u 0xFF<16>",
                 "4|L--|C = false");
         }
 
@@ -487,7 +489,7 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0x73); // jmp\t@DPTR+A
             AssertCode(
                 "0|T--|0000(1): 1 instructions",
-                "1|T--|goto Mem0[DPTR + A:ptr16]");
+                "1|T--|goto DPTR + A");
         }
 
         [Test]
@@ -496,8 +498,8 @@ namespace Reko.UnitTests.Arch.i8051
             Given_Bytes(0xC4); // swap\tA
             AssertCode(
                 "0|L--|0000(1): 3 instructions",
-                "1|L--|v2 = A << 0x04",
-                "2|L--|A = A >>u 0x04",
+                "1|L--|v2 = A << 4<8>",
+                "2|L--|A = A >>u 4<8>",
                 "3|L--|A = A | v2");
         }
     }

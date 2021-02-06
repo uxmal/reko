@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,12 +30,13 @@ namespace Reko.Core.Lib
     /// </summary>
     public static class BTreeDictionaryEx
     {
+        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
         public static bool TryGetLowerBound<K, V>(this BTreeDictionary<K, V> list, K key, out V value)
         {
             var cmp = list.Comparer;
             int lo = 0;
             int hi = list.Count - 1;
-            value = default(V);
+            value = default!;
             bool set = false;
             while (lo <= hi)
             {
@@ -61,12 +62,13 @@ namespace Reko.Core.Lib
             return set;
         }
 
+        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
         public static bool TryGetUpperBound<K, V>(this BTreeDictionary<K, V> list, K key, out V value)
         {
             var cmp = list.Comparer;
             int lo = 0;
             int hi = list.Count - 1;
-            value = default(V);
+            value = default!;
             bool set = false;
             while (lo <= hi)
             {
@@ -92,12 +94,14 @@ namespace Reko.Core.Lib
             return set;
         }
 
+
+        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
         public static bool TryGetLowerBoundKey<K, V>(this BTreeDictionary<K, V> list, K key, out K closestKey)
         {
             var cmp = list.Comparer;
             int lo = 0;
             int hi = list.Count - 1;
-            closestKey = default(K);
+            closestKey = default!;
             bool set = false;
             while (lo <= hi)
             {
@@ -123,12 +127,13 @@ namespace Reko.Core.Lib
             return set;
         }
 
+        //$TODO: .NET 5 [NotNullWhen(returnValue: true)]
         public static bool TryGetUpperBoundKey<K, V>(this BTreeDictionary<K, V> list, K key, out K closestKey)
         {
             var cmp = list.Comparer;
             int lo = 0;
             int hi = list.Count - 1;
-            closestKey = default(K);
+            closestKey = default!;
             bool set = false;
             while (lo <= hi)
             {

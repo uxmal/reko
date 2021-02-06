@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,9 @@ using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Environments.Windows;
 using Reko.UserInterfaces.WindowsForms.Forms;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Data.SqlClient;
 using System.Drawing;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
@@ -39,8 +42,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void Setup()
         {
             proc = new Procedure_v1();
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
-            var platform = new Win32Platform(null, arch);
+            var sc = new ServiceContainer();
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
+            var platform = new Win32Platform(sc, arch);
             var program = new Program
             {
                 Architecture = arch,

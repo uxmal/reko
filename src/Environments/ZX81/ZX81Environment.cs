@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+// https://cdn.hackaday.io/files/289631239152992/ZX81_dual_2018-02-09.htm
 
 using Reko.Arch.Z80;
 using Reko.Core;
@@ -65,7 +67,7 @@ namespace Reko.Environments.ZX81
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -75,20 +77,20 @@ namespace Reko.Environments.ZX81
             get { throw new NotImplementedException(); }
         }
 
-        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        public override int GetBitSizeFromCBasicType(CBasicType cb)
         {
             switch (cb)
             {
-            case CBasicType.Bool: return 1;
-            case CBasicType.Char: return 1;
-            case CBasicType.Short: return 2;
-            case CBasicType.Int: return 2;
-            case CBasicType.Long: return 4;
-            case CBasicType.LongLong: return 8;
-            case CBasicType.Float: return 4;
-            case CBasicType.Double: return 8;
-            case CBasicType.LongDouble: return 8;
-            case CBasicType.Int64: return 8;
+            case CBasicType.Bool: return 8;
+            case CBasicType.Char: return 8;
+            case CBasicType.Short: return 16;
+            case CBasicType.Int: return 16;
+            case CBasicType.Long: return 32;
+            case CBasicType.LongLong: return 64;
+            case CBasicType.Float: return 32;
+            case CBasicType.Double: return 64;
+            case CBasicType.LongDouble: return 64;
+            case CBasicType.Int64: return 64;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }
         }

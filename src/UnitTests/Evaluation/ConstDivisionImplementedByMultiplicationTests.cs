@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,24 +105,24 @@ namespace Reko.UnitTests.Evaluation
         [Test]
         public void Cdiv_SmallConstants()
         {
-            AssertSmallConst("r1 / 15", 3, 0x88888889);
-            AssertSmallConst("r1 / 14", 3, 0x92492493);
-            AssertSmallConst("r1 / 13", 2, 0x4ec4ec4f);
-            AssertSmallConst("r1 / 12", 1, 0x2aaaaaab);
-            AssertSmallConst("r1 / 11", 1, 0x2e8ba2e9);
-            AssertSmallConst("r1 / 10", 2, 0x66666667);
-            AssertSmallConst("r1 / 9", 1, 0x38e38e39);
-            AssertSmallConst("r1 / 7", 2, 0x92492493);
-            AssertSmallConst("r1 / 6", 0, 0x2aaaaaab);
-            AssertSmallConst("r1 / 5", 1, 0x66666667);
-            AssertSmallConst("r1 / 3", 0, 0x55555556);
-            AssertSmallConst("r1 / 1000", 6, 0x10624dd3);
+            AssertSmallConst("r1 / 15<i32>", 3, 0x88888889);
+            AssertSmallConst("r1 / 14<i32>", 3, 0x92492493);
+            AssertSmallConst("r1 / 13<i32>", 2, 0x4ec4ec4f);
+            AssertSmallConst("r1 / 12<i32>", 1, 0x2aaaaaab);
+            AssertSmallConst("r1 / 11<i32>", 1, 0x2e8ba2e9);
+            AssertSmallConst("r1 / 10<i32>", 2, 0x66666667);
+            AssertSmallConst("r1 / 9<i32>", 1, 0x38e38e39);
+            AssertSmallConst("r1 / 7<i32>", 2, 0x92492493);
+            AssertSmallConst("r1 / 6<i32>", 0, 0x2aaaaaab);
+            AssertSmallConst("r1 / 5<i32>", 1, 0x66666667);
+            AssertSmallConst("r1 / 3<i32>", 0, 0x55555556);
+            AssertSmallConst("r1 / 1000<i32>", 6, 0x10624dd3);
         }
 
         [Test]
         public void Cdiv_TwoThirds()
         {
-            AssertSmallConst("r1 * 2 / 3", 0, 0xAAAAAAAA);
+            AssertSmallConst("r1 * 2<i32> / 3<i32>", 0, 0xAAAAAAAA);
         }
 
         private void Frac(int num, int denom)
@@ -175,10 +175,10 @@ ProcedureBuilder_entry:
 	def ecx
 	// succ:  l1
 l1:
-	edx_1 = 0x24924925
+	edx_1 = 0x24924925<32>
 	eax_3 = ecx
-	edx_eax_4 = ecx *u 0x24924925
-	edx_6 = SLICE(ecx *u 0x24924925, word32, 32) (alias)
+	edx_eax_4 = ecx *u 0x24924925<32>
+	edx_6 = SLICE(ecx *u 0x24924925<32>, word32, 32) (alias)
 	eax_5 = ecx
 	eax_7 = ecx - edx_6
 	eax_8 = eax_7 >>u 0x01

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +18,26 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Code;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
+using NUnit.Framework;
 using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Serialization;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using NUnit.Framework;
-using System;
 
 namespace Reko.UnitTests.Core.Serialization
 {
-	[TestFixture]
+    [TestFixture]
 	public class ArgumentTests
 	{
 		private IProcessorArchitecture arch;
 
 		public ArgumentTests()
 		{
-			arch = new X86ArchitectureReal("x86-real-16");
+			arch = new X86ArchitectureReal(new ServiceContainer(), "x86-real-16", new Dictionary<string, object>());
 		}
 
 		[Test]

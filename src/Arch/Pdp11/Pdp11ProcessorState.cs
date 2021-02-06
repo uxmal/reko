@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,10 +69,18 @@ namespace Reko.Arch.Pdp11
             }
         }
 
-        public override void SetInstructionPointer(Address addr)
+        public override Address InstructionPointer
         {
-            regs[Registers.pc.Number] = addr.ToUInt16();
-            valid[Registers.pc.Number] = true;
+            get
+            {
+                return arch.MakeAddressFromConstant(GetRegister(Registers.pc), false);
+            }
+
+            set
+            {
+                regs[Registers.pc.Number] = value.ToUInt16();
+                valid[Registers.pc.Number] = true;
+            }
         }
 
         public override Constant GetRegister(RegisterStorage r)

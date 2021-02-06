@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -33,29 +34,65 @@ namespace Reko.Arch.M68k
     {
         private void RewriteBkpt()
         {
-            rtlc = InstrClass.Invalid;
+            iclass = InstrClass.Invalid;
             var src = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
-            m.SideEffect(host.PseudoProcedure("__bkpt", VoidType.Instance, src));
+            m.SideEffect(host.Intrinsic("__bkpt", false, VoidType.Instance, src));
+        }
+        
+        private void RewriteCinva()
+        {
+            m.SideEffect(host.Intrinsic($"__invalidate_cache_all_{instr.Operands[0]}", false, VoidType.Instance));
+        }
+
+        private void RewriteCinvp()
+        {
+            var src = (MemoryAccess) this.orw.RewriteSrc(instr.Operands[1], instr.Address);
+            m.SideEffect(host.Intrinsic($"__invalidate_cache_page_{instr.Operands[0]}", false, VoidType.Instance, src.EffectiveAddress));
+        }
+
+        private void RewriteCinvl()
+        {
+            var src = (MemoryAccess) this.orw.RewriteSrc(instr.Operands[1], instr.Address);
+            m.SideEffect(host.Intrinsic($"__invalidate_cache_line_{instr.Operands[0]}", false, VoidType.Instance, src.EffectiveAddress));
+        }
+
+        private void RewriteMovec()
+        {
+            var src = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
+            var dst = orw.RewriteDst(instr.Operands[1], instr.Address, instr.DataWidth!, src, (s, d) =>
+                host.Intrinsic("__movec", false, VoidType.Instance, s));
         }
 
         private void RewriteMoves()
         {
             var src = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
-            var dst = orw.RewriteDst(instr.Operands[1], instr.Address, instr.DataWidth, src, (s, d) =>
-                host.PseudoProcedure("__moves", VoidType.Instance, s));
+            var dst = orw.RewriteDst(instr.Operands[1], instr.Address, instr.DataWidth!, src, (s, d) =>
+                host.Intrinsic("__moves", false, VoidType.Instance, s));
+        }
+
+        private void RewritePload()
+        {
+            var src1 = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
+            var src2 = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
+            m.SideEffect(host.Intrinsic("__pload", false, VoidType.Instance, src1, src2));
         }
 
         private void RewritePflushr()
         {
             var src = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
-            m.SideEffect(host.PseudoProcedure("__pflushr", VoidType.Instance, src));
+            m.SideEffect(host.Intrinsic("__pflushr", false, VoidType.Instance, src));
         }
 
         private void RewritePtest()
         {
             var src1 = this.orw.RewriteSrc(instr.Operands[0], instr.Address);
-            var src2 = this.orw.RewriteSrc(instr.Operands[1], instr.Address);
-            m.SideEffect(host.PseudoProcedure("__ptest", VoidType.Instance, src2, src1));
+            var src2 = ((MemoryAccess) this.orw.RewriteSrc(instr.Operands[1], instr.Address)).EffectiveAddress;
+            m.SideEffect(host.Intrinsic("__ptest", false, VoidType.Instance, src2, src1));
+        }
+
+        private void RewriteReset()
+        {
+            m.SideEffect(host.Intrinsic("__reset", false, VoidType.Instance));
         }
 
         private void RewriteRte()

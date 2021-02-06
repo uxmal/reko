@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -245,7 +245,7 @@ namespace Reko.UnitTests.Core.Output
 "    Identifier i = Local(PrimitiveType.Int32, \"i\");" + nl + 
 "    " + nl + 
 "    Label(\"l1\");" + nl + 
-"    BranchIf(Eq(i, Constant.Create(Primitive.Int32, 0x0)), \"skip\");" + nl + 
+"    BranchIf(Eq(i, Constant.Int32(0x0)), \"skip\");" + nl + 
 "    " + nl + 
 "    Label(\"fade\");" + nl + 
 "    MStore(Word32(0x123456), i);" + nl + 
@@ -365,7 +365,7 @@ namespace Reko.UnitTests.Core.Output
                 "    Identifier b = Local(PrimitiveType.Word32, \"b\");" + nl +
                 "    " + nl +
                 "    Label(\"l1\");" + nl +
-                "    Assign(a, Dpb(a, Slice(PrimitiveType.Word16, b, 16), 0));" + nl +
+                "    Assign(a, Seq(Slice(PrimitiveType.Word16, a, 16), Slice(PrimitiveType.Word16, b, 16)));" + nl +
                 "}" + nl +
                 "" + nl);
         }

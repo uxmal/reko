@@ -1,0 +1,10 @@
+LIBRARY QUECALLS
+EXPORTS
+    DOSREADQUEUE                                @1
+    DOSPURGEQUEUE                               @2
+    DOSCLOSEQUEUE                               @3
+    DOSQUERYQUEUE                               @4
+    DOSPEEKQUEUE                                @5
+    DOSWRITEQUEUE                               @6
+    DOSOPENQUEUE                                @7
+    DOSCREATEQUEUE                              @8

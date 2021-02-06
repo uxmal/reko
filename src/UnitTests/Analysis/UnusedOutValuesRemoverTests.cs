@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -104,10 +105,13 @@ namespace Reko.UnitTests.Analysis
 
         private void RunTest(string sExp, Program program)
         {
+            var sc = new ServiceContainer();
+            sc.AddService(eventListener.Object);
+
             var dfa = new DataFlowAnalysis(
-                program, 
-                import.Object, 
-                eventListener.Object);
+                program,
+                import.Object,
+                sc);
             var ssts = dfa.RewriteProceduresToSsa();
 
             var uvr = new UnusedOutValuesRemover(
@@ -147,8 +151,8 @@ namespace Reko.UnitTests.Analysis
             {
                 var r1 = m.Frame.EnsureRegister(_r1);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
-                m.Assign(r1, m.Mem32(m.Word32(0x123400)));
-                m.MStore(m.Word16(0x123408), r1);
+                m.Assign(r1, m.Mem32(m.Ptr32(0x123400)));
+                m.MStore(m.Ptr32(0x123408), r1);
                 m.Return();
             });
 
@@ -172,8 +176,8 @@ foo_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	r1_4 = Mem0[0x00123400:word32]
-	Mem5[0x3408:word32] = r1_4
+	r1_4 = Mem0[0x00123400<p32>:word32]
+	Mem5[0x00123408<p32>:word32] = r1_4
 	return
 	// succ:  foo_exit
 foo_exit:
@@ -187,7 +191,7 @@ foo_exit:
         [Test(Description = "")]
         public void Uvr_Forks()
         {
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
             var pb = new ProgramBuilder(arch);
             var _r1 = arch.GetRegister("r1");
             var _r2 = arch.GetRegister("r2");
@@ -197,17 +201,17 @@ foo_exit:
                 var r1 = m.Frame.EnsureRegister(_r1);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Call("foo", 0);
-                m.MStore(m.Word32(0x123420), r1);
+                m.MStore(m.Ptr32(0x123420), r1);
             });
             pb.Add("foo", m =>
             {
                 var r1 = m.Frame.EnsureRegister(_r1);
                 var r2 = m.Frame.EnsureRegister(_r2);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
-                m.Assign(r1, m.Mem32(m.Word32(0x123400)));
-                m.MStore(m.Word32(0x123408), r1);
-                m.Assign(r2, m.Mem32(m.Word32(0x123410)));
-                m.MStore(m.Word32(0x123418), r2);
+                m.Assign(r1, m.Mem32(m.Ptr32(0x123400)));
+                m.MStore(m.Ptr32(0x123408), r1);
+                m.Assign(r2, m.Mem32(m.Ptr32(0x123410)));
+                m.MStore(m.Ptr32(0x123418), r2);
                 m.Return();
             });
 
@@ -223,7 +227,7 @@ main_entry:
 l1:
 	call foo (retsize: 0;)
 		defs: r1:r1_3
-	Mem5[0x00123420:word32] = r1_3
+	Mem5[0x00123420<p32>:word32] = r1_3
 main_exit:
 ===
 // foo
@@ -233,10 +237,10 @@ foo_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	r1_4 = Mem0[0x00123400:word32]
-	Mem5[0x00123408:word32] = r1_4
-	r2_6 = Mem5[0x00123410:word32]
-	Mem7[0x00123418:word32] = r2_6
+	r1_4 = Mem0[0x00123400<p32>:word32]
+	Mem5[0x00123408<p32>:word32] = r1_4
+	r2_6 = Mem5[0x00123410<p32>:word32]
+	Mem7[0x00123418<p32>:word32] = r2_6
 	return
 	// succ:  foo_exit
 foo_exit:
@@ -251,7 +255,7 @@ foo_exit:
         [Test(Description = "Respect any provided procedure signature")]
         public void Uvr_Signature()
         {
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
             var pb = new ProgramBuilder(arch);
             var _r1 = arch.GetRegister("r1");
             var _r2 = arch.GetRegister("r2");
@@ -261,17 +265,17 @@ foo_exit:
                 var r1 = m.Frame.EnsureRegister(_r1);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Call("foo", 0);
-                m.MStore(m.Word32(0x123420), r1);
+                m.MStore(m.Ptr32(0x123420), r1);
             });
             pb.Add("foo", m =>
             {
                 var r1 = m.Frame.EnsureRegister(_r1);
                 var r2 = m.Frame.EnsureRegister(_r2);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
-                m.Assign(r1, m.Mem32(m.Word32(0x123400)));
-                m.MStore(m.Word32(0x123408), r1);
-                m.Assign(r2, m.Mem32(m.Word32(0x123410)));
-                m.MStore(m.Word32(0x123418), r2);
+                m.Assign(r1, m.Mem32(m.Ptr32(0x123400)));
+                m.MStore(m.Ptr32(0x123408), r1);
+                m.Assign(r2, m.Mem32(m.Ptr32(0x123410)));
+                m.MStore(m.Ptr32(0x123418), r2);
                 m.Return();
 
                 m.Procedure.Signature = FunctionType.Func(
@@ -291,7 +295,7 @@ main_entry:
 	// succ:  l1
 l1:
 	r1_4 = foo(r2)
-	Mem5[0x00123420:word32] = r1_4
+	Mem5[0x00123420<p32>:word32] = r1_4
 main_exit:
 ===
 // foo
@@ -303,10 +307,10 @@ foo_entry:
 	// succ:  l1
 l1:
 	r63_2 = fp
-	r1_4 = Mem0[0x00123400:word32]
-	Mem5[0x00123408:word32] = r1_4
-	r2_6 = Mem5[0x00123410:word32]
-	Mem7[0x00123418:word32] = r2_6
+	r1_4 = Mem0[0x00123400<p32>:word32]
+	Mem5[0x00123408<p32>:word32] = r1_4
+	r2_6 = Mem5[0x00123410<p32>:word32]
+	Mem7[0x00123418<p32>:word32] = r2_6
 	return
 	// succ:  foo_exit
 foo_exit:
@@ -322,7 +326,7 @@ foo_exit:
         [Category(Categories.UnitTests)]
         public void Uvr_Chain()
         {
-            var arch = new FakeArchitecture();
+            var arch = new FakeArchitecture(new ServiceContainer());
             var _r1 = arch.GetRegister("r1");
             var _r2 = arch.GetRegister("r2");
             var _r3 = arch.GetRegister("r3");
@@ -332,7 +336,7 @@ foo_exit:
                 var r1 = m.Frame.EnsureRegister(_r1);
                 m.Assign(m.Frame.EnsureRegister(m.Architecture.StackRegister), m.Frame.FramePointer);
                 m.Call("level1", 0);
-                m.MStore(m.Word32(0x00123400), m.Cast(PrimitiveType.Byte, r1)); // forces r1 to be liveout on level1
+                m.MStore(m.Ptr32(0x00123400), m.Slice(PrimitiveType.Byte, r1, 0)); // forces r1 to be liveout on level1
                 m.Return();
             });
             pb.Add("level1", m =>
@@ -363,7 +367,7 @@ l1:
 	call level1 (retsize: 0;)
 		uses: r2:r2
 		defs: r1:r1_4
-	Mem5[0x00123400:byte] = (byte) r1_4
+	Mem5[0x00123400<p32>:byte] = SLICE(r1_4, byte, 0)
 	return
 	// succ:  main_exit
 main_exit:
@@ -428,7 +432,7 @@ level2_exit:
                     (regA, a), (regB, b)
                 };
                 m.Call("fn", 4, uses, defines);
-                m.MStore(m.Word32(0x5678), b);
+                m.MStore(m.Ptr32(0x5678), b);
                 m.AddUseToExitBlock(a);
                 m.AddUseToExitBlock(b);
             });
@@ -440,7 +444,7 @@ level2_exit:
 @"========================
 fn_entry:
 body:
-	b = 0x00000034
+	b = 0x34<32>
 fn_exit:
 	use b
 ========================
@@ -448,7 +452,7 @@ main_entry:
 body:
 	call fn (retsize: 4;)
 		defs: regB:b
-	Mem2[0x00005678:word32] = b
+	Mem2[0x00005678<p32>:word32] = b
 main_exit:
 ";
             #endregion
@@ -476,7 +480,7 @@ main_exit:
 @"========================
 fn_entry:
 body:
-	a = 0x00000012
+	a = 0x12<32>
 fn_exit:
 	use a
 ";
@@ -519,7 +523,7 @@ fn_exit:
 @"========================
 fn_entry:
 body:
-	a = 0x00000012
+	a = 0x12<32>
 fn_exit:
 	use a
 ========================
@@ -565,7 +569,7 @@ main_exit:
                 m.Call("fn", 4, uses, defines);
                 m.BranchIf(C_2, "m3");
                 m.Label("m2");
-                m.MStore(m.Word32(0x00123400), m.Byte(0));
+                m.MStore(m.Ptr32(0x00123400), m.Byte(0));
                 m.Label("m3");
                 m.Return();
                 m.AddUseToExitBlock(C_2);
@@ -578,7 +582,7 @@ main_exit:
 @"========================
 fn_entry:
 body:
-	C_1 = cond(a - 0x00000012)
+	C_1 = cond(a - 0x12<32>)
 	return
 fn_exit:
 	use C_1
@@ -589,7 +593,7 @@ body:
 		defs: C:C_2
 	branch C_2 m3
 m2:
-	Mem2[0x00123400:byte] = 0x00
+	Mem2[0x00123400<p32>:byte] = 0<8>
 m3:
 	return
 main_exit:

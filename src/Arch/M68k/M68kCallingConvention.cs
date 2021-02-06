@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,14 +31,14 @@ namespace Reko.Arch.M68k
 {
     public class M68kCallingConvention : CallingConvention
     {
-        private M68kArchitecture arch;
+        private readonly M68kArchitecture arch;
 
         public M68kCallingConvention(M68kArchitecture arch)
         {
             this.arch = arch;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             int stackOffset = 4;        // return address
             ccr.LowLevelDetails(4, stackOffset);

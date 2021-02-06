@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,26 +34,26 @@ namespace Reko.Typing
     /// <summary>
     /// Rewrites all the expressions in the program based on the type information provided.
     /// </summary>
+    /// <remarks>
+    /// It's important that all Visit*(subclass-of-expression) methods preserve the 
+    /// <see cref="Expression.TypeVariable"/> property when new expressions are created.
+    /// </remarks>
     public class TypedExpressionRewriter : InstructionTransformer
     {
         private readonly Program program;
-        private readonly Identifier globals;
         private readonly DataTypeComparer compTypes;
         private readonly TypedConstantRewriter tcr;
-        private readonly ExpressionEmitter m;
         private readonly Unifier unifier;
         private bool dereferenced;
-        private Expression basePtr;
-        private DecompilerEventListener eventListener;
+        private Expression? basePtr;
+        private readonly DecompilerEventListener eventListener;
 
         public TypedExpressionRewriter(Program program, DecompilerEventListener eventListener)
         {
             this.program = program;
-            this.globals = program.Globals;
             this.eventListener = eventListener;
             this.compTypes = new DataTypeComparer();
             this.tcr = new TypedConstantRewriter(program, eventListener);
-            this.m = new ExpressionEmitter();
             this.unifier = new Unifier();
         }
 
@@ -75,10 +75,11 @@ namespace Reko.Typing
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(
-                            string.Format("Exception in TypedExpressionRewriter.RewriteProgram: {0} ({1})\r\n{2}", proc, ex.Message, ex.StackTrace));
+                        Debug.Print("Exception in TypedExpressionRewriter.RewriteProgram: {0} ({1})\r\n{2}",
+                            proc, ex.Message, ex.StackTrace);
                         // reset flags after error
                         dereferenced = false;
+                        basePtr = null;
                     }
                 }
             }
@@ -87,7 +88,7 @@ namespace Reko.Typing
         private void RewriteFormals(FunctionType sig)
         {
             if (!sig.HasVoidReturn)
-                sig.ReturnValue.DataType = sig.ReturnValue.TypeVariable.DataType;
+                sig.ReturnValue.DataType = sig.ReturnValue.TypeVariable!.DataType;
             if (sig.Parameters != null)
             {
                 foreach (Identifier formalArg in sig.Parameters)
@@ -106,26 +107,25 @@ namespace Reko.Typing
         private Instruction MakeAssignment(Expression dst, Expression src)
         {
             src = src.Accept(this);
-            var tvDst = dst.TypeVariable;
+            var tvDst = dst.TypeVariable!;
             dst = dst.Accept(this);
             var dtSrc = DataTypeOf(src);
             var dtDst = DataTypeOf(dst);
             if (!TypesAreCompatible(dtSrc, dtDst))
             {
-                UnionType uDst = dtDst.ResolveAs<UnionType>();
-                UnionType uSrc = dtSrc.ResolveAs<UnionType>();
+                UnionType? uDst = dtDst.ResolveAs<UnionType>();
+                UnionType? uSrc = dtSrc.ResolveAs<UnionType>();
                 if (uDst != null)
                 {
                     // ceb = new ComplexExpressionBuilder(dtDst, dtDst, dtSrc, null, dst, null, 0);
                     tvDst.DataType = dtDst;
                     tvDst.OriginalDataType = dtSrc;
                     dst.TypeVariable = tvDst;
-                    var ceb = new ComplexExpressionBuilder(dtSrc, null, dst, null, 0);
+                    var ceb = new ComplexExpressionBuilder(program, null, dst, null, 0);
                     dst = ceb.BuildComplex(false);
                 }
                 else if (uSrc != null)
                 {
-                    //throw new NotImplementedException();
                     //var ceb = new ComplexExpressionBuilder(dtSrc, dtSrc, dtDst, null, src, null, 0);
                     //src = ceb.BuildComplex(false);
                     src = new Cast(dtDst, src);
@@ -151,7 +151,7 @@ namespace Reko.Typing
         public override Instruction TransformDeclaration(Declaration decl)
         {
             base.TransformDeclaration(decl);
-            decl.Identifier.DataType = decl.Identifier.TypeVariable.DataType;
+            decl.Identifier.DataType = decl.Identifier.TypeVariable!.DataType;
             return decl;
         }
 
@@ -175,7 +175,7 @@ namespace Reko.Typing
             return exp;
         }
 
-        public Expression RewriteComplexExpression(Expression complex, Expression index, int offset, bool dereferenced)
+        public Expression RewriteComplexExpression(Expression complex, Expression? index, int offset, bool dereferenced)
         {
             if (index is Constant cOther)
             {
@@ -185,7 +185,7 @@ namespace Reko.Typing
                 offset += (int) cOther.ToUInt32();
                 index = null;
             }
-            var ceb = new ComplexExpressionBuilder(null, basePtr, complex, index, offset);
+            var ceb = new ComplexExpressionBuilder(program, basePtr, complex, index, offset);
             return ceb.BuildComplex(dereferenced);
         }
 
@@ -252,7 +252,7 @@ namespace Reko.Typing
             else if (binOp == Operator.Shr)
                 binOp = Operator.Sar;
             binExp = new BinaryExpression(binOp, binExp.DataType, left, right) { TypeVariable = binExp.TypeVariable };
-            program.TypeStore.SetTypeVariableExpression(binExp.TypeVariable, binExp);
+            program.TypeStore.SetTypeVariableExpression(binExp.TypeVariable!, binExp);
             return binExp;
         }
 
@@ -263,12 +263,12 @@ namespace Reko.Typing
 
         public override Expression VisitAddress(Address addr)
         {
-            return tcr.Rewrite(addr, dereferenced);
+            return tcr.Rewrite(addr, basePtr, dereferenced);
         }
 
         public override Expression VisitConstant(Constant c)
         {
-            return tcr.Rewrite(c, this.dereferenced);
+            return tcr.Rewrite(c, basePtr, this.dereferenced);
         }
 
         public override Expression VisitMemoryAccess(MemoryAccess access)
@@ -354,11 +354,25 @@ namespace Reko.Typing
             return exp;
         }
 
+        public override Expression VisitConversion(Conversion conversion)
+        {
+            var exp = conversion.Expression.Accept(this);
+            return new Cast(conversion.DataType, exp);
+        }
+
         private bool TypesAreCompatible(DataType dtSrc, DataType dtDst)
         {
             if (compTypes.Compare(dtSrc, dtDst) == 0)
                 return true;
             return unifier.AreCompatible(dtSrc, dtDst);
+        }
+
+        public override Expression VisitUnaryExpression(UnaryExpression unary)
+        {
+            var uNew = base.VisitUnaryExpression(unary);
+            uNew.TypeVariable = unary.TypeVariable;
+            program.TypeStore.SetTypeVariableExpression(unary.TypeVariable!, uNew);
+            return uNew;
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
@@ -118,10 +119,10 @@ namespace Reko.ImageLoaders.MzExe.Borland
                 var sym = srdr.Read();
                 this.symbols[nSym] = sym;
                 var symClass = ClassifySymbol(sym.flags, names[sym.symbol_name], ref sym);
-                DebugEx.Verbose(trace, $"  Symbol:  {names[sym.symbol_name]} ({nSym})");
-                DebugEx.Verbose(trace, $"    Type:  {sym.symbol_type:X4}");
-                DebugEx.Verbose(trace, $"    Addr:  {sym.symbol_segment:X4}:{sym.symbol_offset:X4}");
-                DebugEx.Verbose(trace, $"    Flags: {symClass}");
+                trace.Verbose($"  Symbol:  {names[sym.symbol_name]} ({nSym})");
+                trace.Verbose($"    Type:  {sym.symbol_type:X4}");
+                trace.Verbose($"    Addr:  {sym.symbol_segment:X4}:{sym.symbol_offset:X4}");
+                trace.Verbose($"    Flags: {symClass}");
                 ++nSym;
             }
         }
@@ -133,12 +134,12 @@ namespace Reko.ImageLoaders.MzExe.Borland
             while (nMod < header.modules_count)
             {
                 var mod = srdr.Read();
-                DebugEx.Verbose(trace, $"  Module:         {names[mod.module_name]}");
-                DebugEx.Verbose(trace, $"    Language:     {ClassifyProgrammingLanguage(mod.language)}");
-                DebugEx.Verbose(trace, $"    Flags:        {mod.flags:X2}");
-                DebugEx.Verbose(trace, $"    Symbols:      [{mod.symbols_index} - {mod.symbols_index + mod.symbols_count})");
-                DebugEx.Verbose(trace, $"    SrcFiles:     [{mod.source_files_index} - {mod.symbols_index + mod.source_files_count})");
-                DebugEx.Verbose(trace, $"    Correlations: [{mod.correlation_index} - {mod.symbols_index + mod.correlation_count})");
+                trace.Verbose($"  Module:         {names[mod.module_name]}");
+                trace.Verbose($"    Language:     {ClassifyProgrammingLanguage(mod.language)}");
+                trace.Verbose($"    Flags:        {mod.flags:X2}");
+                trace.Verbose($"    Symbols:      [{mod.symbols_index} - {mod.symbols_index + mod.symbols_count})");
+                trace.Verbose($"    SrcFiles:     [{mod.source_files_index} - {mod.symbols_index + mod.source_files_count})");
+                trace.Verbose($"    Correlations: [{mod.correlation_index} - {mod.symbols_index + mod.correlation_count})");
                 ++nMod;
             }
         }
@@ -152,7 +153,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
                 if (!rdr.TryReadLeUInt16(out ushort iFileName) ||
                     !rdr.TryReadLeUInt32(out uint timestamp))
                     break;
-                DebugEx.Verbose(trace, $"  Source file:  {names[iFileName]}");
+                trace.Verbose($"  Source file:  {names[iFileName]}");
                 ++nSrc;
             }
         }
@@ -164,13 +165,13 @@ namespace Reko.ImageLoaders.MzExe.Borland
             while (nScopes < header.scopes_count)
             {
                 var scope = srdr.Read();
-                DebugEx.Verbose(trace, $"  Scope:");
-                DebugEx.Verbose(trace, $"    autos_index:     {scope.autos_index}");
-                DebugEx.Verbose(trace, $"    autos_count:     {scope.autos_count}");
-                DebugEx.Verbose(trace, $"    parent_scope:    {scope.parent_scope}");
-                DebugEx.Verbose(trace, $"    function_symbol: {scope.function_symbol}");
-                DebugEx.Verbose(trace, $"    scope_offset:    {scope.scope_offset}");
-                DebugEx.Verbose(trace, $"    scope_length:    {scope.scope_length}");
+                trace.Verbose($"  Scope:");
+                trace.Verbose($"    autos_index:     {scope.autos_index}");
+                trace.Verbose($"    autos_count:     {scope.autos_count}");
+                trace.Verbose($"    parent_scope:    {scope.parent_scope}");
+                trace.Verbose($"    function_symbol: {scope.function_symbol}");
+                trace.Verbose($"    scope_offset:    {scope.scope_offset}");
+                trace.Verbose($"    scope_length:    {scope.scope_length}");
                 ++nScopes;
             }
         }
@@ -181,8 +182,8 @@ namespace Reko.ImageLoaders.MzExe.Borland
             for (int nLineNos = 0; nLineNos < header.lines_count; ++nLineNos)
             {
                 var line = srdr.Read();
-                DebugEx.Verbose(trace, $"    line_number_value:  {line.line_number_value}");
-                DebugEx.Verbose(trace, $"    line_number_offset: {line.line_number_offset}");
+                trace.Verbose($"    line_number_value:  {line.line_number_value}");
+                trace.Verbose($"    line_number_offset: {line.line_number_offset}");
             }
         }
 
@@ -194,15 +195,15 @@ namespace Reko.ImageLoaders.MzExe.Borland
             {
                 var seg = srdr.Read();
 
-                DebugEx.Verbose(trace, "  Segment");
-                DebugEx.Verbose(trace, $"    mod_index: {seg.mod_index}");
-                DebugEx.Verbose(trace, $"    code_segment: {seg.code_segment:X4}");
-                DebugEx.Verbose(trace, $"    code_offset: {seg.code_offset:X4}");
-                DebugEx.Verbose(trace, $"    code_length: {seg.code_length:X4}");
-                DebugEx.Verbose(trace, $"    scopes_index: {seg.scopes_index}");
-                DebugEx.Verbose(trace, $"    scopes_count: {seg.scopes_count}");
-                DebugEx.Verbose(trace, $"    correlation_index: {seg.correlation_index}");
-                DebugEx.Verbose(trace, $"    correlation_count: {seg.correlation_count}");
+                trace.Verbose("  Segment");
+                trace.Verbose($"    mod_index: {seg.mod_index}");
+                trace.Verbose($"    code_segment: {seg.code_segment:X4}");
+                trace.Verbose($"    code_offset: {seg.code_offset:X4}");
+                trace.Verbose($"    code_length: {seg.code_length:X4}");
+                trace.Verbose($"    scopes_index: {seg.scopes_index}");
+                trace.Verbose($"    scopes_count: {seg.scopes_count}");
+                trace.Verbose($"    correlation_index: {seg.correlation_index}");
+                trace.Verbose($"    correlation_count: {seg.correlation_count}");
                 ++nSegs;
             }
         }
@@ -213,11 +214,11 @@ namespace Reko.ImageLoaders.MzExe.Borland
             for (int iCorr = 0; iCorr < header.correlation_count; ++iCorr)
             {
                 var corr = srdr.Read();
-                DebugEx.Verbose(trace, "  Correlation");
-                DebugEx.Verbose(trace, $"    segment_index: {corr.segment_index}");
-                DebugEx.Verbose(trace, $"    file_index: {corr.file_index}");
-                DebugEx.Verbose(trace, $"    lines_index: {corr.lines_index}");
-                DebugEx.Verbose(trace, $"    lines_count: {corr.lines_count}");
+                trace.Verbose("  Correlation");
+                trace.Verbose($"    segment_index: {corr.segment_index}");
+                trace.Verbose($"    file_index: {corr.file_index}");
+                trace.Verbose($"    lines_index: {corr.lines_index}");
+                trace.Verbose($"    lines_count: {corr.lines_count}");
             }
         }
 
@@ -511,7 +512,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
 
         private void LoadTypeTable(LeImageReader rdr, string[] names)
         {
-            DebugEx.Verbose(trace, $"Type table (offset: {rdr.Offset:X8}); {header.types_count:X4} entries");
+            trace.Verbose($"Type table (offset: {rdr.Offset:X8}); {header.types_count:X4} entries");
             this.types = new Dictionary<ushort, BorlandType>();
             for (int i = 0; i < header.types_count; ++i)
             {
@@ -523,9 +524,9 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                     break;
                 }
                 int iType = i + 1;
-                DebugEx.Verbose(trace, $"  Type {names[type_name]} - {iType:X4}");
-                DebugEx.Verbose(trace, $"    type id: {type_id:X2}");
-                DebugEx.Verbose(trace, $"    size:    {type_size:X4}");
+                trace.Verbose($"  Type {names[type_name]} - {iType:X4}");
+                trace.Verbose($"    type id: {type_id:X2}");
+                trace.Verbose($"    size:    {type_size:X4}");
 
                 BorlandType bt = null;
                 switch (type_id)
@@ -534,10 +535,10 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 default:
                     {
                         if (TID_VOID != type_id)
-                            DebugEx.Verbose(trace, $"No special support for type {type_id:X2}, fallback to void");
+                            trace.Verbose($"No special support for type {type_id:X2}, fallback to void");
                         var b2 = rdr.ReadByte();
                         var w = rdr.ReadLeUInt16();
-                        DebugEx.Verbose(trace, $"    {b2:X2} {w:X4}");
+                        trace.Verbose($"    {b2:X2} {w:X4}");
                         bt = new SimpleType { DataType = new VoidType_v1() };
                         break;
                     }
@@ -575,14 +576,14 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                         var filler3 = rdr.ReadLeUInt16();
                         var filler4 = rdr.ReadLeUInt16();
                         SerializedType indexDataType;
-                        if (elementType > iType) DebugEx.Warn(trace, $"    array defined before its element type: {elementType:X4}");
+                        if (elementType > iType) trace.Warn($"    array defined before its element type: {elementType:X4}");
                         if (arrayIndexType > iType)
                         {
-                            DebugEx.Warn(trace, $"    array defined before its index type: {arrayIndexType:X4}");
+                            trace.Warn($"    array defined before its index type: {arrayIndexType:X4}");
                             indexDataType = null;
                         }
                         else indexDataType = ((SimpleType) types[arrayIndexType]).DataType;
-                        DebugEx.Verbose(trace, $"    Pascal Array[]: {filler1:X2} {elementType:X4}({GetKnownTypeName(elementType)})" +
+                        trace.Verbose($"    Pascal Array[]: {filler1:X2} {elementType:X4}({GetKnownTypeName(elementType)})" +
                                                             $" {arrayIndexType:X4}{indexDataType} {filler2:X4}{filler3:X4}{filler4:X4}");
                         // TODO: Get upper index value from arrayIndexType
                         bt = new ComplexType
@@ -595,12 +596,12 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                     
                 case TID_TFILE:
                     {
-                        DebugEx.Verbose(trace, "      Text File");
+                        trace.Verbose("      Text File");
                         bt = ClassifyType(rdr, new VoidType_v1()); break;
                     }
                 case TID_BFILE:
                     {
-                        DebugEx.Verbose(trace, "      Binary File");
+                        trace.Verbose("      Binary File");
                         bt = ClassifyType(rdr, new VoidType_v1()); break;
                     }
                     
@@ -610,7 +611,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                         var w = rdr.ReadLeUInt16();
                         // TODO: Use special SerializedType
                         SerializedType dt = new ArrayType_v1 {ElementType = PrimitiveType_v1.UChar8(), Length = type_size};
-                        DebugEx.Verbose(trace, $"    PascalString MaxLenght={maxLenght:X2} {w:X4} {dt}");
+                        trace.Verbose($"    PascalString MaxLenght={maxLenght:X2} {w:X4} {dt}");
                         bt = new SimpleType { DataType = dt };
                         break;
                     }
@@ -625,7 +626,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                         var isVararg = (b2 & 0x80) != 0;
                         var additionalBits = b2 & 0x38;
                         
-                        DebugEx.Verbose(trace, $"    function/procedure: {b2:X2} returns {retType:X4}({GetKnownTypeName(retType)}) ({lang}" +
+                        trace.Verbose($"    function/procedure: {b2:X2} returns {retType:X4}({GetKnownTypeName(retType)}) ({lang}" +
                                                             $"{(isVararg ? " varargs" : "")}" +
                                                              $"{(isNested ? " nested" : "")}" +
                                                             $"{(additionalBits != 0 ? $" additional bits: {additionalBits:X2}" : "")})");
@@ -643,7 +644,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                     {
                         var b2 = rdr.ReadByte();
                         var w = rdr.ReadLeUInt16();
-                        DebugEx.Verbose(trace, $"    goto: {b2:X2} {w:X4}");
+                        trace.Verbose($"    goto: {b2:X2} {w:X4}");
                         bt = new SimpleType { DataType = new VoidType_v1() };
                         break;
                     }
@@ -651,7 +652,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                     {
                         var b2 = rdr.ReadByte();
                         var w = rdr.ReadLeUInt16();
-                        DebugEx.Verbose(trace, $"    struct: {b2:X2} {w:X4}");
+                        trace.Verbose($"    struct: {b2:X2} {w:X4}");
                         bt = new StructUnionType
                         {
                             iMembers = w,
@@ -662,7 +663,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                     {
                         var b2 = rdr.ReadByte();
                         var w = rdr.ReadLeUInt16();
-                        DebugEx.Verbose(trace, $"    union: {b2:X2} {w:X4}");
+                        trace.Verbose($"    union: {b2:X2} {w:X4}");
                         bt = new StructUnionType
                         {
                             iMembers = w,
@@ -690,7 +691,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
             var lower = rdr.ReadLeInt32();
             var upper = rdr.ReadLeInt32();
             var parentType = parent != 0 ? $" ({GetKnownTypeName(parent)})" : ""; 
-            DebugEx.Verbose(trace, $"    {filler:X2} {parent:X4}{parentType} [{lower:X8}..{upper:X8}] {pt}");
+            trace.Verbose($"    {filler:X2} {parent:X4}{parentType} [{lower:X8}..{upper:X8}] {pt}");
             // TODO: Add limits into type
             return new SimpleType { DataType = pt };
         }
@@ -699,7 +700,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
         {
             var b2 = rdr.ReadByte();
             var w = rdr.ReadLeUInt16();
-            DebugEx.Verbose(trace, $"    {b2:X2} {w:X4} {dt}");
+            trace.Verbose($"    {b2:X2} {w:X4} {dt}");
             return new SimpleType { DataType = dt };
         }
 
@@ -707,7 +708,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
         {
             var b2 = rdr.ReadByte();
             var w = rdr.ReadLeUInt16();
-            DebugEx.Verbose(trace, $"    {msg}: {w:X4} ({GetKnownTypeName(w)})");
+            trace.Verbose($"    {msg}: {w:X4} ({GetKnownTypeName(w)})");
             return new ComplexType
             {
                 ConstructType = ctor,
@@ -717,7 +718,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
 
         private void LoadMemberTable(LeImageReader rdr, string[] names)
         {
-            DebugEx.Verbose(trace, $"Member table (offset: {rdr.Offset:X8}); {header.members_count:X4} entries");
+            trace.Verbose($"Member table (offset: {rdr.Offset:X8}); {header.members_count:X4} entries");
             for (int i = 0; i < header.members_count; ++i)
             {
                 byte b;
@@ -731,12 +732,12 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 }
                 if ((b & 0x40) == 0x40)
                 {
-                    DebugEx.Verbose(trace, $"  {i+1:X4}: {b:X2} {w1:X4}");
+                    trace.Verbose($"  {i+1:X4}: {b:X2} {w1:X4}");
                 }
                 else
                 {
                     var name = w1 < names.Length ? names[w1] : w1.ToString("X4");
-                    DebugEx.Verbose(trace, $"  {i+1:X4}: {b:X2} {name} {w2:X4}");
+                    trace.Verbose($"  {i+1:X4}: {b:X2} {name} {w2:X4}");
                 }
             }
         }
@@ -867,7 +868,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
             foreach (var imgSym in imgSymbols.Values)
             {
                 var iType = this.symbolTypes[imgSym];
-                DebugEx.Verbose(trace, $"Image symbol {imgSym.Address} {imgSym.Name} type {iType:X4}");
+                trace.Verbose($"Image symbol {imgSym.Address} {imgSym.Name} type {iType:X4}");
                 if (iType == 0)
                     continue;
                 var type = this.types[iType];

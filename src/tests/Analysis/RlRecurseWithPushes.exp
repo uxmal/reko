@@ -28,15 +28,14 @@ fn0C00_0004_entry:
 l0C00_0004:
 	call fn0C00_001D (retsize: 2;)
 		uses: ds:ds
-	ax_12 = Mem7[ds:si + 0x0028:word16]
-	v7_13 = Mem7[ds:0x1444:word16] + ax_12
-	Mem14[ds:0x1444:word16] = v7_13
-	branch Mem14[ds:di + 0x0030:byte] == 0x00 l0C00_001C
+	ax_12 = Mem7[ds:si + 0x28<16>:word16]
+	v7_13 = Mem7[ds:0x1444<16>:word16] + ax_12
+	Mem14[ds:0x1444<16>:word16] = v7_13
+	branch Mem14[ds:di + 0x30<16>:byte] == 0<8> l0C00_001C
 l0C00_0016:
-	di_18 = Mem14[ds:di + 0x0030:word16]
+	di_18 = Mem14[ds:di + 0x30<16>:word16]
 	call fn0C00_0004 (retsize: 2;)
 		uses: di:di_18,ds:ds,si:si
-		defs: SCZO:SCZO_22
 l0C00_001C:
 	return
 fn0C00_0004_exit:
@@ -50,6 +49,6 @@ define fn0C00_001D
 fn0C00_001D_entry:
 	def ds
 l0C00_001D:
-	Mem6[ds:0x4321:word32] = 0x00001234
+	Mem6[ds:0x4321<16>:word32] = 0x1234<32>
 	return
 fn0C00_001D_exit:

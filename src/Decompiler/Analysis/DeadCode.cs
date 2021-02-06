@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,17 +35,16 @@ namespace Reko.Analysis
 	/// </summary>
 	public class DeadCode : InstructionVisitorBase
 	{
-		private SsaState ssa;
-		private WorkList<SsaIdentifier> liveIds;
-		private CriticalInstruction critical;
-
-		private static TraceSwitch trace = new TraceSwitch("DeadCode", "Traces dead code elimination");
+		private static readonly TraceSwitch trace = new TraceSwitch(nameof(DeadCode), "Traces dead code elimination");
+        
+        private readonly SsaState ssa;
+		private readonly WorkList<SsaIdentifier> liveIds;
 
 		private DeadCode(SsaState ssa) 
 		{
 			this.ssa = ssa;
-			this.critical = new CriticalInstruction();
-		}
+            this.liveIds = new WorkList<SsaIdentifier>();
+        }
 
 		/// <summary>
 		/// Cleanup statements of the type eax = Foo(); where eax is dead (has no uses),
@@ -78,7 +77,7 @@ namespace Reko.Analysis
         /// chain of dead expressions.
         /// expressions.
         /// </summary>
-        private static Application ContainedApplication(Expression exp)
+        private static Application? ContainedApplication(Expression exp)
         {
             for (; ;)
             {
@@ -89,14 +88,20 @@ namespace Reko.Analysis
                 case Slice slice: return ContainedApplication(slice.Expression);
                 case UnaryExpression u: return ContainedApplication(u.Expression);
                 case Dereference deref: return ContainedApplication(deref.Expression);
-                case DepositBits dpb:
-                    var s = ContainedApplication(dpb.Source);
-                    var b = ContainedApplication(dpb.InsertedBits);
-                    if (s != null && b == null)
-                        return s;
-                    if (s == null && b != null)
-                        return b;
-                    return null;
+                case MkSequence seq:
+                    Application? appl = null;
+                    foreach (var elem in seq.Expressions)
+                    {
+                        var a = ContainedApplication(elem);
+                        if (a != null)
+                        {
+                            if (appl == null)
+                                appl = a;
+                            else
+                                return null;
+                        }
+                    }
+                    return appl;
                 default:
                     return null;
                 }
@@ -133,7 +138,6 @@ namespace Reko.Analysis
 
 		private void Eliminate()
 		{
-			liveIds = new WorkList<SsaIdentifier>();
 			HashSet<Statement> marks = new HashSet<Statement>();
 
 			// Initially, just mark those statements that contain critical statements.
@@ -142,9 +146,9 @@ namespace Reko.Analysis
 
             foreach (var stm in ssa.Procedure.Statements)
             {
-                if (critical.IsCritical(stm.Instruction))
+                if (CriticalInstruction.IsCritical(stm.Instruction))
                 {
-                    if (trace.TraceInfo) Debug.WriteLineIf(trace.TraceInfo, string.Format("Critical: {0}", stm.Instruction));
+                    trace.Inform("Critical: {0}", stm.Instruction);
                     marks.Add(stm);
                     stm.Instruction.Accept(this);		// mark all used identifiers as live.
                 }
@@ -154,37 +158,48 @@ namespace Reko.Analysis
 
 			while (liveIds.GetWorkItem(out SsaIdentifier sid))
 			{
-				Statement def = sid.DefStatement;
+				Statement? def = sid.DefStatement;
 				if (def != null)
 				{
 					if (!marks.Contains(def))
 					{
-						if (trace.TraceInfo) Debug.WriteLine(string.Format("Marked: {0}", def.Instruction));
+						trace.Inform("Marked: {0}", def.Instruction);
                         marks.Add(def);
-						sid.DefStatement.Instruction.Accept(this);
+						sid.DefStatement?.Instruction.Accept(this);
 					}
 				}
 			}
 
-			// We have now marked all the useful instructions in the code. Any non-marked
-			// instruction is now useless and should be deleted.
-
-			foreach (Block b in ssa.Procedure.ControlGraph.Blocks)
+            // We have now marked all the useful instructions in the code. Any non-marked
+            // instruction is now useless and should be deleted. Now remove all uses; 
+            // we just proved that no-one uses the non-marked instructions.
+            foreach (var sid in ssa.Identifiers)
+            {
+                sid.Uses.RemoveAll(u => !marks.Contains(u));
+                if (sid.DefStatement != null && !marks.Contains(sid.DefStatement))
+                    sid.DefStatement = null;
+            }
+            foreach (Block b in ssa.Procedure.ControlGraph.Blocks)
 			{
-				for (int iStm = 0; iStm < b.Statements.Count; ++iStm)
-				{
-					Statement stm = b.Statements[iStm];
+                int iTo = 0;
+                for (int iStm = 0; iStm < b.Statements.Count; ++iStm)
+                {
+                    Statement stm = b.Statements[iStm];
                     if (stm.Instruction is CallInstruction call)
                     {
                         AdjustCallWithDeadDefinitions(call);
                     }
-					if (!marks.Contains(stm))
-					{
-						if (trace.TraceInfo) Debug.WriteLineIf(trace.TraceInfo, string.Format("Deleting: {0}", stm.Instruction));
-						ssa.DeleteStatement(stm);
-						--iStm;
-					}
-				}
+                    if (marks.Contains(stm))
+                    {
+                        b.Statements[iTo] = stm;
+                        ++iTo;
+                    }
+                    else
+                    {
+                        trace.Inform("Deleting: {0}", stm.Instruction);
+                    }
+                }
+                b.Statements.RemoveRange(iTo, b.Statements.Count - iTo);
 			}
 
 			AdjustApplicationsWithDeadReturnValues();

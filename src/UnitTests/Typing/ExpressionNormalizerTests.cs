@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Typing
             Expression ea = m.IAdd(globals, m.IAdd(m.Shl(i, 4), 0x30000));
             Expression e = m.Mem(PrimitiveType.Int32, ea);
             e = e.Accept(aen);
-            Assert.AreEqual("(globals + 0x00030000)[idx * 0x00000010]", e.ToString());
+            Assert.AreEqual("(globals + 0x30000<32>)[idx * 0x10<32>]", e.ToString());
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Typing
             Expression e = m.Mem(PrimitiveType.Int32,
             m.IAdd(p, m.IAddS(m.SMul(i, 8), 4)));
             e = e.Accept(aen);
-            Assert.AreEqual("(p + 4)[i * 0x00000008]", e.ToString());
+            Assert.AreEqual("(p + 4<i32>)[i * 8<32>]", e.ToString());
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Typing
             Identifier p = m.Local32("p");
             Expression e = m.Mem(PrimitiveType.Word16, p);
             e = e.Accept(aen);
-            Assert.AreEqual("Mem0[p + 0x00000000:word16]", e.ToString());
+            Assert.AreEqual("Mem0[p + 0<32>:word16]", e.ToString());
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Typing
             Identifier ds = m.Local16("ds");
             Expression e = m.SegMem(PrimitiveType.Byte, ds, bx);
             e = e.Accept(aen);
-            Assert.AreEqual("Mem0[ds:bx + 0x0000:byte]", e.ToString());
+            Assert.AreEqual("Mem0[ds:bx + 0<16>:byte]", e.ToString());
         }
 
         [Test]
@@ -87,9 +87,9 @@ namespace Reko.UnitTests.Typing
             Identifier bx = m.Local16("bx");
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
             Expression e = m.SegMem(PrimitiveType.Int16, ds, m.IAdd(m.IMul(bx, 2), 0x42));
-            Assert.AreEqual("Mem0[ds:bx * 0x0002 + 0x0042:int16]", e.ToString());
+            Assert.AreEqual("Mem0[ds:bx * 2<16> + 0x42<16>:int16]", e.ToString());
             e = e.Accept(aen);
-            Assert.AreEqual("SEQ(ds, 0x0042)[bx * 0x0002]", e.ToString());
+            Assert.AreEqual("SEQ(ds, 0x42<16>)[bx * 2<16>]", e.ToString());
         }
 
         [Test]
@@ -98,9 +98,9 @@ namespace Reko.UnitTests.Typing
             Identifier bx = m.Local16("bx");
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
             Expression e = m.SegMem(PrimitiveType.Int32, ds, m.Shl(bx, 2));
-            Assert.AreEqual("Mem0[ds:bx << 0x02:int32]", e.ToString());
+            Assert.AreEqual("Mem0[ds:bx << 2<8>:int32]", e.ToString());
             e = e.Accept(aen);
-            Assert.AreEqual("SEQ(ds, 0x0000)[bx * 0x0004]", e.ToString());
+            Assert.AreEqual("SEQ(ds, 0<16>)[bx * 4<16>]", e.ToString());
         }
 
         // Seems unlikely, but sometimes important arrays are located at address 0 in memory.
@@ -109,9 +109,9 @@ namespace Reko.UnitTests.Typing
         {
             Identifier a1 = m.Local32("a1");
             Expression e = m.Mem(PrimitiveType.Int32, m.Shl(a1, 2));
-            Assert.AreEqual("Mem0[a1 << 0x02:int32]", e.ToString());
+            Assert.AreEqual("Mem0[a1 << 2<8>:int32]", e.ToString());
             e = e.Accept(aen);
-            Assert.AreEqual("0x00000000[a1 * 0x00000004]", e.ToString());
+            Assert.AreEqual("0<32>[a1 * 4<32>]", e.ToString()); //$LIT: 0<p32>?
         }
     }
 }

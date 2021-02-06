@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,11 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.Z80;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
-using NUnit.Framework;
 using System.Collections.Generic;
 
 namespace Reko.UnitTests.Arch.Z80
@@ -29,7 +30,7 @@ namespace Reko.UnitTests.Arch.Z80
     [TestFixture]
     public class RewriterTests : RewriterTestBase
     {
-        private readonly Z80ProcessorArchitecture arch = new Z80ProcessorArchitecture("z80");
+        private readonly Z80ProcessorArchitecture arch = new Z80ProcessorArchitecture(CreateServiceContainer(), "z80", new Dictionary<string, object>());
         private readonly Address baseAddr = Address.Ptr16(0x0100);
 
         public override IProcessorArchitecture Architecture => arch;
@@ -37,8 +38,8 @@ namespace Reko.UnitTests.Arch.Z80
 
         protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            var state = (Z80ProcessorState)arch.CreateProcessorState();
-            return new Z80Rewriter(arch, new LeImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
+            var state = arch.CreateProcessorState();
+            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
         }
 
         [SetUp]
@@ -52,7 +53,7 @@ namespace Reko.UnitTests.Arch.Z80
             Given_Bytes(0x21, 0x34, 0x12);
             AssertCode(
                 "0|L--|0100(3): 1 instructions",
-                "1|L--|hl = 0x1234");
+                "1|L--|hl = 0x1234<16>");
         }
 
         [Test]
@@ -70,7 +71,7 @@ namespace Reko.UnitTests.Arch.Z80
             Given_Bytes(0xDD, 0x7E, 0x3);
             AssertCode(
                 "0|L--|0100(3): 1 instructions",
-                "1|L--|a = Mem0[ix + 0x0003:byte]");
+                "1|L--|a = Mem0[ix + 3<i16>:byte]");
         }
 
         [Test]
@@ -97,7 +98,7 @@ namespace Reko.UnitTests.Arch.Z80
             Given_Bytes(0xDD, 0x71, 0x80);
             AssertCode(
                 "0|L--|0100(3): 1 instructions",
-                "1|L--|Mem0[ix - 0x0080:byte] = c");
+                "1|L--|Mem0[ix - 128<i16>:byte] = c");
         }
 
         [Test]
@@ -106,7 +107,7 @@ namespace Reko.UnitTests.Arch.Z80
             Given_Bytes(0xE5);
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|sp = sp - 0x0002",
+                "1|L--|sp = sp - 2<16>",
                 "2|L--|Mem0[sp:word16] = hl");
         }
 
@@ -126,8 +127,8 @@ namespace Reko.UnitTests.Arch.Z80
             Given_Bytes(0x10, 0xFE);
             AssertCode(
                 "0|T--|0100(2): 2 instructions",
-                "1|L--|b = b - 0x01",
-                "2|T--|if (b != 0x00) branch 0100");
+                "1|L--|b = b - 1<8>",
+                "2|T--|if (b != 0<8>) branch 0100");
         }
 
         [Test]
@@ -146,10 +147,10 @@ namespace Reko.UnitTests.Arch.Z80
             AssertCode(
                 "0|L--|0100(2): 6 instructions",
                 "1|L--|Mem0[de:byte] = Mem0[hl:byte]",
-                "2|L--|hl = hl + 1",
-                "3|L--|de = de + 1",
-                "4|L--|bc = bc - 0x0001",
-                "5|T--|if (bc != 0x0000) branch 0100",
+                "2|L--|hl = hl + 1<i16>",
+                "3|L--|de = de + 1<i16>",
+                "4|L--|bc = bc - 1<16>",
+                "5|T--|if (bc != 0<16>) branch 0100",
                 "6|L--|P = false");
         }
 
@@ -179,7 +180,7 @@ namespace Reko.UnitTests.Arch.Z80
             Given_Bytes(0xDD, 0xBE, 0x08);
             AssertCode(
                 "0|L--|0100(3): 1 instructions",
-                "1|L--|SZPC = cond(a - Mem0[ix + 0x0008:byte])");
+                "1|L--|SZPC = cond(a - Mem0[ix + 8<i16>:byte])");
         }
 
         [Test]
@@ -245,7 +246,7 @@ namespace Reko.UnitTests.Arch.Z80
             Given_Bytes(0xCB, 0x27);
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|a = a << 0x01",
+                "1|L--|a = a << 1<8>",
                 "2|L--|SZPC = cond(a)");
         }
 
@@ -256,10 +257,10 @@ namespace Reko.UnitTests.Arch.Z80
             AssertCode(
                 "0|L--|0100(2): 5 instructions",
                 "1|L--|Mem0[hl:byte] = __in(c)",
-                "2|L--|hl = hl + 1",
-                "3|L--|b = b - 0x01",
+                "2|L--|hl = hl + 1<i16>",
+                "3|L--|b = b - 1<8>",
                 "4|L--|Z = cond(b)",
-                "5|T--|if (b != 0x00) branch 0100");
+                "5|T--|if (b != 0<8>) branch 0100");
         }
 
         [Test]
@@ -269,9 +270,9 @@ namespace Reko.UnitTests.Arch.Z80
             AssertCode(
                 "0|L--|0100(2): 5 instructions",
                 "1|L--|Z = cond(a - Mem0[hl:byte])",
-                "2|L--|hl = hl - 1",
-                "3|L--|bc = bc - 1",
-                "4|T--|if (bc == 0x0000) branch 0102",
+                "2|L--|hl = hl - 1<i16>",
+                "3|L--|bc = bc - 1<16>", 
+                "4|T--|if (bc == 0<16>) branch 0102",
                 "5|T--|if (Test(NE,Z)) branch 0100");
         }
 
@@ -281,7 +282,7 @@ namespace Reko.UnitTests.Arch.Z80
             Given_Bytes(0x17);
             AssertCode(
                 "0|L--|0100(1): 2 instructions",
-                "1|L--|a = __rcl(a, 0x01, C)",
+                "1|L--|a = __rcl(a, 1<8>, C)",
                 "2|L--|C = cond(a)");
         }
     }

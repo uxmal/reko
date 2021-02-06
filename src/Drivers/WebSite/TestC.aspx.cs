@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -147,9 +147,13 @@ namespace Reko.WebSite
 				{
                     var sc = new ServiceContainer();
                     var ldr = new Loader(sc);
-                    var cfg = RekoConfigurationService.Load();
-                    var asm = cfg.GetAssembler("x86-masm");
+                    var cfg = RekoConfigurationService.Load(sc);
+                    var arch = cfg.GetArchitecture("x86-protected-32");
+                    var env = cfg.GetEnvironment("win32");
+                    var platform = env.Load(sc, arch);
+                    var asm = arch.CreateAssembler(null);
                     var program = asm.AssembleFragment(Address.Ptr32(0x10000000), txtAssembler.Text + Environment.NewLine);
+                    program.Platform = platform;
 					var decomp = new Decompiler(ldr, sc);
 					var project = new Project
                     {

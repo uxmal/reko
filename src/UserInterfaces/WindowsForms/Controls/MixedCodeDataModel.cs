@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,20 +38,22 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         const int BytesPerLine = 16;
 
         private Program program;
+        private ImageMap imageMap;
         private ModelPosition curPos;
         private ModelPosition endPos;
         private Dictionary<ImageMapBlock, MachineInstruction[]> instructions;
         private IDictionary<Address, string[]> comments;
 
-        public MixedCodeDataModel(Program program)
+        public MixedCodeDataModel(Program program, ImageMap imageMap)
         {
             this.program = program;
+            this.imageMap = imageMap;
             var firstSeg = program.SegmentMap.Segments.Values.FirstOrDefault();
             if (firstSeg == null)
             {
-                this.curPos = Pos(program.ImageMap.BaseAddress);
-                this.StartPosition = Pos(program.ImageMap.BaseAddress);
-                this.endPos = Pos(program.ImageMap.BaseAddress);
+                this.curPos = Pos(imageMap.BaseAddress);
+                this.StartPosition = Pos(imageMap.BaseAddress);
+                this.endPos = Pos(imageMap.BaseAddress);
                 this.LineCount = 0;
             }
             else
@@ -91,7 +93,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private int CountLines()
         {
             int sum = 0;
-            foreach (var item in program.ImageMap.Items.Values)
+            foreach (var item in imageMap.Items.Values)
             {
                 sum += CountBlockLines(item);
             }
@@ -141,6 +143,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private int CountDisassembledLines(ImageMapBlock bi)
         {
             return instructions[bi].Length;
+            //if (!instructions.TryGetValue(bi, out var instrs))
+            //    return 0;
+            //return instrs.Length;
         }
 
         private static ulong Align(ulong ul, uint alignment)
@@ -162,7 +167,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private void CollectInstructions()
         {
             this.instructions = new Dictionary<ImageMapBlock, MachineInstruction[]>();
-            foreach (var bi in program.ImageMap.Items.Values.OfType<ImageMapBlock>()
+            foreach (var bi in imageMap.Items.Values.OfType<ImageMapBlock>()
                 .ToList())
             {
                 var instrs = new List<MachineInstruction>();
@@ -194,7 +199,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public Tuple<int, int> GetPositionAsFraction()
         {
             long numer = 0;
-            foreach (var item in program.ImageMap.Items.Values)
+            foreach (var item in imageMap.Items.Values)
             {
                 if (item.Address <= curPos.Address)
                 {
@@ -249,9 +254,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             if (offset > 0)
             {
 
-                if (!program.ImageMap.TryFindItem(curPos.Address, out var item))
+                if (!imageMap.TryFindItem(curPos.Address, out var item))
                     return moved;
-                int iItem = program.ImageMap.Items.IndexOfKey(item.Address);
+                int iItem = imageMap.Items.IndexOfKey(item.Address);
                 for (;;)
                 {
                     Debug.Assert(item != null);
@@ -311,7 +316,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     // Since we fall off the current map item,
                     // move to next image map item.
                     ++iItem;
-                    if (iItem >= program.ImageMap.Items.Count)
+                    if (iItem >= imageMap.Items.Count)
                     {
                         // At the end of image, no need for SanitizeAddress
                         curPos = (ModelPosition)this.EndPosition;
@@ -320,7 +325,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     else
                     {
                         // At the start of an item, no need for SanitizeAddress
-                        item = program.ImageMap.Items.Values[iItem];
+                        item = imageMap.Items.Values[iItem];
                         curPos = Pos(item.Address);
                     }
                 }
@@ -336,7 +341,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// <returns></returns>
         private ModelPosition SanitizePosition(ModelPosition position)
         {
-            if (program.ImageMap.TryFindItem(position.Address, out var item))
+            if (imageMap.TryFindItem(position.Address, out var item))
             {
                 if (item.IsInRange(position.Address))
                 {
@@ -345,18 +350,18 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 }
                 // If we're positioned at the end of the item
                 // advance to the start of the next item if possible.
-                int iItem = program.ImageMap.Items.Keys.IndexOf(item.Address) + 1;
-                if (iItem >= program.ImageMap.Items.Count)
+                int iItem = imageMap.Items.Keys.IndexOf(item.Address) + 1;
+                if (iItem >= imageMap.Items.Count)
                 {
                     return this.endPos;
                 }
-                return Pos(program.ImageMap.Items.Keys[iItem]);
+                return Pos(imageMap.Items.Keys[iItem]);
             }
             // We're outside the range of all items, so peg the position
             // at either the beginning or the end.
-            if (position.Address < program.ImageMap.BaseAddress)
+            if (position.Address < imageMap.BaseAddress)
             {
-                return Pos(program.ImageMap.BaseAddress);
+                return Pos(imageMap.BaseAddress);
             }
             return endPos;
         }
@@ -412,7 +417,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
             var targetLine = (int)(((long)numer * LineCount) / denom);
             int curLine = 0;
-            foreach (var item in program.ImageMap.Items.Values)
+            foreach (var item in imageMap.Items.Values)
             {
                 int size;
                 if (item is ImageMapBlock bi)
@@ -517,7 +522,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             Procedure curProc = null;
             DataItemNode curNode = null;
 
-            foreach (var item in program.ImageMap.Items.Values)
+            foreach (var item in imageMap.Items.Values)
             {
                 int numLines;
                 var startAddr = item.Address;

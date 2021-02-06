@@ -1,0 +1,205 @@
+word32 __fixunsdfsi(word32 r4, word32 r5)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00409170
+// MayUse:  r4:[0..31] r5:[0..31]
+// LiveOut: r4
+// Trashed: r25 r4 r5 r6 r7 r8 r9
+// Preserved: sp
+__fixunsdfsi_entry:
+l00410110:
+	word32 r6_5 = __ext(r5, 4<32>, 0xB<32>)
+	word32 r9_9 = __ext(r5, 0<32>, 0x14<32>)
+	branch r6_5 <= 0x3FE<32> l0041016E
+l00410128:
+	branch r5 >>u 0x1F<32> != 0<32> l00410166
+l00410166:
+	branch r6_5 > 0x41D<32> l00410154
+l0041016E:
+	return 0<32>
+l0041012A:
+	branch r6_5 > 0x41E<32> l00410154
+l00410154:
+	return (r5 >>u 0x1F<32>) + 0xFFFFFFFF<32>
+l00410132:
+	word32 r5_18 = 0x433<32> - r6_5
+	branch r5_18 >= 0x20<32> l0041015A
+l0041015A:
+	return (r9_9 | 0x1000000<32>) >>u 0x413<32> - r6_5
+l00410144:
+	return (r9_9 | 0x1000000<32>) << r6_5 + 0xFFFFFBED<32> | r4 >>u r5_18
+__fixunsdfsi_exit:
+
+
+word32 __floatsidf(word32 r4)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00409170
+//      __floatscan
+// MayUse:  r4:[0..31]
+// LiveOut: r4
+// Trashed: r25 r4 r6 r7 r8 r9
+// Preserved: sp
+__floatsidf_entry:
+l00410170:
+	word32 r4_21
+	word32 r8_10
+	word32 r6_16
+	word32 r7_20
+	branch r4 == 0<32> l004101C4
+l004101C4:
+	r7_20 = 0<32>
+	r4_21 = 0<32>
+	r6_16 = 0<32>
+	r8_10 = 0<32>
+l00410172:
+	word32 r4_13 = (r4 ^ r4 >> 0x1F<32>) - (r4 >> 0x1F<32>)
+	word32 r9_15 = __clz(r4_13)
+	r6_16 = 0x41E<32> - r9_15
+	r8_10 = r4 >>u 0x1F<32>
+	word32 r5_17 = 0x433<32> - r6_16
+	branch r5_17 >= 0x20<32> l004101B6
+l004101B6:
+	r7_20 = r4_13 << 0x413<32> - r6_16
+	r4_21 = 0<32>
+l00410194:
+	r7_20 = r4_13 >>u 0xB<32> - r9_15
+	r4_21 = r4_13 << r5_17
+l004101A2:
+	__ins(__ins(__ins(0<32>, r7_20, 0<32>, 1<32>), r6_16, 4<32>, 1<32>), r8_10, 0xF<32>, 1<32>)
+	return r4_21
+__floatsidf_exit:
+
+
+word32 __floatunsidf(word32 r4, ptr32 & r5Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00409170
+//      __floatscan
+// MayUse:  r4:[0..31]
+// LiveOut: r4 r5
+// Trashed: r25 r4 r5 r6 r7 r8
+// Preserved: sp
+__floatunsidf_entry:
+l004101D0:
+	word32 r4_16
+	word32 r6_10
+	word32 r7_15
+	branch r4 == 0<32> l00410218
+l00410218:
+	r7_15 = 0<32>
+	r4_16 = 0<32>
+	r6_10 = 0<32>
+l004101D2:
+	word32 r8_8 = __clz(r4)
+	r6_10 = 0x41E<32> - r8_8
+	word32 r5_12 = 0x433<32> - r6_10
+	branch r5_12 >= 0x20<32> l0041020A
+l0041020A:
+	r7_15 = r4 << 0x413<32> - r6_10
+	r4_16 = 0<32>
+l004101E8:
+	r7_15 = r4 >>u 0xB<32> - r8_8
+	r4_16 = r4 << r5_12
+l004101F6:
+	r5Out = __ext(__ins(__ins(0<32>, r7_15, 0<32>, 1<32>), r6_10, 4<32>, 1<32>), 0<32>, 0x1F<32>)
+	return r4_16
+__floatunsidf_exit:
+
+
+word32 __truncdfsf2(word32 r4, word32 r5, ptr32 & r9Out, ptr32 & r10Out)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      strtof_l
+//      __isoc99_vfscanf
+// MayUse:  r4:[0..31] r5:[0..31]
+// LiveOut: r10 r8 r9
+// Trashed: r10 r25 r4 r5 r6 r7 r8 r9
+// Preserved: r11 sp
+__truncdfsf2_entry:
+l00410220:
+	word32 r8_16
+	word32 r7_15
+	word32 r9_5 = __ext(r5, 0<32>, 0x14<32>)
+	word32 r10_42 = __ext(r5, 4<32>, 0xB<32>)
+	word32 r9_10 = r4 >>u 0x1D<32> | r9_5 << 3<32>
+	branch (r10_42 + 1<32> & 0x7FF<32>) < 2<32> l004102D4
+l004102D4:
+	r7_15 = r9_10 | r4 << 3<32>
+	branch r10_42 != 0<32> l004102E2
+l004102E2:
+	r8_16 = 0xFF<32>
+	branch r7_15 == 0<32> l004102FC
+l004102E8:
+	r9_10 = r9_10 << 3<32>
+	r7_15 = r9_10 << 3<32> | 0x20000000<32>
+l004102DC:
+	r7_15 = CONVERT(r7_15 >u 0<32>, bool, word32)
+l00410246:
+	r8_16 = r10_42 + 0xFFFFFC80<32>
+	branch r10_42 > 0xFFFFFB82<32> l004102F6
+l004102F6:
+	r7_15 = 0<32>
+	r8_16 = 0xFF<32>
+l00410252:
+	branch r10_42 > 0xFFFFFC80<32> l004102B6
+l004102B6:
+	r7_15 = r9_10 << 3<32> | ((r4 << 3<32>) >>u 0x1D<32> | CONVERT(r4 << 6<32> >u 0<32>, bool, word32))
+l00410256:
+	branch r10_42 < 0xFFFFFC97<32> l00410332
+l00410332:
+	r7_15 = 1<32>
+	r8_16 = 0<32>
+l0041025E:
+	word32 r4_36 = 0x1E<32> - (r10_42 + 0xFFFFFC80<32>)
+	r9_10 = r9_10 | 0x8000000<32>
+	branch r4_36 >= 0x20<32> l0041028E
+l0041028E:
+	word32 r11_39 = 0<32>
+	word32 r8_41 = (r9_10 | 0x8000000<32>) >>u 0xFFFFFFFE<32> - (r10_42 + 0xFFFFFC80<32>)
+	branch r4_36 == 0x20<32> l004102A8
+l004102A0:
+	r10_42 = r10_42 + 0xFFFFFCA2<32>
+	r11_39 = (r9_10 | 0x8000000<32>) << r10_42 + 0xFFFFFCA2<32>
+l004102A8:
+	r7_15 = r8_41 | CONVERT((r11_39 | r4 << 3<32>) >u 0<32>, bool, word32)
+l00410270:
+	r9_10 = (r9_10 | 0x8000000<32>) << r10_42 + 0xFFFFFC82<32>
+	r10_42 = r10_42 + 0xFFFFFC82<32>
+	r7_15 = CONVERT(r4 << 3<32> << r10_42 + 0xFFFFFC82<32> >u 0<32>, bool, word32) | r9_10 | (r4 << 3<32>) >>u r4_36
+l0041028A:
+	r8_16 = 0<32>
+l004102C8:
+	branch (r7_15 & 7<32>) == 0<32> l004102FC
+l004102CC:
+	branch (r7_15 & 0xF<32>) != 4<32> l00410336
+l00410336:
+	r7_15 = r7_15 + 4<32>
+l004102D2:
+l004102FC:
+	branch __bit(r7_15, 0x1A<32>) l00410310
+l00410300:
+	r8_16 = r8_16 + 1<32>
+	r7_15 = __ins(r7_15, 0<32>, 0xA<32>, 1<32>)
+	branch r8_16 != 0xFF<32> l00410310
+l0041030E:
+	r7_15 = 0<32>
+l00410310:
+	word32 r7_74 = r7_15 >>u 3<32>
+	branch r8_16 != 0xFF<32> l00410322
+l0041031A:
+	branch r7_74 == 0<32> l00410322
+l0041031C:
+	r7_74 = r7_74 | 0x4000000<32>
+l00410322:
+	__ins(__ins(__ins(0<32>, r7_74, 0<32>, 1<32>), r8_16, 7<32>, 1<32>), r5 >>u 0x1F<32>, 0xF<32>, 1<32>)
+	r9Out = r9_10
+	r10Out = r10_42
+	return r8_16
+__truncdfsf2_exit:
+
+

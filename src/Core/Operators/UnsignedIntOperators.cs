@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,8 +34,8 @@ namespace Reko.Core.Operators
 		{
             if (!ValidArgs(c1, c2))
                 return Constant.Invalid;
-            uint v1 = c1.ToUInt32();
-			uint v2 = c2.ToUInt32();
+            ulong v1 = c1.ToUInt64();
+			ulong v2 = c2.ToUInt64();
 			return Constant.Bool(v1 < v2);
 		}
 
@@ -50,8 +50,8 @@ namespace Reko.Core.Operators
 		{
             if (!ValidArgs(c1, c2))
                 return Constant.Invalid;
-            uint v1 = c1.ToUInt32();
-			uint v2 = c2.ToUInt32();
+            ulong v1 = c1.ToUInt64();
+			ulong v2 = c2.ToUInt64();
             return Constant.Bool(v1 <= v2);
 		}
 
@@ -67,8 +67,8 @@ namespace Reko.Core.Operators
             if (!ValidArgs(c1, c2))
                 return Constant.Invalid;
 
-            uint v1 = (uint) c1.ToInt32();
-			uint v2 = (uint) c2.ToInt32();
+            ulong v1 = c1.ToUInt64();
+			ulong v2 = c2.ToUInt64();
             return Constant.Bool(v1 <= v2);
 		}
 
@@ -84,8 +84,8 @@ namespace Reko.Core.Operators
             if (!ValidArgs(c1, c2))
                 return Constant.Invalid;
 
-            uint v1 = (uint) c1.ToUInt32();
-			uint v2 = (uint) c2.ToUInt32();
+            ulong v1 = c1.ToUInt64();
+			ulong v2 = c2.ToUInt64();
 			return Constant.Bool(v1 >= v2);
 		}
 

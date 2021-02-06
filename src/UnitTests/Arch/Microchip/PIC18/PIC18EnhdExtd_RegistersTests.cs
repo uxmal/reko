@@ -1,8 +1,8 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 2017-2020 Christian Hostelet.
+ * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work of:
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,8 @@ using Reko.Arch.MicrochipPIC.PIC18;
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
 {
     using Common;
+    using System.Collections.Generic;
+    using System.ComponentModel.Design;
     using static Common.Sample;
 
     [TestFixture]
@@ -36,7 +38,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
 
         private PICArchitecture GetArch(string picName, PICExecMode mode = PICExecMode.Traditional)
         {
-            var arch = new PICArchitecture("pic") { Options = new PICArchitectureOptions(picName, mode) };
+            var arch = new PICArchitecture(new ServiceContainer(), "pic", new Dictionary<string, object>()) { Options = new PICArchitectureOptions(picName, mode) };
             Assert.NotNull(arch);
             arch.CreatePICProcessorModel();
             return arch;

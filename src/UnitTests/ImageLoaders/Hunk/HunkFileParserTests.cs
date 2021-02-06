@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
         public void Hfp_ReadString_ZeroLength()
         {
             var bytes = hm.MakeImageReader(0);
-            var parser = new HunkFileParser( bytes);
+            var parser = new HunkFileParser(bytes);
             Assert.AreEqual("", parser.ReadString());
         }
 

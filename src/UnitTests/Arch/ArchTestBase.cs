@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ using System.Text;
 using System.Diagnostics;
 using Reko.Core.Serialization;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch
 {
@@ -49,7 +50,7 @@ namespace Reko.UnitTests.Arch
         {
             private readonly IProcessorArchitecture arch;
             private readonly Dictionary<Address, ImportReference> importThunks;
-            private readonly Dictionary<string, PseudoProcedure> ppp;
+            private readonly Dictionary<string, IntrinsicProcedure> intrinsics;
 
             public RewriterHost(IProcessorArchitecture arch) : this(arch, new Dictionary<Address, ImportReference>())
             {
@@ -59,24 +60,24 @@ namespace Reko.UnitTests.Arch
             {
                 this.arch = arch;
                 this.importThunks = imports;
-                this.ppp = new Dictionary<string, PseudoProcedure>();
+                this.intrinsics = new Dictionary<string, IntrinsicProcedure>();
             }
 
-            public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
+            public IntrinsicProcedure EnsureIntrinsic(string name, bool isIdempotent, DataType returnType, int arity)
             {
-                if (ppp.TryGetValue(name, out var p))
+                if (intrinsics.TryGetValue(name, out var p))
                     return p;
-                p = new PseudoProcedure(name, returnType, arity);
-                ppp.Add(name, p);
+                p = new IntrinsicProcedure(name, isIdempotent, returnType, arity);
+                intrinsics.Add(name, p);
                 return p;
             }
 
-            public Expression CallIntrinsic(string name, FunctionType fnType, params Expression[] args)
+            public Expression CallIntrinsic(string name, bool isIdempotent, FunctionType fnType, params Expression[] args)
             {
-                if (!ppp.TryGetValue(name, out var intrinsic))
+                if (!intrinsics.TryGetValue(name, out var intrinsic))
                 {
-                    intrinsic = new PseudoProcedure(name, fnType);
-                    ppp.Add(name, intrinsic);
+                    intrinsic = new IntrinsicProcedure(name, isIdempotent, fnType);
+                    intrinsics.Add(name, intrinsic);
                 }
                 return new Application(
                     new ProcedureConstant(PrimitiveType.Ptr32, intrinsic),
@@ -84,21 +85,21 @@ namespace Reko.UnitTests.Arch
                     args);
             }
 
-            public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
+            public Expression Intrinsic(string name, bool isIdempotent, DataType returnType, params Expression[] args)
             {
-                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
+                var intrinsic = EnsureIntrinsic(name, isIdempotent, returnType, args.Length);
                 return new Application(
-                    new ProcedureConstant(PrimitiveType.Ptr32, ppp),
+                    new ProcedureConstant(PrimitiveType.Ptr32, intrinsic),
                     returnType,
                     args);
             }
 
-            public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+            public Expression Intrinsic(string name, bool isIdempotent, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
             {
-                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
-                ppp.Characteristics = c;
+                var intrinsic = EnsureIntrinsic(name, isIdempotent, returnType, args.Length);
+                intrinsic.Characteristics = c;
                 return new Application(
-                    new ProcedureConstant(PrimitiveType.Ptr32, ppp),
+                    new ProcedureConstant(PrimitiveType.Ptr32, intrinsic),
                     returnType,
                     args);
             }
@@ -121,6 +122,11 @@ namespace Reko.UnitTests.Arch
             }
 
             public ExternalProcedure GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value)
             {
                 throw new NotImplementedException();
             }
@@ -175,21 +181,20 @@ namespace Reko.UnitTests.Arch
         {
             var w = new BeImageWriter();
             int h = 0;
+            int nDigits = 0;
             for (int i = 0; i < octalBytes.Length; ++i)
             {
                 var digit = octalBytes[i] - '0';
                 if (0 <= digit && digit <= 9)
                 {
+                    ++nDigits;
                     h = h * 8 + digit;
-                    if ((i + 1) % 6 == 0)
+                    if (nDigits == 6)
                     {
                         w.WriteBeUInt16((ushort) h);
                         h = 0;
+                        nDigits = 0;
                     }
-                }
-                else
-                {
-                    break;
                 }
             }
             var aOut = new byte[w.Position];

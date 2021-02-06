@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private void RewriteDi()
         {
-            m.SideEffect(host.PseudoProcedure("__disable_interrupts", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__disable_interrupts", false, VoidType.Instance));
         }
 
         private void RewriteDjnz()
@@ -72,7 +72,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private void RewriteEi()
         {
-            m.SideEffect(host.PseudoProcedure("__enable_interrupts", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__enable_interrupts", false, VoidType.Instance));
         }
 
         private void RewriteHalt()
@@ -82,7 +82,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 Terminates = true,
             };
             m.SideEffect(
-                host.PseudoProcedure("__halt", c, VoidType.Instance),
+                host.Intrinsic("__halt", false, c, VoidType.Instance),
                 InstrClass.Terminates);
         }
 

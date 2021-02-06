@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -138,23 +138,23 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             objectSections.Add(os);
         }
 
-        protected void BuildObjectFile32()
+        protected void BuildObjectFile32(bool big_endian)
         {
             // Add symbol table
             if (symbols.Count > 0)
             {
-                Given_Section(".symtab", SectionHeaderType.SHT_SYMTAB, ElfLoader.SHF_ALLOC, FlattenSymbolTable());
+                Given_Section(".symtab", SectionHeaderType.SHT_SYMTAB, ElfLoader.SHF_ALLOC, FlattenSymbolTable(big_endian));
                 var os = objectSections[objectSections.Count - 1];
                 os.ElementSize = Elf32_Sym.Size;
                 os.Link = (ushort)objectSections.Count;
                 Given_Section(".strtab", SectionHeaderType.SHT_STRTAB, ElfLoader.SHF_ALLOC, symbolStringtab.ToArray());
             }
 
-            var bin = new BeImageWriter();
+            ImageWriter bin = big_endian ? new BeImageWriter() : (ImageWriter)new LeImageWriter();
             bin.WriteByte(0x7F);
             bin.WriteBytes(new byte[] { 0x45, 0x4C, 0x46 });
             bin.WriteByte(1);    // 32-bit
-            bin.WriteByte(2);    // big-endian
+            bin.WriteByte(big_endian ? ElfLoader.ELFDATA2MSB : ElfLoader.ELFDATA2LSB);
             bin.WriteByte(1);    // ELF version
             bin.WriteByte(0);    // OS ABI
             bin.WriteByte(0);    // OS version
@@ -162,20 +162,20 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
             // ELF header
 
-            bin.WriteBeUInt16(1);   // relocatable
-            bin.WriteBeUInt16((ushort)ElfMachine.EM_SPARC);
-            bin.WriteBeUInt32(1);   // version
-            bin.WriteBeUInt32(0);   // entry point (none in reloc file)
-            bin.WriteBeUInt32(0);   // program segment table offset (none in reloc file)
-            bin.WriteBeUInt32((uint)bin.Position + 20); // point to section table.
+            bin.WriteUInt16(1);   // relocatable
+            bin.WriteUInt16((ushort)ElfMachine.EM_SPARC);
+            bin.WriteUInt32(1);   // version
+            bin.WriteUInt32(0);   // entry point (none in reloc file)
+            bin.WriteUInt32(0);   // program segment table offset (none in reloc file)
+            bin.WriteUInt32((uint)bin.Position + 20); // point to section table.
 
-            bin.WriteBeUInt32(0);   // e_flags;
-            bin.WriteBeUInt16(0);   // e_ehsize;
-            bin.WriteBeUInt16((ushort)Elf32_PHdr.Size);   // e_phentsize;
-            bin.WriteBeUInt16((ushort)progHeaders.Count);   // e_phnum;
-            bin.WriteBeUInt16(0);   // e_shentsize;
-            bin.WriteBeUInt16((ushort)objectSections.Count);   // e_shnum;
-            bin.WriteBeUInt16(1);   // e_shstrndx;
+            bin.WriteUInt32(0);   // e_flags;
+            bin.WriteUInt16(0);   // e_ehsize;
+            bin.WriteUInt16((ushort)Elf32_PHdr.Size);   // e_phentsize;
+            bin.WriteUInt16((ushort)progHeaders.Count);   // e_phnum;
+            bin.WriteUInt16(0);   // e_shentsize;
+            bin.WriteUInt16((ushort)objectSections.Count);   // e_shnum;
+            bin.WriteUInt16(1);   // e_shstrndx;
 
             // Build string table.
 
@@ -210,31 +210,31 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             // Write the program header table
             foreach (var ph in this.progHeaders)
             {
-                bin.WriteBeUInt32((uint)ph.Type);
-                bin.WriteBeUInt32(ph.Offset);
-                bin.WriteBeUInt32(ph.VirtualAddress);
-                bin.WriteBeUInt32(0);
-                bin.WriteBeUInt32((uint)ph.Content.Length);
-                bin.WriteBeUInt32(ph.AllocateSize);
-                bin.WriteBeUInt32(ph.Flags);
-                bin.WriteBeUInt32(ph.Alignment);
+                bin.WriteUInt32((uint)ph.Type);
+                bin.WriteUInt32(ph.Offset);
+                bin.WriteUInt32(ph.VirtualAddress);
+                bin.WriteUInt32(0);
+                bin.WriteUInt32((uint)ph.Content.Length);
+                bin.WriteUInt32(ph.AllocateSize);
+                bin.WriteUInt32(ph.Flags);
+                bin.WriteUInt32(ph.Alignment);
             }
 
             // Write the section table.
             foreach (var os in this.objectSections)
             {
-                bin.WriteBeUInt32((uint)mpOsToiName[os]);
-                bin.WriteBeUInt32((uint)os.Type);
-                bin.WriteBeUInt32(os.Flags);
-                bin.WriteBeUInt32(0);
+                bin.WriteUInt32((uint)mpOsToiName[os]);
+                bin.WriteUInt32((uint)os.Type);
+                bin.WriteUInt32(os.Flags);
+                bin.WriteUInt32(0);
 
-                bin.WriteBeUInt32(os.Offset);
-                bin.WriteBeUInt32(os.Content != null ? (uint)os.Content.Length : 0u);
-                bin.WriteBeUInt32(os.Link);
-                bin.WriteBeUInt32(0);
+                bin.WriteUInt32(os.Offset);
+                bin.WriteUInt32(os.Content != null ? (uint)os.Content.Length : 0u);
+                bin.WriteUInt32(os.Link);
+                bin.WriteUInt32(0);
 
-                bin.WriteBeUInt32(0);
-                bin.WriteBeUInt32(os.ElementSize);
+                bin.WriteUInt32(0);
+                bin.WriteUInt32(os.ElementSize);
             }
 
             // write the non-null sections.
@@ -246,17 +246,17 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             this.rawBytes = bin.ToArray();
         }
 
-        private byte[] FlattenSymbolTable()
+        private byte[] FlattenSymbolTable(bool big_endian)
         {
-            var syms = new BeImageWriter();
+            var syms = big_endian ? new BeImageWriter() : (ImageWriter) new LeImageWriter();
             foreach (var sym in symbols)
             {
-                syms.WriteBeUInt32(sym.st_name);
-                syms.WriteBeUInt32(sym.st_value);
-                syms.WriteBeUInt32(sym.st_size);
+                syms.WriteUInt32(sym.st_name);
+                syms.WriteUInt32(sym.st_value);
+                syms.WriteUInt32(sym.st_size);
                 syms.WriteByte(sym.st_info);
                 syms.WriteByte(sym.st_other);
-                syms.WriteBeUInt16(sym.st_shndx);
+                syms.WriteUInt16(sym.st_shndx);
             }
             return syms.ToArray();
         }

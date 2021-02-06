@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,10 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
@@ -40,7 +42,7 @@ namespace Reko.Arch.Alpha
         private readonly IRewriterHost host;
         private readonly IEnumerator<AlphaInstruction> dasm;
         private AlphaInstruction instr;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private RtlEmitter m;
 
         public AlphaRewriter(AlphaArchitecture arch, EndianImageReader rdr, IStorageBinder binder, IRewriterHost host)
@@ -59,7 +61,7 @@ namespace Reko.Arch.Alpha
                 this.instr = dasm.Current;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
-                this.rtlc = instr.InstructionClass;
+                this.iclass = instr.InstructionClass;
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -101,7 +103,7 @@ namespace Reko.Arch.Alpha
                 case Mnemonic.cmovge: RewriteCmov(m.Ge0); break;
                 case Mnemonic.cmovlbc: RewriteCmov(lbc); break;
                 case Mnemonic.cmovlbs: RewriteCmov(lbs); break;
-                case Mnemonic.cmpbge: RewriteInstrinsic("__cmpbge"); break;
+                case Mnemonic.cmpbge: RewriteInstrinsic("__cmpbge", true); break;
                 case Mnemonic.cmpeq: RewriteCmp(m.Eq); break;
                 case Mnemonic.cmple: RewriteCmp(m.Le); break;
                 case Mnemonic.cmplt: RewriteCmp(m.Lt); break;
@@ -121,13 +123,13 @@ namespace Reko.Arch.Alpha
                 case Mnemonic.cvtts: RewriteCvt(PrimitiveType.Real64, PrimitiveType.Real32); break;
                 case Mnemonic.divs: RewriteFpuOp(m.FDiv); break;
                 case Mnemonic.divt: RewriteFpuOp(m.FDiv); break;
-                case Mnemonic.extbl: RewriteInstrinsic("__extbl"); break;
-                case Mnemonic.extlh: RewriteInstrinsic("__extlh"); break;
-                case Mnemonic.extll: RewriteInstrinsic("__extll"); break;
-                case Mnemonic.extqh: RewriteInstrinsic("__extqh"); break;
-                case Mnemonic.extql: RewriteInstrinsic("__extql"); break;
-                case Mnemonic.extwh: RewriteInstrinsic("__extwh"); break;
-                case Mnemonic.extwl: RewriteInstrinsic("__extwl"); break;
+                case Mnemonic.extbl: RewriteInstrinsic("__extbl", false); break;
+                case Mnemonic.extlh: RewriteInstrinsic("__extlh", false); break;
+                case Mnemonic.extll: RewriteInstrinsic("__extll", false); break;
+                case Mnemonic.extqh: RewriteInstrinsic("__extqh", false); break;
+                case Mnemonic.extql: RewriteInstrinsic("__extql", false); break;
+                case Mnemonic.extwh: RewriteInstrinsic("__extwh", false); break;
+                case Mnemonic.extwl: RewriteInstrinsic("__extwl", false); break;
                 case Mnemonic.fbeq: RewriteFBranch(Operator.Feq); break;
                 case Mnemonic.fbge: RewriteFBranch(Operator.Fge); break;
                 case Mnemonic.fbgt: RewriteFBranch(Operator.Fgt); break;
@@ -139,13 +141,13 @@ namespace Reko.Arch.Alpha
                 case Mnemonic.fcmovlt: RewriteFCmov(Operator.Flt); break;
                 case Mnemonic.fcmovne: RewriteFCmov(Operator.Fne); break;
                 case Mnemonic.halt: RewriteHalt(); break;
-                case Mnemonic.implver: RewriteInstrinsic("__implver"); break;
-                case Mnemonic.insbl: RewriteInstrinsic("__insbl"); break;
-                case Mnemonic.inslh: RewriteInstrinsic("__inslh"); break;
-                case Mnemonic.insll: RewriteInstrinsic("__insll"); break;
-                case Mnemonic.insqh: RewriteInstrinsic("__insqh"); break;
-                case Mnemonic.insql: RewriteInstrinsic("__insql"); break;
-                case Mnemonic.inswl: RewriteInstrinsic("__inswl"); break;
+                case Mnemonic.implver: RewriteInstrinsic("__implver", false); break;
+                case Mnemonic.insbl: RewriteInstrinsic("__insbl", false); break;
+                case Mnemonic.inslh: RewriteInstrinsic("__inslh", false); break;
+                case Mnemonic.insll: RewriteInstrinsic("__insll", false); break;
+                case Mnemonic.insqh: RewriteInstrinsic("__insqh", false); break;
+                case Mnemonic.insql: RewriteInstrinsic("__insql", false); break;
+                case Mnemonic.inswl: RewriteInstrinsic("__inswl", false); break;
                 case Mnemonic.jmp: RewriteJmp(); break;
                 case Mnemonic.jsr: RewriteJmp(); break;
                 case Mnemonic.jsr_coroutine: RewriteJmp(); break;
@@ -155,19 +157,19 @@ namespace Reko.Arch.Alpha
                 case Mnemonic.ldf: RewriteLd(PrimitiveType.Real32, PrimitiveType.Real64); break;
                 case Mnemonic.ldg: RewriteLd(PrimitiveType.Real64, PrimitiveType.Real64); break;
                 case Mnemonic.ldl: RewriteLd(PrimitiveType.Int32, PrimitiveType.Word64); break;
-                case Mnemonic.ldl_l: RewriteLoadInstrinsic("__ldl_l", PrimitiveType.Word32); break;
-                case Mnemonic.ldq_l: RewriteLoadInstrinsic("__ldq_l", PrimitiveType.Word64); break;
+                case Mnemonic.ldl_l: RewriteLoadInstrinsic("__ldl_l", false, PrimitiveType.Word32); break;
+                case Mnemonic.ldq_l: RewriteLoadInstrinsic("__ldq_l", false, PrimitiveType.Word64); break;
                 case Mnemonic.ldq: RewriteLd(PrimitiveType.Word64, PrimitiveType.Word64); break;
                 case Mnemonic.ldq_u: RewriteLd(PrimitiveType.Word64, PrimitiveType.Word64); break;
                 case Mnemonic.lds: RewriteLd(PrimitiveType.Real32, PrimitiveType.Real64); break;
                 case Mnemonic.ldt: RewriteLd(PrimitiveType.Real64, PrimitiveType.Real64); break;
                 case Mnemonic.ldwu: RewriteLd(PrimitiveType.UInt16, PrimitiveType.Word64); break;
-                case Mnemonic.mskbl: RewriteInstrinsic("__mskbl"); break;
-                case Mnemonic.msklh: RewriteInstrinsic("__msklh"); break;
-                case Mnemonic.mskll: RewriteInstrinsic("__mskll"); break;
-                case Mnemonic.mskqh: RewriteInstrinsic("__mskqh"); break;
-                case Mnemonic.mskql: RewriteInstrinsic("__mskql"); break;
-                case Mnemonic.mskwl: RewriteInstrinsic("__mskwl"); break;
+                case Mnemonic.mskbl: RewriteInstrinsic("__mskbl", false); break;
+                case Mnemonic.msklh: RewriteInstrinsic("__msklh", false); break;
+                case Mnemonic.mskll: RewriteInstrinsic("__mskll", false); break;
+                case Mnemonic.mskqh: RewriteInstrinsic("__mskqh", false); break;
+                case Mnemonic.mskql: RewriteInstrinsic("__mskql", false); break;
+                case Mnemonic.mskwl: RewriteInstrinsic("__mskwl", false); break;
                 case Mnemonic.mull: RewriteBin(mull); break;
                 case Mnemonic.mulq: RewriteBin(mulq); break;
                 case Mnemonic.muls: RewriteFpuOp(m.FMul); break;
@@ -184,10 +186,10 @@ namespace Reko.Arch.Alpha
                 case Mnemonic.s8subl: RewriteBin(s8subl); break;
                 case Mnemonic.s8subq: RewriteBin(s8subq); break;
                 case Mnemonic.sll: RewriteBin(sll); break;
-                case Mnemonic.src: RewriteInstrinsic("__src"); break;
+                case Mnemonic.src: RewriteInstrinsic("__src", false); break;
                 case Mnemonic.srl: RewriteBin(srl); break;
                 case Mnemonic.stb: RewriteSt(PrimitiveType.Byte); break;
-                case Mnemonic.stf: RewriteSt(PrimitiveType.Real32); break;
+                case Mnemonic.stf: RewriteSt(PrimitiveType.Real64, PrimitiveType.Real32); break;
                 case Mnemonic.stl: RewriteSt(PrimitiveType.Word32); break;
                 case Mnemonic.stl_c: RewriteStoreInstrinsic("__stl_c", PrimitiveType.Word32); break;
                 case Mnemonic.stq_c: RewriteStoreInstrinsic("__stq_c", PrimitiveType.Word64); break;
@@ -208,47 +210,20 @@ namespace Reko.Arch.Alpha
                 case Mnemonic.trapb: RewriteTrapb(); break;
                 case Mnemonic.umulh: RewriteBin(umulh); break;
                 case Mnemonic.xor: RewriteBin(xor); break;
-                case Mnemonic.zap: RewriteInstrinsic("__zap"); break;
-                case Mnemonic.zapnot: RewriteInstrinsic("__zapnot"); break;
-
+                case Mnemonic.zap: RewriteInstrinsic("__zap", false); break;
+                case Mnemonic.zapnot: RewriteInstrinsic("__zapnot", false); break;
                 }
-                yield return new RtlInstructionCluster(instr.Address, instr.Length, instrs.ToArray())
-                {
-                    Class = rtlc
-                };
+                yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
         }
-
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
 
         /// <summary>
         /// Emits the text of a unit test that can be pasted into the unit tests 
         /// for this rewriter.
         /// </summary>
-        [Conditional("DEBUG")]
         private void EmitUnitTest()
         {
-            if (seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var bytes = r2.ReadBytes(dasm.Current.Length);
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void AlphaRw_" + dasm.Current.Mnemonic + "()");
-            Debug.WriteLine("        {");
-            Debug.Write("            RewriteCode(\"");
-            Debug.Write(string.Join(
-                "",
-                bytes.Select(b => string.Format("{0:X2}", (int)b))));
-            Debug.WriteLine("\");\t// " + dasm.Current.ToString());
-            Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|00100000({0}): 1 instructions\",", dasm.Current.Length);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            arch.Services.GetService<ITestGenerationService>()?.ReportMissingRewriter("AlphaRw", dasm.Current, dasm.Current.Mnemonic.ToString(), rdr, "");
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -259,7 +234,7 @@ namespace Reko.Arch.Alpha
         private void Invalid()
         {
             m.Invalid();
-            rtlc = InstrClass.Invalid;
+            iclass = InstrClass.Invalid;
         }
 
         private Expression Rewrite(MachineOperand op, bool highWord = false)

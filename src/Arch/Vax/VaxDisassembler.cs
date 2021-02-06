@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -31,12 +33,14 @@ namespace Reko.Arch.Vax
 {
     using Decoder = Decoder<VaxDisassembler, Mnemonic, VaxInstruction>;
     using Mutator = Mutator<VaxDisassembler>;
+#pragma warning disable IDE1006
 
     public partial class VaxDisassembler : DisassemblerBase<VaxInstruction, Mnemonic>
     {
-        private VaxArchitecture arch;
-        private EndianImageReader rdr;
-        private List<MachineOperand> ops;
+        private readonly VaxArchitecture arch;
+        private readonly EndianImageReader rdr;
+        private readonly List<MachineOperand> ops;
+        private Address addr;
 
         public VaxDisassembler(VaxArchitecture arch, EndianImageReader imageReader)
         {
@@ -47,7 +51,7 @@ namespace Reko.Arch.Vax
 
         public override VaxInstruction DisassembleInstruction()
         {
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte op))
                 return null;
             VaxInstruction instr;
@@ -86,6 +90,13 @@ namespace Reko.Arch.Vax
                 Mnemonic = Mnemonic.Invalid,
                 Operands = MachineInstruction.NoOperands
             };
+        }
+
+        public override VaxInstruction NotYetImplemented(string message)
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("VaxDis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         private bool TryDecodeOperand(PrimitiveType width, out MachineOperand op)
@@ -278,7 +289,8 @@ namespace Reko.Arch.Vax
         {
             return (u, d) =>
             {
-                long jOffset = d.rdr.ReadLeSigned(width);
+                if (!d.rdr.TryReadLeSigned(width, out long jOffset))
+                    return false;
                 uint uAddr = (uint) ((long) d.rdr.Address.Offset + jOffset);
                 d.ops.Add(AddressOperand.Ptr32(uAddr));
                 return true;

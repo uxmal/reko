@@ -9,11 +9,11 @@ fn0C00_0000_entry:
 	def ds
 	def es
 l0C00_0000:
-	ds_si_6 = SEQ(ds, 0x1234) (alias)
+	ds_si_6 = SEQ(ds, 0x1234<16>) (alias)
 	call fn0C00_000B (retsize: 2;)
 		uses: es:es,Sequence ds:si:ds_si_6
 		defs: ax:ax_8
-	Mem14[ds:0x4321:word16] = ax_8
+	Mem14[ds:0x4321<16>:word16] = ax_8
 	return
 fn0C00_0000_exit:
 // fn0C00_000B /////////////////////
@@ -32,9 +32,9 @@ l0C00_000B:
 	call fn0C00_0026 (retsize: 2;)
 		uses: Sequence ds:si:ds_si
 		defs: ax:ax_10
-	Mem12[ds:ax_10:word16] = 0x0000
-	Mem13[ds:ax_10 + 0x0002:word16] = 0x0000
-	Mem14[ds:ax_10 + 0x0004:word16] = 0x0000
+	Mem12[ds:ax_10:word16] = 0<16>
+	Mem13[ds:ax_10 + 2<16>:word16] = 0<16>
+	Mem14[ds:ax_10 + 4<16>:word16] = 0<16>
 	call fn0C00_0035 (retsize: 2;)
 		uses: di:ax_10,es:es,Sequence ds:si:ds_si
 	ax_23 = si
@@ -52,9 +52,9 @@ fn0C00_0026_entry:
 	def ds_si
 	si = SLICE(ds_si, word16, 0)
 l0C00_0026:
-	Mem9[ds_si:word16] = 0x0001
-	Mem10[ds_si + 0x0002:word16] = 0x0000
-	ax_11 = si + 0x0004
+	Mem9[ds_si:word16] = 1<16>
+	Mem10[ds_si + 2<16>:word16] = 0<16>
+	ax_11 = si + 4<16>
 	return
 fn0C00_0026_exit:
 	use ax_11
@@ -71,10 +71,10 @@ fn0C00_0035_entry:
 	si = SLICE(ds_si, word16, 0)
 	def es
 l0C00_0035:
-	v7_10 = Mem7[ds_si + 0x0002:word16] + 0x0001
-	Mem11[ds_si + 0x0002:word16] = v7_10
-	ax_12 = Mem11[ds_si + 0x0002:word16]
-	di_15 = si + 0x0004 + (ax_12 << 0x0002)
+	v7_10 = Mem7[ds_si + 2<16>:word16] + 1<16>
+	Mem11[ds_si + 2<16>:word16] = v7_10
+	ax_12 = Mem11[ds_si + 2<16>:word16]
+	di_15 = si + 4<16> + (ax_12 << 2<16>)
 	Mem20[es:di_15:word16] = di
 	return
 fn0C00_0035_exit:

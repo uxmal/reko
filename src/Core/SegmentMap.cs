@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Lib;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,23 @@ namespace Reko.Core
     /// </summary>
     public class SegmentMap
     {
-        public event EventHandler MapChanged;
+        public event EventHandler? MapChanged;
+
+        public SegmentMap(params ImageSegment[] segments) : this(MinBaseAddr(segments), segments)
+        {
+        }
+
+        private static Address MinBaseAddr(ImageSegment[] segments)
+        {
+            if (segments.Length == 0)
+                throw new ArgumentException("At least one ImageSegment must be provided.");
+            var addr = segments[0].Address;
+            for (int i = 1; i < segments.Length; ++i)
+            {
+                addr = Address.Min(addr, segments[i].Address);
+            }
+            return addr;
+        }
 
         public SegmentMap(Address addrBase, params ImageSegment[] segments)
         {
@@ -60,7 +77,7 @@ namespace Reko.Core
         /// <param name="segmentName">The name of the segment.</param>
         /// <param name="mode">The access mode of the segment.</param>
         /// <returns>The resulting image segment.</returns>
-        public ImageSegment AddSegment(MemoryArea mem, string segmentName, AccessMode mode)
+        public ImageSegment AddSegment(ByteMemoryArea mem, string segmentName, AccessMode mode)
         {
             var segment = new ImageSegment(
                     segmentName,
@@ -98,7 +115,7 @@ namespace Reko.Core
                 EnsureSegmentSize(segNew);
                 Segments.Add(segNew.Address, segNew);
                 SegmentByLinAddress.Add(segNew.Address.ToLinear(), segNew);
-                MapChanged.Fire(this);
+                MapChanged?.Fire(this);
                 //DumpSections();
                 return segNew;
             }
@@ -117,7 +134,7 @@ namespace Reko.Core
 
                 // And split any items in the segment
 
-                MapChanged.Fire(this);
+                MapChanged?.Fire(this);
                 //DumpSections();
                 return segSplit;
             }
@@ -223,7 +240,7 @@ namespace Reko.Core
             var imageMap = new ImageMap(this.BaseAddress);
             foreach (var segment in Segments.Values)
             {
-                imageMap.AddItem(segment.Address, new ImageMapItem(segment.Size) { DataType = new UnknownType() });
+                imageMap.AddItem(segment.Address, new ImageMapItem(segment.Address, segment.Size) { DataType = new UnknownType() });
             }
             return imageMap;
         }

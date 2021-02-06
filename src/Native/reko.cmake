@@ -71,6 +71,14 @@ function(invoke_cmake name path build_dir)
 
 	if(REKO_PLATFORM)
 		list(APPEND CMAKE_ARGS "-DREKO_PLATFORM=${REKO_PLATFORM}")
+		if(NOT IS_MSYS AND NOT MINGW)
+			if(REKO_PLATFORM STREQUAL "x86")
+				set(REKO_ARCH "Win32")
+			else()
+				set(REKO_ARCH ${REKO_PLATFORM})
+			endif()
+			list(APPEND CMAKE_ARGS -A ${REKO_ARCH})
+		endif()
 	endif()
 
 	if(CMAKE_BUILD_TYPE)
@@ -98,10 +106,11 @@ function(invoke_cmake name path build_dir)
 
 	set(build_args "")
 
+	include(ProcessorCount)
+	ProcessorCount(NUM_THREADS)
+
 	if(IS_MSYS OR MINGW OR UNIX)
 		list(APPEND build_args -- -j ${NUM_THREADS})
-	elseif(WIN32 AND MSVC)
-		list(APPEND build_args -- /m:${NUM_THREADS})
 	endif()
 
 	execute_process(
@@ -118,10 +127,8 @@ endfunction()
 message("== Configuration ==")
 message("=> Build Type: ${CMAKE_BUILD_TYPE}")
 message("=> Generator : ${REKO_COMPILER}")
+message("=> Platform  : ${REKO_PLATFORM}")
 message("")
-
-include(ProcessorCount)
-ProcessorCount(NUM_THREADS)
 
 if(NOT DEFINED IS_MSYS)
 	check_msys(IS_MSYS)

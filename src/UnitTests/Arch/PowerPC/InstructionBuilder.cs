@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         internal void Lbzu(RegisterOperand rD, short offset, RegisterOperand rA)
         {
-            Add(new PowerPcInstruction(Mnemonic.lbzu, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
+            Add(new PowerPcInstruction(Mnemonic.lbzu, rD, new MemoryOperand(rD.Register.DataType, rA.Register, offset), null, false));
         }
 
         public void Lis(RegisterOperand r, ushort uimm)
@@ -149,12 +149,12 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         public void Lwzu(RegisterOperand rD, short offset, RegisterOperand rA)
         {
-            Add(new PowerPcInstruction(Mnemonic.lwzu, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
+            Add(new PowerPcInstruction(Mnemonic.lwzu, rD, new MemoryOperand(rD.Register.DataType, rA.Register, offset), null, false));
         }
 
         public void Lwz(RegisterOperand rD, short offset, RegisterOperand rA)
         {
-            Add(new PowerPcInstruction(Mnemonic.lwz, rD, new MemoryOperand(rD.Register.DataType, rA.Register, Constant.Int16(offset)), null, false));
+            Add(new PowerPcInstruction(Mnemonic.lwz, rD, new MemoryOperand(rD.Register.DataType, rA.Register, offset), null, false));
         }
 
         public void Mtctr(RegisterOperand r)
@@ -174,7 +174,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         private MemoryOperand Mem(RegisterOperand baseReg, short offset)
         {
-            return new MemoryOperand(baseReg.Register.DataType, baseReg.Register, Constant.Int16(offset));
+            return new MemoryOperand(baseReg.Register.DataType, baseReg.Register, offset);
         }
     }
 }

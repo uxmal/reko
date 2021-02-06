@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,10 +23,51 @@ namespace Reko.Arch.Cray
     public enum Mnemonic
     {
         Invalid,
-        err,
+
         _and,
+        _and_or,
+        _andnot,
+        _clz,
+        _dlsl,
+        _dlsr,
+        _eqv,
         _fmul,
+        _iadd,
+        _imul,
+        _isub,
+        _lmask,
+        _load,
+        _load_inc,
+        _lsl,
+        _lsr,
         _mov,
+        _movhi,
+        _movlo,
+        _movs,
+        _movst,
+        _movz,
+        _neg,
+        _popcnt,
+        _rmask,
+        _store,
+        _store_inc,
+        _viadd,
+        _vmov,
+        _vor,
+        _xor,
+        err,
+        ex,
         j,
+        jam,
+        jan,
+        jap,
+        jaz,
+        jsm,
+        jsn,
+        jsp,
+        jsz,
+        jts,
+        pass,
+        r,
     }
 }

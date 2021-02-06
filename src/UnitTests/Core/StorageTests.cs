@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -126,6 +126,14 @@ namespace Reko.UnitTests.Core
         public void Stg_TemporaryStorageWord32BitSize()
         {
             Assert.AreEqual(tmpWord32.BitSize, 32);
+        }
+
+        [Test]
+        public void Stg_FpuStackStorageOffsetOf()
+        {
+            Assert.AreEqual(0, fpu0.OffsetOf(fpu0));
+            Assert.AreEqual(-1, fpu0.OffsetOf(fpu1));
+            Assert.AreEqual(-1, fpu1.OffsetOf(fpu0));
         }
     }
 }

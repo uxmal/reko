@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Services;
 using System;
@@ -32,7 +33,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public abstract class ElfRelocator
     {
-        private SortedList<Address, ImageSymbol> imageSymbols;
+        private readonly SortedList<Address, ImageSymbol> imageSymbols;
 
         public ElfRelocator(SortedList<Address, ImageSymbol> syms)
         {
@@ -41,11 +42,23 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public abstract ElfLoader Loader { get; }
 
+
+
         public IEnumerable<ElfSegment> EnumerateDynamicSegments()
         {
             return Loader.Segments
                 .Where(p => p.p_type == ProgramHeaderType.PT_DYNAMIC);
         }
+
+
+        /// <summary>
+        /// Give the relocator a chance to adjust an address.
+        /// </summary>
+        /// <remarks>
+        /// This is helpful when adjust ARM Thumb symbols, which will have
+        /// their least significant bit set to 1.
+        /// </remarks>
+        public virtual Address AdjustAddress(Address address) => address;
 
         /// <summary>
         /// Give the relocator a chance to adjust the image symbol.
@@ -54,14 +67,21 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// This is helpful when adjust ARM Thumb symbols, which will have
         /// their least significant bit set to 1.
         /// </remarks>
-        public virtual ImageSymbol AdjustImageSymbol(ImageSymbol sym)
-        {
-            return sym;
-        }
+        public virtual ImageSymbol AdjustImageSymbol(ImageSymbol sym) => sym;
 
         public abstract void Relocate(Program program);
 
-        public abstract ElfSymbol RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela);
+        /// <summary>
+        /// Perform the relocation specified by <paramref name="rela"/>, using the <paramref name="symbol"/> as a 
+        /// reference.
+        /// </summary>
+        /// <param name="program">The program image being loaded</param>
+        /// <param name="symbol">The <see cref="ElfSymbol"/> associated with this relocation.</param>
+        /// <param name="referringSection">The section in which the relocation is.</param>
+        /// <param name="rela">The relocation information.</param>
+        /// <returns>The address of the entry in the GOT where the relocation was performed, and optionally
+        /// a symbol for the PLT entry that refers to that GOT entry.</returns>
+        public abstract (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela);
 
         public abstract string RelocationTypeToString(uint type);
 
@@ -80,14 +100,17 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             if (!program.SegmentMap.TryFindSegment(addrEntry, out var seg))
                 return null;
+            if (!(seg.MemoryArea is ByteMemoryArea mem))
+                return null;    //$REVIEW: is ELF even compatible with non-byte granularity?
             foreach (var sPattern in GetStartPatterns())
             {
                 var dfa = Core.Dfa.Automaton.CreateFromPattern(sPattern.SearchPattern);
-                var start = addrEntry - seg.MemoryArea.BaseAddress;
-                var hits = dfa.GetMatches(seg.MemoryArea.Bytes, (int)start, (int)start + 300).ToList();
+                var start = (int)(addrEntry - seg.MemoryArea.BaseAddress);
+                var end = Math.Min((int) start + 300, mem.Bytes.Length);
+                var hits = dfa.GetMatches(mem.Bytes, start, end).ToList();
                 if (hits.Count > 0)
                 {
-                    return GetMainFunctionAddress(program.Architecture, seg.MemoryArea, hits[0], sPattern);
+                    return GetMainFunctionAddress(program.Architecture, mem, hits[0], sPattern);
                 }
             }
             return null;
@@ -109,7 +132,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return sym;
         }
 
-        protected virtual Address GetMainFunctionAddress(IProcessorArchitecture arch, MemoryArea mem, int offset, StartPattern sPattern)
+        protected virtual Address GetMainFunctionAddress(IProcessorArchitecture arch, ByteMemoryArea mem, int offset, StartPattern sPattern)
         {
             return null;
         }
@@ -174,11 +197,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 LoadSymbolsFromDynamicSegment(dynSeg, symtab, syment, offStrtab, offSymtab);
 
                 // Generate a symbol for each relocation.
-                Debug.Print("Relocating entries in .dynamic:");
-                foreach (var elfSym in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
+                ElfImageLoader.trace.Inform("Relocating entries in .dynamic:");
+                foreach (var (_, elfSym, _) in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
                 {
                     symbols.Add(elfSym);
                     var imgSym = Loader.CreateImageSymbol(elfSym, true);
+                    // Symbols need to refer to the loaded image, if their value is 0,
+                    // they are imported symbols.
                     if (imgSym == null || imgSym.Address.ToLinear() == 0)
                         continue;
                     imageSymbols[imgSym.Address] = imgSym;
@@ -190,11 +215,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 Loader.DynamicEntries.TryGetValue(ElfDynamicEntry.DT_PLTREL, out var pltrel);
                 if (jmprel != null && pltrelsz != null && pltrel != null)
                 {
-                    if (pltrel.SValue == 7) // entries are in RELA format.
+                    if (pltrel.SValue == ElfDynamicEntry.DT_RELA) // entries are in RELA format.
                     {
                         relTable = new RelaTable(this, jmprel.UValue, pltrelsz.UValue);
                     }
-                    else if (pltrel.SValue == 0x11) // entries are in REL format
+                    else if (pltrel.SValue == ElfDynamicEntry.DT_REL) // entries are in REL format
                     {
                         relTable = new RelTable(this, jmprel.UValue, pltrelsz.UValue);
                     }
@@ -204,20 +229,31 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         continue;
                     }
 
-                    DebugEx.Inform(ElfImageLoader.trace, "Relocating entries in DT_JMPREL:");
-                    foreach (var elfSym in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
+                    ElfImageLoader.trace.Inform("Relocating entries in DT_JMPREL:");
+                    foreach (var (addrImport, elfSym, extraSym) in relTable.RelocateEntries(program, offStrtab, offSymtab, syment.UValue))
                     {
                         symbols.Add(elfSym);
                         var imgSym = Loader.CreateImageSymbol(elfSym, true);
-                        if (imgSym == null || imgSym.Address.ToLinear() == 0)
-                            continue;
-                        imageSymbols[imgSym.Address] = imgSym;
-                        program.ImportReferences[imgSym.Address] =
-                            new NamedImportReference(
-                                imgSym.Address,
-                                null,   // ELF imports don't specify which modile to take the import from
-                                imgSym.Name,
-                                imgSym.Type);
+                        if (imgSym != null && imgSym.Address.ToLinear() != 0)
+                        {
+                            imageSymbols[imgSym.Address] = imgSym;
+                        }
+                        
+                        if (extraSym != null)
+                        {
+                            symbols.Add(extraSym);
+                            var extraImgSym = Loader.CreateImageSymbol(extraSym, true);
+                            imageSymbols[extraImgSym.Address] = extraImgSym;
+                        }
+                        if (elfSym.SectionIndex == ElfSection.SHN_UNDEF)
+                        {
+                            program.ImportReferences[addrImport] =
+                                new NamedImportReference(
+                                    addrImport,
+                                    null,   // ELF imports don't specify which module to take the import from
+                                    imgSym.Name,
+                                    imgSym.Type);
+                        }
                     }
                 }
             }
@@ -232,13 +268,13 @@ namespace Reko.ImageLoaders.Elf.Relocators
             if (addrEnd != 0)
             {
                 // We have found some symbols to ensure.
-                DebugEx.Verbose(ElfImageLoader.trace, "== Symbols in the DT_DYNAMIC segment");
+                ElfImageLoader.trace.Verbose("== Symbols in the DT_DYNAMIC segment");
                 int i = 0;
                 for (ulong uSymAddr = symtab.UValue; uSymAddr < addrEnd; uSymAddr += syment.UValue)
                 {
                     var elfSym = Loader.EnsureSymbol(offSymtab, i, syment.UValue, offStrtab);
                     ++i;
-                    DebugEx.Verbose(ElfImageLoader.trace, "  {0:X8} {1}", elfSym.Value, elfSym.Name);
+                    ElfImageLoader.trace.Verbose("  {0:X8} {1}", elfSym.Value, elfSym.Name);
                     var imgSym = Loader.CreateImageSymbol(elfSym, true);
                     if (imgSym == null || imgSym.Address.ToLinear() == 0)
                         continue;
@@ -261,24 +297,29 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 this.TableSize = tableByteSize;
             }
 
-
             public ulong VirtualAddress { get; }
             public ulong TableSize { get; }
 
-            public List<ElfSymbol> RelocateEntries(Program program, ulong offStrtab, ulong offSymtab, ulong symEntrySize)
+            public List<(Address,ElfSymbol,ElfSymbol)> RelocateEntries(Program program, ulong offStrtab, ulong offSymtab, ulong symEntrySize)
             {
                 var offRela = relocator.Loader.AddressToFileOffset(VirtualAddress);
                 var rdrRela = relocator.Loader.CreateReader(offRela);
                 var offRelaEnd = (long)(offRela + TableSize);
 
-                var symbols = new List<ElfSymbol>();
+                var symbols = new List<(Address, ElfSymbol, ElfSymbol)>();
                 while (rdrRela.Offset < offRelaEnd)
                 {
                     var relocation = ReadRelocation(rdrRela);
                     var elfSym = relocator.Loader.EnsureSymbol(offSymtab, relocation.SymbolIndex, symEntrySize, offStrtab);
-                    DebugEx.Verbose(ElfImageLoader.trace, "  {0}: symbol {1} type: {2} addend: {3:X}", relocation, elfSym, relocator.RelocationTypeToString((byte)relocation.Info), relocation.Addend);
-                    relocator.RelocateEntry(program, elfSym, null, relocation);
-                    symbols.Add(elfSym);
+                    if (elfSym == null)
+                        continue;
+
+                    ElfImageLoader.trace.Verbose("  {0}: symbol {1} type: {2} addend: {3:X}", relocation, elfSym, relocator.RelocationTypeToString((byte) relocation.Info), relocation.Addend);
+                    var (addrRelocation, newSym) = relocator.RelocateEntry(program, elfSym, null, relocation);
+                    if (addrRelocation != null)
+                    {
+                        symbols.Add((addrRelocation, elfSym, newSym));
+                    }
                 }
                 return symbols;
             }
@@ -294,7 +335,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
             public override ElfRelocation ReadRelocation(EndianImageReader rdr)
             {
-                return relocator.Loader.LoadRelaEntry(rdr);
+                var entry = relocator.AdjustRelocation(relocator.Loader.LoadRelaEntry(rdr));
+                return entry;
             }
         }
 
@@ -306,8 +348,20 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
             public override ElfRelocation ReadRelocation(EndianImageReader rdr)
             {
-                return relocator.Loader.LoadRelEntry(rdr);
+                return relocator.AdjustRelocation(relocator.Loader.LoadRelEntry(rdr));
             }
+        }
+
+        /// <summary>
+        /// Some ELF spec variants, like MIPS64 (bless their hearts) deviate from the
+        /// "default" interpretation of ELF relocations. This hook allows the relocator
+        /// to manipulate the entry.
+        /// </summary>
+        /// <param name="elfRelocation">Relocation to manipulate</param>
+        /// <returns></returns>
+        protected virtual ElfRelocation AdjustRelocation(ElfRelocation elfRelocation)
+        {
+            return elfRelocation;
         }
 
         /// <summary>
@@ -391,7 +445,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_REL))
             {
-                DebugEx.Inform(ElfImageLoader.trace, "REL: offset {0:X} symbol section {1}, relocating in section {2}",
+                ElfImageLoader.trace.Inform("REL: offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
                     section.LinkedSection.Name,
                     section.RelocatedSection.Name);
@@ -400,7 +454,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 for (uint i = 0; i < section.EntryCount(); ++i)
                 {
                     var rel = Elf32_Rel.Read(rdr);
-                    DebugEx.Verbose(ElfImageLoader.trace,
+                    ElfImageLoader.trace.Verbose(
                         "  off:{0:X8} type:{1,-16} {3,3} {2}",
                         rel.r_offset,
                         RelocationTypeToString(rel.r_info & 0xFF),
@@ -415,7 +469,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
             {
-                DebugEx.Inform(ElfImageLoader.trace, 
+                ElfImageLoader.trace.Inform(
                     "RELA: offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
                     section.LinkedSection.Name,
@@ -426,7 +480,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 for (uint i = 0; i < section.EntryCount(); ++i)
                 {
                     var rela = Elf32_Rela.Read(rdr);
-                    DebugEx.Verbose(ElfImageLoader.trace,
+                    ElfImageLoader.trace.Verbose(
                         "  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2}",
                         rela.r_offset,
                         RelocationTypeToString(rela.r_info & 0xFF),
@@ -453,7 +507,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         protected override void DumpDynamicSegment(ElfSegment dynSeg)
         {
-            var renderer = new DynamicSectionRenderer64(Loader, null);
+            var renderer = new DynamicSectionRenderer64(Loader, null, ElfMachine.EM_NONE);
             var sw = new StringWriter();
             renderer.Render(dynSeg.p_offset, new TextFormatter(sw));
             Debug.WriteLine(sw.ToString());
@@ -483,7 +537,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
         [Conditional("DEBUG")]
         protected void DumpRela64(ElfLoader64 loader)
         {
-            foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
+            foreach (var section in loader.Sections.Where(s => 
+                s.Type == SectionHeaderType.SHT_RELA &&
+                s.LinkedSection != null && 
+                s.LinkedSection.FileOffset != 0))
             {
                 Debug.Print("RELA: offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,

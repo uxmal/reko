@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,20 +26,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.M68k
 {
     [TestFixture]
     public class M68kDisassemblerTests : DisassemblerTestBase<M68kInstruction>
     {
-        private M68kArchitecture arch = new M68kArchitecture("m68k");
+        private M68kArchitecture arch;
         private IEnumerator<M68kInstruction> dasm;
+
+        public M68kDisassemblerTests()
+        {
+            arch = new M68kArchitecture(CreateServiceContainer(), "m68k", new Dictionary<string, object>());
+        }
 
         private IEnumerator<M68kInstruction> CreateDasm(byte[] bytes, uint address)
         {
             Address addr = Address.Ptr32(address);
-            MemoryArea img = new MemoryArea(addr, bytes);
-            return M68kDisassembler.Create68020(img.CreateBeReader(addr)).GetEnumerator();
+            ByteMemoryArea mem = new ByteMemoryArea(addr, bytes);
+            return M68kDisassembler.Create68020(arch.Services, mem.CreateBeReader(addr)).GetEnumerator();
         }
 
         public override IProcessorArchitecture Architecture
@@ -573,13 +580,13 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68kdis_move_to_ccr()
         {
-            RunTest("move.w\td3,ccr", 0x44c3);
+            RunTest("move.b\td3,ccr", 0x44c3);
         }
 
         [Test]
         public void M68kdis_move_fr_ccr()
         {
-            RunTest("move.w\tccr,(a3)", 0x42d3, 0x0000);
+            RunTest("move.b\tccr,(a3)", 0x42d3, 0x0000);
         }
 
         [Test]
@@ -726,12 +733,6 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
-        public void M68kdis_cinv_invalid()
-        {
-            RunTest("cinv", 0xF400);
-        }
-
-        [Test]
         public void M68kdis_bfins()
         {
             RunTest("bfins\td3,d5,{d3:#$00000002}", 0xEFC5, 0x38C2);
@@ -762,6 +763,25 @@ namespace Reko.UnitTests.Arch.M68k
         public void M68kdis_eori_ccr()
         {
             RunTest("eori.b\t#$80,ccr", 0x0A3C, 0x0080);
+        }
+
+        /*
+        R:rorl  %a2@(19131)                         E6 EA 4A BB
+        O:rorw %a2@(0)                             E6 EA 4A BB
+        */
+
+        [Test]
+        public void M68kdis_tst_68020()
+        {
+            RunTest("tst.b\t$1236(pc)", 0x4A3A, 0x1234);
+            RunTest("tst.b\t($36,pc,d1.w*2)", 0x4A3B, 0x1234);
+            RunTest("tst.b\t#$34", 0x4A3C, 0x1234);
+        }
+
+        [Test]
+        public void M68kdis_fsqrt()
+        {
+            RunTest("fsqrt.s\td4,fp0", 0xF204, 0x4404);
         }
     }
 }

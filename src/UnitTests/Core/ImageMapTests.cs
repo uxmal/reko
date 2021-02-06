@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -77,7 +78,7 @@ namespace Reko.UnitTests.Core
 
             var size = (uint)dt.Size;
 
-            var imageMapItem = new ImageMapItem(size) { Address = curAddr };
+            var imageMapItem = new ImageMapItem(curAddr, size);
             if (dt != null)
                 imageMapItem.DataType = dt;
             map.AddItemWithSize(curAddr, imageMapItem);
@@ -90,7 +91,7 @@ namespace Reko.UnitTests.Core
             var segmentMap = new SegmentMap(Address.Ptr32(0x01000),
                 new ImageSegment(
                     ".text", 
-                    new MemoryArea(Address.Ptr32(0x01010), new byte[0x10]),
+                    new ByteMemoryArea(Address.Ptr32(0x01010), new byte[0x10]),
                     AccessMode.ReadExecute));
             var map = segmentMap.CreateImageMap();
             Assert.AreEqual(1, map.Items.Count);
@@ -102,17 +103,16 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Im_CreateItem_MiddleOfEmptyRange()
         {
-            var mem = new MemoryArea(addrBase, new byte[0x100]);
+            var mem = new ByteMemoryArea(addrBase, new byte[0x100]);
             var segmentMap = new SegmentMap(addrBase,
                 new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var map = segmentMap.CreateImageMap();
             map.AddItemWithSize(
                 addrBase + 0x10,
-                new ImageMapItem(0x10) { DataType = new ArrayType(PrimitiveType.Byte, 10) });
+                new ImageMapItem(addrBase + 0x10, 0x10) { DataType = new ArrayType(PrimitiveType.Byte, 10) });
             map.Dump();
             Assert.AreEqual(3, map.Items.Count);
-            ImageMapItem item;
-            Assert.IsTrue(map.TryFindItemExact(addrBase, out item));
+            Assert.IsTrue(map.TryFindItemExact(addrBase, out ImageMapItem item));
             Assert.AreEqual(0x10, item.Size);
             Assert.IsInstanceOf<UnknownType>(item.DataType);
         }
@@ -125,7 +125,7 @@ namespace Reko.UnitTests.Core
             var map = segmentMap.CreateImageMap();
             map.AddItemWithSize(
                 addrBase,
-                new ImageMapItem(0x10) { DataType = new ArrayType(PrimitiveType.Byte, 0x10) });
+                new ImageMapItem(addrBase, 0x10) { DataType = new ArrayType(PrimitiveType.Byte, 0x10) });
             map.Dump();
             ImageMapItem item;
             Assert.IsTrue(map.TryFindItemExact(addrBase, out item));
@@ -192,12 +192,12 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Im_RemoveItem_DoNotMergeDisjointItems()
         {
-            var mem = new MemoryArea(addrBase, new byte[0x0100]);
+            var mem = new ByteMemoryArea(addrBase, new byte[0x0100]);
             var segmentMap = new SegmentMap(addrBase,
                 new ImageSegment("", mem, AccessMode.ReadWriteExecute));
             var codeMem = mem;
-            var dataMem = new MemoryArea(addrBase + 0x1000, new byte[0x0004]);
-            var textMem = new MemoryArea(addrBase + 0x2000, new byte[0x0100]);
+            var dataMem = new ByteMemoryArea(addrBase + 0x1000, new byte[0x0004]);
+            var textMem = new ByteMemoryArea(addrBase + 0x2000, new byte[0x0100]);
             segmentMap.AddSegment(codeMem, "code", AccessMode.ReadWrite);
             segmentMap.AddSegment(dataMem, "data", AccessMode.ReadWrite);
             segmentMap.AddSegment(textMem, "text", AccessMode.ReadWrite);
@@ -234,7 +234,7 @@ namespace Reko.UnitTests.Core
             var map = new ImageMap(addrBase);
             var mapChangedFired = false;
             map.MapChanged += (sender, e) => { mapChangedFired = true; };
-            map.AddItem(addrBase, new ImageMapItem { DataType = new CodeType() });
+            map.AddItem(addrBase, new ImageMapItem(addrBase) { DataType = new CodeType() });
             Assert.IsTrue(mapChangedFired, "ImageMap should have fired MapChanged event");
         }
 	}

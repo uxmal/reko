@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,28 @@ namespace Reko.ImageLoaders.Elf
                 r_info = i,
             };
         }
+    }
+
+    public class Elf64_Rel
+    {
+        public ulong r_offset; // Location (file byte offset, or program virtual addr).
+        public ulong r_info;  // Symbol table index and type of relocation to apply.
+
+        public static Elf64_Rel Read(EndianImageReader rdr)
+        {
+            var o = rdr.ReadUInt64();
+            var i = rdr.ReadUInt64();
+            return new Elf64_Rel
+            {
+                r_offset = o,
+                r_info = i
+            };
+        }
+
+        // These accessors and mutators correspond to the ELF64_R_SYM, ELF64_R_TYPE,
+        // and ELF64_R_INFO macros defined in the ELF specification:
+        public int SymbolIndex => (int)(r_info >> 32);
+        public int Type => (int) r_info;
     }
 
     public class Elf32_Rela

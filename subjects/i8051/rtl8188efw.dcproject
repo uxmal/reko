@@ -16,6 +16,7 @@
         <address>0000</address>
       </procedure>
       <registerValues />
+      <outputFilePolicy>Segment</outputFilePolicy>
     </user>
   </input>
 </project>

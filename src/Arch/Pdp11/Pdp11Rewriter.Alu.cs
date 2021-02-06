@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ namespace Reko.Arch.Pdp11
             var dst = RewriteDst(instr.Operands[0], src, fn);
             if (dst == null)
             {
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
             }
             else
@@ -85,7 +85,7 @@ namespace Reko.Arch.Pdp11
             }
             else
             {
-                m.Assign(dst, host.PseudoProcedure("__shift", dst.DataType, dst, sh));
+                m.Assign(dst, host.Intrinsic("__shift", true, dst.DataType, dst, sh));
             }
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.CF | FlagM.VF, 0, 0);
         }
@@ -193,13 +193,13 @@ namespace Reko.Arch.Pdp11
             var src = RewriteSrc(instr.Operands[0]);
             if (src == null)
             {
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
             var tmp = binder.CreateTemporary(PrimitiveType.Word16);
             var sp = binder.EnsureRegister(arch.StackRegister);
-            m.Assign(tmp, host.PseudoProcedure("__mfpd", tmp.DataType, src));
+            m.Assign(tmp, host.Intrinsic("__mfpd", false, tmp.DataType, src));
             m.Assign(sp, m.ISub(sp, 2));
             m.Assign(m.Mem16(sp), tmp);
             SetFlags(tmp, FlagM.NF | FlagM.ZF, FlagM.VF, 0);
@@ -210,13 +210,13 @@ namespace Reko.Arch.Pdp11
             var src = RewriteSrc(instr.Operands[0]);
             if (src == null)
             {
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
             var tmp = binder.CreateTemporary(PrimitiveType.Word16);
             var sp = binder.EnsureRegister(arch.StackRegister);
-            m.Assign(tmp, host.PseudoProcedure("__mfpi", tmp.DataType, src));
+            m.Assign(tmp, host.Intrinsic("__mfpi", false, tmp.DataType, src));
             m.Assign(sp, m.ISub(sp, 2));
             m.Assign(m.Mem16(sp), tmp);
             SetFlags(tmp, FlagM.NF | FlagM.ZF, FlagM.VF, 0);
@@ -227,7 +227,7 @@ namespace Reko.Arch.Pdp11
             var src = RewriteSrc(instr.Operands[0]);
             if (src == null)
             {
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
@@ -235,7 +235,7 @@ namespace Reko.Arch.Pdp11
             var sp = binder.EnsureRegister(arch.StackRegister);
             m.Assign(tmp, m.Mem16(sp));
             m.Assign(sp, m.ISub(sp, 2));
-            m.SideEffect(host.PseudoProcedure("__mtpi", tmp.DataType, src, tmp));
+            m.SideEffect(host.Intrinsic("__mtpi", false, tmp.DataType, src, tmp));
             SetFlags(tmp, FlagM.NF | FlagM.ZF, FlagM.VF, 0);
         }
 
@@ -245,7 +245,7 @@ namespace Reko.Arch.Pdp11
             Expression dst;
             if (instr.Operands[1] is RegisterOperand && instr.DataWidth.Size == 1)
             {
-                dst = RewriteDst(instr.Operands[1], src, s => m.Cast(PrimitiveType.Int16, s));
+                dst = RewriteDst(instr.Operands[1], src, s => m.Convert(s, s.DataType, PrimitiveType.Int16));
             }
             else
             {
@@ -281,12 +281,16 @@ namespace Reko.Arch.Pdp11
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF, 0, 0);
         }
 
-        private void RewriteRotate(string op)
+        private void RewriteRotate(string op, uint cyMask)
         {
             var src = RewriteSrc(instr.Operands[0]);
+            var C = binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.psw, (uint) FlagM.CF));
+            var tmp = binder.CreateTemporary(src.DataType);
+            m.Assign(tmp, src);
             var dst = RewriteDst(instr.Operands[0], src, (a, b) =>
-                host.PseudoProcedure(op, instr.DataWidth, a, b));
-            SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
+                host.Intrinsic(op, true, instr.DataWidth, a, m.Int16(1), C));
+            m.Assign(C, m.Ne0(m.And(tmp, cyMask)));
+            SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF, 0, 0);
         }
 
         private void RewriteShift()
@@ -311,7 +315,7 @@ namespace Reko.Arch.Pdp11
             else
             {
                 fn = (a, b) =>
-                    host.PseudoProcedure("__shift", instr.DataWidth, a, b);
+                    host.Intrinsic("__shift", true, instr.DataWidth, a, b);
             }
             var dst = RewriteDst(instr.Operands[1], src, fn);
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
@@ -328,7 +332,7 @@ namespace Reko.Arch.Pdp11
         {
             var src = RewriteSrc(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[1], src, e =>
-                host.PseudoProcedure("__stexp", PrimitiveType.Int16, e));
+                host.Intrinsic("__stexp",  false, PrimitiveType.Int16, e));
             SetFlags(dst, FlagM.ZF | FlagM.NF, FlagM.CF | FlagM.VF, 0);
         }
 
@@ -344,7 +348,7 @@ namespace Reko.Arch.Pdp11
         private void RewriteSwab()
         {
             var src = RewriteSrc(instr.Operands[0]);
-            var dst = RewriteDst(instr.Operands[0], src, e => host.PseudoProcedure("__swab", PrimitiveType.Word16, e));
+            var dst = RewriteDst(instr.Operands[0], src, e => host.Intrinsic("__swab", true, PrimitiveType.Word16, e));
             if (dst == null)
             {
                 m.Invalid();

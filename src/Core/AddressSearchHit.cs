@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,8 +28,15 @@ namespace Reko.Core
 {
     public class AddressSearchHit
     {
-        public Program Program;
-        public Address Address;
-        public int Length;
+        public readonly Program Program;
+        public readonly Address Address;
+        public readonly int Length;
+
+        public AddressSearchHit(Program program, Address address, int length)
+        {
+            this.Program = program;
+            this.Address = address;
+            this.Length = length;
+        }
     }
 }

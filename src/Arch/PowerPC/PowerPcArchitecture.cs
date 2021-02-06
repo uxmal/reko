@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -34,6 +35,8 @@ using System.Linq;
 
 namespace Reko.Arch.PowerPC
 {
+    using Decoder = Decoder<PowerPcDisassembler, Mnemonic, PowerPcInstruction>;
+
     [Designer("Reko.Arch.PowerPC.Design.PowerPCArchitectureDesigner,Reko.Arch.PowerPC.Design")]
     public abstract class PowerPcArchitecture : ProcessorArchitecture
     {
@@ -47,7 +50,7 @@ namespace Reko.Arch.PowerPC
         private Dictionary<int, RegisterStorage> spregs;
         private Dictionary<uint, FlagGroupStorage> ccFlagGroups;
         private Dictionary<string, FlagGroupStorage> ccFlagGroupsByName;
-        private PowerPcDisassembler.Decoder[] primaryDecoders;
+        private Decoder[] primaryDecoders;
 
         public RegisterStorage lr { get; private set; }
         public RegisterStorage ctr { get; private set; }
@@ -62,7 +65,8 @@ namespace Reko.Arch.PowerPC
         /// Creates an instance of PowerPcArchitecture.
         /// </summary>
         /// <param name="wordWidth">Supplies the word width of the PowerPC architecture.</param>
-        public PowerPcArchitecture(string archId, EndianServices endianness, PrimitiveType wordWidth, PrimitiveType signedWord) : base(archId)
+        public PowerPcArchitecture(IServiceProvider services, string archId, EndianServices endianness, PrimitiveType wordWidth, PrimitiveType signedWord, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             Endianness = endianness;
             WordWidth = wordWidth;
@@ -115,6 +119,8 @@ namespace Reko.Arch.PowerPC
 
             spregs = new Dictionary<int, RegisterStorage>
             {
+                { 8, new RegisterStorage("lr", 0x0100 + 8, 0, PointerType) },
+                { 9, new RegisterStorage("ctr", 0x0100 + 9, 0, WordWidth) },
                 { 26, new RegisterStorage("srr0", 0x0100 + 26, 0, PrimitiveType.Word32) },
                 { 27, new RegisterStorage("srr1", 0x0100 + 27, 0, PrimitiveType.Word32) },
             };
@@ -122,7 +128,7 @@ namespace Reko.Arch.PowerPC
             //$REVIEW: using R1 as the stack register is a _convention_. It 
             // should be platform-specific at the very least.
             StackRegister = regs[1];
-            Options = new Dictionary<string, object>();
+            LoadUserOptions(options);
         }
 
         public ReadOnlyCollection<RegisterStorage> Registers
@@ -150,8 +156,6 @@ namespace Reko.Arch.PowerPC
 
         public PrimitiveType SignedWord { get; }
 
-        public Dictionary<string,object> Options { get; }
-
         #region IProcessorArchitecture Members
 
         public PowerPcDisassembler CreateDisassemblerImpl(EndianImageReader rdr)
@@ -166,7 +170,7 @@ namespace Reko.Arch.PowerPC
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
         {
-            throw new NotImplementedException();
+            return new PowerPcEmulator(this, segmentMap, envEmulator);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -220,7 +224,7 @@ namespace Reko.Arch.PowerPC
                 return null;
             if (mem.BaseRegister != reg)
                 return null;
-            uAddr = (uint)((int)uAddr + mem.Offset.ToInt32());
+            uAddr = (uint)((int)uAddr + mem.Offset);
             reg = ((RegisterOperand)e.Current.Operands[0]).Register;
 
             if (!e.MoveNext() || e.Current.Mnemonic != Mnemonic.mtctr)
@@ -248,13 +252,13 @@ namespace Reko.Arch.PowerPC
         // PowerPC uses a link register
         public override int ReturnAddressOnStack => 0;
 
-        private PowerPcDisassembler.Decoder[] EnsureDecoders()
+        private Decoder[] EnsureDecoders()
         {
             if (this.primaryDecoders == null)
             {
                 this.Options.TryGetValue("Model", out var model);
-                var factory = new DecoderFactory((string)model);
-                this.primaryDecoders = factory.CreateDecoders();
+                var iset = InstructionSet.Create((string)model);
+                this.primaryDecoders = iset.CreateDecoders();
             }
             return this.primaryDecoders;
         }
@@ -364,7 +368,7 @@ namespace Reko.Arch.PowerPC
         {
             if (options == null)
                 return;
-            foreach (var option in options)
+            foreach (var option in options.ToList())
             {
                 this.Options[option.Key] = option.Value;
             }
@@ -390,7 +394,8 @@ namespace Reko.Arch.PowerPC
 
     public class PowerPcBe32Architecture : PowerPcArchitecture
     {
-        public PowerPcBe32Architecture(string archId) : base(archId, EndianServices.Big, PrimitiveType.Word32, PrimitiveType.Int32)
+        public PowerPcBe32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, EndianServices.Big, PrimitiveType.Word32, PrimitiveType.Int32, options)
         { }
 
         public override IEnumerable<Address> CreatePointerScanner(
@@ -422,7 +427,8 @@ namespace Reko.Arch.PowerPC
 
     public class PowerPcLe32Architecture : PowerPcArchitecture
     {
-        public PowerPcLe32Architecture(string archId) : base(archId, EndianServices.Little, PrimitiveType.Word32, PrimitiveType.Int32)
+        public PowerPcLe32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, EndianServices.Little, PrimitiveType.Word32, PrimitiveType.Int32, options)
         {
 
         }
@@ -448,8 +454,8 @@ namespace Reko.Arch.PowerPC
 
     public class PowerPcBe64Architecture : PowerPcArchitecture
     {
-        public PowerPcBe64Architecture(string archId)
-            : base(archId, EndianServices.Big, PrimitiveType.Word64, PrimitiveType.Int64)
+        public PowerPcBe64Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, EndianServices.Big, PrimitiveType.Word64, PrimitiveType.Int64, options)
         { }
 
         public override IEnumerable<Address> CreatePointerScanner(

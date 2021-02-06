@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,32 +28,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Pdp11
 {
     [TestFixture]
     public class DisassemblerTests
     {
-        private MachineInstructionWriterOptions options;
+        private MachineInstructionRendererOptions options;
 
         [SetUp]
         public void Setup()
         {
-            this.options = MachineInstructionWriterOptions.None;
+            this.options = MachineInstructionRendererOptions.Default;
         }
 
         private void RunTest(string expected, params ushort[] words)
         {
             var instr = RunTest(words);
             var r = new StringRenderer();
-            r.Address = instr.Address;
             instr.Render(r, options);
             Assert.AreEqual(expected, r.ToString());
         }
 
         private void Given_ResolvePcRelativeAddress()
         {
-            this.options = MachineInstructionWriterOptions.ResolvePcRelativeAddress;
+            this.options = new MachineInstructionRendererOptions(
+                flags: MachineInstructionRendererFlags.ResolvePcRelativeAddress);
         }
 
         private MachineInstruction RunTest(params ushort[] words)
@@ -64,9 +66,9 @@ namespace Reko.UnitTests.Arch.Pdp11
             {
                 writer.WriteLeUInt16(word);
             }
-            var image = new MemoryArea(Address.Ptr16(0x200), bytes);
+            var image = new ByteMemoryArea(Address.Ptr16(0x200), bytes);
             var rdr = new LeImageReader(image, 0);
-            var arch = new Pdp11Architecture("pdp11");
+            var arch = new Pdp11Architecture(new ServiceContainer(), "pdp11", new Dictionary<string, object>());
             var dasm = new Pdp11Disassembler(rdr, arch);
             return dasm.First();
         }

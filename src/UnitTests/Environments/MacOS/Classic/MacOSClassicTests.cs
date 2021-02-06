@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,11 @@ using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Environments.MacOS.Classic;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Environments.MacOS.Classic
 {
@@ -33,10 +36,11 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
         [Test(Description="Resolves a call to the jumptable pointed to by A5 as a direct call.")]
         public void MacOS_ResolveIndirectCall()
         {
-            var macOS = new MacOSClassic(null, new M68kArchitecture("m68k"));
+            var sc = new ServiceContainer();
+            var macOS = new MacOSClassic(sc, new M68kArchitecture(sc, "m68k", new Dictionary<string, object>()));
             var a5 = new Identifier(Registers.a5.Name, Registers.a5.DataType, Registers.a5);
 
-            var a5world = new MemoryArea(Address.Ptr32(0x00100000), new byte[0x0300]);
+            var a5world = new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[0x0300]);
             macOS.A5World = new ImageSegment("A5World", a5world, AccessMode.ReadWrite);
             macOS.A5Offset = 0x0100u;
             const int jumpTableOffset = 0x0032;

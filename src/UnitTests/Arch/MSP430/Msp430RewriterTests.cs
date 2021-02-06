@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@ using Reko.Core;
 using Reko.Arch.Msp430;
 using NUnit.Framework;
 using Reko.Core.Rtl;
+using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Msp430
 {
@@ -36,7 +38,7 @@ namespace Reko.UnitTests.Arch.Msp430
 
         public Msp430RewriterTests()
         {
-            this.arch = new Msp430Architecture("msp430");
+            this.arch = new Msp430Architecture(CreateServiceContainer(), "msp430", new Dictionary<string, object>());
         }
 
         public override IProcessorArchitecture Architecture => arch;
@@ -54,7 +56,7 @@ namespace Reko.UnitTests.Arch.Msp430
             Given_Bytes(0x3C, 0x40, 0xA0, 0xEE);	// mov.w	#EEA0,r12
             AssertCode(
                 "0|L--|0100(4): 1 instructions",
-                "1|L--|r12 = 0xEEA0");
+                "1|L--|r12 = 0xEEA0<16>");
         }
 
 
@@ -65,10 +67,10 @@ namespace Reko.UnitTests.Arch.Msp430
             AssertCode(
                 "0|L--|0100(4): 5 instructions",
                 "1|L--|v3 = Mem0[r14:word16]",
-                "2|L--|v5 = Mem0[pc + -28612:word16]",
-                "3|L--|v5 = v5 ^ v3",
-                "4|L--|Mem0[pc + -28612:word16] = v5",
-                "5|L--|VNZC = cond(v5)");
+                "2|L--|v4 = Mem0[0x913E<p16>:word16]",
+                "3|L--|v4 = v4 ^ v3",
+                "4|L--|Mem0[0x913E<p16>:word16] = v4",
+                "5|L--|VNZC = cond(v4)");
         }
 
         [Test]
@@ -77,7 +79,7 @@ namespace Reko.UnitTests.Arch.Msp430
             Given_Bytes(0x3C, 0x90, 0xA0, 0xEE);	// cmp.w	#EEA0,r12
             AssertCode(
                 "0|L--|0100(4): 1 instructions",
-                "1|L--|VNZC = cond(r12 - 0xEEA0)");
+                "1|L--|VNZC = cond(r12 - 0xEEA0<16>)");
         }
 
         [Test]
@@ -104,7 +106,7 @@ namespace Reko.UnitTests.Arch.Msp430
             Given_Bytes(0x3D, 0x80, 0xA0, 0xEE);	// sub.w	#EEA0,r13
             AssertCode(
                 "0|L--|0100(4): 2 instructions",
-                "1|L--|r13 = r13 - 0xEEA0",
+                "1|L--|r13 = r13 - 0xEEA0<16>",
                 "2|L--|VNZC = cond(r13)");
         }
 
@@ -114,7 +116,7 @@ namespace Reko.UnitTests.Arch.Msp430
             Given_Bytes(0x0D, 0x11);	// rra.w	r13
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|r13 = r13 >> 0x01",
+                "1|L--|r13 = r13 >> 1<8>",
                 "2|L--|V = false",
                 "3|L--|NZC = cond(r13)");
         }
@@ -125,7 +127,7 @@ namespace Reko.UnitTests.Arch.Msp430
             Given_Bytes(0x5C, 0x03);	// rrum.w	r12
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|r12 = r12 >>u 0x01",
+                "1|L--|r12 = r12 >>u 1<8>",
                 "2|L--|V = false",
                 "3|L--|NZC = cond(r12)");
         }
@@ -136,7 +138,7 @@ namespace Reko.UnitTests.Arch.Msp430
             Given_Bytes(0x4D, 0x18, 0x0C, 0x11);	// rpt #14 rrax.w	r12
             AssertCode(
                 "0|L--|0100(4): 3 instructions",
-                "1|L--|r12 = r12 >> 0x0E",
+                "1|L--|r12 = r12 >> 0xE<8>",
                 "2|L--|V = false",
                 "3|L--|NZC = cond(r12)");
         }
@@ -157,9 +159,9 @@ namespace Reko.UnitTests.Arch.Msp430
             Given_Bytes(0x1A, 0x15);	// pushm.w	#02,r10
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
-                "1|L--|sp = sp - 2",
+                "1|L--|sp = sp - 2<i32>",
                 "2|L--|Mem0[sp:word16] = r10",
-                "3|L--|sp = sp - 2",
+                "3|L--|sp = sp - 2<i32>",
                 "4|L--|Mem0[sp:word16] = r9");
         }
 
@@ -197,9 +199,9 @@ namespace Reko.UnitTests.Arch.Msp430
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
                 "1|L--|r8 = Mem0[sp:word16]",
-                "2|L--|sp = sp + 2",
+                "2|L--|sp = sp + 2<i32>",
                 "3|L--|r9 = Mem0[sp:word16]",
-                "4|L--|sp = sp + 2");
+                "4|L--|sp = sp + 2<i32>");
         }
 
         [Test]
@@ -247,10 +249,10 @@ namespace Reko.UnitTests.Arch.Msp430
             AssertCode(
                 "0|L--|0100(4): 7 instructions",
                 "1|L--|v3 = Mem0[r15:byte]",
-                "2|L--|r15 = r15 + 1",
-                "3|L--|v5 = Mem0[r14 + 16377:byte]",
+                "2|L--|r15 = r15 + 1<i16>",
+                "3|L--|v5 = Mem0[r14 + 16377<i16>:byte]",
                 "4|L--|v5 = v5 & v3",
-                "5|L--|Mem0[r14 + 16377:byte] = v5",
+                "5|L--|Mem0[r14 + 16377<i16>:byte] = v5",
                 "6|L--|V = false",
                 "7|L--|NZC = cond(v5)");
         }
@@ -262,10 +264,10 @@ namespace Reko.UnitTests.Arch.Msp430
             AssertCode(
                 "0|L--|0100(4): 6 instructions",
                 "1|L--|v4 = Mem0[r9:word16]",
-                "2|L--|r9 = r9 + 2",
-                "3|L--|v6 = Mem0[sp + 8206:word16]",
+                "2|L--|r9 = r9 + 2<i16>",
+                "3|L--|v6 = Mem0[sp + 8206<i16>:word16]",
                 "4|L--|v6 = v6 - v4 - C",
-                "5|L--|Mem0[sp + 8206:word16] = v6",
+                "5|L--|Mem0[sp + 8206<i16>:word16] = v6",
                 "6|L--|VNZC = cond(v6)");
         }
 
@@ -297,7 +299,7 @@ namespace Reko.UnitTests.Arch.Msp430
             Given_Bytes(0x16, 0xCB, 0x1C, 0x4A);	// bic.w	4A1C(r11),r6
             AssertCode(
                 "0|L--|0100(4): 2 instructions",
-                "1|L--|v3 = Mem0[r11 + 18972:word16]",
+                "1|L--|v3 = Mem0[r11 + 18972<i16>:word16]",
                 "2|L--|r6 = r6 & ~v3");
         }
 
@@ -307,7 +309,7 @@ namespace Reko.UnitTests.Arch.Msp430
             Given_Bytes(0x04, 0x10);	// rrc.w	pc
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
-                "1|L--|r4 = __rcr(r4, 0x01, C)",
+                "1|L--|r4 = __rcr(r4, 1<8>, C)",
                 "2|L--|V = false",
                 "3|L--|NZC = cond(r4)");
         }
@@ -319,11 +321,11 @@ namespace Reko.UnitTests.Arch.Msp430
             AssertCode(
                 "0|L--|0100(4): 6 instructions",
                 "1|L--|v3 = Mem0[r4:word16]",
-                "2|L--|r4 = r4 + 2",
-                "3|L--|v5 = Mem0[pc + 16446:word16]",
-                "4|L--|v5 = __dadd(v5, v3)",
-                "5|L--|Mem0[pc + 16446:word16] = v5",
-                "6|L--|NZC = cond(v5)");
+                "2|L--|r4 = r4 + 2<i16>",
+                "3|L--|v4 = Mem0[0x4140<p16>:word16]",
+                "4|L--|v4 = __dadd(v4, v3)",
+                "5|L--|Mem0[0x4140<p16>:word16] = v4",
+                "6|L--|NZC = cond(v4)");
         }
 
         [Test]
@@ -342,7 +344,7 @@ namespace Reko.UnitTests.Arch.Msp430
             AssertCode(
                 "0|L--|0100(2): 4 instructions",
                 "1|L--|v3 = SLICE(r15, byte, 0)",
-                "2|L--|r15 = (int16) v3",
+                "2|L--|r15 = CONVERT(v3, byte, int16)",
                 "3|L--|V = false",
                 "4|L--|NZC = cond(r15)");
         }
@@ -372,7 +374,7 @@ namespace Reko.UnitTests.Arch.Msp430
             Given_Bytes(0x21, 0x83); // sub.w #0002,sp
             AssertCode(
                 "0|L--|0100(2): 2 instructions",
-                "1|L--|sp = sp - 0x0002",
+                "1|L--|sp = sp - 2<16>",
                 "2|L--|VNZC = cond(sp)");
         }
 
@@ -392,6 +394,32 @@ namespace Reko.UnitTests.Arch.Msp430
             AssertCode(         // ret
                 "0|T--|0100(2): 1 instructions",
                 "1|T--|return (2,0)");
+        }
+
+        [Test]
+        public void MSP430Rw_add_two_abs()
+        {
+            Given_HexString("9252 9C57 7877");
+            AssertCode(         // add.w\t&579C,&7778
+                "0|L--|0100(6): 5 instructions",
+                "1|L--|v2 = Mem0[0x579C<p16>:word16]",
+                "2|L--|v3 = Mem0[0x7778<p16>:word16]",
+                "3|L--|v3 = v3 + v2",
+                "4|L--|Mem0[0x7778<p16>:word16] = v3",
+                "5|L--|VNZC = cond(v3)");
+        }
+
+        [Test]
+        public void MSP430Dis_add_b_pcrel_pcrel()
+        {
+            Given_HexString("D050 6647 40F7");
+            AssertCode(         // add.b\t4768(pc),-08BC(pc)
+                "0|L--|0100(6): 5 instructions",
+                "1|L--|v3 = Mem0[0x4868<p16>:byte]",
+                "2|L--|v4 = Mem0[0xF844<p16>:byte]",
+                "3|L--|v4 = v4 + v3",
+                "4|L--|Mem0[0xF844<p16>:byte] = v4",
+                "5|L--|VNZC = cond(v4)");
         }
     }
 }

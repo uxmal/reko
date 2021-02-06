@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ namespace Reko.Environments.Windows
             return new[] {
                 "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8",
                    "r16", "r17", "r18", "r9", "r20", "r21",
-                   "r22", "r23", "r24", "r25", "r26", "r27", "r28"}.Select(n => Architecture.GetRegister(n)).ToHashSet();
+                   "r22", "r23", "r24", "r25", "r26", "r27", "r28"}.Select(n => Architecture.GetRegister(n)).ToSet();
         }
 
         public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
@@ -69,12 +69,12 @@ namespace Reko.Environments.Windows
             return null;
         }
 
-        public override SystemService FindService(int vector, ProcessorState state)
+        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
         {
             throw new NotImplementedException();
         }
 
-        public override int GetByteSizeFromCBasicType(CBasicType cb)
+        public override int GetBitSizeFromCBasicType(CBasicType cb)
         {
             throw new NotImplementedException();
         }

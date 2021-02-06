@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,8 @@ using NUnit.Framework;
 using System;
 using Reko.Core;
 using Reko.UnitTests.Mocks;
+using System.ComponentModel.Design;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Typing
 {
@@ -41,8 +43,8 @@ namespace Reko.UnitTests.Typing
 		[SetUp]
 		public void Setup()
 		{
-            var mem = new MemoryArea(Address.Ptr32(0x00400000), new byte[1024]);
-            var arch = new FakeArchitecture();
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00400000), new byte[1024]);
+            var arch = new FakeArchitecture(new ServiceContainer());
             program = new Program
             {
                 Architecture = arch,

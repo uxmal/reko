@@ -5,8 +5,8 @@ TypedAddressOf_entry:
 	// succ:  l1
 l1:
 	word32 r1 = &foo
-	Mem0[r1 + 0x00000000:word16] = 0x1234
-	Mem0[r1 + 0x00000004:byte] = 0x0A
+	Mem0[r1 + 0<32>:word16] = 0x1234<16>
+	Mem0[r1 + 4<32>:byte] = 0xA<8>
 	return
 	// succ:  TypedAddressOf_exit
 TypedAddressOf_exit:
@@ -36,35 +36,35 @@ T_4: (in &foo : ptr32)
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: (ptr32 foo)
-T_5: (in 0x1234 : word16)
+T_5: (in 0x1234<16> : word16)
   Class: Eq_5
   DataType: int16
   OrigDataType: word16
-T_6: (in 0x00000000 : word32)
+T_6: (in 0<32> : word32)
   Class: Eq_6
   DataType: word32
   OrigDataType: word32
-T_7: (in r1 + 0x00000000 : word32)
+T_7: (in r1 + 0<32> : word32)
   Class: Eq_7
   DataType: (ptr32 int16)
   OrigDataType: (ptr32 int16)
-T_8: (in Mem0[r1 + 0x00000000:word16] : word16)
+T_8: (in Mem0[r1 + 0<32>:word16] : word16)
   Class: Eq_5
   DataType: int16
   OrigDataType: int16
-T_9: (in 0x0A : byte)
+T_9: (in 0xA<8> : byte)
   Class: Eq_9
   DataType: byte
   OrigDataType: byte
-T_10: (in 0x00000004 : word32)
+T_10: (in 4<32> : word32)
   Class: Eq_10
   DataType: word32
   OrigDataType: word32
-T_11: (in r1 + 0x00000004 : word32)
+T_11: (in r1 + 4<32> : word32)
   Class: Eq_11
   DataType: (ptr32 byte)
   OrigDataType: (ptr32 byte)
-T_12: (in Mem0[r1 + 0x00000004:byte] : byte)
+T_12: (in Mem0[r1 + 4<32>:byte] : byte)
   Class: Eq_9
   DataType: byte
   OrigDataType: byte

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,9 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -40,9 +42,10 @@ namespace Reko.Arch.Mos6502
         private readonly EndianImageReader rdr;
         private readonly IEnumerator<Instruction> dasm;
         private Instruction instrCur;
-        private InstrClass rtlc;
+        private InstrClass iclass;
         private RtlEmitter m;
 
+#nullable disable
         public Rewriter(Mos6502Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
@@ -50,8 +53,9 @@ namespace Reko.Arch.Mos6502
             this.binder = binder;
             this.host = host;
             this.rdr = rdr;
-            this.dasm = new Disassembler(rdr).GetEnumerator();
+            this.dasm = new Disassembler(arch, rdr).GetEnumerator();
         }
+#nullable enable
 
         private AddressCorrelatedException NYI()
         {
@@ -67,13 +71,13 @@ namespace Reko.Arch.Mos6502
             {
                 this.instrCur = dasm.Current;
                 var instrs = new List<RtlInstruction>();
-                this.rtlc = instrCur.InstructionClass;
+                this.iclass = instrCur.InstructionClass;
                 this.m = new RtlEmitter(instrs);
                 switch (instrCur.Mnemonic)
                 {
                 default:
-                    EmitUnitTest();
-                    rtlc = InstrClass.Invalid;
+                    EmitUnitTest(instrCur);
+                    iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
                 case Mnemonic.illegal: m.Invalid(); break;
@@ -116,8 +120,8 @@ namespace Reko.Arch.Mos6502
                 case Mnemonic.php: Push(AllFlags()); break;
                 case Mnemonic.pla: Pull(Registers.a); break;
                 case Mnemonic.plp: Plp(); break;
-                case Mnemonic.rol: Rotate(PseudoProcedure.Rol); break;
-                case Mnemonic.ror: Rotate(PseudoProcedure.Ror); break;
+                case Mnemonic.rol: Rotate(IntrinsicProcedure.Rol); break;
+                case Mnemonic.ror: Rotate(IntrinsicProcedure.Ror); break;
                 case Mnemonic.rti: Rti(); break;
                 case Mnemonic.rts: Rts(); break;
                 case Mnemonic.sbc: Sbc(); break;
@@ -134,13 +138,7 @@ namespace Reko.Arch.Mos6502
                 case Mnemonic.txs: Copy(Registers.s, Registers.x); break;
                 case Mnemonic.tya: Copy(Registers.a, Registers.y); break;
                 }
-                yield return new RtlInstructionCluster(
-                    instrCur.Address,
-                    instrCur.Length,
-                    instrs.ToArray())
-                {
-                    Class = rtlc
-                };
+                yield return m.MakeCluster(instrCur.Address, instrCur.Length, iclass);
             }
         }
 
@@ -173,8 +171,8 @@ namespace Reko.Arch.Mos6502
             var f = FlagGroupStorage(flags);
             m.Branch(
                 m.Test(cc, f),
-                Address.Ptr16(((Operand)instrCur.Operands[0]).Offset.ToUInt16()),
-                rtlc);
+                Address.Ptr16(((Operand)instrCur.Operands[0]).Offset!.ToUInt16()),
+                iclass);
         }
 
         private Identifier FlagGroupStorage(FlagM flags)
@@ -215,7 +213,7 @@ namespace Reko.Arch.Mos6502
 
         private void Brk()
         {
-            m.SideEffect(host.PseudoProcedure("__brk", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__brk", false, VoidType.Instance));
         }
 
         private void Cmp(RegisterStorage r)
@@ -350,7 +348,7 @@ namespace Reko.Arch.Mos6502
         {
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             var arg = RewriteOperand(instrCur.Operands[0]);
-            m.Assign(arg, host.PseudoProcedure(rot, arg.DataType, arg, Constant.Byte(1)));
+            m.Assign(arg, host.Intrinsic(rot, true, arg.DataType, arg, Constant.Byte(1)));
             m.Assign(c, m.Cond(arg));
         }
 
@@ -411,7 +409,7 @@ namespace Reko.Arch.Mos6502
 
         private Expression RewriteOperand(MachineOperand mop)
         {
-            Constant offset;
+            Address addrZeroPage;
             var op = (Operand) mop;
             switch (op.Mode)
             {
@@ -419,69 +417,48 @@ namespace Reko.Arch.Mos6502
             case AddressMode.Accumulator:
                 return binder.EnsureRegister(Registers.a);
             case AddressMode.Immediate:
-                return op.Offset;
+                return op.Offset!;
             case AddressMode.IndirectIndexed:
                 var y = binder.EnsureRegister(Registers.y);
-                offset = Constant.Word16((ushort) op.Offset.ToByte());
+                addrZeroPage = m.Ptr16(op.Offset!.ToByte());
                 return m.Mem8(
                     m.IAdd(
-                        m.Mem(PrimitiveType.Ptr16, offset),
-                        m.Cast(PrimitiveType.UInt16, y)));
+                        m.Mem(PrimitiveType.Ptr16, addrZeroPage),
+                        m.Convert(y, y.DataType, PrimitiveType.UInt16)));
             case AddressMode.IndexedIndirect:
                 var x = binder.EnsureRegister(Registers.x);
-                offset = Constant.Word16(op.Offset.ToByte());
+                addrZeroPage = m.Ptr16(op.Offset!.ToByte());
                 return m.Mem8(
                     m.Mem(
                         PrimitiveType.Ptr16,
                         m.IAdd(
-                            offset,
-                            m.Cast(PrimitiveType.UInt16, x))));
+                            addrZeroPage,
+                            m.Convert(x, x.DataType, PrimitiveType.UInt16))));
             case AddressMode.Absolute:
-                return m.Mem8(arch.MakeAddressFromConstant(op.Offset, false));
+                return m.Mem8(arch.MakeAddressFromConstant(op.Offset!, false));
             case AddressMode.AbsoluteX:
             case AddressMode.AbsoluteY:
                 return m.Mem8(m.IAdd(
-                    arch.MakeAddressFromConstant(op.Offset, false),
-                    binder.EnsureRegister(op.Register)));
+                    arch.MakeAddressFromConstant(op.Offset!, false),
+                    binder.EnsureRegister(op.Register!)));
             case AddressMode.ZeroPage:
-                 return m.Mem8(arch.MakeAddressFromConstant(op.Offset, false));
+                 return m.Mem8(arch.MakeAddressFromConstant(op.Offset!, false));
             case AddressMode.ZeroPageX:
             case AddressMode.ZeroPageY:
                 return m.Mem8(
                     m.IAdd(
-                        arch.MakeAddressFromConstant(op.Offset, false),
-                        binder.EnsureRegister(op.Register)));
+                        arch.MakeAddressFromConstant(op.Offset!, false),
+                        binder.EnsureRegister(op.Register!)));
             case AddressMode.Indirect:
-                return m.Mem16(m.Mem16(arch.MakeAddressFromConstant(op.Offset, false)));
+                return m.Mem16(m.Mem16(arch.MakeAddressFromConstant(op.Offset!, false)));
             }
         }
 
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
         [Conditional("DEBUG")]
-        private void EmitUnitTest()
+        private void EmitUnitTest(Instruction instr)
         {
-            if (seen.Contains(dasm.Current.Mnemonic))
-                return;
-            seen.Add(dasm.Current.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var bytes = r2.ReadBytes(dasm.Current.Length);
-            Debug.WriteLine("        [Test]");
-            Debug.WriteLine("        public void Rw6502_" + dasm.Current.Mnemonic + "()");
-            Debug.WriteLine("        {");
-            Debug.Write("            BuildTest(");
-            Debug.Write(string.Join(
-                ", ",
-                bytes.Select(b => string.Format("0x{0:X2}", (int) b))));
-            Debug.WriteLine(");\t// " + dasm.Current.ToString());
-            Debug.WriteLine("            AssertCode(");
-            Debug.WriteLine("                \"0|L--|{0}({1}): 1 instructions\",", dasm.Current.Address, dasm.Current.Length);
-            Debug.WriteLine("                \"1|L--|@@@\");");
-            Debug.WriteLine("        }");
-            Debug.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("Rw6502", instr, instr.Mnemonic.ToString(), rdr, "");
         }
-
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,13 +66,15 @@ namespace Reko.Arch.PaRisc
             else
             {
                 //$TODO: r2 is the default link register. If this is not used, come up with a workaround
-                throw new NotImplementedException();
+                iclass = InstrClass.Transfer | InstrClass.Delay | InstrClass.Call;
+                m.CallD(dest, 0);
+                host.Warn(instr.Address, "Unusual link register usage in {0}", instr);
             }
         }
 
         private void RewriteBreak()
         {
-            m.SideEffect(host.PseudoProcedure("__break", VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__break", true, VoidType.Instance));
         }
 
         private void RewriteBe()
@@ -173,7 +175,7 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteRfi(string intrinsic)
         {
-            m.SideEffect(host.PseudoProcedure(intrinsic, VoidType.Instance));
+            m.SideEffect(host.Intrinsic(intrinsic, false, VoidType.Instance));
             m.Return(0, 0);
         }
     }

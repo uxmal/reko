@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using Reko.Core;
 using Reko.Gui.Controls;
@@ -40,11 +42,11 @@ namespace Reko.Gui
         /// <summary>
         /// This event is raised when a file is dropped on the browser service.
         /// </summary>
-        public event EventHandler<FileDropEventArgs> FileDropped;
+        public event EventHandler<FileDropEventArgs>? FileDropped;
 
-        private ITabPage tabPage;
-        protected ITreeView tree;
-        private Project project;
+        private readonly ITabPage tabPage;
+        protected readonly ITreeView tree;
+        private Project? project;
 
         public ProjectBrowserService(IServiceProvider services, ITabPage tabPage, ITreeView treeView)
             : base(treeView, services)
@@ -53,9 +55,9 @@ namespace Reko.Gui
             this.tree = treeView;
         }
 
-        public Program CurrentProgram { get { return FindCurrentProgram(); } }
+        public Program? CurrentProgram => FindCurrentProgram();
 
-        public bool ContainsFocus { get { return tree.Focused;  } }
+        public bool ContainsFocus => tree.Focused;
 
         public override void Clear()
         {
@@ -63,7 +65,7 @@ namespace Reko.Gui
             Load(null);
         }
 
-        public void Load(Project project)
+        public void Load(Project? project)
         {
             var uiPrefsSvc = Services.RequireService<IUiPreferencesService>();
             uiPrefsSvc.UpdateControlStyle(UiStyles.Browser, tree);
@@ -99,8 +101,7 @@ namespace Reko.Gui
             tree.Focus();
         }
 
-
-        private Program FindCurrentProgram()
+        private Program? FindCurrentProgram()
         {
             var obj = SelectedObject;
             while (obj != null)
@@ -108,7 +109,7 @@ namespace Reko.Gui
                 if (obj is Program program)
                     return program;
                 var des = GetDesigner(obj);
-                if (des.Parent == null)
+                if (des is null || des.Parent == null)
                     return null;
                 obj = des.Parent.Component;
             }
@@ -185,11 +186,13 @@ namespace Reko.Gui
             if (des == null)
                 return;
             var program = FindCurrentProgram();
+            if (program is null)
+                return;
             if (!(des.Component is ImageSegment segment))
                 return;
             using (var dlg = Services.RequireService<IDialogFactory>().CreateSegmentEditorDialog())
             {
-                dlg.LoadUserSegment(segment.MemoryArea.Bytes, new UserSegment
+                dlg.LoadUserSegment(segment.MemoryArea, new UserSegment
                 {
                     Name = segment.Name,
                     Address = segment.Address,

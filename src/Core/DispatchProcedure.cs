@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ namespace Reko.Core
         private List<(SyscallInfo, ExternalProcedure)> services;
         private FunctionType dummySig;
 
-        public DispatchProcedure(string name, List<(SyscallInfo, ExternalProcedure)> services) : base(name)
+        public DispatchProcedure(string name, List<(SyscallInfo, ExternalProcedure)> services) : base(name, false)
         {
             this.services = services;
             this.dummySig = new FunctionType();
@@ -52,7 +52,8 @@ namespace Reko.Core
             get { return dummySig; }
             set { throw new NotSupportedException(); }
         }
-        public ExternalProcedure FindService(ProcessorState state)
+
+        public ExternalProcedure? FindService(ProcessorState state)
         {
             foreach (var (si, proc) in services)
             {

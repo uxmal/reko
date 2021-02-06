@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using Reko.Loading;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -39,25 +40,29 @@ namespace Reko.CmdLine
         private readonly ILoader ldr;
         private readonly IDecompiler decompiler;
         private readonly IConfigurationService config;
-        private readonly IDiagnosticsService diagnosticSvc;
         private readonly CmdLineListener listener;
         private Timer timer;
 
         public static void Main(string[] args)
         {
             var services = new ServiceContainer();
-            var listener = new CmdLineListener();
-            var config = RekoConfigurationService.Load();
-            var diagnosticSvc = new CmdLineDiagnosticsService(Console.Out);
+            var listener = new CmdLineListener
+            {
+                Quiet = Console.IsOutputRedirected
+            };
+            var config = RekoConfigurationService.Load(services);
             var fsSvc = new FileSystemServiceImpl();
+            var dcSvc = new DecompilerService();
+            services.AddService<IDecompilerService>(dcSvc);
             services.AddService<DecompilerEventListener>(listener);
             services.AddService<IConfigurationService>(config);
             services.AddService<ITypeLibraryLoaderService>(new TypeLibraryLoaderServiceImpl(services));
-            services.AddService<IDiagnosticsService>(diagnosticSvc);
             services.AddService<IFileSystemService>(fsSvc);
-            services.AddService<IDecompiledFileService>(new DecompiledFileService(fsSvc));
+            services.AddService<IDecompiledFileService>(new DecompiledFileService(fsSvc, listener));
+            services.AddService<ITestGenerationService>(new TestGenerationService(services));
             var ldr = new Loader(services);
             var decompiler = new Decompiler(ldr, services);
+            dcSvc.Decompiler = decompiler;
             var driver = new CmdLineDriver(services, ldr, decompiler, listener);
             driver.Execute(args);
         }
@@ -73,7 +78,6 @@ namespace Reko.CmdLine
             this.decompiler = decompiler;
             this.listener = listener;
             this.config = services.RequireService<IConfigurationService>();
-            this.diagnosticSvc = services.RequireService<IDiagnosticsService>();
         }
 
         public void Execute(string[] args)
@@ -81,6 +85,10 @@ namespace Reko.CmdLine
             var pArgs = ProcessArguments(Console.Out, args);
             if (pArgs == null)
                 return;
+
+            if(pArgs.TryGetValue("--locale", out var localeName)){
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo((string)localeName);
+            }
 
             if (pArgs.TryGetValue("--default-to", out var defaultTo))
             {
@@ -147,11 +155,12 @@ namespace Reko.CmdLine
         private void Decompile(Dictionary<string, object> pArgs)
         {
             pArgs.TryGetValue("--loader", out object loader);
+            var addrLoad = ParseAddress(pArgs, "--base");
             try
             {
                 var fileName = (string) pArgs["filename"];
                 var filePath = Path.GetFullPath(fileName);
-                if (!decompiler.Load(filePath, (string) loader))
+                if (!decompiler.Load(filePath, (string) loader, addrLoad))
                     return;
 
                 decompiler.Project.Programs[0].User.ExtractResources =
@@ -177,6 +186,20 @@ namespace Reko.CmdLine
                 {
                     decompiler.Project.Programs[0].User.ShowBytesInDisassembly = true;
                 }
+                if (pArgs.TryGetValue("aggressive-branch-removal", out object oAggressiveBranchRemoval))
+                {
+                    decompiler.Project.Programs[0].User.AggressiveBranchRemoval =
+                        oAggressiveBranchRemoval is bool flag && flag;
+                }
+                if (pArgs.TryGetValue("debug-types", out var oProcRange))
+                {
+                    decompiler.Project.Programs[0].DebugProcedureRange = ((int, int)) oProcRange;
+                }
+                if (pArgs.TryGetValue("debug-trace-proc", out object oTraceProcs))
+                {
+                    decompiler.Project.Programs[0].User.DebugTraceProcedures =
+                        (HashSet<string>) oTraceProcs;
+                }
                 decompiler.ExtractResources();
                 decompiler.ScanPrograms();
                 if (!pArgs.ContainsKey("scan-only"))
@@ -189,7 +212,21 @@ namespace Reko.CmdLine
             }
             catch (Exception ex)
             {
-                diagnosticSvc.Error(ex, "An error occurred during decompilation.");
+                listener.Error(ex, "An error occurred during decompilation.");
+            }
+        }
+
+        private Address ParseAddress(Dictionary<string, object> pArgs, string key)
+        {
+            if (pArgs.TryGetValue(key, out var osAddr) &&
+                osAddr is string sAddr && 
+                ulong.TryParse(sAddr, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out ulong uAddr))
+            {
+                return Address.Ptr64(uAddr);
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -227,6 +264,11 @@ namespace Reko.CmdLine
                 {
                     decompiler.Project.Programs[0].User.Heuristics = ((string[]) oHeur).ToSortedSet();
                 }
+                if (pArgs.TryGetValue("aggressive-branch-removal", out object oAggressiveBranchRemoval))
+                {
+                    decompiler.Project.Programs[0].User.AggressiveBranchRemoval =
+                        oAggressiveBranchRemoval is bool flag && flag;
+                }
                 decompiler.ScanPrograms();
                 decompiler.AnalyzeDataFlow();
                 decompiler.ReconstructTypes();
@@ -235,7 +277,7 @@ namespace Reko.CmdLine
             }
             catch (Exception ex)
             {
-                diagnosticSvc.Error(ex, "An error occurred during decompilation.");
+                listener.Error(ex, "An error occurred during decompilation.");
             }
         }
 
@@ -288,10 +330,19 @@ namespace Reko.CmdLine
                     Usage(w);
                     return null;
                 }
+                if (arg == "-q" || arg == "--quiet")
+                {
+                    listener.Quiet = true;
+                }
                 else if (arg.StartsWith("--version"))
                 {
                     ShowVersion(w);
                     return null;
+                }
+                else if (args[i] == "--locale")
+                {
+                    if (i < args.Length - 1)
+                        parsedArgs["--locale"] = args[++i];
                 }
                 else if (args[i] == "--arch")
                 {
@@ -405,6 +456,25 @@ namespace Reko.CmdLine
                         parsedArgs["extract-resources"] = "yes";
                     }
                 }
+                else if (args[i] == "--aggressive-branch-removal")
+                {
+                    parsedArgs["aggressive-branch-removal"] = true;
+                }
+                else if (args[i] == "--debug-types")
+                {
+                    if (i < args.Length - 1)
+                    {
+                        parsedArgs["debug-types"] = ParseIntRange(args[++i]);
+                    }
+                }
+                else if (args[i] == "--debug-trace-proc")
+                {
+                    if (i < args.Length - 1)
+                    {
+                        ++i;
+                        parsedArgs["debug-trace-proc"] = new HashSet<string>(args[i].Split(','));
+                    }
+                }
                 else if (arg.StartsWith("-"))
                 {
                     w.WriteLine("error: unrecognized option {0}", arg);
@@ -416,6 +486,24 @@ namespace Reko.CmdLine
                 }
             }
             return parsedArgs;
+        }
+
+        private (int, int) ParseIntRange(string sRange)
+        {
+            int iColon = sRange.IndexOf(':');
+            if (iColon <= 0)
+            {
+                return (0, Convert.ToInt32(sRange));
+            }
+            else
+            {
+                var nStart = Convert.ToInt32(sRange.Remove(iColon));
+                ++iColon;
+                var nEnd = (iColon < sRange.Length)
+                    ? Convert.ToInt32(sRange.Substring(iColon))
+                    : 0;
+                return (nStart, nEnd);
+            }
         }
 
         /// <summary>
@@ -475,6 +563,7 @@ namespace Reko.CmdLine
             DumpEnvironments(config, w, "    {0,-25} {1}");
             w.WriteLine(" --base <address>         Use <address> as the base address of the program.");
             w.WriteLine(" --dasm-address           Display addresses in disassembled machine code.");
+            w.WriteLine(" --dasm-bytes             Display individual bytes in disassembled machine code.");
             w.WriteLine(" --data <hex-bytes>       Supply machine code as hex bytes");
             w.WriteLine(" --default-to <format>    If no executable format can be recognized, default");
             w.WriteLine("                          to one of the following formats:");
@@ -482,15 +571,19 @@ namespace Reko.CmdLine
             w.WriteLine(" --entry <address>        Use <address> as an entry point to the program.");
             w.WriteLine(" --extract-resources <flag>  If <flag> is true, extract any embedded");
             w.WriteLine("                          resources (defaults to true).");
+            w.WriteLine(" -q, --quiet              Suppress most output during execution.");
             w.WriteLine(" --reg <regInit>          Set register to value, where regInit is formatted as");
             w.WriteLine("                          reg_name:value, e.g. sp:FF00");
             w.WriteLine(" --heuristic <h1>[,<h2>...]  Use one of the following heuristics to examine");
             w.WriteLine("                          the binary:");
             w.WriteLine("    shingle               Use shingle assembler to discard data ");
+            w.WriteLine(" --aggressive-branch-removal Be more aggressive in removing unused branches");
             w.WriteLine(" --metadata <filename>    Use the file <filename> as a source of metadata");
             w.WriteLine(" --scan-only              Only scans the binary to find instructions, forgoing");
             w.WriteLine("                          full decompilation.");
             w.WriteLine(" --time-limit <s>         Limit execution time to s seconds");
+            w.WriteLine(" --debug-trace-proc <p1>[,<p2>...]  Debug: trace Reko analysis phases of the");
+            w.WriteLine("                          given procedure names p1, p2 etc.");
             //           01234567890123456789012345678901234567890123456789012345678901234567890123456789
         }
 

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +41,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             dlg.Load += dlg_Load;
             dlg.EnableScript.CheckedChanged += delegate { EnableControls(); };
             dlg.OkButton.Click += OkButton_Click;
+            dlg.OutputPolicies.SelectedIndexChanged += OutputPolicies_SelectedIndexChanged;
         }
 
         private void EnableControls()
@@ -63,6 +66,14 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 dlg.Heuristics.SelectedIndex = 0;
             else
                 dlg.Heuristics.SelectedItem = heuristicDescriptions[dlg.Program.User.Heuristics.First()];
+
+            dlg.OutputPolicies.Items.Add(new ListOption("Separate file per segment", Program.SegmentFilePolicy));
+            dlg.OutputPolicies.Items.Add(new ListOption("Single file per program", Program.SingleFilePolicy));
+            var i = dlg.OutputPolicies.Items.Cast<ListOption>().ToList().FindIndex(x => (string)((ListOption)x).Value == dlg.Program.User.OutputFilePolicy);
+            if (i >= 0)
+            {
+                dlg.OutputPolicies.SelectedIndex = i;
+            }
         }
 
         void OkButton_Click(object sender, EventArgs e)
@@ -82,6 +93,16 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
                 dlg.Program.User.Heuristics.Clear();
             }
+            var optPolicy = (ListOption) dlg.OutputPolicies.SelectedItem;
+            if (optPolicy != null)
+            {
+                dlg.Program.User.OutputFilePolicy = (string) optPolicy.Value;
+            }
+            dlg.Program.User.AggressiveBranchRemoval = dlg.AggressiveBranchRemoval.Checked;
+        }
+
+        void OutputPolicies_SelectedIndexChanged(object sender, EventArgs e)
+        {
         }
     }
 }

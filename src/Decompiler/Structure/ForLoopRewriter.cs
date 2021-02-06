@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ namespace Reko.Structure
 
         public void Transform()
         {
-            RewriteForLoops(proc.Body);
+            RewriteForLoops(proc.Body!);
         }
 
         /// <summary>
@@ -55,8 +55,8 @@ namespace Reko.Structure
         {
             for (int i = 0; i < stmts.Count; ++i)
             {
-                ForLoopCandidate candidate;
-                AbsynFor forLoop;
+                ForLoopCandidate? candidate;
+                AbsynFor? forLoop;
                 switch (stmts[i])
                 {
                 case AbsynWhile whi:
@@ -81,7 +81,7 @@ namespace Reko.Structure
                     if (whileLoop != null)
                     {
                         forLoop = TryRewriteWhileLoop(whileLoop, stmts, i);
-                        stmts[i] = (forLoop != null) ? forLoop : (AbsynStatement) whileLoop;
+                        stmts[i] = forLoop ?? (AbsynStatement) whileLoop;
                     }
                     break;
                 case AbsynSwitch sw:
@@ -94,7 +94,7 @@ namespace Reko.Structure
             stmts.RemoveAll(s => s == null);
         }
 
-        private AbsynFor TryRewriteWhileLoop(AbsynWhile whi, List<AbsynStatement> stmts, int i)
+        private AbsynFor? TryRewriteWhileLoop(AbsynWhile whi, List<AbsynStatement> stmts, int i)
         {
             RewriteForLoops(whi.Body);
             var candidate = TryMakeLoopCandidate(whi.Condition, whi.Body, stmts, i);
@@ -114,7 +114,7 @@ namespace Reko.Structure
         /// </summary>
         /// <remarks>
         /// </remarks>
-        private AbsynWhile TryRewriteGuardedDoWhile(AbsynIf ifStm)
+        private AbsynWhile? TryRewriteGuardedDoWhile(AbsynIf ifStm)
         {
             if (ifStm.Then.Count == 1 && ifStm.Then[0] is AbsynDoWhile doWhile)
             {
@@ -125,9 +125,8 @@ namespace Reko.Structure
                     // Pattern 1
                     return new AbsynWhile(doCond, doWhile.Body);
                 }
-                var ifCondBin = ifStm.Condition as BinaryExpression;
-                var doCondBin = doWhile.Condition as BinaryExpression;
-                if (ifCondBin == null || doCondBin == null)
+                if (!(ifStm.Condition is BinaryExpression ifCondBin) ||
+                    !(doWhile.Condition is BinaryExpression doCondBin))
                     return null;
 
                 if (ifCondBin.Operator == Operator.Ne && 
@@ -154,7 +153,7 @@ namespace Reko.Structure
         /// <param name="container">List of statements in which the loop is located.</param>
         /// <param name="i">Position of the candidate loop within the container.</param>
         /// <returns>A for loop candidate if a loop has been recognized, otherwise null.</returns>
-        public ForLoopCandidate TryMakeLoopCandidate(
+        public ForLoopCandidate? TryMakeLoopCandidate(
             Expression cond,
             List<AbsynStatement> loopBody,
             List<AbsynStatement> container, 
@@ -168,25 +167,26 @@ namespace Reko.Structure
             if (loopVariable == null)
                 return null;
 
-            var initializer = FindInitializer(loopVariable, container, i);
+            var (initializer, deadDecl) = FindInitializer(loopVariable, container, i);
             var candidate = new ForLoopCandidate
             {
                 LoopBody = loopBody,
                 Container = container,
                 LoopVariable = loopVariable,
                 Initializer = initializer,
+                DeadDeclaration = deadDecl,
                 Condition = cmp,
                 Update = update,
             };
             return candidate;
         }
 
-        private (Identifier,AbsynAssignment) IdentifyLoopVariable(
+        private (Identifier?,AbsynAssignment?) IdentifyLoopVariable(
             List<AbsynStatement> loopBody,
             BinaryExpression cmp)
         {
             List<AbsynAssignment> updates;
-            Identifier loopVariable;
+            Identifier? loopVariable;
             var idLeft = FindLoopExpressionUse(cmp.Left);
             var idRight = FindLoopExpressionUse(cmp.Right);
             var leftUpdates = FindUpdateAssignments(idLeft, loopBody);
@@ -208,51 +208,62 @@ namespace Reko.Structure
             return (loopVariable, updates[0]);
         }
 
-        private Identifier FindLoopExpressionUse(Expression exp)
+        private Identifier? FindLoopExpressionUse(Expression exp)
         {
             if (exp is Identifier id)
                 return id;
             if (exp is Cast c && c.Expression is Identifier castId)
                 return castId;
+            if (exp is Conversion conv && conv.Expression is Identifier convId)
+                return convId;
             return null;
         }
 
-        private AbsynAssignment FindInitializer(Identifier loopVariable, List<AbsynStatement> stmts, int i)
+        /// <summary>
+        /// Attempt to find the statement that initalizes the for loop variable. 
+        /// </summary>
+        /// <param name="loopVariable">The index variable of the potential loop.</param>
+        /// <param name="stmts">The statements in which the loop is located.</param>
+        /// <param name="i">The location of the loop within those statements.</param>
+        /// <returns>If an initializing statement is found, a pair consisting of a possibly
+        /// freshly created initializing statement and a possible old declaration that needs
+        /// to be deleted.
+        /// </returns>
+        private (AbsynAssignment?, AbsynDeclaration?) FindInitializer(Identifier loopVariable, List<AbsynStatement> stmts, int i)
         {
             for (i = i - 1; i >= 0; --i)
             {
                 if (stmts[i] is AbsynAssignment ass)
                 {
                     if (ass.Dst == loopVariable)
-                        return ass;
+                        return (ass, null);
                     if (UsedIdentifierFinder.Contains(ass.Dst, loopVariable))
-                        return null;
+                        return (null, null);
                     if (UsedIdentifierFinder.Contains(ass.Src, loopVariable))
-                        return null;
+                        return (null, null);
                 }
                 else if (stmts[i] is AbsynDeclaration decl)
                 {
                     if (decl.Identifier == loopVariable)
                     {
                         if (decl.Expression == null)
-                            return null;
+                            return (null, null);
                         var init = new AbsynAssignment(decl.Identifier, decl.Expression);
-                        decl.Expression = null;
-                        return init;
+                        return (init, decl);
                     }
                     else
                     {
-                        if (UsedIdentifierFinder.Contains(decl.Expression, loopVariable))
-                            return null;
+                        if (UsedIdentifierFinder.Contains(decl.Expression!, loopVariable))
+                            return (null, null);
                     }
                 }
                 else
-                    return null;
+                    return (null, null);
             }
-            return null;
+            return (null, null);
         }
 
-        private List<AbsynAssignment> FindUpdateAssignments(Identifier id, List<AbsynStatement> stmts)
+        private List<AbsynAssignment> FindUpdateAssignments(Identifier? id, List<AbsynStatement> stmts)
         {
             var updates = new List<AbsynAssignment>();
             if (id == null)
@@ -313,23 +324,30 @@ namespace Reko.Structure
 
         private AbsynFor MakeForLoop(ForLoopCandidate candidate, List<AbsynStatement> stmts)
         {
-            var iInit = stmts.IndexOf(candidate.Initializer);
+            var iInit = candidate.Initializer is null
+                ? -1 
+                : stmts.IndexOf(candidate.Initializer);
             if (iInit >= 0)
             {
-                stmts[iInit] = null;
+                // Putting in nulls is bad but we will remove them later.
+                stmts[iInit] = null!;
             }
-            candidate.LoopBody.Remove(candidate.Update);
+            if (candidate.DeadDeclaration != null)
+            {
+                candidate.DeadDeclaration.Expression = null;
+            }
+            candidate.LoopBody!.Remove(candidate.Update!);
             var forLoop = new AbsynFor(
-                candidate.Initializer,
-                candidate.Condition,
-                candidate.Update,
+                candidate.Initializer!,
+                candidate.Condition!,
+                candidate.Update!,
                 candidate.LoopBody);
             return forLoop;
         }
 
         private class UsedIdentifierFinder : ExpressionVisitorBase
         {
-            private Identifier id;
+            private Identifier? id;
             private bool found;
 
             public static bool Contains(Expression expr, Identifier id)
@@ -350,11 +368,12 @@ namespace Reko.Structure
 
     public class ForLoopCandidate
     {
-        public List<AbsynStatement> Container;
-        public List<AbsynStatement> LoopBody;
-        public Identifier LoopVariable;
-        public AbsynAssignment Initializer;
-        public Expression Condition;
-        public AbsynAssignment Update;
+        public List<AbsynStatement>? Container;
+        public List<AbsynStatement>? LoopBody;
+        public Identifier? LoopVariable;
+        public AbsynDeclaration? DeadDeclaration;
+        public AbsynAssignment? Initializer;
+        public Expression? Condition;
+        public AbsynAssignment? Update;
     }
 }

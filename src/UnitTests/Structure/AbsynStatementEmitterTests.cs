@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Structure
             emitter.EmitStatement(m.Declare(m.Local32("dwLoc18"), m.Word32(1)));
             Assert.AreEqual(1, stms.Count);
             AbsynAssignment ass= (AbsynAssignment) stms[0];
-            Assert.AreEqual("dwLoc18 = 0x00000001;", ass.ToString());
+            Assert.AreEqual("dwLoc18 = 1<32>;", ass.ToString());
         }
 
     }

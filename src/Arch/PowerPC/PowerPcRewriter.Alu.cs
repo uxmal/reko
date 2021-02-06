@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,12 +48,13 @@ namespace Reko.Arch.PowerPC
             RewriteAdd(opD, opL, opR);
         }
 
-        public void RewriteAddc()
+        private void RewriteAddc()
         {
-            var opL = RewriteOperand(instr.Operands[1], true);
+            var opL = RewriteOperand(instr.Operands[1]);
             var opR = RewriteOperand(instr.Operands[2]);
             var opD = RewriteOperand(instr.Operands[0]);
             RewriteAdd(opD, opL, opR);
+            MaybeEmitCr0(opD);
             var xer = binder.EnsureRegister(arch.xer);
             m.Assign(xer, m.Cond(opD));
         }
@@ -86,7 +87,7 @@ namespace Reko.Arch.PowerPC
         public void RewriteAddi()
         {
             var opL = RewriteOperand(instr.Operands[1], true);
-            var opR = RewriteOperand(instr.Operands[2]);
+            var opR = RewriteSignedOperand(instr.Operands[2]);
             var opD = RewriteOperand(instr.Operands[0]);
             RewriteAdd(opD, opL, opR);
         }
@@ -94,7 +95,7 @@ namespace Reko.Arch.PowerPC
         public void RewriteAddic()
         {
             var opL = RewriteOperand(instr.Operands[1]);
-            var opR = RewriteOperand(instr.Operands[2]);
+            var opR = RewriteSignedOperand(instr.Operands[2]);
             var opD = RewriteOperand(instr.Operands[0]);
             RewriteAdd(opD, opL, opR);
             var xer = binder.EnsureRegister(arch.xer);
@@ -172,7 +173,7 @@ namespace Reko.Arch.PowerPC
             var b = RewriteOperand(instr.Operands[2]);
             m.Assign(
                 d,
-                host.PseudoProcedure("__bcdadd", d.DataType, a, b));
+                host.Intrinsic("__bcdadd", true, d.DataType, a, b));
         }
 
         private void RewriteCmp()
@@ -244,41 +245,41 @@ namespace Reko.Arch.PowerPC
             var src = RewriteOperand(instr.Operands[1]);
             if (dt.Size < arch.WordWidth.Size)
             {
-                src = m.Cast(dt, src);
+                src = m.Convert(src, src.DataType, dt);
             }
-            m.Assign(dst, host.PseudoProcedure(name, PrimitiveType.UInt32, src));
+            m.Assign(dst, host.Intrinsic(name, true, PrimitiveType.UInt32, src));
         }
 
         private void RewriteCreqv()
         {
-            var cr = RewriteOperand(instr.Operands[0]);
-            var r = RewriteOperand(instr.Operands[1]);
-            var i = RewriteOperand(instr.Operands[2]);
-            m.SideEffect(host.PseudoProcedure("__creqv", VoidType.Instance, cr, r, i));
+            var cr = ImmOperand(instr.Operands[0]);
+            var r = ImmOperand(instr.Operands[1]);
+            var i = ImmOperand(instr.Operands[2]);
+            m.SideEffect(host.Intrinsic("__creqv", true, VoidType.Instance, cr, r, i));
         }
 
         private void RewriteCrnor()
         {
-            var cr = RewriteOperand(instr.Operands[0]);
-            var r = RewriteOperand(instr.Operands[1]);
-            var i = RewriteOperand(instr.Operands[2]);
-            m.SideEffect(host.PseudoProcedure("__crnor", VoidType.Instance, cr, r, i));
+            var cr = ImmOperand(instr.Operands[0]);
+            var r = ImmOperand(instr.Operands[1]);
+            var i = ImmOperand(instr.Operands[2]);
+            m.SideEffect(host.Intrinsic("__crnor", true, VoidType.Instance, cr, r, i));
         }
 
         private void RewriteCror()
         {
-            var cr = RewriteOperand(instr.Operands[0]);
-            var r = RewriteOperand(instr.Operands[1]);
-            var i = RewriteOperand(instr.Operands[2]);
-            m.SideEffect(host.PseudoProcedure("__cror", VoidType.Instance, cr, r, i));
+            var cr = ImmOperand(instr.Operands[0]);
+            var r = ImmOperand(instr.Operands[1]);
+            var i = ImmOperand(instr.Operands[2]);
+            m.SideEffect(host.Intrinsic("__cror", true, VoidType.Instance, cr, r, i));
         }
 
         private void RewriteCrxor()
         {
-            var cr = RewriteOperand(instr.Operands[0]);
-            var r = RewriteOperand(instr.Operands[1]);
-            var i = RewriteOperand(instr.Operands[2]);
-            m.SideEffect(host.PseudoProcedure("__crxor", VoidType.Instance, cr, r, i));
+            var cr = ImmOperand(instr.Operands[0]);
+            var r = ImmOperand(instr.Operands[1]);
+            var i = ImmOperand(instr.Operands[2]);
+            m.SideEffect(host.Intrinsic("__crxor", true, VoidType.Instance, cr, r, i));
         }
 
         private void RewriteDivd(Func<Expression,Expression,Expression> div)
@@ -312,13 +313,9 @@ namespace Reko.Arch.PowerPC
         {
             var opS = RewriteOperand(instr.Operands[1]);
             var opD = RewriteOperand(instr.Operands[0]);
-            var tmp = binder.CreateTemporary(size);
-            m.Assign(tmp, m.Cast(tmp.DataType, opS));
-            m.Assign(
-                opD, 
-                m.Cast(
-                    PrimitiveType.Create(Domain.SignedInt, opD.DataType.BitSize),
-                    tmp));
+            var dtDst = PrimitiveType.Create(Domain.SignedInt, opD.DataType.BitSize);
+
+            m.Assign(opD, m.Convert(m.Slice(size, opS, 0), size, dtDst));
             MaybeEmitCr0(opD);
         }
 
@@ -346,7 +343,7 @@ namespace Reko.Arch.PowerPC
         private void RewriteMftb()
         {
             var dst = RewriteOperand(instr.Operands[0]);
-            var src = host.PseudoProcedure("__mftb", dst.DataType);
+            var src = host.Intrinsic("__mftb", true, dst.DataType);
             m.Assign(dst, src);
         }
 
@@ -361,7 +358,7 @@ namespace Reko.Arch.PowerPC
         {
             var dst = RewriteOperand(instr.Operands[0]);
             var src = RewriteOperand(instr.Operands[1]);
-            m.SideEffect(host.PseudoProcedure("__mtcrf", VoidType.Instance, dst, src));
+            m.SideEffect(host.Intrinsic("__mtcrf", true, VoidType.Instance, dst, src));
         }
 
         private void RewriteMtctr()
@@ -405,12 +402,10 @@ namespace Reko.Arch.PowerPC
             MaybeEmitCr0(opD);
         }
 
-
-
         private void RewriteMull()
         {
             var opL = RewriteOperand(instr.Operands[1]);
-            var opR = RewriteOperand(instr.Operands[2]);
+            var opR = RewriteSignedOperand(instr.Operands[2]);
             var opD = RewriteOperand(instr.Operands[0]);
             m.Assign(opD, m.IMul(opL, opR));
             MaybeEmitCr0(opD);
@@ -430,16 +425,37 @@ namespace Reko.Arch.PowerPC
             var opL = RewriteOperand(instr.Operands[1]);
             var opR = RewriteOperand(instr.Operands[2]);
             var opD = RewriteOperand(instr.Operands[0]);
-            var s = (opL == opR)
-                ? opL
-                :  m.Or(opL, opR);
-            if (negate)
-                s = m.Comp(s);
+            RewriteOr(opD, opL, opR, negate);
+        }
+
+        private void RewriteOr(Expression opD, Expression opL, Expression opR, bool negate)
+        {
+            Expression s;
+            if (opL.IsZero && opR.IsZero)
+            {
+                var c = negate ? ~0ul : 0ul;
+                s = Constant.Create(opD.DataType, c);
+            } else {
+                if (opR.IsZero || opL == opR)
+                {
+                    s = opL;
+                }
+                else if (opL.IsZero)
+                {
+                    s = opR;
+                }
+                else
+                {
+                    s = m.Or(opL, opR);
+                }
+                if (negate)
+                    s = m.Comp(s);
+            }
             m.Assign(opD, s);
             MaybeEmitCr0(opD);
         }
 
-        private void RewriteOrc(bool negate)
+        private void RewriteOrc()
         {
             var opL = RewriteOperand(instr.Operands[1]);
             var opR = RewriteOperand(instr.Operands[2]);
@@ -453,11 +469,11 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteOris()
         {
-            m.Assign(
+            RewriteOr(
                 RewriteOperand(instr.Operands[0]),
-                m.Or(
-                    RewriteOperand(instr.Operands[1]),
-                    Shift16(dasm.Current.Operands[2])));
+                RewriteOperand(instr.Operands[1]),
+                Shift16(dasm.Current.Operands[2]),
+                false);
         }
 
         void RewriteRlwimi()
@@ -466,13 +482,14 @@ namespace Reko.Arch.PowerPC
             var dst = RewriteOperand(instr.Operands[0]);
             m.Assign(
                 dst,
-                host.PseudoProcedure(
+                host.Intrinsic(
                     "__rlwimi",
+                    true,
                     PrimitiveType.Word32,
                     src,
-                    RewriteOperand(instr.Operands[2]),
-                    RewriteOperand(instr.Operands[3]),
-                    RewriteOperand(instr.Operands[4]))
+                    ImmOperand(instr.Operands[2]),
+                    ImmOperand(instr.Operands[3]),
+                    ImmOperand(instr.Operands[4]))
                 );
         }
 
@@ -482,116 +499,127 @@ namespace Reko.Arch.PowerPC
             var rs = RewriteOperand(instr.Operands[1]);
             byte sh = ((Constant)RewriteOperand(instr.Operands[2])).ToByte();
             byte mb = ((Constant)RewriteOperand(instr.Operands[3])).ToByte();
-            ulong maskBegin = (ulong)(1ul << (64 - mb)) - 1;
+            ulong maskBegin = (1ul << (64 - mb)) - 1;
             if (sh == 0)
             {
                 m.Assign(rd, m.And(rs, Constant.Word64(maskBegin)));
             }
             else if (sh + mb == 64)
             {
-                m.Assign(rd, m.Shr(rs, (byte)mb));
+                m.Assign(rd, m.Shr(rs, mb));
             }
             else if (sh == 0x3F && mb == 0x3F)
             {
-                m.Assign(rd, m.Shr(rs, (byte)mb));
+                m.Assign(rd, m.Shr(rs, mb));
             }
             else if (sh < mb)
             {
                 m.Assign(rd, m.And(
-                    m.Shl(rs, (byte)sh),
-                    maskBegin));
-            }
-            else if (sh == 0x39 && mb == 0x38)
-            {
-                m.Assign(rd, m.And(
-                    m.Shr(rs, (byte)(64 - sh)),
-                    maskBegin));
-            }
-            else if (sh == 0x31 && mb == 0x3F)
-            {
-                m.Assign(rd, m.And(
-                    m.Shr(rs, (byte)(64 - sh)),
-                    maskBegin));
-            }
-            else if (sh == 0x10 && mb == 0x2F)
-            {
-                m.Assign(rd, m.And(
-                    m.Shr(rs, (byte)(64 - sh)),
-                    maskBegin));
-            }
-            else if (sh == 0x08 && mb == 0x37)
-            {
-                m.Assign(rd, m.And(
-                    m.Shr(rs, (byte)(64 - sh)),
-                    maskBegin));
-            }
-            else if (sh == 0x18 && mb == 0x27)
-            {
-                m.Assign(rd, m.And(
-                    m.Shr(rs, (byte)(64 - sh)),
-                    maskBegin));
-            }
-            else if (sh == 0x20 && mb == 0x1F)
-            {
-                m.Assign(rd, m.And(
-                    m.Shr(rs, (byte)(64 - sh)),
-                    maskBegin));
-            }
-            else if (sh == 0x02 && mb == 0x1E)
-            {
-                m.Assign(rd, m.And(
-                    m.Shr(rs, (byte)(64 - sh)),
-                    maskBegin));
-            }
-            else if (sh == 0x38 && mb == 0x3F)
-            {
-                m.Assign(rd, m.And(
-                    m.Shr(rs, (byte)(64 - sh)),
-                    maskBegin));
-            }
-            else if (sh == 0x37 && mb == 0x3F)
-            {
-                m.Assign(rd, m.And(
-                    m.Shr(rs, (byte)(64 - sh)),
-                    maskBegin));
-            }
-            else if (sh == 0x21 && mb == 0x3F)
-            {
-                m.Assign(rd, m.And(
-                    m.Shr(rs, (byte)(64 - sh)),
-                    maskBegin));
-            }
-            else if (sh == 0x08 && mb == 0x30)
-            {
-                m.Assign(rd, m.And(
-                    m.Shr(rs, (byte)(64 - sh)),
-                    maskBegin));
-            }
-            else if (sh == 0x3D && mb == 0x23)
-            {
-                m.Assign(rd, m.And(
-                    m.Shr(rs, (byte)(64 - sh)),
-                    maskBegin));
-            }
-            else if (sh == 0x3E && mb == 0x22)
-            {
-                m.Assign(rd, m.And(
-                    m.Shr(rs, (byte)(64 - sh)),
+                    m.Shl(rs, (byte) sh),
                     maskBegin));
             }
             else if (mb == 0x00)
             {
-                m.Assign(rd, host.PseudoProcedure(PseudoProcedure.Rol, rd.DataType, rs, Constant.Byte((byte)sh)));
+                m.Assign(rd, host.Intrinsic(IntrinsicProcedure.Rol, true, rd.DataType, rs, Constant.Byte((byte) sh)));
             }
             else
             {
-                host.Error(
-                    instr.Address,
-                    string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
-                EmitUnitTest();
-                rtlc = InstrClass.Invalid;
-                m.Invalid();
-                return;
+                var beExtBitpos = (sh + mb) - 64;
+                var extBitsize = 64 - mb;
+                if (0 <= beExtBitpos && beExtBitpos < 64)
+                {
+                    //$TODO: check this logic.
+                    var dtSlice = PrimitiveType.CreateWord(extBitsize);
+                    m.Assign(rd, m.Convert(m.Slice(dtSlice, rs, 63 - beExtBitpos), dtSlice, rd.DataType));
+                }
+                else if (sh == 0x39 && mb == 0x38)
+                {
+                    m.Assign(rd, m.And(
+                        m.Shr(rs, (byte) (64 - sh)),
+                        maskBegin));
+                }
+                else if (sh == 0x31 && mb == 0x3F)
+                {
+                    m.Assign(rd, m.And(
+                        m.Shr(rs, (byte) (64 - sh)),
+                        maskBegin));
+                }
+                else if (sh == 0x10 && mb == 0x2F)
+                {
+                    m.Assign(rd, m.And(
+                        m.Shr(rs, (byte) (64 - sh)),
+                        maskBegin));
+                }
+                else if (sh == 0x08 && mb == 0x37)
+                {
+                    m.Assign(rd, m.And(
+                        m.Shr(rs, (byte) (64 - sh)),
+                        maskBegin));
+                }
+                else if (sh == 0x18 && mb == 0x27)
+                {
+                    m.Assign(rd, m.And(
+                        m.Shr(rs, (byte) (64 - sh)),
+                        maskBegin));
+                }
+                else if (sh == 0x20 && mb == 0x1F)
+                {
+                    m.Assign(rd, m.And(
+                        m.Shr(rs, (byte) (64 - sh)),
+                        maskBegin));
+                }
+                else if (sh == 0x02 && mb == 0x1E)
+                {
+                    m.Assign(rd, m.And(
+                        m.Shr(rs, (byte) (64 - sh)),
+                        maskBegin));
+                }
+                else if (sh == 0x38 && mb == 0x3F)
+                {
+                    m.Assign(rd, m.And(
+                        m.Shr(rs, (byte) (64 - sh)),
+                        maskBegin));
+                }
+                else if (sh == 0x37 && mb == 0x3F)
+                {
+                    m.Assign(rd, m.And(
+                        m.Shr(rs, (byte) (64 - sh)),
+                        maskBegin));
+                }
+                else if (sh == 0x21 && mb == 0x3F)
+                {
+                    m.Assign(rd, m.And(
+                        m.Shr(rs, (byte) (64 - sh)),
+                        maskBegin));
+                }
+                else if (sh == 0x08 && mb == 0x30)
+                {
+                    m.Assign(rd, m.And(
+                        m.Shr(rs, (byte) (64 - sh)),
+                        maskBegin));
+                }
+                else if (sh == 0x3D && mb == 0x23)
+                {
+                    m.Assign(rd, m.And(
+                        m.Shr(rs, (byte) (64 - sh)),
+                        maskBegin));
+                }
+                else if (sh == 0x3E && mb == 0x22)
+                {
+                    m.Assign(rd, m.And(
+                        m.Shr(rs, (byte) (64 - sh)),
+                        maskBegin));
+                }
+                else
+                {
+                    host.Error(
+                        instr.Address,
+                        string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
+                    EmitUnitTest();
+                    iclass = InstrClass.Invalid;
+                    m.Invalid();
+                    return;
+                }
             }
             MaybeEmitCr0(rd);
         }
@@ -622,11 +650,30 @@ namespace Reko.Arch.PowerPC
             }
             else if (me == 63)
             {
-                // rotldi
-                m.Assign(rd, host.PseudoProcedure(
-                    PseudoProcedure.Rol,
+                // rotldi: The mask is 0b111.....111, so we have a full rotation
+                m.Assign(rd, host.Intrinsic(
+                    IntrinsicProcedure.Rol,
+                    true,
                     PrimitiveType.Word64,
                     rs, Constant.Byte(sh)));
+            }
+            else if (me != 0 && sh > 0)
+            {
+                //$TODO: check this logic
+                var wordSize = me - 1;
+                var bitpos = 63 - sh;   // convert to reko's little endian bit positions.
+                var dt = PrimitiveType.CreateWord(wordSize);
+                var slice = m.Convert(m.Slice(dt, rs, bitpos), dt, rd.DataType);
+
+                m.Assign(
+                    rd,
+                    m.Shl(slice, 64 - wordSize));
+            }
+            else if (sh == 0)
+            {
+                // No rotation, just mask the low bits.
+                var mask = (ulong) -(1L << (63 - me));
+                m.Assign(rd, m.And(rs, mask));
             }
             else
             {
@@ -634,7 +681,7 @@ namespace Reko.Arch.PowerPC
                     instr.Address,
                     string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
                 EmitUnitTest();
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
@@ -648,11 +695,11 @@ namespace Reko.Arch.PowerPC
             byte sh = ((Constant)RewriteOperand(instr.Operands[2])).ToByte();
             byte me = ((Constant)RewriteOperand(instr.Operands[3])).ToByte();
 
-            MaybeEmitCr0(rd);
-            if (sh == 0x20 && me == 0x00)
+            var n = 64 - (sh + me);
+            if (0 < n && n < 64)
             {
-                m.Assign(rd,
-                    m.Dpb(rd, m.Cast(PrimitiveType.Word32, rs), 0x20));
+                var slice = m.Slice(PrimitiveType.CreateWord(n), rs, 0);
+                Dpb(rd, slice, sh);
             }
             else
             {
@@ -660,12 +707,45 @@ namespace Reko.Arch.PowerPC
                     instr.Address,
                     string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
                 EmitUnitTest();
-                rtlc = InstrClass.Invalid;
+                iclass = InstrClass.Invalid;
                 m.Invalid();
                 return;
             }
             MaybeEmitCr0(rd);
+        }
 
+        private void Dpb(Expression dst, Expression bits, int offset)
+        {
+            int dstBitsLeft = dst.DataType.BitSize;
+            var elems = new List<Expression>(4);
+            if (offset > 0)
+            {
+                var dtLo = PrimitiveType.CreateWord(offset);
+                var tmp = binder.CreateTemporary(dtLo);
+                m.Assign(tmp, m.Slice(dtLo, dst, 0));
+                elems.Add(tmp);
+                dstBitsLeft -= offset;
+            }
+            elems.Add(bits);
+            dstBitsLeft -= bits.DataType.BitSize;
+
+            if (dstBitsLeft > 0)
+            {
+                var dtHi = PrimitiveType.CreateWord(dstBitsLeft);
+                var tmp = binder.CreateTemporary(dtHi);
+                m.Assign(tmp, m.Slice(dtHi, dst, dst.DataType.BitSize - dstBitsLeft));
+                elems.Add(tmp);
+            }
+
+            if (elems.Count == 1)
+            {
+                m.Assign(dst, elems[0]);
+            }
+            else
+            {
+                elems.Reverse();
+                m.Assign(dst, m.Seq(dst.DataType, elems.ToArray()));
+            }
         }
 
         void RewriteRlwinm()
@@ -706,9 +786,9 @@ namespace Reko.Arch.PowerPC
             else if (mb == 0 && me == 31)
             {
                 if (sh < 16)
-                    m.Assign(rd, host.PseudoProcedure(PseudoProcedure.Rol, PrimitiveType.Word32, rs, Constant.Byte(sh)));
+                    m.Assign(rd, host.Intrinsic(IntrinsicProcedure.Rol, true, PrimitiveType.Word32, rs, Constant.Byte(sh)));
                 else
-                    m.Assign(rd, host.PseudoProcedure(PseudoProcedure.Ror, PrimitiveType.Word32, rs, Constant.Byte((byte)(32 - sh))));
+                    m.Assign(rd, host.Intrinsic(IntrinsicProcedure.Ror, true, PrimitiveType.Word32, rs, Constant.Byte((byte)(32 - sh))));
             }
             else if (me == 31)
             {
@@ -747,8 +827,9 @@ namespace Reko.Arch.PowerPC
             {
                 //$TODO: yeah, this one is hard...
                 m.Assign(rd,
-                    host.PseudoProcedure(
+                    host.Intrinsic(
                         "__rlwinm",
+                        true,
                         PrimitiveType.Word32,
                         rs,
                         Constant.Byte(sh),
@@ -774,7 +855,7 @@ namespace Reko.Arch.PowerPC
             var sh = RewriteOperand(instr.Operands[2]);
             byte mb = ((Constant)RewriteOperand(instr.Operands[3])).ToByte();
             byte me = ((Constant)RewriteOperand(instr.Operands[4])).ToByte();
-            var rol = host.PseudoProcedure(PseudoProcedure.Rol, rd.DataType, rs, sh );
+            var rol = host.Intrinsic(IntrinsicProcedure.Rol, true, rd.DataType, rs, sh );
             if (mb == 0 && me == 31)
             {
                 m.Assign(rd, rol);

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,14 +46,11 @@ namespace Reko.ImageLoaders.Elf
             var rdr = loader.CreateReader(shdr.FileOffset);
             for (ulong i = 0; i < entries; ++i)
             {
-                uint offset;
-                if (!rdr.TryReadUInt32(out offset))
+                if (!rdr.TryReadUInt32(out uint offset))
                     return;
-                uint info;
-                if (!rdr.TryReadUInt32(out info))
+                if (!rdr.TryReadUInt32(out uint info))
                     return;
-                int addend;
-                if (!rdr.TryReadInt32(out addend))
+                if (!rdr.TryReadInt32(out int addend))
                     return;
 
                 uint sym = info >> 8;
@@ -79,17 +76,16 @@ namespace Reko.ImageLoaders.Elf
         {
             var entries = shdr.EntryCount();
             var symtab = shdr.LinkedSection;
+            if (symtab.FileOffset == 0)
+                return;
             var rdr = loader.CreateReader(shdr.FileOffset);
             for (ulong i = 0; i < entries; ++i)
             {
-                ulong offset;
-                if (!rdr.TryReadUInt64(out offset))
+                if (!rdr.TryReadUInt64(out ulong offset))
                     return;
-                ulong info;
-                if (!rdr.TryReadUInt64(out info))
+                if (!rdr.TryReadUInt64(out ulong info))
                     return;
-                ulong addend;
-                if (!rdr.TryReadUInt64(out addend))
+                if (!rdr.TryReadUInt64(out ulong addend))
                     return;
 
                 ulong sym = info >> 32;

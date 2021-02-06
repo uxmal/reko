@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,10 +38,10 @@ namespace Reko.Core.Output
 		}
 
         /// <summary>
-        /// This method is used to indent with spaces or tabs before the
-        /// code on this line.
+        /// Indents the current line to the level specified by the <see cref="Indentation"/>
+        /// property.
         /// </summary>
-		public void Indent()
+		public virtual void Indent()
 		{
 			int n = Indentation;
 			while (n >= TabSize)
@@ -60,7 +60,7 @@ namespace Reko.Core.Output
 		}
 
 		public int Indentation { get; set; }
-		public int TabSize  {get; set; }
+		public int TabSize {get; set; }
         public bool UseTabs { get; set; }
 
         /// <summary>
@@ -103,6 +103,8 @@ namespace Reko.Core.Output
         public abstract void WriteType(string typeName, DataType dt);
 
         public abstract void WriteLine();
+
+        public abstract void WriteLabel(string label, object block);
 
         public abstract void WriteLine(string s);
 
@@ -157,6 +159,10 @@ namespace Reko.Core.Output
         }
 
         public override void WriteKeyword(string keyword)
+        {
+        }
+
+        public override void WriteLabel(string label, object block)
         {
         }
 

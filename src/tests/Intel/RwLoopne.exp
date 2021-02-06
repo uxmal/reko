@@ -20,36 +20,36 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	si = Mem0[ds:0x0100:word16]
+	si = Mem0[ds:0x100<16>:word16]
 	cx = Mem0[ds:si:word16]
-	si = si + 0x0001
+	si = si + 1<16>
 	SZO = cond(si)
-	si = si + 0x0001
+	si = si + 1<16>
 	SZO = cond(si)
 	// succ:  l0C00_0008
 l0C00_0008:
 	al = Mem0[ds:si:byte]
-	si = si + 0x0001
+	si = si + 1<i16>
 	SCZO = cond(al - ah)
-	cx = cx - 0x0001
-	branch Test(NE,Z) && cx != 0x0000 l0C00_0008
+	cx = cx - 1<16>
+	branch Test(NE,Z) && cx != 0<16> l0C00_0008
 	// succ:  l0C00_000D l0C00_0008
 l0C00_000D:
-	si = Mem0[ds:0x0100:word16]
+	si = Mem0[ds:0x100<16>:word16]
 	ax = Mem0[ds:si:word16]
-	si = si + 0x0002
+	si = si + 2<i16>
 	al = al ^ al
 	SZO = cond(al)
 	C = false
 	// succ:  l0C00_0014
 l0C00_0014:
 	Mem0[es:di:byte] = al
-	di = di + 0x0001
-	cx = cx - 0x0001
-	branch cx != 0x0000 l0C00_0014
+	di = di + 1<i16>
+	cx = cx - 1<16>
+	branch cx != 0<16> l0C00_0014
 	// succ:  l0C00_0017 l0C00_0014
 l0C00_0017:
 	return

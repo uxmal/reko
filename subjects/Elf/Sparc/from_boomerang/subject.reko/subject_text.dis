@@ -1,0 +1,256 @@
+void _start(word32 g1, word32 o2, word32 o3, word32 o4, word32 o5, word32 o7, word32 fsr, word32 dwArg40)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  fsr:[0..31] g1:[0..31] o2:[0..31] o3:[0..31] o4:[0..31] o5:[0..31] o7:[0..31] Stack +0040:[0..31]
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+_start_exit:
+_start_entry:
+l00010958:
+	Mem8[0x20E60<32>:word32] = fp + 0x44<32>
+	Mem13[0x20E3C<32>:word32] = fp + 0x44<32> + ((dwArg40 << 2<32>) + 4<32>)
+	branch true l00010958_ds_t
+l00010958_ds_t:
+l00010958_ds_f:
+l00010994:
+	Mem27[0x20E58<32>:word32] = fsr
+	Mem33[0x20E58<32>:word32] = Mem27[0x20E58<32>:word32] & 0x303FFFFF<32>
+	branch true l00010994_ds_t
+l00010994_ds_t:
+l00010994_ds_f:
+l000109E8:
+	Mem44[0x20E5C<32>:word32] = 1<32>
+l000109F8:
+	branch g1 == 0<32> l000109F8_ds_t
+l000109F8_ds_t:
+l00010A10:
+	atexit(0x10CB8<32>)
+	_init(0x10CB8<32>, 0x20C00<32>, o2, o3, o4, o5, o7)
+l000109F8_ds_f:
+l00010A08:
+	atexit(g1)
+
+
+void func1()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: sp
+func1_entry:
+l00010A5C:
+	return
+func1_exit:
+
+
+void func2()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: sp
+func2_entry:
+l00010A74:
+	return
+func2_exit:
+
+
+void func3()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: sp
+func3_entry:
+l00010A8C:
+	return
+func3_exit:
+
+
+void func4()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: sp
+func4_entry:
+l00010AA4:
+	return
+func4_exit:
+
+
+void func5()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: sp
+func5_entry:
+l00010ABC:
+	return
+func5_exit:
+
+
+void func6()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: sp
+func6_entry:
+l00010AD4:
+	return
+func6_exit:
+
+
+void func7()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: sp
+func7_entry:
+l00010AEC:
+	return
+func7_exit:
+
+
+void func8()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: sp
+func8_entry:
+l00010B04:
+	return
+func8_exit:
+
+
+void main(word32 o0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      _start
+// MayUse:  o0:[0..31]
+// LiveOut:
+// Trashed: NZVC g0 g1 i0 i1 i2 i3 i4 i5 i6 i7 o0 o1
+// Preserved: o2 o3 o4 o5 o7 sp
+main_entry:
+l00010B0C:
+	word32 o0_20 = 1<32>
+	branch o0 <= 1<32> l00010B0C_ds_t
+l00010B0C_ds_t:
+	o0_20 = 0<32>
+l00010B20:
+	word32 o0_31
+	branch o0_20 == 0<32> l00010B20_ds_t
+l00010B20_ds_t:
+l00010B34:
+	o0_31 = 0x10A74<32>
+l00010B20_ds_f:
+l00010B2C:
+	o0_31 = 0x10A5C<32>
+l00010B3C:
+	word32 o3_37
+	branch o0_20 == 0<32> l00010B3C_ds_t
+l00010B3C_ds_t:
+l00010B4C:
+	o3_37 = 0x10AA4<32>
+l00010B3C_ds_f:
+l00010B44:
+	o3_37 = 0x10A8C<32>
+l00010B54:
+	word32 o2_43
+	branch o0_20 == 0<32> l00010B54_ds_t
+l00010B54_ds_t:
+l00010B64:
+	o2_43 = 0x10AD4<32>
+l00010B54_ds_f:
+l00010B5C:
+	o2_43 = 0x10ABC<32>
+l00010B6C:
+	word32 o1_49
+	branch o0_20 == 0<32> l00010B6C_ds_t
+l00010B6C_ds_t:
+l00010B7C:
+	o1_49 = 0x10B04<32>
+l00010B6C_ds_f:
+l00010B74:
+	o1_49 = 0x10AEC<32>
+l00010B84:
+	bool v24_217
+	word32 i1_114
+	branch o0_20 == 0<32> l00010B84_ds_t
+l00010B84_ds_t:
+l00010BE8:
+	branch o0_31 != 0x10A74<32> l00010BE8_ds_t
+l00010BE8_ds_t:
+l00010BE8_ds_f:
+l00010BFC:
+	branch o3_37 != 0x10AA4<32> l00010BFC_ds_t
+l00010BFC_ds_t:
+l00010BFC_ds_f:
+l00010C0C:
+	branch o2_43 != 0x10AD4<32> l00010C0C_ds_t
+l00010C0C_ds_t:
+l00010C0C_ds_f:
+l00010C20:
+	branch o1_49 != 0x10B04<32> l00010C20_ds_t
+l00010C20_ds_t:
+l00010C3C:
+	i1_114 = 0<32>
+l00010C20_ds_f:
+l00010C34:
+	i1_114 = 1<32>
+l00010B84_ds_f:
+l00010B8C:
+	branch o0_31 != 0x10A5C<32> l00010B8C_ds_t
+l00010B8C_ds_t:
+l00010BDC:
+l00010B8C_ds_f:
+l00010B9C:
+	branch o3_37 != 0x10A8C<32> l00010B9C_ds_t
+l00010B9C_ds_t:
+l00010B9C_ds_f:
+l00010BAC:
+	branch o2_43 != 0x10ABC<32> l00010BAC_ds_t
+l00010BAC_ds_t:
+l00010BAC_ds_f:
+l00010BC0:
+	branch o1_49 != 0x10AEC<32> l00010BC0_ds_t
+l00010BC0_ds_t:
+l00010BE0:
+	i1_114 = 0<32>
+	v24_217 = true
+l00010BC0_ds_f:
+l00010BD4:
+	i1_114 = 1<32>
+l00010C40:
+	v24_217 = i1_114 == 0<32>
+l00010C44:
+	branch v24_217 l00010C40_ds_t
+l00010C40_ds_t:
+l00010C5C:
+	printf(0x10D00<32>)
+l00010C40_ds_f:
+l00010C4C:
+	printf(0x10CF8<32>)
+l00010C6C:
+	branch i1_114 == 0<32> l00010C6C_ds_t
+l00010C6C_ds_t:
+l00010C78:
+	return
+main_exit:
+
+

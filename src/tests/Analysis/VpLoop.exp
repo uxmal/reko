@@ -1,29 +1,29 @@
 = main ========================
 r0_1: orig: r0
     def:  r0_1 = PHI((r0, main_entry), (r0_3, l0000))
-    uses: Mem2[r0_1:word32] = 0x00000000
-          r0_3 = r0_1 - 0x00000004
+    uses: Mem2[r0_1:word32] = 0<32>
+          r0_3 = r0_1 - 4<32>
 Mem2: orig: Mem0
-    def:  Mem2[r0_1:word32] = 0x00000000
+    def:  Mem2[r0_1:word32] = 0<32>
 r0_3: orig: r0
-    def:  r0_3 = r0_1 - 0x00000004
+    def:  r0_3 = r0_1 - 4<32>
     uses: Z_4 = cond(r0_3)
           r0_1 = PHI((r0, main_entry), (r0_3, l0000))
-          branch r0_3 != 0x00000000 l0000
+          branch r0_3 != 0<32> l0000
 Z_4: orig: Z
     def:  Z_4 = cond(r0_3)
 r0_5: orig: r0
-    def:  r0_5 = 0x0000002A
+    def:  r0_5 = 0x2A<32>
     uses: r0_6 = PHI((r0_5, l0001), (r0_8, l0002))
 r0_6: orig: r0
     def:  r0_6 = PHI((r0_5, l0001), (r0_8, l0002))
-    uses: Mem7[r0_6:word32] = 0x0000000C
-          r0_8 = r0_6 - 0x00000004
+    uses: Mem7[r0_6:word32] = 0xC<32>
+          r0_8 = r0_6 - 4<32>
 Mem7: orig: Mem0
-    def:  Mem7[r0_6:word32] = 0x0000000C
+    def:  Mem7[r0_6:word32] = 0xC<32>
 r0_8: orig: r0
-    def:  r0_8 = r0_6 - 0x00000004
-    uses: branch r0_8 == 0x00000000 l0002
+    def:  r0_8 = r0_6 - 4<32>
+    uses: branch r0_8 == 0<32> l0002
           r0_6 = PHI((r0_5, l0001), (r0_8, l0002))
 r0:r0
     def:  def r0
@@ -36,19 +36,19 @@ main_entry:
 	// succ:  l0000
 l0000:
 	r0_1 = PHI((r0, main_entry), (r0_3, l0000))
-	Mem2[r0_1:word32] = 0x00000000
-	r0_3 = r0_1 - 0x00000004
+	Mem2[r0_1:word32] = 0<32>
+	r0_3 = r0_1 - 4<32>
 	Z_4 = cond(r0_3)
-	branch r0_3 != 0x00000000 l0000
+	branch r0_3 != 0<32> l0000
 	// succ:  l0001 l0000
 l0001:
-	r0_5 = 0x0000002A
+	r0_5 = 0x2A<32>
 	// succ:  l0002
 l0002:
 	r0_6 = PHI((r0_5, l0001), (r0_8, l0002))
-	Mem7[r0_6:word32] = 0x0000000C
-	r0_8 = r0_6 - 0x00000004
-	branch r0_8 == 0x00000000 l0002
+	Mem7[r0_6:word32] = 0xC<32>
+	r0_8 = r0_6 - 4<32>
+	branch r0_8 == 0<32> l0002
 	// succ:  l1 l0002
 l1:
 	return
@@ -57,29 +57,29 @@ main_exit:
 
 r0_1: orig: r0
     def:  r0_1 = PHI((r0, main_entry), (r0_3, l0000))
-    uses: Mem2[r0_1:word32] = 0x00000000
-          r0_3 = r0_1 - 0x00000004
+    uses: Mem2[r0_1:word32] = 0<32>
+          r0_3 = r0_1 - 4<32>
 Mem2: orig: Mem0
-    def:  Mem2[r0_1:word32] = 0x00000000
+    def:  Mem2[r0_1:word32] = 0<32>
 r0_3: orig: r0
-    def:  r0_3 = r0_1 - 0x00000004
+    def:  r0_3 = r0_1 - 4<32>
     uses: Z_4 = cond(r0_3)
-          branch r0_3 != 0x00000000 l0000
+          branch r0_3 != 0<32> l0000
           r0_1 = PHI((r0, main_entry), (r0_3, l0000))
 Z_4: orig: Z
     def:  Z_4 = cond(r0_3)
 r0_5: orig: r0
-    def:  r0_5 = 0x0000002A
+    def:  r0_5 = 0x2A<32>
     uses: r0_6 = PHI((r0_5, l0001), (r0_8, l0002))
 r0_6: orig: r0
     def:  r0_6 = PHI((r0_5, l0001), (r0_8, l0002))
-    uses: Mem7[r0_6:word32] = 0x0000000C
-          r0_8 = r0_6 - 0x00000004
+    uses: Mem7[r0_6:word32] = 0xC<32>
+          r0_8 = r0_6 - 4<32>
 Mem7: orig: Mem0
-    def:  Mem7[r0_6:word32] = 0x0000000C
+    def:  Mem7[r0_6:word32] = 0xC<32>
 r0_8: orig: r0
-    def:  r0_8 = r0_6 - 0x00000004
-    uses: branch r0_8 == 0x00000000 l0002
+    def:  r0_8 = r0_6 - 4<32>
+    uses: branch r0_8 == 0<32> l0002
           r0_6 = PHI((r0_5, l0001), (r0_8, l0002))
 r0:r0
     def:  def r0
@@ -92,19 +92,19 @@ main_entry:
 	// succ:  l0000
 l0000:
 	r0_1 = PHI((r0, main_entry), (r0_3, l0000))
-	Mem2[r0_1:word32] = 0x00000000
-	r0_3 = r0_1 - 0x00000004
+	Mem2[r0_1:word32] = 0<32>
+	r0_3 = r0_1 - 4<32>
 	Z_4 = cond(r0_3)
-	branch r0_3 != 0x00000000 l0000
+	branch r0_3 != 0<32> l0000
 	// succ:  l0001 l0000
 l0001:
-	r0_5 = 0x0000002A
+	r0_5 = 0x2A<32>
 	// succ:  l0002
 l0002:
 	r0_6 = PHI((r0_5, l0001), (r0_8, l0002))
-	Mem7[r0_6:word32] = 0x0000000C
-	r0_8 = r0_6 - 0x00000004
-	branch r0_8 == 0x00000000 l0002
+	Mem7[r0_6:word32] = 0xC<32>
+	r0_8 = r0_6 - 4<32>
+	branch r0_8 == 0<32> l0002
 	// succ:  l1 l0002
 l1:
 	return

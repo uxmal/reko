@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 Pavel Tomin.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.UnitTests.Mocks;
@@ -116,7 +117,7 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Given_ImageSegment(uint addr, params byte[] bytes)
         {
-            var mem = new MemoryArea(Address.Ptr32(addr), bytes);
+            var mem = new ByteMemoryArea(Address.Ptr32(addr), bytes);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
             program.SegmentMap.AddSegment(seg);
             program.ImageMap = program.SegmentMap.CreateImageMap();
@@ -130,11 +131,10 @@ namespace Reko.UnitTests.Gui.Windows
             this.proc = m.Procedure;
             this.program.Procedures[address] = proc;
 
-            var item = new ImageMapBlock
+            var item = new ImageMapBlock(address)
             {
-                Address = address,
                 Size = size,
-                Block = new Block(proc, "fakeBlock")
+                Block = new Block(proc, address, "fakeBlock")
             };
             program.ImageMap.AddItemWithSize(address, item);
         }
@@ -142,9 +142,8 @@ namespace Reko.UnitTests.Gui.Windows
         private void Given_ImageMapItem(uint addr, DataType dataType, string name)
         {
             var address = Address.Ptr32(addr);
-            var item = new ImageMapItem
+            var item = new ImageMapItem(address)
             {
-                Address = address,
                 DataType = dataType,
                 Name = name,
                 Size = (uint)dataType.Size,

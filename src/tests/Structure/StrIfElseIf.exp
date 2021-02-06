@@ -2,58 +2,58 @@
 // Return size: 0
 define MockIfElseIf
 MockIfElseIf_entry:
-	branch r != 0x00000000 not_0
+	branch r != 0<32> not_0
 	goto l2
 	// succ:  l2 not_0
 default:
-	x = 0xFFFFFFFF
+	x = 0xFFFFFFFF<32>
 	// succ:  done
 done:
 	return x
 	// succ:  MockIfElseIf_exit
 l1:
 l2:
-	x = 0x00000000
+	x = 0<32>
 	goto done
 	// succ:  done
 l3:
-	x = 0x00000001
+	x = 1<32>
 	goto done
 	// succ:  done
 l4:
-	x = 0x00000002
+	x = 2<32>
 	goto done
 	// succ:  done
 l5:
-	x = 0x00000003
+	x = 3<32>
 	goto done
 	// succ:  done
 not_0:
-	branch r != 0x00000001 not_1
+	branch r != 1<32> not_1
 	goto l3
 	// succ:  l3 not_1
 not_1:
-	branch r != 0x00000002 not_2
+	branch r != 2<32> not_2
 	goto l4
 	// succ:  l4 not_2
 not_2:
-	branch r != 0x00000003 default
+	branch r != 3<32> default
 	goto l5
 	// succ:  l5 default
 MockIfElseIf_exit:
 
 define MockIfElseIf
 {
-	if (r == 0x00000000)
-		x = 0x00000000;
-	else if (r == 0x00000001)
-		x = 0x00000001;
-	else if (r == 0x00000002)
-		x = 0x00000002;
-	else if (r == 0x00000003)
-		x = 0x00000003;
+	if (r == 0<32>)
+		x = 0<32>;
+	else if (r == 1<32>)
+		x = 1<32>;
+	else if (r == 2<32>)
+		x = 2<32>;
+	else if (r == 3<32>)
+		x = 3<32>;
 	else
-		x = 0xFFFFFFFF;
+		x = 0xFFFFFFFF<32>;
 	return x;
 }
 ===========================

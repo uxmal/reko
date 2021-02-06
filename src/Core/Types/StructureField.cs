@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,37 +30,25 @@ namespace Reko.Core.Types
     /// </summary>
 	public class StructureField : Field
 	{
-        public StructureField()
-        {
-        }
-
-        public StructureField(int offset, DataType type)
+		public StructureField(int offset, DataType type, string? name = null) : base(type)
 		{
-            if (type == null)
-                throw new ArgumentNullException("type");
-			this.Offset = offset; this.DataType = type;
-		}
-
-		public StructureField(int offset, DataType type, string name)
-		{
-            if (type == null)
-                throw new ArgumentNullException("type");
-            this.Offset = offset; this.DataType = type; this.name = name;
+            this.Offset = offset;
+            this.name = name;
 		}
 
         public override string Name
         {
-            get { if (name == null) return DefaultName(); return name; }
+            get { return name ?? DefaultName(); }
             set { name = value; }
         }
 
-        public bool IsNameSet { get { return name != null; } }
+        public bool IsNameSet => name != null;
 
-        private string name;
+        private string? name;
 
         public int Offset { get; set; }
 
-        public StructureField Clone(IDictionary<DataType, DataType> clonedTypes = null)
+        public StructureField Clone(IDictionary<DataType, DataType>? clonedTypes = null)
 		{
 			return new StructureField(Offset, DataType.Clone(clonedTypes), name);
 		}
@@ -70,13 +58,17 @@ namespace Reko.Core.Types
             return NamingPolicy.Instance.Types.StructureFieldName(this, this.name);
         }
 
-        public static int ToOffset(Constant offset)
+        public static int? ToOffset(Constant? offset)
         {
             if (offset == null)
                 return 0;
-            PrimitiveType pt = (PrimitiveType) offset.DataType;
+            PrimitiveType? pt = offset.DataType.ResolveAs<PrimitiveType>();
+            if (pt is null)
+                return null;
             if (pt.Domain == Domain.SignedInt)
                 return (int) offset.ToInt32();
+            else if (pt.Domain == Domain.Real)
+                return null;
             else
                 return (int) offset.ToUInt32();
         }
@@ -89,41 +81,102 @@ namespace Reko.Core.Types
 
 	public class StructureFieldCollection : ICollection<StructureField>
 	{
-        private List<StructureField> innerList = new List<StructureField>();
+        private const int BinarySearchLimit = 0;
+
+        private readonly List<StructureField> innerList = new List<StructureField>();
 
         public StructureField this[int i]
         {
             get { return innerList[i]; }
         }
 
-		public void Add(int offset, DataType dt)
+		public StructureField Add(int offset, DataType dt)
 		{
-			Add(new StructureField(offset, dt));
+			return Add(new StructureField(offset, dt));
 		}
 
-		public void Add(int offset, DataType dt, string name)
+		public StructureField Add(int offset, DataType dt, string? name)
 		{
-			Add(new StructureField(offset, dt, name));
+			return Add(new StructureField(offset, dt, name));
 		}
 
         //$PERF: slow, should use binary search.
-		public void Add(StructureField f)
+		public StructureField Add(StructureField f)
 		{
 			int i;
-			StructureField ff = null;
-			for (i = 0; i < innerList.Count; ++i)
-			{
-				ff = innerList[i];
-				if (f.Offset == ff.Offset)
-				{
-					if (f.DataType == ff.DataType)
-						return;
-				}
-				if (f.Offset <= ff.Offset)
-					break;
-			}
-			innerList.Insert(i, f);
+            int c = innerList.Count;
+            if (c >= BinarySearchLimit)
+            {
+                for (i = 0; i < innerList.Count; ++i)
+                {
+                    var ff = innerList[i];
+                    if (f.Offset == ff.Offset)
+                    {
+                        if (f.DataType == ff.DataType)
+                            return ff;
+                    }
+                    if (f.Offset <= ff.Offset)
+                        break;
+                }
+                innerList.Insert(i, f);
+                return f;
+            }
+            else
+            {
+                i = 0;
+                {
+                    int iMax = c;
+                    int iMin = 0;
+                    while (iMin < iMax)
+                    {
+                        i = iMin + (iMax - iMin) / 2;
+                        var ff = innerList[i];
+                        if (ff.Offset > f.Offset)
+                        {
+                            iMax = i;
+                        }
+                        else
+                        {
+                            iMin = i + 1;
+                        }
+                    }
+                    if (i < c)
+                    {
+                        var fff = innerList[i];
+                        if (f.Offset == fff.Offset)
+                        {
+                            if (f.DataType == fff.DataType)
+                                return fff;
+                            i = i + 1;
+                        }
+                        else
+                        {
+                            i = iMax;
+                        }
+                    }
+                }
+                innerList.Insert(i, f); //$PERF: slow...
+                return f;
+            }
 		}
+
+        private void Dump(int iFail)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("== Order violated ==");
+            for (int i = 0; i < innerList.Count; ++i)
+            {
+                var f = innerList[i];
+                sb.AppendFormat("{0} {1:X8} {2}", i == iFail ? "*" : " ", f.Offset, f.Name);
+                sb.AppendLine();
+            }
+            throw new Exception(sb.ToString());
+        }
+
+        void ICollection<StructureField>.Add(StructureField f)
+        {
+            Add(f);
+        }
 
         public void AddRange(IEnumerable<StructureField> fields)
         {
@@ -138,14 +191,39 @@ namespace Reko.Core.Types
         /// </summary>
         /// <param name="offset">Offset (in bytes) of the field to retrieve.</param>
         /// <returns>The requested StructureField if it exists at <paramref>offset</paramref>, otherwise null.</returns>
-        public StructureField AtOffset(int offset)
+        public StructureField? AtOffset(int offset)
         {
+            if (innerList.Count >= BinarySearchLimit)
+            {
             foreach (StructureField f in innerList)
             {
                 if (f.Offset == offset)
                     return f;
             }
             return null;
+        }
+            else
+            {
+                int iMin = 0;
+                int iMax = innerList.Count - 1;
+                while (iMin <= iMax)
+                {
+                    int iMid = iMin + (iMax - iMin) / 2;
+                    var f = innerList[iMid];
+                    int cmp = f.Offset - offset;
+                    if (f.Offset == offset)
+                        return f;
+                    else if (f.Offset < offset)
+                    {
+                        iMin = iMid + 1;
+                    }
+                    else
+                    {
+                        iMax = iMid - 1;
+                    }
+                }
+                return null;
+            }
         }
 
         /// <summary>
@@ -154,9 +232,9 @@ namespace Reko.Core.Types
         /// </summary>
         /// <param name="offset"></param>
         /// <returns></returns>
-		public StructureField LowerBound(int offset)
+		public StructureField? LowerBound(int offset)
 		{
-			StructureField fPrev = null;
+			StructureField? fPrev = null;
 			foreach (StructureField f in innerList)
 			{
 				if (f.Offset <= offset)

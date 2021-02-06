@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 Pavel Tomin.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 
 namespace Reko.UnitTests.Mocks
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Mocks
         public SsaState Ssa { get; private set; }
 
         public SsaProcedureBuilder(IProcessorArchitecture arch = null, string name = nameof(SsaProcedureBuilder)) 
-            : base(arch ?? new FakeArchitecture(), name)
+            : base(arch ?? new FakeArchitecture(new ServiceContainer()), name)
         {
             this.Ssa = new SsaState(Procedure);
         }
@@ -114,9 +115,15 @@ namespace Reko.UnitTests.Mocks
             return Reg(name, PrimitiveType.Word64);
         }
 
-        public Identifier Reg32(string name)
+        public override Identifier Reg32(string name)
         {
             return Reg(name, PrimitiveType.Word32);
+        }
+
+        public override Identifier Reg64(string name, int number)
+        {
+            var id = base.Reg64(name, number);
+            return MakeSsaIdentifier(id, name);
         }
 
         public override Identifier Reg32(string name, int number)

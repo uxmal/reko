@@ -5,13 +5,13 @@ sp_2: orig: sp
     def:  sp_2 = fp
     uses: use sp_2
 Top_3: orig: Top
-    def:  Top_3 = 0
+    def:  Top_3 = 0<i8>
     uses: use Top_3
 bx:bx
     def:  def bx
-    uses: SCZO_5 = cond(bx - 0x0000)
+    uses: SCZO_5 = cond(bx - 0<16>)
 SCZO_5: orig: SCZO
-    def:  SCZO_5 = cond(bx - 0x0000)
+    def:  SCZO_5 = cond(bx - 0<16>)
     uses: Z_6 = SLICE(SCZO_5, bool, 2) (alias)
           SZO_10 = SLICE(SCZO_5, bool, 4) (alias)
           C_18 = SLICE(SCZO_5, bool, 1) (alias)
@@ -19,7 +19,7 @@ Z_6: orig: Z
     def:  Z_6 = SLICE(SCZO_5, bool, 2) (alias)
     uses: branch Test(EQ,Z_6) l0C00_0013
 ax_7: orig: ax
-    def:  ax_7 = 0x0000
+    def:  ax_7 = 0<16>
     uses: SZO_8 = cond(ax_7)
           ax_13 = PHI((ax_12, l0C00_0007), (ax_7, l0C00_0013), (ax_11, l0C00_000D))
 SZO_8: orig: SZO
@@ -37,23 +37,23 @@ SZO_10: orig: SZO
           S_23 = SLICE(SZO_10, bool, 0) (alias)
           Z_28 = SLICE(SZO_10, bool, 2) (alias)
 ax_11: orig: ax
-    def:  ax_11 = 0x0001
+    def:  ax_11 = 1<16>
     uses: ax_13 = PHI((ax_12, l0C00_0007), (ax_7, l0C00_0013), (ax_11, l0C00_000D))
 ax_12: orig: ax
-    def:  ax_12 = 0xFFFF
+    def:  ax_12 = 0xFFFF<16>
     uses: ax_13 = PHI((ax_12, l0C00_0007), (ax_7, l0C00_0013), (ax_11, l0C00_000D))
 ax_13: orig: ax
     def:  ax_13 = PHI((ax_12, l0C00_0007), (ax_7, l0C00_0013), (ax_11, l0C00_000D))
-    uses: Mem16[ds:0x0100:word16] = ax_13
+    uses: Mem16[ds:0x100<16>:word16] = ax_13
           use ax_13
 C_17: orig: C
     def:  C_17 = PHI((C_18, l0C00_0007), (C_9, l0C00_0013), (C_18, l0C00_000D))
     uses: use C_17
 ds:ds
     def:  def ds
-    uses: Mem16[ds:0x0100:word16] = ax_13
+    uses: Mem16[ds:0x100<16>:word16] = ax_13
 Mem16: orig: Mem0
-    def:  Mem16[ds:0x0100:word16] = ax_13
+    def:  Mem16[ds:0x100<16>:word16] = ax_13
 C_18: orig: C
     def:  C_18 = SLICE(SCZO_5, bool, 1) (alias)
     uses: C_17 = PHI((C_18, l0C00_0007), (C_9, l0C00_0013), (C_18, l0C00_000D))
@@ -96,10 +96,10 @@ fn0C00_0000_entry:
 	def bx
 	def ds
 	sp_2 = fp
-	Top_3 = 0
+	Top_3 = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	SCZO_5 = cond(bx - 0x0000)
+	SCZO_5 = cond(bx - 0<16>)
 	Z_6 = SLICE(SCZO_5, bool, 2) (alias)
 	SZO_10 = SLICE(SCZO_5, bool, 4) (alias)
 	C_18 = SLICE(SCZO_5, bool, 1) (alias)
@@ -112,15 +112,15 @@ l0C00_0005:
 	branch Test(GT,SZO_10) l0C00_000D
 	// succ:  l0C00_0007 l0C00_000D
 l0C00_0007:
-	ax_12 = 0xFFFF
+	ax_12 = 0xFFFF<16>
 	goto l0C00_0015
 	// succ:  l0C00_0015
 l0C00_000D:
-	ax_11 = 0x0001
+	ax_11 = 1<16>
 	goto l0C00_0015
 	// succ:  l0C00_0015
 l0C00_0013:
-	ax_7 = 0x0000
+	ax_7 = 0<16>
 	SZO_8 = cond(ax_7)
 	O_21 = SLICE(SZO_8, bool, 4) (alias)
 	S_24 = SLICE(SZO_8, bool, 0) (alias)
@@ -133,7 +133,7 @@ l0C00_0015:
 	O_19 = PHI((O_20, l0C00_0007), (O_21, l0C00_0013), (O_20, l0C00_000D))
 	C_17 = PHI((C_18, l0C00_0007), (C_9, l0C00_0013), (C_18, l0C00_000D))
 	ax_13 = PHI((ax_12, l0C00_0007), (ax_7, l0C00_0013), (ax_11, l0C00_000D))
-	Mem16[ds:0x0100:word16] = ax_13
+	Mem16[ds:0x100<16>:word16] = ax_13
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ namespace Reko.Gui.Forms
         int Stride { get; set; }
 
         ILabel CaptionLabel { get; }
+        ITextBox JumpInstructionAddress { get; }
         IComboBox IndexRegister { get; }
         ILabel InstructionLabel { get; }
         ITextBox JumpTableStartAddress { get; }

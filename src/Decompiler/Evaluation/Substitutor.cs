@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -118,16 +118,17 @@ namespace Reko.Evaluation
             return c;
         }
 
-        public Expression VisitDepositBits(DepositBits d)
+        public Expression VisitConversion(Conversion conversion)
         {
-            var source = d.Source.Accept(this);
-            if (source == Constant.Invalid)
-                return source;
-            var inserted = d.InsertedBits.Accept(this);
-            if (inserted == Constant.Invalid)
-                return inserted;
-            return new DepositBits(source, inserted, d.BitPosition);
+            var exp = conversion.Expression.Accept(this);
+            if (exp == Constant.Invalid)
+                return exp;
+            if (exp is Constant ||
+                exp is Identifier)
+                return new Conversion(exp, conversion.SourceDataType, conversion.DataType);
+            return Constant.Invalid;
         }
+
 
         public Expression VisitDereference(Dereference deref)
         {
@@ -141,7 +142,7 @@ namespace Reko.Evaluation
 
         public Expression VisitIdentifier(Identifier id)
         {
-            return ctx.GetValue(id);
+            return ctx.GetValue(id)!;
         }
 
         public Expression VisitMemberPointerSelector(MemberPointerSelector mps)

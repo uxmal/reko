@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,22 +23,19 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using Reko.Evaluation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Reko.Core.Types;
 
 namespace Reko.Analysis
 {
     public class TrashedRegisterFinder : InstructionVisitor<bool>
     {
-        private static TraceSwitch trace = new TraceSwitch("TrashedRegisters", "Trashed value propagation") { Level = TraceLevel.Error };
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(TrashedRegisterFinder), "Trashed value propagation") { Level = TraceLevel.Error };
 
-        private readonly IProcessorArchitecture arch;
         private readonly SegmentMap segmentMap;
         private readonly ProgramDataFlow flow;
         private readonly HashSet<SsaTransform> sccGroup;
@@ -47,11 +44,13 @@ namespace Reko.Analysis
         private readonly WorkStack<Block> worklist;
         private readonly Dictionary<Procedure, SsaState> ssas;
         private readonly ExpressionValueComparer cmp;
-        private Block block;
-        private Dictionary<Procedure, ProcedureFlow> procCtx;
-        private Dictionary<Block, Context> blockCtx;
-        private Context ctx;
-        private ExpressionSimplifier eval;
+        //$REFACTOR the following expressions to get rid of the nullable '?'s.
+            private Block? block;
+            private Dictionary<Procedure, ProcedureFlow>? procCtx;
+            private Dictionary<Block, Context>? blockCtx;
+            private Context? ctx;       //$R
+            private ExpressionSimplifier? eval;
+        private IProcessorArchitecture arch;
         private bool propagateToCallers;
         private bool selfRecursiveCalls;
 
@@ -95,6 +94,7 @@ namespace Reko.Analysis
             Block block;
             while (worklist.GetWorkItem(out block))
             {
+                arch = block.Procedure.Architecture;
                 ProcessBlock(block);
             }
             
@@ -122,7 +122,7 @@ namespace Reko.Analysis
             var savedTops = new Dictionary<Procedure, int?>();
             if (arch.TryGetRegister("Top", out var top))
             {
-                savedTops = CollectStackPointers(flow, arch.GetRegister("Top"));
+                savedTops = CollectStackPointers(flow, top);
             }
 
             CreateState();
@@ -211,7 +211,7 @@ namespace Reko.Analysis
                 procCtx.Add(proc, procFlow);
                 var idState = new Dictionary<Identifier, Tuple<Expression,BitRange>>();
                 //$REVIEW: this assumes the existence of a frame pointer.
-                Identifier fp;
+                Identifier? fp;
                 if (sst.SsaState.Identifiers.TryGetValue(proc.Frame.FramePointer, out var sidFp))
                 {
                     fp = sidFp.Identifier;
@@ -221,7 +221,7 @@ namespace Reko.Analysis
                     fp = null;
                 }
                 var block = proc.EntryBlock;
-                blockCtx.Add(block, new Context(sst.SsaState, fp, idState, procFlow));
+                blockCtx.Add(block, new Context(sst.SsaState, fp!, idState, procFlow));
 
                 if (proc.Signature.ParametersValid)
                 {
@@ -253,7 +253,7 @@ namespace Reko.Analysis
 
         private void ProcessBlock(Block block)
         {
-            this.ctx = blockCtx[block];
+            this.ctx = blockCtx![block];
             this.eval = new ExpressionSimplifier(segmentMap, ctx, listener);
             this.block = block;
             this.ctx.IsDirty = false;
@@ -285,7 +285,7 @@ namespace Reko.Analysis
                 .Where(b => ssas.ContainsKey(b.Procedure));
             foreach (var caller in callingBlocks)
             {
-                if (!blockCtx.TryGetValue(caller, out var succCtx))
+                if (!blockCtx!.TryGetValue(caller, out var succCtx))
                 {
                     var ssaCaller = ssas[caller.Procedure];
                     var fpCaller = ssaCaller.Identifiers[caller.Procedure.Frame.FramePointer].Identifier;
@@ -294,7 +294,7 @@ namespace Reko.Analysis
                         ssaCaller,
                         fpCaller,
                         idsCaller,
-                        procCtx[caller.Procedure]);
+                        procCtx![caller.Procedure]);
                     blockCtx.Add(caller, clone);
                 }
                 else
@@ -307,12 +307,12 @@ namespace Reko.Analysis
 
         private void UpateBlockSuccessors(Block block)
         {
-            var bf = blockCtx[block];
+            var bf = blockCtx![block];
             foreach (var s in block.Succ)
             {
                 if (!blockCtx.TryGetValue(s, out var succCtx))
                 {
-                    var ctxClone = ctx.Clone();
+                    var ctxClone = ctx!.Clone();
                     blockCtx.Add(s, ctxClone);
                     worklist.Add(s);
                 }
@@ -326,40 +326,27 @@ namespace Reko.Analysis
 
         public bool VisitAssignment(Assignment ass)
         {
-            var value = ass.Src.Accept(eval);
-            DebugEx.Verbose(trace, "{0} = [{1}]", ass.Dst, value);
-
-            if (ass.Src is DepositBits dpb && 
-                dpb.Source is Identifier idDpb &&
-                ass.Dst.Storage == idDpb.Storage)
-            {
-                var oldRange = ctx.GetBitRange(idDpb);
-                var newRange = new BitRange(
-                    Math.Min(oldRange.Lsb, dpb.BitPosition),
-                    Math.Max(oldRange.Msb, dpb.BitPosition + dpb.InsertedBits.DataType.BitSize));
-                ctx.SetValue(ass.Dst, value, newRange);
-            }
-            else
-            {
-                ctx.SetValue(ass.Dst, value);
-            }
+            var value = ass.Src.Accept(eval!);
+            trace.Verbose("{0} = [{1}]", ass.Dst, value);
+            ctx!.SetValue(ass.Dst, value);
             return true;
         }
 
         public bool VisitBranch(Branch branch)
         {
-            branch.Condition.Accept(eval);
+            branch.Condition.Accept(eval!);
             return true;
         }
 
         public bool VisitCallInstruction(CallInstruction ci)
         {
+            var ctx = this.ctx!;
             if (!(ci.Callee is ProcedureConstant pc))
             {
                 foreach (var d in ci.Definitions)
                 {
                     ctx.SetValue((Identifier) d.Expression, Constant.Invalid);
-                    DebugEx.Verbose(trace, "  {0} = [{1}]", d.Expression, Constant.Invalid);
+                    trace.Verbose("  {0} = [{1}]", d.Expression, Constant.Invalid);
                 }
                 return true;
             }
@@ -390,22 +377,22 @@ namespace Reko.Analysis
             }
 
             var flow = this.flow[callee];
-            Dump(block);
+            Dump(block!);
             foreach (var d in ci.Definitions)
             {
                 if (flow.Trashed.Contains(d.Storage))
                 {
                     ctx.SetValue((Identifier)d.Expression, Constant.Invalid);
-                    DebugEx.Verbose(trace, "  {0} = [{1}]", d.Expression, Constant.Invalid);
+                    trace.Verbose("  {0} = [{1}]", d.Expression, Constant.Invalid);
                 }
                 if (flow.Preserved.Contains(d.Storage))
                 {
                     var before = ci.Uses
                         .Where(u => u.Storage == d.Storage)
-                        .Select(u => u.Expression.Accept(eval))
+                        .Select(u => u.Expression.Accept(eval!))
                         .SingleOrDefault();
                     ctx.SetValue((Identifier)d.Expression, before);
-                    DebugEx.Verbose(trace, "  {0} = [{1}]", d.Expression, before);
+                    trace.Verbose("  {0} = [{1}]", d.Expression, before);
                 }
             }
             return true;
@@ -418,29 +405,33 @@ namespace Reko.Analysis
 
         public bool VisitDeclaration(Declaration decl)
         {
-            var value = decl.Expression.Accept(eval);
-            DebugEx.Verbose(trace, "{0} = [{1}]", decl.Identifier, value);
-            ctx.SetValue(decl.Identifier, value);
+            if (decl.Expression != null)
+            {
+                var value = decl.Expression.Accept(eval!);
+                trace.Verbose("{0} = [{1}]", decl.Identifier, value);
+                ctx!.SetValue(decl.Identifier, value);
+            }
             return true;
         }
 
         public bool VisitDefInstruction(DefInstruction def)
         {
             var id = def.Identifier;
-            ctx.SetValue(id, id, BitRange.Empty);
+            ctx!.SetValue(id, id, BitRange.Empty);
             return true;
         }
 
         public bool VisitGotoInstruction(GotoInstruction g)
         {
-            g.Condition.Accept(eval);
-            g.Target.Accept(eval);
+            g.Condition.Accept(eval!);
+            g.Target.Accept(eval!);
             return true;
         }
 
         public bool VisitPhiAssignment(PhiAssignment phi)
         {
-            Expression total = null;
+            Expression? total = null;
+            var ctx = this.ctx!;
             foreach (var de in phi.Src.Arguments)
             {
                 var p = de.Block;
@@ -464,7 +455,7 @@ namespace Reko.Analysis
             {
                 ctx.SetValue(phi.Dst, total);
             }
-            DebugEx.Verbose(trace, "{0} = φ[{1}]", phi.Dst, total);
+            trace.Verbose("{0} = φ[{1}]", phi.Dst, total!);
             return true;
         }
 
@@ -472,30 +463,30 @@ namespace Reko.Analysis
         {
             if (ret.Expression != null)
             {
-                ret.Expression.Accept(eval);
+                ret.Expression.Accept(eval!);
             }
             return true;
         }
 
         public bool VisitSideEffect(SideEffect side)
         {
-            side.Expression.Accept(eval);
+            side.Expression.Accept(eval!);
             return true;
         }
 
         public bool VisitStore(Store store)
         {
-            var value = store.Src.Accept(eval);
+            var value = store.Src.Accept(eval!);
             if (store.Dst is MemoryAccess mem)
             {
-                ctx.SetValueEa(mem.EffectiveAddress, value);
+                ctx!.SetValueEa(mem.EffectiveAddress, value);
             }
             return true;
         }
 
         public bool VisitSwitchInstruction(SwitchInstruction si)
         {
-            si.Expression.Accept(eval);
+            si.Expression.Accept(eval!);
             return true;
         }
 
@@ -508,10 +499,11 @@ namespace Reko.Analysis
         {
             if (!(use.Expression is Identifier id))
                 return true;
-            var sid = ssas[block.Procedure].Identifiers[id];
+            var sid = ssas[block!.Procedure].Identifiers[id];
+            var ctx = this.ctx!;
             switch (id.Storage)
             {
-            case RegisterStorage reg:
+            case RegisterStorage _:
                 {
                     var value = ctx.GetValue(id);
                     var range = ctx.GetBitRange(id);
@@ -598,14 +590,14 @@ namespace Reko.Analysis
         [Conditional("DEBUG")]
         public void Dump(Block block)
         {
-            var b = block ?? this.block;
-            foreach (var de in blockCtx[b].IdState.OrderBy(i => i.Key.Name))
+            var b = block ?? this.block!;
+            foreach (var de in blockCtx![b].IdState.OrderBy(i => i.Key.Name))
             {
-                DebugEx.Verbose(trace, "{0}: [{1}]", de.Key, de.Value);
+                trace.Verbose("{0}: [{1}]", de.Key, de.Value);
             }
             foreach (var de in blockCtx[b].StackState.OrderBy(i => i.Key))
             {
-                DebugEx.Verbose(trace, "fp {0} {1}: [{2}]", de.Key >= 0 ? "+" : "-", Math.Abs(de.Key), de.Value);
+                trace.Verbose("fp {0} {1}: [{2}]", de.Key >= 0 ? "+" : "-", Math.Abs(de.Key), de.Value);
             }
         }
 
@@ -615,8 +607,7 @@ namespace Reko.Analysis
             public readonly Dictionary<Identifier, Tuple<Expression, BitRange>> IdState;
             public readonly Dictionary<int, Expression> StackState;
             public ProcedureFlow ProcFlow;
-            public bool IsDirty { get; set; }
-            private SsaState ssa;
+            private readonly SsaState ssa;
             private readonly ExpressionValueComparer cmp;
 
             public Context(
@@ -647,8 +638,13 @@ namespace Reko.Analysis
                 this.IdState = idState;
                 this.ProcFlow = procFlow;
                 this.StackState = stack;
+                this.Endianness = ssa.Procedure.Architecture.Endianness;
                 this.cmp = cmp;
             }
+
+            public EndianServices Endianness { get; }
+
+            public bool IsDirty { get; set; }
 
             public Context Clone()
             {
@@ -679,7 +675,7 @@ namespace Reko.Analysis
                 return changed;
             }
 
-            public Expression GetDefiningExpression(Identifier id)
+            public Expression? GetDefiningExpression(Identifier id)
             {
                 return null;
             }
@@ -724,10 +720,10 @@ namespace Reko.Analysis
                 return Constant.Invalid;
             }
 
-            public Expression GetValue(Identifier id)
+            public Expression? GetValue(Identifier id)
             {
                 if (id.Storage is StackStorage stack)
-                    return StackState.Get(stack.StackOffset);
+                    return StackState!.Get(stack.StackOffset);
                 if (!IdState.TryGetValue(id, out Tuple<Expression, BitRange> value))
                     return null;
                 else
@@ -753,16 +749,21 @@ namespace Reko.Analysis
                 return ExpressionIdentifierUseFinder.Find(ssa.Identifiers, assSrc.Src)
                     .Select(c => ssa.Identifiers[c].DefStatement)
                     .Where(d => d != null)
-                    .Select(ph => ph.Instruction as PhiAssignment)
+                    .Select(ph => ph!.Instruction as PhiAssignment)
                     .Where(ph => ph != null)
                     .Any();
             }
 
             public Expression MakeSegmentedAddress(Constant c1, Constant c2)
             {
-                throw new NotImplementedException();
+                return ssa.Procedure.Architecture.MakeSegmentedAddress(c1, c2);
             }
 
+            public Constant ReinterpretAsFloat(Constant rawBits)
+            {
+                return ssa.Procedure.Architecture.ReinterpretAsFloat(rawBits);
+            }
+            
             public void RemoveExpressionUse(Expression expr)
             {
             }
@@ -782,13 +783,13 @@ namespace Reko.Analysis
                 {
                     if (!StackState.TryGetValue(stack.StackOffset, out Expression oldValue))
                     {
-                        DebugEx.Verbose(trace, "Trf: Stack offset {0:X4} now has value {1}", stack.StackOffset, value);
+                        trace.Verbose("Trf: Stack offset {0:X4} now has value {1}", stack.StackOffset, value);
                         IsDirty = true;
                         StackState.Add(stack.StackOffset, value);
                     }
                     else if (!cmp.Equals(oldValue, value) && oldValue != Constant.Invalid)
                     {
-                        DebugEx.Verbose(trace, "Trf: Stack offset {0:X4} now has value {1}, was {2}", stack.StackOffset, value, oldValue);
+                        trace.Verbose("Trf: Stack offset {0:X4} now has value {1}, was {2}", stack.StackOffset, value, oldValue);
                         IsDirty = true;
                         StackState[stack.StackOffset] = Constant.Invalid;
                     }
@@ -797,13 +798,13 @@ namespace Reko.Analysis
                 {
                     if (!IdState.TryGetValue(id, out Tuple<Expression, BitRange> oldValue))
                     {
-                        DebugEx.Verbose(trace, "Trf: id {0} now has value {1}", id, value);
+                        trace.Verbose("Trf: id {0} now has value {1}", id, value);
                         IsDirty = true;
                         IdState.Add(id, Tuple.Create(value, range));
                     }
                     else if (!cmp.Equals(oldValue.Item1, value) && oldValue.Item1 != Constant.Invalid)
                     {
-                        DebugEx.Verbose(trace, "Trf: id {0} now has value {1}, was {2}", id, value, oldValue);
+                        trace.Verbose("Trf: id {0} now has value {1}, was {2}", id, value, oldValue);
                         IsDirty = true;
                         IdState[id] = Tuple.Create((Expression)Constant.Invalid, range);
                     }
@@ -819,13 +820,13 @@ namespace Reko.Analysis
                 if (!StackState.TryGetValue(offset.Value, out Expression oldValue))
                 {
                     IsDirty = true;
-                    DebugEx.Verbose(trace, "Trf: Stack offset {0:X4} now has value {1}", offset.Value, value);
+                    trace.Verbose("Trf: Stack offset {0:X4} now has value {1}", offset.Value, value);
                     StackState.Add(offset.Value, value);
                 }
                 else if (!cmp.Equals(oldValue, value) && oldValue != Constant.Invalid)
                 {
                     IsDirty = true;
-                    DebugEx.Verbose(trace, "Trf: Stack offset {0:X4} now has value {1}, was {2}", offset.Value, value, oldValue);
+                    trace.Verbose("Trf: Stack offset {0:X4} now has value {1}, was {2}", offset.Value, value, oldValue);
                     StackState[offset.Value] = Constant.Invalid;
                 }
             }

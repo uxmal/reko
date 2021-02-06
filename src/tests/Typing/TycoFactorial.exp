@@ -4,7 +4,7 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem17[ds:0x0064:word16] = fn0C00_000F(0x0064)
+	Mem17[ds:0x64<16>:word16] = fn0C00_000F(0x64<16>)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -16,14 +16,14 @@ fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
 	word16 ax_13
-	branch wArg02 == 0x0001 l0C00_0026
+	branch wArg02 == 1<16> l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
-	ax_13 = SLICE(wArg02 *s fn0C00_000F(wArg02 - 0x0001), word16, 0) (alias)
+	ax_13 = SLICE(wArg02 *s32 fn0C00_000F(wArg02 - 1<16>), word16, 0) (alias)
 	goto l0C00_0029
 	// succ:  l0C00_0029
 l0C00_0026:
-	ax_13 = 0x0001
+	ax_13 = 1<16>
 	// succ:  l0C00_0029
 l0C00_0029:
 	return ax_13
@@ -52,19 +52,19 @@ T_5: (in wArg02 : word16)
   Class: Eq_5
   DataType: int16
   OrigDataType: int16
-T_6: (in 0x0064 : word16)
+T_6: (in 0x64<16> : word16)
   Class: Eq_5
   DataType: word16
   OrigDataType: word16
-T_7: (in fn0C00_000F(0x0064) : word16)
+T_7: (in fn0C00_000F(0x64<16>) : word16)
   Class: Eq_7
   DataType: word16
   OrigDataType: word16
-T_8: (in 0x0064 : word16)
+T_8: (in 0x64<16> : word16)
   Class: Eq_8
   DataType: (memptr T_2 (struct (0 T_9 t0000)))
   OrigDataType: (memptr T_2 (struct (0 T_9 t0000)))
-T_9: (in Mem17[ds:0x0064:word16] : word16)
+T_9: (in Mem17[ds:0x64<16>:word16] : word16)
   Class: Eq_7
   DataType: word16
   OrigDataType: word16
@@ -76,15 +76,15 @@ T_11: (in ax_13 : word16)
   Class: Eq_10
   DataType: word16
   OrigDataType: word16
-T_12: (in 0x0001 : word16)
+T_12: (in 1<16> : word16)
   Class: Eq_5
   DataType: int16
   OrigDataType: int16
-T_13: (in wArg02 == 0x0001 : bool)
+T_13: (in wArg02 == 1<16> : bool)
   Class: Eq_13
   DataType: bool
   OrigDataType: bool
-T_14: (in 0x0001 : word16)
+T_14: (in 1<16> : word16)
   Class: Eq_10
   DataType: word16
   OrigDataType: word16
@@ -92,19 +92,19 @@ T_15: (in fn0C00_000F : segptr32)
   Class: Eq_3
   DataType: (ptr32 (fn T_17 (T_16)))
   OrigDataType: (ptr32 (fn T_17 (T_16)))
-T_16: (in wArg02 - 0x0001 : word16)
+T_16: (in wArg02 - 1<16> : word16)
   Class: Eq_5
   DataType: word16
   OrigDataType: word16
-T_17: (in fn0C00_000F(wArg02 - 0x0001) : word16)
+T_17: (in fn0C00_000F(wArg02 - 1<16>) : word16)
   Class: Eq_17
   DataType: int16
   OrigDataType: int16
-T_18: (in wArg02 *s fn0C00_000F(wArg02 - 0x0001) : int32)
+T_18: (in wArg02 *s32 fn0C00_000F(wArg02 - 1<16>) : int32)
   Class: Eq_18
   DataType: int32
   OrigDataType: int32
-T_19: (in SLICE(wArg02 *s fn0C00_000F(wArg02 - 0x0001), word16, 0) : word16)
+T_19: (in SLICE(wArg02 *s32 fn0C00_000F(wArg02 - 1<16>), word16, 0) : word16)
   Class: Eq_10
   DataType: word16
   OrigDataType: word16

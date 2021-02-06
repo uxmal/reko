@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ namespace Reko.Arch.Pdp11
         public bool PostInc { get; set; }
         public ushort EffectiveAddress { get; set; }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             string fmt;
             switch (Mode)
@@ -60,35 +60,35 @@ namespace Reko.Arch.Pdp11
             case AddressMode.AutoDecrDef: fmt = "@-({0})"; break;
             case AddressMode.Indexed:
                 if (Register == Registers.pc &&
-                    (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                    (options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)
                 {
-                    var ea = writer.Address + 4 + EffectiveAddress;
-                    writer.WriteAddress("@#" + ea.ToString(), ea);
+                    var ea = renderer.Address + 4 + EffectiveAddress;
+                    renderer.WriteAddress("@#" + ea.ToString(), ea);
                     return;
                 }
                 fmt = "{1:X4}({0})";
                 break;
             case AddressMode.IndexedDef:
                 if (Register == Registers.pc &&
-                    (options & MachineInstructionWriterOptions.ResolvePcRelativeAddress) != 0)
+                    (options.Flags & MachineInstructionRendererFlags.ResolvePcRelativeAddress) != 0)
                 {
-                    writer.WriteString("@(");
-                    var ea = writer.Address + 4 + EffectiveAddress;
-                    writer.WriteAddress(ea.ToString(), ea);
-                    writer.WriteString(")");
+                    renderer.WriteString("@(");
+                    var ea = renderer.Address + 4 + EffectiveAddress;
+                    renderer.WriteAddress(ea.ToString(), ea);
+                    renderer.WriteString(")");
                     return;
                 }
                 fmt = "@{1:X4}({0})";
                 break;
             //case AddressMode.Immediate : fmt = "#{1:X4}"; break;
             case AddressMode.Absolute:
-                writer.WriteAddress(
+                renderer.WriteAddress(
                     string.Format("@#{0:X4}", EffectiveAddress),
                     Address.Ptr16(EffectiveAddress));
                 return;
             default: throw new NotImplementedException(string.Format("Unknown mode {0}.", Mode));
             }
-            writer.WriteString(string.Format(fmt, Register, EffectiveAddress));
+            renderer.WriteString(string.Format(fmt, Register, EffectiveAddress));
         }
     }
 

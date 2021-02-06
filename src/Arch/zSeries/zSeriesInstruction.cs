@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,24 +24,25 @@ using System;
 
 namespace Reko.Arch.zSeries
 {
+#pragma warning disable IDE1006 // Naming Styles
     public class zSeriesInstruction : MachineInstruction
     {
-        internal Mnemonic Mnemonic;
-
+        public Mnemonic Mnemonic { get; set; }
         public override int MnemonicAsInteger => (int) Mnemonic;
+        public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteMnemonic(this.Mnemonic.ToString());
+            renderer.WriteMnemonic(this.Mnemonic.ToString());
             if (Operands.Length == 0)
                 return;
-            writer.Tab();
+            renderer.Tab();
             var sep = "";
             foreach (var op in Operands)
             {
-                writer.WriteString(sep);
+                renderer.WriteString(sep);
                 sep = ",";
-                op.Write(writer, options);
+                op.Render(renderer, options);
         }
     }
     }

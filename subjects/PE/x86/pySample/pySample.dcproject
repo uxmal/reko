@@ -23,9 +23,9 @@
         </arr>
         <Name>methods</Name>
       </global>
-      <heuristic name="shingle" />
       <onLoad Enabled="false" />
       <registerValues />
+      <outputFilePolicy>Segment</outputFilePolicy>
     </user>
   </input>
   <metadata>

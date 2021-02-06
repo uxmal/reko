@@ -1,0 +1,22 @@
+LIBRARY KBDCALLS
+EXPORTS
+    KBD16SETCUSTXT                              @1  
+    KBD16GETCP                                  @3  
+    KBD16CHARIN                                 @4  
+    KBD16SETCP                                  @5  
+    KBD16SYNCH                                  @7  
+    KBD16REGISTER                               @8  
+    KBD16STRINGIN                               @9  
+    KBD16GETSTATUS                              @10 
+    KBD16SETSTATUS                              @11 
+    KBD16GETFOCUS                               @12 
+    KBD16FLUSHBUFFER                            @13 
+    KBD16XLATE                                  @14 
+    KBD16CLOSE                                  @17 
+    KBD16FREEFOCUS                              @18 
+    KBD16DEREGISTER                             @20 
+    KBD16SETFGND                                @21 
+    KBD16PEEK                                   @22 
+    KBD16OPEN                                   @23 
+    KBD16GETHWID                                @24 
+    KBD16SETHWID                                @25 

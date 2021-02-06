@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+#pragma warning disable IDE1006
 
 using System;
 
@@ -37,7 +38,6 @@ namespace Reko.Core.Expressions
         void VisitConditionalExpression(ConditionalExpression cond);
         void VisitConditionOf(ConditionOf cof);
 		void VisitConstant(Constant c);
-		void VisitDepositBits(DepositBits d);
 		void VisitDereference(Dereference deref);
 		void VisitFieldAccess(FieldAccess acc);
 		void VisitIdentifier(Identifier id);
@@ -53,7 +53,8 @@ namespace Reko.Core.Expressions
 
         void VisitSlice(Slice slice);
 		void VisitTestCondition(TestCondition tc);
-		void VisitUnaryExpression(UnaryExpression unary);
+        void VisitConversion(Conversion conversion);
+        void VisitUnaryExpression(UnaryExpression unary);
     }
 
     public interface ExpressionVisitor<T>
@@ -66,7 +67,7 @@ namespace Reko.Core.Expressions
         T VisitConditionalExpression(ConditionalExpression cond);
         T VisitConditionOf(ConditionOf cof);
         T VisitConstant(Constant c);
-        T VisitDepositBits(DepositBits d);
+        T VisitConversion(Conversion conversion);
         T VisitDereference(Dereference deref);
         T VisitFieldAccess(FieldAccess acc);
         T VisitIdentifier(Identifier id);
@@ -94,7 +95,7 @@ namespace Reko.Core.Expressions
         T VisitConditionalExpression(ConditionalExpression c, C context);
         T VisitConditionOf(ConditionOf cof, C ctx);
         T VisitConstant(Constant c, C ctx);
-        T VisitDepositBits(DepositBits d, C ctx);
+        T VisitConversion(Conversion conversion, C context);
         T VisitDereference(Dereference deref, C ctx);
         T VisitFieldAccess(FieldAccess acc, C ctx);
         T VisitIdentifier(Identifier id, C ctx);
@@ -162,11 +163,10 @@ namespace Reko.Core.Expressions
 		{
 		}
 
-		public void VisitDepositBits(DepositBits d)
-		{
-			d.Source.Accept(this);
-			d.InsertedBits.Accept(this);
-		}
+        public virtual void VisitConversion(Conversion conversion)
+        {
+            conversion.Expression.Accept(this);
+        }
 
 		public void VisitDereference(Dereference deref)
 		{
@@ -253,8 +253,10 @@ namespace Reko.Core.Expressions
 		#endregion
 	}
 
-    public class ExpressionVisitorBase<T> : ExpressionVisitor<T>
+    public abstract class ExpressionVisitorBase<T> : ExpressionVisitor<T>
     {
+        public abstract T DefaultValue { get; }
+
         public virtual T VisitAddress(Address addr)
         {
             throw new NotImplementedException();
@@ -274,7 +276,7 @@ namespace Reko.Core.Expressions
         {
             binExp.Left.Accept(this);
             binExp.Right.Accept(this);
-            return default(T);
+            return DefaultValue;
         }
 
         public virtual T VisitCast(Cast cast)
@@ -294,10 +296,10 @@ namespace Reko.Core.Expressions
 
         public virtual T VisitConstant(Constant c)
         {
-            return default(T);
+            return DefaultValue;
         }
 
-        public virtual T VisitDepositBits(DepositBits d)
+        public virtual T VisitConversion(Conversion conversion)
         {
             throw new NotImplementedException();
         }
@@ -314,7 +316,7 @@ namespace Reko.Core.Expressions
 
         public virtual T VisitIdentifier(Identifier id)
         {
-            return default(T);
+            return DefaultValue;
         }
 
         public virtual T VisitMemberPointerSelector(MemberPointerSelector mps)

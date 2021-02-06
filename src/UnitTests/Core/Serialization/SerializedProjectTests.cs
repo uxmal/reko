@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -270,6 +271,7 @@ namespace Reko.UnitTests.Core.Serialization
                             {
                                 { jumpTable.Address, jumpTable }
                             },
+                            OutputFilePolicy = Program.SegmentFilePolicy,
                         }
                     }
                 }
@@ -340,7 +342,7 @@ namespace Reko.UnitTests.Core.Serialization
                     address,
                     new ImageSegment(
                         ".text", 
-                        new MemoryArea(address, bytes),
+                        new ByteMemoryArea(address, bytes),
                         AccessMode.ReadWriteExecute))
             };
             loader.Setup(l => l.LoadImageBytes(
@@ -356,7 +358,7 @@ namespace Reko.UnitTests.Core.Serialization
         private void Given_ExecutableProgram(string exeName, Address address)
         {
             var bytes = new byte[0x1000];
-            var mem = new MemoryArea(address, bytes);
+            var mem = new ByteMemoryArea(address, bytes);
             var segmentMap = new SegmentMap(address,
                     new ImageSegment(".text", mem, AccessMode.ReadWriteExecute));
             var program = new Program

@@ -11,15 +11,15 @@ fn0C00_0000_entry:
 	def si
 	def es
 l0C00_0000:
-	Mem7[ds:0x02FC:word32] = eax * 0x00000005
+	Mem7[ds:0x2FC<16>:word32] = eax * 5<32>
 	eax_9 = Mem7[ds:si:word32]
-	Mem11[ds:0x0300:word32] = eax_9
-	eax_12 = Mem11[ds:si + 0x0004:word32]
-	Mem14[ds:0x0304:word32] = eax_12
-	ax_15 = Mem14[ds:si + 0x0008:word16]
-	Mem17[ds:0x0308:word16] = ax_15
-	ax_18 = Mem17[ds:si + 0x000A:word16]
-	Mem20[ds:0x030A:word16] = ax_18
+	Mem11[ds:0x300<16>:word32] = eax_9
+	eax_12 = Mem11[ds:si + 4<i16>:word32]
+	Mem14[ds:0x304<16>:word32] = eax_12
+	ax_15 = Mem14[ds:si + 8<i16>:word16]
+	Mem17[ds:0x308<16>:word16] = ax_15
+	ax_18 = Mem17[ds:si + 10<i16>:word16]
+	Mem20[ds:0x30A<16>:word16] = ax_18
 	call fn0C00_0026 (retsize: 2;)
 		uses: ds:ds,es:es
 	return
@@ -36,18 +36,18 @@ fn0C00_0026_entry:
 	def Mem0
 	def es
 l0C00_0026:
-	cx_6 = Mem0[ds:0x0400:word16]
-	di_8 = Mem0[ds:0x0402:word16]
+	cx_6 = Mem0[ds:0x400<16>:word16]
+	di_8 = Mem0[ds:0x402<16>:word16]
 l0C00_0030:
 	di_12 = PHI((di_8, l0C00_0026), (di_15, l0C00_0030_1))
 	cx_9 = PHI((cx_6, l0C00_0026), (cx_16, l0C00_0030_1))
-	branch cx_9 == 0x0000 l0C00_0032
+	branch cx_9 == 0<16> l0C00_0032
 l0C00_0030_1:
-	di_15 = di_12 + 0x0001
-	cx_16 = cx_9 - 0x0001
-	branch Mem0[es:di_12:byte] != 0x00 l0C00_0030
+	di_15 = di_12 + 1<i16>
+	cx_16 = cx_9 - 1<16>
+	branch Mem0[es:di_12:byte] != 0<8> l0C00_0030
 l0C00_0032:
 	di_18 = PHI((di_12, l0C00_0030), (di_15, l0C00_0030_1))
-	Mem21[ds:0x0404:word16] = di_18
+	Mem21[ds:0x404<16>:word16] = di_18
 	return
 fn0C00_0026_exit:

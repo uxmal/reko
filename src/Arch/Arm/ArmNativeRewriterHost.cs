@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,12 +36,12 @@ namespace Reko.Arch.Arm
     [ClassInterface(ClassInterfaceType.None)]
     public class ArmNativeRewriterHost : MarshalByRefObject, INativeRewriterHost
     {
-        private Dictionary<int, RegisterStorage> regs;
-        private Dictionary<int, RegisterStorage> coprocregs;
-        private IStorageBinder frame;
-        private IRewriterHost host;
-        private NativeTypeFactory ntf;
-        private NativeRtlEmitter m;
+        private readonly Dictionary<int, RegisterStorage> regs;
+        private readonly Dictionary<int, RegisterStorage> coprocregs;
+        private readonly IStorageBinder frame;
+        private readonly IRewriterHost host;
+        private readonly NativeTypeFactory ntf;
+        private readonly NativeRtlEmitter m;
 
         public ArmNativeRewriterHost(Dictionary<int, RegisterStorage> regs, IStorageBinder frame, IRewriterHost host, NativeTypeFactory ntf, NativeRtlEmitter m)
         {
@@ -121,9 +121,9 @@ namespace Reko.Arch.Arm
             host.Error(m.CreateAddress(uAddress), error);
         }
 
-        public HExpr EnsurePseudoProcedure(string name, BaseType dt, int arity)
+        public HExpr EnsureIntrinsicProcedure(string name, int isIdempotent, BaseType dt, int arity)
         {
-            var exp = host.EnsurePseudoProcedure(name, ntf.GetRekoType((HExpr) dt), arity);
+            var exp = host.EnsureIntrinsic(name, isIdempotent != 0, ntf.GetRekoType((HExpr) dt), arity);
             var pc = new ProcedureConstant(PrimitiveType.Ptr32, exp);
             return m.MapToHandle(pc);
         }

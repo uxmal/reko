@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,9 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -30,7 +32,7 @@ using System.Diagnostics;
 
 namespace Reko.Arch.Mips
 {
-    using Decoder = Reko.Core.Machine.Decoder<MipsDisassembler, Mnemonic, MipsInstruction>;
+    using Decoder = Decoder<MipsDisassembler, Mnemonic, MipsInstruction>;
 
     public partial class MipsDisassembler : DisassemblerBase<MipsInstruction, Mnemonic>
     {
@@ -93,24 +95,11 @@ namespace Reko.Arch.Mips
             };
         }
 
-        public override MipsInstruction NotYetImplemented(uint wInstr, string message)
+        public override MipsInstruction NotYetImplemented(string message)
         {
-            var instr = CreateInvalidInstruction();
-            EmitUnitTest(wInstr, message);
-            return instr;
-        }
-
-        [Conditional("DEBUG")]
-        public void EmitUnitTest(uint wInstr, string message)
-        {
-            var op = (wInstr >> 26);
-            if (op == 0 || op == 1)
-                return;
-            var instrHex = $"{wInstr:X8}";
-            base.EmitUnitTest("MIPS", instrHex, message, "MipsDis", this.addr, w =>
-            {
-                w.WriteLine("    AssertCode(\"@@@\", \"0x{0:X8}\");", wInstr);
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("MipsDis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         private RegisterOperand Reg(uint regNumber)

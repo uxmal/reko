@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,13 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -64,7 +66,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
         private void Given_Program()
         {
-            this.arch = new FakeArchitecture();
+            this.arch = new FakeArchitecture(new ServiceContainer());
             var platform = new FakePlatform(null, arch);
 
             this.program = new Program
@@ -73,7 +75,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                         Address.Ptr32(0x1000),
                         new ImageSegment(
                             ".text",
-                            new MemoryArea(Address.Ptr32(0x1000), new byte[1000]),
+                            new ByteMemoryArea(Address.Ptr32(0x1000), new byte[1000]),
                             AccessMode.ReadExecute)),
                 Platform = platform,
                 Architecture = arch,
@@ -82,9 +84,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
         private void Given_Table_UInt32(Address address, params uint[] entries)
         {
-            ImageSegment seg;
-            program.SegmentMap.Segments.TryGetValue(address, out seg);
-            var writer = new LeImageWriter(seg.MemoryArea, address);
+            program.SegmentMap.Segments.TryGetValue(address, out ImageSegment seg);
+            var writer = seg.MemoryArea.CreateLeWriter(address);
             foreach (uint entry in entries)
             {
                 writer.WriteLeUInt32(entry);
@@ -93,14 +94,13 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
         private void Given_IndirectTable_UInt32(Address address,  Address addrIndirect, params uint[] entries)
         {
-            ImageSegment seg;
-            program.SegmentMap.Segments.TryGetValue(address, out seg);
-            var writer = new LeImageWriter(seg.MemoryArea, address);
+            program.SegmentMap.Segments.TryGetValue(address, out ImageSegment seg);
+            var writer = seg.MemoryArea.CreateLeWriter(address);
             foreach (uint entry in entries)
             {
                 writer.WriteLeUInt32(entry);
             }
-            writer = new LeImageWriter(seg.MemoryArea, addrIndirect);
+            writer = seg.MemoryArea.CreateLeWriter(addrIndirect);
             for (int i = 0; i< entries.Length; ++i)
             {
                 writer.WriteByte((byte)i);

@@ -10,8 +10,8 @@ void fn10000000()
 fn10000000_entry:
 	// succ:  l10000000
 l10000000:
-	fn10000018(0x00000003)
-	fn10000013(0x00000009)
+	fn10000018(3<32>)
+	fn10000013(9<32>)
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:
@@ -64,7 +64,7 @@ void fn10000020(word32 dwArg04)
 fn10000020_entry:
 	// succ:  l10000020
 l10000020:
-	Mem6[0x00123400:word32] = dwArg04
+	Mem6[0x00123400<p32>:word32] = dwArg04
 	return
 	// succ:  fn10000020_exit
 fn10000020_exit:

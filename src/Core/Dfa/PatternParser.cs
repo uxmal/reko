@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ namespace Reko.Core.Dfa
             this.idx = 0;
         }
 
-        public TreeNode Parse()
+        public TreeNode? Parse()
         {
             var head = ParseOr();
             if (PeekAndDiscard(']'))
@@ -70,7 +70,7 @@ namespace Reko.Core.Dfa
             return idx >= pattern.Length;
         }
 
-        private TreeNode ParseOr()
+        private TreeNode? ParseOr()
         {
             var head = ParseCat();
             while (PeekAndDiscard('|'))
@@ -86,7 +86,7 @@ namespace Reko.Core.Dfa
             return head;
         }
 
-        private TreeNode ParseCat()
+        private TreeNode? ParseCat()
         {
             var prev = ParseFactor();
             for (; ; )
@@ -105,7 +105,7 @@ namespace Reko.Core.Dfa
             return prev;
         }
 
-        private TreeNode ParseFactor()
+        private TreeNode? ParseFactor()
         {
             var atom = ParseAtom();
             if (atom == null)
@@ -129,7 +129,7 @@ namespace Reko.Core.Dfa
             return atom;
         }
 
-        private TreeNode ParseAtom()
+        private TreeNode? ParseAtom()
         {
             if (!EatSpaces())
                 return null;

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Absyn;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using Reko.Gui;
@@ -305,7 +306,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private void GenerateSimulatedProgram()
         {
             var row = Enumerable.Range(0, 0x100).Select(b => (byte)b).ToArray();
-            var image = new MemoryArea(
+            var image = new ByteMemoryArea(
                     Address.Ptr32(0x0010000),
                     Enumerable.Repeat(
                         row,
@@ -316,8 +317,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 image.BaseAddress,
                 new ImageSegment("code", image,  AccessMode.ReadWriteExecute));
             var imageMap = segmentMap.CreateImageMap();
-            imageMap.AddItemWithSize(addrCode, new ImageMapBlock { Address = addrCode, Size = 0x0E });
-            imageMap.AddItemWithSize(addrData, new ImageMapItem { Address = addrData, DataType = PrimitiveType.Byte, Size = 0x0E });
+            imageMap.AddItemWithSize(addrCode, new ImageMapBlock(addrCode) { Size = 0x0E });
+            imageMap.AddItemWithSize(addrData, new ImageMapItem(addrData) { DataType = PrimitiveType.Byte, Size = 0x0E });
             var arch = dlg.Services.RequireService<IConfigurationService>().GetArchitecture("x86-protected-32");
             this.program = new Program
             {

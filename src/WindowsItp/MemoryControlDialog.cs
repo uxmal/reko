@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,12 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
+using System.ComponentModel.Design;
 using System.Windows.Forms;
 
 namespace Reko.WindowsItp
@@ -41,14 +39,17 @@ namespace Reko.WindowsItp
         {
             if (chkShowData.Checked)
             {
-                var mem = new MemoryArea(Address.Ptr32(0x00100000), new byte[2560]);
+                var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), new byte[2560]);
                 var segMap = new SegmentMap(mem.BaseAddress,
                     new ImageSegment("", mem, AccessMode.ReadWriteExecute));
                 var imgMap = segMap.CreateImageMap();
-                imgMap.AddItemWithSize(Address.Ptr32(0x00100000), new ImageMapBlock { Size = 30 });
-                imgMap.AddItemWithSize(Address.Ptr32(0x00100100), new ImageMapBlock { Size = 300 });
-                imgMap.AddItemWithSize(Address.Ptr32(0x00100500), new ImageMapBlock { Size = 600 });
-                memoryControl1.Architecture = new X86ArchitectureFlat32("x86-protected-32");
+                imgMap.AddItemWithSize(Address.Ptr32(0x00100000), new ImageMapBlock(Address.Ptr32(0x00100000)) { Size = 30 });
+                imgMap.AddItemWithSize(Address.Ptr32(0x00100100), new ImageMapBlock(Address.Ptr32(0x00100100)) { Size = 300 });
+                imgMap.AddItemWithSize(Address.Ptr32(0x00100500), new ImageMapBlock(Address.Ptr32(0x00100500)) { Size = 600 });
+                memoryControl1.Architecture = new X86ArchitectureFlat32(
+                    new ServiceContainer(), 
+                    "x86-protected-32",
+                    new Dictionary<string, object>());
 
                 imageMapView1.ImageMap = imgMap;
             }

@@ -1,0 +1,30 @@
+void _init()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      __libc_csu_init
+// MayUse: 
+// LiveOut:
+// Trashed: r2 r25 r28
+// Preserved: ra sp
+_init_entry:
+l00000588:
+	branch __gmon_start__ == 0<32> l00000588_ds_t
+l00000588_ds_t:
+l000005B8:
+	word32 r25_16 = Mem10[0x00020A4C<p32>:word32]
+	call r25_16 + 2004<i32> (retsize: 0;)
+		uses: r25:r25_16 + 2004<i32>
+	word32 r25_24 = Mem10[0x00020A4C<p32>:word32]
+	call r25_24 + 2416<i32> (retsize: 0;)
+		uses: r25:r25_24 + 2416<i32>
+	return
+_init_exit:
+l00000588_ds_f:
+l000005AC:
+	word32 r25_31
+	call __gmon_start__ (retsize: 0;)
+		uses: r25:r25_31
+		defs: r25:r25_31
+
+

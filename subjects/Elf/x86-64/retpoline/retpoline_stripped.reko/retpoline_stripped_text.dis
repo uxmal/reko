@@ -1,0 +1,82 @@
+void fn0000000000400480(word64 rdx, word64 qwArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rdx:[0..63] Stack +0000:[0..63]
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn0000000000400480_exit:
+fn0000000000400480_entry:
+l0000000000400480:
+	__align(fp + 8<i64>)
+	__libc_start_main(0x400660<64>, qwArg00, fp + 8<i64>, 0x400710<64>, 0x400780<64>, rdx, fp)
+	__hlt()
+
+
+void fn00000000004004B0()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO rax rdi Top
+// Preserved: rbp rsp
+fn00000000004004B0_entry:
+l00000000004004B0:
+	branch true l00000000004004D8
+l00000000004004C1:
+	branch true l00000000004004D8
+l00000000004004D8:
+	return
+l00000000004004CB:
+	call 0<u64> (retsize: 0;)
+		uses: rdi:0x601040<u64>
+	return
+fn00000000004004B0_exit:
+
+
+void fn0000000000400560(word32 esi, word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  edi:[0..31] esi:[0..31]
+// LiveOut:
+// Trashed: SCZO rdi rsi Top
+// Preserved: rbp rsp
+fn0000000000400560_entry:
+l0000000000400560:
+	calloc(CONVERT(edi, word32, int64), CONVERT(esi, word32, int64))
+	return
+fn0000000000400560_exit:
+
+
+void fn00000000004006F0()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+fn00000000004006F0_exit:
+fn00000000004006F0_entry:
+l00000000004006F0:
+	fn0000000000400700()
+l00000000004006F5:
+	__pause()
+
+
+void fn0000000000400700()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00000000004006F0
+// MayUse: 
+// LiveOut:
+// Trashed: Top
+// Preserved: rsp
+fn0000000000400700_entry:
+l0000000000400700:
+	return
+fn0000000000400700_exit:
+
+

@@ -8,16 +8,16 @@ done:
 	return
 	// succ:  ProcedureBuilder_exit
 l1:
-	p_1 = 0x00003000
+	p_1 = 0x3000<32>
 	goto loop
 	// succ:  loop
 l2:
-	Mem3[p_2 + 0x00000000:int32] = 0
-	p_4 = p_2 + 0x00000004
+	Mem3[p_2 + 0<32>:int32] = 0<i32>
+	p_4 = p_2 + 4<32>
 	// succ:  loop
 loop:
 	p_2 = PHI((p_1, l1), (p_4, l2))
-	branch p_2 == 0x00001000 done
+	branch p_2 == 0x1000<32> done
 	goto l2
 	// succ:  l2 done
 ProcedureBuilder_exit:

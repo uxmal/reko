@@ -8,15 +8,15 @@ T_2: (in psz : LPSTR)
   Class: Eq_2
   DataType: LPSTR
   OrigDataType: LPSTR
-T_3: (in 0x00000000 : word32)
+T_3: (in 0<32> : word32)
   Class: Eq_3
   DataType: word32
   OrigDataType: word32
-T_4: (in psz + 0x00000000 : word32)
+T_4: (in psz + 0<32> : word32)
   Class: Eq_4
   DataType: LPSTR
   OrigDataType: LPSTR
-T_5: (in Mem0[psz + 0x00000000:byte] : byte)
+T_5: (in Mem0[psz + 0<32>:byte] : byte)
   Class: Eq_5
   DataType: char
   OrigDataType: char

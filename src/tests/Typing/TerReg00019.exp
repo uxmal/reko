@@ -1,0 +1,95 @@
+// Before ///////
+// fn00100000
+// Return size: 0
+void fn00100000(word32 dwArg0C)
+fn00100000_entry:
+	// succ:  l00100000
+l00100000:
+	Mem25[fp - 0x6C<32> + dwArg0C:byte] = 0x41<8>
+	Mem27[fp - 0x6B<32> + dwArg0C:byte] = 0x20<8>
+	return
+	// succ:  fn00100000_exit
+fn00100000_exit:
+
+// After ///////
+// fn00100000
+// Return size: 0
+void fn00100000(int32 dwArg0C)
+fn00100000_entry:
+	// succ:  l00100000
+l00100000:
+	fp - 0x6C<32> + dwArg0C = (byte *) 0x41<8>
+	(*fp - 0x6B<32>)[dwArg0C]  =  0x20<8>
+	return
+	// succ:  fn00100000_exit
+fn00100000_exit:
+
+// Equivalence classes ////////////
+Eq_1: (struct "Globals")
+	globals_t (in globals : (ptr32 (struct "Globals")))
+Eq_9: (struct "Eq_9" 0001 (0 (arr Eq_9) a0000))
+	T_9 (in 0x20<8> : byte)
+	T_13 (in Mem27[fp - 0x6B<32> + dwArg0C:byte] : byte)
+	T_14
+	T_15
+// Type Variables ////////////
+globals_t: (in globals : (ptr32 (struct "Globals")))
+  Class: Eq_1
+  DataType: (ptr32 Eq_1)
+  OrigDataType: (ptr32 (struct "Globals"))
+T_2: (in dwArg0C : int32)
+  Class: Eq_2
+  DataType: int32
+  OrigDataType: int32
+T_3: (in 0x41<8> : byte)
+  Class: Eq_3
+  DataType: byte
+  OrigDataType: byte
+T_4: (in fp : ptr32)
+  Class: Eq_4
+  DataType: ptr32
+  OrigDataType: ptr32
+T_5: (in 0x6C<32> : word32)
+  Class: Eq_5
+  DataType: ui32
+  OrigDataType: ui32
+T_6: (in fp - 0x6C<32> : word32)
+  Class: Eq_6
+  DataType: ptr32
+  OrigDataType: ptr32
+T_7: (in fp - 0x6C<32> + dwArg0C : word32)
+  Class: Eq_7
+  DataType: (ptr32 byte)
+  OrigDataType: (ptr32 (struct (0 T_8 t0000)))
+T_8: (in Mem25[fp - 0x6C<32> + dwArg0C:byte] : byte)
+  Class: Eq_3
+  DataType: byte
+  OrigDataType: byte
+T_9: (in 0x20<8> : byte)
+  Class: Eq_9
+  DataType: (struct "Eq_9" 0001 (0 (arr Eq_9) a0000))
+  OrigDataType: byte
+T_10: (in 0x6B<32> : word32)
+  Class: Eq_10
+  DataType: ui32
+  OrigDataType: ui32
+T_11: (in fp - 0x6B<32> : (arr Eq_9))
+  Class: Eq_11
+  DataType: (ptr32 (arr Eq_9))
+  OrigDataType: (ptr32 (struct (0 (arr T_14) a0000)))
+T_12: (in fp - 0x6B<32> + dwArg0C : word32)
+  Class: Eq_12
+  DataType: (ptr32 Eq_9)
+  OrigDataType: (ptr32 (struct (0 T_13 t0000)))
+T_13: (in Mem27[fp - 0x6B<32> + dwArg0C:byte] : byte)
+  Class: Eq_9
+  DataType: Eq_9
+  OrigDataType: byte
+T_14:
+  Class: Eq_9
+  DataType: Eq_9
+  OrigDataType: (struct 0001 (0 T_13 t0000))
+T_15:
+  Class: Eq_9
+  DataType: Eq_9
+  OrigDataType: (arr Eq_9)

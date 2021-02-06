@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,7 +62,11 @@ namespace Reko.Core.CLanguage
 
         public CExpression ArrayAccess(CExpression e, CExpression idx)
         {
-            throw new NotImplementedException();
+            return new CArrayAccess
+            {
+                Expression = e,
+                Index = idx,
+            };
         }
 
         public CExpression MemberAccess(CExpression e, string fieldName)
@@ -152,7 +156,12 @@ namespace Reko.Core.CLanguage
 
         public Stat IfStatement(CExpression expr, Stat consequence, Stat alternative)
         {
-            throw new NotImplementedException();
+            return new IfStat
+            {
+                Expression = expr,
+                Consequence = consequence,
+                Alternative = alternative,
+            };
         }
 
         public Stat SwitchStatement(CExpression expr, Stat switchBody)
@@ -306,9 +315,13 @@ namespace Reko.Core.CLanguage
             };
         }
 
-        public StructDecl StructDecl(List<DeclSpec> sql, List<FieldDeclarator> decls)
+        public StructDecl StructDecl(List<DeclSpec> sql, List<FieldDeclarator> decls, List<CAttribute>? attrs)
         {
-            return new StructDecl { SpecQualifierList = sql, FieldDeclarators = decls };
+            return new StructDecl { 
+                SpecQualifierList = sql, 
+                FieldDeclarators = decls,
+                AttributeList = attrs 
+            };
         }
 
         public Declarator ArrayDeclarator(Declarator decl, CExpression expr)

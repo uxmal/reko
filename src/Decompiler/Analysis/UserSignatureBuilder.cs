@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,19 +72,20 @@ namespace Reko.Analysis
                     var sig = ser.Deserialize(sProc.Signature, proc.Frame);
                     if (sig != null)
                     {
-                        proc.Name = sProc.Name;
+                        proc.Name = sProc.Name ?? program.NamingPolicy.ProcedureName(proc.EntryAddress);
                         proc.Signature = sig;
                         return;
                     }
                 }
+                proc.Name = userProc.Name ?? proc.Name;
             }
         }
 
-        public ProcedureBase_v1 DeserializeSignature(Procedure_v1 userProc, Procedure proc)
+        public ProcedureBase_v1? DeserializeSignature(Procedure_v1 userProc, Procedure proc)
         {
             if (!string.IsNullOrEmpty(userProc.CSignature))
             {
-                return ParseFunctionDeclaration(userProc.CSignature);
+                return ParseFunctionDeclaration(userProc.CSignature!);
             }
             return null;
         }
@@ -107,7 +108,7 @@ namespace Reko.Analysis
 
             var linAddr = addr.ToLinear();
             var m = new ExpressionEmitter();
-            foreach (var param in sig.Parameters)
+            foreach (var param in sig.Parameters!)
             {
                 if (param.Storage is StackArgumentStorage starg)
                 {
@@ -138,10 +139,12 @@ namespace Reko.Analysis
             }
         }
 
-        public ProcedureBase_v1 ParseFunctionDeclaration(string fnDecl)
+        public ProcedureBase_v1? ParseFunctionDeclaration(string? fnDecl)
         {
+            if (string.IsNullOrEmpty(fnDecl))
+                return null;
             try {
-                var lexer = new CLexer(new StringReader(fnDecl + ";"));
+                var lexer = new CLexer(new StringReader(fnDecl + ";"), CLexer.GccKeywords);
                 var symbols = program.CreateSymbolTable();
                 var oldProcs = symbols.Procedures.Count;
                 var cstate = new ParserState(symbols);
@@ -167,11 +170,11 @@ namespace Reko.Analysis
             }
         }
 
-        public GlobalDataItem_v2 ParseGlobalDeclaration(string txtGlobal)
+        public GlobalDataItem_v2? ParseGlobalDeclaration(string txtGlobal)
         {
             try
             {
-                var lexer = new CLexer(new StringReader(txtGlobal + ";"));
+                var lexer = new CLexer(new StringReader(txtGlobal + ";"), CLexer.GccKeywords);  //$REVIEW: what's the right thing?
                 var symbols = program.CreateSymbolTable();
                 var oldVars = symbols.Variables.Count;
                 var cstate = new ParserState(symbols);

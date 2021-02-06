@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,9 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Gui.Design
 {
@@ -32,8 +30,8 @@ namespace Reko.Gui.Design
         {
             base.Initialize(obj);
             var grp = ((ProgramResourceGroup)obj);
-            TreeNode.Text = grp.Name;
-            Host.AddComponents(grp, grp.Resources);
+            TreeNode!.Text = grp.Name;
+            Host!.AddComponents(grp, grp.Resources);
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,12 +27,14 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
+using Reko.Core.Memory;
 
 namespace Reko.Arch.Xtensa
 {
     public class XtensaArchitecture : ProcessorArchitecture
     {
-        public XtensaArchitecture(string archId)  : base(archId)
+        public XtensaArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             //$TODO: Xtensa is bi-endian, but we're assuming little-endian here.
             // Fix this if encountering a big-endian binary.
@@ -45,7 +47,7 @@ namespace Reko.Arch.Xtensa
             this.StackRegister = Registers.a1;
         }
 
-        private static RegisterStorage[] aregs = new[]
+        private static readonly RegisterStorage[] aregs = new[]
         {
             Registers.a0 ,
             Registers.a1 ,
@@ -65,7 +67,7 @@ namespace Reko.Arch.Xtensa
             Registers.a15,
         };
 
-        private static RegisterStorage[] bregs = new[]
+        private static readonly RegisterStorage[] bregs = new[]
         {
             Registers.b0 ,
             Registers.b1 ,
@@ -85,8 +87,8 @@ namespace Reko.Arch.Xtensa
             Registers.b15,
         };
 
-        private static RegisterStorage[] fregs = new[]
-{
+        private static readonly RegisterStorage[] fregs = new[]
+        {
             Registers.f0 ,
             Registers.f1 ,
             Registers.f2 ,
@@ -105,14 +107,31 @@ namespace Reko.Arch.Xtensa
             Registers.f15,
         };
 
-        private static RegisterStorage[] allRegs =
+        private static readonly RegisterStorage[] mac16regs = new RegisterStorage[4]
+        {
+            Registers.mr0,
+            Registers.mr1,
+            Registers.mr2,
+            Registers.mr3,
+        };
+
+        private static readonly RegisterStorage[] allRegs =
             aregs.Concat(bregs).Concat(fregs).ToArray();
 
-        private static Dictionary<int, RegisterStorage> sregs = new Dictionary<int, RegisterStorage>
+        private static readonly Dictionary<string, RegisterStorage> regsByName =
+            allRegs.ToDictionary(r => r.Name);
+
+        private static readonly Dictionary<int, RegisterStorage> sregs = new Dictionary<int, RegisterStorage>
         {
+            { 0x00, Registers.LBEG },
+            { 0x01, Registers.LEND },
+            { 0x02, Registers.LCOUNT },
             { 0x03, Registers.SAR },
-            { 0xA2, new RegisterStorage("CCOUNT", 0x1A2, 0, PrimitiveType.Word32) },
-            { 0xA3, new RegisterStorage("INTENABLE", 0x1A3, 0, PrimitiveType.Word32) },
+            { 0x05, new RegisterStorage("LITBASE", 0x105, 0, PrimitiveType.Word32) },
+            { 0x0C, Registers.SCOMPARE1 },
+            { 0x10, Registers.ACCLO },
+            { 0x11, Registers.ACCHI },
+
             { 0xB1, new RegisterStorage("EPC1", 0x1B1, 0, PrimitiveType.Ptr32) },
             { 0xB2, new RegisterStorage("EPC2", 0x1B2, 0, PrimitiveType.Ptr32) },
             { 0xB3, new RegisterStorage("EPC3", 0x1B3, 0, PrimitiveType.Ptr32) },
@@ -126,12 +145,19 @@ namespace Reko.Arch.Xtensa
             { 0xD7, new RegisterStorage("EXCSAVE7", 0x1D7, 0, PrimitiveType.Word32) },
             { 0xE2, new RegisterStorage("INTSET", 0x1E2, 0, PrimitiveType.Word32) },
             { 0xE3, new RegisterStorage("INTCLEAR", 0x1E3, 0, PrimitiveType.Word32) },
+            { 0xE4, new RegisterStorage("INTENABLE", 0x1E4, 0, PrimitiveType.Word32) },
             { 0xE6, new RegisterStorage("PS", 0x1E6, 0, PrimitiveType.Ptr32) },
             { 0xE7, new RegisterStorage("VECBASE", 0x1E7, 0, PrimitiveType.Ptr32) },
             { 0xE8, new RegisterStorage("EXCCAUSE", 0x1E8, 0, PrimitiveType.Ptr32) },
+            { 0xEA, new RegisterStorage("CCOUNT", 0x1EA, 0, PrimitiveType.Word32) },
+            { 0xEB, new RegisterStorage("PRID", 0x1EB, 0, PrimitiveType.Ptr32) },
             { 0xEE, new RegisterStorage("EXCVADDR", 0x1EE, 0, PrimitiveType.Ptr32) },
             { 0xF0, new RegisterStorage("CCOMPARE0", 0x1F0, 0, PrimitiveType.Word32) },
         };
+
+        private static readonly RegisterStorage[] uregs = Enumerable.Range(0, 0x100)
+            .Select(n => new RegisterStorage($"user{n}", 0x800 + n, 0, PrimitiveType.Word32))
+            .ToArray();
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
@@ -181,9 +207,25 @@ namespace Reko.Arch.Xtensa
             return fregs[i];
         }
 
+        public RegisterStorage GetMac16Register(int i)
+        {
+            if (0 <= i && i < mac16regs.Length)
+                return mac16regs[i];
+            else
+                return null;
+        }
+
         public RegisterStorage GetSpecialRegister(int sr)
         {
-            return sregs[sr];
+            if (sregs.TryGetValue(sr, out var sreg))
+                return sreg;
+            else
+                return null;
+        }
+
+        public RegisterStorage GetUserRegister(int ur)
+        {
+            return uregs[ur];
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -219,7 +261,11 @@ namespace Reko.Arch.Xtensa
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            return allRegs[domain - StorageDomain.Register];
+            var ireg = domain - StorageDomain.Register;
+            if (0 <= ireg && ireg < allRegs.Length)
+                return allRegs[ireg];
+            else
+                return null;
         }
 
         public override RegisterStorage[] GetRegisters()
@@ -245,7 +291,7 @@ namespace Reko.Arch.Xtensa
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return regsByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)

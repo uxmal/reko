@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
@@ -73,6 +74,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private Mock<ISelectionService> selSvc;
         private Mock<ICallHierarchyService> callHierSvc;
         private Mock<IDecompiledFileService> dcFileSvc;
+        private Mock<ITestGenerationService> testGenSvc;
+        private Mock<IUserEventService> userEventSvc;
 
         [SetUp]
         public void Setup()
@@ -128,7 +131,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             uiSvc.Setup(u => u.ShowSaveFileDialog("foo.dcproject")).Returns("foo.dcproject");
 
             When_CreateMainFormInteractor();
-            diagnosticSvc.Object.Error(new NullCodeLocation(""), "test");
+            diagnosticSvc.Object.Error("test");
             interactor.OpenBinary(null);
 
             uiSvc.Verify();
@@ -226,7 +229,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private void Given_Loader()
         {
             var bytes = new byte[1000];
-            var mem = new MemoryArea(Address.SegPtr(0x0C00, 0x0000), bytes);
+            var mem = new ByteMemoryArea(Address.SegPtr(0x0C00, 0x0000), bytes);
             loader = new Mock<ILoader>();
             loader.Setup(l => l.LoadImageBytes(It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(bytes);
@@ -428,7 +431,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             this.decompiler = new Mock<IDecompiler>();
             // Having a compiler presupposes having a project.
             var platform = mockFactory.CreateMockPlatform();
-            var mem = new MemoryArea(Address.Ptr32(0x00010000), new byte[100]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00010000), new byte[100]);
             var project = new Project
             {
                 Programs = { new Program
@@ -446,7 +449,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             dcSvc.Setup(d => d.Decompiler).Returns(decompiler.Object);
             dcSvc.Setup(d => d.ProjectName).Returns("foo.exe");
             decompiler.Setup(d => d.Project).Returns(project);
-            decompiler.Setup(d => d.Load(It.IsNotNull<string>(), null)).Returns(false);
+            decompiler.Setup(d => d.Load(It.IsNotNull<string>(), null, null)).Returns(false);
         }
 
         private void Given_NoDecompilerInstance()
@@ -601,6 +604,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             selSvc = new Mock<ISelectionService>();
             callHierSvc = new Mock<ICallHierarchyService>();
             dcFileSvc = new Mock<IDecompiledFileService>();
+            testGenSvc = new Mock<ITestGenerationService>();
+            userEventSvc = new Mock<IUserEventService>();
+
 
             svcFactory.Setup(s => s.CreateArchiveBrowserService()).Returns(archSvc.Object);
             svcFactory.Setup(s => s.CreateCodeViewerService()).Returns(cvSvc.Object);
@@ -629,6 +635,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Setup(s => s.CreateSelectionService()).Returns(selSvc.Object);
             svcFactory.Setup(s => s.CreateCallHierarchyService()).Returns(callHierSvc.Object);
             svcFactory.Setup(s => s.CreateDecompiledFileService()).Returns(dcFileSvc.Object);
+            svcFactory.Setup(s => s.CreateTestGenerationService()).Returns(testGenSvc.Object);
+            svcFactory.Setup(s => s.CreateUserEventService()).Returns(userEventSvc.Object);
+
             services.AddService<IDialogFactory>(dlgFactory.Object);
             services.AddService<IServiceFactory>(svcFactory.Object);
             services.AddService<IFileSystemService>(fsSvc.Object);

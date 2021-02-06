@@ -1,7 +1,6 @@
-
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,9 +28,9 @@ namespace Reko.Core.Expressions
 {
     public class ExpressionReplacer : ExpressionVisitor<Expression>
     {
-        private ExpressionValueComparer cmp;
-        private Expression original;
-        private Expression replacement;
+        private readonly ExpressionValueComparer cmp;
+        private readonly Expression original;
+        private readonly Expression replacement;
 
         private ExpressionReplacer(Expression original, Expression replacement)
         {
@@ -111,13 +110,12 @@ namespace Reko.Core.Expressions
                 return c;
         }
 
-        public Expression VisitDepositBits(DepositBits d)
+        public Expression VisitConversion(Conversion conversion)
         {
-            if (cmp.Equals(d, original))
+            if (cmp.Equals(conversion, original))
                 return replacement;
-            var src = d.Source.Accept(this);
-            var bits = d.InsertedBits.Accept(this);
-            return new DepositBits(src, bits, d.BitPosition);
+            var expr = conversion.Expression.Accept(this);
+            return new Conversion(expr, conversion.SourceDataType, conversion.DataType);
         }
 
         public Expression VisitDereference(Dereference deref)
@@ -212,11 +210,6 @@ namespace Reko.Core.Expressions
         }
 
         public Expression VisitUnaryExpression(UnaryExpression unary)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static Expression Replace(Expression dst, object srcExpr, Expression jumpTableFormat)
         {
             throw new NotImplementedException();
         }

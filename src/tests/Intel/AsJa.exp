@@ -5,19 +5,19 @@
 0C00:0000 0E              	push	cs
 0C00:0001 1F              	pop	ds
 0C00:0002 8A 1C           	mov	bl,[si]
-0C00:0004 80 FB 02        	cmp	bl,02
-0C00:0007 77 1A           	ja	0023
+0C00:0004 80 FB 02        	cmp	bl,2h
+0C00:0007 77 1A           	ja	0023h
 0C00:0009 32 FF           	xor	bh,bh
 0C00:000B 03 DB           	add	bx,bx
-0C00:000D FF A7 11 00     	jmp	word ptr [bx+0011]
+0C00:000D FF A7 11 00     	jmp	word ptr [bx+11h]
 0C00:0011 17              	pop	ss
 0C00:0012 00 1B           	add	[bp+di],bl
 0C00:0014 00 1F           	add	[bx],bl
-0C00:0016 00 B8 01 00     	add	[bx+si+0001],bh
+0C00:0016 00 B8 01 00     	add	[bx+si+1h],bh
 0C00:001A C3              	ret
-0C00:001B B8 02 00        	mov	ax,0002
+0C00:001B B8 02 00        	mov	ax,2h
 0C00:001E C3              	ret
-0C00:001F B8 03 00        	mov	ax,0003
+0C00:001F B8 03 00        	mov	ax,3h
 0C00:0022 C3              	ret
-0C00:0023 B8 00 00        	mov	ax,0000
+0C00:0023 B8 00 00        	mov	ax,0h
 0C00:0026 C3              	ret

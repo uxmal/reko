@@ -19,36 +19,34 @@
 // ds:ds
 // ax:ax
 // Z:Z
-// eax:eax
-// ecx:ecx
 // Top:Top
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	si = bp + 0x000C
+	si = bp + 0xC<16>
 	__outb(dx, al)
-	v8 = (bx & 0x0001 << 0x01) != 0x0000
-	bx = __ror(bx, 0x01)
+	v8 = (bx & 1<16> << 1<8>) != 0<16>
+	bx = __ror(bx, 1<8>)
 	C = v8
-	v11 = (cx & 0x0001 << 0x01) != 0x0000
-	cx = __rcr(cx, 0x01, C)
+	v11 = (cx & 1<16> << 1<8>) != 0<16>
+	cx = __rcr(cx, 1<8>, C)
 	C = v11
-	dx = dx + 0x0001
+	dx = dx + 1<16>
 	SZO = cond(dx)
 	al = __inb(dx)
 	Mem0[es:di:byte] = al
-	di = di + 0x0001
-	C = __bt(Mem0[ds:0x3000:word16], ax)
+	di = di + 1<i16>
+	C = __bt(Mem0[ds:0x3000<16>:word16], ax)
 	C = __bt(cx, ax)
-	C = __bt(cx, 0x02)
-	Z = Mem0[ds:si:word16] == 0x0000
+	C = __bt(cx, 2<8>)
+	Z = Mem0[ds:si:word16] == 0<16>
 	cx = __bsr(Mem0[ds:si:word16])
-	Z = eax == 0x00000000
-	ecx = __bsr(eax)
+	Z = ax == 0<16>
+	cx = __bsr(ax)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

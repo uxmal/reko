@@ -6,14 +6,14 @@ ProcedureBuilder_entry:
 	// succ:  l1
 default:
 l1:
-	eax = Mem0[esp + 0x00000004:word32]
-	SCZO = cond(eax - 0x00000003)
+	eax = Mem0[esp + 4<32>:word32]
+	SCZO = cond(eax - 3<32>)
 	branch Test(UGT,SCZO) default
 	// succ:  l2 default
 l2:
 	edx = edx ^ edx
 	SCZO = cond(edx)
-	dl = Mem0[eax + 0x00010000:byte]
+	dl = Mem0[eax + 0x10000<32>:byte]
 ProcedureBuilder_exit:
 cmp 3
 branch UGT

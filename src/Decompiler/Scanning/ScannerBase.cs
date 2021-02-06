@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +22,7 @@ using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
-using Reko.Core.Types;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Scanning
 {
@@ -50,7 +45,7 @@ namespace Reko.Scanning
             if (!Program.User.Procedures.TryGetValue(addr, out sProc) ||
                 sProc.Decompile)
             {
-                sProc = null;
+                sProc = null!;
                 return false;
             }
             return true;
@@ -65,7 +60,7 @@ namespace Reko.Scanning
         {
             if (!TryGetNoDecompiledProcedure(addr, out Procedure_v1 sProc))
             {
-                parsedProc = null;
+                parsedProc = null!;
                 return false;
             }
             if (noDecompiledProcs.TryGetValue(addr, out parsedProc))
@@ -99,14 +94,14 @@ namespace Reko.Scanning
         {
             if (!TryGetNoDecompiledParsedProcedure(addr, out Procedure_v1 sProc))
             {
-                ep = null;
+                ep = null!;
                 return false;
             }
             var ser = Program.CreateProcedureSerializer();
             var sig = ser.Deserialize(
                 sProc.Signature,
                 Program.Architecture.CreateFrame());
-            ep = new ExternalProcedure(sProc.Name, sig);
+            ep = new ExternalProcedure(sProc.Name!, sig!);
             return true;
         }
 

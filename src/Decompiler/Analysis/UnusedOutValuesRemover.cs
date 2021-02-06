@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,10 @@ namespace Reko.Analysis
     /// </summary>
     public class UnusedOutValuesRemover
     {
-        public static TraceSwitch trace = new TraceSwitch(typeof(UnusedOutValuesRemover).Name, "Trace removal of unused out values");
+        public static TraceSwitch trace = new TraceSwitch(nameof(UnusedOutValuesRemover) , "Trace removal of unused out values")
+        {
+            Level = TraceLevel.Warning,
+        };
 
         private readonly IEnumerable<SsaState> ssaStates;
         private readonly WorkList<SsaState> wl;
@@ -82,9 +85,9 @@ namespace Reko.Analysis
                     var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker, eventListener);
                     vp.Transform();
                     change |= RemoveUnusedDefinedValues(ssa, wl);
-                    DataFlowAnalysis.DumpWatchedProcedure("After RemoveUnusedDefinedValues", ssa.Procedure);
+                    //DataFlowAnalysis.DumpWatchedProcedure("After RemoveUnusedDefinedValues", ssa.Procedure);
                     change |= RemoveLiveInStorages(ssa.Procedure, dataFlow[ssa.Procedure], wl);
-                    DataFlowAnalysis.DumpWatchedProcedure("After RemoveLiveInStorages", ssa.Procedure);
+                    //DataFlowAnalysis.DumpWatchedProcedure("After RemoveLiveInStorages", ssa.Procedure);
                 }
             } while (change);
             foreach (var proc in procToSsa.Keys)
@@ -105,7 +108,7 @@ namespace Reko.Analysis
             var defs = proc.EntryBlock.Statements
                 .Select(s => s.Instruction as DefInstruction)
                 .Where(s => s != null)
-                .Select(s => s.Identifier.Storage)
+                .Select(s => s!.Identifier.Storage)
                 .ToHashSet();
             var deadStgs = flow.BitsUsed.Keys.Except(defs).ToHashSet();
             bool changed = false;
@@ -220,13 +223,13 @@ namespace Reko.Analysis
         public bool RemoveUnusedDefinedValues(SsaState ssa, WorkList<SsaState> wl)
         {
             bool change = false;
-            DebugEx.Verbose(trace, "UVR: {0}", ssa.Procedure.Name);
+            trace.Verbose("UVR: {0}", ssa.Procedure.Name);
             var (deadStms, deadStgs) = FindDeadStatementsInExitBlock(ssa, this.dataFlow[ssa.Procedure].BitsLiveOut);
 
             // Remove 'use' statements that are known to be dead from the exit block.
             foreach (var stm in deadStms)
             {
-                DebugEx.Verbose(trace, "UVR: {0}, deleting {1}", ssa.Procedure.Name, stm.Instruction);
+                trace.Verbose("UVR: {0}, deleting {1}", ssa.Procedure.Name, stm.Instruction);
                 ssa.DeleteStatement(stm);
                 change = true;
             }
@@ -284,7 +287,7 @@ namespace Reko.Analysis
         /// <returns></returns>
         private Dictionary<Storage, BitRange> CollectLiveOutStorages(Procedure procCallee)
         {
-            DebugEx.Verbose(trace, "== Collecting live out storages of {0}", procCallee.Name);
+            trace.Verbose("== Collecting live out storages of {0}", procCallee.Name);
             var liveOutStorages = new Dictionary<Storage, BitRange>();
 
             var sig = procCallee.Signature;
@@ -307,7 +310,7 @@ namespace Reko.Analysis
                 {
                     if (!(stm.Instruction is CallInstruction ci))
                         continue;
-                    DebugEx.Verbose(trace, "  {0}", ci);
+                    trace.Verbose("  {0}", ci);
                     var ssaCaller = this.procToSsa[stm.Block.Procedure];
                     foreach (var def in ci.Definitions)
                     {
@@ -317,7 +320,7 @@ namespace Reko.Analysis
                         if (sid.Uses.Count > 0)
                         {
                             var br = urf.Classify(ssaCaller, sid, def.Storage, true);
-                            DebugEx.Verbose(trace, "  {0}: {1}", sid.Identifier.Name, br);
+                            trace.Verbose("  {0}: {1}", sid.Identifier.Name, br);
                             if (liveOutStorages.TryGetValue(def.Storage, out BitRange brOld))
                             {
                                 br |= brOld;

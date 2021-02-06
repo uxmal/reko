@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Xml;
@@ -45,7 +46,7 @@ namespace Reko.UnitTests.Core.Serialization
 		{
             this.sc = new ServiceContainer();
             this.sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-			this.arch = new X86ArchitectureReal("x86-real-16");
+			this.arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             this.platform = new MsdosPlatform(sc, arch);
 		}
 

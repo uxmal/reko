@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using System;
@@ -101,7 +102,7 @@ namespace Reko.Scanning
         /// <returns></returns>
         public ScanResults ScanNew()
         {
-            ICodeLocation location = null;
+            ICodeLocation? location = null;
             Exception error;
             try
             {
@@ -168,7 +169,7 @@ namespace Reko.Scanning
 
             var y = new byte[cbAlloc];
             // Advance by the instruction granularity.
-            var step = program.Architecture.InstructionBitSize / 8;
+            var step = program.Architecture.InstructionBitSize / program.Architecture.MemoryGranularity;
             
             // Align the start address to instruction granularity. If we align off 
             // into invalid memory, return immediately.
@@ -330,7 +331,6 @@ namespace Reko.Scanning
             // Find all places that are reachable from "bad" addresses.
             // By transitivity, they must also be be bad.
             var deadNodes = new HashSet<Address>();
-            throw new NotImplementedException();
             //foreach (var a in new DfsIterator<Address>(G).PreOrder(Bad))
             //{
             //    if (a != Bad)
@@ -512,12 +512,7 @@ namespace Reko.Scanning
                     endBlockNow = terminateDeferred;
                 }
             }
-            return new IcfgBuilder
-            {
-                Edges = edges,
-                AddrToBlock = mpBlocks,
-                Blocks = allBlocks,
-            };
+            return new IcfgBuilder(edges, mpBlocks, allBlocks);
         }
 
         private void BuildEdges(IcfgBuilder icb)
@@ -609,7 +604,9 @@ namespace Reko.Scanning
             var rdr = program.CreateImageReader(arch, seg.Address);
             while (rdr.TryRead(program.Platform.PointerType, out Constant c))
             {
-                yield return program.Architecture.MakeAddressFromConstant(c, false);
+                var addr = program.Architecture.MakeAddressFromConstant(c, false);
+                if (addr != null)
+                    yield return addr;
             }
         }
 
@@ -625,7 +622,7 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        private Address DestinationAddress(RtlInstructionCluster i)
+        private Address? DestinationAddress(RtlInstructionCluster i)
         {
             var rtl = i.Instructions[i.Instructions.Length - 1];
             for (;;)
@@ -647,7 +644,7 @@ namespace Reko.Scanning
         /// <param name="segment"></param>
         /// <param name="a"></param>
         /// <returns></returns>
-        private MachineInstruction Dasm(ImageSegment segment, int a)
+        private MachineInstruction? Dasm(ImageSegment segment, int a)
         {
             var addr = segment.Address + a;
             if (!segment.IsInRange(addr) || !segment.MemoryArea.IsValidAddress(addr))

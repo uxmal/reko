@@ -1,6 +1,6 @@
 #pragma once
 /*
-* Copyright (C) 1999-2019 John Källén.
+* Copyright (C) 1999-2021 John Kï¿½llï¿½n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -29,21 +29,21 @@ public:
 	STDMETHODIMP_(ULONG) Release() override { return ComBase::Release(); }
 
 	STDMETHODIMP GetInfo(NativeInstructionInfo * info) override;
-	STDMETHODIMP Render(INativeInstructionWriter * w, MachineInstructionWriterOptions options) override;
+	STDMETHODIMP Render(INativeInstructionRenderer * w, MachineInstructionRendererFlags options) override;
 private:
-	bool WriteRegisterSetInstruction(const cs_insn & instr, INativeInstructionWriter & writer);
-	void Write(const cs_insn & insn, const cs_arm_op & op, INativeInstructionWriter & writer, MachineInstructionWriterOptions options);
-	void WriteShift(const cs_arm_op & op, INativeInstructionWriter & writer);
-	void WriteMemoryOperand(const cs_insn & insn, const cs_arm_op & op, INativeInstructionWriter & writer);
+	bool WriteRegisterSetInstruction(const cs_insn & instr, INativeInstructionRenderer & renderer);
+	void Write(const cs_insn & insn, const cs_arm_op & op, INativeInstructionRenderer & renderer, MachineInstructionRendererFlags options);
+	void WriteShift(const cs_arm_op & op, INativeInstructionRenderer & renderer);
+	void WriteMemoryOperand(const cs_insn & insn, const cs_arm_op & op, INativeInstructionRenderer & renderer);
 	static bool IsLastOperand(const cs_insn & instr, const cs_arm_op * op)
 	{
 		auto ops = &instr.detail->arm.operands[0];
 		return op == ops + (instr.detail->arm.op_count - 1);
 	}
 
-	void WriteImmShift(const char * op, int value, INativeInstructionWriter & writer);
-	void WriteRegShift(const char * op, int value, INativeInstructionWriter &writer);
-	static void WriteImmediateValue(int imm8, INativeInstructionWriter & writer);
+	void WriteImmShift(const char * op, int value, INativeInstructionRenderer & renderer);
+	void WriteRegShift(const char * op, int value, INativeInstructionRenderer & renderer);
+	static void WriteImmediateValue(int imm8, INativeInstructionRenderer & renderer);
 	const char * RegName(int reg);
 protected:
 	cs_insn * instr;

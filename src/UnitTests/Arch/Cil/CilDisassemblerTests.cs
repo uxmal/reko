@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.Design;
+using Reko.Core.Services;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Cil
 {
@@ -33,8 +36,13 @@ namespace Reko.UnitTests.Arch.Cil
     {
         private void RunTest(string sExp, params byte[] bytes)
         {
-            var image = new MemoryArea(Address.Ptr32(0x0100000), bytes);
-            var dasm = new CilDisassembler(image.CreateLeReader(0)).GetEnumerator();
+            var image = new ByteMemoryArea(Address.Ptr32(0x0100000), bytes);
+            var sc = new ServiceContainer();
+            sc.AddService<ITestGenerationService>(new UnitTestGenerationService(sc));
+            var arch = new CilArchitecture {
+                Services = sc,
+            };
+            var dasm = new CilDisassembler(arch, image.CreateLeReader(0)).GetEnumerator();
             Assert.IsTrue(dasm.MoveNext());
             var instr = dasm.Current;
             Assert.AreEqual(sExp, instr.ToString());

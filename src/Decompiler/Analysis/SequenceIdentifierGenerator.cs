@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Reko.Analysis
     {
         private readonly SsaTransform sst;
         private readonly SsaState ssa;
-        private Statement stmCur;
+        private Statement? stmCur;      //$REFACTOR: context var.
 
         public SequenceIdentifierGenerator(SsaTransform sst)
         {
@@ -80,21 +80,21 @@ namespace Reko.Analysis
             {
                 if (storeOffset[i] == null)
                     continue;
-                var cast1 = GetCastRhs(storeOffset[i].Store);
-                var slice1 = GetSliceRhs(storeOffset[i].Store);
-                if (cast1 != null || slice1 != null)
+                var slice1a = GetSliceRhs(storeOffset[i].Store);
+                var slice1b = GetSliceRhs(storeOffset[i].Store);
+                if (slice1a != null || slice1b != null)
                 {
                     for (int j = i + 1; j < storeOffset.Length; ++j)
                     {
-                        var cast2 = GetCastRhs(storeOffset[j].Store);
-                        var slice2 = GetSliceRhs(storeOffset[j].Store);
-                        if (cast1 != null && slice2 != null)
+                        var slice2a = GetSliceRhs(storeOffset[j].Store);
+                        var slice2b = GetSliceRhs(storeOffset[j].Store);
+                        if (slice1a != null && slice2b != null)
                         {
                             ReplaceStores(sid, storeOffset[i], storeOffset[j]);
-                            storeOffset[i] = null;
-                            storeOffset[j] = null;
+                            storeOffset[i] = null!;
+                            storeOffset[j] = null!;
                         }
-                        else if (slice1 != null && cast2 != null)
+                        else if (slice1b != null && slice2a != null)
                         {
                             throw new NotImplementedException();
                         }
@@ -118,26 +118,27 @@ namespace Reko.Analysis
             }
         }
 
-        private Slice GetSliceRhs(Store store)
+        private Slice? GetSliceRhs(Store store)
         {
             var slice = store.Src as Slice;
             return slice;
         }
 
-        private Cast GetCastRhs(Store store)
-        {
-            var cast = store.Src as Cast;
-            return cast;
-        }
-
         private class StoreOffset
         {
-            public Statement Statement;
-            public Store Store;
-            public Constant Offset;
+            public StoreOffset(Statement stm, Store store, Constant Offset)
+            {
+                this.Statement = stm;
+                this.Store = store;
+                this.Offset = Offset;
+            }
+
+            public readonly Statement Statement;
+            public readonly Store Store;
+            public readonly Constant Offset;
         }
 
-        private StoreOffset ClassifyStore(Statement stm)
+        private StoreOffset? ClassifyStore(Statement stm)
         {
             if (!(stm.Instruction is Store store))
                 return null;
@@ -151,7 +152,7 @@ namespace Reko.Analysis
                 else
                     return null;
             }
-            Constant offset = null;
+            Constant? offset = null;
             if (ea is Identifier)
                 offset = Constant.Zero(ea.DataType);
             else
@@ -166,10 +167,7 @@ namespace Reko.Analysis
             }
             if (offset == null)
                 return null;
-            return new StoreOffset {
-                Statement = stm,
-                Store = store,
-                Offset = offset };
+            return new StoreOffset(stm, store, offset);
         }
 
         public override Expression VisitMkSequence(MkSequence seq)
@@ -182,10 +180,10 @@ namespace Reko.Analysis
             {
                 var sidHead = ssa.Identifiers[idHead];
                 var sidTail = ssa.Identifiers[idTail];
-                if (sidHead.DefStatement.Instruction is DefInstruction &&
-                    sidTail.DefStatement.Instruction is DefInstruction)
+                if (sidHead.DefStatement!.Instruction is DefInstruction &&
+                    sidTail.DefStatement!.Instruction is DefInstruction)
                 {
-                    return ReplaceMkSequence(seq, stmCur, sidHead, sidTail);
+                    return ReplaceMkSequence(seq, stmCur!, sidHead, sidTail);
                 }
             }
             return seq;
@@ -209,7 +207,7 @@ namespace Reko.Analysis
             if (!ssa.Identifiers.TryGetValue(idSeq, out SsaIdentifier sidSeq))
             {
                 var b = ssa.Procedure.EntryBlock;
-                var def = b.Statements.Add(b.Address.ToLinear(), null);
+                var def = b.Statements.Add(b.Address.ToLinear(), null!);    //$REFACTOR this to SsaState.AddDefineStatement
                 sidSeq = ssa.Identifiers.Add(idSeq, null, null, false);
                 sidSeq.DefStatement = def;
                 def.Instruction = new DefInstruction(sidSeq.Identifier);
@@ -219,7 +217,7 @@ namespace Reko.Analysis
 
         private void RemoveUse(SsaIdentifier sid)
         {
-            sid.Uses.Remove(stmCur);
+            sid.Uses.Remove(stmCur!);
         }
     }
 }

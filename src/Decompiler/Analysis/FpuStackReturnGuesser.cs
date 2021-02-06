@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 Pavel Tomin.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,15 +52,17 @@ namespace Reko.Analysis
         private readonly SsaState ssa;
         private readonly SsaMutator ssam;
         private readonly SsaIdentifierTransformer ssaIdTransformer;
+        private readonly DecompilerEventListener listener;
 
-        public FpuStackReturnGuesser(SsaState ssa)
+        public FpuStackReturnGuesser(SsaState ssa, DecompilerEventListener listener)
         {
             this.ssa = ssa;
             this.ssam = new SsaMutator(ssa);
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
+            this.listener = listener;
         }
 
-        public void Rewrite()
+        public void Transform()
         {
             var fpuStack = ssa.Procedure.Architecture.FpuStackRegister;
             if (fpuStack == null)
@@ -71,7 +74,9 @@ namespace Reko.Analysis
                 .ToList();
             foreach (var sid in fpuStackIds)
             {
-                if (!(sid.DefStatement.Instruction is CallInstruction ci))
+                if (listener.IsCanceled())
+                    return;
+                if (!(sid.DefStatement!.Instruction is CallInstruction ci))
                     continue;
                 var callStm = sid.DefStatement;
                 // If FPU stack variable was not used after call then assume
@@ -152,7 +157,7 @@ namespace Reko.Analysis
 
         private class FpuStackUsesFinder : InstructionVisitorBase
         {
-            private Identifier id;
+            private Identifier? id;
             private bool wasUsed;
 
             public bool WasUsed(Instruction instr, Identifier id)

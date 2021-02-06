@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -33,21 +34,19 @@ namespace Reko.Arch.PaRisc
 {
     public class PaRiscArchitecture : ProcessorArchitecture
     {
-        public PaRiscArchitecture(string archId) : base(archId)
+        public PaRiscArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, options)
         {
             InstructionBitSize = 32;
             StackRegister = Registers.GpRegs[30];
             Endianness = EndianServices.Big;
-            Options = new Dictionary<string, object>();
             SetOptionDependentProperties();
+            LoadUserOptions(options);
         }
-
-        public Dictionary<string, object> Options { get; }
-
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
-            return new PaRiscDisassembler(this, rdr);
+            return new PaRiscDisassembler(this, rdr: rdr);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -100,7 +99,10 @@ namespace Reko.Arch.PaRisc
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            if (Registers.RegistersByStorageDomain.TryGetValue(domain, out var reg))
+                return reg;
+            else
+                return null;
         }
 
         public override RegisterStorage GetRegister(string name)
@@ -130,7 +132,7 @@ namespace Reko.Arch.PaRisc
         {
             if (options == null)
                 return;
-            foreach (var option in options)
+            foreach (var option in options.ToList())
             {
                 this.Options[option.Key] = option.Value;
             }

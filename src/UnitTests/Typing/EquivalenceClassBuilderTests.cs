@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using Reko.Typing;
 using NUnit.Framework;
 using System;
 using Reko.UnitTests.Mocks;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Typing
 {
@@ -121,7 +122,7 @@ namespace Reko.UnitTests.Typing
             var tmp = new TemporaryStorage("seg1234", 0, PrimitiveType.SegmentSelector);
             var segment = new ImageSegment(
                     "seg1234",
-                    new MemoryArea(Address.SegPtr(0x1234, 0), new byte[100]),
+                    new ByteMemoryArea(Address.SegPtr(0x1234, 0), new byte[100]),
                     AccessMode.ReadWriteExecute)
             {
                 Identifier = new Identifier(tmp.Name, PrimitiveType.SegmentSelector, tmp)

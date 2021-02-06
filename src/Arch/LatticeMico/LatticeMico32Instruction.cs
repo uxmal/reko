@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,16 +29,17 @@ namespace Reko.Arch.LatticeMico
     {
         public Mnemonic Mnemonic { get; set; }
         public override int MnemonicAsInteger => (int) Mnemonic;
+        public override string MnemonicAsString => Mnemonic.ToString();
 
-        public override void Render(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            RenderMnemonic(writer);
-            RenderOperands(writer, options);
+            RenderMnemonic(renderer);
+            RenderOperands(renderer, options);
         }
 
-        private void RenderMnemonic(MachineInstructionWriter writer)
+        private void RenderMnemonic(MachineInstructionRenderer renderer)
         {
-            writer.WriteMnemonic(Mnemonic.ToString());
+            renderer.WriteMnemonic(Mnemonic.ToString());
         }
     }
 }

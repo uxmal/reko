@@ -4,10 +4,10 @@
   <platform>win32</platform>
   <input>
     <filename>VCExeSample.exe</filename>
-    <asmDir>.</asmDir>
-    <srcDir>.</srcDir>
-    <includeDir>.</includeDir>
-    <resources>.</resources>
+    <asmDir>VCExeSample.reko</asmDir>
+    <srcDir>VCExeSample.reko</srcDir>
+    <includeDir>VCExeSample.reko</includeDir>
+    <resources>VCExeSample.reko</resources>
     <user>
       <processor />
       <procedure name="main">
@@ -35,15 +35,24 @@
         <address>00401360</address>
         <CSignature>void nested_structs_test13(nested_structs_type *str)</CSignature>
       </procedure>
+      <procedure name="double_return_test15">
+        <characteristics />
+        <address>004013B0</address>
+        <CSignature>double double_return_test15(double d)</CSignature>
+      </procedure>
       <procedure name="Win32CrtStartup">
         <characteristics />
-        <address>00401623</address>
+        <address>0040165F</address>
         <decompile>false</decompile>
         <CSignature>DWORD Win32CrtStartup()</CSignature>
       </procedure>
+      <annotation addr="00401383">gbl_nested_structs.a = 5</annotation>
+      <annotation addr="0040138D">gbl_nested_structs.str.b = 6</annotation>
+      <annotation addr="00401397">gbl_nested_structs.str.c = 7</annotation>
+      <annotation addr="004013A1">gbl_nested_structs.d = 8</annotation>
       <call>
         <address>00401113</address>
-        <signature stackDelta="4">
+        <signature retOnStack="4" stackDelta="4">
           <return name="">
             <void />
           </return>
@@ -69,7 +78,12 @@
         <Name>gbl_c</Name>
       </global>
       <global>
-        <Address>00403024</Address>
+        <Address>0040301C</Address>
+        <type>nested_structs_type</type>
+        <Name>gbl_nested_structs</Name>
+      </global>
+      <global>
+        <Address>00403034</Address>
         <ptr size="4">
           <type>thiscall_class</type>
         </ptr>
@@ -78,8 +92,12 @@
       <onLoad Enabled="false" />
       <registerValues />
       <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
     </user>
   </input>
+  <metadata>
+    <filename>nested_struct.inc</filename>
+  </metadata>
   <metadata>
     <filename>decl.xml</filename>
   </metadata>

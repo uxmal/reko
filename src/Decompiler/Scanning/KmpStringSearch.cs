@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,8 +30,8 @@ namespace Reko.Scanning
     /// <typeparam name="C"></typeparam>
     public class KmpStringSearch<C> : StringSearch<C> where C : IComparable<C>
     {
-        private int[] failureTable;
-        private C[] keyword;
+        private readonly int[] failureTable;
+        private readonly C[] keyword;
 
         public KmpStringSearch(C[] W, bool scannedMemory, bool unscannedMemory)
             : base(W,  scannedMemory,  unscannedMemory)

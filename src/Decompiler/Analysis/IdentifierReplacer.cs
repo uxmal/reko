@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,11 +33,11 @@ namespace Reko.Analysis
     /// </summary>
     public class IdentifierReplacer : InstructionTransformer
     {
-        private SsaIdentifierCollection ssaIds;
-        private Statement use;
-        private Identifier idOld;
-        private Expression exprNew;
-        private bool replaceDefinitions;
+        private readonly SsaIdentifierCollection ssaIds;
+        private readonly Statement use;
+        private readonly Identifier idOld;
+        private readonly Expression exprNew;
+        private readonly bool replaceDefinitions;
 
         public IdentifierReplacer(SsaIdentifierCollection ssaIds, Statement use, Identifier idOld, Expression exprNew, bool replaceDefinitions)
         {

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
  */
 #endregion
 
+#pragma warning disable IDE1006
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,6 +30,8 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using static Reko.Arch.Arm.AArch32.ArmVectorData;
 
@@ -61,7 +65,7 @@ namespace Reko.Arch.Arm.AArch32
             var instr = rootDecoder.Decode(wInstr, this);
             instr.Address = this.addr;
             instr.InstructionClass |= wInstr == 0 ? InstrClass.Zero : 0;
-            instr.InstructionClass |= instr.condition != ArmCondition.AL ? InstrClass.Conditional : 0;
+            instr.InstructionClass |= instr.Condition != ArmCondition.AL ? InstrClass.Conditional : 0;
             instr.Length = 4;
             return instr;
         }
@@ -275,15 +279,10 @@ namespace Reko.Arch.Arm.AArch32
             return imm32;
         }
 
-        private AArch32Instruction NotYetImplemented(string message, uint wInstr)
+        public override AArch32Instruction NotYetImplemented(string message)
         {
-            var hexBytes = wInstr.ToString("X8");
-            base.EmitUnitTest("A32", hexBytes, message, "ArmDasm", this.addr,
-                w =>
-            {
-                w.WriteLine($"    Disassemble32(0x{hexBytes});");
-                w.WriteLine($"    Expect_Code(\"@@@\");");
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("ArmDasm", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 
@@ -441,6 +440,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
+        private static Mutator<A32Disassembler> vf18_HS_ = vf(20, 2, INVALID, F32, F16, INVALID);
         private static Mutator<A32Disassembler> vf20_SD = vf(20, 1, F32, F16);
 
         /// <summary>
@@ -457,6 +457,9 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
         private static readonly Mutator<A32Disassembler> vi_HW_f_HS_ = ves(Bf((8, 1), (20, 2)), INVALID, I16, I32, INVALID,   INVALID, F16, F32, INVALID);
+
+        private static readonly Mutator<A32Disassembler> viBH__18 = ves(Bf((18, 2)), I8, I16, INVALID, INVALID);
+        private static readonly Mutator<A32Disassembler> viBHW_18 = ves(Bf((18, 2)), I8, I16, I32, INVALID);
 
         private static readonly Mutator<A32Disassembler> vis_HW_ = ves(Bf((20, 2)), INVALID, S16, S32, INVALID);
         private static readonly Mutator<A32Disassembler> visBHW_ = ves(Bf((20, 2)), S8, S16, S32, INVALID);
@@ -620,7 +623,7 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         /// <summary>
-        /// Vector register, whose size is set by q(<bitpos>)
+        /// Vector register D or Q, whose size is set by q(<bitpos>)
         /// </summary>
         private static Mutator<A32Disassembler> W(int pos1, int size1, int pos2, int size2)
         {
@@ -994,6 +997,17 @@ namespace Reko.Arch.Arm.AArch32
                     return false;
                 d.state.ops.Add(new RegisterOperand(Registers.SRegs[iReg]));
                 d.state.ops.Add(new RegisterOperand(Registers.SRegs[iReg + 1]));
+                return true;
+            };
+        }
+
+        private static Mutator<A32Disassembler> D(int bitpos, int bitsize)
+        {
+            var field = new Bitfield(bitpos, bitsize);
+            return (u, d) =>
+            {
+                var iReg = field.Read(u);
+                d.state.ops.Add(new RegisterOperand(Registers.DRegs[iReg]));
                 return true;
             };
         }
@@ -1404,7 +1418,7 @@ namespace Reko.Arch.Arm.AArch32
                     m = op;
                 else
                     m = $"{op} - {message}";
-                d.NotYetImplemented(m, u);
+                d.NotYetImplemented(m);
                 d.CreateInvalidInstruction();
                 return false;
             };
@@ -3146,15 +3160,25 @@ namespace Reko.Arch.Arm.AArch32
                             Instr(Mnemonic.sha1su0, x("*")),
                             Vfms)),
 
-                    nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1101"),
+                    Mask(4, 1, "  0b1101",
+                        Mask(20, 2, "  op1=0",
+                            nyi("size=00"),
+                            nyi("size=01"),
+                            nyi("size=10"),
+                            nyi("size=11")),
+                        Mask(20, 2, "  op1=1",
+                            Instr(Mnemonic.vmla, F32, q6, W22_12, W7_16, W5_0),
+                            Instr(Mnemonic.vmla, F16, q6, W22_12, W7_16, W5_0),
+                            nyi("size=10"),
+                            nyi("size=11"))),
 
                     nyi("AdvancedSimd_ThreeRegisters - U = 0, opc=0b1110"),
                     Mask(21, 1, "  opc=0b1111",
                         Mask(4, 1, "  size=0x", 
                             Instr(Mnemonic.vmax, vf20_SD, q6, W22_12, W7_16, W5_0),
                             Instr(Mnemonic.vrecps, vf20_SD, q6, W22_12, W7_16, W5_0)),
-                        Mask(4, 1, "  size=0x",
-                            nyi("VMIN (floating point)"),
+                        Mask(4, 1, "  size=1x",
+                            Instr(Mnemonic.vmin, vf20_SD, q6, W22_12, W7_16, W5_0),
                             nyi("VRSQRTS")))),
 
                 Mask(8, 4, "  U = 1",
@@ -3218,7 +3242,17 @@ namespace Reko.Arch.Arm.AArch32
                     nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b1011"),
 
                     nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b1100"),
-                    nyi("AdvancedSimd_ThreeRegisters - U = 1, opc=0b1101"),
+                    Mask(4, 1, "  0b1101",
+                        Mask(20, 2, "  op1=0", 
+                            nyi("size=0b00"),
+                            nyi("size=0b01"),
+                            nyi("size=0b10"),
+                            nyi("size=0b11")),
+                        Mask(20, 2, "  op1=1",
+                            Instr(Mnemonic.vmul, F32, q6, W22_12, W7_16, W5_0),
+                            Instr(Mnemonic.vmul, F16, q6, W22_12, W7_16, W5_0),
+                            nyi("size=0b10"),
+                            nyi("size=0b11"))),
                     Mask(21, 1, 4, 1, "opc=0b1110 size:o1",
                         nyi("VCGE (register) - A2"),
                         Instr(Mnemonic.vacge, vf20_SD, q6, W22_12, W7_16, W5_0),
@@ -3345,17 +3379,21 @@ namespace Reko.Arch.Arm.AArch32
             var VmlsByScalar = Instr(Mnemonic.vmls, q(24),W22_12, vi_HW_f_HS_, W22_12,W7_16,W5_0,Ix(5,1));
             var VmlalByScalar = Mask(20, 2, "vmlsl",
                 invalid,
-                Instr(Mnemonic.vmlal, vi_HW__HW_, Q22_12, D7_16, D(11, 1, 0, 3), Ix((5, 1), (3, 1))),
-                Instr(Mnemonic.vmlal, vi_HW__HW_, Q22_12, D7_16, D(11, 1, 0, 4), Ix((5, 1))),
+                Instr(Mnemonic.vmlal, vi_HW__HW_, Q22_12, D7_16, D(0, 3), Ix((5, 1), (3, 1))),
+                Instr(Mnemonic.vmlal, vi_HW__HW_, Q22_12, D7_16, D(0, 4), Ix((5, 1))),
                 invalid);
             var VmlslByScalar = Mask(20, 2, "vmlsl",
                 invalid,
-                Instr(Mnemonic.vmlsl, vi_HW__HW_, Q22_12, D7_16, D(11, 1, 0, 3), Ix((5, 1), (3, 1))),
-                Instr(Mnemonic.vmlsl, vi_HW__HW_, Q22_12, D7_16, D(11, 1, 0, 4), Ix((5, 1))),
+                Instr(Mnemonic.vmlsl, vi_HW__HW_, Q22_12, D7_16, D(0, 3), Ix((5, 1), (3, 1))),
+                Instr(Mnemonic.vmlsl, vi_HW__HW_, Q22_12, D7_16, D(0, 4), Ix((5, 1))),
                 invalid);
             var Vqdmlal = nyi("vqdmlal");
             var Vqdmlsl = nyi("vqdmlsl");
-            var VmulByScalar = nyi("vmul");
+            var VmulByScalar = Mask(20, 2, "  vmul",
+                invalid,
+                Instr(Mnemonic.vmul, q6, vi_HW_f_HS_, W22_12, W7_16, D(0,3), Ix((5, 1), (3, 1))),
+                Instr(Mnemonic.vmul, q6, vi_HW_f_HS_, W22_12, W7_16, D(0,4), Ix((5, 1))),
+                invalid);
             var VmullByScalar = nyi("vmull");
             var Vqdmull = nyi("vqdmull");
             var Vqdmulh = nyi("vqdmulh");
@@ -3397,10 +3435,9 @@ namespace Reko.Arch.Arm.AArch32
             var Vcvtn = nyi("Vcvtn");
             var Vcvtp = nyi("Vcvtp");
             var Vcvtm = nyi("Vcvtm");
-            var Vrecpe = nyi("Vrecpe");
-            var Vrsqrtpe = nyi("Vrsqrtpe");
+            var vrecpe =  Instr(Mnemonic.vrecpe, q6, vf18_HS_, W22_12, W5_0);
+            var vrsqrte = Instr(Mnemonic.vrsqrte, q6, vf18_HS_, W22_12, W5_0);
             var Vcvt_between_fp_and_int = nyi("VCVT(between floating - point and integer, Advanced SIMD)");
-
 
             var AdvancedSimd_TwoRegistersMisc = Mask(16, 2, "Advanced SIMD two registers misc",
                 Mask(7, 4, "  opc1=00",
@@ -3448,7 +3485,9 @@ namespace Reko.Arch.Arm.AArch32
                         invalid),
                     Instr(Mnemonic.vtrn, x("*")),
                     Instr(Mnemonic.vuzp, x("*")),
-                    Instr(Mnemonic.vzip, x("*")),
+                    Mask(6, 1, " Q",
+                        Instr(Mnemonic.vzip, viBH__18, D22_12, D5_0),
+                        Instr(Mnemonic.vzip, viBHW_18, Q22_12, Q5_0)),
 
                     Mask(6, 1, " Q",
                         Instr(Mnemonic.vmovn, x("*")),
@@ -3486,17 +3525,29 @@ namespace Reko.Arch.Arm.AArch32
                     Vcvtm,
                     Vcvtm,
 
-                    Vrecpe,
-                    Vrsqrtpe,
-                    Vrecpe,
-                    Vrsqrtpe,
+                    vrecpe,
+                    vrsqrte,
+                    vrecpe,
+                    vrsqrte,
 
                     Vcvt_between_fp_and_int,
                     Vcvt_between_fp_and_int,
                     Vcvt_between_fp_and_int,
                     Vcvt_between_fp_and_int));
 
-            var AdvancedSimd_Duplicate_scalar = nyi("Advanced SIMD duplicate (scalar)");
+            var AdvancedSimd_Duplicate_scalar = Select("  Advanced SIMD duplicate (scalar)", 7, 0b111, 
+                u => u == 0,
+                Mask(16, 3, "  VDUP (scalar)", 
+                    invalid,
+                    Instr(Mnemonic.vdup, I8, q6, W22_12, D5_0, Ix(17, 3)),
+                    Instr(Mnemonic.vdup, I16, q6, W22_12, D5_0, Ix(18, 2)),
+                    Instr(Mnemonic.vdup, I8, q6, W22_12, D5_0, Ix(17, 3)),
+
+                    Instr(Mnemonic.vdup, I32, q6, W22_12, D5_0, Ix(19, 1)),
+                    Instr(Mnemonic.vdup, I8, q6, W22_12, D5_0, Ix(17, 3)),
+                    Instr(Mnemonic.vdup, I16, q6, W22_12, D5_0, Ix(18, 2)),
+                    Instr(Mnemonic.vdup, I8, q6, W22_12, D5_0, Ix(17, 3))),
+                invalid);
 
             var Vtbl_vtbx = Mask(6, 1, "VTBL,VTBX",
                 Instr(Mnemonic.vtbl, I8, D22_12,DRegList,D5_0),

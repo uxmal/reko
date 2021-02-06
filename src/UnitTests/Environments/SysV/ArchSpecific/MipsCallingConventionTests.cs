@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@ using Reko.Arch.Mips;
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Environments.SysV.ArchSpecific;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 
 namespace Reko.UnitTests.Environments.SysV.ArchSpecific
@@ -37,7 +39,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 
         private void AssertSignature(string sExp, params DataType[] args)
         {
-            var arch = new MipsBe32Architecture("mips-be-32");
+            var arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-32", new Dictionary<string, object>());
             var cc = new MipsCallingConvention(arch);
             var ccr = new CallingConventionEmitter();
             cc.Generate(ccr, null, null, args.ToList());
@@ -46,7 +48,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 
         private void AssertSignature64(string sExp, params DataType[] args)
         {
-            var arch = new MipsBe64Architecture("mips-be-64");
+            var arch = new MipsBe64Architecture(new ServiceContainer(), "mips-be-64", new Dictionary<string, object>());
             var cc = new MipsCallingConvention(arch);
             var ccr = new CallingConventionEmitter();
             cc.Generate(ccr, null, null, args.ToList());

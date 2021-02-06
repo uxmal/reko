@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 Pavel Tomin.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace Reko.Analysis
 {
     public class SsaDefinitionsCollector : InstructionVisitorBase
     {
-        private List<Identifier> definitions;
+        private readonly List<Identifier> definitions;
 
         public SsaDefinitionsCollector()
         {
@@ -55,7 +55,7 @@ namespace Reko.Analysis
             base.VisitCallInstruction(ci);
             definitions.AddRange(ci.Definitions
                 .Select(d => d.Expression as Identifier)
-                .Where(i => i != null));
+                .Where(i => i != null)!);
         }
 
         public override void VisitDefInstruction(DefInstruction def)

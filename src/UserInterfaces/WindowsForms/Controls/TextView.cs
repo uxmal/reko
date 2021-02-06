@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -463,6 +463,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 vScroll.Maximum = Math.Max(model.LineCount - 1, 0);
                 vScroll.LargeChange = Math.Max(visibleLines - 1, 0);
+                vScroll.SmallChange = 1;
                 vScroll.Enabled = visibleLines < model.LineCount;
             }
             else
@@ -495,11 +496,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 return cLines - 1;
             else
                 return cLines;
-        }
-
-        void model_ModelChanged(object sender, EventArgs e)
-        {
-            ChangeLayout();
         }
 
         void vScroll_ValueChanged(object sender, EventArgs e)
@@ -540,7 +536,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var modelPos = model.CurrentPosition;
             try
             {
-                var writer = new StreamWriter(stream, Encoding.Unicode);
+                var writer = new StreamWriter(stream, new UnicodeEncoding(false, false));
                 var start = GetStartSelection();
                 var end = GetEndSelection();
                 if (layout.ComparePositions(start, end) == 0)
@@ -599,7 +595,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         {
             var frac = model.GetPositionAsFraction();
             this.ignoreScroll = true;
-            if(frac.Item2 != 0)
+            if (frac.Item2 != 0)
                 vScroll.Value = (int)(Math.BigMul(frac.Item1, vScroll.Maximum) / frac.Item2);
             this.ignoreScroll = false;
         }

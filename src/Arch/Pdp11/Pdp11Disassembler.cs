@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -33,11 +35,14 @@ namespace Reko.Arch.Pdp11
 
     public class Pdp11Disassembler : DisassemblerBase<Pdp11Instruction, Mnemonic>
     {
+#pragma warning disable IDE1006 // Naming Styles
+
         private static readonly Decoder[] decoders;
 
         private readonly Pdp11Architecture arch;
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
+        private Address addr;
         private Pdp11Instruction instrCur;
         private PrimitiveType dataWidth;
 
@@ -50,7 +55,7 @@ namespace Reko.Arch.Pdp11
 
         public override Pdp11Instruction DisassembleInstruction()
         {
-            var addr = rdr.Address;
+            this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out ushort opcode))
                 return null;
             ops.Clear();
@@ -82,6 +87,13 @@ namespace Reko.Arch.Pdp11
                 Mnemonic = Mnemonic.illegal,
                 Operands = MachineInstruction.NoOperands
             };
+        }
+
+        public override Pdp11Instruction NotYetImplemented(string message)
+        {
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("Pdp11dis", this.addr, this.rdr, message);
+            return CreateInvalidInstruction();
         }
 
         #region Mutators
@@ -372,47 +384,6 @@ namespace Reko.Arch.Pdp11
             return new RegisterOperand(freg);
         }
 
-        private PrimitiveType DataWidthFromSizeBit(uint p)
-        {
-            return p != 0 ? PrimitiveType.Byte : PrimitiveType.Word16;
-        }
-
-        private Pdp11Instruction DecodeCondCode(ushort opcode)
-        {
-            if ((opcode & 0x1F) == 0)
-            {
-                return new Pdp11Instruction
-                {
-                    Mnemonic = Mnemonic.nop,
-                    InstructionClass = InstrClass.Linear|InstrClass.Padding,
-                    Operands = new MachineOperand[0]
-                };
-            } 
-            return new Pdp11Instruction
-            {
-                Mnemonic = ((opcode & 0x10) != 0) ? Mnemonic.setflags : Mnemonic.clrflags,
-                InstructionClass = InstrClass.Linear,
-                DataWidth = dataWidth,
-                Operands = new MachineOperand[] { new ImmediateOperand(Constant.Byte((byte) (opcode & 0xF))) },
-            };
-        }
-
-        private static MachineOperand Reg(int bits, Pdp11Disassembler dasm)
-        {
-            return new RegisterOperand(dasm.arch.GetRegister(bits & 7));
-        }
-
-        private Pdp11Instruction BranchInstruction(ushort opcode, Mnemonic oc, InstrClass iclass = InstrClass.ConditionalTransfer)
-        {
-            return new Pdp11Instruction
-            {
-                Mnemonic = oc,
-                InstructionClass = iclass,
-                DataWidth = PrimitiveType.Word16,
-                Operands = new MachineOperand[] { new AddressOperand(this.rdr.Address + 2 * (sbyte) (opcode & 0xFF)) },
-            };
-        }
-
         /// <summary>
         /// Decodes an operand based on the 6-bit quantitity <paramref name="operandBits"/>.
         /// </summary>
@@ -437,7 +408,10 @@ namespace Reko.Arch.Pdp11
                     if (!this.rdr.TryReadLeUInt16(out u))
                         return null;
                     return ImmediateOperand.Word16(u);
-                case 3: return new MemoryOperand(this.rdr.ReadLeUInt16(), this.dataWidth);
+                case 3:
+                    if (!this.rdr.TryReadLeUInt16(out u))
+                        return null;
+                    return new MemoryOperand(u, this.dataWidth);
                 case 6:
                     if (!this.rdr.TryReadLeUInt16(out u))
                         return null;

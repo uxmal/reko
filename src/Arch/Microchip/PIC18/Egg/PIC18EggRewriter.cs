@@ -1,8 +1,8 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 2017-2020 Christian Hostelet.
+ * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -101,17 +101,17 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             m.Assign(Fsr2, m.IAdd(Fsr2, k.ImmediateValue));
             var src = PopFromHWStackAccess();
             m.Assign(tos, src);
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Return(0, 0);
         }
 
         private void RewriteCALLW()
         {
 
-            rtlc = InstrClass.Transfer | InstrClass.Call;
+            iclass = InstrClass.Transfer | InstrClass.Call;
 
             var pclat = binder.EnsureRegister(PIC18Registers.PCLAT);
-            var target = m.Fn(host.PseudoProcedure("__callw", VoidType.Instance, Wreg, pclat));
+            var target = m.Fn(host.Intrinsic("__callw", false, VoidType.Instance, Wreg, pclat));
             var retaddr = instrCurr.Address + instrCurr.Length;
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
@@ -144,7 +144,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteSUBULNK()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
 
             var k = instrCurr.Operands[0] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[0]}");
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
@@ -152,7 +152,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             m.Assign(Fsr2, m.ISub(Fsr2, k.ImmediateValue));
             var src = PopFromHWStackAccess();
             m.Assign(tos, src);
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             m.Return(0, 0);
         }
 

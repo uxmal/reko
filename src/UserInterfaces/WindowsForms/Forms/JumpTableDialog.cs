@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,6 +43,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.interactor = new JumpTableInteractor();
 
             this.CaptionLabel = new LabelWrapper(lblCaption);
+            this.JumpInstructionAddress = new TextBoxWrapper(txtJumpAddress);
             this.InstructionLabel = new LabelWrapper(lblInstruction);
             this.JumpTableStartAddress = new TextBoxWrapper(txtStartAddress);
             this.EntryCount = new NumericUpDownWrapper(numEntries);
@@ -65,25 +66,26 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public IServiceProvider Services { get; set; }
         public MachineInstruction Instruction { get; set; }
-        public Address VectorAddress { get;  set; }
+        public Address VectorAddress { get; set; }
         public Program Program { get; set; }
+        public IProcessorArchitecture Architecture { get; set; }
         public int Stride { get; set; }
 
-        public ILabel CaptionLabel { get; private set; }
-        public IComboBox IndexRegister { get; private set; }
-        public ILabel InstructionLabel { get; private set; }
-        public ITextBox JumpTableStartAddress { get; private set; }
-        public INumericUpDown EntryCount { get; private set; }
-        public ICheckBox IsIndirectTable { get; private set; }
-        public ILabel IndirectLabel { get; private set; }
-        public ITextBox IndirectTable { get; private set; }
-        public IRadioButton FarAddress { get; private set; }
-        public IRadioButton RelativeAddress { get; private set; }
-        public IRadioButton SegmentOffsets { get; private set; }
-        public IComboBox SegmentList { get; private set; }
-
-        public IListBox Entries { get; private set; }
-        public ITextBox Disassembly { get; private set; }
+        public ILabel CaptionLabel { get; }
+        public ITextBox JumpInstructionAddress { get;}
+        public IComboBox IndexRegister { get; }
+        public ILabel InstructionLabel { get; }
+        public ITextBox JumpTableStartAddress { get; }
+        public INumericUpDown EntryCount { get; }
+        public ICheckBox IsIndirectTable { get; }
+        public ILabel IndirectLabel { get; }
+        public ITextBox IndirectTable { get; }
+        public IRadioButton FarAddress { get; }
+        public IRadioButton RelativeAddress { get; }
+        public IRadioButton SegmentOffsets { get; }
+        public IComboBox SegmentList { get; }
+        public IListBox Entries { get; }
+        public ITextBox Disassembly { get; }
 
         public UserIndirectJump GetResults()
         {

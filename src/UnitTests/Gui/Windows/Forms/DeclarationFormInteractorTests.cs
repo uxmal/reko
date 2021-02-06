@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 Pavel Tomin.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
@@ -31,6 +32,7 @@ using Reko.Gui.Forms;
 using Reko.UnitTests.Mocks;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
 
@@ -60,11 +62,11 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             services.AddService<IDialogFactory>(dlgFactory.Object);
 
             interactor = new DeclarationFormInteractor(services);
-            var mem = new MemoryArea(Address.Ptr32(0x10), new byte[40]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x10), new byte[40]);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
             var segmentMap = new SegmentMap(Address.Ptr32(0x05), seg);
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
-            var platform = new Win32Platform(null, arch);
+            var arch = new X86ArchitectureFlat32(services, "x86-protected-32", new Dictionary<string, object>());
+            var platform = new Win32Platform(services, arch);
             program = new Program(segmentMap, arch, platform);
             program.ImageMap = segmentMap.CreateImageMap();
         }
@@ -77,9 +79,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private void Given_ImageMapItem(uint addr, DataType dataType, string name)
         {
             var address = Address32.Ptr32(addr);
-            var item = new ImageMapItem
+            var item = new ImageMapItem(address)
             {
-                Address = address,
                 DataType = dataType,
                 Name = name,
                 Size = (uint)dataType.Size,

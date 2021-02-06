@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Memory;
 using System;
 
 namespace Reko.ImageLoaders.MzExe.Pe
@@ -34,11 +35,11 @@ namespace Reko.ImageLoaders.MzExe.Pe
         {
             ushort fixup = rdr.ReadLeUInt16();
             var rt = (ArmRt) (fixup >> 12);
-            DebugEx.Verbose(PeImageLoader.trace, "  {0:X4} {1}", fixup, rt);
-            switch (fixup)
-            {
+            PeImageLoader.trace.Verbose("  {0:X4} {1}", fixup, rt);
+            //switch (fixup)
+            //{
 
-            }
+            //}
         }
 
         public enum ArmRt

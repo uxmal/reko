@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
@@ -55,7 +56,7 @@ namespace Reko.UnitTests.Core
                     Address.Ptr32(0x00010000),
                     new ImageSegment(
                         ".text",
-                        new MemoryArea(
+                        new ByteMemoryArea(
                             Address.Ptr32(0x00010000),
                             Enumerable.Range(0, size)
                                 .Select(i => (byte) i)
@@ -66,9 +67,9 @@ namespace Reko.UnitTests.Core
             arch.Setup(a => a.CreateFrame()).Returns(
                 () => new Frame(PrimitiveType.Ptr32));
             arch.Setup(a => a.CreateImageReader(
-                It.IsNotNull<MemoryArea>(),
+                It.IsNotNull<ByteMemoryArea>(),
                 It.IsNotNull<Address>()))
-                .Returns((MemoryArea m, Address a) => new LeImageReader(m, a));
+                .Returns((ByteMemoryArea m, Address a) => new LeImageReader(m, a));
         }
 
         private void Given_Disassembly(params Mnemonic[] operations)
@@ -94,7 +95,7 @@ namespace Reko.UnitTests.Core
                     Address.Ptr32(0x00010000),
                     new ImageSegment(
                         ".text",
-                        new MemoryArea(
+                        new ByteMemoryArea(
                             Address.Ptr32(0x00010000),
                             Enumerable.Range(0, size)
                                 .Select(i => (byte)0)
@@ -108,13 +109,12 @@ namespace Reko.UnitTests.Core
         {
             var proc = Procedure.Create(arch.Object, address, arch.Object.CreateFrame());
             var label = program.NamingPolicy.BlockName(address);
-            var block = new Block(proc, label);
+            var block = new Block(proc, address, label);
             program.Procedures.Add(address, proc);
 
             program.ImageMap.AddItemWithSize(
-                address, new ImageMapBlock
+                address, new ImageMapBlock(address)
                 {
-                    Address = address,
                     Block = block,
                     Size = 8
                 });
@@ -211,9 +211,8 @@ __foo@8 proc
 
             program.ImageMap.AddItemWithSize(
                 Address.Ptr32(0x10004),
-                new ImageMapItem
+                new ImageMapItem(Address.Ptr32(0x10004))
                 {
-                    Address = Address.Ptr32(0x10004),
                     DataType = PrimitiveType.Word32,
                     Size = 4,
                 });
@@ -256,9 +255,8 @@ l00010004	dd	0x07060504
 
             program.ImageMap.AddItemWithSize(
                 Address.Ptr32(0x10004),
-                new ImageMapItem
+                new ImageMapItem(Address.Ptr32(0x10004))
                 {
-                    Address = Address.Ptr32(0x10004),
                     DataType = str,
                     Size = 12,
                 });
@@ -288,13 +286,13 @@ l00010004		db	0x04
         {
             Given_32bit_Program_Zeros(110);
             arch.Setup(a => a.CreateImageReader(
-                It.IsAny<MemoryArea>(),
+                It.IsAny<ByteMemoryArea>(),
                 It.IsAny<Address>()))
                 .Returns(
-                    (MemoryArea m, Address a) => new LeImageReader(m, a));
+                    (ByteMemoryArea m, Address a) => new LeImageReader(m, a));
 
             var addr = program.ImageMap.BaseAddress + 8;
-            var item = new ImageMapItem(90) { Address = addr };
+            var item = new ImageMapItem(addr, 90);
             program.ImageMap.AddItem(item.Address, item);
             var dmp = new Dumper(program);
             var sw = new StringWriter();

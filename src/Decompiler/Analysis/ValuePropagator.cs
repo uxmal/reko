@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,13 @@
  */
 #endregion
 
-using Reko.Evaluation;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using System;
+using Reko.Evaluation;
 using System.Diagnostics;
 using System.Linq;
 
@@ -44,7 +42,7 @@ namespace Reko.Analysis
     /// </remarks>
     public class ValuePropagator : InstructionVisitor<Instruction>
     {
-        private static TraceSwitch trace = new TraceSwitch("ValuePropagation", "Traces value propagation");
+        private static readonly TraceSwitch trace = new TraceSwitch("ValuePropagation", "Traces value propagation");
 
         private readonly IProcessorArchitecture arch;
         private readonly SsaState ssa;
@@ -53,7 +51,7 @@ namespace Reko.Analysis
         private readonly SsaEvaluationContext evalCtx;
         private readonly SsaMutator ssam;
         private readonly DecompilerEventListener eventListener;
-        private Statement stmCur;
+        private Statement? stmCur;      //$REFACTOR: try to make this a context paramter.
 
         public ValuePropagator(
             SegmentMap segmentMap,
@@ -93,9 +91,9 @@ namespace Reko.Analysis
         public void Transform(Statement stm)
         {
             evalCtx.Statement = stm;
-            if (trace.TraceVerbose) Debug.WriteLine(string.Format("From: {0}", stm.Instruction.ToString()));
+            trace.Verbose("From: {0}", stm.Instruction.ToString());
             stm.Instruction = stm.Instruction.Accept(this);
-            if (trace.TraceVerbose) Debug.WriteLine(string.Format("  To: {0}", stm.Instruction.ToString()));
+            trace.Verbose("  To: {0}", stm.Instruction.ToString());
         }
 
         #region InstructionVisitor<Instruction> Members
@@ -115,6 +113,7 @@ namespace Reko.Analysis
 
         public Instruction VisitCallInstruction(CallInstruction ci)
         {
+            var stmCur = this.stmCur!;
             var oldCallee = ci.Callee;
             ci.Callee = ci.Callee.Accept(eval);
             if (ci.Callee is ProcedureConstant pc)
@@ -218,7 +217,7 @@ namespace Reko.Analysis
             Statement stm,
             CallInstruction ci,
             FunctionType sig,
-            ProcedureCharacteristics chr)
+            ProcedureCharacteristics? chr)
         {
             ssam.AdjustRegisterAfterCall(
                 stm,
@@ -230,7 +229,7 @@ namespace Reko.Analysis
                 ci,
                 this.arch.FpuStackRegister,
                 -sig.FpuStackDelta);
-            var ab = new CallApplicationBuilder(this.ssa, stm, ci, ci.Callee);
+            var ab = new CallApplicationBuilder(this.ssa, stm, ci, ci.Callee, true);
             stm.Instruction = ab.CreateInstruction(sig, chr);
             ssam.AdjustSsa(stm, ci);
         }

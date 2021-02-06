@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,9 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections;
@@ -39,7 +41,7 @@ namespace Reko.Arch.Sparc
         private readonly EndianImageReader rdr;
         private RtlEmitter m;
         private SparcInstruction instrCur;
-        private InstrClass rtlc;
+        private InstrClass iclass;
 
         public SparcRewriter(SparcArchitecture arch, EndianImageReader rdr, SparcProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -60,7 +62,7 @@ namespace Reko.Arch.Sparc
 
         private IEnumerable<SparcInstruction> CreateDisassemblyStream(EndianImageReader rdr)
         {
-            return new SparcDisassembler(arch, rdr);
+            return new SparcDisassembler(arch, arch.Decoder, rdr);
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -70,7 +72,7 @@ namespace Reko.Arch.Sparc
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
                 var rtlInstructions = new List<RtlInstruction>();
-                rtlc = InstrClass.Linear;
+                iclass = instrCur.InstructionClass;
                 m = new RtlEmitter(rtlInstructions);
                 switch (instrCur.Mnemonic)
                 {
@@ -82,7 +84,7 @@ namespace Reko.Arch.Sparc
                         instrCur.Mnemonic);
                     goto case Mnemonic.illegal;
                 case Mnemonic.illegal:
-                    rtlc = InstrClass.Invalid;
+                    iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
                 case Mnemonic.add: RewriteAlu(m.IAdd, false); break;
@@ -106,6 +108,12 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.bcs: RewriteBranch(m.Test(ConditionCode.ULT, Grf(FlagM.CF))); break;
                 case Mnemonic.bneg: RewriteBranch(m.Test(ConditionCode.LT, Grf(FlagM.NF))); break;
                 case Mnemonic.bpos: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.NF))); break;
+                case Mnemonic.brgz: RewriteBranchReg(m.Gt0); break;
+                case Mnemonic.brgez: RewriteBranchReg(m.Ge0); break;
+                case Mnemonic.brlz: RewriteBranchReg(m.Lt0); break;
+                case Mnemonic.brlez: RewriteBranchReg(m.Le0); break;
+                case Mnemonic.brnz: RewriteBranchReg(m.Ne0); break;
+                case Mnemonic.brz: RewriteBranchReg(m.Eq0); break;
                 //                    Z
                 //case Mnemonic.bgu  not (C or Z)
                 //case Mnemonic.bleu (C or Z)
@@ -132,11 +140,11 @@ namespace Reko.Arch.Sparc
                 //case Mnemonic.fbul  : on Unordered or Less L or U
                 //case Mnemonic.fblg  : on Less or Greater L or G
                 //case Mnemonic.fbne  : on Not Equal L or G or U
-                //case Mnemonic.fbe   : on Equal E
+                case Mnemonic.fbe  : RewriteBranch(m.Test(ConditionCode.EQ, Grf(FlagM.EF))); break;
                 case Mnemonic.fbue : RewriteBranch(m.Test(ConditionCode.EQ, Grf(FlagM.EF | FlagM.UF))); break;
                 case Mnemonic.fbuge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.EF | FlagM.GF | FlagM.UF))); break;
 
-                //case Mnemonic.fble  : on Less or Equal E or L
+                case Mnemonic.fble  : RewriteBranch(m.Test(ConditionCode.LE, Grf(FlagM.EF | FlagM.LF))); break;
                 //case Mnemonic.fbule : on Unordered or Less or Equal E or L or U
                 case Mnemonic.fbule: RewriteBranch(m.Test(ConditionCode.LE, Grf(FlagM.EF | FlagM.LF | FlagM.UF))); break;
                 case Mnemonic.fbge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.EF | FlagM.GF))); break;
@@ -144,6 +152,7 @@ namespace Reko.Arch.Sparc
 
 
                 case Mnemonic.fcmpes: RewriteFcmpes(); break;
+                case Mnemonic.fcmped: RewriteFcmped(); break;
                 case Mnemonic.fcmpd: RewriteFcmpd(); break;
                 case Mnemonic.fcmpq: RewriteFcmpq(); break;
                 case Mnemonic.fcmps: RewriteFcmps(); break;
@@ -154,6 +163,7 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.fitoq: RewriteFitoq(); break;
                 case Mnemonic.fitos: RewriteFitos(); break;
                 case Mnemonic.fmovs: RewriteFmovs(); break;
+                case Mnemonic.fmuld: RewriteFmuld(); break;
                 case Mnemonic.fmuls: RewriteFmuls(); break;
                 case Mnemonic.fnegs: RewriteFmovs(); break;
                 case Mnemonic.fstod: RewriteFstod(); break;
@@ -165,30 +175,42 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.ldd: RewriteLoad(PrimitiveType.Word64); break;
                 case Mnemonic.ldsb: RewriteLoad(PrimitiveType.SByte); break;
                 case Mnemonic.ldsh: RewriteLoad(PrimitiveType.Int16); break;
+                case Mnemonic.ldsw: RewriteLoad(PrimitiveType.Int32); break;
                 case Mnemonic.ldstub: RewriteLdstub(); break;
                 case Mnemonic.ldub: RewriteLoad(PrimitiveType.Byte); break;
                 case Mnemonic.lduh: RewriteLoad(PrimitiveType.Word16); break;
+                case Mnemonic.lduw: RewriteLoad(PrimitiveType.Word32); break;
+                case Mnemonic.ldx: RewriteLoad(PrimitiveType.Word64); break;
                 case Mnemonic.ldfsr: RewriteLoad(PrimitiveType.Word32); break;
+                case Mnemonic.mulx: RewriteAlu(m.IMul, false); break;
                 case Mnemonic.mulscc: RewriteMulscc(); break;
                 case Mnemonic.or: RewriteAlu(m.Or, false); break;
                 case Mnemonic.orcc: RewriteAluCc(m.Or, false); break;
+                case Mnemonic.orn: RewriteAlu(m.Or, true); break;
+                case Mnemonic.orncc: RewriteAlu(m.Or, true); break;
                 case Mnemonic.restore: RewriteRestore(); break;
                 case Mnemonic.rett: RewriteRett(); break;
+                case Mnemonic.@return: RewriteReturn(); break;
                 case Mnemonic.save: RewriteSave(); break;
                 case Mnemonic.sethi: RewriteSethi(); break;
                 case Mnemonic.sdiv: RewriteAlu(m.SDiv, false); break;
                 case Mnemonic.sdivcc: RewriteAlu(m.SDiv, false); break;
                 case Mnemonic.sll: RewriteAlu(m.Shl, false); break;
+                case Mnemonic.sllx: RewriteAlu(m.Shl, false); break;
                 case Mnemonic.smul: RewriteAlu(m.SMul, false); break;
                 case Mnemonic.smulcc: RewriteAluCc(m.SMul, false); break;
                 case Mnemonic.sra: RewriteAlu(m.Sar, false); break;
+                case Mnemonic.srax: RewriteAlu(m.Sar, false); break;
                 case Mnemonic.srl: RewriteAlu(m.Shr, false); break;
+                case Mnemonic.srlx: RewriteAlu(m.Shr, false); break;
                 case Mnemonic.st: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.stb: RewriteStore(PrimitiveType.Byte); break;
                 case Mnemonic.std: RewriteStore(PrimitiveType.Word64); break;
                 case Mnemonic.stdf: RewriteStore(PrimitiveType.Real64); break;
                 case Mnemonic.stf: RewriteStore(PrimitiveType.Real32); break;
                 case Mnemonic.sth: RewriteStore(PrimitiveType.Word16); break;
+                case Mnemonic.stw: RewriteStore(PrimitiveType.Word32); break;
+                case Mnemonic.stx: RewriteStore(PrimitiveType.Word64); break;
                 case Mnemonic.stfsr: RewriteStore(PrimitiveType.Word32); break;
                 case Mnemonic.sub: RewriteAlu(m.ISub, false); break;
                 case Mnemonic.subcc: RewriteAluCc(m.ISub, false); break;
@@ -208,12 +230,8 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.xorcc: RewriteAlu(m.Xor, true); break;
                 case Mnemonic.xnor: RewriteAlu(XNor, false); break;
                 case Mnemonic.xnorcc: RewriteAlu(XNor, true); break;
-
                 }
-                yield return new RtlInstructionCluster(addr, 4, rtlInstructions.ToArray())
-                {
-                    Class = rtlc
-                };
+                yield return m.MakeCluster(addr, 4, iclass);
             }
         }
 
@@ -222,35 +240,17 @@ namespace Reko.Arch.Sparc
             return GetEnumerator();
         }
 
-        private static HashSet<Mnemonic> seen = new HashSet<Mnemonic>();
-
-        //[Conditional("DEBUG")]
         public void EmitUnitTest()
         {
-            if (seen.Contains(instrCur.Mnemonic))
-                return;
-            seen.Add(instrCur.Mnemonic);
-
-            var r2 = rdr.Clone();
-            r2.Offset -= dasm.Current.Length;
-            var wInstr = r2.ReadUInt32();
-            Console.WriteLine("        [Test]");
-            Console.WriteLine("        public void SparcRw_" + dasm.Current.Mnemonic + "()");
-            Console.WriteLine("        {");
-            Console.Write($"            BuildTest(0x{wInstr:X8}");
-            Console.WriteLine(");\t// " + dasm.Current.ToString());
-            Console.WriteLine("            AssertCode(");
-            Console.WriteLine("                \"0|L--|{0}({1}): 1 instructions\",", instrCur.Address, instrCur.Length);
-            Console.WriteLine("                \"1|L--|@@@\");");
-            Console.WriteLine("        }");
-            Console.WriteLine("");
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("SparcRw", instrCur, instrCur.Mnemonic.ToString(), rdr, "");
         }
 
         private void EmitCc(Expression dst)
         {
             m.Assign(
                 binder.EnsureFlagGroup(
-                    Registers.psr,
+                    arch.Registers.psr,
                     0xF, "NZVC",
                     PrimitiveType.Byte),
                 m.Cond(dst));
@@ -265,7 +265,7 @@ namespace Reko.Arch.Sparc
         {
             if (op is RegisterOperand r)
             {
-                if (r.Register == Registers.g0)
+                if (r.Register == arch.Registers.g0)
                 {
                     if (g0_becomes_null)
                         return null;
@@ -288,18 +288,18 @@ namespace Reko.Arch.Sparc
         private Expression RewriteDoubleRegister(MachineOperand op)
         {
             var reg = ((RegisterOperand)op).Register;
-            var iReg = reg.Number - Registers.FloatRegisters[0].Number;
-            var regLo = Registers.FloatRegisters[iReg + 1];
+            var iReg = reg.Number - arch.Registers.FloatRegisters[0].Number;
+            var regLo = arch.Registers.FloatRegisters[iReg + 1];
             return binder.EnsureSequence(PrimitiveType.Word64, reg, regLo);
         }
 
         private Expression RewriteQuadRegister(MachineOperand op)
         {
             var reg3 = ((RegisterOperand) op).Register;
-            var iReg = reg3.Number - Registers.FloatRegisters[0].Number;
-            var reg2 = Registers.FloatRegisters[iReg + 1];
-            var reg1 = Registers.FloatRegisters[iReg + 2];
-            var reg0 = Registers.FloatRegisters[iReg + 3];
+            var iReg = reg3.Number - arch.Registers.FloatRegisters[0].Number;
+            var reg2 = arch.Registers.FloatRegisters[iReg + 1];
+            var reg1 = arch.Registers.FloatRegisters[iReg + 2];
+            var reg0 = arch.Registers.FloatRegisters[iReg + 3];
             return binder.EnsureSequence(PrimitiveType.Word128, reg3, reg2, reg1, reg0);
         }
 
@@ -310,15 +310,15 @@ namespace Reko.Arch.Sparc
             Expression offset;
             if (op is MemoryOperand mem)
             {
-                baseReg = mem.Base == Registers.g0 ? null : binder.EnsureRegister(mem.Base);
+                baseReg = mem.Base == arch.Registers.g0 ? null : binder.EnsureRegister(mem.Base);
                 offset = mem.Offset.IsIntegerZero ? null : mem.Offset;
             }
             else
             {
                 if (op is IndexedMemoryOperand i)
                 {
-                    baseReg = i.Base == Registers.g0 ? null : binder.EnsureRegister(i.Base);
-                    offset = i.Index == Registers.g0 ? null : binder.EnsureRegister(i.Index);
+                    baseReg = i.Base == arch.Registers.g0 ? null : binder.EnsureRegister(i.Base);
+                    offset = i.Index == arch.Registers.g0 ? null : binder.EnsureRegister(i.Index);
                 }
                 else
                     throw new NotImplementedException(string.Format("Unknown memory operand {0} ({1})", op, op.GetType().Name));

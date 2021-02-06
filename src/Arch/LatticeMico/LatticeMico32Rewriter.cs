@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,9 @@ using System.Text;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.LatticeMico
@@ -66,7 +68,7 @@ namespace Reko.Arch.LatticeMico
                 {
                 default:
                     EmitUnitTest();
-                    break;
+                    goto case Mnemonic.Invalid;
                 case Mnemonic.Invalid:
                 case Mnemonic.reserved:
                     m.Invalid(); break;
@@ -143,36 +145,10 @@ namespace Reko.Arch.LatticeMico
             return GetEnumerator();
         }
 
-        private static readonly HashSet<Mnemonic> seenMnemonic = new HashSet<Mnemonic>();
-
         private void EmitUnitTest()
         {
-            m.Invalid();
-            iclass = InstrClass.Invalid;
-
-            if (seenMnemonic.Contains(instr.Mnemonic))
-                return;
-            seenMnemonic.Add(instr.Mnemonic);
-            host.Warn(
-                instr.Address,
-                "LatticeMico32 instruction '{0}' is not supported yet.",
-                instr.Mnemonic.ToString());
-
-            var r2 = rdr.Clone();
-            r2.Offset -= instr.Length;
-            var hexBytes = string.Join("", r2.ReadBytes(instr.Length).Select(b => $"{b:X2}"));
-
-            var sb = new StringBuilder();
-            sb.AppendLine($"        [Test]");
-            sb.AppendLine($"        public void Lm32Rw_{instr.Mnemonic}()");
-            sb.AppendLine("        {");
-            sb.AppendLine($"            Given_HexString(\"{hexBytes}\"); // {instr}");
-            sb.AppendLine($"            AssertCode(");
-            sb.AppendLine($"                \"0|L--|00100000({instr.Length}): 1 instructions\",");
-            sb.AppendLine($"                \"1|L--|@@@\");");
-            sb.AppendLine("        }");
-            Debug.WriteLine(sb.ToString());
-            Console.WriteLine(sb.ToString());
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("Lm32Rw", this.instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
         private Expression Nor(Expression a, Expression b)
@@ -268,7 +244,7 @@ namespace Reko.Arch.LatticeMico
             var dst = Rewrite(instr.Operands[0]);
             if (src.DataType.BitSize < dst.DataType.BitSize)
             {
-                src = m.Cast(dt, src);
+                src = m.Convert(src, src.DataType, dt);
             }
             m.Assign(dst, src);
         }
@@ -285,8 +261,7 @@ namespace Reko.Arch.LatticeMico
         {
             var src = Rewrite(instr.Operands[1]);
             var dst = Rewrite(instr.Operands[0]);
-            src = m.Cast(dt, src);
-            m.Assign(dst, m.Cast(PrimitiveType.Int32, src));
+            m.Assign(dst, m.Convert(m.Slice(dt, src, 0), dt, PrimitiveType.Int32));
         }
 
         private void RewriteStore()

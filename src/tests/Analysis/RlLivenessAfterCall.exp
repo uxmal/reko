@@ -22,7 +22,7 @@ fn0C00_0000_exit:
 define fn0C00_0006
 fn0C00_0006_entry:
 l0C00_0006:
-	ax_4 = 0x0001
+	ax_4 = 1<16>
 	return
 fn0C00_0006_exit:
 	use ax_4

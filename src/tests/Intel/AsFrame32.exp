@@ -6,33 +6,33 @@
 10000050 01 66 89 4D FC E9 D5 FF FF FF 66 8B 45 FC 8B E5 .f.M......f.E...
 10000060 5D C3                                           ].             
 
-10000000 8B 05 20 34 00 10 	mov	eax,[10003420]
+10000000 8B 05 20 34 00 10 	mov	eax,[10003420h]
 10000006 50              	push	eax
-10000007 E8 0B 00 00 00  	call	10000017
-1000000C 83 C4 04        	add	esp,04
-1000000F 66 89 05 28 34 00 10 	mov	[10003428],ax
+10000007 E8 0B 00 00 00  	call	10000017h
+1000000C 83 C4 04        	add	esp,4h
+1000000F 66 89 05 28 34 00 10 	mov	[10003428h],ax
 10000016 C3              	ret
 10000017 55              	push	ebp
 10000018 8B EC           	mov	ebp,esp
 1000001A 51              	push	ecx
-1000001B 66 C7 45 FC 00 00 	mov	word ptr [ebp-04],0000
-10000021 83 7D 08 00     	cmp	dword ptr [ebp+08],00
-10000025 75 08           	jnz	1000002F
+1000001B 66 C7 45 FC 00 00 	mov	word ptr [ebp-4h],0h
+10000021 83 7D 08 00     	cmp	dword ptr [ebp+8h],0h
+10000025 75 08           	jnz	1000002Fh
 10000027 66 33 C0        	xor	ax,ax
-1000002A E9 2F 00 00 00  	jmp	1000005E
-1000002F 0F BF 45 FC     	movsx	eax,word ptr [ebp-04]
-10000033 8B 4D 08        	mov	ecx,[ebp+08]
+1000002A E9 2F 00 00 00  	jmp	1000005Eh
+1000002F 0F BF 45 FC     	movsx	eax,word ptr [ebp-4h]
+10000033 8B 4D 08        	mov	ecx,[ebp+8h]
 10000036 0F BE 14 01     	movsx	edx,byte ptr [ecx+eax]
 1000003A 85 D2           	test	edx,edx
-1000003C 74 1C           	jz	1000005A
-1000003E 0F BF 45 FC     	movsx	eax,word ptr [ebp-04]
-10000042 3D FF 7F 00 00  	cmp	eax,00007FFF
-10000047 7D 11           	jge	1000005A
-10000049 66 8B 4D FC     	mov	cx,[ebp-04]
-1000004D 66 83 C1 01     	add	cx,01
-10000051 66 89 4D FC     	mov	[ebp-04],cx
-10000055 E9 D5 FF FF FF  	jmp	1000002F
-1000005A 66 8B 45 FC     	mov	ax,[ebp-04]
+1000003C 74 1C           	jz	1000005Ah
+1000003E 0F BF 45 FC     	movsx	eax,word ptr [ebp-4h]
+10000042 3D FF 7F 00 00  	cmp	eax,7FFFh
+10000047 7D 11           	jge	1000005Ah
+10000049 66 8B 4D FC     	mov	cx,[ebp-4h]
+1000004D 66 83 C1 01     	add	cx,1h
+10000051 66 89 4D FC     	mov	[ebp-4h],cx
+10000055 E9 D5 FF FF FF  	jmp	1000002Fh
+1000005A 66 8B 45 FC     	mov	ax,[ebp-4h]
 1000005E 8B E5           	mov	esp,ebp
 10000060 5D              	pop	ebp
 10000061 C3              	ret

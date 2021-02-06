@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,13 +66,13 @@ namespace Reko.Core.Serialization
                     new XmlAttributeOverrides(),
                     (ov, field) =>
                     { 
-                        ov.Add(field.Field.DeclaringType, field.Field.Name, field.AttrCreator(xmlNamespace)); 
+                        ov.Add(field.Field.DeclaringType, field.Field.Name, field.AttrCreator!(xmlNamespace)); 
                         return ov;
                     });
             return overrides;
         }
 
-        private static Func<string, XmlAttributes> GetAttributeCreator(FieldInfo f)
+        private static Func<string, XmlAttributes>? GetAttributeCreator(FieldInfo f)
         {
             if (f.FieldType == typeof(SerializedType))
                 return CreateElementAttributes;
@@ -150,6 +150,6 @@ namespace Reko.Core.Serialization
     public abstract class SerializedTaggedType : SerializedType
     {
         [XmlAttribute("name")]
-        public string Name;
+        public string? Name;
     }
 }

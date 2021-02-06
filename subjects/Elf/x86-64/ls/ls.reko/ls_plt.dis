@@ -1,0 +1,24 @@
+void free()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+// Terminates process
+free_exit:
+free_entry:
+
+
+void malloc()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: rsp
+// Terminates process
+malloc_exit:
+malloc_entry:
+
+

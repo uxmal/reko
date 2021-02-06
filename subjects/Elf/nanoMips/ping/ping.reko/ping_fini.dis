@@ -1,0 +1,15 @@
+void _fini()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      __libc_exit_fini
+// MayUse: 
+// LiveOut:
+// Trashed: r25 r7
+// Preserved: sp
+_fini_entry:
+l00410340:
+	return
+_fini_exit:
+
+

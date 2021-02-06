@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Services;
 using Reko.Core.Types;
 
 namespace Reko.Arch.OpenRISC
@@ -85,13 +87,10 @@ namespace Reko.Arch.OpenRISC
             return instr;
         }
 
-        public override OpenRISCInstruction NotYetImplemented(uint wInstr, string message)
+        public override OpenRISCInstruction NotYetImplemented(string message)
         {
-            var hex = $"{wInstr:X8}";
-            base.EmitUnitTest("OpenRISC", hex, message, "OpenRiscDis", this.addr, w =>
-            {
-                w.WriteLine("    AssertCode(\"@@@\", \"{0}\");", hex);
-            });
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingDecoder("OpenRiscDis", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
         }
 
@@ -244,8 +243,8 @@ namespace Reko.Arch.OpenRISC
 
         private class Instr64Decoder : Decoder
         {
-            private Decoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction> dec32bit;
-            private Decoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction> dec64bit;
+            private readonly Decoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction> dec32bit;
+            private readonly Decoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction> dec64bit;
 
             public Instr64Decoder(Decoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction> dec32bit, Decoder<OpenRISCDisassembler, Mnemonic, OpenRISCInstruction> dec64bit)
             {

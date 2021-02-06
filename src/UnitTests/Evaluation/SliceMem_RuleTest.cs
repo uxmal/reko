@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Evaluation
 			var r = new SliceMem_Rule();
 			Assert.IsTrue(r.Match(s));
 			var e = r.Transform();
-			Assert.AreEqual("Mem0[ptr + 0x00000002:byte]", e.ToString());
+			Assert.AreEqual("Mem0[ptr + 2<32>:byte]", e.ToString());
 		}
 
 		[Test]
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Evaluation
 			var r = new SliceMem_Rule();
 			Assert.IsTrue(r.Match(s));
 			var e = r.Transform();
-			Assert.AreEqual("Mem0[ptr + 0x00000000:word16]", e.ToString());
+			Assert.AreEqual("Mem0[ptr + 0<32>:word16]", e.ToString());
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
+using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Core
 {
@@ -90,7 +91,7 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Sr_ReadLeInt32_String()
         {
-            var rdr = new ImageReader(new byte[] { 
+            var rdr = new ByteImageReader(new byte[] { 
                 0x34, 0x12, 
                 0xAB, 0xCD,
                 0x48, 0x69, 0x00,
@@ -128,7 +129,7 @@ namespace Reko.UnitTests.Core
             sr.Read(rdr);
 
             Assert.IsNotNull(test.extra);
-            Assert.AreEqual((ushort) 0x1234, test.extra.sig);
+            Assert.AreEqual((ushort) 0x1234<16>, test.extra.sig);
         }
 
         public class TestStruct6

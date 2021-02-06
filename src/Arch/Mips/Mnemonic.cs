@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -234,6 +234,7 @@ namespace Reko.Arch.Mips
         addiupc,
         aluipc,
         balc,
+        balrsc,
         bnec,
         bnezc,
         bbeqzc,
@@ -250,6 +251,8 @@ namespace Reko.Arch.Mips
         bltiuc,
         bltuc,
         bneiuc,
+        brsc,
+        cachee,
         clo,
         clz,
         ext,
@@ -317,6 +320,27 @@ namespace Reko.Arch.Mips
         bteqz,
         btnez,
         jalx,
+        la,
         neg,
+        zeb,
+        zeh,
+        cmp,
+        sbx,
+        lbx,
+        she,
+        rotr,
+        muh,
+        muhu,
+        mod,
+        lhxs,
+        lhuxs,
+        lhue,
+        lbue,
+        jalrc_hb,
+        seqi,
+        swpc,
+        rotx,
+        llwp,
+        scwp,
     }
 }

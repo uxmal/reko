@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Reko.Arch.OpenRISC;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,7 +35,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
     {
         public OpenRISCDisassemblerTests()
         {
-            this.Architecture = new OpenRISCArchitecture("openRisc");
+            this.Architecture = new OpenRISCArchitecture(new ServiceContainer(), "openRisc", new Dictionary<string, object>());
             this.LoadAddress = Address.Ptr32(0x00100000);
         }
 

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ using Reko.Arch.Tlcs.Tlcs900;
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -32,11 +33,9 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class Tlcs900DisassemblerTests : DisassemblerTestBase<Tlcs900Instruction>
     {
-        private readonly Tlcs900Architecture arch;
-
         public Tlcs900DisassemblerTests()
         {
-            this.Architecture = new Tlcs900Architecture("tlcs900");
+            this.Architecture = new Tlcs900Architecture(new ServiceContainer(), "tlcs900", new Dictionary<string, object>());
             this.LoadAddress = Address.Ptr32(0x00010000);
         }
 

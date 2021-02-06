@@ -13,6 +13,7 @@
       <onLoad Enabled="false" />
       <annotation addr="46BE">This indirect jump appears to use the range [-1,1], which Reko can't deduce. This is a typical place where a user annotation (indicating the range of valid values) would help.</annotation>
       <registerValues />
+      <outputFilePolicy>Segment</outputFilePolicy>
     </user>
   </input>
 </project>

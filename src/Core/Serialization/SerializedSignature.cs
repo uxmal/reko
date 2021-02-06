@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,13 +38,13 @@ namespace Reko.Core.Serialization
         }
 
         [XmlElement("type")]
-        public SerializedType EnclosingType;
+        public SerializedType? EnclosingType;
 
 		[XmlElement("return")]
-		public Argument_v1 ReturnValue;
+		public Argument_v1? ReturnValue;
 
 		[XmlAttribute("convention")]
-		public string Convention;
+		public string? Convention;
 
         [XmlAttribute("isInstance")]
         [DefaultValue(false)]
@@ -64,7 +64,7 @@ namespace Reko.Core.Serialization
 		public int StackDelta;
 
 		[XmlElement("arg")]
-		public Argument_v1 [] Arguments;
+		public Argument_v1[]? Arguments;
 
         [XmlAttribute("fpuStackDelta")]
         [DefaultValue(0)]

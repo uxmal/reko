@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,16 +31,19 @@ namespace Reko.Arch.RiscV
 {
     public class MemoryOperand : MachineOperand
     {
-        public RegisterStorage Base;
-        public int Offset;
 
-        public MemoryOperand(PrimitiveType width) : base(width)
+        public MemoryOperand(PrimitiveType width, RegisterStorage baseRegister, int offset) : base(width)
         {
+            this.Base = baseRegister;
+            this.Offset = offset;
         }
 
-        public override void Write(MachineInstructionWriter writer, MachineInstructionWriterOptions options)
+        public RegisterStorage Base { get; }
+        public int Offset { get; }
+
+        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            writer.WriteFormat("{0}({1})", Offset, Base);
+            renderer.WriteFormat("{0}({1})", Offset, Base);
         }
     }
 }

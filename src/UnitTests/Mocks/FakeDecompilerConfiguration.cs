@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,11 +53,6 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public ICollection<AssemblerDefinition> GetAssemblers()
-        {
-            throw new NotImplementedException();
-        }
-
         public ICollection<RawFileDefinition> GetRawFiles()
         {
             throw new NotImplementedException();
@@ -87,11 +82,16 @@ namespace Reko.UnitTests.Mocks
         {
             throw new NotImplementedException();
         }
-
-        public Assembler GetAssembler(string sAsm)
+        public IProcessorArchitecture GetArchitecture(string sArch, string modelName)
         {
-            return new Reko.Assemblers.x86.X86TextAssembler(services, new Reko.Arch.X86.X86ArchitectureReal("x86-real-16"));
+            throw new NotImplementedException();
         }
+
+        public IProcessorArchitecture GetArchitecture(string sArch, Dictionary<string, object> options)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public PlatformDefinition GetEnvironment(string envName)
         {

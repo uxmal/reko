@@ -1,8 +1,11 @@
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Gui;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Windows.Forms;
 
 namespace Reko.WindowsItp
@@ -19,12 +22,13 @@ namespace Reko.WindowsItp
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
-            var mem = new MemoryArea(Address.Ptr32(0x12312300),new byte[0x1000]);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x12312300),new byte[0x1000]);
             var imageMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
-            var arch = new X86ArchitectureFlat32("x86-protected-32");
-            var program = new Core.Program(imageMap, arch, new DefaultPlatform(null, arch));
+            var sc = new ServiceContainer();
+            var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
+            var program = new Core.Program(imageMap, arch, new DefaultPlatform(sc, arch));
             var project = new Project { Programs = { program } };
             pbs.Load(project);
         }

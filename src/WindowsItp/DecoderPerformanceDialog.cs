@@ -1,7 +1,10 @@
 using Reko.Core;
+using Reko.Core.Memory;
+using Reko.Core.Rtl;
 using Reko.WindowsItp.Decoders;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -10,9 +13,13 @@ namespace Reko.WindowsItp
 {
     public partial class DecoderPerformanceDialog : Form
     {
+        private List<RtlInstructionCluster> rtls;
+        private ServiceContainer sc;
+
         public DecoderPerformanceDialog()
         {
             InitializeComponent();
+            this.sc = new ServiceContainer();
         }
 
         private async void btnDoit_Click(object sender, EventArgs e)
@@ -40,8 +47,8 @@ namespace Reko.WindowsItp
             Func<long> test;
             if (rdbRealDasm.Checked)
             {
-                //var arch = new Reko.Arch.Arm.Arm32Architecture("arm32");
-                var arch = new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
+                var arch = new Reko.Arch.Arm.Arm32Architecture(sc, "arm32", new Dictionary<string, object>());
+                //var arch = new Reko.Arch.X86.X86ArchitectureFlat32("x86-protected-32");
 
                 if (rewriter)
                 {
@@ -141,7 +148,7 @@ namespace Reko.WindowsItp
 
         private long PerformanceTest_A32Dasm(IProcessorArchitecture arch, byte[] buf)
         {
-            var mem = new MemoryArea(Address.Ptr32(0x00100000), buf);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), buf);
             var rdr = arch.CreateImageReader(mem, mem.BaseAddress);
             var dasm = arch.CreateDisassembler(rdr);
             Stopwatch sw = new Stopwatch();
@@ -157,14 +164,16 @@ namespace Reko.WindowsItp
 
         private long PerformanceTest_A32Rewriter(IProcessorArchitecture arch,   byte[] buf)
         {
-            var mem = new MemoryArea(Address.Ptr32(0x00100000), buf);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), buf);
             var rdr = arch.CreateImageReader(mem, mem.BaseAddress);
             var dasm = arch.CreateRewriter(rdr, arch.CreateProcessorState(), new StorageBinder(),
                 new RewriterPerformanceDialog.RewriterHost(new Dictionary<Address, ImportReference>()));
+            this.rtls = new List<RtlInstructionCluster>();
             Stopwatch sw = new Stopwatch();
             sw.Start();
-            foreach (var instr in dasm)
+            foreach (var rtl in dasm)
             {
+                rtls.Add(rtl);
             }
             sw.Stop();
             var time = sw.ElapsedMilliseconds;

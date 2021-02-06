@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,20 +39,20 @@ namespace Reko.Typing
 	/// "Entwicklung eines Typanalysesystem für einen Decompiler", 2004, by Raimar Falke.
 	/// </para>
 	/// </remarks>
-	public class TraitCollector : InstructionVisitor<DataType>, ExpressionVisitor<DataType>
+	public class TraitCollector : InstructionVisitor<DataType?>, ExpressionVisitor<DataType?>
 	{
-		private Program program;
-        private Procedure proc;
-		private TypeFactory factory;
-		private ITypeStore store;
-		private ITraitHandler handler;
-		private LinearInductionVariable ivCur;
-		private ArrayExpressionMatcher aem;
-		private AddressTraitCollector atrco;
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(TraitCollector), "Traces the work of the Trait Collector");
 
-		private static TraceSwitch trace = new TraceSwitch("TraitCollector", "Traces the work of the Trait Collector");
+		private readonly TypeFactory factory;
+		private readonly ITypeStore store;
+		private readonly ITraitHandler handler;
+		private readonly ArrayExpressionMatcher aem;
+		private readonly AddressTraitCollector atrco;
+        private Program program;
+        private Procedure? proc;
+        private LinearInductionVariable? ivCur;
 
-		public TraitCollector(TypeFactory factory, ITypeStore store, ITraitHandler handler, Program program)
+        public TraitCollector(TypeFactory factory, ITypeStore store, ITraitHandler handler, Program program)
 		{
 			this.factory = factory;
 			this.store = store;
@@ -82,7 +82,7 @@ namespace Reko.Typing
                 return;
 
             FunctionType sig = pc.Procedure.Signature;
-            if (appl.Arguments.Length != sig.Parameters.Length)
+            if (appl.Arguments.Length != sig.Parameters!.Length)
                 throw new InvalidOperationException(
                     string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
                     pc.Procedure.Name, appl.Arguments.Length, sig.Parameters.Length));
@@ -100,9 +100,9 @@ namespace Reko.Typing
 			atrco.Collect(null, 0, field, effectiveAddress);
 		}
 
-		public void CollectEffectiveAddress(Expression basePtr, int basePtrSize, Expression field, Expression effectiveAddress)
+		public void CollectEffectiveAddress(Expression basePtr, int basePtrBitSize, Expression field, Expression effectiveAddress)
 		{
-			atrco.Collect(basePtr, basePtrSize, field, effectiveAddress);
+			atrco.Collect(basePtr, basePtrBitSize, field, effectiveAddress);
 		}
 
 		public void CollectProgramTraits(Program program)
@@ -126,35 +126,35 @@ namespace Reko.Typing
 			return ((PrimitiveType)t).Domain;
 		}
 
-        private DataType MakeNonPointer(DataType dataType)
+        private DataType? MakeNonPointer(DataType dataType)
         {
             if (!(dataType is PrimitiveType p))
                 return null;
             return p.MaskDomain(~Domain.Pointer);
         }
 
-        private DataType MakeIntegral(DataType dataType)
+        private DataType? MakeIntegral(DataType dataType)
         {
             if (!(dataType is PrimitiveType p))
                 return null;
             return p.MaskDomain(Domain.Integer);
         }
 
-		public PrimitiveType MakeNotSigned(DataType t)
+		public PrimitiveType? MakeNotSigned(DataType t)
 		{
             if (!(t is PrimitiveType p))
                 return null;
             return p.MaskDomain(~(Domain.SignedInt | Domain.Real));
 		}
 
-		public PrimitiveType MakeSigned(DataType t)
+		public PrimitiveType? MakeSigned(DataType t)
 		{
             if (!(t is PrimitiveType p))
                 return null;
             return p.MaskDomain(Domain.SignedInt);
 		}
 
-		public PrimitiveType MakeUnsigned(DataType t)
+		public PrimitiveType? MakeUnsigned(DataType t)
 		{
             if (t is PrimitiveType p)
                 return PrimitiveType.Create(Domain.UnsignedInt, p.BitSize);
@@ -162,13 +162,13 @@ namespace Reko.Typing
                 return null;
         }
 
-		public LinearInductionVariable MergeInductionVariableConstant(LinearInductionVariable iv, Operator op, Constant c)
+		public LinearInductionVariable? MergeInductionVariableConstant(LinearInductionVariable iv, Operator op, Constant? c)
 		{
 			if (iv == null || c == null)
 				return null;
-			Constant delta   = op.ApplyConstants(iv.Delta, c);
-			Constant initial = (iv.Initial != null) ? op.ApplyConstants(iv.Initial, c) : null; 
-			Constant final =   (iv.Final != null) ?   op.ApplyConstants(iv.Final, c) : null;
+			Constant delta   = op.ApplyConstants(iv.Delta!, c);
+			Constant? initial = (iv.Initial != null) ? op.ApplyConstants(iv.Initial, c) : null; 
+			Constant? final =   (iv.Final != null) ?   op.ApplyConstants(iv.Final, c) : null;
 			return new LinearInductionVariable(initial, delta, final, false);
 		}
 
@@ -189,13 +189,13 @@ namespace Reko.Typing
 			return handler.EqualTrait(store.Dst, store.Src);
 		}
 
-		public DataType VisitCallInstruction(CallInstruction call)
+		public DataType? VisitCallInstruction(CallInstruction call)
 		{
             handler.DataTypeTrait(
                 call.Callee, 
                 new Pointer(
                     new CodeType(), 
-                    program.Platform.PointerType.BitSize));
+                    program!.Platform.PointerType.BitSize));
             return call.Callee.Accept(this);
         }
 
@@ -209,7 +209,7 @@ namespace Reko.Typing
             return VoidType.Instance;
         }
 
-		public DataType VisitDefInstruction(DefInstruction def)
+		public DataType? VisitDefInstruction(DefInstruction def)
 		{
 			return def.Identifier.Accept(this);
 		}
@@ -221,13 +221,13 @@ namespace Reko.Typing
 			return handler.EqualTrait(phi.Dst, phi.Src);
 		}
 
-        public DataType VisitReturnInstruction(ReturnInstruction ret)
+        public DataType? VisitReturnInstruction(ReturnInstruction ret)
         {
             if (ret.Expression == null)
                 return VoidType.Instance;
 
             var dt = ret.Expression.Accept(this);
-            if (!proc.Signature.HasVoidReturn)
+            if (!proc!.Signature.HasVoidReturn)
             {
                 dt = handler.EqualTrait(proc.Signature.ReturnValue, ret.Expression);
             }
@@ -264,10 +264,10 @@ namespace Reko.Typing
 			for (int i = 0; i < appl.Arguments.Length; ++i)
 			{
 				appl.Arguments[i].Accept(this);
-				paramTypes[i] = appl.Arguments[i].TypeVariable;
+				paramTypes[i] = appl.Arguments[i].TypeVariable!;
 			}
 			var dt = handler.DataTypeTrait(appl, appl.DataType); 
-			handler.FunctionTrait(appl.Procedure, appl.Procedure.DataType.Size, appl.TypeVariable, paramTypes);
+			handler.FunctionTrait(appl.Procedure, appl.Procedure.DataType.Size, appl.TypeVariable!, paramTypes);
 
 			BindActualTypesToFormalTypes(appl);
 
@@ -298,7 +298,7 @@ namespace Reko.Typing
                 return id.DataType ;
 
 			var dt = handler.DataTypeTrait(id, id.DataType);
-            if (!program.InductionVariables.TryGetValue(id, out ivCur))
+            if (!program!.InductionVariables.TryGetValue(id, out ivCur))
                 ivCur = null;
             return dt;
 		}
@@ -330,7 +330,7 @@ namespace Reko.Typing
 					ivCur = MergeInductionVariableConstant(ivLeft, binExp.Operator, binExp.Right as Constant);
 			} 
 
-			TypeVariable tvExp = binExp.TypeVariable;
+			TypeVariable tvExp = binExp.TypeVariable!;
             //$BUGBUG: This needs to be redone because the domain of the operation is now in the OPERATOR, not the operands.
 			if (binExp.Operator == Operator.IAdd || 
 				binExp.Operator == Operator.ISub ||
@@ -343,7 +343,7 @@ namespace Reko.Typing
 			else if (binExp.Operator == Operator.SMul ||
 				binExp.Operator == Operator.SDiv)
 			{
-                handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType));
+                handler.DataTypeTrait(binExp, MakeNonPointer(binExp.DataType)!);
                 var dt = handler.DataTypeTrait(binExp, binExp.DataType);
 				handler.DataTypeTrait(binExp.Left, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Left.DataType.BitSize));
 				handler.DataTypeTrait(binExp.Right, PrimitiveType.Create(DomainOf(binExp.DataType), binExp.Right.DataType.BitSize));
@@ -415,8 +415,8 @@ namespace Reko.Typing
 			{
 				handler.EqualTrait(binExp.Left, binExp.Right);
 				var dt = handler.DataTypeTrait(binExp, PrimitiveType.Bool);
-				handler.DataTypeTrait(binExp.Left, MakeNotSigned(binExp.Left.DataType));
-				handler.DataTypeTrait(binExp.Right, MakeNotSigned(binExp.Right.DataType));
+				handler.DataTypeTrait(binExp.Left, MakeNotSigned(binExp.Left.DataType)!);
+				handler.DataTypeTrait(binExp.Right, MakeNotSigned(binExp.Right.DataType)!);
                 return dt;
 			}
             else if (binExp.Operator == Operator.FAdd ||
@@ -442,7 +442,7 @@ namespace Reko.Typing
             throw new NotImplementedException("NYI: " + binExp.Operator + " in " + binExp);
 		}
 
-		public DataType VisitBranch(Branch b)
+		public DataType? VisitBranch(Branch b)
 		{
 			return b.Condition.Accept(this);
 		}
@@ -464,6 +464,13 @@ namespace Reko.Typing
 			return handler.DataTypeTrait(cof, cof.DataType);
 		}
 
+        public DataType VisitConversion(Conversion conversion)
+        {
+            conversion.Expression.Accept(this);
+            handler.DataTypeTrait(conversion.Expression, conversion.SourceDataType);
+            return handler.DataTypeTrait(conversion, conversion.DataType);
+        }
+
         public DataType VisitAddress(Address addr)
         {
             return handler.DataTypeTrait(addr, addr.DataType);
@@ -477,15 +484,15 @@ namespace Reko.Typing
             {
                 handler.MemAccessTrait(
                     null, 
-                    program.Globals,
-                    program.Platform.PointerType.Size,
+                    program!.Globals,
+                    program.Platform.PointerType.BitSize,
                     c,
                     c.ToInt32() * 0x10);   //$REVIEW Platform-dependent
             }
             return dt;
 		}
 
-        public DataType VisitDeclaration(Declaration decl)
+        public DataType? VisitDeclaration(Declaration decl)
         {
             var dtId = decl.Identifier.Accept(this);
             if (decl.Expression == null)
@@ -495,19 +502,10 @@ namespace Reko.Typing
             return handler.EqualTrait(decl.Identifier, decl.Expression);
         }
 
-        public DataType VisitDepositBits(DepositBits d)
-        {
-            d.Source.Accept(this);
-            d.InsertedBits.Accept(this);
-            var dt = handler.DataTypeTrait(d, d.DataType);
-            ivCur = null;
-            return dt;
-        }
-
 		public DataType VisitDereference(Dereference deref)
 		{
 			deref.Expression.Accept(this);
-            return handler.MemAccessTrait(null, deref.Expression, deref.Expression.DataType.Size, deref, 0);
+            return handler.MemAccessTrait(null, deref.Expression, deref.Expression.DataType.BitSize, deref, 0);
 		}
 
 		public DataType VisitFieldAccess(FieldAccess acc)
@@ -515,7 +513,7 @@ namespace Reko.Typing
 			throw new NotImplementedException();
 		}
 
-        public DataType VisitMkSequence(MkSequence seq)
+        public DataType? VisitMkSequence(MkSequence seq)
         {
             foreach (var e in seq.Expressions)
             {
@@ -528,7 +526,7 @@ namespace Reko.Typing
 		{
 			mps.BasePointer.Accept(this);
 			mps.MemberPointer.Accept(this);
-			return handler.DataTypeTrait(mps, program.Platform.PointerType);
+			return handler.DataTypeTrait(mps, program!.Platform.PointerType);
 		}
 
 		public DataType VisitMemoryAccess(MemoryAccess access)
@@ -543,9 +541,9 @@ namespace Reko.Typing
 		{
             access.BasePointer.Accept(this);
             access.EffectiveAddress.Accept(this);
-			TypeVariable tAccess = access.TypeVariable;
+			TypeVariable tAccess = access.TypeVariable!;
 			var dt = handler.DataTypeTrait(access, access.DataType);
-			CollectEffectiveAddress(access.BasePointer, access.BasePointer.DataType.Size, access, access.EffectiveAddress);
+			CollectEffectiveAddress(access.BasePointer, access.BasePointer.DataType.BitSize, access, access.EffectiveAddress);
             return dt;
 		}
 
@@ -560,7 +558,7 @@ namespace Reko.Typing
 
 		public DataType VisitPhiFunction(PhiFunction phi)
 		{
-			TypeVariable tPhi = phi.TypeVariable;
+			TypeVariable tPhi = phi.TypeVariable!;
 			foreach (var arg in phi.Arguments)
 			{
 				arg.Value.Accept(this);
@@ -573,23 +571,23 @@ namespace Reko.Typing
 			throw new NotImplementedException();
 		}
 
-		public DataType VisitProcedureConstant(ProcedureConstant pc)
+		public DataType? VisitProcedureConstant(ProcedureConstant pc)
 		{
 			FunctionType sig = pc.Procedure.Signature;
-			DataType [] argTypes = null;
+			DataType []? argTypes = null;
 			if (sig != null && sig.Parameters != null)
 			{
 				argTypes = new DataType[sig.Parameters.Length];
 				for (int i = 0; i < argTypes.Length; ++i)
 				{
-					argTypes[i] = sig.Parameters[i].TypeVariable;
+					argTypes[i] = sig.Parameters[i].TypeVariable!;
 				}
 			} 
 			else
 			{
-                if (pc.Procedure is PseudoProcedure ppp)
+                if (pc.Procedure is IntrinsicProcedure intrinsic)
                 {
-                    argTypes = new DataType[ppp.Arity];
+                    argTypes = new DataType[intrinsic.Arity];
                     for (int i = 0; i < argTypes.Length; ++i)
                     {
                         argTypes[i] = factory.CreateUnknown();
@@ -633,8 +631,8 @@ namespace Reko.Typing
 			}
 			else if (unary.Operator == Operator.Neg)
 			{
-				handler.DataTypeTrait(unary.Expression, MakeSigned(unary.Expression.DataType));
-                return handler.DataTypeTrait(unary, MakeSigned(unary.Expression.DataType));
+				handler.DataTypeTrait(unary.Expression, MakeSigned(unary.Expression.DataType)!);
+                return handler.DataTypeTrait(unary, MakeSigned(unary.Expression.DataType)!);
             }
 			else if (unary.Operator == Operator.Comp)
 			{

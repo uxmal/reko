@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Types;
 using Reko.Core.Serialization;
 using Reko.ImageLoaders.MzExe.Pe;
+using Reko.Core.Memory;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -91,10 +92,10 @@ namespace Reko.ImageLoaders.MzExe
         private ushort fileFlags;
 		private int sections;
         private uint rvaSectionTable;
-		private MemoryArea imgLoaded;
+		private ByteMemoryArea imgLoaded;
 		private Address preferredBaseOfImage;
         private List<Section> sectionList;
-        private Dictionary<uint, PseudoProcedure> importThunks;
+        private Dictionary<uint, IntrinsicProcedure> importThunks;
 		private uint rvaStartAddress;		// unrelocated start address of the image.
 		private uint rvaExportTable;
 		private uint sizeExportTable;
@@ -119,7 +120,7 @@ namespace Reko.ImageLoaders.MzExe
 			{
 				throw new BadImageFormatException("Not a valid PE header.");
 			}
-            importThunks = new Dictionary<uint, PseudoProcedure>();
+            importThunks = new Dictionary<uint, IntrinsicProcedure>();
             importReferences = new Dictionary<Address, ImportReference>();
             ImageSymbols = new SortedList<Address, ImageSymbol>();
 			short expectedMagic = ReadCoffHeader(rdr);
@@ -136,7 +137,7 @@ namespace Reko.ImageLoaders.MzExe
 			uint timestamp = rdr.ReadLeUInt32();
 			uint version = rdr.ReadLeUInt32();
 			uint binaryNameAddr = rdr.ReadLeUInt32();
-			uint baseOrdinal = rdr.ReadLeUInt32();
+			int baseOrdinal = rdr.ReadLeInt32();
 
 			int nExports = rdr.ReadLeInt32();
 			int nNames = rdr.ReadLeInt32();
@@ -147,12 +148,15 @@ namespace Reko.ImageLoaders.MzExe
             EndianImageReader rdrNames = nNames != 0
                 ? imgLoaded.CreateLeReader(rvaNames)
                 : null;
+            trace.Verbose("== Exports");
 			for (int i = 0; i < nExports; ++i)
 			{
-                ImageSymbol ep = LoadEntryPoint(addrLoad, rdrAddrs, rdrNames);
+                ImageSymbol ep = LoadEntryPoint(addrLoad, rdrAddrs, i < nNames ? rdrNames : null);
 				if (imageMap.IsExecutableAddress(ep.Address))
 				{
+                    ep.Ordinal = baseOrdinal + i;
                     ImageSymbols[ep.Address] = ep;
+                    trace.Verbose("  {0,-8} {1} {2}", ep.Ordinal, ep.Address, ep.Name);
 					entryPoints.Add(ep);
 				}
 			}
@@ -354,11 +358,11 @@ namespace Reko.ImageLoaders.MzExe
             return sectionMap;
 		}
 
-        public MemoryArea LoadSectionBytes(Address addrLoad, List<Section> sections)
+        public ByteMemoryArea LoadSectionBytes(Address addrLoad, List<Section> sections)
         {
             var vaMax = sections.Max(s => s.VirtualAddress);
             var sectionMax = sections.Where(s => s.VirtualAddress == vaMax).First();
-            var imgLoaded = new MemoryArea(addrLoad, new byte[sectionMax.VirtualAddress + Math.Max(sectionMax.VirtualSize, sectionMax.SizeRawData)]);
+            var imgLoaded = new ByteMemoryArea(addrLoad, new byte[sectionMax.VirtualAddress + Math.Max(sectionMax.VirtualSize, sectionMax.SizeRawData)]);
             foreach (Section s in sectionList)
             {
                 Array.Copy(RawImage, s.OffsetRawData, imgLoaded.Bytes, s.VirtualAddress, s.SizeRawData);
@@ -748,7 +752,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 #endif
         public void ApplyRelocations(uint rvaReloc, uint size, Address baseOfImage, RelocationDictionary relocations)
 		{
-            DebugEx.Inform(trace, "PELdr: applying relocations {0:X8}", rvaReloc);
+            trace.Inform("PELdr: applying relocations {0:X8}", rvaReloc);
 			EndianImageReader rdr = new LeImageReader(RawImage, rvaReloc);
 			uint rvaStop = rvaReloc + size;
 			while (rdr.Offset < rvaStop)
@@ -1080,7 +1084,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             switch (machine)
             {
             default: 
-                Services.RequireService<IDiagnosticsService>()
+                Services.RequireService<DecompilerEventListener>()
                     .Warn(new NullCodeLocation(Filename), "Exception table reading not supported for machine #{0}.", machine);
                 break;
             case MACHINE_x86_64:

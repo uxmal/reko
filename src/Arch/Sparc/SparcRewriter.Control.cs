@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,9 +36,9 @@ namespace Reko.Arch.Sparc
         private Identifier Grf(FlagM grf)
         {
             return binder.EnsureFlagGroup(
-                Registers.psr,
+                arch.Registers.psr,
                 (uint) grf, 
-                arch.GrfToString(Registers.psr, "", (uint) grf),
+                arch.GrfToString(arch.Registers.psr, "", (uint) grf),
                 Bits.IsSingleBitSet((uint)grf) ? PrimitiveType.Bool: PrimitiveType.Byte);
         }
 
@@ -46,7 +46,7 @@ namespace Reko.Arch.Sparc
         {
             // SPARC architecture always has delay slot.
             var rtlClass = instrCur.InstructionClass;
-            this.rtlc = rtlClass;
+            this.iclass = rtlClass;
             if (cond is Constant c && c.ToBoolean())
             {
                 m.Goto(((AddressOperand)instrCur.Operands[0]).Address, rtlClass);
@@ -57,29 +57,48 @@ namespace Reko.Arch.Sparc
             }
         }
 
+        private void RewriteBranchReg(Func<Expression, Expression> fn)
+        {
+            var rtlClass = instrCur.InstructionClass;
+            this.iclass = rtlClass;
+            var reg = RewriteRegister(instrCur.Operands[0]);
+            m.Branch(fn(reg), ((AddressOperand) instrCur.Operands[1]).Address, rtlClass);
+        }
+
         private void RewriteCall()
         {
-            rtlc = InstrClass.Transfer | InstrClass.Call;
-            m.CallD(((AddressOperand)instrCur.Operands[0]).Address, 0);
+            // A special case is when we call to the location after
+            // the delay slot. This is an idiom to capture the 
+            // program counter in the la register.
+            var dst = ((AddressOperand) instrCur.Operands[0]).Address;
+            if (instrCur.Address.ToLinear() + 8 == dst.ToLinear())
+            {
+                iclass = InstrClass.Linear;
+                m.Assign(binder.EnsureRegister(arch.Registers.o7), dst);
+            }
+            else
+            {
+                m.CallD(dst, 0);
+            }
         }
 
         private void RewriteJmpl()
         {
-            rtlc = InstrClass.Transfer;
+            iclass = InstrClass.Transfer;
             var rDst = instrCur.Operands[2] as RegisterOperand;
             var src1 = RewriteOp(instrCur.Operands[0]);
             var src2 = RewriteOp(instrCur.Operands[1]);
-            if (rDst.Register != Registers.g0)
+            if (rDst.Register != arch.Registers.g0)
             {
                 var dst = RewriteOp(instrCur.Operands[2]);
                 m.Assign(dst, instrCur.Address);
             }
             var target = SimplifySum(src1, src2);
-            if (rDst.Register == Registers.o7)
+            if (rDst.Register == arch.Registers.o7)
             {
                 m.CallD(target, 0);
             }
-            else if (rDst.Register == Registers.g0)
+            else if (rDst.Register == arch.Registers.g0)
             {
                 m.ReturnD(0, 0);
             }
@@ -93,6 +112,15 @@ namespace Reko.Arch.Sparc
         {
         }
 
+        private void RewriteReturn()
+        {
+            var dst = RewriteOp(instrCur.Operands[0]);
+            var src1 = RewriteOp(instrCur.Operands[0]);
+            var src2 = RewriteOp(instrCur.Operands[1]);
+            RestoreRegisterWindow(dst, src1, src2);
+            m.Return(0, 0, instrCur.InstructionClass);
+        }
+
         private void RewriteTrap(Expression cond)
         {
             //$REVIEW: does a SPARC trap instruction have a delay slot?
@@ -103,8 +131,9 @@ namespace Reko.Arch.Sparc
                 instrCur.Address + instrCur.Length,
                 InstrClass.ConditionalTransfer);
             m.SideEffect(
-                    host.PseudoProcedure(
-                        PseudoProcedure.Syscall, 
+                    host.Intrinsic(
+                        IntrinsicProcedure.Syscall, 
+                        false,
                         VoidType.Instance, 
                     SimplifySum(src1, src2)));
         }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public IConfigurationService CreateDecompilerConfiguration()
         {
-            return RekoConfigurationService.Load();
+            return RekoConfigurationService.Load(services);
         }
 
         public IDiagnosticsService CreateDiagnosticsService()
@@ -203,8 +203,19 @@ namespace Reko.UserInterfaces.WindowsForms
         public IDecompiledFileService CreateDecompiledFileService()
         {
             var fsSvc = services.RequireService<IFileSystemService>();
-            var svc = new DecompiledFileService(fsSvc);
+            var listener = services.RequireService<DecompilerEventListener>();
+            var svc = new DecompiledFileService(fsSvc, listener);
             return svc;
+        }
+
+        public ITestGenerationService CreateTestGenerationService()
+        {
+            return new TestGenerationService(services);
+        }
+
+        public IUserEventService CreateUserEventService()
+        {
+            return new UserEventService();
         }
     }
 }

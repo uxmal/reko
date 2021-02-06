@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@ using System.IO;
 using System.Collections.Generic;
 using Reko.Core.Expressions;
 using System.Linq;
+using Reko.Core.Services;
+using NUnit.Framework.Constraints;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -58,8 +60,8 @@ namespace Reko.UnitTests.Analysis
         protected override void RunTest(Program program, TextWriter fut)
         {
             IDynamicLinker dynamicLinker = null;
-            var listener = new FakeDecompilerEventListener();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker, listener);
+            var listener = sc.RequireService<DecompilerEventListener>();
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, dynamicLinker, sc);
             var ssts = dfa.UntangleProcedures();
 
             foreach (Procedure proc in program.Procedures.Values)
@@ -67,7 +69,7 @@ namespace Reko.UnitTests.Analysis
                 var sst = ssts.Single(s => s.SsaState.Procedure == proc);
                 SsaState ssa = sst.SsaState;
 
-                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
+                ConditionCodeEliminator cce = new ConditionCodeEliminator(program, ssa, listener);
                 cce.Transform();
                 DeadCode.Eliminate(ssa);
 
@@ -213,7 +215,7 @@ call r3 (retsize: 4;)
 
             var expected =
 @"
-call r2() + 0x00000004 (retsize: 4;)
+call r2() + 4<32> (retsize: 4;)
 	uses: r2:r2
 ";
             AssertProcedureCode(expected);
@@ -233,7 +235,7 @@ call r2() + 0x00000004 (retsize: 4;)
             var expected =
 @"
 a = <invalid>
-b = a + 0x00000004
+b = a + 4<32>
 ";
             AssertProcedureCode(expected);
         }
@@ -253,7 +255,7 @@ b = a + 0x00000004
             var sExp =
 @"
 // This is a comment
-b = Mem3[Mem2[0x00123400:word32]:word32]
+b = Mem3[Mem2[0x123400<32>:word32]:word32]
 ";
             AssertProcedureCode(sExp);
         }
@@ -271,7 +273,7 @@ b = Mem3[Mem2[0x00123400:word32]:word32]
 
             var sExp =
 @"
-c = b + 1
+c = b + 1<i32>
 ";
             AssertProcedureCode(sExp);
         }

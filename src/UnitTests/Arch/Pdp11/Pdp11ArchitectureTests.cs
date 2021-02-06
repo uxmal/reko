@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace Reko.UnitTests.Arch.Pdp11
         [SetUp]
         public void Setup()
         {
-            this.arch = new Pdp11Architecture("pdp11");
+            this.arch = new Pdp11Architecture(new ServiceContainer(), "pdp11", new Dictionary<string, object>());
         }
 
         [Test]
@@ -52,7 +53,7 @@ namespace Reko.UnitTests.Arch.Pdp11
             
             var access = arch.CreateStackAccess(binder.Object, -12, PrimitiveType.Word16);
 
-            Assert.AreEqual("Mem0[sp + -12:word16]", access.ToString());
+            Assert.AreEqual("Mem0[sp + -12<i16>:word16]", access.ToString());
         }
     }
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -51,10 +52,10 @@ namespace Reko.Arch.Mips
         public RegisterStorage pc;
         private string instructionSetEncoding;
         private Dictionary<string, RegisterStorage> mpNameToReg;
-        private Dictionary<string, object> options;
         private Decoder<MipsDisassembler, Mnemonic, MipsInstruction> rootDecoder;
 
-        public MipsProcessorArchitecture(string archId, EndianServices endianness, PrimitiveType wordSize, PrimitiveType ptrSize) : base(archId)
+        public MipsProcessorArchitecture(IServiceProvider services, string archId, EndianServices endianness, PrimitiveType wordSize, PrimitiveType ptrSize, Dictionary<string, object> options) 
+            : base(services, archId, options)
         {
             this.Endianness = endianness;
             this.WordWidth = wordSize;
@@ -83,15 +84,8 @@ namespace Reko.Arch.Mips
                 .Concat(ccRegs)
                 .Concat(new[] { hi, lo })
                 .ToDictionary(k => k.Name);
-        }
 
-        /// <summary>
-        /// If the architecture name contains "v6" we are a MIPS v6, which
-        /// has different instruction encodings.
-        /// </summary>
-        private bool IsVersion6OrLater
-        {
-            get { return this.Name.Contains("v6"); }
+            LoadUserOptions(options);
         }
 
         public RegisterStorage FCSR { get; private set; }
@@ -210,7 +204,7 @@ namespace Reko.Arch.Mips
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -220,7 +214,7 @@ namespace Reko.Arch.Mips
 
         public override void LoadUserOptions(Dictionary<string, object> options)
         {
-            this.options = options;
+            this.Options = options;
             if (options.TryGetValue("decoder", out var oDecoderName) && 
                 oDecoderName is string decoderName)
             {
@@ -317,7 +311,10 @@ namespace Reko.Arch.Mips
 
     public class MipsBe32Architecture : MipsProcessorArchitecture
     {
-        public MipsBe32Architecture(string archId) : base(archId, EndianServices.Big,  PrimitiveType.Word32, PrimitiveType.Ptr32) { }
+        public MipsBe32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options) 
+            : base(services, archId, EndianServices.Big,  PrimitiveType.Word32, PrimitiveType.Ptr32, options) 
+        {
+        }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
@@ -330,7 +327,10 @@ namespace Reko.Arch.Mips
 
     public class MipsLe32Architecture : MipsProcessorArchitecture
     {
-        public MipsLe32Architecture(string archId) : base(archId, EndianServices.Little, PrimitiveType.Word32, PrimitiveType.Ptr32) { }
+        public MipsLe32Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, EndianServices.Little, PrimitiveType.Word32, PrimitiveType.Ptr32, options) 
+        {
+        }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
@@ -343,8 +343,10 @@ namespace Reko.Arch.Mips
 
     public class MipsBe64Architecture : MipsProcessorArchitecture
     {
-        public MipsBe64Architecture(string archId) : base(archId, EndianServices.Big, PrimitiveType.Word64, PrimitiveType.Ptr64)
-        { }
+        public MipsBe64Architecture(IServiceProvider services, string archId, Dictionary<string, object> options) 
+            : base(services, archId, EndianServices.Big, PrimitiveType.Word64, PrimitiveType.Ptr64, options)
+        { 
+        }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
@@ -357,7 +359,8 @@ namespace Reko.Arch.Mips
 
     public class MipsLe64Architecture : MipsProcessorArchitecture
     {
-        public MipsLe64Architecture(string archId) : base(archId, EndianServices.Little, PrimitiveType.Word64, PrimitiveType.Ptr64)
+        public MipsLe64Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
+            : base(services, archId, EndianServices.Little, PrimitiveType.Word64, PrimitiveType.Ptr64, options)
         {
         }
 

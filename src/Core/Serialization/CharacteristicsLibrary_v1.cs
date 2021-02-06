@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,15 +34,15 @@ namespace Reko.Core.Serialization
     public class CharacteristicsLibrary_v1
     {
         [XmlElement("entry")]
-        public Entry[] Entries;
+        public Entry[]? Entries;
 
         public class Entry
         {
             [XmlAttribute("name")]
-            public string ProcedureName;
+            public string? ProcedureName;
 
             [XmlElement("characteristics")]
-            public ProcedureCharacteristics Characteristics;
+            public ProcedureCharacteristics? Characteristics;
         }
     }
 }

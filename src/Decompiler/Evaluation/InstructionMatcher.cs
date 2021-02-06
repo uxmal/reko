@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,12 +36,12 @@ namespace Reko.Evaluation
         public InstructionMatcher(Instruction pattern)
         {
             this.pattern = pattern;
-            this.matcher = new ExpressionMatcher(null);
+            this.matcher = new ExpressionMatcher(null!);
         }
 
-        public Expression CapturedExpressions(string label) { return matcher.CapturedExpression(label); }
+        public Expression? CapturedExpressions(string label) { return matcher.CapturedExpression(label); }
 
-        public Operator CapturedOperators(string label) { return matcher.CapturedOperators(label); }
+        public Operator? CapturedOperators(string label) { return matcher.CapturedOperators(label); }
 
         public bool Match(Instruction instr)
         {

@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ using Reko.Environments.SysV.ArchSpecific;
 using Reko.Arch.Avr;
 using Reko.Core;
 using Reko.Core.Types;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Environments.SysV.ArchSpecific
 {
@@ -42,7 +43,7 @@ namespace Reko.UnitTests.Environments.SysV.ArchSpecific
         [SetUp]
         public void Setup()
         {
-            this.arch = new Avr8Architecture("avr8");
+            this.arch = new Avr8Architecture(new ServiceContainer(), "avr8", new Dictionary<string, object>());
         }
 
         private void Given_CallingConvention()

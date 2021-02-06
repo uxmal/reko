@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,38 +29,64 @@ using System.Threading.Tasks;
 namespace Reko.Core.Machine
 {
     /// <summary>
-    /// Abstract base class for instruction decoders
+    /// Abstract base class for instruction decoders.
     /// </summary>
     /// <typeparam name="TDasm">Disassembler</typeparam>
     /// <typeparam name="TInstr">Instruction type</typeparam>
-    public abstract class Decoder<TDasm, TMnemonic, TInstr> 
+    public abstract class Decoder<TDasm, TMnemonic, TInstr> : Decoder
         where TInstr : MachineInstruction
+        where TMnemonic : struct
     {
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(Decoder), "Trace the progress of machine code decoders") { Level = TraceLevel.Verbose };
-
         public abstract TInstr Decode(uint wInstr, TDasm dasm);
 
         [Conditional("DEBUG")]
         public static void DumpMaskedInstruction(uint wInstr, uint shMask, TMnemonic mnemonic)
         {
-            DumpMaskedInstruction(wInstr, shMask, mnemonic.ToString());
+            DumpMaskedInstruction(32, wInstr, shMask, mnemonic!.ToString());
         }
 
         [Conditional("DEBUG")]
-        public static void DumpMaskedInstruction(uint wInstr, Bitfield[] bitfields, string tag)
+        public static void DumpMaskedInstruction64(uint wInstr, uint shMask, TMnemonic mnemonic)
+        {
+            DumpMaskedInstruction(64, wInstr, shMask, mnemonic!.ToString());
+        }
+    }
+
+
+    public abstract class WideDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
+        where TInstr : MachineInstruction
+        where TMnemonic : struct
+    {
+        public sealed override TInstr Decode(uint wInstr, TDasm dasm)
+        {
+            throw new InvalidOperationException("32-bit decoding is not allowed with wide decoders.");
+        }
+
+        public abstract TInstr Decode(ulong ulInstr, TDasm dasm);
+    }
+
+    public class Decoder
+    {
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(Decoder), "Trace the progress of machine code decoders")
+        {
+            Level = TraceLevel.Warning
+        };
+
+        [Conditional("DEBUG")]
+        public static void DumpMaskedInstruction(int instrBitSize, uint wInstr, Bitfield[] bitfields, string tag)
         {
             var shMask = bitfields.Aggregate(0u, (mask, bf) => mask | bf.Mask << bf.Position);
-            DumpMaskedInstruction(wInstr, shMask, tag);
+            DumpMaskedInstruction(instrBitSize, wInstr, shMask, tag);
         }
 
         [Conditional("DEBUG")]
-        public static void DumpMaskedInstruction(uint wInstr, uint shMask, string tag)
+        public static void DumpMaskedInstruction(int instrBitSize, ulong wInstr, ulong shMask, string tag)
         {
             if (trace.Level != TraceLevel.Verbose)
                 return;
-            var hibit = 0x80000000u;
-            var sb = new StringBuilder();
-            for (int i = 0; i < 32; ++i)
+            var hibit = 1ul << (instrBitSize - 1);
+            var sb = new StringBuilder("// ");
+            for (int i = 0; i < instrBitSize; ++i)
             {
                 if ((shMask & hibit) != 0)
                 {
@@ -77,18 +103,8 @@ namespace Reko.Core.Machine
             {
                 sb.AppendFormat(" {0}", tag);
             }
-            Debug.Print(sb.ToString());
+            Debug.WriteLine(sb.ToString());
+            Console.WriteLine(sb.ToString());
         }
-    }
-
-    public abstract class WideDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
-        where TInstr : MachineInstruction
-    {
-        public sealed override TInstr Decode(uint wInstr, TDasm dasm)
-        {
-            throw new InvalidOperationException("32-bit decoding is not allowed with wide decoders.");
-        }
-
-        public abstract TInstr Decode(ulong ulInstr, TDasm dasm);
     }
 }

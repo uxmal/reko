@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,8 @@ using System.Text;
 namespace Reko.Core.Types
 {
     /// <summary>
-    /// Refers to another type by name
+    /// Refers to another type by name; think of C's "typedef"
+    /// type builder.
     /// </summary>
     public class TypeReference : DataType
     {
@@ -62,7 +63,7 @@ namespace Reko.Core.Types
             return v.VisitTypeReference(this);
         }
 
-        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
+        public override DataType Clone(IDictionary<DataType, DataType>? clonedTypes)
         {
             return this;
         }

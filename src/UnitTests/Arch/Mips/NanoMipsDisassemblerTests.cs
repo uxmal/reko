@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,10 @@ using NUnit.Framework;
 using Reko.Arch.Mips;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +40,7 @@ namespace Reko.UnitTests.Arch.Mips
 
         public NanoMipsDisassemblerTests()
         {
-            this.arch = new MipsBe32Architecture("mips-be-micro");
+            this.arch = new MipsBe32Architecture(new ServiceContainer(), "mips-be-micro", new Dictionary<string, object>());
             this.LoadAddress = Address.Ptr32(0x00100000);
         }
 
@@ -57,18 +59,12 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual(expectedAsm, instr.ToString());
         }
 
-        private void Given_Mips64Architecture()
-        {
-            this.arch = new MipsBe64Architecture("mips-be-micro");
-        }
-
-        [Test]
         public void NanoMipsDis_Generate()
         {
             var ab = new byte[1000];
             var rnd = new Random(0x4711);
             rnd.NextBytes(ab);
-            var mem = new MemoryArea(Address.Ptr32(0x00100000), ab);
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), ab);
             var rdr = new BeImageReader(mem, 0);
             var dasm = new NanoMipsDisassembler(arch, rdr);
             foreach (var instr in dasm)
@@ -153,6 +149,12 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsDis_andi()
+        {
+            AssertCode("andi\tr17,r18,00000004", "F0A40059");
+        }
+
+        [Test]
         public void NanoMipsDis_andi_32()
         {
             AssertCode("andi\tr7,r7,000007FF", "80E727FF");
@@ -162,6 +164,12 @@ namespace Reko.UnitTests.Arch.Mips
         public void NanoMipsDis_balc16()
         {
             AssertCode("balc\t00100088", "3886");
+        }
+
+        [Test]
+        public void NanoMipsDis_balrsc()
+        {
+            AssertCode("balrsc\tr10,r14", "494E 8454");
         }
 
         [Test]
@@ -249,6 +257,18 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsDis_break_32()
+        {
+            AssertCode("break\t0004AAC4", "0014AAC4");
+        }
+
+        [Test]
+        public void NanoMipsDis_cachee()
+        {
+            AssertCode("cachee\t0000000E,-00F6(r14)", "A5CEBA0A");
+        }
+
+        [Test]
         public void NanoMipsDis_clz()
         {
             AssertCode("clz\tr7,r4", "20E45B3F");
@@ -277,7 +297,6 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("jalrc\tra,r16", "DA10");
         }
-
 
         [Test]
         public void NanoMipsDis_jrc()
@@ -328,6 +347,12 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsDis_lhu()
+        {
+            AssertCode("lhu\tr4,0006(r4)", "7E4E");
+        }
+
+        [Test]
         public void NanoMipsDis_lhu_gp()
         {
             AssertCode("lhu\tr24,4F24(r28)", "47104F25");
@@ -349,6 +374,12 @@ namespace Reko.UnitTests.Arch.Mips
         public void NanoMipsDis_li_48()
         {
             AssertCode("li\tr7,000FFFFF", "60E0FFFF000F");
+        }
+
+        [Test]
+        public void NanoMipsDis_addiupc()
+        {
+            AssertCode("addiupc\tr5,FFE50050", "04A50051");
         }
 
         [Test]
@@ -550,6 +581,12 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsDis_sdbbp()
+        {
+            AssertCode("sdbbp\t000135B5", "001935B5");
+        }
+
+        [Test]
         public void NanoMipsDis_seb()
         {
             AssertCode("seb\tr7,r7", "20E70008");
@@ -559,13 +596,6 @@ namespace Reko.UnitTests.Arch.Mips
         public void NanoMipsDis_seh()
         {
             AssertCode("seh\tr7,r7", "20E70048");
-        }
-
-
-        [Test]
-        public void NanoMipsDis_sh_gp16()
-        {
-            AssertCode("sh\tr7,0002(r18)", "7FA2");
         }
 
         [Test]
@@ -578,6 +608,12 @@ namespace Reko.UnitTests.Arch.Mips
         public void NanoMipsDis_sh_u12()
         {
             AssertCode("sh\tr7,0304(r16)", "84F05304");
+        }
+
+        [Test]
+        public void NanoMipsDis_sb()
+        {
+            AssertCode("sb\tsp,002A(r28)", "47A4002A");
         }
 
         [Test]
@@ -716,6 +752,12 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void NanoMipsDis_syscall_32()
+        {
+            AssertCode("syscall\t00000000", "00080000");
+        }
+
+        [Test]
         public void NanoMipsDis_ualwm()
         {
             AssertCode("ualwm\tr7,0001(r4),00000001", "A4E41501");
@@ -738,7 +780,5 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode("xori\tr0,r8,00000142", "80081142");
         }
-
- 
     }
 }

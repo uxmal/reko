@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+
+#nullable enable
 
 using Reko.Core;
 using System;
@@ -36,9 +38,9 @@ namespace Reko.Gui.Design
 
         private void SetTreeNodeProperties()
         {
-            var arch = (IProcessorArchitecture)Component;
+            var arch = (IProcessorArchitecture)Component!;
 
-            TreeNode.Text = arch.Description;
+            TreeNode!.Text = arch.Description;
             TreeNode.ImageName = "Cpu.ico";
         }
     }

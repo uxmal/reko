@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -103,7 +103,19 @@ namespace Reko.UnitTests.Core.Configuration
                     {
                         Name="x86-real-16",
                         Description = "x86 16-bit Real Mode",
-                        Type ="Reko.Arch.X86.X86ArchitectureReal,Reko.Arch.X86"
+                        Type ="Reko.Arch.X86.X86ArchitectureReal,Reko.Arch.X86",
+                        Models = new ModelDefinition_v1[]
+                        {
+                            new ModelDefinition_v1
+                            {
+                                Name = "8086",
+                                Options = new ListOption_v1[]
+                                {
+                                    new ListOption_v1 { Text="ISA", Value="8086"},
+                                    new ListOption_v1 { Text="FPCoproc", Value="false" },
+                                }
+                            }
+                        }
                     }
                 },
                 Assemblers = new []
@@ -170,7 +182,14 @@ namespace Reko.UnitTests.Core.Configuration
     </Environment>
   </Environments>
   <Architectures>
-    <Architecture Name=""x86-real-16"" Description=""x86 16-bit Real Mode"" Type=""Reko.Arch.X86.X86ArchitectureReal,Reko.Arch.X86"" />
+    <Architecture Name=""x86-real-16"" Description=""x86 16-bit Real Mode"" Type=""Reko.Arch.X86.X86ArchitectureReal,Reko.Arch.X86"">
+      <Models>
+        <Model Name=""8086"">
+          <Option Text=""ISA"" Value=""8086"" />
+          <Option Text=""FPCoproc"" Value=""false"" />
+        </Model>
+      </Models>
+    </Architecture>
   </Architectures>
   <Assemblers>
     <Assembler Name=""pdp11-mac"" Description=""PDP-11 MACRO assembler"" Type=""Reko.Assemblers.Pdp11.Pdp11TextAssembler,Reko.Assemblers.Pdp11"" />

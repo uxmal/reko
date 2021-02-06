@@ -3,15 +3,15 @@
 define fn0C00_0000
 fn0C00_0000_entry:
 	sp = fp
-	Top = 0
+	Top = 0<i8>
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = sp - 2
+	sp = sp - 2<i16>
 	Mem0[ss:sp:word16] = cs
 	ds = Mem0[ss:sp:selector]
-	sp = sp + 2
+	sp = sp + 2<i16>
 	bl = Mem0[ds:si:byte]
-	SCZO = cond(bl - 0x02)
+	SCZO = cond(bl - 2<8>)
 	branch Test(UGT,CZ) l0C00_0023
 	// succ:  l0C00_0009 l0C00_0023
 l0C00_0009:
@@ -23,19 +23,19 @@ l0C00_0009:
 	switch (bl) { l0C00_0017 l0C00_001B l0C00_001F }
 	// succ:  l0C00_0017 l0C00_001B l0C00_001F
 l0C00_0017:
-	ax = 0x0001
+	ax = 1<16>
 	return
 	// succ:  fn0C00_0000_exit
 l0C00_001B:
-	ax = 0x0002
+	ax = 2<16>
 	return
 	// succ:  fn0C00_0000_exit
 l0C00_001F:
-	ax = 0x0003
+	ax = 3<16>
 	return
 	// succ:  fn0C00_0000_exit
 l0C00_0023:
-	ax = 0x0000
+	ax = 0<16>
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

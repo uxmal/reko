@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ namespace Reko.Environments.AmigaOS
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             var rdr = new StreamReader(new MemoryStream(bytes));
-            var lexer = new CLexer(rdr);
+            var lexer = new CLexer(rdr, CLexer.StdKeywords);
             var state = new ParserState();
             var parser = new CParser(state, lexer);
             var symbolTable = new SymbolTable(platform);

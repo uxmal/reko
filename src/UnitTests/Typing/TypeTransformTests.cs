@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@ using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
+using Reko.Core.Serialization;
+using System.IO;
 
 namespace Reko.UnitTests.Typing
 {
@@ -45,34 +47,54 @@ namespace Reko.UnitTests.Typing
             store = new TypeStore();
         }
 
-        protected override void RunTest(Program program, string outputFileName)
+        private void RunTestCore(Program program)
         {
             var listener = new FakeDecompilerEventListener();
-            ExpressionNormalizer aen = new ExpressionNormalizer(program.Architecture.PointerType);
+            var aen = new ExpressionNormalizer(program.Architecture.PointerType);
             aen.Transform(program);
-            EquivalenceClassBuilder eq = new EquivalenceClassBuilder(factory, store, listener);
+            var eq = new EquivalenceClassBuilder(factory, store, listener);
             eq.Build(program);
-#if OLD
-			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, program.Architecture);
-			TraitCollector coll = new TraitCollector(factory, store, dtb, program);
-			coll.CollectProgramTraits(program);
-			sktore.BuildEquivalenceClassDataTypes(factory);
-#else
-            TypeCollector coll = new TypeCollector(factory, store, program, listener);
+            var coll = new TypeCollector(factory, store, program, listener);
             coll.CollectTypes();
-
             store.BuildEquivalenceClassDataTypes(factory);
-#endif
 
-            TypeVariableReplacer tvr = new TypeVariableReplacer(store);
+            var tvr = new TypeVariableReplacer(store);
             tvr.ReplaceTypeVariables();
 
+            var trans = new TypeTransformer(factory, store, program);
+            trans.Transform();
+        }
+
+        protected void RunStringTest(string sExpected, Program program)
+        {
+            RunTestCore(program);
+            var sw = new StringWriter();
+            WriteTestResults(program, sw);
+            var sActual = sw.ToString();
+            if (sExpected != sActual)
+            {
+                Console.WriteLine(sActual);
+                Assert.AreEqual(sExpected, sActual);
+            }
+        }
+
+        protected override void RunTest(Program program, string outputFileName)
+        {
             Exception theEx = null;
+            try
+            {
+                RunTestCore(program);
+            }
+            catch (Exception ex)
+            {
+                theEx = ex;
+            }
             try
             {
                 TypeTransformer trans = new TypeTransformer(factory, store, program);
                 trans.Transform();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 theEx = ex;
             }
@@ -83,14 +105,19 @@ namespace Reko.UnitTests.Typing
                     fut.TextWriter.WriteLine(theEx.Message);
                     fut.TextWriter.WriteLine(theEx.StackTrace);
                 }
-                foreach (Procedure proc in program.Procedures.Values)
-                {
-                    proc.Write(false, fut.TextWriter);
-                    fut.TextWriter.WriteLine();
-                }
-                store.Write(fut.TextWriter);
+                WriteTestResults(program, fut.TextWriter);
                 fut.AssertFilesEqual();
             }
+        }
+
+        private void WriteTestResults(Program program, TextWriter writer)
+        {
+            foreach (Procedure proc in program.Procedures.Values)
+            {
+                proc.Write(false, writer);
+                writer.WriteLine();
+            }
+            store.Write(writer);
         }
 
         [Test]
@@ -237,6 +264,8 @@ namespace Reko.UnitTests.Typing
 
             ut.AddAlternative(PrimitiveType.Real32);
             ut.AddAlternative(PrimitiveType.Int32);
+            // TypeTransformer.Transform() clear some state (TypeTransformer.visitedTypes) between iterations.
+            trans = new TypeTransformer(factory, null, null);
             DataType d = ut.Accept(trans);
             Assert.AreEqual("(union \"foo\" (int32 u0) (real32 u1))", d.ToString());
         }
@@ -435,7 +464,7 @@ namespace Reko.UnitTests.Typing
                 var ds = m.Temp(PrimitiveType.SegmentSelector, "ds");
                 var bx = m.Temp(PrimitiveType.Word16, "bx");
                 m.SStore(
-                    ds, m.Word16( 0x1234),
+                    ds, m.Word16(0x1234),
                     m.SegMem16(
                         ds,
                         m.IAdd(m.IMul(bx, 2), m.Word16(0x5388))));
@@ -541,6 +570,74 @@ namespace Reko.UnitTests.Typing
                 m.Return();
             });
             RunTest(pb.BuildProgram(), "Typing/TtranSelfRef.txt");
+        }
+
+        [Test]
+        public void TtranMalloc()
+        {
+            var r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
+            var malloc = new ExternalProcedure("malloc", FunctionType.Func(
+                new Identifier("", new Pointer(new UnknownType(), 32), r1),
+                new Identifier("size", PrimitiveType.UInt32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32))),
+                new ProcedureCharacteristics
+                {
+                    Allocator = true,
+                });
+
+            var pb = new ProgramBuilder();
+            pb.Add(nameof(TtranMalloc), m =>
+            {
+                var r1_1 = new Identifier("r1_1", PrimitiveType.Word32, r1);
+                var r1_2 = new Identifier("r1_2", PrimitiveType.Word32, r1);
+                m.Assign(r1_1, m.Fn(malloc, m.Word32(40)));
+                m.MStore(m.IAddS(r1_1, 4), Constant.Real32(0.5F));
+                m.Assign(r1_2, m.Fn(malloc, m.Word32(20)));
+                m.MStore(m.IAddS(r1_2, 4), Constant.Int32(-2));
+                m.Return();
+            });
+            RunTest(pb.BuildProgram(), $"Typing/{nameof(TtranMalloc)}.txt");
+        }
+
+        [Test]
+        [Category(Categories.IntegrationTests)]
+        public void TtranArrayAssignment()
+        {
+            var pp = new ProgramBuilder();
+            pp.Add("Fn", m =>
+            {
+                Identifier rbx_18 = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rbx_18");
+                Identifier rdx = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rdx");
+                Identifier rax_22 = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rax_22");
+                Identifier rsi = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rsi");
+                Identifier rdi = m.Local(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), "rdi");
+
+                m.Label("l000000000040EC30");
+                m.Declare(rbx_18, m.ISub(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x1)));
+                m.BranchIf(m.Eq(rdx, Constant.Create(PrimitiveType.Create(Domain.Integer | Domain.Real | Domain.Pointer, 64), 0x0)), "l000000000040EC69");
+
+                m.Label("l000000000040EC40");
+                m.Declare(rax_22, m.Word64(0x10000040));
+
+                m.Label("l000000000040EC50");
+                m.MStore(m.IAdd(rdi, rbx_18), m.Convert(m.Mem32(
+                    m.IAdd(m.Mem64(rax_22), m.IMul(
+                        m.Convert(
+                            m.Convert(
+                                m.Mem8(m.IAdd(rsi, rbx_18)),
+                                PrimitiveType.Byte,
+                                PrimitiveType.Word32),
+                            PrimitiveType.Word32,
+                            PrimitiveType.Word64),
+                        Constant.Create(PrimitiveType.Word64, 0x4)))),
+                        PrimitiveType.Word32,
+                        PrimitiveType.Byte));
+                m.Assign(rbx_18, m.ISub(rbx_18, Constant.Create(PrimitiveType.Word64, 0x1)));
+                m.BranchIf(m.Ne(rbx_18, Constant.Create(PrimitiveType.Word64, 0xFFFFFFFFFFFFFFFF)), "l000000000040EC50");
+
+                m.Label("l000000000040EC69");
+                m.Return();
+            });
+            RunTest(pp.BuildProgram(), $"Typing/{nameof(TtranArrayAssignment)}.txt");
         }
     }
 }

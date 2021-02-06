@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Text;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Environments.AmigaOS
 {
@@ -36,7 +37,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
 
         public FuncsFileParserTests()
         {
-            this.arch = new Reko.Arch.M68k.M68kArchitecture("m68k");
+            this.arch = new Reko.Arch.M68k.M68kArchitecture(new ServiceContainer(), "m68k", new Dictionary<string, object>());
         }
 
         private FuncsFileParser CreateParser(string file)

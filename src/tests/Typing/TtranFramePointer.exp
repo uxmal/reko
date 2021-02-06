@@ -4,7 +4,7 @@ FramePointerMock_entry:		// block 0, pred:
 	// succ:  1
 l1:		// block 1, pred: 0
 	fp = &frame
-	Mem0[fp + 0x00000004:word32] = Mem0[fp + 0x00000008:word32]
+	Mem0[fp + 0x00000004<32>:word32] = Mem0[fp + 0x00000008<32>:word32]
 	// succ: 
 
 // Equivalence classes ////////////
@@ -30,27 +30,27 @@ T_4:(in fp)
   Class: Eq_3
   DataType: (ptr32 Eq_3)
   OrigDataType: (ptr32 (struct (0 Eq_2 t0000) (4 word32 dw0004) (8 word32 dw0008)))
-T_5:(in 0x00000008)
+T_5:(in 0x00000008<32>)
   Class: Eq_5
   DataType: word32
   OrigDataType: word32
-T_6:(in fp + 0x00000008)
+T_6:(in fp + 0x00000008<32>)
   Class: Eq_6
   DataType: word32
   OrigDataType: word32
-T_7:(in Mem0[fp + 0x00000008:word32])
+T_7:(in Mem0[fp + 0x00000008<32>:word32])
   Class: Eq_7
   DataType: word32
   OrigDataType: word32
-T_8:(in 0x00000004)
+T_8:(in 0x00000004<32>)
   Class: Eq_8
   DataType: word32
   OrigDataType: word32
-T_9:(in fp + 0x00000004)
+T_9:(in fp + 0x00000004<32>)
   Class: Eq_9
   DataType: word32
   OrigDataType: word32
-T_10:(in Mem0[fp + 0x00000004:word32])
+T_10:(in Mem0[fp + 0x00000004<32>:word32])
   Class: Eq_7
   DataType: word32
   OrigDataType: word32

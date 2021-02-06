@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2020 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,11 @@ namespace Reko.Core.Serialization.Json
         private TextWriter w;
         private JsonWriter js;
 
+        public JsonProcedureSerializer()
+        {
+            this.w = TextWriter.Null;
+            this.js = new JsonWriter(w);
+        }
         public string Serialize(Procedure proc)
         {
             var sw = new StringWriter();
@@ -45,7 +50,7 @@ namespace Reko.Core.Serialization.Json
             return sw.ToString();
         }
 
-        public void Serialize(Procedure proc, TextWriter w)
+        private void Serialize(Procedure proc, TextWriter w)
         {
             this.w = w;
             js.BeginObject();
@@ -114,7 +119,7 @@ namespace Reko.Core.Serialization.Json
                 js.WriteKeyValue("kind", "reg");
                 js.WriteKeyValue("name", reg.Name);
                 break;
-            case MemoryStorage mem:
+            case MemoryStorage _:
                 js.WriteKeyValue("kind", "mem");
                 break;
             case FlagGroupStorage flg:
@@ -123,7 +128,7 @@ namespace Reko.Core.Serialization.Json
                 js.WriteKeyValue("reg", flg.FlagRegister.Name);
                 break;
             default:
-                throw new NotImplementedException(string.Format("Unimplemented storage: {0}.", stg));
+                throw new NotImplementedException($"Unimplemented storage: {stg}.");
             }
             js.EndObject();
         }
@@ -136,7 +141,7 @@ namespace Reko.Core.Serialization.Json
         private void WriteBlock(Block block, bool isExit)
         {
             js.BeginObject();
-            js.WriteKeyValue("name", block.Name);
+            js.WriteKeyValue("name", block.DisplayName);
             if (isExit)
             {
                 js.WriteKeyValue("exit", isExit);
@@ -149,7 +154,7 @@ namespace Reko.Core.Serialization.Json
             }
             if (block.Succ.Count > 0)
             {
-                js.WriteKeyValue("succ", () => js.WriteList(block.Succ.Select(s => s.Name), js.Write));
+                js.WriteKeyValue("succ", () => js.WriteList(block.Succ.Select(s => s.DisplayName), js.Write));
             }
             js.EndObject();
         }
@@ -207,7 +212,7 @@ namespace Reko.Core.Serialization.Json
             w.Write(',');
             branch.Condition.Accept(this);
             w.Write(',');
-            js.Write(branch.Target.Name);
+            js.Write(branch.Target.DisplayName);
         }
 
         public void VisitCallInstruction(CallInstruction ci)
@@ -261,17 +266,17 @@ namespace Reko.Core.Serialization.Json
             w.Write(']');
         }
 
+        public void VisitConversion(Conversion conversion)
+        {
+            throw new NotImplementedException();
+        }
+
         public void VisitDeclaration(Declaration decl)
         {
             throw new NotImplementedException();
         }
 
         public void VisitDefInstruction(DefInstruction def)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void VisitDepositBits(DepositBits d)
         {
             throw new NotImplementedException();
         }
