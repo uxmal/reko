@@ -79,7 +79,7 @@ namespace Reko.Core.Output
 
         private void WriteBlock(Block block, int i, Block[] blocks)
         {
-            w.WriteLine("{0}:", block.Name);
+            w.WriteLine("{0}:", block.DisplayName);
             foreach (var stm in block.Statements)
             {
                 w.Write("    ");

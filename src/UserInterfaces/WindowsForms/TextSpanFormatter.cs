@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -93,6 +93,16 @@ namespace Reko.UserInterfaces.WindowsForms
             span.Style = "link";
             span.Text.Append(text);
             span.Tag = href;
+            currentSpan = null;
+        }
+
+        public override void WriteLabel(string label, object block)
+        {
+            currentSpan = null;
+            var span = EnsureSpan();
+            span.Style = "label";
+            span.Text.Append(label);
+            span.Tag = block;
             currentSpan = null;
         }
 

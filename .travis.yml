@@ -3,6 +3,7 @@ dotnet: 3.1.404
 solution: src/Reko-decompiler.sln
 dist: xenial
 os: linux
+dotnet: 2.0.0
 
 # This script builds the Mono version of Reko in the Un*x environment 
 # of Travis-CI. When building the SLN file, we therefore use the "Release"

@@ -68,9 +68,9 @@ void branches(int32 esi, int32 edi)
 	if ((word32) (uint64) edi >= esi || ((word32) ((uint64) ((word32) ((uint64) edi) << 0x01)) >= (word32) ((uint64) ((word32) ((uint64) esi) << 0x01)) || ((word32) ((uint64) (edi *s 0x03)) >= (word32) ((uint64) (esi *s 0x03)) || (word32) ((uint64) ((word32) ((uint64) edi) << 0x02)) >= (word32) ((uint64) ((word32) ((uint64) esi) << 0x02)))))
 		return;
 	uint64 rax_n = (uint64) (word32) (uint64) esi;
-	int32 eax_n = (int32) ((int64) (word32) rax_n / 0x02);
+	int32 eax_n = (int32) ((int64) (word32) rax_n /32 0x02);
 	void * rax_n = SEQ(SLICE(rax_n, word32, 32), eax_n);
-	if ((word32) (uint64) (int32) ((int64) (word32) (uint64) (word32) (uint64) edi / 0x02) >= eax_n)
+	if ((word32) (uint64) (int32) ((int64) (word32) (uint64) (word32) (uint64) edi /32 0x02) >= eax_n)
 		return;
 	my1((word32) (uint64) esi, (word32) (uint64) edi);
 	free(rax_n);

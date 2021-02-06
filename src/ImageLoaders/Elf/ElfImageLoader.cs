@@ -79,7 +79,6 @@ namespace Reko.ImageLoaders.Elf
             LoadElfIdentification(rdr);
             this.innerLoader = CreateLoader();
             this.innerLoader.LoadArchitectureFromHeader();
-            addrLoad = addrLoad ?? innerLoader.DefaultAddress;
             var platform = innerLoader.LoadPlatform(osAbi, innerLoader.Architecture);
             
             int cHeaders = innerLoader.LoadSegments();
@@ -92,11 +91,20 @@ namespace Reko.ImageLoaders.Elf
             }
             else
             {
+                if (addrLoad != null)
+                {
+                    addrLoad = innerLoader.CreateAddress(addrLoad.ToLinear());
+                }
                 // The file we're loading is an object file, and needs to be 
                 // linked before we can load it.
                 var linker = innerLoader.CreateLinker();
                 return linker.LinkObject(platform, addrLoad, RawImage);
             }
+        }
+
+        private Address ComputeBaseAddressFromSections(List<ElfSection> sections)
+        {
+            throw new NotImplementedException();
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)

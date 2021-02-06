@@ -88,6 +88,7 @@ namespace Reko.UnitTests.Arch.Sparc
             var instr = new SparcInstruction
             {
                 Mnemonic = mnemonic,
+                InstructionClass = InstrClass.Linear,
                 Operands = ops.Select(Op).ToArray()
             };
             return instr;
@@ -108,7 +109,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             Given_UInt32s(0x7FFFFFFF);  // "call\t000FFFFC"
             AssertCode(
-                "0|T--|00100000(4): 1 instructions",
+                "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|call 000FFFFC (0)");
         }
 
@@ -525,6 +526,34 @@ namespace Reko.UnitTests.Arch.Sparc
             AssertCode(     // fble	000107F4
                 "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|if (Test(LE,EL)) branch 00100058");
+        }
+
+        [Test]
+        public void SparcRw_fmuld()
+        {
+            Given_HexString("85A08944");
+            AssertCode(     // fmuld	%f2,%f4,%f2
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f2_f3 = f2_f3 * f4_f5");
+        }
+
+        [Test(Description = "Idiom used to retrieve the PC at the time of execution")]
+        public void SparcRw_call_self()
+        {
+            //00010EA0 40000002 call fn00010EA8
+            //00010EA4 2F000042 sethi 00000042,%l7
+            //00010EA8 AE15E154 or %l7,00000154,%l7
+            //00010EAC AE05C00F add %l7,%o7,%l7
+            Given_HexString("40000002 2F000042 AE15E154 AE05C00F");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|o7 = 00100008",
+                "2|L--|00100004(4): 1 instructions",
+                "3|L--|l7 = 0x10800<32>",
+                "4|L--|00100008(4): 1 instructions",
+                "5|L--|l7 = l7 | 0x154<32>",
+                "6|L--|0010000C(4): 1 instructions",
+                "7|L--|l7 = l7 + o7");
         }
     }
 }

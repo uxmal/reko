@@ -75,6 +75,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private Mock<ICallHierarchyService> callHierSvc;
         private Mock<IDecompiledFileService> dcFileSvc;
         private Mock<ITestGenerationService> testGenSvc;
+        private Mock<IUserEventService> userEventSvc;
 
         [SetUp]
         public void Setup()
@@ -448,7 +449,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             dcSvc.Setup(d => d.Decompiler).Returns(decompiler.Object);
             dcSvc.Setup(d => d.ProjectName).Returns("foo.exe");
             decompiler.Setup(d => d.Project).Returns(project);
-            decompiler.Setup(d => d.Load(It.IsNotNull<string>(), null)).Returns(false);
+            decompiler.Setup(d => d.Load(It.IsNotNull<string>(), null, null)).Returns(false);
         }
 
         private void Given_NoDecompilerInstance()
@@ -604,6 +605,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             callHierSvc = new Mock<ICallHierarchyService>();
             dcFileSvc = new Mock<IDecompiledFileService>();
             testGenSvc = new Mock<ITestGenerationService>();
+            userEventSvc = new Mock<IUserEventService>();
+
 
             svcFactory.Setup(s => s.CreateArchiveBrowserService()).Returns(archSvc.Object);
             svcFactory.Setup(s => s.CreateCodeViewerService()).Returns(cvSvc.Object);
@@ -633,6 +636,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             svcFactory.Setup(s => s.CreateCallHierarchyService()).Returns(callHierSvc.Object);
             svcFactory.Setup(s => s.CreateDecompiledFileService()).Returns(dcFileSvc.Object);
             svcFactory.Setup(s => s.CreateTestGenerationService()).Returns(testGenSvc.Object);
+            svcFactory.Setup(s => s.CreateUserEventService()).Returns(userEventSvc.Object);
 
             services.AddService<IDialogFactory>(dlgFactory.Object);
             services.AddService<IServiceFactory>(svcFactory.Object);

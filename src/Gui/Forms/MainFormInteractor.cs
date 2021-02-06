@@ -208,6 +208,9 @@ namespace Reko.Gui.Forms
 
             var testGenSvc = svcFactory.CreateTestGenerationService();
             sc.AddService<ITestGenerationService>(testGenSvc);
+
+            var userEventSvc = svcFactory.CreateUserEventService();
+            sc.AddService<IUserEventService>(userEventSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)

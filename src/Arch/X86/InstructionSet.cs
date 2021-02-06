@@ -249,6 +249,14 @@ namespace Reko.Arch.X86
                 return new VexInstructionDecoder(legDec, vexDec);
             }
 
+            /// <summary>
+            /// Selects a decoder based on the VEX 'L' (long bit)
+            /// </summary>
+            public static Decoder VexLong(Decoder instrNotLong, Decoder instrLong)
+            {
+                return new VexLongDecoder(instrNotLong, instrLong);
+            }
+
             public Decoder X87Instr()
             {
                 return x87instr();
@@ -258,7 +266,6 @@ namespace Reko.Arch.X86
             {
                 return amd64instr(legacy, amd64);
             }
-
 
             static InstructionSet()
             {

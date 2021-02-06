@@ -27,7 +27,7 @@ PyObject * fn100010A0(PyObject * ptrArg04, PyObject * ptrArg08)
 {
 	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:div", fp - 0x08, fp - 0x04);
 	if (eax_n != null)
-		return Py_BuildValue("i", (int32) ((int64) dwLoc08 / dwLoc04));
+		return Py_BuildValue("i", (int32) ((int64) dwLoc08 /32 dwLoc04));
 	return eax_n;
 }
 

@@ -986,22 +986,22 @@ void xTaskGenericNotify(struct Eq_n * r0, ui32 r1, up32 r2, ui32 * r3, ptr32 cps
 		{
 		case 0x01:
 			r0->dw0060 = r1 | r0->dw0060;
-			break;
+			goto l00000A8C;
 		case 0x02:
 			++r0->dw0060;
 			if (r4_n == 0x01)
 				goto l00000AA6;
 			goto l00000A90;
 		case 0x03:
-l00000A8A:
-			r0->dw0060 = r1;
 			break;
 		case 0x04:
-			if (r4_n != 0x02)
-				goto l00000A8A;
-			goto l00000A92;
+			if (r4_n == 0x02)
+				goto l00000A92;
+			break;
 		}
+		r0->dw0060 = r1;
 	}
+l00000A8C:
 	if (r4_n == 0x01)
 	{
 l00000AA6:
@@ -1044,22 +1044,22 @@ void xTaskGenericNotifyFromISR(struct Eq_n * r0, ui32 r1, up32 r2, ui32 * r3, pt
 		{
 		case 0x01:
 			r0->dw0060 = r1 | r0->dw0060;
-			break;
+			goto l00000B4A;
 		case 0x02:
 			++r0->dw0060;
 			if (r4_n == 0x01)
 				goto l00000B64;
 			goto l00000B4E;
 		case 0x03:
-l00000B48:
-			r0->dw0060 = r1;
 			break;
 		case 0x04:
-			if (r4_n != 0x02)
-				goto l00000B48;
-			goto l00000B50;
+			if (r4_n == 0x02)
+				goto l00000B50;
+			break;
 		}
+		r0->dw0060 = r1;
 	}
+l00000B4A:
 	if (r4_n == 0x01)
 	{
 l00000B64:

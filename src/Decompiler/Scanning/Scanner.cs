@@ -144,6 +144,8 @@ namespace Reko.Scanning
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
             Block b = new Block(proc, addr, blockName);
+            if (Program.User.BlockLabels.TryGetValue(blockName, out var userLabel))
+                b.UserLabel = userLabel;
             if (!blocks.TryGetUpperBound(addr, out var br))
             {
                 var lastMem = segmentMap.Segments.Values.Last().MemoryArea;
@@ -414,7 +416,7 @@ namespace Reko.Scanning
 
         private Block? CloneBlockIntoOtherProcedure(Block block, Procedure proc)
         {
-            trace.Verbose("Cloning {0} to {1}", block.Name, proc);
+            trace.Verbose("Cloning {0} to {1}", block.Id, proc);
             var clonedBlock = new BlockCloner(block, proc, Program.CallGraph).Execute();
             return clonedBlock;
         }
@@ -442,6 +444,8 @@ namespace Reko.Scanning
             var callRetThunkBlock = procOld.AddSyntheticBlock(
                 addrFrom,
                 blockName);
+            if (Program.User.BlockLabels.TryGetValue(blockName, out var userLabel))
+                callRetThunkBlock.UserLabel = userLabel;
 
             var linFrom = addrFrom.ToLinear();
             callRetThunkBlock.Statements.Add(
@@ -481,6 +485,8 @@ namespace Reko.Scanning
 
         public void ScanImageSymbol(ImageSymbol sym, bool isEntryPoint)
         {
+            if (sym.Name != null && sym.Name == "")
+                sym.ToString();
             try
             {
                 Address addr = sym.Address!;
@@ -495,9 +501,9 @@ namespace Reko.Scanning
                     var sser = Program.CreateProcedureSerializer();
                     proc.Signature = sser.Deserialize(sym.Signature, proc.Frame)!;
                 }
-                else if (sym.Name != null)
+                else if (!string.IsNullOrEmpty(sym.Name))
                 {
-                    var sProc = Program.Platform.SignatureFromName(sym.Name);
+                    var sProc = Program.Platform.SignatureFromName(sym.Name!);
                     if (sProc != null)
                     {
                         var loader = Program.CreateTypeLibraryDeserializer();
@@ -511,7 +517,7 @@ namespace Reko.Scanning
                     }
                     else
                     {
-                        proc.Name = sym.Name;
+                        proc.Name = sym.Name!;
                     }
                 }
 
@@ -615,8 +621,8 @@ namespace Reko.Scanning
             {
                 if (b.Block.Succ.Count == 0)
                     return b.Block;
-                string succName = b.Block.Succ[0].Name;
-                if (succName != b.Block.Name && succName.StartsWith(b.Block.Name) &&
+                string succName = b.Block.Succ[0].Id;
+                if (succName != b.Block.Id && succName.StartsWith(b.Block.Id) &&
                     !b.Block.Succ[0].IsSynthesized)
                     return b.Block.Succ[0];
                 return b.Block;
@@ -782,9 +788,9 @@ namespace Reko.Scanning
         private void Dump(string title, IEnumerable<Block> blocks)
         {
             Debug.WriteLine(title);
-            foreach (var block in blocks.OrderBy(b => b.Name))
+            foreach (var block in blocks.OrderBy(b => b.Id))
             {
-                Debug.Print("    {0}", block.Name);
+                Debug.Print("    {0}", block.Id);
             }
         }
 

@@ -47,6 +47,7 @@ namespace Reko.Core
             this.ProcedureSourceFiles = new Dictionary<Address, string>();
             this.Patches = new Dictionary<Address, CodePatch>();
             this.DebugTraceProcedures = new HashSet<string>();
+            this.BlockLabels = new Dictionary<string, string>();
         }
 
         // 'Oracular' information provided by the user.
@@ -61,7 +62,8 @@ namespace Reko.Core
         public SortedList<Address, ImageMapVectorTable> JumpTables { get; set; }
         public AnnotationList Annotations { get; set; }
         public List<UserSegment> Segments { get; set; }
-
+        public Dictionary<string, string> BlockLabels { get; set; }
+        
         /// <summary>
         /// A script to run after the image is loaded.
         /// </summary>

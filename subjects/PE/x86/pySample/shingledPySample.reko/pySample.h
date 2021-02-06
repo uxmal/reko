@@ -19,7 +19,7 @@ Eq_2: PyObject
 	T_52 (in eax_17 : (ptr32 Eq_2))
 	T_63 (in PyArg_ParseTuple(ptrArg08, "ii:div", fp - 8<32>, fp - 4<32>) : int32)
 	T_64 (in 0<32> : word32)
-	T_75 (in Py_BuildValue("i", (int32) ((int64) dwLoc08 / dwLoc04)) : (ptr32 PyObject))
+	T_75 (in Py_BuildValue("i", (int32) ((int64) dwLoc08 /32 dwLoc04)) : (ptr32 PyObject))
 	T_76 (in eax_17 : (ptr32 Eq_2))
 	T_87 (in PyArg_ParseTuple(ptrArg08, "ff:fdiv", fp - 8<32>, fp - 4<32>) : int32)
 	T_88 (in 0<32> : word32)
@@ -822,15 +822,15 @@ T_72: (in dwLoc04 : word32)
   Class: Eq_72
   DataType: int32
   OrigDataType: int32
-T_73: (in (int64) dwLoc08 / dwLoc04 : word32)
+T_73: (in (int64) dwLoc08 /32 dwLoc04 : word32)
   Class: Eq_73
   DataType: int32
   OrigDataType: int32
-T_74: (in CONVERT(CONVERT(dwLoc08, word32, int64) / dwLoc04, word32, int32) : int32)
+T_74: (in CONVERT(CONVERT(dwLoc08, word32, int64) /32 dwLoc04, word32, int32) : int32)
   Class: Eq_68
   DataType: int32
   OrigDataType: int32
-T_75: (in Py_BuildValue("i", (int32) ((int64) dwLoc08 / dwLoc04)) : (ptr32 PyObject))
+T_75: (in Py_BuildValue("i", (int32) ((int64) dwLoc08 /32 dwLoc04)) : (ptr32 PyObject))
   Class: Eq_2
   DataType: (ptr32 Eq_2)
   OrigDataType: (ptr32 PyObject)

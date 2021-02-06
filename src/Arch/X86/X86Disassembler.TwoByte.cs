@@ -348,7 +348,9 @@ namespace Reko.Arch.X86
                     dec66:VexInstr(Mnemonic.pcmpeqd, Mnemonic.vpcmpeqd, Vx,Wx));
                 d[0x77] = VexInstr(
                     Instr(Mnemonic.emms, InstrClass.System),
-                    s_nyi);//$TODO: vzeroupper, vzeroall
+                    VexLong(
+                        Instr(Mnemonic.vzeroupper),
+                        Instr(Mnemonic.vzeroall)));
 
 				d[0x78] = new PrefixedDecoder(
                     dec:Instr(Mnemonic.vmread, InstrClass.System, Ey,Gy));

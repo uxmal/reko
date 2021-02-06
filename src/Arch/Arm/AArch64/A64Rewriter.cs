@@ -102,7 +102,8 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.ccmp: RewriteCcmp(); break;
                 case Mnemonic.clz: RewriteClz(); break;
                 case Mnemonic.cmp: RewriteCmp(); break;
-                case Mnemonic.cmeq: RewriteCmeq(); break;
+                case Mnemonic.cmeq: RewriteCm("__cmeq"); break;
+                case Mnemonic.cmhs: RewriteCm("__cmhs"); break;
                 case Mnemonic.csel: RewriteCsel(); break;
                 case Mnemonic.csinc: RewriteCsinc(); break;
                 case Mnemonic.csinv: RewriteCsinv(); break;
@@ -140,6 +141,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.ld2: RewriteLdN("__ld2"); break;
                 case Mnemonic.ld3: RewriteLdN("__ld3"); break;
                 case Mnemonic.ld4: RewriteLdN("__ld4"); break;
+                case Mnemonic.ldnp: RewriteLoadStorePair(true); break;
                 case Mnemonic.ldp: RewriteLoadStorePair(true); break;
                 case Mnemonic.ldarh: RewriteLoadAcquire("__load_acquire_{0}", PrimitiveType.Word16); break;
                 case Mnemonic.ldaxrh: RewriteLoadAcquire("__load_acquire_exclusive_{0}", PrimitiveType.Word16); break;
@@ -233,6 +235,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.umlal: RewriteUmlal(); break;
                 case Mnemonic.umull: RewriteMull(PrimitiveType.UInt32, PrimitiveType.UInt64, m.UMul); break;
                 case Mnemonic.umulh: RewriteMulh(PrimitiveType.UInt64, m.UMul); break;
+                case Mnemonic.ushr: RewriteMaybeSimdBinary(m.Shr, "__ushr_{0}", Domain.UnsignedInt); break;
                 case Mnemonic.uxtb: RewriteUSxt(Domain.UnsignedInt, 8); break;
                 case Mnemonic.uxth: RewriteUSxt(Domain.UnsignedInt, 16); break;
                 case Mnemonic.uxtl: RewriteSimdUnary("__uxtl_{0}", Domain.UnsignedInt); break;

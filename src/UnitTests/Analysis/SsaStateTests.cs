@@ -63,13 +63,13 @@ namespace Reko.UnitTests.Analysis
 
         private Block FindBlock(string blockName)
         {
-            return ssa.Procedure.ControlGraph.Blocks.Single(b => b.Name == blockName);
+            return ssa.Procedure.ControlGraph.Blocks.Single(b => b.DisplayName == blockName);
         }
 
         private void AssertOutput(string sExp, Dictionary<Block, CallBinding[]> dict)
         {
             var sb = new StringBuilder();
-            foreach (var de in dict.OrderBy(d => d.Key.Name))
+            foreach (var de in dict.OrderBy(d => d.Key.DisplayName))
             {
                 sb.AppendFormat(
                     "{0}: [{1}]",

@@ -390,7 +390,7 @@ namespace Reko.UnitTests.Environments.C64
             m.Add(10, "S", Token.eq, "S", Token.mul,"3");
             AssertCode(
                 "0|L--|0801(1): 1 instructions",
-                "1|L--|S_r = S_r * 3<i16>");
+                "1|L--|S_r = S_r *32 3<i16>");
         }
 
         [Test]

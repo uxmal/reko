@@ -111,6 +111,7 @@ namespace Reko.Core.Expressions
                 default: return new ConstantUInt32(p, (uint) value);
                 }
             case 36:        // PDP-10 <3
+            case 40:
             case 48:
             case 56:
                 value &= (long)Bits.Mask(0, bitSize);
@@ -129,6 +130,8 @@ namespace Reko.Core.Expressions
                 case Domain.SignedInt: return new ConstantInt128(p, (long)value);
                 default: return new ConstantUInt128(p, (ulong)value);
                 }
+            case 136:
+            case 144:
             case 192:
             case 224:
             case 256:

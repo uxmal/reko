@@ -29,7 +29,7 @@ l0C00_0018:
 	call fn0C00_000F (retsize: 2;)
 		uses: Stack +0002:wArg02 - 1<16>
 		defs: ax:ax_17
-	dx_ax_24 = wArg02 *s ax_17
+	dx_ax_24 = wArg02 *s32 ax_17
 	ax_26 = SLICE(dx_ax_24, word16, 0) (alias)
 l0C00_0026:
 	ax_13 = 1<16>

@@ -11350,7 +11350,7 @@ T_2419: (in 2<16> : word16)
   Class: Eq_2419
   DataType: ui16
   OrigDataType: ui16
-T_2420: (in *((word32) sp_117 + 18<i32>) * 2<16> : word16)
+T_2420: (in *((word32) sp_117 + 18<i32>) *16 2<16> : word16)
   Class: Eq_2420
   DataType: ui16
   OrigDataType: ui16
@@ -11358,7 +11358,7 @@ T_2421: (in 0x9EF0<16> : word16)
   Class: Eq_2421
   DataType: word16
   OrigDataType: word16
-T_2422: (in *((word32) sp_117 + 18<i32>) * 2<16> + 0x9EF0<16> : word16)
+T_2422: (in *((word32) sp_117 + 18<i32>) *16 2<16> + 0x9EF0<16> : word16)
   Class: Eq_2422
   DataType: ui16
   OrigDataType: ui16
@@ -11382,7 +11382,7 @@ T_2427: (in 0<16> : word16)
   Class: Eq_2426
   DataType: ci16
   OrigDataType: ci16
-T_2428: (in *SEQ(er2_16_16, *((word32) sp_117 + 18<i32>) * 2<16> + 0x9EF0<16>) > 0<16> : bool)
+T_2428: (in *SEQ(er2_16_16, *((word32) sp_117 + 18<i32>) *16 2<16> + 0x9EF0<16>) > 0<16> : bool)
   Class: Eq_2428
   DataType: bool
   OrigDataType: bool
@@ -23478,7 +23478,7 @@ T_5451: (in 2<16> : word16)
   Class: Eq_5451
   DataType: ui16
   OrigDataType: ui16
-T_5452: (in *((word32) sp_777 + 10<i32>) * 2<16> : word16)
+T_5452: (in *((word32) sp_777 + 10<i32>) *16 2<16> : word16)
   Class: Eq_5452
   DataType: ui16
   OrigDataType: ui16
@@ -27730,7 +27730,7 @@ T_6514: (in r0_11 : uint16)
   Class: Eq_6514
   DataType: uint16
   OrigDataType: uint16
-T_6515: (in r0h_8 * r1l : word16)
+T_6515: (in r0h_8 *16 r1l : word16)
   Class: Eq_6514
   DataType: uint16
   OrigDataType: uint16
@@ -27742,27 +27742,27 @@ T_6517: (in SLICE(r0, byte, 8) : byte)
   Class: Eq_6517
   DataType: bu8
   OrigDataType: bu8
-T_6518: (in SLICE(r0, byte, 8) * r1h : word16)
+T_6518: (in SLICE(r0, byte, 8) *16 r1h : word16)
   Class: Eq_6518
   DataType: uint16
   OrigDataType: uint16
-T_6519: (in SLICE(SLICE(r0, byte, 8) *u r1h, byte, 0) : byte)
+T_6519: (in SLICE(SLICE(r0, byte, 8) *u16 r1h, byte, 0) : byte)
   Class: Eq_6519
   DataType: byte
   OrigDataType: byte
-T_6520: (in SLICE(r0_11, byte, 8) + (byte) (SLICE(r0, byte, 8) * r1h) : byte)
+T_6520: (in SLICE(r0_11, byte, 8) + (byte) (SLICE(r0, byte, 8) *16 r1h) : byte)
   Class: Eq_6520
   DataType: byte
   OrigDataType: byte
-T_6521: (in r1h * r0h_8 : word16)
+T_6521: (in r1h *16 r0h_8 : word16)
   Class: Eq_6521
   DataType: uint16
   OrigDataType: uint16
-T_6522: (in SLICE(r1h *u r0h_8, byte, 0) : byte)
+T_6522: (in SLICE(r1h *u16 r0h_8, byte, 0) : byte)
   Class: Eq_6522
   DataType: byte
   OrigDataType: byte
-T_6523: (in SLICE(r0_11, byte, 8) + (byte) (SLICE(r0, byte, 8) * r1h) + (byte) (r1h * r0h_8) : byte)
+T_6523: (in SLICE(r0_11, byte, 8) + (byte) (SLICE(r0, byte, 8) *16 r1h) + (byte) (r1h *16 r0h_8) : byte)
   Class: Eq_6523
   DataType: byte
   OrigDataType: byte
@@ -27770,7 +27770,7 @@ T_6524: (in SLICE(r0_11, byte, 0) : byte)
   Class: Eq_6524
   DataType: byte
   OrigDataType: byte
-T_6525: (in SEQ(SLICE(r0_11, byte, 8) + SLICE(SLICE(r0, byte, 8) *u r1h, byte, 0) + SLICE(r1h *u r0h_8, byte, 0), SLICE(r0_11, byte, 0)) : word16)
+T_6525: (in SEQ(SLICE(r0_11, byte, 8) + SLICE(SLICE(r0, byte, 8) *u16 r1h, byte, 0) + SLICE(r1h *u16 r0h_8, byte, 0), SLICE(r0_11, byte, 0)) : word16)
   Class: Eq_2484
   DataType: word16
   OrigDataType: word16

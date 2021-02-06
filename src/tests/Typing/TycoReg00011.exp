@@ -19,7 +19,7 @@ l0C00_0004:
 	// succ:  l0C00_000C
 l0C00_000C:
 	byte bl_10 = SLICE(bx_39, byte, 0)
-	Mem23[0x4DE1<16>:bx_39 + 0<16>:byte] = bl_10 & 0xF0<8> | SLICE((bl_10 & 0xF<8>) *u (SLICE(bx_39, byte, 8) + 1<8>) << 4<16>, byte, 8) & 0xF<8>
+	Mem23[0x4DE1<16>:bx_39 + 0<16>:byte] = bl_10 & 0xF0<8> | SLICE((bl_10 & 0xF<8>) *u16 (SLICE(bx_39, byte, 8) + 1<8>) << 4<16>, byte, 8) & 0xF<8>
 	bx_36 = bx_39 - 1<16> (alias)
 	bx_39 = bx_36
 	branch bx_39 >= 1<16> l0C00_000C
@@ -95,7 +95,7 @@ T_16: (in SLICE(bx_39, byte, 8) + 1<8> : byte)
   Class: Eq_16
   DataType: bu8
   OrigDataType: bu8
-T_17: (in (bl_10 & 0xF<8>) *u (SLICE(bx_39, byte, 8) + 1<8>) : uint16)
+T_17: (in (bl_10 & 0xF<8>) *u16 (SLICE(bx_39, byte, 8) + 1<8>) : uint16)
   Class: Eq_17
   DataType: uint16
   OrigDataType: uint16
@@ -103,11 +103,11 @@ T_18: (in 4<16> : word16)
   Class: Eq_18
   DataType: word16
   OrigDataType: word16
-T_19: (in (bl_10 & 0xF<8>) *u (SLICE(bx_39, byte, 8) + 1<8>) << 4<16> : word16)
+T_19: (in (bl_10 & 0xF<8>) *u16 (SLICE(bx_39, byte, 8) + 1<8>) << 4<16> : word16)
   Class: Eq_19
   DataType: ui16
   OrigDataType: ui16
-T_20: (in SLICE((bl_10 & 0xF<8>) *u (SLICE(bx_39, byte, 8) + 1<8>) << 4<16>, byte, 8) : byte)
+T_20: (in SLICE((bl_10 & 0xF<8>) *u16 (SLICE(bx_39, byte, 8) + 1<8>) << 4<16>, byte, 8) : byte)
   Class: Eq_20
   DataType: byte
   OrigDataType: byte
@@ -115,11 +115,11 @@ T_21: (in 0xF<8> : byte)
   Class: Eq_21
   DataType: byte
   OrigDataType: byte
-T_22: (in SLICE((bl_10 & 0xF<8>) *u (SLICE(bx_39, byte, 8) + 1<8>) << 4<16>, byte, 8) & 0xF<8> : byte)
+T_22: (in SLICE((bl_10 & 0xF<8>) *u16 (SLICE(bx_39, byte, 8) + 1<8>) << 4<16>, byte, 8) & 0xF<8> : byte)
   Class: Eq_22
   DataType: byte
   OrigDataType: byte
-T_23: (in bl_10 & 0xF0<8> | SLICE((bl_10 & 0xF<8>) *u (SLICE(bx_39, byte, 8) + 1<8>) << 4<16>, byte, 8) & 0xF<8> : byte)
+T_23: (in bl_10 & 0xF0<8> | SLICE((bl_10 & 0xF<8>) *u16 (SLICE(bx_39, byte, 8) + 1<8>) << 4<16>, byte, 8) & 0xF<8> : byte)
   Class: Eq_23
   DataType: byte
   OrigDataType: byte

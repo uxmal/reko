@@ -141,7 +141,7 @@ void fn037C(int32 gp0_gp1, int32 gp12_gp13, word16 gp2, cui16 gp3, struct Eq_n *
 	else
 	{
 		real48 gp2_gp3_gp4_n = g_rFFFF8054;
-		real48 gp5_gp6_gp7_n = (SEQ((word32) gp2_gp3_gp4_n, (word16) gp2_gp3_gp4_n) - SEQ(gp0_gp1, gp2)) * *((char *) (&g_rFFFF8054) + 3);
+		real48 gp5_gp6_gp7_n = (SEQ((word32) gp2_gp3_gp4_n, (word16) gp2_gp3_gp4_n) - SEQ(gp0_gp1, gp2)) *48 *((char *) (&g_rFFFF8054) + 3);
 		Eq_n gp0_gp1_n = (int32) gp5_gp6_gp7_n;
 		if (gp5_gp6_gp7_n - (real48) gp0_gp1_n >= 0.0)
 		{
@@ -168,7 +168,7 @@ void fn03A0(int32 gp0_gp1, int32 gp12_gp13, word16 gp2, word16 gp8, cui16 gp9, w
 	else
 	{
 		real48 gp2_gp3_gp4_n = g_rFFFF8061 - SEQ(gp0_gp1, gp2);
-		real48 gp5_gp6_gp7_n = SEQ((word32) gp2_gp3_gp4_n, (word16) gp2_gp3_gp4_n) * *((char *) (&g_rFFFF8061) + 3);
+		real48 gp5_gp6_gp7_n = SEQ((word32) gp2_gp3_gp4_n, (word16) gp2_gp3_gp4_n) *48 *((char *) (&g_rFFFF8061) + 3);
 		int32 gp0_gp1_n = (int32) gp5_gp6_gp7_n;
 		real48 gp5_gp6_gp7_n = gp5_gp6_gp7_n - (real48) gp0_gp1_n;
 		word16 gp7_n = (word16) gp5_gp6_gp7_n;

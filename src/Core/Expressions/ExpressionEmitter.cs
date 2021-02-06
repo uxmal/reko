@@ -111,8 +111,8 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// Takes the address of the expression (which must be an l-value).
         /// </summary>
-        /// <param name="e">L-value</param>
         /// <param name="ptType">Type of the resulting pointer.</param>
+        /// <param name="e">L-value</param>
         /// <returns>A unary expresssion representing the address-of operation.</returns>
         public UnaryExpression AddrOf(DataType ptType, Expression e)
         {
@@ -261,7 +261,7 @@ namespace Reko.Core.Expressions
         /// <remarks>
         /// The method expects 
         /// </remarks>
-        public Expression Dpb(Expression dst, Expression src, int offset)
+        public MkSequence Dpb(Expression dst, Expression src, int offset)
         {
             Debug.Assert(dst is Identifier || dst is Constant);
             var exps = new List<Expression>();
@@ -356,6 +356,19 @@ namespace Reko.Core.Expressions
         {
             var dtSum = PrimitiveType.Create(Domain.Real, a.DataType.BitSize);
             return new BinaryExpression(Operator.FMul, dtSum, a, b);
+        }
+
+        /// <summary>
+        /// Generate a floating point multiplication where the product differs
+        /// in size from the operands.
+        /// </summary>
+        /// <param name="dtProduct">Datatype of the result.</param>
+        /// <param name="a">Multiplicand.</param>
+        /// <param name="b">Multiplier.</param>
+        /// <returns>A floating point multiplication expression.</returns>
+        public Expression FMul(DataType dtProduct, Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.FMul, dtProduct, a, b);
         }
 
         /// <summary>
@@ -801,6 +814,19 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generate the integer modulus ('%' in the C language family) where the 
+        /// size of the modulus is not the same as the dividend.
+        /// </summary>
+        /// <param name="dt">Size of modulus.</param>
+        /// <param name="opLeft">Dividend.</param>
+        /// <param name="opRight">Divisor.</param>
+        /// <returns>A modulus expression.</returns>
+        public Expression Mod(DataType dt, Expression opLeft, Expression opRight)
+        {
+            return new BinaryExpression(Operator.IMod, dt, opLeft, opRight);
+        }
+
+        /// <summary>
         /// Generates an integer inequality comparison ('!=' in the C language family).
         /// </summary>
         /// <returns>An integer comparison expression.</returns>
@@ -907,8 +933,7 @@ namespace Reko.Core.Expressions
         /// <returns>A signed division expression.</returns>
         public BinaryExpression SDiv(Expression a, Expression b)
         {
-            return new BinaryExpression(
-                Operator.SDiv, b.DataType, a, b);
+            return new BinaryExpression(Operator.SDiv, b.DataType, a, b);
         }
 
         /// <summary>
@@ -1046,6 +1071,18 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates a signed integer multiplication.
+        /// </summary>
+        /// <param name="dtProduct">Data type of product.</param>
+        /// <param name="left">Multiplicand.</param>
+        /// <param name="right">Multiplier.</param>
+        /// <returns>A signed integer multiplication expression</returns>
+        public Expression SMul(PrimitiveType dtProduct, Expression left, Expression right)
+        {
+            return new BinaryExpression(Operator.SMul, dtProduct, left, right);
+        }
+
+        /// <summary>
         /// Convenience method to generate a signed integer multiplication. The
         /// second parameter is converted to a signed integer constant.
         /// </summary>
@@ -1070,6 +1107,18 @@ namespace Reko.Core.Expressions
         public Expression UMul(Expression left, Expression right)
         {
             return new BinaryExpression(Operator.UMul, left.DataType, left, right);
+        }
+
+        /// <summary>
+        /// Generates an unsigned integer multiplication.
+        /// </summary>
+        /// <param name="dtProduct">Data type of product.</param>
+        /// <param name="left">Multiplicand.</param>
+        /// <param name="right">Multiplier.</param>
+        /// <returns>An unsigned integer multiplication expression</returns>
+        public Expression UMul(PrimitiveType dtProduct, Expression left, Expression right)
+        {
+            return new BinaryExpression(Operator.UMul, dtProduct, left, right);
         }
 
         /// <summary>
@@ -1328,6 +1377,19 @@ namespace Reko.Core.Expressions
         {
             return new BinaryExpression(
                 Operator.UDiv, b.DataType, a, b);
+        }
+
+        /// <summary>
+        /// Generates an unsigned division expression where the quotient
+        /// has a different size than the dividend or divisor.
+        /// /// </summary>
+        /// <param name="dt">Quotient size</param>
+        /// <param name="a">Dividend</param>
+        /// <param name="b">Divisor</param>
+        /// <returns>An unsigned division expression.</returns>
+        public BinaryExpression UDiv(DataType dt, Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.UDiv, dt, a, b);
         }
 
         /// <summary>

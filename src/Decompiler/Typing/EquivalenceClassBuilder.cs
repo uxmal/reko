@@ -310,7 +310,7 @@ namespace Reko.Typing
             {
                 if (signature.ReturnValue.TypeVariable == null)
                 {
-                    DebugEx.Warn(trace, "Eqb: {0:X}: Type variable for return value of signature of {1} is missing", stmCur!.LinearAddress, stmCur.Block.Procedure.Name);
+                    trace.Warn("Eqb: {0:X}: Type variable for return value of signature of {1} is missing", stmCur!.LinearAddress, stmCur.Block.Procedure.Name);
                     return;
                 }
                 store.MergeClasses(

@@ -64,7 +64,7 @@ l0C00_0018:
 	sp = sp + 1<16>
 	SZO = cond(sp)
 	dx = Mem0[ss:bp + 4<16>:word16]
-	dx_ax = dx *s ax
+	dx_ax = dx *s32 ax
 	SCZO = cond(dx_ax)
 	goto l0C00_0029
 	// succ:  l0C00_0029

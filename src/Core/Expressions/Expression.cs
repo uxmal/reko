@@ -18,12 +18,10 @@
  */
 #endregion
 
-using Reko.Core.Operators;
 using Reko.Core.Types;
 using Reko.Core.Output;
 using System;
 using System.IO;
-using System.Collections;
 using System.Collections.Generic;
 
 #nullable enable

@@ -99,7 +99,7 @@ ax_11: orig: ax
 si_12: orig: si
     def:  si_12 = cx
     uses: call fn0C00_000B (retsize: 2;)	uses: cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_17,cx:cx_16,SCZO:SCZO_19,sp:sp_15,Top:Top_18
-          dx_ax_20 = si_12 *s ax_17
+          dx_ax_20 = si_12 *s32 ax_17
 cx_13: orig: cx
     def:  cx_13 = cx - 1<16>
     uses: SZO_14 = cond(cx_13)
@@ -114,14 +114,14 @@ cx_16: orig: cx
     uses: cx_33 = PHI((cx_16, l0C00_0011), (cx, l0C00_001C))
 ax_17: orig: ax
     def:  call fn0C00_000B (retsize: 2;)	uses: cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_17,cx:cx_16,SCZO:SCZO_19,sp:sp_15,Top:Top_18
-    uses: dx_ax_20 = si_12 *s ax_17
+    uses: dx_ax_20 = si_12 *s32 ax_17
 Top_18: orig: Top
     def:  call fn0C00_000B (retsize: 2;)	uses: cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_17,cx:cx_16,SCZO:SCZO_19,sp:sp_15,Top:Top_18
     uses: Top_42 = PHI((Top_18, l0C00_0011), (Top_3, l0C00_001C))
 SCZO_19: orig: SCZO
     def:  call fn0C00_000B (retsize: 2;)	uses: cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3	defs: ax:ax_17,cx:cx_16,SCZO:SCZO_19,sp:sp_15,Top:Top_18
 dx_ax_20: orig: dx_ax
-    def:  dx_ax_20 = si_12 *s ax_17
+    def:  dx_ax_20 = si_12 *s32 ax_17
     uses: dx_21 = SLICE(dx_ax_20, word16, 16) (alias)
           ax_22 = SLICE(dx_ax_20, word16, 0) (alias)
           SCZO_23 = cond(dx_ax_20)
@@ -228,7 +228,7 @@ l0C00_0011:
 	call fn0C00_000B (retsize: 2;)
 		uses: cx:cx_13,si:si_12,sp:sp_4,ss:ss,Top:Top_3
 		defs: ax:ax_17,cx:cx_16,SCZO:SCZO_19,sp:sp_15,Top:Top_18
-	dx_ax_20 = si_12 *s ax_17
+	dx_ax_20 = si_12 *s32 ax_17
 	dx_21 = SLICE(dx_ax_20, word16, 16) (alias)
 	ax_22 = SLICE(dx_ax_20, word16, 0) (alias)
 	SCZO_23 = cond(dx_ax_20)

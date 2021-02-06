@@ -88,6 +88,11 @@ namespace Reko.Core.Output
             TextWriter.Write(keyword);
         }
 
+        public override void WriteLabel(string label, object block)
+        {
+            TextWriter.Write(label);
+        }
+
         public override void WriteLine()
         {
             TextWriter.WriteLine();

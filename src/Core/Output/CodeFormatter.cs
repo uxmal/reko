@@ -198,7 +198,7 @@ namespace Reko.Core.Output
 		{
 			int prec = SetPrecedence((int) precedences[binExp.Operator]);
 			binExp.Left.Accept(this);
-			InnerFormatter.Write(binExp.Operator.ToString());
+            FormatOperator(binExp);
             var old = forceParensIfSamePrecedence;
             forceParensIfSamePrecedence = true;
             binExp.Right.Accept(this);
@@ -206,7 +206,29 @@ namespace Reko.Core.Output
 			ResetPresedence(prec);
 		}
 
-		public void VisitCast(Cast cast)
+        private void FormatOperator(BinaryExpression binExp)
+        {
+            var sOperator = binExp.Operator.ToString();
+            var resultSize = binExp.DataType.BitSize;
+            if (binExp.Operator is IMulOperator || binExp.Operator is FMulOperator ||
+                binExp.Operator is SDivOperator || binExp.Operator is SDivOperator ||
+                binExp.Operator is FDivOperator)
+            {
+                // Multiplication and division are peculiar on many processors because the product/
+                // quotient may be different size from either of the operands. It's unclear what
+                // the C/C++ standards say about this.
+                if (resultSize != binExp.Left.DataType.BitSize ||
+                    resultSize != binExp.Right.DataType.BitSize)
+                {
+                    InnerFormatter.Write(sOperator.TrimEnd());
+                    InnerFormatter.Write($"{resultSize} ");
+                    return;
+                }
+            }
+            InnerFormatter.Write(sOperator);
+        }
+
+        public void VisitCast(Cast cast)
 		{
 			int prec = SetPrecedence(PrecedenceCase);
 			InnerFormatter.Write("(");
@@ -464,7 +486,7 @@ namespace Reko.Core.Output
                 InnerFormatter.Write("(");
                 arg.Value.Accept(this);
                 InnerFormatter.Write(", ");
-                InnerFormatter.Write(arg.Block.Name);
+                InnerFormatter.Write(arg.Block.DisplayName);
                 InnerFormatter.Write(")");
             }
             InnerFormatter.Write(")");
@@ -535,7 +557,7 @@ namespace Reko.Core.Output
             InnerFormatter.Write(" ");
 			b.Condition.Accept(this);
             InnerFormatter.Write(" ");
-            InnerFormatter.Write(b.Target.Name);
+            InnerFormatter.Write(b.Target.DisplayName);
 			InnerFormatter.Terminate();
 		}
 
@@ -710,7 +732,7 @@ namespace Reko.Core.Output
 			InnerFormatter.Write(") { ");
 			foreach (Block b in si.Targets)
 			{
-				InnerFormatter.Write("{0} ", b.Name);
+				InnerFormatter.Write("{0} ", b.DisplayName);
 			}
 			InnerFormatter.Write("}");
 			InnerFormatter.Terminate();

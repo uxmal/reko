@@ -3333,7 +3333,7 @@ l004024E4:
 	Mem169[0x886<32>:byte] = SLICE(r7_167, byte, 0)
 	word32 r7_173 = Mem169[0x88A<32>:word32]
 	word32 r6_175 = r7_173 + r22_122 *s r22_122
-	word32 r7_178 = CONVERT(r6_175 <u r7_173, bool, word32) + (Mem169[0x88E<32>:word32] + SLICE(r22_122 *s r22_122, word32, 32))
+	word32 r7_178 = CONVERT(r6_175 <u r7_173, bool, word32) + (Mem169[0x88E<32>:word32] + SLICE(r22_122 *s64 r22_122, word32, 32))
 	Mem179[0x88A<32>:byte] = SLICE(r6_175, byte, 0)
 	Mem180[0x88E<32>:byte] = SLICE(r7_178, byte, 0)
 	branch r22_122 >= Mem180[0x0043007C<p32>:word32] l0040253E
@@ -3572,7 +3572,7 @@ l004027AC:
 l004027B4:
 	word32 r4_194 = r6_191 - Mem23[0x004544DC<p32>:word32]
 	word32 r5_719
-	fn00402A9A(r3_117, r4_194 *s 0x64<32>, SLICE(r4_194 *s 0x64<32>, word32, 32), r6_191, r6_191 >> 0x1F<32>, out r5_719)
+	fn00402A9A(r3_117, r4_194 *s 0x64<32>, SLICE(r4_194 *s64 0x64<32>, word32, 32), r6_191, r6_191 >> 0x1F<32>, out r5_719)
 	word32 r22_721
 	word32 r14_720
 	fn004029C6(0x004115F8<p32>, out r14_720, out r22_721)
@@ -3596,7 +3596,7 @@ l00402802:
 	word32 r21_321 = r4_311 - r4_292 *s r4_292
 	r19 = r4_292
 	r22_113 = r5_293
-	word32 r17_325 = r5_312 - (SLICE(r4_292 *u r4_292, word32, 32) + (r5_293 *s r4_292 << 1<8>)) - CONVERT(r4_311 <u r21_321, bool, word32)
+	word32 r17_325 = r5_312 - (SLICE(r4_292 *u64 r4_292, word32, 32) + (r5_293 *s r4_292 << 1<8>)) - CONVERT(r4_311 <u r21_321, bool, word32)
 	branch r17_325 > 0<32> l00402868
 l00402860:
 	branch r17_325 != 0<32> l004029C2
@@ -3654,7 +3654,7 @@ l0040293C:
 l00402946:
 	word32 r5_488 = r16_485 *s 0xF4240<32>
 	word32 r4_496 = r5_488 + r20_240
-	r16_485 = SLICE(r16_485 *s 0xF4240<32>, word32, 32) + (r20_240 >> 0x1F<32>)
+	r16_485 = SLICE(r16_485 *s64 0xF4240<32>, word32, 32) + (r20_240 >> 0x1F<32>)
 	word32 r5_730
 	fn00402A9A(r3_269, r4_496, CONVERT(r4_496 <u r5_488, bool, word32) + r16_485, r6_480 + 0xFFFFFFFF<32>, r6_480 + 0xFFFFFFFF<32> >> 0x1F<32>, out r5_730)
 	word32 r4_731
@@ -3728,7 +3728,7 @@ l004029CA:
 l004029E2:
 	word32 r8_16 = r16_11 - r17_15
 	word32 r5_172
-	fn00402A9A(r3, r8_16 *s 0x64<32>, SLICE(r8_16 *s 0x64<32>, word32, 32), r16_11, r16_11 >> 0x1F<32>, out r5_172)
+	fn00402A9A(r3, r8_16 *s 0x64<32>, SLICE(r8_16 *s64 0x64<32>, word32, 32), r16_11, r16_11 >> 0x1F<32>, out r5_172)
 l004029F6:
 	word32 r7_166
 	word32 r8_167
@@ -5937,7 +5937,7 @@ l00403EFA:
 	r7_101 = r9_58 << 0x10<32> | r7_76
 	word32 r10_87 = r5_75 - r10_69
 	word32 r6_92 = r7_101 *s r8_56
-	word32 r8_93 = SLICE(r7_101 *u r8_56, word32, 32)
+	word32 r8_93 = SLICE(r7_101 *u64 r8_56, word32, 32)
 	branch r10_87 <u r8_93 l00403F20
 l00403F12:
 	r11_102 = 0<32>
@@ -6125,7 +6125,7 @@ l0040417C:
 	word32 r6_89 = r10_57 << 0x10<32> | r5_76
 	word32 r7_87 = r7_75 - r2_71
 	word32 r10_92 = r6_89 *s r8_37
-	word32 r6_93 = SLICE(r6_89 *u r8_37, word32, 32)
+	word32 r6_93 = SLICE(r6_89 *u64 r8_37, word32, 32)
 	branch r7_87 <u r6_93 l0040419C
 l00404196:
 	branch r6_93 != r7_87 l004041AC
@@ -6513,19 +6513,19 @@ l0040439C:
 	branch r10_115 >=u 0xFFFFFFF0<32> l004044A4
 l004044A4:
 	word32 r3_141 = r8_11 *s r4_138
-	word32 r10_158 = r3_141 + SLICE(r8_11 *u r9_142, word32, 32)
-	word32 r8_155 = SLICE(r8_11 *u r4_138, word32, 32)
+	word32 r10_158 = r3_141 + SLICE(r8_11 *u64 r9_142, word32, 32)
+	word32 r8_155 = SLICE(r8_11 *u64 r4_138, word32, 32)
 	word32 r5_156 = r9_142 *s r11_12
 	word32 r3_160 = CONVERT(r10_158 <u r3_141, bool, word32)
 	word32 r15_161 = r8_155 + r4_138 *s r11_12
 	word32 r10_162 = r10_158 + r5_156
-	word32 r9_157 = SLICE(r9_142 *u r11_12, word32, 32)
+	word32 r9_157 = SLICE(r9_142 *u64 r11_12, word32, 32)
 	word32 r25_163 = r3_160 + r15_161
 	word32 r5_164 = CONVERT(r10_162 <u r5_156, bool, word32)
 	word32 r24_165 = r9_157 + r25_163
 	word32 r3_168 = CONVERT(r25_163 <u r3_160, bool, word32)
 	word32 r14_166 = r5_164 + r24_165
-	word32 r11_181 = (CONVERT(r15_161 <u r8_155, bool, word32) | r3_168) + SLICE(r4_138 *u r11_12, word32, 32) + (CONVERT(r24_165 <u r9_157, bool, word32) | CONVERT(r14_166 <u r5_164, bool, word32)) << 9<32> | r14_166 >>u 0x17<32>
+	word32 r11_181 = (CONVERT(r15_161 <u r8_155, bool, word32) | r3_168) + SLICE(r4_138 *u64 r11_12, word32, 32) + (CONVERT(r24_165 <u r9_157, bool, word32) | CONVERT(r14_166 <u r5_164, bool, word32)) << 9<32> | r14_166 >>u 0x17<32>
 	word32 r8_184 = CONVERT((r10_162 << 9<32> | r8_11 *s r9_142) >u 0<32>, bool, word32) | r10_162 >>u 0x17<32> | r14_166 << 9<32>
 	branch __bit(r11_181, 0x18<32>) l004045E8
 l004045E8:
@@ -6765,7 +6765,7 @@ l0040480C:
 	word32 r7_318
 	word32 r6_317
 	word32 r3_316
-	__udivdi3(r2_23, r3_25, dwLoc0114 *s r4, r4 *s 0<32> + SLICE(r4 *u dwLoc0114, word32, 32), Mem38[0x00454454<p32>:word32], 0<32>, r12, out r3_316, out r4_108, out r5_71, out r6_317, out r7_318, out r8_319, out r9_320, out r11_321, out r13_322)
+	__udivdi3(r2_23, r3_25, dwLoc0114 *s r4, r4 *s 0<32> + SLICE(r4 *u64 dwLoc0114, word32, 32), Mem38[0x00454454<p32>:word32], 0<32>, r12, out r3_316, out r4_108, out r5_71, out r6_317, out r7_318, out r8_319, out r9_320, out r11_321, out r13_322)
 	r7_109 = 0x7FFFFFFF<32>
 	branch r5_71 == 0<32> l0040477C
 l004047A8:
@@ -20671,7 +20671,7 @@ l0040B666:
 	r30_1140 = r7_582
 l0040B672:
 	word32 r7_1507 = r23_106 >> 0x1F<32>
-	word32 r17_1501 = r23_106 - ((SLICE(r23_106 *s 0x38E38E39<32>, word32, 32) >> 1<32>) - r7_1507) * 9<32>
+	word32 r17_1501 = r23_106 - ((SLICE(r23_106 *s64 0x38E38E39<32>, word32, 32) >> 1<32>) - r7_1507) * 9<32>
 	branch r17_1501 == 0<32> l0040B70E
 l0040B692:
 	branch r23_106 < 0<32> l0040BCC6
@@ -22723,7 +22723,7 @@ l0040C8AC:
 	r21_329 = Mem582[r4 + 1<32>:word32]
 	word32 r7_585 = r18_294 *s r5
 	r10 = 0xFFFFFFFF<32>
-	r11 = SLICE(r17_548 *u r5, word32, 32)
+	r11 = SLICE(r17_548 *u64 r5, word32, 32)
 	r2 = r21_329 + 1<32>
 	branch r5_109 <u r18_294 l0040C8FE
 l0040C8CA:
@@ -26997,7 +26997,7 @@ l0040ED10:
 	r7_14 = r8_36 << 0x10<32> | r7_55
 	r9_147 = r5_54 - r9_48
 	r8_180 = r7_14 *s r6_34
-	r6 = SLICE(r7_14 *u r6_34, word32, 32)
+	r6 = SLICE(r7_14 *u64 r6_34, word32, 32)
 	branch r9_147 <u r6 l0040ED36
 l0040ED28:
 	r5_11 = 0<32>
@@ -27213,7 +27213,7 @@ l0040EF62:
 l0040EF68:
 	word32 r11_66 = r2_34 << 0x10<32> | r5_53
 	r2 = r11_66 *s r6_31
-	word32 r11_70 = SLICE(r11_66 *u r6_31, word32, 32)
+	word32 r11_70 = SLICE(r11_66 *u64 r6_31, word32, 32)
 	word32 r10_64 = r10_52 - r7_48
 	word32 r7_71 = r2
 	word32 r5_72 = r11_70
@@ -27993,7 +27993,7 @@ l0040F7E8:
 	word32 r8_236
 	word32 r3_231 = r3_198 << 0x10<32> | r6_218
 	word32 r9_229 = r9_217 - r8_211
-	word32 r6_234 = SLICE(r3_231 *u r7_173, word32, 32)
+	word32 r6_234 = SLICE(r3_231 *u64 r7_173, word32, 32)
 	word32 r5_235 = r3_231 *s r7_173
 	branch r9_229 <u r6_234 l0040F80A
 l0040F800:
@@ -28062,7 +28062,7 @@ l0040F8C6:
 	word32 r9_360
 	word32 r5_354 = r9_321 << 0x10<32> | r2_341
 	word32 r6_352 = r6_340 - r3_334
-	word32 r2_358 = SLICE(r7_173 *u r5_354, word32, 32)
+	word32 r2_358 = SLICE(r7_173 *u64 r5_354, word32, 32)
 	word32 r3_359 = r7_173 *s r5_354
 	branch r6_352 <u r2_358 l0040F8E8
 l0040F8DE:

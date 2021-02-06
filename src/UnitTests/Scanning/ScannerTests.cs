@@ -270,9 +270,9 @@ namespace Reko.UnitTests.Scanning
             Enqueue(Address.Ptr32(0x106), proc);
             Enqueue(Address.Ptr32(0x104), proc);
 
-            Assert.AreEqual("l00000101", scan.FindContainingBlock(Address.Ptr32(0x103)).Name);
-            Assert.AreEqual("l00000104", scan.FindContainingBlock(Address.Ptr32(0x105)).Name);
-            Assert.AreEqual("l00000106", scan.FindContainingBlock(Address.Ptr32(0x106)).Name);
+            Assert.AreEqual("l00000101", scan.FindContainingBlock(Address.Ptr32(0x103)).DisplayName);
+            Assert.AreEqual("l00000104", scan.FindContainingBlock(Address.Ptr32(0x105)).DisplayName);
+            Assert.AreEqual("l00000106", scan.FindContainingBlock(Address.Ptr32(0x106)).DisplayName);
         }
 
         private void Enqueue(Address addr, Procedure proc)

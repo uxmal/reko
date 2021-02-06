@@ -41,14 +41,11 @@ namespace Reko.Arch.zSeries
         {
             this.Endianness = EndianServices.Big;
             this.InstructionBitSize = 16;
-            Options = new Dictionary<string, object>();
             SetOptionDependentProperties();
         }
 
         // zSeries uses a link register
         public override int ReturnAddressOnStack => 0;
-
-        public Dictionary<string, object> Options { get; private set;  }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
@@ -187,7 +184,6 @@ namespace Reko.Arch.zSeries
                 this.WordWidth = PrimitiveType.Word32;
                 this.PointerType = PrimitiveType.Ptr32;
                 this.FramePointerType = PrimitiveType.Ptr32;
-
             }
             //$REVIEW: is this architectural?
             this.StackRegister = Registers.GpRegisters[15];

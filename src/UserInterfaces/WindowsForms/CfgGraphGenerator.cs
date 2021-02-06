@@ -71,13 +71,13 @@ namespace Reko.UserInterfaces.WindowsForms
                 if (visited.Contains(b))
                     continue;
                 visited.Add(b);
-                Debug.Print("Node {0}", b.Name);
+                Debug.Print("Node {0}", b.DisplayName);
                 visited.Add(b);
                 CreateGraphNode(b);
                 foreach (var pred in b.Pred.Where(p => p != block.Procedure.EntryBlock))
                 {
-                    Debug.Print("Edge {0} - {1}", pred.Name, b.Name);
-                    graph.AddEdge(pred.Name, b.Name);
+                    Debug.Print("Edge {0} - {1}", pred.DisplayName, b.DisplayName);
+                    graph.AddEdge(pred.DisplayName, b.DisplayName);
                 }
                 foreach (var succ in b.Succ)
                 {
@@ -100,7 +100,7 @@ namespace Reko.UserInterfaces.WindowsForms
                  Layout = layout,
                  UiPreferences = uiPreferences,
             };
-            var node = graph.AddNode(b.Name);
+            var node = graph.AddNode(b.DisplayName);
             node.Attr.LabelMargin = 5;
             node.UserData = blockNode;
             if (useTextEngine)
@@ -116,7 +116,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 node.Label.FontSize = 10f;
                 node.Attr.FillColor = fillColor;
                 node.LabelText =
-                    b.Name + nl +
+                    b.DisplayName + nl +
                     string.Join(nl, b.Statements.Select(s => s.Instruction));
             }
             return node;

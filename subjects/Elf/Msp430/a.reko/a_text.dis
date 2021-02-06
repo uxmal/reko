@@ -434,7 +434,7 @@ l000045A0:
 	r10_158 = 0xFFFF<16>
 l000044E2:
 	prvInitialiseTCBVariables(v15_35, r14, r13, r15_45)
-	Mem81[r15_45:word16] = pxPortInitialiseStack(r12, r15, Mem23[r15_45 + 36<i16>:word16] * 2<20> + Mem23[r15_45 + 2<i16>:word16] - 2<16>)
+	Mem81[r15_45:word16] = pxPortInitialiseStack(r12, r15, Mem23[r15_45 + 36<i16>:word16] *20 2<20> + Mem23[r15_45 + 2<i16>:word16] - 2<16>)
 	Mem85[0x0218<p16>:word16] = Mem81[0x0218<p16>:word16] + 1<16>
 	Mem88[0x0206<p16>:word16] = Mem85[0x0206<p16>:word16] + 1<16>
 	sr_171 = sr_171 & ~8<16>
@@ -461,7 +461,7 @@ l00004538:
 l0000454C:
 	Mem140[0x020C<p16>:word16] = v31_114
 l00004550:
-	vListInsertEnd(r15_45 + 8<16>, v31_114 * 0x10<20> + 0x222<16>)
+	vListInsertEnd(r15_45 + 8<16>, v31_114 *20 0x10<20> + 0x222<16>)
 	r10_158 = 1<16>
 	branch Mem159[0x0218<p16>:word16] == 0<16> l00004574
 l0000456C:
@@ -782,7 +782,7 @@ l00004790:
 l000047B2:
 	Mem167[0x020C<p16>:word16] = v19_160
 l000047B6:
-	vListInsertEnd(r10_147, v19_160 * 0x10<20> + 0x222<16>)
+	vListInsertEnd(r10_147, v19_160 *20 0x10<20> + 0x222<16>)
 	branch Mem184[Mem184[0x0202<p16>:word16] + 6<i16>:word16] <u Mem184[r11_34 + 6<i16>:word16] l0000477A
 l000047D4:
 	r9_192 = 1<16>
@@ -892,7 +892,7 @@ l0000489A:
 l000048A8:
 	Mem97[0x020C<p16>:word16] = v27_90
 l000048AC:
-	vListInsertEnd(r10_62, v27_90 * 0x10<20> + 0x222<16>)
+	vListInsertEnd(r10_62, v27_90 *20 0x10<20> + 0x222<16>)
 
 
 void vTaskPlaceOnEventList(word20 r14, word20 r15)
@@ -961,7 +961,7 @@ l00004958:
 l00004970:
 	Mem58[0x020C<p16>:word16] = v14_51
 l00004974:
-	r15_37 = v14_51 * 0x10<20> + 0x222<16>
+	r15_37 = v14_51 *20 0x10<20> + 0x222<16>
 	r14_36 = r10_13 + 8<16>
 l00004982:
 	word20 r15_116
@@ -1164,18 +1164,18 @@ vTaskSwitchContext_entry:
 l00004B18:
 	branch Mem0[0x0210<p16>:word16] != 0<16> l00004BAE
 l00004B1E:
-	branch Mem0[Mem0[0x020C<p16>:word16] * 0x10<20> + 546<i16>:word16] != 0<16> l00004B46
+	branch Mem0[Mem0[0x020C<p16>:word16] *20 0x10<20> + 546<i16>:word16] != 0<16> l00004B46
 l00004B30:
 	Mem19[0x020C<p16>:word16] = Mem16[0x020C<p16>:word16] + 0xFFFF<16>
-	branch Mem19[Mem19[0x020C<p16>:word16] * 0x10<20> + 546<i16>:word16] == 0<16> l00004B30
+	branch Mem19[Mem19[0x020C<p16>:word16] *20 0x10<20> + 546<i16>:word16] == 0<16> l00004B30
 l00004B46:
 	word20 r13_29 = 0x222<16>
-	Mem50[Mem30[0x020C<p16>:word16] * 0x10<20> + r13_29 + 4<i16>:word16] = Mem30[Mem30[Mem30[0x020C<p16>:word16] * 0x10<20> + r13_29 + 4<i16>:word16] + 2<i16>:word16]
-	branch Mem50[Mem50[0x020C<p16>:word16] * 0x10<20> + r13_29 + 4<i16>:word16] == Mem50[(Mem50[0x020C<p16>:word16] * 0x10<20> + r13_29) + 2<i16>:word16] l00004BB0
+	Mem50[Mem30[0x020C<p16>:word16] *20 0x10<20> + r13_29 + 4<i16>:word16] = Mem30[Mem30[Mem30[0x020C<p16>:word16] *20 0x10<20> + r13_29 + 4<i16>:word16] + 2<i16>:word16]
+	branch Mem50[Mem50[0x020C<p16>:word16] *20 0x10<20> + r13_29 + 4<i16>:word16] == Mem50[(Mem50[0x020C<p16>:word16] *20 0x10<20> + r13_29) + 2<i16>:word16] l00004BB0
 l00004BB0:
-	Mem89[Mem50[0x020C<p16>:word16] * 0x10<20> + 550<i16>:word16] = Mem50[Mem50[Mem50[0x020C<p16>:word16] * 0x10<20> + 550<i16>:word16] + 2<i16>:word16]
+	Mem89[Mem50[0x020C<p16>:word16] *20 0x10<20> + 550<i16>:word16] = Mem50[Mem50[Mem50[0x020C<p16>:word16] *20 0x10<20> + 550<i16>:word16] + 2<i16>:word16]
 l00004B98:
-	Mem103[0x0202<p16>:word16] = Mem90[Mem90[Mem90[0x020C<p16>:word16] * 0x10<20> + 550<i16>:word16] + 6<i16>:word16]
+	Mem103[0x0202<p16>:word16] = Mem90[Mem90[Mem90[0x020C<p16>:word16] *20 0x10<20> + 550<i16>:word16] + 6<i16>:word16]
 l00004BAE:
 	return
 vTaskSwitchContext_exit:

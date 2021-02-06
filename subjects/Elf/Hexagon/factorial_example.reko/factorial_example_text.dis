@@ -4099,7 +4099,7 @@ l00007790:
 	// succ:  l000077A0
 l000077A0:
 	r5 = r16 + 9<32>
-	r4 = SLICE(r16 * r0, word32, 32)
+	r4 = SLICE(r16 *64 r0, word32, 32)
 	p0 = r5 >u 0x12<32>
 	r3 = r4 >>u 0x1F<32>
 	r3 = r3 + (r4 >> r1)
@@ -4692,7 +4692,7 @@ l000081E0:
 	call __qdsp_divdi3 (retsize: 0;)
 	Mem0[r16:word64] = r1_r0
 	r2 = r26 + 0xFFFFFFFF<32>
-	r5_r4 = r0 *u r18
+	r5_r4 = r0 *u64 r18
 	p0 = r25_r24 > r1_r0
 	r5 = r5 + r0 * r19
 	r5 = r5 + r18 * r1
@@ -10277,10 +10277,10 @@ l0000AB20:
 	r5_r4 = r3_r2 << 0xA<32>
 	r13_r12 = insert(r0, 0x34<32>, 0xC<32>)
 	r5_r4 = insert(r8, 2<32>, 0x3A<32>)
-	r7_r6 = r4 *u r13
-	r15_r14 = r12 *u r4
+	r7_r6 = r4 *u64 r13
+	r15_r14 = r12 *u64 r4
 	r5_r4 = 0x7FC00000000<64>
-	r11_r10 = r13 *u r5
+	r11_r10 = r13 *u64 r5
 	r7_r6 = r7_r6 + (r15_r14 >>u 0x20<32>)
 	p1 = r6 == 0<32>
 	p1 = r14 == 0<32>

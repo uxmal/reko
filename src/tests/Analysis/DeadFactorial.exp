@@ -18,7 +18,7 @@ Mem15: orig: Mem0
 sp_16: orig: sp
 ax_17: orig: ax
     def:  ax_17 = fn0C00_000F(wArg02 - 1<16>)
-    uses: dx_ax_24 = wArg02 *s ax_17
+    uses: dx_ax_24 = wArg02 *s32 ax_17
 dx_18: orig: dx
 Top_19: orig: Top
 SCZO_20: orig: SCZO
@@ -26,7 +26,7 @@ sp_21: orig: sp
 sp_22: orig: sp
 dx_23: orig: dx
 dx_ax_24: orig: dx_ax
-    def:  dx_ax_24 = wArg02 *s ax_17
+    def:  dx_ax_24 = wArg02 *s32 ax_17
     uses: ax_26 = SLICE(dx_ax_24, word16, 0) (alias)
 dx_25: orig: dx
 ax_26: orig: ax
@@ -41,7 +41,7 @@ sp_32: orig: sp
 wArg02:Stack +0002
     def:  def wArg02
     uses: branch wArg02 == 1<16> l0C00_0026
-          dx_ax_24 = wArg02 *s ax_17
+          dx_ax_24 = wArg02 *s32 ax_17
           ax_17 = fn0C00_000F(wArg02 - 1<16>)
 wLoc04_35: orig: wLoc04
 ax_36: orig: ax
@@ -74,7 +74,7 @@ l0C00_000F:
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
 	ax_17 = fn0C00_000F(wArg02 - 1<16>)
-	dx_ax_24 = wArg02 *s ax_17
+	dx_ax_24 = wArg02 *s32 ax_17
 	ax_26 = SLICE(dx_ax_24, word16, 0) (alias)
 	goto l0C00_0029
 	// succ:  l0C00_0029

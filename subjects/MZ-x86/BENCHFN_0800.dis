@@ -2671,8 +2671,8 @@ l0800_17EF:
 	wLoc24_1513 = wLoc24_1040
 	branch wLoc24_1513 < 0<16> l0800_1794
 l0800_17F9:
-	dx = SLICE(wLoc24_1513 *u 0xA<16>, word16, 16) (alias)
-	wLoc24_1040 = ax_58 - 0x30<16> + SLICE(wLoc24_1513 *u 0xA<16>, word16, 0)
+	dx = SLICE(wLoc24_1513 *u32 0xA<16>, word16, 16) (alias)
+	wLoc24_1040 = ax_58 - 0x30<16> + SLICE(wLoc24_1513 *u32 0xA<16>, word16, 0)
 l0800_17E9:
 	bLoc2B_1041 = bLoc2B_1041 | 1<8>
 l0800_17E3:
@@ -3248,7 +3248,7 @@ l0800_1CCD:
 	word16 ax_294 = ax_284
 	branch fn0800_1B9E(SLICE(wArg08, byte, 0), ax_284) l0800_1CB4
 l0800_1CB4:
-	ui32 di_si_528 = di_ax_761 + wArg08 *u si_123
+	ui32 di_si_528 = di_ax_761 + wArg08 *u32 si_123
 	si_123 = SLICE(di_si_528, word16, 0) (alias)
 	di_125 = SLICE(di_si_528, word16, 16) (alias)
 	branch di_125 != 0<16> l0800_1CEA
@@ -3269,8 +3269,8 @@ l0800_1CEF:
 	ax_294 = ax_329
 	branch fn0800_1B9E(SLICE(wArg08, byte, 0), ax_329) l0800_1CD9
 l0800_1CD9:
-	int32 dx_ax_360 = wArg08 *u di_125
-	ui32 ax_si_531 = SEQ(SLICE(dx_ax_360, word16, 0), ax_329) + wArg08 *u si_123
+	int32 dx_ax_360 = wArg08 *u32 di_125
+	ui32 ax_si_531 = SEQ(SLICE(dx_ax_360, word16, 0), ax_329) + wArg08 *u32 si_123
 	word16 ax_365 = SLICE(ax_si_531, word16, 16)
 	si_123 = SLICE(ax_si_531, word16, 0) (alias)
 	di_125 = ax_365

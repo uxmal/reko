@@ -68,7 +68,7 @@ namespace Reko.Analysis
             /// <returns>The SSA name of the identifier that was read.</returns>
             public virtual SsaIdentifier ReadVariable(SsaBlockState bs)
             {
-                trace.Verbose("ReadVariable {0} in block {1}", this.id, bs.Block.Name);
+                trace.Verbose("ReadVariable {0} in block {1}", this.id, bs.Block.DisplayName);
                 if (bs.Terminates)
                 {
                     // Reko has determined that this block diverges. We fall back to 
@@ -91,7 +91,7 @@ namespace Reko.Analysis
                     bs.Block.Procedure.Dump(true);
                     foreach (var block in bloxx)
                     {
-                        Debug.Print("  {0}", block.Name);
+                        Debug.Print("  {0}", block.DisplayName);
                     }
                     throw new StackOverflowException($"Boundless recursion in {bs.Block.Procedure.Name}.");
                 }
@@ -256,10 +256,10 @@ namespace Reko.Analysis
             private bool TryRemoveTrivial(SsaIdentifier phi, out SsaIdentifier sid)
             {
                 var phiFunc = ((PhiAssignment) phi.DefStatement!.Instruction).Src;
-                DebugEx.Verbose(trace, "  Checking {0} for triviality", phiFunc);
+                trace.Verbose("  Checking {0} for triviality", phiFunc);
                 if (phiFunc.Arguments.All(a => a.Value == phi.Identifier))
                 {
-                    DebugEx.Verbose(trace, "  {0} is a def", phi.Identifier);
+                    trace.Verbose("  {0} is a def", phi.Identifier);
                     // Undef'ined or unreachable parameter; assume it's a def.
                     sid = NewDefInstruction(phi.OriginalIdentifier, phi.DefStatement.Block);
                 }
@@ -279,7 +279,7 @@ namespace Reko.Analysis
                 sid.Uses.RemoveAll(u => u == phi.DefStatement);
 
                 // Remove all phi uses which may have become trivial now.
-                DebugEx.Verbose(trace, "Removing {0} and uses {1}", phi.Identifier.Name, string.Join(",", users));
+                trace.Verbose("Removing {0} and uses {1}", phi.Identifier.Name, string.Join(",", users));
                 foreach (var use in users)
                 {
                     if (use.Instruction is PhiAssignment phiAss)
@@ -497,7 +497,7 @@ namespace Reko.Analysis
             /// <returns>The new SSA identifier</returns>
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid)
             {
-                DebugEx.Verbose(trace, "  WriteBlockLocalVariable: ({0}, {1}, ({2})", bs.Block.Name, id, this.liveBits);
+                trace.Verbose("  WriteBlockLocalVariable: ({0}, {1}, ({2})", bs.Block.DisplayName, id, this.liveBits);
                 if (!bs.currentDef.TryGetValue(id.Storage.Domain, out var aliasState))
                 {
                     aliasState = new AliasState();
@@ -514,14 +514,14 @@ namespace Reko.Analysis
                         var stgPrev = sidPrev.Identifier.Storage;
                         if (defRange.Covers(prevRange))
                         {
-                            DebugEx.Verbose(trace, "     overwriting: {0}", sidPrev.Identifier);
+                            trace.Verbose("     overwriting: {0}", sidPrev.Identifier);
                             aliasState.Definitions.RemoveAt(i);
                             --i;
                         }
                     }
                     aliasState.Definitions.Add((sid, defRange, this.Offset));
                 }
-                DebugEx.Verbose(trace, "     writing: {0}", sid.Identifier);
+                trace.Verbose("     writing: {0}", sid.Identifier);
 
                 var newDict = aliasState.ExactAliases
                     .Where(kv => !kv.Key.OverlapsWith(id.Storage))
@@ -537,7 +537,7 @@ namespace Reko.Analysis
 
             public override SsaIdentifier? ReadBlockLocalVariable(SsaBlockState bs)
             {
-                DebugEx.Verbose(trace, "  ReadBlockLocalVariable: ({0}, {1}, ({2})", bs.Block.Name, id, this.liveBits);
+                trace.Verbose("  ReadBlockLocalVariable: ({0}, {1}, ({2})", bs.Block.DisplayName, id, this.liveBits);
                 if (!bs.currentDef.TryGetValue(id.Storage.Domain, out var alias))
                     return null;
 
@@ -545,7 +545,7 @@ namespace Reko.Analysis
                 // Has an exact alias already been calculated?
                 if (alias.ExactAliases.TryGetValue(id.Storage, out var sid))
                 {
-                    DebugEx.Verbose(trace, "    found alias ({0}, {1})", bs.Block.Name, sid.Identifier.Name);
+                    trace.Verbose("    found alias ({0}, {1})", bs.Block.DisplayName, sid.Identifier.Name);
                     return sid;
                 }
 
@@ -688,7 +688,7 @@ namespace Reko.Analysis
             /// <returns>The new SSA identifier</returns>
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid)
             {
-                DebugEx.Verbose(trace, "  WriteBlockLocalVariable: ({0}, {1}, ({2:X8})", bs.Block.Name, id, this.flagMask);
+                trace.Verbose("  WriteBlockLocalVariable: ({0}, {1}, ({2:X8})", bs.Block.DisplayName, id, this.flagMask);
                 if (!bs.currentFlagDef.TryGetValue(id.Storage.Domain, out var aliasState))
                 {
                     aliasState = new FlagAliasState();
@@ -698,7 +698,7 @@ namespace Reko.Analysis
                 {
                     if ((aliasState.Definitions[i].Item2 & ~flagMask) == 0)
                     {
-                        DebugEx.Verbose(trace, "     overwriting: {0} {1:X8}",
+                        trace.Verbose("     overwriting: {0} {1:X8}",
                             aliasState.Definitions[i].Item1.Identifier,
                             aliasState.Definitions[i].Item2);
                         aliasState.Definitions.RemoveAt(i);
@@ -706,7 +706,7 @@ namespace Reko.Analysis
                     }
                 }
                 aliasState.Definitions.Add((sid, flagMask));
-                DebugEx.Verbose(trace, "     writing: {0} {1:X8}", sid.Identifier, flagMask);
+                trace.Verbose("     writing: {0} {1:X8}", sid.Identifier, flagMask);
 
                 var newDict = aliasState.ExactAliases
                     .Where(kv => !kv.Key.Storage.OverlapsWith(id.Storage))

@@ -72,7 +72,7 @@ namespace Reko.Scanning
             {
                 return blockNew;
             }
-            blockNew = new Block(procCalling, blockOrig.Address, blockOrig.Name + "_in_" + procCalling.Name);
+            blockNew = new Block(procCalling, blockOrig.Address, blockOrig.Id + "_in_" + procCalling.Name);
             mpBlocks.Add(blockOrig, blockNew);
             var succ = blockOrig.Succ.Count > 0 ? CloneBlock(blockOrig.Succ[0]) : null;
             foreach (var stm in blockOrig.Statements)

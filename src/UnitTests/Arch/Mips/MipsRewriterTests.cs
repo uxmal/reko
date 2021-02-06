@@ -1291,7 +1291,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x71A60000,   // madd	r13,r6
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|hi_lo = hi_lo + r13 * r6");
+                "1|L--|hi_lo = hi_lo + r13 *64 r6");
         }
 
         [Test]
@@ -1299,7 +1299,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x71670004,   // msub	r11,r7
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|hi_lo = hi_lo - r11 * r7");
+                "1|L--|hi_lo = hi_lo - r11 *64 r7");
         }
 
         [Test]
@@ -1414,7 +1414,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0x4E989AF9,   // nmsub_d	f11,f20,f19,f24
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|f11 = -(f20 - f19 * f24)");
+                "1|L--|f11 = -(f20 - f19 *64 f24)");
         }
 
         [Test]

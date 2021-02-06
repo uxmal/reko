@@ -234,7 +234,7 @@ namespace Reko.Core.Types
             if (++recDepth > 100)
             {
                 --recDepth;
-                DebugEx.Error(trace, "Unifier: exceeded stack depth, giving up");
+                trace.Error("Unifier: exceeded stack depth, giving up");
                 if (a == null && b == null)
                     return null;
                 if (a == null)

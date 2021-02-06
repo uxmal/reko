@@ -16,7 +16,7 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-#endregion
+#endregion 
 
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
@@ -66,6 +66,64 @@ namespace Reko.Core
 
         void Error(Address address, string format, params object[] args);
         void Warn(Address address, string format, params object[] args);
+    }
+
+    public class NullRewriterHost : IRewriterHost
+    {
+        public Expression CallIntrinsic(string name, bool isIdempotent, FunctionType fnType, params Expression[] args)
+        {
+            throw new NotSupportedException();
+        }
+
+        public IntrinsicProcedure EnsureIntrinsic(string name, bool isIdempotent, DataType returnType, int arity)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void Error(Address address, string format, params object[] args)
+        {
+        }
+
+        public IProcessorArchitecture GetArchitecture(string archMoniker)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Expression? GetImport(Address addrThunk, Address addrInstr)
+        {
+            return null;
+        }
+
+        public ExternalProcedure? GetImportedProcedure(IProcessorArchitecture arch, Address addrThunk, Address addrInstr)
+        {
+            return null;
+        }
+
+        public ExternalProcedure? GetInterceptedCall(IProcessorArchitecture arch, Address addrImportThunk)
+        {
+            return null;
+        }
+
+        public Expression Intrinsic(string name, bool isIdempotent, DataType returnType, params Expression[] args)
+        {
+            throw new NotSupportedException();
+        }
+
+        public Expression Intrinsic(string name, bool isIdempotent, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+        {
+            throw new NotSupportedException();
+            throw new NotImplementedException();
+        }
+
+        public bool TryRead(IProcessorArchitecture arch, Address addr, PrimitiveType dt, out Constant value)
+        {
+            value = null!;
+            return false;
+        }
+
+        public void Warn(Address address, string format, params object[] args)
+        {
+        }
     }
 }
 

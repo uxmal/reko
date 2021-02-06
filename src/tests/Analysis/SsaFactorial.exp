@@ -167,7 +167,7 @@ sp_16: orig: sp
     uses: sp_21 = sp_16 + 1<16>
 ax_17: orig: ax
     def:  call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
-    uses: dx_ax_26 = dx_25 *s ax_17
+    uses: dx_ax_26 = dx_25 *s32 ax_17
 dx_18: orig: dx
     def:  call fn0C00_000F (retsize: 2;)	uses: bp:bp_8,sp:sp_14,ss:ss,Top:Top_3	defs: ax:ax_17,dx:dx_18,SCZO:SCZO_20,sp:sp_16,Top:Top_19
 Top_19: orig: Top
@@ -189,9 +189,9 @@ SZO_24: orig: SZO
     def:  SZO_24 = cond(sp_23)
 dx_25: orig: dx
     def:  dx_25 = Mem15[ss:bp_8 + 4<16>:word16]
-    uses: dx_ax_26 = dx_25 *s ax_17
+    uses: dx_ax_26 = dx_25 *s32 ax_17
 dx_ax_26: orig: dx_ax
-    def:  dx_ax_26 = dx_25 *s ax_17
+    def:  dx_ax_26 = dx_25 *s32 ax_17
     uses: dx_27 = SLICE(dx_ax_26, word16, 16) (alias)
           ax_28 = SLICE(dx_ax_26, word16, 0) (alias)
           SCZO_29 = cond(dx_ax_26)
@@ -300,7 +300,7 @@ l0C00_0018:
 	sp_23 = sp_21 + 1<16>
 	SZO_24 = cond(sp_23)
 	dx_25 = Mem15[ss:bp_8 + 4<16>:word16]
-	dx_ax_26 = dx_25 *s ax_17
+	dx_ax_26 = dx_25 *s32 ax_17
 	dx_27 = SLICE(dx_ax_26, word16, 16) (alias)
 	ax_28 = SLICE(dx_ax_26, word16, 0) (alias)
 	SCZO_29 = cond(dx_ax_26)

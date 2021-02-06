@@ -199,7 +199,7 @@ namespace Reko.UnitTests.Arch.H8
             Given_HexString("5012");
             AssertCode(     // mulxu.b	r1h,r2h
                 "0|L--|8000(2): 1 instructions",
-                "1|L--|r2 = r2h *u r1h");
+                "1|L--|r2 = r2h *u16 r1h");
         }
 
         [Test]

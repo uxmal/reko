@@ -1866,6 +1866,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("st4 {v0.8h-v3.8h},[x11], #64", "60059F4C");
         }
 
+
         /*
          * //$BORED: amuse yourself by making these tests pass.
         [Test]

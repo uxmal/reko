@@ -67,8 +67,19 @@ namespace Reko.Arch.Sparc
 
         private void RewriteCall()
         {
-            iclass = InstrClass.Transfer | InstrClass.Call;
-            m.CallD(((AddressOperand)instrCur.Operands[0]).Address, 0);
+            // A special case is when we call to the location after
+            // the delay slot. This is an idiom to capture the 
+            // program counter in the la register.
+            var dst = ((AddressOperand) instrCur.Operands[0]).Address;
+            if (instrCur.Address.ToLinear() + 8 == dst.ToLinear())
+            {
+                iclass = InstrClass.Linear;
+                m.Assign(binder.EnsureRegister(arch.Registers.o7), dst);
+            }
+            else
+            {
+                m.CallD(dst, 0);
+            }
         }
 
         private void RewriteJmpl()

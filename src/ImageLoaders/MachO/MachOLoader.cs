@@ -33,23 +33,24 @@ using System.Text;
 namespace Reko.ImageLoaders.MachO
 {
     // http://newosxbook.com/articles/DYLD.html
+    // http://www.m4b.io/reverse/engineering/mach/binaries/2015/03/29/mach-binaries.html
     public class MachOLoader : ImageLoader
     {
         const uint MH_MAGIC = 0xFEEDFACE;
         const uint MH_MAGIC_64 = 0xFEEDFACF;
-        const uint MH_MAGIC_32_LE = 0xCEFAEDFE; //0xfeedface;
-        const uint MH_MAGIC_64_LE = 0xCFFAEDFE; // 0xfeedfacf;
+        const uint MH_MAGIC_32_LE = 0xCEFAEDFE; // 0xFEEDFACE;
+        const uint MH_MAGIC_64_LE = 0xCFFAEDFE; // 0xFEEDFACF;
 
         internal static readonly TraceSwitch trace = new TraceSwitch(nameof(MachOLoader), "Trace loading of MachO binaries") { Level = TraceLevel.Verbose };
 
-        private Parser parser;
+        private Parser? parser;
         internal List<MachOSection> sections;
         internal Dictionary<string, MachOSection> sectionsByName;
         internal Dictionary<MachOSection, ImageSegment> imageSections;
         internal List<MachOSymbol> machoSymbols;
         internal SortedList<Address, ImageSymbol> imageSymbols;
         internal List<ImageSymbol> entryPoints;
-        internal Program program;
+        internal Program? program;
 
         public MachOLoader(IServiceProvider services, string filename, byte[] rawImg)
             : base(services, filename, rawImg)
@@ -69,12 +70,12 @@ namespace Reko.ImageLoaders.MachO
             set { throw new NotImplementedException(); }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             this.program = new Program();
             parser = CreateParser();
-            var hdr = parser.ParseHeader(addrLoad);
-            this.program = parser.ParseLoadCommands(hdr, addrLoad);
+            var (hdr, specific) = parser.ParseHeader(addrLoad);
+            this.program = parser.ParseLoadCommands(hdr, specific.Architecture, addrLoad);
             return this.program;
         }
 
@@ -94,7 +95,9 @@ namespace Reko.ImageLoaders.MachO
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            CollectSymbolStubs(machoSymbols, imageSymbols);
+            if (parser is null)
+                throw new InvalidOperationException();
+            CollectSymbolStubs(parser!, machoSymbols, imageSymbols);
             var imgSymbols = new SortedList<Address, ImageSymbol>();
             foreach (var de in imageSymbols)
             {
@@ -109,21 +112,25 @@ namespace Reko.ImageLoaders.MachO
         /// </summary>
         /// <param name="machoSymbols"></param>
         /// <param name="imageSymbols"></param>
-        private void CollectSymbolStubs(List<MachOSymbol> machoSymbols, SortedList<Address, ImageSymbol> imageSymbols)
+        private void CollectSymbolStubs(Parser parser, List<MachOSymbol> machoSymbols, SortedList<Address, ImageSymbol> imageSymbols)
         {
             var msec = this.sections.FirstOrDefault(s => (s.Flags & SectionFlags.SECTION_TYPE) == SectionFlags.S_SYMBOL_STUBS);
             if (msec == null)
                 return;
+            if (parser.dysymtab == null)
+                return;
+            var indirectSymRdr = program!.Architecture.Endianness.CreateImageReader(RawImage, parser.dysymtab.indirectsymoff);
             var sec = this.imageSections[msec];
-            for (uint i = 0; i < sec.Size; i += msec.Reserved2)
+            trace.Inform("MachO: Found {0} import stubs", sec.Size / msec.Reserved2);
+            for (uint off = 0; off < sec.Size; off += msec.Reserved2)
             {
-                var addrStub = sec.Address + i;
-                var addr = parser.specific.ReadStub(addrStub, (ByteMemoryArea)sec.MemoryArea);
-                if (program.ImportReferences.TryGetValue(addr, out var refe))
-                {
-                    var stubSym = ImageSymbol.ExternalProcedure(program.Architecture, addrStub, refe.EntryName);
-                    imageSymbols.Add(addrStub, stubSym);
-                }
+                var addrStub = sec.Address + off;
+                if (!indirectSymRdr.TryReadInt32(out int isym))
+                    break;
+                var sym = machoSymbols[isym];
+                trace.Verbose("   Stub at {0}: {1:X8}", addrStub, sym.Name);
+                var stubSym = ImageSymbol.ExternalProcedure(program.Architecture, addrStub, sym.Name);
+                imageSymbols.Add(addrStub, stubSym);
             }
         }
 
@@ -234,15 +241,15 @@ static const byte NO_SECT = 0;
     {
         public string Name;
         public byte n_type;
-        public MachOSection msec;
+        public byte n_sect;
         public ushort n_desc;
         public ulong n_value;
 
-        public MachOSymbol(string name, byte n_type, MachOSection msec, ushort n_desc, ulong n_value)
+        public MachOSymbol(string name, byte n_type, byte n_sect, ushort n_desc, ulong n_value)
         {
             this.Name = name;
             this.n_type = n_type;
-            this.msec = msec;
+            this.n_sect = n_sect;
             this.n_desc = n_desc;
             this.n_value = n_value;
         }

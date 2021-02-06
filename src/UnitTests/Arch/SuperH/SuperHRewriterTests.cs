@@ -883,7 +883,7 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "2|L--|r15 = r15 + 4<i32>",
                 "3|L--|v4 = Mem0[r0:word32]",
                 "4|L--|r0 = r0 + 4<i32>",
-                "5|L--|mac = v2 *s v4 + mac");
+                "5|L--|mac = v2 *s64 v4 + mac");
         }
 
         [Test]

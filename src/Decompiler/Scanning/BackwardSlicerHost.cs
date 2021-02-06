@@ -167,7 +167,7 @@ namespace Reko.Scanning
         {
             if (!cache.TryGetValue(block, out var rtlBlock))
             {
-                rtlBlock = new RtlBlock(block.Address, block.Name);
+                rtlBlock = new RtlBlock(block.Address, block.Id);
                 cache.Add(block, rtlBlock);
                 invCache.Add(rtlBlock, block);
             }

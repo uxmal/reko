@@ -1134,12 +1134,12 @@ l00000DDC:
 	r1 = pcyclehi
 	r0 = pcyclelo
 	r7_r6 = Mem0[r29 + 16<i32>:word64]
-	r3_r2 = r0 *u r4
+	r3_r2 = r0 *u64 r4
 	branch p2 l00000DFC
 	// succ:  l00000DF0 l00000DFC
 l00000DF0:
 	r3_r2 = r3_r2 >>u 0x20<32>
-	r1_r0 = r1 *u r4
+	r1_r0 = r1 *u64 r4
 	r1_r0 = r3_r2 + r1_r0
 	// succ:  l00000DFC
 l00000DFC:

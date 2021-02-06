@@ -55,7 +55,7 @@ Eq_49: (union "Eq_49" (ptr16 u0) ((ptr20 Eq_4057) u1))
 	T_103 (in out r15_50 : word16)
 	T_126 (in out r15_50 : word16)
 	T_764 (in r15 : Eq_49)
-	T_770 (in v31_114 * 0x10<20> + 0x222<16> : word20)
+	T_770 (in v31_114 *20 0x10<20> + 0x222<16> : word20)
 	T_824 (in 0x296<16> : word16)
 	T_864 (in v8_23 : Eq_49)
 	T_867 (in Mem11[r15 + 0<20>:word16] : word16)
@@ -75,7 +75,7 @@ Eq_49: (union "Eq_49" (ptr16 u0) ((ptr20 Eq_4057) u1))
 	T_1016 (in Mem35[0x0208<p16>:word16] : word16)
 	T_1111 (in 0<16> : word16)
 	T_1114 (in Mem159[r11_34 + 8<i16>:word16] : word16)
-	T_1126 (in v19_160 * 0x10<20> + 0x222<16> : word20)
+	T_1126 (in v19_160 *20 0x10<20> + 0x222<16> : word20)
 	T_1196 (in r15_11 : Eq_49)
 	T_1198 (in Mem8[0x0208<p16>:word16] : word16)
 	T_1240 (in v8_16 : Eq_49)
@@ -87,7 +87,7 @@ Eq_49: (union "Eq_49" (ptr16 u0) ((ptr20 Eq_4057) u1))
 	T_1281 (in Mem30[r11_36 + 8<i16>:word16] : word16)
 	T_1297 (in 0<16> : word16)
 	T_1300 (in Mem89[r11_36 + 8<i16>:word16] : word16)
-	T_1312 (in v27_90 * 0x10<20> + 0x222<16> : word20)
+	T_1312 (in v27_90 *20 0x10<20> + 0x222<16> : word20)
 	T_1328 (in r11_24 : word20)
 	T_1330 (in Mem5[0x0208<p16>:word16] : word16)
 	T_1331 (in r14 + Mem5[0x0208<p16>:word16] : word20)
@@ -97,7 +97,7 @@ Eq_49: (union "Eq_49" (ptr16 u0) ((ptr20 Eq_4057) u1))
 	T_1381 (in r15_37 : Eq_49)
 	T_1386 (in 0<16> : word16)
 	T_1389 (in Mem50[r10_13 + 8<i16>:word16] : word16)
-	T_1400 (in v14_51 * 0x10<20> + 0x222<16> : word20)
+	T_1400 (in v14_51 *20 0x10<20> + 0x222<16> : word20)
 	T_1794 (in Mem30[r14 + 8<i16>:word16] : word16)
 	T_1901 (in v11_17 : Eq_49)
 	T_1904 (in Mem16[r15 + 8<i16>:word16] : word16)
@@ -227,9 +227,9 @@ Eq_169: (union "Eq_169" (uint16 u0) (uint20 u1) (byte u2) (ptr16 u3))
 	T_3984 (in 0<20> : word20)
 	T_3985 (in r14_25 : Eq_169)
 	T_3986 (in 0<20> : word20)
-	T_4016 (in r14_25 * 2<20> + (r8 < 0<20>) : word20)
+	T_4016 (in r14_25 *20 2<20> + (r8 < 0<20>) : word20)
 	T_4019 (in 0<20> : word20)
-	T_4021 (in r15_29 * 2<20> + (r14_25 < 0<20>) : word20)
+	T_4021 (in r15_29 *20 2<20> + (r14_25 < 0<20>) : word20)
 	T_4024 (in r14_25 - r10 : word20)
 	T_4026 (in 0<20> : word20)
 	T_4028 (in r15_29 - r11 - (r14_25 < 0<20>) : word20)
@@ -335,7 +335,7 @@ Eq_230: (union "Eq_230" (uint16 u0) (uint20 u1) (ptr16 u2))
 	T_3949 (in out r12_44 : word16)
 	T_3977 (in (r12_44 ^ 0xFFFF<16>) + 1<16> : word20)
 	T_3981 (in (r12_44 ^ 0xFFFF<16>) + 1<16> : word20)
-	T_3990 (in r12 * 2<20> : word20)
+	T_3990 (in r12 *20 2<20> : word20)
 	T_3993 (in 0<20> : word20)
 Eq_231: (union "Eq_231" (bool u0) (ci16 u1) (uint20 u2) (ptr16 u3))
 	T_231 (in r13 : Eq_231)
@@ -354,13 +354,13 @@ Eq_231: (union "Eq_231" (bool u0) (ci16 u1) (uint20 u2) (ptr16 u3))
 	T_3422 (in out r13_2485 : word16)
 	T_3502 (in r13_563 : Eq_231)
 	T_3508 (in out r13_563 : word16)
-	T_3569 (in ~(0<16> - (v189_216 * 2<16> < 0<16>)) : word16)
+	T_3569 (in ~(0<16> - (v189_216 *16 2<16> < 0<16>)) : word16)
 	T_3577 (in Mem245[r5_1050 + 2<i16>:word16] : word16)
 	T_3585 (in ~wLoc1A_1130 + (v184_257 <u 1<16>) : word16)
 	T_3590 (in 0<16> : word16)
 	T_3936 (in (r13 ^ 0xFFFF<16>) + (r12 < 0<20>) : word20)
 	T_3950 (in out r13_114 : word16)
-	T_3995 (in r13 * 2<20> + (r12 < 0<20>) : word20)
+	T_3995 (in r13 *20 2<20> + (r12 < 0<20>) : word20)
 	T_4001 (in 0<20> : word20)
 Eq_234: (struct "Eq_234" (2 (ptr16 Eq_238) ptr0002))
 	T_234 (in fp : word16)
@@ -428,7 +428,7 @@ Eq_284: (union "Eq_284" (bool u0) (ui20 u1) (word16 u2))
 Eq_286: (union "Eq_286" (ui20 u0) (word16 u1))
 	T_286 (in r15_131 : Eq_286)
 	T_287 (in 1<16> : word16)
-	T_293 (in r15_131 * 2<20> : word20)
+	T_293 (in r15_131 *20 2<20> : word20)
 Eq_294: (union "Eq_294" (cu8 u0) (word20 u1) (word16 u2))
 	T_294 (in 1<16> : word16)
 Eq_304: (union "Eq_304" (bool u0) (ui20 u1) (word16 u2))
@@ -436,7 +436,7 @@ Eq_304: (union "Eq_304" (bool u0) (ui20 u1) (word16 u2))
 Eq_306: (union "Eq_306" (bool u0) (ui20 u1) (word16 u2))
 	T_306 (in r10_127 <u 0<20> : bool)
 Eq_324: (union "Eq_324" (bool u0) (int20 u1))
-	T_324 (in r10_127 * 2<20> - r14_111 < 0<20> : bool)
+	T_324 (in r10_127 *20 2<20> - r14_111 < 0<20> : bool)
 Eq_329: (union "Eq_329" (ui20 u0) (byte u1) (word16 u2))
 	T_329 (in wLoc10 : word16)
 	T_392 (in  : word20)
@@ -824,7 +824,7 @@ Eq_633: (struct "Eq_633" (0 (ptr16 Eq_2887) ptr0000) (6 Eq_624 t0006) (8 Eq_49 t
 	T_1417 (in Mem77[0x0202<p16>:word16] : word16)
 	T_1478 (in Mem51[r15 + 14<i16>:word16] : word16)
 	T_1486 (in Mem60[r15 + 24<i16>:word16] : word16)
-	T_1725 (in Mem90[550<i16>[Mem90[0x020C<p16>:word16] * 0x10<20>] + 6<i16>:word16] : word16)
+	T_1725 (in Mem90[550<i16>[Mem90[0x020C<p16>:word16] *16 0x10<20>] + 6<i16>:word16] : word16)
 	T_1727 (in Mem103[0x0202<p16>:word16] : word16)
 	T_2884 (in Mem0[0x00000202<p32>:word16] : word16)
 	T_2897 (in Mem46[0x00000202<p32>:word16] : word16)
@@ -850,12 +850,12 @@ Eq_652: (fn Eq_668 (Eq_196, Eq_199, (ptr20 Eq_656)))
 	T_653 (in signature of pxPortInitialiseStack : void)
 Eq_656: (struct "Eq_656" (FFFFFFE4 word16 wFFFFFFE4) (FFFFFFE6 Eq_196 tFFFFFFE6) (FFFFFFE8 word16 wFFFFFFE8) (FFFFFFEA word16 wFFFFFFEA) (FFFFFFEC word16 wFFFFFFEC) (FFFFFFEE word16 wFFFFFFEE) (FFFFFFF0 word16 wFFFFFFF0) (FFFFFFF2 word16 wFFFFFFF2) (FFFFFFF4 word16 wFFFFFFF4) (FFFFFFF6 word16 wFFFFFFF6) (FFFFFFF8 word16 wFFFFFFF8) (FFFFFFFA word16 wFFFFFFFA) (FFFFFFFC word16 wFFFFFFFC) (FFFFFFFE word16 wFFFFFFFE) (0 Eq_199 t0000))
 	T_656 (in r15 : (ptr20 Eq_656))
-	T_667 (in *((char *) &r15_45->ptr0000 + 2<i32>) + ((&r15_45->w001A)[5<i32>] * 2<20>) / 28<i32> - 2<16> : word20)
+	T_667 (in *((char *) &r15_45->ptr0000 + 2<i32>) + ((&r15_45->w001A)[5<i32>] *20 2<20>) /20 28<i32> - 2<16> : word20)
 	T_2879 (in r15 - 0x1C<16> : word20)
 Eq_666: (union "Eq_666" (ui20 u0) (word16 u1))
 	T_666 (in 2<16> : word16)
 Eq_668: (union "Eq_668" (word20 u0) (word16 u1))
-	T_668 (in pxPortInitialiseStack(r12, r15, *((char *) &r15_45->ptr0000 + 2<i32>) + ((&r15_45->w001A)[5<i32>] * 2<20>) / 28<i32> - 2<16>) : word20)
+	T_668 (in pxPortInitialiseStack(r12, r15, *((char *) &r15_45->ptr0000 + 2<i32>) + ((&r15_45->w001A)[5<i32>] *20 2<20>) /20 28<i32> - 2<16>) : word20)
 	T_671 (in Mem81[r15_45 + 0<20>:word16] : word16)
 Eq_685: (union "Eq_685" (ui20 u0) (word16 u1))
 	T_685 (in ~8<16> : word16)
@@ -1182,7 +1182,7 @@ Eq_1490: (fn void (Eq_1492))
 	T_1511 (in vListInitialise : word16)
 Eq_1492: (union "Eq_1492" (word16 u0) ((ptr20 Eq_4075) u1))
 	T_1492 (in r15 : Eq_1492)
-	T_1496 (in r11_20 * 0x10<20> + 0x222<16> : word20)
+	T_1496 (in r11_20 *20 0x10<20> + 0x222<16> : word20)
 	T_1503 (in 0x262<16> : word16)
 	T_1506 (in 0x272<16> : word16)
 	T_1509 (in 0x286<16> : word16)
@@ -1219,7 +1219,7 @@ Eq_1599: (fn ui20 (ui20, Eq_1602, Eq_1603))
 Eq_1602: (union "Eq_1602" (ui20 u0) (word16 u1))
 	T_1602 (in r15 : Eq_1602)
 	T_1604 (in 0x26<16> : word16)
-	T_1613 (in r15 * 2<20> : word20)
+	T_1613 (in r15 *20 2<20> : word20)
 	T_1928 (in 0x32<16> : word16)
 	T_2786 (in r11_10 : Eq_1602)
 	T_2806 (in r15 - (r15 & 1<16>) + 2<16> : word20)
@@ -1246,7 +1246,7 @@ Eq_1621: (fn ui20 (ui20, Eq_1624, Eq_329, Eq_1610))
 	T_1622 (in signature of memset : void)
 Eq_1624: (union "Eq_1624" (uint20 u0) (byte u1) (ptr16 u2))
 	T_1624 (in r13 : Eq_1624)
-	T_1627 (in r15 * 2<20> : word20)
+	T_1627 (in r15 *20 2<20> : word20)
 	T_2043 (in r13 : Eq_1624)
 	T_2048 (in Mem152[r11_120 + 44<i16>:word16] : word16)
 	T_2067 (in Mem178[r11_120 + 44<i16>:word16] : word16)
@@ -1282,7 +1282,7 @@ Eq_1624: (union "Eq_1624" (uint20 u0) (byte u1) (ptr16 u2))
 	T_3939 (in r8_48 : Eq_1624)
 	T_3948 (in out r8_48 : word16)
 	T_3998 (in r8_17 : Eq_1624)
-	T_4003 (in r8 * 2<20> + (r13 < 0<20>) : word20)
+	T_4003 (in r8 *20 2<20> + (r13 < 0<20>) : word20)
 Eq_1630: (fn void ())
 	T_1630 (in vPortFree : word16)
 	T_1631 (in signature of vPortFree : void)
@@ -1294,19 +1294,19 @@ Eq_1650: (union "Eq_1650" (ptr20 u0) (word16 u1))
 	T_1650 (in r13_29 : Eq_1650)
 	T_1651 (in 0x222<16> : word16)
 Eq_1656: (struct "Eq_1656" (4 (ptr16 Eq_1659) ptr0004))
-	T_1656 (in Mem30[0x020C<p16>:word16] * 0x10<20> + r13_29 : word20)
+	T_1656 (in Mem30[0x020C<p16>:word16] *20 0x10<20> + r13_29 : word20)
 Eq_1659: (struct "Eq_1659" (2 word16 w0002))
-	T_1659 (in Mem30[Mem30[0x020C<p16>:word16] * 0x10<20> + r13_29 + 4<i16>:word16] : word16)
+	T_1659 (in Mem30[Mem30[0x020C<p16>:word16] *20 0x10<20> + r13_29 + 4<i16>:word16] : word16)
 Eq_1667: (struct "Eq_1667" (4 word16 w0004))
-	T_1667 (in Mem30[0x020C<p16>:word16] * 0x10<20> + r13_29 : word20)
+	T_1667 (in Mem30[0x020C<p16>:word16] *20 0x10<20> + r13_29 : word20)
 Eq_1675: (struct "Eq_1675" (4 word16 w0004))
-	T_1675 (in Mem50[0x020C<p16>:word16] * 0x10<20> + r13_29 : word20)
+	T_1675 (in Mem50[0x020C<p16>:word16] *20 0x10<20> + r13_29 : word20)
 Eq_1683: (struct "Eq_1683" (2 word16 w0002))
-	T_1683 (in Mem50[0x020C<p16>:word16] * 0x10<20> + r13_29 : word20)
+	T_1683 (in Mem50[0x020C<p16>:word16] *20 0x10<20> + r13_29 : word20)
 Eq_1707: (struct "Eq_1707" (2 word16 w0002))
-	T_1707 (in 550<i16>[Mem50[0x020C<p16>:word16] * 0x10<20>] : word16)
+	T_1707 (in 550<i16>[Mem50[0x020C<p16>:word16] *16 0x10<20>] : word16)
 Eq_1722: (struct "Eq_1722" (6 (ptr20 Eq_633) ptr0006))
-	T_1722 (in 550<i16>[Mem90[0x020C<p16>:word16] * 0x10<20>] : word16)
+	T_1722 (in 550<i16>[Mem90[0x020C<p16>:word16] *16 0x10<20>] : word16)
 Eq_1728: (union "Eq_1728" (int20 u0) (word16 u1))
 	T_1728 (in 6<16> : word16)
 Eq_1729: (union "Eq_1729" (word20 u0) (word16 u1))
@@ -1635,7 +1635,7 @@ Eq_3092: (union "Eq_3092" (ci16 u0) (byte u1) ((ptr20 byte) u2))
 	T_3181 (in 0<16> : word16)
 	T_3184 (in r15_937 : Eq_3092)
 	T_3185 (in 0xFFFF<16> : word16)
-	T_3203 (in r13_906 * 4<20> + r14_916 + r14_916 + r14_916 + (int16) ((byte) r7_1042) + 0xFFD0<16> : word20)
+	T_3203 (in r13_906 *20 4<20> + r14_916 + r14_916 + r14_916 + (int16) ((byte) r7_1042) + 0xFFD0<16> : word20)
 	T_3208 (in 0xFFFF<16> : word16)
 	T_3215 (in 0xFFFF<16> : word16)
 	T_3252 (in r9_366 : Eq_3092)
@@ -1863,7 +1863,7 @@ Eq_3559: (union "Eq_3559" ((ptr16 word16) u0) ((ptr20 Eq_4083) u1))
 Eq_3561: (union "Eq_3561" ((ptr16 word16) u0) ((ptr20 Eq_4083) u1))
 	T_3561 (in 2<16> : word16)
 Eq_3567: (union "Eq_3567" (bool u0) (word16 u1))
-	T_3567 (in v189_216 * 2<16> < 0<16> : bool)
+	T_3567 (in v189_216 *16 2<16> < 0<16> : bool)
 Eq_3570: (union "Eq_3570" ((ptr16 word16) u0) ((ptr20 Eq_4083) u1))
 	T_3570 (in 4<16> : word16)
 Eq_3573: (union "Eq_3573" ((ptr16 word16) u0) ((ptr20 Eq_4083) u1))
@@ -3293,7 +3293,7 @@ T_292: (in 2<20> : word20)
   Class: Eq_292
   DataType: ui20
   OrigDataType: ui20
-T_293: (in r15_131 * 2<20> : word20)
+T_293: (in r15_131 *20 2<20> : word20)
   Class: Eq_286
   DataType: Eq_286
   OrigDataType: ui20
@@ -3357,7 +3357,7 @@ T_308: (in 2<20> : word20)
   Class: Eq_308
   DataType: ui20
   OrigDataType: ui20
-T_309: (in r11_101 * 2<20> : word20)
+T_309: (in r11_101 *20 2<20> : word20)
   Class: Eq_309
   DataType: ui20
   OrigDataType: ui20
@@ -3365,7 +3365,7 @@ T_310: (in 2<20> : word20)
   Class: Eq_310
   DataType: ui20
   OrigDataType: ui20
-T_311: (in r10_127 * 2<20> : word20)
+T_311: (in r10_127 *20 2<20> : word20)
   Class: Eq_311
   DataType: uint20
   OrigDataType: uint20
@@ -3373,11 +3373,11 @@ T_312: (in 0<20> : word20)
   Class: Eq_311
   DataType: uint20
   OrigDataType: up20
-T_313: (in r10_127 * 2<20> < 0<20> : bool)
+T_313: (in r10_127 *20 2<20> < 0<20> : bool)
   Class: Eq_313
   DataType: bool
   OrigDataType: bool
-T_314: (in r11_101 * 2<20> + (r10_127 * 2<20> < 0<20>) : word20)
+T_314: (in r11_101 *20 2<20> + (r10_127 *20 2<20> < 0<20>) : word20)
   Class: Eq_314
   DataType: int20
   OrigDataType: int20
@@ -3401,15 +3401,15 @@ T_319: (in (r15 ^ 0xFFFF<16>) + (r14_111 < 0<20>) : word20)
   Class: Eq_319
   DataType: int20
   OrigDataType: int20
-T_320: (in r11_101 * 2<20> + (r10_127 * 2<20> < 0<20>) - ((r15 ^ 0xFFFF<16>) + (r14_111 < 0<20>)) : word20)
+T_320: (in r11_101 *20 2<20> + (r10_127 *20 2<20> < 0<20>) - ((r15 ^ 0xFFFF<16>) + (r14_111 < 0<20>)) : word20)
   Class: Eq_320
   DataType: int20
   OrigDataType: int20
-T_321: (in r10_127 * 2<20> : word20)
+T_321: (in r10_127 *20 2<20> : word20)
   Class: Eq_321
   DataType: uint20
   OrigDataType: uint20
-T_322: (in r10_127 * 2<20> - r14_111 : word20)
+T_322: (in r10_127 *20 2<20> - r14_111 : word20)
   Class: Eq_322
   DataType: uint20
   OrigDataType: uint20
@@ -3417,11 +3417,11 @@ T_323: (in 0<20> : word20)
   Class: Eq_322
   DataType: uint20
   OrigDataType: up20
-T_324: (in r10_127 * 2<20> - r14_111 < 0<20> : bool)
+T_324: (in r10_127 *20 2<20> - r14_111 < 0<20> : bool)
   Class: Eq_324
   DataType: Eq_324
   OrigDataType: (union (bool u0) (int20 u1))
-T_325: (in r11_101 * 2<20> + (r10_127 * 2<20> < 0<20>) - ((r15 ^ 0xFFFF<16>) + (r14_111 < 0<20>)) - (r10_127 * 2<20> - r14_111 < 0<20>) : word20)
+T_325: (in r11_101 *20 2<20> + (r10_127 *20 2<20> < 0<20>) - ((r15 ^ 0xFFFF<16>) + (r14_111 < 0<20>)) - (r10_127 *20 2<20> - r14_111 < 0<20>) : word20)
   Class: Eq_325
   DataType: int20
   OrigDataType: int20
@@ -3429,7 +3429,7 @@ T_326: (in 0<20> : word20)
   Class: Eq_325
   DataType: int20
   OrigDataType: int20
-T_327: (in r11_101 * 2<20> + (r10_127 * 2<20> < 0<20>) - ((r15 ^ 0xFFFF<16>) + (r14_111 < 0<20>)) - (r10_127 * 2<20> - r14_111 < 0<20>) >= 0<20> : bool)
+T_327: (in r11_101 *20 2<20> + (r10_127 *20 2<20> < 0<20>) - ((r15 ^ 0xFFFF<16>) + (r14_111 < 0<20>)) - (r10_127 *20 2<20> - r14_111 < 0<20>) >= 0<20> : bool)
   Class: Eq_327
   DataType: bool
   OrigDataType: bool
@@ -4765,7 +4765,7 @@ T_660: (in 2<20> : word20)
   Class: Eq_660
   DataType: ui20
   OrigDataType: ui20
-T_661: (in (&r15_45->w001A)[5<i32>] * 2<20> : word20)
+T_661: (in (&r15_45->w001A)[5<i32>] *20 2<20> : word20)
   Class: Eq_661
   DataType: ui20
   OrigDataType: ui20
@@ -4781,7 +4781,7 @@ T_664: (in Mem23[r15_45 + 2<i16>:word16] : word16)
   Class: Eq_664
   DataType: word16
   OrigDataType: word16
-T_665: (in Mem23[r15_45 + 36<i16>:word16] * 2<20> + Mem23[r15_45 + 2<i16>:word16] : word20)
+T_665: (in Mem23[r15_45 + 36<i16>:word16] *20 2<20> + Mem23[r15_45 + 2<i16>:word16] : word20)
   Class: Eq_665
   DataType: ui20
   OrigDataType: ui20
@@ -4789,11 +4789,11 @@ T_666: (in 2<16> : word16)
   Class: Eq_666
   DataType: ui20
   OrigDataType: (union (ui20 u0) (word16 u1))
-T_667: (in *((char *) &r15_45->ptr0000 + 2<i32>) + ((&r15_45->w001A)[5<i32>] * 2<20>) / 28<i32> - 2<16> : word20)
+T_667: (in *((char *) &r15_45->ptr0000 + 2<i32>) + ((&r15_45->w001A)[5<i32>] *20 2<20>) /20 28<i32> - 2<16> : word20)
   Class: Eq_656
   DataType: (ptr20 Eq_656)
   OrigDataType: ui20
-T_668: (in pxPortInitialiseStack(r12, r15, *((char *) &r15_45->ptr0000 + 2<i32>) + ((&r15_45->w001A)[5<i32>] * 2<20>) / 28<i32> - 2<16>) : word20)
+T_668: (in pxPortInitialiseStack(r12, r15, *((char *) &r15_45->ptr0000 + 2<i32>) + ((&r15_45->w001A)[5<i32>] *20 2<20>) /20 28<i32> - 2<16>) : word20)
   Class: Eq_668
   DataType: Eq_668
   OrigDataType: word20
@@ -5193,7 +5193,7 @@ T_767: (in 0x10<20> : word20)
   Class: Eq_767
   DataType: ui20
   OrigDataType: ui20
-T_768: (in v31_114 * 0x10<20> : word20)
+T_768: (in v31_114 *20 0x10<20> : word20)
   Class: Eq_768
   DataType: ui20
   OrigDataType: ui20
@@ -5201,11 +5201,11 @@ T_769: (in 0x222<16> : word16)
   Class: Eq_769
   DataType: word16
   OrigDataType: word16
-T_770: (in v31_114 * 0x10<20> + 0x222<16> : word20)
+T_770: (in v31_114 *20 0x10<20> + 0x222<16> : word20)
   Class: Eq_49
   DataType: Eq_49
   OrigDataType: ui20
-T_771: (in vListInsertEnd(&r15_45->t0008, v31_114 * 0x10<20> + 0x222<16>) : void)
+T_771: (in vListInsertEnd(&r15_45->t0008, v31_114 *20 0x10<20> + 0x222<16>) : void)
   Class: Eq_771
   DataType: void
   OrigDataType: void
@@ -6617,7 +6617,7 @@ T_1123: (in 0x10<20> : word20)
   Class: Eq_1123
   DataType: ui20
   OrigDataType: ui20
-T_1124: (in v19_160 * 0x10<20> : word20)
+T_1124: (in v19_160 *20 0x10<20> : word20)
   Class: Eq_1124
   DataType: ui20
   OrigDataType: ui20
@@ -6625,11 +6625,11 @@ T_1125: (in 0x222<16> : word16)
   Class: Eq_1125
   DataType: word16
   OrigDataType: word16
-T_1126: (in v19_160 * 0x10<20> + 0x222<16> : word20)
+T_1126: (in v19_160 *20 0x10<20> + 0x222<16> : word20)
   Class: Eq_49
   DataType: Eq_49
   OrigDataType: ui20
-T_1127: (in vListInsertEnd(r10_147, v19_160 * 0x10<20> + 0x222<16>) : void)
+T_1127: (in vListInsertEnd(r10_147, v19_160 *20 0x10<20> + 0x222<16>) : void)
   Class: Eq_771
   DataType: void
   OrigDataType: void
@@ -7361,7 +7361,7 @@ T_1309: (in 0x10<20> : word20)
   Class: Eq_1309
   DataType: ui20
   OrigDataType: ui20
-T_1310: (in v27_90 * 0x10<20> : word20)
+T_1310: (in v27_90 *20 0x10<20> : word20)
   Class: Eq_1310
   DataType: ui20
   OrigDataType: ui20
@@ -7369,11 +7369,11 @@ T_1311: (in 0x222<16> : word16)
   Class: Eq_1311
   DataType: word16
   OrigDataType: word16
-T_1312: (in v27_90 * 0x10<20> + 0x222<16> : word20)
+T_1312: (in v27_90 *20 0x10<20> + 0x222<16> : word20)
   Class: Eq_49
   DataType: Eq_49
   OrigDataType: ui20
-T_1313: (in vListInsertEnd(r10_62, v27_90 * 0x10<20> + 0x222<16>) : void)
+T_1313: (in vListInsertEnd(r10_62, v27_90 *20 0x10<20> + 0x222<16>) : void)
   Class: Eq_771
   DataType: void
   OrigDataType: void
@@ -7713,7 +7713,7 @@ T_1397: (in 0x10<20> : word20)
   Class: Eq_1397
   DataType: ui20
   OrigDataType: ui20
-T_1398: (in v14_51 * 0x10<20> : word20)
+T_1398: (in v14_51 *20 0x10<20> : word20)
   Class: Eq_1398
   DataType: ui20
   OrigDataType: ui20
@@ -7721,7 +7721,7 @@ T_1399: (in 0x222<16> : word16)
   Class: Eq_1399
   DataType: word16
   OrigDataType: word16
-T_1400: (in v14_51 * 0x10<20> + 0x222<16> : word20)
+T_1400: (in v14_51 *20 0x10<20> + 0x222<16> : word20)
   Class: Eq_49
   DataType: Eq_49
   OrigDataType: ui20
@@ -8097,7 +8097,7 @@ T_1493: (in 0x10<20> : word20)
   Class: Eq_1493
   DataType: ui20
   OrigDataType: ui20
-T_1494: (in r11_20 * 0x10<20> : word20)
+T_1494: (in r11_20 *20 0x10<20> : word20)
   Class: Eq_1494
   DataType: ui20
   OrigDataType: ui20
@@ -8105,11 +8105,11 @@ T_1495: (in 0x222<16> : word16)
   Class: Eq_1495
   DataType: word16
   OrigDataType: word16
-T_1496: (in r11_20 * 0x10<20> + 0x222<16> : word20)
+T_1496: (in r11_20 *20 0x10<20> + 0x222<16> : word20)
   Class: Eq_1492
   DataType: Eq_1492
   OrigDataType: ui20
-T_1497: (in vListInitialise(r11_20 * 0x10<20> + 0x222<16>) : void)
+T_1497: (in vListInitialise(r11_20 *20 0x10<20> + 0x222<16>) : void)
   Class: Eq_1497
   DataType: void
   OrigDataType: void
@@ -8573,7 +8573,7 @@ T_1612: (in 2<20> : word20)
   Class: Eq_1612
   DataType: ui20
   OrigDataType: ui20
-T_1613: (in r15 * 2<20> : word20)
+T_1613: (in r15 *20 2<20> : word20)
   Class: Eq_1602
   DataType: Eq_1602
   OrigDataType: ui20
@@ -8581,7 +8581,7 @@ T_1614: (in out r15_27 : word16)
   Class: Eq_1603
   DataType: Eq_1603
   OrigDataType: (union (ptr16 u1) (word20 u0))
-T_1615: (in pvPortMalloc(sr_15, r15 * 2<20>, out r15_27) : word20)
+T_1615: (in pvPortMalloc(sr_15, r15 *20 2<20>, out r15_27) : word20)
   Class: Eq_2
   DataType: ui20
   OrigDataType: word20
@@ -8629,7 +8629,7 @@ T_1626: (in r15 : Eq_1610)
   Class: Eq_1610
   DataType: Eq_1610
   OrigDataType: ui20
-T_1627: (in r15 * 2<20> : word20)
+T_1627: (in r15 *20 2<20> : word20)
   Class: Eq_1624
   DataType: Eq_1624
   OrigDataType: ui20
@@ -8637,7 +8637,7 @@ T_1628: (in 0xA5<16> : word16)
   Class: Eq_329
   DataType: ui20
   OrigDataType: (union (word20 u1) (word16 u0))
-T_1629: (in memset(sr_15, r15 * 2<20>, 0xA5<16>, r15_27) : word20)
+T_1629: (in memset(sr_15, r15 *20 2<20>, 0xA5<16>, r15_27) : word20)
   Class: Eq_2
   DataType: ui20
   OrigDataType: word20
@@ -8705,11 +8705,11 @@ T_1645: (in 0x10<20> : word20)
   Class: Eq_1645
   DataType: ui20
   OrigDataType: ui20
-T_1646: (in uxTopReadyPriority * 0x10<20> : word16)
+T_1646: (in uxTopReadyPriority *16 0x10<20> : word16)
   Class: Eq_1646
   DataType: ui16
   OrigDataType: ui16
-T_1647: (in 546<i16>[Mem0[0x020C<p16>:word16] * 0x10<20>] : word16)
+T_1647: (in 546<i16>[Mem0[0x020C<p16>:word16] *16 0x10<20>] : word16)
   Class: Eq_1647
   DataType: word16
   OrigDataType: word16
@@ -8717,7 +8717,7 @@ T_1648: (in 0<16> : word16)
   Class: Eq_1647
   DataType: word16
   OrigDataType: word16
-T_1649: (in (&g_w0222)[uxTopReadyPriority * 0x10<20>] != 0<16> : bool)
+T_1649: (in (&g_w0222)[uxTopReadyPriority *16 0x10<20>] != 0<16> : bool)
   Class: Eq_1649
   DataType: bool
   OrigDataType: bool
@@ -8741,11 +8741,11 @@ T_1654: (in 0x10<20> : word20)
   Class: Eq_1654
   DataType: ui20
   OrigDataType: ui20
-T_1655: (in uxTopReadyPriority * 0x10<20> : word20)
+T_1655: (in uxTopReadyPriority *20 0x10<20> : word20)
   Class: Eq_1655
   DataType: int20
   OrigDataType: int20
-T_1656: (in Mem30[0x020C<p16>:word16] * 0x10<20> + r13_29 : word20)
+T_1656: (in Mem30[0x020C<p16>:word16] *20 0x10<20> + r13_29 : word20)
   Class: Eq_1656
   DataType: (ptr20 Eq_1656)
   OrigDataType: (ptr20 (struct (4 T_1659 t0004)))
@@ -8753,11 +8753,11 @@ T_1657: (in 4<i16> : int16)
   Class: Eq_1657
   DataType: int16
   OrigDataType: int16
-T_1658: (in (word24) r13_29 + uxTopReadyPriority * 0x10<20> + 4<i16> : word20)
+T_1658: (in (word24) r13_29 + uxTopReadyPriority *20 0x10<20> + 4<i16> : word20)
   Class: Eq_1658
   DataType: ui20
   OrigDataType: ui20
-T_1659: (in Mem30[Mem30[0x020C<p16>:word16] * 0x10<20> + r13_29 + 4<i16>:word16] : word16)
+T_1659: (in Mem30[Mem30[0x020C<p16>:word16] *20 0x10<20> + r13_29 + 4<i16>:word16] : word16)
   Class: Eq_1659
   DataType: (ptr16 Eq_1659)
   OrigDataType: (ptr16 (struct (2 T_1662 t0002)))
@@ -8765,11 +8765,11 @@ T_1660: (in 2<i16> : int16)
   Class: Eq_1660
   DataType: int16
   OrigDataType: int16
-T_1661: (in (word24) r13_29 + uxTopReadyPriority * 0x10<20> + 4<i16> + 2<i16> : word20)
+T_1661: (in (word24) r13_29 + uxTopReadyPriority *20 0x10<20> + 4<i16> + 2<i16> : word20)
   Class: Eq_1661
   DataType: word16
   OrigDataType: word16
-T_1662: (in Mem30[Mem30[Mem30[0x020C<p16>:word16] * 0x10<20> + r13_29 + 4<i16>:word16] + 2<i16>:word16] : word16)
+T_1662: (in Mem30[Mem30[Mem30[0x020C<p16>:word16] *20 0x10<20> + r13_29 + 4<i16>:word16] + 2<i16>:word16] : word16)
   Class: Eq_1662
   DataType: word16
   OrigDataType: word16
@@ -8785,11 +8785,11 @@ T_1665: (in 0x10<20> : word20)
   Class: Eq_1665
   DataType: ui20
   OrigDataType: ui20
-T_1666: (in uxTopReadyPriority * 0x10<20> : word20)
+T_1666: (in uxTopReadyPriority *20 0x10<20> : word20)
   Class: Eq_1666
   DataType: int20
   OrigDataType: int20
-T_1667: (in Mem30[0x020C<p16>:word16] * 0x10<20> + r13_29 : word20)
+T_1667: (in Mem30[0x020C<p16>:word16] *20 0x10<20> + r13_29 : word20)
   Class: Eq_1667
   DataType: (ptr20 Eq_1667)
   OrigDataType: (ptr20 (struct (4 T_1670 t0004)))
@@ -8797,11 +8797,11 @@ T_1668: (in 4<i16> : int16)
   Class: Eq_1668
   DataType: int16
   OrigDataType: int16
-T_1669: (in (word24) r13_29 + uxTopReadyPriority * 0x10<20> + 4<i16> : word20)
+T_1669: (in (word24) r13_29 + uxTopReadyPriority *20 0x10<20> + 4<i16> : word20)
   Class: Eq_1669
   DataType: ui20
   OrigDataType: ui20
-T_1670: (in Mem50[Mem30[0x020C<p16>:word16] * 0x10<20> + r13_29 + 4<i16>:word16] : word16)
+T_1670: (in Mem50[Mem30[0x020C<p16>:word16] *20 0x10<20> + r13_29 + 4<i16>:word16] : word16)
   Class: Eq_1662
   DataType: word16
   OrigDataType: word16
@@ -8817,11 +8817,11 @@ T_1673: (in 0x10<20> : word20)
   Class: Eq_1673
   DataType: ui20
   OrigDataType: ui20
-T_1674: (in uxTopReadyPriority * 0x10<20> : word20)
+T_1674: (in uxTopReadyPriority *20 0x10<20> : word20)
   Class: Eq_1674
   DataType: int20
   OrigDataType: int20
-T_1675: (in Mem50[0x020C<p16>:word16] * 0x10<20> + r13_29 : word20)
+T_1675: (in Mem50[0x020C<p16>:word16] *20 0x10<20> + r13_29 : word20)
   Class: Eq_1675
   DataType: (ptr20 Eq_1675)
   OrigDataType: (ptr20 (struct (4 T_1678 t0004)))
@@ -8829,11 +8829,11 @@ T_1676: (in 4<i16> : int16)
   Class: Eq_1676
   DataType: int16
   OrigDataType: int16
-T_1677: (in (word24) r13_29 + uxTopReadyPriority * 0x10<20> + 4<i16> : word20)
+T_1677: (in (word24) r13_29 + uxTopReadyPriority *20 0x10<20> + 4<i16> : word20)
   Class: Eq_1677
   DataType: ui20
   OrigDataType: ui20
-T_1678: (in Mem50[Mem50[0x020C<p16>:word16] * 0x10<20> + r13_29 + 4<i16>:word16] : word16)
+T_1678: (in Mem50[Mem50[0x020C<p16>:word16] *20 0x10<20> + r13_29 + 4<i16>:word16] : word16)
   Class: Eq_1678
   DataType: word16
   OrigDataType: word16
@@ -8849,11 +8849,11 @@ T_1681: (in 0x10<20> : word20)
   Class: Eq_1681
   DataType: ui20
   OrigDataType: ui20
-T_1682: (in uxTopReadyPriority * 0x10<20> : word20)
+T_1682: (in uxTopReadyPriority *20 0x10<20> : word20)
   Class: Eq_1682
   DataType: int20
   OrigDataType: int20
-T_1683: (in Mem50[0x020C<p16>:word16] * 0x10<20> + r13_29 : word20)
+T_1683: (in Mem50[0x020C<p16>:word16] *20 0x10<20> + r13_29 : word20)
   Class: Eq_1683
   DataType: (ptr20 Eq_1683)
   OrigDataType: (ptr20 (struct (2 T_1686 t0002)))
@@ -8861,15 +8861,15 @@ T_1684: (in 2<i16> : int16)
   Class: Eq_1684
   DataType: int16
   OrigDataType: int16
-T_1685: (in (word24) r13_29 + uxTopReadyPriority * 0x10<20> + 2<i16> : word20)
+T_1685: (in (word24) r13_29 + uxTopReadyPriority *20 0x10<20> + 2<i16> : word20)
   Class: Eq_1685
   DataType: ui20
   OrigDataType: ui20
-T_1686: (in Mem50[Mem50[0x020C<p16>:word16] * 0x10<20> + r13_29 + 2<i16>:word16] : word16)
+T_1686: (in Mem50[Mem50[0x020C<p16>:word16] *20 0x10<20> + r13_29 + 2<i16>:word16] : word16)
   Class: Eq_1678
   DataType: word16
   OrigDataType: word16
-T_1687: (in (word24) r13_29 + uxTopReadyPriority * 0x10<20> + 4<i16> == ((word24) r13_29 + uxTopReadyPriority * 0x10<20>) + 2<i16> : bool)
+T_1687: (in (word24) r13_29 + uxTopReadyPriority *20 0x10<20> + 4<i16> == ((word24) r13_29 + uxTopReadyPriority *20 0x10<20>) + 2<i16> : bool)
   Class: Eq_1687
   DataType: bool
   OrigDataType: bool
@@ -8913,11 +8913,11 @@ T_1697: (in 0x10<20> : word20)
   Class: Eq_1697
   DataType: ui20
   OrigDataType: ui20
-T_1698: (in uxTopReadyPriority * 0x10<20> : word16)
+T_1698: (in uxTopReadyPriority *16 0x10<20> : word16)
   Class: Eq_1698
   DataType: ui16
   OrigDataType: ui16
-T_1699: (in 546<i16>[Mem19[0x020C<p16>:word16] * 0x10<20>] : word16)
+T_1699: (in 546<i16>[Mem19[0x020C<p16>:word16] *16 0x10<20>] : word16)
   Class: Eq_1699
   DataType: word16
   OrigDataType: word16
@@ -8925,7 +8925,7 @@ T_1700: (in 0<16> : word16)
   Class: Eq_1699
   DataType: word16
   OrigDataType: word16
-T_1701: (in (&g_w0222)[uxTopReadyPriority * 0x10<20>] == 0<16> : bool)
+T_1701: (in (&g_w0222)[uxTopReadyPriority *16 0x10<20>] == 0<16> : bool)
   Class: Eq_1701
   DataType: bool
   OrigDataType: bool
@@ -8945,11 +8945,11 @@ T_1705: (in 0x10<20> : word20)
   Class: Eq_1705
   DataType: ui20
   OrigDataType: ui20
-T_1706: (in uxTopReadyPriority * 0x10<20> : word16)
+T_1706: (in uxTopReadyPriority *16 0x10<20> : word16)
   Class: Eq_1706
   DataType: ui16
   OrigDataType: ui16
-T_1707: (in 550<i16>[Mem50[0x020C<p16>:word16] * 0x10<20>] : word16)
+T_1707: (in 550<i16>[Mem50[0x020C<p16>:word16] *16 0x10<20>] : word16)
   Class: Eq_1707
   DataType: (ptr16 Eq_1707)
   OrigDataType: (ptr16 (struct (2 T_1710 t0002)))
@@ -8957,11 +8957,11 @@ T_1708: (in 2<i16> : int16)
   Class: Eq_1708
   DataType: int16
   OrigDataType: int16
-T_1709: (in 550<i16>[Mem50[0x020C<p16>:word16] * 0x10<20>] + 2<i16> : word20)
+T_1709: (in 550<i16>[Mem50[0x020C<p16>:word16] *16 0x10<20>] + 2<i16> : word20)
   Class: Eq_1709
   DataType: word16
   OrigDataType: word16
-T_1710: (in Mem50[550<i16>[Mem50[0x020C<p16>:word16] * 0x10<20>] + 2<i16>:word16] : word16)
+T_1710: (in Mem50[550<i16>[Mem50[0x020C<p16>:word16] *16 0x10<20>] + 2<i16>:word16] : word16)
   Class: Eq_1710
   DataType: word16
   OrigDataType: word16
@@ -8981,11 +8981,11 @@ T_1714: (in 0x10<20> : word20)
   Class: Eq_1714
   DataType: ui20
   OrigDataType: ui20
-T_1715: (in uxTopReadyPriority * 0x10<20> : word16)
+T_1715: (in uxTopReadyPriority *16 0x10<20> : word16)
   Class: Eq_1715
   DataType: ui16
   OrigDataType: ui16
-T_1716: (in 550<i16>[Mem50[0x020C<p16>:word16] * 0x10<20>] : word16)
+T_1716: (in 550<i16>[Mem50[0x020C<p16>:word16] *16 0x10<20>] : word16)
   Class: Eq_1710
   DataType: word16
   OrigDataType: word16
@@ -9005,11 +9005,11 @@ T_1720: (in 0x10<20> : word20)
   Class: Eq_1720
   DataType: ui20
   OrigDataType: ui20
-T_1721: (in uxTopReadyPriority * 0x10<20> : word16)
+T_1721: (in uxTopReadyPriority *16 0x10<20> : word16)
   Class: Eq_1721
   DataType: ui16
   OrigDataType: ui16
-T_1722: (in 550<i16>[Mem90[0x020C<p16>:word16] * 0x10<20>] : word16)
+T_1722: (in 550<i16>[Mem90[0x020C<p16>:word16] *16 0x10<20>] : word16)
   Class: Eq_1722
   DataType: (ptr16 Eq_1722)
   OrigDataType: (ptr16 (struct (6 T_1725 t0006)))
@@ -9017,11 +9017,11 @@ T_1723: (in 6<i16> : int16)
   Class: Eq_1723
   DataType: int16
   OrigDataType: int16
-T_1724: (in 550<i16>[Mem90[0x020C<p16>:word16] * 0x10<20>] + 6<i16> : word20)
+T_1724: (in 550<i16>[Mem90[0x020C<p16>:word16] *16 0x10<20>] + 6<i16> : word20)
   Class: Eq_1724
   DataType: word16
   OrigDataType: word16
-T_1725: (in Mem90[550<i16>[Mem90[0x020C<p16>:word16] * 0x10<20>] + 6<i16>:word16] : word16)
+T_1725: (in Mem90[550<i16>[Mem90[0x020C<p16>:word16] *16 0x10<20>] + 6<i16>:word16] : word16)
   Class: Eq_633
   DataType: (ptr20 Eq_633)
   OrigDataType: word16
@@ -14877,7 +14877,7 @@ T_3188: (in 2<20> : word20)
   Class: Eq_3188
   DataType: ui20
   OrigDataType: ui20
-T_3189: (in r13_906 * 2<20> : word20)
+T_3189: (in r13_906 *20 2<20> : word20)
   Class: Eq_3187
   DataType: ui20
   OrigDataType: ui20
@@ -14901,19 +14901,19 @@ T_3194: (in 4<20> : word20)
   Class: Eq_3194
   DataType: ui20
   OrigDataType: ui20
-T_3195: (in r13_906 * 4<20> : word20)
+T_3195: (in r13_906 *20 4<20> : word20)
   Class: Eq_3195
   DataType: ui20
   OrigDataType: ui20
-T_3196: (in r13_906 * 4<20> + r14_916 : word20)
+T_3196: (in r13_906 *20 4<20> + r14_916 : word20)
   Class: Eq_3196
   DataType: ui20
   OrigDataType: ui20
-T_3197: (in r13_906 * 4<20> + r14_916 + r14_916 : word20)
+T_3197: (in r13_906 *20 4<20> + r14_916 + r14_916 : word20)
   Class: Eq_3197
   DataType: ui20
   OrigDataType: ui20
-T_3198: (in r13_906 * 4<20> + r14_916 + r14_916 + r14_916 : word20)
+T_3198: (in r13_906 *20 4<20> + r14_916 + r14_916 + r14_916 : word20)
   Class: Eq_3198
   DataType: ui20
   OrigDataType: ui20
@@ -14925,7 +14925,7 @@ T_3200: (in CONVERT(SLICE(r7_1042, byte, 0), byte, int16) : int16)
   Class: Eq_3200
   DataType: int16
   OrigDataType: int16
-T_3201: (in r13_906 * 4<20> + r14_916 + r14_916 + r14_916 + (int16) ((byte) r7_1042) : word20)
+T_3201: (in r13_906 *20 4<20> + r14_916 + r14_916 + r14_916 + (int16) ((byte) r7_1042) : word20)
   Class: Eq_3201
   DataType: ui20
   OrigDataType: ui20
@@ -14933,7 +14933,7 @@ T_3202: (in 0xFFD0<16> : word16)
   Class: Eq_3202
   DataType: word16
   OrigDataType: word16
-T_3203: (in r13_906 * 4<20> + r14_916 + r14_916 + r14_916 + (int16) ((byte) r7_1042) + 0xFFD0<16> : word20)
+T_3203: (in r13_906 *20 4<20> + r14_916 + r14_916 + r14_916 + (int16) ((byte) r7_1042) + 0xFFD0<16> : word20)
   Class: Eq_3092
   DataType: Eq_3092
   OrigDataType: ui20
@@ -15017,7 +15017,7 @@ T_3223: (in 2<20> : word20)
   Class: Eq_3223
   DataType: ui20
   OrigDataType: ui20
-T_3224: (in r13_849 * 2<20> : word20)
+T_3224: (in r13_849 *20 2<20> : word20)
   Class: Eq_3222
   DataType: ui20
   OrigDataType: ui20
@@ -15029,19 +15029,19 @@ T_3226: (in 4<20> : word20)
   Class: Eq_3226
   DataType: ui20
   OrigDataType: ui20
-T_3227: (in r13_849 * 4<20> : word20)
+T_3227: (in r13_849 *20 4<20> : word20)
   Class: Eq_3227
   DataType: ui20
   OrigDataType: ui20
-T_3228: (in r13_849 * 4<20> + r14_855 : word20)
+T_3228: (in r13_849 *20 4<20> + r14_855 : word20)
   Class: Eq_3228
   DataType: ui20
   OrigDataType: ui20
-T_3229: (in r13_849 * 4<20> + r14_855 + r14_855 : word20)
+T_3229: (in r13_849 *20 4<20> + r14_855 + r14_855 : word20)
   Class: Eq_3229
   DataType: ui20
   OrigDataType: ui20
-T_3230: (in r13_849 * 4<20> + r14_855 + r14_855 + r14_855 : word20)
+T_3230: (in r13_849 *20 4<20> + r14_855 + r14_855 + r14_855 : word20)
   Class: Eq_3230
   DataType: ui20
   OrigDataType: ui20
@@ -15053,7 +15053,7 @@ T_3232: (in CONVERT(SLICE(r7_1042, byte, 0), byte, int16) : int16)
   Class: Eq_3232
   DataType: int16
   OrigDataType: int16
-T_3233: (in r13_849 * 4<20> + r14_855 + r14_855 + r14_855 + (int16) ((byte) r7_1042) : word20)
+T_3233: (in r13_849 *20 4<20> + r14_855 + r14_855 + r14_855 + (int16) ((byte) r7_1042) : word20)
   Class: Eq_3225
   DataType: ui20
   OrigDataType: ui20
@@ -16381,7 +16381,7 @@ T_3564: (in 2<16> : word16)
   Class: Eq_3564
   DataType: ui16
   OrigDataType: ui16
-T_3565: (in v189_216 * 2<16> : word16)
+T_3565: (in v189_216 *16 2<16> : word16)
   Class: Eq_3565
   DataType: uint16
   OrigDataType: uint16
@@ -16389,15 +16389,15 @@ T_3566: (in 0<16> : word16)
   Class: Eq_3565
   DataType: uint16
   OrigDataType: cup16
-T_3567: (in v189_216 * 2<16> < 0<16> : bool)
+T_3567: (in v189_216 *16 2<16> < 0<16> : bool)
   Class: Eq_3567
   DataType: Eq_3567
   OrigDataType: (union (bool u0) (word16 u1))
-T_3568: (in 0<16> - (v189_216 * 2<16> < 0<16>) : word16)
+T_3568: (in 0<16> - (v189_216 *16 2<16> < 0<16>) : word16)
   Class: Eq_3568
   DataType: word16
   OrigDataType: word16
-T_3569: (in ~(0<16> - (v189_216 * 2<16> < 0<16>)) : word16)
+T_3569: (in ~(0<16> - (v189_216 *16 2<16> < 0<16>)) : word16)
   Class: Eq_231
   DataType: Eq_231
   OrigDataType: word16
@@ -18081,7 +18081,7 @@ T_3989: (in 2<20> : word20)
   Class: Eq_3989
   DataType: ui20
   OrigDataType: ui20
-T_3990: (in r12 * 2<20> : word20)
+T_3990: (in r12 *20 2<20> : word20)
   Class: Eq_230
   DataType: Eq_230
   OrigDataType: ui20
@@ -18089,7 +18089,7 @@ T_3991: (in 2<20> : word20)
   Class: Eq_3991
   DataType: ui20
   OrigDataType: ui20
-T_3992: (in r13 * 2<20> : word20)
+T_3992: (in r13 *20 2<20> : word20)
   Class: Eq_3992
   DataType: ui20
   OrigDataType: ui20
@@ -18101,7 +18101,7 @@ T_3994: (in r12 < 0<20> : bool)
   Class: Eq_3994
   DataType: bool
   OrigDataType: bool
-T_3995: (in r13 * 2<20> + (r12 < 0<20>) : word20)
+T_3995: (in r13 *20 2<20> + (r12 < 0<20>) : word20)
   Class: Eq_231
   DataType: Eq_231
   OrigDataType: ui20
@@ -18121,7 +18121,7 @@ T_3999: (in 2<20> : word20)
   Class: Eq_3999
   DataType: ui20
   OrigDataType: ui20
-T_4000: (in r8 * 2<20> : word20)
+T_4000: (in r8 *20 2<20> : word20)
   Class: Eq_4000
   DataType: ui20
   OrigDataType: ui20
@@ -18133,7 +18133,7 @@ T_4002: (in r13 < 0<20> : bool)
   Class: Eq_4002
   DataType: bool
   OrigDataType: bool
-T_4003: (in r8 * 2<20> + (r13 < 0<20>) : word20)
+T_4003: (in r8 *20 2<20> + (r13 < 0<20>) : word20)
   Class: Eq_1624
   DataType: Eq_1624
   OrigDataType: ui20
@@ -18173,7 +18173,7 @@ T_4012: (in 2<20> : word20)
   Class: Eq_4012
   DataType: ui20
   OrigDataType: ui20
-T_4013: (in r14_25 * 2<20> : word20)
+T_4013: (in r14_25 *20 2<20> : word20)
   Class: Eq_4013
   DataType: ui20
   OrigDataType: ui20
@@ -18185,7 +18185,7 @@ T_4015: (in r8 < 0<20> : bool)
   Class: Eq_4015
   DataType: bool
   OrigDataType: bool
-T_4016: (in r14_25 * 2<20> + (r8 < 0<20>) : word20)
+T_4016: (in r14_25 *20 2<20> + (r8 < 0<20>) : word20)
   Class: Eq_169
   DataType: Eq_169
   OrigDataType: ui20
@@ -18193,7 +18193,7 @@ T_4017: (in 2<20> : word20)
   Class: Eq_4017
   DataType: ui20
   OrigDataType: ui20
-T_4018: (in r15_29 * 2<20> : word20)
+T_4018: (in r15_29 *20 2<20> : word20)
   Class: Eq_4018
   DataType: ui20
   OrigDataType: ui20
@@ -18205,7 +18205,7 @@ T_4020: (in r14_25 < 0<20> : bool)
   Class: Eq_4020
   DataType: bool
   OrigDataType: bool
-T_4021: (in r15_29 * 2<20> + (r14_25 < 0<20>) : word20)
+T_4021: (in r15_29 *20 2<20> + (r14_25 < 0<20>) : word20)
   Class: Eq_169
   DataType: Eq_169
   OrigDataType: ui20

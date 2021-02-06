@@ -2522,8 +2522,8 @@ word16 fn9E08(word16 r0, byte r1h, byte r1l)
 fn9E08_entry:
 	byte r0h_8 = SLICE(r0, byte, 8)
 l9E08:
-	word16 r0_11 = r0h_8 *u r1l
-	return SEQ(SLICE(r0_11, byte, 8) + SLICE(SLICE(r0, byte, 8) *u r1h, byte, 0) + SLICE(r1h *u r0h_8, byte, 0), SLICE(r0_11, byte, 0))
+	word16 r0_11 = r0h_8 *u16 r1l
+	return SEQ(SLICE(r0_11, byte, 8) + SLICE(SLICE(r0, byte, 8) *u16 r1h, byte, 0) + SLICE(r1h *u16 r0h_8, byte, 0), SLICE(r0_11, byte, 0))
 fn9E08_exit:
 
 

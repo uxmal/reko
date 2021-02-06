@@ -38,15 +38,16 @@ void __do_global_dtors_aux(word32 o3, word32 o4, word32 o5, word32 o7)
 	if (**o2_n != 0x00)
 	{
 		word32 ** l0_n = o2_n;
-		word32 * o0_n = (char *) *o2_n + 4;
+		struct Eq_n * o0_n = (char *) *o2_n + 4;
 		while (true)
 		{
-			*l0_n = o0_n;
-			fn02800018();
+			*l0_n = (word32 **) o0_n;
+			<anonymous> * o1_n = o0_n->dwFFFFFFFC;
+			o1_n();
 			word32 * o0_n = *l0_n;
 			if (*o0_n == 0x00)
 				break;
-			o0_n = o0_n + 1;
+			o0_n = (struct Eq_n *) (o0_n + 1);
 		}
 	}
 	if (l7_n->dw001C == 0x00)
@@ -1624,7 +1625,7 @@ Eq_n gen_aux_info_file(Eq_n o0, ptr32 & l0Out, struct stat & l1Out, char & l4Out
 		{
 			char * l2_n = errno;
 			fprintf(&g_t2B640, "%s: ", l0_n->ptr0150);
-			fprintf(&g_t2B640, i6_n->ptrFFFFFFEC, i6_n->ptrFFFFFFE8);
+			fprintf(&g_t2B640, i6_n->ptrFFFFFFEC, 0x00);
 			xstrerror(l2_n);
 			fprintf(&g_t2B640, ": %s\n", l2_n);
 			ptr32 i2_n;
@@ -2855,7 +2856,8 @@ void _obstack_begin(struct Eq_n * o0, word32 o1, word32 o2, <anonymous> * o3, wo
 	else
 	{
 		i0_n->ptr0004 = i1_n;
-		fn00000FE8();
+		<anonymous> * o1_n = obstack_alloc_failed_handler;
+		o1_n();
 	}
 }
 
@@ -2911,7 +2913,8 @@ void _obstack_begin_n(struct Eq_n * o0, word32 o1, word32 o2, <anonymous> * o3, 
 	else
 	{
 		i0_n->ptr0004 = i1_n;
-		fn00000FE8();
+		<anonymous> * o1_n = obstack_alloc_failed_handler;
+		o1_n();
 	}
 }
 
@@ -4071,11 +4074,11 @@ void getopt_long_only(Eq_n (* o1)[], int8 * o2, ptr32 * o4)
 //      gen_aux_info_file
 Eq_n pexecute(Eq_n o0, pid_t * o1, word32 o3, word32 * o4, word32 * o5, Eq_n l1, ui32 dwArg5C, ptr32 & l0Out, ptr32 & i6Out)
 {
-	word32 o0_n;
+	<anonymous> * o0_n;
 	if ((dwArg5C & 0x04) != 0x00)
-		o0_n = 163388;
+		o0_n = &g_t27E3C;
 	else
-		o0_n = 163400;
+		o0_n = &g_t27E48;
 	if ((dwArg5C & 0x01) != 0x00)
 		g_t2B310.u0 = 0x00;
 	Eq_n dwLoc24_n;
@@ -4137,9 +4140,9 @@ l00016AEC:
 			if (o0_n != 0x00)
 				close(o0_n);
 			struct Eq_n * i6_n;
-			fn00000000();
+			o0_n();
 			fprintf(&g_t2B640, "%s: ", i6_n->ptr004C);
-			fprintf(&g_t2B640, install_error_msg, i6_n->ptr0044);
+			fprintf(&g_t2B640, install_error_msg, 0x00);
 			char * o0_n = errno;
 			xstrerror(o0_n);
 			fprintf(&g_t2B640, ": %s\n", o0_n);
@@ -4340,8 +4343,10 @@ word32 * __do_global_ctors_aux(word32 o3, word32 o4, word32 o5, word32 o7)
 	{
 		l0_n = &o1_n->dwFFFFFFFC;
 		do
-			fn00000014();
-		while (*l0_n != ~0x00);
+		{
+			<anonymous> * o0_n = *l0_n;
+			o0_n();
+		} while (*l0_n != (<anonymous> *) ~0x00);
 	}
 	else
 		l0_n = &o1_n->dwFFFFFFFC;

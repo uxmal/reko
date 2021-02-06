@@ -100,6 +100,26 @@ namespace Reko.Arch.X86
             }
         }
 
+        public class VexLongDecoder : Decoder
+        {
+            private readonly Decoder notLongDecoder;
+            private readonly Decoder longDecoder;
+
+            public VexLongDecoder(Decoder notLongDecoder, Decoder longDecoder)
+            {
+                this.notLongDecoder = notLongDecoder;
+                this.longDecoder = longDecoder;
+            }
+
+            public override bool Decode(X86Disassembler disasm, byte op)
+            {
+                var decoder = disasm.decodingContext.VexLong
+                    ? longDecoder
+                    : notLongDecoder;
+                return decoder.Decode(disasm, op);
+            }
+        }
+
         /// <summary>
         /// Use this decoder when an instruction encoding is dependent on whether the processor
         /// is in 64-bit mode or not.

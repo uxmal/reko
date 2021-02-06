@@ -156,11 +156,12 @@ namespace Reko.CmdLine
         private void Decompile(Dictionary<string, object> pArgs)
         {
             pArgs.TryGetValue("--loader", out object loader);
+            var addrLoad = ParseAddress(pArgs, "--base");
             try
             {
                 var fileName = (string) pArgs["filename"];
                 var filePath = Path.GetFullPath(fileName);
-                if (!decompiler.Load(filePath, (string) loader))
+                if (!decompiler.Load(filePath, (string) loader, addrLoad))
                     return;
 
                 decompiler.Project.Programs[0].User.ExtractResources =
@@ -213,6 +214,20 @@ namespace Reko.CmdLine
             catch (Exception ex)
             {
                 listener.Error(ex, "An error occurred during decompilation.");
+            }
+        }
+
+        private Address ParseAddress(Dictionary<string, object> pArgs, string key)
+        {
+            if (pArgs.TryGetValue(key, out var osAddr) &&
+                osAddr is string sAddr && 
+                ulong.TryParse(sAddr, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out ulong uAddr))
+            {
+                return Address.Ptr64(uAddr);
+            }
+            else
+            {
+                return null;
             }
         }
 

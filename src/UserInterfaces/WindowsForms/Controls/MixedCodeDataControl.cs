@@ -82,7 +82,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             {
                 if (program != null)
                 {
-                    Model = new MixedCodeDataModel(program);
+                    Model = new MixedCodeDataModel(program, program.ImageMap.Clone());
                     var currentPos = Model.CurrentPosition;
                     addrTop = MixedCodeDataModel.PositionAddress(currentPos);
                     return;
@@ -125,7 +125,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         private void RefreshModel()
         {
             var currentPos = Model.CurrentPosition;
-            var model = new MixedCodeDataModel(program);
+            var model = new MixedCodeDataModel(program, program.ImageMap.Clone());
             model.MoveToLine(currentPos, 0);
             currentPos = Model.CurrentPosition;
             this.addrTop = MixedCodeDataModel.PositionAddress(currentPos);

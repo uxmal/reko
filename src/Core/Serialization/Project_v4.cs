@@ -112,6 +112,7 @@ namespace Reko.Core.Serialization
             Calls = new List<SerializedCall_v1>();
             IndirectJumps = new List<IndirectJump_v4>();
             Segments = new List<Segment_v4>();
+            BlockLabels = new List<BlockLabel_v1>();
         }
 
         [XmlElement("address")]
@@ -149,6 +150,9 @@ namespace Reko.Core.Serialization
 
         [XmlElement("annotation")]
         public List<Annotation_v3> Annotations;
+
+        [XmlElement("blocklabel")]
+        public List<BlockLabel_v1> BlockLabels;
 
         [XmlElement("textEncoding")]
         public string? TextEncoding;
@@ -238,5 +242,14 @@ namespace Reko.Core.Serialization
 
         [XmlAttribute("access")]
         public string? Access;
+    }
+
+    public class BlockLabel_v1
+    {
+        [XmlAttribute("location")]
+        public string? Location;
+
+        [XmlAttribute("name")]
+        public string? Name;
     }
 }

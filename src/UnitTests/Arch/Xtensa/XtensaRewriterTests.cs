@@ -211,7 +211,7 @@ namespace Reko.UnitTests.Arch.Xtensa
         {
             Given_UInt32s(0x000000);  // ill
             AssertCode(
-                "0|L--|00010000(3): 1 instructions",
+                "0|---|00010000(3): 1 instructions",
                 "1|L--|__ill()");
         }
 
@@ -1855,7 +1855,7 @@ namespace Reko.UnitTests.Arch.Xtensa
         {
             Given_HexString("305700");    // syscall
             AssertCode(
-                "0|L--|00010000(3): 1 instructions",
+                "0|T--|00010000(3): 1 instructions",
                 "1|L--|__syscall()");
         }
 

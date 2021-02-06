@@ -35,10 +35,11 @@ namespace Reko.ImageLoaders.MachO
 
     public abstract class Parser
     {
-        // http://www.opensource.apple.com/source/xnu/xnu-792.13.8/osfmk/mach/machine.h
+        // https://opensource.apple.com/source/xnu/xnu-792.13.8/osfmk/mach/machine.h
+        // https://opensource.apple.com/source/xnu/xnu-2050.18.24/EXTERNAL_HEADERS/mach-o/loader.h
 
-        public const uint CPU_ARCH_MASK = 0xff000000;		/* mask for architecture bits */
-        public const uint CPU_ARCH_ABI64 = 0x01000000;		/* 64 bit ABI */
+        public const uint CPU_ARCH_MASK = 0xff000000;		// mask for architecture bits
+        public const uint CPU_ARCH_ABI64 = 0x01000000;		// 64 bit ABI
 
         public const uint CPU_TYPE_ANY = 0xFFFFFFFF;
         public const uint CPU_TYPE_VAX = 1;
@@ -63,10 +64,8 @@ namespace Reko.ImageLoaders.MachO
         protected MachOLoader ldr;
         private IConfigurationService cfgSvc;
         protected EndianByteImageReader rdr;
-        public ArchSpecific specific;
         protected Dictionary<uint, uint> mpCputypeToUnixthreadPc;
         protected Dictionary<string, ulong> segments;
-        private string platformName;
 
         protected Parser(MachOLoader ldr, EndianByteImageReader rdr)
         {
@@ -75,16 +74,19 @@ namespace Reko.ImageLoaders.MachO
             this.rdr = rdr;
             this.mpCputypeToUnixthreadPc = new Dictionary<uint, uint>
             {
-                { CPU_TYPE_POWERPC, 0x0010 },
+                { CPU_TYPE_POWERPC, 0x0000 },
                 { CPU_TYPE_POWERPC64, 0x0010 },
                 { CPU_TYPE_X86, 0x38 },
-                { CPU_TYPE_X86_64, 0x90 },
+                { CPU_TYPE_X86_64, 0x80 },
                 { CPU_TYPE_ARM, 0x4C },
                 { CPU_TYPE_ARM64, 0x110 },
                 { CPU_TYPE_MC680x0, 0x44 }
             };
             this.segments = new Dictionary<string, ulong>();
         }
+
+        public DySymtab? dysymtab { get; private set; }
+
 
         public ArchSpecific CreateArchitecture(uint cputype)
         {
@@ -105,7 +107,7 @@ namespace Reko.ImageLoaders.MachO
         private ArchSpecific MakeSpecific(string archLabel, Func<IProcessorArchitecture, ArchSpecific> ctor)
         {
             var arch = cfgSvc.GetArchitecture(archLabel);
-            return ctor(arch);
+            return ctor(arch!);
         }
 
         /// <summary>
@@ -113,9 +115,9 @@ namespace Reko.ImageLoaders.MachO
         /// </summary>
         /// <param name="addrLoad"></param>
         /// <returns>The number of load commands in the header.</returns>
-        public abstract mach_header_64 ParseHeader(Address addrLoad);
+        public abstract (mach_header_64, ArchSpecific) ParseHeader(Address? addrLoad);
 
-
+        // http://www.m4b.io/reverse/engineering/mach/binaries/2015/03/29/mach-binaries.html
         // http://llvm.org/docs/doxygen/html/Support_2MachO_8h_source.html
         // http://opensource.apple.com//source/clang/clang-503.0.38/src/tools/macho-dump/macho-dump.cpp
         // https://github.com/opensource-apple/cctools/blob/master/libstuff/ofile.c
@@ -175,11 +177,11 @@ namespace Reko.ImageLoaders.MachO
             LC_VERSION_MIN_WATCHOS = 0x00000030u,
         }
 
-        public Program ParseLoadCommands(mach_header_64 hdr, Address addrLoad)
+        public Program ParseLoadCommands(mach_header_64 hdr, IProcessorArchitecture arch, Address addrLoad)
         {
             var imageMap = new SegmentMap(addrLoad);
             Debug.Print("Parsing {0} load commands.", hdr.ncmds);
-
+            string? platformName = null;
             for (uint i = 0; i < hdr.ncmds; ++i)
             {
                 var pos = rdr.Offset;
@@ -201,41 +203,41 @@ namespace Reko.ImageLoaders.MachO
                     ParseSegmentCommand64(imageMap);
                     break;
                 case LC_SYMTAB:
-                    ParseSymtabCommand(specific.Architecture);
+                    ParseSymtabCommand(arch);
                     break;
                 case LC_DYSYMTAB:
-                    ParseDysymtabCommand();
+                    ParseDysymtabCommand(arch);
                     break;
                 case LC_FUNCTION_STARTS:
                     ParseFunctionStarts(rdr.Clone());
                     break;
                 case LC_UNIXTHREAD:
-                    ParseUnixThread(hdr.cputype);
+                    ParseUnixThread(hdr.cputype, arch);
                     break;
                 case LC_VERSION_MIN_MACOSX:
                     platformName = "macOsX";
                     break;
                 case LC_MAIN & ~LC_REQ_DYLD:
-                    ParseMain();
+                    ParseMain(arch);
                     break;
                 }
                 rdr.Offset = pos + cmdsize;
             }
-            ldr.program.Architecture = specific.Architecture;
+            ldr.program.Architecture = arch;
             ldr.program.SegmentMap = imageMap;
             if (!string.IsNullOrEmpty(platformName))
             {
-                var env = cfgSvc.GetEnvironment(platformName);
-                ldr.program.Platform = env.Load(ldr.Services, specific.Architecture);
+                var env = cfgSvc.GetEnvironment(platformName!);
+                ldr.program.Platform = env.Load(ldr.Services, arch);
             }
             else
             {
-                ldr.program.Platform = new DefaultPlatform(ldr.Services, specific.Architecture);
+                ldr.program.Platform = new DefaultPlatform(ldr.Services, arch);
             }
             return ldr.program;
         }
 
-        protected MachOSection FindSectionByType(SectionFlags type)
+        protected MachOSection? FindSectionByType(SectionFlags type)
         {
             foreach (var kv in ldr.imageSections)
             {
@@ -245,24 +247,7 @@ namespace Reko.ImageLoaders.MachO
             return null;
         }
 
-        protected abstract void ParseUnixThread(uint cputype);
-
-        private static string ReadSectionName(EndianImageReader rdr, int maxSize)
-        {
-            byte[] bytes = rdr.ReadBytes(maxSize);
-            Encoding asc = Encoding.ASCII;
-            char[] chars = asc.GetChars(bytes);
-            int i;
-            for (i = chars.Length - 1; i >= 0; --i)
-            {
-                if (chars[i] != 0)
-                {
-                    ++i;
-                    break;
-                }
-            }
-            return new String(chars, 0, i);
-        }
+        protected abstract void ParseUnixThread(uint cputype, IProcessorArchitecture arch);
 
         void ParseSegmentCommand32(SegmentMap imageMap)
         {
@@ -278,7 +263,7 @@ namespace Reko.ImageLoaders.MachO
             {
                 throw new BadImageFormatException("Could not read segment command.");
             }
-            Debug.Print("  Found segment '{0}' at address {1} with {2} sections.", segname, vmaddr, nsects);
+            Debug.Print("  Found segment '{0}' at address {1:X} of length {2:X} with {3} sections.", segname, vmaddr, vmsize, nsects);
             this.segments[segname] = vmaddr;
 
             for (uint i = 0; i < nsects; ++i)
@@ -338,6 +323,31 @@ namespace Reko.ImageLoaders.MachO
             }
         }
 
+        [Conditional("DEBUG")]
+        protected static void DumpData(ulong offset, byte[] data)
+        {
+            var sb = new StringBuilder();
+            var offsetLo = offset & ~0xFul; 
+            while (offsetLo < offset + (uint) data.Length)
+            {
+                sb.AppendFormat("{0:X8}", offsetLo);
+                for (int i = 0; i < 16; ++i, ++offsetLo)
+                {
+                    if (offsetLo < offset)
+                        sb.Append("   ");
+                    else
+                    {
+                        int j = (int) (offsetLo - offset);
+                        if (j >= data.Length)
+                            break;
+                        sb.AppendFormat(" {0:X2}", data[j]);
+                    }
+                }
+                sb.AppendLine();
+            }
+            Debug.Write(sb.ToString());
+        }
+
         public string GetAsciizString(byte[] bytes, int iStart)
         {
             int iEnd = Array.IndexOf<byte>(bytes, 0, iStart);
@@ -376,7 +386,7 @@ namespace Reko.ImageLoaders.MachO
                     segmentName,
                     uAddr,
                     size);
-            Debug.Print("      reloff:  {0:X8} nreloc: {1:X} flags {2:X}", reloff, nreloc, flags);
+            Debug.Print("      reloff:  {0:X8} nreloc: {1:X} flags {2}", reloff, nreloc, RenderSectionFlags(flags));
             Debug.Print("      reserv1: {0:X8} reserv2: {1:X8}", reserved1, reserved2);
 
 
@@ -385,6 +395,11 @@ namespace Reko.ImageLoaders.MachO
             var name = string.Format("{0},{1}", segmentName, sectionName);
 
             AddSection(segmentMap, size, flags, reserved1, reserved2, protection, addr, bytes, name);
+        }
+
+        private string RenderSectionFlags(uint flags)
+        {
+            return $"{flags:X8}";
         }
 
         private void AddSection(SegmentMap segmentMap, uint size, uint flags, uint reserved1, uint reserved2, uint protection, Address addr, EndianImageReader bytes, string name)
@@ -451,7 +466,7 @@ namespace Reko.ImageLoaders.MachO
             AddSection(segmentMap, (uint)size, flags, reserved1, reserved2, protection, addr, bytes, name);
         }
 
-        protected abstract void ParseMain();
+        protected abstract void ParseMain(IProcessorArchitecture arch);
 
         void ParseSymtabCommand(IProcessorArchitecture arch)
         {
@@ -470,7 +485,7 @@ namespace Reko.ImageLoaders.MachO
                     if (msym != null)
                     {
                         ldr.machoSymbols.Add(msym);
-                        if (addr.ToLinear() != 0 &&
+                        if (addr!.ToLinear() != 0 &&
                             msym.Name != "radr://5614542")      // Ignore Apple's hack for radar bug 5614542
                         {
                             ldr.imageSymbols[addr] = ImageSymbol.Procedure(arch, addr, msym.Name);
@@ -541,41 +556,49 @@ namespace Reko.ImageLoaders.MachO
                 */
         }
 
-        public abstract (MachOSymbol, Address) ReadSymbol(byte[] strBytes, EndianImageReader syms, uint i);
+        public abstract (MachOSymbol?, Address?) ReadSymbol(byte[] strBytes, EndianImageReader syms, uint i);
 
-        void ParseDysymtabCommand()
+        void ParseDysymtabCommand(IProcessorArchitecture arch)
         {
-            if (rdr.TryReadUInt32(out uint ilocalsym) &&
-                rdr.TryReadUInt32(out uint nlocalsym) &&
-                rdr.TryReadUInt32(out uint iextdefsym) &&
-                rdr.TryReadUInt32(out uint nextdefsym) &&
-                rdr.TryReadUInt32(out uint iundefsym) &&
-                rdr.TryReadUInt32(out uint nundefsym) &&
-                rdr.TryReadUInt32(out uint tocoff) &&
-                rdr.TryReadUInt32(out uint ntoc) &&
-                rdr.TryReadUInt32(out uint modtaboff) &&
-                rdr.TryReadUInt32(out uint nmodtab) &&
-                rdr.TryReadUInt32(out uint extrefsymoff) &&
-                rdr.TryReadUInt32(out uint nextrefsyms) &&
-                rdr.TryReadUInt32(out uint indirectsymoff) &&
-                rdr.TryReadUInt32(out uint nindirectsyms) &&
-                rdr.TryReadUInt32(out uint extreloff) &&
-                rdr.TryReadUInt32(out uint nextrel) &&
-                rdr.TryReadUInt32(out uint locreloff) &&
-                rdr.TryReadUInt32(out uint nlocrel))
+            if (dysymtab != null)
             {
-                if (nundefsym > 0 && nindirectsyms > 0)
+                var listener = ldr.Services.RequireService<Reko.Core.Services.DecompilerEventListener>();
+                listener.Warn("Multiple dysymtab commands found.");
+            }
+            this.dysymtab = new DySymtab();
+            if (rdr.TryReadUInt32(out this.dysymtab.ilocalsym) &&
+                rdr.TryReadUInt32(out this.dysymtab.nlocalsym) &&
+                rdr.TryReadUInt32(out this.dysymtab.iextdefsym) &&
+                rdr.TryReadUInt32(out this.dysymtab.nextdefsym) &&
+
+                rdr.TryReadUInt32(out this.dysymtab.iundefsym) &&
+                rdr.TryReadUInt32(out this.dysymtab.nundefsym) &&
+                rdr.TryReadUInt32(out this.dysymtab.tocoff) &&
+                rdr.TryReadUInt32(out this.dysymtab.ntoc) &&
+
+                rdr.TryReadUInt32(out this.dysymtab.modtaboff) &&
+                rdr.TryReadUInt32(out this.dysymtab.nmodtab) &&
+                rdr.TryReadUInt32(out this.dysymtab.extrefsymoff) &&
+                rdr.TryReadUInt32(out this.dysymtab.nextrefsyms) &&
+
+                rdr.TryReadUInt32(out this.dysymtab.indirectsymoff) &&
+                rdr.TryReadUInt32(out this.dysymtab.nindirectsyms) &&
+                rdr.TryReadUInt32(out this.dysymtab.extreloff) &&
+                rdr.TryReadUInt32(out this.dysymtab.nextrel) &&
+                rdr.TryReadUInt32(out this.dysymtab.locreloff) &&
+                rdr.TryReadUInt32(out this.dysymtab.nlocrel))
+            {
+                if (dysymtab.nundefsym > 0 && dysymtab.nindirectsyms > 0)
                 {
-                    var rdrIndirect = rdr.CreateNew(ldr.RawImage, indirectsymoff);
-                    var indirects = LoadIndirectSymbols(rdrIndirect, nindirectsyms);
+                    var rdrIndirect = rdr.CreateNew(ldr.RawImage, dysymtab.indirectsymoff);
+                    var indirects = LoadIndirectSymbols(rdrIndirect, dysymtab.nindirectsyms);
                     var lazySection = FindSectionByType(S_LAZY_SYMBOL_POINTERS);
                     if (lazySection != null)
-                        LoadImports(lazySection, indirects);
+                        LoadImports(lazySection, indirects, arch);
                     var nonLazySection = FindSectionByType(S_NON_LAZY_SYMBOL_POINTERS);
                     if (nonLazySection != null)
-                        LoadImports(nonLazySection, indirects);
+                        LoadImports(nonLazySection, indirects, arch);
                 }
-                nextrel.ToString();
             }
             else
             {
@@ -583,7 +606,7 @@ namespace Reko.ImageLoaders.MachO
             }
         }
 
-        protected abstract void LoadImports(MachOSection msec, List<uint> indirects);
+        protected abstract void LoadImports(MachOSection msec, List<uint> indirects, IProcessorArchitecture arch);
 
         private List<uint> LoadIndirectSymbols(EndianImageReader rdr, uint nindirectsyms)
         {
@@ -595,7 +618,7 @@ namespace Reko.ImageLoaders.MachO
                 if (!rdr.TryReadUInt32(out uint indir))
                     return indirects;
                 indirects.Add(indir);
-                if ((int)indir < 0)
+                if ((int)indir < 0 || (int)indir >= ldr.machoSymbols.Count)
                 {
                     Debug.Print(" *** Invalid indirect symbol {0:X}", indir);
                 }
@@ -638,7 +661,7 @@ namespace Reko.ImageLoaders.MachO
         {
         }
 
-        public override mach_header_64 ParseHeader(Address addrLoad)
+        public override (mach_header_64, ArchSpecific) ParseHeader(Address? addrLoad)
         {
             if (rdr.TryReadUInt32(out uint magic) &&
                 rdr.TryReadUInt32(out uint cputype) &&
@@ -648,9 +671,8 @@ namespace Reko.ImageLoaders.MachO
                 rdr.TryReadUInt32(out uint sizeofcmds) &&
                 rdr.TryReadUInt32(out uint flags))
             {
-                var cfgSvc = ldr.Services.RequireService<IConfigurationService>();
-                specific = CreateArchitecture(cputype);
-                return new mach_header_64
+                var specific = CreateArchitecture(cputype);
+                var hdr = new mach_header_64
                 {
                     magic = magic,
                     cputype = cputype,
@@ -660,33 +682,39 @@ namespace Reko.ImageLoaders.MachO
                     sizeofcmds = sizeofcmds,
                     flags = flags
                 };
+                return (hdr, specific);
             }
             throw new BadImageFormatException("Invalid Mach-O header.");
         }
 
-        protected override void ParseMain()
+        protected override void ParseMain(IProcessorArchitecture arch)
         {
             throw new NotImplementedException();
         }
 
-        protected override void ParseUnixThread(uint cputype)
+        protected override void ParseUnixThread(uint cputype, IProcessorArchitecture arch)
         {
             if (rdr.TryReadUInt32(out uint flavor) &&
                 rdr.TryReadUInt32(out uint count))
             {
                 var data = rdr.ReadBytes(count * 4);
+
+                DumpData(0, data);
                 if (!mpCputypeToUnixthreadPc.TryGetValue(cputype, out uint uOffAddrStart))
                     throw new BadImageFormatException($"LC_PARSEUNIXTHREAD for CPU type {cputype} has not been implemented.");
-                var ep = ByteMemoryArea.ReadBeUInt32(data, uOffAddrStart);
-                base.ldr.entryPoints.Add(ImageSymbol.Procedure(specific.Architecture, Address.Ptr32(ep)));
+                var rdrPtr = arch.Endianness.CreateImageReader(data, uOffAddrStart);
+                if (rdrPtr.TryReadUInt32(out uint ep))
+                {
+                    base.ldr.entryPoints.Add(ImageSymbol.Procedure(arch, Address.Ptr32(ep)));
+                }
             }
         }
 
-        protected override void LoadImports(MachOSection section, List<uint> indirects)
+        protected override void LoadImports(MachOSection section, List<uint> indirects, IProcessorArchitecture arch)
         {
             Debug.Print("    Loading imports from section {0} / res: {1:X8}", section.Name, section.Reserved1);
             var iseg = ldr.imageSections[section];
-            var rdr = iseg.CreateImageReader(specific.Architecture);
+            var rdr = iseg.CreateImageReader(arch);
             var addr = rdr.Address;
             var tableIndex = section.Reserved1;
             int i = (int) tableIndex;
@@ -695,9 +723,9 @@ namespace Reko.ImageLoaders.MachO
                 var msym = ldr.machoSymbols[(int) indirects[i]];
                 Debug.Print("      {0}: {1:X8} {2}", addr, uImport, msym.Name);
                 var addrImport = Address.Ptr32(uImport);
-                var ptr = new Pointer(new CodeType(), specific.Architecture.PointerType.BitSize);
+                var ptr = new Pointer(new CodeType(), arch.PointerType.BitSize);
                 var impSymbol = ImageSymbol.DataObject(
-                    specific.Architecture,
+                    arch,
                     addr,
                     "__imp__" + msym.Name,
                     ptr);
@@ -708,7 +736,7 @@ namespace Reko.ImageLoaders.MachO
             }
         }
 
-        public override (MachOSymbol, Address) ReadSymbol(byte[] strBytes, EndianImageReader syms, uint i)
+        public override (MachOSymbol?, Address?) ReadSymbol(byte[] strBytes, EndianImageReader syms, uint i)
         {
             if (syms.TryReadUInt32(out uint n_strx) &&
                 syms.TryReadByte(out byte n_type) &&
@@ -717,10 +745,11 @@ namespace Reko.ImageLoaders.MachO
                 syms.TryReadUInt32(out uint n_value))
             {
                 var str = GetAsciizString(strBytes, (int) n_strx);
-                Debug.Print("      {0,2}: {1:X8} {2:X8} {3}({4}) {5:X4} {6:X8} {7}",
-                    i, n_strx, n_type, ldr.sections[n_sect].Name,
+                var secName = n_sect < ldr.sections.Count ? ldr.sections[n_sect].Name : n_sect.ToString();
+                Debug.Print("      {0,2}: {2,-8} {3}({4}) {5:X4} {6:X8} {7}",
+                    i, n_strx, (Stab) n_type, secName,
                     n_sect, n_desc, n_value, str);
-                var msym = new MachOSymbol(str, n_type, ldr.sections[n_sect], n_desc, n_value);
+                var msym = new MachOSymbol(str, n_type, n_sect, n_desc, n_value);
                 var addr = Address.Ptr32(n_value);
                 return (msym, addr);
             }
@@ -736,7 +765,7 @@ namespace Reko.ImageLoaders.MachO
         {
         }
 
-        public override mach_header_64 ParseHeader(Address addrLoad)
+        public override (mach_header_64, ArchSpecific) ParseHeader(Address? addrLoad)
         {
             if (rdr.TryReadUInt32(out uint magic) &&
               rdr.TryReadUInt32(out uint cputype) &&
@@ -747,8 +776,8 @@ namespace Reko.ImageLoaders.MachO
               rdr.TryReadUInt32(out uint flags) &&
               rdr.TryReadUInt32(out uint reserved))
             {
-                specific = CreateArchitecture(cputype);
-                return new mach_header_64
+                var specific = CreateArchitecture(cputype);
+                var header = new mach_header_64
                 {
                     magic = magic,
                     cputype = cputype,
@@ -759,28 +788,67 @@ namespace Reko.ImageLoaders.MachO
                     flags = flags,
                     reserved = reserved,
                 };
+                return (header, specific);
             }
             throw new BadImageFormatException("Invalid Mach-O header.");
         }
 
-        protected override void ParseMain()
+        protected override void ParseMain(IProcessorArchitecture arch)
         {
             var entryOffset = rdr.ReadUInt64();
             var addrEntry = base.segments["__TEXT"] + entryOffset;
-            base.ldr.entryPoints.Add(ImageSymbol.Procedure(specific.Architecture, Address.Ptr64(addrEntry)));
+            base.ldr.entryPoints.Add(ImageSymbol.Procedure(arch, Address.Ptr64(addrEntry)));
         }
 
-        protected override void ParseUnixThread(uint cputype)
+        protected override void ParseUnixThread(uint cputype, IProcessorArchitecture arch)
         {
-            throw new NotImplementedException();
+            if (rdr.TryReadUInt32(out uint flavor) &&
+                rdr.TryReadUInt32(out uint count))
+            {
+                var data = rdr.ReadBytes(count * 4);
+
+                DumpData(0, data);
+                if (!mpCputypeToUnixthreadPc.TryGetValue(cputype, out uint uOffAddrStart))
+                    throw new BadImageFormatException($"LC_PARSEUNIXTHREAD for CPU type {cputype} has not been implemented.");
+                var rdrPtr = arch.Endianness.CreateImageReader(data, uOffAddrStart);
+                if (rdrPtr.TryReadUInt64(out ulong ep))
+                {
+                    base.ldr.entryPoints.Add(ImageSymbol.Procedure(arch, Address.Ptr64(ep)));
+                }
+            }
         }
 
-        protected override void LoadImports(MachOSection section, List<uint> indirects)
+        protected override void LoadImports(MachOSection section, List<uint> indirects, IProcessorArchitecture arch)
         {
-            // throw new NotImplementedException();
+            Debug.Print("    Loading imports from section {0} / res: {1:X8}", section.Name, section.Reserved1);
+            var iseg = ldr.imageSections[section];
+            var rdr = iseg.CreateImageReader(arch);
+            var addr = rdr.Address;
+            var tableIndex = section.Reserved1;
+            int i = (int) tableIndex;
+            while (rdr.TryReadUInt64(out ulong uImport))
+            {
+                var indsym = (int) indirects[i];
+                if (indsym < ldr.machoSymbols.Count)
+                {
+                    var msym = ldr.machoSymbols[indsym];
+                    Debug.Print("      {0}: {1:X8} {2}", addr, uImport, msym.Name);
+                    var addrImport = Address.Ptr64(uImport);
+                    var ptr = new Pointer(new CodeType(), arch.PointerType.BitSize);
+                    var impSymbol = ImageSymbol.DataObject(
+                        arch,
+                        addr,
+                        "__imp__" + msym.Name,
+                        ptr);
+                    ldr.imageSymbols[addr] = impSymbol;
+                    ldr.program.ImportReferences.Add(addr, new NamedImportReference(addrImport, "", msym.Name, SymbolType.ExternalProcedure));
+                }
+                addr = rdr.Address;
+                ++i;
+            }
         }
 
-        public override (MachOSymbol, Address) ReadSymbol(byte[] strBytes, EndianImageReader syms, uint i)
+        public override (MachOSymbol?, Address?) ReadSymbol(byte[] strBytes, EndianImageReader syms, uint i)
         {
             if (syms.TryReadUInt32(out uint n_strx) &&
                 syms.TryReadByte(out byte n_type) &&
@@ -789,17 +857,88 @@ namespace Reko.ImageLoaders.MachO
                 syms.TryReadUInt64(out ulong n_value))
             {
                 var str = GetAsciizString(strBytes, (int) n_strx);
-                Debug.Print("      {0,2}: {1:X8} {2:X8} {3}({4}) {5:X4} {6:X16} {7}",
-                    i, n_strx, n_type, ldr.sections[n_sect].Name,
+                var secName = n_sect < ldr.sections.Count ? ldr.sections[n_sect].Name : n_sect.ToString();
+
+                Debug.Print("      {0,2}: {2,-8} {3}({4}) {5:X4} {6:X16} {7}",
+                    i, n_strx, (Stab) n_type, secName,
                     n_sect, n_desc, n_value, str);
-                var msym = new MachOSymbol(str, n_type, ldr.sections[n_sect], n_desc, n_value);
+                var msym = new MachOSymbol(str, n_type, n_sect, n_desc, n_value);
                 var addr = Address.Ptr64(n_value);
                 return (msym, addr);
             }
             else
                 return (null, null);
         }
-
     }
 
+    public enum Stab
+    {
+        UNDF = 0x0,
+        ABS = 0x2,
+        INDR  = 0xA,    // The symbol is defined to be the same as another symbol. The n_value field is an index into the string table specifying the name of the other symbol. When that symbol is linked, both this and the other symbol point to the same defined type and value.
+        PBUD = 0xC,     // The symbol is undefined and the image is using a prebound value for the symbol. Set the n_sect field to NO_SECT.
+        SECT = 0xE,     // The symbol is defined in the section number given in n_sect
+
+        GSYM = 0x20,    // global symbol: name,,NO_SECT,type,0 
+        FNAME = 0x22,   // procedure name (f77 kludge): name,,NO_SECT,0,0
+        FUN	 = 0x24,    // procedure: name,,n_sect,linenumber,address */
+        STSYM = 0x26,	//  static symbol: name,,n_sect,type,address 
+        LCSYM = 0x28,	//  .lcomm symbol: name,,n_sect,type,address 
+        MAIN = 0x2a,
+        BNSYM  = 0x2e,	// begin nsect sym: 0,,n_sect,0,address 
+        PC = 0x30,
+        AST = 0x32,
+        MAC_UNDEF = 0x3a,
+        OPT = 0x3c,	    // emitted with gcc2_compiled and in gcc source 
+        RSYM = 0x40,	// register sym: name,,NO_SECT,type,register 
+        SLINE = 0x44,	// src line: 0,,n_sect,linenumber,address 
+        DSLINE = 0x46,
+        BSLINE = 0x48,
+        ENSYM = 0x4e,	// end nsect sym: 0,,n_sect,0,address 
+        SSYM = 0x60,	// structure elt: name,,NO_SECT,type,struct_offset 
+        SO = 0x64,	    // source file name: name,,n_sect,0,address 
+        OSO = 0x66,	    // object file name: name,,0,0,st_mtime 
+        LSYM = 0x80,	// local sym: name,,NO_SECT,type,offset 
+        BINCL = 0x82,	// include file beginning: name,,NO_SECT,0,sum 
+        SOL = 0x84,	    // #included file name: name,,n_sect,0,address 
+        PARAMS = 0x86,	// compiler parameters: name,,NO_SECT,0,0 
+        VERSION= 0x88,	// compiler version: name,,NO_SECT,0,0 
+        OLEVEL = 0x8A,	// compiler -O level: name,,NO_SECT,0,0 
+        PSYM = 0xa0,	// parameter: name,,NO_SECT,type,offset 
+        EINCL = 0xa2,	// include file end: name,,NO_SECT,0,0 
+        ENTRY = 0xa4,	// alternate entry: name,,n_sect,linenumber,address 
+        LBRAC = 0xc0,	// left bracket: 0,,NO_SECT,nesting level,address 
+        EXCL = 0xc2,	// deleted include file: name,,NO_SECT,0,sum 
+        RBRAC = 0xe0,	// right bracket: 0,,NO_SECT,nesting level,address 
+        BCOMM = 0xe2,	// begin common: name,,NO_SECT,0,0 
+        ECOMM = 0xe4,	// end common: name,,n_sect,0,0 
+        ECOML = 0xe8,	// end common (local name): 0,,n_sect,0,address 
+        LENG = 0xfe,	// second stab entry with length information 
+    }
+
+    // https://www.apriorit.com/dev-blog/225-dynamic-linking-mach-o
+    public class DySymtab
+    {
+        public uint ilocalsym;
+        public uint nlocalsym;
+        public uint iextdefsym;
+        public uint nextdefsym;
+
+        public uint iundefsym;
+        public uint nundefsym;
+        public uint tocoff;
+        public uint ntoc;
+
+        public uint modtaboff;
+        public uint nmodtab;
+        public uint extrefsymoff;
+        public uint nextrefsyms;
+
+        public uint indirectsymoff;
+        public uint nindirectsyms;
+        public uint extreloff;
+        public uint nextrel;
+        public uint locreloff;
+        public uint nlocrel;
+    }
 }

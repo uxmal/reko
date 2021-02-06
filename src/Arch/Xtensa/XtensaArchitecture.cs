@@ -118,18 +118,20 @@ namespace Reko.Arch.Xtensa
         private static readonly RegisterStorage[] allRegs =
             aregs.Concat(bregs).Concat(fregs).ToArray();
 
+        private static readonly Dictionary<string, RegisterStorage> regsByName =
+            allRegs.ToDictionary(r => r.Name);
+
         private static readonly Dictionary<int, RegisterStorage> sregs = new Dictionary<int, RegisterStorage>
         {
             { 0x00, Registers.LBEG },
             { 0x01, Registers.LEND },
             { 0x02, Registers.LCOUNT },
             { 0x03, Registers.SAR },
+            { 0x05, new RegisterStorage("LITBASE", 0x105, 0, PrimitiveType.Word32) },
             { 0x0C, Registers.SCOMPARE1 },
             { 0x10, Registers.ACCLO },
             { 0x11, Registers.ACCHI },
 
-            { 0xA2, new RegisterStorage("CCOUNT", 0x1A2, 0, PrimitiveType.Word32) },
-            { 0xA3, new RegisterStorage("INTENABLE", 0x1A3, 0, PrimitiveType.Word32) },
             { 0xB1, new RegisterStorage("EPC1", 0x1B1, 0, PrimitiveType.Ptr32) },
             { 0xB2, new RegisterStorage("EPC2", 0x1B2, 0, PrimitiveType.Ptr32) },
             { 0xB3, new RegisterStorage("EPC3", 0x1B3, 0, PrimitiveType.Ptr32) },
@@ -143,9 +145,12 @@ namespace Reko.Arch.Xtensa
             { 0xD7, new RegisterStorage("EXCSAVE7", 0x1D7, 0, PrimitiveType.Word32) },
             { 0xE2, new RegisterStorage("INTSET", 0x1E2, 0, PrimitiveType.Word32) },
             { 0xE3, new RegisterStorage("INTCLEAR", 0x1E3, 0, PrimitiveType.Word32) },
+            { 0xE4, new RegisterStorage("INTENABLE", 0x1E4, 0, PrimitiveType.Word32) },
             { 0xE6, new RegisterStorage("PS", 0x1E6, 0, PrimitiveType.Ptr32) },
             { 0xE7, new RegisterStorage("VECBASE", 0x1E7, 0, PrimitiveType.Ptr32) },
             { 0xE8, new RegisterStorage("EXCCAUSE", 0x1E8, 0, PrimitiveType.Ptr32) },
+            { 0xEA, new RegisterStorage("CCOUNT", 0x1EA, 0, PrimitiveType.Word32) },
+            { 0xEB, new RegisterStorage("PRID", 0x1EB, 0, PrimitiveType.Ptr32) },
             { 0xEE, new RegisterStorage("EXCVADDR", 0x1EE, 0, PrimitiveType.Ptr32) },
             { 0xF0, new RegisterStorage("CCOMPARE0", 0x1F0, 0, PrimitiveType.Word32) },
         };
@@ -256,7 +261,11 @@ namespace Reko.Arch.Xtensa
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            return allRegs[domain - StorageDomain.Register];
+            var ireg = domain - StorageDomain.Register;
+            if (0 <= ireg && ireg < allRegs.Length)
+                return allRegs[ireg];
+            else
+                return null;
         }
 
         public override RegisterStorage[] GetRegisters()
@@ -282,7 +291,7 @@ namespace Reko.Arch.Xtensa
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return regsByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)

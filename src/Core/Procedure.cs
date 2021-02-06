@@ -143,7 +143,7 @@ namespace Reko.Core
                 else if (y == ex)
                     return -1;
                     
-                return String.Compare(x.Name, y.Name);
+                return String.Compare(x.Id, y.Id);
             }
         }
 
@@ -208,14 +208,15 @@ namespace Reko.Core
         {
             foreach (var b in SortBlocksByName())
             {
-                writer.WriteLine(b.Name);
+                writer.WriteLine(b.DisplayName);
                 writer.Write("    Pred:");
                 foreach (var p in b.Pred)
-                    writer.Write(" {0}", p.Name);
+                    writer.Write(" {0}", p.DisplayName);
                 writer.WriteLine();
+                b.WriteStatements(writer);
                 writer.Write("    Succ:");
                 foreach (var s in b.Succ)
-                    writer.Write(" {0}", s.Name);
+                    writer.Write(" {0}", s.DisplayName);
                 writer.WriteLine();
             }
         }

@@ -237,13 +237,13 @@ namespace Reko.Scanning
                 if (!state!.IsInBeginningOfBlock())
                     break;
 
-                DebugEx.Verbose(trace, "Reached beginning of block {0}", state!.block.Address);
+                trace.Verbose("Reached beginning of block {0}", state!.block.Address);
                 var preds = host.GetPredecessors(state!.block);
                 if (preds.Count == 0)
                 {
-                    DebugEx.Verbose(trace, "  No predecessors found for block {0}", state.block.Address);
-                    DebugEx.Verbose(trace, "  index: {0} ({1})", this.JumpTableIndex!, this.JumpTableIndexInterval);
-                    DebugEx.Verbose(trace, "  expr:  {0}", this.JumpTableFormat!);
+                    trace.Verbose("  No predecessors found for block {0}", state.block.Address);
+                    trace.Verbose("  index: {0} ({1})", this.JumpTableIndex!, this.JumpTableIndexInterval);
+                    trace.Verbose("  expr:  {0}", this.JumpTableFormat!);
                     return true;
                 }
                 foreach (var pred in preds)
@@ -260,7 +260,7 @@ namespace Reko.Scanning
                             break;
                         SliceState pstate = state.CreateNew(pred,  state.block.Address);
                         worklist.Add(pstate);
-                        DebugEx.Verbose(trace, "  Added block {0} to worklist", pred.Address);
+                        trace.Verbose("  Added block {0} to worklist", pred.Address);
                     }
                 }
             }
@@ -537,17 +537,17 @@ namespace Reko.Scanning
             if (!sr.LiveExprs.Keys.OfType<Identifier>().Any())
             {
                 // Couldn't find any indirect registers, so there is no work to do.
-                DebugEx.Warn(BackwardSlicer.trace, "Bwslc: No indirect registers?");
+                BackwardSlicer.trace.Warn("Bwslc: No indirect registers?");
                 return false;
             }
-            DebugEx.Verbose(BackwardSlicer.trace, "  live: {0}", DumpLive(this.Live));
+            BackwardSlicer.trace.Verbose("  live: {0}", DumpLive(this.Live));
             return true;
         }
 
         public bool Step()
         {
             var instr = this.instrs[this.iInstr];
-            DebugEx.Inform(BackwardSlicer.trace, "Bwslc: Stepping to instruction {0}", instr);
+            BackwardSlicer.trace.Inform("Bwslc: Stepping to instruction {0}", instr);
             var sr = instr.Accept(this);
             --this.iInstr;
             if (sr == null)
@@ -568,19 +568,19 @@ namespace Reko.Scanning
             }
             if (sr.Stop)
             {
-                DebugEx.Verbose(BackwardSlicer.trace, "  Was asked to stop, stopping.");
-                DebugEx.Verbose(BackwardSlicer.trace, "  index: {0} ({1})", this.JumpTableIndex!, this.JumpTableIndexInterval);
-                DebugEx.Verbose(BackwardSlicer.trace, "  expr:  {0}", this.JumpTableFormat!);
+                BackwardSlicer.trace.Verbose("  Was asked to stop, stopping.");
+                BackwardSlicer.trace.Verbose("  index: {0} ({1})", this.JumpTableIndex!, this.JumpTableIndexInterval);
+                BackwardSlicer.trace.Verbose("  expr:  {0}", this.JumpTableFormat!);
                 return false;
             }
             if (this.Live.Count == 0)
             {
-                DebugEx.Verbose(BackwardSlicer.trace, "  No more live expressions, stopping.");
-                DebugEx.Verbose(BackwardSlicer.trace, "  index: {0} ({1})", this.JumpTableIndex!, this.JumpTableIndexInterval);
-                DebugEx.Verbose(BackwardSlicer.trace, "  expr:  {0}", this.JumpTableFormat!);
+                BackwardSlicer.trace.Verbose("  No more live expressions, stopping.");
+                BackwardSlicer.trace.Verbose("  index: {0} ({1})", this.JumpTableIndex!, this.JumpTableIndexInterval);
+                BackwardSlicer.trace.Verbose("  expr:  {0}", this.JumpTableFormat!);
                 return false;
             }
-            DebugEx.Verbose(BackwardSlicer.trace, "  live: {0}", this.DumpLive(this.Live));
+            BackwardSlicer.trace.Verbose("  live: {0}", this.DumpLive(this.Live));
             return true;
         }
 
@@ -709,7 +709,7 @@ namespace Reko.Scanning
                 var newJt = ExpressionReplacer.Replace(assignLhs, se.SrcExpr, JumpTableFormat!);
                 this.JumpTableFormat = slicer.Simplify(newJt);
             }
-            DebugEx.Verbose(BackwardSlicer.trace, "  expr:  {0}", this.JumpTableFormat!);
+            BackwardSlicer.trace.Verbose("  expr:  {0}", this.JumpTableFormat!);
             this.assignLhs = null;
             return se;
         }
@@ -783,7 +783,7 @@ namespace Reko.Scanning
                     this.JumpTableIndex = assignLhs;
                     this.JumpTableIndexToUse = assignLhs;
                     this.JumpTableIndexInterval = MakeInterval_ISub(assignLhs!, binExp.Right as Constant);
-                    DebugEx.Verbose(BackwardSlicer.trace, "  Found range of {0}: {1}", assignLhs!, JumpTableIndexInterval);
+                    BackwardSlicer.trace.Verbose("  Found range of {0}: {1}", assignLhs!, JumpTableIndexInterval);
                     return new SlicerResult
                     {
                         SrcExpr = null,     // the jump table expression already has the correct shape.
@@ -832,7 +832,7 @@ namespace Reko.Scanning
             this.JumpTableIndex = liveKey;
             this.JumpTableIndexToUse = binExp.Left;
             this.JumpTableIndexInterval = interval;
-            DebugEx.Verbose(BackwardSlicer.trace, "  Found range of {0}: {1}", liveKey, JumpTableIndexInterval);
+            BackwardSlicer.trace.Verbose("  Found range of {0}: {1}", liveKey, JumpTableIndexInterval);
             return new SlicerResult
             {
                 SrcExpr = binExp,

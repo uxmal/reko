@@ -48,7 +48,7 @@ namespace Reko.Core.Output
             {
                 StringBuilder sb = new StringBuilder("succ: ");
                 foreach (var s in block.Succ.Where(b => b != null))
-                    sb.AppendFormat(" {0}", s.Name);
+                    sb.AppendFormat(" {0}", s.DisplayName);
                 lines.Add(sb.ToString());
             }
         }

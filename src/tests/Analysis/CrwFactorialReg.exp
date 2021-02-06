@@ -61,7 +61,7 @@ l0C00_000B:
 	// succ:  l0C00_0011 l0C00_001C
 l0C00_0011:
 	ax_17 = fn0C00_000B(cx - 1<16>)
-	dx_ax_20 = cx *s ax_17
+	dx_ax_20 = cx *s32 ax_17
 	ax_22 = SLICE(dx_ax_20, word16, 0) (alias)
 	goto l0C00_001F
 	// succ:  l0C00_001F

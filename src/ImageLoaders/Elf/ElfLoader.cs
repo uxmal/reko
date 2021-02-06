@@ -728,6 +728,7 @@ namespace Reko.ImageLoaders.Elf
                 .ToList();
             foreach (var section in symbolSections)
             {
+                ElfImageLoader.trace.Inform("== Loading ELF symbols from section {0} (at offset {1:X})", section.Name, section.FileOffset);
                 var symtab = LoadSymbolsSection(section);
                 Symbols[section.FileOffset] = symtab;
                 if (section.Type == SectionHeaderType.SHT_DYNSYM)

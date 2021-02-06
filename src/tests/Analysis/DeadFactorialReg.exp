@@ -7,7 +7,7 @@ ss:ss
 Mem7: orig: Mem0
 cx:cx
     def:  def cx
-    uses: dx_ax_20 = cx *s ax_17
+    uses: dx_ax_20 = cx *s32 ax_17
           branch cx <= 1<16> l0C00_001C
           ax_17 = fn0C00_000B(cx - 1<16>)
 SCZO_9: orig: SCZO
@@ -22,11 +22,11 @@ sp_15: orig: sp
 cx_16: orig: cx
 ax_17: orig: ax
     def:  ax_17 = fn0C00_000B(cx - 1<16>)
-    uses: dx_ax_20 = cx *s ax_17
+    uses: dx_ax_20 = cx *s32 ax_17
 Top_18: orig: Top
 SCZO_19: orig: SCZO
 dx_ax_20: orig: dx_ax
-    def:  dx_ax_20 = cx *s ax_17
+    def:  dx_ax_20 = cx *s32 ax_17
     uses: ax_22 = SLICE(dx_ax_20, word16, 0) (alias)
 dx_21: orig: dx
 ax_22: orig: ax
@@ -70,7 +70,7 @@ l0C00_000B:
 	// succ:  l0C00_0011 l0C00_001C
 l0C00_0011:
 	ax_17 = fn0C00_000B(cx - 1<16>)
-	dx_ax_20 = cx *s ax_17
+	dx_ax_20 = cx *s32 ax_17
 	ax_22 = SLICE(dx_ax_20, word16, 0) (alias)
 	goto l0C00_001F
 	// succ:  l0C00_001F

@@ -65,5 +65,6 @@ namespace Reko.Gui
         ICallHierarchyService CreateCallHierarchyService();
         IDecompiledFileService CreateDecompiledFileService();
         ITestGenerationService CreateTestGenerationService();
+        IUserEventService CreateUserEventService();
     }
 }

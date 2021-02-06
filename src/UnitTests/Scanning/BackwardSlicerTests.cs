@@ -481,7 +481,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(bwslc.Step());
             Assert.IsFalse(bwslc.Step());
 
-            Assert.AreEqual("Mem0[Mem0[eax + 0x123500<32>:byte] * 4<32> + 0x123400<32>:word32]", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("Mem0[Mem0[eax + 0x123500<32>:byte] *32 4<32> + 0x123400<32>:word32]", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("1[0,3]", bwslc.JumpTableIndexInterval.ToString());
         }
 
@@ -812,7 +812,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(bwslc.Start(b2, 6, Target(b2)));
             while (bwslc.Step())
                 ;
-            Assert.AreEqual("CONVERT(SLICE(SLICE(v3 * 2<32>, word16, 0) * 2<32>, word16, 0), word16, int32) + 0xA8B4<32>", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("CONVERT(SLICE(SLICE(v3 *32 2<32>, word16, 0) *32 2<32>, word16, 0), word16, int32) + 0xA8B4<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("v3", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("v3", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[20,7FFFFFFFFFFFFFFF]", bwslc.JumpTableIndexInterval.ToString());

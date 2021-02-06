@@ -20,23 +20,23 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	al = Mem0[ds:0x300<16>:byte]
-	ax = Mem0[ds:0x301<16>:byte] *u al
+	ax = Mem0[ds:0x301<16>:byte] *u16 al
 	SCZO = cond(ax)
 	Mem0[ds:0x302<16>:word16] = ax
 	ax = Mem0[ds:0x304<16>:word16]
-	dx_ax = Mem0[ds:0x306<16>:word16] *u ax
+	dx_ax = Mem0[ds:0x306<16>:word16] *u32 ax
 	SCZO = cond(dx_ax)
 	Mem0[ds:0x308<16>:word16] = ax
 	Mem0[ds:0x30A<16>:word16] = dx
 	cx = Mem0[ds:0x30C<16>:word16]
 	ax = Mem0[ds:0x30E<16>:word16]
-	dx_ax = cx *s ax
+	dx_ax = cx *s32 ax
 	SCZO = cond(dx_ax)
 	Mem0[ds:0x310<16>:word16] = ax
 	Mem0[ds:0x312<16>:word16] = dx
 	al = Mem0[ds:0x300<16>:byte]
 	cl = Mem0[ds:0x301<16>:byte]
-	ax = cl *u al
+	ax = cl *u16 al
 	SCZO = cond(ax)
 	Mem0[ds:0x302<16>:word16] = ax
 	ax = Mem0[ds:0x304<16>:word16] *s 0x24<16>

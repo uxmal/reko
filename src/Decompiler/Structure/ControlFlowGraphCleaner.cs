@@ -33,7 +33,7 @@ namespace Reko.Structure
 	/// </summary>
 	public class ControlFlowGraphCleaner
 	{
-		private Procedure proc;
+		private readonly Procedure proc;
 		private bool dirty;
 
 		public ControlFlowGraphCleaner(Procedure proc)
