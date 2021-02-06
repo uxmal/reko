@@ -485,12 +485,13 @@ elseif("${TARGET}" STREQUAL "update_runtime_nuspec")
 	# Create a new target to update the Runtime nuspec
 	#
 	set(RUNTIME_OUTDIR ${REKO_SRC}/Drivers/Runtime/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_LIB_FRAMEWORK})
-	RUN_DOTNET(${REKO_SRC}/tools/nugetSpecGen/nugetSpecGen.csproj
+	RUN_DOTNET(${REKO_SRC}/tools/specGen/specGen.csproj
 		NO_RESTORE
 		NO_CLEAN
 		CONFIG ${CMAKE_BUILD_TYPE}
 		PLATFORM ${REKO_PLATFORM}
 		ARGUMENTS 
+			nuget
 			${REKO_SRC}/Drivers/Runtime
 			${RUNTIME_OUTDIR}
 			${REKO_LIB_FRAMEWORK}
