@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  <!-- Caution! Do not edit these values, they are generated automatically
+     by a script. Edit reko-files.xml instead. -->
+  <File Source="$(var.OS2.ProjectDir)os2-16.xml" />
+  <File Source="$(var.OS2.ProjectDir)16\ANSICALL.def" Id="File_Os2_16_ANSICALL" />
+  <File Source="$(var.OS2.ProjectDir)16\BKSCALLS.def" Id="File_Os2_16_BKSCALLS" />
+  <File Source="$(var.OS2.ProjectDir)16\BMSCALLS.def" Id="File_Os2_16_BMSCALLS" />
+  <File Source="$(var.OS2.ProjectDir)16\BVH8514A.def" Id="File_Os2_16_BVH8514A" />
+  <File Source="$(var.OS2.ProjectDir)16\BVHCGA.def" Id="File_Os2_16_BVHCGA" />
+  <File Source="$(var.OS2.ProjectDir)16\BVHEGA.def" Id="File_Os2_16_BVHEGA" />
+  <File Source="$(var.OS2.ProjectDir)16\BVHINIT.def" Id="File_Os2_16_BVHINIT" />
+  <File Source="$(var.OS2.ProjectDir)16\BVHMPA.def" Id="File_Os2_16_BVHMPA" />
+  <File Source="$(var.OS2.ProjectDir)16\BVHVGA.def" Id="File_Os2_16_BVHVGA" />
+  <File Source="$(var.OS2.ProjectDir)16\BVHWNDW.def" Id="File_Os2_16_BVHWNDW" />
+  <File Source="$(var.OS2.ProjectDir)16\BVHXGA.def" Id="File_Os2_16_BVHXGA" />
+  <File Source="$(var.OS2.ProjectDir)16\BVSCALLS.def" Id="File_Os2_16_BVSCALLS" />
+  <File Source="$(var.OS2.ProjectDir)16\DOSCALLS.def" Id="File_Os2_16_DOSCALLS" />
+  <File Source="$(var.OS2.ProjectDir)16\DOSRFICO.def" Id="File_Os2_16_DOSRFICO" />
+  <File Source="$(var.OS2.ProjectDir)16\HELPMGR.def" Id="File_Os2_16_HELPMGR" />
+  <File Source="$(var.OS2.ProjectDir)16\KBDCALLS.def" Id="File_Os2_16_KBDCALLS" />
+  <File Source="$(var.OS2.ProjectDir)16\LOCKDLL.def" Id="File_Os2_16_LOCKDLL" />
+  <File Source="$(var.OS2.ProjectDir)16\MONCALLS.def" Id="File_Os2_16_MONCALLS" />
+  <File Source="$(var.OS2.ProjectDir)16\MOUCALLS.def" Id="File_Os2_16_MOUCALLS" />
+  <File Source="$(var.OS2.ProjectDir)16\MSG.def" Id="File_Os2_16_MSG" />
+  <File Source="$(var.OS2.ProjectDir)16\NAMPIPES.def" Id="File_Os2_16_NAMPIPES" />
+  <File Source="$(var.OS2.ProjectDir)16\NLS.def" Id="File_Os2_16_NLS" />
+  <File Source="$(var.OS2.ProjectDir)16\OS2SM.def" Id="File_Os2_16_OS2SM" />
+  <File Source="$(var.OS2.ProjectDir)16\OS2SMDUM.def" Id="File_Os2_16_OS2SMDUM" />
+  <File Source="$(var.OS2.ProjectDir)16\PMDRAG.def" Id="File_Os2_16_PMDRAG" />
+  <File Source="$(var.OS2.ProjectDir)16\PMGPI.def" Id="File_Os2_16_PMGPI" />
+  <File Source="$(var.OS2.ProjectDir)16\PMSHAPI.def" Id="File_Os2_16_PMSHAPI" />
+  <File Source="$(var.OS2.ProjectDir)16\PMSHLTKT.def" Id="File_Os2_16_PMSHLTKT" />
+  <File Source="$(var.OS2.ProjectDir)16\PMSPL.def" Id="File_Os2_16_PMSPL" />
+  <File Source="$(var.OS2.ProjectDir)16\PMTKT.def" Id="File_Os2_16_PMTKT" />
+  <File Source="$(var.OS2.ProjectDir)16\PMTRACE.def" Id="File_Os2_16_PMTRACE" />
+  <File Source="$(var.OS2.ProjectDir)16\PMVIOP.def" Id="File_Os2_16_PMVIOP" />
+  <File Source="$(var.OS2.ProjectDir)16\PMWIN.def" Id="File_Os2_16_PMWIN" />
+  <File Source="$(var.OS2.ProjectDir)16\PMWINDUM.def" Id="File_Os2_16_PMWINDUM" />
+  <File Source="$(var.OS2.ProjectDir)16\QUECALLS.def" Id="File_Os2_16_QUECALLS" />
+  <File Source="$(var.OS2.ProjectDir)16\REXX.def" Id="File_Os2_16_REXX" />
+  <File Source="$(var.OS2.ProjectDir)16\REXXAPI.def" Id="File_Os2_16_REXXAPI" />
+  <File Source="$(var.OS2.ProjectDir)16\SESMGR.def" Id="File_Os2_16_SESMGR" />
+  <File Source="$(var.OS2.ProjectDir)16\SPOOLCP.def" Id="File_Os2_16_SPOOLCP" />
+  <File Source="$(var.OS2.ProjectDir)16\VIOCALLS.def" Id="File_Os2_16_VIOCALLS" />
+  <File Source="$(var.OS2.ProjectDir)16\fsd.xml" />
+  <File Source="$(var.OS2.ProjectDir)16\fsh.xml" />
+  <File Source="$(var.OS2.ProjectDir)16\fsu.xml" />
+</Include>

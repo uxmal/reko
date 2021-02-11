@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  <!-- Caution! Do not edit these values, they are generated automatically
+     by a script. Edit reko-files.xml instead. -->
+  <File Source="$(var.OS2.ProjectDir)32\bdcalls.def" />
+  <File Source="$(var.OS2.ProjectDir)32\dive.def" />
+  <File Source="$(var.OS2.ProjectDir)32\DOSCALLS.def" />
+  <File Source="$(var.OS2.ProjectDir)32\ftpapi.def" />
+  <File Source="$(var.OS2.ProjectDir)32\glut.def" />
+  <File Source="$(var.OS2.ProjectDir)32\helpmgr.def" />
+  <File Source="$(var.OS2.ProjectDir)32\kbdcalls.def" />
+  <File Source="$(var.OS2.ProjectDir)32\libaux.def" />
+  <File Source="$(var.OS2.ProjectDir)32\libtk.def" />
+  <File Source="$(var.OS2.ProjectDir)32\libuni.def" />
+  <File Source="$(var.OS2.ProjectDir)32\mciapi.def" />
+  <File Source="$(var.OS2.ProjectDir)32\mdm.def" />
+  <File Source="$(var.OS2.ProjectDir)32\mmio.def" />
+  <File Source="$(var.OS2.ProjectDir)32\moncalls.def" />
+  <File Source="$(var.OS2.ProjectDir)32\moucalls.def" />
+  <File Source="$(var.OS2.ProjectDir)32\msg.def" />
+  <File Source="$(var.OS2.ProjectDir)32\nampipes.def" />
+  <File Source="$(var.OS2.ProjectDir)32\nls.def" />
+  <File Source="$(var.OS2.ProjectDir)32\opengl.def" />
+  <File Source="$(var.OS2.ProjectDir)32\pmctls.def" />
+  <File Source="$(var.OS2.ProjectDir)32\pmdrag.def" />
+  <File Source="$(var.OS2.ProjectDir)32\pmgpi.def" />
+  <File Source="$(var.OS2.ProjectDir)32\pmshapi.def" />
+  <File Source="$(var.OS2.ProjectDir)32\pmspl.def" />
+  <File Source="$(var.OS2.ProjectDir)32\pmviop.def" />
+  <File Source="$(var.OS2.ProjectDir)32\pmwin.def" />
+  <File Source="$(var.OS2.ProjectDir)32\pmwp.def" />
+  <File Source="$(var.OS2.ProjectDir)32\quecalls.def" />
+  <File Source="$(var.OS2.ProjectDir)32\rexx.def" />
+  <File Source="$(var.OS2.ProjectDir)32\rexxapi.def" />
+  <File Source="$(var.OS2.ProjectDir)32\rtmidi.def" />
+  <File Source="$(var.OS2.ProjectDir)32\sesmgr.def" />
+  <File Source="$(var.OS2.ProjectDir)32\sw.def" />
+  <File Source="$(var.OS2.ProjectDir)32\tcpip32.def" />
+  <File Source="$(var.OS2.ProjectDir)32\uconv.def" />
+  <File Source="$(var.OS2.ProjectDir)32\upm32.def" />
+  <File Source="$(var.OS2.ProjectDir)32\viocalls.def" />
+</Include>
