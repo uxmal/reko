@@ -443,13 +443,6 @@ namespace Reko.ImageLoaders.OdbgScript
             public readonly byte offset;
         }
 
-        public class constant_t
-        {
-            public constant_t(string name, byte value) { this.name = name; this.value = value; }
-            public readonly string name;
-            public readonly byte value;
-        }
-
         public class eflags_t
         {
             public ulong dw;
@@ -1524,11 +1517,6 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
             }
             return false;
-        }
-
-        bool SetBool(Expression op, bool value)
-        {
-            return SetRulong(op, value?1u:0u, 1);
         }
 
         bool TryFindRegister(string name, out register_t reg)

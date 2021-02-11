@@ -29,8 +29,9 @@ namespace Reko.ImageLoaders.OdbgScript
             return null;
         }
 
-        public static void SetHardwareBreakPoint(Address addr, object o, eHWBPType type, byte size, Action callback)
+        public void SetHardwareBreakPoint(Address addr, object o, eHWBPType type, byte size, Action callback)
         {
+            this.emu.SetBreakpoint(addr.ToLinear(), callback);
         }
 
         public rulong GetContextData(eContextData eContextData)
