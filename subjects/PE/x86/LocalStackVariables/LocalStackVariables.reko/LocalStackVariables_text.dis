@@ -1,0 +1,68 @@
+int32 main(int32 argc, char ** argv)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut: eax
+// Trashed: eax
+// Preserved:
+main_entry:
+l00401000:
+	// s1.i = 0
+	// s1.d = 1.0
+	// s2.i = 10
+	// s2.d = 11.0
+	// res = GetMin(&s1, &s2)
+	// s1.i = 100
+	// res->i = 5
+	real64 rLoc1_101 = Mem15[0x004020F8<p32>:real64]
+	word32 eax_26 = GetMin(fp - 0x2C<32>, fp - 0x1C<32>)
+	Mem38[eax_26:word32] = 5<32>
+	// res->d = 5.0
+	Mem42[eax_26 + 8<32>:real64] = Mem38[0x004020F0<p32>:real64]
+	// printf("%d %f %d %f\n", s1.i, s1.d, s2.i, s2.d)
+	printf(0x4020C8<32>, 0x64<32>, 1.0, 0xA<32>, rLoc1_101)
+	// gbl_s = &s2
+	Mem65[0x00403018<p32>:word32] = fp - 0x1C<32>
+	// s2.i = 2
+	// s2.d = 2.0
+	// gbl_s->i = 3
+	real64 rLoc1_116 = Mem66[0x004020E8<p32>:real64]
+	Mem72[Mem69[0x00403018<p32>:word32]:word32] = 3<32>
+	// gbl_s->d = 3.0
+	Mem76[Mem72[0x00403018<p32>:word32] + 8<32>:real64] = Mem72[0x004020E0<p32>:real64]
+	// printf("%d %f\n", s2.i, s2.d)
+	printf(0x4020D8<32>, 2<32>, rLoc1_116)
+	return 0<32>
+main_exit:
+
+
+word32 GetMin(word32 dwArg04, word32 dwArg08)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      main
+// MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
+// LiveOut: eax
+// Trashed: SCZO eax ecx edx FPU -1 FPUF Top
+// Preserved: ebp esp
+GetMin_entry:
+l004010D0:
+	word32 eax_25
+	branch Mem6[dwArg04:word32] >= Mem6[dwArg08:word32] l004010E4
+l004010E4:
+	branch Mem6[dwArg04:word32] >= Mem6[dwArg08:word32] l004010F5
+l004010F5:
+	branch Mem6[dwArg08 + 8<32>:real64] <= Mem6[dwArg04 + 8<32>:real64] l0040110F
+l0040110F:
+	eax_25 = dwArg08
+l00401108:
+	eax_25 = dwArg04
+l004010F0:
+	eax_25 = dwArg08
+l004010DF:
+	eax_25 = dwArg04
+l00401112:
+	return eax_25
+GetMin_exit:
+
+
