@@ -64,7 +64,7 @@ namespace Reko.Arch.X86
             {
                 zappedInstructions.Add(i, Mnemonic.nop);
                 rewritten.Add(new Assignment(
-                    orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF),
+                    orw.FlagGroup(Registers.SCZO),
                     orw.AluRegister(Registers.FPUF)));
                 return true;
             }
@@ -81,7 +81,7 @@ namespace Reko.Arch.X86
                     return false;
                 zappedInstructions.Add(i, Mnemonic.nop);
                 rewritten.Add(new Assignment(
-                    orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF),
+                    orw.FlagGroup(Registers.SCZO),
                     orw.AluRegister(Registers.FPUF)));
 
                 i = FindConditionalJumpInstruction(++i);

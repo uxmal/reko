@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Arch.X86
 			var s1 = arch.GetFlagGroup("S");
 			var s2 = arch.GetFlagGroup("S");
 			Assert.AreEqual("S", s1.Name);
-			Assert.AreSame(s1, s2);
+			Assert.AreEqual(s1, s2);
 			Assert.AreEqual(PrimitiveType.Bool, s1.DataType);
 		}
 
