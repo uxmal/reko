@@ -137,16 +137,22 @@ namespace Reko.Core.Types
             if (cache.TryGetValue((dom, bitSize), out var shared))
                 return shared;
             var p = new PrimitiveType(dom, bitSize, false, name ?? GenerateName(dom, bitSize));
-            return Cache(p, name);
+            return Cache(p, p.Name);
         }
 
         private static PrimitiveType Cache(PrimitiveType p, string? name)
         {
             if (!cache.TryGetValue((p.Domain, p.BitSize), out var shared))
             {
-                shared = p;
-                cache.Add((p.Domain, p.bitSize), shared);
-                lookupByName.Add(shared.Name, shared);
+                lock (cache)
+                {
+                    if (!cache.TryGetValue((p.Domain, p.BitSize), out shared))
+                    {
+                        shared = p;
+                        cache.Add((p.Domain, p.bitSize), shared);
+                        lookupByName.Add(shared.Name, shared);
+                    }
+                }
             }
 			return shared;
 		}
@@ -312,7 +318,7 @@ namespace Reko.Core.Types
                 { 16, Domain.Character | Domain.Integer | Domain.Pointer | Domain.Offset | Domain.Selector | Domain.Real },
                 { 32, Domain.Integer | Domain.Pointer | Domain.Real | Domain.SegPointer },
                 { 64, Domain.Integer | Domain.Pointer | Domain.Real },
-                { 80, Domain.Integer | Domain.Real | Domain.Bcd },
+                { 80, Domain.Integer | Domain.Pointer | Domain.SegPointer | Domain.Real | Domain.Bcd },
                 { 96, Domain.Integer | Domain.Real },
                 { 128, Domain.Integer | Domain.Real },
                 { 256, Domain.Integer | Domain.Real },

@@ -2485,6 +2485,15 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86rw_lss_64bit()
+        {
+            Run64bitTest("480FB206");
+            AssertCode(
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|ss_rax = Mem0[rsi + 0<64>:segptr80]");
+        }
+
+        [Test]
         public void X86Rw_maskmovdqu()
         {
             Run32bitTest("660FF7E2");
