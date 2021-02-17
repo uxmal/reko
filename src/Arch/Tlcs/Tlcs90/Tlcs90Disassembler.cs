@@ -154,28 +154,33 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private static readonly Mutator<Tlcs90Disassembler> Ib = I(PrimitiveType.Byte);
         private static readonly Mutator<Tlcs90Disassembler> Iw = I(PrimitiveType.Word16);
 
-            private static bool i(uint b, Tlcs90Disassembler dasm) { // immediate value from opcode bits
-                    dasm.ops.Add(ImmediateOperand.Byte((byte)(b & 0x7)));
-                    return true;
-                }
+        private static bool i(uint b, Tlcs90Disassembler dasm)
+        { // immediate value from opcode bits
+            dasm.ops.Add(ImmediateOperand.Byte((byte)(b & 0x7)));
+            return true;
+        }
 
-            private static bool g(uint b, Tlcs90Disassembler dasm) {
-                    Debug.Assert(dasm.byteReg != null);
-                    dasm.ops.Add(dasm.byteReg);
-                    return true;
-                }
-
-            private static bool G(uint b, Tlcs90Disassembler dasm) {
-                    Debug.Assert(dasm.wordReg != null);
-                    dasm.ops.Add(dasm.wordReg);
-                    return true;
-                }
-
-            private static bool H(uint b, Tlcs90Disassembler dasm)
+        private static bool g(uint b, Tlcs90Disassembler dasm)
         {
-                    dasm.ops.Add(new RegisterOperand(Registers.hl));
-                    return true;
-                }
+            if (dasm.byteReg is null)
+                throw new InvalidOperationException();
+            dasm.ops.Add(dasm.byteReg);
+            return true;
+        }
+
+        private static bool G(uint b, Tlcs90Disassembler dasm)
+        {
+            if (dasm.wordReg is null)
+                throw new InvalidOperationException();
+            dasm.ops.Add(dasm.wordReg);
+            return true;
+        }
+
+        private static bool H(uint b, Tlcs90Disassembler dasm)
+        {
+            dasm.ops.Add(new RegisterOperand(Registers.hl));
+            return true;
+        }
 
         // Absolute jump.
         private static Mutator<Tlcs90Disassembler> J(PrimitiveType size)

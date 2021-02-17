@@ -48,16 +48,43 @@ namespace Reko.UnitTests.Arch.M6800
         }
 
         [Test]
-        public void M6812Rw_clr()
+        public void M6812Rw_rola()
         {
-            Given_HexString("6980");
-            AssertCode(     // clr\t$0000,sp
-                "0|L--|0000(2): 5 instructions",
-                "1|L--|Mem0[sp + 0<16>:byte] = 0<8>",
-                "2|L--|N = false",
-                "3|L--|Z = true",
-                "4|L--|V = false",
-                "5|L--|C = false");
+            Given_HexString("45");
+            AssertCode(
+                "0|L--|0000(1): 2 instructions",
+                "1|L--|a = __rcl(a, 1<i8>, C)",
+                "2|L--|NZVC = cond(a)");
+        }
+
+        [Test]
+        public void M6812Rw_rolb()
+        {
+            Given_HexString("55");
+            AssertCode(
+                "0|L--|0000(1): 2 instructions",
+                "1|L--|b = __rcl(b, 1<i8>, C)",
+                "2|L--|NZVC = cond(b)");
+        }
+
+        [Test]
+        public void M6812Rw_rora()
+        {
+            Given_HexString("46");
+            AssertCode(
+                "0|L--|0000(1): 2 instructions",
+                "1|L--|a = __rcr(a, 1<i8>, C)",
+                "2|L--|NZVC = cond(a)");
+        }
+
+        [Test]
+        public void M6812Rw_rorb()
+        {
+            Given_HexString("56");
+            AssertCode(
+                "0|L--|0000(1): 2 instructions",
+                "1|L--|b = __rcr(b, 1<i8>, C)",
+                "2|L--|NZVC = cond(b)");
         }
 
         [Test]
@@ -88,6 +115,66 @@ namespace Reko.UnitTests.Arch.M6800
                 "1|L--|b = Mem0[0x4242<p16>:byte]",
                 "2|L--|NZ = cond(b)",
                 "3|L--|V = false");
+        }
+
+        [Test]
+        public void M6812Rw_lsla()
+        {
+            Given_HexString("48");
+            AssertCode(
+                "0|L--|0000(1): 2 instructions",
+                "1|L--|a = a << 1<i8>",
+                "2|L--|NZVC = cond(a)");
+        }
+
+        [Test]
+        public void M6812Rw_lslb()
+        {
+            Given_HexString("58");
+            AssertCode(
+                "0|L--|0000(1): 2 instructions",
+                "1|L--|b = b << 1<i8>",
+                "2|L--|NZVC = cond(b)");
+        }
+
+        [Test]
+        public void M6812Rw_lsld()
+        {
+            Given_HexString("59");
+            AssertCode(
+                "0|L--|0000(1): 2 instructions",
+                "1|L--|d = d << 1<i8>",
+                "2|L--|NZVC = cond(d)");
+        }
+
+        [Test]
+        public void M6812Rw_lsra()
+        {
+            Given_HexString("44");
+            AssertCode(
+                "0|L--|0000(1): 2 instructions",
+                "1|L--|a = a >>u 1<i8>",
+                "2|L--|NZVC = cond(a)");
+        }
+
+        [Test]
+        public void M6812Rw_lsrb()
+        {
+            Given_HexString("54");
+            AssertCode(
+                "0|L--|0000(1): 2 instructions",
+                "1|L--|b = b >>u 1<i8>",
+                "2|L--|NZVC = cond(b)");
+        }
+
+        [Test]
+        public void M6812Rw_lsrd()
+        {
+            Given_HexString("49");
+            AssertCode(
+                "0|L--|0000(1): 2 instructions",
+                "1|L--|d = d >>u 1<i8>",
+                "2|L--|NZVC = cond(d)");
         }
 
         [Test]
@@ -136,6 +223,57 @@ namespace Reko.UnitTests.Arch.M6800
             AssertCode(     // bcc\t0000
                 "0|T--|0000(2): 1 instructions",
                 "1|T--|if (Test(UGE,C)) branch 0000");
+        }
+
+        [Test]
+        public void M6812Rw_call_hl()
+        {
+            Given_HexString("4AFFAA70");
+            AssertCode(
+                "0|T--|0000(4): 1 instructions",
+                "1|T--|call SEQ(0x70<8>, 0xFFAA<p16>) (3)");
+        }
+
+        [Test]
+        public void M6812Rw_call_ind_x()
+        {
+            Given_HexString("4B2642");
+            AssertCode(
+                "0|T--|0000(3): 2 instructions",
+                "1|L--|x = x + 7<i16>",
+                "2|T--|call SEQ(0x42<8>, x) (3)");
+        }
+
+        [Test]
+        public void M6812Rw_call_xb_00()
+        {
+            Given_HexString("4B00");
+            AssertCode(
+                "0|T--|0000(2): 1 instructions",
+                "1|T--|call Mem0[x + 0<16>:byte] (3)");
+        }
+
+        [Test]
+        public void M6812Rw_call_xb_2a()
+        {
+            Given_HexString("4B2AD5");
+            AssertCode(
+                "0|T--|0000(3): 2 instructions",
+                "1|L--|x = x + -6<i16>",
+                "2|T--|call SEQ(0xD5<8>, x) (3)");
+        }
+
+        [Test]
+        public void M6812Rw_clr()
+        {
+            Given_HexString("6980");
+            AssertCode(     // clr\t$0000,sp
+                "0|L--|0000(2): 5 instructions",
+                "1|L--|Mem0[sp + 0<16>:byte] = 0<8>",
+                "2|L--|N = false",
+                "3|L--|Z = true",
+                "4|L--|V = false",
+                "5|L--|C = false");
         }
 
         [Test]
@@ -223,6 +361,26 @@ namespace Reko.UnitTests.Arch.M6800
                 "3|L--|v4 = Mem0[v3:byte] >> 1<i8>",
                 "4|L--|Mem0[v3:byte] = v4",
                 "5|L--|NZVC = cond(v4)");
+        }
+
+        [Test]
+        public void M6812Rw_asra()
+        {
+            Given_HexString("47");
+            AssertCode(
+                "0|L--|0000(1): 2 instructions",
+                "1|L--|a = a >> 1<i8>",
+                "2|L--|NZVC = cond(a)");
+        }
+
+        [Test]
+        public void M6812Rw_asrb()
+        {
+            Given_HexString("57");
+            AssertCode(
+                "0|L--|0000(1): 2 instructions",
+                "1|L--|b = b >> 1<i8>",
+                "2|L--|NZVC = cond(b)");
         }
 
         [Test]
