@@ -65,12 +65,13 @@ namespace Reko.Arch.WE32100
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new WE32100State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            var arch = this;
+            return new WE32100Rewriter(arch, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
