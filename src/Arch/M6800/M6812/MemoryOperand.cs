@@ -31,8 +31,8 @@ namespace Reko.Arch.M6800.M6812
         {
         }
 
-        public RegisterStorage Base { get; set; }
-        public RegisterStorage Index { get; set; }
+        public RegisterStorage? Base { get; set; }
+        public RegisterStorage? Index { get; set; }
         public short? Offset { get; set; }
         public bool PreIncrement { get; internal set; }
         public bool PostIncrement { get; internal set; }

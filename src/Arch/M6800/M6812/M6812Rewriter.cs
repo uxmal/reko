@@ -54,6 +54,8 @@ namespace Reko.Arch.M6800.M6812
             this.binder = binder;
             this.host = host;
             this.dasm = new M6812Disassembler(arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -90,8 +92,8 @@ namespace Reko.Arch.M6800.M6812
                 case Mnemonic.andb: RewriteLogical(Registers.b, m.And); break;
                 case Mnemonic.andcc: RewriteAndcc(); break;
                 case Mnemonic.asr: RewriteShiftMem(m.Sar); break;
-                case Mnemonic.asra: RewriteArithmetic(Registers.a, m.Sar); break;
-                case Mnemonic.asrb: RewriteArithmetic(Registers.b, m.Sar); break;
+                case Mnemonic.asra: RewriteShift(Registers.a, m.Sar); break;
+                case Mnemonic.asrb: RewriteShift(Registers.b, m.Sar); break;
                 case Mnemonic.bcc: RewriteBcc(ConditionCode.UGE, FlagM.CF); break;
                 case Mnemonic.bclr: RewriteBclr(); break;
                 case Mnemonic.bcs: RewriteBcc(ConditionCode.ULT, FlagM.CF); break;
@@ -188,13 +190,13 @@ namespace Reko.Arch.M6800.M6812
                 case Mnemonic.leax: RewriteLea(Registers.x); break;
                 case Mnemonic.leay: RewriteLea(Registers.y); break;
                 case Mnemonic.lsl: RewriteShiftMem(m.Shl); break;
-                case Mnemonic.lsla: RewriteArithmetic(Registers.a, m.Shl); break;
-                case Mnemonic.lslb: RewriteArithmetic(Registers.b, m.Shl); break;
-                case Mnemonic.lsld: RewriteArithmetic(Registers.d, m.Shl); break;
+                case Mnemonic.lsla: RewriteShift(Registers.a, m.Shl); break;
+                case Mnemonic.lslb: RewriteShift(Registers.b, m.Shl); break;
+                case Mnemonic.lsld: RewriteShift(Registers.d, m.Shl); break;
                 case Mnemonic.lsr: RewriteShiftMem(m.Shr); break;
-                case Mnemonic.lsra: RewriteArithmetic(Registers.a, m.Shr); break;
-                case Mnemonic.lsrb: RewriteArithmetic(Registers.b, m.Shr); break;
-                case Mnemonic.lsrd: RewriteArithmetic(Registers.d, m.Shr); break;
+                case Mnemonic.lsra: RewriteShift(Registers.a, m.Shr); break;
+                case Mnemonic.lsrb: RewriteShift(Registers.b, m.Shr); break;
+                case Mnemonic.lsrd: RewriteShift(Registers.d, m.Shr); break;
                 case Mnemonic.maxa: RewriteMaxmina("__umax_b"); break;
                 case Mnemonic.maxm: RewriteMaxminm("__umax_b"); break;
                 case Mnemonic.mem: RewriteMem(); break;
@@ -222,11 +224,11 @@ namespace Reko.Arch.M6800.M6812
                 case Mnemonic.puly: RewritePul(Registers.y); break;
                 
                 case Mnemonic.rol: RewriteShiftMem(Rol); break;
-                case Mnemonic.rola: RewriteArithmetic(Registers.a,Rol); break;
-                case Mnemonic.rolb: RewriteArithmetic(Registers.b,Rol); break;
+                case Mnemonic.rola: RewriteShift(Registers.a,Rol); break;
+                case Mnemonic.rolb: RewriteShift(Registers.b,Rol); break;
                 case Mnemonic.ror: RewriteShiftMem(Ror); break;
-                case Mnemonic.rora: RewriteArithmetic(Registers.a, Ror); break;
-                case Mnemonic.rorb: RewriteArithmetic(Registers.a, Ror); break;
+                case Mnemonic.rora: RewriteShift(Registers.a, Ror); break;
+                case Mnemonic.rorb: RewriteShift(Registers.b, Ror); break;
                 case Mnemonic.rtc: RewriteRtc(); break;
                 case Mnemonic.rti: RewriteRti(); break;
                 case Mnemonic.rts: RewriteRts(); break;
@@ -307,18 +309,18 @@ namespace Reko.Arch.M6800.M6812
                 }
                 else if (memop.PreIncrement)
                 {
-                    m.Assign(ea, m.IAddS(ea, memop.Offset.Value));
+                    m.Assign(ea, m.IAddS(ea, memop.Offset!.Value));
                 }
                 else if (memop.PostIncrement)
                 {
                     var tmp = binder.CreateTemporary(baseReg.DataType);
                     m.Assign(tmp, ea);
-                    m.Assign(baseReg, m.IAddS(baseReg, memop.Offset.Value));
+                    m.Assign(baseReg, m.IAddS(baseReg, memop.Offset!.Value));
                     ea = tmp;
                 }
                 else
                 {
-                    ea = m.IAdd(baseReg, (ushort)memop.Offset.Value);
+                    ea = m.IAdd(baseReg, (ushort)memop.Offset!.Value);
                 }
                 if (memop.Indirect)
                 {
@@ -329,19 +331,21 @@ namespace Reko.Arch.M6800.M6812
             else
             {
                 Debug.Assert(memop.Offset != null);
-                return m.Mem(memop.Width, Address.Ptr16((ushort)memop.Offset.Value));
+                return m.Mem(memop.Width, Address.Ptr16((ushort)memop.Offset!.Value));
             }
         }
 
         private Expression Rol(Expression a, Expression b)
         {
-            var intrinsic = host.Intrinsic(IntrinsicProcedure.RolC, true, a.DataType, a, b);
+            var C = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.ccr, (uint) FlagM.CF));
+            var intrinsic = host.Intrinsic(IntrinsicProcedure.RolC, true, a.DataType, a, b, C);
             return intrinsic;
         }
 
         private Expression Ror(Expression a, Expression b)
         {
-            var intrinsic = host.Intrinsic(IntrinsicProcedure.RorC, true, a.DataType, a, b);
+            var C = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.ccr, (uint) FlagM.CF));
+            var intrinsic = host.Intrinsic(IntrinsicProcedure.RorC, true, a.DataType, a, b, C);
             return intrinsic;
         }
 
@@ -429,6 +433,14 @@ namespace Reko.Arch.M6800.M6812
             m.Assign(left, m.And(left, right));
         }
 
+        private void RewriteShift(RegisterStorage reg, Func<Expression, Expression, Expression> fn)
+        {
+            var left = binder.EnsureRegister(reg);
+            var right = Constant.SByte(1);
+            m.Assign(left, fn(left, right));
+            NZVC(left);
+        }
+
         private void RewriteShiftMem(Func<Expression,Expression,Expression> fn)
         {
             var mem = RewriteOp(instr.Operands[0]);
@@ -511,10 +523,17 @@ namespace Reko.Arch.M6800.M6812
 
         private void RewriteCall()
         {
-            var dst = (ushort)((AddressOperand)instr.Operands[0]).Address.ToLinear();
-            var page = (ImmediateOperand)instr.Operands[1];
-            var addr = Address.SegPtr(page.Value.ToByte(), dst);
-            m.Call(addr, 3);
+            Expression dst = RewriteOp(instr.Operands[0]);
+            if (instr.Operands.Length == 2)
+            {
+                var page = (ImmediateOperand) instr.Operands[1];
+                if (dst is MemoryAccess mem)
+                {
+                    dst = mem.EffectiveAddress;
+                }
+                dst = m.Seq(page.Value, dst);
+            }
+            m.Call(dst, 3);
         }
 
         private void RewriteCba()
