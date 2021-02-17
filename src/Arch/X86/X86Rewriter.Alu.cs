@@ -463,7 +463,7 @@ namespace Reko.Arch.X86
             Expression op1 = SrcOp(0);
             Expression op2 = SrcOp(1, instrCur.Operands[0].Width);
             m.Assign(
-                orw.FlagGroup(X86Instruction.DefCc(Mnemonic.cmp)),
+                binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!),
                 new ConditionOf(m.ISub(op1, op2)));
         }
 
@@ -506,7 +506,7 @@ namespace Reko.Arch.X86
 
         private void EmitDaaDas(string fnName)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.Z), host.Intrinsic(
+            m.Assign(binder.EnsureFlagGroup(Registers.C), host.Intrinsic(
                 fnName,
                 true,
                 PrimitiveType.Bool,
@@ -1244,7 +1244,7 @@ namespace Reko.Arch.X86
             case Mnemonic.cmps:
             case Mnemonic.cmpsb:
                 m.Assign(
-                    orw.FlagGroup(X86Instruction.DefCc(Mnemonic.cmp)),
+                    binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!),
                     m.Cond(m.ISub(MemSi(), MemDi())));
                 incSi = true;
                 incDi = true;
@@ -1278,7 +1278,7 @@ namespace Reko.Arch.X86
             case Mnemonic.scas:
             case Mnemonic.scasb:
                 m.Assign(
-                    orw.FlagGroup(X86Instruction.DefCc(Mnemonic.cmp)),
+                    binder.EnsureFlagGroup(X86Instruction.DefCc(Mnemonic.cmp)!),
                     m.Cond(m.ISub(RegAl, MemDi())));
                 incDi = true;
                 break;
