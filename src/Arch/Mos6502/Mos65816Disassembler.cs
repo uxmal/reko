@@ -64,6 +64,17 @@ namespace Reko.Arch.Mos6502
             return instr;
         }
 
+        public override Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            var instr = new Instruction
+            {
+                InstructionClass = iclass,
+                Mnemonic = mnemonic,
+                Operands = this.ops.ToArray(),
+            };
+            return instr;
+        }
+
         public override Instruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
