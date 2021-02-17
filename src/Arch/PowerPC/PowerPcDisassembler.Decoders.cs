@@ -51,16 +51,9 @@ namespace Reko.Arch.PowerPC
                 this.message = message;
             }
 
-            private static readonly HashSet<uint> seen = new HashSet<uint>();
-
             public override PowerPcInstruction Decode(uint wInstr, PowerPcDisassembler dasm)
             {
-                if (!seen.Contains(wInstr))
-                {
-                    seen.Add(wInstr);
-                    EmitUnitTest(wInstr);
-                }
-                return dasm.CreateInvalidInstruction();
+                return dasm.NotYetImplemented(message);
             }
 
             [Conditional("DEBUG")]
