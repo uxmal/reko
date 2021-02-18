@@ -116,5 +116,14 @@ namespace Reko.UnitTests.Arch.Sparc
                 "0|L--|0000001000000000(4): 1 instructions",
                 "1|L--|g1 = g2 * g1");
         }
+
+        [Test]
+        public void sparc64_fcvtsd()
+        {
+            Given_HexString("93A09937 "); // 0CFFA93B4F089C2CF32A5B47");
+            AssertCode(
+                "0|L--|0000001000000000(4): 1 instructions",
+                "1|L--|d20 = CONVERT(f23, real32, real64)");
+        }
     }
 }

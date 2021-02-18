@@ -83,10 +83,7 @@ namespace Reko.Arch.Sparc
                         "SPARC instruction '{0}' is not supported yet.",
                         instrCur.Mnemonic);
                     goto case Mnemonic.illegal;
-                case Mnemonic.illegal:
-                    iclass = InstrClass.Invalid;
-                    m.Invalid();
-                    break;
+                case Mnemonic.illegal: iclass = InstrClass.Invalid; m.Invalid(); break;
                 case Mnemonic.add: RewriteAlu(m.IAdd, false); break;
                 case Mnemonic.addcc: RewriteAluCc(m.IAdd, false); break;
                 case Mnemonic.addx: RewriteAddxSubx(m.IAdd, false); break;
@@ -149,7 +146,6 @@ namespace Reko.Arch.Sparc
                 case Mnemonic.fbule: RewriteBranch(m.Test(ConditionCode.LE, Grf(FlagM.EF | FlagM.LF | FlagM.UF))); break;
                 case Mnemonic.fbge: RewriteBranch(m.Test(ConditionCode.GE, Grf(FlagM.EF | FlagM.GF))); break;
                 //                case Mnemonic.FBO   : on Ordered E or L or G
-
 
                 case Mnemonic.fcmpes: RewriteFcmpes(); break;
                 case Mnemonic.fcmped: RewriteFcmped(); break;
@@ -261,6 +257,8 @@ namespace Reko.Arch.Sparc
             return RewriteOp(op, false);
         }
 
+        private Expression RewriteOp(int iOp, bool g0_becomes_null = false) => RewriteOp(instrCur.Operands[iOp], g0_becomes_null);
+
         private Expression RewriteOp(MachineOperand op, bool g0_becomes_null)
         {
             if (op is RegisterOperand r)
@@ -284,25 +282,6 @@ namespace Reko.Arch.Sparc
         {
             return binder.EnsureRegister(((RegisterOperand)op).Register);
         }
-
-        private Expression RewriteDoubleRegister(MachineOperand op)
-        {
-            var reg = ((RegisterOperand)op).Register;
-            var iReg = reg.Number - arch.Registers.FloatRegisters[0].Number;
-            var regLo = arch.Registers.FloatRegisters[iReg + 1];
-            return binder.EnsureSequence(PrimitiveType.Word64, reg, regLo);
-        }
-
-        private Expression RewriteQuadRegister(MachineOperand op)
-        {
-            var reg3 = ((RegisterOperand) op).Register;
-            var iReg = reg3.Number - arch.Registers.FloatRegisters[0].Number;
-            var reg2 = arch.Registers.FloatRegisters[iReg + 1];
-            var reg1 = arch.Registers.FloatRegisters[iReg + 2];
-            var reg0 = arch.Registers.FloatRegisters[iReg + 3];
-            return binder.EnsureSequence(PrimitiveType.Word128, reg3, reg2, reg1, reg0);
-        }
-
 
         private Expression RewriteMemOp(MachineOperand op, PrimitiveType size)
         {

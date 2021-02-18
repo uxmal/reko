@@ -246,6 +246,22 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
+        public void SparcRw_save_g0()
+        {
+            Given_HexString("81E10F91");
+            AssertCode(
+                "0|L--|00100000(4): 8 instructions",
+                "1|L--|i0 = o0",
+                "2|L--|i1 = o1",
+                "3|L--|i2 = o2",
+                "4|L--|i3 = o3",
+                "5|L--|i4 = o4",
+                "6|L--|i5 = o5",
+                "7|L--|i6 = sp",
+                "8|L--|i7 = o7");
+        }
+
+        [Test]
         public void SparcRw_restore()
         {
             Given_UInt32s(0x81E80000); // restore\t%g0,%g0,%g0
@@ -297,6 +313,15 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
+        public void SparcRw_fsubs()
+        {
+            Given_HexString("B1B0445F");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f24 = f1 - f31");
+        }
+
+        [Test]
         public void SparcRw_jmpl_goto()
         {
             Given_UInt32s(0x8FC07FF0);  // jmpl    %g1,-16,%g7
@@ -335,6 +360,15 @@ namespace Reko.UnitTests.Arch.Sparc
                 "0|L--|00100000(4): 2 instructions",
                 "1|T--|if (false) branch 00100004",
                 "2|L--|__syscall(0x19<32>)");
+        }
+
+        [Test]
+        public void SparcRw_fitoq()
+        {
+            Given_HexString("89BC0CCC");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|q4 = CONVERT(f12, int32, real128)");
         }
 
         [Test]
@@ -480,7 +514,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_UInt32s(0x81A90A47);	// fcmpd	%f4,%f38
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|ELGU = cond(f38_f39 - f4_f5)");
+                "1|L--|ELGU = cond(d19 - d2)");
         }
 
         [Test]
@@ -489,7 +523,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_UInt32s(0x81A90A65);	// fcmpq %f4,%f36
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|ELGU = cond(f36_f37_f38_f39 - f4_f5_f6_f7)");
+                "1|L--|ELGU = cond(q36 - q4)");
         }
 
         [Test]
@@ -507,7 +541,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_HexString("81A88AC4");
             AssertCode(     // fcmped	%f2,%f4
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|ELGU = cond(f2_f3 - f4_f5)");
+                "1|L--|ELGU = cond(d1 - d2)");
         }
 
         [Test]
@@ -534,7 +568,7 @@ namespace Reko.UnitTests.Arch.Sparc
             Given_HexString("85A08944");
             AssertCode(     // fmuld	%f2,%f4,%f2
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|f2_f3 = f2_f3 * f4_f5");
+                "1|L--|d1 = d1 * d2");
         }
 
         [Test(Description = "Idiom used to retrieve the PC at the time of execution")]
@@ -555,5 +589,8 @@ namespace Reko.UnitTests.Arch.Sparc
                 "6|L--|0010000C(4): 1 instructions",
                 "7|L--|l7 = l7 + o7");
         }
+
+
+
     }
 }

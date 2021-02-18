@@ -139,7 +139,7 @@ namespace Reko.Arch.Sparc
             var src1 = RewriteOp(instrCur.Operands[0]);
             var src2 = RewriteOp(instrCur.Operands[1]);
             Identifier tmp = null;
-            if (((Identifier)dst).Storage != arch.Registers.g0)
+            if (dst is Identifier)
             {
                 tmp = binder.CreateTemporary(dst.DataType);
                 m.Assign(tmp, m.IAdd(src1, src2));

@@ -128,7 +128,10 @@ namespace Reko.Arch.Sparc
         {
             return
                 Registers.IntegerRegisters
-                .Concat(Registers.FloatRegisters).ToArray();
+                .Concat(Registers.QFloatRegisters)
+                .Concat(Registers.DFloatRegisters)
+                .Concat(Registers.FFloatRegisters)
+                .ToArray();
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
