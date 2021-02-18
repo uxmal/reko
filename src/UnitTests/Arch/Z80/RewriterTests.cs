@@ -285,5 +285,29 @@ namespace Reko.UnitTests.Arch.Z80
                 "1|L--|a = __rcl(a, 1<8>, C)",
                 "2|L--|C = cond(a)");
         }
+
+        [Test]
+        public void Z80rw_outi()
+        {
+            Given_HexString("EDA3");
+            AssertCode(
+                "0|L--|0100(2): 3 instructions",
+                "1|L--|v4 = Mem0[hl:byte]",
+                "2|L--|__out(c, v4)",
+                "3|L--|hl = hl + 1<i16>");
+        }
+
+        [Test]
+        public void Z80rw_otir()
+        {
+            Given_HexString("EDB3");
+            AssertCode(
+               "0|L--|0100(2): 5 instructions",
+               "1|L--|v4 = Mem0[hl:byte]",
+               "2|L--|__out(c, v4)",
+               "3|L--|hl = hl + 1<i16>",
+               "4|L--|b = b - 1<8>",
+               "5|T--|if (b != 0<8>) branch 0100");
+        }
     }
 }

@@ -64,10 +64,12 @@ namespace Reko.Arch.Z80
                 m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Mnemonic)
                 {
-                default: throw new AddressCorrelatedException(
-                    dasm.Current.Address,
-                    "Z80 instruction '{0}' is not supported yet.",
-                    dasm.Current.Mnemonic);
+                default:
+                    host.Error(
+               dasm.Current.Address,
+               "Z80 instruction '{0}' is not supported yet.",
+               dasm.Current.Mnemonic);
+                    goto case Mnemonic.illegal;
                 case Mnemonic.illegal: m.Invalid(); break;
                 case Mnemonic.adc: RewriteAdc(); break;
                 case Mnemonic.add: RewriteAdd(); break;
@@ -76,10 +78,10 @@ namespace Reko.Arch.Z80
                 case Mnemonic.call: RewriteCall(dasm.Current); break;
                 case Mnemonic.ccf: RewriteCcf(); break;
                 case Mnemonic.cp: RewriteCp(); break;
-                case Mnemonic.cpd: RewriteCp(m.ISub, false);  break;
-                case Mnemonic.cpdr:RewriteCp(m.ISub, true);   break;
-                case Mnemonic.cpi: RewriteCp(m.IAdd, false);  break;
-                case Mnemonic.cpir:RewriteCp(m.IAdd, true);   break;
+                case Mnemonic.cpd: RewriteCp(m.ISub, false); break;
+                case Mnemonic.cpdr: RewriteCp(m.ISub, true); break;
+                case Mnemonic.cpi: RewriteCp(m.IAdd, false); break;
+                case Mnemonic.cpir: RewriteCp(m.IAdd, true); break;
                 case Mnemonic.cpl: RewriteCpl(); break;
                 case Mnemonic.di: RewriteDi(); break;
                 case Mnemonic.daa: RewriteDaa(); break;
@@ -91,7 +93,7 @@ namespace Reko.Arch.Z80
                 case Mnemonic.exx: RewriteExx(); break;
                 case Mnemonic.hlt: RewriteHlt(); break;
                 case Mnemonic.@in: RewriteIn(); break;
-                case Mnemonic.ind:  RewriteIn(m.ISub, false); break;
+                case Mnemonic.ind: RewriteIn(m.ISub, false); break;
                 case Mnemonic.indr: RewriteIn(m.ISub, true); break;
                 case Mnemonic.ini: RewriteIn(m.IAdd, false); break;
                 case Mnemonic.inir: RewriteIn(m.IAdd, true); break;
@@ -101,7 +103,7 @@ namespace Reko.Arch.Z80
                 case Mnemonic.inc: RewriteInc(); break;
                 case Mnemonic.jp: RewriteJp(dasm.Current); break;
                 case Mnemonic.jr: RewriteJr(); break;
-                case Mnemonic.ld: RewriteLd();  break;
+                case Mnemonic.ld: RewriteLd(); break;
                 case Mnemonic.rl: RewriteRotation(IntrinsicProcedure.RolC, true); break;
                 case Mnemonic.rla: RewriteRotation(IntrinsicProcedure.RolC, true); break;
                 case Mnemonic.rlc: RewriteRotation(IntrinsicProcedure.Rol, false); break;
@@ -118,6 +120,10 @@ namespace Reko.Arch.Z80
                 case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.or: RewriteOr(); break;
                 case Mnemonic.@out: RewriteOut(); break;
+                case Mnemonic.otdr: RewriteOutInstruction(-1, true); break;
+                case Mnemonic.otir: RewriteOutInstruction(1, true); break;
+                case Mnemonic.outd: RewriteOutInstruction(-1, false); break;
+                case Mnemonic.outi: RewriteOutInstruction(1, false); break;
                 case Mnemonic.pop: RewritePop(); break;
                 case Mnemonic.push: RewritePush(dasm.Current); break;
                 case Mnemonic.res: RewriteResSet("__res"); break;
@@ -129,20 +135,15 @@ namespace Reko.Arch.Z80
                 case Mnemonic.sla: RewriteShift(dasm.Current, m.Shl); break;
                 case Mnemonic.sra: RewriteShift(dasm.Current, m.Sar); break;
                 case Mnemonic.srl: RewriteShift(dasm.Current, m.Shr); break;
+                case Mnemonic.sll: RewriteShift(dasm.Current, m.Shl); break;
                 case Mnemonic.sub: RewriteSub(); break;
                 case Mnemonic.xor: RewriteXor(); break;
 
                 //$TODO: Not implemented yet; feel free to implement these!
-        case Mnemonic.otdr: goto default;
-        case Mnemonic.otir: goto default;
-        case Mnemonic.outd: goto default;
-        case Mnemonic.outi: goto default;
-        case Mnemonic.outr: goto default;
-        case Mnemonic.reti: goto default;
-        case Mnemonic.retn: goto default;
-        case Mnemonic.rld: goto default;
-        case Mnemonic.rrd: goto default;
-        case Mnemonic.swap: goto default;
+                case Mnemonic.reti: goto default;
+                case Mnemonic.retn: goto default;
+                case Mnemonic.rld: goto default;
+                case Mnemonic.rrd: goto default;
                 }
                 yield return m.MakeCluster(addr, len, iclass);
             }
@@ -559,6 +560,22 @@ namespace Reko.Arch.Z80
             var dst = RewriteOp(dasm.Current.Operands[0]);
             var src = RewriteOp(dasm.Current.Operands[1]);
             m.SideEffect(host.Intrinsic("__out", false, PrimitiveType.Byte, dst, src));
+        }
+
+        private void RewriteOutInstruction(int increment, bool repeat)
+        {
+            var hl = binder.EnsureRegister(Registers.hl);
+            var c = binder.EnsureRegister(Registers.c);
+            var tmp = binder.CreateTemporary(PrimitiveType.Byte);
+            m.Assign(tmp, m.Mem8(hl));
+            m.SideEffect(host.Intrinsic("__out", false, VoidType.Instance, c, tmp));
+            m.Assign(hl, m.AddSubSignedInt(hl, increment));
+            if (repeat)
+            {
+                var b = binder.EnsureRegister(Registers.b);
+                m.Assign(b, m.ISub(b, 1));
+                m.Branch(m.Ne0(b), dasm.Current.Address);
+            }
         }
 
         private void RewritePop()
