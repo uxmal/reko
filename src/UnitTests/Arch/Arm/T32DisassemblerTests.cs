@@ -82,6 +82,15 @@ namespace Reko.UnitTests.Arch.Arm
             return arch.CreateDisassembler(rdr).GetEnumerator();
         }
 
+        // Handle the case when only 2 bytes are available but they are the first 
+        // 2 bytes of a 4 byte instruction.
+        [Test]
+        public void ThumbDis_Incomplete_instr()
+        {
+            var instr = Disassemble16(0xE895);
+            Assert.AreEqual("Invalid", instr.ToString());
+        }
+
         [Test]
         public void ThumbDis_push()
         {

@@ -8026,7 +8026,5 @@ namespace Reko.UnitTests.Arch.Arm
                  "0|L--|00100000(4): 1 instructions",
                  "1|L--|NZCV = cond(r0 - (r5 << 1<u32>))");
         }
-
-  
     }
 }
