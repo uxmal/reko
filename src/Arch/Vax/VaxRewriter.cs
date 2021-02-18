@@ -584,7 +584,17 @@ namespace Reko.Arch.Vax
                     return load;
                 }
             case AddressOperand addrOp:
-                return addrOp.Address;
+                //$BUG: enabling the commented code causes huge regressions in the
+                // unzip subject.
+                /*if (addrOp.Width.BitSize > width.BitSize)
+                {
+                    var c = addrOp.Address.ToUInt32();
+                    return Constant.Create(width, c);
+                }
+                else*/
+                {
+                    return addrOp.Address;
+                }
             }
             throw new NotImplementedException(op.GetType().Name);
         }

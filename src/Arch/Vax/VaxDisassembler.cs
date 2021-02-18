@@ -99,7 +99,7 @@ namespace Reko.Arch.Vax
             return CreateInvalidInstruction();
         }
 
-        private bool TryDecodeOperand(PrimitiveType width, out MachineOperand op)
+        private bool TryDecodeOperand(PrimitiveType width, int maxReg, out MachineOperand op)
         {
             op = null;
             if (!rdr.TryReadByte(out byte bSpecifier))
@@ -121,6 +121,8 @@ namespace Reko.Arch.Vax
                     return false;
                 break;
             case 5: // Register mode
+                if (reg.Number > maxReg)
+                    return false;
                 op = new RegisterOperand(reg);
                 break;
             case 6: // Register deferred
@@ -191,7 +193,7 @@ namespace Reko.Arch.Vax
 
         private MachineOperand IndexOperand(PrimitiveType width, RegisterStorage reg)
         {
-            if (!TryDecodeOperand(width, out MachineOperand op))
+            if (!TryDecodeOperand(width, 15, out MachineOperand op))
                 return null;
             if (!(op is MemoryOperand aOp))
                 return null;
@@ -272,7 +274,7 @@ namespace Reko.Arch.Vax
         {
             return (u, d) =>
             {
-                if (!d.TryDecodeOperand(dt, out var op))
+                if (!d.TryDecodeOperand(dt, 15, out var op))
                     return false;
                 d.ops.Add(op);
                 return true;
@@ -302,11 +304,11 @@ namespace Reko.Arch.Vax
         private static readonly Mutator bl = b(PrimitiveType.Word32);
 
 
-        private static Mutator r(PrimitiveType dt)
+        private static Mutator r(PrimitiveType dt, int maxReg = 15)
         {
             return (u, d) =>
             {
-                if (!d.TryDecodeOperand(dt, out var op))
+                if (!d.TryDecodeOperand(dt, maxReg, out var op))
                     return false;
                 d.ops.Add(op);
                 return true;
@@ -316,20 +318,20 @@ namespace Reko.Arch.Vax
         private static readonly Mutator rb = r(PrimitiveType.Byte);
         private static readonly Mutator rw = r(PrimitiveType.Word16);
         private static readonly Mutator rl = r(PrimitiveType.Word32);
-        private static readonly Mutator rf = r(PrimitiveType.Real32);  //$TODO: this is not IEEE
-        private static readonly Mutator rd = r(PrimitiveType.Real64);  //$TODO: this is not IEEE
-        private static readonly Mutator rg = r(PrimitiveType.Real64);  //$TODO: this is not IEEE
-        private static readonly Mutator rh = r(PrimitiveType.Real128);  //$TODO: this is not IEEE
-        private static readonly Mutator rq = r(PrimitiveType.Word64);
+        private static readonly Mutator rf = r(PrimitiveType.Real32, 14);  //$TODO: this is not IEEE
+        private static readonly Mutator rd = r(PrimitiveType.Real64, 13);  //$TODO: this is not IEEE
+        private static readonly Mutator rg = r(PrimitiveType.Real64, 13);  //$TODO: this is not IEEE
+        private static readonly Mutator rh = r(PrimitiveType.Real128, 11);  //$TODO: this is not IEEE
+        private static readonly Mutator rq = r(PrimitiveType.Word64, 14);
 
         private static readonly Mutator vb = r(PrimitiveType.Byte);
 
 
-        private static Mutator w(PrimitiveType dt)
+        private static Mutator w(PrimitiveType dt, int maxReg = 15)
         {
             return (u, d) =>
             {
-                if (!d.TryDecodeOperand(dt, out var op))
+                if (!d.TryDecodeOperand(dt, maxReg, out var op))
                     return false;
                 if (op is ImmediateOperand)
                     return false;    // Can't modify a constant! 
@@ -341,19 +343,19 @@ namespace Reko.Arch.Vax
         private static readonly Mutator wb = w(PrimitiveType.Byte);
         private static readonly Mutator ww = w(PrimitiveType.Word16);
         private static readonly Mutator wl = w(PrimitiveType.Word32);
-        private static readonly Mutator wf = w(PrimitiveType.Real32);  //$TODO: this is not IEEE
-        private static readonly Mutator wd = w(PrimitiveType.Real64);  //$TODO: this is not IEEE
-        private static readonly Mutator wg = w(PrimitiveType.Real64);  //$TODO: this is not IEEE
-        private static readonly Mutator wh = w(PrimitiveType.Real128);  //$TODO: this is not IEEE
-        private static readonly Mutator wq = w(PrimitiveType.Word64);
+        private static readonly Mutator wf = w(PrimitiveType.Real32, 14);  //$TODO: this is not IEEE
+        private static readonly Mutator wd = w(PrimitiveType.Real64, 13);  //$TODO: this is not IEEE
+        private static readonly Mutator wg = w(PrimitiveType.Real64, 13);  //$TODO: this is not IEEE
+        private static readonly Mutator wh = w(PrimitiveType.Real128, 11);  //$TODO: this is not IEEE
+        private static readonly Mutator wq = w(PrimitiveType.Word64, 14);
 
         private static readonly Mutator mb = w(PrimitiveType.Byte);
         private static readonly Mutator mw = w(PrimitiveType.Word16);
         private static readonly Mutator ml = w(PrimitiveType.Word32);
-        private static readonly Mutator mf = w(PrimitiveType.Real32);  //$TODO: this is not IEEE
-        private static readonly Mutator md = w(PrimitiveType.Real64);  //$TODO: this is not IEEE
-        private static readonly Mutator mg = w(PrimitiveType.Real64);  //$TODO: this is not IEEE
-        private static readonly Mutator mh = w(PrimitiveType.Real128);  //$TODO: this is not IEEE
+        private static readonly Mutator mf = w(PrimitiveType.Real32, 14);  //$TODO: this is not IEEE
+        private static readonly Mutator md = w(PrimitiveType.Real64, 13);  //$TODO: this is not IEEE
+        private static readonly Mutator mg = w(PrimitiveType.Real64, 13);  //$TODO: this is not IEEE
+        private static readonly Mutator mh = w(PrimitiveType.Real128, 11);  //$TODO: this is not IEEE
 
 
     }

@@ -2280,6 +2280,7 @@ namespace Reko.UnitTests.Arch.Vax
                 "2|L--|ZN = cond(r0)",
                 "3|L--|V = false");
         }
+
 #if LATER
         [Test]
         public void VaxRw_cmpv()
