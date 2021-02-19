@@ -170,16 +170,20 @@
 <File Source="$(var.Arm.TargetPath)" />
 <File Source="$(var.Avr.TargetPath)" />
 <File Source="$(var.Blackfin.TargetPath)" />
+<File Source="$(var.CompactRisc.TargetPath)" />
 <File Source="$(var.Cray.TargetPath)" />
 <File Source="$(var.H8.TargetPath)" />
 <File Source="$(var.i8051.TargetPath)" />
+<File Source="$(var.IA64.TargetPath)" />
 <File Source="$(var.LatticeMico.TargetPath)" />
 <File Source="$(var.M6800.TargetPath)" />
 <File Source="$(var.M68k.TargetPath)" />
 <File Source="$(var.M68k.Design.TargetPath)" />
+<File Source="$(var.MCore.TargetPath)" />
 <File Source="$(var.MicroBlaze.TargetPath)" />
 <File Source="$(var.MicrochipPIC.TargetPath)" />
 <File Source="$(var.MicrochipPIC.Design.TargetPath)" />
+<File Source="$(var.MilStd1750.TargetPath)" />
 <File Source="$(var.Mips.TargetPath)" />
 <File Source="$(var.Mos6502.TargetPath)" />
 <File Source="$(var.MSP430.TargetPath)" />
@@ -188,17 +192,23 @@
 <File Source="$(var.Pdp11.TargetPath)" />
 <File Source="$(var.PowerPC.TargetPath)" />
 <File Source="$(var.PowerPC.Design.TargetPath)" />
+<File Source="$(var.Qualcomm.TargetPath)" />
 <File Source="$(var.RiscV.TargetPath)" />
 <File Source="$(var.Rl78.TargetPath)" />
 <File Source="$(var.Sparc.TargetPath)" />
 <File Source="$(var.SuperH.TargetPath)" />
 <File Source="$(var.Tlcs.TargetPath)" />
+<File Source="$(var.Tms7000.TargetPath)" />
 <File Source="$(var.Vax.TargetPath)" />
+<File Source="$(var.V850.TargetPath)" />
 <File Source="$(var.WE32100.TargetPath)" />
 <File Source="$(var.X86.TargetPath)" />
 <File Source="$(var.X86.Design.TargetPath)" />
+<File Source="$(var.XCore.TargetPath)" />
 <File Source="$(var.Xtensa.TargetPath)" />
 <File Source="$(var.Z80.TargetPath)" />
+<File Source="$(var.zSeries.TargetPath)" />
+
 <File Source="$(var.SolutionDir)Native/build/$(var.Platform)/$(var.Configuration)/ArmNative/ArmNative.dll" />
 
         <!-- Symbol sources -->
@@ -226,7 +236,7 @@
 <File Source="$(var.WindowsForms.ProjectDir)bin\$(var.Configuration)\AutomaticGraphLayout.dll" />
 <File Source="$(var.WindowsForms.ProjectDir)bin\$(var.Configuration)\AutomaticGraphLayout.Drawing.dll" />
 <File Source="$(var.WindowsForms.ProjectDir)bin\$(var.Configuration)\Microsoft.Msagl.GraphViewerGdi.dll" />
-<File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\K4os.Compression.LZ4.dll" />
+<File Source="$(var.CmdLine.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\K4os.Compression.LZ4.dll" />
         
 <File Source="$(var.SolutionDir)..\external\reactos\coredll.def" />
 <File Source="$(var.SolutionDir)..\external\wine\commdlg.dll16.spec" />
