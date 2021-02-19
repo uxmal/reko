@@ -6,6 +6,8 @@
     <AssemblyName>Reko.Arch.V850</AssemblyName>
     <RootNamespace>Reko.Arch.V850</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>8.0</LangVersion>
+    <nullable>enable</nullable>
   </PropertyGroup>
 
   <ItemGroup>

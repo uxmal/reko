@@ -29,6 +29,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 
 namespace Reko.Arch.XCore
 {
@@ -88,35 +89,31 @@ namespace Reko.Arch.XCore
             return GetEnumerator();
         }
 
-        private static HashSet<Mnemonic> opcode_seen = new HashSet<Mnemonic>();
-
         private void EmitUnitTest()
         {
             m.Invalid();
             iclass = InstrClass.Invalid;
-            if (opcode_seen.Contains(instr.Mnemonic))
-                return;
-            opcode_seen.Add(instr.Mnemonic);
+            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            testGenSvc?.ReportMissingRewriter("XCore200Rw", instr, instr.Mnemonic.ToString(), rdr, "");
+            //var r2 = rdr.Clone();
+            //r2.Offset -= instr.Length;
+            //var hexString = string.Join("",
+            //    r2.ReadBytes(instr.Length)
+            //    .Select(b => string.Format("{0:X2}", b)));
 
-            var r2 = rdr.Clone();
-            r2.Offset -= instr.Length;
-            var hexString = string.Join("",
-                r2.ReadBytes(instr.Length)
-                .Select(b => string.Format("{0:X2}", b)));
+            //var sb = new StringBuilder();
+            //sb.AppendLine($"        [Test]");
+            //sb.AppendLine($"        public void XCore200Rw_{instr.Mnemonic}()");
+            //sb.AppendLine("        {");
 
-            var sb = new StringBuilder();
-            sb.AppendLine($"        [Test]");
-            sb.AppendLine($"        public void XCore200Rw_{instr.Mnemonic}()");
-            sb.AppendLine("        {");
-
-            sb.AppendLine($"            Given_HexString(\"{hexString}\"); // {instr}");
-            sb.AppendLine("            AssertCode(");
-            sb.AppendLine($"                \"0|L--|00100000({instr.Length}): 1 instructions\",");
-            sb.AppendLine($"                \"1|L--|@@@\");");
-            sb.AppendLine("        }");
-            sb.AppendLine();
-            Console.Write(sb);
-            Debug.WriteLine(sb);
+            //sb.AppendLine($"            Given_HexString(\"{hexString}\"); // {instr}");
+            //sb.AppendLine("            AssertCode(");
+            //sb.AppendLine($"                \"0|L--|00100000({instr.Length}): 1 instructions\",");
+            //sb.AppendLine($"                \"1|L--|@@@\");");
+            //sb.AppendLine("        }");
+            //sb.AppendLine();
+            //Console.Write(sb);
+            //Debug.WriteLine(sb);
         }
 
         private Expression Operand(MachineOperand op)

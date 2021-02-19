@@ -67,12 +67,12 @@ namespace Reko.Arch.CompactRisc
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new Cr16State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new Cr16Rewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
