@@ -90,8 +90,8 @@ namespace Reko.Arch.Msp430
                 case Mnemonics.jnz: RewriteBranch(ConditionCode.NE, FlagM.ZF); break;
                 case Mnemonics.jz:  RewriteBranch(ConditionCode.EQ, FlagM.ZF); break;
 
-                case Mnemonics.mov: RewriteBinop((a, b) => b, ""); break;
-                case Mnemonics.mova: RewriteBinop((a, b) => b, ""); break;
+                case Mnemonics.mov: RewriteMov(); break;
+                case Mnemonics.mova: RewriteMov(); break;
                 case Mnemonics.popm: RewritePopm(); break;
                 case Mnemonics.push: RewritePush(); break;
                 case Mnemonics.pushm: RewritePushm(); break;
@@ -195,6 +195,8 @@ namespace Reko.Arch.Msp430
                     m.Assign(dst, ev);
                 }
                 return dst;
+            case ImmediateOperand imm:
+                return imm.Value;
             case MemoryOperand mop:
                 Expression ea;
                 if (mop.Base != null)
@@ -226,8 +228,57 @@ namespace Reko.Arch.Msp430
                 m.Assign(mem, fn(mem, src));
                 return mem;
             }
-            throw new NotImplementedException(op.ToString());
+            throw new NotImplementedException($"Unknown operand type {op.GetType().Name} ({op})");
         }
+
+        private Expression RewriteMovDst(MachineOperand op, Expression src)
+        {
+            switch (op)
+            {
+            case RegisterOperand rop:
+                var dst = binder.EnsureRegister(rop.Register);
+                if (dst.Storage == Registers.sp && src is Constant)
+                {
+                    m.SideEffect(host.Intrinsic("__set_stackpointer", false, VoidType.Instance, src));
+                }
+                else
+                {
+                    m.Assign(dst, src);
+                }
+                return dst;
+            case ImmediateOperand imm:
+                return imm.Value;
+            case MemoryOperand mop:
+                Expression ea;
+                if (mop.Base != null)
+                {
+                    if (mop.Base == Registers.pc)
+                    {
+                        ea = instr.Address + mop.Offset;
+                    }
+                    else
+                    {
+                        ea = binder.EnsureRegister(mop.Base);
+                        if (mop.Offset != 0)
+                        {
+                            ea = m.IAdd(ea, m.Int16(mop.Offset));
+                        }
+                    }
+                }
+                else
+                {
+                    ea = Address.Ptr16((ushort) mop.Offset);
+                }
+                m.Assign(m.Mem(mop.Width, ea), src);
+                return src;
+            case AddressOperand aop:
+                var mem = m.Mem(op.Width, aop.Address);
+                m.Assign(mem, src);
+                return src;
+            }
+            throw new NotImplementedException($"Unknown operand type {op.GetType().Name} ({op})");
+        }
+
 
         private void EmitCc(Expression exp, string vnzc)
         {
@@ -335,6 +386,23 @@ namespace Reko.Arch.Msp430
         {
             iclass = InstrClass.Transfer;
             m.Goto(RewriteOp(instr.Operands[0]));
+        }
+
+        private void RewriteMov()
+        {
+            var src = RewriteOp(instr.Operands[0]);
+            if (instr.Operands[1] is RegisterOperand rop &&
+                rop.Register == Registers.pc)
+            {
+                if (instr.Operands[0] is MemoryOperand mop &&
+                    mop.PostIncrement &&
+                    mop.Base == Registers.sp)
+                {
+                    m.Return(2, 0);
+                    return;
+                }
+            }
+            RewriteMovDst(instr.Operands[1], src);
         }
 
         private void RewritePopm()

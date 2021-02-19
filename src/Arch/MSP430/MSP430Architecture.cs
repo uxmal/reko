@@ -36,7 +36,7 @@ namespace Reko.Arch.Msp430
     public class Msp430Architecture : ProcessorArchitecture
     {
         public readonly static PrimitiveType Word20 = PrimitiveType.CreateWord(20);
-        private Dictionary<uint, FlagGroupStorage> flagGroups;
+        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Msp430Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)

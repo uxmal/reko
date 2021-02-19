@@ -111,7 +111,17 @@ namespace Reko.UnitTests.Arch.Msp430
         }
 
         [Test]
-        public void Msp430Rw_rra()
+        public void MSP430Rw_rra_b()
+        {
+            Given_HexString("5311");
+            AssertCode(
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|V = false",
+                "2|L--|NZC = cond(1<8>)");
+        }
+
+        [Test]
+        public void Msp430Rw_rra_w()
         {
             Given_Bytes(0x0D, 0x11);	// rra.w	r13
             AssertCode(
@@ -369,6 +379,15 @@ namespace Reko.UnitTests.Arch.Msp430
         }
 
         [Test]
+        public void MSP430Rw_mova_r_ix()
+        {
+            Given_HexString("7405F2B6");
+            AssertCode(
+                "0|L--|0100(4): 1 instructions",
+                "1|L--|Mem0[r4 + -18702<i16>:word20] = r5");
+        }
+
+        [Test]
         public void Msp430Rw_sub_sp()
         {
             Given_Bytes(0x21, 0x83); // sub.w #0002,sp
@@ -410,7 +429,7 @@ namespace Reko.UnitTests.Arch.Msp430
         }
 
         [Test]
-        public void MSP430Dis_add_b_pcrel_pcrel()
+        public void MSP430Rw_add_b_pcrel_pcrel()
         {
             Given_HexString("D050 6647 40F7");
             AssertCode(         // add.b\t4768(pc),-08BC(pc)
