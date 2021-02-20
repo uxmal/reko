@@ -92,6 +92,8 @@ namespace Reko.Core.Memory
             return false;
         }
 
+        public bool TryReadInt16(out short _) => throw new System.NotImplementedException();
+
         public bool TryReadInt32(out int value)
         {
             throw new System.NotImplementedException();
