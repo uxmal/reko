@@ -198,6 +198,7 @@
     <Compile Include="Arch\Sparc\Sparc64RewriterTests.cs" />
     <Compile Include="Arch\SuperH\SuperHArchitectureTests.cs" />
     <Compile Include="Arch\UnitTestGenerationService.cs" />
+    <Compile Include="Arch\WE32100\WE32100RewriterTests.cs" />
     <Compile Include="Arch\X86\Assembler\AssembleFragmentTests.cs" />
     <Compile Include="Arch\X86\Assembler\AssemblerAdvanced.cs" />
     <Compile Include="Arch\X86\Assembler\AssemblerBasic.cs" />
