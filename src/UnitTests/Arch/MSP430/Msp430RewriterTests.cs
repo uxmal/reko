@@ -113,11 +113,12 @@ namespace Reko.UnitTests.Arch.Msp430
         [Test]
         public void MSP430Rw_rra_b()
         {
-            Given_HexString("5311");
+            Given_HexString("4411");
             AssertCode(
-                "0|L--|0100(2): 2 instructions",
-                "1|L--|V = false",
-                "2|L--|NZC = cond(1<8>)");
+                "0|L--|0100(2): 3 instructions",
+                "1|L--|r4 = r4 >> 1<8>",
+                "2|L--|V = false",
+                "3|L--|NZC = cond(r4)");
         }
 
         [Test]

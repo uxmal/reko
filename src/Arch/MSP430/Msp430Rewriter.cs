@@ -126,8 +126,9 @@ namespace Reko.Arch.Msp430
             return host.Intrinsic("__dadd", false, a.DataType, a, b);
         }
 
-        private Expression RewriteOp(MachineOperand op)
+        private Expression RewriteOp(MachineOperand op, PrimitiveType? dt = null)
         {
+            dt ??= op.Width ?? instr.dataWidth;
             switch (op)
             {
             case RegisterOperand rop:
@@ -139,36 +140,36 @@ namespace Reko.Arch.Msp430
                     ea = binder.EnsureRegister(mop.Base);
                     if (mop.PostIncrement)
                     {
-                        var tmp = binder.CreateTemporary(op.Width);
+                        var tmp = binder.CreateTemporary(dt);
                         m.Assign(tmp, m.Mem(op.Width, ea));
-                        m.Assign(ea, m.IAdd(ea, m.Int16((short) op.Width.Size)));
+                        m.Assign(ea, m.IAdd(ea, m.Int16((short) dt.Size)));
                         return tmp;
                     }
                     else if (mop.Base == Registers.pc)
                     {
                         ea = instr.Address + mop.Offset;
-                        var tmp = binder.CreateTemporary(op.Width);
-                        m.Assign(tmp, m.Mem(op.Width, ea));
+                        var tmp = binder.CreateTemporary(dt);
+                        m.Assign(tmp, m.Mem(dt, ea));
                         return tmp;
                     }
                     else if (mop.Offset != 0)
                     {
-                        var tmp = binder.CreateTemporary(op.Width);
-                        m.Assign(tmp, m.Mem(op.Width, m.IAdd(ea, m.Int16(mop.Offset))));
+                        var tmp = binder.CreateTemporary(dt);
+                        m.Assign(tmp, m.Mem(dt, m.IAdd(ea, m.Int16(mop.Offset))));
                         return tmp;
                     }
                     else
                     {
-                        var tmp = binder.CreateTemporary(op.Width);
-                        m.Assign(tmp, m.Mem(op.Width, ea));
+                        var tmp = binder.CreateTemporary(dt);
+                        m.Assign(tmp, m.Mem(dt, ea));
                         return tmp;
                     }
                 }
                 else
                 {
-                    var tmp = binder.CreateTemporary(op.Width);
+                    var tmp = binder.CreateTemporary(dt);
                     ea = Address.Ptr16((ushort) mop.Offset);
-                    m.Assign(tmp, m.Mem(op.Width, ea));
+                    m.Assign(tmp, m.Mem(dt, ea));
                     return tmp;
                 }
             case ImmediateOperand iop:
@@ -372,6 +373,7 @@ namespace Reko.Arch.Msp430
         private void RewriteCall()
         {
             iclass = InstrClass.Transfer | InstrClass.Call;
+            instr.dataWidth = PrimitiveType.Word16;
             m.Call(RewriteOp(instr.Operands[0]), 2);
         }
 
@@ -514,7 +516,7 @@ namespace Reko.Arch.Msp430
 
         private void RewriteSwpb()
         {
-            var src = RewriteOp(instr.Operands[0]);
+            var src = RewriteOp(instr.Operands[0], PrimitiveType.Word16);
             var dst = RewriteDst(instr.Operands[0],
                 src,
                 (a, b) => host.Intrinsic(
