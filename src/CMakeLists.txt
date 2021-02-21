@@ -671,29 +671,36 @@ elseif("${TARGET}" STREQUAL "reko_all")
 	add_custom_target(reko_run_unit_tests
 		COMMAND ${invoke_buildtarget} ${prop_config_generic} -t:run_unit_tests ${buildtarget_csproj}
 	)
+	add_dependencies(reko_run_unit_tests reko_build_solution)
 
 	add_custom_target(reko_run_regressions
 		COMMAND ${invoke_buildtarget} ${prop_config_generic} -t:run_regressions ${buildtarget_csproj}
 	)
+	add_dependencies(reko_run_regressions reko_run_unit_tests)
+
+	if(WIN32)
+		add_custom_target(reko_create_msi_installer
+			COMMAND ${invoke_buildtarget} ${prop_config_generic} -t:create_msi_wix ${buildtarget_csproj}
+		)
+	endif()
 
 	add_custom_target(reko_create_runtime_nupkg
 		COMMAND ${invoke_buildtarget} ${prop_config_generic} -t:create_runtime_nupkg ${buildtarget_csproj}
 	)
+	add_dependencies(reko_create_runtime_nupkg reko_run_regressions)
 
 	add_custom_target(reko_create_release
 		COMMAND ${invoke_buildtarget} ${prop_config_generic} -t:create_release ${buildtarget_csproj}
 	)
+	add_dependencies(reko_create_release reko_create_runtime_nupkg)
+	if(WIN32)
+		add_dependencies(reko_create_release reko_create_msi_installer)
+	endif()
 
 	add_dependencies(reko_all reko_build_solution)
 	add_dependencies(reko_all reko_run_unit_tests)
 	add_dependencies(reko_all reko_run_regressions)
-	add_dependencies(reko_all reko_create_runtime_nupkg)
 	add_dependencies(reko_all reko_create_release)
-
-	add_dependencies(reko_create_release reko_create_runtime_nupkg)
-	add_dependencies(reko_create_runtime_nupkg reko_run_regressions)
-	add_dependencies(reko_run_regressions reko_run_unit_tests)
-	add_dependencies(reko_run_unit_tests reko_build_solution)
 elseif(NOT "${TARGET}" STREQUAL "")
 	message(FATAL_ERROR "Unknown target ${TARGET}")
 endif()
