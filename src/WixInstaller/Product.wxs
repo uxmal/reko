@@ -68,6 +68,8 @@
       </Component>
     </DirectoryRef>
 
+    <?include Components.wxi ?>
+
     <Feature Id="ProductFeature" Title="Complete" Level="1">
       <ComponentRef Id="ProductComponent" />
       <ComponentRef Id="ApplicationShortcut" />

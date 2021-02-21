@@ -497,7 +497,7 @@ elseif("${TARGET}" STREQUAL "create_msi_wix")
 			${REKO_SRC}/Drivers/WindowsDecompiler
 			${WINDRIVER_OUTDIR}
 			${REKO_EXE_FRAMEWORK}
-			${REKO_SRC}/WixInstaller/Product.wxs.template
+			${REKO_SRC}/WixInstaller/Components.wxi.template
 		OUTPUT
 			${REKO_SRC}/WixInstaller/.skipwixpecupdate
 		TARGET_NAME "update_wix_spec"

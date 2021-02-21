@@ -71,7 +71,7 @@ namespace Reko.Tools.specGen
             {
                 dom.Load(sr);
             }
-            var root = dom.DocumentElement["Product"];
+            var root = dom.DocumentElement;
 
             Console.Error.WriteLine($"Scanning files in '{outDir}'");
 
