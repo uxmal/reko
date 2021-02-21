@@ -9,20 +9,14 @@ namespace Reko.Tools.specGen
 {
     internal class WixSpecGen
     {
-        private string projectDir;
-        private string outDir;
-        private string targetFramework;
-        private string inputFilePath;
-
+        private readonly string outDir;
+        private readonly string inputFilePath;
         private readonly string pathPrefix;
 
         public WixSpecGen(string projectDir, string outDir, string targetFramework, string inputFilePath)
         {
-            this.projectDir = projectDir.NormalizePath();
             this.outDir = outDir.NormalizePath();
-            this.targetFramework = targetFramework;
             this.inputFilePath = inputFilePath;
-
             this.pathPrefix = this.outDir.EnsureTrailingSlash();
         }
 
@@ -82,7 +76,6 @@ namespace Reko.Tools.specGen
             Console.Error.WriteLine($"Scanning files in '{outDir}'");
 
             var componentNodes = new Dictionary<string, XmlElement>();
-            var featureNodes = new Dictionary<string, XmlElement>();
 
             var files = Directory.GetFiles(outDir, "*", SearchOption.AllDirectories);
             foreach (var f in files)
@@ -91,11 +84,6 @@ namespace Reko.Tools.specGen
                 var relaDir = Path.GetDirectoryName(f)
                                   .Replace(outDir, "")
                                   .TrimSlashes();
-
-                var extension = Path.GetExtension(f) ?? "";
-                var basename = Path.GetFileName(f);
-
-                var separator = (string.IsNullOrEmpty(relaDir)) ? "" : "/";
 
                 if(!componentNodes.TryGetValue(relaDir, out XmlElement component))
                 {
@@ -108,7 +96,6 @@ namespace Reko.Tools.specGen
 
                     var componentRef = dom.CreateElement("ComponentRef", NAMESPACE);
                     componentRef.SetAttribute("Id", component.GetAttribute("Id"));
-                    featureNodes[relaDir] = componentRef;
                 }
 
                 var fileNode = CreateFileElement(dom, relaPath);
