@@ -8,7 +8,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>Reko.WindowsDecompiler</RootNamespace>
     <AssemblyName>WindowsDecompiler</AssemblyName>
-    <ApplicationIcon />
+    <ApplicationIcon>App.ico</ApplicationIcon>
     <OutputType>WinExe</OutputType>
     <UseWindowsForms>true</UseWindowsForms>
     <StartupObject>Reko.WindowsDecompiler.Driver</StartupObject>
