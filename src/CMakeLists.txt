@@ -503,8 +503,14 @@ elseif("${TARGET}" STREQUAL "create_msi_wix")
 		TARGET_NAME "update_wix_spec"
 	)
 
-	find_program(CANDLE_EXECUTABLE candle REQUIRED)
-	find_program(LIGHT_EXECUTABLE light REQUIRED)
+	find_program(CANDLE_EXECUTABLE candle
+		PATHS ${WIX_ROOT}/bin
+		REQUIRED
+	)
+	find_program(LIGHT_EXECUTABLE light
+		PATHS ${WIX_ROOT}/bin
+		REQUIRED
+	)
 
 	set(WIX_CANDLE_INPUT ${REKO_SRC}/WixInstaller/Product.wxs)
 	set(WIX_CANDLE_OUTPUT ${CMAKE_BINARY_DIR}/wix/Reko.wixobj)
