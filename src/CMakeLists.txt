@@ -25,6 +25,8 @@ endif()
 set(REKO_SRC ${CMAKE_CURRENT_LIST_DIR})
 set(REKO_VERSION "0.9.3")
 
+set(artifacts_dir ${REKO_SRC}/../bin)
+file(MAKE_DIRECTORY ${artifacts_dir})
 
 #
 # This function obtains the output path of a given csproj
@@ -480,6 +482,89 @@ elseif("${TARGET}" STREQUAL "create_runtime_nupkg")
 			-p:PackageVersion=${REKO_VERSION}
 			${REKO_SRC}/Drivers/Runtime/Runtime.csproj
 	)
+elseif("${TARGET}" STREQUAL "create_msi_wix")
+	#
+	# Create a new target to update the Wix spec
+	#
+	set(WINDRIVER_OUTDIR ${REKO_SRC}/Drivers/WindowsDecompiler/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_EXE_FRAMEWORK})
+	RUN_DOTNET(${REKO_SRC}/tools/specGen/specGen.csproj
+		NO_RESTORE
+		NO_CLEAN
+		CONFIG ${CMAKE_BUILD_TYPE}
+		PLATFORM ${REKO_PLATFORM}
+		ARGUMENTS 
+			wix
+			${REKO_SRC}/Drivers/WindowsDecompiler
+			${WINDRIVER_OUTDIR}
+			${REKO_EXE_FRAMEWORK}
+			${REKO_SRC}/WixInstaller/Product.wxs.template
+		OUTPUT
+			${REKO_SRC}/WixInstaller/.skipwixpecupdate
+		TARGET_NAME "update_wix_spec"
+	)
+
+	find_program(CANDLE_EXECUTABLE candle REQUIRED)
+	find_program(LIGHT_EXECUTABLE light REQUIRED)
+
+	set(WIX_CANDLE_INPUT ${REKO_SRC}/WixInstaller/Product.wxs)
+	set(WIX_CANDLE_OUTPUT ${CMAKE_BINARY_DIR}/wix/Reko.wixobj)
+	set(WIX_LIGHT_OUTPUT ${CMAKE_BINARY_DIR}/wix/Reko-${REKO_VERSION}.msi)
+
+	#
+	# This command describes the process of getting 
+	# WIX_CANDLE_OUTPUT (.wixobj)
+	# from
+	# WIX_CANDLE_INPUT (.wxs)
+	#
+	add_custom_command(
+		OUTPUT ${WIX_CANDLE_OUTPUT}
+		COMMAND
+			${CANDLE_EXECUTABLE}
+			-dSolutionDir=${REKO_SRC}/
+			-dOUTDIR=${WINDRIVER_OUTDIR}
+			-dEXEFILE=${WINDRIVER_OUTDIR}/WindowsDecompiler.exe
+			-arch ${REKO_PLATFORM}
+			-o ${WIX_CANDLE_OUTPUT}
+			${WIX_CANDLE_INPUT}
+		DEPENDS ${WIX_CANDLE_INPUT}
+	)
+	# 
+	# This target is linked with WIX_CANDLE_OUTPUT (.wixobj)
+	# so that the corresponding command will run
+	#
+	add_custom_target("wix_compile_wxs"
+		COMMENT "Wix: Compile .wxs to .wixobj"
+		DEPENDS ${WIX_CANDLE_OUTPUT}
+	)
+
+	#
+	# This command describes the process of getting 
+	# WIX_LIGHT_OUTPUT (.msi)
+	# from
+	# WIX_CANDLE_OUTPUT (.wixobj)
+	#
+	add_custom_command(
+		OUTPUT ${WIX_LIGHT_OUTPUT}
+		COMMAND
+			${LIGHT_EXECUTABLE}
+			-ext WixUIExtension
+			${WIX_CANDLE_OUTPUT}
+			-o ${WIX_LIGHT_OUTPUT}
+		DEPENDS ${WIX_CANDLE_OUTPUT}
+	)
+	# 
+	# This target is linked with WIX_LIGHT_OUTPUT (.msi)
+	# so that the corresponding command will run
+	#
+	add_custom_target("create_msi_wix"
+		COMMENT "Wix: assemble .wixobj to .msi"
+		DEPENDS ${WIX_LIGHT_OUTPUT}
+	)
+
+	# .msi depends on .wixobj
+	add_dependencies(create_msi_wix wix_compile_wxs)
+	# .wixobj depends on specGen
+	add_dependencies(wix_compile_wxs update_wix_spec)
 elseif("${TARGET}" STREQUAL "update_runtime_nuspec")
 	#
 	# Create a new target to update the Runtime nuspec
@@ -519,9 +604,6 @@ elseif("${TARGET}" STREQUAL "create_release")
 		set(build_version "${REKO_VERSION}")
 	endif()
 
-	set(artifacts_dir ${REKO_SRC}/../bin)
-	file(MAKE_DIRECTORY ${artifacts_dir})
-
 	add_custom_target(create_release)
 
 	if(WIN32 AND NOT UNIX)
@@ -531,8 +613,13 @@ elseif("${TARGET}" STREQUAL "create_release")
 				${REKO_SRC}/Drivers/WindowsDecompiler/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_EXE_FRAMEWORK}/*
 		)
 		add_dependencies(create_release create_release_zip_windowsdecompiler)
-		# $TODO: WiX
-		#add_dependencies(create_release appveyor_msi)
+
+		add_copy_target(
+			SRC_PATH ${CMAKE_BINARY_DIR}/../create_msi_wix/wix/Reko-${REKO_VERSION}.msi
+			DEST_PATH ${artifacts_dir}/Reko-${build_version}-${build_shorthash}.msi
+			OUT_TARGET_NAME copy_msi_target
+		)
+		add_dependencies(create_release ${copy_msi_target})
 	endif()
 
 	add_custom_target(create_release_zip_cmdline
@@ -540,14 +627,7 @@ elseif("${TARGET}" STREQUAL "create_release")
 		COMMAND ${SEVENZIP_BIN} a ${artifacts_dir}/CmdLine-${build_version}-${build_shorthash}.zip
 			${REKO_SRC}/Drivers/CmdLine/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_EXE_FRAMEWORK}/*
 	)
-
-	add_custom_target(create_release_msi
-		COMMAND ${CMAKE_COMMAND} -E copy
-			${REKO_SRC}/WixInstaller/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/reko-${build_version}.msi
-			${REKO_SRC}/WixInstaller/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/reko-${build_version}-${build_shorthash}.msi
-	)
 	add_dependencies(create_release create_release_zip_cmdline)
-
 
 	add_copy_target(
 		SRC_PATH ${REKO_SRC}/Drivers/Runtime/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/Reko.Runtime.${REKO_VERSION}.nupkg

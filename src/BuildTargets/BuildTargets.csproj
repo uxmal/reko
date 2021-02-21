@@ -35,6 +35,11 @@
     <Exec Command="cmake $(CMakeArguments) -DTARGET=create_runtime_nupkg -P $(RekoCMake)" />
   </Target>
 
+  <!-- This build the MSI installer (Windows only) -->
+  <Target Name="create_msi_wix">
+    <Exec Command="cmake $(CMakeArguments) -DTARGET=create_msi_wix -P $(RekoCMake)" />
+  </Target>
+
   <!-- Builds and runs the Reko unit test. This may build Reko twice. -->
   <Target Name="run_unit_tests">
     <Exec Command="cmake $(CMakeArguments) -DTARGET=run_unit_tests -P $(RekoCMake)" />
