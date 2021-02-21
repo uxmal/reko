@@ -23,6 +23,7 @@ build_script:
 
 after_build:
   - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -v:m -t:create_runtime_nupkg -m ./src/BuildTargets/BuildTargets.csproj
+  - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -v:m -t:create_msi_wix -m ./src/BuildTargets/BuildTargets.csproj
   - cmd: dotnet msbuild -p:Platform=%PLATFORM% -p:Configuration=%CONFIGURATION% -v:m -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
 
 test_script:

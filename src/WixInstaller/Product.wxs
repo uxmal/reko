@@ -45,9 +45,9 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="$(var.PlatformProgramFilesFolder)">
         <Directory Id="jklSoftFolder" Name="jklSoft">
-          <Directory Id="INSTALLFOLDER" Name="Reko">
-            <Directory Id="Os2_16Folder" Name="os2-16" /> <!-- Folder for OS/2 16-bit specific files-->
-            <Directory Id="Os2_32Folder" Name="os2-32" /> <!-- Folder for OS/2 32-bit specific files-->
+          <Directory Id="ProductComponentFolder" Name="Reko">
+            <Directory Id="os2_16Folder" Name="os2-16" /> <!-- Folder for OS/2 16-bit specific files-->
+            <Directory Id="os2_32Folder" Name="os2-32" /> <!-- Folder for OS/2 32-bit specific files-->
           </Directory>
         </Directory>
       </Directory>
@@ -61,42 +61,29 @@
         <Shortcut Id="ApplicationStartMenuShortcut"
                   Name="Reko Decompiler"
                   Description="Decompiles binary executable files"
-                  Target="[INSTALLFOLDER]WindowsDecompiler.exe"
-                  WorkingDirectory="INSTALLFOLDER"/>
+                  Target="[ProductComponentFolder]WindowsDecompiler.exe"
+                  WorkingDirectory="ProductComponentFolder"/>
         <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
         <RegistryValue Root="HKCU" Key="Software\jklSoft\Decompiler" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
       </Component>
     </DirectoryRef>
 
-    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-      <!-- Insert files, registry keys, and other resources here. -->
-      <Component Id="ProductComponent" Guid="9C3E003B-43CB-47B3-B5B8-DC6373A38AE1">
-        <?include BinaryFiles.wxi ?>
-      </Component>
-    </ComponentGroup>
-
-    <Component Id="Comp_Os2_16" Directory="Os2_16Folder" Guid="0444AAFF-1B7C-4182-AEEF-7DFCCDBC426C">
-      <?include Os2_16Metadata.wxi ?>
-    </Component>
-
-    <Component Id="Comp_Os2_32" Directory="Os2_32Folder" Guid="17698BD8-9701-44F7-8D05-F42F450334C6">
-      <?include Os2_32Metadata.wxi ?>
-    </Component>
+    <?include Components.wxi ?>
 
     <Feature Id="ProductFeature" Title="Complete" Level="1">
-      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="ProductComponent" />
       <ComponentRef Id="ApplicationShortcut" />
-      <ComponentRef Id="Comp_Os2_16" />
-      <ComponentRef Id="Comp_Os2_32" />
+      <ComponentRef Id="os2_16" />
+      <ComponentRef Id="os2_32" />
     </Feature>
 
-    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <Property Id="WIXUI_INSTALLDIR" Value="ProductComponentFolder" />
 
     <WixVariable Id="WixUILicenseRtf" Value="$(var.SolutionDir)..\COPYING.rtf" />
     
     <UIRef Id="WixUI_InstallDir" />
 
     <Property Id="ARPPRODUCTICON" Value="PackageIcon" />
-    <Icon Id="PackageIcon" SourceFile="$(var.WindowsDecompiler.TargetPath)" />
+    <Icon Id="PackageIcon" SourceFile="$(var.EXEFILE)" />
   </Product>
 </Wix>

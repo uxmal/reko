@@ -53,6 +53,9 @@ jobs:
       env:
         BUILD_CONFIG: ${{ matrix.build_config }}
       run: dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_runtime_nupkg -m ./src/BuildTargets/BuildTargets.csproj
+    - name: Create Installer .msi
+      if: matrix.os == 'windows-latest'
+      run: dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_msi_wix -m ./src/BuildTargets/BuildTargets.csproj
     - name: Create Release
       shell: bash
       env:
