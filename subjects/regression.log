@@ -1023,9 +1023,7 @@ Error: An error occurred during decompilation.
 00002982: error: Instruction acbd	-(r2),(fp),(r1),000049FC too complex to rewrite.
 00002989: error: Instruction acbd	#8.0,-(r0),-(r5),00004A03 too complex to rewrite.
 00002990: error: Instruction acbd	#8.0,-(r3),(r3),00008F08 too complex to rewrite.
-000029A5: error: Instruction acbd	pc,(pc),-(r5),00009A1F too complex to rewrite.
 000029A7: error: Instruction acbd	-(r5),-(r4),-(r0),00009E22 too complex to rewrite.
-000029CB: error: Instruction acbd	pc,(pc),-(r5),00009A45 too complex to rewrite.
 000029CD: error: Instruction acbd	-(r5),-(r4),-(r0),00009E48 too complex to rewrite.
 000029F9: error: Instruction acbf	#8.0,(r6),(r1),00009668 too complex to rewrite.
 00002A13: error: Instruction acbd	fp,-(r6),(r5),0000A18B too complex to rewrite.
@@ -1432,4 +1430,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === wasm\nbody.wasm
 === wasm\sample.wasm
 Stripping SSA identifier numbers
-Decompiled 75 binaries in 90.56 seconds ---
+Decompiled 75 binaries in 104.84 seconds ---
