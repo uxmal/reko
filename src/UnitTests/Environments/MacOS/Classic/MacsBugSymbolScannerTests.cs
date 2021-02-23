@@ -91,6 +91,7 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             while (count > 0)
             {
                 w.WriteByte((byte)count);
+                --count;
             }
             if ((w.Position & 1) == 1)
                 w.WriteByte(0x00);
@@ -115,6 +116,32 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             Assert.AreEqual(SymbolType.Procedure, sym.Type);
             Assert.AreEqual("my_printf", sym.Name);
             Assert.AreEqual(Address.Ptr32(0x00100000), sym.Address);
+        }
+
+        [Test]
+        public void MacsBug_ScanProcedures_WithConstantData()
+        {
+            Given_Link(4);
+            Given_Body(3);
+            Given_Rts();
+            Given_Variable_Length_Symbol("some_symbol");
+            Given_ProgramData(5);
+
+            Given_Link(4);
+            Given_Body(8);
+            Given_Rts();
+            Given_Variable_Length_Symbol("other_symbol");
+            Given_ProgramData(0);
+
+            Given_Link(6);
+            Given_Body(3);
+            Given_Rts();    // no symbol.
+
+            var mem = new ByteMemoryArea(Address.Ptr32(0x00100000), w.ToArray());
+            var scan = new MacsBugSymbolScanner(arch, mem);
+            var symbols = scan.ScanForSymbols();
+
+            Assert.AreEqual(2, symbols.Count);
         }
     }
 }
