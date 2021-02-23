@@ -147,30 +147,20 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private Expression RewriteSrc(MachineOperand op)
         {
-            var reg = op as RegisterOperand;
-            if (reg != null)
+            switch (op)
             {
+            case RegisterOperand reg:
                 return binder.EnsureRegister(reg.Register);
-            }
-            var addr = op as AddressOperand;
-            if (addr != null)
-            {
+            case AddressOperand addr:
                 return addr.Address;
-            }
-            var imm = op as ImmediateOperand;
-            if (imm != null)
-            {
+            case ImmediateOperand imm:
                 return imm.Value;
-            }
-            var mem = op as MemoryOperand;
-            if (mem != null)
-            {
+            case MemoryOperand mem:
                 Expression ea = RewriteSrcEa(mem);
                 var tmp = binder.CreateTemporary(mem.Width);
                 m.Assign(tmp, m.Mem(mem.Width, ea));
                 return tmp;
             }
-
             throw new NotImplementedException(op.GetType().Name);
         }
 
@@ -184,37 +174,41 @@ namespace Reko.Arch.Tlcs.Tlcs900
             Expression ea;
             if (mem.Base != null)
             {
-                if (mem.Increment < 0)
-                    throw new NotImplementedException("predec");
                 ea = binder.EnsureRegister(mem.Base);
+                if (mem.Increment < 0)
+                {
+                    m.Assign(ea, m.AddSubSignedInt(ea, mem.Increment));
+                }
                 if (mem.Offset != null)
                 {
                     ea = m.IAdd(ea, mem.Offset);
+                }
+                if (mem.Increment > 0)
+                {
+                    var tmp = binder.CreateTemporary(ea.DataType);
+                    m.Assign(tmp, ea);
+                    m.Assign(ea, m.AddSubSignedInt(ea, mem.Increment));
+                    ea = tmp;
                 }
             }
             else
             {
                 ea = arch.MakeAddressFromConstant(mem.Offset, false);
             }
-
             return ea;
         }
 
         private Expression RewriteDst(MachineOperand op, Expression src, Func<Expression, Expression, Expression> fn)
         {
-            var reg = op as RegisterOperand;
-            if(reg != null)
+            switch (op)
             {
+            case RegisterOperand reg:
                 var id = binder.EnsureRegister(reg.Register);
                 m.Assign(id, fn(id, src));
                 return id;
-            }
-            if (op is AddressOperand addr)
-            {
+            case AddressOperand addr:
                 return addr.Address;
-            }
-            if (op is MemoryOperand mem)
-            {
+            case MemoryOperand mem:
                 Expression ea;
                 if (mem.Base != null)
                 {

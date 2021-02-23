@@ -157,11 +157,13 @@ namespace Reko.Arch.Tlcs
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
+            if (width == 0)
+                return null;
             if (!Registers.Subregisters.TryGetValue(reg.Domain, out var subs))
                 return null;
             int key = (width << 4) | offset;
             if (!subs.TryGetValue(key, out var subreg))
-                return null;
+                return reg;
             return subreg;
         }
 

@@ -36,8 +36,8 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class Tlcs900RewriterTests : RewriterTestBase
     {
-        private Tlcs900Architecture arch = new Tlcs900Architecture(CreateServiceContainer(), "tlcs900", new Dictionary<string, object>());
-        private Address baseAddr = Address.Ptr32(0x0010000);
+        private readonly Tlcs900Architecture arch = new Tlcs900Architecture(CreateServiceContainer(), "tlcs900", new Dictionary<string, object>());
+        private readonly Address baseAddr = Address.Ptr32(0x0010000);
 
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => baseAddr;
@@ -161,6 +161,18 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "1|L--|v2 = Mem0[0x00006F91<p32>:byte]",
                 "2|L--|N = true",
                 "3|L--|SZHVC = cond(v2 - 0<8>)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_cp_predec()
+        {
+            Given_HexString("D4E1F2");
+            AssertCode(
+            "0|L--|00010000(3): 4 instructions",
+            "1|L--|xwa = xwa - 2<i32>",
+            "2|L--|v4 = Mem0[xwa:word16]",
+            "3|L--|N = true",
+            "4|L--|SZHVC = cond(de - v4)");
         }
 
         [Test]
@@ -351,6 +363,21 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "2|L--|c = v3 /u 0xA<16>",
                 "3|L--|b = v3 % 0xA<16>",
                 "4|L--|V = cond(c)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_div_postdec()
+        {
+            Given_HexString("E53850");
+            AssertCode(
+            "0|L--|00010000(3): 7 instructions",
+            "1|L--|v3 = xiz",
+            "2|L--|xiz = xiz + 1<i32>",
+            "3|L--|v4 = Mem0[v3:word32]",
+            "4|L--|v6 = xwa",
+            "5|L--|a = v6 /u v4",
+            "6|L--|w = v6 % v4",
+            "7|L--|V = cond(a)");
         }
 
         [Test]
@@ -638,5 +665,6 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|iy = Test(ULT,Z)");
         }
+
     }
 }
