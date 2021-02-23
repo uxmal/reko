@@ -28,18 +28,19 @@ namespace Reko.Arch.zSeries
 {
     public class zSeriesState : ProcessorState
     {
-        private zSeriesArchitecture arch;
+        private readonly zSeriesArchitecture arch;
         private Dictionary<RegisterStorage, Constant> values;
 
         public zSeriesState(zSeriesArchitecture arch)
         {
             this.arch = arch;
+            this.values = new Dictionary<RegisterStorage, Constant>();
         }
 
         public zSeriesState(zSeriesState that)
         {
             this.arch = that.arch;
-            this.values = new Dictionary<RegisterStorage, Constant>();
+            this.values = new Dictionary<RegisterStorage, Constant>(that.values);
         }
 
         public override IProcessorArchitecture Architecture
@@ -57,7 +58,7 @@ namespace Reko.Arch.zSeries
             return Constant.Invalid;
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
 

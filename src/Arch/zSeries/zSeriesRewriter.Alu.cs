@@ -230,9 +230,9 @@ namespace Reko.Arch.zSeries
         {
             var eaLeft = (MemoryOperand) instr.Operands[0];
             var eaRight = (MemoryOperand) instr.Operands[1];
-            var ptrLeft = binder.EnsureRegister(eaLeft.Base);
+            var ptrLeft = binder.EnsureRegister(eaLeft.Base!);
             var lenLeft = Constant.Create(PrimitiveType.Int32, eaLeft.Offset);
-            var ptrRight= binder.EnsureRegister(eaRight.Base);
+            var ptrRight= binder.EnsureRegister(eaRight.Base!);
             var lenRight = Constant.Create(PrimitiveType.Int32, eaRight.Offset);
             SetCc(host.Intrinsic("__packed_divide", false, PrimitiveType.Byte, ptrLeft, lenLeft, ptrRight, lenRight, ptrLeft));
         }
@@ -620,8 +620,8 @@ namespace Reko.Arch.zSeries
 
         private void RewriteAlu3(Func<Expression, Expression, Expression> fn, PrimitiveType dtResult)
         {
-            var src1 = Reg(0, dtResult);
-            var src2 = m.Mem(dtResult, EffectiveAddress(1));
+            var src1 = Reg(1, dtResult);
+            var src2 = Op(2, dtResult);
             var bin = fn(src1, src2);
             var dst = Assign(Reg(0), bin);
             SetCc(m.Cond(dst));

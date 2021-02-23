@@ -1199,15 +1199,63 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSeriesDis_verim()
+        {
+            AssertCode("verimg\tv13,v1,v11,B8", "E7D1B7B83472");
+        }
+
+        [Test]
+        public void zSeriesDis_vfs()
+        {
+            AssertCode("vfsdb\tv8,v21,v2", "E785 21E9 36E2");
+        }
+
+        [Test]
         public void zSerDasm_vl()
         {
             AssertCode("vl\tv8,88(r15)", "E780F0580806");
         }
 
         [Test]
+        public void zSeriesDis_vgbm()
+        {
+            AssertCode("vgbm\tv5,FD8B", "E755 FD8B F844");
+        }
+
+        [Test]
+        public void zSeriesDis_vftci()
+        {
+            AssertCode("vftci\tv23,v28,0FDA", "E77CFDA0DE4A");
+        }
+
+        [Test]
         public void zSerDasm_vlm()
         {
             AssertCode("vlm\tv24,v31,160(r15)", "E78FF0A00C36");
+        }
+
+        [Test]
+        public void zSeriesDis_vmahb()
+        {
+            AssertCode("vmahb\tv20,v9,v12,v16", "E749C60B02AB");
+        }
+
+        [Test]
+        public void zSeriesDis_vmxlg()
+        {
+            AssertCode("vmxlg\tv15,v0,v14", "E7F0E01737FD");
+        }
+
+        [Test]
+        public void zSeriesDis_vpks()
+        {
+            AssertCode("vpksf\tv8,v0,v1", "E78015E92997");
+        }
+
+        [Test]
+        public void zSeriesDis_vscef()
+        {
+            AssertCode("vscef\tv18,v31,1034(r8)", "E72F840A2B1B");
         }
 
         [Test]
@@ -1245,6 +1293,5 @@ namespace Reko.UnitTests.Arch.zSeries
         {
             AssertCode("zap\t578(16,r4),578(7,r4)", "F8F642424242");
         }
-
     }
 }

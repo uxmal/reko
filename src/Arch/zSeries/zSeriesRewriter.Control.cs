@@ -90,7 +90,11 @@ namespace Reko.Arch.zSeries
         private void RewriteBranchOnCount(PrimitiveType dt)
         {
             var index = Reg(0,dt);
-            var dst = EffectiveAddress(1);
+            Expression dst;
+            if (instr.Operands[1] is RegisterOperand r)
+                dst = binder.EnsureRegister(r.Register);
+            else
+                dst = EffectiveAddress(1);
             m.Assign(index, m.ISub(index, 1));
             if (dst is Address addr)
             {
@@ -103,7 +107,7 @@ namespace Reko.Arch.zSeries
             }
         }
 
-        private void RewriteBranchOnIndex(Func<Expression, Expression, Expression> cmp)
+        private void Brx(Func<Expression, Expression, Expression> cmp)
         {
             var index = Reg(0);
             var addr = EffectiveAddress(2);
@@ -122,6 +126,39 @@ namespace Reko.Arch.zSeries
             else
             {
                 val = inc; 
+            }
+            m.Assign(index, m.IAdd(index, inc));
+            var condition = cmp(index, val);
+            if (addr is Address a)
+            {
+                m.Branch(condition, a);
+            }
+            else
+            {
+                m.BranchInMiddleOfInstruction(condition.Invert(), instr.Address + instr.Length, iclass);
+                m.Goto(addr);
+            }
+        }
+
+        private void Bx(Func<Expression, Expression, Expression> cmp)
+        {
+            var index = Reg(0);
+            var addr = EffectiveAddress(2);
+            // How's this for CISC:
+            // "When the R3 field is even, it designates a pair of registers; the contents of the even
+            // " and odd registers of the pair are used as the increment and the compare value, respectively.
+            // When the R3 field is odd, it designates a single register, the contents of which are
+            // used as both the increment and the compare value
+            var r3 = ((RegisterOperand) instr.Operands[1]).Register;
+            Identifier inc = binder.EnsureRegister(r3);
+            Identifier val;
+            if ((r3.Number & 1) == 0)
+            {
+                val = binder.EnsureRegister(NextGpReg(r3));
+            }
+            else
+            {
+                val = inc;
             }
             m.Assign(index, m.IAdd(index, inc));
             var condition = cmp(index, val);

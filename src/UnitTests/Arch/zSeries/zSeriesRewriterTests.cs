@@ -377,13 +377,15 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
-        [Ignore("S390 instr")]
         public void zSeriesRw_bctr()
         {
             Given_HexString("06CB");
             AssertCode(     // bctr	r12,r11
-                "0|L--|00100000(2): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|00100000(2): 4 instructions",
+                "1|L--|v3 = SLICE(r12, word32, 0)",
+                "2|L--|v3 = v3 - 1<32>",
+                "3|T--|if (v3 == 0<32>) branch 00100002",
+                "4|T--|goto r11");
         }
 
         [Test]
@@ -2558,6 +2560,19 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSeriesRw_slrk()
+        {
+            Given_HexString("B9FB DBB4");
+            AssertCode(
+                "0|L--|00100000(4): 5 instructions",
+                "1|L--|v3 = SLICE(r4, word32, 0)",
+                "2|L--|v5 = SLICE(r13, word32, 0)",
+                "3|L--|v7 = v3 -u v5", 
+                "4|L--|r11 = SEQ(SLICE(r11, word32, 32), v7)",
+                "5|L--|CC = cond(v7)");
+        }
+
+        [Test]
         [Ignore("S390 instr")]
         public void zSeriesRw_sp()
         {
@@ -2967,6 +2982,98 @@ namespace Reko.UnitTests.Arch.zSeries
             AssertCode(     // unpku	1833(40,r10),0000007F
                 "0|L--|00100000(6): 1 instructions",
                 "1|L--|@@@");
+        }
+
+        [Test]
+        public void zSeries_vll()
+        {
+            Given_HexString("E774099E5737");
+            AssertCode(
+                "0|L--|00100000(6): 1 instructions",
+                "1|L--|v7 = __vll(r4, 0x0000099E<p32>)");
+        }
+
+        [Test]
+        public void zSeriesRw_verim()
+        {
+            Given_HexString("E7D1B7B83472");
+            AssertCode(
+                "0|L--|00100000(6): 4 instructions",
+                "1|L--|v5 = v1",
+                "2|L--|v6 = v11",
+                "3|L--|v7 = 0xB8<8>",
+                "4|L--|v13 = __verim_64(v5, v6, v7)");
+        }
+
+        [Test]
+        public void zSeriesRw_vmahb()
+        {
+            Given_HexString("E749C60B02AB");
+            AssertCode( // vmahb\tv20,v9,v12,v16
+                "0|L--|00100000(6): 4 instructions",
+                "1|L--|v6 = v9",
+                "2|L--|v7 = v12",
+                "3|L--|v8 = v16",
+                "4|L--|v20 = __vmah_8(v6, v7, v8)");
+        }
+
+        [Test]
+        public void zSeriesRw_vfs()
+        {
+            Given_HexString("E785 21E9 36E2");
+            AssertCode(
+                "0|L--|00100000(6): 3 instructions",
+                "1|L--|v5 = v21",
+                "2|L--|v6 = v2",
+                "3|L--|v8 = __vfs(v5, v6)");
+        }
+
+        [Test]
+        public void zSeriesRw_vmxlg()
+        {
+            Given_HexString("E7F0E01737FD");
+            AssertCode(     // xr	r0,r1
+                "0|L--|00100000(6): 3 instructions",
+                "1|L--|v5 = v0",
+                "2|L--|v6 = v14",
+                "3|L--|v15 = __vmx_64(v5, v6)");
+        }
+
+        [Test]
+        public void zSeriesRw_vpk()
+        {
+            Given_HexString("E7AF92791A94");
+            AssertCode(
+                "0|L--|00100000(6): 3 instructions",
+                "1|L--|v5 = v31",
+                "2|L--|v6 = v25",
+                "3|L--|v26 = __vpk_16(v5, v6)");
+        }
+
+        [Test]
+        [Ignore("Need m4 operand")]
+        public void zSeriesRw_vscef()
+        {
+            Given_HexString("E72F840A2B1B");
+            AssertCode(
+            "@@@");
+        }
+
+        [Test]
+        public void zSeriesRw_vsel()
+        {
+            Given_HexString("E76A0061B48D");
+            AssertCode(
+            "0|L--|00100000(6): 1 instructions",
+            "1|L--|v22 = __vsel(v10, v16, v11)");
+        }
+
+        [Test]
+        [Ignore("side effect")]
+        public void zSeriesRw_vstl()
+        {
+            Given_HexString("E7BFB949933F8BFF8FFD087C0D7B75A2");
+            AssertCode("@@@");
         }
 
         [Test]

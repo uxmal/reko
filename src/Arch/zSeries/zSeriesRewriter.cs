@@ -137,11 +137,11 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.br: RewriteBr(); break;
                 case Mnemonic.brasl: RewriteBrasl(); break;
                 case Mnemonic.brctg: RewriteBrctg(); break;
-                case Mnemonic.brxh: RewriteBranchOnIndex(m.Gt); break;
-                case Mnemonic.brxle: RewriteBranchOnIndex(m.Le); break;
+                case Mnemonic.brxh: Brx(m.Gt); break;
+                case Mnemonic.brxle: Brx(m.Le); break;
                 case Mnemonic.bsm: RewriteBsm(); break;
-                case Mnemonic.bxh: RewriteBranchOnIndex(m.Gt); break;
-                case Mnemonic.bxle: RewriteBranchOnIndex(m.Le); break;
+                case Mnemonic.bxh: Bx(m.Gt); break;
+                case Mnemonic.bxle: Bx(m.Le); break;
                 case Mnemonic.c: RewriteC(PrimitiveType.Int32); break;
                 case Mnemonic.cd: RewriteCmpFloatMem(PrimitiveType.Real64); break;
                 case Mnemonic.cdb: RewriteCmpFloatMem(PrimitiveType.Real64); break;
@@ -340,6 +340,25 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.svc: RewriteSvc(); break;
                 case Mnemonic.sxr: RewriteFpuRegPair(m.FSub, ExtendedHexFloat); break;
                 case Mnemonic.ts: RewriteTs(); break;
+
+                case Mnemonic.vavg: RewriteVectorInstruction4Elem("__vavg_{0}", false); break;
+                case Mnemonic.verim: RewriteVectorInstruction4Elem("__verim_{0}", false); break;
+                case Mnemonic.vfa: RewriteVectorInstruction3Elem("__vfa"); break;
+                case Mnemonic.vfd: RewriteVectorInstruction3Elem("__vfd"); break;
+                case Mnemonic.vfs: RewriteVectorInstruction3Elem("__vfs"); break;
+                case Mnemonic.vll: RewriteVectorInstruction("__vll"); break;
+                case Mnemonic.vmao: RewriteVectorInstruction4Elem("__vmao_{0}", false); break;
+                case Mnemonic.vmah: RewriteVectorInstruction4Elem("__vmah_{0}", true); break;
+                case Mnemonic.vmrh: RewriteVectorInstruction3Elem("__vmrh_{0}"); break;
+                case Mnemonic.vmrl: RewriteVectorInstruction3Elem("__vmrl_{0}"); break;
+                case Mnemonic.vmxl: RewriteVectorInstruction3Elem("__vmx_{0}"); break;
+                case Mnemonic.vpk: RewriteVectorInstruction3Elem("__vpk_{0}", shrink:true); break;
+                case Mnemonic.vpkls: RewriteVectorInstruction3Elem("__vpkls_{0}"); break;
+                case Mnemonic.vn: RewriteVectorInstruction("__vn"); break;
+                case Mnemonic.vslb: RewriteVectorInstruction("__vslb"); break;
+                case Mnemonic.vsel: RewriteVectorInstruction("__vsel"); break;
+                case Mnemonic.vx: RewriteVectorInstruction("__vx"); break;
+
                 case Mnemonic.x: RewriteXor2(PrimitiveType.Word32); break;
                 case Mnemonic.xgr: RewriteLogicR(PrimitiveType.Word64, m.Xor); break;
                 case Mnemonic.xr: RewriteLogicR(PrimitiveType.Word32, m.Xor); break;

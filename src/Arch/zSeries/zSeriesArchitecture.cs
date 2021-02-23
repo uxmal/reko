@@ -103,7 +103,7 @@ namespace Reko.Arch.zSeries
             return Registers.GpRegisters[i];
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             if (!Registers.RegistersByDomain.TryGetValue(domain, out var reg))
                 return null;
@@ -111,7 +111,7 @@ namespace Reko.Arch.zSeries
                 return reg;
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
             if (Registers.RegistersByName.TryGetValue(name, out var reg))
                 return reg;
@@ -140,9 +140,9 @@ namespace Reko.Arch.zSeries
             return "CC";
         }
 
-        public override void LoadUserOptions(Dictionary<string, object> options)
+        public override void LoadUserOptions(Dictionary<string, object>? options)
         {
-            Options = options;
+            Options = options ?? new Dictionary<string, object>();
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
@@ -153,7 +153,7 @@ namespace Reko.Arch.zSeries
             return Address.Ptr32(uAddr);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -194,7 +194,7 @@ namespace Reko.Arch.zSeries
             return Registers.RegistersByName.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse64(txtAddr, out addr);
         }
