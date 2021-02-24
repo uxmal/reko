@@ -150,21 +150,39 @@ namespace Reko.Arch.WE32100
         private static bool Register_WordImm(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
             var register = opDescriptor & 0xF;
-            if (register == 0xF)
-                throw new NotImplementedException();
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[register]));
+            MachineOperand op;
+            if (register != 0xF)
+            {
+                op = new RegisterOperand(Registers.GpRegs[register]);
+            }
+            else
+            {
+                if (!dasm.rdr.TryReadUInt32(out uint imm))
+                    return false;
+                op = ImmediateOperand.Word32(imm);
+            }
+            dasm.ops.Add(op);
             return true;
         }
 
         private static bool RegisterDeferred_HalfwordImm(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
             var register = opDescriptor & 0xF;
-            if (register == 0xF)
-                throw new NotImplementedException();
-            dasm.ops.Add(new MemoryOperand(dt)
+            MachineOperand op;
+            if (register != 0xF)
             {
-                Base = Registers.GpRegs[register],
-            });
+                op = new MemoryOperand(dt)
+                {
+                    Base = Registers.GpRegs[register],
+                };
+            }
+            else
+            {
+                if (!dasm.rdr.TryReadUInt16(out ushort imm))
+                    return false;
+                op = ImmediateOperand.Word16(imm);
+            }
+            dasm.ops.Add(op);
             return true;
         }
  
@@ -333,13 +351,22 @@ namespace Reko.Arch.WE32100
         private static bool FPshortOffset_ByteImm(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
             var offset = opDescriptor & 0xF;
-            if (offset == 0xF)
-                throw new NotImplementedException();
-            dasm.ops.Add(new MemoryOperand(dt)
+            MachineOperand op;
+            if (offset != 0xF)
             {
-                Base = Registers.fp,
-                Offset = offset,
-            });
+                op = new MemoryOperand(dt)
+                {
+                    Base = Registers.fp,
+                    Offset = offset,
+                };
+            }
+            else
+            {
+                if (!dasm.rdr.TryReadByte(out byte imm))
+                    return false;
+                op = ImmediateOperand.Byte(imm);
+            }
+            dasm.ops.Add(op);
             return true;
         }
 

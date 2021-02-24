@@ -591,6 +591,10 @@ namespace Reko.Arch.Vax
                     var c = addrOp.Address.ToUInt32();
                     return Constant.Create(width, c);
                 }
+                else if (addrOp.Width.BitSize < width.BitSize)
+                {
+                    return m.Convert(addrOp.Address, addrOp.Address.DataType, width);
+                }
                 else*/
                 {
                     return addrOp.Address;
@@ -602,20 +606,20 @@ namespace Reko.Arch.Vax
         private Identifier RewriteDstOp(int iOp, PrimitiveType width, Func<Expression, Expression> fn)
         {
             var op = this.instr.Operands[iOp];
-            var regOp = op as RegisterOperand;
-            if (regOp != null)
+            switch (op)
             {
+            case RegisterOperand regOp:
                 var reg = binder.EnsureRegister(regOp.Register);
                 if (reg == null)
                     return null;
                 if (width.BitSize < 32)
                 {
-                    var tmp = binder.CreateTemporary(width);
+                    var tmpLo = binder.CreateTemporary(width);
                     var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(32 - width.BitSize));
-                    m.Assign(tmp, fn(m.Slice(width, reg, 0)));
+                    m.Assign(tmpLo, fn(m.Slice(width, reg, 0)));
                     m.Assign(tmpHi, m.Slice(tmpHi.DataType, reg, width.BitSize));
-                    m.Assign(reg, m.Seq(tmpHi, tmp));
-                    return tmp;
+                    m.Assign(reg, m.Seq(tmpHi, tmpLo));
+                    return tmpLo;
                 }
                 else if (width.BitSize == 64)
                 {
@@ -637,24 +641,17 @@ namespace Reko.Arch.Vax
                 }
                 m.Assign(reg, fn(reg));
                 return reg;
-            }
-            if (op is ImmediateOperand || op is AddressOperand)
-            {
-                // Can't assign to an immediate.
-                return null;
-            }
-            if (op is MemoryOperand memOp)
-            {
+            case MemoryOperand memOp:
                 Expression ea;
-                Identifier reg = null;
+                Identifier regEa = null;
                 if (memOp.Base != null)
                 {
-                    reg = binder.EnsureRegister(memOp.Base);
+                    regEa = binder.EnsureRegister(memOp.Base);
                     if (memOp.AutoDecrement)
                     {
-                        m.Assign(reg, m.ISub(reg, width.Size));
+                        m.Assign(regEa, m.ISub(regEa, width.Size));
                     }
-                    ea = reg;
+                    ea = regEa;
                     if (memOp.Offset != null)
                     {
                         if (memOp.Offset.DataType.BitSize < ea.DataType.BitSize)
@@ -680,12 +677,15 @@ namespace Reko.Arch.Vax
                     load = m.Mem(width, ea);
                 m.Assign(load, tmp);
 
-                if (reg != null && memOp.AutoIncrement)
+                if (regEa != null && memOp.AutoIncrement)
                 {
                     int inc = (memOp.Deferred) ? 4 : width.Size;
-                    m.Assign(reg, m.IAdd(reg, inc));
+                    m.Assign(regEa, m.IAdd(regEa, inc));
                 }
                 return tmp;
+            case ImmediateOperand _:
+            case AddressOperand _:
+                return null;
             }
             throw new NotImplementedException(op.GetType().Name);
         }

@@ -252,6 +252,20 @@ namespace Reko.Arch.Sparc
                 m.Cond(dst));
         }
 
+        private Expression MaybeSlice(Expression e, PrimitiveType dt)
+        {
+            if (e.DataType.BitSize > dt.BitSize)
+            {
+                var tmp = binder.CreateTemporary(dt);
+                m.Assign(tmp, m.Slice(e, dt, 0));
+                return tmp;
+            }
+            else
+            {
+                return e;
+            }
+        }
+
         private Expression RewriteOp(MachineOperand op)
         {
             return RewriteOp(op, false);
@@ -278,8 +292,9 @@ namespace Reko.Arch.Sparc
             throw new NotImplementedException(string.Format("Unsupported operand {0} ({1})", op, op.GetType().Name));
         }
 
-        private Expression RewriteRegister(MachineOperand op)
+        private Expression RewriteRegister(int iop)
         {
+            var op = this.instrCur.Operands[iop];
             return binder.EnsureRegister(((RegisterOperand)op).Register);
         }
 

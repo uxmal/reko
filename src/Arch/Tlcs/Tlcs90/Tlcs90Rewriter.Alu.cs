@@ -237,8 +237,17 @@ namespace Reko.Arch.Tlcs.Tlcs90
             {
                 src = host.Intrinsic(pseudoOp, true, reg.DataType, reg, one);
             }
-            m.Assign(reg, src);
-            EmitCc(reg, "**-0XP0*");
+            Expression result;
+            if (instr.Operands.Length >= 1)
+            {
+                result = RewriteDst(instr.Operands[0], src, (a, b) => b);
+            }
+            else
+            {
+                m.Assign(reg, src);
+                result = reg;
+            }
+            EmitCc(result, "**-0XP0*");
         }
 
         private void RewriteScf()

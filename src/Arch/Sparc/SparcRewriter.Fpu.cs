@@ -86,8 +86,8 @@ namespace Reko.Arch.Sparc
 
         private void RewriteFcmps()
         {
-            var r1 = RewriteRegister(instrCur.Operands[0]);
-            var r2 = RewriteRegister(instrCur.Operands[1]);
+            var r1 = RewriteRegister(0);
+            var r2 = RewriteRegister(1);
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
             m.Assign(grf, m.Cond(m.FSub(r2, r1)));
         }
@@ -110,41 +110,39 @@ namespace Reko.Arch.Sparc
 
         private void RewriteFitod()
         {
-            var dt = PrimitiveType.Real64;
+            var dtFrom = PrimitiveType.Int32;
+            var dtTo = PrimitiveType.Real64;
             var fpDst = RewriteOp(instrCur.Operands[1]);
-            m.Assign(fpDst, m.Convert(RewriteOp(0), arch.SignedWord, dt));
+            m.Assign(fpDst, m.Convert(MaybeSlice(RewriteOp(0), dtFrom), dtFrom, dtTo));
         }
 
         private void RewriteFitoq()
         {
-            var fpDst = RewriteOp(instrCur.Operands[1]);
-            var dt = PrimitiveType.Real128;
-            m.Assign(fpDst, m.Convert(RewriteOp(0), arch.SignedWord, dt));
+            var fpDst = RewriteOp(1);
+            var dtFrom = PrimitiveType.Int32;
+            var dtTo = PrimitiveType.Real128;
+            m.Assign(fpDst, m.Convert(MaybeSlice(RewriteOp(0), dtFrom), dtFrom, dtTo));
         }
 
         private void RewriteFdtos()
         {
-            var src = RewriteOp(instrCur.Operands[0]);
             var fpDst = RewriteOp(instrCur.Operands[1]);
-            m.Assign(fpDst, m.Convert(src, PrimitiveType.Real64, PrimitiveType.Real32));
+            m.Assign(fpDst, m.Convert(RewriteOp(0), PrimitiveType.Real64, PrimitiveType.Real32));
         }
 
         private void RewriteFstod()
         {
             var fpDst = RewriteOp(instrCur.Operands[1]);
             var dt = PrimitiveType.Real64;
-            m.Assign(fpDst, m.Convert(RewriteOp(instrCur.Operands[0]), PrimitiveType.Real32, dt));
+            m.Assign(fpDst, m.Convert(RewriteOp(0), PrimitiveType.Real32, dt));
         }
-
-
-
 
         private void RewriteFitos()
         {
             var dst = (RegisterOperand) instrCur.Operands[1];
             var fpDst = binder.EnsureRegister(dst.Register);
             var dt = PrimitiveType.Real32;
-            m.Assign(fpDst, m.Convert(RewriteOp(instrCur.Operands[0]), PrimitiveType.Int32, dt));
+            m.Assign(fpDst, m.Convert(MaybeSlice(RewriteOp(0), PrimitiveType.Int32), PrimitiveType.Int32, dt));
         }
 
         private void RewriteFmovs()

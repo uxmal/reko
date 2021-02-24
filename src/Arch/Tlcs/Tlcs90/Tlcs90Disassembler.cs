@@ -28,10 +28,6 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Tlcs.Tlcs90
 {
@@ -103,13 +99,18 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         #region Mutators
 
+        /// <summary>
+        /// A register.
+        /// </summary>
         private static bool a(uint b, Tlcs90Disassembler dasm) {
             dasm.dataWidth = PrimitiveType.Byte;
             dasm.ops.Add(new RegisterOperand(Registers.a));
             return true;
         }
 
-        // '@'
+        /// <summary>
+        /// AF' register pair
+        /// </summary>
         private static bool af_(uint b, Tlcs90Disassembler dasm)
         {
             dasm.dataWidth = PrimitiveType.Word16;
@@ -117,32 +118,52 @@ namespace Reko.Arch.Tlcs.Tlcs90
             return true;
         }
 
-            private static bool A(uint b, Tlcs90Disassembler dasm) {
-                    dasm.dataWidth = PrimitiveType.Word16;
-                    dasm.ops.Add(new RegisterOperand(Registers.af));
-                    return true;
-                }
+        /// <summary>
+        /// AF register pair
+        /// </summary>
+        private static bool A(uint b, Tlcs90Disassembler dasm)
+        {
+            dasm.dataWidth = PrimitiveType.Word16;
+            dasm.ops.Add(new RegisterOperand(Registers.af));
+            return true;
+        }
 
-            private static bool B(uint b, Tlcs90Disassembler dasm) {
-                    dasm.dataWidth = PrimitiveType.Word16;
-                    dasm.ops.Add(new RegisterOperand(Registers.bc));
-                    return true;
-                }
+        /// <summary>
+        /// BC register pair.
+        /// </summary>
+        private static bool B(uint b, Tlcs90Disassembler dasm)
+        {
+            dasm.dataWidth = PrimitiveType.Word16;
+            dasm.ops.Add(new RegisterOperand(Registers.bc));
+            return true;
+        }
 
-            private static bool c(uint b, Tlcs90Disassembler dasm) {
-                    dasm.ops.Add(new ConditionOperand((CondCode)(b & 0xF)));
-                    return true;
-                }
+        /// <summary>
+        /// Condition code.
+        /// </summary>
+        private static bool c(uint b, Tlcs90Disassembler dasm)
+        {
+            dasm.ops.Add(new ConditionOperand((CondCode) (b & 0xF)));
+            return true;
+        }
 
-            private static bool D(uint b, Tlcs90Disassembler dasm) {
-                    dasm.dataWidth = PrimitiveType.Word16;
-                    dasm.ops.Add(new RegisterOperand(Registers.de));
-                    return true;
-                }
+        /// <summary>
+        /// DE register pair.
+        /// </summary>
+        private static bool D(uint b, Tlcs90Disassembler dasm)
+        {
+            dasm.dataWidth = PrimitiveType.Word16;
+            dasm.ops.Add(new RegisterOperand(Registers.de));
+            return true;
+        }
 
+        /// <summary>
+        /// Immediate value.
+        /// </summary>
         private static Mutator<Tlcs90Disassembler> I(PrimitiveType size)
         {
-            return (b, dasm) => {
+            return (b, dasm) =>
+            {
                 // Immediate value
                 dasm.dataWidth = size;
                 if (!dasm.rdr.TryReadLe(dasm.dataWidth, out var c))
@@ -154,35 +175,50 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private static readonly Mutator<Tlcs90Disassembler> Ib = I(PrimitiveType.Byte);
         private static readonly Mutator<Tlcs90Disassembler> Iw = I(PrimitiveType.Word16);
 
+        /// <summary>
+        /// Immediate value from opcode bits.
+        /// </summary>
+        /// <returns></returns>
         private static bool i(uint b, Tlcs90Disassembler dasm)
-        { // immediate value from opcode bits
+        {
             dasm.ops.Add(ImmediateOperand.Byte((byte)(b & 0x7)));
             return true;
         }
 
+        /// <summary>
+        /// Use byte register from previous mutator.
+        /// </summary>
         private static bool g(uint b, Tlcs90Disassembler dasm)
         {
             if (dasm.byteReg is null)
-                throw new InvalidOperationException();
+                return false;
             dasm.ops.Add(dasm.byteReg);
             return true;
         }
 
+        /// <summary>
+        /// Use word register from previous mutator.
+        /// </summary>
         private static bool G(uint b, Tlcs90Disassembler dasm)
         {
             if (dasm.wordReg is null)
-                throw new InvalidOperationException();
+                return false;
             dasm.ops.Add(dasm.wordReg);
             return true;
         }
 
+        /// <summary>
+        /// HL register pair.
+        /// </summary>
         private static bool H(uint b, Tlcs90Disassembler dasm)
         {
             dasm.ops.Add(new RegisterOperand(Registers.hl));
             return true;
         }
 
-        // Absolute jump.
+        /// <summary>
+        /// Absolute jump.
+        /// </summary>
         private static Mutator<Tlcs90Disassembler> J(PrimitiveType size)
         {
             return (b, dasm) =>
@@ -196,7 +232,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private static readonly Mutator<Tlcs90Disassembler> Jb = J(PrimitiveType.Byte);
         private static readonly Mutator<Tlcs90Disassembler> Jw = J(PrimitiveType.Word16);
 
-        // relative jump
+        /// <summary>
+        /// 8-bit relative jump.
+        /// </summary>
         private static bool jb(uint u, Tlcs90Disassembler dasm)
         {
             if (!dasm.rdr.TryReadByte(out byte b))
@@ -206,6 +244,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
             return true;
         }
 
+        /// <summary>
+        /// 16-bit relative jump.
+        /// </summary>
         private static bool jw(uint b, Tlcs90Disassembler dasm)
         {
             if (!dasm.rdr.TryReadLeInt16(out short off))
@@ -215,6 +256,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
             return true;
         }
 
+        /// <summary>
+        /// Absolute memory access.
+        /// </summary>
         private static Mutator<Tlcs90Disassembler> M(PrimitiveType size)
         {
             return (u, d) =>
@@ -229,6 +273,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private static readonly Mutator<Tlcs90Disassembler> Mb = M(PrimitiveType.Byte);
         private static readonly Mutator<Tlcs90Disassembler> Mw = M(PrimitiveType.Word16);
 
+        /// <summary>
+        /// Last page memory access.
+        /// </summary>
         private static Mutator<Tlcs90Disassembler> m(PrimitiveType size)
         {
             return (u, d) =>
@@ -242,18 +289,27 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private static readonly Mutator<Tlcs90Disassembler> mb = m(PrimitiveType.Byte);
         private static readonly Mutator<Tlcs90Disassembler> mw = m(PrimitiveType.Word16);
 
+        /// <summary>
+        /// Stack register.
+        /// </summary>
         private static bool S(uint b, Tlcs90Disassembler dasm) {
             dasm.dataWidth = PrimitiveType.Word16;
             dasm.ops.Add(new RegisterOperand(Registers.sp));
             return true;
         }
 
+        /// <summary>
+        /// IX register.
+        /// </summary>
         private static bool X(uint b, Tlcs90Disassembler dasm) {
             dasm.dataWidth = PrimitiveType.Word16;
             dasm.ops.Add(new RegisterOperand(Registers.ix));
             return true;
         }
 
+        /// <summary>
+        /// IY register.
+        /// </summary>
         private static bool Y(uint b, Tlcs90Disassembler dasm)
         {
             dasm.dataWidth = PrimitiveType.Word16;
@@ -261,9 +317,11 @@ namespace Reko.Arch.Tlcs.Tlcs90
             return true;
         }
 
+        /// <summary>
+        /// Register encoded in low 3 bits of b.
+        /// </summary>
         private static bool r(uint b, Tlcs90Disassembler dasm)
         {
-            // Register encoded in low 3 bits of b.
             dasm.dataWidth = PrimitiveType.Byte;
             dasm.ops.Add(new RegisterOperand(Registers.byteRegs[b & 7]));
             return true;
@@ -274,16 +332,24 @@ namespace Reko.Arch.Tlcs.Tlcs90
             return true;
         }
 
-        #endregion
-
-        private PrimitiveType GetSize(char v)
+        /// <summary>
+        /// Set <see cref="dataWidth"/> to 'byte'.
+        /// </summary>
+        private static bool db(uint b, Tlcs90Disassembler dasm)
         {
-            if (v == 'b')
-                return PrimitiveType.Byte;
-            else if (v == 'w')
-                return PrimitiveType.Word16;
-            throw new NotImplementedException();
+            dasm.dataWidth = PrimitiveType.Byte;
+            return true;
         }
+
+        /// <summary>
+        /// Set <see cref="dataWidth"/> to 'word16'.
+        /// </summary>
+        private static bool dw(uint b, Tlcs90Disassembler dasm)
+        {
+            dasm.dataWidth = PrimitiveType.Word16;
+            return true;
+        }
+        #endregion
 
         private class RegDecoder : Decoder
         {
@@ -325,14 +391,12 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 switch (format[0])
                 {
                 case 'M':
-                    ushort a;
-                    if (!dasm.rdr.TryReadLeUInt16(out a))
+                    if (!dasm.rdr.TryReadLeUInt16(out ushort a))
                         return null;
                     absAddr = a;
                     break;
                 case 'm':
-                    byte bb;
-                    if (!dasm.rdr.TryReadByte(out bb))
+                    if (!dasm.rdr.TryReadByte(out byte bb))
                         return null;
                     absAddr = (ushort)(0xFF00 | bb);
                     break;

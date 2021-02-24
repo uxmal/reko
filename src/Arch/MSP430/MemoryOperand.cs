@@ -27,7 +27,7 @@ namespace Reko.Arch.Msp430
 {
     public class MemoryOperand : MachineOperand
     {
-        public RegisterStorage Base;
+        public RegisterStorage? Base;
         public short Offset;
         public bool PostIncrement;
 

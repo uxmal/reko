@@ -688,7 +688,6 @@ namespace Reko.UnitTests.Arch.Arc
                 "1|L--|__flag(r1)");
         }
 
-
         [Test]
         public void ARCompactRw_ld_ab()
         {
@@ -1397,8 +1396,5 @@ namespace Reko.UnitTests.Arch.Arc
                 "0|L--|00100000(2): 1 instructions",
                 "1|L--|r3 = r3 ^ r0");
         }
-
-
-        
     }
 }

@@ -813,7 +813,7 @@ namespace Reko.Arch.MilStd1750
                 }
                 for (int i = 0; i < rb.Number; ++i)
                 {
-                    m.Assign(binder.EnsureRegister(Registers.GpRegs[ra.Number + i]), m.Mem16(r15));
+                    m.Assign(binder.EnsureRegister(Registers.GpRegs[i]), m.Mem16(r15));
                     m.Assign(r15, m.AddSubSignedInt(r15, 1));
                 }
             }
@@ -877,8 +877,19 @@ namespace Reko.Arch.MilStd1750
 
         private void RewriteSjs()
         {
-            var dst = Addr(1);
+            Expression dst;
+            if (instr.Operands.Length == 2)
+            {
+                dst = Addr(1);
+            }
+            else
+            {
+                var imm = Op(1);
+                var reg = Op(2);
+                dst = m.IAdd(reg, imm);
+            }
             m.Call(dst, 2);
+
         }
 
         private void RewriteSll()

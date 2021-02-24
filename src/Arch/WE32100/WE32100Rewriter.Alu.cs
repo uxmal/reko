@@ -50,6 +50,14 @@ namespace Reko.Arch.WE32100
             NZV0(dst);
         }
 
+        private void RewriteLogical3(Func<Expression, Expression, Expression> fn, PrimitiveType dt)
+        {
+            var src1 = ReadOp(0, dt);
+            var src2 = ReadOp(1, dt);
+            var dst = WriteOp(2, dt, fn(src1, src2));
+            NZV0(dst);
+        }
+
         private void RewriteMov(PrimitiveType dt)
         {
             var src = ReadOp(0, dt);

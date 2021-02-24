@@ -31,8 +31,6 @@ namespace Reko.UnitTests.Gui
     [TestFixture]
     public class HungarianParserTests
     {
-        private HungarianParser parser;
-
         [SetUp]
         public void Setup()
         {

@@ -43,16 +43,17 @@ namespace Reko.Arch.Msp430
         private readonly List<MachineOperand> ops;
         private Address addr;
         private ushort uExtension;
-        private PrimitiveType dataWidth;
+        private PrimitiveType? dataWidth;
 
         public Msp430Disassembler(Msp430Architecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override Msp430Instruction DisassembleInstruction()
+        public override Msp430Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out ushort uInstr))
@@ -99,7 +100,7 @@ namespace Reko.Arch.Msp430
                     else
                     {
                         instr.Mnemonic = Mnemonics.br;
-                        instr.Operands[1] = null;
+                        instr.Operands[1] = null!;
                         if (instr.Operands[0] is ImmediateOperand imm)
                         {
                             var uAddr = imm.Value.ToUInt16();
@@ -187,7 +188,7 @@ namespace Reko.Arch.Msp430
         /// </summary>
         private static bool r(uint uInstr, Msp430Disassembler dasm)
         {
-            var op = dasm.SourceOperand(0, (uInstr >> 8) & 0x0F, false, dasm.dataWidth);
+            var op = dasm.SourceOperand(0, (uInstr >> 8) & 0x0F, false, dasm.dataWidth!);
             if (op == null)
                 return false;
             dasm.ops.Add(op);
@@ -201,7 +202,7 @@ namespace Reko.Arch.Msp430
         private static bool r2(uint uInstr, Msp430Disassembler dasm)
         {
             var n = uInstr & 0x0F;
-            var op2 = dasm.SourceOperand(0, n, true, dasm.dataWidth);
+            var op2 = dasm.SourceOperand(0, n, true, dasm.dataWidth!);
             if (op2 == null)
                 return false;
             dasm.ops.Add(op2);
@@ -212,7 +213,7 @@ namespace Reko.Arch.Msp430
         {
             var aS = (uInstr >> 4) & 0x03;
             var iReg = (uInstr >> 8) & 0x0F;
-            var op1 = dasm.SourceOperand(aS, iReg, false, dasm.dataWidth);
+            var op1 = dasm.SourceOperand(aS, iReg, false, dasm.dataWidth!);
             if (op1 == null)
                 return false;
             dasm.ops.Add(op1);
@@ -223,7 +224,7 @@ namespace Reko.Arch.Msp430
         {
             var aS = (uInstr >> 4) & 0x03;
             var iReg = uInstr & 0x0F;
-            var op1 = dasm.SourceOperand(aS, iReg, false, dasm.dataWidth);
+            var op1 = dasm.SourceOperand(aS, iReg, false, dasm.dataWidth!);
             if (op1 == null)
                 return false;
             dasm.ops.Add(op1);
@@ -237,7 +238,7 @@ namespace Reko.Arch.Msp430
         {
             var aS = (uInstr >> 4) & 0x03;
             var iReg = uInstr & 0x0F;
-            var op1 = dasm.SourceOperand(aS, iReg, true, dasm.dataWidth);
+            var op1 = dasm.SourceOperand(aS, iReg, true, dasm.dataWidth!);
             if (op1 == null || op1 is ImmediateOperand || op1 is AddressOperand)
                 return false;
             dasm.ops.Add(op1);
@@ -285,6 +286,8 @@ namespace Reko.Arch.Msp430
             var iReg = (uInstr >> 8) & 0x0F;
             var reg = Registers.GpRegisters[iReg];
             var op1 = dasm.PostInc(reg, Msp430Architecture.Word20);
+            if (op1 is null)
+                return false;
             dasm.ops.Add(op1);
             return true;
         }
@@ -327,7 +330,7 @@ namespace Reko.Arch.Msp430
                 return false;
             }
             var reg = Registers.GpRegisters[iReg];
-            MachineOperand op2;
+            MachineOperand? op2;
             if (aD == 0)
             {
                 if (iReg == 3)
@@ -336,7 +339,7 @@ namespace Reko.Arch.Msp430
             }
             else
             {
-                op2 = dasm.Indexed(reg, dasm.dataWidth);
+                op2 = dasm.Indexed(reg, dasm.dataWidth!);
                 if (op2 == null)
                     return false;
             }
@@ -348,7 +351,7 @@ namespace Reko.Arch.Msp430
 
         #endregion
 
-        private MachineOperand SourceOperand(uint aS, uint iReg, bool isDestination, PrimitiveType dataWidth)
+        private MachineOperand? SourceOperand(uint aS, uint iReg, bool isDestination, PrimitiveType dataWidth)
         {
             var reg = Registers.GpRegisters[iReg];
             switch (aS)
@@ -402,7 +405,7 @@ namespace Reko.Arch.Msp430
             }
         }
 
-        private MachineOperand PostInc(RegisterStorage reg, PrimitiveType dataWidth)
+        private MachineOperand? PostInc(RegisterStorage reg, PrimitiveType dataWidth)
         {
             if (reg == Registers.pc)
             {
@@ -421,12 +424,12 @@ namespace Reko.Arch.Msp430
 
         }
 
-        private MachineOperand Indexed(RegisterStorage reg, PrimitiveType dataWidth)
+        private MachineOperand? Indexed(RegisterStorage? reg, PrimitiveType dataWidth)
         {
             var delta = (rdr.Address - this.addr);
             if (!rdr.TryReadLeInt16(out short offset))
                 return null;
-            if (reg.Number == 2)
+            if (reg != null && reg.Number == 2)
             {
                 // Absolute address will not use a base register.
                 reg = null;
@@ -629,7 +632,7 @@ namespace Reko.Arch.Msp430
                 new MaskDecoder(6, 6, "  op1",
                     Instr(Mnemonics.rrc, w, d),
                     Instr(Mnemonics.rrc, w, d),
-                    Instr(Mnemonics.swpb, d),
+                    Instr(Mnemonics.swpb, w16, d),
                     invalid,
 
                     Instr(Mnemonics.rra, w,d),

@@ -223,7 +223,7 @@ namespace Reko.ImageLoaders.MachO
                 }
                 rdr.Offset = pos + cmdsize;
             }
-            ldr.program.Architecture = arch;
+            ldr.program!.Architecture = arch;
             ldr.program.SegmentMap = imageMap;
             if (!string.IsNullOrEmpty(platformName))
             {
@@ -730,7 +730,7 @@ namespace Reko.ImageLoaders.MachO
                     "__imp__" + msym.Name,
                     ptr);
                 ldr.imageSymbols[addr] = impSymbol;
-                ldr.program.ImportReferences.Add(addr, new NamedImportReference(addrImport, "", msym.Name, SymbolType.ExternalProcedure));
+                ldr.program!.ImportReferences.Add(addr, new NamedImportReference(addrImport, "", msym.Name, SymbolType.ExternalProcedure));
                 addr = rdr.Address;
                 ++i;
             }
@@ -841,7 +841,7 @@ namespace Reko.ImageLoaders.MachO
                         "__imp__" + msym.Name,
                         ptr);
                     ldr.imageSymbols[addr] = impSymbol;
-                    ldr.program.ImportReferences.Add(addr, new NamedImportReference(addrImport, "", msym.Name, SymbolType.ExternalProcedure));
+                    ldr.program!.ImportReferences.Add(addr, new NamedImportReference(addrImport, "", msym.Name, SymbolType.ExternalProcedure));
                 }
                 addr = rdr.Address;
                 ++i;

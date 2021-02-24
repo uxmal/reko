@@ -17,7 +17,7 @@ namespace Reko.UnitTests.Arch.MilStd1750
 
         public MilStd1750RewriterTests()
         {
-            this.arch = new MilStd1750Architecture(CreateServiceContainer(), "mil-std-1750a", new Dictionary<string, object>());
+            this.arch = new MilStd1750Architecture(CreateServiceContainer(), "MS1750Rwa", new Dictionary<string, object>());
         }
         public override IProcessorArchitecture Architecture => arch;
 
@@ -719,6 +719,20 @@ namespace Reko.UnitTests.Arch.MilStd1750
         }
 
         [Test]
+        public void MS1750Rw_popm_wraparound()
+        {
+            Given_HexString("8FF3");
+            AssertCode(     // popm gp15,gp3
+                "0|L--|0100(1): 6 instructions",
+                "1|L--|gp0 = Mem0[gp15:word16]",
+                "2|L--|gp15 = gp15 + 1<i16>",
+                "3|L--|gp1 = Mem0[gp15:word16]",
+                "4|L--|gp15 = gp15 + 1<i16>",
+                "5|L--|gp2 = Mem0[gp15:word16]",
+                "6|L--|gp15 = gp15 + 1<i16>");
+        }
+
+        [Test]
         public void MS1750Rw_pshm()
         {
             Given_HexString("9FEE");
@@ -783,6 +797,15 @@ namespace Reko.UnitTests.Arch.MilStd1750
             AssertCode(     // sjs	gp15,0115
                 "0|T--|0100(2): 1 instructions",
                 "1|T--|call 0115 (2)");
+        }
+
+        [Test]
+        public void MS1750Rw_sjs_indexed()
+        {
+            Given_HexString("7E01 08DD"); // 27065832A09591C5883C66ED");
+            AssertCode(
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|call gp1 + 0x8DD<16> (2)");
         }
 
         [Test]

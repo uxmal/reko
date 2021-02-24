@@ -370,6 +370,16 @@ namespace Reko.UnitTests.Arch.Msp430
         }
 
         [Test]
+        public void Msp430Rw_swpb_mem()
+        {
+            Given_HexString("A110"); // A39022DE16323851D8D4877F2AC2");
+            AssertCode(
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|v3 = Mem0[sp:word16]",
+                "2|L--|Mem0[sp:word16] = __swpb(v3)");
+        }
+
+        [Test]
         public void Msp430Rw_mova()
         {
             Given_Bytes(0x05, 0x04);	// mova.a	@r4,r5

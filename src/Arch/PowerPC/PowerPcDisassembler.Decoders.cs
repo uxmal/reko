@@ -56,18 +56,6 @@ namespace Reko.Arch.PowerPC
                 return dasm.NotYetImplemented(message);
             }
 
-            [Conditional("DEBUG")]
-            private void EmitUnitTest(uint wInstr)
-            {
-                Console.WriteLine("    // {0}", message);
-                Console.WriteLine("    [Test]");
-                Console.WriteLine("    public void PPCDis_{0:X8}()", wInstr);
-                Console.WriteLine("    {");
-                Console.WriteLine("        AssertCode(0x{0:X8}, \"@@@\");", wInstr);
-                Console.WriteLine("    }");
-                Console.WriteLine("");
-            }
-
             public override string ToString()
             {
                 return $"Nyi: {message}";

@@ -661,6 +661,13 @@ namespace Reko.Arch.PowerPC
             {
                 //$TODO: check this logic
                 var wordSize = me - 1;
+                if (wordSize <= 0)
+                {
+                    iclass = InstrClass.Invalid;
+                    m.Invalid();
+                    return;
+                }
+
                 var bitpos = 63 - sh;   // convert to reko's little endian bit positions.
                 var dt = PrimitiveType.CreateWord(wordSize);
                 var slice = m.Convert(m.Slice(dt, rs, bitpos), dt, rd.DataType);

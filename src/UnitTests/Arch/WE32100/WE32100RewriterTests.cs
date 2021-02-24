@@ -23,19 +23,15 @@ using Reko.Arch.WE32100;
 using Reko.Core;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.WE32100
 {
     [TestFixture]
     public class WE32100RewriterTests : RewriterTestBase
     {
-        private WE32100Architecture arch;
-        private Address addr;
+        private readonly WE32100Architecture arch;
+        private readonly Address addr;
 
         public WE32100RewriterTests()
         {

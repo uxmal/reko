@@ -53,6 +53,8 @@ namespace Reko.Arch.Msp430
             this.host = host;
             this.rdr = rdr;
             this.dasm = new Msp430Disassembler(arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -128,7 +130,7 @@ namespace Reko.Arch.Msp430
 
         private Expression RewriteOp(MachineOperand op, PrimitiveType? dt = null)
         {
-            dt ??= op.Width ?? instr.dataWidth;
+            dt ??= op.Width ?? instr.dataWidth!;
             switch (op)
             {
             case RegisterOperand rop:
@@ -141,7 +143,7 @@ namespace Reko.Arch.Msp430
                     if (mop.PostIncrement)
                     {
                         var tmp = binder.CreateTemporary(dt);
-                        m.Assign(tmp, m.Mem(op.Width, ea));
+                        m.Assign(tmp, m.Mem(op.Width!, ea));
                         m.Assign(ea, m.IAdd(ea, m.Int16((short) dt.Size)));
                         return tmp;
                     }
@@ -503,7 +505,7 @@ namespace Reko.Arch.Msp430
             }
             else
             {
-                return binder.EnsureRegister(instr.repeatReg);
+                return binder.EnsureRegister(instr.repeatReg!);
             }
         }
 
@@ -517,13 +519,13 @@ namespace Reko.Arch.Msp430
         private void RewriteSwpb()
         {
             var src = RewriteOp(instr.Operands[0], PrimitiveType.Word16);
-            var dst = RewriteDst(instr.Operands[0],
-                src,
-                (a, b) => host.Intrinsic(
+            RewriteMovDst(
+                instr.Operands[0],
+                host.Intrinsic(
                     "__swpb",
                     true,
                     PrimitiveType.Word16,
-                    b));
+                    src));
         }
 
         private void RewriteSxt(string flags)

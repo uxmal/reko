@@ -33,12 +33,12 @@ namespace Reko.Arch.WE32100
 {
     public partial class WE32100Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private WE32100Architecture arch;
-        private EndianImageReader rdr;
-        private ProcessorState state;
-        private IStorageBinder binder;
-        private IRewriterHost host;
-        private IEnumerator<WE32100Instruction> dasm;
+        private readonly WE32100Architecture arch;
+        private readonly EndianImageReader rdr;
+        private readonly ProcessorState state;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
+        private readonly IEnumerator<WE32100Instruction> dasm;
         private WE32100Instruction instr;
         private RtlEmitter m;
         private InstrClass iclass;
@@ -77,8 +77,17 @@ namespace Reko.Arch.WE32100
                 case Mnemonic.addb3: RewriteArithmetic3(m.IAdd, PrimitiveType.Byte); break;
                 case Mnemonic.addh3: RewriteArithmetic3(m.IAdd, PrimitiveType.Word16); break;
                 case Mnemonic.addw3: RewriteArithmetic3(m.IAdd, PrimitiveType.Word32); break;
+                case Mnemonic.andb2: RewriteLogical2(m.And, PrimitiveType.Byte); break;
+                case Mnemonic.andh2: RewriteLogical2(m.And, PrimitiveType.Word16); break;
+                case Mnemonic.andw2: RewriteLogical2(m.And, PrimitiveType.Word32); break;
+                case Mnemonic.andb3: RewriteLogical3(m.And, PrimitiveType.Byte); break;
+                case Mnemonic.andh3: RewriteLogical3(m.And, PrimitiveType.Word16); break;
+                case Mnemonic.andw3: RewriteLogical3(m.And, PrimitiveType.Word32); break;
                 case Mnemonic.dech: RewriteUnary(e => m.ISub(e, 1), PrimitiveType.Word16, NZVC); break;
                 case Mnemonic.movb: RewriteMov(PrimitiveType.Byte); break;
+                case Mnemonic.subb2: RewriteArithmetic2(m.ISub, PrimitiveType.Byte); break;
+                case Mnemonic.subh2: RewriteArithmetic2(m.ISub, PrimitiveType.Word16); break;
+                case Mnemonic.subw2: RewriteArithmetic2(m.ISub, PrimitiveType.Word32); break;
                 case Mnemonic.xorb2: RewriteLogical2(m.Xor, PrimitiveType.Byte); break;
                 case Mnemonic.xorh2: RewriteLogical2(m.Xor, PrimitiveType.Word16); break;
                 case Mnemonic.xorw2: RewriteLogical2(m.Xor, PrimitiveType.Word32); break;
@@ -116,7 +125,7 @@ namespace Reko.Arch.WE32100
             }
         }
 
-        private Expression WriteOp(int iop, PrimitiveType dt, Expression src)
+        private Expression? WriteOp(int iop, PrimitiveType dt, Expression src)
         {
             var op = instr.Operands[iop];
             switch (op)
@@ -139,12 +148,17 @@ namespace Reko.Arch.WE32100
                 }
                 m.Assign(m.Mem(dt, ea), src);
                 return src;
+            case ImmediateOperand _:
+            case AddressOperand _:
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return null;
             default:
                 throw new NotImplementedException($"Unsupported operand type {op.GetType().Name}.");
             }
         }
 
-        private Expression WriteBinaryOp(int iop, PrimitiveType dt, Expression src, Func<Expression, Expression, Expression> binary)
+        private Expression? WriteBinaryOp(int iop, PrimitiveType dt, Expression src, Func<Expression, Expression, Expression> binary)
         {
             var op = instr.Operands[iop];
             switch (op)
@@ -163,12 +177,17 @@ namespace Reko.Arch.WE32100
                 m.Assign(tmp, binary(m.Mem(dt, ea), src));
                 m.Assign(m.Mem(dt, ea), tmp);
                 return tmp;
+            case ImmediateOperand _:
+            case AddressOperand _:
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return null;
             default:
                 throw new NotImplementedException($"Unsupported operand type {op.GetType().Name}.");
             }
         }
 
-        private Expression WriteUnaryOp(int iop, PrimitiveType dt, Expression src, Func<Expression, Expression> unary)
+        private Expression? WriteUnaryOp(int iop, PrimitiveType dt, Expression src, Func<Expression, Expression> unary)
         {
             var op = instr.Operands[iop];
             switch (op)
@@ -187,6 +206,11 @@ namespace Reko.Arch.WE32100
                 m.Assign(tmp, unary(src));
                 m.Assign(m.Mem(dt, ea), tmp);
                 return tmp;
+            case ImmediateOperand _:
+            case AddressOperand _:
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return null;
             default:
                 throw new NotImplementedException($"Unsupported operand type {op.GetType().Name}.");
             }
@@ -210,15 +234,21 @@ namespace Reko.Arch.WE32100
             return ea;
         }
 
-        private void NZV0(Expression e)
+        private void NZV0(Expression? e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.NZV), m.Cond(e));
-            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
+            if (e != null)
+            {
+                m.Assign(binder.EnsureFlagGroup(Registers.NZV), m.Cond(e));
+                m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
+            }
         }
 
-        private void NZVC(Expression e)
+        private void NZVC(Expression? e)
         {
-            m.Assign(binder.EnsureFlagGroup(Registers.NZVC), m.Cond(e));
+            if (e != null)
+            {
+                m.Assign(binder.EnsureFlagGroup(Registers.NZVC), m.Cond(e));
+            }
         }
     }
 }

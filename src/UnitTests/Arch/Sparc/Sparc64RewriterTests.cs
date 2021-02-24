@@ -23,11 +23,7 @@ using Reko.Arch.Sparc;
 using Reko.Core;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.Sparc
 {
@@ -54,7 +50,7 @@ namespace Reko.UnitTests.Arch.Sparc
 
 
         [Test]
-        public void SparcRw_brz()
+        public void Sparc64Rw_brz()
         {
             Given_HexString("02C24008");
             AssertCode(     // brz	%o1,0000000000010850
@@ -62,6 +58,23 @@ namespace Reko.UnitTests.Arch.Sparc
                 "1|TD-|if (o1 == 0<64>) branch 0000001000010020");
         }
 
+        [Test]
+        public void Sparc64Rw_fcvtsd()
+        {
+            Given_HexString("93A09937 "); // 0CFFA93B4F089C2CF32A5B47");
+            AssertCode(
+                "0|L--|0000001000000000(4): 1 instructions",
+                "1|L--|d20 = CONVERT(f23, real32, real64)");
+        }
+
+        [Test]
+        public void Sparc64Rw_fitoq()
+        {
+            Given_HexString("89BC0CCC");
+            AssertCode(
+                "0|L--|0000001000000000(4): 1 instructions",
+                "1|L--|q4 = CONVERT(f12, int32, real128)");
+        }
 
         [Test]
         public void Sparc64Rw_ldx()
@@ -109,21 +122,12 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
-        public void SparcRw_mulx()
+        public void Sparc64Rw_mulx()
         {
             Given_HexString("82488001");
             AssertCode(     // mulx	%g2,%g1,%g1
                 "0|L--|0000001000000000(4): 1 instructions",
                 "1|L--|g1 = g2 * g1");
-        }
-
-        [Test]
-        public void sparc64_fcvtsd()
-        {
-            Given_HexString("93A09937 "); // 0CFFA93B4F089C2CF32A5B47");
-            AssertCode(
-                "0|L--|0000001000000000(4): 1 instructions",
-                "1|L--|d20 = CONVERT(f23, real32, real64)");
         }
     }
 }

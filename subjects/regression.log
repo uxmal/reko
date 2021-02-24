@@ -1430,4 +1430,4 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 === wasm\nbody.wasm
 === wasm\sample.wasm
 Stripping SSA identifier numbers
-Decompiled 75 binaries in 104.84 seconds ---
+Decompiled 75 binaries in 90.03 seconds ---
