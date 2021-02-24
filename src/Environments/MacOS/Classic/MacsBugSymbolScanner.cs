@@ -245,7 +245,7 @@ namespace Reko.Environments.MacOS.Classic
             if ((us & 1) == 1)
                 ++us;
             rdr.Offset += us;
-            if (!rdr.IsValid)
+            if (us > 0 && !rdr.IsValid)
             {
                 rdr.Offset = offset;
                 return false;

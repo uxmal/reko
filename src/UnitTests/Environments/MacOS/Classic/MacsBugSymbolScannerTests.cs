@@ -97,7 +97,6 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
                 w.WriteByte(0x00);
         }
 
-
         [Test]
         public void MacsBug_ScanProcedures()
         {
