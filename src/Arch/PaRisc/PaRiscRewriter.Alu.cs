@@ -72,7 +72,10 @@ namespace Reko.Arch.PaRisc
             {
                 var zero = Constant.Zero(SizeFromCondition(instr.Condition.Type));
                 var c = RewriteCondition(dst, zero);
-                m.BranchInMiddleOfInstruction(c.Invert(), instr.Address + 4, InstrClass.ConditionalTransfer);
+                if (!c.IsZero)
+                {
+                    m.BranchInMiddleOfInstruction(c.Invert(), instr.Address + 4, InstrClass.ConditionalTransfer);
+                }
                 m.SideEffect(host.Intrinsic("__trap", false, VoidType.Instance));
             }
             else
@@ -100,7 +103,6 @@ namespace Reko.Arch.PaRisc
             if (pos is Constant cpos)
             {
                 var dt = PrimitiveType.CreateWord(len);
-                var dtHi = PrimitiveType.CreateWord(32 - len);
                 var ins = Constant.Create(dt, imm);
                 var lePos = 31 - cpos.ToInt32();
                 if (instr.Zero)
@@ -109,9 +111,8 @@ namespace Reko.Arch.PaRisc
                 }
                 else
                 {
-                    m.Assign(dst, m.Dpb((Identifier)dst, ins, lePos));
+                    m.Assign(dst, m.Dpb(dst, ins, lePos));
                 }
-                m.Assign(dst,  lePos);
                 return;
             }
             throw new NotImplementedException("depwi sar not implemented yet.");
@@ -269,6 +270,7 @@ namespace Reko.Arch.PaRisc
             case ConditionType.Ule:
             case ConditionType.Uge:
             case ConditionType.Ugt:
+            case ConditionType.Never:
                 return PrimitiveType.Word32;
             case ConditionType.Eq64:
             case ConditionType.Lt64:
@@ -288,6 +290,7 @@ namespace Reko.Arch.PaRisc
             case ConditionType.Ule64:
             case ConditionType.Uge64:
             case ConditionType.Ugt64:
+            case ConditionType.Never64:
                 return PrimitiveType.Word64;
             }
             throw new NotImplementedException($"Condition type {ct} not implemented.");

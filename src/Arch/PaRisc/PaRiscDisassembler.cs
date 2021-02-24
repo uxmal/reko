@@ -279,12 +279,13 @@ namespace Reko.Arch.PaRisc
         /// <summary>
         /// Fixed shift amount 
         /// </summary>
-        private static Mutator<PaRiscDisassembler> shamt(Bitfield[] fields)
+        private static Mutator<PaRiscDisassembler> shamt(Bitfield[] fields, uint nBits)
         {
+            uint nBitsm1 = nBits - 1;
             return (u, d) =>
             {
                 var sh = Bitfield.ReadFields(fields, u);
-                sh = 63 - sh;
+                sh = nBitsm1 - sh;
                 var imm = ImmediateOperand.UInt32(sh);
                 d.ops.Add(imm);
                 return true;
@@ -435,10 +436,7 @@ namespace Reko.Arch.PaRisc
                 var cond = conds[iCond];
                 if (cond == null)
                     return false;
-                if (cond.Type != ConditionType.Never)
-                {
-                    d.cond = cond;
-                }
+                d.cond = cond;
                 return true;
             };
         }
@@ -739,6 +737,19 @@ namespace Reko.Arch.PaRisc
         });
 
         private static readonly Mutator<PaRiscDisassembler> cf16_sh_ex_dp_3 = cf(16, 3, new[]
+        {
+            ConditionOperand.Never,
+            ConditionOperand.Eq,
+            ConditionOperand.Lt,
+            ConditionOperand.Odd,
+
+            ConditionOperand.Tr,
+            ConditionOperand.Ne,
+            ConditionOperand.Ge,
+            ConditionOperand.Even,
+        });
+
+        private static readonly Mutator<PaRiscDisassembler> cf16_sh_ex_dp_3_64 = cf(16, 3, new[]
         {
             ConditionOperand.Never64,
             ConditionOperand.Eq64,
@@ -1366,19 +1377,6 @@ namespace Reko.Arch.PaRisc
             {
                 return dasm.NotYetImplemented(message);
             }
-
-            [Conditional("DEBUG")]
-            private void EmitUnitTest(uint wInstr)
-            {
-                Console.WriteLine("    // Reko: a decoder for hppa instruction {0} at address(.*?) has not");
-                Console.WriteLine("    // {0}", message);
-                Console.WriteLine("    [Test]");
-                Console.WriteLine("    public void PaRiscDis_{0:X8}()", wInstr);
-                Console.WriteLine("    {");
-                Console.WriteLine("        AssertCode(\"@@@\", \"{0:X8}\");", wInstr);
-                Console.WriteLine("    }");
-                Console.WriteLine("");
-            }
         }
 
 
@@ -1552,9 +1550,9 @@ namespace Reko.Arch.PaRisc
                     (0x0, Instr(Mnemonic.ldb, Mx(PrimitiveType.Byte, 6, 11, 16), r27)),
                     (0x1, Instr(Mnemonic.ldh, Mx(PrimitiveType.Word16, 6, 11, 16), r27)),
                     (0x2, Instr(Mnemonic.ldw, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
-                    (0x3, Instr(Mnemonic.ldd, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
-                    (0x4, Instr(Mnemonic.ldda, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
-                    (0x5, Instr(Mnemonic.ldcd, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
+                    (0x3, Instr(Mnemonic.ldd, Mx(PrimitiveType.Word64, 6, 11, 16), r27)),
+                    (0x4, Instr(Mnemonic.ldda, Mx(PrimitiveType.Word64, 6, 11, 16), r27)),
+                    (0x5, Instr(Mnemonic.ldcd, Mx(PrimitiveType.Word64, 6, 11, 16), r27)),
                     (0x6, Instr(Mnemonic.ldwa, Mx(PrimitiveType.Word32, 6, 11, 16), r27)),
                     (0x7, Instr(Mnemonic.ldcw, Mx(PrimitiveType.Word32, 6, 11, 16), r27))),
                 Mask(22, 4, invalid,
@@ -1564,8 +1562,8 @@ namespace Reko.Arch.PaRisc
                     (0x3, Instr(Mnemonic.ldd, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
                     (0x4, Instr(Mnemonic.ldda, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
                     (0x5, Instr(Mnemonic.ldcd, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
-                    (0x6, Instr(Mnemonic.ldwa, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
-                    (0x7, Instr(Mnemonic.ldcw, cc_loads, Mshort(11, PrimitiveType.Word64), r27)),
+                    (0x6, Instr(Mnemonic.ldwa, cc_loads, Mshort(11, PrimitiveType.Word32), r27)),
+                    (0x7, Instr(Mnemonic.ldcw, cc_loads, Mshort(11, PrimitiveType.Word32), r27)),
                     (0x8, Instr(Mnemonic.stb, cc_stores, r11, Mshort(27, PrimitiveType.Byte))),
                     (0x9, Instr(Mnemonic.sth, cc_stores, r11, Mshort(27, PrimitiveType.Word16))),
                     (0xA, Instr(Mnemonic.stw, cc_stores, r11, Mshort(27, PrimitiveType.Word32))),
@@ -1655,10 +1653,10 @@ namespace Reko.Arch.PaRisc
                 Instr(Mnemonic.fcmp, cf27_fp, fr25_27, fr11_19),
                 Mask(23, 1,
                     Mask(16, 3,
-                        Instr(Mnemonic.fadd, fpFmt20_1),
-                        Instr(Mnemonic.fsub, fpFmt20_1),
+                        Instr(Mnemonic.fadd, fpFmt20_1, fr24_6, fr24_11, fr25_27),
+                        Instr(Mnemonic.fsub, fpFmt20_1, fr24_6, fr24_11, fr25_27),
                         Instr(Mnemonic.fmpy, fpFmt20_1, fr24_6, fr24_11, fr25_27),
-                        Instr(Mnemonic.fdiv, fpFmt20_1),
+                        Instr(Mnemonic.fdiv, fpFmt20_1, fr24_6, fr24_11, fr25_27),
                         invalid,
                         invalid,
                         invalid,
@@ -1669,12 +1667,14 @@ namespace Reko.Arch.PaRisc
                 Instr(Mnemonic.subi, cf16_cmpsub_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11),
                 Instr(Mnemonic.subi_tsv, cf16_cmpsub_32, s(PrimitiveType.Int32, BeFields((21, 11)), low_sign_ext11), r6, r11));
             var extract_34 = Mask(19, 3,
-                Instr(Mnemonic.shrpw, cf16_sh_ex_dp_3, r11, r6, r27),
                 Cond(23, 4, Eq0,
-                    Instr(Mnemonic.shrpd, cf16_sh_ex_dp_3, r11, r6, reg(Registers.SAR), r27),
-                    Instr(Mnemonic.shrpd, cf16_sh_ex_dp_3, r11, r6, shamt(BeFields((20,1),(22,5))), r27)),
-                Instr(Mnemonic.shrpw, cf16_sh_ex_dp_3, r11, r6, r27),
-                Instr(Mnemonic.shrpd, cf16_sh_ex_dp_3, r11, r6, r27),
+                    Mask(22, 1, 
+                        Instr(Mnemonic.shrpw, cf16_sh_ex_dp_3, r11, r6, reg(Registers.SAR), r27),
+                        Instr(Mnemonic.shrpd, cf16_sh_ex_dp_3_64, r11, r6, reg(Registers.SAR), r27)),
+                    invalid),
+                Instr(Mnemonic.shrpd, cf16_sh_ex_dp_3_64, r11, r6, shamt(BeFields((20,1),(22,5)), 64), r27), //),
+                Instr(Mnemonic.shrpw, cf16_sh_ex_dp_3, r11, r6, shamt(BeFields((22,5)), 32), r27),
+                Instr(Mnemonic.shrpd, cf16_sh_ex_dp_3_64, r11, r6, shamt(BeFields((20,1), (22,5)), 64), r27),
 
                 Nyi("extract-100"),
                 Nyi("extract-101"),

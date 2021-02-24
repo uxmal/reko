@@ -43,6 +43,7 @@ namespace Reko.Arch.PaRisc
         Uge,
         Ugt,
 
+        Never64,
         Eq64,
         Lt64,
         Le64,
