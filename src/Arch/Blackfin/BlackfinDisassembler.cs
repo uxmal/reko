@@ -234,6 +234,8 @@ namespace Reko.Arch.Blackfin
             return (u, d) =>
             {
                 var iReg = (int) bitfield.Read(u);
+                if (iReg >= regs.Length)
+                    return false;
                 var reg = regs[iReg];
                 if (reg == null)
                     return false;
@@ -266,6 +268,8 @@ namespace Reko.Arch.Blackfin
             {
                 var bitNo = (int)field.Read(u);
                 var flag = d.arch.GetFlagGroup(Registers.ASTAT, 1u<<bitNo);
+                if (flag is null)
+                    return false;
                 d.ops.Add(new FlagGroupOperand(flag));
                 return true;
             };
@@ -560,10 +564,12 @@ namespace Reko.Arch.Blackfin
             var bitfield = new Bitfield(0, 3);
             return (u, d) =>
             {
-                var iregMin = bitfield.Read(u);
+                var iregMin = (int)bitfield.Read(u);
                 if (iregMin > iregMax)
                     return false;
-                d.ops.Add(new RegisterRange(Registers.Pointers[0].DataType, regs[iregMax], regs[iregMin]));
+                var bitsize = (iregMax - iregMin + 1) * Registers.Pointers[0].DataType.BitSize;
+                var dt = PrimitiveType.CreateWord(bitsize);
+                d.ops.Add(new RegisterRange(dt, regs, iregMax, iregMin));
                 return true;
             };
         }

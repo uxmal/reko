@@ -79,7 +79,9 @@ namespace Reko.Arch.Blackfin
         {
             if (reg == Registers.ASTAT)
             {
-                return Registers.AStatFlags[grf];
+                return Registers.AStatFlags.TryGetValue(grf, out FlagGroupStorage flags)
+                    ? flags
+                    : null;
             }
             throw new NotImplementedException();
         }

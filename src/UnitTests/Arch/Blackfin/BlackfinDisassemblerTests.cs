@@ -681,7 +681,7 @@ namespace Reko.UnitTests.Arch.Blackfin
         }
 
         [Test]
-        public void BlackfinDasm_98C9()
+        public void BlackfinDasm_ld_postdec()
         {
             var instr = DisassembleHexBytes("C998");
             Assert.AreEqual("R1 = W[P1--].B (X);", instr.ToString());
