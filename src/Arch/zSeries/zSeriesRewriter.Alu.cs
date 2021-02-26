@@ -435,6 +435,18 @@ namespace Reko.Arch.zSeries
             Assign(Reg(0), src);
         }
 
+        private void RewriteLocr(PrimitiveType dt, ConditionCode ccode)
+        {
+            if (ccode != ConditionCode.ALWAYS)
+            {
+                var cc = binder.EnsureFlagGroup(Registers.CC);
+                m.Branch(m.Test(ccode.Invert(), cc), instr.Address + instr.Length);
+            }
+            var src = Op(1, dt);
+            src.DataType = dt;
+            Assign(Reg(0), src);
+        }
+
         private void RewriteLpr(string fnName, PrimitiveType dt)
         {
             Expression src = Reg(1, dt);

@@ -1523,9 +1523,7 @@ namespace Reko.UnitTests.Arch.zSeries
                 "1|L--|r1 = Mem0[r2 + 16<i64>:word64]");
         }
 
-
         [Test]
-        [Ignore("S390 instr")]
         public void zSeriesRw_locgre()
         {
             Given_HexString("B9E280D1");
@@ -1536,7 +1534,6 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
-        [Ignore("S390 instr")]
         public void zSeriesRw_locgrh()
         {
             Given_HexString("B9E22012");
@@ -1547,18 +1544,16 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
-        [Ignore("S390 instr")]
         public void zSeriesRw_locgrl()
         {
             Given_HexString("B9E24021");
             AssertCode(     // locgrl	r2,r1
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@",
-                "2|L--|@@@");
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (Test(GE,CC)) branch 00100004",
+                "2|L--|r2 = r1");
         }
 
         [Test]
-        [Ignore("S390 instr")]
         public void zSeriesRw_locgrle()
         {
             Given_HexString("B9E2C053");
@@ -1569,7 +1564,6 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
-        [Ignore("S390 instr")]
         public void zSeriesRw_locgrne()
         {
             Given_HexString("B9E270C1");
@@ -1580,18 +1574,16 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
-        [Ignore("S390 instr")]
         public void zSeriesRw_locgrnhe()
         {
             Given_HexString("B9E25091");
             AssertCode(     // locgrnhe	r9,r1
                 "0|L--|00100000(4): 2 instructions",
                 "1|T--|if (Test(UGT,CC)) branch 00100004",
-                "2|L--|@@@");
+                "2|L--|r9 = r1");
         }
 
         [Test]
-        [Ignore("S390 instr")]
         public void zSeriesRw_locgrnl()
         {
             Given_HexString("B9E2B012");
@@ -1602,7 +1594,6 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
-        [Ignore("S390 instr")]
         public void zSeriesRw_locgrnle()
         {
             Given_HexString("B9E230C1");

@@ -241,13 +241,14 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.lngr: RewriteLnr(PrimitiveType.Int64); break;
                 case Mnemonic.lnr: RewriteLnr(PrimitiveType.Int32); break;
                 case Mnemonic.locg: RewriteLoc(PrimitiveType.Word64, ConditionCode.ALWAYS); break;
-                case Mnemonic.locgre: RewriteLoc(PrimitiveType.Word64, ConditionCode.EQ); break;
-                case Mnemonic.locgrh: RewriteLoc(PrimitiveType.Word64, ConditionCode.UGT); break;
-                case Mnemonic.locgrle: RewriteLoc(PrimitiveType.Word64, ConditionCode.LE); break;
-                case Mnemonic.locgrne: RewriteLoc(PrimitiveType.Word64, ConditionCode.NE); break;
-                case Mnemonic.locgrnhe: RewriteLoc(PrimitiveType.Word64, ConditionCode.ULE); break;
-                case Mnemonic.locgrnl: RewriteLoc(PrimitiveType.Word64, ConditionCode.GE); break;
-                case Mnemonic.locgrnle: RewriteLoc(PrimitiveType.Word64, ConditionCode.GT); break;
+                case Mnemonic.locgre: RewriteLocr(PrimitiveType.Word64, ConditionCode.EQ); break;
+                case Mnemonic.locgrh: RewriteLocr(PrimitiveType.Word64, ConditionCode.UGT); break;
+                case Mnemonic.locgrl: RewriteLocr(PrimitiveType.Word64, ConditionCode.LT); break;
+                case Mnemonic.locgrle: RewriteLocr(PrimitiveType.Word64, ConditionCode.LE); break;
+                case Mnemonic.locgrne: RewriteLocr(PrimitiveType.Word64, ConditionCode.NE); break;
+                case Mnemonic.locgrnhe: RewriteLocr(PrimitiveType.Word64, ConditionCode.ULE); break;
+                case Mnemonic.locgrnl: RewriteLocr(PrimitiveType.Word64, ConditionCode.GE); break;
+                case Mnemonic.locgrnle: RewriteLocr(PrimitiveType.Word64, ConditionCode.GT); break;
                 case Mnemonic.lpdr: RewriteLpr("fabs", LongHexFloat); break;
                 case Mnemonic.lper: RewriteLpr("fabsf", ShortHexFloat); break;
                 case Mnemonic.lpgr: RewriteLpr("abs", PrimitiveType.Int64); break;
@@ -341,7 +342,7 @@ namespace Reko.Arch.zSeries
                 case Mnemonic.sxr: RewriteFpuRegPair(m.FSub, ExtendedHexFloat); break;
                 case Mnemonic.ts: RewriteTs(); break;
 
-                case Mnemonic.vavg: RewriteVectorInstruction4Elem("__vavg_{0}", false); break;
+                case Mnemonic.vavg: RewriteVectorInstruction3Elem("__vavg_{0}", false); break;
                 case Mnemonic.verim: RewriteVectorInstruction4Elem("__verim_{0}", false); break;
                 case Mnemonic.vfa: RewriteVectorInstruction3Elem("__vfa"); break;
                 case Mnemonic.vfd: RewriteVectorInstruction3Elem("__vfd"); break;

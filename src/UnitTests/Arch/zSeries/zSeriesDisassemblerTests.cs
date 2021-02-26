@@ -1169,6 +1169,12 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSeriesDasm_tp()
+        {
+            AssertCode("tp\t-1267(6,r13)", "EB5F DB0D 08C0");
+        }
+
+        [Test]
         public void zSerDasm_tr()
         {
             AssertCode("tr\t578(240,r4),578(r4)", "DCEF42424242");
@@ -1229,6 +1235,12 @@ namespace Reko.UnitTests.Arch.zSeries
         }
 
         [Test]
+        public void zSeriesDasm_vlgv()
+        {
+            AssertCode("vlgv\tr0,v0,432(r12)", "E700C1B0B921E3095E5268B455A66A29");
+        }
+
+        [Test]
         public void zSerDasm_vlm()
         {
             AssertCode("vlm\tv24,v31,160(r15)", "E78FF0A00C36");
@@ -1250,6 +1262,12 @@ namespace Reko.UnitTests.Arch.zSeries
         public void zSeriesDis_vpks()
         {
             AssertCode("vpksf\tv8,v0,v1", "E78015E92997");
+        }
+
+        [Test]
+        public void zSeriesDasm_vrep()
+        {
+            AssertCode("vrep\tv31,v10,B654", "E7FAB654564D");
         }
 
         [Test]

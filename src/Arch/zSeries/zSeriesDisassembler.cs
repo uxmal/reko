@@ -378,8 +378,26 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
-        public static bool RSL(ulong uInstr, zSeriesDisassembler dasm) { dasm.NotYetImplemented("RSL instr"); return false; }
-        public static bool RSLb(ulong uInstr, zSeriesDisassembler dasm) { dasm.NotYetImplemented("RSLb instr"); return false; }
+        private static bool RSL(ulong uInstr, zSeriesDisassembler dasm) { dasm.NotYetImplemented("RSL instr"); return false; }
+        private static bool RSLa(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var b1 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            var d1 = (int) Bits.SignExtend(uInstr >> 16, 12);
+            var l1 = (byte) ((uInstr >> 36) & 0xF);
+            dasm.ops.Add(dasm.CreateAccessLength(b1, d1, l1 + 1));
+            return true;
+        }
+
+        private static bool RSLb(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var r1 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
+            var b2 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            var d2 = (int) Bits.SignExtend(uInstr >> 16, 12);
+            var l2 = (byte) (uInstr >> 32);
+            dasm.ops.Add(new RegisterOperand(r1));
+            dasm.ops.Add(dasm.CreateAccessLength(b2, d2, l2 + 1));
+            return true;
+        }
 
         public static bool RXa(ulong uInstr, zSeriesDisassembler dasm)
         {
@@ -589,8 +607,6 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
-        private static bool RSLa(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
-
         private static readonly Bitfield[] rsya_offset = new[]
         {
             new Bitfield(8, 8),
@@ -724,7 +740,16 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
-        private static bool VRIc(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
+        private static bool VRIc(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var v1 = Registers.VecRegisters[Bitfield.ReadFields(bf_v36, uInstr)];
+            var v2 = Registers.VecRegisters[Bitfield.ReadFields(bf_v32, uInstr)];
+            var imm = (ushort) (uInstr >> 16);
+            dasm.ops.Add(new RegisterOperand(v1));
+            dasm.ops.Add(new RegisterOperand(v2));
+            dasm.ops.Add(ImmediateOperand.Word16(imm));
+            return true;
+        }
 
         private static bool VRId(ulong uInstr, zSeriesDisassembler dasm)
         {
@@ -842,7 +867,17 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
-        private static bool VRSc(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
+        private static bool VRSc(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var r1 = Registers.GpRegisters[(uInstr >> 36) & 0xF];
+            var b2 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            var v3 = Registers.VecRegisters[Bitfield.ReadFields(bf_v32, uInstr)];
+            var d2 = (int) Bits.ZeroExtend(uInstr >> 16, 12);
+            dasm.ops.Add(new RegisterOperand(r1));
+            dasm.ops.Add(new RegisterOperand(v3));
+            dasm.ops.Add(dasm.CreateAccess(b2, d2));
+            return true;
+        }
        
         private static bool VRV(ulong uInstr, zSeriesDisassembler dasm)
         {
@@ -1374,22 +1409,22 @@ namespace Reko.Arch.zSeries
                 (0xE0, Instr(Mnemonic.locfhr, RRFc)),
                 (0xE1, Instr(Mnemonic.popcnt, RRE)),
                 (0xE2, Mask(12, 4,
-                    Instr(Mnemonic.locgrnv, RR),
-                    Instr(Mnemonic.locgro, RR),
-                    Instr(Mnemonic.locgrh, RR),
-                    Instr(Mnemonic.locgrnle, RR),
-                    Instr(Mnemonic.locgrl, RR),
-                    Instr(Mnemonic.locgrnhe, RR),
-                    Instr(Mnemonic.locgrlh, RR),
-                    Instr(Mnemonic.locgrne, RR),
-                    Instr(Mnemonic.locgre, RR),
-                    Instr(Mnemonic.locgrnlh, RR),
-                    Instr(Mnemonic.locgrhe, RR),
-                    Instr(Mnemonic.locgrnl, RR),
-                    Instr(Mnemonic.locgrle, RR),
-                    Instr(Mnemonic.locgrnh, RR),
-                    Instr(Mnemonic.locgrno, RR),
-                    Instr(Mnemonic.locgr, RR))),
+                    Instr(Mnemonic.locgrnv, RRFc),
+                    Instr(Mnemonic.locgro, RRFc),
+                    Instr(Mnemonic.locgrh, RRFc),
+                    Instr(Mnemonic.locgrnle, RRFc),
+                    Instr(Mnemonic.locgrl, RRFc),
+                    Instr(Mnemonic.locgrnhe, RRFc),
+                    Instr(Mnemonic.locgrlh, RRFc),
+                    Instr(Mnemonic.locgrne, RRFc),
+                    Instr(Mnemonic.locgre, RRFc),
+                    Instr(Mnemonic.locgrnlh, RRFc),
+                    Instr(Mnemonic.locgrhe, RRFc),
+                    Instr(Mnemonic.locgrnl, RRFc),
+                    Instr(Mnemonic.locgrle, RRFc),
+                    Instr(Mnemonic.locgrnh, RRFc),
+                    Instr(Mnemonic.locgrno, RRFc),
+                    Instr(Mnemonic.locgr, RRFc))),
                 (0xE4, Instr(Mnemonic.ngrk, RRFa)),
                 (0xE6, Instr(Mnemonic.ogrk, RRFa)),
                 (0xE7, Instr(Mnemonic.xgrk, RRFa)),
