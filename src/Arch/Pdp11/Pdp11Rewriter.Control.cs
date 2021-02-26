@@ -36,7 +36,7 @@ namespace Reko.Arch.Pdp11
         private void RewriteBpt()
         {
             this.iclass = InstrClass.Call | InstrClass.Transfer;
-            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.psw, (uint)(FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF)));
+            var grf = binder.EnsureFlagGroup(Registers.NZVC);
             m.Assign(grf, host.Intrinsic("__bpt", false, PrimitiveType.Byte)); 
         }
 
@@ -46,11 +46,11 @@ namespace Reko.Arch.Pdp11
             m.Goto(((AddressOperand)instr.Operands[0]).Address);
         }
 
-        private void RewriteBxx(ConditionCode cc, FlagM flags)
+        private void RewriteBxx(ConditionCode cc, FlagGroupStorage flags)
         {
             this.iclass = InstrClass.Transfer;
             m.Branch(
-                m.Test(cc, binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.psw, (uint)flags))),
+                m.Test(cc, binder.EnsureFlagGroup(flags)),
                 ((AddressOperand)instr.Operands[0]).Address,
                 InstrClass.ConditionalTransfer);
         }

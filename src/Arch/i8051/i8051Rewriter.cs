@@ -80,7 +80,7 @@ namespace Reko.Arch.i8051
                     Invalid();
                     break;
                 case Mnemonic.acall: RewriteCall(); break;
-                case Mnemonic.add: RewriteBinop(m.IAdd, FlagM.C | FlagM.AC | FlagM.OV | FlagM.P); break;
+                case Mnemonic.add: RewriteBinop(m.IAdd, Registers.CAOP); break;
                 case Mnemonic.addc: RewriteAddcSubb(m.IAdd); break;
                 case Mnemonic.ajmp: RewriteJump(); break;
                 case Mnemonic.anl: RewriteLogical(m.And); break;
@@ -144,15 +144,14 @@ namespace Reko.Arch.i8051
             m.Goto(dst);
         }
 
-        private void RewriteBinop(Func<Expression, Expression, BinaryExpression> fn, FlagM grf)
+        private void RewriteBinop(Func<Expression, Expression, BinaryExpression> fn, FlagGroupStorage grf = null)
         {
             var dst = OpSrc(instr.Operands[0], arch.DataMemory);
             var src = OpSrc(instr.Operands[1], arch.DataMemory);
             m.Assign(dst, fn(dst, src));
-            if (grf != 0)
+            if (grf != null)
             {
-                var flg = arch.GetFlagGroup(Registers.PSW, (uint)grf);
-                m.Assign(binder.EnsureFlagGroup(flg), m.Cond(dst));
+                m.Assign(binder.EnsureFlagGroup(grf), m.Cond(dst));
             }
         }
 
@@ -197,8 +196,7 @@ namespace Reko.Arch.i8051
             WriteDst(instr.Operands[0], Constant.Zero(dst.DataType));
             if (dst is Identifier id && id.Storage is RegisterStorage)
             {
-                var flg = arch.GetFlagGroup(Registers.PSW, (uint)FlagM.P);
-                m.Assign(binder.EnsureFlagGroup(flg), m.Cond(dst));
+                m.Assign(binder.EnsureFlagGroup(Registers.PFlag), m.Cond(dst));
             }
         }
 

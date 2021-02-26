@@ -29,8 +29,8 @@ namespace Reko.Arch.M6800.M6809
     {
         public Mode AccessMode;
         public int Offset;
-        public RegisterStorage Base;
-        public RegisterStorage Index;
+        public RegisterStorage? Base;
+        public RegisterStorage? Index;
         public bool Indirect;
 
         public MemoryOperand(PrimitiveType dt) : base(dt)
@@ -77,19 +77,19 @@ namespace Reko.Arch.M6800.M6809
                 renderer.WriteFormat(fmt, offset, regName);
                 break;
             case Mode.AccumulatorOffset:
-                renderer.WriteFormat("{0},{1}", Index.Name, Base.Name);
+                renderer.WriteFormat("{0},{1}", Index!.Name, Base!.Name);
                 break;
             case Mode.PostInc1:
-                renderer.WriteFormat(",{0}+", Base.Name);
+                renderer.WriteFormat(",{0}+", Base!.Name);
                 break;
             case Mode.PostInc2:
-                renderer.WriteFormat(",{0}++", Base.Name);
+                renderer.WriteFormat(",{0}++", Base!.Name);
                 break;
             case Mode.PreDec1:
-                renderer.WriteFormat(",-{0}", Base.Name);
+                renderer.WriteFormat(",-{0}", Base!.Name);
                 break;
             case Mode.PreDec2:
-                renderer.WriteFormat(",--{0}", Base.Name);
+                renderer.WriteFormat(",--{0}", Base!.Name);
                 break;
             default:
                throw new NotImplementedException($"Unimplemented address mode {AccessMode}.");

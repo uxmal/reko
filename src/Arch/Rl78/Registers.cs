@@ -50,7 +50,11 @@ namespace Reko.Arch.Rl78
         public static readonly RegisterStorage l;
         public static readonly RegisterStorage h;
 
+        public static readonly FlagGroupStorage C;
         public static readonly FlagGroupStorage cy;
+        public static readonly FlagGroupStorage CZ;
+        public static readonly FlagGroupStorage Z;
+
 
         static Registers()
         {
@@ -75,7 +79,10 @@ namespace Reko.Arch.Rl78
 
             ByteRegs = new RegisterStorage[8] { x, a, c, b, e, d, l, h };
 
+            C = new FlagGroupStorage(psw, (uint) FlagM.CF, "C", PrimitiveType.Bool);
             cy = new FlagGroupStorage(psw, (uint) FlagM.CF, "cy", PrimitiveType.Bool);
+            CZ = new FlagGroupStorage(psw, (uint) (FlagM.CF | FlagM.ZF), "CZ", PrimitiveType.Byte);
+            Z = new FlagGroupStorage(psw, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
         }
     }
 

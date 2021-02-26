@@ -68,6 +68,14 @@ namespace Reko.Arch.M68k
         public static readonly FlagGroupStorage Z;
         public static readonly FlagGroupStorage N;
         public static readonly FlagGroupStorage X;
+        public static readonly FlagGroupStorage VN;
+        public static readonly FlagGroupStorage ZN;
+        public static readonly FlagGroupStorage VZN;
+        public static readonly FlagGroupStorage CVZN;
+        public static readonly FlagGroupStorage CZ;
+        public static readonly FlagGroupStorage CZN;
+        public static readonly FlagGroupStorage CZNX;
+        public static readonly FlagGroupStorage CVZNX;
 
         internal static RegisterStorage[] regs;
         internal static int Max;
@@ -114,6 +122,14 @@ namespace Reko.Arch.M68k
             N = new FlagGroupStorage(ccr, (uint) FlagM.NF, "N", PrimitiveType.Bool);
             X = new FlagGroupStorage(ccr, (uint) FlagM.XF, "X", PrimitiveType.Bool);
 
+            CVZN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF), "CVZN", PrimitiveType.Byte);
+            CZ = new FlagGroupStorage(ccr, (uint) (FlagM.ZF | FlagM.CF), "CZ", PrimitiveType.Byte);
+            CZN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.ZF | FlagM.CF), "CZN", PrimitiveType.Byte);
+            CZNX = new FlagGroupStorage(ccr, (uint) (FlagM.XF | FlagM.NF | FlagM.ZF | FlagM.CF), "CZNX", PrimitiveType.Byte);
+            CVZNX = new FlagGroupStorage(ccr, (uint) (FlagM.XF | FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF), "CVZNX", PrimitiveType.Byte);
+            VN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.VF), "VN", PrimitiveType.Byte);
+            VZN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.ZF | FlagM.VF), "VZN", PrimitiveType.Byte);
+            ZN = new FlagGroupStorage(ccr, (uint) (FlagM.NF | FlagM.ZF), "ZN", PrimitiveType.Byte);
             Max = 29;
 
             regs = new RegisterStorage[] { 
@@ -186,8 +202,7 @@ namespace Reko.Arch.M68k
 
         public static RegisterStorage GetRegister(string name)
         {
-            RegisterStorage reg;
-            if (!regsByName.TryGetValue(name, out reg))
+            if (!regsByName.TryGetValue(name, out RegisterStorage reg))
             {
                 reg = RegisterStorage.None;
             }

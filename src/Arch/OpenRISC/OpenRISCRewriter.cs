@@ -209,13 +209,13 @@ namespace Reko.Arch.OpenRISC
 
         private void CV(Identifier dst)
         {
-            var cv = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, (uint) (FlagM.CY | FlagM.OV)));
+            var cv = binder.EnsureFlagGroup(Registers.CV);
             m.Assign(cv, m.Cond(dst));
         }
 
         private void V(Identifier dst)
         {
-            var v = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, (uint) FlagM.OV));
+            var v = binder.EnsureFlagGroup(Registers.V);
             m.Assign(v, m.Cond(dst));
         }
 
@@ -242,7 +242,7 @@ namespace Reko.Arch.OpenRISC
             var dst = Reg(instrCur.Operands[0]);
             var src1 = Reg0(instrCur.Operands[1]);
             var src2 = Reg0(instrCur.Operands[2]);
-            var c = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, (uint) FlagM.CY));
+            var c = binder.EnsureFlagGroup(Registers.C);
             m.Assign(dst, m.IAdd(m.IAdd(src1, src2), c));
             CV(dst);
         }
@@ -268,7 +268,7 @@ namespace Reko.Arch.OpenRISC
             var dst = Reg(instrCur.Operands[0]);
             var src = Reg0(instrCur.Operands[1]);
             var imm = Imm(instrCur.Operands[2]);
-            var c = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, (uint) FlagM.CY));
+            var c = binder.EnsureFlagGroup(Registers.C);
             m.Assign(dst, m.IAdd(m.IAdd(src, imm), c));
             CV(dst);
         }

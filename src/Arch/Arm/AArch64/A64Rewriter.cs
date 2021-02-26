@@ -326,8 +326,7 @@ namespace Reko.Arch.Arm.AArch64
         }
         private Identifier NZCV()
         {
-            var nzcv = arch.GetFlagGroup(Registers.pstate, (uint)(FlagM.NF | FlagM.ZF | FlagM.CF | FlagM.VF));
-            return binder.EnsureFlagGroup(nzcv);
+            return binder.EnsureFlagGroup(Registers.NZCV);
         }
 
         private void NZCV(Expression test)
@@ -338,17 +337,16 @@ namespace Reko.Arch.Arm.AArch64
 
         private void NZ00(Expression test)
         {
-            var nz = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.pstate, (uint)(FlagM.NF | FlagM.ZF)));
-            var c = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.pstate, (uint)FlagM.CF));
-            var v = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.pstate, (uint)FlagM.VF));
+            var nz = binder.EnsureFlagGroup(Registers.NZ);
+            var c = binder.EnsureFlagGroup(Registers.C);
+            var v = binder.EnsureFlagGroup(Registers.V);
             m.Assign(nz, test);
             m.Assign(c, Constant.False());
             m.Assign(v, Constant.False());
         }
 
-        Identifier FlagGroup(FlagM bits, string name, PrimitiveType type)
+        Identifier FlagGroup(FlagGroupStorage grf)
         {
-            var grf = arch.GetFlagGroup(Registers.pstate, (uint)bits);
             return binder.EnsureFlagGroup(grf);
         }
 
@@ -359,33 +357,33 @@ namespace Reko.Arch.Arm.AArch64
             //default:
             //	throw new NotImplementedException(string.Format("ARM condition code {0} not implemented.", cond));
             case ArmCondition.HS:
-                return m.Test(ConditionCode.UGE, FlagGroup(FlagM.CF, "C", PrimitiveType.Word32));
+                return m.Test(ConditionCode.UGE, FlagGroup(Registers.C));
             case ArmCondition.LO:
-                return m.Test(ConditionCode.ULT, FlagGroup(FlagM.CF, "C", PrimitiveType.Word32));
+                return m.Test(ConditionCode.ULT, FlagGroup(Registers.C));
             case ArmCondition.EQ:
-                return m.Test(ConditionCode.EQ, FlagGroup(FlagM.ZF, "Z", PrimitiveType.Word32));
+                return m.Test(ConditionCode.EQ, FlagGroup(Registers.Z));
             case ArmCondition.GE:
-                return m.Test(ConditionCode.GE, FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV", PrimitiveType.Word32));
+                return m.Test(ConditionCode.GE, FlagGroup(Registers.NZV));
             case ArmCondition.GT:
-                return m.Test(ConditionCode.GT, FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF, "NZV", PrimitiveType.Word32));
+                return m.Test(ConditionCode.GT, FlagGroup(Registers.NZV));
             case ArmCondition.HI:
-                return m.Test(ConditionCode.UGT, FlagGroup(FlagM.ZF | FlagM.CF, "ZC", PrimitiveType.Word32));
+                return m.Test(ConditionCode.UGT, FlagGroup(Registers.ZC));
             case ArmCondition.LE:
-                return m.Test(ConditionCode.LE, FlagGroup(FlagM.ZF | FlagM.CF | FlagM.VF, "NZV", PrimitiveType.Word32));
+                return m.Test(ConditionCode.LE, FlagGroup(Registers.NZV));
             case ArmCondition.LS:
-                return m.Test(ConditionCode.ULE, FlagGroup(FlagM.ZF | FlagM.CF, "ZC", PrimitiveType.Word32));
+                return m.Test(ConditionCode.ULE, FlagGroup(Registers.ZC));
             case ArmCondition.LT:
-                return m.Test(ConditionCode.LT, FlagGroup(FlagM.NF | FlagM.VF, "NV", PrimitiveType.Word32));
+                return m.Test(ConditionCode.LT, FlagGroup(Registers.NV));
             case ArmCondition.MI:
-                return m.Test(ConditionCode.LT, FlagGroup(FlagM.NF, "N", PrimitiveType.Word32));
+                return m.Test(ConditionCode.LT, FlagGroup(Registers.N));
             case ArmCondition.PL:
-                return m.Test(ConditionCode.GE, FlagGroup(FlagM.NF, "N", PrimitiveType.Word32));
+                return m.Test(ConditionCode.GE, FlagGroup(Registers.N));
             case ArmCondition.NE:
-                return m.Test(ConditionCode.NE, FlagGroup(FlagM.ZF, "Z", PrimitiveType.Word32));
+                return m.Test(ConditionCode.NE, FlagGroup(Registers.Z));
             case ArmCondition.VC:
-                return m.Test(ConditionCode.NO, FlagGroup(FlagM.VF, "V", PrimitiveType.Word32));
+                return m.Test(ConditionCode.NO, FlagGroup(Registers.V));
             case ArmCondition.VS:
-                return m.Test(ConditionCode.OV, FlagGroup(FlagM.VF, "V", PrimitiveType.Word32));
+                return m.Test(ConditionCode.OV, FlagGroup(Registers.V));
             }
             return null;
         }

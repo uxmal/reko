@@ -117,8 +117,8 @@ namespace Reko.UnitTests.Arch.Msp430
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|r4 = r4 >> 1<8>",
-                "2|L--|V = false",
-                "3|L--|NZC = cond(r4)");
+                "2|L--|NZC = cond(r4)",
+                "3|L--|V = false");
         }
 
         [Test]
@@ -128,8 +128,8 @@ namespace Reko.UnitTests.Arch.Msp430
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|r13 = r13 >> 1<8>",
-                "2|L--|V = false",
-                "3|L--|NZC = cond(r13)");
+                "2|L--|NZC = cond(r13)",
+                "3|L--|V = false");
         }
 
         [Test]
@@ -139,8 +139,8 @@ namespace Reko.UnitTests.Arch.Msp430
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|r12 = r12 >>u 1<8>",
-                "2|L--|V = false",
-                "3|L--|NZC = cond(r12)");
+                "2|L--|NZC = cond(r12)",
+                "3|L--|V = false");
         }
 
         [Test]
@@ -150,8 +150,8 @@ namespace Reko.UnitTests.Arch.Msp430
             AssertCode(
                 "0|L--|0100(4): 3 instructions",
                 "1|L--|r12 = r12 >> 0xE<8>",
-                "2|L--|V = false",
-                "3|L--|NZC = cond(r12)");
+                "2|L--|NZC = cond(r12)",
+                "3|L--|V = false");
         }
 
         [Test]
@@ -264,8 +264,8 @@ namespace Reko.UnitTests.Arch.Msp430
                 "3|L--|v5 = Mem0[r14 + 16377<i16>:byte]",
                 "4|L--|v5 = v5 & v3",
                 "5|L--|Mem0[r14 + 16377<i16>:byte] = v5",
-                "6|L--|V = false",
-                "7|L--|NZC = cond(v5)");
+                "6|L--|NZC = cond(v5)",
+                "7|L--|V = false");
         }
 
         [Test]
@@ -321,8 +321,8 @@ namespace Reko.UnitTests.Arch.Msp430
             AssertCode(
                 "0|L--|0100(2): 3 instructions",
                 "1|L--|r4 = __rcr(r4, 1<8>, C)",
-                "2|L--|V = false",
-                "3|L--|NZC = cond(r4)");
+                "2|L--|NZC = cond(r4)",
+                "3|L--|V = false");
         }
 
         [Test]
@@ -356,8 +356,8 @@ namespace Reko.UnitTests.Arch.Msp430
                 "0|L--|0100(2): 4 instructions",
                 "1|L--|v3 = SLICE(r15, byte, 0)",
                 "2|L--|r15 = CONVERT(v3, byte, int16)",
-                "3|L--|V = false",
-                "4|L--|NZC = cond(r15)");
+                "3|L--|NZC = cond(r15)",
+                "4|L--|V = false");
         }
 
         [Test]

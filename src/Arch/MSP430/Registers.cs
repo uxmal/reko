@@ -19,6 +19,7 @@
 #endregion
  
 using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,10 @@ namespace Reko.Arch.Msp430
         public static RegisterStorage sp = new RegisterStorage("sp", 1, 0, Msp430Architecture.Word20);
         public static RegisterStorage sr = new RegisterStorage("sr", 2, 0, Msp430Architecture.Word20);
 
+        public static FlagGroupStorage NZC { get; }
+        public static FlagGroupStorage V { get; }
+        public static FlagGroupStorage VNZC { get; }
+        
         static Registers()
         {
             GpRegisters = new RegisterStorage[]
@@ -48,6 +53,9 @@ namespace Reko.Arch.Msp430
                     string.Format("r{0}", i), i, 0, Msp430Architecture.Word20)))
 
                 .ToArray();
+            NZC = new FlagGroupStorage(sr, (uint) (FlagM.NF | FlagM.ZF | FlagM.CF), "NZC", PrimitiveType.Byte);
+            V = new FlagGroupStorage(sr, (uint) FlagM.VF, "V", PrimitiveType.Bool);
+            VNZC = new FlagGroupStorage(sr, (uint) (FlagM.VF | FlagM.NF | FlagM.ZF | FlagM.CF), "VNZC", PrimitiveType.Byte);
 
             ByName = GpRegisters.ToDictionary(r => r.Name);
         }

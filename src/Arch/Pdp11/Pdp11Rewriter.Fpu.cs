@@ -33,7 +33,8 @@ namespace Reko.Arch.Pdp11
             var src = RewriteSrc(instr.Operands[0]);
             src = m.Convert(src, src.DataType, PrimitiveType.Int32);
             var dst = RewriteDst(instr.Operands[1], src, s => s);
-            SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.CF, FlagM.VF, 0);
+            SetFlags(dst, Registers.NZC);
+            SetFalse(Registers.V);
         }
     }
 }

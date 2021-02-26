@@ -37,8 +37,6 @@ namespace Reko.Arch.M6800
 
     public class M6809Architecture : ProcessorArchitecture
     {
-        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
-
         public M6809Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)
         {
@@ -47,7 +45,6 @@ namespace Reko.Arch.M6800
             this.InstructionBitSize = 8;
             this.PointerType = PrimitiveType.Ptr16;
             this.StackRegister = M6809.Registers.S;
-            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
@@ -82,14 +79,8 @@ namespace Reko.Arch.M6800
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            if (flagGroups.TryGetValue(grf, out var f))
-            {
-                return f;
-            }
-
             var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var fl = new FlagGroupStorage(M6809.Registers.CC, grf, GrfToString(M6809.Registers.CC, "", grf), dt);
-            flagGroups.Add(grf, fl);
             return fl;
         }
 

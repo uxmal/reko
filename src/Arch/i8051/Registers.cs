@@ -68,39 +68,42 @@ namespace Reko.Arch.i8051
 
         // Special function registers.
 
-        public static RegisterStorage P0 = new RegisterStorage("P0", 0x80, 0, PrimitiveType.Byte);
-        public static RegisterStorage SP = new RegisterStorage("SP", 0x81, 0, PrimitiveType.Byte);
-        public static RegisterStorage DPL = new RegisterStorage("DPL", 0x82, 0, PrimitiveType.Byte);
-        public static RegisterStorage DPH = new RegisterStorage("DPH", 0x83, 0, PrimitiveType.Byte);
-        public static SequenceStorage DPTR = new SequenceStorage("DPTR", PrimitiveType.Word16, DPH, DPL);
-        public static RegisterStorage PCON = new RegisterStorage("PCON", 0x87, 0, PrimitiveType.Byte);
-        public static RegisterStorage TCON = new RegisterStorage("TCON", 0x88, 0, PrimitiveType.Byte);
-        public static RegisterStorage TMOD = new RegisterStorage("TMOD", 0x89, 0, PrimitiveType.Byte);
-        public static RegisterStorage TL0 = new RegisterStorage("TL0", 0x8A, 0, PrimitiveType.Byte);
-        public static RegisterStorage TH0 = new RegisterStorage("TH0", 0x8C, 0, PrimitiveType.Byte);
-        public static SequenceStorage T0 = new SequenceStorage("T0", PrimitiveType.Word16, TH0, TL0);
-        public static RegisterStorage TL1 = new RegisterStorage("TL1", 0x8B, 0, PrimitiveType.Byte);
-        public static RegisterStorage TH1 = new RegisterStorage("TH1", 0x8D, 0, PrimitiveType.Byte);
-        public static SequenceStorage T1 = new SequenceStorage("T1", PrimitiveType.Word16, TH1, TL1);
-        public static RegisterStorage P1 = new RegisterStorage("P1", 0x90, 0, PrimitiveType.Byte);
-        public static RegisterStorage SCON = new RegisterStorage("SCON", 0x98, 0, PrimitiveType.Byte);
-        public static RegisterStorage SBUF = new RegisterStorage("SBUF", 0x99, 0, PrimitiveType.Byte);
-        public static RegisterStorage P2 = new RegisterStorage("P2", 0xA0, 0, PrimitiveType.Byte);
-        public static RegisterStorage IE = new RegisterStorage("IE", 0xA8, 0, PrimitiveType.Byte);
-        public static RegisterStorage P3 = new RegisterStorage("P2", 0xB0, 0, PrimitiveType.Byte);
-        public static RegisterStorage IP = new RegisterStorage("IP", 0xB8, 0, PrimitiveType.Byte);
-        public static RegisterStorage PSW = new RegisterStorage("PSW", 0xD0, 0, PrimitiveType.Byte);
-        public static RegisterStorage A = new RegisterStorage("A", 0xE0, 0, PrimitiveType.Byte);
-        public static RegisterStorage B = new RegisterStorage("B", 0xF0, 0, PrimitiveType.Byte);
-        public static SequenceStorage AB = new SequenceStorage("AB", PrimitiveType.Word16, A, B);
+        public static readonly RegisterStorage P0 = new RegisterStorage("P0", 0x80, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage SP = new RegisterStorage("SP", 0x81, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage DPL = new RegisterStorage("DPL", 0x82, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage DPH = new RegisterStorage("DPH", 0x83, 0, PrimitiveType.Byte);
+        public static readonly SequenceStorage DPTR = new SequenceStorage("DPTR", PrimitiveType.Word16, DPH, DPL);
+        public static readonly RegisterStorage PCON = new RegisterStorage("PCON", 0x87, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage TCON = new RegisterStorage("TCON", 0x88, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage TMOD = new RegisterStorage("TMOD", 0x89, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage TL0 = new RegisterStorage("TL0", 0x8A, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage TH0 = new RegisterStorage("TH0", 0x8C, 0, PrimitiveType.Byte);
+        public static readonly SequenceStorage T0 = new SequenceStorage("T0", PrimitiveType.Word16, TH0, TL0);
+        public static readonly RegisterStorage TL1 = new RegisterStorage("TL1", 0x8B, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage TH1 = new RegisterStorage("TH1", 0x8D, 0, PrimitiveType.Byte);
+        public static readonly SequenceStorage T1 = new SequenceStorage("T1", PrimitiveType.Word16, TH1, TL1);
+        public static readonly RegisterStorage P1 = new RegisterStorage("P1", 0x90, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage SCON = new RegisterStorage("SCON", 0x98, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage SBUF = new RegisterStorage("SBUF", 0x99, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage P2 = new RegisterStorage("P2", 0xA0, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage IE = new RegisterStorage("IE", 0xA8, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage P3 = new RegisterStorage("P2", 0xB0, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage IP = new RegisterStorage("IP", 0xB8, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage PSW = new RegisterStorage("PSW", 0xD0, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage A = new RegisterStorage("A", 0xE0, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage B = new RegisterStorage("B", 0xF0, 0, PrimitiveType.Byte);
+        public static readonly SequenceStorage AB = new SequenceStorage("AB", PrimitiveType.Word16, A, B);
 
-        public static RegisterStorage PC = new RegisterStorage("PC", 0x100, 0, PrimitiveType.Ptr16);
+        public static readonly RegisterStorage PC = new RegisterStorage("PC", 0x100, 0, PrimitiveType.Ptr16);
 
 
-        public static FlagGroupStorage CFlag = new FlagGroupStorage(PSW, (uint) FlagM.C, "C", PrimitiveType.Bool);
-        public static FlagGroupStorage AFlag = new FlagGroupStorage(PSW, (uint) FlagM.AC, "A", PrimitiveType.Bool);
-        public static FlagGroupStorage OFlag = new FlagGroupStorage(PSW, (uint) FlagM.OV, "O", PrimitiveType.Bool);
-        public static FlagGroupStorage PFlag = new FlagGroupStorage(PSW, (uint) FlagM.P, "P", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage CFlag = new FlagGroupStorage(PSW, (uint) FlagM.C, "C", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage AFlag = new FlagGroupStorage(PSW, (uint) FlagM.AC, "A", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage OFlag = new FlagGroupStorage(PSW, (uint) FlagM.OV, "O", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage PFlag = new FlagGroupStorage(PSW, (uint) FlagM.P, "P", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage CAOP = new FlagGroupStorage(PSW, (uint) (FlagM.C | FlagM.AC | FlagM.OV | FlagM.P), "CAOP", PrimitiveType.Byte);
+        
+
 
         private static Dictionary<int, RegisterStorage> regsByNumber;
         private static Dictionary<StorageDomain, RegisterStorage> regsByDomain;

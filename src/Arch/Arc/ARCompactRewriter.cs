@@ -35,13 +35,6 @@ namespace Reko.Arch.Arc
 {
     public class ARCompactRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private const FlagM ZNCV = FlagM.ZF | FlagM.NF | FlagM.CF | FlagM.VF;
-        private const FlagM ZNC = FlagM.ZF | FlagM.NF | FlagM.CF;
-        private const FlagM ZNV = FlagM.ZF | FlagM.NF | FlagM.VF;
-        private const FlagM ZN = FlagM.ZF | FlagM.NF;
-
-        private const AuxFlagM S = AuxFlagM.Sat;
-
         private readonly ARCompactArchitecture arch;
         private readonly EndianImageReader rdr;
         private readonly ProcessorState state;
@@ -114,29 +107,29 @@ namespace Reko.Arch.Arc
                     this.iclass = InstrClass.Invalid;
                     m.Invalid();
                     break;
-                case Mnemonic.adc: RewriteAluOp(Adc, ZNCV); break;
+                case Mnemonic.adc: RewriteAluOp(Adc, Registers.ZNCV); break;
                 case Mnemonic.add:
                 case Mnemonic.add_s:
-                    RewriteAluOp(m.IAdd, ZNCV); break;
+                    RewriteAluOp(m.IAdd, Registers.ZNCV); break;
                 case Mnemonic.add1:
                 case Mnemonic.add1_s:
-                    RewriteAluOp(Add1, ZNCV); break;
+                    RewriteAluOp(Add1, Registers.ZNCV); break;
                 case Mnemonic.add2:
                 case Mnemonic.add2_s:
-                    RewriteAluOp(Add2, ZNCV); break;
+                    RewriteAluOp(Add2, Registers.ZNCV); break;
                 case Mnemonic.add3:
                 case Mnemonic.add3_s:
-                    RewriteAluOp(Add3, ZNCV); break;
+                    RewriteAluOp(Add3, Registers.ZNCV); break;
                 case Mnemonic.addsdw: RewriteAddSubsdw("__addsdw"); break;
                 case Mnemonic.and:
                 case Mnemonic.and_s:
-                    RewriteAluOp(m.And, ZN); break;
+                    RewriteAluOp(m.And, Registers.ZN); break;
                 case Mnemonic.asl:
                 case Mnemonic.asl_s:
-                    RewriteShift(m.Shl, ZNCV); break;
+                    RewriteShift(m.Shl, Registers.ZNCV); break;
                 case Mnemonic.asr:
                 case Mnemonic.asr_s:
-                    RewriteShift(m.Sar, ZNCV); break;
+                    RewriteShift(m.Sar, Registers.ZNCV); break;
                 case Mnemonic.b: case Mnemonic.b_s: RewriteB(ArcCondition.AL); break;
                 case Mnemonic.bcc: case Mnemonic.bhs_s: RewriteB(ArcCondition.CC); break;
                 case Mnemonic.bcs: case Mnemonic.blo_s: RewriteB(ArcCondition.CS); break;
@@ -160,7 +153,7 @@ namespace Reko.Arch.Arc
                 case Mnemonic.bbit1: RewriteBbit(true); break;
                 case Mnemonic.bclr:
                 case Mnemonic.bclr_s:
-                    RewriteAluOp(Bclr, ZN); break;
+                    RewriteAluOp(Bclr, Registers.ZN); break;
 
                 case Mnemonic.bl:
                 case Mnemonic.bl_s:
@@ -195,23 +188,23 @@ namespace Reko.Arch.Arc
 
                 case Mnemonic.bic:
                 case Mnemonic.bic_s:
-                    RewriteAluOp(AndNot, ZN); break;
+                    RewriteAluOp(AndNot, Registers.ZN); break;
                 case Mnemonic.bmsk:
                 case Mnemonic.bmsk_s:
-                    RewriteAluOp(Bmsk, ZN); break;
+                    RewriteAluOp(Bmsk, Registers.ZN); break;
                 case Mnemonic.bset:
                 case Mnemonic.bset_s:
-                    RewriteAluOp(Bset, ZN); break;
+                    RewriteAluOp(Bset, Registers.ZN); break;
                 case Mnemonic.btst:
                 case Mnemonic.btst_s:
-                    RewriteCondInstr(Btst, ZN); break;
+                    RewriteCondInstr(Btst, Registers.ZN); break;
                 case Mnemonic.bxor:
-                    RewriteAluOp(Bxor, ZN); break;
+                    RewriteAluOp(Bxor, Registers.ZN); break;
 
 
                 case Mnemonic.cmp:
                 case Mnemonic.cmp_s:
-                    RewriteCondInstr(m.ISub, ZNCV); break;
+                    RewriteCondInstr(m.ISub, Registers.ZNCV); break;
                 case Mnemonic.divaw: RewriteDivaw(); break;
                 case Mnemonic.extb:
                 case Mnemonic.extb_s:
@@ -256,9 +249,9 @@ namespace Reko.Arch.Arc
                 case Mnemonic.lr: RewriteLr(); break;
                 case Mnemonic.lsr:
                 case Mnemonic.lsr_s:
-                    RewriteShift(m.Shr, ZNC); break;
-                case Mnemonic.max: RewriteAluOp(Max, ZNCV); break;
-                case Mnemonic.min: RewriteAluOp(Min, ZNCV); break;
+                    RewriteShift(m.Shr, Registers.ZNC); break;
+                case Mnemonic.max: RewriteAluOp(Max, Registers.ZNCV); break;
+                case Mnemonic.min: RewriteAluOp(Min, Registers.ZNCV); break;
                 case Mnemonic.mov:
                 case Mnemonic.mov_s:
                     RewriteMov(); break;
@@ -267,18 +260,18 @@ namespace Reko.Arch.Arc
                     RewriteMul(m.SMul, PrimitiveType.Int64); break;
                 case Mnemonic.mulu64:
                     RewriteMul(m.UMul, PrimitiveType.UInt64); break;
-                case Mnemonic.neg_s: RewriteAluOp(m.Neg, ZNCV); break;
+                case Mnemonic.neg_s: RewriteAluOp(m.Neg, Registers.ZNCV); break;
                 case Mnemonic.nop: m.Nop(); break;
-                case Mnemonic.not: RewriteAluOp(m.Comp, ZN); break;
+                case Mnemonic.not: RewriteAluOp(m.Comp, Registers.ZN); break;
                 case Mnemonic.or:
                 case Mnemonic.or_s:
-                    RewriteAluOp(m.Or, ZN); break;
+                    RewriteAluOp(m.Or, Registers.ZN); break;
                 case Mnemonic.pop_s: RewritePop(); break;
                 case Mnemonic.push_s: RewritePush(); break;
-                case Mnemonic.rcmp: RewriteCondInstr(Rsub, ZNCV); break;
-                case Mnemonic.ror: RewriteShift(Ror, ZNC); break;
-                case Mnemonic.rsub: RewriteAluOp(Rsub, ZNCV); break;
-                case Mnemonic.sbc: RewriteAluOp(Sbc, ZNCV); break;
+                case Mnemonic.rcmp: RewriteCondInstr(Rsub, Registers.ZNCV); break;
+                case Mnemonic.ror: RewriteShift(Ror, Registers.ZNC); break;
+                case Mnemonic.rsub: RewriteAluOp(Rsub, Registers.ZNCV); break;
+                case Mnemonic.sbc: RewriteAluOp(Sbc, Registers.ZNCV); break;
                 case Mnemonic.sexb:
                 case Mnemonic.sexb_s:
                     RewriteExt(PrimitiveType.SByte, PrimitiveType.Int32); break;
@@ -297,10 +290,10 @@ namespace Reko.Arch.Arc
                     RewriteStore(PrimitiveType.Word16); break;
                 case Mnemonic.sub:
                 case Mnemonic.sub_s:
-                    RewriteAluOp(m.ISub, ZNCV); break;
-                case Mnemonic.sub1: RewriteAluOp(Sub1, ZNCV); break;
-                case Mnemonic.sub2: RewriteAluOp(Sub2, ZNCV); break;
-                case Mnemonic.sub3: RewriteAluOp(Sub3, ZNCV); break;
+                    RewriteAluOp(m.ISub, Registers.ZNCV); break;
+                case Mnemonic.sub1: RewriteAluOp(Sub1, Registers.ZNCV); break;
+                case Mnemonic.sub2: RewriteAluOp(Sub2, Registers.ZNCV); break;
+                case Mnemonic.sub3: RewriteAluOp(Sub3, Registers.ZNCV); break;
                 case Mnemonic.subsdw: RewriteAddSubsdw("__subsdw"); break;
                 case Mnemonic.trap_s:
                 case Mnemonic.trap0:
@@ -308,10 +301,10 @@ namespace Reko.Arch.Arc
                     break;
                 case Mnemonic.tst:
                 case Mnemonic.tst_s:
-                    RewriteCondInstr(m.And, ZN); break;
+                    RewriteCondInstr(m.And, Registers.ZN); break;
                 case Mnemonic.xor:
                 case Mnemonic.xor_s:
-                    RewriteAluOp(m.Xor, ZN); break;
+                    RewriteAluOp(m.Xor, Registers.ZN); break;
                 }
 
                 TryHandlingZeroOverheadLoop();
@@ -512,7 +505,7 @@ namespace Reko.Arch.Arc
 
         private Expression TestSaturation(bool isSaturated)
         {
-            var flags = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.AuxMacmode, (uint) S));
+            var flags = binder.EnsureFlagGroup(Registers.S);
             var test = host.Intrinsic("__saturated", true, PrimitiveType.Bool, flags);
             if (isSaturated)
             {
@@ -588,27 +581,27 @@ namespace Reko.Arch.Arc
             m.Assign(tmp2, Operand(2));
             var dst = Operand(0);
             m.Assign(dst, host.Intrinsic(fnName, true, dt, tmp1, tmp2));
-            var flagReg = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.Status32, (uint) ZNV));
-            var satReg = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.AuxMacmode, (uint) S));
+            var flagReg = binder.EnsureFlagGroup(Registers.ZNV);
+            var satReg = binder.EnsureFlagGroup(Registers.S);
 
             m.Assign(flagReg, m.Cond(dst));
             m.Assign(satReg, m.Cond(dst));
         }
 
-        private void RewriteAluOp(Func<Expression, Expression> fn, FlagM grf)
+        private void RewriteAluOp(Func<Expression, Expression> fn, FlagGroupStorage grf = null)
         {
             MaybeSkip(instr.Condition);
             var src = Operand(1);
             var dst = Operand(0);
             m.Assign(dst, fn(src));
-            if (instr.SetFlags && grf != 0)
+            if (instr.SetFlags && grf != null)
             {
-                var flagReg = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.Status32, (uint) grf));
+                var flagReg = binder.EnsureFlagGroup(grf);
                 m.Assign(flagReg, m.Cond(dst));
             }
         }
 
-        private void RewriteAluOp(Func<Expression, Expression, Expression> fn, FlagM grf)
+        private void RewriteAluOp(Func<Expression, Expression, Expression> fn, FlagGroupStorage grf)
         {
             MaybeSkip(instr.Condition);
             var src1 = Operand(1);
@@ -617,7 +610,7 @@ namespace Reko.Arch.Arc
             m.Assign(dst, fn(src1, src2));
             if (instr.SetFlags)
             {
-                var flagReg = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.Status32, (uint) grf));
+                var flagReg = binder.EnsureFlagGroup(grf);
                 m.Assign(flagReg, m.Cond(dst));
             }
         }
@@ -665,12 +658,12 @@ namespace Reko.Arch.Arc
             m.SideEffect(host.Intrinsic("__brk", true, VoidType.Instance), instr.InstructionClass);
         }
 
-        private void RewriteCondInstr(Func<Expression, Expression, Expression> fn, FlagM grf)
+        private void RewriteCondInstr(Func<Expression, Expression, Expression> fn, FlagGroupStorage grf)
         {
             MaybeSkip(instr.Condition);
             var src1 = Operand(0);
             var src2 = Operand(1);
-            var dst = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.Status32, (uint)grf));
+            var dst = binder.EnsureFlagGroup(grf);
             m.Assign(dst, m.Cond(fn(src1, src2)));
         }
 
@@ -816,7 +809,7 @@ namespace Reko.Arch.Arc
             m.Assign(m.Mem32(sp), src);
         }
 
-        private void RewriteShift(Func<Expression, Expression, Expression> fn, FlagM grf)
+        private void RewriteShift(Func<Expression, Expression, Expression> fn, FlagGroupStorage grf)
         {
             MaybeSkip(instr.Condition);
             var src1 = Operand(1);
@@ -833,7 +826,7 @@ namespace Reko.Arch.Arc
             m.Assign(dst, fn(src1, src2));
             if (instr.SetFlags)
             {
-                var flagReg = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.Status32, (uint) grf));
+                var flagReg = binder.EnsureFlagGroup(grf);
                 m.Assign(flagReg, m.Cond(dst));
             }
         }

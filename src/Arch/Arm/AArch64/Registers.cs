@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -56,6 +56,14 @@ namespace Reko.Arch.Arm.AArch64
         public static readonly RegisterStorage[][] SubRegisters;
 
         public static readonly FlagGroupStorage C;
+        public static readonly FlagGroupStorage N;
+        public static readonly FlagGroupStorage NV;
+        public static readonly FlagGroupStorage NZ;
+        public static readonly FlagGroupStorage NZV;
+        public static readonly FlagGroupStorage NZCV;
+        public static readonly FlagGroupStorage V;
+        public static readonly FlagGroupStorage Z;
+        public static readonly FlagGroupStorage ZC;
 
         internal static bool IsIntegerRegister(RegisterStorage reg)
         {
@@ -176,6 +184,14 @@ namespace Reko.Arch.Arm.AArch64
                 }).ToArray();
 
             C = new FlagGroupStorage(pstate, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            N = new FlagGroupStorage(pstate, (uint) FlagM.NF, "N", PrimitiveType.Bool);
+            NV = new FlagGroupStorage(pstate, (uint) (FlagM.NF|FlagM.VF), "NV", PrimitiveType.Word32);
+            NZ = new FlagGroupStorage(pstate, (uint) (FlagM.NF|FlagM.ZF), "NZ", PrimitiveType.Word32);
+            NZV = new FlagGroupStorage(pstate, (uint) (FlagM.NF|FlagM.ZF|FlagM.VF), "NZV", PrimitiveType.Word32);
+            NZCV = new FlagGroupStorage(pstate, (uint) (FlagM.NF|FlagM.ZF|FlagM.CF|FlagM.VF), "NZCV", PrimitiveType.Word32);
+            V = new FlagGroupStorage(pstate, (uint) FlagM.VF, "V", PrimitiveType.Bool);
+            Z = new FlagGroupStorage(pstate, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
+            ZC = new FlagGroupStorage(pstate, (uint) (FlagM.ZF|FlagM.CF), "ZC", PrimitiveType.Word32);
         }
     }
 }

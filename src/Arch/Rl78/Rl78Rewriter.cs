@@ -164,20 +164,17 @@ namespace Reko.Arch.Rl78
 
         private Identifier C()
         {
-            var c = arch.GetFlagGroup(Registers.psw, (uint) FlagM.CF);
-            return binder.EnsureFlagGroup(c);
+            return binder.EnsureFlagGroup(Registers.C);
         }
 
         private Identifier CZ()
         {
-            var cz = arch.GetFlagGroup(Registers.psw, (uint) (FlagM.CF | FlagM.ZF));
-            return binder.EnsureFlagGroup(cz);
+            return binder.EnsureFlagGroup(Registers.CZ);
         }
 
         private Identifier Z()
         {
-            var z = arch.GetFlagGroup(Registers.psw, (uint) FlagM.ZF);
-            return binder.EnsureFlagGroup(z);
+            return binder.EnsureFlagGroup(Registers.Z);
         }
 
         private Expression RewriteSrc(MachineOperand op)
