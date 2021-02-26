@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -50,6 +50,18 @@ namespace Reko.Arch.Vax
         public static RegisterStorage pc = RegisterStorage.Reg32("pc", 15);
 
         public static readonly RegisterStorage psw = new RegisterStorage("psw", 20, 0, PrimitiveType.UInt32);
+
+
+        public static readonly FlagGroupStorage C = new FlagGroupStorage(psw, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage V = new FlagGroupStorage(psw, (uint) FlagM.VF, "V", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage Z = new FlagGroupStorage(psw, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage N = new FlagGroupStorage(psw, (uint) FlagM.NF, "N", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage CVN = new FlagGroupStorage(psw, (uint) FlagM.CVN, "CVN", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage CVZN = new FlagGroupStorage(psw, (uint) FlagM.CVZN, "CVZN", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage CZ = new FlagGroupStorage(psw, (uint) FlagM.CZ, "CZ", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage CZN = new FlagGroupStorage(psw, (uint) FlagM.CZN, "CZN", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage VZN = new FlagGroupStorage(psw, (uint) FlagM.VZN, "VZN", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage ZN = new FlagGroupStorage(psw, (uint) FlagM.ZN, "ZN", PrimitiveType.Byte);
     }
 
     [Flags]
@@ -60,10 +72,11 @@ namespace Reko.Arch.Vax
         VF = 2,
         CF = 1,
 
-        NZVC = NF|ZF|VF|CF,
-        NVC = NF|VF| CF,
-        NZC = NF|ZF|CF,
-        NZV = NF|ZF|VF,
-        NZ = NF|ZF,
+        CVZN = NF|ZF|VF|CF,
+        CVN = NF|VF| CF,
+        CZ = CF|ZF,
+        CZN = NF|ZF|CF,
+        VZN = NF|ZF|VF,
+        ZN = NF|ZF,
     }
 }

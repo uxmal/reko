@@ -54,9 +54,9 @@ namespace Reko.Arch.Vax
         {
             var entry = RewriteSrcOp(0, PrimitiveType.Word32);
             var queue = RewriteSrcOp(1, PrimitiveType.Word32);
-            var grf = FlagGroup(FlagM.NZC);
+            var grf = FlagGroup(Registers.CZN);
             m.Assign(grf, host.Intrinsic("__insque", false, grf.DataType, queue, entry));
-            m.Assign(FlagGroup(FlagM.VF), Constant.False());
+            m.Assign(FlagGroup(Registers.V), Constant.False());
         }
 
         private void RewriteBpt()
@@ -105,7 +105,7 @@ namespace Reko.Arch.Vax
             var mode = RewriteSrcOp(0, PrimitiveType.Word16);
             var len = RewriteSrcOp(1, PrimitiveType.Ptr32);
             var @base = RewriteSrcOp(2, PrimitiveType.Ptr32);
-            var z = FlagGroup(FlagM.ZF);
+            var z = FlagGroup(Registers.Z);
             m.Assign(z, host.Intrinsic(
                 "__prober",
                 false,
@@ -123,13 +123,13 @@ namespace Reko.Arch.Vax
             var r1 = binder.EnsureRegister(Registers.r1);
             var r2 = binder.EnsureRegister(Registers.r2);
             var r3 = binder.EnsureRegister(Registers.r3);
-            var z = FlagGroup(FlagM.ZF);
+            var z = FlagGroup(Registers.Z);
             m.Assign(r3, tbl);
             m.Assign(z, host.Intrinsic("__scanc", false, z.DataType, len, addr, tbl, mask,
                 m.Out(PrimitiveType.Word32, r0),
                 m.Out(PrimitiveType.Word32, r1)));
             m.Assign(r2, 0);
-            m.Assign(FlagGroup(FlagM.NVC), 0);
+            m.Assign(FlagGroup(Registers.CVN), 0);
         }
     }
 }

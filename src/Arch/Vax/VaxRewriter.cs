@@ -117,18 +117,18 @@ namespace Reko.Arch.Vax
                 case Mnemonic.bbsc: RewriteBbxx(true, false); break;
                 case Mnemonic.bbss: RewriteBbxx(true, true); break;
                 case Mnemonic.bbssi: RewriteBbxxi(true); break;
-                case Mnemonic.beql: RewriteBranch(ConditionCode.EQ, FlagM.ZF); break;
-                case Mnemonic.bgeq: RewriteBranch(ConditionCode.GE, FlagM.NF); break;
-                case Mnemonic.bgequ: RewriteBranch(ConditionCode.UGE, FlagM.CF); break;
-                case Mnemonic.bgtr: RewriteBranch(ConditionCode.GT, FlagM.ZF | FlagM.NF); break;
-                case Mnemonic.bgtru: RewriteBranch(ConditionCode.UGT, FlagM.ZF | FlagM.CF); break;
-                case Mnemonic.bleq: RewriteBranch(ConditionCode.LE, FlagM.ZF | FlagM.NF); break;
-                case Mnemonic.blequ: RewriteBranch(ConditionCode.ULE, FlagM.ZF | FlagM.CF); break;
-                case Mnemonic.blss: RewriteBranch(ConditionCode.LT, FlagM.NF); break;
-                case Mnemonic.blssu: RewriteBranch(ConditionCode.ULT, FlagM.CF); break;
-                case Mnemonic.bneq: RewriteBranch(ConditionCode.NE, FlagM.ZF); break;
-                case Mnemonic.bvc: RewriteBranch(ConditionCode.NO, FlagM.VF); break;
-                case Mnemonic.bvs: RewriteBranch(ConditionCode.OV, FlagM.VF); break;
+                case Mnemonic.beql: RewriteBranch(ConditionCode.EQ, Registers.Z); break;
+                case Mnemonic.bgeq: RewriteBranch(ConditionCode.GE, Registers.N); break;
+                case Mnemonic.bgequ: RewriteBranch(ConditionCode.UGE, Registers.C); break;
+                case Mnemonic.bgtr: RewriteBranch(ConditionCode.GT, Registers.ZN); break;
+                case Mnemonic.bgtru: RewriteBranch(ConditionCode.UGT, Registers.CZ); break;
+                case Mnemonic.bleq: RewriteBranch(ConditionCode.LE, Registers.ZN); break;
+                case Mnemonic.blequ: RewriteBranch(ConditionCode.ULE, Registers.CZ); break;
+                case Mnemonic.blss: RewriteBranch(ConditionCode.LT, Registers.N); break;
+                case Mnemonic.blssu: RewriteBranch(ConditionCode.ULT, Registers.C); break;
+                case Mnemonic.bneq: RewriteBranch(ConditionCode.NE, Registers.Z); break;
+                case Mnemonic.bvc: RewriteBranch(ConditionCode.NO, Registers.V); break;
+                case Mnemonic.bvs: RewriteBranch(ConditionCode.OV, Registers.V); break;
                 case Mnemonic.bicb2: RewriteAlu2(PrimitiveType.Byte, Bic, NZ00); break;
                 case Mnemonic.bicb3: RewriteAlu3(PrimitiveType.Byte, Bic, NZ00); break;
                 case Mnemonic.bicl2: RewriteAlu2(PrimitiveType.Word32, Bic, NZ00); break;
@@ -690,9 +690,9 @@ namespace Reko.Arch.Vax
             throw new NotImplementedException(op.GetType().Name);
         }
 
-        private Identifier FlagGroup(FlagM flags)
+        private Identifier FlagGroup(FlagGroupStorage flags)
         {
-            return binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.psw, (uint)flags));
+            return binder.EnsureFlagGroup(flags);
         }
 
         private bool AllFlags(Expression dst)
@@ -702,7 +702,7 @@ namespace Reko.Arch.Vax
                 EmitInvalid();
                 return false;
             }
-            var grf = FlagGroup(FlagM.NZVC);
+            var grf = FlagGroup(Registers.CVZN);
             m.Assign(grf, m.Cond(dst));
             return true;
         }
@@ -714,10 +714,10 @@ namespace Reko.Arch.Vax
                 EmitInvalid();
                 return false;
             }
-            var grf = FlagGroup(FlagM.NF | FlagM.ZF);
+            var grf = FlagGroup(Registers.ZN);
             m.Assign(grf, m.Cond(dst));
-            var c = FlagGroup(FlagM.CF);
-            var v = FlagGroup(FlagM.VF);
+            var c = FlagGroup(Registers.C);
+            var v = FlagGroup(Registers.V);
             m.Assign(v, Constant.False());
             return true;
         }
@@ -729,23 +729,23 @@ namespace Reko.Arch.Vax
                 EmitInvalid();
                 return false;
             }
-            var grf = FlagGroup(FlagM.NF| FlagM.ZF);
+            var grf = FlagGroup(Registers.ZN);
             m.Assign(grf, m.Cond(dst));
-            var c = FlagGroup(FlagM.CF);
-            var v = FlagGroup(FlagM.VF);
+            var c = FlagGroup(Registers.C);
+            var v = FlagGroup(Registers.V);
             m.Assign(c, Constant.False());
             m.Assign(v, Constant.False());
             return true;
         }
 
-        private bool NZV(Expression dst)
+        private bool VZN(Expression dst)
         {
             if (dst == null)
             {
                 EmitInvalid();
                 return false;
             }
-            var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
+            var grf = FlagGroup(Registers.VZN);
             m.Assign(grf, m.Cond(dst));
             return true;
         }
@@ -757,9 +757,9 @@ namespace Reko.Arch.Vax
                 EmitInvalid();
                 return false;
             }
-            var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
+            var grf = FlagGroup(Registers.VZN);
             m.Assign(grf, m.Cond(dst));
-            var c = FlagGroup(FlagM.CF);
+            var c = FlagGroup(Registers.C);
             m.Assign(c, Constant.False());
             return true;
         }
