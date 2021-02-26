@@ -112,9 +112,12 @@ namespace Reko.Core.Services
             var filename = Path.Combine(outDir, Path.ChangeExtension(testPrefix, ".tests"));
             EnsureDecoderFile(fsSvc, filename);
             var instrBytes = ReadInstructionBytes(addrStart, rdr);
-            if (this.emittedDecoderTests[filename].Contains(instrBytes))
-                return;
-            this.emittedDecoderTests[filename].Add(instrBytes);
+            lock (decoderLock)
+            {
+                if (this.emittedDecoderTests[filename].Contains(instrBytes))
+                    return;
+                this.emittedDecoderTests[filename].Add(instrBytes);
+            }
             hexizer = hexizer ?? Hexizer;
             var test = GenerateDecoderUnitTest(testPrefix, addrStart, hexizer(instrBytes), message);
             AttemptToAppendText(fsSvc, decoderLock, filename, test);
