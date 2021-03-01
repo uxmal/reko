@@ -89,14 +89,17 @@ SP	top of stack
         {
             if (ccName == null)
                 ccName = "";
+
             switch (ccName)
             {
             case "":
             case "__cdecl":
             case "cdecl":
                 return new X86CallingConvention(4, 2, 4, true, false);
+            case "__pascal":
             case "pascal":
                 return new X86CallingConvention(4, 2, 4, false, true);
+            case "__stdcall":
             case "stdcall":
                 return new X86CallingConvention(4, 4, 4, false, false);
             }
