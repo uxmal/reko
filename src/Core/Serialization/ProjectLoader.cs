@@ -559,8 +559,7 @@ namespace Reko.Core.Serialization
             {
                 if (name is null)
                     return null;
-                var reg = platform.Architecture.GetRegister(name);
-                if (reg != null)
+                if (platform.Architecture.TryGetRegister(name, out var reg))
                     return reg;
                 return platform.Architecture.GetFlagGroup(name);
             }
