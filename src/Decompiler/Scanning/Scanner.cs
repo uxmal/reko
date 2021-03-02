@@ -485,8 +485,6 @@ namespace Reko.Scanning
 
         public void ScanImageSymbol(ImageSymbol sym, bool isEntryPoint)
         {
-            if (sym.Name != null && sym.Name == "")
-                sym.ToString();
             try
             {
                 Address addr = sym.Address!;
