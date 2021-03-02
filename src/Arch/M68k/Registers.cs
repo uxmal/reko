@@ -78,6 +78,7 @@ namespace Reko.Arch.M68k
         public static readonly FlagGroupStorage CVZNX;
 
         internal static RegisterStorage[] regs;
+        internal static FlagGroupStorage[] flags;
         internal static int Max;
         internal static readonly Dictionary<string, RegisterStorage> regsByName;
 
@@ -168,6 +169,7 @@ namespace Reko.Arch.M68k
             };
 
             regsByName = regs.ToDictionary(r => r.Name, StringComparer.InvariantCultureIgnoreCase);
+            flags = new[] { C, V, Z, N, X };
         }
 
         public static RegisterStorage GetRegister(int reg)

@@ -109,6 +109,11 @@ namespace Reko.Arch.WE32100
             throw new NotImplementedException();
         }
 
+        public override FlagGroupStorage[] GetFlags()
+        {
+            return Registers.Flags;
+        }
+
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             throw new NotImplementedException();

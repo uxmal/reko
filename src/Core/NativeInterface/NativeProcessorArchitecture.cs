@@ -111,7 +111,12 @@ namespace Reko.Core.NativeInterface
 			throw new NotImplementedException();
 		}
 
-		public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
+        public override FlagGroupStorage[] GetFlags()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string GrfToString(RegisterStorage flagregister, string prefix, uint grf)
 		{
 			throw new NotImplementedException();
 		}

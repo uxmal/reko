@@ -32,8 +32,14 @@ namespace Reko.Arch.WE32100
         public static RegisterStorage[] GpRegs { get; }
         
         public static FlagGroupStorage C { get; }
+        public static FlagGroupStorage V { get; }
+        public static FlagGroupStorage Z { get; }
+        public static FlagGroupStorage N { get; }
         public static FlagGroupStorage NZV { get; }
         public static FlagGroupStorage NZVC { get; }
+
+        public static FlagGroupStorage[] Flags { get; }
+
 
         private static readonly string[] regNames = new[] {
                 "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
@@ -49,6 +55,10 @@ namespace Reko.Arch.WE32100
             sp = GpRegs[12];
             psw = GpRegs[11];
             C = new FlagGroupStorage(psw, (uint) FlagM.C, "C", PrimitiveType.Bool);
+            V = new FlagGroupStorage(psw, (uint) FlagM.C, "V", PrimitiveType.Bool);
+            Z = new FlagGroupStorage(psw, (uint) FlagM.C, "Z", PrimitiveType.Bool);
+            N = new FlagGroupStorage(psw, (uint) FlagM.C, "N", PrimitiveType.Bool);
+            Flags = new FlagGroupStorage[] { C, V, Z, N };
             NZV = new FlagGroupStorage(psw, (uint) (FlagM.N | FlagM.Z | FlagM.V), "NZV", PrimitiveType.Byte);
             NZVC = new FlagGroupStorage(psw, (uint) (FlagM.N | FlagM.Z | FlagM.V | FlagM.C), "NZVC", PrimitiveType.Byte);
         }

@@ -300,6 +300,11 @@ namespace Reko.Arch.X86
             return Registers.All.Where(a => a != null).ToArray();
         }
 
+        public override FlagGroupStorage[] GetFlags()
+        {
+            return Registers.EflagsBits;
+        }
+
         public override List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
         {
             var dasm = mode.CreateDisassembler(Services, EnsureRootDecoders(), rdr, this.Options);

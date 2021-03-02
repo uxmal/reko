@@ -266,6 +266,13 @@ namespace Reko.Core
         /// <returns></returns>
         RegisterStorage[] GetRegisters(); 
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
+
+        /// <summary>
+        /// Get all processor flags of this architecture.
+        /// </summary>
+        /// <returns></returns>
+        FlagGroupStorage[] GetFlags();
+
         FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf);          // Returns flag group matching the bitflags.
 
         /// <summary>
@@ -500,6 +507,7 @@ namespace Reko.Core
         public abstract RegisterStorage? GetRegister(StorageDomain domain, BitRange range);
 
         public abstract RegisterStorage[] GetRegisters();
+        public virtual FlagGroupStorage[] GetFlags() => throw new NotImplementedException("GetFlags not implemented this architecture.");
 
         public virtual FrameApplicationBuilder CreateFrameApplicationBuilder(
             IStorageBinder binder,

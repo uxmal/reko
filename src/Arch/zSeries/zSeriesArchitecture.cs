@@ -124,6 +124,11 @@ namespace Reko.Arch.zSeries
             return Registers.GpRegisters;
         }
 
+        public override FlagGroupStorage[] GetFlags()
+        {
+            return new[] { Registers.CC };
+        }
+
         public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
         {
             yield return Registers.CC;

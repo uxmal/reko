@@ -115,6 +115,11 @@ namespace Reko.Arch.M68k
             return Registers.regs;
         }
 
+        public override FlagGroupStorage[] GetFlags()
+        {
+            return Registers.flags;
+        }
+
         public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
         {
             uint grf = flags.FlagGroupBits;

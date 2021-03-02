@@ -110,6 +110,11 @@ namespace Reko.Arch.Z80
             return Registers.All!;
         }
 
+        public override FlagGroupStorage[] GetFlags()
+        {
+            return Registers.Flags;
+        }
+
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             return Registers.regsByName.TryGetValue(name, out reg);
@@ -259,6 +264,7 @@ namespace Reko.Arch.Z80
         public static readonly FlagGroupStorage SZPC = new FlagGroupStorage(f, (uint) (FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF), "SZPC", PrimitiveType.Byte);
 
         internal static RegisterStorage?[] All;
+        internal static FlagGroupStorage[] Flags = new[] { S, Z, P, N, C };
         internal static Dictionary<StorageDomain, RegisterStorage[]> SubRegisters;
         internal static Dictionary<string, RegisterStorage> regsByName;
         private readonly static RegisterStorage?[] regsByStorage;
@@ -266,35 +272,34 @@ namespace Reko.Arch.Z80
         static Registers()
         {
             All = new RegisterStorage?[] {
-             b ,
-             c ,
-             d ,
-             e ,
+                b ,
+                c ,
+                d ,
+                e ,
 
-             h ,
-             l ,
-             a ,
-             f,
+                h ,
+                l ,
+                a ,
+                f,
                
-             bc,
-             de,
-             hl,
-             sp,
-             ix,
-             iy,
-             af,
-             null,
+                bc,
+                de,
+                hl,
+                sp,
+                ix,
+                iy,
+                af,
+                null,
 
-             i ,
-             r ,
-             null,
-             null,
+                i ,
+                r ,
+                null,
+                null,
 
-             bc_,
-             de_,
-             hl_,
-             null,
-
+                bc_,
+                de_,
+                hl_,
+                null,
             };
 
             Registers.regsByName = All.Where(reg => reg != null).ToDictionary(reg => reg!.Name, reg => reg!);
