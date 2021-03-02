@@ -34,7 +34,6 @@ using System.Text;
 using Reko.Core.Types;
 using Reko.Core.Expressions;
 using System.Globalization;
-using Reko.Core.Output;
 using Reko.Core.Memory;
 
 namespace Reko.Core.Serialization
@@ -556,6 +555,16 @@ namespace Reko.Core.Serialization
         private SortedList<Address, List<UserRegisterValue>> LoadRegisterValues(
             RegisterValue_v2[] sRegValues)
         {
+            Storage GetStorage(string name)
+            {
+                if (name is null)
+                    return null;
+                var reg = platform.Architecture.GetRegister(name);
+                if (reg != null)
+                    return reg;
+                return platform.Architecture.GetFlagGroup(name);
+            }
+
             var allLists = new SortedList<Address, List<UserRegisterValue>>();
             foreach (var sRegValue in sRegValues)
             {
@@ -566,15 +575,15 @@ namespace Reko.Core.Serialization
                         list = new List<UserRegisterValue>();
                         allLists.Add(addr, list);
                     }
-                    var reg = platform.Architecture.GetRegister(sRegValue.Register);
+                    var stg = GetStorage(sRegValue.Register);
                     var c = sRegValue.Value != "*"
-                        ? Constant.Create(reg.DataType, Convert.ToUInt64(sRegValue.Value, 16))
+                        ? Constant.Create(stg.DataType, Convert.ToUInt64(sRegValue.Value, 16))
                         : Constant.Invalid;
-                    if (reg != null)
+                    if (stg != null)
                     {
                         list.Add(new UserRegisterValue
                         {
-                            Register = reg,
+                            Register = stg,
                             Value = c
                         });
                     }

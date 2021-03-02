@@ -28,7 +28,7 @@ namespace Reko.Core
 {
     public class UserRegisterValue
     {
-        public RegisterStorage? Register { get; set;  }
+        public Storage? Register { get; set;  }
         public Constant? Value { get; set; }
     }
 }
