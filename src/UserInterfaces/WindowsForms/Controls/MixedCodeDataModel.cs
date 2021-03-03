@@ -169,7 +169,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// </summary>
         private Dictionary<ImageMapBlock, MachineInstruction[]> CollectInstructions()
         {
-            Dictionary<ImageMapBlock, MachineInstruction[]> instructions = new Dictionary<ImageMapBlock, MachineInstruction[]>();
+            var instructions = new Dictionary<ImageMapBlock, MachineInstruction[]>();
             foreach (var bi in imageMap.Items.Values.OfType<ImageMapBlock>()
                 .ToList())
             {
