@@ -377,7 +377,6 @@ namespace Reko.Analysis
             }
 
             var flow = this.flow[callee];
-            Dump(block!);
             foreach (var d in ci.Definitions)
             {
                 if (flow.Trashed.Contains(d.Storage))

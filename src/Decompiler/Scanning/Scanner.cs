@@ -562,7 +562,10 @@ namespace Reko.Scanning
             var oldQueue = procQueue;
             procQueue = new PriorityQueue<WorkItem>();
             var block = EnqueueJumpTarget(addr, addr, proc, st);
-            proc.ControlGraph.AddEdge(proc.EntryBlock, block!);
+            if (proc.EntryBlock.Succ.Count == 0)
+            {
+                proc.ControlGraph.AddEdge(proc.EntryBlock, block!);
+            }
             ProcessQueue();
 
             procQueue = oldQueue;
