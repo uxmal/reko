@@ -1489,6 +1489,58 @@ Eq_n g_t0EF4 = // 0EF4
 //      fn45C8
 void fn0EF8(struct Eq_n * r4, word16 * r5)
 {
+	struct Eq_n * r3_n = g_ptr5424;
+	struct Eq_n * v13_n = r4->ptr0000;
+	struct Eq_n * v17_n = r3_n->ptr000E;
+	word16 v18_n = r3_n->t0000;
+	byte v16_n = r3_n->b0074;
+	byte bLoc04_n = v13_n->b0001;
+	r3_n->t0000 = (<anonymous>) 0x00;
+	r3_n->ptr000E = fp - 0x07;
+	word16 v22_n = *r5;
+	byte bArg00_n = SLICE(v17_n, byte, 8);
+	byte bLoc03_n = (byte) v18_n;
+	byte bLoc01_n = (byte) v17_n;
+	byte bLoc02_n = SLICE(v18_n, byte, 8);
+	word16 * r0_n = &v13_n->w0004;
+	word16 * r5_n = r5 + 1;
+	word16 r1_n = v22_n;
+	word16 wArg00_n = SEQ(v16_n, bArg00_n);
+	word16 wLoc04_n = SEQ(bLoc03_n, bLoc04_n);
+	wLoc04_n = SEQ(bLoc03_n, bLoc04_n);
+	struct Eq_n * wLoc02_n = SEQ(bLoc01_n, bLoc02_n);
+	wLoc02_n = SEQ(bLoc01_n, bLoc02_n);
+	if (v22_n != 0x00)
+	{
+		word16 v23_n = v13_n->w0004;
+		r0_n = &v13_n->ptr0006;
+		word16 r2_n = v23_n;
+		if (v23_n != 0x00)
+		{
+			r0_n = v13_n->ptr0006;
+			do
+			{
+				*r0_n = *r5_n;
+				++r5_n;
+				++r0_n;
+				--r1_n;
+				if (r1_n == 0x00)
+					break;
+				--r2_n;
+			} while (r2_n != 0x00);
+		}
+	}
+	r3_n->b0074 = 0x00;
+	if (true)
+	{
+		r4->ptr0002();
+		struct Eq_n * r4_n = g_ptr5424;
+		r4_n->t0000 = (<anonymous>) wLoc04_n;
+		r4_n->ptr000E = wLoc02_n;
+		r4_n->b0074 = bArg00_n;
+	}
+	else
+		r4->ptr0002();
 }
 
 // 0F48: void fn0F48(Register (ptr16 Eq_n) r5)

@@ -472,6 +472,7 @@ void fn0467(real48 gp12_gp13_gp14, cui16 gp0)
 //      fn0467
 void fn046A()
 {
+	fn0467(SEQ(gp12, gp13, gp14), gp0);
 }
 
 // 04AC: void fn04AC(Register cui16 gp0)

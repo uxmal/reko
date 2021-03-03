@@ -6948,6 +6948,34 @@ void fn0000F89C()
 //      fn0000E96C
 void fn0000F8E8(struct Eq_n ** r3, word32 r4, word32 VR)
 {
+	ui32 r11_n;
+	struct Eq_n * r2_n = fn0000E718(VR, out r11_n) | 0x3788;
+	int32 r5_n = -1;
+	while (true)
+	{
+		struct Eq_n * r2_n;
+		if (r2_n->dw0000 == 0x00)
+			break;
+		r5_n += -1;
+		if (r5_n == 0x09)
+		{
+			r2_n = null;
+			goto l0000F960;
+		}
+		r2_n = (struct Eq_n *) ((char *) r2_n - 0x0C);
+	}
+	int32 r5_n = r5_n + 0;
+	r2_n = ((r5_n - 1) * 0x02 + (r5_n - 1) << 0x02) + 0x00013788;
+	r2_n->dw0000 = -1;
+l0000F960:
+	fn0000E740(r11_n, VR);
+	if (r2_n != null)
+	{
+		struct Eq_n * r3_n = *r3;
+		r2_n->dw0004 = r4;
+		r2_n->ptr0008 = r3_n;
+		*r3 = (struct Eq_n **) r2_n;
+	}
 }
 
 // 0000FA38: void fn0000FA38(Register (ptr32 (ptr32 Eq_n)) r3, Register int32 r4, Register Eq_n r5, Register Eq_n r9)
