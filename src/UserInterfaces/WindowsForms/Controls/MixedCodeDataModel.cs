@@ -73,10 +73,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public MixedCodeDataModel(MixedCodeDataModel that)
         {
             this.program = that.program;
+            this.imageMap = that.imageMap;
             this.curPos = that.curPos;
+            this.StartPosition = that.StartPosition;
             this.endPos = that.endPos;
             this.instructions = that.instructions;
             this.LineCount = that.LineCount;
+            this.comments = that.comments;
         }
 
         public object CurrentPosition { get { return curPos; } }
