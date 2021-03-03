@@ -37,12 +37,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     {
         const int BytesPerLine = 16;
 
-        private Program program;
-        private ImageMap imageMap;
+        private readonly Program program;
+        private readonly ImageMap imageMap;
         private ModelPosition curPos;
-        private ModelPosition endPos;
-        private Dictionary<ImageMapBlock, MachineInstruction[]> instructions;
-        private IDictionary<Address, string[]> comments;
+        private readonly ModelPosition endPos;
+        private readonly Dictionary<ImageMapBlock, MachineInstruction[]> instructions;
+        private readonly IDictionary<Address, string[]> comments;
 
         public MixedCodeDataModel(Program program, ImageMap imageMap)
         {
@@ -62,7 +62,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 this.curPos = Pos(firstSeg.Address);
                 this.StartPosition = Pos(firstSeg.Address);
                 this.endPos = Pos(lastSeg.EndAddress);
-                this.CollectInstructions();
+                this.instructions = this.CollectInstructions();
                 this.LineCount = CountLines();
             }
             this.comments = program.User.Annotations.ToSortedList(
@@ -167,9 +167,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// Preemptively collect the machine code instructions
         /// in all image map blocks.
         /// </summary>
-        private void CollectInstructions()
+        private Dictionary<ImageMapBlock, MachineInstruction[]> CollectInstructions()
         {
-            this.instructions = new Dictionary<ImageMapBlock, MachineInstruction[]>();
+            Dictionary<ImageMapBlock, MachineInstruction[]> instructions = new Dictionary<ImageMapBlock, MachineInstruction[]>();
             foreach (var bi in imageMap.Items.Values.OfType<ImageMapBlock>()
                 .ToList())
             {
@@ -187,6 +187,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 }
                 instructions.Add(bi, instrs.ToArray());
             }
+
+            return instructions;
         }
 
         public int ComparePositions(object a, object b)
@@ -522,7 +524,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public Collection<DataItemNode> GetDataItemNodes()
         {
             var nodes = new Collection<DataItemNode>();
-            Procedure curProc = null;
+            Procedure curProc;
             DataItemNode curNode = null;
 
             foreach (var item in imageMap.Items.Values)
@@ -543,9 +545,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
                 if (curNode == null || curNode.Proc != curProc || curProc == null)
                 {
-                    curNode = new DataItemNode(curProc, numLines);
-                    curNode.StartAddress = startAddr;
-                    curNode.EndAddress = endAddr;
+                    curNode = new DataItemNode(curProc, numLines)
+                    {
+                        StartAddress = startAddr,
+                        EndAddress = endAddr
+                    };
                     nodes.Add(curNode);
                 }
                 else
