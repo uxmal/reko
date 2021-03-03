@@ -65,7 +65,6 @@ namespace Reko.Core.Configuration
             if (type == null)
                 throw new TypeLoadException(
                     string.Format("Unable to load {0} environment.", Description));
-            var cs = type.GetConstructors();
             var platform = (Platform)Activator.CreateInstance(type, services, arch);
             LoadSettingsFromConfiguration(services, platform);
             return platform;

@@ -71,6 +71,7 @@ by the PreBuild.targets file.
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows64.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\oleaut32.def" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\oleaut32.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win16characteristics.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win32characteristics.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win64characteristics.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wince.inc" />

@@ -199,6 +199,7 @@
         <File Source="$(var.Windows.ProjectDir)oleaut32.xml" nuget_target="c:" />
         <File Source="$(var.Windows.ProjectDir)shell32.xml" nuget_target="c:" />
         <File Source="$(var.Windows.ProjectDir)user32.xml" nuget_target="c:" />
+        <File Source="$(var.Windows.ProjectDir)win16characteristics.xml" nuget_target="c:" />
         <File Source="$(var.Windows.ProjectDir)win32characteristics.xml" nuget_target="c:" />
         <File Source="$(var.Windows.ProjectDir)win64characteristics.xml" nuget_target="c:" />
         <File Source="$(var.Windows.ProjectDir)windows_CE.xml" nuget_target="c:" />
