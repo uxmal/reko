@@ -143,7 +143,7 @@ namespace Reko.Core
         /// returns a default value.
         /// </summary>
         /// <remarks>Patterned after Python's dict.get(key [,=defaultvalue]) function</remarks>
-        public static TValue Get<TKey, TValue>(this IDictionary<TKey,TValue> d, TKey key, TValue def = default)
+        public static TValue Get<TKey, TValue>(this IDictionary<TKey,TValue> d, TKey key, TValue def = default!)
         {
             if (d.TryGetValue(key, out var value))
                 return value;
