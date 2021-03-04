@@ -258,8 +258,8 @@ namespace Reko.UnitTests.Core.Serialization
                                     Address.Ptr32(0x012310),
                                     new List<UserRegisterValue>
                                     {
-                                        new UserRegisterValue { Register = eax, Value=Constant.Word32(0x01231) },
-                                        new UserRegisterValue { Register = ecx, Value=Constant.Word32(0x42424711) },
+                                        new UserRegisterValue(eax, Constant.Word32(0x01231)),
+                                        new UserRegisterValue(ecx, Constant.Word32(0x42424711)),
                                     }
                                 }
                             },

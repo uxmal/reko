@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Core.Serialization
             this.sc.AddService(cfgSvc.Object);
         }
 
-        private string AbsolutePathEndingWith(params string [] dirs)
+        private string AbsolutePathEndingWith(params string[] dirs)
         {
             var relativePath = Path.Combine(dirs);
             if (Path.DirectorySeparatorChar == '/')
@@ -235,8 +235,8 @@ namespace Reko.UnitTests.Core.Serialization
 
         private void Expect_LoadOptions()
         {
-            platform.Setup(p => p.LoadUserOptions(It.IsAny<Dictionary<string,object>>()))
-                .Callback((Dictionary<string,object> options) => {
+            platform.Setup(p => p.LoadUserOptions(It.IsAny<Dictionary<string, object>>()))
+                .Callback((Dictionary<string, object> options) => {
                     this.loadedOptions = options;
                 });
         }
@@ -272,7 +272,7 @@ namespace Reko.UnitTests.Core.Serialization
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
             prld.LoadProject("/ff/b/foo.proj", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
 
-            var list = (IList)loadedOptions["Names"];
+            var list = (IList) loadedOptions["Names"];
             Assert.AreEqual(3, list.Count);
         }
 
@@ -307,7 +307,7 @@ namespace Reko.UnitTests.Core.Serialization
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
             prld.LoadProject("c:\\foo\\bar.proj", new MemoryStream(Encoding.UTF8.GetBytes(sproject)));
 
-            var list = (IDictionary)loadedOptions["Names"];
+            var list = (IDictionary) loadedOptions["Names"];
             Assert.AreEqual(3, list.Count);
         }
 
@@ -335,7 +335,7 @@ namespace Reko.UnitTests.Core.Serialization
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(new Program());
             ldr.Setup(l => l.LoadImageBytes(
-                It.IsAny<string>(), 
+                It.IsAny<string>(),
                 It.IsAny<int>())).Returns(new byte[1000]);
 
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
@@ -487,7 +487,7 @@ namespace Reko.UnitTests.Core.Serialization
 
             Assert.AreEqual(1, project.Programs.Count);
         }
-       
+
         [Test]
         public void Prld_LoadGlobalUserData()
         {
@@ -520,7 +520,7 @@ namespace Reko.UnitTests.Core.Serialization
                             }
                         }
                     },
-                   
+
                 }
             };
             var ldr = mockFactory.CreateLoader();
@@ -682,7 +682,7 @@ namespace Reko.UnitTests.Core.Serialization
                                 },
                                 new Segment_v4
                                 {
-                                     Name="data", Address="00200000", Offset="C00", Length="1200", Access="rw" 
+                                     Name="data", Address="00200000", Offset="C00", Length="1200", Access="rw"
                                 },
                             }
                         }
@@ -716,7 +716,7 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual(0x0C00, u.Segments[1].Offset);
             Assert.AreEqual(AccessMode.ReadWrite, u.Segments[1].AccessMode);
         }
-        
+
         [Test]
         [Category(Categories.UnitTests)]
         public void Prld_Procedure_Placement()
@@ -751,11 +751,11 @@ namespace Reko.UnitTests.Core.Serialization
             platform.Setup(p => p.TryParseAddress("00123400", out addr)).Returns(true);
 
             var prld = new ProjectLoader(sc, ldr, listener.Object);
-            var prj = prld.LoadProject(this.AbsolutePathEndingWith("foo","foo.dcproject"), sProject);
+            var prj = prld.LoadProject(this.AbsolutePathEndingWith("foo", "foo.dcproject"), sProject);
 
             var u = prj.Programs[0].User;
             var placement = u.ProcedureSourceFiles[addr];
-            Assert.AreEqual(this.AbsolutePathEndingWith("foo","src","bar.c"), placement);
+            Assert.AreEqual(this.AbsolutePathEndingWith("foo", "src", "bar.c"), placement);
         }
     }
 }

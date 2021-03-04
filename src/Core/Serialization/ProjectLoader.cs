@@ -580,11 +580,7 @@ namespace Reko.Core.Serialization
                         : Constant.Invalid;
                     if (stg != null)
                     {
-                        list.Add(new UserRegisterValue
-                        {
-                            Register = stg,
-                            Value = c
-                        });
+                        list.Add(new UserRegisterValue(stg, c));
                     }
                 }
             }

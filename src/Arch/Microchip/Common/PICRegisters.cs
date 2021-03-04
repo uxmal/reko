@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -708,7 +708,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         }
 
         protected static UserRegisterValue GetRegisterResetValue(PICRegisterStorage reg)
-            => new UserRegisterValue() { Register = reg, Value = Constant.Create(reg.DataType, new PICRegisterContent(reg.Traits).ResetValue) };
+            => new UserRegisterValue(reg, Constant.Create(reg.DataType, new PICRegisterContent(reg.Traits).ResetValue));
 
         private void Reset()
         {
