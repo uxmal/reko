@@ -24,7 +24,7 @@ namespace Reko.Tools.regressionTests
 
         private string configuration = "Debug";
         private bool checkOutput = false;
-        private string framework = "netcoreapp3.1";
+        private string framework = "net5.0";
         private bool stripSuffixes = true;
         private string platform = "x64";
 
