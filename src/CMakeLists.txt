@@ -483,6 +483,10 @@ elseif("${TARGET}" STREQUAL "create_runtime_nupkg")
 			${REKO_SRC}/Drivers/Runtime/Runtime.csproj
 	)
 elseif("${TARGET}" STREQUAL "create_msi_wix")
+	if(NOT DEFINED WIX_ROOT)
+		message(FATAL_ERROR "Wix not found, cannot continue")
+	endif()
+
 	#
 	# Create a new target to update the Wix spec
 	#
@@ -678,7 +682,7 @@ elseif("${TARGET}" STREQUAL "reko_all")
 	)
 	add_dependencies(reko_run_regressions reko_run_unit_tests)
 
-	if(WIN32)
+	if(WIN32 and DEFINED WIX_ROOT)
 		add_custom_target(reko_create_msi_installer
 			COMMAND ${invoke_buildtarget} ${prop_config_generic} -t:create_msi_wix ${buildtarget_csproj}
 		)

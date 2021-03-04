@@ -3,7 +3,7 @@ list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_SOURCE_DIR}/cmake")
 find_package(Dotnet 2.0 REQUIRED)
 
 if(WIN32)
-	find_package(WIX REQUIRED)
+	find_package(WIX)
 endif()
 
 project(Reko NONE)
