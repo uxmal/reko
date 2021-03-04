@@ -709,7 +709,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         }
 
         protected static UserRegisterValue GetRegisterResetValue(PICRegisterStorage reg)
-            => new UserRegisterValue() { Register = reg, Value = Constant.Create(reg.DataType, new PICRegisterContent(reg.Traits).ResetValue) };
+            => new UserRegisterValue(reg, Constant.Create(reg.DataType, new PICRegisterContent(reg.Traits).ResetValue));
 
         private void Reset()
         {

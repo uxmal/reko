@@ -69,11 +69,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                     items[stg] = value;
                 }
             }
-            var list = items.Select(de => new UserRegisterValue
-            {
-                Register = de.Key,
-                Value = de.Value
-            }).ToList();
+            var list = items.Select(de => new UserRegisterValue(de.Key, de.Value)).ToList();
             dlg.RegisterValues = list;
         }
 

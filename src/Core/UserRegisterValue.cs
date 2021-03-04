@@ -28,7 +28,12 @@ namespace Reko.Core
 {
     public class UserRegisterValue
     {
-        public Storage? Register { get; set;  }
-        public Constant? Value { get; set; }
+        public UserRegisterValue(Storage register, Constant value)
+        {
+            Register = register;
+            Value = value;
+        }
+        public Storage Register { get; }
+        public Constant Value { get; }
     }
 }

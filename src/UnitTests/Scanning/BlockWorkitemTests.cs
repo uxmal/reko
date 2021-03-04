@@ -883,8 +883,8 @@ testProc_exit:
             var addrStart = Address.Ptr32(0x00100000);
             program.User.RegisterValues[addrStart+4] = new List<UserRegisterValue>
             {
-                new UserRegisterValue { Register = (RegisterStorage)r1.Storage, Value= Constant.Word32(0x4711) },
-                new UserRegisterValue { Register = (RegisterStorage)r2.Storage, Value= Constant.Word32(0x1147) },
+                new UserRegisterValue(r1.Storage, Constant.Word32(0x4711)),
+                new UserRegisterValue(r2.Storage, Constant.Word32(0x1147)),
             };
             trace.Add(m => { m.Assign(r1, m.Mem32(m.Ptr32(0x112200))); });
             trace.Add(m => { m.Assign(m.Mem32(m.Ptr32(0x112204)), r1); });
