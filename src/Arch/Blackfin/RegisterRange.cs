@@ -31,21 +31,23 @@ namespace Reko.Arch.Blackfin
 {
     public class RegisterRange : MachineOperand
     {
-        public RegisterRange(PrimitiveType width, RegisterStorage max, RegisterStorage min) : base(width)
+        public RegisterRange(PrimitiveType width, RegisterStorage [] regs, int max, int min) : base(width)
         {
+            this.Registers = regs;
             this.MaxRegister = max;
             this.MinRegister = min;
         }
 
-        public RegisterStorage MaxRegister { get; }
-        public RegisterStorage MinRegister { get; }
+        public RegisterStorage[] Registers { get; }
+        public int MaxRegister { get; }
+        public int MinRegister { get; }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.WriteString("(");
-            renderer.WriteString(MaxRegister.Name);
+            renderer.WriteString(Registers[MaxRegister].Name);
             renderer.WriteString(":");
-            renderer.WriteString(MinRegister.Name);
+            renderer.WriteString(Registers[MinRegister].Name);
             renderer.WriteString(")");
         }
     }

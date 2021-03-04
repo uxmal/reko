@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
@@ -83,10 +84,16 @@ namespace Reko.Arch.zSeries
         {
             var left = Reg(0, dtSrc);
             var right = m.Mem(dtSrc, EffectiveAddress(1));
-            Identifier dst;
+            Identifier? dst;
             if (dtDst.BitSize == 128)
             {
                 dst = FpRegPair(0, dtDst);
+                if (dst is null)
+                {
+                    iclass = InstrClass.Invalid;
+                    m.Invalid();
+                    return;
+                }
 
             }
             else
@@ -107,6 +114,12 @@ namespace Reko.Arch.zSeries
         {
             var src1 = FpRegPair(0, dt);
             var src2 = FpRegPair(1, dt);
+            if (src1 == null || src2 == null)
+            {
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
             var dst = Assign(src1, fn(src1, src2));
             SetCc(m.Cond(dst));
         }
@@ -128,6 +141,12 @@ namespace Reko.Arch.zSeries
         {
             var src = FpRegPair(1, PrimitiveType.Word128);
             var dst = FpRegPair(0, PrimitiveType.Word128);
+            if (src == null || dst == null)
+            {
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
             m.Assign(dst, src);
         }
 

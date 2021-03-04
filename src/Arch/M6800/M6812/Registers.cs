@@ -41,6 +41,19 @@ namespace Reko.Arch.M6800.M6812
 
         public static RegisterStorage ccr = new RegisterStorage("ccr", 5, 0, PrimitiveType.Byte);
 
+        public static readonly FlagGroupStorage C = new FlagGroupStorage(ccr, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage V = new FlagGroupStorage(ccr, (uint) FlagM.VF, "V", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage Z = new FlagGroupStorage(ccr, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage N = new FlagGroupStorage(ccr, (uint) FlagM.NF, "N", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage NV = new FlagGroupStorage(ccr, (uint) (FlagM.NF| FlagM.VF), "NV", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage NZ = new FlagGroupStorage(ccr, (uint) (FlagM.NF| FlagM.ZF), "NZ", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage NZC = new FlagGroupStorage(ccr, (uint) (FlagM.NF| FlagM.ZF | FlagM.CF), "NZC", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage NZV = new FlagGroupStorage(ccr, (uint) (FlagM.NF| FlagM.ZF | FlagM.VF), "NZV", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage NZVC = new FlagGroupStorage(ccr, (uint) (FlagM.NF| FlagM.ZF | FlagM.VF | FlagM.CF), "NZVC", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage ZC = new FlagGroupStorage(ccr, (uint) (FlagM.ZF | FlagM.CF), "ZC", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage ZV = new FlagGroupStorage(ccr, (uint) (FlagM.ZF | FlagM.VF), "ZV", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage ZVC = new FlagGroupStorage(ccr, (uint) (FlagM.ZF | FlagM.VF | FlagM.CF), "ZVC", PrimitiveType.Byte);
+
     }
 
     [Flags]

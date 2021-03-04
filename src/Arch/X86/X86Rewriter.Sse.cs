@@ -61,12 +61,12 @@ namespace Reko.Arch.X86
 
         private void RewriteComis(PrimitiveType size)
         {
-            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ZCP"));
+            var grf = binder.EnsureFlagGroup(Registers.CZP);
             m.Assign(grf, m.Cond(m.FSub(
                 MaybeSlice(size, SrcOp(0)),
                 MaybeSlice(size, SrcOp(1)))));
-            m.Assign(orw.FlagGroup(FlagM.OF), Constant.False());
-            m.Assign(orw.FlagGroup(FlagM.SF), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.O), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.S), Constant.False());
         }
 
 

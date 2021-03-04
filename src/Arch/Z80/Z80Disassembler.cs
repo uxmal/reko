@@ -45,7 +45,6 @@ namespace Reko.Arch.Z80
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
         private Address addr;
-        //private Z80Instruction instr;
         private RegisterStorage? IndexRegister;
 
         public Z80Disassembler(Z80ProcessorArchitecture arch, EndianImageReader rdr)
@@ -202,7 +201,7 @@ namespace Reko.Arch.Z80
                 Mnemonic.rr,
                 Mnemonic.sla,
                 Mnemonic.sra,
-                Mnemonic.swap,
+                Mnemonic.sll,
                 Mnemonic.srl,
             };
 

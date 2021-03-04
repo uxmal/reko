@@ -117,18 +117,18 @@ namespace Reko.Arch.Vax
                 case Mnemonic.bbsc: RewriteBbxx(true, false); break;
                 case Mnemonic.bbss: RewriteBbxx(true, true); break;
                 case Mnemonic.bbssi: RewriteBbxxi(true); break;
-                case Mnemonic.beql: RewriteBranch(ConditionCode.EQ, FlagM.ZF); break;
-                case Mnemonic.bgeq: RewriteBranch(ConditionCode.GE, FlagM.NF); break;
-                case Mnemonic.bgequ: RewriteBranch(ConditionCode.UGE, FlagM.CF); break;
-                case Mnemonic.bgtr: RewriteBranch(ConditionCode.GT, FlagM.ZF | FlagM.NF); break;
-                case Mnemonic.bgtru: RewriteBranch(ConditionCode.UGT, FlagM.ZF | FlagM.CF); break;
-                case Mnemonic.bleq: RewriteBranch(ConditionCode.LE, FlagM.ZF | FlagM.NF); break;
-                case Mnemonic.blequ: RewriteBranch(ConditionCode.ULE, FlagM.ZF | FlagM.CF); break;
-                case Mnemonic.blss: RewriteBranch(ConditionCode.LT, FlagM.NF); break;
-                case Mnemonic.blssu: RewriteBranch(ConditionCode.ULT, FlagM.CF); break;
-                case Mnemonic.bneq: RewriteBranch(ConditionCode.NE, FlagM.ZF); break;
-                case Mnemonic.bvc: RewriteBranch(ConditionCode.NO, FlagM.VF); break;
-                case Mnemonic.bvs: RewriteBranch(ConditionCode.OV, FlagM.VF); break;
+                case Mnemonic.beql: RewriteBranch(ConditionCode.EQ, Registers.Z); break;
+                case Mnemonic.bgeq: RewriteBranch(ConditionCode.GE, Registers.N); break;
+                case Mnemonic.bgequ: RewriteBranch(ConditionCode.UGE, Registers.C); break;
+                case Mnemonic.bgtr: RewriteBranch(ConditionCode.GT, Registers.ZN); break;
+                case Mnemonic.bgtru: RewriteBranch(ConditionCode.UGT, Registers.CZ); break;
+                case Mnemonic.bleq: RewriteBranch(ConditionCode.LE, Registers.ZN); break;
+                case Mnemonic.blequ: RewriteBranch(ConditionCode.ULE, Registers.CZ); break;
+                case Mnemonic.blss: RewriteBranch(ConditionCode.LT, Registers.N); break;
+                case Mnemonic.blssu: RewriteBranch(ConditionCode.ULT, Registers.C); break;
+                case Mnemonic.bneq: RewriteBranch(ConditionCode.NE, Registers.Z); break;
+                case Mnemonic.bvc: RewriteBranch(ConditionCode.NO, Registers.V); break;
+                case Mnemonic.bvs: RewriteBranch(ConditionCode.OV, Registers.V); break;
                 case Mnemonic.bicb2: RewriteAlu2(PrimitiveType.Byte, Bic, NZ00); break;
                 case Mnemonic.bicb3: RewriteAlu3(PrimitiveType.Byte, Bic, NZ00); break;
                 case Mnemonic.bicl2: RewriteAlu2(PrimitiveType.Word32, Bic, NZ00); break;
@@ -584,7 +584,21 @@ namespace Reko.Arch.Vax
                     return load;
                 }
             case AddressOperand addrOp:
-                return addrOp.Address;
+                //$BUG: enabling the commented code causes huge regressions in the
+                // unzip subject.
+                /*if (addrOp.Width.BitSize > width.BitSize)
+                {
+                    var c = addrOp.Address.ToUInt32();
+                    return Constant.Create(width, c);
+                }
+                else if (addrOp.Width.BitSize < width.BitSize)
+                {
+                    return m.Convert(addrOp.Address, addrOp.Address.DataType, width);
+                }
+                else*/
+                {
+                    return addrOp.Address;
+                }
             }
             throw new NotImplementedException(op.GetType().Name);
         }
@@ -592,20 +606,20 @@ namespace Reko.Arch.Vax
         private Identifier RewriteDstOp(int iOp, PrimitiveType width, Func<Expression, Expression> fn)
         {
             var op = this.instr.Operands[iOp];
-            var regOp = op as RegisterOperand;
-            if (regOp != null)
+            switch (op)
             {
+            case RegisterOperand regOp:
                 var reg = binder.EnsureRegister(regOp.Register);
                 if (reg == null)
                     return null;
                 if (width.BitSize < 32)
                 {
-                    var tmp = binder.CreateTemporary(width);
+                    var tmpLo = binder.CreateTemporary(width);
                     var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(32 - width.BitSize));
-                    m.Assign(tmp, fn(m.Slice(width, reg, 0)));
+                    m.Assign(tmpLo, fn(m.Slice(width, reg, 0)));
                     m.Assign(tmpHi, m.Slice(tmpHi.DataType, reg, width.BitSize));
-                    m.Assign(reg, m.Seq(tmpHi, tmp));
-                    return tmp;
+                    m.Assign(reg, m.Seq(tmpHi, tmpLo));
+                    return tmpLo;
                 }
                 else if (width.BitSize == 64)
                 {
@@ -627,24 +641,17 @@ namespace Reko.Arch.Vax
                 }
                 m.Assign(reg, fn(reg));
                 return reg;
-            }
-            if (op is ImmediateOperand || op is AddressOperand)
-            {
-                // Can't assign to an immediate.
-                return null;
-            }
-            if (op is MemoryOperand memOp)
-            {
+            case MemoryOperand memOp:
                 Expression ea;
-                Identifier reg = null;
+                Identifier regEa = null;
                 if (memOp.Base != null)
                 {
-                    reg = binder.EnsureRegister(memOp.Base);
+                    regEa = binder.EnsureRegister(memOp.Base);
                     if (memOp.AutoDecrement)
                     {
-                        m.Assign(reg, m.ISub(reg, width.Size));
+                        m.Assign(regEa, m.ISub(regEa, width.Size));
                     }
-                    ea = reg;
+                    ea = regEa;
                     if (memOp.Offset != null)
                     {
                         if (memOp.Offset.DataType.BitSize < ea.DataType.BitSize)
@@ -670,19 +677,22 @@ namespace Reko.Arch.Vax
                     load = m.Mem(width, ea);
                 m.Assign(load, tmp);
 
-                if (reg != null && memOp.AutoIncrement)
+                if (regEa != null && memOp.AutoIncrement)
                 {
                     int inc = (memOp.Deferred) ? 4 : width.Size;
-                    m.Assign(reg, m.IAdd(reg, inc));
+                    m.Assign(regEa, m.IAdd(regEa, inc));
                 }
                 return tmp;
+            case ImmediateOperand _:
+            case AddressOperand _:
+                return null;
             }
             throw new NotImplementedException(op.GetType().Name);
         }
 
-        private Identifier FlagGroup(FlagM flags)
+        private Identifier FlagGroup(FlagGroupStorage flags)
         {
-            return binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.psw, (uint)flags));
+            return binder.EnsureFlagGroup(flags);
         }
 
         private bool AllFlags(Expression dst)
@@ -692,7 +702,7 @@ namespace Reko.Arch.Vax
                 EmitInvalid();
                 return false;
             }
-            var grf = FlagGroup(FlagM.NZVC);
+            var grf = FlagGroup(Registers.CVZN);
             m.Assign(grf, m.Cond(dst));
             return true;
         }
@@ -704,10 +714,10 @@ namespace Reko.Arch.Vax
                 EmitInvalid();
                 return false;
             }
-            var grf = FlagGroup(FlagM.NF | FlagM.ZF);
+            var grf = FlagGroup(Registers.ZN);
             m.Assign(grf, m.Cond(dst));
-            var c = FlagGroup(FlagM.CF);
-            var v = FlagGroup(FlagM.VF);
+            var c = FlagGroup(Registers.C);
+            var v = FlagGroup(Registers.V);
             m.Assign(v, Constant.False());
             return true;
         }
@@ -719,23 +729,23 @@ namespace Reko.Arch.Vax
                 EmitInvalid();
                 return false;
             }
-            var grf = FlagGroup(FlagM.NF| FlagM.ZF);
+            var grf = FlagGroup(Registers.ZN);
             m.Assign(grf, m.Cond(dst));
-            var c = FlagGroup(FlagM.CF);
-            var v = FlagGroup(FlagM.VF);
+            var c = FlagGroup(Registers.C);
+            var v = FlagGroup(Registers.V);
             m.Assign(c, Constant.False());
             m.Assign(v, Constant.False());
             return true;
         }
 
-        private bool NZV(Expression dst)
+        private bool VZN(Expression dst)
         {
             if (dst == null)
             {
                 EmitInvalid();
                 return false;
             }
-            var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
+            var grf = FlagGroup(Registers.VZN);
             m.Assign(grf, m.Cond(dst));
             return true;
         }
@@ -747,9 +757,9 @@ namespace Reko.Arch.Vax
                 EmitInvalid();
                 return false;
             }
-            var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
+            var grf = FlagGroup(Registers.VZN);
             m.Assign(grf, m.Cond(dst));
-            var c = FlagGroup(FlagM.CF);
+            var c = FlagGroup(Registers.C);
             m.Assign(c, Constant.False());
             return true;
         }

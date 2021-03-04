@@ -33,8 +33,6 @@ namespace Reko.Arch.Arc
 {
     public class ARCompactArchitecture : ProcessorArchitecture
     {
-        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
-
         public ARCompactArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)
         {
@@ -44,7 +42,6 @@ namespace Reko.Arch.Arc
             base.PointerType = PrimitiveType.Ptr32;
             base.StackRegister = Registers.Sp;
             base.WordWidth = PrimitiveType.Word32;
-            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
             LoadUserOptions(options);
         }
 
@@ -80,15 +77,9 @@ namespace Reko.Arch.Arc
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            if (flagGroups.TryGetValue(grf, out var fl))
-            {
-                return fl;
-            }
-
             var dt = Bits.IsSingleBitSet((uint)grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var flagregister = Registers.Status32;
-            fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf), dt);
-            flagGroups.Add(grf, fl);
+            var fl = new FlagGroupStorage(flagregister, grf, GrfToString(flagRegister, "", grf), dt);
             return fl;
         }
 

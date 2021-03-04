@@ -38,6 +38,11 @@ namespace Reko.Core.Lib
             return ((u >> pos) & 1) != 0;
         }
 
+        public static bool IsBitSet(ulong u, int pos)
+        {
+            return ((u >> pos) & 1) != 0;
+        }
+
         /// <summary>
         /// Returns true if exactly one bit of the word is set.
         /// </summary>

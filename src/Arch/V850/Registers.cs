@@ -36,6 +36,5 @@ namespace Reko.Arch.V850
             GpRegs = gpRegs;
             ElementPtr = gpRegs[30];
         }
-
     }
 }

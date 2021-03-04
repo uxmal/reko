@@ -30,9 +30,9 @@ namespace Reko.Arch.Msp430
     public class Msp430Instruction : MachineInstruction
     {
         public Mnemonics Mnemonic;
-        public PrimitiveType dataWidth;
+        public PrimitiveType? dataWidth;
         public int repeatImm;
-        public RegisterStorage repeatReg;
+        public RegisterStorage? repeatReg;
 
         public override int MnemonicAsInteger => (int) Mnemonic;
 

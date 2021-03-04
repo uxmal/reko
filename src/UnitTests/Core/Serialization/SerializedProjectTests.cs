@@ -91,6 +91,13 @@ namespace Reko.UnitTests.Core.Serialization
                 .Returns(true);
         }
 
+        private void Expect_TryGetRegister(Mock<IProcessorArchitecture> arch, string regName, RegisterStorage reg)
+        {
+            arch.Setup(a => a.TryGetRegister(
+                regName, out reg))
+                .Returns(true);
+        }
+
         [Test]
         public void SudWrite()
         {
@@ -491,8 +498,8 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestOS_Platform();
             Expect_TryParseAddress("0041230", Address.Ptr32(0x0041230));
             Expect_TryParseAddress("00443210", Address.Ptr32(0x00443210));
-            arch.Setup(a => a.GetRegister("eax")).Returns(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
-            arch.Setup(a => a.GetRegister("ecx")).Returns(new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32));
+            Expect_TryGetRegister(arch, "eax", new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
+            Expect_TryGetRegister(arch, "ecx", new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32));
             var loader = new Mock<ILoader>();
             loader.Setup(l => l.LoadImageBytes(It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(new byte[10]);

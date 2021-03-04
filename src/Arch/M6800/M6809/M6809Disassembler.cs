@@ -45,9 +45,10 @@ namespace Reko.Arch.M6800.M6809
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override M6809Instruction DisassembleInstruction()
+        public override M6809Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte b))
@@ -117,7 +118,7 @@ namespace Reko.Arch.M6800.M6809
                 var iReg = (b >> 5) & 3;
                 var reg = Registers.AddrRegs[iReg];
                 int offset = 0;
-                RegisterStorage idx = null;
+                RegisterStorage? idx = null;
                 MemoryOperand.Mode mode;
                 bool indirect;
                 if ((b & 0x80) == 0)
@@ -308,7 +309,7 @@ namespace Reko.Arch.M6800.M6809
         private static readonly Mutator<M6809Disassembler> MregsU = Mregs(regsU);
 
 
-        private static readonly RegisterStorage[] exgRegs = new RegisterStorage[16]
+        private static readonly RegisterStorage?[] exgRegs = new RegisterStorage?[16]
         {
             Registers.D,
             Registers.X,

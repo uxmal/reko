@@ -1444,8 +1444,10 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        // BFI / BFC bit field pair. It's encoded as lsb,msb but needs to be 
-        // decoded as lsb,width
+        /// <summary>
+        /// BFI / BFC bit field pair. It's encoded as lsb,msb but needs to be 
+        /// decoded as lsb,width
+        /// <summary>
         private static Mutator<A32Disassembler> B(int lsbPos, int lsbSize, int msbPos, int msbSize)
         {
             var lsbField = new[]
@@ -1460,6 +1462,8 @@ namespace Reko.Arch.Arm.AArch32
             {
                 var lsb = Bitfield.ReadFields(lsbField, u);
                 var msb = Bitfield.ReadFields(msbField, u);
+                if (lsb > msb)
+                    return false;
                 d.state.ops.Add(ImmediateOperand.Int32((int)lsb));
                 d.state.ops.Add(ImmediateOperand.Int32((int)(msb - lsb + 1)));
                 return true;

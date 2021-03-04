@@ -58,7 +58,7 @@ namespace Reko.Arch.Mos6502
             case AddressMode.Indirect: fmt = "(${0:X4})"; break;
             case AddressMode.IndexedIndirect: fmt = "(${0:X2},{1})"; break;
             case AddressMode.IndirectIndexed: fmt = "(${0:X2}),{1}"; break;
-            default: throw new NotSupportedException();
+            default: throw new NotSupportedException($"Mode {Mode} not supported.");
             }
             renderer.WriteString(string.Format(fmt, o, Register));
         }

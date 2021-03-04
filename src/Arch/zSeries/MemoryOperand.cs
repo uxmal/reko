@@ -31,8 +31,8 @@ namespace Reko.Arch.zSeries
 {
     public class MemoryOperand : MachineOperand
     {
-        public RegisterStorage Base;
-        public RegisterStorage Index;
+        public RegisterStorage? Base;
+        public RegisterStorage? Index;
         public int Length;
         public int Offset;
 

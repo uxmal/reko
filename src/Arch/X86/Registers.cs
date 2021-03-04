@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -71,6 +72,14 @@ namespace Reko.Arch.X86
         public static readonly FlagGroupStorage D;
         public static readonly FlagGroupStorage O;
         public static readonly FlagGroupStorage P;
+        public static readonly FlagGroupStorage CO;
+        public static readonly FlagGroupStorage CZ;
+        public static readonly FlagGroupStorage CZP;
+        public static readonly FlagGroupStorage SCZ;
+        public static readonly FlagGroupStorage SCZO;
+        public static readonly FlagGroupStorage SO;
+        public static readonly FlagGroupStorage SZ;
+        public static readonly FlagGroupStorage SZO;
 
         public static readonly RegisterStorage eflags;
 
@@ -262,6 +271,14 @@ namespace Reko.Arch.X86
             D = FlagRegister("D", eflags, FlagM.DF);
             O = FlagRegister("O", eflags, FlagM.OF);
             P = FlagRegister("P", eflags, FlagM.PF);
+            CO = FlagRegister("CO", eflags, FlagM.CF | FlagM.OF);
+            CZ = FlagRegister("CZ", eflags, FlagM.CF | FlagM.ZF);
+            CZP = FlagRegister("CZP", eflags, FlagM.CF | FlagM.ZF | FlagM.PF);
+            SCZ = FlagRegister("SCZ", eflags, FlagM.SF | FlagM.CF | FlagM.ZF);
+            SCZO = FlagRegister("SCZO", eflags, FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF);
+            SO = FlagRegister("SO", eflags, FlagM.SF | FlagM.OF);
+            SZ = FlagRegister("SZ", eflags, FlagM.SF | FlagM.ZF);
+            SZO = FlagRegister("SZO", eflags, FlagM.SF | FlagM.ZF | FlagM.OF);
             EflagsBits = new FlagGroupStorage[] { S, C, Z, D, O, P };
 
             FPUF = factory.Reg("FPUF", PrimitiveType.Word16);
@@ -550,7 +567,8 @@ namespace Reko.Arch.X86
 
         private static FlagGroupStorage FlagRegister(string name, RegisterStorage freg, FlagM grf)
         {
-            return new FlagGroupStorage(freg, (uint)grf, name, PrimitiveType.Bool);
+            var dt = Bits.IsSingleBitSet((uint) grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            return new FlagGroupStorage(freg, (uint)grf, name, dt);
         }
 
         private static FlagGroupStorage FlagRegister(string name, RegisterStorage freg, uint grf)

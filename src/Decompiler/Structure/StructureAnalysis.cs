@@ -381,7 +381,7 @@ namespace Reko.Structure
             if (regionGraph.Predecessors(s).Count == 1)
             {
                 // Sequence!
-                Debug.Print("Concatenated {0} and {1}", n.Block.DisplayName, s.Block.DisplayName);
+                trace.Verbose("Concatenated {0} and {1}", n.Block.DisplayName, s.Block.DisplayName);
                 n.Type = s.Type;
                 n.Expression = s.Expression;
                 n.Statements.AddRange(s.Statements);

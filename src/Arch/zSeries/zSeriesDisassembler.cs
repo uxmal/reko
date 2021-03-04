@@ -45,20 +45,27 @@ namespace Reko.Arch.zSeries
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
         private Address addr;
+        private PrimitiveType? vecElemSize;
+        private bool singleElement;
+        private bool setCc;
 
         public zSeriesDisassembler(zSeriesArchitecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override zSeriesInstruction DisassembleInstruction()
+        public override zSeriesInstruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadBeUInt16(out var opcode))
                 return null;
             this.ops.Clear();
+            this.vecElemSize = null;
+            this.singleElement = false;
+            this.setCc = false;
             var instr = decoders[opcode >> 8].Decode(opcode, this);
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - addr);
@@ -73,6 +80,9 @@ namespace Reko.Arch.zSeries
                 InstructionClass = iclass,
                 Mnemonic = mnemonic,
                 Operands = this.ops.ToArray(),
+                ElementSize = vecElemSize,
+                SingleElement = singleElement,
+                SetConditionCode = setCc,
             };
             return instr;
         }
@@ -368,8 +378,26 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
-        public static bool RSL(ulong uInstr, zSeriesDisassembler dasm) { dasm.NotYetImplemented("RSL instr"); return false; }
-        public static bool RSLb(ulong uInstr, zSeriesDisassembler dasm) { dasm.NotYetImplemented("RSLb instr"); return false; }
+        private static bool RSL(ulong uInstr, zSeriesDisassembler dasm) { dasm.NotYetImplemented("RSL instr"); return false; }
+        private static bool RSLa(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var b1 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            var d1 = (int) Bits.SignExtend(uInstr >> 16, 12);
+            var l1 = (byte) ((uInstr >> 36) & 0xF);
+            dasm.ops.Add(dasm.CreateAccessLength(b1, d1, l1 + 1));
+            return true;
+        }
+
+        private static bool RSLb(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var r1 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
+            var b2 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            var d2 = (int) Bits.SignExtend(uInstr >> 16, 12);
+            var l2 = (byte) (uInstr >> 32);
+            dasm.ops.Add(new RegisterOperand(r1));
+            dasm.ops.Add(dasm.CreateAccessLength(b2, d2, l2 + 1));
+            return true;
+        }
 
         public static bool RXa(ulong uInstr, zSeriesDisassembler dasm)
         {
@@ -543,6 +571,18 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
+        public static bool RSar(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var r1 = Registers.GpRegisters[(uInstr >> 20) & 0xF];
+            var r3 = Registers.GpRegisters[(uInstr >> 16) & 0xF];
+            var b2 = Registers.GpRegisters[(uInstr >> 12) & 0xF];
+            var d2 = (int) Bits.SignExtend(uInstr, 12);
+            dasm.ops.Add(new RegisterOperand(r1));
+            dasm.ops.Add(new RegisterOperand(r3));
+            dasm.ops.Add(dasm.CreateAccess(b2, d2));
+            return true;
+        }
+
         public static bool RSa3(ulong uInstr, zSeriesDisassembler dasm)
         {
             var r1 = Registers.GpRegisters[(uInstr >> 20) & 0xF];
@@ -566,8 +606,6 @@ namespace Reko.Arch.zSeries
             dasm.ops.Add(m3);
             return true;
         }
-
-        private static bool RSLa(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
 
         private static readonly Bitfield[] rsya_offset = new[]
         {
@@ -682,11 +720,61 @@ namespace Reko.Arch.zSeries
         private static readonly Bitfield[] bf_v28 = Bf((33, 1), (28, 4));
         private static readonly Bitfield[] bf_v12 = Bf((32, 1), (12, 4));
 
-        private static bool VRIa(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
-        private static bool VRIb(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
-        private static bool VRIc(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
-        private static bool VRId(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
-        private static bool VRIe(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
+        private static bool VRIa(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var v1 = Registers.VecRegisters[Bitfield.ReadFields(bf_v36, uInstr)];
+            var i1 = (ushort) (uInstr >> 16);
+            dasm.ops.Add(new RegisterOperand(v1));
+            dasm.ops.Add(ImmediateOperand.Word16(i1));
+            return true;
+        }
+
+        private static bool VRIb(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var v1 = Registers.VecRegisters[Bitfield.ReadFields(bf_v36, uInstr)];
+            var i1 = (byte) (uInstr >> 24);
+            var i2 = (byte) (uInstr >> 16);
+            dasm.ops.Add(new RegisterOperand(v1));
+            dasm.ops.Add(ImmediateOperand.Byte(i1));
+            dasm.ops.Add(ImmediateOperand.Byte(i2));
+            return true;
+        }
+
+        private static bool VRIc(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var v1 = Registers.VecRegisters[Bitfield.ReadFields(bf_v36, uInstr)];
+            var v2 = Registers.VecRegisters[Bitfield.ReadFields(bf_v32, uInstr)];
+            var imm = (ushort) (uInstr >> 16);
+            dasm.ops.Add(new RegisterOperand(v1));
+            dasm.ops.Add(new RegisterOperand(v2));
+            dasm.ops.Add(ImmediateOperand.Word16(imm));
+            return true;
+        }
+
+        private static bool VRId(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var v1 = Registers.VecRegisters[Bitfield.ReadFields(bf_v36, uInstr)];
+            var v2 = Registers.VecRegisters[Bitfield.ReadFields(bf_v32, uInstr)];
+            var v3 = Registers.VecRegisters[Bitfield.ReadFields(bf_v28, uInstr)];
+            var imm = (byte) (uInstr >> 16);
+            dasm.ops.Add(new RegisterOperand(v1));
+            dasm.ops.Add(new RegisterOperand(v2));
+            dasm.ops.Add(new RegisterOperand(v3));
+            dasm.ops.Add(ImmediateOperand.Byte(imm));
+            return true;
+        }
+
+        private static bool VRIe(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var v1 = Registers.VecRegisters[Bitfield.ReadFields(bf_v36, uInstr)];
+            var v2 = Registers.VecRegisters[Bitfield.ReadFields(bf_v32, uInstr)];
+            var imm = (ushort) Bits.ZeroExtend((uInstr >> 20), 12);
+            dasm.ops.Add(new RegisterOperand(v1));
+            dasm.ops.Add(new RegisterOperand(v2));
+            dasm.ops.Add(ImmediateOperand.Word16(imm));
+            return true;
+        }
+
         private static bool VRRa(ulong uInstr, zSeriesDisassembler dasm)
         {
             var v1 = Registers.VecRegisters[Bitfield.ReadFields(bf_v36, uInstr)];
@@ -695,11 +783,65 @@ namespace Reko.Arch.zSeries
             dasm.ops.Add(new RegisterOperand(v2));
             return true;
         }
-        private static bool VRRb(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
-        private static bool VRRc(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
-        private static bool VRRd(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
-        private static bool VRRe(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
-        private static bool VRRf(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
+
+        private static bool VRRb(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var v1 = Registers.VecRegisters[Bitfield.ReadFields(bf_v36, uInstr)];
+            var v2 = Registers.VecRegisters[Bitfield.ReadFields(bf_v32, uInstr)];
+            var v3 = Registers.VecRegisters[Bitfield.ReadFields(bf_v28, uInstr)];
+            dasm.ops.Add(new RegisterOperand(v1));
+            dasm.ops.Add(new RegisterOperand(v2));
+            dasm.ops.Add(new RegisterOperand(v3));
+            return true;
+        }
+
+        private static bool VRRc(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var v1 = Registers.VecRegisters[Bitfield.ReadFields(bf_v36, uInstr)];
+            var v2 = Registers.VecRegisters[Bitfield.ReadFields(bf_v32, uInstr)];
+            var v3 = Registers.VecRegisters[Bitfield.ReadFields(bf_v28, uInstr)];
+            dasm.ops.Add(new RegisterOperand(v1));
+            dasm.ops.Add(new RegisterOperand(v2));
+            dasm.ops.Add(new RegisterOperand(v3));
+            return true;
+        }
+
+        private static bool VRRd(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var v1 = Registers.VecRegisters[Bitfield.ReadFields(bf_v36, uInstr)];
+            var v2 = Registers.VecRegisters[Bitfield.ReadFields(bf_v32, uInstr)];
+            var v3 = Registers.VecRegisters[Bitfield.ReadFields(bf_v28, uInstr)];
+            var v4 = Registers.VecRegisters[Bitfield.ReadFields(bf_v12, uInstr)];
+            dasm.ops.Add(new RegisterOperand(v1));
+            dasm.ops.Add(new RegisterOperand(v2));
+            dasm.ops.Add(new RegisterOperand(v3));
+            dasm.ops.Add(new RegisterOperand(v4));
+            return true;
+        }
+
+        private static bool VRRe(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var v1 = Registers.VecRegisters[Bitfield.ReadFields(bf_v36, uInstr)];
+            var v2 = Registers.VecRegisters[Bitfield.ReadFields(bf_v32, uInstr)];
+            var v3 = Registers.VecRegisters[Bitfield.ReadFields(bf_v28, uInstr)];
+            var v4 = Registers.VecRegisters[Bitfield.ReadFields(bf_v12, uInstr)];
+            dasm.ops.Add(new RegisterOperand(v1));
+            dasm.ops.Add(new RegisterOperand(v2));
+            dasm.ops.Add(new RegisterOperand(v3));
+            dasm.ops.Add(new RegisterOperand(v4));
+            return true;
+        }
+
+        private static bool VRRf(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var v1 = Registers.VecRegisters[Bitfield.ReadFields(bf_v36, uInstr)];
+            var r2 = Registers.GpRegisters[(uInstr >> 32) & 0xF];
+            var r3 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            dasm.ops.Add(new RegisterOperand(v1));
+            dasm.ops.Add(new RegisterOperand(r2));
+            dasm.ops.Add(new RegisterOperand(r3));
+            return true;
+        }
 
         private static bool VRSa(ulong uInstr, zSeriesDisassembler dasm)
         {
@@ -713,9 +855,41 @@ namespace Reko.Arch.zSeries
             return true;
         }
 
-        private static bool VRSb(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
-        private static bool VRSc(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
-        private static bool VRV(ulong uInstr, zSeriesDisassembler dasm) => throw new NotImplementedException();
+        private static bool VRSb(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var v1 = Registers.VecRegisters[Bitfield.ReadFields(bf_v36, uInstr)];
+            var b2 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            var r3 = Registers.GpRegisters[(uInstr >> 32) & 0xF];
+            var d2 = (int) Bits.ZeroExtend(uInstr >> 16, 12);
+            dasm.ops.Add(new RegisterOperand(v1));
+            dasm.ops.Add(new RegisterOperand(r3));
+            dasm.ops.Add(dasm.CreateAccess(b2, d2));
+            return true;
+        }
+
+        private static bool VRSc(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var r1 = Registers.GpRegisters[(uInstr >> 36) & 0xF];
+            var b2 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            var v3 = Registers.VecRegisters[Bitfield.ReadFields(bf_v32, uInstr)];
+            var d2 = (int) Bits.ZeroExtend(uInstr >> 16, 12);
+            dasm.ops.Add(new RegisterOperand(r1));
+            dasm.ops.Add(new RegisterOperand(v3));
+            dasm.ops.Add(dasm.CreateAccess(b2, d2));
+            return true;
+        }
+       
+        private static bool VRV(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            var v1 = Registers.VecRegisters[Bitfield.ReadFields(bf_v36, uInstr)];
+            var v2 = Registers.VecRegisters[Bitfield.ReadFields(bf_v32, uInstr)];
+            var b2 = Registers.GpRegisters[(uInstr >> 28) & 0xF];
+            var d2 = (int) Bits.ZeroExtend(uInstr >> 16, 12);
+            dasm.ops.Add(new RegisterOperand(v1));
+            dasm.ops.Add(new RegisterOperand(v2));
+            dasm.ops.Add(dasm.CreateAccess(b2, d2));
+            return true;
+        }
         private static bool VRX(ulong uInstr, zSeriesDisassembler dasm)
         {
             var v1 = Registers.VecRegisters[Bitfield.ReadFields(bf_v36, uInstr)];
@@ -724,6 +898,66 @@ namespace Reko.Arch.zSeries
             var d2 = (int) Bits.ZeroExtend(uInstr >> 16, 12);
             dasm.ops.Add(new RegisterOperand(v1));
             dasm.ops.Add(dasm.CreateAccess(b2, x2, d2));
+            return true;
+        }
+
+        private static readonly Bitfield vecelemField = new Bitfield(12, 4);
+        /// <summary>
+        /// Extract the vector element size.
+        /// </summary>
+        private static WideMutator<zSeriesDisassembler> vecelem(PrimitiveType?[] vectorElementTypes)
+        {
+            return (u, d) =>
+            {
+                var size = vecelemField.Read(u);
+                d.vecElemSize = size < vectorElementTypes.Length
+                    ? vectorElementTypes[size]
+                    : null;
+                return d.vecElemSize != null;
+            };
+        }
+        private static readonly WideMutator<zSeriesDisassembler> Sbhf = vecelem(new[] {
+            PrimitiveType.SByte, PrimitiveType.Int16, PrimitiveType.Int32, PrimitiveType.Int64,
+        });
+        private static readonly WideMutator<zSeriesDisassembler> Sbhfg = vecelem(new[] {
+            PrimitiveType.SByte, PrimitiveType.Int16, PrimitiveType.Int32, PrimitiveType.Int64,
+        });
+        private static readonly WideMutator<zSeriesDisassembler> S_hfg = vecelem(new[] {
+            null, PrimitiveType.Int16, PrimitiveType.Int32, PrimitiveType.Int64,
+        });
+
+        private static readonly WideMutator<zSeriesDisassembler> Ubhf = vecelem(new[] {
+            PrimitiveType.Byte,   PrimitiveType.Word16, PrimitiveType.Word32,
+        });
+        private static readonly WideMutator<zSeriesDisassembler> Ubhfg = vecelem(new PrimitiveType[] {
+            PrimitiveType.Byte,   PrimitiveType.Word16, PrimitiveType.Word32, PrimitiveType.Word64,
+        });
+        private static readonly WideMutator<zSeriesDisassembler> U_hfg = vecelem(new[] {
+            null, PrimitiveType.Word16, PrimitiveType.Word32, PrimitiveType.Word64,
+        });
+
+        private static readonly WideMutator<zSeriesDisassembler> Fg = vecelem(new PrimitiveType?[] {
+            null, null, null, PrimitiveType.Real64,
+        });
+
+
+        /// <summary>
+        /// Instruction checks the Single-Element bit.
+        /// </summary>
+        private static bool Se(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            const int bit = 16 + 3;
+            dasm.singleElement = Bits.IsBitSet(uInstr, bit);
+            return true;
+        }
+
+        /// <summary>
+        /// Sets the condition code
+        /// </summary>
+        private static bool Scc(ulong uInstr, zSeriesDisassembler dasm)
+        {
+            const int bit = 20;
+            dasm.setCc = Bits.IsBitSet(uInstr, bit);
             return true;
         }
 
@@ -1175,22 +1409,22 @@ namespace Reko.Arch.zSeries
                 (0xE0, Instr(Mnemonic.locfhr, RRFc)),
                 (0xE1, Instr(Mnemonic.popcnt, RRE)),
                 (0xE2, Mask(12, 4,
-                    Instr(Mnemonic.locgrnv, RR),
-                    Instr(Mnemonic.locgro, RR),
-                    Instr(Mnemonic.locgrh, RR),
-                    Instr(Mnemonic.locgrnle, RR),
-                    Instr(Mnemonic.locgrl, RR),
-                    Instr(Mnemonic.locgrnhe, RR),
-                    Instr(Mnemonic.locgrlh, RR),
-                    Instr(Mnemonic.locgrne, RR),
-                    Instr(Mnemonic.locgre, RR),
-                    Instr(Mnemonic.locgrnlh, RR),
-                    Instr(Mnemonic.locgrhe, RR),
-                    Instr(Mnemonic.locgrnl, RR),
-                    Instr(Mnemonic.locgrle, RR),
-                    Instr(Mnemonic.locgrnh, RR),
-                    Instr(Mnemonic.locgrno, RR),
-                    Instr(Mnemonic.locgr, RR))),
+                    Instr(Mnemonic.locgrnv, RRFc),
+                    Instr(Mnemonic.locgro, RRFc),
+                    Instr(Mnemonic.locgrh, RRFc),
+                    Instr(Mnemonic.locgrnle, RRFc),
+                    Instr(Mnemonic.locgrl, RRFc),
+                    Instr(Mnemonic.locgrnhe, RRFc),
+                    Instr(Mnemonic.locgrlh, RRFc),
+                    Instr(Mnemonic.locgrne, RRFc),
+                    Instr(Mnemonic.locgre, RRFc),
+                    Instr(Mnemonic.locgrnlh, RRFc),
+                    Instr(Mnemonic.locgrhe, RRFc),
+                    Instr(Mnemonic.locgrnl, RRFc),
+                    Instr(Mnemonic.locgrle, RRFc),
+                    Instr(Mnemonic.locgrnh, RRFc),
+                    Instr(Mnemonic.locgrno, RRFc),
+                    Instr(Mnemonic.locgr, RRFc))),
                 (0xE4, Instr(Mnemonic.ngrk, RRFa)),
                 (0xE6, Instr(Mnemonic.ogrk, RRFa)),
                 (0xE7, Instr(Mnemonic.xgrk, RRFa)),
@@ -1420,7 +1654,7 @@ namespace Reko.Arch.zSeries
                 (0x43, Instr(Mnemonic.vleif, VRIa)),
                 (0x44, Instr(Mnemonic.vgbm, VRIa)),
                 (0x45, Instr(Mnemonic.vrepi, VRIa)),
-                (0x46, Instr(Mnemonic.vgm, VRIb)),
+                (0x46, Instr(Mnemonic.vgm, VRIb, Ubhfg)),
                 (0x4A, Instr(Mnemonic.vftci, VRIe)),
                 (0x4D, Instr(Mnemonic.vrep, VRIc)),
                 (0x50, Instr(Mnemonic.vpopct, VRRa)),
@@ -1429,8 +1663,8 @@ namespace Reko.Arch.zSeries
                 (0x56, Instr(Mnemonic.vlr, VRRa)),
                 (0x5C, Instr(Mnemonic.vistr, VRRa)),
                 (0x5F, Instr(Mnemonic.vseg, VRRa)),
-                (0x60, Instr(Mnemonic.vmrl, VRRc)),
-                (0x61, Instr(Mnemonic.vmrh, VRRc)),
+                (0x60, Instr(Mnemonic.vmrl, VRRc, Ubhfg)),
+                (0x61, Instr(Mnemonic.vmrh, VRRc, Ubhfg)),
                 (0x62, Instr(Mnemonic.vlvgp, VRRf)),
                 (0x64, Instr(Mnemonic.vsum, VRRc)),
                 (0x65, Instr(Mnemonic.vsumg, VRRc)),
@@ -1442,7 +1676,7 @@ namespace Reko.Arch.zSeries
                 (0x6B, Instr(Mnemonic.vno, VRRc)),
                 (0x6D, Instr(Mnemonic.vx, VRRc)),
                 (0x70, Instr(Mnemonic.veslv, VRRc)),
-                (0x72, Instr(Mnemonic.verim, VRId)),
+                (0x72, Instr(Mnemonic.verim, VRId, Ubhfg)),
                 (0x73, Instr(Mnemonic.verllv, VRRc)),
                 (0x74, Instr(Mnemonic.vsl, VRRc)),
                 (0x75, Instr(Mnemonic.vslb, VRRc)),
@@ -1462,9 +1696,9 @@ namespace Reko.Arch.zSeries
                 (0x8D, Instr(Mnemonic.vsel, VRRe)),
                 (0x8E, Instr(Mnemonic.vfms, VRRe)),
                 (0x8F, Instr(Mnemonic.vfma, VRRe)),
-                (0x94, Instr(Mnemonic.vpk, VRRc)),
-                (0x95, Instr(Mnemonic.vpkls, VRRb)),
-                (0x97, Instr(Mnemonic.vpks, VRRb)),
+                (0x94, Instr(Mnemonic.vpk, VRRc, S_hfg)),
+                (0x95, Instr(Mnemonic.vpkls, VRRb, U_hfg, Scc)),
+                (0x97, Instr(Mnemonic.vpks, VRRb, S_hfg, Scc)),
                 (0xA1, Instr(Mnemonic.vmlh, VRRc)),
                 (0xA2, Instr(Mnemonic.vml, VRRc)),
                 (0xA3, Instr(Mnemonic.vmh, VRRc)),
@@ -1472,13 +1706,13 @@ namespace Reko.Arch.zSeries
                 (0xA5, Instr(Mnemonic.vmlo, VRRc)),
                 (0xA6, Instr(Mnemonic.vme, VRRc)),
                 (0xA7, Instr(Mnemonic.vmo, VRRc)),
-                (0xA9, Instr(Mnemonic.vmalh, VRRd)),
-                (0xAA, Instr(Mnemonic.vmal, VRRd)),
-                (0xAB, Instr(Mnemonic.vmah, VRRd)),
+                (0xA9, Instr(Mnemonic.vmalh, VRRd, Ubhf)),
+                (0xAA, Instr(Mnemonic.vmal, VRRd, Ubhf)),
+                (0xAB, Instr(Mnemonic.vmah, VRRd, Sbhf)),
                 (0xAC, Instr(Mnemonic.vmale, VRRd)),
                 (0xAD, Instr(Mnemonic.vmalo, VRRd)),
-                (0xAE, Instr(Mnemonic.vmae, VRRd)),
-                (0xAF, Instr(Mnemonic.vmao, VRRd)),
+                (0xAE, Instr(Mnemonic.vmae, VRRd, Sbhf)),
+                (0xAF, Instr(Mnemonic.vmao, VRRd, Sbhf)),
                 (0xB4, Instr(Mnemonic.vgfm, VRRc)),
                 (0xB9, Instr(Mnemonic.vaccc, VRRd)),
                 (0xBB, Instr(Mnemonic.vac, VRRd)),
@@ -1505,26 +1739,26 @@ namespace Reko.Arch.zSeries
                 (0xDB, Instr(Mnemonic.vec, VRRa)),
                 (0xDE, Instr(Mnemonic.vlc, VRRa)),
                 (0xDF, Instr(Mnemonic.vlp, VRRa)),
-                (0xE2, Instr(Mnemonic.vfs, VRRc)),
+                (0xE2, Instr(Mnemonic.vfs, VRRc, Fg)),
                 (0xE3, Instr(Mnemonic.vfa, VRRc)),
-                (0xE5, Instr(Mnemonic.vfd, VRRc)),
+                (0xE5, Instr(Mnemonic.vfd, VRRc, Fg)),
                 (0xE7, Instr(Mnemonic.vfm, VRRc)),
                 (0xE8, Instr(Mnemonic.vfce, VRRc)),
                 (0xEA, Instr(Mnemonic.vfche, VRRc)),
                 (0xEB, Instr(Mnemonic.vfch, VRRc)),
-                (0xF0, Instr(Mnemonic.vavgl, VRRc)),
+                (0xF0, Instr(Mnemonic.vavgl, VRRc, Ubhfg)),
                 (0xF1, Instr(Mnemonic.vacc, VRRc)),
-                (0xF2, Instr(Mnemonic.vavg, VRRc)),
+                (0xF2, Instr(Mnemonic.vavg, VRRc, Sbhfg)),
                 (0xF3, Instr(Mnemonic.va, VRRc)),
                 (0xF5, Instr(Mnemonic.vscbi, VRRc)),
                 (0xF7, Instr(Mnemonic.vs, VRRc)),
                 (0xF8, Instr(Mnemonic.vceq, VRRb)),
                 (0xF9, Instr(Mnemonic.vchl, VRRb)),
                 (0xFB, Instr(Mnemonic.vch, VRRb)),
-                (0xFC, Instr(Mnemonic.vmnl, VRRc)),
-                (0xFD, Instr(Mnemonic.vmxl, VRRc)),
-                (0xFE, Instr(Mnemonic.vmn, VRRc)),
-                (0xFF, Instr(Mnemonic.vmx, VRRc)));
+                (0xFC, Instr(Mnemonic.vmnl, VRRc, Ubhfg)),
+                (0xFD, Instr(Mnemonic.vmxl, VRRc, Ubhfg)),
+                (0xFE, Instr(Mnemonic.vmn, VRRc, Sbhfg)),
+                (0xFF, Instr(Mnemonic.vmx, VRRc, Sbhfg)));
 
             var eb_decoders = ExtendMask48(0, 8,
                 (0x04, Instr(Mnemonic.lmg, RSYa)),
@@ -1911,8 +2145,8 @@ namespace Reko.Arch.zSeries
 
                 Instr32(Mnemonic.brxh, InstrClass.ConditionalTransfer, RSI),
                 Instr32(Mnemonic.brxle, InstrClass.ConditionalTransfer, RSI),
-                Instr32(Mnemonic.bxh, InstrClass.ConditionalTransfer, RSa),
-                Instr32(Mnemonic.bxle, InstrClass.ConditionalTransfer, RSa),
+                Instr32(Mnemonic.bxh, InstrClass.ConditionalTransfer, RSar),
+                Instr32(Mnemonic.bxle, InstrClass.ConditionalTransfer, RSar),
 
                 Instr32(Mnemonic.srl, RSa),
                 Instr32(Mnemonic.sll, RSa),

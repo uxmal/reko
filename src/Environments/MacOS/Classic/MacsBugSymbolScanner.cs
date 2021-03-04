@@ -83,9 +83,9 @@ namespace Reko.Environments.MacOS.Classic
         public const ushort JMP_A0 = 0x4ED0;
         public const ushort RTD = 0x4E74;
 
-        private IProcessorArchitecture arch;
-        private EndianImageReader rdr;
-        private Regex reValidVariableLengthProcedureName;
+        private readonly IProcessorArchitecture arch;
+        private readonly EndianImageReader rdr;
+        private readonly Regex reValidVariableLengthProcedureName;
 
         public MacsBugSymbolScanner(IProcessorArchitecture arch, ByteMemoryArea mem)
         {
@@ -122,8 +122,7 @@ namespace Reko.Environments.MacOS.Classic
         public List<ImageSymbol> ScanForSymbols()
         {
             var symbols = new List<ImageSymbol>();
-            ImageSymbol sym;
-            while (TryScanProcedure(out sym))
+            while (TryScanProcedure(out ImageSymbol sym))
             {
                 if (sym.Type == SymbolType.Procedure)
                 {
@@ -135,10 +134,9 @@ namespace Reko.Environments.MacOS.Classic
 
         private bool TryScanProcedure(out ImageSymbol sym)
         {
-            ushort us;
             var addrStart = rdr.Address;
             sym = null;
-            while (rdr.TryReadBeUInt16(out us))
+            while (rdr.TryReadBeUInt16(out ushort us))
             {
                 switch (us)
                 {
@@ -148,7 +146,7 @@ namespace Reko.Environments.MacOS.Classic
                     break;
                 case RTD:
                     // Read uint16 of bytes to pop.
-                    if (!rdr.TryReadBeUInt16(out us))
+                    if (!rdr.TryReadBeUInt16(out _))
                     {
                         return false;
                     }
@@ -159,12 +157,8 @@ namespace Reko.Environments.MacOS.Classic
                     continue;
                 }
 
-                // Remember the end of the procedure.
-                var position = rdr.Offset;
-
                 // We think we saw the end of the procedure. Could there be a MacsBug symbol?
-                string symbol;
-                if (!TryReadMacsBugSymbol(out symbol))
+                if (!TryReadMacsBugSymbol(out string symbol))
                 {
                     // Don't really want a symbol in this case.
                     // But there might be more procedures.
@@ -174,7 +168,6 @@ namespace Reko.Environments.MacOS.Classic
                 if (!SkipConstantData())
                 {
                     // That wasn't valid constant data, but there might be more procedures.
-                    // But there might be more procedures.
                     continue;
                 }
                 
@@ -186,19 +179,18 @@ namespace Reko.Environments.MacOS.Classic
 
         private bool TryReadMacsBugSymbol(out string symbol)
         {
-            var offset = rdr.Offset;
-            byte b;
+            var savedOffset = rdr.Offset;
             symbol = null;
-            if (!rdr.TryReadByte(out b))
+            if (!rdr.TryReadByte(out byte b))
                 return false;
-            int symLength = 0;
+            int symLength;
             // May have read the length byte.
             if (b == 0x80)
             {
                 // long symbol: next byte is the 8-bit length.
                 if (!rdr.TryReadByte(out b) || b == 0)
                 {
-                    rdr.Offset = offset;
+                    rdr.Offset = savedOffset;
                     return false;
                 }
                 symLength = b;
@@ -209,18 +201,17 @@ namespace Reko.Environments.MacOS.Classic
             }
             else
             {
-                rdr.Offset = offset;
+                rdr.Offset = savedOffset;
                 return false;
             }
 
             // Now try reading `symLength` valid 8-bit chars.
-            var symOffset = rdr.Offset;
             var sb = new StringBuilder();
             for (int i = 0; i < symLength; ++i)
             {
                 if (!rdr.TryReadByte(out b))
                 {
-                    rdr.Offset = offset;
+                    rdr.Offset = savedOffset;
                     return false;
                 }
                 sb.Append((char)b);
@@ -231,12 +222,21 @@ namespace Reko.Environments.MacOS.Classic
             if (!this.reValidVariableLengthProcedureName.IsMatch(symbol))
             {
                 symbol = null;
-                rdr.Offset = offset;
+                rdr.Offset = savedOffset;
                 return false;
             }
             return true;
         }
 
+        /// <summary>
+        /// Skips constant data after symbol.
+        /// </summary>
+        /// <remarks>
+        /// The constant data is a WORD containing the number of constant bytes (it may be odd)
+        /// followed by a number of WORDs corresponding to the constant bytes. 
+        /// //$TODO: mark the constant bytes as data.
+        /// </remarks>
+        /// <returns></returns>
         private bool SkipConstantData()
         {
             var offset = rdr.Offset;
@@ -245,7 +245,7 @@ namespace Reko.Environments.MacOS.Classic
             if ((us & 1) == 1)
                 ++us;
             rdr.Offset += us;
-            if (rdr.IsValid)
+            if (us > 0 && !rdr.IsValid)
             {
                 rdr.Offset = offset;
                 return false;

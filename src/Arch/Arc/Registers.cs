@@ -49,6 +49,12 @@ namespace Reko.Arch.Arc
         public static readonly FlagGroupStorage V;
         public static readonly FlagGroupStorage S;
 
+        public static readonly FlagGroupStorage ZNCV;
+        public static readonly FlagGroupStorage ZNC;
+        public static readonly FlagGroupStorage ZNV;
+        public static readonly FlagGroupStorage ZN; 
+
+
         public static readonly Dictionary<StorageDomain, RegisterStorage> ByStorageDomain;
         public static readonly Dictionary<string, RegisterStorage> ByName;
 
@@ -78,6 +84,11 @@ namespace Reko.Arch.Arc
             C = new FlagGroupStorage(Status32, (uint) FlagM.CF, "C", PrimitiveType.Bool);
             V = new FlagGroupStorage(Status32, (uint) FlagM.VF, "V", PrimitiveType.Bool);
             S = new FlagGroupStorage(AuxMacmode, (uint) AuxFlagM.Sat, "S", PrimitiveType.Bool);
+            ZNCV = new FlagGroupStorage(Status32, (uint) (FlagM.ZF | FlagM.NF | FlagM.CF | FlagM.VF), "ZNCV", PrimitiveType.Byte);
+            ZNC = new FlagGroupStorage(Status32, (uint) (FlagM.ZF | FlagM.NF | FlagM.CF), "ZNC", PrimitiveType.Byte);
+            ZNV = new FlagGroupStorage(Status32, (uint) (FlagM.ZF | FlagM.NF | FlagM.VF), "ZNV", PrimitiveType.Byte);
+            ZN = new FlagGroupStorage(Status32, (uint) (FlagM.ZF | FlagM.NF), "ZN", PrimitiveType.Byte);
+
 
             ByStorageDomain = factory.DomainsToRegisters
                 .Concat(sysFactory.DomainsToRegisters)

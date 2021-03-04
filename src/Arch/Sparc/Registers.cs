@@ -54,7 +54,9 @@ namespace Reko.Arch.Sparc
         public readonly FlagGroupStorage U;
 
         public readonly RegisterStorage[] IntegerRegisters;
-        public readonly RegisterStorage[] FloatRegisters;
+        public readonly RegisterStorage[] QFloatRegisters;
+        public readonly RegisterStorage[] DFloatRegisters;
+        public readonly RegisterStorage[] FFloatRegisters;
 
         private static Dictionary<string, RegisterStorage> mpNameToReg;
         private static Dictionary<StorageDomain, RegisterStorage> mpDomainToReg;
@@ -89,7 +91,25 @@ namespace Reko.Arch.Sparc
             // why they can't be real32. This also forces our hand into
             // making float-point versions of add, sub, mul, div. 
 
-            FloatRegisters = stg.RangeOfReg(64, n => $"f{n}", wordSize);
+            QFloatRegisters = stg.RangeOfReg(16, n => $"q{n*4}", PrimitiveType.Word128);
+            DFloatRegisters = QFloatRegisters.SelectMany((q, i) =>
+            {
+                return new[]
+                {
+                    new RegisterStorage($"d{i * 2}", q.Number, 64, PrimitiveType.Word64),
+                    new RegisterStorage($"d{i * 2 + 1}", q.Number, 0, PrimitiveType.Word64),
+                };
+            }).ToArray();
+            FFloatRegisters= QFloatRegisters.Take(8).SelectMany((q, i) =>
+            {
+                return new[]
+                {
+                    new RegisterStorage($"f{i * 4}", q.Number, 96, PrimitiveType.Word32),
+                    new RegisterStorage($"f{i * 4 + 1}", q.Number, 64, PrimitiveType.Word32),
+                    new RegisterStorage($"f{i * 4 + 2}", q.Number, 32, PrimitiveType.Word32),
+                    new RegisterStorage($"f{i * 4 + 3}", q.Number, 0, PrimitiveType.Word32),
+                };
+            }).ToArray();
 
             psr = stg.Reg32("psr");
 
@@ -106,17 +126,16 @@ namespace Reko.Arch.Sparc
             fsr = stg.Reg32("fsr");
 
             mpNameToReg = stg.NamesToRegisters;
+            foreach (var fpreg in DFloatRegisters.Concat(FFloatRegisters))
+            {
+                mpNameToReg.Add(fpreg.Name, fpreg);
+            }
             mpDomainToReg = stg.DomainsToRegisters;
         }
 
         public RegisterStorage GetRegister(uint r)
         {
             return IntegerRegisters[r & 0x1F];
-        }
-
-        public RegisterStorage GetFpuRegister(int f)
-        {
-            return FloatRegisters[f];
         }
 
         public bool TryGetRegister(string regName, out RegisterStorage reg)

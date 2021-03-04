@@ -211,11 +211,7 @@ namespace Reko.Arch.X86
             return expr!;
         }
 
-        public Identifier FlagGroup(FlagM flags)
-        {
-            return binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.eflags, (uint)flags)); ;
-        }
-
+        public Identifier FlagGroup(FlagGroupStorage flags) => binder.EnsureFlagGroup(flags);
 
         /// <summary>
         /// Changes the stack-relative address 'reg' into a frame-relative operand.

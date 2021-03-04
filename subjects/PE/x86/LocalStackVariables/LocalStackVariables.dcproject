@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>x86-protected-32</arch>
+  <platform>win32</platform>
+  <input>
+    <filename>LocalStackVariables.exe</filename>
+    <asmDir>LocalStackVariables.reko</asmDir>
+    <srcDir>LocalStackVariables.reko</srcDir>
+    <includeDir>LocalStackVariables.reko</includeDir>
+    <resources>LocalStackVariables.reko</resources>
+    <user>
+      <processor />
+      <procedure name="main">
+        <characteristics />
+        <address>00401000</address>
+        <CSignature>int main(int argc, char *argv[])</CSignature>
+      </procedure>
+      <procedure name="GetMin">
+        <characteristics />
+        <address>004010D0</address>
+      </procedure>
+      <procedure name="Win32CrtStartup">
+        <characteristics />
+        <address>004013BF</address>
+        <decompile>false</decompile>
+        <CSignature>DWORD Win32CrtStartup()</CSignature>
+      </procedure>
+      <onLoad Enabled="false" />
+      <annotation addr="00401006">s1.i = 0</annotation>
+      <annotation addr="0040100D">s1.d = 1.0</annotation>
+      <annotation addr="00401012">s2.i = 10</annotation>
+      <annotation addr="00401019">s2.d = 11.0</annotation>
+      <annotation addr="00401022">res = GetMin(&amp;s1, &amp;s2)</annotation>
+      <annotation addr="00401035">s1.i = 100</annotation>
+      <annotation addr="0040103C">res-&gt;i = 5</annotation>
+      <annotation addr="00401045">res-&gt;d = 5.0</annotation>
+      <annotation addr="00401051">printf("%d %f %d %f\n", s1.i, s1.d, s2.i, s2.d)</annotation>
+      <annotation addr="00401079">gbl_s = &amp;s2</annotation>
+      <annotation addr="00401081">s2.i = 2</annotation>
+      <annotation addr="00401088">s2.d = 2.0</annotation>
+      <annotation addr="00401091">gbl_s-&gt;i = 3</annotation>
+      <annotation addr="0040109D">gbl_s-&gt;d = 3.0</annotation>
+      <annotation addr="004010AC">printf("%d %f\n", s2.i, s2.d)</annotation>
+      <registerValues />
+      <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+</project>

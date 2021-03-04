@@ -46,20 +46,27 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private void OkButton_Click(object sender, EventArgs e)
         {
-            var items = new Dictionary<RegisterStorage, Constant>();
+            var items = new Dictionary<Storage, Constant>();
             foreach (DataGridViewRow row in dlg.Grid.Rows)
             {
-                RegisterStorage reg = null;
+                Storage stg = null;
                 if (row.Cells[0].Value is string sRegister)
                 {
-                    dlg.Architecture.TryGetRegister(sRegister, out reg);
+                    if (dlg.Architecture.TryGetRegister(sRegister, out var reg))
+                    {
+                        stg = reg;
+                    }
+                    else
+                    {
+                        stg = dlg.Architecture.GetFlagGroup(sRegister);
+                    }
                 }
-                if (reg != null && row.Cells[1].Value is string sValue)
+                if (stg != null && row.Cells[1].Value is string sValue)
                 {
                     var value = sValue != "*"
-                        ? Constant.Create(reg.DataType, Convert.ToUInt64(sValue, 16))
+                        ? Constant.Create(stg.DataType, Convert.ToUInt64(sValue, 16))
                         : Constant.Invalid;
-                    items[reg] = value;
+                    items[stg] = value;
                 }
             }
             var list = items.Select(de => new UserRegisterValue
@@ -77,16 +84,16 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private void Grid_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            if (e.ColumnIndex != 1)
-            {
-                e.Cancel = false;
-            }
+            e.Cancel = false;
         }
 
         private void dlg_Load(object sender, EventArgs e)
         {
             var registers = dlg.Architecture.GetRegisters()
                 .OrderBy(r => r.Name)
+                .Cast<Storage>()
+                .Concat(dlg.Architecture.GetFlags())
+                .Select(r => r.Name)
                 .ToArray();
             dlg.RegisterColumn.Items.AddRange(registers);
             if (dlg.RegisterValues != null)

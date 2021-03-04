@@ -38,10 +38,10 @@ namespace Reko.Core
 
         public static CharacteristicsLibrary Load(string filename, IFileSystemService fsSvc)
         {
-            XmlSerializer ser = new XmlSerializer(typeof(Serialization.CharacteristicsLibrary_v1));
+            var ser = new XmlSerializer(typeof(Serialization.CharacteristicsLibrary_v1));
             using (var stm = fsSvc.CreateFileStream(filename, FileMode.Open, FileAccess.Read))
             {
-                var slib = (Serialization.CharacteristicsLibrary_v1) ser.Deserialize(stm);
+                var slib = (CharacteristicsLibrary_v1) ser.Deserialize(stm);
                 return new CharacteristicsLibrary
                 {
                     Entries = slib.Entries

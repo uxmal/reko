@@ -9225,36 +9225,36 @@ void fn0000F8E8(word32 r3, word32 r4, word32 VR)
 // Preserved: r1 r14 r16 r2 r9
 fn0000F8E8_entry:
 l0000F8E8:
-	word32 r11_28
-	word32 r2_34 = fn0000E718(VR, out r11_28) | 0x3788<32>
-	word32 r5_36 = -1<i32>
+	word32 r11_20
+	word32 r2_26 = fn0000E718(VR, out r11_20) | 0x3788<32>
+	word32 r5_28 = -1<i32>
 l0000F918:
-	word32 r2_50
-	branch Mem15[r2_34:word32] != 0<32> l0000F8E8_ds_t
+	word32 r2_42
+	branch Mem10[r2_26:word32] != 0<32> l0000F8E8_ds_t
 l0000F8E8_ds_t:
-	r5_36 = r5_36 + -1<i32>
+	r5_28 = r5_28 + -1<i32>
 l0000F950:
-	branch r5_36 != 9<32> l0000F950_ds_t
+	branch r5_28 != 9<32> l0000F950_ds_t
 l0000F950_ds_t:
-	r2_34 = r2_34 + -12<i32>
+	r2_26 = r2_26 + -12<i32>
 l0000F950_ds_f:
 l0000F95C:
-	r2_50 = 0<i32>
+	r2_42 = 0<i32>
 l0000F8E8_ds_f:
-	word32 r5_52 = r5_36 + 0<i32>
+	word32 r5_44 = r5_28 + 0<i32>
 l0000F928:
-	r2_50 = ((r5_52 - 1<i32>) * 2<32> + (r5_52 - 1<i32>) << 2<32>) + 0x13788<32>
-	Mem63[r2_50:word32] = -1<i32>
+	r2_42 = ((r5_44 - 1<i32>) * 2<32> + (r5_44 - 1<i32>) << 2<32>) + 0x13788<32>
+	Mem55[r2_42:word32] = -1<i32>
 l0000F960:
-	fn0000E740(r11_28, VR)
-	branch r2_50 == 0<32> l0000F960_ds_t
+	fn0000E740(r11_20, VR)
+	branch r2_42 == 0<32> l0000F960_ds_t
 l0000F960_ds_t:
 l0000F960_ds_f:
 l0000F974:
-	word32 r3_80 = Mem79[r3:word32]
-	Mem83[r2_50 + 4<i32>:word32] = r4
-	Mem84[r2_50 + 8<i32>:word32] = r3_80
-	Mem85[r3:word32] = r2_50
+	word32 r3_72 = Mem71[r3:word32]
+	Mem75[r2_42 + 4<i32>:word32] = r4
+	Mem76[r2_42 + 8<i32>:word32] = r3_72
+	Mem77[r3:word32] = r2_42
 l0000F988:
 	return
 fn0000F8E8_exit:

@@ -18,18 +18,12 @@
  */
 #endregion
 
-using Moq;
 using NUnit.Framework;
 using Reko.Arch.LatticeMico;
 using Reko.Core;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.LatticeMico
 {

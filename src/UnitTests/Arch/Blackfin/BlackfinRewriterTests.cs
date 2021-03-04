@@ -67,6 +67,47 @@ namespace Reko.UnitTests.Arch.Blackfin
         }
 
         [Test]
+        public void BlackfinRw_ld_pair()
+        {
+            Given_HexString("1805");
+            AssertCode( // (FP:P0) = [SP++];
+                "0|L--|00100000(2): 3 instructions",
+                "1|L--|v3 = SP",
+                "2|L--|SP = SP + 4<i32>");
+        }
+
+        [Test]
+        public void BlackfinRw_ldb_postdec()
+        {
+            Given_HexString("AD98");
+            AssertCode(
+                "0|L--|00100000(2): 3 instructions",
+                "1|L--|v3 = P5",
+                "2|L--|P5 = P5 - 2<i32>",
+                "3|L--|R5 = CONVERT(SLICE(Mem0[v3:word16], byte, 0), byte, word32)");
+        }
+
+        [Test]
+        public void BlackfinRw_ldsw()
+        {
+            Given_HexString("0AA9");
+            AssertCode( // R2 = W[P1 + 0x0008] (X);
+                "0|L--|00100000(2): 1 instructions",
+                "1|L--|R2 = CONVERT(Mem0[P1 + 8<i32>:word16], int16, int32)");
+        }
+
+        [Test]
+        public void BlackfinRw_store_postinc()
+        {
+            Given_HexString("059A");
+            AssertCode( // B[P0++] = R5;
+                "0|L--|00100000(2): 3 instructions",
+                "1|L--|v4 = P0",
+                "2|L--|P0 = P0 + 1<i32>",
+                "3|L--|Mem0[v4:byte] = R5");
+        }
+
+        [Test]
         public void BlackfinRw_RTN()
         {
             Given_HexString("1300");
@@ -81,7 +122,7 @@ namespace Reko.UnitTests.Arch.Blackfin
             Given_HexString("20E1E803");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|R0 = CONVERT(0x3E8<16>, word16, word32)");
+                "1|L--|R0 = CONVERT(0x3E8<16>, int16, int32)");
         }
 
         [Test]

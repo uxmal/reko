@@ -51,7 +51,7 @@ namespace Reko.Arch.Arm.AArch32
             public override AArch32Instruction Decode(uint wInstr, T32Disassembler dasm)
             {
                 if (!dasm.rdr.TryReadLeUInt16(out var wNext))
-                    return null;
+                    return dasm.CreateInvalidInstruction();
                 wInstr = (wInstr << 16) | wNext;
                 DumpMaskedInstruction(32, wInstr, 0xF << (9 + 16), "");
                 return decoders[SBitfield(wInstr, 9 + 16, 4)].Decode(wInstr, dasm);
@@ -248,7 +248,10 @@ namespace Reko.Arch.Arm.AArch32
                     opMsb = (ImmediateOperand)instr.Operands[2];
                     opLsb = (ImmediateOperand)instr.Operands[1];
                 }
-                var opWidth = ImmediateOperand.Word32(opMsb.Value.ToInt32() - opLsb.Value.ToInt32() + 1);
+                int width = opMsb.Value.ToInt32() - opLsb.Value.ToInt32() + 1;
+                if (width <= 0)
+                    return dasm.CreateInvalidInstruction();
+                var opWidth = ImmediateOperand.Word32(width);
                 if (instr.Operands.Length > 3)
                     instr.Operands[3] = opWidth;
                 else

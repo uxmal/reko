@@ -45,20 +45,16 @@ namespace Reko.Arch.Sparc
 
         private void RewriteFadds()
         {
-            var dst = (RegisterOperand)instrCur.Operands[2];
-            var src1 = (RegisterOperand)instrCur.Operands[0];
-            var src2 = (RegisterOperand)instrCur.Operands[1];
-            var fdst = binder.EnsureRegister(arch.Registers.GetFpuRegister(dst.Register.Number));
-            var fsrc1 = binder.EnsureRegister(arch.Registers.GetFpuRegister(src1.Register.Number));
-            var fsrc2 = binder.EnsureRegister(arch.Registers.GetFpuRegister(src2.Register.Number));
-            m.Assign(fdst, m.FAdd(fsrc1, fsrc2));
+            var src1 = RewriteOp(instrCur.Operands[0]);
+            var src2 = RewriteOp(instrCur.Operands[1]);
+            var dst =  RewriteOp(instrCur.Operands[2]);
+            m.Assign(dst, m.FAdd(src1, src2));
         }
-
 
         private void RewriteFcmped()
         {
-            var f1 = RewriteDoubleRegister(instrCur.Operands[0]);
-            var f2 = RewriteDoubleRegister(instrCur.Operands[1]);
+            var f1 = RewriteOp(instrCur.Operands[0]);
+            var f2 = RewriteOp(instrCur.Operands[1]);
 
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
             m.Assign(grf, m.Cond(m.FSub(f1, f2)));
@@ -66,93 +62,79 @@ namespace Reko.Arch.Sparc
 
         private void RewriteFcmpes()
         {
-            var r1 = (RegisterOperand)instrCur.Operands[0];
-            var r2 = (RegisterOperand)instrCur.Operands[1];
-
-            var f1 = binder.EnsureRegister(arch.Registers.GetFpuRegister(r1.Register.Number)); 
-            var f2 = binder.EnsureRegister(arch.Registers.GetFpuRegister(r2.Register.Number));
+            var f1 = RewriteOp(instrCur.Operands[0]);
+            var f2 = RewriteOp(instrCur.Operands[1]);
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
             m.Assign(grf, m.Cond(m.FSub(f1, f2)));
         }
 
         private void RewriteFcmpd()
         {
-            var r1 = RewriteDoubleRegister(instrCur.Operands[0]);
-            var r2 = RewriteDoubleRegister(instrCur.Operands[1]);
+            var r1 = RewriteOp(instrCur.Operands[0]);
+            var r2 = RewriteOp(instrCur.Operands[1]);
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
             m.Assign(grf, m.Cond(m.FSub(r2, r1)));
         }
 
         private void RewriteFcmpq()
         {
-            var r1 = RewriteQuadRegister(instrCur.Operands[0]);
-            var r2 = RewriteQuadRegister(instrCur.Operands[1]);
+            var r1 = RewriteOp(instrCur.Operands[0]);
+            var r2 = RewriteOp(instrCur.Operands[1]);
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
             m.Assign(grf, m.Cond(m.FSub(r2, r1)));
         }
 
         private void RewriteFcmps()
         {
-            var r1 = RewriteRegister(instrCur.Operands[0]);
-            var r2 = RewriteRegister(instrCur.Operands[1]);
+            var r1 = RewriteRegister(0);
+            var r2 = RewriteRegister(1);
             var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
             m.Assign(grf, m.Cond(m.FSub(r2, r1)));
         }
 
         private void RewriteFdivd()
         {
-            var fdst = RewriteDoubleRegister(instrCur.Operands[2]);
-            var fsrc1 = RewriteDoubleRegister(instrCur.Operands[0]);
-            var fsrc2 = RewriteDoubleRegister(instrCur.Operands[1]);
-            m.Assign(fdst, m.FDiv(fsrc1, fsrc2));
+            var src1 = RewriteOp(instrCur.Operands[0]);
+            var src2 = RewriteOp(instrCur.Operands[1]);
+            var dst = RewriteOp(instrCur.Operands[2]);
+            m.Assign(dst, m.FDiv(src1, src2));
         }
 
         private void RewriteFdivs()
         {
-            var dst = (RegisterOperand)instrCur.Operands[2];
-            var src1 = (RegisterOperand)instrCur.Operands[0];
-            var src2 = (RegisterOperand)instrCur.Operands[1];
-            var fdst = binder.EnsureRegister(arch.Registers.GetFpuRegister(dst.Register.Number));
-            var fsrc1 = binder.EnsureRegister(arch.Registers.GetFpuRegister(src1.Register.Number));
-            var fsrc2 = binder.EnsureRegister(arch.Registers.GetFpuRegister(src2.Register.Number));
-            m.Assign(fdst, m.FDiv(fsrc1, fsrc2));
+            var src1 = RewriteOp(instrCur.Operands[0]);
+            var src2 = RewriteOp(instrCur.Operands[1]);
+            var dst =  RewriteOp(instrCur.Operands[2]);
+            m.Assign(dst, m.FDiv(src1, src2));
         }
 
         private void RewriteFitod()
         {
-            var dst = (RegisterOperand) instrCur.Operands[1];
-            var r0 = binder.EnsureRegister(arch.Registers.GetFpuRegister(dst.Register.Number));
-            var r1 = binder.EnsureRegister(arch.Registers.GetFpuRegister(dst.Register.Number + 1));
-            var dt = PrimitiveType.Real64;
-            var fpDst = binder.EnsureSequence(dt, r0.Storage, r1.Storage);
-            var src = RewriteOp(instrCur.Operands[0]);
-            m.Assign(fpDst, m.Convert(src, PrimitiveType.Int32, dt));
+            var dtFrom = PrimitiveType.Int32;
+            var dtTo = PrimitiveType.Real64;
+            var fpDst = RewriteOp(instrCur.Operands[1]);
+            m.Assign(fpDst, m.Convert(MaybeSlice(RewriteOp(0), dtFrom), dtFrom, dtTo));
+        }
+
+        private void RewriteFitoq()
+        {
+            var fpDst = RewriteOp(1);
+            var dtFrom = PrimitiveType.Int32;
+            var dtTo = PrimitiveType.Real128;
+            m.Assign(fpDst, m.Convert(MaybeSlice(RewriteOp(0), dtFrom), dtFrom, dtTo));
         }
 
         private void RewriteFdtos()
         {
-            var src = RewriteDoubleRegister(instrCur.Operands[0]);
             var fpDst = RewriteOp(instrCur.Operands[1]);
-            m.Assign(fpDst, m.Convert(src, PrimitiveType.Real64, PrimitiveType.Real32));
+            m.Assign(fpDst, m.Convert(RewriteOp(0), PrimitiveType.Real64, PrimitiveType.Real32));
         }
 
         private void RewriteFstod()
         {
             var fpDst = RewriteOp(instrCur.Operands[1]);
             var dt = PrimitiveType.Real64;
-            m.Assign(fpDst, m.Convert(RewriteOp(instrCur.Operands[0]), PrimitiveType.Real32, dt));
-        }
-
-
-        private void RewriteFitoq()
-        {
-            throw new NotSupportedException("Sequences don't work well with multiple segments");
-            //var dst = (RegisterOperand) di.Instr.Op2;
-            //var r0 = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
-            //var r1 = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number + 1));
-            //var dt = PrimitiveType.Real64;
-            //var fpDst = frame.EnsureSequence(r0, r1, dt);
-            //emitter.Assign(fpDst, emitter.Cast(dt, RewriteOp(src)));
+            m.Assign(fpDst, m.Convert(RewriteOp(0), PrimitiveType.Real32, dt));
         }
 
         private void RewriteFitos()
@@ -160,55 +142,45 @@ namespace Reko.Arch.Sparc
             var dst = (RegisterOperand) instrCur.Operands[1];
             var fpDst = binder.EnsureRegister(dst.Register);
             var dt = PrimitiveType.Real32;
-            m.Assign(fpDst, m.Convert(RewriteOp(instrCur.Operands[0]), PrimitiveType.Int32, dt));
+            m.Assign(fpDst, m.Convert(MaybeSlice(RewriteOp(0), PrimitiveType.Int32), PrimitiveType.Int32, dt));
         }
 
         private void RewriteFmovs()
         {
-            var dst = (RegisterOperand)instrCur.Operands[1];
-            var src = (RegisterOperand)instrCur.Operands[0];
-            var fdst = binder.EnsureRegister(arch.Registers.GetFpuRegister(dst.Register.Number));
-            var fsrc = binder.EnsureRegister(arch.Registers.GetFpuRegister(src.Register.Number));
-            m.Assign(fdst, fsrc);
+            var src = RewriteOp(instrCur.Operands[0]);
+            var dst = RewriteOp(instrCur.Operands[1]);
+            m.Assign(dst, src);
         }
 
         private void RewriteFmuld()
         {
-            var src1 = RewriteDoubleRegister(instrCur.Operands[0]);
-            var src2 = RewriteDoubleRegister(instrCur.Operands[1]);
-            var dst = RewriteDoubleRegister(instrCur.Operands[2]);
+            var src1 = RewriteOp(instrCur.Operands[0]);
+            var src2 = RewriteOp(instrCur.Operands[1]);
+            var dst = RewriteOp(instrCur.Operands[2]);
             m.Assign(dst, m.FMul(src1, src2));
         }
 
         private void RewriteFmuls()
         {
-            var dst = (RegisterOperand)instrCur.Operands[2];
-            var src1 = (RegisterOperand)instrCur.Operands[0];
-            var src2 = (RegisterOperand)instrCur.Operands[1];
-            var fdst = binder.EnsureRegister(arch.Registers.GetFpuRegister(dst.Register.Number));
-            var fsrc1 = binder.EnsureRegister(arch.Registers.GetFpuRegister(src1.Register.Number));
-            var fsrc2 = binder.EnsureRegister(arch.Registers.GetFpuRegister(src2.Register.Number));
-            m.Assign(fdst, m.FMul(fsrc1, fsrc2));
+            var src1 = RewriteOp(instrCur.Operands[0]);
+            var src2 = RewriteOp(instrCur.Operands[1]);
+            var dst =  RewriteOp(instrCur.Operands[2]);
+            m.Assign(dst, m.FMul(src1, src2));
         }
 
         private void RewriteFnegs()
         {
-            var dst = (RegisterOperand)instrCur.Operands[1];
-            var src = (RegisterOperand)instrCur.Operands[0];
-            var fdst = binder.EnsureRegister(arch.Registers.GetFpuRegister(dst.Register.Number));
-            var fsrc = binder.EnsureRegister(arch.Registers.GetFpuRegister(src.Register.Number));
-            m.Assign(fdst, m.Neg(fsrc));
+            var src = RewriteOp(instrCur.Operands[0]);
+            var dst = RewriteOp(instrCur.Operands[1]);
+            m.Assign(dst, m.Neg(src));
         }
 
         private void RewriteFsubs()
         {
-            var dst = (RegisterOperand)instrCur.Operands[2];
-            var src1 = (RegisterOperand)instrCur.Operands[0];
-            var src2 = (RegisterOperand)instrCur.Operands[1];
-            var fdst = binder.EnsureRegister(arch.Registers.GetFpuRegister(dst.Register.Number));
-            var fsrc1 = binder.EnsureRegister(arch.Registers.GetFpuRegister(src1.Register.Number));
-            var fsrc2 = binder.EnsureRegister(arch.Registers.GetFpuRegister(src2.Register.Number));
-            m.Assign(fdst, m.FSub(fsrc1, fsrc2));
+            var src1 = RewriteOp(instrCur.Operands[0]);
+            var src2 = RewriteOp(instrCur.Operands[1]);
+            var dst =  RewriteOp(instrCur.Operands[2]);
+            m.Assign(dst, m.FSub(src1, src2));
         }
     }
 }

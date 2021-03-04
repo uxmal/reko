@@ -9767,7 +9767,7 @@ define fn00008CD8
 fn00008CD8_entry:
 	r1 = fp
 	r1 = fp
-	// succ:  l00008CD8 l00008CD8
+	// succ:  l00008CD8
 l00008CD8:
 	r5 = Mem0[r8 + 24<i32>:word32]
 	r4 = r5 ^ 1<32>
@@ -14886,7 +14886,7 @@ define fn0000B1D0
 fn0000B1D0_entry:
 	r1 = fp
 	r1 = fp
-	// succ:  l0000B1D0 l0000B1D0
+	// succ:  l0000B1D0
 l0000B1D0:
 	v4 = SLICE(r6, word16, 0)
 	Mem0[r7 + r5:word16] = v4
@@ -18647,7 +18647,7 @@ define fn0000D18C
 fn0000D18C_entry:
 	r1 = fp
 	r1 = fp
-	// succ:  l0000D18C l0000D18C
+	// succ:  l0000D18C
 l0000D18C:
 	r19 = Mem0[r23 + 28<i32>:word32]
 	r5 = Mem0[r19 + 56<i32>:word32]

@@ -40,6 +40,17 @@ namespace Reko.Arch.M6800.M6809
 
         public static readonly RegisterStorage[] AddrRegs;
 
+        public static readonly FlagGroupStorage N;
+        public static readonly FlagGroupStorage Z;
+        public static readonly FlagGroupStorage V;
+        public static readonly FlagGroupStorage C;
+        public static readonly FlagGroupStorage NV;
+        public static readonly FlagGroupStorage NZ;
+        public static readonly FlagGroupStorage NZC;
+        public static readonly FlagGroupStorage NZV;
+        public static readonly FlagGroupStorage NZVC;
+        public static readonly FlagGroupStorage ZC;
+
         static Registers()
         {
             var factory = new StorageFactory();
@@ -56,6 +67,19 @@ namespace Reko.Arch.M6800.M6809
             B = new RegisterStorage("b", D.Number, 0, PrimitiveType.Byte);
 
             AddrRegs = new RegisterStorage[] { X, Y, U, S };
+            
+            N = new FlagGroupStorage(CC, (uint)FlagM.N, "N", PrimitiveType.Bool); 
+            Z = new FlagGroupStorage(CC, (uint)FlagM.Z, "Z", PrimitiveType.Bool); 
+            V = new FlagGroupStorage(CC, (uint)FlagM.V, "V", PrimitiveType.Bool);
+            C = new FlagGroupStorage(CC, (uint)FlagM.C, "C", PrimitiveType.Bool);
+
+            NV = new FlagGroupStorage(CC, (uint) (FlagM.N| FlagM.V), "NV", PrimitiveType.Byte);
+            NZ = new FlagGroupStorage(CC, (uint) (FlagM.N| FlagM.Z), "NZ", PrimitiveType.Byte);
+            NZC = new FlagGroupStorage(CC, (uint) (FlagM.N| FlagM.Z| FlagM.C), "NZC", PrimitiveType.Byte);
+            NZV = new FlagGroupStorage(CC, (uint) (FlagM.N| FlagM.Z| FlagM.V), "NZV", PrimitiveType.Byte);
+            NZVC = new FlagGroupStorage(CC, (uint) (FlagM.N| FlagM.Z| FlagM.V|FlagM.C), "NZVC", PrimitiveType.Byte);
+            ZC = new FlagGroupStorage(CC, (uint) (FlagM.Z|FlagM.C), "ZC", PrimitiveType.Byte);
+
         }
     }
 

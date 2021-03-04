@@ -34,8 +34,6 @@ namespace Reko.Arch.Z80
 {
     public class Z80ProcessorArchitecture : ProcessorArchitecture
     {
-        private readonly Dictionary<uint, FlagGroupStorage> flagGroups;
-
         public Z80ProcessorArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)
         {
@@ -46,7 +44,6 @@ namespace Reko.Arch.Z80
             this.WordWidth = PrimitiveType.Word16;
             this.StackRegister = Registers.sp;
             this.CarryFlagMask = (uint)FlagM.CF;
-            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
@@ -113,6 +110,11 @@ namespace Reko.Arch.Z80
             return Registers.All!;
         }
 
+        public override FlagGroupStorage[] GetFlags()
+        {
+            return Registers.Flags;
+        }
+
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             return Registers.regsByName.TryGetValue(name, out reg);
@@ -166,14 +168,8 @@ namespace Reko.Arch.Z80
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            if (flagGroups.TryGetValue(grf, out FlagGroupStorage f))
-            {
-                return f;
-            }
-
             PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var fl = new FlagGroupStorage(Registers.f, grf, GrfToString(flagRegister, "", grf), dt);
-            flagGroups.Add(grf, fl);
             return fl;
         }
 
@@ -263,8 +259,12 @@ namespace Reko.Arch.Z80
         public static readonly FlagGroupStorage P = new FlagGroupStorage(f, (uint)FlagM.PF, "P", PrimitiveType.Bool);
         public static readonly FlagGroupStorage N = new FlagGroupStorage(f, (uint)FlagM.NF, "N", PrimitiveType.Bool);
         public static readonly FlagGroupStorage C = new FlagGroupStorage(f, (uint)FlagM.CF, "C", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage SZ = new FlagGroupStorage(f, (uint) (FlagM.SF|FlagM.ZF), "SZ", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage SZP = new FlagGroupStorage(f, (uint) (FlagM.ZF | FlagM.SF | FlagM.PF), "SZP", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage SZPC = new FlagGroupStorage(f, (uint) (FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF), "SZPC", PrimitiveType.Byte);
 
         internal static RegisterStorage?[] All;
+        internal static FlagGroupStorage[] Flags = new[] { S, Z, P, N, C };
         internal static Dictionary<StorageDomain, RegisterStorage[]> SubRegisters;
         internal static Dictionary<string, RegisterStorage> regsByName;
         private readonly static RegisterStorage?[] regsByStorage;
@@ -272,35 +272,34 @@ namespace Reko.Arch.Z80
         static Registers()
         {
             All = new RegisterStorage?[] {
-             b ,
-             c ,
-             d ,
-             e ,
+                b ,
+                c ,
+                d ,
+                e ,
 
-             h ,
-             l ,
-             a ,
-             f,
+                h ,
+                l ,
+                a ,
+                f,
                
-             bc,
-             de,
-             hl,
-             sp,
-             ix,
-             iy,
-             af,
-             null,
+                bc,
+                de,
+                hl,
+                sp,
+                ix,
+                iy,
+                af,
+                null,
 
-             i ,
-             r ,
-             null,
-             null,
+                i ,
+                r ,
+                null,
+                null,
 
-             bc_,
-             de_,
-             hl_,
-             null,
-
+                bc_,
+                de_,
+                hl_,
+                null,
             };
 
             Registers.regsByName = All.Where(reg => reg != null).ToDictionary(reg => reg!.Name, reg => reg!);

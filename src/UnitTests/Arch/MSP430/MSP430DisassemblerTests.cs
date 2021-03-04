@@ -91,6 +91,12 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void MSP430Dis_cmpa()
+        {
+            AssertCode("cmpa.a\tr9,r4", "D409");
+        }
+
+        [Test]
         public void MSP430Dis_symbolic()
         {
             AssertCode("rrc.w\t1236(pc)", "1010 3412");
@@ -200,6 +206,5 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("mov.w\t#EEA0,r12", "3C40 A0EE");
         }
-
     }
 }

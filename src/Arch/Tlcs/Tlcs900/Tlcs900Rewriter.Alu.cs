@@ -198,8 +198,19 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteScc()
         {
-            var test = GenerateTestExpression((ConditionOperand)instr.Operands[0], false);
-            m.Assign(RewriteSrc(instr.Operands[1]), test);
+            Expression src;
+            Expression dst;
+            if (instr.Operands.Length > 1)
+            {
+                src = GenerateTestExpression((ConditionOperand) instr.Operands[0], false);
+                dst = RewriteSrc(instr.Operands[1]);
+            }
+            else
+            {
+                src = Constant.True();
+                dst = RewriteSrc(instr.Operands[0]);
+            }
+            m.Assign(dst, m.Convert(src, src.DataType, dst.DataType));
         }
 
         private void RewriteScf()

@@ -41,6 +41,7 @@ namespace Reko.Arch.M6800.M6812
         private readonly static Decoder[] decodersRegisters;
         private readonly static RegisterStorage[] BaseRegisters;
 
+        private Address addr;
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> operands;
 
@@ -49,9 +50,10 @@ namespace Reko.Arch.M6800.M6812
             this.arch = arch;
             this.rdr = rdr;
             this.operands = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override M6812Instruction DisassembleInstruction()
+        public override M6812Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadByte(out var bInstr))
@@ -175,9 +177,9 @@ namespace Reko.Arch.M6800.M6812
 
         private static bool PG(uint bInstr, M6812Disassembler dasm)
         {
-            if (!dasm.rdr.TryReadBeUInt16(out var imm))
+            if (!dasm.rdr.TryReadByte(out var imm))
                 return false;
-            dasm.operands.Add(ImmediateOperand.Word16(imm));
+            dasm.operands.Add(ImmediateOperand.Byte(imm));
             return true;
         }
 
@@ -209,95 +211,106 @@ namespace Reko.Arch.M6800.M6812
         {
             1, 2, 3, 4, 5, 6, 7, 8, -8, -7, -6, -5, -4, -3, -2, -1,
         };
-        private Address addr;
 
-        public static bool XB(uint bInstr, M6812Disassembler dasm)
+        public static Mutator<M6812Disassembler> ExtraByte(bool pageByte)
         {
-            if (!dasm.rdr.TryReadByte(out var bExtraByte))
-                return false;
-            RegisterStorage baseReg;
-            RegisterStorage idxReg;
-            MemoryOperand mem;
-            short? offset = null;
-            switch ((bExtraByte >> 5) & 0x7)
+            return (u, d) =>
             {
-            case 0:
-            case 2:
-            case 4:
-            case 6:
-                // 5-bit constant offset.
-                baseReg = BaseRegisters[(bExtraByte >> 6) & 3];
-                offset = (short)Bits.SignExtend(bExtraByte, 5);
-                mem = new MemoryOperand(PrimitiveType.Byte)
-                {
-                    Base = baseReg,
-                    Offset = offset
-                };
-                dasm.operands.Add(mem);
-                return true;
-            case 1:
-            case 3:
-            case 5:
-                // Auto (pre|post)(dec|inc)rement 
-                baseReg = BaseRegisters[(bExtraByte >> 6) & 3];
-                offset = prePostIncrementOffset[bExtraByte & 0xF];
-                mem = new MemoryOperand(PrimitiveType.Byte)
-                {
-                    Base = baseReg,
-                    Offset = offset,
-                    PreIncrement = (bExtraByte & 0x10) == 0,
-                    PostIncrement = (bExtraByte & 0x10) != 0,
-                };
-                break;
-            default:
-                baseReg = BaseRegisters[(bExtraByte >> 3) & 3];
-                idxReg = null;
-                bool indirect;
-                switch (bExtraByte & 0b111)
+                if (!d.rdr.TryReadByte(out var bExtraByte))
+                    return false;
+                RegisterStorage? baseReg;
+                RegisterStorage? idxReg;
+                MemoryOperand mem;
+                bool indirect = false;
+                short? offset = null;
+                switch ((bExtraByte >> 5) & 0x7)
                 {
                 case 0:
-                case 1:
-                    // 9-bit constant offset
-                    indirect = false;
-                    if (!dasm.rdr.TryReadByte(out var bOffset))
-                        return false;
-                    var q = (uint)((bExtraByte << 8) | bOffset);
-                    offset = (short)Bits.SignExtend(q, 9);
-                    break;
                 case 2:
-                    // 16-bit constant offset;
-                    indirect = false;
-                    if (!dasm.rdr.TryReadBeInt16(out var wOffset))
-                        return false;
-                    offset = wOffset;
-                    break;
+                case 4:
+                case 6:
+                    // 5-bit constant offset.
+                    baseReg = BaseRegisters[(bExtraByte >> 6) & 3];
+                    offset = (short) Bits.SignExtend(bExtraByte, 5);
+                    mem = new MemoryOperand(PrimitiveType.Byte)
+                    {
+                        Base = baseReg,
+                        Offset = offset
+                    };
+                    d.operands.Add(mem);
+                    return true;
+                case 1:
                 case 3:
-                    // 16-bit indexed indirect.
-                    if (!dasm.rdr.TryReadBeInt16(out var o))
-                        return false;
-                    offset = o;
-                    indirect = true;
+                case 5:
+                    // Auto (pre|post)(dec|inc)rement 
+                    baseReg = BaseRegisters[(bExtraByte >> 6) & 3];
+                    offset = prePostIncrementOffset[bExtraByte & 0xF];
+                    mem = new MemoryOperand(PrimitiveType.Byte)
+                    {
+                        Base = baseReg,
+                        Offset = offset,
+                        PreIncrement = (bExtraByte & 0x10) == 0,
+                        PostIncrement = (bExtraByte & 0x10) != 0,
+                    };
                     break;
-                case 4: idxReg = Registers.a; indirect = false; break;
-                case 5: idxReg = Registers.b; indirect = false; break;
-                case 6: idxReg = Registers.d; indirect = false; break;
                 default:
-                    idxReg = Registers.d;
-                    indirect = true;
+                    baseReg = BaseRegisters[(bExtraByte >> 3) & 3];
+                    idxReg = null;
+                    switch (bExtraByte & 0b111)
+                    {
+                    case 0:
+                    case 1:
+                        // 9-bit constant offset
+                        indirect = false;
+                        if (!d.rdr.TryReadByte(out var bOffset))
+                            return false;
+                        var q = (uint) ((bExtraByte << 8) | bOffset);
+                        offset = (short) Bits.SignExtend(q, 9);
+                        break;
+                    case 2:
+                        // 16-bit constant offset;
+                        indirect = false;
+                        if (!d.rdr.TryReadBeInt16(out var wOffset))
+                            return false;
+                        offset = wOffset;
+                        break;
+                    case 3:
+                        // 16-bit indexed indirect.
+                        if (!d.rdr.TryReadBeInt16(out var o))
+                            return false;
+                        offset = o;
+                        indirect = true;
+                        break;
+                    case 4: idxReg = Registers.a; indirect = false; break;
+                    case 5: idxReg = Registers.b; indirect = false; break;
+                    case 6: idxReg = Registers.d; indirect = false; break;
+                    default:
+                        idxReg = Registers.d;
+                        indirect = true;
+                        break;
+                    }
+                    mem = new MemoryOperand(PrimitiveType.Byte)
+                    {
+                        Base = baseReg,
+                        Index = idxReg,
+                        Offset = offset,
+                        Indirect = indirect
+                    };
                     break;
                 }
-                mem = new MemoryOperand(PrimitiveType.Byte)
+                d.operands.Add(mem);
+                if (pageByte && !indirect)
                 {
-                    Base = baseReg,
-                    Index = idxReg,
-                    Offset = offset,
-                    Indirect = indirect
-                };
-                break;
-            }
-            dasm.operands.Add(mem);
-            return true;
+                    if (!d.rdr.TryReadByte(out var imm))
+                        return false;
+                    d.operands.Add(ImmediateOperand.Byte(imm));
+                }
+                return true;
+            };
         }
+
+        public static readonly Mutator<M6812Disassembler> XB = ExtraByte(false);
+        public static readonly Mutator<M6812Disassembler> XB_PG = ExtraByte(true);
 
         private static bool R(uint bInstr, M6812Disassembler dasm)
         {
@@ -1423,8 +1436,8 @@ namespace Reko.Arch.M6800.M6812
 
                 Instr(Mnemonic.lsla),
                 Instr(Mnemonic.lsrd),
-                Instr(Mnemonic.call, HL,PG),
-                Instr(Mnemonic.call, HL,PG),
+                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, HL,PG),
+                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, XB_PG),
 
                 Instr(Mnemonic.bset, Dir,I),
                 Instr(Mnemonic.bclr, Dir,I),

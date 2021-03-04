@@ -20,6 +20,7 @@
 
 using Reko.Core.Lib;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -68,10 +69,10 @@ namespace Reko.Core.Types
 	/// </remarks>
 	public class PrimitiveType : DataType
 	{
-        private static Dictionary<(Domain,int), PrimitiveType> cache;
-        private static Dictionary<string, PrimitiveType> lookupByName;
+        private static ConcurrentDictionary<(Domain,int), PrimitiveType> cache;
+        private static ConcurrentDictionary<string, PrimitiveType> lookupByName;
         private static Dictionary<int, Domain> mpBitWidthToAllowableDomain;
-        private static Dictionary<int, PrimitiveType> mpBitsizeToWord;
+        private static ConcurrentDictionary<int, PrimitiveType> mpBitsizeToWord;
         private readonly int bitSize;
         private readonly int byteSize;
 		
@@ -122,8 +123,8 @@ namespace Reko.Core.Types
             {
                 var name = GenerateName(Domain.Integer, bitlength);
                 shared = new PrimitiveType(Domain.Integer, bitlength, false, name);
-                cache.Add((Domain.Integer, bitlength), shared);
-                lookupByName.Add(shared.Name, shared);
+                cache.TryAdd((Domain.Integer, bitlength), shared);
+                lookupByName.TryAdd(shared.Name, shared);
             }
             return shared;
         }
@@ -137,7 +138,7 @@ namespace Reko.Core.Types
             if (cache.TryGetValue((dom, bitSize), out var shared))
                 return shared;
             var p = new PrimitiveType(dom, bitSize, false, name ?? GenerateName(dom, bitSize));
-            return Cache(p, name);
+            return Cache(p, p.Name);
         }
 
         private static PrimitiveType Cache(PrimitiveType p, string? name)
@@ -145,8 +146,8 @@ namespace Reko.Core.Types
             if (!cache.TryGetValue((p.Domain, p.BitSize), out var shared))
             {
                 shared = p;
-                cache.Add((p.Domain, p.bitSize), shared);
-                lookupByName.Add(shared.Name, shared);
+                cache.TryAdd((p.Domain, p.bitSize), shared);
+                lookupByName.TryAdd(shared.Name, shared);
             }
 			return shared;
 		}
@@ -298,12 +299,12 @@ namespace Reko.Core.Types
 			set => throw new InvalidOperationException("Size of a primitive type cannot be changed."); 
 		}
 
-        public static Dictionary<string, PrimitiveType> AllTypes => lookupByName;
+        public static ConcurrentDictionary<string, PrimitiveType> AllTypes => lookupByName;
 
         static PrimitiveType()
         {
-            cache = new Dictionary<(Domain,int), PrimitiveType>();
-            lookupByName = new Dictionary<string, PrimitiveType>();
+            cache = new ConcurrentDictionary<(Domain,int), PrimitiveType>();
+            lookupByName = new ConcurrentDictionary<string, PrimitiveType>();
             mpBitWidthToAllowableDomain = new Dictionary<int, Domain>
             {
                 { 0, Domain.Any },
@@ -312,12 +313,12 @@ namespace Reko.Core.Types
                 { 16, Domain.Character | Domain.Integer | Domain.Pointer | Domain.Offset | Domain.Selector | Domain.Real },
                 { 32, Domain.Integer | Domain.Pointer | Domain.Real | Domain.SegPointer },
                 { 64, Domain.Integer | Domain.Pointer | Domain.Real },
-                { 80, Domain.Integer | Domain.Real | Domain.Bcd },
+                { 80, Domain.Integer | Domain.Pointer | Domain.SegPointer | Domain.Real | Domain.Bcd },
                 { 96, Domain.Integer | Domain.Real },
                 { 128, Domain.Integer | Domain.Real },
                 { 256, Domain.Integer | Domain.Real },
             };
-            mpBitsizeToWord = new Dictionary<int, PrimitiveType>();
+            mpBitsizeToWord = new ConcurrentDictionary<int, PrimitiveType>();
 
             Bool = Create(Domain.Boolean, 1);
 

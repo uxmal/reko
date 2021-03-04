@@ -172,7 +172,7 @@ namespace Reko.Arch.X86
         private void RewriteInto()
         {
             m.BranchInMiddleOfInstruction(
-                m.Test(ConditionCode.NO, orw.FlagGroup(FlagM.OF)),
+                m.Test(ConditionCode.NO, binder.EnsureFlagGroup(Registers.O)),
                 instrCur.Address + instrCur.Length,
                 InstrClass.ConditionalTransfer);
             m.SideEffect(
@@ -228,15 +228,15 @@ namespace Reko.Arch.X86
             m.SideEffect(host.Intrinsic("__jmpe", false, VoidType.Instance));
         }
 
-        private void RewriteLoop(FlagM useFlags, ConditionCode cc)
+        private void RewriteLoop(FlagGroupStorage? useFlags, ConditionCode cc)
         {
             Identifier cx = orw.AluRegister(Registers.rcx, instrCur.dataWidth);
             m.Assign(cx, m.ISub(cx, 1));
-            if (useFlags != 0)
+            if (useFlags != null)
             {
                 m.Branch(
                     m.Cand(
-                        m.Test(cc, orw.FlagGroup(useFlags)),
+                        m.Test(cc, binder.EnsureFlagGroup(useFlags)),
                         m.Ne0(cx)),
                     OperandAsCodeAddress(instrCur.Operands[0])!,
                     InstrClass.ConditionalTransfer);
@@ -275,7 +275,7 @@ namespace Reko.Arch.X86
         public void RewriteIret()
         {
             RewritePop(
-                orw.FlagGroup(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), instrCur.dataWidth);
+                binder.EnsureFlagGroup(Registers.SCZO), instrCur.dataWidth);
             m.Return(
                 Registers.cs.DataType.Size +
                 arch.WordWidth.Size, 
@@ -319,7 +319,7 @@ namespace Reko.Arch.X86
 
         private void RewriteVerrw(string intrinsicName)
         {
-            var z = orw.FlagGroup(FlagM.ZF);
+            var z = binder.EnsureFlagGroup(Registers.Z);
             m.Assign(z, host.Intrinsic(intrinsicName,
                 false,
                 z.DataType,

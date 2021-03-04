@@ -75,6 +75,7 @@ namespace Reko.Core.Memory
 
         public bool TryRead(PrimitiveType dataType, out Constant value) => TryReadBe(dataType, out value);
 
+        public bool TryReadInt16(out short value) => TryReadBeInt16(out value);
         public bool TryReadInt32(out int value) => TryReadBeInt32(out value);
         public bool TryReadInt64(out long value) => TryReadBeInt64(out value);
         public bool TryReadUInt16(out ushort value) => TryReadBeUInt16(out value);

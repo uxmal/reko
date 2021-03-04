@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Reko.Decompiler.Runtime</id>
-    <version>0.9.3-prerelease</version>
+    <version>0.9.4-prerelease</version>
     <title>Reko Decompiler Runtime</title>
     <authors>Reko Decompiler contributors</authors>
     <owners>John Källén</owners>
@@ -113,16 +113,20 @@
 <file src="../Arch/Arm/bin/$Configuration$/netstandard2.1/Reko.Arch.Arm.dll" target="lib\netstandard2.0" />
 <file src="../Arch/Avr/bin/$Configuration$/netstandard2.1/Reko.Arch.Avr.dll" target="lib\netstandard2.0" />
 <file src="../Arch/Blackfin/bin/$Configuration$/netstandard2.1/Reko.Arch.Blackfin.dll" target="lib\netstandard2.0" />
+<file src="../Arch/CompactRisc/bin/$Configuration$/netstandard2.1/Reko.Arch.CompactRisc.dll" target="lib\netstandard2.0" />
 <file src="../Arch/Cray/bin/$Configuration$/netstandard2.1/Reko.Arch.Cray.dll" target="lib\netstandard2.0" />
 <file src="../Arch/H8/bin/$Configuration$/netstandard2.1/Reko.Arch.H8.dll" target="lib\netstandard2.0" />
 <file src="../Arch/i8051/bin/$Configuration$/netstandard2.1/Reko.Arch.i8051.dll" target="lib\netstandard2.0" />
+<file src="../Arch/IA64/bin/$Configuration$/netstandard2.1/Reko.Arch.IA64.dll" target="lib\netstandard2.0" />
 <file src="../Arch/LatticeMico/bin/$Configuration$/netstandard2.1/Reko.Arch.LatticeMico.dll" target="lib\netstandard2.0" />
 <file src="../Arch/M6800/bin/$Configuration$/netstandard2.1/Reko.Arch.M6800.dll" target="lib\netstandard2.0" />
 <file src="../Arch/M68k/bin/$Configuration$/netstandard2.1/Reko.Arch.M68k.dll" target="lib\netstandard2.0" />
 <file src="../Arch/M68k.Design/bin/$Configuration$/netcoreapp3.1/Reko.Arch.M68k.Design.dll" target="lib\netstandard2.0" />
+<file src="../Arch/MCore/bin/$Configuration$/netstandard2.1/Reko.Arch.MCore.dll" target="lib\netstandard2.0" />
 <file src="../Arch/MicroBlaze/bin/$Configuration$/netstandard2.1/Reko.Arch.MicroBlaze.dll" target="lib\netstandard2.0" />
 <file src="../Arch/Microchip/bin/$Configuration$/netstandard2.1/Reko.Arch.MicrochipPIC.dll" target="lib\netstandard2.0" />
 <file src="../Arch/MicrochipPIC.Design/bin/$Configuration$/netcoreapp3.1/Reko.Arch.MicrochipPIC.Design.dll" target="lib\netstandard2.0" />
+<file src="../Arch/MilStd1750/bin/$Configuration$/netstandard2.1/Reko.Arch.MilStd1750.dll" target="lib\netstandard2.0" />
 <file src="../Arch/Mips/bin/$Configuration$/netstandard2.1/Reko.Arch.Mips.dll" target="lib\netstandard2.0" />
 <file src="../Arch/Mos6502/bin/$Configuration$/netstandard2.1/Reko.Arch.Mos6502.dll" target="lib\netstandard2.0" />
 <file src="../Arch/MSP430/bin/$Configuration$/netstandard2.1/Reko.Arch.MSP430.dll" target="lib\netstandard2.0" />
@@ -131,17 +135,21 @@
 <file src="../Arch/Pdp11/bin/$Configuration$/netstandard2.1/Reko.Arch.Pdp11.dll" target="lib\netstandard2.0" />
 <file src="../Arch/PowerPC/bin/$Configuration$/netstandard2.1/Reko.Arch.PowerPC.dll" target="lib\netstandard2.0" />
 <file src="../Arch/PowerPC.Design/bin/$Configuration$/netcoreapp3.1/Reko.Arch.PowerPC.Design.dll" target="lib\netstandard2.0" />
+<file src="../Arch/Qualcomm/bin/$Configuration$/netstandard2.1/Reko.Arch.Qualcomm.dll" target="lib\netstandard2.0" />
 <file src="../Arch/RiscV/bin/$Configuration$/netstandard2.1/Reko.Arch.RiscV.dll" target="lib\netstandard2.0" />
 <file src="../Arch/Rl78/bin/$Configuration$/netstandard2.1/Reko.Arch.Rl78.dll" target="lib\netstandard2.0" />
 <file src="../Arch/Sparc/bin/$Configuration$/netstandard2.1/Reko.Arch.Sparc.dll" target="lib\netstandard2.0" />
 <file src="../Arch/SuperH/bin/$Configuration$/netstandard2.1/Reko.Arch.SuperH.dll" target="lib\netstandard2.0" />
 <file src="../Arch/Tlcs/bin/$Configuration$/netstandard2.1/Reko.Arch.Tlcs.dll" target="lib\netstandard2.0" />
 <file src="../Arch/Vax/bin/$Configuration$/netstandard2.1/Reko.Arch.Vax.dll" target="lib\netstandard2.0" />
+<file src="../Arch/V850/bin/$Configuration$/netstandard2.1/Reko.Arch.V850.dll" target="lib\netstandard2.0" />
 <file src="../Arch/WE32100/bin/$Configuration$/netstandard2.1/Reko.Arch.WE32100.dll" target="lib\netstandard2.0" />
 <file src="../Arch/X86/bin/$Configuration$/netstandard2.1/Reko.Arch.X86.dll" target="lib\netstandard2.0" />
 <file src="../Arch/X86.Design/bin/$Configuration$/netcoreapp3.1/Reko.Arch.X86.Design.dll" target="lib\netstandard2.0" />
+<file src="../Arch/XCore/bin/$Configuration$/netstandard2.1/Reko.Arch.XCore.dll" target="lib\netstandard2.0" />
 <file src="../Arch/Xtensa/bin/$Configuration$/netstandard2.1/Reko.Arch.Xtensa.dll" target="lib\netstandard2.0" />
 <file src="../Arch/Z80/bin/$Configuration$/netstandard2.1/Reko.Arch.Z80.dll" target="lib\netstandard2.0" />
+<file src="../Arch/zSeries/bin/$Configuration$/netstandard2.1/Reko.Arch.zSeries.dll" target="lib\netstandard2.0" />
 <file src="../Symbols/LGSymLoader/bin/$Configuration$/netstandard2.1/Reko.Symbols.LGSymLoader.dll" target="lib\netstandard2.0" />
 <file src="../Libraries/Libc/bin/$Configuration$/netstandard2.1/Reko.Libraries.Libc.dll" target="lib\netstandard2.0" />
 <file src="../Libraries/Python/bin/$Configuration$/netstandard2.1/Reko.Libraries.Python.dll" target="lib\netstandard2.0" />

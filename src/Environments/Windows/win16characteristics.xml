@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<characteristics xmlns="http://schemata.jklnet.org/Decompiler">
+  <entry name="ExitProcess">
+    <characteristics>
+      <terminates>true</terminates>
+    </characteristics>
+  </entry>
+  <entry name="FatalExit">
+    <characteristics>
+      <terminates>true</terminates>
+    </characteristics>
+  </entry>
+</characteristics>

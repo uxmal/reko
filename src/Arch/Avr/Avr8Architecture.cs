@@ -35,8 +35,7 @@ namespace Reko.Arch.Avr
     public class Avr8Architecture : ProcessorArchitecture
     {
         private readonly RegisterStorage[] regs;
-        private readonly Dictionary<uint, FlagGroupStorage> grfs;
-        private readonly List<Tuple<FlagM, char>> grfToString;
+        private readonly List<(FlagM, char)> grfToString;
 
         public Avr8Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)
@@ -60,17 +59,31 @@ namespace Reko.Arch.Avr
                 ByteRegs
                 .Concat(new[] { x, y, z, this.sreg })
                 .ToArray();
-            this.grfs = new Dictionary<uint, FlagGroupStorage>();
-            this.grfToString = new List<Tuple<FlagM, char>>
+            this.I = new FlagGroupStorage(sreg, (uint) FlagM.IF, "I", PrimitiveType.Bool);
+            this.H = new FlagGroupStorage(sreg, (uint) FlagM.HF, "H", PrimitiveType.Bool);
+            this.V = new FlagGroupStorage(sreg, (uint) FlagM.VF, "V", PrimitiveType.Bool);
+            this.N = new FlagGroupStorage(sreg, (uint) FlagM.NF, "N", PrimitiveType.Bool);
+            this.C = new FlagGroupStorage(sreg, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            this.Z = new FlagGroupStorage(sreg, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
+            this.HSVNZC = new FlagGroupStorage(sreg, (uint) (FlagM.HF | FlagM.SF | FlagM.VF | FlagM.NF | FlagM.ZF | FlagM.CF), "HSVNZC", PrimitiveType.Byte);
+            this.SNZ = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.NF | FlagM.ZF), "SNZ", PrimitiveType.Byte);
+            this.SNZC = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.NF | FlagM.ZF | FlagM.CF), "SNZC", PrimitiveType.Byte);
+            this.SNZV = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.NF | FlagM.ZF | FlagM.VF), "SNZV", PrimitiveType.Byte);
+            this.SVNC = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.VF | FlagM.NF | FlagM.CF), "SVNC", PrimitiveType.Byte);
+            this.SVNZ = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.VF | FlagM.NF | FlagM.ZF), "SVNZ", PrimitiveType.Byte);
+            this.SVNZC = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.VF | FlagM.NF | FlagM.ZF | FlagM.CF), "SVNZC", PrimitiveType.Byte);
+            this.SVZC = new FlagGroupStorage(sreg, (uint) (FlagM.SF | FlagM.VF | FlagM.ZF | FlagM.CF), "SVZC", PrimitiveType.Byte);
+            this.VN = new FlagGroupStorage(sreg, (uint) (FlagM.VF | FlagM.NF), "VN", PrimitiveType.Byte);
+            this.grfToString = new List<(FlagM, char)>
             {
-                Tuple.Create(FlagM.IF, 'I'),
-                Tuple.Create(FlagM.TF, 'T'),
-                Tuple.Create(FlagM.HF, 'H'),
-                Tuple.Create(FlagM.SF, 'S'),
-                Tuple.Create(FlagM.VF, 'V'),
-                Tuple.Create(FlagM.NF, 'N'),
-                Tuple.Create(FlagM.ZF, 'Z'),
-                Tuple.Create(FlagM.CF, 'C'),
+                (FlagM.IF, 'I'),
+                (FlagM.TF, 'T'),
+                (FlagM.HF, 'H'),
+                (FlagM.SF, 'S'),
+                (FlagM.VF, 'V'),
+                (FlagM.NF, 'N'),
+                (FlagM.ZF, 'Z'),
+                (FlagM.CF, 'C'),
             };
         }
         
@@ -86,6 +99,22 @@ namespace Reko.Arch.Avr
         public static RegisterStorage y { get; }
         public static RegisterStorage z { get; }
         public RegisterStorage code { get; private set; }
+        public FlagGroupStorage H { get; }
+        public FlagGroupStorage I { get; }
+        public FlagGroupStorage V { get; }
+        public FlagGroupStorage N { get; }
+        public FlagGroupStorage C { get; }
+        public FlagGroupStorage Z { get; }
+        public FlagGroupStorage HSVNZC { get; }
+        public FlagGroupStorage SNZC { get; }
+        public FlagGroupStorage SNZ { get; }
+        public FlagGroupStorage SNZV { get; }
+        public FlagGroupStorage SVNZ { get; }
+        public FlagGroupStorage SVNC { get; }
+        public FlagGroupStorage SVNZC { get; }
+        public FlagGroupStorage SVZC { get; }
+        public FlagGroupStorage VN { get; }
+
 
         public RegisterStorage[] ByteRegs { get; }
 
@@ -126,12 +155,8 @@ namespace Reko.Arch.Avr
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            if (!grfs.TryGetValue(grf, out FlagGroupStorage fl))
-            {
-                PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-                fl = new FlagGroupStorage(this.sreg, grf, GrfToString(flagRegister, "", grf), dt);
-                grfs.Add(grf, fl);
-            }
+            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(this.sreg, grf, GrfToString(flagRegister, "", grf), dt);
             return fl;
         }
 

@@ -201,6 +201,20 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void Tlcs90_rw_rrc_mem()
+        {
+            Given_HexString("E0A1");
+            AssertCode(
+                "0|L--|0100(2): 6 instructions",
+                "1|L--|v3 = Mem0[bc:byte]",
+                "2|L--|v5 = __ror(v3, 1<8>)",
+                "3|L--|Mem0[bc:byte] = v5",
+                "4|L--|H = false",
+                "5|L--|N = false",
+                "6|L--|SZXC = cond(v5)");
+        }
+
+        [Test]
         public void Tlcs90_rw_swi()
         {
             Given_HexString("FF");  // swi
@@ -261,6 +275,17 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|T--|0100(3): 1 instructions",
                 "1|T--|call 0200 (2)");
         }
+
+        [Test]
+        public void Tlcs90_rw_call_mem()
+        {
+            Given_HexString("F67AD8");
+            AssertCode(
+                "0|T--|0100(3): 2 instructions",
+                "1|L--|v3 = Mem0[sp + 122<i16>:word16]",
+                "2|T--|call v3 (2)");
+        }
+
         [Test]
         public void Tlcs90_rw_callr()
         {
@@ -514,6 +539,20 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void Tlcs90_rw_rl_mem()
+        {
+            Given_HexString("E4A2");
+            AssertCode(
+                "0|L--|0100(2): 6 instructions",
+                "1|L--|v3 = Mem0[ix:byte]",
+                "2|L--|v5 = __rcl(v3, 1<8>, C)",
+                "3|L--|Mem0[ix:byte] = v5",
+                "4|L--|H = false",
+                "5|L--|N = false",
+                "6|L--|SZXC = cond(v5)");
+        }
+
+        [Test]
         public void Tlcs90_rw_rl_a()
         {
             Given_HexString("A2");	// rl
@@ -732,7 +771,6 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "3|L--|SHXV = cond(e)",
                 "4|L--|e = e | 8<8>");
         }
-
 
         [Test]
         public void Tlcs90_rw_ConditionalJump()

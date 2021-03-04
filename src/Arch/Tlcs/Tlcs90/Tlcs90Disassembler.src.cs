@@ -32,7 +32,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
     partial class Tlcs90Disassembler
     {
-        private static Decoder[] srcEncodings = new Decoder[]
+        private static readonly Decoder[] srcEncodings = new Decoder[]
         {
             // 00
             invalid,
@@ -56,8 +56,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
 
             // 10
-            Instr(Mnemonic.rld, x),
-            Instr(Mnemonic.rrd, x),
+            Instr(Mnemonic.rld, db,x),
+            Instr(Mnemonic.rrd, db,x),
             Instr(Mnemonic.mul, H,x),
             Instr(Mnemonic.div, H,x),
 
@@ -66,15 +66,15 @@ namespace Reko.Arch.Tlcs.Tlcs90
             Instr(Mnemonic.add, S,x),
             invalid,
 
-            Instr(Mnemonic.tset, i,x),
-            Instr(Mnemonic.tset, i,x),
-            Instr(Mnemonic.tset, i,x),
-            Instr(Mnemonic.tset, i,x),
+            Instr(Mnemonic.tset, db,i,x),
+            Instr(Mnemonic.tset, db,i,x),
+            Instr(Mnemonic.tset, db,i,x),
+            Instr(Mnemonic.tset, db,i,x),
 
-            Instr(Mnemonic.tset, i,x),
-            Instr(Mnemonic.tset, i,x),
-            Instr(Mnemonic.tset, i,x),
-            Instr(Mnemonic.tset, i,x),
+            Instr(Mnemonic.tset, db,i,x),
+            Instr(Mnemonic.tset, db,i,x),
+            Instr(Mnemonic.tset, db,i,x),
+            Instr(Mnemonic.tset, db,i,x),
 
             // 20
             invalid,
@@ -211,7 +211,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
             invalid,
             invalid,
-            Instr(Mnemonic.inc, x),
+            Instr(Mnemonic.inc, db, x),
 
             invalid,
             invalid,
@@ -221,7 +221,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
             invalid,
             invalid,
-            Instr(Mnemonic.dec, x),
+            Instr(Mnemonic.dec, db, x),
 
             // 90
             invalid,
@@ -232,7 +232,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
             invalid,
             invalid,
-            Instr(Mnemonic.incw, x),
+            Instr(Mnemonic.incw, dw, x),
 
             invalid,
             invalid,
@@ -242,70 +242,49 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
             invalid,
             invalid,
-            Instr(Mnemonic.decw, x),
+            Instr(Mnemonic.decw, dw,x),
 
             // A0
-            Instr(Mnemonic.rlc, x),
-            Instr(Mnemonic.rrc, x),
-            Instr(Mnemonic.rl, x),
-            Instr(Mnemonic.rr, x),
+            Instr(Mnemonic.rlc, db,x),
+            Instr(Mnemonic.rrc, db,x),
+            Instr(Mnemonic.rl, db,x),
+            Instr(Mnemonic.rr, db,x),
 
-            Instr(Mnemonic.sla, x),
-            Instr(Mnemonic.sra, x),
-            Instr(Mnemonic.sll, x),
-            Instr(Mnemonic.srl, x),
+            Instr(Mnemonic.sla, db,x),
+            Instr(Mnemonic.sra, db,x),
+            Instr(Mnemonic.sll, db,x),
+            Instr(Mnemonic.srl, db,x),
 
-            Instr(Mnemonic.bit, i,x),
-            Instr(Mnemonic.bit, i,x),
-            Instr(Mnemonic.bit, i,x),
-            Instr(Mnemonic.bit, i,x),
+            Instr(Mnemonic.bit, db,i,x),
+            Instr(Mnemonic.bit, db,i,x),
+            Instr(Mnemonic.bit, db,i,x),
+            Instr(Mnemonic.bit, db,i,x),
 
-            Instr(Mnemonic.bit, i,x),
-            Instr(Mnemonic.bit, i,x),
-            Instr(Mnemonic.bit, i,x),
-            Instr(Mnemonic.bit, i,x),
+            Instr(Mnemonic.bit, db,i,x),
+            Instr(Mnemonic.bit, db,i,x),
+            Instr(Mnemonic.bit, db,i,x),
+            Instr(Mnemonic.bit, db,i,x),
 
             // B0
-            Instr(Mnemonic.res, i,x),
-            Instr(Mnemonic.res, i,x),
-            Instr(Mnemonic.res, i,x),
-            Instr(Mnemonic.res, i,x),
+            Instr(Mnemonic.res, db,i,x),
+            Instr(Mnemonic.res, db,i,x),
+            Instr(Mnemonic.res, db,i,x),
+            Instr(Mnemonic.res, db,i,x),
 
-            Instr(Mnemonic.res, i,x),
-            Instr(Mnemonic.res, i,x),
-            Instr(Mnemonic.res, i,x),
-            Instr(Mnemonic.res, i,x),
+            Instr(Mnemonic.res, db,i,x),
+            Instr(Mnemonic.res, db,i,x),
+            Instr(Mnemonic.res, db,i,x),
+            Instr(Mnemonic.res, db,i,x),
 
-            Instr(Mnemonic.set, i,x),
-            Instr(Mnemonic.set, i,x),
-            Instr(Mnemonic.set, i,x),
-            Instr(Mnemonic.set, i,x),
+            Instr(Mnemonic.set, db,i,x),
+            Instr(Mnemonic.set, db,i,x),
+            Instr(Mnemonic.set, db,i,x),
+            Instr(Mnemonic.set, db,i,x),
 
-            Instr(Mnemonic.set, i,x),
-            Instr(Mnemonic.set, i,x),
-            Instr(Mnemonic.set, i,x),
-            Instr(Mnemonic.set, i,x),
-
-            // 00
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-
-            invalid,
-            invalid,
-            invalid,
-            invalid,
-
-            invalid,
-            invalid,
-            invalid,
-            invalid,
+            Instr(Mnemonic.set, db,i,x),
+            Instr(Mnemonic.set, db,i,x),
+            Instr(Mnemonic.set, db,i,x),
+            Instr(Mnemonic.set, db,i,x),
 
             // 00
             invalid,
@@ -370,6 +349,26 @@ namespace Reko.Arch.Tlcs.Tlcs90
             invalid,
             invalid,
 
+            // 00
+            invalid,
+            invalid,
+            invalid,
+            invalid,
+
+            invalid,
+            invalid,
+            invalid,
+            invalid,
+
+            invalid,
+            invalid,
+            invalid,
+            invalid,
+
+            invalid,
+            invalid,
+            invalid,
+            invalid,
         };
     }
 }

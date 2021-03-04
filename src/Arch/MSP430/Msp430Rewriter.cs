@@ -53,6 +53,8 @@ namespace Reko.Arch.Msp430
             this.host = host;
             this.rdr = rdr;
             this.dasm = new Msp430Disassembler(arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -71,15 +73,15 @@ namespace Reko.Arch.Msp430
                     Invalid();
                     break;
                 case Mnemonics.addc: RewriteAdcSbc(m.IAdd); break;
-                case Mnemonics.add: RewriteBinop(m.IAdd, "V-----NZC"); break;
-                case Mnemonics.and: RewriteBinop(m.And,  "0-----NZC"); break;
-                case Mnemonics.bic: RewriteBinop(Bis,    "---------"); break;
-                case Mnemonics.bis: RewriteBinop(m.Or,   "---------"); break;
+                case Mnemonics.add: RewriteBinop(m.IAdd, Registers.VNZC); break;
+                case Mnemonics.and: RewriteLogop(m.And); break;
+                case Mnemonics.bic: RewriteBinop(Bis,  null); break;
+                case Mnemonics.bis: RewriteBinop(m.Or, null); break;
                 case Mnemonics.bit: RewriteBit(); break;
                 case Mnemonics.br: RewriteBr(); break;
                 case Mnemonics.call: RewriteCall(); break;
                 case Mnemonics.cmp: RewriteCmp(); break;
-                case Mnemonics.dadd: RewriteBinop(Dadd,  "------NZC"); break;
+                case Mnemonics.dadd: RewriteBinop(Dadd, Registers.NZC); break;
 
                 case Mnemonics.jc:  RewriteBranch(ConditionCode.ULT, FlagM.CF); break;
                 case Mnemonics.jge: RewriteBranch(ConditionCode.GE, FlagM.VF|FlagM.NF); break;
@@ -90,22 +92,22 @@ namespace Reko.Arch.Msp430
                 case Mnemonics.jnz: RewriteBranch(ConditionCode.NE, FlagM.ZF); break;
                 case Mnemonics.jz:  RewriteBranch(ConditionCode.EQ, FlagM.ZF); break;
 
-                case Mnemonics.mov: RewriteBinop((a, b) => b, ""); break;
-                case Mnemonics.mova: RewriteBinop((a, b) => b, ""); break;
+                case Mnemonics.mov: RewriteMov(); break;
+                case Mnemonics.mova: RewriteMov(); break;
                 case Mnemonics.popm: RewritePopm(); break;
                 case Mnemonics.push: RewritePush(); break;
                 case Mnemonics.pushm: RewritePushm(); break;
                 case Mnemonics.ret: RewriteRet(); break;
                 case Mnemonics.reti: RewriteReti(); break;
-                case Mnemonics.rra: RewriteRra(  "0-----NZC"); break;
-                case Mnemonics.rrax: RewriteRrax("0-----NZC"); break;
-                case Mnemonics.rrc: RewriteRrc(  "0-----NZC"); break;
-                case Mnemonics.rrum: RewriteRrum("0-----NZC"); break;
-                case Mnemonics.sub: RewriteBinop(m.ISub, "V-----NZC"); break;
+                case Mnemonics.rra: RewriteRra(); break;
+                case Mnemonics.rrax: RewriteRrax(); break;
+                case Mnemonics.rrc: RewriteRrc(); break;
+                case Mnemonics.rrum: RewriteRrum(); break;
+                case Mnemonics.sub: RewriteBinop(m.ISub, Registers.VNZC); break;
                 case Mnemonics.subc: RewriteAdcSbc(m.ISub); break;
                 case Mnemonics.swpb: RewriteSwpb(); break;
-                case Mnemonics.sxt: RewriteSxt("0-----NZC"); break;
-                case Mnemonics.xor: RewriteBinop(m.Xor,  "V-----NZC"); break;
+                case Mnemonics.sxt: RewriteSxt(); break;
+                case Mnemonics.xor: RewriteBinop(m.Xor, Registers.VNZC); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
             }
@@ -114,6 +116,11 @@ namespace Reko.Arch.Msp430
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private void Assign(FlagGroupStorage grf, Expression e)
+        {
+            m.Assign(binder.EnsureFlagGroup(grf), e);
         }
 
         private Expression Bis(Expression a, Expression b)
@@ -126,8 +133,9 @@ namespace Reko.Arch.Msp430
             return host.Intrinsic("__dadd", false, a.DataType, a, b);
         }
 
-        private Expression RewriteOp(MachineOperand op)
+        private Expression RewriteOp(MachineOperand op, PrimitiveType? dt = null)
         {
+            dt ??= op.Width ?? instr.dataWidth!;
             switch (op)
             {
             case RegisterOperand rop:
@@ -139,36 +147,36 @@ namespace Reko.Arch.Msp430
                     ea = binder.EnsureRegister(mop.Base);
                     if (mop.PostIncrement)
                     {
-                        var tmp = binder.CreateTemporary(op.Width);
-                        m.Assign(tmp, m.Mem(op.Width, ea));
-                        m.Assign(ea, m.IAdd(ea, m.Int16((short) op.Width.Size)));
+                        var tmp = binder.CreateTemporary(dt);
+                        m.Assign(tmp, m.Mem(op.Width!, ea));
+                        m.Assign(ea, m.IAdd(ea, m.Int16((short) dt.Size)));
                         return tmp;
                     }
                     else if (mop.Base == Registers.pc)
                     {
                         ea = instr.Address + mop.Offset;
-                        var tmp = binder.CreateTemporary(op.Width);
-                        m.Assign(tmp, m.Mem(op.Width, ea));
+                        var tmp = binder.CreateTemporary(dt);
+                        m.Assign(tmp, m.Mem(dt, ea));
                         return tmp;
                     }
                     else if (mop.Offset != 0)
                     {
-                        var tmp = binder.CreateTemporary(op.Width);
-                        m.Assign(tmp, m.Mem(op.Width, m.IAdd(ea, m.Int16(mop.Offset))));
+                        var tmp = binder.CreateTemporary(dt);
+                        m.Assign(tmp, m.Mem(dt, m.IAdd(ea, m.Int16(mop.Offset))));
                         return tmp;
                     }
                     else
                     {
-                        var tmp = binder.CreateTemporary(op.Width);
-                        m.Assign(tmp, m.Mem(op.Width, ea));
+                        var tmp = binder.CreateTemporary(dt);
+                        m.Assign(tmp, m.Mem(dt, ea));
                         return tmp;
                     }
                 }
                 else
                 {
-                    var tmp = binder.CreateTemporary(op.Width);
+                    var tmp = binder.CreateTemporary(dt);
                     ea = Address.Ptr16((ushort) mop.Offset);
-                    m.Assign(tmp, m.Mem(op.Width, ea));
+                    m.Assign(tmp, m.Mem(dt, ea));
                     return tmp;
                 }
             case ImmediateOperand iop:
@@ -195,6 +203,8 @@ namespace Reko.Arch.Msp430
                     m.Assign(dst, ev);
                 }
                 return dst;
+            case ImmediateOperand imm:
+                return imm.Value;
             case MemoryOperand mop:
                 Expression ea;
                 if (mop.Base != null)
@@ -226,42 +236,62 @@ namespace Reko.Arch.Msp430
                 m.Assign(mem, fn(mem, src));
                 return mem;
             }
-            throw new NotImplementedException(op.ToString());
+            throw new NotImplementedException($"Unknown operand type {op.GetType().Name} ({op})");
         }
 
-        private void EmitCc(Expression exp, string vnzc)
+        private Expression RewriteMovDst(MachineOperand op, Expression src)
         {
-            var mask = 1u << 8;
-            uint grf = 0;
-            foreach (var c in vnzc)
+            switch (op)
             {
-                switch (c)
+            case RegisterOperand rop:
+                var dst = binder.EnsureRegister(rop.Register);
+                if (dst.Storage == Registers.sp && src is Constant)
                 {
-                case '*':
-                case 'V':
-                case 'N':
-                case 'Z':
-                case 'C':
-                    grf |= mask;
-                    break;
-                case '0':
-                    m.Assign(
-                        binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, mask)),
-                        Constant.False());
-                    break;
-                case '1':
-                    m.Assign(
-                        binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, mask)),
-                        Constant.True());
-                    break;
+                    m.SideEffect(host.Intrinsic("__set_stackpointer", false, VoidType.Instance, src));
                 }
-                mask >>= 1;
+                else
+                {
+                    m.Assign(dst, src);
+                }
+                return dst;
+            case ImmediateOperand imm:
+                return imm.Value;
+            case MemoryOperand mop:
+                Expression ea;
+                if (mop.Base != null)
+                {
+                    if (mop.Base == Registers.pc)
+                    {
+                        ea = instr.Address + mop.Offset;
+                    }
+                    else
+                    {
+                        ea = binder.EnsureRegister(mop.Base);
+                        if (mop.Offset != 0)
+                        {
+                            ea = m.IAdd(ea, m.Int16(mop.Offset));
+                        }
+                    }
+                }
+                else
+                {
+                    ea = Address.Ptr16((ushort) mop.Offset);
+                }
+                m.Assign(m.Mem(mop.Width, ea), src);
+                return src;
+            case AddressOperand aop:
+                var mem = m.Mem(op.Width, aop.Address);
+                m.Assign(mem, src);
+                return src;
             }
-            if (grf != 0)
+            throw new NotImplementedException($"Unknown operand type {op.GetType().Name} ({op})");
+        }
+
+        private void EmitCc(Expression exp, FlagGroupStorage? grf)
+        {
+            if (grf != null)
             {
-                m.Assign(
-                    binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.sr, grf)),
-                    m.Cond(exp));
+                Assign(grf, m.Cond(exp));
             }
         }
 
@@ -270,10 +300,10 @@ namespace Reko.Arch.Msp430
             var c = binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.sr, (uint)FlagM.CF));
             var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[1], src, (a, b) => fn(fn(a, b), c));
-            EmitCc(dst, "V-----NZC");
+            EmitCc(dst, Registers.VNZC);
         }
 
-        private void RewriteBinop(Func<Expression,Expression,Expression> fn, string vnzc)
+        private void RewriteBinop(Func<Expression,Expression,Expression> fn, FlagGroupStorage? vnzc)
         {
             var src = RewriteOp(instr.Operands[0]);
             if (instr.Operands[1] is RegisterOperand rop &&
@@ -321,6 +351,7 @@ namespace Reko.Arch.Msp430
         private void RewriteCall()
         {
             iclass = InstrClass.Transfer | InstrClass.Call;
+            instr.dataWidth = PrimitiveType.Word16;
             m.Call(RewriteOp(instr.Operands[0]), 2);
         }
 
@@ -328,13 +359,49 @@ namespace Reko.Arch.Msp430
         {
             var right = RewriteOp(instr.Operands[0]);
             var left = RewriteOp(instr.Operands[1]);
-            EmitCc(m.ISub(left, right), "V-----NZC");
+            EmitCc(m.ISub(left, right), Registers.VNZC);
         }
 
         private void RewriteGoto()
         {
             iclass = InstrClass.Transfer;
             m.Goto(RewriteOp(instr.Operands[0]));
+        }
+
+        private void RewriteLogop(Func<Expression, Expression, Expression> fn)
+        {
+            var src = RewriteOp(instr.Operands[0]);
+            if (instr.Operands[1] is RegisterOperand rop &&
+                rop.Register == Registers.pc)
+            {
+                if (instr.Operands[0] is MemoryOperand mop &&
+                    mop.PostIncrement &&
+                    mop.Base == Registers.sp)
+                {
+                    m.Return(2, 0);
+                    return;
+                }
+            }
+            var dst = RewriteDst(instr.Operands[1], src, fn);
+            EmitCc(dst, Registers.NZC);
+            Assign(Registers.V, Constant.False());
+        }
+
+        private void RewriteMov()
+        {
+            var src = RewriteOp(instr.Operands[0]);
+            if (instr.Operands[1] is RegisterOperand rop &&
+                rop.Register == Registers.pc)
+            {
+                if (instr.Operands[0] is MemoryOperand mop &&
+                    mop.PostIncrement &&
+                    mop.Base == Registers.sp)
+                {
+                    m.Return(2, 0);
+                    return;
+                }
+            }
+            RewriteMovDst(instr.Operands[1], src);
         }
 
         private void RewritePopm()
@@ -395,21 +462,23 @@ namespace Reko.Arch.Msp430
             m.Return(2, 0);
         }
 
-        private void RewriteRra(string flags)
+        private void RewriteRra()
         {
             var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[0], src, (a, b) => m.Sar(a, m.Byte(1)));
-            EmitCc(dst, flags);
+            EmitCc(dst, Registers.NZC);
+            Assign(Registers.V, Constant.False());
         }
 
-        private void RewriteRrax(string flags)
+        private void RewriteRrax()
         {
             var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[0], src, (a, b) => m.Sar(a, Repeat()));
-            EmitCc(dst, flags);
+            EmitCc(dst, Registers.NZC);
+            Assign(Registers.V, Constant.False());
         }
 
-        private void RewriteRrc(string flags)
+        private void RewriteRrc()
         {
             var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteDst(
@@ -422,7 +491,8 @@ namespace Reko.Arch.Msp430
                     a, 
                     m.Byte(1),
                     binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.sr, (uint) FlagM.CF))));
-            EmitCc(dst, flags);
+            EmitCc(dst, Registers.NZC);
+            Assign(Registers.V, Constant.False());
         }
 
         private Expression Repeat()
@@ -433,36 +503,39 @@ namespace Reko.Arch.Msp430
             }
             else
             {
-                return binder.EnsureRegister(instr.repeatReg);
+                return binder.EnsureRegister(instr.repeatReg!);
             }
         }
 
-        private void RewriteRrum(string flags)
+        private void RewriteRrum()
         {
             var src = RewriteOp(instr.Operands[0]);
             var dst = RewriteDst(instr.Operands[1], src, (a, b) => m.Shr(a, b));
-            EmitCc(dst, flags);
+            EmitCc(dst, Registers.NZC);
+            Assign(Registers.V, Constant.False());
         }
 
         private void RewriteSwpb()
         {
-            var src = RewriteOp(instr.Operands[0]);
-            var dst = RewriteDst(instr.Operands[0],
-                src,
-                (a, b) => host.Intrinsic(
+            var src = RewriteOp(instr.Operands[0], PrimitiveType.Word16);
+            RewriteMovDst(
+                instr.Operands[0],
+                host.Intrinsic(
                     "__swpb",
                     true,
                     PrimitiveType.Word16,
-                    b));
+                    src));
         }
 
-        private void RewriteSxt(string flags)
+        private void RewriteSxt()
         {
             var src = RewriteOp(instr.Operands[0]);
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             m.Assign(tmp, m.Slice(PrimitiveType.Byte, src, 0));
             var dst = RewriteDst(instr.Operands[0], tmp, (a, b) => m.Convert(b, b.DataType, PrimitiveType.Int16));
-            EmitCc(dst, flags);
+            EmitCc(dst, Registers.NZC);
+            Assign(Registers.V, Constant.False());
+
         }
 
         private void Invalid()

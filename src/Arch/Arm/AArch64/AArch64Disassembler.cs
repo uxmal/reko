@@ -3545,6 +3545,11 @@ namespace Reko.Arch.Arm.AArch64
                     VectorData.I64,
                     VectorData.I64,
                     VectorData.I64,
+
+                    VectorData.Invalid,
+                    VectorData.Invalid,
+                    VectorData.Invalid,
+                    VectorData.Invalid,
                 };
 
                 var arrShrn = new VectorData[] // Narrowing shifts
@@ -4140,7 +4145,7 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b1101"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b1110"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b00 op2=0b1111")),
-                        Mask(19, 4, // op0=4 op1=0b01 op2
+                        Mask(19, 4, "  op0=4 op1=0b01 op2",
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b0000"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b0001"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b0010"),
@@ -4185,7 +4190,7 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b1101"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b1110"),
                             Nyi("DataProcessingScalarFpAdvancedSimd - op0=4 op1=0b01 op2=0b1111")),
-                        Select((19, 4), IsZero, " op1=10",
+                        Select((19, 4), IsZero, "  op1=10",
                             Mask(10, 1, // op0=4 op1=0b10 op2=0000 op3=xxxxxxxx?
                                 AdvancedSimdVector_x_indexedElement,
                                 AdvancedSimdModifiedImm),

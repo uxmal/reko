@@ -54,10 +54,17 @@ namespace Reko.Arch.Pdp11
         public static RegisterStorage ac4 = new RegisterStorage("ac4", 20, 0, PrimitiveType.Real64);
         public static RegisterStorage ac5 = new RegisterStorage("ac5", 21, 0, PrimitiveType.Real64);
 
-        public static FlagGroupStorage N = new FlagGroupStorage(psw, 8, "N",PrimitiveType.Bool);
-        public static FlagGroupStorage Z = new FlagGroupStorage(psw, 4, "Z",PrimitiveType.Bool);
-        public static FlagGroupStorage V = new FlagGroupStorage(psw, 2, "V", PrimitiveType.Bool);
-        public static FlagGroupStorage C = new FlagGroupStorage(psw, 1, "C", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage N = new FlagGroupStorage(psw, 8, "N",PrimitiveType.Bool);
+        public static readonly FlagGroupStorage Z = new FlagGroupStorage(psw, 4, "Z",PrimitiveType.Bool);
+        public static readonly FlagGroupStorage V = new FlagGroupStorage(psw, 2, "V", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage C = new FlagGroupStorage(psw, 1, "C", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage NV = new FlagGroupStorage(psw, 0xA, "NV", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage NVC = new FlagGroupStorage(psw, 0xB, "NVC", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage NZ = new FlagGroupStorage(psw, 0xC, "NZ", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage NZC = new FlagGroupStorage(psw, 0xD, "NZC", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage NZV = new FlagGroupStorage(psw, 0xE, "NZV", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage NZVC = new FlagGroupStorage(psw, 0xF, "NZVC", PrimitiveType.Byte);
+        public static readonly FlagGroupStorage ZC = new FlagGroupStorage(psw, 0x5, "ZC", PrimitiveType.Byte);
     }
 
     [Flags]
@@ -74,7 +81,6 @@ namespace Reko.Arch.Pdp11
         private RegisterStorage[] regs;
         private RegisterStorage[] fpuRegs;
         private FlagGroupStorage[] flagRegs;
-        private Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Pdp11Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)
@@ -92,7 +98,6 @@ namespace Reko.Arch.Pdp11
             {
                 Registers.N, Registers.Z, Registers.V, Registers.C
             };
-            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
 
             Endianness = EndianServices.Little;
             InstructionBitSize = 16;
@@ -204,13 +209,8 @@ namespace Reko.Arch.Pdp11
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
 		{
-            FlagGroupStorage f;
-            if (flagGroups.TryGetValue(grf, out f))
-                return f;
-
 			PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var fl = new FlagGroupStorage(flagRegister, grf, GrfToString(flagRegister, "", grf), dt);
-			flagGroups.Add(grf, fl);
 			return fl;
 		}
 

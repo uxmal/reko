@@ -161,7 +161,7 @@ namespace Reko.Scanning
             {
                 if (rv.Register != null && rv.Value != null)
                 {
-                    var reg = frame!.EnsureRegister(rv.Register);
+                    var reg = frame!.EnsureIdentifier(rv.Register);
                     new RtlAssignment(reg, rv.Value).Accept(this);
                 }
             }

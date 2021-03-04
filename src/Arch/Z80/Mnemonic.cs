@@ -103,7 +103,6 @@ namespace Reko.Arch.Z80
         @out,
         outd,
         outi,
-        outr,
         pop,
         push,
         res,
@@ -127,7 +126,7 @@ namespace Reko.Arch.Z80
         srl,
         sra,
         set,
-        swap,
+        sll,
         xor,
 
         // Shared mnemonics

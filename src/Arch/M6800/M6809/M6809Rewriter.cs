@@ -28,10 +28,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.M6800.M6809
 {
@@ -55,6 +52,8 @@ namespace Reko.Arch.M6800.M6809
             this.binder = binder;
             this.host = host;
             this.dasm = new M6809Disassembler(arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -85,25 +84,25 @@ namespace Reko.Arch.M6800.M6809
                 case Mnemonic.andb: RewriteBinary(Registers.B, m.And, NZ0_); break;
                 case Mnemonic.andcc: RewriteModifyCc(m.And); break;
                 case Mnemonic.asr: RewriteUnary(Shl1, NZ_C); break;
-                case Mnemonic.beq: RewriteBranch(ConditionCode.EQ, FlagM.Z); break;
-                case Mnemonic.bge: RewriteBranch(ConditionCode.GE, FlagM.N | FlagM.V); break;
-                case Mnemonic.bgt: RewriteBranch(ConditionCode.GT, FlagM.N | FlagM.Z |FlagM.V); break;
-                case Mnemonic.bhi: RewriteBranch(ConditionCode.UGT, FlagM.Z | FlagM.C); break;
-                case Mnemonic.bhs: RewriteBranch(ConditionCode.UGE, FlagM.C); break;
+                case Mnemonic.beq: RewriteBranch(ConditionCode.EQ, Registers.Z); break;
+                case Mnemonic.bge: RewriteBranch(ConditionCode.GE, Registers.NV); break;
+                case Mnemonic.bgt: RewriteBranch(ConditionCode.GT, Registers.NZV); break;
+                case Mnemonic.bhi: RewriteBranch(ConditionCode.UGT, Registers.ZC); break;
+                case Mnemonic.bhs: RewriteBranch(ConditionCode.UGE, Registers.C); break;
                 case Mnemonic.bita: RewriteBinaryTest(Registers.A, m.And, NZ0_); break;
                 case Mnemonic.bitb: RewriteBinaryTest(Registers.A, m.And, NZ0_); break;
-                case Mnemonic.ble: RewriteBranch(ConditionCode.LE, FlagM.N | FlagM.Z |FlagM.V); break;
-                case Mnemonic.blo: RewriteBranch(ConditionCode.ULT, FlagM.C); break;
-                case Mnemonic.bls: RewriteBranch(ConditionCode.ULE, FlagM.Z | FlagM.C); break;
-                case Mnemonic.blt: RewriteBranch(ConditionCode.LT, FlagM.N | FlagM.V); break;
-                case Mnemonic.bmi: RewriteBranch(ConditionCode.LT, FlagM.N); break;
-                case Mnemonic.bne: RewriteBranch(ConditionCode.NE, FlagM.Z); break;
-                case Mnemonic.bpl: RewriteBranch(ConditionCode.GE, FlagM.N); break;
+                case Mnemonic.ble: RewriteBranch(ConditionCode.LE, Registers.NZV); break;
+                case Mnemonic.blo: RewriteBranch(ConditionCode.ULT, Registers.C); break;
+                case Mnemonic.bls: RewriteBranch(ConditionCode.ULE, Registers.ZC); break;
+                case Mnemonic.blt: RewriteBranch(ConditionCode.LT, Registers.NV); break;
+                case Mnemonic.bmi: RewriteBranch(ConditionCode.LT, Registers.N); break;
+                case Mnemonic.bne: RewriteBranch(ConditionCode.NE, Registers.Z); break;
+                case Mnemonic.bpl: RewriteBranch(ConditionCode.GE, Registers.N); break;
                 case Mnemonic.bra: RewriteBra(); break;
                 case Mnemonic.brn: m.Nop(); break;
                 case Mnemonic.bsr: RewriteBsr(); break;
-                case Mnemonic.bvc: RewriteBranch(ConditionCode.NO, FlagM.V); break;
-                case Mnemonic.bvs: RewriteBranch(ConditionCode.OV, FlagM.V); break;
+                case Mnemonic.bvc: RewriteBranch(ConditionCode.NO, Registers.V); break;
+                case Mnemonic.bvs: RewriteBranch(ConditionCode.OV, Registers.V); break;
                 case Mnemonic.clr: RewriteUnary(Clr, ClrCc); break;
                 case Mnemonic.cmpa: RewriteBinaryTest(Registers.A, m.ISub, NZVC); break;
                 case Mnemonic.cmpb: RewriteBinaryTest(Registers.B, m.ISub, NZVC); break;
@@ -122,23 +121,23 @@ namespace Reko.Arch.M6800.M6809
                 case Mnemonic.inc: RewriteUnary(Inc, NZV); break;
                 case Mnemonic.jmp: RewriteJmp(); break;
                 case Mnemonic.jsr: RewriteJsr(); break;
-                case Mnemonic.lbeq: RewriteBranch(ConditionCode.EQ, FlagM.Z); break;
-                case Mnemonic.lbge: RewriteBranch(ConditionCode.GE, FlagM.N | FlagM.V); break;
-                case Mnemonic.lbgt: RewriteBranch(ConditionCode.GT, FlagM.N | FlagM.Z | FlagM.V); break;
-                case Mnemonic.lbhi: RewriteBranch(ConditionCode.UGT, FlagM.Z | FlagM.C); break;
-                case Mnemonic.lbhs: RewriteBranch(ConditionCode.UGE, FlagM.C); break;
-                case Mnemonic.lble: RewriteBranch(ConditionCode.LE, FlagM.N | FlagM.Z | FlagM.V); break;
-                case Mnemonic.lblo: RewriteBranch(ConditionCode.ULT, FlagM.C); break;
-                case Mnemonic.lbls: RewriteBranch(ConditionCode.ULE, FlagM.Z | FlagM.C); break;
-                case Mnemonic.lblt: RewriteBranch(ConditionCode.LT, FlagM.N | FlagM.V); break;
-                case Mnemonic.lbmi: RewriteBranch(ConditionCode.LT, FlagM.N); break;
-                case Mnemonic.lbne: RewriteBranch(ConditionCode.NE, FlagM.Z); break;
-                case Mnemonic.lbpl: RewriteBranch(ConditionCode.GE, FlagM.N); break;
+                case Mnemonic.lbeq: RewriteBranch(ConditionCode.EQ, Registers.Z); break;
+                case Mnemonic.lbge: RewriteBranch(ConditionCode.GE, Registers.NV); break;
+                case Mnemonic.lbgt: RewriteBranch(ConditionCode.GT, Registers.NZV); break;
+                case Mnemonic.lbhi: RewriteBranch(ConditionCode.UGT, Registers.ZC); break;
+                case Mnemonic.lbhs: RewriteBranch(ConditionCode.UGE, Registers.C); break;
+                case Mnemonic.lble: RewriteBranch(ConditionCode.LE, Registers.NZV); break;
+                case Mnemonic.lblo: RewriteBranch(ConditionCode.ULT, Registers.C); break;
+                case Mnemonic.lbls: RewriteBranch(ConditionCode.ULE, Registers.ZC); break;
+                case Mnemonic.lblt: RewriteBranch(ConditionCode.LT, Registers.NV); break;
+                case Mnemonic.lbmi: RewriteBranch(ConditionCode.LT, Registers.N); break;
+                case Mnemonic.lbne: RewriteBranch(ConditionCode.NE, Registers.Z); break;
+                case Mnemonic.lbpl: RewriteBranch(ConditionCode.GE, Registers.N); break;
                 case Mnemonic.lbra: RewriteBra(); break;
                 case Mnemonic.lbrn: m.Nop(); break;
                 case Mnemonic.lbsr: RewriteBsr(); break;
-                case Mnemonic.lbvc: RewriteBranch(ConditionCode.NO, FlagM.V); break;
-                case Mnemonic.lbvs: RewriteBranch(ConditionCode.OV, FlagM.V); break;
+                case Mnemonic.lbvc: RewriteBranch(ConditionCode.NO, Registers.V); break;
+                case Mnemonic.lbvs: RewriteBranch(ConditionCode.OV, Registers.V); break;
                 case Mnemonic.lda: RewriteBinary(Registers.A, Load, NZ0_); break;
                 case Mnemonic.ldb: RewriteBinary(Registers.B, Load, NZ0_); break;
                 case Mnemonic.ldd: RewriteBinary(Registers.D, Load, NZ0_); break;
@@ -211,10 +210,10 @@ namespace Reko.Arch.M6800.M6809
 
         private void ClrCc(Expression e)
         {
-            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.CC, (uint) FlagM.N)), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.CC, (uint) FlagM.Z)), Constant.True());
-            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.CC, (uint) FlagM.V)), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.CC, (uint) FlagM.C)), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.N), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.Z), Constant.True());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
         }
 
         private void NoCc(Expression e)
@@ -224,7 +223,7 @@ namespace Reko.Arch.M6800.M6809
 
         private Expression Adc(Expression a, Expression b)
         {
-            var C = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.CC, (uint) FlagM.C));
+            var C = binder.EnsureFlagGroup(Registers.C);
             return m.IAdd(m.IAdd(a, b), C);
         }
 
@@ -278,7 +277,7 @@ namespace Reko.Arch.M6800.M6809
 
         private Expression Sbc(Expression a, Expression b)
         {
-            var C = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.CC, (uint) FlagM.C));
+            var C = binder.EnsureFlagGroup(Registers.C);
             return m.ISub(m.ISub(a, b), C);
         }
 
@@ -305,56 +304,45 @@ namespace Reko.Arch.M6800.M6809
 
         private void NZV(Expression e)
         {
-            var nzvc = arch.GetFlagGroup(Registers.CC, (uint) (FlagM.N | FlagM.Z | FlagM.V));
-            m.Assign(binder.EnsureFlagGroup(nzvc), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.NZV), m.Cond(e));
         }
 
         private void NZVC(Expression e)
         {
-            var nzvc = arch.GetFlagGroup(Registers.CC, (uint) (FlagM.N | FlagM.Z | FlagM.V | FlagM.C));
-            m.Assign(binder.EnsureFlagGroup(nzvc), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.NZVC), m.Cond(e));
         }
         
         private void NZ_C(Expression e)
         {
-            var nz_c = arch.GetFlagGroup(Registers.CC, (uint) (FlagM.N | FlagM.Z |  FlagM.C));
-            m.Assign(binder.EnsureFlagGroup(nz_c), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.NZC), m.Cond(e));
         }
 
         private void NZ0_(Expression e)
         {
-            var nz = arch.GetFlagGroup(Registers.CC, (uint) (FlagM.N | FlagM.Z));
-            var v = arch.GetFlagGroup(Registers.CC, (uint) FlagM.V);
-            m.Assign(binder.EnsureFlagGroup(nz), m.Cond(e));
-            m.Assign(binder.EnsureFlagGroup(v), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.NZ), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
         }
 
         private void NZ01(Expression e)
         {
-            var nz = arch.GetFlagGroup(Registers.CC, (uint) (FlagM.N | FlagM.Z));
-            var v = arch.GetFlagGroup(Registers.CC, (uint) FlagM.V);
-            var c = arch.GetFlagGroup(Registers.CC, (uint) FlagM.C);
-            m.Assign(binder.EnsureFlagGroup(nz), m.Cond(e));
-            m.Assign(binder.EnsureFlagGroup(v), Constant.False());
-            m.Assign(binder.EnsureFlagGroup(c), Constant.True());
+            m.Assign(binder.EnsureFlagGroup(Registers.NZ), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.True());
         }
 
         private void NZ__(Expression e)
         {
-            var nz__ = arch.GetFlagGroup(Registers.CC, (uint) (FlagM.N | FlagM.Z));
-            m.Assign(binder.EnsureFlagGroup(nz__), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.NZ), m.Cond(e));
         }
 
         private void _Z__(Expression e)
         {
-            var z = arch.GetFlagGroup(Registers.CC, (uint) FlagM.Z);
-            m.Assign(binder.EnsureFlagGroup(z), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.Z), m.Cond(e));
         }
 
         private void _ZC_(Expression e)
         {
-            var zc = arch.GetFlagGroup(Registers.CC, (uint) (FlagM.Z|FlagM.C));
-            m.Assign(binder.EnsureFlagGroup(zc), m.Cond(e));
+            m.Assign(binder.EnsureFlagGroup(Registers.ZC), m.Cond(e));
         }
 
         Expression EaKernel(Func<Expression, Expression, Expression> f, Expression d, Expression ea, MemoryOperand mem)
@@ -419,16 +407,16 @@ namespace Reko.Arch.M6800.M6809
 
         private void RewriteUnary(Func<Expression, Expression> fn, Action<Expression> genFlags)
         {
-            RewriteOp(null, UnaryMemKernel, (d, t) => fn(t), genFlags);
+            RewriteOp(null!, UnaryMemKernel, (d, t) => fn(t), genFlags);
         }
 
         private void RewriteOp(
-            Storage rDst, 
+            Storage? rDst, 
             Func<Func<Expression,Expression,Expression>, Expression, Expression, MemoryOperand, Expression> memFn,
             Func<Expression, Expression, Expression> bin, 
             Action<Expression> genFlags)
         {
-            Expression dst = rDst != null ? binder.EnsureIdentifier(rDst) : null;
+            Expression dst = rDst != null ? binder.EnsureIdentifier(rDst) : null!;
             Expression tmp;
             switch (instr.Operands[0])
             {
@@ -447,8 +435,8 @@ namespace Reko.Arch.M6800.M6809
                 switch (mem.AccessMode)
                 {
                 case MemoryOperand.Mode.AccumulatorOffset:
-                    ea = binder.EnsureRegister(mem.Base);
-                    idx = binder.EnsureRegister(mem.Index);
+                    ea = binder.EnsureRegister(mem.Base!);
+                    idx = binder.EnsureRegister(mem.Index!);
                     if (idx.DataType.BitSize < ea.DataType.BitSize)
                     {
                         idx = m.Convert(idx, idx.DataType, PrimitiveType.Int16);
@@ -477,22 +465,22 @@ namespace Reko.Arch.M6800.M6809
                     tmp = memFn(bin, dst, ea, mem);
                     break;
                 case MemoryOperand.Mode.PostInc1:
-                    ea = binder.EnsureRegister(mem.Base);
+                    ea = binder.EnsureRegister(mem.Base!);
                     tmp = memFn(bin, dst, ea, mem);
                     m.Assign(ea, m.IAddS(ea, 1));
                     break;
                 case MemoryOperand.Mode.PostInc2:
-                    ea = binder.EnsureRegister(mem.Base);
+                    ea = binder.EnsureRegister(mem.Base!);
                     tmp = memFn(bin, dst, ea, mem);
                     m.Assign(ea, m.IAddS(ea, 2));
                     break;
                 case MemoryOperand.Mode.PreDec1:
-                    ea = binder.EnsureRegister(mem.Base);
+                    ea = binder.EnsureRegister(mem.Base!);
                     m.Assign(ea, m.ISubS(ea, 1));
                     tmp = memFn(bin, dst, ea, mem);
                     break;
                 case MemoryOperand.Mode.PreDec2:
-                    ea = binder.EnsureRegister(mem.Base);
+                    ea = binder.EnsureRegister(mem.Base!);
                     m.Assign(ea, m.ISubS(ea, 2));
                     tmp = memFn(bin, dst, ea, mem);
                     break;
@@ -520,9 +508,9 @@ namespace Reko.Arch.M6800.M6809
             m.Assign(cc, fn(cc, imm));
         }
 
-        private void RewriteBranch(ConditionCode cc, FlagM flags)
+        private void RewriteBranch(ConditionCode cc, FlagGroupStorage flags)
         {
-            var flagGrp = binder.EnsureFlagGroup(arch.GetFlagGroup(Registers.CC, (uint)flags));
+            var flagGrp = binder.EnsureFlagGroup(flags);
             m.Branch(m.Test(cc, flagGrp), ((AddressOperand) instr.Operands[0]).Address, instr.InstructionClass); 
         }
 
@@ -566,12 +554,12 @@ namespace Reko.Arch.M6800.M6809
 
         private void RewriteJmp()
         {
-            RewriteOp(null, EaKernel, (a, b) => { m.Goto(b); return null; }, NoCc);
+            RewriteOp(null, EaKernel, (a, b) => { m.Goto(b); return null!; }, NoCc);
         }
 
         private void RewriteJsr()
         {
-            RewriteOp(null, EaKernel, (a, b) => { m.Call(b, 2); return null; }, NoCc);
+            RewriteOp(null, EaKernel, (a, b) => { m.Call(b, 2); return null!; }, NoCc);
         }
 
         private void RewriteLd(RegisterStorage reg)
@@ -583,7 +571,7 @@ namespace Reko.Arch.M6800.M6809
 
         private void RewriteLea(RegisterStorage reg, Action<Expression> genFlags)
         {
-            RewriteOp(reg, EaKernel, (a, b) => { m.Assign(a, b); return null; }, genFlags);
+            RewriteOp(reg, EaKernel, (a, b) => { m.Assign(a, b); return null!; }, genFlags);
         }
 
         private void RewriteLsr()
@@ -695,7 +683,7 @@ namespace Reko.Arch.M6800.M6809
             }
             else
             {
-                RewriteBinaryTest(null, Tst, NZ0_);
+                RewriteBinaryTest(null!, Tst, NZ0_);
             }
         }
     }

@@ -235,21 +235,15 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private Expression RewriteDst(MachineOperand op, Expression src, Func<Expression, Expression, Expression> fn)
         {
-            var reg = op as RegisterOperand;
-            if (reg != null)
+            switch (op)
             {
+            case RegisterOperand reg:
                 var id = binder.EnsureRegister(reg.Register);
                 m.Assign(id, fn(id, src));
                 return id;
-            }
-            var addr = op as AddressOperand;
-            if (addr != null)
-            {
+            case AddressOperand addr:
                 return addr.Address;
-            }
-            var mem = op as MemoryOperand;
-            if (mem != null)
-            {
+            case MemoryOperand mem:
                 Expression ea;
                 if (mem.Base != null)
                 {

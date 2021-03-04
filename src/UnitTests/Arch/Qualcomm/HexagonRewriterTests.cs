@@ -692,6 +692,5 @@ namespace Reko.UnitTests.Arch.Qualcomm
                 "1|L--|r3 = vsubh(r1, r3)",
                 "2|L--|p1 = r5 == r4");
         }
-
     }
 }

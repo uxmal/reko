@@ -6,6 +6,8 @@
     <AssemblyName>Reko.Arch.WE32100</AssemblyName>
     <RootNamespace>Reko.Arch.WE32100</RootNamespace>
     <Configurations>Debug;Release</Configurations>
+    <LangVersion>8.0</LangVersion>
+    <nullable>enable</nullable>
   </PropertyGroup>
 
   <ItemGroup>

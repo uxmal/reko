@@ -61,7 +61,7 @@ namespace Reko.Arch.Sparc
         {
             var rtlClass = instrCur.InstructionClass;
             this.iclass = rtlClass;
-            var reg = RewriteRegister(instrCur.Operands[0]);
+            var reg = RewriteRegister(0);
             m.Branch(fn(reg), ((AddressOperand) instrCur.Operands[1]).Address, rtlClass);
         }
 

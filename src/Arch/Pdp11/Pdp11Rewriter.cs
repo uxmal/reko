@@ -81,25 +81,25 @@ namespace Reko.Arch.Pdp11
                 case Mnemonic.aslb: RewriteAsl(); break;
                 case Mnemonic.asr: RewriteAsr(); break;
                 case Mnemonic.asrb: RewriteAsr(); break;
-                case Mnemonic.bcc: RewriteBxx(ConditionCode.UGE, FlagM.CF); break;
-                case Mnemonic.bcs: RewriteBxx(ConditionCode.ULT, FlagM.CF); break;
-                case Mnemonic.beq: RewriteBxx(ConditionCode.EQ, FlagM.ZF); break;
-                case Mnemonic.bge: RewriteBxx(ConditionCode.GE, FlagM.VF|FlagM.NF); break;
-                case Mnemonic.bgt: RewriteBxx(ConditionCode.GT, FlagM.ZF|FlagM.NF|FlagM.VF); break;
-                case Mnemonic.bhi: RewriteBxx(ConditionCode.UGT, FlagM.ZF|FlagM.CF); break;
-                case Mnemonic.bvs: RewriteBxx(ConditionCode.OV, FlagM.VF); break;
+                case Mnemonic.bcc: RewriteBxx(ConditionCode.UGE, Registers.C); break;
+                case Mnemonic.bcs: RewriteBxx(ConditionCode.ULT, Registers.C); break;
+                case Mnemonic.beq: RewriteBxx(ConditionCode.EQ,  Registers.Z); break;
+                case Mnemonic.bge: RewriteBxx(ConditionCode.GE,  Registers.NV); break;
+                case Mnemonic.bgt: RewriteBxx(ConditionCode.GT,  Registers.NZV); break;
+                case Mnemonic.bhi: RewriteBxx(ConditionCode.UGT, Registers.ZC); break;
+                case Mnemonic.bvs: RewriteBxx(ConditionCode.OV,  Registers.V); break;
                 case Mnemonic.bic: RewriteBic(); break;
                 case Mnemonic.bicb: RewriteBic(); break;
                 case Mnemonic.bis: RewriteBis(); break;
                 case Mnemonic.bisb: RewriteBis(); break;
                 case Mnemonic.bit: RewriteBit(); break;
                 case Mnemonic.bitb: RewriteBit(); break;
-                case Mnemonic.ble: RewriteBxx(ConditionCode.LE, FlagM.ZF|FlagM.NF|FlagM.VF); break;
-                case Mnemonic.blos: RewriteBxx(ConditionCode.ULE, FlagM.ZF | FlagM.CF); break;
-                case Mnemonic.blt: RewriteBxx(ConditionCode.LT, FlagM.NF|FlagM.VF); break;
-                case Mnemonic.bmi: RewriteBxx(ConditionCode.LT, FlagM.NF); break;
-                case Mnemonic.bne: RewriteBxx(ConditionCode.NE, FlagM.ZF); break;
-                case Mnemonic.bpl: RewriteBxx(ConditionCode.GT, FlagM.NF); break;
+                case Mnemonic.ble: RewriteBxx(ConditionCode.LE, Registers.NZV); break;
+                case Mnemonic.blos: RewriteBxx(ConditionCode.ULE, Registers.ZC); break;
+                case Mnemonic.blt: RewriteBxx(ConditionCode.LT, Registers.NV); break;
+                case Mnemonic.bmi: RewriteBxx(ConditionCode.LT, Registers.N); break;
+                case Mnemonic.bne: RewriteBxx(ConditionCode.NE, Registers.Z); break;
+                case Mnemonic.bpl: RewriteBxx(ConditionCode.GT, Registers.N); break;
                 case Mnemonic.bpt: RewriteBpt(); break;
                 case Mnemonic.br: RewriteBr(); break;
                 case Mnemonic.clr: RewriteClr(instr, m.Word16(0)); break;
@@ -161,39 +161,28 @@ namespace Reko.Arch.Pdp11
             return GetEnumerator();
         }
 
-        private void SetFlags(Expression e, FlagM changed, FlagM zeroed, FlagM set)
+        private void SetFlags(Expression e, FlagGroupStorage changed)
         {
             if (e == null)
             {
                 Invalid();
                 return;
             }
-            uint uChanged = (uint)changed;
-            if (uChanged != 0)
+            if (changed != null)
             {
-                var grfChanged = binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.psw, uChanged));
+                var grfChanged = binder.EnsureFlagGroup(changed);
                 m.Assign(grfChanged, m.Cond(e));
             }
-            uint grfMask = 1;
-            while (grfMask <= (uint)zeroed)
-            {
-                if ((grfMask & (uint)zeroed) != 0)
-                {
-                    var grfZeroed = binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.psw, grfMask));
-                    m.Assign(grfZeroed, 0);
-                }
-                grfMask <<= 1;
-            }
-            grfMask = 1;
-            while (grfMask <= (uint)set)
-            {
-                if ((grfMask & (uint)set) != 0)
-                {
-                    var grfZeroed = binder.EnsureFlagGroup(this.arch.GetFlagGroup(Registers.psw, grfMask));
-                    m.Assign(grfZeroed, 1);
-                }
-                grfMask <<= 1;
-            }
+        }
+
+        private void SetFalse(FlagGroupStorage flag)
+        {
+            m.Assign(binder.EnsureFlagGroup(flag), 0);
+        }
+
+        private void SetTrue(FlagGroupStorage flag)
+        {
+            m.Assign(binder.EnsureFlagGroup(flag), 1);
         }
 
         private Expression RewriteJmpSrc(MachineOperand op)

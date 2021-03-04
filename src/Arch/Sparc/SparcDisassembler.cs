@@ -129,7 +129,7 @@ namespace Reko.Arch.Sparc
         {
             return (u, d) =>
             {
-                var freg = d.arch.Registers.GetFpuRegister((int) (u >> pos) & 0x1F);
+                var freg = d.arch.Registers.FFloatRegisters[(u >> pos) & 0x1F];
                 d.ops.Add(new RegisterOperand(freg));
                 return true;
             };
@@ -324,7 +324,7 @@ namespace Reko.Arch.Sparc
         {
             int encodedReg = (int) (wInstr >> offset) & 0x1F;
             int reg = ((encodedReg & 1) << 5) | (encodedReg & ~1);
-            return new RegisterOperand(registers.GetFpuRegister(reg));
+            return new RegisterOperand(registers.DFloatRegisters[reg >> 1]);
         }
 
         private static RegisterOperand GetQuadRegisterOperand(Registers registers, uint wInstr, int offset)
@@ -333,7 +333,7 @@ namespace Reko.Arch.Sparc
             int reg = ((encodedReg & 1) << 5) | (encodedReg & ~1);
             if ((reg & 0x3) != 0)
                 return null;
-            return new RegisterOperand(registers.GetFpuRegister(reg));
+            return new RegisterOperand(registers.QFloatRegisters[reg>>2]);
         }
 
         private MachineOperand GetRegImmOperand(Registers registers, uint wInstr, bool signed, int bits)

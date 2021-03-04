@@ -993,6 +993,16 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void AlphaRw_cvtlq()
         {
+            Given_HexString("0D02B25E");
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = SLICE(f21, int32, 0)",
+                "2|L--|f18 = CONVERT(v3, int32, int64)");
+        }
+
+        [Test]
+        public void AlphaRw_cvtlq_0()
+        {
             Given_HexString("0002E05F");	// cvtlq	f31,f0,f0
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",

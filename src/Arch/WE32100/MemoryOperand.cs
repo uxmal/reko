@@ -31,7 +31,7 @@ namespace Reko.Arch.WE32100
         {
         }
 
-        public RegisterStorage Base { get; set; }
+        public RegisterStorage? Base { get; set; }
         public int Offset { get; set; }
         public bool Deferred { get; set; }
 

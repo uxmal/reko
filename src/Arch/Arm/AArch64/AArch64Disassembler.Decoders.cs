@@ -33,33 +33,6 @@ namespace Reko.Arch.Arm.AArch64
 
     public partial class AArch64Disassembler
     {
-        public class SparseMaskDecoder : Decoder
-        {
-            private readonly string tag;
-            private readonly int shift;
-            private readonly uint mask;
-            private readonly Dictionary<uint, Decoder> decoders;
-            private readonly Decoder @default;
-
-            public SparseMaskDecoder(string tag, int shift, uint mask, Dictionary<uint, Decoder> decoders, Decoder @default)
-            {
-                this.tag = tag;
-                this.shift = shift;
-                this.mask = mask;
-                this.decoders = decoders;
-                this.@default = @default;
-            }
-
-            public override AArch64Instruction Decode(uint wInstr, AArch64Disassembler dasm)
-            {
-                DumpMaskedInstruction(32, wInstr, mask << shift, tag);
-                var op = (wInstr >> shift) & mask;
-                if (!decoders.TryGetValue(op, out Decoder decoder))
-                    decoder = @default;
-                return decoder.Decode(wInstr, dasm);
-            }
-        }
-
         private class InstrDecoder : Decoder
         {
             private readonly Mnemonic mnemonic;

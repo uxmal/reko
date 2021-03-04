@@ -20,7 +20,9 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
+using System.Text;
 
 namespace Reko.Arch.zSeries
 {
@@ -31,9 +33,24 @@ namespace Reko.Arch.zSeries
         public override int MnemonicAsInteger => (int) Mnemonic;
         public override string MnemonicAsString => Mnemonic.ToString();
 
+        /// <summary>
+        /// Determines the vector element size, if the instruction is a vector instruction.
+        /// </summary>
+        public PrimitiveType? ElementSize { get; set; }
+
+        /// <summary>
+        /// If true, only the zero-indexed element is used. 
+        /// </summary>
+        public bool SingleElement { get; set; }
+
+        /// <summary>
+        /// Some instructions optionally set the condition code.
+        /// </summary>
+        public bool SetConditionCode { get; set; }
+
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            renderer.WriteMnemonic(this.Mnemonic.ToString());
+            WriteMnemonic(renderer);
             if (Operands.Length == 0)
                 return;
             renderer.Tab();
@@ -43,7 +60,39 @@ namespace Reko.Arch.zSeries
                 renderer.WriteString(sep);
                 sep = ",";
                 op.Render(renderer, options);
+            }
         }
-    }
+
+        private void WriteMnemonic(MachineInstructionRenderer renderer)
+        {
+            var sb = new StringBuilder();
+            if (this.SingleElement)
+                sb.Append('w');
+            sb.Append(this.Mnemonic.ToString());
+            if (this.ElementSize != null)
+            {
+                if (this.ElementSize.Domain == Domain.Real)
+                {
+                    sb.Append("db");
+                }
+                else
+                {
+                    char suffix = this.ElementSize.Size switch
+                    {
+                        1 => 'b',
+                        2 => 'h',
+                        4 => 'f',
+                        8 => 'g',
+                        _ => '?'
+                    };
+                    sb.Append(suffix);
+                }
+            }
+            if (this.SetConditionCode)
+            {
+                sb.Append('s');
+            }
+            renderer.WriteString(sb.ToString());
+        }
     }
 }

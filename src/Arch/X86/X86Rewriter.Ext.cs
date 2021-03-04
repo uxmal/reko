@@ -89,7 +89,7 @@ namespace Reko.Arch.X86
                     instrCur.Operands[0].Width,
                     SrcOp(1)));
             m.Assign(
-                orw.FlagGroup(FlagM.ZF),
+                binder.EnsureFlagGroup(Registers.Z),
                 Constant.True());
         }
 

@@ -65,9 +65,9 @@ namespace Reko.Arch.M68k
                 return;
             }
             m.Assign(
-                orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.ZF),
+                binder.EnsureFlagGroup(Registers.CZN),
                 m.Cond(opDst));
-            m.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
         }
 
         public void RewriteRotationX(string procName)
@@ -77,13 +77,13 @@ namespace Reko.Arch.M68k
             {
                 var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
                 opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, (s, d) =>
-                    host.Intrinsic(procName, true, instr.DataWidth!, d, s, orw.FlagGroup(FlagM.XF)));
+                    host.Intrinsic(procName, true, instr.DataWidth!, d, s, binder.EnsureFlagGroup(Registers.X)));
             }
             else
             {
                 opDst = orw.RewriteDst(instr.Operands[0], instr.Address,
                     Constant.Byte(1), (s, d) =>
-                        host.Intrinsic(procName, true, PrimitiveType.Word32, d, s, orw.FlagGroup(FlagM.XF)));
+                        host.Intrinsic(procName, true, PrimitiveType.Word32, d, s, binder.EnsureFlagGroup(Registers.X)));
             }
             if (opDst == null)
             {
@@ -91,18 +91,18 @@ namespace Reko.Arch.M68k
                 return;
             }
             m.Assign(
-                orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.XF | FlagM.ZF),
+                binder.EnsureFlagGroup(Registers.CZNX),
                 m.Cond(opDst));
-            m.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
         }
 
         public void RewriteTst()
         {
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
-            var opDst = orw.FlagGroup(FlagM.NF | FlagM.ZF);
+            var opDst = binder.EnsureFlagGroup(Registers.ZN);
             m.Assign(opDst, m.Cond(m.ISub(opSrc, 0)));
-            m.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
-            m.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
         }
 
         public void RewriteShift(Func<Expression, Expression, Expression> binOpGen)
@@ -133,7 +133,7 @@ namespace Reko.Arch.M68k
                 return;
             }
             m.Assign(
-                orw.FlagGroup(FlagM.ZF),
+                binder.EnsureFlagGroup(Registers.Z),
                 m.Cond(m.And(opDst, tmpMask)));
         }
 
@@ -147,7 +147,7 @@ namespace Reko.Arch.M68k
             orw.DataWidth = w;
             var opDst = orw.RewriteSrc(instr.Operands[1], instr.Address);
             m.Assign(
-                orw.FlagGroup(FlagM.ZF),
+                binder.EnsureFlagGroup(Registers.Z),
                 host.Intrinsic(name, false, PrimitiveType.Bool, opDst, opSrc, m.Out(PrimitiveType.Ptr32, opDst)));
         }
 
@@ -188,7 +188,7 @@ namespace Reko.Arch.M68k
                     m.Slice(dtSrc, dReg, 0),
                     dtSrc, dtDst));
             m.Assign(
-                orw.FlagGroup(FlagM.NF | FlagM.ZF),
+                binder.EnsureFlagGroup(Registers.ZN),
                 m.Cond(dReg));
         }
 
@@ -199,7 +199,7 @@ namespace Reko.Arch.M68k
                 dReg,
                 m.Convert(m.Slice(PrimitiveType.SByte, dReg, 0), PrimitiveType.SByte, PrimitiveType.Int32));
             m.Assign(
-                orw.FlagGroup(FlagM.NF | FlagM.ZF),
+                binder.EnsureFlagGroup(Registers.ZN),
                 m.Cond(dReg));
         }
 
@@ -220,8 +220,8 @@ namespace Reko.Arch.M68k
                 EmitInvalid();
                 return;
             }
-            m.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF), m.Cond(opDst));
-            m.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.VZN), m.Cond(opDst));
+            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
         }
 
         public void RewriteUnary(Func<Expression, Expression> unaryOpGen, Action<Expression> generateFlags)
@@ -248,7 +248,7 @@ namespace Reko.Arch.M68k
                     EmitInvalid();
                     return;
                 }
-                m.Assign(orw.FlagGroup(FlagM.CVZNX), m.Cond(opDst));
+                m.Assign(binder.EnsureFlagGroup(Registers.CVZNX), m.Cond(opDst));
             }
         }
 
@@ -256,7 +256,7 @@ namespace Reko.Arch.M68k
         {
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
-            var x = orw.FlagGroup(FlagM.XF);
+            var x = binder.EnsureFlagGroup(Registers.X);
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (d, s) => 
                     opr(opr(d, s), x));
@@ -265,14 +265,14 @@ namespace Reko.Arch.M68k
                 EmitInvalid();
                 return;
             }
-            m.Assign(orw.FlagGroup(FlagM.CVZNX), m.Cond(dst));
+            m.Assign(binder.EnsureFlagGroup(Registers.CVZNX), m.Cond(dst));
         }
 
-        private void RewriteScc(ConditionCode cc, FlagM flagsUsed)
+        private void RewriteScc(ConditionCode cc, FlagGroupStorage flagsUsed)
         {
             var cond = m.Conditional(
                 PrimitiveType.Byte,
-                m.Test(cc, orw.FlagGroup(flagsUsed)),
+                m.Test(cc, binder.EnsureFlagGroup(flagsUsed)),
                 m.Byte(0xFF),
                 m.Byte(0x00));
             orw.RewriteMoveDst(instr.Operands[0], instr.Address, PrimitiveType.Byte, cond);
@@ -283,9 +283,9 @@ namespace Reko.Arch.M68k
             var r = (RegisterOperand) instr.Operands[0];
             var reg = binder.EnsureRegister(r.Register);
             m.Assign(reg, host.Intrinsic("__swap", false, PrimitiveType.Word32, reg));
-            m.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF), m.Cond(reg));
-            m.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
-            m.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.ZN), m.Cond(reg));
+            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
         }
 
         private void RewriteBinOp(Func<Expression,Expression,Expression> opGen)
@@ -299,7 +299,7 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private void RewriteBinOp(Func<Expression, Expression, Expression> opGen, FlagM flags)
+        private void RewriteBinOp(Func<Expression, Expression, Expression> opGen, FlagGroupStorage flags)
         {
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, opGen);
@@ -308,7 +308,7 @@ namespace Reko.Arch.M68k
                 EmitInvalid();
                 return;
             }
-            m.Assign(orw.FlagGroup(flags), m.Cond(opDst));
+            m.Assign(binder.EnsureFlagGroup(flags), m.Cond(opDst));
         }
 
         private void RewriteBtst()
@@ -317,7 +317,7 @@ namespace Reko.Arch.M68k
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var opDst = orw.RewriteSrc(instr.Operands[1], instr.Address);
             m.Assign(
-                orw.FlagGroup(FlagM.ZF),
+                binder.EnsureFlagGroup(Registers.Z),
                 host.Intrinsic("__btst", true, PrimitiveType.Bool,
                     opDst, opSrc));
         }
@@ -325,7 +325,7 @@ namespace Reko.Arch.M68k
         private void RewriteCas()
         {
             m.Assign(
-                orw.FlagGroup(FlagM.CVZN),
+                binder.EnsureFlagGroup(Registers.CVZN),
                 host.Intrinsic("atomic_compare_exchange_weak", false, PrimitiveType.Bool,
                     m.AddrOf(PrimitiveType.Ptr32, orw.RewriteSrc(instr.Operands[2], instr.Address)),
                     orw.RewriteSrc(instr.Operands[1], instr.Address),
@@ -336,10 +336,10 @@ namespace Reko.Arch.M68k
         {
             var src = Constant.Create(instr.DataWidth!, 0);
             var opDst = orw.RewriteMoveDst(instr.Operands[0], instr.Address, instr.DataWidth!, src);
-            m.Assign(orw.FlagGroup(FlagM.ZF), Constant.True());
-            m.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
-            m.Assign(orw.FlagGroup(FlagM.NF), Constant.False());
-            m.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.Z), Constant.True());
+            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.N), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
         }
 
         private void RewriteCmp()
@@ -349,7 +349,7 @@ namespace Reko.Arch.M68k
             var tmp = binder.CreateTemporary(dst.DataType);
             m.Assign(tmp, m.ISub(dst, src));
             m.Assign(
-                orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.VF | FlagM.ZF),
+                binder.EnsureFlagGroup(Registers.CVZN),
                 m.Cond(tmp));
         }
 
@@ -361,8 +361,8 @@ namespace Reko.Arch.M68k
             {
                 var ea = mem.EffectiveAddress;
                 var hiBound = m.Mem(lowBound.DataType, m.IAdd(ea, lowBound.DataType.Size));
-                var C = orw.FlagGroup(FlagM.CF);
-                var Z = orw.FlagGroup(FlagM.ZF);
+                var C = binder.EnsureFlagGroup(Registers.C);
+                var Z = binder.EnsureFlagGroup(Registers.Z);
                 m.Assign(C, m.Cor(m.Lt(reg, lowBound), m.Gt(reg, hiBound)));
                 m.Assign(Z, m.Cor(m.Eq(reg, lowBound), m.Eq(reg, hiBound)));
             }
@@ -427,10 +427,10 @@ namespace Reko.Arch.M68k
                 }
             }
             m.Assign(
-                orw.FlagGroup(FlagM.NF | FlagM.VF | FlagM.ZF),
+                binder.EnsureFlagGroup(Registers.VZN),
                 m.Cond(quot));
             m.Assign(
-                orw.FlagGroup(FlagM.CF), Constant.False());
+                binder.EnsureFlagGroup(Registers.C), Constant.False());
         }
 
         private Expression RewriteSrcOperand(MachineOperand mop)
@@ -617,7 +617,7 @@ namespace Reko.Arch.M68k
             if (setFlag && !isSr)
             {
                 m.Assign(
-                    orw.FlagGroup(FlagM.CVZN),
+                    binder.EnsureFlagGroup(Registers.CVZN),
                     m.Cond(opDst));
             }
         }
@@ -636,7 +636,7 @@ namespace Reko.Arch.M68k
             var opDst = binder.EnsureRegister(((RegisterOperand)instr.Operands[1]).Register);
             m.Assign(opDst, Constant.Int32(opSrc));
             m.Assign(
-                orw.FlagGroup(FlagM.CVZN),
+                binder.EnsureFlagGroup(Registers.CVZN),
                 m.Cond(opDst));
         }
 
@@ -732,7 +732,7 @@ namespace Reko.Arch.M68k
         private Expression RewriteNegx(Expression expr)
         {
             expr = m.Neg(expr);
-            return m.ISub(expr, orw.FlagGroup(FlagM.XF));
+            return m.ISub(expr, binder.EnsureFlagGroup(Registers.X));
         }
 
         private void RewriteLink()
@@ -757,7 +757,7 @@ namespace Reko.Arch.M68k
         {
             // We do not take the trouble of widening the XF to the word size
             // to simplify code analysis in later stages. 
-            var x = orw.FlagGroup(FlagM.XF);
+            var x = binder.EnsureFlagGroup(Registers.X);
             orw.DataWidth = PrimitiveType.Byte;
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             orw.DataWidth = PrimitiveType.Byte;
@@ -768,14 +768,14 @@ namespace Reko.Arch.M68k
                 EmitInvalid();
                 return;
             }
-            m.Assign(orw.FlagGroup(FlagM.CVZNX), m.Cond(dst));
+            m.Assign(binder.EnsureFlagGroup(Registers.CVZNX), m.Cond(dst));
         }
 
         private void RewriteSbcd()
         {
             // We do not take the trouble of widening the XF to the word size
             // to simplify code analysis in later stages. 
-            var x = orw.FlagGroup(FlagM.XF);
+            var x = binder.EnsureFlagGroup(Registers.X);
             orw.DataWidth = PrimitiveType.Byte;
             var src = orw.RewriteSrc(instr.Operands[0], instr.Address);
             orw.DataWidth = PrimitiveType.Byte;
@@ -786,12 +786,12 @@ namespace Reko.Arch.M68k
                 EmitInvalid();
                 return;
             }
-            m.Assign(orw.FlagGroup(FlagM.CVZNX), m.Cond(dst));
+            m.Assign(binder.EnsureFlagGroup(Registers.CVZNX), m.Cond(dst));
         }
 
         private void RewriteNbcd()
         {
-            var x = orw.FlagGroup(FlagM.XF);
+            var x = binder.EnsureFlagGroup(Registers.X);
             orw.DataWidth = PrimitiveType.Byte;
             var dst = orw.RewriteDst(instr.Operands[0], instr.Address, null!, (s, d) =>
                     m.ISub(m.ISub(Constant.Zero(d.DataType), d), x));
@@ -800,7 +800,7 @@ namespace Reko.Arch.M68k
                 EmitInvalid();
                 return;
             }
-            m.Assign(orw.FlagGroup(FlagM.CVZNX), m.Cond(dst));
+            m.Assign(binder.EnsureFlagGroup(Registers.CVZNX), m.Cond(dst));
         }
 
         private void RewriteUnlk()
@@ -833,7 +833,7 @@ namespace Reko.Arch.M68k
                 EmitInvalid();
                 return;
             }
-            var f = orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.VF | FlagM.XF | FlagM.ZF);
+            var f = binder.EnsureFlagGroup(Registers.CVZNX);
             m.Assign(f, m.Cond(expr));
         }
 
@@ -844,9 +844,9 @@ namespace Reko.Arch.M68k
                 EmitInvalid();
                 return;
             }
-            m.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF), m.Cond(expr));
-            m.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
-            m.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.ZN), m.Cond(expr));
+            m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
         }
     }
 }

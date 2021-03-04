@@ -57,6 +57,7 @@ namespace Reko.Arch.Mips
             internal static readonly Mutator<MipsDisassembler> R3 = R(11);
             internal static readonly Mutator<MipsDisassembler> R4 = R(6);
 
+            // Floating point register
             internal static Mutator<MipsDisassembler> F(int offset)
             {
                 return (u, d) =>
@@ -70,6 +71,25 @@ namespace Reko.Arch.Mips
             internal static readonly Mutator<MipsDisassembler> F2 = F(16);
             internal static readonly Mutator<MipsDisassembler> F3 = F(11);
             internal static readonly Mutator<MipsDisassembler> F4 = F(6);
+
+            // Floating point register (even part of register pair)
+            internal static Mutator<MipsDisassembler> FP(int offset)
+            {
+                return (u, d) =>
+                {
+                    var iReg = (u >> offset) & 0x1F;
+                    if ((iReg & 1) != 0)
+                        return false;
+                    var op = d.FReg(iReg);
+                    d.ops.Add(op);
+                    return true;
+                };
+            }
+            internal static readonly Mutator<MipsDisassembler> FP1 = FP(21);
+            internal static readonly Mutator<MipsDisassembler> FP2 = FP(16);
+            internal static readonly Mutator<MipsDisassembler> FP3 = FP(11);
+            internal static readonly Mutator<MipsDisassembler> FP4 = FP(6);
+
 
             // FPU control register
             internal static Mutator<MipsDisassembler> Fcreg(int offset)
@@ -367,10 +387,10 @@ namespace Reko.Arch.Mips
 
                 var cop1_d = Mask(0, 6, "FPU (double)",
                     // fn 00
-                    Instr(Mnemonic.add_d, F4, F3, F2),
-                    Instr(Mnemonic.sub_d, F4, F3, F2),
-                    Instr(Mnemonic.mul_d, F4, F3, F2),
-                    Instr(Mnemonic.div_d, F4, F3, F2),
+                    Instr(Mnemonic.add_d, FP4, FP3, FP2),
+                    Instr(Mnemonic.sub_d, FP4, FP3, FP2),
+                    Instr(Mnemonic.mul_d, FP4, FP3, FP2),
+                    Instr(Mnemonic.div_d, FP4, FP3, FP2),
                     invalid,
                     invalid,
                     Instr(Mnemonic.mov_d, F4, F3),

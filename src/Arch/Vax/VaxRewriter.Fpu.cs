@@ -36,13 +36,13 @@ namespace Reko.Arch.Vax
             var muld = RewriteSrcOp(2, floatType);
             var integral = RewriteSrcOp(3, PrimitiveType.Int32);
             var frac = RewriteSrcOp(4, floatType);
-            var nzv = FlagGroup(FlagM.NZV);
+            var nzv = FlagGroup(Registers.VZN);
             m.Assign(
                 nzv,
                 host.Intrinsic(fnname, false, nzv.DataType, mulr, mulrx, muld,
                 m.Out(PrimitiveType.Word32, integral),
                 m.Out(floatType, frac)));
-            m.Assign(FlagGroup(FlagM.CF), Constant.False());
+            m.Assign(FlagGroup(Registers.C), Constant.False());
         }
 
         private bool RewriteFpu2(PrimitiveType width, Func<Expression, Expression, Expression> fn, Func<Expression, bool> genFlags)

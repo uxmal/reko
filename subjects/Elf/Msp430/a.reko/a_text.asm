@@ -333,7 +333,7 @@ init_uart_isr proc
 	mov.b	r15,r14
 	mov.b	@r4,&007C
 	mov.w	@r4,r15
-	swpb	r15
+	swpb.w	r15
 	and.b	#FF,r15
 	mov.b	r15,&007D
 	mov.b	r14,&007B
@@ -3813,7 +3813,7 @@ l00005A8A:
 
 l00005A90:
 	mov.w	r11,r15
-	swpb	r15
+	swpb.w	r15
 	bis.w	r15,r11
 
 l00005A96:

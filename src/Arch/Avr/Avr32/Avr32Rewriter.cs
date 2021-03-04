@@ -410,6 +410,12 @@ namespace Reko.Arch.Avr.Avr32
         {
             var b = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
             var w = ((ImmediateOperand) instr.Operands[3]).Value.ToInt32();
+            if (w == 0 || b + w > 32)
+            {
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
             var dt = PrimitiveType.Create(Domain.SignedInt, w);
             var slice = m.Slice(dt, RewriteOp(1), b);
             var dst = RewriteOpDst(0, slice);
@@ -420,6 +426,12 @@ namespace Reko.Arch.Avr.Avr32
         {
             var b = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
             var w = ((ImmediateOperand) instr.Operands[3]).Value.ToInt32();
+            if (w == 0 || b + w > 32)
+            {
+                iclass = InstrClass.Invalid;
+                m.Invalid();
+                return;
+            }
             var dt = PrimitiveType.CreateWord(w);
             var slice = m.Slice(dt, RewriteOp(1), b);
             var dst = RewriteOpDst(0, slice);

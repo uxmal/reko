@@ -104,7 +104,7 @@ namespace Reko.Arch.Blackfin
             return ((AddressOperand) instr.Operands[iOperand]).Address;
         }
 
-        private Expression Operand(int iOperand)
+        private Expression SrcOperand(int iOperand)
         {
             switch (instr.Operands[iOperand])
             {
@@ -112,9 +112,82 @@ namespace Reko.Arch.Blackfin
                 return binder.EnsureRegister(rop.Register);
             case ImmediateOperand imm:
                 return imm.Value;
+            case MemoryOperand mem:
+                var ea = EffectiveAddress(mem);
+                return m.Mem(mem.Width, ea);
+            case RegisterRange range:
+                return ExtendedRegister(range);
             default:
                 throw new NotImplementedException($"Operand type {instr.Operands[iOperand].GetType().Name}.");
             }
+        }
+
+        private Expression DstOperand(int iOperand, Expression src)
+        {
+            switch (instr.Operands[iOperand])
+            {
+            case RegisterOperand rop:
+                var dst = binder.EnsureRegister(rop.Register);
+                m.Assign(dst, src);
+                return dst;
+            case ImmediateOperand imm:
+                return imm.Value;
+            case MemoryOperand mem:
+                var ea = EffectiveAddress(mem);
+                m.Assign(m.Mem(mem.Width, ea), src);
+                return src;
+            case RegisterRange range:
+                var extReg = ExtendedRegister(range);
+                m.Assign(extReg, src);
+                return extReg;
+            default:
+                throw new NotImplementedException($"Operand type {instr.Operands[iOperand].GetType().Name}.");
+            }
+        }
+
+        private Expression EffectiveAddress(MemoryOperand mem)
+        {
+            Expression ea;
+            if (mem.Base != null)
+            {
+                ea = binder.EnsureRegister(mem.Base);
+                if (mem.Index != null)
+                    throw new NotImplementedException();
+                if (mem.Offset != 0)
+                {
+                    ea = m.AddSubSignedInt(ea, mem.Offset);
+                }
+                if (mem.PostDecrement || mem.PostIncrement)
+                {
+                    var tmp = binder.CreateTemporary(ea.DataType);
+                    m.Assign(tmp, ea);
+                    var size = mem.Width.Size;
+                    m.Assign(ea, m.AddSubSignedInt(ea, mem.PostIncrement
+                        ? size
+                        : -size));
+                    ea = tmp;
+                }
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+            return ea;
+        }
+
+        private Identifier ExtendedRegister(RegisterRange range)
+        {
+            int nRegs = range.MaxRegister - range.MinRegister + 1;
+            var regSequence = new Storage[nRegs];
+            int bitsize = 0;
+            for (int i = 0; i < nRegs; ++i)
+            {
+                var reg = range.Registers[range.MaxRegister - i];
+                regSequence[i] = reg;
+                bitsize += reg.DataType.BitSize; 
+            }
+            var dt = PrimitiveType.CreateWord(bitsize);
+            return binder.EnsureSequence(dt, regSequence);
         }
 
         private Identifier Reg(int iOperand)
@@ -141,23 +214,27 @@ namespace Reko.Arch.Blackfin
 
         private void RewriteMov()
         {
-            m.Assign(Reg(0), Operand(1));
+            var src = SrcOperand(1);
+            DstOperand(0, src);
         }
 
         private void RewriteMovx()
         {
-            var src = Operand(1);
-            m.Assign(Reg(0), m.Convert(src, src.DataType, PrimitiveType.Word32));
+            var src = SrcOperand(1);
+            var from = PrimitiveType.Create(Domain.SignedInt, src.DataType.BitSize);
+            m.Assign(Reg(0), m.Convert(src, from, PrimitiveType.Int32));
         }
 
         private void RewriteMovxb()
         {
-            m.Assign(Reg(0), m.Convert(m.Slice(PrimitiveType.SByte, Reg(1), 0), PrimitiveType.SByte, PrimitiveType.Int32));
+            var src = SrcOperand(1);
+            m.Assign(Reg(0), m.Convert(m.Slice(PrimitiveType.SByte, src, 0), PrimitiveType.SByte, PrimitiveType.Int32));
         }
 
         private void RewriteMovzb()
         {
-            m.Assign(Reg(0), m.Convert(m.Slice(PrimitiveType.Byte, Reg(1), 0), PrimitiveType.Byte, PrimitiveType.Word32));
+            var src = SrcOperand(1);
+            m.Assign(Reg(0), m.Convert(m.Slice(PrimitiveType.Byte, src, 0), PrimitiveType.Byte, PrimitiveType.Word32));
         }
 
         private void RewriteMul()

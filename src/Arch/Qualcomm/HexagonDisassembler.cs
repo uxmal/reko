@@ -420,7 +420,7 @@ namespace Reko.Arch.Qualcomm
             {
                 var regEnc = regField.Read(u);
                 if (!Registers.SystemRegisters.TryGetValue(regEnc, out var reg))
-                    throw new ApplicationException($"Unknown system register {regEnc}.");
+                    return false;
                 d.ops.Add(new RegisterOperand(reg));    
                 return true;
             };
@@ -438,10 +438,10 @@ namespace Reko.Arch.Qualcomm
             return (u, d) =>
             {
                 var regEnc = regField.Read(u);
-                if ((regEnc & 1) == 1)
+                if ((regEnc & 1) == 1 ||
+                   !Registers.SystemRegisters.TryGetValue(regEnc, out var regLo) ||
+                   !Registers.SystemRegisters.TryGetValue(regEnc + 1, out var regHi))
                     return false;
-                var regLo = Registers.SystemRegisters[regEnc];
-                var regHi = Registers.SystemRegisters[regEnc + 1];
                 d.ops.Add(new RegisterPairOperand(regHi, regLo));
                 return true;
             };

@@ -607,12 +607,6 @@ namespace Reko.UnitTests.Arch.PaRisc
         }
 
         [Test]
-        public void PaRiscDis_shrpw()
-        {
-            AssertCode("shrpw,*<>\tr9,r5,r19", "d0a9a973");
-        }
-
-        [Test]
         public void PaRiscDis_addb_le_n()
         {
             AssertCode("addb,<=,n\tr24,r11,000FEC70", "a17878d3");
@@ -1118,6 +1112,30 @@ namespace Reko.UnitTests.Arch.PaRisc
         public void PaRiscDis_mtsm()
         {
             AssertCode("mtsm\tr0", "00003860");
+        }
+
+        [Test]
+        public void PaRiscDis_shifts()
+        {
+            AssertCode("shrpw\tr0,r24,sar,r0", "d3000000");
+            AssertCode("shrpd,*\tr0,r24,sar,r0", "d3000200");
+            AssertCode("invalid", "d3000280");
+            AssertCode("shrpd,*\tr0,r24,0000003F,r0", "d3000400");
+            AssertCode("shrpd,*\tr0,r24,0000003B,r0", "d3000480");
+            AssertCode("shrpd,*\tr0,r24,0000002B,r0", "d3000680");
+            AssertCode("shrpd,*\tr0,r24,0000002F,r0", "d3000600");
+            AssertCode("shrpw\tr0,r24,0000001B,r0", "d3000880");
+            AssertCode("shrpw\tr0,r24,0000000B,r0", "d3000a80");
+            AssertCode("shrpd,*\tr0,r24,0000001B,r0", "d3000c80");
+            AssertCode("shrpd,*\tr0,r24,0000000B,r0", "d3000e80");
+            AssertCode("shrpw,=\tr0,r24,sar,r0", "d3002000");
+            AssertCode("invalid", "d3002280");
+            AssertCode("shrpd,*=\tr0,r24,0000003B,r0", "d3002480");
+            AssertCode("shrpd,*=\tr0,r24,0000002B,r0", "d3002680");
+            AssertCode("shrpw,=\tr0,r24,0000001B,r0", "d3002880");
+            AssertCode("shrpw,=\tr0,r24,0000000B,r0", "d3002a80");
+            AssertCode("shrpd,*=\tr0,r24,0000001B,r0", "d3002c80");
+            AssertCode("shrpd,*=\tr0,r24,0000000B,r0", "d3002e80");
         }
     }
 }

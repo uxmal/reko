@@ -240,7 +240,7 @@ namespace Reko.UnitTests.Arch.Sparc
         [Test]
         public void SparcDis_fcmpd()
         {
-            AssertInstruction(0x81A90A47, "fcmpd\t%f4,%f38");
+            AssertInstruction(0x81A90A47, "fcmpd\t%d2,%d19");
         }
 
         [Test]

@@ -60,14 +60,12 @@ namespace Reko.Arch.X86
 	public class IntelArchitecture : ProcessorArchitecture
 	{
         private ProcessorMode mode;
-        private Dictionary<uint, FlagGroupStorage> flagGroupCache;
         private Decoder[]? rootDecoders;
 
         public IntelArchitecture(IServiceProvider services, string archId, ProcessorMode mode, Dictionary<string, object> options)
             : base(services, archId, options)
         {
             this.mode = mode;
-            this.flagGroupCache = new Dictionary<uint, FlagGroupStorage>();
             this.Endianness = EndianServices.Little;
             this.InstructionBitSize = 8;
             this.CarryFlagMask = (uint)FlagM.CF;
@@ -200,14 +198,8 @@ namespace Reko.Arch.X86
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
 		{
-            if (flagGroupCache.TryGetValue(grf, out FlagGroupStorage f))
-			{
-				return f;
-			}
-
 			var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
-            f = new FlagGroupStorage(Registers.eflags, grf, GrfToString(flagRegister, "", grf), dt);
-			flagGroupCache.Add(grf, f);
+            var f = new FlagGroupStorage(Registers.eflags, grf, GrfToString(flagRegister, "", grf), dt);
 			return f;
 		}
 
@@ -306,6 +298,11 @@ namespace Reko.Arch.X86
         public override RegisterStorage[] GetRegisters()
         {
             return Registers.All.Where(a => a != null).ToArray();
+        }
+
+        public override FlagGroupStorage[] GetFlags()
+        {
+            return Registers.EflagsBits;
         }
 
         public override List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)

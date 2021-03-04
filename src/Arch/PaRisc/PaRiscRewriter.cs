@@ -164,7 +164,9 @@ namespace Reko.Arch.PaRisc
 
         private bool MaybeConditionalJump(InstrClass iclass, Address addrTaken, bool invert, Expression left, Expression right = null)
         {
-            if (instr.Condition == null)
+            if (instr.Condition == null ||
+                instr.Condition.Type == ConditionType.Never ||
+                instr.Condition.Type == ConditionType.Never64)
                 return false;
 
             right = right ?? Constant.Word(left.DataType.BitSize, 0);
@@ -236,33 +238,63 @@ namespace Reko.Arch.PaRisc
             switch (instr.Condition.Type)
             {
             case ConditionType.Tr: e = Constant.True(); break;
-            case ConditionType.Never: e = Constant.False(); break;
+            case ConditionType.Never:
+            case ConditionType.Never64:
+                e = Constant.False(); break;
             case ConditionType.Eq:
             case ConditionType.Eq64:
                 e = m.Eq(left, right); break;
             case ConditionType.Ne:
             case ConditionType.Ne64:
                 e = m.Ne(left, right); break;
-            case ConditionType.Lt: e = m.Lt(left, right); break;
-            case ConditionType.Le: e = m.Le(left, right); break;
+            case ConditionType.Lt:
+            case ConditionType.Lt64:
+                e = m.Lt(left, right); break;
+            case ConditionType.Le:
+            case ConditionType.Le64:
+                e = m.Le(left, right); break;
             case ConditionType.Ge:
-            case ConditionType.Ge64: e = m.Ge(left, right); break;
-            case ConditionType.Gt: e = m.Gt(left, right); break;
-            case ConditionType.Ult: e = m.Ult(left, right); break;
-            case ConditionType.Ule: e = m.Ule(left, right); break;
+            case ConditionType.Ge64:
+                e = m.Ge(left, right); break;
+            case ConditionType.Gt:
+            case ConditionType.Gt64:
+                e = m.Gt(left, right); break;
+            case ConditionType.Ult:
+            case ConditionType.Ult64:
+                e = m.Ult(left, right); break;
+            case ConditionType.Ule:
+            case ConditionType.Ule64:
+                e = m.Ule(left, right); break;
             case ConditionType.Uge:
             case ConditionType.Uge64:
                 e = m.Uge(left, right); break;
-            case ConditionType.Ugt: e = m.Ugt(left, right); break;
+            case ConditionType.Ugt:
+            case ConditionType.Ugt64:
+                e = m.Ugt(left, right); break;
+            case ConditionType.Uv:
+            case ConditionType.Uv64:
+                e = m.Test(ConditionCode.NO, m.USub(left, right)); break;
+            case ConditionType.Sv:
+            case ConditionType.Sv64:
+                e = m.Test(ConditionCode.NO, m.ISub(left, right)); break;
             case ConditionType.Nuv:
             case ConditionType.Nuv64:
-                e = m.Test(ConditionCode.OV, m.ISub(left, right)); break;
+                e = m.Test(ConditionCode.OV, m.USub(left, right)); break;
             case ConditionType.Nsv:
-                //$TODO: need signed minus/unsigned minus.
+            case ConditionType.Nsv64:
                 e = m.Test(ConditionCode.OV, m.ISub(left, right)); break;
             case ConditionType.Even:
             case ConditionType.Even64:
                 e = m.Eq0(m.And(left, 1)); break;
+            case ConditionType.Odd:
+            case ConditionType.Odd64:
+                e = m.Ne0(m.And(left, 1)); break;
+            case ConditionType.Vnz:
+            case ConditionType.Vnz64:
+                e = m.And(m.Eq(left, right), m.Test(ConditionCode.NO, m.ISub(left, right))); break;
+            case ConditionType.Znv:
+            case ConditionType.Znv64:
+                e = m.And(m.Ne(left, right), m.Test(ConditionCode.OV, m.ISub(left, right))); break;
             default:
                 throw new NotImplementedException(instr.Condition.ToString());
             }

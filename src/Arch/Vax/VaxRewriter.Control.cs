@@ -39,7 +39,7 @@ namespace Reko.Arch.Vax
             var limit = RewriteSrcOp(0, width);
             var add = RewriteSrcOp(1, width);
             var index = RewriteDstOp(2, width, e => m.FAdd(e, add));
-            if (!NZV(index))
+            if (!VZN(index))
                 return;
             if (!(add is Constant cAdd))
             {
@@ -77,7 +77,7 @@ namespace Reko.Arch.Vax
             var limit = RewriteSrcOp(0, width);
             var add = RewriteSrcOp(1, width);
             var index = RewriteDstOp(2, width, e => m.IAdd(e, add));
-            if (!NZV(index))
+            if (!VZN(index))
                 return;
             if (!(add is Constant cAdd))
             {
@@ -207,7 +207,7 @@ namespace Reko.Arch.Vax
             }
         }
 
-        private void RewriteBranch(ConditionCode cc, FlagM flags)
+        private void RewriteBranch(ConditionCode cc, FlagGroupStorage flags)
         {
             m.Branch(
                 m.Test(cc, FlagGroup(flags)),

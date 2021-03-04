@@ -36,8 +36,8 @@ namespace Reko.UnitTests.Arch.Tlcs
     [TestFixture]
     public class Tlcs900RewriterTests : RewriterTestBase
     {
-        private Tlcs900Architecture arch = new Tlcs900Architecture(CreateServiceContainer(), "tlcs900", new Dictionary<string, object>());
-        private Address baseAddr = Address.Ptr32(0x0010000);
+        private readonly Tlcs900Architecture arch = new Tlcs900Architecture(CreateServiceContainer(), "tlcs900", new Dictionary<string, object>());
+        private readonly Address baseAddr = Address.Ptr32(0x0010000);
 
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => baseAddr;
@@ -161,6 +161,18 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "1|L--|v2 = Mem0[0x00006F91<p32>:byte]",
                 "2|L--|N = true",
                 "3|L--|SZHVC = cond(v2 - 0<8>)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_cp_predec()
+        {
+            Given_HexString("D4E1F2");
+            AssertCode(
+            "0|L--|00010000(3): 4 instructions",
+            "1|L--|xwa = xwa - 2<i32>",
+            "2|L--|v4 = Mem0[xwa:word16]",
+            "3|L--|N = true",
+            "4|L--|SZHVC = cond(de - v4)");
         }
 
         [Test]
@@ -354,12 +366,45 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
+        public void Tlcs900_rw_div_postdec()
+        {
+            Given_HexString("E53850");
+            AssertCode(
+            "0|L--|00010000(3): 7 instructions",
+            "1|L--|v3 = xiz",
+            "2|L--|xiz = xiz + 1<i32>",
+            "3|L--|v4 = Mem0[v3:word32]",
+            "4|L--|v6 = xwa",
+            "5|L--|a = v6 /u v4",
+            "6|L--|w = v6 % v4",
+            "7|L--|V = cond(a)");
+        }
+
+        [Test]
         public void Tlcs900_rw_rcf()
         {
             Given_HexString("10");	// rcf
             AssertCode(
                 "0|L--|00010000(1): 1 instructions",
                 "1|L--|C = false");
+        }
+
+        [Test]
+        public void Tlcs900_rw_scc_byte()
+        {
+            Given_HexString("CA78");
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|b = CONVERT(true, bool, byte)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_scc_word()
+        {
+            Given_HexString("DD77");	// scc	C,iy
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|iy = CONVERT(Test(ULT,Z), bool, word16)");
         }
 
         [Test]
@@ -628,15 +673,6 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "2|L--|H = false",
                 "3|L--|N = false",
                 "4|L--|SZVC = cond(d)");
-        }
-
-        [Test]
-        public void Tlcs900_rw_scc()
-        {
-            Given_HexString("DD77");	// scc	C,iy
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|iy = Test(ULT,Z)");
         }
     }
 }

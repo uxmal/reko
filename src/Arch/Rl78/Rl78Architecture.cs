@@ -35,8 +35,6 @@ namespace Reko.Arch.Rl78
 {
     public class Rl78Architecture : ProcessorArchitecture
     {
-        private Dictionary<uint, FlagGroupStorage> flagGroups;
-
         public Rl78Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)
         {
@@ -47,7 +45,6 @@ namespace Reko.Arch.Rl78
             CarryFlagMask = (uint) FlagM.CF;
             StackRegister = Registers.sp;
             Endianness = EndianServices.Little;
-            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
@@ -82,12 +79,8 @@ namespace Reko.Arch.Rl78
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage reg, uint grf)
         {
-            if (flagGroups.TryGetValue(grf, out FlagGroupStorage f))
-                return f;
-
             PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var fl = new FlagGroupStorage(Registers.psw, grf, GrfToString(reg, "", grf), dt);
-            flagGroups.Add(grf, fl);
             return fl;
         }
 

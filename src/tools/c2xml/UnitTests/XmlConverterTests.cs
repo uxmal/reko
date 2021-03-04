@@ -106,6 +106,11 @@ namespace Reko.Tools.C2Xml.UnitTests
                 throw new NotImplementedException();
             }
 
+            public override FlagGroupStorage[] GetFlags()
+            {
+                throw new NotImplementedException();
+            }
+
             public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
             {
                 throw new NotImplementedException();

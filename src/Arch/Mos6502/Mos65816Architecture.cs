@@ -43,6 +43,14 @@ namespace Reko.Arch.Mos6502
         public Mos65816Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)
         {
+
+            CarryFlagMask = (uint) FlagM.CF;
+            Endianness = EndianServices.Little;
+            InstructionBitSize = 8;
+            FramePointerType = PrimitiveType.Byte;       // Yup, stack pointer is a byte register (!)
+            PointerType = PrimitiveType.Ptr16;
+            StackRegister = Registers.s;
+            WordWidth = PrimitiveType.Byte;       // 8-bit, baby!
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
@@ -67,12 +75,12 @@ namespace Reko.Arch.Mos6502
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new Mos65816ProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new Mos65816Rewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)

@@ -35,6 +35,12 @@ namespace Reko.Arch.V850
             : base(services, archId, options)
         {
             Endianness = EndianServices.Little;
+            InstructionBitSize = 16;
+            //StackRegister = Registers.sp;
+            //CarryFlagMask  = { get { throw new NotImplementedException(); } }
+            FramePointerType = PrimitiveType.Ptr32;
+            PointerType = PrimitiveType.Ptr32;
+            WordWidth = PrimitiveType.Word32;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
@@ -59,12 +65,13 @@ namespace Reko.Arch.V850
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new V850State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            var arch = this;
+            return new V850Rewriter(arch, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)

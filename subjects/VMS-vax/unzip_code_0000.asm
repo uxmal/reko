@@ -5163,87 +5163,57 @@ l0000AF79:
 	ret
 	nop
 	prober	#00,+5E04(r2),-(ap)
-
-;; fn0000AFDA: 0000AFDA
-fn0000AFDA proc
-	subl2	#00000004,sp
-	clrq	r2
-	movl	+08(ap),r0
+	mnegf	@+08AC(r0),r0
 	decl	+08(ap)
 	tstl	r0
 	bneq	0000AFED
-
-l0000AFEA:
 	brw	0000B06F
-
-l0000AFED:
 	tstl	r0
 	nop
-
-l0000AFF0:
 	tstl	r2
 	bgtr	0000B011
-
-l0000AFF4:
 	addl3	#00000008,r2,r1
 	cmpl	r1,#00000020
 	bgtr	0000B011
-
-l0000AFFD:
 	movl	+0C(ap),r0
 	incl	+0C(ap)
 	movzbl	(r0),r0
 	ashl	r2,r0,r0
 	bisl2	r0,r3
 	movl	r1,r2
-
-l0000B011:
 	blbc	r3,0000B054
-
-l0000B014:
 	extzv	#00000001,#1F,r3,r3
 	decl	r2
 	cmpl	r2,#00000008
 	bgeq	0000B03D
-
-l0000B020:
 	addl3	#00000008,r2,r1
 	cmpl	r1,#00000020
 	bgtr	0000B03D
-
-l0000B029:
 	movl	+0C(ap),r0
 	incl	+0C(ap)
 	movzbl	(r0),r0
 	ashl	r2,r0,r0
 	bisl2	r0,r3
 	movl	r1,r2
-
-l0000B03D:
 	movl	+04(ap),r0
 	incl	+04(ap)
 	movb	r3,(r0)
 	subl2	#00000008,r2
 	extzv	#00000008,#18,r3,r3
 	brb	0000B064
-0000B051    D5 50 01                                      .P.           
-
-l0000B054:
+	tstl	r0
+	nop
 	movl	+04(ap),r0
 	incl	+04(ap)
 	clrb	(r0)
 	decl	r2
 	extzv	#00000001,#1F,r3,r3
-
-l0000B064:
 	movl	+08(ap),r0
 	decl	+08(ap)
 	tstl	r0
 	bneq	0000AFF0
-
-l0000B06F:
 	ret
-0000B070 0C 00                                           ..             
+	prober	#00,+5E04(r2),@(sp)+
 
 ;; fn0000B072: 0000B072
 ;;   Called from:
@@ -5345,106 +5315,483 @@ l0000B21D:
 	addl2	r0,+000101F8(r2)
 	clrl	r0
 	ret
-0000B234             FC 00 C2 04 5E 9E EF 99 C5 FD FF 53     ....^......S
-0000B240 D4 57 DE AC 08 55 D5 65 12 03 31 93 00 D5 50 01 .W...U.e..1...P.
-0000B250 D0 E3 90 01 01 00 51 D1 A1 08 8F 00 80 00 00 1E ......Q.........
-0000B260 42 D0 65 52 C3 A1 08 8F 00 80 00 00 50 D1 52 50 B.eR........P.RP
-0000B270 1B 06 D0 50 54 11 04 01 D0 52 54 D0 54 56 DD 56 ...PT....RT.TV.V
-0000B280 C1 AC 04 57 7E C1 A1 04 A1 08 7E FB 03 FF 0A E0 ...W~.....~.....
-0000B290 00 00 C2 56 65 D0 E3 90 01 01 00 50 C0 56 A0 08 ...Ve......P.V..
-0000B2A0 C0 56 57 D0 E3 90 01 01 00 50 D1 A0 08 8F 00 80 .VW......P......
-0000B2B0 00 00 12 25 DD A0 08 DD A0 04 FB 02 CF D1 FE D5 ...%............
-0000B2C0 50 13 01 04 D0 F3 90 01 01 00 E3 90 01 01 00 D0 P...............
-0000B2D0 E3 90 01 01 00 50 D4 A0 08 D5 65 13 03 31 70 FF .....P....e..1p.
-0000B2E0 D0 E3 90 01 01 00 54 D4 52 D5 A4 08 13 02 D6 52 ......T.R......R
-0000B2F0 D2 52 52 CB 52 AC 0C 52 13 16 C1 01 A4 08 52 CB .RR.R..R......R.
-0000B300 01 52 7E DD A4 04 FB 02 CF 85 FE D0 50 52 11 02 .R~.........PR..
-0000B310 D4 52 D0 52 50 04 D5 50 FC 0F 9E CE 5C FF 5E 9E .R.RP..P....\.^.
-0000B320 EF 13 AC FD FF 5B 9E EF A4 00 FF FF 5A 9E EF A5 .....[......Z...
-0000B330 C4 FD FF 54 D0 AC 04 55 D0 E4 6C 01 01 00 58 12 ...T...U..l...X.
-0000B340 03 31 B6 00 3C C4 69 01 56 C1 02 56 59 C2 58 59 .1..<.i.V..VY.XY
-0000B350 DE AC 08 57 D1 59 67 1B 5B C1 58 67 50 D1 50 8F ...W.Yg.[.XgP.P.
-0000B360 00 00 01 00 1B 27 DD 01 DD 56 DF CB 11 04 DF AD .....'...V......
-0000B370 AC FB 03 FF 58 DF 00 00 DD 50 DF AD AC 9F 6A D0 ....X....P....j.
-0000B380 EA 39 C8 00 00 50 FB 04 60 D0 32 50 04 DE AC 08 .9...P..`.2P....
-0000B390 53 DD 63 DD 55 DE C4 69 01 52 C1 E4 6C 01 01 00 S.c.U..i.R..l...
-0000B3A0 52 7E FB 03 FF F3 DE 00 00 C0 63 E4 6C 01 01 00 R~........c.l...
-0000B3B0 D4 63 11 46 DD 59 DD 55 DE C4 69 01 50 C1 50 58 .c.F.Y.U..i.P.PX
-0000B3C0 7E FB 03 FF D4 DE 00 00 C0 59 E4 6C 01 01 00 C2 ~........Y.l....
-0000B3D0 59 67 C0 59 55 E9 56 04 D7 67 D6 55 DD 56 DE C4 Yg.YU.V..g.U.V..
-0000B3E0 69 01 52 C1 02 52 7E FB 02 CF 08 05 D5 50 13 04 i.R..R~......P..
-0000B3F0 D0 32 50 04 D4 E4 6C 01 01 00 DE AC 08 52 D5 62 .2P...l......R.b
-0000B400 13 56 D5 50 3C 65 56 C1 02 56 50 D0 62 53 D1 50 .V.P<eV..VP.bS.P
-0000B410 53 1A 29 DD 56 C1 02 55 7E FB 02 CF D6 04 D5 50 S.).V..U~......P
-0000B420 13 04 D0 32 50 04 C1 02 56 51 C2 51 62 C0 51 55 ...2P...VQ.Qb.QU
-0000B430 E9 56 21 D7 62 D6 55 11 1B D5 50 01 DD 53 DD 55 .V!.b.U...P..S.U
-0000B440 DF C4 69 01 FB 03 FF 51 DE 00 00 D0 53 E4 6C 01 ..i....Q....S.l.
-0000B450 01 00 D4 62 D5 62 12 AC D5 AC 0C 13 4E D5 E4 6C ...b.b......N..l
-0000B460 01 01 00 13 46 DD 01 3C C4 69 01 7E DF CB 31 04 ....F..<.i.~..1.
-0000B470 DF CD 5C FF FB 03 FF 55 DE 00 00 DD 50 DF CD 5C ..\....U....P..\
-0000B480 FF 9F 6A D0 EA 39 C8 00 00 50 FB 04 60 C3 02 E4 ..j..9...P..`...
-0000B490 6C 01 01 00 7E DE C4 69 01 52 C1 02 52 7E FB 02 l...~..i.R..R~..
-0000B4A0 CF 51 04 D5 50 13 04 D0 32 50 04 D4 50 04 D5 50 .Q..P...2P..P..P
-0000B4B0 0C 00 C2 04 5E D0 AC 08 53 D4 BC 0C D0 AC 04 51 ....^...S......Q
-0000B4C0 D5 AC 08 13 21 D5 50 01 9A 61 50 D1 50 0A 13 05 ....!.P..aP.P...
-0000B4D0 D1 50 0D 12 07 C3 AC 04 51 53 11 0A D7 AC 08 D6 .P......QS......
-0000B4E0 51 D5 AC 08 12 E2 D1 AC 08 01 1B 27 D0 01 BC 0C Q..........'....
-0000B4F0 9A 61 52 D1 52 0D 12 09 9A A1 01 50 D1 50 0A 13 .aR.R......P.P..
-0000B500 0E D1 52 0A 12 0D 9A A1 01 50 D1 50 0D 12 04 D0 ..R......P.P....
-0000B510 02 BC 0C D0 53 50 04 01 FC 0F 9E CE 40 FF 5E 9E ....SP......@.^.
-0000B520 EF B3 C2 FD FF 57 7C 58 D5 AC 08 12 0B D5 E7 6C .....W|X.......l
-0000B530 01 01 00 12 03 D4 50 04 D5 AC 0C 13 3A 95 E7 74 ......P.....:..t
-0000B540 01 01 00 13 07 90 01 53 11 04 D5 50 94 53 98 53 .......S...P.S.S
-0000B550 52 C3 52 E7 6C 01 01 00 54 D1 54 01 12 0D 9A C7 R.R.l...T.T.....
-0000B560 69 01 52 D1 52 1A 12 03 D4 50 04 DD 54 DF C7 69 i.R.R....P..T..i
-0000B570 01 FB 02 CF 7E 03 04 D5 E7 6C 01 01 00 12 03 31 ....~....l.....1
-0000B580 7C 01 90 E7 74 01 01 00 53 13 35 C3 01 E7 6C 01 |...t...S.5...l.
-0000B590 01 00 AE 04 D0 01 AE 08 91 53 0D 12 09 9A BC 04 .........S......
-0000B5A0 52 D1 52 0A 13 0E 91 53 0A 12 0C 9A BC 04 52 D1 R.R....S......R.
-0000B5B0 52 0D 12 03 D0 01 58 94 E7 74 01 01 00 31 16 01 R.....X..t...1..
-0000B5C0 D0 AC 04 56 D0 AC 08 54 DE AD F8 AE 0C D0 54 51 ...V...T......TQ
-0000B5D0 D4 BE 0C D0 56 53 D5 54 13 1E D5 50 9A 63 50 D1 ....VS.T...P.cP.
-0000B5E0 50 0A 13 05 D1 50 0D 12 07 C3 56 53 51 11 09 01 P....P....VSQ...
-0000B5F0 D7 54 D6 53 D5 54 12 E4 D1 54 01 1B 27 D0 01 BE .T.S.T...T..'...
-0000B600 0C 9A 63 55 D1 55 0D 12 09 9A A3 01 52 D1 52 0A ..cU.U......R.R.
-0000B610 13 0E D1 55 0A 12 0D 9A A3 01 52 D1 52 0D 12 04 ...U......R.R...
-0000B620 D0 02 BE 0C D0 51 5B C1 E7 6C 01 01 00 5B 52 D1 .....Q[..l...[R.
-0000B630 52 8F 00 00 01 00 1B 3C D0 E7 6C 01 01 00 AE 04 R......<..l.....
-0000B640 D4 59 DD 01 DD 52 DF EF 4A AD FD FF DF AD A4 FB .Y...R..J.......
-0000B650 03 FF 7A DC 00 00 DD 50 DF AD A4 9F EF 6F FD FE ..z....P.....o..
-0000B660 FF D0 EF A2 C5 FF FF 52 FB 04 62 D0 01 AE 08 D4 .......R..b.....
-0000B670 58 11 63 01 D0 AC 08 53 D1 5B 53 1F 0B D0 53 58 X.c....S.[S...SX
-0000B680 D4 AE 08 11 51 D5 50 01 D5 AD F8 12 17 DE BC 04 ....Q.P.........
-0000B690 52 9A 4B 62 52 F6 52 E7 74 01 01 00 D0 53 58 D4 R.KbR.R.t....SX.
-0000B6A0 AE 08 11 32 DD 5B DD AC 04 DD E7 70 01 01 00 FB ...2.[.....p....
-0000B6B0 03 FF E6 DB 00 00 C1 E7 6C 01 01 00 5B AE 04 C0 ........l...[...
-0000B6C0 5B E7 70 01 01 00 C0 5B E7 6C 01 01 00 C1 AD F8 [.p....[.l......
-0000B6D0 5B 58 D0 01 AE 08 D5 AE 08 13 23 DD AE 04 DF C7 [X........#.....
-0000B6E0 69 01 FB 02 CF 0D 02 D5 50 13 04 D0 32 50 04 D4 i.......P...2P..
-0000B6F0 E7 6C 01 01 00 DE C7 69 01 E7 70 01 01 00 D0 58 .l.....i..p....X
-0000B700 59 DE AC 08 56 D1 59 66 1F 03 31 CE 00 D1 58 66 Y...V.Yf..1...Xf
-0000B710 1F 03 31 C6 00 D5 50 01 94 E7 74 01 01 00 D1 59 ..1...P...t....Y
-0000B720 66 1F 03 31 A8 00 C1 AC 04 59 54 C3 59 66 52 DE f..1.....YT.YfR.
-0000B730 AD F4 AE 10 D0 52 55 D4 BE 10 D0 54 51 D5 52 13 .....RU....TQ.R.
-0000B740 1F D5 50 01 9A 61 50 D1 50 0A 13 05 D1 50 0D 12 ..P..aP.P....P..
-0000B750 07 C3 54 51 55 11 09 01 D7 52 D6 51 D5 52 12 E4 ..TQU....R.Q.R..
-0000B760 D1 52 01 1B 27 D0 01 BE 10 9A 61 53 D1 53 0D 12 .R..'.....aS.S..
-0000B770 09 9A A1 01 50 D1 50 0A 13 0E D1 53 0A 12 0D 9A ....P.P....S....
-0000B780 A1 01 50 D1 50 0D 12 04 D0 02 BE 10 D0 55 5A C1 ..P.P........UZ.
-0000B790 59 5A 58 D1 58 66 1E 36 D5 AD F4 13 1F C3 59 58 YZX.Xf.6......YX
-0000B7A0 7E C1 AC 04 59 7E FB 02 CF 49 01 D5 50 13 04 D0 ~...Y~...I..P...
-0000B7B0 32 50 04 C1 58 AD F4 59 11 14 D5 50 DE BC 04 52 2P..X..Y...P...R
-0000B7C0 9A 48 62 50 F6 50 E7 74 01 01 00 D0 66 58 D1 59 .HbP.P.t....fX.Y
-0000B7D0 66 1E 08 D1 58 66 1E 03 31 3D FF C3 59 AC 08 54 f...Xf..1=..Y..T
-0000B7E0 14 03 31 81 00 D1 54 8F 00 00 01 00 15 56 95 E7 ..1...T......V..
-0000B7F0 74 01 01 00 13 06 90 01 53 11 03 01 94 53 98 53 t.......S....S.S
-0000B800 52 C3 52 54 6E DD 01 DD AE 04 DF EF A9 AB FD FF R.RTn...........
-0000B810 DF CD 54 FF FB 03 FF B5 DA 00 00 DD 50 DF CD 54 ..T.........P..T
-0000B820 FF 9F EF A9 FB FE FF D0 EF DC C3 FF FF 52 FB 04 .............R..
-0000B830 62 94 E7 74 01 01 00 DD 6E C1 AC 04 59 7E FB 02 b..t....n...Y~..
-0000B840 CF B1 00 04 DD 54 C1 AC 04 59 7E DD E7 70 01 01 .....T...Y~..p..
-0000B850 00 FB 03 FF 44 DA 00 00 C0 54 E7 70 01 01 00 C0 ....D....T.p....
-0000B860 54 E7 6C 01 01 00 D4 50 04 D5 50 01 0C 00       T.l....P..P... 
+	xfc
+	halt
+	subl2	#00000004,sp
+	movab	FFFE77D8,r3
+	clrl	r7
+	moval	+08(ap),r5
+	tstl	(r5)
+	bneq	0000B24D
+	brw	0000B2E0
+	tstl	r0
+	nop
+	movl	+00010190(r3),r1
+	cmpl	+08(r1),#00008000
+	bgequ	0000B2A3
+	movl	(r5),r2
+	subl3	+08(r1),#00008000,r0
+	cmpl	r2,r0
+	blequ	0000B278
+	movl	r0,r4
+	brb	0000B27B
+	nop
+	movl	r2,r4
+	movl	r4,r6
+	pushl	r6
+	addl3	+04(ap),r7,-(sp)
+	addl3	+04(r1),+08(r1),-(sp)
+	calls	#03,@0001929C
+	subl2	r6,(r5)
+	movl	+00010190(r3),r0
+	addl2	r6,+08(r0)
+	addl2	r6,r7
+	movl	+00010190(r3),r0
+	cmpl	+08(r0),#00008000
+	bneq	0000B2D9
+	pushl	+08(r0)
+	pushl	+04(r0)
+	calls	#02,0000B190
+	tstl	r0
+	beql	0000B2C4
+	ret
+	movl	@+00010190(r3),+00010190(r3)
+	movl	+00010190(r3),r0
+	clrl	+08(r0)
+	tstl	(r5)
+	beql	0000B2E0
+	brw	0000B250
+	movl	+00010190(r3),r4
+	clrl	r2
+	tstl	+08(r4)
+	beql	0000B2F0
+	incl	r2
+	mcoml	r2,r2
+	bicl3	r2,+0C(ap),r2
+	beql	0000B310
+	addl3	#00000001,+08(r4),r2
+	bicl3	#00000001,r2,-(sp)
+	pushl	+04(r4)
+	calls	#02,0000B190
+	movl	r0,r2
+	brb	0000B312
+	clrl	r2
+	movl	r2,r0
+	ret
+	tstl	r0
+	xfc
+	remque	@(sp)+,-00A4(sp)
+	remqhi
+	movab	FFFE5F38,r11
+	movab	FFFFB3D0,r10
+	movab	FFFE77D8,r4
+	movl	+04(ap),r5
+	movl	+0001016C(r4),r8
+	bneq	0000B344
+	brw	0000B3FA
+	movzwl	+0169(r4),r6
+	addl3	#00000002,r6,r9
+	subl2	r8,r9
+	moval	+08(ap),r7
+	cmpl	r9,(r7)
+	blequ	0000B3B4
+	addl3	r8,(r7),r0
+	cmpl	r0,#00010000
+	blequ	0000B38D
+	pushl	#00000001
+	pushl	r6
+	pushal	+0411(r11)
+	pushal	-54(fp)
+	calls	#03,@000192D0
+	pushl	r0
+	pushal	-54(fp)
+	pushab	(r10)
+	movl	+0000C839(r10),r0
+	calls	#04,(r0)
+	movl	#00000032,r0
+	ret
+	moval	+08(ap),r3
+	pushl	(r3)
+	pushl	r5
+	moval	+0169(r4),r2
+	addl3	+0001016C(r4),r2,-(sp)
+	calls	#03,@0001929C
+	addl2	(r3),+0001016C(r4)
+	clrl	(r3)
+	brb	0000B3FA
+	pushl	r9
+	pushl	r5
+	moval	+0169(r4),r0
+	addl3	r0,r8,-(sp)
+	calls	#03,@0001929C
+	addl2	r9,+0001016C(r4)
+	subl2	r9,(r7)
+	addl2	r9,r5
+	blbc	r6,0000B3DC
+	decl	(r7)
+	incl	r5
+	pushl	r6
+	moval	+0169(r4),r2
+	addl3	#00000002,r2,-(sp)
+	calls	#02,0000B8F4
+	tstl	r0
+	beql	0000B3F4
+	movl	#00000032,r0
+	ret
+	clrl	+0001016C(r4)
+	moval	+08(ap),r2
+	tstl	(r2)
+	beql	0000B458
+	tstl	r0
+	movzwl	(r5),r6
+	addl3	#00000002,r6,r0
+	movl	(r2),r3
+	cmpl	r0,r3
+	bgtru	0000B43C
+	pushl	r6
+	addl3	#00000002,r5,-(sp)
+	calls	#02,0000B8F4
+	tstl	r0
+	beql	0000B426
+	movl	#00000032,r0
+	ret
+	addl3	#00000002,r6,r1
+	subl2	r1,(r2)
+	addl2	r1,r5
+	blbc	r6,0000B454
+	decl	(r2)
+	incl	r5
+	brb	0000B454
+	tstl	r0
+	nop
+	pushl	r3
+	pushl	r5
+	pushal	+0169(r4)
+	calls	#03,@0001929C
+	movl	r3,+0001016C(r4)
+	clrl	(r2)
+	tstl	(r2)
+	bneq	0000B404
+	tstl	+0C(ap)
+	beql	0000B4AB
+	tstl	+0001016C(r4)
+	beql	0000B4AB
+	pushl	#00000001
+	movzwl	+0169(r4),-(sp)
+	pushal	+0431(r11)
+	pushal	-00A4(fp)
+	calls	#03,@000192D0
+	pushl	r0
+	pushal	-00A4(fp)
+	pushab	(r10)
+	movl	+0000C839(r10),r0
+	calls	#04,(r0)
+	subl3	#00000002,+0001016C(r4),-(sp)
+	moval	+0169(r4),r2
+	addl3	#00000002,r2,-(sp)
+	calls	#02,0000B8F4
+	tstl	r0
+	beql	0000B4AB
+	movl	#00000032,r0
+	ret
+	clrl	r0
+	ret
+	tstl	r0
+	prober	#00,+5E04(r2),@+08AC(r0)
+	tstf	@+0CBC(r4)
+	movl	+04(ap),r1
+	tstl	+08(ap)
+	beql	0000B4E6
+	tstl	r0
+	nop
+	movzbl	(r1),r0
+	cmpl	r0,#0000000A
+	beql	0000B4D5
+	cmpl	r0,#0000000D
+	bneq	0000B4DC
+	subl3	+04(ap),r1,r3
+	brb	0000B4E6
+	decl	+08(ap)
+	incl	r1
+	tstl	+08(ap)
+	bneq	0000B4C8
+	cmpl	+08(ap),#00000001
+	blequ	0000B513
+	movl	#00000001,@+0C(ap)
+	movzbl	(r1),r2
+	cmpl	r2,#0000000D
+	bneq	0000B501
+	movzbl	+01(r1),r0
+	cmpl	r0,#0000000A
+	beql	0000B50F
+	cmpl	r2,#0000000A
+	bneq	0000B513
+	movzbl	+01(r1),r0
+	cmpl	r0,#0000000D
+	bneq	0000B513
+	movl	#00000002,@+0C(ap)
+	movl	r3,r0
+	ret
+	nop
+	xfc
+	remque	@(sp)+,-00C0(sp)
+	remqhi
+	movab	FFFE77D8,r7
+	clrq	r8
+	tstl	+08(ap)
+	bneq	0000B538
+	tstl	+0001016C(r7)
+	bneq	0000B538
+	clrl	r0
+	ret
+	tstl	+0C(ap)
+	beql	0000B577
+	tstb	+00010174(r7)
+	beql	0000B54C
+	movb	#01,r3
+	brb	0000B54E
+	tstl	r0
+	clrb	r3
+	cvtbl	r3,r2
+	subl3	r2,+0001016C(r7),r4
+	cmpl	r4,#00000001
+	bneq	0000B56B
+	movzbl	+0169(r7),r2
+	cmpl	r2,#0000001A
+	bneq	0000B56B
+	clrl	r0
+	ret
+	pushl	r4
+	pushal	+0169(r7)
+	calls	#02,0000B8F4
+	ret
+	tstl	+0001016C(r7)
+	bneq	0000B582
+	brw	0000B6FE
+	movb	+00010174(r7),r3
+	beql	0000B5C0
+	subl3	#00000001,+0001016C(r7),+04(sp)
+	movl	#00000001,+08(sp)
+	cmpb	r3,#0D
+	bneq	0000B5A6
+	movzbl	@+04(ap),r2
+	cmpl	r2,#0000000A
+	beql	0000B5B4
+	cmpb	r3,#0A
+	bneq	0000B5B7
+	movzbl	@+04(ap),r2
+	cmpl	r2,#0000000D
+	bneq	0000B5B7
+	movl	#00000001,r8
+	clrb	+00010174(r7)
+	brw	0000B6D6
+	movl	+04(ap),r6
+	movl	+08(ap),r4
+	moval	-08(fp),+0C(sp)
+	movl	r4,r1
+	clrl	@+0C(sp)
+	movl	r6,r3
+	tstl	r4
+	beql	0000B5F8
+	tstl	r0
+	movzbl	(r3),r0
+	cmpl	r0,#0000000A
+	beql	0000B5E9
+	cmpl	r0,#0000000D
+	bneq	0000B5F0
+	subl3	r6,r3,r1
+	brb	0000B5F8
+	nop
+	decl	r4
+	incl	r3
+	tstl	r4
+	bneq	0000B5DC
+	cmpl	r4,#00000001
+	blequ	0000B624
+	movl	#00000001,@+0C(sp)
+	movzbl	(r3),r5
+	cmpl	r5,#0000000D
+	bneq	0000B612
+	movzbl	+01(r3),r2
+	cmpl	r2,#0000000A
+	beql	0000B620
+	cmpl	r5,#0000000A
+	bneq	0000B624
+	movzbl	+01(r3),r2
+	cmpl	r2,#0000000D
+	bneq	0000B624
+	movl	#00000002,@+0C(sp)
+	movl	r1,r11
+	addl3	+0001016C(r7),r11,r2
+	cmpl	r2,#00010000
+	blequ	0000B674
+	movl	+0001016C(r7),+04(sp)
+	clrl	r9
+	pushl	#00000001
+	pushl	r2
+	pushal	FFFE6396
+	pushal	-5C(fp)
+	calls	#03,@000192D0
+	pushl	r0
+	pushal	-5C(fp)
+	pushab	FFFFB3D0
+	movl	00007C09,r2
+	calls	#04,(r2)
+	movl	#00000001,+08(sp)
+	clrl	r8
+	brb	0000B6D6
+	nop
+	movl	+08(ap),r3
+	cmpl	r11,r3
+	blssu	0000B688
+	movl	r3,r8
+	clrl	+08(sp)
+	brb	0000B6D6
+	tstl	r0
+	nop
+	tstl	-08(fp)
+	bneq	0000B6A4
+	moval	@+04(ap),r2
+	movzbl	(r2)[r11],r2
+	cvtlb	r2,+00010174(r7)
+	movl	r3,r8
+	clrl	+08(sp)
+	brb	0000B6D6
+	pushl	r11
+	pushl	+04(ap)
+	pushl	+00010170(r7)
+	calls	#03,@0001929C
+	addl3	+0001016C(r7),r11,+04(sp)
+	addl2	r11,+00010170(r7)
+	addl2	r11,+0001016C(r7)
+	addl3	-08(fp),r11,r8
+	movl	#00000001,+08(sp)
+	tstl	+08(sp)
+	beql	0000B6FE
+	pushl	+04(sp)
+	pushal	+0169(r7)
+	calls	#02,0000B8F4
+	tstl	r0
+	beql	0000B6EF
+	movl	#00000032,r0
+	ret
+	clrl	+0001016C(r7)
+	moval	+0169(r7),+00010170(r7)
+	movl	r8,r9
+	moval	+08(ap),r6
+	cmpl	r9,(r6)
+	blssu	0000B70D
+	brw	0000B7DB
+	cmpl	r8,(r6)
+	blssu	0000B715
+	brw	0000B7DB
+	tstl	r0
+	nop
+	clrb	+00010174(r7)
+	cmpl	r9,(r6)
+	blssu	0000B726
+	brw	0000B7CE
+	addl3	+04(ap),r9,r4
+	subl3	r9,(r6),r2
+	moval	-0C(fp),+10(sp)
+	movl	r2,r5
+	clrl	@+10(sp)
+	movl	r4,r1
+	tstl	r2
+	beql	0000B760
+	tstl	r0
+	nop
+	movzbl	(r1),r0
+	cmpl	r0,#0000000A
+	beql	0000B751
+	cmpl	r0,#0000000D
+	bneq	0000B758
+	subl3	r4,r1,r5
+	brb	0000B760
+	nop
+	decl	r2
+	incl	r1
+	tstl	r2
+	bneq	0000B744
+	cmpl	r2,#00000001
+	blequ	0000B78C
+	movl	#00000001,@+10(sp)
+	movzbl	(r1),r3
+	cmpl	r3,#0000000D
+	bneq	0000B77A
+	movzbl	+01(r1),r0
+	cmpl	r0,#0000000A
+	beql	0000B788
+	cmpl	r3,#0000000A
+	bneq	0000B78C
+	movzbl	+01(r1),r0
+	cmpl	r0,#0000000D
+	bneq	0000B78C
+	movl	#00000002,@+10(sp)
+	movl	r5,r10
+	addl3	r9,r10,r8
+	cmpl	r8,(r6)
+	bgequ	0000B7CE
+	tstl	-0C(fp)
+	beql	0000B7BC
+	subl3	r9,r8,-(sp)
+	addl3	+04(ap),r9,-(sp)
+	calls	#02,0000B8F4
+	tstl	r0
+	beql	0000B7B3
+	movl	#00000032,r0
+	ret
+	addl3	r8,-0C(fp),r9
+	brb	0000B7CE
+	tstl	r0
+	moval	@+04(ap),r2
+	movzbl	(r2)[r8],r0
+	cvtlb	r0,+00010174(r7)
+	movl	(r6),r8
+	cmpl	r9,(r6)
+	bgequ	0000B7DB
+	cmpl	r8,(r6)
+	bgequ	0000B7DB
+	brw	0000B718
+	subl3	r9,+08(ap),r4
+	bgtr	0000B7E5
+	brw	0000B866
+	cmpl	r4,#00010000
+	bleq	0000B844
+	tstb	+00010174(r7)
+	beql	0000B7FC
+	movb	#01,r3
+	brb	0000B7FE
+	nop
+	clrb	r3
+	cvtbl	r3,r2
+	subl3	r2,r4,(sp)
+	pushl	#00000001
+	pushl	+04(sp)
+	pushal	FFFE63B9
+	pushal	-00AC(fp)
+	calls	#03,@000192D0
+	pushl	r0
+	pushal	-00AC(fp)
+	pushab	FFFFB3D0
+	movl	00007C09,r2
+	calls	#04,(r2)
+	clrb	+00010174(r7)
+	pushl	(sp)
+	addl3	+04(ap),r9,-(sp)
+	calls	#02,0000B8F4
+	ret
+	pushl	r4
+	addl3	+04(ap),r9,-(sp)
+	pushl	+00010170(r7)
+	calls	#03,@0001929C
+	addl2	r4,+00010170(r7)
+	addl2	r4,+0001016C(r7)
+	clrl	r0
+	ret
+	tstl	r0
+	nop
+	prober	#00,+5E04(r2),@(sp)+
 
 ;; fn0000B86E: 0000B86E
 fn0000B86E proc
@@ -5613,10 +5960,6 @@ l0000B9E1:
 0000BBB0 FC 03                                           ..             
 
 ;; fn0000BBB2: 0000BBB2
-;;   Called from:
-;;     0000BD0A (in fn0000BC8A)
-;;     0000BD0A (in fn0000BD08)
-;;     0000BD28 (in fn0000BD1C)
 fn0000BBB2 proc
 	subl2	#00000004,sp
 	movab	FFFE77D8,r5
@@ -5698,54 +6041,47 @@ fn0000BC8A proc
 	bicl3	#FFFFFFC0,r0,+04(r1)
 	ashl	#01,+08(ap),r0
 	bicl3	#FFFFFFC1,r0,(r1)
-
-;; fn0000BD08: 0000BD08
-fn0000BD08 proc
 	pushl	r1
 	calls	#01,0000BBB0
 	movl	r0,r4
 	movl	#00000003,r2
 	movl	r4,-00000008(fp)
-
-;; fn0000BD1C: 0000BD1C
-;;   Called from:
-;;     0000BD15 (in fn0000BD08)
-;;     0000BD15 (in fn0000BC8A)
-fn0000BD1C proc
 	pushal	-08(fp)
 	calls	#01,@000192A4
 	pushl	r0
 	calls	#01,0000BBB0
 	subl3	r0,r4,r0
 	beql	0000BD3B
-
-l0000BD33:
 	addl2	r0,-08(fp)
 	decl	r2
 	bgtr	0000BD1C
-
-l0000BD3B:
 	cmpl	+04(ap),#00007432
 	blssu	0000BD53
-
-l0000BD45:
 	cmpl	-08(fp),#70000000
 	bgequ	0000BD53
-
-l0000BD4F:
 	mnegl	#00000001,-08(fp)
-
-l0000BD53:
 	movl	-08(fp),r0
 	ret
-0000BD58                         0C 00 C2 08 5E 9E EF D5         ....^...
-0000BD60 A1 FD FF 53 9E EF 6E BA FD FF 52 D0 AC 04 AD F8 ...S..n...R.....
-0000BD70 DF AD F8 FB 01 FF 2A D5 00 00 D0 50 51 DD 61 DD ......*....PQ.a.
-0000BD80 A1 04 DD A1 08 C1 8F 6C 07 00 00 A1 14 7E D0 A1 .......l.....~..
-0000BD90 10 50 DD 40 E2 A0 01 01 00 DD C1 0C 00 DF C3 9A .P.@............
-0000BDA0 05 DF E2 D0 01 01 00 FB 08 FF 22 D5 00 00 DD CC ..........".....
-0000BDB0 08 00 9F E2 E8 01 01 00 FB 02 9F 58 DE FE 7F 04 ...........X....
-0000BDC0 FC 00                                           ..             
+	prober	#00,+5E08(r2),@(sp)+
+	extzv	@-025F(r5),@6EF05BBA,@-03(r10),@04AD8DC0
+	xorw3	@-04075221(r8),#0001,@000192A4
+	movl	r0,r1
+	pushl	(r1)
+	pushl	+04(r1)
+	pushl	+08(r1)
+	addl3	#0000076C,+14(r1),-(sp)
+	movl	+10(r1),r0
+	pushl	+000101A0(r2)[r0]
+	pushl	+000C(r1)
+	pushal	+059A(r3)
+	pushal	+000101D0(r2)
+	calls	#08,@000192D0
+	pushl	+0008(ap)
+	pushab	+000101E8(r2)
+	calls	#02,0000BDBB                                         ; @(pc)+
+	adawi	@+7FFE(sp),#0004
+	xfc
+	halt
 
 ;; fn0000BDC2: 0000BDC2
 ;;   Called from:
@@ -6786,8 +7122,6 @@ l0000CFE4:
 	subl2	#00000008,(r5)
 	cmpl	(r5),#00000008
 	blssu	0000D0A7
-
-l0000D0A4:
 	brw	0000CFE4
 
 l0000D0A7:
@@ -7085,12 +7419,10 @@ l0000D3CF:
 	extzv	#00000001,#1F,r2,ap
 	xorl3	#EDB88320,ap,r0
 	brb	0000D3E5
-0000D3DE                                           D5 50               .P
+	tstl	r0
 
 l0000D3E0:
 	extzv	#00000001,#1F,r2,r0
-
-l0000D3E5:
 	movl	r0,r2
 	decl	r1
 	bneq	0000D3CC
@@ -7339,11 +7671,7 @@ l0000D692:
 ;;   Called from:
 ;;     0001527C (in fn00015256)
 ;;     000152A8 (in fn00015256)
-;;     00017F90 (in fn00017F4E)
-;;     00017FF4 (in fn00017F4E)
-;;     00018054 (in fn00017F4E)
 ;;     000185E8 (in fn000185AE)
-;;     00018644 (in fn000185AE)
 fn0000D69A proc
 	subl2	#00000004,sp
 	movab	FFFFB3D0,r4
@@ -7542,7 +7870,6 @@ l0000D7EA:
 ;;     00012CE1 (in fn00012A2A)
 ;;     00012D4A (in fn00012A2A)
 ;;     000132EF (in fn0001325E)
-;;     000147D0 (in fn0001325E)
 fn0000DC76 proc
 	subl2	#0000000C,sp
 	movab	00007CC8,r10

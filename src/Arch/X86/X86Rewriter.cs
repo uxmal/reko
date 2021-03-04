@@ -138,11 +138,11 @@ namespace Reko.Arch.X86
                 case Mnemonic.cdq: RewriteCdq(); break;
                 case Mnemonic.cdqe: RewriteCdqe(); break;
                 case Mnemonic.cqo: RewriteCqo(); break;
-                case Mnemonic.clc: RewriteSetFlag(FlagM.CF, Constant.False()); break;
-                case Mnemonic.cld: RewriteSetFlag(FlagM.DF, Constant.False()); break;
+                case Mnemonic.clc: RewriteSetFlag(Registers.C, Constant.False()); break;
+                case Mnemonic.cld: RewriteSetFlag(Registers.D, Constant.False()); break;
                 case Mnemonic.cli: RewriteCli(); break;
                 case Mnemonic.clts: RewriteClts(); break;
-                case Mnemonic.cmc: m.Assign(orw.FlagGroup(FlagM.CF), m.Not(orw.FlagGroup(FlagM.CF))); break;
+                case Mnemonic.cmc: m.Assign(binder.EnsureFlagGroup(Registers.C), m.Not(binder.EnsureFlagGroup(Registers.C))); break;
                 case Mnemonic.cmova: RewriteConditionalMove(ConditionCode.UGT, instrCur.Operands[0], instrCur.Operands[1]); break;
                 case Mnemonic.cmovbe: RewriteConditionalMove(ConditionCode.ULE, instrCur.Operands[0], instrCur.Operands[1]); break;
                 case Mnemonic.cmovc: RewriteConditionalMove(ConditionCode.ULT, instrCur.Operands[0], instrCur.Operands[1]); break;
@@ -219,14 +219,14 @@ namespace Reko.Arch.X86
                 case Mnemonic.fbstp: RewriteFbstp(); break;
                 case Mnemonic.fchs: EmitFchs(); break;
                 case Mnemonic.fclex: RewriteFclex(); break;
-                case Mnemonic.fcmovb: RewriteFcmov(FlagM.CF, ConditionCode.GE); break;
-                case Mnemonic.fcmovbe: RewriteFcmov(FlagM.CF| FlagM.ZF, ConditionCode.GT); break;
-                case Mnemonic.fcmove: RewriteFcmov(FlagM.ZF, ConditionCode.NE); break;
-                case Mnemonic.fcmovnb: RewriteFcmov(FlagM.CF| FlagM.ZF, ConditionCode.GE); break;
-                case Mnemonic.fcmovnbe: RewriteFcmov(FlagM.CF| FlagM.ZF, ConditionCode.LE); break;
-                case Mnemonic.fcmovne: RewriteFcmov(FlagM.ZF, ConditionCode.EQ); break;
-                case Mnemonic.fcmovnu: RewriteFcmov(FlagM.PF, ConditionCode.IS_NAN); break;
-                case Mnemonic.fcmovu: RewriteFcmov(FlagM.PF, ConditionCode.NOT_NAN); break;
+                case Mnemonic.fcmovb: RewriteFcmov(Registers.C, ConditionCode.GE); break;
+                case Mnemonic.fcmovbe: RewriteFcmov(Registers.CZ, ConditionCode.GT); break;
+                case Mnemonic.fcmove: RewriteFcmov(Registers.Z, ConditionCode.NE); break;
+                case Mnemonic.fcmovnb: RewriteFcmov(Registers.CZ, ConditionCode.GE); break;
+                case Mnemonic.fcmovnbe: RewriteFcmov(Registers.CZ, ConditionCode.LE); break;
+                case Mnemonic.fcmovne: RewriteFcmov(Registers.Z, ConditionCode.EQ); break;
+                case Mnemonic.fcmovnu: RewriteFcmov(Registers.P, ConditionCode.IS_NAN); break;
+                case Mnemonic.fcmovu: RewriteFcmov(Registers.P, ConditionCode.NOT_NAN); break;
                 case Mnemonic.fcom: RewriteFcom(0); break;
                 case Mnemonic.fcomi: RewriteFcomi(false); break;
                 case Mnemonic.fcomip: RewriteFcomi(true); break;
@@ -357,9 +357,9 @@ namespace Reko.Arch.X86
                 case Mnemonic.@lock: RewriteLock(); break;
                 case Mnemonic.lods: RewriteStringInstruction(); break;
                 case Mnemonic.lodsb: RewriteStringInstruction(); break;
-                case Mnemonic.loop: RewriteLoop(0, ConditionCode.EQ); break;
-                case Mnemonic.loope: RewriteLoop(FlagM.ZF, ConditionCode.EQ); break;
-                case Mnemonic.loopne: RewriteLoop(FlagM.ZF, ConditionCode.NE); break;
+                case Mnemonic.loop: RewriteLoop(null, ConditionCode.EQ); break;
+                case Mnemonic.loope: RewriteLoop(Registers.Z, ConditionCode.EQ); break;
+                case Mnemonic.loopne: RewriteLoop(Registers.Z, ConditionCode.NE); break;
                 case Mnemonic.lsl: RewriteLsl(); break;
                 case Mnemonic.lss: RewriteLxs(Registers.ss); break;
                 case Mnemonic.ltr: RewriteLtr(); break;
@@ -550,7 +550,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.vroundss: RewriteRoundsx(true, PrimitiveType.Real32); break;
                 case Mnemonic.rsm: RewriteRsm(); break;
                 case Mnemonic.rsqrtps: RewritePackedUnaryop("__rsqrtps", PrimitiveType.Real32); break;
-                case Mnemonic.sahf: m.Assign(orw.FlagGroup(X86Instruction.DefCc(instrCur.Mnemonic)), orw.AluRegister(Registers.ah)); break;
+                case Mnemonic.sahf: m.Assign(binder.EnsureFlagGroup(X86Instruction.DefCc(instrCur.Mnemonic)!), orw.AluRegister(Registers.ah)); break;
                 case Mnemonic.sar: RewriteBinOp(m.Sar); break;
                 case Mnemonic.sarx: RewriteBinOp(m.Sar); break;
                 case Mnemonic.sbb: RewriteAdcSbb(m.ISub); break;
@@ -590,8 +590,8 @@ namespace Reko.Arch.X86
                 case Mnemonic.sqrtps: RewritePackedUnaryop("__sqrtps", PrimitiveType.Real32); break;
                 case Mnemonic.sqrtsd: RewriteSqrtsd("__sqrt", PrimitiveType.Real64); break;
                 case Mnemonic.sqrtss: RewriteSqrtsd("__fsqrt", PrimitiveType.Real32); break;
-                case Mnemonic.stc: RewriteSetFlag(FlagM.CF, Constant.True()); break;
-                case Mnemonic.std: RewriteSetFlag(FlagM.DF, Constant.True()); break;
+                case Mnemonic.stc: RewriteSetFlag(Registers.C, Constant.True()); break;
+                case Mnemonic.std: RewriteSetFlag(Registers.D, Constant.True()); break;
                 case Mnemonic.sti: RewriteSti(); break;
                 case Mnemonic.stos: RewriteStringInstruction(); break;
                 case Mnemonic.stosb: RewriteStringInstruction(); break;
@@ -707,7 +707,7 @@ namespace Reko.Arch.X86
             }
             if ((flags & CopyFlags.SetCfIf0) != 0)
             {
-                m.Assign(orw.FlagGroup(FlagM.CF), m.Eq0(dst));
+                m.Assign(binder.EnsureFlagGroup(Registers.C), m.Eq0(dst));
             }
         }
 

@@ -25,7 +25,7 @@
         <var id="var.M6800.TargetPath" >../Arch/M6800/$TargetDir$/Reko.Arch.M6800.dll</var>
         <var id="var.M68k.Design.TargetPath" >../Arch/M68k.Design/$TargetFwk472Dir$/Reko.Arch.M68k.Design.dll</var>
         <var id="var.M68k.TargetPath" >../Arch/M68k/$TargetDir$/Reko.Arch.M68k.dll</var>
-        <var id="var.MCore.TargetPath" >../Arch/MCore/$TargetDir$/Reko.Arch.MCore.dll</var>
+        <var id="var.MCore.TargetPath">../Arch/MCore/$TargetDir$/Reko.Arch.MCore.dll</var>
         <var id="var.MicroBlaze.TargetPath" >../Arch/MicroBlaze/$TargetDir$/Reko.Arch.MicroBlaze.dll</var>
         <var id="var.Microchip.Utils.TargetPath" >../Libraries/Microchip/Utils/$TargetDir$/Reko.Libraries.Microchip.Utils.dll</var>
         <var id="var.MicrochipPIC.Design.TargetPath" >../Arch/MicrochipPIC.Design/$TargetFwk472Dir$/Reko.Arch.MicrochipPIC.Design.dll</var>
@@ -45,13 +45,16 @@
         <var id="var.Sparc.TargetPath" >../Arch/Sparc/$TargetDir$/Reko.Arch.Sparc.dll</var>
         <var id="var.SuperH.TargetPath" >../Arch/SuperH/$TargetDir$/Reko.Arch.SuperH.dll</var>
         <var id="var.Tlcs.TargetPath" >../Arch/Tlcs/$TargetDir$/Reko.Arch.Tlcs.dll</var>
+        <var id="var.Tms7000.TargetPath" >../Arch/Tms7000/$TargetDir$/Reko.Arch.Tms7000.dll</var>
         <var id="var.Vax.TargetPath" >../Arch/Vax/$TargetDir$/Reko.Arch.Vax.dll</var>
+        <var id="var.V850.TargetPath" >../Arch/V850/$TargetDir$/Reko.Arch.V850.dll</var>
         <var id="var.WE32100.TargetPath" >../Arch/WE32100/$TargetDir$/Reko.Arch.WE32100.dll</var>
         <var id="var.X86.Design.TargetPath" >../Arch/X86.Design/$TargetFwk472Dir$/Reko.Arch.X86.Design.dll</var>
         <var id="var.X86.TargetPath" >../Arch/X86/$TargetDir$/Reko.Arch.X86.dll</var>
         <var id="var.XCore.TargetPath" >../Arch/XCore/$TargetDir$/Reko.Arch.XCore.dll</var>
         <var id="var.Xtensa.TargetPath" >../Arch/Xtensa/$TargetDir$/Reko.Arch.Xtensa.dll</var>
         <var id="var.Z80.TargetPath" >../Arch/Z80/$TargetDir$/Reko.Arch.Z80.dll</var>
+        <var id="var.zSeries.TargetPath" >../Arch/zSeries/$TargetDir$/Reko.Arch.zSeries.dll</var>
         <var id="var.i8051.TargetPath" >../Arch/i8051/$TargetDir$/Reko.Arch.i8051.dll</var>
 
         <var id="var.AmigaOS.ProjectDir">../Environments/AmigaOS/</var>
@@ -196,6 +199,7 @@
         <File Source="$(var.Windows.ProjectDir)oleaut32.xml" nuget_target="c:" />
         <File Source="$(var.Windows.ProjectDir)shell32.xml" nuget_target="c:" />
         <File Source="$(var.Windows.ProjectDir)user32.xml" nuget_target="c:" />
+        <File Source="$(var.Windows.ProjectDir)win16characteristics.xml" nuget_target="c:" />
         <File Source="$(var.Windows.ProjectDir)win32characteristics.xml" nuget_target="c:" />
         <File Source="$(var.Windows.ProjectDir)win64characteristics.xml" nuget_target="c:" />
         <File Source="$(var.Windows.ProjectDir)windows_CE.xml" nuget_target="c:" />
@@ -215,16 +219,20 @@
         <File Source="$(var.Arm.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Avr.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Blackfin.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.CompactRisc.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Cray.TargetPath)" nuget_target="f:" />
         <File Source="$(var.H8.TargetPath)" nuget_target="f:" />
         <File Source="$(var.i8051.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.IA64.TargetPath)" nuget_target="f:" />
         <File Source="$(var.LatticeMico.TargetPath)" nuget_target="f:" />
         <File Source="$(var.M6800.TargetPath)" nuget_target="f:" />
         <File Source="$(var.M68k.TargetPath)" nuget_target="f:" />
         <File Source="$(var.M68k.Design.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.MCore.TargetPath)" nuget_target="f:" />
         <File Source="$(var.MicroBlaze.TargetPath)" nuget_target="f:" />
         <File Source="$(var.MicrochipPIC.TargetPath)" nuget_target="f:" />
         <File Source="$(var.MicrochipPIC.Design.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.MilStd1750.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Mips.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Mos6502.TargetPath)" nuget_target="f:" />
         <File Source="$(var.MSP430.TargetPath)" nuget_target="f:" />
@@ -233,17 +241,23 @@
         <File Source="$(var.Pdp11.TargetPath)" nuget_target="f:" />
         <File Source="$(var.PowerPC.TargetPath)" nuget_target="f:" />
         <File Source="$(var.PowerPC.Design.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.Qualcomm.TargetPath)" nuget_target="f:" />
         <File Source="$(var.RiscV.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Rl78.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Sparc.TargetPath)" nuget_target="f:" />
         <File Source="$(var.SuperH.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Tlcs.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.Tms7000.TargetPath)" nuget_traget="f:" />
         <File Source="$(var.Vax.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.V850.TargetPath)" nuget_target="f:" />
         <File Source="$(var.WE32100.TargetPath)" nuget_target="f:" />
         <File Source="$(var.X86.TargetPath)" nuget_target="f:" />
         <File Source="$(var.X86.Design.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.XCore.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Xtensa.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Z80.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.zSeries.TargetPath)" nuget_target="f:" />
+
         <File Source="$(var.SolutionDir)Native/build/$(var.Platform)/$(var.Configuration)/ArmNative/ArmNative.dll" />
 
         <!-- Symbol sources -->

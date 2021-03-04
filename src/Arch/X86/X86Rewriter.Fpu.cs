@@ -136,10 +136,10 @@ namespace Reko.Arch.X86
             m.SideEffect(host.Intrinsic("__fclex", false, VoidType.Instance));
         }
 
-        private void RewriteFcmov(FlagM flag, ConditionCode cc)
+        private void RewriteFcmov(FlagGroupStorage flag, ConditionCode cc)
         {
             m.BranchInMiddleOfInstruction(
-                m.Test(cc, orw.FlagGroup(flag)),
+                m.Test(cc, binder.EnsureFlagGroup(flag)),
                 instrCur.Address + instrCur.Length,
                 InstrClass.ConditionalTransfer);
 
@@ -403,13 +403,14 @@ namespace Reko.Arch.X86
         // bit 1: RESERVED
         // bit 2: PF
         // bit 6: ZF
-
         private void RewriteFstsw()
         {
+            var icur = instrCur;
             if (MatchesFstswSequence())
                 return;
+            var opSrc = icur.Operands[0];
             m.Assign(
-                SrcOp(0),
+                orw.Transform(instrCur, opSrc, opSrc.Width),
                 new BinaryExpression(Operator.Shl, PrimitiveType.Word16,
                         m.Convert(orw.AluRegister(Registers.FPUF), Registers.FPUF.DataType, PrimitiveType.Word16),
                         Constant.Int16(8)));
@@ -425,7 +426,7 @@ namespace Reko.Arch.X86
                     this.len += nextInstr.Length;
                     dasm.Skip(1);
                     m.Assign(
-                        orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF),
+                        binder.EnsureFlagGroup(Registers.SCZO),
                         orw.AluRegister(Registers.FPUF));
                     return true;
                 }
@@ -484,7 +485,7 @@ namespace Reko.Arch.X86
                         return false;
                     this.len += nextInstr.Length;
                     m.Assign(
-                        orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF),
+                        binder.EnsureFlagGroup(Registers.SCZO),
                         orw.AluRegister(Registers.FPUF));
 
                     // Advance past the 'test' instruction.
@@ -497,6 +498,7 @@ namespace Reko.Arch.X86
                     return EvaluateFstswTestInstructions(mask);
                 }
             default:
+                host.Warn(instrCur.Address, "Last test {0}", instrCur.Address);
                 return false;
             }
 
@@ -657,7 +659,7 @@ namespace Reko.Arch.X86
         private void RewriteFtst()
         {
             m.Assign(
-                orw.FlagGroup(FlagM.CF),
+                binder.EnsureFlagGroup(Registers.C),
                 m.ISub(FpuRegister(0), Constant.Real64(0.0)));
         }
 
@@ -666,11 +668,11 @@ namespace Reko.Arch.X86
             var op1 = SrcOp(0);
             var op2 = SrcOp(1);
             m.Assign(
-                orw.FlagGroup(FlagM.ZF|FlagM.PF|FlagM.CF),
+                binder.EnsureFlagGroup(Registers.CZP),
                 m.Cond(
                     m.FSub(op1, op2)));
-            m.Assign(orw.FlagGroup(FlagM.OF), Constant.False());
-            m.Assign(orw.FlagGroup(FlagM.SF), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.O), Constant.False());
+            m.Assign(binder.EnsureFlagGroup(Registers.S), Constant.False());
             if (pop)
             {
                 ShrinkFpuStack(1);

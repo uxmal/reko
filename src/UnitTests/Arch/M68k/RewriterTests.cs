@@ -680,7 +680,7 @@ namespace Reko.UnitTests.Arch.M68k
             Given_UInt16s(0x5FCF, 0xFFFA);
             AssertCode(
                 "0|T--|00010000(4): 6 instructions",
-                "1|T--|if (Test(GT,VZN)) branch 00010004",
+                "1|T--|if (Test(LE,VZN)) branch 00010004",
                 "2|L--|v4 = SLICE(d7, word16, 0)",
                 "3|L--|v4 = v4 - 1<i16>",
                 "4|L--|v5 = SLICE(d7, word16, 16)",

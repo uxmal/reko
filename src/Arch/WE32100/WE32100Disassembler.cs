@@ -18,17 +18,19 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Services;
+using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
 
 namespace Reko.Arch.WE32100
 {
-    using Reko.Core.Memory;
-    using Reko.Core.Services;
-    using Reko.Core.Types;
-    using System;
-    using System.Linq;
+
     using Decoder = Reko.Core.Machine.Decoder<WE32100Disassembler, Mnemonic, WE32100Instruction>;
 
     public class WE32100Disassembler : DisassemblerBase<WE32100Instruction, Mnemonic>
@@ -37,7 +39,7 @@ namespace Reko.Arch.WE32100
 
         private readonly WE32100Architecture arch;
         private readonly EndianImageReader rdr;
-        private List<MachineOperand> ops;
+        private readonly List<MachineOperand> ops;
         private Address addr;
 
         public WE32100Disassembler(WE32100Architecture arch, EndianImageReader rdr)
@@ -45,9 +47,10 @@ namespace Reko.Arch.WE32100
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override WE32100Instruction DisassembleInstruction()
+        public override WE32100Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte op))
@@ -130,31 +133,62 @@ namespace Reko.Arch.WE32100
 
         #region Mutators
 
-        private static bool PositiveLiteral(int register, PrimitiveType dt, WE32100Disassembler dasm)
+        private static bool PositiveLiteral(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
-            throw new NotImplementedException();
-        }
-
-        private static bool Register_WordImm(int register, PrimitiveType dt, WE32100Disassembler dasm)
-        {
-            if (register == 0xF)
-                throw new NotImplementedException();
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[register]));
+            var c = new ImmediateOperand(Constant.Create(dt, opDescriptor & 0x3F));
+            dasm.ops.Add(c);
             return true;
         }
 
-        private static bool RegisterDeferred_HalfwordImm(int register, PrimitiveType dt, WE32100Disassembler dasm)
+        private static bool NegativeLiteral(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
-            throw new NotImplementedException();
+            var c = new ImmediateOperand(Constant.Create(dt, (sbyte) opDescriptor));
+            dasm.ops.Add(c);
+            return true;
         }
 
-        private static bool FPshortOffset_ByteImm(int register, PrimitiveType dt, WE32100Disassembler dasm)
+        private static bool Register_WordImm(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
-            throw new NotImplementedException();
+            var register = opDescriptor & 0xF;
+            MachineOperand op;
+            if (register != 0xF)
+            {
+                op = new RegisterOperand(Registers.GpRegs[register]);
+            }
+            else
+            {
+                if (!dasm.rdr.TryReadUInt32(out uint imm))
+                    return false;
+                op = ImmediateOperand.Word32(imm);
+            }
+            dasm.ops.Add(op);
+            return true;
         }
 
-        private static bool APshortOffset_Absolute(int register, PrimitiveType dt, WE32100Disassembler dasm)
+        private static bool RegisterDeferred_HalfwordImm(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
+            var register = opDescriptor & 0xF;
+            MachineOperand op;
+            if (register != 0xF)
+            {
+                op = new MemoryOperand(dt)
+                {
+                    Base = Registers.GpRegs[register],
+                };
+            }
+            else
+            {
+                if (!dasm.rdr.TryReadUInt16(out ushort imm))
+                    return false;
+                op = ImmediateOperand.Word16(imm);
+            }
+            dasm.ops.Add(op);
+            return true;
+        }
+ 
+        private static bool APshortOffset_Absolute(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
+        {
+            var register = opDescriptor & 0xF;
             if (register == 0xF)
             {
                 if (!dasm.rdr.TryReadInt32(out int wAbsolute))
@@ -163,35 +197,80 @@ namespace Reko.Arch.WE32100
                 {
                     Offset = wAbsolute,
                 });
-                return true;
             }
-            throw new NotImplementedException();
+            else
+            {
+                var offset = (int) Bits.SignExtend((uint)opDescriptor, 4);
+                dasm.ops.Add(new MemoryOperand(dt)
+                {
+                    Base = Registers.ap,
+                    Offset = offset,
+                });
+            }
+            return true;
         }
 
-        private static bool WordDisplacement(int register, PrimitiveType dt, WE32100Disassembler dasm)
+        private static bool WordDisplacement(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
-            throw new NotImplementedException();
+            if (!dasm.rdr.TryReadInt32(out int displacement))
+                return false;
+            var register = opDescriptor & 0xF;
+            dasm.ops.Add(new MemoryOperand(dt)
+            {
+                Offset = displacement,
+                Base = Registers.GpRegs[register],
+                Deferred = true,
+            });
+            return true;
         }
 
-        private static bool WordDisplacementDeferred(int register, PrimitiveType dt, WE32100Disassembler dasm)
+        private static bool WordDisplacementDeferred(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
-            throw new NotImplementedException();
+            if (!dasm.rdr.TryReadInt32(out int displacement))
+                return false;
+            var register = opDescriptor & 0xF;
+            dasm.ops.Add(new MemoryOperand(dt)
+            {
+                Offset = displacement,
+                Base = Registers.GpRegs[register],
+                Deferred = true,
+            });
+            return true;
         }
 
-        private static bool HalfwordDisplacement(int register, PrimitiveType dt, WE32100Disassembler dasm)
+        private static bool HalfwordDisplacement(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
-            throw new NotImplementedException();
+            if (!dasm.rdr.TryReadInt16(out short displacement))
+                return false;
+            var register = opDescriptor & 0xF;
+            dasm.ops.Add(new MemoryOperand(dt)
+            {
+                Offset = displacement,
+                Base = Registers.GpRegs[register],
+                Deferred = false,
+            });
+            return true;
         }
 
-        private static bool HalfwordDisplacementDeferred(int register, PrimitiveType dt, WE32100Disassembler dasm)
+        private static bool HalfwordDisplacementDeferred(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
-            throw new NotImplementedException();
+            if (!dasm.rdr.TryReadLeInt16(out short displacement))
+                return false;
+            var register = opDescriptor & 0xF;
+            dasm.ops.Add(new MemoryOperand(dt)
+            {
+                Offset = displacement,
+                Base = Registers.GpRegs[register],
+                Deferred = true,
+            });
+            return true;
         }
 
-        private static bool ByteDisplacement(int register, PrimitiveType dt, WE32100Disassembler dasm)
+        private static bool ByteDisplacement(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
             if (!dasm.rdr.TryReadByte(out byte sOffset))
                 return false;
+            var register = opDescriptor & 0xF;
             dasm.ops.Add(new MemoryOperand(dt)
             {
                 Base = Registers.GpRegs[register],
@@ -200,10 +279,11 @@ namespace Reko.Arch.WE32100
             return true;
         }
 
-        private static bool ByteDisplacementDeferred(int register, PrimitiveType dt, WE32100Disassembler dasm)
+        private static bool ByteDisplacementDeferred(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
             if (!dasm.rdr.TryReadByte(out byte sOffset))
                 return false;
+            var register = opDescriptor & 0xF;
             dasm.ops.Add(new MemoryOperand(dt)
             {
                 Base = Registers.GpRegs[register],
@@ -213,8 +293,9 @@ namespace Reko.Arch.WE32100
             return true;
         }
 
-        private static bool ExpandedOperandType_AbsoluteDeferred(int register, PrimitiveType dt, WE32100Disassembler dasm)
+        private static bool ExpandedOperandType_AbsoluteDeferred(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
+            var register = opDescriptor & 0xF;
             if (register == 0xF)
             {
                 if (!dasm.rdr.TryReadInt32(out int wAbsolute))
@@ -226,34 +307,69 @@ namespace Reko.Arch.WE32100
                 });
                 return true;
             }
-            throw new NotImplementedException();
+            //$TODO: documentation is vague. it would be awesome to find a real binary 
+            // that uses this.
+            return false;
         }
 
-        private static bool NegativeLiteral(int register, PrimitiveType dt, WE32100Disassembler dasm)
+
+        private static bool InvalidOperand(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
-        private static bool InvalidOperand(int register, PrimitiveType dt, WE32100Disassembler dasm)
+        private static bool Register(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
-            throw new NotImplementedException();
-        }
-
-        private static bool Register(int register, PrimitiveType dt, WE32100Disassembler dasm)
-        {
+            var register = opDescriptor & 0xF;
             dasm.ops.Add(new RegisterOperand(Registers.GpRegs[register]));
             return true;
         }
 
-        private static bool RegisterDeferred(int register, PrimitiveType dt, WE32100Disassembler dasm)
+        private static bool RegisterDeferred(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
-            throw new NotImplementedException();
+            var register = opDescriptor & 0xF;
+            dasm.ops.Add(new MemoryOperand(dt)
+            {
+                Base = Registers.GpRegs[register],
+            });
+            return true;
         }
 
-        private static bool FPshortOffset(int register, PrimitiveType dt, WE32100Disassembler dasm)
+        private static bool FPshortOffset(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
-            throw new NotImplementedException();
+            var offset = opDescriptor & 0xF;
+            if (offset == 0xF)
+                return false;
+            dasm.ops.Add(new MemoryOperand(dt)
+            {
+                Base = Registers.fp,
+                Offset = offset,
+            });
+            return true;
         }
+
+        private static bool FPshortOffset_ByteImm(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
+        {
+            var offset = opDescriptor & 0xF;
+            MachineOperand op;
+            if (offset != 0xF)
+            {
+                op = new MemoryOperand(dt)
+                {
+                    Base = Registers.fp,
+                    Offset = offset,
+                };
+            }
+            else
+            {
+                if (!dasm.rdr.TryReadByte(out byte imm))
+                    return false;
+                op = ImmediateOperand.Byte(imm);
+            }
+            dasm.ops.Add(op);
+            return true;
+        }
+
 
         private static readonly Func<int, PrimitiveType, WE32100Disassembler, bool>[] readAddressMode = new Func<int, PrimitiveType, WE32100Disassembler, bool>[16]
         {
@@ -307,7 +423,7 @@ namespace Reko.Arch.WE32100
             {
                 if (!d.rdr.TryReadByte(out byte descriptor))
                     return false;
-                return readAddressMode[descriptor >> 4](descriptor & 0xF, dt, d);
+                return readAddressMode[descriptor >> 4](descriptor, dt, d);
             };
         }
         private static readonly Mutator<WE32100Disassembler> Rb = R(PrimitiveType.Byte);
@@ -320,7 +436,7 @@ namespace Reko.Arch.WE32100
             {
                 if (!d.rdr.TryReadByte(out byte descriptor))
                     return false;
-                return writeAddressMode[descriptor >> 4](descriptor & 0xF, dt, d);
+                return writeAddressMode[descriptor >> 4](descriptor, dt, d);
             };
         }
 
@@ -377,7 +493,7 @@ namespace Reko.Arch.WE32100
         static WE32100Disassembler()
         {
             var invalid = Instr(Mnemonic.Invalid, InstrClass.Invalid);
-            rootDecoder = Mask(0, 8, "WE32100",
+            rootDecoder = Mask(0, 8, "WE32100", new Decoder[256] {
                 // 0x00
                 Instr(Mnemonic.Invalid, InstrClass.Invalid | InstrClass.Zero | InstrClass.Padding),
                 invalid,
@@ -443,11 +559,10 @@ namespace Reko.Arch.WE32100
 
                 // 0x30
                 new ExtDecoder(Sparse(0, 8, "  30", invalid,
-
                     (0x09, Instr(Mnemonic.mverno, X(""))),         // 0x3009 Move version number
                     (0x19, Instr(Mnemonic.movblw, X(""))),         // 0x3019 Move block of words
                     (0x1F, Instr(Mnemonic.strend, X(""))),         // 0x301F String end
-                    (0x35, Instr(Mnemonic.strcpy, X(""))))),         // 0x3035 String copy
+                    (0x35, Instr(Mnemonic.strcpy, X(""))))),       // 0x3035 String copy
                     invalid,
                 Instr(Mnemonic.spop, X("")),         // 0x32
                 Instr(Mnemonic.spopws, X("")),         // 0x33
@@ -490,10 +605,9 @@ namespace Reko.Arch.WE32100
 
                 // 0x50
                 Instr(Mnemonic.rcc, X("")),         // 0x50 *
-                invalid,
-                //Instr(Mnemonic.rgequ, X("")),         // 0x50 *
+                invalid,            //Instr(Mnemonic.rgequ, X("")),         // 0x50 *
                 Instr(Mnemonic.bcch, X("")),         // 0x52 *
-                                              //Instr(Mnemonic.bgeuh, X("")),         // 0x52 *
+                                  //Instr(Mnemonic.bgeuh, X("")),         // 0x52 *
                 Instr(Mnemonic.bccb, X("")),         // 0x53 *
                                   //Instr(Mnemonic.bgeub, X("")),         // 0x53 *
 
@@ -503,12 +617,12 @@ namespace Reko.Arch.WE32100
                 Instr(Mnemonic.bgub, X("")),         // 0x57
 
                 Instr(Mnemonic.rcs, X("")),         // 0x58 *
-                                             //Instr(Mnemonic.rlssu, X("")),         // 0x58 *
+                                    //Instr(Mnemonic.rlssu, X("")),         // 0x58 *
                 invalid,
                 Instr(Mnemonic.bcsh, X("")),         // 0x5A *
-                                              //Instr(Mnemonic.bluh, X("")),         // 0x5A *
+                                    //Instr(Mnemonic.bluh, X("")),         // 0x5A *
                 Instr(Mnemonic.bcsb, X("")),         // 0x5B *
-                                              //Instr(Mnemonic.blub, X("")),         // 0x5B *
+                                    //Instr(Mnemonic.blub, X("")),         // 0x5B *
 
                 Instr(Mnemonic.rlequ, X("")),         // 0x5C
                 invalid,
@@ -621,78 +735,78 @@ namespace Reko.Arch.WE32100
                 Instr(Mnemonic.mnegb, X("")),         // 0x8F Move negated byte
 
                 // 0x90
-            Instr(Mnemonic.incw, X("")),         // 0x90 Increment word
+            Instr(Mnemonic.incw, Ww),         // 0x90 Increment word
             invalid,
-            Instr(Mnemonic.inch, X("")),         // 0x92 Increment halfword
-            Instr(Mnemonic.incb, X("")),         // 0x93 Increment byte
+            Instr(Mnemonic.inch, Wh),         // 0x92 Increment halfword
+            Instr(Mnemonic.incb, Wb),         // 0x93 Increment byte
 
-            Instr(Mnemonic.decw, X("")),         // 0x94 Decrement word
+            Instr(Mnemonic.decw, Ww),         // 0x94 Decrement word
             invalid,
             Instr(Mnemonic.dech, Wh),         // 0x96 Decrement halfword
-            Instr(Mnemonic.decb, X("")),         // 0x97 Decrement byte
+            Instr(Mnemonic.decb, Wb),         // 0x97 Decrement byte
 
             invalid,
             invalid,
             invalid,
             invalid,
 
-            Instr(Mnemonic.addw2, X("")),         // 0x9C Add word
+            Instr(Mnemonic.addw2, Rw,Ww),         // 0x9C Add word
             invalid,
-            Instr(Mnemonic.addh2, X("")),         // 0x9E Add halfword
-            Instr(Mnemonic.addb2, X("")),         // 0x9F Add byte
+            Instr(Mnemonic.addh2, Rh,Wh),         // 0x9E Add halfword
+            Instr(Mnemonic.addb2, Rb,Wb),         // 0x9F Add byte
 
             // 0xA0
-            Instr(Mnemonic.pushw, X("")),          // 0xA0         // Push word
+            Instr(Mnemonic.pushw, Rw),          // 0xA0         // Push word
             invalid,
             invalid,
             invalid,
 
-            Instr(Mnemonic.modw2, X("")),         // 0xA4),         // Modulo word
+            Instr(Mnemonic.modw2, Rw,Ww),         // 0xA4),         // Modulo word
             invalid,
-            Instr(Mnemonic.modh2, X("")),         // 0xA6),         // Modulo halfword
-            Instr(Mnemonic.modb2, X("")),         // 0xA7),         // Modulo byte
+            Instr(Mnemonic.modh2, Rh,Wh),         // 0xA6),         // Modulo halfword
+            Instr(Mnemonic.modb2, Rb,Wb),         // 0xA7),         // Modulo byte
 
-            Instr(Mnemonic.mulw2, X("")),         // 0xA8),         // Multiply word
+            Instr(Mnemonic.mulw2, Rw,Ww),         // 0xA8),         // Multiply word
             invalid,
-            Instr(Mnemonic.mulh2, X("")),         // 0xAA),         // Multiply halfword
-            Instr(Mnemonic.mulb2, X("")),         // 0xAB),         // Multiply byte
+            Instr(Mnemonic.mulh2, Rh,Wh),         // 0xAA),         // Multiply halfword
+            Instr(Mnemonic.mulb2, Rb,Wb),         // 0xAB),         // Multiply byte
 
-            Instr(Mnemonic.divw2, X("")),         // 0xAC),         // Divide word
+            Instr(Mnemonic.divw2, Rw,Ww),         // 0xAC),         // Divide word
             invalid,
-            Instr(Mnemonic.divh2, X("")),         // 0xAE),         // Divide halfword
-            Instr(Mnemonic.divb2, X("")),         // 0xAF),         // Divide byte
+            Instr(Mnemonic.divh2, Rh,Wh),         // 0xAE),         // Divide halfword
+            Instr(Mnemonic.divb2, Rb,Wb),         // 0xAF),         // Divide byte
 
             // 0xB0
-            Instr(Mnemonic.orw2, X("")),         // 0xB0),         // OR word
+            Instr(Mnemonic.orw2, Rw,Ww),         // 0xB0),         // OR word
             invalid,
-            Instr(Mnemonic.orh2, X("")),         // 0xB2),         // OR halfword
-            Instr(Mnemonic.orb2, X("")),         // 0xB3),         // OR byte
+            Instr(Mnemonic.orh2, Rh,Wh),         // 0xB2),         // OR halfword
+            Instr(Mnemonic.orb2, Rb,Wb),         // 0xB3),         // OR byte
 
             Instr(Mnemonic.xorw2, Rw,Ww),         // 0xB4),         // Exclusive OR word
             invalid,
             Instr(Mnemonic.xorh2, Rh,Wh),         // 0xB6),         // Exclusive OR halfword
             Instr(Mnemonic.xorb2, Rb,Wb),         // 0xB7),         // Exclusive OR byte
 
-            Instr(Mnemonic.andw2, X("")),         // 0xB8),         // AND word
+            Instr(Mnemonic.andw2, Rw,Ww),         // 0xB8),         // AND word
             invalid,
-            Instr(Mnemonic.andh2, X("")),         // 0xBA),         // AND halfword
-            Instr(Mnemonic.andb2, X("")),         // 0xBB),         // AND byte
+            Instr(Mnemonic.andh2, Rh,Wh),         // 0xBA),         // AND halfword
+            Instr(Mnemonic.andb2, Rb,Wb),         // 0xBB),         // AND byte
 
-            Instr(Mnemonic.subw2, X("")),         // 0xBC),         // Subtract word
+            Instr(Mnemonic.subw2, Rw,Ww),         // 0xBC),         // Subtract word
             invalid,
-            Instr(Mnemonic.subh2, X("")),         // 0xBE),         // Subtract halfword
-            Instr(Mnemonic.subb2, X("")),         // 0xBF),         // Subtract byte
+            Instr(Mnemonic.subh2, Rh,Wh),         // 0xBE),         // Subtract halfword
+            Instr(Mnemonic.subb2, Rb,Wb),         // 0xBF),         // Subtract byte
 
             // 0xC0
-            Instr(Mnemonic.alsw3, X("")),         // 0xCO),         // Arithmetic left shift word
+            Instr(Mnemonic.alsw3, Rw,Rw,Ww),         // 0xCO),         // Arithmetic left shift word
             invalid,
             invalid,
             invalid,
 
-            Instr(Mnemonic.arsw3, X("")),         // 0xC4),         // Arithmetic right shift word
+            Instr(Mnemonic.arsw3, Rw,Rw,Ww),         // 0xC4),         // Arithmetic right shift word
             invalid,
-            Instr(Mnemonic.arsh3, X("")),         // 0xC6),         // Arithmetic right shift halfword
-            Instr(Mnemonic.arsb3, X("")),         // 0xC7),         // Arithmetic right shift byte
+            Instr(Mnemonic.arsh3, Rw,Rh,Wh),         // 0xC6),         // Arithmetic right shift halfword
+            Instr(Mnemonic.arsb3, Rw,Rb,Wb),         // 0xC7),         // Arithmetic right shift byte
 
             Instr(Mnemonic.insfw, X("")),         // 0xC8),         // Insert field word
             invalid,
@@ -765,7 +879,7 @@ namespace Reko.Arch.WE32100
             Instr(Mnemonic.subw3, X("")),         // 0xFC Subtract word, 3 - address
             invalid,
             Instr(Mnemonic.subh3, X("")),         // 0x FE Subtract halfword, 3 - address
-            Instr(Mnemonic.subb3, X(""))); // 0xFF Subtract byte, 3 - address
+            Instr(Mnemonic.subb3, X("")) }); // 0xFF Subtract byte, 3 - address
 
         }
     }

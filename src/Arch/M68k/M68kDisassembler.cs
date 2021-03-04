@@ -2397,6 +2397,8 @@ namespace Reko.Arch.M68k
                 const uint valid_ea_mask = 0xE4;
                 if ((1u << (((int)uInstr >> 3) & 7) & valid_ea_mask) == 0)
                     return false;
+                if ((uInstr & 0x3F) == 0x3C)    // Immediate
+                    return false;
                 dasm.mnemonic = Mnemonic.ptest;
                 dasm.iclass = InstrClass.System;
                 dasm.ops.Add(new M68kImmediateOperand(Constant.Byte((byte) (modes & 0x1f))));

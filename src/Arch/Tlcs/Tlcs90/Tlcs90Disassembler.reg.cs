@@ -32,7 +32,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
     partial class Tlcs90Disassembler
     {
-        private static Decoder[] regEncodings = new Decoder[]
+        private static readonly Decoder[] regEncodings = new Decoder[]
         {
             // 00
             invalid,

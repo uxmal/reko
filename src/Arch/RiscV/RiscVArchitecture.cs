@@ -30,6 +30,8 @@ using System.Linq;
 
 namespace Reko.Arch.RiscV
 {
+    using Decoder = Decoder<RiscVDisassembler, Mnemonic, RiscVInstruction>;
+
     public class RiscVArchitecture : ProcessorArchitecture
     {
         private static readonly string [] regnames = {
@@ -46,6 +48,7 @@ namespace Reko.Arch.RiscV
           "fs8", "fs9", "fs10", "fs11", "ft8", "ft9", "ft10", "ft11"
         };
 
+        private Decoder[]? decoders;
         private Dictionary<StorageDomain, RegisterStorage> regsByDomain;
         private Dictionary<string, RegisterStorage> regsByName;
 
@@ -78,7 +81,7 @@ namespace Reko.Arch.RiscV
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
-            return new RiscVDisassembler(this, imageReader);
+            return new RiscVDisassembler(this, decoders!, imageReader);
         }
 
         public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
@@ -103,7 +106,7 @@ namespace Reko.Arch.RiscV
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new RiscVRewriter(this, rdr, state, binder, host);
+            return new RiscVRewriter(this, decoders!, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -247,6 +250,9 @@ namespace Reko.Arch.RiscV
             this.StackRegister = regsByDomain[(StorageDomain) 2];       // sp
 
             DefineCsrs();
+
+            var isa = RiscVDisassembler.InstructionSet.Create(Options);
+            this.decoders = isa.CreateRootDecoders();
         }
 
         private void DefineCsrs()

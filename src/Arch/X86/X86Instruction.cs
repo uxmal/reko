@@ -74,34 +74,34 @@ namespace Reko.Arch.X86
         /// <summary>
         /// Returns the condition codes that an instruction modifies.
         /// </summary>
-        public static FlagM DefCc(Mnemonic mnemonic)
+        public static FlagGroupStorage? DefCc(Mnemonic mnemonic)
 		{
 			switch (mnemonic)
 			{
 			case Mnemonic.aaa:
 			case Mnemonic.aas:
             case Mnemonic.adcx:
-				return FlagM.CF;
+				return Registers.C;
 			case Mnemonic.aad:
 			case Mnemonic.aam:
-				return FlagM.SF|FlagM.ZF;
+                return Registers.SZ;
             case Mnemonic.adox:
-                return FlagM.OF;
+                return Registers.O;
 			case Mnemonic.bt:
 			case Mnemonic.bts:
 			case Mnemonic.btc:
 			case Mnemonic.btr:
-				return FlagM.CF;
+				return Registers.C;
 			case Mnemonic.clc:
 			case Mnemonic.cmc:
 			case Mnemonic.stc:
-				return FlagM.CF;
+				return Registers.C;
 			case Mnemonic.cld:
 			case Mnemonic.std:
-				return FlagM.DF;
+				return Registers.D;
 			case Mnemonic.daa:
 			case Mnemonic.das:
-				return FlagM.CF|FlagM.SF|FlagM.ZF;
+                return Registers.SCZ;
 			case Mnemonic.adc:
 			case Mnemonic.add:
 			case Mnemonic.sbb:
@@ -116,25 +116,25 @@ namespace Reko.Arch.X86
 			case Mnemonic.neg:
 			case Mnemonic.scas:
 			case Mnemonic.scasb:
-				return FlagM.CF|FlagM.SF|FlagM.ZF|FlagM.OF;
+                return Registers.SCZO;
 			case Mnemonic.dec:
 			case Mnemonic.inc:
-				return FlagM.SF|FlagM.ZF|FlagM.OF;
+                return Registers.SZO;
 			case Mnemonic.rcl:
 			case Mnemonic.rcr:
 			case Mnemonic.rol:
 			case Mnemonic.ror:
-				return FlagM.OF|FlagM.CF;		// if shift count > 1, FlagM.OF is not set.
+				return Registers.CO;		// if shift count > 1, FlagM.OF is not set.
 			case Mnemonic.sar:
 			case Mnemonic.shl:
 			case Mnemonic.shr:
-				return FlagM.OF|FlagM.SF|FlagM.ZF|FlagM.CF;	// if shift count > 1, FlagM.OF is not set.
+				return Registers.SCZO;	// if shift count > 1, FlagM.OF is not set.
 			case Mnemonic.shld:
 			case Mnemonic.shrd:
-				return FlagM.SF|FlagM.ZF|FlagM.CF;
+                return Registers.SCZ;
 			case Mnemonic.bsf:
 			case Mnemonic.bsr:
-				return FlagM.ZF;
+				return Registers.Z;
 			case Mnemonic.and:
 			case Mnemonic.andn:
 			case Mnemonic.or:
@@ -142,26 +142,26 @@ namespace Reko.Arch.X86
             case Mnemonic.test:
             case Mnemonic.xadd:
             case Mnemonic.xor:
-				return FlagM.OF|FlagM.SF|FlagM.ZF|FlagM.CF;
+                return Registers.SCZO;
 			default:
-				return 0;
+				return null;
 			}
 		}
 
         /// <summary>
         /// Returns the condition codes an instruction uses.
         /// </summary>
-        public static FlagM UseCc(Mnemonic mnemonic)
+        public static FlagGroupStorage? UseCc(Mnemonic mnemonic)
 		{
 			switch (mnemonic)
 			{
 			case Mnemonic.adc:
 			case Mnemonic.adcx:
 			case Mnemonic.sbb:
-				return FlagM.CF;
+				return Registers.C;
 			case Mnemonic.daa:
 			case Mnemonic.das:
-				return FlagM.CF;
+				return Registers.C;
 			case Mnemonic.ins:
 			case Mnemonic.insb:
 			case Mnemonic.lods:
@@ -174,80 +174,80 @@ namespace Reko.Arch.X86
 			case Mnemonic.scasb:
 			case Mnemonic.stos:
 			case Mnemonic.stosb:
-				return FlagM.DF;
+				return Registers.D;
             case Mnemonic.cmova:
             case Mnemonic.ja:
 			case Mnemonic.seta:
-				return FlagM.CF|FlagM.ZF;
+                return Registers.CZ;
             case Mnemonic.cmovbe:
             case Mnemonic.jbe:
 			case Mnemonic.setbe:
-				return FlagM.CF|FlagM.ZF;
+				return Registers.CZ;
             case Mnemonic.cmovc:
             case Mnemonic.jc:
 			case Mnemonic.setc:
-				return FlagM.CF;
+				return Registers.C;
             case Mnemonic.cmovg:
             case Mnemonic.jg:
 			case Mnemonic.setg:
-				return FlagM.SF|FlagM.OF|FlagM.ZF;
+				return Registers.SZO;
             case Mnemonic.cmovge:
             case Mnemonic.jge:
 			case Mnemonic.setge:
-				return FlagM.SF|FlagM.OF;
+				return Registers.SO;
 			case Mnemonic.cmovl:
             case Mnemonic.jl:
             case Mnemonic.setl:
-				return FlagM.SF|FlagM.OF;
+				return Registers.SO;
             case Mnemonic.cmovle:
             case Mnemonic.jle:
 			case Mnemonic.setle:
-				return FlagM.SF|FlagM.OF|FlagM.ZF;
+                return Registers.SZO;
             case Mnemonic.cmovnc:
             case Mnemonic.jnc:
             case Mnemonic.setnc:
-				return FlagM.CF;
+				return Registers.C;
             case Mnemonic.cmovno:
             case Mnemonic.jno:
 			case Mnemonic.setno:
-				return FlagM.OF;
+				return Registers.O;
             case Mnemonic.cmovns:
             case Mnemonic.jns:
 			case Mnemonic.setns:
-				return FlagM.SF;
+				return Registers.S;
             case Mnemonic.cmovnz:
             case Mnemonic.jnz:
 			case Mnemonic.setnz:
-				return FlagM.ZF;
+				return Registers.Z;
             case Mnemonic.cmovo:
             case Mnemonic.jo:
 			case Mnemonic.seto:
-				return FlagM.OF;
+				return Registers.O;
             case Mnemonic.cmovpe:
             case Mnemonic.jpe:
 			case Mnemonic.setpe:
             case Mnemonic.cmovpo:
             case Mnemonic.jpo:
 			case Mnemonic.setpo:
-                return FlagM.PF;
+                return Registers.P;
             case Mnemonic.cmovs:
             case Mnemonic.js:
 			case Mnemonic.sets:
-				return FlagM.SF;
+				return Registers.S;
             case Mnemonic.cmovz:
             case Mnemonic.jz:
 			case Mnemonic.setz:
-				return FlagM.ZF;
+				return Registers.Z;
 			case Mnemonic.lahf:
-				return FlagM.CF|FlagM.SF|FlagM.ZF|FlagM.OF;
+				return Registers.SCZO;
 			case Mnemonic.loope:
 			case Mnemonic.loopne:
-				return FlagM.ZF;
+				return Registers.Z;
 			case Mnemonic.rcl:
 			case Mnemonic.rcr:
-				return FlagM.CF;
+				return Registers.C;
 			default:
-				return 0;
+				return null;
 			}
 		}
 	}
