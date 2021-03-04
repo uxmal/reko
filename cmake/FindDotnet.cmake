@@ -271,8 +271,8 @@ FUNCTION(DOTNET_GET_DEPS _DN_PROJECT arguments)
     ENDIF()
 
     IF(_DN_NETCOREAPP)
-        SET(_DN_BUILD_OPTIONS -f netcoreapp3.1)
-        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=netcoreapp3.1)
+        SET(_DN_BUILD_OPTIONS -f net5.0)
+        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=net5.0)
     ELSEIF(UNIX)
         # Unix builds default to netstandard2.1
         SET(_DN_BUILD_OPTIONS -f netstandard2.1)
@@ -452,7 +452,7 @@ FUNCTION(RUN_DOTNET DOTNET_PROJECT)
         DEPENDS ${DOTNET_deps}
         ${dotnet_run_cmds}
         # XXX tfm
-        COMMAND ${DOTNET_EXE} ${DOTNET_OUTPUT_PATH}/netcoreapp3.1/${DOTNET_PROJNAME}.dll ${DOTNET_ARGUMENTS}
+        COMMAND ${DOTNET_EXE} ${DOTNET_OUTPUT_PATH}/net5.0/${DOTNET_PROJNAME}.dll ${DOTNET_ARGUMENTS}
         #COMMAND ${CMAKE_COMMAND} -E echo ${aio_run_command}
         #COMMAND ${aio_run_command}
         COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/${DOTNET_TARGETNAME}.runtimestamp
@@ -469,7 +469,7 @@ FUNCTION(TEST_DOTNET DOTNET_PROJECT)
     IF(WIN32)
         SET(test_framework_args "")
     ELSE()
-        SET(test_framework_args -f netcoreapp3.1)
+        SET(test_framework_args -f net5.0)
     ENDIF()
 
     ADD_TEST(NAME              ${DOTNET_PROJNAME}

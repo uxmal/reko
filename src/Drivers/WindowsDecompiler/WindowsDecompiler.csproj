@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.SDK">
   <Import Project="$(ProjectDir)..\Common.items" />
   <PropertyGroup>
     <!-- dotnet restore goes into this project; doesn't seem to be a way to stop it. -->
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <!-- <RuntimeIdentifiers>win7-x86;win7-x64;unix</RuntimeIdentifiers> -->
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>Reko.WindowsDecompiler</RootNamespace>

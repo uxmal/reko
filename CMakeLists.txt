@@ -10,6 +10,6 @@ project(Reko NONE)
 enable_testing()
 
 set(REKO_LIB_FRAMEWORK "netstandard2.1")
-set(REKO_EXE_FRAMEWORK "netcoreapp3.1")
+set(REKO_EXE_FRAMEWORK "net5.0")
 
 add_subdirectory(src)
