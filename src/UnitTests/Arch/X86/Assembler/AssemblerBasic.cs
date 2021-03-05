@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
                     var formatter = new TextFormatter(fut.TextWriter);
                     dumper.DumpData(program.SegmentMap, program.Architecture, bmem.BaseAddress, bmem.Length, formatter);
                     fut.TextWriter.WriteLine();
-                    dumper.DumpAssembler(program.SegmentMap, program.Architecture, bmem.BaseAddress, bmem.EndAddress, formatter);
+                    dumper.DumpAssembler(program.SegmentMap, program.Architecture, bmem.BaseAddress, bmem.Length, formatter);
                     if (program.ImportReferences.Count > 0)
                     {
                         foreach (var de in program.ImportReferences.OrderBy(d => d.Key))
@@ -393,7 +393,7 @@ foo		endp
 				fut.TextWriter.WriteLine();
 				dump.ShowAddresses = true;
 				dump.ShowCodeBytes = true;
-				dump.DumpAssembler(program.SegmentMap, program.Architecture, bmem.BaseAddress, bmem.EndAddress, formatter);
+				dump.DumpAssembler(program.SegmentMap, program.Architecture, bmem.BaseAddress, bmem.Length, formatter);
 
 				fut.AssertFilesEqual();
 			}	
