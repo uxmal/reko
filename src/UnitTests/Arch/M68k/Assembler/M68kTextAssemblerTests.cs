@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Arch.M68k.Assembler
                 var formatter = new TextFormatter(fut.TextWriter);
                 dumper.DumpData(program.SegmentMap, program.Architecture, mem.BaseAddress, mem.Bytes.Length, formatter);
                 fut.TextWriter.WriteLine();
-                dumper.DumpAssembler(program.SegmentMap, program.Architecture, mem.BaseAddress, mem.EndAddress, formatter);
+                dumper.DumpAssembler(program.SegmentMap, program.Architecture, mem.BaseAddress, mem.Length, formatter);
                 if (program.ImportReferences.Count > 0)
                 {
                     var list = new SortedList<Address, ImportReference>(program.ImportReferences);

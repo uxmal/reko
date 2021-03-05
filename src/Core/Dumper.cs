@@ -94,7 +94,7 @@ namespace Reko.Core
                     formatter.WriteLine();
                 }
                 var arch = block.Block.Procedure.Architecture;
-                DumpAssembler(program.SegmentMap, arch, block.Address, block.Address + block.Size, formatter);
+                DumpAssembler(program.SegmentMap, arch, block.Address, block.Size, formatter);
                 return;
             }
 
@@ -242,7 +242,7 @@ namespace Reko.Core
             return true;
         }
 
-        public void DumpAssembler(SegmentMap map, IProcessorArchitecture arch, Address addrStart, Address addrLast, Formatter formatter)
+        public void DumpAssembler(SegmentMap map, IProcessorArchitecture arch, Address addrStart, long cbBytes, Formatter formatter)
         {
             if (!map.TryFindSegment(addrStart, out var segment))
                 return;
@@ -255,10 +255,12 @@ namespace Reko.Core
                     syntax: "");
                 foreach (var instr in dasm)
                 {
-                    if (instr.Address! >= addrLast)
+                    if (cbBytes <= 0)
                         break;
                     if (!DumpAssemblerLine(segment.MemoryArea, arch, instr, writer, options))
                         break;
+
+                    cbBytes -= instr.Length;
                 }
             }
             catch (Exception ex)
