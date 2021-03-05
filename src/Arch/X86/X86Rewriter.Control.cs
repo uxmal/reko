@@ -40,7 +40,7 @@ namespace Reko.Arch.X86
     {
         private Expression CreateTestCondition(ConditionCode cc, Mnemonic mnemonic)
         {
-            var grf = orw.FlagGroup(X86Instruction.UseCc(mnemonic));
+            var grf = orw.FlagGroup(X86Instruction.UseCc(mnemonic) ?? throw new ArgumentException("Mnemonic not setting conditions"));
             var tc = new TestCondition(cc, grf);
             return tc;
         }
