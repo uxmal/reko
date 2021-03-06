@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items"/>
   <PropertyGroup>
     <ProjectGuid>{8C072C7A-9771-42D5-BF07-E79850CFCC90}</ProjectGuid>
     <OutputType>Library</OutputType>

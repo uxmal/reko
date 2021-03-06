@@ -169,6 +169,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Drivers", "Drivers", "{583D1273-7630-480B-9020-D16B3A15D15D}"
 	ProjectSection(SolutionItems) = preProject
 		Drivers\Common.items = Drivers\Common.items
+		Drivers\CommonBuildProperties.items = Drivers\CommonBuildProperties.items
 		Drivers\PreBuild.targets = Drivers\PreBuild.targets
 		Drivers\reko.config = Drivers\reko.config
 	EndProjectSection

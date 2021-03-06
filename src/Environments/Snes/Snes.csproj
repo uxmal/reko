@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items"/>
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <ProjectGuid>{B4704089-C5BD-42ED-B509-8F2C0A528BA1}</ProjectGuid>
