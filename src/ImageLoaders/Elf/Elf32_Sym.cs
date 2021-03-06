@@ -53,7 +53,7 @@ namespace Reko.ImageLoaders.Elf
             }
             else
             {
-                sym = null;
+                sym = null!;
                 return false;
             }
         }
@@ -85,7 +85,7 @@ namespace Reko.ImageLoaders.Elf
             }
             else
             {
-                sym = null;
+                sym = null!;
                 return false;
             }
         }

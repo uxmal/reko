@@ -34,7 +34,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation  rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation  rela)
         {
             var addr = Address.Ptr64(rela.Offset);
             var rt = (RtAarch64) (rela.Info & 0xFFFF);

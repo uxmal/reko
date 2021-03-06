@@ -113,7 +113,7 @@ namespace Reko.ImageLoaders.Elf
                 }
                 else
                 {
-                    entryName = dser.Name;
+                    entryName = dser.Name!;
                     fmt = dser.Format;
                 }
                 RenderEntry(entryName, fmt, entry, offStrtab, formatter);
@@ -174,12 +174,12 @@ namespace Reko.ImageLoaders.Elf
 
     public class DynamicSectionRenderer64 : DynamicSectionRenderer
     {
-        private ElfLoader loader;
-        private ElfSection shdr;
-        private ElfSection strtabSection;
+        private readonly ElfLoader loader;
+        private readonly ElfSection? shdr;
+        private ElfSection? strtabSection;
         private readonly Dictionary<long, ElfDynamicEntry.TagInfo> machineSpecific;
 
-        public DynamicSectionRenderer64(ElfLoader loader, ElfSection shdr, ElfMachine machine)
+        public DynamicSectionRenderer64(ElfLoader loader, ElfSection? shdr, ElfMachine machine)
         {
             this.loader = loader;
             this.shdr = shdr;
@@ -191,7 +191,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
-            Render(shdr.FileOffset, formatter);
+            Render(shdr!.FileOffset, formatter);
         }
 
         public void Render(ulong fileOffset, Formatter formatter)
@@ -202,7 +202,7 @@ namespace Reko.ImageLoaders.Elf
                 return;
             var offStrtab = loader.AddressToFileOffset(dynStrtab.UValue);
 
-            this.strtabSection = ((ElfLoader64)loader).GetSectionInfoByAddr64(dynStrtab.UValue);
+            this.strtabSection = ((ElfLoader64)loader).GetSectionInfoByAddr64(dynStrtab.UValue)!;
             foreach (var entry in loader.GetDynamicEntries(fileOffset))
             {
                 DtFormat fmt;
@@ -215,7 +215,7 @@ namespace Reko.ImageLoaders.Elf
                 }
                 else
                 {
-                    entryName = dser.Name;
+                    entryName = dser.Name!;
                     fmt = dser.Format;
                 }
                 RenderEntry(entryName, fmt, entry, formatter);
@@ -267,7 +267,7 @@ namespace Reko.ImageLoaders.Elf
                 formatter.WriteHyperlink(string.Format("{0:X16}", entry.UValue), Address.Ptr64(entry.UValue));
                 break;
             case DtFormat.String:
-                formatter.Write(loader.ReadAsciiString(strtabSection.FileOffset + entry.UValue));
+                formatter.Write(loader.ReadAsciiString(strtabSection!.FileOffset + entry.UValue));
                 break;
             }
         }

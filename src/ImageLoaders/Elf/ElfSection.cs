@@ -44,10 +44,16 @@ namespace Reko.ImageLoaders.Elf
         public Address Address;
         public ulong FileOffset;
         public ulong Size;
-        public ElfSection LinkedSection;
-        public ElfSection RelocatedSection;
+        public ElfSection? LinkedSection;
+        public ElfSection? RelocatedSection;
         public ulong Alignment;
         public ulong EntrySize;
+
+        public ElfSection()
+        {
+            this.Name = null!;
+            this.Address = null!;
+        }
 
         public uint EntryCount()
         {
@@ -78,7 +84,7 @@ namespace Reko.ImageLoaders.Elf
         public uint sh_addralign;
         public uint sh_entsize;
 
-        public static Elf32_SHdr Load(EndianImageReader rdr)
+        public static Elf32_SHdr? Load(EndianImageReader rdr)
         {
             try
             {

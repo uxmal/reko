@@ -30,7 +30,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class x86_64Relocator : ElfRelocator64
     {
-        private Dictionary<Address, ImportReference> importReferences;
+        private Dictionary<Address, ImportReference>? importReferences;
 
         public x86_64Relocator(ElfLoader64 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
@@ -66,18 +66,18 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 var rela = Elf64_Rela.Read(relaRdr);
 
                 ulong sym = rela.r_info >> 32;
-                var symStr = loader.Symbols[rela_plt.LinkedSection.FileOffset][(int)sym];
+                var symStr = loader.Symbols[rela_plt.LinkedSection!.FileOffset][(int)sym];
 
-                var addr = plt.Address + (uint)(i + 1) * plt.EntrySize;
+                var addr = plt.Address! + (uint)(i + 1) * plt.EntrySize;
                 var st = ElfLoader.GetSymbolType(symStr);
                 if (st.HasValue)
                 {
-                    importReferences[addr] = new NamedImportReference(addr, null, symStr.Name, st.Value);
+                    importReferences![addr] = new NamedImportReference(addr, null, symStr.Name, st.Value);
                 }
             }
         }
 
-        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol sym, ElfSection? referringSection, ElfRelocation rela)
         {
             var rt = (x86_64Rt)(rela.Info & 0xFF);
             if (loader.Sections.Count <= sym.SectionIndex)
@@ -90,7 +90,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 var st = ElfLoader.GetSymbolType(sym);
                 if (!st.HasValue)
                     return (null, null);
-                importReferences.Add(addrPfn, new NamedImportReference(addrPfn, null, sym.Name, st.Value));
+                importReferences!.Add(addrPfn, new NamedImportReference(addrPfn, null, sym.Name, st.Value));
                 var gotSym = loader.CreateGotSymbol(addrPfn, sym.Name);
                 imageSymbols.Add(addrPfn, gotSym);
                 return (addrPfn, null);
@@ -99,7 +99,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             if (sym.SectionIndex != 0)
             {
                 var symSection = loader.Sections[(int) sym.SectionIndex];
-                S = (ulong) sym.Value + symSection.Address.ToLinear();
+                S = (ulong) sym.Value + symSection.Address!.ToLinear();
             }
             long A = 0;
             int sh = 0;

@@ -85,7 +85,7 @@ namespace Reko.ImageLoaders.Elf
         public long SValue => (long)UValue;
         public int Tag { get; }
 
-        public TagInfo GetTagInfo(ElfMachine machine)
+        public TagInfo? GetTagInfo(ElfMachine machine)
         {
             if (TagInfos.TryGetValue(Tag, out var info))
                 return info;
@@ -100,12 +100,12 @@ namespace Reko.ImageLoaders.Elf
 
         public class TagInfo
         {
-            public string Name;
+            public string? Name;
             public DtFormat Format;
         }
 
 
-        public static Dictionary<long, TagInfo> TagInfos = new Dictionary<long, TagInfo>
+        public static readonly Dictionary<long, TagInfo> TagInfos = new()
         {
             { DT_DEBUG,   new TagInfo { Name = "DT_DEBUG", Format= DtFormat.Hexadecimal } },
             { DT_FINI,    new TagInfo { Name="DT_DEBUG", Format = DtFormat.Address } },

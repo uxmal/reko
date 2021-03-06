@@ -36,6 +36,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public MipsRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
+            archMips16e = null!;
         }
 
         public override ImageSymbol AdjustImageSymbol(ImageSymbol sym)
@@ -44,16 +45,17 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 sym.Type != SymbolType.ExternalProcedure &&
                 sym.Type != SymbolType.Procedure)
                 return sym;
-            if ((sym.Address.ToLinear() & 1) == 0)
+            if ((sym.Address!.ToLinear() & 1) == 0)
                 return sym;
             if (archMips16e == null)
             {
                 var cfgSvc = loader.Services.RequireService<IConfigurationService>();
-                this.archMips16e = cfgSvc.GetArchitecture(loader.Architecture.Name);
-                archMips16e.LoadUserOptions(new Dictionary<string, object>
-                {
-                    { "decoder", "mips16e" }
-                });
+                this.archMips16e = cfgSvc.GetArchitecture(
+                    loader.Architecture.Name, 
+                    new Dictionary<string, object>
+                    {
+                        { "decoder", "mips16e" }
+                    })!;
             }
             var addrNew = sym.Address - 1;
             var symNew = ImageSymbol.Create(
@@ -213,7 +215,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rel)
+        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rel)
         {
             if (symbol == null || loader.Sections.Count <= symbol.SectionIndex)
                 return (null, null);
@@ -377,7 +379,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return elfNew;
         }
 
-        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
         {
             switch ((Mips64Rt)rela.Info)
             {

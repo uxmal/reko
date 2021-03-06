@@ -60,11 +60,12 @@ namespace Reko.ImageLoaders.Elf
         private byte osAbi;
         private Address addrPreferred;
 
-        protected ElfLoader innerLoader;
+        protected ElfLoader? innerLoader;
 
         public ElfImageLoader(IServiceProvider services, string filename, byte[] rawBytes)
             : base(services, filename, rawBytes)
         {
+            this.addrPreferred = Address.Ptr32(0);
         }
 
         public override Address PreferredBaseAddress 
@@ -73,7 +74,7 @@ namespace Reko.ImageLoaders.Elf
             set { addrPreferred = value; }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             var rdr = new BeImageReader(this.RawImage, 0);
             LoadElfIdentification(rdr);
@@ -109,7 +110,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            var reloc = innerLoader.Relocate(program, addrLoad);
+            var reloc = innerLoader!.Relocate(program, addrLoad);
             return reloc;
         }
 
