@@ -60,17 +60,6 @@ namespace Reko.Core.Serialization
     {
         [XmlElement("filename")]
         public string? Filename;
-
-        public abstract T Accept<T>(IProjectFileVisitor_v3<T> visitor);
-    }
-
-    public interface IProjectFileVisitor_v3<T>
-    {
-        T VisitInputFile(DecompilerInput_v3 input);
-        T VisitInputFile(DecompilerInput_v4 input);
-        T VisitInputFile(DecompilerInput_v5 input);
-        T VisitMetadataFile(MetadataFile_v3 metadata);
-        T VisitAssemblerFile(AssemblerFile_v3 asm);
     }
 
     public class UserData_v3
@@ -145,11 +134,6 @@ namespace Reko.Core.Serialization
 
         [XmlElement("user")]
         public UserData_v3 User;
-
-        public override T Accept<T>(IProjectFileVisitor_v3<T> visitor)
-        {
-            return visitor.VisitInputFile(this);
-        }
     }
 
     public class MetadataFile_v3 : ProjectFile_v3
@@ -159,22 +143,12 @@ namespace Reko.Core.Serialization
 
         [XmlElement("module")]
         public string? ModuleName;
-
-        public override T Accept<T>(IProjectFileVisitor_v3<T> visitor)
-        {
-            return visitor.VisitMetadataFile(this);
-        }
     }
 
     public class AssemblerFile_v3 : ProjectFile_v3
     {
         [XmlElement("assembler")]
         public string? Assembler;
-
-        public override T Accept<T>(IProjectFileVisitor_v3<T> visitor)
-        {
-            return visitor.VisitAssemblerFile(this);
-        }
     }
 
     public class PlatformOptions_v3

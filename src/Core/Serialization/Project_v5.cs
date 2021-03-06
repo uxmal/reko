@@ -89,10 +89,5 @@ namespace Reko.Core.Serialization
 
         [XmlElement("user")]
         public UserData_v4? User;
-
-        public override T Accept<T>(IProjectFileVisitor_v3<T> visitor)
-        {
-            return visitor.VisitInputFile(this);
-        }
     }
 }
