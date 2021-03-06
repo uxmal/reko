@@ -36,6 +36,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         public ArmRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
             this.currentTlsSlotOffset = 0x0000000;
+            this.archThumb = null!;
         }
 
         public override Address AdjustAddress(Address address)
@@ -51,12 +52,12 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 sym.Type != SymbolType.ExternalProcedure &&
                 sym.Type != SymbolType.Procedure)
                 return sym;
-            if ((sym.Address.ToLinear() & 1) == 0)
+            if ((sym.Address!.ToLinear() & 1) == 0)
                 return sym;
             if (archThumb == null)
             {
                 var cfgSvc = loader.Services.RequireService<IConfigurationService>();
-                this.archThumb = cfgSvc.GetArchitecture("arm-thumb");
+                this.archThumb = cfgSvc.GetArchitecture("arm-thumb")!;
             }
             var addrNew = sym.Address - 1;
             var symNew = ImageSymbol.Create(
@@ -70,7 +71,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return symNew;
         }
 
-        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
         {
             /*
             S (when used on its own) is the address of the symbol
@@ -107,7 +108,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             uint mask = ~0u;
             int sh = 0;
             var addr = referringSection != null
-                ? referringSection.Address + rela.Offset
+                ? referringSection.Address! + rela.Offset
                 : loader.CreateAddress(rela.Offset);
             var rt = (Arm32Rt)(rela.Info & 0xFF);
             switch (rt)

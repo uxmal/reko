@@ -73,7 +73,7 @@ namespace Reko.ImageLoaders.Elf
             return Address.Ptr64(uAddr);
         }
 
-        protected override IProcessorArchitecture CreateArchitecture(EndianServices endianness)
+        protected override IProcessorArchitecture? CreateArchitecture(EndianServices endianness)
         {
             var options = new Dictionary<string, object>();
             string archName;
@@ -114,7 +114,7 @@ namespace Reko.ImageLoaders.Elf
             return new ElfObjectLinker64(this, Architecture, rawImage);
         }
 
-        private ImageSegmentRenderer CreateRenderer64(ElfSection shdr)
+        private ImageSegmentRenderer? CreateRenderer64(ElfSection shdr)
         {
             switch (shdr.Type)
             {
@@ -180,7 +180,7 @@ namespace Reko.ImageLoaders.Elf
                     ph.p_flags,
                     ph.p_align);
             }
-            writer.WriteLine("Base address: {0:X8}", ComputeBaseAddress(platform));
+            writer.WriteLine("Base address: {0:X8}", ComputeBaseAddress(platform!));
             writer.WriteLine();
             writer.WriteLine("Dependencies");
             foreach (var dep in GetDependencyList(rawImage))
@@ -218,9 +218,9 @@ namespace Reko.ImageLoaders.Elf
         }
 
 
-        public override Address GetEntryPointAddress(Address addrBase)
+        public override Address? GetEntryPointAddress(Address addrBase)
         {
-            Address addr = null;
+            Address? addr = null;
             //$REVIEW: should really have a subclassed "Ps3ElfLoader"
             if (osAbi == ElfLoader.ELFOSABI_CELL_LV2)
             {
@@ -260,7 +260,7 @@ namespace Reko.ImageLoaders.Elf
             ulong offset = symSection.FileOffset + symbolNo * symSection.EntrySize;
             var rdr = CreateReader(offset);
             rdr.TryReadUInt64(out offset);
-            return GetStrPtr(symSection.LinkedSection, (uint) offset);
+            return GetStrPtr(symSection.LinkedSection!, (uint) offset);
         }
 
         public override SegmentMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred)
@@ -392,8 +392,8 @@ namespace Reko.ImageLoaders.Elf
                     Type = shdr.sh_type,
                     Flags = shdr.sh_flags,
                     Address = shdr.sh_addr != 0
-                        ? platform.MakeAddressFromLinear(shdr.sh_addr, false)
-                        : null,
+                        ? platform!.MakeAddressFromLinear(shdr.sh_addr, false)
+                        : null!,
                     FileOffset = shdr.sh_offset,
                     Size = shdr.sh_size,
                     Alignment = shdr.sh_addralign,
@@ -412,8 +412,8 @@ namespace Reko.ImageLoaders.Elf
                 var section = sections[i];
                 section.Name = ReadSectionName(sections, inames[i]);
 
-                ElfSection linkSection = null;
-                ElfSection relSection = null;
+                ElfSection? linkSection = null;
+                ElfSection? relSection = null;
                 switch (section.Type)
                 {
                 case SectionHeaderType.SHT_REL:
@@ -434,14 +434,14 @@ namespace Reko.ImageLoaders.Elf
             return sections;
         }
 
-        public override ElfSymbol LoadSymbol(ulong offsetSymtab, ulong symbolIndex, ulong entrySize, ulong offsetStringTable)
+        public override ElfSymbol? LoadSymbol(ulong offsetSymtab, ulong symbolIndex, ulong entrySize, ulong offsetStringTable)
         {
             var rdr = CreateReader(offsetSymtab + entrySize * symbolIndex);
             if (!Elf64_Sym.TryLoad(rdr, out var sym))
                 return null;
-            return new ElfSymbol
+            var name = RemoveModuleSuffix(ReadAsciiString(offsetStringTable + sym.st_name));
+            return new ElfSymbol(name)
             {
-                Name = RemoveModuleSuffix(ReadAsciiString(offsetStringTable + sym.st_name)),
                 Type = (ElfSymbolType) (sym.st_info & 0xF),
                 Bind = sym.st_info >> 4,
                 SectionIndex = sym.st_shndx,
@@ -453,9 +453,9 @@ namespace Reko.ImageLoaders.Elf
         public override Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
             //Debug.Print("Symbols");
-            var stringtableSection = symSection.LinkedSection;
-            var rdr = CreateReader(symSection.FileOffset);
             var symbols = new Dictionary<int, ElfSymbol>();
+            var stringtableSection = symSection.LinkedSection!;
+            var rdr = CreateReader(symSection.FileOffset);
             for (ulong i = 0; i < symSection.Size / symSection.EntrySize; ++i)
             {
                 if (Elf64_Sym.TryLoad(rdr, out var sym))
@@ -468,22 +468,21 @@ namespace Reko.ImageLoaders.Elf
                     //    GetSectionName(sym.st_shndx),
                     //    sym.st_value,
                     //    sym.st_size);
-                    symbols.Add(
-                        (int) i,
-                        new ElfSymbol
-                        {
-                            Name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
-                            Type = (ElfSymbolType) (sym.st_info & 0xF),
-                            SectionIndex = sym.st_shndx,
-                            Value = sym.st_value,
-                            Size = sym.st_size,
-                        });
+                    var name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name));
+                    var esym = new ElfSymbol(name)
+                    {
+                        Type = (ElfSymbolType) (sym.st_info & 0xF),
+                        SectionIndex = sym.st_shndx,
+                        Value = sym.st_value,
+                        Size = sym.st_size,
+                    };
+                    symbols.Add((int) i, esym);
                 }
             }
             return symbols;
         }
 
-        public override Address ReadAddress(EndianImageReader rdr)
+        public override Address? ReadAddress(EndianImageReader rdr)
         {
             if (!rdr.TryReadUInt64(out ulong uAddrSym))
                 return null;

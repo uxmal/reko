@@ -35,10 +35,10 @@ namespace Reko.Core
     public abstract class ImportReference : IComparable<ImportReference>
     {
         public Address ReferenceAddress;
-        public string ModuleName;
+        public string? ModuleName;
         public readonly string EntryName;
 
-        public ImportReference(Address addr, string moduleName, string entryName, SymbolType symType)
+        public ImportReference(Address addr, string? moduleName, string entryName, SymbolType symType)
         {
             this.ReferenceAddress = addr;
             this.ModuleName = moduleName;
@@ -53,13 +53,26 @@ namespace Reko.Core
         public abstract ExternalProcedure ResolveImportedProcedure(IDynamicLinker dynamicLinker, IPlatform platform, AddressContext ctx);
 
         public abstract int CompareTo(ImportReference that);
+
+        protected int CompareModuleNames(ImportReference that)
+        {
+            if (this.ModuleName != null && that.ModuleName != null)
+            {
+                return this.ModuleName.CompareTo(that.ModuleName);
+            }
+            else if (this.ModuleName is null)
+                return -1;
+            else if (that.ModuleName is null)
+                return 1;
+            else return 0;
+        }
     }
 
     public class NamedImportReference : ImportReference
     {
         public string ImportName;
 
-        public NamedImportReference(Address addr, string moduleName, string importName, SymbolType symType)
+        public NamedImportReference(Address addr, string? moduleName, string importName, SymbolType symType)
             : base(addr, moduleName, importName, symType)
         {
             this.ImportName = importName;
@@ -71,22 +84,9 @@ namespace Reko.Core
             {
                 return this.GetType().FullName.CompareTo(this.GetType().FullName);
             }
-            if (this.ModuleName == null)
-            {
-                if (that.ModuleName != null)
-                    return -1;
-            }
-            else if (this.ModuleName != null)
-            {
-                if (that.ModuleName == null)
-                    return 1;
-            }
-            else
-            {
-                int cmp = this.ModuleName!.CompareTo(that.ModuleName);
-                if (cmp != 0)
-                    return cmp;
-            }
+            int cmp = CompareModuleNames(that);
+            if (cmp != 0)
+                return cmp;
             return string.Compare(
                 this.ImportName,
                 ((NamedImportReference)that).ImportName,
@@ -152,16 +152,18 @@ namespace Reko.Core
             {
                 return this.GetType().FullName.CompareTo(this.GetType().FullName);
             }
-            int cmp = this.ModuleName.CompareTo(that.ModuleName);
+            int cmp = CompareModuleNames(that);
             if (cmp != 0)
                 return cmp;
-            cmp = this.Ordinal.CompareTo(((OrdinalImportReference)that).Ordinal);
+            cmp = this.Ordinal.CompareTo(((OrdinalImportReference) that).Ordinal);
             return cmp;
         }
 
+
+
         public override Expression? ResolveImport(IDynamicLinker dynamicLinker, IPlatform platform, AddressContext ctx)
         {
-            var imp = dynamicLinker.ResolveImport(ModuleName, Ordinal, platform);
+            var imp = dynamicLinker.ResolveImport(ModuleName!, Ordinal, platform);
             if (imp != null)
                 return imp;
             ctx.Warn("Unable to resolve imported reference {0}.", this);
@@ -170,7 +172,7 @@ namespace Reko.Core
 
         public override ExternalProcedure ResolveImportedProcedure(IDynamicLinker resolver, IPlatform platform, AddressContext ctx)
         {
-            var ep = resolver.ResolveProcedure(ModuleName, Ordinal, platform);
+            var ep = resolver.ResolveProcedure(ModuleName!, Ordinal, platform);
             if (ep != null)
                 return ep;
             ctx.Warn("Unable to resolve imported reference {0}.", this);

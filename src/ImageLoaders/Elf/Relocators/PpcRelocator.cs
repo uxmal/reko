@@ -32,10 +32,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
     public class PpcRelocator : ElfRelocator32
     {
-        private ElfRelocation prevPpcHi16;
-        private EndianImageReader prevRelR;
-        private ImageWriter prevRelW;
-        private Dictionary<PpcRt, int> missedRelocations = new Dictionary<PpcRt, int>();
+        private ElfRelocation? prevPpcHi16;
+        private EndianImageReader? prevRelR;
+        private ImageWriter? prevRelW;
+        private readonly Dictionary<PpcRt, int> missedRelocations = new Dictionary<PpcRt, int>();
 
         public PpcRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
@@ -93,7 +93,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             */
         }
 
-        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol sym, ElfSection? referringSection, ElfRelocation rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
                 return (null, null);
@@ -133,7 +133,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case PpcRt.R_PPC_ADDR16_LO:
                 if (prevPpcHi16 == null)
                     return (null, null);
-                uint valueHi = prevRelR.ReadUInt16();
+                uint valueHi = prevRelR!.ReadUInt16();
                 uint valueLo = relR.ReadUInt16();
 
                 if ((PpcRt)(prevPpcHi16.Info & 0xFF) == PpcRt.R_PPC_ADDR16_HA)
@@ -146,7 +146,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
                 valueHi = (value >> 16) & 0xFFFF;
                 valueLo = value & 0xFFFF;
-                prevRelW.WriteBeUInt16((ushort)valueHi);
+                prevRelW!.WriteBeUInt16((ushort)valueHi);
                 relW.WriteBeUInt16((ushort)valueLo);
                 break;
             default:
@@ -171,7 +171,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             this.loader = loader;
         }
 
-        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
         {
             if (loader.Sections.Count <= symbol.SectionIndex)
             {

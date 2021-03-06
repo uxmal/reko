@@ -58,8 +58,12 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             this.arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.PointerType).Returns(PrimitiveType.Ptr32);
-            cfgSvc.Setup(c => c.GetArchitecture("x86-protected-32")).Returns(arch.Object);
-            cfgSvc.Setup(c => c.GetArchitecture("mips-be-32")).Returns(arch.Object);
+            cfgSvc.Setup(c => c.GetArchitecture(
+                "x86-protected-32",
+                It.IsAny<Dictionary<string, object>>())).Returns(arch.Object);
+            cfgSvc.Setup(c => c.GetArchitecture(
+                "mips-be-32",
+                It.IsAny<Dictionary<string, object>>() )).Returns(arch.Object);
             sc.AddService<IConfigurationService>(cfgSvc.Object);
         }
 
@@ -157,8 +161,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             When_CreateLoader32(false);
             var segmentMap = el32.LoadImageBytes(platform.Object, this.bytes, Address.Ptr32(0x1000));
 
-            ImageSegment segText;
-            Assert.IsTrue(segmentMap.TryFindSegment(Address.Ptr32(0x1001), out segText));
+            Assert.IsTrue(segmentMap.TryFindSegment(Address.Ptr32(0x1001), out ImageSegment segText));
             Assert.AreEqual(".text", segText.Name);
             Assert.AreEqual(8, segText.Size);
         }

@@ -34,21 +34,32 @@ namespace Reko.ImageLoaders.Elf
     // https://sourceware.org/gdb/onlinedocs/stabs/Stab-Section-Basics.html#Stab-Section-Basics
     public abstract class ElfObjectLinker
     {
-        protected IProcessorArchitecture arch;
+        protected readonly IProcessorArchitecture arch;
         private readonly ElfLoader loader;
         protected byte[] rawImage;
-        protected ElfSection rekoExtfn;
+        protected readonly ElfSection rekoExtfn;
 
         public ElfObjectLinker(ElfLoader loader, IProcessorArchitecture arch, byte[] rawImage)
         {
             this.loader = loader;
             this.arch = arch;
             this.rawImage = rawImage ?? throw new ArgumentNullException("rawImage");
+            this.rekoExtfn = new ElfSection
+            {
+                Name = ".reko.externs",
+                Number = (uint) loader.Sections.Count,
+                Type = SectionHeaderType.SHT_NOBITS,
+                Flags = ElfLoader.SHF_ALLOC | ElfLoader.SHF_EXECINSTR,
+                FileOffset = 0,
+                Size = 0,
+                Alignment = 0x10,
+            };
+
         }
 
         public abstract Program LinkObject(IPlatform platform, Address? addrLoad, byte[] rawImage);
 
-        protected Address ComputeBaseAddressFromSections(IEnumerable<ElfSection> sections)
+        protected Address? ComputeBaseAddressFromSections(IEnumerable<ElfSection> sections)
         {
             return sections.Where(s => s.Address != null && (s.Flags & ElfLoader.SHF_ALLOC) != 0)
                 .OrderBy(s => s.Address)
@@ -84,7 +95,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override Program LinkObject(IPlatform platform, Address? addrLoad, byte[] rawImage)
         {
-            var addrBase = addrLoad ?? ComputeBaseAddressFromSections(loader.Sections);
+            var addrBase = addrLoad ?? ComputeBaseAddressFromSections(loader.Sections)!;
             var segments = ComputeSegmentSizes();
             var imageMap = CreateSegments(addrBase, segments);
             var program = new Program(imageMap, platform.Architecture, platform);
@@ -166,16 +177,6 @@ namespace Reko.ImageLoaders.Elf
         /// </summary>
         private void CollectUndefinedSymbolsIntoSection()
         {
-            this.rekoExtfn = new ElfSection
-            {
-                Name = ".reko.externs",
-                Number = (uint) loader.Sections.Count,
-                Type = SectionHeaderType.SHT_NOBITS,
-                Flags = ElfLoader.SHF_ALLOC | ElfLoader.SHF_EXECINSTR,
-                FileOffset = 0,
-                Size = 0,
-                Alignment = 0x10,
-            };
             foreach (var sym in loader.GetAllSymbols().Where(s =>
                 s.Type == ElfSymbolType.STT_NOTYPE &&
                 !string.IsNullOrEmpty(s.Name)))
@@ -267,7 +268,7 @@ namespace Reko.ImageLoaders.Elf
             foreach (var sym in loader.GetAllSymbols().Where(IsExternalSymbol))
             {
                 var addr =
-                    loader.Sections[(int) sym.SectionIndex].Address +
+                    loader.Sections[(int) sym.SectionIndex].Address! +
                     sym.Value;
                 //$TODO: try guessing the signature based on the symbol name.
                 var sig = new FunctionType();

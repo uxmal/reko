@@ -34,6 +34,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public Sparc32Relocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
+            importReferences = null!;
         }
 
         public override void Relocate(Program program)
@@ -42,7 +43,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             base.Relocate(program);
         }
 
-        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol sym, ElfSection? referringSection, ElfRelocation rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
                 return (null, null);
@@ -64,14 +65,14 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
 
             var symSection = loader.Sections[(int)sym.SectionIndex];
-            uint S = (uint)sym.Value + symSection.Address.ToUInt32();
+            uint S = (uint)sym.Value + symSection.Address!.ToUInt32();
             int A = 0;
             int sh = 0;
             uint mask = ~0u;
             Address addr;
             if (referringSection != null)
             {
-                addr = referringSection.Address + rela.Offset;
+                addr = referringSection.Address! + rela.Offset;
             }
             else
             {

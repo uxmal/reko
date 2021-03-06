@@ -42,8 +42,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public abstract ElfLoader Loader { get; }
 
-
-
         public IEnumerable<ElfSegment> EnumerateDynamicSegments()
         {
             return Loader.Segments
@@ -81,9 +79,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// <param name="rela">The relocation information.</param>
         /// <returns>The address of the entry in the GOT where the relocation was performed, and optionally
         /// a symbol for the PLT entry that refers to that GOT entry.</returns>
-        public abstract (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela);
+        public abstract (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela);
 
-        public abstract string RelocationTypeToString(uint type);
+        public abstract string? RelocationTypeToString(uint type);
 
         /// <summary>
         /// When an ELF binary has no symbols, Reko needs help in finding the location
@@ -96,7 +94,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         /// <param name="program"></param>
         /// <param name="addrEntry"></param>
         /// <returns></returns>
-        public Address FindMainFunction(Program program, Address addrEntry)
+        public Address? FindMainFunction(Program program, Address addrEntry)
         {
             if (!program.SegmentMap.TryFindSegment(addrEntry, out var seg))
                 return null;
@@ -104,7 +102,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 return null;    //$REVIEW: is ELF even compatible with non-byte granularity?
             foreach (var sPattern in GetStartPatterns())
             {
+                if (sPattern.SearchPattern is null)
+                    continue;
                 var dfa = Core.Dfa.Automaton.CreateFromPattern(sPattern.SearchPattern);
+                if (dfa is null)
+                    continue;
                 var start = (int)(addrEntry - seg.MemoryArea.BaseAddress);
                 var end = Math.Min((int) start + 300, mem.Bytes.Length);
                 var hits = dfa.GetMatches(mem.Bytes, start, end).ToList();
@@ -132,7 +134,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return sym;
         }
 
-        protected virtual Address GetMainFunctionAddress(IProcessorArchitecture arch, ByteMemoryArea mem, int offset, StartPattern sPattern)
+        protected virtual Address? GetMainFunctionAddress(IProcessorArchitecture arch, ByteMemoryArea mem, int offset, StartPattern sPattern)
         {
             return null;
         }
@@ -204,7 +206,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     var imgSym = Loader.CreateImageSymbol(elfSym, true);
                     // Symbols need to refer to the loaded image, if their value is 0,
                     // they are imported symbols.
-                    if (imgSym == null || imgSym.Address.ToLinear() == 0)
+                    if (imgSym == null || imgSym.Address!.ToLinear() == 0)
                         continue;
                     imageSymbols[imgSym.Address] = imgSym;
                 }
@@ -234,7 +236,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     {
                         symbols.Add(elfSym);
                         var imgSym = Loader.CreateImageSymbol(elfSym, true);
-                        if (imgSym != null && imgSym.Address.ToLinear() != 0)
+                        if (imgSym != null && imgSym.Address!.ToLinear() != 0)
                         {
                             imageSymbols[imgSym.Address] = imgSym;
                         }
@@ -243,15 +245,18 @@ namespace Reko.ImageLoaders.Elf.Relocators
                         {
                             symbols.Add(extraSym);
                             var extraImgSym = Loader.CreateImageSymbol(extraSym, true);
-                            imageSymbols[extraImgSym.Address] = extraImgSym;
+                            if (extraImgSym != null)
+                            {
+                                imageSymbols[extraImgSym.Address!] = extraImgSym;
+                            }
                         }
-                        if (elfSym.SectionIndex == ElfSection.SHN_UNDEF)
+                        if (elfSym.SectionIndex == ElfSection.SHN_UNDEF && imgSym != null)
                         {
                             program.ImportReferences[addrImport] =
                                 new NamedImportReference(
                                     addrImport,
                                     null,   // ELF imports don't specify which module to take the import from
-                                    imgSym.Name,
+                                    imgSym.Name!,
                                     imgSym.Type);
                         }
                     }
@@ -274,9 +279,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 {
                     var elfSym = Loader.EnsureSymbol(offSymtab, i, syment.UValue, offStrtab);
                     ++i;
+                    if (elfSym is null)
+                        continue;
                     ElfImageLoader.trace.Verbose("  {0:X8} {1}", elfSym.Value, elfSym.Name);
                     var imgSym = Loader.CreateImageSymbol(elfSym, true);
-                    if (imgSym == null || imgSym.Address.ToLinear() == 0)
+                    if (imgSym == null || imgSym.Address!.ToLinear() == 0)
                         continue;
                     imageSymbols[imgSym.Address] = imgSym;
                 }
@@ -300,21 +307,21 @@ namespace Reko.ImageLoaders.Elf.Relocators
             public ulong VirtualAddress { get; }
             public ulong TableSize { get; }
 
-            public List<(Address,ElfSymbol,ElfSymbol)> RelocateEntries(Program program, ulong offStrtab, ulong offSymtab, ulong symEntrySize)
+            public List<(Address,ElfSymbol,ElfSymbol?)> RelocateEntries(Program program, ulong offStrtab, ulong offSymtab, ulong symEntrySize)
             {
                 var offRela = relocator.Loader.AddressToFileOffset(VirtualAddress);
                 var rdrRela = relocator.Loader.CreateReader(offRela);
                 var offRelaEnd = (long)(offRela + TableSize);
 
-                var symbols = new List<(Address, ElfSymbol, ElfSymbol)>();
+                var symbols = new List<(Address, ElfSymbol, ElfSymbol?)>();
                 while (rdrRela.Offset < offRelaEnd)
                 {
                     var relocation = ReadRelocation(rdrRela);
                     var elfSym = relocator.Loader.EnsureSymbol(offSymtab, relocation.SymbolIndex, symEntrySize, offStrtab);
-                    if (elfSym == null)
+                    if (elfSym is null)
                         continue;
 
-                    ElfImageLoader.trace.Verbose("  {0}: symbol {1} type: {2} addend: {3:X}", relocation, elfSym, relocator.RelocationTypeToString((byte) relocation.Info), relocation.Addend);
+                    ElfImageLoader.trace.Verbose("  {0}: symbol {1} type: {2} addend: {3:X}", relocation, elfSym, relocator.RelocationTypeToString((byte) relocation.Info) ?? "?", relocation.Addend);
                     var (addrRelocation, newSym) = relocator.RelocateEntry(program, elfSym, null, relocation);
                     if (addrRelocation != null)
                     {
@@ -394,7 +401,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         protected override void DumpDynamicSegment(ElfSegment dynSeg)
         {
-            var renderer = new DynamicSectionRenderer32(Loader, null, ElfMachine.EM_NONE);
+            var renderer = new DynamicSectionRenderer32(Loader, null!, ElfMachine.EM_NONE);
             var sw = new StringWriter();
             renderer.Render(dynSeg.p_offset, new TextFormatter(sw));
             Debug.WriteLine(sw.ToString());
@@ -414,26 +421,26 @@ namespace Reko.ImageLoaders.Elf.Relocators
             {
                 if (relSection.Type == SectionHeaderType.SHT_REL)
                 {
-                    loader.Symbols.TryGetValue(relSection.LinkedSection.FileOffset, out var sectionSymbols);
+                    loader.Symbols.TryGetValue(relSection.LinkedSection!.FileOffset, out var sectionSymbols);
                     var referringSection = relSection.RelocatedSection;
                     var rdr = loader.CreateReader(relSection.FileOffset);
                     for (uint i = 0; i < relSection.EntryCount(); ++i)
                     {
                         var rel = loader.LoadRelEntry(rdr);
                         var sym = sectionSymbols?[rel.SymbolIndex];
-                        RelocateEntry(program, sym, referringSection, rel);
+                        RelocateEntry(program, sym!, referringSection, rel);
                     }
                 }
                 else if (relSection.Type == SectionHeaderType.SHT_RELA)
                 {
-                    loader.Symbols.TryGetValue(relSection.LinkedSection.FileOffset, out var sectionSymbols);
+                    loader.Symbols.TryGetValue(relSection.LinkedSection!.FileOffset, out var sectionSymbols);
                     var referringSection = relSection.RelocatedSection;
                     var rdr = loader.CreateReader(relSection.FileOffset);
                     for (uint i = 0; i < relSection.EntryCount(); ++i)
                     {
                         var rela = loader.LoadRelaEntry(rdr);
-                        var sym = sectionSymbols?[rela.SymbolIndex];
-                        RelocateEntry(program, sym, referringSection, rela);
+                        var sym = sectionSymbols![rela.SymbolIndex];
+                        RelocateEntry(program, sym!, referringSection, rela);
                     }
                 }
             }
@@ -447,9 +454,9 @@ namespace Reko.ImageLoaders.Elf.Relocators
             {
                 ElfImageLoader.trace.Inform("REL: offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
-                    section.LinkedSection.Name,
-                    section.RelocatedSection.Name);
-                loader.Symbols.TryGetValue(section.LinkedSection.FileOffset, out var symbols);
+                    section.LinkedSection?.Name ?? "?",
+                    section.RelocatedSection?.Name ?? "?");
+                loader.Symbols.TryGetValue(section.LinkedSection!.FileOffset, out var symbols);
                 var rdr = loader.CreateReader(section.FileOffset);
                 for (uint i = 0; i < section.EntryCount(); ++i)
                 {
@@ -457,7 +464,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     ElfImageLoader.trace.Verbose(
                         "  off:{0:X8} type:{1,-16} {3,3} {2}",
                         rel.r_offset,
-                        RelocationTypeToString(rel.r_info & 0xFF),
+                        RelocationTypeToString(rel.r_info & 0xFF) ?? "?",
                         symbols!=null ? symbols[(int)(rel.r_info >> 8)].Name : "<nosym>",
                         (int)(rel.r_info >> 8));
                 }
@@ -472,8 +479,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 ElfImageLoader.trace.Inform(
                     "RELA: offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
-                    section.LinkedSection.Name,
-                    section.RelocatedSection.Name);
+                    section.LinkedSection!.Name,
+                    section.RelocatedSection!.Name);
 
                 var symbols = loader.Symbols[section.LinkedSection.FileOffset];
                 var rdr = loader.CreateReader(section.FileOffset);
@@ -483,7 +490,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     ElfImageLoader.trace.Verbose(
                         "  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2}",
                         rela.r_offset,
-                        RelocationTypeToString(rela.r_info & 0xFF),
+                        RelocationTypeToString(rela.r_info & 0xFF) ?? "?",
                         symbols[(int)(rela.r_info >> 8)].Name,
                         rela.r_addend,
                         (int)(rela.r_info >> 8));
@@ -522,7 +529,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 return;
             foreach (var relSection in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
             {
-                var symbols = loader.Symbols[relSection.LinkedSection.FileOffset];
+                var symbols = loader.Symbols[relSection.LinkedSection!.FileOffset];
                 var referringSection = relSection.RelocatedSection;
                 var rdr = loader.CreateReader(relSection.FileOffset);
                 for (uint i = 0; i < relSection.EntryCount(); ++i)
@@ -544,10 +551,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
             {
                 Debug.Print("RELA: offset {0:X} symbol section {1}, relocating in section {2}",
                     section.FileOffset,
-                    section.LinkedSection.Name,
-                    section.RelocatedSection.Name);
+                    section.LinkedSection?.Name ?? "?",
+                    section.RelocatedSection?.Name ?? "?");
 
-                var symbols = loader.Symbols[section.LinkedSection.FileOffset];
+                var symbols = loader.Symbols[section.LinkedSection!.FileOffset];
                 var rdr = loader.CreateReader(section.FileOffset);
                 for (uint i = 0; i < section.EntryCount(); ++i)
                 {
@@ -565,7 +572,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
     public class StartPattern
     {
-        public string SearchPattern;
+        public string? SearchPattern;
         public int MainAddressOffset;
     }
 }

@@ -95,9 +95,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
 
         protected ElfSymbol Given_symbol(int index, string name, ElfSymbolType type, uint iSection, uint uAddr)
         {
-            var sym = new ElfSymbol
+            var sym = new ElfSymbol(name)
             {
-                Name = name,
                 Value = uAddr,
                 Type = type,
                 SectionIndex = iSection,

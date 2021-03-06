@@ -44,7 +44,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             var rel_plt = loader.GetSectionInfoByName(".rel.plt");
             if (rel_plt == null)
                 return;
-            var symtab = rel_plt.LinkedSection;
+            var symtab = rel_plt.LinkedSection!;
             var relRdr = loader.CreateReader(rel_plt.FileOffset);
 
             uint entries = rel_plt.EntryCount();
@@ -65,7 +65,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol sym, ElfSection? referringSection, ElfRelocation rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
                 return (null,null);
@@ -74,7 +74,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             int sh = 0;
             uint mask = ~0u;
             var addr = referringSection != null
-                ? referringSection.Address + rela.Offset
+                ? referringSection.Address! + rela.Offset
                 : loader.CreateAddress(rela.Offset);
             uint P = (uint)addr.ToLinear();
             uint PP = P;

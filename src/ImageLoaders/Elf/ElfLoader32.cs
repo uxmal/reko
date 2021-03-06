@@ -41,7 +41,9 @@ namespace Reko.ImageLoaders.Elf
             this.Header = header32 ?? throw new ArgumentNullException(nameof(header32));
         }
 
-        public ElfLoader32() : base() { }
+        public ElfLoader32() : base() {
+            Header = null!;
+        }
 
         public Elf32_EHdr Header { get; private set; }
         public override Address DefaultAddress { get { return Address.Ptr32(0x8048000); } }
@@ -79,11 +81,11 @@ namespace Reko.ImageLoaders.Elf
             return Address.Ptr32((uint) uAddr);
         }
 
-        protected override IProcessorArchitecture CreateArchitecture(EndianServices endianness)
+        protected override IProcessorArchitecture? CreateArchitecture(EndianServices endianness)
         {
             string arch;
             var options = new Dictionary<string, object>();
-            string stackRegName = null;
+            string? stackRegName = null;
             switch (machine)
             {
             case ElfMachine.EM_MIPS:
@@ -131,11 +133,16 @@ namespace Reko.ImageLoaders.Elf
                return base.CreateArchitecture(endianness);
             }
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            var a = cfgSvc.GetArchitecture(arch);
-            a.LoadUserOptions(options);
+            var a = cfgSvc.GetArchitecture(arch, options);
+            if (a is null)
+                throw new InvalidOperationException($"Unknown architecture '{arch}'.");
             if (stackRegName != null)
             {
-                a.StackRegister = a.GetRegister(stackRegName);
+                var sp = a.GetRegister(stackRegName);
+                if (sp != null)
+                {
+                    a.StackRegister = sp;
+                }
             }
             return a;
         }
@@ -173,7 +180,7 @@ namespace Reko.ImageLoaders.Elf
             return base.CreateRelocator(machine, imageSymbols);
         }
 
-        public ImageSegmentRenderer CreateRenderer(ElfSection shdr, ElfMachine machine)
+        public ImageSegmentRenderer? CreateRenderer(ElfSection shdr, ElfMachine machine)
         {
             switch (shdr.Type)
             {
@@ -223,7 +230,7 @@ namespace Reko.ImageLoaders.Elf
                     ph.p_flags,
                     ph.p_align);
             }
-            writer.WriteLine("Base address: {0:X8}", ComputeBaseAddress(platform));
+            writer.WriteLine("Base address: {0:X8}", ComputeBaseAddress(platform!));
             writer.WriteLine();
             writer.WriteLine("Dependencies");
             foreach (var dep in GetDependencyList(rawImage))
@@ -254,7 +261,7 @@ namespace Reko.ImageLoaders.Elf
                     return;
 
                 uint sym = info >> 8;
-                string symStr = GetStrPtr(symtab, sym);
+                string symStr = GetStrPtr(symtab!, sym);
                 ElfImageLoader.trace.Verbose("  RELA {0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
             }
         }
@@ -281,7 +288,7 @@ namespace Reko.ImageLoaders.Elf
         }
 
 
-        public override Address GetEntryPointAddress(Address addrBase)
+        public override Address? GetEntryPointAddress(Address addrBase)
         {
             if (Header.e_entry == 0)
                 return null;
@@ -481,8 +488,8 @@ namespace Reko.ImageLoaders.Elf
                 var section = sections[i];
                 section.Name = ReadSectionName(sections, inames[i]);
 
-                ElfSection linkSection = null;
-                ElfSection relSection = null;
+                ElfSection? linkSection = null;
+                ElfSection? relSection = null;
                 switch (section.Type)
                 {
                 case SectionHeaderType.SHT_REL:
@@ -503,14 +510,14 @@ namespace Reko.ImageLoaders.Elf
             return sections;
         }
 
-        public override ElfSymbol LoadSymbol(ulong offsetSymtab, ulong symbolIndex, ulong entrySize, ulong offsetStringTable)
+        public override ElfSymbol? LoadSymbol(ulong offsetSymtab, ulong symbolIndex, ulong entrySize, ulong offsetStringTable)
         {
             var rdr = CreateReader(offsetSymtab + entrySize * symbolIndex);
             if (Elf32_Sym.TryLoad(rdr, out var sym))
             {
-                return new ElfSymbol
+                var name = RemoveModuleSuffix(ReadAsciiString(offsetStringTable + sym.st_name));
+                return new ElfSymbol(name)
                 {
-                    Name = RemoveModuleSuffix(ReadAsciiString(offsetStringTable + sym.st_name)),
                     Type = (ElfSymbolType) (sym.st_info & 0xF),
                     Bind = sym.st_info >> 4,
                     SectionIndex = sym.st_shndx,
@@ -525,7 +532,7 @@ namespace Reko.ImageLoaders.Elf
         public override Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
             ElfImageLoader.trace.Inform("== Symbols from {0} ==", symSection.Name);
-            var stringtableSection = symSection.LinkedSection;
+            var stringtableSection = symSection.LinkedSection!;
             var rdr = CreateReader(symSection.FileOffset);
             var symbols = new Dictionary<int, ElfSymbol>();
             for (ulong i = 0; i < symSection.Size / symSection.EntrySize; ++i)
@@ -544,9 +551,9 @@ namespace Reko.ImageLoaders.Elf
                     GetSectionName(sym.st_shndx),
                     sym.st_value,
                     sym.st_size);
-                symbols.Add((int) i, new ElfSymbol
+                var name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name));
+                symbols.Add((int) i, new ElfSymbol(name)
                 {
-                    Name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
                     Type = (ElfSymbolType) (sym.st_info & 0xF),
                     SectionIndex = sym.st_shndx,
                     Value = sym.st_value,
@@ -556,7 +563,7 @@ namespace Reko.ImageLoaders.Elf
             return symbols;
         }
 
-        public override Address ReadAddress(EndianImageReader rdr)
+        public override Address? ReadAddress(EndianImageReader rdr)
         {
             if (!rdr.TryReadUInt32(out uint uAddr))
                 return null;
