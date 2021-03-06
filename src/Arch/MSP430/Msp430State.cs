@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -42,6 +43,8 @@ namespace Reko.Arch.Msp430
         public Msp430State(Msp430State that) : base(that)
         {
             this.arch = that.arch;
+            this.regs = that.regs.ToArray();
+            this.valid = that.valid.ToArray();
         }
         public override IProcessorArchitecture Architecture
         {
@@ -58,7 +61,7 @@ namespace Reko.Arch.Msp430
             return Constant.Invalid;
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
 

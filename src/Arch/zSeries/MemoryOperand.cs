@@ -62,7 +62,7 @@ namespace Reko.Arch.zSeries
             }
             else
             {
-                renderer.WriteString(Base.Name);
+                renderer.WriteString(Base!.Name);
             }
             renderer.WriteFormat(")");
         }

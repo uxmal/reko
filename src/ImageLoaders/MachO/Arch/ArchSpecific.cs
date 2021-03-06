@@ -43,7 +43,8 @@ namespace Reko.ImageLoaders.MachO.Arch
         /// </summary>
         /// <param name="addrStub"></param>
         /// <param name="memoryArea"></param>
-        /// <returns></returns>
-        public abstract Address ReadStub(Address addrStub, ByteMemoryArea bmem);
+        /// <returns>Returns the address of the GOT slot if successful, otherwise
+        /// returns null.</returns>
+        public abstract Address? ReadStub(Address addrStub, ByteMemoryArea bmem);
     }
 }

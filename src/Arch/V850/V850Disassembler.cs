@@ -47,9 +47,10 @@ namespace Reko.Arch.V850
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override V850Instruction DisassembleInstruction()
+        public override V850Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out this.uInstr))
