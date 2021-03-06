@@ -72,6 +72,8 @@ namespace Reko.Arch.WE32100
         {
             var src = ReadOp(0, dt);
             var dst = WriteUnaryOp(0, dt, src, unary);
+            if (dst is null)
+                return;
             setcc(dst);
         }
     }

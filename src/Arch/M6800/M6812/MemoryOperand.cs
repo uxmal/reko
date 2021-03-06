@@ -47,14 +47,14 @@ namespace Reko.Arch.M6800.M6812
                 if (PreIncrement)
                 {
                     renderer.WriteFormat("${0:X2},{1}{2}",
-                        Math.Abs(Offset.Value),
+                        Math.Abs(Offset!.Value),
                         Offset.Value > 0 ? "+" : "-",
                         Base.Name);
                 }
                 else if (PostIncrement)
                 {
                     renderer.WriteFormat("${0:X2},{1}{2}",
-                        Math.Abs(Offset.Value),
+                        Math.Abs(Offset!.Value),
                         Base.Name,
                         Offset.Value > 0 ? "+" : "-");
                 }
@@ -64,7 +64,7 @@ namespace Reko.Arch.M6800.M6812
                 } 
                 else
                 {
-                    renderer.WriteFormat("{0},{1}", Index.Name, Base.Name);
+                    renderer.WriteFormat("{0},{1}", Index!.Name, Base.Name);
                 }
                 if (Indirect)
                     renderer.WriteChar(']');
