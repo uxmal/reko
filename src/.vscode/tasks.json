@@ -12,7 +12,7 @@
 				"/property:GenerateFullPaths=true",
 				"/consoleloggerparameters:NoSummary",
 				"/p:Platform=x64",
-				"/p:Configuration=Debug"
+				"/p:Configuration=Debug",
                 "/verbosity:minimal",
                 "/m",
 			],
@@ -27,7 +27,8 @@
 			"type": "shell",
 			"command": "dotnet",
 			"args": [
-				"clean"
+				"clean",
+				"-v:m"
 			],
 			"problemMatcher": [
 				"$msCompile"
