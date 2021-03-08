@@ -35,7 +35,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         /// <summary>
         /// Find the destination of a ARM PLT stub.
         /// </summary>
-        public static Expression Arm32(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        public static Expression? Arm32(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             var stubInstrs = instrs.Take(3).ToArray();
             if (stubInstrs.Length != 3)
@@ -81,7 +81,7 @@ namespace Reko.Environments.SysV.ArchSpecific
         /// jalr    t1,t3,+00000000
         /// </code>
         /// <param name="addrInstr">Address of the beginning of the stub.</param>
-        public static Expression RiscV(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        public static Expression? RiscV(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             if (addrInstr.ToLinear() == 0x0000000000014F30)
                 addrInstr.ToString();
@@ -116,14 +116,14 @@ namespace Reko.Environments.SysV.ArchSpecific
             else return null;
         }
 
-        public static Expression X86(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        public static Expression? X86(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             var instr = instrs.FirstOrDefault();
             if (instr == null)
                 return null;
             // Match x86 pattern.
             // jmp [destination]
-            Address addrTarget = null;
+            Address? addrTarget = null;
             if (instr is RtlGoto jump)
             {
                 if (jump.Target is ProcedureConstant pc)
@@ -143,14 +143,14 @@ namespace Reko.Environments.SysV.ArchSpecific
             return addrTarget;
         }
 
-        public static Expression X86_64(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        public static Expression? X86_64(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             var instr = instrs.FirstOrDefault();
             if (instr == null)
                 return null;
             // Match x86-64 pattern.
             // jmp [destination]
-            Address addrTarget = null;
+            Address? addrTarget = null;
             if (instr is RtlGoto jump)
             {
                 if (jump.Target is ProcedureConstant pc)

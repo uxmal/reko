@@ -128,7 +128,7 @@ namespace Reko.Arch.Tlcs
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(StorageDomain regDomain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain regDomain, BitRange range)
         {
             if (!Registers.Subregisters.TryGetValue(regDomain, out var subs))
                 return null;
@@ -155,7 +155,7 @@ namespace Reko.Arch.Tlcs
             if ((grf & Registers.C.FlagGroupBits) != 0) yield return Registers.C;
         }
 
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        public override RegisterStorage? GetSubregister(RegisterStorage reg, int offset, int width)
         {
             if (width == 0)
                 return null;
@@ -183,7 +183,7 @@ namespace Reko.Arch.Tlcs
             return Address.Ptr32(c.ToUInt32());
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -193,7 +193,7 @@ namespace Reko.Arch.Tlcs
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse32(txtAddr, out addr);
         }

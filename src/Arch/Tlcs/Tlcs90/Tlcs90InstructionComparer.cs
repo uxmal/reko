@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -50,39 +50,27 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 return false;
             if (opA.GetType() != opB.GetType())
                 return false;
-            var regOpA = opA as RegisterOperand;
-            if (regOpA != null)
+            switch (opA)
             {
+            case RegisterOperand regOpA:
                 if (NormalizeRegisters)
                     return true;
                 var regOpB = (RegisterOperand)opB;
                 return regOpA.Register == regOpB.Register;
-            }
-            var immOpA = opA as ImmediateOperand;
-            if (immOpA != null)
-            {
+            case ImmediateOperand immOpA:
                 if (NormalizeConstants)
                     return true;
                 var immOpB = (ImmediateOperand)opB;
                 return CompareValues(immOpA.Value, immOpB.Value);
-            }
-            var addrOpA = opA as AddressOperand;
-            if (addrOpA != null)
-            {
+            case AddressOperand addrOpA:
                 if (NormalizeConstants)
                     return true;
                 var addrOpB = (AddressOperand)opB;
                 return addrOpA.Address.ToLinear() == addrOpB.Address.ToLinear();
-            }
-            var condOpA = opA as ConditionOperand;
-            if (condOpA != null)
-            {
+            case ConditionOperand condOpA:
                 return condOpA.Code == ((ConditionOperand)opB).Code;
-            }
-            var memOpA = opA as MemoryOperand;
-            if (memOpA != null)
-            {
-                var memOpB = opB as MemoryOperand;
+            case MemoryOperand memOpA:
+                var memOpB = (MemoryOperand) opB;
                 if (NormalizeRegisters && !CompareRegisters(memOpA.Base, memOpB.Base))
                     return false;
                 if (NormalizeConstants && !CompareValues(memOpA.Offset, memOpB.Offset))

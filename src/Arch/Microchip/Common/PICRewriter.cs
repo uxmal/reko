@@ -61,6 +61,9 @@ namespace Reko.Arch.MicrochipPIC.Common
             dasm = disasm.GetEnumerator();
             Wreg = GetWReg;
             Bsr = GetBsr;
+            this.instrCurr = null!;
+            this.m = null!;
+            this.rtlInstructions = null!;
         }
 
         /// <summary>

@@ -44,6 +44,7 @@ namespace Reko.Environments.AmigaOS
             this.arch = arch;
             this.streamReader = streamReader;
             this.FunctionsByLibBaseOffset = new Dictionary<int, AmigaSystemFunction>();
+            this.lex = null!;
         }
 
         public void Parse()
@@ -53,24 +54,24 @@ namespace Reko.Environments.AmigaOS
                 var line = streamReader.ReadLine();
                 if (line == null)
                     break;
-                AmigaSystemFunction func = ParseLine(line);
+                AmigaSystemFunction? func = ParseLine(line);
                 if (func != null)
                     FunctionsByLibBaseOffset.Add(func.Offset, func);
             }
         }
 
-        private AmigaSystemFunction ParseLine(string line)
+        private AmigaSystemFunction? ParseLine(string line)
         {
             lex = new Lexer(line);
             if (!PeekAndDiscard(TokenType.HASH))
                 return null;
             Expect(TokenType.Number);   // Ordinal
-            var decOffset = (int) Expect(TokenType.Number);   // offset (in decimal)
-            var hexOffset = (int) Expect(TokenType.Number);   // offset (in hex)
+            var decOffset = (int) Expect(TokenType.Number)!;   // offset (in decimal)
+            var hexOffset = (int) Expect(TokenType.Number)!;   // offset (in hex)
             if (decOffset != hexOffset)
                 throw new InvalidOperationException(string.Format(
                     "Decimal offset {0} and hexadecimal offset {1:X} do not match.", decOffset, hexOffset));
-            var name = (string) Expect(TokenType.Id);         // fn name
+            var name = (string) Expect(TokenType.Id)!;         // fn name
 
             var parameters = new List<Argument_v1>();
             // GitHub #941. Assume that all functions return something in d0. If they don't,
@@ -84,9 +85,9 @@ namespace Reko.Environments.AmigaOS
             if (!PeekAndDiscard(TokenType.RPAREN))
             {
                 do {
-                    var argName = (string) Expect(TokenType.Id);
+                    var argName = (string) Expect(TokenType.Id)!;
                     Expect(TokenType.SLASH);
-                    var regName = (string)Expect(TokenType.Id);
+                    var regName = (string)Expect(TokenType.Id)!;
                     parameters.Add(new Argument_v1
                     {
                         Kind = new Register_v1 { Name = regName },
@@ -95,9 +96,9 @@ namespace Reko.Environments.AmigaOS
                 } while (PeekAndDiscard(TokenType.COMMA));
                 if (PeekAndDiscard(TokenType.SEMI))
                 {
-                    var argName = (string) Expect(TokenType.Id);
+                    var argName = (string) Expect(TokenType.Id)!;
                     Expect(TokenType.SLASH);
-                    var regName = (string) Expect(TokenType.Id);
+                    var regName = (string) Expect(TokenType.Id)!;
                     returnValue = new Argument_v1
                     {
                         Kind = new Register_v1 { Name = regName }
@@ -129,7 +130,7 @@ namespace Reko.Environments.AmigaOS
                 return false;
         }
 
-        private object Expect(TokenType type)
+        private object? Expect(TokenType type)
         {
             var tok = lex.GetToken();
             if (tok.Type != type)
@@ -144,12 +145,13 @@ namespace Reko.Environments.AmigaOS
         {
             private readonly string line;
             private int pos;
-            private Token token;
+            private Token? token;
             private StringBuilder sb;
 
             public Lexer(string line)
             {
                 this.line = line;
+                this.sb = new StringBuilder();
             }
 
             public Token PeekToken()
@@ -212,14 +214,14 @@ namespace Reko.Environments.AmigaOS
                         case '7':
                         case '8':
                         case '9':
-                            sb = new StringBuilder();
+                            sb.Clear();
                             sb.Append(ch);
                             st = State.Number;
                             break;
                         default:
                             if (Char.IsLetter(ch))
                             {
-                                sb = new StringBuilder();
+                                sb.Clear();
                                 sb.Append(ch);
                                 st = State.Id;
                             }
@@ -322,9 +324,9 @@ namespace Reko.Environments.AmigaOS
         private class Token
         {
             public TokenType Type;
-            public object Value;
+            public object? Value;
 
-            public    Token(TokenType tokenType)
+            public Token(TokenType tokenType)
             {
                 this.Type = tokenType;
             }

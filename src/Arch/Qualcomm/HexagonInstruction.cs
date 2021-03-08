@@ -39,7 +39,7 @@ namespace Reko.Arch.Qualcomm
         public override string MnemonicAsString => Mnemonic.ToString();
         public ParseType ParseType { get; set; }
 
-        public MachineOperand ConditionPredicate { get; set; }
+        public MachineOperand? ConditionPredicate { get; set; }
         public bool ConditionInverted { get; set; }
         public bool ConditionPredicateNew { get; set; }
 

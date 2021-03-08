@@ -37,10 +37,10 @@ namespace Reko.Environments.SysV.ArchSpecific
         {
             this.arch = arch;
             this.argRegs = new[] { "r0", "r1", "r2", "r3" }
-            .Select(r => arch.GetRegister(r)).ToArray();
+            .Select(r => arch.GetRegister(r)!).ToArray();
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 0x0010);
 

@@ -37,10 +37,11 @@ namespace Reko.Environments.Msdos
     /// </summary>
     public class Msdos386Platform : Platform
     {
-        private object[] interruptServices;
+        private SystemService[] interruptServices;
 
         public Msdos386Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "ms-dos-386")
         {
+            interruptServices = null!;
         }
 
         public override string DefaultCallingConvention => "cdecl";
@@ -82,12 +83,12 @@ namespace Reko.Environments.Msdos
             LoadInterruptServices(Architecture);
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             EnsureTypeLibraries(PlatformIdentifier);
             foreach (SystemService svc in interruptServices)
             {
-                if (svc.SyscallInfo.Matches(vector, state))
+                if (svc.SyscallInfo!.Matches(vector, state))
                     return svc;
             }
             return null;
@@ -111,7 +112,7 @@ namespace Reko.Environments.Msdos
             }
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             return new X86CallingConvention(
                 4,
@@ -144,7 +145,7 @@ namespace Reko.Environments.Msdos
                 .ToArray();
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }
@@ -165,6 +166,7 @@ namespace Reko.Environments.Msdos
                 {
                     if (arg.Type is PointerType_v1 ptr &&
                         arg.Kind is SerializedSequence seq &&
+                        seq.Registers != null && 
                         seq.Registers.Length == 2 &&
                         seq.Registers[1].Name != null)
                     {

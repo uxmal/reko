@@ -38,14 +38,14 @@ namespace Reko.Arch.Blackfin
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            (string prefix, string infix, string suffix) aaOpcode;
+            (string? prefix, string? infix, string? suffix) aaOpcode;
             if (!mapMnemonics.TryGetValue(Mnemonic, out aaOpcode))
             {
                 aaOpcode.prefix = Mnemonic.ToString();
             }
             if (aaOpcode.infix != null)
             {
-                renderer.WriteString(aaOpcode.prefix);
+                renderer.WriteString(aaOpcode.prefix!);
                 Operands[0].Render(renderer, options);
                 if (Operands.Length > 2)
                 {
@@ -66,7 +66,7 @@ namespace Reko.Arch.Blackfin
             }
             else
             {
-                renderer.WriteMnemonic(aaOpcode.prefix);
+                renderer.WriteMnemonic(aaOpcode.prefix!);
                 var sep = " ";
                 if (Operands == null)
                     return;
@@ -84,8 +84,8 @@ namespace Reko.Arch.Blackfin
             renderer.WriteString(";");
         }
 
-        private static readonly Dictionary<Mnemonic, (string,string,string)> mapMnemonics = 
-            new Dictionary<Mnemonic, (string, string, string)>
+        private static readonly Dictionary<Mnemonic, (string?,string?,string?)> mapMnemonics = 
+            new Dictionary<Mnemonic, (string?, string?, string?)>
         {
             { Mnemonic.add, (null, " += ", null) },
             { Mnemonic.add3, (null, " + ", null) },

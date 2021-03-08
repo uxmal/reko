@@ -136,7 +136,7 @@ namespace Reko.Arch.PowerPC
             m.Assign(tmp, ea);
             while (r <= 31)
             {
-                var reg = binder.EnsureRegister(arch.GetRegister(r));
+                var reg = binder.EnsureRegister(arch.GetRegister(r)!);
                 if (reg.DataType.BitSize > 32)
                 {
                     var tmp2 = binder.CreateTemporary(PrimitiveType.Word32);
@@ -163,7 +163,7 @@ namespace Reko.Arch.PowerPC
                 m.Invalid();
                 return;
             }
-            var rDstNext = arch.GetRegister(rDst.Number + 1);
+            var rDstNext = arch.GetRegister(rDst.Number + 1)!;
             var regPair = binder.EnsureSequence(PrimitiveType.Word128, rDst, rDstNext);
             var ea = EffectiveAddress_r0(instr.Operands[1], m);
             m.Assign(regPair, m.Mem(regPair.DataType, ea));
@@ -323,7 +323,7 @@ namespace Reko.Arch.PowerPC
             var tmp = binder.CreateTemporary(ea.DataType);
             while (r <= 31)
             {
-                var reg = arch.GetRegister(r);
+                var reg = arch.GetRegister(r)!;
                 Expression w = binder.EnsureRegister(reg);
                 if (reg.DataType.Size > 4)
                 {
@@ -427,7 +427,7 @@ namespace Reko.Arch.PowerPC
             var c = (Constant) RewriteOperand(instr.Operands[0]);
             var ra = RewriteOperand(instr.Operands[1]);
             var rb = RewriteOperand(instr.Operands[2]);
-            Func<Expression,Expression,Expression> op = null;
+            Func<Expression,Expression,Expression>? op = null;
             switch (c.ToInt32())
             {
             case 0x01: op = m.Ugt; break;

@@ -100,7 +100,7 @@ namespace Reko.Arch.Arm.AArch32
 
         public class Enumerator : IEnumerator<RtlInstructionCluster>
         {
-            private INativeRewriter native;
+            private INativeRewriter? native;
             private byte[] bytes;
             private GCHandle hBytes;
             private RtlEmitter m;
@@ -113,6 +113,7 @@ namespace Reko.Arch.Arm.AArch32
 
             public Enumerator(Dictionary<int, RegisterStorage> regs, ThumbRewriterRetired outer)
             {
+                Current = null!;
                 this.bytes = ((ByteImageReader)outer.rdr).Bytes;
                 ulong addr = outer.rdr.Address.ToLinear();
                 this.hBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
@@ -177,7 +178,7 @@ namespace Reko.Arch.Arm.AArch32
             public bool MoveNext()
             {
                 m.Instructions = new List<RtlInstruction>();
-                int n = native.GetCount();
+                int n = native!.GetCount();
                 if (native.Next() == 1)
                     return false;
                 this.Current = this.rtlEmitter.ExtractCluster();

@@ -44,7 +44,7 @@ namespace Reko.Environments.MacOS.Classic
             this.arch = arch;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(2, 4);
             for (int i = dtParams.Count - 1; i >= 0; --i)

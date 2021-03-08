@@ -62,7 +62,7 @@ namespace Reko.Environments.C64
             return GetEnumerator();
         }
         
-        public C64BasicInstruction ReadLine(Address addr)
+        public C64BasicInstruction? ReadLine(Address addr)
         {
             var rdr = this.bmem.CreateLeReader(addr);
             if (!rdr.TryReadLeUInt16(out ushort next))

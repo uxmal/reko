@@ -451,7 +451,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             iclass = InstrClass.ConditionalTransfer;
             var (indMode, memPtr) = GetUnaryPtrs(instrCurr.Operands[0], out Expression memExpr);
             var mask = GetBitMask(instrCurr.Operands[1], false);
-            Expression res = null;
+            Expression? res = null;
 
             switch (indMode)
             {
@@ -476,7 +476,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     res = m.And(memExpr, mask);
                     break;
             }
-            m.Branch(m.Eq0(res), SkipToAddr(), iclass);
+            m.Branch(m.Eq0(res!), SkipToAddr(), iclass);
         }
 
         private void RewriteBTFSS()
@@ -484,33 +484,32 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             iclass = InstrClass.ConditionalTransfer;
             var (indMode, memPtr) = GetUnaryPtrs(instrCurr.Operands[0], out Expression memExpr);
             var mask = GetBitMask(instrCurr.Operands[1], false);
-            Expression res = null;
+            Expression? res = null;
 
             switch (indMode)
             {
-                case FSRIndexedMode.None:
-                case FSRIndexedMode.INDF:
-                case FSRIndexedMode.PLUSW:
-                    res = m.And(memExpr, mask);
-                    break;
+            case FSRIndexedMode.None:
+            case FSRIndexedMode.INDF:
+            case FSRIndexedMode.PLUSW:
+                res = m.And(memExpr, mask);
+                break;
 
-                case FSRIndexedMode.POSTDEC:
-                    res = m.And(memExpr, mask);
-                    m.Assign(memPtr, m.ISub(memPtr, 1));
-                    break;
+            case FSRIndexedMode.POSTDEC:
+                res = m.And(memExpr, mask);
+                m.Assign(memPtr, m.ISub(memPtr, 1));
+                break;
 
-                case FSRIndexedMode.POSTINC:
-                    res = m.And(memExpr, mask);
-                    m.Assign(memPtr, m.IAdd(memPtr, 1));
-                    break;
+            case FSRIndexedMode.POSTINC:
+                res = m.And(memExpr, mask);
+                m.Assign(memPtr, m.IAdd(memPtr, 1));
+                break;
 
-                case FSRIndexedMode.PREINC:
-                    m.Assign(memPtr, m.IAdd(memPtr, 1));
-                    res = m.And(memExpr, mask);
-                    break;
-
+            case FSRIndexedMode.PREINC:
+                m.Assign(memPtr, m.IAdd(memPtr, 1));
+                res = m.And(memExpr, mask);
+                break;
             }
-            m.Branch(m.Ne0(res), SkipToAddr(), iclass);
+            m.Branch(m.Ne0(res!), SkipToAddr(), iclass);
         }
 
         private void RewriteBTG()
@@ -534,7 +533,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
             Address retaddr = instrCurr.Address + instrCurr.Length;
             Identifier tos = binder.EnsureRegister(PIC18Registers.TOS);
-            Identifier statuss = PIC18Registers.STATUS_CSHAD != null
+            Identifier? statuss = PIC18Registers.STATUS_CSHAD != null
                 ? binder.EnsureRegister(PIC18Registers.STATUS_CSHAD)
                 : null;
 
@@ -621,7 +620,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             if (toreg != null)
             {
                 mask = (byte)((1 << to.BitPos));
-                m.Assign(pdreg, m.Or(pdreg, Constant.Byte(mask)));
+                m.Assign(pdreg!, m.Or(pdreg!, Constant.Byte(mask)));
             }
         }
 
@@ -985,7 +984,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             iclass = InstrClass.Transfer;
 
             Identifier tos = binder.EnsureRegister(PIC18Registers.TOS);
-            Identifier statuss = PIC18Registers.STATUS_CSHAD != null
+            Identifier? statuss = PIC18Registers.STATUS_CSHAD != null
                 ? binder.EnsureRegister(PIC18Registers.STATUS_CSHAD)
                 : null;
             var src = PopFromHWStackAccess();
@@ -1052,7 +1051,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             }
             if (pd != null)
             {
-                m.Assign(pdreg, m.Dpb(pdreg, Constant.False(), pd.BitPos));
+                m.Assign(pdreg!, m.Dpb(pdreg!, Constant.False(), pd.BitPos));
             }
             if (to != null)
             {

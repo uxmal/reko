@@ -39,9 +39,11 @@ namespace Reko.Environments.SysV.ArchSpecific
         {
             this.services = services;
             this.arch = arch;
+            this.ccX86 = null!;
+            this.ccRiscV = null!;
         }
 
-        public Func<IProcessorArchitecture, Address, IEnumerable<RtlInstruction>, IRewriterHost, Expression> CreateTrampolineDestinationFinder(IProcessorArchitecture arch)
+        public Func<IProcessorArchitecture, Address, IEnumerable<RtlInstruction>, IRewriterHost, Expression?> CreateTrampolineDestinationFinder(IProcessorArchitecture arch)
         {
             switch (arch.Name)
             {

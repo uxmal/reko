@@ -54,6 +54,9 @@ namespace Reko.Arch.MicroBlaze
             this.binder = binder;
             this.host = host;
             this.dasm = new MicroBlazeDisassembler(arch, rdr).GetEnumerator();
+            this.instrCur = null!;
+            this.addrInstr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -134,10 +137,10 @@ namespace Reko.Arch.MicroBlaze
                 }
                 var addr = addrInstr ?? instrCur.Address;
                 var length = (int) (rdr.Address - addr);
-                this.addrInstr = null;
+                this.addrInstr = null!;
                 yield return m.MakeCluster(addr, length, iclass);
                 this.immHiBits = 0;
-                addrInstr = null;
+                addrInstr = null!;
             }
         }
 

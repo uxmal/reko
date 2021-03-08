@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -28,7 +28,7 @@ using System.Collections.Generic;
 namespace Reko.Arch.MicrochipPIC.PIC16
 {
     using Common;
-
+#nullable disable
     /// <summary>
     /// This class implements the Full-featured PIC16 registers pool.
     /// </summary>

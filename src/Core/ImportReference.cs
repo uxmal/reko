@@ -60,11 +60,12 @@ namespace Reko.Core
             {
                 return this.ModuleName.CompareTo(that.ModuleName);
             }
-            else if (this.ModuleName is null)
-                return -1;
-            else if (that.ModuleName is null)
+            else if (this.ModuleName != null)
                 return 1;
-            else return 0;
+            else if (that.ModuleName != null)
+                return -1;
+            else
+                return 0;
         }
     }
 
@@ -84,6 +85,7 @@ namespace Reko.Core
             {
                 return this.GetType().FullName.CompareTo(this.GetType().FullName);
             }
+            System.Diagnostics.Debugger.Break();
             int cmp = CompareModuleNames(that);
             if (cmp != 0)
                 return cmp;
@@ -158,8 +160,6 @@ namespace Reko.Core
             cmp = this.Ordinal.CompareTo(((OrdinalImportReference) that).Ordinal);
             return cmp;
         }
-
-
 
         public override Expression? ResolveImport(IDynamicLinker dynamicLinker, IPlatform platform, AddressContext ctx)
         {

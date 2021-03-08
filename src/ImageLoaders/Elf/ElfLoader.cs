@@ -766,12 +766,16 @@ namespace Reko.ImageLoaders.Elf
             relocator.LocateGotPointers(program, symbols);
             symbols = symbols.Values.Select(relocator.AdjustImageSymbol).ToSortedList(s => s.Address!);
             var entryPoints = new List<ImageSymbol>();
-            var addrEntry = relocator.AdjustAddress(GetEntryPointAddress(addrLoad)!);
-            var symEntry = EnsureEntryPoint(entryPoints, symbols, addrEntry);
-            var addrMain = relocator.FindMainFunction(program, addrEntry);
-            if (addrMain != null)
+            var addrEntry = GetEntryPointAddress(addrLoad);
+            if (addrEntry != null)
             {
-                EnsureEntryPoint(entryPoints, symbols, addrMain);
+                addrEntry = relocator.AdjustAddress(addrEntry);
+                var symEntry = EnsureEntryPoint(entryPoints, symbols, addrEntry);
+                var addrMain = relocator.FindMainFunction(program, addrEntry);
+                if (addrMain != null)
+                {
+                    EnsureEntryPoint(entryPoints, symbols, addrMain);
+                }
             }
             entryPoints = entryPoints.Select(relocator.AdjustImageSymbol).ToList();
             return new RelocationResults(entryPoints, symbols);

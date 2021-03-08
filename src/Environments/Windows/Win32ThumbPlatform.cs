@@ -130,29 +130,29 @@ namespace Reko.Environments.Windows
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             return new[] { "r11", "sp", "lr", "pc" }
-                .Select(r => Architecture.GetRegister(r)).ToHashSet();
+                .Select(r => Architecture.GetRegister(r)!).ToHashSet();
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             // https://msdn.microsoft.com/en-us/library/dn736986.aspx 
             return new[] { "r0", "r1", "r2", "r3", "ip" }
-                .Select(r => Architecture.GetRegister(r)).ToHashSet();
+                .Select(r => Architecture.GetRegister(r)!).ToHashSet();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             return new Arm32CallingConvention();
         }
 
-        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
         {
             Services.RequireService<DecompilerEventListener>().Warn(new NullCodeLocation(program.Name),
                            "Win32 ARM main procedure finder not implemented yet.");
             return null;
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             SystemService svc;
             systemServices.TryGetValue(vector, out svc);
@@ -177,7 +177,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             //00011644 E59FC000 ldr ip,[0001164C]                                                           ;[pc]
             //00011648 E59CF000 ldr pc,[ip]
@@ -208,7 +208,7 @@ namespace Reko.Environments.Windows
             return null;
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }

@@ -67,18 +67,18 @@ namespace Reko.Environments.RT11
             };
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             return new Rt11CallingConvention(this.arch);
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             base.EnsureTypeLibraries(PlatformIdentifier);
             int uVec = vector & 0xFFFF;
             foreach (var svc in this.Metadata.Modules.Values.SelectMany(m => m.ServicesByOrdinal.Values))
             {
-                if (svc.SyscallInfo.Matches(uVec, state))
+                if (svc.SyscallInfo != null && svc.SyscallInfo.Matches(uVec, state))
                 {
                     return svc;
                 }
@@ -91,7 +91,7 @@ namespace Reko.Environments.RT11
             throw new NotImplementedException();
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }

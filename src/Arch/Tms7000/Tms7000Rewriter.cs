@@ -51,6 +51,8 @@ namespace Reko.Arch.Tms7000
             this.host = host;
             this.binder = binder;
             this.dasm = new Tms7000Disassembler(arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -181,7 +183,7 @@ namespace Reko.Arch.Tms7000
                 }
                 else
                 {
-                    ea = RegisterPair(mem.Register);
+                    ea = RegisterPair(mem.Register!);
                 }
                 return m.Mem(mem.Width, ea);
             case AddressOperand addr:

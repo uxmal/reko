@@ -40,7 +40,7 @@ namespace Reko.Environments.Windows
     {
         private string filename;
         private Lexer lexer;
-        private Token bufferedToken;
+        private Token? bufferedToken;
         private TypeLibraryDeserializer tlLoader;
         private IPlatform platform;
         private string moduleName;
@@ -51,6 +51,10 @@ namespace Reko.Environments.Windows
             this.filename = filename;
             var rdr = new StreamReader(new MemoryStream(bytes));
             this.lexer = new Lexer(rdr);
+            this.tlLoader = null!;
+            this.platform = null!;
+            this.moduleName = null!;
+
         }
 
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
@@ -58,7 +62,7 @@ namespace Reko.Environments.Windows
             return Load(platform, DefaultModuleName(filename), dstLib);
         }
 
-        public override TypeLibrary Load(IPlatform platform, string module, TypeLibrary dstLib)
+        public override TypeLibrary Load(IPlatform platform, string? module, TypeLibrary dstLib)
         {
             this.platform = platform;
             module = module ?? DefaultModuleName(filename);
@@ -72,23 +76,23 @@ namespace Reko.Environments.Windows
                     break;
                 if (PeekAndDiscard(TokenType.NL))
                     continue;
-                var line = ParseLine();
-                if (line != null)
+                var (ordinal, svc) = ParseLine();
+                if (svc != null)
                 {
-                    if (line.Item1.HasValue)
+                    if (ordinal.HasValue)
                     {
-                        tlLoader.LoadService(line.Item1.Value, line.Item2);
+                        tlLoader.LoadService(ordinal.Value, svc);
                     }
                     else
                     {
-                        tlLoader.LoadService(line.Item2.Name, line.Item2);
+                        tlLoader.LoadService(svc.Name!, svc);
                     }
                 }
             }
             return dstLib;
         }
 
-        public Tuple<int?, SystemService> ParseLine()
+        public (int?, SystemService?) ParseLine()
         {
             try
             {
@@ -99,7 +103,7 @@ namespace Reko.Environments.Windows
                 var options = ParseOptions();
 
                 var tok = Get();
-                string fnName = tok.Value;
+                string fnName = tok.Value!;
                 var ssig = new SerializedSignature
                 {
                     Convention = callconv,
@@ -115,7 +119,7 @@ namespace Reko.Environments.Windows
                     Name = fnName,
                     Signature = sig
                 };
-                return Tuple.Create(ordinal, svc);
+                return (ordinal, svc);
             }
             catch
             {
@@ -124,7 +128,7 @@ namespace Reko.Environments.Windows
                     "Line {0} in the Wine spec file could not be read; skipping.",
                     lexer.lineNumber);
                 SkipToEndOfLine();
-                return null;
+                return (null, null);
             }
         }
 
@@ -161,11 +165,11 @@ namespace Reko.Environments.Windows
             var options = new Dictionary<string,string>();
             while (PeekAndDiscard(TokenType.MINUS))
             {
-                var key = Expect(TokenType.ID).Value;
+                var key = Expect(TokenType.ID).Value!;
                 var value = "";
                 if (PeekAndDiscard(TokenType.EQ))
                 {
-                    value = Get().Value;
+                    value = Get().Value!;
                 }
                 options[key] = value;
             }
@@ -190,7 +194,7 @@ namespace Reko.Environments.Windows
 
         private string ParseCallingConvention()
         {
-            return Expect(TokenType.ID).Value;
+            return Expect(TokenType.ID).Value!;
         }
 
         private bool LoadParameter(SerializedSignature ssig, List<Argument_v1> args)
@@ -201,7 +205,7 @@ namespace Reko.Environments.Windows
             if (tok.Type != TokenType.ID)
                 return false;
             Get();
-            SerializedType type = null;
+            SerializedType? type = null;
             switch (tok.Value)
             {
             case "word":
@@ -276,7 +280,7 @@ namespace Reko.Environments.Windows
 
         private Token Get()
         {
-            Token t = bufferedToken;
+            Token? t = bufferedToken;
             if (t == null)
                 t = lexer.GetToken();
             bufferedToken = null;
@@ -313,7 +317,7 @@ namespace Reko.Environments.Windows
             public Token GetToken()
             {
                 var st = State.Initial;
-                StringBuilder sb = null;
+                StringBuilder sb = new StringBuilder();
                 for (;;)
                 {
                     int c = rdr.Peek();
@@ -387,7 +391,7 @@ namespace Reko.Environments.Windows
         public class Token
         {
             internal TokenType Type;
-            internal string Value;
+            internal string? Value;
             internal int lineNumber;
 
             public Token(TokenType type, int lineNumber)
@@ -415,12 +419,6 @@ namespace Reko.Environments.Windows
             RPAREN,
             AT,
             EQ,
-        }
-
-        public class ParseResults
-        {
-            public SortedList<int, SystemService> ServicesByOrdinal;
-            public SortedList<string, SystemService> ServicesByName;
         }
     }
 }

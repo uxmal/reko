@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +25,7 @@ namespace Reko.ImageLoaders.OdbgScript
         public static eHWBPType UE_HARDWARE_WRITE;
         public static eHWBPType UE_HARDWARE_EXECUTE;
         public static byte UE_HARDWARE_SIZE_1;
-        public static object UE_ACCESS_READ;
+        public const byte UE_ACCESS_READ = 0;
         public const byte UE_PLUGIN_CALL_REASON_PREDEBUG = 1;
         public const byte UE_PLUGIN_CALL_REASON_POSTDEBUG = 2;
         public const byte UE_PLUGIN_CALL_REASON_EXCEPTION = 3;

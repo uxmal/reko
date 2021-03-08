@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -34,8 +34,8 @@ namespace Reko.Arch.MicrochipPIC.Common
     public class PICMemoryDescriptor
     {
 
-        private static IPICDeviceConfigDefs deviceConfigDefinitions = null;
-        private static IPICMemoryMap memoryMap = null;
+        private static IPICDeviceConfigDefs deviceConfigDefinitions = null!;
+        private static IPICMemoryMap memoryMap = null!;
 
         protected PICMemoryDescriptor()
         {
@@ -218,7 +218,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A <see cref="PICDevConfigRegister"/> instance or null.
         /// </returns>
-        public static PICDevConfigRegister GetDCR(string name)
+        public static PICDevConfigRegister? GetDCR(string name)
             => deviceConfigDefinitions.GetDCR(name);
 
         /// <summary>
@@ -228,7 +228,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A <see cref="PICDevConfigRegister"/> instance or null.
         /// </returns>
-        public static PICDevConfigRegister GetDCR(Address addr)
+        public static PICDevConfigRegister? GetDCR(Address addr)
             => deviceConfigDefinitions.GetDCR(addr);
 
         /// <summary>
@@ -238,7 +238,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A <see cref="DevConfigField"/> instance or null.
         /// </returns>
-        public static DevConfigField GetDCRField(string name)
+        public static DevConfigField? GetDCRField(string name)
             => deviceConfigDefinitions.GetDCRField(name);
 
         /// <summary>
@@ -266,8 +266,8 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         protected void Reset()
         {
-            deviceConfigDefinitions = null;
-            memoryMap = null;
+            deviceConfigDefinitions = null!;
+            memoryMap = null!;
         }
 
         protected void LoadMemDescr(IPICDescriptor pic)

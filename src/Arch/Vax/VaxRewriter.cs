@@ -55,6 +55,9 @@ namespace Reko.Arch.Vax
             this.binder = binder;
             this.host = host;
             this.dasm = new VaxDisassembler(arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
+            this.rtlInstructions = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -491,7 +494,7 @@ namespace Reko.Arch.Vax
             case RegisterOperand regOp:
                 var reg = binder.EnsureRegister(regOp.Register);
                 if (reg == null)
-                    return null;
+                    return null!;
                 if (width.Size == 4)
                 {
                     return reg;
@@ -500,15 +503,15 @@ namespace Reko.Arch.Vax
                 {
                     var rHi = arch.GetRegister(1 + (int)reg.Storage.Domain);
                     if (rHi == null)
-                        return null;
+                        return null!;
                     var regHi = binder.EnsureRegister(rHi);
                     return binder.EnsureSequence(width, regHi.Storage, reg.Storage);
                 }
                 else if (width.Size == 16)
                 {
-                    var regHi1 = binder.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
-                    var regHi2 = binder.EnsureRegister(arch.GetRegister(2 + (int)reg.Storage.Domain));
-                    var regHi3 = binder.EnsureRegister(arch.GetRegister(3 + (int)reg.Storage.Domain));
+                    var regHi1 = binder.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain)!);
+                    var regHi2 = binder.EnsureRegister(arch.GetRegister(2 + (int)reg.Storage.Domain)!);
+                    var regHi3 = binder.EnsureRegister(arch.GetRegister(3 + (int)reg.Storage.Domain)!);
 
                     var regLo = binder.EnsureSequence(PrimitiveType.Word64, regHi1.Storage, reg.Storage);
                     var regHi = binder.EnsureSequence(PrimitiveType.Word64, regHi3.Storage, regHi2.Storage);
@@ -571,7 +574,7 @@ namespace Reko.Arch.Vax
                 }
                 else
                 {
-                    ea = arch.MakeAddressFromConstant(memOp.Offset, false);
+                    ea = arch.MakeAddressFromConstant(memOp.Offset!, false);
                     Expression load;
                     if (memOp.Deferred)
                     {
@@ -611,7 +614,7 @@ namespace Reko.Arch.Vax
             case RegisterOperand regOp:
                 var reg = binder.EnsureRegister(regOp.Register);
                 if (reg == null)
-                    return null;
+                    return null!;
                 if (width.BitSize < 32)
                 {
                     var tmpLo = binder.CreateTemporary(width);
@@ -625,15 +628,15 @@ namespace Reko.Arch.Vax
                 {
                     var rHi = arch.GetRegister(1 + (int)reg.Storage.Domain);
                     if (rHi == null)
-                        return null;
+                        return null!;
                     var regHi = binder.EnsureRegister(rHi);
                     reg = binder.EnsureSequence(width, regHi.Storage, reg.Storage);
                 }
                 else if (width.BitSize == 128)
                 {
-                    var regHi1 = binder.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
-                    var regHi2 = binder.EnsureRegister(arch.GetRegister(2 + (int)reg.Storage.Domain));
-                    var regHi3 = binder.EnsureRegister(arch.GetRegister(3 + (int)reg.Storage.Domain));
+                    var regHi1 = binder.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain)!);
+                    var regHi2 = binder.EnsureRegister(arch.GetRegister(2 + (int)reg.Storage.Domain)!);
+                    var regHi3 = binder.EnsureRegister(arch.GetRegister(3 + (int)reg.Storage.Domain)!);
 
                     var regLo = binder.EnsureSequence(PrimitiveType.Word64, regHi1.Storage, reg.Storage);
                     var regHi = binder.EnsureSequence(PrimitiveType.Word64, regHi3.Storage, regHi2.Storage);
@@ -643,7 +646,7 @@ namespace Reko.Arch.Vax
                 return reg;
             case MemoryOperand memOp:
                 Expression ea;
-                Identifier regEa = null;
+                Identifier? regEa = null;
                 if (memOp.Base != null)
                 {
                     regEa = binder.EnsureRegister(memOp.Base);
@@ -666,7 +669,7 @@ namespace Reko.Arch.Vax
                 }
                 else
                 {
-                    ea = arch.MakeAddressFromConstant(memOp.Offset, false);
+                    ea = arch.MakeAddressFromConstant(memOp.Offset!, false);
                 }
                 var tmp = binder.CreateTemporary(width);
                 m.Assign(tmp, fn(m.Mem(width, ea)));
@@ -685,7 +688,7 @@ namespace Reko.Arch.Vax
                 return tmp;
             case ImmediateOperand _:
             case AddressOperand _:
-                return null;
+                return null!;
             }
             throw new NotImplementedException(op.GetType().Name);
         }

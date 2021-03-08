@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -24,7 +24,7 @@ using Reko.Core.Expressions;
 
 namespace Reko.Arch.MicrochipPIC.PIC18
 {
-
+#nullable disable
     using Common;
 
     /// <summary>

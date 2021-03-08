@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -57,7 +57,7 @@ namespace Reko.ImageLoaders.LLVM
             Expect(TokenType.COMMA);
             var ptrType = ParseType();
             var ptr = ParseValue();
-            var indices = new List<Tuple<LLVMType, Value>>();
+            var indices = new List<Tuple<LLVMType, Value?>>();
             while (PeekAndDiscard(TokenType.COMMA))
             {
                 var type = ParseType();
@@ -70,7 +70,7 @@ namespace Reko.ImageLoaders.LLVM
                 Inbounds = inbounds,
                 BaseType = baseType,
                 PointerType = ptrType,
-                Pointer = ptr,
+                Pointer = ptr!,
                 Indices = indices,
             };
         }

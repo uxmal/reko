@@ -46,7 +46,7 @@ namespace Reko.Arch.PowerPC
                 .ToArray();
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             //$TODO: verify the stack offset
             ccr.LowLevelDetails(arch.WordWidth.Size, 0x40);

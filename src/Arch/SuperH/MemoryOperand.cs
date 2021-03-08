@@ -39,6 +39,7 @@ namespace Reko.Arch.SuperH
 
         private MemoryOperand(PrimitiveType width) : base(width)
         {
+            reg = null!;
         }
 
         public static MemoryOperand Indirect(PrimitiveType w, Reg r)                    { return new MemoryOperand(w) { mode = AddressingMode.Indirect, reg = r }; }

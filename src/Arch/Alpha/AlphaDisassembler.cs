@@ -40,9 +40,10 @@ namespace Reko.Arch.Alpha
         {
             this.arch = arch;
             this.rdr = rdr;
+            this.addr = null!;
         }
 
-        public override AlphaInstruction DisassembleInstruction()
+        public override AlphaInstruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt32(out uint uInstr))

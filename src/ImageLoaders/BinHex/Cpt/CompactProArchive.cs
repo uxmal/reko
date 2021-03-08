@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -28,13 +28,13 @@ namespace Reko.ImageLoaders.BinHex.Cpt
 {
     public class CompactProArchive : Archive
     {
-        private byte[] cpt_data;
+        private byte[] cpt_data = null!;
         private uint cpt_datamax;
         private uint cpt_datasize;
 
         const int BYTEMASK = 0xFF;
 
-        CrcUpdater updcrc;
+        CrcUpdater updcrc = null!;
         delegate uint CrcUpdater(uint crc, byte[] buf, int offset, int length);
         uint cpt_crc;
 
@@ -121,7 +121,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                 }
                 if (filehdr.folder != 0)
                 {
-                    entries.Add(cpt_folder(text, filehdr, cptindex, cptptr));
+                    entries.Add(cpt_folder(text!, filehdr, cptindex, cptptr));
                     i += filehdr.foldersize;
                     cptptr += filehdr.foldersize * FILEHDRSIZE;
 
@@ -207,7 +207,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
             return Encoding.ASCII.GetString(buf, offset, length);
         }
 
-        string text;
+        string? text;
 
         private int cpt_filehdr(out FileHdr f, byte[] hdr, int hdrOff)
         {
@@ -281,7 +281,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                 }
                 if (filehdr.folder != 0)
                 {
-                    entries.Add(cpt_folder(text, filehdr, cptindex, cptptr));
+                    entries.Add(cpt_folder(text!, filehdr, cptindex, cptptr));
                     i += filehdr.foldersize;
                     cptptr += filehdr.foldersize * FILEHDRSIZE;
                 }
@@ -349,13 +349,13 @@ namespace Reko.ImageLoaders.BinHex.Cpt
 
         public class FileHdr // 78 bytes
         {
-            public string fName;	/* a STR32 */
+            public string? fName;	/* a STR32 */
             public byte folder;		/* set to 1 if a folder */
             public ushort foldersize;	/* number of entries in folder */
             public byte volume;		/* for multi-file archives */
             public uint filepos;	/* position of data in file */
-            public string fType;			/* file type */
-            public string fCreator;		/* er... */
+            public string? fType;			/* file type */
+            public string? fCreator;		/* er... */
             public uint creationDate;
             public uint modDate;	/* !restored-compat w/backup prgms */
             public ushort FndrFlags;	/* copy of Finder flags.  For our
@@ -423,7 +423,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                 this.forks = new ForkFolder(archive, hdr);
             }
 
-            public string Name { get { return hdr.fName; } set { hdr.fName = value; } }
+            public string Name { get { return hdr.fName!; } set { hdr.fName = value; } }
 
             public ICollection<ArchiveDirectoryEntry> Items { get { return forks; } }
 
@@ -484,7 +484,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                     get { return 2; }
                 }
 
-                public ArchiveDirectoryEntry this[string entryName]
+                public ArchiveDirectoryEntry? this[string entryName]
                 {
                     get
                     {

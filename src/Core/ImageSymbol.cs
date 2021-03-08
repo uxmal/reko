@@ -42,6 +42,7 @@ namespace Reko.Core
         private ImageSymbol(IProcessorArchitecture arch)
         {
             this.Architecture = arch ?? throw new ArgumentNullException(nameof(arch));
+            this.Address = null!; //$TODO: C# 9.0 init
         }
 
         /// <summary>
@@ -130,7 +131,7 @@ namespace Reko.Core
         public static ImageSymbol Create(
             SymbolType type,
             IProcessorArchitecture arch,
-            Address? address,
+            Address address,
             string? name = null,
             DataType? dataType = null,
             bool decompile = true)
@@ -159,7 +160,7 @@ namespace Reko.Core
         /// <summary>
         /// The location of the object referred to by the symbol.
         /// </summary>
-        public Address? Address { get; private set; }
+        public Address Address { get; private set; }
 
         /// <summary>
         /// The name of the symbol if known, null or blank if unknown.

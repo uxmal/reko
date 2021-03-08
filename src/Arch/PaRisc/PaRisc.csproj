@@ -4,7 +4,6 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>Reko.Arch.PaRisc</AssemblyName>
     <RootNamespace>Reko.Arch.PaRisc</RootNamespace>
-    <LangVersion>7.3</LangVersion>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 

@@ -37,6 +37,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
             this.arch = arch;
             this.rawImage = rawImage;
             this.addrLoad = addrLoad;
+            this.subsections = null!;
         }
 
         // ----------------------------------------
@@ -177,7 +178,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
                 Console.WriteLine("== Type information for module {0}", module);
                 foreach (var item in dict.OrderBy(d => d.Key))
                 {
-                    Dump(item.Key, item.Value.Leaves);
+                    Dump(item.Key, item.Value.Leaves!);
                 }
             }
 
@@ -223,7 +224,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         /// <returns>
         /// A tuple of (signature, start of CodeView data/dlfaBase, start of subsection directory)
         /// </returns>
-        public static (string, int, int) FindCodeView(byte[] rawImage)
+        public static (string?, int, int) FindCodeView(byte[] rawImage)
         {
             // get filesize -- seek to EOF then 
             var fp = new LeImageReader(rawImage);
@@ -278,7 +279,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         {
             Debug.Print("== Module {0} symbols ==============", m);
             var list = new List<PublicSymbol>();
-            CodeViewTypeLoader types = null;
+            CodeViewTypeLoader? types = null;
             foreach (var item in module)
             {
                 if (item is sstPublics sp)
@@ -286,7 +287,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
                     foreach (var sym in sp.symbols)
                     {
                         var addr = Address.SegPtr(
-                                (ushort) (sym.addr.Selector.Value + this.addrLoad.Selector),
+                                (ushort) (sym.addr.Selector!.Value + this.addrLoad.Selector!.Value),
                                 (uint) sym.addr.Offset);
                         dict[addr] = ImageSymbol.Procedure(this.arch, addr, sym.name);
 
@@ -299,7 +300,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
                     types = new CodeViewTypeLoader(ty.data);
                 }
             }
-            var typeBuilder = new TypeBuilder(arch, types?.Load());
+            var typeBuilder = new TypeBuilder(arch, types?.Load()!);
             foreach (var s in list.OrderBy(tu => tu.addr))
             {
                 Debug.Print("{0} [{1}] {2:X6}:{3}", s.addr, m, s.typeidx, s.name);

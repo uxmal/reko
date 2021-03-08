@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -25,6 +25,8 @@ using System;
 
 namespace Reko.Arch.MicrochipPIC.PIC16
 {
+#nullable disable
+
     using Common;
 
     /// <summary>

@@ -40,9 +40,10 @@ namespace Reko.Arch.Cil
         {
             this.arch = arch;
             this.rdr = rdr;
+            this.instr = null!;
         }
 
-        public override CilInstruction DisassembleInstruction()
+        public override CilInstruction? DisassembleInstruction()
         {
             if (!rdr.IsValid)
                 return null;
@@ -910,7 +911,7 @@ namespace Reko.Arch.Cil
 
         public override CilInstruction NotYetImplemented(string message)
         {
-            var testGenSvc = arch.Services.GetService<ITestGenerationService>();
+            var testGenSvc = arch.Services!.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("Dis6502", this.instr.Address, this.rdr, message);
             return CreateInvalidInstruction();
         }

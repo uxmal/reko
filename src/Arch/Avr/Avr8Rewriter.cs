@@ -57,6 +57,10 @@ namespace Reko.Arch.Avr
             this.state = state;
             this.binder = binder;
             this.host = host;
+            this.instr = null!;
+            this.m = null!;
+            this.rtlInstructions = null!;
+            this.clusters = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -210,7 +214,7 @@ namespace Reko.Arch.Avr
         private void RewriteBinOp(
              Func<Expression, Expression, Expression> fn,
              FlagGroupStorage mod,
-             FlagGroupStorage clr = null)
+             FlagGroupStorage? clr = null)
         {
             var dst = RewriteOp(0);
             var src = RewriteOp(1);
@@ -225,8 +229,8 @@ namespace Reko.Arch.Avr
         private void RewriteUnary(
              Func<Expression, Expression> fn,
              FlagGroupStorage mod,
-             FlagGroupStorage clr = null,
-             FlagGroupStorage set = null)
+             FlagGroupStorage? clr = null,
+             FlagGroupStorage? set = null)
         {
             var reg = RewriteOp(0);
             m.Assign(reg, fn(reg));
@@ -256,11 +260,11 @@ namespace Reko.Arch.Avr
             throw new NotImplementedException(string.Format("Rewriting {0}s not implemented yet.", op.GetType().Name));
         }
 
-        private void RewriteMem(int iOp, Expression src, Action<Expression, Expression> write, Expression seg)
+        private void RewriteMem(int iOp, Expression src, Action<Expression, Expression> write, Expression? seg)
         {
             var op = instr.Operands[iOp];
             var mop = (MemoryOperand)op;
-            var baseReg = binder.EnsureRegister(mop.Base);
+            var baseReg = binder.EnsureRegister(mop.Base!);
             Expression ea = baseReg;
             if (mop.PreDecrement)
             {

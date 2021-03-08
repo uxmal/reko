@@ -62,7 +62,7 @@ namespace Reko.Arch.SuperH
             throw new NotImplementedException();
         }
 
-        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
         {
             return null;
         }
@@ -91,7 +91,7 @@ namespace Reko.Arch.SuperH
             throw new NotImplementedException();
         }
 
-        public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
+        public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             if (flagRegister == Registers.sr)
             {
@@ -122,7 +122,7 @@ namespace Reko.Arch.SuperH
             return (RegisterStorage)regField.GetValue(null);
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             if (domain == Registers.fr0.Domain)
             {
@@ -173,7 +173,7 @@ namespace Reko.Arch.SuperH
             return Address.Ptr32(uAddr);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -183,7 +183,7 @@ namespace Reko.Arch.SuperH
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse32(txtAddr, out addr);
         }

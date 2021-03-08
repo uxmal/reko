@@ -140,7 +140,7 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
         {
             return null;
         }
@@ -165,7 +165,7 @@ namespace Reko.Arch.Arm
             return null;
         }
 
-        public override RegisterStorage GetRegister(StorageDomain dom, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain dom, BitRange range)
         {
             var i = (int) dom;
             if (0 <= i && i < Registers.SubRegisters.Length)
@@ -184,7 +184,7 @@ namespace Reko.Arch.Arm
             return null;
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
             if (Registers64.ByName.TryGetValue(name, out var reg))
                 return reg;
@@ -243,7 +243,7 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -256,7 +256,7 @@ namespace Reko.Arch.Arm
             return Address.Ptr64(uAddr);
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse64(txtAddress, out addr);
         }

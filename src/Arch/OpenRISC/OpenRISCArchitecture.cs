@@ -130,9 +130,11 @@ namespace Reko.Arch.OpenRISC
             return s.ToString();
         }
 
-        public override void LoadUserOptions(Dictionary<string, object> options)
+        public override void LoadUserOptions(Dictionary<string, object>? options)
         {
-            this.Endianness = options.TryGetValue("Endianness", out var oEnd) && 
+            this.Endianness = 
+                options != null &&
+                options.TryGetValue("Endianness", out var oEnd) && 
                 (string) oEnd == "le"
                 ? EndianServices.Little
                 : EndianServices.Big;
@@ -146,7 +148,7 @@ namespace Reko.Arch.OpenRISC
             return Address.Ptr32(uAddr);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -169,7 +171,7 @@ namespace Reko.Arch.OpenRISC
             return Registers.RegisterByName.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse32(txtAddr, out addr);
         }

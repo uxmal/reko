@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -82,7 +82,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             var memOpA = opA as MemoryOperand;
             if (memOpA != null)
             {
-                var memOpB = opB as MemoryOperand;
+                var memOpB = (MemoryOperand) opB;
                 if (NormalizeRegisters && !CompareRegisters(memOpA.Base, memOpB.Base))
                     return false;
                 if (NormalizeConstants && !CompareValues(memOpA.Offset, memOpB.Offset))

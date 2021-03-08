@@ -57,6 +57,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             InstructionBitSize = 8;
             PointerType = PrimitiveType.Ptr32;
             WordWidth = PrimitiveType.Byte;
+            this.Options = null!;
         }
 
         public PICArchitecture(IServiceProvider services, Dictionary<string, object> options)
@@ -70,12 +71,12 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the processor mode builders.
         /// </summary>
-        public IPICProcessorModel ProcessorModel => Options?.ProcessorModel;
+        public IPICProcessorModel ProcessorModel => Options?.ProcessorModel!;
 
         /// <summary>
         /// Gets PIC descriptor as retrieved from the Microchip Crownking database.
         /// </summary>
-        public IPICDescriptor PICDescriptor => ProcessorModel?.PICDescriptor;
+        public IPICDescriptor PICDescriptor => ProcessorModel?.PICDescriptor!;
 
         /// <summary>
         /// Creates the PIC processor model.
@@ -144,7 +145,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                         grf |= FlagM.N;
                         break;
                     default:
-                        return null;
+                        return null!;
                 }
             }
             return GetFlagGroup(PICRegisters.STATUS, (uint)grf);
@@ -218,7 +219,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// do exist.
         /// </remarks>
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-            => PICRegisters.GetSubregister(reg, offset, width);
+            => PICRegisters.GetSubregister(reg, offset, width)!;
 
         /// <summary>
         /// Find the widest sub-register that covers the register <paramref name="reg"/>.
@@ -229,7 +230,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// The widest subregister(s).
         /// </returns>
         public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
-            => PICRegisters.GetWidestSubregister(reg, regs);
+            => PICRegisters.GetWidestSubregister(reg, regs)!;
 
         /// <summary>
         /// Find the parent (joined) register of the register <paramref name="reg"/>.
@@ -239,7 +240,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// The parent register or null.
         /// </returns>
         public RegisterStorage GetParentRegister(RegisterStorage reg)
-            => PICRegisters.GetParentRegister(reg);
+            => PICRegisters.GetParentRegister(reg)!;
 
         /// <summary>
         /// Gets the registers.
@@ -270,7 +271,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             yield break;
         }
 
-        public override void LoadUserOptions(Dictionary<string, object> options)
+        public override void LoadUserOptions(Dictionary<string, object>? options)
         {
             //TODO: throw exception instead of tinkering the options, when dcproject loading will be effective.
             if (options == null)
@@ -306,7 +307,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 throw new InvalidOperationException($"Missing PIC model user options.");
         }
 
-        public override Dictionary<string, object> SaveUserOptions()
+        public override Dictionary<string, object>? SaveUserOptions()
         {
             if (Options == null)
                 return null;
@@ -340,10 +341,10 @@ namespace Reko.Arch.MicrochipPIC.Common
         public override Expression CreateStackAccess(IStorageBinder frame, int offset, DataType dataType)
             => throw new NotSupportedException("Microchip PIC has no explicit argument stack.");
 
-        public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int byteSize, EndianImageReader rdr, ProcessorState? state)
             => PICProgAddress.Ptr(rdr.ReadLeUInt32());
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
             => Address.TryParse32(txtAddress, out addr);
 
         public override void PostprocessProgram(Program program)

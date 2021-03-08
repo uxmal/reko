@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -50,7 +50,12 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             /// <summary>
             /// Constructor that prevents a default instance of this class from being created.
             /// </summary>
-            private PIC18MemoryMap() : base() { }
+            private PIC18MemoryMap() : base() 
+            {
+                AccessRAM = null!;
+                AccessSFR = null!;
+                ExtendedGPRE = null!;
+            }
 
             /// <summary>
             /// Private constructor creating an instance of memory map for specified PIC.
@@ -58,6 +63,9 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             /// <param name="thePIC">the PIC descriptor.</param>
             protected PIC18MemoryMap(IPICDescriptor thePIC) : base(thePIC)
             {
+                AccessRAM = null!;
+                AccessSFR = null!;
+                ExtendedGPRE = null!;
                 SetMaps();
             }
 
@@ -165,8 +173,8 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             {
                 if (bAddr == null)
                     throw new ArgumentNullException(nameof(bAddr));
-                absAddr = null;
-                IMemoryRegion regn = null;
+                absAddr = null!;
+                IMemoryRegion? regn = null;
                 if (bAddr.IsAccessRAMAddr)
                 {
                     if (AccessRAM?.Contains(bAddr.ToDataAddress(AccessRAM)) ?? false)

@@ -53,18 +53,19 @@ namespace Reko.Environments.Trs80
             set { throw new NotImplementedException(); }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             if (!ParseDMKHeader())
-                return null;
+                throw new BadImageFormatException("Unable to read DMK header.");
 
+            addrLoad ??= PreferredBaseAddress;
             var tracks = BuildTrackList(TrackLength);
             var bytes = tracks.SelectMany(t => t.Sectors)
                 .SelectMany(s => s.GetData())
                 .ToArray();
             var mem = new ByteMemoryArea(addrLoad, bytes);
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch = cfgSvc.GetArchitecture("z80");
+            var arch = cfgSvc.GetArchitecture("z80")!;
             var platform = cfgSvc.GetEnvironment("trs80").Load(Services, arch);
             var segmentMap = CreateMemoryMap(platform, mem);
             return new Program
@@ -78,7 +79,7 @@ namespace Reko.Environments.Trs80
         private SegmentMap CreateMemoryMap(IPlatform platform, ByteMemoryArea bmem)
         {
             var segmentMap = platform.CreateAbsoluteMemoryMap();
-            foreach (var seg in segmentMap.Segments.Values)
+            foreach (var seg in segmentMap!.Segments.Values)
             {
                 seg.MemoryArea = new ByteMemoryArea(seg.Address, new byte[seg.Size]);
             }
@@ -190,22 +191,23 @@ namespace Reko.Environments.Trs80
 
         private SortedList<Address, ImageSymbol> BuildSymbols(Program program)
         {
-            Func<string, Address> ParseAddress = sAddr =>
-             {
-                 if (!program.Platform.TryParseAddress(sAddr, out Address addr))
-                     return null;
-                 return addr;
-             };
+            Address? ParseAddress(string? sAddr)
+            {
+                if (!program.Platform.TryParseAddress(sAddr, out Address addr))
+                    return null;
+                return addr;
+            }
+
             var procs = program.Platform.MemoryMap.Segments
                 .SelectMany(s => s.Procedures)
                 .OfType<Procedure_v1>()
                 .Select(p => ImageSymbol.Create(
                     SymbolType.Procedure,
                     program.Architecture,
-                    ParseAddress(p.Address),
+                    ParseAddress(p.Address)!,
                     p.Name,
                     decompile: p.Decompile));
-            return procs.ToSortedList(k => k.Address, k => k);
+            return procs.ToSortedList(k => k.Address!, k => k);
         }
     }
 }

@@ -50,7 +50,7 @@ namespace Reko.Arch.PowerPC
         private Dictionary<int, RegisterStorage> spregs;
         private Dictionary<uint, FlagGroupStorage> ccFlagGroups;
         private Dictionary<string, FlagGroupStorage> ccFlagGroupsByName;
-        private Decoder[] primaryDecoders;
+        private Decoder[]? primaryDecoders;
 
         public RegisterStorage lr { get; private set; }
         public RegisterStorage ctr { get; private set; }
@@ -208,7 +208,7 @@ namespace Reko.Arch.PowerPC
         /// <param name="rdr"></param>
         /// <param name="host"></param>
         /// <returns></returns>
-        public ProcedureBase GetTrampolineDestination(IEnumerable<PowerPcInstruction> rdr, IRewriterHost host)
+        public ProcedureBase? GetTrampolineDestination(IEnumerable<PowerPcInstruction> rdr, IRewriterHost host)
         {
             var e = rdr.GetEnumerator();
 
@@ -277,7 +277,7 @@ namespace Reko.Arch.PowerPC
             return (int)result;
         }
 
-        public RegisterStorage GetRegister(int i)
+        public RegisterStorage? GetRegister(int i)
         {
             if (0 <= i && i < regs.Count)
                 return regs[i];
@@ -285,7 +285,7 @@ namespace Reko.Arch.PowerPC
                 return null;
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             return GetRegister(domain - StorageDomain.Register);
         }
@@ -306,7 +306,7 @@ namespace Reko.Arch.PowerPC
             return reg != null;
         }
 
-        public FlagGroupStorage GetCcFieldAsFlagGroup(RegisterStorage reg)
+        public FlagGroupStorage? GetCcFieldAsFlagGroup(RegisterStorage reg)
         {
             if (IsCcField(reg))
             {
@@ -338,7 +338,7 @@ namespace Reko.Arch.PowerPC
             if (offset == 0)
                 return reg;
             else
-                return null;
+                return null!;
         }
 
         public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
@@ -364,7 +364,7 @@ namespace Reko.Arch.PowerPC
             return new PowerPcRewriter(this, rdr, binder, host);
         }
 
-        public override void LoadUserOptions(Dictionary<string, object> options)
+        public override void LoadUserOptions(Dictionary<string, object>? options)
         {
             if (options == null)
                 return;
@@ -384,7 +384,7 @@ namespace Reko.Arch.PowerPC
 
         public override abstract Address MakeAddressFromConstant(Constant c, bool codeAlign);
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -419,7 +419,7 @@ namespace Reko.Arch.PowerPC
             return Address.Ptr32(uAddr);
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }
@@ -446,7 +446,7 @@ namespace Reko.Arch.PowerPC
             return Address.Ptr32(uAddr);
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }
@@ -479,7 +479,7 @@ namespace Reko.Arch.PowerPC
             return Address.Ptr64(uAddr);
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse64(txtAddress, out addr);
         }

@@ -91,9 +91,9 @@ namespace Reko.ImageLoaders.MzExe.Ne
             var rsrcTable = new LeImageReader(RawImage, OffRsrcTable);
             var rdr = rsrcTable.Clone();
             ushort size_shift = rdr.ReadLeUInt16();
-            ProgramResourceGroup bitmaps = null;
-            ProgramResourceGroup iconGroups = null;
-            ProgramResourceGroup icons = null;
+            ProgramResourceGroup? bitmaps = null;
+            ProgramResourceGroup? iconGroups = null;
+            ProgramResourceGroup? icons = null;
             var iconIds = new Dictionary<ushort, ProgramResourceInstance>();
             ushort rsrcType = rdr.ReadLeUInt16();
             while (rsrcType != 0)
@@ -302,8 +302,8 @@ namespace Reko.ImageLoaders.MzExe.Ne
         /// <param name="iconGroups"></param>
         /// <param name="icons"></param>
         private void PostProcessIcons(
-            ProgramResourceGroup iconGroups,
-            ProgramResourceGroup icons,
+            ProgramResourceGroup? iconGroups,
+            ProgramResourceGroup? icons,
             Dictionary<ushort, ProgramResourceInstance> iconIds,
             List<ProgramResource> resources)
         {
@@ -316,7 +316,7 @@ namespace Reko.ImageLoaders.MzExe.Ne
             if (iconGroups == null)
             {
                 if (icons == null)
-                    resources.Remove(icons);
+                    resources.Remove(icons!);
                 return;
             }
 
@@ -359,7 +359,7 @@ namespace Reko.ImageLoaders.MzExe.Ne
             resources.Remove(icons);
         }
 
-        void PostProcessBitmaps(ProgramResourceGroup bitmaps)
+        void PostProcessBitmaps(ProgramResourceGroup? bitmaps)
         {
             if (bitmaps == null)
                 return;
@@ -370,7 +370,7 @@ namespace Reko.ImageLoaders.MzExe.Ne
 
                 bw.Write('B');
                 bw.Write('M');
-                bw.Write(14 + bitmap.Bytes.Length);
+                bw.Write(14 + bitmap.Bytes!.Length);
                 bw.Write(0);
                 bw.Write(14);
                 bw.Write(bitmap.Bytes, 0, bitmap.Bytes.Length);

@@ -50,9 +50,10 @@ namespace Reko.Arch.SuperH
             this.arch = arch;
             this.rdr = rdr;
             this.state = new DasmState();
+            this.addr = null!;
         }
 
-        public override SuperHInstruction DisassembleInstruction()
+        public override SuperHInstruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt16(out ushort uInstr))
@@ -90,7 +91,7 @@ namespace Reko.Arch.SuperH
             public List<MachineOperand> ops = new List<MachineOperand>();
             public Mnemonic mnemonic;
             public InstrClass iclass;
-            public RegisterStorage reg;
+            public RegisterStorage? reg;
 
             public void Clear()
             {

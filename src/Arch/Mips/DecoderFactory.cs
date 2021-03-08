@@ -38,7 +38,7 @@ namespace Reko.Arch.Mips
         {
             private bool isv6;
 
-            public DecoderFactory(string instrFormat)
+            public DecoderFactory(string? instrFormat)
             {
                 this.isv6 = instrFormat == "v6";
             }
@@ -223,8 +223,8 @@ namespace Reko.Arch.Mips
                 {
                     var iBase = (int) baseField.Read(u);
                     var iIndex = (int) idxField.Read(u);
-                    var rBase = d.arch.GetRegister(iBase);
-                    var rIndex = d.arch.GetRegister(iIndex);
+                    var rBase = d.arch.GetRegister(iBase)!;
+                    var rIndex = d.arch.GetRegister(iIndex)!;
                     d.ops.Add(new IndexedOperand(dt, rBase, rIndex));
                     return true;
                 };

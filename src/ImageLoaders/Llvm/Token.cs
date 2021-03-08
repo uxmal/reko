@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -34,7 +34,7 @@ namespace Reko.ImageLoaders.LLVM
             this.Type = type;
         }
 
-        public Token(int line, TokenType type, string value)
+        public Token(int line, TokenType type, string? value)
         {
             this.LineNumber = line;
             this.Type = type;
@@ -43,7 +43,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public int LineNumber { get; private set; }
         public TokenType Type { get; private set; }
-        public string  Value { get; private set; }
+        public string? Value { get; private set; }
     }
 
     public enum TokenType

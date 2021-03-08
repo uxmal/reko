@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -38,7 +38,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// The register address if memory-mapped.
         /// </summary>
-        public readonly PICDataAddress Addr;
+        public readonly PICDataAddress? Addr;
 
         /// <summary>
         /// The register ID is non-memory-mapped.
@@ -63,7 +63,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             NMMRID = nmmrID;
         }
 
-        public int CompareTo(PICRegisterUniqueAddress other)
+        public int CompareTo(PICRegisterUniqueAddress? other)
         {
             if (other == null)
                 return 1;

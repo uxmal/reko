@@ -29,22 +29,23 @@ namespace Reko.Environments.RT11
 {
     public class LdaFileLoader : ImageLoader
     {
-        private Address addrEntry;
+        private Address? addrEntry;
 
         public LdaFileLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
         {
+            PreferredBaseAddress = Address.Ptr16(0);
         }
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             var arch = new Pdp11Architecture(Services, "pdp11", new Dictionary<string, object>());
 
             var rdr = new LeImageReader(RawImage);
 
-            var tuple = ReadDataBlocks(rdr);
-            if (tuple == null)
+            var (uAddrStart, segmentMap) = ReadDataBlocks(rdr);
+            if (segmentMap is null)
                 throw new BadImageFormatException("The file doesn't appear to be in LDA format.");
 
             var platform = new RT11Platform(Services, arch);
@@ -52,9 +53,9 @@ namespace Reko.Environments.RT11
             {
                 Architecture = arch,
                 Platform = platform,
-                SegmentMap = tuple.Item2,
+                SegmentMap = segmentMap,
             };
-            this.addrEntry = Address.Ptr16(tuple.Item1);
+            this.addrEntry = Address.Ptr16(uAddrStart);
             return program;
         }
 
@@ -63,29 +64,29 @@ namespace Reko.Environments.RT11
             return new RelocationResults(
                 new List<ImageSymbol>
                 {
-                    ImageSymbol.Procedure(program.Architecture, addrEntry),
+                    ImageSymbol.Procedure(program.Architecture, addrEntry!),
                 },
                 new SortedList<Address, ImageSymbol>());
         }
 
-        public Tuple<ushort, SegmentMap> ReadDataBlocks(LeImageReader rdr)
+        public (ushort, SegmentMap?) ReadDataBlocks(LeImageReader rdr)
         {
             var segs = new List<ImageSegment>();
             var addrMin = (ushort)0xFFFFu;
             var addrMax = (ushort)0x0000u;
             ushort addrStart = 0;
-            var blocks = new List<Tuple<ushort, byte[]>>();
+            var blocks = new List<(ushort, byte[])>();
             for (;;)
             {
                 var block = ReadDataBlock(rdr);
-                if (block == null)
-                    return null;
-                if (block.Item2 == null)
+                if (block.Item2 is null)
                 {
+                    if (block.Item1 == 0)
+                        return (0, null);
                     addrStart = block.Item1;
                     break;
                 }
-                blocks.Add(block);
+                blocks.Add(block!);
                 addrMin = Math.Min(addrMin, block.Item1);
                 addrMax = Math.Max(addrMax, (ushort)(block.Item1 + block.Item2.Length));
             }
@@ -95,7 +96,7 @@ namespace Reko.Environments.RT11
             {
                 Array.Copy(block.Item2, 0, bmem.Bytes, block.Item1 - addrMin, block.Item2.Length);
             }
-            return Tuple.Create(
+            return (
                 addrStart,
                 new SegmentMap(
                     bmem.BaseAddress,
@@ -122,7 +123,7 @@ namespace Reko.Environments.RT11
         /// </remarks>
         /// <param name="rdr"></param>
         /// <returns></returns>
-        public Tuple<ushort, byte[]> ReadDataBlock(LeImageReader rdr)
+        public (ushort, byte[]?) ReadDataBlock(LeImageReader rdr)
         {
             ushort count;
             ushort uAddr;
@@ -134,26 +135,26 @@ namespace Reko.Environments.RT11
                 while (rdr.TryReadByte(out b) && b != 1)
                     ;
                 if (b != 1)
-                    return null;    // invalid file
+                    return (0, null);    // invalid file
                 if (!rdr.TryReadByte(out b))
-                    return null;
+                    return (0, null);
             } while (b != 0);
 
             if (!rdr.TryReadLeUInt16(out count))
-                return null;
+                return (0, null);
             if (!rdr.TryReadLeUInt16(out uAddr))
-                return null;
+                return (0, null);
 
             if (count == 6)
-                return new Tuple<ushort, byte[]>(uAddr, null);
+                return (uAddr, null);
             var data = rdr.ReadBytes(count - 6);
             if (data == null || data.Length < count - 6)
-                return null;
+                return (0, null);
             if (!rdr.TryReadByte(out b))  // read (and ignore) checksum
-                return null;
+                return (0, null);
 
             Debug.Print("Data block: {0:X4} {1:X4}", uAddr, count);
-            return Tuple.Create(uAddr, data);
+            return (uAddr, data);
         }
     }
 }

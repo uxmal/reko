@@ -52,9 +52,11 @@ namespace Reko.Arch.Arc
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
+            this.instr = null!;
         }
 
-        public override ArcInstruction DisassembleInstruction()
+        public override ArcInstruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt16(out ushort hInstr))

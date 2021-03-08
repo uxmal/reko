@@ -46,7 +46,7 @@ namespace Reko.Arch.LatticeMico
             throw new System.NotImplementedException();
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
             throw new System.NotImplementedException();
         }

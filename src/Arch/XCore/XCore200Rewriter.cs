@@ -53,6 +53,8 @@ namespace Reko.Arch.XCore
             this.binder = binder;
             this.host = host;
             this.dasm = new XCore200Disassembler(arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

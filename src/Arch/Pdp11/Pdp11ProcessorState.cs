@@ -108,7 +108,7 @@ namespace Reko.Arch.Pdp11
             return new CallSite(returnSize, 0);
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
     }

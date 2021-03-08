@@ -38,9 +38,9 @@ namespace Reko.Environments.Windows
 
         private readonly Lexer lexer;
         private readonly string filename;
-        private Token bufferedTok;
-        private IPlatform platform;
-        private string moduleName;
+        private Token? bufferedTok;
+        private IPlatform? platform;
+        private string? moduleName;
 
         public ModuleDefinitionLoader(IServiceProvider services, string filename, byte[]  bytes) : base(services, filename, bytes)
         {
@@ -82,11 +82,11 @@ namespace Reko.Environments.Windows
         {
             while (Peek().Type == TokenType.Id)
             {
-                string entryName = Expect(TokenType.Id);
-                string internalName = null;
+                string entryName = Expect(TokenType.Id)!;
+                string? internalName = null;
                 if (PeekAndDiscard(TokenType.Eq))
                 {
-                    internalName = Expect(TokenType.Id);
+                    internalName = Expect(TokenType.Id)!;
                 }
                 int ordinal = -1;
                 if (PeekAndDiscard(TokenType.At))
@@ -103,14 +103,14 @@ namespace Reko.Environments.Windows
                 PeekAndDiscard(TokenType.PRIVATE);
                 PeekAndDiscard(TokenType.DATA);
 
-                var ep = ParseSignature(entryName, deserializer);
+                var ep = ParseSignature(entryName!, deserializer);
                 var svc = new SystemService
                 {
                     ModuleName = moduleName,
                     Name = ep != null ? ep.Name : entryName,
                     Signature = ep?.Signature,
                 };
-                trace.Verbose("Loaded {0} @ {1}", entryName, ordinal);
+                trace.Verbose("Loaded {0} @ {1}", entryName!, ordinal);
                 if (ordinal != -1)
                 {
                     svc.SyscallInfo = new SyscallInfo { Vector = ordinal };
@@ -124,7 +124,7 @@ namespace Reko.Environments.Windows
         {
             if (Peek().Type == TokenType.Id)
             {
-                moduleName = Get().Text.ToUpper();
+                moduleName = Get().Text!.ToUpper();
                 lib.SetModuleName(moduleName);
             }
             if (PeekAndDiscard(TokenType.BASE))
@@ -133,9 +133,9 @@ namespace Reko.Environments.Windows
             }
         }
 
-        private ExternalProcedure ParseSignature(string entryName, TypeLibraryDeserializer loader)
+        private ExternalProcedure? ParseSignature(string entryName, TypeLibraryDeserializer loader)
         {
-            var sProc = SignatureGuesser.SignatureFromName(entryName, platform);
+            var sProc = SignatureGuesser.SignatureFromName(entryName, platform!);
             if (sProc == null)
                 return null;
             return loader.LoadExternalProcedure(sProc);
@@ -159,14 +159,14 @@ namespace Reko.Environments.Windows
 
         private Token Get()
         {
-            Token t = bufferedTok;
+            Token? t = bufferedTok;
             if (t == null)
                 t = lexer.GetToken();
             bufferedTok = null;
             return t;
         }
 
-        private string Expect(TokenType type)
+        private string? Expect(TokenType type)
         {
             var tok = Get();
             if (tok.Type != type)
@@ -198,19 +198,17 @@ namespace Reko.Environments.Windows
         public class Token
         {
             public TokenType Type;
-            public string Text;
+            public string? Text;
             public int LineNumber;
 
             public Token(TokenType tokenType, int lineNumber)
             {
-                //Debug.Print("Token: {0}", tokenType);
                 this.Type = tokenType;
                 this.LineNumber = lineNumber;
             }
 
             public Token(TokenType tokenType, string p, int lineNumber)
             {
-                //Debug.Print("Token: {0} {1}", tokenType, p);
                 this.Type = tokenType;
                 this.Text = p;
                 this.LineNumber = lineNumber;
@@ -254,7 +252,7 @@ namespace Reko.Environments.Windows
             public Token GetToken()
             {
                 var st = State.Initial;
-                StringBuilder sb = null;
+                StringBuilder? sb = null;
                 for (; ; )
                 {
                     int c = rdr.Peek();
@@ -306,46 +304,46 @@ namespace Reko.Environments.Windows
                         case -1: throw new FormatException("Unterminated string.");
                         case '\r':
                         case '\n': throw new FormatException("Newline in string.");
-                        case '\"': rdr.Read(); return new Token(TokenType.Id, sb.ToString(), lineNumber);
+                        case '\"': rdr.Read(); return new Token(TokenType.Id, sb!.ToString(), lineNumber);
                         default:
                             rdr.Read();
-                            sb.Append(ch);
+                            sb!.Append(ch);
                             break;
                         }
                         break;
                     case State.Id:
                         if (c == -1)
-                            return IdOrKeyword(sb);
+                            return IdOrKeyword(sb!);
                         if (Char.IsWhiteSpace(ch) || c == ';')
-                            return IdOrKeyword(sb);
-                        sb.Append(ch);
+                            return IdOrKeyword(sb!);
+                        sb!.Append(ch);
                         rdr.Read();
                         break;
                     case State.Number:
                         if (c == -1 || !Char.IsDigit(ch))
-                            return Tok(TokenType.Number, sb);
+                            return Tok(TokenType.Number, sb!);
                         rdr.Read();
-                        sb.Append(ch);
+                        sb!.Append(ch);
                         break;
                     case State.Zero:
                         if (c == -1)
-                            return Tok(TokenType.Number, sb);
+                            return Tok(TokenType.Number, sb!);
                         switch (ch)
                         {
                         case 'x': case 'X':
                             rdr.Read();
-                            sb.Clear();
+                            sb!.Clear();
                             st = State.HexPrefix;
                             break;
                         default:
-                            return Tok(TokenType.Number, sb);
+                            return Tok(TokenType.Number, sb!);
                         }
                         break;
                     case State.HexPrefix:
                         if (c != -1 && BytePattern.IsHexDigit(ch))
                         { 
                             rdr.Read();
-                            sb.Append(ch);
+                            sb!.Append(ch);
                             st = State.HexNumber;
                             break;
                         }
@@ -354,11 +352,11 @@ namespace Reko.Environments.Windows
                         if (c != -1 && BytePattern.IsHexDigit(ch))
                         {
                             rdr.Read();
-                            sb.Append(ch);
+                            sb!.Append(ch);
                             st = State.HexNumber;
                             break;
                         }
-                        return Tok(TokenType.HexNumber, sb);
+                        return Tok(TokenType.HexNumber, sb!);
                     }
                 }
             }

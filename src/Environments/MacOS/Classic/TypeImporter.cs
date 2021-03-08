@@ -54,6 +54,7 @@ namespace Reko.Environments.MacOS.Classic
             this.namedTypes = new Dictionary<string, SerializedType>(StringComparer.InvariantCultureIgnoreCase);
             this.sizes= new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
             this.sizer = new TypeSizer(platform, namedTypes);
+            this.pascalTypes = null!;
         }
 
         public SerializedType VisitArrayType(Core.Pascal.Array array)

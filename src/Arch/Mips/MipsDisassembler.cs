@@ -55,9 +55,11 @@ namespace Reko.Arch.Mips
             this.rdr = imageReader;
             this.signedWord = PrimitiveType.Create(Domain.SignedInt, arch.WordWidth.BitSize);
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
+            this.instrCur = null!;
         }
 
-        public override MipsInstruction DisassembleInstruction()
+        public override MipsInstruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt32(out uint wInstr))
@@ -104,7 +106,7 @@ namespace Reko.Arch.Mips
 
         private RegisterOperand Reg(uint regNumber)
         {
-            return new RegisterOperand(arch.GetRegister((int) regNumber & 0x1F));
+            return new RegisterOperand(arch.GetRegister((int) regNumber & 0x1F)!);
         }
 
         private RegisterOperand FReg(uint regNumber)
@@ -121,7 +123,7 @@ namespace Reko.Arch.Mips
             }
             else
             {
-                op = null;
+                op = null!;
                 return false;
             }
         }
@@ -155,7 +157,7 @@ namespace Reko.Arch.Mips
 
         private IndirectOperand Ea(uint wInstr, PrimitiveType dataWidth, int shift, short offset)
         {
-            var baseReg = arch.GetRegister((int) (wInstr >> shift) & 0x1F);
+            var baseReg = arch.GetRegister((int) (wInstr >> shift) & 0x1F)!;
             return new IndirectOperand(dataWidth, offset, baseReg);
         }
     }

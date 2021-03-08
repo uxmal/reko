@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -34,13 +34,13 @@ namespace Reko.Arch.MicrochipPIC.Design
     /// </summary>
     public class PICArchitectureInteractor
     {
-        private PICArchitecturePicker form;
-        private PICArchitectureOptionsPicker result;
+        private PICArchitecturePicker form = null!;
+        private PICArchitectureOptionsPicker result = null!;
 
         internal void Attach(PICArchitecturePicker pickerForm)
         {
             this.form = pickerForm;
-            form.Load += Form_Load;
+            form.Load += Form_Load!;
             form.FormClosing += Form_FormClosing;
         }
 
@@ -48,10 +48,10 @@ namespace Reko.Arch.MicrochipPIC.Design
         {
             result = form.Value ?? new PICArchitectureOptionsPicker() { PICName = String.Empty, AllowExtended = false };
             InitValues();
-            form.ModelComboBox.SelectedIndexChanged += ModelComboBox_SelectedIndexChanged;
-            form.ExtendedModeCheckBox.CheckedChanged += ExtendedModeCheckbox_CheckedChanged;
-            form.PIC16RadioButton.CheckedChanged += PICRadioButtons_CheckedChanged;
-            form.PIC18RadioButton.CheckedChanged += PICRadioButtons_CheckedChanged;
+            form.ModelComboBox.SelectedIndexChanged += ModelComboBox_SelectedIndexChanged!;
+            form.ExtendedModeCheckBox.CheckedChanged += ExtendedModeCheckbox_CheckedChanged!;
+            form.PIC16RadioButton.CheckedChanged += PICRadioButtons_CheckedChanged!;
+            form.PIC18RadioButton.CheckedChanged += PICRadioButtons_CheckedChanged!;
         }
 
         private void Form_FormClosing(object sender, EventArgs e)
@@ -69,7 +69,7 @@ namespace Reko.Arch.MicrochipPIC.Design
 
         private void ModelComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var cmb = sender as ComboBox;
+            var cmb = (ComboBox) sender;
             result.PICName = cmb.Text;
             form.OKButton.Enabled = form.ModelComboBox.SelectedIndex >= 0;
         }

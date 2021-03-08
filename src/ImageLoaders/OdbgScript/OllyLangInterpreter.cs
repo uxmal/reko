@@ -38,12 +38,12 @@ namespace Reko.ImageLoaders.OdbgScript
     // This is the table for Script Execution
     public class t_dbgmemblock
     {
-        public Address address;    //Memory Adress
+        public Address? address;    //Memory Adress
         public uint size;     //Block Size
         public int script_pos; //Registred at script pos
         public bool autoclean; //On script restart/change
 
-        public Address free_at_ip; //To free memory block used in ASM commands
+        public Address? free_at_ip; //To free memory block used in ASM commands
 
         //Optional actions to do
         public bool restore_registers;
@@ -56,7 +56,7 @@ namespace Reko.ImageLoaders.OdbgScript
     public class t_export
     {
         public rulong addr;
-        public string label; // ;label[256];
+        public string? label; // ;label[256];
     }
 
     public partial class OllyLangInterpreter : IScriptInterpreter
@@ -92,8 +92,8 @@ namespace Reko.ImageLoaders.OdbgScript
         //last breakpoint reason
         private rulong break_reason;
         private rulong break_memaddr;
-        private Address pmemforexec;
-        private Address membpaddr;
+        private Address? pmemforexec;
+        private Address? membpaddr;
         private ulong membpsize;
         //private bool require_addonaction;
         //private bool back_to_debugloop;
@@ -104,6 +104,10 @@ namespace Reko.ImageLoaders.OdbgScript
             this.services = services;
             this.arch = arch;
             this.Script = new OllyScript();
+            this.Debugger = null!;
+            this.Host = null!;
+            this.errorstr = "";
+            this.callback_return = null!;
 
             #region Initialize command array
             commands["add"] = DoADD;
@@ -481,7 +485,7 @@ namespace Reko.ImageLoaders.OdbgScript
         private int EOB_row, EOE_row;
         private bool bInternalBP;
         private ulong tickcount_startup;
-        private byte[] search_buffer;
+        private byte[]? search_buffer;
 
         // Pseudo-flags to emulate CMP
         private bool zf;
@@ -770,7 +774,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public void LoadFromFile(string scriptFilename, Program program, string curDir)
         {
-            var host = new OdbgScriptHost(null, program);
+            var host = new OdbgScriptHost(null!, program);
             var fsSvc = services.RequireService<IFileSystemService>();
             using (var parser = OllyScriptParser.FromFile(host, fsSvc, scriptFilename, curDir))
             {
@@ -780,7 +784,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public void LoadFromString(string scriptString, Program program, string curDir)
         {
-            var host = new OdbgScriptHost(null, program);
+            var host = new OdbgScriptHost(null!, program);
             var fsSvc = services.RequireService<IFileSystemService>();
             using (var parser = OllyScriptParser.FromString(host, fsSvc, scriptString, curDir))
             {
@@ -828,8 +832,10 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
 
                 // Find command and execute it
-                Func<Expression[], bool> cmd = line.CommandPtr;
-                if (cmd == null && commands.TryGetValue(line.Command, out var it))
+                Func<Expression[], bool>? cmd = line.CommandPtr;
+                if (cmd == null && 
+                    line.Command != null &&
+                    commands.TryGetValue(line.Command, out var it))
                 {
                     line.CommandPtr = cmd = it;
                 }
@@ -876,7 +882,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 if (tMemBlocks[i].free_at_ip == ip)
                 {
-                    Host.FreeMemory(tMemBlocks[i].address, tMemBlocks[i].size);
+                    Host.FreeMemory(tMemBlocks[i].address!, tMemBlocks[i].size);
                     if (tMemBlocks[i].result_register)
                         variables["$RESULT"] = Var.Create((rulong)Debugger.GetContextData(tMemBlocks[i].reg_to_return));
                     if (tMemBlocks[i].restore_registers)
@@ -1044,7 +1050,7 @@ namespace Reko.ImageLoaders.OdbgScript
         }
 #endif
 
-        bool GetAnyValue(Expression op, out string value, bool hex8forExec = false)
+        bool GetAnyValue(Expression op, out string? value, bool hex8forExec = false)
         {
             value = null;
             if (op is Identifier id && IsVariable(id.Name))
@@ -1142,11 +1148,11 @@ namespace Reko.ImageLoaders.OdbgScript
                     {
                         Var tmp = variables[id.Name];
                         tmp.resize(size);
-                        value = tmp.str;
+                        value = tmp.str!;
                     }
                     else
                     {
-                        value = variables[id.Name].str;
+                        value = variables[id.Name].str!;
                     }
                     return true;
                 }
@@ -1222,7 +1228,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public bool GetAddress(Expression op, out Address value)
         {
-            value = null;
+            value = null!;
             if (op is MkSequence seq && seq.Expressions.Length == 2)
             {
                 // Possible segmented address. Evaluate part before
@@ -1238,7 +1244,7 @@ namespace Reko.ImageLoaders.OdbgScript
             }
             if (op is Identifier id && IsVariable(id.Name) && variables[id.Name].Address != null)
             {
-                value = variables[id.Name].Address;
+                value = variables[id.Name].Address!;
                 return true;
             }
             if (!GetRulong(op, out rulong uAddr))
@@ -1478,13 +1484,13 @@ namespace Reko.ImageLoaders.OdbgScript
 			XMM_SAVE_AREA32 fltctx;
 			preg = (double*)&fltctx.FloatRegisters + index;
 #else
-                    FLOATING_SAVE_AREA fltctx = null;
+                    FLOATING_SAVE_AREA? fltctx = null;
                     //preg = (double*)&fltctx.RegisterArea[0] + index;
 #endif
-                    if (Debugger.GetContextFPUDataEx(Host.TE_GetCurrentThreadHandle(), fltctx))
+                    if (Debugger.GetContextFPUDataEx(Host.TE_GetCurrentThreadHandle(), fltctx!))
                     {
                         preg = value;
-                        return Debugger.SetContextFPUDataEx(Host.TE_GetCurrentThreadHandle(), fltctx);
+                        return Debugger.SetContextFPUDataEx(Host.TE_GetCurrentThreadHandle(), fltctx!);
                     }
                 }
             }
@@ -1592,7 +1598,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 else if (ti[i] == '}')
                 {
                     insideVar = false;
-                    GetAnyValue(MkId(varname.ToString()), out string value, hex8forExec);
+                    GetAnyValue(MkId(varname.ToString()), out string? value, hex8forExec);
                     sb.Append(value);
                     varname.Clear();
                 }
@@ -1685,7 +1691,7 @@ namespace Reko.ImageLoaders.OdbgScript
             for (int i = 0; i < tMemBlocks.Count; i++)
             {
                 if (tMemBlocks[i].autoclean)
-                    Host.FreeMemory(tMemBlocks[i].address, tMemBlocks[i].size);
+                    Host.FreeMemory(tMemBlocks[i].address!, tMemBlocks[i].size);
             }
             tMemBlocks.Clear();
             return true;
@@ -1811,9 +1817,9 @@ namespace Reko.ImageLoaders.OdbgScript
                 {
                     //$TODO: bleh. To remove this hard-coded dependence of X86,
                     // we need to implement a new InstrClass type, Return.
-                    var instr = (X86Instruction) Host.Disassemble(Debugger.InstructionPointer);
-                    if (instr.Mnemonic == Arch.X86.Mnemonic.ret ||
-                       instr.Mnemonic == Arch.X86.Mnemonic.retf)
+                    var instr = (X86Instruction?) Host.Disassemble(Debugger.InstructionPointer);
+                    if (instr != null && (instr.Mnemonic == Arch.X86.Mnemonic.ret ||
+                                          instr.Mnemonic == Arch.X86.Mnemonic.retf))
                     {
                         run_till_return = false;
                         stepcount = 0;
@@ -1828,8 +1834,8 @@ namespace Reko.ImageLoaders.OdbgScript
                     that's not gonna do us any good for jumps
                     so we'll stepinto except for a few exceptions
                     */
-                    var instr = (X86Instruction) Host.Disassemble(Debugger.InstructionPointer);
-                    if (instr.Mnemonic == Arch.X86.Mnemonic.call || instr.repPrefix != 0)
+                    var instr = (X86Instruction?) Host.Disassemble(Debugger.InstructionPointer);
+                    if (instr != null && (instr.Mnemonic == Arch.X86.Mnemonic.call || instr.repPrefix != 0))
                         Debugger.StepOver(StepOverCallback);
                     else
                         Debugger.StepInto(StepIntoCallback);
@@ -1893,11 +1899,11 @@ namespace Reko.ImageLoaders.OdbgScript
 
         void LBPC_TRAMPOLINE(LOAD_DLL_DEBUG_INFO SpecialDBG, eLibraryEvent bpxType)
         {
-            Librarian.LIBRARY_ITEM_DATA Lib = Librarian.GetLibraryInfoEx(SpecialDBG.lpBaseOfDll);
+            Librarian.LIBRARY_ITEM_DATA Lib = Librarian.GetLibraryInfoEx(SpecialDBG.lpBaseOfDll!);
             if (Lib != null)
             {
                 Dictionary<string, string> labels = LibraryBreakpointLabels[bpxType];
-                if (labels.TryGetValue(Lib.szLibraryPath, out string it))
+                if (labels.TryGetValue(Lib.szLibraryPath!, out string it))
                 {
 
                     DoCALL(new[] { MkString(it) });

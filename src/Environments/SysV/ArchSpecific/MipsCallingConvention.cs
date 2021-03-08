@@ -45,16 +45,16 @@ namespace Reko.Environments.SysV.ArchSpecific
         {
             this.arch = arch;
             this.iregs = new[] { "r4", "r5", "r6", "r7" }
-                .Select(r => arch.GetRegister(r))
+                .Select(r => arch.GetRegister(r)!)
                 .ToArray();
             this.fregs = new[] { "f12", "f13", "f14", "f15" }
-                .Select(r => arch.GetRegister(r))
+                .Select(r => arch.GetRegister(r)!)
                 .ToArray();
-            this.iret = arch.GetRegister("r2");
-            this.fret = arch.GetRegister("f1");
+            this.iret = arch.GetRegister("r2")!;
+            this.fret = arch.GetRegister("f1")!;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(arch.WordWidth.Size, 0x10);
 

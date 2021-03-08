@@ -56,6 +56,8 @@ namespace Reko.Arch.i8051
             this.binder = binder;
             this.host = host;
             this.dasm = new i8051Disassembler(arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -144,7 +146,7 @@ namespace Reko.Arch.i8051
             m.Goto(dst);
         }
 
-        private void RewriteBinop(Func<Expression, Expression, BinaryExpression> fn, FlagGroupStorage grf = null)
+        private void RewriteBinop(Func<Expression, Expression, BinaryExpression> fn, FlagGroupStorage? grf = null)
         {
             var dst = OpSrc(instr.Operands[0], arch.DataMemory);
             var src = OpSrc(instr.Operands[1], arch.DataMemory);
@@ -367,7 +369,7 @@ namespace Reko.Arch.i8051
             return GetEnumerator();
         }
 
-        private Expression OpSrc(MachineOperand op, RegisterStorage dataMemory)
+        private Expression OpSrc(MachineOperand op, RegisterStorage? dataMemory)
         {
             switch (op)
             {
@@ -454,7 +456,7 @@ namespace Reko.Arch.i8051
         /// <summary>
         /// Some 8051 registers are aliased to memory addresses.
         /// </summary>
-        private Expression AliasedSpecialFunctionRegister(ushort uAddress)
+        private Expression? AliasedSpecialFunctionRegister(ushort uAddress)
         {
             switch (uAddress)
             {

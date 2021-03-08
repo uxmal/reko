@@ -93,7 +93,7 @@ namespace Reko.Arch.IA64
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
             if (Registers.RegistersByName.TryGetValue(name, out var reg))
                 return reg;
@@ -121,7 +121,7 @@ namespace Reko.Arch.IA64
             throw new NotImplementedException();
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -131,7 +131,7 @@ namespace Reko.Arch.IA64
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             throw new NotImplementedException();
         }

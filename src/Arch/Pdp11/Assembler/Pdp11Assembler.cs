@@ -56,7 +56,7 @@ namespace Reko.Assemblers.Pdp11
                     bmem.BaseAddress,
                     new ImageSegment(".text", bmem, AccessMode.ReadWriteExecute)),
                 arch,
-                new DefaultPlatform(null, arch));
+                new DefaultPlatform(arch.Services, arch));
         }
 
         public Dictionary<string, object> Equates { get; private set; }
@@ -154,16 +154,16 @@ namespace Reko.Assemblers.Pdp11
             switch (op.Type)
             {
             case AddressMode.Register:
-                enc = op.Register.Number;
+                enc = op.Register!.Number;
                 break;
             case AddressMode.RegDef:
-                enc = 0x08 | op.Register.Number;
+                enc = 0x08 | op.Register!.Number;
                 break;
             case AddressMode.AutoIncr:
-                enc = 0x10 | op.Register.Number;
+                enc = 0x10 | op.Register!.Number;
                 break;
             case AddressMode.AutoDecr:
-                enc = 0x20 | op.Register.Number;
+                enc = 0x20 | op.Register!.Number;
                 break;
             case AddressMode.Immediate:
                 enc = 0x17;
@@ -195,8 +195,7 @@ namespace Reko.Assemblers.Pdp11
                 throw new ArgumentException("ops");
             if (ops[0].Type != AddressMode.Register)
                 throw new ArgumentException("First argument must be a register.");
-            Debug.Print("ops(0): {0} {1}", ops[0].Register.Name, ops[0].Register.Number);
-            EmitSingleOperandInstruction(0x0800 | (ops[0].Register.Number << 6), ops[1]);
+            EmitSingleOperandInstruction(0x0800 | (ops[0].Register!.Number << 6), ops[1]);
         }
 
         internal void ProcessShortBranch(int opcode, string destination)

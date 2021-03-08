@@ -44,6 +44,10 @@ namespace Reko.ImageLoaders.MzExe
             : base(services, filename, rawImage)
         {
             this.FileHeaderOffset = headerOffset;
+            this.arch = null!;
+            this.platform = null!;
+            this.program = null!;
+            this.segmentMap = null!;
         }
 
         public uint FileHeaderOffset { get; }
@@ -54,10 +58,11 @@ namespace Reko.ImageLoaders.MzExe
             set { throw new NotImplementedException(); }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
+            addrLoad ??= PreferredBaseAddress;
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            this.arch = cfgSvc.GetArchitecture("x86-protected-32");
+            this.arch = cfgSvc.GetArchitecture("x86-protected-32")!;
             this.platform = cfgSvc.GetEnvironment("ms-dos-386")
                 .Load(Services, arch);
             var rdr = new LeImageReader(RawImage, FileHeaderOffset);

@@ -240,15 +240,15 @@ namespace Reko.Environments.MacOS.Classic
                 for (int i = 0; i < count; ++i)
                 {
                     ushort rsrcID = ByteMemoryArea.ReadBeUInt16(bytes, offset);
-                    string name = ReadName(ByteMemoryArea.ReadBeUInt16(bytes, offset + 2));
+                    string? name = ReadName(ByteMemoryArea.ReadBeUInt16(bytes, offset + 2));
                     uint dataOff = ByteMemoryArea.ReadBeUInt32(bytes, offset + 4) & 0x00FFFFFFU;
-                    yield return new ResourceReference(rsrcID, name, dataOff);
+                    yield return new ResourceReference(rsrcID, name!, dataOff);
 
                     offset += 0x0C;
                 }
             }
 
-            private string ReadName(ushort rsrcInstanceNameOffset)
+            private string? ReadName(ushort rsrcInstanceNameOffset)
             {
                 if (rsrcInstanceNameOffset == 0xFFFF)
                     return null;
@@ -291,7 +291,7 @@ namespace Reko.Environments.MacOS.Classic
             List<ImageSymbol> entryPoints,
             SortedList<Address, ImageSymbol> symbols)
         {
-            JumpTable jt = null;
+            JumpTable? jt = null;
             var codeSegs = new Dictionary<int, ImageSegment>();
             foreach (ResourceType type in ResourceTypes)
             {
@@ -372,7 +372,7 @@ namespace Reko.Environments.MacOS.Classic
             }
         }
 
-        private static BeImageReader GetA5InitImageReader(ImageSegment a5dataSegment)
+        private static BeImageReader? GetA5InitImageReader(ImageSegment a5dataSegment)
         {
             var a5data = a5dataSegment.MemoryArea;
             var a5dr = new BeImageReader((ByteMemoryArea) a5data, 0);

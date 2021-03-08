@@ -696,10 +696,10 @@ register*/
         {
             this.arch = arch;
             this.iregs = new[] { "r12", "r13", "r14", "r15" }
-                .Select(r => arch.GetRegister(r)).ToArray();
+                .Select(r => arch.GetRegister(r)!).ToArray();
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(2, 0);
             if (dtRet != null && !(dtRet is VoidType))

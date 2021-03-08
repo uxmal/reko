@@ -47,6 +47,7 @@ namespace Reko.Arch.PowerPC
             this.map = segmentMap;
             this.envEmulator = envEmulator;
             this.registerFile = new ulong[32];
+            this.dasm = null!;
         }
 
         public override MachineInstruction CurrentInstruction => dasm.Current;

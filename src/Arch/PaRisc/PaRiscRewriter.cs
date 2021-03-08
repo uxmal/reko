@@ -55,6 +55,8 @@ namespace Reko.Arch.PaRisc
             this.binder = binder;
             this.host = host;
             this.dasm = new PaRiscDisassembler(arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -148,7 +150,7 @@ namespace Reko.Arch.PaRisc
             MaybeConditionalJump(InstrClass.ConditionalTransfer, addrNext, false, e);
         }
 
-        private bool MaybeSkipNextInstruction(InstrClass iclass, bool invert, Expression left, Expression right = null)
+        private bool MaybeSkipNextInstruction(InstrClass iclass, bool invert, Expression left, Expression? right = null)
         {
             var addrNext = instr.Address + 8;
             if (MaybeConditionalJump(iclass, addrNext, invert, left, right))
@@ -162,7 +164,7 @@ namespace Reko.Arch.PaRisc
             }
         }
 
-        private bool MaybeConditionalJump(InstrClass iclass, Address addrTaken, bool invert, Expression left, Expression right = null)
+        private bool MaybeConditionalJump(InstrClass iclass, Address addrTaken, bool invert, Expression left, Expression? right = null)
         {
             if (instr.Condition == null ||
                 instr.Condition.Type == ConditionType.Never ||
@@ -235,7 +237,7 @@ namespace Reko.Arch.PaRisc
         private Expression RewriteCondition(Expression left, Expression right)
         {
             Expression e;
-            switch (instr.Condition.Type)
+            switch (instr.Condition!.Type)
             {
             case ConditionType.Tr: e = Constant.True(); break;
             case ConditionType.Never:

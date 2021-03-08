@@ -8,8 +8,6 @@
     <RootNamespace>Reko.ImageLoaders.WebAssembly</RootNamespace>
     <AssemblyName>Reko.ImageLoaders.WebAssembly</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <LangVersion>8.0</LangVersion>
-    <nullable>enable</nullable>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>

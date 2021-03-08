@@ -49,7 +49,7 @@ namespace Reko.Analysis
 			sb.Write(caption);
             var sGrf = string.Join(" ", grfFlags
                 .Where(f => f.Value != 0)
-                .Select(f => arch.GetFlagGroup(f.Key, f.Value))
+                .Select(f => arch.GetFlagGroup(f.Key, f.Value)!)
                 .OrderBy(f => f.Name));
             if (sGrf.Length > 0)
 			{
@@ -63,7 +63,7 @@ namespace Reko.Analysis
             sb.Write(caption);
             var sGrf = string.Join(" ", grfFlags
                 .Where(f => f.Value != 0)
-                .Select(f => arch.GetFlagGroup(f.Key, f.Value))
+                .Select(f => arch.GetFlagGroup(f.Key, f.Value)!)
                 .OrderBy(f => f.Name));
             if (sGrf.Length > 0)
             {
@@ -103,7 +103,7 @@ namespace Reko.Analysis
         {
             sb.Write(caption);
             foreach (var freg in flagRegs
-                .Select(f => arch.GetFlagGroup(f.Key, f.Value))
+                .Select(f => arch.GetFlagGroup(f.Key, f.Value)!)
                 .OrderBy(f => f.Name))
             {
                 sb.Write(" {0}", freg.Name);

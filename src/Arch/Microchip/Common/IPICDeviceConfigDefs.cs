@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -36,7 +36,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A <see cref="PICDevConfigRegister"/> instance or null.
         /// </returns>
-        PICDevConfigRegister GetDCR(string name);
+        PICDevConfigRegister? GetDCR(string name);
 
         /// <summary>
         /// Gets a Device Configuration Register by its memory address.
@@ -45,7 +45,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A <see cref="PICDevConfigRegister"/> instance or null.
         /// </returns>
-        PICDevConfigRegister GetDCR(Address addr);
+        PICDevConfigRegister? GetDCR(Address addr);
 
         /// <summary>
         /// Gets a Device Configuration Field by its name.
@@ -54,7 +54,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A <see cref="DevConfigField"/> instance or null.
         /// </returns>
-        DevConfigField GetDCRField(string name);
+        DevConfigField? GetDCRField(string name);
 
         /// <summary>
         /// Renders the Device Configuration Register state given its value.

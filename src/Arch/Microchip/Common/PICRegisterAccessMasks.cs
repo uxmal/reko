@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -38,8 +38,8 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         private PICRegisterAccessMasks(PICRegisterTraits traits)
         {
-            string sPOR = traits?.POR ?? new string('0', traits.BitWidth);
-            string sAccess = traits?.Access ?? new string('n', traits.BitWidth);
+            string sPOR = traits.POR ?? new string('0', traits.BitWidth);
+            string sAccess = traits.Access ?? new string('n', traits.BitWidth);
 
             ResetValue = 0;
             foreach (var c in sPOR)

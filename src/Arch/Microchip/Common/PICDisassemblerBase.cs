@@ -40,7 +40,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         protected PICInstruction instrCur;
         public PICProgAddress addrCur;
 
-        protected static IMemoryRegion lastusedregion = null;
+        protected static IMemoryRegion? lastusedregion = null;
 
         /// <summary>
         /// Instantiates a base PIC disassembler.
@@ -51,6 +51,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             this.arch = arch;
             this.rdr = rdr;
+            this.instrCur = null!;
+            this.addrCur = null!;
         }
 
         /// <summary>
@@ -66,7 +68,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </returns>
         /// <exception cref="AddressCorrelatedException">Thrown when the Address Correlated error
         ///                                              condition occurs.</exception>
-        public override PICInstruction DisassembleInstruction()
+        public override PICInstruction? DisassembleInstruction()
         {
             IMemoryRegion GetProgRegion()
             {
@@ -192,7 +194,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         protected abstract PICInstruction DecodeEEPROMInstruction();
 
-        protected abstract PICInstruction DecodeDAInstruction();
+        protected abstract PICInstruction? DecodeDAInstruction();
 
         protected abstract PICInstruction DecodeDBInstruction();
 
@@ -204,7 +206,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         protected abstract PICInstruction DecodeUserIDInstruction();
 
-        protected abstract PICInstruction DecodeConfigInstruction();
+        protected abstract PICInstruction? DecodeConfigInstruction();
 
         protected abstract PICInstruction DecodeDCIInstruction();
 

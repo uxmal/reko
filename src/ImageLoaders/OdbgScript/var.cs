@@ -12,14 +12,14 @@ namespace Reko.ImageLoaders.OdbgScript
         public enum etype { EMP, DW, STR, FLT, ADR, };
 
         private rulong dw;
-        public string str;
+        public string? str;
         public double flt;
 
         public etype type;
         public int size;
         public bool IsBuf;
 
-        public Reko.Core.Address Address;
+        public Reko.Core.Address? Address;
 
         public static Var Create() { return new Var { type = etype.EMP }; }
         public static Var Create(rulong rhs) { return new Var { type = etype.DW, dw = (rhs), size = 4 }; }
@@ -119,7 +119,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 if (IsBuf)
                 {
-                    char[] revChars = new char[str.Length];
+                    char[] revChars = new char[str!.Length];
                     int iMax = str.Length - 1;
                     revChars[0] = '#';
                     revChars[iMax] = '#';
@@ -145,7 +145,7 @@ namespace Reko.ImageLoaders.OdbgScript
             public override string ToHexString()
             {
                 if (IsBuf) // #001122# to "001122"
-                    return str.Substring(1, str.Length - 2);
+                    return str!.Substring(1, str.Length - 2);
                 else      // "001122" to "303031313232"
                     return Helper.bytes2hexstr(
                         Encoding.ASCII.GetBytes(str),
@@ -162,7 +162,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     //string tmp(bytes, size);
                     //return tmp;
                 }
-                else return str;
+                else return str!;
             }
         }
 
@@ -218,7 +218,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
             case etype.STR:
                 if (IsBuf == rhs.IsBuf)
-                    return str.CompareTo(rhs.str);
+                    return str!.CompareTo(rhs.str);
                 else
                     return ToHexString().CompareTo(rhs.ToHexString());
             }
@@ -249,7 +249,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     if (IsBuf)
                         str = '#' + ToHexString().Substring(0, newsize * 2) + '#';
                     else
-                        str.Remove(newsize);
+                        str!.Remove(newsize);
                     size = newsize;
                 }
                 break;
@@ -272,7 +272,7 @@ namespace Reko.ImageLoaders.OdbgScript
             if (etype.DW == this.type)
                 return dw;
             else if (etype.ADR == this.type)
-                return Address.ToLinear();
+                return Address!.ToLinear();
             throw new NotSupportedException();
         }
     }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -256,11 +256,11 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         private sealed class InvalidFieldSem : IDeviceFusesSemantic
         {
-            public string Name { get; set; }
+            public string? Name { get; set; }
 
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
-            public string When { get; set; }
+            public string? When { get; set; }
 
             public bool IsHidden => false;
 
@@ -274,9 +274,11 @@ namespace Reko.Arch.MicrochipPIC.Common
         public static DevConfigSemantic invalid =
             new DevConfigSemantic(new InvalidFieldSem() { Name = "<invalid>", Description = "Invalid fuse value", When = "?" });
 
-
         private DevConfigSemantic()
         {
+            State = null!;
+            Descr = null!;
+            When = null!;
         }
 
         public DevConfigSemantic(IDeviceFusesSemantic dcrsem)

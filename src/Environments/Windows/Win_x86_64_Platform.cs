@@ -102,19 +102,19 @@ namespace Reko.Environments.Windows
             };
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             return new X86_64CallingConvention();
         }
 
-        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
         {
             Services.RequireService<DecompilerEventListener>().Warn(new NullCodeLocation(program.Name),
                            "Win32 X86-64 main procedure finder not implemented yet.");
             return null;
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             if (vector == 3)
                 return int3svc;
@@ -141,7 +141,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rw, IRewriterHost host)
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rw, IRewriterHost host)
         {
             var instr = rw.FirstOrDefault();
             if (instr == null)
@@ -161,13 +161,13 @@ namespace Reko.Environments.Windows
                 }
                 addrTarget = MakeAddressFromConstant(wAddr, false);
             }
-            ProcedureBase proc = host.GetImportedProcedure(this.Architecture, addrTarget, addrInstr);
+            ProcedureBase? proc = host.GetImportedProcedure(this.Architecture, addrTarget, addrInstr);
             if (proc != null)
                 return proc;
             return host.GetInterceptedCall(this.Architecture, addrTarget);
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             ModuleDescriptor mod;
             if (moduleName == null || !Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
@@ -175,13 +175,13 @@ namespace Reko.Environments.Windows
             SystemService svc;
             if (mod.ServicesByName.TryGetValue(procName, out svc))
             {
-                return new ExternalProcedure(svc.Name, svc.Signature);
+                return new ExternalProcedure(svc.Name!, svc.Signature!);
             }
             else
                 return null;
         }
 
-        public override ProcedureBase_v1 SignatureFromName(string fnName)
+        public override ProcedureBase_v1? SignatureFromName(string fnName)
         {
             return SignatureGuesser.SignatureFromName(fnName, this);
         }

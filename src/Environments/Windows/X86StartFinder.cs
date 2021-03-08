@@ -112,7 +112,7 @@ namespace Reko.Environments.Windows
             ReturnValue = Arg(null, "INT")
         };
 
-        private static Argument_v1 Arg(string name, string typename)
+        private static Argument_v1 Arg(string? name, string typename)
         {
             return new Argument_v1
             {
@@ -130,7 +130,7 @@ namespace Reko.Environments.Windows
             };
         }
 
-        public ImageSymbol FindMainProcedure()
+        public ImageSymbol? FindMainProcedure()
         {
             const uint MaxDistanceFromEntry = 0x400;
 

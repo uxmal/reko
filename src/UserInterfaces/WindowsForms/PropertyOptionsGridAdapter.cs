@@ -248,7 +248,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 valueProperty.SetValue(form, value);
                 if (svc.ShowDialog(form) == System.Windows.Forms.DialogResult.OK)
                 {
-                    value = valueProperty.GetValue(form);
+                    value = valueProperty.GetValue(form)!;
                 }
                 form.Dispose();
                 return value;

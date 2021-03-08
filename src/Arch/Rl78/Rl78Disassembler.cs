@@ -44,16 +44,17 @@ namespace Reko.Arch.Rl78
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
         private Address addr;
-        private RegisterStorage prefix;
+        private RegisterStorage? prefix;
 
         public Rl78Disassembler(Rl78Architecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override Rl78Instruction DisassembleInstruction()
+        public override Rl78Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte op))

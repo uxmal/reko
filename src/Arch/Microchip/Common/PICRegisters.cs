@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -57,7 +57,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 BitPos = bitPos;
             }
 
-            public int CompareTo(BitFieldPosAndAddrKey other)
+            public int CompareTo(BitFieldPosAndAddrKey? other)
             {
                 if (other is null)
                     return 1;
@@ -72,7 +72,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             public int CompareTo(object obj) => CompareTo(obj as BitFieldPosAndAddrKey);
 
-            public bool Equals(BitFieldPosAndAddrKey other) => CompareTo(other) == 0;
+            public bool Equals(BitFieldPosAndAddrKey? other) => CompareTo(other) == 0;
 
             public override bool Equals(object obj) => Equals(obj as BitFieldPosAndAddrKey);
 
@@ -89,7 +89,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         }
 
         private static readonly object symTabLock = new object(); // lock to allow concurrent access.
-        private static PICRegisters regs = null;
+        private static PICRegisters? regs = null;
 
         private static SortedList<string, PICRegisterStorage> registersByName
             = new SortedList<string, PICRegisterStorage>();
@@ -118,13 +118,14 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
         }
 
+#nullable disable
+
         public static PICRegisterStorage PCL { get; protected set; }
         public static PICRegisterStorage STATUS { get; protected set; }
         public static PICRegisterStorage WREG { get; protected set; }
         public static PICRegisterStorage PCLATH { get; protected set; }
         public static PICRegisterStorage STKPTR { get; protected set; }
         public static PICRegisterStorage BSR { get; protected set; }
-
         /// <summary> Carry bit in STATUS register. </summary>
         public static PICRegisterBitFieldStorage C { get; protected set; }
 
@@ -139,6 +140,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         /// <summary> Timed-Out bit in STATUS or PCON register. </summary>
         public static PICRegisterBitFieldStorage TO { get; protected set; }
+#nullable  enable
 
 
         /// <summary>
@@ -253,7 +255,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             if (string.IsNullOrWhiteSpace(regName))
                 throw new ArgumentNullException(nameof(regName));
 
-            reg = default(PICRegisterStorage);
+            reg = default!;
             lock (symTabLock)
                 return registersByName.TryGetValue(regName, out reg);
         }
@@ -368,7 +370,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             if (string.IsNullOrWhiteSpace(fieldName))
                 throw new ArgumentNullException(nameof(fieldName));
-            field = default(PICRegisterBitFieldStorage);
+            field = default!;
             lock (symTabLock)
             {
                 return bitFieldsByName.TryGetValue(fieldName, out field);
@@ -402,7 +404,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </returns>
         public static bool TryGetBitField(PICRegisterStorage parentReg, out PICRegisterBitFieldStorage field, byte bitPos, byte bitWidth = 0)
         {
-            field = null;
+            field = null!;
             if (parentReg is null)
                 return false;
 
@@ -412,7 +414,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             {
                 if (bitPos > parentReg.Traits.BitWidth || (bitPos + bitWidth) > parentReg.Traits.BitWidth)
                     return false;
-                if (parentReg.BitFields.Count <= 0)
+                if (parentReg.BitFields!.Count <= 0)
                     return false;
                 field = parentReg.BitFields.FirstOrDefault(f => f.Key.Equals(fldkey)).Value;
                 return field != null;
@@ -433,7 +435,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
         public static bool TryGetBitField(PICDataAddress regAddress, out PICRegisterBitFieldStorage field, byte bitPos, byte bitWidth = 0)
         {
-            field = null;
+            field = null!;
             if (regAddress is null)
                 throw new ArgumentNullException(nameof(regAddress));
 
@@ -458,7 +460,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </returns>
         public static bool TryGetBitField(string regName, out PICRegisterBitFieldStorage field, byte bitPos, byte bitWidth = 0)
         {
-            field = null;
+            field = null!;
             if (TryGetRegister(regName, out var reg))
                 return TryGetBitField(reg, out field, bitPos, bitWidth);
             return false;
@@ -485,7 +487,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// etc)</code>
         /// do exist.
         /// </remarks>
-        public static RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        public static RegisterStorage? GetSubregister(RegisterStorage reg, int offset, int width)
         {
             if (reg is null)
                 throw new ArgumentNullException(nameof(reg));
@@ -494,7 +496,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             if (reg is PICRegisterStorage preg)
             {
                 if (preg.HasAttachedRegs)
-                    return preg.AttachedRegs.Find(r => r.BitAddress == (ulong)offset && r.Traits.BitWidth == width);
+                    return preg.AttachedRegs!.Find(r => r.BitAddress == (ulong)offset && r.Traits.BitWidth == width);
             }
             return null;
         }
@@ -507,14 +509,14 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The widest sub-register.
         /// </returns>
-        public static RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
+        public static RegisterStorage? GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
         {
             if (regs == null || regs.Count <= 0)
                 return reg;
             ulong mask = regs.Where(b => b != null && b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
             if ((mask & reg.BitMask) == reg.BitMask)
                 return reg;
-            RegisterStorage rMax = null;
+            RegisterStorage? rMax = null;
             //$TODO: Setup sub-registers (FSR, TBLPTR, ...) see what can be done with Joined Registers from XML
             /*
             Dictionary<uint, RegisterStorage> subregs;
@@ -531,7 +533,6 @@ namespace Reko.Arch.MicrochipPIC.Common
             }
             */
             return rMax;
-
         }
 
         /// <summary>
@@ -541,7 +542,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The parent register or null if orphan.
         /// </returns>
-        public static RegisterStorage GetParentRegister(RegisterStorage subReg)
+        public static RegisterStorage? GetParentRegister(RegisterStorage subReg)
         {
             if (subReg is PICRegisterStorage preg)
                 return preg.ParentRegister;

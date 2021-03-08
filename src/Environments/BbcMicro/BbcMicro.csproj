@@ -4,8 +4,6 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>Reko.Environments.BbcMicro</AssemblyName>
     <RootNamespace>Reko.Environments.BbcMicro</RootNamespace>
-    <LangVersion>8.0</LangVersion>
-    <nullable>enable</nullable>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 

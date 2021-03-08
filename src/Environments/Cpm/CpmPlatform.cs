@@ -65,12 +65,12 @@ namespace Reko.Environments.Cpm
             return new HashSet<RegisterStorage>();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -93,12 +93,12 @@ namespace Reko.Environments.Cpm
             }
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }
 
-        public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             var e = instrs.GetEnumerator();
             if (!e.MoveNext())
@@ -127,15 +127,15 @@ namespace Reko.Environments.Cpm
                     var svcs = sDisp.Services
                         .Where(s => s.SyscallInfo != null)
                         .Select(s => (
-                            s.SyscallInfo.Build(this),
+                            s.SyscallInfo!.Build(this),
                             new ExternalProcedure(
-                                s.Name,
-                                sser.Deserialize(s.Signature, Architecture.CreateFrame()))))
+                                s.Name!,
+                                sser.Deserialize(s.Signature!, Architecture.CreateFrame())!)))
                         .ToList();
                     if (Architecture.TryParseAddress(sDisp.Address, out var addr))
                     {
                         var disp = new DispatchProcedure(
-                            sDisp.Name,
+                            sDisp.Name!,
                             svcs);
                         disps.Add(addr, disp);
                     }

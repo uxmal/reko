@@ -37,6 +37,7 @@ namespace Reko.Environments.Trs80.Basic
         public L2BasicInstruction()
         {
             this.InstructionClass = InstrClass.Linear;
+            this.Line = null!;
         }
 
         public override int MnemonicAsInteger => throw new NotImplementedException();

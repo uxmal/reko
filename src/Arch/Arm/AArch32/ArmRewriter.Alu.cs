@@ -239,9 +239,9 @@ namespace Reko.Arch.Arm.AArch32
             }
             else
             {
-                tableBase = binder.EnsureRegister(mem.BaseRegister);
+                tableBase = binder.EnsureRegister(mem.BaseRegister!);
             }
-            var idxReg = binder.EnsureRegister(mem.Index);
+            var idxReg = binder.EnsureRegister(mem.Index!);
             Expression ea;
             if (elemSize.Size != 1)
             {
@@ -287,7 +287,7 @@ namespace Reko.Arch.Arm.AArch32
             if (mem.PreIndex && instr.Writeback)
             {
                 // Pre-index operand.
-                Expression baseReg = Reg(mem.BaseRegister);
+                Expression baseReg = Reg(mem.BaseRegister!);
                 Expression ea = EffectiveAddress(mem);
                 m.Assign(baseReg, ea);
                 src = m.Mem(dtSrc, baseReg);
@@ -303,7 +303,7 @@ namespace Reko.Arch.Arm.AArch32
             if (!mem.PreIndex && instr.Writeback)
             {
                 // Post-index operand.
-                var baseReg = binder.EnsureRegister(mem.BaseRegister);
+                var baseReg = binder.EnsureRegister(mem.BaseRegister!);
                 if (isJump && instr.IsSinglePop())
                 {
                     //$TODO: this is a cheat; we could be popping
@@ -313,7 +313,7 @@ namespace Reko.Arch.Arm.AArch32
                     iclass = instr.Condition == ArmCondition.AL
                         ? InstrClass.Transfer
                         : InstrClass.ConditionalTransfer;
-                    m.Assign(baseReg, m.IAdd(baseReg, mem.Offset));
+                    m.Assign(baseReg, m.IAdd(baseReg, mem.Offset!));
                     m.Return(0, 0);
                     return;
                 }
@@ -990,7 +990,7 @@ namespace Reko.Arch.Arm.AArch32
             Expression src = Reg(((RegisterOperand)Src2()).Register);
             if (instr.ShiftType == Mnemonic.ror)
             {
-                src = m.Shr(src, Operand(instr.ShiftValue));
+                src = m.Shr(src, Operand(instr.ShiftValue!));
             }
             if (dt.BitSize < src.DataType.BitSize)
             {
@@ -1006,7 +1006,7 @@ namespace Reko.Arch.Arm.AArch32
             Expression src = Reg(((RegisterOperand)Src1()).Register);
             if (instr.ShiftType == Mnemonic.ror)
             {
-                src = m.Shr(src,Operand(instr.ShiftValue));
+                src = m.Shr(src,Operand(instr.ShiftValue!));
             }
             if (dtSrc.BitSize < src.DataType.BitSize)
             {

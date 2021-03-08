@@ -48,7 +48,7 @@ namespace Reko.Arch.Qualcomm
         private readonly List<HexagonInstruction> instrs;
         private List<MachineOperand> ops;
         private Address addrInstr;
-        private MachineOperand conditionPredicate;
+        private MachineOperand? conditionPredicate;
         private bool conditionPredicateInverted;
         private bool conditionPredicateNew;
         private DirectionHint directionHint;
@@ -60,9 +60,10 @@ namespace Reko.Arch.Qualcomm
             this.rdr = rdr;
             this.instrs = new List<HexagonInstruction>();
             this.ops = new List<MachineOperand>();
+            this.addrInstr = null!;
         }
 
-        public override HexagonPacket DisassembleInstruction()
+        public override HexagonPacket? DisassembleInstruction()
         {
             var addr = rdr.Address;
             instrs.Clear();
@@ -789,7 +790,7 @@ namespace Reko.Arch.Qualcomm
             };
         }
 
-        private static bool ApplyMutators(Mnemonic mnemonic, Mutator<HexagonDisassembler>[] mutators, PrimitiveType dt, uint u, HexagonDisassembler d)
+        private static bool ApplyMutators(Mnemonic mnemonic, Mutator<HexagonDisassembler>[] mutators, PrimitiveType? dt, uint u, HexagonDisassembler d)
         {
             var opsOld = d.ops;
             d.ops = new List<MachineOperand>();
@@ -893,7 +894,7 @@ namespace Reko.Arch.Qualcomm
         {
             return (u, d) =>
             {
-                if (!ApplyMutators(mnemonic, mutators,null, u, d))
+                if (!ApplyMutators(mnemonic, mutators, null, u, d))
                     return false;
                 d.conditionPredicate = d.ops[d.ops.Count - 1];
                 d.ops.RemoveAt(d.ops.Count - 1);

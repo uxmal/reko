@@ -93,7 +93,7 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-        public override XtensaInstruction DisassembleInstruction()
+        public override XtensaInstruction? DisassembleInstruction()
         {
             state.addr = this.rdr.Address;
             if (!this.rdr.TryReadByte(out byte b0)) return null;

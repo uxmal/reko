@@ -5,8 +5,6 @@
     <RootNamespace>Reko.Arch.CompactRisc</RootNamespace>
     <AssemblyName>Reko.Arch.CompactRisc</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <nullable>enable</nullable>
-    <LangVersion>8.0</LangVersion>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 

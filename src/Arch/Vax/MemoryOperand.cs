@@ -30,12 +30,12 @@ namespace Reko.Arch.Vax
     {
         public MemoryOperand(PrimitiveType width) : base(width) { }
 
-        public RegisterStorage Base;
-        public Constant Offset;
+        public RegisterStorage? Base;
+        public Constant? Offset;
         public bool Deferred;
         internal bool AutoDecrement;
         internal bool AutoIncrement;
-        internal RegisterStorage Index;
+        internal RegisterStorage? Index;
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {

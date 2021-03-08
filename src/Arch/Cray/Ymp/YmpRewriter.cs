@@ -55,6 +55,8 @@ namespace Reko.Arch.Cray.Ymp
             this.binder = binder;
             this.host = host;
             this.dasm = new YmpDisassembler(arch, decoder, rdr).GetEnumerator();
+            this.instrCur = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

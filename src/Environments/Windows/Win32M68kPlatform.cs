@@ -32,25 +32,25 @@ namespace Reko.Environments.Windows
 			return new HashSet<RegisterStorage>();
 		}
 
-		public override CallingConvention GetCallingConvention(string ccName)
+		public override CallingConvention GetCallingConvention(string? ccName)
 		{
 			return new M68kCallingConvention(this.Architecture);
 		}
 
-		public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+		public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
 		{
 			Services.RequireService<DecompilerEventListener>().Warn(new NullCodeLocation(program.Name),
 				"Win32 M68k main procedure finder not supported.");
 			return null;
 		}
 
-		public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+		public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
 		{
 			//throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
 			return null;
 		}
 
-		public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rtls, IRewriterHost host)
+		public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rtls, IRewriterHost host)
 		{
 			return null;
 		}
@@ -73,31 +73,30 @@ namespace Reko.Environments.Windows
 			}
 		}
 
-		public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
+		public override ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal)
 		{
 			EnsureTypeLibraries(PlatformIdentifier);
-			ModuleDescriptor mod;
-			if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+			if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
 				return null;
-			SystemService svc;
-			if (mod.ServicesByOrdinal.TryGetValue(ordinal, out svc))
+			if (mod.ServicesByOrdinal.TryGetValue(ordinal, out SystemService svc))
 			{
-				return new ExternalProcedure(svc.Name, svc.Signature);
+				return new ExternalProcedure(svc.Name!, svc.Signature!);
 			}
 			else
 				return null;
 		}
 
-		public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+		public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
 		{
+            if (moduleName is null)
+                return null;
 			EnsureTypeLibraries(PlatformIdentifier);
-			ModuleDescriptor mod;
-			if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+			if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
 				return null;
 			SystemService svc;
 			if (mod.ServicesByName.TryGetValue(moduleName, out svc))
 			{
-				return new ExternalProcedure(svc.Name, svc.Signature);
+				return new ExternalProcedure(svc.Name!, svc.Signature!);
 			}
 			else
 				throw new NotImplementedException();

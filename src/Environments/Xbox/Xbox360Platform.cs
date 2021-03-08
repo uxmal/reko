@@ -67,14 +67,14 @@ namespace Reko.Environments.Xbox
             return new HashSet<RegisterStorage>();
         }
 
-        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
         {
             // Right now we are not aware of any way to locate WinMain
             // on Xbox360 binaries.
             return null;
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             //$TODO: investigate whether the calling
             // convention on Xbox deviates from the convention
@@ -122,7 +122,7 @@ namespace Reko.Environments.Xbox
             return new PowerPcCallingConvention((PowerPcArchitecture)Architecture);
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -146,13 +146,13 @@ namespace Reko.Environments.Xbox
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rdr, IRewriterHost host)
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rdr, IRewriterHost host)
         {
             //$TODO: for now we don't attempt to locate trampolines.
             return null;
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }
@@ -173,7 +173,7 @@ namespace Reko.Environments.Xbox
             return Address.Ptr32((uint)uAddr);
         }
 
-        public override bool TryParseAddress(string sAddress, out Address addr)
+        public override bool TryParseAddress(string? sAddress, out Address addr)
         {
             return Address.TryParse32(sAddress, out addr);
         }

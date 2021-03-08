@@ -55,18 +55,22 @@ namespace Reko.Environments.Windows
             this.i = 0;
             this.namesSeen = new List<string>();
             this.pointerSize = 4;  //$TODO: should follow platform pointer size, really.
+            this.compoundArgs = null!;
+            this.templateNamesSeen = null!;
         }
 
-        public string Modifier;
-        public string ClassName;
-        public string Scope;
+        public string? Modifier;
+        public string? ClassName;
+        public string? Scope;
         private bool isConstuctor;
 
-        public Tuple<string,SerializedType,SerializedType> Parse()
+        public (string?,SerializedType?,SerializedType?) Parse()
         {
             Expect('?');
-            string basicName = ParseBasicName();
-            Tuple<string, SerializedType, SerializedType> typeCode;
+            string? basicName = ParseBasicName();
+            if (basicName is null)
+                return (null, null, null);
+            (string, SerializedType?, SerializedType?) typeCode;
             var compoundArgs =     new List<Argument_v1>();
             if (PeekAndDiscard('@'))
             {
@@ -112,7 +116,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public string ParseBasicName()
+        public string? ParseBasicName()
         {
             if (PeekAndDiscard('?'))
             {
@@ -145,7 +149,7 @@ namespace Reko.Environments.Windows
             {
                 string name = outer.ParseAtName();
                 List<SerializedType> types = outer.ParseTemplateArguments();
-                return new SerializedTemplate(null, name, types.ToArray());
+                return new SerializedTemplate(null!, name, types.ToArray());
             }
         }
 
@@ -199,7 +203,7 @@ namespace Reko.Environments.Windows
         public string[] ParseQualification()
         {
             var qualifiers = new List<string>();
-            SerializedType[] typeArgs = null;
+            SerializedType[]? typeArgs = null;
             while (i < str.Length && !PeekAndDiscard('@'))
             {
                 string name = ParseAtName();
@@ -233,18 +237,18 @@ namespace Reko.Environments.Windows
             return qualifiers.ToArray();
         }
 
-        public Tuple<string, SerializedType, SerializedType> ParseQualifiedTypeCode(string basicName, string[] qualification, List<Argument_v1> compoundArgs)
+        public (string, SerializedType?, SerializedType?) ParseQualifiedTypeCode(string basicName, string[] qualification, List<Argument_v1> compoundArgs)
         {
             this.compoundArgs = new List<Argument_v1>();
             this.Scope = string.Join("::", qualification);
-            SerializedSignature sig = null;
+            SerializedSignature? sig = null;
             switch (str[i++])
             {
             case '0':
             case '1':
             case '2':
             case '3':
-                return new Tuple<string, SerializedType, SerializedType>(
+                return (
                     basicName,
                     ParseDataTypeCode(compoundArgs),
                     CreateEnclosingType(Scope));
@@ -278,7 +282,7 @@ namespace Reko.Environments.Windows
             default: throw new NotImplementedException(string.Format("Character '{0}' not supported", str[i - 1]));
 
             }
-            return new Tuple<string, SerializedType, SerializedType>(
+            return (
                 basicName,
                 sig,
                 sig != null 
@@ -286,12 +290,12 @@ namespace Reko.Environments.Windows
                     : CreateEnclosingType(Scope));
         }
 
-        public Tuple<string, SerializedType, SerializedType> ParseUnqualifiedTypeCode(string basicName)
+        public (string name, SerializedType?, SerializedType?) ParseUnqualifiedTypeCode(string basicName)
         {
             this.compoundArgs = new List<Argument_v1>();
             if (PeekAndDiscard('Y'))
             {
-                return new Tuple<string, SerializedType, SerializedType>(
+                return (
                     basicName,
                     ParseFunctionTypeCode(),
                     null);
@@ -299,7 +303,7 @@ namespace Reko.Environments.Windows
             else
             {
                 Expect('3');
-                return new Tuple<string, SerializedType, SerializedType>(
+                return (
                     basicName,
                     ParseDataTypeCode(new List<Argument_v1>()),
                     null);
@@ -353,7 +357,7 @@ namespace Reko.Environments.Windows
             return ParseFunctionTypeCode();
         }
 
-        public string ParseStorageClass()
+        public string? ParseStorageClass()
         {
             switch (str[i++])
             {
@@ -367,7 +371,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public string ParseThisStorageClass()
+        public string? ParseThisStorageClass()
         {
             if (PeekAndDiscard('E'))    // 64-bit ptr
             {
@@ -388,8 +392,8 @@ namespace Reko.Environments.Windows
 
         public SerializedSignature ParseFunctionTypeCode()
         {
-            string convention = ParseCallingConvention();
-            SerializedType retType;
+            string? convention = ParseCallingConvention();
+            SerializedType? retType;
             if (PeekAndDiscard('@'))
             {
                 // C++ ctors have no explicit return type!
@@ -423,7 +427,7 @@ namespace Reko.Environments.Windows
             };
         }
 
-        private StructType_v1 CreateEnclosingType(string scope)
+        private StructType_v1? CreateEnclosingType(string? scope)
         {
             return !string.IsNullOrEmpty(Scope)
                 ? new StructType_v1 { Name = scope, ForceStructure = true }
@@ -450,7 +454,7 @@ namespace Reko.Environments.Windows
             };
         }
 
-        public string ParseOperatorCode()
+        public string? ParseOperatorCode()
         {
             switch (str[i++])
             {
@@ -532,7 +536,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public string ParseCallingConvention()
+        public string? ParseCallingConvention()
         {
             switch (str[i++])
             {
@@ -569,7 +573,7 @@ namespace Reko.Environments.Windows
             return args.ToArray();
         }
 
-        public SerializedType ParseDataTypeCode(List<Argument_v1> compoundArgs)
+        public SerializedType? ParseDataTypeCode(List<Argument_v1> compoundArgs)
         {
             if (PeekAndDiscard('?'))
             {
@@ -645,10 +649,10 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public SerializedType ParsePointer(List<Argument_v1> compoundArgs, Qualifier q)
+        public SerializedType? ParsePointer(List<Argument_v1> compoundArgs, Qualifier q)
         {
             int size = pointerSize;
-            SerializedType type;
+            SerializedType? type;
             if (PeekAndDiscard('E')) // 64-bit pointer
             {
                 size = 8;
@@ -673,8 +677,10 @@ namespace Reko.Environments.Windows
             return pType;
         }
 
-        private SerializedType Qualify(SerializedType t, Qualifier q)
+        private SerializedType? Qualify(SerializedType? t, Qualifier q)
         {
+            if (t is null)
+                return null;
             t.Qualifier = q;
             return t;
         }
@@ -691,7 +697,7 @@ namespace Reko.Environments.Windows
             return tr;
         }
 
-        public SerializedType ParseEnum(List<Argument_v1> compoundArgs)
+        public SerializedType? ParseEnum(List<Argument_v1> compoundArgs)
         {
             int size;
             Domain domain;

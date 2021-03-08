@@ -91,6 +91,7 @@ namespace Reko.Symbols.LGSymLoader
             stream = stm;
             rdr = new BinaryReader(stm);
             this.filesize = stm.Length;
+            mf = null!;
         }
 
         public void Dispose()
@@ -101,7 +102,7 @@ namespace Reko.Symbols.LGSymLoader
                 mf.Dispose();
         }
 
-		public bool CanLoad(string filename, byte[] fileContents = null)
+		public bool CanLoad(string filename, byte[]? fileContents = null)
         {
 			try {
                 this.hdr = rdr.ReadStruct<SymHeader>();
@@ -179,7 +180,7 @@ namespace Reko.Symbols.LGSymLoader
                 //$BUG: how do we get the architecture?
                 symbols.Add(ImageSymbol.Create(
                     SymbolType.Unknown,
-                    null,
+                    null!,
                     Address.Ptr32(sym.addr),
                     sym_name,
                     new UnknownType((int)(sym.end - sym.addr))));

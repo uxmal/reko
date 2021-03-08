@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -93,7 +93,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// The GPR data memory address or NOPHYSICAL_MEM.
         /// </returns>
-        Address RemapAddress(Address aFSRAddr);
+        Address? RemapAddress(Address aFSRAddr);
 
         /// <summary>
         /// Remap a FSR indirect address in linear data region address to the corresponding GPR bank number and

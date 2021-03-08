@@ -31,12 +31,12 @@ namespace Reko.Arch.Qualcomm
         {
         }
 
-        public RegisterStorage Base { get; set; }
+        public RegisterStorage? Base { get; set; }
         public int Offset { get; set; }
-        public RegisterStorage Index { get; internal set; }
-        public int Shift { get; internal set; }
+        public RegisterStorage? Index { get; set; }
+        public int Shift { get; set; }
 
-        public object AutoIncrement { get; set; }
+        public object? AutoIncrement { get; set; }
 
         protected override void DoRender(MachineInstructionRenderer writer, MachineInstructionRendererOptions options)
         {

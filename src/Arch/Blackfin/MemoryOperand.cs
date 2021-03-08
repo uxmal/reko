@@ -26,8 +26,8 @@ namespace Reko.Arch.Blackfin
 {
     public class MemoryOperand : MachineOperand
     {
-        public RegisterStorage Base;
-        public RegisterStorage Index;
+        public RegisterStorage? Base;
+        public RegisterStorage? Index;
         public int Offset;
         public bool PreDecrement;
         public bool PostDecrement;
@@ -52,7 +52,7 @@ namespace Reko.Arch.Blackfin
             {
                 renderer.WriteString("--");
             }
-            renderer.WriteString(Base.Name);
+            renderer.WriteString(Base!.Name);
             if (Index != null)
             {
                 renderer.WriteString(" + ");

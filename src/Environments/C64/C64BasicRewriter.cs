@@ -61,6 +61,9 @@ namespace Reko.Environments.C64
             this.instrs = instrs; 
             this.host = host;
             this.strType = StringType.LengthPrefixedStringType(PrimitiveType.Char, PrimitiveType.Byte);
+            this.line = null!;
+            this.m = null!;
+            this.rtlInstructions = null!;
         }
 
         public SortedList<ushort, C64BasicInstruction> Lines { get; }
@@ -189,7 +192,7 @@ namespace Reko.Environments.C64
             ++i;
         }
 
-        private Expression ExpectExpr()
+        private Expression? ExpectExpr()
         {
             var expr = ParseExpr();
             if (expr == null)
@@ -197,7 +200,7 @@ namespace Reko.Environments.C64
             return expr;
         }
 
-        private Expression ExpectLValue()
+        private Expression? ExpectLValue()
         {
             if (!GetIdentifier(out Identifier id))
                 SyntaxError();
@@ -205,6 +208,11 @@ namespace Reko.Environments.C64
             if (PeekAndDiscard((byte)'('))
             {
                 var index = ExpectExpr();
+                if (index is null)
+                {
+                    SyntaxError();
+                    return null;
+                }
                 Expect((byte)')');
                 e = m.Array(id.DataType, id, index);
             }
@@ -214,7 +222,7 @@ namespace Reko.Environments.C64
         private bool GetIdentifier(out Identifier id)
         {
             var sb = new StringBuilder();
-            id = null;
+            id = null!;
             if (i >= line.Length)
                 return false;
             char ch = (char)line[i];
@@ -257,10 +265,10 @@ namespace Reko.Environments.C64
             return true;
         }
 
-        private Expression ParseExpr()
+        private Expression? ParseExpr()
         {
             var lhs = ParseOrExp();
-            if (!EatSpaces())
+            if (lhs is null || !EatSpaces())
                 return lhs;
             Func<Expression,Expression,Expression> ctor;
             switch (line[i])
@@ -273,11 +281,14 @@ namespace Reko.Environments.C64
             ++i;
             var rhs = ParseOrExp();
             if (rhs == null)
+            {
                 SyntaxError();
+                return null;
+            }
             return ctor(lhs, rhs);
         }
 
-        private Expression ParseOrExp()
+        private Expression? ParseOrExp()
         {
             var e = ParseTerm();
             if (e == null)
@@ -292,12 +303,17 @@ namespace Reko.Environments.C64
                 }
                 ++i;
                 var e2 = ParseTerm();
+                if (e2 is null)
+                {
+                    SyntaxError();
+                    return null;
+                }
                 e = ctor(e, e2);
             }
             return e;
         }
 
-        private Expression ParseTerm()
+        private Expression? ParseTerm()
         {
             var e = ParseFactor();
             if (e == null)
@@ -312,12 +328,12 @@ namespace Reko.Environments.C64
                 }
                 ++i;
                 var e2 = ParseFactor();
-                e = ctor(e, e2);
+                e = ctor(e, e2!);
             }
             return e;
         }
 
-        private Expression ParseFactor()
+        private Expression? ParseFactor()
         {
             if (PeekAndDiscard((byte)Token.sub))
             {
@@ -329,7 +345,7 @@ namespace Reko.Environments.C64
             return ParseAtom();
         }
 
-        private Expression ParseAtom()
+        private Expression? ParseAtom()
         {
             if (!EatSpaces())
                 return null;
@@ -340,15 +356,15 @@ namespace Reko.Environments.C64
             {
             case Token.CHR_s:
                 Expect((byte)'(');
-                e = ExpectExpr();
+                e = ExpectExpr()!;
                 Expect((byte)')');
                 return host.Intrinsic("__Chr", false, strType, e);
             case Token.SPC_lp:
-                e = ExpectExpr();
+                e = ExpectExpr()!;
                 Expect((byte)')');
                 return host.Intrinsic("__Spc", false, strType, e);
             case Token.TAB_lp:
-                e = ExpectExpr();
+                e = ExpectExpr()!;
                 Expect((byte)')');
                 return host.Intrinsic("__Tab", false, strType, e);
             case Token.QUOTE:
@@ -366,7 +382,7 @@ namespace Reko.Environments.C64
                     {
                         if (PeekAndDiscard((byte)'('))
                         {
-                            var index = ExpectExpr();
+                            var index = ExpectExpr()!;
                             Expect((byte)')');
                             return m.Array(id.DataType, id, index);
                         }
@@ -432,7 +448,7 @@ namespace Reko.Environments.C64
             iclass = InstrClass.Linear;
             m.SideEffect(
                 host.Intrinsic("__Close", false, VoidType.Instance,
-                handle));
+                handle!));
         }
 
         private void RewriteClr()
@@ -449,10 +465,15 @@ namespace Reko.Environments.C64
             var start = ExpectExpr();
             Expect((byte)Token.TO);
             var end = ExpectExpr();
-            Expression step;
+            Expression? step;
             if (PeekAndDiscard((byte)Token.STEP))
             {
                 step = ExpectExpr();
+                if (step is null)
+                {
+                    SyntaxError();
+                    return;
+                }
             }
             else
             {
@@ -461,16 +482,16 @@ namespace Reko.Environments.C64
             iclass = InstrClass.Linear;
             m.SideEffect(host.Intrinsic("__For", false, VoidType.Instance,
                 m.Out(PrimitiveType.Ptr16, id),
-                start,
-                end,
-                step));
+                start!,
+                end!,
+                step!));
         }
 
         private void RewriteLet()
         {
-            Expression lhs = ExpectLValue();
+            Expression lhs = ExpectLValue()!;
             Expect((byte)Token.eq);
-            Expression rhs = ParseExpr();
+            Expression rhs = ParseExpr()!;
             m.Assign(lhs, rhs);
         }
 
@@ -512,7 +533,10 @@ namespace Reko.Environments.C64
         {
             var expr = ParseExpr();
             if (expr == null)
+            {
                 SyntaxError();
+                return;
+            }
             if (PeekAndDiscard((byte)Token.THEN))
             {
                 if (!EatSpaces())
@@ -560,13 +584,16 @@ namespace Reko.Environments.C64
             {
                 var str = ParseStringLiteral();
                 if (str == null)
+                {
                     SyntaxError();
+                    return;
+                }
                 var fnName = "__PrintLine";
                 if (PeekAndDiscard((byte)';'))
                     fnName = "__Print";
                 m.SideEffect(host.Intrinsic(fnName, false, VoidType.Instance, str));
             }
-            Expression lValue = ExpectLValue();
+            Expression lValue = ExpectLValue()!;
             iclass = InstrClass.Linear;
             m.SideEffect(host.Intrinsic("__Input", false, VoidType.Instance,
                 m.Out(PrimitiveType.Ptr16, lValue)));
@@ -574,17 +601,19 @@ namespace Reko.Environments.C64
 
         private void RewriteInput_hash()
         {
-            var logFileNo = ExpectExpr();
+            var logFileNo = ExpectExpr()!;
             EatSpaces();
             Expect((byte)',');
-            Expression lValue = ExpectLValue();
+            Expression? lValue = ExpectLValue();
+            if (lValue is null)
+                return;
             iclass = InstrClass.Linear;
             m.SideEffect(host.Intrinsic("__InputStm", false, VoidType.Instance,
-                logFileNo,
+                logFileNo!,
                 m.Out(PrimitiveType.Ptr16, lValue)));
             while (EatSpaces() && PeekAndDiscard((byte)','))
             {
-                lValue = ExpectLValue();
+                lValue = ExpectLValue()!;
                 m.SideEffect(host.Intrinsic("__InputStm", false, VoidType.Instance,
                     logFileNo,
                     m.Out(PrimitiveType.Ptr16, lValue)));
@@ -613,7 +642,7 @@ namespace Reko.Environments.C64
                 }
                 else
                 {
-                    deviceNo = ParseExpr();
+                    deviceNo = ParseExpr()!;
                     if (deviceNo == null)
                         SyntaxError();
                     if (EatSpaces() && PeekAndDiscard((byte)','))
@@ -624,7 +653,7 @@ namespace Reko.Environments.C64
                         }
                         else
                         {
-                            secondaryNo = ParseExpr();
+                            secondaryNo = ParseExpr()!;
                             if (secondaryNo == null)
                                 SyntaxError();
                             if (EatSpaces() && PeekAndDiscard((byte)','))
@@ -640,19 +669,27 @@ namespace Reko.Environments.C64
                 "__Open",
                 false,
                 VoidType.Instance,
-                logicalFileNo,
-                deviceNo,
-                secondaryNo,
+                logicalFileNo!,
+                deviceNo!,
+                secondaryNo!,
                 fileName));
         }
             
         private void RewritePoke()
         {
             var addr = ParseExpr();
-            if (!EatSpaces())
-                throw new InvalidOperationException("?SN Error");
+            if (addr is null || !EatSpaces())
+            {
+                SyntaxError();
+                return;
+            }
             Expect((byte)',');
             var val = ParseExpr();
+            if (val is null)
+            {
+                SyntaxError();
+                return;
+            }
             m.SideEffect(host.Intrinsic("__Poke",
                 false,
                 VoidType.Instance,
@@ -677,12 +714,15 @@ namespace Reko.Environments.C64
             }
             do
             {
-                Expression expr;
+                Expression? expr;
                 if (PeekAndDiscard((byte)Token.TAB_lp))
                 {
                     expr = ParseExpr();
                     if (expr == null)
+                    {
                         SyntaxError();
+                        return;
+                    }
                     Expect((byte)')');
                     m.SideEffect(host.Intrinsic("__PrintTab", false, VoidType.Instance, expr));
                     PeekAndDiscard((byte)';');

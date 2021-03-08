@@ -80,7 +80,7 @@ namespace Reko.Environments.MacOS.Classic
                 {
                     var svc = syscall.Build(platform, typelib);
                     PostProcessSignature(platform, svc);
-                    if (!module.ServicesByVector.TryGetValue(svc.SyscallInfo.Vector, out List<SystemService> svcs))
+                    if (!module.ServicesByVector.TryGetValue(svc.SyscallInfo!.Vector, out List<SystemService> svcs))
                     {
                         svcs = new List<SystemService>();
                         module.ServicesByVector.Add(svc.SyscallInfo.Vector, svcs);
@@ -92,7 +92,7 @@ namespace Reko.Environments.MacOS.Classic
 
         private void PostProcessSignature(IPlatform platform, SystemService svc)
         {
-            var parameters = svc.Signature.Parameters;
+            var parameters = svc.Signature!.Parameters!;
             for (int i = 0; i < parameters.Length; ++i)
             {
                 var p = parameters[i];

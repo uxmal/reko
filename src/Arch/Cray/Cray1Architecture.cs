@@ -40,7 +40,7 @@ namespace Reko.Arch.Cray
             this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;
             this.PointerType = PrimitiveType.Ptr32;
-            this.StackRegister = null; //$TODO: Ax?
+            this.StackRegister = null!; //$TODO: Ax?
             this.WordWidth = PrimitiveType.Word64;
         }
 
@@ -119,7 +119,7 @@ namespace Reko.Arch.Cray
             throw new NotImplementedException();
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -129,7 +129,7 @@ namespace Reko.Arch.Cray
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             throw new NotImplementedException();
         }

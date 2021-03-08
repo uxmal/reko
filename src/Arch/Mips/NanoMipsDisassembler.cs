@@ -55,10 +55,11 @@ namespace Reko.Arch.Mips
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
-            this.gp = arch.GetRegister(28);
+            this.gp = arch.GetRegister(28)!;
+            this.addr = null!;
         }
 
-        public override MipsInstruction DisassembleInstruction()
+        public override MipsInstruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt16(out ushort uInstr))
@@ -110,7 +111,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var iReg = (int) field.Read(u);
-                var reg = d.arch.GetRegister(iReg);
+                var reg = d.arch.GetRegister(iReg)!;
                 d.ops.Add(new RegisterOperand(reg));
                 return true;
             };
@@ -127,7 +128,7 @@ namespace Reko.Arch.Mips
         {
             return (u, d) =>
             {
-                var reg = d.arch.GetRegister(regNumber);
+                var reg = d.arch.GetRegister(regNumber)!;
                 d.ops.Add(new RegisterOperand(reg));
                 return true;
             };
@@ -140,7 +141,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var iReg = (int) field.Read(u);
-                var reg = d.arch.GetRegister(iReg);
+                var reg = d.arch.GetRegister(iReg)!;
                 d.ops.Add(new RegisterOperand(reg));
                 return true;
             };
@@ -165,7 +166,7 @@ namespace Reko.Arch.Mips
             {
                 var iEncodedReg = (int) field.Read(u);
                 var iReg = gprEncoding[iEncodedReg];
-                var reg = d.arch.GetRegister(iReg);
+                var reg = d.arch.GetRegister(iReg)!;
                 d.ops.Add(new RegisterOperand(reg));
                 return true;
             };
@@ -182,7 +183,7 @@ namespace Reko.Arch.Mips
             {
                 var iEncodedReg = (int) Bitfield.ReadFields(fields, u);
                 var iReg = gprEncoding[iEncodedReg];
-                var reg = d.arch.GetRegister(iReg);
+                var reg = d.arch.GetRegister(iReg)!;
                 d.ops.Add(new RegisterOperand(reg));
                 return true;
             };
@@ -373,7 +374,7 @@ namespace Reko.Arch.Mips
             {
                 var iEncodedReg = (int) baseField.Read(u);
                 var iReg = gpr3_encoding[iEncodedReg];
-                var baseReg = d.arch.GetRegister(iReg);
+                var baseReg = d.arch.GetRegister(iReg)!;
                 var nOffset = offsetField.Read(u) * dt.Size;
                 d.ops.Add(new IndirectOperand(dt, (int) nOffset, baseReg));
                 return true;
@@ -441,7 +442,7 @@ namespace Reko.Arch.Mips
             {
                 var iBase = (int) baseField.Read(u);
                 var off = (int)offsetField.Read(u);
-                var rBase = d.arch.GetRegister(iBase);
+                var rBase = d.arch.GetRegister(iBase)!;
                 d.ops.Add(new IndirectOperand(dt, off, rBase));
                 return true;
             };
@@ -455,7 +456,7 @@ namespace Reko.Arch.Mips
             {
                 var iBase = (int) baseField.Read(u);
                 var off = Bitfield.ReadSignedFields(offsetFields, u);
-                var rBase = d.arch.GetRegister(iBase);
+                var rBase = d.arch.GetRegister(iBase)!;
                 d.ops.Add(new IndirectOperand(dt, off, rBase));
                 return true;
             };
@@ -475,8 +476,8 @@ namespace Reko.Arch.Mips
             {
                 var iBase = (int) baseField.Read(u);
                 var iIndex = (int) idxField.Read(u);
-                var rBase = d.arch.GetRegister(iBase);
-                var rIndex = d.arch.GetRegister(iIndex);
+                var rBase = d.arch.GetRegister(iBase)!;
+                var rIndex = d.arch.GetRegister(iIndex)!;
                 d.ops.Add(new IndexedOperand(dt, rBase, rIndex));
                 return true;
             };
@@ -497,8 +498,8 @@ namespace Reko.Arch.Mips
             {
                 var encBase = (int) baseField.Read(u);
                 var encIndex = (int) ixField.Read(u);
-                var regBase = d.arch.GetRegister(gpr3_encoding[encBase]);
-                var regIndex = d.arch.GetRegister(gpr3_encoding[encIndex]);
+                var regBase = d.arch.GetRegister(gpr3_encoding[encBase])!;
+                var regIndex = d.arch.GetRegister(gpr3_encoding[encIndex])!;
                 d.ops.Add(new IndexedOperand(dt, regBase, regIndex));
                 return true;
             };
@@ -575,8 +576,8 @@ namespace Reko.Arch.Mips
                 var iRtCode = (int) Bitfield.ReadFields(rtFields, u);
                 var iRsCode = (int) Bitfield.ReadFields(rsFields, u);
                 var offset = (int) Bitfield.ReadFields(offFields, u);
-                var rt = d.arch.GetRegister(gpr4_encoding[iRtCode]);
-                var rs = d.arch.GetRegister(gpr4_encoding[iRsCode]);
+                var rt = d.arch.GetRegister(gpr4_encoding[iRtCode])!;
+                var rs = d.arch.GetRegister(gpr4_encoding[iRsCode])!;
                 d.ops.Add(new RegisterOperand(rt));
                 d.ops.Add(new IndirectOperand(PrimitiveType.Word32, offset, rs));
                 return true;

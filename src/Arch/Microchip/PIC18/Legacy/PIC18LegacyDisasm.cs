@@ -180,7 +180,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
-                return null;
+                return null!;
             }
         }
 

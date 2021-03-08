@@ -62,9 +62,11 @@ namespace Reko.Arch.Arm.AArch32
             this.rdr = rdr;
             this.itState = 0;
             this.itCondition = ArmCondition.AL;
+            this.addr = null!;
+            this.state = null!;
         }
 
-        public override AArch32Instruction DisassembleInstruction()
+        public override AArch32Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out var wInstr))
@@ -101,7 +103,7 @@ namespace Reko.Arch.Arm.AArch32
             public bool wide = false;
             public bool writeback = false;
             public Mnemonic shiftType = Mnemonic.Invalid;
-            public MachineOperand shiftValue = null;
+            public MachineOperand? shiftValue = null;
             public ArmVectorData vectorData = ArmVectorData.INVALID;
             public bool useQ = false;
             public uint vectorShiftAmt = 0;
@@ -129,7 +131,7 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private (Mnemonic, MachineOperand) DecodeImmShift(uint wInstr, Bitfield bfType, Bitfield[] bfImm)
+        private (Mnemonic, MachineOperand?) DecodeImmShift(uint wInstr, Bitfield bfType, Bitfield[] bfImm)
         {
             var type = bfType.Read(wInstr);
             var imm = Bitfield.ReadFields(bfImm, wInstr);
@@ -266,7 +268,7 @@ namespace Reko.Arch.Arm.AArch32
             return imm32;
         }
 
-        private static MachineOperand MakeBarrierOperand(uint n)
+        private static MachineOperand? MakeBarrierOperand(uint n)
         {
             var bo = (BarrierOption) n;
             switch (bo)
@@ -766,7 +768,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static readonly RegisterStorage[] simdSysRegisters = new[]
+        private static readonly RegisterStorage?[] simdSysRegisters = new[]
         {
             Registers.fpsid,
             Registers.fpscr,
@@ -1223,7 +1225,7 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static Mutator<T32Disassembler> Imm(PrimitiveType dt = null, uint minuend = 0, params Bitfield[] fields)
+        private static Mutator<T32Disassembler> Imm(PrimitiveType? dt = null, uint minuend = 0, params Bitfield[] fields)
         {
             var dataType = dt ?? PrimitiveType.Word32;
             return (u, d) =>
@@ -1664,9 +1666,9 @@ namespace Reko.Arch.Arm.AArch32
         private static Mutator<T32Disassembler> MemOff(
             PrimitiveType dt,
             int baseRegBitoffset = 0,
-            RegisterStorage baseReg = null,
+            RegisterStorage? baseReg = null,
             int offsetShift = 0,
-            IndexSpec indexSpec = null,
+            IndexSpec? indexSpec = null,
             params (int bitOffset, int length)[] offsetFields)
         {
             var brf = new Bitfield(baseRegBitoffset, 4);
@@ -1704,7 +1706,7 @@ namespace Reko.Arch.Arm.AArch32
         private static Mutator<T32Disassembler> MemOff_r(
             PrimitiveType dt,
             int baseRegBitoffset = 0,
-            RegisterStorage baseReg = null,
+            RegisterStorage? baseReg = null,
             int shift = 0,
             params (int bitOffset, int length)[] fields)
         {
@@ -1880,7 +1882,10 @@ namespace Reko.Arch.Arm.AArch32
             return (u, d) =>
             {
                 uint n = field.Read(u);
-                d.state.ops.Add(MakeBarrierOperand(n));
+                var b = MakeBarrierOperand(n);
+                if (b is null)
+                    return false;
+                d.state.ops.Add(b);
                 return true;
             };
         }

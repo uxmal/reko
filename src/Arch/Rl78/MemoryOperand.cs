@@ -22,10 +22,6 @@ using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Rl78
 {
@@ -35,10 +31,10 @@ namespace Reko.Arch.Rl78
         {
         }
 
-        public RegisterStorage Base { get; set; }
+        public RegisterStorage? Base { get; set; }
 
         public int Offset { get; set; }
-        public RegisterStorage Index { get; internal set; }
+        public RegisterStorage? Index { get; set; }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {

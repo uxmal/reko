@@ -62,7 +62,7 @@ namespace Reko.Arch.i8051
                 return Constant.Invalid;
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
 

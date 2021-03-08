@@ -61,6 +61,8 @@ namespace Reko.Arch.Arm.AArch32
             this.binder = binder;
             this.dasm = dasm;
             this.pcValueOffset = 8;
+            this.instr = null!;
+            this.m = null!;
         }
 
         protected virtual void PostRewrite() { }
@@ -645,7 +647,7 @@ namespace Reko.Arch.Arm.AArch32
                     iclass = InstrClass.ConditionalTransfer;
                     if (dstIsAddress)
                     {
-                        m.Branch(TestCond(instr.Condition), (Address) dst, iclass);
+                        m.Branch(TestCond(instr.Condition)!, (Address) dst, iclass);
                     }
                     else
                     {
@@ -685,14 +687,14 @@ namespace Reko.Arch.Arm.AArch32
                 }
             }
             m.BranchInMiddleOfInstruction(
-                TestCond(Invert(cc)),
+                TestCond(Invert(cc))!,
                 instr.Address + instr.Length,
                 InstrClass.ConditionalTransfer);
         }
 
         Expression EffectiveAddress(MemoryOperand mem)
         {
-            var baseReg = Reg(mem.BaseRegister);
+            var baseReg = Reg(mem.BaseRegister!);
             Expression ea = baseReg;
             if (mem.Offset != null)
             {
@@ -740,9 +742,9 @@ namespace Reko.Arch.Arm.AArch32
         //    return &op == &instr->detail->arm.operands[instr->detail->arm.op_count - 1];
         //}
 
-        Expression Operand(MachineOperand op, PrimitiveType dt = null, bool write = false)
+        Expression Operand(MachineOperand op, PrimitiveType? dt = null, bool write = false)
         {
-            dt = dt ?? PrimitiveType.Word32;
+            dt ??= PrimitiveType.Word32;
             switch (op)
             {
             case RegisterOperand rOp:
@@ -762,7 +764,7 @@ namespace Reko.Arch.Arm.AArch32
             //    return host->EnsureRegister(2, op.imm);
             case MemoryOperand mop:
                 {
-                    var baseReg = Reg(mop.BaseRegister);
+                    var baseReg = Reg(mop.BaseRegister!);
                     Expression ea = baseReg;
                     if (mop.BaseRegister == Registers.pc)
                     {
@@ -899,7 +901,7 @@ namespace Reko.Arch.Arm.AArch32
             if (instr.ShiftValue is RegisterOperand reg)
                 sh = binder.EnsureRegister(reg.Register);
             else
-                sh = ((ImmediateOperand) instr.ShiftValue).Value;
+                sh = ((ImmediateOperand) instr.ShiftValue!).Value;
 
             return MaybeShiftExpression(exp, sh, instr.ShiftType);
         }
@@ -924,9 +926,9 @@ namespace Reko.Arch.Arm.AArch32
                 return;
             if (!instr.Writeback || mop.PreIndex)
                 return;
-            var baseReg = Reg(mop.BaseRegister);
+            var baseReg = Reg(mop.BaseRegister!);
 
-            Expression idx = null;
+            Expression? idx = null;
             var offset = mop.Offset;
             if (offset != null && !offset.IsIntegerZero)
             {
@@ -950,12 +952,12 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        protected Expression TestCond(ArmCondition cond)
+        protected Expression? TestCond(ArmCondition cond)
         {
             switch (cond)
             {
-            //default:
-            //	throw new NotImplementedException(string.Format("ARM condition code {0} not implemented.", cond));
+            default:
+                throw new NotImplementedException(string.Format("ARM condition code {0} not implemented.", cond));
             case ArmCondition.HS:
                 return m.Test(ConditionCode.UGE, FlagGroup(FlagM.CF, "C", PrimitiveType.Bool));
             case ArmCondition.LO:
@@ -985,7 +987,6 @@ namespace Reko.Arch.Arm.AArch32
             case ArmCondition.VS:
                 return m.Test(ConditionCode.OV, FlagGroup(FlagM.VF, "V", PrimitiveType.Bool));
             }
-            return null;
         }
 
         Identifier FlagGroup(FlagM bits, string name, PrimitiveType type)

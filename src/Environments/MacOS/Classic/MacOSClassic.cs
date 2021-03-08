@@ -41,6 +41,8 @@ namespace Reko.Environments.MacOS.Classic
             : base(services, arch, "macOs")
         {
             encoding = new MacOsRomanEncoding();
+            ptrA5World = null!;
+            A5World = null!;
         }
 
         public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
@@ -62,7 +64,7 @@ namespace Reko.Environments.MacOS.Classic
             };
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             switch (ccName)
             {
@@ -74,14 +76,14 @@ namespace Reko.Environments.MacOS.Classic
             }
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             EnsureTypeLibraries(PlatformIdentifier);
             vector &= 0xFFFF;
             foreach (var module in this.Metadata.Modules.Values)
             {
                 if (module.ServicesByVector.TryGetValue(vector, out List<SystemService> svcs))
-                    return svcs.FirstOrDefault(s => s.SyscallInfo.Matches(vector, state));
+                    return svcs.FirstOrDefault(s => s.SyscallInfo!.Matches(vector, state));
             }
             return null;
         }
@@ -137,7 +139,7 @@ namespace Reko.Environments.MacOS.Classic
             return this.ptrA5World;
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }
@@ -149,7 +151,7 @@ namespace Reko.Environments.MacOS.Classic
         /// </summary>
         /// <param name="instr"></param>
         /// <returns>Null if the call wasn't to a valid A5 jumptable location.</returns>
-        public override Address ResolveIndirectCall(RtlCall instr)
+        public override Address? ResolveIndirectCall(RtlCall instr)
         {
             if (!(instr.Target is BinaryExpression bin))
                 return null;
