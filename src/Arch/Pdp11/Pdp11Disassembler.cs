@@ -51,9 +51,12 @@ namespace Reko.Arch.Pdp11
             this.rdr = rdr;
             this.arch = arch;
             this.ops = new List<MachineOperand>(2);
+            this.addr = null!;
+            this.instrCur = null!;
+            this.dataWidth = null!;
         }
 
-        public override Pdp11Instruction DisassembleInstruction()
+        public override Pdp11Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out ushort opcode))
@@ -130,14 +133,14 @@ namespace Reko.Arch.Pdp11
 
         private static bool R0(uint wOpcode, Pdp11Disassembler dasm)
         {
-            var op = new RegisterOperand(dasm.arch.GetRegister(((int) wOpcode) & 7));
+            var op = new RegisterOperand(dasm.arch.GetRegister(((int) wOpcode) & 7)!);
             dasm.ops.Add(op);
             return true;
         }
 
         private static bool r(uint wOpcode, Pdp11Disassembler dasm)
         {
-            var op = new RegisterOperand(dasm.arch.GetRegister(((int)wOpcode >> 6) & 7));
+            var op = new RegisterOperand(dasm.arch.GetRegister(((int)wOpcode >> 6) & 7)!);
             dasm.ops.Add(op);
             return true;
         }
@@ -376,7 +379,7 @@ namespace Reko.Arch.Pdp11
             return new AddressOperand(rdr.Address - offset);
         }
 
-        private RegisterOperand FpuAccumulator(uint opcode)
+        private RegisterOperand? FpuAccumulator(uint opcode)
         {
             var freg= arch.GetFpuRegister((int)opcode & 0x7);
             if (freg == null)
@@ -389,10 +392,10 @@ namespace Reko.Arch.Pdp11
         /// </summary>
         /// <param name="operandBits"></param>
         /// <returns>A decoded operand, or null if invalid.</returns>
-        private MachineOperand DecodeOperand(uint operandBits, bool fpuReg = false)
+        private MachineOperand? DecodeOperand(uint operandBits, bool fpuReg = false)
         {
             ushort u;
-            var reg = this.arch.GetRegister((int)operandBits & 7);
+            var reg = this.arch.GetRegister((int)operandBits & 7)!;
             //Debug.Print("operandBits {0:X} {1:X} ", (operandBits >> 3) & 7, operandBits & 7);
             if (reg == Registers.pc)
             {

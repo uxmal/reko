@@ -56,7 +56,7 @@ namespace Reko.Arch.Sparc
             var f1 = RewriteOp(instrCur.Operands[0]);
             var f2 = RewriteOp(instrCur.Operands[1]);
 
-            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU")!);
             m.Assign(grf, m.Cond(m.FSub(f1, f2)));
         }
 
@@ -64,7 +64,7 @@ namespace Reko.Arch.Sparc
         {
             var f1 = RewriteOp(instrCur.Operands[0]);
             var f2 = RewriteOp(instrCur.Operands[1]);
-            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU")!);
             m.Assign(grf, m.Cond(m.FSub(f1, f2)));
         }
 
@@ -72,7 +72,7 @@ namespace Reko.Arch.Sparc
         {
             var r1 = RewriteOp(instrCur.Operands[0]);
             var r2 = RewriteOp(instrCur.Operands[1]);
-            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU")!);
             m.Assign(grf, m.Cond(m.FSub(r2, r1)));
         }
 
@@ -80,7 +80,7 @@ namespace Reko.Arch.Sparc
         {
             var r1 = RewriteOp(instrCur.Operands[0]);
             var r2 = RewriteOp(instrCur.Operands[1]);
-            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU")!);
             m.Assign(grf, m.Cond(m.FSub(r2, r1)));
         }
 
@@ -88,7 +88,7 @@ namespace Reko.Arch.Sparc
         {
             var r1 = RewriteRegister(0);
             var r2 = RewriteRegister(1);
-            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU"));
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup("ELGU")!);
             m.Assign(grf, m.Cond(m.FSub(r2, r1)));
         }
 

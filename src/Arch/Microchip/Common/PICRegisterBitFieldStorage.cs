@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -58,11 +58,11 @@ namespace Reko.Arch.MicrochipPIC.Common
             }
         }
 
-        public bool Equals(PICRegisterBitFieldSortKey other) => CompareTo(other) == 0;
+        public bool Equals(PICRegisterBitFieldSortKey? other) => CompareTo(other) == 0;
 
         public override bool Equals(object obj) => Equals(obj as PICRegisterBitFieldSortKey);
 
-        public int CompareTo(PICRegisterBitFieldSortKey other)
+        public int CompareTo(PICRegisterBitFieldSortKey? other)
         {
             if (other == null)
                 return 1;
@@ -122,7 +122,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the parent register.
         /// </summary>
-        public PICRegisterStorage ParentReg => FlagRegister as PICRegisterStorage;
+        public PICRegisterStorage? ParentReg => FlagRegister as PICRegisterStorage;
 
         private static PrimitiveType CreateBitFieldType(int bitSize)
             => (bitSize <= 1 ? PrimitiveType.Bool : PrimitiveType.CreateWord(bitSize));

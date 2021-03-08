@@ -96,7 +96,7 @@ char - just clr r25). Arguments to functions with variable argument lists
                      select reg).ToArray();
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             /*
              * To find the register where a function argument is passed, initialize the register number 
@@ -152,7 +152,7 @@ Arguments of varargs functions are passed on the stack. This applies even to the
                         continue;
                     }
 
-                    SequenceStorage seq = null;
+                    SequenceStorage? seq = null;
                     for (int r = iReg + 1, i = 1; i < dtParam.Size; ++i, ++r)
                     {
                         var regNext = argRegs[r - 8];
@@ -165,7 +165,7 @@ Arguments of varargs functions are passed on the stack. This applies even to the
                             seq = new SequenceStorage(PrimitiveType.CreateWord(regNext.DataType.BitSize + reg.DataType.BitSize), regNext, reg);
                         }
                     }
-                    ccr.SequenceParam(seq);
+                    ccr.SequenceParam(seq!);
                 }
                 else
                 {

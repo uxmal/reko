@@ -8,8 +8,6 @@
     <RootNamespace>Reko.Environments.Snes</RootNamespace>
     <AssemblyName>Reko.Environments.Snes</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <LangVersion>8.0</LangVersion>
-    <nullable>enable</nullable>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>

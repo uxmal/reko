@@ -65,10 +65,10 @@ namespace Reko.Environments.Msdos
         /// successful, sets the DS register to the appropriate value.
         /// </summary>
         /// <returns></returns>
-        public ImageSymbol FindMainAddress()
+        public ImageSymbol? FindMainAddress()
         {
             var listener = services.RequireService<DecompilerEventListener>();
-            Address addrEntry;
+            Address? addrEntry;
             /* This function checks the startup code for various compilers' way of
             loading DS. If found, it sets DS. This may not be needed in the future if
             pushing and popping of registers is implemented.
@@ -182,6 +182,8 @@ namespace Reko.Environments.Msdos
                 Debug.Print("Main could not be located!");
                 addrEntry = null;
             }
+            if (addrEntry is null)
+                return null;
 
             Debug.Print("Model: {0}", chModel);
             //program.addressingMode = chModel;
@@ -316,7 +318,7 @@ namespace Reko.Environments.Msdos
         void setState(string regName, ushort val)
         {
             state.SetRegister(
-                program.Architecture.GetRegister(regName),
+                program.Architecture.GetRegister(regName)!,
                 Constant.Word16(val));
 
         }

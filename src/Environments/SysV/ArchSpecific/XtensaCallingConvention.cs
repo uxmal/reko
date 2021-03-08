@@ -75,14 +75,14 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.arch = arch;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 0);
             if (dtRet != null)
             {
                 var a2 = (StorageDomain) 2;
                 //$TODO: size > 4 bytes?
-                ccr.RegReturn(arch.GetRegister(a2, r32));
+                ccr.RegReturn(arch.GetRegister(a2, r32)!);
             }
             int iReg = 2;
             foreach (var dtParam in dtParams)
@@ -90,7 +90,7 @@ namespace Reko.Environments.SysV.ArchSpecific
                 //$TODO: size > 4 bytes?
                 //$TODO: iReg > 6?
                 var arg = (StorageDomain) iReg;
-                ccr.RegParam(arch.GetRegister(arg, r32));
+                ccr.RegParam(arch.GetRegister(arg, r32)!);
                 ++iReg;
             }
         }

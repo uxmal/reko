@@ -49,7 +49,7 @@ namespace Reko.Arch.OpenRISC
             return Constant.Invalid;
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
 

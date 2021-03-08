@@ -30,7 +30,7 @@ namespace Reko.Arch.IA64
         public bool Stop { get; set; }
         public Mnemonic Mnemonic { get; set; }
 
-        public RegisterStorage QualifyingPredicate { get; set; }
+        public RegisterStorage? QualifyingPredicate { get; set; }
 
         /// <summary>
         /// Execution unit.

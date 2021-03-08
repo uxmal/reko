@@ -52,6 +52,8 @@ namespace Reko.Arch.Alpha
             this.binder = binder;
             this.host = host;
             this.dasm = new AlphaDisassembler(this.arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

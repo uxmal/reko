@@ -95,6 +95,7 @@ namespace Reko.Environments.C64
         public D64Loader(IServiceProvider services, string filename, byte[] rawImage)
             : base(services, filename, rawImage)
         {
+            this.program = null!;
         }
 
         public override Address PreferredBaseAddress
@@ -130,8 +131,9 @@ namespace Reko.Environments.C64
             public override Address PreferredBaseAddress { get; set; }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
+            addrLoad ??= PreferredBaseAddress;
             List<ArchiveDirectoryEntry> entries = LoadDiskDirectory();
             IArchiveBrowserService abSvc = Services.GetService<IArchiveBrowserService>();
             if (abSvc != null)

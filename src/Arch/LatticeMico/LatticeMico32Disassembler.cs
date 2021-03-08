@@ -46,9 +46,10 @@ namespace Reko.Arch.LatticeMico
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override LatticeMico32Instruction DisassembleInstruction()
+        public override LatticeMico32Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadBeUInt32(out uint uInstr))

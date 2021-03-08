@@ -39,7 +39,7 @@ namespace Reko.Arch.PaRisc
         public FpFormat FpFmtDst { get; set; }
         public CacheHint CacheHint { get; set; }
 
-        public ConditionOperand Condition { get; set; }
+        public ConditionOperand? Condition { get; set; }
 
         public override int MnemonicAsInteger => (int) Mnemonic;
 

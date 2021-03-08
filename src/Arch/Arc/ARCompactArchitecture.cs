@@ -146,9 +146,9 @@ namespace Reko.Arch.Arc
             return s.ToString();
         }
 
-        public override void LoadUserOptions(Dictionary<string, object> options)
+        public override void LoadUserOptions(Dictionary<string, object>? options)
         {
-            Endianness = (options.TryGetValue("Endianness", out var oEndian)
+            Endianness = (options != null && options.TryGetValue("Endianness", out var oEndian)
                 && oEndian is string sEndian
                 && string.Compare(sEndian, "be") == 0)
                 ? EndianServices.Big
@@ -163,7 +163,7 @@ namespace Reko.Arch.Arc
             return Address.Ptr32(uAddr);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -173,7 +173,7 @@ namespace Reko.Arch.Arc
             return Registers.ByName.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse32(txtAddr, out addr);
         }

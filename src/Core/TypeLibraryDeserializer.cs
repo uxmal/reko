@@ -84,7 +84,7 @@ namespace Reko.Core
                     var globalType = g.Type!;
                     var globalName = g.Name!;
                     var dt = this.LoadType(globalType);
-                    var sym = ImageSymbol.Create(SymbolType.Data, platform.Architecture, null, globalName);
+                    var sym = ImageSymbol.Create(SymbolType.Data, platform.Architecture, null!, globalName);
                     mod.GlobalsByName[globalName] = sym;
                     if (g.Ordinal != GlobalVariable_v1.NoOrdinal)
                     {

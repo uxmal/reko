@@ -32,11 +32,11 @@ namespace Reko.Arch.Arm.AArch64
 {
     public partial class A64Rewriter
     {
-        private void RewriteSimdBinary(string simdFormat, Domain domain, Action<Expression> setFlags = null)
+        private void RewriteSimdBinary(string simdFormat, Domain domain, Action<Expression>? setFlags = null)
         {
             var arrayLeft = MakeArrayType(instr.Operands[1], domain);
             var tmpLeft = binder.CreateTemporary(arrayLeft);
-            Expression tmpRight = null;
+            Expression? tmpRight = null;
             if (!(instr.Operands[2] is ImmediateOperand imm))
             {
                 var arrayRight = MakeArrayType(instr.Operands[2], domain);
@@ -60,7 +60,7 @@ namespace Reko.Arch.Arm.AArch64
             setFlags?.Invoke(dst);
         }
 
-        private void RewriteSimdWithScalar(string simdFormat, Domain domain, Action<Expression> setFlags = null)
+        private void RewriteSimdWithScalar(string simdFormat, Domain domain, Action<Expression>? setFlags = null)
         {
             var arrayLeft = MakeArrayType(instr.Operands[1], domain);
             var arrayDst = MakeArrayType(instr.Operands[0], domain);

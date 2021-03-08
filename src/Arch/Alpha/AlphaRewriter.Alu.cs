@@ -140,7 +140,7 @@ namespace Reko.Arch.Alpha
             m.Assign(dst, src);
         }
 
-        private void RewriteSt(PrimitiveType dtFrom, PrimitiveType dtTo = null)
+        private void RewriteSt(PrimitiveType dtFrom, PrimitiveType? dtTo = null)
         {
             var src = Rewrite(instr.Operands[0]);
             if (dtTo != null)

@@ -54,6 +54,8 @@ namespace Reko.Arch.LatticeMico
             this.binder = binder;
             this.host = host;
             this.dasm = new LatticeMico32Disassembler(arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

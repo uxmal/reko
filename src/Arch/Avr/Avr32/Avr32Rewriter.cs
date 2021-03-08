@@ -66,6 +66,8 @@ namespace Reko.Arch.Avr.Avr32
             this.binder = binder;
             this.host = host;
             this.dasm = new Avr32Disassembler(arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -208,7 +210,7 @@ namespace Reko.Arch.Avr.Avr32
 
         private Expression RewriteMemoryOperand(MemoryOperand mem)
         {
-            var baseReg = binder.EnsureRegister(mem.Base);
+            var baseReg = binder.EnsureRegister(mem.Base!);
             if (mem.PostIncrement)
             {
                 var tmp = binder.CreateTemporary(mem.Width);
@@ -295,7 +297,7 @@ namespace Reko.Arch.Avr.Avr32
                     return id;
                 }
             case MemoryOperand mem:
-                Expression ea = binder.EnsureRegister(mem.Base);
+                Expression ea = binder.EnsureRegister(mem.Base!);
                 if (mem.PreDecrement)
                 {
                     m.Assign(ea, m.ISubS(ea, mem.Width.Size));
@@ -620,7 +622,7 @@ namespace Reko.Arch.Avr.Avr32
             {
                 Debug.Assert(post.PostIncrement);
                 postInc = true;
-                sp = binder.EnsureRegister(post.Base);
+                sp = binder.EnsureRegister(post.Base!);
             }
             else
             {
@@ -1032,7 +1034,7 @@ namespace Reko.Arch.Avr.Avr32
             if (instr.Operands[0] is MemoryOperand pre)
             {
                 Debug.Assert(pre.PreDecrement);
-                sp = binder.EnsureRegister(pre.Base);
+                sp = binder.EnsureRegister(pre.Base!);
                 preDec = true;
             }
             else

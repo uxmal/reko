@@ -222,7 +222,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
     public class TypeDefinition
     {
         public int linkage;
-        public object[] Leaves;
+        public object[]? Leaves;
     }
 
     public class Array
@@ -230,7 +230,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         public int BitSize;
         public ushort ElementType;
         public int IndexType;
-        public string Name;
+        public string? Name;
 
         public override string ToString()
         {
@@ -252,7 +252,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
     {
         public LeafType Model;
         public int TypeIndex;
-        public string Name;
+        public string? Name;
 
         public override string ToString()
         {
@@ -279,7 +279,7 @@ namespace Reko.ImageLoaders.MzExe.CodeView
         public int FieldCount;
         public int TypeList;
         public int NameOffsetList;
-        public string Name;
+        public string? Name;
 
         public override string ToString()
         {

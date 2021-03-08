@@ -50,9 +50,10 @@ namespace Reko.Arch.Avr.Avr32
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override Avr32Instruction DisassembleInstruction()
+        public override Avr32Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadBeUInt16(out ushort uInstr))
@@ -520,7 +521,7 @@ namespace Reko.Arch.Avr.Avr32
             public override Avr32Instruction Decode(uint wInstr, Avr32Disassembler dasm)
             {
                 if (!dasm.rdr.TryReadBeUInt16(out ushort uLow))
-                    return null;
+                    return dasm.CreateInvalidInstruction();
                 uint wInstrLong = (wInstr << 16) | uLow;
                 return decoder.Decode(wInstrLong, dasm);
             }

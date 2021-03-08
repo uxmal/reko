@@ -9,7 +9,6 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>9.0</LangVersion>
-    <Nullable>enable</Nullable>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>

@@ -37,7 +37,7 @@ namespace Reko.Environments.Windows
             this.arch = arch;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             //$TODO: finding it hard to locate information about the calling
  			// convention on PowerPC Win32. May have to reverse engineer it.

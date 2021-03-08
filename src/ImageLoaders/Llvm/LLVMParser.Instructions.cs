@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -32,8 +32,8 @@ namespace Reko.ImageLoaders.LLVM
         {
             Expect(TokenType.alloca);
             LLVMType type = ParseType();
-            LLVMType elcType = null;
-            Value elc = null;
+            LLVMType? elcType = null;
+            Value? elc = null;
             int alignment = 0;
             while (PeekAndDiscard(TokenType.COMMA))
             {
@@ -117,7 +117,7 @@ namespace Reko.ImageLoaders.LLVM
             };
         }
 
-        private Instruction ParseCall(LocalId result)
+        private Instruction ParseCall(LocalId? result)
         {
             //$TODO: tail
             Expect(TokenType.call);
@@ -173,7 +173,7 @@ namespace Reko.ImageLoaders.LLVM
                 PeekAndDiscard(TokenType.inrange);  //$REVIEW: use this?
                 var type = ParseType();
                 var idxVal = ParseValue();
-                indices.Add(Tuple.Create(type, idxVal));
+                indices.Add(Tuple.Create(type, idxVal!));
             }
             return new GetElementPtr
             {
@@ -297,7 +297,7 @@ namespace Reko.ImageLoaders.LLVM
         {
             Expect(TokenType.ret);
             var type = ParseType();
-            Value val = null;
+            Value? val = null;
             if (type != LLVMType.Void)
             {
                 val = ParseValue();
@@ -358,7 +358,7 @@ namespace Reko.ImageLoaders.LLVM
                 Expect(TokenType.COMMA);
                 Expect(TokenType.label);
                 var dest = ParseLocalId();
-                destinations.Add(Tuple.Create(caseType, caseVal, dest));
+                destinations.Add(Tuple.Create(caseType, caseVal!, dest!));
             }
             return new Switch
             {
@@ -386,7 +386,7 @@ namespace Reko.ImageLoaders.LLVM
             Expect(TokenType.COMMA);
             var label = ParseLocalId();
             Expect(TokenType.RBRACKET);
-            var arg = Tuple.Create(value, label);
+            var arg = Tuple.Create(value!, label!);
             args.Add(arg);
             while (PeekAndDiscard(TokenType.COMMA))
             {
@@ -395,7 +395,7 @@ namespace Reko.ImageLoaders.LLVM
                 Expect(TokenType.COMMA);
                 label = ParseLocalId();
                 Expect(TokenType.RBRACKET);
-                arg = Tuple.Create(value, label);
+                arg = Tuple.Create(value!, label!);
                 args.Add(arg);
             }
             return new PhiInstruction

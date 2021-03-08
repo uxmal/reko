@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -37,10 +37,10 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
 
         /// <summary> INTCON special function register. </summary>
-        public static PICRegisterStorage INTCON { get; protected set; }
+        public static PICRegisterStorage INTCON { get; protected set; } = null!;
 
         /// <summary> Global Interrupt Enable in INTCON register. </summary>
-        public static PICRegisterBitFieldStorage GIE { get; protected set; }
+        public static PICRegisterBitFieldStorage GIE { get; protected set; } = null!;
 
 
         /// <summary>

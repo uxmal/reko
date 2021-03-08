@@ -8,8 +8,6 @@
     <RootNamespace>Reko.Arch.X86</RootNamespace>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <LangVersion>8.0</LangVersion>
-    <nullable>enable</nullable>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>

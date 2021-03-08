@@ -32,9 +32,9 @@ namespace Reko.Arch.Tlcs.Tlcs900
 {
     public class MemoryOperand : MachineOperand
     {
-        public RegisterStorage Base;
-        public RegisterStorage Index;
-        public Constant Offset;
+        public RegisterStorage? Base;
+        public RegisterStorage? Index;
+        public Constant? Offset;
         public int Increment;
 
         private MemoryOperand(PrimitiveType size) : base(size)
@@ -141,7 +141,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
             else
             {
-                var addr = Address.Ptr32(Offset.ToUInt32());
+                var addr = Address.Ptr32(Offset!.ToUInt32());
                 renderer.WriteAddress(addr.ToString(), addr);
             }
             renderer.WriteChar(')');

@@ -80,14 +80,14 @@ namespace Reko.Core
         /// </summary>
         public StackValue[]? StackValues;
 
-		public bool Matches(int vector, ProcessorState state)
+		public bool Matches(int vector, ProcessorState? state)
 		{
 			if (Vector != vector)
 				return false;
             return Matches(state);
 		}
 
-        public bool Matches(ProcessorState state)
+        public bool Matches(ProcessorState? state)
         {
             if (state == null &&
                 ((RegisterValues != null && RegisterValues.Length > 0) ||

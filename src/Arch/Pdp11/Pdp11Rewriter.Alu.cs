@@ -62,7 +62,7 @@ namespace Reko.Arch.Pdp11
                 m.Invalid();
                 return;
             }
-            var r1 = arch.GetRegister(r.Number + 1);
+            var r1 = arch.GetRegister(r.Number + 1)!;
             var dst = binder.EnsureSequence(PrimitiveType.Word32, r, r1);
             var sh = RewriteSrc(instr.Operands[0]);
             if (sh == null)
@@ -180,7 +180,7 @@ namespace Reko.Arch.Pdp11
         private void RewriteDiv()
         {
             var reg = ((RegisterOperand)instr.Operands[1]).Register;
-            var reg1 = arch.GetRegister(reg.Number | 1);
+            var reg1 = arch.GetRegister(reg.Number | 1)!;
             var reg_reg = binder.EnsureSequence(PrimitiveType.Int32, reg, reg1);
             var dividend = binder.CreateTemporary(PrimitiveType.Int32);
             var divisor = RewriteSrc(instr.Operands[0]);
@@ -257,13 +257,13 @@ namespace Reko.Arch.Pdp11
         {
             var src = RewriteSrc(instr.Operands[0]);
             Expression dst;
-            if (instr.Operands[1] is RegisterOperand && instr.DataWidth.Size == 1)
+            if (instr.Operands[1] is RegisterOperand && instr.DataWidth!.Size == 1)
             {
-                dst = RewriteDst(instr.Operands[1], src, s => m.Convert(s, s.DataType, PrimitiveType.Int16));
+                dst = RewriteDst(instr.Operands[1], src, s => m.Convert(s, s.DataType, PrimitiveType.Int16))!;
             }
             else
             {
-                dst = RewriteDst(instr.Operands[1], src, s => s);
+                dst = RewriteDst(instr.Operands[1], src, s => s)!;
             }
             SetFlags(dst, Registers.NZ);
             SetFalse(Registers.V);
@@ -278,7 +278,7 @@ namespace Reko.Arch.Pdp11
             Identifier dst;
             if ((reg.Number & 1) == 0)
             {
-                var regLo = arch.GetRegister(reg.Number + 1);
+                var regLo = arch.GetRegister(reg.Number + 1)!;
                 dst = binder.EnsureSequence(PrimitiveType.Int32, reg, regLo);
             }
             else
@@ -293,7 +293,7 @@ namespace Reko.Arch.Pdp11
         private void RewriteNeg()
         {
             var src = RewriteSrc(instr.Operands[0]);
-            var dst = RewriteDst(instr.Operands[0], src, m.Neg);
+            var dst = RewriteDst(instr.Operands[0], src, m.Neg)!;
             SetFlags(dst, Registers.NZV);
         }
 
@@ -304,7 +304,7 @@ namespace Reko.Arch.Pdp11
             var tmp = binder.CreateTemporary(src.DataType);
             m.Assign(tmp, src);
             var dst = RewriteDst(instr.Operands[0], src, (a, b) =>
-                host.Intrinsic(op, true, instr.DataWidth, a, m.Int16(1), C));
+                host.Intrinsic(op, true, instr.DataWidth!, a, m.Int16(1), C))!;
             m.Assign(C, m.Ne0(m.And(tmp, cyMask)));
             SetFlags(dst, Registers.NZV);
         }
@@ -313,7 +313,7 @@ namespace Reko.Arch.Pdp11
         {
             var src = RewriteSrc(instr.Operands[0]);
             var immSrc = src as Constant;
-            Func<Expression, Expression, Expression> fn = null;
+            Func<Expression, Expression, Expression>? fn = null;
             if (immSrc != null)
             {
                 int sh = immSrc.ToInt32();
@@ -331,7 +331,7 @@ namespace Reko.Arch.Pdp11
             else
             {
                 fn = (a, b) =>
-                    host.Intrinsic("__shift", true, instr.DataWidth, a, b);
+                    host.Intrinsic("__shift", true, instr.DataWidth!, a, b);
             }
             var dst = RewriteDst(instr.Operands[1], src, fn);
             SetFlags(dst, Registers.NZVC);

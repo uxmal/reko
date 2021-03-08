@@ -50,9 +50,10 @@ namespace Reko.Arch.Mips
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override MipsInstruction DisassembleInstruction()
+        public override MipsInstruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             this.ops.Clear();
@@ -488,7 +489,7 @@ namespace Reko.Arch.Mips
 
         private static bool MptrSp8Ex(uint uInstr, Mips16eDisassembler dasm)
         {
-            var uExtend = Bitfield.ReadFields(bf_extend5, dasm.extend.Value) << bf0_5.Length;
+            var uExtend = Bitfield.ReadFields(bf_extend5, dasm.extend!.Value) << bf0_5.Length;
             var offset = (int) Bits.SignExtend(uExtend | bf0_5.Read(uInstr), bf0_5.Length + 11);
             var mem = new IndirectOperand(dasm.arch.PointerType, offset, dasm.arch.StackRegister);
             dasm.ops.Add(mem);

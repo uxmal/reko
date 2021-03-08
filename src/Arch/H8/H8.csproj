@@ -5,8 +5,6 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>Reko.Arch.H8</RootNamespace>
     <AssemblyName>Reko.Arch.H8</AssemblyName>
-    <LangVersion>8.0</LangVersion>
-    <nullable>enable</nullable>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 

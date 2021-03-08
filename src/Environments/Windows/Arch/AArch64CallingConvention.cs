@@ -37,7 +37,7 @@ namespace Reko.Environments.Windows
             this.arch = arch;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             //$TODO: make this happen
         }

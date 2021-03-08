@@ -42,22 +42,21 @@ namespace Reko.Arch.Cray.Ymp
         
         private readonly CrayYmpArchitecture arch;
         private readonly Word16BeImageReader rdr;
-        private readonly List<MachineOperand>  ops;
+        private readonly List<MachineOperand> ops;
         private Address addr;
 
         public YmpDisassembler(CrayYmpArchitecture arch, Decoder<YmpDisassembler, Mnemonic, CrayInstruction> decoder, EndianImageReader rdr)
         {
             this.arch = arch;
             // Crays are weird; we can only disassemble areas that have 16-bit granularity.
-            this.rdr = rdr as Word16BeImageReader;
+            this.rdr = (Word16BeImageReader) rdr;
             this.ops = new List<MachineOperand>();
             this.rootDecoder = decoder;
+            this.addr = null!;
         }
 
-        public override CrayInstruction DisassembleInstruction()
+        public override CrayInstruction? DisassembleInstruction()
         {
-            if (rdr is null)
-                return null;
             this.addr = rdr.Address;
             if (!rdr.TryReadBeUInt16(out ushort hInstr))
                 return null;

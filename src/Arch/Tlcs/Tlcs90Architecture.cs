@@ -232,7 +232,7 @@ namespace Reko.Arch.Tlcs
             return Registers.allRegs.FirstOrDefault(r => r.Name == name);
         }
 
-        public override RegisterStorage GetRegister(StorageDomain regDomain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain regDomain, BitRange range)
         {
             if (!Subregisters.TryGetValue(regDomain, out var subs))
                 return null;
@@ -276,7 +276,7 @@ namespace Reko.Arch.Tlcs
             return Address.Ptr16(c.ToUInt16());
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -287,7 +287,7 @@ namespace Reko.Arch.Tlcs
             return reg != null;
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse16(txtAddr, out addr);
         }

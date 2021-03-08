@@ -38,14 +38,14 @@ namespace Reko.Environments.SysV.ArchSpecific
         {
             this.arch = arch;
             this.iregs = new[] { "r2", "r3", "r4", "r5", "r6" }
-                .Select(r => arch.GetRegister(r))
+                .Select(r => arch.GetRegister(r)!)
                 .ToArray();
             this.fregs = new[] { "f0", "f2", "f4", "f6" }
-                .Select(r => arch.GetRegister(r))
+                .Select(r => arch.GetRegister(r)!)
                 .ToArray();
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             int fr = 0;
             int gr = 0;

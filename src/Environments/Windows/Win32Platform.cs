@@ -117,7 +117,7 @@ namespace Reko.Environments.Windows
             };
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             if (ccName == null)
                 return new X86CallingConvention(
@@ -168,7 +168,7 @@ namespace Reko.Environments.Windows
             throw new ArgumentOutOfRangeException(string.Format("Unknown calling convention '{0}'.", ccName));
         }
 
-        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
         {
             var sf = new X86StartFinder(program, addrStart);
             return sf.FindMainProcedure();
@@ -195,7 +195,7 @@ namespace Reko.Environments.Windows
         }
 
         //$REFACTOR: should fetch this from config file?
-        public override string GetPrimitiveTypeName(PrimitiveType pt, string language)
+        public override string? GetPrimitiveTypeName(PrimitiveType pt, string language)
         {
             if (language != "C")
                 return null;
@@ -237,7 +237,7 @@ namespace Reko.Environments.Windows
             return null;
         }
 
-        public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rdr, IRewriterHost host)
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rdr, IRewriterHost host)
         {
             var instr = rdr.FirstOrDefault();
             if (instr == null)
@@ -257,7 +257,7 @@ namespace Reko.Environments.Windows
                 }
                 addrTarget = MakeAddressFromConstant(wAddr, true);
             }
-            ProcedureBase proc = host.GetImportedProcedure(this.Architecture, addrTarget,  addrInstr);
+            ProcedureBase? proc = host.GetImportedProcedure(this.Architecture, addrTarget,  addrInstr);
             if (proc != null)
                 return proc;
             return host.GetInterceptedCall(this.Architecture, addrTarget);
@@ -271,17 +271,15 @@ namespace Reko.Environments.Windows
             m.Assign(proc.Frame.EnsureRegister(Registers.Top), 0);
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             EnsureTypeLibraries(PlatformIdentifier);
-            ModuleDescriptor mod;
-            if (moduleName != null && Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+            if (moduleName != null && Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
             {
-                SystemService svc;
-                if (mod.ServicesByName.TryGetValue(procName, out svc))
+                if (mod.ServicesByName.TryGetValue(procName, out SystemService svc))
                 {
-                    var chr = LookupCharacteristicsByName(svc.Name);
-                    return new ExternalProcedure(svc.Name, svc.Signature, chr);
+                    var chr = LookupCharacteristicsByName(svc.Name!);
+                    return new ExternalProcedure(svc.Name!, svc.Signature!, chr);
                 }
                 else
                 {
@@ -298,7 +296,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
+        public override ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
             EnsureTypeLibraries(PlatformIdentifier);
             ModuleDescriptor mod;
@@ -307,14 +305,14 @@ namespace Reko.Environments.Windows
             SystemService svc;
             if (mod.ServicesByOrdinal.TryGetValue(ordinal, out svc))
             {
-                var chr = LookupCharacteristicsByName(svc.Name);
-                return new ExternalProcedure(svc.Name, svc.Signature, chr);
+                var chr = LookupCharacteristicsByName(svc.Name!);
+                return new ExternalProcedure(svc.Name!, svc.Signature!, chr);
             }
             else
                 return null;
         }
 
-		public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+		public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
 		{
             SystemService svc;
             if (!services.TryGetValue(vector, out svc))
@@ -327,16 +325,19 @@ namespace Reko.Environments.Windows
             get { return "__cdecl"; }
         }
 
-        public override ProcedureBase_v1 SignatureFromName(string fnName)
+        public override ProcedureBase_v1? SignatureFromName(string fnName)
         {
             EnsureTypeLibraries(PlatformIdentifier); 
             return SignatureGuesser.SignatureFromName(fnName, this);
         }
 
-        public override Tuple<string, SerializedType, SerializedType> DataTypeFromImportName(string importName)
+        public override Tuple<string, SerializedType, SerializedType>? DataTypeFromImportName(string importName)
         {
             EnsureTypeLibraries(PlatformIdentifier);
-            return SignatureGuesser.InferTypeFromName(importName);
+            var (name, type, outerType) = SignatureGuesser.InferTypeFromName(importName);
+            if (name is null)
+                return null;
+            return Tuple.Create(name!, type!, outerType!);
         }
     }
 }

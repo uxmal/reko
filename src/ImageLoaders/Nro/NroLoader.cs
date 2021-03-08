@@ -106,17 +106,17 @@ namespace Reko.ImageLoaders.Nro
             segments.Add(seg);
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch = cfgSvc.GetArchitecture("arm-64");
+            var arch = cfgSvc.GetArchitecture("arm-64")!;
             var platform = cfgSvc.GetEnvironment("switch").Load(Services, arch);
 
             NroStart start = rdr.ReadStruct<NroStart>();
             NroHeader header = rdr.ReadStruct<NroHeader>();
             if(header.magic != MAGIC)
             {
-                throw new BadImageFormatException("Invalid NRO Magic");
+                throw new BadImageFormatException("Invalid NRO Magic.");
             }
 
             HandleSegment(NroSegmentType.Text, header.segments0[0]);

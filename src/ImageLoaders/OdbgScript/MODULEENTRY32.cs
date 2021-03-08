@@ -8,8 +8,8 @@ namespace Reko.ImageLoaders.OdbgScript
 {
     public class MODULEENTRY32
     {
-        public Address modBaseAddr;
+        public Address? modBaseAddr;
         public ulong modBaseSize;
-        public string szModule;
+        public string? szModule;
     }
 }

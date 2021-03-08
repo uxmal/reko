@@ -282,7 +282,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 pattern = $"#{a.Arguments[0]}#";
                 return true;
             }
-            pattern = null;
+            pattern = null!;
             return false;
         }
 

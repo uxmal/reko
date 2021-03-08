@@ -81,11 +81,11 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             }
 
             // All legal PIC16 instructions are one word long.
-            if (instrCur != null)
-            {
-                instrCur.Address = addrCur;
-                instrCur.Length = 2;
-            }
+            if (instrCur is null)
+                return CreateInvalidInstruction();
+
+            instrCur.Address = addrCur;
+            instrCur.Length = 2;
             return instrCur;
         }
 
@@ -387,11 +387,11 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         protected override PICInstruction DecodeEEPROMInstruction()
         {
             if (!rdr.TryReadByte(out byte uEEByte))
-                return null;
+                return CreateInvalidInstruction();
             var bl = new List<byte>() { uEEByte };
             for (int i = 0; i < 7; i++)
             {
-                if (!lastusedregion.Contains(rdr.Address))
+                if (!lastusedregion!.Contains(rdr.Address))
                     break;
                 if (!rdr.TryReadByte(out uEEByte))
                     break;
@@ -406,7 +406,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             return instrCur;
         }
 
-        protected override PICInstruction DecodeDAInstruction()
+        protected override PICInstruction? DecodeDAInstruction()
         {
             if (!rdr.TryReadByte(out byte uDAByte))
                 return null;
@@ -421,7 +421,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         protected override PICInstruction DecodeDBInstruction()
         {
             if (!rdr.TryReadByte(out byte uDBByte))
-                return null;
+                return CreateInvalidInstruction();
             instrCur = new PICInstructionPseudo(Mnemonic.DB, new PICOperandDByte(uDBByte))
             {
                 Address = addrCur,
@@ -433,7 +433,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         protected override PICInstruction DecodeDWInstruction()
         {
             if (!rdr.TryReadUInt16(out ushort uDWWord))
-                return null;
+                return CreateInvalidInstruction();
             instrCur = new PICInstructionPseudo(Mnemonic.DW, new PICOperandDWord(uDWWord))
             {
                 Address = addrCur,
@@ -445,7 +445,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         protected override PICInstruction DecodeUserIDInstruction()
         {
             if (!rdr.TryReadUInt16(out ushort uConfigWord))
-                return null;
+                return CreateInvalidInstruction();
             instrCur = new PICInstructionPseudo(Mnemonic.__IDLOCS, new PICOperandIDLocs(addrCur, uConfigWord))
             {
                 Address = addrCur,
@@ -457,7 +457,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         protected override PICInstruction DecodeConfigInstruction()
         {
             if (!rdr.TryReadUInt16(out ushort uConfigWord))
-                return null;
+                return CreateInvalidInstruction();
             var cfgAddr = PICProgAddress.Ptr((uint)(addrCur.ToLinear() >> 1));
             instrCur = new PICInstructionPseudo(Mnemonic.__CONFIG, new PICOperandConfigBits(arch, cfgAddr, uConfigWord))
             {

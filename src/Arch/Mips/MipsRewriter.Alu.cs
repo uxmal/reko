@@ -176,7 +176,7 @@ namespace Reko.Arch.Mips
             m.Assign(dst, host.Intrinsic("__ins", false, dst.DataType, dst, src, pos, size));
         }
 
-        private void RewriteLoad(MipsInstruction instr, PrimitiveType dtSmall, PrimitiveType dtSmall64 = null)
+        private void RewriteLoad(MipsInstruction instr, PrimitiveType dtSmall, PrimitiveType? dtSmall64 = null)
         {
             var opSrc = RewriteOperand(instr.Operands[1]);
             var opDst = RewriteOperand(instr.Operands[0]);
@@ -319,7 +319,7 @@ namespace Reko.Arch.Mips
             {
                 int this_rt = (rt + i < 32) ? rt + i : rt + i - 16;
                 int this_offset = offset + (i << 2);
-                var dst = binder.EnsureRegister(arch.GetRegister(this_rt));
+                var dst = binder.EnsureRegister(arch.GetRegister(this_rt)!);
                 m.Assign(dst, m.Mem32(m.IAddS(rs, this_offset)));
 
                 // if this_rt == rs and i != count - 1:
@@ -530,7 +530,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteRestore(MipsInstruction instr, bool ret)
         {
-            var sp = binder.EnsureRegister(arch.GetRegister(29));
+            var sp = binder.EnsureRegister(arch.GetRegister(29)!);
             int count = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
             int rt = ((RegisterOperand) instr.Operands[1]).Register.Number;
             int u = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
@@ -545,7 +545,7 @@ namespace Reko.Arch.Mips
                         : rt + i - 16;
                 var this_offset = u - ((i + 1) << 2);
                 var ea = m.Mem32(m.IAddS(sp, this_offset));
-                var reg = binder.EnsureRegister(arch.GetRegister(this_rt));
+                var reg = binder.EnsureRegister(arch.GetRegister(this_rt)!);
                 m.Assign(reg, ea);
                 ++i;
             }
@@ -556,7 +556,7 @@ namespace Reko.Arch.Mips
 
         protected virtual void RewriteSave(MipsInstruction instr)
         {
-            var sp = binder.EnsureRegister(arch.GetRegister(29));
+            var sp = binder.EnsureRegister(arch.GetRegister(29)!);
             int count = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
             int rt = ((RegisterOperand) instr.Operands[1]).Register.Number;
             int u = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
@@ -568,7 +568,7 @@ namespace Reko.Arch.Mips
                     : rt + i < 32
                         ? rt + i
                         : rt + i - 16;
-                var reg = binder.EnsureRegister(arch.GetRegister(this_rt));
+                var reg = binder.EnsureRegister(arch.GetRegister(this_rt)!);
                 var this_offset = -((i + 1) << 2);
                 var ea = m.Mem32(m.IAddS(sp, this_offset));
                 m.Assign(ea, reg);

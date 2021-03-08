@@ -36,7 +36,7 @@ namespace Reko.Environments.RT11
             this.arch = arch;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(2, 2);
             if (dtRet != null)
@@ -47,7 +47,7 @@ namespace Reko.Environments.RT11
             int gr = 0;
             for (int iArg = 0; iArg < dtParams.Count; ++iArg)
             {
-                var arg = arch.GetRegister("r" + gr);
+                var arg = arch.GetRegister("r" + gr)!;
                 ++gr;
                 ccr.RegParam(arg);
             }
@@ -56,7 +56,8 @@ namespace Reko.Environments.RT11
 
         public void SetReturnRegisters(ICallingConventionEmitter ccr, DataType dtRet)
         {
-            ccr.RegReturn(arch.GetRegister("r0"));
+            //$TODO: use dtRet?
+            ccr.RegReturn(arch.GetRegister("r0")!);
         }
 
         public bool IsArgument(Storage stg)

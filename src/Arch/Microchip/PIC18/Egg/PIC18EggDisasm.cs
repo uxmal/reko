@@ -246,7 +246,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
                     return new PICInstructionNoOpnd(Mnemonic.invalid);
                 byte fsrnum = (byte)uInstr.Extract(6, 2);
                 if (fsrnum >= 3)
-                    return null;
+                    return dasm.CreateInvalidInstruction();
                 var imm6 = (byte)uInstr.Extract(0, 6);
                 return new PICInstructionFSRUArith(mnemonic, fsrnum, imm6);
             }

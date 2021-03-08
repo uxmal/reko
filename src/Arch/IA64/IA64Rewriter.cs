@@ -47,6 +47,8 @@ namespace Reko.Arch.IA64
             this.binder = binder;
             this.host = host;
             this.dasm =  new IA64Disassembler(arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

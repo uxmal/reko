@@ -81,7 +81,7 @@ namespace Reko.Arch.Blackfin
             {
                 return Registers.AStatFlags.TryGetValue(grf, out FlagGroupStorage flags)
                     ? flags
-                    : null;
+                    : null!;
             }
             throw new NotImplementedException();
         }
@@ -129,7 +129,7 @@ namespace Reko.Arch.Blackfin
             throw new NotImplementedException();
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -139,7 +139,7 @@ namespace Reko.Arch.Blackfin
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse32(txtAddr, out addr);
         }

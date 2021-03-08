@@ -62,9 +62,9 @@ namespace Reko.ImageLoaders.Omf
             }
             for (; ;)
             {
-                byte[] data;
+                byte[]? data;
                 (type, data) = ReadRecord(rdr);
-                if (data == null)
+                if (data is null)
                     break;
                 switch (type)
                 {
@@ -103,7 +103,7 @@ namespace Reko.ImageLoaders.Omf
             return dstLib;
         }
 
-        private SystemService ReadImpdef(LeImageReader rdr, TypeLibraryDeserializer loader)
+        private SystemService? ReadImpdef(LeImageReader rdr, TypeLibraryDeserializer loader)
         {
             if (!rdr.TryReadByte(out byte useOrdinal))
                 return null;
@@ -141,10 +141,10 @@ namespace Reko.ImageLoaders.Omf
                 PrimitiveType.Byte,
                 PrimitiveType.Char,
                 Encoding.ASCII);
-            return cStr?.ToString();
+            return cStr!.ToString();
         }
 
-        private (RecordType, byte[]) ReadRecord(LeImageReader rdr)
+        private (RecordType, byte[]?) ReadRecord(LeImageReader rdr)
         {
             if (!rdr.TryReadByte(out var type))
                 return (0, null);

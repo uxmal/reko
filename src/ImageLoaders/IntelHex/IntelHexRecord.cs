@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  *
@@ -42,7 +42,7 @@ namespace Reko.ImageLoaders.IntelHex
         /// <summary>
         /// The data from the record
         /// </summary>
-        public List<byte> Data { get; set; }
+        public List<byte>? Data { get; set; }
 
         /// <summary>
         /// The record checksum

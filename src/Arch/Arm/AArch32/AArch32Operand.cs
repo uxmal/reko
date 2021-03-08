@@ -32,9 +32,9 @@ namespace Reko.Arch.Arm.AArch32
 {
     public class MemoryOperand : MachineOperand
     {
-        public RegisterStorage BaseRegister;
-        public Constant Offset;
-        public RegisterStorage Index;
+        public RegisterStorage? BaseRegister;
+        public Constant? Offset;
+        public RegisterStorage? Index;
         public Mnemonic ShiftType;
         public int Shift;
         public bool Add;

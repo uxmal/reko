@@ -9,10 +9,9 @@
   },
   "profiles": {
     "CmdLine": {
-      "commandName": "Executable",
-      "executablePath": "D:\\dev\\uxmal\\reko\\master\\src\\Drivers\\CmdLine\\bin\\x64\\Debug\\net472\\decompile.exe",
-      "commandLineArgs": "--heuristic shingle --arch pic --arch-option model=\"PIC18F1230\" --loader IntelHex --base 0000 --entry 0000 PIC18EggExtd.hex",
-      "workingDirectory": "D:\\dev\\uxmal\\reko\\master\\subjects\\Microchip\\C18\\PIC18Extd"
+      "commandName": "Project",
+      "commandLineArgs": "--base 08048000 adddf3.o",
+      "workingDirectory": "D:\\dev\\uxmal\\reko\\master\\subjects\\Elf\\nanoMips\\adddf3"
     }
   }
 }

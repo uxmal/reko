@@ -52,16 +52,16 @@ r31         zero        reads as zero       N/A         Writes are ignored.
         public AlphaCallingConvention(IProcessorArchitecture arch)
         {
             this.iRegs = new[] { "r16", "r17", "r18", "r19", "r20", "r21" }
-                .Select(r => arch.GetRegister(r))
+                .Select(r => arch.GetRegister(r)!)
                 .ToArray();
-            this.iRet = arch.GetRegister("r0");
+            this.iRet = arch.GetRegister("r0")!;
             this.fRegs = new[] { "f12", "f13", "f14", "f15" }
-                .Select(r => arch.GetRegister(r))
+                .Select(r => arch.GetRegister(r)!)
                 .ToArray();
 
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(8, 0);      //$BUGBUG: the '0' is incorrect, but we need a reliable spec for WinAlpha to determine exact value.
             if (dtRet != null)

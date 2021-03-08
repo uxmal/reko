@@ -262,7 +262,7 @@ namespace Reko.Arch.Xtensa
             var a = RewriteOp(this.instr.Operands[1]);
             var off = Constant.UInt32(
                         ((ImmediateOperand)instr.Operands[2]).Value.ToUInt32());
-            Expression ea = null;
+            Expression? ea = null;
             var dst = RewriteOp(this.instr.Operands[0]);
             if (off.IsZero)
             {

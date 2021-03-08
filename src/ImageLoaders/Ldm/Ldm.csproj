@@ -3,8 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <LangVersion>8.0</LangVersion>
-    <nullable>enable</nullable>
     <RootNamespace>Reko.ImageLoaders.Ldm</RootNamespace>
     <AssemblyName>Reko.ImageLoaders.Ldm</AssemblyName>
     <Configurations>Debug;Release</Configurations>

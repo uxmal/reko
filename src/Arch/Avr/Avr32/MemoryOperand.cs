@@ -34,9 +34,9 @@ namespace Reko.Arch.Avr.Avr32
         {
         }
 
-        public RegisterStorage Base { get; private set; }
+        public RegisterStorage? Base { get; private set; }
         public int Offset { get; private set; }
-        public RegisterStorage Index { get; private set; }
+        public RegisterStorage? Index { get; private set; }
         public int Shift { get; private set; }
         public bool PostIncrement { get; private set; }
         public bool PreDecrement { get; private set; }
@@ -87,16 +87,16 @@ namespace Reko.Arch.Avr.Avr32
             if (this.PreDecrement)
             {
                 renderer.WriteString("--");
-                renderer.WriteString(Base.Name);
+                renderer.WriteString(Base!.Name);
                 return;
             }
             if (this.PostIncrement)
             {
-                renderer.WriteString(Base.Name);
+                renderer.WriteString(Base!.Name);
                 renderer.WriteString("++");
                 return;
             }
-            renderer.WriteString(Base.Name);
+            renderer.WriteString(Base!.Name);
             renderer.WriteString("[");
             if (Index != null)
             {

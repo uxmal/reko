@@ -55,7 +55,7 @@ namespace Reko.Arch.PaRisc
         private bool annul;
         private bool zero;
         private SignExtension signExtend;
-        private ConditionOperand cond;
+        private ConditionOperand? cond;
         private AddrRegMod addrMod;
         private int coprocessor;
         private FpFormat fpFormat;
@@ -69,9 +69,10 @@ namespace Reko.Arch.PaRisc
             this.ops = new List<MachineOperand>();
             is64bit = arch.Is64Bit();
             this.dtSignedWord = is64bit ? PrimitiveType.Int64 : PrimitiveType.Int32;
+            this.addr = null!;
         }
 
-        public override PaRiscInstruction DisassembleInstruction()
+        public override PaRiscInstruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             this.ops.Clear();
@@ -547,13 +548,13 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Le,
             ConditionOperand.Gt,
 
-            null,
-            null,
-            null,
-            null,
+            null!,
+            null!,
+            null!,
+            null!,
 
-            null,
-            null,
+            null!,
+            null!,
             ConditionOperand.Odd,
             ConditionOperand.Even,
         });
@@ -570,13 +571,13 @@ namespace Reko.Arch.PaRisc
             ConditionOperand.Le64,
             ConditionOperand.Gt64,
 
-            null,
-            null,
-            null,
-            null,
+            null!,
+            null!,
+            null!,
+            null!,
 
-            null,
-            null,
+            null!,
+            null!,
             ConditionOperand.Odd64,
             ConditionOperand.Even64,
         });
@@ -725,13 +726,13 @@ namespace Reko.Arch.PaRisc
         // Table D-15 of PA-RISC 2.0 manual
         private static readonly Mutator<PaRiscDisassembler> cf16_bb_1 = cf(16, 3, new[]
         {
-            null,
-            null,
+            null!,
+            null!,
             ConditionOperand.Lt,
             ConditionOperand.Lt64,
 
-            null,
-            null,
+            null!,
+            null!,
             ConditionOperand.Ge,
             ConditionOperand.Ge64,
         });
@@ -902,7 +903,7 @@ namespace Reko.Arch.PaRisc
         /// _OR_
         /// Register indexed indirect.
         /// </summary>
-        private static Mutator<PaRiscDisassembler> Mshort(int dispFieldPos, PrimitiveType dt, AddrRegMod[] baseRegMods = null)
+        private static Mutator<PaRiscDisassembler> Mshort(int dispFieldPos, PrimitiveType dt, AddrRegMod[]? baseRegMods = null)
         {
             var dispField = BeField(dispFieldPos, 5);
             var baseRegField = BeField(6, 5);

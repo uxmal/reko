@@ -12,9 +12,6 @@ namespace Reko.ImageLoaders.MzExe.Pe
 	{
 		private readonly IServiceProvider services;
 
-		public M68kRelocator(Program program) : base(program) {
-		}
-
 		public M68kRelocator(IServiceProvider services, Program program) : base(program)
 		{
 			this.services = services;

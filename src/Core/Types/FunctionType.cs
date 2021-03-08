@@ -55,7 +55,7 @@ namespace Reko.Core.Types
         }
 
         public FunctionType(
-            Identifier returnValue,
+            Identifier? returnValue,    // 'null' means Void return value.
             params Identifier [] parameters)
         {
             this.Parameters = parameters;

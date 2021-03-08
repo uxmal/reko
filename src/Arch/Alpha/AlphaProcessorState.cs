@@ -55,7 +55,7 @@ namespace Reko.Arch.Alpha
             return Constant.Invalid;
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
             return;
         }

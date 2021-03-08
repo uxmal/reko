@@ -43,7 +43,7 @@ namespace Reko.Arch.Pdp11
         }
 
         public AddressMode Mode { get; set; }
-        public RegisterStorage Register { get;set;}
+        public RegisterStorage? Register { get;set;}
         public bool PreDec { get; set; }
         public bool PostInc { get; set; }
         public ushort EffectiveAddress { get; set; }

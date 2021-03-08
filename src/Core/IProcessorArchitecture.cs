@@ -152,13 +152,13 @@ namespace Reko.Core
         bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
 
         /// <summary>
-        /// Creates a comparer that compares instructions for equality. 
+        /// Optionally creates a comparer that compares instructions for equality. 
         /// Normalization means some attributes of the instruction are 
         /// treated as wildcards.
         /// </summary>
         /// <param name="norm"></param>
-        /// <returns></returns>
-        IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
+        /// <returns>An instruction comparer if the architecture supports it.</returns>
+        IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm);
 
         /// <summary>
         /// Creates a frame application builder for this architecture.
@@ -239,7 +239,7 @@ namespace Reko.Core
         /// <returns>If an invalid domain is passed, null is returned.</returns>
         RegisterStorage? GetRegister(StorageDomain domain, BitRange range);  
 
-        RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
+        RegisterStorage? GetSubregister(RegisterStorage reg, int offset, int width);
         /// <summary>
         /// If the <paramref name="flags"/> parameter consists of multiple sub fields, separate them
         /// into distinct fields.
@@ -273,7 +273,7 @@ namespace Reko.Core
         /// <returns></returns>
         FlagGroupStorage[] GetFlags();
 
-        FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf);          // Returns flag group matching the bitflags.
+        FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf);          // Returns flag group matching the bitflags.
 
         /// <summary>
         /// Given the name of a flag register bit group, returns the corresponding
@@ -289,7 +289,7 @@ namespace Reko.Core
         /// <param name="flagRegister"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        FlagGroupStorage GetFlagGroup(string name);
+        FlagGroupStorage? GetFlagGroup(string name);
         Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
         //$REFACTOR: this should probably live in FrameApplicationBuilder instead.
         Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType);  //$REVIEW: generalize these two methods?
@@ -487,7 +487,7 @@ namespace Reko.Core
         public ImageWriter CreateImageWriter(MemoryArea mem, Address addr) => Endianness.CreateImageWriter(mem, addr);
         public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value) => Endianness.TryRead(mem, addr, dt, out value);
 
-        public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
+        public abstract IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
@@ -575,7 +575,7 @@ namespace Reko.Core
         /// <param name="offset"></param>
         /// <param name="width"></param>
         /// <returns></returns>
-        public virtual RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        public virtual RegisterStorage? GetSubregister(RegisterStorage reg, int offset, int width)
         {
             return reg;
         }
@@ -616,8 +616,8 @@ namespace Reko.Core
         }
             
         public abstract bool TryGetRegister(string name, out RegisterStorage reg);
-        public abstract FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf);
-        public abstract FlagGroupStorage GetFlagGroup(string name);
+        public abstract FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf);
+        public abstract FlagGroupStorage? GetFlagGroup(string name);
         public abstract string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);
         public virtual List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
         {

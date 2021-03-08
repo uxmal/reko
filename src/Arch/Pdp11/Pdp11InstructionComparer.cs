@@ -40,12 +40,12 @@ namespace Reko.Arch.Pdp11
                 Compare(Op(x, 1), Op(y, 1));
         }
 
-        private MachineOperand Op(MachineInstruction instr, int iOp)
+        private MachineOperand? Op(MachineInstruction instr, int iOp)
         {
             return iOp < instr.Operands.Length ? instr.Operands[iOp] : null;
         }
 
-        private bool Compare(MachineOperand opA, MachineOperand opB)
+        private bool Compare(MachineOperand? opA, MachineOperand? opB)
         {
             if (opA == null && opB == null)
                 return true;
@@ -65,7 +65,7 @@ namespace Reko.Arch.Pdp11
                 if (NormalizeConstants)
                     return true;
                 var addrB = opB as AddressOperand;
-                return addrA.Address.ToLinear() == addrB.Address.ToLinear();
+                return addrB != null && addrA.Address.ToLinear() == addrB.Address.ToLinear();
             }
             var immA = opA as ImmediateOperand;
             if (immA != null)

@@ -50,6 +50,8 @@ namespace Reko.Arch.Sparc
             this.host = host;
             this.rdr = rdr;
             this.dasm = new LookaheadEnumerator<SparcInstruction>(CreateDisassemblyStream(rdr));
+            this.instrCur = null!;
+            this.m = null!;
         }
 
         public SparcRewriter(SparcArchitecture arch, IEnumerator<SparcInstruction> instrs, SparcProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -58,6 +60,9 @@ namespace Reko.Arch.Sparc
             this.binder = binder;
             this.host = host;
             this.dasm = new LookaheadEnumerator<SparcInstruction>(instrs);
+            this.instrCur = null!;
+            this.m = null!;
+            this.rdr = null!;
         }
 
         private IEnumerable<SparcInstruction> CreateDisassemblyStream(EndianImageReader rdr)
@@ -279,8 +284,9 @@ namespace Reko.Arch.Sparc
             {
                 if (r.Register == arch.Registers.g0)
                 {
+                    //$REVIEW: handle null
                     if (g0_becomes_null)
-                        return null;
+                        return null!;
                     else
                         return Constant.Zero(PrimitiveType.Word32);
                 }
@@ -300,8 +306,8 @@ namespace Reko.Arch.Sparc
 
         private Expression RewriteMemOp(MachineOperand op, PrimitiveType size)
         {
-            Expression baseReg;
-            Expression offset;
+            Expression? baseReg;
+            Expression? offset;
             if (op is MemoryOperand mem)
             {
                 baseReg = mem.Base == arch.Registers.g0 ? null : binder.EnsureRegister(mem.Base);
@@ -320,12 +326,12 @@ namespace Reko.Arch.Sparc
             return m.Mem(size, SimplifySum(baseReg, offset));
         }
 
-        private Expression SimplifySum(Expression srcLeft, Expression srcRight)
+        private Expression SimplifySum(Expression? srcLeft, Expression? srcRight)
         {
             if (srcLeft == null && srcRight == null)
                 return Constant.Zero(PrimitiveType.Ptr32);
             else if (srcLeft == null)
-                return srcRight;
+                return srcRight!;
             else if (srcRight == null)
                 return srcLeft;
             else

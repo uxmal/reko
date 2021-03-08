@@ -47,16 +47,16 @@ namespace Reko.Arch.i8051
             return new MemoryOperand { Register = @base, Index = idx };
         }
 
-        public Expression DirectAddress { get; set; }
-        public Storage Register { get; set; }
-        public RegisterStorage Index { get; set; }
+        public Expression? DirectAddress { get; set; }
+        public Storage? Register { get; set; }
+        public RegisterStorage? Index { get; set; }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             if (Index != null)
             {
                 renderer.WriteString("@");
-                renderer.WriteString(Register.Name);
+                renderer.WriteString(Register!.Name);
                 renderer.WriteString("+");
                 renderer.WriteString(Index.Name);
             }
@@ -76,7 +76,7 @@ namespace Reko.Arch.i8051
                     renderer.WriteString("]");
                 }
                 else
-                    renderer.WriteString($"@{Register.Name}");
+                    renderer.WriteString($"@{Register!.Name}");
             }
         }
     }

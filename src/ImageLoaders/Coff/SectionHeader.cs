@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -27,7 +27,7 @@ namespace Reko.ImageLoaders.Coff
 {
     public class SectionHeader
     {
-        public string s_name; // [8];  /* section name                     */
+        public string? s_name; // [8];  /* section name                     */
         public uint s_paddr;    /* physical address, aliased s_nlib */
         public uint s_vaddr;    /* virtual address                  */
         public uint s_size;     /* section size                     */

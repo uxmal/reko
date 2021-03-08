@@ -28,7 +28,7 @@ namespace Reko.Arch.Avr
 {
     public class MemoryOperand : MachineOperand
     {
-        public RegisterStorage Base;
+        public RegisterStorage? Base;
         public short Displacement;
         public bool PreDecrement;
         public bool PostIncrement;
@@ -43,7 +43,7 @@ namespace Reko.Arch.Avr
             {
                 renderer.WriteChar('-');
             }
-            renderer.WriteString(Base.Name);
+            renderer.WriteString(Base!.Name);
             if (PostIncrement)
             {
                 renderer.WriteChar('+');

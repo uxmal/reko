@@ -97,7 +97,7 @@ namespace Reko.Arch.Arm.AArch32
             return new CallSite(0, 0);
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
     }

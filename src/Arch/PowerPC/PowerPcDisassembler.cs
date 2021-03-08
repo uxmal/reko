@@ -54,9 +54,10 @@ namespace Reko.Arch.PowerPC
             this.defaultWordWidth = defaultWordWidth;
             this.primaryDecoders = primaryDecoders;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override PowerPcInstruction DisassembleInstruction()
+        public override PowerPcInstruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt32(out uint wInstr))

@@ -53,6 +53,10 @@ namespace Reko.Arch.PowerPC
             this.binder = binder;
             this.host = host;
             this.dasm = instrs.GetEnumerator();
+            this.rdr = null!;
+            this.instr = null!;
+            this.m = null!;
+            this.rtlInstructions = null!;
         }
 
         public PowerPcRewriter(PowerPcArchitecture arch, EndianImageReader rdr, IStorageBinder binder, IRewriterHost host)
@@ -62,6 +66,9 @@ namespace Reko.Arch.PowerPC
             this.host = host;
             this.rdr = rdr;
             this.dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
+            this.rtlInstructions = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -459,7 +466,7 @@ namespace Reko.Arch.PowerPC
                     return Constant.Zero(rOp.Register.DataType);
                 if (arch.IsCcField(rOp.Register))
                 {
-                    return binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(rOp.Register));
+                    return binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(rOp.Register)!);
                 }
                 else
                 {
@@ -485,7 +492,7 @@ namespace Reko.Arch.PowerPC
                     return Constant.Zero(rOp.Register.DataType);
                 if (arch.IsCcField(rOp.Register))
                 {
-                    return binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(rOp.Register));
+                    return binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(rOp.Register)!);
                 }
                 else
                 {

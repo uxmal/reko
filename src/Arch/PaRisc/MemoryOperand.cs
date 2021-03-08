@@ -30,10 +30,10 @@ namespace Reko.Arch.PaRisc
     {
         public int Offset;
         public RegisterStorage Base;
-        public RegisterStorage Index;
-        public RegisterStorage Space;
+        public RegisterStorage? Index;
+        public RegisterStorage? Space;
 
-        public MemoryOperand(PrimitiveType dt, int disp, RegisterStorage baseReg, RegisterStorage idxReg, RegisterStorage spaceReg) :
+        public MemoryOperand(PrimitiveType dt, int disp, RegisterStorage baseReg, RegisterStorage? idxReg, RegisterStorage? spaceReg) :
             base(dt)
         {
             this.Offset = disp;
@@ -42,12 +42,12 @@ namespace Reko.Arch.PaRisc
             this.Space= spaceReg;
         }
 
-        public static MemoryOperand Indirect(PrimitiveType dt, int offset, RegisterStorage baseReg, RegisterStorage spaceReg = null)
+        public static MemoryOperand Indirect(PrimitiveType dt, int offset, RegisterStorage baseReg, RegisterStorage? spaceReg = null)
         {
             return new MemoryOperand(dt, offset, baseReg, null, spaceReg);
         }
 
-        public static MemoryOperand Indexed(PrimitiveType dt, RegisterStorage baseReg, RegisterStorage idxReg, RegisterStorage spaceReg = null)
+        public static MemoryOperand Indexed(PrimitiveType dt, RegisterStorage baseReg, RegisterStorage idxReg, RegisterStorage? spaceReg = null)
         {
             return new MemoryOperand(dt, 0, baseReg, idxReg, spaceReg);
         }

@@ -5,8 +5,6 @@
     <RootNamespace>Reko.ImageLoaders.TekHex</RootNamespace>
     <AssemblyName>Reko.ImageLoaders.TekHex</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <LangVersion>8.0</LangVersion>
-    <nullable>enable</nullable>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 

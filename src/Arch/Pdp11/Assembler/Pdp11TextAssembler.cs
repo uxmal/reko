@@ -46,11 +46,14 @@ namespace Reko.Assemblers.Pdp11
         {
             this.emitter = emitter;
             this.ImageSymbols = new List<ImageSymbol>();
+            this.arch = new Pdp11Architecture(new ServiceContainer(), "pdp11", new Dictionary<string, object>());
+            this.lexer = null!;
+            this.StartAddress = null!;
+            this.Assembler = null!;
         }
 
         public Program Assemble(Address addrBase, TextReader reader)
         {
-            arch = new Pdp11Architecture(new ServiceContainer(), "pdp11", new Dictionary<string, object>());
             Assembler = new Pdp11Assembler(arch, addrBase, emitter);
             lexer = new Lexer(reader);
 
@@ -90,11 +93,11 @@ namespace Reko.Assemblers.Pdp11
                 return;
             if (lexer.Peek().Type == TokenType.Id)
             {
-                var id = (string) lexer.Expect(TokenType.Id);
+                var id = (string) lexer.Expect(TokenType.Id)!;
                 if (lexer.PeekAndDiscard(TokenType.Eq))
                 {
                     var exp = ParseExpression();
-                    Assembler.Equate(id, exp);
+                    Assembler.Equate(id, exp!);
                     lexer.PeekAndDiscard(TokenType.EOL);
                     return;
                 }
@@ -121,7 +124,7 @@ namespace Reko.Assemblers.Pdp11
                 lexer.Expect(TokenType.Eq);
                 lexer.Expect(TokenType._Dot);
                 lexer.Expect(TokenType.Plus);
-                var delta = (int) ParseExpression();
+                var delta = (int) ParseExpression()!;
                 emitter.Reserve(delta);
                 break;
             case TokenType.ASR: ProcessSingleOperand(Assembler.Asr); break;
@@ -130,7 +133,7 @@ namespace Reko.Assemblers.Pdp11
             case TokenType.BEQ: ProcessBranch(Assembler.Beq); break;
             case TokenType.DEC: ProcessSingleOperand(Assembler.Dec); break;
             case TokenType.INC: ProcessSingleOperand(Assembler.Inc); break;
-            case TokenType.JSR: lexer.Get(); Assembler.Jsr(ParseOperands()); break;
+            case TokenType.JSR: lexer.Get(); Assembler.Jsr(ParseOperands()!); break;
             case TokenType.MOV: ProcessDoubleOperand(Assembler.Mov); break;
             case TokenType.MOVB: ProcessDoubleOperand(Assembler.Movb); break;
             case TokenType.RESET: lexer.Get(); Assembler.Reset(); break;
@@ -144,7 +147,7 @@ namespace Reko.Assemblers.Pdp11
         private void ProcessBranch(Action<string> action)
         {
             lexer.Get();
-            var dest = (string)lexer.Expect(TokenType.Id);
+            var dest = (string)lexer.Expect(TokenType.Id)!;
             lexer.PeekAndDiscard(TokenType.EOL);
             action(dest);
         }
@@ -153,7 +156,7 @@ namespace Reko.Assemblers.Pdp11
         {
             lexer.Get();
             var ops = ParseOperands();
-            if (ops.Length != 1)
+            if (ops is null || ops.Length != 1)
                 throw new ApplicationException();
             action(ops[0]);
         }
@@ -162,22 +165,28 @@ namespace Reko.Assemblers.Pdp11
         {
             lexer.Get();
             var ops = ParseOperands();
-            if (ops.Length != 2)
+            if (ops is null || ops.Length != 2)
                 throw new ApplicationException();
             action(ops[0], ops[1]);
         }
 
-        private ParsedOperand[] ParseOperands()
+        private ParsedOperand[]? ParseOperands()
         {
             var ops = new List<ParsedOperand>();
             var tok = lexer.Peek();
             var opp = new OperandParser(arch, lexer, Assembler);
             if (tok.Type != TokenType.EOF && tok.Type != TokenType.EOL)
             {
-                ops.Add(opp.ParseOperand());
+                var op = opp.ParseOperand();
+                if (op is null)
+                    return null;
+                ops.Add(op);
                 while (lexer.PeekAndDiscard(TokenType.Comma))
                 {
-                    ops.Add(opp.ParseOperand());
+                    op = opp.ParseOperand();
+                    if (op is null)
+                        return null;
+                    ops.Add(op);
                 }
             }
             lexer.PeekAndDiscard(TokenType.EOL);
@@ -193,36 +202,36 @@ namespace Reko.Assemblers.Pdp11
                 return;
             }
             var exp = ParseExpression();
-            if (exp is string)
+            if (exp is string symName)
             {
                 // A symbol!
-                var sym = Assembler.Symtab.CreateSymbol((string)exp);
+                var sym = Assembler.Symtab.CreateSymbol(symName);
                 Assembler.ReferToSymbol(sym, emitter.Position, wordSize);
                 emitter.EmitLeUInt16(0);
                 return;
             }
-            emitter.EmitLe(wordSize, (int) exp);
+            emitter.EmitLe(wordSize, (int) exp!);
         }
 
-        private object ParseExpression()
+        private object? ParseExpression()
         {
             var o = ParseTerm();
             while (lexer.PeekAndDiscard(TokenType.Plus))
             {
-                var n = (int) o;
+                var n = (int) o!;
                 o = ParseTerm();
-                o = n + (int) o;
+                o = n + (int) o!;
             }
             return o;
         }
 
-        private object ParseTerm()
+        private object? ParseTerm()
         {
             object exp;
             var token = lexer.Peek();
             if (token.Type == TokenType.Id)
             {
-                return Evaluate((string) lexer.Expect(TokenType.Id));
+                return Evaluate((string) lexer.Expect(TokenType.Id)!);
             }
             if (token.Type == TokenType._Dot)
             {
@@ -231,12 +240,12 @@ namespace Reko.Assemblers.Pdp11
             }
             if (token.Type == TokenType.Number)
             {
-                exp = (int) lexer.Expect(TokenType.Number);
+                exp = (int) lexer.Expect(TokenType.Number)!;
                 return exp;
             }
             if (token.Type == TokenType.Register)
             {
-                return lexer.Expect(TokenType.Register);
+                return lexer.Expect(TokenType.Register)!;
             }
             lexer.Unexpected(lexer.Get());
             return null;

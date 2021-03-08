@@ -43,6 +43,7 @@ namespace Reko.ImageLoaders.LLVM
             this.Functions = new Dictionary<FunctionDefinition, ProcedureBuilder>();
             this.Globals = new Dictionary<string, Expression>();
             this.cfgSvc = services.RequireService<IConfigurationService>();
+            this.Types = null!;
         }
 
         public Dictionary<FunctionDefinition, ProcedureBuilder> Functions { get; private set; }
@@ -67,11 +68,11 @@ namespace Reko.ImageLoaders.LLVM
 
         public void DetermineTargetInformation(List<TargetSpecification> targets)
         {
-            IProcessorArchitecture arch = null;
-            IPlatform platform = null;
+            IProcessorArchitecture? arch = null;
+            IPlatform? platform = null;
             foreach (var target in targets)
             {
-                var segs = target.Specification.Split('-');
+                var segs = target.Specification!.Split('-');
                 switch (target.Type)
                 {
                 case TokenType.datalayout:
@@ -84,10 +85,10 @@ namespace Reko.ImageLoaders.LLVM
                 }
             }
             if (platform == null)
-                platform = new DefaultPlatform(services, arch);
+                platform = new DefaultPlatform(services, arch!);
             this.program = new Program
             {
-                Architecture = arch,
+                Architecture = arch!,
                 Platform = platform,
                 // No segment map.
             };
@@ -95,7 +96,7 @@ namespace Reko.ImageLoaders.LLVM
 
         private IProcessorArchitecture LoadArchitecture(string llvmArchName)
         {
-            string archName = null;
+            string? archName = null;
             switch (llvmArchName)
             {
             case "x86_64": archName = "x86-protected-64"; break;
@@ -104,12 +105,12 @@ namespace Reko.ImageLoaders.LLVM
                     "Support for LLVM type {0} not supported yet.",
                     llvmArchName));
             }
-            return cfgSvc.GetArchitecture(archName);
+            return cfgSvc.GetArchitecture(archName)!;
         }
 
         private IPlatform LoadPlatform(IProcessorArchitecture arch, string llvmPlatformName)
         {
-            string platformName = null;
+            string? platformName = null;
             switch (llvmPlatformName)
             {
             case "linux": platformName = "elf-neutral"; break;
@@ -133,7 +134,7 @@ namespace Reko.ImageLoaders.LLVM
             case FunctionDefinition fn:
                 var proc = RegisterFunction(fn, addr);
                 program.Procedures.Add(addr, proc);
-                this.Globals[fn.FunctionName] = new Core.Expressions.ProcedureConstant(
+                this.Globals[fn.FunctionName!] = new Core.Expressions.ProcedureConstant(
                     new Pointer(proc.Signature, program.Platform.PointerType.BitSize),
                     proc);
                 return addr + 1;
@@ -149,22 +150,22 @@ namespace Reko.ImageLoaders.LLVM
 
         public Identifier RegisterGlobal(GlobalDefinition global)
         {
-            var dt = TranslateType(global.Type);
-            var id = Identifier.Global(global.Name, dt);
-            this.Globals.Add(global.Name, id);
+            var dt = TranslateType(global.Type!);
+            var id = Identifier.Global(global.Name!, dt);
+            this.Globals.Add(global.Name!, id);
             return id;
         }
 
         public void RegisterDeclaration(Declaration decl)
         {
-            var dt = TranslateType(decl.Type);
-            var id = Identifier.Global(decl.Name, dt);
+            var dt = TranslateType(decl.Type!);
+            var id = Identifier.Global(decl.Name!, dt);
             this.Globals.Add(id.Name, id);
         }
         
         public Procedure RegisterFunction(FunctionDefinition fn, Address addr)
         {
-            var proc = Procedure.Create(program.Architecture, fn.FunctionName, addr, new Frame(program.Platform.PointerType));
+            var proc = Procedure.Create(program.Architecture, fn.FunctionName!, addr, new Frame(program.Platform.PointerType));
             var builder = new ProcedureBuilder(proc);
             Functions.Add(fn, builder);
             return proc;
@@ -172,7 +173,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public void RegisterTypeDefinition(TypeDefinition tydef)
         {
-            Types.Add(tydef.Name, tydef.Type.Accept(new TypeTranslator(program.Platform.PointerType.BitSize)));
+            Types.Add(tydef.Name!, tydef.Type!.Accept(new TypeTranslator(program.Platform.PointerType.BitSize)));
         }
 
         public void TranslateEntry(ModuleEntry entry)
@@ -209,7 +210,7 @@ namespace Reko.ImageLoaders.LLVM
                 else
                 {
                     var prefix = "arg";
-                    var pt = TranslateType(param.Type);
+                    var pt = TranslateType(param.Type!);
                     var id = m.CreateLocalId(prefix, pt);
                     sigParameters.Add(id);
                 }
@@ -227,12 +228,12 @@ namespace Reko.ImageLoaders.LLVM
         {
             var m = Functions[fn];
             var proc = m.Procedure;
-            var sig = TranslateSignature(fn.ResultType, fn.Parameters, m);
+            var sig = TranslateSignature(fn.ResultType!, fn.Parameters!, m);
             proc.Signature = sig;
 
             m.EnsureBlock(null);
             var xlat = new LLVMInstructionTranslator(this, m);
-            foreach (var instr in fn.Instructions)
+            foreach (var instr in fn.Instructions!)
             {
                 instr.Accept(xlat);
             }

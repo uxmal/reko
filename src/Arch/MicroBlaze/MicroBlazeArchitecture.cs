@@ -140,7 +140,7 @@ namespace Reko.Arch.MicroBlaze
             return Address.Ptr32(uAddr);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -150,7 +150,7 @@ namespace Reko.Arch.MicroBlaze
             return Registers.RegistersByName.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse32(txtAddr, out addr);
         }

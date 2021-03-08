@@ -85,12 +85,12 @@ namespace Reko.Arch.Sparc
         private void RewriteJmpl()
         {
             iclass = InstrClass.Transfer;
-            var rDst = instrCur.Operands[2] as RegisterOperand;
+            var rDst = (RegisterOperand) instrCur.Operands[2];
             var src1 = RewriteOp(instrCur.Operands[0]);
             var src2 = RewriteOp(instrCur.Operands[1]);
             if (rDst.Register != arch.Registers.g0)
             {
-                var dst = RewriteOp(instrCur.Operands[2]);
+                var dst = RewriteOp(instrCur.Operands[2])!;
                 m.Assign(dst, instrCur.Address);
             }
             var target = SimplifySum(src1, src2);
@@ -114,9 +114,9 @@ namespace Reko.Arch.Sparc
 
         private void RewriteReturn()
         {
-            var dst = RewriteOp(instrCur.Operands[0]);
-            var src1 = RewriteOp(instrCur.Operands[0]);
-            var src2 = RewriteOp(instrCur.Operands[1]);
+            var dst = RewriteOp(instrCur.Operands[0])!;
+            var src1 = RewriteOp(instrCur.Operands[0])!;
+            var src2 = RewriteOp(instrCur.Operands[1])!;
             RestoreRegisterWindow(dst, src1, src2);
             m.Return(0, 0, instrCur.InstructionClass);
         }

@@ -1,4 +1,4 @@
-﻿#region HEADER
+#region HEADER
 /* This file was derived from libmspack
  * (C) 2003-2004 Stuart Caie.
  * (C) 2011 Ali Scissons.
@@ -52,8 +52,8 @@ namespace Microsoft.Xna.Framework.Content
 
     class LzxDecoder
     {
-        public static uint[] position_base = null;
-        public static byte[] extra_bits = null;
+        public static uint[]? position_base = null;
+        public static byte[]? extra_bits = null;
 
         private LzxState m_state;
 
@@ -256,9 +256,9 @@ namespace Microsoft.Xna.Framework.Content
                                     if (match_offset > 2) {
                                         /* not repeated offset */
                                         if (match_offset != 3) {
-                                            extra = extra_bits[match_offset];
+                                            extra = extra_bits![match_offset];
                                             verbatim_bits = (int)bitbuf.ReadBits((byte)extra);
-                                            match_offset = (int)position_base[match_offset] - 2 + verbatim_bits;
+                                            match_offset = (int)position_base![match_offset] - 2 + verbatim_bits;
                                         } else {
                                             match_offset = 1;
                                         }
@@ -328,8 +328,8 @@ namespace Microsoft.Xna.Framework.Content
 
                                     if (match_offset > 2) {
                                         /* not repeated offset */
-                                        extra = extra_bits[match_offset];
-                                        match_offset = (int)position_base[match_offset] - 2;
+                                        extra = extra_bits![match_offset];
+                                        match_offset = (int)position_base![match_offset] - 2;
                                         if (extra > 3) {
                                             /* verbatim and aligned bits */
                                             extra -= 3;

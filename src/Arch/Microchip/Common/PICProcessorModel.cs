@@ -50,7 +50,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// Specialised default constructor for use only by derived class.
         /// </summary>
         protected PICProcessorModel()
-        { }
+        {
+            PICDescriptor = null!;
+        }
 
         /// <summary>
         /// Gets the PIC processor model corresponding to the given processor name.
@@ -61,7 +63,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="procName"/> is null.</exception>
         /// <exception cref="InvalidOperationException">Thrown the PIC database is not accessible.</exception>
-        public static IPICProcessorModel GetModel(string procName)
+        public static IPICProcessorModel? GetModel(string procName)
         {
             if (string.IsNullOrEmpty(procName))
                 procName = DefaultPICName;
@@ -87,7 +89,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the PIC name.
         /// </summary>
-        string IPICProcessorModel.PICName => PICDescriptor?.PICName;
+        string IPICProcessorModel.PICName => PICDescriptor?.PICName!;
 
         /// <summary>
         /// Creates a disassembler for the target processor.

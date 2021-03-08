@@ -97,7 +97,7 @@ namespace Reko.Arch.PaRisc
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             if (Registers.RegistersByStorageDomain.TryGetValue(domain, out var reg))
                 return reg;
@@ -128,7 +128,7 @@ namespace Reko.Arch.PaRisc
                 wordSize == 64;
         }
 
-        public override void LoadUserOptions(Dictionary<string, object> options)
+        public override void LoadUserOptions(Dictionary<string, object>? options)
         {
             if (options == null)
                 return;
@@ -158,7 +158,7 @@ namespace Reko.Arch.PaRisc
             }
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -190,7 +190,7 @@ namespace Reko.Arch.PaRisc
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse32(txtAddr, out addr);
         }

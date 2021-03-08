@@ -31,7 +31,7 @@ namespace Reko.ImageLoaders.Xex
     {
         internal XEXEncryptionType encryption_type;
         internal XEXCompressionType compression_type;
-        internal List<XexFileBasicCompressionBlock> basic_blocks;
+        internal List<XexFileBasicCompressionBlock>? basic_blocks;
         internal XexFileNormalCompressionInfo normal;
     }
 
@@ -58,7 +58,7 @@ namespace Reko.ImageLoaders.Xex
 
     public class LoaderInfo
 	{
-		public byte[] aes_key;
+		public byte[]? aes_key;
 	}
 
     public class ImageData
@@ -70,7 +70,7 @@ namespace Reko.ImageLoaders.Xex
         internal XexGameRating game_ratings = new XexGameRating();
         internal XexTlsInfo tls_info;
 
-        internal List<XexResourceInfo> resources;
+        internal List<XexResourceInfo>? resources;
         internal uint exe_address;
         internal uint exe_entry_point;
         internal uint exe_stack_size;
@@ -80,10 +80,10 @@ namespace Reko.ImageLoaders.Xex
         internal List<string> libNames = new List<string>();
         internal List<UInt32> import_records = new List<uint>();
         internal LoaderInfo loader_info = new LoaderInfo();
-        internal List<XexSection> sections;
-        internal byte[] session_key;
+        internal List<XexSection>? sections;
+        internal byte[]? session_key;
 
-        internal byte[] memoryData;
+        internal byte[]? memoryData;
         internal uint memorySize;
         internal PEOptHeader peHeader;
     }

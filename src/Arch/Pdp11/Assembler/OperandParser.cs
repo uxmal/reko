@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -42,7 +42,7 @@ namespace Reko.Assemblers.Pdp11
             this.asm = asm;
         }
 
-        public ParsedOperand ParseOperand()
+        public ParsedOperand? ParseOperand()
         {
             var tok = lexer.Get();
             switch (tok.Type)
@@ -51,7 +51,7 @@ namespace Reko.Assemblers.Pdp11
                 return new ParsedOperand
                 {
                     Type = AddressMode.Register,
-                    Register = arch.GetRegister((string) tok.Value)
+                    Register = arch.GetRegister((string) tok.Value!)
                 };
             case TokenType.Hash:
                 tok = lexer.Get();
@@ -61,7 +61,7 @@ namespace Reko.Assemblers.Pdp11
                     return new ParsedOperand
                     {
                         Type = AddressMode.Immediate,
-                        Symbol = asm.Symtab.CreateSymbol((string) tok.Value)
+                        Symbol = asm.Symtab.CreateSymbol((string) tok.Value!)
                     };
                 default: 
                     lexer.Unexpected(tok); 
@@ -69,6 +69,8 @@ namespace Reko.Assemblers.Pdp11
                 }
             case TokenType.At:
                 var op = ParseOperand();
+                if (op is null)
+                    return null;
                 switch (op.Type)
                 {
                 case AddressMode.Register: op.Type = AddressMode.RegDef; break;
@@ -84,7 +86,7 @@ namespace Reko.Assemblers.Pdp11
                 return op;
             case TokenType.Minus:
                 lexer.Expect(TokenType.LParen);
-                var regStr = (string) lexer.Expect(TokenType.Register);
+                var regStr = (string) lexer.Expect(TokenType.Register)!;
                 lexer.Expect(TokenType.RParen);
                 return new ParsedOperand
                 {
@@ -92,7 +94,7 @@ namespace Reko.Assemblers.Pdp11
                     Register = arch.GetRegister(regStr),
                 };
             case TokenType.LParen:
-                regStr = (string) lexer.Expect(TokenType.Register);
+                regStr = (string) lexer.Expect(TokenType.Register)!;
                 lexer.Expect(TokenType.RParen);
                 if (lexer.PeekAndDiscard(TokenType.Plus))
                 {
@@ -114,7 +116,7 @@ namespace Reko.Assemblers.Pdp11
                 return new ParsedOperand
                 {
                     Type = AddressMode.Absolute,
-                    Symbol = asm.Symtab.CreateSymbol((string) tok.Value)
+                    Symbol = asm.Symtab.CreateSymbol((string) tok.Value!)
                 };
             }
         }

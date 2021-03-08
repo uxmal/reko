@@ -58,7 +58,7 @@ namespace Reko.Environments.Trs80.Basic
             return GetEnumerator();
         }
 
-        public L2BasicInstruction ReadLine(Address addr)
+        public L2BasicInstruction? ReadLine(Address addr)
         {
             var rdr = bmem.CreateLeReader(addr);
             if (!rdr.TryReadLeUInt16(out ushort next))

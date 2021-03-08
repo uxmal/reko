@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -95,7 +95,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the optional parent PIC register.
         /// </summary>
-        public PICRegisterStorage ParentRegister { get; internal set; }
+        public PICRegisterStorage? ParentRegister { get; internal set; }
 
         /// <summary>
         /// Gets the traits of the PIC register as provided by Microchip.
@@ -105,7 +105,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the attached registers of this PIC register, if any.
         /// </summary>
-        public List<PICRegisterStorage> AttachedRegs { get; }
+        public List<PICRegisterStorage>? AttachedRegs { get; }
 
         /// <summary>
         /// Gets a value indicating whether this PIC register has attached registers.
@@ -115,12 +115,12 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the bit-fields composing this register. Sorted by increasing width then bit position.
         /// </summary>
-        public SortedList<PICRegisterBitFieldSortKey, PICRegisterBitFieldStorage> BitFields { get; }
+        public SortedList<PICRegisterBitFieldSortKey, PICRegisterBitFieldStorage>? BitFields { get; }
 
         /// <summary>
         /// Gets a value indicating whether this PIC register is composed of bit-fields.
         /// </summary>
-        public bool HasBitFields => ((BitFields?.Count() ??0) > 0);
+        public bool HasBitFields => ((BitFields?.Count() ?? 0) > 0);
 
         /// <summary>
         /// The "None" PIC register.
@@ -131,7 +131,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context) => visitor.VisitRegisterStorage(this, context);
 
-        public int CompareTo(PICRegisterStorage other)
+        public int CompareTo(PICRegisterStorage? other)
         {
             if (other is null)
                 return 1;

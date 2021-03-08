@@ -135,7 +135,7 @@ namespace Reko.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             int i = domain - StorageDomain.Register;
             return (0 <= i && i < regs.Length)
@@ -143,14 +143,14 @@ namespace Reko.Arch.Pdp11
                 : null;
         }
 
-        public RegisterStorage GetRegister(int i)
+        public RegisterStorage? GetRegister(int i)
         {
             return (0 <= i && i < regs.Length)
                 ? regs[i]
                 : null;
         }
 
-        internal RegisterStorage GetFpuRegister(int i)
+        internal RegisterStorage? GetFpuRegister(int i)
         {
             return (0 <= i && i < fpuRegs.Length)
                 ? fpuRegs[i]
@@ -173,7 +173,7 @@ namespace Reko.Arch.Pdp11
             return (int)result;
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
             foreach (RegisterStorage reg in regs)
             {
@@ -190,7 +190,7 @@ namespace Reko.Arch.Pdp11
 
         public override bool TryGetRegister(string name, out RegisterStorage result)
         {
-            result = null;
+            result = null!;
             foreach (RegisterStorage reg in regs)
             {
                 if (string.Compare(reg.Name, name, StringComparison.InvariantCultureIgnoreCase) == 0)
@@ -264,7 +264,7 @@ namespace Reko.Arch.Pdp11
             return Address.Ptr16(uAddr);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             if (rdr.TryReadUInt16(out var uaddr))
             {
@@ -276,7 +276,7 @@ namespace Reko.Arch.Pdp11
             }
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
         }

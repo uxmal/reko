@@ -26,10 +26,10 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public PROCESS_INFORMATION InitDebugEx(string szFileName, string szCommandLine, string szCurrentFolder, Action EntryCallBack)
         {
-            return null;
+            return null!;
         }
 
-        public void SetHardwareBreakPoint(Address addr, object o, eHWBPType type, byte size, Action callback)
+        public void SetHardwareBreakPoint(Address addr, object? o, eHWBPType type, byte size, Action callback)
         {
             this.emu.SetBreakpoint(addr.ToLinear(), callback);
         }

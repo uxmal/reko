@@ -62,12 +62,12 @@ namespace Reko.Environments.ZX81
             return new HashSet<RegisterStorage> { Registers.a };
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -95,7 +95,7 @@ namespace Reko.Environments.ZX81
             }
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }

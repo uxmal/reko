@@ -50,9 +50,9 @@ namespace Reko.Arch.Mips
         public RegisterStorage hi;
         public RegisterStorage lo;
         public RegisterStorage pc;
-        private string instructionSetEncoding;
+        private string? instructionSetEncoding;
         private Dictionary<string, RegisterStorage> mpNameToReg;
-        private Decoder<MipsDisassembler, Mnemonic, MipsInstruction> rootDecoder;
+        private Decoder<MipsDisassembler, Mnemonic, MipsInstruction>? rootDecoder;
 
         public MipsProcessorArchitecture(IServiceProvider services, string archId, EndianServices endianness, PrimitiveType wordSize, PrimitiveType ptrSize, Dictionary<string, object> options) 
             : base(services, archId, options)
@@ -174,13 +174,13 @@ namespace Reko.Arch.Mips
             return (int)result;
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             var i = domain - StorageDomain.Register;
             return GetRegister(i);
         }
 
-        public RegisterStorage GetRegister(int i)
+        public RegisterStorage? GetRegister(int i)
         {
             if (i >= GeneralRegs.Length)
                 return null;
@@ -212,10 +212,10 @@ namespace Reko.Arch.Mips
             throw new NotImplementedException();
         }
 
-        public override void LoadUserOptions(Dictionary<string, object> options)
+        public override void LoadUserOptions(Dictionary<string, object>? options)
         {
-            this.Options = options;
-            if (options.TryGetValue("decoder", out var oDecoderName) && 
+            this.Options = options ?? new Dictionary<string, object>();
+            if (Options.TryGetValue("decoder", out var oDecoderName) && 
                 oDecoderName is string decoderName)
             {
                 this.instructionSetEncoding = decoderName;
@@ -234,7 +234,7 @@ namespace Reko.Arch.Mips
             this.rootDecoder = null;
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             if (rdr.TryReadUInt32(out var uaddr))
             {
@@ -253,7 +253,7 @@ namespace Reko.Arch.Mips
             return "";
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }

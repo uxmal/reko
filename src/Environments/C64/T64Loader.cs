@@ -40,6 +40,7 @@ namespace Reko.Environments.C64
         public T64Loader(IServiceProvider services, string filename, byte[] bytes)
             : base(services, filename, bytes)
         {
+            this.program = null!;
         }
 
         public override Address PreferredBaseAddress
@@ -48,8 +49,9 @@ namespace Reko.Environments.C64
             set { throw new NotImplementedException(); }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
+            addrLoad ??= PreferredBaseAddress;
             List<ArchiveDirectoryEntry> entries = LoadTapeDirectory();
             IArchiveBrowserService abSvc = Services.GetService<IArchiveBrowserService>();
             if (abSvc != null)
@@ -91,10 +93,10 @@ namespace Reko.Environments.C64
             var rdr = new C64BasicReader(image, 0x0801);
             var lines = rdr.ToSortedList(line => (ushort) line.LineNumber, line => line);
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch6502 = cfgSvc.GetArchitecture("m6502");
+            var arch6502 = cfgSvc.GetArchitecture("m6502")!;
             var arch = new C64Basic(Services, lines);
             var platform = cfgSvc.GetEnvironment("c64").Load(Services, arch);
-            var segMap = platform.CreateAbsoluteMemoryMap();
+            var segMap = platform.CreateAbsoluteMemoryMap()!;
             segMap.AddSegment(image, "code", AccessMode.ReadWriteExecute);
             var program = new Program(segMap, arch, platform);
             program.Architectures.Add(arch6502.Name, arch6502);

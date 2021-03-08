@@ -52,6 +52,8 @@ namespace Reko.Arch.Blackfin
             this.binder = binder;
             this.host = host;
             this.dasm = new BlackfinDisassembler(arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

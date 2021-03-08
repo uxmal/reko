@@ -100,7 +100,7 @@ namespace Reko.Arch.Sparc
             return new CallSite(0, 0);
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
     }

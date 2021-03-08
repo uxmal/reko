@@ -73,8 +73,8 @@ namespace Reko.Environments.AmigaOS
                 foreach (var declarator in declaration.init_declarator_list)
                 {
                     var nt = ntde.GetNameAndType(declarator.Declarator);
-                    var ssig = (SerializedSignature)nt.DataType;
-                    if (ssig.ReturnValue != null)
+                    var ssig = (SerializedSignature?)nt.DataType;
+                    if (ssig != null && ssig.ReturnValue != null)
                     {
                         ssig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(
                             "returns", declaration.attribute_list);
@@ -104,7 +104,7 @@ namespace Reko.Environments.AmigaOS
                 .Where(a =>
                     a.Name.Components[0] == "reko" &&
                     a.Name.Components[1] == "amiga_function_vector")
-                .Select(a => (int?)(int)a.Tokens[2].Value)
+                .Select(a => (int?)(int)a.Tokens[2].Value!)
                 .FirstOrDefault();
         }
     }

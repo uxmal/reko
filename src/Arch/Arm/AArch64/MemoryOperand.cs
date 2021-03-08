@@ -32,9 +32,9 @@ namespace Reko.Arch.Arm.AArch64
 {
     public class MemoryOperand : MachineOperand
     {
-        public RegisterStorage Base;
-        public Constant Offset;
-        public RegisterStorage Index;
+        public RegisterStorage? Base;
+        public Constant? Offset;
+        public RegisterStorage? Index;
         public Mnemonic IndexExtend;
         public int IndexShift;
         public bool PreIndex;
@@ -47,7 +47,7 @@ namespace Reko.Arch.Arm.AArch64
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.WriteChar('[');
-            renderer.WriteString(Base.Name);
+            renderer.WriteString(Base!.Name);
             if (Offset != null && !Offset.IsIntegerZero)
             {
                 if (PostIndex)

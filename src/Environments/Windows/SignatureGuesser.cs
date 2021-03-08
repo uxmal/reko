@@ -38,25 +38,24 @@ namespace Reko.Environments.Windows
     /// </remarks>
     public class SignatureGuesser
     {
-        public static Tuple<string, SerializedType, SerializedType> InferTypeFromName(string fnName)
+        public static (string?, SerializedType?, SerializedType?) InferTypeFromName(string fnName)
         {
             if (fnName[0] == '?')
             {
                 // Microsoft-mangled signatures begin with '?'
                 var pmnp = new MsMangledNameParser(fnName);
-                Tuple<string, SerializedType, SerializedType> field = null;
                 try
                 {
-                    field = pmnp.Parse();
+                    var field = pmnp.Parse();
+                    return field;
                 }
                 catch (Exception ex)
                 {
                     Debug.Print("*** Error parsing {0}. {1}", fnName, ex.Message);
-                    return null;
+                    return (null,null,null);
                 }
-                return field;
             }
-            return null;
+            return (null,null,null);
         }
 
         /// <summary>
@@ -66,7 +65,7 @@ namespace Reko.Environments.Windows
         /// <param name="loader"></param>
         /// <param name="arch"></param>
         /// <returns></returns>
-        public static ProcedureBase_v1 SignatureFromName(string fnName, IPlatform platform)
+        public static ProcedureBase_v1? SignatureFromName(string fnName, IPlatform platform)
         {
             int argBytes;
             if (fnName[0] == '_')
@@ -88,7 +87,7 @@ namespace Reko.Environments.Windows
                 // Borland-mangled signatures begin with '@'.
                 var bmnp = new BorlandMangledNamedParser(fnName);
                 var field = bmnp.Parse();
-                if (field != null)
+                if (field.Item1 != null)
                 {
                     var sproc = field.Item2 as SerializedSignature;
                     if (sproc != null)
@@ -115,7 +114,7 @@ namespace Reko.Environments.Windows
             {
                 // Microsoft-mangled signatures begin with '?'
                 var pmnp = new MsMangledNameParser(fnName);
-                Tuple<string,SerializedType,SerializedType> field = null;
+                (string?,SerializedType?,SerializedType?) field;
                 try
                 {
                     field = pmnp.Parse();

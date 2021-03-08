@@ -21,6 +21,7 @@ namespace Reko.Environments.Trs80.Dmk
             this.Track = -1;
             this.Side = -1;
             this.SizeCode = -1;
+            m_data = null!;
         }
 
 		public long Length

@@ -153,13 +153,14 @@ namespace Reko.ImageLoaders.Xbe
             : base(services, filename, rawImage)
         {
             rdr = new LeImageReader(rawImage);
+            ctx = null!;
         }
 
         public override Address PreferredBaseAddress
         {
             get
             {
-                return null; //the format is self describing
+                return null!; //the format is self describing
             }
 
             set
@@ -210,7 +211,7 @@ namespace Reko.ImageLoaders.Xbe
             return segments;
         }
 
-        private ImageSegment LoadTlsSection()
+        private ImageSegment? LoadTlsSection()
         {
             Address tlsDirectoryAddress = Address.Ptr32(hdr.TlsAddress);
             XbeTls tls = rdr.ReadAt<XbeTls>(tlsDirectoryAddress - ctx.BaseAddress, (rdr) =>
@@ -264,10 +265,10 @@ namespace Reko.ImageLoaders.Xbe
             return imports;
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch = cfgSvc.GetArchitecture("x86-protected-32");
+            var arch = cfgSvc.GetArchitecture("x86-protected-32")!;
             var platform = cfgSvc.GetEnvironment("xbox").Load(Services, arch);
 
             this.hdr = rdr.ReadStruct<XbeImageHeader>();
@@ -283,7 +284,7 @@ namespace Reko.ImageLoaders.Xbe
 
             var segments = LoadPrimarySections();
 
-            ImageSegment tlsSegment = LoadTlsSection();
+            ImageSegment? tlsSegment = LoadTlsSection();
             if(tlsSegment != null)
             {
                 segments.Add(tlsSegment);

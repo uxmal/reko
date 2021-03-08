@@ -49,9 +49,10 @@ namespace Reko.Arch.Avr
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override AvrInstruction DisassembleInstruction()
+        public override AvrInstruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt16(out ushort wInstr))

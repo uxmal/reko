@@ -61,7 +61,7 @@ namespace Reko.Arch.Tms7000
             return c;
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
 

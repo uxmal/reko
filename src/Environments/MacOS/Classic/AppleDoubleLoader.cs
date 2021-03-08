@@ -40,6 +40,9 @@ namespace Reko.Environments.MacOS.Classic
         public AppleDoubleLoader(IServiceProvider services, string filename, byte[] rawImage)
             : base(services, filename, rawImage)
         {
+            rsrcFork = null!;
+            mem = null!;
+            segmentMap = null!;
         }
 
         public override Address PreferredBaseAddress
@@ -48,8 +51,9 @@ namespace Reko.Environments.MacOS.Classic
             set { throw new NotImplementedException(); }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
+            addrLoad ??= PreferredBaseAddress;
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var rdr = new Core.Memory.BeImageReader(RawImage);
             var hdr = rdr.ReadStruct<Header>();
@@ -65,7 +69,7 @@ namespace Reko.Environments.MacOS.Classic
             {
                 var bytes = new byte[resourceEntry.length];
                 Array.Copy(RawImage, resourceEntry.offset, bytes, 0, bytes.Length);
-                var arch = cfgSvc.GetArchitecture("m68k");
+                var arch = cfgSvc.GetArchitecture("m68k")!;
                 var platform = (MacOSClassic) cfgSvc.GetEnvironment("macOs").Load(Services, arch);
                 this.rsrcFork = new ResourceFork(platform, bytes);
                 this.mem = new ByteMemoryArea(addrLoad, bytes);

@@ -34,7 +34,7 @@ namespace Reko.ImageLoaders.MzExe
 	public class ExeImageLoader : ImageLoader
 	{
         private readonly IServiceProvider services;
-        private ImageLoader ldrDeferred;
+        private ImageLoader? ldrDeferred;
 
 		public ushort	e_magic;                     // 0000 - Magic number
 		public ushort   e_cbLastPage;                // 0002 - Bytes on last page of file
@@ -116,7 +116,7 @@ namespace Reko.ImageLoaders.MzExe
         /// sub-formats, so we need to discover what flavour it is before we
         /// can proceed.
         /// </summary>
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
 		{
 			return GetDeferredLoader().Load(addrLoad);
 		}

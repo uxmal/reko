@@ -46,7 +46,7 @@ namespace Reko.Arch.Qualcomm
             return Constant.Invalid;
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
 

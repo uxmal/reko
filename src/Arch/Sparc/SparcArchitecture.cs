@@ -111,12 +111,12 @@ namespace Reko.Arch.Sparc
             return (int)result;
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             return Registers.GetRegister(domain);
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
             if (Registers.TryGetRegister(name, out var reg))
                 return reg;
@@ -139,7 +139,7 @@ namespace Reko.Arch.Sparc
             return Registers.TryGetRegister(name, out reg);
         }
 
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        public override RegisterStorage? GetSubregister(RegisterStorage reg, int offset, int width)
         {
             if (offset == 0)
                 return reg;
@@ -158,7 +158,7 @@ namespace Reko.Arch.Sparc
             return fl;
         }
 
-        public override FlagGroupStorage GetFlagGroup(string name)
+        public override FlagGroupStorage? GetFlagGroup(string name)
         {
             FlagM grf = 0;
             for (int i = 0; i < name.Length; ++i)
@@ -204,7 +204,7 @@ namespace Reko.Arch.Sparc
             return Address.Ptr32(uAddr);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -226,7 +226,7 @@ namespace Reko.Arch.Sparc
             return s.ToString();
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }

@@ -27,6 +27,6 @@ namespace Reko.Arch.Cil
 {
     public class CilArchitecture
     {
-        public IServiceProvider Services { get; set; }
+        public IServiceProvider? Services { get; set; }
     }
 }

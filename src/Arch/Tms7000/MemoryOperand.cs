@@ -27,8 +27,8 @@ namespace Reko.Arch.Tms7000
 {
     public class MemoryOperand : MachineOperand
     {
-        public RegisterStorage Register;
-        public Address Address;
+        public RegisterStorage? Register;
+        public Address? Address;
 
         public MemoryOperand() : base(PrimitiveType.Byte) { }
         public static MemoryOperand Indexed(Address address, RegisterStorage b)
@@ -61,7 +61,7 @@ namespace Reko.Arch.Tms7000
             if (Address == null)
             {
                 renderer.WriteChar('*');
-                renderer.WriteString(Register.Name);
+                renderer.WriteString(Register!.Name);
             }
             else
             {

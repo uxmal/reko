@@ -67,6 +67,8 @@ namespace Reko.ImageLoaders.MzExe
             importStubs = new Dictionary<uint, Tuple<Address, ImportReference>>();
             imageSymbols = new SortedList<Address, ImageSymbol>();
             PreferredBaseAddress = Address.Ptr32(0x0010_0000);  //$REVIEW: arbitrary address.
+            this.arch = null!;
+            this.moduleNames = null!;
         }
         
         /// <summary>
@@ -444,18 +446,19 @@ namespace Reko.ImageLoaders.MzExe
             public uint DataOffset;
             public uint DataLength;
             public ObjectFlags Flags;
-            public Address Address;
-            public string Name;
+            public Address? Address;
+            public string? Name;
             public uint BaseAddress;
         }
 
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
+            addrLoad ??= PreferredBaseAddress;
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            this.arch = cfgSvc.GetArchitecture("x86-protected-32");
+            this.arch = cfgSvc.GetArchitecture("x86-protected-32")!;
             var rdr = new LeImageReader(RawImage, this.lfaNew);
 
             var hdrReader = new StructureReader<LXHeader>(rdr);
@@ -623,7 +626,7 @@ namespace Reko.ImageLoaders.MzExe
                 RawImage, (int)seg.DataOffset,
                 mem.Bytes, 0,
                 mem.Bytes.Length);
-            var imgSegment = new ImageSegment(seg.Name, mem, access);
+            var imgSegment = new ImageSegment(seg.Name!, mem, access);
             return imgSegment;
         }
 

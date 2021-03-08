@@ -52,7 +52,7 @@ namespace Reko.Arch.PaRisc
             return Constant.Invalid;
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
 

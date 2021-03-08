@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -30,7 +30,7 @@ namespace Reko.Assemblers.Pdp11
     public class Lexer
     {
         private TextReader rdr;
-        private Token tok;
+        private Token? tok;
         private StringBuilder sb;
         private int lineNumber;
 
@@ -69,6 +69,7 @@ namespace Reko.Assemblers.Pdp11
         {
             this.rdr = rdr;
             this.lineNumber = 1;
+            this.sb = new StringBuilder();
         }
 
         private enum State
@@ -223,13 +224,13 @@ namespace Reko.Assemblers.Pdp11
 
         private State StartToken(State state)
         {
-            this.sb = new StringBuilder();
+            this.sb.Clear();
             return state;
         }
 
         private State StartToken(char ch, State state)
         {
-            this.sb = new StringBuilder();
+            this.sb.Clear();
             rdr.Read();
             sb.Append(ch);
             return state;
@@ -263,7 +264,7 @@ namespace Reko.Assemblers.Pdp11
             throw new FormatException(string.Format("Unpexected token '{0}'.", unexpected));
         }
 
-        public object Expect(TokenType expected)
+        public object? Expect(TokenType expected)
         {
             var token = Get();
             if (token.Type != expected)
@@ -275,7 +276,7 @@ namespace Reko.Assemblers.Pdp11
     public class Token
     {
         public TokenType Type { get; private set; }
-        public object Value { get; private set; }
+        public object? Value { get; }
         public int Linenumber { get; private set; }
         public Token(TokenType type, int lineNumber)
         {

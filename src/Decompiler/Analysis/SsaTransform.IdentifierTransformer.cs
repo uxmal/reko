@@ -732,7 +732,7 @@ namespace Reko.Analysis
                     var (sidElem, maskElem) = alias.Definitions[i];
                     if ((maskElem & mask) != 0)
                     {
-                        var flagGroup = outer.arch.GetFlagGroup(this.flagGroup.FlagRegister, maskElem & mask);
+                        var flagGroup = outer.arch.GetFlagGroup(this.flagGroup.FlagRegister, maskElem & mask)!;
                         var idElem = outer.ssa.Procedure.Frame.EnsureFlagGroup(flagGroup);
                         sids.Add((alias, sidElem, maskElem & mask));
                         mask &= ~maskElem;
@@ -773,7 +773,7 @@ namespace Reko.Analysis
                     return sid;
                 int offset = Bits.Log2(this.flagMask);
                 var e = outer.m.Slice(PrimitiveType.Bool, elem.sid.Identifier, offset);
-                this.flagGroup = outer.arch.GetFlagGroup(grfFrom.FlagRegister, elem.mask);
+                this.flagGroup = outer.arch.GetFlagGroup(grfFrom.FlagRegister, elem.mask)!;
                 var idSlice = outer.ssa.Procedure.Frame.EnsureFlagGroup(this.flagGroup);
                 var ass = new AliasAssignment(idSlice, e);
                 var sidSlice = InsertAfterDefinition(elem.sid.DefStatement!, ass);

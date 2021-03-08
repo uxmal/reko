@@ -52,7 +52,7 @@ namespace Reko.Arch.Alpha
             throw new NotImplementedException();
         }
 
-        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
         {
             return null;
         }
@@ -96,14 +96,14 @@ namespace Reko.Arch.Alpha
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
             return Registers.AllRegisters.TryGetValue(name, out var reg)
                 ? reg
                 : null;
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             return Registers.ByDomain.TryGetValue(domain, out var reg)
                 ? reg
@@ -129,7 +129,7 @@ namespace Reko.Arch.Alpha
             return Address.Ptr32(uAddr);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -139,7 +139,7 @@ namespace Reko.Arch.Alpha
             return Registers.AllRegisters.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             //$TODO: this should be in the platform not the architecture.
             return Address.TryParse32(txtAddr, out addr);

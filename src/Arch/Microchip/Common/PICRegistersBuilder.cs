@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -35,7 +35,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     {
         private ulong bitRegAddr = 0;
         private static int regNumber = 0;
-        private IPICRegisterSymTable symTable;
+        private IPICRegisterSymTable? symTable;
 
         /// <summary>
         /// Loads the PIC registers, as found in the PIC definition, into the registers symbol table.
@@ -89,9 +89,9 @@ namespace Reko.Arch.MicrochipPIC.Common
                 if ((sfld.Name != sfr.Name) && (sfld.BitWidth != sfr.BitWidth))
                 {
                     var fld = new PICRegisterBitFieldStorage(reg, sfld);
-                    if (!reg.BitFields.ContainsKey(fld.BitFieldSortKey))
+                    if (!reg.BitFields!.ContainsKey(fld.BitFieldSortKey))
                     {
-                        if (symTable.AddRegisterBitField(fld))
+                        if (symTable!.AddRegisterBitField(fld))
                         {
                             reg.BitFields.Add(fld.BitFieldSortKey, fld);
                             continue;

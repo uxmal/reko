@@ -44,16 +44,17 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
         private Address addr;
-        private PrimitiveType opSize;
+        private PrimitiveType? opSize;
 
         public Tlcs900Disassembler(Tlcs900Architecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override Tlcs900Instruction DisassembleInstruction()
+        public override Tlcs900Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte b))
@@ -103,7 +104,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private static bool BW(uint b, Tlcs900Disassembler dasm)
         {
             // Opsize must be set to byte or word16.
-            return dasm.opSize.Size == 1 || dasm.opSize.Size == 2;
+            return dasm.opSize!.Size == 1 || dasm.opSize.Size == 2;
         }
 
         private static bool clr(uint b, Tlcs900Disassembler dasm)
@@ -128,7 +129,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         }
 
         // Immediate encoded in low 3 bits
-        private static Mutator<Tlcs900Disassembler> i3(PrimitiveType size)
+        private static Mutator<Tlcs900Disassembler> i3(PrimitiveType? size)
         {
             return (b, dasm) => 
             {
@@ -201,17 +202,23 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private static bool Jw(uint b, Tlcs900Disassembler dasm)
         {
-            dasm.ops.Add(dasm.AbsoluteDestination(2));
+            var dst = dasm.AbsoluteDestination(2);
+            if (dst is null)
+                return false;
+            dasm.ops.Add(dst);
             return true;
         }
 
         private static bool Jl(uint b, Tlcs900Disassembler dasm)
         {
-            dasm.ops.Add(dasm.AbsoluteDestination(3));
+            var dst = dasm.AbsoluteDestination(3);
+            if (dst is null)
+                return false;
+            dasm.ops.Add(dst);
             return true;
         }
 
-        private static Mutator<Tlcs900Disassembler> R(PrimitiveType size)
+        private static Mutator<Tlcs900Disassembler> R(PrimitiveType? size)
         {
             return (b, dasm) => {
                 dasm.ops.Add(new RegisterOperand(dasm.Reg(size, (int)b & 0x7)));
@@ -239,7 +246,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         #endregion
 
-        private static Mutator<Tlcs900Disassembler> Post(PrimitiveType size)
+        private static Mutator<Tlcs900Disassembler> Post(PrimitiveType? size)
         {
             return (b, dasm) =>
             {
@@ -255,7 +262,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         }
 
         // Predecrement
-        private static Mutator<Tlcs900Disassembler> Pre(PrimitiveType size)
+        private static Mutator<Tlcs900Disassembler> Pre(PrimitiveType? size)
         {
             return (b, dasm) =>
             {
@@ -271,7 +278,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         }
 
         // Immediate encoded in low 3 bits, with 8 encoded as 0
-        private static Mutator<Tlcs900Disassembler> q3(PrimitiveType size)
+        private static Mutator<Tlcs900Disassembler> q3(PrimitiveType? size)
         {
             return (b, dasm) => {
                 var c = Constant.Create(dasm.Size(size), imm3Const8[b & 7]);
@@ -322,7 +329,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private static readonly Mutator<Tlcs900Disassembler> rw = r(PrimitiveType.Word16);
         private static readonly Mutator<Tlcs900Disassembler> rx = r(PrimitiveType.Word32);
 
-        private static Mutator<Tlcs900Disassembler> M(PrimitiveType size)
+        private static Mutator<Tlcs900Disassembler> M(PrimitiveType? size)
         {
             return (b, dasm) =>
             {
@@ -338,7 +345,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private static readonly Mutator<Tlcs900Disassembler> M_ = M(null);
 
         // indexed (8-bit offset)
-        private static Mutator<Tlcs900Disassembler> N(PrimitiveType size)
+        private static Mutator<Tlcs900Disassembler> N(PrimitiveType? size)
         {
             return (b, dasm) => {
                 if (!dasm.rdr.TryReadByte(out byte o8))
@@ -354,7 +361,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private static readonly Mutator<Tlcs900Disassembler> N_ = N(null);
 
         // various mem formats
-        private static Mutator<Tlcs900Disassembler> m(PrimitiveType size)
+        private static Mutator<Tlcs900Disassembler> m(PrimitiveType? size)
         {
             return (b, dasm) =>
             {
@@ -409,9 +416,12 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private static readonly Mutator<Tlcs900Disassembler> Zx = Z(PrimitiveType.Word32);
 
 
-        private static Mutator<Tlcs900Disassembler> O(PrimitiveType size) {
+        private static Mutator<Tlcs900Disassembler> O(PrimitiveType? size) {
             return (b, dasm) => {
-                dasm.ops.Add(dasm.Absolute(1, size));
+                var abs = dasm.Absolute(1, size);
+                if (abs is null)
+                    return false;
+                dasm.ops.Add(abs);
                 return true;
             };
         }
@@ -420,10 +430,14 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private static readonly Mutator<Tlcs900Disassembler> Ox = O(PrimitiveType.Word32);
         private static readonly Mutator<Tlcs900Disassembler> O_ = O(null);
 
-        private static Mutator<Tlcs900Disassembler> P(PrimitiveType size)
+        private static Mutator<Tlcs900Disassembler> P(PrimitiveType? size)
         {
-            return (b, dasm) => {
-                dasm.ops.Add(dasm.Absolute(2, size));
+            return (b, dasm) => 
+            {
+                var abs = dasm.Absolute(2, size);
+                if (abs is null)
+                    return false;
+                dasm.ops.Add(abs);
                 return true;
             };
         }
@@ -432,10 +446,14 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private static readonly Mutator<Tlcs900Disassembler> Px = P(PrimitiveType.Word32);
         private static readonly Mutator<Tlcs900Disassembler> P_ = P(null);
 
-        private static Mutator<Tlcs900Disassembler> Q(PrimitiveType size)
+        private static Mutator<Tlcs900Disassembler> Q(PrimitiveType? size)
         {
-            return (b, dasm) => {
-                dasm.ops.Add(dasm.Absolute(3, size));
+            return (b, dasm) => 
+            {
+                var abs = dasm.Absolute(3, size);
+                if (abs is null)
+                    return false;
+                dasm.ops.Add(abs);
                 return true;
             };
         }
@@ -444,12 +462,12 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private static readonly Mutator<Tlcs900Disassembler> Qx = Q(PrimitiveType.Word32);
         private static readonly Mutator<Tlcs900Disassembler> Q_ = Q(null);
 
-        private RegisterStorage Reg(PrimitiveType size, int regNum)
+        private RegisterStorage Reg(PrimitiveType? size, int regNum)
         {
             int r = regNum & 7;
             if (size == null)
             {
-                size = this.opSize;
+                size = this.opSize!;
             }
             switch (size.Size)
             {
@@ -460,18 +478,18 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
         }
 
-        private PrimitiveType Size(PrimitiveType size)
+        private PrimitiveType Size(PrimitiveType? size)
         {
-            return size ?? this.opSize;
+            return size ?? this.opSize!;
         }
 
-        private void SetSize(PrimitiveType size)
+        private void SetSize(PrimitiveType? size)
         {
             if (size != null)
                 this.opSize = size;
         }
 
-        private MachineOperand Absolute(int addrBytes, PrimitiveType size)
+        private MachineOperand? Absolute(int addrBytes, PrimitiveType? size)
         {
             uint uAddr = 0;
             int sh = 0;
@@ -483,10 +501,10 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 sh += 8;
             }
             SetSize(size);
-            return MemoryOperand.Absolute(size, uAddr);
+            return MemoryOperand.Absolute(size!, uAddr);
         }
 
-        private MachineOperand AbsoluteDestination(int addrBytes)
+        private MachineOperand? AbsoluteDestination(int addrBytes)
         {
             uint uAddr = 0;
             int sh = 0;
@@ -500,17 +518,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             return AddressOperand.Ptr32(uAddr);
         }
 
-        private MachineOperand StatusRegister(char size)
-        {
-            switch (size)
-            {
-            case 'b': return new RegisterOperand( Tlcs900Registers.f);
-            case 'w': return new RegisterOperand(Tlcs900Registers.sr);
-            default: return null;
-            }
-        }
-
-        private RegisterOperand ExtraRegister(byte b)
+        private RegisterOperand? ExtraRegister(byte b)
         {
             switch (b)
             {
@@ -549,10 +557,10 @@ namespace Reko.Arch.Tlcs.Tlcs900
             public override Tlcs900Instruction Decode(uint bPrev, Tlcs900Disassembler dasm)
             {
                 if (!dasm.rdr.TryReadByte(out byte b))
-                    return null;
+                    return dasm.CreateInvalidInstruction();
                 dasm.opSize = width;
                 var op = dasm.ExtraRegister(b);
-                if (op == null)
+                if (op is null)
                     return dasm.CreateInvalidInstruction();
                 if (!dasm.rdr.TryReadByte(out b))
                     return dasm.CreateInvalidInstruction();
@@ -608,9 +616,9 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private class SecondDecoder : Decoder
         {
             private readonly Mnemonic mnemonic;
-            private readonly Mutator<Tlcs900Disassembler> mutator;
+            private readonly Mutator<Tlcs900Disassembler>? mutator;
 
-            public SecondDecoder(Mnemonic mnemonic, Mutator<Tlcs900Disassembler> mutator = null)
+            public SecondDecoder(Mnemonic mnemonic, Mutator<Tlcs900Disassembler>? mutator = null)
             {
                 this.mnemonic = mnemonic;
                 this.mutator = mutator;
@@ -618,7 +626,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
             public override Tlcs900Instruction Decode(uint bPrev, Tlcs900Disassembler dasm)
             {
-                if (this.mutator == null)
+                if (this.mutator is null)
                 {
                     return new Tlcs900Instruction
                     {
@@ -675,7 +683,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             {
                 return new Tlcs900Instruction
                 {
-                    Mnemonic = dasm.opSize.Size == 2 ? Mnemonic.ldirw : Mnemonic.ldir,
+                    Mnemonic = dasm.opSize!.Size == 2 ? Mnemonic.ldirw : Mnemonic.ldir,
                     InstructionClass = InstrClass.Linear,
                     Operands = new MachineOperand[0],
                     Address = dasm.addr

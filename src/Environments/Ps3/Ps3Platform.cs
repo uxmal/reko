@@ -73,12 +73,12 @@ namespace Reko.Environments.Ps3
             return new HashSet<RegisterStorage>();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -102,7 +102,7 @@ namespace Reko.Environments.Ps3
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rdr, IRewriterHost host)
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rdr, IRewriterHost host)
         {
             var dasm = rdr.Take(8).ToArray();
             if (dasm.Length < 8)
@@ -168,7 +168,7 @@ namespace Reko.Environments.Ps3
             */
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }
@@ -189,7 +189,7 @@ namespace Reko.Environments.Ps3
             return Address.Ptr32((uint)uAddr);
         }
 
-        public override bool TryParseAddress(string sAddress, out Address addr)
+        public override bool TryParseAddress(string? sAddress, out Address addr)
         {
             return Address.TryParse32(sAddress, out addr);
         }

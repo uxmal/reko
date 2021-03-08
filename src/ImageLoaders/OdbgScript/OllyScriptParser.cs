@@ -53,7 +53,7 @@ namespace Reko.ImageLoaders.OdbgScript
         private readonly IOdbgScriptHost host;
         private readonly IFileSystemService fsSvc;
         private Lexer lexer;
-        private Stack<Lexer> lexerStack;
+        private Stack<Lexer>? lexerStack;
         private Token tok;
         private OllyScript script;
 
@@ -65,6 +65,7 @@ namespace Reko.ImageLoaders.OdbgScript
             this.currentDir = currentDir;
             this.lexerStack = new Stack<Lexer>();
             this.lexerStack.Push(new Lexer(rdr));
+            this.lexer = null!;
         }
 
         public void Dispose()
@@ -82,7 +83,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             int lastLineNumber = 0;
 
-            while (lexerStack.Count > 0)
+            while (lexerStack!.Count > 0)
             {
                 this.lexer = lexerStack.Pop();
                 var line = Line();
@@ -98,7 +99,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     line = Line();
                 }
                 this.lexer.Dispose();
-                this.lexer = null;
+                this.lexer = null!;
             }
 
             var script = this.script;
@@ -106,7 +107,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return script;
         }
 
-        private OllyScript.Line Line()
+        private OllyScript.Line? Line()
         {
             var tok = GetToken();
             if (tok.Type == TokenType.EOF)
@@ -122,7 +123,7 @@ namespace Reko.ImageLoaders.OdbgScript
             {
                 if (PeekAndDiscard(TokenType.Colon))
                 {
-                    script.Labels[(string) tok.Value] = tok.LineNumber;
+                    script.Labels[(string) tok.Value!] = tok.LineNumber;
                     tok = GetToken();
                 }
             }
@@ -130,7 +131,7 @@ namespace Reko.ImageLoaders.OdbgScript
             var line = new OllyScript.Line { LineNumber = tok.LineNumber };
             if (tok.Type == TokenType.Id)
             {
-                line.Command = (string) tok.Value;
+                line.Command = (string) tok.Value!;
                 line.IsCommand = true;
                 line.Args = ExpressionList();
                 tok = GetToken();
@@ -148,7 +149,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private void Directive(Token tok)
         {
-            var directive = (string) tok.Value;
+            var directive = (string) tok.Value!;
             if (directive == "inc")
             {
                 var tokPath = GetToken();
@@ -163,8 +164,8 @@ namespace Reko.ImageLoaders.OdbgScript
                     // Discard trailing garbage.
                     tok = GetToken();
                 }
-                this.lexerStack.Push(lexer); 
-                var path = (string) tokPath.Value;
+                this.lexerStack!.Push(lexer); 
+                var path = (string) tokPath.Value!;
                 if (!Path.IsPathRooted(path))
                 {
                     path = Path.Combine(this.currentDir, path);
@@ -194,7 +195,7 @@ namespace Reko.ImageLoaders.OdbgScript
         //exp ::=  sum
         //        | exp ':' sum
 
-        private Expression Expression()
+        private Expression? Expression()
         {
             var sums = new List<Expression>();
             var sum = Sum();
@@ -214,7 +215,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 return new MkSequence(unk, sums.ToArray());
         }
 
-        private Expression OrExpr()
+        private Expression? OrExpr()
         {
             var left = XorExpr();
             if (left == null)
@@ -229,7 +230,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return left;
         }
 
-        private Expression XorExpr()
+        private Expression? XorExpr()
         {
             var left = AndExpr();
             if (left == null)
@@ -244,7 +245,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return left;
         }
 
-        private Expression AndExpr()
+        private Expression? AndExpr()
         {
             var left = ShiftExpr();
             if (left == null)
@@ -259,7 +260,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return left;
         }
 
-        private Expression ShiftExpr()
+        private Expression? ShiftExpr()
         {
             var left = Sum();
             if (left == null)
@@ -290,7 +291,7 @@ namespace Reko.ImageLoaders.OdbgScript
         //sum ::= term
         //        | sum '+'/'-' term
 
-        private Expression Sum()
+        private Expression? Sum()
         {
             var left = Term();
             if (left == null)
@@ -318,7 +319,7 @@ namespace Reko.ImageLoaders.OdbgScript
             }
         }
 
-        private Expression Term()
+        private Expression? Term()
         {
             var left = Atom();
             if (left == null)
@@ -354,7 +355,7 @@ namespace Reko.ImageLoaders.OdbgScript
         //      |     [ exp ]
         //      |     ( exp )
     
-        private Expression Atom()
+        private Expression? Atom()
         {
             var token = PeekToken();
             switch (token.Type)
@@ -373,7 +374,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 return new Application( hexString, unk,  MkString(token));
             case TokenType.Id:
                 GetToken();
-                return new Identifier((string) token.Value, new UnknownType(), MemoryStorage.Instance);
+                return new Identifier((string) token.Value!, new UnknownType(), MemoryStorage.Instance);
             case TokenType.Integer:
                 GetToken();
                 return Constant.UInt64(Convert.ToUInt64(token.Value));
@@ -429,10 +430,10 @@ namespace Reko.ImageLoaders.OdbgScript
 
         private static Constant MkString(Token token)
         {
-            return Constant.String((string) token.Value, StringType.NullTerminated(PrimitiveType.Char));
+            return Constant.String((string) token.Value!, StringType.NullTerminated(PrimitiveType.Char));
         }
 
-        public static OllyScriptParser FromFile(IOdbgScriptHost host, IFileSystemService fsSvc, string file, string dir = null)
+        public static OllyScriptParser FromFile(IOdbgScriptHost host, IFileSystemService fsSvc, string file, string? dir = null)
         {
             string cdir = Environment.CurrentDirectory;
             string curdir = Helper.pathfixup(cdir, true);
@@ -460,7 +461,7 @@ namespace Reko.ImageLoaders.OdbgScript
         public class Lexer : IDisposable
         {
             private readonly StringBuilder sb;
-            private TextReader rdr;
+            private TextReader? rdr;
             private int lineNumber;
 
             public Lexer(TextReader rdr)
@@ -506,7 +507,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 TokenType stringType = TokenType.EOF;
                 for (; ; )
                 {
-                    int c = rdr.Peek();
+                    int c = rdr!.Peek();
                     char ch = (char) c;
                     switch (state)
                     {
@@ -795,7 +796,7 @@ namespace Reko.ImageLoaders.OdbgScript
             }
 
             // For tokens that may span multiple lines.
-            private Token MakeToken(TokenType type, int lineNumber, object value = null)
+            private Token MakeToken(TokenType type, int lineNumber, object? value = null)
             {
                 var tok = new Token(type, lineNumber, value);
                 return tok;
@@ -808,11 +809,11 @@ namespace Reko.ImageLoaders.OdbgScript
                 return tok;
             }
 
-            private Token MakeToken(TokenType type, object value = null)
+            private Token MakeToken(TokenType type, object? value = null)
             {
                 var tok = new Token(type, this.lineNumber, value);
                 Debug.Assert(type != TokenType.Newline);
-                trace.Verbose("Olly: {0} ({1})", type, value);
+                trace.Verbose("Olly: {0} ({1})", type, value!);
                 return tok;
             }
 
@@ -827,9 +828,9 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             public readonly TokenType Type;
             public readonly int LineNumber;
-            public readonly object Value;
+            public readonly object? Value;
 
-            public Token(TokenType type, int lineNumber, object value)
+            public Token(TokenType type, int lineNumber, object? value)
             {
                 this.Type = type;
                 this.LineNumber = lineNumber;

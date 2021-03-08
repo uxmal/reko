@@ -135,7 +135,7 @@ namespace Reko.Environments.MacOS.Classic
         private bool TryScanProcedure(out ImageSymbol sym)
         {
             var addrStart = rdr.Address;
-            sym = null;
+            sym = null!;
             while (rdr.TryReadBeUInt16(out ushort us))
             {
                 switch (us)
@@ -180,7 +180,7 @@ namespace Reko.Environments.MacOS.Classic
         private bool TryReadMacsBugSymbol(out string symbol)
         {
             var savedOffset = rdr.Offset;
-            symbol = null;
+            symbol = null!;
             if (!rdr.TryReadByte(out byte b))
                 return false;
             int symLength;
@@ -221,7 +221,7 @@ namespace Reko.Environments.MacOS.Classic
             symbol = sb.ToString();
             if (!this.reValidVariableLengthProcedureName.IsMatch(symbol))
             {
-                symbol = null;
+                symbol = null!;
                 rdr.Offset = savedOffset;
                 return false;
             }

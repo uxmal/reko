@@ -52,12 +52,12 @@ namespace Reko.Environments.SegaGenesis
             return new HashSet<RegisterStorage>();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             //$TODO: implement some services;
             return null;
@@ -68,7 +68,7 @@ namespace Reko.Environments.SegaGenesis
             throw new NotImplementedException();
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }

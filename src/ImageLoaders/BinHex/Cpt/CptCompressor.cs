@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2021 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,6 +67,8 @@ namespace Reko.ImageLoaders.BinHex.Cpt
         public CptCompressor(byte[] compressedData)
         {
             this.cpt_data = compressedData;
+            this.out_buffer = null!;
+            this.get_bit = null!;
         }
 
         public byte[] Uncompact(
@@ -88,7 +90,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
         class HuffNode
         {
             public int flag, Byte;
-            public HuffNode one, zero;
+            public HuffNode? one, zero;
         }
 
         Func<int> get_bit;
@@ -100,9 +102,9 @@ namespace Reko.ImageLoaders.BinHex.Cpt
             HuffNode np;
 
             np = l_nodelist;
-            while (np.flag == 0)
+            while (np!.flag == 0)
             {
-                np = get_bit() != 0 ? np.one : np.zero;
+                np = get_bit() != 0 ? np.one! : np.zero!;
             }
             return np.Byte;
         }

@@ -33,7 +33,7 @@ namespace Reko.Arch.Arm.AArch64
             if (instr.Operands[0] is ConditionOperand cop)
             {
                 var cc = cop.Condition;
-                m.Branch(TestCond(cc), ((AddressOperand) instr.Operands[1]).Address, iclass);
+                m.Branch(TestCond(cc)!, ((AddressOperand) instr.Operands[1]).Address, iclass);
             }
             else
             {

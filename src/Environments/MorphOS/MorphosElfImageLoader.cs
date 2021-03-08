@@ -38,6 +38,7 @@ namespace Reko.Environments.MorphOS
         public MorphosElfImageLoader(IServiceProvider services, string filename, byte[] rawBytes) 
             : base(services, filename, rawBytes)
         {
+            this.elfLdr = null!;
         }
 
         public override Address PreferredBaseAddress
@@ -53,7 +54,7 @@ namespace Reko.Environments.MorphOS
             }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             var sr = new StructureReader<MorphosHeader>(new BeImageReader(this.RawImage));
             var hdr = sr.Read();

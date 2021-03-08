@@ -43,7 +43,7 @@ namespace Reko.Environments.Msdos
             return false;
         }
 
-        public ImageSegment InitializeStack(IProcessorEmulator emulator, ProcessorState state)
+        public ImageSegment? InitializeStack(IProcessorEmulator emulator, ProcessorState state)
         {
             var cs = ((Constant) state.GetValue(Registers.cs)).ToUInt16();
             var ss = ((Constant) state.GetValue(Registers.ss)).ToUInt16();
@@ -58,7 +58,7 @@ namespace Reko.Environments.Msdos
             return null;
         }
 
-        public void TearDownStack(ImageSegment stackSeg)
+        public void TearDownStack(ImageSegment? stackSeg)
         {
         }
     }

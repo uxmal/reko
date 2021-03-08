@@ -39,6 +39,7 @@ namespace Reko.Environments.NeoGeo
             : base(services, filename, imgRaw)
         {
             PreferredBaseAddress = Address.Ptr32(0x00000000);
+            entryPoint = null!;
         }
 
         public override Address PreferredBaseAddress
@@ -47,7 +48,7 @@ namespace Reko.Environments.NeoGeo
             set;
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             var romSegment = new ImageSegment(
                 ".text",
@@ -60,7 +61,7 @@ namespace Reko.Environments.NeoGeo
             this.entryPoint = Address.Ptr32(uAddrEntry);
             var segmap = new SegmentMap(PreferredBaseAddress, romSegment);
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch = cfgSvc.GetArchitecture("tlcs-900");
+            var arch = cfgSvc.GetArchitecture("tlcs-900")!;
             var env = cfgSvc.GetEnvironment("neo-geo-pocket");
             var platform = env.Load(Services, arch);
             

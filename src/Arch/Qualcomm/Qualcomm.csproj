@@ -5,7 +5,6 @@
     <RootNamespace>Reko.Arch.Qualcomm</RootNamespace>
     <AssemblyName>Reko.Arch.Qualcomm</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <LangVersion>8.0</LangVersion>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 

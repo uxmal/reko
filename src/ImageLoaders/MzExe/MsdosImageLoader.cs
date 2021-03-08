@@ -52,9 +52,12 @@ namespace Reko.ImageLoaders.MzExe
 		{
 			this.ExeLoader = exe;
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            this.arch = cfgSvc.GetArchitecture("x86-real-16");
+            this.arch = cfgSvc.GetArchitecture("x86-real-16")!;
             this.platform = cfgSvc.GetEnvironment("ms-dos")
                 .Load(Services, arch);
+            this.imgLoaded = null!;
+            this.segmentMap = null!;
+            this.addrStackTop = null!;
 		}
 
         public ExeImageLoader ExeLoader { get; }
@@ -65,9 +68,10 @@ namespace Reko.ImageLoaders.MzExe
             set { throw new NotImplementedException(); }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
-            this.segPsp = (ushort) (addrLoad.Selector.Value - 0x10);
+            addrLoad ??= PreferredBaseAddress;
+            this.segPsp = (ushort) (addrLoad.Selector!.Value - 0x10);
             var ss = (ushort) (ExeLoader.e_ss + addrLoad.Selector.Value);
             this.addrStackTop = Address.SegPtr(ss, ExeLoader.e_sp);
 
@@ -136,7 +140,7 @@ namespace Reko.ImageLoaders.MzExe
             var linBase = addrLoad.ToLinear();
 
             segmentMap.AddOverlappingSegment(
-                addrLoad.Selector.Value.ToString("X4"),
+                addrLoad.Selector!.Value!.ToString("X4"),
                 imgLoaded,
                 addrLoad,
                 AccessMode.ReadWriteExecute);
@@ -174,7 +178,7 @@ namespace Reko.ImageLoaders.MzExe
 
             Address addrStart = Address.SegPtr((ushort) (ExeLoader.e_cs + addrLoad.Selector.Value), ExeLoader.e_ip);
 			segmentMap.AddSegment(new ImageSegment(
-                addrStart.Selector.Value.ToString("X4"),
+                addrStart.Selector!.Value.ToString("X4"),
                 Address.SegPtr(addrStart.Selector.Value, 0),
                 imgLoaded,
                 AccessMode.ReadWriteExecute));
@@ -210,8 +214,8 @@ namespace Reko.ImageLoaders.MzExe
         {
             var state = arch.CreateProcessorState();
             state.InstructionPointer = addrStart;
-            state.SetRegister(Registers.cs, Constant.UInt16((ushort) (ExeLoader.e_cs + addrLoad.Selector.Value)));
-            state.SetRegister(Registers.ss, Constant.UInt16((ushort) addrStackTop.Selector.Value));
+            state.SetRegister(Registers.cs, Constant.UInt16((ushort) (ExeLoader.e_cs + addrLoad.Selector!.Value)));
+            state.SetRegister(Registers.ss, Constant.UInt16((ushort) addrStackTop.Selector!.Value));
             state.SetRegister(Registers.sp, Constant.UInt16((ushort) addrStackTop.Offset));
             state.SetRegister(Registers.ds, Constant.UInt16(segPsp));
             state.SetRegister(Registers.es, Constant.UInt16(segPsp));

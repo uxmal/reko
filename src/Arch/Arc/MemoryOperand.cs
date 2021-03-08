@@ -33,9 +33,9 @@ namespace Reko.Arch.Arc
         {
         }
 
-        public RegisterStorage Base { get; set; }
+        public RegisterStorage? Base { get; set; }
         public int Offset { get;  set; }
-        public RegisterStorage Index { get; set; }
+        public RegisterStorage? Index { get; set; }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {

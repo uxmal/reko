@@ -29,6 +29,8 @@ using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 
+#nullable disable
+
 namespace Reko.ImageLoaders.LLVM
 {
     public class LLVMPlatform : IPlatform

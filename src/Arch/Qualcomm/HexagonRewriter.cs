@@ -140,7 +140,7 @@ namespace Reko.Arch.Qualcomm
         }
 
 
-        private Expression OperandSrc(MachineOperand op)
+        private Expression? OperandSrc(MachineOperand op)
         {
             switch (op)
             {
@@ -161,24 +161,24 @@ namespace Reko.Arch.Qualcomm
             if (dec.NewValue)
             {
                 //$TODO;
-                return exp;
+                return exp!;
             }
             if (dec.Inverted)
             {
-                exp = m.Not(exp);
+                exp = m.Not(exp!);
                 return exp;
             }
             if (dec.Carry)
             {
                 var app = (ApplicationOperand) dec.Operand;
                 var p = binder.EnsureRegister(((RegisterOperand)app.Operands[2]).Register);
-                exp = m.IAdd(exp, p);
+                exp = m.IAdd(exp!, p);
                 //$TODO: what about carry-out? it's in p.
                 return exp;
             }
             if (dec.Width.BitSize < (int) dec.Operand.Width.BitSize)
             {
-                exp = m.Slice(dec.Width, exp, dec.BitOffset);
+                exp = m.Slice(dec.Width, exp!, dec.BitOffset);
                 return exp;
             }
             throw new NotImplementedException(dec.ToString());
@@ -218,15 +218,15 @@ namespace Reko.Arch.Qualcomm
                 break;
             case ApplicationOperand app:
                 var appOps = app.Operands.Select(OperandSrc).Concat(new[] { src }).ToArray();
-                m.SideEffect(host.Intrinsic(app.Mnemonic.ToString(), false, VoidType.Instance, appOps));
+                m.SideEffect(host.Intrinsic(app.Mnemonic.ToString(), false, VoidType.Instance, appOps!));
                 return;
             }
             throw new NotImplementedException($"Hexagon rewriter for {op.GetType().Name} not implemented yet.");
         }
 
-        private Expression RewriteApplication(ApplicationOperand app)
+        private Expression? RewriteApplication(ApplicationOperand app)
         {
-            var ops = app.Operands.Select(OperandSrc).ToArray();
+            var ops = app.Operands.Select(o => OperandSrc(o)!).ToArray();
             var dt = app.Width;
             switch (app.Mnemonic)
             {
@@ -369,7 +369,7 @@ namespace Reko.Arch.Qualcomm
         {
             if (mem.AutoIncrement != null)
             {
-                var reg = binder.EnsureRegister(mem.Base);
+                var reg = binder.EnsureRegister(mem.Base!);
                 if (mem.AutoIncrement is int incr)
                     m.Assign(reg, m.AddSubSignedInt(reg, incr));
                 else
@@ -381,8 +381,8 @@ namespace Reko.Arch.Qualcomm
         {
             var pred = OperandSrc(conditionPredicate);
             if (invert)
-                pred = m.Not(pred);
-            return pred;
+                pred = m.Not(pred!);
+            return pred!;
         }
 
 
@@ -403,14 +403,14 @@ namespace Reko.Arch.Qualcomm
 
         private void RewriteAssign(MachineOperand opDst, MachineOperand opSrc)
         {
-            var src = OperandSrc(opSrc);
+            var src = OperandSrc(opSrc)!;
             OperandDst(opDst, (l, r) => { m.Assign(l, r); }, src);
             //$TODO: conditions.
         }
 
         private void RewriteAugmentedAssign(MachineOperand opDst, Func<Expression, Expression,Expression> fn, MachineOperand opSrc)
         {
-            var src = OperandSrc(opSrc);
+            var src = OperandSrc(opSrc)!;
             OperandDst(opDst, (l, r) => { m.Assign(l, fn(l, r)); }, src);
         }
 
@@ -422,7 +422,7 @@ namespace Reko.Arch.Qualcomm
                 var pred = RewritePredicateExpression(instr.ConditionPredicate, !instr.ConditionInverted);
                 m.BranchInMiddleOfInstruction(pred, instr.Address + 4, InstrClass.ConditionalTransfer);
             }
-            m.Call(OperandSrc(instr.Operands[0]), 0);
+            m.Call(OperandSrc(instr.Operands[0])!, 0);
         }
 
         private Expression RewriteCmp(DataType dt, Func<Expression,Expression,Expression> cmp, Expression a, Expression b)
@@ -499,7 +499,7 @@ namespace Reko.Arch.Qualcomm
             {
                 //if (instr.ConditionPredicateNew)
                 //    throw new NotImplementedException(".NEW");
-                var cond = OperandSrc(instr.ConditionPredicate);
+                var cond = OperandSrc(instr.ConditionPredicate)!;
                 m.Branch(cond, aop.Address);
             }
             else

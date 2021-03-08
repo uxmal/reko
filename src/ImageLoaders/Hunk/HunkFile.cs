@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -29,13 +29,13 @@ namespace Reko.ImageLoaders.Hunk
     {
         public FileType type;
         public List<Hunk> hunks;
-        public HeaderHunk header;
+        public HeaderHunk? header;
         public List<List<Hunk>> segments;
-        public Hunk overlay;
-        public List<HeaderHunk> overlay_headers;
-        public List<List<List<Hunk>>> overlay_segments;
-        public List<Lib> libs;
-        public List<Unit> units;
+        public Hunk? overlay;
+        public List<HeaderHunk>? overlay_headers;
+        public List<List<List<Hunk>>>? overlay_segments;
+        public List<Lib>? libs;
+        public List<Unit>? units;
 
         public HunkFile()
         {

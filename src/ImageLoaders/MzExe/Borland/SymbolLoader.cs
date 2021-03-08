@@ -36,7 +36,7 @@ namespace Reko.ImageLoaders.MzExe.Borland
     {
         public const ushort MagicNumber = 0x52FB;
 
-        private static TraceSwitch trace = new TraceSwitch("BorlandDebugSymbols", "Traces the loading of Borland debug symbols");
+        private static readonly TraceSwitch trace = new TraceSwitch("BorlandDebugSymbols", "Traces the loading of Borland debug symbols");
 
         private IProcessorArchitecture arch;
         private ExeImageLoader exeLoader;
@@ -57,6 +57,8 @@ namespace Reko.ImageLoaders.MzExe.Borland
             this.addrLoad = addrLoad;
             this.imgSymbols = new Dictionary<Address, ImageSymbol>();
             this.symbolTypes = new Dictionary<ImageSymbol, ushort>();
+            this.symbols = null!;
+            this.types = null!;
         }
 
         public bool LoadDebugHeader()
@@ -528,7 +530,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                 trace.Verbose($"    type id: {type_id:X2}");
                 trace.Verbose($"    size:    {type_size:X4}");
 
-                BorlandType bt = null;
+                BorlandType? bt = null;
                 switch (type_id)
                 {
                 case TID_VOID:
@@ -575,7 +577,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
                         var filler2 = rdr.ReadLeUInt16();
                         var filler3 = rdr.ReadLeUInt16();
                         var filler4 = rdr.ReadLeUInt16();
-                        SerializedType indexDataType;
+                        SerializedType? indexDataType;
                         if (elementType > iType) trace.Warn($"    array defined before its element type: {elementType:X4}");
                         if (arrayIndexType > iType)
                         {
@@ -681,7 +683,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
         {
             if (typeNumber == 0) return "<no-type>"; 
             BorlandType type;
-            return types.TryGetValue(typeNumber, out type) ? type.name : "<unknown>";
+            return types.TryGetValue(typeNumber, out type) ? type.name! : "<unknown>";
         }
 
         private BorlandType ClassifyRangeType(LeImageReader rdr, SerializedType pt)
@@ -780,7 +782,7 @@ private const byte TID_LOCALHANDLE = 0x3F;    //  Windows local handle
             {
             case 0x00:
                 // Static, offset and segment give the address.
-                sym.symbol_segment += addrLoad.Selector.Value;
+                sym.symbol_segment += addrLoad.Selector!.Value;
                 if (!name.Contains('@'))
                 {
                     var imgSymbol = ImageSymbol.Create(

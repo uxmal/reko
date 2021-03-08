@@ -51,6 +51,9 @@ namespace Reko.Arch.Pdp11
             this.dasm = instrs.GetEnumerator();
             this.binder = binder;
             this.host = host;
+            this.instr = null!;
+            this.m = null!;
+            this.rtlInstructions = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -161,7 +164,7 @@ namespace Reko.Arch.Pdp11
             return GetEnumerator();
         }
 
-        private void SetFlags(Expression e, FlagGroupStorage changed)
+        private void SetFlags(Expression? e, FlagGroupStorage changed)
         {
             if (e == null)
             {
@@ -185,7 +188,7 @@ namespace Reko.Arch.Pdp11
             m.Assign(binder.EnsureFlagGroup(flag), 1);
         }
 
-        private Expression RewriteJmpSrc(MachineOperand op)
+        private Expression? RewriteJmpSrc(MachineOperand op)
         {
             if (!(op is MemoryOperand memOp))
             {
@@ -205,23 +208,23 @@ namespace Reko.Arch.Pdp11
                     "Not implemented: addressing mode {0}.",
                     memOp.Mode);
             case AddressMode.RegDef:
-                return r;
+                return r!;
             case AddressMode.Absolute:
                 return Address.Ptr16(memOp.EffectiveAddress);
             case AddressMode.AutoIncr:
-                m.Assign(tmp, m.Mem(PrimitiveType.Ptr16, r));
-                m.Assign(r, m.IAdd(r, memOp.Width.Size));
+                m.Assign(tmp, m.Mem(PrimitiveType.Ptr16, r!));
+                m.Assign(r!, m.IAdd(r!, memOp.Width.Size));
                 break;
             case AddressMode.AutoIncrDef:
-                m.Assign(tmp, m.Mem(op.Width, r));
-                m.Assign(r, m.IAdd(r, memOp.Width.Size));
+                m.Assign(tmp, m.Mem(op.Width, r!));
+                m.Assign(r!, m.IAdd(r!, memOp.Width.Size));
                 break;
             case AddressMode.AutoDecr:
-                m.Assign(r, m.ISub(r, memOp.Width.Size));
-                return m.Mem(op.Width, r);
+                m.Assign(r!, m.ISub(r!, memOp.Width.Size));
+                return m.Mem(op.Width, r!);
             case AddressMode.AutoDecrDef:
-                m.Assign(r, m.ISub(r, memOp.Width.Size));
-                m.Assign(tmp, m.Mem(op.Width, m.Mem(PrimitiveType.Ptr16, r)));
+                m.Assign(r!, m.ISub(r!, memOp.Width.Size));
+                m.Assign(tmp, m.Mem(op.Width, m.Mem(PrimitiveType.Ptr16, r!)));
                 return tmp;
             case AddressMode.Indexed:
                 if (memOp.Register == Registers.pc)
@@ -234,8 +237,8 @@ namespace Reko.Arch.Pdp11
                 else
                 {
                     return m.Mem(
-                        this.dasm.Current.DataWidth,
-                        m.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
+                        this.dasm.Current.DataWidth!,
+                        m.IAdd(r!, Constant.Word16(memOp.EffectiveAddress)));
                 }
             case AddressMode.IndexedDef:
                 if (memOp.Register == Registers.pc)
@@ -251,7 +254,7 @@ namespace Reko.Arch.Pdp11
                 {
                     return m.Mem(
                         PrimitiveType.Ptr16,
-                        m.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
+                        m.IAdd(r!, Constant.Word16(memOp.EffectiveAddress)));
                 }
             }
             return tmp;
@@ -280,7 +283,7 @@ namespace Reko.Arch.Pdp11
                 else
                     return binder.EnsureRegister(regOp.Register);
             case ImmediateOperand immOp:
-                if (dasm.Current.DataWidth.Size == 1)
+                if (dasm.Current.DataWidth!.Size == 1)
                 {
                     return Constant.Byte((byte) immOp.Value.ToInt32());
                 }
@@ -303,25 +306,25 @@ namespace Reko.Arch.Pdp11
                         "Not implemented: addressing mode {0}.", 
                         memOp.Mode);
                 case AddressMode.RegDef:
-                    return m.Mem(this.dasm.Current.DataWidth, r);
+                    return m.Mem(this.dasm.Current.DataWidth!, r!);
                 case AddressMode.Absolute:
                     return m.Mem(
-                           dasm.Current.DataWidth,
+                           dasm.Current.DataWidth!,
                            Address.Ptr16(memOp.EffectiveAddress));
                 case AddressMode.AutoIncr:
-                    m.Assign(tmp, m.Mem(op.Width, r));
-                    m.Assign(r, m.IAdd(r, memOp.Width.Size));
+                    m.Assign(tmp, m.Mem(op.Width, r!));
+                    m.Assign(r!, m.IAdd(r!, memOp.Width.Size));
                     break;
                 case AddressMode.AutoIncrDef:
-                    m.Assign(tmp, m.Mem(op.Width, m.Mem(PrimitiveType.Ptr16, r)));
-                    m.Assign(r, m.IAdd(r, memOp.Width.Size));
+                    m.Assign(tmp, m.Mem(op.Width, m.Mem(PrimitiveType.Ptr16, r!)));
+                    m.Assign(r!, m.IAdd(r!, memOp.Width.Size));
                     break;
                 case AddressMode.AutoDecr:
-                    m.Assign(r, m.ISub(r, memOp.Width.Size));
-                    return m.Mem(op.Width, r);
+                    m.Assign(r!, m.ISub(r!, memOp.Width.Size));
+                    return m.Mem(op.Width, r!);
                 case AddressMode.AutoDecrDef:
-                    m.Assign(r, m.ISub(r, memOp.Width.Size));
-                    m.Assign(tmp, m.Mem(op.Width, m.Mem(PrimitiveType.Ptr16, r)));
+                    m.Assign(r!, m.ISub(r!, memOp.Width.Size));
+                    m.Assign(tmp, m.Mem(op.Width, m.Mem(PrimitiveType.Ptr16, r!)));
                     return tmp;
                 case AddressMode.Indexed:
                     if (memOp.Register == Registers.pc)
@@ -334,8 +337,8 @@ namespace Reko.Arch.Pdp11
                     else
                     {
                         return m.Mem(
-                            this.dasm.Current.DataWidth,
-                            m.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
+                            this.dasm.Current.DataWidth!,
+                            m.IAdd(r!, Constant.Word16(memOp.EffectiveAddress)));
                     }
                 case AddressMode.IndexedDef:
                     if (memOp.Register == Registers.pc)
@@ -348,10 +351,10 @@ namespace Reko.Arch.Pdp11
                     else
                     {
                     return m.Mem(
-                        this.dasm.Current.DataWidth,
+                        this.dasm.Current.DataWidth!,
                         m.Mem(
                             PrimitiveType.Ptr16,
-                            m.IAdd(r, Constant.Word16(memOp.EffectiveAddress))));
+                            m.IAdd(r!, Constant.Word16(memOp.EffectiveAddress))));
                     }
                 }
                 return tmp;
@@ -360,7 +363,7 @@ namespace Reko.Arch.Pdp11
         }
 
         // Rewrites a destination operand when the source is unary.
-        private Expression RewriteDst(MachineOperand op, Expression src, Func<Expression, Expression> gen)
+        private Expression? RewriteDst(MachineOperand op, Expression src, Func<Expression, Expression> gen)
         {
             switch (op)
             {
@@ -388,46 +391,46 @@ namespace Reko.Arch.Pdp11
                 case AddressMode.Absolute:
                     m.Assign(
                         m.Mem(
-                            dasm.Current.DataWidth,
+                            dasm.Current.DataWidth!,
                             Address.Ptr16(memOp.EffectiveAddress)),
                         tmp);
                     break;
                 case AddressMode.RegDef:
-                    m.Assign(m.Mem(tmp.DataType, r), tmp);
+                    m.Assign(m.Mem(tmp.DataType, r!), tmp);
                     break;
                 case AddressMode.AutoIncr:
-                    m.Assign(m.Mem(tmp.DataType, r), tmp);
-                    m.Assign(r, m.IAdd(r, tmp.DataType.Size));
+                    m.Assign(m.Mem(tmp.DataType, r!), tmp);
+                    m.Assign(r!, m.IAdd(r!, tmp.DataType.Size));
                     break;
                 case AddressMode.AutoIncrDef:
-                    m.Assign(m.Mem(PrimitiveType.Ptr16, m.Mem(tmp.DataType, r)), tmp);
-                    m.Assign(r, m.IAdd(r, tmp.DataType.Size));
+                    m.Assign(m.Mem(PrimitiveType.Ptr16, m.Mem(tmp.DataType, r!)), tmp);
+                    m.Assign(r!, m.IAdd(r!, tmp.DataType.Size));
                     break;
                 case AddressMode.AutoDecr:
-                    m.Assign(r, m.ISub(r, tmp.DataType.Size));
-                    m.Assign(m.Mem(tmp.DataType, r), tmp);
+                    m.Assign(r!, m.ISub(r!, tmp.DataType.Size));
+                    m.Assign(m.Mem(tmp.DataType, r!), tmp);
                     break;
                 case AddressMode.AutoDecrDef:
-                    m.Assign(r, m.ISub(r, tmp.DataType.Size));
+                    m.Assign(r!, m.ISub(r!, tmp.DataType.Size));
                     m.Assign(
                         m.Mem(
                             tmp.DataType, 
-                            m.Mem(PrimitiveType.Ptr16, r)),
+                            m.Mem(PrimitiveType.Ptr16, r!)),
                         tmp);
                     break;
                 case AddressMode.Indexed:
-                    if (r.Storage == Registers.pc)
+                    if (r!.Storage == Registers.pc)
                     {
                         var addr = dasm.Current.Address + dasm.Current.Length + memOp.EffectiveAddress;
                         m.Assign(
-                            m.Mem(dasm.Current.DataWidth, addr),
+                            m.Mem(dasm.Current.DataWidth!, addr),
                             tmp);
                     }
                     else
                     {
                         m.Assign(
                             m.Mem(
-                                this.dasm.Current.DataWidth,
+                                this.dasm.Current.DataWidth!,
                                 m.IAdd(
                                     r,
                                     Constant.Word16(memOp.EffectiveAddress))),
@@ -435,7 +438,7 @@ namespace Reko.Arch.Pdp11
                     }
                     break;
                 case AddressMode.IndexedDef:
-                    if (r.Storage == Registers.pc)
+                    if (r!.Storage == Registers.pc)
                     {
                         //$REVIEW: what if there are two of these?
                         var addr = dasm.Current.Address + dasm.Current.Length + memOp.EffectiveAddress;
@@ -444,7 +447,7 @@ namespace Reko.Arch.Pdp11
                             deferred,
                             m.Mem(PrimitiveType.Ptr16, addr));
                         m.Assign(
-                            m.Mem(dasm.Current.DataWidth, deferred),
+                            m.Mem(dasm.Current.DataWidth!, deferred),
                             tmp);
                     }
                     else
@@ -453,7 +456,7 @@ namespace Reko.Arch.Pdp11
                             m.Mem(
                                 PrimitiveType.Ptr16,
                                 m.Mem(
-                                    this.dasm.Current.DataWidth,
+                                    this.dasm.Current.DataWidth!,
                                     m.IAdd(
                                         r,
                                         Constant.Word16(memOp.EffectiveAddress)))),
@@ -475,7 +478,7 @@ namespace Reko.Arch.Pdp11
             return tmp;
         }
 
-        private Expression RewriteDst(MachineOperand op, Expression src, Func<Expression, Expression, Expression> gen)
+        private Expression? RewriteDst(MachineOperand op, Expression src, Func<Expression, Expression, Expression> gen)
         {
             switch (op)
             {
@@ -487,7 +490,7 @@ namespace Reko.Arch.Pdp11
                 var r = memOp.Register != null
                     ? binder.EnsureRegister(memOp.Register)
                     : null;
-                var tmp = binder.CreateTemporary(dasm.Current.DataWidth);
+                var tmp = binder.CreateTemporary(dasm.Current.DataWidth!);
                 switch (memOp.Mode)
                 {
                 default:
@@ -496,40 +499,40 @@ namespace Reko.Arch.Pdp11
                         "Not implemented: addressing mode {0}.",
                         memOp.Mode);
                 case AddressMode.RegDef:
-                    m.Assign(tmp, gen(m.Mem(tmp.DataType, r), src));
-                    m.Assign(m.Mem(tmp.DataType, r), tmp);
+                    m.Assign(tmp, gen(m.Mem(tmp.DataType, r!), src));
+                    m.Assign(m.Mem(tmp.DataType, r!), tmp);
                     break;
                 case AddressMode.AutoIncr:
-                    m.Assign(tmp, gen(m.Mem(tmp.DataType, r), src));
-                    m.Assign(m.Mem(tmp.DataType, r), tmp);
-                    m.Assign(r, m.IAdd(r, tmp.DataType.Size));
+                    m.Assign(tmp, gen(m.Mem(tmp.DataType, r!), src));
+                    m.Assign(m.Mem(tmp.DataType, r!), tmp);
+                    m.Assign(r!, m.IAdd(r!, tmp.DataType.Size));
                     break;
                 case AddressMode.AutoDecr:
-                    m.Assign(r, m.ISub(r, tmp.DataType.Size));
-                    m.Assign(tmp, gen(m.Mem(tmp.DataType, r), src));
-                    m.Assign(m.Mem(tmp.DataType, r), tmp);
+                    m.Assign(r!, m.ISub(r!, tmp.DataType.Size));
+                    m.Assign(tmp, gen(m.Mem(tmp.DataType, r!), src));
+                    m.Assign(m.Mem(tmp.DataType, r!), tmp);
                     break;
                 case AddressMode.AutoIncrDef:
-                    m.Assign(tmp, gen(m.Mem(PrimitiveType.Ptr16, m.Mem(tmp.DataType, r)), src));
-                    m.Assign(m.Mem(tmp.DataType, r), tmp);
-                    m.Assign(r, m.IAdd(r, tmp.DataType.Size));
+                    m.Assign(tmp, gen(m.Mem(PrimitiveType.Ptr16, m.Mem(tmp.DataType, r!)), src));
+                    m.Assign(m.Mem(tmp.DataType, r!), tmp);
+                    m.Assign(r!, m.IAdd(r!, tmp.DataType.Size));
                     break;
                 case AddressMode.AutoDecrDef:
-                    m.Assign(r, m.ISub(r, tmp.DataType.Size));
-                    m.Assign(tmp, gen(m.Mem(tmp.DataType, m.Mem(PrimitiveType.Ptr16, r)), src));
-                    m.Assign(m.Mem(tmp.DataType, m.Mem(PrimitiveType.Ptr16, r)), tmp);
+                    m.Assign(r!, m.ISub(r!, tmp.DataType.Size));
+                    m.Assign(tmp, gen(m.Mem(tmp.DataType, m.Mem(PrimitiveType.Ptr16, r!)), src));
+                    m.Assign(m.Mem(tmp.DataType, m.Mem(PrimitiveType.Ptr16, r!)), tmp);
                     break;
                 case AddressMode.Absolute:
                     m.Assign(
                         tmp,
                         gen(
                             m.Mem(
-                                dasm.Current.DataWidth,
+                                dasm.Current.DataWidth!,
                                 Address.Ptr16(memOp.EffectiveAddress)),
                             src));
                     m.Assign(
                         m.Mem(
-                           dasm.Current.DataWidth,
+                           dasm.Current.DataWidth!,
                            Address.Ptr16(memOp.EffectiveAddress)),
                         tmp);
                     break;
@@ -538,29 +541,29 @@ namespace Reko.Arch.Pdp11
                         tmp,
                         gen(
                             m.Mem(
-                                dasm.Current.DataWidth,
+                                dasm.Current.DataWidth!,
                                 m.IAdd(
-                                    r, memOp.EffectiveAddress)),
+                                    r!, memOp.EffectiveAddress)),
                             src));
                     m.Assign(
                         m.Mem(
-                            dasm.Current.DataWidth,
+                            dasm.Current.DataWidth!,
                             m.IAdd(
-                                r, memOp.EffectiveAddress)),
+                                r!, memOp.EffectiveAddress)),
                         tmp);
                     break;
                 case AddressMode.IndexedDef:
-                    if (r.Storage == Registers.pc)
+                    if (r!.Storage == Registers.pc)
                     {
                         //$REVIEW: what if there are two of these?
                         var addr = dasm.Current.Address + dasm.Current.Length;
                         m.Assign(
                             tmp,
                             gen(
-                                m.Mem(dasm.Current.DataWidth, addr),
+                                m.Mem(dasm.Current.DataWidth!, addr),
                                 src));
                         m.Assign(
-                            m.Mem(dasm.Current.DataWidth, addr),
+                            m.Mem(dasm.Current.DataWidth!, addr),
                             tmp);
                     }
                     else
@@ -569,7 +572,7 @@ namespace Reko.Arch.Pdp11
                            tmp,
                            gen(
                                m.Mem(
-                                   dasm.Current.DataWidth,
+                                   dasm.Current.DataWidth!,
                                    m.Mem(
                                        PrimitiveType.Ptr16,
                                        m.IAdd(
@@ -577,7 +580,7 @@ namespace Reko.Arch.Pdp11
                                    src));
                         m.Assign(
                             m.Mem(
-                                dasm.Current.DataWidth,
+                                dasm.Current.DataWidth!,
                                 m.Mem(
                                     PrimitiveType.Ptr16,
                                     m.IAdd(

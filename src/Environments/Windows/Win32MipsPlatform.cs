@@ -57,8 +57,8 @@ namespace Reko.Environments.Windows
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            var gp = Architecture.GetRegister("r28");
-            var sp = Architecture.GetRegister("sp");
+            var gp = Architecture.GetRegister("r28")!;
+            var sp = Architecture.GetRegister("sp")!;
             return new HashSet<RegisterStorage>
             {
                 gp, sp
@@ -69,40 +69,40 @@ namespace Reko.Environments.Windows
         {
             return new HashSet<RegisterStorage>
             {
-                Architecture.GetRegister("r2"),
-                Architecture.GetRegister("r3"),
-                Architecture.GetRegister("r4"),
-                Architecture.GetRegister("r5"),
-                Architecture.GetRegister("r6"),
-                Architecture.GetRegister("r7"),
-                Architecture.GetRegister("r8"),
-                Architecture.GetRegister("r9"),
-                Architecture.GetRegister("r10"),
-                Architecture.GetRegister("r11"),
-                Architecture.GetRegister("r12"),
-                Architecture.GetRegister("r13"),
-                Architecture.GetRegister("r14"),
-                Architecture.GetRegister("r15"),
+                Architecture.GetRegister("r2")!,
+                Architecture.GetRegister("r3")!,
+                Architecture.GetRegister("r4")!,
+                Architecture.GetRegister("r5")!,
+                Architecture.GetRegister("r6")!,
+                Architecture.GetRegister("r7")!,
+                Architecture.GetRegister("r8")!,
+                Architecture.GetRegister("r9")!,
+                Architecture.GetRegister("r10")!,
+                Architecture.GetRegister("r11")!,
+                Architecture.GetRegister("r12")!,
+                Architecture.GetRegister("r13")!,
+                Architecture.GetRegister("r14")!,
+                Architecture.GetRegister("r15")!,
 
-                Architecture.GetRegister("r24"),
-                Architecture.GetRegister("r25"),
+                Architecture.GetRegister("r24")!,
+                Architecture.GetRegister("r25")!,
             };
 
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             return new MipsCallingConvention(this.Architecture);
         }
 
-        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
         {
             Services.RequireService<DecompilerEventListener>().Warn(new NullCodeLocation(program.Name),
                 "Win32 MIPS main procedure finder not supported.");
             return null;
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
         }
@@ -132,7 +132,7 @@ namespace Reko.Environments.Windows
         /// <param name="insts"></param>
         /// <param name="host"></param>
         /// <returns></returns>
-        public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rtls, IRewriterHost host)
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rtls, IRewriterHost host)
         {
             var instrs = rtls
                 .Take(3)
@@ -150,11 +150,11 @@ namespace Reko.Environments.Windows
                 return null;
             if (trampPattern[1].CapturedExpressions("r1d") != trampPattern[2].CapturedExpressions("r2s"))
                 return null;
-            var hi = (Constant)trampPattern[0].CapturedExpressions("hi");
-            var lo = (Constant)trampPattern[1].CapturedExpressions("lo");
+            var hi = (Constant)trampPattern[0].CapturedExpressions("hi")!;
+            var lo = (Constant)trampPattern[1].CapturedExpressions("lo")!;
             var c = Operator.IAdd.ApplyConstants(hi, lo);
             var addrTarget= MakeAddressFromConstant(c, false);
-            ProcedureBase proc = host.GetImportedProcedure(this.Architecture, addrTarget, addrFrom);
+            ProcedureBase? proc = host.GetImportedProcedure(this.Architecture, addrTarget, addrFrom);
             if (proc != null)
                 return proc;
             return host.GetInterceptedCall(this.Architecture, addrTarget);
@@ -179,27 +179,31 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
+        public override ExternalProcedure? LookupProcedureByOrdinal(string? moduleName, int ordinal)
         {
+            if (moduleName is null)
+                return null;
             EnsureTypeLibraries(PlatformIdentifier);
             if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
                 return null;
             if (mod.ServicesByOrdinal.TryGetValue(ordinal, out SystemService svc))
             {
-                return new ExternalProcedure(svc.Name, svc.Signature);
+                return new ExternalProcedure(svc.Name!, svc.Signature!);
             }
             else
                 return null;
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
+            if (moduleName is null)
+                return null;
             EnsureTypeLibraries(PlatformIdentifier);
             if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
                 return null;
             if (mod.ServicesByName.TryGetValue(moduleName, out SystemService svc))
             {
-                return new ExternalProcedure(svc.Name, svc.Signature);
+                return new ExternalProcedure(svc.Name!, svc.Signature!);
             }
             else
                 return null;

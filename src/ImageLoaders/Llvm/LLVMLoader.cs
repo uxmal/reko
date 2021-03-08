@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -46,7 +46,7 @@ namespace Reko.ImageLoaders.LLVM
             }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             var rdr = new StreamReader(new MemoryStream(RawImage), Encoding.UTF8);
             var parser = new LLVMParser(new LLVMLexer(rdr));

@@ -85,7 +85,7 @@ SP	top of stack
             };
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             if (ccName == null)
                 ccName = "";
@@ -106,7 +106,7 @@ SP	top of stack
             throw new NotSupportedException(string.Format("Calling convention '{0}' is not supported.", ccName));
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             return null;
         }
@@ -134,27 +134,26 @@ SP	top of stack
             m.Assign(proc.Frame.EnsureRegister(Registers.Top), 0);
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             EnsureTypeLibraries(PlatformIdentifier);
             return null;
         }
 
-        public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
+        public override ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
             EnsureTypeLibraries(PlatformIdentifier);
             foreach (var tl in Metadata.Modules.Values.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
             {
-                SystemService svc;
-                if (tl.ServicesByOrdinal.TryGetValue(ordinal, out svc))
+                if (tl.ServicesByOrdinal.TryGetValue(ordinal, out SystemService svc))
                 {
-                    return new ExternalProcedure(svc.Name, svc.Signature);
+                    return new ExternalProcedure(svc.Name!, svc.Signature!);
                 }
             }
             return null;
         }
 
-        public override ProcedureBase_v1 SignatureFromName(string fnName)
+        public override ProcedureBase_v1? SignatureFromName(string fnName)
         {
             var sig = SignatureGuesser.SignatureFromName(fnName, this);
             return sig;
