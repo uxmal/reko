@@ -267,22 +267,22 @@ FUNCTION(DOTNET_GET_DEPS _DN_PROJECT arguments)
     SET(DOTNET_deps ${_DN_deps} PARENT_SCOPE)
 
     IF(_DN_PLATFORM)
-        SET(_DN_PLATFORM_PROP "/p:Platform=${_DN_PLATFORM}")
+        SET(_DN_PLATFORM_PROP "-p:Platform=${_DN_PLATFORM}")
     ENDIF()
 
     IF(_DN_NETCOREAPP)
         SET(_DN_BUILD_OPTIONS -f net5.0)
-        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=net5.0)
+        SET(_DN_PACK_OPTIONS -p:TargetFrameworks=net5.0)
     ELSEIF(UNIX)
         # Unix builds default to netstandard2.1
         SET(_DN_BUILD_OPTIONS -f netstandard2.1)
-        SET(_DN_PACK_OPTIONS /p:TargetFrameworks=netstandard2.1)
+        SET(_DN_PACK_OPTIONS -p:TargetFrameworks=netstandard2.1)
     ENDIF()
 
     SET(_DN_IMPORT_PROP ${CMAKE_CURRENT_BINARY_DIR}/${_DN_projname}.imports.props)
     CONFIGURE_FILE(${DOTNET_MODULE_DIR}/DotnetImports.props.in ${_DN_IMPORT_PROP})
     
-    SET(_DN_IMPORT_ARGS "/p:DirectoryBuildPropsPath=${_DN_IMPORT_PROP}")
+    SET(_DN_IMPORT_ARGS "-p:DirectoryBuildPropsPath=${_DN_IMPORT_PROP}")
 
     SET(DOTNET_IMPORT_PROPERTIES ${_DN_IMPORT_ARGS} PARENT_SCOPE)
     SET(DOTNET_BUILD_PROPERTIES ${_DN_PLATFORM_PROP} ${_DN_IMPORT_ARGS} PARENT_SCOPE)
@@ -333,12 +333,12 @@ MACRO(DOTNET_BUILD_COMMANDS)
         endif()
         if(NOT DOTNET_NO_CLEAN)
             list(APPEND build_dotnet_cmds
-                COMMAND ${DOTNET_EXE} msbuild ${DOTNET_PROJPATH} /t:Clean ${DOTNET_BUILD_PROPERTIES} /p:Configuration="${DOTNET_CONFIG}"
+                COMMAND ${DOTNET_EXE} msbuild ${DOTNET_PROJPATH} /t:Clean ${DOTNET_BUILD_PROPERTIES} -p:Configuration="${DOTNET_CONFIG}"
             )
         endif()
 
         list(APPEND build_dotnet_cmds
-            COMMAND ${DOTNET_EXE} msbuild ${DOTNET_PROJPATH} /t:Build ${DOTNET_BUILD_PROPERTIES} /p:Configuration="${DOTNET_CONFIG}" ${DOTNET_ARGUMENTS}
+            COMMAND ${DOTNET_EXE} msbuild ${DOTNET_PROJPATH} /t:Build ${DOTNET_BUILD_PROPERTIES} -p:Configuration="${DOTNET_CONFIG}" ${DOTNET_ARGUMENTS}
         )
 
 

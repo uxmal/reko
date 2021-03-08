@@ -20,28 +20,6 @@
 
 cmake_minimum_required ( VERSION 3.10 FATAL_ERROR )
 
-function(check_msys output)
-	execute_process(
-		COMMAND uname -o
-		OUTPUT_VARIABLE ostype
-		RESULT_VARIABLE result
-	)
-	if(NOT result EQUAL 0)
-		set(${output} FALSE PARENT_SCOPE)
-		return()
-	endif()
-
-	string(TOLOWER "${ostype}" ostype)
-	string(STRIP "${ostype}" ostype)
-
-	if(${ostype} STREQUAL "msys")
-		set(${output} TRUE PARENT_SCOPE)
-		return()
-	endif()
-
-	set(${output} FALSE PARENT_SCOPE)
-endfunction()
-
 function(clean_project name path build_dir)
 	if(EXISTS ${build_dir})
 		message(STATUS "Removing ${build_dir}")
@@ -81,9 +59,16 @@ function(invoke_cmake)
 
 	# set default generator for win32
 	if(NOT proj_GENERATOR AND WIN32)
-		if(NOT DEFINED IS_MSYS)
-			check_msys(IS_MSYS)
+		if(DEFINED ENV{MSYSTEM})
+			set(IS_MSYS TRUE)
+		else()
+			set(IS_MSYS FALSE)
 		endif()
+
+		# remove "lib" prefix
+		set(CMAKE_SHARED_LIBRARY_PREFIX "")
+		set(CMAKE_STATIC_LIBRARY_PREFIX "")
+
 		message(STATUS "IS_MSYS: ${IS_MSYS}")
 		if(IS_MSYS)
 			set(proj_GENERATOR "MSYS Makefiles")

@@ -398,6 +398,7 @@ elseif("${TARGET}" STREQUAL "nativeproxy_clean")
 		COMMENT "Cleaning NativeProxy..."
 		WORKING_DIRECTORY ${REKO_SRC}/Native
 		COMMAND ${CMAKE_COMMAND}
+			-DIS_MSYS=${IS_MSYS}
 			-DREKO_SRC=${REKO_SRC}
 			-DREKO_ROOT=${REKO_SRC}/../
 			-DREKO_PLATFORM=${REKO_PLATFORM}
@@ -429,7 +430,7 @@ elseif("${TARGET}" STREQUAL "build_solution")
 		WORKING_DIRECTORY ${REKO_SRC}
 		COMMAND ${DOTNET_EXE} build
 				${REKO_SRC}/Reko-decompiler.sln
-				-c ${CMAKE_BUILD_TYPE} /p:Platform=${REKO_PLATFORM}
+				-c ${CMAKE_BUILD_TYPE} -p:Platform=${REKO_PLATFORM}
 	)
 elseif("${TARGET}" STREQUAL "run_unit_tests")
 	TEST_DOTNET(${REKO_SRC}/UnitTests/UnitTests.csproj

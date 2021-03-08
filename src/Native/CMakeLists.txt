@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
 project(reko-native)
-
-include(${CMAKE_CURRENT_LIST_DIR}/reko_platforms.cmake)
-
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_C_STANDARD 11)
+
+include(${CMAKE_CURRENT_LIST_DIR}/reko_platforms.cmake)
 
 # No library prefix for consistent naming (Windows has no lib prefix)
 # set(CMAKE_SHARED_LIBRARY_PREFIX "")
