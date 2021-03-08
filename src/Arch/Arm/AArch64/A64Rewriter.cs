@@ -387,7 +387,6 @@ namespace Reko.Arch.Arm.AArch64
             case ArmCondition.VS:
                 return m.Test(ConditionCode.OV, FlagGroup(Registers.V));
             }
-            return null;
         }
 
         protected ArmCondition Invert(ArmCondition cc)
