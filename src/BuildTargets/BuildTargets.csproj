@@ -15,64 +15,70 @@
   <PropertyGroup>
     <!-- this is needed to have a consistent and normalized path (or it will not work on Unix) -->
     <RekoCMake>$([System.IO.Path]::Combine($(ProjectDir), ..\reko.cmake))</RekoCMake>
+    <CMakeVS>$([System.IO.Path]::Combine($(VSAPPIDDIR), CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe))</CMakeVS>
+    <CMake>cmake</CMake>
     <!-- build the arguments string by joining <CMakeFlags> items by space -->
     <CMakeArguments>@(CMakeFlags -> '%(Identity)', ' ')</CMakeArguments>
   </PropertyGroup>
 
+  <PropertyGroup Condition="Exists('$(CMakeVS)')">
+    <CMake>"$(CMakeVS)"</CMake>
+  </PropertyGroup>
+
   <!-- Builds the whole Reko solution (the ~/src/Reko-decompiler.sln) -->
   <Target Name="build_solution">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=build_solution -P $(RekoCMake)" />
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=build_solution -P $(RekoCMake)" />
   </Target>
 
   <!-- Updates the NuSpec file to contain all the build outputs. This must be done after the build_solution build
        or no files will be found. -->
   <Target Name="update_runtime_nuspec">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=update_runtime_nuspec -P $(RekoCMake)" />
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=update_runtime_nuspec -P $(RekoCMake)" />
   </Target>
 
   <!-- This actually build the nupkg, requiring the `update_runtime_spec` step above. -->
   <Target Name="create_runtime_nupkg">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=create_runtime_nupkg -P $(RekoCMake)" />
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=create_runtime_nupkg -P $(RekoCMake)" />
   </Target>
 
   <!-- This build the MSI installer (Windows only) -->
   <Target Name="create_msi_wix">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=create_msi_wix -P $(RekoCMake)" />
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=create_msi_wix -P $(RekoCMake)" />
   </Target>
 
   <!-- Builds and runs the Reko unit test. This may build Reko twice. -->
   <Target Name="run_unit_tests">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=run_unit_tests -P $(RekoCMake)" />
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=run_unit_tests -P $(RekoCMake)" />
   </Target>
 
   <!-- This runs the regressionTests tool to execute reko on all the binaries in the 
     ~/subjects directory. 
   -->
   <Target Name="run_regressions">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=run_regressions -P $(RekoCMake)" />
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=run_regressions -P $(RekoCMake)" />
   </Target>
 
   <!-- Executes the xslt tool to generate the C# code for the reko menus in ~/src/Gui -->
   <Target Name="gen_decompiler_menus">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_decompiler_menus -P $(RekoCMake)" />
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=gen_decompiler_menus -P $(RekoCMake)" />
   </Target>
 
   <!-- Executes the xslt tool to generate the C# code for the reko menus in ~/src/UserInterfaces/WindowsForms -->
   <Target Name="gen_decompiler_menus_winforms">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_decompiler_menus_winforms -P $(RekoCMake)" />
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=gen_decompiler_menus_winforms -P $(RekoCMake)" />
   </Target>
 
   <!-- Preprocesses the C header files to XML -->
   <Target Name="gen_c2xml_os2">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_c2xml_os2 -P $(RekoCMake)" />
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=gen_c2xml_os2 -P $(RekoCMake)" />
   </Target>
 
   <Target Name="gen_c2xml_sysv">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_c2xml_sysv -P $(RekoCMake)" />
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=gen_c2xml_sysv -P $(RekoCMake)" />
   </Target>
 
   <Target Name="gen_c2xml_windows">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=gen_c2xml_windows -P $(RekoCMake)" />
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=gen_c2xml_windows -P $(RekoCMake)" />
   </Target>
 
   <!-- Runs the hdrgen tool to generate the C interop file 'reko.h'from the C# types that have been 
@@ -80,26 +86,26 @@
   -->
 
   <Target Name="run_hdrgen">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=run_hdrgen -P $(RekoCMake)" />
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=run_hdrgen -P $(RekoCMake)" />
   </Target>
 
   <!-- Deletes any cmake and build process junk in the native directory. -->
   <Target Name="nativeproxy_clean">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=nativeproxy_clean -P $(RekoCMake)" />
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=nativeproxy_clean -P $(RekoCMake)" />
   </Target>
 
   <!-- Builds the native code components of Reko -->
   <Target Name="nativeproxy_build">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=nativeproxy_build -P $(RekoCMake)" />
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=nativeproxy_build -P $(RekoCMake)" />
   </Target>
 
   <!-- Deploys ZIP files containing all the build outputs (including executables, metadata files, and nupkg)-->
   <Target Name="create_release">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=create_release -P $(RekoCMake)" />
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=create_release -P $(RekoCMake)" />
   </Target>
 
   <!-- Convenience target that performs all the above steps in the correct order -->
   <Target Name="reko_all">
-    <Exec Command="cmake $(CMakeArguments) -DTARGET=reko_all -P $(RekoCMake)" />
+    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=reko_all -P $(RekoCMake)" />
   </Target>
 </Project>
