@@ -276,7 +276,14 @@ namespace Reko.Tools.regressionTests
                         WorkingDirectory = job.WorkingDirectory,
                         RedirectStandardOutput = true
                     });
-                    output = proc.StandardOutput.ReadToEnd();
+                    if (proc != null)
+                    {
+                        output = proc.StandardOutput.ReadToEnd();
+                    }
+                    else 
+                    {
+                        output = $"*** Didn't start {cmdline.Item1} {cmdline.Item2}." + Environment.NewLine;
+                    }
                 }
                 catch (Exception)
                 {
@@ -429,12 +436,18 @@ namespace Reko.Tools.regressionTests
                 // capture stderr, as we're going to silence it
                 RedirectStandardError = true
             });
+            if (git != null) 
+            {
+                // pipe stdout to stderr (to show it on-screen, since stdout is going to regression.log)
+                git.StandardOutput.BaseStream.CopyTo(Console.OpenStandardError());
 
-            // pipe stdout to stderr (to show it on-screen, since stdout is going to regression.log)
-            git.StandardOutput.BaseStream.CopyTo(Console.OpenStandardError());
-
-            git.WaitForExit();
-            return git.ExitCode;
+                git.WaitForExit();
+                return git.ExitCode;
+            }
+            else 
+            {
+                return 1;
+            }
         }
 
         private List<Job> CollectJobs(List<string> dirs)

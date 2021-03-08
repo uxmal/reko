@@ -54,7 +54,7 @@ namespace Reko.Arch.MicrochipPIC.Design
             form.PIC18RadioButton.CheckedChanged += PICRadioButtons_CheckedChanged!;
         }
 
-        private void Form_FormClosing(object sender, EventArgs e)
+        private void Form_FormClosing(object? sender, EventArgs e)
         {
             if (form.DialogResult == DialogResult.OK)
             {

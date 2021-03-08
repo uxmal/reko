@@ -64,7 +64,7 @@ namespace Reko.UnitTests
 		{
 			get 
 			{
-                string assemblyUri = typeof(FileUnitTester).Assembly.CodeBase;
+                string assemblyUri = typeof(FileUnitTester).Assembly.Location;
                 string assemblyName = new Uri(assemblyUri).LocalPath;
                 var iUnitTests = assemblyName.IndexOf("UnitTests");
                 if (iUnitTests <= 0)

@@ -99,8 +99,7 @@ namespace Reko.Tools.genPICdb
             var assembly = Assembly.GetEntryAssembly();
             if (assembly is null)
                 return null;
-            var location = new Uri(assembly.GetName().CodeBase);
-            return location is null ? null : new FileInfo(location.LocalPath).Directory.FullName;
+            return Path.GetDirectoryName(assembly.Location);
         }
 
         private static string workingDir
