@@ -510,7 +510,7 @@ elseif("${TARGET}" STREQUAL "create_msi_wix")
 	#
 	# Create a new target to update the Wix spec
 	#
-	set(WINDRIVER_OUTDIR ${REKO_SRC}/Drivers/WindowsDecompiler/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_EXE_FRAMEWORK})
+	set(WINDRIVER_OUTDIR ${REKO_SRC}/Drivers/WindowsDecompiler/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_WINFORMS_EXE_FRAMEWORK})
 	RUN_DOTNET(${REKO_SRC}/tools/specGen/specGen.csproj
 		NO_RESTORE
 		NO_CLEAN
@@ -644,7 +644,7 @@ elseif("${TARGET}" STREQUAL "create_release")
 		add_custom_target(create_release_zip_windowsdecompiler
 			COMMENT "Compressing WindowsDecompiler..."
 			COMMAND ${SEVENZIP_BIN} a ${artifacts_dir}/WindowsDecompiler-${build_version}-${build_shorthash}.zip
-				${REKO_SRC}/Drivers/WindowsDecompiler/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_EXE_FRAMEWORK}/*
+				${REKO_SRC}/Drivers/WindowsDecompiler/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_WINFORMS_EXE_FRAMEWORK}/*
 		)
 		add_dependencies(create_release create_release_zip_windowsdecompiler)
 
