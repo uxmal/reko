@@ -23,6 +23,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup MSYS
+      if: matrix.os == 'windows-latest'
       uses: msys2/setup-msys2@v2
       with:
         update: true
