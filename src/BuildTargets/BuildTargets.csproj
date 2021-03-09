@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <CMakeFlags Include="-DIS_MSYS=FALSE" />
     <CMakeFlags Include="-DCMAKE_BUILD_TYPE=$(Configuration)" />
     <CMakeFlags Include="-DREKO_PLATFORM=$(Platform)" />
     <CMakeFlags Include="-DREKO_SRC=$(ProjectDir)../" />
