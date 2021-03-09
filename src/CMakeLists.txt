@@ -150,20 +150,6 @@ function(add_c2xml_target)
 	set(c2xml_dir ${CMAKE_BINARY_DIR}/c2xml/${REKO_EXE_FRAMEWORK})
 	set(c2xml_exe ${c2xml_dir}/c2xml)
 
-	# 
-	# To speedup c2xml invocations, we use "dotnet" just once
-	# for subsequent runs, we'll reuse the path of the previously built binary
-	#
-	if(NOT TARGET build_c2xml)
-		ADD_DOTNET(${REKO_SRC}/tools/c2xml/c2xml.csproj
-			NETCOREAPP
-			CONFIG ${CMAKE_BUILD_TYPE}
-			PLATFORM ${REKO_PLATFORM}
-			SOURCES ${c2xml_HEADER}
-			TARGET_NAME "build_c2xml"
-		)
-	endif()
-
 	# for some reason, dotnet build doesn't seem to produce a native executable on macOS
 	if(APPLE)
 		set(c2xml_exe dotnet ${c2xml_exe}.dll)
@@ -304,6 +290,18 @@ endfunction()
 
 set(GUI_BASEDIR ${REKO_SRC}/Gui)
 
+macro(add_c2xml_build_target target_name)
+	ADD_DOTNET(${REKO_SRC}/tools/c2xml/c2xml.csproj
+		NO_RESTORE
+		NO_CLEAN
+		NETCOREAPP
+		CONFIG ${CMAKE_BUILD_TYPE}
+		PLATFORM ${REKO_PLATFORM}
+		SOURCES ${c2xml_HEADER}
+		TARGET_NAME ${target_name}
+	)
+endmacro()
+
 if("${TARGET}" STREQUAL "gen_decompiler_menus")
 	#
 	# Create a new target to generate CmdIds.cs
@@ -375,21 +373,30 @@ elseif("${TARGET}" STREQUAL "run_hdrgen")
 		TARGET_NAME "run_hdrgen"
 	)
 elseif("${TARGET}" STREQUAL "gen_c2xml_windows")
+	add_c2xml_build_target(build_c2xml)
+
 	add_custom_target(gen_c2xml_windows)
 	add_c2xml_target_windows(gen_c2xml_windows msvcrt)
 	add_c2xml_target_windows(gen_c2xml_windows ntoskrnl)
+	add_dependencies(gen_c2xml_windows build_c2xml)
 elseif("${TARGET}" STREQUAL "gen_c2xml_os2")
+	add_c2xml_build_target(build_c2xml)
+
 	add_custom_target(gen_c2xml_os2)
 	add_c2xml_target_os2(gen_c2xml_os2 os2-16)
 	add_c2xml_target_os2(gen_c2xml_os2 16/fsu)
 	add_c2xml_target_os2(gen_c2xml_os2 16/fsh)
 	add_c2xml_target_os2(gen_c2xml_os2 16/fsd)
+	add_dependencies(gen_c2xml_os2 build_c2xml)
 elseif("${TARGET}" STREQUAL "gen_c2xml_sysv")
+	add_c2xml_build_target(build_c2xml)
+
 	add_custom_target(gen_c2xml_sysv)
 	add_c2xml_target_sysv(gen_c2xml_sysv lp32)
 	add_c2xml_target_sysv(gen_c2xml_sysv libc.so)
 	add_c2xml_target_sysv(gen_c2xml_sysv Xlib)
 	add_c2xml_target_sysv(gen_c2xml_sysv opengl)
+	add_dependencies(gen_c2xml_sysv build_c2xml)
 elseif("${TARGET}" STREQUAL "nativeproxy_clean")
 	#
 	# Create a new target to clean NativeProxy
