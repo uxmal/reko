@@ -296,35 +296,42 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
-        public void Sud_LoadProject_Inputs_v2()
+        public void Sud_LoadProject_Inputs_v5()
         {
             Given_Loader();
             Given_Architecture();
+            Given_TestOS_Platform();
             Expect_Arch_ParseAddress("1000:0400", Address.SegPtr(0x1000, 0x0400));
             Given_ExecutableProgram("foo.exe", Address.SegPtr(0x1000, 0x0000));
             Given_BinaryFile("foo.bin", Address.SegPtr(0x1000, 0x0000));
 
-
-            var sProject = new Project_v2
+            var sProject = new Project_v5
             {
+                ArchitectureName = arch.Object.Name,
+                PlatformName = platform.Object.Name,
                 Inputs = {
-                    new DecompilerInput_v2 {
+                    new DecompilerInput_v5 {
                         Filename = "foo.exe",
-                        Address = "1000:0000",
+                        User = {
+                            LoadAddress = "1000:0000",
+                            GlobalData = {
+                                new GlobalDataItem_v2 { Address = "1000:0400", DataType = new StringType_v2 {
+                                    Termination=StringType_v2.ZeroTermination,
+                                    CharType= new PrimitiveType_v1 { ByteSize = 1, Domain=Domain.Character} }
+                                }
+                            }
+                        },
                         Comment = "main file",
-                        UserGlobalData = new List<GlobalDataItem_v2>
-                        {
-                            new GlobalDataItem_v2 { Address = "1000:0400", DataType = new StringType_v2 { 
-                                Termination=StringType_v2.ZeroTermination,
-                                CharType= new PrimitiveType_v1 { ByteSize = 1, Domain=Domain.Character} } 
+                    },
+                    new DecompilerInput_v5 {
+                        Filename = "foo.bin",
+                        Comment = "overlay",
+                        User = { 
+                            LoadAddress = "1000:D000",
+                            Processor = new ProcessorOptions_v4 {
+                                Name = "x86-real-16",
                             }
                         }
-                    },
-                    new DecompilerInput_v2 {
-                        Filename = "foo.bin",
-                        Address = "1000:D000",
-                        Comment = "overlay",
-                        Processor = "x86-real-16",
                     }
                 }
             };
@@ -434,10 +441,15 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void SudLoadMetadata()
         {
-            var sProject = new Project_v2 {
+            Given_Architecture();
+            Given_TestOS_Platform();
+
+            var sProject = new Project_v5 {
+                ArchitectureName = arch.Object.Name,
+                PlatformName = platform.Object.Name,
                 Inputs =
                 {
-                    new MetadataFile_v2
+                    new MetadataFile_v3
                     {
                         Filename = "c:\\tmp\\foo.def"
                     }

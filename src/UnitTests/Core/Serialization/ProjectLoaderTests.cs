@@ -123,10 +123,10 @@ namespace Reko.UnitTests.Core.Serialization
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
             prld.LoadProject(
                 "project.dcproj",
-                new Project_v2
+                new Project_v5
                 {
                     Inputs = {
-                        new MetadataFile_v2 {
+                        new MetadataFile_v3 {
                             Filename = "foo",
                         }
                     }
@@ -423,69 +423,6 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual(
                 Address.Ptr32(0x00123400),
                 project.Programs[0].User.LoadAddress);
-        }
-
-        [Test]
-        public void Prld_v2()
-        {
-            var sExp =
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<project xmlns=""http://schemata.jklnet.org/Decompiler/v2"">
-  <input>
-     <filename>/foo/foo</filename>
-  </input>
-</project>";
-            var ldr = new Mock<ILoader>();
-            var platform = new TestPlatform(sc);
-            Given_Binary(ldr, platform);
-            Given_TypeLibraryLoaderService();
-            cfgSvc.Setup(c => c.GetEnvironment("testOS")).Returns(new PlatformDefinition
-            {
-
-            });
-
-            var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            var project = prld.LoadProject("/foo/bar", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
-
-            Assert.AreEqual(1, project.Programs.Count);
-        }
-
-        [Test(Description = "Failure to load v3 project file")]
-        public void Prld_issue_299()
-        {
-            var sExp =
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<project xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://schemata.jklnet.org/Reko/v3"">
-  <input>
-    <filename>switch.dll</filename>
-    <disassembly>switch.asm</disassembly>
-    <intermediate-code>switch.dis</intermediate-code>
-    <output>switch.c</output>
-    <types-file>switch.h</types-file>
-    <global-vars>switch.globals.c</global-vars>
-    <user>
-      <procedure name=""get"">
-        <address>10071000</address>
-        <CSignature>char * get(unsigned int n)</CSignature>
-      </procedure>
-      <heuristic name=""shingle"" />
-    </user>
-  </input>
-</project>
-";
-            var ldr = new Mock<ILoader>();
-            var platform = new TestPlatform(sc);
-            Given_TestArch();
-            Given_TestOS();
-            Given_Binary(ldr, platform);
-            Given_TypeLibraryLoaderService();
-            oe.Setup(o => o.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
-            oe.Setup(o => o.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
-
-            var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            var project = prld.LoadProject("/foo/bar", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
-
-            Assert.AreEqual(1, project.Programs.Count);
         }
        
         [Test]
