@@ -22,6 +22,14 @@ jobs:
             build_config: Release
     steps:
     - uses: actions/checkout@v2
+    - name: Setup MSYS
+      uses: msys2/setup-msys2@v2
+      with:
+        update: true
+        msystem: MINGW64
+        install: >-
+          mingw-w64-x86_64-gcc
+          mingw-w64-x86_64-pkgconf
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
