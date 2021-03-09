@@ -107,6 +107,8 @@ function(invoke_cmake)
 		set(CMAKE_ARGS "${CMAKE_ARGS};${proj_EXTRA_ARGUMENTS}")
 	endif()
 
+	set(CMAKE_ARGS "${CMAKE_ARGS};-DIS_MSYS=${IS_MSYS}")
+
 	execute_process(
 		COMMAND ${CMAKE_COMMAND} ${CMAKE_ARGS}
 		WORKING_DIRECTORY ${proj_BUILD_DIR}
