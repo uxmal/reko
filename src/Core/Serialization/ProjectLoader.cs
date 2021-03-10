@@ -150,8 +150,8 @@ namespace Reko.Core.Serialization
             {
                 this.outer = outer; this.filename = filename;
             }
-            public Project VisitProject_v4(Project_v4 sProject) { return outer.LoadProject(filename, sProject); }
-            public Project VisitProject_v5(Project_v5 sProject) { return outer.LoadProject(filename, sProject); }
+            public Project VisitProject_v4(Project_v4 sProject) => outer.LoadProject(filename, sProject);
+            public Project VisitProject_v5(Project_v5 sProject) => outer.LoadProject(filename, sProject);
         }
 
         /// <summary>
@@ -236,25 +236,7 @@ namespace Reko.Core.Serialization
         /// <returns></returns>
         public Project LoadProject(string filename, Project_v4 sp)
         {
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-            this.arch = cfgSvc.GetArchitecture(sp.ArchitectureName!);
-            if (arch == null)
-                throw new ApplicationException(
-                    string.Format("Unknown architecture '{0}' in project file.",
-                        sp.ArchitectureName ?? "(null)"));
-            var env = cfgSvc.GetEnvironment(sp.PlatformName!);
-            if (env == null)
-                throw new ApplicationException(
-                    string.Format("Unknown operating environment '{0}' in project file.",
-                        sp.PlatformName ?? "(null)"));
-            this.platform = env.Load(Services, arch);
-            this.project.LoadedMetadata = this.platform.CreateMetadata();
-            var typelibs = sp.MetadataFiles.Select(m => VisitMetadataFile(filename, m));
-            var programs = sp.InputFiles.Select(s => VisitInputFile(filename, s));
-            sp.AssemblerFiles.Select(s => VisitAssemblerFile(s));
-            project.MetadataFiles.AddRange(typelibs);
-            project.Programs.AddRange(programs);
-            return this.project;
+            return LoadProject(filename, ProjectVersionMigrator.MigrateProject(sp));
         }
 
         private Program LoadProgram(string projectFilePath, DecompilerInput_v5 sInput)
@@ -316,53 +298,6 @@ namespace Reko.Core.Serialization
             program.EnsureDirectoryNames(program.Filename);
             program.User.LoadAddress = address;
             ProgramLoaded?.Fire(this, new ProgramEventArgs(program));
-            return program;
-        }
-
-        public Program VisitInputFile(string projectFilePath, DecompilerInput_v4 sInput)
-        {
-            var binAbsPath = ConvertToAbsolutePath(projectFilePath, sInput.Filename)!;
-            var bytes = loader.LoadImageBytes(binAbsPath, 0);
-            var sUser = sInput.User ?? new UserData_v4
-            {
-                ExtractResources = true,
-            };
-            var address = LoadAddress(sUser, this.arch);
-            var archOptions = XmlOptions.LoadIntoDictionary(sUser.Processor?.Options, StringComparer.OrdinalIgnoreCase);
-            Program program;
-            if (!string.IsNullOrEmpty(sUser.Loader))
-            {
-                // The presence of an explicit loader name prompts us to
-                // use the LoadRawImage path.
-                var archName = sUser.Processor?.Name;
-                var platform = sUser.PlatformOptions?.Name;
-                program = loader.LoadRawImage(binAbsPath, bytes, address, new LoadDetails
-                {
-                    LoaderName = sUser.Loader,
-                    ArchitectureName = archName,
-                    ArchitectureOptions = archOptions,
-                    PlatformName = platform,
-                    LoadAddress = sUser.LoadAddress,
-                });
-            }
-            else
-            {
-                program = loader.LoadExecutable(binAbsPath, bytes, sUser.Loader, address)
-                    ?? new Program();   // A previous save of the project was able to read the file, 
-                                        // but now we can't...
-            }
-            LoadUserData(sUser, program, program.User, projectFilePath);
-            program.Filename = binAbsPath;
-            program.DisassemblyDirectory = ConvertToAbsolutePath(projectFilePath, Path.GetDirectoryName(sInput.DisassemblyFilename));
-            program.SourceDirectory = ConvertToAbsolutePath(projectFilePath, Path.GetDirectoryName(sInput.OutputFilename));
-            program.IncludeDirectory = ConvertToAbsolutePath(projectFilePath, Path.GetDirectoryName(sInput.TypesFilename));
-            program.ResourcesDirectory = ConvertToAbsolutePath(projectFilePath, sInput.ResourcesDirectory);
-            program.EnsureDirectoryNames(binAbsPath);
-            program.User.LoadAddress = address;
-            // We are fettered by backwards compatibility here, don't suddenly change behavior
-            // but keep all code in one file. After loading users can change to other policies.
-            program.User.OutputFilePolicy = program.User.OutputFilePolicy ?? Program.SingleFilePolicy;
-            ProgramLoaded?.Invoke(this, new ProgramEventArgs(program));
             return program;
         }
 
