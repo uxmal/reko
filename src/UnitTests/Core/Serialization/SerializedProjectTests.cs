@@ -466,7 +466,7 @@ namespace Reko.UnitTests.Core.Serialization
             var ploader = new ProjectLoader(sc, loader.Object, listener.Object);
             var project = ploader.LoadProject("c:\\bar\\bar.dcproj", sProject);
             Assert.AreEqual(1, project.MetadataFiles.Count);
-            Assert.AreEqual("c:\\tmp\\foo.def", project.MetadataFiles[0].Filename);
+            Assert.AreEqual("foo.def", project.MetadataFiles[0].Filename[^7..]);
         }
 
         [Test]
