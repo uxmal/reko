@@ -162,13 +162,14 @@ namespace Reko.Core.Serialization
         /// <returns></returns>
         public Project LoadProject(string filename, Project_v5 sp)
         {
+            if (string.IsNullOrWhiteSpace(sp.ArchitectureName))
+                sp.ArchitectureName = GuessProjectProcessorArchitecture(filename, sp.Inputs.OfType<DecompilerInput_v5>());
+            if (string.IsNullOrWhiteSpace(sp.ArchitectureName))
+                throw new ApplicationException("Missing <arch> in project file. Please specify.");
+            if (string.IsNullOrWhiteSpace(sp.PlatformName))
+                sp.PlatformName = GuessProjectPlatform(filename, sp.Inputs.OfType<DecompilerInput_v5>());
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            IProcessorArchitecture arch = null;
-            if (sp.ArchitectureName != null)
-            {
-                arch = cfgSvc.GetArchitecture(sp.ArchitectureName);
-            }
-
+            var arch = cfgSvc.GetArchitecture(sp.ArchitectureName);
             this.arch = arch ?? throw new ApplicationException(
                     string.Format("Unknown architecture '{0}' in project file.",
                         sp.ArchitectureName ?? "(null)"));
@@ -187,6 +188,45 @@ namespace Reko.Core.Serialization
             return this.project;
         }
 
+        private string GuessProjectProcessorArchitecture(string projectFilename, IEnumerable<DecompilerInput_v5> inputs)
+        {
+            foreach (var input in inputs)
+            {
+                string? processorArchitecture = input.User?.Processor?.Name;
+
+                if (processorArchitecture != null)
+                    return processorArchitecture;
+            }
+
+            foreach (var input in inputs)
+            {
+                var program = LoadProgram(projectFilename, input);
+
+                return program.Architecture.Name;
+            }
+
+            return null;
+        }
+
+        private string GuessProjectPlatform(string projectFilename, IEnumerable<DecompilerInput_v5> inputs)
+        {
+            foreach (var input in inputs)
+            {
+                string? platform = input.User?.PlatformOptions?.Name;
+
+                if (platform != null)
+                    return platform;
+            }
+
+            foreach (var input in inputs)
+            {
+                var program = LoadProgram(projectFilename, input);
+
+                return program.Platform.Name;
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Loads a Project object from its serialized representation. First loads the
@@ -217,11 +257,8 @@ namespace Reko.Core.Serialization
             return this.project;
         }
 
-        public Program VisitInputFile(string projectFilePath, DecompilerInput_v5 sInput)
+        private Program LoadProgram(string projectFilePath, DecompilerInput_v5 sInput)
         {
-            //$REVIEW: make this null
-            //if (sInput.Filename == null)
-            //    return null;
             var binAbsPath = ConvertToAbsolutePath(projectFilePath, sInput.Filename)!;
             var bytes = loader.LoadImageBytes(binAbsPath, 0);
             var sUser = sInput.User ?? new UserData_v4
@@ -253,6 +290,23 @@ namespace Reko.Core.Serialization
                     ?? new Program();   // A previous save of the project was able to read the file, 
                                         // but now we can't...
             }
+
+            return program;
+        }
+
+        public Program VisitInputFile(string projectFilePath, DecompilerInput_v5 sInput)
+        {
+            //$REVIEW: make this null
+            //if (sInput.Filename == null)
+            //    return null;
+            var binAbsPath = ConvertToAbsolutePath(projectFilePath, sInput.Filename)!;
+            var sUser = sInput.User ?? new UserData_v4
+            {
+                ExtractResources = true,
+                OutputFilePolicy = Program.SingleFilePolicy,
+            };
+            var address = LoadAddress(sUser, this.arch);
+            Program program = LoadProgram(projectFilePath, sInput);
             LoadUserData(sUser, program, program.User, projectFilePath);
             program.Filename = binAbsPath;
             program.DisassemblyDirectory = ConvertToAbsolutePath(projectFilePath, sInput.DisassemblyDirectory);
@@ -312,7 +366,7 @@ namespace Reko.Core.Serialization
             return program;
         }
 
-        private Address LoadAddress(UserData_v4 user, IProcessorArchitecture arch)
+        private Address? LoadAddress(UserData_v4 user, IProcessorArchitecture arch)
         {
             if (user == null || arch == null || user.LoadAddress == null)
                 return null;
@@ -646,17 +700,7 @@ namespace Reko.Core.Serialization
                 return platformsInUse[0];
             IPlatform platform = null;
             if (platformsInUse.Length == 0)
-            {
-                var oSvc = Services.GetService<IOracleService>();
-                if (oSvc != null)
-                {
-                    platform = oSvc.QueryPlatform(string.Format(
-                        "Please specify with operating environment should be used with metadata file {0}.",
-                        filename));
-                }
-                Debug.Print("Got platform <{0}>", platform);
-                return platform;
-            }
+                throw new NotImplementedException("Must specify platform for project.");
             throw new NotImplementedException("Multiple platforms possible; not implemented yet.");
         }
 

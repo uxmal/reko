@@ -108,33 +108,6 @@ namespace Reko.UnitTests.Core.Serialization
             sc.AddService<ITypeLibraryLoaderService>(this.tlSvc.Object);
         }
 
-        [Test(Description = "If the project file just has a single metadata file, we don't know what the platform is; so ask the user.")]
-        public void Prld_LoadMetadata_NoPlatform_ShouldQuery()
-        {
-            var ldr = new Mock<ILoader>();
-            var oracle = new Mock<IOracleService>();
-            var platform = mockFactory.CreateMockPlatform();
-            var typeLib = new TypeLibrary();
-            ldr.Setup(l => l.LoadMetadata(It.IsNotNull<string>(), platform.Object, It.IsNotNull<TypeLibrary>()))
-                .Returns(typeLib);
-            oracle.Setup(o => o.QueryPlatform(It.IsNotNull<string>())).Returns(platform.Object).Verifiable();
-            sc.AddService<IOracleService>(oracle.Object);
-
-            var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            prld.LoadProject(
-                "project.dcproj",
-                new Project_v5
-                {
-                    Inputs = {
-                        new MetadataFile_v3 {
-                            Filename = "foo",
-                        }
-                    }
-                });
-
-            oracle.VerifyAll();
-        }
-
         private void Given_Binary(Mock<ILoader> ldr, IPlatform platform)
         {
             ldr.Setup(l => l.LoadImageBytes(

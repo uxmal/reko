@@ -462,9 +462,6 @@ namespace Reko.UnitTests.Core.Serialization
                 It.IsAny<IPlatform>(),
                 It.IsAny<TypeLibrary>()))
                 .Returns(typelib);
-            var oracle = new Mock<IOracleService>();
-            oracle.Setup(o => o.QueryPlatform(It.IsNotNull<string>())).Returns(mockFactory.CreateMockPlatform().Object);
-            sc.AddService<IOracleService>(oracle.Object);
 
             var ploader = new ProjectLoader(sc, loader.Object, listener.Object);
             var project = ploader.LoadProject("c:\\bar\\bar.dcproj", sProject);
