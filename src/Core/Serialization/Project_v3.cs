@@ -27,20 +27,17 @@ using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
 {
-    public abstract class ProjectFile_v3
-    {
-        [XmlElement("filename")]
-        public string? Filename;
-    }
-
     public class Heuristic_v3
     {
         [XmlAttribute("name")]
         public string? Name;
     }
 
-    public class MetadataFile_v3 : ProjectFile_v3
+    public class MetadataFile_v3
     {
+        [XmlElement("filename")]
+        public string? Filename;
+
         [XmlElement("loader")]
         public string? LoaderTypeName;
 
@@ -48,12 +45,14 @@ namespace Reko.Core.Serialization
         public string? ModuleName;
     }
 
-    public class AssemblerFile_v3 : ProjectFile_v3
+    public class AssemblerFile_v3
     {
+        [XmlElement("filename")]
+        public string? Filename;
+
         [XmlElement("assembler")]
         public string? Assembler;
     }
-
 
     public class Annotation_v3
     {

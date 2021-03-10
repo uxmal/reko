@@ -45,7 +45,9 @@ namespace Reko.Core.Serialization
 
         public Project_v5()
         {
-            this.Inputs = new List<ProjectFile_v3>();
+            this.InputFiles = new List<DecompilerInput_v5>();
+            this.MetadataFiles = new List<MetadataFile_v3>();
+            this.AssemblerFiles = new List<AssemblerFile_v3>();
         }
 
         [XmlElement("arch")]
@@ -55,9 +57,11 @@ namespace Reko.Core.Serialization
         public string? PlatformName;
 
         [XmlElement("input", typeof(DecompilerInput_v5))]
+        public List<DecompilerInput_v5> InputFiles;
         [XmlElement("metadata", typeof(MetadataFile_v3))]
+        public List<MetadataFile_v3> MetadataFiles;
         [XmlElement("asm", typeof(AssemblerFile_v3))]
-        public List<ProjectFile_v3> Inputs;
+        public List<AssemblerFile_v3> AssemblerFiles;
 
         public override T Accept<T>(ISerializedProjectVisitor<T> visitor)
         {
@@ -65,12 +69,15 @@ namespace Reko.Core.Serialization
         }
     }
 
-    public class DecompilerInput_v5 : ProjectFile_v3
+    public class DecompilerInput_v5
     {
         public DecompilerInput_v5()
         {
             User = new UserData_v4();
         }
+
+        [XmlElement("filename")]
+        public string? Filename;
 
         [XmlElement("comment")]
         public string? Comment;

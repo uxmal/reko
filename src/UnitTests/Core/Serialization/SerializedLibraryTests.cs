@@ -153,7 +153,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var proj = new Project_v5
             {
-                Inputs = {
+                InputFiles = {
                     new DecompilerInput_v5 {
                         User = new UserData_v4
                         {
@@ -228,8 +228,8 @@ namespace Reko.UnitTests.Core.Serialization
             var rdr = new XmlTextReader(sr);
             var proj = (Project_v5)ser.Deserialize(rdr);
 
-            Assert.AreEqual(1, proj.Inputs.Count);
-            var input = (DecompilerInput_v5)proj.Inputs[0];
+            Assert.AreEqual(1, proj.InputFiles.Count);
+            var input = (DecompilerInput_v5)proj.InputFiles[0];
             Assert.AreEqual(1, input.User.GlobalData.Count);
             Assert.AreEqual("arr(ptr(code),10)", input.User.GlobalData[0].DataType.ToString());
         }

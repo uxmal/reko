@@ -291,7 +291,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v4
                     {
@@ -323,7 +323,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v4
                     {
@@ -333,6 +333,8 @@ namespace Reko.UnitTests.Core.Serialization
                             LoadAddress = "00123400"
                         }
                     },
+                },
+                MetadataFiles = {
                     new MetadataFile_v3 {
                         Filename = "meta1.xml",
                     },
@@ -405,7 +407,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v4
                     {
@@ -457,7 +459,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v4
                     {
@@ -504,7 +506,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v4
                     {
@@ -548,7 +550,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v4
                     {
@@ -577,7 +579,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v4
                     {
@@ -635,7 +637,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v5
                     {

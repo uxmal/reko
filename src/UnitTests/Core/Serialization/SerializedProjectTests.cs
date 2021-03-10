@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             Project_v5 ud = new Project_v5
             {
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v5
                     {
@@ -309,7 +309,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = arch.Object.Name,
                 PlatformName = platform.Object.Name,
-                Inputs = {
+                InputFiles = {
                     new DecompilerInput_v5 {
                         Filename = "foo.exe",
                         User = {
@@ -447,7 +447,7 @@ namespace Reko.UnitTests.Core.Serialization
             var sProject = new Project_v5 {
                 ArchitectureName = arch.Object.Name,
                 PlatformName = platform.Object.Name,
-                Inputs =
+                MetadataFiles =
                 {
                     new MetadataFile_v3
                     {
@@ -477,7 +477,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs = 
+                InputFiles =
                 {
                     new DecompilerInput_v4
                     {
@@ -550,7 +550,7 @@ namespace Reko.UnitTests.Core.Serialization
             var saver = new ProjectSaver(sc);
             var sProj = new Project_v5
             {
-                Inputs = { saver.VisitProgram("foo.exe", program) }
+                InputFiles = { saver.VisitProgram("foo.exe", program) }
             };
             var writer = new FilteringXmlWriter(sw);
             writer.Formatting = System.Xml.Formatting.Indented;

@@ -163,11 +163,11 @@ namespace Reko.Core.Serialization
         public Project LoadProject(string filename, Project_v5 sp)
         {
             if (string.IsNullOrWhiteSpace(sp.ArchitectureName))
-                sp.ArchitectureName = GuessProjectProcessorArchitecture(filename, sp.Inputs.OfType<DecompilerInput_v5>());
+                sp.ArchitectureName = GuessProjectProcessorArchitecture(filename, sp.InputFiles);
             if (string.IsNullOrWhiteSpace(sp.ArchitectureName))
                 throw new ApplicationException("Missing <arch> in project file. Please specify.");
             if (string.IsNullOrWhiteSpace(sp.PlatformName))
-                sp.PlatformName = GuessProjectPlatform(filename, sp.Inputs.OfType<DecompilerInput_v5>());
+                sp.PlatformName = GuessProjectPlatform(filename, sp.InputFiles);
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture(sp.ArchitectureName);
             this.arch = arch ?? throw new ApplicationException(
@@ -180,9 +180,9 @@ namespace Reko.Core.Serialization
                         sp.PlatformName ?? "(null)"));
             this.platform = env.Load(Services, arch);
             this.project.LoadedMetadata = this.platform.CreateMetadata();
-            var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m));
-            var programs = sp.Inputs.OfType<DecompilerInput_v5>().Select(s => VisitInputFile(filename, s));
-            sp.Inputs.OfType<AssemblerFile_v3>().Select(s => VisitAssemblerFile(s));
+            var typelibs = sp.MetadataFiles.Select(m => VisitMetadataFile(filename, m));
+            var programs = sp.InputFiles.Select(s => VisitInputFile(filename, s));
+            sp.AssemblerFiles.Select(s => VisitAssemblerFile(s));
             project.MetadataFiles.AddRange(typelibs);
             project.Programs.AddRange(programs);
             return this.project;
@@ -249,9 +249,9 @@ namespace Reko.Core.Serialization
                         sp.PlatformName ?? "(null)"));
             this.platform = env.Load(Services, arch);
             this.project.LoadedMetadata = this.platform.CreateMetadata();
-            var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m));
-            var programs = sp.Inputs.OfType<DecompilerInput_v4>().Select(s => VisitInputFile(filename, s));
-            sp.Inputs.OfType<AssemblerFile_v3>().Select(s => VisitAssemblerFile(s));
+            var typelibs = sp.MetadataFiles.Select(m => VisitMetadataFile(filename, m));
+            var programs = sp.InputFiles.Select(s => VisitInputFile(filename, s));
+            sp.AssemblerFiles.Select(s => VisitAssemblerFile(s));
             project.MetadataFiles.AddRange(typelibs);
             project.Programs.AddRange(programs);
             return this.project;

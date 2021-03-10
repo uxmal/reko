@@ -48,20 +48,23 @@ namespace Reko.Core.Serialization
         /// <returns></returns>
         public Project_v5 Serialize(string projectAbsPath, Project project)
         {
-            var inputs = new List<ProjectFile_v3>();
-            inputs.AddRange(project.Programs.Select(p => VisitProgram(projectAbsPath, p)));
-            inputs.AddRange(project.MetadataFiles.Select(m => VisitMetadataFile(projectAbsPath, m)));
+            var inputFiles = new List<DecompilerInput_v5>();
+            inputFiles.AddRange(project.Programs.Select(p => VisitProgram(projectAbsPath, p)));
+
+            var metadataFiles = new List<MetadataFile_v3>();
+            metadataFiles.AddRange(project.MetadataFiles.Select(m => VisitMetadataFile(projectAbsPath, m)));
             var sp = new Project_v5
             {
                 // ".Single()" because there can be only one Architecture and Platform, realistically.
                 ArchitectureName = project.Programs.Select(p => p.Architecture.Name).Distinct().SingleOrDefault(),
                 PlatformName = project.Programs.Select(p => p.Platform.Name).Distinct().SingleOrDefault(),   
-                Inputs = inputs
+                InputFiles = inputFiles,
+                MetadataFiles = metadataFiles,
             };
             return sp;
         }
 
-        public ProjectFile_v3 VisitProgram(string projectAbsPath, Program program)
+        public DecompilerInput_v5 VisitProgram(string projectAbsPath, Program program)
         {
             return new DecompilerInput_v5
             {
@@ -285,7 +288,7 @@ namespace Reko.Core.Serialization
             throw new NotSupportedException(value.GetType().Name);
         }
 
-        public ProjectFile_v3 VisitMetadataFile(string projectAbsPath, MetadataFile metadata)
+        public MetadataFile_v3 VisitMetadataFile(string projectAbsPath, MetadataFile metadata)
         {
             return new MetadataFile_v3
             {
