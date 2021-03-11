@@ -35,8 +35,6 @@ namespace Reko.Core.Serialization
 
     public interface ISerializedProjectVisitor<T>
     {
-        T VisitProject_v2(Project_v2 sProject);
-        T VisitProject_v3(Project_v3 sProject);
         T VisitProject_v4(Project_v4 sProject);
         T VisitProject_v5(Project_v5 sProject);
     }

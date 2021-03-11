@@ -108,33 +108,6 @@ namespace Reko.UnitTests.Core.Serialization
             sc.AddService<ITypeLibraryLoaderService>(this.tlSvc.Object);
         }
 
-        [Test(Description = "If the project file just has a single metadata file, we don't know what the platform is; so ask the user.")]
-        public void Prld_LoadMetadata_NoPlatform_ShouldQuery()
-        {
-            var ldr = new Mock<ILoader>();
-            var oracle = new Mock<IOracleService>();
-            var platform = mockFactory.CreateMockPlatform();
-            var typeLib = new TypeLibrary();
-            ldr.Setup(l => l.LoadMetadata(It.IsNotNull<string>(), platform.Object, It.IsNotNull<TypeLibrary>()))
-                .Returns(typeLib);
-            oracle.Setup(o => o.QueryPlatform(It.IsNotNull<string>())).Returns(platform.Object).Verifiable();
-            sc.AddService<IOracleService>(oracle.Object);
-
-            var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            prld.LoadProject(
-                "project.dcproj",
-                new Project_v2
-                {
-                    Inputs = {
-                        new MetadataFile_v2 {
-                            Filename = "foo",
-                        }
-                    }
-                });
-
-            oracle.VerifyAll();
-        }
-
         private void Given_Binary(Mock<ILoader> ldr, IPlatform platform)
         {
             ldr.Setup(l => l.LoadImageBytes(
@@ -423,69 +396,6 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual(
                 Address.Ptr32(0x00123400),
                 project.Programs[0].User.LoadAddress);
-        }
-
-        [Test]
-        public void Prld_v2()
-        {
-            var sExp =
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<project xmlns=""http://schemata.jklnet.org/Decompiler/v2"">
-  <input>
-     <filename>/foo/foo</filename>
-  </input>
-</project>";
-            var ldr = new Mock<ILoader>();
-            var platform = new TestPlatform(sc);
-            Given_Binary(ldr, platform);
-            Given_TypeLibraryLoaderService();
-            cfgSvc.Setup(c => c.GetEnvironment("testOS")).Returns(new PlatformDefinition
-            {
-
-            });
-
-            var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            var project = prld.LoadProject("/foo/bar", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
-
-            Assert.AreEqual(1, project.Programs.Count);
-        }
-
-        [Test(Description = "Failure to load v3 project file")]
-        public void Prld_issue_299()
-        {
-            var sExp =
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<project xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://schemata.jklnet.org/Reko/v3"">
-  <input>
-    <filename>switch.dll</filename>
-    <disassembly>switch.asm</disassembly>
-    <intermediate-code>switch.dis</intermediate-code>
-    <output>switch.c</output>
-    <types-file>switch.h</types-file>
-    <global-vars>switch.globals.c</global-vars>
-    <user>
-      <procedure name=""get"">
-        <address>10071000</address>
-        <CSignature>char * get(unsigned int n)</CSignature>
-      </procedure>
-      <heuristic name=""shingle"" />
-    </user>
-  </input>
-</project>
-";
-            var ldr = new Mock<ILoader>();
-            var platform = new TestPlatform(sc);
-            Given_TestArch();
-            Given_TestOS();
-            Given_Binary(ldr, platform);
-            Given_TypeLibraryLoaderService();
-            oe.Setup(o => o.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
-            oe.Setup(o => o.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
-
-            var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            var project = prld.LoadProject("/foo/bar", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
-
-            Assert.AreEqual(1, project.Programs.Count);
         }
        
         [Test]

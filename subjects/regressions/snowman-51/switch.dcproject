@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Decompiler/v2">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>x86-protected-32</arch>
+  <platform>win32</platform>
   <input>
     <filename>switch.dll</filename>
-    <address>10070000</address>
-    <procedure name="get">
-      <address>10071000</address>
-      <CSignature>char * get(unsigned int n)</CSignature>
-    </procedure>
-    <options>
-      <HeuristicScanning>false</HeuristicScanning>
-    </options>
+    <asmDir>switch.reko</asmDir>
+    <srcDir>switch.reko</srcDir>
+    <includeDir>switch.reko</includeDir>
+    <resources>switch.reko\resources</resources>
+    <user>
+      <processor />
+      <procedure name="get">
+        <address>10071000</address>
+        <CSignature>char * get(unsigned int n)</CSignature>
+      </procedure>
+      <heuristic name="shingle" />
+      <registerValues />
+      <extractResources>false</extractResources>
+      <outputFilePolicy>SingleFile</outputFilePolicy>
+    </user>
   </input>
-  <output />
 </project>

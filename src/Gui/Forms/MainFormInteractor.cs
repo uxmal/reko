@@ -254,7 +254,7 @@ namespace Reko.Gui.Forms
                 SwitchInteractor(InitialPageInteractor);
                 if (openAction(file) || onFailAction(file))
                 {
-                    if (file.EndsWith(Project_v3.FileExtension))
+                    if (file.EndsWith(Project_v5.FileExtension))
                     {
                         ProjectFileName = file;
                     }
@@ -729,7 +729,7 @@ namespace Reko.Gui.Forms
                 string newName = uiSvc.ShowSaveFileDialog(
                     Path.ChangeExtension(
                         decompilerSvc.Decompiler.Project.Programs[0].Filename,
-                        Project_v3.FileExtension));
+                        Project_v5.FileExtension));
                 if (newName == null)
                     return false;
                 ProjectFileName = newName;
