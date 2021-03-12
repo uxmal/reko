@@ -349,17 +349,10 @@ namespace Reko.Core.Serialization
             if (sUser.GlobalData != null)
             {
                 user.Globals = sUser.GlobalData
-                    .Select(sud =>
-                    {
-                        program.Architecture.TryParseAddress(sud.Address, out Address addr);
-                        return new KeyValuePair<Address, GlobalDataItem_v2>(
-                            addr,
-                            sud);
-                    })
-                    .Where(kv => !(kv.Key is null))
-                   .ToSortedList(kv => kv.Key, kv => kv.Value);
+                    .Select(c => LoadUserGlobal(c))
+                    .Where(c => c != null && !(c.Address is null))
+                    .ToSortedList(k => k!.Address!, v => v!);
             }
-          
             if (sUser.Annotations != null)
             {
                 user.Annotations = new AnnotationList(sUser.Annotations
@@ -493,6 +486,32 @@ namespace Reko.Core.Serialization
                 }
             }
             return new ImageMapVectorTable(addr, listAddrDst.ToArray(), 0);
+        }
+
+        private UserGlobal LoadUserGlobal(GlobalDataItem_v2 sGlobal)
+        {
+            if (!arch.TryParseAddress(sGlobal.Address, out var address))
+                return null; // TODO: Emit warning?
+
+            if (sGlobal.DataType == null)
+                throw new ArgumentException("Missing required field DataType");
+
+            string name = GlobalNameOrDefault(sGlobal, address);
+
+            var ug = new UserGlobal(address, name, sGlobal.DataType!)
+            {
+                Comment = sGlobal.Comment,
+            };
+
+            return ug;
+        }
+
+        private string GlobalNameOrDefault(GlobalDataItem_v2 sGlobal, Address address)
+        {
+            if (!string.IsNullOrWhiteSpace(sGlobal.Name))
+                return sGlobal.Name;
+
+            return UserGlobal.GenerateDefaultName(address);
         }
 
         private UserCallData LoadUserCall(SerializedCall_v1 call, Program program)

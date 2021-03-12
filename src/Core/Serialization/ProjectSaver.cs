@@ -85,14 +85,7 @@ namespace Reko.Core.Serialization
                         .ToList(),
                     IndirectJumps = program.User.IndirectJumps.Select(SerializeIndirectJump).ToList(),
                     JumpTables = program.User.JumpTables.Select(SerializeJumpTable).ToList(),
-                    GlobalData = program.User.Globals
-                        .Select(de => new GlobalDataItem_v2
-                        {
-                            Address = de.Key.ToString(),
-                            DataType = de.Value.DataType,
-                            Name = GlobalName(de),
-                        })
-                        .ToList(),
+                    GlobalData = program.User.Globals.Select(i => SerializeGlobal(i.Value)).ToList(),
                     OnLoadedScript = program.User.OnLoadedScript,
                     Heuristics = program.User.Heuristics
                         .Select(h => new Heuristic_v3 { Name = h }).ToList(),
@@ -138,16 +131,6 @@ namespace Reko.Core.Serialization
             return sRegValues.ToArray();
         }
 
-        private string GlobalName(KeyValuePair<Address, GlobalDataItem_v2> de)
-        {
-            var name = de.Value.Name;
-            if (string.IsNullOrEmpty(name))
-            {
-                name = string.Format("g_{0:X}", de.Key.ToLinear());
-            }
-            return name!;
-        }
-
         private SerializedCall_v1? SerializeUserCall(Program program, UserCallData? uc)
         {
             if (uc == null || uc.Address is null)
@@ -183,6 +166,17 @@ namespace Reko.Core.Serialization
             {
                 TableAddress = de.Key.ToString(),
                 Destinations = de.Value.Addresses.Select(a => a.ToString()).ToArray(),
+            };
+        }
+
+        private GlobalDataItem_v2 SerializeGlobal(UserGlobal global)
+        {
+            return new GlobalDataItem_v2
+            {
+                Address = global.Address.ToString(),
+                Comment = global.Comment,
+                DataType = global.DataType,
+                Name  = global.Name,
             };
         }
 

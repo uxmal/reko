@@ -485,11 +485,8 @@ namespace Reko.Core
             else
                 this.ImageMap.AddItem(address, item);
 
-            this.User.Globals.Add(address, new Serialization.GlobalDataItem_v2
-            {
-                Address = address.ToString(),
-                DataType = dataType.Accept(new Serialization.DataTypeSerializer()),
-            });
+            this.User.Globals.Add(address, new UserGlobal(address, UserGlobal.GenerateDefaultName(address), dataType.Accept(new Serialization.DataTypeSerializer())));
+
             return item;
         }
 
@@ -662,19 +659,18 @@ namespace Reko.Core
             return up;
         }
 
-        public GlobalDataItem_v2 ModifyUserGlobal(IProcessorArchitecture arch, Address address, SerializedType dataType, string name)
+        public UserGlobal ModifyUserGlobal(IProcessorArchitecture arch, Address address, SerializedType dataType, string name)
         {
             if (!User.Globals.TryGetValue(address, out var gbl))
             {
-                gbl = new GlobalDataItem_v2()
-                {
-                    Address = address.ToString(),
-                };
+                gbl = new UserGlobal(address, name, dataType);
                 User.Globals.Add(address, gbl);
             }
-
-            gbl.Name = name;
-            gbl.DataType = dataType;
+            else
+            {
+                gbl.Name = name;
+                gbl.DataType = dataType;
+            }
 
             this.ImageMap.RemoveItem(address);
 
