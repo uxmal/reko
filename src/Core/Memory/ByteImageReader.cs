@@ -154,7 +154,7 @@ namespace Reko.Core.Memory
             return bytes[(long) off + offset];
         }
 
-        public sbyte PeekSByte(int offset) { return (sbyte) bytes[(long) off + offset]; }
+        public sbyte PeekSByte(int offset) { return (sbyte)bytes[(long)off + offset]; }
 
         public byte[] ReadBytes(int length) { return ReadBytes((uint) length); }
 

@@ -195,6 +195,7 @@ by the PreBuild.targets file.
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Nro\bin\$(StandardOutputDir)\Reko.ImageLoaders.Nro.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\bin\$(StandardOutputDir)\Reko.ImageLoaders.OdbgScript.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Omf\bin\$(StandardOutputDir)\Reko.ImageLoaders.Omf.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Pef\bin\$(StandardOutputDir)\Reko.ImageLoaders.Pef.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Srec\bin\$(StandardOutputDir)\Reko.ImageLoaders.Srec.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\TekHex\bin\$(StandardOutputDir)\Reko.ImageLoaders.TekHex.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\VmsExe\bin\$(StandardOutputDir)\Reko.ImageLoaders.VmsExe.*" />
