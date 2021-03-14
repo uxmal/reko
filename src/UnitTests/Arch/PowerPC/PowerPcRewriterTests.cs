@@ -129,6 +129,15 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCRw_nop()
+        {
+            Given_HexString("60000000");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|nop");
+        }
+
+        [Test]
         public void PPCRw_Add()
         {
             RunTest((m) =>
@@ -151,6 +160,24 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|r4 = r1 + r3",
                 "2|L--|cr0 = cond(r4)");
+        }
+
+        [Test]
+        public void PPCRw_lswi()
+        {
+            //$TODO: test for LE; PPC docs say that is an invalid instruction
+            // in little endian mode.
+            Given_HexString("7CAC84AA");
+            AssertCode(     // lswi	r5,r12,10
+                "0|L--|00100000(4): 8 instructions",
+                "1|L--|r5 = Mem0[r12:word32]",
+                "2|L--|r12 = r12 + 4<i32>",
+                "3|L--|r6 = Mem0[r12:word32]",
+                "4|L--|r12 = r12 + 4<i32>",
+                "5|L--|r7 = Mem0[r12:word32]",
+                "6|L--|r12 = r12 + 4<i32>",
+                "7|L--|r8 = Mem0[r12:word32]",
+                "8|L--|r12 = r12 + 4<i32>");
         }
 
         [Test]
@@ -263,6 +290,18 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x7c9c002e, // "lwzx\tr4,r28,r0");
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r4 = Mem0[r28 + r0:word32]");
+        }
+
+        [Test]
+        public void PPCRw_stswi()
+        {
+            Given_HexString("7CA345AA");
+            AssertCode(     // stswi	r5,r3,08
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|Mem0[r3:word32] = r5",
+                "2|L--|r3 = r3 + 4<i32>",
+                "3|L--|Mem0[r3:word32] = r6",
+                "4|L--|r3 = r3 + 4<i32>");
         }
 
         [Test]
@@ -552,6 +591,24 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x8809002a,	//lbz     r0,42(r9)
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r0 = CONVERT(Mem0[r9 + 42<i32>:byte], byte, word32)");
+        }
+
+        [Test]
+        public void PPCRw_crnand()
+        {
+            Given_HexString("4CC601C2");
+            AssertCode(     // crnand	06,06,00
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__crnand(6<8>, 6<8>, 0<8>)");
+        }
+
+        [Test]
+        public void PPCRw_crorc()
+        {
+            Given_HexString("4C40C342");
+            AssertCode(     // crorc	02,00,18
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__crorc(2<8>, 0<8>, 0x18<8>)");
         }
 
         [Test]
@@ -2105,6 +2162,18 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCRw_vmsumshm()
+        {
+            Given_HexString("10000128");
+            AssertCode(     // vmsumshm	v0,v0,v0,v4
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|v4 = v0",
+                "2|L--|v5 = v0",
+                "3|L--|v6 = v4",
+                "4|L--|v0 = __vmsumshm(v4, v5, v6)");
+        }
+
+        [Test]
         public void PPCRw_Xenon_stvx128()
         {
             Given_Xenon();
@@ -2755,5 +2824,18 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|v9 = v19 | ~v17");
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

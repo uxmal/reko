@@ -204,6 +204,14 @@ Warning: Checksum error in line 5.
 Warning: Checksum error in line 6.
 Warning: Checksum error in line 7.
 Warning: Checksum error in line 8.
+Warning: Checksum error in line 1.
+Warning: Checksum error in line 2.
+Warning: Checksum error in line 3.
+Warning: Checksum error in line 4.
+Warning: Checksum error in line 5.
+Warning: Checksum error in line 6.
+Warning: Checksum error in line 7.
+Warning: Checksum error in line 8.
 011A: warning: Procedure fn0100 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 041A: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 045C: warning: Procedure fn043E previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -451,6 +459,7 @@ hello_m68k.exe: warning: Win32 M68k main procedure finder not supported.
 hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
 
 *** Raw\1750A\hello
+Warning: Checksum error in line 1.
 Warning: Checksum error in line 1.
 
 === wasm\hello
@@ -700,6 +709,20 @@ Error: An error occurred during decompilation.
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 130
    at Reko.Decompiler.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 110
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 208
+
+*** XCoff\ppc\mkisofs
+1001C0AC: error: PowerPC instruction 'mtfsb1	1F' is not supported yet.
+1001C0CC: error: PowerPC instruction 'mtfsb1	1F' is not supported yet.
+1001C0AC: error: PowerPC instruction 'mtfsb1	1F' is not supported yet.
+1001C538: error: PowerPC instruction 'lswx	r5,r0,r4' is not supported yet.
+1001C570: error: PowerPC instruction 'lswx	r5,r0,r4' is not supported yet.
+1001C570: error: PowerPC instruction 'lswx	r5,r0,r4' is not supported yet.
+1001C59C: error: PowerPC instruction 'lswx	r5,r0,r4' is not supported yet.
+1001EC10: error: PowerPC instruction 'crandc	06,1A,02' is not supported yet.
+1001EED8: error: PowerPC instruction 'crandc	02,02,06' is not supported yet.
+1001C5F0: error: PowerPC instruction 'stswx	r5,r0,r3' is not supported yet.
+1001C620: error: PowerPC instruction 'stswx	r5,r0,r3' is not supported yet.
+20023AE8: error: PowerPC instruction 'maddhd	r0,r0,r0,r7' is not supported yet.
 
 === wasm\nbody
 
@@ -1976,4 +1999,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 75 binaries in 85.12 seconds.
+Decompiled 76 binaries in 101.73 seconds.

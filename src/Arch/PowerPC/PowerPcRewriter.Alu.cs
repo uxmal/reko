@@ -250,36 +250,12 @@ namespace Reko.Arch.PowerPC
             m.Assign(dst, host.Intrinsic(name, true, PrimitiveType.UInt32, src));
         }
 
-        private void RewriteCreqv()
+        private void RewriteCrLogical(string intrinsic)
         {
             var cr = ImmOperand(instr.Operands[0]);
             var r = ImmOperand(instr.Operands[1]);
             var i = ImmOperand(instr.Operands[2]);
-            m.SideEffect(host.Intrinsic("__creqv", true, VoidType.Instance, cr, r, i));
-        }
-
-        private void RewriteCrnor()
-        {
-            var cr = ImmOperand(instr.Operands[0]);
-            var r = ImmOperand(instr.Operands[1]);
-            var i = ImmOperand(instr.Operands[2]);
-            m.SideEffect(host.Intrinsic("__crnor", true, VoidType.Instance, cr, r, i));
-        }
-
-        private void RewriteCror()
-        {
-            var cr = ImmOperand(instr.Operands[0]);
-            var r = ImmOperand(instr.Operands[1]);
-            var i = ImmOperand(instr.Operands[2]);
-            m.SideEffect(host.Intrinsic("__cror", true, VoidType.Instance, cr, r, i));
-        }
-
-        private void RewriteCrxor()
-        {
-            var cr = ImmOperand(instr.Operands[0]);
-            var r = ImmOperand(instr.Operands[1]);
-            var i = ImmOperand(instr.Operands[2]);
-            m.SideEffect(host.Intrinsic("__crxor", true, VoidType.Instance, cr, r, i));
+            m.SideEffect(host.Intrinsic(intrinsic, true, VoidType.Instance, cr, r, i));
         }
 
         private void RewriteDivd(Func<Expression,Expression,Expression> div)

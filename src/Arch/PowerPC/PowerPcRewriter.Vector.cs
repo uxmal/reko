@@ -88,6 +88,24 @@ namespace Reko.Arch.PowerPC
                 host.Intrinsic(intrinsic, isIdempotent, arrayType, tmp1, tmp2));
         }
 
+        private void RewriteVectorTernaryOp(string intrinsic, bool isIdempotent, DataType elemType)
+        {
+            var vrt = RewriteOperand(instr.Operands[0]);
+            var vra = RewriteOperand(instr.Operands[1]);
+            var vrb = RewriteOperand(instr.Operands[2]);
+            var vrc = RewriteOperand(instr.Operands[3]);
+            var arrayType = MakeArrayType(vrt.DataType, elemType);
+            var tmp1 = binder.CreateTemporary(arrayType);
+            var tmp2 = binder.CreateTemporary(arrayType);
+            var tmp3 = binder.CreateTemporary(arrayType);
+            m.Assign(tmp1, vra);
+            m.Assign(tmp2, vrb);
+            m.Assign(tmp3, vrc);
+            m.Assign(
+                vrt,
+                host.Intrinsic(intrinsic, isIdempotent, arrayType, tmp1, tmp2, tmp3));
+        }
+
         private void RewriteVectorPairOp(string intrinsic, bool isIdempotent, DataType elemType)
         {
             var vrt = RewriteOperand(instr.Operands[0]);

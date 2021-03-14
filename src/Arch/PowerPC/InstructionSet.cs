@@ -88,7 +88,9 @@ namespace Reko.Arch.PowerPC
                 invalid,
                 Instr(Mnemonic.rlwnm, r2,r1,r3,I4,I5),
 
-                Instr(Mnemonic.ori, r2,r1,U),
+                Select(0, 32, u => u == 0x6000_0000,
+                    Instr(InstrClass.Linear|InstrClass.Padding, Mnemonic.nop),
+                    Instr(Mnemonic.ori, r2,r1,U)),
                 Instr(Mnemonic.oris, r2,r1,U),
                 Instr(Mnemonic.xori, r2,r1,U),
                 Instr(Mnemonic.xoris, r2,r1,U),
@@ -223,7 +225,7 @@ namespace Reko.Arch.PowerPC
             return new Bitfield(32 - (bitPos + bitLength), bitLength);
         }
 
-        protected  static Bitfield[] BeFields(params (int bitPos, int bitLength)[] fieldDescs)
+        protected static Bitfield[] BeFields(params (int bitPos, int bitLength)[] fieldDescs)
         {
             var bitfields = new Bitfield[fieldDescs.Length];
             for (int i = 0; i < fieldDescs.Length; ++i)
@@ -898,9 +900,9 @@ namespace Reko.Arch.PowerPC
                     (0b01001, Nyi("ldmx")),                               // v3.0 PI ldmx Load Dword Monitored Indexed
                     (0b01010, Instr(Mnemonic.lwax, r1, r2, r3)),        // PPC lwax Load Word Algebraic Indexed
                     (0b01011, Nyi("lwaux")),                            // PPC lwaux Load Word Algebraic with Update Indexed
-                    (0b10000, Nyi("lswx")),                             // P1 lswx Load String Word Indexed
+                    (0b10000, Instr(Mnemonic.lswx, r1, r2, r3)),        // P1 lswx Load String Word Indexed
                     (0b10010, Instr(Mnemonic.lswi, r1, r2, I3)),        // P1 lswi Load String Word Immediate
-                    (0b10100, Nyi("stswx")),                            // P1 stswx Store String Word Indexed
+                    (0b10100, Instr(Mnemonic.stswx, r1, r2, r3)),       // P1 stswx Store String Word Indexed
                     (0b10110, Instr(Mnemonic.stswi, r1, r2, I3)),       // P1 stswi Store String Word Immediate
                     (0b11000, Nyi("lwzcix")),                           // v2.05 H lwzcix Load Word & Zero Caching Inhibited Indexed
                     (0b11001, Nyi("lhzcix")),                           // v2.05 H lhzcix Load Hword & Zero Caching Inhibited Indexed
@@ -1442,7 +1444,7 @@ namespace Reko.Arch.PowerPC
                     invalid),
 
                 Sparse(21, 5, invalid, "  00110",
-                    ( 0b00001, Nyi("mtfsb1[.]")),                   // 111111 ..... ///// ///// 00001 00110. X I 173 P1 mtfsb1[.] Move To FPSCR Bit 1
+                    ( 0b00001, Instr(Mnemonic.mtfsb1,C,u22_5)),     // 111111 ..... ///// ///// 00001 00110. X I 173 P1 mtfsb1[.] Move To FPSCR Bit 1
                     ( 0b00010, Nyi("mtfsb0[.]")),                   // 111111 ..... ///// ///// 00010 00110. X I 173 P1 mtfsb0[.] Move To FPSCR Bit 0
                     ( 0b00100, Nyi("mtfsfi[.]")),                   // 111111 ...// ////. ..../ 00100 00110. X I 172 P1 mtfsfi[.] Move To FPSCR Field Immediate
                     ( 0b11010, Nyi("fmrgow")),                      // 111111 ..... ..... ..... 11010 00110/ X I 152 v2.07 fmrgow Floating Merge Odd Word

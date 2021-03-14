@@ -169,6 +169,21 @@ namespace Reko.Arch.PowerPC
             m.Assign(regPair, m.Mem(regPair.DataType, ea));
         }
 
+        private void RewriteLswi()
+        {
+            var nDst = ((RegisterOperand) instr.Operands[0]).Register.Number;
+            var ea = RewriteOperand(1);
+            int n = ((Constant) ImmOperand(2)).ToInt32();
+            if (n == 0) n = 32;
+            int cRegs = (n + 3) / 4;
+            for (int i = 0; i < cRegs; ++i)
+            {
+                var r = arch.Registers[(nDst + i) & 0x1F];
+                m.Assign(binder.EnsureRegister(r), m.Mem32(ea));
+                m.Assign(ea, m.IAddS(ea, 4));
+            }
+        }
+
         private void RewriteLvewx()
         {
             var vrt = RewriteOperand(instr.Operands[0]);
@@ -332,6 +347,21 @@ namespace Reko.Arch.PowerPC
                 m.Assign(m.Mem32(tmp), w);
                 m.Assign(tmp, m.IAddS(tmp, 4));
                 ++r;
+            }
+        }
+
+        private void RewriteStswi()
+        {
+            var nDst = ((RegisterOperand) instr.Operands[0]).Register.Number;
+            var ea = RewriteOperand(1);
+            int n = ((Constant) ImmOperand(2)).ToInt32();
+            if (n == 0) n = 32;
+            int cRegs = (n + 3) / 4;
+            for (int i = 0; i < cRegs; ++i)
+            {
+                var r = arch.Registers[(nDst + i) & 0x1F];
+                m.Assign(m.Mem32(ea), binder.EnsureRegister(r));
+                m.Assign(ea, m.IAddS(ea, 4));
             }
         }
 

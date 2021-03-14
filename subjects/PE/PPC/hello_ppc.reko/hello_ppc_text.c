@@ -847,7 +847,7 @@ Eq_n fn00401598(Eq_n r2, Eq_n r3, Eq_n r4, ptr32 r25, ptr32 r26, Eq_n r27, Eq_n 
 				r2 = fn00402248(r2, r30_n, *((word32) r4 + 8), r29_n, r29_n, r30_n, r4, out r3_n, out r29_n, out r30_n, out r31_n);
 				r28_n = r3_n;
 			}
-			else if ((CONVERT(Mem208[Mem208[r2 + 0x0078:word32] + r30_n:byte], byte, int32) & 0x20) != 0x00)
+			else if ((CONVERT(Mem202[Mem202[r2 + 0x0078:word32] + r30_n:byte], byte, int32) & 0x20) != 0x00)
 				r2 = fn004026B8(r2, r30_n, 0x02, r26, r27_n, r28_n, r29_n, r30_n, r31, out r26, out r27_n, out r28_n, out r29_n, out r31_n);
 			**((word32) r31_n + 8) = (byte) (int32) (int8) r27_n;
 		}
@@ -2415,11 +2415,11 @@ Eq_n fn00403744(Eq_n r2, Eq_n r3, struct Eq_n * r29, ptr32 r30, Eq_n r31, ptr32 
 			word32 ctr_n;
 			for (ctr_n = 0x05; ctr_n != 0x00; --ctr_n)
 			{
-				Mem78[fp + ~0x5F + r11_n:word32] = 0x00;
+				Mem73[fp + ~0x5F + r11_n:word32] = 0x00;
 				int32 r11_n = r11_n + 0x04;
-				Mem80[fp + ~0x5F + r11_n:word32] = 0x00;
-				Mem82[fp + ~0x5F + (r11_n + 0x04):word32] = 0x00;
-				Mem84[fp + ~0x5F + (r11_n + 0x08):word32] = 0x00;
+				Mem75[fp + ~0x5F + r11_n:word32] = 0x00;
+				Mem77[fp + ~0x5F + (r11_n + 0x04):word32] = 0x00;
+				Mem79[fp + ~0x5F + (r11_n + 0x08):word32] = 0x00;
 				r11_n = r11_n + 0x0C;
 			}
 			fn00403F54(r2);
@@ -2429,11 +2429,11 @@ Eq_n fn00403744(Eq_n r2, Eq_n r3, struct Eq_n * r29, ptr32 r30, Eq_n r31, ptr32 
 				word32 ctr_n;
 				for (ctr_n = 0x05; ctr_n != 0x00; --ctr_n)
 				{
-					Mem106[fp + ~0x5F + r11_n:word32] = 0x00;
+					Mem101[fp + ~0x5F + r11_n:word32] = 0x00;
 					int32 r11_n = r11_n + 0x04;
-					Mem108[fp + ~0x5F + r11_n:word32] = 0x00;
-					Mem110[fp + ~0x5F + (r11_n + 0x04):word32] = 0x00;
-					Mem112[fp + ~0x5F + (r11_n + 0x08):word32] = 0x00;
+					Mem103[fp + ~0x5F + r11_n:word32] = 0x00;
+					Mem105[fp + ~0x5F + (r11_n + 0x04):word32] = 0x00;
+					Mem107[fp + ~0x5F + (r11_n + 0x08):word32] = 0x00;
 					r11_n = r11_n + 0x0C;
 				}
 				fn00403F6C(dwLoc0184);
