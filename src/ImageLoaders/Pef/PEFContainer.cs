@@ -1,8 +1,28 @@
+#region License
+/* 
+ * Copyright (C) 2018-2021 Stefano Moioli <smxdev4@gmail.com>.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
 using Reko.Core;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -34,8 +54,14 @@ namespace Reko.ImageLoaders.Pef
 
                 if (sectionHeader.IsCompressedSection())
                 {
+                    MemoryStream output = new MemoryStream();
+
                     // if the section is packed, the data we just read is the compressed section data we need to interpret
-                    throw new NotImplementedException();
+                    var interp = new PefOpcodeInterpreter(containerData, output);
+                    interp.RunProgram();
+
+                    // replace PEF bytecode with decoded output from the interpreter
+                    containerData = output.ToArray();
                 }
 
                 if (sectionHeader.defaultAddress != 0)
@@ -60,15 +86,34 @@ namespace Reko.ImageLoaders.Pef
             }       
         }
 
+        private static string? GetStandardSectionName(PEFSectionHeader section)
+        {
+            return section.sectionKind switch
+            {
+                PEFSectionType.Code => ".text",
+                PEFSectionType.UnpackedData => ".data",
+                PEFSectionType.PatternInitializedData => ".data",
+                PEFSectionType.Constant => ".rodata",
+                PEFSectionType.Loader => ".loader",
+                PEFSectionType.Debug => ".debug",
+                PEFSectionType.ExecutableData => ".data",
+                PEFSectionType.Exception => ".exception",
+                PEFSectionType.Traceback => ".traceback",
+                _ => null
+            };
+        }
+
         private static IEnumerable<string> ReadSectionNameTable(IEnumerable<PEFSectionHeader> sectionHeaders, EndianByteImageReader rdr)
         {
             long start = rdr.Offset;
 
             return sectionHeaders.Select(hdr =>
             {
-                return hdr.nameOffset == -1
-                    ? "(unnamed)"
-                    : rdr.ReadAt(start + hdr.nameOffset, rdr => rdr.ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString());
+                if (hdr.nameOffset == -1)
+                {
+                    return GetStandardSectionName(hdr) ?? "(unnamed)";
+                }
+                return rdr.ReadAt(start + hdr.nameOffset, rdr => rdr.ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString());
             });
         }
 
