@@ -64,6 +64,8 @@ namespace Reko.ImageLoaders.Pef
 
         public IEnumerable<ImageSymbol> GetSymbols(IProcessorArchitecture arch)
         {
+            var ptrCodeT = new Pointer(new CodeType(), arch.WordWidth.BitSize);
+
             return LoaderInfo.ExportedSymbols
                 // $TODO: resolve import addresses in relocations
                 .Where(s => s.sym.sectionIndex != -3)
@@ -73,7 +75,7 @@ namespace Reko.ImageLoaders.Pef
 
                 return s.classAndName.SymbolClass switch
                 {
-                    PEFSymbolClassType.kPEFCodeSymbol => ImageSymbol.DataObject(arch, symAddr, s.Name, new UnknownType()),
+                    PEFSymbolClassType.kPEFCodeSymbol => ImageSymbol.DataObject(arch, symAddr, s.Name, ptrCodeT),
                     PEFSymbolClassType.kPEFDataSymbol => ImageSymbol.DataObject(arch, symAddr, s.Name, new UnknownType()),
                     PEFSymbolClassType.kPEFTVectSymbol => ImageSymbol.Procedure(arch, symAddr, s.Name),
                     PEFSymbolClassType.kPEFTOCSymbol => ImageSymbol.DataObject(arch, symAddr, s.Name, new UnknownType()),
