@@ -1,3 +1,23 @@
+#region License
+/*
+ * Copyright (C) 2021-2021 Sven Almgren.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,8 +26,14 @@ using System.Text;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// ProjectVersionMigrator provides a set of methods to migrate older projects to later versions.
+    /// </summary>
     public static class ProjectVersionMigrator
     {
+        /// <summary>
+        /// Migrate Project_v4 to Project_v5.
+        /// </summary>
         public static Project_v5 MigrateProject(Project_v4 v4) => new Project_v5()
         {
             ArchitectureName = v4.ArchitectureName,
@@ -18,12 +44,13 @@ namespace Reko.Core.Serialization
         };
 
         /// <summary>
+        /// Migrate DecompilerInput_v4 to DecompilerInput_v5.
+        /// </summary>
+        /// <remarks>
         /// Ignored fields (They existed in v4 but are unused in current code):
         ///     IntermediateFilename
         ///     GlobalsFilename
-        /// </summary>
-        /// <param name="v4"></param>
-        /// <returns></returns>
+        /// </remarks>
         public static DecompilerInput_v5 MigrateDecompilerInput(DecompilerInput_v4 v4)
         {
             var v5 = new DecompilerInput_v5()
