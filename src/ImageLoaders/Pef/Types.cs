@@ -63,6 +63,111 @@ namespace Reko.ImageLoaders.Pef
     }
 
     [Endian(Endianness.BigEndian)]
+    public struct PEFLoaderInfoHeader
+    {
+        public Int32 mainSection;
+        public UInt32 mainOffset;
+        public Int32 initSection;
+        public UInt32 initOffset;
+        public Int32 termSection;
+        public UInt32 termOffset;
+        public UInt32 importedLibraryCount;
+        public UInt32 totalImportedSymbolCount;
+        public UInt32 relocSectionCount;
+        public UInt32 relocInstrOffset;
+        public UInt32 loaderStringsOffset;
+        public UInt32 exportHashOffset;
+        public UInt32 exportHashTablePower;
+        public UInt32 exportedSymbolCount;
+
+        public PEFLoaderInfoHeader(EndianByteImageReader rdr)
+        {
+            this = rdr.ReadStruct<PEFLoaderInfoHeader>();
+        }
+    }
+
+    [Endian(Endianness.BigEndian)]
+    public struct PEFImportedLibrary
+    {
+        public UInt32 nameOffset;
+        public UInt32 oldImpVersion;
+        public UInt32 currentVersion;
+        public UInt32 importedSymbolCount;
+        public UInt32 firstImportedSymbol;
+        public byte options;
+        private byte reservedA;
+        private UInt16 reservedB;
+
+        public PEFImportedLibrary(EndianByteImageReader rdr)
+        {
+            this = rdr.ReadStruct<PEFImportedLibrary>();
+
+            if(reservedA != 0 || reservedB != 0)
+            {
+                throw new BadImageFormatException("Invalid PEFImportedLibrary");
+            }
+        }
+    }
+
+    [Endian(Endianness.BigEndian)]
+    public struct PEFLoaderRelocationHeader
+    {
+        public UInt16 sectionIndex;
+        private UInt16 reservedA;
+        public UInt32 relocCount;
+        public UInt32 firstRelocOffset;
+
+        public PEFLoaderRelocationHeader(EndianByteImageReader rdr)
+        {
+            this = rdr.ReadStruct<PEFLoaderRelocationHeader>();
+
+            if(reservedA != 0)
+            {
+                throw new BadImageFormatException("Invalid PEFLoaderRelocationHeader");
+            }
+        }
+    }
+
+    public enum PEFSymbolClassType : byte
+    {
+        /// <summary>
+        /// A code address
+        /// </summary>
+        kPEFCodeSymbol = 0,
+        /// <summary>
+        /// A data address
+        /// </summary>
+        kPEFDataSymbol = 1,
+        /// <summary>
+        /// A standard procedure pointer
+        /// </summary>
+        kPEFTVectSymbol = 2,
+        /// <summary>
+        /// A direct data area (Table of Contents ) symbol
+        /// </summary>
+        kPEFTOCSymbol = 3,
+        /// <summary>
+        /// A linker-inserted glue symbol
+        /// </summary>
+        kPEFGlueSymbol = 4
+
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [Endian(Endianness.BigEndian)]
+    public struct PEFExportedSymbol
+    {
+        public UInt32 classAndName;
+        public UInt32 symbolValue;
+        public Int16 sectionIndex;
+
+        public PEFExportedSymbol(EndianByteImageReader rdr)
+        {
+            this = rdr.ReadStruct<PEFExportedSymbol>();
+        }
+    }
+
+    [Endian(Endianness.BigEndian)]
     public struct PEFSectionHeader
     {
         /// <summary>

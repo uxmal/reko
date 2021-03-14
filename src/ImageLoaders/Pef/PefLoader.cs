@@ -22,6 +22,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -32,7 +33,7 @@ namespace Reko.ImageLoaders.Pef
     /// </summary>
     public class PefLoader : ImageLoader
     {
-        private PEFContainer container;
+        private PefContainer container;
 
         public PefLoader(IServiceProvider services, string filename, byte[]rawImage) :
             base(services, filename, rawImage)
@@ -52,9 +53,9 @@ namespace Reko.ImageLoaders.Pef
         }
 
 
-        private PEFContainer LoadContainer(EndianByteImageReader rdr)
+        private PefContainer LoadContainer(EndianByteImageReader rdr)
         {
-            return PEFContainer.Load(rdr);
+            return PefContainer.Load(rdr);
         }
 
         public override Program Load(Address? addrLoad)
@@ -71,9 +72,24 @@ namespace Reko.ImageLoaders.Pef
             var arch = GetArchitecture(cfgSvc);
             var platform = GetPlatform(cfgSvc, arch);
 
-            var segments = container.GetImageSegments(rdr, PreferredBaseAddress!).ToArray();
-            var addrBase = segments.Min(s => s.Address);
-            var program = new Program(new SegmentMap(addrBase, segments), arch, platform);
+            var pefSegments = container.GetImageSegments(rdr, PreferredBaseAddress!).ToArray();
+
+            var segments = pefSegments.Select(s => s.Segment);
+            var addrBase = pefSegments.Min(s => s.Segment.Address);
+            var segMap = new SegmentMap(addrBase, segments.ToArray());
+
+            var pefFile = PefFile.Load(container, pefSegments);
+            var entryPoints = pefFile.GetEntryPoints(arch).ToSortedList(s => s.Address);
+            var symbols = pefFile.GetSymbols(arch).ToArray();
+
+            var program = new Program(segMap, arch, platform)
+            {
+                EntryPoints = entryPoints
+            };
+            foreach(var sym in symbols)
+            {
+                program.ImageSymbols.Add(sym.Address, sym);
+            }
             return program;
         }
 

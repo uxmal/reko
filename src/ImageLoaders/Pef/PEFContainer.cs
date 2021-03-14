@@ -28,13 +28,13 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Pef
 {
-    public class PEFContainer
+    public class PefContainer
     {
         public readonly PEFContainerHeader ContainerHeader;
         private readonly PEFSectionHeader[] sectionHeaders;
         private readonly string?[] sectionNameTable;
 
-        public PEFContainer(PEFContainerHeader hdr, PEFSectionHeader[] secHdrs, string[] sectionNameTable)
+        public PefContainer(PEFContainerHeader hdr, PEFSectionHeader[] secHdrs, string[] sectionNameTable)
         {
             this.ContainerHeader = hdr;
             this.sectionHeaders = secHdrs;
@@ -43,7 +43,7 @@ namespace Reko.ImageLoaders.Pef
 
         /////
 
-        public IEnumerable<ImageSegment> GetImageSegments(EndianByteImageReader rdr, Address addrLoad)
+        public IEnumerable<PefImageSegment> GetImageSegments(EndianByteImageReader rdr, Address addrLoad)
         {
             var addr = addrLoad;
             for (int i=0; i<ContainerHeader.sectionCount; i++)
@@ -60,6 +60,9 @@ namespace Reko.ImageLoaders.Pef
                     var interp = new PefOpcodeInterpreter(containerData, output);
                     interp.RunProgram();
 
+                    // write dummy byte for the "end of data" symbol, which sits 1 byte out of bounds
+                    output.WriteByte(00);
+
                     // replace PEF bytecode with decoded output from the interpreter
                     containerData = output.ToArray();
                 }
@@ -72,7 +75,8 @@ namespace Reko.ImageLoaders.Pef
                     sectionNameTable[i] ?? $"seg{sectionHeader.defaultAddress:X8}",
                     new ByteMemoryArea(addr, containerData),
                     sectionHeader.GetAccessMode());
-                yield return segment;
+
+                yield return new PefImageSegment(sectionHeader, segment);
 
                 addrLoad = (segment.Address + containerData.Length).Align(0x1000);
             }
@@ -117,14 +121,14 @@ namespace Reko.ImageLoaders.Pef
             });
         }
 
-        public static PEFContainer Load(EndianByteImageReader rdr)
+        public static PefContainer Load(EndianByteImageReader rdr)
         {
             var hdr = rdr.ReadStruct<PEFContainerHeader>();
             if (hdr.sectionCount == 0)
                 throw new BadImageFormatException($"Binary image has 0 sections.");
             var secHdrs = ReadSections(hdr, rdr).ToArray();
             var sectionNameTable = ReadSectionNameTable(secHdrs, rdr).ToArray();
-            var result = new PEFContainer(hdr, secHdrs, sectionNameTable);
+            var result = new PefContainer(hdr, secHdrs, sectionNameTable);
             return result;
         }
     }

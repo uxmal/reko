@@ -18,20 +18,35 @@
  */
 #endregion
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.ImageLoaders.Pef
 {
-    public class PefSection {
-        public readonly string? Name;
-        public readonly PEFSectionHeader SectionHeader;
-        public readonly byte[] SectionData;
+    public class PefSymbolClass
+    {
+        public readonly byte Flags;
+        public readonly PEFSymbolClassType Class;
 
-        public PefSection(string? sectionName, PEFSectionHeader sectionHeader, byte[] sectionData) {
-            Name = sectionName;
-            SectionHeader = sectionHeader;
-            SectionData = sectionData;
+        public PefSymbolClass(byte val)
+        {
+            Class = (PEFSymbolClassType) (val & 0x0F);
+            Flags = (byte) ((val >> 4) & 0x0F);
+
+            if(!Enum.IsDefined(typeof(PEFSymbolClassType), Class))
+            {
+                throw new BadImageFormatException($"Invalid PEF symbol class {Class:X}");
+            }
+        }
+    }
+
+    public class PefSymbol
+    {
+        public readonly PefSymbolClass SymbolClass;
+        public readonly uint NameOffset;
+
+        public PefSymbol(uint sym)
+        {
+            NameOffset = sym & 0xFFF;
+            SymbolClass = new PefSymbolClass((byte) ((sym >> 24) & 0xFF));
         }
     }
 }

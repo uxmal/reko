@@ -17,21 +17,34 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
+using Reko.Core.Memory;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Reko.ImageLoaders.Pef
 {
-    public class PefSection {
-        public readonly string? Name;
-        public readonly PEFSectionHeader SectionHeader;
-        public readonly byte[] SectionData;
+    public class PefLoaderStringTable
+    {
+        private readonly PEFLoaderInfoHeader infoHeader;
+        private readonly EndianByteImageReader rdr;
 
-        public PefSection(string? sectionName, PEFSectionHeader sectionHeader, byte[] sectionData) {
-            Name = sectionName;
-            SectionHeader = sectionHeader;
-            SectionData = sectionData;
+        public PefLoaderStringTable(PEFLoaderInfoHeader infoHeader, EndianByteImageReader rdr)
+        {
+            this.infoHeader = infoHeader;
+            this.rdr = rdr;
+        }
+
+        public string ReadString(uint offset, uint length = 0)
+        {
+            return rdr.ReadAt(infoHeader.loaderStringsOffset + offset, (_) =>
+            {
+                if(length == 0) return rdr.ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString();
+                
+                var bytes = rdr.ReadBytes(length);
+                return Encoding.ASCII.GetString(bytes);
+            });
         }
     }
 }
