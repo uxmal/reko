@@ -23,29 +23,30 @@ using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Reko.Scanning
 {
     public abstract class ScannerBase
     {
         private DecompilerEventListener eventListener;
-        private Dictionary<Address, Procedure_v1> noDecompiledProcs;
+        private Dictionary<Address, UserProcedure> noDecompiledProcs;
  
         public ScannerBase(Program program, DecompilerEventListener eventListener)
         {
             this.Program = program;
             this.eventListener = eventListener;
-            this.noDecompiledProcs = new Dictionary<Address, Procedure_v1>();
+            this.noDecompiledProcs = new Dictionary<Address, UserProcedure>();
         }
 
         public Program Program { get; private set; }
 
-        private bool TryGetNoDecompiledProcedure(Address addr, out Procedure_v1 sProc)
+        private bool TryGetNoDecompiledProcedure(Address addr, [NotNullWhen(true)] out UserProcedure? proc)
         {
-            if (!Program.User.Procedures.TryGetValue(addr, out sProc) ||
-                sProc.Decompile)
+            if (!Program.User.Procedures.TryGetValue(addr, out proc) ||
+                proc.Decompile)
             {
-                sProc = null!;
+                proc = null!;
                 return false;
             }
             return true;
@@ -53,19 +54,19 @@ namespace Reko.Scanning
 
         protected bool IsNoDecompiledProcedure(Address addr)
         {
-            return TryGetNoDecompiledProcedure(addr, out Procedure_v1 sProc);
+            return TryGetNoDecompiledProcedure(addr, out UserProcedure? _);
         }
 
-        private bool TryGetNoDecompiledParsedProcedure(Address addr, out Procedure_v1 parsedProc)
+        private bool TryGetNoDecompiledParsedProcedure(Address addr, [NotNullWhen(true)] out UserProcedure? parsedProc)
         {
-            if (!TryGetNoDecompiledProcedure(addr, out Procedure_v1 sProc))
+            if (!TryGetNoDecompiledProcedure(addr, out UserProcedure? sProc))
             {
-                parsedProc = null!;
+                parsedProc = null;
                 return false;
             }
             if (noDecompiledProcs.TryGetValue(addr, out parsedProc))
                 return true;
-            parsedProc = new Procedure_v1()
+            parsedProc = new UserProcedure(addr, sProc.Name)
             {
                 Name = sProc.Name,
                 Signature = new SerializedSignature
@@ -90,18 +91,18 @@ namespace Reko.Scanning
             return true;
         }
 
-        protected bool TryGetNoDecompiledProcedure(Address addr, out ExternalProcedure ep)
+        protected bool TryGetNoDecompiledProcedure(Address addr, [NotNullWhen(true)] out ExternalProcedure? ep)
         {
-            if (!TryGetNoDecompiledParsedProcedure(addr, out Procedure_v1 sProc))
+            if (!TryGetNoDecompiledParsedProcedure(addr, out UserProcedure? sProc))
             {
-                ep = null!;
+                ep = null;
                 return false;
             }
             var ser = Program.CreateProcedureSerializer();
             var sig = ser.Deserialize(
                 sProc.Signature,
                 Program.Architecture.CreateFrame());
-            ep = new ExternalProcedure(sProc.Name!, sig!);
+            ep = new ExternalProcedure(sProc.Name, sig!);
             return true;
         }
 

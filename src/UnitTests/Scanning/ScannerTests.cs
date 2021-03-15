@@ -603,11 +603,11 @@ fn00001000_exit:
         public void Scanner_NoDecompiledProcedure()
         {
             Given_Program(Address.Ptr32(0x1000), new byte[0x2000]);
+            var address = Address.Ptr32(0x2000);
             program.User.Procedures.Add(
-                Address.Ptr32(0x2000),
-                new Procedure_v1()
+                address,
+                new UserProcedure(address, "ndProc")
                 {
-                    Name = "ndProc",
                     CSignature = "int ndProc(double dVal)",
                     Decompile = false,
                 }
@@ -627,9 +627,10 @@ fn00001000_exit:
         public void Scanner_NoDecompiledProcedure_NullSignature()
         {
             Given_Program(Address.Ptr32(0x1000), new byte[0x2000]);
+            var address = Address.Ptr32(0x2000);
             program.User.Procedures.Add(
-                Address.Ptr32(0x2000),
-                new Procedure_v1()
+                address,
+                new UserProcedure(address, NamingPolicy.Instance.ProcedureName(address))
                 {
                     CSignature = null,
                     Decompile = false,
@@ -652,19 +653,14 @@ fn00001000_exit:
             var sc = CreateScanner(program);
             sc.EnqueueUserProcedure(
                 program.Architecture,
-                new Procedure_v1
+                new UserProcedure(Address.Ptr32(0x1000), "proc1")
                 {
-                    Address = "0x1010",
-                    Name = "proc1",
                     Decompile = false
                 });
             sc.EnqueueUserProcedure(
                 program.Architecture,
-                new Procedure_v1
-                {
-                    Address = "0x1020",
-                    Name = "proc2",
-                });
+                new UserProcedure(Address.Ptr32(0x1020), "proc2")
+                );
             sc.ScanImage();
             Assert.AreEqual(1, program.Procedures.Count);
             Assert.AreEqual("proc2", program.Procedures.Values[0].Name);
@@ -674,9 +670,10 @@ fn00001000_exit:
         public void Scanner_NoDecompiledEntryPoint()
         {
             Given_Program(Address.Ptr32(0x12314), new byte[20]);
+            var address = Address.Ptr32(0x12314);
             program.User.Procedures.Add(
-                Address.Ptr32(0x12314),
-                new Procedure_v1()
+                address,
+                new UserProcedure(address, NamingPolicy.Instance.ProcedureName(address))
                 {
                     Decompile = false,
                 }
@@ -700,9 +697,10 @@ fn00001000_exit:
         {
             Given_Program(Address.Ptr32(0x12314), new byte[20]);
             fakeArch.Test_IgnoreAllUnkownTraces();
+            var address = Address.Ptr32(0x12314);
             program.User.Procedures.Add(
-                Address.Ptr32(0x12314),
-                new Procedure_v1()
+                address,
+                new UserProcedure(address, NamingPolicy.Instance.ProcedureName(address))
                 {
                     Decompile = false,
                 }
@@ -730,9 +728,10 @@ fn00001000_exit:
         public void Scanner_ScanData_NoDecompiledProcedureFromUserGlobal()
         {
             Given_Program(Address.Ptr32(0x12314), new byte[20]);
+            var address = Address.Ptr32(0x12314);
             program.User.Procedures.Add(
-                Address.Ptr32(0x12314),
-                new Procedure_v1()
+                address,
+                new UserProcedure(address, NamingPolicy.Instance.ProcedureName(address))
                 {
                     Decompile = false,
                 }
@@ -853,11 +852,13 @@ fn00001200_exit:
         public void Scanner_ScanProcedure_AssumeRegisterValues()
         {
             var scanner = CreateScanner(0x1000, 0x2000);
-            program.User.Procedures.Add(Address.Ptr32(0x1000), new Reko.Core.Serialization.Procedure_v1
+
+            var address = Address.Ptr32(0x1000);
+            program.User.Procedures.Add(Address.Ptr32(0x1000), new UserProcedure(address, NamingPolicy.Instance.ProcedureName(address))
             {
-                Assume = new RegisterValue_v2[] {
+                Assume = {
                      new RegisterValue_v2 { Register="r1", Value="0DC0" }
-                 }
+                }
             });
             Given_Trace(new RtlTrace(0x1000)
             {
@@ -1044,9 +1045,10 @@ fn00001200_exit:
         {
             Given_Program(Address.Ptr32(0x00100000), new byte[100]);
             Given_Project();
+            var address = Address.Ptr32(0x00100010);
             program.User.Procedures.Add(
-                Address.Ptr32(0x00100010),
-                new Procedure_v1
+                address,
+                new UserProcedure(address, NamingPolicy.Instance.ProcedureName(address))
                 {
                     CSignature = "int foo(char * a, float b)"
                 });

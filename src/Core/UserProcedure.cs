@@ -25,20 +25,34 @@ using System.Text;
 
 namespace Reko.Core
 {
-    public class UserGlobal
+    public class UserProcedure
     {
-        public Address Address { get; set; }
-        public string Name { get; set; }
-        public SerializedType DataType { get; set; }
-        public string? Comment { get; set; }
-
-        public UserGlobal(Address address, string name, SerializedType dataType)
+        public const int NoOrdinal = -1;
+        
+        public UserProcedure(Address address, string name)
         {
             Address = address;
             Name = name;
-            DataType = dataType;
+            Assume = new List<RegisterValue_v2>();
+            Characteristics = new ProcedureCharacteristics();
         }
 
-        public static string GenerateDefaultName(Address address) => string.Format("g_{0:X}", address.ToLinear());
+        public Address Address { get; set; }
+
+        public string Name { get; set; }
+
+        public bool Decompile { get; set; } = true;
+        
+        public List<RegisterValue_v2> Assume { get; set; }
+        
+        public string? CSignature { get; set; }
+        
+        public string? OutputFile { get; set; }
+
+        public int Ordinal { get; set; } = NoOrdinal;
+        
+        public SerializedSignature? Signature { get; set; }
+
+        public ProcedureCharacteristics Characteristics { get; set; }
     }
 }

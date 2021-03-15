@@ -205,9 +205,8 @@ namespace Reko.UnitTests.Core.Serialization
                             {
                                 {
                                     Address.SegPtr(0x1000, 0x10),
-                                    new Procedure_v1
+                                    new UserProcedure(Address.SegPtr(0x1000, 0x10), "foo")
                                     {
-                                        Name = "foo",
                                         Signature = new SerializedSignature
                                         {
                                             ReturnValue = new Argument_v1 { Kind = new Register_v1("eax") },

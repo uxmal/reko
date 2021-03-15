@@ -86,10 +86,8 @@ namespace Reko.UnitTests.Core.Output
         private void Given_UserProcedure(uint uAddr, string procName, string placement)
         {
             var addr = Address.Ptr32(uAddr);
-            var uProc = new Reko.Core.Serialization.Procedure_v1
+            var uProc = new UserProcedure(addr, procName)
             {
-                Address = addr.ToString(),
-                Name = procName,
                 OutputFile = placement
             };
             program.User.Procedures.Add(addr, uProc);

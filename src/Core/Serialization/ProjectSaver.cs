@@ -73,7 +73,7 @@ namespace Reko.Core.Serialization
                 {
                     Loader = program.User.Loader,
                     Procedures = program.User.Procedures
-                        .Select(de => { de.Value.Address = de.Key.ToString(); return de.Value; })
+                        .Select(up => SerializeUserProcedure(up.Value))
                         .ToList(),
                     Processor = SerializeProcessorOptions(program.User, program.Architecture),
                     PlatformOptions = SerializePlatformOptions(program.User, program.Platform),
@@ -103,6 +103,32 @@ namespace Reko.Core.Serialization
                 IncludeDirectory =      ConvertToProjectRelativePath(projectAbsPath, program.IncludeDirectory),
                 ResourcesDirectory =    ConvertToProjectRelativePath(projectAbsPath, program.ResourcesDirectory),
             };
+        }
+
+        private Procedure_v1 SerializeUserProcedure(UserProcedure up)
+        {
+            var sp = new Procedure_v1()
+            {
+                Name = up.Name,
+                Ordinal = up.Ordinal,
+                Signature = up.Signature,
+                Characteristics = SerializeProcedureCharacteristics(up.Characteristics),
+                Address = up.Address.ToString(),
+                Decompile = up.Decompile,
+                Assume = up.Assume.Count != 0 ? up.Assume.ToArray() : null,
+                CSignature = up.CSignature,
+                OutputFile = up.OutputFile,
+            };
+
+            return sp;
+        }
+
+        private ProcedureCharacteristics? SerializeProcedureCharacteristics(ProcedureCharacteristics? pc)
+        {
+            if (pc == null || pc.IsDefaultCharactaristics)
+                return null;
+
+            return pc;
         }
 
         private RegisterValue_v2[] SerializeRegisterValues(SortedList<Address, List<UserRegisterValue>> registerValues)

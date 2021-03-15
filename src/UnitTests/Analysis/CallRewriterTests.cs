@@ -220,10 +220,8 @@ namespace Reko.UnitTests.Analysis
         {
             program.User.Procedures.Add(
                 address,
-                new Procedure_v1
+                new UserProcedure(address, name)
                 {
-                    Name = name,
-                    Address = address.ToString(),
                     Decompile = true,
                     Signature = sSig,
                 });

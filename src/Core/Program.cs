@@ -644,18 +644,17 @@ namespace Reko.Core
             return intrinsic;
         }
 
-        public Procedure_v1 EnsureUserProcedure(Address address, string? name, bool decompile = true)
+        public UserProcedure EnsureUserProcedure(Address address, string? name, bool decompile = true)
         {
             if (!User.Procedures.TryGetValue(address, out var up))
             {
-                up = new Procedure_v1
+                up = new UserProcedure(address, name ?? NamingPolicy.ProcedureName(address))
                 {
-                    Address = address.ToString(),
-                    Name = name,
                     Decompile = decompile,
                 };
                 User.Procedures.Add(address, up);
             }
+
             return up;
         }
 
