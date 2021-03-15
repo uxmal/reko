@@ -129,7 +129,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs = {
+                InputFiles = {
                     new DecompilerInput_v4
                     {
                         Filename = "f.exe",
@@ -237,7 +237,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs = {
+                InputFiles = {
                     new DecompilerInput_v5
                     {
                         Filename = "f.exe",
@@ -338,7 +338,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var sp = new Project_v5
             {
-                Inputs = {
+                InputFiles = {
                     new DecompilerInput_v5 {
                         Filename ="foo.exe",
                         User = new UserData_v4 {
@@ -347,6 +347,8 @@ namespace Reko.UnitTests.Core.Serialization
                             },
                         }
                     },
+                },
+                AssemblerFiles = {
                     new AssemblerFile_v3 { Filename="foo.asm", Assembler="x86-att" }
                 }
             };
