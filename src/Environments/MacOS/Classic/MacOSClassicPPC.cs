@@ -18,11 +18,13 @@
  */
 #endregion
 
+using Reko.Arch.PowerPC;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Reko.Environments.MacOS.Classic
 {
@@ -42,7 +44,35 @@ namespace Reko.Environments.MacOS.Classic
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
-            throw new NotImplementedException();
+            var arch = (PowerPcArchitecture)Architecture;
+
+            var trashed = new HashSet<RegisterStorage>
+            {
+                arch.Registers[0],
+                arch.Registers[1],
+                arch.FpRegisters[0],
+                arch.lr,
+                arch.ctr,
+                arch.xer,
+                arch.CrRegisters[0],
+                arch.CrRegisters[1],
+                arch.CrRegisters[5],
+                arch.CrRegisters[7]
+            };
+
+            //GPR2 - GPR12
+            foreach (var reg in RuntimeHelpers.GetSubArray(arch.Registers.ToArray(), new Range(2, 13)))
+            {
+                trashed.Add(reg);
+            }
+
+            //FPR0 - FPR13
+            foreach(var reg in RuntimeHelpers.GetSubArray(arch.FpRegisters.ToArray(), new Range(1, 14)))
+            {
+                trashed.Add(reg);
+            }
+
+            return trashed;
         }
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
