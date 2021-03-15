@@ -35,6 +35,7 @@ namespace Reko.ImageLoaders.Pef
         private PefLoaderInfo(PefLoaderSegment loader)
         {
             Loader = loader;
+            ExportedSymbols = new List<PefExportedSymbol>();
         }
 
         private IEnumerable<PefExportedSymbol> LoadHashChain(PefExportHash tab)
@@ -44,7 +45,7 @@ namespace Reko.ImageLoaders.Pef
             {
                 var key = Loader.ExportKeyTable[i];
                 var sym = Loader.ExportSymbolTable[i];
-                yield return new PefExportedSymbol(sym, key, Loader.StringTable);
+                yield return PefExportedSymbol.Load(sym, key, Loader.StringTable);
             }
         }
 

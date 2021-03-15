@@ -41,7 +41,19 @@ namespace Reko.ImageLoaders.Pef
             this.sectionNameTable = sectionNameTable;
         }
 
-        /////
+        private byte[] DecompressSection(byte[] sectionData)
+        {
+            MemoryStream output = new MemoryStream();
+
+            // if the section is packed, the data we just read is the compressed section data we need to interpret
+            var interp = new PefOpcodeInterpreter(sectionData, output);
+            interp.RunProgram();
+
+            // write dummy byte for the "end of data" symbol, which sits 1 byte out of bounds
+            output.WriteByte(00);
+
+            return output.ToArray();
+        }
 
         public IEnumerable<PefImageSegment> GetImageSegments(EndianByteImageReader rdr, Address addrLoad)
         {
@@ -54,17 +66,8 @@ namespace Reko.ImageLoaders.Pef
 
                 if (sectionHeader.IsCompressedSection())
                 {
-                    MemoryStream output = new MemoryStream();
-
-                    // if the section is packed, the data we just read is the compressed section data we need to interpret
-                    var interp = new PefOpcodeInterpreter(containerData, output);
-                    interp.RunProgram();
-
-                    // write dummy byte for the "end of data" symbol, which sits 1 byte out of bounds
-                    output.WriteByte(00);
-
                     // replace PEF bytecode with decoded output from the interpreter
-                    containerData = output.ToArray();
+                    containerData = DecompressSection(containerData);
                 }
 
                 if (sectionHeader.defaultAddress != 0)
@@ -125,7 +128,7 @@ namespace Reko.ImageLoaders.Pef
         {
             var hdr = rdr.ReadStruct<PEFContainerHeader>();
             if (hdr.sectionCount == 0)
-                throw new BadImageFormatException($"Binary image has 0 sections.");
+                throw new BadImageFormatException($"PEF binary image image has 0 sections.");
             var secHdrs = ReadSections(hdr, rdr).ToArray();
             var sectionNameTable = ReadSectionNameTable(secHdrs, rdr).ToArray();
             var result = new PefContainer(hdr, secHdrs, sectionNameTable);

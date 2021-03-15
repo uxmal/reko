@@ -25,6 +25,9 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Pef
 {
+    /// <summary>
+    /// Provides an interface for reading strings conveniently from the loader string table
+    /// </summary>
     public class PefLoaderStringTable
     {
         private readonly PEFLoaderInfoHeader infoHeader;
@@ -36,12 +39,29 @@ namespace Reko.ImageLoaders.Pef
             this.rdr = rdr;
         }
 
-        public string ReadString(uint offset, uint length = 0)
+        /// <summary>
+        /// Reads a NULL terminated string
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        public string ReadCString(uint offset)
         {
             return rdr.ReadAt(infoHeader.loaderStringsOffset + offset, (_) =>
             {
-                if(length == 0) return rdr.ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString();
-                
+                return rdr.ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString();
+            });
+        }
+
+        /// <summary>
+        /// Reads a fixed length string (not NULL-terminated)
+        /// </summary>
+        /// <param name="offset"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public string ReadString(uint offset, uint length)
+        {
+            return rdr.ReadAt(infoHeader.loaderStringsOffset + offset, (_) =>
+            {               
                 var bytes = rdr.ReadBytes(length);
                 return Encoding.ASCII.GetString(bytes);
             });

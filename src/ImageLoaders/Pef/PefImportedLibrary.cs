@@ -24,15 +24,22 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Pef
 {
-    public class PefImportedLibrary
+    public struct PefImportedLibrary
     {
-        private PEFImportedLibrary lib;
-        public string Name;
+        public readonly PEFImportedLibrary Lib;
+        public readonly string Name;
 
-        public PefImportedLibrary(EndianByteImageReader rdr, PefLoaderStringTable loaderStringTable)
+        public PefImportedLibrary(PEFImportedLibrary lib, string name)
         {
-            lib = new PEFImportedLibrary(rdr);
-            Name = loaderStringTable.ReadString(lib.nameOffset);
+            Lib = lib;
+            Name = name;
+        }
+
+        public static PefImportedLibrary Load(EndianByteImageReader rdr, PefLoaderStringTable loaderStringTable)
+        {
+            var lib = PEFImportedLibrary.Load(rdr);
+            var name = loaderStringTable.ReadCString(lib.nameOffset);
+            return new PefImportedLibrary(lib, name);
         }
     }
 }

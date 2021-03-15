@@ -22,7 +22,7 @@ using System;
 namespace Reko.ImageLoaders.Pef
 {
 
-    public class PefClassAndName
+    public struct PefClassAndName
     {
         public readonly PEFSymbolClassType SymbolClass;
         public readonly uint NameOffset;
@@ -46,11 +46,18 @@ namespace Reko.ImageLoaders.Pef
 
         public readonly string Name;
 
-        public PefExportedSymbol(PEFExportedSymbol sym, PefHashWord exportHash, PefLoaderStringTable stringTable)
+        private PefExportedSymbol(PefClassAndName classAndName, PEFExportedSymbol sym, string name)
         {
-            this.classAndName = new PefClassAndName(sym.classAndName);
+            this.classAndName = classAndName;
             this.sym = sym;
-            this.Name = stringTable.ReadString(classAndName.NameOffset, exportHash.NameLength);
+            this.Name = name;
+        }
+        
+        public static PefExportedSymbol Load(PEFExportedSymbol sym, PefHashWord exportHash, PefLoaderStringTable stringTable)
+        {
+            var classAndName = new PefClassAndName(sym.classAndName);
+            var name = stringTable.ReadString(classAndName.NameOffset, exportHash.NameLength);
+            return new PefExportedSymbol(classAndName, sym, name);
         }
 
         public override string ToString()
@@ -60,7 +67,7 @@ namespace Reko.ImageLoaders.Pef
         }
     }
 
-    public class PefExportHash
+    public struct PefExportHash
     {
         public readonly ushort ChainCount;
         public readonly ushort FirstExportIndex;
@@ -72,13 +79,12 @@ namespace Reko.ImageLoaders.Pef
         }
     }
 
-    public class PefHashWord
+    public struct PefHashWord
     {
         public readonly ushort EncodedName;
         public readonly ushort NameLength;
 
         public readonly uint HashWord;
-
 
         public PefHashWord(uint val)
         {

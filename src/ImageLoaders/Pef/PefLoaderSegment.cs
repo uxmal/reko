@@ -26,11 +26,20 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Pef
 {
+    public struct PefLoaderFields
+    {
+        public PefLoaderStringTable StringTable;
+        public PEFLoaderInfoHeader InfoHeader;
+        public IList<PefImportedLibrary> ImportedLibraries;
+        public IList<PefSymbol> ImportedSymbols;
+        public IList<PEFLoaderRelocationHeader> RelocationHeaders;
+        public IList<PefExportHash> ExportHashTable;
+        public IList<PefHashWord> ExportKeyTable;
+        public IList<PEFExportedSymbol> ExportSymbolTable;
+    }
+
     public class PefLoaderSegment
     {
-        private readonly PefImageSegment loaderSegment;        
-        private EndianByteImageReader rdr;
-
         public PefLoaderStringTable StringTable { get; private set; }
 
         public PEFLoaderInfoHeader InfoHeader { get; private set; }
@@ -41,24 +50,43 @@ namespace Reko.ImageLoaders.Pef
         public IList<PefHashWord> ExportKeyTable { get; private set; }
         public IList<PEFExportedSymbol> ExportSymbolTable { get; private set; }
 
-        private PefLoaderSegment(PefImageSegment loaderSegment)
+        public PefLoaderSegment(PefLoaderFields fields)
         {
-            this.loaderSegment = loaderSegment;
+            this.StringTable = fields.StringTable;
+            this.InfoHeader = fields.InfoHeader;
+            this.ImportedLibraries = fields.ImportedLibraries;
+            this.ImportedSymbols = fields.ImportedSymbols;
+            this.RelocationHeaders = fields.RelocationHeaders;
+            this.ExportHashTable = fields.ExportHashTable;
+            this.ExportKeyTable = fields.ExportKeyTable;
+            this.ExportSymbolTable = fields.ExportSymbolTable;
+        }
+    }
+
+    public class PefLoaderSegmentReader {
+
+        private readonly EndianByteImageReader rdr;
+        private PefLoaderFields fields;
+
+        public PefLoaderSegmentReader(PefImageSegment loaderSegment)
+        {
+            fields = new PefLoaderFields();
+            rdr = (EndianByteImageReader) loaderSegment.Segment.MemoryArea.CreateBeReader(0);
         }
 
-        private PEFLoaderInfoHeader ReadInfoHeader() => new PEFLoaderInfoHeader(rdr);
+        private PEFLoaderInfoHeader ReadInfoHeader() => PEFLoaderInfoHeader.Load(rdr);
 
         private IEnumerable<PefImportedLibrary> ReadImportedLibraries()
         {
-            for(var i=0; i<InfoHeader.importedLibraryCount; i++)
+            for(var i=0; i<fields.InfoHeader.importedLibraryCount; i++)
             {
-                yield return new PefImportedLibrary(rdr, StringTable);
+                yield return PefImportedLibrary.Load(rdr, fields.StringTable);
             }
         }
 
         private IEnumerable<PefSymbol> ReadImportedSymbolTable()
         {
-            for(var i=0; i<InfoHeader.totalImportedSymbolCount; i++)
+            for(var i=0; i<fields.InfoHeader.totalImportedSymbolCount; i++)
             {
                 var s = rdr.ReadUInt32();
                 yield return new PefSymbol(s);
@@ -67,17 +95,17 @@ namespace Reko.ImageLoaders.Pef
 
         private IEnumerable<PEFLoaderRelocationHeader> ReadRelocationHeadersTable()
         {
-            for(var i=0; i<InfoHeader.relocSectionCount; i++)
+            for(var i=0; i<fields.InfoHeader.relocSectionCount; i++)
             {
-                yield return new PEFLoaderRelocationHeader(rdr);
+                yield return PEFLoaderRelocationHeader.Load(rdr);
             }
         }
 
         private IEnumerable<PefExportHash> ReadExportHashTable()
         {
-            rdr.Seek(InfoHeader.exportHashOffset, System.IO.SeekOrigin.Begin);
+            rdr.Seek(fields.InfoHeader.exportHashOffset, System.IO.SeekOrigin.Begin);
 
-            var count = 1 << (int) InfoHeader.exportHashTablePower;
+            var count = 1 << (int) fields.InfoHeader.exportHashTablePower;
             for(var i=0; i<count; i++)
             {
                 var h = rdr.ReadUInt32();
@@ -87,7 +115,7 @@ namespace Reko.ImageLoaders.Pef
 
         private IEnumerable<PefHashWord> ReadExportKeyTable()
         {
-            for(var i=0; i<InfoHeader.exportedSymbolCount; i++)
+            for(var i=0; i<fields.InfoHeader.exportedSymbolCount; i++)
             {
                 var v = rdr.ReadUInt32();
                 yield return new PefHashWord(v);
@@ -96,35 +124,30 @@ namespace Reko.ImageLoaders.Pef
 
         private IEnumerable<PEFExportedSymbol> ReadExportSymbolTable()
         {
-            for (var i = 0; i < InfoHeader.exportedSymbolCount; i++)
+            for (var i = 0; i < fields.InfoHeader.exportedSymbolCount; i++)
             {
-                yield return new PEFExportedSymbol(rdr);
+                yield return PEFExportedSymbol.Load(rdr);
             }
         }
 
-        private void Initialize()
+        private PefLoaderFields Load()
         {
-            rdr = (EndianByteImageReader) loaderSegment.Segment.MemoryArea.CreateBeReader(0);
+            fields.InfoHeader = ReadInfoHeader();
+            fields.StringTable = new PefLoaderStringTable(fields.InfoHeader, rdr);
+            fields.ImportedLibraries = ReadImportedLibraries().ToArray();
+            fields.ImportedSymbols = ReadImportedSymbolTable().ToArray();
+            fields.RelocationHeaders = ReadRelocationHeadersTable().ToArray();
+            fields.ExportHashTable = ReadExportHashTable().ToArray();
+            fields.ExportKeyTable = ReadExportKeyTable().ToArray();
+            fields.ExportSymbolTable = ReadExportSymbolTable().ToArray();
+            return fields;
         }
 
-        private void Load()
+        public static PefLoaderSegment ReadLoaderSegment(PefImageSegment loaderSegment)
         {
-            Initialize();
-            InfoHeader = ReadInfoHeader();
-            StringTable = new PefLoaderStringTable(InfoHeader, rdr);
-            ImportedLibraries = ReadImportedLibraries().ToArray();
-            ImportedSymbols = ReadImportedSymbolTable().ToArray();
-            RelocationHeaders = ReadRelocationHeadersTable().ToArray();
-            ExportHashTable = ReadExportHashTable().ToArray();
-            ExportKeyTable = ReadExportKeyTable().ToArray();
-            ExportSymbolTable = ReadExportSymbolTable().ToArray();
-        }
-
-        public static PefLoaderSegment Load(PefImageSegment loaderSegment)
-        {
-            var obj = new PefLoaderSegment(loaderSegment);
-            obj.Load();
-            return obj;
+            var obj = new PefLoaderSegmentReader(loaderSegment);
+            var loaderFields = obj.Load();
+            return new PefLoaderSegment(loaderFields);
         }
     }
 }

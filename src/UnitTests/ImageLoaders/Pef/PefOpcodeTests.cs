@@ -28,7 +28,7 @@ using System.Text;
 namespace Reko.UnitTests.ImageLoaders.Pef
 {
     [TestFixture]
-    class PefOpcodeTests
+    public class PefOpcodeTests
     {
         private MemoryStream output;
 
@@ -38,17 +38,9 @@ namespace Reko.UnitTests.ImageLoaders.Pef
             output = new MemoryStream();
         }
 
-        public static byte[] StringToByteArray(string hex)
-        {
-            return Enumerable.Range(0, hex.Length)
-                             .Where(x => x % 2 == 0)
-                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-                             .ToArray();
-        }
-
         byte[] RunProgram(string hexData)
         {
-            var data = StringToByteArray(hexData);
+            var data = Reko.Core.BytePattern.FromHexBytes(hexData).ToArray();
             var interp = new PefOpcodeInterpreter(data, output);
             interp.RunProgram();
             return output.ToArray();

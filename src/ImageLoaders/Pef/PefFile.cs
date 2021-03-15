@@ -1,3 +1,22 @@
+#region License
+/* 
+ * Copyright (C) 2018-2021 Stefano Moioli <smxdev4@gmail.com>.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
 using Reko.Core;
 using Reko.Core.Types;
 using System;
@@ -14,19 +33,19 @@ namespace Reko.ImageLoaders.Pef
 
         private PefImageSegment[] pefSegments;
 
-        private PefFile(PefContainer container, PefImageSegment[] imageSegments)
+        private PefFile(PefContainer container, PefImageSegment[] imageSegments, PefLoaderInfo loaderInfo)
         {
             this.Container = container;
             this.pefSegments = imageSegments;
+            this.LoaderInfo = loaderInfo;
         }
 
-        private PefLoaderInfo ProcessLoaderSection(PefImageSegment loaderSegment)
-        {
-            var pefLoaderSegment = PefLoaderSegment.Load(loaderSegment);
-            var loaderInfo = PefLoaderInfo.Load(pefLoaderSegment);
-            return loaderInfo;
-        }
-
+        /// <summary>
+        /// Obtains an address from a section index and an offset
+        /// </summary>
+        /// <param name="sectionIndex"></param>
+        /// <param name="sectionOffset"></param>
+        /// <returns></returns>
         private Address GetAddress(int sectionIndex, uint sectionOffset)
         {
             switch (sectionIndex)
@@ -36,6 +55,7 @@ namespace Reko.ImageLoaders.Pef
             // offset is the imported symbol index
             case -3: throw new NotImplementedException();
             }
+
             var baseAddr = pefSegments[sectionIndex].Segment.Address;
             return baseAddr + sectionOffset;
         }
@@ -85,10 +105,17 @@ namespace Reko.ImageLoaders.Pef
             });
         }
 
-        private void Load()
+        private static PefLoaderInfo ProcessLoaderSection(PefImageSegment loaderSegment)
+        {
+            var pefLoaderSegment = PefLoaderSegmentReader.ReadLoaderSegment(loaderSegment);
+            var loaderInfo = PefLoaderInfo.Load(pefLoaderSegment);
+            return loaderInfo;
+        }
+
+        private static PefLoaderInfo ProcessLoaderSection(PefImageSegment[] pefSegments)
         {
             var loaderSegment = pefSegments.Where(s => s.SectionHeader.sectionKind == PEFSectionType.Loader).Single();
-            LoaderInfo = ProcessLoaderSection(loaderSegment);
+            return ProcessLoaderSection(loaderSegment);
         }
 
         public static PefFile Load(
@@ -96,8 +123,8 @@ namespace Reko.ImageLoaders.Pef
             PefImageSegment[] imageSegments
         )
         {
-            var obj = new PefFile(container, imageSegments);
-            obj.Load();
+            var loaderInfo = ProcessLoaderSection(imageSegments);
+            var obj = new PefFile(container, imageSegments, loaderInfo);
             return obj;
         }
     }
