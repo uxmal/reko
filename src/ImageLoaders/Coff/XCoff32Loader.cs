@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Expressions;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
@@ -33,7 +34,11 @@ namespace Reko.ImageLoaders.Coff
 {
     public class XCoff32Loader : ImageLoader
     {
+        private ImageSegment? textSection;
+        private ImageSegment? dataSection;
+        private ImageSegment? bssSection;
         private ImageSegment? loaderSection;
+        AuxFileHeader? aux = null;
 
         public XCoff32Loader(IServiceProvider services, string filename, byte[] rawImage) :
             base(services, filename, rawImage)
@@ -47,7 +52,6 @@ namespace Reko.ImageLoaders.Coff
         {
             BeImageReader rdr = new BeImageReader(this.RawImage, 0);
             FileHeader str = rdr.ReadStruct<FileHeader>();
-            AuxFileHeader? aux = null;
             if (str.f_opthdr != 0)
             {
                 aux = rdr.ReadStruct<AuxFileHeader>();
@@ -71,9 +75,54 @@ namespace Reko.ImageLoaders.Coff
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             var (entries, symbols) = LoadLoaderSection(program.Architecture);
-            return new RelocationResults(
-                symbols ?? new List<ImageSymbol>(),
-                new SortedList<Address, ImageSymbol>());
+            symbols ??= new List<ImageSymbol>();
+            var symDict = symbols
+                .Where(s => s.Address.ToLinear() != 0)
+                .ToSortedList(s => s.Address);
+            entries ??= new List<ImageSymbol>();
+            var ep = LoadProgramEntryPoint(program, symDict);
+            if (ep != null)
+                entries.Add(ep);
+            return new RelocationResults(entries, symDict);
+        }
+
+        private ImageSymbol? LoadProgramEntryPoint(Program program, SortedList<Address, ImageSymbol> symbols)
+        {
+            if (!aux.HasValue)
+                return null;
+            var entry = aux.Value.o_entry;
+            if (entry == 0 || entry == ~0u)
+                return null;
+            var arch = program.Architecture;
+            var rdr = program.CreateImageReader(arch, Address.Ptr32(entry));
+            // o_entry actually points to a function descriptor (think of it as a closure)
+            // consisting of a pointer to the actual code and a pointer to the TOC.
+            if (TryReadFunctionDescriptor(rdr, out Address addrEntry, out Constant ptrToc))
+            {
+                if (!symbols.TryGetValue(addrEntry, out var symEntry))
+                {
+                    symEntry = ImageSymbol.Procedure(arch, addrEntry);
+                    symbols.Add(addrEntry, symEntry);
+                }
+                symEntry.ProcessorState = arch.CreateProcessorState();
+                symEntry.ProcessorState.SetRegister(arch.GetRegister("r2")!, ptrToc);
+                return symEntry;
+            }
+            return null;
+        }
+
+        private bool TryReadFunctionDescriptor(EndianImageReader rdr, out Address addrEntry, out Constant ptrToc)
+        {
+            if (rdr.TryReadUInt32(out uint uAddrEntry) &&
+                rdr.TryReadUInt32(out uint uEntryTocPtr))
+            {
+                addrEntry = Address.Ptr32(uAddrEntry);
+                ptrToc = Constant.Word32(uEntryTocPtr);
+                return true;
+            }
+            addrEntry = null!;
+            ptrToc = null!;
+            return false;
         }
 
         private ImageSegment LoadSegment(BeImageReader rdr)
@@ -89,18 +138,28 @@ namespace Reko.ImageLoaders.Coff
             var mem = new ByteMemoryArea(addr, bytes);
             var access = SectionAccessMode(section.s_flags);
             var seg = new ImageSegment(name, mem, access);
-            if (section.s_flags.HasFlag(SectionFlags.STYP_LOADER))
+            Debug.Print("   {0} {1,-10} {2}", seg.Address, section.s_flags, seg.Name);
+            SetWellKnownSection(section, SectionFlags.STYP_TEXT , seg, ref textSection);
+            SetWellKnownSection(section, SectionFlags.STYP_DATA  , seg, ref dataSection);
+            SetWellKnownSection(section, SectionFlags.STYP_BSS, seg, ref bssSection);
+            SetWellKnownSection(section, SectionFlags.STYP_LOADER, seg, ref loaderSection);
+            return seg;
+        }
+
+        private void SetWellKnownSection(Section section, SectionFlags flag, ImageSegment  seg, ref ImageSegment? segToSet)
+        {
+            if (section.s_flags.HasFlag(flag))
             {
-                if (this.loaderSection != null)
+                if (segToSet != null)
                 {
-                    Services.RequireService<DecompilerEventListener>().Warn("Multiple XCoff loader sections found, ignoring.");
+                    Services.RequireService<DecompilerEventListener>().Warn("Multiple XCoff {0} sections found, ignoring.", flag);
+                    Debug.WriteLine("  ?Dup?");
                 }
                 else
                 {
-                    this.loaderSection = seg;
+                    segToSet = seg;
                 }
             }
-            return seg;
         }
 
         private AccessMode SectionAccessMode(SectionFlags s_flags)
@@ -121,35 +180,40 @@ namespace Reko.ImageLoaders.Coff
             return Encoding.UTF8.GetString(abName, 0, i);
         }
 
-        private (object?, List<ImageSymbol>?) LoadLoaderSection(IProcessorArchitecture arch)
+        private (List<ImageSymbol>?, List<ImageSymbol>?) LoadLoaderSection(IProcessorArchitecture arch)
         {
             if (this.loaderSection is null)
                 return (null, null);
             var rdr = (BeImageReader) loaderSection.MemoryArea.CreateBeReader(0);
             var hdr = rdr.ReadStruct<LoaderSectionHeader>();
-            // In XCoff32 symbols appear immediately after the header.
-            var symbols = ReadSymbols(arch, rdr, (ByteMemoryArea) loaderSection.MemoryArea, hdr.l_stoff, hdr.l_nsyms);
-            var relocs = ReadRelocations(rdr, hdr.l_nreloc);
-            return (null, symbols);
+
+            // In XCoff32 files, the symbols appear immediately after the header.
+            var symbols = ReadSymbols(rdr, hdr.l_nsyms);
+            
+            // ...followed by the relocations
+            var relocs = ReadRelocations(rdr, hdr.l_nreloc, symbols);
+            return (
+                null, 
+                symbols.Select((sym, i) => MakeImageSymbol(sym, arch, (ByteMemoryArea) loaderSection.MemoryArea, hdr.l_stoff))
+                    .ToList());
         }
 
-        private List<ImageSymbol> ReadSymbols(IProcessorArchitecture arch, BeImageReader rdr, ByteMemoryArea loaderArea, uint strTableBase, uint nsyms)
+        private List<Symbol> ReadSymbols(BeImageReader rdr, uint nsyms)
         {
-            var syms = new List<ImageSymbol>((int)nsyms);
+            var syms = new List<Symbol>((int)nsyms);
             for (uint i = 0; i < nsyms; ++i)
             {
-                var sym = ReadSymbol(arch, loaderArea, strTableBase, rdr);
-                syms.Add(sym);
-                Debug.WriteLine($"{i,4} {sym}");
+                var xcoffSym = rdr.ReadStruct<Symbol>();
+                syms.Add(xcoffSym);
             }
             return syms;
         }
 
-        private ImageSymbol ReadSymbol(IProcessorArchitecture arch, ByteMemoryArea loaderArea, uint strTableBase, BeImageReader rdr)
+        private ImageSymbol MakeImageSymbol(in Symbol xcoffSym, IProcessorArchitecture arch, ByteMemoryArea loaderArea, uint strTableBase)
         {
-            var xcoffSym = rdr.ReadStruct<Symbol>();
             var name = ReadSymbolName(xcoffSym, loaderArea, strTableBase);
             var stype = GetSymbolType(xcoffSym.l_smclas);
+            Debug.Print("    {0:X4} {1} {2}", xcoffSym.l_value, xcoffSym.l_smclas, name);
             return ImageSymbol.Create(stype, arch, Address.Ptr32(xcoffSym.l_value), name);
         }
 
@@ -157,6 +221,7 @@ namespace Reko.ImageLoaders.Coff
         {
             return l_smclas switch
             {
+                SymbolClass.XMC_PR => Core.SymbolType.Procedure,
                 SymbolClass.XMC_RW => Core.SymbolType.Data,
                 _ => Core.SymbolType.Unknown
             };
@@ -175,13 +240,29 @@ namespace Reko.ImageLoaders.Coff
                 return Utf8StringFromFixedArray(xcoffSym.l_name);
         }
 
-        private object ReadRelocations(BeImageReader rdr, uint nreloc)
+        private object ReadRelocations(BeImageReader rdr, uint nreloc, List<Symbol> symbols)
         {
+            // Compute the loader section symbol table index (n-th entry) of the symbol that is being referenced. Values 0, 1, and 2 are implicit references to .text, .data, and .bss sections, respectively. Symbol index 3 is the index for the first symbol actually contained in the loader section symbol table.
+
+            var badAddr = Address.Ptr32(0);
+            var symsToAddresses = new List<Address>
+            {
+                this.textSection?.Address ?? badAddr,
+                this.dataSection?.Address ?? badAddr,
+                this.bssSection?.Address ?? badAddr
+            };
+            symsToAddresses.AddRange(symbols.Select(s => Address.Ptr32(s.l_value)));
             Debug.WriteLine($"== Relocations {nreloc} ========================");
             for (uint i = 0; i < nreloc; ++i)
             {
                 var reloc = rdr.ReadStruct<Relocation>();
-                Debug.Print("    {0:X8} {1:X8} {2:X2} {3} {4:X4}", reloc.l_vaddr, reloc.l_symndx, reloc.l_rsize, reloc.l_rtype, reloc.l_rsecnm);
+                Debug.Print("    {0:X8} {1:X8}:{2} {3:X2} {4} {5:X4}",
+                    reloc.l_vaddr,
+                    reloc.l_symndx,
+                    symsToAddresses[(int)reloc.l_symndx],
+                    reloc.l_rsize,
+                    reloc.l_rtype,
+                    reloc.l_rsecnm);
             }
             return nreloc;
         }
