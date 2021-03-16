@@ -94,6 +94,7 @@
     <ProjectReference Include="..\..\ImageLoaders\Nro\Nro.csproj" />
     <ProjectReference Include="..\..\ImageLoaders\OdbgScript\OdbgScript.csproj" />
     <ProjectReference Include="..\..\ImageLoaders\Omf\Omf.csproj" />
+    <ProjectReference Include="..\..\ImageLoaders\Pef\Pef.csproj" />
     <ProjectReference Include="..\..\ImageLoaders\Srec\Srec.csproj" />
     <ProjectReference Include="..\..\ImageLoaders\TypeLib\TypeLib.csproj" />
     <ProjectReference Include="..\..\ImageLoaders\VmsExe\VmsExe.csproj" />
