@@ -89,7 +89,7 @@
   -->
   <Target Name="run_regressions" DependsOnTargets="BuildTools">
     <Message Importance="high" Text="Running regression tests" />
-    <Exec Command="dotnet run --no-restore --no-build -p $(regressionProject) -- -c $(Configuration) -p $(Platform) --check-output .. > ../../subjects/regression.log" />
+    <Exec Command="dotnet run --no-restore --no-build -p $(regressionProject) -c $(Configuration) -- -c $(Configuration) -p $(Platform) --check-output .. > ../../subjects/regression.log" />
   </Target>
 
   <ItemGroup>
@@ -117,9 +117,7 @@
       Inputs="$(CoreDll)"
       Outputs="$(RekoHeaderFile)">
     <Message Importance="high" Text="hdrgen -> $(RekoHeaderFile)" />
-    <Message Importance="high" Condition="Exists($(hdrgenProject))"  Text="$$$$$$$$ hdrgen project exists: $(hdrgenProject)" />
-    <Message Importance="high" Condition="!Exists($(hdrgenProject))" Text="$$$$$$$$ hdrgen project doesn't exist: $(hdrgenProject)" />
-    <Exec Command="dotnet run --no-restore --no-build -p $(hdrgenProject) -- $(CoreDll) $(RekoHeaderFile)" />
+    <Exec Command="dotnet run --no-restore --no-build -p $(hdrgenProject) -c $(Configuration) -- $(CoreDll) $(RekoHeaderFile)" />
   </Target>
 
   <!-- Deletes any cmake and build process junk in the native directory. -->
