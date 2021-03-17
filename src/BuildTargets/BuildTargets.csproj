@@ -108,6 +108,7 @@
       Inputs="$(CoreDll)"
       Outputs="$(RekoHeaderFile)">
     <Message Importance="high" Text="hdrgen -> $(RekoHeaderFile)" />
+    <Message Importance="high" Text="*** hdrgen: project dir is &amp;$(ProjectDir)&amp;" />
     <Exec Command="dotnet run --no-restore --no-build -p ../tools/hdrgen/hdrgen.csproj -- $(CoreDll) $(RekoHeaderFile)" />
   </Target>
 
