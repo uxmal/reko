@@ -117,6 +117,8 @@
       Inputs="$(CoreDll)"
       Outputs="$(RekoHeaderFile)">
     <Message Importance="high" Text="hdrgen -> $(RekoHeaderFile)" />
+    <Message Importance="high" Condition="Exists($(hdrgenProject))"  Text="$$$$$$$$ hdrgen project exists: $(hdrgenProject)" />
+    <Message Importance="high" Condition="!Exists($(hdrgenProject))" Text="$$$$$$$$ hdrgen project doesn't exist: $(hdrgenProject)" />
     <Exec Command="dotnet run --no-restore --no-build -p $(hdrgenProject) -- $(CoreDll) $(RekoHeaderFile)" />
   </Target>
 
