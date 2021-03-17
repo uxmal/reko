@@ -30,6 +30,9 @@
     <regressionProject>$(MSBuildProjectDirectory)/../tools/regressionTests/regressionTests.csproj</regressionProject>
     <specGenProject>$(MSBuildProjectDirectory)/../tools/specGen/specGen.csproj</specGenProject>
     <xsltProject>$(MSBuildProjectDirectory)/../tools/xslt/xslt.csproj</xsltProject>
+
+    <NullDevice Condition="'$(OS)'!='Windows'">/dev/null</NullDevice>
+    <NullDevice Condition="'$(OS)'=='Windows'">nul</NullDevice>
   </PropertyGroup>
 
   <!-- This target makes sure all the tools have been built. -->
@@ -89,7 +92,7 @@
   -->
   <Target Name="run_regressions" DependsOnTargets="BuildTools">
     <Message Importance="high" Text="Running regression tests" />
-    <Exec Command="dotnet run --no-restore --no-build -p $(regressionProject) -c $(Configuration) -- -c $(Configuration) -p $(Platform) --check-output .. > ../../subjects/regression.log" />
+    <Exec Command="dotnet run --no-restore --no-build -p $(regressionProject) -c $(Configuration) -- -c $(Configuration) -p $(Platform) --check-output .. > $(NullDevice)" />
   </Target>
 
   <ItemGroup>
