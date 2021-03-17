@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Configurations>Debug;Release</Configurations>
@@ -24,6 +24,19 @@
     <CMake>"$(CMakeVS)"</CMake>
   </PropertyGroup>
 
+  <Target Name="BuildTools">
+    <MSBuild Projects="$(ProjectDir)../tools/c2xml/c2xml.csproj" />
+    <MSBuild Projects="$(ProjectDir)../tools/hdrgen/hdrgen.csproj" />
+    <MSBuild Projects="$(ProjectDir)../tools/regressionTests/regressionTests.csproj" />
+    <MSBuild Projects="$(ProjectDir)../tools/specGen/specGen.csproj" />
+    <MSBuild Projects="$(ProjectDir)../tools/xslt/xslt.csproj" />
+  </Target>
+
+  <!-- //$TODO: build the enviroments and archs that xslt requires to run. -->
+  <Target Name="C2xmlRequirements">
+    <MSBuild Projects="$(ProjectDir)../tools/xslt/xslt.csproj" />
+  </Target>
+    
   <!-- Builds the whole Reko solution (the ~/src/Reko-decompiler.sln) -->
   <Target Name="build_solution">
     <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=build_solution -P $(RekoCMake)" />
@@ -31,14 +44,22 @@
 
   <!-- Updates the NuSpec file to contain all the build outputs. This must be done after the build_solution build
        or no files will be found. -->
+  <PropertyGroup>
+    <LibFramework>netstandard2.1</LibFramework>
+    <RUNTIME_OUTDIR>../Drivers/Runtime/bin/$(Platform)/$(Configuration)/$(LibFramework)</RUNTIME_OUTDIR>
+  </PropertyGroup>
+
   <Target Name="update_runtime_nuspec"
+          DependsOnTargets="build_solution"
           Inputs="$(ProjectDir)../Installers/NuGetPackage/reko-files.xml"
           Outputs="$(ProjectDir)../Installers/Runtime/bin/Runtime-$(Platform)-($Configuration).nuspec">
+    <Message Importance="high" Text="Updating Runtime nuspec" />
+    <Exec Command="dotnet run --no-restore --no-build -p ../tools/specGen/specGen.csproj -c $(Configuration) -- nuget ../Drivers/Runtime $(RUNTIME_OUTDIR) $(LibFramework) ../Drivers/Runtime/Runtime.nuspec.template" />
     <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=update_runtime_nuspec -P $(RekoCMake)" />
   </Target>
 
-  <!-- This actually build the nupkg, requiring the `update_runtime_nuspec` step above. -->
-  <Target Name="create_runtime_nupkg"
+  <!-- This actually builds the nupkg, requiring the `update_runtime_nuspec` step above. -->
+  <Target Name="create_runtime_nupkg" 
           DependsOnTargets="update_runtime_nuspec">
     <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=create_runtime_nupkg -P $(RekoCMake)" />
   </Target>
@@ -57,29 +78,37 @@
   <!-- This runs the regressionTests tool to execute reko on all the binaries in the 
     ~/subjects directory. 
   -->
-  <Target Name="run_regressions">
-    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=run_regressions -P $(RekoCMake)" />
+  <Target Name="run_regressions" DependsOnTargets="BuildTools">
+    <Message Importance="high" Text="Running regression tests" />
+    <Exec Command="dotnet run --no-restore --no-build -p ../tools/regressionTests/regressionTests.csproj -- -c $(Configuration) -p $(Platform) --check-output .. > ../../subjects/regression.log" />
   </Target>
 
+  <ItemGroup>
+    <C2xmlOsFiles Include="../Environments/OS2/**/*.inc"></C2xmlOsFiles>
+  </ItemGroup>
+
   <!-- Preprocesses the C header files to XML -->
-  <Target Name="gen_c2xml_os2">
+  <Target Name="gen_c2xml_os2" DependsOnTargets="C2xmlRequirements">
+    <Message Importance="High" Text="%(C2xmlOsFiles.Identity) %(C2xmlOsFiles.RootDir)%(C2xmlOsFiles.Directory) %(C2xmlOsFiles.Filename).xml" />
     <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=gen_c2xml_os2 -P $(RekoCMake)" />
   </Target>
 
-  <Target Name="gen_c2xml_sysv">
+  <Target Name="gen_c2xml_sysv" DependsOnTargets="BuildTools">
     <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=gen_c2xml_sysv -P $(RekoCMake)" />
   </Target>
 
-  <Target Name="gen_c2xml_windows">
+  <Target Name="gen_c2xml_windows" DependsOnTargets="BuildTools">
     <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=gen_c2xml_windows -P $(RekoCMake)" />
   </Target>
 
-  <!-- Runs the hdrgen tool to generate the C interop file 'reko.h'from the C# types that have been 
+  <!-- Runs the hdrgen tool to generate the C interop file 'reko.h' from the C# types that have been 
    marked with [NativeInteropAttribute]
   -->
-
-  <Target Name="run_hdrgen">
-    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=run_hdrgen -P $(RekoCMake)" />
+  <Target Name="run_hdrgen" DependsOnTargets="BuildTools"
+      Inputs="$(CoreDll)"
+      Outputs="$(RekoHeaderFile)">
+    <Message Importance="high" Text="Generating header $(RekoHeaderFile)" />
+    <Exec Command="dotnet run --no-restore --no-build -p ../tools/hdrgen/hdrgen.csproj -- $(CoreDll) $(RekoHeaderFile)" />
   </Target>
 
   <!-- Deletes any cmake and build process junk in the native directory. -->
