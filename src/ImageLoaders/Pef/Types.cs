@@ -207,11 +207,11 @@ namespace Reko.ImageLoaders.Pef
         /// <summary>
         /// reserved and must be set to 0
         /// </summary>
-        private byte reservedA;
+        public byte reservedA;
         /// <summary>
         /// reserved and must be set to 0
         /// </summary>
-        private UInt16 reservedB;
+        public UInt16 reservedB;
 
         private PEFImportedLibrary(EndianByteImageReader rdr)
         {
@@ -236,7 +236,7 @@ namespace Reko.ImageLoaders.Pef
         /// <summary>
         /// reserved and must be set to 0.
         /// </summary>
-        private UInt16 reservedA;
+        public UInt16 reservedA;
         /// <summary>
         /// the number of 16-bit relocation blocks for this section.
         /// </summary>
@@ -348,7 +348,7 @@ namespace Reko.ImageLoaders.Pef
         /// </summary>
         public byte alignment;
 
-        private byte reservedA;
+        public byte reservedA;
 
         private PEFSectionHeader(EndianByteImageReader rdr)
         {
@@ -391,8 +391,8 @@ namespace Reko.ImageLoaders.Pef
     [Endian(Endianness.BigEndian)]
     public struct PEFContainerHeader
     {
-        private UInt32 tag1;
-        private UInt32 tag2;
+        public UInt32 tag1;
+        public UInt32 tag2;
         /// <summary>
         /// indicates the architecture type that the
         /// container was generated for
@@ -422,7 +422,7 @@ namespace Reko.ImageLoaders.Pef
         /// execution.
         /// </summary>
         public UInt16 instSectionCount;
-        private UInt32 reservedA;
+        public UInt32 reservedA;
 
         /// <summary>
         /// Joy!
