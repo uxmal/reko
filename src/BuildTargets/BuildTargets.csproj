@@ -107,7 +107,7 @@
   <Target Name="run_hdrgen" DependsOnTargets="BuildTools"
       Inputs="$(CoreDll)"
       Outputs="$(RekoHeaderFile)">
-    <Message Importance="high" Text="Generating header $(RekoHeaderFile)" />
+    <Message Importance="high" Text="hdrgen -> $(RekoHeaderFile)" />
     <Exec Command="dotnet run --no-restore --no-build -p ../tools/hdrgen/hdrgen.csproj -- $(CoreDll) $(RekoHeaderFile)" />
   </Target>
 
