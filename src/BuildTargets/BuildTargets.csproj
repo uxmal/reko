@@ -24,17 +24,26 @@
     <CMake>"$(CMakeVS)"</CMake>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <c2xmlProject>$(MSBuildProjectDirectory)/../tools/c2xml/c2xml.csproj</c2xmlProject>
+    <hdrgenProject>$(MSBuildProjectDirectory)/../tools/hdrgen/hdrgen.csproj</hdrgenProject>
+    <regressionProject>$(MSBuildProjectDirectory)/../tools/regressionTests/regressionTests.csproj</regressionProject>
+    <specGenProject>$(MSBuildProjectDirectory)/../tools/specGen/specGen.csproj</specGenProject>
+    <xsltProject>$(MSBuildProjectDirectory)/../tools/xslt/xslt.csproj</xsltProject>
+  </PropertyGroup>
+
+  <!-- This target makes sure all the tools have been built. -->
   <Target Name="BuildTools">
-    <MSBuild Projects="$(ProjectDir)../tools/c2xml/c2xml.csproj" />
-    <MSBuild Projects="$(ProjectDir)../tools/hdrgen/hdrgen.csproj" />
-    <MSBuild Projects="$(ProjectDir)../tools/regressionTests/regressionTests.csproj" />
-    <MSBuild Projects="$(ProjectDir)../tools/specGen/specGen.csproj" />
-    <MSBuild Projects="$(ProjectDir)../tools/xslt/xslt.csproj" />
+    <MSBuild Projects="$(c2xmlProject)" />
+    <MSBuild Projects="$(hdrgenProject)" />
+    <MSBuild Projects="$(regressionProject)" />
+    <MSBuild Projects="$(specGenProject)" />
+    <MSBuild Projects="$(xsltProject)" />
   </Target>
 
-  <!-- //$TODO: build the enviroments and archs that xslt requires to run. -->
+  <!-- //$TODO: build the environments and archs that xslt requires to run. -->
   <Target Name="C2xmlRequirements">
-    <MSBuild Projects="$(ProjectDir)../tools/xslt/xslt.csproj" />
+    <MSBuild Projects="$(MSBuildProjectDirectory)/../tools/xslt/xslt.csproj" />
   </Target>
     
   <!-- Builds the whole Reko solution (the ~/src/Reko-decompiler.sln) -->
@@ -54,7 +63,7 @@
           Inputs="$(ProjectDir)../Installers/NuGetPackage/reko-files.xml"
           Outputs="$(ProjectDir)../Installers/Runtime/bin/Runtime-$(Platform)-($Configuration).nuspec">
     <Message Importance="high" Text="Updating Runtime nuspec" />
-    <Exec Command="dotnet run --no-restore --no-build -p ../tools/specGen/specGen.csproj -c $(Configuration) -- nuget ../Drivers/Runtime $(RUNTIME_OUTDIR) $(LibFramework) ../Drivers/Runtime/Runtime.nuspec.template" />
+    <Exec Command="dotnet run --no-restore --no-build -p $(specGenProject) -c $(Configuration) -- nuget $(MSBuildProjectDir)/../Drivers/Runtime $(RUNTIME_OUTDIR) $(LibFramework) ../Drivers/Runtime/Runtime.nuspec.template" />
     <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=update_runtime_nuspec -P $(RekoCMake)" />
   </Target>
 
@@ -80,7 +89,7 @@
   -->
   <Target Name="run_regressions" DependsOnTargets="BuildTools">
     <Message Importance="high" Text="Running regression tests" />
-    <Exec Command="dotnet run --no-restore --no-build -p ../tools/regressionTests/regressionTests.csproj -- -c $(Configuration) -p $(Platform) --check-output .. > ../../subjects/regression.log" />
+    <Exec Command="dotnet run --no-restore --no-build -p $(regressionProject) -- -c $(Configuration) -p $(Platform) --check-output .. > ../../subjects/regression.log" />
   </Target>
 
   <ItemGroup>
@@ -108,8 +117,7 @@
       Inputs="$(CoreDll)"
       Outputs="$(RekoHeaderFile)">
     <Message Importance="high" Text="hdrgen -> $(RekoHeaderFile)" />
-    <Message Importance="high" Text="*** hdrgen: project dir is &amp;$(ProjectDir)&amp;" />
-    <Exec Command="dotnet run --no-restore --no-build -p ../tools/hdrgen/hdrgen.csproj -- $(CoreDll) $(RekoHeaderFile)" />
+    <Exec Command="dotnet run --no-restore --no-build -p $(hdrgenProject) -- $(CoreDll) $(RekoHeaderFile)" />
   </Target>
 
   <!-- Deletes any cmake and build process junk in the native directory. -->

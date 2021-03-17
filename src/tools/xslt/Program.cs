@@ -76,7 +76,6 @@ namespace Reko.Tools.Xslt
 					XmlTextReader rdrSheet = new XmlTextReader(stmSheet);
 					xslt.Load(rdrSheet);
 				}
-
                 xslt.Transform(new XmlTextReader(input), new FilteringXmlWriter(output));
 			}
 			catch (Exception e)
