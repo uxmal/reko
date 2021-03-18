@@ -334,7 +334,7 @@ namespace Reko.Core.Serialization
                 user.Procedures = sUser.Procedures
                     .Select(sup => LoadUserProcedure(program, sup))
                     .Where(sup => sup != null)
-                    .ToSortedList(k => k!.Address, v => v);
+                    .ToSortedList(k => k!.Address, v => v!);
                 user.ProcedureSourceFiles = user.Procedures
                     .Where(kv => !string.IsNullOrEmpty(kv.Value.OutputFile))
                     .ToDictionary(kv => kv.Key!, kv => ConvertToAbsolutePath(projectFilePath, kv.Value.OutputFile)!);
@@ -484,7 +484,7 @@ namespace Reko.Core.Serialization
 
         private UserGlobal? LoadUserGlobal(GlobalDataItem_v2 sGlobal)
         {
-            if (!arch.TryParseAddress(sGlobal.Address, out var address))
+            if (!arch!.TryParseAddress(sGlobal.Address, out var address))
                 return null; // TODO: Emit warning?
 
             if (sGlobal.DataType == null)
