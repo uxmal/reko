@@ -20,6 +20,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\Arm\bin\$(StandardOutputDir)\Reko.Arch.Arm.*" />
     <Architectures Include="$(SolutionDir)Arch\Avr\bin\$(StandardOutputDir)\Reko.Arch.Avr.*" />
     <Architectures Include="$(SolutionDir)Arch\Blackfin\bin\$(StandardOutputDir)\Reko.Arch.Blackfin.*" />
+    <Architectures Include="$(SolutionDir)Arch\C166\bin\$(StandardOutputDir)\Reko.Arch.C166.*" />
     <Architectures Include="$(SolutionDir)Arch\CompactRisc\bin\$(StandardOutputDir)\Reko.Arch.CompactRisc.*" />
     <Architectures Include="$(SolutionDir)Arch\Cray\bin\$(StandardOutputDir)\Reko.Arch.Cray.*" />
     <Architectures Include="$(SolutionDir)Arch\H8\bin\$(StandardOutputDir)\Reko.Arch.H8.*" />

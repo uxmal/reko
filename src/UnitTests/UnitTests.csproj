@@ -20,6 +20,7 @@
     <ProjectReference Include="..\Arch\Arm\Arm.csproj" />
     <ProjectReference Include="..\Arch\Avr\Avr.csproj" />
     <ProjectReference Include="..\Arch\Blackfin\Blackfin.csproj" />
+    <ProjectReference Include="..\Arch\C166\C166.csproj" />
     <ProjectReference Include="..\Arch\Cil\Cil.csproj" />
     <ProjectReference Include="..\Arch\CompactRisc\CompactRisc.csproj" />
     <ProjectReference Include="..\Arch\Cray\Cray.csproj" />

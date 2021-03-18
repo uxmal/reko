@@ -17,6 +17,7 @@
         <var id="var.Arm.TargetPath" >../Arch/Arm/$TargetDir$/Reko.Arch.Arm.dll</var>
         <var id="var.Avr.TargetPath" >../Arch/Avr/$TargetDir$/Reko.Arch.Avr.dll</var>
         <var id="var.Blackfin.TargetPath" >../Arch/Blackfin/$TargetDir$/Reko.Arch.Blackfin.dll</var>
+        <var id="var.C166.TargetPath" >../Arch/CompactRisc/$TargetDir$/Reko.Arch.C166.dll</var>
         <var id="var.CompactRisc.TargetPath" >../Arch/CompactRisc/$TargetDir$/Reko.Arch.CompactRisc.dll</var>
         <var id="var.Cray.TargetPath" >../Arch/Cray/$TargetDir$/Reko.Arch.Cray.dll</var>
         <var id="var.H8.TargetPath" >../Arch/H8/$TargetDir$/Reko.Arch.H8.dll</var>
