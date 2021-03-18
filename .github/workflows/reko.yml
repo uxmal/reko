@@ -2,7 +2,7 @@ name: Reko
 
 on:
   push:
-    branches: [ master, net5.0 ]
+    branches: [ master, net5.0, msbuildify ]
   pull_request:
     branches: [ master, net5.0 ]
 

@@ -145,6 +145,7 @@
         <File Source="$(var.MzExe.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Nro.TargetPath)" nuget_target="f:" />
         <File Source="$(var.OdbgScript.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.Pef.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Srec.TargetPath)" nuget_target="f:" />
         <File Source="$(var.TekHex.TargetPath)" nuget_target="f:" />
         <File Source="$(var.VmsExe.TargetPath)" nuget_target="f:" />
