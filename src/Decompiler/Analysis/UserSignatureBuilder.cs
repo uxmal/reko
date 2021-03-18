@@ -63,7 +63,7 @@ namespace Reko.Analysis
 
         public void BuildSignature(Address addr, Procedure proc)
         {
-            if (program.User.Procedures.TryGetValue(addr, out Procedure_v1 userProc))
+            if (program.User.Procedures.TryGetValue(addr, out var userProc))
             {
                 var sProc = DeserializeSignature(userProc, proc);
                 if (sProc != null)
@@ -81,7 +81,7 @@ namespace Reko.Analysis
             }
         }
 
-        public ProcedureBase_v1? DeserializeSignature(Procedure_v1 userProc, Procedure proc)
+        public ProcedureBase_v1? DeserializeSignature(UserProcedure userProc, Procedure proc)
         {
             if (!string.IsNullOrEmpty(userProc.CSignature))
             {

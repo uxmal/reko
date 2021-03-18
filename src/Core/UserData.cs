@@ -34,9 +34,9 @@ namespace Reko.Core
     {
         public UserData()
         {
-            this.Procedures = new SortedList<Address, Serialization.Procedure_v1>();
+            this.Procedures = new SortedList<Address, UserProcedure>();
             this.Calls = new SortedList<Address, UserCallData>();
-            this.Globals = new SortedList<Address, Serialization.GlobalDataItem_v2>();
+            this.Globals = new SortedList<Address, UserGlobal>();
             this.Heuristics = new SortedSet<string>();
             this.IndirectJumps = new SortedList<Address, UserIndirectJump>();
             this.JumpTables = new SortedList<Address, ImageMapVectorTable>();
@@ -55,9 +55,9 @@ namespace Reko.Core
         public string? Processor { get; set; }
         public string? Environment { get; set; }
         public Address? LoadAddress { get; set; }
-        public SortedList<Address, Serialization.Procedure_v1> Procedures { get; set; }
+        public SortedList<Address, UserProcedure> Procedures { get; set; }
         public SortedList<Address, UserCallData> Calls { get; set; }
-        public SortedList<Address, Serialization.GlobalDataItem_v2> Globals { get; set; }
+        public SortedList<Address, UserGlobal> Globals { get; set; }
         public SortedList<Address, UserIndirectJump> IndirectJumps { get; set; }
         public SortedList<Address, ImageMapVectorTable> JumpTables { get; set; }
         public AnnotationList Annotations { get; set; }

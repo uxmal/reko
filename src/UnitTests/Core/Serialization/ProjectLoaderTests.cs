@@ -89,6 +89,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             this.oe = new Mock<PlatformDefinition>();
             this.platform = new Mock<IPlatform>();
+            this.platform.Setup(a => a.Name).Returns("testOS");
             this.cfgSvc.Setup(c => c.GetEnvironment("testOS")).Returns(oe.Object);
             oe.Setup(e => e.Load(sc, It.IsAny<IProcessorArchitecture>())).Returns(platform.Object);
             this.platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
@@ -121,6 +122,14 @@ namespace Reko.UnitTests.Core.Serialization
                     Platform = platform,
                     Architecture = arch.Object
                 });
+        }
+
+        private void Expect_Arch_ParseAddress(string sExp, Address result)
+        {
+            arch.Setup(a => a.TryParseAddress(
+                sExp,
+                out result))
+                .Returns(true);
         }
 
         public class TestPlatform : Platform
@@ -399,14 +408,18 @@ namespace Reko.UnitTests.Core.Serialization
                 Address.Ptr32(0x00123400),
                 project.Programs[0].User.LoadAddress);
         }
-       
+
         [Test]
         public void Prld_LoadGlobalUserData()
         {
+            Given_TestArch();
+            Given_TestOS();
+            Expect_Arch_ParseAddress("10000010", Address.Ptr32(0x10000010));
+
             var sproject = new Project_v4
             {
-                ArchitectureName = "testArch",
-                PlatformName = "testOS",
+                ArchitectureName = arch.Object.Name,
+                PlatformName = platform.Object.Name,
                 InputFiles =
                 {
                     new DecompilerInput_v4
@@ -436,8 +449,6 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             };
             var ldr = mockFactory.CreateLoader();
-            Given_TestArch();
-            Given_TestOS();
 
             var prld = new ProjectLoader(sc, ldr, listener.Object);
             var project = prld.LoadProject(
@@ -447,7 +458,7 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual(1, project.Programs.Count);
             Assert.AreEqual(1, project.Programs[0].User.Globals.Count);
             var globalVariable = project.Programs[0].User.Globals.Values[0];
-            Assert.AreEqual("10000010", globalVariable.Address);
+            Assert.AreEqual("10000010", globalVariable.Address.ToString());
             Assert.AreEqual("testVar", globalVariable.Name);
             Assert.AreEqual("arr(Blob,10)", globalVariable.DataType.ToString());
         }

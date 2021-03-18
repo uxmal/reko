@@ -228,7 +228,7 @@ test_exit:
             var arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32",  new Dictionary<string, object>());
             var pb = new ProgramBuilder(arch);
             var test = pb.Add(
-                new Procedure_v1
+                new UserProcedure(pb.NextAddress(), "test")
                 {
                     CSignature = "void test(int a, int b)"
                 },

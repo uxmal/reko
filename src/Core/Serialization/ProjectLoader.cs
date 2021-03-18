@@ -332,9 +332,9 @@ namespace Reko.Core.Serialization
             if (sUser.Procedures != null)
             {
                 user.Procedures = sUser.Procedures
-                    .Select(sup => LoadUserProcedure_v1(program, sup))
-                    .Where(kv => !(kv.Key is null))
-                    .ToSortedList(kv => kv.Key, kv => kv.Value);
+                    .Select(sup => LoadUserProcedure(program, sup))
+                    .Where(sup => sup != null)
+                    .ToSortedList(k => k!.Address, v => v);
                 user.ProcedureSourceFiles = user.Procedures
                     .Where(kv => !string.IsNullOrEmpty(kv.Value.OutputFile))
                     .ToDictionary(kv => kv.Key!, kv => ConvertToAbsolutePath(projectFilePath, kv.Value.OutputFile)!);
@@ -342,17 +342,10 @@ namespace Reko.Core.Serialization
             if (sUser.GlobalData != null)
             {
                 user.Globals = sUser.GlobalData
-                    .Select(sud =>
-                    {
-                        program.Architecture.TryParseAddress(sud.Address, out Address addr);
-                        return new KeyValuePair<Address, GlobalDataItem_v2>(
-                            addr,
-                            sud);
-                    })
-                    .Where(kv => !(kv.Key is null))
-                   .ToSortedList(kv => kv.Key, kv => kv.Value);
+                    .Select(c => LoadUserGlobal(c))
+                    .Where(c => c != null && !(c.Address is null))
+                    .ToSortedList(k => k!.Address!, v => v!);
             }
-          
             if (sUser.Annotations != null)
             {
                 user.Annotations = new AnnotationList(sUser.Annotations
@@ -489,6 +482,32 @@ namespace Reko.Core.Serialization
             return new ImageMapVectorTable(addr, listAddrDst.ToArray(), 0);
         }
 
+        private UserGlobal? LoadUserGlobal(GlobalDataItem_v2 sGlobal)
+        {
+            if (!arch.TryParseAddress(sGlobal.Address, out var address))
+                return null; // TODO: Emit warning?
+
+            if (sGlobal.DataType == null)
+                throw new ArgumentException("Missing required field DataType");
+
+            string name = GlobalNameOrDefault(sGlobal, address);
+
+            var ug = new UserGlobal(address, name, sGlobal.DataType!)
+            {
+                Comment = sGlobal.Comment,
+            };
+
+            return ug;
+        }
+
+        private string GlobalNameOrDefault(GlobalDataItem_v2 sGlobal, Address address)
+        {
+            if (!string.IsNullOrWhiteSpace(sGlobal.Name))
+                return sGlobal.Name;
+
+            return UserGlobal.GenerateDefaultName(address);
+        }
+
         private UserCallData? LoadUserCall(SerializedCall_v1 call, Program program)
         {
             if (!program.Platform.TryParseAddress(call.InstructionAddress, out Address addr))
@@ -583,11 +602,13 @@ namespace Reko.Core.Serialization
             return mode;
         }
 
-        private KeyValuePair<Address, Procedure_v1> LoadUserProcedure_v1(
+        private UserProcedure? LoadUserProcedure(
             Program program,
             Procedure_v1 sup)
         {
-            program.Architecture.TryParseAddress(sup.Address, out Address addr);
+            if (!program.Architecture.TryParseAddress(sup.Address, out Address addr))
+                return null;
+
             if (!sup.Decompile && sup.Signature == null && string.IsNullOrEmpty(sup.CSignature))
             {
                 listener.Warn(
@@ -596,7 +617,21 @@ namespace Reko.Core.Serialization
                     "has not been specified.",
                     sup.Name ?? "<unnamed>");
             }
-            return new KeyValuePair<Address, Procedure_v1>(addr, sup);
+
+            string name = sup.Name ?? NamingPolicy.Instance.ProcedureName(addr);
+
+            var up = new UserProcedure(addr, name)
+            {
+                Ordinal = sup.Ordinal,
+                Signature = sup.Signature,
+                Characteristics = sup.Characteristics ?? new ProcedureCharacteristics(),
+                Decompile = sup.Decompile,
+                Assume = sup.Assume?.ToList() ?? new List<RegisterValue_v2>(),
+                CSignature = sup.CSignature,
+                OutputFile = sup.OutputFile
+            };
+
+            return up;
         }
 
         public MetadataFile VisitMetadataFile(string projectFilePath, MetadataFile_v3 sMetadata)

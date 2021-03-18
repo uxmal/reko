@@ -55,7 +55,8 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_UserSignature(uint address, string str)
         {
-            program.User.Procedures.Add(Address.Ptr32(address), new Procedure_v1
+            var addr = Address.Ptr32(address);
+            program.User.Procedures.Add(addr, new UserProcedure(addr, NamingPolicy.Instance.ProcedureName(addr))
             {
                  CSignature = str
             });
@@ -63,12 +64,8 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_UserName(uint address, string name)
         {
-            program.User.Procedures.Add(
-                Address.Ptr32(address),
-                new Procedure_v1
-            {
-                Name = name
-            });
+            var addr = Address.Ptr32(address);
+            program.User.Procedures.Add(addr, new UserProcedure(addr, name));
         }
 
         private void Given_UserProcDecompileFlag(uint address, bool decompile)

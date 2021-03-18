@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Mocks
 
 		public Program Program { get; set; }
 
-        public void Add(Procedure proc, Procedure_v1 userProc = null)
+        public void Add(Procedure proc, UserProcedure? userProc = null)
         {
             ++procCount;
             var addr = Address.Ptr32(procCount * 0x1000u);
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Mocks
             }
         }
 
-        private string GuessName(Procedure_v1 userProc, Procedure proc = null)
+        private string GuessName(UserProcedure? userProc, Procedure proc = null)
         {
             if (userProc != null)
             {
@@ -115,16 +115,18 @@ namespace Reko.UnitTests.Mocks
             unresolvedProcedures.AddRange(mock.UnresolvedProcedures);
         }
 
+        public Address NextAddress() => Address.Ptr32((procCount + 1) * 0x1000u);
+
         public Procedure Add(string procName, Action<ProcedureBuilder> testCodeBuilder)
         {
-            return Add(new Procedure_v1 { Name = procName }, testCodeBuilder);
+            return Add(new UserProcedure(NextAddress(), procName), testCodeBuilder);
         }
 
-        public Procedure Add(Procedure_v1 userProc, Action<ProcedureBuilder> testCodeBuilder)
+        public Procedure Add(UserProcedure userProc, Action<ProcedureBuilder> testCodeBuilder)
         {
             var mock = new ProcedureBuilder(Program.Architecture, GuessName(userProc));
             mock.ProgramBuilder = this;
-            mock.LinearAddress = (uint)((procCount + 1) * 0x1000);
+            mock.LinearAddress = (uint)userProc.Address.ToLinear();
             testCodeBuilder(mock);
             Add(mock.Procedure, userProc);
             unresolvedProcedures.AddRange(mock.UnresolvedProcedures);

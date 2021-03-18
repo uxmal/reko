@@ -96,8 +96,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             if (address == null)
                 return null;
-            Procedure_v1 uProc;
-            if (program.User.Procedures.TryGetValue(address, out uProc))
+            if (program.User.Procedures.TryGetValue(address, out var uProc))
             {
                 if (!string.IsNullOrEmpty(uProc.CSignature))
                     return uProc.CSignature;

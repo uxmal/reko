@@ -73,7 +73,7 @@ namespace Reko.Core.Serialization
                 {
                     Loader = program.User.Loader,
                     Procedures = program.User.Procedures
-                        .Select(de => { de.Value.Address = de.Key.ToString(); return de.Value; })
+                        .Select(up => SerializeUserProcedure(up.Value))
                         .ToList(),
                     Processor = SerializeProcessorOptions(program.User, program.Architecture),
                     PlatformOptions = SerializePlatformOptions(program.User, program.Platform),
@@ -85,14 +85,7 @@ namespace Reko.Core.Serialization
                         .ToList(),
                     IndirectJumps = program.User.IndirectJumps.Select(SerializeIndirectJump).ToList(),
                     JumpTables = program.User.JumpTables.Select(SerializeJumpTable).ToList(),
-                    GlobalData = program.User.Globals
-                        .Select(de => new GlobalDataItem_v2
-                        {
-                            Address = de.Key.ToString(),
-                            DataType = de.Value.DataType,
-                            Name = GlobalName(de),
-                        })
-                        .ToList(),
+                    GlobalData = program.User.Globals.Select(i => SerializeGlobal(i.Value)).ToList(),
                     OnLoadedScript = program.User.OnLoadedScript,
                     Heuristics = program.User.Heuristics
                         .Select(h => new Heuristic_v3 { Name = h }).ToList(),
@@ -110,6 +103,32 @@ namespace Reko.Core.Serialization
                 IncludeDirectory =      ConvertToProjectRelativePath(projectAbsPath, program.IncludeDirectory),
                 ResourcesDirectory =    ConvertToProjectRelativePath(projectAbsPath, program.ResourcesDirectory),
             };
+        }
+
+        private Procedure_v1 SerializeUserProcedure(UserProcedure up)
+        {
+            var sp = new Procedure_v1()
+            {
+                Name = up.Name,
+                Ordinal = up.Ordinal,
+                Signature = up.Signature,
+                Characteristics = SerializeProcedureCharacteristics(up.Characteristics),
+                Address = up.Address.ToString(),
+                Decompile = up.Decompile,
+                Assume = up.Assume.Count != 0 ? up.Assume.ToArray() : null,
+                CSignature = up.CSignature,
+                OutputFile = up.OutputFile,
+            };
+
+            return sp;
+        }
+
+        private ProcedureCharacteristics? SerializeProcedureCharacteristics(ProcedureCharacteristics? pc)
+        {
+            if (pc == null || pc.IsDefaultCharactaristics)
+                return null;
+
+            return pc;
         }
 
         private RegisterValue_v2[] SerializeRegisterValues(SortedList<Address, List<UserRegisterValue>> registerValues)
@@ -136,16 +155,6 @@ namespace Reko.Core.Serialization
                 }
             }
             return sRegValues.ToArray();
-        }
-
-        private string GlobalName(KeyValuePair<Address, GlobalDataItem_v2> de)
-        {
-            var name = de.Value.Name;
-            if (string.IsNullOrEmpty(name))
-            {
-                name = string.Format("g_{0:X}", de.Key.ToLinear());
-            }
-            return name!;
         }
 
         private SerializedCall_v1? SerializeUserCall(Program program, UserCallData? uc)
@@ -183,6 +192,17 @@ namespace Reko.Core.Serialization
             {
                 TableAddress = de.Key.ToString(),
                 Destinations = de.Value.Addresses.Select(a => a.ToString()).ToArray(),
+            };
+        }
+
+        private GlobalDataItem_v2 SerializeGlobal(UserGlobal global)
+        {
+            return new GlobalDataItem_v2
+            {
+                Address = global.Address.ToString(),
+                Comment = global.Comment,
+                DataType = global.DataType,
+                Name  = global.Name,
             };
         }
 

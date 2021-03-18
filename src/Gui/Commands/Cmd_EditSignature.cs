@@ -45,19 +45,16 @@ namespace Reko.Gui.Commands
         {
             var dlgFactory = Services.RequireService<IDialogFactory>();
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
-            if (!program.User.Procedures.TryGetValue(address, out Procedure_v1 sProc))
-                sProc = new Procedure_v1
-                {
-                    Name = procedure.Name
-                };
-            using (IProcedureDialog dlg = dlgFactory.CreateProcedureDialog(program, sProc))
+            if (!program.User.Procedures.TryGetValue(address, out var proc))
+                proc = new UserProcedure(address, procedure.Name);
+            using (IProcedureDialog dlg = dlgFactory.CreateProcedureDialog(program, proc))
             {
                 if (DialogResult.OK == uiSvc.ShowModalDialog(dlg))
                 {
                     dlg.ApplyChanges();
-                    program.User.Procedures[address] = sProc;
+                    program.User.Procedures[address] = proc;
                     if (procedure != null)
-                        procedure.Name = sProc.Name!;
+                        procedure.Name = proc.Name;
                 }
             }
         }

@@ -205,9 +205,8 @@ namespace Reko.UnitTests.Core.Serialization
                             {
                                 {
                                     Address.SegPtr(0x1000, 0x10),
-                                    new Procedure_v1
+                                    new UserProcedure(Address.SegPtr(0x1000, 0x10), "foo")
                                     {
-                                        Name = "foo",
                                         Signature = new SerializedSignature
                                         {
                                             ReturnValue = new Argument_v1 { Kind = new Register_v1("eax") },
@@ -232,13 +231,10 @@ namespace Reko.UnitTests.Core.Serialization
                             {
                                 {
                                   Address.SegPtr(0x2000, 0),
-                                  new GlobalDataItem_v2 {
-                                       Address = Address.SegPtr(0x2000, 0).ToString(),
-                                       DataType = new StringType_v2 {
+                                  new UserGlobal(Address.SegPtr(0x2000, 0), "g_20000", new StringType_v2 {
                                            Termination=StringType_v2.ZeroTermination,
                                            CharType = new PrimitiveType_v1 { Domain = Domain.Character, ByteSize = 1 }
-                                       }
-                                  }
+                                       })
                                 }
                             },
                             Calls =
@@ -341,7 +337,7 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual(2, project.Programs.Count);
             var input0 = project.Programs[0];
             Assert.AreEqual(1, input0.User.Globals.Count);
-            Assert.AreEqual("1000:0400", input0.User.Globals.Values[0].Address);
+            Assert.AreEqual("1000:0400", input0.User.Globals.Values[0].Address.ToString());
             var str_t = (StringType_v2)input0.User.Globals.Values[0].DataType;
             Assert.AreEqual("prim(Character,1)", str_t.CharType.ToString());
         }
@@ -704,11 +700,7 @@ namespace Reko.UnitTests.Core.Serialization
                     {
                         {
                             Address.Ptr32(0x01234),
-                            new GlobalDataItem_v2
-                            {
-                                 DataType = PrimitiveType_v1.Real32(),
-                                 Name = "pi"
-                            }
+                            new UserGlobal(Address.Ptr32(0x01234), "pi", PrimitiveType_v1.Real32())
                         }
                     }
                 }

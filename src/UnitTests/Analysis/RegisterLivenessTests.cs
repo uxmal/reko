@@ -40,13 +40,13 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
 	public class RegisterLivenessTests : AnalysisTestBase
 	{
-        private SortedList<Address, Procedure_v1> userSigs;
+        private SortedList<Address, UserProcedure> userSigs;
         private Mock<IDynamicLinker> dynamicLinker;
 
         [SetUp]
         public void Setup()
         {
-            userSigs = new SortedList<Address, Procedure_v1>();
+            userSigs = new SortedList<Address, UserProcedure>();
             this.dynamicLinker = new Mock<IDynamicLinker>();
         }
 
@@ -81,10 +81,8 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_Signature(Address addr, string procName, SerializedSignature ssig)
         {
-            userSigs[addr] = new Procedure_v1
+            userSigs[addr] = new UserProcedure(addr, procName)
             {
-                 Address = addr.ToString(),
-                 Name = procName,
                  Signature = ssig,
             };
         }

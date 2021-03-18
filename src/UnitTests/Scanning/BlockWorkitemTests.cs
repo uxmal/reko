@@ -841,7 +841,7 @@ testProc_exit:
 
             program.User.Procedures.Add(
                 addrCallee,
-                new Procedure_v1
+                new UserProcedure(addrCallee, NamingPolicy.Instance.ProcedureName(addrCallee))
                 {
                     CSignature = "int testFn(char * str, float f)"
                 });

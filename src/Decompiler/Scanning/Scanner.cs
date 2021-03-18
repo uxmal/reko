@@ -365,7 +365,7 @@ namespace Reko.Scanning
             procQueue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, arch, addr, null));
         }
 
-        public Address? EnqueueUserProcedure(IProcessorArchitecture arch, Procedure_v1 sp)
+        public Address? EnqueueUserProcedure(IProcessorArchitecture arch, UserProcedure sp)
         {
             var de = EnsureUserProcedure(arch, sp);
             if (de == null)
@@ -386,15 +386,13 @@ namespace Reko.Scanning
             Program.CallGraph.EntryPoints.Add(proc);
         }
 
-        protected KeyValuePair<Address, Procedure>? EnsureUserProcedure(IProcessorArchitecture arch, Procedure_v1 sp)
+        protected KeyValuePair<Address, Procedure>? EnsureUserProcedure(IProcessorArchitecture arch, UserProcedure sp)
         {
-            if (!Program.Architecture.TryParseAddress(sp.Address, out var addr))
-                return null;
-            if (Program.Procedures.TryGetValue(addr, out var proc))
+            if (Program.Procedures.TryGetValue(sp.Address, out var proc))
                 return null; // Already scanned. Do nothing.
             if (!sp.Decompile)
                 return null;
-            proc = Program.EnsureProcedure(arch, addr, sp.Name);
+            proc = Program.EnsureProcedure(arch, sp.Address, sp.Name);
             if (sp.Signature != null)
             {
                 var sser = Program.CreateProcedureSerializer();
@@ -404,7 +402,7 @@ namespace Reko.Scanning
             {
                 proc.Characteristics = sp.Characteristics;
             }
-            return new KeyValuePair<Address, Procedure>(addr, proc);
+            return new KeyValuePair<Address, Procedure>(sp.Address, proc);
         }
 
         public bool IsBlockLinearProcedureExit(Block block)
@@ -992,7 +990,7 @@ namespace Reko.Scanning
             {
                 if (noDecompiles.Contains(de.Key))
                 {
-                    Program.EnsureUserProcedure(de.Key, de.Value.Name!, false);
+                    Program.EnsureUserProcedure(de.Key, de.Value.Name, false);
                 }
                 else
                 {
