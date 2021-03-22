@@ -310,5 +310,19 @@ namespace Reko.UnitTests.Typing
             var e = tcr.Rewrite(c, null, false);
             Assert.AreEqual("&seg0C00->b0124", e.ToString());
         }
+
+        [Test]
+        public void Tcr_TypelessPointer()
+        {
+            Given_Segment(0xC00, "seg0C00");
+            Given_TypedConstantRewriter();
+            var c = Address.SegPtr(0xC00, 0x200);
+            store.EnsureExpressionTypeVariable(factory, 0, c);
+            c.TypeVariable.DataType = PrimitiveType.SegPtr32;
+            c.TypeVariable.OriginalDataType = PrimitiveType.SegPtr32;
+
+            var e = tcr.Rewrite(c, null, false);
+            Assert.AreEqual("&seg0C00->t0200", e.ToString());
+        }
     }
 }
