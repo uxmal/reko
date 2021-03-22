@@ -46,6 +46,7 @@ namespace Reko.Typing
         private readonly Unifier unifier;
         private bool dereferenced;
         private Expression? basePtr;
+        private Statement? stmCur;
         private readonly DecompilerEventListener eventListener;
 
         public TypedExpressionRewriter(Program program, DecompilerEventListener eventListener)
@@ -71,6 +72,7 @@ namespace Reko.Typing
                         return;
                     try
                     {
+                        stmCur = stm;
                         stm.Instruction = stm.Instruction.Accept(this);
                     }
                     catch (Exception ex)
@@ -252,7 +254,7 @@ namespace Reko.Typing
             else if (binOp == Operator.Shr)
                 binOp = Operator.Sar;
             binExp = new BinaryExpression(binOp, binExp.DataType, left, right) { TypeVariable = binExp.TypeVariable };
-            program.TypeStore.SetTypeVariableExpression(binExp.TypeVariable!, binExp);
+            program.TypeStore.SetTypeVariableExpression(binExp.TypeVariable!, 0, binExp);
             return binExp;
         }
 
@@ -371,7 +373,10 @@ namespace Reko.Typing
         {
             var uNew = base.VisitUnaryExpression(unary);
             uNew.TypeVariable = unary.TypeVariable;
-            program.TypeStore.SetTypeVariableExpression(unary.TypeVariable!, uNew);
+            ulong uAddr = stmCur != null
+                ? stmCur.LinearAddress
+                : 0;
+            program.TypeStore.SetTypeVariableExpression(unary.TypeVariable!, uAddr, uNew);
             return uNew;
         }
     }

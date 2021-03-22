@@ -5,10 +5,10 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
-	globals_t (in globals : (ptr64 (struct "Globals")))
+	globals_t (in globals @ 00000000 : (ptr64 (struct "Globals")))
 Eq_16: (fn void ())
-	T_16 (in bar : ptr64)
-	T_17 (in signature of bar : void)
+	T_16 (in bar @ 00000FA6 : ptr64)
+	T_17 (in signature of bar @ 00000FB4 : void)
 // Type Variables ////////////
 globals_t: (in globals : (ptr64 (struct "Globals")))
   Class: Eq_1

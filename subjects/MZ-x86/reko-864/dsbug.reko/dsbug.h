@@ -5,11 +5,11 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (104C0 uint16 theGlobal))
-	globals_t (in globals : (ptr32 (struct "Globals")))
+	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
 Eq_2: (segment "seg1000_t")
-	T_2 (in seg1000 : selector)
+	T_2 (in seg1000 @ 00010000 : selector)
 Eq_3: (segment "seg1046_t" (60 uint16 theGlobal))
-	T_3 (in seg1046 : selector)
+	T_3 (in seg1046 @ 00010460 : selector)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1

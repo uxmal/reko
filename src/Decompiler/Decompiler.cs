@@ -523,7 +523,7 @@ namespace Reko
         public void WriteDecompiledTypes(Program program, string headerFilename, TextWriter w)
         {
             WriteHeaderComment(headerFilename, program, w);
-            w.WriteLine("/*"); program.TypeStore.Write(w); w.WriteLine("*/");
+            w.WriteLine("/*"); program.TypeStore.Write(true, w); w.WriteLine("*/");
             var tf = new TextFormatter(w)
             {
                 Indentation = 0,

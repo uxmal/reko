@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Typing
 
         private TypeVariable CreateTv(Expression e, DataType dt, DataType dtOrig)
         {
-            TypeVariable tv = store.EnsureExpressionTypeVariable(factory, e);
+            TypeVariable tv = store.EnsureExpressionTypeVariable(factory, 0, e);
             tv.DataType = dt;
             tv.OriginalDataType = dtOrig;
             e.TypeVariable = tv;

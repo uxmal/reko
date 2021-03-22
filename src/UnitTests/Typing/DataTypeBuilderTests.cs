@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Typing
                         fut.TextWriter.WriteLine();
                     }
                 }
-                store.Write(fut.TextWriter);
+                store.Write(false, fut.TextWriter);
                 fut.AssertFilesEqual();
             }
         }
@@ -384,7 +384,7 @@ namespace Reko.UnitTests.Typing
                 Architecture = arch,
                 Platform = new DefaultPlatform(sc, arch)
             };
-            store.EnsureExpressionTypeVariable(factory, program.Globals);
+            store.EnsureExpressionTypeVariable(factory, 0, program.Globals);
 
             Identifier ds = m.Local16("ds");
             Expression e = m.SegMem(PrimitiveType.Byte, ds, m.Word16(0x0200));

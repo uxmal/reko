@@ -5,16 +5,16 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (10072000 (str char) str10072000) (10072008 (str char) str10072008) (10072010 (str char) str10072010) (10072014 (str char) str10072014) (10072018 (str char) str10072018))
-	globals_t (in globals : (ptr32 (struct "Globals")))
+	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
 Eq_14: BOOL
-	T_14 (in eax : Eq_14)
-	T_18 (in 1<32> : word32)
+	T_14 (in eax @ 10071028 : Eq_14)
+	T_18 (in 1<32> @ 10071085 : word32)
 Eq_15: HANDLE
-	T_15 (in hModule : Eq_15)
+	T_15 (in hModule @ 10071028 : Eq_15)
 Eq_16: DWORD
-	T_16 (in dwReason : Eq_16)
+	T_16 (in dwReason @ 10071028 : Eq_16)
 Eq_17: LPVOID
-	T_17 (in lpReserved : Eq_17)
+	T_17 (in lpReserved @ 10071028 : Eq_17)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1

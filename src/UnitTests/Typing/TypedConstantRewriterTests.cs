@@ -56,12 +56,12 @@ namespace Reko.UnitTests.Typing
             store = program.TypeStore;
             factory = program.TypeFactory;
             globals = program.Globals;
-			store.EnsureExpressionTypeVariable(factory, globals);
+			store.EnsureExpressionTypeVariable(factory, 0, globals);
 
 			StructureType s = new StructureType(null, 0);
 			s.Fields.Add(0x00100000, PrimitiveType.Word32, null);
 
-			TypeVariable tvGlobals = store.EnsureExpressionTypeVariable(factory, globals);
+			TypeVariable tvGlobals = store.EnsureExpressionTypeVariable(factory, 0, globals);
 			EquivalenceClass eqGlobals = new EquivalenceClass(tvGlobals);
 			eqGlobals.DataType = s;
             var globalsPtr = new Pointer(eqGlobals, 32);
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Typing
             seg.Identifier = new Identifier(name, PrimitiveType.SegmentSelector, RegisterStorage.None);
             program.SegmentMap.AddSegment(seg);
 
-            var tv = store.EnsureExpressionTypeVariable(factory, seg.Identifier);
+            var tv = store.EnsureExpressionTypeVariable(factory, 0, seg.Identifier);
             var dt = new StructureType
             {
                 IsSegment = true,
@@ -102,7 +102,7 @@ namespace Reko.UnitTests.Typing
 		{
             Given_TypedConstantRewriter();
 			Constant c = Constant.Word32(0x0131230);
-			store.EnsureExpressionTypeVariable(factory, c);
+			store.EnsureExpressionTypeVariable(factory, 0, c);
 			c.TypeVariable.DataType = PrimitiveType.Word32;
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
 			Expression e = tcr.Rewrite(c, null, false);
@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Typing
 		{
             Given_TypedConstantRewriter();
             Constant c = Constant.Word32(0x3F800000);
-			store.EnsureExpressionTypeVariable(factory, c);
+			store.EnsureExpressionTypeVariable(factory, 0, c);
 			c.TypeVariable.DataType = PrimitiveType.Real32;
 			c.TypeVariable.OriginalDataType = c.DataType;
 			Expression e = tcr.Rewrite(c, null, false);
@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Typing
 		{
             Given_TypedConstantRewriter();
             Constant c = Constant.Word32(0x00100000);
-			store.EnsureExpressionTypeVariable(factory, c);
+			store.EnsureExpressionTypeVariable(factory, 0, c);
 			c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
 			Expression e = tcr.Rewrite(c, null, false);
@@ -138,7 +138,7 @@ namespace Reko.UnitTests.Typing
         {
             Given_TypedConstantRewriter();
             Constant c = Constant.Word32(0x00000000);
-            store.EnsureExpressionTypeVariable(factory, c);
+            store.EnsureExpressionTypeVariable(factory, 0, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
             Expression e = tcr.Rewrite(c, null, false);
@@ -150,7 +150,7 @@ namespace Reko.UnitTests.Typing
         {
             Given_TypedConstantRewriter();
             Constant c = Constant.Word32(0xFFFFFFFF);
-            store.EnsureExpressionTypeVariable(factory, c);
+            store.EnsureExpressionTypeVariable(factory, 0, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
             Expression e = tcr.Rewrite(c, null, false);
@@ -171,7 +171,7 @@ namespace Reko.UnitTests.Typing
             };
             Given_Global(0x00100100, str);
             var c = Constant.Word32(0x00100104);
-            store.EnsureExpressionTypeVariable(factory, c);
+            store.EnsureExpressionTypeVariable(factory, 0, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
             var e = tcr.Rewrite(c, null, false);
@@ -192,7 +192,7 @@ namespace Reko.UnitTests.Typing
             };
             Given_Global(0x00100100, str);
             var c = Constant.Word32(0x00100100);
-            store.EnsureExpressionTypeVariable(factory, c);
+            store.EnsureExpressionTypeVariable(factory, 0, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
             var e = tcr.Rewrite(c, null, true);
@@ -232,7 +232,7 @@ namespace Reko.UnitTests.Typing
             Given_String("Hello", 0x00100000);
             Given_Readonly_Segment();
             var c = Constant.Word32(0x00100000);
-            store.EnsureExpressionTypeVariable(factory, c);
+            store.EnsureExpressionTypeVariable(factory, 0, c);
             var charPtr = new Pointer(PrimitiveType.Char, 32);
             c.TypeVariable.DataType = charPtr;
             c.TypeVariable.OriginalDataType = charPtr;
@@ -254,7 +254,7 @@ namespace Reko.UnitTests.Typing
             Given_String("Hello", 0x00100000);
             Given_Readonly_Segment();
             var c = Constant.Word32(0x00100000);
-            store.EnsureExpressionTypeVariable(factory, c);
+            store.EnsureExpressionTypeVariable(factory, 0, c);
             var arrayCharPtr = new Pointer(new ArrayType(PrimitiveType.Char, 32), 6);
             c.TypeVariable.DataType = arrayCharPtr;
             c.TypeVariable.OriginalDataType = arrayCharPtr;
@@ -273,7 +273,7 @@ namespace Reko.UnitTests.Typing
             Given_String("Hello", 0x00100000);
             Given_Writeable_Segment(".rdata", 0x00100000, 0x20);
             var c = Constant.Word32(0x00100000);
-            store.EnsureExpressionTypeVariable(factory, c);
+            store.EnsureExpressionTypeVariable(factory, 0, c);
             var charPtr = new Pointer(PrimitiveType.Char, 32);
             c.TypeVariable.DataType = charPtr;
             c.TypeVariable.OriginalDataType = charPtr;
@@ -288,7 +288,7 @@ namespace Reko.UnitTests.Typing
             Given_Global(0x00000000, new ArrayType(PrimitiveType.Real32, 16));
             Given_Global(0x00000040, PrimitiveType.Word16);
             var c = Constant.Word32(0x00100040);
-            store.EnsureExpressionTypeVariable(factory, c);
+            store.EnsureExpressionTypeVariable(factory, 0, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Real32, 32);
             c.TypeVariable.OriginalDataType = new Pointer(PrimitiveType.Real32, 32);
 
@@ -303,7 +303,7 @@ namespace Reko.UnitTests.Typing
             Given_TypedConstantRewriter();
 
             var c = Address.SegPtr(0xC00, 0x0124);
-            store.EnsureExpressionTypeVariable(factory, c);
+            store.EnsureExpressionTypeVariable(factory, 0, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Char, 32);
             c.TypeVariable.OriginalDataType = new Pointer(PrimitiveType.Char, 32);
 

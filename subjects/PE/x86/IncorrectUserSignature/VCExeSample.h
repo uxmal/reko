@@ -5,23 +5,23 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (402000 (ptr32 code) __imp__UnhandledExceptionFilter) (402004 (ptr32 code) __imp__GetCurrentProcess) (402008 (ptr32 code) __imp__TerminateProcess) (40200C (ptr32 code) __imp__GetSystemTimeAsFileTime) (402010 (ptr32 code) __imp__GetCurrentProcessId) (402014 (ptr32 code) __imp__GetCurrentThreadId) (402018 (ptr32 code) __imp__GetTickCount) (40201C (ptr32 code) __imp__QueryPerformanceCounter) (402020 (ptr32 code) __imp__SetUnhandledExceptionFilter) (402024 (ptr32 code) __imp__InterlockedCompareExchange) (402028 (ptr32 code) __imp__Sleep) (40202C (ptr32 code) __imp__InterlockedExchange) (402030 (ptr32 code) __imp__IsDebuggerPresent) (402038 (ptr32 code) __imp____p__fmode) (40203C (ptr32 code) __imp___encode_pointer) (402040 (ptr32 code) __imp____set_app_type) (402044 (ptr32 code) __imp__?terminate@@YAXXZ) (402048 (ptr32 code) __imp___unlock) (40204C (ptr32 code) __imp____p__commode) (402050 (ptr32 code) __imp___lock) (402054 (ptr32 code) __imp___onexit) (402058 (ptr32 code) __imp___decode_pointer) (40205C (ptr32 code) __imp___except_handler4_common) (402060 (ptr32 code) __imp___invoke_watson) (402064 (ptr32 code) __imp___controlfp_s) (402068 (ptr32 code) __imp___crt_debugger_hook) (40206C (ptr32 code) __imp___adjust_fdiv) (402070 (ptr32 code) __imp____setusermatherr) (402074 (ptr32 code) __imp___configthreadlocale) (402078 (ptr32 code) __imp___initterm_e) (40207C (ptr32 code) __imp___initterm) (402080 (ptr32 code) __imp____initenv) (402084 (ptr32 code) __imp__exit) (402088 (ptr32 code) __imp___XcptFilter) (40208C (ptr32 code) __imp___exit) (402090 (ptr32 code) __imp___cexit) (402094 (ptr32 code) __imp____getmainargs) (402098 (ptr32 code) __imp___amsg_exit) (40209C (ptr32 code) __imp____dllonexit) (4020A0 (ptr32 code) __imp__printf) (402210 word32 dw402210) (402214 word32 dw402214) (402218 word32 dw402218) (40221C word32 dw40221C) (402220 word32 dw402220) (402224 word32 dw402224) (402228 word32 dw402228) (40222C word32 dw40222C) (402230 word32 dw402230) (402234 word32 dw402234) (402238 word32 dw402238) (40223C word32 dw40223C) (402240 word32 dw402240) (402248 word32 dw402248) (40224C word32 dw40224C) (402250 word32 dw402250) (402254 word32 dw402254) (402258 word32 dw402258) (40225C word32 dw40225C) (402260 word32 dw402260) (402264 word32 dw402264) (402268 word32 dw402268) (40226C word32 dw40226C) (402270 word32 dw402270) (402274 word32 dw402274) (402278 word32 dw402278) (40227C word32 dw40227C) (402280 word32 dw402280) (402284 word32 dw402284) (402288 word32 dw402288) (40228C word32 dw40228C) (402290 word32 dw402290) (402294 word32 dw402294) (402298 word32 dw402298) (40229C word32 dw40229C) (4022A0 word32 dw4022A0) (4022A4 word32 dw4022A4) (4022A8 word32 dw4022A8) (4022AC word32 dw4022AC) (4022B0 word32 dw4022B0))
-	globals_t (in globals : (ptr32 (struct "Globals")))
+	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
 Eq_2: cdecl_class
-	T_2 (in c : (ptr32 Eq_2))
+	T_2 (in c @ 00000000 : (ptr32 Eq_2))
 Eq_5: cdecl_class
-	T_5 (in c : (ptr32 cdecl_class))
+	T_5 (in c @ 00401138 : (ptr32 cdecl_class))
 Eq_7: cdecl_class_vtbl
-	T_7 (in c + 0<32> : word32)
+	T_7 (in c + 0<32> @ 00401138 : word32)
 Eq_8: cdecl_class_vtbl
-	T_8 (in Mem19[c + 0<32>:word32] : word32)
+	T_8 (in Mem19[c + 0<32>:word32] @ 00401138 : word32)
 Eq_10: (fn void ((ptr32 cdecl_class), int32, int32))
-	T_10 (in Mem19[c + 0<32>:word32] + 8<32> : word32)
+	T_10 (in Mem19[c + 0<32>:word32] + 8<32> @ 00401138 : word32)
 Eq_11: (fn void ((ptr32 cdecl_class), int32, int32))
-	T_11 (in Mem19[Mem19[c + 0<32>:word32] + 8<32>:word32] : word32)
+	T_11 (in Mem19[Mem19[c + 0<32>:word32] + 8<32>:word32] @ 00401138 : word32)
 Eq_19: (struct "Eq_19" (4 (ptr32 Eq_22) ptr0004))
-	T_19 (in Mem37[c + 0<32>:word32] : word32)
+	T_19 (in Mem37[c + 0<32>:word32] @ 00401150 : word32)
 Eq_22: (fn void ((ptr32 Eq_5), word32))
-	T_22 (in Mem37[Mem37[c + 0<32>:word32] + 4<32>:word32] : word32)
+	T_22 (in Mem37[Mem37[c + 0<32>:word32] + 4<32>:word32] @ 00401150 : word32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1

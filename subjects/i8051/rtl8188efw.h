@@ -5,11 +5,11 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
-	globals_t (in globals : (ptr16 (struct "Globals")))
+	globals_t (in globals @ 00000000 : (ptr16 (struct "Globals")))
 Eq_3: (segment "Eq_3" (1D byte b001D) (80F0 byte b80F0))
-	T_3 (in __data : (ptr16 Eq_3))
+	T_3 (in __data @ 00000000 : (ptr16 Eq_3))
 Eq_11: (segment "Eq_11" (157 byte b0157) (80EA bcu8 b80EA))
-	T_11 (in __data_23 : (ptr16 Eq_11))
+	T_11 (in __data_23 @ 00000797 : (ptr16 Eq_11))
 // Type Variables ////////////
 globals_t: (in globals : (ptr16 (struct "Globals")))
   Class: Eq_1

@@ -5,7 +5,7 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
-	globals_t (in globals : (ptr32 (struct "Globals")))
+	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1

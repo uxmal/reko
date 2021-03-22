@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2021 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Typing
 			foreach (KeyValuePair<TypeVariable,List<Trait>> de in items)
 			{
                 tw.Write(de.Key);
-                store.WriteExpressionOf(de.Key, formatter);
+                store.WriteExpressionOf(de.Key, false, writer: formatter);
                 tw.WriteLine();
 				foreach (Trait tr in de.Value)
 				{

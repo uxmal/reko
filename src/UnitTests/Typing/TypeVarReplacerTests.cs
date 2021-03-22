@@ -93,7 +93,7 @@ namespace Reko.UnitTests.Typing
 			store.CopyClassDataTypesToTypeVariables();
 			using (FileUnitTester fut = new FileUnitTester(outputFilename))
 			{
-				store.Write(fut.TextWriter);
+				store.Write(false, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}

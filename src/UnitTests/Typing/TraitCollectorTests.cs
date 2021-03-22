@@ -233,7 +233,7 @@ namespace Reko.UnitTests.Typing
 		public void TrcoSegmentedDirectAddress()
 		{
             Program program = CreateProgram();
-			program.TypeStore.EnsureExpressionTypeVariable(program.TypeFactory, program.Globals);
+			program.TypeStore.EnsureExpressionTypeVariable(program.TypeFactory, 0, program.Globals);
 
             ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local16("ds");
