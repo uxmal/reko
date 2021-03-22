@@ -11,27 +11,27 @@ Eq_2: (segment "seg1000_t")
 Eq_3: (segment "seg1046_t" (60 uint16 theGlobal))
 	T_3 (in seg1046 @ 00010460 : selector)
 // Type Variables ////////////
-globals_t: (in globals : (ptr32 (struct "Globals")))
+globals_t: (in globals @ 00000000 : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in seg1000 : selector)
+T_2: (in seg1000 @ 00010000 : selector)
   Class: Eq_2
   DataType: (ptr16 Eq_2)
   OrigDataType: (ptr16 (segment "seg1000_t"))
-T_3: (in seg1046 : selector)
+T_3: (in seg1046 @ 00010460 : selector)
   Class: Eq_3
   DataType: (ptr16 Eq_3)
   OrigDataType: (ptr16 (segment "seg1046_t"))
-T_4: (in 0x1337<16> : word16)
+T_4: (in 0x1337<16> @ 00010007 : word16)
   Class: Eq_4
   DataType: uint16
   OrigDataType: word16
-T_5: (in 1046:0060 : segptr32)
+T_5: (in 1046:0060 @ 00010007 : segptr32)
   Class: Eq_5
   DataType: (ptr32 uint16)
   OrigDataType: (ptr32 (struct (0 uint16 w0000)))
-T_6: (in Mem5[1046:0060:word16] : word16)
+T_6: (in Mem5[1046:0060:word16] @ 00010007 : word16)
   Class: Eq_4
   DataType: uint16
   OrigDataType: uint16
