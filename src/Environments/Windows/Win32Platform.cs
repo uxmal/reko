@@ -288,8 +288,7 @@ namespace Reko.Environments.Windows
             }
             else
             {
-                FunctionType sig;
-                if (!Metadata.Signatures.TryGetValue(procName, out sig))
+                if (!Metadata.Signatures.TryGetValue(procName, out FunctionType sig))
                     return null;
                 var chr = LookupCharacteristicsByName(procName);
                 return new ExternalProcedure(procName, sig, chr);

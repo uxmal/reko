@@ -98,6 +98,7 @@
 <file src="../Environments/Windows/user32.xml" target="contentFiles/any/any/reko" />
 <file src="../Environments/Windows/win32characteristics.xml" target="contentFiles/any/any/reko" />
 <file src="../Environments/Windows/win64characteristics.xml" target="contentFiles/any/any/reko" />
+<file src="../Environments/Windows/win16c.xml" target="contentFiles/any/any/reko" />
 <file src="../Environments/Windows/windows_CE.xml" target="contentFiles/any/any/reko" />
 <file src="../Environments/Windows/windows32.xml" target="contentFiles/any/any/reko" />
 <file src="../Environments/Windows/windows64.xml" target="contentFiles/any/any/reko" />

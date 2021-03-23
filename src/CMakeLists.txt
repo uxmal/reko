@@ -257,6 +257,24 @@ function(add_c2xml_target_windows main_target header)
 	add_dependencies(${main_target} ${target_name})
 endfunction()
 
+
+function(add_c2xml_target_win16 main_target header)
+	string(REPLACE "/" "_" target ${header})
+	set(target_name "gen_c2xml_windows_${target}")
+
+	add_c2xml_target(
+		REKO_ARCH "x86-protected-16"
+		REKO_ENV "win16"
+		REQUIRED_ARCHITECTURES "X86"
+		REQUIRED_ENVIRONMENTS "Windows"
+		DIALECT "msvc"
+		TARGET_NAME "${target_name}"
+		HEADER ${REKO_SRC}/Environments/Windows/${header}.inc
+		OUTPUT ${REKO_SRC}/Environments/Windows/${header}.xml
+	)
+	add_dependencies(${main_target} ${target_name})
+endfunction()
+
 #
 # This function is used to simplify the generation of OS2 metadata
 # It will create a new target for the given `header`, and append it to `main_target`
@@ -378,6 +396,7 @@ elseif("${TARGET}" STREQUAL "gen_c2xml_windows")
 	add_custom_target(gen_c2xml_windows)
 	add_c2xml_target_windows(gen_c2xml_windows msvcrt)
 	add_c2xml_target_windows(gen_c2xml_windows ntoskrnl)
+	add_c2xml_target_win16(gen_c2xml_windows win16c)
 elseif("${TARGET}" STREQUAL "gen_c2xml_os2")
 	add_custom_target(gen_c2xml_os2)
 	add_c2xml_target_os2(gen_c2xml_os2 os2-16)

@@ -30,7 +30,7 @@ using System.Text;
 namespace Reko.Environments.Windows
 {
     /// <summary>
-    /// Unmangles methods and data objects whose names have been mangled using Microsoft's 
+    /// Unmangles methods and data objects whose names have been mangled using Microsoft's
     /// mangling algorithm.
     /// </summary>
     /// <remarks>
