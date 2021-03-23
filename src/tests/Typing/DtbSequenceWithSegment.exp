@@ -12,7 +12,7 @@ Eq_1: (ptr32 (struct "Globals"))
 	globals_t (in globals : (ptr32 (struct "Globals")))
 Eq_2: (ptr16 (segment (100 T_6 t0100)))
 	T_2 (in ds : selector)
-Eq_3: word16
+Eq_3: (memptr T_2 <unknown>)
 	T_3 (in 0x1234<16> : word16)
 Eq_4: ptr32
 	T_4 (in SEQ(ds, 0x1234<16>) : ptr32)
@@ -30,8 +30,8 @@ T_2: (in ds : selector)
   OrigDataType: (ptr16 (segment (100 T_6 t0100)))
 T_3: (in 0x1234<16> : word16)
   Class: Eq_3
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr T_2 <unknown>)
+  OrigDataType: (memptr T_2 <unknown>)
 T_4: (in SEQ(ds, 0x1234<16>) : ptr32)
   Class: Eq_4
   DataType: ptr32

@@ -772,9 +772,13 @@ namespace Reko.Typing
                     var seg = seq.Expressions[0];
                     var off = seq.Expressions[1];
                     MeetDataType(seg, new Pointer(new StructureType { IsSegment = true }, DataTypeOf(seg).BitSize));
-                    if (DataTypeOf(seq) is Pointer ptr)
+                    var dtSeq = DataTypeOf(seq);
+                    if (dtSeq is Pointer ptr)
                     {
                         MeetDataType(off, MemberPointerTo(seg.TypeVariable!, ptr.Pointee, DataTypeOf(off).BitSize));
+                    } else if (dtSeq.IsPointer)
+                    {
+                        MeetDataType(off, MemberPointerTo(seg.TypeVariable!, new UnknownType(), DataTypeOf(off).BitSize));
                     }
                     seg.Accept(this, seg.TypeVariable!);
                     off.Accept(this, off.TypeVariable!);

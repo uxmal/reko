@@ -261,7 +261,7 @@ namespace Reko.Core
 
 		public Identifier EnsureStackLocal(int cbOffset, DataType type, string? name)
 		{
-			Identifier? id = FindStackLocal(cbOffset, type.Size);
+			Identifier? id = FindStackLocal(cbOffset, type);
 			if (id == null)
 			{
 				id = new Identifier(namingPolicy.StackLocalName(type, cbOffset, name), type, new StackLocalStorage(cbOffset, type));
@@ -419,12 +419,16 @@ namespace Reko.Core
 			return null;
 		}
 
-		public Identifier? FindStackLocal(int offset, int size)
+		public Identifier? FindStackLocal(int offset, DataType dt)
 		{
 			foreach (Identifier id in identifiers)
 			{
-                if (id.Storage is StackLocalStorage loc && loc.StackOffset == offset && id.DataType.Size == size)
+                if (id.Storage is StackLocalStorage loc &&
+                    loc.StackOffset == offset &&
+                    (id.DataType.Size == dt.Size))
+                {
                     return id;
+                }
             }
 			return null;
 		}
