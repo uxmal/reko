@@ -397,9 +397,10 @@ namespace Reko.Core.CLanguage
 
         private PrimitiveType_v1 CreatePrimitive()
         {
-            if (domain != Domain.None && basicType == CBasicType.None)
-                basicType = CBasicType.Int;
-            var bitSize = platform.GetBitSizeFromCBasicType(basicType);
+            var bt = basicType;
+            if (domain != Domain.None && bt == CBasicType.None)
+                bt = CBasicType.Int;
+            var bitSize = platform.GetBitSizeFromCBasicType(bt);
             var memoryUnitBitSize = platform.Architecture.MemoryGranularity;
             this.byteSize = (bitSize + (memoryUnitBitSize - 1)) / memoryUnitBitSize;
             var d = domain;

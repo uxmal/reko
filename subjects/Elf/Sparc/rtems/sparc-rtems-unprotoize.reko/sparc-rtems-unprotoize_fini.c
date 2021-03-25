@@ -4,8 +4,8 @@
 
 #include "sparc-rtems-unprotoize.h"
 
-// 00016EE4: void _fini(Register word32 o3, Register word32 o4, Register word32 o5, Register word32 o7)
-void _fini(word32 o3, word32 o4, word32 o5, word32 o7)
+// 00016EE4: void _fini(Register word32 o3, Register word32 o4, Register word32 o5, Register ptr32 o7)
+void _fini(word32 o3, word32 o4, word32 o5, ptr32 o7)
 {
 	__do_global_dtors_aux(o3, o4, o5, o7);
 }

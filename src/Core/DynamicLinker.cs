@@ -65,13 +65,10 @@ namespace Reko.Core
 
         private FunctionType? EnsureSignature(Program program, SystemService svc)
         {
-            if (svc.Signature is null)
+            // If there is a signature in 'Signatures', it should override the signature in the service.
+            if (program.EnvironmentMetadata.Signatures.TryGetValue(svc.Name!, out var fnc))
             {
-                // If there is a signature in 'Signatures', it should override the signature in the service.
-                if (program.EnvironmentMetadata.Signatures.TryGetValue(svc.Name!, out var fnc))
-                {
-                    return fnc;
-                }
+                return fnc;
             }
             return svc.Signature;
         }

@@ -30,6 +30,7 @@ using System.Text;
 using Reko.UnitTests.Mocks;
 using Reko.Core;
 using System.ComponentModel.Design;
+using Moq;
 
 namespace Reko.UnitTests.Core.CLanguage
 {
@@ -47,6 +48,16 @@ namespace Reko.UnitTests.Core.CLanguage
             var sc = new ServiceContainer();
             this.arch = new FakeArchitecture(sc);
             this.platform = new DefaultPlatform(sc, arch);
+            symbolTable = new SymbolTable(platform);
+        }
+
+        public void Given_16bitPlatform()
+        {
+            var platformMock = new Mock<IPlatform>();
+            platformMock.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Int)).Returns(16);
+            platformMock.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Long)).Returns(32);
+            platformMock.Setup(p => p.Architecture).Returns(arch);
+            this.platform = platformMock.Object;
             symbolTable = new SymbolTable(platform);
         }
 
@@ -298,6 +309,31 @@ namespace Reko.UnitTests.Core.CLanguage
                 },
                 new IdDeclarator { Name = "size_t" });
             Assert.AreEqual("prim(UnsignedInt,2)", nt.DataType.ToString());
+        }
+
+        [Test]
+        public void NamedDataTypeExtractor_unsigned_long_16bitplatform()
+        {
+            Given_16bitPlatform();
+            Run(new[] {
+                SType(CTokenType.Unsigned),
+                SType(CTokenType.Long),
+                },
+                new IdDeclarator { Name = "DWORD" });
+            Assert.AreEqual("prim(UnsignedInt,4)", nt.DataType.ToString());
+        }
+
+        [Test]
+        public void NamedDataTypeExtractor_unsigned_long_int_16bitplatform()
+        {
+            Given_16bitPlatform();
+            Run(new[] {
+                SType(CTokenType.Unsigned),
+                SType(CTokenType.Long),
+                SType(CTokenType.Int),
+                },
+                new IdDeclarator { Name = "DWORD" });
+            Assert.AreEqual("prim(UnsignedInt,4)", nt.DataType.ToString());
         }
     }
 }

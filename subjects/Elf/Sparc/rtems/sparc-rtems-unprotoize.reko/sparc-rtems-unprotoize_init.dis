@@ -1,16 +1,23 @@
-word32 _init(word32 o3, word32 o4, word32 o5, word32 o7)
+word32 _init(word32 o3, word32 o4, word32 o5, word32 o7, ptr32 & o5Out, ptr32 & o7Out, ptr32 & l0Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      _start
 // MayUse:  o3:[0..31] o4:[0..31] o5:[0..31] o7:[0..31]
-// LiveOut: l0
+// LiveOut: l0 o4 o5 o7
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l7 o0 o1 o2 o3 o4 o5 o7 sp
 // Preserved:
 _init_entry:
 l00016EC8:
 	frame_dummy(o3, o4, o5, o7)
-	return __do_global_ctors_aux(o3, o4, o5, o7)
+	word32 i4_39
+	word32 i5_40
+	word32 i7_42
+	word32 l0_43 = __do_global_ctors_aux(o3, o4, o5, o7, out i4_39, out i5_40, out i7_42)
+	o5Out = i5_40
+	o7Out = i7_42
+	l0Out = l0_43
+	return i4_39
 _init_exit:
 
 
