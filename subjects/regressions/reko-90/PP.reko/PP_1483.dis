@@ -797,16 +797,16 @@ fn1483_1BB9_exit:
 l1483_1B75:
 	Mem148[ss:sp_116 - 2<i16>:word16] = 0x6365<16>
 	word16 sp_149 = Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16>
-	di = Mem148[ss:sp_149:word16]
-	si = Mem148[ss:sp_149 + 2<16>:word16]
-	bx = Mem148[ss:sp_149 + 8<16>:word16]
-	dh_177 = Mem148[ss:sp_149 + 0xB<16>:byte] (alias)
-	cl_185 = Mem148[ss:sp_149 + 0xC<16>:byte] (alias)
-	al_109 = Mem148[ss:sp_149 + 0xE<16>:byte] (alias)
+	di = Mem148[ss:Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16> + si:word16]
+	si = Mem148[ss:Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16> + 2<16>:word16]
+	bx = Mem148[ss:Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16> + 8<16>:word16]
+	dh_177 = Mem148[ss:Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16> + 0xB<16>:byte] (alias)
+	cl_185 = Mem148[ss:Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16> + 0xC<16>:byte] (alias)
+	al_109 = Mem148[ss:Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16> + 0xE<16>:byte] (alias)
 	sp_115 = sp_149 + 0x10<16>
 l1483_1B7F:
 	bp = Mem168[ds:si + 0x65<16>:word16] *s 0x3A64<16>
-	Mem174[ss:bp + si:byte] = Mem168[ss:bp + si:byte] & al_109
+	Mem174[ss:Mem168[ds:si + 0x65<16>:word16] *s 0x3A64<16> + si:byte] = Mem168[ss:Mem168[ds:si + 0x65<16>:word16] *s 0x3A64<16> + si:byte] & al_109
 	byte dh_182 = dh_177 ^ Mem174[ds:bx + di:byte]
 	word16 ax_184 = __inw(0xC<8>)
 	Mem189[ds:0x2CF2<16>:byte] = Mem174[ds:0x2CF2<16>:byte] ^ cl_185

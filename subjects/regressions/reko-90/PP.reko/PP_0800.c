@@ -11978,8 +11978,7 @@ void fn0800-889A(Eq_n ds)
 	uint16 ax_n = (*((word32) ds + 11833))->a0000[*((word32) ds + 20112)];
 	while (ax_n != *((word32) ds + 11825))
 	{
-		Eq_n di_n = ax_n << 0x01;
-		*((word32) ds + 20114) = *((word32) ds + 11841)->*di_n;
+		*((word32) ds + 20114) = (*((word32) ds + 11841))->a0000[ax_n];
 		uint16 bx_n = *((word32) ds + 11821);
 		if (bx_n <= ax_n)
 			bx_n += *((word32) ds + 11825);
@@ -11987,7 +11986,7 @@ void fn0800-889A(Eq_n ds)
 		uint16 bx_n = bx_n - ax_n;
 		if (*((word32) ds + 20112) == (word16) es_si_n - bx_n)
 		{
-			uint16 cx_n = *((word32) ds + 11837)->*di_n;
+			uint16 cx_n = (*((word32) ds + 11837))->a0000[ax_n];
 			if (cx_n > bx_n)
 			{
 				bx_n = 0x01;
@@ -12089,7 +12088,7 @@ l0800_nB1:
 	}
 	if (!v24_n)
 		--cx_n;
-	cup16 bx_n = bx_n - cx_n;
+	uint16 bx_n = bx_n - cx_n;
 	(*((word32) ds + 11837))->a0000[*((word32) ds + 11821)] = bx_n;
 	while (true)
 	{
@@ -14829,13 +14828,13 @@ word16 fn0800_A162(Eq_n ds, Eq_n wArg02, Eq_n wArg04, union Eq_n & cxOut, union 
 {
 	Eq_n dx_n;
 	word16 ax_n;
-	uint16 si_n = (word32) wArg04 + 1 - *((word32) ds + 0x007B) + 0x3F >> 0x06;
+	cu16 si_n = (word32) wArg04 + 1 - *((word32) ds + 0x007B);
 	Eq_n cx_n = SEQ(ch, 0x06);
-	if (si_n != *((word32) ds + 9880))
+	if (si_n + 0x3F >> 0x06 != *((word32) ds + 9880))
 	{
-		struct Eq_n * ax_n = *((word32) ds + 0x007B) + (si_n << 0x06);
-		Eq_n si_n = si_n << 0x06;
+		Eq_n si_n = __align(si_n + 0x3F, 64);
 		struct Eq_n * dx_n = *((word32) ds + 0x0091);
+		struct Eq_n * ax_n = *((word32) ds + 0x007B) + __align(si_n + 0x3F, 64);
 		byte al_n = (byte) ax_n;
 		if (ax_n > dx_n)
 			si_n = dx_n - *((word32) ds + 0x007B);

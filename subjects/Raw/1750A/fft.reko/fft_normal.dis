@@ -65,8 +65,8 @@ l014E:
 	word16 gp9_6 = 0<16>
 l0152:
 	word16 gp8_11 = gp9_6 * 3<16>
-	real48 gp5_gp6_gp7_14 = Mem13[gp8_11 + 0x8030<16>:real48]
-	real48 gp2_gp3_gp4_15 = Mem13[gp8_11 + 0x8060<16>:real48]
+	real48 gp5_gp6_gp7_14 = Mem13[gp9_6 * 3<16> + 0x8030<16>:real48]
+	real48 gp2_gp3_gp4_15 = Mem13[gp9_6 * 3<16> + 0x8060<16>:real48]
 	Mem47[gp14_46 + 1<16>:word32] = SEQ(gp8_11, gp9_6)
 	real48 gp5_gp6_gp7_36 = gp5_gp6_gp7_14 * gp5_gp6_gp7_14 + gp2_gp3_gp4_15 * gp2_gp3_gp4_15
 	word16 gp7_37 = SLICE(gp5_gp6_gp7_36, word16, 0)

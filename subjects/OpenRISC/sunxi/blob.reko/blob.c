@@ -1561,14 +1561,14 @@ l00007298:
 //      fn00007FAC
 int32 fn00007338(uint32 r3, Eq_n r4)
 {
-	union Eq_n * r6_n = (union Eq_n *) 0x40000000;
-	int32 r3_n = r3 >> 0x01 << 0x14;
+	struct Eq_n * r6_n = (struct Eq_n *) 0x40000000;
+	ui32 r3_n = r3 >> 0x01 << 0x14;
 	Eq_n r5_n = 0;
 	while (r5_n < r4)
 	{
-		*r6_n = (word32) r5_n + 19088743;
-		*((char *) r6_n + r3_n) = (word32) r5_n - 19088744;
-		r6_n = (union Eq_n *) ((char *) r6_n - 4);
+		r6_n->t0000.u0 = (word32) r5_n + 19088743;
+		r6_n[(r3 >> 0x01) * 0x00040000] = (struct Eq_n) ((word32) r5_n - 19088744);
+		r6_n = (struct Eq_n *) ((char *) r6_n - 4);
 		r5_n = (word32) r5_n - 1;
 	}
 	word32 * r6_n = (word32 *) 0x40000000;
@@ -2608,8 +2608,7 @@ void fn00008834(int32 r4, word32 VR)
 	if (g_ptr13160 == null)
 	{
 		int32 r4_n = r4 *s 2000000;
-		word32 * r5_n = &r2_n->dw000C + 1841165 << 0x02;
-		while (*r5_n == 0x01)
+		while (null[&r2_n->dw000C + 1841165] == 0x01)
 		{
 			bool F_n = r4_n != 0x00;
 			if (!F_n)

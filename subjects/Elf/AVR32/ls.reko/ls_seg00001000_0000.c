@@ -2596,18 +2596,18 @@ l0000450A:
 					}
 					else
 						r8_n = r4_n /u r8_n;
-					Eq_n (* r7_n)[] = r10_n->dw0004;
+					Eq_n r7_n[] = r10_n->dw0004;
 					lr = r9_n << 0x02;
 					if (r9_n != r12_n)
 						r8_n.u0 = 0x02;
 					if (r9_n == r12_n)
 						r8_n.u0 = 0x00;
-					r11_n = Mem256[r7_n + lr:word32];
+					r11_n = r7_n[r9_n];
 					word32 r9_n = r8_n + r12_n;
 					if (r11_n < r9_n)
 					{
 						r10_n->dw0000 = (word32) r9_n + (r10_n->dw0000 - r11_n);
-						*lr = r9_n;
+						r7_n[r9_n] = r9_n;
 						r10_n->bFFFFFFFC = (byte) (word32) (r10_n->dw0000 < r2);
 					}
 				}
@@ -9931,7 +9931,7 @@ Eq_n fn00009C40(Eq_n r0, Eq_n r1, Eq_n r2, <anonymous> * r9, word32 * r10, uint3
 	word32 lr_n;
 	word32 r10_n;
 	Eq_n r4_n;
-	Eq_n r0_n = fn00009C40(fn00009C40(r0_n, r1_n, r2_n, r9, r10, r0_n - (r11 >> 2), r3_n + ((r11 >> 2) << 0x02) / 4, lr, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r10_n, out lr_n), r1_n, r2_n, r9, r10, r4_n, r3_n, lr_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r10_n, out lr_n);
+	Eq_n r0_n = fn00009C40(fn00009C40(r0_n, r1_n, r2_n, r9, r10, r0_n - (r11 >> 2), r3_n + __align(r11, 4) / 4, lr, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r10_n, out lr_n), r1_n, r2_n, r9, r10, r4_n, r3_n, lr_n, out r1_n, out r2_n, out r3_n, out r4_n, out r5_n, out r6_n, out r10_n, out lr_n);
 	struct Eq_n * sp_n = fp - 0x3C;
 	word32 r1_n = *r5_n;
 	word32 r2_n = r3_n[0];

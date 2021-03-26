@@ -3155,12 +3155,12 @@ l00004590:
 l00004590_1:
 	r8_267 = 0<32>
 l00004594:
-	r11_163 = Mem256[r7_276 + lr:word32]
+	r11_163 = Mem256[r7_276 + (r9_262 << 2<32>):word32]
 	word32 r9_299 = r8_267 + r12_237
 	branch r11_163 >=u r9_299 l000045B6
 l000045A0:
 	Mem307[r10_248:word32] = Mem256[r10_248:word32] - r11_163 + r9_299
-	Mem308[lr:word32] = r9_299
+	Mem308[r7_276 + (r9_262 << 2<32>):word32] = r9_299
 	Mem317[r10_248 + -4<i32>:byte] = SLICE(CONVERT(Mem308[r10_248:word32] <u r2, bool, word32), byte, 0)
 l000045B6:
 	r12_250 = r12_250 + 1<32>
@@ -11292,7 +11292,7 @@ l00009C8E:
 	word32 lr_106
 	word32 r10_108
 	word32 r4_102
-	word32 r0_129 = fn00009C40(fn00009C40(r0_184, r1_53, r2_54, r9, r10, r0_184 - (r11 >>u 2<i32>), r3_187 + ((r11 >>u 2<i32>) << 2<8>), lr, out r1_79, out r2_80, out r3_81, out r4_82, out r5_453, out r6_454, out r10_455, out lr_86), r1_79, r2_80, r9, r10, r4_82, r3_81, lr_86, out r1_456, out r2_457, out r3_101, out r4_102, out r5_103, out r6_104, out r10_108, out lr_106)
+	word32 r0_129 = fn00009C40(fn00009C40(r0_184, r1_53, r2_54, r9, r10, r0_184 - (r11 >>u 2<i32>), r3_187 + __align(r11, 4<i32>), lr, out r1_79, out r2_80, out r3_81, out r4_82, out r5_453, out r6_454, out r10_455, out lr_86), r1_79, r2_80, r9, r10, r4_82, r3_81, lr_86, out r1_456, out r2_457, out r3_101, out r4_102, out r5_103, out r6_104, out r10_108, out lr_106)
 	word32 sp_120 = fp - 0x3C<32>
 	word32 r1_113 = Mem50[r5_103:word32]
 	word32 r2_115 = Mem50[r3_101:word32]

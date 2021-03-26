@@ -52,6 +52,8 @@ namespace Reko.Core
         public const string SwL = "__swl";
         public const string SwR = "__swr";
 
+        public const string Align = "__align";
+
         /// <summary>
         /// Use this constructor for intrinsics that model operators that may have parameters of varying sizes.
         /// </summary>

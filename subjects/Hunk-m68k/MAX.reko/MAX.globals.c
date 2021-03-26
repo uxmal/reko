@@ -10,7 +10,6 @@ struct Eq_n * g_ptr0004; // 00000004
 word32 g_a0008[];
 ui32 g_a0010[];
 word32 g_dw3ED0; // 00003ED0
-Eq_n g_t3ED8;
 word32 g_dw3EDC; // 00003EDC
 struct Eq_n * g_ptr3EE8; // 00003EE8
 struct Eq_n * g_ptr3EEC; // 00003EEC

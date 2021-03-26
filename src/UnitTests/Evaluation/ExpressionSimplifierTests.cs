@@ -625,6 +625,37 @@ namespace Reko.UnitTests.Evaluation
             Assert.AreEqual("__ror(foo_1, 3<32>)", exp.Accept(simplifier).ToString());
         }
 
+        [Test]
+        public void Exs_Shifts_Used_ToAlign()
+        {
+            Given_ExpressionSimplifier();
+            var t1 = Given_Tmp("t1", m.Mem32(m.Word32(0x123400)));
+            var t2 = Given_Tmp("t2", m.Shr(t1, 4));
+            ssaIds[foo].Uses.Add(ssaIds[t1].DefStatement);
+            var expr = m.Shl(t2, 4);
+            Assert.AreEqual("__align(t1_2, 16<i32>)", expr.Accept(simplifier).ToString());
+        }
 
+        [Test]
+        public void Exs_ScaledIndex_Multiplication_LeftSide()
+        {
+            Given_ExpressionSimplifier();
+            var t1 = Given_Tmp("t1", m.Mem32(m.Word32(0x123400)));
+            var t2 = Given_Tmp("t2", m.IMul(t1, 4));
+            ssaIds[foo].Uses.Add(ssaIds[t1].DefStatement);
+            var expr = m.Mem32(m.IAdd(t2, 24));
+            Assert.AreEqual("Mem0[t1_2 * 4<32> + 0x18<32>:word32]", expr.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_ScaledIndex_Multiplication_RightSide()
+        {
+            Given_ExpressionSimplifier();
+            var t1 = Given_Tmp("t1", m.Mem32(m.Word32(0x123400)));
+            var t2 = Given_Tmp("t2", m.Shl(t1, 3));
+            ssaIds[foo].Uses.Add(ssaIds[t1].DefStatement);
+            var expr = m.Mem32(m.IAdd(Constant.Word32(0x00123456), t2));
+            Assert.AreEqual("Mem0[(t1_2 << 3<8>) + 0x123456<32>:word32]", expr.Accept(simplifier).ToString());
+        }
     }
 }

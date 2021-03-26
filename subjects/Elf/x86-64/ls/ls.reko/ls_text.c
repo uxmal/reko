@@ -6183,8 +6183,7 @@ uint64 fn000000000040CDC0(word32 rax_32_n, Eq_n rcx, uint64 rdx, struct Eq_n * r
 		}
 		goto l000000000040CF8C;
 	}
-	Eq_n r15_n = (rax_n + 0x01) * 0x04;
-	Eq_n rax_n = malloc(r15_n);
+	Eq_n rax_n = malloc((rax_n + 0x01) * 0x04);
 	word32 rax_32_32_n = SLICE(rax_n, word32, 32);
 	qwLoc58_n = rax_n;
 	if (rax_n == 0x00)
@@ -6216,7 +6215,7 @@ l000000000040CE03:
 		goto l000000000040CE08;
 	}
 	Eq_n qwLoc48_n;
-	Mem86[rax_n - 0x04 + r15_n:word32] = 0x00;
+	(rax_n - 0x04)[rax_n + 0x01] = 0x00;
 	Eq_n rdi_n = (uint64) *rax_n;
 	word32 rax_32_32_n = SLICE(rax_n, word32, 32);
 	if ((word32) rdi_n != 0x00)
@@ -6230,7 +6229,7 @@ l000000000040CE03:
 				*r15_n = 0xFFFD;
 				bLoc39_n = 0x01;
 			}
-			r15_n += 0x04;
+			r15_n = (word32) r15_n + 4;
 			rdi_n.u0 = (uint64) *r15_n;
 		} while ((word32) rdi_n != 0x00);
 		r15_n = (int64) wcswidth(rax_n, rax_n + 0x01);
@@ -6358,7 +6357,7 @@ l000000000040D064:
 					if (rax_n < rax_n)
 						break;
 				}
-				r14_n += 0x04;
+				r14_n = (word32) r14_n + 4;
 				rdi_n.u1 = (uint64) *r14_n;
 				rax_32_32_n = SLICE(rax_n, word32, 32);
 				r15_n = rax_n;

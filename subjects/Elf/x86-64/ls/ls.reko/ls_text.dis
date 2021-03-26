@@ -6416,8 +6416,7 @@ l000000000040CF6F:
 	word64 rax_55 = SEQ(rax_32_32, mbstowcs(0<u64>, rdi, 0<u64>))
 	branch rax_55 != 0xFFFFFFFFFFFFFFFF<64> l000000000040CFA8
 l000000000040CFA8:
-	word64 r15_59 = (rax_55 + 1<64>) * 4<64>
-	word64 rax_62 = malloc(r15_59)
+	word64 rax_62 = malloc((rax_55 + 1<64>) * 4<64>)
 	word32 rax_32_32_80 = SLICE(rax_62, word32, 32)
 	qwLoc58_579 = rax_62
 	branch rax_62 == 0<64> l000000000040D160
@@ -6430,7 +6429,7 @@ l000000000040CFCF:
 	branch SEQ(rax_32_32_80, mbstowcs(rax_62, rdi, rax_55 + 1<64>)) == 0<64> l000000000040CE03
 l000000000040CFEC:
 	word64 qwLoc48_588
-	Mem86[rax_62 - 4<64> + r15_59:word32] = 0<32>
+	Mem86[rax_62 - 4<64> + (rax_55 + 1<64>) * 4<64>:word32] = 0<32>
 	word64 rdi_113 = CONVERT(Mem86[rax_62:word32], word32, uint64)
 	word32 rax_32_32_152 = SLICE(rax_62, word32, 32)
 	branch SLICE(rdi_113, word32, 0) == 0<32> l000000000040D106

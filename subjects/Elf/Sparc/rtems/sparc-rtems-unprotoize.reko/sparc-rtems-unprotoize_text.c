@@ -3510,7 +3510,7 @@ void _obstack_newchunk(struct Eq_n * o0, word32 o1, word32 o3, word32 o4, word32
 		}
 		else
 			g2_n = (char *) &l1_n->ptr0004 + 4;
-		o0_n = o0_n << 0x02;
+		o0_n = __align(l2_n, 4);
 	}
 	else
 	{
@@ -4054,9 +4054,8 @@ l0001600C:
 			}
 			else
 			{
-				int32 o0_n = o2_n << 0x02;
 				word32 o0_n;
-				Eq_n o3_n = i1_n[o0_n / 4];
+				Eq_n o3_n = i1_n[o2_n];
 				if ((int32) *o3_n == 0x2D)
 				{
 					int32 o0_n = (int32) *((word32) o3_n + 1);
@@ -4553,12 +4552,11 @@ l00015F24:
 	bool v42_n = o2_n - i6_n->ptr0044 >= 0x00;
 	while (!v42_n)
 	{
-		int32 o0_n = o2_n << 0x02;
 		ptr32 * o0_n;
-		struct Eq_n * o0_n = i1_n[o0_n / 4];
-		if ((int32) o0_n->b0000 == 0x2D)
+		Eq_n o0_n = i1_n[o2_n];
+		if ((int32) *o0_n == 0x2D)
 		{
-			if ((int32) o0_n->b0001 != 0x00)
+			if ((int32) *((word32) o0_n + 1) != 0x00)
 				break;
 			o0_n = optind;
 		}

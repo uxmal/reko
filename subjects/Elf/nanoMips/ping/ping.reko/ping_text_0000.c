@@ -7286,34 +7286,33 @@ Eq_n __malloc0(Eq_n r0, Eq_n r4, Eq_n r11, ptr32 & r6Out, union Eq_n & r11Out)
 	word32 r3_n;
 	ptr32 r6_n;
 	malloc(r0, r4, r11, out r3_n, out r4_n, out r6_n, out r8_n, out r9_n, out r10_n, out r11_n);
-	if (r4_n != null && !__bit(r4_n->tFFFFFFFC, 0x00))
+	if (r4_n == null || (__bit(r4_n->tFFFFFFFC, 0x00) || (word32) r4 + 3 >> 0x02 == 0x00))
 	{
-		uint32 r5_n = (word32) r4 + 3 >> 0x02;
-		if (r5_n != 0x00)
-		{
-			struct Eq_n * r5_n = r4_n + (r5_n << 0x02) / 4;
-			struct Eq_n * r7_n = r4_n;
-			do
-			{
-				r6_n = r7_n->dw0000;
-				if (r6_n == 0x00)
-				{
-					++r7_n;
-					if (r7_n == r5_n)
-						goto l004057CE;
-					continue;
-				}
-				++r7_n;
-			} while (r7_n != r5_n);
-			r6Out = r6_n;
-			r11Out.u0 = ~0x45223501;
-			return ~0x45223501;
-		}
-	}
 l004057CE:
-	r6Out = r6_n;
-	r11Out.u0 = ~0x45223501;
-	return ~0x45223501;
+		r6Out = r6_n;
+		r11Out.u0 = ~0x45223501;
+		return ~0x45223501;
+	}
+	else
+	{
+		struct Eq_n * r5_n = r4_n + __align((word32) r4 + 3, 4) / 4;
+		struct Eq_n * r7_n = r4_n;
+		do
+		{
+			r6_n = r7_n->dw0000;
+			if (r6_n == 0x00)
+			{
+				++r7_n;
+				if (r7_n == r5_n)
+					goto l004057CE;
+				continue;
+			}
+			++r7_n;
+		} while (r7_n != r5_n);
+		r6Out = r6_n;
+		r11Out.u0 = ~0x45223501;
+		return ~0x45223501;
+	}
 }
 
 // 004057D0: Register Eq_n realloc(Register Eq_n r0, Register Eq_n r4, Register Eq_n r5, Register Eq_n r11, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r6Out, Register out ptr32 r8Out, Register out ptr32 r9Out, Register out ptr32 r10Out, Register out Eq_n r11Out, Register out ptr32 r12Out)
@@ -10082,7 +10081,7 @@ l00407054:
 			do
 			{
 				int32 r17_n = r21_n *s 0x1C;
-				if (*((word32) r4 + r17_n) == 0x0A)
+				if (*((word32) r4 + r21_n * 0x1C) == 0x0A)
 				{
 					if (r21_n < r20_n)
 					{
@@ -10871,8 +10870,7 @@ l004079EE:
 							if (r7_n == r9_n)
 								break;
 l004079BA:
-							int32 r4_n = r7_n << 0x02;
-							r11 = (word32) r6_n + r4_n;
+							r11 = (word32) r6_n + (r7_n << 0x02);
 							Eq_n r17_n = r8;
 							if (*r11 != 0x00)
 								break;
@@ -10913,7 +10911,7 @@ l004079BA:
 									word32 r5_n;
 									word32 r8_n;
 									word32 r10_n;
-									memcpy(*((word32) r7_n + r4_n), r5_n, r9_n, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11, out r12_n, out r13_n);
+									memcpy(null[r7_n].t0000, r5_n, r9_n, out r3_n, out r5_n, out r6_n, out r7_n, out r8_n, out r9_n, out r10_n, out r11, out r12_n, out r13_n);
 									r17_n = r7;
 								}
 								if (r9_n == r17_n)
@@ -15507,19 +15505,19 @@ l0040A154:
 l0040A312:
 			int32 r13_n = (word32) r13_n + 16;
 			r5 = r5_n + r13_n / 16;
-			r6 = r6_n - (((word32) r6 - 20 >> 0x04) << 0x04);
+			r6 = r6_n - __align((word32) r6 - 20, 16);
 			r13 = r24_n + r13_n / 16;
 			goto l0040A322;
 		}
 		if (r8 == 0x03)
 		{
+			Eq_n r16_n = (word32) r6 - 20;
+			struct Eq_n * r25_n = (word32) r13 + (__align(r16_n, 16) + 0x11);
 			r13->u1 = (byte) r9_n;
 			r5_n = (word32) r5 + 1;
 			r24_n = (word32) r13 + 1;
-			Eq_n r16_n = (word32) r6 - 20;
 			r2 = r5_n;
 			struct Eq_n * r8_n = r24_n;
-			struct Eq_n * r25_n = (word32) r13 + (((r16_n >> 0x04) << 0x04) + 0x11);
 			do
 			{
 				uint32 r11_n = r2->dw0003;
@@ -15567,7 +15565,7 @@ l0040A312:
 			++r8_n;
 		} while (r8_n != r15_n);
 		Eq_n r13_n = __ins(r24_n, 0x00, 0x00, 0x01);
-		r6 = (word32) r6 - 19 - ((r24_n >> 0x04) << 0x04);
+		r6 = (word32) r6 - 19 - __align(r24_n, 16);
 		r5 = r5_n + ((word32) r13_n + 16) / 16;
 		r13 = r16_n + ((word32) r13_n + 16) / 16;
 	}

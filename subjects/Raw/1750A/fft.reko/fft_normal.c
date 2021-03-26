@@ -49,13 +49,13 @@ cui16 fn011B(cui16 gp0, word16 gp1, word16 gp3, word16 gp4, struct Eq_n * gp14, 
 void fn014E()
 {
 	struct Eq_n * gp14_n = fp - 0x02;
-	ui16 gp9_n = 0x00;
+	uint16 gp9_n = 0x00;
 	do
 	{
-		struct Eq_n * gp8_n = gp9_n * 0x03;
-		real48 gp5_gp6_gp7_n = gp8_n->r8030;
-		real48 gp2_gp3_gp4_n = gp8_n->r8060;
-		gp14_n[1] = (struct Eq_n) gp9_n;
+		ui16 gp8_n = gp9_n * 0x03;
+		real48 gp5_gp6_gp7_n = g_aFFFF8030[gp9_n];
+		real48 gp2_gp3_gp4_n = g_aFFFF8060[gp9_n];
+		gp14_n[1] = (struct Eq_n) SEQ(gp8_n, gp9_n);
 		Eq_n gp5_gp6_gp7_n = gp5_gp6_gp7_n * gp5_gp6_gp7_n + gp2_gp3_gp4_n * gp2_gp3_gp4_n;
 		word16 gp7_n = (word16) gp5_gp6_gp7_n;
 		gp14_n = fn0245(gp5_gp6_gp7_n, gp7_n, gp7_n);

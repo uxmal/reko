@@ -104,8 +104,16 @@ namespace Reko.Core.Expressions
                     dt = dtField;
                 }
                 else
-                { 
-                    dt = PullSumDataType(dtLeft, dtRight);
+                {
+                    dtField = GetPossibleFieldType(dtRight, dtLeft, binExp.Left);
+                    if (dtField != null)
+                    {
+                        dt = dtField;
+                    }
+                    else
+                    {
+                        dt = PullSumDataType(dtLeft, dtRight);
+                    }
                 }
             }
             else if (binExp.Operator == Operator.ISub)
