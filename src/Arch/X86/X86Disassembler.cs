@@ -557,7 +557,9 @@ namespace Reko.Arch.X86
 
         // Operand decoders //////
 
-        // Absolute memory address
+        /// <summary>
+        /// Absolute memory address
+        /// </summary>
         public static bool Ap(uint op, X86Disassembler dasm)
         {
             var rdr = dasm.rdr;
@@ -572,7 +574,9 @@ namespace Reko.Arch.X86
             return true;
         }
 
-        // control register encoded in the reg field.
+        /// <summary>
+        /// Control register encoded in the reg field.
+        /// </summary>
         private static bool Cd(uint op, X86Disassembler dasm)
         {
             if (!dasm.TryEnsureModRM(out byte modRm))
@@ -585,7 +589,9 @@ namespace Reko.Arch.X86
             return true;
         }
 
-        // debug register encoded in the reg field.
+        /// <summary>
+        /// Debug register encoded in the reg field.
+        /// </summary>
         private static bool Dd(uint op, X86Disassembler dasm)
         {
             if (!dasm.TryEnsureModRM(out byte modRm))
@@ -599,7 +605,9 @@ namespace Reko.Arch.X86
 
         }
 
-        // memory or register operand specified by mod & r/m fields.
+        /// <summary>
+        /// Memory or register operand specified by mod & r/m fields.
+        /// </summary>
         private static Mutator<X86Disassembler> E(OperandType opType)
         {
             return (u, d) =>
@@ -621,8 +629,10 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Ey = E(OperandType.y);
         private static readonly Mutator<X86Disassembler> Ew = E(OperandType.w);
 
-        // Hybrid decoding: if effective memory address, use word16 size, if register 
-        // use the current GP register size.
+        /// <summary>
+        /// Hybrid decoding: if effective memory address, use word16 size, if register 
+        /// use the current GP register size.
+        /// </summary>
         public static bool Ewv(uint top, X86Disassembler dasm)
         {
             if (!dasm.TryEnsureModRM(out byte modRm))
@@ -639,7 +649,9 @@ namespace Reko.Arch.X86
             return true;
         }
 
-        // B: The VEX.vvvv field of the VEX prefix selects a general purpose register
+        /// <summary>
+        /// B: The VEX.vvvv field of the VEX prefix selects a general purpose register
+        /// </summary>
         private static Mutator<X86Disassembler> B(OperandType opType)
         {
             return (u, d) =>
@@ -655,7 +667,9 @@ namespace Reko.Arch.X86
         }
         private static readonly Mutator<X86Disassembler> By = B(OperandType.y);
 
-        // Floating-point ST(x)
+        /// <summary>
+        /// Floating-point ST(x)
+        /// </summary>
         private static bool F(uint op, X86Disassembler d)
         {
             if (!d.TryEnsureModRM(out byte modRm))
@@ -664,14 +678,18 @@ namespace Reko.Arch.X86
             return true;
         }
 
-        // Floating-point ST(0)
+        /// <summary>
+        /// Floating-point ST(0)
+        /// </summary>
         private static bool f(uint op, X86Disassembler d)
         {
             d.decodingContext.ops.Add(new FpuOperand(0));
             return true;
         }
 
-        // General purpose register operand specified by the reg field of the modRM byte.
+        /// <summary>
+        /// General purpose register operand specified by the reg field of the modRM byte.
+        /// </summary>
         private static Mutator<X86Disassembler> G(OperandType opType)
         {
             return (u, d) =>
@@ -695,7 +713,9 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Gw = G(OperandType.w);
         private static readonly Mutator<X86Disassembler> Gy = G(OperandType.y);
 
-        // If VEX encoding, use vvvv register.
+        /// <summary>
+        /// If VEX encoding, use vvvv register, otherwise ignore.
+        /// </summary>
         private static Mutator<X86Disassembler> H(OperandType opType)
         {
             return (u, d) => {
@@ -720,7 +740,9 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Hq = H(OperandType.q);
         private static readonly Mutator<X86Disassembler> Hx = H(OperandType.x);
 
-        // Immediate operand.
+        /// <summary>
+        /// Immediate operand.
+        /// </summary>
         private static Mutator<X86Disassembler> I(OperandType opType)
         {
             return (u, d) =>
@@ -750,7 +772,9 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Ix = I(OperandType.x);
         private static readonly Mutator<X86Disassembler> Iz = I(OperandType.z);
 
-        // Relative ("near") jump.
+        /// <summary>
+        /// Relative ("near") jump.
+        /// </summary>
         private static Mutator<X86Disassembler> J(OperandType opType)
         {
             return (u, d) =>
@@ -776,8 +800,10 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Jb = J(OperandType.b);
         private static readonly Mutator<X86Disassembler> Jv = J(OperandType.v);
 
-        // The upper 4 bits of the 8-bit immediate selects a 128-bit XMM register or a 256-bit YMM register, determined
-        // by operand type.
+        /// <summary>
+        /// The upper 4 bits of the 8-bit immediate selects a 128-bit XMM register or a 256-bit YMM register, determined
+        /// by operand type.
+        /// </summary>
         public static bool Lx(uint op, X86Disassembler d)
         {
             if (!d.rdr.TryReadByte(out var lReg))
@@ -791,7 +817,9 @@ namespace Reko.Arch.X86
             return true;
         }
 
-        // modRM may only refer to memory.
+        /// <summary>
+        /// modRM may only refer to memory.
+        /// </summary>
         private static Mutator<X86Disassembler> M(OperandType opType)
         {
             return (u, d) =>
@@ -825,7 +853,9 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Mx = M(OperandType.x);
         private static readonly Mutator<X86Disassembler> My = M(OperandType.y);
 
-        // MMX register operand specified by the r/m field of the modRM byte.
+        /// <summary>
+        /// MMX register operand specified by the r/m field of the modRM byte.
+        /// </summary>
         private static Mutator<X86Disassembler> N(OperandType opType)
         {
             return (u, d) =>
@@ -840,7 +870,9 @@ namespace Reko.Arch.X86
         }
         private static readonly Mutator<X86Disassembler> Nq = N(OperandType.q);
 
-        // Offset of the operand is encoded directly after the opcode.
+        /// <summary>
+        /// Offset of the operand is encoded directly after the opcode.
+        /// </summary>
         private static Mutator<X86Disassembler> O(OperandType opType)
         {
             return (u, d) =>
@@ -860,7 +892,9 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Ob = O(OperandType.b);
         private static readonly Mutator<X86Disassembler> Ov = O(OperandType.v);
 
-        // MMX register operand specified by the reg field of the modRM byte.
+        /// <summary>
+        /// MMX register operand specified by the reg field of the modRM byte.
+        /// </summary>
         private static Mutator<X86Disassembler> P(OperandType opType)
         {
             return (u, d) => {
@@ -878,7 +912,9 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Pq = P(OperandType.q);
         private static readonly Mutator<X86Disassembler> Py = P(OperandType.y);
 
-        // memory or register MMX operand specified by mod & r/m fields.
+        /// <summary>
+        /// Memory or register MMX operand specified by mod & r/m fields.
+        /// </summary>
         private static Mutator<X86Disassembler> Q(OperandType opType)
         {
             return (u, d) =>
@@ -896,7 +932,9 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Qpi = Q(OperandType.pi);
         private static readonly Mutator<X86Disassembler> Qq = Q(OperandType.q);
 
-        // register operand specified by the mod field of the modRM byte.
+        /// <summary>
+        /// Register operand specified by the mod field of the modRM byte.
+        /// </summary>
         private static Mutator<X86Disassembler> R(OperandType opType)
         {
             return (u, d) =>
@@ -920,7 +958,9 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Rq = R(OperandType.q);
         private static readonly Mutator<X86Disassembler> Ry = R(OperandType.y);
 
-        // XMM operand specified by the modRm field of the modRM byte.
+        /// <summary>
+        /// XMM operand specified by the modRm field of the modRM byte.
+        /// </summary>
         private static Mutator<X86Disassembler> U(OperandType opType)
         {
             return (u, d) =>
@@ -942,7 +982,9 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Ups = U(OperandType.ps);
         private static readonly Mutator<X86Disassembler> Ux = U(OperandType.x);
 
-        // XMM operand specified by the reg field of the modRM byte.
+        /// <summary>
+        /// XMM operand specified by the reg field of the modRM byte.
+        /// </summary>
         private static Mutator<X86Disassembler> V(OperandType opType)
         {
             return (u, d) =>
@@ -970,7 +1012,9 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Vx = V(OperandType.x);
         private static readonly Mutator<X86Disassembler> Vy = V(OperandType.y);
 
-        // memory or XMM operand specified by mod & r/m fields.
+        /// <summary>
+        /// Memory or XMM operand specified by mod & r/m fields.
+        /// </summary>
         private static Mutator<X86Disassembler> W(OperandType opType)
         {
             return (u, d) =>
@@ -995,7 +1039,9 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> Wx = W(OperandType.x);
         private static readonly Mutator<X86Disassembler> Wy = W(OperandType.y);
 
-        // Segment register encoded by reg field of modRM byte.
+        /// <summary>
+        /// Segment register encoded by reg field of modRM byte.
+        /// </summary>
         public static bool Sw(uint op, X86Disassembler d)
         {
             if (!d.TryEnsureModRM(out byte modRm))
@@ -1004,8 +1050,9 @@ namespace Reko.Arch.X86
             return true;
         }
 
-        // Implicit use of accumulator.
-
+        /// <summary>
+        /// Implicit use of accumulator.
+        /// </summary>
         private static bool AL(uint uInstr, X86Disassembler dasm)
         {
             dasm.decodingContext.ops.Add(new RegisterOperand(Registers.al));
@@ -1060,20 +1107,27 @@ namespace Reko.Arch.X86
                 d.decodingContext.ops.Add(op);
 */
 
+        /// <summary>
+        /// Force the current data width to 'byte'.
+        /// </summary>
         private static bool b(uint op, X86Disassembler d)
         {
             d.decodingContext.iWidth = PrimitiveType.Byte;
             return true;
         }
 
-        // Implicit use of CL.
+        /// <summary>
+        /// Implicit use of CL.
+        /// </summary>
         private static bool c(uint u, X86Disassembler d)
         {
             d.decodingContext.ops.Add(new RegisterOperand(Registers.cl));
             return true;
         }
 
-        // Implicit use of DX or EDX.
+        /// <summary>
+        /// Implicit use of DX or EDX.
+        /// </summary>
         private static bool DX(uint u, X86Disassembler dasm)
         {
             dasm.decodingContext.ops.Add(new RegisterOperand(Registers.dx));
@@ -1099,6 +1153,9 @@ namespace Reko.Arch.X86
             return true;
         }
 
+        /// <summary>
+        /// Constant 1
+        /// </summary>
         private static bool n1(uint u, X86Disassembler d)
         {
             var op = new ImmediateOperand(Constant.Byte(1));
@@ -1106,6 +1163,9 @@ namespace Reko.Arch.X86
             return true;
         }
 
+        /// <summary>
+        /// Constant 3
+        /// </summary>
         private static bool n3(uint u, X86Disassembler d)
         {
             var op = new ImmediateOperand(Constant.Byte(3));
@@ -1113,7 +1173,9 @@ namespace Reko.Arch.X86
             return true;
         }
 
-        // Register encoded as last 3 bits of instruction.
+        /// <summary>
+        /// Register encoded as last 3 bits of instruction.
+        /// </summary>
         private static Mutator<X86Disassembler> r(OperandType width)
         {
             return (u, d) =>
@@ -1132,6 +1194,9 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> rw = r(OperandType.w);
 
 
+        /// <summary>
+        /// Specific register encoding.
+        /// </summary>
         private static Mutator<X86Disassembler> Reg(RegisterStorage reg)
         {
             var op = new RegisterOperand(reg);
@@ -1162,13 +1227,6 @@ namespace Reko.Arch.X86
         {
             return new InstructionDecoder(op, iclass, mutators);
         }
-
-
-
-
-
-
-
 
         public static MemRegDecoder MemReg(Decoder mem, Decoder reg)
         {

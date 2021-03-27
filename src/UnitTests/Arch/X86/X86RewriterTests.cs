@@ -925,6 +925,30 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86Rw_fstsw_InterleavedInstructions()
+        {
+            Run32bitTest(
+                "D9 44 24 14" +         // fld dword ptr[esp + 14h]
+                "D8 D9" +               // fcomp st(0),st(1)
+                "DF E0" +               // fstsw ax
+                "DD D8" +               // fstp st(0)
+                "F6 C4 05" +            // test ah,5h
+                "0F 8B 2E FF FF FF");   // jpo 41E652h
+            AssertCode(
+                "0|L--|10000000(4): 2 instructions",
+                "1|L--|Top = Top - 1<i8>",
+                "2|L--|ST[Top:real64] = CONVERT(Mem0[esp + 0x14<32>:real32], real32, real64)",
+                "3|L--|10000004(2): 2 instructions",
+                "4|L--|FPUF = cond(ST[Top:real64] - ST[Top + 1<i8>:real64])",
+                "5|L--|Top = Top + 1<i8>",
+                "6|T--|10000006(13): 4 instructions",
+                "7|L--|ST[Top:real64] = ST[Top:real64]",
+                "8|L--|Top = Top + 1<i8>",
+                "9|L--|SCZO = FPUF",
+                "10|T--|if (Test(LT,FPUF)) branch 0FFFFF41");
+        }
+
+        [Test]
         public void X86rw_FstswTestMov()
         {
             Run32bitTest(m =>
@@ -2444,7 +2468,16 @@ namespace Reko.UnitTests.Arch.X86
             Run32bitTest(0xDD, 0xE5);    // fucom\tst(5),st(0)
             AssertCode(
                 "0|L--|10000000(2): 2 instructions",
-                "1|L--|FPUF = cond(ST[Top:real64] - ST[Top + 5<i8>:real64])");
+                "1|L--|FPUF = cond(ST[Top + 5<i8>:real64] - ST[Top:real64])");
+        }
+
+        [Test]
+        public void X86rw_fcomp()
+        {
+            Run32bitTest("D8 D9");               // fcomp st(0),st(1)
+            AssertCode(
+                "0|L--|10000000(2): 2 instructions",
+                "1|L--|FPUF = cond(ST[Top:real64] - ST[Top + 1<i8>:real64])");
         }
 
         [Test]

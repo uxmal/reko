@@ -3,15 +3,15 @@
 *** Elf\Msp430\a
 Error: Unable to load metadata file libc.so.xml.
     An error occurred when loading the signature of procedure lseek.
-       at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 148
-   at Reko.Core.TypeLibraryDeserializer.LoadProcedures(SerializedLibrary serializedLibrary) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 107
-   at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 61
-   at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 41
-   at Reko.Core.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in D:\dev\uxmal\reko\master\src\Core\MetadataLoader.cs:line 52
-   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in D:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 71
-       at Reko.Environments.SysV.ArchSpecific.Msp430CallingConvention.Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List`1 dtParams) in D:\dev\uxmal\reko\master\src\Environments\SysV\ArchSpecific\Msp430CallingConvention.cs:line 713
-   at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 175
-   at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 127
+       at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 148
+   at Reko.Core.TypeLibraryDeserializer.LoadProcedures(SerializedLibrary serializedLibrary) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 107
+   at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 62
+   at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 41
+   at Reko.Core.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\MetadataLoader.cs:line 52
+   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in d:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 71
+       at Reko.Environments.SysV.ArchSpecific.Msp430CallingConvention.Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List`1 dtParams) in d:\dev\uxmal\reko\master\src\Environments\SysV\ArchSpecific\Msp430CallingConvention.cs:line 726
+   at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in d:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 175
+   at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 127
 0200: warning: Expected sizes of arrays to have been determined by now
 021C: warning: Expected sizes of arrays to have been determined by now
 0226: warning: Expected sizes of arrays to have been determined by now
@@ -22,15 +22,15 @@ Error: Unable to load metadata file libc.so.xml.
 *** regressions\reko-351\a
 Error: Unable to load metadata file libc.so.xml.
     An error occurred when loading the signature of procedure lseek.
-       at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 148
-   at Reko.Core.TypeLibraryDeserializer.LoadProcedures(SerializedLibrary serializedLibrary) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 107
-   at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 61
-   at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 41
-   at Reko.Core.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in D:\dev\uxmal\reko\master\src\Core\MetadataLoader.cs:line 52
-   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in D:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 71
-       at Reko.Environments.SysV.ArchSpecific.M68kCallingConvention.Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List`1 dtParams) in D:\dev\uxmal\reko\master\src\Environments\SysV\ArchSpecific\M68kCallingConvention.cs:line 50
-   at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 175
-   at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 127
+       at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 148
+   at Reko.Core.TypeLibraryDeserializer.LoadProcedures(SerializedLibrary serializedLibrary) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 107
+   at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 62
+   at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 41
+   at Reko.Core.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\MetadataLoader.cs:line 52
+   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in d:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 71
+       at Reko.Environments.SysV.ArchSpecific.M68kCallingConvention.Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List`1 dtParams) in d:\dev\uxmal\reko\master\src\Environments\SysV\ArchSpecific\M68kCallingConvention.cs:line 49
+   at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in d:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 175
+   at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 127
 80000120: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 8000018A: warning: Procedure frame_dummy previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 800001A0: warning: Procedure frame_dummy previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -70,18 +70,18 @@ Borland v2 detected
     Not handling mp16 and mp16 yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 411
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 228
-   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 76
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in d:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 50
+   at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 75
 0800:1358: error: An error occurred while processing the statement word16 di_327 = di_312 - (fp - 0x8A<16>).
     Not handling (memptr T_1994 (struct (0 T_2911 t0000))) and (memptr T_236 <unknown>) yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 411
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 228
-   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 76
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in d:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 50
+   at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 75
 l0800_113C: warning: Non-integral switch expression
 l0800_17AE: warning: Non-integral switch expression
 
@@ -169,15 +169,15 @@ Error: An error occurred during decompilation.
     An item with the same key has already been added. Key: 4611686018427490960
        at System.Collections.Generic.Dictionary`2.TryInsert(TKey key, TValue value, InsertionBehavior behavior)
    at System.Collections.Generic.Dictionary`2.Add(TKey key, TValue value)
-   at Reko.Scanning.ShingledScanner.AddInstruction(RtlInstructionCluster i) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 288
-   at Reko.Scanning.ShingledScanner.ScanRange(IProcessorArchitecture arch, MemoryArea mem, Address addrStart, UInt32 cbAlloc, UInt64 workToDo) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 201
+   at Reko.Scanning.ShingledScanner.AddInstruction(RtlInstructionCluster i) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 298
+   at Reko.Scanning.ShingledScanner.ScanRange(IProcessorArchitecture arch, MemoryArea mem, Address addrStart, UInt32 cbAlloc, UInt64 workToDo) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 202
    at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 130
    at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 65
    at Reko.Scanning.Scanner.ShingleScanProcedures() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1040
-   at Reko.Scanning.Scanner.ScanImage() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 780
-   at Reko.Decompiler.ScanProgram(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 589
-   at Reko.Decompiler.ScanPrograms() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 577
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 205
+   at Reko.Scanning.Scanner.ScanImage() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 782
+   at Reko.Decompiler.ScanProgram(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 590
+   at Reko.Decompiler.ScanPrograms() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 575
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 206
 
 === Elf\zSeries\fib\example
 
@@ -255,210 +255,210 @@ Warning: Checksum error in line 8.
 03BE: warning: Procedure fn03A0 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
 0579: error: Failed to write global variable g_r0579.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 057C: error: Failed to write global variable g_r057C.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 057F: error: Failed to write global variable g_r057F.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8000: error: Failed to write global variable g_tFFFF8000.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 800C: error: Failed to write global variable g_tFFFF800C.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 801B: error: Failed to write global variable g_tFFFF801B.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8030: warning: Expected sizes of arrays to have been determined by now
 8054: error: Failed to write global variable g_rFFFF8054.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8057: error: Failed to write global variable g_r8057.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8060: warning: Expected sizes of arrays to have been determined by now
 8061: error: Failed to write global variable g_rFFFF8061.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8064: error: Failed to write global variable g_r8064.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 806E: error: Failed to write global variable g_tFFFF806E.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 0579: error: Failed to write global variable g_r0579.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 057C: error: Failed to write global variable g_r057C.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 057F: error: Failed to write global variable g_r057F.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8000: error: Failed to write global variable g_tFFFF8000.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 800C: error: Failed to write global variable g_tFFFF800C.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 801B: error: Failed to write global variable g_tFFFF801B.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8030: warning: Expected sizes of arrays to have been determined by now
 8054: error: Failed to write global variable g_rFFFF8054.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8057: error: Failed to write global variable g_r8057.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8060: warning: Expected sizes of arrays to have been determined by now
 8061: error: Failed to write global variable g_rFFFF8061.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8064: error: Failed to write global variable g_r8064.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 806E: error: Failed to write global variable g_tFFFF806E.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 
 === Hunk-m68k\FIBO
 000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
@@ -478,29 +478,27 @@ Signature of 'Microsoft Visual C++ vx.x DLL' detected.
 hello_m68k.exe: warning: Win32 M68k main procedure finder not supported.
 Error: Unable to load metadata file windows32.xml.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
-       at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 199
-   at Reko.Core.TypeLibraryDeserializer.VisitSignature(SerializedSignature sSig) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 327
-   at Reko.Core.Serialization.SerializedSignature.Accept[T](ISerializedTypeVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Serialization\SerializedSignature.cs:line 79
-   at Reko.Core.TypeLibraryDeserializer.VisitTypedef(SerializedTypedef typedef) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 368
-   at Reko.Core.Serialization.SerializedTypedef.Accept[T](ISerializedTypeVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Serialization\SerializedTypedef.cs:line 42
-   at Reko.Core.TypeLibraryDeserializer.LoadType(SerializedType sType) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 205
-   at Reko.Core.TypeLibraryDeserializer.LoadTypes(SerializedLibrary serializedLibrary) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 198
-   at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 60
-   at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 41
-   at Reko.Core.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in D:\dev\uxmal\reko\master\src\Core\MetadataLoader.cs:line 52
-   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in D:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 71
+       at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in d:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 92
+   at Reko.Core.TypeLibraryDeserializer.VisitSignature(SerializedSignature sSig) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 327
+   at Reko.Core.Serialization.SerializedSignature.Accept[T](ISerializedTypeVisitor`1 visitor) in d:\dev\uxmal\reko\master\src\Core\Serialization\SerializedSignature.cs:line 79
+   at Reko.Core.TypeLibraryDeserializer.VisitTypedef(SerializedTypedef typedef) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 368
+   at Reko.Core.Serialization.SerializedTypedef.Accept[T](ISerializedTypeVisitor`1 visitor) in d:\dev\uxmal\reko\master\src\Core\Serialization\SerializedTypedef.cs:line 42
+   at Reko.Core.TypeLibraryDeserializer.LoadType(SerializedType sType) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 205
+   at Reko.Core.TypeLibraryDeserializer.LoadTypes(SerializedLibrary serializedLibrary) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 198
+   at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 61
+   at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 41
+   at Reko.Core.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\MetadataLoader.cs:line 52
+   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in d:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 71
 Error: Unable to load metadata file wsock32.xml.
     An error occurred when loading the signature of procedure __WSAFDIsSet.
-       at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 148
-   at Reko.Core.TypeLibraryDeserializer.LoadProcedures(SerializedLibrary serializedLibrary) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 107
-   at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 61
-   at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 41
-   at Reko.Core.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in D:\dev\uxmal\reko\master\src\Core\MetadataLoader.cs:line 52
-   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in D:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 71
-       at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 199
-   at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 127
+       at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 148
+   at Reko.Core.TypeLibraryDeserializer.LoadProcedures(SerializedLibrary serializedLibrary) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 107
+   at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 62
+   at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 41
+   at Reko.Core.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\MetadataLoader.cs:line 52
+   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in d:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 71
+       at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in d:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 92
+   at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 127
 Signature of 'Microsoft Visual C++ vx.x DLL' detected.
 hello_m68k.exe: warning: Win32 M68k main procedure finder not supported.
 00001758: warning: Expected sizes of arrays to have been determined by now
@@ -597,12 +595,11 @@ Signature of 'Microsoft Visual C++ 8' detected.
     Not handling (ptr32 (struct 0001 (FFFFFFD8 T_27015 tFFFFFFD8) (FFFFFFEC word32 dwFFFFFFEC) (0 T_27235 t0000) (4 T_27241 t0004))) and (union ((ptr32 (struct 0001 (FFFFFFEC word32 dwFFFFFFEC))) u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 424
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 257
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 354
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 190
-   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 54
-   at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 76
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 355
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
+   at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 75
 l00009F1C: warning: Non-integral switch expression
 000099B4: warning: Expected sizes of arrays to have been determined by now
 0000C2E0: warning: Expected sizes of arrays to have been determined by now
@@ -744,26 +741,26 @@ fn0B06: warning: Structure analysis stopped making progress, quitting. Please re
 Error: An error occurred during decompilation.
     The given key 'l0000A774' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
-   at Reko.Analysis.SsaTransform.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 128
+   at Reko.Analysis.SsaTransform.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 127
    at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 451
    at System.Linq.Enumerable.SelectListIterator`2.ToArray()
+   at System.Linq.Enumerable.ToArray[TSource](IEnumerable`1 source)
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 189
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 96
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 79
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 79
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 79
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 79
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 79
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 79
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 79
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 79
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 79
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 79
-   at Reko.Core.Lib.SccFinder`1.FindAll() in D:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 118
-   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 169
+   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in d:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
+   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in d:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
+   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in d:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
+   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in d:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
+   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in d:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
+   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in d:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
+   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in d:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
+   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in d:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
+   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in d:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
+   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in d:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 80
+   at Reko.Core.Lib.SccFinder`1.FindAll() in d:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 115
+   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 170
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 130
-   at Reko.Decompiler.AnalyzeDataFlow() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 110
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 208
+   at Reko.Decompiler.AnalyzeDataFlow() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 112
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 209
 
 === wasm\nbody
 
@@ -772,19 +769,17 @@ Error: An error occurred during decompilation.
     An item with the same key has already been added. Key: c
        at System.Collections.Generic.Dictionary`2.TryInsert(TKey key, TValue value, InsertionBehavior behavior)
    at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
-   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector)
    at Reko.Analysis.CallRewriter.MakeSignature(SsaState ssa, IStorageBinder frame, ProcedureFlow flow) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 135
-   at Reko.Analysis.CallRewriter.EnsureSignature(SsaState ssa, IStorageBinder frame, ProcedureFlow flow) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 108
-   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 84
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 155
-   at Reko.Decompiler.AnalyzeDataFlow() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 110
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 208
+   at Reko.Analysis.CallRewriter.Rewrite(IPlatform platform, List`1 ssts, ProgramDataFlow summaries, DecompilerEventListener eventListener) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\CallRewriter.cs:line 76
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 156
+   at Reko.Decompiler.AnalyzeDataFlow() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 112
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 209
 
 *** Microchip\C18\PIC18Extd\PIC18EggExtd
 Error: An error occurred during decompilation.
     Missing PIC model user options.
-       at Reko.Arch.MicrochipPIC.Common.PICArchitecture.LoadUserOptions(Dictionary`2 options) in D:\dev\uxmal\reko\master\src\Arch\Microchip\Common\PICArchitecture.cs:line 308
-   at Reko.Loading.Loader.LoadRawImage(String filename, Byte[] image, Address addrLoad, LoadDetails details) in d:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 165
+       at Reko.Arch.MicrochipPIC.Common.PICArchitecture.LoadUserOptions(Dictionary`2 options) in d:\dev\uxmal\reko\master\src\Arch\Microchip\Common\PICArchitecture.cs:line 307
+   at Reko.Loading.Loader.LoadRawImage(String filename, Byte[] image, Address addrLoad, LoadDetails details) in d:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 167
    at Reko.Decompiler.LoadRawImage(String fileName, LoadDetails raw) in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 271
    at Reko.CmdLine.CmdLineDriver.LoadProgram(Dictionary`2 pArgs, LoadDetails loadDetails) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 295
    at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 262
@@ -792,8 +787,8 @@ Error: An error occurred during decompilation.
 *** Microchip\C18\PIC18\PIC18Legacy
 Error: An error occurred during decompilation.
     Missing PIC model user options.
-       at Reko.Arch.MicrochipPIC.Common.PICArchitecture.LoadUserOptions(Dictionary`2 options) in D:\dev\uxmal\reko\master\src\Arch\Microchip\Common\PICArchitecture.cs:line 308
-   at Reko.Loading.Loader.LoadRawImage(String filename, Byte[] image, Address addrLoad, LoadDetails details) in d:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 165
+       at Reko.Arch.MicrochipPIC.Common.PICArchitecture.LoadUserOptions(Dictionary`2 options) in d:\dev\uxmal\reko\master\src\Arch\Microchip\Common\PICArchitecture.cs:line 307
+   at Reko.Loading.Loader.LoadRawImage(String filename, Byte[] image, Address addrLoad, LoadDetails details) in d:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 167
    at Reko.Decompiler.LoadRawImage(String fileName, LoadDetails raw) in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 271
    at Reko.CmdLine.CmdLineDriver.LoadProgram(Dictionary`2 pArgs, LoadDetails loadDetails) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 295
    at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 262
@@ -801,10 +796,9 @@ Error: An error occurred during decompilation.
 *** Elf\nanoMips\ping\ping
 __isoc99_vfscanf: error: An internal error occurred while building the expressions of __isoc99_vfscanf
     Dominator graph calculation timed out.
-       at Reko.Core.Lib.DominatorGraph`1.Intersect(Dictionary`2 postdoms, T b1, T b2) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 234
-   at Reko.Core.Lib.DominatorGraph`1.Build(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 161
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 43
-   at Reko.Core.Lib.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in D:\dev\uxmal\reko\master\src\Core\Lib\BlockDominatorGraph.cs:line 34
+       at Reko.Core.Lib.DominatorGraph`1.Intersect(Dictionary`2 postdoms, T b1, T b2) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 233
+   at Reko.Core.Lib.DominatorGraph`1.Build(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 161
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 43
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 400
 l0040D4D6: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 l0040478C: warning: Non-integral switch expression
@@ -826,24 +820,17 @@ l0040478C: warning: Non-integral switch expression
 00431498: warning: Expected sizes of arrays to have been determined by now
 00432550: warning: Expected sizes of arrays to have been determined by now
 00452340: warning: Expected sizes of arrays to have been determined by now
-00412060: warning: Expected sizes of arrays to have been determined by now
-00412170: warning: Expected sizes of arrays to have been determined by now
-004122D0: warning: Expected sizes of arrays to have been determined by now
-00412304: warning: Expected sizes of arrays to have been determined by now
-00412340: warning: Expected sizes of arrays to have been determined by now
-00412368: warning: Expected sizes of arrays to have been determined by now
-00412E1C: warning: Expected sizes of arrays to have been determined by now
-00412EF8: warning: Expected sizes of arrays to have been determined by now
-00412F40: warning: Expected sizes of arrays to have been determined by now
-00413220: warning: Expected sizes of arrays to have been determined by now
-00413240: warning: Expected sizes of arrays to have been determined by now
-00413370: warning: Expected sizes of arrays to have been determined by now
-0041343C: warning: Expected sizes of arrays to have been determined by now
-00413454: warning: Expected sizes of arrays to have been determined by now
-0041353C: warning: Expected sizes of arrays to have been determined by now
-00431498: warning: Expected sizes of arrays to have been determined by now
-00432550: warning: Expected sizes of arrays to have been determined by now
-00452340: warning: Expected sizes of arrays to have been determined by now
+Error: An error occurred during decompilation.
+    The requested operation cannot be performed on a file with a user-mapped section open. : 'd:\dev\uxmal\reko\master\subjects\Elf\nanoMips\ping\ping.reko\ping.h'
+       at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access)
+   at Reko.Core.Services.FileSystemServiceImpl.CreateFileStream(String filename, FileMode mode, FileAccess access) in d:\dev\uxmal\reko\master\src\Core\Services\IFileSystemService.cs:line 79
+   at Reko.DecompiledFileService.CreateTextWriter(String filename) in d:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 119
+   at Reko.DecompiledFileService.WriteTypes(Program program, Action`2 writer) in d:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 156
+   at Reko.Decompiler.WriteDecompilerProducts() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 677
+   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 211
 
 *** Elf\x86-64\pngpixel\pngpixel
 00000000004013B1: warning: Unable to resolve imported reference png_create_read_struct.
@@ -938,28 +925,23 @@ Borland C v3 runtime detected
 1483:0CA6: warning: Call target address 1483:FD4E is invalid.
 fn0800_8F97: error: An internal error occurred while building the expressions of fn0800_8F97
     Dominator graph calculation timed out.
-       at Reko.Core.Lib.DominatorGraph`1.Intersect(Dictionary`2 postdoms, T b1, T b2) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 234
-   at Reko.Core.Lib.DominatorGraph`1.Build(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 161
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 43
-   at Reko.Core.Lib.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in D:\dev\uxmal\reko\master\src\Core\Lib\BlockDominatorGraph.cs:line 34
+       at Reko.Core.Lib.DominatorGraph`1.Intersect(Dictionary`2 postdoms, T b1, T b2) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 233
+   at Reko.Core.Lib.DominatorGraph`1.Build(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 161
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 43
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 400
 l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 0800:9A95: error: An error occurred while processing the statement word16 di_325 = di_311 - (fp - 0x48<16>).
     Not handling (memptr T_34034 (struct (0 T_34732 t0000))) and (memptr T_2 <unknown>) yet.
-       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 411
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 228
-   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 76
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 409
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 352
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 239
+   at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 75
 1483:0C7D: error: An error occurred while processing the statement word16 ax_82 = bx_54 - 0x903<16> - (SLICE(dh_ax_142, byte, 16) <u 0<8>).
     Not handling (memptr T_41465 (struct (0 T_41515 t0000) (3303 T_41509 t3303))) and bool yet.
-       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 411
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 228
-   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 76
+       at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 409
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 352
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 239
+   at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 75
 
 === PE\x86\pySample\pySample
 100013D8: warning: Call target address 00000000 is invalid.
@@ -1021,13 +1003,13 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
     Not handling (ptr32 (struct (0 T_7371 t0000))) and (ptr32 (struct (0 (arr T_9490) a0000))) yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 405
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 607
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
+   at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(Expression basePointer, TypeVariable tvAccess, Expression effectiveAddress, Expression globals) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 608
    at Reko.Typing.ExpressionTypeDescender.VisitMemoryAccess(MemoryAccess access, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 527
-   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
-   at Reko.Typing.TypeCollector.VisitStore(Store store) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 285
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 87
-   at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 76
+   at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in d:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 71
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 287
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in d:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 88
+   at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 75
 0000A284: warning: Expected sizes of arrays to have been determined by now
 0000A2A4: warning: Expected sizes of arrays to have been determined by now
 0000A554: warning: Expected sizes of arrays to have been determined by now
@@ -1122,12 +1104,12 @@ Signature of 'Borland C++ for Win32 1999' detected.
     Not handling ptr16 and (union (cui16 u1) (ptr16 u0)) yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 405
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 354
-   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 228
-   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 76
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 355
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 56
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 230
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in d:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 50
+   at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 75
 47E2: warning: Expected sizes of arrays to have been determined by now
 541C: warning: Expected sizes of arrays to have been determined by now
 47E2: warning: Expected sizes of arrays to have been determined by now
@@ -1136,16 +1118,16 @@ Signature of 'Borland C++ for Win32 1999' detected.
 *** Elf\Sparc\rtems\sparc-rtems-unprotoize
 Error: Unable to load metadata file libc.so.xml.
     An error occurred when loading the signature of procedure lseek.
-       at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 148
-   at Reko.Core.TypeLibraryDeserializer.LoadProcedures(SerializedLibrary serializedLibrary) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 107
-   at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 61
-   at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 41
-   at Reko.Core.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in D:\dev\uxmal\reko\master\src\Core\MetadataLoader.cs:line 52
-   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in D:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 71
-       at Reko.Environments.SysV.ArchSpecific.SparcCallingConvention.SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg) in D:\dev\uxmal\reko\master\src\Environments\SysV\ArchSpecific\SparcCallingConvention.cs:line 112
-   at Reko.Environments.SysV.ArchSpecific.SparcCallingConvention.Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List`1 dtParams) in D:\dev\uxmal\reko\master\src\Environments\SysV\ArchSpecific\SparcCallingConvention.cs:line 56
-   at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 175
-   at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 127
+       at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 148
+   at Reko.Core.TypeLibraryDeserializer.LoadProcedures(SerializedLibrary serializedLibrary) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 107
+   at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 62
+   at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 41
+   at Reko.Core.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\MetadataLoader.cs:line 52
+   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in d:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 71
+       at Reko.Environments.SysV.ArchSpecific.SparcCallingConvention.SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg) in d:\dev\uxmal\reko\master\src\Environments\SysV\ArchSpecific\SparcCallingConvention.cs:line 111
+   at Reko.Environments.SysV.ArchSpecific.SparcCallingConvention.Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List`1 dtParams) in d:\dev\uxmal\reko\master\src\Environments\SysV\ArchSpecific\SparcCallingConvention.cs:line 59
+   at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in d:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 175
+   at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 127
 00011610: warning: Unable to resolve imported reference __register_frame_info.
 00015318: warning: Unable to resolve imported reference stat.
 00015334: warning: Unable to resolve imported reference stat.
@@ -1210,10 +1192,10 @@ Error: Unable to load metadata file libc.so.xml.
 safe_read: error: An error occurred while rewriting procedure to high-level language.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
        at System.Collections.Generic.List`1.get_Item(Int32 index)
-   at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 91
+   at Reko.Core.Block.get_ThenBlock() in d:\dev\uxmal\reko\master\src\Core\Block.cs:line 91
    at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
    at Reko.Structure.CompoundConditionCoalescer.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 78
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 79
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 655
 00017540: warning: Expected sizes of arrays to have been determined by now
 0002B411: warning: Expected sizes of arrays to have been determined by now
@@ -1267,16 +1249,16 @@ safe_read: error: An error occurred while rewriting procedure to high-level lang
 *** Elf\Sparc\from_boomerang\subject
 Error: Unable to load metadata file libc.so.xml.
     An error occurred when loading the signature of procedure lseek.
-       at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 148
-   at Reko.Core.TypeLibraryDeserializer.LoadProcedures(SerializedLibrary serializedLibrary) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 107
-   at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 61
-   at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 41
-   at Reko.Core.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in D:\dev\uxmal\reko\master\src\Core\MetadataLoader.cs:line 52
-   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in D:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 71
-       at Reko.Environments.SysV.ArchSpecific.SparcCallingConvention.SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg) in D:\dev\uxmal\reko\master\src\Environments\SysV\ArchSpecific\SparcCallingConvention.cs:line 112
-   at Reko.Environments.SysV.ArchSpecific.SparcCallingConvention.Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List`1 dtParams) in D:\dev\uxmal\reko\master\src\Environments\SysV\ArchSpecific\SparcCallingConvention.cs:line 56
-   at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 175
-   at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in D:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 127
+       at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 148
+   at Reko.Core.TypeLibraryDeserializer.LoadProcedures(SerializedLibrary serializedLibrary) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 107
+   at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 62
+   at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 41
+   at Reko.Core.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\MetadataLoader.cs:line 52
+   at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in d:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 71
+       at Reko.Environments.SysV.ArchSpecific.SparcCallingConvention.SetReturnRegister(ICallingConventionEmitter ccr, DataType dtArg) in d:\dev\uxmal\reko\master\src\Environments\SysV\ArchSpecific\SparcCallingConvention.cs:line 111
+   at Reko.Environments.SysV.ArchSpecific.SparcCallingConvention.Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List`1 dtParams) in d:\dev\uxmal\reko\master\src\Environments\SysV\ArchSpecific\SparcCallingConvention.cs:line 59
+   at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in d:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 175
+   at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 127
 
 === regressions\snowman-51\switch
 
@@ -1337,340 +1319,340 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
 000003B1: warning: Procedure fn032A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0007: error: Failed to write global variable g_t0007.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 000A: error: Failed to write global variable g_t000A.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 05AB: error: Failed to write global variable g_r05AB.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 05AE: error: Failed to write global variable g_r05AE.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 05B1: error: Failed to write global variable g_r05B1.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 05B4: error: Failed to write global variable g_r05B4.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 060A: error: Failed to write global variable g_t060A.
     Reading data type int48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 060D: error: Failed to write global variable g_t060D.
     Reading data type int48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 0610: error: Failed to write global variable g_r0610.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8000: error: Failed to write global variable g_tFFFF8000.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 80E9: error: Failed to write global variable g_tFFFF80E9.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8122: error: Failed to write global variable g_rFFFF8122.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8125: error: Failed to write global variable g_r8125.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8128: error: Failed to write global variable g_rFFFF8128.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 812F: error: Failed to write global variable g_rFFFF812F.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8132: error: Failed to write global variable g_r8132.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8135: error: Failed to write global variable g_rFFFF8135.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 813C: error: Failed to write global variable g_tFFFF813C.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 0007: error: Failed to write global variable g_t0007.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 000A: error: Failed to write global variable g_t000A.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 05AB: error: Failed to write global variable g_r05AB.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 05AE: error: Failed to write global variable g_r05AE.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 05B1: error: Failed to write global variable g_r05B1.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 05B4: error: Failed to write global variable g_r05B4.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 060A: error: Failed to write global variable g_t060A.
     Reading data type int48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 060D: error: Failed to write global variable g_t060D.
     Reading data type int48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 0610: error: Failed to write global variable g_r0610.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8000: error: Failed to write global variable g_tFFFF8000.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 80E9: error: Failed to write global variable g_tFFFF80E9.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8122: error: Failed to write global variable g_rFFFF8122.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8125: error: Failed to write global variable g_r8125.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8128: error: Failed to write global variable g_rFFFF8128.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 812F: error: Failed to write global variable g_rFFFF812F.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8132: error: Failed to write global variable g_r8132.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 8135: error: Failed to write global variable g_rFFFF8135.
     Reading data type real48 not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 813C: error: Failed to write global variable g_tFFFF813C.
     Reading data type byte not implemented yet.
-       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
-   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in D:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
-   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 430
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 393
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
+       at Reko.Core.Memory.Word16ImageReader.TryReadBe(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 248
+   at Reko.Core.Memory.Word16BeImageReader.TryRead(PrimitiveType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16BeImageReader.cs:line 76
+   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 273
+   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 99
+   at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 431
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 81
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 245
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 54
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 394
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 59
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 
 *** VMS-vax\unzip
 000012B8: error: Instruction acbd	#8.0,r5,(sp),00007C18 too complex to rewrite.
@@ -2050,11 +2032,10 @@ fn000125CA: error: An error occurred while renaming variables.
     Value cannot be null. (Parameter 'key')
        at System.Collections.Generic.Dictionary`2.FindEntry(TKey key)
    at System.Collections.Generic.Dictionary`2.TryGetValue(TKey key, TValue& value)
-   at Reko.Core.Lib.DominatorGraph`1.ImmediateDominator(T node) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 125
-   at Reko.Core.Lib.DominatorGraph`1.CommonDominator(IEnumerable`1 blocks) in D:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 99
+   at Reko.Core.Lib.DominatorGraph`1.CommonDominator(IEnumerable`1 blocks) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 99
    at Reko.Analysis.DeclarationInserter.InsertDeclaration(Web web) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeclarationInserter.cs:line 60
    at Reko.Analysis.WebBuilder.InsertDeclarations() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 86
-   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 112
+   at Reko.Analysis.WebBuilder.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\WebBuilder.cs:line 114
 fn000125CA: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 
 === PE\x86-64\varargs_test\varargs_test
@@ -2106,4 +2087,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 75 binaries in 124.27 seconds.
+Decompiled 75 binaries in 70.59 seconds.
