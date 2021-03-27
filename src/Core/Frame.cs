@@ -168,7 +168,7 @@ namespace Reko.Core
 			Identifier? id = FindFlagGroup(freg, grfMask);
 			if (id == null)
 			{
-				id = new Identifier(name, dt, new FlagGroupStorage(freg, grfMask, name, dt));
+				id = Identifier.Create(new FlagGroupStorage(freg, grfMask, name, dt));
 				identifiers.Add(id);
 			}
 			return id;
@@ -181,7 +181,7 @@ namespace Reko.Core
             var id = FindFlagGroup(grf.FlagRegister, grf.FlagGroupBits);
             if (id == null)
             {
-                id = new Identifier(grf.Name, grf.DataType, new FlagGroupStorage(grf.FlagRegister, grf.FlagGroupBits, grf.Name, grf.DataType));
+                id = Identifier.Create(new FlagGroupStorage(grf.FlagRegister, grf.FlagGroupBits, grf.Name, grf.DataType));
                 identifiers.Add(id);
             }
             return id;
@@ -211,7 +211,7 @@ namespace Reko.Core
 			Identifier? id = FindRegister(reg);
 			if (id == null)
 			{
-				id = new Identifier(reg.Name, reg.DataType, reg);
+                id = Identifier.Create(reg);
 				identifiers.Add(id);
 			}
 			return id;

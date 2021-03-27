@@ -820,17 +820,24 @@ l0040478C: warning: Non-integral switch expression
 00431498: warning: Expected sizes of arrays to have been determined by now
 00432550: warning: Expected sizes of arrays to have been determined by now
 00452340: warning: Expected sizes of arrays to have been determined by now
-Error: An error occurred during decompilation.
-    The requested operation cannot be performed on a file with a user-mapped section open. : 'd:\dev\uxmal\reko\master\subjects\Elf\nanoMips\ping\ping.reko\ping.h'
-       at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
-   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
-   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
-   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access)
-   at Reko.Core.Services.FileSystemServiceImpl.CreateFileStream(String filename, FileMode mode, FileAccess access) in d:\dev\uxmal\reko\master\src\Core\Services\IFileSystemService.cs:line 79
-   at Reko.DecompiledFileService.CreateTextWriter(String filename) in d:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 119
-   at Reko.DecompiledFileService.WriteTypes(Program program, Action`2 writer) in d:\dev\uxmal\reko\master\src\Decompiler\IDecompiledFileService.cs:line 156
-   at Reko.Decompiler.WriteDecompilerProducts() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 677
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 211
+00412060: warning: Expected sizes of arrays to have been determined by now
+00412170: warning: Expected sizes of arrays to have been determined by now
+004122D0: warning: Expected sizes of arrays to have been determined by now
+00412304: warning: Expected sizes of arrays to have been determined by now
+00412340: warning: Expected sizes of arrays to have been determined by now
+00412368: warning: Expected sizes of arrays to have been determined by now
+00412E1C: warning: Expected sizes of arrays to have been determined by now
+00412EF8: warning: Expected sizes of arrays to have been determined by now
+00412F40: warning: Expected sizes of arrays to have been determined by now
+00413220: warning: Expected sizes of arrays to have been determined by now
+00413240: warning: Expected sizes of arrays to have been determined by now
+00413370: warning: Expected sizes of arrays to have been determined by now
+0041343C: warning: Expected sizes of arrays to have been determined by now
+00413454: warning: Expected sizes of arrays to have been determined by now
+0041353C: warning: Expected sizes of arrays to have been determined by now
+00431498: warning: Expected sizes of arrays to have been determined by now
+00432550: warning: Expected sizes of arrays to have been determined by now
+00452340: warning: Expected sizes of arrays to have been determined by now
 
 *** Elf\x86-64\pngpixel\pngpixel
 00000000004013B1: warning: Unable to resolve imported reference png_create_read_struct.
@@ -2087,4 +2094,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 75 binaries in 70.59 seconds.
+Decompiled 75 binaries in 63.88 seconds.

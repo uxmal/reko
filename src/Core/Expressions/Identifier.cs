@@ -43,14 +43,9 @@ namespace Reko.Core.Expressions
 			this.Storage = stg;
 		}
 
-        public static Identifier Create(RegisterStorage reg)
+        public static Identifier Create(Storage reg)
         {
             return new Identifier(reg.Name, reg.DataType, reg);
-        }
-
-        public static Identifier Create(SequenceStorage seq)
-        {
-            return new Identifier(seq.Name, seq.DataType, seq);
         }
 
         public static Identifier CreateTemporary(string name, DataType dt)

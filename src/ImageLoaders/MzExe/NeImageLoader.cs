@@ -531,7 +531,7 @@ namespace Reko.ImageLoaders.MzExe
                 string.Format("seg{0:X4}", seg.Address!.Selector!.Value),
                 0,
                 PrimitiveType.SegmentSelector);
-            seg.Identifier = new Identifier(stg.Name, stg.DataType, stg);
+            seg.Identifier = Identifier.Create(stg);
             if ((neSeg.Flags & NE_STFLAGS_RELOCATIONS) == 0)
                 return true;
             var rdr = new LeImageReader(
