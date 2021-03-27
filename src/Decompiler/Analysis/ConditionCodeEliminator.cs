@@ -49,7 +49,10 @@ namespace Reko.Analysis
 	/// </remarks>
 	public class ConditionCodeEliminator : InstructionTransformer
 	{
-        private static readonly TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator", "Verbose");
+        private static readonly TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator")
+        {
+            Level = TraceLevel.Warning,
+        };
         
         private readonly SsaState ssa;
         private readonly SsaMutator mutator;

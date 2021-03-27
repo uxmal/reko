@@ -88,12 +88,13 @@ namespace Reko.Analysis
                 bloxx.Push(bs.Block);
                 if (this.bloxx.Count> 1000)
                 {
-                    bs.Block.Procedure.Dump(true);
+                    var proc = bs.Block.Procedure;
+                    proc.Dump(true);
                     foreach (var block in bloxx)
                     {
                         Debug.Print("  {0}", block.DisplayName);
                     }
-                    throw new StackOverflowException($"Boundless recursion in {bs.Block.Procedure.Name}.");
+                    throw new StackOverflowException($"Boundless recursion in {proc.Name}.");
                 }
                 sid = ReadVariableRecursive(bs);
                 bloxx.Pop();

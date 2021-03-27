@@ -439,7 +439,14 @@ namespace Reko.Analysis
         /// <returns>The SsaTransform for the procedure.</returns>
         public SsaTransform ConvertToSsa(Procedure proc)
         {
-            if (program.NeedsSsaTransform)
+            if (!program.NeedsSsaTransform)
+            {
+                // Some formats, like LLVM, already have phi functions.
+                var sst = new SsaTransform(program, proc, sccProcs!, dynamicLinker, this.ProgramDataFlow);
+                return sst;
+            }
+
+            try
             {
                 // Transform the procedure to SSA state. When encountering 'call'
                 // instructions, they can be to functions already visited. If so,
@@ -510,11 +517,11 @@ namespace Reko.Analysis
 
                 return sst;
             }
-            else
+            catch (Exception ex)
             {
-                // We are assuming phi functions are already generated.
-                var sst = new SsaTransform(program, proc, sccProcs!, dynamicLinker, this.ProgramDataFlow);
-                return sst;
+                services.GetService<ITestGenerationService>()?
+                    .ReportProcedure($"analysis_{99:00}_crash.txt", $"// {proc.Name} ===========", proc);
+                throw;
             }
         }
 
