@@ -49,16 +49,19 @@ namespace Reko.Analysis
     /// 
     /// The transformation then determines which variables are too wide, and
     /// injects slice expressions where appropriate to narrow them down.
-    /// 
     /// </remarks>
     public class SlicePropagator
     {
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(SlicePropagator), "Trace progress of SlicePropagator") { Level = TraceLevel.Verbose }; private readonly SsaState ssa;
-
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(SlicePropagator), "Trace progress of SlicePropagator")
+        {
+            Level = TraceLevel.Verbose
+        }; 
+        
+        private readonly SsaState ssa;
         private readonly DecompilerEventListener listener;
         private readonly Dictionary<SsaIdentifier, HashSet<BitRange>> neededSlices;  // Sliced identifiers we want, but don't have
         private readonly Dictionary<SsaIdentifier, Dictionary<BitRange, SsaIdentifier>> availableSlices; // Sliced identifiers we do have.
-        private readonly Dictionary<SsaIdentifier, SsaIdentifier> replaceIds;   // Identifiers that can be replaced.
+        private readonly Dictionary<SsaIdentifier, (SsaIdentifier sid, int lsb)> replaceIds;   // Identifiers that can be replaced.
 
         public SlicePropagator(SsaState ssa, DecompilerEventListener listener)
         {
@@ -66,7 +69,7 @@ namespace Reko.Analysis
             this.listener = listener;
             this.neededSlices = new Dictionary<SsaIdentifier, HashSet<BitRange>>();
             this.availableSlices = new Dictionary<SsaIdentifier, Dictionary<BitRange, SsaIdentifier>>();
-            this.replaceIds = new Dictionary<SsaIdentifier, SsaIdentifier>();
+            this.replaceIds = new Dictionary<SsaIdentifier, (SsaIdentifier, int)>();
             foreach (var sid in ssa.Identifiers)
             {
                 if (sid.Uses.Count == 0 || sid.Identifier.Storage is FlagGroupStorage)
@@ -82,6 +85,7 @@ namespace Reko.Analysis
         {
             DetermineNeededSlices();
             GenerateNeededSlices();
+            DumpState();
             ReplaceSlices();
             ssa.Validate(e => { ssa.Procedure.Dump(true); });
         }
@@ -150,16 +154,23 @@ namespace Reko.Analysis
                 // Now remove the uses of the old identifier. New uses will be added
                 // by the SlicePusher.
                 sidOld.Uses.Clear();
-                this.replaceIds.Add(sidOld, sidNew);
+                this.replaceIds.Add(sidOld, (sidNew, brNeeded.Lsb));
                 trace.Verbose("Slp: Narrowing {0} down to {1} ({2})", sidOld.Identifier, sidNew.Identifier, brNeeded);
             }
         }
 
         private SsaIdentifier MakeSlicedIdentifier(SsaIdentifier sidOriginal, BitRange brNeeded)
         {
+            Identifier idSliced = SliceStorage(sidOriginal.Identifier.Storage, brNeeded);
+            var sidTo = ssa.Identifiers.Add(idSliced, sidOriginal.DefStatement, new Slice(idSliced.DataType, sidOriginal.Identifier, brNeeded.Lsb), false);
+            return sidTo;
+        }
+
+        private Identifier SliceStorage(Storage stg, BitRange brNeeded)
+        {
             var dt = PrimitiveType.CreateWord(brNeeded.Extent);
             Identifier idSliced;
-            switch (sidOriginal.Identifier.Storage)
+            switch (stg)
             {
             case RegisterStorage reg:
                 var regSliced = ssa.Procedure.Architecture.GetRegister(reg.Domain, brNeeded);
@@ -171,13 +182,13 @@ namespace Reko.Analysis
                 idSliced = ssa.Procedure.Frame.EnsureStackVariable(stkSliced.StackOffset, dt);
                 break;
             case TemporaryStorage _:
+            case SequenceStorage _:
                 idSliced = ssa.Procedure.Frame.CreateTemporary(dt);
                 break;
             default:
-                throw new NotImplementedException($"Support for slicing {sidOriginal.Identifier.Storage.GetType().Name} not implemented yet.");
+                throw new NotImplementedException($"Support for slicing {stg.GetType().Name} not implemented yet.");
             }
-            var sidTo = ssa.Identifiers.Add(idSliced, sidOriginal.DefStatement, new Slice(dt, sidOriginal.Identifier, brNeeded.Lsb), false);
-            return sidTo;
+            return idSliced;
         }
 
         private void ReplaceSlices()
@@ -185,8 +196,6 @@ namespace Reko.Analysis
             var slicePusher = new SlicePusher(this, default!);
             foreach (var stm in ssa.Procedure.Statements)
             {
-                if (stm.Block.Name == "l00100073")
-                    stm.ToString(); //$DEBUG
                 slicePusher.Statement = stm;
                 var instrNew = stm.Instruction.Accept(slicePusher);
                 stm.Instruction = instrNew;
@@ -206,6 +215,33 @@ namespace Reko.Analysis
         private static PrimitiveType Word(BitRange range)
         {
             return PrimitiveType.CreateWord(range.Extent);
+        }
+
+        [Conditional("DEBUG")]
+        private void DumpState()
+        {
+            if (!trace.TraceInfo)
+                return;
+            trace.Inform("== SLP: {0} =========", ssa.Procedure.Name);
+            if (availableSlices.Count > 0)
+            {
+                trace.Inform("  Available slices:");
+                foreach (var de in availableSlices.OrderBy(e => e.Key.Identifier.Name))
+                {
+                    trace.Inform("    {0}: {1}", de.Key.Identifier.Name, string.Join(";", de.Value
+                        .OrderBy(e => e.Key)
+                        .Select(e => $"{e.Key}, {e.Value.DefStatement}")));
+                }
+            }
+
+            if (neededSlices.Count > 0)
+            {
+                trace.Inform("  Needed slices:");
+                foreach (var de in neededSlices.OrderBy(e => e.Key.Identifier.Name))
+                {
+                    trace.Inform("    {0}: {1}", de.Key.Identifier.Name, string.Join(";", de.Value.OrderBy(e => e)));
+                }
+            }
         }
 
         /// <summary>
@@ -232,6 +268,7 @@ namespace Reko.Analysis
                 ass.Src.Accept(this, ctx);
                 if (ass.Src is Slice slice && slice.Expression is Identifier slicedId)
                 {
+                    // Found a slice.
                     var sidSlice = outer.ssa.Identifiers[ass.Dst];
                     var sidOriginal = outer.ssa.Identifiers[slicedId];
                     var br = Ctx(slice);
@@ -431,6 +468,8 @@ namespace Reko.Analysis
 
             public Expression VisitIdentifier(Identifier id, NarrowContext ctx)
             {
+                if (id.Storage is FlagGroupStorage)
+                    return id;
                 var sid = outer.ssa.Identifiers[id];
                 var added = outer.neededSlices[sid].Add(ctx.Bitrange);
                 if (!ctx.Bitrange.Covers(Ctx(id).Bitrange))
@@ -541,7 +580,7 @@ namespace Reko.Analysis
         /// <summary>
         /// This instruction visitor will 'push' slice expressions towards the leaves of an expression. Slicing an
         /// identifier may result in the use of an existing slice alias -- a code improvement. Likewise, slicing
-        /// a Constant will also result in a code improvement.
+        /// a Constant into a smaller Constant will also result in a code improvement.
         /// </summary>
         public class SlicePusher : InstructionVisitor<Instruction>, ExpressionVisitor<Expression, NarrowContext>
         {
@@ -564,9 +603,11 @@ namespace Reko.Analysis
                     : MkAssign;
 
                 var sidDst = outer.ssa.Identifiers[ass.Dst];
-                if (outer.replaceIds.TryGetValue(sidDst, out var sidDstNew))
+                if (outer.replaceIds.TryGetValue(sidDst, out var replacement))
                 {
-                    var src = ass.Src.Accept(this, Ctx(sidDstNew.Identifier));
+                    var sidDstNew = replacement.sid;
+                    var ctx = new NarrowContext(sidDstNew.Identifier.DataType, replacement.lsb);
+                    var src = ass.Src.Accept(this, ctx);
                     sidDstNew.DefStatement = this.Statement;
                     sidDstNew.DefExpression = src;
                     sidDst.DefStatement = null;
@@ -616,8 +657,9 @@ namespace Reko.Analysis
             {
                 //$REVIEW: what about user-defined parameters?
                 var sidDst = outer.ssa.Identifiers[def.Identifier];
-                if (outer.replaceIds.TryGetValue(sidDst, out var sidDstNew))
+                if (outer.replaceIds.TryGetValue(sidDst, out var replacement))
                 {
+                    var sidDstNew = replacement.sid;
                     trace.Verbose("SLP: Replacing def {0} with {1}", sidDst.Identifier, sidDstNew.Identifier);
                     sidDstNew.DefStatement = Statement;
                     sidDst.DefStatement = null;
@@ -641,8 +683,9 @@ namespace Reko.Analysis
                 foreach (var oldArg in phi.Src.Arguments)
                 {
                     var sidOld = outer.ssa.Identifiers[(Identifier) oldArg.Value];
-                    if (outer.replaceIds.TryGetValue(sidOld, out var sidNew))
+                    if (outer.replaceIds.TryGetValue(sidOld, out var srcReplacement))
                     {
+                        var sidNew = srcReplacement.sid;
                         sidNew.Uses.Add(Statement);
                         newArgs.Add(new PhiArgument(oldArg.Block, sidNew.Identifier));
                     }
@@ -653,9 +696,9 @@ namespace Reko.Analysis
                 }
                 var phiFn = new PhiFunction(phi.Src.DataType, newArgs.ToArray());
                 var sidDst = outer.ssa.Identifiers[phi.Dst];
-                if (outer.replaceIds.TryGetValue(sidDst, out var sidDstNew))
+                if (outer.replaceIds.TryGetValue(sidDst, out var replacement))
                 {
-
+                    var sidDstNew = replacement.sid;
                     sidDstNew.DefStatement = this.Statement;
                     sidDstNew.DefExpression = phiFn;
                     sidDst.DefStatement = null;
@@ -890,10 +933,10 @@ namespace Reko.Analysis
                     sid.Uses.Remove(Statement);
                     return id;
                 }
-                if (outer.replaceIds.TryGetValue(sid, out var sidNew))
+                if (outer.replaceIds.TryGetValue(sid, out var replacement))
                 {
-                    sidNew.Uses.Add(Statement);
-                    sid = sidNew;
+                    replacement.sid.Uses.Add(Statement);
+                    sid = replacement.sid;
                 }
 
                 if (available.TryGetValue(ctx.Bitrange, out var sidSlice) &&

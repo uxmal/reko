@@ -300,5 +300,27 @@ SsaProcedureBuilder_exit:
                 m.Store(m.Mem8(m.Word32(0x00123408)), bb);
             });
         }
+
+        [Test]
+        public void Slp_Slice_Sequence()
+        {
+            var sExp =
+@"SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	v2_4 = SLICE(Mem1[0x123402<32>:word64], word32, 16)
+	Mem2[0x123410<32>:word32] = v2_4
+SsaProcedureBuilder_exit:
+";
+            RunTest(sExp, m =>
+            {
+                var reg_r2 = arch.GetRegister("r2");
+                var reg_r3 = arch.GetRegister("r3");
+                var r2_r3 = m.SeqId("r2_r3", PrimitiveType.Word64, reg_r2, reg_r3);
+
+                m.Assign(r2_r3, m.Mem(r2_r3.DataType, m.Word32(0x00123400)));
+                m.MStore(m.Word32(0x00123410), m.Slice(reg_r2.DataType, r2_r3, 16));
+            });
+        }
     }
 }

@@ -382,11 +382,15 @@ namespace Reko.Analysis
                         urb.Transform();
                     }
 
-                    DumpWatchedProcedure("precoa", "Before expression coalescing", ssa.Procedure);
-                    
+                    DumpWatchedProcedure("preslice2", "Before second slice propagation", ssa.Procedure);
+                    var sp = new SlicePropagator(ssa, eventListener);
+                    sp.Transform();
+
                     // Procedures should be untangled from each other. Now process
                     // each one separately.
                     DeadCode.Eliminate(ssa);
+
+                    DumpWatchedProcedure("precoa", "Before expression coalescing", ssa.Procedure);
 
                     // Build expressions. A definition with a single use can be subsumed
                     // into the using expression. 

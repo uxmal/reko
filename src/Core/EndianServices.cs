@@ -141,7 +141,7 @@ namespace Reko.Core
 
         /// <summary>
         /// Reads a value from memory, respecting the processor's endianness. Use this
-        /// instead of ImageWriter when random access of memory is requored.
+        /// instead of ImageWriter when random access of memory is required.
         /// </summary>
         /// <param name="mem">Memory area to read from</param>
         /// <param name="addr">Address to read from</param>
