@@ -4536,6 +4536,24 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|__xsaveopt(&Mem0[eax - 0x42<32> + ebx * 8<32>:word32])");
         }
 
+        [Test]
+        public void X86rw_lea_ptr64_into_32_bitreg()
+        {
+            Run64bitTest("8D 4C 09 01");    // lea ecx,[rcx + rcx + 1]
+            AssertCode(
+                "0|L--|0000000140000000(4): 1 instructions",
+                "1|L--|ecx = SLICE(rcx + 1<64> + rcx, word32, 0)");
+        }
+
+        [Test]
+        public void X86Rw_fdiv_mem()
+        {
+            Run32bitTest("D8 B6 3C 01 00 00");  // fdiv dword ptr [esi+0000013C]
+            AssertCode(
+                "0|L--|10000000(6): 1 instructions",
+                "1|L--|something Mem0[esp:word16] = 0x1234<16>");
+        }
+
         /*
         [Test]
         public void X86Rw_fstsw_and_cmp_jz()
