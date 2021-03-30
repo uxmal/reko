@@ -816,7 +816,7 @@ l1483_1B7F:
 	Mem208[ss:sp_207:word16] = sp_115
 	ds = Mem208[ss:sp_207 + 2<i16>:selector]
 	dx = Mem208[ss:sp_207:word16]
-	word16 v33_213 = Mem208[ds:di + 0xB0A<16>:word16]
+	word16 v34_213 = Mem208[ds:di + 0xB0A<16>:word16]
 	Mem214[ds:di + 0xB0A<16>:word16] = di
 	__inb(0x41<8>)
 	__sti()
@@ -825,7 +825,7 @@ l1483_1B7F:
 	bx = 0xD909<16>
 	cx = SEQ(SLICE(ax_184, byte, 8), al_193 - 0xD9<8>)
 	sp_115 = sp_207 + 4<i16>
-	di = v33_213
+	di = v34_213
 	C = false
 	ax = SEQ(SLICE(SEQ(0xAF<8>, cl_185) + 0xA587<16> + (al_193 <u 0xD9<8>), byte, 8), __inb(dx) - 0xF8<8> & 0xA<8>) (alias)
 

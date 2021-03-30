@@ -134,11 +134,11 @@ word16 fn03B2(ui8 a, Eq_n b, Eq_n c, Eq_n de, uint8 h, Eq_n l, struct Eq_n * ix,
 		Eq_n v44_n = ix->tFFFFFFE0;
 		ix->tFFFFFFFC = a_n;
 		ix->bFFFFFFFD = (uint8) ((bool) (a_n < 0x00) + (a_n + ix->bFFFFFFE1));
-		ui16 a_a_n = SEQ(v17_n, ix->tFFFFFFF6) + SEQ(v18_n, ix->bFFFFFFEE);
+		ui16 a_a_n = SEQ(v48_n, ix->tFFFFFFF6) + SEQ(v49_n, ix->bFFFFFFEE);
 		cu8 a_n = SLICE(a_a_n, byte, 8);
 		cu8 a_n = (bool) (a_n < 0x00) + ((word16) ix->tFFFFFFF8 + ix->bFFFFFFF0);
-		Eq_n v17_n = ix->tFFFFFFF7;
-		ui8 v18_n = ix->bFFFFFFEF;
+		Eq_n v48_n = ix->tFFFFFFF7;
+		ui8 v49_n = ix->bFFFFFFEF;
 		byte a_n = (bool) (a_n < 0x00) + (ix->bFFFFFFF9 + ix->bFFFFFFF1);
 		ix->bFFFFFFFA = ix->bFFFFFFFA ^ (byte) a_a_n;
 		ix->bFFFFFFFB = ix->bFFFFFFFB ^ a_n;

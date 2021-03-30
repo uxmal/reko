@@ -75,6 +75,8 @@ namespace Reko.Scanning
                 movedBlocks.Add(b);
                 foreach (var stm in b.Statements)
                 {
+                    if (stm.LinearAddress == 0x00000000000009c4)
+                        stm.ToString();
                     stm.Instruction = replacer.ReplaceIdentifiers(stm.Instruction);
                 }
                 if (b.Succ.Count > 0)

@@ -703,7 +703,7 @@ Eq_n fn1483-1BB9(Eq_n ax, word16 cx, mp16 dx, Eq_n bx, Eq_n bp, Eq_n si, Eq_n di
 		(ss->*sp_n).ptr0000 = sp_n;
 		ds = sp_n[2];
 		dx = (ss->*sp_n).ptr0000;
-		Eq_n v33_n = ds->*((word16) di + 2826);
+		Eq_n v34_n = ds->*((word16) di + 2826);
 		ds->*((word16) di + 2826) = di;
 		__inb(0x41);
 		__sti();
@@ -712,7 +712,7 @@ Eq_n fn1483-1BB9(Eq_n ax, word16 cx, mp16 dx, Eq_n bx, Eq_n bp, Eq_n si, Eq_n di
 		bx.u0 = 55561;
 		cx = SEQ(SLICE(ax_n, byte, 8), al_n - ~0x26);
 		sp_n = sp_n + 4;
-		di = v33_n;
+		di = v34_n;
 		C = false;
 		ax = SEQ(SLICE((bool) (al_n < ~0x26) + (SEQ(~0x50, cl_n) + 0xA587), byte, 8), __inb(dx) - ~0x07 & 0x0A);
 	}
