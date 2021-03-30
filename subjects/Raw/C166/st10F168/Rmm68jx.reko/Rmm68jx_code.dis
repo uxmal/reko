@@ -7,12 +7,12 @@ void fn0000(word16 SP)
 // Preserved:
 fn0000_entry:
 l0000:
+	Mem3[0xFF12<p16>:word16] = 0x8004<16>
 	Mem4[0xFF12<p16>:word16] = 0x8004<16>
-	Mem6[0xFF12<p16>:word16] = 0x8004<16>
 l0000_0010:
-	Mem22[SP - 2<i16>:word16] = 0<16>
-	Mem25[SP - 4<i16>:word16] = 0<16>
-	Mem29[SP - 6<i16>:word16] = 0x34<16>
+	Mem20[SP - 2<i16>:word16] = 0<16>
+	Mem23[SP - 4<i16>:word16] = 0<16>
+	Mem27[SP - 6<i16>:word16] = 0x34<16>
 	return
 fn0000_exit:
 
@@ -28,47 +28,47 @@ fn0034_entry:
 l0034:
 	__disable_watchdog_timer()
 	__end_of_initialization()
-	word16 S0TIC_161 = 0<16>
-	word16 S0RIC_152 = 0<16>
+	word16 S0TIC_160 = 0<16>
+	word16 S0RIC_151 = 0<16>
 l006A:
-	fn0128(0x13E<16>, S0TIC_161)
-	S0RIC_152 = fn011C(S0RIC_152)
+	fn0128(0x13E<16>, S0TIC_160)
+	S0RIC_151 = fn011C(S0RIC_151)
 	word16 r0_34 = <invalid>
 	branch (r0_34 & 0xDF<16>) == 0x44<16> l0098
 l0098:
 	word16 r0_45 = <invalid>
-	S0RIC_152 = fn011C(S0RIC_152)
+	S0RIC_151 = fn011C(S0RIC_151)
 	branch SLICE(r0_45, byte, 0) == 0x3A<8> l0098
 l00A2:
 	word16 r0_55 = <invalid>
-	word16 S0RIC_56 = fn011C(S0RIC_152)
+	word16 S0RIC_56 = fn011C(S0RIC_151)
 	branch SLICE(r0_55, byte, 0) == 0<8> l00DA
 l00DA:
-	S0RIC_152 = fn011C(fn011C(fn011C(fn011C(S0RIC_56))))
-	S0TIC_161 = fn0110(S0TIC_161)
+	S0RIC_151 = fn011C(fn011C(fn011C(fn011C(S0RIC_56))))
+	S0TIC_160 = fn0110(S0TIC_160)
 l00AA:
 	word16 r0_107 = <invalid>
 	word16 r0_117 = <invalid>
 	word16 r2_103 = r0_55 & 0xFF<16>
 	word16 S0RIC_128 = fn011C(fn011C(fn011C(S0RIC_56)))
-	word16 r1_144 = SEQ(SLICE(r0_107, byte, 0), SLICE(r0_117, byte, 0))
+	word16 r1_143 = SEQ(SLICE(r0_107, byte, 0), SLICE(r0_117, byte, 0))
 l00C0:
 	word16 r0_135 = <invalid>
 	S0RIC_128 = fn011C(S0RIC_128)
-	Mem145[r1_144:byte] = SLICE(r0_135, byte, 0)
-	r1_144 = r1_144 + 1<8>
-	r2_103 = r2_230 - 1<i16>
-	r2_230 = r2_103
-	branch r2_230 >u 1<16> l00C0
+	Mem144[r1_143:byte] = SLICE(r0_135, byte, 0)
+	r1_143 = r1_143 + 1<8>
+	r2_103 = r2_229 - 1<i16>
+	r2_229 = r2_103
+	branch r2_229 >u 1<16> l00C0
 l00CC:
-	S0RIC_152 = fn011C(S0RIC_128)
-	S0TIC_161 = fn0110(S0TIC_161)
+	S0RIC_151 = fn011C(S0RIC_128)
+	S0TIC_160 = fn0110(S0TIC_160)
 l0080:
 	branch (r0_34 & 0xDF<16>) == 0x47<16> l0088
 l0088:
-	fn011C(fn011C(S0RIC_152))
-	word16 r0_169 = <invalid>
-	Mem192[0xFBFE<16>:word16] = SEQ(SLICE(r0_169, byte, 0), SLICE(fp, byte, 0))
+	fn011C(fn011C(S0RIC_151))
+	word16 r0_168 = <invalid>
+	Mem191[0xFBFE<16>:word16] = SEQ(SLICE(r0_168, byte, 0), SLICE(fp, byte, 0))
 	return
 fn0034_exit:
 l0086:
@@ -86,7 +86,7 @@ word16 fn0110(word16 S0TIC)
 // Preserved: r0
 fn0110_entry:
 l0110:
-	Mem4[0xFEB0<p16>:word16] = fp
+	Mem3[0xFEB0<p16>:word16] = fp
 l0114:
 	branch !__bit(S0TIC, 7<i16>) l0114
 l0118:

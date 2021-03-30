@@ -34,6 +34,15 @@ namespace Reko.Arch.C166
         public static readonly RegisterStorage[] LoByteRegs;
         public static readonly RegisterStorage[] HiByteRegs;
         public static readonly Dictionary<int, RegisterStorage> SpecialFunctionRegs;
+        public static readonly RegisterStorage PSW;
+        public static readonly RegisterStorage SP;
+        public static readonly Dictionary<StorageDomain, RegisterStorage> ByDomain;
+
+        public static readonly FlagGroupStorage E;
+        public static readonly FlagGroupStorage Z;
+        public static readonly FlagGroupStorage V;
+        public static readonly FlagGroupStorage C;
+        public static readonly FlagGroupStorage N;
 
         static Registers()
         {
@@ -49,8 +58,11 @@ namespace Reko.Arch.C166
                 .SelectMany(i => new[] { LoByteRegs[i], HiByteRegs[i] })
                 .ToArray();
 
-            RegisterStorage Sfr(string name, int regNo, string description) =>
+            static RegisterStorage Sfr(string name, int regNo, string description) =>
                 new RegisterStorage(name, regNo | (int)StorageDomain.SystemRegister, 0, PrimitiveType.Word16);
+
+            PSW = Sfr("PSW", 0xFF10, "CPU Program Status Word 0000");
+            SP = Sfr("SP", 0xFE12, "CPU System Stack Pointer Register FC00");
 
             SpecialFunctionRegs = new Dictionary<int, RegisterStorage>
             {
@@ -127,7 +139,7 @@ namespace Reko.Arch.C166
                 { 0xFECA, Sfr("PECC5", 0xFECA, "PEC Channel 5 Control Register 0000") },
                 { 0xFECC, Sfr("PECC6", 0xFECC, "PEC Channel 6 Control Register 0000") },
                 { 0xFECE, Sfr("PECC7", 0xFECE, "PEC Channel 7 Control Register 0000") },
-                { 0xFF10, Sfr("PSW", 0xFF10, "CPU Program Status Word 0000") },
+                { 0xFF10, PSW },
                 { 0xFEB4, Sfr("S0BG", 0xFEB4, "Serial Channel 0 Baud Rate Generator Reload Register 0000") },
                 { 0xFFB0, Sfr("S0CON", 0xFFB0, "Serial Channel 0 Control Register 0000") },
                 { 0xFF70, Sfr("S0EIC", 0xFF70, "Serial Channel 0 Error Interrupt Control Register 0000") },
@@ -142,7 +154,7 @@ namespace Reko.Arch.C166
                 { 0xFF74, Sfr("S1RIC", 0xFF74, "Serial Channel 1 Receive Interrupt Control Register 0000") },
                 { 0xFEB8, Sfr("S1TBUF", 0xFEB8, "Serial Channel 1 Transmit Buffer Register (write only) 00") },
                 { 0xFF72, Sfr("S1TIC", 0xFF72, "Serial Channel 1 Transmit Interrupt Control Register 0000") },
-                { 0xFE12, Sfr("SP", 0xFE12, "CPU System Stack Pointer Register FC00") },
+                { 0xFE12, SP },
                 { 0xFE14, Sfr("STKOV", 0xFE14, "CPU Stack Overflow Pointer Register FA00") },
                 { 0xFE16, Sfr("STKUN", 0xFE16, "CPU Stack Underflow Pointer Register FC00") },
                 { 0xFF0C, Sfr("SYSCON", 0xFF0C, "CPU System Configuration Register 0xx0") },
@@ -173,6 +185,14 @@ namespace Reko.Arch.C166
                 { 0xFFAE, Sfr("WDTCON", 0xFFAE, "Watchdog Timer Control Register 0000") },
                 { 0xFF1C, Sfr("ZEROS", 0xFF1C, "Constant Value 0’s Register (read only) 0000") },
             };
+            ByDomain = GpRegs.Concat(SpecialFunctionRegs.Values)
+                .ToDictionary(r => r.Domain);
+
+            E = new FlagGroupStorage(PSW, (uint)FlagM.EF, "E", PrimitiveType.Bool);
+            Z = new FlagGroupStorage(PSW, (uint)FlagM.ZF, "Z", PrimitiveType.Bool);
+            V = new FlagGroupStorage(PSW, (uint)FlagM.VF, "V", PrimitiveType.Bool);
+            C = new FlagGroupStorage(PSW, (uint)FlagM.CF, "C", PrimitiveType.Bool);
+            N = new FlagGroupStorage(PSW, (uint)FlagM.NF, "N", PrimitiveType.Bool);
         }
     }
 

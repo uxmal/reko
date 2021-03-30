@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -38,6 +39,7 @@ namespace Reko.Arch.C166
             Endianness = EndianServices.Little;
             FramePointerType = PrimitiveType.Ptr16;
             InstructionBitSize = 16;
+            PointerType = PrimitiveType.Ptr16;
             StackRegister = Registers.GpRegs[0];
             WordWidth = PrimitiveType.Word16;
 
@@ -75,12 +77,14 @@ DPP3	If DPP3 is modified in the assembler subroutine, it must be reset to 3 (SYS
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new C166Rewriter(this, state, binder, host);
+            return new C166Rewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
-            throw new NotImplementedException();
+            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(Registers.PSW, grf, GrfToString(flagRegister, "", grf), dt);
+            return fl;
         }
 
         public override FlagGroupStorage? GetFlagGroup(string name)
@@ -105,7 +109,16 @@ DPP3	If DPP3 is modified in the assembler subroutine, it must be reset to 3 (SYS
 
         public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            var nDomain = (int) domain;
+            if (0 <= nDomain && nDomain < Registers.GpRegs.Length)
+            {
+                if (range.Lsb < 8 && range.Msb <= 8)
+                    return Registers.LoByteRegs[nDomain / 2];
+                if (range.Lsb >= 8 && range.Msb < 16)
+                    return Registers.HiByteRegs[nDomain / 2];
+                return Registers.GpRegs[nDomain];
+            }
+            return Registers.ByDomain[domain];
         }
 
         public override RegisterStorage[] GetRegisters()
@@ -113,9 +126,25 @@ DPP3	If DPP3 is modified in the assembler subroutine, it must be reset to 3 (SYS
             throw new NotImplementedException();
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if ((grf & Registers.E.FlagGroupBits) != 0) yield return Registers.E;
+            if ((grf & Registers.Z.FlagGroupBits) != 0) yield return Registers.Z;
+            if ((grf & Registers.V.FlagGroupBits) != 0) yield return Registers.V;
+            if ((grf & Registers.C.FlagGroupBits) != 0) yield return Registers.C;
+            if ((grf & Registers.N.FlagGroupBits) != 0) yield return Registers.N;
+        }
+
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
-            throw new NotImplementedException();
+            StringBuilder sb = new StringBuilder();
+            if ((grf & Registers.E.FlagGroupBits) != 0) sb.Append(Registers.E.Name);
+            if ((grf & Registers.Z.FlagGroupBits) != 0) sb.Append(Registers.Z.Name);
+            if ((grf & Registers.V.FlagGroupBits) != 0) sb.Append(Registers.V.Name);
+            if ((grf & Registers.C.FlagGroupBits) != 0) sb.Append(Registers.C.Name);
+            if ((grf & Registers.N.FlagGroupBits) != 0) sb.Append(Registers.N.Name);
+            return sb.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)

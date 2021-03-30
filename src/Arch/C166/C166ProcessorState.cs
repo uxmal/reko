@@ -60,7 +60,7 @@ namespace Reko.Arch.C166
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            throw new NotImplementedException();
+            return new CallSite(2, 0);
         }
 
         public override void OnProcedureEntered()
