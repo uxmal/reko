@@ -65,5 +65,22 @@ namespace Reko.Core
         /// files.
         /// </summary>
         public TypeLibrary LoadedMetadata { get; set; }
+
+        /// <summary>
+        /// Call event handlers defined at user-defined scripts.
+        /// </summary>
+        /// <param name="funcName">
+        /// Name for script function which is used as event handler.
+        /// </param>
+        public void FireScriptEvent(string funcName)
+        {
+            foreach (var scriptModule in ScriptModules)
+            {
+                foreach (var program in Programs)
+                {
+                    scriptModule.CallFunction(funcName, program);
+                }
+            }
+        }
     }
 }

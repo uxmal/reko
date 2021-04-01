@@ -201,6 +201,10 @@ namespace Reko
             BuildImageMaps();
             WriteEntryPoints();
             eventListener.ShowStatus("Source program loaded.");
+            // $TODO: I do not like hardcoded name of function
+            // Maybe object inspector should be introduced, which could allow
+            // user to choose handler for each event
+            Project.FireScriptEvent("on_program_loaded");
             return true;
         }
 
