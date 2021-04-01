@@ -48,6 +48,7 @@ namespace Reko.Core.Serialization
             this.InputFiles = new List<DecompilerInput_v5>();
             this.MetadataFiles = new List<MetadataFile_v3>();
             this.AssemblerFiles = new List<AssemblerFile_v3>();
+            this.ScriptFiles = new List<ScriptFile_v5>();
         }
 
         [XmlElement("arch")]
@@ -62,6 +63,8 @@ namespace Reko.Core.Serialization
         public List<MetadataFile_v3> MetadataFiles;
         [XmlElement("asm", typeof(AssemblerFile_v3))]
         public List<AssemblerFile_v3> AssemblerFiles;
+        [XmlElement("script", typeof(ScriptFile_v5))]
+        public List<ScriptFile_v5> ScriptFiles;
 
         public override T Accept<T>(ISerializedProjectVisitor<T> visitor)
         {
@@ -96,5 +99,11 @@ namespace Reko.Core.Serialization
 
         [XmlElement("user")]
         public UserData_v4? User;
+    }
+
+    public class ScriptFile_v5
+    {
+        [XmlElement("filename")]
+        public string? Filename;
     }
 }

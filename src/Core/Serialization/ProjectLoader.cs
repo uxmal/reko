@@ -180,8 +180,12 @@ namespace Reko.Core.Serialization
             this.project.LoadedMetadata = this.platform.CreateMetadata();
             var typelibs = sp.MetadataFiles.Select(m => VisitMetadataFile(filename, m));
             var programs = sp.InputFiles.Select(s => VisitInputFile(filename, s));
+            var scripts = sp.ScriptFiles.
+                Select(s => VisitScriptFile(filename, s)).
+                OfType<ScriptModule>();
             sp.AssemblerFiles.Select(s => VisitAssemblerFile(s));
             project.MetadataFiles.AddRange(typelibs);
+            project.ScriptModules.AddRange(scripts);
             project.Programs.AddRange(programs);
             return this.project;
         }
@@ -667,6 +671,16 @@ namespace Reko.Core.Serialization
             if (platformsInUse.Length == 0)
                 throw new NotImplementedException("Must specify platform for project.");
             throw new NotImplementedException("Multiple platforms possible; not implemented yet.");
+        }
+
+        public ScriptModule? VisitScriptFile(
+            string projectFilePath, ScriptFile_v5 sScript)
+        {
+            var filename = ConvertToAbsolutePath(
+                projectFilePath, sScript.Filename);
+            if (filename == null)
+                return null;
+            return loader.LoadScript(filename);
         }
 
         public Program VisitAssemblerFile(AssemblerFile_v3 sAsmFile)

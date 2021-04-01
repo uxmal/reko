@@ -315,6 +315,12 @@ namespace Reko.Loading
             return result;
         }
 
+        public ScriptModule? LoadScript(string fileName)
+        {
+            var rawBytes = LoadImageBytes(fileName, 0);
+            return FindImageLoader<ScriptModule>(fileName, rawBytes);
+        }
+
         /// <summary>
         /// Loads the contents of a file with the specified filename into an array 
         /// of bytes, optionally at the offset <paramref>offset</paramref>. No interpretation

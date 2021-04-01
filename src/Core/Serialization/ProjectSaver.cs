@@ -53,6 +53,10 @@ namespace Reko.Core.Serialization
 
             var metadataFiles = new List<MetadataFile_v3>();
             metadataFiles.AddRange(project.MetadataFiles.Select(m => VisitMetadataFile(projectAbsPath, m)));
+            var scriptFiles = new List<ScriptFile_v5>();
+            scriptFiles.AddRange(
+                project.ScriptModules.Select(
+                    s => VisitScriptFile(projectAbsPath, s)));
             var sp = new Project_v5
             {
                 // ".Single()" because there can be only one Architecture and Platform, realistically.
@@ -60,6 +64,7 @@ namespace Reko.Core.Serialization
                 PlatformName = project.Programs.Select(p => p.Platform.Name).Distinct().SingleOrDefault(),   
                 InputFiles = inputFiles,
                 MetadataFiles = metadataFiles,
+                ScriptFiles = scriptFiles,
             };
             return sp;
         }
@@ -314,6 +319,16 @@ namespace Reko.Core.Serialization
             {
                  Filename = ConvertToProjectRelativePath(projectAbsPath, metadata.Filename!),
                   ModuleName = metadata.ModuleName,
+            };
+        }
+
+        private ScriptFile_v5 VisitScriptFile(
+            string projectAbsPath, ScriptModule script)
+        {
+            return new ScriptFile_v5
+            {
+                Filename = ConvertToProjectRelativePath(
+                    projectAbsPath, script.Filename),
             };
         }
     }
