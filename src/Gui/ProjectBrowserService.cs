@@ -83,6 +83,7 @@ namespace Reko.Gui
             {
                 AddComponents(project.Programs);
                 AddComponents(project.MetadataFiles);
+                AddComponents(project.ScriptModules);
                 project.MetadataFiles.CollectionChanged += TypeLibraries_CollectionChanged;
                 tree.ShowNodeToolTips = true;
                 tree.ShowRootLines = true;
