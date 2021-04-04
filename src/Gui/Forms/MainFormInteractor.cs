@@ -317,6 +317,33 @@ namespace Reko.Gui.Forms
             }
         }
 
+        /// <summary>
+        /// Prompts the user for a script module and adds to the project.
+        /// </summary>
+        public void AddScriptModule()
+        {
+            var fileName = uiSvc.ShowOpenFileDialog(null);
+            if (fileName == null)
+                return;
+            try
+            {
+                var script = loader.LoadScript(fileName);
+                if (script is null)
+                    return;
+                var project = decompilerSvc.Decompiler.Project;
+                if (project is null)
+                    return;
+                project.ScriptModules.Add(script);
+            }
+            catch (Exception e)
+            {
+                uiSvc.ShowError(
+                    e,
+                    "An error occured while parsing the script module {0}",
+                    fileName);
+            }
+        }
+
         public bool AssembleFile()
         {
             IAssembleFileDialog dlg = null;
@@ -863,6 +890,7 @@ namespace Reko.Gui.Forms
                     return true;
                 case CmdIds.FileAddBinary:
                 case CmdIds.FileAddMetadata:
+                case CmdIds.FileAddScript:
                 case CmdIds.FileSave:
                 case CmdIds.FileCloseProject:
                 case CmdIds.EditFind:
@@ -925,6 +953,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.FileAssemble: retval = AssembleFile(); break;
                 case CmdIds.FileSave: Save(); retval = true; break;
                 case CmdIds.FileAddMetadata: AddMetadataFile(); retval = true; break;
+                case CmdIds.FileAddScript: AddScriptModule(); retval = true; break;
                 case CmdIds.FileCloseProject: CloseProject(); retval = true; break;
                 case CmdIds.FileExit: form.Close(); retval = true; break;
 
