@@ -842,40 +842,6 @@ namespace Reko.UnitTests.Arch.RiscV
                 "1|T--|if (a4 != 0<64>) branch 000000000000FF30");
         }
 
-        // Reko: a decoder for RiscV instruction 62696C2F at address 00100000 has not been implemented. (amo)
-        [Test]
-        [Ignore("ASCII code decoded as text")]
-        public void RiscV_rw_62696C2F()
-        {
-            Given_RiscVInstructions(0x62696C2F);    // @@@
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        // Reko: a decoder for RiscV instruction 2D646C2F at address 00100000 has not been implemented. (amo)
-        [Test]
-        [Ignore("ASCII code decoded as text")]
-
-        public void RiscV_rw_2D646C2F()
-        {
-            Given_RiscVInstructions(0x2D646C2F);    // @@@
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        // Reko: a decoder for RiscV instruction 36766373 at address 00100000 has not been implemented. (system)
-        [Test]
-        [Ignore("ASCII code decoded as text")]
-        public void RiscV_rw_36766373()
-        {
-            Given_RiscVInstructions(0x36766373);    // @@@
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
         [Test]
         public void RiscV_rw_c_fldsp()
         {
@@ -883,17 +849,6 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(
                 "0|L--|0000000000010000(2): 1 instructions",
                 "1|L--|fa3 = Mem0[sp + 552<i64>:real64]");
-        }
-
-        // Reko: a decoder for RiscV instruction 312E6F73 at address 00100000 has not been implemented. (system)
-        [Test]
-        [Ignore("ASCII code decoded as text")]
-        public void RiscV_rw_312E6F73()
-        {
-            Given_RiscVInstructions(0x312E6F73);    // @@@
-            AssertCode(
-                "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|@@@");
         }
 
         [Test]

@@ -223,5 +223,30 @@ namespace Reko.Arch.RiscV
         wfi,
         xor,
         xori,
+
+        lr_w,
+        sc_w, 
+        amoswap_w,
+        amoadd_w, 
+        amoxor_w, 
+        amoand_w, 
+        amoor_w, 
+        amomin_w, 
+        amomax_w, 
+        amominu_w,
+        amomaxu_w,
+
+        lr_d,
+        sc_d,
+        amoswap_d,
+        amoadd_d,
+        amoxor_d,
+        amoand_d,
+        amoor_d,
+        amomin_d,
+        amomax_d,
+        amominu_d,
+        amomaxu_d,
+
     }
 }

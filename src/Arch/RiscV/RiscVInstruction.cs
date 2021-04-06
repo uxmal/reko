@@ -23,6 +23,7 @@ using Reko.Core.Machine;
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Reko.Arch.RiscV
 {
@@ -90,6 +91,9 @@ namespace Reko.Arch.RiscV
 
         public override string MnemonicAsString => Mnemonic.ToString();
 
+        public bool Acquire { get; set; }
+        public bool Release { get; set; }
+
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             RenderMnemonic(renderer);
@@ -98,12 +102,21 @@ namespace Reko.Arch.RiscV
 
         private void RenderMnemonic(MachineInstructionRenderer renderer)
         {
-            if (!mnemonicNames.TryGetValue(Mnemonic, out string name))
+            var sb = new StringBuilder();
+            if (mnemonicNames.TryGetValue(Mnemonic, out string name))
             {
-                name = Mnemonic.ToString();
-                name = name.Replace('_', '.');
+                sb.Append(name);
             }
-            renderer.WriteMnemonic(name);
+            else
+            {
+                sb.Append(Mnemonic.ToString());
+                sb.Replace('_', '.');
+            }
+            if (Acquire)
+                sb.Append(".aq");
+            if (Release)
+                sb.Append(".rl");
+            renderer.WriteMnemonic(sb.ToString());
         }
 
         protected override void RenderOperand(MachineOperand op, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
