@@ -4,41 +4,45 @@
 
 #include "pySample.h"
 
-// 10001000: void sum_wrapper(Stack (ptr32 Eq_n) dwArg08)
-void sum_wrapper(PyObject * dwArg08)
+// 10001000: Register (ptr32 Eq_n) sum_wrapper(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
+PyObject * sum_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
 {
-	if (PyArg_ParseTuple(dwArg08, "ii:sum", fp - 0x04, fp - 0x08) == 0x00)
-		return;
-	Py_BuildValue("i", dwLoc04 + dwLoc08);
+	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:sum", fp - 0x04, fp - 0x08);
+	if (eax_n != null)
+		return Py_BuildValue("i", dwLoc04 + dwLoc08);
+	return eax_n;
 }
 
-// 10001050: void dif_wrapper(Stack (ptr32 Eq_n) dwArg08)
-void dif_wrapper(PyObject * dwArg08)
+// 10001050: Register (ptr32 Eq_n) dif_wrapper(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
+PyObject * dif_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
 {
-	if (PyArg_ParseTuple(dwArg08, "ii:dif", fp - 0x08, fp - 0x04) == 0x00)
-		return;
-	Py_BuildValue("i", dwLoc08 - dwLoc04);
+	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:dif", fp - 0x08, fp - 0x04);
+	if (eax_n != null)
+		return Py_BuildValue("i", dwLoc08 - dwLoc04);
+	return eax_n;
 }
 
-// 100010A0: void div_wrapper(Stack (ptr32 Eq_n) dwArg08)
-void div_wrapper(PyObject * dwArg08)
+// 100010A0: Register (ptr32 Eq_n) div_wrapper(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
+PyObject * div_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
 {
-	if (PyArg_ParseTuple(dwArg08, "ii:div", fp - 0x08, fp - 0x04) == 0x00)
-		return;
-	Py_BuildValue("i", (int32) ((int64) dwLoc08 /32 dwLoc04));
+	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:div", fp - 0x08, fp - 0x04);
+	if (eax_n != null)
+		return Py_BuildValue("i", (int32) ((int64) dwLoc08 /32 dwLoc04));
+	return eax_n;
 }
 
-// 100010F0: void fdiv_wrapper(Stack (ptr32 Eq_n) dwArg08)
-void fdiv_wrapper(PyObject * dwArg08)
+// 100010F0: Register (ptr32 Eq_n) fdiv_wrapper(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
+PyObject * fdiv_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
 {
-	if (PyArg_ParseTuple(dwArg08, "ff:fdiv", fp - 0x08, fp - 0x04) == 0x00)
-		return;
-	Py_BuildValue("f", (real64) rLoc08 / (real64) rLoc04);
+	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ff:fdiv", fp - 0x08, fp - 0x04);
+	if (eax_n != null)
+		return Py_BuildValue("f", (real64) rLoc08 / (real64) rLoc04);
+	return eax_n;
 }
 
 // 10001170: void initpySample()
 void initpySample()
 {
-	Py_InitModule4("pySample", &g_t10003010, null, null, 1007);
+	Py_InitModule4("pySample", methods, null, null, 1007);
 }
 

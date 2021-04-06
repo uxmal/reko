@@ -68,6 +68,16 @@ class Memory(object):
     def __getitem__(self, addr):
         return MemorySlice(self._reko, addr)
 
+class Globals(object):
+    def __init__(self, reko):
+        self._reko = reko
+
+    def __setitem__(self, addr, decl):
+        if isinstance(decl, str):
+            self._reko.SetUserGlobal(addr, decl)
+            return
+        raise TypeError('Unsupported type: {}'.format(type(decl)))
+
 class Procedures(object):
     def __init__(self, reko):
         self._reko = reko
@@ -85,6 +95,10 @@ class Program(object):
     @property
     def memory(self):
         return Memory(self._reko)
+
+    @property
+    def globals(self):
+        return Globals(self._reko)
 
     @property
     def procedures(self):

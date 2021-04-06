@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
@@ -47,6 +48,19 @@ namespace Reko.Scripts.Python
             var rdr = CreateImageReader(linearAddress);
             var c = rdr.ReadCString(PrimitiveType.Char, program.TextEncoding);
             return c.ToString();
+        }
+
+        public void SetUserGlobal(ulong linearAddress, string decl)
+        {
+            var addr = Addr(linearAddress);
+            var usb = new UserSignatureBuilder(program);
+            var global = usb.ParseGlobalDeclaration(decl);
+            var name = global?.Name;
+            var dataType = global?.DataType;
+            if (name is null || dataType is null)
+                throw new ArgumentException(
+                    $"Failed to parse global variable declaration: '{decl}'");
+            program.User.Globals[addr] = new UserGlobal(addr, name, dataType);
         }
 
         public void SetUserProcedure(ulong linearAddress, string name)
