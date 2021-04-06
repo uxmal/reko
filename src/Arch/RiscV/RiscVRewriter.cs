@@ -149,7 +149,9 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.fcvt_d_s: RewriteFcvt(PrimitiveType.Real32, PrimitiveType.Real64); break;
                 case Mnemonic.fcvt_l_d: RewriteFcvt(PrimitiveType.Real64, PrimitiveType.Int64); break;
                 case Mnemonic.fcvt_l_s: RewriteFcvt(PrimitiveType.Real32, PrimitiveType.Int64); break;
+                case Mnemonic.fcvt_lu_s: RewriteFcvt(PrimitiveType.Real32, PrimitiveType.UInt64); break;
                 case Mnemonic.fcvt_s_w: RewriteFcvt(PrimitiveType.Int32, PrimitiveType.Real32); break;
+                case Mnemonic.fcvt_s_lu: RewriteFcvt(PrimitiveType.UInt64, PrimitiveType.Real32); break;
                 case Mnemonic.fcvt_s_wu: RewriteFcvt(PrimitiveType.UInt32, PrimitiveType.Real32); break;
                 case Mnemonic.fcvt_w_d: RewriteFcvt(PrimitiveType.Real64, PrimitiveType.Int32); break;
                 case Mnemonic.fcvt_w_s: RewriteFcvt(PrimitiveType.Real32, PrimitiveType.Int32); break;
@@ -214,6 +216,7 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.srl: RewriteBinOp(m.Shr); break;
                 case Mnemonic.srli: RewriteShift(m.Shr); break;
                 case Mnemonic.srliw: RewriteShiftw(SrlI); break;
+                case Mnemonic.srlw: RewriteShiftw(m.Shr); break;
                 case Mnemonic.sub: RewriteSub(); break;
                 case Mnemonic.subw: RewriteSubw(); break;
                 case Mnemonic.uret: RewriteRet("__uret"); break;

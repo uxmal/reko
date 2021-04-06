@@ -64,6 +64,7 @@ char g_str117A8[] = "%s.0"; // 00000000000117A8
 char g_str117B0[] = "Memory allocation failure line %d\n"; // 00000000000117B0
 char g_str117D8[] = "ipcalc: bad IPv4 prefix %d\n"; // 00000000000117D8
 void g_v117F8 = ??void??; // 00000000000117F8
+char g_str11828[] = "%u"; // 0000000000011828
 char g_str11830[] = "ipcalc: cannot find hostname for %s"; // 0000000000011830
 char g_str11920[] = "ipcalc: bad IPv6 address: %s\n"; // 0000000000011920
 char g_str11940[] = "ipcalc: bad IPv6 prefix: %d\n"; // 0000000000011940

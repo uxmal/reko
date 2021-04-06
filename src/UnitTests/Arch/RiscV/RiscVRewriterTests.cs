@@ -1104,6 +1104,15 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_srlw()
+        {
+            Given_HexString("3BD6F600");
+            AssertCode(     // srlw     a2,a3,a5
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a2 = CONVERT(SLICE(a3, word32, 0) >>u a5, word32, int64)");
+        }
+
+        [Test]
         public void RiscV_rw_fsd()
         {
             Given_RiscVInstructions(0x639435A7);    // fsd	fs9,12632(s0)
@@ -1186,5 +1195,24 @@ namespace Reko.UnitTests.Arch.RiscV
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|__wait_for_interrupt()");
         }
+
+        [Test]
+        public void RiscV_rw_fcvt_s_lu()
+        {
+            Given_HexString("D3F734D0");
+            AssertCode(     // fcvt.s.lu        fa5,s1
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa5 = SEQ(0xFFFFFFFF<32>, CONVERT(s1, uint64, real32))");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_lu_s()
+        {
+            Given_HexString("D39437C0");
+            AssertCode(     // fcvt.lu.s        s1,fa5
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|s1 = CONVERT(SLICE(fa5, real32, 0), real32, uint64)");
+        }
+
     }
 }

@@ -626,5 +626,17 @@ namespace Reko.UnitTests.Arch.RiscV
             //10500073
             AssertCode("wfi", "73005010");
         }
+
+        [Test]
+        public void RiscV_dasm_srlw()
+        {
+            AssertCode("srlw\ta0,a3,a4", "3BD5E600");
+        }
+
+        [Test]
+        public void RiscV_dasm_sllw()
+        {
+            AssertCode("sllw\ta1,a1,a4", "BB95E500");
+        }
     }
 }

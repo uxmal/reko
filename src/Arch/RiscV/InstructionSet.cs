@@ -197,8 +197,7 @@ namespace Reko.Arch.RiscV
                         Nyi("op - 20 - 0b110"),
                         Nyi("op - 20 - 0b111")));
 
-                var op32 = new Decoder[]            // 0b01110
-                {
+                var op32 = Mask(12, 3, "  op-32",            // 0b01110
                     Sparse(25, 7, "  000", Nyi(""),
                         (0x00, Instr(Mnemonic.addw, d,r1,r2)),
                         (0x01, Instr(Mnemonic.mulw, d,r1,r2)),
@@ -217,8 +216,7 @@ namespace Reko.Arch.RiscV
                     Sparse(25, 7, "  110", Nyi(""),
                         (0x01, Instr(Mnemonic.remw, d,r1,r2))),
                     Sparse(25, 7, "  111", Nyi(""),
-                        (0x01, Instr(Mnemonic.remuw, d,r1,r2))),
-                };
+                        (0x01, Instr(Mnemonic.remuw, d,r1,r2))));
 
                 var opfp = new (uint, Decoder)[]     // 0b10100
                 {
@@ -398,29 +396,7 @@ namespace Reko.Arch.RiscV
 
                     op,
                     Instr(Mnemonic.lui, d, Iu),
-                    Sparse(25, 7, "op-32",
-                        invalid,
-                        (1, new MaskDecoder(12, 3, "muldiv",
-                            Instr(Mnemonic.mulw, Rd, R1, R2),
-                            invalid,
-                            invalid,
-                            invalid,
-
-                            Instr(Mnemonic.divw, Rd, R1, R2),
-                            Instr(Mnemonic.divuw, Rd, R1, R2),
-                            Instr(Mnemonic.remw, Rd, R1, R2),
-                            Instr(Mnemonic.remuw, Rd, R1, R2))
-                        ),
-                        (0x20, new MaskDecoder(12, 3, "suww",
-                            Instr(Mnemonic.subw, Rd, R1, R2),
-                            Nyi("20 - 001"),
-                            Nyi("20 - 010"),
-                            Nyi("20 - 011"),
-
-                            Nyi("20 - 100"),
-                            Nyi("20 - 101"),
-                            Nyi("20 - 110"),
-                            Nyi("20 - 111")))),
+                    op32,
                     Nyi("64-bit instruction"),
 
                     // 10
