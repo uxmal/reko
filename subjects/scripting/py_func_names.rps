@@ -49,6 +49,8 @@ def on_program_loaded(program):
         num_methods += 1
     program.globals[0x10003010] = 'PyMethodDef methods[{}]'.format(num_methods)
     exclude_dll_main(program)
+    comments = 'This is initialization of Python extension module'
+    program.comments[0x10001170] = comments
 
 def exclude_dll_main(program):
     program.procedures[0x1000149E] = 'DllMain'

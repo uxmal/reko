@@ -50,6 +50,12 @@ namespace Reko.Scripts.Python
             return c.ToString();
         }
 
+        public void SetUserComment(ulong linearAddress, string comment)
+        {
+            var addr = Addr(linearAddress);
+            program.User.Annotations[addr] = comment;
+        }
+
         public void SetUserGlobal(ulong linearAddress, string decl)
         {
             var addr = Addr(linearAddress);

@@ -48,6 +48,17 @@ namespace Reko.Scripts.Python
         private ScriptScope EvaluatePythonDefinitions(ScriptEngine engine)
         {
             var pythonAPIDefinitions = @"
+class Comments(object):
+    def __init__(self, reko):
+        self._reko = reko
+
+    def __setitem__(self, addr, comment):
+        if not isinstance(comment, str):
+            raise TypeError(
+                'Unsupported type: {}. Expected type: str'.format(
+                    type(comment)))
+        self._reko.SetUserComment(addr, comment)
+
 class MemorySlice(object):
     def __init__(self, reko, start_addr):
         self._reko = reko
@@ -107,6 +118,10 @@ class Procedures(object):
 class Program(object):
     def __init__(self, reko):
         self._reko = reko
+
+    @property
+    def comments(self):
+        return Comments(self._reko)
 
     @property
     def memory(self):

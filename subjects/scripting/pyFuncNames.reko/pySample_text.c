@@ -43,6 +43,7 @@ PyObject * fdiv_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
 // 10001170: void initpySample()
 void initpySample()
 {
+	// This is initialization of Python extension module
 	Py_InitModule4("pySample", methods, null, null, 1007);
 }
 
