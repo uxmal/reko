@@ -130,6 +130,7 @@ namespace Reko.Arch.RiscV
         fdiv_q,
         fdiv_s,
         feq_d,
+        feq_q,
         feq_s,
         fld,
         fle_d,

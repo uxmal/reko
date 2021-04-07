@@ -57,6 +57,18 @@ namespace Reko.UnitTests.Arch.RiscV
             baseAddr = Address.Ptr32(0x0010000);
         }
 
+        private void Given_128bitFloat()
+        {
+            arch = new RiscVArchitecture(
+                CreateServiceContainer(),
+                "riscV",
+                new Dictionary<string, object>
+                {
+                    { "WordSize", "64" },
+                    { "FloatAbi", 128 }
+                });
+        }
+
         // No floating point support.
         private void Given_32bit()
         {
@@ -204,6 +216,16 @@ namespace Reko.UnitTests.Arch.RiscV
                  "1|L--|fs10 = ft7 * fs1 + fa6");
         }
 
+
+        [Test]
+        public void RiscV_rw_fmul_d()
+        {
+            Given_HexString("5377D712");
+            AssertCode(     // fmul.d	fa4,fa4,fa3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = fa4 * fa3");
+        }
+
         [Test]
         public void RiscV_rw_fnmadd_s()
         {
@@ -326,6 +348,42 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_fcvt_d_lu()
+        {
+            Given_HexString("53F739D2");
+            AssertCode(     // fcvt.d.lu	fa4,s3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = CONVERT(s3, uint64, real64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_d_wu()
+        {
+            Given_HexString("538416D2");
+            AssertCode(     // fcvt.d.wu	fs0,a3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fs0 = CONVERT(SLICE(a3, uint32, 0), uint32, real64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_lu_d()
+        {
+            Given_HexString("531534C2");
+            AssertCode(     // fcvt.lu.d	a0,fs0
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a0 = CONVERT(fs0, real64, uint64)");
+        }
+
+        [Test]
+        public void RiscV_rw_fcvt_s_d()
+        {
+            Given_HexString("D3261C40");
+            AssertCode(     // fcvt.s.d	fa3,fs8
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa3 = SEQ(0xFFFFFFFF<32>, CONVERT(fs8, real64, real32))");
+        }
+
+        [Test]
         public void RiscV_rw_fcvt_s_w()
         {
             Given_32bitFloat();
@@ -372,6 +430,15 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(     // fdiv.s	fs0,fs0,fa5
                 "0|L--|00010000(4): 1 instructions",
                 "1|L--|fs0 = fs0 / fa5");
+        }
+
+        [Test]
+        public void RiscV_rw_feq_d()
+        {
+            Given_HexString("D327D7A2");
+            AssertCode(     // feq.d	a5,fa4,fa3
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = CONVERT(fa4 == fa3, bool, word64)");
         }
 
         [Test]
@@ -484,6 +551,15 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_fdiv_d()
+        {
+            Given_HexString("D377F71A");
+            AssertCode(     // fdiv.d	fa5,fa4,fa5
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa5 = fa4 / fa5");
+        }
+
+        [Test]
         public void RiscV_rw_feq_s()
         {
             // 1010000 011110111001001111 10100 11
@@ -492,6 +568,16 @@ namespace Reko.UnitTests.Arch.RiscV
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|a5 = CONVERT(SLICE(fa4, real32, 0) == SLICE(fa5, real32, 0), bool, word64)");
         }
+
+        [Test]
+        public void RiscV_rw_fle_d()
+        {
+            Given_HexString("D387E7A2");
+            AssertCode(     // fle.d	a5,fa5,fa4
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = CONVERT(fa5 <= fa4, bool, word64)");
+        }
+
 
         [Test]
         public void RiscV_rw_fle_s()
@@ -505,10 +591,20 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_rw_flq()
         {
+            Given_128bitFloat();
             Given_HexString("0740E391");
             AssertCode(     // flq	ft0,2334(t1)
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|ft0 = Mem0[t1 + 2334<i64>:real128]");
+        }
+
+        [Test]
+        public void RiscV_rw_flt_d()
+        {
+            Given_HexString("D317C7A2");
+            AssertCode(     // flt.d	a5,fa4,fa2
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|a5 = CONVERT(fa4 < fa2, bool, word64)");
         }
 
         [Test]
@@ -566,6 +662,24 @@ namespace Reko.UnitTests.Arch.RiscV
             AssertCode(     // fmv.x.w	a0,fa5
                 "0|L--|00010000(4): 1 instructions",
                 "1|L--|a0 = fa5");
+        }
+
+        [Test]
+        public void RiscV_rw_fneg_d()
+        {
+            Given_HexString("5317E722");
+            AssertCode(     // fneg.d	fa4,fa4,fa4
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa4 = -fa4");
+        }
+
+        [Test]
+        public void RiscV_rw_fneg_s_64bit()
+        {
+            Given_HexString("D397F720");
+            AssertCode(     // fsgnjn.s	fa5,fa5,fa5
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fa5 = SEQ(0xFFFFFFFF<32>, -SLICE(fa5, real32, 0))");
         }
 
         [Test]
@@ -1114,6 +1228,16 @@ namespace Reko.UnitTests.Arch.RiscV
         }
 
         [Test]
+        public void RiscV_rw_fmul_q()
+        {
+            Given_128bitFloat();
+            Given_HexString("53046316");
+            AssertCode(     // fmul.q	fs0,ft6,ft6
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|fs0 = ft6 * ft6");
+        }
+
+        [Test]
         public void RiscV_rw_fmul_s()
         {
             Given_32bitFloat();
@@ -1168,6 +1292,5 @@ namespace Reko.UnitTests.Arch.RiscV
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|s1 = CONVERT(SLICE(fa5, real32, 0), real32, uint64)");
         }
-
     }
 }

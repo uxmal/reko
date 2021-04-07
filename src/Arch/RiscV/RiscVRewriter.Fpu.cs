@@ -154,9 +154,9 @@ namespace Reko.Arch.RiscV
             m.Assign(dst, MaybeNanBox(src, dst.DataType));
         }
 
-        private void RewriteFneg()
+        private void RewriteFneg(PrimitiveType dt)
         {
-            var src = RewriteOp(1);
+            var src = MaybeSlice(RewriteOp(1), dt);
             var dst = RewriteOp(0);
             m.Assign(dst,  MaybeNanBox(m.FNeg(src), dst.DataType));
         }

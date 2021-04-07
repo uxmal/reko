@@ -35,7 +35,9 @@ namespace Reko.Arch.RiscV
         {
             private static readonly Decoder invalid = Instr(Mnemonic.invalid, InstrClass.Invalid);
 
-            private Func<Mnemonic, Mutator<RiscVDisassembler>[], Decoder> floatSupport;
+            private Func<Mnemonic, Mutator<RiscVDisassembler>[], Decoder> float32Support;
+            private Func<Mnemonic, Mutator<RiscVDisassembler>[], Decoder> float64Support;
+            private Func<Mnemonic, Mutator<RiscVDisassembler>[], Decoder> float128Support;
             private Dictionary<string, object> options;
 
             public static InstructionSet Create(Dictionary<string, object> options)
@@ -47,10 +49,39 @@ namespace Reko.Arch.RiscV
             private InstructionSet(Dictionary<string, object> options)
             {
                 this.options = options;
-                if (options.ContainsKey("FloatAbi"))
-                    floatSupport = Instr;
+                if (options.TryGetValue("FloatAbi", out var oFloatAbi) &&
+                    int.TryParse(oFloatAbi.ToString(), out int floatAbi))
+                {
+                    switch (floatAbi)
+                    {
+                    case 128:
+                        float128Support = Instr;
+                        float64Support = Instr;
+                        float32Support = Instr;
+                        break;
+                    case 64:
+                        float128Support = MakeInvalid;
+                        float64Support = Instr;
+                        float32Support = Instr;
+                        break;
+                    case 32:
+                        float128Support = MakeInvalid;
+                        float64Support = MakeInvalid;
+                        float32Support = Instr;
+                        break;
+                    default:
+                        float128Support = MakeInvalid;
+                        float64Support = MakeInvalid;
+                        float32Support = MakeInvalid;
+                        break;
+                    }
+                }
                 else
-                    floatSupport = MakeInvalid;
+                {
+                    float128Support = MakeInvalid;
+                    float64Support = MakeInvalid;
+                    float32Support = MakeInvalid;
+                }
             }
 
             private static Decoder MakeInvalid(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
@@ -63,9 +94,19 @@ namespace Reko.Arch.RiscV
                 return new InstrDecoder<RiscVDisassembler, Mnemonic, RiscVInstruction>(InstrClass.Linear, mnemonic, mutators);
             }
 
-            private Decoder FpInstr(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
+            private Decoder FpInstr32(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
             {
-                return floatSupport(mnemonic, mutators);
+                return float32Support(mnemonic, mutators);
+            }
+
+            private Decoder FpInstr64(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
+            {
+                return float64Support(mnemonic, mutators);
+            }
+
+            private Decoder FpInstr128(Mnemonic mnemonic, params Mutator<RiscVDisassembler>[] mutators)
+            {
+                return float128Support(mnemonic, mutators);
             }
 
             private static Decoder Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<RiscVDisassembler>[] mutators)
@@ -108,10 +149,10 @@ namespace Reko.Arch.RiscV
                 {
                     invalid,
                     invalid,
-                    FpInstr(Mnemonic.flw, Fd,Mem(PrimitiveType.Real32, 15, (20, 12))),
-                    FpInstr(Mnemonic.fld, Fd,Mem(PrimitiveType.Real64, 15, (20, 12))),
+                    FpInstr32(Mnemonic.flw, Fd,Mem(PrimitiveType.Real32, 15, (20, 12))),
+                    FpInstr64(Mnemonic.fld, Fd,Mem(PrimitiveType.Real64, 15, (20, 12))),
 
-                    FpInstr(Mnemonic.flq, Fd,Mem(PrimitiveType.Real64, 15, (20, 12))),
+                    FpInstr128(Mnemonic.flq, Fd,Mem(PrimitiveType.Real64, 15, (20, 12))),
                     invalid,
                     invalid,
                     invalid,
@@ -134,8 +175,8 @@ namespace Reko.Arch.RiscV
                 {
                     invalid,
                     invalid,
-                    FpInstr(Mnemonic.fsw, F2,Memc(PrimitiveType.Real32, 15, (25,7),(7,5))),
-                    FpInstr(Mnemonic.fsd, F2,Memc(PrimitiveType.Real64, 15, (25,7),(7,5))),
+                    FpInstr32(Mnemonic.fsw, F2,Memc(PrimitiveType.Real32, 15, (25,7),(7,5))),
+                    FpInstr64(Mnemonic.fsd, F2,Memc(PrimitiveType.Real64, 15, (25,7),(7,5))),
 
                     invalid,
                     invalid,
@@ -220,129 +261,129 @@ namespace Reko.Arch.RiscV
 
                 var opfp = new (uint, Decoder)[]     // 0b10100
                 {
-                    ( 0x00, FpInstr(Mnemonic.fadd_s, Fd,F1,F2) ),
-                    ( 0x01, FpInstr(Mnemonic.fadd_d, Fd,F1,F2) ),
-                    ( 0x03, FpInstr(Mnemonic.fadd_q, Fd,F1,F2) ),
+                    ( 0x00, FpInstr32(Mnemonic.fadd_s, Fd,F1,F2) ),
+                    ( 0x01, FpInstr64(Mnemonic.fadd_d, Fd,F1,F2) ),
+                    ( 0x03, FpInstr128(Mnemonic.fadd_q, Fd,F1,F2) ),
 
-                    ( 0x04, FpInstr(Mnemonic.fsub_s, Fd,F1,F2) ),
-                    ( 0x05, FpInstr(Mnemonic.fsub_d, Fd,F1,F2) ),
-                    ( 0x07, FpInstr(Mnemonic.fsub_q, Fd,F1,F2) ),
+                    ( 0x04, FpInstr32(Mnemonic.fsub_s, Fd,F1,F2) ),
+                    ( 0x05, FpInstr64(Mnemonic.fsub_d, Fd,F1,F2) ),
+                    ( 0x07, FpInstr128(Mnemonic.fsub_q, Fd,F1,F2) ),
 
-                    ( 0x08, FpInstr(Mnemonic.fmul_s, Fd,F1,F2) ),
-                    ( 0x09, FpInstr(Mnemonic.fmul_d, Fd,F1,F2) ),
-                    ( 0x0B, FpInstr(Mnemonic.fmul_q, Fd,F1,F2) ),
+                    ( 0x08, FpInstr32(Mnemonic.fmul_s, Fd,F1,F2) ),
+                    ( 0x09, FpInstr64(Mnemonic.fmul_d, Fd,F1,F2) ),
+                    ( 0x0B, FpInstr128(Mnemonic.fmul_q, Fd,F1,F2) ),
 
-                    ( 0x0C, FpInstr(Mnemonic.fdiv_s, Fd,F1,F2) ),
-                    ( 0x0D, FpInstr(Mnemonic.fdiv_d, Fd,F1,F2) ),
-                    ( 0x0F, FpInstr(Mnemonic.fdiv_q, Fd,F1,F2) ),
+                    ( 0x0C, FpInstr32(Mnemonic.fdiv_s, Fd,F1,F2) ),
+                    ( 0x0D, FpInstr64(Mnemonic.fdiv_d, Fd,F1,F2) ),
+                    ( 0x0F, FpInstr128(Mnemonic.fdiv_q, Fd,F1,F2) ),
 
                     ( 0x10, Sparse(12, 3, "fsgn.s", invalid,
                         (0x0, Select(R1EqR2,
-                            FpInstr(Mnemonic.fmv_s, Fd,F1, F2),
-                            FpInstr(Mnemonic.fsgnj_s, Fd,F1, F2))),
+                            FpInstr32(Mnemonic.fmv_s, Fd,F1),
+                            FpInstr32(Mnemonic.fsgnj_s, Fd,F1, F2))),
                         (0x1, Select(R1EqR2,
-                            FpInstr(Mnemonic.fneg_s, Fd,F1, F2),
-                            FpInstr(Mnemonic.fsgnjn_s, Fd,F1, F2))),
+                            FpInstr32(Mnemonic.fneg_s, Fd,F1),
+                            FpInstr32(Mnemonic.fsgnjn_s, Fd,F1, F2))),
                         (0x2, Select(R1EqR2,
-                            FpInstr(Mnemonic.fabs_s, Fd,F1, F2),
-                            FpInstr(Mnemonic.fsgnjx_s, Fd,F1, F2))))),
+                            FpInstr32(Mnemonic.fabs_s, Fd,F1),
+                            FpInstr32(Mnemonic.fsgnjx_s, Fd,F1, F2))))),
                     ( 0x11, Sparse(12, 3, "fsgn.d", invalid,
                         (0x0, Select(R1EqR2,
-                            FpInstr(Mnemonic.fmv_d, Fd,F1, F2),
-                            FpInstr(Mnemonic.fsgnj_d, Fd,F1, F2))),
+                            FpInstr64(Mnemonic.fmv_d, Fd,F1),
+                            FpInstr64(Mnemonic.fsgnj_d, Fd,F1, F2))),
                         (0x1, Select(R1EqR2,
-                            FpInstr(Mnemonic.fneg_d, Fd,F1, F2),
-                            FpInstr(Mnemonic.fsgnjn_d, Fd,F1, F2))),
+                            FpInstr64(Mnemonic.fneg_d, Fd,F1),
+                            FpInstr64(Mnemonic.fsgnjn_d, Fd,F1, F2))),
                         (0x2, Select(R1EqR2,
-                            FpInstr(Mnemonic.fabs_d, Fd,F1, F2),
-                            FpInstr(Mnemonic.fsgnjx_d, Fd,F1, F2))))),
+                            FpInstr64(Mnemonic.fabs_d, Fd,F1),
+                            FpInstr64(Mnemonic.fsgnjx_d, Fd,F1, F2))))),
                     ( 0x13, Sparse(12, 3, "fsgn.q", invalid,
                         (0x0, Select(R1EqR2,
-                            FpInstr(Mnemonic.fmv_q, Fd,F1, F2),
-                            FpInstr(Mnemonic.fsgnj_q, Fd,F1, F2))),
+                            FpInstr128(Mnemonic.fmv_q, Fd,F1, F2),
+                            FpInstr128(Mnemonic.fsgnj_q, Fd,F1, F2))),
                         (0x1, Select(R1EqR2,
-                            FpInstr(Mnemonic.fneg_q, Fd,F1, F2),
-                            FpInstr(Mnemonic.fsgnjn_q, Fd,F1, F2))),
+                            FpInstr128(Mnemonic.fneg_q, Fd,F1, F2),
+                            FpInstr128(Mnemonic.fsgnjn_q, Fd,F1, F2))),
                         (0x2, Select(R1EqR2,
-                            FpInstr(Mnemonic.fabs_q, Fd,F1, F2),
-                            FpInstr(Mnemonic.fsgnjx_q, Fd,F1, F2))))),
+                            FpInstr128(Mnemonic.fabs_q, Fd,F1, F2),
+                            FpInstr128(Mnemonic.fsgnjx_q, Fd,F1, F2))))),
 
                     ( 0x14, Sparse(12, 3, "fmin/fmax.s", invalid,
-                        (0x0, FpInstr(Mnemonic.fmin_s, Fd,F1, F2)),
-                        (0x1, FpInstr(Mnemonic.fmax_s, Fd,F1, F2)))),
+                        (0x0, FpInstr32(Mnemonic.fmin_s, Fd,F1, F2)),
+                        (0x1, FpInstr32(Mnemonic.fmax_s, Fd,F1, F2)))),
                     ( 0x15, Sparse(12, 3, "fmin/fmax.d", invalid,
-                        (0x0, FpInstr(Mnemonic.fmin_d, Fd,F1, F2)),
-                        (0x1, FpInstr(Mnemonic.fmax_d, Fd,F1, F2)))),
+                        (0x0, FpInstr64(Mnemonic.fmin_d, Fd,F1, F2)),
+                        (0x1, FpInstr64(Mnemonic.fmax_d, Fd,F1, F2)))),
                     ( 0x17, Sparse(12, 3, "fmin/fmax.q", invalid,
-                        (0x0, FpInstr(Mnemonic.fmin_q, Fd,F1, F2)),
-                        (0x1, FpInstr(Mnemonic.fmax_q, Fd,F1, F2)))),
+                        (0x0, FpInstr128(Mnemonic.fmin_q, Fd,F1, F2)),
+                        (0x1, FpInstr128(Mnemonic.fmax_q, Fd,F1, F2)))),
 
                     ( 0x20, Sparse(20, 5, "fcvt.s", invalid,
-                        (0x1, FpInstr(Mnemonic.fcvt_s_d, Fd,F1) ),
-                        (0x3, FpInstr(Mnemonic.fcvt_s_q, Fd,F1) ))),
+                        (0x1, FpInstr64(Mnemonic.fcvt_s_d, Fd,F1) ),
+                        (0x3, FpInstr128(Mnemonic.fcvt_s_q, Fd,F1) ))),
                     ( 0x21, Sparse(20, 5, "fcvt.d", invalid,
-                        (0x0, FpInstr(Mnemonic.fcvt_d_s, Fd,F1) ),
-                        (0x3, FpInstr(Mnemonic.fcvt_d_q, Fd,F1) ))),
+                        (0x0, FpInstr64(Mnemonic.fcvt_d_s, Fd,F1) ),
+                        (0x3, FpInstr128(Mnemonic.fcvt_d_q, Fd,F1) ))),
                     ( 0x23, Sparse(20, 5, "fcvt", invalid,
-                        (0x0, FpInstr(Mnemonic.fcvt_q_s, Fd,F1) ),
-                        (0x1, FpInstr(Mnemonic.fcvt_q_d, Fd,F1) ))),
+                        (0x0, FpInstr128(Mnemonic.fcvt_q_s, Fd,F1) ),
+                        (0x1, FpInstr128(Mnemonic.fcvt_q_d, Fd,F1) ))),
 
-                    ( 0x2C, Select((20, 5), Ne0, invalid, FpInstr(Mnemonic.fsqrt_s, Fd,F1)) ),
-                    ( 0x2D, Select((20, 5), Ne0, invalid, FpInstr(Mnemonic.fsqrt_d, Fd,F1)) ),
-                    ( 0x2F, Select((20, 5), Ne0, invalid, FpInstr(Mnemonic.fsqrt_q, Fd,F1)) ),
+                    ( 0x2C, Select((20, 5), Ne0, invalid, FpInstr32(Mnemonic.fsqrt_s, Fd,F1)) ),
+                    ( 0x2D, Select((20, 5), Ne0, invalid, FpInstr64(Mnemonic.fsqrt_d, Fd,F1)) ),
+                    ( 0x2F, Select((20, 5), Ne0, invalid, FpInstr128(Mnemonic.fsqrt_q, Fd,F1)) ),
 
                     ( 0x50, Sparse(12, 3, "fcmp.s", invalid,
-                        ( 0, FpInstr(Mnemonic.fle_s, d,F1,F2)),
-                        ( 1, FpInstr(Mnemonic.flt_s, d,F1,F2)),
-                        ( 2, FpInstr(Mnemonic.feq_s, d,F1,F2)))),
+                        ( 0, FpInstr32(Mnemonic.fle_s, d,F1,F2)),
+                        ( 1, FpInstr32(Mnemonic.flt_s, d,F1,F2)),
+                        ( 2, FpInstr32(Mnemonic.feq_s, d,F1,F2)))),
                     ( 0x51, Sparse(12, 3, "fcmp.d", invalid,
-                        ( 0, FpInstr(Mnemonic.fle_d, d,F1,F2)),
-                        ( 1, FpInstr(Mnemonic.flt_d, d,F1,F2)),
-                        ( 2, FpInstr(Mnemonic.feq_d, d,F1,F2)))),
+                        ( 0, FpInstr64(Mnemonic.fle_d, d,F1,F2)),
+                        ( 1, FpInstr64(Mnemonic.flt_d, d,F1,F2)),
+                        ( 2, FpInstr64(Mnemonic.feq_d, d,F1,F2)))),
                     ( 0x53, Sparse(12, 3, "fcmp.q", invalid,
-                        ( 0, FpInstr(Mnemonic.fle_q, d,F1,F2)),
-                        ( 1, FpInstr(Mnemonic.flt_q, d,F1,F2)),
-                        ( 2, FpInstr(Mnemonic.feq_s, d,F1,F2)))),
+                        ( 0, FpInstr128(Mnemonic.fle_q, d,F1,F2)),
+                        ( 1, FpInstr128(Mnemonic.flt_q, d,F1,F2)),
+                        ( 2, FpInstr128(Mnemonic.feq_q, d,F1,F2)))),
 
                     ( 0x60, Sparse(20, 5, "fcvt.w.s", invalid,
-                        ( 0, FpInstr(Mnemonic.fcvt_w_s, Rd,F1)),
-                        ( 1, FpInstr(Mnemonic.fcvt_wu_s, Rd,F1)),
-                        ( 2, FpInstr(Mnemonic.fcvt_l_s, Rd,F1)),
-                        ( 3, FpInstr(Mnemonic.fcvt_lu_s, Rd,F1)))),
+                        ( 0, FpInstr32(Mnemonic.fcvt_w_s, Rd,F1)),
+                        ( 1, FpInstr32(Mnemonic.fcvt_wu_s, Rd,F1)),
+                        ( 2, FpInstr32(Mnemonic.fcvt_l_s, Rd,F1)),
+                        ( 3, FpInstr32(Mnemonic.fcvt_lu_s, Rd,F1)))),
                     ( 0x61, Sparse(20, 5, "fcvt.w.d", invalid,
-                        ( 0, FpInstr(Mnemonic.fcvt_w_d, Rd,F1)),
-                        ( 1, FpInstr(Mnemonic.fcvt_wu_d, Rd,F1)),
-                        ( 2, FpInstr(Mnemonic.fcvt_l_d, Rd,F1)),
-                        ( 3, FpInstr(Mnemonic.fcvt_lu_d, Rd,F1)))),
+                        ( 0, FpInstr64(Mnemonic.fcvt_w_d, Rd,F1)),
+                        ( 1, FpInstr64(Mnemonic.fcvt_wu_d, Rd,F1)),
+                        ( 2, FpInstr64(Mnemonic.fcvt_l_d, Rd,F1)),
+                        ( 3, FpInstr64(Mnemonic.fcvt_lu_d, Rd,F1)))),
                     ( 0x63, Sparse(20, 5, "fcvt_w_q", invalid,
-                        ( 0, FpInstr(Mnemonic.fcvt_w_q, Rd,F1)),
-                        ( 1, FpInstr(Mnemonic.fcvt_wu_q, Rd,F1)),
-                        ( 2, FpInstr(Mnemonic.fcvt_l_q, Rd,F1)),
-                        ( 3, FpInstr(Mnemonic.fcvt_lu_q, Rd,F1)))),
+                        ( 0, FpInstr128(Mnemonic.fcvt_w_q, Rd,F1)),
+                        ( 1, FpInstr128(Mnemonic.fcvt_wu_q, Rd,F1)),
+                        ( 2, FpInstr128(Mnemonic.fcvt_l_q, Rd,F1)),
+                        ( 3, FpInstr128(Mnemonic.fcvt_lu_q, Rd,F1)))),
 
                     ( 0x68, Sparse(20, 5, "fcvt.to.s", invalid,
-                        ( 0, FpInstr(Mnemonic.fcvt_s_w, Fd,R1)),
-                        ( 1, FpInstr(Mnemonic.fcvt_s_wu, Fd,R1)),
-                        ( 2, FpInstr(Mnemonic.fcvt_s_l, Fd,R1)),
-                        ( 3, FpInstr(Mnemonic.fcvt_s_lu, Fd,R1)))),
+                        ( 0, FpInstr32(Mnemonic.fcvt_s_w, Fd,R1)),
+                        ( 1, FpInstr32(Mnemonic.fcvt_s_wu, Fd,R1)),
+                        ( 2, FpInstr32(Mnemonic.fcvt_s_l, Fd,R1)),
+                        ( 3, FpInstr32(Mnemonic.fcvt_s_lu, Fd,R1)))),
                     ( 0x69, Sparse(20, 5, "fcvt.to.d", invalid,
-                        ( 0, FpInstr(Mnemonic.fcvt_d_w, Fd,R1)),
-                        ( 1, FpInstr(Mnemonic.fcvt_d_wu, Fd,R1)),
-                        ( 2, FpInstr(Mnemonic.fcvt_d_l, Fd,R1)),
-                        ( 3, FpInstr(Mnemonic.fcvt_d_lu, Fd,R1)))),
+                        ( 0, FpInstr64(Mnemonic.fcvt_d_w, Fd,R1)),
+                        ( 1, FpInstr64(Mnemonic.fcvt_d_wu, Fd,R1)),
+                        ( 2, FpInstr64(Mnemonic.fcvt_d_l, Fd,R1)),
+                        ( 3, FpInstr64(Mnemonic.fcvt_d_lu, Fd,R1)))),
                     ( 0x6B, Sparse(20, 5, "fcvt.to.q", invalid,
-                        ( 0, FpInstr(Mnemonic.fcvt_q_w, Fd,R1)),
-                        ( 1, FpInstr(Mnemonic.fcvt_q_wu, Fd,R1)),
-                        ( 2, FpInstr(Mnemonic.fcvt_q_l, Fd,R1)),
-                        ( 3, FpInstr(Mnemonic.fcvt_q_lu, Fd,R1)))),
+                        ( 0, FpInstr128(Mnemonic.fcvt_q_w, Fd,R1)),
+                        ( 1, FpInstr128(Mnemonic.fcvt_q_wu, Fd,R1)),
+                        ( 2, FpInstr128(Mnemonic.fcvt_q_l, Fd,R1)),
+                        ( 3, FpInstr128(Mnemonic.fcvt_q_lu, Fd,R1)))),
 
-                    ( 0x70, FpInstr(Mnemonic.fmv_x_w, Rd,F1) ),
-                    ( 0x71, FpInstr(Mnemonic.fmv_d_x, Fd,r1) ),
+                    ( 0x70, FpInstr32(Mnemonic.fmv_x_w, Rd,F1) ),
+                    ( 0x71, FpInstr64(Mnemonic.fmv_d_x, Fd,r1) ),
                     ( 0x73, Sparse(20, 5, "fclass.q", invalid,
-                        ( 0, FpInstr(Mnemonic.fclass_q, Rd,F1)))),
+                        ( 0, FpInstr128(Mnemonic.fclass_q, Rd,F1)))),
 
-                    ( 0x78, FpInstr(Mnemonic.fmv_w_x, Fd,r1) ),
-                    ( 0x79, FpInstr(Mnemonic.fmv_d_x, Fd,r1) )
+                    ( 0x78, FpInstr32(Mnemonic.fmv_w_x, Fd,r1) ),
+                    ( 0x79, FpInstr64(Mnemonic.fmv_d_x, Fd,r1) )
                 };
 
                 var branches = new Decoder[]            // 0b11000
@@ -434,10 +475,10 @@ namespace Reko.Arch.RiscV
                     Nyi("64-bit instruction"),
 
                     // 10
-                    FpInstr(Mnemonic.fmadd_s, Fd, F1, F2, F3),
-                    FpInstr(Mnemonic.fmsub_s, Fd, F1, F2, F3),
-                    FpInstr(Mnemonic.fnmsub_s, Fd, F1, F2, F3),
-                    FpInstr(Mnemonic.fnmadd_s, Fd, F1, F2, F3),
+                    FpInstr32(Mnemonic.fmadd_s, Fd, F1, F2, F3),
+                    FpInstr32(Mnemonic.fmsub_s, Fd, F1, F2, F3),
+                    FpInstr32(Mnemonic.fnmsub_s, Fd, F1, F2, F3),
+                    FpInstr32(Mnemonic.fnmadd_s, Fd, F1, F2, F3),
 
                     Sparse(25, 7, invalid, opfp),
                     Nyi("Reserved"),
@@ -462,19 +503,19 @@ namespace Reko.Arch.RiscV
                         Instr(Mnemonic.c_addi4spn, Rc(2), Imm((7,4), (11,2), (5, 1),(6, 1), (0,2))),
                         Instr(Mnemonic.invalid, InstrClass.Invalid|InstrClass.Zero)),
                     WordSize(
-                        rv32: FpInstr(Mnemonic.c_fld, Fc(2), Memc(PrimitiveType.Real64, 7, (5,2), (10, 3))),
-                        rv64: FpInstr(Mnemonic.c_fld, Fc(2), Memc(PrimitiveType.Real64, 7, (5,2), (10, 3))),
+                        rv32: FpInstr32(Mnemonic.c_fld, Fc(2), Memc(PrimitiveType.Real64, 7, (5,2), (10, 3))),
+                        rv64: FpInstr64(Mnemonic.c_fld, Fc(2), Memc(PrimitiveType.Real64, 7, (5,2), (10, 3))),
                         rv128: Nyi("lq")),
                     Instr(Mnemonic.c_lw, Rc(2), Memc(PrimitiveType.Word32, 7, (5,1), (10,3), (6,1))),
                     WordSize(
-                        rv32: FpInstr(Mnemonic.c_flw, Fc(2), Memc(PrimitiveType.Real32, 7, (5,1), (10,3), (6,1))),
+                        rv32: FpInstr32(Mnemonic.c_flw, Fc(2), Memc(PrimitiveType.Real32, 7, (5,1), (10,3), (6,1))),
                         rv64: Instr(Mnemonic.c_ld, Rc(2), Memc(PrimitiveType.Word64, 7, (5,2), (10, 3))),
                         rv128: Instr(Mnemonic.c_ld, Rc(2), Memc(PrimitiveType.Word64, 7, (5,2), (10, 3)))),
 
                     invalid, // Nyi("reserved"),
                     WordSize(
-                        rv32: FpInstr(Mnemonic.c_fsd, Fc(2), Memc(PrimitiveType.Real64, 7, (5,2), (10, 3))),
-                        rv64: FpInstr(Mnemonic.c_fsd, Fc(2), Memc(PrimitiveType.Real64, 7, (5,2), (10, 3))),
+                        rv32: FpInstr64(Mnemonic.c_fsd, Fc(2), Memc(PrimitiveType.Real64, 7, (5,2), (10, 3))),
+                        rv64: FpInstr64(Mnemonic.c_fsd, Fc(2), Memc(PrimitiveType.Real64, 7, (5,2), (10, 3))),
                         rv128: Nyi("sq")),
                     Instr(Mnemonic.c_sw, Rc(2), Memc(PrimitiveType.Word32, 7, (5,1), (10,3), (6,1))),
                     WordSize(
@@ -530,8 +571,8 @@ namespace Reko.Arch.RiscV
                     {
                     Instr(Mnemonic.c_slli, R_nz(7), ImmB((12, 1), (2, 5))),
                     WordSize(
-                        rv32: FpInstr(Mnemonic.c_fldsp, F(2), ImmSh(3, (12,1),(7,3),(10,3))),
-                        rv64: FpInstr(Mnemonic.c_fldsp, F(2), ImmSh(3, (12,1),(7,3),(10,3))),
+                        rv32: FpInstr64(Mnemonic.c_fldsp, F(2), ImmSh(3, (12,1),(7,3),(10,3))),
+                        rv64: FpInstr64(Mnemonic.c_fldsp, F(2), ImmSh(3, (12,1),(7,3),(10,3))),
                         rv128: Instr(Mnemonic.c_lqsp, R_nz(7), ImmSh(4, (2, 4),(12, 1),(6,1)))),
                     Instr(Mnemonic.c_lwsp, R_nz(7), ImmSh(2, (12,1),(2,2),(4,3))),
                     Instr(Mnemonic.c_ldsp, R_nz(7), ImmSh(3, (12,1),(2,3),(5,2))),
@@ -546,8 +587,8 @@ namespace Reko.Arch.RiscV
                                 Instr(Mnemonic.c_jalr, InstrClass.Transfer, R(7))),
                             Instr(Mnemonic.c_add, R(7), R(2)))),
                     WordSize(
-                        rv32: FpInstr(Mnemonic.c_fsdsp, F(2), ImmSh(3, (7,3), (10,3))),
-                        rv64: FpInstr(Mnemonic.c_fsdsp, F(2), ImmSh(3, (7,3), (10,3))),
+                        rv32: FpInstr64(Mnemonic.c_fsdsp, F(2), ImmSh(3, (7,3), (10,3))),
+                        rv64: FpInstr64(Mnemonic.c_fsdsp, F(2), ImmSh(3, (7,3), (10,3))),
                         rv128:Nyi("sqsp")),
                     Instr(Mnemonic.c_swsp, R(2), ImmSh(2, (7,2),(9,4))),
                     Instr(Mnemonic.c_sdsp, R(2), ImmSh(3, (7,3),(10,3))),
