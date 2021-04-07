@@ -78,9 +78,25 @@ class Globals(object):
             return
         raise TypeError('Unsupported type: {}'.format(type(decl)))
 
+class Procedure(object):
+    def __init__(self, reko, addr):
+        self._reko = reko
+        self._addr = addr
+
+    @property
+    def decompile(self):
+        raise AttributeError('Can not read decompile attribute')
+
+    @decompile.setter
+    def decompile(self, value):
+        self._reko.SetUserProcedureDecompileFlag(self._addr, value)
+
 class Procedures(object):
     def __init__(self, reko):
         self._reko = reko
+
+    def __getitem__(self, addr):
+        return Procedure(self._reko, addr)
 
     def __setitem__(self, addr, proc):
         if isinstance(proc, str):

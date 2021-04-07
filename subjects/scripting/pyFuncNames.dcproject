@@ -10,10 +10,6 @@
     <resources>pyFuncNames.reko\resources</resources>
     <user>
       <processor />
-      <procedure name="DllMain">
-        <address>1000149E</address>
-        <decompile>false</decompile>
-      </procedure>
       <registerValues />
       <extractResources>false</extractResources>
       <outputFilePolicy>Segment</outputFilePolicy>

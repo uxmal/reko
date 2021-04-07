@@ -69,6 +69,12 @@ namespace Reko.Scripts.Python
             program.User.Procedures[addr] = new UserProcedure(addr, name);
         }
 
+        public void SetUserProcedureDecompileFlag(
+            ulong linearAddress, bool decompile)
+        {
+            UserProcedure(linearAddress).Decompile = decompile;
+        }
+
         private Address Addr(ulong linearAddress)
         {
             return program.SegmentMap.MapLinearAddressToAddress(linearAddress);
@@ -78,6 +84,12 @@ namespace Reko.Scripts.Python
         {
             var addr = Addr(linearAddress);
             return program.CreateImageReader(program.Architecture, addr);
+        }
+
+        private UserProcedure UserProcedure(ulong linearAddress)
+        {
+            var addr = Addr(linearAddress);
+            return program.User.Procedures[addr];
         }
     }
 }
