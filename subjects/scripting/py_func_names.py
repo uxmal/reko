@@ -49,9 +49,19 @@ def on_program_loaded(program):
         num_methods += 1
     program.globals[0x10003010] = 'PyMethodDef methods[{}]'.format(num_methods)
     exclude_dll_main(program)
-    comments = 'This is initialization of Python extension module'
-    program.comments[0x10001170] = comments
+    comments = []
+    dump_procedures(program, comments)
+    program.comments[0x10001170] = "\n".join(comments)
+    program.comments[0x10001183] = \
+        'This is initialization of Python extension module'
 
 def exclude_dll_main(program):
     program.procedures[0x1000149E] = 'DllMain'
     program.procedures[0x1000149E].decompile = False
+
+def dump_procedures(program, lines):
+    lines.append('Procedures:')
+    for addr, proc in program.procedures.items():
+        lines.append('    {}:'.format(proc.name))
+        lines.append('        Address: 0x{:08X}'.format(addr))
+        lines.append('        Decompile: {}'.format(proc.decompile))

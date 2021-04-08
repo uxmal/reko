@@ -43,6 +43,22 @@ PyObject * fdiv_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
 // 10001170: void initpySample()
 void initpySample()
 {
+	// Procedures:
+	//     sum_wrapper:
+	//         Address: 0x10001000
+	//         Decompile: True
+	//     dif_wrapper:
+	//         Address: 0x10001050
+	//         Decompile: True
+	//     div_wrapper:
+	//         Address: 0x100010A0
+	//         Decompile: True
+	//     fdiv_wrapper:
+	//         Address: 0x100010F0
+	//         Decompile: True
+	//     DllMain:
+	//         Address: 0x1000149E
+	//         Decompile: False
 	// This is initialization of Python extension module
 	Py_InitModule4("pySample", methods, null, null, 1007);
 }

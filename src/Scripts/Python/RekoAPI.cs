@@ -23,6 +23,7 @@ using Reko.Core.CLanguage;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
+using System.Linq;
 
 namespace Reko.Scripts.Python
 {
@@ -57,7 +58,7 @@ namespace Reko.Scripts.Python
         public void SetUserComment(ulong linearAddress, string comment)
         {
             var addr = Addr(linearAddress);
-            program.User.Annotations[addr] = comment;
+            program.User.Annotations[addr] = NormalizeLineEndings(comment);
         }
 
         public void SetUserGlobal(ulong linearAddress, string decl)
@@ -73,10 +74,26 @@ namespace Reko.Scripts.Python
             program.User.Globals[addr] = new UserGlobal(addr, name, dataType);
         }
 
+        public string[] GetProcedureAddresses()
+        {
+            return program.User.Procedures.Keys.Select(
+                addr => addr.ToString()).ToArray();
+        }
+
+        public string GetProcedureName(ulong linearAddress)
+        {
+            return UserProcedure(linearAddress).Name;
+        }
+
         public void SetUserProcedure(ulong linearAddress, string name)
         {
             var addr = Addr(linearAddress);
             program.User.Procedures[addr] = new UserProcedure(addr, name);
+        }
+
+        public bool GetProcedureDecompileFlag(ulong linearAddress)
+        {
+            return UserProcedure(linearAddress).Decompile;
         }
 
         public void SetUserProcedureDecompileFlag(
@@ -100,6 +117,15 @@ namespace Reko.Scripts.Python
         {
             var addr = Addr(linearAddress);
             return program.User.Procedures[addr];
+        }
+
+        private string NormalizeLineEndings(string s)
+        {
+            // Python line endings differ from C#.
+            // We should normalize them.
+            return s.
+                Replace(Environment.NewLine, "\n").
+                Replace("\n", Environment.NewLine);
         }
     }
 }

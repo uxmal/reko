@@ -16,6 +16,21 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 '''
 
+def addr_from_str(s_addr):
+    # $TODO: Make it work with segmented addresses.
+    return int(s_addr, 16)
+
+def addr_list_from_str_list(s_addr_list):
+    return (addr_from_str(s_addr) for s_addr in s_addr_list)
+
+class RekoDictBase(object):
+    def __getitem__(self, key):
+        raise KeyError
+
+    def items(self):
+        for key in self:
+            yield (key, self[key])
+
 class Comments(object):
     def __init__(self, reko):
         self._reko = reko
@@ -64,13 +79,17 @@ class Procedure(object):
 
     @property
     def decompile(self):
-        raise AttributeError('Can not read decompile attribute')
+        return self._reko.GetProcedureDecompileFlag(self._addr)
 
     @decompile.setter
     def decompile(self, value):
         self._reko.SetUserProcedureDecompileFlag(self._addr, value)
 
-class Procedures(object):
+    @property
+    def name(self):
+        return self._reko.GetProcedureName(self._addr)
+
+class Procedures(RekoDictBase):
     def __init__(self, reko):
         self._reko = reko
 
@@ -82,6 +101,9 @@ class Procedures(object):
             self._reko.SetUserProcedure(addr, proc)
             return
         raise TypeError('Unsupported type: {}'.format(type(proc)))
+
+    def __iter__(self):
+        return addr_list_from_str_list(self._reko.GetProcedureAddresses())
 
 class Program(object):
     def __init__(self, reko):
