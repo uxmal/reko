@@ -95,7 +95,14 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_RISCV: 
                 archName = "risc-v";
                 options["WordSize"] = "64";
-                RiscVElf.SetOptions((RiscVFlags) Header64.e_flags, options);
+                var flags = (RiscVFlags) Header64.e_flags;
+                // According to the Risc-V ELF spec, a RV64G implementation is strongly
+                // encouraged to support the LP64D ABI
+                if ((flags & RiscVFlags.EF_RISCV_FLOAT_ABI_MASK) == 0)
+                {
+                    flags |= RiscVFlags.EF_RISCV_FLOAT_ABI_DOUBLE;
+                }
+                RiscVElf.SetOptions(flags, options);
                 break;
             case ElfMachine.EM_S390: //$REVIEW: any pertinent differences?
                 archName = "zSeries";
