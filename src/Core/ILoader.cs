@@ -97,10 +97,10 @@ namespace Reko.Core
         /// </summary>
         /// <param name="fileName">The name of the file.</param>
         /// <returns>
-        /// Evaluated script module or null if no appropriate loader for the
+        /// Evaluated script file or null if no appropriate loader for the
         /// script format could be found.
         /// </returns>
-        ScriptModule? LoadScript(string fileName);
+        ScriptFile? LoadScript(string fileName);
     }
 
     /// <summary>

@@ -126,10 +126,10 @@ namespace Reko.UnitTests.Core.Serialization
 
         private void Given_Script(Mock<ILoader> ldr, string fileName)
         {
-            var scriptModule = new Mock<ScriptModule>(
+            var scriptFile = new Mock<ScriptFile>(
                 null, fileName, new byte[100]);
             ldr.Setup(l => l.LoadScript(fileName))
-                .Returns(scriptModule.Object);
+                .Returns(scriptFile.Object);
         }
 
         private void Expect_Arch_ParseAddress(string sExp, Address result)
@@ -441,7 +441,7 @@ namespace Reko.UnitTests.Core.Serialization
 
             Assert.AreEqual(
                 AbsolutePathEndingWith("dir", "fake.script"),
-                project.ScriptModules.Single().Filename);
+                project.ScriptFiles.Single().Filename);
         }
 
         [Test]

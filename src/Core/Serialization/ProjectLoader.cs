@@ -182,10 +182,10 @@ namespace Reko.Core.Serialization
             var programs = sp.InputFiles.Select(s => VisitInputFile(filename, s));
             var scripts = sp.ScriptFiles.
                 Select(s => VisitScriptFile(filename, s)).
-                OfType<ScriptModule>();
+                OfType<ScriptFile>();
             sp.AssemblerFiles.Select(s => VisitAssemblerFile(s));
             project.MetadataFiles.AddRange(typelibs);
-            project.ScriptModules.AddRange(scripts);
+            project.ScriptFiles.AddRange(scripts);
             project.Programs.AddRange(programs);
             return this.project;
         }
@@ -673,7 +673,7 @@ namespace Reko.Core.Serialization
             throw new NotImplementedException("Multiple platforms possible; not implemented yet.");
         }
 
-        public ScriptModule? VisitScriptFile(
+        public ScriptFile? VisitScriptFile(
             string projectFilePath, ScriptFile_v5 sScript)
         {
             var filename = ConvertToAbsolutePath(

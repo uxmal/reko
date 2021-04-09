@@ -31,7 +31,7 @@ namespace Reko.Scripts.Python
     /// Class for execution of Python modules. Use IronPython
     /// (https://ironpython.net) engine.
     /// </summary>
-    public class PythonModule : ScriptModule
+    public class PythonModule : ScriptFile
     {
         private readonly ScriptScope scope;
         private readonly PythonAPI pythonAPI;

@@ -40,7 +40,7 @@ namespace Reko.Core
         {
             Programs = new ObservableRangeCollection<Program>();
             MetadataFiles = new ObservableRangeCollection<MetadataFile>();
-            ScriptModules = new ObservableRangeCollection<ScriptModule>();
+            ScriptFiles = new ObservableRangeCollection<ScriptFile>();
             LoadedMetadata = new TypeLibrary();
         }
 
@@ -58,7 +58,7 @@ namespace Reko.Core
         /// A list of user-provided script files that can customize the process
         /// of decompilation.
         /// </summary>
-        public ObservableRangeCollection<ScriptModule> ScriptModules { get; private set; }
+        public ObservableRangeCollection<ScriptFile> ScriptFiles { get; private set; }
 
         /// <summary>
         /// All the metadata collected from both platforms and user-provided metadata
@@ -74,11 +74,11 @@ namespace Reko.Core
         /// </param>
         public void FireScriptEvent(string funcName)
         {
-            foreach (var scriptModule in ScriptModules)
+            foreach (var scriptFile in ScriptFiles)
             {
                 foreach (var program in Programs)
                 {
-                    scriptModule.CallFunction(funcName, program);
+                    scriptFile.CallFunction(funcName, program);
                 }
             }
         }

@@ -55,7 +55,7 @@ namespace Reko.Core.Serialization
             metadataFiles.AddRange(project.MetadataFiles.Select(m => VisitMetadataFile(projectAbsPath, m)));
             var scriptFiles = new List<ScriptFile_v5>();
             scriptFiles.AddRange(
-                project.ScriptModules.Select(
+                project.ScriptFiles.Select(
                     s => VisitScriptFile(projectAbsPath, s)));
             var sp = new Project_v5
             {
@@ -323,7 +323,7 @@ namespace Reko.Core.Serialization
         }
 
         private ScriptFile_v5 VisitScriptFile(
-            string projectAbsPath, ScriptModule script)
+            string projectAbsPath, ScriptFile script)
         {
             return new ScriptFile_v5
             {

@@ -315,10 +315,10 @@ namespace Reko.Loading
             return result;
         }
 
-        public ScriptModule? LoadScript(string fileName)
+        public ScriptFile? LoadScript(string fileName)
         {
             var rawBytes = LoadImageBytes(fileName, 0);
-            return FindImageLoader<ScriptModule>(fileName, rawBytes);
+            return FindImageLoader<ScriptFile>(fileName, rawBytes);
         }
 
         /// <summary>

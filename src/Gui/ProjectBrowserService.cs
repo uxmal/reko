@@ -83,11 +83,11 @@ namespace Reko.Gui
             {
                 AddComponents(project.Programs);
                 AddComponents(project.MetadataFiles);
-                AddComponents(project.ScriptModules);
+                AddComponents(project.ScriptFiles);
                 project.MetadataFiles.CollectionChanged +=
                     TypeLibraries_CollectionChanged;
-                project.ScriptModules.CollectionChanged +=
-                    ScriptModules_CollectionChanged;
+                project.ScriptFiles.CollectionChanged +=
+                    ScriptFiles_CollectionChanged;
                 tree.ShowNodeToolTips = true;
                 tree.ShowRootLines = true;
             }
@@ -137,7 +137,7 @@ namespace Reko.Gui
             }
         }
 
-        void ScriptModules_CollectionChanged(
+        void ScriptFiles_CollectionChanged(
             object sender,
             NotifyCollectionChangedEventArgs e)
         {

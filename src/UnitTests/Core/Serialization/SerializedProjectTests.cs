@@ -296,9 +296,9 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var project = new Project
             {
-                ScriptModules =
+                ScriptFiles =
                 {
-                    new Mock<ScriptModule>(
+                    new Mock<ScriptFile>(
                         null, "/var/foo/script.fake", new byte[100]).Object
                 },
             };
