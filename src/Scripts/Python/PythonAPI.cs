@@ -117,23 +117,26 @@ class Procedures(object):
 
 class Program(object):
     def __init__(self, reko):
-        self._reko = reko
+        self._comments = Comments(reko)
+        self._memory = Memory(reko)
+        self._globals = Globals(reko)
+        self._procedures = Procedures(reko)
 
     @property
     def comments(self):
-        return Comments(self._reko)
+        return self._comments
 
     @property
     def memory(self):
-        return Memory(self._reko)
+        return self._memory
 
     @property
     def globals(self):
-        return Globals(self._reko)
+        return self._globals
 
     @property
     def procedures(self):
-        return Procedures(self._reko)
+        return self._procedures
 ";
             var scope = engine.CreateScope();
             engine.Execute(pythonAPIDefinitions, scope);
