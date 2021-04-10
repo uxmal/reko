@@ -48,15 +48,12 @@ namespace Reko.Core.Serialization
         /// <returns></returns>
         public Project_v5 Serialize(string projectAbsPath, Project project)
         {
-            var inputFiles = new List<DecompilerInput_v5>();
-            inputFiles.AddRange(project.Programs.Select(p => VisitProgram(projectAbsPath, p)));
-
-            var metadataFiles = new List<MetadataFile_v3>();
-            metadataFiles.AddRange(project.MetadataFiles.Select(m => VisitMetadataFile(projectAbsPath, m)));
-            var scriptFiles = new List<ScriptFile_v5>();
-            scriptFiles.AddRange(
-                project.ScriptFiles.Select(
-                    s => VisitScriptFile(projectAbsPath, s)));
+            var inputFiles = project.Programs.Select(
+                p => VisitProgram(projectAbsPath, p)).ToList();
+            var metadataFiles = project.MetadataFiles.Select(
+                m => VisitMetadataFile(projectAbsPath, m)).ToList();
+            var scriptFiles = project.ScriptFiles.Select(
+                s => VisitScriptFile(projectAbsPath, s)).ToList();
             var sp = new Project_v5
             {
                 // ".Single()" because there can be only one Architecture and Platform, realistically.
