@@ -38,6 +38,10 @@ namespace Reko.Scripts.Python
             this.program = program;
         }
 
+        //$TODO: Make it work with segmented addresses. The API should accept
+        // Python ints and strs as parameters, and use
+        // IProcessorArchitecture.TryParseAddress so that segmented addresses
+        // are handled correctly.
         public int ReadInt32(ulong linearAddress)
         {
             return CreateImageReader(linearAddress).ReadInt32();
