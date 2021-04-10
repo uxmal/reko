@@ -19,6 +19,8 @@ loaded dynamically (using the services provided by IConfigurationService).
     <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying Assemblers to $(TargetDir)" />
     <Copy SourceFiles="@(Environments)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Copying Scripts to $(TargetDir)" />
+    <Copy SourceFiles="@(Scripts)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying Libraries to $(TargetDir)" />
     <Copy SourceFiles="@(Libraries)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying Odbg scripts to $(TargetDir)" />

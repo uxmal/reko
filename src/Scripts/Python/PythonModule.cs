@@ -48,7 +48,7 @@ namespace Reko.Scripts.Python
             engine.Runtime.IO.RedirectToConsole();
             using var rdr = new StreamReader(stream);
             this.scope = Evaluate(rdr.ReadToEnd(), filename, engine);
-            this.pythonAPI = new PythonAPI(engine);
+            this.pythonAPI = new PythonAPI(services, engine);
         }
 
         public override void CallFunction(string funcName, Program program)
