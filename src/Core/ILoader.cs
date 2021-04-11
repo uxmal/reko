@@ -91,6 +91,16 @@ namespace Reko.Core
         /// metadata could be found.
         /// </returns>
         TypeLibrary? LoadMetadata(string fileName, IPlatform platform, TypeLibrary typeLib);
+
+        /// <summary>
+        /// Loads a file containing script.
+        /// </summary>
+        /// <param name="fileName">The name of the file.</param>
+        /// <returns>
+        /// Evaluated script file or null if no appropriate loader for the
+        /// script format could be found.
+        /// </returns>
+        ScriptFile? LoadScript(string fileName);
     }
 
     /// <summary>

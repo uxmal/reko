@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
@@ -111,6 +111,5 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 EnableProcedureName();
             }
         }
-
     }
 }

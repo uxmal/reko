@@ -124,6 +124,14 @@ namespace Reko.UnitTests.Core.Serialization
                 });
         }
 
+        private void Given_Script(Mock<ILoader> ldr, string fileName)
+        {
+            var scriptFile = new Mock<ScriptFile>(
+                null, fileName, new byte[100]);
+            ldr.Setup(l => l.LoadScript(fileName))
+                .Returns(scriptFile.Object);
+        }
+
         private void Expect_Arch_ParseAddress(string sExp, Address result)
         {
             arch.Setup(a => a.TryParseAddress(
@@ -410,6 +418,33 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
+        public void Prld_LoadScripts()
+        {
+            var xml =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<project xmlns=""http://schemata.jklnet.org/Reko/v5"">
+  <arch>testArch</arch>
+  <platform>testOS</platform>
+  <script>
+    <filename>fake.script</filename>
+  </script>
+</project>";
+            var ldr = new Mock<ILoader>();
+            Given_TestArch();
+            Given_TestOS();
+            Given_Script(ldr, AbsolutePathEndingWith("dir", "fake.script"));
+
+            var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
+            var project = prld.LoadProject(
+                AbsolutePathEndingWith("dir", "script.proj"), stream);
+
+            Assert.AreEqual(
+                AbsolutePathEndingWith("dir", "fake.script"),
+                project.ScriptFiles.Single().Filename);
+        }
+
+        [Test]
         public void Prld_LoadGlobalUserData()
         {
             Given_TestArch();
@@ -445,7 +480,6 @@ namespace Reko.UnitTests.Core.Serialization
                             }
                         }
                     },
-                   
                 }
             };
             var ldr = mockFactory.CreateLoader();

@@ -40,6 +40,7 @@ namespace Reko.Core
         {
             Programs = new ObservableRangeCollection<Program>();
             MetadataFiles = new ObservableRangeCollection<MetadataFile>();
+            ScriptFiles = new ObservableRangeCollection<ScriptFile>();
             LoadedMetadata = new TypeLibrary();
         }
 
@@ -54,9 +55,32 @@ namespace Reko.Core
         public ObservableRangeCollection<MetadataFile> MetadataFiles { get; private set; }
 
         /// <summary>
+        /// A list of user-provided script files that can customize the process
+        /// of decompilation.
+        /// </summary>
+        public ObservableRangeCollection<ScriptFile> ScriptFiles { get; private set; }
+
+        /// <summary>
         /// All the metadata collected from both platforms and user-provided metadata
         /// files.
         /// </summary>
         public TypeLibrary LoadedMetadata { get; set; }
+
+        /// <summary>
+        /// Call event handlers defined at user-defined scripts.
+        /// </summary>
+        /// <param name="funcName">
+        /// Name for script function which is used as event handler.
+        /// </param>
+        public void FireScriptEvent(string funcName)
+        {
+            foreach (var scriptFile in ScriptFiles)
+            {
+                foreach (var program in Programs)
+                {
+                    scriptFile.CallFunction(funcName, program);
+                }
+            }
+        }
     }
 }

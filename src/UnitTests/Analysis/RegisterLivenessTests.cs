@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.UnitTests.Mocks;

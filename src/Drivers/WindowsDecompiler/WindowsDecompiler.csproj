@@ -104,6 +104,7 @@
     <ProjectReference Include="..\..\Libraries\Libc\Libc.csproj" />
     <ProjectReference Include="..\..\Libraries\Python\Python.csproj" />
     <ProjectReference Include="..\..\Native\NativeProxy.csproj" />
+    <ProjectReference Include="..\..\Scripts\Python\Python.csproj" />
     <ProjectReference Include="..\..\Symbols\LGSymLoader\LGSymLoader.csproj" />
     <ProjectReference Include="..\..\UserInterfaces\WindowsForms\WindowsForms.csproj" />
   </ItemGroup>

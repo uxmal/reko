@@ -18,22 +18,18 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.CLanguage;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Reko.Analysis
+namespace Reko.Core.CLanguage
 {
     /// <summary>
     /// Builds ProcedureSignatures from user-supplied signatures.

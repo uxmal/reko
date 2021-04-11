@@ -20,6 +20,7 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using Reko.Analysis;

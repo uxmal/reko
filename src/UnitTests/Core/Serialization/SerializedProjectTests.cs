@@ -292,6 +292,40 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
+        public void SudSaveScripts()
+        {
+            var project = new Project
+            {
+                ScriptFiles =
+                {
+                    new Mock<ScriptFile>(
+                        null, "/var/foo/script.fake", new byte[100]).Object
+                },
+            };
+            var sw = new StringWriter();
+            var writer = new FilteringXmlWriter(sw)
+            {
+                Formatting = System.Xml.Formatting.Indented
+            };
+            var ser = SerializedLibrary.CreateSerializer_v5(
+                typeof(Project_v5));
+
+            var saver = new ProjectSaver(sc);
+            var sProject = saver.Serialize("/var/foo/foo.proj", project);
+            ser.Serialize(writer, sProject);
+
+            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<project xmlns=""http://schemata.jklnet.org/Reko/v5"">
+  <script>
+    <filename>script.fake</filename>
+  </script>
+</project>";
+            if (sw.ToString() != expected)
+                Console.WriteLine("{0}", sw.ToString());
+            Assert.AreEqual(expected, sw.ToString());
+        }
+
+        [Test]
         public void Sud_LoadProject_Inputs_v5()
         {
             Given_Loader();
@@ -725,6 +759,5 @@ namespace Reko.UnitTests.Core.Serialization
                 Debug.Print("{0}", sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
         }
-
     }
 }

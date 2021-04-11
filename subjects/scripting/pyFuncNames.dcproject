@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>x86-protected-32</arch>
+  <platform>win32</platform>
+  <input>
+    <filename>../PE/x86/pySample/pySample.dll</filename>
+    <asmDir>pyFuncNames.reko</asmDir>
+    <srcDir>pyFuncNames.reko</srcDir>
+    <includeDir>pyFuncNames.reko</includeDir>
+    <resources>pyFuncNames.reko\resources</resources>
+    <user>
+      <processor />
+      <registerValues />
+      <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+  <metadata>
+    <filename>../PE/x86/pySample/python.xml</filename>
+  </metadata>
+  <script>
+    <filename>py_func_names.py</filename>
+  </script>
+</project>

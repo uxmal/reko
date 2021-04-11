@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -175,7 +175,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // If parser failed, perhaps it's simply a valid name? 
             if (UserSignatureBuilder.IsValidCIdentifier(procText))
             {
-                declarationForm.TextBox.ForeColor = SystemColors.ControlText; ;
+                declarationForm.TextBox.ForeColor = SystemColors.ControlText;
                 return;
             }
             // Not valid name either, die.

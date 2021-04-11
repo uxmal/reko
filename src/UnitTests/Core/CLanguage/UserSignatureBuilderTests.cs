@@ -20,7 +20,6 @@
 
 using Moq;
 using NUnit.Framework;
-using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Code;
@@ -35,7 +34,7 @@ using System.Linq;
 using System.Text;
 using CommonMockFactory = Reko.UnitTests.Mocks.CommonMockFactory;
 
-namespace Reko.UnitTests.Analysis
+namespace Reko.UnitTests.Core.CLanguage
 {
     [TestFixture]
     public class UserSignatureBuilderTests

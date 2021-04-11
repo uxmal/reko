@@ -48,11 +48,12 @@ namespace Reko.Core.Serialization
         /// <returns></returns>
         public Project_v5 Serialize(string projectAbsPath, Project project)
         {
-            var inputFiles = new List<DecompilerInput_v5>();
-            inputFiles.AddRange(project.Programs.Select(p => VisitProgram(projectAbsPath, p)));
-
-            var metadataFiles = new List<MetadataFile_v3>();
-            metadataFiles.AddRange(project.MetadataFiles.Select(m => VisitMetadataFile(projectAbsPath, m)));
+            var inputFiles = project.Programs.Select(
+                p => VisitProgram(projectAbsPath, p)).ToList();
+            var metadataFiles = project.MetadataFiles.Select(
+                m => VisitMetadataFile(projectAbsPath, m)).ToList();
+            var scriptFiles = project.ScriptFiles.Select(
+                s => VisitScriptFile(projectAbsPath, s)).ToList();
             var sp = new Project_v5
             {
                 // ".Single()" because there can be only one Architecture and Platform, realistically.
@@ -60,6 +61,7 @@ namespace Reko.Core.Serialization
                 PlatformName = project.Programs.Select(p => p.Platform.Name).Distinct().SingleOrDefault(),   
                 InputFiles = inputFiles,
                 MetadataFiles = metadataFiles,
+                ScriptFiles = scriptFiles,
             };
             return sp;
         }
@@ -314,6 +316,16 @@ namespace Reko.Core.Serialization
             {
                  Filename = ConvertToProjectRelativePath(projectAbsPath, metadata.Filename!),
                   ModuleName = metadata.ModuleName,
+            };
+        }
+
+        private ScriptFile_v5 VisitScriptFile(
+            string projectAbsPath, ScriptFile script)
+        {
+            return new ScriptFile_v5
+            {
+                Filename = ConvertToProjectRelativePath(
+                    projectAbsPath, script.Filename),
             };
         }
     }

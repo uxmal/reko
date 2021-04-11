@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using System.Collections.Generic;

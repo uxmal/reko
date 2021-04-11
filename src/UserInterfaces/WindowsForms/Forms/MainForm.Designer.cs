@@ -120,6 +120,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.imlBrowser.Images.SetKeyName(11, "Cpu.ico");
             this.imlBrowser.Images.SetKeyName(12, "EntryProcedure.ico");
             this.imlBrowser.Images.SetKeyName(13, "UserEntryProcedure.ico");
+            this.imlBrowser.Images.SetKeyName(14, "Script.py.ico");
             // 
             // tabControl1
             // 
