@@ -51,6 +51,12 @@ def on_program_loaded(program):
     exclude_dll_main(program)
     comments = []
     dump_procedures(program, comments)
+    get_procedure(program, 0x00000001, comments)
+    get_procedure(program, 0x1000149E, comments)
+    get_procedure(program, 0x1000149D, comments)
+    check_procedure(program, 0x00000002, comments)
+    check_procedure(program, 0x100010F0, comments)
+    check_procedure(program, 0x100010F1, comments)
     program.comments[0x10001170] = "\n".join(comments)
     program.comments[0x10001183] = \
         'This is initialization of Python extension module'
@@ -65,3 +71,14 @@ def dump_procedures(program, lines):
         lines.append('    {}:'.format(proc.name))
         lines.append('        Address: 0x{:08X}'.format(addr))
         lines.append('        Decompile: {}'.format(proc.decompile))
+
+def get_procedure(program, addr, lines):
+    proc = program.procedures.get(addr)
+    name = proc.name if proc is not None else None
+    lines.append('    Get procedure at 0x{:08X}: {}'.format(addr, name))
+
+def check_procedure(program, addr, lines):
+    if addr in program.procedures:
+        lines.append('    There is procedure entry at 0x{:08X}'.format(addr))
+    else:
+        lines.append('    There is no procedure entry at 0x{:08X}'.format(addr))

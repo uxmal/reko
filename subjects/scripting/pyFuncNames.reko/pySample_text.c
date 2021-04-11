@@ -59,6 +59,12 @@ void initpySample()
 	//     DllMain:
 	//         Address: 0x1000149E
 	//         Decompile: False
+	//     Get procedure at 0x00000001: None
+	//     Get procedure at 0x1000149E: DllMain
+	//     Get procedure at 0x1000149D: None
+	//     There is no procedure entry at 0x00000002
+	//     There is procedure entry at 0x100010F0
+	//     There is no procedure entry at 0x100010F1
 	// This is initialization of Python extension module
 	Py_InitModule4("pySample", methods, null, null, 1007);
 }

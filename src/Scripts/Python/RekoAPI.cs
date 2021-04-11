@@ -80,6 +80,13 @@ namespace Reko.Scripts.Python
                 addr => addr.ToString()).ToArray();
         }
 
+        public bool ContainsProcedureAddress(ulong linearAddress)
+        {
+            if (!TryConvertAddress(linearAddress, out var addr))
+                return false;
+            return program.User.Procedures.ContainsKey(addr);
+        }
+
         public string GetProcedureName(ulong linearAddress)
         {
             return UserProcedure(linearAddress).Name;
@@ -100,6 +107,20 @@ namespace Reko.Scripts.Python
             ulong linearAddress, bool decompile)
         {
             UserProcedure(linearAddress).Decompile = decompile;
+        }
+
+        private bool TryConvertAddress(ulong linearAddress, out Address addr)
+        {
+            try
+            {
+                addr = Addr(linearAddress);
+                return true;
+            }
+            catch
+            {
+                addr = null!;
+                return false;
+            }
         }
 
         private Address Addr(ulong linearAddress)

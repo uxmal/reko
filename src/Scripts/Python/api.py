@@ -27,6 +27,21 @@ class RekoDictBase(object):
     def __getitem__(self, key):
         raise KeyError
 
+    def get(self, key, default=None):
+        'D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.'
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
+    def __contains__(self, key):
+        try:
+            self[key]
+        except KeyError:
+            return False
+        else:
+            return True
+
     def items(self):
         for key in self:
             yield (key, self[key])
@@ -94,6 +109,8 @@ class Procedures(RekoDictBase):
         self._reko = reko
 
     def __getitem__(self, addr):
+        if not self._reko.ContainsProcedureAddress(addr):
+            raise KeyError(addr)
         return Procedure(self._reko, addr)
 
     def __setitem__(self, addr, proc):
