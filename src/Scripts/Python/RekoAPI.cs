@@ -43,9 +43,24 @@ namespace Reko.Scripts.Python
         // Python ints and strs as parameters, and use
         // IProcessorArchitecture.TryParseAddress so that segmented addresses
         // are handled correctly.
+        public byte ReadByte(ulong linearAddress)
+        {
+            return CreateImageReader(linearAddress).ReadByte();
+        }
+
+        public short ReadInt16(ulong linearAddress)
+        {
+            return CreateImageReader(linearAddress).ReadInt16();
+        }
+
         public int ReadInt32(ulong linearAddress)
         {
             return CreateImageReader(linearAddress).ReadInt32();
+        }
+
+        public long ReadInt64(ulong linearAddress)
+        {
+            return CreateImageReader(linearAddress).ReadInt64();
         }
 
         public string ReadCString(ulong linearAddress)

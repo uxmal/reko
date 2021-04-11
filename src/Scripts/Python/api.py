@@ -63,8 +63,20 @@ class MemorySlice(object):
         self._start_addr = start_addr
 
     @property
+    def byte(self):
+        return self._reko.ReadByte(self._start_addr)
+
+    @property
+    def int16(self):
+        return self._reko.ReadInt16(self._start_addr)
+
+    @property
     def int32(self):
         return self._reko.ReadInt32(self._start_addr)
+
+    @property
+    def int64(self):
+        return self._reko.ReadInt64(self._start_addr)
 
     @property
     def c_str(self):

@@ -65,6 +65,11 @@ void initpySample()
 	//     There is no procedure entry at 0x00000002
 	//     There is procedure entry at 0x100010F0
 	//     There is no procedure entry at 0x100010F1
+	// Memory at 0x10003020:
+	//     Byte: 0x28
+	//     16-bit integer: 0x2128
+	//     32-bit integer: 0x10002128
+	//     64-bit integer: 0x1000105010002128
 	// This is initialization of Python extension module
 	Py_InitModule4("pySample", methods, null, null, 1007);
 }

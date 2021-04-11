@@ -57,6 +57,7 @@ def on_program_loaded(program):
     check_procedure(program, 0x00000002, comments)
     check_procedure(program, 0x100010F0, comments)
     check_procedure(program, 0x100010F1, comments)
+    test_memory_reading(program, comments)
     program.comments[0x10001170] = "\n".join(comments)
     program.comments[0x10001183] = \
         'This is initialization of Python extension module'
@@ -82,3 +83,11 @@ def check_procedure(program, addr, lines):
         lines.append('    There is procedure entry at 0x{:08X}'.format(addr))
     else:
         lines.append('    There is no procedure entry at 0x{:08X}'.format(addr))
+
+def test_memory_reading(program, lines):
+    mem = program.memory
+    lines.append('Memory at 0x10003020:')
+    lines.append('    Byte: 0x{:X}'.format(mem[0x10003020].byte))
+    lines.append('    16-bit integer: 0x{:X}'.format(mem[0x10003020].int16))
+    lines.append('    32-bit integer: 0x{:X}'.format(mem[0x10003020].int32))
+    lines.append('    64-bit integer: 0x{:X}'.format(mem[0x10003020].int64))
