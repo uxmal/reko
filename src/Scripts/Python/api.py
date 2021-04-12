@@ -125,11 +125,11 @@ class Procedures(RekoDictBase):
             raise KeyError(addr)
         return Procedure(self._reko, addr)
 
-    def __setitem__(self, addr, proc):
-        if isinstance(proc, str):
-            self._reko.SetUserProcedure(addr, proc)
+    def __setitem__(self, addr, decl):
+        if isinstance(decl, str):
+            self._reko.SetUserProcedure(addr, decl)
             return
-        raise TypeError('Unsupported type: {}'.format(type(proc)))
+        raise TypeError('Unsupported type: {}'.format(type(decl)))
 
     def __iter__(self):
         return addr_list_from_str_list(self._reko.GetProcedureAddresses())

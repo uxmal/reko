@@ -107,10 +107,30 @@ namespace Reko.Scripts.Python
             return UserProcedure(linearAddress).Name;
         }
 
-        public void SetUserProcedure(ulong linearAddress, string name)
+        public void SetUserProcedure(ulong linearAddress, string decl)
         {
             var addr = Addr(linearAddress);
-            program.User.Procedures[addr] = new UserProcedure(addr, name);
+            string name;
+            string? CSignature;
+            if (UserSignatureBuilder.IsValidCIdentifier(decl))
+            {
+                name = decl;
+                CSignature = null;
+            }
+            else
+            {
+                var usb = new UserSignatureBuilder(program);
+                var sProc = usb.ParseFunctionDeclaration(decl);
+                if (sProc is null || sProc.Name is null)
+                    throw new ArgumentException(
+                        $"Failed to parse procedure declaration: '{decl}'");
+                name = sProc.Name;
+                CSignature = decl;
+            }
+            program.User.Procedures[addr] = new UserProcedure(addr, name)
+            {
+                CSignature = CSignature,
+            };
         }
 
         public bool GetProcedureDecompileFlag(ulong linearAddress)

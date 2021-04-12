@@ -40,6 +40,17 @@ PyObject * fdiv_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
 	return eax_n;
 }
 
+// 10001140: Register (ptr32 Eq_n) unused_wrapper(Stack (ptr32 Eq_n) self, Stack (ptr32 Eq_n) args)
+PyObject * unused_wrapper(PyObject * self, PyObject * args)
+{
+	PyObject * eax_n = PyArg_ParseTuple(args, ":unused");
+	if (eax_n == null)
+		return eax_n;
+	PyObject * eax_n = &_Py_NoneStruct;
+	++eax_n->ob_refcnt;
+	return &_Py_NoneStruct;
+}
+
 // 10001170: void initpySample()
 void initpySample()
 {
@@ -55,6 +66,9 @@ void initpySample()
 	//         Decompile: True
 	//     fdiv_wrapper:
 	//         Address: 0x100010F0
+	//         Decompile: True
+	//     unused_wrapper:
+	//         Address: 0x10001140
 	//         Decompile: True
 	//     DllMain:
 	//         Address: 0x1000149E

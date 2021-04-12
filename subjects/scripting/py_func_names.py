@@ -47,6 +47,8 @@ def on_program_loaded(program):
         # set procedure name for method based on name defined at table entry
         program.procedures[method_addr] = '{}_wrapper'.format(method_name)
         num_methods += 1
+    program.procedures[0x10001140] = \
+        'PyObject *unused_wrapper(PyObject *self, PyObject *args)'
     program.globals[0x10003010] = 'PyMethodDef methods[{}]'.format(num_methods)
     exclude_dll_main(program)
     comments = []
