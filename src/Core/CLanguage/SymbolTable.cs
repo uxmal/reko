@@ -100,7 +100,7 @@ namespace Reko.Core.CLanguage
 
                 if (nt.DataType is SerializedSignature sSig)
                 {
-                    sSig.Convention = GetCallingConventionFromAttributes(decl.attribute_list);
+                    sSig.Convention ??= GetCallingConventionFromAttributes(decl.attribute_list);
                     if (sSig.ReturnValue != null)
                     {
                         sSig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(
