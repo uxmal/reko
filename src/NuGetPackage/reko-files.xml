@@ -184,6 +184,7 @@
         <File Source="$(var.Switch.TargetPath)" nuget_target="f:" />
         <File Source="$(var.SysV.TargetPath)" nuget_target="f:" />
         <File Source="$(var.SysV.ProjectDir)lp32.xml" nuget_target="c:" />
+        <File Source="$(var.SysV.ProjectDir)lp64.xml" nuget_target="c:" />
         <File Source="$(var.SysV.ProjectDir)libc.so.xml" nuget_target="c:" />
         <File Source="$(var.SysV.ProjectDir)Xlib.xml" nuget_target="c:" />
         <File Source="$(var.SysV.ProjectDir)sysvcharacteristics.xml" nuget_target="c:" />

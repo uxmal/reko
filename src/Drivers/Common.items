@@ -168,6 +168,8 @@ by the PreBuild.targets file.
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SegaGenesis\SegaGenesis.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\lp32.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\lp64.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\Xlib.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\opengl.xml" />

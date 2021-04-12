@@ -10,9 +10,6 @@ struct timespec
 	long	tv_sec;
 	long	tv_nsec;
 };
-typedef unsigned int size_t;
-typedef int ssize_t;
-typedef unsigned long long off_t;
 typedef int clockid_t;
 typedef long time_t;
 typedef void * va_list;	
