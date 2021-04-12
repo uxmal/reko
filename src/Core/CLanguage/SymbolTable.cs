@@ -105,11 +105,8 @@ namespace Reko.Core.CLanguage
                         sSig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(
                             "returns", decl.attribute_list);
                     }
-                    Procedures.Add(new Procedure_v1
-                    {
-                        Name = nt.Name,
-                        Signature = sSig,
-                    });
+                    var sProc = MakeProcedure(nt.Name!, sSig, decl.attribute_list);
+                    Procedures.Add(sProc);
                     types.Add(sSig);
                 }
                 else if (!isTypedef)
@@ -138,6 +135,36 @@ namespace Reko.Core.CLanguage
                 }
             }
             return types;
+        }
+
+        private ProcedureBase_v1 MakeProcedure(string name, SerializedSignature sSig, List<CAttribute> attributes)
+        {
+            var attrService = attributes?.Find(a => a.Name.Components[0] == "reko" && a.Name.Components[1] == "service");
+            if (attrService != null)
+            {
+                var sService = MakeService(name, sSig, attrService);
+                return sService;
+            }
+            else
+            {
+                return new Procedure_v1
+                {
+                    Name = name,
+                    Signature = sSig,
+                };
+            }
+        }
+
+        private SerializedService MakeService(string name, SerializedSignature sSig, CAttribute attrService)
+        {
+            var sap = new ServiceAttributeParser(attrService);
+            var syscall = sap.Parse();
+            return new SerializedService
+            {
+                Signature = sSig,
+                Name = name,
+                SyscallInfo = syscall,
+            };
         }
     }
 }

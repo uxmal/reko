@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -53,7 +53,10 @@ namespace Reko.Tools.C2Xml.UnitTests
 
         public override void WriteEndAttribute()
         {
-            ignoreString = false;
+            if (ignoreString)
+                ignoreString = false;
+            else 
+                base.WriteEndAttribute();
         }
     }
 }
