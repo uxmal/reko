@@ -100,6 +100,7 @@ namespace Reko.Core.CLanguage
 
                 if (nt.DataType is SerializedSignature sSig)
                 {
+                    sSig.Convention = GetCallingConventionFromAttributes(decl.attribute_list);
                     if (sSig.ReturnValue != null)
                     {
                         sSig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(
@@ -137,9 +138,28 @@ namespace Reko.Core.CLanguage
             return types;
         }
 
+        private string? GetCallingConventionFromAttributes(List<CAttribute> attributes)
+        {
+            var attrConvention = attributes?.Find(a =>
+                a.Name.Components.Length == 2 &&
+                a.Name.Components[0] == "reko" &&
+                a.Name.Components[1] == "convention");
+            if (attrConvention is null)
+                return null;
+            if (attrConvention.Tokens.Count == 1 && 
+                attrConvention.Tokens[0].Type == CTokenType.Id)
+            {
+                return (string?) attrConvention.Tokens[0].Value;
+            }
+            throw new CParserException("Incorrect syntax for [[reko::convention]].");
+        }
+
         private ProcedureBase_v1 MakeProcedure(string name, SerializedSignature sSig, List<CAttribute> attributes)
         {
-            var attrService = attributes?.Find(a => a.Name.Components[0] == "reko" && a.Name.Components[1] == "service");
+            var attrService = attributes?.Find(a =>
+                a.Name.Components.Length == 2 && 
+                a.Name.Components[0] == "reko" &&
+                a.Name.Components[1] == "service");
             if (attrService != null)
             {
                 var sService = MakeService(name, sSig, attrService);

@@ -165,7 +165,6 @@ namespace Reko.Tools.C2Xml.UnitTests
                 var xc = new XmlConverter(reader, xWriter, platform, dialect);
                 xc.Convert();
                 writer.Flush();
-                Console.Write(writer.ToString());
                 Assert.AreEqual(expectedXml, writer.ToString());
             }
             catch
@@ -1045,6 +1044,36 @@ namespace Reko.Tools.C2Xml.UnitTests
 </library>";
             RunTest(
                 "[[reko::service(vector=0x10, regs={al:0x42,ah:0x43})]] [[reko::returns(register,\"D0\")]] char foo();",
+                sExp, "");
+        }
+
+        [Test]
+        public void C2x_Convention()
+        {
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types />
+  <procedure name=""read"">
+    <signature convention=""amd64kernel"">
+      <return>
+        <prim domain=""SignedInt"" size=""4"" />
+      </return>
+      <arg name=""fd"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </arg>
+      <arg name=""buffer"">
+        <ptr size=""4"">
+          <prim domain=""Character"" size=""1"" />
+        </ptr>
+      </arg>
+      <arg name=""length"">
+        <type>size_t</type>
+      </arg>
+    </signature>
+  </procedure>
+</library>";
+            RunTest(
+                "[[reko::convention(amd64kernel)]] int read(int fd, char * buffer, size_t length);",
                 sExp, "");
         }
     }
