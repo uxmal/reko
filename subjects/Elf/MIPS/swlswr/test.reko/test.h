@@ -40,7 +40,7 @@ Eq_133: (fn void ())
 Eq_136: (fn (ptr32 void) ((ptr32 void), int32, Eq_140))
 	T_136 (in memset @ 00000830 : ptr32)
 	T_137 (in signature of memset @ 00000000 : void)
-Eq_140: (union "Eq_140" (int32 u0) (size_t u1))
+Eq_140: size_t
 	T_140 (in num @ 00000830 : size_t)
 	T_145 (in 5<i32> @ 00000830 : int32)
 	T_150 (in num @ 0000084C : size_t)
@@ -649,8 +649,8 @@ T_144: (in 0<32> @ 00000830 : word32)
   OrigDataType: int32
 T_145: (in 5<i32> @ 00000830 : int32)
   Class: Eq_140
-  DataType: int32
-  OrigDataType: (union (int32 u0) (size_t u1))
+  DataType: Eq_140
+  OrigDataType: size_t
 T_146: (in memset(fp + -20<i32>, 0<32>, 5<i32>) @ 00000830 : (ptr32 void))
   Class: Eq_146
   DataType: (ptr32 void)
@@ -677,12 +677,12 @@ T_151: (in size @ 0000084C : size_t)
   OrigDataType: 
 T_152: (in 1<i32> @ 0000084C : int32)
   Class: Eq_140
-  DataType: int32
-  OrigDataType: (union (int32 u0) (size_t u1))
+  DataType: Eq_140
+  OrigDataType: size_t
 T_153: (in 5<i32> @ 0000084C : int32)
   Class: Eq_140
-  DataType: int32
-  OrigDataType: (union (int32 u0) (size_t u1))
+  DataType: Eq_140
+  OrigDataType: size_t
 T_154: (in calloc(1<i32>, 5<i32>) @ 0000084C : (ptr32 void))
   Class: Eq_147
   DataType: (ptr32 Eq_147)
@@ -1101,12 +1101,9 @@ typedef union Eq_114 {
 
 typedef void (Eq_133)();
 
-typedef void (Eq_136)(void, int32, Eq_140);
+typedef void (Eq_136)(void, int32, size_t);
 
-typedef union Eq_140 {
-	int32 u0;
-	size_t u1;
-} Eq_140;
+typedef size_t Eq_140;
 
 typedef struct Eq_147 {
 	Eq_155 t0000;	// 0

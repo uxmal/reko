@@ -2032,7 +2032,7 @@ l004026F8:
 	word32 r5_700
 	word32 r6_701
 	word32 r7_702
-	dwLoc28_523 = add_to_request(r4, request_add_lines(dwLoc20_525, r4, add_to_request(r4, dwLoc28_523, dwLoc20_525 + 532<i32>, strlen(dwLoc20_525 + 532<i32>), ra, out r5_697, out r6_698, out r7_699)), fp + -2064<i32>, 0<32>, ra, out r5_700, out r6_701, out r7_702)
+	dwLoc28_523 = add_to_request(r4, request_add_lines(dwLoc20_525, r4, add_to_request(r4, dwLoc28_523, dwLoc20_525 + 532<i32>, CONVERT(strlen(dwLoc20_525 + 532<i32>), size_t, uint32), ra, out r5_697, out r6_698, out r7_699)), fp + -2064<i32>, 0<32>, ra, out r5_700, out r6_701, out r7_702)
 	Mem248[r4 + 0x1794<32>:word32] = 2<i32>
 l004026A8_ds_f:
 l004026B8:
@@ -2377,7 +2377,7 @@ void client_read_reply(word32 r4)
 client_read_reply_entry:
 l0040307C:
 	Mem27[r4 + 0x17D0<32>:word32] = time(0<32>)
-	Mem44[r4 + 0x178C<32>:word32] = read(Mem27[r4 + 4<32>:word32], r4 + 4024<i32>, 1999<i32>)
+	Mem44[r4 + 0x178C<32>:word32] = CONVERT(read(Mem27[r4 + 4<32>:word32], r4 + 4024<i32>, 1999<i32>), ssize_t, uint32)
 	Mem48[r4 + 0x1788<32>:word32] = r4 + 4024<i32>
 	return
 client_read_reply_exit:
@@ -3520,7 +3520,7 @@ l0040555C:
 l0040555C_ds_t:
 l0040555C_ds_f:
 l0040556C:
-	word32 r2_52 = malloc(strlen(r4) + 11<i32>)
+	word32 r2_52 = malloc(CONVERT(strlen(r4), size_t, uint32) + 11<i32>)
 	dwArg04_530 = r2_52
 	branch r2_52 != 0<32> l0040556C_ds_t
 l0040556C_ds_t:
@@ -4041,7 +4041,7 @@ l0040697C:
 	call gmtime (retsize: 0;)
 		uses: r2:fp + -40<i32>,r25:r25_92,r3:r3_98,r4:fp + -40<i32>,r5:r5_30,r6:r6_95,r7:r7_33,Stack +0018:0x10008860<32>,Stack +0044:dwLoc24,Stack +0068:r4
 		defs: r2:r2_43
-	strftime(fp + -72<i32>, 28<i32>, 0x40A74C<32>, r2_43)
+	r2_57 = CONVERT(strftime(fp + -72<i32>, 28<i32>, 0x40A74C<32>, r2_43), size_t, uint32)
 	fprintf(r4, 0x40A760<32>, 0<32>)
 	fflush(r4)
 	Mem106[Mem75[0x10000878<32>:word32] + 2084<i32>:word32] = Mem75[Mem75[0x10000878<32>:word32] + 2084<i32>:word32] + 1<i32>

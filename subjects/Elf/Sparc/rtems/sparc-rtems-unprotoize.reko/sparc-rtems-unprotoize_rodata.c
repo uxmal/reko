@@ -9,35 +9,25 @@ word32 aux_info_suffix = 0x00016F00; // 00016F04
 word32 save_suffix = 93960; // 00016F10
 Eq_n g_t16F14 = // 00016F14
 	{
-		'\0'
+		&g_str16F30
 	};
+char g_str16F30[] = "struct _iobuf"; // 00016F30
 word32 hash_mask = 0x01FF; // 00016F40
+char g_str17040[] = "/opt/rtems/lib/gcc-lib/sparc-rtems/2.95.2/../../../../include/g++-3"; // 00017040
 word32 other_var_style = 94344; // 00017090
-char g_str170A8[] = "\n%s: virtual memory exceeded\n"; // 000170A8
-char g_str170C8[] = "%s: internal abort\n"; // 000170C8
-char g_str17108[] = "%s: usage '%s [ -VqfnkN ] [ -i <istring> ] [ filename ... ]'\n"; // 00017108
-char g_str17148[] = "%s: invalid file name: %s\n"; // 00017148
-char g_str17190[] = "\n%s: fatal error: aux info file corrupted at line %d\n"; // 00017190
-char g_str171D8[] = "%s:%d: declaration of function `%s' takes different forms\n"; // 000171D8
 char g_str17218[] = ""; // 00017218
-char g_str17250[] = "%s: compiling `%s'\n"; // 00017250
 char g_str17268[] = "%s: "; // 00017268
 char g_str17270[] = ": %s\n"; // 00017270
-char g_str172D0[] = "%s: warning: missing SYSCALLS file `%s'\n"; // 000172D0
 int8 g_b17468 = 46; // 00017468
-char g_str17470[] = "%s: declaration of function `%s' not converted\n"; // 00017470
-char g_str174D0[] = "%s: definition of function `%s' not converted\n"; // 000174D0
 Eq_n g_t1753C = // 0001753C
 	{
-		'\0'
+		&g_str17598
 	};
 Eq_n g_a17540[] = // 00017540
 	{
 	};
-char g_str175D8[] = "%s: function definition not converted\n"; // 000175D8
-char g_str17810[] = "%s: cannot get working directory: %s\n"; // 00017810
+char g_str17598[] = "if"; // 00017598
 int8 g_b17838 = 99; // 00017838
-char g_str17850[] = "%s: input file names must have .c suffixes: %s\n"; // 00017850
 char g_str17880[] = "%s: %s\n"; // 00017880
 char g_str17888[] = "PWD"; // 00017888
 char g_str178B0[] = "2.95.2 19991024 (release)"; // 000178B0

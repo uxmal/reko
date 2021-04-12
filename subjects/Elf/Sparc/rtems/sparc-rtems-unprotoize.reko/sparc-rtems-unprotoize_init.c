@@ -4,19 +4,12 @@
 
 #include "sparc-rtems-unprotoize.h"
 
-// 00016EC8: Register ptr32 _init(Register word32 o3, Register ptr32 o4, Register ptr32 o5, Register ptr32 o7, Register out ptr32 o5Out, Register out ptr32 o7Out, Register out ptr32 l0Out)
+// 00016EC8: Register word32 _init(Register word32 o3, Register word32 o4, Register word32 o5, Register word32 o7)
 // Called from:
 //      _start
-ptr32 _init(word32 o3, ptr32 o4, ptr32 o5, ptr32 o7, ptr32 & o5Out, ptr32 & o7Out, ptr32 & l0Out)
+word32 _init(word32 o3, word32 o4, word32 o5, word32 o7)
 {
 	frame_dummy(o3, o4, o5, o7);
-	ptr32 i4_n;
-	ptr32 i5_n;
-	ptr32 i7_n;
-	ptr32 l0_n = __do_global_ctors_aux(o3, o4, o5, o7, out i4_n, out i5_n, out i7_n);
-	o5Out = i5_n;
-	o7Out = i7_n;
-	l0Out = l0_n;
-	return i4_n;
+	return __do_global_ctors_aux(o3, o4, o5, o7);
 }
 

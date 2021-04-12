@@ -121,7 +121,7 @@ Eq_593: (fn Eq_596 ((ptr64 void), Eq_596, Eq_596, (ptr64 Eq_115)))
 	T_594 (in signature of fwrite @ 00000000 : void)
 	T_655 (in fwrite @ 0040170F : ptr64)
 	T_670 (in fwrite @ 004016D9 : ptr64)
-Eq_596: (union "Eq_596" (uint64 u0) (size_t u1))
+Eq_596: size_t
 	T_596 (in size @ 00401758 : size_t)
 	T_597 (in count @ 00401758 : size_t)
 	T_600 (in 1<u64> @ 00401758 : uint64)
@@ -2578,12 +2578,12 @@ T_599: (in 0x401A70<u64> @ 00401758 : uint64)
   OrigDataType: (ptr64 void)
 T_600: (in 1<u64> @ 00401758 : uint64)
   Class: Eq_596
-  DataType: uint64
-  OrigDataType: (union (uint64 u0) (size_t u1))
+  DataType: Eq_596
+  OrigDataType: size_t
 T_601: (in 0x27<u64> @ 00401758 : uint64)
   Class: Eq_596
-  DataType: uint64
-  OrigDataType: (union (uint64 u0) (size_t u1))
+  DataType: Eq_596
+  OrigDataType: size_t
 T_602: (in 0000000000602100 @ 00401758 : ptr64)
   Class: Eq_602
   DataType: (ptr64 (ptr64 Eq_115))
@@ -2806,12 +2806,12 @@ T_656: (in 0x401A18<u64> @ 0040170F : uint64)
   OrigDataType: (ptr64 void)
 T_657: (in 1<u64> @ 0040170F : uint64)
   Class: Eq_596
-  DataType: uint64
-  OrigDataType: (union (uint64 u0) (size_t u1))
+  DataType: Eq_596
+  OrigDataType: size_t
 T_658: (in 0x2E<u64> @ 0040170F : uint64)
   Class: Eq_596
-  DataType: uint64
-  OrigDataType: (union (uint64 u0) (size_t u1))
+  DataType: Eq_596
+  OrigDataType: size_t
 T_659: (in 0000000000602100 @ 0040170F : ptr64)
   Class: Eq_659
   DataType: (ptr64 (ptr64 Eq_115))
@@ -2866,12 +2866,12 @@ T_671: (in 0x4019E8<u64> @ 004016D9 : uint64)
   OrigDataType: (ptr64 void)
 T_672: (in 1<u64> @ 004016D9 : uint64)
   Class: Eq_596
-  DataType: uint64
-  OrigDataType: (union (uint64 u0) (size_t u1))
+  DataType: Eq_596
+  OrigDataType: size_t
 T_673: (in 0x2C<u64> @ 004016D9 : uint64)
   Class: Eq_596
-  DataType: uint64
-  OrigDataType: (union (uint64 u0) (size_t u1))
+  DataType: Eq_596
+  OrigDataType: size_t
 T_674: (in 0000000000602100 @ 004016D9 : ptr64)
   Class: Eq_674
   DataType: (ptr64 (ptr64 Eq_115))
@@ -4477,12 +4477,9 @@ typedef struct Eq_585 {
 	char * ptr0018;	// 18
 } Eq_585;
 
-typedef Eq_596 (Eq_593)(void, Eq_596, Eq_596, FILE *);
+typedef size_t (Eq_593)(void, size_t, size_t, FILE *);
 
-typedef union Eq_596 {
-	uint64 u0;
-	size_t u1;
-} Eq_596;
+typedef size_t Eq_596;
 
 typedef int32 (Eq_611)(char *);
 

@@ -974,7 +974,7 @@ word32 client_prepare_connect(Eq_n r4, word32 ra, ptr32 & r6Out, ptr32 & r7Out)
 	Eq_n r25_n = (char *) <invalid>;
 	Eq_n dwLoc18_n = r2_n;
 	if ((word32) (r2_n < 0x0100) == 0x00)
-		dwLoc18_n.u0 = 0x0100;
+		dwLoc18_n = 0x0100;
 	ptr32 r7_n;
 	word32 r5_n;
 	ptr32 r6_n;
@@ -987,8 +987,8 @@ word32 client_prepare_connect(Eq_n r4, word32 ra, ptr32 & r6Out, ptr32 & r7Out)
 // 004021A0: void client_copy_request(Register (ptr32 Eq_n) r4)
 void client_copy_request(struct Eq_n * r4)
 {
-	memcpy((char *) &r4->t07D8 + 4, (char *) r4 + 8, r4->t07D8);
-	r4->ptr0FB0 = (char *) &r4->t07D8 + 4;
+	memcpy(&r4->t07D8 + 1, (char *) r4 + 8, r4->t07D8);
+	r4->ptr0FB0 = &r4->t07D8 + 1;
 	r4->t0FAC = r4->t07D8;
 }
 
@@ -1124,7 +1124,7 @@ void client_parse_request(Eq_n r4, word32 ra)
 					word32 r5_n;
 					word32 r6_n;
 					word32 r7_n;
-					dwLoc28_n = add_to_request(r4, request_add_lines(dwLoc20_n, r4, add_to_request(r4, dwLoc28_n, dwLoc20_n.u0 + 532, strlen(dwLoc20_n.u0 + 532), ra, out r5_n, out r6_n, out r7_n)), fp + -0x0810, 0x00, ra, out r5_n, out r6_n, out r7_n);
+					dwLoc28_n = add_to_request(r4, request_add_lines(dwLoc20_n, r4, add_to_request(r4, dwLoc28_n, dwLoc20_n.u0 + 532, (uint32) strlen(dwLoc20_n.u0 + 532), ra, out r5_n, out r6_n, out r7_n)), fp + -0x0810, 0x00, ra, out r5_n, out r6_n, out r7_n);
 					*((word32) r4 + 6036) = 2;
 				}
 			}
@@ -1264,7 +1264,7 @@ Eq_n client_send_request(Eq_n r4, word32 ra, union Eq_n & r25Out)
 void client_read_reply(struct Eq_n * r4)
 {
 	r4->t17D0 = time(null);
-	r4->t178C = read(r4->dw0004, &r4->dw0004 + 1005, 1999);
+	r4->dw178C = (uint32) read(r4->dw0004, &r4->dw0004 + 1005, 1999);
 	r4->ptr1788 = &r4->dw0004 + 1005;
 }
 
@@ -1941,7 +1941,7 @@ void properties_load(Eq_n r4, Eq_n r5, word32 ra)
 		return;
 	if (r5 == 0x00)
 	{
-		Eq_n r2_n = malloc((word32) strlen(r4) + 11);
+		Eq_n r2_n = malloc((uint32) strlen(r4) + 11);
 		dwArg04_n = r2_n;
 		if (r2_n == 0x00)
 		{
@@ -2295,7 +2295,7 @@ void log_string(FILE * r4, word32 r5, word32 r7, word32 ra)
 	Eq_n r5_n = (char *) <invalid>;
 	struct tm * r2_n;
 	gmtime();
-	strftime(fp + -72, 28, "%Y-%m-%d %H:%M:%S", r2_n);
+	r2_n = (uint32) strftime(fp + -72, 28, "%Y-%m-%d %H:%M:%S", r2_n);
 	fprintf(r4, "%s:%s.%03d:%s\n", 0x00);
 	fflush(r4);
 	++g_ptr10000878->dw0824;
