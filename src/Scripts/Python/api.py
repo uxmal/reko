@@ -58,25 +58,34 @@ class Comments(object):
         self._reko.SetUserComment(addr, comment)
 
 class MemorySlice(object):
-    def __init__(self, reko, start_addr):
+    def __init__(self, reko, start_addr, end_addr):
         self._reko = reko
         self._start_addr = start_addr
+        self._end_addr = end_addr
 
     @property
     def byte(self):
-        return self._reko.ReadByte(self._start_addr)
+        if self._end_addr is None:
+            return self._reko.ReadByte(self._start_addr)
+        return self._reko.ReadBytes(self._start_addr, self._end_addr)
 
     @property
     def int16(self):
-        return self._reko.ReadInt16(self._start_addr)
+        if self._end_addr is None:
+            return self._reko.ReadInt16(self._start_addr)
+        return self._reko.ReadInts16(self._start_addr, self._end_addr)
 
     @property
     def int32(self):
-        return self._reko.ReadInt32(self._start_addr)
+        if self._end_addr is None:
+            return self._reko.ReadInt32(self._start_addr)
+        return self._reko.ReadInts32(self._start_addr, self._end_addr)
 
     @property
     def int64(self):
-        return self._reko.ReadInt64(self._start_addr)
+        if self._end_addr is None:
+            return self._reko.ReadInt64(self._start_addr)
+        return self._reko.ReadInts64(self._start_addr, self._end_addr)
 
     @property
     def c_str(self):
@@ -86,8 +95,20 @@ class Memory(object):
     def __init__(self, reko):
         self._reko = reko
 
-    def __getitem__(self, addr):
-        return MemorySlice(self._reko, addr)
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            if key.step is not None:
+                raise ValueError('Step is not supported')
+            if key.start is None:
+                raise ValueError('Start address is required')
+            if key.stop is None:
+                raise ValueError('End address is required')
+            start_addr = key.start
+            end_addr = key.stop
+        else:
+            start_addr = key
+            end_addr = None
+        return MemorySlice(self._reko, start_addr, end_addr)
 
 class Globals(object):
     def __init__(self, reko):

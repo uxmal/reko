@@ -93,3 +93,16 @@ def test_memory_reading(program, lines):
     lines.append('    16-bit integer: 0x{:X}'.format(mem[0x10003020].int16))
     lines.append('    32-bit integer: 0x{:X}'.format(mem[0x10003020].int32))
     lines.append('    64-bit integer: 0x{:X}'.format(mem[0x10003020].int64))
+    lines.append('Memory at [0x10003020:0x10003024]:')
+    lines.append('    Bytes: {}'.format(
+        bytes_to_list(mem[0x10003020:0x10003024].byte)))
+    lines.append('    16-bit integers: {}'.format(
+        bytes_to_list(mem[0x10003020:0x10003024].int16)))
+    lines.append('Memory at [0x10003020:0x10003030]:')
+    lines.append('    32-bit integers: {}'.format(
+        bytes_to_list(mem[0x10003020:0x10003030].int32)))
+    lines.append('    64-bit integers: {}'.format(
+        bytes_to_list(mem[0x10003020:0x10003030].int64)))
+
+def bytes_to_list(numbers):
+    return ['0x{:X}'.format(num) for num in numbers]

@@ -84,6 +84,12 @@ void initpySample()
 	//     16-bit integer: 0x2128
 	//     32-bit integer: 0x10002128
 	//     64-bit integer: 0x1000105010002128
+	// Memory at [0x10003020:0x10003024]:
+	//     Bytes: ['0x28', '0x21', '0x0', '0x10']
+	//     16-bit integers: ['0x2128', '0x1000']
+	// Memory at [0x10003020:0x10003030]:
+	//     32-bit integers: ['0x10002128', '0x10001050', '0x1', '0x10002114']
+	//     64-bit integers: ['0x1000105010002128', '0x1000211400000001']
 	// This is initialization of Python extension module
 	Py_InitModule4("pySample", methods, null, null, 1007);
 }

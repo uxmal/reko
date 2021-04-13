@@ -23,6 +23,7 @@ using Reko.Core.CLanguage;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Reko.Scripts.Python
@@ -48,9 +49,19 @@ namespace Reko.Scripts.Python
             return CreateImageReader(linearAddress).ReadByte();
         }
 
+        public IEnumerable<byte> ReadBytes(ulong iStartAddr, ulong iEndAddr)
+        {
+            return ReadData(rdr => rdr.ReadByte(), iStartAddr, iEndAddr);
+        }
+
         public short ReadInt16(ulong linearAddress)
         {
             return CreateImageReader(linearAddress).ReadInt16();
+        }
+
+        public IEnumerable<short> ReadInts16(ulong iStartAddr, ulong iEndAddr)
+        {
+            return ReadData(rdr => rdr.ReadInt16(), iStartAddr, iEndAddr);
         }
 
         public int ReadInt32(ulong linearAddress)
@@ -58,9 +69,19 @@ namespace Reko.Scripts.Python
             return CreateImageReader(linearAddress).ReadInt32();
         }
 
+        public IEnumerable<int> ReadInts32(ulong iStartAddr, ulong iEndAddr)
+        {
+            return ReadData(rdr => rdr.ReadInt32(), iStartAddr, iEndAddr);
+        }
+
         public long ReadInt64(ulong linearAddress)
         {
             return CreateImageReader(linearAddress).ReadInt64();
+        }
+
+        public IEnumerable<long> ReadInts64(ulong iStartAddr, ulong iEndAddr)
+        {
+            return ReadData(rdr => rdr.ReadInt64(), iStartAddr, iEndAddr);
         }
 
         public string ReadCString(ulong linearAddress)
@@ -167,6 +188,19 @@ namespace Reko.Scripts.Python
         {
             var addr = Addr(linearAddress);
             return program.CreateImageReader(program.Architecture, addr);
+        }
+
+        private IEnumerable<T> ReadData<T>(
+            Func<EndianImageReader, T> reader,
+            ulong iStartAddr,
+            ulong iEndAddr)
+        {
+            var rdr = CreateImageReader(iStartAddr);
+            var endAddr = Addr(iEndAddr);
+            while (rdr.Address < endAddr)
+            {
+                yield return reader(rdr);
+            }
         }
 
         private UserProcedure UserProcedure(ulong linearAddress)
