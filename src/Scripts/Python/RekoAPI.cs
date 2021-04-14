@@ -49,9 +49,9 @@ namespace Reko.Scripts.Python
             return CreateImageReader(linearAddress).ReadByte();
         }
 
-        public IEnumerable<byte> ReadBytes(ulong iStartAddr, ulong iEndAddr)
+        public IEnumerable<byte> ReadBytes(ulong iStartAddr, long length)
         {
-            return ReadData(rdr => rdr.ReadByte(), iStartAddr, iEndAddr);
+            return ReadData(rdr => rdr.ReadByte(), iStartAddr, length);
         }
 
         public short ReadInt16(ulong linearAddress)
@@ -59,9 +59,9 @@ namespace Reko.Scripts.Python
             return CreateImageReader(linearAddress).ReadInt16();
         }
 
-        public IEnumerable<short> ReadInts16(ulong iStartAddr, ulong iEndAddr)
+        public IEnumerable<short> ReadInts16(ulong iStartAddr, long length)
         {
-            return ReadData(rdr => rdr.ReadInt16(), iStartAddr, iEndAddr);
+            return ReadData(rdr => rdr.ReadInt16(), iStartAddr, length);
         }
 
         public int ReadInt32(ulong linearAddress)
@@ -69,9 +69,9 @@ namespace Reko.Scripts.Python
             return CreateImageReader(linearAddress).ReadInt32();
         }
 
-        public IEnumerable<int> ReadInts32(ulong iStartAddr, ulong iEndAddr)
+        public IEnumerable<int> ReadInts32(ulong iStartAddr, long length)
         {
-            return ReadData(rdr => rdr.ReadInt32(), iStartAddr, iEndAddr);
+            return ReadData(rdr => rdr.ReadInt32(), iStartAddr, length);
         }
 
         public long ReadInt64(ulong linearAddress)
@@ -79,9 +79,9 @@ namespace Reko.Scripts.Python
             return CreateImageReader(linearAddress).ReadInt64();
         }
 
-        public IEnumerable<long> ReadInts64(ulong iStartAddr, ulong iEndAddr)
+        public IEnumerable<long> ReadInts64(ulong iStartAddr, long length)
         {
-            return ReadData(rdr => rdr.ReadInt64(), iStartAddr, iEndAddr);
+            return ReadData(rdr => rdr.ReadInt64(), iStartAddr, length);
         }
 
         public string ReadCString(ulong linearAddress)
@@ -204,11 +204,11 @@ namespace Reko.Scripts.Python
         private IEnumerable<T> ReadData<T>(
             Func<EndianImageReader, T> reader,
             ulong iStartAddr,
-            ulong iEndAddr)
+            long length)
         {
             var rdr = CreateImageReader(iStartAddr);
-            var endAddr = Addr(iEndAddr);
-            while (rdr.Address < endAddr)
+            var offStart = rdr.Offset;
+            while (rdr.Offset - offStart < length)
             {
                 yield return reader(rdr);
             }
