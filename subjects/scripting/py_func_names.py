@@ -46,6 +46,8 @@ def on_program_loaded(program):
         addr += 0x0C
         # set procedure name for method based on name defined at table entry
         program.procedures[method_addr] = '{}_wrapper'.format(method_name)
+        # move decompiled code of procedure to separate file
+        program.procedures[method_addr].file = '{}.c'.format(method_name)
         num_methods += 1
     program.procedures[0x10001140] = \
         'PyObject *unused_wrapper(PyObject *self, PyObject *args)'
@@ -73,6 +75,7 @@ def dump_procedures(program, lines):
     for addr, proc in program.procedures.items():
         lines.append('    {}:'.format(proc.name))
         lines.append('        Address: 0x{:08X}'.format(addr))
+        lines.append('        File: {}'.format(proc.file))
         lines.append('        Decompile: {}'.format(proc.decompile))
 
 def get_procedure(program, addr, lines):

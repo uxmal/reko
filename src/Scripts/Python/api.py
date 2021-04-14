@@ -121,6 +121,8 @@ class Globals(object):
         raise TypeError('Unsupported type: {}'.format(type(decl)))
 
 class Procedure(object):
+    __slots__ = '_reko', '_addr'
+
     def __init__(self, reko, addr):
         self._reko = reko
         self._addr = addr
@@ -136,6 +138,14 @@ class Procedure(object):
     @property
     def name(self):
         return self._reko.GetProcedureName(self._addr)
+
+    @property
+    def file(self):
+        return self._reko.GetProcedureOutputFile(self._addr)
+
+    @file.setter
+    def file(self, value):
+        self._reko.SetUserProcedureOutputFile(self._addr, value)
 
 class Procedures(RekoDictBase):
     def __init__(self, reko):

@@ -4,42 +4,6 @@
 
 #include "pySample.h"
 
-// 10001000: Register (ptr32 Eq_n) sum_wrapper(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
-PyObject * sum_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
-{
-	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:sum", fp - 0x04, fp - 0x08);
-	if (eax_n != null)
-		return Py_BuildValue("i", dwLoc04 + dwLoc08);
-	return eax_n;
-}
-
-// 10001050: Register (ptr32 Eq_n) dif_wrapper(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
-PyObject * dif_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
-{
-	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:dif", fp - 0x08, fp - 0x04);
-	if (eax_n != null)
-		return Py_BuildValue("i", dwLoc08 - dwLoc04);
-	return eax_n;
-}
-
-// 100010A0: Register (ptr32 Eq_n) div_wrapper(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
-PyObject * div_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
-{
-	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ii:div", fp - 0x08, fp - 0x04);
-	if (eax_n != null)
-		return Py_BuildValue("i", (int32) ((int64) dwLoc08 /32 dwLoc04));
-	return eax_n;
-}
-
-// 100010F0: Register (ptr32 Eq_n) fdiv_wrapper(Stack (ptr32 Eq_n) ptrArg04, Stack (ptr32 Eq_n) ptrArg08)
-PyObject * fdiv_wrapper(PyObject * ptrArg04, PyObject * ptrArg08)
-{
-	PyObject * eax_n = PyArg_ParseTuple(ptrArg08, "ff:fdiv", fp - 0x08, fp - 0x04);
-	if (eax_n != null)
-		return Py_BuildValue("f", (real64) rLoc08 / (real64) rLoc04);
-	return eax_n;
-}
-
 // 10001140: Register (ptr32 Eq_n) unused_wrapper(Stack (ptr32 Eq_n) self, Stack (ptr32 Eq_n) args)
 PyObject * unused_wrapper(PyObject * self, PyObject * args)
 {
@@ -57,21 +21,27 @@ void initpySample()
 	// Procedures:
 	//     sum_wrapper:
 	//         Address: 0x10001000
+	//         File: sum.c
 	//         Decompile: True
 	//     dif_wrapper:
 	//         Address: 0x10001050
+	//         File: dif.c
 	//         Decompile: True
 	//     div_wrapper:
 	//         Address: 0x100010A0
+	//         File: div.c
 	//         Decompile: True
 	//     fdiv_wrapper:
 	//         Address: 0x100010F0
+	//         File: fdiv.c
 	//         Decompile: True
 	//     unused_wrapper:
 	//         Address: 0x10001140
+	//         File: None
 	//         Decompile: True
 	//     DllMain:
 	//         Address: 0x1000149E
+	//         File: None
 	//         Decompile: False
 	//     Get procedure at 0x00000001: None
 	//     Get procedure at 0x1000149E: DllMain

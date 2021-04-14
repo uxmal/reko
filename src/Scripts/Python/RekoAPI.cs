@@ -165,6 +165,17 @@ namespace Reko.Scripts.Python
             UserProcedure(linearAddress).Decompile = decompile;
         }
 
+        public string? GetProcedureOutputFile(ulong linearAddress)
+        {
+            return UserProcedure(linearAddress).OutputFile;
+        }
+
+        public void SetUserProcedureOutputFile(
+            ulong linearAddress, string outputFile)
+        {
+            UserProcedure(linearAddress).OutputFile = outputFile;
+        }
+
         private bool TryConvertAddress(ulong linearAddress, out Address addr)
         {
             try
