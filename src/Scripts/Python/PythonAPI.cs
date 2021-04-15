@@ -52,8 +52,9 @@ namespace Reko.Scripts.Python
         {
             var scope = engine.CreateScope();
             var cfgSvc = services.RequireService<IConfigurationService>();
-            var pythonAPIFile = cfgSvc.GetInstallationRelativePath("api.py");
-            engine.ExecuteFile(pythonAPIFile, scope);
+            var programAPIFile = cfgSvc.GetInstallationRelativePath(
+                "_program.py");
+            engine.ExecuteFile(programAPIFile, scope);
             return scope;
         }
     }
