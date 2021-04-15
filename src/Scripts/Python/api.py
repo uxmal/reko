@@ -24,6 +24,8 @@ def addr_list_from_str_list(s_addr_list):
     return (addr_from_str(s_addr) for s_addr in s_addr_list)
 
 class RekoDictBase(object):
+    __slots__ = []
+
     def __getitem__(self, key):
         raise KeyError
 
@@ -47,6 +49,8 @@ class RekoDictBase(object):
             yield (key, self[key])
 
 class Comments(object):
+    __slots__ = '_reko'
+
     def __init__(self, reko):
         self._reko = reko
 
@@ -58,6 +62,8 @@ class Comments(object):
         self._reko.SetUserComment(addr, comment)
 
 class MemorySlice(object):
+    __slots__ = '_reko', '_start_addr', '_length'
+
     def __init__(self, reko, start_addr, length):
         self._reko = reko
         self._start_addr = start_addr
@@ -92,6 +98,8 @@ class MemorySlice(object):
         return self._reko.ReadCString(self._start_addr)
 
 class Memory(object):
+    __slots__ = '_reko'
+
     def __init__(self, reko):
         self._reko = reko
 
@@ -111,6 +119,8 @@ class Memory(object):
         return MemorySlice(self._reko, start_addr, length)
 
 class Globals(object):
+    __slots__ = '_reko'
+
     def __init__(self, reko):
         self._reko = reko
 
@@ -148,6 +158,8 @@ class Procedure(object):
         self._reko.SetUserProcedureOutputFile(self._addr, value)
 
 class Procedures(RekoDictBase):
+    __slots__ = '_reko'
+
     def __init__(self, reko):
         self._reko = reko
 
@@ -166,6 +178,8 @@ class Procedures(RekoDictBase):
         return addr_list_from_str_list(self._reko.GetProcedureAddresses())
 
 class Program(object):
+    __slots__ = '_comments', '_memory', '_globals', '_procedures'
+
     def __init__(self, reko):
         self._comments = Comments(reko)
         self._memory = Memory(reko)
