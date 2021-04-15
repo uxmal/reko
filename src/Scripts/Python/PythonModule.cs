@@ -55,7 +55,7 @@ namespace Reko.Scripts.Python
         {
             try
             {
-                var rekoAPI = new RekoAPI(program);
+                var rekoAPI = new RekoProgramAPI(program);
                 var programWrapper = pythonAPI.CreateProgramWrapper(rekoAPI);
                 var func = GetFunction(funcName);
                 func(programWrapper);

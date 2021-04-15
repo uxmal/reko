@@ -29,13 +29,14 @@ using System.Linq;
 namespace Reko.Scripts.Python
 {
     /// <summary>
-    /// Reko functionality which provided for using in user-defined scripts
+    /// Decompiling <see cref="Program"/> functionality which provided for
+    /// using in user-defined scripts
     /// </summary>
-    public class RekoAPI
+    public class RekoProgramAPI
     {
         private readonly Program program;
 
-        public RekoAPI(Program program)
+        public RekoProgramAPI(Program program)
         {
             this.program = program;
         }

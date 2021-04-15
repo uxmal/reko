@@ -40,9 +40,9 @@ namespace Reko.Scripts.Python
             scope = EvaluatePythonDefinitions(services, engine);
         }
 
-        public object CreateProgramWrapper(RekoAPI rekoAPI)
+        public object CreateProgramWrapper(RekoProgramAPI rekoAPI)
         {
-            var programCreator = scope.GetVariable<Func<RekoAPI, object>>(
+            var programCreator = scope.GetVariable<Func<RekoProgramAPI, object>>(
                 "Program");
             return programCreator(rekoAPI);
         }
