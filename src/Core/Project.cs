@@ -68,16 +68,16 @@ namespace Reko.Core
         /// <summary>
         /// Call event handlers defined at user-defined scripts.
         /// </summary>
-        /// <param name="funcName">
-        /// Name for script function which is used as event handler.
+        /// <param name="event">
+        /// Fired event.
         /// </param>
-        public void FireScriptEvent(string funcName)
+        public void FireScriptEvent(ScriptEvent @event)
         {
             foreach (var scriptFile in ScriptFiles)
             {
                 foreach (var program in Programs)
                 {
-                    scriptFile.CallFunction(funcName, program);
+                    scriptFile.FireEvent(@event, program);
                 }
             }
         }

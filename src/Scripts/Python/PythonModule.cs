@@ -34,32 +34,33 @@ namespace Reko.Scripts.Python
     /// </summary>
     public class PythonModule : ScriptFile
     {
-        private readonly ScriptScope scope;
+        private readonly ScriptEngine engine;
         private readonly PythonAPI pythonAPI;
         private readonly DecompilerEventListener eventListener;
+        private readonly RekoEventsAPI eventsAPI;
 
         public PythonModule(
             IServiceProvider services, string filename, byte[] bytes)
         : base(services, filename, bytes)
         {
             this.eventListener = services.RequireService<DecompilerEventListener>();
-            var stream = new MemoryStream(bytes);
-            var engine = IronPython.Hosting.Python.CreateEngine();
+            this.engine = IronPython.Hosting.Python.CreateEngine();
             // $TODO: Redirect script output to Reko Console tab
             engine.Runtime.IO.RedirectToConsole();
-            using var rdr = new StreamReader(stream);
-            this.scope = Evaluate(rdr.ReadToEnd(), filename, engine);
             this.pythonAPI = new PythonAPI(services, engine);
+            var stream = new MemoryStream(bytes);
+            using var rdr = new StreamReader(stream);
+            this.eventsAPI = Evaluate(rdr.ReadToEnd(), filename);
         }
 
-        public override void CallFunction(string funcName, Program program)
+        public override void FireEvent(ScriptEvent @event, Program program)
         {
             try
             {
-                var rekoAPI = new RekoProgramAPI(program);
-                var programWrapper = pythonAPI.CreateProgramWrapper(rekoAPI);
-                var func = GetFunction(funcName);
-                func(programWrapper);
+                var programAPI = new RekoProgramAPI(program);
+                var programWrapper = pythonAPI.CreateProgramWrapper(
+                    programAPI);
+                eventsAPI.FireEvent(@event, programWrapper);
             }
             catch (Exception ex)
             {
@@ -67,22 +68,15 @@ namespace Reko.Scripts.Python
                     new NullCodeLocation(Filename),
                     ex,
                     "An error occurred while running the Python script.");
-                DumpPythonStack(ex, scope.Engine);
+                DumpPythonStack(ex, engine);
             }
         }
 
-        private Action<object> GetFunction(string funcName)
+        private RekoEventsAPI Evaluate(string script, string filename)
         {
-            return scope.GetVariable<Action<object>>(funcName);
-        }
-
-        private ScriptScope Evaluate(
-            string script,
-            string filename,
-            ScriptEngine engine)
-        {
+            var eventsAPI = new RekoEventsAPI();
+            var scope = CreateRekoVariable(engine, pythonAPI, eventsAPI);
             var src = engine.CreateScriptSourceFromString(script, filename);
-            var scope = engine.CreateScope();
             try
             {
                 src.Execute(scope);
@@ -94,12 +88,23 @@ namespace Reko.Scripts.Python
                     ex,
                     "An error occurred while evaluating the Python script.");
                 DumpPythonStack(ex, engine);
-                return engine.CreateScope();
+                return new RekoEventsAPI();
             }
+            return eventsAPI;
+        }
+
+        private static ScriptScope CreateRekoVariable(
+            ScriptEngine engine,
+            PythonAPI pythonAPI,
+            RekoEventsAPI eventsAPI)
+        {
+            var scope = engine.CreateScope();
+            var rekoWrapper = pythonAPI.CreateRekoWrapper(eventsAPI);
+            scope.SetVariable("reko", rekoWrapper);
             return scope;
         }
 
-        private void DumpPythonStack(Exception ex, ScriptEngine engine)
+        private static void DumpPythonStack(Exception ex, ScriptEngine engine)
         {
             var exceptionOperations = engine.GetService<ExceptionOperations>();
             // $TODO: Allow user to go to failed line. It can be obtained by

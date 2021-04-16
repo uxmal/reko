@@ -109,3 +109,6 @@ def test_memory_reading(program, lines):
 
 def bytes_to_list(numbers):
     return ['0x{:X}'.format(num) for num in numbers]
+
+# Subscribe to Reko events
+reko.on.program_loaded += on_program_loaded

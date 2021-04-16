@@ -33,29 +33,28 @@ namespace Reko.Scripts.Python
     /// </summary>
     public class PythonAPI
     {
-        private readonly ScriptScope scope;
-
         public PythonAPI(IServiceProvider services, ScriptEngine engine)
         {
-            scope = EvaluatePythonDefinitions(services, engine);
+            this.CreateProgramWrapper = EvaluatePythonDefinitions(
+                services, engine, "_program.py", "Program");
+            this.CreateRekoWrapper = EvaluatePythonDefinitions(
+                services, engine, "_reko.py", "Reko");
         }
 
-        public object CreateProgramWrapper(RekoProgramAPI rekoAPI)
-        {
-            var programCreator = scope.GetVariable<Func<RekoProgramAPI, object>>(
-                "Program");
-            return programCreator(rekoAPI);
-        }
+        public readonly Func<object, object> CreateProgramWrapper;
+        public readonly Func<object, object> CreateRekoWrapper;
 
-        private ScriptScope EvaluatePythonDefinitions(
-            IServiceProvider services, ScriptEngine engine)
+        private Func<object, object> EvaluatePythonDefinitions(
+            IServiceProvider services,
+            ScriptEngine engine,
+            string fileName,
+            string className)
         {
             var scope = engine.CreateScope();
             var cfgSvc = services.RequireService<IConfigurationService>();
-            var programAPIFile = cfgSvc.GetInstallationRelativePath(
-                "_program.py");
-            engine.ExecuteFile(programAPIFile, scope);
-            return scope;
+            var absolutePath = cfgSvc.GetInstallationRelativePath(fileName);
+            engine.ExecuteFile(absolutePath, scope);
+            return scope.GetVariable<Func<object, object>>(className);
         }
     }
 }

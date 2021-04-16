@@ -19,30 +19,15 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 namespace Reko.Core.Scripts
 {
     /// <summary>
-    /// Base class for execution of user-defined scripts.
+    /// Event which can be handled by user-defined <see cref="ScriptFile"/>.
     /// </summary>
-    [Designer("Reko.Gui.Design.ScriptFileDesigner,Reko.Gui")]
-    public abstract class ScriptFile
+    public enum ScriptEvent
     {
-        public ScriptFile(IServiceProvider services, string filename, byte[] bytes)
-        {
-            this.Filename = filename;
-        }
-
-        public readonly string Filename;
-
-        /// <summary>
-        /// Call handlers of specified event, pass program as parameter.
-        /// </summary>
-        /// <param name="event">Fired event.</param>
-        /// <param name="program">Program.</param>
-        public abstract void FireEvent(ScriptEvent @event, Program program);
+        /// <summary>Fired when program was loaded to memory.</summary>
+        OnProgramLoaded,
     }
 }
