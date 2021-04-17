@@ -24,6 +24,7 @@ using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.Scripts.Python
@@ -177,7 +178,8 @@ namespace Reko.Scripts.Python
             UserProcedure(linearAddress).OutputFile = outputFile;
         }
 
-        private bool TryConvertAddress(ulong linearAddress, out Address addr)
+        private bool TryConvertAddress(
+            ulong linearAddress, [NotNullWhen(true)] out Address? addr)
         {
             try
             {
@@ -186,7 +188,7 @@ namespace Reko.Scripts.Python
             }
             catch
             {
-                addr = null!;
+                addr = null;
                 return false;
             }
         }
