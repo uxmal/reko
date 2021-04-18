@@ -29,5 +29,14 @@ namespace Reko.Core.Scripts
     {
         /// <summary>Fired when program was loaded to memory.</summary>
         OnProgramLoaded,
+        /// <summary>Fired before starting of program decompilation.</summary>
+        OnProgramDecompiling,
+        /// <summary>Fired when program was scanned.</summary>
+        OnProgramScanned,
+        /// <summary>
+        /// Fired when program was decompiled but before output files are
+        /// written.
+        /// </summary>
+        OnProgramDecompiled,
     }
 }

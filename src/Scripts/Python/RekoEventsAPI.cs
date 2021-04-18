@@ -39,6 +39,9 @@ namespace Reko.Scripts.Python
             events = new Dictionary<string, ScriptEvent>
             {
                 {"program_loaded", ScriptEvent.OnProgramLoaded},
+                {"program_decompiling", ScriptEvent.OnProgramDecompiling},
+                {"program_scanned", ScriptEvent.OnProgramScanned},
+                {"program_decompiled", ScriptEvent.OnProgramDecompiled},
             };
             handlers = new EventHandlersMap();
         }
