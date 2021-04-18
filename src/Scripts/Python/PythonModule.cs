@@ -20,6 +20,7 @@
 
 using Microsoft.Scripting.Hosting;
 using Reko.Core;
+using Reko.Core.Scripts;
 using Reko.Core.Services;
 using System;
 using System.Diagnostics;

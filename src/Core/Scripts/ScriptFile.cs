@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace Reko.Core
+namespace Reko.Core.Scripts
 {
     /// <summary>
     /// Base class for execution of user-defined scripts.

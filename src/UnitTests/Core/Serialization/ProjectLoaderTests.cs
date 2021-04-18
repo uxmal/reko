@@ -21,8 +21,7 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
-using Reko.Core.Code;
-using Reko.Core.Lib;
+using Reko.Core.Scripts;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
