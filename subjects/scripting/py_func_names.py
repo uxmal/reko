@@ -46,7 +46,11 @@ def on_program_loaded(program):
         addr += 0x0C
         # set procedure name for method based on name defined at table entry
         program.procedures[method_addr] = '{}_wrapper'.format(method_name)
+        # move decompiled code of procedure to separate file
+        program.procedures[method_addr].file = '{}.c'.format(method_name)
         num_methods += 1
+    program.procedures[0x10001140] = \
+        'PyObject *unused_wrapper(PyObject *self, PyObject *args)'
     program.globals[0x10003010] = 'PyMethodDef methods[{}]'.format(num_methods)
     exclude_dll_main(program)
     comments = []
@@ -57,6 +61,7 @@ def on_program_loaded(program):
     check_procedure(program, 0x00000002, comments)
     check_procedure(program, 0x100010F0, comments)
     check_procedure(program, 0x100010F1, comments)
+    test_memory_reading(program, comments)
     program.comments[0x10001170] = "\n".join(comments)
     program.comments[0x10001183] = \
         'This is initialization of Python extension module'
@@ -70,6 +75,7 @@ def dump_procedures(program, lines):
     for addr, proc in program.procedures.items():
         lines.append('    {}:'.format(proc.name))
         lines.append('        Address: 0x{:08X}'.format(addr))
+        lines.append('        File: {}'.format(proc.file))
         lines.append('        Decompile: {}'.format(proc.decompile))
 
 def get_procedure(program, addr, lines):
@@ -82,3 +88,27 @@ def check_procedure(program, addr, lines):
         lines.append('    There is procedure entry at 0x{:08X}'.format(addr))
     else:
         lines.append('    There is no procedure entry at 0x{:08X}'.format(addr))
+
+def test_memory_reading(program, lines):
+    mem = program.memory
+    lines.append('Memory at 0x10003020:')
+    lines.append('    Byte: 0x{:X}'.format(mem[0x10003020].byte))
+    lines.append('    16-bit integer: 0x{:X}'.format(mem[0x10003020].int16))
+    lines.append('    32-bit integer: 0x{:X}'.format(mem[0x10003020].int32))
+    lines.append('    64-bit integer: 0x{:X}'.format(mem[0x10003020].int64))
+    lines.append('Memory at [0x10003020:0x10003024]:')
+    lines.append('    Bytes: {}'.format(
+        bytes_to_list(mem[0x10003020:0x10003024].byte)))
+    lines.append('    16-bit integers: {}'.format(
+        bytes_to_list(mem[0x10003020:0x10003024].int16)))
+    lines.append('Memory at [0x10003020:0x10003030]:')
+    lines.append('    32-bit integers: {}'.format(
+        bytes_to_list(mem[0x10003020:0x10003030].int32)))
+    lines.append('    64-bit integers: {}'.format(
+        bytes_to_list(mem[0x10003020:0x10003030].int64)))
+
+def bytes_to_list(numbers):
+    return ['0x{:X}'.format(num) for num in numbers]
+
+# Subscribe to Reko events
+reko.on.program_loaded += on_program_loaded

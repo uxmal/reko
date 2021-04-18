@@ -20,9 +20,9 @@
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Assemblers;
-using Reko.Core.Configuration;
 using Reko.Core.Lib;
 using Reko.Core.Output;
+using Reko.Core.Scripts;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -201,10 +201,7 @@ namespace Reko
             BuildImageMaps();
             WriteEntryPoints();
             eventListener.ShowStatus("Source program loaded.");
-            // $TODO: I do not like hardcoded name of function
-            // Maybe object inspector should be introduced, which could allow
-            // user to choose handler for each event
-            Project.FireScriptEvent("on_program_loaded");
+            Project.FireScriptEvent(ScriptEvent.OnProgramLoaded);
             return true;
         }
 

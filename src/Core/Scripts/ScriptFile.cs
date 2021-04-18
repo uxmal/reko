@@ -18,26 +18,31 @@
  */
 #endregion
 
-using Reko.Core.Scripts;
 using System;
-using System.IO;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Text;
 
-namespace Reko.Gui.Design
+namespace Reko.Core.Scripts
 {
-    public class ScriptFileDesigner : TreeNodeDesigner
+    /// <summary>
+    /// Base class for execution of user-defined scripts.
+    /// </summary>
+    [Designer("Reko.Gui.Design.ScriptFileDesigner,Reko.Gui")]
+    public abstract class ScriptFile
     {
-        public override void Initialize(object obj)
+        public ScriptFile(IServiceProvider services, string filename, byte[] bytes)
         {
-            base.Initialize(obj);
-            var scriptFile = (ScriptFile) obj;
-            SetTreeNodeProperties(scriptFile);
+            this.Filename = filename;
         }
 
-        public void SetTreeNodeProperties(ScriptFile scriptFile)
-        {
-            TreeNode!.Text = Path.GetFileName(scriptFile.Filename);
-            var ext = Path.GetExtension(scriptFile.Filename).ToLower();
-            TreeNode.ImageName = $"Script{ext}.ico";
-        }
+        public readonly string Filename;
+
+        /// <summary>
+        /// Call handlers of specified event, pass program as parameter.
+        /// </summary>
+        /// <param name="event">Fired event.</param>
+        /// <param name="program">Program.</param>
+        public abstract void FireEvent(ScriptEvent @event, Program program);
     }
 }
