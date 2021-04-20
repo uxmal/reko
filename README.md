@@ -1,6 +1,7 @@
 
 # reko - a general purpose decompiler.
 
+[![GitHub workflow status](https://github.com/uxmal/reko/workflows/Reko/badge.svg)]
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/uxmal/reko?branch=master&svg=true)](https://ci.appveyor.com/project/uxmal/reko)
  [![Build Status](https://travis-ci.org/uxmal/reko.svg?branch=master)](https://travis-ci.org/uxmal/reko) 
  [![Join us on Discord](https://img.shields.io/static/v1?link=https://discord.gg/9PMWVxEjqr&message=Join%20Discord&logo=discord&style=flat&color=107090&labelColor=5E5E5E&label=&logoColor=white)](https://discord.gg/9PMWVxEjqr)
