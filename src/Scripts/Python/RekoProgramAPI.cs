@@ -154,6 +154,10 @@ namespace Reko.Scripts.Python
             {
                 CSignature = CSignature,
             };
+            if (program.Procedures.TryGetValue(addr, out var proc))
+            {
+                proc.Name = name;
+            }
         }
 
         public bool GetProcedureDecompileFlag(ulong linearAddress)

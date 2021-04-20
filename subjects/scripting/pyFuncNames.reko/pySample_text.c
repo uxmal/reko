@@ -64,3 +64,8 @@ void initpySample()
 	Py_InitModule4("pySample", methods, null, null, 1007);
 }
 
+// 10001196: void empty_procedure_loaded_decompiling_scanned_decompiled()
+void empty_procedure_loaded_decompiling_scanned_decompiled()
+{
+}
+

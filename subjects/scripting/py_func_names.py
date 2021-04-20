@@ -65,6 +65,7 @@ def on_program_loaded(program):
     program.comments[0x10001170] = "\n".join(comments)
     program.comments[0x10001183] = \
         'This is initialization of Python extension module'
+    program.procedures[0x10001196] = "empty_procedure_loaded"
 
 def exclude_dll_main(program):
     program.procedures[0x1000149E] = 'DllMain'
@@ -112,3 +113,13 @@ def bytes_to_list(numbers):
 
 # Subscribe to Reko events
 reko.on.program_loaded += on_program_loaded
+reko.on.program_decompiling += lambda program: add_event_name_to_procedure(
+    program, 0x10001196, 'decompiling')
+reko.on.program_scanned += lambda program: add_event_name_to_procedure(
+    program, 0x10001196, 'scanned')
+reko.on.program_decompiled += lambda program: add_event_name_to_procedure(
+    program, 0x10001196, 'decompiled')
+
+def add_event_name_to_procedure(program, address, event):
+    procedures = program.procedures
+    procedures[address] = '{}_{}'.format(procedures[address].name, event)

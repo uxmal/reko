@@ -572,12 +572,13 @@ namespace Reko
 		{
 			if (Project is null || Project.Programs.Count == 0)
 				throw new InvalidOperationException("Programs must be loaded first.");
-
+            Project.FireScriptEvent(ScriptEvent.OnProgramDecompiling);
             foreach (Program program in Project.Programs)
             {
                 ScanProgram(program);
             }
-		}
+            Project.FireScriptEvent(ScriptEvent.OnProgramScanned);
+        }
 
         private void ScanProgram(Program program)
         {
@@ -663,9 +664,10 @@ namespace Reko
                             "An error occurred while rewriting procedure to high-level language.");
                     }
                 }
-                WriteDecompilerProducts();
             }
-			eventListener.ShowStatus("Rewriting complete.");
+            project.FireScriptEvent(ScriptEvent.OnProgramDecompiled);
+            WriteDecompilerProducts();
+            eventListener.ShowStatus("Rewriting complete.");
 		}
 
 		public void WriteDecompilerProducts()
