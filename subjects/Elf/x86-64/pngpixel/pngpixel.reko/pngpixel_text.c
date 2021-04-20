@@ -182,7 +182,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 	word64 rax_n = fs->qw0028;
 	if (edi != 0x04)
 	{
-		al_n = (uint8) fwrite(&g_v401A70, 0x01, 0x27, stderr);
+		fwrite(&g_v401A70, 0x01, 0x27, stderr);
 		goto l000000000040175D;
 	}
 	char * rax_n = rsi->ptr0008;
@@ -202,7 +202,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 	png_create_read_struct();
 	if (rax_n == 0x00)
 	{
-		al_n = (uint8) fwrite(&g_v401A18, 0x01, 0x2E, stderr);
+		fwrite(&g_v401A18, 0x01, 0x2E, stderr);
 		goto l000000000040175D;
 	}
 	word64 rax_n;
@@ -330,7 +330,7 @@ l000000000040175D:
 		word64 r8_n;
 		png_error();
 	}
-	al_n = (uint8) fwrite(&g_v4019E8, 0x01, 44, stderr);
+	fwrite(&g_v4019E8, 0x01, 44, stderr);
 	goto l00000000004016DE;
 }
 

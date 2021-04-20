@@ -77,7 +77,6 @@ word64 g_a413700[] = // 0000000000413700
 	{
 	};
 byte g_b413733 = 0x30; // 0000000000413733
-int32 g_dw413734 = 0x72730030; // 0000000000413734
 char g_str413736[] = "src/ls.c"; // 0000000000413736
 char g_str41373F[] = "sort_type != sort_version"; // 000000000041373F
 char g_str41375A[] = "%lu"; // 000000000041375A
@@ -96,13 +95,8 @@ char g_str4138E4[] = "BLOCK_SIZE"; // 00000000004138E4
 char g_str4138F5[] = "TIME_STYLE"; // 00000000004138F5
 char g_str41397F[] = "LS_COLORS"; // 000000000041397F
 char g_str413992[] = "found"; // 0000000000413992
-int32 g_dw4139E1 = 788552475; // 00000000004139E1
 char g_str413A21[] = "r"; // 0000000000413A21
-int32 g_dw413BF1 = 0x25206225; // 0000000000413BF1
-int32 g_dw413BFB = 0x25206225; // 0000000000413BFB
 byte g_b413C07 = 0x6D; // 0000000000413C07
-int32 g_dw413C0F = 0x333B3130; // 0000000000413C0F
-int32 g_dw413C4B = 0x004B5B1B; // 0000000000413C4B
 char g_str415BC8[] = "abcdfghiklmnopqrstuvw:xABCDFGHI:LNQRST:UXZ1"; // 0000000000415BC8
 char g_str415C58[] = "sizeof (struct dev_ino) <= __extension__ ({ struct obstack const *__o = (&dev_ino_obstack); (unsigned) (__o->next_free - __o->object_base); })"; // 0000000000415C58
 char g_str415D68[] = "hash_get_n_entries (active_dir_set) == 0"; // 0000000000415D68

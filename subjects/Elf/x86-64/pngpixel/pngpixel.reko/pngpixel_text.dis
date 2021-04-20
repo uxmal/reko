@@ -234,7 +234,7 @@ l00000000004012F9:
 	word64 rax_14 = Mem12[fs:0x28<32>:word64]
 	branch edi != 4<32> l000000000040173F
 l000000000040173F:
-	al_29 = CONVERT(fwrite(0x401A70<u64>, 1<u64>, 0x27<u64>, Mem18[0x0000000000602100<p64>:word64]), size_t, uint8)
+	fwrite(0x401A70<u64>, 1<u64>, 0x27<u64>, Mem18[0x0000000000602100<p64>:word64])
 l0000000000401337:
 	word64 rax_32 = Mem18[rsi + 8<64>:word64]
 	word64 rax_36 = SEQ(SLICE(rax_32, word32, 32), atol(rax_32))
@@ -254,7 +254,7 @@ l000000000040139D:
 		defs: r8:r8_82,r9:r9_81,rax:rax_78,rsi:rsi_77
 	branch rax_78 == 0<64> l00000000004016F6
 l00000000004016F6:
-	al_97 = CONVERT(fwrite(0x401A18<u64>, 1<u64>, 0x2E<u64>, Mem84[0x0000000000602100<p64>:word64]), size_t, uint8)
+	fwrite(0x401A18<u64>, 1<u64>, 0x2E<u64>, Mem84[0x0000000000602100<p64>:word64])
 l00000000004013C7:
 	word64 rax_102
 	word64 rcx_103
@@ -294,7 +294,7 @@ l00000000004016AF:
 		uses: r8:r8_205,r9:r9_204,rax:rax_78,rcx:rcx_202,rdi:rax_78,rsi:0x4019C3<u64>,Stack +0028:dwLoc88,Stack +002C:dwLoc84,Stack +0038:dwLoc78,Stack +0044:dwLoc6C
 		defs: r8:r8_205,r9:r9_204,rcx:rcx_202
 l00000000004016C0:
-	al_216 = CONVERT(fwrite(0x4019E8<u64>, 1<u64>, 0x2C<u64>, Mem207[0x0000000000602100<p64>:word64]), size_t, uint8)
+	fwrite(0x4019E8<u64>, 1<u64>, 0x2C<u64>, Mem207[0x0000000000602100<p64>:word64])
 l000000000040147A:
 	word32 eax_219 = SLICE(CONVERT(dwLoc78, word32, uint64), word32, 0)
 	branch eax_219 == 0<32> l0000000000401488
