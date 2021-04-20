@@ -19,7 +19,7 @@ WARNING: This is a part of internal API. Do not import it directly to your
 scripts.
 '''
 
-class RekoEventHandlers(object):
+class RekoEventHandlers:
     __slots__ = '_reko_handlers', '_event'
 
     def __init__(self, reko_handlers, event):
@@ -30,7 +30,7 @@ class RekoEventHandlers(object):
         self._reko_handlers.AddEventHandler(self._event, handler)
         return self
 
-class RekoEvents(object):
+class RekoEvents:
     __slots__ = '_reko_handlers'
 
     def __init__(self, reko_handlers):
@@ -44,7 +44,7 @@ class RekoEvents(object):
 
     def __setattr__(self, name, value):
         if name in self.__slots__:
-            super(RekoEvents, self).__setattr__(name, value)
+            super().__setattr__(name, value)
             return
         # Do not allow overwriting of event handlers attribute
         if self._reko_handlers.GetEventByName(name) is not None:
@@ -57,7 +57,7 @@ class RekoEvents(object):
             "'{}' object has no attribute '{}'".format(
                 self.__class__.__name__, name))
 
-class Reko(object):
+class Reko:
     __slots__ = '_events'
 
     def __init__(self, reko_handlers):

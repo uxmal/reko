@@ -27,7 +27,7 @@ def addr_from_str(s_addr):
 def addr_list_from_str_list(s_addr_list):
     return (addr_from_str(s_addr) for s_addr in s_addr_list)
 
-class RekoDictBase(object):
+class RekoDictBase:
     __slots__ = []
 
     def __getitem__(self, key):
@@ -52,7 +52,7 @@ class RekoDictBase(object):
         for key in self:
             yield (key, self[key])
 
-class Comments(object):
+class Comments:
     __slots__ = '_reko'
 
     def __init__(self, reko):
@@ -65,7 +65,7 @@ class Comments(object):
                     type(comment)))
         self._reko.SetUserComment(addr, comment)
 
-class MemorySlice(object):
+class MemorySlice:
     __slots__ = '_reko', '_start_addr', '_length'
 
     def __init__(self, reko, start_addr, length):
@@ -101,7 +101,7 @@ class MemorySlice(object):
     def c_str(self):
         return self._reko.ReadCString(self._start_addr)
 
-class Memory(object):
+class Memory:
     __slots__ = '_reko'
 
     def __init__(self, reko):
@@ -122,7 +122,7 @@ class Memory(object):
             length = None
         return MemorySlice(self._reko, start_addr, length)
 
-class Globals(object):
+class Globals:
     __slots__ = '_reko'
 
     def __init__(self, reko):
@@ -134,7 +134,7 @@ class Globals(object):
             return
         raise TypeError('Unsupported type: {}'.format(type(decl)))
 
-class Procedure(object):
+class Procedure:
     __slots__ = '_reko', '_addr'
 
     def __init__(self, reko, addr):
@@ -181,7 +181,7 @@ class Procedures(RekoDictBase):
     def __iter__(self):
         return addr_list_from_str_list(self._reko.GetProcedureAddresses())
 
-class Program(object):
+class Program:
     __slots__ = '_comments', '_memory', '_globals', '_procedures'
 
     def __init__(self, reko):
