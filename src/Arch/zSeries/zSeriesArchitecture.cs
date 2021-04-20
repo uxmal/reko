@@ -134,11 +134,6 @@ namespace Reko.Arch.zSeries
             yield return Registers.CC;
         }
 
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            return reg;
-        }
-
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             //$BUG: this is clearly not correct.

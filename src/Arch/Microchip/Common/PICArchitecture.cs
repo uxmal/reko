@@ -188,7 +188,10 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// The register instance or null.
         /// </returns>
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
-            => PICRegisters.PeekRegisterByIdx(domain - StorageDomain.Register);
+            => PICRegisters.GetSubregister(
+                    PICRegisters.PeekRegisterByIdx(domain - StorageDomain.Register),
+                    range.Lsb,
+                    range.Extent)!;
 
         /// <summary>
         /// Gets a register given its name.
@@ -201,36 +204,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         ///                                     illegal values.</exception>
         public override RegisterStorage GetRegister(string regName)
             => PICRegisters.GetRegister(regName);
-
-        /// <summary>
-        /// Get the proper sub-register of <paramref name="reg" /> that starts at offset
-        /// <paramref name="offset" /> and is of size <paramref name="width"/>.
-        /// </summary>
-        /// <param name="reg">The parent register.</param>
-        /// <param name="offset">The bit offset of the sub-register.</param>
-        /// <param name="width">The bit width of the sub-register.</param>
-        /// <returns>
-        /// The sub-register.
-        /// </returns>
-        /// <remarks>
-        /// Most architectures not have sub-registers, and will use this default implementation. This
-        /// method is overridden for architectures like x86 and Z80, where sub-registers <code>(ah, al,
-        /// etc)</code>
-        /// do exist.
-        /// </remarks>
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-            => PICRegisters.GetSubregister(reg, offset, width)!;
-
-        /// <summary>
-        /// Find the widest sub-register that covers the register <paramref name="reg"/>.
-        /// </summary>
-        /// <param name="reg">The target register.</param>
-        /// <param name="regs">.</param>
-        /// <returns>
-        /// The widest subregister(s).
-        /// </returns>
-        public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
-            => PICRegisters.GetWidestSubregister(reg, regs)!;
 
         /// <summary>
         /// Find the parent (joined) register of the register <paramref name="reg"/>.
@@ -264,11 +237,6 @@ namespace Reko.Arch.MicrochipPIC.Common
             var res = PICRegisters.TryGetRegister(regName, out var preg);
             reg = preg;
             return res;
-        }
-
-        public override IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
-        {
-            yield break;
         }
 
         public override void LoadUserOptions(Dictionary<string, object>? options)

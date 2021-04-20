@@ -119,11 +119,6 @@ namespace Reko.Arch.Mos6502
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            return reg;
-        }
-
         public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
         {
             foreach (var flag in Registers.Flags)

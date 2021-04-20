@@ -232,19 +232,7 @@ namespace Reko.Arch.X86
 
         public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
-            return GetSubregisterUsingMask(domain, range.BitMask());
-        }
-
-        public override IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
-        {
-            return Registers.All.Where(r => r != null && r.OverlapsWith(reg));
-        }
-
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            var mask = reg.BitMask & new BitRange(offset, offset + width).BitMask();
-            var subreg = GetSubregisterUsingMask(reg.Domain, mask) ?? reg;
-            return subreg;
+            return GetSubregister(domain, range);
         }
 
         public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
@@ -258,9 +246,9 @@ namespace Reko.Arch.X86
             if ((grf & Registers.P.FlagGroupBits) != 0) yield return Registers.P;
         }
 
-        private static RegisterStorage? GetSubregisterUsingMask(StorageDomain domain, ulong mask)
+        private static RegisterStorage? GetSubregister(StorageDomain domain, BitRange range)
         {
-            if (mask == 0)
+            if (range.IsEmpty)
                 return null;
             RegisterStorage? reg = null;
             if (Registers.SubRegisters.TryGetValue(domain, out RegisterStorage[] subregs))
@@ -268,27 +256,8 @@ namespace Reko.Arch.X86
                 for (int i = 0; i < subregs.Length; ++i)
                 {
                     var subreg = subregs[i];
-                    var regMask = subreg.BitMask;
-                    if ((mask & (~regMask)) == 0)
-                        reg = subreg;
-                }
-            }
-            return reg;
-        }
-
-        public override RegisterStorage? GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
-        {
-            ulong mask = bits.Where(b => b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
-            if (mask == 0)
-                return null;
-            mask &= reg.BitMask;
-            if (Registers.SubRegisters.TryGetValue(reg.Domain, out RegisterStorage[] subregs))
-            {
-                for (int i = 0; i < subregs.Length; ++i)
-                {
-                    var subreg = subregs[i];
-                    var regMask = subreg.BitMask;
-                    if ((mask & (~regMask)) == 0)
+                    var subRange = new BitRange((int) subreg.BitAddress, (int) (subreg.BitAddress + subreg.BitSize));
+                    if (subRange.Covers(range))
                         reg = subreg;
                 }
             }
@@ -326,18 +295,6 @@ namespace Reko.Arch.X86
                 return null;
             var dict = new Dictionary<string, object>(Options);
             return dict;
-        }
-
-        public override void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg)
-        {
-            foreach (var rAlias in GetAliases(reg))
-            {
-                ids.Remove(rAlias);
-                if (reg.BitAddress > 0 && rAlias.BitSize == 16)
-                {
-                    ids.Add(GetSubregister(rAlias, 0, 8));
-                }
-            }
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)

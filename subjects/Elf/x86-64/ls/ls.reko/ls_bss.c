@@ -9,23 +9,23 @@ FILE * stdout = &g_tC34C10; // 000000000061A610
 word32 g_dw61A620 = 0x00C34C20; // 000000000061A620
 Eq_n optarg = // 000000000061A640
 	{
-		true
+		&g_dwC34C40
 	};
 Eq_n __progname_full = // 000000000061A648
 	{
-		true
+		&g_dwC34C48
 	};
 FILE * stderr = &g_tC34C50; // 000000000061A650
 Eq_n g_t61A660 = // 000000000061A660
 	{
-		false
+		null
 	};
 word64 g_qw61A668 = 0x00; // 000000000061A668
 word64 g_qw61A670 = 0x00; // 000000000061A670
 word64 g_qw61A678 = 0x00; // 000000000061A678
 Eq_n g_t61A748 = // 000000000061A748
 	{
-		false
+		null
 	};
 Eq_n g_t61A760 = // 000000000061A760
 	{
@@ -36,33 +36,27 @@ Eq_n g_t61AF00 = // 000000000061AF00
 	{
 	};
 word64 g_qw61AF10 = 0x00; // 000000000061AF10
-Eq_n g_t61AF18 = // 000000000061AF18
-	{
-		false
-	};
+DIR * g_ptr61AF18 = null; // 000000000061AF18
 int64 g_qw61AF20 = 0; // 000000000061AF20
 Eq_n g_t61AF60 = // 000000000061AF60
 	{
 	};
-Eq_n g_t61AF78 = // 000000000061AF78
-	{
-		false
-	};
+DIR * g_ptr61AF78 = null; // 000000000061AF78
 word64 * g_ptr61AF80 = null; // 000000000061AF80
 Eq_n g_t61AFC0 = // 000000000061AFC0
 	{
 	};
 Eq_n g_t61B018 = // 000000000061B018
 	{
-		false
+		null
 	};
 Eq_n g_t61B020 = // 000000000061B020
 	{
-		false
+		null
 	};
 Eq_n g_t61B028 = // 000000000061B028
 	{
-		false
+		null
 	};
 word32 g_dw61B030 = 0x00; // 000000000061B030
 word32 g_dw61B034 = 0x00; // 000000000061B034
@@ -74,23 +68,23 @@ byte g_b61B0C0 = 0x00; // 000000000061B0C0
 byte g_b61B0C1 = 0x00; // 000000000061B0C1
 Eq_n g_t61B0C8 = // 000000000061B0C8
 	{
-		false
+		null
 	};
 byte g_b61B0D0 = 0x00; // 000000000061B0D0
 Eq_n g_t61B0D8 = // 000000000061B0D8
 	{
-		false
+		null
 	};
 struct Eq_n * g_ptr61B0E0 = null; // 000000000061B0E0
 struct Eq_n * g_ptr61B0E8 = null; // 000000000061B0E8
 byte g_b61B0F0 = 0x00; // 000000000061B0F0
 Eq_n g_t61B0F8 = // 000000000061B0F8
 	{
-		false
+		null
 	};
 Eq_n g_t61B100 = // 000000000061B100
 	{
-		false
+		null
 	};
 word32 g_dw61B108 = 0x00; // 000000000061B108
 byte g_b61B10C = 0x00; // 000000000061B10C
@@ -101,11 +95,11 @@ byte g_b61B114 = 0x00; // 000000000061B114
 byte g_b61B115 = 0x00; // 000000000061B115
 Eq_n g_t61B118 = // 000000000061B118
 	{
-		false
+		null
 	};
 Eq_n g_t61B120 = // 000000000061B120
 	{
-		false
+		null
 	};
 byte g_b61B128 = 0x00; // 000000000061B128
 byte g_b61B129 = 0x00; // 000000000061B129
@@ -136,51 +130,48 @@ int32 g_dw61B174 = 0; // 000000000061B174
 int32 g_dw61B178 = 0; // 000000000061B178
 byte g_b61B17C = 0x00; // 000000000061B17C
 byte g_b61B17D = 0x00; // 000000000061B17D
-Eq_n g_t61B180 = // 000000000061B180
-	{
-		0
-	};
+<anonymous> * g_ptr61B180 = null; // 000000000061B180
 Eq_n g_t61B188 = // 000000000061B188
 	{
 		0
 	};
 Eq_n g_t61B190 = // 000000000061B190
 	{
-		false
+		null
 	};
 byte g_b61B198 = 0x00; // 000000000061B198
 uint64 g_qw61B1A0 = 0x00; // 000000000061B1A0
 Eq_n g_t61B1A8 = // 000000000061B1A8
 	{
-		false
+		null
 	};
 Eq_n g_t61B1B0 = // 000000000061B1B0
 	{
-		false
+		null
 	};
 Eq_n g_t61B1B8 = // 000000000061B1B8
 	{
-		false
+		null
 	};
 Eq_n g_t61B1C0 = // 000000000061B1C0
 	{
-		false
+		null
 	};
 Eq_n g_t61B1C8 = // 000000000061B1C8
 	{
-		false
+		null
 	};
 Eq_n g_t61B1E8 = // 000000000061B1E8
 	{
-		false
+		null
 	};
 Eq_n g_t61B1F8 = // 000000000061B1F8
 	{
-		false
+		null
 	};
 Eq_n g_t61B200 = // 000000000061B200
 	{
-		false
+		null
 	};
 Eq_n g_t61B320 = // 000000000061B320
 	{
@@ -188,14 +179,14 @@ Eq_n g_t61B320 = // 000000000061B320
 		0x00,
 		
 		{
-			false
+			null
 		},
 		
 		{
-			false
+			null
 		},
 	};
 Eq_n g_t61B358 = // 000000000061B358
 	{
-		false
+		null
 	};

@@ -75,8 +75,8 @@ l1483_0C6C:
 	byte cl_122 = SLICE(cx_89 - 1<16>, byte, 0)
 	branch v23_86 != 0<16> && cx_89 != 1<16> l1483_0C85_thunk_fn1483_0CA0
 l1483_0C85_thunk_fn1483_0CA0:
-	word16 di_193
-	return fn1483_0CA0(SEQ(es_59, di_66), ss_bp_190, al_94, ah_95, ax_67, si_60, ds_56, out di_193)
+	word32 edi_193
+	return fn1483_0CA0(SEQ(es_59, di_66), ss_bp_190, al_94, ah_95, ax_67, si_60, ds_56, out edi_193)
 l1483_0C87:
 	byte al_114 = Mem87[ds_56:ax_67:byte]
 	Mem112[ss_61:bx:word16] = si_60
@@ -86,9 +86,9 @@ l1483_0C8F_thunk_fn1483_0C91:
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
 	selector stackArg0 = <invalid>
-	word16 di_195
+	word32 edi_195
 	selector es_196
-	return SLICE(CONVERT(fn1483_0C91(SEQ(ds, bx), SEQ(ss, bp), ax, cx_123, si_60 + 1<i16>, di_66 + 1<i16>, stackArg0, out di_195, out es_196), word16, uint32), word16, 0)
+	return SLICE(CONVERT(fn1483_0C91(SEQ(ds, bx), SEQ(ss, bp), ax, cx_123, si_60 + 1<i16>, di_66 + 1<i16>, stackArg0, out edi_195, out es_196), word16, uint32), word16, 0)
 fn1483_0C11_exit:
 l1483_0C24:
 	Mem135[es_di:word16] = 0x1955<16>
@@ -115,7 +115,7 @@ l1483_0C57:
 fn1483_0C55_exit:
 
 
-word16 fn1483_0C91(segptr32 ds_bx, segptr32 ss_bp, word16 ax, word16 cx, word16 si, word16 di, selector psegArg00, ptr16 & diOut, ptr16 & esOut)
+word16 fn1483_0C91(segptr32 ds_bx, segptr32 ss_bp, word16 ax, word16 cx, word16 si, word16 di, selector psegArg00, ptr16 & ediOut, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -137,29 +137,29 @@ l1483_0C91:
 	branch !OVERFLOW(al_14) l1483_0C96_thunk_fn1483_0C55
 l1483_0C96_thunk_fn1483_0C55:
 	word16 ax_21 = fn1483_0C55()
-	diOut = di
+	ediOut = <invalid>
 	esOut = <invalid>
 	return ax_21
 l1483_0C98:
 	branch Mem0[ds_bx + si:word16] *s 0x18<16> == 0<16> && cx != 1<16> l1483_0CA9
 l1483_0C9B_thunk_fn1483_0CA0:
-	word16 di_43
-	word16 ax_39 = fn1483_0CA0(SEQ(psegArg00, di), ss_bp, al_14, ah_17, bx, si, ds, out di_43)
-	diOut = di_43
+	word32 edi_92
+	word16 ax_39 = fn1483_0CA0(SEQ(psegArg00, di), ss_bp, al_14, ah_17, bx, si, ds, out edi_92)
+	ediOut = <invalid>
 	esOut = <invalid>
 	return ax_39
 l1483_0C9D:
 	Mem50[ds:bx + 0x2203<16> + si:word16] = Mem0[ds:bx + 0x2203<16> + si:word16] + (cx - 1<16>)
 l1483_0C9D_thunk_fn1483_0CA0:
-	word16 di_58
-	word16 ax_54 = fn1483_0CA0(SEQ(psegArg00, di), ss_bp, al_14, ah_17, bx, si, ds, out di_58)
-	diOut = di_58
+	word32 edi_91
+	word16 ax_54 = fn1483_0CA0(SEQ(psegArg00, di), ss_bp, al_14, ah_17, bx, si, ds, out edi_91)
+	ediOut = <invalid>
 	esOut = <invalid>
 	return ax_54
 fn1483_0C91_exit:
 
 
-word16 fn1483_0CA0(segptr32 es_di, segptr32 ss_bp, byte al, byte ah, word16 bx, word16 si, selector ds, ptr16 & diOut)
+word16 fn1483_0CA0(segptr32 es_di, segptr32 ss_bp, byte al, byte ah, word16 bx, word16 si, selector ds, ptr16 & ediOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -204,12 +204,12 @@ l1483_0CA9_in_fn1483_0CA0:
 	Mem138[ds:0xF7E3<16>:word16] = Mem128[ds:0xF7E3<16>:word16] - dx_133
 	Mem141[ds:bx_132 + (di + 1<i16>):word16] = Mem138[ds:bx_132 + (di + 1<i16>):word16] + (bp - 1<16>)
 	word16 ax_153 = __inw(0x8B<8>)
-	diOut = di + 1<i16>
+	ediOut = <invalid>
 	return ax_153
 fn1483_0CA0_exit:
 
 
-word16 fn1483_0CED(segptr32 es_di, segptr32 ss_bp, word16 ax, word16 dx, word16 bx, word16 si, selector ds, selector fs, word16 wArg00, selector psegArg02, word16 wArg06, word16 wArg0A, word16 wArg10, ptr16 & esOut)
+word32 fn1483_0CED(segptr32 es_di, segptr32 ss_bp, word16 ax, word16 dx, word16 bx, word16 si, selector ds, selector fs, word16 wArg00, selector psegArg02, word16 wArg06, word16 wArg0A, word16 wArg10, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -235,18 +235,18 @@ l1483_0CED:
 	branch bl_17 != 1<8> l1483_0CE5_in_fn1483_0CED
 l1483_0CE5_in_fn1483_0CED:
 	esOut = es
-	return di + 2<i16>
+	return <invalid>
 l1483_0CF8:
 	Mem28[ds:bx_25 + si_8:byte] = __rcr(Mem15[ds:bx_25 + si_8:byte], 0xAC<8>, C_27)
 l1483_0CF9_thunk_fn1483_0CFC:
 	selector es_43
-	word16 di_41 = fn1483_0CFC(SEQ(ds, di + 2<i16>), ss_bp, al_33, ah_34, wArg00, dx, bl_17 + 1<8>, bh_24, si_8, fs, psegArg02, wArg06, wArg10, out es_43)
+	fn1483_0CFC(SEQ(ds, di + 2<i16>), ss_bp, al_33, ah_34, wArg00, dx, bl_17 + 1<8>, bh_24, si_8, fs, psegArg02, wArg06, wArg10, out es_43)
 	esOut = es_43
-	return di_41
+	return <invalid>
 fn1483_0CED_exit:
 
 
-word16 fn1483_0CFA(segptr32 ds_di, segptr32 ss_bp, byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector fs, selector psegArg00, word16 wArg04, word16 wArg0E, ptr16 & esOut)
+word32 fn1483_0CFA(segptr32 ds_di, segptr32 ss_bp, byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector fs, selector psegArg00, word16 wArg04, word16 wArg0E, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -262,13 +262,13 @@ l1483_0CFA:
 	Mem10[ds:si + 0xD832<16>:byte] = Mem0[ds:si + 0xD832<16>:byte] - ch - C
 l1483_0CFA_thunk_fn1483_0CFC:
 	selector es_31
-	word16 di_29 = fn1483_0CFC(ds_di, ss_bp, al, ah, cx, dx, bl, bh, si, fs, psegArg00, wArg04, wArg0E, out es_31)
+	fn1483_0CFC(ds_di, ss_bp, al, ah, cx, dx, bl, bh, si, fs, psegArg00, wArg04, wArg0E, out es_31)
 	esOut = es_31
-	return di_29
+	return <invalid>
 fn1483_0CFA_exit:
 
 
-word16 fn1483_0CFC(segptr32 ds_di, segptr32 ss_bp, byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector fs, selector psegArg00, word16 wArg04, word16 wArg0E, ptr16 & esOut)
+word32 fn1483_0CFC(segptr32 ds_di, segptr32 ss_bp, byte al, byte ah, word16 cx, word16 dx, byte bl, byte bh, word16 si, selector fs, selector psegArg00, word16 wArg04, word16 wArg0E, ptr16 & esOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -289,18 +289,18 @@ l1483_0CFC:
 	branch cx == 0<16> l1483_0D04_thunk_fn1483_0C91
 l1483_0D04_thunk_fn1483_0C91:
 	selector es_73
-	word16 di_76
-	fn1483_0C91(SEQ(ds, bx_56), ss_bp, ax_68, cx, si, di, psegArg00, out di_76, out es_73)
+	word32 edi_123
+	fn1483_0C91(SEQ(ds, bx_56), ss_bp, ax_68, cx, si, di, psegArg00, out edi_123, out es_73)
 	esOut = es_73
-	return di_76
+	return <invalid>
 l1483_0D04_thunk_fn1483_0D06:
-	word16 di_88 = fn1483_0D06(SEQ(ds, bx_56), dx, fs, psegArg00, wArg04, wArg0E)
+	fn1483_0D06(SEQ(ds, bx_56), dx, fs, psegArg00, wArg04, wArg0E)
 	esOut = es
-	return di_88
+	return <invalid>
 fn1483_0CFC_exit:
 
 
-word16 fn1483_0D06(segptr32 ds_bx, word16 dx, selector fs, word16 wArg00, word16 wArg04, word16 wArg0E)
+word32 fn1483_0D06(segptr32 ds_bx, word16 dx, selector fs, word16 wArg00, word16 wArg04, word16 wArg0E)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -319,9 +319,8 @@ l1483_0D06:
 l1483_0D11:
 	msdos_display_string(SEQ(ds, 0xD21<16>))
 	Mem42[fs:wArg04 + 0x52<16> + wArg00:byte] = Mem10[fs:wArg04 + 0x52<16> + wArg00:byte] & SLICE(wArg0E, byte, 0)
-	di = wArg00
 l1483_0D2B:
-	return di
+	return <invalid>
 fn1483_0D06_exit:
 
 
@@ -643,12 +642,12 @@ l1483_1BB7_thunk_fn1483_1BB9:
 	word16 cx_75
 	byte dh_76
 	word16 bx_77
-	word16 bp_78
+	word32 ebp_78
 	word16 si_79
 	word16 di_80
 	selector es_81
 	selector ds_82
-	fn1483_1BB9(ax, ax_23, dx, bx, bp, si, v18_34, es, psegArg00, out cx_75, out dh_76, out bx_77, out bp_78, out si_79, out di_80, out es_81, out ds_82)
+	fn1483_1BB9(ax, ax_23, dx, bx, bp, si, v18_34, es, psegArg00, out cx_75, out dh_76, out bx_77, out ebp_78, out si_79, out di_80, out es_81, out ds_82)
 	return <invalid>
 fn1483_1B91_exit:
 
@@ -668,7 +667,6 @@ fn1483_1BB8_entry:
 l1483_1BB8:
 	word16 ax_15 = SEQ(ah, al | Mem0[ds_si:byte])
 l1483_1BB8_thunk_fn1483_1BB9:
-	word16 bp_22
 	word16 bx_23
 	word16 di_24
 	selector ds_25
@@ -676,7 +674,8 @@ l1483_1BB8_thunk_fn1483_1BB9:
 	selector es_30
 	word16 cx_44
 	byte dh_45
-	word16 ax_21 = fn1483_1BB9(ax_15, cx, dx, bx, bp, si, di, es, ds, out cx_44, out dh_45, out bx_23, out bp_22, out si_28, out di_24, out es_30, out ds_25)
+	word32 ebp_46
+	word16 ax_21 = fn1483_1BB9(ax_15, cx, dx, bx, bp, si, di, es, ds, out cx_44, out dh_45, out bx_23, out ebp_46, out si_28, out di_24, out es_30, out ds_25)
 	cxOut = <invalid>
 	dhOut = <invalid>
 	bxOut = bx_23
@@ -688,7 +687,7 @@ l1483_1BB8_thunk_fn1483_1BB9:
 fn1483_1BB8_exit:
 
 
-word16 fn1483_1BB9(word16 ax, word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, ptr16 & cxOut, ptr16 & dhOut, ptr16 & bxOut, ptr16 & bpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
+word16 fn1483_1BB9(word16 ax, word16 cx, word16 dx, word16 bx, word16 bp, word16 si, word16 di, selector es, selector ds, ptr16 & cxOut, ptr16 & dhOut, ptr16 & bxOut, ptr16 & ebpOut, ptr16 & siOut, ptr16 & diOut, ptr16 & esOut, ptr16 & dsOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -735,7 +734,7 @@ l1483_1B13:
 	cxOut = <invalid>
 	dhOut = <invalid>
 	bxOut = bx_45
-	bpOut = bp
+	ebpOut = <invalid>
 	siOut = ax
 	diOut = di
 	esOut = es_16
@@ -761,7 +760,6 @@ l1483_1B51:
 	word16 ax_91 = Mem76[ss:sp_58 + 0xE<16>:word16]
 	word16 di_78 = Mem76[ss:sp_58:word16]
 	si = Mem76[ss:sp_58 + 2<16>:word16]
-	bp = Mem76[ss:sp_58 + 4<16>:word16]
 	bx_85 = Mem76[ss:sp_58 + 8<16>:word16]
 	Mem94[es:di_78:byte] = SLICE(ax_91, byte, 0)
 	word16 v37_101 = Mem94[ds:bx_85 + (di_78 + 1<i16>):word16] + bx_85
@@ -787,7 +785,7 @@ l1483_1BE8:
 	cxOut = <invalid>
 	dhOut = <invalid>
 	bxOut = SEQ(bh_137, bl_134)
-	bpOut = bp - 2<16>
+	ebpOut = <invalid>
 	siOut = 0x7269<16>
 	diOut = di
 	esOut = es
@@ -805,7 +803,6 @@ l1483_1B75:
 	al_109 = Mem148[ss:Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16> + 0xE<16>:byte] (alias)
 	sp_115 = sp_149 + 0x10<16>
 l1483_1B7F:
-	bp = Mem168[ds:si + 0x65<16>:word16] *s 0x3A64<16>
 	Mem174[ss:Mem168[ds:si + 0x65<16>:word16] *s 0x3A64<16> + si:byte] = Mem168[ss:Mem168[ds:si + 0x65<16>:word16] *s 0x3A64<16> + si:byte] & al_109
 	byte dh_182 = dh_177 ^ Mem174[ds:bx + di:byte]
 	word16 ax_184 = __inw(0xC<8>)

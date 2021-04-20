@@ -189,11 +189,6 @@ namespace Reko.Arch.Arm
             return regsByNumber.Values.OrderBy(r => r.Number).ToArray();
         }
 
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            throw new NotSupportedException();
-        }
-
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();

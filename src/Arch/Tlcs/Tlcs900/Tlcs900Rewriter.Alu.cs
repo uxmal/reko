@@ -95,10 +95,10 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             var reg = ((RegisterOperand)this.instr.Operands[0]).Register;
             var op2 = RewriteSrc(this.instr.Operands[1]);
-            var div = binder.EnsureRegister(arch.GetSubregister(Registers.regs[(int)reg.Domain], 0, (int)reg.BitSize * 2)!);
+            var div = binder.EnsureRegister(arch.GetRegister(reg.Domain, new BitRange(0, (int)reg.BitSize * 2))!);
             var tmp = binder.CreateTemporary(reg.DataType);
-            var q = arch.GetSubregister(reg, 0, 8);
-            var r = arch.GetSubregister(reg, 8, 8);
+            var q = arch.GetRegister(reg.Domain, new BitRange(0, 8));
+            var r = arch.GetRegister(reg.Domain, new BitRange(8, 16));
             if (q is null || r is null)
             {
                 iclass = InstrClass.Invalid;

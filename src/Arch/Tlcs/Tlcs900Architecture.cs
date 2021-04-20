@@ -132,9 +132,9 @@ namespace Reko.Arch.Tlcs
         {
             if (!Registers.Subregisters.TryGetValue(regDomain, out var subs))
                 return null;
-            int key = (range.Extent * 4) + range.Lsb;
+            int key = (range.Extent << 4) + range.Lsb;
             if (subs.TryGetValue(key, out var subreg))
-            return subreg;
+                return subreg;
             else
                 return Registers.regs[regDomain - StorageDomain.Register];
         }
@@ -153,18 +153,6 @@ namespace Reko.Arch.Tlcs
             if ((grf & Registers.V.FlagGroupBits) != 0) yield return Registers.V;
             if ((grf & Registers.N.FlagGroupBits) != 0) yield return Registers.N;
             if ((grf & Registers.C.FlagGroupBits) != 0) yield return Registers.C;
-        }
-
-        public override RegisterStorage? GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            if (width == 0)
-                return null;
-            if (!Registers.Subregisters.TryGetValue(reg.Domain, out var subs))
-                return null;
-            int key = (width << 4) | offset;
-            if (!subs.TryGetValue(key, out var subreg))
-                return reg;
-            return subreg;
         }
 
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)

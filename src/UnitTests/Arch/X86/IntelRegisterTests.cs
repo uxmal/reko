@@ -35,46 +35,54 @@ namespace Reko.UnitTests.Arch.X86
 	public class IntelRegisterTests
 	{
 		private IntelArchitecture arch;
+        private readonly BitRange lowByte;
+        private readonly BitRange highByte;
+        private readonly BitRange word;
+        private readonly BitRange dword;
 
-		public IntelRegisterTests()
+        public IntelRegisterTests()
 		{
 			arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
+            lowByte = new BitRange(0, 8);
+            highByte = new BitRange(8, 16);
+            word = new BitRange(0, 16);
+            dword = new BitRange(0, 32);
+        }
+
+        [Test]
+		public void X86r_GetRegisterOfAx()
+		{
+			Assert.AreSame(Registers.al, arch.GetRegister(Registers.ax.Domain, lowByte));
 		}
 
 		[Test]
-		public void X86r_GetSubregisterOfAx()
+		public void X86r_GetRegisterOfEsi()
 		{
-			Assert.AreSame(Registers.al, arch.GetSubregister(Registers.ax, 0, 8));
+			Assert.AreSame(Registers.esi, arch.GetRegister(Registers.esi.Domain, dword));
 		}
 
 		[Test]
-		public void X86r_GetSubregisterOfEsi()
+		public void X86r_GetRegisterOfEdx()
 		{
-			Assert.AreSame(Registers.esi, arch.GetSubregister(Registers.esi, 0, 32));
+			Assert.AreSame(Registers.edx, arch.GetRegister(Registers.edx.Domain, dword));
 		}
 
 		[Test]
-		public void X86r_GetSubregisterOfEdx()
+		public void X86r_GetRegisterOfAh()
 		{
-			Assert.AreSame(Registers.edx, arch.GetSubregister(Registers.edx, 0, 32));
+			Assert.AreSame(Registers.ah, arch.GetRegister(Registers.ah.Domain, highByte));
 		}
 
 		[Test]
-		public void X86r_GetSubregisterOfAh()
+		public void X86r_GetRegisterOfEax()
 		{
-			Assert.AreSame(Registers.ah, arch.GetSubregister(Registers.ah, 8, 16));
-		}
-
-		[Test]
-		public void X86r_GetSubregisterOfEax()
-		{
-			Assert.AreSame(Registers.ah, arch.GetSubregister(Registers.eax, 8, 8));
+			Assert.AreSame(Registers.ah, arch.GetRegister(Registers.eax.Domain, highByte));
 		}
 
 		[Test]
 		public void X86r_GetPartEsi()
 		{
-            Assert.AreSame(Registers.si, arch.GetSubregister(Registers.esi, 0, 16));
+            Assert.AreSame(Registers.si, arch.GetRegister(Registers.esi.Domain, word));
 		}
 
 		[Test]
@@ -92,86 +100,10 @@ namespace Reko.UnitTests.Arch.X86
 		[Test]
 		public void X86r_RegisterPartsByteCount()
 		{
-            Assert.AreEqual(Registers.al, arch.GetSubregister(Registers.eax, 0, 8));
-            Assert.AreEqual(Registers.bx, arch.GetSubregister(Registers.ebx, 0, 16));
-            Assert.AreEqual(Registers.ecx, arch.GetSubregister(Registers.ecx, 0, 32));
-            Assert.AreEqual(Registers.sil, arch.GetSubregister(Registers.esi, 0, 8));
-		}
-
-		[Test]
-		public void X86r_WidestSubregisterEcx()
-		{
-            var bits = new HashSet<RegisterStorage>();
-			Assert.IsNull(arch.GetWidestSubregister(Registers.ecx, bits));
-            bits.Add(Registers.cl);
-			Assert.AreSame(Registers.cl, arch.GetWidestSubregister(Registers.ecx, bits));
-            bits.Clear();
-			bits.Add(Registers.ch);
-			Assert.AreSame(Registers.ch, arch.GetWidestSubregister(Registers.ecx, bits));
-            bits.Add(Registers.cx);
-			Assert.AreSame(Registers.cx, arch.GetWidestSubregister(Registers.ecx, bits));
-			bits.Add(Registers.ecx);
-			Assert.AreSame(Registers.ecx, arch.GetWidestSubregister(Registers.ecx, bits));
-		}
-
-		[Test]
-		public void X86r_WidestSubregisterChClTogether()
-		{
-            var bits = new HashSet<RegisterStorage>();
-            bits.Add(Registers.cl);
-            bits.Add(Registers.ch);
-			Assert.AreSame(Registers.cx, arch.GetWidestSubregister(Registers.ecx, bits));
-		}
-
-		[Test]
-		public void X86r_WidestSubregisterEsi()
-		{
-            var bits = new HashSet<RegisterStorage>();
-            Assert.IsNull(arch.GetWidestSubregister(Registers.esi, bits));
-			bits.Add(Registers.si);
-			Assert.AreSame(Registers.si, arch.GetWidestSubregister(Registers.esi, bits));
-			bits.Add(Registers.esi);
-			Assert.AreSame(Registers.esi, arch.GetWidestSubregister(Registers.esi, bits));
-		}
-
-		[Test]
-		public void X86r_WidestSubregisterDx()
-		{
-            var bits = new HashSet<RegisterStorage>();
-			Assert.IsNull(arch.GetWidestSubregister(Registers.dx, bits));
-            bits.Add(Registers.dl);
-			Assert.AreSame(Registers.dl, arch.GetWidestSubregister(Registers.dx, bits));
-            bits.Clear();
-			bits.Add(Registers.dh);
-			Assert.AreSame(Registers.dh, arch.GetWidestSubregister(Registers.dx, bits));
-			bits.Add(Registers.dx);
-			Assert.AreSame(Registers.dx, arch.GetWidestSubregister(Registers.dx, bits));
-			bits.Add(Registers.edx);
-			Assert.AreSame(Registers.dx, arch.GetWidestSubregister(Registers.dx, bits));
-		}
-
-		[Test]
-		public void X86r_WidestSubregisterSp()
-		{
-            var bits = new HashSet<RegisterStorage>();
-			Assert.IsNull(arch.GetWidestSubregister(Registers.sp, bits));
-			bits.Add(Registers.sp);
-			Assert.AreSame(Registers.sp, arch.GetWidestSubregister(Registers.sp, bits));
-			bits.Add(Registers.esp);
-			Assert.AreSame(Registers.sp, arch.GetWidestSubregister(Registers.sp, bits));
-		}
-
-		[Test]
-		public void X86r_WidestSubregisterBh()
-		{
-            var bits = new HashSet<RegisterStorage>();
-            Assert.IsNull(arch.GetWidestSubregister(Registers.bh, bits));
-			bits.Add(Registers.bh);
-			Assert.AreSame(Registers.bh, arch.GetWidestSubregister(Registers.bh, bits));
-			bits.Add(Registers.bx);
- 			Assert.AreSame(Registers.bh, arch.GetWidestSubregister(Registers.bh, bits));
-			bits.Add(Registers.ebx);
-			Assert.AreSame(Registers.bh, arch.GetWidestSubregister(Registers.bh, bits));
+            Assert.AreEqual(Registers.al, arch.GetRegister(Registers.eax.Domain, lowByte));
+            Assert.AreEqual(Registers.bx, arch.GetRegister(Registers.ebx.Domain, word));
+            Assert.AreEqual(Registers.ecx, arch.GetRegister(Registers.ecx.Domain, dword));
+            Assert.AreEqual(Registers.sil, arch.GetRegister(Registers.esi.Domain, lowByte));
 		}
 
         [Test]

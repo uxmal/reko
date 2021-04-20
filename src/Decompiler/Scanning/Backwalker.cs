@@ -163,22 +163,22 @@ namespace Reko.Scanning
                         binSrc.Operator == Operator.Xor &&
                         binSrc.Left == assDst &&
                         binSrc.Right == assDst &&
-                        RegisterOf(assDst) == host.GetSubregister(Index, 8, 8))
+                        RegisterOf(assDst) == host.GetSubregister(Index, new BitRange(8, 16)))
                     {
                         Operations.Add(new BackwalkOperation(BackwalkOperator.and, 0xFF));
-                        Index = host.GetSubregister(Index, 0, 8);
+                        Index = host.GetSubregister(Index, new BitRange(0, 8));
                     }
                 }
                 var cSrc = assSrc as Constant;
                 if (Index != null &&
                     cSrc != null &&
                     cSrc.IsIntegerZero &&
-                    RegisterOf(assDst) == host.GetSubregister(Index, 8, 8))
+                    RegisterOf(assDst) == host.GetSubregister(Index, new BitRange(8, 16)))
                 {
                     // mov bh,0 ;; xor bh,bh
                     // jmp [bx...]
                     Operations.Add(new BackwalkOperation(BackwalkOperator.and, 0xFF));
-                    Index = host.GetSubregister(Index, 0, 8);
+                    Index = host.GetSubregister(Index, new BitRange(0, 8));
                     return true;
                 }
                 if (assSrc is ConditionOf cof && UsedFlagIdentifier != null)
@@ -195,7 +195,7 @@ namespace Reko.Scanning
                     {
                         var idLeft = RegisterOf(binCmp.Left  as Identifier);
                         if (idLeft != null &&
-                            (idLeft == Index || idLeft == host.GetSubregister(Index!, 0, 8)) ||
+                            (idLeft == Index || idLeft == host.GetSubregister(Index!, new BitRange(0, 8))) ||
                            (IndexExpression != null && IndexExpression.ToString() == idLeft!.ToString()))    //$HACK: sleazy, but we don't appear to have an expression comparer
                         {
                             if (binCmp.Right is Constant immSrc)
@@ -230,7 +230,7 @@ namespace Reko.Scanning
                     // R = Mem[xxx]
                     var rIdx = Index;
                     var rDst = RegisterOf(assDst);
-                    if ((rDst != host.GetSubregister(rIdx, 0, 8) && cvtSrc == null) &&
+                    if ((rDst != host.GetSubregister(rIdx, new BitRange(0, 8)) && cvtSrc == null) &&
                         rDst != rIdx)
                     {
                         Index = RegisterStorage.None;

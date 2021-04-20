@@ -1,642 +1,328 @@
-// fn00200089
-// Return size: 0
-define fn00200089
-fn00200089_entry:
-	xsp = fp
-	// succ:  l00200089
-l00200089:
-	call fn0020060C (retsize: 4;)
-	v3 = Mem0[0x00006F86<p32>:byte] | 1<i8> << 6<8>
-	Mem0[0x00006F86<p32>:byte] = v3
-	xix = 0x00200040<p32>
-	xiy = 0x00006FB8<p32>
-	b = 0x12<8>
-	// succ:  l0020009B
-l0020009B:
-	v7 = xix
-	xix = xix + 4<i32>
-	v8 = Mem0[v7:word32]
-	xwa = v8
-	v10 = xwa
-	Mem0[xiy:word32] = v10
-	xiy = xiy + 4<32>
-	b = b - 1<8>
-	branch b != 0<8> l0020009B
-	// succ:  l002000A4 l0020009B
-l002000A4:
-	v11 = 0<8>
-	Mem0[0x00008002<p32>:byte] = v11
-	v12 = 0<8>
-	Mem0[0x00008003<p32>:byte] = v12
-	v13 = 0xA0<8>
-	Mem0[0x00008004<p32>:byte] = v13
-	v14 = 0x98<8>
-	Mem0[0x00008005<p32>:byte] = v14
-	wa = 0<16>
-	xhl = 0xA000<32>
-	bc = 0x200<16>
-	// succ:  l002000C2
-l002000C2:
-	v18 = wa
-	Mem0[xhl:word16] = v18
-	xhl = xhl + 2<32>
-	bc = bc - 1<16>
-	branch bc != 0<16> l002000C2
-	// succ:  l002000C8 l002000C2
-l002000C8:
-	bc = 0x250<16>
-	xde = 0xA400<32>
-	xhl = 0x20061D<32>
-	// succ:  l002000D5
-l002000D5:
-	v20 = Mem0[xhl:word16]
-	Mem0[xde:word16] = v20
-	xhl = xhl + 2<i32>
-	xde = xde + 2<i32>
-	bc = bc - 1<16>
-	branch bc != 0<16> l002000D5
-	// succ:  l002000D7 l002000D5
-l002000D7:
-	H = false
-	V = false
-	N = false
-	call fn002005B8 (retsize: 4;)
-	__ei(0<8>)
-	bc = 0x10<16>
-	xde = 0x8300<32>
-	xhl = 0x200ABD<32>
-	// succ:  l002000EA
-l002000EA:
-	v24 = Mem0[xhl:word16]
-	Mem0[xde:word16] = v24
-	xhl = xhl + 2<i32>
-	xde = xde + 2<i32>
-	bc = bc - 1<16>
-	branch bc != 0<16> l002000EA
-	// succ:  l002000EC l002000EA
-l002000EC:
-	H = false
-	V = false
-	N = false
-	v25 = 0x33<8>
-	Mem0[0x000083E0<p32>:byte] = v25
-	v26 = 7<8>
-	Mem0[0x000083E1<p32>:byte] = v26
-	v27 = 0x80<8>
-	Mem0[0x00008118<p32>:byte] = v27
-	// succ:  l00200111
-l00200111:
-	xhl = 0x2000FD<32>
-	d = 4<8>
-	c = 1<8>
-	b = 0<8>
-	call fn00200557 (retsize: 4;)
-	// succ:  l00200136
-l00200136:
-	xhl = 0x200122<32>
-	d = 4<8>
-	c = 1<8>
-	b = 1<8>
-	call fn00200557 (retsize: 4;)
-	// succ:  l00200154
-l00200154:
-	xhl = 0x200147<32>
-	d = 4<8>
-	c = 2<8>
-	b = 4<8>
-	call fn00200557 (retsize: 4;)
-	// succ:  l0020016E
-l0020016E:
-	xhl = 0x200165<32>
-	d = 2<8>
-	c = 4<8>
-	b = 5<8>
-	call fn00200557 (retsize: 4;)
-	// succ:  l00200186
-l00200186:
-	xhl = 0x20017F<32>
-	d = 2<8>
-	c = 4<8>
-	b = 6<8>
-	call fn00200557 (retsize: 4;)
-	xde = 0x7000<32>
-	xhl = 0x200363<32>
-	bc = 0x12F<16>
-	// succ:  l002001A2
-l002001A2:
-	v30 = Mem0[xhl:byte]
-	Mem0[xde:byte] = v30
-	xhl = xhl + 1<i32>
-	xde = xde + 1<i32>
-	bc = bc - 1<16>
-	branch bc != 0<16> l002001A2
-	// succ:  l002001A4 l002001A2
-l002001A4:
-	H = false
-	V = false
-	N = false
-	w = 1<8>
-	call fn002004F2 (retsize: 4;)
-	xwa = 0x7000<32>
-	v32 = Mem0[xwa:word32]
-	call v32 (retsize: 4;)
-	hl = 0xD06<16>
-	v34 = Mem0[0x00004003<p32>:byte]
-	a = v34
-	w = 4<8>
-	call fn00200532 (retsize: 4;)
-	hl = 0xD05<16>
-	a = 4<8>
-	w = 4<8>
-	call fn00200532 (retsize: 4;)
-	v36 = Mem0[0x00004003<p32>:byte]
-	N = true
-	SZHVC = cond(v36 - 4<8>)
-	branch Test(NE,Z) l002001E6
-	// succ:  l002001D0 l002001E6
-l002001D0:
-	// succ:  l002001D5
-l002001D5:
-	xhl = 0x2001D2<32>
-	d = 1<8>
-	c = 0xF<8>
-	b = 4<8>
-	call fn00200557 (retsize: 4;)
-	goto l002001FB
-	// succ:  l002001FB
-l002001E6:
-	// succ:  l002001EC
-l002001EC:
-	xhl = 0x2001E8<32>
-	d = 3<8>
-	c = 0xF<8>
-	b = 4<8>
-	call fn00200557 (retsize: 4;)
-	// succ:  l002001FB
-l002001FB:
-	// succ:  l00200206
-l00200206:
-	xhl = 0x2001FD<32>
-	d = 4<8>
-	c = 2<8>
-	b = 8<8>
-	call fn00200557 (retsize: 4;)
-	// succ:  l00200220
-l00200220:
-	xhl = 0x200217<32>
-	d = 2<8>
-	c = 4<8>
-	b = 9<8>
-	call fn00200557 (retsize: 4;)
-	// succ:  l00200238
-l00200238:
-	xhl = 0x200231<32>
-	d = 2<8>
-	c = 4<8>
-	b = 0xA<8>
-	call fn00200557 (retsize: 4;)
-	xde = 0x7000<32>
-	xhl = 0x200492<32>
-	bc = 0x23<16>
-	// succ:  l00200254
-l00200254:
-	v39 = Mem0[xhl:byte]
-	Mem0[xde:byte] = v39
-	xhl = xhl + 1<i32>
-	xde = xde + 1<i32>
-	bc = bc - 1<16>
-	branch bc != 0<16> l00200254
-	// succ:  l00200256 l00200254
-l00200256:
-	H = false
-	V = false
-	N = false
-	w = 1<8>
-	call fn002004F2 (retsize: 4;)
-	xwa = 0x7000<32>
-	v40 = Mem0[xwa:word32]
-	call v40 (retsize: 4;)
-	hl = 0xD0A<16>
-	v41 = Mem0[0x00004003<p32>:byte]
-	a = v41
-	w = 4<8>
-	call fn00200532 (retsize: 4;)
-	hl = 0xD09<16>
-	a = 1<8>
-	w = 4<8>
-	call fn00200532 (retsize: 4;)
-	v42 = Mem0[0x00004003<p32>:byte]
-	N = true
-	SZHVC = cond(v42 - 1<8>)
-	branch Test(NE,Z) l00200298
-	// succ:  l00200282 l00200298
-l00200282:
-	// succ:  l00200287
-l00200287:
-	xhl = 0x200284<32>
-	d = 1<8>
-	c = 0xF<8>
-	b = 8<8>
-	call fn00200557 (retsize: 4;)
-	goto l002002AD
-	// succ:  l002002AD
-l00200298:
-	// succ:  l0020029E
-l0020029E:
-	xhl = 0x20029A<32>
-	d = 3<8>
-	c = 0xF<8>
-	b = 8<8>
-	call fn00200557 (retsize: 4;)
-	// succ:  l002002AD
-l002002AD:
-	// succ:  l002002BA
-l002002BA:
-	xhl = 0x2002AF<32>
-	d = 4<8>
-	c = 2<8>
-	b = 0xC<8>
-	call fn00200557 (retsize: 4;)
-	// succ:  l002002D4
-l002002D4:
-	xhl = 0x2002CB<32>
-	d = 2<8>
-	c = 4<8>
-	b = 0xD<8>
-	call fn00200557 (retsize: 4;)
-	// succ:  l002002EC
-l002002EC:
-	xhl = 0x2002E5<32>
-	d = 2<8>
-	c = 4<8>
-	b = 0xE<8>
-	call fn00200557 (retsize: 4;)
-	xde = 0x7000<32>
-	xhl = 0x2004B5<32>
-	bc = 0x2B<16>
-	// succ:  l00200308
-l00200308:
-	v43 = Mem0[xhl:byte]
-	Mem0[xde:byte] = v43
-	xhl = xhl + 1<i32>
-	xde = xde + 1<i32>
-	bc = bc - 1<16>
-	branch bc != 0<16> l00200308
-	// succ:  l0020030A l00200308
-l0020030A:
-	H = false
-	V = false
-	N = false
-	w = 1<8>
-	call fn002004F2 (retsize: 4;)
-	xwa = 0x7000<32>
-	v44 = Mem0[xwa:word32]
-	call v44 (retsize: 4;)
-	hl = 0xD0E<16>
-	v45 = Mem0[0x00004003<p32>:byte]
-	a = v45
-	w = 4<8>
-	call fn00200532 (retsize: 4;)
-	hl = 0xD0D<16>
-	a = 0<8>
-	w = 4<8>
-	call fn00200532 (retsize: 4;)
-	v46 = Mem0[0x00004003<p32>:byte]
-	N = true
-	SZHVC = cond(v46 - 0<8>)
-	branch Test(NE,Z) l0020034C
-	// succ:  l00200336 l0020034C
-l00200336:
-	// succ:  l0020033B
-l0020033B:
-	xhl = 0x200338<32>
-	d = 1<8>
-	c = 0xF<8>
-	b = 0xC<8>
-	call fn00200557 (retsize: 4;)
-	goto l00200361
-	// succ:  l00200361
-l0020034C:
-	// succ:  l00200352
-l00200352:
-	xhl = 0x20034E<32>
-	d = 3<8>
-	c = 0xF<8>
-	b = 0xC<8>
-	call fn00200557 (retsize: 4;)
-	// succ:  l00200361
-l00200361:
-	goto l00200361
-	// succ:  l00200361
+void fn00200089()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 fn00200089_exit:
+fn00200089_entry:
+l00200089:
+	fn0020060C()
+	Mem11[0x00006F86<p32>:byte] = Mem0[0x00006F86<p32>:byte] | 64<i8>
+	word32 xix_12 = 0x00200040<p32>
+	word32 xiy_13 = 0x00006FB8<p32>
+	byte b_14 = 0x12<8>
+l0020009B:
+	Mem23[xiy_13:word32] = Mem18[xix_12:word32]
+	xix_12 = xix_12 + 4<i32>
+	xiy_13 = xiy_13 + 4<32>
+	b_14 = b_14 - 1<8>
+	branch b_14 != 0<8> l0020009B
+l002000A4:
+	Mem28[0x00008002<p32>:byte] = 0<8>
+	Mem30[0x00008003<p32>:byte] = 0<8>
+	Mem32[0x00008004<p32>:byte] = 0xA0<8>
+	Mem34[0x00008005<p32>:byte] = 0x98<8>
+	word32 xhl_36 = 0xA000<32>
+	word16 bc_37 = 0x200<16>
+l002000C2:
+	Mem41[xhl_36:word16] = 0<16>
+	xhl_36 = xhl_36 + 2<32>
+	bc_37 = bc_37 - 1<16>
+	branch bc_37 != 0<16> l002000C2
+l002000C8:
+	word16 bc_45 = 0x250<16>
+	word32 xde_46 = 0xA400<32>
+	word32 xhl_47 = 0x20061D<32>
+l002000D5:
+	Mem52[xde_46:word16] = Mem49[xhl_47:word16]
+	xhl_47 = xhl_47 + 2<i32>
+	xde_46 = xde_46 + 2<i32>
+	bc_45 = bc_45 - 1<16>
+	branch bc_45 != 0<16> l002000D5
+l002000D7:
+	fn002005B8()
+	__ei(0<8>)
+	word16 bc_68 = 0x10<16>
+	word32 xde_69 = 0x8300<32>
+	word32 xhl_70 = 0x200ABD<32>
+l002000EA:
+	Mem75[xde_69:word16] = Mem72[xhl_70:word16]
+	xhl_70 = xhl_70 + 2<i32>
+	xde_69 = xde_69 + 2<i32>
+	bc_68 = bc_68 - 1<16>
+	branch bc_68 != 0<16> l002000EA
+l002000EC:
+	Mem84[0x000083E0<p32>:byte] = 0x33<8>
+	Mem86[0x000083E1<p32>:byte] = 7<8>
+	Mem88[0x00008118<p32>:byte] = 0x80<8>
+l00200111:
+	fn00200557(1<8>, 0<8>, 0x2000FD<32>)
+l00200136:
+	fn00200557(1<8>, 1<8>, 0x200122<32>)
+l00200154:
+	fn00200557(2<8>, 4<8>, 0x200147<32>)
+l0020016E:
+	fn00200557(4<8>, 5<8>, 0x200165<32>)
+l00200186:
+	word32 xwa_142 = fn00200557(4<8>, 6<8>, 0x20017F<32>)
+	byte a_166 = SLICE(xwa_142, byte, 0)
+	word16 xwa_16_16_168 = SLICE(xwa_142, word16, 16)
+	word32 xde_149 = 0x7000<32>
+	word32 xhl_150 = 0x200363<32>
+	word16 bc_151 = 0x12F<16>
+l002001A2:
+	Mem156[xde_149:byte] = Mem153[xhl_150:byte]
+	xhl_150 = xhl_150 + 1<i32>
+	xde_149 = xde_149 + 1<i32>
+	bc_151 = bc_151 - 1<16>
+	branch bc_151 != 0<16> l002001A2
+l002001A4:
+	fn002004F2(SEQ(xwa_16_16_168, 1<8>, a_166))
+	word32 xsp_183
+	word32 xhl_188
+	call Mem156[0x7000<32>:word32] (retsize: 4;)
+		uses: xsp:fp,xwa:0x7000<32>
+		defs: xhl:xhl_188,xsp:xsp_183
+	word16 xhl_16_16_196 = SLICE(xhl_188, word16, 16)
+	fn00200532(SEQ(xhl_16_16_196, 0xD06<16>))
+	branch fn00200532(SEQ(xhl_16_16_196, 0xD05<16>)) l002001E6
+l002001E6:
+l002001EC:
+	fn00200557(0xF<8>, 4<8>, 0x2001E8<32>)
+l002001D0:
+l002001D5:
+	fn00200557(0xF<8>, 4<8>, 0x2001D2<32>)
+l002001FB:
+l00200206:
+	fn00200557(2<8>, 8<8>, 0x2001FD<32>)
+l00200220:
+	fn00200557(4<8>, 9<8>, 0x200217<32>)
+l00200238:
+	word32 xwa_270 = fn00200557(4<8>, 0xA<8>, 0x200231<32>)
+	byte a_294 = SLICE(xwa_270, byte, 0)
+	word16 xwa_16_16_296 = SLICE(xwa_270, word16, 16)
+	word32 xde_277 = 0x7000<32>
+	word32 xhl_278 = 0x200492<32>
+	word16 bc_279 = 0x23<16>
+l00200254:
+	Mem284[xde_277:byte] = Mem281[xhl_278:byte]
+	xhl_278 = xhl_278 + 1<i32>
+	xde_277 = xde_277 + 1<i32>
+	bc_279 = bc_279 - 1<16>
+	branch bc_279 != 0<16> l00200254
+l00200256:
+	fn002004F2(SEQ(xwa_16_16_296, 1<8>, a_294))
+	word32 xsp_308
+	word32 xhl_313
+	call Mem284[0x7000<32>:word32] (retsize: 4;)
+		uses: xsp:xsp_183,xwa:0x7000<32>
+		defs: xhl:xhl_313,xsp:xsp_308
+	word16 xhl_16_16_320 = SLICE(xhl_313, word16, 16)
+	fn00200532(SEQ(xhl_16_16_320, 0xD0A<16>))
+	branch fn00200532(SEQ(xhl_16_16_320, 0xD09<16>)) l00200298
+l00200298:
+l0020029E:
+	fn00200557(0xF<8>, 8<8>, 0x20029A<32>)
+l00200282:
+l00200287:
+	fn00200557(0xF<8>, 8<8>, 0x200284<32>)
+l002002AD:
+l002002BA:
+	fn00200557(2<8>, 0xC<8>, 0x2002AF<32>)
+l002002D4:
+	fn00200557(4<8>, 0xD<8>, 0x2002CB<32>)
+l002002EC:
+	word32 xwa_394 = fn00200557(4<8>, 0xE<8>, 0x2002E5<32>)
+	byte a_418 = SLICE(xwa_394, byte, 0)
+	word16 xwa_16_16_420 = SLICE(xwa_394, word16, 16)
+	word32 xde_401 = 0x7000<32>
+	word32 xhl_402 = 0x2004B5<32>
+	word16 bc_403 = 0x2B<16>
+l00200308:
+	Mem408[xde_401:byte] = Mem405[xhl_402:byte]
+	xhl_402 = xhl_402 + 1<i32>
+	xde_401 = xde_401 + 1<i32>
+	bc_403 = bc_403 - 1<16>
+	branch bc_403 != 0<16> l00200308
+l0020030A:
+	fn002004F2(SEQ(xwa_16_16_420, 1<8>, a_418))
+	word32 xhl_437
+	call Mem408[0x7000<32>:word32] (retsize: 4;)
+		uses: xsp:xsp_308,xwa:0x7000<32>
+		defs: xhl:xhl_437
+	word16 xhl_16_16_444 = SLICE(xhl_437, word16, 16)
+	fn00200532(SEQ(xhl_16_16_444, 0xD0E<16>))
+	branch fn00200532(SEQ(xhl_16_16_444, 0xD0D<16>)) l0020034C
+l0020034C:
+l00200352:
+	fn00200557(0xF<8>, 0xC<8>, 0x20034E<32>)
+l00200336:
+l0020033B:
+	fn00200557(0xF<8>, 0xC<8>, 0x200338<32>)
+l00200361:
 
 
-// fn002004F2
-// Return size: 4
-define fn002004F2
+void fn002004F2(byte w)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00200089
+// MayUse:  xwa:[8..15]
+// LiveOut:
+// Trashed: SZHVNC
+// Preserved: xsp xwa
 fn002004F2_entry:
-	xsp = fp
-	// succ:  l002004F2
+	byte w_20 = SLICE(xwa, byte, 8)
 l002004F2:
-	xsp = xsp - 4<i32>
-	Mem0[xsp:word32] = xwa
-	v4 = 0<8>
-	Mem0[0x00004004<p32>:byte] = v4
-	// succ:  l002004F8
+	Mem7[0x00004004<p32>:byte] = 0<8>
 l002004F8:
-	v5 = Mem0[0x00007600<p32>:byte]
-	a = v5
-	v7 = Mem0[0x00007600<p32>:byte]
-	a = v7
-	v8 = Mem0[0x00004004<p32>:byte]
-	a = v8
-	N = true
-	SZHVC = cond(a - w)
-	branch Test(NE,Z) l002004F8
-	// succ:  l00200508 l002004F8
+	branch Mem7[0x00004004<p32>:byte] != w_20 l002004F8
 l00200508:
-	xwa = Mem0[xsp:word32]
-	xsp = xsp + 4<i32>
 	return
-	// succ:  fn002004F2_exit
 fn002004F2_exit:
 
 
-// fn0020050A
-// Return size: 4
-define fn0020050A
+bool fn0020050A(word16 hl)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00200532
+// MayUse:  xhl:[0..15]
+// LiveOut: Z
+// Trashed: SZHVNC a w
+// Preserved: xbc xde xhl xsp
 fn0020050A_entry:
-	xsp = fp
-	// succ:  l0020050A
+	byte h_13 = SLICE(xhl, byte, 8)
+	byte l_22 = SLICE(xhl, byte, 0)
 l0020050A:
-	xsp = xsp - 4<i32>
-	Mem0[xsp:word32] = xhl
-	xsp = xsp - 4<i32>
-	Mem0[xsp:word32] = xde
-	xsp = xsp - 4<i32>
-	Mem0[xsp:word32] = xbc
-	xde = 0x9800<32>
-	c = h
-	b = 0<8>
-	xbc = bc *u 2<16>
-	de = de + bc
-	N = false
-	SZHVC = cond(de)
-	h = 0<8>
-	xhl = hl *u 0x40<16>
-	de = de + hl
-	N = false
-	SZHVC = cond(de)
-	v14 = Mem0[xde:word32]
-	a = v14
-	xde = xde + 1<32>
-	N = false
-	SZHVC = cond(xde)
-	v16 = Mem0[xde:word32]
-	w = v16
-	xbc = Mem0[xsp:word32]
-	xsp = xsp + 4<i32>
-	xde = Mem0[xsp:word32]
-	xsp = xsp + 4<i32>
-	xhl = Mem0[xsp:word32]
-	xsp = xsp + 4<i32>
-	return
-	// succ:  fn0020050A_exit
+	return SLICE(cond(CONVERT(CONVERT(h_13, byte, uint16) *u 2<16> + 0x9800<16> + CONVERT(l_22, byte, uint16) *u 0x40<16>, word16, uint32) + 1<32>), bool, 4)
 fn0020050A_exit:
 
 
-// fn00200532
-// Return size: 4
-define fn00200532
+bool fn00200532(word32 xhl)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00200089
+// MayUse:  xhl:[0..31]
+// LiveOut: Z
+// Trashed: SZHVNC
+// Preserved: xbc xhl xsp xwa
 fn00200532_entry:
-	xsp = fp
-	// succ:  l00200532
+	byte h_30 = SLICE(xhl, byte, 8)
+	word16 xhl_16_16_34 = SLICE(xhl, word16, 16)
+	byte l_35 = SLICE(xhl, byte, 0)
 l00200532:
-	xsp = xsp - 4<i32>
-	Mem0[xsp:word32] = xhl
-	xsp = xsp - 4<i32>
-	Mem0[xsp:word32] = xbc
-	xsp = xsp - 4<i32>
-	Mem0[xsp:word32] = xwa
-	c = a
-	a = a & 0xF0<8>
-	H = true
-	N = false
-	C = false
-	SZV = cond(a)
-	a = a >>u 4<8>
-	H = false
-	N = false
-	SZVC = cond(a)
-	a = a + 0x40<8>
-	N = false
-	SZHVC = cond(a)
-	call fn0020050A (retsize: 4;)
-	a = c
-	a = a & 0xF<8>
-	H = true
-	N = false
-	C = false
-	SZV = cond(a)
-	a = a + 0x40<8>
-	N = false
-	SZHVC = cond(a)
-	h = h + 1<8>
-	N = false
-	SZHVC = cond(h)
-	call fn0020050A (retsize: 4;)
-	xwa = Mem0[xsp:word32]
-	xsp = xsp + 4<i32>
-	xbc = Mem0[xsp:word32]
-	xsp = xsp + 4<i32>
-	xhl = Mem0[xsp:word32]
-	xsp = xsp + 4<i32>
-	return
-	// succ:  fn00200532_exit
+	fn0020050A(xhl)
+	return fn0020050A(SEQ(xhl_16_16_34, h_30 + 1<8>, l_35))
 fn00200532_exit:
 
 
-// fn00200557
-// Return size: 4
-define fn00200557
+word32 fn00200557(byte c, byte b, word32 xhl)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00200089
+// MayUse:  b:[0..7] c:[0..7] xhl:[0..31]
+// LiveOut: xwa
+// Trashed: SZHVNC xbc xwa
+// Preserved: xde xhl xsp
 fn00200557_entry:
-	xsp = fp
-	// succ:  l00200557
 l00200557:
-	xsp = xsp - 4<i32>
-	Mem0[xsp:word32] = xhl
-	xsp = xsp - 4<i32>
-	Mem0[xsp:word32] = xde
-	d = d << 1<8>
-	H = false
-	N = false
-	SZVC = cond(d)
-	v9 = Mem0[0x00004002<p32>:word32]
-	d = v9
-	xde = 0x9800<32>
-	xwa = 0<32>
-	a = c
-	a = a + c
-	N = false
-	SZHVC = cond(a)
-	xde = xde + xwa
-	N = false
-	SZHVC = cond(xde)
-	c = b
-	b = 0<8>
-	xbc = bc *u 0x40<16>
-	xde = xde + xbc
-	N = false
-	SZHVC = cond(xde)
-	b = 0x13<8>
-	// succ:  l00200579
+	word24 xwa_24_8_106 = 0<24>
+	word32 xde_26 = CONVERT(c * 2<8>, byte, uint32) + 0x9800<32> + CONVERT(b, byte, uint16) *u 0x40<16>
+	byte b_29 = 0x13<8>
 l00200579:
-	v17 = Mem0[xhl:byte]
-	a = v17
-	N = true
-	SZHVC = cond(a - 0<8>)
-	branch Test(EQ,Z) l0020059E
-	// succ:  l0020057F l0020059E
+	byte v17_32 = Mem8[xhl:byte]
+	word16 xwa_16_16_108 = SLICE(xwa_24_8_106, word16, 8)
+	word32 xwa_105 = SEQ(xwa_24_8_106, v17_32)
+	branch v17_32 == 0<8> l0020059E
 l0020057F:
 	xhl = xhl + 1<32>
-	N = false
-	SZHV = cond(xhl)
-	N = true
-	SZHVC = cond(a - 0x5B<8>)
-	branch Test(ULT,Z) l00200589
-	// succ:  l00200586 l00200589
+	branch v17_32 <u 0x5B<8> l00200589
 l00200586:
-	a = a + 0xE0<8>
-	N = false
-	SZHVC = cond(a)
-	// succ:  l00200589
 l00200589:
-	w = 0<8>
-	wa = wa + 9<16>
-	N = false
-	SZHVC = cond(wa)
-	v22 = Mem0[0x00004002<p32>:byte]
-	w = w + v22
-	N = false
-	SZHVC = cond(w)
-	v23 = Mem0[xde:word32]
-	a = v23
-	xde = xde + 1<32>
-	N = false
-	SZHV = cond(xde)
-	v24 = Mem0[xde:word32]
-	w = v24
-	xde = xde + 1<32>
-	N = false
-	SZHV = cond(xde)
-	b = b - 1<8>
-	branch b != 0<8> l00200579
-	// succ:  l0020059E l00200579
+	word32 xde_57 = xde_26 + 1<32>
+	word32 v24_58 = Mem8[xde_57:word32]
+	xde_26 = xde_57 + 1<32>
+	b_29 = b_29 - 1<8>
+	xwa_24_8_106 = SEQ(xwa_16_16_108, v24_58) (alias)
+	xwa_105 = SEQ(xwa_16_16_108, v24_58, Mem8[xde_26:word32]) (alias)
+	branch b_29 != 0<8> l00200579
 l0020059E:
-	xde = Mem0[xsp:word32]
-	xsp = xsp + 4<i32>
-	xhl = Mem0[xsp:word32]
-	xsp = xsp + 4<i32>
-	return
-	// succ:  fn00200557_exit
+	return xwa_105
 fn00200557_exit:
 
 
-// fn002005B8
-// Return size: 4
-define fn002005B8
+void fn002005B8()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00200089
+// MayUse: 
+// LiveOut:
+// Trashed: SZHVNC hl xbc
+// Preserved: xsp
 fn002005B8_entry:
-	xsp = fp
-	// succ:  l002005B8
 l002005B8:
-	xbc = 0x9000<32>
-	hl = 0x4C0<16>
-	// succ:  l002005C0
+	word32 xbc_3 = 0x9000<32>
+	word16 hl_10 = 0x4C0<16>
 l002005C0:
-	v5 = 0<8>
-	Mem0[xbc:byte] = v5
-	xbc = xbc + 1<32>
-	N = false
-	SZHVC = cond(xbc)
-	hl = hl - 1<16>
-	N = true
-	SZHVC = cond(hl)
-	branch Test(NE,Z) l002005C0
-	// succ:  l002005CF l002005C0
+	Mem7[xbc_3:byte] = 0<8>
+	xbc_3 = xbc_3 + 1<32>
+	hl_10 = hl_10 - 1<16>
+	branch hl_10 != 0<16> l002005C0
 l002005CF:
-	xbc = 0x9800<32>
-	hl = 0x4C0<16>
-	// succ:  l002005D7
+	word32 xbc_14 = 0x9800<32>
+	word16 hl_15 = 0x4C0<16>
 l002005D7:
-	v9 = 0<8>
-	Mem0[xbc:byte] = v9
-	xbc = xbc + 1<32>
-	N = false
-	SZHVC = cond(xbc)
-	hl = hl - 1<16>
-	N = true
-	SZHVC = cond(hl)
-	branch Test(NE,Z) l002005D7
-	// succ:  l002005E6 l002005D7
+	Mem18[xbc_14:byte] = 0<8>
+	xbc_14 = xbc_14 + 1<32>
+	hl_15 = hl_15 - 1<16>
+	branch hl_15 != 0<16> l002005D7
 l002005E6:
 	return
-	// succ:  fn002005B8_exit
 fn002005B8_exit:
 
 
-// fn002005F5
-// Return size: 4
-define fn002005F5
+void fn002005F5(byte w, byte a, word16 xwa_16_16, word32 xix, word16 sr)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  a:[0..7] sr:[0..15] w:[0..7] xix:[0..31] xwa_16_16:[0..15]
+// LiveOut:
+// Trashed: SZHVNC xwa
+// Preserved: sr xix xsp
 fn002005F5_entry:
-	xsp = fp
-	// succ:  l002005F5
 l002005F5:
-	xsp = xsp - 2<i32>
-	Mem0[xsp:word16] = sr
 	__ldf(3<8>)
-	xsp = xsp - 4<i32>
-	Mem0[xsp:word32] = xix
-	w = w + w
-	N = false
-	SZHVC = cond(w)
-	w = w + w
-	N = false
-	SZHVC = cond(w)
-	xix = 0xFFFE00<32>
-	v9 = Mem0[xwa:word32]
-	xix = v9
-	v10 = Mem0[xix:word32]
-	call v10 (retsize: 4;)
-	xix = Mem0[xsp:word32]
-	xsp = xsp + 4<i32>
-	sr = Mem0[xsp:word16]
-	xsp = xsp + 2<i32>
+	word32 xwa_16 = SEQ(xwa_16_16, w * 4<8>, a)
+	word32 v9_17 = Mem8[xwa_16:word32]
+	call Mem8[v9_17:word32] (retsize: 4;)
+		uses: sr:sr,Stack +0004:xix,xix:v9_17,xsp:fp - 6<i32>,xwa:xwa_16
 	return
-	// succ:  fn002005F5_exit
 fn002005F5_exit:
 
 
-// fn0020060C
-// Return size: 4
-define fn0020060C
+void fn0020060C()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      fn00200089
+// MayUse: 
+// LiveOut:
+// Trashed: SZHVNC
+// Preserved: xsp
 fn0020060C_entry:
-	xsp = fp
-	// succ:  l0020060C
 l0020060C:
-	v3 = Mem0[0x00006F91<p32>:byte]
-	N = true
-	SZHVC = cond(v3 - 0<8>)
-	branch Test(NE,Z) l0020061C
-	// succ:  l00200613 l0020061C
+	branch Mem0[0x00006F91<p32>:byte] != 0<8> l0020061C
 l00200613:
-	v7 = Mem0[0x00006F83<p32>:byte] & ~(1<8> << 3<8>)
-	Mem0[0x00006F83<p32>:byte] = v7
-	v8 = 0<8>
-	Mem0[0x00006DA0<p32>:byte] = v8
-	// succ:  l0020061C
+	Mem9[0x00006F83<p32>:byte] = Mem0[0x00006F83<p32>:byte] & ~8<8>
+	Mem11[0x00006DA0<p32>:byte] = 0<8>
 l0020061C:
 	return
-	// succ:  fn0020060C_exit
 fn0020060C_exit:
 
 

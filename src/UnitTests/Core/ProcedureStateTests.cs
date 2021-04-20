@@ -216,26 +216,6 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg)
-            {
-                throw new NotImplementedException();
-            }
-
             public override void LoadUserOptions(Dictionary<string, object> options)
             {
                 throw new NotImplementedException();

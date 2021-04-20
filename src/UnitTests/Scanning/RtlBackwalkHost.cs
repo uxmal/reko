@@ -87,9 +87,9 @@ namespace Reko.UnitTests.Scanning
             throw new NotImplementedException();
         }
 
-        public RegisterStorage GetSubregister(RegisterStorage rIdx, int v1, int v2)
+        public RegisterStorage GetSubregister(RegisterStorage rIdx, BitRange range)
         {
-            throw new NotImplementedException();
+            return Architecture.GetRegister(rIdx.Domain, range);
         }
 
         public bool IsFallthrough(RtlInstruction instr, RtlBlock block)

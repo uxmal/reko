@@ -184,7 +184,7 @@ namespace Reko.Scanning
             return vector;
         }
 
-        public RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        public RegisterStorage GetSubregister(RegisterStorage reg, BitRange range)
         {
             throw new NotImplementedException();
         }

@@ -201,11 +201,6 @@ namespace Reko.Arch.Arm
 #endif
         }
 
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            return reg;
-        }
-
         public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
         {
             uint grf = flags.FlagGroupBits;

@@ -113,9 +113,15 @@ namespace Reko.UnitTests.Scanning
                 return block.Pred.ToList();
             }
 
+
+            public RegisterStorage GetSubregister(RegisterStorage reg, BitRange range)
+            {
+                return arch.GetRegister(reg.Domain, range)!;
+            }
+
             public RegisterStorage GetSubregister(RegisterStorage reg, int off, int width)
             {
-                return arch.GetSubregister(reg, off, width);
+                throw new NotImplementedException();
             }
 
             public bool IsStackRegister(Storage stg)

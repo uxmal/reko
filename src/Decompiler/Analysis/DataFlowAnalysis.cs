@@ -559,7 +559,7 @@ namespace Reko.Analysis
         {
             if (program.User.DebugTraceProcedures.Contains(proc.Name)
                 ||
-                proc.Name == "")
+                new[] { "fn0800_A471" }.Contains(proc.Name))
             {
                 Debug.Print("// {0}: {1} ==================", proc.Name, caption);
                 //MockGenerator.DumpMethod(proc);

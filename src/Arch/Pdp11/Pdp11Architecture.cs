@@ -202,11 +202,6 @@ namespace Reko.Arch.Pdp11
             return false;
         }
 
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            return reg;
-        }
-
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
 		{
 			PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;

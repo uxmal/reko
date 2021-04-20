@@ -66,7 +66,10 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 var rela = Elf64_Rela.Read(relaRdr);
 
                 ulong sym = rela.r_info >> 32;
-                var symStr = loader.Symbols[rela_plt.LinkedSection!.FileOffset][(int)sym];
+                var fileOff = rela_plt.LinkedSection!.FileOffset;
+                if (fileOff == 0)
+                    continue;
+                var symStr = loader.Symbols[fileOff][(int)sym];
 
                 var addr = plt.Address! + (uint)(i + 1) * plt.EntrySize;
                 var st = ElfLoader.GetSymbolType(symStr);

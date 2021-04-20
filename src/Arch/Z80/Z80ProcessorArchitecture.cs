@@ -130,42 +130,6 @@ namespace Reko.Arch.Z80
             if ((grf & Registers.C.FlagGroupBits) != 0) yield return Registers.C;
         }
 
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            if (offset == 0 && reg.BitSize == (ulong)width)
-                return reg;
-            var subregs = Registers.SubRegisters[reg.Domain];
-            var mask = ((1ul << width) - 1) << offset;
-            var result = reg;
-            foreach (var subreg in subregs)
-            {
-                if ((mask & ~subreg.BitMask) == 0)
-                    result = subreg;
-            }
-            return result;
-        }
-
-        public override RegisterStorage? GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
-        {
-            ulong mask = regs.Where(b => b != null && b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
-            if ((mask & reg.BitMask) == reg.BitMask)
-                return reg;
-            RegisterStorage? rMax = null;
-            if (Registers.SubRegisters.TryGetValue(reg.Domain, out RegisterStorage[] subregs))
-            {
-                throw new NotImplementedException();
-                //foreach (var subreg in subregs.Values)
-                //{
-                //    if ((subreg.BitMask & mask) == subreg.BitMask &&
-                //        (rMax == null || subreg.BitSize > rMax.BitSize))
-                //    {
-                //        rMax = subreg;
-                //    }
-                //}
-            }
-            return rMax;
-        }
-
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;

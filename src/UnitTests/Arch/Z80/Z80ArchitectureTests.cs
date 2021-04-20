@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Arch.Z80;
+using Reko.Core;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 
@@ -39,25 +40,25 @@ namespace Reko.UnitTests.Arch.Z80
         [Test]
         public void Z80Arch_GetRegister_Low()
         {
-            Assert.AreEqual(Registers.l, arch.GetRegister(Registers.hl.Domain, new Reko.Core.BitRange(0, 8)));
+            Assert.AreEqual(Registers.l, arch.GetRegister(Registers.hl.Domain, new BitRange(0, 8)));
         }
 
         [Test]
         public void Z80Arch_GetRegister_High()
         {
-            Assert.AreEqual(Registers.d, arch.GetRegister(Registers.de.Domain, new Reko.Core.BitRange(8, 16)));
+            Assert.AreEqual(Registers.d, arch.GetRegister(Registers.de.Domain, new BitRange(8, 16)));
         }
 
         [Test]
         public void Z80Arch_GetRegister_word()
         {
-            Assert.AreEqual(Registers.bc, arch.GetRegister(Registers.bc.Domain, new Reko.Core.BitRange(0, 16)));
+            Assert.AreEqual(Registers.bc, arch.GetRegister(Registers.bc.Domain, new BitRange(0, 16)));
         }
 
         [Test]
         public void Z80Arch_GetSubRegister_hl()
         {
-            Assert.AreEqual(Registers.h, arch.GetSubregister(Registers.hl, 8, 8));
+            Assert.AreSame(Registers.h, arch.GetRegister(Registers.hl.Domain, new BitRange(8, 16)));
         }
     }
 }

@@ -226,11 +226,6 @@ namespace Reko.UnitTests.Mocks
             }
         }
 
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            return reg;
-        }
-
         public override RegisterStorage[] GetRegisters()
         {
             return registers;
@@ -327,22 +322,6 @@ namespace Reko.UnitTests.Mocks
         public override Address MakeSegmentedAddress(Constant seg, Constant offset)
         {
             return Address.SegPtr(seg.ToUInt16(), offset.ToUInt16());
-        }
-
-        public override IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
-        {
-            yield return reg;
-        }
-
-        public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
-        {
-            ulong mask = bits.Where(b => b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
-            return mask != 0 ? reg : null;
-        }
-
-        public override void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg)
-        {
-            ids.Remove(reg);
         }
 
         public override void LoadUserOptions(Dictionary<string, object> options)

@@ -333,14 +333,6 @@ namespace Reko.Arch.PowerPC
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            if (offset == 0)
-                return reg;
-            else
-                return null!;
-        }
-
         public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
         {
             return ccFlagGroups.Values

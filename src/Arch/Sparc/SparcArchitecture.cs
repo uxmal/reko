@@ -139,14 +139,6 @@ namespace Reko.Arch.Sparc
             return Registers.TryGetRegister(name, out reg);
         }
 
-        public override RegisterStorage? GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            if (offset == 0)
-                return reg;
-            else
-                return null;
-        }
-
         public override FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf)
         {
             if (flagGroups.TryGetValue(grf, out FlagGroupStorage fl))

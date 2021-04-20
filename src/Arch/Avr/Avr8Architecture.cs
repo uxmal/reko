@@ -177,7 +177,15 @@ namespace Reko.Arch.Avr
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            return regs[domain - StorageDomain.Register];
+            var reg= regs[domain - StorageDomain.Register];
+            if (domain == z.Domain)
+            {
+                if (range.Lsb == 0)
+                    return regs[30];
+                else
+                    return regs[31];
+            }
+            return reg;
         }
 
         public RegisterStorage GetRegister(int i)
@@ -188,18 +196,6 @@ namespace Reko.Arch.Avr
         public override RegisterStorage[] GetRegisters()
         {
             return regs;
-        }
-
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            if (reg == z)
-            {
-                if (offset == 0)
-                    return regs[30];
-                else
-                    return regs[31];
-            }
-            return reg;
         }
 
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
