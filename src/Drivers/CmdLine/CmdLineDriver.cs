@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Scripts;
 using Reko.Core.Services;
 using Reko.Loading;
 using System;
@@ -61,6 +62,7 @@ namespace Reko.CmdLine
             services.AddService<IDecompiledFileService>(new DecompiledFileService(fsSvc, listener));
             services.AddService<IPluginLoaderService>(new PluginLoaderService());
             services.AddService<ITestGenerationService>(new TestGenerationService(services));
+            services.AddService<OutputWriter>(new CmdOutputWriter());
             var ldr = new Loader(services);
             var decompiler = new Decompiler(ldr, services);
             dcSvc.Decompiler = decompiler;

@@ -23,7 +23,6 @@ using Reko.Core;
 using Reko.Core.Scripts;
 using Reko.Core.Services;
 using System;
-using System.Diagnostics;
 using System.IO;
 
 namespace Reko.Scripts.Python
@@ -35,6 +34,7 @@ namespace Reko.Scripts.Python
     public class PythonModule : ScriptFile
     {
         private readonly ScriptEngine engine;
+        private readonly OutputWriter outputWriter;
         private readonly PythonAPI pythonAPI;
         private readonly DecompilerEventListener eventListener;
         private readonly RekoEventsAPI eventsAPI;
@@ -45,8 +45,8 @@ namespace Reko.Scripts.Python
         {
             this.eventListener = services.RequireService<DecompilerEventListener>();
             this.engine = IronPython.Hosting.Python.CreateEngine();
-            // $TODO: Redirect script output to Reko Console tab
-            engine.Runtime.IO.RedirectToConsole();
+            this.outputWriter = services.RequireService<OutputWriter>();
+            RedirectConsoleOutput(outputWriter, engine);
             this.pythonAPI = new PythonAPI(services, engine);
             var stream = new MemoryStream(bytes);
             using var rdr = new StreamReader(stream);
@@ -68,12 +68,13 @@ namespace Reko.Scripts.Python
                     new NullCodeLocation(Filename),
                     ex,
                     "An error occurred while running the Python script.");
-                DumpPythonStack(ex, engine);
+                DumpPythonStack(outputWriter, ex, engine);
             }
         }
 
         private RekoEventsAPI Evaluate(string script, string filename)
         {
+            outputWriter.WriteLine($"Evaluating {filename}");
             var eventsAPI = new RekoEventsAPI();
             var scope = CreateRekoVariable(engine, pythonAPI, eventsAPI);
             var src = engine.CreateScriptSourceFromString(script, filename);
@@ -87,7 +88,7 @@ namespace Reko.Scripts.Python
                     new NullCodeLocation(filename),
                     ex,
                     "An error occurred while evaluating the Python script.");
-                DumpPythonStack(ex, engine);
+                DumpPythonStack(outputWriter, ex, engine);
                 return new RekoEventsAPI();
             }
             return eventsAPI;
@@ -104,13 +105,23 @@ namespace Reko.Scripts.Python
             return scope;
         }
 
-        private static void DumpPythonStack(Exception ex, ScriptEngine engine)
+        private static void DumpPythonStack(
+            OutputWriter writer, Exception ex, ScriptEngine engine)
         {
             var exceptionOperations = engine.GetService<ExceptionOperations>();
             // $TODO: Allow user to go to failed line. It can be obtained by
             // GetStackFrames method of ExceptionOperations class */
             var msg = exceptionOperations.FormatException(ex);
-            Debug.Print(msg);
+            writer.WriteLine(msg);
+        }
+
+        private static void RedirectConsoleOutput(
+            OutputWriter writer, ScriptEngine engine)
+        {
+            var stream = new MemoryStream();
+            engine.Runtime.IO.SetOutput(stream, writer);
+            engine.Runtime.IO.SetErrorOutput(stream, writer);
+            writer.WriteLine(engine.Setup.DisplayName);
         }
     }
 }
