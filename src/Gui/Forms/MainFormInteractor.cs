@@ -23,6 +23,7 @@ using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
 using Reko.Core.Memory;
 using Reko.Core.Output;
+using Reko.Core.Scripts;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -211,6 +212,9 @@ namespace Reko.Gui.Forms
 
             var userEventSvc = svcFactory.CreateUserEventService();
             sc.AddService<IUserEventService>(userEventSvc);
+
+            var outputWriter = new ScriptOutputInteractor(form);
+            sc.AddService<OutputWriter>(outputWriter);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
