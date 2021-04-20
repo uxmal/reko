@@ -497,7 +497,7 @@ namespace Reko.Typing
 
         public Expression VisitUnknownType(UnknownType ut)
 		{
-			throw new NotImplementedException();
+            return c!;
 		}
 
         public Expression VisitVoidType(VoidType vt)

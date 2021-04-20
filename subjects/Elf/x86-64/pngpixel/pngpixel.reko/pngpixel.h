@@ -126,13 +126,13 @@ Eq_596: size_t
 	T_597 (in count @ 00401758 : size_t)
 	T_600 (in 1<u64> @ 00401758 : uint64)
 	T_601 (in 0x27<u64> @ 00401758 : uint64)
-	T_604 (in fwrite(&g_v401A70, 1<u64>, 0x27<u64>, Mem18[0x0000000000602100<p64>:word64]) @ 00401758 : size_t)
+	T_604 (in fwrite(&g_v401A70, 1<u64>, 0x27<u64>, stderr) @ 00401758 : size_t)
 	T_659 (in 1<u64> @ 0040170F : uint64)
 	T_660 (in 0x2E<u64> @ 0040170F : uint64)
-	T_663 (in fwrite(&g_v401A18, 1<u64>, 0x2E<u64>, Mem84[0x0000000000602100<p64>:word64]) @ 0040170F : size_t)
+	T_663 (in fwrite(&g_v401A18, 1<u64>, 0x2E<u64>, stderr) @ 0040170F : size_t)
 	T_676 (in 1<u64> @ 004016D9 : uint64)
 	T_677 (in 0x2C<u64> @ 004016D9 : uint64)
-	T_680 (in fwrite(&g_v4019E8, 1<u64>, 0x2C<u64>, Mem207[0x0000000000602100<p64>:word64]) @ 004016D9 : size_t)
+	T_680 (in fwrite(&g_v4019E8, 1<u64>, 0x2C<u64>, stderr) @ 004016D9 : size_t)
 Eq_613: (fn int32 ((ptr64 char)))
 	T_613 (in atol @ 0040134D : ptr64)
 	T_614 (in signature of atol @ 00000000 : void)
@@ -2592,11 +2592,11 @@ T_603: (in Mem18[0x0000000000602100<p64>:word64] @ 00401758 : word64)
   Class: Eq_115
   DataType: (ptr64 Eq_115)
   OrigDataType: (ptr64 FILE)
-T_604: (in fwrite(&g_v401A70, 1<u64>, 0x27<u64>, Mem18[0x0000000000602100<p64>:word64]) @ 00401758 : size_t)
+T_604: (in fwrite(&g_v401A70, 1<u64>, 0x27<u64>, stderr) @ 00401758 : size_t)
   Class: Eq_596
   DataType: Eq_596
   OrigDataType: size_t
-T_605: (in CONVERT(fwrite(&g_v401A70, 1<u64>, 0x27<u64>, Mem18[0x0000000000602100<p64>:word64]), size_t, uint8) @ 00401758 : uint8)
+T_605: (in CONVERT(fwrite(&g_v401A70, 1<u64>, 0x27<u64>, stderr), size_t, uint8) @ 00401758 : uint8)
   Class: Eq_605
   DataType: uint8
   OrigDataType: uint8
@@ -2828,11 +2828,11 @@ T_662: (in Mem84[0x0000000000602100<p64>:word64] @ 0040170F : word64)
   Class: Eq_115
   DataType: (ptr64 Eq_115)
   OrigDataType: (ptr64 FILE)
-T_663: (in fwrite(&g_v401A18, 1<u64>, 0x2E<u64>, Mem84[0x0000000000602100<p64>:word64]) @ 0040170F : size_t)
+T_663: (in fwrite(&g_v401A18, 1<u64>, 0x2E<u64>, stderr) @ 0040170F : size_t)
   Class: Eq_596
   DataType: Eq_596
   OrigDataType: size_t
-T_664: (in CONVERT(fwrite(&g_v401A18, 1<u64>, 0x2E<u64>, Mem84[0x0000000000602100<p64>:word64]), size_t, uint8) @ 0040170F : uint8)
+T_664: (in CONVERT(fwrite(&g_v401A18, 1<u64>, 0x2E<u64>, stderr), size_t, uint8) @ 0040170F : uint8)
   Class: Eq_664
   DataType: uint8
   OrigDataType: uint8
@@ -2896,11 +2896,11 @@ T_679: (in Mem207[0x0000000000602100<p64>:word64] @ 004016D9 : word64)
   Class: Eq_115
   DataType: (ptr64 Eq_115)
   OrigDataType: (ptr64 FILE)
-T_680: (in fwrite(&g_v4019E8, 1<u64>, 0x2C<u64>, Mem207[0x0000000000602100<p64>:word64]) @ 004016D9 : size_t)
+T_680: (in fwrite(&g_v4019E8, 1<u64>, 0x2C<u64>, stderr) @ 004016D9 : size_t)
   Class: Eq_596
   DataType: Eq_596
   OrigDataType: size_t
-T_681: (in CONVERT(fwrite(&g_v4019E8, 1<u64>, 0x2C<u64>, Mem207[0x0000000000602100<p64>:word64]), size_t, uint8) @ 004016D9 : uint8)
+T_681: (in CONVERT(fwrite(&g_v4019E8, 1<u64>, 0x2C<u64>, stderr), size_t, uint8) @ 004016D9 : uint8)
   Class: Eq_681
   DataType: uint8
   OrigDataType: uint8

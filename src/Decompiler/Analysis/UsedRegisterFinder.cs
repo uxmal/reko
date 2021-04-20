@@ -277,7 +277,7 @@ namespace Reko.Analysis
                         else
                             return br;
                     });
-                return bitrange;
+                return bitrange & stg.GetBitRange();
             }
             else
             {
