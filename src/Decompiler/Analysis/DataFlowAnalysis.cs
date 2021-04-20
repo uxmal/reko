@@ -557,9 +557,7 @@ namespace Reko.Analysis
         [Conditional("DEBUG")]
         public void DumpWatchedProcedure(string phase, string caption, Procedure proc)
         {
-            if (program.User.DebugTraceProcedures.Contains(proc.Name)
-                ||
-                new[] { "fn0800_A471" }.Contains(proc.Name))
+            if (program.User.DebugTraceProcedures.Contains(proc.Name))
             {
                 Debug.Print("// {0}: {1} ==================", proc.Name, caption);
                 //MockGenerator.DumpMethod(proc);
