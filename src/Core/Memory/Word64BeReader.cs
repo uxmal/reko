@@ -86,6 +86,8 @@ namespace Reko.Core.Memory
             throw new System.NotImplementedException();
         }
 
+        public bool TryPeekUInt64(int offset, out ulong value) => TryPeekBeUInt64(offset, out value);
+
         public bool TryRead(PrimitiveType dataType, out Constant value)
         {
             value = default!;
