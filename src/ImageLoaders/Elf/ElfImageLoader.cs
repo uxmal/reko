@@ -96,16 +96,13 @@ namespace Reko.ImageLoaders.Elf
                 {
                     addrLoad = innerLoader.CreateAddress(addrLoad.ToLinear());
                 }
+                innerLoader.Dump(addrLoad ?? innerLoader.CreateAddress(0), Console.Out);
+
                 // The file we're loading is an object file, and needs to be 
                 // linked before we can load it.
                 var linker = innerLoader.CreateLinker();
                 return linker.LinkObject(platform, addrLoad, RawImage);
             }
-        }
-
-        private Address ComputeBaseAddressFromSections(List<ElfSection> sections)
-        {
-            throw new NotImplementedException();
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
@@ -170,6 +167,17 @@ namespace Reko.ImageLoaders.Elf
             if (fileClass == ELFCLASS64)
             {
                 var header64 = Elf64_EHdr.Load(rdr);
+                trace.Verbose("== ELF header =================");
+                trace.Verbose("  e_entry: {0}", header64.e_entry);
+                trace.Verbose("  e_phoff: {0}", header64.e_phoff);
+                trace.Verbose("  e_shoff: {0}", header64.e_shoff);
+                trace.Verbose("  e_flags: {0}", header64.e_flags);
+                trace.Verbose("  e_ehsize: {0}", header64.e_ehsize);
+                trace.Verbose("  e_phentsize: {0}", header64.e_phentsize);
+                trace.Verbose("  e_phnum: {0}", header64.e_phnum);
+                trace.Verbose("  e_shentsize: {0}", header64.e_shentsize);
+                trace.Verbose("  e_shnum: {0}", header64.e_shnum);
+                trace.Verbose("  e_shstrndx: {0}", header64.e_shstrndx);
                 return new ElfLoader64(this.Services, header64, osAbi, endianness, RawImage);
             }
             else

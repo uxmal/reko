@@ -154,7 +154,7 @@ namespace Reko.ImageLoaders.Elf
             return base.CreateRelocator(machine, symbols);
         }
 
-        public override void Dump(TextWriter writer)
+        public override void Dump(Address addrLoad, TextWriter writer)
         {
             writer.WriteLine("Entry: {0:X}", Header64.e_entry);
             writer.WriteLine("Sections:");
@@ -187,7 +187,7 @@ namespace Reko.ImageLoaders.Elf
                     ph.p_flags,
                     ph.p_align);
             }
-            writer.WriteLine("Base address: {0:X8}", ComputeBaseAddress(platform!));
+            writer.WriteLine("Base address: {0:X8}", addrLoad);
             writer.WriteLine();
             writer.WriteLine("Dependencies");
             foreach (var dep in GetDependencyList(rawImage))
@@ -197,9 +197,51 @@ namespace Reko.ImageLoaders.Elf
 
             writer.WriteLine();
             writer.WriteLine("Relocations");
+            foreach (var sh in Sections.Where(sh => sh.Type == SectionHeaderType.SHT_REL))
+            {
+                DumpRel(sh);
+            }
             foreach (var sh in Sections.Where(sh => sh.Type == SectionHeaderType.SHT_RELA))
             {
-                // DumpRela(sh);
+                DumpRela(sh);
+            }
+        }
+
+        private void DumpRel(ElfSection sh)
+        {
+            var entries = sh.Size / sh.EntrySize;
+            var symtab = sh.LinkedSection;
+            var rdr = CreateReader(sh.FileOffset);
+            for (ulong i = 0; i < entries; ++i)
+            {
+                if (!rdr.TryReadUInt64(out ulong offset))
+                    return;
+                if (!rdr.TryReadUInt64(out ulong info))
+                    return;
+
+                ulong sym = info >> 8;
+                string symStr = GetStrPtr(symtab!, sym);
+                ElfImageLoader.trace.Verbose("  RELA {0:X16} {1,3} {2:X16} {3}", offset, info & 0xFF, sym, symStr);
+            }
+        }
+
+        private void DumpRela(ElfSection sh)
+        {
+            var entries = sh.Size / sh.EntrySize;
+            var symtab = sh.LinkedSection;
+            var rdr = CreateReader(sh.FileOffset);
+            for (ulong i = 0; i < entries; ++i)
+            {
+                if (!rdr.TryReadUInt64(out ulong offset))
+                    return;
+                if (!rdr.TryReadUInt64(out ulong info))
+                    return;
+                if (!rdr.TryReadInt64(out long addend))
+                    return;
+
+                ulong sym = info >> 8;
+                string symStr = GetStrPtr(symtab!, sym);
+                ElfImageLoader.trace.Verbose("  RELA {0:X16} {1,3} {2:X16} {3:X16} {4}", offset, info & 0xFF, sym, addend, symStr);
             }
         }
 
@@ -238,7 +280,7 @@ namespace Reko.ImageLoaders.Elf
                 if (rdr.TryReadUInt32(out uint uAddr))
                     addr = Address.Ptr32(uAddr);
             }
-            else
+            else if (this.Header64.e_type != ET_REL)
             {
                 addr = Address.Ptr64(Header64.e_entry);
             }
@@ -450,7 +492,7 @@ namespace Reko.ImageLoaders.Elf
             return new ElfSymbol(name)
             {
                 Type = (ElfSymbolType) (sym.st_info & 0xF),
-                Bind = sym.st_info >> 4,
+                Bind = (ElfSymbolBinding) (sym.st_info >> 4),
                 SectionIndex = sym.st_shndx,
                 Value = sym.st_value,
                 Size = sym.st_size,
@@ -459,32 +501,37 @@ namespace Reko.ImageLoaders.Elf
 
         public override Dictionary<int, ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
-            //Debug.Print("Symbols");
+            ElfImageLoader.trace.Inform("== Symbols from {0} ==", symSection.Name);
             var symbols = new Dictionary<int, ElfSymbol>();
             var stringtableSection = symSection.LinkedSection!;
             var rdr = CreateReader(symSection.FileOffset);
             for (ulong i = 0; i < symSection.Size / symSection.EntrySize; ++i)
             {
-                if (Elf64_Sym.TryLoad(rdr, out var sym))
+                if (!Elf64_Sym.TryLoad(rdr, out var sym))
                 {
-                    //Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
-                    //    i,
-                    //    RemoveGlibcSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name)),
-                    //    (ElfSymbolType)(sym.st_info & 0xF),
-                    //    sym.st_shndx,
-                    //    GetSectionName(sym.st_shndx),
-                    //    sym.st_value,
-                    //    sym.st_size);
-                    var name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name));
-                    var esym = new ElfSymbol(name)
-                    {
-                        Type = (ElfSymbolType) (sym.st_info & 0xF),
-                        SectionIndex = sym.st_shndx,
-                        Value = sym.st_value,
-                        Size = sym.st_size,
-                    };
-                    symbols.Add((int) i, esym);
+                    ElfImageLoader.trace.Warn("Unable to load symbol entry {0} from {1}", i, symSection.Name);
+                    continue;
                 }
+                var name = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name));
+                ElfImageLoader.trace.Verbose("  {0,3} {1,-25} {2,-12} {3,6} {4} {5,-15} {6:X16} {7,9}",
+                    i,
+                    string.IsNullOrWhiteSpace(name) ? "<empty>" : name,
+                    (ElfSymbolType) (sym.st_info & 0xF),
+                    sym.st_shndx,
+                    GetBindingName((ElfSymbolBinding) (sym.st_info >> 4)),
+                    GetSectionName(sym.st_shndx),
+                    sym.st_value,
+                    sym.st_size);
+
+                var esym = new ElfSymbol(name)
+                {
+                    Type = (ElfSymbolType) (sym.st_info & 0xF),
+                    Bind = (ElfSymbolBinding) (sym.st_info >> 4),
+                    SectionIndex = sym.st_shndx,
+                    Value = sym.st_value,
+                    Size = sym.st_size,
+                };
+                symbols.Add((int) i, esym);
             }
             return symbols;
         }

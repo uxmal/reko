@@ -30,7 +30,7 @@ namespace Reko.ImageLoaders.Elf
         public string Name { get; }
         public ElfSymbolType Type;
         public ulong Value;
-        public int Bind;
+        public ElfSymbolBinding Bind;
         public uint SectionIndex;
         /// <summary>
         /// Size in bytes

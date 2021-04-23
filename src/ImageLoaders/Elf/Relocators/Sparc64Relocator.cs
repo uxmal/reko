@@ -87,7 +87,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 rela.Offset,
                 (SparcRt) (rela.Info & 0xFF),
                 sym.Name,
-                rela.Addend,
+                rela.Addend.HasValue ? rela.Addend.Value : 0,
                 (int) (rela.Info >> 8),
                 "section?");
 
@@ -96,37 +96,37 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case 0:
                 return (null, null);
             case SparcRt.R_SPARC_HI22:
-                A = (int) rela.Addend;
+                A = (int) rela.Addend!.Value;
                 sh = 10;
                 P = 0;
                 mask = 0x3FFFFF;
                 return Relocate32(program, sym, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_LM22:
-                A = (int) rela.Addend;
+                A = (int) rela.Addend!.Value;
                 S = sym.Value;
                 sh = 10;
                 P = 0;
                 mask = 0x3FFFFF;
                 return Relocate32(program, sym, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_LO10:
-                A = (int) rela.Addend;
+                A = (int) rela.Addend!.Value;
                 S = sym.Value;
                 mask = 0x3FF;
                 P = 0;
                 return Relocate32(program, sym, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_32:
-                A = (int) rela.Addend;
+                A = (int) rela.Addend!.Value;
                 S = sym.Value;
                 mask = 0xFFFFFFFF;
                 P = 0;
                 return Relocate32(program, sym, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_WDISP30:
-                A = (int) rela.Addend;
+                A = (int) rela.Addend!.Value;
                 P = ~P + 1;
                 sh = 2;
                 return Relocate32(program, sym, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_RELATIVE:
-                A = (int) rela.Addend;
+                A = (int) rela.Addend!.Value;
                 B = program.SegmentMap.BaseAddress.ToLinear();
                 P = 0;
                 return Relocate64(program, sym, addr, S, A, sh, mask, P, B);

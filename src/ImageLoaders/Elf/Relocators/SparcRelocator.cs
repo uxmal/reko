@@ -95,27 +95,27 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case 0:
                 return (addr, null);
             case SparcRt.R_SPARC_HI22:
-                A = (int)rela.Addend;
+                A = (int)rela.Addend!.Value;
                 sh = 10;
                 P = 0;
                 break;
             case SparcRt.R_SPARC_LO10:
-                A = (int)rela.Addend;
+                A = (int)rela.Addend!.Value;
                 mask = 0x3FF;
                 P = 0;
                 break;
             case SparcRt.R_SPARC_32:
-                A = (int)rela.Addend;
+                A = (int)rela.Addend!.Value;
                 mask = 0xFFFFFFFF;
                 P = 0;
                 break;
             case SparcRt.R_SPARC_WDISP30:
-                A = (int)rela.Addend;
+                A = (int)rela.Addend!.Value;
                 P = ~P + 1;
                 sh = 2;
                 break;
             case SparcRt.R_SPARC_RELATIVE:
-                A = (int)rela.Addend;
+                A = (int)rela.Addend!.Value;
                 B = program.SegmentMap.BaseAddress.ToUInt32();
                 break;
             case SparcRt.R_SPARC_COPY:

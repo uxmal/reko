@@ -160,7 +160,7 @@ namespace Reko.Environments.Switch
             return new ElfSymbol(name)
             {
                 Type = (ElfSymbolType) (sym.st_info & 0xF),
-                Bind = sym.st_info >> 4,
+                Bind = (ElfSymbolBinding) (sym.st_info >> 4),
                 SectionIndex = sym.st_shndx,
                 Value = sym.st_value,
                 Size = sym.st_size,

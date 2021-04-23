@@ -102,4 +102,15 @@ namespace Reko.ImageLoaders.Elf
         STT_LOPROC = 13,
         STT_HIPROC = 15,
     }
+
+    public enum ElfSymbolBinding
+    {
+        STB_LOCAL = 0,  // Not visible outside object file where defined
+        STB_GLOBAL = 1, // Visible to all object files. Multiple definitions cause errors.
+                        // Force extraction of defining object from archive file.
+        STB_WEAK  = 2,  // Visible to all object files. Ignored if
+                        // STB_GLOBAL with same name found. Do
+                        // not force extraction of defining object from
+                        // archive file. Value is 0 if undefined
+    }
 }

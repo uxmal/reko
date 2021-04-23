@@ -103,7 +103,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             22  R_ARM_JUMP_SLOT Dynamic     Data            (S + A) | T 
             23  R_ARM_RELATIVE Dynamic      Data            B(S) + A  [Note: see Table 4-18]
             */
-            var A = rela.Addend;
+            var A = rela.Addend.HasValue ? rela.Addend.Value : 0;
             uint S = (uint) symbol.Value;
             uint mask = ~0u;
             int sh = 0;

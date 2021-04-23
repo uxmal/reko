@@ -35,6 +35,13 @@ namespace Reko.ImageLoaders.Elf
 {
     public abstract class ElfLoader
     {
+        // Object file type
+        public const short ET_NONE = 0;             // No file type
+        public const short ET_REL =  1;             // Relocatable file
+        public const short ET_EXEC = 2;             // Executable file
+        public const short ET_DYN =  3;             // Shared object file
+        public const short ET_CORE = 4;             // Core file
+
         public const int ELFOSABI_NONE = 0x00;      // No specific ABI specified.
         public const int ELFOSABI_HPUX = 1;         // Hewlett-Packard HP-UX 
         public const int ELFOSABI_NETBSD = 2;       // NetBSD 
@@ -144,7 +151,7 @@ namespace Reko.ImageLoaders.Elf
 
         protected abstract int GetSectionNameOffset(List<ElfSection> sections, uint idxString);
 
-        public abstract void Dump(TextWriter writer);
+        public abstract void Dump(Address addrLoad, TextWriter writer);
 
         public abstract Address? GetEntryPointAddress(Address addrBase);
 
@@ -303,7 +310,7 @@ namespace Reko.ImageLoaders.Elf
             // an offset from the section's virtual address. 
             // If this is an executable file, the symbol value is
             // the virtual address.
-            var addr = isExecutable
+            var addr = isExecutable || sym.SectionIndex == 0
                 ? platform!.MakeAddressFromLinear(sym.Value, true)
                 : Sections[(int) sym.SectionIndex].Address! + sym.Value;
 
@@ -415,7 +422,7 @@ namespace Reko.ImageLoaders.Elf
             this.platform = platform;
             this.rawImage = rawImage;
             var addrPreferred = ComputeBaseAddress(platform);
-            Dump();
+            Dump(addrPreferred);
             this.segmentMap = LoadImageBytes(platform, rawImage, addrPreferred);
             LoadDynamicSegment();
             var program = new Program(segmentMap, platform.Architecture, platform);
@@ -615,6 +622,17 @@ namespace Reko.ImageLoaders.Elf
             return ReadAsciiString(offset);
         }
 
+        protected string GetBindingName(ElfSymbolBinding binding)
+        {
+            return binding switch
+            {
+                ElfSymbolBinding.STB_GLOBAL => "glbl",
+                ElfSymbolBinding.STB_LOCAL => "locl",
+                ElfSymbolBinding.STB_WEAK => "weak",
+                _ => binding.ToString("X4")
+            };
+        }
+
         public string GetSectionName(ushort st_shndx)
         {
             Debug.Assert(Sections != null);
@@ -652,12 +670,12 @@ namespace Reko.ImageLoaders.Elf
         }
 
         [Conditional("DEBUG")]
-        public void Dump()
+        public void Dump(Address addrLoad)
         {
             if (ElfImageLoader.trace.TraceVerbose)
             {
                 var sw = new StringWriter();
-                Dump(sw);
+                Dump(addrLoad, sw);
                 Debug.Print(sw.ToString());
             }
         }

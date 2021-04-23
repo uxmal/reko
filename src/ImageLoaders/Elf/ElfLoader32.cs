@@ -197,7 +197,7 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public override void Dump(TextWriter writer)
+        public override void Dump(Address addrLoad, TextWriter writer)
         {
             writer.WriteLine("Entry: {0:X}", Header.e_entry);
             writer.WriteLine("Sections:");
@@ -230,7 +230,7 @@ namespace Reko.ImageLoaders.Elf
                     ph.p_flags,
                     ph.p_align);
             }
-            writer.WriteLine("Base address: {0:X8}", ComputeBaseAddress(platform!));
+            writer.WriteLine("Base address: {0:X8}", addrLoad);
             writer.WriteLine();
             writer.WriteLine("Dependencies");
             foreach (var dep in GetDependencyList(rawImage))
@@ -519,7 +519,7 @@ namespace Reko.ImageLoaders.Elf
                 return new ElfSymbol(name)
                 {
                     Type = (ElfSymbolType) (sym.st_info & 0xF),
-                    Bind = sym.st_info >> 4,
+                    Bind = (ElfSymbolBinding) (sym.st_info >> 4),
                     SectionIndex = sym.st_shndx,
                     Value = sym.st_value,
                     Size = sym.st_size,
@@ -543,11 +543,12 @@ namespace Reko.ImageLoaders.Elf
                     continue;
                 }
                 var symName = RemoveModuleSuffix(ReadAsciiString(stringtableSection.FileOffset + sym.st_name));
-                ElfImageLoader.trace.Verbose("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
+                ElfImageLoader.trace.Verbose("  {0,3} {1,-25} {2,-12} {3,6} {4} {5,-15} {6:X8} {7,9}",
                     i,
                     string.IsNullOrWhiteSpace(symName) ? "<empty>" : symName,
                     (ElfSymbolType) (sym.st_info & 0xF),
                     sym.st_shndx,
+                    GetBindingName((ElfSymbolBinding) (sym.st_info >> 4)),
                     GetSectionName(sym.st_shndx),
                     sym.st_value,
                     sym.st_size);

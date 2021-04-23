@@ -321,7 +321,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     if (elfSym is null)
                         continue;
 
-                    ElfImageLoader.trace.Verbose("  {0}: symbol {1} type: {2} addend: {3:X}", relocation, elfSym, relocator.RelocationTypeToString((byte) relocation.Info) ?? "?", relocation.Addend);
+                    ElfImageLoader.trace.Verbose("  {0}: symbol {1} type: {2} addend: {3}", relocation, elfSym, relocator.RelocationTypeToString((byte) relocation.Info) ?? "?", relocation.Addend.HasValue ? relocation.Addend.Value.ToString("X") : "-None-");
                     var (addrRelocation, newSym) = relocator.RelocateEntry(program, elfSym, null, relocation);
                     if (addrRelocation != null)
                     {
@@ -525,8 +525,12 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
             DumpRela64(loader);
             var syms = RelocateDynamicSymbols(program);
-            if (syms != null)
+            if (syms.Count > 0)
                 return;
+
+            DumpRel64(loader);
+            DumpRela64(loader);
+
             foreach (var relSection in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
             {
                 var symbols = loader.Symbols[relSection.LinkedSection!.FileOffset];
@@ -537,6 +541,43 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     var rela = loader.LoadRelaEntry(rdr);
                     var sym = symbols[rela.SymbolIndex];
                     RelocateEntry(program, sym, referringSection, rela);
+                }
+            }
+            foreach (var relSection in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_REL))
+            {
+                var symbols = loader.Symbols[relSection.LinkedSection!.FileOffset];
+                var referringSection = relSection.RelocatedSection;
+                var rdr = loader.CreateReader(relSection.FileOffset);
+                for (uint i = 0; i < relSection.EntryCount(); ++i)
+                {
+                    var rela = loader.LoadRelEntry(rdr);
+                    var sym = symbols[rela.SymbolIndex];
+                    RelocateEntry(program, sym, referringSection, rela);
+                }
+            }
+        }
+
+
+        [Conditional("DEBUG")]
+        protected void DumpRel64(ElfLoader64 loader)
+        {
+            foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_REL))
+            {
+                ElfImageLoader.trace.Inform("REL: offset {0:X} symbol section {1}, relocating in section {2}",
+                    section.FileOffset,
+                    section.LinkedSection?.Name ?? "?",
+                    section.RelocatedSection?.Name ?? "?");
+                loader.Symbols.TryGetValue(section.LinkedSection!.FileOffset, out var symbols);
+                var rdr = loader.CreateReader(section.FileOffset);
+                for (uint i = 0; i < section.EntryCount(); ++i)
+                {
+                    var rel = Elf64_Rel.Read(rdr);
+                    ElfImageLoader.trace.Verbose(
+                        "  off:{0:X16} type:{1,-16} {3,3} {2}",
+                        rel.r_offset,
+                        RelocationTypeToString((uint)rel.r_info & 0xFF) ?? "?",
+                        symbols != null ? symbols[(int) (rel.r_info >> 32)].Name : "<nosym>",
+                        (int) (rel.r_info >> 32));
                 }
             }
         }

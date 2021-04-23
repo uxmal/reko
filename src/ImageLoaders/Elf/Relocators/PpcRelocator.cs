@@ -98,7 +98,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             if (loader.Sections.Count <= sym.SectionIndex)
                 return (null, null);
             uint S = (uint)sym.Value;
-            uint A = (uint)rela.Addend;
+            uint A = (uint)rela.Addend!.Value;  //$REVIEW: PowerPC ELF Spec
             uint P = (uint)rela.Offset;
             var addr = Address.Ptr32(P);
             uint PP = P;
@@ -178,7 +178,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 return (null, null);
             }
             ulong S = (ulong) symbol.Value;
-            ulong A = (ulong) rela.Addend;
+            ulong A = (ulong) rela.Addend!.Value;
             ulong P = (ulong) rela.Offset;
             ulong B = program.SegmentMap.BaseAddress.ToLinear();
             var addr = Address.Ptr64(P);
