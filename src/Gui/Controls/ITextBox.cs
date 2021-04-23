@@ -34,5 +34,7 @@ namespace Reko.Gui.Controls
         string Text { get; set; }
 
         void SelectAll();
+
+        void ScrollToEnd();
     }
 }

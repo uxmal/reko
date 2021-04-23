@@ -42,6 +42,7 @@ namespace Reko.Gui.Forms
             form.Invoke(new Action(() =>
             {
                 form.OutputTextBox.Text += value;
+                form.OutputTextBox.ScrollToEnd();
             }));
         }
     }
