@@ -520,8 +520,10 @@ namespace Reko.Analysis
             }
             catch (Exception ex)
             {
+                var nl = Environment.NewLine;
+                var banner = $"// {proc.Name} ==========={nl}{ex.Message}{nl}{ex.StackTrace}{nl}{nl}";
                 services.GetService<ITestGenerationService>()?
-                    .ReportProcedure($"analysis_{99:00}_crash.txt", $"// {proc.Name} ===========", proc);
+                    .ReportProcedure($"analysis_{99:00}_crash.txt", banner, proc);
                 throw;
             }
         }
@@ -557,7 +559,8 @@ namespace Reko.Analysis
         [Conditional("DEBUG")]
         public void DumpWatchedProcedure(string phase, string caption, Procedure proc)
         {
-            if (program.User.DebugTraceProcedures.Contains(proc.Name))
+            if (program.User.DebugTraceProcedures.Contains(proc.Name) ||
+                proc.Name == "usb_device_info")
             {
                 Debug.Print("// {0}: {1} ==================", proc.Name, caption);
                 //MockGenerator.DumpMethod(proc);
