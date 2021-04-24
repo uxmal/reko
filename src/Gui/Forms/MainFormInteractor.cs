@@ -152,6 +152,9 @@ namespace Reko.Gui.Forms
             var codeViewSvc = svcFactory.CreateCodeViewerService();
             sc.AddService<ICodeViewerService>(codeViewSvc);
 
+            var textEditorSvc = svcFactory.CreateTextFileEditorService();
+            sc.AddService<ITextFileEditorService>(textEditorSvc);
+
             var segmentViewSvc = svcFactory.CreateImageSegmentService();
             sc.AddService(typeof(ImageSegmentService), segmentViewSvc);
 

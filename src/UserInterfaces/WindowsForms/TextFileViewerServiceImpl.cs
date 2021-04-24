@@ -20,35 +20,28 @@
 
 #nullable enable
 
-using Reko.Core;
-using Reko.Core.Scripts;
+using Reko.Gui;
+using Reko.Gui.Controls;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
-namespace Reko.Gui.Design
+namespace Reko.UserInterfaces.WindowsForms
 {
-    public class ScriptFileDesigner : TreeNodeDesigner
+    public class TextFileViewerServiceImpl : ViewService, ITextFileEditorService
     {
-        private ScriptFile? scriptFile;
-
-        public override void Initialize(object obj)
+        public TextFileViewerServiceImpl(IServiceProvider sp) : base(sp)
         {
-            base.Initialize(obj);
-            this.scriptFile = (ScriptFile) obj;
-            SetTreeNodeProperties(scriptFile);
         }
 
-        public override void DoDefaultAction()
+        public void DisplayFile(string fileName)
         {
-            var editorSvc = Services!.RequireService<ITextFileEditorService>();
-            editorSvc.DisplayFile(scriptFile!.Filename);
-        }
-
-        public void SetTreeNodeProperties(ScriptFile scriptFile)
-        {
-            TreeNode!.Text = Path.GetFileName(scriptFile.Filename);
-            var ext = Path.GetExtension(scriptFile.Filename).ToLower();
-            TreeNode.ImageName = $"Script{ext}.ico";
+            var pane = new TextFileEditorInteractor(fileName);
+            var windowType = typeof(TextFileEditorInteractor).Name;
+            var title = Path.GetFileName(fileName);
+            var frame = ShowWindow(windowType, title, fileName, pane);
+            ((TextFileEditorInteractor) frame.Pane).DisplayFile();
         }
     }
 }
