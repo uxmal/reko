@@ -398,6 +398,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 addr = Address.Ptr64(rel.Offset);
                 P = 0;
             }
+            if (addr.ToLinear() == 0)
+                return (addr, symbol);
             var S = symbol.Value;
             ulong PP = P;
             var relR = program.CreateImageReader(program.Architecture, addr);

@@ -28,7 +28,8 @@ namespace Reko.Gui.Forms
     /// <summary>
     /// Redirect script output to text box.
     /// </summary>
-    public class ScriptOutputInteractor : OutputWriter
+    [Obsolete("", true)]
+    public class ScriptOutputInteractor 
     {
         private readonly IMainForm form;
 
@@ -37,7 +38,7 @@ namespace Reko.Gui.Forms
             this.form = form;
         }
 
-        public override void Write(char value)
+        public  void Write(char value)
         {
             form.Invoke(new Action(() =>
             {

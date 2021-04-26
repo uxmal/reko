@@ -27,7 +27,7 @@ namespace Reko.Core.Scripts
     /// <summary>
     /// Base class for redirection of script output.
     /// </summary>
-    public abstract class OutputWriter : TextWriter
+    public abstract class XOutputWriter : TextWriter
     {
         public override Encoding Encoding => Encoding.Default;
     }

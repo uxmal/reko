@@ -66,5 +66,6 @@ namespace Reko.Gui
         IDecompiledFileService CreateDecompiledFileService();
         ITestGenerationService CreateTestGenerationService();
         IUserEventService CreateUserEventService();
+        IOutputService CreateOutputService();
     }
 }

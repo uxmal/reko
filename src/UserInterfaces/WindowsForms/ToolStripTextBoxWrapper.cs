@@ -55,6 +55,9 @@ namespace Reko.UserInterfaces.WindowsForms
             textbox.ScrollToCaret();
         }
 
+        public void BringToFront()
+        { }
+
         public void Focus()
         {
             textbox.Focus();

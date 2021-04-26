@@ -49,7 +49,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             docWindows = new DocumentWindowCollection(this);
             ProjectBrowser = new TreeViewWrapper(treeBrowser);
             ProjectBrowserTab = new TabPageWrapper(tabProject);
-            OutputTextBox = new TextBoxWrapper(outputTextBox);
 
             this.Load += MainForm_Load;
             this.ProcessCommandKey += this.MainForm_ProcessCommandKey;
@@ -234,6 +233,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             get { return projectToolBar; }
         }
+
+        public ToolStripComboBox OutputWindowSources => ddlOutputWindowSources;
+
+        public Panel OutputWindowPanel => this.outputWindowPanel;
 
         public Gui.DialogResult ShowDialog(CommonDialog dialog)
         {

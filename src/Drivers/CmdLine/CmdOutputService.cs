@@ -19,18 +19,25 @@
 #endregion
 
 using Reko.Core.Scripts;
+using Reko.Core.Services;
 using System;
+using System.IO;
 
 namespace Reko.CmdLine
 {
     /// <summary>
     /// Redirect script output to console.
     /// </summary>
-    public class CmdOutputWriter : OutputWriter
+    public class CmdOutputService : IOutputService
     {
-        public override void Write(char value)
+        public TextWriter GetTextWriter(string sourceName)
         {
-            Console.Out.Write(value);
+            return Console.Out;
+        }
+
+        public TextWriter RegisterOutputSource(string sourceName)
+        {
+            return Console.Out;
         }
     }
 }

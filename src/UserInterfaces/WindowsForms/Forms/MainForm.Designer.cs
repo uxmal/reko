@@ -46,7 +46,9 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.callHierarchyView = new Reko.UserInterfaces.WindowsForms.Forms.CallHierarchyView();
             this.tabConsole = new System.Windows.Forms.TabPage();
             this.tabOutput = new System.Windows.Forms.TabPage();
-            this.outputTextBox = new System.Windows.Forms.TextBox();
+            this.outputWindowPanel = new System.Windows.Forms.Panel();
+            this.outputWindowToolstrip = new System.Windows.Forms.ToolStrip();
+            this.ddlOutputWindowSources = new System.Windows.Forms.ToolStripComboBox();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
             this.splitContainerMain = new System.Windows.Forms.SplitContainer();
@@ -66,6 +68,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.tabFindResults.SuspendLayout();
             this.tabCallHierarchy.SuspendLayout();
             this.tabOutput.SuspendLayout();
+            this.outputWindowToolstrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
             this.splitContainerMain.Panel1.SuspendLayout();
             this.splitContainerMain.Panel2.SuspendLayout();
@@ -84,16 +87,16 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel});
-            this.statusStrip.Location = new System.Drawing.Point(0, 798);
+            this.statusStrip.Location = new System.Drawing.Point(0, 593);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStrip.Size = new System.Drawing.Size(1045, 22);
+            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 17, 0);
+            this.statusStrip.Size = new System.Drawing.Size(914, 22);
             this.statusStrip.TabIndex = 2;
             // 
             // toolStripStatusLabel
             // 
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 16);
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
             // treeBrowser
             // 
@@ -101,11 +104,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.treeBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeBrowser.ImageIndex = 0;
             this.treeBrowser.ImageList = this.imlBrowser;
-            this.treeBrowser.Location = new System.Drawing.Point(4, 5);
-            this.treeBrowser.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.treeBrowser.Location = new System.Drawing.Point(4, 4);
+            this.treeBrowser.Margin = new System.Windows.Forms.Padding(4);
             this.treeBrowser.Name = "treeBrowser";
             this.treeBrowser.SelectedImageIndex = 0;
-            this.treeBrowser.Size = new System.Drawing.Size(221, 486);
+            this.treeBrowser.Size = new System.Drawing.Size(191, 357);
             this.treeBrowser.TabIndex = 0;
             // 
             // imlBrowser
@@ -138,20 +141,20 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.tabControl1.Controls.Add(this.tabOutput);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1045, 263);
+            this.tabControl1.Size = new System.Drawing.Size(914, 196);
             this.tabControl1.TabIndex = 5;
             // 
             // tabDiagnostics
             // 
             this.tabDiagnostics.Controls.Add(this.listDiagnostics);
-            this.tabDiagnostics.Location = new System.Drawing.Point(4, 29);
-            this.tabDiagnostics.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabDiagnostics.Location = new System.Drawing.Point(4, 24);
+            this.tabDiagnostics.Margin = new System.Windows.Forms.Padding(4);
             this.tabDiagnostics.Name = "tabDiagnostics";
-            this.tabDiagnostics.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabDiagnostics.Size = new System.Drawing.Size(1037, 230);
+            this.tabDiagnostics.Padding = new System.Windows.Forms.Padding(4);
+            this.tabDiagnostics.Size = new System.Drawing.Size(906, 168);
             this.tabDiagnostics.TabIndex = 1;
             this.tabDiagnostics.Text = "Diagnostics";
             this.tabDiagnostics.UseVisualStyleBackColor = true;
@@ -164,10 +167,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.listDiagnostics.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listDiagnostics.FullRowSelect = true;
             this.listDiagnostics.HideSelection = false;
-            this.listDiagnostics.Location = new System.Drawing.Point(4, 5);
-            this.listDiagnostics.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.listDiagnostics.Location = new System.Drawing.Point(4, 4);
+            this.listDiagnostics.Margin = new System.Windows.Forms.Padding(4);
             this.listDiagnostics.Name = "listDiagnostics";
-            this.listDiagnostics.Size = new System.Drawing.Size(1029, 220);
+            this.listDiagnostics.Size = new System.Drawing.Size(898, 160);
             this.listDiagnostics.SmallImageList = this.imageList;
             this.listDiagnostics.TabIndex = 2;
             this.listDiagnostics.UseCompatibleStateImageBehavior = false;
@@ -203,11 +206,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // tabFindResults
             // 
             this.tabFindResults.Controls.Add(this.listFindResults);
-            this.tabFindResults.Location = new System.Drawing.Point(4, 29);
-            this.tabFindResults.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabFindResults.Location = new System.Drawing.Point(4, 24);
+            this.tabFindResults.Margin = new System.Windows.Forms.Padding(4);
             this.tabFindResults.Name = "tabFindResults";
-            this.tabFindResults.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabFindResults.Size = new System.Drawing.Size(1037, 230);
+            this.tabFindResults.Padding = new System.Windows.Forms.Padding(4);
+            this.tabFindResults.Size = new System.Drawing.Size(906, 168);
             this.tabFindResults.TabIndex = 0;
             this.tabFindResults.Text = "Find results";
             this.tabFindResults.UseVisualStyleBackColor = true;
@@ -217,20 +220,20 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.listFindResults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listFindResults.FullRowSelect = true;
             this.listFindResults.HideSelection = false;
-            this.listFindResults.Location = new System.Drawing.Point(4, 5);
-            this.listFindResults.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.listFindResults.Location = new System.Drawing.Point(4, 4);
+            this.listFindResults.Margin = new System.Windows.Forms.Padding(4);
             this.listFindResults.Name = "listFindResults";
-            this.listFindResults.Size = new System.Drawing.Size(1029, 220);
+            this.listFindResults.Size = new System.Drawing.Size(898, 160);
             this.listFindResults.TabIndex = 0;
             this.listFindResults.UseCompatibleStateImageBehavior = false;
             // 
             // tabCallHierarchy
             // 
             this.tabCallHierarchy.Controls.Add(this.callHierarchyView);
-            this.tabCallHierarchy.Location = new System.Drawing.Point(4, 29);
-            this.tabCallHierarchy.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabCallHierarchy.Location = new System.Drawing.Point(4, 24);
+            this.tabCallHierarchy.Margin = new System.Windows.Forms.Padding(4);
             this.tabCallHierarchy.Name = "tabCallHierarchy";
-            this.tabCallHierarchy.Size = new System.Drawing.Size(1037, 230);
+            this.tabCallHierarchy.Size = new System.Drawing.Size(906, 168);
             this.tabCallHierarchy.TabIndex = 3;
             this.tabCallHierarchy.Text = "Call hierarchy";
             this.tabCallHierarchy.UseVisualStyleBackColor = true;
@@ -239,51 +242,64 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // 
             this.callHierarchyView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.callHierarchyView.Location = new System.Drawing.Point(0, 0);
-            this.callHierarchyView.Margin = new System.Windows.Forms.Padding(5, 8, 5, 8);
+            this.callHierarchyView.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.callHierarchyView.Name = "callHierarchyView";
             this.callHierarchyView.Services = null;
-            this.callHierarchyView.Size = new System.Drawing.Size(1037, 230);
+            this.callHierarchyView.Size = new System.Drawing.Size(906, 168);
             this.callHierarchyView.TabIndex = 0;
             // 
             // tabConsole
             // 
-            this.tabConsole.Location = new System.Drawing.Point(4, 29);
-            this.tabConsole.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabConsole.Location = new System.Drawing.Point(4, 24);
+            this.tabConsole.Margin = new System.Windows.Forms.Padding(4);
             this.tabConsole.Name = "tabConsole";
-            this.tabConsole.Size = new System.Drawing.Size(1037, 230);
+            this.tabConsole.Size = new System.Drawing.Size(906, 168);
             this.tabConsole.TabIndex = 2;
             this.tabConsole.Text = "Console";
             this.tabConsole.UseVisualStyleBackColor = true;
             // 
             // tabOutput
             // 
-            this.tabOutput.Controls.Add(this.outputTextBox);
-            this.tabOutput.Location = new System.Drawing.Point(4, 29);
-            this.tabOutput.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabOutput.Controls.Add(this.outputWindowPanel);
+            this.tabOutput.Controls.Add(this.outputWindowToolstrip);
+            this.tabOutput.Location = new System.Drawing.Point(4, 24);
+            this.tabOutput.Margin = new System.Windows.Forms.Padding(4);
             this.tabOutput.Name = "tabOutput";
-            this.tabOutput.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabOutput.Size = new System.Drawing.Size(1037, 230);
+            this.tabOutput.Padding = new System.Windows.Forms.Padding(4);
+            this.tabOutput.Size = new System.Drawing.Size(906, 168);
             this.tabOutput.TabIndex = 4;
             this.tabOutput.Text = "Output";
             this.tabOutput.UseVisualStyleBackColor = true;
             // 
-            // outputTextBox
+            // outputWindowPanel
             // 
-            this.outputTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.outputTextBox.Location = new System.Drawing.Point(4, 5);
-            this.outputTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.outputTextBox.Multiline = true;
-            this.outputTextBox.Name = "outputTextBox";
-            this.outputTextBox.ReadOnly = true;
-            this.outputTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.outputTextBox.Size = new System.Drawing.Size(1029, 220);
-            this.outputTextBox.TabIndex = 0;
+            this.outputWindowPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.outputWindowPanel.Location = new System.Drawing.Point(4, 29);
+            this.outputWindowPanel.Name = "outputWindowPanel";
+            this.outputWindowPanel.Size = new System.Drawing.Size(898, 135);
+            this.outputWindowPanel.TabIndex = 2;
+            // 
+            // outputWindowToolstrip
+            // 
+            this.outputWindowToolstrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ddlOutputWindowSources});
+            this.outputWindowToolstrip.Location = new System.Drawing.Point(4, 4);
+            this.outputWindowToolstrip.Name = "outputWindowToolstrip";
+            this.outputWindowToolstrip.Size = new System.Drawing.Size(898, 25);
+            this.outputWindowToolstrip.TabIndex = 1;
+            this.outputWindowToolstrip.Text = "toolStrip1";
+            // 
+            // ddlOutputWindowSources
+            // 
+            this.ddlOutputWindowSources.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlOutputWindowSources.Name = "ddlOutputWindowSources";
+            this.ddlOutputWindowSources.Size = new System.Drawing.Size(121, 25);
             // 
             // splitContainerMain
             // 
             this.splitContainerMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainerMain.Location = new System.Drawing.Point(0, 0);
-            this.splitContainerMain.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.splitContainerMain.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainerMain.Name = "splitContainerMain";
             this.splitContainerMain.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -294,16 +310,15 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // splitContainerMain.Panel2
             // 
             this.splitContainerMain.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainerMain.Size = new System.Drawing.Size(1045, 798);
-            this.splitContainerMain.SplitterDistance = 529;
-            this.splitContainerMain.SplitterWidth = 6;
+            this.splitContainerMain.Size = new System.Drawing.Size(914, 593);
+            this.splitContainerMain.SplitterDistance = 393;
             this.splitContainerMain.TabIndex = 9;
             // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
@@ -313,9 +328,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.tabDocuments);
-            this.splitContainer2.Size = new System.Drawing.Size(1045, 529);
-            this.splitContainer2.SplitterDistance = 237;
-            this.splitContainer2.SplitterWidth = 5;
+            this.splitContainer2.Size = new System.Drawing.Size(914, 393);
+            this.splitContainer2.SplitterDistance = 207;
             this.splitContainer2.TabIndex = 0;
             // 
             // tabControl2
@@ -324,20 +338,20 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.tabControl2.Controls.Add(this.tabProcedures);
             this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
-            this.tabControl2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabControl2.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(237, 529);
+            this.tabControl2.Size = new System.Drawing.Size(207, 393);
             this.tabControl2.TabIndex = 1;
             // 
             // tabProject
             // 
             this.tabProject.Controls.Add(this.treeBrowser);
-            this.tabProject.Location = new System.Drawing.Point(4, 29);
-            this.tabProject.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabProject.Location = new System.Drawing.Point(4, 24);
+            this.tabProject.Margin = new System.Windows.Forms.Padding(4);
             this.tabProject.Name = "tabProject";
-            this.tabProject.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabProject.Size = new System.Drawing.Size(229, 496);
+            this.tabProject.Padding = new System.Windows.Forms.Padding(4);
+            this.tabProject.Size = new System.Drawing.Size(199, 365);
             this.tabProject.TabIndex = 0;
             this.tabProject.Text = "Project";
             this.tabProject.UseVisualStyleBackColor = true;
@@ -346,11 +360,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             // 
             this.tabProcedures.Controls.Add(this.listProcedures);
             this.tabProcedures.Controls.Add(this.txtProcedureFilter);
-            this.tabProcedures.Location = new System.Drawing.Point(4, 29);
-            this.tabProcedures.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabProcedures.Location = new System.Drawing.Point(4, 24);
+            this.tabProcedures.Margin = new System.Windows.Forms.Padding(4);
             this.tabProcedures.Name = "tabProcedures";
-            this.tabProcedures.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tabProcedures.Size = new System.Drawing.Size(229, 496);
+            this.tabProcedures.Padding = new System.Windows.Forms.Padding(4);
+            this.tabProcedures.Size = new System.Drawing.Size(199, 365);
             this.tabProcedures.TabIndex = 1;
             this.tabProcedures.Text = "Procedures";
             this.tabProcedures.UseVisualStyleBackColor = true;
@@ -366,10 +380,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.colProcSegment});
             this.listProcedures.FullRowSelect = true;
             this.listProcedures.HideSelection = false;
-            this.listProcedures.Location = new System.Drawing.Point(-263, 40);
-            this.listProcedures.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.listProcedures.Location = new System.Drawing.Point(-230, 30);
+            this.listProcedures.Margin = new System.Windows.Forms.Padding(4);
             this.listProcedures.Name = "listProcedures";
-            this.listProcedures.Size = new System.Drawing.Size(442, 439);
+            this.listProcedures.Size = new System.Drawing.Size(387, 330);
             this.listProcedures.TabIndex = 1;
             this.listProcedures.UseCompatibleStateImageBehavior = false;
             this.listProcedures.View = System.Windows.Forms.View.Details;
@@ -393,10 +407,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.txtProcedureFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtProcedureFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtProcedureFilter.Location = new System.Drawing.Point(-263, 0);
-            this.txtProcedureFilter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtProcedureFilter.Location = new System.Drawing.Point(-230, 0);
+            this.txtProcedureFilter.Margin = new System.Windows.Forms.Padding(4);
             this.txtProcedureFilter.Name = "txtProcedureFilter";
-            this.txtProcedureFilter.Size = new System.Drawing.Size(443, 27);
+            this.txtProcedureFilter.Size = new System.Drawing.Size(388, 23);
             this.txtProcedureFilter.TabIndex = 0;
             // 
             // tabDocuments
@@ -404,23 +418,23 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.tabDocuments.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabDocuments.ImageList = this.imageList;
             this.tabDocuments.Location = new System.Drawing.Point(0, 0);
-            this.tabDocuments.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tabDocuments.Margin = new System.Windows.Forms.Padding(4);
             this.tabDocuments.Name = "tabDocuments";
             this.tabDocuments.SelectedIndex = 0;
-            this.tabDocuments.Size = new System.Drawing.Size(803, 529);
+            this.tabDocuments.Size = new System.Drawing.Size(703, 393);
             this.tabDocuments.TabIndex = 0;
             // 
             // MainForm
             // 
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1045, 820);
+            this.ClientSize = new System.Drawing.Size(914, 615);
             this.Controls.Add(this.splitContainerMain);
             this.Controls.Add(this.statusStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "Reko Decompiler";
             this.statusStrip.ResumeLayout(false);
@@ -431,6 +445,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.tabCallHierarchy.ResumeLayout(false);
             this.tabOutput.ResumeLayout(false);
             this.tabOutput.PerformLayout();
+            this.outputWindowToolstrip.ResumeLayout(false);
+            this.outputWindowToolstrip.PerformLayout();
             this.splitContainerMain.Panel1.ResumeLayout(false);
             this.splitContainerMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).EndInit();
@@ -477,8 +493,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private System.Windows.Forms.ColumnHeader colProcSegment;
         private System.Windows.Forms.TabPage tabCallHierarchy;
         private CallHierarchyView callHierarchyView;
-        private System.Windows.Forms.TextBox outputTextBox;
         private System.Windows.Forms.TabPage tabOutput;
+        private System.Windows.Forms.ToolStrip outputWindowToolstrip;
+        private System.Windows.Forms.ToolStripComboBox ddlOutputWindowSources;
+        private System.Windows.Forms.Panel outputWindowPanel;
     }
 }
 

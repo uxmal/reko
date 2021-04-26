@@ -217,5 +217,12 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             return new UserEventService();
         }
+
+        public IOutputService CreateOutputService()
+        {
+            var outputSvc = new OutputWindowInteractor();
+            outputSvc.Attach(mainForm.OutputWindowSources, mainForm.OutputWindowPanel);
+            return outputSvc;
+        }
     }
 }

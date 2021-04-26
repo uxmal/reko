@@ -34,7 +34,7 @@ namespace Reko.Scripts.Python
     public class PythonModule : ScriptFile
     {
         private readonly ScriptEngine engine;
-        private readonly OutputWriter outputWriter;
+        private readonly TextWriter outputWriter;
         private readonly PythonAPI pythonAPI;
         private readonly DecompilerEventListener eventListener;
         private readonly RekoEventsAPI eventsAPI;
@@ -45,7 +45,8 @@ namespace Reko.Scripts.Python
         {
             this.eventListener = services.RequireService<DecompilerEventListener>();
             this.engine = IronPython.Hosting.Python.CreateEngine();
-            this.outputWriter = services.RequireService<OutputWriter>();
+            var outputService = services.RequireService<IOutputService>();
+            this.outputWriter = outputService.RegisterOutputSource("Scripting");
             RedirectConsoleOutput(outputWriter, engine);
             this.pythonAPI = new PythonAPI(services, engine);
             var stream = new MemoryStream(bytes);
@@ -106,7 +107,7 @@ namespace Reko.Scripts.Python
         }
 
         private static void DumpPythonStack(
-            OutputWriter writer, Exception ex, ScriptEngine engine)
+            TextWriter writer, Exception ex, ScriptEngine engine)
         {
             var exceptionOperations = engine.GetService<ExceptionOperations>();
             // $TODO: Allow user to go to failed line. It can be obtained by
@@ -116,7 +117,7 @@ namespace Reko.Scripts.Python
         }
 
         private static void RedirectConsoleOutput(
-            OutputWriter writer, ScriptEngine engine)
+            TextWriter writer, ScriptEngine engine)
         {
             var stream = new MemoryStream();
             engine.Runtime.IO.SetOutput(stream, writer);

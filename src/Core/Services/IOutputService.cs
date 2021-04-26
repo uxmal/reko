@@ -19,20 +19,19 @@
 #endregion
 
 using System;
-using System.Drawing;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
-namespace Reko.Gui.Controls
+namespace Reko.Core.Services
 {
-    public interface IControl
+    /// <summary>
+    /// Represents the capability of displaying output messages from within
+    /// the Reko environment.
+    /// </summary>
+    public interface IOutputService
     {
-        event EventHandler GotFocus;
-        event EventHandler LostFocus;
-
-        Color ForeColor { get; set; }
-        Color BackColor { get; set; }
-        bool Enabled { get; set; }
-
-        void BringToFront();
-        void Focus();
+        public TextWriter RegisterOutputSource(string sourceName);
+        public TextWriter GetTextWriter(string sourceName);
     }
 }

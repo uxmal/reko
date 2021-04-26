@@ -62,7 +62,7 @@ namespace Reko.CmdLine
             services.AddService<IDecompiledFileService>(new DecompiledFileService(fsSvc, listener));
             services.AddService<IPluginLoaderService>(new PluginLoaderService());
             services.AddService<ITestGenerationService>(new TestGenerationService(services));
-            services.AddService<OutputWriter>(new CmdOutputWriter());
+            services.AddService<IOutputService>(new CmdOutputService());
             var ldr = new Loader(services);
             var decompiler = new Decompiler(ldr, services);
             dcSvc.Decompiler = decompiler;

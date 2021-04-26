@@ -213,8 +213,8 @@ namespace Reko.Gui.Forms
             var userEventSvc = svcFactory.CreateUserEventService();
             sc.AddService<IUserEventService>(userEventSvc);
 
-            var outputWriter = new ScriptOutputInteractor(form);
-            sc.AddService<OutputWriter>(outputWriter);
+            var outputSvc = svcFactory.CreateOutputService();
+            sc.AddService<IOutputService>(outputSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -239,12 +239,6 @@ namespace Reko.Gui.Forms
             get { return form; }
         }
 
-        //$REFACTOR: only seems to be opened in unit tests?
-        public void OpenBinary(string file)
-        {
-            OpenBinary(file, (f) => pageInitial.OpenBinary(f), f => OpenBinaryAs(f));
-        }
-
         /// <summary>
         /// Master function for opening a new project.
         /// </summary>
@@ -267,7 +261,7 @@ namespace Reko.Gui.Forms
             catch (Exception ex)
             {
                 Debug.Print("Caught exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
-                uiSvc.ShowError(ex, "Couldn't open file '{0}'.", file);
+                uiSvc.ShowError(ex, "Couldn't open file '{0}'. {1}", file, ex.Message);
             }
             finally
             {
