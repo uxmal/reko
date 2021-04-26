@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2021 John Källén.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,19 @@
  */
 #endregion
 
+using Reko.Core.Scripts;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Reko.Gui.Controls
+namespace Reko.CmdLine
 {
-    public interface ITextBox : IControl
+    /// <summary>
+    /// Redirect script output to console.
+    /// </summary>
+    public class CmdOutputWriter : OutputWriter
     {
-        event EventHandler TextChanged;
-        event EventHandler<KeyEventArgs> KeyDown;
-        event EventHandler<KeyEventArgs> KeyUp;
-
-        string Text { get; set; }
-
-        void SelectAll();
-
-        void ScrollToEnd();
+        public override void Write(char value)
+        {
+            Console.Out.Write(value);
+        }
     }
 }

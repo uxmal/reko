@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2021 John Källén.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,32 @@
  */
 #endregion
 
+#nullable enable
+
+using Reko.Core.Scripts;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Reko.Gui.Controls
+namespace Reko.Gui.Forms
 {
-    public interface ITextBox : IControl
+    /// <summary>
+    /// Redirect script output to text box.
+    /// </summary>
+    public class ScriptOutputInteractor : OutputWriter
     {
-        event EventHandler TextChanged;
-        event EventHandler<KeyEventArgs> KeyDown;
-        event EventHandler<KeyEventArgs> KeyUp;
+        private readonly IMainForm form;
 
-        string Text { get; set; }
+        public ScriptOutputInteractor(IMainForm form)
+        {
+            this.form = form;
+        }
 
-        void SelectAll();
-
-        void ScrollToEnd();
+        public override void Write(char value)
+        {
+            form.Invoke(new Action(() =>
+            {
+                form.OutputTextBox.Text += value;
+                form.OutputTextBox.ScrollToEnd();
+            }));
+        }
     }
 }

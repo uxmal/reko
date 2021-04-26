@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -47,6 +47,12 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public void SelectAll() {
             text.SelectAll();
+        }
+
+        public void ScrollToEnd()
+        {
+            text.SelectionStart = text.TextLength;
+            text.ScrollToCaret();
         }
 
         public event EventHandler TextChanged
