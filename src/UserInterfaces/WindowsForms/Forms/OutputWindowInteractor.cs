@@ -56,6 +56,29 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
                 return regSource.Item2;
             }
+            TextWriter writer = null;
+            outputWindowPanel.Invoke(new Action(() =>
+            {
+                writer = AddOutputSource(source);
+            }));
+            return writer;
+        }
+
+        public object CreateControl()
+        {
+            return this.outputWindowPanel;
+        }
+
+        public void Close()
+        {
+        }
+
+        public void SetSite(IServiceProvider services)
+        {
+        }
+
+        private TextWriter AddOutputSource(string source)
+        {
             var window = new TextBox
             {
                 Dock = DockStyle.Fill,
@@ -71,19 +94,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             outputWindows.Add(source, (new TextBoxWrapper(window), writer));
             this.outputWindowPanel.Controls.Add(window);
             return writer;
-        }
-
-        public object CreateControl()
-        {
-            return this.outputWindowPanel;
-        }
-
-        public void Close()
-        {
-        }
-
-        public void SetSite(IServiceProvider services)
-        {
         }
 
         private void DdlOutputSources_TextChanged(object sender, EventArgs e)
