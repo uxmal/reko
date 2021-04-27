@@ -30,11 +30,6 @@ namespace Reko.CmdLine
     /// </summary>
     public class CmdOutputService : IOutputService
     {
-        public TextWriter GetTextWriter(string sourceName)
-        {
-            return Console.Out;
-        }
-
         public TextWriter RegisterOutputSource(string sourceName)
         {
             return Console.Out;

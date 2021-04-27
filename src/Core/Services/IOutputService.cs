@@ -32,6 +32,5 @@ namespace Reko.Core.Services
     public interface IOutputService
     {
         public TextWriter RegisterOutputSource(string sourceName);
-        public TextWriter GetTextWriter(string sourceName);
     }
 }

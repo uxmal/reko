@@ -169,7 +169,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         }
 
         public ITabPage ProjectBrowserTab { get; }
-        public ITextBox OutputTextBox { get; }
 
         public TabPage ProcedureListTab
         {

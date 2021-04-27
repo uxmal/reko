@@ -40,7 +40,6 @@ namespace Reko.Gui.Forms
         string TitleText { get; set; }
         System.Drawing.Size Size { get; set; }
         FormWindowState WindowState { get; set; }
-        ITextBox OutputTextBox { get; }
 
         void LayoutMdi(DocumentWindowLayout layout);
 

@@ -82,14 +82,6 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
         }
 
-        public TextWriter GetTextWriter(string source)
-        {
-            if (!outputWindows.TryGetValue(source, out var textwriter))
-                return TextWriter.Null;
-            else
-                return textwriter.Item2;
-        }
-
         public void SetSite(IServiceProvider services)
         {
         }
