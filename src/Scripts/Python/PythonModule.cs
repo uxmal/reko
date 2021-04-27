@@ -46,7 +46,7 @@ namespace Reko.Scripts.Python
             this.eventListener = services.RequireService<DecompilerEventListener>();
             this.engine = IronPython.Hosting.Python.CreateEngine();
             var outputService = services.RequireService<IOutputService>();
-            this.outputWriter = outputService.RegisterOutputSource("Scripting");
+            this.outputWriter = outputService.EnsureOutputSource("Scripting");
             RedirectConsoleOutput(outputWriter, engine);
             this.pythonAPI = new PythonAPI(services, engine);
             var stream = new MemoryStream(bytes);

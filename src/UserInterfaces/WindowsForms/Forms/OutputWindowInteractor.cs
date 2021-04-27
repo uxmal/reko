@@ -50,7 +50,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             ddlOutputSources.SelectedIndexChanged += DdlOutputSources_TextChanged;
         }
 
-        public TextWriter RegisterOutputSource(string source)
+        public TextWriter EnsureOutputSource(string source)
         {
             if (outputWindows.TryGetValue(source, out var regSource))
             {
