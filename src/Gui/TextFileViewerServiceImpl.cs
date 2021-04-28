@@ -20,14 +20,13 @@
 
 #nullable enable
 
-using Reko.Gui;
 using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Reko.UserInterfaces.WindowsForms
+namespace Reko.Gui
 {
     public class TextFileViewerServiceImpl : ViewService, ITextFileEditorService
     {

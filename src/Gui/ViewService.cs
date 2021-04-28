@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -19,12 +19,11 @@
 #endregion
 
 using Reko.Core;
-using Reko.Gui;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.UserInterfaces.WindowsForms
+namespace Reko.Gui
 {
     public class ViewService
     {
