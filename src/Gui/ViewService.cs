@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using System;
 using System.Collections.Generic;
@@ -27,22 +29,16 @@ namespace Reko.Gui
 {
     public class ViewService
     {
-        private IServiceProvider sp;
-        private IDecompilerShellUiService shellUiSvc;
+        private readonly IServiceProvider sp;
 
         public ViewService(IServiceProvider sp)
         {
             this.sp = sp;
-            this.shellUiSvc = sp.RequireService<IDecompilerShellUiService>();
-        }
-
-        protected IDecompilerShellUiService ShellUiSvc
-        {
-            get { return shellUiSvc; }
         }
 
         protected IWindowFrame ShowWindow(string windowType, string windowTitle, object docItem, IWindowPane innerPane)
         {
+            var shellUiSvc = sp.RequireService<IDecompilerShellUiService>();
             var windowFrame = shellUiSvc.FindDocumentWindow(windowType, docItem);
             if (windowFrame == null)
             {
