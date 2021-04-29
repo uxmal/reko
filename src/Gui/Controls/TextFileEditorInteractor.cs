@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Reko.Gui.Controls
@@ -34,11 +35,13 @@ namespace Reko.Gui.Controls
         private ITextFileEditor? editor;
         private readonly string fileName;
         private bool textLoaded;
+        private bool textChanged;
 
         public TextFileEditorInteractor(string fileName)
         {
             this.fileName = fileName;
             this.textLoaded = false;
+            this.textChanged = false;
         }
 
         public IWindowFrame? Frame { get; set; }
@@ -48,6 +51,7 @@ namespace Reko.Gui.Controls
             if (editor != null)
             {
                 this.editor.SaveButton.Click -= textEditor_Save;
+                this.editor.TextBox.TextChanged -= textEditor_Changed;
                 editor.Dispose();
             }
             editor = null;
@@ -62,6 +66,7 @@ namespace Reko.Gui.Controls
                 var svcFactory = services.RequireService<IServiceFactory>();
                 editor = svcFactory.CreateTextFileEditor();
                 this.editor.SaveButton.Click += textEditor_Save;
+                this.editor.TextBox.TextChanged += textEditor_Changed;
             }
             return editor;
         }
@@ -87,6 +92,7 @@ namespace Reko.Gui.Controls
                     fileName, Encoding.UTF8);
                 editor.TextBox.Text = rdr.ReadToEnd();
                 this.textLoaded = true;
+                this.textChanged = false;
             }
             catch (Exception ex)
             {
@@ -107,10 +113,34 @@ namespace Reko.Gui.Controls
                 using var writer = fsSvc.CreateStreamWriter(
                     fileName, false, Encoding.UTF8);
                 writer.Write(editor.TextBox.Text);
+                this.textChanged = false;
+                UpdateTitle();
             }
             catch(Exception ex)
             {
                 uiSvc.ShowError(ex, $"Couldn't save file '{fileName}'");
+            }
+        }
+
+        private void textEditor_Changed(object sender, EventArgs e)
+        {
+            if (textLoaded && !textChanged)
+            {
+                this.textChanged = true;
+                UpdateTitle();
+            }
+        }
+
+        private void UpdateTitle()
+        {
+            var title = Path.GetFileName(this.fileName);
+            if (textChanged)
+            {
+                title += "*";
+            }
+            if (Frame != null)
+            {
+                Frame.Title = title;
             }
         }
     }

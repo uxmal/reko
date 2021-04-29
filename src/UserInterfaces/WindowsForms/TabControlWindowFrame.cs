@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -43,8 +43,8 @@ namespace Reko.UserInterfaces.WindowsForms
             this.page = page;
             this.Pane = pane;
             this.sc = new ServiceContainer(services);
-            sc.AddService(typeof(IWindowFrame), this);
             page.Tag = this;
+            Pane.Frame = this;
             pane.SetSite(sc);
         }
 
