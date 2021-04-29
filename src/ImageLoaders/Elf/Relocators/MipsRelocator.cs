@@ -400,7 +400,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
             if (addr.ToLinear() == 0)
                 return (addr, symbol);
-            var S = symbol.Value;
+            var uAddrSection = (symbol.SectionIndex != 0)
+                ? loader.Sections[(int) symbol.SectionIndex].Address?.ToLinear() ?? 0
+                : 0;
+            uint S = (uint) (symbol.Value + uAddrSection);
+
             ulong PP = P;
             var relR = program.CreateImageReader(program.Architecture, addr);
             var relW = program.CreateImageWriter(program.Architecture, addr);
@@ -423,29 +427,18 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     A64 = (ulong) rel.Addend.Value;
                 else if (!relR.TryPeekUInt64(0, out A64))
                     return (null, null);
-                Debug.Print("    Reloc at {0} is now {1:16}", addr, S + A64);
                 relW.WriteUInt64(S + A64);
                 return (addr, symbol);
             case Mips64Rt.R_MIPS_26:
-                uint n;
-                if (symbol.Bind == ElfSymbolBinding.STB_LOCAL)
-                {
-                    n = (uint) (((A << 2) | (addr.ToLinear() & 0xF0000000u)) + S) >> 2;
-                }
-                else
-                {
-                    long sA = targ26.ReadSigned(A) << 2;
-                    n = (uint) ((S + (ulong) sA) >> 2);
-                }
+                long sA = targ26.ReadSigned(A) << 2;
+                uint n = (uint) ((S + (ulong) sA) >> 2);
                 ww = (w & 0xFC000000u) | n;
-                relW.WriteUInt32(w);
                 break;
             default:
                 ElfImageLoader.trace.Warn("Unimplemented MIPS64 relocation type: {0}", RelocationTypeToString((uint) rel.Info));
                 return (addr, symbol);
             }
             relW.WriteUInt32(ww);
-            Debug.Print("    Reloc at {0} was {1:X8}, is now {2:X8}", addr, w, ww);
             return (addr, symbol);
         }
 

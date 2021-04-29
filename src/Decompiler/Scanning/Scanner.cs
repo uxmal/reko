@@ -105,7 +105,7 @@ namespace Reko.Scanning
             };
         }
 
-        public IServiceProvider Services { get; private set; }
+        public IServiceProvider Services { get; }
 
         private class BlockRange
         {
@@ -124,7 +124,7 @@ namespace Reko.Scanning
                 Debug.Assert(start < end);
             }
 
-            public Block Block { get; private set; }
+            public Block Block { get; }
             public ulong Start { get; set; }
             public ulong End { get; set; }
 
