@@ -30,12 +30,12 @@ namespace Reko.UserInterfaces.WindowsForms
     /// </summary>
     public class TextBoxWrapper : ControlWrapper, ITextBox
     {
-        private TextBox text;
+        private TextBoxBase text;
 
         public event EventHandler<Gui.Controls.KeyEventArgs> KeyDown;
         public event EventHandler<Gui.Controls.KeyEventArgs> KeyUp;
 
-        public TextBoxWrapper(TextBox text)
+        public TextBoxWrapper(TextBoxBase text)
             : base(text)
         {
             this.text = text;

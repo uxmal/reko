@@ -40,6 +40,20 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public ITextBox TextBox { get; }
         public IButton SaveButton { get; }
+        public string Status
+        {
+            get => statusStrip.Items[0].Text;
+            set => statusStrip.Items[0].Text = value;
+        }
+
+        private void UpdateStatus()
+        {
+            int caretIndex = textBox.SelectionStart;
+            int line = textBox.GetLineFromCharIndex(caretIndex);
+            int firstLineChar = textBox.GetFirstCharIndexFromLine(line);
+            int col = caretIndex - firstLineChar + 1;
+            Status = $"Line: {line + 1} Col: {col}";
+        }
 
         private void textBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -50,6 +64,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 int numSpaces = 4;
                 textBox.SelectedText = new string(' ', numSpaces);
             }
+        }
+
+        private void textBox_SelectionChanged(object sender, EventArgs e)
+        {
+            UpdateStatus();
         }
     }
 }
