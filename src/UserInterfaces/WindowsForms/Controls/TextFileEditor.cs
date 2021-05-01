@@ -46,6 +46,14 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             set => statusStrip.Items[0].Text = value;
         }
 
+        public void GoToLine(int line)
+        {
+            var lineNumber = line - 1;
+            var charIndex = textBox.GetFirstCharIndexFromLine(lineNumber);
+            textBox.SelectionStart = charIndex;
+            textBox.ScrollToCaret();
+        }
+
         private void UpdateStatus()
         {
             int caretIndex = textBox.SelectionStart;

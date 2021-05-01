@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Scripts;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
@@ -267,6 +268,35 @@ namespace Reko.UserInterfaces.WindowsForms
         public void Error(ICodeLocation location, Exception ex, string message, params object[] args)
         {
             diagnosticSvc.Error(location, ex, message, args);
+        }
+
+        public void Error(ScriptError scriptError)
+        {
+            diagnosticSvc.Error(
+                new FileNavigator(
+                    scriptError.FileName,
+                    scriptError.LineNumber,
+                    sp),
+                scriptError.Exception,
+                scriptError.Message);
+            if (scriptError.StackFrames.Count > 0)
+            {
+                diagnosticSvc.Error(
+                    new NullCodeLocation("Traceback"),
+                    "(most recent call last):");
+            }
+            foreach (var stackFrame in scriptError.StackFrames)
+            {
+                diagnosticSvc.Error(
+                    new FileNavigator(
+                        stackFrame.FileName,
+                        stackFrame.LineNumber,
+                        sp)
+                    {
+                        ShowFileName = false,
+                    },
+                    stackFrame.ToString());
+            }
         }
 
         void DecompilerEventListener.ShowStatus(string caption)

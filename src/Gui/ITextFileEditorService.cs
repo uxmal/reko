@@ -31,6 +31,6 @@ namespace Reko.Gui
     /// </summary>
     public interface ITextFileEditorService
     {
-        void DisplayFile(string fileName);
+        void DisplayFile(string fileName, int? line = null);
     }
 }

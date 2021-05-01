@@ -18,22 +18,28 @@
  */
 #endregion
 
-#nullable enable
-
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Gui.Controls
+namespace Reko.Core.Scripts
 {
-    /// <summary>
-    /// Interface that abstracts the functionality of the text file editor.
-    /// </summary>
-    public interface ITextFileEditor : IDisposable
+    public class ScriptStackFrame
     {
-        ITextBox TextBox { get; }
-        IButton SaveButton { get; }
+        public ScriptStackFrame(string file, int line, string method)
+        {
+            this.FileName = file;
+            this.LineNumber = line;
+            this.MethodName = method;
+        }
 
-        void GoToLine(int line);
+        public readonly string FileName;
+        public readonly int LineNumber;
+        public readonly string MethodName;
+
+        public override string ToString()
+        {
+            return $"File \"{FileName}\", line {LineNumber}, in {MethodName}";
+        }
     }
 }

@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Scripts;
 using Reko.Core.Services;
 using Reko.Gui;
 using System;
@@ -130,6 +131,14 @@ namespace Reko.UnitTests.Mocks
         public void Error(ICodeLocation location, Exception ex, string message, params object[] args)
         {
             Error(location, ex, string.Format(message, args));
+        }
+
+        public void Error(ScriptError scriptError)
+        {
+            Error(
+                new NullCodeLocation(scriptError.FileName),
+                scriptError.Exception,
+                scriptError.Message);
         }
 
         public void ShowProgress(string caption, int numerator, int denominator)

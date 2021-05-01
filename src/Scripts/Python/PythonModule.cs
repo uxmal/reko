@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Scripts;
 using Reko.Core.Services;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Reko.Scripts.Python
@@ -65,10 +66,12 @@ namespace Reko.Scripts.Python
             }
             catch (Exception ex)
             {
-                eventListener.Error(
-                    new NullCodeLocation(Filename),
+                var scriptError = CreateError(
+                    Filename,
                     ex,
-                    "An error occurred while running the Python script.");
+                    "An error occurred while running the Python script.",
+                    engine);
+                eventListener.Error(scriptError);
                 DumpPythonStack(outputWriter, ex, engine);
             }
         }
@@ -85,10 +88,12 @@ namespace Reko.Scripts.Python
             }
             catch (Exception ex)
             {
-                eventListener.Error(
-                    new NullCodeLocation(filename),
+                var scriptError = CreateError(
+                    filename,
                     ex,
-                    "An error occurred while evaluating the Python script.");
+                    "An error occurred while evaluating the Python script.",
+                    engine);
+                eventListener.Error(scriptError);
                 DumpPythonStack(outputWriter, ex, engine);
                 return new RekoEventsAPI();
             }
@@ -110,10 +115,29 @@ namespace Reko.Scripts.Python
             TextWriter writer, Exception ex, ScriptEngine engine)
         {
             var exceptionOperations = engine.GetService<ExceptionOperations>();
-            // $TODO: Allow user to go to failed line. It can be obtained by
-            // GetStackFrames method of ExceptionOperations class */
             var msg = exceptionOperations.FormatException(ex);
             writer.WriteLine(msg);
+        }
+
+        private static ScriptError CreateError(
+            string fileName, Exception ex, string message, ScriptEngine engine)
+        {
+            var stackFrames = GetStackFrames(ex, engine);
+            return new ScriptError(fileName, ex, message, stackFrames);
+        }
+
+        private static IEnumerable<ScriptStackFrame> GetStackFrames(
+            Exception ex, ScriptEngine engine)
+        {
+            var exceptionOperations = engine.GetService<ExceptionOperations>();
+            foreach (var stackFrame in exceptionOperations.GetStackFrames(ex))
+            {
+                yield return new ScriptStackFrame(
+                    stackFrame.GetFileName(),
+                    stackFrame.GetFileLineNumber(),
+                    stackFrame.GetMethodName()
+                );
+            }
         }
 
         private static void RedirectConsoleOutput(

@@ -100,6 +100,11 @@ namespace Reko.Gui.Controls
             }
         }
 
+        public void GoToLine(int line)
+        {
+            editor?.GoToLine(line);
+        }
+
         private void textEditor_Save(object? sender, EventArgs e)
         {
             if (services == null)

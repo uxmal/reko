@@ -34,13 +34,18 @@ namespace Reko.Gui
         {
         }
 
-        public void DisplayFile(string fileName)
+        public void DisplayFile(string fileName, int? line)
         {
             var pane = new TextFileEditorInteractor(fileName);
             var windowType = typeof(TextFileEditorInteractor).Name;
             var title = Path.GetFileName(fileName);
             var frame = ShowWindow(windowType, title, fileName, pane);
-            ((TextFileEditorInteractor) frame.Pane).DisplayFile();
+            pane = ((TextFileEditorInteractor) frame.Pane);
+            pane.DisplayFile();
+            if (line.HasValue)
+            {
+                pane.GoToLine(line.Value);
+            }
         }
     }
 }
