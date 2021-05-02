@@ -49,7 +49,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         public void GoToLine(int line)
         {
             var lineNumber = line - 1;
+            if (lineNumber < 0)
+                return;
             var charIndex = textBox.GetFirstCharIndexFromLine(lineNumber);
+            if (charIndex < 0)
+                return;
             textBox.SelectionStart = charIndex;
             textBox.ScrollToCaret();
         }
