@@ -273,30 +273,9 @@ namespace Reko.UserInterfaces.WindowsForms
         public void Error(ScriptError scriptError)
         {
             diagnosticSvc.Error(
-                new FileNavigator(
-                    scriptError.FileName,
-                    scriptError.LineNumber,
-                    sp),
+                new ScriptErrorNavigator(scriptError, sp),
                 scriptError.Exception,
                 scriptError.Message);
-            if (scriptError.StackFrames.Count > 0)
-            {
-                diagnosticSvc.Error(
-                    new NullCodeLocation("Traceback"),
-                    "(most recent call last):");
-            }
-            foreach (var stackFrame in scriptError.StackFrames)
-            {
-                diagnosticSvc.Error(
-                    new FileNavigator(
-                        stackFrame.FileName,
-                        stackFrame.LineNumber,
-                        sp)
-                    {
-                        ShowFileName = false,
-                    },
-                    stackFrame.ToString());
-            }
         }
 
         void DecompilerEventListener.ShowStatus(string caption)

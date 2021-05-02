@@ -237,5 +237,10 @@ namespace Reko.UserInterfaces.WindowsForms
             outputSvc.Attach(mainForm.OutputWindowSources, mainForm.OutputWindowPanel);
             return outputSvc;
         }
+
+        public IStackTraceService CreateStackTraceService()
+        {
+            return new StackTraceService(services, mainForm);
+        }
     }
 }

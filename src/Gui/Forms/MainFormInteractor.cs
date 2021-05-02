@@ -218,6 +218,9 @@ namespace Reko.Gui.Forms
 
             var outputSvc = svcFactory.CreateOutputService();
             sc.AddService<IOutputService>(outputSvc);
+
+            var stackTraceSvc = svcFactory.CreateStackTraceService();
+            sc.AddService<IStackTraceService>(stackTraceSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -441,6 +444,7 @@ namespace Reko.Gui.Forms
             CloseAllDocumentWindows();
             sc.RequireService<IProjectBrowserService>().Clear();
             sc.RequireService<IProcedureListService>().Clear();
+            sc.RequireService<IStackTraceService>().Clear();
             diagnosticsSvc.ClearDiagnostics();
             decompilerSvc.Decompiler = null;
             this.ProjectFileName = null;
@@ -491,6 +495,7 @@ namespace Reko.Gui.Forms
             SwitchInteractor(this.InitialPageInteractor);
             
             CloseAllDocumentWindows();
+            sc.RequireService<IStackTraceService>().Clear();
             diagnosticsSvc.ClearDiagnostics();
             projectBrowserSvc.Reload();
             projectBrowserSvc.Show();
