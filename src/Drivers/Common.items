@@ -23,6 +23,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\C166\bin\$(StandardOutputDir)\Reko.Arch.C166.*" />
     <Architectures Include="$(SolutionDir)Arch\CompactRisc\bin\$(StandardOutputDir)\Reko.Arch.CompactRisc.*" />
     <Architectures Include="$(SolutionDir)Arch\Cray\bin\$(StandardOutputDir)\Reko.Arch.Cray.*" />
+    <Architectures Include="$(SolutionDir)Arch\Etrax\bin\$(StandardOutputDir)\Reko.Arch.Etrax.*" />
     <Architectures Include="$(SolutionDir)Arch\H8\bin\$(StandardOutputDir)\Reko.Arch.H8.*" />
     <Architectures Include="$(SolutionDir)Arch\i8051\bin\$(StandardOutputDir)\Reko.Arch.i8051.*" />
     <Architectures Include="$(SolutionDir)Arch\IA64\bin\$(StandardOutputDir)\Reko.Arch.IA64.*" />

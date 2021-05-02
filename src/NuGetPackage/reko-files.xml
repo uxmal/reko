@@ -20,6 +20,7 @@
         <var id="var.C166.TargetPath" >../Arch/CompactRisc/$TargetDir$/Reko.Arch.C166.dll</var>
         <var id="var.CompactRisc.TargetPath" >../Arch/CompactRisc/$TargetDir$/Reko.Arch.CompactRisc.dll</var>
         <var id="var.Cray.TargetPath" >../Arch/Cray/$TargetDir$/Reko.Arch.Cray.dll</var>
+        <var id="var.Etrax.TargetPath" >../Arch/Etrax/$TargetDir$/Reko.Arch.Etrax.dll</var>
         <var id="var.H8.TargetPath" >../Arch/H8/$TargetDir$/Reko.Arch.H8.dll</var>
         <var id="var.IA64.TargetPath" >../Arch/IA64/$TargetDir$/Reko.Arch.IA64.dll</var>
         <var id="var.LatticeMico.TargetPath" >../Arch/LatticeMico/$TargetDir$/Reko.Arch.LatticeMico.dll</var>
