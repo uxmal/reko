@@ -60,7 +60,7 @@ namespace Reko.Gui.Controls
         public object CreateControl()
         {
             if (services == null)
-                throw new InvalidOperationException("Services should be set");
+                throw new InvalidOperationException("Services should be set.");
             if (editor == null)
             {
                 var svcFactory = services.RequireService<IServiceFactory>();
@@ -96,7 +96,7 @@ namespace Reko.Gui.Controls
             }
             catch (Exception ex)
             {
-                uiSvc.ShowError(ex, $"Couldn't open file '{fileName}'");
+                uiSvc.ShowError(ex, $"Couldn't open file '{fileName}'.");
             }
         }
 
@@ -123,7 +123,7 @@ namespace Reko.Gui.Controls
             }
             catch(Exception ex)
             {
-                uiSvc.ShowError(ex, $"Couldn't save file '{fileName}'");
+                uiSvc.ShowError(ex, $"Couldn't save file '{fileName}'.");
             }
         }
 
