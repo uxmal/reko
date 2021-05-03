@@ -29,7 +29,7 @@ namespace Reko.Gui.Design
 {
     public class ScriptFileDesigner : TreeNodeDesigner
     {
-        private ScriptFile? scriptFile;
+        private ScriptFile scriptFile = default!;
 
         public override void Initialize(object obj)
         {
@@ -41,7 +41,7 @@ namespace Reko.Gui.Design
         public override void DoDefaultAction()
         {
             var editorSvc = Services!.RequireService<ITextFileEditorService>();
-            editorSvc.DisplayFile(scriptFile!.Filename);
+            editorSvc.DisplayFile(scriptFile.Filename);
         }
 
         public void SetTreeNodeProperties(ScriptFile scriptFile)
