@@ -146,7 +146,7 @@
   <cmd id="ToolsOptions" cmdSet="Reko" container="GrpTools">_Options...</cmd>
   <cmd id="ToolsKeyBindings" cmdSet="Reko" container="GrpTools">_Key bindings...</cmd>
   
-  <cmd id="WindowsCascade" cmdSet="Reko" container="GrpWindows">_Cacade</cmd>
+  <cmd id="WindowsCascade" cmdSet="Reko" container="GrpWindows">_Cascade</cmd>
   <cmd id="WindowsTileVertical" cmdSet="Reko" container="GrpWindows">Tile _Vertically</cmd>
   <cmd id="WindowsTileHorizontal" cmdSet="Reko" container="GrpWindows">Tile _Horizontally</cmd>
   <cmd id="WindowsCloseAll" cmdSet="Reko" container="GrpWindows">C_lose All Windows</cmd>
