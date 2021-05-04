@@ -48,14 +48,60 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         public void GoToLine(int line)
         {
+            int highlightedLineOffset = 10;
             var lineNumber = line - 1;
             if (lineNumber < 0)
                 return;
+            int offset = highlightedLineOffset;
+            if (offset > lineNumber)
+                offset = lineNumber;
+            SelectLineStart(lineNumber - offset);
+            textBox.ScrollToCaret();
+            bool modified = textBox.Modified;
+            ResetBackground();
+            HighlightLine(lineNumber, Color.Azure);
+            textBox.Modified = modified;
+            SelectLineStart(lineNumber);
+        }
+
+        private void SelectLineStart(int lineNumber)
+        {
             var charIndex = textBox.GetFirstCharIndexFromLine(lineNumber);
             if (charIndex < 0)
                 return;
             textBox.SelectionStart = charIndex;
-            textBox.ScrollToCaret();
+            textBox.SelectionLength = 0;
+        }
+
+        private void ResetBackground()
+        {
+            textBox.SelectAll();
+            textBox.SelectionBackColor = textBox.BackColor;
+        }
+
+        private void HighlightLine(int lineNumber, Color color)
+        {
+            var lineStart = textBox.GetFirstCharIndexFromLine(lineNumber);
+            if (lineStart < 0)
+                return;
+            var lineEnd = textBox.GetFirstCharIndexFromLine(lineNumber + 1);
+            if (lineEnd < 0)
+                return;
+            (lineStart, lineEnd) = TrimStart(lineStart, lineEnd);
+            var lineLength = lineEnd - lineStart;
+            textBox.SelectionStart = lineStart;
+            textBox.SelectionLength = lineLength;
+            textBox.SelectionBackColor = color;
+        }
+
+        private (int, int) TrimStart(int start, int end)
+        {
+            for(; start < end; start++)
+            {
+                if (!char.IsWhiteSpace(textBox.Text[start]))
+                    break;
+            }
+            return (start, end);
         }
 
         private void UpdateStatus()

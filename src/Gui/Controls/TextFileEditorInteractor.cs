@@ -35,13 +35,11 @@ namespace Reko.Gui.Controls
         private ITextFileEditor? editor;
         private readonly string fileName;
         private bool textLoaded;
-        private bool textDirty;
 
         public TextFileEditorInteractor(string fileName)
         {
             this.fileName = fileName;
             this.textLoaded = false;
-            this.textDirty = false;
         }
 
         public IWindowFrame? Frame { get; set; }
@@ -92,7 +90,6 @@ namespace Reko.Gui.Controls
                     fileName, Encoding.UTF8);
                 editor.TextBox.Text = rdr.ReadToEnd();
                 this.textLoaded = true;
-                this.textDirty = false;
             }
             catch (Exception ex)
             {
@@ -103,6 +100,7 @@ namespace Reko.Gui.Controls
         public void GoToLine(int line)
         {
             editor?.GoToLine(line);
+            UpdateTitle();
         }
 
         private void textEditor_Save(object? sender, EventArgs e)
@@ -118,7 +116,7 @@ namespace Reko.Gui.Controls
                 using var writer = fsSvc.CreateStreamWriter(
                     fileName, false, Encoding.UTF8);
                 writer.Write(editor.TextBox.Text);
-                this.textDirty = false;
+                editor.TextBox.Modified = false;
                 UpdateTitle();
             }
             catch(Exception ex)
@@ -129,9 +127,8 @@ namespace Reko.Gui.Controls
 
         private void textEditor_Changed(object sender, EventArgs e)
         {
-            if (textLoaded && !textDirty)
+            if (textLoaded)
             {
-                this.textDirty = true;
                 UpdateTitle();
             }
         }
@@ -139,7 +136,7 @@ namespace Reko.Gui.Controls
         private void UpdateTitle()
         {
             var title = Path.GetFileName(this.fileName);
-            if (textDirty)
+            if (editor != null && editor.TextBox.Modified)
             {
                 title += "*";
             }

@@ -45,7 +45,6 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox.HideSelection = false;
             this.textBox.Location = new System.Drawing.Point(0, 38);
             this.textBox.Name = "textBox";
             this.textBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;

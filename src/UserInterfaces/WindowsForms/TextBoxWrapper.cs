@@ -45,6 +45,12 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public string Text { get { return text.Text; } set { text.Text = value;  } }
 
+        public bool Modified
+        {
+            get => text.Modified;
+            set => text.Modified = value;
+        }
+
         public void SelectAll() {
             text.SelectAll();
         }
