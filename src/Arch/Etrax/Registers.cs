@@ -48,6 +48,21 @@ namespace Reko.Arch.Etrax
         public static RegisterStorage brp  { get; }
         public static RegisterStorage usp { get; }
 
+        public static FlagGroupStorage F { get; }
+        public static FlagGroupStorage P { get; }
+        public static FlagGroupStorage U { get; }
+        public static FlagGroupStorage M { get; }
+        public static FlagGroupStorage B { get; }
+        public static FlagGroupStorage I { get; }
+        public static FlagGroupStorage X { get; }
+        public static FlagGroupStorage N { get; }
+        public static FlagGroupStorage Z { get; }
+        public static FlagGroupStorage V { get; }
+        public static FlagGroupStorage C { get; }
+
+        public static FlagGroupStorage NZ { get; }
+        public static FlagGroupStorage NZVC { get; }
+
         static Registers()
         {
             var factory = new StorageFactory();
@@ -100,6 +115,21 @@ namespace Reko.Arch.Etrax
                 brp,
                 usp,
             };
+
+            F =  new FlagGroupStorage(dccr, (uint)FlagM.FF, "F", PrimitiveType.Bool);
+            P =  new FlagGroupStorage(dccr, (uint)FlagM.PF, "P", PrimitiveType.Bool);
+            U =  new FlagGroupStorage(dccr, (uint)FlagM.UF, "U", PrimitiveType.Bool);
+            M =  new FlagGroupStorage(dccr, (uint)FlagM.MF, "M", PrimitiveType.Bool);
+            B =  new FlagGroupStorage(dccr, (uint)FlagM.BF, "B", PrimitiveType.Bool);
+            I =  new FlagGroupStorage(dccr, (uint)FlagM.IF, "I", PrimitiveType.Bool);
+            X =  new FlagGroupStorage(dccr, (uint)FlagM.XF, "X", PrimitiveType.Bool);
+            N =  new FlagGroupStorage(dccr, (uint)FlagM.NF, "N", PrimitiveType.Bool);
+            Z =  new FlagGroupStorage(dccr, (uint)FlagM.ZF, "Z", PrimitiveType.Bool);
+            V =  new FlagGroupStorage(dccr, (uint)FlagM.VF, "V", PrimitiveType.Bool);
+            C =  new FlagGroupStorage(dccr, (uint)FlagM.CF, "C", PrimitiveType.Bool);
+
+            NZ = new FlagGroupStorage(dccr, (uint) (FlagM.NF|FlagM.ZF), "NZ", dccr.DataType);
+            NZVC = new FlagGroupStorage(dccr, (uint) (FlagM.NF|FlagM.ZF|FlagM.VF|FlagM.CF), "NZVC", dccr.DataType);
         }
     }
 

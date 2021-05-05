@@ -134,12 +134,6 @@ namespace Reko.UnitTests.Arch.Etrax
         }
 
         [Test]
-        public void EtraxDis_btst()
-        {
-            AssertCode("btsts\tr10,pc", "FAF4");
-        }
-
-        [Test]
         public void EtraxDis_bvs()
         {
             AssertCode("bvs\t00100002", "0050");

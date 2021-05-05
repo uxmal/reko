@@ -82,7 +82,7 @@ namespace Reko.Core.Machine
         [Conditional("DEBUG")]
         public static void DumpMaskedInstruction(int instrBitSize, ulong wInstr, ulong shMask, string tag)
         {
-            if (!trace.TraceVerbose && false)
+            if (!trace.TraceVerbose)
                 return;
             var hibit = 1ul << (instrBitSize - 1);
             var sb = new StringBuilder("// ");

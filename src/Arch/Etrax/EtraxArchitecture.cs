@@ -34,7 +34,7 @@ namespace Reko.Arch.Etrax
     {
         public EtraxArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options) : base(services, archId, options)
         {
-            this.CarryFlagMask = 0;//$TODO
+            this.CarryFlagMask = (uint) FlagM.CF;
             this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Word32;
             this.InstructionBitSize = 16;
@@ -66,12 +66,12 @@ namespace Reko.Arch.Etrax
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new EtraxProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new EtraxRewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
@@ -110,6 +110,22 @@ namespace Reko.Arch.Etrax
             throw new NotImplementedException();
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            var mask = (FlagM) flags.FlagGroupBits;
+            if (mask.HasFlag(FlagM.FF)) yield return Registers.F;
+            if (mask.HasFlag(FlagM.PF)) yield return Registers.P;
+            if (mask.HasFlag(FlagM.UF)) yield return Registers.U;
+            if (mask.HasFlag(FlagM.MF)) yield return Registers.M;
+            if (mask.HasFlag(FlagM.BF)) yield return Registers.B;
+            if (mask.HasFlag(FlagM.IF)) yield return Registers.I;
+            if (mask.HasFlag(FlagM.XF)) yield return Registers.X;
+            if (mask.HasFlag(FlagM.NF)) yield return Registers.N;
+            if (mask.HasFlag(FlagM.ZF)) yield return Registers.Z;
+            if (mask.HasFlag(FlagM.VF)) yield return Registers.V;
+            if (mask.HasFlag(FlagM.CF)) yield return Registers.C;
+        }
+
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
         {
             var mask = (FlagM) grf;
@@ -130,7 +146,7 @@ namespace Reko.Arch.Etrax
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            throw new NotImplementedException();
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)

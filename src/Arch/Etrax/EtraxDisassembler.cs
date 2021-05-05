@@ -580,7 +580,7 @@ namespace Reko.Arch.Etrax
                     Nyi("btst")),
 
                 Select(u => u == 0x050F,
-                    Instr(Mnemonic.nop),
+                    Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding),
                     SizedInstr(
                         Instr(Mnemonic.addi, ScR, NpcRd),
                         scc)),
