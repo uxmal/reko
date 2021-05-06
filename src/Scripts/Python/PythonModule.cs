@@ -38,7 +38,7 @@ namespace Reko.Scripts.Python
         private readonly TextWriter outputWriter;
         private readonly PythonAPI pythonAPI;
         private readonly DecompilerEventListener eventListener;
-        private readonly RekoEventsAPI eventsAPI;
+        private RekoEventsAPI eventsAPI;
 
         public PythonModule(
             IServiceProvider services, string filename, byte[] bytes)
@@ -53,6 +53,11 @@ namespace Reko.Scripts.Python
             var stream = new MemoryStream(bytes);
             using var rdr = new StreamReader(stream);
             this.eventsAPI = Evaluate(rdr.ReadToEnd(), filename);
+        }
+
+        public override void Evaluate(string script)
+        {
+            this.eventsAPI = Evaluate(script, Filename);
         }
 
         public override void FireEvent(ScriptEvent @event, Program program)
