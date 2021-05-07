@@ -54,11 +54,14 @@ namespace Reko.Environments.MacOS.Classic
             var cRight = binExp.Right.Accept(this);
             if (!cRight.IsValid)
                 return cRight;
-            if (binExp.Op == TokenType.Minus)
+            return binExp.Op switch
             {
-                return Operator.ISub.ApplyConstants(cLeft, cRight);
-            }
-            throw new NotImplementedException();
+                TokenType.Plus => Operator.ISub.ApplyConstants(cLeft, cRight),
+                TokenType.Minus => Operator.ISub.ApplyConstants(cLeft, cRight),
+                TokenType.Star => Operator.IMul.ApplyConstants(cLeft, cRight),
+                TokenType.Slash => Operator.FDiv.ApplyConstants(cLeft, cRight),
+                _ => throw new NotImplementedException(),
+            };
         }
 
         public Constant VisitBooleanLiteral(BooleanLiteral boolLiteral)
@@ -67,6 +70,11 @@ namespace Reko.Environments.MacOS.Classic
         }
 
         public Constant VisitCallableDeclaration(CallableDeclaration cd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Constant VisitCallableType(CallableType ct)
         {
             throw new NotImplementedException();
         }
@@ -121,8 +129,12 @@ namespace Reko.Environments.MacOS.Classic
         {
             return Constant.Create(PrimitiveType.Int64, number.Value);
         }
-
         public Constant VisitPointerType(Core.Pascal.Pointer pointer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Constant VisitObject(Core.Pascal.ObjectType pointer)
         {
             throw new NotImplementedException();
         }

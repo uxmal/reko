@@ -308,7 +308,8 @@ namespace Reko.Environments.MacOS.Classic
                     var abSegment = new byte[segmentSize];
                     Array.Copy(mem.Bytes, uSegOffset + bytesToSkip, abSegment, 0, segmentSize);
 
-                    Address addrSegment = addrLoad + uSegOffset + bytesToSkip;    //$TODO pad to 16-byte boundary?
+                    var uAddr = (uSegOffset + bytesToSkip) & ~1u;
+                    Address addrSegment = addrLoad + uAddr;    //$TODO pad to 16-byte boundary?
                     var memSeg = new ByteMemoryArea(addrSegment, abSegment);
                     var segment = segmentMap.AddSegment(new ImageSegment(
                         ResourceDescriptiveName(type, rsrc),
@@ -322,14 +323,14 @@ namespace Reko.Environments.MacOS.Classic
                         }
                         else
                         {
-                            codeSegs.Add(rsrc.ResourceID, segment);
-                            var macsBug = new MacsBugSymbolScanner(arch, memSeg);
-                            var mbSymbols = macsBug.ScanForSymbols();
-                            foreach (var symbol in mbSymbols)
-                            {
-                                symbols[symbol.Address] = symbol;
-                            }
+                            AddCodeSegment(symbols, codeSegs, rsrc, memSeg, segment);
                         }
+                    }
+                    if (type.Name == "INIT")
+                    {
+                        AddCodeSegment(symbols, codeSegs, rsrc, memSeg, segment);
+                        var symInit = ImageSymbol.Procedure(arch, segment.Address, $"Init_{segment.Address}");
+                        entryPoints.Add(symInit);
                     }
                 }
             }
@@ -369,6 +370,18 @@ namespace Reko.Environments.MacOS.Classic
                 a5dr.Seek(a5hdroffset + a5dreloc, System.IO.SeekOrigin.Begin);
                 var relocator = new A5Relocator(platform, a5dr, a5dbelow);
                 relocator.Relocate();
+            }
+        }
+
+        private void AddCodeSegment(SortedList<Address, ImageSymbol> symbols, Dictionary<int, ImageSegment> codeSegs, ResourceReference rsrc, ByteMemoryArea memSeg, ImageSegment segment)
+        {
+            segment.Access |= AccessMode.Execute;
+            codeSegs.Add(rsrc.ResourceID, segment);
+            var macsBug = new MacsBugSymbolScanner(arch, memSeg);
+            var mbSymbols = macsBug.ScanForSymbols();
+            foreach (var symbol in mbSymbols)
+            {
+                symbols[symbol.Address] = symbol;
             }
         }
 
