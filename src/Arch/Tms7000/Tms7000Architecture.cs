@@ -149,7 +149,7 @@ namespace Reko.Arch.Tms7000
 
         public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse16(txtAddr, out addr);
         }
     }
 
