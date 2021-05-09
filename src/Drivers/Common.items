@@ -51,7 +51,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\SuperH\bin\$(StandardOutputDir)\Reko.Arch.SuperH.*" />
     <Architectures Include="$(SolutionDir)Arch\Tlcs\bin\$(StandardOutputDir)\Reko.Arch.Tlcs.*" />
     <Architectures Include="$(SolutionDir)Arch\Tms7000\bin\$(StandardOutputDir)\Reko.Arch.Tms7000.*" />
-    <Architectures Include="$(SolutionDir)Arch\V850\bin\$(StandardOutputDir)\Reko.Arch.Vax.*" />
+    <Architectures Include="$(SolutionDir)Arch\V850\bin\$(StandardOutputDir)\Reko.Arch.V850.*" />
     <Architectures Include="$(SolutionDir)Arch\Vax\bin\$(StandardOutputDir)\Reko.Arch.Vax.*" />
     <Architectures Include="$(SolutionDir)Arch\WE32100\bin\$(StandardOutputDir)\Reko.Arch.WE32100.*" />
     <Architectures Include="$(SolutionDir)Arch\X86\bin\$(StandardOutputDir)\Reko.Arch.X86.*" />
