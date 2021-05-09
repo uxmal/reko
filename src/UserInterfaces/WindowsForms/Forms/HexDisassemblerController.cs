@@ -23,6 +23,7 @@ using Reko.Core.Configuration;
 using Reko.Gui;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -80,17 +81,22 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 if (!arch.TryParseAddress(control.Address.Text, out var addr))
                     return;
                 var bytes = BytePattern.FromHexBytes(control.HexBytes.Text).ToArray();
-                var mem = arch.CreateMemoryArea(addr, bytes);
-
-                var sb = new StringBuilder();
-                var rdr = arch.CreateImageReader(mem, 0);
-                var dasm = arch.CreateDisassembler(rdr);
-                foreach (var instr in dasm)
+                if (bytes.Length > 0)
                 {
-                    sb.AppendLine(instr.ToString());
+                    var mem = arch.CreateMemoryArea(addr, bytes);
+                    var dumper = new Dumper(new Program())
+                    {
+                        ShowAddresses = true,
+                        ShowCodeBytes = true,
+                    };
+                    var sw = new StringWriter();
+                    dumper.DumpAssembler(arch, mem, mem.BaseAddress, bytes.Length, new Core.Output.TextFormatter(sw));
+                    control.Disassembly.Text = sw.ToString();
                 }
-
-                control.Disassembly.Text = sb.ToString();
+                else
+                {
+                    control.Disassembly.Text = "";
+                }
             }
             catch (Exception ex)
             {
