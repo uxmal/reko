@@ -224,5 +224,10 @@ namespace Reko.UserInterfaces.WindowsForms
             outputSvc.Attach(mainForm.OutputWindowSources, mainForm.OutputWindowPanel);
             return outputSvc;
         }
+
+        public IHexDisassemblerService CreateHexDisassemblerService()
+        {
+            return new HexDisassemblerService(services);
+        }
     }
 }

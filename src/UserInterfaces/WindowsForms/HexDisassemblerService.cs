@@ -18,26 +18,34 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Gui;
+using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Gui
+namespace Reko.UserInterfaces.WindowsForms
 {
-    /// <summary>
-    /// Abstracts the notion of an item in a list view, for future platform
-    /// independence.
-    /// </summary>
-    public interface IListViewItem
+    public class HexDisassemblerService : IHexDisassemblerService
     {
-        string Text { get; set; }
-        object Tag { get; set; }
+        private readonly IServiceProvider services;
 
-        void AddSubItem(string text);
-    }
+        public HexDisassemblerService(IServiceProvider services)
+        {
+            this.services = services;
+        }
 
-    public interface IListViewSubItem
-    {
-        string Text { get; set; }
+        public void Show()
+        {
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            var window = uiSvc.FindDocumentWindow("hexDisassembler", this);
+            if (window is null)
+            {
+                var pane = new HexDisassemblerController();
+                window = uiSvc.CreateDocumentWindow("hexDisassembler", this, "Hex disassembler", pane);
+            }
+            window.Show();
+        }
     }
 }

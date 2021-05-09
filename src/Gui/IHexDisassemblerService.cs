@@ -25,19 +25,10 @@ using System.Text;
 namespace Reko.Gui
 {
     /// <summary>
-    /// Abstracts the notion of an item in a list view, for future platform
-    /// independence.
+    /// This service provides an interactive hex disassembler for testing.
     /// </summary>
-    public interface IListViewItem
+    public interface IHexDisassemblerService
     {
-        string Text { get; set; }
-        object Tag { get; set; }
-
-        void AddSubItem(string text);
-    }
-
-    public interface IListViewSubItem
-    {
-        string Text { get; set; }
+        void Show();
     }
 }

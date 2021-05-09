@@ -215,6 +215,9 @@ namespace Reko.Gui.Forms
 
             var outputSvc = svcFactory.CreateOutputService();
             sc.AddService<IOutputService>(outputSvc);
+
+            var hexDasmSvc = svcFactory.CreateHexDisassemblerService();
+            sc.AddService<IHexDisassemblerService>(hexDasmSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -715,6 +718,12 @@ namespace Reko.Gui.Forms
             cgvSvc.ShowCallgraph(program, title);
         }
 
+        public void ToolsHexDisassembler()
+        {
+            var hexDasmSvc = sc.RequireService<IHexDisassemblerService>();
+            hexDasmSvc.Show();
+        }
+
         public void ToolsOptions()
         {
             using (var dlg = dlgFactory.CreateUserPreferencesDialog())
@@ -863,6 +872,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.FileAssemble:
                 case CmdIds.ViewProjectBrowser:
                 case CmdIds.ViewProcedureList:
+                case CmdIds.ToolsHexDisassembler:
                 case CmdIds.ToolsOptions:
                 case CmdIds.WindowsCascade: 
                 case CmdIds.WindowsTileVertical:
@@ -969,6 +979,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.ViewFindAllProcedures: FindProcedures(srSvc); retval = true; break;
                 case CmdIds.ViewFindStrings: FindStrings(srSvc); retval = true; break;
 
+                case CmdIds.ToolsHexDisassembler: ToolsHexDisassembler(); retval = true; break;
                 case CmdIds.ToolsOptions: ToolsOptions(); retval = true; break;
                 case CmdIds.ToolsKeyBindings: ToolsKeyBindings(); retval = true; break;
 
