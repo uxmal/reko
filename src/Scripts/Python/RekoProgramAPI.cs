@@ -42,66 +42,72 @@ namespace Reko.Scripts.Python
             this.program = program;
         }
 
-        //$TODO: Make it work with segmented addresses. The API should accept
-        // Python ints and strs as parameters, and use
-        // IProcessorArchitecture.TryParseAddress so that segmented addresses
-        // are handled correctly.
-        public byte ReadByte(ulong linearAddress)
+        public Address Address(ulong linearAddress)
         {
-            return CreateImageReader(linearAddress).ReadByte();
+            return program.SegmentMap.MapLinearAddressToAddress(linearAddress);
         }
 
-        public IEnumerable<byte> ReadBytes(ulong iStartAddr, long length)
+        public Address Address(string sAddr)
         {
-            return ReadData(rdr => rdr.ReadByte(), iStartAddr, length);
+            if (TryConvertAddress(sAddr, out var addr))
+                return addr;
+            throw new ArgumentException($"Failed to parse address: {sAddr}");
         }
 
-        public short ReadInt16(ulong linearAddress)
+        public byte ReadByte(Address addr)
         {
-            return CreateImageReader(linearAddress).ReadInt16();
+            return CreateImageReader(addr).ReadByte();
         }
 
-        public IEnumerable<short> ReadInts16(ulong iStartAddr, long length)
+        public IEnumerable<byte> ReadBytes(Address startAddr, long length)
         {
-            return ReadData(rdr => rdr.ReadInt16(), iStartAddr, length);
+            return ReadData(rdr => rdr.ReadByte(), startAddr, length);
         }
 
-        public int ReadInt32(ulong linearAddress)
+        public short ReadInt16(Address addr)
         {
-            return CreateImageReader(linearAddress).ReadInt32();
+            return CreateImageReader(addr).ReadInt16();
         }
 
-        public IEnumerable<int> ReadInts32(ulong iStartAddr, long length)
+        public IEnumerable<short> ReadInts16(Address startAddr, long length)
         {
-            return ReadData(rdr => rdr.ReadInt32(), iStartAddr, length);
+            return ReadData(rdr => rdr.ReadInt16(), startAddr, length);
         }
 
-        public long ReadInt64(ulong linearAddress)
+        public int ReadInt32(Address addr)
         {
-            return CreateImageReader(linearAddress).ReadInt64();
+            return CreateImageReader(addr).ReadInt32();
         }
 
-        public IEnumerable<long> ReadInts64(ulong iStartAddr, long length)
+        public IEnumerable<int> ReadInts32(Address startAddr, long length)
         {
-            return ReadData(rdr => rdr.ReadInt64(), iStartAddr, length);
+            return ReadData(rdr => rdr.ReadInt32(), startAddr, length);
         }
 
-        public string ReadCString(ulong linearAddress)
+        public long ReadInt64(Address addr)
         {
-            var rdr = CreateImageReader(linearAddress);
+            return CreateImageReader(addr).ReadInt64();
+        }
+
+        public IEnumerable<long> ReadInts64(Address startAddr, long length)
+        {
+            return ReadData(rdr => rdr.ReadInt64(), startAddr, length);
+        }
+
+        public string ReadCString(Address addr)
+        {
+            var rdr = CreateImageReader(addr);
             var c = rdr.ReadCString(PrimitiveType.Char, program.TextEncoding);
             return c.ToString();
         }
 
-        public void SetUserComment(ulong linearAddress, string comment)
+        public void SetUserComment(Address addr, string comment)
         {
-            var addr = Addr(linearAddress);
             program.User.Annotations[addr] = NormalizeLineEndings(comment);
         }
 
-        public void SetUserGlobal(ulong linearAddress, string decl)
+        public void SetUserGlobal(Address addr, string decl)
         {
-            var addr = Addr(linearAddress);
             var usb = new UserSignatureBuilder(program);
             var global = usb.ParseGlobalDeclaration(decl);
             var name = global?.Name;
@@ -118,21 +124,18 @@ namespace Reko.Scripts.Python
                 addr => addr.ToString()).ToArray();
         }
 
-        public bool ContainsProcedureAddress(ulong linearAddress)
+        public bool ContainsProcedureAddress(Address addr)
         {
-            if (!TryConvertAddress(linearAddress, out var addr))
-                return false;
             return program.User.Procedures.ContainsKey(addr);
         }
 
-        public string GetProcedureName(ulong linearAddress)
+        public string GetProcedureName(Address addr)
         {
-            return UserProcedure(linearAddress).Name;
+            return UserProcedure(addr).Name;
         }
 
-        public void SetUserProcedure(ulong linearAddress, string decl)
+        public void SetUserProcedure(Address addr, string decl)
         {
-            var addr = Addr(linearAddress);
             string name;
             string? CSignature;
             if (UserSignatureBuilder.IsValidCIdentifier(decl))
@@ -160,60 +163,45 @@ namespace Reko.Scripts.Python
             }
         }
 
-        public bool GetProcedureDecompileFlag(ulong linearAddress)
+        public bool GetProcedureDecompileFlag(Address addr)
         {
-            return UserProcedure(linearAddress).Decompile;
+            return UserProcedure(addr).Decompile;
         }
 
         public void SetUserProcedureDecompileFlag(
-            ulong linearAddress, bool decompile)
+            Address addr, bool decompile)
         {
-            UserProcedure(linearAddress).Decompile = decompile;
+            UserProcedure(addr).Decompile = decompile;
         }
 
-        public string? GetProcedureOutputFile(ulong linearAddress)
+        public string? GetProcedureOutputFile(Address addr)
         {
-            return UserProcedure(linearAddress).OutputFile;
+            return UserProcedure(addr).OutputFile;
         }
 
         public void SetUserProcedureOutputFile(
-            ulong linearAddress, string outputFile)
+            Address addr, string outputFile)
         {
-            UserProcedure(linearAddress).OutputFile = outputFile;
+            UserProcedure(addr).OutputFile = outputFile;
         }
 
         private bool TryConvertAddress(
-            ulong linearAddress, [NotNullWhen(true)] out Address? addr)
+            string sAddress, [NotNullWhen(true)] out Address? addr)
         {
-            try
-            {
-                addr = Addr(linearAddress);
-                return true;
-            }
-            catch
-            {
-                addr = null;
-                return false;
-            }
+            return program.Architecture.TryParseAddress(sAddress, out addr);
         }
 
-        private Address Addr(ulong linearAddress)
+        private EndianImageReader CreateImageReader(Address addr)
         {
-            return program.SegmentMap.MapLinearAddressToAddress(linearAddress);
-        }
-
-        private EndianImageReader CreateImageReader(ulong linearAddress)
-        {
-            var addr = Addr(linearAddress);
             return program.CreateImageReader(program.Architecture, addr);
         }
 
         private IEnumerable<T> ReadData<T>(
             Func<EndianImageReader, T> reader,
-            ulong iStartAddr,
+            Address startAddr,
             long length)
         {
-            var rdr = CreateImageReader(iStartAddr);
+            var rdr = CreateImageReader(startAddr);
             var offStart = rdr.Offset;
             while (rdr.Offset - offStart < length)
             {
@@ -221,9 +209,8 @@ namespace Reko.Scripts.Python
             }
         }
 
-        private UserProcedure UserProcedure(ulong linearAddress)
+        private UserProcedure UserProcedure(Address addr)
         {
-            var addr = Addr(linearAddress);
             return program.User.Procedures[addr];
         }
 

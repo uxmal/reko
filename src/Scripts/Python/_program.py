@@ -20,8 +20,15 @@ WARNING: This is a part of internal API. Do not import it directly to your
 scripts.
 '''
 
+def reko_address(reko, addr):
+    if isinstance(addr, tuple):
+        addr = ":".join(map('0x{:X}'.format, addr))
+    return reko.Address(addr)
+
 def addr_from_str(s_addr):
-    # $TODO: Make it work with segmented addresses.
+    pos = s_addr.find(":")
+    if pos >= 0:
+        return (int(s_addr[:pos], 16), int(s_addr[pos + 1:], 16))
     return int(s_addr, 16)
 
 def addr_list_from_str_list(s_addr_list):
@@ -59,6 +66,7 @@ class Comments:
         self._reko = reko
 
     def __setitem__(self, addr, comment):
+        addr = reko_address(self._reko, addr)
         if not isinstance(comment, str):
             raise TypeError(
                 'Unsupported type: {}. Expected type: str'.format(
@@ -120,6 +128,7 @@ class Memory:
         else:
             start_addr = key
             length = None
+        start_addr = reko_address(self._reko, start_addr)
         return MemorySlice(self._reko, start_addr, length)
 
 class Globals:
@@ -129,6 +138,7 @@ class Globals:
         self._reko = reko
 
     def __setitem__(self, addr, decl):
+        addr = reko_address(self._reko, addr)
         if isinstance(decl, str):
             self._reko.SetUserGlobal(addr, decl)
             return
@@ -168,11 +178,16 @@ class Procedures(RekoDictBase):
         self._reko = reko
 
     def __getitem__(self, addr):
+        try:
+            addr = reko_address(self._reko, addr)
+        except Exception:
+            raise KeyError(addr)
         if not self._reko.ContainsProcedureAddress(addr):
             raise KeyError(addr)
         return Procedure(self._reko, addr)
 
     def __setitem__(self, addr, decl):
+        addr = reko_address(self._reko, addr)
         if isinstance(decl, str):
             self._reko.SetUserProcedure(addr, decl)
             return
