@@ -284,6 +284,7 @@ namespace Reko.Environments.MacOS.Classic
             }
         }
 
+        // References: Inside Macintosh: Processes (Segment Manager)
         public void AddResourcesToImageMap(
             Address addrLoad, 
             ByteMemoryArea mem,
@@ -338,6 +339,13 @@ namespace Reko.Environments.MacOS.Classic
                         var symInit = ImageSymbol.Procedure(arch, segment.Address, $"CDev_{segment.Address}");
                         entryPoints.Add(symInit);
                     }
+                    else if (type.Name == "DRVR")
+                    {
+                        AddCodeSegment(symbols, codeSegs, rsrc, memSeg, segment);
+                        var symInit = ImageSymbol.Procedure(arch, segment.Address, $"Drvr_{segment.Address}");
+                        entryPoints.Add(symInit);
+                        AddDriverMethods(symbols, memSeg);
+                    }
                 }
             }
 
@@ -379,6 +387,7 @@ namespace Reko.Environments.MacOS.Classic
             }
         }
 
+
         private void AddCodeSegment(SortedList<Address, ImageSymbol> symbols, Dictionary<int, ImageSegment> codeSegs, ResourceReference rsrc, ByteMemoryArea memSeg, ImageSegment segment)
         {
             segment.Access |= AccessMode.Execute;
@@ -412,6 +421,35 @@ namespace Reko.Environments.MacOS.Classic
             a5dr.Seek(a5dheaderOffset - 2);
             return a5dr;
         }
+
+        /// <summary>
+        /// Create symbols for the driver routines.
+        /// </summary>
+        private void AddDriverMethods(SortedList<Address, ImageSymbol> symbols, ByteMemoryArea memSeg)
+        {
+            void MakeSymbol(ByteMemoryArea mem, string prefix, string routineName, uint offset)
+            {
+                var name = $"{prefix}_{routineName}";
+                var sym = ImageSymbol.Procedure(this.arch, mem.BaseAddress + offset + 4, name);
+                symbols.Add(sym.Address, sym);
+            }
+            var rdr = memSeg.CreateBeReader(4 + 8);
+            var offsetOpen = rdr.ReadBeUInt16();
+            var offsetPrime = rdr.ReadBeUInt16();
+            var offsetCtl = rdr.ReadBeUInt16();
+            var offsetStatus = rdr.ReadBeUInt16();
+            var offsetClose = rdr.ReadBeUInt16();
+            var cbName = rdr.ReadByte();
+            var abName = rdr.ReadBytes(cbName);
+            var driverName = Encoding.UTF8.GetString(abName);
+            var driverPrefix = NamingPolicy.SanitizeIdentifierName(driverName);
+            MakeSymbol(memSeg, driverPrefix, "Open", offsetOpen);
+            MakeSymbol(memSeg, driverPrefix, "Prime", offsetPrime);
+            MakeSymbol(memSeg, driverPrefix, "Ctl", offsetCtl);
+            MakeSymbol(memSeg, driverPrefix, "Status", offsetStatus);
+            MakeSymbol(memSeg, driverPrefix, "Close", offsetClose);
+        }
+
 
         private static bool SegmentNamedA5Init(ImageSegment segment)
         {

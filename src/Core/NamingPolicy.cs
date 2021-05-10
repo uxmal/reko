@@ -114,6 +114,46 @@ namespace Reko.Core
             return GenerateStackAccessName(type, "Loc", cbOffset, nameOverride);
         }
 
+        /// <summary>
+        /// Makes a string that can serve as a valid identifer from a string that might
+        /// contain non-identifier characters.
+        /// </summary>
+        /// <param name="name">String to sanitize.</param>
+        /// <returns>Sanitized identifier name.</returns>
+        public static string SanitizeIdentifierName(string name)
+        {
+            var sb = new StringBuilder();
+            int n = name.Length;
+            int i;
+
+            // Skip leading unprintables.
+            for (i = 0; i < n; ++i)
+            {
+                if (char.IsLetterOrDigit(name[i]))
+                    break;
+            }
+
+            bool emitUnderscore = false;
+            for (; i < n; ++i)
+            {
+                char ch = name[i];
+                if (char.IsLetterOrDigit(ch))
+                {
+                    if (emitUnderscore)
+                    {
+                        sb.Append('_');
+                        emitUnderscore = false;
+                    }
+                    sb.Append(ch);
+                }
+                else
+                {
+                    emitUnderscore = true;
+                }
+            }
+            return sb.ToString();
+        }
+
         private string GenerateStackAccessName(DataType type, string prefix, int cbOffset, string? nameOverride)
         {
             if (nameOverride != null)
