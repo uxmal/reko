@@ -26,7 +26,6 @@
     <ProjectReference Include="..\Arch\Cray\Cray.csproj" />
     <ProjectReference Include="..\Arch\Etrax\Etrax.csproj" />
     <ProjectReference Include="..\Arch\CompactRisc\CompactRisc.csproj" />
-    <ProjectReference Include="..\Arch\Etrax\Etrax.csproj" />
     <ProjectReference Include="..\Arch\H8\H8.csproj" />
     <ProjectReference Include="..\Arch\i8051\i8051.csproj" />
     <ProjectReference Include="..\Arch\IA64\IA64.csproj" />
