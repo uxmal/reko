@@ -380,10 +380,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.colProcSegment});
             this.listProcedures.FullRowSelect = true;
             this.listProcedures.HideSelection = false;
-            this.listProcedures.Location = new System.Drawing.Point(-230, 30);
+            this.listProcedures.Location = new System.Drawing.Point(0, 30);
             this.listProcedures.Margin = new System.Windows.Forms.Padding(4);
             this.listProcedures.Name = "listProcedures";
-            this.listProcedures.Size = new System.Drawing.Size(387, 330);
+            this.listProcedures.Size = new System.Drawing.Size(198, 330);
             this.listProcedures.TabIndex = 1;
             this.listProcedures.UseCompatibleStateImageBehavior = false;
             this.listProcedures.View = System.Windows.Forms.View.Details;
@@ -407,10 +407,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.txtProcedureFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtProcedureFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtProcedureFilter.Location = new System.Drawing.Point(-230, 0);
+            this.txtProcedureFilter.Location = new System.Drawing.Point(0, 0);
             this.txtProcedureFilter.Margin = new System.Windows.Forms.Padding(4);
             this.txtProcedureFilter.Name = "txtProcedureFilter";
-            this.txtProcedureFilter.Size = new System.Drawing.Size(388, 23);
+            this.txtProcedureFilter.Size = new System.Drawing.Size(198, 23);
             this.txtProcedureFilter.TabIndex = 0;
             // 
             // tabDocuments
