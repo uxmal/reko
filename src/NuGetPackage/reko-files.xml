@@ -170,6 +170,7 @@
         <File Source="$(var.Hpux.TargetPath)" nuget_target="f:" />
         <File Source="$(var.MacOS.TargetPath)" nuget_target="f:" />
         <File Source="$(var.MacOS.ProjectDir)Classic/macos_classic.xml" nuget_target="c:" />
+        <File Source="$(var.MacOS.ProjectDir)Classic/MacOSClassicInterfaces.p" nuget_target="c:" />
         <File Source="$(var.MorphOS.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Msdos.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Msdos.ProjectDir)realmodeintservices.xml" nuget_target="c:" />
