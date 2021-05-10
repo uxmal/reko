@@ -332,6 +332,12 @@ namespace Reko.Environments.MacOS.Classic
                         var symInit = ImageSymbol.Procedure(arch, segment.Address, $"Init_{segment.Address}");
                         entryPoints.Add(symInit);
                     }
+                    else if (type.Name == "cdev")
+                    {
+                        AddCodeSegment(symbols, codeSegs, rsrc, memSeg, segment);
+                        var symInit = ImageSymbol.Procedure(arch, segment.Address, $"CDev_{segment.Address}");
+                        entryPoints.Add(symInit);
+                    }
                 }
             }
 
