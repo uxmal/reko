@@ -127,7 +127,10 @@ namespace Reko.Environments.MacOS.Classic
 
         private Dictionary<string,Constant> EvaluateConstants(IEnumerable<Declaration> decls)
         {
-            var evaluated = new Dictionary<string, Constant>();
+            var evaluated = new Dictionary<string, Constant>
+            {
+                { "nil", Constant.Word32(0) }
+            };
 
             var dict = new SortedDictionary<string, Exp>();
             foreach (var qq in decls.OfType<ConstantDeclaration>())

@@ -25,6 +25,7 @@ using Reko.Core.Pascal;
 using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -107,13 +108,20 @@ namespace Reko.Environments.MacOS.Classic
                     stackValues.Push((4, regValue.Value));
                     continue;
                 }
+                if (IsIgnorable(uInstr, ref iOpcode))
+                {
+                    continue;
+                }
+
                 if (IsALineTrap(uInstr))
                 {
                     vector = uInstr;
                     ++iOpcode;
                     break;
                 }
-                throw new NotImplementedException(string.Format("uInstr: {0:X4}", uInstr));
+                Debug.Print("****** pre: uInstr: {0:X4}", uInstr);
+                return null;
+                //throw new NotImplementedException(string.Format("uInstr: {0:X4}", uInstr));
             }
             if (iOpcode < uOpcodes.Length)
             {
@@ -129,12 +137,16 @@ namespace Reko.Environments.MacOS.Classic
                         ssig.ReturnValue.Kind = new Register_v1 { Name = reg.Name };
                         continue;
                     }
-                    throw new NotImplementedException(string.Format("uInstr: {0:X4}", uInstr));
+                    Debug.Print("****** post: uInstr: {0:X4}", uInstr);
+                    return null;
+                    //throw new NotImplementedException(string.Format("uInstr: {0:X4}", uInstr));
                 }
             }
             if (vector == 0)
                 return null;
 
+            if (vector == 0xA0AC)
+                vector.ToString();
             int offset = 4;
             var sStackValues = new List<StackValue_v1>();
             while (stackValues.Count > 0)
@@ -164,9 +176,14 @@ namespace Reko.Environments.MacOS.Classic
 
         private RegisterStorage? PushRegister(ushort uInstr)
         {
-            if ((uInstr & 0xFFF8) == 0x2F00)    // move.l dN,-(a7)
+            var opcode = (uInstr & 0xFFF8);
+            switch (opcode)
             {
+            case 0x2F00:    // move.l dN,-(a7)
+            case 0x3F00:    // move.w dN,-(a7)
                 return Registers.DataRegister(uInstr & 7);
+            case 0x2F08:    // move.l aN,-(a7)
+                return Registers.AddressRegister(uInstr & 7);
             }
             return null;
         }
@@ -189,6 +206,21 @@ namespace Reko.Environments.MacOS.Classic
             default:
                 return null;
             }
+        }
+
+        bool IsIgnorable(ushort uInstr, ref int i)
+        {
+            switch (uInstr)
+            {
+            case 0x1010:    // move.l (a0),d0
+                return true;
+            case 0x2038:    // move.l   <w16>,dN
+                i += 1;     // Skip short address
+                return true;
+            case 0x4840:    // swap.l d0
+                return true;
+            }
+            return false;
         }
 
         private (int cBytes, string? sValue) PushConstant(ushort uInstr, ushort[] uOpcodes, ref int i)
@@ -217,13 +249,19 @@ namespace Reko.Environments.MacOS.Classic
             {
             case 0x1E80:    // move.b (sp),dX
             case 0x2E80:    // move.w (sp),dX
+            case 0x2080:    // move.l dX,(a0)
+            case 0x2280:    // move.w d0,(a1)
             case 0x3E80:    // move.l (sp),dX
+            case 0x5240:    // addq.w #1,dX
+            case 0x1080:    // move.b dX,(a0)
                 return Registers.DataRegister(uInstr & 7);
             case 0x2E88:    // movea  (sp),aX
+            case 0x2288:    // move.l aX,aY
                 return Registers.AddressRegister(uInstr & 7);
-            default:
-                return null;
             }
+            //case 0x2257:    // move.w (sp+),aX
+            //if (uInstr == )
+            return null;
         }
 
         private SerializedRegValue? QuickConstant(ushort uInstr)
@@ -242,12 +280,12 @@ namespace Reko.Environments.MacOS.Classic
         {
             switch (uInstr & 0xF1FF)
             {
-            case 0x205F:
-                // movea $(sp)+,aX
+            case 0x205F:    // movea $(sp)+,aX
+            case 0x305F:    // movea.w $(sp)+,aX
                 return Registers.AddressRegister((uInstr >> 9) & 7);
-            case 0x201F:
-            case 0x301F:
-                // move $(sp)+,dX
+            case 0x101F:    // move.b $(sp)+,dX
+            case 0x201F:    // move.l $(sp)+,dX
+            case 0x301F:    // move.w $(sp)+,dX
                 return Registers.DataRegister((uInstr >> 9) & 7);
             default:
                 return null;

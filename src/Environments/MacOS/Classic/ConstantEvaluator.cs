@@ -107,7 +107,7 @@ namespace Reko.Environments.MacOS.Classic
                 }
                 else
                 {
-                    throw new InvalidOperationException(string.Format("Undefined constant '{0}'.", id.Name));
+                    throw new InvalidOperationException($"Undefined constant '{id.Name}'.");
                 }
             }
             else

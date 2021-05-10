@@ -235,7 +235,11 @@ namespace Reko.Environments.MacOS.Classic
 
         public SerializedType VisitObject(ObjectType objectType)
         {
-            throw new NotImplementedException();
+            //$TODO: what do we translate Pascal OBJECT to?
+            return new StructType_v1
+            {
+
+            };
         }
 
         public SerializedType VisitPointerType(Core.Pascal.Pointer pointer)

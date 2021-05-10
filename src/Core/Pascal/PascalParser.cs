@@ -316,6 +316,14 @@ namespace Reko.Core.Pascal
                 if (string.Compare(id, "object", true) == 0)
                 {
                     return ParseObject();
+                } 
+                else if (string.Compare(id, "single", true) == 0)
+                {
+                    return new Primitive(Serialization.PrimitiveType_v1.Real32());
+                }
+                else if (string.Compare(id, "double", true) == 0)
+                {
+                    return new Primitive(Serialization.PrimitiveType_v1.Real64());
                 }
                 return new TypeReference(id);
             case TokenType.Ptr:
