@@ -367,5 +367,55 @@ namespace Reko.UnitTests.Environments.MacOS.Classic
             Assert.AreEqual("6", svc.SyscallInfo.StackValues[1].Offset);
             Assert.AreEqual("ffffffff", svc.SyscallInfo.StackValues[1].Value);
         }
+
+        [Test]
+        public void Ici_load_do_with_16bit_load()
+        {
+            var ici = new InlineCodeInterpreter(constants);
+            var ssig = new SerializedSignature
+            {
+                Arguments = new[]
+                {
+                    new Argument_v1
+                    {
+                        Name = "d",
+                        Type = new ReferenceType_v1 {
+                            Referent = PrimitiveType_v1.Int32(),
+                            Size = 4,
+                        }
+                    },
+                },
+            };
+
+            var svc = ici.BuildSystemCallFromMachineCode(
+                "GetTime", ssig, Opcodes(0x205F, 0x2038, 0x020c, 0xa9c6));
+            Assert.AreEqual("A9C6", svc.SyscallInfo.Vector);
+            var reg = (Register_v1)svc.Signature.Arguments[0].Kind;
+            Assert.AreEqual("a0", reg.Name);
+        }
+
+        [Test]
+        public void Ici_swap()
+        {
+            var ici = new InlineCodeInterpreter(constants);
+            var ssig = new SerializedSignature
+            {
+                Arguments = new[]
+           {
+                    new Argument_v1
+                    {
+                        Name = "d",
+                        Type = new ReferenceType_v1 {
+                            Referent = PrimitiveType_v1.Int32(),
+                            Size = 4,
+                        }
+                    },
+                },
+            };
+
+            var svc = ici.BuildSystemCallFromMachineCode(
+                "xx", ssig, Opcodes(0x4840, 0xa9c6));
+            Assert.AreEqual("A9C6", svc.SyscallInfo.Vector);
+        }
     }
 }

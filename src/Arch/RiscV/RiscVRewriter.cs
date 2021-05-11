@@ -43,11 +43,10 @@ namespace Reko.Arch.RiscV
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly ProcessorState state;
-#nullable disable
+        private readonly List<RtlInstruction> rtlInstructions;
+        private readonly RtlEmitter m;
         private RiscVInstruction instr;
-        private RtlEmitter m;
         private InstrClass iclass;
-#nullable enable
 
         public RiscVRewriter(RiscVArchitecture arch, Decoder[] decoders, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -57,6 +56,9 @@ namespace Reko.Arch.RiscV
             this.binder = binder;
             this.host = host;
             this.rdr = rdr;
+            this.rtlInstructions = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtlInstructions);
+            this.instr = default!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -66,9 +68,7 @@ namespace Reko.Arch.RiscV
                 this.instr = dasm.Current;
                 var addr = dasm.Current.Address;
                 var len = dasm.Current.Length;
-                var rtlInstructions = new List<RtlInstruction>();
                 this.iclass = this.instr.InstructionClass;
-                this.m = new RtlEmitter(rtlInstructions);
 
                 switch (instr.Mnemonic)
                 {
@@ -237,6 +237,7 @@ namespace Reko.Arch.RiscV
                 case Mnemonic.xori: RewriteXor(); break;
                 }
                 yield return m.MakeCluster(addr, len, iclass);
+                rtlInstructions.Clear();
             }
         }
 

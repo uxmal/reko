@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -37,9 +39,8 @@ namespace Reko.UnitTests.Mocks
 	public class ProgramBuilder
 	{
 		private uint procCount;
-        private Dictionary<string, Procedure> nameToProcedure = new Dictionary<string, Procedure>();
-        private Dictionary<string, Block> blocks = new Dictionary<string, Block>();
-		private List<ProcUpdater> unresolvedProcedures = new List<ProcUpdater>();
+        private readonly Dictionary<string, Procedure> nameToProcedure = new Dictionary<string, Procedure>();
+		private readonly List<ProcUpdater> unresolvedProcedures = new List<ProcUpdater>();
 
 		public ProgramBuilder() : this(new FakeArchitecture(new ServiceContainer()))
 		{
@@ -71,14 +72,18 @@ namespace Reko.UnitTests.Mocks
             var addr = Address.Ptr32(procCount * 0x1000u);
             Program.Procedures[addr] = proc;
             Program.CallGraph.AddProcedure(proc);
-            nameToProcedure[GuessName(userProc, proc)] = proc;
+            var name = GuessName(userProc, proc);
+            if (name != null)
+            {
+                nameToProcedure[name] = proc;
+            }
             if (userProc != null)
             {
                 Program.User.Procedures[addr] = userProc;
             }
         }
 
-        private string GuessName(UserProcedure? userProc, Procedure proc = null)
+        private string? GuessName(UserProcedure? userProc, Procedure? proc = null)
         {
             if (userProc != null)
             {
@@ -94,7 +99,7 @@ namespace Reko.UnitTests.Mocks
                         {
                             --i;
                         } while (i > 0 && (char.IsLetterOrDigit(name[i]) || name[i] == '_'));
-                        return name.Substring(i + 1);
+                        return name[(i + 1)..];
                     }
                 }
             }
@@ -139,16 +144,12 @@ namespace Reko.UnitTests.Mocks
             {
                 foreach (Statement stm in proc.Statements)
                 {
-                    var call = stm.Instruction as CallInstruction;
-                    if (call == null)
-                        continue;
-                    var pc = call.Callee as ProcedureConstant;
-                    if (pc == null)
-                        continue;
-                    var callee = pc.Procedure as Procedure;
-                    if (callee == null)
-                        continue;
-                    Program.CallGraph.AddEdge(stm, callee);
+                    if (stm.Instruction is CallInstruction call &&
+                        call.Callee is ProcedureConstant pc &&
+                        pc.Procedure is Procedure callee)
+                    {
+                        Program.CallGraph.AddEdge(stm, callee);
+                    }
                 }
             }
         }
@@ -169,7 +170,7 @@ namespace Reko.UnitTests.Mocks
                 new ByteMemoryArea(Address.Ptr32(0x1000), new byte[Program.Procedures.Count * 0x1000]),
                 ".text", AccessMode.Execute);
                 
-            Program.Platform = new DefaultPlatform(null, arch);
+            Program.Platform = new DefaultPlatform(new ServiceContainer(), arch);
 			return Program;
 		}
 
@@ -177,8 +178,7 @@ namespace Reko.UnitTests.Mocks
 		{
 			foreach (ProcUpdater pcu in unresolvedProcedures)
 			{
-				Procedure proc;
-                if (!nameToProcedure.TryGetValue(pcu.Name, out proc))
+                if (!nameToProcedure.TryGetValue(pcu.Name, out var proc))
 					throw new ApplicationException("Unresolved procedure name: " + pcu.Name);
 				pcu.Update(proc);
 			}
@@ -204,7 +204,7 @@ namespace Reko.UnitTests.Mocks
 
 	public class ProcedureConstantUpdater : ProcUpdater
 	{
-		private CallInstruction ci;
+		private readonly CallInstruction ci;
 
 		public ProcedureConstantUpdater(string name, CallInstruction ci) : base(name)
 		{
@@ -220,7 +220,7 @@ namespace Reko.UnitTests.Mocks
 
 	public class ApplicationUpdater : ProcUpdater
 	{
-		private Application appl;
+		private readonly Application appl;
 
 		public ApplicationUpdater(string name, Application appl) : base(name)
 		{

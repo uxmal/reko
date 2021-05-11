@@ -17,9 +17,10 @@
         <var id="var.Arm.TargetPath" >../Arch/Arm/$TargetDir$/Reko.Arch.Arm.dll</var>
         <var id="var.Avr.TargetPath" >../Arch/Avr/$TargetDir$/Reko.Arch.Avr.dll</var>
         <var id="var.Blackfin.TargetPath" >../Arch/Blackfin/$TargetDir$/Reko.Arch.Blackfin.dll</var>
-        <var id="var.C166.TargetPath" >../Arch/CompactRisc/$TargetDir$/Reko.Arch.C166.dll</var>
+        <var id="var.C166.TargetPath" >../Arch/C166/$TargetDir$/Reko.Arch.C166.dll</var>
         <var id="var.CompactRisc.TargetPath" >../Arch/CompactRisc/$TargetDir$/Reko.Arch.CompactRisc.dll</var>
         <var id="var.Cray.TargetPath" >../Arch/Cray/$TargetDir$/Reko.Arch.Cray.dll</var>
+        <var id="var.Etrax.TargetPath" >../Arch/Etrax/$TargetDir$/Reko.Arch.Etrax.dll</var>
         <var id="var.H8.TargetPath" >../Arch/H8/$TargetDir$/Reko.Arch.H8.dll</var>
         <var id="var.IA64.TargetPath" >../Arch/IA64/$TargetDir$/Reko.Arch.IA64.dll</var>
         <var id="var.LatticeMico.TargetPath" >../Arch/LatticeMico/$TargetDir$/Reko.Arch.LatticeMico.dll</var>
@@ -109,6 +110,7 @@
         <var id="var.Nro.TargetPath" >../ImageLoaders/Nro/$TargetDir$/Reko.ImageLoaders.Nro.dll</var>
         <var id="var.OdbgScript.ProjectDir" >../ImageLoaders/OdbgScript/</var>
         <var id="var.OdbgScript.TargetPath" >../ImageLoaders/OdbgScript/$TargetDir$/Reko.ImageLoaders.OdbgScript.dll</var>
+        <var id="var.Pef.TargetPath" >../ImageLoaders/Pef/$TargetDir$/Reko.ImageLoaders.Pef.dll</var>
         <var id="var.Srec.TargetPath" >../ImageLoaders/Srec/$TargetDir$/Reko.ImageLoaders.Srec.dll</var>
         <var id="var.TekHex.TargetPath" >../ImageLoaders/TekHex/$TargetDir$/Reko.ImageLoaders.TekHex.dll</var>
         <var id="var.VmsExe.TargetPath" >../ImageLoaders/VmsExe/$TargetDir$/Reko.ImageLoaders.VmsExe.dll</var>
@@ -169,6 +171,7 @@
         <File Source="$(var.Hpux.TargetPath)" nuget_target="f:" />
         <File Source="$(var.MacOS.TargetPath)" nuget_target="f:" />
         <File Source="$(var.MacOS.ProjectDir)Classic/macos_classic.xml" nuget_target="c:" />
+        <File Source="$(var.MacOS.ProjectDir)Classic/MacOSClassicInterfaces.p" nuget_target="c:" />
         <File Source="$(var.MorphOS.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Msdos.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Msdos.ProjectDir)realmodeintservices.xml" nuget_target="c:" />
@@ -288,7 +291,7 @@
         <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.dll" />
         <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.Drawing.dll" />
         <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Msagl.GraphViewerGdi.dll" />
-        <File Source="$(var.CmdLine.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\K4os.Compression.LZ4.dll" />
+        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\K4os.Compression.LZ4.dll" />
         
         <File Source="$(var.SolutionDir)..\external\reactos\coredll.def" nuget_target="c:" />
         <File Source="$(var.SolutionDir)..\external\wine\commdlg.dll16.spec" nuget_target="c:" />
@@ -350,9 +353,9 @@
       <File Id="File_Os2_16_SESMGR" Source="$(var.OS2.ProjectDir)16\SESMGR.def" nuget_target="c:/os-16" />
       <File Id="File_Os2_16_SPOOLCP" Source="$(var.OS2.ProjectDir)16\SPOOLCP.def" nuget_target="c:/os-16" />
       <File Id="File_Os2_16_VIOCALLS" Source="$(var.OS2.ProjectDir)16\VIOCALLS.def" nuget_target="c:/os-16" />
-      <File Source="$(var.OS2.ProjectDir)fsd.xml" nuget_target="c:/os-16" />
-      <File Source="$(var.OS2.ProjectDir)fsh.xml" nuget_target="c:/os-16" />
-      <File Source="$(var.OS2.ProjectDir)fsu.xml" nuget_target="c:/os-16" />
+      <File Source="$(var.OS2.ProjectDir)16\fsd.xml" nuget_target="c:/os-16" />
+      <File Source="$(var.OS2.ProjectDir)16\fsh.xml" nuget_target="c:/os-16" />
+      <File Source="$(var.OS2.ProjectDir)16\fsu.xml" nuget_target="c:/os-16" />
 
     </Component>
 

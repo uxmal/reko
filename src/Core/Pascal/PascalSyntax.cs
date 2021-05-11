@@ -70,9 +70,15 @@ namespace Reko.Core.Pascal
 
     public class ConstantDeclaration : Declaration
     {
-        public Exp Exp;
+        public ConstantDeclaration(string name, Exp exp, PascalType type = null) : base(name)
+        {
+            this.Exp = exp;
+            this.Type = type;
+        }
 
-        public ConstantDeclaration(string name, Exp exp) : base(name) { this.Exp = exp; }
+        public Exp Exp { get; }
+        public PascalType Type { get; }
+
 
         public override T Accept<T>(IPascalSyntaxVisitor<T> visitor)
         {
@@ -84,6 +90,11 @@ namespace Reko.Core.Pascal
             writer.Write("const");
             writer.Write(' ');
             writer.Write(Name);
+            if (this.Type != null)
+            {
+                writer.Write(" : ");
+                Type.Write(writer);
+            }
             writer.Write(" = ");
             Exp.Write(writer);
         }
@@ -126,6 +137,7 @@ namespace Reko.Core.Pascal
         }
 
         public Block Body { get; set; }
+        public string CallingConvention { get; set; }
 
         public override T Accept<T>(IPascalSyntaxVisitor<T> visitor)
         {
@@ -154,6 +166,10 @@ namespace Reko.Core.Pascal
             {
                 writer.Write(" : ");
                 ReturnType.Write(writer);
+            }
+            if (CallingConvention != null)
+            {
+                writer.Write("; {0}", CallingConvention);
             }
             if (Body != null)
             {
@@ -280,7 +296,10 @@ namespace Reko.Core.Pascal
             Left.Write(writer);
             switch (Op)
             {
+            case TokenType.Plus: writer.Write(" + "); break;
             case TokenType.Minus: writer.Write(" - "); break;
+            case TokenType.Star: writer.Write(" * "); break;
+            case TokenType.Slash: writer.Write(" / "); break;
             default: writer.Write(Op.ToString()); break;
             }
             Right.Write(writer);
@@ -536,6 +555,29 @@ namespace Reko.Core.Pascal
         }
     }
 
+    public class ObjectType : PascalType
+    {
+        public ObjectType(List<Declaration> members)
+        {
+            this.Members = members;
+        }
+
+        public List<Declaration> Members { get; }
+
+        public override T Accept<T>(IPascalSyntaxVisitor<T> visitor)
+        {
+            return visitor.VisitObject(this);
+        }
+
+        public override void Write(TextWriter writer)
+        {
+            writer.Write("object");
+            writer.Write(" ");
+            WriteList(writer, "; ", Members);
+            writer.Write(" end");
+        }
+    }
+
     public class VariantPart
     {
         public string VariantTag;
@@ -598,6 +640,11 @@ namespace Reko.Core.Pascal
 
         public static void Write(TextWriter writer, ParameterDeclaration decl)
         {
+            if (decl.ParameterNames.Count == 1 && decl.ParameterNames[0] == "...")
+            {
+                writer.Write("...");
+                return;
+            }
             if (decl.ByReference)
             {
                 writer.Write("var");
@@ -650,6 +697,50 @@ namespace Reko.Core.Pascal
         }
     }
 
+    public class CallableType : PascalType
+    {
+        public CallableType(List<ParameterDeclaration> procParameters, PascalType returnType = null)
+        {
+            this.Parameters = procParameters;
+            this.ReturnType = returnType;
+        }
+
+        public List<ParameterDeclaration> Parameters { get; }
+        public PascalType ReturnType { get; }
+        public string CallingConvention { get; set; }
+
+        public override T Accept<T>(IPascalSyntaxVisitor<T> visitor)
+        {
+            return visitor.VisitCallableType(this);
+        }
+        public override void Write(TextWriter writer)
+        {
+            if (ReturnType is null)
+            {
+                writer.Write("procedure");
+            }
+            else
+            {
+                writer.Write("function");
+            }
+            if (Parameters.Count > 0)
+            {
+                writer.Write("(");
+                WriteList(writer, "; ", Parameters, ParameterDeclaration.Write);
+                writer.Write(")");
+            }
+            if (ReturnType != null)
+            {
+                writer.Write(" : ");
+                ReturnType.Write(writer);
+            }
+            if (CallingConvention != null)
+            {
+                writer.Write("; {0}", CallingConvention);
+            }
+        }
+    }
+
     public class ArrayDimension
     {
         public Exp Low;
@@ -697,12 +788,14 @@ namespace Reko.Core.Pascal
         T VisitBinExp(BinExp binExp);
         T VisitBooleanLiteral(BooleanLiteral booleanLiteral);
         T VisitCallableDeclaration(CallableDeclaration cd);
+        T VisitCallableType(CallableType callableType);
         T VisitConstantDeclaration(ConstantDeclaration cd);
         T VisitEnumType(EnumType enumType);
         T VisitFile(File file);
         T VisitIdentifier(Id id);
         T VisitInlineMachineCode(InlineMachineCode code);
         T VisitNumericLiteral(NumericLiteral number);
+        T VisitObject(ObjectType objectType);
         T VisitPointerType(Pointer pointer);
         T VisitPrimitiveType(Primitive primitive);
         T VisitRangeType(RangeType rangeType);

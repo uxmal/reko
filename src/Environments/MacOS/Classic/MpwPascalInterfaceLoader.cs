@@ -48,7 +48,7 @@ namespace Reko.Environments.MacOS.Classic
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             var rdr = new StreamReader(new MemoryStream(bytes));
-            var lexer = new PascalLexer(rdr);
+            var lexer = new PascalLexer(rdr, false);    // It seems MPW pascal doesn't allow nesting comments.
             var parser = new PascalParser(lexer);
             var symbolTable = new SymbolTable(platform);
             var declarations = parser.Parse();
@@ -127,7 +127,10 @@ namespace Reko.Environments.MacOS.Classic
 
         private Dictionary<string,Constant> EvaluateConstants(IEnumerable<Declaration> decls)
         {
-            var evaluated = new Dictionary<string, Constant>();
+            var evaluated = new Dictionary<string, Constant>
+            {
+                { "nil", Constant.Word32(0) }
+            };
 
             var dict = new SortedDictionary<string, Exp>();
             foreach (var qq in decls.OfType<ConstantDeclaration>())

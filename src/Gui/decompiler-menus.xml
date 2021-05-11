@@ -143,10 +143,11 @@
   <cmd id="ActionMarkStrings" cmdSet="Reko" container="ActionMarkStrings">Mark selection as _strings</cmd>
   <cmd id="ActionAssumeRegisterValues" cmdSet="Reko" container="ActionAssumeRegisterValues">_Register values...</cmd>
 
+  <cmd id="ToolsHexDisassembler" cmdSet="Reko" container="GrpTools">_Hex disassembler</cmd>
   <cmd id="ToolsOptions" cmdSet="Reko" container="GrpTools">_Options...</cmd>
   <cmd id="ToolsKeyBindings" cmdSet="Reko" container="GrpTools">_Key bindings...</cmd>
   
-  <cmd id="WindowsCascade" cmdSet="Reko" container="GrpWindows">_Cacade</cmd>
+  <cmd id="WindowsCascade" cmdSet="Reko" container="GrpWindows">_Cascade</cmd>
   <cmd id="WindowsTileVertical" cmdSet="Reko" container="GrpWindows">Tile _Vertically</cmd>
   <cmd id="WindowsTileHorizontal" cmdSet="Reko" container="GrpWindows">Tile _Horizontally</cmd>
   <cmd id="WindowsCloseAll" cmdSet="Reko" container="GrpWindows">C_lose All Windows</cmd>

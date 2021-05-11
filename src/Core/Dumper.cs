@@ -94,7 +94,10 @@ namespace Reko.Core
                     formatter.WriteLine();
                 }
                 var arch = block.Block.Procedure.Architecture;
-                DumpAssembler(program.SegmentMap, arch, block.Address, block.Size, formatter);
+                if (program.SegmentMap.TryFindSegment(block.Address, out var seg))
+                {
+                    DumpAssembler(arch, seg.MemoryArea, block.Address, block.Size, formatter);
+                }
                 return;
             }
 
@@ -161,19 +164,29 @@ namespace Reko.Core
             DumpData(map, arch, range.Begin, (long) (range.End - range.Begin), stm);
         }
 
-		public void DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, long cbBytes, Formatter stm)
-		{
+        public void DumpData(SegmentMap map, IProcessorArchitecture arch, Address address, long cbBytes, Formatter stm)
+        {
+            if (!map.TryFindSegment(address, out var segment) || segment.MemoryArea == null)
+                return;
+            DumpData(arch, segment.MemoryArea, address, cbBytes, stm);
+        }
+
+        public void DumpData(
+            IProcessorArchitecture arch, 
+            MemoryArea mem, 
+            Address address, 
+            long cbBytes, 
+            Formatter stm)
+        {
             const int BytesPerLine = 16;
             var linAddr = address.ToLinear();
             ulong cSkip = linAddr - BytesPerLine * (linAddr / BytesPerLine);
-            if (!map.TryFindSegment(address, out var segment) || segment.MemoryArea == null)
-                return;
             byte[]? prevLine = null;
             bool showEllipsis = true;
-            cbBytes = Math.Min(cbBytes, segment.MemoryArea.Length - (address - segment.MemoryArea.BaseAddress));
+            cbBytes = Math.Min(cbBytes, mem.Length - (address - mem.BaseAddress));
             if (cbBytes <= 0)
                 return;
-			var rdr = arch.CreateImageReader(segment.MemoryArea, address);
+			var rdr = arch.CreateImageReader(mem, address);
 			while (cbBytes > 0)
             {
 				StringBuilder sb = new StringBuilder(0x12);
@@ -242,11 +255,14 @@ namespace Reko.Core
             return true;
         }
 
-        public void DumpAssembler(SegmentMap map, IProcessorArchitecture arch, Address addrStart, long cbBytes, Formatter formatter)
+        public void DumpAssembler(
+            IProcessorArchitecture arch,
+            MemoryArea mem,
+            Address addrStart,
+            long cbBytes,
+            Formatter formatter)
         {
-            if (!map.TryFindSegment(addrStart, out var segment))
-                return;
-            var dasm = arch.CreateDisassembler(arch.CreateImageReader(segment.MemoryArea, addrStart));
+            var dasm = arch.CreateDisassembler(arch.CreateImageReader(mem, addrStart));
             try
             {
                 var writer = new InstrWriter(formatter);
@@ -257,7 +273,7 @@ namespace Reko.Core
                 {
                     if (cbBytes <= 0)
                         break;
-                    if (!DumpAssemblerLine(segment.MemoryArea, arch, instr, writer, options))
+                    if (!DumpAssemblerLine(mem, arch, instr, writer, options))
                         break;
 
                     cbBytes -= instr.Length;

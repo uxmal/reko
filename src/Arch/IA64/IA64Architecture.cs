@@ -133,6 +133,7 @@ namespace Reko.Arch.IA64
 
         public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
+            return Address.TryParse64(txtAddr, out addr);
             throw new NotImplementedException();
         }
     }

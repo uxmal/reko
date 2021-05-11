@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Core.Pascal
 
         private void RunTest(string src, params Token[] expectedTokens)
         {
-            var lex = new PascalLexer(new StringReader(src));
+            var lex = new PascalLexer(new StringReader(src), true);
             foreach (var exp in expectedTokens)
             {
                 var token = lex.Read();
@@ -96,6 +96,22 @@ namespace Reko.UnitTests.Core.Pascal
         {
             var src = "BooleaN";
             RunTest(src, T(TokenType.Boolean));
+        }
+
+        [Test]
+        public void PLex_DoubleQuoteString()
+        {
+            var src = "\"string\"";
+            RunTest(src, T(TokenType.StringLiteral, "string"));
+        }
+
+        [Test]
+        public void PLex_FloatWithExponent()
+        {
+            RunTest("2e10", T(TokenType.RealLiteral, 2e10));
+            RunTest("2.5e10", T(TokenType.RealLiteral, 2.5e10));
+            RunTest("2e+10", T(TokenType.RealLiteral, 2e10));
+            RunTest("2.5e+10", T(TokenType.RealLiteral, 2.5e10));
         }
     }
 }

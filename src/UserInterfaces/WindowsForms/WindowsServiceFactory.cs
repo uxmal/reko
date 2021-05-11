@@ -242,5 +242,10 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             return new StackTraceService(services, mainForm);
         }
+
+        public IHexDisassemblerService CreateHexDisassemblerService()
+        {
+            return new HexDisassemblerService(services);
+        }
     }
 }
