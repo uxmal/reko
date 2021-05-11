@@ -30,12 +30,12 @@ namespace Reko.UserInterfaces.WindowsForms
     /// </summary>
     public class TextBoxWrapper : ControlWrapper, ITextBox
     {
-        private TextBox text;
+        private TextBoxBase text;
 
         public event EventHandler<Gui.Controls.KeyEventArgs> KeyDown;
         public event EventHandler<Gui.Controls.KeyEventArgs> KeyUp;
 
-        public TextBoxWrapper(TextBox text)
+        public TextBoxWrapper(TextBoxBase text)
             : base(text)
         {
             this.text = text;
@@ -44,6 +44,12 @@ namespace Reko.UserInterfaces.WindowsForms
         }
 
         public string Text { get { return text.Text; } set { text.Text = value;  } }
+
+        public bool Modified
+        {
+            get => text.Modified;
+            set => text.Modified = value;
+        }
 
         public void SelectAll() {
             text.SelectAll();

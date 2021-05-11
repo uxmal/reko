@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2021 John Källén.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,22 @@
  */
 #endregion
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Reko.Gui.Controls
 {
-    public interface ITextBox : IControl
+    /// <summary>
+    /// Interface that abstracts the functionality of the text file editor.
+    /// </summary>
+    public interface ITextFileEditor : IDisposable
     {
-        event EventHandler TextChanged;
-        event EventHandler<KeyEventArgs> KeyDown;
-        event EventHandler<KeyEventArgs> KeyUp;
+        ITextBox TextBox { get; }
+        IButton SaveButton { get; }
 
-        string Text { get; set; }
-        bool Modified { get; set; }
-
-        void SelectAll();
-        void ScrollToEnd();
+        void GoToLine(int line);
     }
 }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -81,7 +81,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public void ShowSearchResults(ISearchResult result)
         {
             SetSearchResults(result);
-            services.RequireService<IWindowFrame>().Show();
+            Frame?.Show();
         }
 
         private void SetSearchResults(ISearchResult result)

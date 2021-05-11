@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2021 John Källén.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,34 @@
  */
 #endregion
 
+#nullable enable
+
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 
-namespace Reko.Gui.Controls
+namespace Reko.Gui
 {
-    public interface ITextBox : IControl
+    public class TextFileViewerServiceImpl : ViewService, ITextFileEditorService
     {
-        event EventHandler TextChanged;
-        event EventHandler<KeyEventArgs> KeyDown;
-        event EventHandler<KeyEventArgs> KeyUp;
+        public TextFileViewerServiceImpl(IServiceProvider sp) : base(sp)
+        {
+        }
 
-        string Text { get; set; }
-        bool Modified { get; set; }
-
-        void SelectAll();
-        void ScrollToEnd();
+        public void DisplayFile(string fileName, int? line)
+        {
+            var pane = new TextFileEditorInteractor(fileName);
+            var windowType = typeof(TextFileEditorInteractor).Name;
+            var title = Path.GetFileName(fileName);
+            var frame = ShowWindow(windowType, title, fileName, pane);
+            pane = ((TextFileEditorInteractor) frame.Pane);
+            pane.DisplayFile();
+            if (line.HasValue)
+            {
+                pane.GoToLine(line.Value);
+            }
+        }
     }
 }

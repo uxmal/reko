@@ -152,6 +152,9 @@ namespace Reko.Gui.Forms
             var codeViewSvc = svcFactory.CreateCodeViewerService();
             sc.AddService<ICodeViewerService>(codeViewSvc);
 
+            var textEditorSvc = svcFactory.CreateTextFileEditorService();
+            sc.AddService<ITextFileEditorService>(textEditorSvc);
+
             var segmentViewSvc = svcFactory.CreateImageSegmentService();
             sc.AddService(typeof(ImageSegmentService), segmentViewSvc);
 
@@ -215,6 +218,9 @@ namespace Reko.Gui.Forms
 
             var outputSvc = svcFactory.CreateOutputService();
             sc.AddService<IOutputService>(outputSvc);
+
+            var stackTraceSvc = svcFactory.CreateStackTraceService();
+            sc.AddService<IStackTraceService>(stackTraceSvc);
 
             var hexDasmSvc = svcFactory.CreateHexDisassemblerService();
             sc.AddService<IHexDisassemblerService>(hexDasmSvc);
@@ -441,6 +447,7 @@ namespace Reko.Gui.Forms
             CloseAllDocumentWindows();
             sc.RequireService<IProjectBrowserService>().Clear();
             sc.RequireService<IProcedureListService>().Clear();
+            sc.RequireService<IStackTraceService>().Clear();
             diagnosticsSvc.ClearDiagnostics();
             decompilerSvc.Decompiler = null;
             this.ProjectFileName = null;
@@ -491,6 +498,7 @@ namespace Reko.Gui.Forms
             SwitchInteractor(this.InitialPageInteractor);
             
             CloseAllDocumentWindows();
+            sc.RequireService<IStackTraceService>().Clear();
             diagnosticsSvc.ClearDiagnostics();
             projectBrowserSvc.Reload();
             projectBrowserSvc.Show();

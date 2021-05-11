@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2021 John Källén.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,26 @@
  */
 #endregion
 
+#nullable enable
+
+using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Text;
+using System.Windows.Forms;
 
-namespace Reko.Gui.Controls
+namespace Reko.UserInterfaces.WindowsForms.Forms
 {
-    public interface ITextBox : IControl
+    public partial class StackTraceDialog : Form
     {
-        event EventHandler TextChanged;
-        event EventHandler<KeyEventArgs> KeyDown;
-        event EventHandler<KeyEventArgs> KeyUp;
+        public StackTraceDialog()
+        {
+            InitializeComponent();
+        }
 
-        string Text { get; set; }
-        bool Modified { get; set; }
-
-        void SelectAll();
-        void ScrollToEnd();
+        public ListView StackTraceListView => this.stackTraceListView;
     }
 }

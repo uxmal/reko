@@ -38,6 +38,8 @@ namespace Reko.UnitTests.Mocks
         public Color BackColor { get; set; }
         public Color ForeColor { get; set; }
 
+        public bool Modified { get; set; }
+
         public void BringToFront()
         {
             throw new NotImplementedException();

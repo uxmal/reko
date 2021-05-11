@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2021 John Källén.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,21 +20,26 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace Reko.Gui.Controls
+namespace Reko.Core.Scripts
 {
-    public interface ITextBox : IControl
+    public class ScriptStackFrame
     {
-        event EventHandler TextChanged;
-        event EventHandler<KeyEventArgs> KeyDown;
-        event EventHandler<KeyEventArgs> KeyUp;
+        public ScriptStackFrame(string file, int line, string method)
+        {
+            this.FileName = file;
+            this.LineNumber = line;
+            this.MethodName = method;
+        }
 
-        string Text { get; set; }
-        bool Modified { get; set; }
+        public readonly string FileName;
+        public readonly int LineNumber;
+        public readonly string MethodName;
 
-        void SelectAll();
-        void ScrollToEnd();
+        public override string ToString()
+        {
+            return $"File \"{FileName}\", line {LineNumber}, in {MethodName}";
+        }
     }
 }

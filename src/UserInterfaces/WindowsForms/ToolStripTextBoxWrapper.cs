@@ -44,6 +44,12 @@ namespace Reko.UserInterfaces.WindowsForms
         public Color BackColor { get { return textbox.BackColor; } set { textbox.BackColor = value; } }
         public Color ForeColor { get { return textbox.ForeColor; } set { textbox.ForeColor = value; } }
 
+        public bool Modified
+        {
+            get => textbox.Modified;
+            set => textbox.Modified = value;
+        }
+
         public void SelectAll()
         {
             textbox.SelectAll();

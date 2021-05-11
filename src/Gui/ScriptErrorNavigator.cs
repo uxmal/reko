@@ -23,32 +23,35 @@
 using Reko.Core;
 using Reko.Core.Scripts;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
-namespace Reko.Gui.Design
+namespace Reko.Gui
 {
-    public class ScriptFileDesigner : TreeNodeDesigner
+    public class ScriptErrorNavigator : ICodeLocation
     {
-        private ScriptFile scriptFile = default!;
+        private readonly ScriptError error;
+        private readonly IServiceProvider sp;
 
-        public override void Initialize(object obj)
+        public ScriptErrorNavigator(ScriptError error, IServiceProvider sp)
         {
-            base.Initialize(obj);
-            this.scriptFile = (ScriptFile) obj;
-            SetTreeNodeProperties(scriptFile);
+            this.error = error;
+            this.sp = sp;
         }
 
-        public override void DoDefaultAction()
+        #region ICodeLocation Members
+
+        public string Text => Path.GetFileName(error.FileName);
+
+        public void NavigateTo()
         {
-            var editorSvc = Services!.RequireService<ITextFileEditorService>();
-            editorSvc.DisplayFile(scriptFile.Filename);
+            var editorSvc = sp.GetService<ITextFileEditorService>();
+            editorSvc?.DisplayFile(error.FileName, error.LineNumber);
+            var stackTraceSvc = sp.GetService<IStackTraceService>();
+            stackTraceSvc?.DisplayStackTrace(error.StackFrames);
         }
 
-        public void SetTreeNodeProperties(ScriptFile scriptFile)
-        {
-            TreeNode!.Text = Path.GetFileName(scriptFile.Filename);
-            var ext = Path.GetExtension(scriptFile.Filename).ToLower();
-            TreeNode.ImageName = $"Script{ext}.ico";
-        }
+        #endregion
     }
 }
