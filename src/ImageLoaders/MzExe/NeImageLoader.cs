@@ -382,6 +382,7 @@ namespace Reko.ImageLoaders.MzExe
                         if (seg.IsData)
                         {
                             ep = ImageSymbol.DataObject(arch, addr, name, new UnknownType());
+                            ep.Ordinal = bundleOrdinal + i;
                         }
                         else
                         {
