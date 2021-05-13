@@ -53,7 +53,7 @@ namespace Reko.Core.Serialization
                 p => VisitProgram(projectAbsPath, p)).ToList();
             var metadataFiles = project.MetadataFiles.Select(
                 m => VisitMetadataFile(projectAbsPath, m)).ToList();
-            var scriptFiles = project.ScriptFiles.Select(
+            var scriptFiles = project.ScriptFiles.ToList().Select(
                 s => VisitScriptFile(projectAbsPath, s)).ToList();
             var sp = new Project_v5
             {

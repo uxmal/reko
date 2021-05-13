@@ -81,13 +81,13 @@ namespace Reko.Core
             {
                 if (project != null)
                 {
-                    RemoveScripts(project.ScriptFiles);
+                    RemoveScripts(project.ScriptFiles.ToList());
                     project.ScriptFiles.CollectionChanged -= OnScriptsChanged;
                 }
                 project = value;
                 if (value != null)
                 {
-                    AddScripts(value.ScriptFiles);
+                    AddScripts(value.ScriptFiles.ToList());
                     value.ScriptFiles.CollectionChanged += OnScriptsChanged;
                 }
             }
@@ -169,7 +169,7 @@ namespace Reko.Core
             if (project is null)
                 return;
             var fullPath = Path.GetFullPath(fileName);
-            var scriptFile = project.ScriptFiles.
+            var scriptFile = project.ScriptFiles.ToList().
                 Where(s => Path.GetFullPath(s.Filename) == fullPath).
                 FirstOrDefault();
             if (scriptFile != null)
