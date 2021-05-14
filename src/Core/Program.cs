@@ -686,7 +686,14 @@ namespace Reko.Core
                 this.ImageMap.AddItemWithSize(address, item);
             else
                 this.ImageMap.AddItem(address, item);
-
+            //$BUGBUG: what about x86 segmented binaries?
+            int offset = (int) address.ToLinear();
+            var globalField = GlobalFields.Fields.AtOffset(offset);
+            if (globalField != null)
+            {
+                GlobalFields.Fields.Remove(globalField);
+            }
+            GlobalFields.Fields.Add(offset, dt, name);
             return gbl;
         }
 

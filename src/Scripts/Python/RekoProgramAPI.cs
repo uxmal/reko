@@ -115,7 +115,8 @@ namespace Reko.Scripts.Python
             if (name is null || dataType is null)
                 throw new ArgumentException(
                     $"Failed to parse global variable declaration: '{decl}'");
-            program.User.Globals[addr] = new UserGlobal(addr, name, dataType);
+            var arch = program.Architecture;
+            program.ModifyUserGlobal(arch, addr, dataType, name);
         }
 
         public string[] GetProcedureAddresses()

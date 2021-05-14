@@ -5,23 +5,21 @@
     program.comments[(0x1234, 0x0000)] = '\n'.join(comments)
 
 def define_procedures(program):
+    mem = program.memory
     for addr, proc in program.procedures.items():
         if proc.decompile:
             proc.decompile = False
             if proc.decompile:
                 raise Exception("'decompile' flag should be set to 'False'")
-            decl = find_declaration(program, addr)
+            decl_addr = find_procedure_end(program, addr)
+            decl = mem[decl_addr].c_str
             program.procedures[addr] = decl
+            program.globals[decl_addr] = "char {}_decl[{}]".format(
+                proc.name, len(decl))
             if not proc.decompile:
                 raise Exception(
                     "'decompile' flag should be reset to 'True' after declaration setting"
                 )
-
-def find_declaration(program, proc_addr):
-    mem = program.memory
-    proc_decl_addr = find_procedure_end(program, proc_addr)
-    proc_decl = mem[proc_decl_addr].c_str
-    return proc_decl
 
 def find_procedure_end(program, proc_addr):
     (seg, offset) = proc_addr
