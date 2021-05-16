@@ -329,11 +329,57 @@ namespace Reko.Gui.Forms
         /// <summary>
         /// Prompts the user for a script file and adds to the project.
         /// </summary>
-        public void AddScriptFile()
+        private void AddScriptFile()
         {
             var fileName = uiSvc.ShowOpenFileDialog(null);
             if (fileName == null)
                 return;
+            AddScriptFile(fileName);
+        }
+
+        /// <summary>
+        /// Prompts the user for a creating new script file and adds it to the
+        /// project.
+        /// </summary>
+        private void NewScriptFile()
+        {
+            var fileName = uiSvc.ShowSaveFileDialog(GetDefaultScriptPath());
+            if (fileName == null)
+                return;
+            var fsSvc = sc.RequireService<IFileSystemService>();
+            try
+            {
+                fsSvc.CopyFile(GetScriptTemplatePath(), fileName, true);
+                AddScriptFile(fileName);
+            }
+            catch (Exception e)
+            {
+                uiSvc.ShowError(
+                    e,
+                    "An error occured while creating the script file {0}.",
+                    fileName);
+            }
+        }
+
+        private string GetDefaultScriptPath()
+        {
+            var defaultFileName = "new_script.py";
+            return ProjectPersister.ConvertToAbsolutePath(
+                ProjectFileName, defaultFileName);
+        }
+
+        private string GetScriptTemplatePath()
+        {
+            var cfgSvc = sc.RequireService<IConfigurationService>();
+            var templName = "_new_script_template.py";
+            return cfgSvc.GetInstallationRelativePath(templName);
+        }
+
+        /// <summary>
+        /// Adds scripts file to the project.
+        /// </summary>
+        private void AddScriptFile(string fileName)
+        {
             try
             {
                 var script = loader.LoadScript(fileName);
@@ -348,7 +394,7 @@ namespace Reko.Gui.Forms
             {
                 uiSvc.ShowError(
                     e,
-                    "An error occured while parsing the script file {0}",
+                    "An error occured while parsing the script file {0}.",
                     fileName);
             }
         }
@@ -906,6 +952,7 @@ namespace Reko.Gui.Forms
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : MenuStatus.Visible;
                     return true;
+                case CmdIds.FileNewScript:
                 case CmdIds.FileAddBinary:
                 case CmdIds.FileAddMetadata:
                 case CmdIds.FileAddScript:
@@ -971,6 +1018,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.FileAssemble: retval = AssembleFile(); break;
                 case CmdIds.FileSave: Save(); retval = true; break;
                 case CmdIds.FileAddMetadata: AddMetadataFile(); retval = true; break;
+                case CmdIds.FileNewScript: NewScriptFile(); retval = true; break;
                 case CmdIds.FileAddScript: AddScriptFile(); retval = true; break;
                 case CmdIds.FileCloseProject: CloseProject(); retval = true; break;
                 case CmdIds.FileExit: form.Close(); retval = true; break;
