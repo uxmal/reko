@@ -26,6 +26,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -84,7 +85,10 @@ namespace Reko.UserInterfaces.WindowsForms
         public virtual string ShowSaveFileDialog(string fileName)
         {
             if (!string.IsNullOrEmpty(fileName))
-                sfd.FileName = fileName;
+            {
+                sfd.FileName = Path.GetFileName(fileName);
+                sfd.InitialDirectory = Path.GetDirectoryName(fileName);
+            }
             if ((Gui.DialogResult)sfd.ShowDialog(form) == Gui.DialogResult.OK)
             {
                 return sfd.FileName;
