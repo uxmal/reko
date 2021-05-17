@@ -346,10 +346,9 @@ namespace Reko.Core
             string instrByteFormat = $"{{0:X{byteSize * 2}}} "; // each byte is two nybbles.
             var instrByteSize = PrimitiveType.CreateWord(arch.InstructionBitSize);
 
-            while (rdr.Address < addrEnd)
-			{
-                if (rdr.TryRead(instrByteSize, out var v))
-                    writer.WriteFormat(instrByteFormat, v.ToUInt64());
+            while (rdr.Address < addrEnd && rdr.TryRead(instrByteSize, out var v))
+            {
+                writer.WriteFormat(instrByteFormat, v.ToUInt64());
 			}
 		}
 
