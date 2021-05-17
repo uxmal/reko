@@ -1165,7 +1165,7 @@ T_98: (in Mem62[ix + -10<i16>:word16] @ 00000341 : word16)
   Class: Eq_24
   DataType: Eq_24
   OrigDataType: uint8
-T_99: (in 1<8> @ 00000343 : byte)
+T_99: (in 1<8> @ 00000341 : byte)
   Class: Eq_99
   DataType: byte
   OrigDataType: byte
@@ -2973,7 +2973,7 @@ T_550: (in Mem12[ix + -26<i16>:word16] @ 0000050B : word16)
   Class: Eq_24
   DataType: Eq_24
   OrigDataType: word16
-T_551: (in 1<8> @ 0000050D : byte)
+T_551: (in 1<8> @ 0000050B : byte)
   Class: Eq_551
   DataType: byte
   OrigDataType: byte
@@ -4029,7 +4029,7 @@ T_814: (in Mem217[ix + -34<i16>:word16] @ 000005DF : word16)
   Class: Eq_24
   DataType: Eq_24
   OrigDataType: uint8
-T_815: (in 1<8> @ 000005E1 : byte)
+T_815: (in 1<8> @ 000005DF : byte)
   Class: Eq_815
   DataType: byte
   OrigDataType: byte
@@ -5773,7 +5773,7 @@ T_1250: (in Mem0[ix + -26<i16>:word16] @ 00000C2C : word16)
   Class: Eq_24
   DataType: Eq_24
   OrigDataType: word16
-T_1251: (in 1<8> @ 00000C2E : byte)
+T_1251: (in 1<8> @ 00000C2C : byte)
   Class: Eq_1251
   DataType: byte
   OrigDataType: byte
@@ -7837,7 +7837,7 @@ T_1766: (in bc_355 @ 00000D00 : Eq_24)
   Class: Eq_24
   DataType: Eq_24
   OrigDataType: ui16
-T_1767: (in 1<8> @ 00000D02 : byte)
+T_1767: (in 1<8> @ 00000D00 : byte)
   Class: Eq_1767
   DataType: byte
   OrigDataType: byte

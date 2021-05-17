@@ -353,6 +353,17 @@ namespace Reko.Analysis
         /// </summary>
         private Instruction TransformRolC(Application rolc, Assignment assRolc)
         {
+            // 1. a_2 = a_1 << 1
+            // 2. C_2 = cond(a_2)
+            // 3. b_2 = b_1 rolc 1, C_2
+            // 4. flags_3 = cond(b_2)
+
+            // *.  tmp_3 = (b_1:a_1) << 1
+            // 1'. a_2 = slice(tmp3,16)
+            // 2.  C_2 = cond(a_2)
+            // 2'. b_2 = slice(tmp3,0)
+            // 4.  flags_3 = cond(b_2)
+
             var sidOrigHi = ssaIds[assRolc.Dst];
             var sidCarryUsedInRolc = ssaIds[(Identifier)rolc.Arguments[2]];
             var defStatements = ClosureOfReachingDefinitions(sidCarryUsedInRolc);
@@ -370,66 +381,40 @@ namespace Reko.Analysis
                 return assRolc;
 
             var block = sidOrigHi.DefStatement!.Block;
-            var expShrSrc = shift.Left;
+            var expShlSrc = shift.Left;
             var expRorSrc = rolc.Arguments[0];
 
-            // Discard the unused statements that generate the carry that 
-            // ties the SHL and RCL together.
+            // Discard the use of the carry that tied the SHL and ROLC together.
             sidCarryUsedInRolc.Uses.Remove(sidOrigHi.DefStatement);
-            ssa.RemoveUses(sidCarry.DefStatement!);
-            block.Statements.Remove(sidCarry.DefStatement!);
 
-            // xx = lo
-            var tmpLo = ssa.Procedure.Frame.CreateTemporary(expShrSrc.DataType);
-            var sidTmpLo = ssaIds.Add(tmpLo, sidOrigLo.DefStatement, expShrSrc, false);
-            sidOrigLo.DefStatement!.Instruction = new Assignment(sidTmpLo.Identifier, expShrSrc);
+            var tmpLo = ssa.Procedure.Frame.CreateTemporary(expShlSrc.DataType);
+            var sidTmpLo = mutator.InsertAssignmentBefore(tmpLo, expShlSrc, sidOrigLo.DefStatement!);
 
             var tmpHi = ssa.Procedure.Frame.CreateTemporary(rolc.Arguments[0].DataType);
-            var sidTmpHi = ssaIds.Add(tmpHi, sidOrigHi.DefStatement, rolc.Arguments[0], false);
-            sidOrigHi.DefStatement.Instruction = new Assignment(sidTmpHi.Identifier, rolc.Arguments[0]);
+            var sidTmpHi = mutator.InsertAssignmentAfter(tmpHi, rolc.Arguments[0], sidTmpLo.DefStatement!);
 
-            var iRolc = block.Statements.IndexOf(sidOrigHi.DefStatement);
-            var dt = PrimitiveType.Create(Domain.Integer, expShrSrc.DataType.BitSize + expRorSrc.DataType.BitSize);
+            var dt = PrimitiveType.Create(Domain.Integer, expShlSrc.DataType.BitSize + expRorSrc.DataType.BitSize);
             var tmp = ssa.Procedure.Frame.CreateTemporary(dt);
             var expMkLongword = m.Shl(m.Seq(sidTmpHi.Identifier, sidTmpLo.Identifier), 1);
-            var sidTmp = ssaIds.Add(tmp, sidGrf!.DefStatement, expMkLongword, false);
-            var stmTmp = block.Statements.Insert(iRolc + 1, sidOrigHi.DefStatement.LinearAddress,
-                new Assignment(sidTmp.Identifier, expMkLongword));
-            sidTmp.DefStatement = stmTmp;
-            sidTmpLo.Uses.Add(stmTmp);
-            sidTmpHi.Uses.Add(stmTmp);
+            var sidTmp = mutator.InsertAssignmentAfter(tmp, expMkLongword, sidTmpHi.DefStatement!);
 
-            //ssa.RemoveUses(sidCarry.DefStatement!);
-            // block.Statements.Remove(sidCarry.DefStatement!);
-            //ssaIds.Remove(sidCarry);
-
+            ssa.RemoveUses(sidOrigLo.DefStatement!);
             var expNewLo = m.Slice(
                 PrimitiveType.CreateWord(tmpHi.DataType.BitSize),
                 sidTmp.Identifier,
                 0);
-            var stmNewLo = block.Statements.Insert(
-                iRolc + 2,
-                sidOrigLo.DefStatement.LinearAddress,
-                new Assignment(sidOrigLo.Identifier, expNewLo));
-            sidTmp.Uses.Add(stmNewLo);
-            sidOrigLo.DefStatement = stmNewLo;
+            sidOrigLo.DefStatement!.Instruction = new Assignment(sidOrigLo.Identifier, expNewLo);
             sidOrigLo.DefExpression = expNewLo;
+            sidTmp.Uses.Add(sidOrigLo.DefStatement!);
 
+            ssa.RemoveUses(sidOrigHi.DefStatement!);
             var expNewHi = m.Slice(
                 PrimitiveType.CreateWord(tmpLo.DataType.BitSize),
                 sidTmp.Identifier,
                 tmpHi.DataType.BitSize);
-            var stmNewHi = block.Statements.Insert(
-                iRolc + 3,
-                sidOrigHi.DefStatement.LinearAddress,
-                new Assignment(sidOrigHi.Identifier, expNewHi));
-            sidTmp.Uses.Add(stmNewHi);
-            sidOrigHi.DefStatement = stmNewHi;
-            sidOrigHi.DefStatement = stmNewHi;
-
-            sidGrf.DefExpression = null;
-            sidGrf.DefStatement = null;
-
+            sidOrigHi.DefStatement!.Instruction = new Assignment(sidOrigHi.Identifier, expNewHi);
+            sidOrigHi.DefExpression = expNewHi;
+            sidTmp.Uses.Add(sidOrigHi.DefStatement!);
             return sidOrigHi.DefStatement.Instruction;
         }
 

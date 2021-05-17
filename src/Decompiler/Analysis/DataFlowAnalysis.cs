@@ -501,6 +501,7 @@ namespace Reko.Analysis
 
                 var fpuGuesser = new FpuStackReturnGuesser(ssa, eventListener);
                 fpuGuesser.Transform();
+                DumpWatchedProcedure("fpug", "After FPU stack guesser", ssa.Procedure);
 
                 // By placing use statements in the exit block, we will collect
                 // reaching definitions in the use statements.
