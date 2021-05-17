@@ -45,7 +45,7 @@ namespace Reko.ImageLoaders.MzExe
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(NeImageLoader), "NE Image loader tracing")
         {
-            Level = TraceLevel.Verbose
+            Level = TraceLevel.Warning
         };
 
         // Relocation address types
@@ -471,8 +471,8 @@ namespace Reko.ImageLoaders.MzExe
             var segs = new List<NeSegment>(cSeg);
             var rdr = new LeImageReader(RawImage, offset);
             uint linAddress = 0x2000;
-            Debug.Print("== Segment table ");
-            Debug.Print("  Address:Offs Len  Flag Alloc");
+            trace.Verbose("== Segment table ");
+            trace.Verbose("  Address:Offs Len  Flag Alloc");
             for (int iSeg = 0; iSeg < cSeg; ++iSeg)
             {
                 var seg = new NeSegment
@@ -494,7 +494,7 @@ namespace Reko.ImageLoaders.MzExe
                 cbSegmentPage = (cbSegmentPage + 0xFFFu) & ~0xFFFu;
                 seg.LinearAddress = linAddress;
                 seg.Address = Address.ProtectedSegPtr((ushort)((linAddress >> 9) | rpl), 0);
-                Debug.Print("{0}:{1:X4} {2:X4} {3:X4} {4:X4}",
+                trace.Verbose("{0}:{1:X4} {2:X4} {3:X4} {4:X4}",
                     seg.Address,
                     seg.DataOffset,
                     seg.DataLength,
@@ -631,7 +631,7 @@ namespace Reko.ImageLoaders.MzExe
         {
             Address? address = null;
             NeRelocationEntry rep;
-            Debug.Print("== Relocating segment {0}", seg.Address);
+            trace.Verbose("== Relocating segment {0}", seg.Address!);
             for (int i = 0; i < cRelocations; i++)
             {
                 rep = new NeRelocationEntry
@@ -642,7 +642,7 @@ namespace Reko.ImageLoaders.MzExe
                     target1 = rdr.ReadLeUInt16(),
                     target2 = rdr.ReadLeUInt16(),
                 };
-                Debug.Print("  {0}", WriteRelocationEntry(rep));
+                trace.Verbose("  {0}", WriteRelocationEntry(rep));
 
                 // Get the target address corresponding to this entry.
 
@@ -703,7 +703,7 @@ namespace Reko.ImageLoaders.MzExe
                     {
                         address = segments[rep.target1 - 1]!.Address! + rep.target2;
                     }
-                    Debug.Print("    {0}: {1:X4}:{2:X4} {3}",
+                    trace.Verbose("    {0}: {1:X4}:{2:X4} {3}",
                           i + 1,
                           address.Selector!.Value, 
                           address.Offset,
@@ -742,7 +742,7 @@ namespace Reko.ImageLoaders.MzExe
                 if (additive)
                 {
                     var sp = seg.Address! + offset;
-                    Debug.Print("    {0} (contains: {1:X4})", sp, mem.ReadLeUInt16(sp));
+                    trace.Verbose("    {0} (contains: {1:X4})", sp, mem.ReadLeUInt16(sp));
                     byte b;
                     ushort w;
                     switch (rep.address_type & (NE_RADDR) 0x7f)
@@ -779,7 +779,7 @@ namespace Reko.ImageLoaders.MzExe
                     {
                         var sp = seg.Address! + offset;
                         ushort next_offset = mem.ReadLeUInt16(sp);
-                        Debug.Print("    {0} (contains: {1:X4})", sp, next_offset);
+                        trace.Verbose("    {0} (contains: {1:X4})", sp, next_offset);
                         switch (rep.address_type & (NE_RADDR) 0x7f)
                         {
                         case NE_RADDR.LOWBYTE:
