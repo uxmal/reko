@@ -29,11 +29,15 @@ namespace Reko.Core
     /// </summary>
     public interface IDecompiler
     {
+        /// <summary>
+        /// Event is fired when the current <see cref="Project"/> used by
+        /// the decompiler is changed.
+        /// </summary>
         public event EventHandler? ProjectChanged;
 
         /// <summary>
-        /// The current <see cref="Project"/> used by the decompiler, or null if 
-        /// no project has been loaded.
+        /// The current <see cref="Core.Project"/> used by the decompiler, or
+        /// null if no project has been loaded.
         /// </summary>
         Project? Project { get; }
 
