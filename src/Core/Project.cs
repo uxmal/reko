@@ -73,7 +73,7 @@ namespace Reko.Core
         /// </param>
         public void FireScriptEvent(ScriptEvent @event)
         {
-            foreach (var scriptFile in ScriptFiles.ToList())
+            foreach (var scriptFile in ScriptFiles)
             {
                 foreach (var program in Programs)
                 {

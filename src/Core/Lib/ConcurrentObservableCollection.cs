@@ -61,14 +61,6 @@ namespace Reko.Core.Lib
             this.collection = new ObservableRangeCollection<T>();
         }
 
-        public List<T> ToList()
-        {
-            lock (collection)
-            {
-                return collection.ToList();
-            }
-        }
-
         public void AddRange(IEnumerable<T> range)
         {
             lock (collection)

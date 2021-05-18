@@ -83,7 +83,7 @@ namespace Reko.Gui
             {
                 AddComponents(project.Programs);
                 AddComponents(project.MetadataFiles);
-                AddComponents(project.ScriptFiles.ToList());
+                AddComponents(project.ScriptFiles);
                 project.MetadataFiles.CollectionChanged +=
                     TypeLibraries_CollectionChanged;
                 project.ScriptFiles.CollectionChanged +=

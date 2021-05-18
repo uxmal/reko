@@ -23,6 +23,7 @@ using Reko.Core.Services;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -81,19 +82,19 @@ namespace Reko.Core
             {
                 if (project != null)
                 {
-                    RemoveScripts(project.ScriptFiles.ToList());
+                    RemoveScripts(project.ScriptFiles);
                     project.ScriptFiles.CollectionChanged -= OnScriptsChanged;
                 }
                 project = value;
                 if (value != null)
                 {
-                    AddScripts(value.ScriptFiles.ToList());
+                    AddScripts(value.ScriptFiles);
                     value.ScriptFiles.CollectionChanged += OnScriptsChanged;
                 }
             }
         }
 
-        private void AddScripts(IList newScripts)
+        private void AddScripts(IEnumerable<ScriptFile> newScripts)
         {
             foreach(ScriptFile script in newScripts)
             {
@@ -113,7 +114,7 @@ namespace Reko.Core
             }
         }
 
-        private void RemoveScripts(IList oldScripts)
+        private void RemoveScripts(IEnumerable<ScriptFile> oldScripts)
         {
             foreach (ScriptFile script in oldScripts)
             {
@@ -169,7 +170,7 @@ namespace Reko.Core
             if (project is null)
                 return;
             var fullPath = Path.GetFullPath(fileName);
-            var scriptFile = project.ScriptFiles.ToList().
+            var scriptFile = project.ScriptFiles.
                 Where(s => Path.GetFullPath(s.Filename) == fullPath).
                 FirstOrDefault();
             if (scriptFile != null)
@@ -183,7 +184,7 @@ namespace Reko.Core
             switch (e.Action)
             {
             case NotifyCollectionChangedAction.Add:
-                AddScripts(e.NewItems);
+                AddScripts(e.NewItems.OfType<ScriptFile>());
                 break;
             default:
                 throw new NotImplementedException();
