@@ -38,6 +38,8 @@ namespace Reko.Core
     /// </summary>
     public class ProjectFilesWatcher
     {
+        public const int MsecReloadDelay = 200;
+
         private readonly IDecompilerService decompilerSvc;
         private readonly DecompilerEventListener eventListener;
         private readonly ILoader loader;
@@ -151,7 +153,7 @@ namespace Reko.Core
             // Multiple Changed event can be raised in some cases. And file
             // access error can be occurred when processing first event. Use
             // timer to delay processing event.
-            var timer = new Timer(200)
+            var timer = new Timer(MsecReloadDelay)
             {
                 AutoReset = false,
             };
