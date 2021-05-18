@@ -31,7 +31,9 @@ namespace Reko.Core.Lib
     /// Represents thread-safe collection that provides notifications
     /// when items get added, removed, or when the whole list is refreshed.
     /// This is lock-based wrapper of
-    /// <see cref="Reko.Core.Lib.ObservableRangeCollection{T}"/>
+    /// <see cref="Reko.Core.Lib.ObservableRangeCollection{T}"/>.
+    /// Locks will make the collection thread safe but will also cause
+    /// performance to drop if there is contention on the lock.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class ConcurrentObservableCollection<T> : IEnumerable<T>
