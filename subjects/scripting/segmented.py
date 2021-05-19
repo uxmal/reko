@@ -25,7 +25,7 @@ def define_procedures(program):
 def find_procedure_end(program, proc_addr):
     (seg, offset) = proc_addr
     mem = program.memory
-    # This search don't work correctly in commom cases ('0xC3' byte can be
+    # This search don't work correctly in common cases ('0xC3' byte can be
     # inside of other instructions). But it's enough for this little sample
     ret = 0xC3
     while mem[(seg, offset)].byte != ret:
