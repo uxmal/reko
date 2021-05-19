@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Microsoft.Scripting.Hosting;
 using Reko.Core.Scripts;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace Reko.Scripts.Python
         private readonly Dictionary<string, ScriptEvent> events;
         private readonly EventHandlersMap handlers;
 
-        public RekoEventsAPI()
+        public RekoEventsAPI(ScriptEngine engine)
         {
             events = new Dictionary<string, ScriptEvent>
             {
@@ -44,7 +45,10 @@ namespace Reko.Scripts.Python
                 {"program_decompiled", ScriptEvent.OnProgramDecompiled},
             };
             handlers = new EventHandlersMap();
+            this.Engine = engine;
         }
+
+        public readonly ScriptEngine Engine;
 
         public ScriptEvent? GetEventByName(string name)
         {
