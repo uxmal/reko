@@ -20,6 +20,7 @@
 
 using Microsoft.Scripting.Hosting;
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.Core.Scripts;
 using Reko.Core.Services;
 using System;
@@ -34,31 +35,39 @@ namespace Reko.Scripts.Python
     /// </summary>
     public class PythonModule : ScriptFile
     {
-        private readonly ScriptEngine engine;
         private readonly TextWriter outputWriter;
-        private readonly PythonAPI pythonAPI;
         private readonly DecompilerEventListener eventListener;
-        private readonly RekoEventsAPI eventsAPI;
+        private readonly IConfigurationService cfgSvc;
+        private RekoEventsAPI eventsAPI;
 
         public PythonModule(
             IServiceProvider services, string filename, byte[] bytes)
         : base(services, filename, bytes)
         {
             this.eventListener = services.RequireService<DecompilerEventListener>();
-            this.engine = IronPython.Hosting.Python.CreateEngine();
+            this.cfgSvc = services.RequireService<IConfigurationService>();
             var outputService = services.RequireService<IOutputService>();
             this.outputWriter = outputService.EnsureOutputSource("Scripting");
-            RedirectConsoleOutput(outputWriter, engine);
-            this.pythonAPI = new PythonAPI(services, engine);
             var stream = new MemoryStream(bytes);
             using var rdr = new StreamReader(stream);
-            this.eventsAPI = Evaluate(rdr.ReadToEnd(), filename);
+            this.eventsAPI = Evaluate(
+                outputWriter, eventListener, cfgSvc, rdr.ReadToEnd(),
+                filename);
+        }
+
+        public override void Evaluate(string script)
+        {
+            this.eventsAPI = Evaluate(
+                outputWriter, eventListener, cfgSvc, script, Filename);
         }
 
         public override void FireEvent(ScriptEvent @event, Program program)
         {
+            var eventsAPI = this.eventsAPI;
+            var engine = eventsAPI.Engine;
             try
             {
+                var pythonAPI = new PythonAPI(cfgSvc, engine);
                 var programAPI = new RekoProgramAPI(program);
                 var programWrapper = pythonAPI.CreateProgramWrapper(
                     programAPI);
@@ -76,10 +85,17 @@ namespace Reko.Scripts.Python
             }
         }
 
-        private RekoEventsAPI Evaluate(string script, string filename)
+        private static RekoEventsAPI Evaluate(
+            TextWriter outputWriter,
+            DecompilerEventListener eventListener,
+            IConfigurationService cfgSvc,
+            string script,
+            string filename)
         {
             outputWriter.WriteLine($"Evaluating {filename}");
-            var eventsAPI = new RekoEventsAPI();
+            var engine = CreateEngine(outputWriter);
+            var pythonAPI = new PythonAPI(cfgSvc, engine);
+            var eventsAPI = new RekoEventsAPI(engine);
             var scope = CreateRekoVariable(engine, pythonAPI, eventsAPI);
             var src = engine.CreateScriptSourceFromString(script, filename);
             try
@@ -95,7 +111,7 @@ namespace Reko.Scripts.Python
                     engine);
                 eventListener.Error(scriptError);
                 DumpPythonStack(outputWriter, ex, engine);
-                return new RekoEventsAPI();
+                return new RekoEventsAPI(engine);
             }
             return eventsAPI;
         }
@@ -138,6 +154,13 @@ namespace Reko.Scripts.Python
                     stackFrame.GetMethodName()
                 );
             }
+        }
+
+        private static ScriptEngine CreateEngine(TextWriter outputWriter)
+        {
+            var engine = IronPython.Hosting.Python.CreateEngine();
+            RedirectConsoleOutput(outputWriter, engine);
+            return engine;
         }
 
         private static void RedirectConsoleOutput(

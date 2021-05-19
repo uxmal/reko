@@ -39,6 +39,11 @@ namespace Reko.Core.Scripts
         public readonly string Filename;
 
         /// <summary>
+        /// Evaluate script. Reset event handlers.
+        /// </summary>
+        public abstract void Evaluate(string script);
+
+        /// <summary>
         /// Call handlers of specified event, pass program as parameter.
         /// </summary>
         /// <param name="event">Fired event.</param>

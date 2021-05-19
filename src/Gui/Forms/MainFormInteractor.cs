@@ -68,6 +68,7 @@ namespace Reko.Gui.Forms
         private MruList mru;
         private string projectFileName;
         private IServiceContainer sc;
+        private ProjectFilesWatcher projectFilesWatcher;
         private IConfigurationService config;
         private ICommandTarget subWindowCommandTarget;
         private static string dirSettings;
@@ -95,6 +96,7 @@ namespace Reko.Gui.Forms
             CreateServices(svcFactory, sc);
             CreatePhaseInteractors(svcFactory);
             projectBrowserSvc.Clear();
+            this.projectFilesWatcher = new ProjectFilesWatcher(sc);
 
             var uiPrefsSvc = sc.RequireService<IUiPreferencesService>();
             // It's ok if we can't load settings, just proceed with defaults.

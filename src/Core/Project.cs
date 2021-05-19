@@ -39,7 +39,7 @@ namespace Reko.Core
         {
             Programs = new ObservableRangeCollection<Program>();
             MetadataFiles = new ObservableRangeCollection<MetadataFile>();
-            ScriptFiles = new ObservableRangeCollection<ScriptFile>();
+            ScriptFiles = new ConcurrentObservableCollection<ScriptFile>();
             LoadedMetadata = new TypeLibrary();
         }
 
@@ -57,7 +57,7 @@ namespace Reko.Core
         /// A list of user-provided script files that can customize the process
         /// of decompilation.
         /// </summary>
-        public ObservableRangeCollection<ScriptFile> ScriptFiles { get; private set; }
+        public readonly ConcurrentObservableCollection<ScriptFile> ScriptFiles;
 
         /// <summary>
         /// All the metadata collected from both platforms and user-provided metadata
