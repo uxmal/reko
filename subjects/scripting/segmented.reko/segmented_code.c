@@ -12,21 +12,21 @@ void main()
 	//         Address: 0x1234:0x0000
 	//         File: None
 	//         Decompile: True
-	fn1234-0020();
-	fn1234-0030();
+	test1();
+	test2();
 }
 
-// 1234:0020: void fn1234-0020()
+// 1234:0020: void test1()
 // Called from:
 //      main
-void fn1234-0020()
+void test1()
 {
 }
 
-// 1234:0030: void fn1234-0030()
+// 1234:0030: void test2()
 // Called from:
 //      main
-void fn1234-0030()
+void test2()
 {
 }
 

@@ -6,8 +6,16 @@
 
 def define_procedures(program):
     for addr, proc in program.procedures.items():
-        decl = find_declaration(program, addr)
-        program.procedures[addr] = decl
+        if proc.decompile:
+            proc.decompile = False
+            if proc.decompile:
+                raise Exception("'decompile' flag should be set to 'False'")
+            decl = find_declaration(program, addr)
+            program.procedures[addr] = decl
+            if not proc.decompile:
+                raise Exception(
+                    "'decompile' flag should be reset to 'True' after declaration setting"
+                )
 
 def find_declaration(program, proc_addr):
     mem = program.memory

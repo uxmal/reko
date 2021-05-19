@@ -120,13 +120,18 @@ namespace Reko.Scripts.Python
 
         public string[] GetProcedureAddresses()
         {
-            return program.User.Procedures.Keys.Select(
-                addr => addr.ToString()).ToArray();
+            return program.User.Procedures.Keys.
+                Union(program.Procedures.Keys).
+                Select(addr => addr.ToString()).ToArray();
         }
 
         public bool ContainsProcedureAddress(Address addr)
         {
-            return program.User.Procedures.ContainsKey(addr);
+            if (program.User.Procedures.ContainsKey(addr))
+                return true;
+            if (program.Procedures.ContainsKey(addr))
+                return true;
+            return false;
         }
 
         public string GetProcedureName(Address addr)
@@ -171,7 +176,7 @@ namespace Reko.Scripts.Python
         public void SetUserProcedureDecompileFlag(
             Address addr, bool decompile)
         {
-            UserProcedure(addr).Decompile = decompile;
+            EnsureUserProcedure(addr).Decompile = decompile;
         }
 
         public string? GetProcedureOutputFile(Address addr)
@@ -182,7 +187,7 @@ namespace Reko.Scripts.Python
         public void SetUserProcedureOutputFile(
             Address addr, string outputFile)
         {
-            UserProcedure(addr).OutputFile = outputFile;
+            EnsureUserProcedure(addr).OutputFile = outputFile;
         }
 
         private bool TryConvertAddress(
@@ -211,7 +216,30 @@ namespace Reko.Scripts.Python
 
         private UserProcedure UserProcedure(Address addr)
         {
-            return program.User.Procedures[addr];
+            TryGetUserProcedure(addr, out var userProc);
+            return userProc;
+        }
+
+        private UserProcedure EnsureUserProcedure(Address addr)
+        {
+            if (!TryGetUserProcedure(addr, out var userProc))
+                program.User.Procedures[addr] = userProc;
+            return userProc;
+        }
+
+        /// <summary>
+        /// Gets the user procedure definition at specified address or default
+        /// user procedure based on data discovered by scanner.
+        /// Returns true if there is user procedure definition at specified
+        /// address; otherwise, false
+        /// </summary>
+        private bool TryGetUserProcedure(Address addr, out UserProcedure userProc)
+        {
+            if (program.User.Procedures.TryGetValue(addr, out userProc))
+                return true;
+            var proc = program.Procedures[addr];
+            userProc = new UserProcedure(addr, proc.Name);
+            return false;
         }
 
         private string NormalizeLineEndings(string s)
