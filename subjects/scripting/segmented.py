@@ -2,6 +2,7 @@
     program.procedures[(0x1234, 0x0000)] = "entry"
     comments = []
     dump_procedures(program, comments)
+    test_memory_reading(program, comments)
     program.comments[(0x1234, 0x0000)] = '\n'.join(comments)
 
 def define_procedures(program):
@@ -39,6 +40,27 @@ def dump_procedures(program, lines):
         lines.append('        Address: 0x{:04X}:0x{:04X}'.format(seg, offset))
         lines.append('        File: {}'.format(proc.file))
         lines.append('        Decompile: {}'.format(proc.decompile))
+
+def test_memory_reading(program, lines):
+    mem = program.memory
+    lines.append('Memory at 0x1234:0x0000:')
+    lines.append('    Byte: 0x{:X}'.format(mem[(0x1234, 0x0000)].byte))
+    lines.append('    16-bit integer: 0x{:X}'.format(mem[(0x1234, 0x0000)].int16))
+    lines.append('    32-bit integer: 0x{:X}'.format(mem[(0x1234, 0x0000)].int32))
+    lines.append('    64-bit integer: 0x{:X}'.format(mem[(0x1234, 0x0000)].int64))
+    lines.append('Memory at ["0x1234:0x0000":"0x1234:0x0004"]:')
+    lines.append('    Bytes: {}'.format(
+        bytes_to_list(mem[(0x1234, 0x0000):(0x1234, 0x0004)].byte)))
+    lines.append('    16-bit integers: {}'.format(
+        bytes_to_list(mem[(0x1234, 0x0000):(0x1234, 0x0004)].int16)))
+    lines.append('Memory at ["0x1234:0x0000":"0x1234:0x0010"]:')
+    lines.append('    32-bit integers: {}'.format(
+        bytes_to_list(mem[(0x1234, 0x0000):(0x1234, 0x0010)].int32)))
+    lines.append('    64-bit integers: {}'.format(
+        bytes_to_list(mem[(0x1234, 0x0000):(0x1234, 0x0010)].int64)))
+
+def bytes_to_list(numbers):
+    return ['0x{:X}'.format(num) for num in numbers]
 
 reko.on.program_decompiling += define_entry_point
 reko.on.program_scanned += define_procedures

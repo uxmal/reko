@@ -12,6 +12,17 @@ void main()
 	//         Address: 0x1234:0x0000
 	//         File: None
 	//         Decompile: True
+	// Memory at 0x1234:0x0000:
+	//     Byte: 0xE8
+	//     16-bit integer: 0x1DE8
+	//     32-bit integer: 0x-17FFE218
+	//     64-bit integer: 0x76C3002AE8001DE8
+	// Memory at ["0x1234:0x0000":"0x1234:0x0004"]:
+	//     Bytes: ['0xE8', '0x1D', '0x0', '0xE8']
+	//     16-bit integers: ['0x1DE8', '0xE800']
+	// Memory at ["0x1234:0x0000":"0x1234:0x0010"]:
+	//     32-bit integers: ['0x-17FFE218', '0x76C3002A', '0x2064696F', '0x6E69616D']
+	//     64-bit integers: ['0x76C3002AE8001DE8', '0x6E69616D2064696F']
 	test1();
 	test2();
 }

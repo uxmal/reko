@@ -34,6 +34,15 @@ def addr_from_str(s_addr):
 def addr_list_from_str_list(s_addr_list):
     return (addr_from_str(s_addr) for s_addr in s_addr_list)
 
+def get_memory_length(start_addr, end_addr):
+    if isinstance(start_addr, tuple) and isinstance(end_addr, tuple):
+        start_seg, start_offset = start_addr
+        end_seg, end_offset = end_addr
+        if start_seg != end_seg:
+            raise Exception("Can't work with different memory segments.")
+        return end_offset - start_offset
+    return end_addr - start_addr
+
 class RekoDictBase:
     __slots__ = []
 
@@ -124,7 +133,7 @@ class Memory:
             if key.stop is None:
                 raise ValueError('End address is required')
             start_addr = key.start
-            length = key.stop - key.start
+            length = get_memory_length(key.start, key.stop)
         else:
             start_addr = key
             length = None
