@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(ProjectDir)..\Common.items" />
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!-- Copy all NuGet package dependencies to the output directory.
+https://docs.microsoft.com/en-us/dotnet/core/project-sdk/msbuild-props#copylocallockfileassemblies
+    -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <RootNamespace>Reko.WixRuntime</RootNamespace>
+    <AssemblyName>Reko.WixRuntime</AssemblyName>
+    <Platforms>x86;x64</Platforms>
+    <Configurations>Debug;Release</Configurations>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CmdLine\CmdLine.csproj" />
+    <ProjectReference Include="..\WindowsDecompiler\WindowsDecompiler.csproj" />
+  </ItemGroup>
+  <Import Project="$(ProjectDir)..\PreBuild.targets" />
+</Project>
