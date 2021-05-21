@@ -1427,8 +1427,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "4|L--|V = false");
         }
 
- 
-
         [Test]
         public void VaxRw_movw()
         {
@@ -1440,6 +1438,20 @@ namespace Reko.UnitTests.Arch.Vax
                 "3|L--|ZN = cond(v3)",
                 "4|L--|C = false",
                 "5|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_movw_IndexedDisplacementDeferred()
+        {
+            Given_HexString("b0 40 ef 4d 04 02 00 50");     // movw 00120454[r0],r0
+            AssertCode(
+                "0|L--|00010000(8): 6 instructions",
+                "1|L--|v3 = Mem0[0x00030454<p32> + r0 * 2<i32>:word16]",
+                "2|L--|v4 = SLICE(r0, word16, 16)",
+                "3|L--|r0 = SEQ(v4, v3)",
+                "4|L--|ZN = cond(v3)",
+                "5|L--|C = false",
+                "6|L--|V = false");
         }
 
         [Test]
@@ -1636,7 +1648,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "5|L--|C = false");
         }
 
-  
         [Test]
         public void VaxRw_pushab()
         {
@@ -1649,6 +1660,19 @@ namespace Reko.UnitTests.Arch.Vax
                 "4|L--|ZN = cond(v4)",
                 "5|L--|C = false",
                 "6|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_pushab_addr()
+        {
+            Given_HexString("9F EF A7 39 02 00 ");
+            AssertCode(
+                "0|L--|00010000(6): 5 instructions",
+                "1|L--|sp = sp - 4<32>",
+                "2|L--|Mem0[sp:word32] = 000339AD",
+                "3|L--|ZN = cond(0x000339AD<p32>)",
+                "4|L--|C = false",
+                "5|L--|V = false");
         }
 
         [Test]
@@ -1678,6 +1702,8 @@ namespace Reko.UnitTests.Arch.Vax
                 "5|L--|C = false",
                 "6|L--|V = false");
         }
+
+
 
         [Test]
         public void VaxRw_pushaw()

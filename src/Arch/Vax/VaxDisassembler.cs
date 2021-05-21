@@ -64,8 +64,6 @@ namespace Reko.Arch.Vax
             {
                 instr = CreateInvalidInstruction();
             }
-            if (instr == null)
-                return null;
             instr.Address = addr;
             instr.Length = (int)(rdr.Address - addr);
             ops.Clear();
@@ -129,13 +127,13 @@ namespace Reko.Arch.Vax
             case 6: // Register deferred
                 op = new MemoryOperand(width)
                 {
-                    Base = reg
+                    Base = new RegisterOperand(reg)
                 };
                 break;
             case 7: // Autodecrement mode
                 op = new MemoryOperand(width)
                 {
-                    Base = reg,
+                    Base = new RegisterOperand(reg),
                     AutoDecrement = true,
                 };
                 break;
@@ -150,7 +148,7 @@ namespace Reko.Arch.Vax
                 {
                     op = new MemoryOperand(width)
                     {
-                        Base = reg,
+                        Base = new RegisterOperand(reg),
                         AutoIncrement = true,
                     };
                 }
@@ -158,7 +156,7 @@ namespace Reko.Arch.Vax
             case 9: // Deferred Autoincrement mode
                 op = new MemoryOperand(width)
                 {
-                    Base = reg,
+                    Base = new RegisterOperand(reg),
                     AutoIncrement = true,
                     Deferred = true,
                 };
@@ -198,10 +196,29 @@ namespace Reko.Arch.Vax
         {
             if (!TryDecodeOperand(width, 15, out MachineOperand op))
                 return null;
-            if (!(op is MemoryOperand aOp))
-                return null;
-            aOp.Index = reg;
-            return aOp;
+            if (op is MemoryOperand aOp)
+            {
+                aOp.Index = reg;
+                return aOp;
+            }
+            else if (op is AddressOperand addrOp)
+            {
+                var idxOp = new MemoryOperand(width)
+                {
+                    Offset = Constant.Word32(addrOp.Address.ToUInt32()),
+                    Index = reg
+                };
+                return idxOp;
+            }
+            else
+            {
+                var idxOp = new MemoryOperand(width)
+                {
+                    Base = op,
+                    Index = reg,
+                };
+                return idxOp;
+            }
         }
 
         private MachineOperand DisplacementOperand(PrimitiveType width, RegisterStorage reg, Constant c, byte bSpecifier)
@@ -226,7 +243,7 @@ namespace Reko.Arch.Vax
             }
             return new MemoryOperand(width)
             {
-                Base = reg,
+                Base = new RegisterOperand(reg),
                 Offset = c,
                 Deferred = deferred
             };
@@ -359,7 +376,5 @@ namespace Reko.Arch.Vax
         private static readonly Mutator md = w(PrimitiveType.Real64, 13);  //$TODO: this is not IEEE
         private static readonly Mutator mg = w(PrimitiveType.Real64, 13);  //$TODO: this is not IEEE
         private static readonly Mutator mh = w(PrimitiveType.Real128, 11);  //$TODO: this is not IEEE
-
-
     }
 }

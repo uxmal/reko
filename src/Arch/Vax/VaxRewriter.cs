@@ -527,9 +527,9 @@ namespace Reko.Arch.Vax
 
             case MemoryOperand memOp:
                 Expression ea;
-                if (memOp.Base != null)
+                if (memOp.Base is RegisterOperand rbaseOp)
                 {
-                    reg = binder.EnsureRegister(memOp.Base);
+                    reg = binder.EnsureRegister(rbaseOp.Register);
                     if (memOp.AutoDecrement)
                     {
                         m.Assign(reg, m.ISub(reg, width.Size));
@@ -566,7 +566,7 @@ namespace Reko.Arch.Vax
                         load = m.Mem(width, ea);
                     if (memOp.AutoIncrement)
                     {
-                        reg = binder.EnsureRegister(memOp.Base);
+                        reg = binder.EnsureRegister(rbaseOp.Register);
                         int inc = (memOp.Deferred) ? 4 : width.Size;
                         m.Assign(reg, m.IAdd(reg, inc));
                     }
@@ -575,6 +575,13 @@ namespace Reko.Arch.Vax
                 else
                 {
                     ea = arch.MakeAddressFromConstant(memOp.Offset!, false);
+                    if (memOp.Index != null)
+                    {
+                        Expression idx = binder.EnsureRegister(memOp.Index);
+                        if (width.Size != 1)
+                            idx = m.IMul(idx, Constant.Int32(width.Size));
+                        ea = m.IAdd(ea, idx);
+                    }
                     Expression load;
                     if (memOp.Deferred)
                     {
@@ -649,7 +656,7 @@ namespace Reko.Arch.Vax
                 Identifier? regEa = null;
                 if (memOp.Base != null)
                 {
-                    regEa = binder.EnsureRegister(memOp.Base);
+                    regEa = binder.EnsureRegister(((RegisterOperand)memOp.Base).Register);
                     if (memOp.AutoDecrement)
                     {
                         m.Assign(regEa, m.ISub(regEa, width.Size));
