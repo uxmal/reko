@@ -276,6 +276,9 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_HEXAGON:
                 arch = "hexagon";
                 break;
+            case ElfMachine.EM_VAX:
+                arch = "vax";
+                break;
             default:
                 throw new NotSupportedException($"Processor format {machine} is not supported.");
             }
@@ -558,6 +561,8 @@ namespace Reko.ImageLoaders.Elf
                             gotStart, addrGot - gotStart, gotSym, symbol);
                         if (symbol.Type == SymbolType.ExternalProcedure)
                         {
+                            program.ImportReferences.TryGetValue(addrGot, out var oldImpRef);
+                            if (oldImpRef is null)
                             program.ImportReferences.Add(
                                 addrGot,
                                 new NamedImportReference(

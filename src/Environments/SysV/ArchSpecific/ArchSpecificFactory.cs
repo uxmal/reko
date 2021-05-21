@@ -128,6 +128,8 @@ namespace Reko.Environments.SysV.ArchSpecific
                 return new HexagonCallingConvention(arch);
             case "ia64":
                 return new Ia64CallingConvention(arch);
+            case "vax":
+                return new VaxCallingConvention(arch);
             default:
                 throw new NotImplementedException(string.Format("ELF calling convention for {0} not implemented yet.", arch.Description));
             }

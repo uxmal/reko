@@ -174,6 +174,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_BLACKFIN: return new BlackfinRelocator(this, imageSymbols);
             case ElfMachine.EM_PARISC: return new PaRiscRelocator(this, imageSymbols);
             case ElfMachine.EM_RISCV: return new RiscVRelocator32(this, imageSymbols);
+            case ElfMachine.EM_VAX: return new VaxRelocator(this, imageSymbols);
             // Support for 32-bit pointers.
             case ElfMachine.EM_X86_64: return new x86Relocator(this, imageSymbols);
             }
