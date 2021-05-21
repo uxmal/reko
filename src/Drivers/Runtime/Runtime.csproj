@@ -11,6 +11,7 @@
     <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Arch\Altera\Altera.csproj" />
     <ProjectReference Include="..\..\Arch\Arc\Arc.csproj" />
     <ProjectReference Include="..\..\Arch\Arm\Arm.csproj" />
     <ProjectReference Include="..\..\Arch\Avr\Avr.csproj" />

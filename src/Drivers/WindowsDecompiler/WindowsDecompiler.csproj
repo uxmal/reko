@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\Alpha\Alpha.csproj" />
+    <ProjectReference Include="..\..\Arch\Altera\Altera.csproj" />
     <ProjectReference Include="..\..\Arch\Arc\Arc.csproj" />
     <ProjectReference Include="..\..\Arch\Arm\Arm.csproj" />
     <ProjectReference Include="..\..\Arch\Avr\Avr.csproj" />
@@ -68,6 +69,7 @@
     <ProjectReference Include="..\..\Environments\AmigaOS.Design\AmigaOS.Design.csproj" />
     <ProjectReference Include="..\..\Environments\AmigaOS\AmigaOS.csproj" />
     <ProjectReference Include="..\..\Environments\AtariTOS\AtariTOS.csproj" />
+    <ProjectReference Include="..\..\Environments\BbcMicro\BbcMicro.csproj" />
     <ProjectReference Include="..\..\Environments\C64\C64.csproj" />
     <ProjectReference Include="..\..\Environments\Cpm\Cpm.csproj" />
     <ProjectReference Include="..\..\Environments\Dreamcast\Dreamcast.csproj" />
