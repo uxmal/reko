@@ -196,29 +196,7 @@ namespace Reko.Arch.Vax
         {
             if (!TryDecodeOperand(width, 15, out MachineOperand op))
                 return null;
-            if (op is MemoryOperand aOp)
-            {
-                aOp.Index = reg;
-                return aOp;
-            }
-            else if (op is AddressOperand addrOp)
-            {
-                var idxOp = new MemoryOperand(width)
-                {
-                    Offset = Constant.Word32(addrOp.Address.ToUInt32()),
-                    Index = reg
-                };
-                return idxOp;
-            }
-            else
-            {
-                var idxOp = new MemoryOperand(width)
-                {
-                    Base = op,
-                    Index = reg,
-                };
-                return idxOp;
-            }
+            return new IndexOperand(width, op, reg);
         }
 
         private MachineOperand DisplacementOperand(PrimitiveType width, RegisterStorage reg, Constant c, byte bSpecifier)

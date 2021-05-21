@@ -1657,14 +1657,20 @@ l000080BA:
 	calls	#03,0000E2E8
 	tstl	r0
 	beql	000080FD
+
+l000080CF:
 	pushl	#00000002
 	pushal	(r7)
 	pushl	r4
 	calls	#03,0000E2E8
 	tstl	r0
 	beql	000080FD
+
+l000080E0:
 	cmpl	+04(ap),#00000001
 	bleq	00008128
+
+l000080E6:
 	pushl	#00000002
 	pushal	+03(r7)
 	movl	+08(ap),r3
@@ -1672,6 +1678,8 @@ l000080BA:
 	calls	#03,@000192D8
 	tstl	r0
 	bneq	00008128
+
+l000080FD:
 	movl	#00000001,(r2)
 	pushal	+21(r5)
 	pushal	+14(r5)
@@ -1683,8 +1691,9 @@ l000080BA:
 	calls	#02,00012700
 	movl	r0,r3
 	brb	0000814C
-	tstl	r0
-	nop
+00008125                D5 50 01                              .P.       
+
+l00008128:
 	clrl	(r2)
 	pushal	+0B(r5)
 	pushal	(r5)
@@ -1695,12 +1704,20 @@ l000080BA:
 	pushal	+04(ap)
 	calls	#02,00008320
 	movl	r0,r3
+
+l0000814C:
 	tstl	+04(ap)
 	blss	00008155
+
+l00008151:
 	tstl	r3
 	beql	00008159
+
+l00008155:
 	movl	r3,r0
 	ret
+
+l00008159:
 	movl	+08(ap),r3
 	addl2	#00000004,+08(ap)
 	movl	(r3),+0000C60F(r2)
@@ -1708,7 +1725,11 @@ l000080BA:
 	clrl	+68(r2)
 	tstl	+04(ap)
 	bgtr	00008178
+
+l00008175:
 	brw	00008314
+
+l00008178:
 	clrl	r6
 	clrl	r9
 	subl3	#00000004,+08(ap),r4
@@ -1717,49 +1738,83 @@ l000080BA:
 	addl3	#00000004,r4,r3
 	tstl	(r3)
 	bneq	00008195
+
+l00008192:
 	brw	00008318
+
+l00008195:
 	tstl	r0
 	nop
+
+l00008198:
 	tstl	+14(r2)
 	beql	000081A0
+
+l0000819D:
 	brw	000082B0
+
+l000081A0:
 	pushl	#00000002
 	pushal	+06(r7)
 	pushl	(r3)
 	calls	#03,@000192D8
 	tstl	r0
 	beql	000081B5
+
+l000081B2:
 	brw	000082B0
+
+l000081B5:
 	movl	(r3),r4
 	clrl	r0
 	cmpl	r3,+08(ap)
 	bneq	000081C2
+
+l000081C0:
 	incl	r0
+
+l000081C2:
 	movl	r0,r8
 	movl	#00000001,+14(r2)
 	tstl	r6
 	beql	000081E0
+
+l000081CD:
 	clrl	(r3)
 	subl3	+0090(r2),r3,r0
 	divl3	#00000004,r0,+64(r2)
 	clrl	r6
 	brb	000081F1
-	tstl	r0
+000081DE                                           D5 50               .P
+
+l000081E0:
 	tstl	r9
 	beql	000081F1
+
+l000081E4:
 	clrl	(r3)
 	subl3	+0094(r2),r3,r0
 	divl3	#00000004,r0,+68(r2)
+
+l000081F1:
 	tstb	+02(r4)
 	beql	000081FC
+
+l000081F6:
 	addl2	#00000002,r4
 	brb	00008231
-	nop
+000081FB                                  01                        .   
+
+l000081FC:
 	addl2	#00000004,r3
 	tstl	(r3)
 	beql	00008208
+
+l00008203:
 	movl	(r3),r4
 	brb	00008231
+
+l00008208:
 	movzwl	#0401,-(sp)
 	pushal	+52(r5)
 	pushab	+05EB(r2)
@@ -1771,19 +1826,31 @@ l000080BA:
 	calls	#04,(r0)
 	movl	#0000000A,r0
 	ret
+
+l00008231:
 	tstl	+74(r2)
 	beql	00008254
+
+l00008236:
 	clrl	r0
 	tstl	+18(r2)
 	bneq	0000823F
+
+l0000823D:
 	incl	r0
+
+l0000823F:
 	movl	r0,+70(r2)
 	pushl	#00000000
 	pushl	r4
 	calls	#02,0000C6F8
 	cmpl	r0,#00000002
 	bleq	00008279
+
+l00008253:
 	ret
+
+l00008254:
 	movzwl	#0401,-(sp)
 	pushal	+2C(r5)
 	pushab	+05EB(r2)
@@ -1793,552 +1860,305 @@ l000080BA:
 	pushab	(r2)
 	movl	+0000C839(r2),r0
 	calls	#04,(r0)
+
+l00008279:
 	tstl	r8
 	bneq	00008280
+
+l0000827D:
 	brw	00008307
+
+l00008280:
 	tstl	+04(r3)
 	beql	000082A0
+
+l00008285:
 	addl3	#00000004,r3,+0090(r2)
 	subl3	+08(ap),+0090(r2),r0
 	divl2	#00000004,r0
 	subl3	r0,+04(ap),+64(r2)
 	brb	00008307
-	tstl	r0
-	nop
+0000829D                                        D5 50 01              .P.
+
+l000082A0:
 	movl	#00000001,+6C(r2)
 	moval	(r10),+0090(r2)
 	clrl	+64(r2)
 	brb	00008318
-	tstl	r0
+000082AE                                           D5 50               .P
+
+l000082B0:
 	tstl	r9
 	bneq	00008307
+
+l000082B4:
 	pushal	+09(r7)
 	pushl	(r3)
 	calls	#02,@000192D4
 	tstl	r0
 	bneq	00008304
+
+l000082C4:
 	movl	#00000001,r9
 	cmpl	r3,+0090(r2)
 	bneq	000082D8
+
+l000082CE:
 	moval	(r10),+0090(r2)
 	clrl	+64(r2)
 	brb	000082EB
+
+l000082D8:
 	tstl	r6
 	beql	000082EB
+
+l000082DC:
 	clrl	(r3)
 	subl3	+0090(r2),r3,r0
 	divl3	#00000004,r0,+64(r2)
 	clrl	r6
+
+l000082EB:
 	addl3	#00000004,r3,+0094(r2)
 	subl3	+08(ap),+0094(r2),r0
 	divl2	#00000004,r0
 	subl3	r0,+04(ap),+68(r2)
 	brb	00008307
-	nop
+00008303          01                                        .           
+
+l00008304:
 	movl	#00000001,r6
+
+l00008307:
 	addl2	#00000004,r3
 	tstl	(r3)
 	beql	00008311
+
+l0000830E:
 	brw	00008198
+
+l00008311:
 	brb	00008318
-	nop
+00008313          01                                        .           
+
+l00008314:
 	movl	#00000001,+6C(r2)
+
+l00008318:
 	calls	#00,000108D0
 	ret
-	xfc
-	remque	+5E04(r2),@(sp)+
-	extzv	+30(r5),@EF9ED62D,@-1A(r6),@+597C55FF(fp)
+00008320 FC 0F                                           ..             
+
+;; fn00008322: 00008322
+;;   Called from:
+;;     00008142 (in fn0000802E)
+fn00008322 proc
+	subl2	#00000004,sp
+	movab	FFFFB3D0,r2
+	movab	FFFE69E8,r5
+	clrq	r9
 	clrl	r4
 	movl	@+04(ap),r6
 	movl	@+08(ap),r7
 	subl3	#00000001,r6,r8
 	bgtr	00008348
+
+l00008345:
 	brw	00008893
+
+l00008348:
 	addl2	#00000004,r7
 	cmpb	@+00(r7),#2D
 	beql	00008354
+
+l00008351:
 	brw	00008893
+
+l00008354:
 	movab	@000192D0,r11
 	nop
+
+l0000835C:
 	addl3	#00000001,(r7),r0
 	movl	r0,r1
 	addl3	#00000001,r0,r3
 	cvtbl	(r1),r6
 	bneq	0000836F
+
+l0000836C:
 	brw	00008883
+
+l0000836F:
 	nop
+
+l00008370:
 	cmpl	r6,#0000002D
 	bgeq	00008378
+
+l00008375:
 	brw	00008878
+
+l00008378:
 	bneq	0000837D
+
+l0000837A:
 	brw	00008410
+
+l0000837D:
 	cmpl	r6,#00000043
 	bgeq	00008389
+
+l00008386:
 	brw	00008878
+
+l00008389:
 	movl	r6,r0
 	casel	r0,#00000043,#00000037
-	blbs	#00000000,0000837B
-	ret
-	bbsc	#00000004,-1BFB1BFC(r4),000083A4
-	bbsc	#00000004,+4C04E404(r4),000083AA
-	addd2	#0.625,-1FFB1BFC(r4)
-	rei
-	bbsc	#00000004,-13FB1BFC(r4),000083BB
-	bgtr	000083BE
-	insqhi
-	ret
-	bbsc	#00000004,-(r4),000083C4
-	bbsc	#00000004,@+04(ap),000083A9
-	ret
-	bbsc	#00000004,-1BFB1BFC(r4),000083D2
-	bbsc	#00000004,(r4)+,000083D2
-	bisw2	#0000,@-0400(r4)
-	halt
-	bbsc	#00000001,+0404E401(r8),000083E2
-	bbsc	#00000004,#12,000083E6
-	bbsc	#00000004,#28,000083EA
-	bbsc	#00000004,-(r4),000083EE
-	bisb2	#02,+02(ap)
+00008394             E8 00 E4 04 E4 04 E4 04 E4 04 E4 04     ............
+000083A0 E4 04 E4 04 E4 04 4C 02 60 02 E4 04 E4 04 E0 02 ......L.`.......
+000083B0 E4 04 E4 04 E4 04 EC 03 14 04 5C 04 E4 04 74 04 ..........\...t.
+000083C0 E4 04 BC 04 E4 04 E4 04 E4 04 E4 04 E4 04 E4 04 ................
+000083D0 84 00 A8 00 D4 00 FC 00 E4 01 E8 01 E4 04 04 02 ................
+000083E0 E4 04 12 02 E4 04 28 02 E4 04 74 02 88 02 AC 02 ......(...t.....
+000083F0 B4 03 E4 04 E4 04 D8 03 00 04 2C 04 E4 04 70 04 ..........,...p.
+00008400 E4 04                                           ..             
+
+l00008402:
 	Invalid
-	bbsc	#00000004,+0003D804(r4),000083FE
-	movc5
-	ret
-	bbsc	#00000004,-(r0),00008404
-	bbsc	#00000004,@(r8)+,00008408
-	brw	00008878
-	nop
+	cmpd	#0.75,#0.5625
 	jmp	40008000
 	tstl	r0
+
+l00008410:
 	incl	r4
 	brw	0000887B
-	tstl	r0
-	nop
-	tstl	r4
-	beql	00008434
-	subl3	r4,+04(r2),r0
-	bleq	00008428
-	movl	r0,r1
-	brb	0000842A
-	clrl	r1
-	movl	r1,+04(r2)
-	clrl	r4
-	brw	0000887B
-	nop
-	incl	+04(r2)
-	brw	0000887B
-	tstl	r0
-	tstl	r4
-	beql	00008458
-	subl3	r4,+08(r2),r0
-	bleq	0000844C
-	movl	r0,r1
-	brb	0000844E
-	clrl	r1
-	movl	r1,+08(r2)
-	clrl	r4
-	brw	0000887B
-	nop
-	tstl	+04(r2)
-	bneq	00008460
-	incl	+08(r2)
-	clrl	+04(r2)
-	brw	0000887B
-	tstl	r0
-	tstl	r4
-	beql	00008474
-	clrl	+0C(r2)
-	clrl	r4
-	brw	0000887B
-	movl	#00000001,+0C(r2)
-	brw	0000887B
-	nop
-	tstl	r4
-	beql	00008488
-	clrl	+10(r2)
-	clrl	r4
-	brw	0000887B
-	movl	#00000001,+10(r2)
-	brw	0000887B
-	nop
-	tstl	r4
-	beql	000084BD
-	movzwl	#0401,-(sp)
-	pushal	+52(r5)
-	pushab	+05EB(r2)
-	calls	#02,@000192D0
-	pushl	r0
-	pushab	+05EB(r2)
-	pushab	(r2)
-	movl	+0000C839(r2),r0
-	calls	#04,(r0)
-	movl	#0000000A,r0
-	ret
-	tstl	+14(r2)
-	beql	000084EC
-	movzwl	#0401,-(sp)
-	pushal	+0095(r5)
-	pushab	+05EB(r2)
-	calls	#02,@000192D0
-	pushl	r0
-	pushab	+05EB(r2)
-	pushab	(r2)
-	movl	+0000C839(r2),r0
-	calls	#04,(r0)
-	movl	#0000000A,r0
-	ret
-	movl	#00000001,+14(r2)
-	movl	r3,r9
-	tstb	(r9)
-	bneq	0000855B
-	cmpl	r8,#00000001
-	bleq	00008532
-	decl	r8
-	addl2	#00000004,r7
-	movl	(r7),r9
-	cmpb	(r9),#2D
-	bneq	0000855B
-	movzwl	#0401,-(sp)
-	pushal	+52(r5)
-	pushab	+05EB(r2)
-	calls	#02,@000192D0
-	pushl	r0
-	pushab	+05EB(r2)
-	pushab	(r2)
-	movl	+0000C839(r2),r0
-	calls	#04,(r0)
-	movl	#0000000A,r0
-	ret
-	movzwl	#0401,-(sp)
-	pushal	+52(r5)
-	pushab	+05EB(r2)
-	calls	#02,@000192D0
-	pushl	r0
-	pushab	+05EB(r2)
-	pushab	(r2)
-	movl	+0000C839(r2),r0
-	calls	#04,(r0)
-	movl	#0000000A,r0
-	ret
-	tstb	(r3)
-	bneq	00008562
-	brw	0000887B
-	incl	r3
-	tstb	(r3)
-	bneq	0000856B
-	brw	0000887B
-	nop
-	incl	r3
-	tstb	(r3)
-	bneq	0000856C
-	brw	0000887B
-	tstl	r0
-	nop
-	brw	0000887B
-	nop
-	tstl	r4
-	beql	0000858C
-	clrl	+4C(r2)
-	clrl	+18(r2)
-	clrl	r4
-	brw	0000887B
-	nop
-	movl	#00000001,+4C(r2)
-	movl	#00000001,+18(r2)
-	brw	0000887B
-	nop
-	mnegl	#00000001,@+04(ap)
-	pushl	#00000000
-	calls	#01,000098D4
-	ret
-	tstl	r4
-	beql	000085B4
-	clrl	+20(r2)
-	clrl	r4
-	brw	0000887B
-	tstl	r0
-	movl	#00000001,+20(r2)
-	brw	0000887B
-	nop
-	tstl	r4
-	beql	000085D8
-	subl3	r4,+50(r2),r0
-	bleq	000085CC
-	movl	r0,r1
-	brb	000085CE
-	clrl	r1
-	movl	r1,+50(r2)
-	clrl	r4
-	brw	0000887B
-	nop
-	incl	+50(r2)
-	brw	0000887B
-	tstl	r0
-	tstl	r4
-	beql	000085EC
-	clrl	+28(r2)
-	clrl	r4
-	brw	0000887B
-	movl	#00000001,+28(r2)
-	brw	0000887B
-	nop
-	tstl	r4
-	beql	00008600
-	clrl	+2C(r2)
-	clrl	r4
-	brw	0000887B
-	movl	#00000001,+2C(r2)
-	brw	0000887B
-	nop
-	tstl	r4
-	beql	00008614
-	clrl	+34(r2)
-	clrl	r4
-	brw	0000887B
-	movl	#00000001,+34(r2)
-	brw	0000887B
-	nop
-	tstl	r4
-	beql	00008638
-	subl3	r4,+38(r2),r0
-	bleq	0000862C
-	movl	r0,r1
-	brb	0000862E
-	clrl	r1
-	movl	r1,+38(r2)
-	clrl	r4
-	brw	0000887B
-	nop
-	incl	+38(r2)
-	brw	0000887B
-	tstl	r0
-	tstl	r4
-	beql	00008664
-	clrl	+0C(r2)
-	addl3	#FFFFFC19,+40(r2),r0
-	bleq	00008658
-	movl	r0,r1
-	brb	0000865A
-	nop
-	clrl	r1
-	movl	r1,+40(r2)
-	clrl	r4
-	brw	0000887B
-	nop
-	movl	#00000001,+0C(r2)
-	addl2	#000003E7,+40(r2)
-	brw	0000887B
-	nop
-	tstl	r4
-	beql	000086A2
-	movzwl	#0401,-(sp)
-	pushal	+00D5(r5)
-	pushab	+05EB(r2)
-	calls	#02,@000192D0
-	pushl	r0
-	pushab	+05EB(r2)
-	pushab	(r2)
-	movl	+0000C839(r2),r0
-	calls	#04,(r0)
-	movl	#0000000A,r0
-	ret
-	tstl	+3C(r2)
-	beql	000086AA
-	brw	0000887B
-	movl	#00000001,+3C(r2)
-	movl	r3,+0000C801(r2)
-	movl	r3,r0
-	tstb	(r0)
-	bneq	00008729
-	cmpl	r8,#00000001
-	bleq	000086FF
-	decl	r8
-	addl2	#00000004,r7
-	movl	(r7),+0000C801(r2)
-	movl	(r7),r0
-	cmpb	(r0),#2D
-	bneq	00008729
-	movzwl	#0401,-(sp)
-	pushal	+00D5(r5)
-	pushab	+05EB(r2)
-	calls	#02,@000192D0
-	pushl	r0
-	pushab	+05EB(r2)
-	pushab	(r2)
-	movl	+0000C839(r2),r0
-	calls	#04,(r0)
-	movl	#0000000A,r0
-	ret
-	movzwl	#0401,-(sp)
-	pushal	+00D5(r5)
-	pushab	+05EB(r2)
-	calls	#02,@000192D0
-	pushl	r0
-	pushab	+05EB(r2)
-	pushab	(r2)
-	movl	+0000C839(r2),r0
-	calls	#04,(r0)
-	movl	#0000000A,r0
-	ret
-	tstb	(r3)
-	bneq	00008730
-	brw	0000887B
-	incl	r3
-	tstb	(r3)
-	bneq	00008739
-	brw	0000887B
-	tstl	r0
-	nop
-	incl	r3
-	tstb	(r3)
-	bneq	0000873C
-	brw	0000887B
-	tstl	r0
-	nop
-	tstl	r4
-	beql	00008764
-	subl3	r4,+40(r2),r0
-	bleq	00008758
-	movl	r0,r1
-	brb	0000875A
-	clrl	r1
-	movl	r1,+40(r2)
-	clrl	r4
-	brw	0000887B
-	nop
-	incl	+40(r2)
-	brw	0000887B
-	tstl	r0
-	tstl	r4
-	beql	00008778
-	clrl	+44(r2)
-	clrl	r4
-	brw	0000887B
-	movl	#00000001,+44(r2)
-	brw	0000887B
-	nop
-	tstl	r4
-	beql	0000878C
-	clrl	+48(r2)
-	clrl	r4
-	brw	0000887B
-	movl	#00000001,+48(r2)
-	brw	0000887B
-	nop
-	tstl	r4
-	beql	000087A0
-	clrl	+4C(r2)
-	clrl	r4
-	brw	0000887B
-	movl	#00000001,+4C(r2)
-	brw	0000887B
-	nop
-	tstl	r4
-	beql	000087B8
-	movl	#00000001,+28(r2)
-	clrl	r4
-	brw	0000887B
-	tstl	r0
-	nop
-	clrl	+28(r2)
-	brw	0000887B
-	tstl	r0
-	tstl	r4
-	beql	000087DC
-	subl3	r4,+50(r2),r0
-	bleq	000087D0
-	movl	r0,r1
-	brb	000087D2
-	clrl	r1
-	movl	r1,+50(r2)
-	clrl	r4
-	brw	0000887B
-	nop
-	tstl	+50(r2)
-	beql	000087E8
-	incl	+50(r2)
-	brw	0000887B
-	nop
-	movl	#00000002,+50(r2)
-	brw	0000887B
-	nop
-	tstl	r4
-	beql	000087FC
-	clrl	+54(r2)
-	clrl	r4
-	brw	0000887B
-	movl	#00000001,+54(r2)
-	brb	0000887B
-	tstl	r0
-	brb	0000887B
-	tstl	r0
-	tstl	r4
-	beql	00008824
-	subl3	r4,+58(r2),r0
-	bleq	00008818
-	movl	r0,r1
-	brb	0000881A
-	clrl	r1
-	movl	r1,+58(r2)
-	clrl	r4
-	brb	0000887B
-	tstl	r0
-	incl	+58(r2)
-	brb	0000887B
-	tstl	r0
-	nop
-	tstl	r4
-	beql	00008848
-	subl3	r4,+5C(r2),r0
-	bleq	0000883C
-	movl	r0,r1
-	brb	0000883E
-	clrl	r1
-	movl	r1,+5C(r2)
-	clrl	r4
-	brb	0000887B
-	tstl	r0
-	incl	+5C(r2)
-	brb	0000887B
-	tstl	r0
-	nop
-	movzwl	#0401,-(sp)
-	pushal	+010B(r5)
-	pushab	+05EB(r2)
-	calls	#02,(r11)
-	pushl	r0
-	pushab	+05EB(r2)
-	pushab	(r2)
-	movl	+0000C839(r2),r0
-	calls	#04,(r0)
+00008415                D5 50 01 D5 54 13 18 C3 54 A2 04      .P..T...T..
+00008420 50 15 05 D0 50 51 11 02 D4 51 D0 51 A2 04 D4 54 P...PQ...Q.Q...T
+00008430 31 48 04 01 D6 A2 04 31 41 04 D5 50 D5 54 13 18 1H.....1A..P.T..
+00008440 C3 54 A2 08 50 15 05 D0 50 51 11 02 D4 51 D0 51 .T..P...PQ...Q.Q
+00008450 A2 08 D4 54 31 24 04 01 D5 A2 04 12 03 D6 A2 08 ...T1$..........
+00008460 D4 A2 04 31 15 04 D5 50 D5 54 13 08 D4 A2 0C D4 ...1...P.T......
+00008470 54 31 07 04 D0 01 A2 0C 31 00 04 01 D5 54 13 08 T1......1....T..
+00008480 D4 A2 10 D4 54 31 F3 03 D0 01 A2 10 31 EC 03 01 ....T1......1...
+00008490 D5 54 13 29 3C 8F 01 04 7E DF A5 52 9F C2 EB 05 .T.)<...~..R....
+000084A0 FB 02 FF 29 0E 01 00 DD 50 9F C2 EB 05 9F 62 D0 ...)....P.....b.
+000084B0 E2 39 C8 00 00 50 FB 04 60 D0 0A 50 04 D5 A2 14 .9...P..`..P....
+000084C0 13 2A 3C 8F 01 04 7E DF C5 95 00 9F C2 EB 05 FB .*<...~.........
+000084D0 02 FF FA 0D 01 00 DD 50 9F C2 EB 05 9F 62 D0 E2 .......P.....b..
+000084E0 39 C8 00 00 50 FB 04 60 D0 0A 50 04 D0 01 A2 14 9...P..`..P.....
+000084F0 D0 53 59 95 69 12 64 D1 58 01 15 36 D7 58 C0 04 .SY.i.d.X..6.X..
+00008500 57 D0 67 59 91 69 2D 12 52 3C 8F 01 04 7E DF A5 W.gY.i-.R<...~..
+00008510 52 9F C2 EB 05 FB 02 FF B4 0D 01 00 DD 50 9F C2 R............P..
+00008520 EB 05 9F 62 D0 E2 39 C8 00 00 50 FB 04 60 D0 0A ...b..9...P..`..
+00008530 50 04 3C 8F 01 04 7E DF A5 52 9F C2 EB 05 FB 02 P.<...~..R......
+00008540 FF 8B 0D 01 00 DD 50 9F C2 EB 05 9F 62 D0 E2 39 ......P.....b..9
+00008550 C8 00 00 50 FB 04 60 D0 0A 50 04 95 63 12 03 31 ...P..`..P..c..1
+00008560 19 03 D6 53 95 63 12 03 31 10 03 01 D6 53 95 63 ...S.c..1....S.c
+00008570 12 FA 31 06 03 D5 50 01 31 00 03 01 D5 54 13 0C ..1...P.1....T..
+00008580 D4 A2 4C D4 A2 18 D4 54 31 F0 02 01 D0 01 A2 4C ..L....T1......L
+00008590 D0 01 A2 18 31 E4 02 01 CE 01 BC 04 DD 00 FB 01 ....1...........
+000085A0 EF 2F 13 00 00 04 D5 54 13 0A D4 A2 20 D4 54 31 ./.....T.... .T1
+000085B0 C9 02 D5 50 D0 01 A2 20 31 C0 02 01 D5 54 13 18 ...P... 1....T..
+000085C0 C3 54 A2 50 50 15 05 D0 50 51 11 02 D4 51 D0 51 .T.PP...PQ...Q.Q
+000085D0 A2 50 D4 54 31 A4 02 01 D6 A2 50 31 9D 02 D5 50 .P.T1.....P1...P
+000085E0 D5 54 13 08 D4 A2 28 D4 54 31 8F 02 D0 01 A2 28 .T....(.T1.....(
+000085F0 31 88 02 01 D5 54 13 08 D4 A2 2C D4 54 31 7B 02 1....T....,.T1{.
+00008600 D0 01 A2 2C 31 74 02 01 D5 54 13 08 D4 A2 34 D4 ...,1t...T....4.
+00008610 54 31 67 02 D0 01 A2 34 31 60 02 01 D5 54 13 18 T1g....41`...T..
+00008620 C3 54 A2 38 50 15 05 D0 50 51 11 02 D4 51 D0 51 .T.8P...PQ...Q.Q
+00008630 A2 38 D4 54 31 44 02 01 D6 A2 38 31 3D 02 D5 50 .8.T1D....81=..P
+00008640 D5 54 13 20 D4 A2 0C C1 8F 19 FC FF FF A2 40 50 .T. ..........@P
+00008650 15 06 D0 50 51 11 03 01 D4 51 D0 51 A2 40 D4 54 ...PQ....Q.Q.@.T
+00008660 31 18 02 01 D0 01 A2 0C C0 8F E7 03 00 00 A2 40 1..............@
+00008670 31 08 02 01 D5 54 13 2A 3C 8F 01 04 7E DF C5 D5 1....T.*<...~...
+00008680 00 9F C2 EB 05 FB 02 FF 44 0C 01 00 DD 50 9F C2 ........D....P..
+00008690 EB 05 9F 62 D0 E2 39 C8 00 00 50 FB 04 60 D0 0A ...b..9...P..`..
+000086A0 50 04 D5 A2 3C 13 03 31 D1 01 D0 01 A2 3C D0 53 P...<..1.....<.S
+000086B0 E2 01 C8 00 00 D0 53 50 95 60 12 6D D1 58 01 15 ......SP.`.m.X..
+000086C0 3E D7 58 C0 04 57 D0 67 E2 01 C8 00 00 D0 67 50 >.X..W.g......gP
+000086D0 91 60 2D 12 54 3C 8F 01 04 7E DF C5 D5 00 9F C2 .`-.T<...~......
+000086E0 EB 05 FB 02 FF E7 0B 01 00 DD 50 9F C2 EB 05 9F ..........P.....
+000086F0 62 D0 E2 39 C8 00 00 50 FB 04 60 D0 0A 50 04 3C b..9...P..`..P.<
+00008700 8F 01 04 7E DF C5 D5 00 9F C2 EB 05 FB 02 FF BD ...~............
+00008710 0B 01 00 DD 50 9F C2 EB 05 9F 62 D0 E2 39 C8 00 ....P.....b..9..
+00008720 00 50 FB 04 60 D0 0A 50 04 95 63 12 03 31 4B 01 .P..`..P..c..1K.
+00008730 D6 53 95 63 12 03 31 42 01 D5 50 01 D6 53 95 63 .S.c..1B..P..S.c
+00008740 12 FA 31 36 01 D5 50 01 D5 54 13 18 C3 54 A2 40 ..16..P..T...T.@
+00008750 50 15 05 D0 50 51 11 02 D4 51 D0 51 A2 40 D4 54 P...PQ...Q.Q.@.T
+00008760 31 18 01 01 D6 A2 40 31 11 01 D5 50 D5 54 13 08 1.....@1...P.T..
+00008770 D4 A2 44 D4 54 31 03 01 D0 01 A2 44 31 FC 00 01 ..D.T1.....D1...
+00008780 D5 54 13 08 D4 A2 48 D4 54 31 EF 00 D0 01 A2 48 .T....H.T1.....H
+00008790 31 E8 00 01 D5 54 13 08 D4 A2 4C D4 54 31 DB 00 1....T....L.T1..
+000087A0 D0 01 A2 4C 31 D4 00 01 D5 54 13 0C D0 01 A2 28 ...L1....T.....(
+000087B0 D4 54 31 C6 00 D5 50 01 D4 A2 28 31 BD 00 D5 50 .T1...P...(1...P
+000087C0 D5 54 13 18 C3 54 A2 50 50 15 05 D0 50 51 11 02 .T...T.PP...PQ..
+000087D0 D4 51 D0 51 A2 50 D4 54 31 A0 00 01 D5 A2 50 13 .Q.Q.P.T1.....P.
+000087E0 07 D6 A2 50 31 94 00 01 D0 02 A2 50 31 8C 00 01 ...P1......P1...
+000087F0 D5 54 13 08 D4 A2 54 D4 54 31 7F 00 D0 01 A2 54 .T....T.T1.....T
+00008800 11 79 D5 50 11 75 D5 50 D5 54 13 18 C3 54 A2 58 .y.P.u.P.T...T.X
+00008810 50 15 05 D0 50 51 11 02 D4 51 D0 51 A2 58 D4 54 P...PQ...Q.Q.X.T
+00008820 11 59 D5 50 D6 A2 58 11 52 D5 50 01 D5 54 13 18 .Y.P..X.R.P..T..
+00008830 C3 54 A2 5C 50 15 05 D0 50 51 11 02 D4 51 D0 51 .T.\P...PQ...Q.Q
+00008840 A2 5C D4 54 11 35 D5 50 D6 A2 5C 11 2E D5 50 01 .\.T.5.P..\...P.
+00008850 3C 8F 01 04 7E DF C5 0B 01 9F C2 EB 05 FB 02 6B <...~..........k
+00008860 DD 50 9F C2 EB 05 9F 62 D0 E2 39 C8 00 00 50 FB .P.....b..9...P.
+00008870 04 60 D0 01 5A 11 04 01                         .`..Z...       
+
+l00008878:
 	movl	#00000001,r10
-	brb	0000887B
-	nop
-	movl	#00000001,r10
+
+l0000887B:
 	cvtbl	(r3)+,r6
 	beql	00008883
+
+l00008880:
 	brw	00008370
+
+l00008883:
 	decl	r8
 	bleq	00008893
+
+l00008887:
 	addl2	#00000004,r7
 	cmpb	@+00(r7),#2D
 	bneq	00008893
+
+l00008890:
 	brw	0000835C
+
+l00008893:
 	tstl	+0C(r2)
 	beql	0000889D
+
+l00008898:
 	tstl	+44(r2)
 	bneq	000088BB
+
+l0000889D:
 	tstl	+0C(r2)
 	beql	000088A7
+
+l000088A2:
 	tstl	+4C(r2)
 	bneq	000088BB
+
+l000088A7:
 	tstl	+44(r2)
 	beql	000088B1
+
+l000088AC:
 	tstl	+4C(r2)
 	bneq	000088BB
+
+l000088B1:
 	tstl	+18(r2)
 	beql	000088E4
+
+l000088B6:
 	tstl	+34(r2)
 	beql	000088E4
+
+l000088BB:
 	movzwl	#0401,-(sp)
 	pushal	+0155(r5)
 	pushab	+05EB(r2)
@@ -2349,16 +2169,30 @@ l000080BA:
 	movl	+0000C839(r2),r3
 	calls	#04,(r3)
 	movl	#00000001,r10
+
+l000088E4:
 	cmpl	+04(r2),#00000002
 	bleq	000088EE
+
+l000088EA:
 	movl	#00000002,+04(r2)
+
+l000088EE:
 	cmpl	+08(r2),#00000002
 	bleq	000088F8
+
+l000088F4:
 	movl	#00000002,+08(r2)
+
+l000088F8:
 	tstl	+38(r2)
 	beql	0000892B
+
+l000088FD:
 	tstl	+34(r2)
 	beql	0000892B
+
+l00008902:
 	movzwl	#0401,-(sp)
 	pushal	+01A2(r5)
 	pushab	+05EB(r2)
@@ -2369,30 +2203,54 @@ l000080BA:
 	movl	+0000C839(r2),r3
 	calls	#04,(r3)
 	clrl	+38(r2)
+
+l0000892B:
 	tstl	+2C(r2)
 	beql	00008940
+
+l00008930:
 	pushl	#00000001
 	calls	#01,@000192E4
 	tstl	r0
 	bneq	00008940
+
+l0000893D:
 	clrl	+2C(r2)
+
+l00008940:
 	movl	r8,r3
 	decl	r8
 	tstl	r3
 	beql	00008950
+
+l00008949:
 	tstl	r10
 	bneq	00008950
+
+l0000894D:
 	brw	00008C52
+
+l00008950:
 	movl	r8,@+04(ap)
 	movl	r7,@+08(ap)
 	cmpl	+50(r2),#00000002
 	bgeq	00008961
+
+l0000895E:
 	brw	00008C3C
+
+l00008961:
 	cmpl	r8,#FFFFFFFF
 	beql	0000896D
+
+l0000896A:
 	brw	00008C3C
+
+l0000896D:
 	cmpl	+40(r2),#00000003
 	bleq	000089A0
+
+l00008973:
 	pushl	#00000000
 	movzwl	#0214,-(sp)
 	pushal	FFFE540C
@@ -2404,6 +2262,8 @@ l000080BA:
 	movl	+0000C839(r2),r3
 	calls	#04,(r3)
 	brw	00008C39
+
+l000089A0:
 	clrl	r4
 	pushl	#00000000
 	pushal	00007ED0
@@ -2498,6 +2358,8 @@ l000080BA:
 	calls	#04,(r3)
 	incl	r4
 	bneq	00008B07
+
+l00008AE4:
 	pushl	#00000000
 	pushal	+0711(r5)
 	pushal	+06D8(r5)
@@ -2508,6 +2370,8 @@ l000080BA:
 	pushab	(r2)
 	movl	+0000C839(r2),r3
 	calls	#04,(r3)
+
+l00008B07:
 	pushl	#00000000
 	pushal	+06DD(r5)
 	pushab	+05EB(r2)
@@ -2522,11 +2386,19 @@ l000080BA:
 	pushl	#00000000
 	tstl	r0
 	beql	00008B3D
+
+l00008B39:
 	tstb	(r0)
 	bneq	00008B44
+
+l00008B3D:
 	moval	+0711(r5),r4
 	brb	00008B47
+
+l00008B44:
 	movl	r0,r4
+
+l00008B47:
 	pushl	r4
 	pushal	(r5)
 	pushal	+0706(r5)
@@ -2542,12 +2414,20 @@ l000080BA:
 	pushl	#00000000
 	tstl	r0
 	beql	00008B80
+
+l00008B7C:
 	tstb	(r0)
 	bneq	00008B88
+
+l00008B80:
 	moval	+0711(r5),r4
 	brb	00008B8B
-	nop
+00008B87                      01                                .       
+
+l00008B88:
 	movl	r0,r4
+
+l00008B8B:
 	pushl	r4
 	pushal	+0B(r5)
 	pushal	+0706(r5)
@@ -2563,11 +2443,19 @@ l000080BA:
 	pushl	#00000000
 	tstl	r0
 	beql	00008BC5
+
+l00008BC1:
 	tstb	(r0)
 	bneq	00008BCC
+
+l00008BC5:
 	moval	+0711(r5),r4
 	brb	00008BCF
+
+l00008BCC:
 	movl	r0,r4
+
+l00008BCF:
 	pushl	r4
 	pushal	+14(r5)
 	pushal	+0706(r5)
@@ -2583,11 +2471,19 @@ l000080BA:
 	pushl	#00000000
 	tstl	r0
 	beql	00008C09
+
+l00008C05:
 	tstb	(r0)
 	bneq	00008C10
+
+l00008C09:
 	moval	+0711(r5),r4
 	brb	00008C13
+
+l00008C10:
 	movl	r0,r4
+
+l00008C13:
 	pushl	r4
 	pushal	+21(r5)
 	pushal	+0706(r5)
@@ -2598,44 +2494,82 @@ l000080BA:
 	pushab	(r2)
 	movl	+0000C839(r2),r3
 	calls	#04,(r3)
+
+l00008C39:
 	clrl	r0
 	ret
+
+l00008C3C:
 	tstl	+60(r2)
 	bneq	00008C48
+
+l00008C41:
 	tstl	r10
 	bneq	00008C48
+
+l00008C45:
 	movl	#0000000A,r10
+
+l00008C48:
 	pushl	r10
 	calls	#01,000098D4
 	ret
+
+l00008C52:
 	tstl	+0C(r2)
 	bneq	00008C6B
+
+l00008C57:
 	tstl	+44(r2)
 	bneq	00008C6B
+
+l00008C5C:
 	tstl	+50(r2)
 	bneq	00008C6B
+
+l00008C61:
 	tstl	+5C(r2)
 	bneq	00008C6B
+
+l00008C66:
 	tstl	+48(r2)
 	beql	00008C70
+
+l00008C6B:
 	clrl	+74(r2)
 	brb	00008C74
+
+l00008C70:
 	movl	#00000001,+74(r2)
+
+l00008C74:
 	tstl	+14(r2)
 	beql	00008CC1
+
+l00008C79:
 	tstl	+74(r2)
 	beql	00008C9C
+
+l00008C7E:
 	clrl	r3
 	tstl	+18(r2)
 	bneq	00008C87
+
+l00008C85:
 	incl	r3
+
+l00008C87:
 	movl	r3,+70(r2)
 	pushl	#00000000
 	pushl	r9
 	calls	#02,0000C6F8
 	cmpl	r0,#00000002
 	bleq	00008CC1
+
+l00008C9B:
 	ret
+
+l00008C9C:
 	movzwl	#0401,-(sp)
 	pushal	+2C(r5)
 	pushab	+05EB(r2)
@@ -2645,15 +2579,17 @@ l000080BA:
 	pushab	(r2)
 	movl	+0000C839(r2),r3
 	calls	#04,(r3)
+
+l00008CC1:
 	movl	r8,@+04(ap)
 	movl	r7,@+08(ap)
 	clrl	r0
 	ret
-	xfc
-	halt
+00008CCC                                     FC 00                   .. 
 
 ;; fn00008CCE: 00008CCE
 ;;   Called from:
+;;     000098F2 (in fn000098D6)
 ;;     00012977 (in fn00012702)
 fn00008CCE proc
 	subl2	#00000004,sp
@@ -2731,7 +2667,7 @@ l00008D00:
 	movl	+0000C839(r2),r0
 	calls	#04,(r0)
 	brw	00008EB4
-	tstl	r0
+00008DAA                               D5 50                       .P   
 
 l00008DAC:
 	pushl	r6
@@ -2762,6 +2698,8 @@ l00008DAC:
 	calls	#04,(r0)
 	tstl	r7
 	bneq	00008E2C
+
+l00008E0D:
 	pushl	r6
 	pushal	+09F7(r3)
 	pushab	+05EB(r2)
@@ -2771,6 +2709,8 @@ l00008DAC:
 	pushab	(r2)
 	movl	+0000C839(r2),r0
 	calls	#04,(r0)
+
+l00008E2C:
 	pushl	r6
 	pushal	+0226(r3)
 	pushal	+0A48(r3)
@@ -2811,13 +2751,19 @@ l00008DAC:
 	pushab	(r2)
 	movl	+0000C839(r2),r0
 	calls	#04,(r0)
+
+l00008EB4:
 	tstl	+04(ap)
 	beql	00008EBD
+
+l00008EB9:
 	movl	#0000000A,r0
 	ret
+
+l00008EBD:
 	clrl	r0
 	ret
-	Invalid
+00008EC0 7C 00                                           |.             
 
 ;; fn00008EC2: 00008EC2
 ;;   Called from:
@@ -3375,6 +3321,9 @@ fn00008EC2 proc
 	ret
 	xfc
 	bpt
+
+;; fn00009746: 00009746
+fn00009746 proc
 	subl2	#00000014,sp
 	clrw	-14(fp)
 	movb	#0E,-12(fp)
@@ -3384,10 +3333,16 @@ fn00008EC2 proc
 	calls	#01,00018F64
 	movl	r0,r2
 	blbs	r2,0000976A
+
+l00009767:
 	brw	000098AD
+
+l0000976A:
 	movl	+10(ap),r4
 	tstl	(r4)
 	bneq	0000978D
+
+l00009772:
 	movl	+14(ap),r3
 	movzwl	#0100,(r3)
 	pushl	(r3)
@@ -3395,20 +3350,30 @@ fn00008EC2 proc
 	movl	r0,(r4)
 	movzwl	#0124,r0
 	ret
+
+l0000978D:
 	movl	@+18(ap),r8
 	pushab	-14(fp)
 	pushl	+04(ap)
 	calls	#02,00018FA7
 	movl	r0,r2
 	blbs	r2,000097A7
+
+l000097A4:
 	brw	000098A9
+
+l000097A7:
 	moval	+0014(ap),r7
+
+l000097AC:
 	movl	r8,r9
 	movzwl	-14(fp),r3
 	incl	r3
 	addl2	r3,r8
 	cmpl	r8,@+00(r7)
 	blequ	000097F2
+
+l000097BE:
 	movl	+10(ap),r4
 	movl	(r4),r5
 	movl	(r7),r3
@@ -3418,12 +3383,20 @@ fn00008EC2 proc
 	calls	#02,@000192B8
 	movl	r0,(r4)
 	bneq	000097F2
+
+l000097DF:
 	tstl	r5
 	beql	000097EC
+
+l000097E3:
 	pushl	r5
 	calls	#01,@000192B0
+
+l000097EC:
 	movzwl	#0124,r0
 	ret
+
+l000097F2:
 	clrl	r6
 	pushab	-14(fp)
 	pushal	-0C(fp)
@@ -3434,83 +3407,140 @@ fn00008EC2 proc
 	movl	-08(fp),r4
 	cmpl	r4,#00000001
 	bleq	00009820
+
+l00009813:
 	addl3	+04(r3),r4,r3
 	subl2	#00000002,r3
 	cmpb	(r3),#22
 	beql	00009824
+
+l00009820:
 	tstl	r4
 	bneq	00009827
+
+l00009824:
 	movl	#00000001,r6
+
+l00009827:
 	movl	-10(fp),r3
 	addl3	@+10(ap),r9,r4
 	clrl	r5
 	movzwl	-14(fp),r0
 	cmpl	r5,r0
 	bgequ	00009866
+
+l0000983B:
 	nop
+
+l0000983C:
 	tstl	r6
 	bneq	00009858
+
+l00009840:
 	cmpb	(r3),#41
 	blss	00009858
+
+l00009846:
 	cmpb	(r3),#5A
 	bgtr	00009858
+
+l0000984C:
 	cvtbl	(r3)+,r0
 	addl2	#00000020,r0
 	cvtlb	r0,(r4)+
 	brb	0000985B
-	nop
+00009857                      01                                .       
+
+l00009858:
 	movb	(r3)+,(r4)+
+
+l0000985B:
 	incl	r5
 	movzwl	-14(fp),r0
 	cmpl	r5,r0
 	blssu	0000983C
+
+l00009866:
 	cmpl	r2,#0003FD39
 	bneq	00009884
+
+l0000986F:
 	subl3	#00000001,r8,r4
 	moval	@+10(ap),r3
 	moval	@+00(r3),r3
 	cvtlb	+0C(ap),(r3)[r4]
 	brb	00009893
-	tstl	r0
+00009882       D5 50                                       .P           
+
+l00009884:
 	subl3	#00000001,r8,r4
 	moval	@+10(ap),r3
 	moval	@+00(r3),r3
 	clrb	(r3)[r4]
+
+l00009893:
 	pushab	-14(fp)
 	pushl	+04(ap)
 	calls	#02,00018FA7
 	movl	r0,r2
 	blbc	r2,000098A9
+
+l000098A6:
 	brw	000097AC
+
+l000098A9:
 	movl	r8,@+18(ap)
+
+l000098AD:
 	cvtwl	#0001,r0
 	ret
-	nop
-	halt
-	halt
+000098B3          01 00 00                                  ...         
+
+;; fn000098B6: 000098B6
+fn000098B6 proc
 	subl2	#00000004,sp
 	pushal	@0001933C
 	calls	#01,@00019330
 	pushl	+00000004(ap)
 	calls	#01,00018F64
 	ret
-	movzwl	#0000,+5E04(r2)
+000098D4             3C 00                                   <.         
+
+;; fn000098D6: 000098D6
+;;   Called from:
+;;     00008C4A (in fn00008322)
+fn000098D6 proc
+	subl2	#00000004,sp
 	movab	FFFE5470,r3
 	movab	FFFFB3D0,r2
 	tstl	FFFE77D4
 	bneq	000098FA
+
+l000098EF:
 	pushl	+04(ap)
 	calls	#01,00008CCC
 	ret
+
+l000098FA:
 	tstl	+04(ap)
 	beql	00009904
+
+l000098FF:
 	movb	#01,r0
 	brb	00009906
+
+l00009904:
 	clrb	r0
+
+l00009906:
 	cvtbl	r0,r5
 	tstl	(r2)
 	bneq	00009910
+
+l0000990D:
 	brw	000099A4
+
+l00009910:
 	pushl	r5
 	pushal	+02A0(r3)
 	pushal	+029F(r3)
@@ -3554,6 +3584,8 @@ fn00008EC2 proc
 	movl	+0000C839(r2),r0
 	calls	#04,(r0)
 	brw	00009A3B
+
+l000099A4:
 	pushl	r5
 	pushal	+060D(r3)
 	pushal	+060C(r3)
@@ -3597,14 +3629,20 @@ fn00008EC2 proc
 	pushab	(r2)
 	movl	+0000C839(r2),r0
 	calls	#04,(r0)
+
+l00009A3B:
 	tstl	+04(ap)
 	beql	00009A44
+
+l00009A40:
 	movl	#0000000A,r0
 	ret
+
+l00009A44:
 	clrl	r0
 	ret
-	halt
-	subp6	#003D,#0A,@+3D70(r7),@+7CA3(r7),#0000,@(sp)+
+00009A47                      00 23 3D 0A D7 70 3D D7 A3        .#=..p=..
+00009A50 7C 00                                           |.             
 
 ;; fn00009A52: 00009A52
 ;;   Called from:
@@ -5217,6 +5255,10 @@ l0000AF79:
 
 ;; fn0000B072: 0000B072
 ;;   Called from:
+;;     00015859 (in fn0001530A)
+;;     00015DE5 (in fn00015896)
+;;     000162A9 (in fn00015E22)
+;;     0001676D (in fn000162E6)
 ;;     0001871C (in fn000186B2)
 fn0000B072 proc
 	subl2	#00000004,sp
@@ -6176,9 +6218,7 @@ fn0000BDC2 proc
 	pushab	+000101E8(r6)
 	calls	#02,0000BF5E                                         ; @(pc)+
 	adawi	@+7FFE(sp),@-20F8(fp)
-	Invalid
-	nop
-	halt
+	bbssi	00000005[r4],#01,0000BF6A
 	pushal	+0001054C(r6)
 	calls	#03,@0001929C
 	movl	#00200000,+0001020C(r6)
@@ -6472,6 +6512,8 @@ l0000C354:
 
 ;; fn0000C6FA: 0000C6FA
 ;;   Called from:
+;;     00008247 (in fn0000802E)
+;;     00008C8F (in fn00008322)
 ;;     00010D6E (in fn000108D2)
 fn0000C6FA proc
 	movab	-00E0(sp),sp
@@ -6889,6 +6931,8 @@ l0000CCAA:
 
 ;; fn0000CE52: 0000CE52
 ;;   Called from:
+;;     0000D170 (in fn0000D0D6)
+;;     0000D20E (in fn0000D0D6)
 ;;     0000D734 (in fn0000D69A)
 fn0000CE52 proc
 	subl2	#00000004,sp
@@ -7013,6 +7057,8 @@ l0000CF36:
 0000CF40 1C 00                                           ..             
 
 ;; fn0000CF42: 0000CF42
+;;   Called from:
+;;     000089F9 (in fn00008322)
 fn0000CF42 proc
 	subl2	#0000002C,sp
 	movab	FFFE5F38,r2
@@ -7049,10 +7095,7 @@ l0000CF85:
 	movl	+0000C839(r3),ap
 	calls	#04,(ap)
 	ret
-	halt
-	halt
-	halt
-	movzwl	#0000,+5E04(r2)
+0000CFB5                00 00 00 3C 00                        ...<.     
 
 ;; fn0000CFBA: 0000CFBA
 ;;   Called from:
@@ -7143,6 +7186,9 @@ l0000D0C8:
 0000D0D1    00 00 00 FC 01                                .....         
 
 ;; fn0000D0D6: 0000D0D6
+;;   Called from:
+;;     0000810C (in fn0000802E)
+;;     00008135 (in fn0000802E)
 fn0000D0D6 proc
 	subl2	#00000004,sp
 	movab	@0001934C,r4
@@ -7496,6 +7542,8 @@ fn0000D4A2 proc
 	movl	r0,+0000C617(r2)
 	cmpl	+0000C617(r2),#FFFFFFFF
 	bneq	0000D507
+
+l0000D4D5:
 	movzwl	#0401,-(sp)
 	pushl	+0000C613(r2)
 	pushal	FFFF8508
@@ -7508,11 +7556,11 @@ fn0000D4A2 proc
 	calls	#04,(ap)
 	movl	#00000001,r0
 	ret
+
+l0000D507:
 	clrl	r0
 	ret
-	tstl	r0
-	halt
-	halt
+0000D50A                               D5 50 00 00                 .P.. 
 
 ;; fn0000D50E: 0000D50E
 fn0000D50E proc
@@ -7577,6 +7625,8 @@ l0000D5B2:
 
 ;; fn0000D5BE: 0000D5BE
 ;;   Called from:
+;;     0000E532 (in fn0000E3DA)
+;;     0000F240 (in fn0000E3DA)
 ;;     00011B0E (in fn000117AA)
 ;;     00011CE9 (in fn00011CDA)
 ;;     00012E42 (in fn00012D86)
@@ -7671,6 +7721,7 @@ l0000D692:
 ;;   Called from:
 ;;     0001527C (in fn00015256)
 ;;     000152A8 (in fn00015256)
+;;     00017828 (in fn000177CA)
 ;;     000185E8 (in fn000185AE)
 fn0000D69A proc
 	subl2	#00000004,sp
@@ -8065,6 +8116,8 @@ l0000E2E2:
 
 ;; fn0000E2EA: 0000E2EA
 ;;   Called from:
+;;     000080C4 (in fn0000802E)
+;;     000080D5 (in fn0000802E)
 ;;     0000CB8D (in fn0000C6FA)
 fn0000E2EA proc
 	subl2	#00000004,sp
@@ -8186,277 +8239,1260 @@ l0000E3D0:
 l0000E3D3:
 	clrl	r0
 	ret
-0000E3D6                   00 00 FC 0F 9E CE 70 FF 5E 9E       ......p.^.
-0000E3E0 EF DF 82 FD FF 59 9E EF E4 CF FE FF 52 9E EF 91 .....Y......R...
-0000E3F0 A2 FE FF 54 CE 01 AE 3C D4 AD E8 D4 57 7C 5A B4 ...T...<....W|Z.
-0000E400 AE 32 B4 AE 1A D4 AE 34 9E C2 A7 00 C2 E7 05 B0 .2.....4........
-0000E410 E2 88 C6 00 00 AE 46 D0 01 A2 78 D4 E2 D1 C6 00 ......F...x.....
-0000E420 00 D5 A2 64 15 25 78 02 A2 64 7E FB 01 FF 82 AE ...d.%x..d~.....
-0000E430 00 00 D0 50 5A 13 14 D4 53 D5 A2 64 15 0D D5 50 ...PZ...S..d...P
-0000E440 D4 43 6A D6 53 D1 53 A2 64 19 F5 D5 A2 68 15 23 .Cj.S.S.d....h.#
-0000E450 78 02 A2 68 7E FB 01 FF 58 AE 00 00 D0 50 5B 13 x..h~...X....P[.
-0000E460 12 D4 53 D5 A2 68 15 0B D4 43 6B D6 53 D1 53 A2 ..S..h...Ck.S.S.
-0000E470 68 19 F5 B5 AE 46 12 03 31 16 0D 9E FF 4F AE 00 h....F..1....O..
-0000E480 00 58 9E FF E4 AD 00 00 AE 2C 9E FF E0 AD 00 00 .X.......,......
-0000E490 AE 28 9E EF 24 F1 FF FF AE 24 9E FF 38 AE 00 00 .(..$....$..8...
-0000E4A0 AE 20 9E EF 38 39 00 00 AE 14 9E EF C4 F7 FF FF . ..89..........
-0000E4B0 AE 1C 9E EF D8 23 00 00 AE 38 9E FF F0 AD 00 00 .....#...8......
-0000E4C0 AE 10 9E FF 98 AD 00 00 AE 0C 9E EF 58 DF FF FF ............X...
-0000E4D0 AE 08 9E EF D8 E7 FF FF AE 04 9E FF B0 AD 00 00 ................
-0000E4E0 AE 50 9E FF DC AD 00 00 CE 4C 00 9E EF 6B 3B 00 .P.......L...k;.
-0000E4F0 00 CE 00 00 D4 AE 48 B5 AE 46 12 03 31 E2 02 D1 ......H..F..1...
-0000E500 AE 48 8F 40 00 00 00 19 03 31 D5 02 9E EF 62 F7 .H.@.....1....b.
-0000E510 FF FF 55 9E EF FF A6 00 00 53 D5 50 B7 AE 46 C5 ..U......S.P..F.
-0000E520 15 AE 48 5C 9E 4C C2 A7 00 C2 E7 05 DD 04 9F C2 ..H\.L..........
-0000E530 98 00 FB 02 EF 83 F0 FF FF D5 50 12 0B D0 33 57 ..........P...3W
-0000E540 B4 AE 46 31 9B 02 D5 50 DD 04 9F E2 34 C6 00 00 ..F1...P....4...
-0000E550 9F C2 98 00 FB 03 FF 7D AD 00 00 D5 50 13 5D 3C .......}....P.]<
-0000E560 8F 01 04 7E DD AE 4C DF EF EF CB FE FF 9F C2 EB ...~..L.........
-0000E570 05 FB 03 FF 58 AD 00 00 DD 50 9F C2 EB 05 9F 62 ....X....P.....b
-0000E580 D0 E2 39 C8 00 00 5C FB 04 6C 3C 8F 01 04 7E DF ..9...\..l<...~.
-0000E590 EF B3 97 FF FF 9F C2 EB 05 FB 02 FF 30 AD 00 00 ............0...
-0000E5A0 DD 50 9F C2 EB 05 9F 62 D0 E2 39 C8 00 00 5C FB .P.....b..9...\.
-0000E5B0 04 6C D0 03 57 B4 AE 46 31 26 02 01 FB 00 EF 45 .l..W..F1&.....E
-0000E5C0 36 00 00 D5 50 13 09 D0 50 57 B4 AE 46 31 11 02 6...P...PW..F1..
-0000E5D0 DD 02 3C E2 70 C6 00 00 7E FB 02 65 D5 50 13 58 ..<.p...~..e.P.X
-0000E5E0 D1 50 57 15 03 D0 50 57 D1 50 01 15 4B 3C 8F 01 .PW...PW.P..K<..
-0000E5F0 04 7E DF 69 9E C2 EB 05 5C C1 8F 00 40 00 00 5C .~.i....\...@..\
-0000E600 7E 9F E2 01 C7 00 00 FB 02 EF 82 22 00 00 DD 50 ~.........."...P
-0000E610 DF C4 18 01 9F C2 EB 05 FB 04 FF B1 AC 00 00 DD ................
-0000E620 50 9F C2 EB 05 9F 62 D0 E2 39 C8 00 00 5C FB 04 P.....b..9...\..
-0000E630 6C B4 AE 46 31 AA 01 01 DD 03 3C E2 72 C6 00 00 l..F1.....<.r...
-0000E640 7E FB 02 65 D5 50 13 58 D1 50 57 15 03 D0 50 57 ~..e.P.X.PW...PW
-0000E650 D1 50 01 15 4B 3C 8F 01 04 7E DF A9 08 9E C2 EB .P..K<...~......
-0000E660 05 5C C1 8F 00 40 00 00 5C 7E 9F E2 01 C7 00 00 .\...@..\~......
-0000E670 FB 02 EF 19 22 00 00 DD 50 DF C4 37 01 9F C2 EB ...."...P..7....
-0000E680 05 FB 04 FF 48 AC 00 00 DD 50 9F C2 EB 05 9F 62 ....H....P.....b
-0000E690 D0 E2 39 C8 00 00 5C FB 04 6C B4 AE 46 31 41 01 ..9...\..l..F1A.
-0000E6A0 DD 00 3C E2 74 C6 00 00 7E FB 02 65 D5 50 13 58 ..<.t...~..e.P.X
-0000E6B0 D1 50 57 15 03 D0 50 57 D1 50 01 15 4B 3C 8F 21 .PW...PW.P..K<.!
-0000E6C0 04 7E 9E C2 EB 05 5C C1 8F 00 40 00 00 5C 7E 9F .~....\...@..\~.
-0000E6D0 E2 01 C7 00 00 FB 02 EF B4 21 00 00 DD 50 DF C4 .........!...P..
-0000E6E0 00 02 9F C2 EB 05 FB 03 FF E3 AB 00 00 DD 50 9F ..............P.
-0000E6F0 C2 EB 05 9F 62 D0 E2 39 C8 00 00 5C FB 04 6C B4 ....b..9...\..l.
-0000E700 AE 46 31 DC 00 D5 50 01 D5 A2 6C 13 17 FB 00 CF .F1...P...l.....
-0000E710 CE 0D D5 50 13 06 D6 AE 48 31 B3 00 B6 AE 32 31 ...P....H1....21
-0000E720 AD 00 D5 50 D4 AD DC C3 04 C2 90 00 AD D8 C0 04 ...P............
-0000E730 AD D8 D5 BD D8 13 36 01 DD A2 10 D0 AD D8 5C DD ......6.......\.
-0000E740 6C 9F E2 01 C7 00 00 FB 03 63 D5 50 13 16 D0 01 l........c.P....
-0000E750 AD DC D5 5A 13 17 C2 C2 90 00 5C C6 04 5C D0 01 ...Z......\..\..
-0000E760 4C 6A 11 09 C0 04 AD D8 D5 BD D8 12 CB D5 AD DC Lj..............
-0000E770 13 47 C3 04 C2 94 00 AD D4 C0 04 AD D4 D5 BD D4 .G..............
-0000E780 13 37 D5 50 DD A2 10 D0 AD D4 5C DD 6C 9F E2 01 .7.P......\.l...
-0000E790 C7 00 00 FB 03 63 D5 50 13 16 D4 AD DC D5 5B 13 .....c.P......[.
-0000E7A0 18 C2 C2 94 00 5C C6 04 5C D0 01 4C 6B 11 0A 01 .....\..\..Lk...
-0000E7B0 C0 04 AD D4 D5 BD D4 12 CB D5 AD DC 13 11 FB 00 ................
-0000E7C0 CF 1D 0D D5 50 13 05 D6 AE 48 11 03 B6 AE 32 B5 ....P....H....2.
-0000E7D0 AE 46 13 0D D1 AE 48 8F 40 00 00 00 18 03 31 3B .F....H.@.....1;
-0000E7E0 FD D0 E2 1F C6 00 00 AD E0 D0 E2 F7 C5 00 00 AD ................
-0000E7F0 F8 D0 E2 FB C5 00 00 AD F4 D4 AE 40 D5 AE 48 14 ...........@..H.
-0000E800 03 31 47 09 78 06 AD E8 5C C1 AE 40 5C AE 3C C5 .1G.x...\..@\.<.
-0000E810 15 AE 40 5C 9E 4C C2 A7 00 C2 E7 05 C1 D2 E7 05 ..@\.L..........
-0000E820 E2 23 C6 00 00 56 7A 00 00 56 50 7B 8F 00 20 00 .#...Vz..VP{.. .
-0000E830 00 50 51 50 D0 50 53 C3 53 56 55 D5 56 19 03 31 .PQP.PS.SVU.V..1
-0000E840 9A 00 3C 8F 01 04 7E DF EF FB 94 FF FF DD E2 13 ..<...~.........
-0000E850 C6 00 00 DF EF 87 95 FF FF 9F C2 EB 05 FB 04 FF ................
-0000E860 6C AA 00 00 DD 50 9F C2 EB 05 9F 62 D0 E2 39 C8 l....P.....b..9.
-0000E870 00 00 5C FB 04 6C D0 02 57 D5 AE 3C 12 56 D5 E2 ..\..l..W..<.V..
-0000E880 23 C6 00 00 13 4E 3C 8F 01 04 7E DF C4 4C 02 9F #....N<...~..L..
-0000E890 C2 EB 05 FB 02 68 DD 50 9F C2 EB 05 9F 62 D0 E2 .....h.P.....b..
-0000E8A0 39 C8 00 00 5C FB 04 6C D0 E2 23 C6 00 00 AE 34 9...\..l..#....4
-0000E8B0 D4 E2 23 C6 00 00 D0 D2 E7 05 56 7A 00 00 56 50 ..#.......Vz..VP
-0000E8C0 7B 8F 00 20 00 00 50 51 50 D0 50 53 C3 53 56 55 {.. ..PQP.PS.SVU
-0000E8D0 11 0A D5 50 D0 03 57 31 64 08 D5 50 D5 56 18 38 ...P..W1d..P.V.8
-0000E8E0 3C 8F 01 04 7E DF EF 5D 94 FF FF DD E2 13 C6 00 <...~..]........
-0000E8F0 00 DF EF E9 94 FF FF 9F C2 EB 05 FB 04 68 DD 50 .............h.P
-0000E900 9F C2 EB 05 9F 62 D0 E2 39 C8 00 00 5C FB 04 6C .....b..9...\..l
-0000E910 D0 03 57 31 28 08 D5 50 D1 55 E2 1F C6 00 00 13 ..W1(..P.U......
-0000E920 7B DD 00 DD 55 DD E2 17 C6 00 00 FB 03 BE 38 D0 {...U.........8.
-0000E930 50 E2 1F C6 00 00 3C 8F 00 20 7E DD E2 F3 C5 00 P.....<.. ~.....
-0000E940 00 DD E2 17 C6 00 00 FB 03 BE 34 D0 50 E2 FB C5 ..........4.P...
-0000E950 00 00 14 30 3C 8F 01 04 7E DD 55 DF A9 10 DD AE ...0<...~.U.....
-0000E960 48 DF C4 59 01 9F C2 EB 05 FB 05 68 DD 50 9F C2 H..Y.......h.P..
-0000E970 EB 05 9F 62 D0 E2 39 C8 00 00 5C FB 04 6C D0 03 ...b..9...\..l..
-0000E980 57 31 BA 07 C1 E2 F3 C5 00 00 53 E2 F7 C5 00 00 W1........S.....
-0000E990 C2 53 E2 FB C5 00 00 11 25 D5 50 01 C3 E2 F3 C5 .S......%.P.....
-0000E9A0 00 00 E2 F7 C5 00 00 5C C2 53 5C C0 5C E2 FB C5 .......\.S\.\...
-0000E9B0 00 00 C1 E2 F3 C5 00 00 53 E2 F7 C5 00 00 DD 04 ........S.......
-0000E9C0 9F C2 98 00 FB 02 BE 2C D5 50 12 30 3C 8F 01 04 .......,.P.0<...
-0000E9D0 7E DD 56 DF A9 16 DD AE 48 DF C4 59 01 9F C2 EB ~.V.....H..Y....
-0000E9E0 05 FB 05 68 DD 50 9F C2 EB 05 9F 62 D0 E2 39 C8 ...h.P.....b..9.
-0000E9F0 00 00 5C FB 04 6C D0 03 57 31 42 07 DD 04 9F E2 ..\..l..W1B.....
-0000EA00 2F C6 00 00 9F C2 98 00 FB 03 BE 2C D5 50 12 03 /..........,.P..
-0000EA10 31 F1 01 3C 8F 01 04 7E DD 56 DF C4 1E 02 DD AE 1..<...~.V......
-0000EA20 48 DF C4 59 01 9F C2 EB 05 FB 05 68 DD 50 9F C2 H..Y.......h.P..
-0000EA30 EB 05 9F 62 D0 E2 39 C8 00 00 5C FB 04 6C D0 02 ...b..9...\..l..
-0000EA40 57 D5 AE 3C 12 08 D5 E2 23 C6 00 00 12 13 D5 E2 W..<....#.......
-0000EA50 23 C6 00 00 13 03 31 E5 06 D5 AE 34 12 03 31 DD #.....1....4..1.
-0000EA60 06 3C 8F 01 04 7E DF C4 4C 02 9F C2 EB 05 FB 02 .<...~..L.......
-0000EA70 68 DD 50 9F C2 EB 05 9F 62 D0 E2 39 C8 00 00 5C h.P.....b..9...\
-0000EA80 FB 04 6C D5 E2 23 C6 00 00 13 11 D0 E2 23 C6 00 ..l..#.......#..
-0000EA90 00 AE 34 D4 E2 23 C6 00 00 11 09 01 D0 AE 34 E2 ..4..#........4.
-0000EAA0 23 C6 00 00 C1 D2 E7 05 E2 23 C6 00 00 AD D0 D0 #........#......
-0000EAB0 AD D0 5C 7A 00 00 5C 50 7B 8F 00 20 00 00 50 51 ..\z..\P{.. ..PQ
-0000EAC0 50 D0 50 53 C3 53 5C AD CC D5 5C 18 35 DD 01 DF P.PS.S\...\.5...
-0000EAD0 EF 73 92 FF FF DD E2 13 C6 00 00 DF EF FF 92 FF .s..............
-0000EAE0 FF 9F C2 EB 05 FB 04 FF E4 A7 00 00 DD 50 9F C2 .............P..
-0000EAF0 EB 05 9F 62 D0 E2 39 C8 00 00 5C FB 04 6C D0 03 ...b..9...\..l..
-0000EB00 50 04 D1 AD CC E2 1F C6 00 00 13 50 DD 00 DD AD P..........P....
-0000EB10 CC DD E2 17 C6 00 00 FB 03 BE 38 D0 50 E2 1F C6 ..........8.P...
-0000EB20 00 00 3C 8F 00 20 7E DD E2 F3 C5 00 00 DD E2 17 ..<.. ~.........
-0000EB30 C6 00 00 FB 03 BE 34 D0 50 E2 FB C5 00 00 14 04 ......4.P.......
-0000EB40 D0 33 50 04 C1 E2 F3 C5 00 00 53 E2 F7 C5 00 00 .3P.......S.....
-0000EB50 C2 53 E2 FB C5 00 00 11 25 D5 50 01 C3 E2 F3 C5 .S......%.P.....
-0000EB60 00 00 E2 F7 C5 00 00 5C C2 53 5C C0 5C E2 FB C5 .......\.S\.\...
-0000EB70 00 00 C1 E2 F3 C5 00 00 53 E2 F7 C5 00 00 DD 04 ........S.......
-0000EB80 9F C2 98 00 FB 02 BE 2C D5 50 12 30 3C 8F 01 04 .......,.P.0<...
-0000EB90 7E DD 56 DF A9 1A DD AE 48 DF C4 59 01 9F C2 EB ~.V.....H..Y....
-0000EBA0 05 FB 05 68 DD 50 9F C2 EB 05 9F 62 D0 E2 39 C8 ...h.P.....b..9.
-0000EBB0 00 00 5C FB 04 6C D0 03 57 31 82 05 DD 04 9F E2 ..\..l..W1......
-0000EBC0 2F C6 00 00 9F C2 98 00 FB 03 BE 2C D5 50 13 34 /..........,.P.4
-0000EBD0 3C 8F 01 04 7E DD 56 DF C4 1E 02 DD AE 48 DF C4 <...~.V......H..
-0000EBE0 59 01 9F C2 EB 05 FB 05 68 DD 50 9F C2 EB 05 9F Y.......h.P.....
-0000EBF0 62 D0 E2 39 C8 00 00 5C FB 04 6C D0 03 57 31 3D b..9...\..l..W1=
-0000EC00 05 D5 50 01 FB 00 BE 14 D0 50 53 13 2B 3C 8F 21 ..P......PS.+<.!
-0000EC10 04 7E DD AE 40 DF C4 2F 02 9F C2 EB 05 FB 03 68 .~..@../.......h
-0000EC20 DD 50 9F C2 EB 05 9F 62 D0 E2 39 C8 00 00 5C FB .P.....b..9...\.
-0000EC30 04 6C D0 53 57 31 06 05 DD 02 3C E2 54 C6 00 00 .l.SW1....<.T...
-0000EC40 7E FB 02 BE 24 D5 50 13 4F D1 50 57 15 03 D0 50 ~...$.P.O.PW...P
-0000EC50 57 D1 50 01 15 42 3C 8F 01 04 7E DF A9 1E 9E C2 W.P..B<...~.....
-0000EC60 EB 05 5C C1 8F 00 40 00 00 5C 7E 9F E2 01 C7 00 ..\...@..\~.....
-0000EC70 00 FB 02 BE 48 DD 50 DF C4 18 01 9F C2 EB 05 FB ....H.P.........
-0000EC80 04 68 DD 50 9F C2 EB 05 9F 62 D0 E2 39 C8 00 00 .h.P.....b..9...
-0000EC90 5C FB 04 6C 31 A7 04 01 D5 E2 27 C6 00 00 13 10 \..l1.....'.....
-0000ECA0 DD E2 27 C6 00 00 FB 01 BE 14 D4 E2 27 C6 00 00 ..'.........'...
-0000ECB0 DD 03 3C E2 56 C6 00 00 7E FB 02 BE 24 D5 50 13 ..<.V...~...$.P.
-0000ECC0 4F D1 50 57 15 03 D0 50 57 D1 50 01 15 42 3C 8F O.PW...PW.P..B<.
-0000ECD0 01 04 7E DF A9 24 9E C2 EB 05 5C C1 8F 00 40 00 ..~..$....\...@.
-0000ECE0 00 5C 7E 9F E2 01 C7 00 00 FB 02 BE 48 DD 50 DF .\~.........H.P.
-0000ECF0 C4 37 01 9F C2 EB 05 FB 04 68 DD 50 9F C2 EB 05 .7.......h.P....
-0000ED00 9F 62 D0 E2 39 C8 00 00 5C FB 04 6C 31 2F 04 01 .b..9...\..l1/..
-0000ED10 D5 A2 44 13 03 31 2C 03 D5 A2 0C 13 03 31 24 03 ..D..1,......1$.
-0000ED20 D4 AD F0 D4 AD EC D0 C2 E7 05 5C D5 AC 0C 12 72 ..........\....r
-0000ED30 DD 2F 9F E2 01 C7 00 00 FB 02 BE 14 D5 50 12 62 ./...........P.b
-0000ED40 9E E2 01 C7 00 00 5C C3 01 5C AD C8 D6 AD C8 95 ......\..\......
-0000ED50 BD C8 13 4E 91 BD C8 8F 5C 12 3F D5 E2 D1 C6 00 ...N....\.?.....
-0000ED60 00 12 33 DD 21 DD E2 13 C6 00 00 DF C4 6D 02 9F ..3.!........m..
-0000ED70 C2 EB 05 FB 03 68 DD 50 9F C2 EB 05 9F 62 D0 E2 .....h.P.....b..
-0000ED80 39 C8 00 00 5C FB 04 6C D0 01 E2 D1 C6 00 00 D5 9...\..l........
-0000ED90 57 12 03 D0 01 57 90 2F BD C8 D6 AD C8 95 BD C8 W....W./........
-0000EDA0 12 B2 DD AD F0 FB 01 BE 0C D0 50 53 D1 53 01 15 ..........PS.S..
-0000EDB0 6B D1 53 8F 4D 00 00 00 12 03 31 81 03 D1 53 8F k.S.M.....1...S.
-0000EDC0 4E 00 00 00 12 3E DD 01 DF A9 2A 9E C2 EB 05 5C N....>....*....\
-0000EDD0 C1 8F 00 40 00 00 5C 7E 9F E2 01 C7 00 00 FB 02 ...@..\~........
-0000EDE0 BE 48 DD 50 DF C4 A9 02 9F C2 EB 05 FB 04 68 DD .H.P..........h.
-0000EDF0 50 9F C2 EB 05 9F 62 D0 E2 39 C8 00 00 5C FB 04 P.....b..9...\..
-0000EE00 6C 31 3A 03 D1 53 02 14 03 31 32 03 D1 57 02 19 l1:..S...12..W..
-0000EE10 03 31 2A 03 D0 02 57 31 24 03 D5 50 9F E2 01 C7 .1*...W1$..P....
-0000EE20 00 00 FB 01 BE 08 CF 50 8F FF FF FF FF 02 12 00 .......P........
-0000EE30 22 00 36 00 11 4C D5 50 17 EF 9A F5 FF 3F D5 50 ".6..L.P.....?.P
-0000EE40 D5 A2 18 13 3D D5 AD F0 12 03 31 F1 02 11 33 01 ....=.....1...3.
-0000EE50 D5 A2 34 13 03 31 E6 02 D5 A2 38 12 25 D0 01 AD ..4..1....8.%...
-0000EE60 EC 11 1F 01 D5 A2 34 13 03 31 D2 02 D5 A2 4C 13 ......4..1....L.
-0000EE70 08 D5 AD F0 12 03 31 C5 02 D5 A2 38 12 04 D0 01 ......1....8....
-0000EE80 AD EC D5 AD EC 12 03 31 BA 01 9A 8F 81 7E 9E C2 .......1.....~..
-0000EE90 EB 05 5C C1 8F 00 40 00 00 5C 7E 9F E2 01 C7 00 ..\...@..\~.....
-0000EEA0 00 FB 02 BE 44 DD 50 DF C4 CD 02 9F C2 EB 05 FB ....D.P.........
-0000EEB0 03 68 DD 50 9F C2 EB 05 9F 62 D0 E2 39 C8 00 00 .h.P.....b..9...
-0000EEC0 5C FB 04 6C DD FF AE A4 00 00 DD 09 9F C2 9D 00 \..l............
-0000EED0 FB 03 BE 5C D5 50 12 2C DD 01 DF C4 00 03 9F C2 ...\.P.,........
-0000EEE0 EB 05 FB 02 68 DD 50 9F C2 EB 05 9F 62 D0 E2 39 ....h.P.....b..9
-0000EEF0 C8 00 00 5C FB 04 6C 90 8F 4E C2 9D 00 D5 57 12 ...\..l..N....W.
-0000EF00 03 D0 01 57 98 C2 9D 00 5C D1 5C 8F 41 00 00 00 ...W....\.\.A...
-0000EF10 18 03 31 07 01 D0 5C 50 CF 50 8F 41 00 00 00 18 ..1...\P.P.A....
-0000EF20 74 00 FC 00 FC 00 FC 00 FC 00 FC 00 FC 00 FC 00 t...............
-0000EF30 FC 00 FC 00 FC 00 FC 00 FC 00 F0 00 FC 00 FC 00 ................
-0000EF40 FC 00 80 00 FC 00 FC 00 FC 00 FC 00 FC 00 FC 00 ................
-0000EF50 EC 00 11 08 17 EF 7E F4 FF 3F D5 50 D1 50 8F 6E ......~..?.P.P.n
-0000EF60 00 00 00 18 03 31 B4 00 CF 50 8F 6E 00 00 00 0B .....1...P.n....
-0000EF70 A7 00 AC 00 AC 00 AC 00 30 00 AC 00 AC 00 AC 00 ........0.......
-0000EF80 AC 00 AC 00 AC 00 9C 00 31 91 00 01 17 EF 46 F4 ........1.....F.
-0000EF90 FF 3F D5 50 D0 01 A2 38 D4 A2 34 31 A6 00 D5 50 .?.P...8..41...P
-0000EFA0 9A 8F 81 7E DF C4 19 03 9F C2 EB 05 FB 02 68 DD ...~..........h.
-0000EFB0 50 9F C2 EB 05 9F 62 D0 E2 39 C8 00 00 5C FB 04 P.....b..9...\..
-0000EFC0 6C DD FF B1 A3 00 00 3C 8F 00 01 7E 9F E2 01 C7 l......<...~....
-0000EFD0 00 00 FB 03 BE 5C 9F E2 01 C7 00 00 FB 01 BE 50 .....\.........P
-0000EFE0 D0 50 AD E4 C3 01 50 5C 91 4C E2 01 C7 00 00 0A .P....P\.L......
-0000EFF0 12 0E D7 AD E4 D0 AD E4 5C 94 4C E2 01 C7 00 00 ........\.L.....
-0000F000 D5 AD E4 13 9B D0 01 AD F0 31 17 FD 11 36 D5 50 .........1...6.P
-0000F010 D0 01 A2 34 D4 A2 38 31 24 01 D5 50 DD 01 98 C2 ...4..81$..P....
-0000F020 9D 00 7E DF C4 24 03 9F C2 EB 05 FB 03 68 DD 50 ..~..$.......h.P
-0000F030 9F C2 EB 05 9F 62 D0 E2 39 C8 00 00 5C FB 04 6C .....b..9...\..l
-0000F040 31 47 FE 01 D0 C2 E7 05 5C E0 00 AC 14 03 31 AF 1G......\.....1.
-0000F050 00 FB 00 BE 00 D0 50 53 12 03 31 A3 00 D1 53 01 ......PS..1...S.
-0000F060 12 56 D5 A2 44 13 05 D5 A2 40 12 45 D5 A2 44 12 .V..D....@.E..D.
-0000F070 05 D5 A2 40 12 3B 3C 8F 01 04 7E 9E C2 EB 05 5C ...@.;<...~....\
-0000F080 C1 8F 00 40 00 00 5C 7E 9F E2 01 C7 00 00 FB 02 ...@..\~........
-0000F090 BE 44 DD 50 DF C4 BD 03 9F C2 EB 05 FB 03 68 DD .D.P..........h.
-0000F0A0 50 9F C2 EB 05 9F 62 D0 E2 39 C8 00 00 5C FB 04 P.....b..9...\..
-0000F0B0 6C B6 AE 1A 31 87 00 01 D1 53 57 15 03 D0 53 57 l...1....SW...SW
-0000F0C0 3C 8F 01 04 7E 9E C2 EB 05 5C C1 8F 00 40 00 00 <...~....\...@..
-0000F0D0 5C 7E 9F E2 01 C7 00 00 FB 02 BE 44 DD 50 DF C4 \~.........D.P..
-0000F0E0 91 03 9F C2 EB 05 FB 03 68 DD 50 9F C2 EB 05 9F ........h.P.....
-0000F0F0 62 D0 E2 39 C8 00 00 5C FB 04 6C 11 41 D5 50 01 b..9...\..l.A.P.
-0000F100 D4 E2 D5 C6 00 00 FB 00 CF 09 07 D5 50 13 2F D1 ............P./.
-0000F110 50 57 15 03 D0 50 57 D1 E2 D5 C6 00 00 01 15 1E PW...PW.........
-0000F120 D5 5A 13 09 DD 5A FB 01 FF 83 A1 00 00 D5 5B 13 .Z...Z........[.
-0000F130 09 DD 5B FB 01 FF 76 A1 00 00 D0 57 50 04 D6 AE ..[...v....WP...
-0000F140 40 D1 AE 40 AE 48 18 03 31 B9 F6 DD 00 DD AD E0 @..@.H..1.......
-0000F150 DD E2 17 C6 00 00 FB 03 BE 38 D0 50 E2 1F C6 00 .........8.P....
-0000F160 00 3C 8F 00 20 7E DD E2 F3 C5 00 00 DD E2 17 C6 .<.. ~..........
-0000F170 00 00 FB 03 BE 34 D0 AD F8 E2 F7 C5 00 00 D0 AD .....4..........
-0000F180 F4 E2 FB C5 00 00 D6 AD E8 B5 AE 46 13 03 31 63 ...........F..1c
-0000F190 F3 D5 5A 13 52 D4 55 D5 A2 64 15 42 D5 45 6A 12 ..Z.R.U..d.B.Ej.
-0000F1A0 35 DD 01 D0 C2 90 00 53 DD 45 63 DF EF F3 C1 FE 5......S.Ec.....
-0000F1B0 FF 9F C2 EB 05 FB 03 FF 14 A1 00 00 DD 50 9F C2 .............P..
-0000F1C0 EB 05 9F 62 D0 E2 39 C8 00 00 5C FB 04 6C D1 57 ...b..9...\..l.W
-0000F1D0 01 14 03 D0 0B 57 D6 55 D1 55 A2 64 19 BE DD 5A .....W.U.U.d...Z
-0000F1E0 FB 01 FF C9 A0 00 00 D5 5B 13 4F D4 55 D5 A2 68 ........[.O.U..h
-0000F1F0 15 3F D5 50 D5 45 6B 12 30 3C 8F 01 04 7E D0 C2 .?.P.Ek.0<...~..
-0000F200 94 00 53 DD 45 63 DF EF 68 C1 FE FF 9F C2 EB 05 ..S.Ec..h.......
-0000F210 FB 03 FF B9 A0 00 00 DD 50 9F C2 EB 05 9F 62 D0 ........P.....b.
-0000F220 E2 39 C8 00 00 5C FB 04 6C D6 55 D1 55 A2 68 19 .9...\..l.U.U.h.
-0000F230 C3 DD 5B FB 01 FF 76 A0 00 00 DD 04 9F C2 98 00 ..[...v.........
-0000F240 FB 02 EF 75 E3 FF FF D5 50 12 03 D0 33 57 DD 04 ...u....P...3W..
-0000F250 9F E2 39 C6 00 00 9F C2 98 00 FB 03 FF 77 A0 00 ..9..........w..
-0000F260 00 D5 50 13 57 3C 8F 01 04 7E DF EF B8 C0 FE FF ..P.W<...~......
-0000F270 9F C2 EB 05 FB 02 FF 55 A0 00 00 DD 50 9F C2 EB .......U....P...
-0000F280 05 9F 62 D0 E2 39 C8 00 00 53 FB 04 63 3C 8F 01 ..b..9...S..c<..
-0000F290 04 7E DF EF B0 8A FF FF 9F C2 EB 05 FB 02 FF 2D .~.............-
-0000F2A0 A0 00 00 DD 50 9F C2 EB 05 9F 62 D0 E2 39 C8 00 ....P.....b..9..
-0000F2B0 00 53 FB 04 63 D5 57 12 03 D0 01 57 D6 AE 3C D5 .S..c.W....W..<.
-0000F2C0 A2 44 12 03 31 BC 01 3C AE 1A 58 C3 58 AE 3C AD .D..1..<..X.X.<.
-0000F2D0 C4 D1 A2 40 02 19 03 31 72 01 D5 57 13 42 DD 00 ...@...1r..W.B..
-0000F2E0 DD E2 13 C6 00 00 D1 57 01 12 09 DE A9 2C 55 11 .......W.....,U.
-0000F2F0 07 D5 50 01 DE A9 2B 55 DD 55 DF C4 43 03 9F C2 ..P...+U.U..C...
-0000F300 EB 05 FB 04 FF C7 9F 00 00 DD 50 9F C2 EB 05 9F ..........P.....
-0000F310 62 D0 E2 39 C8 00 00 53 FB 04 63 31 B1 00 D5 50 b..9...S..c1...P
-0000F320 D0 AD C4 56 12 2E DD 00 DD E2 13 C6 00 00 DF C4 ...V............
-0000F330 6D 03 9F C2 EB 05 FB 03 FF 93 9F 00 00 DD 50 9F m.............P.
-0000F340 C2 EB 05 9F 62 D0 E2 39 C8 00 00 53 FB 04 63 11 ....b..9...S..c.
-0000F350 7E D5 50 01 D5 A2 6C 13 37 3C AE 32 53 C0 58 53 ~.P...l.7<.2S.XS
-0000F360 12 2E DD 00 DD E2 13 C6 00 00 DF C4 40 04 9F C2 ............@...
-0000F370 EB 05 FB 03 FF 57 9F 00 00 DD 50 9F C2 EB 05 9F .....W....P.....
-0000F380 62 D0 E2 39 C8 00 00 53 FB 04 63 11 42 D5 50 01 b..9...S..c.B.P.
-0000F390 DD 00 D1 56 01 12 09 DE A9 37 55 11 07 D5 50 01 ...V.....7U...P.
-0000F3A0 DE A9 35 55 DD 55 DD 56 DD E2 13 C6 00 00 DF C4 ..5U.U.V........
-0000F3B0 6E 04 9F C2 EB 05 FB 05 FF 13 9F 00 00 DD 50 9F n.............P.
-0000F3C0 C2 EB 05 9F 62 D0 E2 39 C8 00 00 53 FB 04 63 3C ....b..9...S..c<
-0000F3D0 AE 32 55 13 38 DD 00 D1 55 01 12 08 DE A9 3A 56 .2U.8...U.....:V
-0000F3E0 11 06 D5 50 DE A9 38 56 DD 56 DD 55 DF C4 A2 04 ...P..8V.V.U....
-0000F3F0 9F C2 EB 05 FB 04 FF D5 9E 00 00 DD 50 9F C2 EB ............P...
-0000F400 05 9F 62 D0 E2 39 C8 00 00 53 FB 04 63 3C AE 1A ..b..9...S..c<..
-0000F410 55 13 70 DD 00 D1 55 01 12 06 DE A9 3D 56 11 04 U.p...U.....=V..
-0000F420 DE A9 3B 56 DD 56 DD 55 DF C4 E5 03 9F C2 EB 05 ..;V.V.U........
-0000F430 FB 04 FF 99 9E 00 00 DD 50 9F C2 EB 05 9F 62 D0 ........P.....b.
-0000F440 E2 39 C8 00 00 53 FB 04 63 11 38 01 D5 A2 40 12 .9...S..c.8...@.
-0000F450 32 D5 57 12 2E D5 AD                            2.W....        
+0000E3D6                   00 00 FC 0F                         ....     
 
-;; fn0000F457: 0000F457
-;;   Called from:
-;;     0000C354 (in fn0000C1FE)
-fn0000F457 proc
+;; fn0000E3DA: 0000E3DA
+fn0000E3DA proc
+	movab	-0090(sp),sp
+	movab	FFFE66C4,r9
+	movab	FFFFB3D0,r2
+	movab	FFFF8684,r4
+	mnegl	#00000001,+3C(sp)
+	clrl	-18(fp)
+	clrl	r7
+	clrq	r10
+	clrw	+32(sp)
+	clrw	+1A(sp)
+	clrl	+34(sp)
+	movab	+00A7(r2),+05E7(r2)
+	movw	+0000C688(r2),+46(sp)
+	movl	#00000001,+78(r2)
+	clrl	+0000C6D1(r2)
+	tstl	+64(r2)
+	bleq	0000E44B
+
+l0000E426:
+	ashl	#02,+64(r2),-(sp)
+	calls	#01,@000192B4
+	movl	r0,r10
+	beql	0000E44B
+
+l0000E437:
+	clrl	r3
+	tstl	+64(r2)
+	bleq	0000E44B
+
+l0000E43E:
+	tstl	r0
+
+l0000E440:
+	clrl	(r10)[r3]
+	incl	r3
+	cmpl	r3,+64(r2)
+	blss	0000E440
+
+l0000E44B:
+	tstl	+68(r2)
+	bleq	0000E473
+
+l0000E450:
+	ashl	#02,+68(r2),-(sp)
+	calls	#01,@000192B4
+	movl	r0,r11
+	beql	0000E473
+
+l0000E461:
+	clrl	r3
+	tstl	+68(r2)
+	bleq	0000E473
+
+l0000E468:
+	clrl	(r11)[r3]
+	incl	r3
+	cmpl	r3,+68(r2)
+	blss	0000E468
+
+l0000E473:
+	tstw	+46(sp)
+	bneq	0000E47B
+
+l0000E478:
+	brw	0000F191
+
+l0000E47B:
+	movab	@000192D0,r8
+	movab	@0001926C,+2C(sp)
+	movab	@00019270,+28(sp)
+	movab	0000D5BC,+24(sp)
+	movab	@000192D8,+20(sp)
+	movab	00011DE0,+14(sp)
+	movab	0000DC74,+1C(sp)
+	movab	00010890,+38(sp)
+	movab	@000192B0,+10(sp)
+	movab	@00019260,+0C(sp)
+	movab	0000C428,+08(sp)
+	movab	0000CCB0,+04(sp)
+	movab	@00019290,+50(sp)
+	movab	@000192C4,+004C(sp)
+	movab	0001205C,+0000(sp)
+
+l0000E4F4:
+	clrl	+48(sp)
+	tstw	+46(sp)
+	bneq	0000E4FF
+
+l0000E4FC:
+	brw	0000E7E1
+
+l0000E4FF:
+	cmpl	+48(sp),#00000040
+	blss	0000E50C
+
+l0000E509:
+	brw	0000E7E1
+
+l0000E50C:
+	movab	0000DC74,r5
+	movab	00018C18,r3
+	tstl	r0
+
+l0000E51C:
+	decw	+46(sp)
+	mull3	#00000015,+48(sp),ap
+	movab	+00A7(r2)[ap],+05E7(r2)
+	pushl	#00000004
+	pushab	+0098(r2)
+	calls	#02,0000D5BC
+	tstl	r0
+	bneq	0000E548
+
+l0000E53D:
+	movl	#00000033,r7
+	clrw	+46(sp)
+	brw	0000E7E1
+0000E546                   D5 50                               .P       
+
+l0000E548:
+	pushl	#00000004
+	pushab	+0000C634(r2)
+	pushab	+0098(r2)
+	calls	#03,@000192D8
+	tstl	r0
+	beql	0000E5BC
+
+l0000E55F:
+	movzwl	#0401,-(sp)
+	pushl	+4C(sp)
+	pushal	FFFFB15C
+	pushab	+05EB(r2)
+	calls	#03,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	movzwl	#0401,-(sp)
+	pushal	00007D48
+	pushab	+05EB(r2)
+	calls	#02,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	movl	#00000003,r7
+	clrw	+46(sp)
+	brw	0000E7E1
+0000E5BB                                  01                        .   
+
+l0000E5BC:
+	calls	#00,00011C08
+	tstl	r0
+	beql	0000E5D0
+
+l0000E5C7:
+	movl	r0,r7
+	clrw	+46(sp)
+	brw	0000E7E1
+
+l0000E5D0:
+	pushl	#00000002
+	movzwl	+0000C670(r2),-(sp)
+	calls	#02,(r5)
+	tstl	r0
+	beql	0000E638
+
+l0000E5E0:
+	cmpl	r0,r7
+	bleq	0000E5E8
+
+l0000E5E5:
+	movl	r0,r7
+
+l0000E5E8:
+	cmpl	r0,#00000001
+	bleq	0000E638
+
+l0000E5ED:
+	movzwl	#0401,-(sp)
+	pushal	(r9)
+	movab	+05EB(r2),ap
+	addl3	#00004000,ap,-(sp)
+	pushab	+0000C701(r2)
+	calls	#02,00010890
+	pushl	r0
+	pushal	+0118(r4)
+	pushab	+05EB(r2)
+	calls	#04,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	clrw	+46(sp)
+	brw	0000E7E1
+0000E637                      01                                .       
+
+l0000E638:
+	pushl	#00000003
+	movzwl	+0000C672(r2),-(sp)
+	calls	#02,(r5)
+	tstl	r0
+	beql	0000E6A0
+
+l0000E648:
+	cmpl	r0,r7
+	bleq	0000E650
+
+l0000E64D:
+	movl	r0,r7
+
+l0000E650:
+	cmpl	r0,#00000001
+	bleq	0000E6A0
+
+l0000E655:
+	movzwl	#0401,-(sp)
+	pushal	+08(r9)
+	movab	+05EB(r2),ap
+	addl3	#00004000,ap,-(sp)
+	pushab	+0000C701(r2)
+	calls	#02,00010890
+	pushl	r0
+	pushal	+0137(r4)
+	pushab	+05EB(r2)
+	calls	#04,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	clrw	+46(sp)
+	brw	0000E7E1
+
+l0000E6A0:
+	pushl	#00000000
+	movzwl	+0000C674(r2),-(sp)
+	calls	#02,(r5)
+	tstl	r0
+	beql	0000E708
+
+l0000E6B0:
+	cmpl	r0,r7
+	bleq	0000E6B8
+
+l0000E6B5:
+	movl	r0,r7
+
+l0000E6B8:
+	cmpl	r0,#00000001
+	bleq	0000E708
+
+l0000E6BD:
+	movzwl	#0421,-(sp)
+	movab	+05EB(r2),ap
+	addl3	#00004000,ap,-(sp)
+	pushab	+0000C701(r2)
+	calls	#02,00010890
+	pushl	r0
+	pushal	+0200(r4)
+	pushab	+05EB(r2)
+	calls	#03,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	clrw	+46(sp)
+	brw	0000E7E1
+0000E705                D5 50 01                              .P.       
+
+l0000E708:
+	tstl	+6C(r2)
+	beql	0000E724
+
+l0000E70D:
+	calls	#00,0000F4E0
+	tstl	r0
+	beql	0000E71C
+
+l0000E716:
+	incl	+48(sp)
+	brw	0000E7CF
+
+l0000E71C:
+	incw	+32(sp)
+	brw	0000E7CF
+0000E722       D5 50                                       .P           
+
+l0000E724:
+	clrl	-24(fp)
+	subl3	#00000004,+0090(r2),-28(fp)
+	addl2	#00000004,-28(fp)
+	tstl	@-28(fp)
+	beql	0000E76D
+
+l0000E737:
+	nop
+
+l0000E738:
+	pushl	+10(r2)
+	movl	-28(fp),ap
+	pushl	(ap)
+	pushab	+0000C701(r2)
+	calls	#03,(r3)
+	tstl	r0
+	beql	0000E764
+
+l0000E74E:
+	movl	#00000001,-24(fp)
+	tstl	r10
+	beql	0000E76D
+
+l0000E756:
+	subl2	+0090(r2),ap
+	divl2	#00000004,ap
+	movl	#00000001,(r10)[ap]
+	brb	0000E76D
+
+l0000E764:
+	addl2	#00000004,-28(fp)
+	tstl	@-28(fp)
+	bneq	0000E738
+
+l0000E76D:
+	tstl	-24(fp)
+	beql	0000E7B9
+
+l0000E772:
+	subl3	#00000004,+0094(r2),-2C(fp)
+	addl2	#00000004,-2C(fp)
+	tstl	@-2C(fp)
+	beql	0000E7B9
+
+l0000E782:
+	tstl	r0
+
+l0000E784:
+	pushl	+10(r2)
+	movl	-2C(fp),ap
+	pushl	(ap)
+	pushab	+0000C701(r2)
+	calls	#03,(r3)
+	tstl	r0
+	beql	0000E7B0
+
+l0000E79A:
+	clrl	-24(fp)
+	tstl	r11
+	beql	0000E7B9
+
+l0000E7A1:
+	subl2	+0094(r2),ap
+	divl2	#00000004,ap
+	movl	#00000001,(r11)[ap]
+	brb	0000E7B9
+0000E7AF                                              01                .
+
+l0000E7B0:
+	addl2	#00000004,-2C(fp)
+	tstl	@-2C(fp)
+	bneq	0000E784
+
+l0000E7B9:
+	tstl	-24(fp)
+	beql	0000E7CF
+
+l0000E7BE:
+	calls	#00,0000F4E0
+	tstl	r0
+	beql	0000E7CC
+
+l0000E7C7:
+	incl	+48(sp)
+	brb	0000E7CF
+
+l0000E7CC:
+	incw	+32(sp)
+
+l0000E7CF:
+	tstw	+46(sp)
+	beql	0000E7E1
+
+l0000E7D4:
+	cmpl	+48(sp),#00000040
+	bgeq	0000E7E1
+
+l0000E7DE:
+	brw	0000E51C
+
+l0000E7E1:
+	movl	+0000C61F(r2),-20(fp)
+	movl	+0000C5F7(r2),-08(fp)
+	movl	+0000C5FB(r2),-0C(fp)
+	clrl	+40(sp)
+	tstl	+48(sp)
+	bgtr	0000E804
+
+l0000E801:
+	brw	0000F14B
+
+l0000E804:
+	ashl	#06,-18(fp),ap
+	addl3	+40(sp),ap,+3C(sp)
+	mull3	#00000015,+40(sp),ap
+	movab	+00A7(r2)[ap],+05E7(r2)
+	addl3	@+05E7(r2),+0000C623(r2),r6
+	emul	#00000000,#00000000,r6,r0
+	ediv	#00002000,r0,r1,r0
+	movl	r0,r3
+	subl3	r3,r6,r5
+	tstl	r6
+	blss	0000E842
+	brw	0000E8DC
+	movzwl	#0401,-(sp)
+	pushal	00007D48
+	pushl	+0000C613(r2)
+	pushal	00007DE0
+	pushab	+05EB(r2)
+	calls	#04,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	movl	#00000002,r7
+	tstl	+3C(sp)
+	bneq	0000E8D4
+	tstl	+0000C623(r2)
+	beql	0000E8D4
+	movzwl	#0401,-(sp)
+	pushal	+024C(r4)
+	pushab	+05EB(r2)
+	calls	#02,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	movl	+0000C623(r2),+34(sp)
+	clrl	+0000C623(r2)
+	movl	@+05E7(r2),r6
+	emul	#00000000,#00000000,r6,r0
+	ediv	#00002000,r0,r1,r0
+	movl	r0,r3
+	subl3	r3,r6,r5
+	brb	0000E8DC
+	tstl	r0
+	movl	#00000003,r7
+	brw	0000F13E
+	tstl	r0
+	tstl	r6
+	bgeq	0000E918
+	movzwl	#0401,-(sp)
+	pushal	00007D48
+	pushl	+0000C613(r2)
+	pushal	00007DE0
+	pushab	+05EB(r2)
+	calls	#04,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	movl	#00000003,r7
+	brw	0000F13E
+	tstl	r0
+	cmpl	r5,+0000C61F(r2)
+	beql	0000E99C
+	pushl	#00000000
+	pushl	r5
+	pushl	+0000C617(r2)
+	calls	#03,@+38(sp)
+	movl	r0,+0000C61F(r2)
+	movzwl	#2000,-(sp)
+	pushl	+0000C5F3(r2)
+	pushl	+0000C617(r2)
+	calls	#03,@+34(sp)
+	movl	r0,+0000C5FB(r2)
+	bgtr	0000E984
+	movzwl	#0401,-(sp)
+	pushl	r5
+	pushal	+10(r9)
+	pushl	+48(sp)
+	pushal	+0159(r4)
+	pushab	+05EB(r2)
+	calls	#05,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	movl	#00000003,r7
+	brw	0000F13E
+	addl3	+0000C5F3(r2),r3,+0000C5F7(r2)
+	subl2	r3,+0000C5FB(r2)
+	brb	0000E9BE
+	tstl	r0
+	nop
+	subl3	+0000C5F3(r2),+0000C5F7(r2),ap
+	subl2	r3,ap
+	addl2	ap,+0000C5FB(r2)
+	addl3	+0000C5F3(r2),r3,+0000C5F7(r2)
+	pushl	#00000004
+	pushab	+0098(r2)
+	calls	#02,@+2C(sp)
+	tstl	r0
+	bneq	0000E9FC
+	movzwl	#0401,-(sp)
+	pushl	r6
+	pushal	+16(r9)
+	pushl	+48(sp)
+	pushal	+0159(r4)
+	pushab	+05EB(r2)
+	calls	#05,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	movl	#00000003,r7
+	brw	0000F13E
+	pushl	#00000004
+	pushab	+0000C62F(r2)
+	pushab	+0098(r2)
+	calls	#03,@+2C(sp)
+	tstl	r0
+	bneq	0000EA13
+	brw	0000EC04
+	movzwl	#0401,-(sp)
+	pushl	r6
+	pushal	+021E(r4)
+	pushl	+48(sp)
+	pushal	+0159(r4)
+	pushab	+05EB(r2)
+	calls	#05,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	movl	#00000002,r7
+	tstl	+3C(sp)
+	bneq	0000EA4E
+	tstl	+0000C623(r2)
+	bneq	0000EA61
+	tstl	+0000C623(r2)
+	beql	0000EA59
+	brw	0000F13E
+	tstl	+34(sp)
+	bneq	0000EA61
+	brw	0000F13E
+	movzwl	#0401,-(sp)
+	pushal	+024C(r4)
+	pushab	+05EB(r2)
+	calls	#02,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	tstl	+0000C623(r2)
+	beql	0000EA9C
+	movl	+0000C623(r2),+34(sp)
+	clrl	+0000C623(r2)
+	brb	0000EAA4
+	nop
+	movl	+34(sp),+0000C623(r2)
+	addl3	@+05E7(r2),+0000C623(r2),-30(fp)
+	movl	-30(fp),ap
+	emul	#00000000,#00000000,ap,r0
+	ediv	#00002000,r0,r1,r0
+	movl	r0,r3
+	subl3	r3,ap,-34(fp)
+	tstl	ap
+	bgeq	0000EB02
+	pushl	#00000001
+	pushal	00007D48
+	pushl	+0000C613(r2)
+	pushal	00007DE0
+	pushab	+05EB(r2)
+	calls	#04,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	movl	#00000003,r0
+	ret
+	cmpl	-34(fp),+0000C61F(r2)
+	beql	0000EB5C
+	pushl	#00000000
+	pushl	-34(fp)
+	pushl	+0000C617(r2)
+	calls	#03,@+38(sp)
+	movl	r0,+0000C61F(r2)
+	movzwl	#2000,-(sp)
+	pushl	+0000C5F3(r2)
+	pushl	+0000C617(r2)
+	calls	#03,@+34(sp)
+	movl	r0,+0000C5FB(r2)
+	bgtr	0000EB44
+	movl	#00000033,r0
+	ret
+	addl3	+0000C5F3(r2),r3,+0000C5F7(r2)
+	subl2	r3,+0000C5FB(r2)
+	brb	0000EB7E
+	tstl	r0
+	nop
+	subl3	+0000C5F3(r2),+0000C5F7(r2),ap
+	subl2	r3,ap
+	addl2	ap,+0000C5FB(r2)
+	addl3	+0000C5F3(r2),r3,+0000C5F7(r2)
+	pushl	#00000004
+	pushab	+0098(r2)
+	calls	#02,@+2C(sp)
+	tstl	r0
+	bneq	0000EBBC
+	movzwl	#0401,-(sp)
+	pushl	r6
+	pushal	+1A(r9)
+	pushl	+48(sp)
+	pushal	+0159(r4)
+	pushab	+05EB(r2)
+	calls	#05,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	movl	#00000003,r7
+	brw	0000F13E
+	pushl	#00000004
+	pushab	+0000C62F(r2)
+	pushab	+0098(r2)
+	calls	#03,@+2C(sp)
+	tstl	r0
+	beql	0000EC04
+	movzwl	#0401,-(sp)
+	pushl	r6
+	pushal	+021E(r4)
+	pushl	+48(sp)
+	pushal	+0159(r4)
+	pushab	+05EB(r2)
+	calls	#05,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	movl	#00000003,r7
+	brw	0000F13E
+	tstl	r0
+	nop
+	calls	#00,@+14(sp)
+	movl	r0,r3
+	beql	0000EC38
+	movzwl	#0421,-(sp)
+	pushl	+40(sp)
+	pushal	+022F(r4)
+	pushab	+05EB(r2)
+	calls	#03,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	movl	r3,r7
+	brw	0000F13E
+	pushl	#00000002
+	movzwl	+0000C654(r2),-(sp)
+	calls	#02,@+24(sp)
+	tstl	r0
+	beql	0000EC98
+	cmpl	r0,r7
+	bleq	0000EC51
+	movl	r0,r7
+	cmpl	r0,#00000001
+	bleq	0000EC98
+	movzwl	#0401,-(sp)
+	pushal	+1E(r9)
+	movab	+05EB(r2),ap
+	addl3	#00004000,ap,-(sp)
+	pushab	+0000C701(r2)
+	calls	#02,@+48(sp)
+	pushl	r0
+	pushal	+0118(r4)
+	pushab	+05EB(r2)
+	calls	#04,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	brw	0000F13E
+	nop
+	tstl	+0000C627(r2)
+	beql	0000ECB0
+	pushl	+0000C627(r2)
+	calls	#01,@+14(sp)
+	clrl	+0000C627(r2)
+	pushl	#00000003
+	movzwl	+0000C656(r2),-(sp)
+	calls	#02,@+24(sp)
+	tstl	r0
+	beql	0000ED10
+	cmpl	r0,r7
+	bleq	0000ECC9
+	movl	r0,r7
+	cmpl	r0,#00000001
+	bleq	0000ED10
+	movzwl	#0401,-(sp)
+	pushal	+24(r9)
+	movab	+05EB(r2),ap
+	addl3	#00004000,ap,-(sp)
+	pushab	+0000C701(r2)
+	calls	#02,@+48(sp)
+	pushl	r0
+	pushal	+0137(r4)
+	pushab	+05EB(r2)
+	calls	#04,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	brw	0000F13E
+	nop
+	tstl	+44(r2)
+	beql	0000ED18
+	brw	0000F044
+	tstl	+0C(r2)
+	beql	0000ED20
+	brw	0000F044
+	clrl	-10(fp)
+	clrl	-14(fp)
+	movl	+05E7(r2),ap
+	tstl	+0C(ap)
+	bneq	0000EDA2
+	pushl	#0000002F
+	pushab	+0000C701(r2)
+	calls	#02,@+14(sp)
+	tstl	r0
+	bneq	0000EDA2
+	movab	+0000C701(r2),ap
+	subl3	#00000001,ap,-38(fp)
+	incl	-38(fp)
+	tstb	@-38(fp)
+	beql	0000EDA2
+	cmpb	@-38(fp),#5C
+	bneq	0000ED9A
+	tstl	+0000C6D1(r2)
+	bneq	0000ED96
+	pushl	#00000021
+	pushl	+0000C613(r2)
+	pushal	+026D(r4)
+	pushab	+05EB(r2)
+	calls	#03,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	movl	#00000001,+0000C6D1(r2)
+	tstl	r7
+	bneq	0000ED96
+	movl	#00000001,r7
+	movb	#2F,@-38(fp)
+	incl	-38(fp)
+	tstb	@-38(fp)
+	bneq	0000ED54
+	pushl	-10(fp)
+	calls	#01,@+0C(sp)
+	movl	r0,r3
+	cmpl	r3,#00000001
+	bleq	0000EE1C
+	cmpl	r3,#0000004D
+	bneq	0000EDBD
+	brw	0000F13E
+	cmpl	r3,#0000004E
+	bneq	0000EE04
+	pushl	#00000001
+	pushal	+2A(r9)
+	movab	+05EB(r2),ap
+	addl3	#00004000,ap,-(sp)
+	pushab	+0000C701(r2)
+	calls	#02,@+48(sp)
+	pushl	r0
+	pushal	+02A9(r4)
+	pushab	+05EB(r2)
+	calls	#04,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	brw	0000F13E
+	cmpl	r3,#00000002
+	bgtr	0000EE0C
+	brw	0000F13E
+	cmpl	r7,#00000002
+	blss	0000EE14
+	brw	0000F13E
+	movl	#00000002,r7
+	brw	0000F13E
+	tstl	r0
+	pushab	+0000C701(r2)
+	calls	#01,@+08(sp)
+	casel	r0,#FFFFFFFF,#00000002
+	bneq	0000EE30
+	subp4	#0000,#36,#0000,#11
+	cvtbf	@+1750(r5),4000E3D8
+	tstl	r0
+	tstl	+18(r2)
+	beql	0000EE82
+	tstl	-10(fp)
+	bneq	0000EE4D
+	brw	0000F13E
+	brb	0000EE82
+	nop
+	tstl	+34(r2)
+	beql	0000EE58
+	brw	0000F13E
+	tstl	+38(r2)
+	bneq	0000EE82
+	movl	#00000001,-14(fp)
+	brb	0000EE82
+	nop
+	tstl	+34(r2)
+	beql	0000EE6C
+	brw	0000F13E
+	tstl	+4C(r2)
+	beql	0000EE79
+	tstl	-10(fp)
+	bneq	0000EE79
+	brw	0000F13E
+	tstl	+38(r2)
+	bneq	0000EE82
+	movl	#00000001,-14(fp)
+	tstl	-14(fp)
+	bneq	0000EE8A
+	brw	0000F044
+	movzbl	#81,-(sp)
+	movab	+05EB(r2),ap
+	addl3	#00004000,ap,-(sp)
+	pushab	+0000C701(r2)
+	calls	#02,@+44(sp)
+	pushl	r0
+	pushal	+02CD(r4)
+	pushab	+05EB(r2)
+	calls	#03,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	pushl	@00019378
+	pushl	#00000009
+	pushab	+009D(r2)
+	calls	#03,@+5C(sp)
+	tstl	r0
+	bneq	0000EF04
+	pushl	#00000001
+	pushal	+0300(r4)
+	pushab	+05EB(r2)
+	calls	#02,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	movb	#4E,+009D(r2)
+	tstl	r7
+	bneq	0000EF04
+	movl	#00000001,r7
+	cvtbl	+009D(r2),ap
+	cmpl	ap,#00000041
+	bgeq	0000EF15
+	brw	0000F01C
+	movl	ap,r0
+	casel	r0,#00000041,#00000018
 	Invalid
+	xfc
+	halt
+	xfc
+	halt
+	xfc
+	halt
+	xfc
+	halt
+	xfc
+	halt
+	xfc
+	halt
+	insv	#00000000,@-03FF0400(ap),#00,(r0)+
+	halt
+	xfc
+	halt
+	xfc
+	halt
+	xfc
+	halt
+	xfc
+	halt
+	xfc
+	halt
+	xfc
+	halt
+	cmpv
+	halt
+	brb	0000EF5C
+	jmp	4000E3D8
+	tstl	r0
+	cmpl	r0,#0000006E
+	bgeq	0000EF68
+	brw	0000F01C
+	casel	r0,#0000006E,#0000000B
+	divw3	#0000,+00(ap),+00(ap)
+	Invalid
+	halt
+	xorw2	#0000,+00(ap)
+	xorw2	#0000,+00(ap)
+	xorw2	#0000,+00(ap)
+	rotl	#00,#00000031,@(r1)+
+	halt
+	nop
+	jmp	4000E3D8
+	tstl	r0
+	movl	#00000001,+38(r2)
+	clrl	+34(r2)
+	brw	0000F044
+	tstl	r0
+	movzbl	#81,-(sp)
+	pushal	+0319(r4)
+	pushab	+05EB(r2)
+	calls	#02,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	pushl	@00019378
+	movzwl	#0100,-(sp)
+	pushab	+0000C701(r2)
+	calls	#03,@+5C(sp)
+	pushab	+0000C701(r2)
+	calls	#01,@+50(sp)
+	movl	r0,-1C(fp)
+	subl3	#00000001,r0,ap
+	cmpb	+0000C701(r2)[ap],#0A
+	bneq	0000F000
+	decl	-1C(fp)
+	movl	-1C(fp),ap
+	clrb	+0000C701(r2)[ap]
+	tstl	-1C(fp)
+	beql	0000EFA0
+	movl	#00000001,-10(fp)
+	brw	0000ED23
+	brb	0000F044
+	tstl	r0
+	movl	#00000001,+34(r2)
+	clrl	+38(r2)
+	brw	0000F13E
+	tstl	r0
+	pushl	#00000001
+	cvtbl	+009D(r2),-(sp)
+	pushal	+0324(r4)
+	pushab	+05EB(r2)
+	calls	#03,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	brw	0000EE8A
+	nop
+	movl	+05E7(r2),ap
+	bbs	#00000000,+14(ap),0000F051
+	brw	0000F100
+	calls	#00,@+00(sp)
+	movl	r0,r3
+	bneq	0000F05D
+	brw	0000F100
+	cmpl	r3,#00000001
+	bneq	0000F0B8
+	tstl	+44(r2)
+	beql	0000F06C
+	tstl	+40(r2)
+	bneq	0000F0B1
+	tstl	+44(r2)
+	bneq	0000F076
+	tstl	+40(r2)
+	bneq	0000F0B1
+	movzwl	#0401,-(sp)
+	movab	+05EB(r2),ap
+	addl3	#00004000,ap,-(sp)
+	pushab	+0000C701(r2)
+	calls	#02,@+44(sp)
+	pushl	r0
+	pushal	+03BD(r4)
+	pushab	+05EB(r2)
+	calls	#03,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	incw	+1A(sp)
+	brw	0000F13E
+	nop
+	cmpl	r3,r7
+	bleq	0000F0C0
+	movl	r3,r7
+	movzwl	#0401,-(sp)
+	movab	+05EB(r2),ap
+	addl3	#00004000,ap,-(sp)
+	pushab	+0000C701(r2)
+	calls	#02,@+44(sp)
+	pushl	r0
+	pushal	+0391(r4)
+	pushab	+05EB(r2)
+	calls	#03,(r8)
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	brb	0000F13E
+	tstl	r0
+	nop
+	clrl	+0000C6D5(r2)
+	calls	#00,0000F814
+	tstl	r0
+	beql	0000F13E
+	cmpl	r0,r7
+	bleq	0000F117
+	movl	r0,r7
+	cmpl	+0000C6D5(r2),#00000001
+	bleq	0000F13E
+	tstl	r10
+	beql	0000F12D
+	pushl	r10
+	calls	#01,@000192B0
+	tstl	r11
+	beql	0000F13A
+	pushl	r11
+	calls	#01,@000192B0
+	movl	r7,r0
+	ret
+	incl	+40(sp)
+	cmpl	+40(sp),+48(sp)
+	bgeq	0000F14B
+	brw	0000E804
+
+l0000F14B:
+	pushl	#00000000
+	pushl	-20(fp)
+	pushl	+0000C617(r2)
+	calls	#03,@+38(sp)
+	movl	r0,+0000C61F(r2)
+	movzwl	#2000,-(sp)
+	pushl	+0000C5F3(r2)
+	pushl	+0000C617(r2)
+	calls	#03,@+34(sp)
+	movl	-08(fp),+0000C5F7(r2)
+	movl	-0C(fp),+0000C5FB(r2)
+	incl	-18(fp)
+	tstw	+46(sp)
+	beql	0000F191
+
+l0000F18E:
+	brw	0000E4F4
+
+l0000F191:
+	tstl	r10
+	beql	0000F1E7
+
+l0000F195:
+	clrl	r5
+	tstl	+64(r2)
+	bleq	0000F1DE
+
+l0000F19C:
+	tstl	(r10)[r5]
+	bneq	0000F1D6
+
+l0000F1A1:
+	pushl	#00000001
+	movl	+0090(r2),r3
+	pushl	(r3)[r5]
+	pushal	FFFFB3A4
+	pushab	+05EB(r2)
+	calls	#03,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+	cmpl	r7,#00000001
+	bgtr	0000F1D6
+
+l0000F1D3:
+	movl	#0000000B,r7
+
+l0000F1D6:
+	incl	r5
+	cmpl	r5,+64(r2)
+	blss	0000F19C
+
+l0000F1DE:
+	pushl	r10
+	calls	#01,@000192B0
+
+l0000F1E7:
+	tstl	r11
+	beql	0000F23A
+
+l0000F1EB:
+	clrl	r5
+	tstl	+68(r2)
+	bleq	0000F231
+
+l0000F1F2:
+	tstl	r0
+
+l0000F1F4:
+	tstl	(r11)[r5]
+	bneq	0000F229
+
+l0000F1F9:
+	movzwl	#0401,-(sp)
+	movl	+0094(r2),r3
+	pushl	(r3)[r5]
+	pushal	FFFFB374
+	pushab	+05EB(r2)
+	calls	#03,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),ap
+	calls	#04,(ap)
+
+l0000F229:
+	incl	r5
+	cmpl	r5,+68(r2)
+	blss	0000F1F4
+
+l0000F231:
+	pushl	r11
+	calls	#01,@000192B0
+
+l0000F23A:
+	pushl	#00000004
+	pushab	+0098(r2)
+	calls	#02,0000D5BC
+	tstl	r0
+	bneq	0000F24E
+
+l0000F24B:
+	movl	#00000033,r7
+
+l0000F24E:
+	pushl	#00000004
+	pushab	+0000C639(r2)
+	pushab	+0098(r2)
+	calls	#03,@000192D8
+	tstl	r0
+	beql	0000F2BC
+
+l0000F265:
+	movzwl	#0401,-(sp)
+	pushal	FFFFB328
+	pushab	+05EB(r2)
+	calls	#02,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),r3
+	calls	#04,(r3)
+	movzwl	#0401,-(sp)
+	pushal	00007D48
+	pushab	+05EB(r2)
+	calls	#02,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),r3
+	calls	#04,(r3)
+	tstl	r7
+	bneq	0000F2BC
+
+l0000F2B9:
+	movl	#00000001,r7
+
+l0000F2BC:
+	incl	+3C(sp)
+	tstl	+44(r2)
+	bneq	0000F2C7
+
+l0000F2C4:
+	brw	0000F483
+
+l0000F2C7:
+	movzwl	+1A(sp),r8
+	subl3	r8,+3C(sp),-3C(fp)
+	cmpl	+40(r2),#00000002
+	blss	0000F2DA
+
+l0000F2D7:
+	brw	0000F44C
+
+l0000F2DA:
+	tstl	r7
+	beql	0000F320
+
+l0000F2DE:
+	pushl	#00000000
+	pushl	+0000C613(r2)
+	cmpl	r7,#00000001
+	bneq	0000F2F4
+
+l0000F2EB:
+	moval	+2C(r9),r5
+	brb	0000F2F8
+0000F2F1    D5 50 01                                      .P.           
+
+l0000F2F4:
+	moval	+2B(r9),r5
+
+l0000F2F8:
+	pushl	r5
+	pushal	+0343(r4)
+	pushab	+05EB(r2)
+	calls	#04,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),r3
+	calls	#04,(r3)
+	brw	0000F3CF
+0000F31E                                           D5 50               .P
+
+l0000F320:
+	movl	-3C(fp),r6
+	bneq	0000F354
+
+l0000F326:
 	pushl	#00000000
 	pushl	+0000C613(r2)
 	pushal	+036D(r4)
@@ -8467,46 +9503,218 @@ fn0000F457 proc
 	pushab	(r2)
 	movl	+0000C839(r2),r3
 	calls	#04,(r3)
+	brb	0000F3CF
+0000F351    D5 50 01                                      .P.           
+
+l0000F354:
+	tstl	+6C(r2)
+	beql	0000F390
+
+l0000F359:
+	movzwl	+32(sp),r3
+	addl2	r8,r3
+	bneq	0000F390
+
+l0000F362:
+	pushl	#00000000
+	pushl	+0000C613(r2)
+	pushal	+0440(r4)
+	pushab	+05EB(r2)
+	calls	#03,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),r3
+	calls	#04,(r3)
+	brb	0000F3CF
+0000F38D                                        D5 50 01              .P.
+
+l0000F390:
+	pushl	#00000000
+	cmpl	r6,#00000001
+	bneq	0000F3A0
+
+l0000F397:
+	moval	+37(r9),r5
+	brb	0000F3A4
+0000F39D                                        D5 50 01              .P.
+
+l0000F3A0:
+	moval	+35(r9),r5
+
+l0000F3A4:
+	pushl	r5
+	pushl	r6
+	pushl	+0000C613(r2)
+	pushal	+046E(r4)
+	pushab	+05EB(r2)
+	calls	#05,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),r3
+	calls	#04,(r3)
+
+l0000F3CF:
+	movzwl	+32(sp),r5
+	beql	0000F40D
+
+l0000F3D5:
+	pushl	#00000000
+	cmpl	r5,#00000001
+	bneq	0000F3E4
+
+l0000F3DC:
+	moval	+3A(r9),r6
+	brb	0000F3E8
+0000F3E2       D5 50                                       .P           
+
+l0000F3E4:
+	moval	+38(r9),r6
+
+l0000F3E8:
+	pushl	r6
+	pushl	r5
+	pushal	+04A2(r4)
+	pushab	+05EB(r2)
+	calls	#04,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),r3
+	calls	#04,(r3)
+
+l0000F40D:
+	movzwl	+1A(sp),r5
+	beql	0000F483
+
+l0000F413:
+	pushl	#00000000
+	cmpl	r5,#00000001
+	bneq	0000F420
+
+l0000F41A:
+	moval	+3D(r9),r6
+	brb	0000F424
+
+l0000F420:
+	moval	+3B(r9),r6
+
+l0000F424:
+	pushl	r6
+	pushl	r5
+	pushal	+03E5(r4)
+	pushab	+05EB(r2)
+	calls	#04,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),r3
+	calls	#04,(r3)
+	brb	0000F483
+0000F44B                                  01                        .   
+
+l0000F44C:
+	tstl	+40(r2)
+	bneq	0000F483
+
+l0000F451:
+	tstl	r7
+	bneq	0000F483
+
+l0000F455:
+	tstl	-3C(fp)
+
+;; fn0000F457: 0000F457
+;;   Called from:
+;;     0000C354 (in fn0000C1FE)
+fn0000F457 proc
+	Invalid
+
+l0000F45A:
+	pushl	#00000000
+	pushl	+0000C613(r2)
+	pushal	+036D(r4)
+	pushab	+05EB(r2)
+	calls	#03,@000192D0
+	pushl	r0
+	pushab	+05EB(r2)
+	pushab	(r2)
+	movl	+0000C839(r2),r3
+	calls	#04,(r3)
+
+l0000F483:
 	tstl	+3C(sp)
 	bneq	0000F4A4
+
+l0000F488:
 	cmpl	r7,#00000001
 	bgtr	0000F4A4
+
+l0000F48D:
 	movzwl	+32(sp),r3
 	beql	0000F49C
+
+l0000F493:
 	movzbl	#51,r7
 	brb	0000F4DB
-	tstl	r0
-	nop
+0000F499                            D5 50 01                      .P.   
+
+l0000F49C:
 	movl	#0000000B,r7
 	brb	0000F4DB
-	tstl	r0
-	nop
+0000F4A1    D5 50 01                                      .P.           
+
+l0000F4A4:
 	movzwl	+1A(sp),r5
 	cmpl	+3C(sp),r5
 	bneq	0000F4BC
+
+l0000F4AE:
 	cmpl	r7,#00000001
 	bgtr	0000F4BC
+
+l0000F4B3:
 	movzbl	#52,r7
 	brb	0000F4DB
-	tstl	r0
-	nop
+0000F4B9                            D5 50 01                      .P.   
+
+l0000F4BC:
 	movzwl	+32(sp),r3
 	beql	0000F4D0
+
+l0000F4C2:
 	cmpl	r7,#00000001
 	bgtr	0000F4D0
+
+l0000F4C7:
 	movzbl	#51,r7
 	brb	0000F4DB
-	tstl	r0
-	nop
+0000F4CD                                        D5 50 01              .P.
+
+l0000F4D0:
 	tstl	r5
 	beql	0000F4DB
+
+l0000F4D4:
 	tstl	r7
 	bneq	0000F4DB
+
+l0000F4D8:
 	movl	#00000001,r7
+
+l0000F4DB:
 	movl	r7,r0
 	ret
-	nop
-	movzwl	#0000,+5E04(r2)
+0000F4DF                                              01                .
+0000F4E0 3C 00                                           <.             
+
+;; fn0000F4E2: 0000F4E2
+;;   Called from:
+;;     0000E70D (in fn0000E3DA)
+;;     0000E7BE (in fn0000E3DA)
+fn0000F4E2 proc
+	subl2	#00000004,sp
 	movab	FFFE66C4,r5
 	movab	FFFFB3D0,r2
 	movab	FFFF8684,r4
@@ -9676,9 +10884,7 @@ l0001042F:
 l00010440:
 	Invalid
 	cvtps	#0017,4000E3D8,@-2EB0(r5),r0
-	Invalid
-	halt
-	halt
+	caseb	00[pc],#00,#00
 	bgeq	00010458
 	brw	00010520
 	beql	0001046C
@@ -9966,6 +11172,9 @@ l00010862:
 
 ;; fn00010892: 00010892
 ;;   Called from:
+;;     0000E607 (in fn0000E3DA)
+;;     0000E670 (in fn0000E3DA)
+;;     0000E6D5 (in fn0000E3DA)
 ;;     0000F87A (in fn0000F816)
 ;;     0001012C (in fn000100C2)
 ;;     000103FD (in fn000100C2)
@@ -10009,6 +11218,8 @@ l000108C7:
 000108D0 FC 0F                                           ..             
 
 ;; fn000108D2: 000108D2
+;;   Called from:
+;;     00008318 (in fn0000802E)
 fn000108D2 proc
 	subl2	#00000008,sp
 	movab	FFFE67AC,r5

@@ -488,7 +488,11 @@ namespace Reko.Arch.Vax
 
         private Expression RewriteSrcOp(int iOp, PrimitiveType width)
         {
-            var op = this.instr.Operands[iOp];
+            return RewriteSrcOp(this.instr.Operands[iOp], width);
+        }
+
+        private Expression RewriteSrcOp(MachineOperand op, PrimitiveType width)
+        {
             switch (op)
             {
             case RegisterOperand regOp:
@@ -501,7 +505,7 @@ namespace Reko.Arch.Vax
                 }
                 else if (width.Size == 8)
                 {
-                    var rHi = arch.GetRegister(1 + (int)reg.Storage.Domain);
+                    var rHi = arch.GetRegister(1 + (int) reg.Storage.Domain);
                     if (rHi == null)
                         return null!;
                     var regHi = binder.EnsureRegister(rHi);
@@ -509,9 +513,9 @@ namespace Reko.Arch.Vax
                 }
                 else if (width.Size == 16)
                 {
-                    var regHi1 = binder.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain)!);
-                    var regHi2 = binder.EnsureRegister(arch.GetRegister(2 + (int)reg.Storage.Domain)!);
-                    var regHi3 = binder.EnsureRegister(arch.GetRegister(3 + (int)reg.Storage.Domain)!);
+                    var regHi1 = binder.EnsureRegister(arch.GetRegister(1 + (int) reg.Storage.Domain)!);
+                    var regHi2 = binder.EnsureRegister(arch.GetRegister(2 + (int) reg.Storage.Domain)!);
+                    var regHi3 = binder.EnsureRegister(arch.GetRegister(3 + (int) reg.Storage.Domain)!);
 
                     var regLo = binder.EnsureSequence(PrimitiveType.Word64, regHi1.Storage, reg.Storage);
                     var regHi = binder.EnsureSequence(PrimitiveType.Word64, regHi3.Storage, regHi2.Storage);
@@ -552,13 +556,6 @@ namespace Reko.Arch.Vax
                             ea = m.IAdd(ea, memOp.Offset);
                         }
                     }
-                    if (memOp.Index != null)
-                    {
-                        Expression idx = binder.EnsureRegister(memOp.Index);
-                        if (width.Size != 1)
-                            idx = m.IMul(idx, Constant.Int32(width.Size));
-                        ea = m.IAdd(ea, idx);
-                    }
                     Expression load;
                     if (memOp.Deferred)
                         load = m.Mem(width, m.Mem32(ea));
@@ -574,13 +571,13 @@ namespace Reko.Arch.Vax
                 }
                 else
                 {
-                    ea = arch.MakeAddressFromConstant(memOp.Offset!, false);
-                    if (memOp.Index != null)
+                    if (memOp.Base is ImmediateOperand imm)
                     {
-                        Expression idx = binder.EnsureRegister(memOp.Index);
-                        if (width.Size != 1)
-                            idx = m.IMul(idx, Constant.Int32(width.Size));
-                        ea = m.IAdd(ea, idx);
+                        ea = imm.Value;
+                    }
+                    else
+                    {
+                        ea = arch.MakeAddressFromConstant(memOp.Offset!, false);
                     }
                     Expression load;
                     if (memOp.Deferred)
@@ -588,7 +585,7 @@ namespace Reko.Arch.Vax
                         load = m.Mem(width, m.Mem32(ea));
                     }
                     else
-                    { 
+                    {
                         load = m.Mem(width, ea);
                     }
                     return load;
@@ -609,6 +606,15 @@ namespace Reko.Arch.Vax
                 {
                     return addrOp.Address;
                 }
+            case IndexOperand indexOperand:
+                ea = RewriteSrcOp(indexOperand.Base, PrimitiveType.Word32);
+                if (ea is MemoryAccess imem)
+                    ea = imem.EffectiveAddress;
+                Expression idx = binder.EnsureRegister(indexOperand.Index);
+                if (width.Size != 1)
+                    idx = m.IMul(idx, Constant.Int32(width.Size));
+                ea = m.IAdd(ea, idx);
+                return m.Mem(width, ea);
             }
             throw new NotImplementedException(op.GetType().Name);
         }
@@ -616,6 +622,11 @@ namespace Reko.Arch.Vax
         private Identifier RewriteDstOp(int iOp, PrimitiveType width, Func<Expression, Expression> fn)
         {
             var op = this.instr.Operands[iOp];
+            return RewriteDstOp(op, width, fn);
+        }
+
+        private Identifier RewriteDstOp(MachineOperand op, PrimitiveType width, Func<Expression, Expression> fn, Expression? index = null)
+        {
             switch (op)
             {
             case RegisterOperand regOp:
@@ -654,9 +665,9 @@ namespace Reko.Arch.Vax
             case MemoryOperand memOp:
                 Expression ea;
                 Identifier? regEa = null;
-                if (memOp.Base != null)
+                if (memOp.Base is RegisterOperand rbase)
                 {
-                    regEa = binder.EnsureRegister(((RegisterOperand)memOp.Base).Register);
+                    regEa = binder.EnsureRegister(rbase.Register);
                     if (memOp.AutoDecrement)
                     {
                         m.Assign(regEa, m.ISub(regEa, width.Size));
@@ -682,9 +693,10 @@ namespace Reko.Arch.Vax
                 m.Assign(tmp, fn(m.Mem(width, ea)));
                 Expression load;
                 if (memOp.Deferred)
-                    load = m.Mem(width, m.Mem32(ea));
-                else
-                    load = m.Mem(width, ea);
+                    ea = m.Mem32(ea);
+                if (index != null)
+                    ea = m.IAdd(ea, index);
+                load = m.Mem(width, ea);
                 m.Assign(load, tmp);
 
                 if (regEa != null && memOp.AutoIncrement)
@@ -693,6 +705,11 @@ namespace Reko.Arch.Vax
                     m.Assign(regEa, m.IAdd(regEa, inc));
                 }
                 return tmp;
+            case IndexOperand indexOperand:
+                Expression idx = binder.EnsureRegister(indexOperand.Index);
+                if (width.Size != 1)
+                    idx = m.IMul(idx, Constant.Int32(width.Size));
+                return RewriteDstOp(indexOperand.Base, PrimitiveType.Word32, fn, idx);
             case ImmediateOperand _:
             case AddressOperand _:
                 return null!;

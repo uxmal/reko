@@ -35,7 +35,6 @@ namespace Reko.Arch.Vax
         public bool Deferred;
         internal bool AutoDecrement;
         internal bool AutoIncrement;
-        internal RegisterStorage? Index;
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
@@ -63,10 +62,6 @@ namespace Reko.Arch.Vax
             if (AutoIncrement)
             {
                 renderer.WriteString("+");
-            }
-            if (Index != null)
-            {
-                renderer.WriteFormat("[{0}]", Index.Name);
             }
         }
     }

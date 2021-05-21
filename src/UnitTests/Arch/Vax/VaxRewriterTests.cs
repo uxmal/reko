@@ -2051,7 +2051,7 @@ namespace Reko.UnitTests.Arch.Vax
         [Test]
         public void VaxRw_movaw()
         {
-            Given_Bytes(0x3E, 0x42, 0x63, 0x51);	// movaw	
+            Given_HexString("3E426351");	// movaw	
             AssertCode(
                 "0|L--|00010000(4): 4 instructions",
                 "1|L--|r1 = r3 + r2 * 2<i32>",
@@ -2059,8 +2059,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "3|L--|C = false",
                 "4|L--|V = false");
         }
-
-
 
         [Test]
         public void VaxRw_xorb2()
