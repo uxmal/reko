@@ -510,7 +510,7 @@ elseif("${TARGET}" STREQUAL "create_msi_wix")
 	#
 	# Create a new target to update the Wix spec
 	#
-	set(WINDRIVER_OUTDIR ${REKO_SRC}/Drivers/WindowsDecompiler/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_EXE_FRAMEWORK})
+	set(WIX_RUNTIME_OUTDIR ${REKO_SRC}/Drivers/WixRuntime/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_EXE_FRAMEWORK})
 	RUN_DOTNET(${REKO_SRC}/tools/specGen/specGen.csproj
 		NO_RESTORE
 		NO_CLEAN
@@ -518,8 +518,8 @@ elseif("${TARGET}" STREQUAL "create_msi_wix")
 		PLATFORM ${REKO_PLATFORM}
 		ARGUMENTS 
 			wix
-			${REKO_SRC}/Drivers/WindowsDecompiler
-			${WINDRIVER_OUTDIR}
+			${REKO_SRC}/Drivers/WixRuntime
+			${WIX_RUNTIME_OUTDIR}
 			${REKO_EXE_FRAMEWORK}
 			${REKO_SRC}/WixInstaller/Components.wxi.template
 		OUTPUT
@@ -551,8 +551,8 @@ elseif("${TARGET}" STREQUAL "create_msi_wix")
 		COMMAND
 			${CANDLE_EXECUTABLE}
 			-dSolutionDir=${REKO_SRC}/
-			-dOUTDIR=${WINDRIVER_OUTDIR}
-			-dEXEFILE=${WINDRIVER_OUTDIR}/WindowsDecompiler.exe
+			-dOUTDIR=${WIX_RUNTIME_OUTDIR}
+			-dEXEFILE=${WIX_RUNTIME_OUTDIR}/WindowsDecompiler.exe
 			-arch ${REKO_PLATFORM}
 			-o ${WIX_CANDLE_OUTPUT}
 			${WIX_CANDLE_INPUT}
