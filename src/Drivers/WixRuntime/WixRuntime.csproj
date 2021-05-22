@@ -18,4 +18,14 @@ https://docs.microsoft.com/en-us/dotnet/core/project-sdk/msbuild-props#copylocal
     <ProjectReference Include="..\WindowsDecompiler\WindowsDecompiler.csproj" />
   </ItemGroup>
   <Import Project="$(ProjectDir)..\PreBuild.targets" />
+  <Target Name="RemoveUnnecessaryFiles" AfterTargets="CopyFilesToOutputDirectory">
+    <ItemGroup>
+      <PdbFiles Include="$(TargetDir)\*.pdb" />
+      <DepsJsonFiles Include="$(TargetDir)\*.deps.json" />
+    </ItemGroup>
+    <Message Importance="high" Text="Removing pdb files from $(TargetDir)" />
+    <Delete Files="@(PdbFiles)"/>
+    <Message Importance="high" Text="Removing deps.json files from $(TargetDir)" />
+    <Delete Files="@(DepsJsonFiles)"/>
+  </Target>
 </Project>
