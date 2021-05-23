@@ -94,6 +94,12 @@ namespace Reko.UnitTests.Arch.Altera
         }
 
         [Test]
+        public void Nios2Dasm_br()
+        {
+            AssertCode("br\t0010000C", "06020000");
+        }
+
+        [Test]
         public void Nios2Dasm_call()
         {
             AssertCode("call\t000FFCDC", "80CDFFFF");
@@ -120,7 +126,7 @@ namespace Reko.UnitTests.Arch.Altera
         [Test]
         public void Nios2Dasm_cmplti()
         {
-            AssertCode("cmplti\tr8,r27,0xFFFF9C38", "100E27DA");
+            AssertCode("cmplti\tr8,sp,0xFFFF9C38", "100E27DA");
         }
 
         [Test]
@@ -133,6 +139,24 @@ namespace Reko.UnitTests.Arch.Altera
         public void Nios2Dasm_cmpnei()
         {
             AssertCode("cmpnei\tr10,r26,0xFFFFBB87", "D8E1AED2");
+        }
+
+        [Test]
+        public void Nios2Dasm_flushi()
+        {
+            AssertCode("flushi\t384(r1)", "3A600008");
+        }
+
+        [Test]
+        public void Nios2Dasm_flushp()
+        {
+            AssertCode("flushp", "3A200000");
+        }
+
+        [Test]
+        public void Nios2Dasm_initi()
+        {
+            AssertCode("initi\tr1", "3A480108");
         }
 
         [Test]
@@ -201,11 +225,16 @@ namespace Reko.UnitTests.Arch.Altera
             AssertCode("ori\tr10,zero,0x8850", "14 14 A2 02");
         }
 
-
         [Test]
         public void Nios2Dasm_sll()
         {
             AssertCode("sll\tr22,r14,r17", "3A986C74");
+        }
+
+        [Test]
+        public void Nios2Dasm_slli()
+        {
+            AssertCode("slli\tr7,r7,0x8", "3A920E38");
         }
 
         [Test]

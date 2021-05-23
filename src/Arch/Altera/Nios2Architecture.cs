@@ -35,10 +35,11 @@ namespace Reko.Arch.Altera
         public Nios2Architecture(IServiceProvider services, string archId, Dictionary<string, object> options) : base(services, archId, options)
         {
             base.Endianness = EndianServices.Little;
-            base.CarryFlagMask = 0; //$TODO
+            base.CarryFlagMask = 0;
             base.FramePointerType = PrimitiveType.Ptr32;
             base.InstructionBitSize = 32;
             base.PointerType = PrimitiveType.Ptr32;
+            base.StackRegister = Nios2.Registers.sp;
             base.WordWidth = PrimitiveType.Word32;
         }
 
@@ -64,12 +65,12 @@ namespace Reko.Arch.Altera
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new Nios2.Nios2State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new Nios2.Nios2Rewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
@@ -94,6 +95,9 @@ namespace Reko.Arch.Altera
 
         public override RegisterStorage? GetRegister(string name)
         {
+            return Nios2.Registers.RegsByName.TryGetValue(name, out var reg)
+                ? reg
+                : null;
             throw new NotImplementedException();
         }
 
@@ -129,7 +133,7 @@ namespace Reko.Arch.Altera
 
         public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse32(txtAddr, out addr);
         }
     }
 }

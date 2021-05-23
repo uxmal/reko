@@ -136,6 +136,25 @@ namespace Reko.Arch.Altera.Nios2
         private static readonly Mutator<Nios2Disassembler> Im_i8 = Im(PrimitiveType.Int8);
         private static readonly Mutator<Nios2Disassembler> Im_i16 = Im(PrimitiveType.Int16);
 
+        private static bool M_addr(uint uInstr, Nios2Disassembler dasm)
+        {
+            var regA = Registers.GpRegisters[i_regA.Read(uInstr)];
+            var imm = i_imm.ReadSigned(uInstr);
+            dasm.ops.Add(new MemoryOperand(PrimitiveType.Word32)
+            {
+                Base = regA,
+                Offset = imm
+            });
+            return true;
+        }
+
+        private static bool B(uint uInstr, Nios2Disassembler dasm)
+        {
+            var offset = i_imm.ReadSigned(uInstr);
+            dasm.ops.Add(AddressOperand.Create(dasm.rdr.Address + offset));
+            return true;
+        }
+
         private static bool Br(uint uInstr, Nios2Disassembler dasm)
         {
             var regA = Registers.GpRegisters[i_regA.Read(uInstr)];
@@ -172,6 +191,17 @@ namespace Reko.Arch.Altera.Nios2
         private static bool Ra(uint uInstr, Nios2Disassembler dasm)
         {
             var regA = Registers.GpRegisters[i_regA.Read(uInstr)];
+            dasm.ops.Add(new RegisterOperand(regA));
+            return true;
+        }
+
+        private static bool Rsa(uint uInstr, Nios2Disassembler dasm)
+        {
+            var iregS = sh_amt.Read(uInstr);
+            if (!Registers.TryGetControlRegister(iregS, out var regS))
+                return false;
+            var regA = Registers.GpRegisters[i_regA.Read(uInstr)];
+            dasm.ops.Add(new RegisterOperand(regS));
             dasm.ops.Add(new RegisterOperand(regA));
             return true;
         }
@@ -242,22 +272,22 @@ namespace Reko.Arch.Altera.Nios2
             var invalid = Instr(Mnemonic.Invalid, InstrClass.Invalid);
 
             var rType = Sparse(11, 6, "  R-type", invalid,
-                (0x01, Nyi(Mnemonic.eret)),
+                (0x01, Instr(Mnemonic.eret, InstrClass.Transfer | InstrClass.System)),
                 (0x02, Instr(Mnemonic.roli, Rsh)),
                 (0x03, Instr(Mnemonic.rol, R)),
-                (0x04, Nyi(Mnemonic.flushp)),
+                (0x04, Instr(Mnemonic.flushp)),
                 (0x05, Instr(Mnemonic.ret, InstrClass.Transfer)),
                 (0x06, Instr(Mnemonic.nor, R)),
                 (0x07, Instr(Mnemonic.mulxuu, R)),
                 (0x08, Instr(Mnemonic.cmpge, R)),
-                (0x09, Nyi(Mnemonic.bret)),
+                (0x09, Instr(Mnemonic.bret, InstrClass.Transfer | InstrClass.System)),
                 (0x0B, Instr(Mnemonic.ror, R)),
-                (0x0C, Nyi(Mnemonic.flushi)),
+                (0x0C, Instr(Mnemonic.flushi, InstrClass.Linear|InstrClass.System, M_addr)),
                 (0x0D, Instr(Mnemonic.jmp, InstrClass.Transfer, Ra)),
                 (0x0E, Instr(Mnemonic.and, R)),
 
                 (0x10, Nyi(Mnemonic.cmplt)),
-                (0x12, Nyi(Mnemonic.slli)),
+                (0x12, Instr(Mnemonic.slli, Rsh)),
                 (0x13, Instr(Mnemonic.sll, R)),
                 (0x14, Instr(Mnemonic.wrprs, InstrClass.Linear|InstrClass.System, Rca)),
                 (0x16, Instr(Mnemonic.or, R)),
@@ -276,9 +306,9 @@ namespace Reko.Arch.Altera.Nios2
                 (0x26, Nyi(Mnemonic.rdctl)),
                 (0x27, Instr(Mnemonic.mul, R)),
                 (0x28, Instr(Mnemonic.cmpgeu, R)),
-                (0x29, Nyi(Mnemonic.initi)),
+                (0x29, Instr(Mnemonic.initi, InstrClass.Linear|InstrClass.System, Ra)),
                 (0x2D, Nyi(Mnemonic.trap)),
-                (0x2E, Instr(Mnemonic.wrctl, InstrClass.Linear|InstrClass.System, Rna)),
+                (0x2E, Instr(Mnemonic.wrctl, InstrClass.Linear|InstrClass.System, Rsa)),
 
                 (0x30, Instr(Mnemonic.cmpltu, R)),
                 (0x31, Instr(Mnemonic.add, R)),
@@ -295,7 +325,7 @@ namespace Reko.Arch.Altera.Nios2
                 Instr(Mnemonic.ldbu, Im_16),
                 Instr(Mnemonic.addi, Is),
                 Instr(Mnemonic.stb, Im_8),
-                Instr(Mnemonic.br, InstrClass.Transfer, Br),
+                Instr(Mnemonic.br, InstrClass.Transfer, B),
                 Instr(Mnemonic.ldb, Im_i8),
 
                 Instr(Mnemonic.cmpgei, Is),
@@ -310,7 +340,7 @@ namespace Reko.Arch.Altera.Nios2
                 Instr(Mnemonic.cmplti, Is),
                 invalid,
                 invalid,
-                Nyi(Mnemonic.initda),
+                Instr(Mnemonic.initda, InstrClass.Linear|InstrClass.System, M_addr),
                 Instr(Mnemonic.ori, I),
                 Instr(Mnemonic.stw, Im_32),
                 Instr(Mnemonic.blt, InstrClass.ConditionalTransfer, Br),
@@ -346,17 +376,17 @@ namespace Reko.Arch.Altera.Nios2
 
                 Instr(Mnemonic.cmpltui, I),
                 invalid,
-                /* 0x32 */ Nyi(Mnemonic.custom),
-                /* 0x33 */ Nyi(Mnemonic.initd),
+                Nyi(Mnemonic.custom),
+                Instr(Mnemonic.initd, InstrClass.Linear|InstrClass.System, M_addr),
                 Instr(Mnemonic.orhi, I),
                 Instr(Mnemonic.stwio, Im_32),
                 Instr(Mnemonic.bltu, InstrClass.ConditionalTransfer, Br),
                 Instr(Mnemonic.ldwio, Im_32),
 
-                /* 0x38 */ Nyi(Mnemonic.rdprs),
+                Instr(Mnemonic.rdprs, Is),
                 invalid,
                 rType,
-                /* 0x3B */ Nyi(Mnemonic.flushd),
+                Instr(Mnemonic.flushd, InstrClass.Linear|InstrClass.System, M_addr),
                 Instr(Mnemonic.xorhi, I),
                 invalid,
                 invalid,
