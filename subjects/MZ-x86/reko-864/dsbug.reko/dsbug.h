@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (104C0 uint16 theGlobal))
+Eq_1: (struct "Globals")
 	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
 Eq_2: (segment "seg0FF0_t" 0100)
 	T_2 (in seg0FF0 @ 0000FF00 : selector)
@@ -31,19 +31,18 @@ T_4: (in seg1046 @ 00010460 : selector)
   OrigDataType: (ptr16 (segment "seg1046_t"))
 T_5: (in 0x1337<16> @ 00010007 : word16)
   Class: Eq_5
-  DataType: uint16
+  DataType: word16
   OrigDataType: word16
 T_6: (in 1046:0060 @ 00010007 : segptr32)
   Class: Eq_6
-  DataType: (ptr32 uint16)
-  OrigDataType: (ptr32 (struct (0 uint16 w0000)))
+  DataType: (ptr32 word16)
+  OrigDataType: (ptr32 (struct (0 T_7 t0000)))
 T_7: (in Mem5[1046:0060:word16] @ 00010007 : word16)
   Class: Eq_5
-  DataType: uint16
-  OrigDataType: uint16
+  DataType: word16
+  OrigDataType: word16
 */
 typedef struct Globals {
-	uint16 theGlobal;	// 104C0
 } Eq_1;
 
 typedef struct seg0FF0_t {	// size: 256 100

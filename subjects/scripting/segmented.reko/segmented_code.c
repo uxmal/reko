@@ -27,7 +27,7 @@ void main()
 	test2();
 }
 
-char main_decl[11] = // 00012347
+char main_decl[11] = // 1234:0007
 	{
 		'v',
 		'o',
@@ -48,7 +48,7 @@ void test1()
 {
 }
 
-char test1_decl[12] = // 00012361
+char test1_decl[12] = // 1234:0021
 	{
 		'v',
 		'o',
@@ -70,7 +70,7 @@ void test2()
 {
 }
 
-char test2_decl[12] = // 00012371
+char test2_decl[12] = // 1234:0031
 	{
 		'v',
 		'o',
