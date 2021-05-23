@@ -51,7 +51,7 @@ namespace Reko.Scripts.Python
         {
             if (TryConvertAddress(sAddr, out var addr))
                 return addr;
-            throw new ArgumentException($"Failed to parse address: {sAddr}");
+            throw new ArgumentException($"Failed to parse address: {sAddr}.");
         }
 
         public byte ReadByte(Address addr)
@@ -114,7 +114,7 @@ namespace Reko.Scripts.Python
             var dataType = global?.DataType;
             if (name is null || dataType is null)
                 throw new ArgumentException(
-                    $"Failed to parse global variable declaration: '{decl}'");
+                    $"Failed to parse global variable declaration: '{decl}'.");
             var arch = program.Architecture;
             program.ModifyUserGlobal(arch, addr, dataType, name);
         }
@@ -155,7 +155,7 @@ namespace Reko.Scripts.Python
                 var sProc = usb.ParseFunctionDeclaration(decl);
                 if (sProc is null || sProc.Name is null)
                     throw new ArgumentException(
-                        $"Failed to parse procedure declaration: '{decl}'");
+                        $"Failed to parse procedure declaration: '{decl}'.");
                 name = sProc.Name;
                 CSignature = decl;
             }
