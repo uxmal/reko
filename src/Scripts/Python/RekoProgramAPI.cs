@@ -217,30 +217,58 @@ namespace Reko.Scripts.Python
 
         private UserProcedure UserProcedure(Address addr)
         {
-            TryGetUserProcedure(addr, out var userProc);
+            if (!TryGetUserProcedure(addr, out var userProc))
+            {
+                if (!TryMakeDefaultUserProcedure(addr, out userProc))
+                    throw new ArgumentException(
+                        $"There is no procedure at address: {addr}.");
+            }
             return userProc;
         }
 
         private UserProcedure EnsureUserProcedure(Address addr)
         {
             if (!TryGetUserProcedure(addr, out var userProc))
+            {
+                if (!TryMakeDefaultUserProcedure(addr, out userProc))
+                    throw new ArgumentException(
+                        $"There is no procedure at address: {addr}.");
                 program.User.Procedures[addr] = userProc;
+            }
             return userProc;
         }
 
         /// <summary>
-        /// Gets the user procedure definition at specified address or default
-        /// user procedure based on data discovered by scanner.
+        /// Gets the user procedure definition at specified address.
         /// Returns true if there is user procedure definition at specified
         /// address; otherwise, false
         /// </summary>
-        private bool TryGetUserProcedure(Address addr, out UserProcedure userProc)
+        private bool TryGetUserProcedure(
+            Address addr, [NotNullWhen(true)] out UserProcedure? userProc)
         {
-            if (program.User.Procedures.TryGetValue(addr, out userProc))
-                return true;
-            var proc = program.Procedures[addr];
+            if (!program.User.Procedures.TryGetValue(addr, out userProc))
+            {
+                userProc = null;
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Gets default user procedure based on data discovered by scanner.
+        /// Returns true if there is procedure discovered by scanner at
+        /// specified address; otherwise, false
+        /// </summary>
+        private bool TryMakeDefaultUserProcedure(
+            Address addr, [NotNullWhen(true)] out UserProcedure? userProc)
+        {
+            if (!program.Procedures.TryGetValue(addr, out var proc))
+            {
+                userProc = null;
+                return false;
+            }
             userProc = new UserProcedure(addr, proc.Name);
-            return false;
+            return true;
         }
 
         private string NormalizeLineEndings(string s)
