@@ -23,66 +23,72 @@ fn0C00_0000_exit:
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr32 (struct "Globals")))
-Eq_2: (struct (4 (memptr Eq_3 Eq_2) ptr0004))
-	T_2 (in bx : word16)
-	T_12 (in Mem0[ds:bx + 4<16>:word16] : word16)
-	T_13 (in 0<16> : word16)
-Eq_3: (segment (0 Eq_2 t0000) (200 word16 w0200))
-	T_3 (in ds : selector)
+Eq_2: (segment "seg0C00_t" 0012)
+	T_2 (in seg0C00 : selector)
+Eq_3: (struct (4 (memptr Eq_4 Eq_3) ptr0004))
+	T_3 (in bx : word16)
+	T_13 (in Mem0[ds:bx + 4<16>:word16] : word16)
+	T_14 (in 0<16> : word16)
+Eq_4: (segment (0 Eq_3 t0000) (200 word16 w0200))
+	T_4 (in ds : selector)
 // Type Variables ////////////
 globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in bx : word16)
+T_2: (in seg0C00 : selector)
   Class: Eq_2
-  DataType: (memptr (ptr16 Eq_3) Eq_2)
-  OrigDataType: (memptr T_3 (struct (4 T_12 t0004)))
-T_3: (in ds : selector)
+  DataType: (ptr16 Eq_2)
+  OrigDataType: (ptr16 (segment "seg0C00_t" 0012))
+T_3: (in bx : word16)
   Class: Eq_3
-  DataType: (ptr16 Eq_3)
-  OrigDataType: (ptr16 (segment (200 T_7 t0200)))
-T_4: (in ax_12 : word16)
+  DataType: (memptr (ptr16 Eq_4) Eq_3)
+  OrigDataType: (memptr T_4 (struct (4 T_13 t0004)))
+T_4: (in ds : selector)
   Class: Eq_4
+  DataType: (ptr16 Eq_4)
+  OrigDataType: (ptr16 (segment (200 T_8 t0200)))
+T_5: (in ax_12 : word16)
+  Class: Eq_5
   DataType: word16
   OrigDataType: word16
-T_5: (in 0<16> : word16)
-  Class: Eq_4
+T_6: (in 0<16> : word16)
+  Class: Eq_5
   DataType: word16
   OrigDataType: word16
-T_6: (in 0x200<16> : word16)
-  Class: Eq_6
-  DataType: (memptr (ptr16 Eq_3) word16)
-  OrigDataType: (memptr T_3 (struct (0 T_7 t0000)))
-T_7: (in Mem14[ds:0x200<16>:word16] : word16)
-  Class: Eq_4
+T_7: (in 0x200<16> : word16)
+  Class: Eq_7
+  DataType: (memptr (ptr16 Eq_4) word16)
+  OrigDataType: (memptr T_4 (struct (0 T_8 t0000)))
+T_8: (in Mem14[ds:0x200<16>:word16] : word16)
+  Class: Eq_5
   DataType: word16
   OrigDataType: word16
-T_8: (in 1<16> : word16)
-  Class: Eq_8
+T_9: (in 1<16> : word16)
+  Class: Eq_9
   DataType: word16
   OrigDataType: word16
-T_9: (in ax_12 + 1<16> : word16)
-  Class: Eq_4
+T_10: (in ax_12 + 1<16> : word16)
+  Class: Eq_5
   DataType: word16
   OrigDataType: word16
-T_10: (in 4<16> : word16)
-  Class: Eq_10
-  DataType: word16
-  OrigDataType: word16
-T_11: (in bx + 4<16> : word16)
+T_11: (in 4<16> : word16)
   Class: Eq_11
   DataType: word16
   OrigDataType: word16
-T_12: (in Mem0[ds:bx + 4<16>:word16] : word16)
-  Class: Eq_2
-  DataType: (memptr (ptr16 Eq_3) Eq_2)
+T_12: (in bx + 4<16> : word16)
+  Class: Eq_12
+  DataType: word16
   OrigDataType: word16
-T_13: (in 0<16> : word16)
-  Class: Eq_2
-  DataType: (memptr (ptr16 Eq_3) Eq_2)
+T_13: (in Mem0[ds:bx + 4<16>:word16] : word16)
+  Class: Eq_3
+  DataType: (memptr (ptr16 Eq_4) Eq_3)
   OrigDataType: word16
-T_14: (in bx == 0<16> : bool)
-  Class: Eq_14
+T_14: (in 0<16> : word16)
+  Class: Eq_3
+  DataType: (memptr (ptr16 Eq_4) Eq_3)
+  OrigDataType: word16
+T_15: (in bx == 0<16> : bool)
+  Class: Eq_15
   DataType: bool
   OrigDataType: bool

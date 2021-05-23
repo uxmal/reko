@@ -6,33 +6,39 @@
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (104C0 uint16 theGlobal))
 	globals_t (in globals @ 00000000 : (ptr32 (struct "Globals")))
-Eq_2: (segment "seg1000_t")
-	T_2 (in seg1000 @ 00010000 : selector)
-Eq_3: (segment "seg1046_t" (60 uint16 theGlobal))
-	T_3 (in seg1046 @ 00010460 : selector)
+Eq_2: (segment "seg0FF0_t" 0100)
+	T_2 (in seg0FF0 @ 0000FF00 : selector)
+Eq_3: (segment "seg1000_t")
+	T_3 (in seg1000 @ 00010000 : selector)
+Eq_4: (segment "seg1046_t" (60 uint16 theGlobal))
+	T_4 (in seg1046 @ 00010460 : selector)
 // Type Variables ////////////
 globals_t: (in globals @ 00000000 : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 Eq_1)
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in seg1000 @ 00010000 : selector)
+T_2: (in seg0FF0 @ 0000FF00 : selector)
   Class: Eq_2
   DataType: (ptr16 Eq_2)
-  OrigDataType: (ptr16 (segment "seg1000_t"))
-T_3: (in seg1046 @ 00010460 : selector)
+  OrigDataType: (ptr16 (segment "seg0FF0_t" 0100))
+T_3: (in seg1000 @ 00010000 : selector)
   Class: Eq_3
   DataType: (ptr16 Eq_3)
-  OrigDataType: (ptr16 (segment "seg1046_t"))
-T_4: (in 0x1337<16> @ 00010007 : word16)
+  OrigDataType: (ptr16 (segment "seg1000_t"))
+T_4: (in seg1046 @ 00010460 : selector)
   Class: Eq_4
+  DataType: (ptr16 Eq_4)
+  OrigDataType: (ptr16 (segment "seg1046_t"))
+T_5: (in 0x1337<16> @ 00010007 : word16)
+  Class: Eq_5
   DataType: uint16
   OrigDataType: word16
-T_5: (in 1046:0060 @ 00010007 : segptr32)
-  Class: Eq_5
+T_6: (in 1046:0060 @ 00010007 : segptr32)
+  Class: Eq_6
   DataType: (ptr32 uint16)
   OrigDataType: (ptr32 (struct (0 uint16 w0000)))
-T_6: (in Mem5[1046:0060:word16] @ 00010007 : word16)
-  Class: Eq_4
+T_7: (in Mem5[1046:0060:word16] @ 00010007 : word16)
+  Class: Eq_5
   DataType: uint16
   OrigDataType: uint16
 */
@@ -40,10 +46,13 @@ typedef struct Globals {
 	uint16 theGlobal;	// 104C0
 } Eq_1;
 
-typedef struct seg1000_t {
+typedef struct seg0FF0_t {	// size: 256 100
 } Eq_2;
+
+typedef struct seg1000_t {
+} Eq_3;
 
 typedef struct seg1046_t {
 	uint16 theGlobal;	// 60
-} Eq_3;
+} Eq_4;
 

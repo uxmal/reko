@@ -52,7 +52,8 @@ namespace Reko.Core
             this.MemoryArea = mem ?? throw new ArgumentNullException(nameof(mem));
 			this.Access = access;
             this.Fields = CreateFields(0);
-		}
+            this.Identifier = CreateIdentifier(Address);
+        }
 
 		public ImageSegment(string name, Address addr, uint size, AccessMode access)
 		{
@@ -62,7 +63,8 @@ namespace Reko.Core
             this.MemoryArea = new ByteMemoryArea(addr, new byte[size]);
 			this.Access = access;
             this.Fields = CreateFields((int)size);
-		}
+            this.Identifier = CreateIdentifier(Address);
+        }
 
         /// <summary>
         /// Use this constructor when the segment's memory area is completely 
@@ -80,6 +82,7 @@ namespace Reko.Core
             this.Address = mem.BaseAddress;
             this.Access = access;
             this.Fields = CreateFields((int)mem.Length);
+            this.Identifier = CreateIdentifier(Address);
         }
 
         /// <summary>
@@ -153,8 +156,7 @@ namespace Reko.Core
         /// image. In particular it has to be a valid C-like identifier, so 
         /// leading '.' are illegal.
         /// </remarks>
-        //$TODO: this should be non-nullable: a segment should 
-        public Identifier? Identifier { get; set; }
+        public Identifier Identifier { get; set; }
 
         private StructureType CreateFields(int size)
         {
@@ -215,6 +217,22 @@ namespace Reko.Core
 		{
 			return string.Format("Segment {0} at {1}, {2} / {3} bytes", Name, Address.ToString(), ContentSize, Size);
 		}
+
+        private static Identifier CreateIdentifier(Address addr)
+        {
+            string name;
+            if (addr.Selector.HasValue)
+            {
+                name = string.Format("seg{0:X4}", addr.Selector.Value);
+            }
+            else
+            {
+                name = $"seg{addr}";
+            }
+            var dt = PrimitiveType.SegmentSelector;
+            var stg = new TemporaryStorage(name, 0, dt);
+            return Identifier.Create(stg);
+        }
     }
 
 	[Flags]

@@ -81,267 +81,271 @@ globals_t: (in globals : (ptr32 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr32 (struct))
   OrigDataType: (ptr32 (struct "Globals"))
-T_2: (in cx : word16)
+T_2: (in seg0C00 : selector)
   Class: Eq_2
-  DataType: word16
-  OrigDataType: word16
-T_3: (in bx : word16)
+  DataType: 
+  OrigDataType: (ptr16 (segment "seg0C00_t" 0053))
+T_3: (in cx : word16)
   Class: Eq_3
   DataType: word16
   OrigDataType: word16
-T_4: (in ds : selector)
+T_4: (in bx : word16)
   Class: Eq_4
+  DataType: word16
+  OrigDataType: word16
+T_5: (in ds : selector)
+  Class: Eq_5
   DataType: (ptr16 (segment))
   OrigDataType: (ptr16 (segment))
-T_5: (in fn0C00_0007 : segptr32)
-  Class: Eq_5
-  DataType: (ptr32 (fn T_9 (T_2, T_4)))
-  OrigDataType: (ptr32 (fn T_9 (T_2, T_4)))
-T_6: (in signature of fn0C00_0007 : void)
-  Class: Eq_5
+T_6: (in fn0C00_0007 : segptr32)
+  Class: Eq_6
+  DataType: (ptr32 (fn T_10 (T_3, T_5)))
+  OrigDataType: (ptr32 (fn T_10 (T_3, T_5)))
+T_7: (in signature of fn0C00_0007 : void)
+  Class: Eq_6
   DataType: 
   OrigDataType: 
-T_7: (in cx : word16)
-  Class: Eq_2
+T_8: (in cx : word16)
+  Class: Eq_3
   DataType: word16
   OrigDataType: word16
-T_8: (in ds : selector)
-  Class: Eq_4
-  DataType: (ptr16 (segment (5388 (arr T_66) a5388)))
-  OrigDataType: (ptr16 (segment (5388 (arr T_66) a5388)))
-T_9: (in fn0C00_0007(cx, ds) : void)
-  Class: Eq_9
+T_9: (in ds : selector)
+  Class: Eq_5
+  DataType: (ptr16 (segment (5388 (arr T_67) a5388)))
+  OrigDataType: (ptr16 (segment (5388 (arr T_67) a5388)))
+T_10: (in fn0C00_0007(cx, ds) : void)
+  Class: Eq_10
   DataType: void
   OrigDataType: void
-T_10: (in fn0C00_001D : segptr32)
-  Class: Eq_10
-  DataType: (ptr32 (fn T_14 (T_3, T_4)))
-  OrigDataType: (ptr32 (fn T_14 (T_3, T_4)))
-T_11: (in signature of fn0C00_001D : void)
-  Class: Eq_10
+T_11: (in fn0C00_001D : segptr32)
+  Class: Eq_11
+  DataType: (ptr32 (fn T_15 (T_4, T_5)))
+  OrigDataType: (ptr32 (fn T_15 (T_4, T_5)))
+T_12: (in signature of fn0C00_001D : void)
+  Class: Eq_11
   DataType: 
   OrigDataType: 
-T_12: (in bx : word16)
-  Class: Eq_3
+T_13: (in bx : word16)
+  Class: Eq_4
   DataType: int16
   OrigDataType: int16
-T_13: (in ds : selector)
-  Class: Eq_4
-  DataType: (ptr16 (segment (5388 (arr T_67) a5388) (53B8 T_38 t53B8) (53BA T_3 t53BA)))
-  OrigDataType: (ptr16 (segment (5388 (arr T_67) a5388) (53B8 T_38 t53B8) (53BA T_3 t53BA)))
-T_14: (in fn0C00_001D(bx, ds) : void)
-  Class: Eq_14
+T_14: (in ds : selector)
+  Class: Eq_5
+  DataType: (ptr16 (segment (5388 (arr T_68) a5388) (53B8 T_39 t53B8) (53BA T_4 t53BA)))
+  OrigDataType: (ptr16 (segment (5388 (arr T_68) a5388) (53B8 T_39 t53B8) (53BA T_4 t53BA)))
+T_15: (in fn0C00_001D(bx, ds) : void)
+  Class: Eq_15
   DataType: void
   OrigDataType: void
-T_15: (in di_21 : word16)
-  Class: Eq_15
-  DataType: (memptr T_8 (struct 0002 (0 word16 w0000)))
-  OrigDataType: (memptr T_8 (struct 0002 (0 word16 w0000)))
-T_16: (in 0x5388<16> : word16)
-  Class: Eq_15
+T_16: (in di_21 : word16)
+  Class: Eq_16
+  DataType: (memptr T_9 (struct 0002 (0 word16 w0000)))
+  OrigDataType: (memptr T_9 (struct 0002 (0 word16 w0000)))
+T_17: (in 0x5388<16> : word16)
+  Class: Eq_16
   DataType: word16
   OrigDataType: word16
-T_17: (in fn0C00_003D : segptr32)
-  Class: Eq_17
-  DataType: (ptr32 (fn T_26 (T_22, T_25, T_8)))
-  OrigDataType: (ptr32 (fn T_26 (T_22, T_25, T_8)))
-T_18: (in signature of fn0C00_003D : void)
-  Class: Eq_17
+T_18: (in fn0C00_003D : segptr32)
+  Class: Eq_18
+  DataType: (ptr32 (fn T_27 (T_23, T_26, T_9)))
+  OrigDataType: (ptr32 (fn T_27 (T_23, T_26, T_9)))
+T_19: (in signature of fn0C00_003D : void)
+  Class: Eq_18
   DataType: 
   OrigDataType: 
-T_19: (in ah : byte)
-  Class: Eq_19
-  DataType: byte
-  OrigDataType: byte
-T_20: (in dx : word16)
+T_20: (in ah : byte)
   Class: Eq_20
-  DataType: word16
-  OrigDataType: word16
-T_21: (in ds : selector)
-  Class: Eq_4
-  DataType: (ptr16 (segment (110 T_57 t0110) (112 T_59 t0112)))
-  OrigDataType: (ptr16 (segment (110 T_57 t0110) (112 T_59 t0112)))
-T_22: (in 0x2D<8> : byte)
-  Class: Eq_19
   DataType: byte
   OrigDataType: byte
-T_23: (in 0<16> : word16)
-  Class: Eq_23
+T_21: (in dx : word16)
+  Class: Eq_21
   DataType: word16
   OrigDataType: word16
-T_24: (in di_21 + 0<16> : word16)
+T_22: (in ds : selector)
+  Class: Eq_5
+  DataType: (ptr16 (segment (110 T_58 t0110) (112 T_60 t0112)))
+  OrigDataType: (ptr16 (segment (110 T_58 t0110) (112 T_60 t0112)))
+T_23: (in 0x2D<8> : byte)
+  Class: Eq_20
+  DataType: byte
+  OrigDataType: byte
+T_24: (in 0<16> : word16)
   Class: Eq_24
   DataType: word16
   OrigDataType: word16
-T_25: (in Mem7[ds:di_21 + 0<16>:word16] : word16)
-  Class: Eq_20
+T_25: (in di_21 + 0<16> : word16)
+  Class: Eq_25
   DataType: word16
   OrigDataType: word16
-T_26: (in fn0C00_003D(0x2D<8>, Mem7[ds:di_21 + 0<16>:word16], ds) : void)
-  Class: Eq_26
+T_26: (in Mem7[ds:di_21 + 0<16>:word16] : word16)
+  Class: Eq_21
+  DataType: word16
+  OrigDataType: word16
+T_27: (in fn0C00_003D(0x2D<8>, Mem7[ds:di_21 + 0<16>:word16], ds) : void)
+  Class: Eq_27
   DataType: void
   OrigDataType: void
-T_27: (in 2<16> : word16)
-  Class: Eq_27
+T_28: (in 2<16> : word16)
+  Class: Eq_28
   DataType: int16
   OrigDataType: int16
-T_28: (in di_21 + 2<16> : word16)
-  Class: Eq_15
-  DataType: (memptr T_8 (struct 0002 (0 word16 w0000)))
-  OrigDataType: (memptr T_8 (struct 0002 (0 word16 w0000)))
-T_29: (in cx_35 : word16)
-  Class: Eq_2
+T_29: (in di_21 + 2<16> : word16)
+  Class: Eq_16
+  DataType: (memptr T_9 (struct 0002 (0 word16 w0000)))
+  OrigDataType: (memptr T_9 (struct 0002 (0 word16 w0000)))
+T_30: (in cx_35 : word16)
+  Class: Eq_3
   DataType: word16
   OrigDataType: word16
-T_30: (in 1<16> : word16)
-  Class: Eq_30
+T_31: (in 1<16> : word16)
+  Class: Eq_31
   DataType: word16
   OrigDataType: word16
-T_31: (in cx_35 - 1<16> : word16)
-  Class: Eq_2
+T_32: (in cx_35 - 1<16> : word16)
+  Class: Eq_3
   DataType: word16
   OrigDataType: word16
-T_32: (in 1<16> : word16)
-  Class: Eq_2
+T_33: (in 1<16> : word16)
+  Class: Eq_3
   DataType: word16
   OrigDataType: word16
-T_33: (in cx_35 != 1<16> : bool)
-  Class: Eq_33
-  DataType: bool
-  OrigDataType: bool
-T_34: (in 0x53BA<16> : word16)
+T_34: (in cx_35 != 1<16> : bool)
   Class: Eq_34
-  DataType: (memptr T_13 (struct (0 T_35 t0000)))
-  OrigDataType: (memptr T_13 (struct (0 T_35 t0000)))
-T_35: (in Mem0[ds:0x53BA<16>:word16] : word16)
-  Class: Eq_3
-  DataType: word16
-  OrigDataType: word16
-T_36: (in bx == Mem0[ds:0x53BA<16>:word16] : bool)
-  Class: Eq_36
   DataType: bool
   OrigDataType: bool
-T_37: (in 0x53B8<16> : word16)
+T_35: (in 0x53BA<16> : word16)
+  Class: Eq_35
+  DataType: (memptr T_14 (struct (0 T_36 t0000)))
+  OrigDataType: (memptr T_14 (struct (0 T_36 t0000)))
+T_36: (in Mem0[ds:0x53BA<16>:word16] : word16)
+  Class: Eq_4
+  DataType: word16
+  OrigDataType: word16
+T_37: (in bx == Mem0[ds:0x53BA<16>:word16] : bool)
   Class: Eq_37
-  DataType: (memptr T_13 (struct (0 T_38 t0000)))
-  OrigDataType: (memptr T_13 (struct (0 T_38 t0000)))
-T_38: (in Mem0[ds:0x53B8<16>:word16] : word16)
-  Class: Eq_3
+  DataType: bool
+  OrigDataType: bool
+T_38: (in 0x53B8<16> : word16)
+  Class: Eq_38
+  DataType: (memptr T_14 (struct (0 T_39 t0000)))
+  OrigDataType: (memptr T_14 (struct (0 T_39 t0000)))
+T_39: (in Mem0[ds:0x53B8<16>:word16] : word16)
+  Class: Eq_4
   DataType: ci16
   OrigDataType: ci16
-T_39: (in bx >= Mem0[ds:0x53B8<16>:word16] : bool)
-  Class: Eq_39
+T_40: (in bx >= Mem0[ds:0x53B8<16>:word16] : bool)
+  Class: Eq_40
   DataType: bool
   OrigDataType: bool
-T_40: (in 0x53BA<16> : word16)
-  Class: Eq_40
-  DataType: (memptr T_13 (struct (0 T_41 t0000)))
-  OrigDataType: (memptr T_13 (struct (0 T_41 t0000)))
-T_41: (in Mem11[ds:0x53BA<16>:word16] : word16)
-  Class: Eq_3
+T_41: (in 0x53BA<16> : word16)
+  Class: Eq_41
+  DataType: (memptr T_14 (struct (0 T_42 t0000)))
+  OrigDataType: (memptr T_14 (struct (0 T_42 t0000)))
+T_42: (in Mem11[ds:0x53BA<16>:word16] : word16)
+  Class: Eq_4
   DataType: word16
   OrigDataType: word16
-T_42: (in fn0C00_0046 : segptr32)
-  Class: Eq_42
-  DataType: (ptr32 (fn T_55 (T_48, T_53, T_54, T_13)))
-  OrigDataType: (ptr32 (fn T_55 (T_48, T_53, T_54, T_13)))
-T_43: (in signature of fn0C00_0046 : void)
-  Class: Eq_42
+T_43: (in fn0C00_0046 : segptr32)
+  Class: Eq_43
+  DataType: (ptr32 (fn T_56 (T_49, T_54, T_55, T_14)))
+  OrigDataType: (ptr32 (fn T_56 (T_49, T_54, T_55, T_14)))
+T_44: (in signature of fn0C00_0046 : void)
+  Class: Eq_43
   DataType: 
   OrigDataType: 
-T_44: (in ax : word16)
-  Class: Eq_44
-  DataType: word16
-  OrigDataType: word16
-T_45: (in dx : word16)
+T_45: (in ax : word16)
   Class: Eq_45
   DataType: word16
   OrigDataType: word16
-T_46: (in bx : word16)
+T_46: (in dx : word16)
   Class: Eq_46
   DataType: word16
   OrigDataType: word16
-T_47: (in ds : selector)
-  Class: Eq_4
-  DataType: (ptr16 (segment (114 T_61 t0114) (116 T_63 t0116) (118 T_65 t0118)))
-  OrigDataType: (ptr16 (segment (114 T_61 t0114) (116 T_63 t0116) (118 T_65 t0118)))
-T_48: (in 0x4400<16> : word16)
-  Class: Eq_44
+T_47: (in bx : word16)
+  Class: Eq_47
   DataType: word16
   OrigDataType: word16
-T_49: (in 0x5388<16> : word16)
-  Class: Eq_49
-  DataType: (memptr T_13 T_67)
-  OrigDataType: (memptr T_13 T_67)
-T_50: (in SEQ(ds, 0x5388<16>) : segptr32)
+T_48: (in ds : selector)
+  Class: Eq_5
+  DataType: (ptr16 (segment (114 T_62 t0114) (116 T_64 t0116) (118 T_66 t0118)))
+  OrigDataType: (ptr16 (segment (114 T_62 t0114) (116 T_64 t0116) (118 T_66 t0118)))
+T_49: (in 0x4400<16> : word16)
+  Class: Eq_45
+  DataType: word16
+  OrigDataType: word16
+T_50: (in 0x5388<16> : word16)
   Class: Eq_50
-  DataType: (ptr32 T_67)
-  OrigDataType: (ptr32 T_67)
-T_51: (in 2<16> : word16)
+  DataType: (memptr T_14 T_68)
+  OrigDataType: (memptr T_14 T_68)
+T_51: (in SEQ(ds, 0x5388<16>) : segptr32)
   Class: Eq_51
-  DataType: ui16
-  OrigDataType: ui16
-T_52: (in bx * 2<16> : word16)
+  DataType: (ptr32 T_68)
+  OrigDataType: (ptr32 T_68)
+T_52: (in 2<16> : word16)
   Class: Eq_52
   DataType: ui16
   OrigDataType: ui16
-T_53: (in SEQ(ds, 0x5388<16>)[bx * 2<16>] : word16)
-  Class: Eq_45
-  DataType: word16
-  OrigDataType: word16
-T_54: (in 0<16> : word16)
+T_53: (in bx * 2<16> : word16)
+  Class: Eq_53
+  DataType: ui16
+  OrigDataType: ui16
+T_54: (in SEQ(ds, 0x5388<16>)[bx * 2<16>] : word16)
   Class: Eq_46
   DataType: word16
   OrigDataType: word16
-T_55: (in fn0C00_0046(0x4400<16>, SEQ(ds, 0x5388<16>)[bx * 2<16>], 0<16>, ds) : void)
-  Class: Eq_55
+T_55: (in 0<16> : word16)
+  Class: Eq_47
+  DataType: word16
+  OrigDataType: word16
+T_56: (in fn0C00_0046(0x4400<16>, SEQ(ds, 0x5388<16>)[bx * 2<16>], 0<16>, ds) : void)
+  Class: Eq_56
   DataType: void
   OrigDataType: void
-T_56: (in 0x110<16> : word16)
-  Class: Eq_56
-  DataType: (memptr T_21 (struct (0 T_57 t0000)))
-  OrigDataType: (memptr T_21 (struct (0 T_57 t0000)))
-T_57: (in Mem6[ds:0x110<16>:byte] : byte)
-  Class: Eq_19
+T_57: (in 0x110<16> : word16)
+  Class: Eq_57
+  DataType: (memptr T_22 (struct (0 T_58 t0000)))
+  OrigDataType: (memptr T_22 (struct (0 T_58 t0000)))
+T_58: (in Mem6[ds:0x110<16>:byte] : byte)
+  Class: Eq_20
   DataType: byte
   OrigDataType: byte
-T_58: (in 0x112<16> : word16)
-  Class: Eq_58
-  DataType: (memptr T_21 (struct (0 T_59 t0000)))
-  OrigDataType: (memptr T_21 (struct (0 T_59 t0000)))
-T_59: (in Mem8[ds:0x112<16>:word16] : word16)
-  Class: Eq_20
+T_59: (in 0x112<16> : word16)
+  Class: Eq_59
+  DataType: (memptr T_22 (struct (0 T_60 t0000)))
+  OrigDataType: (memptr T_22 (struct (0 T_60 t0000)))
+T_60: (in Mem8[ds:0x112<16>:word16] : word16)
+  Class: Eq_21
   DataType: word16
   OrigDataType: word16
-T_60: (in 0x114<16> : word16)
-  Class: Eq_60
-  DataType: (memptr T_47 (struct (0 T_61 t0000)))
-  OrigDataType: (memptr T_47 (struct (0 T_61 t0000)))
-T_61: (in Mem6[ds:0x114<16>:word16] : word16)
-  Class: Eq_44
-  DataType: word16
-  OrigDataType: word16
-T_62: (in 0x116<16> : word16)
-  Class: Eq_62
-  DataType: (memptr T_47 (struct (0 T_63 t0000)))
-  OrigDataType: (memptr T_47 (struct (0 T_63 t0000)))
-T_63: (in Mem8[ds:0x116<16>:word16] : word16)
-  Class: Eq_46
-  DataType: word16
-  OrigDataType: word16
-T_64: (in 0x118<16> : word16)
-  Class: Eq_64
-  DataType: (memptr T_47 (struct (0 T_65 t0000)))
-  OrigDataType: (memptr T_47 (struct (0 T_65 t0000)))
-T_65: (in Mem10[ds:0x118<16>:word16] : word16)
+T_61: (in 0x114<16> : word16)
+  Class: Eq_61
+  DataType: (memptr T_48 (struct (0 T_62 t0000)))
+  OrigDataType: (memptr T_48 (struct (0 T_62 t0000)))
+T_62: (in Mem6[ds:0x114<16>:word16] : word16)
   Class: Eq_45
   DataType: word16
   OrigDataType: word16
-T_66:
-  Class: Eq_66
-  DataType: (struct 0002 (0 T_25 t0000))
-  OrigDataType: (struct 0002 (0 T_25 t0000))
+T_63: (in 0x116<16> : word16)
+  Class: Eq_63
+  DataType: (memptr T_48 (struct (0 T_64 t0000)))
+  OrigDataType: (memptr T_48 (struct (0 T_64 t0000)))
+T_64: (in Mem8[ds:0x116<16>:word16] : word16)
+  Class: Eq_47
+  DataType: word16
+  OrigDataType: word16
+T_65: (in 0x118<16> : word16)
+  Class: Eq_65
+  DataType: (memptr T_48 (struct (0 T_66 t0000)))
+  OrigDataType: (memptr T_48 (struct (0 T_66 t0000)))
+T_66: (in Mem10[ds:0x118<16>:word16] : word16)
+  Class: Eq_46
+  DataType: word16
+  OrigDataType: word16
 T_67:
   Class: Eq_67
-  DataType: (struct 0002 (0 T_53 t0000))
-  OrigDataType: (struct 0002 (0 T_53 t0000))
+  DataType: (struct 0002 (0 T_26 t0000))
+  OrigDataType: (struct 0002 (0 T_26 t0000))
+T_68:
+  Class: Eq_68
+  DataType: (struct 0002 (0 T_54 t0000))
+  OrigDataType: (struct 0002 (0 T_54 t0000))
