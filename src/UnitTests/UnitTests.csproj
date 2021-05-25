@@ -66,6 +66,7 @@
     <ProjectReference Include="..\Environments\C64\C64.csproj" />
     <ProjectReference Include="..\Environments\Cpm\Cpm.csproj" />
     <ProjectReference Include="..\Environments\Dreamcast\Dreamcast.csproj" />
+    <ProjectReference Include="..\Environments\Gameboy\Gameboy.csproj" />
     <ProjectReference Include="..\Environments\Hpux\Hpux.csproj" />
     <ProjectReference Include="..\Environments\MacOS\MacOS.csproj" />
     <ProjectReference Include="..\Environments\MorphOS\MorphOS.csproj" />

@@ -216,6 +216,7 @@ by the PreBuild.targets file.
     <Environments Include="$(SolutionDir)Environments\C64\bin\$(StandardOutputDir)\Reko.Environments.C64.*" />
     <Environments Include="$(SolutionDir)Environments\Cpm\bin\$(StandardOutputDir)\Reko.Environments.Cpm.*" />
     <Environments Include="$(SolutionDir)Environments\Dreamcast\bin\$(StandardOutputDir)\Reko.Environments.Dreamcast.*" />
+    <Environments Include="$(SolutionDir)Environments\Gameboy\bin\$(StandardOutputDir)\Reko.Environments.Gameboy.*" />
     <Environments Include="$(SolutionDir)Environments\Hpux\bin\$(StandardOutputDir)\Reko.Environments.Hpux.*" />
     <Environments Include="$(SolutionDir)Environments\MacOS\bin\$(StandardOutputDir)\Reko.Environments.MacOS.*" />
     <Environments Include="$(SolutionDir)Environments\MorphOS\bin\$(StandardOutputDir)\Reko.Environments.MorphOS.*" />
