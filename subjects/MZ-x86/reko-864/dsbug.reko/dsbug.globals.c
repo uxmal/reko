@@ -4,4 +4,4 @@
 
 #include "dsbug.h"
 
-uint16 theGlobal = 0x00; // 000104C0
+uint16 theGlobal = 0x00; // 1046:0060

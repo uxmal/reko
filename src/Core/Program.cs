@@ -527,9 +527,7 @@ namespace Reko.Core
                 {
                     this.ImageMap.AddItem(kv.Key, item);
                 }
-                //$BUGBUG: what about x86 segmented binaries?
-                int offset = (int)kv.Key.ToLinear();
-                GlobalFields.Fields.Add(offset, dt, kv.Value.Name!);
+                AddGlobalField(kv.Key, dt, kv.Value.Name);
             }
         }
 
@@ -686,7 +684,7 @@ namespace Reko.Core
                 this.ImageMap.AddItemWithSize(address, item);
             else
                 this.ImageMap.AddItem(address, item);
-
+            AddGlobalField(address, dt, name);
             return gbl;
         }
 
@@ -709,6 +707,29 @@ namespace Reko.Core
             TypeStore.Clear();
             GlobalFields = TypeFactory.CreateStructureType("Globals", 0);
             BuildImageMap();
+        }
+
+        private void AddGlobalField(Address address, DataType dt, string name)
+        {
+            int offset;
+            StructureFieldCollection fields;
+            if (address.Selector.HasValue &&
+                SegmentMap.TryFindSegment(address, out var seg))
+            {
+                offset = (int) address.Offset;
+                fields = seg.Fields.Fields;
+            }
+            else
+            {
+                offset = (int) address.ToLinear();
+                fields = GlobalFields.Fields;
+            }
+            var globalField = fields.AtOffset(offset);
+            if (globalField != null)
+            {
+                fields.Remove(globalField);
+            }
+            fields.Add(offset, dt, name);
         }
     } 
 }
