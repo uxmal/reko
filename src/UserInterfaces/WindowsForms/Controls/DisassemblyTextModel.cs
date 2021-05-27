@@ -36,7 +36,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     /// </summary>
     /// <remarks>
     /// The big challenge here is that we don't want to go rushing away
-    /// and disassemble the whole binary. It's costly, and unnecessesary since
+    /// and disassemble the whole binary. It's costly, and unnecessary since
     /// users typically only navigate a page at a time. Instead we estimate the
     /// number of lines the disassembly would have had (overestimating is safe)
     /// and then render accordingly.
@@ -60,9 +60,13 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             this.mem = segment.MemoryArea;
 
             this.addrStart = Address.Max(segment.Address, mem.BaseAddress);
-            this.offsetStart = addrStart - mem.BaseAddress;
+            this.offsetStart = 0;
             this.offset = offsetStart;
-            this.offsetEnd = Math.Min(offsetStart + segment.Size, mem.Length);
+            this.offsetEnd = Math.Max(
+                0,
+                Math.Min(
+                    segment.Address - addrStart + segment.Size,
+                    mem.BaseAddress - addrStart + mem.Length));
         }
 
         public object StartPosition => offsetStart;
