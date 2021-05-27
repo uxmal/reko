@@ -43,11 +43,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     /// </remarks>
     public class DisassemblyTextModel : TextViewModel
     {
-        private Program program;
-        private MemoryArea mem;
-        private Address addrStart;
-        private Address addrEnd;
-        private Address position;
+        private readonly Program program;
+        private readonly MemoryArea mem;
+        private readonly Address addrStart;
+        private readonly long offsetStart;
+        private readonly long offsetEnd;
+        private long offset;
 
         public DisassemblyTextModel(Program program, ImageSegment segment)
         {
@@ -59,20 +60,20 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             this.mem = segment.MemoryArea;
 
             this.addrStart = Address.Max(segment.Address, mem.BaseAddress);
-            this.position = addrStart;
-            //$BUG: the BaseAddress + length is unsafe! it will overflow!
-            this.addrEnd = Address.Min(segment.Address + segment.Size, mem.BaseAddress + mem.Length);
+            this.offsetStart = addrStart - mem.BaseAddress;
+            this.offset = offsetStart;
+            this.offsetEnd = Math.Min(offsetStart + segment.Size, mem.Length);
         }
 
-        public object StartPosition { get { return addrStart; } }
-        public object CurrentPosition { get { return position; } }
-        public object EndPosition { get { return addrEnd; } }
-        public int LineCount { get { return GetPositionEstimate(addrEnd - addrStart); } }
+        public object StartPosition => offsetStart;
+        public object CurrentPosition => offset;
+        public object EndPosition => offsetEnd;
+        public int LineCount => GetPositionEstimate(offsetEnd - offsetStart);
         public bool ShowPcRelative { get; set; }
 
         public int ComparePositions(object a, object b)
         {
-            return ((Address)a).CompareTo((Address)b);
+            return ((long)a).CompareTo((long)b);
         }
 
         public LineSpan[] GetLineSpans(int count)
@@ -80,7 +81,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             var lines = new List<LineSpan>();
             if (program.Architecture != null)
             {
-                var addr = Align(position);
+                var addr = Align(addrStart + offset);
                 if (program.SegmentMap.TryFindSegment(addr, out ImageSegment seg) &&
                     seg.MemoryArea != null &&
                     seg.MemoryArea.IsValidAddress(addr))
@@ -90,15 +91,15 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                             ? MachineInstructionRendererFlags.None
                             : MachineInstructionRendererFlags.ResolvePcRelativeAddress);
                     var arch = GetArchitectureForAddress(addr);
-                    var dasm = program.CreateDisassembler(arch, Align(position)).GetEnumerator();
+                    var dasm = program.CreateDisassembler(arch, Align(addrStart + offset)).GetEnumerator();
                     while (count != 0 && dasm.MoveNext())
                     {
                         var instr = dasm.Current;
                         lines.Add(
                             RenderAsmLine(
-                                instr.Address, program, arch, instr, options));
+                                instr.Address - addrStart, program, arch, instr, options));
                         --count;
-                        position += instr.Length;
+                        offset += instr.Length;
                     }
                 }
             }
@@ -147,21 +148,28 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             return addr - (int)rem;
         }
 
-        public int MoveToLine(object basePosition, int offset)
+        public int MoveToAddress(Address addr)
         {
-            var addrInitial = (Address)basePosition;
-            var addr = addrInitial;
-            if (addr < addrStart)
-                addr = addrStart;
-            if (addrEnd.ToLinear() != 0 && addr >= addrEnd)
-                addr = addrEnd-1;
-            this.position = addr;
-            return (int)(addr - addrInitial);
+            var offset = addr - addrStart;
+            return MoveToLine(offset, 0);
         }
 
-        public Tuple<int, int> GetPositionAsFraction()
+        public int MoveToLine(object basePosition, int posOffset)
         {
-            return Tuple.Create((int)(position - addrStart), (int)mem.Length);
+            var offsetInitial = (long) basePosition;
+            var offset = offsetInitial + posOffset;
+            if (offset < offsetStart)
+                offset = offsetStart;
+
+            if (offsetEnd != 0 && offset >= offsetEnd)
+                offset = offsetEnd-1;
+            this.offset = offset;
+            return (int)(offset - offsetInitial);
+        }
+
+        public (int, int) GetPositionAsFraction()
+        {
+            return ((int)(offset - offsetStart), (int)mem.Length);
         }
 
         public void SetPositionAsFraction(int numerator, int denominator)
@@ -170,13 +178,11 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 throw new ArgumentException("denominator");
             if (numerator < 0 || numerator > denominator)
                 throw new ArgumentException("numerator");
-            long offset = Math.BigMul(numerator, (int)mem.Length) / denominator;
-            if (offset < 0)
-                offset = 0;
-            var addr = addrStart + offset;
-            if (addrEnd.ToLinear() != 0 && addr >= addrEnd)
-                addr = addrEnd-1;
-            this.position = addr;
+            long offset = offsetStart + Math.BigMul(numerator, (int)mem.Length) / denominator;
+            offset = Math.Max(offsetStart, offset);
+            offset = Math.Min(offsetEnd - 1, offset);
+            offset = Math.Max(0, offset);
+            this.offset = offset;
         }
 
         /// <summary>
@@ -187,7 +193,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// <returns></returns>
         private int GetPositionEstimate(long byteOffset)
         {
-            if (addrEnd.ToLinear() == 0)
+            if (offsetEnd == 0)
                 byteOffset = Math.Abs(byteOffset);
             int bitSize;
             int unitSize;

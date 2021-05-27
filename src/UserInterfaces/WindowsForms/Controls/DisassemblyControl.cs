@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2021 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -101,9 +101,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
             else
             {
-                ImageSegment segment;
-                if (!program.SegmentMap.TryFindSegment(topAddress, out segment) ||
-                    segment.MemoryArea == null)
+                if (!program.SegmentMap.TryFindSegment(topAddress, out ImageSegment segment))
                 {
                     Model = new EmptyEditorModel();
                 }
@@ -112,7 +110,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     var addr = topAddress;
                     this.dasmModel = new DisassemblyTextModel(program, segment);
                     Model = dasmModel;
-                    Model.MoveToLine(addr, 0);
+                    dasmModel.MoveToAddress(addr);
                 }
             }
             RecomputeLayout();
