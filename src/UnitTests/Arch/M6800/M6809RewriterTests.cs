@@ -44,15 +44,6 @@ namespace Reko.UnitTests.Arch.M6800
 
         public override Address LoadAddress => addr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return arch.CreateRewriter(
-                mem.CreateBeReader(0),
-                arch.CreateProcessorState(),
-                binder,
-                host);
-        }
-
         [Test]
         public void M6809Rw_abx()
         {

@@ -57,15 +57,6 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(sExp);
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return new AlphaRewriter(
-                arch, 
-                mem.CreateLeReader(0),
-                binder,
-                host);
-        }
-
         [Test]
         public void AlphaRw_lda()
         {

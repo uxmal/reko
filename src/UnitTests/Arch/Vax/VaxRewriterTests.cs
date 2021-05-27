@@ -41,11 +41,6 @@ namespace Reko.UnitTests.Arch.Vax
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => baseAddr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
-        }
-
         [SetUp]
         public void Setup()
         {

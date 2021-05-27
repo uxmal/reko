@@ -41,12 +41,6 @@ namespace Reko.UnitTests.Arch.Mos6502
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => addrBase;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var state = new Mos6502ProcessorState(arch);
-            return new Rewriter(arch, mem.CreateLeReader(0), state, new Frame(arch.FramePointerType), host);
-        }
-
         [Test]
         public void Rw6502_tax()
         {

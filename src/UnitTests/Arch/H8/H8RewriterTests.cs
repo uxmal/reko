@@ -42,12 +42,6 @@ namespace Reko.UnitTests.Arch.H8
 
         public override Address LoadAddress => addrLoad;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var rdr = arch.CreateImageReader(mem, addrLoad);
-            return arch.CreateRewriter(rdr, arch.CreateProcessorState(), binder, host);
-        }
-
         [Test]
         public void H8Rw_add()
         {

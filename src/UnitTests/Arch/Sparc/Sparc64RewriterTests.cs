@@ -42,13 +42,6 @@ namespace Reko.UnitTests.Arch.Sparc
 
         public override Address LoadAddress => addrLoad;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var rdr = mem.CreateBeReader(0);
-            return arch.CreateRewriter(rdr, arch.CreateProcessorState(), binder, host);
-        }
-
-
         [Test]
         public void Sparc64Rw_brz()
         {

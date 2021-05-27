@@ -61,15 +61,6 @@ namespace Reko.UnitTests.Arch.X86
 
         public override Address LoadAddress => baseAddr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return arch.CreateRewriter(
-                mem.CreateLeReader(0),
-                arch.CreateProcessorState(),
-                binder,
-                this.host);
-        }
-
         [SetUp]
         public void Setup()
         {

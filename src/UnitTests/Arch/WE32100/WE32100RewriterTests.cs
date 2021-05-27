@@ -43,13 +43,6 @@ namespace Reko.UnitTests.Arch.WE32100
 
         public override Address LoadAddress => addr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var state = arch.CreateProcessorState();
-            var rdr = arch.CreateImageReader(mem, addr);
-            return arch.CreateRewriter(rdr, state, binder, host);
-        }
-
         [Test]
         public void WE32100Rw_addw3()
         {

@@ -46,11 +46,6 @@ namespace Reko.UnitTests.Arch.Tms7000
 
         public override Address LoadAddress => Address.Ptr16(0x0100);
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), new Tms7000State(arch), binder, host);
-        }
-
         [Test]
         public void Tms7000Rw_nop()
         {

@@ -45,11 +45,6 @@ namespace Reko.UnitTests.Arch.Etrax
 
         public override Address LoadAddress => addrLoad;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var rdr = mem.CreateLeReader(mem.BaseAddress);
-            return arch.CreateRewriter(rdr, arch.CreateProcessorState(), binder, host);
-        }
 
         [Test]
         public void EtraxRw_add()

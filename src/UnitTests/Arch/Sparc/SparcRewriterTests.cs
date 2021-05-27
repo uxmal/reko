@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Arch.Sparc
             if (e != null)
                 return e;
             else
-                return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
+                return base.GetRtlStream(mem, binder, host);
         }
 
         [SetUp]

@@ -83,8 +83,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             if (ppcInstrs != null)
                 return new PowerPcRewriter(arch, ppcInstrs, binder, host);
-            var rdr = arch.CreateImageReader(mem, 0);
-            return arch.CreateRewriter(rdr, arch.CreateProcessorState(), binder, host);
+            return base.GetRtlStream(mem, binder, host);
         }
 
         private void Given_PowerPcBe64()

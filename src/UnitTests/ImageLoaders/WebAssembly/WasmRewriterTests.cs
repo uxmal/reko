@@ -45,11 +45,6 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => addr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return new WasmRewriter(arch, mem.CreateLeReader(0), arch.CreateFrame());
-        }
-
         [Test]
         public void WasmRw_Const()
         {

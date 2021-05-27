@@ -37,13 +37,6 @@ namespace Reko.UnitTests.Arch.RiscV
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => baseAddr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var segMap = new SegmentMap(baseAddr, new ImageSegment("code", mem, AccessMode.ReadExecute));
-            var state = arch.CreateProcessorState();
-            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
-        }
-
         private void Given_32bitFloat()
         {
             arch = new RiscVArchitecture(

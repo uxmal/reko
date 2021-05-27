@@ -45,12 +45,6 @@ namespace Reko.UnitTests.Arch.Altera
 
         public override Address LoadAddress => addr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var rdr = arch.CreateImageReader(mem, 0);
-            return arch.CreateRewriter(rdr, arch.CreateProcessorState(), binder, host);
-        }
-
         [Test]
         public void Nios2Rw_add()
         {
