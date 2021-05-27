@@ -21,11 +21,13 @@
 using Microsoft.Scripting.Hosting;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Lib;
 using Reko.Core.Scripts;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace Reko.Scripts.Python
 {
@@ -161,18 +163,23 @@ namespace Reko.Scripts.Python
 
         private static ScriptEngine CreateEngine(TextWriter outputWriter)
         {
-            var engine = IronPython.Hosting.Python.CreateEngine();
-            RedirectConsoleOutput(outputWriter, engine);
+            // Redirect console output before engine was created
+            // See https://github.com/IronLanguages/ironpython3/issues/961
+            // $TODO: remove this workaround when new IronPython will be
+            // released
+            var runtime = IronPython.Hosting.Python.CreateRuntime();
+            RedirectConsoleOutput(outputWriter, runtime);
+            var engine = IronPython.Hosting.Python.GetEngine(runtime);
+            outputWriter.WriteLine(engine.Setup.DisplayName);
             return engine;
         }
 
         private static void RedirectConsoleOutput(
-            TextWriter writer, ScriptEngine engine)
+            TextWriter writer, ScriptRuntime runtime)
         {
-            var stream = new MemoryStream();
-            engine.Runtime.IO.SetOutput(stream, writer);
-            engine.Runtime.IO.SetErrorOutput(stream, writer);
-            writer.WriteLine(engine.Setup.DisplayName);
+            var stream = new TextWriterStream(writer);
+            runtime.IO.SetOutput(stream, writer.Encoding);
+            runtime.IO.SetErrorOutput(stream, writer.Encoding);
         }
     }
 }
