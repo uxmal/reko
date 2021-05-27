@@ -28,12 +28,12 @@ namespace Reko.Environments.Gameboy
 {
     public class ConditionOperand : MachineOperand
     {
-        public ConditionOperand(ConditionCode cc) : base(PrimitiveType.Byte)
+        public ConditionOperand(CCode cc) : base(PrimitiveType.Byte)
         {
             this.ConditionCode = cc;
         }
 
-        public ConditionCode ConditionCode { get; }
+        public CCode ConditionCode { get; }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
@@ -41,7 +41,7 @@ namespace Reko.Environments.Gameboy
         }
     }
 
-    public enum ConditionCode
+    public enum CCode
     {
         C,
         NC,

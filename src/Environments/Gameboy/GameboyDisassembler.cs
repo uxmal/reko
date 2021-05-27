@@ -310,7 +310,7 @@ namespace Reko.Environments.Gameboy
             return true;
         }
 
-        private static Mutator<GameboyDisassembler> CCode(ConditionCode cc)
+        private static Mutator<GameboyDisassembler> CCode(CCode cc)
         {
             var op = new ConditionOperand(cc);
             return (u, d) =>
@@ -320,10 +320,10 @@ namespace Reko.Environments.Gameboy
             };
         }
 
-        private static readonly Mutator<GameboyDisassembler> Z = CCode(ConditionCode.Z);
-        private static readonly Mutator<GameboyDisassembler> Cy = CCode(ConditionCode.C);
-        private static readonly Mutator<GameboyDisassembler> NZ = CCode(ConditionCode.NZ);
-        private static readonly Mutator<GameboyDisassembler> NC = CCode(ConditionCode.NC);
+        private static readonly Mutator<GameboyDisassembler> Z = CCode(Gameboy.CCode.Z);
+        private static readonly Mutator<GameboyDisassembler> Cy = CCode(Gameboy.CCode.C);
+        private static readonly Mutator<GameboyDisassembler> NZ = CCode(Gameboy.CCode.NZ);
+        private static readonly Mutator<GameboyDisassembler> NC = CCode(Gameboy.CCode.NC);
 
 
         private static bool SP_r8(uint opcode, GameboyDisassembler dasm)
@@ -709,7 +709,7 @@ namespace Reko.Environments.Gameboy
                 Instr(Mnemonic.dec, M_hl),          // Z 1 H -
                 Instr(Mnemonic.ld, M_hl, d8),       // - - - -
                 Instr(Mnemonic.scf),                // - 0 0 1
-                Instr(Mnemonic.jr, C, r8),          // - - - -
+                Instr(Mnemonic.jr, Cy, r8),          // - - - -
                 Instr(Mnemonic.add, M_hl_w, SP),    // - 0 H C
                 Instr(Mnemonic.ld, A, (M_hl_dec)),  // - - - -
                 Instr(Mnemonic.dec, SP),            // - - - -
@@ -900,11 +900,11 @@ namespace Reko.Environments.Gameboy
 
                 // E0
                 Instr(Mnemonic.ldh, M_a8, A),           // - - - -
-                Instr(Mnemonic.pop, M_hl),              // - - - -
+                Instr(Mnemonic.pop, HL),                // - - - -
                 Instr(Mnemonic.ld, M_c, A),             // - - - -
                 invalid,
                 invalid,
-                Instr(Mnemonic.push, M_hl),             // - - - -
+                Instr(Mnemonic.push, HL),               // - - - -
                 Instr(Mnemonic.and, d8),                // Z 0 1 0
                 Instr(Mnemonic.rst, Implicit(0x20)),    // - - - -
                 Instr(Mnemonic.add, SP, s8),            // 0 0 H C
