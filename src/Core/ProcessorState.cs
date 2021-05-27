@@ -287,4 +287,49 @@ namespace Reko.Core
             return false;
         }
     }
+
+    /// <summary>
+    /// This <see cref="ProcessorState"/> may be used if there is no need to track
+    /// the processor's state during scanning.
+    /// </summary>
+    public class DefaultProcessorState : ProcessorState
+    {
+        public DefaultProcessorState(IProcessorArchitecture arch)
+        {
+            this.Architecture = arch;
+        }
+
+        public override IProcessorArchitecture Architecture { get; }
+
+        public override ProcessorState Clone()
+        {
+            return new DefaultProcessorState(Architecture);
+        }
+
+        public override Constant GetRegister(RegisterStorage r)
+        {
+            return Constant.Invalid;
+        }
+
+        public override void OnAfterCall(FunctionType? sigCallee)
+        {
+        }
+
+        public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
+        {
+            return new CallSite(returnAddressSize, 0);
+        }
+
+        public override void OnProcedureEntered()
+        {
+        }
+
+        public override void OnProcedureLeft(FunctionType procedureSignature)
+        {
+        }
+
+        public override void SetRegister(RegisterStorage r, Constant v)
+        {
+        }
+    }
 }

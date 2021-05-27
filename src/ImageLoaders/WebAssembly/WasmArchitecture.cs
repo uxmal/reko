@@ -66,7 +66,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new DefaultProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)

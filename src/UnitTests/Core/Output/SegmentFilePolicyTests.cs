@@ -236,6 +236,7 @@ namespace Reko.UnitTests.Core.Output
 
         [Test]
         [Category(Categories.FailedTests)]
+        [Ignore(Categories.FailedTests)]
         public void SegFp_segmented_global_placement()
         {
             Given_Executable(".text", Address.SegPtr(0x0010, 0x0000), 0x4000);
