@@ -37,14 +37,14 @@ namespace Reko.Environments.Gameboy
         public static RegisterStorage hl { get; }
         public static RegisterStorage sp { get; }
 
-         public static RegisterStorage a { get; }
-         public static RegisterStorage f { get; }
-         public static RegisterStorage b { get; }
-         public static RegisterStorage c { get; }
-         public static RegisterStorage d { get; }
-         public static RegisterStorage e { get; }
-         public static RegisterStorage h { get; }
-         public static RegisterStorage l { get; }
+        public static RegisterStorage a { get; }
+        public static RegisterStorage f { get; }
+        public static RegisterStorage b { get; }
+        public static RegisterStorage c { get; }
+        public static RegisterStorage d { get; }
+        public static RegisterStorage e { get; }
+        public static RegisterStorage h { get; }
+        public static RegisterStorage l { get; }
 
         public static FlagGroupStorage C { get; }
         public static FlagGroupStorage H { get; }
@@ -103,14 +103,14 @@ namespace Reko.Environments.Gameboy
             ZHC = new FlagGroupStorage(af, (uint) (FlagM.ZF | FlagM.HF | FlagM.CF), "ZHC", PrimitiveType.Byte);
             ZNHC = new FlagGroupStorage(af, (uint) (FlagM.ZF | FlagM.HF | FlagM.NF | FlagM.CF), "ZNHC", PrimitiveType.Byte);
         }
-
-        [Flags]
-        public enum FlagM
-        {
-            ZF = 0x80,
-            NF = 0x40,
-            HF = 0x20,
-            CF = 0x10,
-        }
+    }
+ 
+    [Flags]
+    public enum FlagM
+    {
+        ZF = 0x80,
+        NF = 0x40,
+        HF = 0x20,
+        CF = 0x10,
     }
 }
