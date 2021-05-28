@@ -236,7 +236,7 @@ by the PreBuild.targets file.
     <Environments Include="$(SolutionDir)Environments\Xbox\bin\$(StandardOutputDir)\Reko.Environments.Xbox.*" />
     <Environments Include="$(SolutionDir)Environments\ZX81\bin\$(StandardOutputDir)\Reko.Environments.ZX81.*" />
 
-    <Scripts Include="$(SolutionDir)Scripts\Python\*.py" />
+    <PythonScripts Include="$(SolutionDir)Scripts\Python\*.py" />
 
     <SymbolSources Include="$(SolutionDir)Sources\LGSymLoader\bin\$(Configuration)\Reko.Symbols.LGSymLoader.*" />
 

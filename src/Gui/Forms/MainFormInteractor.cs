@@ -371,8 +371,9 @@ namespace Reko.Gui.Forms
         private string GetScriptTemplatePath()
         {
             var cfgSvc = sc.RequireService<IConfigurationService>();
+            var templDir = "Python";
             var templName = "_new_script_template.py";
-            return cfgSvc.GetInstallationRelativePath(templName);
+            return cfgSvc.GetInstallationRelativePath(templDir, templName);
         }
 
         /// <summary>
