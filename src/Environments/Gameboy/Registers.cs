@@ -46,6 +46,19 @@ namespace Reko.Environments.Gameboy
          public static RegisterStorage h { get; }
          public static RegisterStorage l { get; }
 
+        public static FlagGroupStorage C { get; }
+        public static FlagGroupStorage H { get; }
+        public static FlagGroupStorage N { get; }
+        public static FlagGroupStorage Z { get; }
+
+        public static FlagGroupStorage HC { get; }
+
+        public static FlagGroupStorage ZC { get; }
+        public static FlagGroupStorage ZH { get; }
+        public static FlagGroupStorage ZHC { get; }
+        public static FlagGroupStorage ZNHC { get; }
+
+
         static Registers()
         {
             var factory = new StorageFactory();
@@ -79,6 +92,25 @@ namespace Reko.Environments.Gameboy
                 h,
                 l,
             };
+
+            C = new FlagGroupStorage(af, (uint) FlagM.CF, "C", PrimitiveType.Bool);
+            H = new FlagGroupStorage(af, (uint) FlagM.HF, "H", PrimitiveType.Bool);
+            N = new FlagGroupStorage(af, (uint) FlagM.NF, "N", PrimitiveType.Bool);
+            Z = new FlagGroupStorage(af, (uint) FlagM.ZF, "Z", PrimitiveType.Bool);
+            HC = new FlagGroupStorage(af, (uint) (FlagM.HF | FlagM.CF), "HC", PrimitiveType.Byte);
+            ZC = new FlagGroupStorage(af, (uint) (FlagM.ZF | FlagM.CF), "ZC", PrimitiveType.Byte);
+            ZH = new FlagGroupStorage(af, (uint) (FlagM.ZF | FlagM.HF | FlagM.CF), "ZH", PrimitiveType.Byte);
+            ZHC = new FlagGroupStorage(af, (uint) (FlagM.ZF | FlagM.HF | FlagM.CF), "ZHC", PrimitiveType.Byte);
+            ZNHC = new FlagGroupStorage(af, (uint) (FlagM.ZF | FlagM.HF | FlagM.NF | FlagM.CF), "ZNHC", PrimitiveType.Byte);
+        }
+
+        [Flags]
+        public enum FlagM
+        {
+            ZF = 0x80,
+            NF = 0x40,
+            HF = 0x20,
+            CF = 0x10,
         }
     }
 }

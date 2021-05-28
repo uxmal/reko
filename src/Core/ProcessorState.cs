@@ -289,7 +289,7 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// This <see cref="ProcessorState"/> may be used if there is no need to track
+    /// This dummy implementation of <see cref="ProcessorState"/> may be used if there is no need to track
     /// the processor's state during scanning.
     /// </summary>
     public class DefaultProcessorState : ProcessorState

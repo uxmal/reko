@@ -38,7 +38,7 @@ namespace Reko.Environments.Gameboy
         public GameboyArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options) 
             : base(services, archId, options)
         {
-            this.CarryFlagMask = 0; //$TODO
+            this.CarryFlagMask = (uint) FlagM.CF;
             this.Endianness = EndianServices.Little;
             this.FramePointerType = PrimitiveType.Ptr16;
             this.InstructionBitSize = 8;
@@ -70,12 +70,12 @@ namespace Reko.Environments.Gameboy
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new DefaultProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new GameboyRewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)
