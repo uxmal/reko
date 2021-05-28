@@ -341,7 +341,7 @@ namespace Reko.Gui.Forms
         /// Prompts the user for a creating new script file and adds it to the
         /// project.
         /// </summary>
-        private void NewScriptFile()
+        private void CreateScriptFile()
         {
             var fileName = uiSvc.ShowSaveFileDialog(GetDefaultScriptPath());
             if (fileName == null)
@@ -1018,7 +1018,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.FileAssemble: retval = AssembleFile(); break;
                 case CmdIds.FileSave: Save(); retval = true; break;
                 case CmdIds.FileAddMetadata: AddMetadataFile(); retval = true; break;
-                case CmdIds.FileNewScript: NewScriptFile(); retval = true; break;
+                case CmdIds.FileNewScript: CreateScriptFile(); retval = true; break;
                 case CmdIds.FileAddScript: AddScriptFile(); retval = true; break;
                 case CmdIds.FileCloseProject: CloseProject(); retval = true; break;
                 case CmdIds.FileExit: form.Close(); retval = true; break;
