@@ -38,6 +38,7 @@ namespace Reko.Scripts.Python
         private readonly TextWriter outputWriter;
         private readonly DecompilerEventListener eventListener;
         private readonly IConfigurationService cfgSvc;
+        private readonly IFileSystemService fsSvc;
         private RekoEventsAPI eventsAPI;
 
         public PythonModule(
@@ -46,19 +47,20 @@ namespace Reko.Scripts.Python
         {
             this.eventListener = services.RequireService<DecompilerEventListener>();
             this.cfgSvc = services.RequireService<IConfigurationService>();
+            this.fsSvc = services.RequireService<IFileSystemService>();
             var outputService = services.RequireService<IOutputService>();
             this.outputWriter = outputService.EnsureOutputSource("Scripting");
             var stream = new MemoryStream(bytes);
             using var rdr = new StreamReader(stream);
             this.eventsAPI = Evaluate(
-                outputWriter, eventListener, cfgSvc, rdr.ReadToEnd(),
+                outputWriter, eventListener, cfgSvc, fsSvc, rdr.ReadToEnd(),
                 filename);
         }
 
         public override void Evaluate(string script)
         {
             this.eventsAPI = Evaluate(
-                outputWriter, eventListener, cfgSvc, script, Filename);
+                outputWriter, eventListener, cfgSvc, fsSvc, script, Filename);
         }
 
         public override void FireEvent(ScriptEvent @event, Program program)
@@ -67,7 +69,7 @@ namespace Reko.Scripts.Python
             var engine = eventsAPI.Engine;
             try
             {
-                var pythonAPI = new PythonAPI(cfgSvc, engine);
+                var pythonAPI = new PythonAPI(cfgSvc, fsSvc, engine);
                 var programAPI = new RekoProgramAPI(program);
                 var programWrapper = pythonAPI.CreateProgramWrapper(
                     programAPI);
@@ -89,12 +91,13 @@ namespace Reko.Scripts.Python
             TextWriter outputWriter,
             DecompilerEventListener eventListener,
             IConfigurationService cfgSvc,
+            IFileSystemService fsSvc,
             string script,
             string filename)
         {
             outputWriter.WriteLine($"Evaluating {filename}");
             var engine = CreateEngine(outputWriter);
-            var pythonAPI = new PythonAPI(cfgSvc, engine);
+            var pythonAPI = new PythonAPI(cfgSvc, fsSvc, engine);
             var eventsAPI = new RekoEventsAPI(engine);
             var scope = CreateRekoVariable(engine, pythonAPI, eventsAPI);
             var src = engine.CreateScriptSourceFromString(script, filename);
