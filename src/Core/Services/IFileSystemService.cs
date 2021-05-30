@@ -40,6 +40,8 @@ namespace Reko.Core.Services
         void CreateDirectory(string dirPath);
         string GetCurrentDirectory();
         void DeleteFile(string filename);
+        void CopyFile(
+            string sourceFileName, string destFileName, bool overwrite);
         bool FileExists(string filePath);
         string[] GetFiles(string? dir, string v);
         bool IsPathRooted(string path);
@@ -111,7 +113,13 @@ namespace Reko.Core.Services
         {
             File.Delete(filePath);
         }
-        
+
+        public void CopyFile(
+            string sourceFileName, string destFileName, bool overwrite)
+        {
+            File.Copy(sourceFileName, destFileName, overwrite);
+        }
+
         public string GetCurrentDirectory()
         {
             return Directory.GetCurrentDirectory();

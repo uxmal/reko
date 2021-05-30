@@ -51,7 +51,9 @@ namespace Reko.Scripts.Python
             string className)
         {
             var scope = engine.CreateScope();
-            var absolutePath = cfgSvc.GetInstallationRelativePath(fileName);
+            var fileDirectory = "Python";
+            var absolutePath = cfgSvc.GetInstallationRelativePath(
+                fileDirectory, fileName);
             engine.ExecuteFile(absolutePath, scope);
             return scope.GetVariable<Func<object, object>>(className);
         }
