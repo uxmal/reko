@@ -97,8 +97,8 @@ namespace Reko.Scripts.Python
             string script,
             string filename)
         {
-            outputWriter.WriteLine($"Evaluating {filename}");
             var engine = CreateEngine(outputWriter);
+            outputWriter.WriteLine($"Evaluating {filename}");
             var pythonAPI = new PythonAPI(cfgSvc, fsSvc, engine);
             var eventsAPI = new RekoEventsAPI(engine);
             var scope = CreateRekoVariable(engine, pythonAPI, eventsAPI);

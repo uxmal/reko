@@ -118,8 +118,8 @@ class Reko:
 
             var expected =
             #region Expected
-@"Evaluating script.py
-{Python version}
+@"{Python version}
+Evaluating script.py
 Initializing Reko API
 This is a script file
 ";
