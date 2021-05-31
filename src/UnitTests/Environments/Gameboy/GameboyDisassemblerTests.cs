@@ -132,5 +132,11 @@ namespace Reko.UnitTests.Environments.Gameboy
         {
             AssertCode("ld\thl,sp-4h", "F8FC");
         }
+
+        [Test]
+        public void GameboyDis_add_hl_sp()
+        {
+            AssertCode("add\thl,sp", "39");
+        }
     }
 }

@@ -665,7 +665,7 @@ namespace Reko.Environments.Gameboy
                 Instr(Mnemonic.rrca),               // 0 0 0 C
 
                 // 10
-                Instr(Mnemonic.stop, 0),            // - - - -
+                Instr(Mnemonic.stop, InstrClass.Terminates),            // - - - -
                 Instr(Mnemonic.ld, DE, d16),        // - - - -
                 Instr(Mnemonic.ld, M_de, A),        // - - - -
                 Instr(Mnemonic.inc, DE),            // - - - -
@@ -673,7 +673,7 @@ namespace Reko.Environments.Gameboy
                 Instr(Mnemonic.dec, D),             // Z 1 H -
                 Instr(Mnemonic.ld, D, d8),          // - - - -
                 Instr(Mnemonic.rla),                // 0 0 0 C
-                Instr(Mnemonic.jr, r8),             // - - - -
+                Instr(Mnemonic.jr, InstrClass.Transfer, r8),             // - - - -
                 Instr(Mnemonic.add, HL, DE),        // - 0 H C
                 Instr(Mnemonic.ld, A, M_de),        // - - - -
                 Instr(Mnemonic.dec, DE),            // - - - -
@@ -683,7 +683,7 @@ namespace Reko.Environments.Gameboy
                 Instr(Mnemonic.rra),                // 0 0 0 C
 
                 // 20
-                Instr(Mnemonic.jr, NZ, r8),         // - - - -
+                Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, NZ, r8),         // - - - -
                 Instr(Mnemonic.ld, HL, d16),        // - - - -
                 Instr(Mnemonic.ld, M_hl_inc, A),    // - - - -
                 Instr(Mnemonic.inc, HL),            // - - - -
@@ -691,7 +691,7 @@ namespace Reko.Environments.Gameboy
                 Instr(Mnemonic.dec, H),             // Z 1 H -
                 Instr(Mnemonic.ld, H, d8),          // - - - -
                 Instr(Mnemonic.daa),                // Z - 0 C
-                Instr(Mnemonic.jr, Z, r8),          // - - - -
+                Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, Z, r8),          // - - - -
                 Instr(Mnemonic.add, HL, HL),        // - 0 H C
                 Instr(Mnemonic.ld, A, (M_hl_inc)),  // - - - -
                 Instr(Mnemonic.dec, HL),            // - - - -
@@ -701,7 +701,7 @@ namespace Reko.Environments.Gameboy
                 Instr(Mnemonic.cpl),                // - 1 1 -
 
                 // 30
-                Instr(Mnemonic.jr, NC, r8),         // - - - -
+                Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, NC, r8),         // - - - -
                 Instr(Mnemonic.ld, SP, d16),        // - - - -
                 Instr(Mnemonic.ld, M_hl_dec, A),    // - - - -
                 Instr(Mnemonic.inc, SP),            // - - - -
@@ -709,9 +709,9 @@ namespace Reko.Environments.Gameboy
                 Instr(Mnemonic.dec, M_hl),          // Z 1 H -
                 Instr(Mnemonic.ld, M_hl, d8),       // - - - -
                 Instr(Mnemonic.scf),                // - 0 0 1
-                Instr(Mnemonic.jr, Cy, r8),          // - - - -
-                Instr(Mnemonic.add, M_hl_w, SP),    // - 0 H C
-                Instr(Mnemonic.ld, A, (M_hl_dec)),  // - - - -
+                Instr(Mnemonic.jr, InstrClass.ConditionalTransfer, Cy, r8),          // - - - -
+                Instr(Mnemonic.add, HL, SP),    // - 0 H C
+                Instr(Mnemonic.ld, A, M_hl_dec),  // - - - -
                 Instr(Mnemonic.dec, SP),            // - - - -
                 Instr(Mnemonic.inc, A),             // Z 0 H -
                 Instr(Mnemonic.dec, A),             // Z 1 H -
@@ -863,37 +863,37 @@ namespace Reko.Environments.Gameboy
                 Instr(Mnemonic.cp, A),                  // Z 1 H C
 
                 // C0
-                Instr(Mnemonic.ret, InstrClass.Transfer, NZ),                // - - - -
+                Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Conditional, NZ),                // - - - -
                 Instr(Mnemonic.pop, BC),                // - - - -
                 Instr(Mnemonic.jp, InstrClass.ConditionalTransfer, NZ, a16),            // - - - -
                 Instr(Mnemonic.jp, InstrClass.Transfer, a16),                // - - - -
-                Instr(Mnemonic.call, NZ, a16),          // - - - -
+                Instr(Mnemonic.call, InstrClass.ConditionalTransfer | InstrClass.Call, NZ, a16),          // - - - -
                 Instr(Mnemonic.push, BC),               // - - - -
                 Instr(Mnemonic.add, A, d8),             // Z 0 H C
                 Instr(Mnemonic.rst, Implicit(00)),      // - - - -
-                Instr(Mnemonic.ret, Z),                 // - - - -
-                Instr(Mnemonic.ret),                    // - - - -
+                Instr(Mnemonic.ret, InstrClass.Transfer|InstrClass.Conditional, Z),                 // - - - -
+                Instr(Mnemonic.ret, InstrClass.Transfer),                    // - - - -
                 Instr(Mnemonic.jp, InstrClass.ConditionalTransfer, Z, a16),             // - - - -
                 new PrefixDecoder(cbDecoders),
-                Instr(Mnemonic.call, Z, a16),           // - - - -
-                Instr(Mnemonic.call, a16),              // - - - -
+                Instr(Mnemonic.call, InstrClass.ConditionalTransfer | InstrClass.Call, Z, a16),           // - - - -
+                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, a16),              // - - - -
                 Instr(Mnemonic.adc, A, d8),             // Z 0 H C
                 Instr(Mnemonic.rst, Implicit(08)),      // - - - -
 
                 // D0
-                Instr(Mnemonic.ret, NC),                // - - - -
+                Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Conditional , NC),                // - - - -
                 Instr(Mnemonic.pop, DE),                // - - - -
                 Instr(Mnemonic.jp, InstrClass.ConditionalTransfer, NC, a16),            // - - - -
                 invalid,
-                Instr(Mnemonic.call, NC, a16),          // - - - -
+                Instr(Mnemonic.call, InstrClass.ConditionalTransfer | InstrClass.Call, NC, a16),          // - - - -
                 Instr(Mnemonic.push, DE),               // - - - -
                 Instr(Mnemonic.sub, d8),                // Z 1 H C
                 Instr(Mnemonic.rst, Implicit(0x10)),    // - - - -
-                Instr(Mnemonic.ret, Cy),                // - - - -
+                Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Conditional, Cy),                // - - - -
                 Instr(Mnemonic.reti),                   // - - - -
                 Instr(Mnemonic.jp, InstrClass.ConditionalTransfer, Cy, a16),            // - - - -
                 invalid,
-                Instr(Mnemonic.call, Cy, a16),          // - - - -
+                Instr(Mnemonic.call, InstrClass.ConditionalTransfer | InstrClass.Call, Cy, a16),          // - - - -
                 invalid,
                 Instr(Mnemonic.sbc, A, d8),             // Z 1 H C
                 Instr(Mnemonic.rst, Implicit(0x18)),    // - - - -

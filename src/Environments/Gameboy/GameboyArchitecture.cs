@@ -105,7 +105,16 @@ namespace Reko.Environments.Gameboy
 
         public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
-            throw new NotImplementedException();
+            bool hi = 8 <= range.Lsb && range.Msb < 16;
+            bool lo = 0 <= range.Lsb && range.Msb < 8;
+            switch ((int)domain)
+            {
+            case 0: return lo ? Registers.f : hi ? Registers.a : Registers.af;
+            case 1: return lo ? Registers.c : hi ? Registers.b : Registers.bc;
+            case 2: return lo ? Registers.e : hi ? Registers.d : Registers.de;
+            case 3: return lo ? Registers.l : hi ? Registers.h : Registers.hl;
+            }
+            return Registers.ByDomain[domain];
         }
 
         public override RegisterStorage[] GetRegisters()
@@ -120,7 +129,7 @@ namespace Reko.Environments.Gameboy
 
         public override Address MakeAddressFromConstant(Constant c, bool codeAlign)
         {
-            throw new NotImplementedException();
+            return Address.Ptr16(c.ToUInt16());
         }
 
         public override Address? ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
