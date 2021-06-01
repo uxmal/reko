@@ -110,6 +110,7 @@
     <ProjectReference Include="..\Libraries\Microchip\Utils\Microchip.Utils.csproj" />
     <ProjectReference Include="..\Libraries\Python\Python.csproj" />
     <ProjectReference Include="..\Native\NativeProxy.csproj" />
+    <ProjectReference Include="..\Scripts\Python\Python.csproj" />
     <ProjectReference Include="..\Symbols\LGSymLoader\LGSymLoader.csproj" />
   </ItemGroup>
   <ItemGroup>

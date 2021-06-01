@@ -19,11 +19,11 @@
 #endregion
 
 using Microsoft.Scripting.Hosting;
-using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace Reko.Scripts.Python
 {
@@ -33,19 +33,23 @@ namespace Reko.Scripts.Python
     /// </summary>
     public class PythonAPI
     {
-        public PythonAPI(IConfigurationService cfgSvc, ScriptEngine engine)
+        public PythonAPI(
+            IConfigurationService cfgSvc,
+            IFileSystemService fsSvc,
+            ScriptEngine engine)
         {
             this.CreateProgramWrapper = EvaluatePythonDefinitions(
-                cfgSvc, engine, "_program.py", "Program");
+                cfgSvc, fsSvc, engine, "_program.py", "Program");
             this.CreateRekoWrapper = EvaluatePythonDefinitions(
-                cfgSvc, engine, "_reko.py", "Reko");
+                cfgSvc, fsSvc, engine, "_reko.py", "Reko");
         }
 
         public readonly Func<object, object> CreateProgramWrapper;
         public readonly Func<object, object> CreateRekoWrapper;
 
-        private Func<object, object> EvaluatePythonDefinitions(
+        private static Func<object, object> EvaluatePythonDefinitions(
             IConfigurationService cfgSvc,
+            IFileSystemService fsSvc,
             ScriptEngine engine,
             string fileName,
             string className)
@@ -54,8 +58,21 @@ namespace Reko.Scripts.Python
             var fileDirectory = "Python";
             var absolutePath = cfgSvc.GetInstallationRelativePath(
                 fileDirectory, fileName);
-            engine.ExecuteFile(absolutePath, scope);
+            var src = CreateScriptSource(fsSvc, engine, absolutePath);
+            src.Execute(scope);
             return scope.GetVariable<Func<object, object>>(className);
+        }
+
+        private static ScriptSource CreateScriptSource(
+            IFileSystemService fsSvc,
+            ScriptEngine engine,
+            string path)
+        {
+            var bytes = fsSvc.ReadAllBytes(path);
+            var stream = new MemoryStream(bytes);
+            using var rdr = new StreamReader(stream);
+            var script = rdr.ReadToEnd();
+            return engine.CreateScriptSourceFromString(script, path);
         }
     }
 }
