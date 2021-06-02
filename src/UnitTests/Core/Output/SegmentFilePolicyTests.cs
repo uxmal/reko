@@ -128,6 +128,15 @@ namespace Reko.UnitTests.Core.Output
             bool found = program.SegmentMap.TryFindSegment(addr, out var seg);
             Assert.IsTrue(found, "Segment is not found");
             seg.Fields.Fields.Add((int)off, dt);
+            CreateSegmentTypeVariable(seg);
+        }
+
+        private void CreateSegmentTypeVariable(ImageSegment seg)
+        {
+            var store = new TypeStore();
+            var factory = new TypeFactory();
+            seg.Identifier.TypeVariable = store.CreateTypeVariable(factory);
+            seg.Identifier.TypeVariable.Class.DataType = seg.Fields;
         }
 
         [Test]
@@ -235,8 +244,6 @@ namespace Reko.UnitTests.Core.Output
         }
 
         [Test]
-        [Category(Categories.FailedTests)]
-        [Ignore(Categories.FailedTests)]
         public void SegFp_segmented_global_placement()
         {
             Given_Executable(".text", Address.SegPtr(0x0010, 0x0000), 0x4000);
