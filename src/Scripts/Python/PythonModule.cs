@@ -161,13 +161,15 @@ namespace Reko.Scripts.Python
             }
         }
 
-        private static ScriptEngine CreateEngine(TextWriter outputWriter)
+        private static ScriptEngine CreateEngine(
+            TextWriter outputWriter,
+            int recursionLimit = 100)
         {
             // Set recursion limit to avoid application crash if there is
             // infinite recursion
             var options = new Dictionary<string, object>()
             {
-                { "RecursionLimit", 100 },
+                { "RecursionLimit", recursionLimit },
             };
             // Redirect console output before engine was created
             // See https://github.com/IronLanguages/ironpython3/issues/961
