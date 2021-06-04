@@ -1056,6 +1056,40 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\py_func_names.py
 10000028: warning: Expected sizes of arrays to have been determined by now
 100007E0: warning: Expected sizes of arrays to have been determined by now
 
+=== Elf\MIPS\redir\redir
+004006B8: warning: Unable to resolve imported reference __deregister_frame_info.
+00400740: warning: Unable to resolve imported reference __register_frame_info.
+00401DE8: warning: Unable to resolve imported reference inet_ntoa.
+004009BC: warning: Unable to resolve imported reference fork.
+00400BB8: warning: Unable to resolve imported reference __xpg_basename.
+00400E78: warning: Unable to resolve imported reference inet_addr.
+0040137C: warning: Unable to resolve imported reference select.
+0040207C: warning: Unable to resolve imported reference getsockopt.
+004020A0: warning: Unable to resolve imported reference inet_ntoa.
+004020C4: warning: Unable to resolve imported reference inet_ntoa.
+00402EB0: warning: Unable to resolve imported reference recv.
+00402F84: warning: Unable to resolve imported reference send.
+00403264: warning: Unable to resolve imported reference send.
+00404B70: warning: Unable to resolve imported reference strsep.
+00404C04: warning: Unable to resolve imported reference strsep.
+00404C98: warning: Unable to resolve imported reference strsep.
+00405810: warning: Unable to resolve imported reference strspn.
+00405874: warning: Unable to resolve imported reference strcspn.
+00405940: warning: Unable to resolve imported reference strspn.
+00405984: warning: Unable to resolve imported reference strcspn.
+00405FE0: warning: Unable to resolve imported reference toupper.
+004064B0: warning: Unable to resolve imported reference toupper.
+00406458: warning: Unable to resolve imported reference tolower.
+00406680: warning: Unable to resolve imported reference vsnprintf.
+0040692C: warning: Unable to resolve imported reference rename.
+004069E0: warning: Unable to resolve imported reference gmtime.
+00406D0C: warning: Unable to resolve imported reference inet_addr.
+00406F18: warning: Unable to resolve imported reference listen.
+10000028: warning: Expected sizes of arrays to have been determined by now
+100007E0: warning: Expected sizes of arrays to have been determined by now
+10000028: warning: Expected sizes of arrays to have been determined by now
+100007E0: warning: Expected sizes of arrays to have been determined by now
+
 === Elf\x86-64\retpoline\retpoline_stripped
 000000000040042C: warning: Unable to resolve imported reference __gmon_start__.
 000000000040042D: warning: Unable to resolve imported reference __gmon_start__.
@@ -2187,4 +2221,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 79 binaries in 66.12 seconds.
+Decompiled 80 binaries in 65.53 seconds.

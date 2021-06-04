@@ -3429,6 +3429,7 @@ l0040528C:
 	branch Mem18[Mem18[0x100009C8<32>:word32] + (dwLoc18_57 << 2<8>):word32] != 0<32> l00405264_ds_t
 l00405264_ds_t:
 l004052BC:
+	// $TODO: understand this stutter after UnSSA
 	dwLoc18_57 = dwLoc18_57 + 1<i32>
 	branch strncmp(Mem31[Mem18[0x100009C8<32>:word32] + (dwLoc18_57 << 2<8>):word32], r4, 20<i32>) != 0<32> l004052BC_ds_t
 l004052BC_ds_t:

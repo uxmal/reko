@@ -1895,6 +1895,7 @@ int32 is_a_method(Eq_n r4)
 			r2_n = 0x00;
 			return r2_n;
 		}
+		// $TODO: understand this stutter after UnSSA
 		++dwLoc18_n;
 	} while (strncmp(g_ptr100009C8[dwLoc18_n], r4, 20) != 0x00);
 	r2_n = 1;
