@@ -605,8 +605,8 @@ void handle_log_rotate(word32 r4, word32 ra)
 	log_rotate(ra);
 }
 
-// 004008D0: void main(Register Eq_n r4, Register (arr Eq_n) r5, Register word32 r16, Register word32 ra)
-void main(Eq_n r4, Eq_n r5[], word32 r16, word32 ra)
+// 004008D0: void main(Register (ptr32 ui32) r4, Register (arr Eq_n) r5, Register word32 r16, Register word32 ra)
+void main(ui32 * r4, Eq_n r5[], word32 r16, word32 ra)
 {
 	*g_ptr10000A20 = *g_ptr10000914;
 	signal(2, handle_stop);
@@ -1895,8 +1895,8 @@ int32 is_a_method(Eq_n r4)
 			r2_n = 0x00;
 			return r2_n;
 		}
-		// $TODO: understand this stutter after UnSSA
-		++dwLoc18_n;
+		dwLoc18_n = dwLoc18_n + 1;
+		dwLoc18_n = dwLoc18_n;
 	} while (strncmp(g_ptr100009C8[dwLoc18_n], r4, 20) != 0x00);
 	r2_n = 1;
 	return r2_n;
@@ -2061,16 +2061,18 @@ void properties_load(Eq_n r4, Eq_n r5, word32 ra)
 	}
 }
 
-// 00405CD0: Register Eq_n properties_parse_command_line(Register Eq_n r4, Register (arr Eq_n) r5, Register word32 r16, Register word32 ra, Register out Eq_n r5Out)
+// 00405CD0: Register (ptr32 ui32) properties_parse_command_line(Register (ptr32 ui32) r4, Register (arr Eq_n) r5, Register word32 r16, Register word32 ra, Register out (ptr32 (arr Eq_n)) r5Out)
 // Called from:
 //      main
-Eq_n properties_parse_command_line(Eq_n r4, Eq_n r5[], word32 r16, word32 ra, union Eq_n & r5Out)
+ui32 * properties_parse_command_line(ui32 * r4, Eq_n r5[], word32 r16, word32 ra, Eq_n (& r5Out)
 {
 	struct Eq_n * r28_n = (struct Eq_n *) 0x10008860;
-	Eq_n dwLoc28_n = 0x00;
+	ui32 * dwLoc28_n = null;
 	r5_n = r5;
+	r4_n = r4;
 	while (true)
 	{
+		ui32 * r4_n;
 		Eq_n (* r5_n)[];
 		if ((word32) (dwLoc28_n < r4) == 0x00)
 			break;
@@ -2082,8 +2084,8 @@ Eq_n properties_parse_command_line(Eq_n r4, Eq_n r5[], word32 r16, word32 ra, un
 				dwLoc18_n = (word32) r5[dwLoc28_n] + 2;
 			else if ((word32) (dwLoc28_n < r4) != 0x00)
 			{
-				dwLoc28_n = (word32) dwLoc28_n + 1;
-				dwLoc18_n = (struct Eq_n *) r5[(word32) dwLoc28_n + 1];
+				dwLoc28_n = (ui32 *) ((char *) dwLoc28_n + 1);
+				dwLoc18_n = (struct Eq_n *) r5[(char *) dwLoc28_n + 1];
 			}
 			else
 				dwLoc18_n = r28_n->dwFFFF8020 + -22928;
@@ -2093,6 +2095,7 @@ Eq_n properties_parse_command_line(Eq_n r4, Eq_n r5[], word32 r16, word32 ra, un
 				exit(0x00);
 				r28_n = r28_n;
 				r5_n = r5_n;
+				r4_n = r4_n;
 			}
 			int32 dwLoc20_n = 0x00;
 			ui32 dwLoc24_n = 0x00;
@@ -2124,8 +2127,9 @@ Eq_n properties_parse_command_line(Eq_n r4, Eq_n r5[], word32 r16, word32 ra, un
 					{
 						if (r2_n == 2)
 						{
-							((char *) r28_n->ptrFFFF81E0 + 4)[(dwLoc24_n * 0x14 - dwLoc24_n) * 0x08 + 144] = (char) ((word32) *((char *) *r28_n->ptrFFFF820C + (word32) bLoc1C_n * 0x02) & 0x01 & 0xFFFF);
-							dwLoc28_n = (word32) dwLoc28_n - 1;
+							r4_n = (ui32 *) ((char *) r28_n->ptrFFFF81E0 + 4 + ((dwLoc24_n * 0x14 - dwLoc24_n << 0x03) + 144));
+							*r4_n = (word32) *((char *) *r28_n->ptrFFFF820C + (word32) bLoc1C_n * 0x02) & 0x01 & 0xFFFF;
+							dwLoc28_n = (ui32 *) ((char *) dwLoc28_n - 1);
 						}
 					}
 					else
@@ -2140,12 +2144,13 @@ Eq_n properties_parse_command_line(Eq_n r4, Eq_n r5[], word32 r16, word32 ra, un
 				else
 				{
 					ptr32 r25_n = r28_n->ptrFFFF801C;
-					word32 r2_n;
+					ui32 * r2_n;
 					word32 r6_n;
 					word32 r7_n;
 					(r25_n + 21488)();
 					*((char *) &g_ptr10000A40->a0004->ptr0000 + ((dwLoc24_n * 0x14 - dwLoc24_n) * 0x08 + 144)) = r2_n;
 					r28_n = (struct Eq_n *) 0x10008860;
+					r4_n = r2_n;
 				}
 l004061C8:
 				++dwLoc24_n;
@@ -2154,20 +2159,20 @@ l004061C8:
 			{
 				word32 r2_n = (word32) bLoc1C_n;
 				r28_n->ptrFFFF818C();
-				properties_print_usage(r5[0]);
+				r4_n = properties_print_usage(r5[0], out r5_n);
 				break;
 			}
 		}
-		dwLoc28_n = (word32) dwLoc28_n + 1;
+		dwLoc28_n = (ui32 *) ((char *) dwLoc28_n + 1);
 	}
-	r5Out.u0 = (char *) <invalid>;
-	return (char *) <invalid>;
+	r5Out = r5_n;
+	return r4_n;
 }
 
-// 0040628C: void properties_print_usage(Register Eq_n r4)
+// 0040628C: Register Eq_n properties_print_usage(Register Eq_n r4, Register out Eq_n r5Out)
 // Called from:
 //      properties_parse_command_line
-void properties_print_usage(Eq_n r4)
+Eq_n properties_print_usage(Eq_n r4, union Eq_n & r5Out)
 {
 	if (r4 != 0x00 && (word32) (*r4) != 0x00)
 		printf("Usage: %s -h ", 0x00);
@@ -2197,6 +2202,10 @@ void properties_print_usage(Eq_n r4)
 		++dwLoc18_n;
 	}
 	printf("\n", 0x00);
+	Eq_n r5_n = (char *) <invalid>;
+	r5Out = r5_n;
+	Eq_n r4_n = (char *) <invalid>;
+	return r4_n;
 }
 
 // 00406610: Register int32 print_log(Register int32 r4, Register ptr32 r5, Register out ptr32 r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r25Out)

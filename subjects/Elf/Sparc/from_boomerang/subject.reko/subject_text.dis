@@ -11,24 +11,20 @@ _start_entry:
 l00010958:
 	Mem8[0x20E60<32>:word32] = fp + 0x44<32>
 	Mem13[0x20E3C<32>:word32] = fp + 0x44<32> + ((dwArg40 << 2<32>) + 4<32>)
-	branch true l00010958_ds_t
-l00010958_ds_t:
-l00010958_ds_f:
+	branch true l000109F8
 l00010994:
 	Mem27[0x20E58<32>:word32] = fsr
 	Mem33[0x20E58<32>:word32] = Mem27[0x20E58<32>:word32] & 0x303FFFFF<32>
-	branch true l00010994_ds_t
-l00010994_ds_t:
-l00010994_ds_f:
+	branch true l000109F8
 l000109E8:
 	Mem44[0x20E5C<32>:word32] = 1<32>
 l000109F8:
-	branch g1 == 0<32> l000109F8_ds_t
-l000109F8_ds_t:
+	branch g1 == 0<32> l00010A04_ds_t
+l00010A04_ds_t:
 l00010A10:
 	atexit(0x10CB8<32>)
 	_init(0x10CB8<32>, 0x20C00<32>, o2, o3, o4, o5, o7)
-l000109F8_ds_f:
+l00010A04_ds_f:
 l00010A08:
 	atexit(g1)
 
@@ -149,106 +145,100 @@ void main(word32 o0)
 main_entry:
 l00010B0C:
 	word32 o0_20 = 1<32>
-	branch o0 <= 1<32> l00010B0C_ds_t
-l00010B0C_ds_t:
+	branch o0 <= 1<32> l00010B1C_ds_t
+l00010B1C_ds_t:
 	o0_20 = 0<32>
 l00010B20:
 	word32 o0_31
-	branch o0_20 == 0<32> l00010B20_ds_t
-l00010B20_ds_t:
+	branch o0_20 == 0<32> l00010B28_ds_t
+l00010B28_ds_t:
 l00010B34:
 	o0_31 = 0x10A74<32>
-l00010B20_ds_f:
+l00010B28_ds_f:
 l00010B2C:
 	o0_31 = 0x10A5C<32>
 l00010B3C:
 	word32 o3_37
-	branch o0_20 == 0<32> l00010B3C_ds_t
-l00010B3C_ds_t:
+	branch o0_20 == 0<32> l00010B40_ds_t
+l00010B40_ds_t:
 l00010B4C:
 	o3_37 = 0x10AA4<32>
-l00010B3C_ds_f:
+l00010B40_ds_f:
 l00010B44:
 	o3_37 = 0x10A8C<32>
 l00010B54:
 	word32 o2_43
-	branch o0_20 == 0<32> l00010B54_ds_t
-l00010B54_ds_t:
+	branch o0_20 == 0<32> l00010B58_ds_t
+l00010B58_ds_t:
 l00010B64:
 	o2_43 = 0x10AD4<32>
-l00010B54_ds_f:
+l00010B58_ds_f:
 l00010B5C:
 	o2_43 = 0x10ABC<32>
 l00010B6C:
 	word32 o1_49
-	branch o0_20 == 0<32> l00010B6C_ds_t
-l00010B6C_ds_t:
+	branch o0_20 == 0<32> l00010B70_ds_t
+l00010B70_ds_t:
 l00010B7C:
 	o1_49 = 0x10B04<32>
-l00010B6C_ds_f:
+l00010B70_ds_f:
 l00010B74:
 	o1_49 = 0x10AEC<32>
 l00010B84:
 	bool v24_217
 	word32 i1_114
-	branch o0_20 == 0<32> l00010B84_ds_t
-l00010B84_ds_t:
+	branch o0_20 == 0<32> l00010B88_ds_t
+l00010B88_ds_t:
 l00010BE8:
-	branch o0_31 != 0x10A74<32> l00010BE8_ds_t
-l00010BE8_ds_t:
-l00010BE8_ds_f:
+	branch o0_31 != 0x10A74<32> l00010BF8_ds_t
+l00010BF8_ds_t:
+l00010BF8_ds_f:
 l00010BFC:
-	branch o3_37 != 0x10AA4<32> l00010BFC_ds_t
-l00010BFC_ds_t:
-l00010BFC_ds_f:
+	branch o3_37 != 0x10AA4<32> l00010C3C
 l00010C0C:
-	branch o2_43 != 0x10AD4<32> l00010C0C_ds_t
-l00010C0C_ds_t:
-l00010C0C_ds_f:
+	branch o2_43 != 0x10AD4<32> l00010C3C
 l00010C20:
-	branch o1_49 != 0x10B04<32> l00010C20_ds_t
-l00010C20_ds_t:
+	branch o1_49 != 0x10B04<32> l00010C3C
 l00010C3C:
 	i1_114 = 0<32>
-l00010C20_ds_f:
 l00010C34:
 	i1_114 = 1<32>
-l00010B84_ds_f:
+l00010B88_ds_f:
 l00010B8C:
-	branch o0_31 != 0x10A5C<32> l00010B8C_ds_t
-l00010B8C_ds_t:
+	branch o0_31 != 0x10A5C<32> l00010B98_ds_t
+l00010B98_ds_t:
 l00010BDC:
-l00010B8C_ds_f:
+l00010B98_ds_f:
 l00010B9C:
-	branch o3_37 != 0x10A8C<32> l00010B9C_ds_t
-l00010B9C_ds_t:
-l00010B9C_ds_f:
+	branch o3_37 != 0x10A8C<32> l00010BA8_ds_t
+l00010BA8_ds_t:
+l00010BA8_ds_f:
 l00010BAC:
-	branch o2_43 != 0x10ABC<32> l00010BAC_ds_t
-l00010BAC_ds_t:
-l00010BAC_ds_f:
+	branch o2_43 != 0x10ABC<32> l00010BBC_ds_t
+l00010BBC_ds_t:
+l00010BBC_ds_f:
 l00010BC0:
-	branch o1_49 != 0x10AEC<32> l00010BC0_ds_t
-l00010BC0_ds_t:
+	branch o1_49 != 0x10AEC<32> l00010BD0_ds_t
+l00010BD0_ds_t:
 l00010BE0:
 	i1_114 = 0<32>
 	v24_217 = true
-l00010BC0_ds_f:
+l00010BD0_ds_f:
 l00010BD4:
 	i1_114 = 1<32>
 l00010C40:
 	v24_217 = i1_114 == 0<32>
 l00010C44:
-	branch v24_217 l00010C40_ds_t
-l00010C40_ds_t:
+	branch v24_217 l00010C48_ds_t
+l00010C48_ds_t:
 l00010C5C:
 	printf(0x10D00<32>)
-l00010C40_ds_f:
+l00010C48_ds_f:
 l00010C4C:
 	printf(0x10CF8<32>)
 l00010C6C:
-	branch i1_114 == 0<32> l00010C6C_ds_t
-l00010C6C_ds_t:
+	branch i1_114 == 0<32> l00010C74_ds_t
+l00010C74_ds_t:
 l00010C78:
 	return
 main_exit:

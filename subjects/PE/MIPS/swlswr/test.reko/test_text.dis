@@ -83,12 +83,9 @@ void fn000111C4()
 fn000111C4_entry:
 l000111C4:
 	word32 r8_7 = Mem5[0x13030<32>:word32]
-	branch r8_7 == 0<32> l000111C4_ds_t
-l000111C4_ds_t:
-l000111C4_ds_f:
+	branch r8_7 == 0<32> l0001120C
 l000111E4:
-	branch r8_7 == 0xB064<32> l000111E4_ds_t
-l000111E4_ds_t:
+	branch r8_7 == 0xB064<32> l0001120C
 l0001120C:
 	word32 r2_16
 	call COREDLL.dll!Ordinal_2696 (retsize: 0;)
@@ -96,15 +93,12 @@ l0001120C:
 		defs: r2:r2_16
 	word32 r8_24 = r2_16 >>u 0x10<8> ^ r2_16 & 0xFFFF<32>
 	word32 dwLoc0C_50 = r8_24
-	branch r8_24 != 0<32> l0001120C_ds_t
-l0001120C_ds_t:
-l0001120C_ds_f:
+	branch r8_24 != 0<32> l0001124C
 l00011244:
 	dwLoc0C_50 = 0xB064<32>
 l0001124C:
 	Mem33[0x13030<32>:word32] = dwLoc0C_50
 	Mem37[0x13034<32>:word32] = ~dwLoc0C_50
-l000111E4_ds_f:
 l000111F4:
 	Mem41[0x13034<32>:word32] = ~r8_7
 l00011268:
@@ -143,39 +137,29 @@ void fn000112A8(word32 r4, word32 r5, word32 r6)
 fn000112A8_entry:
 l000112A8:
 	Mem16[0x13038<32>:byte] = SLICE(CONVERT(SLICE(r6, byte, 0), byte, int32), byte, 0)
-	branch r5 != 0<32> l000112A8_ds_t
-l000112A8_ds_t:
+	branch r5 != 0<32> l0001138C
 l0001138C:
 	fn0001147C(0x12018<32>, 0x1201C<32>)
-	branch r6 != 0<32> l0001138C_ds_t
-l0001138C_ds_t:
+	branch r6 != 0<32> l000113C8
 l000113C8:
 	return
 fn000112A8_exit:
-l0001138C_ds_f:
 l000113B0:
 	TerminateProcess(fn00011460(), r4)
-l000112A8_ds_f:
 l000112DC:
-	branch Mem16[0x13040<32>:word32] == 0<32> l000112DC_ds_t
-l000112DC_ds_t:
-l000112DC_ds_f:
+	branch Mem16[0x13040<32>:word32] == 0<32> l00011374
 l000112EC:
 	Mem39[0x1303C<32>:word32] = Mem35[0x1303C<32>:word32] + -4<i32>
-	branch CONVERT(Mem39[0x1303C<32>:word32] <u Mem39[0x13040<32>:word32], bool, word32) != 0<32> l000112EC_ds_t
-l000112EC_ds_t:
+	branch CONVERT(Mem39[0x1303C<32>:word32] <u Mem39[0x13040<32>:word32], bool, word32) != 0<32> l0001134C
 l0001134C:
 	free(Mem39[0x13040<32>:word32])
 	Mem48[0x1303C<32>:word32] = 0<32>
 	Mem52[0x13040<32>:word32] = Mem48[0x1303C<32>:word32]
 l00011374:
 	fn0001147C(0x12010<32>, 0x12014<32>)
-l000112EC_ds_f:
 l0001131C:
-	branch Mem39[Mem39[0x1303C<32>:word32]:word32] == 0<32> l0001131C_ds_t
-l0001131C_ds_t:
+	branch Mem39[Mem39[0x1303C<32>:word32]:word32] == 0<32> l00011344
 l00011344:
-l0001131C_ds_f:
 l00011330:
 	word32 r8_64 = Mem39[Mem39[0x1303C<32>:word32]:word32]
 	call r8_64 (retsize: 0;)
@@ -253,18 +237,14 @@ fn0001147C_entry:
 l0001147C:
 	word32 dwArg00_33 = r4
 l0001148C:
-	branch CONVERT(dwArg00_33 <u r5, bool, word32) == 0<32> l0001147C_ds_t
-l0001147C_ds_t:
+	branch CONVERT(dwArg00_33 <u r5, bool, word32) == 0<32> l000114D4
 l000114D4:
 	return
 fn0001147C_exit:
-l0001147C_ds_f:
 l000114A0:
-	branch Mem11[dwArg00_33:word32] == 0<32> l000114A0_ds_t
-l000114A0_ds_t:
+	branch Mem11[dwArg00_33:word32] == 0<32> l000114C0
 l000114C0:
 	dwArg00_33 = dwArg00_33 + 4<i32>
-l000114A0_ds_f:
 l000114B0:
 	call fn00000000 (retsize: 0;)
 		uses: r4:r4,r5:r5,r8:Mem11[dwArg00_34:word32]
@@ -300,12 +280,9 @@ fn0001152C_entry:
 l0001152C:
 	word32 r8_10 = Mem8[0x13040<32>:word32]
 	word32 sp_3 = fp + -56<i32>
-	branch Mem11[0x1303C<32>:word32] - r8_10 >= 0<32> l0001152C_ds_t
-l0001152C_ds_t:
+	branch Mem11[0x1303C<32>:word32] - r8_10 >= 0<32> l00011588
 l00011588:
-	branch r8_10 == 0<32> l00011588_ds_t
-l00011588_ds_t:
-l00011588_ds_f:
+	branch r8_10 == 0<32> l000115B0
 l000115A0:
 	word32 r5_31
 	call msize (retsize: 0;)
@@ -313,41 +290,28 @@ l000115A0:
 		defs: r5:r5_31
 	sp_3 = fp + 0xFFFFFFCC<32>
 l000115B0:
-	branch CONVERT(Mem35[sp_3 + 0x18<32>:word32] <u Mem35[sp_3 + 0x24<32>:word32], bool, word32) == 0<32> l000115B0_ds_t
-l000115B0_ds_t:
-l000115B0_ds_f:
+	branch CONVERT(Mem35[sp_3 + 0x18<32>:word32] <u Mem35[sp_3 + 0x24<32>:word32], bool, word32) == 0<32> l000116B0
 l000115C4:
-	branch Mem35[sp_3 + 0x1C<32>:word32] != 0<32> l000115C4_ds_t
-l000115C4_ds_t:
+	branch Mem35[sp_3 + 0x1C<32>:word32] != 0<32> l000115E8
 l000115E8:
 	Mem42[sp_3 + 0x20<32>:word32] = Mem35[sp_3 + 0x18<32>:word32] << 1<8>
-	branch CONVERT(Mem42[sp_3 + 0x18<32>:word32] <u 513<i32>, bool, word32) != 0<32> l000115E8_ds_t
-l000115E8_ds_t:
-l000115E8_ds_f:
+	branch CONVERT(Mem42[sp_3 + 0x18<32>:word32] <u 513<i32>, bool, word32) != 0<32> l00011610
 l00011604:
 	Mem47[sp_3 + 0x20<32>:word32] = Mem42[sp_3 + 0x18<32>:word32] + 512<i32>
 l00011610:
-	branch CONVERT(Mem49[sp_3 + 0x18<32>:word32] <u Mem49[sp_3 + 0x20<32>:word32], bool, word32) == 0<32> l00011610_ds_t
-l00011610_ds_t:
-l00011610_ds_f:
+	branch CONVERT(Mem49[sp_3 + 0x18<32>:word32] <u Mem49[sp_3 + 0x20<32>:word32], bool, word32) == 0<32> l00011638
 l00011624:
 	Mem56[sp_3 + 0x14<32>:word32] = realloc(Mem49[sp_3 + 0x1C<32>:word32], Mem49[sp_3 + 0x20<32>:word32])
 l00011638:
-	branch Mem58[sp_3 + 0x14<32>:word32] != 0<32> l00011638_ds_t
-l00011638_ds_t:
-l00011638_ds_f:
+	branch Mem58[sp_3 + 0x14<32>:word32] != 0<32> l0001166C
 l00011644:
-	branch CONVERT(Mem58[sp_3 + 0x18<32>:word32] <u Mem58[sp_3 + 0x24<32>:word32], bool, word32) == 0<32> l00011644_ds_t
-l00011644_ds_t:
-l00011644_ds_f:
+	branch CONVERT(Mem58[sp_3 + 0x18<32>:word32] <u Mem58[sp_3 + 0x24<32>:word32], bool, word32) == 0<32> l0001166C
 l00011658:
 	Mem66[sp_3 + 0x14<32>:word32] = realloc(Mem58[sp_3 + 0x1C<32>:word32], Mem58[sp_3 + 0x24<32>:word32])
-l000115C4_ds_f:
 l000115D0:
 	Mem69[sp_3 + 0x14<32>:word32] = malloc(16<i32>)
 l0001166C:
-	branch Mem71[sp_3 + 0x14<32>:word32] != 0<32> l0001166C_ds_t
-l0001166C_ds_t:
+	branch Mem71[sp_3 + 0x14<32>:word32] != 0<32> l00011688
 l00011688:
 	Mem80[sp_3 + 0x28<32>:word32] = Mem71[sp_3 + 0x14<32>:word32] + __align(Mem71[sp_3 + 0x28<32>:word32] - Mem71[sp_3 + 0x1C<32>:word32], 4<i32>)
 	Mem82[sp_3 + 0x1C<32>:word32] = Mem80[sp_3 + 0x14<32>:word32]
@@ -357,10 +321,8 @@ l000116B0:
 	Mem93[0x1303C<32>:word32] = Mem90[sp_3 + 0x28<32>:word32]
 	Mem96[0x13040<32>:word32] = Mem93[sp_3 + 0x1C<32>:word32]
 	Mem98[sp_3 + 0x2C<32>:word32] = Mem96[sp_3 + 0x38<32>:word32]
-l0001166C_ds_f:
 l00011678:
 	Mem100[sp_3 + 0x2C<32>:word32] = 0<32>
-l0001152C_ds_f:
 l00011578:
 	dwLoc0C = 0<32>
 l000116E8:
@@ -377,10 +339,8 @@ void fn000116FC()
 // Preserved: ra sp
 fn000116FC_entry:
 l000116FC:
-	branch fn0001152C() == 0<32> l000116FC_ds_t
-l000116FC_ds_t:
+	branch fn0001152C() == 0<32> l00011728
 l00011728:
-l000116FC_ds_f:
 l0001171C:
 l00011730:
 	return
