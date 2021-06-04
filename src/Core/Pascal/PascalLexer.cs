@@ -20,8 +20,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -311,7 +313,7 @@ namespace Reko.Core.Pascal
                     return Tok(TokenType.Number, sign * Int64.Parse(sb.ToString()));
                 case State.NumberDot:
                     if (c < 0)
-                        return Tok(TokenType.RealLiteral, sign * double.Parse(sb.ToString()));
+                        return Tok(TokenType.RealLiteral, sign * ParseDouble(sb.ToString()));
                     if ('0' <= ch && ch <= '9')
                     {
                         rdr.Read();
@@ -324,10 +326,10 @@ namespace Reko.Core.Pascal
                         sb.Remove(sb.Length - 1, 1);
                         return Tok(TokenType.Number, State.Dot, Int64.Parse(sb.ToString()));
                     }
-                    return Tok(TokenType.RealLiteral, sign * double.Parse(sb.ToString()));
+                    return Tok(TokenType.RealLiteral, sign * ParseDouble(sb.ToString()));
                 case State.Real:
                     if (c < 0)
-                        return Tok(TokenType.RealLiteral, sign * double.Parse(sb.ToString()));
+                        return Tok(TokenType.RealLiteral, sign * ParseDouble(sb.ToString()));
                     if (ch == 'e' || ch == 'E')
                     {
                         rdr.Read();
@@ -341,10 +343,10 @@ namespace Reko.Core.Pascal
                         sb.Append(ch);
                         break;
                     }
-                    return Tok(TokenType.RealLiteral, sign * double.Parse(sb.ToString()));
+                    return Tok(TokenType.RealLiteral, sign * ParseDouble(sb.ToString()));
                 case State.RealExponentStart:
                     if (c < 0)
-                        return Tok(TokenType.RealLiteral, sign * double.Parse(sb.ToString()));
+                        return Tok(TokenType.RealLiteral, sign * ParseDouble(sb.ToString()));
                     if (ch == '+' || ch == '-' || ('0' <= ch && ch <= '9'))
                     {
                         rdr.Read();
@@ -352,17 +354,17 @@ namespace Reko.Core.Pascal
                         st = State.RealExponent;
                         break;
                     }
-                    return Tok(TokenType.RealLiteral, sign * double.Parse(sb.ToString()));
+                    return Tok(TokenType.RealLiteral, sign * ParseDouble(sb.ToString()));
                 case State.RealExponent:
                     if (c < 0)
-                        return Tok(TokenType.RealLiteral, sign * double.Parse(sb.ToString()));
+                        return Tok(TokenType.RealLiteral, sign * ParseDouble(sb.ToString()));
                     if ('0' <= ch && ch <= '9')
                     {
                         rdr.Read();
                         sb.Append(ch);
                         break;
                     }
-                    return Tok(TokenType.RealLiteral, sign * double.Parse(sb.ToString()));
+                    return Tok(TokenType.RealLiteral, sign * ParseDouble(sb.ToString()));
                 case State.HexNumber:
                     if (c < 0)
                         return Tok(TokenType.Number, Convert.ToInt64(sb.ToString(), 16));
@@ -412,6 +414,13 @@ namespace Reko.Core.Pascal
                     return Tok(TokenType.LParen);
                 }
             }
+        }
+
+        // #1050: double parsing was failing in locales where '.' is not a decimal separator.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static double ParseDouble(string sDouble)
+        {
+            return double.Parse(sDouble, CultureInfo.InvariantCulture);
         }
 
         private bool UnnestComment(char commentChar)

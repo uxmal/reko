@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 #nullable disable
@@ -234,7 +235,7 @@ namespace Reko.Core.Pascal
 
         public override void Write(TextWriter writer)
         {
-            writer.Write(Value);
+            writer.Write(Value.ToString(CultureInfo.InvariantCulture));
         }
     }
 

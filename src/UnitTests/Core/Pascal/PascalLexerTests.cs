@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Core.Pascal;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -108,10 +109,20 @@ namespace Reko.UnitTests.Core.Pascal
         [Test]
         public void PLex_FloatWithExponent()
         {
-            RunTest("2e10", T(TokenType.RealLiteral, 2e10));
-            RunTest("2.5e10", T(TokenType.RealLiteral, 2.5e10));
-            RunTest("2e+10", T(TokenType.RealLiteral, 2e10));
-            RunTest("2.5e+10", T(TokenType.RealLiteral, 2.5e10));
+            var culture = CultureInfo.CurrentCulture;
+            try
+            {
+                // Github #1050: tokenizer is sensitive to locale.
+                CultureInfo.CurrentCulture = CultureInfo.CreateSpecificCulture("sv");
+                RunTest("2e10", T(TokenType.RealLiteral, 2e10));
+                RunTest("2.5e10", T(TokenType.RealLiteral, 2.5e10));
+                RunTest("2e+10", T(TokenType.RealLiteral, 2e10));
+                RunTest("2.5e+10", T(TokenType.RealLiteral, 2.5e10));
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = culture;
+            }
         }
     }
 }
