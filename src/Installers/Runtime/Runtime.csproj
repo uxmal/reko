@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)..\Common.items" />
+  <Import Project="$(ProjectDir)..\..\Drivers\Common.items" />
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -110,7 +110,7 @@
     <ProjectReference Include="..\..\Symbols\LGSymLoader\LGSymLoader.csproj" />
     <ProjectReference Include="..\..\Arch\Alpha\Alpha.csproj" />
   </ItemGroup>
-  <Import Project="$(ProjectDir)..\PreBuild.targets" />
+  <Import Project="$(ProjectDir)..\..\Drivers\PreBuild.targets" />
 
   <Target Name="SetNuspecProperties" BeforeTargets="GenerateNuspec">
     <PropertyGroup>
