@@ -745,21 +745,73 @@ fn0B06: warning: Structure analysis stopped making progress, quitting. Please re
 0001E734: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
 000257A4: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
 0001E3F0: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
-Error: An error occurred during decompilation.
-    Object reference not set to an instance of an object.
-       at Reko.Analysis.StackPointerBackpropagator.MatchStackOffsetPattern(Identifier sp) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\StackPointerBackpropagator.cs:line 124
-   at Reko.Analysis.StackPointerBackpropagator.BackpropagateStackPointer(Identifier spAtExit) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\StackPointerBackpropagator.cs:line 93
-   at Reko.Analysis.StackPointerBackpropagator.BackpropagateStackPointer() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\StackPointerBackpropagator.cs:line 81
-   at Reko.Analysis.DataFlowAnalysis.ConvertToSsa(Procedure proc) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 513
-   at System.Linq.Enumerable.SelectListIterator`2.ToArray()
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedureScc(IList`1 procs) in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 190
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in d:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 96
-   at Reko.Core.Lib.SccFinder`1.Dfs(Node node) in d:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 79
-   at Reko.Core.Lib.SccFinder`1.FindAll() in d:\dev\uxmal\reko\master\src\Core\Lib\SccFinder.cs:line 118
-   at Reko.Analysis.DataFlowAnalysis.RewriteProceduresToSsa() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 170
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 131
-   at Reko.Decompiler.AnalyzeDataFlow() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 110
-   at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 210
+fn0000EE14: error: An internal error occurred while building the expressions of fn0000EE14
+    The given key 'l0000EE2C' was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Core.Lib.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in d:\dev\uxmal\reko\master\src\Core\Lib\BlockDominatorGraph.cs:line 34
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 401
+fn0000CE88: error: An internal error occurred while building the expressions of fn0000CE88
+    The given key 'l0000CEAC' was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Core.Lib.BlockDominatorGraph..ctor(DirectedGraph`1 graph, Block entry) in d:\dev\uxmal\reko\master\src\Core\Lib\BlockDominatorGraph.cs:line 34
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 401
+l0000CEAC: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
+fn0000CE88: error: An error occurred while rewriting procedure to high-level language.
+    The given key 'l0000CEAC' was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 143
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
+   at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 657
+fn0000EE14: error: An error occurred while rewriting procedure to high-level language.
+    The given key 'l0000EE2C' was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 143
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
+   at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 657
+00000007: warning: Expected sizes of arrays to have been determined by now
+0000000D: warning: Expected sizes of arrays to have been determined by now
+00000015: warning: Expected sizes of arrays to have been determined by now
+00000018: warning: Expected sizes of arrays to have been determined by now
+00000019: warning: Expected sizes of arrays to have been determined by now
+00000029: warning: Expected sizes of arrays to have been determined by now
+0000002D: warning: Expected sizes of arrays to have been determined by now
+00000031: warning: Expected sizes of arrays to have been determined by now
+00000038: warning: Expected sizes of arrays to have been determined by now
+0000003C: warning: Expected sizes of arrays to have been determined by now
+00000041: warning: Expected sizes of arrays to have been determined by now
+00000045: warning: Expected sizes of arrays to have been determined by now
+00000049: warning: Expected sizes of arrays to have been determined by now
+0000004D: warning: Expected sizes of arrays to have been determined by now
+00000051: warning: Expected sizes of arrays to have been determined by now
+00000055: warning: Expected sizes of arrays to have been determined by now
+00007734: warning: Expected sizes of arrays to have been determined by now
+00007860: warning: Expected sizes of arrays to have been determined by now
+00000007: warning: Expected sizes of arrays to have been determined by now
+0000000D: warning: Expected sizes of arrays to have been determined by now
+00000015: warning: Expected sizes of arrays to have been determined by now
+00000018: warning: Expected sizes of arrays to have been determined by now
+00000019: warning: Expected sizes of arrays to have been determined by now
+00000029: warning: Expected sizes of arrays to have been determined by now
+0000002D: warning: Expected sizes of arrays to have been determined by now
+00000031: warning: Expected sizes of arrays to have been determined by now
+00000038: warning: Expected sizes of arrays to have been determined by now
+0000003C: warning: Expected sizes of arrays to have been determined by now
+00000041: warning: Expected sizes of arrays to have been determined by now
+00000045: warning: Expected sizes of arrays to have been determined by now
+00000049: warning: Expected sizes of arrays to have been determined by now
+0000004D: warning: Expected sizes of arrays to have been determined by now
+00000051: warning: Expected sizes of arrays to have been determined by now
+00000055: warning: Expected sizes of arrays to have been determined by now
+00007734: warning: Expected sizes of arrays to have been determined by now
+00007860: warning: Expected sizes of arrays to have been determined by now
 
 === wasm\nbody
 
@@ -957,8 +1009,8 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
    at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 76
 
 === scripting\pyFuncNames
-Evaluating d:\dev\uxmal\reko\master\subjects\scripting\py_func_names.py
 IronPython 3.4.0
+Evaluating d:\dev\uxmal\reko\master\subjects\scripting\py_func_names.py
 
 === PE\x86\pySample\pySample
 100013D8: warning: Call target address 00000000 is invalid.
@@ -1069,8 +1121,8 @@ Signature of 'Borland C++ for Win32 1999' detected.
 === wasm\sample
 
 === scripting\segmented
-Evaluating d:\dev\uxmal\reko\master\subjects\scripting\segmented.py
 IronPython 3.4.0
+Evaluating d:\dev\uxmal\reko\master\subjects\scripting\segmented.py
 
 === PE\x86\pySample\shingledPySample
 100013D8: warning: Call target address 00000000 is invalid.
@@ -1161,7 +1213,7 @@ IronPython 3.4.0
 00011F6C: error: An error occurred while processing the statement word32 sp_37 = fp + 0xFFFFFF90<32> - (CONVERT(strlen(i0_25) + strlen(o1), size_t, size_t) + 9<32> & 0xFFFFFFF8<32>).
     Specified argument was out of the range of valid values. (Parameter 'bitSize')
        at Reko.Core.Types.PrimitiveType.CreateWord(Int32 bitSize) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 159
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 126
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 130
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 61
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 61
@@ -2131,4 +2183,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 78 binaries in 63.87 seconds.
+Decompiled 78 binaries in 64.11 seconds.

@@ -250,7 +250,7 @@ namespace Reko.Typing
                 if (dt != null)
                     MeetDataType(eRight, dt);
             }
-            else if (binExp.Operator == Operator.ISub)
+            else if (binExp.Operator == Operator.ISub || binExp.Operator == Operator.USub)
             {
                 var dt = PushMinuendDataType(binExp.TypeVariable!.DataType, eRight.TypeVariable!.DataType);
                 MeetDataType(eLeft, dt);
