@@ -58,7 +58,8 @@ Reko has a rich API you can use for reverse engineering. [Read on for more detai
 Now that you're installed, it's time to learn what Reko is about. Try the [quick start](quickstart.md) if you're impatient, or read on to gain a deeper understanding of what is going on.
 
 ## The decompilation process
-Compilation is inherently a lossy process. Information such as complex data types and comments are lost when transforming a high level source code program to a low level machine code executable binary. A useful decompilation usually requires assistance from a user. Users can supply type information that was discarded by the compiler, and add comments or give friendly names to procedures. 
+Compilation is inherently a lossy process. Information such as complex data types and comments are lost when transforming a high level source code program to a low level machine code executable binary. A useful decompilation usually requires assistance from a user. Users can supply type information that was discarded by the compiler, and add comments or give friendly names to procedures.
+User can also write [scripts](scripting.md) for adding procedure names, comments, etc.
 
 ### Loading
 The first stage is loading the binary into memory. Reko identifies the binary file format by looking for "magic numbers" in the binary file header and/or by looking at the file extension. Each different binary file format requires a different loader. Some binaries may in addition be packed and require unpacking / decompressing before further processing.
