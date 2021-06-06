@@ -655,10 +655,10 @@ T_125: (in sp_29 @ 00008498 : (ptr32 Eq_104))
   Class: Eq_125
   DataType: (ptr32 Eq_104)
   OrigDataType: (ptr32 (struct (0 T_135 t0000)))
-T_126: (in <invalid> @ 00008498 : void)
+T_126: (in <invalid> @ 00008498 : word32)
   Class: Eq_125
   DataType: (ptr32 Eq_104)
-  OrigDataType: void
+  OrigDataType: word32
 T_127: (in r0_47 @ 000084B0 : Eq_104)
   Class: Eq_104
   DataType: Eq_104

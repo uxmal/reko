@@ -668,11 +668,11 @@ namespace Reko.Core
         {
             if (value is Constant c && c.IsValid && !c.IsReal)
             {
-                var newValue = (c.ToUInt64() & this.BitMask) >> (int)this.BitAddress;
+                var newValue = (c.ToUInt64() & this.BitMask) >> (int) this.BitAddress;
                 return Constant.Create(this.DataType, newValue);
             }
             else
-                return Constant.Invalid;
+                return InvalidConstant.Create(this.DataType);
         }
 
         public int CompareTo(RegisterStorage that)

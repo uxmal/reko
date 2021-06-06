@@ -270,7 +270,7 @@ namespace Reko.Arch.X86
         protected TWord GetEffectiveOffset(MemoryOperand m)
         {
             TWord ea = 0;
-            if (m.Offset!.IsValid)
+            if (m.Offset != null)
                 ea += m.Offset.ToUInt32();
             if (m.Index != RegisterStorage.None)
                 ea += (TWord)ReadRegister(m.Index) * m.Scale;

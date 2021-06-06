@@ -1323,10 +1323,10 @@ T_39: (in sp_31 @ 00000490 : (ptr16 (ptr16 Eq_25)))
   Class: Eq_39
   DataType: (ptr16 (ptr16 Eq_25))
   OrigDataType: (ptr16 (struct (0 T_44 t0000)))
-T_40: (in <invalid> @ 00000490 : void)
+T_40: (in <invalid> @ 00000490 : word16)
   Class: Eq_39
   DataType: (ptr16 (ptr16 Eq_25))
-  OrigDataType: void
+  OrigDataType: word16
 T_41: (in fn0528 @ 00000496 : ptr16)
   Class: Eq_35
   DataType: (ptr16 Eq_35)

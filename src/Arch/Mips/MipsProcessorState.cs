@@ -65,7 +65,7 @@ namespace Reko.Arch.Mips
             }
             else
             {
-                return Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
             }
         }
 

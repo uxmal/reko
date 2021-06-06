@@ -57,7 +57,7 @@ namespace Reko.Arch.Tms7000
         public override Constant GetRegister(RegisterStorage r)
         {
             if (!regs.TryGetValue(r, out var c))
-                c = Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
             return c;
         }
 

@@ -1953,7 +1953,7 @@ Eq_263: (fn void ())
 	T_264 (in signature of fn00004788 @ 00004788 : void)
 Eq_269: (struct "Eq_269" 0001 (FFFFFFE0 ptr32 ptrFFFFFFE0) (FFFFFFE4 Eq_3030 tFFFFFFE4) (FFFFFFE8 Eq_3341 tFFFFFFE8) (FFFFFFEC Eq_3341 tFFFFFFEC) (FFFFFFF0 ptr32 ptrFFFFFFF0) (FFFFFFF4 word32 dwFFFFFFF4) (FFFFFFF8 word32 dwFFFFFFF8) (0 Eq_17952 t0000) (1 byte b0001) (2 byte b0002) (3 byte b0003) (4 Eq_1016 t0004) (8 Eq_6 t0008) (C Eq_1016 t000C) (10 Eq_343 t0010) (14 Eq_6 t0014) (15 byte b0015) (16 byte b0016) (17 byte b0017) (18 Eq_1211 t0018) (19 byte b0019) (1A byte b001A) (1C Eq_6 t001C) (20 Eq_6 t0020) (24 Eq_6 t0024) (28 Eq_1268 t0028) (2C int32 dw002C) (30 int32 dw0030) (60 ui32 dw0060) (64 ui32 dw0064) (68 ui32 dw0068) (6C ui32 dw006C) (70 ui32 dw0070) (74 ui32 dw0074) (78 ui32 dw0078) (7C ui32 dw007C) (80 ui32 dw0080) (84 ui32 dw0084) (88 ui32 dw0088) (8C ui32 dw008C) (90 ui32 dw0090))
 	T_269 (in r1_11 @ 00004854 : (ptr32 Eq_269))
-	T_270 (in <invalid> @ 00004854 : void)
+	T_270 (in <invalid> @ 00004854 : word32)
 	T_293 (in r1_35 @ 0000489C : (ptr32 Eq_269))
 	T_1022 (in r1_1017 @ 00005220 : (ptr32 Eq_269))
 	T_1025 (in fp - 96<i32> @ 00000000 : word32)
@@ -6548,10 +6548,10 @@ T_269: (in r1_11 @ 00004854 : (ptr32 Eq_269))
   Class: Eq_269
   DataType: (ptr32 Eq_269)
   OrigDataType: (ptr32 (struct (0 T_250 t0000)))
-T_270: (in <invalid> @ 00004854 : void)
+T_270: (in <invalid> @ 00004854 : word32)
   Class: Eq_269
   DataType: (ptr32 Eq_269)
-  OrigDataType: void
+  OrigDataType: word32
 T_271: (in 0x1700020<32> @ 00004880 : word32)
   Class: Eq_271
   DataType: (ptr32 Eq_6)

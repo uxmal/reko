@@ -354,8 +354,8 @@ namespace Reko.Evaluation
             }
 
             //$REVIEW: this is evaluation! Shouldn't the be done by the evaluator?
-            if (left == Constant.Invalid || right == Constant.Invalid)
-                return Constant.Invalid;
+            if (left is InvalidConstant || right is InvalidConstant)
+                return InvalidConstant.Create(binExp.DataType);
 
             binExp = new BinaryExpression(binExp.Operator, binExp.DataType, left, right);
             if (constConstBin.Match(binExp))
@@ -611,7 +611,7 @@ namespace Reko.Evaluation
         public virtual Expression VisitConversion(Conversion conversion)
         {
             var exp = conversion.Expression.Accept(this);
-            if (exp != Constant.Invalid)
+            if (!(exp is InvalidConstant))
             {
                 var ptCvt = conversion.DataType.ResolveAs<PrimitiveType>();
                 var ptSrc = conversion.SourceDataType.ResolveAs<PrimitiveType>();
@@ -844,7 +844,7 @@ namespace Reko.Evaluation
             var newSeq = seq.Expressions.Select(e =>
             {
                 var eNew = e.Accept(this);
-                if (eNew == Constant.Invalid)
+                if (eNew is InvalidConstant)
                     eNew = e;
                 return eNew;
             }).ToArray();

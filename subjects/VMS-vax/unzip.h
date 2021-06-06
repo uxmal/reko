@@ -36,7 +36,7 @@ Eq_79: (struct "Eq_79" 0004 (FFFFFFE4 word32 dwFFFFFFE4) (FFFFFFE8 word32 dwFFFF
 	T_149 (in PHI((sp_737, l000082B0), (sp_750, l00008304), (sp_750, l000082EB), (sp_868, l0000827D), (sp_868, l00008285)) @ 00008307 : word32)
 	T_150 (in sp_750 @ 00008307 : word32)
 	T_151 (in sp_868 @ 00008307 : word32)
-	T_389 (in <invalid> @ 00008247 : void)
+	T_389 (in <invalid> @ 00008247 : word32)
 	T_390 (in sp_689 @ 00008247 : word32)
 	T_476 (in PHI((sp_689, l0000823F), (sp_620, l00008254)) @ 00008279 : word32)
 	T_477 (in sp_620 @ 00008279 : word32)
@@ -5960,10 +5960,10 @@ T_388: (in Mem653[sp_423 + -8<i32>:word32] @ 00008245 : word32)
   Class: Eq_303
   DataType: (ptr32 byte)
   OrigDataType: word32
-T_389: (in <invalid> @ 00008247 : void)
+T_389: (in <invalid> @ 00008247 : word32)
   Class: Eq_79
   DataType: (ptr32 Eq_79)
-  OrigDataType: void
+  OrigDataType: word32
 T_390: (in sp_689 @ 00008247 : word32)
   Class: Eq_79
   DataType: (ptr32 Eq_79)

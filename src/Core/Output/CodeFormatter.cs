@@ -673,7 +673,7 @@ namespace Reko.Core.Output
         public void VisitGotoInstruction(GotoInstruction g)
         {
             InnerFormatter.Indent();
-            if (!(g.Condition is Constant))
+            if (g.Condition != null)
             {
                 InnerFormatter.WriteKeyword("if");
                 InnerFormatter.Write(" (");

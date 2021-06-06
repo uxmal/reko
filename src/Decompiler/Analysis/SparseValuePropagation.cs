@@ -55,11 +55,11 @@ namespace Reko.Analysis
         {
             SetInitialValues();
             var wl = new WorkList<SsaIdentifier>();
-            wl.AddRange(ssa.Identifiers.Where(sid => ctx.GetValue(sid.Identifier) != Constant.Unknown));
+            wl.AddRange(ssa.Identifiers);
             while (wl.GetWorkItem(out var sid) && !listener.IsCanceled())
             {
                 var oldValue = ctx.GetValue(sid.Identifier);
-                if (oldValue == Constant.Invalid)
+                if (oldValue is InvalidConstant)
                     continue;
         
                 var newValue = Evaluate(sid);
@@ -97,9 +97,9 @@ namespace Reko.Analysis
                 {
                     throw new NotImplementedException();
                 }
-                return Constant.Invalid;
+                return InvalidConstant.Create(sid.Identifier.DataType);
             default:
-                return Constant.Invalid;
+                return InvalidConstant.Create(sid.Identifier.DataType);
             }
         }
 
@@ -138,17 +138,17 @@ namespace Reko.Analysis
 
             public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
             {
-                return Constant.Invalid;
+                return InvalidConstant.Create(access.DataType);
             }
 
             public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
             {
-                return Constant.Invalid;
+                return InvalidConstant.Create(access.DataType);
             }
 
             public Expression GetValue(Application appl)
             {
-                return Constant.Invalid;
+                return InvalidConstant.Create(appl.DataType);
             }
 
             public bool IsUsedInPhi(Identifier id)

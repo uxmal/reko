@@ -812,7 +812,7 @@ Constants: cl:0x00
             Assert.AreEqual(esi, ctx.StackState[-8]);
             Assert.AreEqual(edi, ctx.StackState[-12]);
             Assert.AreEqual("0x42<32>", ctx.StackState[-16].ToString());
-            Assert.AreSame(Constant.Invalid, ctx.StackState[-20]);
+            Assert.IsTrue(ctx.StackState[-20] is InvalidConstant);
         }
 
         [Test(Description = "This analysis is flow sensitive, so if a called procedure terminates, no effects are propagated")]

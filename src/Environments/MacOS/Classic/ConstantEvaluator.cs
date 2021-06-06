@@ -98,7 +98,7 @@ namespace Reko.Environments.MacOS.Classic
         {
             if (!this.evaluated.TryGetValue(id.Name, out Constant c))
             {
-                this.evaluated.Add(id.Name, Constant.Invalid);
+                this.evaluated.Add(id.Name, InvalidConstant.Create(PrimitiveType.Word32));
                 if (constDefinitions.TryGetValue(id.Name, out Exp def))
                 {
                     c = def.Accept(this);

@@ -58,7 +58,7 @@ namespace Reko.Arch.SuperH
         {
             if (regValues.TryGetValue(r.Domain, out var constant))
                 return constant;
-            return Constant.Invalid;
+            return InvalidConstant.Create(r.DataType);
         }
 
         public override void OnAfterCall(FunctionType? sigCallee)

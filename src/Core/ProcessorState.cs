@@ -123,20 +123,20 @@ namespace Reko.Core
         public Expression GetValue(Identifier id)
         {
             if (id.Storage is TemporaryStorage)
-                return Constant.Invalid;
+                return InvalidConstant.Create(id.DataType);
             if (!(id.Storage is RegisterStorage reg))
-                return Constant.Invalid;
+                return InvalidConstant.Create(id.DataType);
             return GetValue(reg);
         }
 
         public Expression GetValue(RegisterStorage reg)
         {
             Expression exp = GetRegister(reg);
-            if (exp != Constant.Invalid)
+            if (!(exp is InvalidConstant))
                 return exp;
             if (linearDerived.TryGetValue(reg, out exp))
                 return exp;
-            return Constant.Invalid;
+            return InvalidConstant.Create(reg.DataType);
         }
 
         public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
@@ -144,7 +144,7 @@ namespace Reko.Core
             if (access.EffectiveAddress is Constant constAddr)
             {
                 // This can only happen on linear architectures.
-                if (constAddr == Constant.Invalid)
+                if (constAddr is InvalidConstant)
                     return constAddr;
                 var ea = Architecture.MakeAddressFromConstant(constAddr, false)!;
                 return GetMemoryValue(ea, access.DataType, segmentMap);
@@ -158,7 +158,7 @@ namespace Reko.Core
                 if (stackState.TryGetValue(stackOffset, out var value))
                     return value;
             }
-            return Constant.Invalid;
+            return InvalidConstant.Create(access.DataType);
         }
 
         public Expression GetValue(SegmentedAccess access, SegmentMap segmentMap)
@@ -169,40 +169,41 @@ namespace Reko.Core
                     value.DataType.BitSize == access.DataType.BitSize)
                     return value;
             }
-            return Constant.Invalid;
+            return InvalidConstant.Create(access.DataType);
         }
 
         public Expression GetMemoryValue(Address addr, DataType dt, SegmentMap segmentMap)
         {
             if (!(dt is PrimitiveType pt))
-                return Constant.Invalid;
+                return InvalidConstant.Create(dt);
             else if (pt.Domain == Domain.Real && pt.BitSize > 80)
             {
                 //$TODO: we can't represent 96- or 128-bit floats quite yet.
-                return Constant.Invalid;
+                return InvalidConstant.Create(dt);
             }
             else if (pt.BitSize > 64)
             {
                 //$TODO: we can't represent integer constants larger than 64 bits yet.
-                return Constant.Invalid;
+                return InvalidConstant.Create(dt);
             }
             if (!segmentMap.TryFindSegment(addr, out ImageSegment seg) || seg.IsWriteable)
-                return Constant.Invalid;
+                return InvalidConstant.Create(dt);
             if (!Architecture.TryRead(seg.MemoryArea, addr, pt, out Constant c))
-                return Constant.Invalid;
+                return InvalidConstant.Create(dt);
             return c;
         }
 
+        //$TODO: needs the data type of the value being fetched.
         public Expression GetStackValue(int offset)
         {
             if (stackState.TryGetValue(offset, out var value))
                 return value;
-            return Constant.Invalid;
+            return InvalidConstant.Create(PrimitiveType.Word32);    //$BUG: should be data type of access
         }
 
         public Expression GetValue(Application appl)
         {
-            return Constant.Invalid;
+            return InvalidConstant.Create(appl.DataType);
         }
 
         public Expression? GetDefiningExpression(Identifier id)
@@ -260,14 +261,16 @@ namespace Reko.Core
                     binVal.Left is Identifier &&
                     binVal.Right is Constant)
                 {
-                    SetRegister(reg, Constant.Invalid);
+                    var invValue = InvalidConstant.Create(value.DataType);
+                    SetRegister(reg, invValue);
                     linearDerived[reg] = binVal;
-                    return Constant.Invalid;
+                    return invValue;
                 }
             }
-            SetRegister(reg, Constant.Invalid);
+            var invValue2 = InvalidConstant.Create(value.DataType);
+            SetRegister(reg, invValue2);
             linearDerived.Remove(reg);
-            return Constant.Invalid;
+            return invValue2;
         }
 
         public void SetValueEa(Expression ea, Expression value)
@@ -308,7 +311,7 @@ namespace Reko.Core
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            return Constant.Invalid;
+            return InvalidConstant.Create(r.DataType);
         }
 
         public override void OnAfterCall(FunctionType? sigCallee)

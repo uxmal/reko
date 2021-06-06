@@ -61,10 +61,10 @@ namespace Reko.Arch.Z80
 
         public override Constant GetRegister(RegisterStorage reg)
         {
-            if (reg != null && isValid[(int)reg.Domain])
-                return Constant.Create(reg.DataType, registerFile[(int)reg.Domain]);
+            if (isValid[(int) reg.Domain])
+                return Constant.Create(reg.DataType, registerFile[(int) reg.Domain]);
             else
-                return Constant.Invalid;
+                return InvalidConstant.Create(reg.DataType);
         }
 
         public override void SetRegister(RegisterStorage reg, Constant v)

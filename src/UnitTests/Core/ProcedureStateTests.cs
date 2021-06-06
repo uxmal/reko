@@ -277,7 +277,7 @@ namespace Reko.UnitTests.Core
             public override Constant GetRegister(RegisterStorage r)
             {
                 if (!regs.TryGetValue(r, out Constant c))
-                    c = Constant.Invalid;
+                    c = InvalidConstant.Create(r.DataType);
                 return c;
             }
 

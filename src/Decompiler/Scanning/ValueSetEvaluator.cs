@@ -260,11 +260,11 @@ namespace Reko.Scanning
             {
                 var addr = arch.MakeAddressFromConstant(cAddr, false)!;
                 if (!segmentMap.TryFindSegment(addr, out ImageSegment seg))
-                    return Constant.Invalid;
+                    return InvalidConstant.Create(dt);
                 var rdr = arch.CreateImageReader(seg.MemoryArea, addr);
                 memAccesses[addr] = dt;
                 if (!rdr.TryRead((PrimitiveType)dt, out var c))
-                    return Constant.Invalid;
+                    return InvalidConstant.Create(dt);
                 else
                     return c;
             }
@@ -277,7 +277,7 @@ namespace Reko.Scanning
             {
                 var addr = arch.MakeSegmentedAddress(seg, off);
                 if (!segmentMap.TryFindSegment(addr, out ImageSegment segment))
-                    return Constant.Invalid;
+                    return InvalidConstant.Create(dt);
                 var rdr = arch.CreateImageReader(segment.MemoryArea, addr);
                 memAccesses[addr] = dt;
                 if (dt == PrimitiveType.SegPtr32)
@@ -290,13 +290,13 @@ namespace Reko.Scanning
                     else
                     {
                         //$REVIEW we want a warning here. OR the caller.
-                        return Constant.Invalid;
+                        return InvalidConstant.Create(dt);
                     }
                 }
                 else
                 {
                     if (!rdr.TryRead((PrimitiveType) dt, out var v))
-                        return Constant.Invalid;
+                        return InvalidConstant.Create(dt);
                     else
                         return v;
                 }

@@ -1752,7 +1752,7 @@ Eq_2174: (fn Eq_129 (Eq_129, (ptr32 Eq_279), Eq_129, (ptr32 Eq_281), ptr32))
 	T_4041 (in dupnstr @ 00013DAC : ptr32)
 Eq_2185: (struct "Eq_2185" (5C ui32 dw005C))
 	T_2185 (in sp_450 @ 000127A8 : (ptr32 Eq_2185))
-	T_2186 (in <invalid> @ 000127A8 : void)
+	T_2186 (in <invalid> @ 000127A8 : word32)
 	T_2912 (in sp_142 @ 00012ED8 : (ptr32 Eq_2185))
 	T_4556 (in sp_156 @ 00014680 : (ptr32 Eq_2185))
 Eq_2219: (fn void ((ptr32 Eq_876)))
@@ -11656,10 +11656,10 @@ T_2185: (in sp_450 @ 000127A8 : (ptr32 Eq_2185))
   Class: Eq_2185
   DataType: (ptr32 Eq_2185)
   OrigDataType: word32
-T_2186: (in <invalid> @ 000127A8 : void)
+T_2186: (in <invalid> @ 000127A8 : word32)
   Class: Eq_2185
   DataType: (ptr32 Eq_2185)
-  OrigDataType: void
+  OrigDataType: word32
 T_2187: (in i0_455 @ 000127B0 : (ptr32 Eq_1718))
   Class: Eq_1718
   DataType: (ptr32 Eq_1718)

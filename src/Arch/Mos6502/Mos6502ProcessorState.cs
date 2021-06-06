@@ -65,7 +65,7 @@ namespace Reko.Arch.Mos6502
             if (valid[r.Number])
                 return Constant.Byte(regs[r.Number]);
             else
-                return Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)

@@ -303,7 +303,7 @@ namespace Reko.UnitTests.Scanning
 
             state.SetRegister(Registers.ebp, Constant.Word32(0x12345678));
             wi.Process();
-            Assert.AreSame(Constant.Invalid, state.GetRegister(Registers.ebp));
+            Assert.IsTrue(state.GetRegister(Registers.ebp) is InvalidConstant);
         }
 
         [Test]
@@ -326,7 +326,7 @@ namespace Reko.UnitTests.Scanning
                 m.Xor(m.eax, m.eax);
                 scanner.Setup(x => x.FindContainingBlock(It.Is<Address>(addr => addr.Offset == 0x00010000))).Returns(block);
             });
-            state.SetRegister(Registers.eax, Constant.Invalid);
+            state.SetRegister(Registers.eax, InvalidConstant.Create(PrimitiveType.Word32));
             wi.Process();
             Assert.AreEqual(0, state.GetRegister(Registers.eax).ToInt32());
         }
@@ -340,7 +340,7 @@ namespace Reko.UnitTests.Scanning
                 m.Sub(m.eax, m.eax);
                 scanner.Setup(x => x.FindContainingBlock(It.Is<Address>(addr => addr.Offset == 0x00010000))).Returns(block);
             });
-            state.SetRegister(Registers.eax, Constant.Invalid);
+            state.SetRegister(Registers.eax, InvalidConstant.Create(PrimitiveType.Word32));
             wi.Process();
             Assert.AreEqual(0, state.GetRegister(Registers.eax).ToInt32());
         }
@@ -355,7 +355,7 @@ namespace Reko.UnitTests.Scanning
             });
             state.SetRegister(Registers.al, Constant.Byte(3));
             wi.Process();
-            Assert.AreSame(Constant.Invalid, state.GetRegister(Registers.al));
+            Assert.IsTrue(state.GetRegister(Registers.al) is InvalidConstant);
         }
 
         [Test]

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 Pavel Tomin.
  *
@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Mocks
         {
             if (returnValues.ContainsKey(id))
                 return returnValues[id];
-            return Constant.Invalid;
+            return InvalidConstant.Create(id.DataType);
         }
 
         public void Test_AddReturnValue(Identifier id, Expression returnValue)

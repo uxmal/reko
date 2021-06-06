@@ -100,7 +100,7 @@ namespace Reko.Core
                 for (int i = 0; i < RegisterValues.Length; ++i)
                 {
                     Constant v = state!.GetRegister(RegisterValues[i].Register!);
-                    if (v == null || v == Constant.Invalid)
+                    if (v == null || !v.IsValid)
                         return false;
                     if (v.ToUInt32() != RegisterValues[i].Value)
                         return false;
@@ -110,8 +110,7 @@ namespace Reko.Core
             {
                 for (int i = 0; i < StackValues.Length; ++i)
                 {
-                    var c = state!.GetStackValue(StackValues[i].Offset) as Constant;
-                    if (c == null || c == Constant.Invalid)
+                    if (!(state!.GetStackValue(StackValues[i].Offset) is Constant c) || !c.IsValid)
                         return false;
                     if (c.ToUInt32() != StackValues[i].Value)
                         return false;

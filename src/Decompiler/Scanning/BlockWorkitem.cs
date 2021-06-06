@@ -817,7 +817,7 @@ namespace Reko.Scanning
                 // $REVIEW: do not trash stack register. It gives regression
                 // on some MSDOS binaries
                 if (reg != arch.StackRegister)
-                    state.SetValue(reg, Constant.Invalid);
+                    state.SetValue(reg, InvalidConstant.Create(reg.DataType));
             }
         }
 
@@ -1245,7 +1245,7 @@ namespace Reko.Scanning
             switch (stg)
             {
             case RegisterStorage reg:
-                state.SetValue(reg, Constant.Invalid);
+                state.SetValue(reg, InvalidConstant.Create(stg.DataType));
                 break;
             case SequenceStorage seq:
                 foreach (var e in seq.Elements)

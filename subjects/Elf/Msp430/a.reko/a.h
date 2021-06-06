@@ -173,7 +173,7 @@ Eq_90: (union "Eq_90" (ptr16 u0) (word20 u1))
 	T_115 (in out r11_47 @ 000040D8 : word16)
 	T_138 (in out r11_47 @ 000040FE : word16)
 	T_456 (in out r11_12 @ 000043DA : word16)
-	T_481 (in <invalid> @ 000043E2 : void)
+	T_481 (in <invalid> @ 000043E2 : ptr16)
 Eq_145: (fn void (word16))
 	T_145 (in __set_stackpointer @ 0000414C : word16)
 	T_146 (in signature of __set_stackpointer @ 00000000 : void)
@@ -4045,10 +4045,10 @@ T_480: (in 1<16> @ 000043BC : word16)
   Class: Eq_458
   DataType: word16
   OrigDataType: word16
-T_481: (in <invalid> @ 000043E2 : void)
+T_481: (in <invalid> @ 000043E2 : ptr16)
   Class: Eq_90
   DataType: ptr16
-  OrigDataType: void
+  OrigDataType: ptr16
 T_482: (in 0<20> @ 000043C0 : word20)
   Class: Eq_458
   DataType: word20

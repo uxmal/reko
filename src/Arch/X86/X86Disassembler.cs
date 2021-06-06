@@ -1518,7 +1518,7 @@ namespace Reko.Arch.X86
 
             // Now fetch the offset if there was any.
 
-            Constant offset;
+            Constant? offset;
             if (offsetWidth != null)
             {
                 if (!rdr.IsValidOffset(rdr.Offset + (uint)offsetWidth.Size -1))
@@ -1528,7 +1528,7 @@ namespace Reko.Arch.X86
             }
             else
             {
-                offset = Constant.Invalid;
+                offset = null;
             }
 
             return new MemoryOperand(dataWidth, offset)

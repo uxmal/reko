@@ -137,7 +137,7 @@ namespace Reko.UnitTests.Arch.X86
                 { Registers.cl, Constant.Byte(0) }
             };
             var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64", new Dictionary<string, object>()));
-            state.SetRegister(Registers.cx, Constant.Invalid);
+            state.SetRegister(Registers.cx, InvalidConstant.Create(Registers.cx.DataType));
             Assert.IsFalse(state.IsValid(Registers.cx));
             Assert.IsFalse(state.IsValid(Registers.cl));
             Assert.IsFalse(state.IsValid(Registers.ch));
@@ -151,7 +151,7 @@ namespace Reko.UnitTests.Arch.X86
                 { Registers.dl, Constant.Byte(3) }
             };
             var state = new X86State(new X86ArchitectureFlat64(new ServiceContainer(), "x86-protected-64", new Dictionary<string, object>()));
-            state.SetRegister(Registers.dh, Constant.Invalid);
+            state.SetRegister(Registers.dh, InvalidConstant.Create(Registers.dh.DataType));
             Assert.IsFalse(state.IsValid(Registers.dh));
             Assert.IsFalse(state.IsValid(Registers.dx));
             Assert.IsFalse(state.IsValid(Registers.edx));

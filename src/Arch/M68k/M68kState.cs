@@ -81,7 +81,7 @@ namespace Reko.Arch.M68k
             }
             else
             {
-                return Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
             }
         }
 

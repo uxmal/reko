@@ -65,12 +65,12 @@ namespace Reko.Arch.PowerPC
                 return value;
             }
             else
-                return Constant.Invalid;
+                return InvalidConstant.Create(reg.DataType);
         }
 
         public override void SetRegister(RegisterStorage reg, Constant c)
         {
-            c = c ?? Constant.Invalid;
+            c ??= InvalidConstant.Create(reg.DataType);
             regs[reg] = c;
         }
 

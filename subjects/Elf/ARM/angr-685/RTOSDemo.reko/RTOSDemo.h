@@ -20853,10 +20853,10 @@ T_4596: (in vSetErrorLED(cpsr) @ 00008204 : word32)
   Class: Eq_4585
   DataType: word32
   OrigDataType: word32
-T_4597: (in <invalid> @ 0000820A : void)
+T_4597: (in <invalid> @ 0000820A : ptr32)
   Class: Eq_4587
   DataType: ptr32
-  OrigDataType: void
+  OrigDataType: ptr32
 T_4598: (in false @ 000081C8 : bool)
   Class: Eq_4598
   DataType: bool

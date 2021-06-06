@@ -36,7 +36,7 @@ namespace Reko.Core.Operators
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
-                return Constant.Invalid;
+                return InvalidConstant.Create(c1.DataType);
             if (c1.DataType.IsPointer && c2.DataType.IsIntegral)
             {
                 var dt = PrimitiveType.Create(Domain.Pointer, c1.DataType.BitSize);

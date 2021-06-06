@@ -313,7 +313,7 @@ namespace Reko.Core
                     return null;
                 var dt = PrimitiveType.CreateWord(impref.ReferenceAddress.DataType.BitSize);
                 if (!program.Architecture.TryRead(seg.MemoryArea, impref.ReferenceAddress, dt, out Constant cIndirect))
-                    return Constant.Invalid;
+                    return InvalidConstant.Create(program.Architecture.WordWidth);
                 return Constant.Create(program.Architecture.WordWidth, cIndirect.ToInt64());
             }
             else

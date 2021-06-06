@@ -173,10 +173,10 @@ T_31: (in r0_45 @ 00000098 : cui16)
   Class: Eq_31
   DataType: cui16
   OrigDataType: word16
-T_32: (in <invalid> @ 00000098 : void)
+T_32: (in <invalid> @ 00000098 : word16)
   Class: Eq_31
   DataType: cui16
-  OrigDataType: void
+  OrigDataType: word16
 T_33: (in fn011C @ 00000098 : ptr16)
   Class: Eq_33
   DataType: (ptr16 Eq_33)

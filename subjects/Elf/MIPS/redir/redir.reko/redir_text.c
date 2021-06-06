@@ -1480,10 +1480,10 @@ struct Eq_n * clist_new(word32 ra, union Eq_n & r4Out, union Eq_n & r5Out)
 	return r2_n;
 }
 
-// 00403CBC: Register int32 clist_add(Register (ptr32 Eq_n) r4, Register Eq_n r5, Register out Eq_n r5Out)
+// 00403CBC: Register int32 clist_add(Register (ptr32 Eq_n) r4, Register Eq_n r5, Register out ptr32 r5Out)
 // Called from:
 //      main
-int32 clist_add(struct Eq_n * r4, Eq_n r5, union Eq_n & r5Out)
+int32 clist_add(struct Eq_n * r4, Eq_n r5, ptr32 & r5Out)
 {
 	if (r4->t0008 != 0x00)
 	{
@@ -1496,7 +1496,7 @@ int32 clist_add(struct Eq_n * r4, Eq_n r5, union Eq_n & r5Out)
 	if ((word32) (r4->dw0004 < r4->dw0000) != 0x00)
 		r4->dw0004 = r4->dw0000;
 	int32 r2_n = r4->dw0000;
-	r5Out.u0 = (char *) <invalid>;
+	r5Out = <invalid>;
 	return r2_n;
 }
 

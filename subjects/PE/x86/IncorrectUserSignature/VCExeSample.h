@@ -83,10 +83,10 @@ T_15: (in eax_25 @ 00401138 : word32)
   Class: Eq_15
   DataType: word32
   OrigDataType: word32
-T_16: (in <invalid> @ 00401138 : void)
+T_16: (in <invalid> @ 00401138 : word32)
   Class: Eq_15
   DataType: word32
-  OrigDataType: void
+  OrigDataType: word32
 T_17: (in 0<32> @ 00401150 : word32)
   Class: Eq_17
   DataType: word32

@@ -15,11 +15,11 @@ word16 fn0115(struct Eq_n & gp14Out)
 	return gp0_n;
 }
 
-// 011B: Register cui16 fn011B(Register cui16 gp0, Register word16 gp1, Register word16 gp3, Register word16 gp4, Register (ptr16 Eq_n) gp14, Register out Eq_n gp14Out)
+// 011B: Register cui16 fn011B(Register cui16 gp0, Register word16 gp1, Register word16 gp3, Register word16 gp4, Register (ptr16 Eq_n) gp14, Register out ptr16 gp14Out)
 // Called from:
 //      fn0100
 //      fn0115
-cui16 fn011B(cui16 gp0, word16 gp1, word16 gp3, word16 gp4, struct Eq_n * gp14, union Eq_n & gp14Out)
+cui16 fn011B(cui16 gp0, word16 gp1, word16 gp3, word16 gp4, struct Eq_n * gp14, ptr16 & gp14Out)
 {
 	do
 	{
@@ -41,7 +41,7 @@ cui16 fn011B(cui16 gp0, word16 gp1, word16 gp3, word16 gp4, struct Eq_n * gp14, 
 		gp0 |= __shift_logical(gp4, 0x03 - gp1_n);
 		gp1 = gp1_n + 0x01;
 	} while (gp1_n <= 0x02);
-	gp14Out.u0 = <invalid>;
+	gp14Out = <invalid>;
 	return gp0;
 }
 

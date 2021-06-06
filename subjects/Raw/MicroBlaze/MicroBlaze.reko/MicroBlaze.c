@@ -1037,7 +1037,7 @@ Eq_n fn0000186C(Eq_n r5, union Eq_n * r6)
 	return r3_n;
 }
 
-// 00001A68: Register ui32 fn00001A68(Register Eq_n r0, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out)
+// 00001A68: Register ui32 fn00001A68(Register Eq_n r0, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register out (ptr32 Eq_n) r4Out, Register out Eq_n r5Out, Register out Eq_n r6Out)
 // Called from:
 //      fn00001BBC
 //      fn00001E88
@@ -1051,7 +1051,7 @@ Eq_n fn0000186C(Eq_n r5, union Eq_n * r6)
 //      fn000041BC
 //      fn00005318
 //      fn00005538
-ui32 fn00001A68(Eq_n r0, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out)
+ui32 fn00001A68(Eq_n r0, Eq_n r5, Eq_n r6, Eq_n r7, struct Eq_n & r4Out, union Eq_n & r5Out, union Eq_n & r6Out)
 {
 	Eq_n r5_n = *((word32) r5 + 80);
 	if (Test(NE,r5_n))
@@ -1084,7 +1084,7 @@ l00001AD8:
 					if (Test(EQ,r3_n * 0x02))
 					{
 						((word32) r5 + 76)->u0 = ~0x03;
-						r4Out.u0 = <invalid>;
+						r4Out = (struct Eq_n *) <invalid>;
 						r5Out = r5_n;
 						r6Out = r6_n;
 						return ~0x03;
@@ -1099,7 +1099,7 @@ l00001AD8:
 			}
 			else
 				*((word32) r5 + 76) = r6;
-			r4Out.u0 = <invalid>;
+			r4Out = (struct Eq_n *) <invalid>;
 			r5Out = r5_n;
 			r6Out = r6_n;
 			return r3_n;
@@ -2015,12 +2015,12 @@ void fn00003964()
 	fn00018918();
 }
 
-// 00003990: Register Eq_n fn00003990(Register Eq_n r0, Register Eq_n r3, Register Eq_n r19, Register Eq_n r23, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out Eq_n r8Out, Register out Eq_n r9Out, Register out Eq_n r10Out, Register out Eq_n r19Out, Register out Eq_n r21Out, Register out Eq_n r22Out, Register out Eq_n r23Out, Register out Eq_n r24Out, Register out Eq_n r25Out, Register out Eq_n r26Out, Register out Eq_n r27Out, Register out Eq_n r28Out, Register out Eq_n r29Out, Register out Eq_n r30Out, Register out Eq_n r31Out)
+// 00003990: Register Eq_n fn00003990(Register Eq_n r0, Register Eq_n r3, Register Eq_n r19, Register Eq_n r23, Register out Eq_n r4Out, Register out Eq_n r5Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out (ptr32 Eq_n) r8Out, Register out (ptr32 Eq_n) r9Out, Register out (ptr32 Eq_n) r10Out, Register out (ptr32 Eq_n) r19Out, Register out (ptr32 Eq_n) r21Out, Register out (ptr32 Eq_n) r22Out, Register out (ptr32 Eq_n) r23Out, Register out (ptr32 Eq_n) r24Out, Register out (ptr32 Eq_n) r25Out, Register out (ptr32 Eq_n) r26Out, Register out (ptr32 Eq_n) r27Out, Register out (ptr32 Eq_n) r28Out, Register out (ptr32 Eq_n) r29Out, Register out (ptr32 Eq_n) r30Out, Register out (ptr32 Eq_n) r31Out)
 // Called from:
 //      fn00005F20
 //      fn0000889C
 //      fn00008E80
-Eq_n fn00003990(Eq_n r0, Eq_n r3, Eq_n r19, Eq_n r23, union Eq_n & r4Out, union Eq_n & r5Out, ptr32 & r6Out, ptr32 & r7Out, union Eq_n & r8Out, union Eq_n & r9Out, union Eq_n & r10Out, union Eq_n & r19Out, union Eq_n & r21Out, union Eq_n & r22Out, union Eq_n & r23Out, union Eq_n & r24Out, union Eq_n & r25Out, union Eq_n & r26Out, union Eq_n & r27Out, union Eq_n & r28Out, union Eq_n & r29Out, union Eq_n & r30Out, union Eq_n & r31Out)
+Eq_n fn00003990(Eq_n r0, Eq_n r3, Eq_n r19, Eq_n r23, union Eq_n & r4Out, union Eq_n & r5Out, ptr32 & r6Out, ptr32 & r7Out, struct Eq_n & r8Out, struct Eq_n & r9Out, struct Eq_n & r10Out, struct Eq_n & r19Out, struct Eq_n & r21Out, struct Eq_n & r22Out, struct Eq_n & r23Out, struct Eq_n & r24Out, struct Eq_n & r25Out, struct Eq_n & r26Out, struct Eq_n & r27Out, struct Eq_n & r28Out, struct Eq_n & r29Out, struct Eq_n & r30Out, struct Eq_n & r31Out)
 {
 	if (Test(NE,r3))
 	{
@@ -2061,21 +2061,21 @@ Eq_n fn00003990(Eq_n r0, Eq_n r3, Eq_n r19, Eq_n r23, union Eq_n & r4Out, union 
 				r5Out = r5;
 				r6Out = r6;
 				r7Out = r7;
-				r8Out.u0 = <invalid>;
-				r9Out.u0 = <invalid>;
-				r10Out.u0 = <invalid>;
-				r19Out.u0 = <invalid>;
-				r21Out.u0 = <invalid>;
-				r22Out.u0 = <invalid>;
-				r23Out.u0 = <invalid>;
-				r24Out.u0 = <invalid>;
-				r25Out.u0 = <invalid>;
-				r26Out.u0 = <invalid>;
-				r27Out.u0 = <invalid>;
-				r28Out.u0 = <invalid>;
-				r29Out.u0 = <invalid>;
-				r30Out.u0 = <invalid>;
-				r31Out.u0 = <invalid>;
+				r8Out = (struct Eq_n *) <invalid>;
+				r9Out = (struct Eq_n *) <invalid>;
+				r10Out = (struct Eq_n *) <invalid>;
+				r19Out = (struct Eq_n *) <invalid>;
+				r21Out = (struct Eq_n *) <invalid>;
+				r22Out = (struct Eq_n *) <invalid>;
+				r23Out = (struct Eq_n *) <invalid>;
+				r24Out = (struct Eq_n *) <invalid>;
+				r25Out = (struct Eq_n *) <invalid>;
+				r26Out = (struct Eq_n *) <invalid>;
+				r27Out = (struct Eq_n *) <invalid>;
+				r28Out = (struct Eq_n *) <invalid>;
+				r29Out = (struct Eq_n *) <invalid>;
+				r30Out = (struct Eq_n *) <invalid>;
+				r31Out = (struct Eq_n *) <invalid>;
 				return <invalid>;
 			}
 			*((word32) r19 + 24) = r5;
@@ -2084,21 +2084,21 @@ l000039A8:
 			r5Out = r5;
 			r6Out = r6;
 			r7Out = r7;
-			r8Out.u0 = <invalid>;
-			r9Out.u0 = <invalid>;
-			r10Out.u0 = <invalid>;
-			r19Out.u0 = <invalid>;
-			r21Out.u0 = <invalid>;
-			r22Out.u0 = <invalid>;
-			r23Out.u0 = <invalid>;
-			r24Out.u0 = <invalid>;
-			r25Out.u0 = <invalid>;
-			r26Out.u0 = <invalid>;
-			r27Out.u0 = <invalid>;
-			r28Out.u0 = <invalid>;
-			r29Out.u0 = <invalid>;
-			r30Out.u0 = <invalid>;
-			r31Out.u0 = <invalid>;
+			r8Out = (struct Eq_n *) <invalid>;
+			r9Out = (struct Eq_n *) <invalid>;
+			r10Out = (struct Eq_n *) <invalid>;
+			r19Out = (struct Eq_n *) <invalid>;
+			r21Out = (struct Eq_n *) <invalid>;
+			r22Out = (struct Eq_n *) <invalid>;
+			r23Out = (struct Eq_n *) <invalid>;
+			r24Out = (struct Eq_n *) <invalid>;
+			r25Out = (struct Eq_n *) <invalid>;
+			r26Out = (struct Eq_n *) <invalid>;
+			r27Out = (struct Eq_n *) <invalid>;
+			r28Out = (struct Eq_n *) <invalid>;
+			r29Out = (struct Eq_n *) <invalid>;
+			r30Out = (struct Eq_n *) <invalid>;
+			r31Out = (struct Eq_n *) <invalid>;
 			return <invalid>;
 		}
 		fn000188F0();
@@ -2120,11 +2120,11 @@ void fn00003A60()
 	fn000188F0();
 }
 
-// 00003AA4: Register Eq_n fn00003AA4(Register Eq_n r0, Register Eq_n r5, Register out ptr32 r3Out, Register out ptr32 r4Out, Register out Eq_n r19Out, Register out Eq_n r21Out, Register out Eq_n r23Out, Register out Eq_n r24Out)
+// 00003AA4: Register Eq_n fn00003AA4(Register Eq_n r0, Register Eq_n r5, Register out ptr32 r3Out, Register out ptr32 r4Out, Register out (ptr32 Eq_n) r19Out, Register out (ptr32 Eq_n) r21Out, Register out (ptr32 Eq_n) r23Out, Register out (ptr32 Eq_n) r24Out)
 // Called from:
 //      fn00003C74
 //      fn00003EC8
-Eq_n fn00003AA4(Eq_n r0, Eq_n r5, ptr32 & r3Out, ptr32 & r4Out, union Eq_n & r19Out, union Eq_n & r21Out, union Eq_n & r23Out, union Eq_n & r24Out)
+Eq_n fn00003AA4(Eq_n r0, Eq_n r5, ptr32 & r3Out, ptr32 & r4Out, struct Eq_n & r19Out, struct Eq_n & r21Out, struct Eq_n & r23Out, struct Eq_n & r24Out)
 {
 	Eq_n r3_n = *((word32) r5 + 24);
 	if (Test(EQ,r3_n))
@@ -2161,10 +2161,10 @@ l00003B2C:
 l00003B44:
 				r3Out = ~0x00;
 				r4Out = r4_n;
-				r19Out.u0 = <invalid>;
-				r21Out.u0 = <invalid>;
-				r23Out.u0 = <invalid>;
-				r24Out.u0 = <invalid>;
+				r19Out = (struct Eq_n *) <invalid>;
+				r21Out = (struct Eq_n *) <invalid>;
+				r23Out = (struct Eq_n *) <invalid>;
+				r24Out = (struct Eq_n *) <invalid>;
 				return <invalid>;
 			}
 		}
@@ -2242,10 +2242,10 @@ l00003B98:
 		}
 		r3Out = 0x00;
 		r4Out = r4;
-		r19Out.u0 = <invalid>;
-		r21Out.u0 = <invalid>;
-		r23Out.u0 = <invalid>;
-		r24Out.u0 = <invalid>;
+		r19Out = (struct Eq_n *) <invalid>;
+		r21Out = (struct Eq_n *) <invalid>;
+		r23Out = (struct Eq_n *) <invalid>;
+		r24Out = (struct Eq_n *) <invalid>;
 		return <invalid>;
 	}
 }
@@ -2849,14 +2849,14 @@ Eq_n fn000041BC(Eq_n r0, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r9, Eq_n r10, union Eq_
 	}
 }
 
-// 00005318: Register Eq_n fn00005318(Register Eq_n r0, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register out Eq_n r3Out, Register out ptr32 r4Out, Register out Eq_n r6Out, Register out (ptr32 Eq_n) r19Out, Register out Eq_n r21Out, Register out (ptr32 Eq_n) r22Out, Register out Eq_n r23Out, Register out ptr32 r24Out, Register out Eq_n r25Out, Register out Eq_n r26Out, Register out (ptr32 Eq_n) r27Out, Register out Eq_n r28Out, Register out Eq_n r29Out, Register out Eq_n r30Out)
+// 00005318: Register Eq_n fn00005318(Register Eq_n r0, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register out Eq_n r3Out, Register out ptr32 r4Out, Register out Eq_n r6Out, Register out (ptr32 Eq_n) r19Out, Register out Eq_n r21Out, Register out (ptr32 Eq_n) r22Out, Register out Eq_n r23Out, Register out ptr32 r24Out, Register out Eq_n r25Out, Register out Eq_n r26Out, Register out (ptr32 Eq_n) r27Out, Register out (ptr32 Eq_n) r28Out, Register out (ptr32 Eq_n) r29Out, Register out (ptr32 Eq_n) r30Out)
 // Called from:
 //      fn00005B0C
 //      fn00005F20
 //      fn00008008
 //      fn00008234
 //      fn00008E80
-Eq_n fn00005318(Eq_n r0, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r3Out, ptr32 & r4Out, union Eq_n & r6Out, struct Eq_n & r19Out, union Eq_n & r21Out, struct Eq_n & r22Out, union Eq_n & r23Out, ptr32 & r24Out, union Eq_n & r25Out, union Eq_n & r26Out, struct Eq_n & r27Out, union Eq_n & r28Out, union Eq_n & r29Out, union Eq_n & r30Out)
+Eq_n fn00005318(Eq_n r0, Eq_n r5, Eq_n r6, Eq_n r7, union Eq_n & r3Out, ptr32 & r4Out, union Eq_n & r6Out, struct Eq_n & r19Out, union Eq_n & r21Out, struct Eq_n & r22Out, union Eq_n & r23Out, ptr32 & r24Out, union Eq_n & r25Out, union Eq_n & r26Out, struct Eq_n & r27Out, struct Eq_n & r28Out, struct Eq_n & r29Out, struct Eq_n & r30Out)
 {
 	Eq_n r23_n;
 	Eq_n r3_n;
@@ -2885,9 +2885,9 @@ l00005384:
 				r25Out = dwLoc0C;
 				r26Out = dwLoc08;
 				r27Out = dwLoc04;
-				r28Out.u0 = <invalid>;
-				r29Out.u0 = <invalid>;
-				r30Out.u0 = <invalid>;
+				r28Out = (struct Eq_n *) <invalid>;
+				r29Out = (struct Eq_n *) <invalid>;
+				r30Out = (struct Eq_n *) <invalid>;
 				return r0;
 			}
 			Eq_n r19_n;
@@ -4126,10 +4126,10 @@ word32 fn000070A4()
 	return r22_n;
 }
 
-// 00007F88: Register (ptr32 Eq_n) fn00007F88(Register (ptr32 Eq_n) r4, Register ui32 r6, Register (ptr32 Eq_n) r7, Register ui32 r18, Register (ptr32 Eq_n) r19, Register out Eq_n r19Out, Register out Eq_n r21Out)
+// 00007F88: Register (ptr32 Eq_n) fn00007F88(Register (ptr32 Eq_n) r4, Register ui32 r6, Register (ptr32 Eq_n) r7, Register ui32 r18, Register (ptr32 Eq_n) r19, Register out (ptr32 Eq_n) r19Out, Register out (ptr32 Eq_n) r21Out)
 // Called from:
 //      fn0000B514
-struct Eq_n * fn00007F88(struct Eq_n * r4, ui32 r6, struct Eq_n * r7, ui32 r18, struct Eq_n * r19, union Eq_n & r19Out, union Eq_n & r21Out)
+struct Eq_n * fn00007F88(struct Eq_n * r4, ui32 r6, struct Eq_n * r7, ui32 r18, struct Eq_n * r19, struct Eq_n & r19Out, struct Eq_n & r21Out)
 {
 	ui32 r3_n;
 	if (Test(LT,r18))
@@ -4143,15 +4143,15 @@ struct Eq_n * fn00007F88(struct Eq_n * r4, ui32 r6, struct Eq_n * r7, ui32 r18, 
 	{
 		if (Test(EQ,r7))
 		{
-			r19Out.u0 = <invalid>;
-			r21Out.u0 = <invalid>;
+			r19Out = (struct Eq_n *) <invalid>;
+			r21Out = (struct Eq_n *) <invalid>;
 			return r7;
 		}
 		else
 		{
 			r7->ptr0000 = r19;
-			r19Out.u0 = <invalid>;
-			r21Out.u0 = <invalid>;
+			r19Out = (struct Eq_n *) <invalid>;
+			r21Out = (struct Eq_n *) <invalid>;
 			return null;
 		}
 	}
@@ -4209,11 +4209,11 @@ void fn00008030(Eq_n r0, Eq_n r5, Eq_n r21)
 	fn00008038(r0, r5, r21, out r4_n, out r8_n, out r21_n);
 }
 
-// 00008038: Register Eq_n fn00008038(Register Eq_n r0, Register Eq_n r5, Register Eq_n r21, Register out Eq_n r4Out, Register out Eq_n r8Out, Register out Eq_n r21Out)
+// 00008038: Register Eq_n fn00008038(Register Eq_n r0, Register Eq_n r5, Register Eq_n r21, Register out Eq_n r4Out, Register out Eq_n r8Out, Register out (ptr32 Eq_n) r21Out)
 // Called from:
 //      fn00008008
 //      fn00008030
-Eq_n fn00008038(Eq_n r0, Eq_n r5, Eq_n r21, union Eq_n & r4Out, union Eq_n & r8Out, union Eq_n & r21Out)
+Eq_n fn00008038(Eq_n r0, Eq_n r5, Eq_n r21, union Eq_n & r4Out, union Eq_n & r8Out, struct Eq_n & r21Out)
 {
 	Eq_n r4_n = r5 ^ *r21;
 	if (Test(NE,r4_n))
@@ -4221,7 +4221,7 @@ Eq_n fn00008038(Eq_n r0, Eq_n r5, Eq_n r21, union Eq_n & r4Out, union Eq_n & r8O
 l0000804C:
 		r4Out = r4_n;
 		r8Out = r8;
-		r21Out.u0 = <invalid>;
+		r21Out = (struct Eq_n *) <invalid>;
 		return ~0x01;
 	}
 	Eq_n r4_n = *((word32) r21 + 4);
@@ -4307,7 +4307,7 @@ l000081B8:
 	fn00003674(r0, r3, r4, r5, r6, r19, r22, r23, r24, r26, r27, r28, out r22_n);
 	r4Out = r4_n;
 	r8Out = r8;
-	r21Out.u0 = <invalid>;
+	r21Out = (struct Eq_n *) <invalid>;
 	return 0x00;
 }
 
@@ -4453,19 +4453,19 @@ Eq_n fn000086C8(struct Eq_n * r4, Eq_n r5, Eq_n r6, Eq_n r7, Eq_n r8, ui32 r9, u
 	}
 }
 
-// 000086F4: Register Eq_n fn000086F4(Register (ptr32 Eq_n) r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register out ptr32 r4Out, Register out Eq_n r8Out)
+// 000086F4: Register Eq_n fn000086F4(Register (ptr32 Eq_n) r4, Register Eq_n r5, Register Eq_n r6, Register Eq_n r7, Register out ptr32 r4Out, Register out (ptr32 Eq_n) r8Out)
 // Called from:
 //      fn00000248
 //      fn00000378
 //      fn000086C8
-Eq_n fn000086F4(struct Eq_n * r4, Eq_n r5, Eq_n r6, Eq_n r7, ptr32 & r4Out, union Eq_n & r8Out)
+Eq_n fn000086F4(struct Eq_n * r4, Eq_n r5, Eq_n r6, Eq_n r7, ptr32 & r4Out, struct Eq_n & r8Out)
 {
 	if (Test(NE,r5 >> 31))
 	{
 		ptr32 r4_n;
 		Eq_n r3_n = fn00008778(r4, r6, r7, out r4_n);
 		r4Out = r4_n;
-		r8Out.u0 = <invalid>;
+		r8Out = (struct Eq_n *) <invalid>;
 		return r3_n;
 	}
 	else
@@ -4473,7 +4473,7 @@ Eq_n fn000086F4(struct Eq_n * r4, Eq_n r5, Eq_n r6, Eq_n r7, ptr32 & r4Out, unio
 		ptr32 r4_n;
 		Eq_n r3_n = fn00008778(r4, r6, r7, out r4_n);
 		r4Out = r4_n;
-		r8Out.u0 = <invalid>;
+		r8Out = (struct Eq_n *) <invalid>;
 		return r3_n;
 	}
 }
@@ -4556,10 +4556,10 @@ Eq_n fn000087FC(Eq_n r0, Eq_n r19, Eq_n r23, ptr32 & r4Out, ptr32 & r5Out, ptr32
 	return r3_n;
 }
 
-// 00008824: Register Eq_n fn00008824(Register Eq_n r0, Register Eq_n r7, Register Eq_n r19, Register Eq_n r22, Register out ptr32 r4Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r8Out, Register out Eq_n r9Out, Register out ptr32 r19Out, Register out ptr32 r21Out, Register out ptr32 r22Out, Register out ptr32 r23Out, Register out ptr32 r24Out)
+// 00008824: Register Eq_n fn00008824(Register Eq_n r0, Register Eq_n r7, Register Eq_n r19, Register Eq_n r22, Register out ptr32 r4Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r8Out, Register out (ptr32 Eq_n) r9Out, Register out ptr32 r19Out, Register out ptr32 r21Out, Register out ptr32 r22Out, Register out ptr32 r23Out, Register out ptr32 r24Out)
 // Called from:
 //      fn00000248
-Eq_n fn00008824(Eq_n r0, Eq_n r7, Eq_n r19, Eq_n r22, ptr32 & r4Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, union Eq_n & r9Out, ptr32 & r19Out, ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out, ptr32 & r24Out)
+Eq_n fn00008824(Eq_n r0, Eq_n r7, Eq_n r19, Eq_n r22, ptr32 & r4Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, struct Eq_n & r9Out, ptr32 & r19Out, ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out, ptr32 & r24Out)
 {
 	Eq_n r3_n = *((word32) r19 + 4);
 	if (Test(GE,(-(r3_n ^ 666) | r3_n ^ 666) & ((-(r3_n ^ 113) | r3_n ^ 113) & ((-(r3_n ^ 0x67) | r3_n ^ 0x67) & ((-(r3_n ^ 0x5B) | r3_n ^ 0x5B) & ((-(r3_n ^ 0x45) | r3_n ^ 0x45) & (-(r3_n ^ 0x2A) | r3_n ^ 0x2A)))))))
@@ -4580,7 +4580,7 @@ Eq_n fn00008824(Eq_n r0, Eq_n r7, Eq_n r19, Eq_n r22, ptr32 & r4Out, ptr32 & r6O
 		r6Out = r6_n;
 		r7Out = r7_n;
 		r8Out = r8_n;
-		r9Out.u0 = <invalid>;
+		r9Out = (struct Eq_n *) <invalid>;
 		r19Out = r19_n;
 		r21Out = r21_n;
 		r22Out = r22_n;
@@ -4604,7 +4604,7 @@ Eq_n fn00008824(Eq_n r0, Eq_n r7, Eq_n r19, Eq_n r22, ptr32 & r4Out, ptr32 & r6O
 		r6Out = r6_n;
 		r7Out = r7_n;
 		r8Out = r8_n;
-		r9Out.u0 = <invalid>;
+		r9Out = (struct Eq_n *) <invalid>;
 		r19Out = r19_n;
 		r21Out = r21_n;
 		r22Out = r22_n;
@@ -9469,10 +9469,10 @@ word32 fn0000B9E0(ptr32 & r19Out, ptr32 & r21Out, ptr32 & r22Out, ptr32 & r23Out
 	return ~0x05;
 }
 
-// 0000BA7C: Register Eq_n fn0000BA7C(Register uint32 r4, Register (ptr32 Eq_n) r5, Register Eq_n r6, Register word32 r8, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r8Out, Register out Eq_n r19Out, Register out Eq_n r22Out)
+// 0000BA7C: Register Eq_n fn0000BA7C(Register uint32 r4, Register (ptr32 Eq_n) r5, Register Eq_n r6, Register word32 r8, Register out Eq_n r3Out, Register out Eq_n r4Out, Register out Eq_n r8Out, Register out (ptr32 Eq_n) r19Out, Register out (ptr32 Eq_n) r22Out)
 // Called from:
 //      fn0002FFD0
-Eq_n fn0000BA7C(uint32 r4, struct Eq_n * r5, Eq_n r6, word32 r8, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r8Out, union Eq_n & r19Out, union Eq_n & r22Out)
+Eq_n fn0000BA7C(uint32 r4, struct Eq_n * r5, Eq_n r6, word32 r8, union Eq_n & r3Out, union Eq_n & r4Out, union Eq_n & r8Out, struct Eq_n & r19Out, struct Eq_n & r22Out)
 {
 	Eq_n r8_n;
 	Eq_n r3_n;
@@ -9620,8 +9620,8 @@ l0000BB84:
 											r3Out = r3_n;
 											r4Out = r4_n;
 											r8Out = r8_n;
-											r19Out.u0 = <invalid>;
-											r22Out.u0 = <invalid>;
+											r19Out = (struct Eq_n *) <invalid>;
+											r22Out = (struct Eq_n *) <invalid>;
 											return r0;
 										}
 										r22_n = r3_n;
@@ -9631,8 +9631,8 @@ l0000BD50:
 										r3Out = r3_n;
 										r4Out = r4_n;
 										r8Out = r8_n;
-										r19Out.u0 = <invalid>;
-										r22Out.u0 = <invalid>;
+										r19Out = (struct Eq_n *) <invalid>;
+										r22Out = (struct Eq_n *) <invalid>;
 										return r0;
 									}
 								}
@@ -13218,11 +13218,11 @@ l0000E530:
 	return 0x01;
 }
 
-// 0000DB74: Register Eq_n fn0000DB74(Register Eq_n r19, Register Eq_n r21, Register Eq_n r22, Register Eq_n r23, Register out (ptr32 Eq_n) r4Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r19Out, Register out ptr32 r21Out, Register out Eq_n r22Out, Register out Eq_n r23Out, Register out (ptr32 Eq_n) r24Out, Register out Eq_n r25Out, Register out Eq_n r26Out, Register out Eq_n r27Out, Register out Eq_n r28Out, Register out Eq_n r29Out, Register out Eq_n r30Out, Register out ptr32 r31Out)
+// 0000DB74: Register Eq_n fn0000DB74(Register Eq_n r19, Register Eq_n r21, Register Eq_n r22, Register Eq_n r23, Register out (ptr32 Eq_n) r4Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r19Out, Register out ptr32 r21Out, Register out (ptr32 Eq_n) r22Out, Register out (ptr32 Eq_n) r23Out, Register out (ptr32 Eq_n) r24Out, Register out Eq_n r25Out, Register out (ptr32 Eq_n) r26Out, Register out (ptr32 Eq_n) r27Out, Register out (ptr32 Eq_n) r28Out, Register out (ptr32 Eq_n) r29Out, Register out (ptr32 Eq_n) r30Out, Register out ptr32 r31Out)
 // Called from:
 //      fn0000CEE4
 //      fn0002FFD0
-Eq_n fn0000DB74(Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, struct Eq_n & r4Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r19Out, ptr32 & r21Out, union Eq_n & r22Out, union Eq_n & r23Out, struct Eq_n & r24Out, union Eq_n & r25Out, union Eq_n & r26Out, union Eq_n & r27Out, union Eq_n & r28Out, union Eq_n & r29Out, union Eq_n & r30Out, ptr32 & r31Out)
+Eq_n fn0000DB74(Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, struct Eq_n & r4Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r19Out, ptr32 & r21Out, struct Eq_n & r22Out, struct Eq_n & r23Out, struct Eq_n & r24Out, union Eq_n & r25Out, struct Eq_n & r26Out, struct Eq_n & r27Out, struct Eq_n & r28Out, struct Eq_n & r29Out, struct Eq_n & r30Out, ptr32 & r31Out)
 {
 	Eq_n r19_n;
 	struct Eq_n * r22_n;
@@ -13286,15 +13286,15 @@ Eq_n fn0000DB74(Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, struct Eq_n & r4Out, uni
 			r8Out = r8;
 			r19Out = r19_n;
 			r21Out = r21_n;
-			r22Out.u0 = <invalid>;
-			r23Out.u0 = <invalid>;
+			r22Out = (struct Eq_n *) <invalid>;
+			r23Out = (struct Eq_n *) <invalid>;
 			r24Out = r31_n;
 			r25Out = r25_n;
-			r26Out.u0 = <invalid>;
-			r27Out.u0 = <invalid>;
-			r28Out.u0 = <invalid>;
-			r29Out.u0 = <invalid>;
-			r30Out.u0 = <invalid>;
+			r26Out = (struct Eq_n *) <invalid>;
+			r27Out = (struct Eq_n *) <invalid>;
+			r28Out = (struct Eq_n *) <invalid>;
+			r29Out = (struct Eq_n *) <invalid>;
+			r30Out = (struct Eq_n *) <invalid>;
 			r31Out = ~0x02;
 			return ~0x5FD3;
 		}
@@ -13332,15 +13332,15 @@ Eq_n fn0000DB74(Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, struct Eq_n & r4Out, uni
 					r8Out.u0 = 0x3F50;
 					r19Out = r3_n;
 					r21Out = r21_n;
-					r22Out.u0 = <invalid>;
-					r23Out.u0 = <invalid>;
+					r22Out = (struct Eq_n *) <invalid>;
+					r23Out = (struct Eq_n *) <invalid>;
 					r24Out = r31_n;
 					r25Out = r3_n;
-					r26Out.u0 = <invalid>;
-					r27Out.u0 = <invalid>;
-					r28Out.u0 = <invalid>;
-					r29Out.u0 = <invalid>;
-					r30Out.u0 = <invalid>;
+					r26Out = (struct Eq_n *) <invalid>;
+					r27Out = (struct Eq_n *) <invalid>;
+					r28Out = (struct Eq_n *) <invalid>;
+					r29Out = (struct Eq_n *) <invalid>;
+					r30Out = (struct Eq_n *) <invalid>;
 					r31Out = r21_n;
 					return 0x1F;
 				}
@@ -13387,15 +13387,15 @@ Eq_n fn0000DB74(Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, struct Eq_n & r4Out, uni
 						r8Out.u0 = 0x3F50;
 						r19Out = r5_n;
 						r21Out = r21_n + ~0x00;
-						r22Out.u0 = <invalid>;
-						r23Out.u0 = <invalid>;
+						r22Out = (struct Eq_n *) <invalid>;
+						r23Out = (struct Eq_n *) <invalid>;
 						r24Out = (struct Eq_n *) &r31_n->b0001;
 						r25Out = r25_n;
-						r26Out.u0 = <invalid>;
-						r27Out.u0 = <invalid>;
-						r28Out.u0 = <invalid>;
-						r29Out.u0 = <invalid>;
-						r30Out.u0 = <invalid>;
+						r26Out = (struct Eq_n *) <invalid>;
+						r27Out = (struct Eq_n *) <invalid>;
+						r28Out = (struct Eq_n *) <invalid>;
+						r29Out = (struct Eq_n *) <invalid>;
+						r30Out = (struct Eq_n *) <invalid>;
 						r31Out = r21_n + ~0x00;
 						return 0x1F;
 					}
@@ -13443,15 +13443,15 @@ Eq_n fn0000DB74(Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, struct Eq_n & r4Out, uni
 							r8Out = r8_n;
 							r19Out = r6_n;
 							r21Out = r21_n + ~0x01;
-							r22Out.u0 = <invalid>;
-							r23Out.u0 = <invalid>;
+							r22Out = (struct Eq_n *) <invalid>;
+							r23Out = (struct Eq_n *) <invalid>;
 							r24Out = (struct Eq_n *) &r31_n->b0002;
 							r25Out = r25_n;
-							r26Out.u0 = <invalid>;
-							r27Out.u0 = <invalid>;
-							r28Out.u0 = <invalid>;
-							r29Out.u0 = <invalid>;
-							r30Out.u0 = <invalid>;
+							r26Out = (struct Eq_n *) <invalid>;
+							r27Out = (struct Eq_n *) <invalid>;
+							r28Out = (struct Eq_n *) <invalid>;
+							r29Out = (struct Eq_n *) <invalid>;
+							r30Out = (struct Eq_n *) <invalid>;
 							r31Out = r21_n + ~0x01;
 							return 0x1F;
 						}
@@ -13499,15 +13499,15 @@ Eq_n fn0000DB74(Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, struct Eq_n & r4Out, uni
 								r8Out = r8_n;
 								r19Out = r5_n;
 								r21Out = r21_n + ~0x02;
-								r22Out.u0 = <invalid>;
-								r23Out.u0 = <invalid>;
+								r22Out = (struct Eq_n *) <invalid>;
+								r23Out = (struct Eq_n *) <invalid>;
 								r24Out = (struct Eq_n *) &r31_n->b0003;
 								r25Out = r25_n;
-								r26Out.u0 = <invalid>;
-								r27Out.u0 = <invalid>;
-								r28Out.u0 = <invalid>;
-								r29Out.u0 = <invalid>;
-								r30Out.u0 = <invalid>;
+								r26Out = (struct Eq_n *) <invalid>;
+								r27Out = (struct Eq_n *) <invalid>;
+								r28Out = (struct Eq_n *) <invalid>;
+								r29Out = (struct Eq_n *) <invalid>;
+								r30Out = (struct Eq_n *) <invalid>;
 								r31Out = 0x00;
 								return 0x1F;
 							}
@@ -13581,15 +13581,15 @@ Eq_n fn0000DB74(Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, struct Eq_n & r4Out, uni
 				r8Out = r8_n;
 				r19Out = r19_n;
 				r21Out = r21_n;
-				r22Out.u0 = <invalid>;
-				r23Out.u0 = <invalid>;
+				r22Out = (struct Eq_n *) <invalid>;
+				r23Out = (struct Eq_n *) <invalid>;
 				r24Out = r4_n;
 				r25Out = r25_n;
-				r26Out.u0 = <invalid>;
-				r27Out.u0 = <invalid>;
-				r28Out.u0 = <invalid>;
-				r29Out.u0 = <invalid>;
-				r30Out.u0 = <invalid>;
+				r26Out = (struct Eq_n *) <invalid>;
+				r27Out = (struct Eq_n *) <invalid>;
+				r28Out = (struct Eq_n *) <invalid>;
+				r29Out = (struct Eq_n *) <invalid>;
+				r30Out = (struct Eq_n *) <invalid>;
 				r31Out = ~0x02;
 				return r3_n;
 			}
@@ -13621,15 +13621,15 @@ Eq_n fn0000DB74(Eq_n r19, Eq_n r21, Eq_n r22, Eq_n r23, struct Eq_n & r4Out, uni
 	r8Out.u0 = 0x3F50;
 	r19Out = r19_n;
 	r21Out = r21_n;
-	r22Out.u0 = <invalid>;
-	r23Out.u0 = <invalid>;
+	r22Out = (struct Eq_n *) <invalid>;
+	r23Out = (struct Eq_n *) <invalid>;
 	r24Out = r24_n;
 	r25Out = r25_n;
-	r26Out.u0 = <invalid>;
-	r27Out.u0 = <invalid>;
-	r28Out.u0 = <invalid>;
-	r29Out.u0 = <invalid>;
-	r30Out.u0 = <invalid>;
+	r26Out = (struct Eq_n *) <invalid>;
+	r27Out = (struct Eq_n *) <invalid>;
+	r28Out = (struct Eq_n *) <invalid>;
+	r29Out = (struct Eq_n *) <invalid>;
+	r30Out = (struct Eq_n *) <invalid>;
 	r31Out = 0x01;
 	return r3_n;
 }
@@ -18790,11 +18790,11 @@ void fn0001CC5C(uint32 r5, ui32 r30, Eq_n dwArg1C)
 	fn0001CC8C(0x00, dwArg1C, r3_n, out r19_n, out r23_n, out r24_n, out r25_n, out r30_n, out r31_n);
 }
 
-// 0001CC8C: Register word32 fn0001CC8C(Register word32 r30, Stack Eq_n dwArg1C, Stack Eq_n dwArg20, Register out ptr32 r19Out, Register out ptr32 r23Out, Register out Eq_n r24Out, Register out Eq_n r25Out, Register out ptr32 r30Out, Register out Eq_n r31Out)
+// 0001CC8C: Register word32 fn0001CC8C(Register word32 r30, Stack Eq_n dwArg1C, Stack Eq_n dwArg20, Register out ptr32 r19Out, Register out ptr32 r23Out, Register out (ptr32 Eq_n) r24Out, Register out (ptr32 Eq_n) r25Out, Register out ptr32 r30Out, Register out (ptr32 Eq_n) r31Out)
 // Called from:
 //      fn0001BB58
 //      fn0001CC5C
-word32 fn0001CC8C(word32 r30, Eq_n dwArg1C, Eq_n dwArg20, ptr32 & r19Out, ptr32 & r23Out, union Eq_n & r24Out, union Eq_n & r25Out, ptr32 & r30Out, union Eq_n & r31Out)
+word32 fn0001CC8C(word32 r30, Eq_n dwArg1C, Eq_n dwArg20, ptr32 & r19Out, ptr32 & r23Out, struct Eq_n & r24Out, struct Eq_n & r25Out, ptr32 & r30Out, struct Eq_n & r31Out)
 {
 	struct Eq_n * r23_n = (word32) *((word32) dwArg1C + 64) + r30;
 	fn0002E908(r23_n->dw000C, dwArg20);
@@ -18809,10 +18809,10 @@ word32 fn0001CC8C(word32 r30, Eq_n dwArg1C, Eq_n dwArg20, ptr32 & r19Out, ptr32 
 		word32 r3_n = fn0001BB58(r21, r31, out r19_n, out r23_n, out r24_n, out r25_n, out r30_n, out r31_n);
 		r19Out = r19_n;
 		r23Out = r23_n;
-		r24Out.u0 = <invalid>;
-		r25Out.u0 = <invalid>;
+		r24Out = (struct Eq_n *) <invalid>;
+		r25Out = (struct Eq_n *) <invalid>;
 		r30Out = r30_n;
-		r31Out.u0 = <invalid>;
+		r31Out = (struct Eq_n *) <invalid>;
 		return r3_n;
 	}
 	else
@@ -18824,10 +18824,10 @@ word32 fn0001CC8C(word32 r30, Eq_n dwArg1C, Eq_n dwArg20, ptr32 & r19Out, ptr32 
 		word32 r3_n = fn0001CCBC(out r19_n, out r23_n, out r25_n, out r30_n);
 		r19Out = r19_n;
 		r23Out = r23_n;
-		r24Out.u0 = <invalid>;
-		r25Out.u0 = <invalid>;
+		r24Out = (struct Eq_n *) <invalid>;
+		r25Out = (struct Eq_n *) <invalid>;
 		r30Out = r30_n;
-		r31Out.u0 = <invalid>;
+		r31Out = (struct Eq_n *) <invalid>;
 		return r3_n;
 	}
 }
@@ -18873,11 +18873,11 @@ word32 fn0001CC98(Eq_n r6, Eq_n r21, ui32 r23, ptr32 r30, ptr32 r31, ptr32 & r19
 	}
 }
 
-// 0001CCBC: Register word32 fn0001CCBC(Register out ptr32 r19Out, Register out Eq_n r23Out, Register out ptr32 r25Out, Register out Eq_n r30Out)
+// 0001CCBC: Register word32 fn0001CCBC(Register out ptr32 r19Out, Register out (ptr32 Eq_n) r23Out, Register out ptr32 r25Out, Register out (ptr32 Eq_n) r30Out)
 // Called from:
 //      fn0001BB58
 //      fn0001CC98
-word32 fn0001CCBC(ptr32 & r19Out, union Eq_n & r23Out, ptr32 & r25Out, union Eq_n & r30Out)
+word32 fn0001CCBC(ptr32 & r19Out, struct Eq_n & r23Out, ptr32 & r25Out, struct Eq_n & r30Out)
 {
 	ptr32 r19_n;
 	ptr32 r25_n;
@@ -18887,9 +18887,9 @@ word32 fn0001CCBC(ptr32 & r19Out, union Eq_n & r23Out, ptr32 & r25Out, union Eq_
 	word32 r31_n;
 	word32 r3_n = fn0001BB58(r21, r31, out r19_n, out r23_n, out r24_n, out r25_n, out r30_n, out r31_n);
 	r19Out = r19_n;
-	r23Out.u0 = <invalid>;
+	r23Out = (struct Eq_n *) <invalid>;
 	r25Out = r25_n;
-	r30Out.u0 = <invalid>;
+	r30Out = (struct Eq_n *) <invalid>;
 	return r3_n;
 }
 
@@ -18936,12 +18936,12 @@ Eq_n fn0001CCE8(Eq_n r25)
 	return r3_n;
 }
 
-// 0001CCF0: Register Eq_n fn0001CCF0(Register Eq_n r3, Register Eq_n r4, Register Eq_n r21, Register Eq_n r25, Register int32 r29, Stack Eq_n dwArg1C, Stack Eq_n dwArg28, Register out Eq_n r4Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r8Out, Register out (ptr32 Eq_n) r19Out, Register out (ptr32 Eq_n) r21Out, Register out (ptr32 Eq_n) r22Out, Register out ptr32 r23Out, Register out ptr32 r24Out, Register out (ptr32 Eq_n) r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out, Register out ptr32 r28Out, Register out ptr32 r29Out, Register out Eq_n r30Out)
+// 0001CCF0: Register Eq_n fn0001CCF0(Register Eq_n r3, Register Eq_n r4, Register Eq_n r21, Register Eq_n r25, Register int32 r29, Stack Eq_n dwArg1C, Stack Eq_n dwArg28, Register out Eq_n r4Out, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r8Out, Register out (ptr32 Eq_n) r19Out, Register out (ptr32 Eq_n) r21Out, Register out (ptr32 Eq_n) r22Out, Register out ptr32 r23Out, Register out ptr32 r24Out, Register out (ptr32 Eq_n) r25Out, Register out ptr32 r26Out, Register out ptr32 r27Out, Register out ptr32 r28Out, Register out ptr32 r29Out, Register out (ptr32 Eq_n) r30Out)
 // Called from:
 //      fn0001BB58
 //      fn0001F63C
 //      fn0001FCE0
-Eq_n fn0001CCF0(Eq_n r3, Eq_n r4, Eq_n r21, Eq_n r25, int32 r29, Eq_n dwArg1C, Eq_n dwArg28, union Eq_n & r4Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, struct Eq_n & r19Out, struct Eq_n & r21Out, struct Eq_n & r22Out, ptr32 & r23Out, ptr32 & r24Out, struct Eq_n & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, union Eq_n & r30Out)
+Eq_n fn0001CCF0(Eq_n r3, Eq_n r4, Eq_n r21, Eq_n r25, int32 r29, Eq_n dwArg1C, Eq_n dwArg28, union Eq_n & r4Out, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, struct Eq_n & r19Out, struct Eq_n & r21Out, struct Eq_n & r22Out, ptr32 & r23Out, ptr32 & r24Out, struct Eq_n & r25Out, ptr32 & r26Out, ptr32 & r27Out, ptr32 & r28Out, ptr32 & r29Out, struct Eq_n & r30Out)
 {
 	Eq_n r3_n = *((word32) r3 + 32);
 	word32 r29_n;
@@ -18985,7 +18985,7 @@ Eq_n fn0001CCF0(Eq_n r3, Eq_n r4, Eq_n r21, Eq_n r25, int32 r29, Eq_n dwArg1C, E
 		r27Out = r27_n;
 		r28Out = r28_n;
 		r29Out = r29_n;
-		r30Out.u0 = <invalid>;
+		r30Out = (struct Eq_n *) <invalid>;
 		return r3_n;
 	}
 	else
@@ -19019,15 +19019,15 @@ Eq_n fn0001CCF0(Eq_n r3, Eq_n r4, Eq_n r21, Eq_n r25, int32 r29, Eq_n dwArg1C, E
 		r27Out = r27_n;
 		r28Out = r28_n;
 		r29Out = r29_n;
-		r30Out.u0 = <invalid>;
+		r30Out = (struct Eq_n *) <invalid>;
 		return r3_n;
 	}
 }
 
-// 0001CE14: Register Eq_n fn0001CE14(Register int32 r11, Register ui32 r19, Register Eq_n r21, Register (ptr32 Eq_n) r23, Register word32 r24, Register (ptr32 Eq_n) r25, Register Eq_n r27, Register word32 r29, Stack Eq_n dwArg1C, Stack Eq_n dwArg28, Register out Eq_n r4Out, Register out Eq_n r6Out, Register out Eq_n r7Out, Register out Eq_n r8Out, Register out Eq_n r19Out, Register out Eq_n r21Out, Register out Eq_n r22Out, Register out Eq_n r23Out, Register out Eq_n r24Out, Register out Eq_n r25Out, Register out Eq_n r26Out, Register out Eq_n r27Out, Register out Eq_n r28Out, Register out Eq_n r29Out)
+// 0001CE14: Register Eq_n fn0001CE14(Register int32 r11, Register ui32 r19, Register Eq_n r21, Register (ptr32 Eq_n) r23, Register word32 r24, Register (ptr32 Eq_n) r25, Register Eq_n r27, Register word32 r29, Stack Eq_n dwArg1C, Stack Eq_n dwArg28, Register out Eq_n r4Out, Register out (ptr32 Eq_n) r6Out, Register out (ptr32 Eq_n) r7Out, Register out (ptr32 Eq_n) r8Out, Register out (ptr32 Eq_n) r19Out, Register out Eq_n r21Out, Register out (ptr32 Eq_n) r22Out, Register out (ptr32 Eq_n) r23Out, Register out (ptr32 Eq_n) r24Out, Register out (ptr32 Eq_n) r25Out, Register out (ptr32 Eq_n) r26Out, Register out (ptr32 Eq_n) r27Out, Register out (ptr32 Eq_n) r28Out, Register out (ptr32 Eq_n) r29Out)
 // Called from:
 //      fn0001CCF0
-Eq_n fn0001CE14(int32 r11, ui32 r19, Eq_n r21, struct Eq_n * r23, word32 r24, struct Eq_n * r25, Eq_n r27, word32 r29, Eq_n dwArg1C, Eq_n dwArg28, union Eq_n & r4Out, union Eq_n & r6Out, union Eq_n & r7Out, union Eq_n & r8Out, union Eq_n & r19Out, union Eq_n & r21Out, union Eq_n & r22Out, union Eq_n & r23Out, union Eq_n & r24Out, union Eq_n & r25Out, union Eq_n & r26Out, union Eq_n & r27Out, union Eq_n & r28Out, union Eq_n & r29Out)
+Eq_n fn0001CE14(int32 r11, ui32 r19, Eq_n r21, struct Eq_n * r23, word32 r24, struct Eq_n * r25, Eq_n r27, word32 r29, Eq_n dwArg1C, Eq_n dwArg28, union Eq_n & r4Out, struct Eq_n & r6Out, struct Eq_n & r7Out, struct Eq_n & r8Out, struct Eq_n & r19Out, union Eq_n & r21Out, struct Eq_n & r22Out, struct Eq_n & r23Out, struct Eq_n & r24Out, struct Eq_n & r25Out, struct Eq_n & r26Out, struct Eq_n & r27Out, struct Eq_n & r28Out, struct Eq_n & r29Out)
 {
 	r21_n = r21;
 	while (true)
@@ -19063,19 +19063,19 @@ l0001CE14:
 							word32 r24_n;
 							fn0001BB58(r21, r31, out r19_n, out r23_n, out r24_n, out r25_n, out r30_n, out r31_n);
 							r4Out = r4_n;
-							r6Out.u0 = <invalid>;
-							r7Out.u0 = <invalid>;
-							r8Out.u0 = <invalid>;
-							r19Out.u0 = <invalid>;
+							r6Out = (struct Eq_n *) <invalid>;
+							r7Out = (struct Eq_n *) <invalid>;
+							r8Out = (struct Eq_n *) <invalid>;
+							r19Out = (struct Eq_n *) <invalid>;
 							r21Out = r21_n;
-							r22Out.u0 = <invalid>;
-							r23Out.u0 = <invalid>;
-							r24Out.u0 = <invalid>;
-							r25Out.u0 = <invalid>;
-							r26Out.u0 = <invalid>;
-							r27Out.u0 = <invalid>;
-							r28Out.u0 = <invalid>;
-							r29Out.u0 = <invalid>;
+							r22Out = (struct Eq_n *) <invalid>;
+							r23Out = (struct Eq_n *) <invalid>;
+							r24Out = (struct Eq_n *) <invalid>;
+							r25Out = (struct Eq_n *) <invalid>;
+							r26Out = (struct Eq_n *) <invalid>;
+							r27Out = (struct Eq_n *) <invalid>;
+							r28Out = (struct Eq_n *) <invalid>;
+							r29Out = (struct Eq_n *) <invalid>;
 							return <invalid>;
 						}
 						else
@@ -19088,19 +19088,19 @@ l0001CE14:
 							word32 r30_n;
 							fn0001BB58(r21, r31, out r19_n, out r23_n, out r24_n, out r25_n, out r30_n, out r31_n);
 							r4Out = dwArg30;
-							r6Out.u0 = <invalid>;
-							r7Out.u0 = <invalid>;
-							r8Out.u0 = <invalid>;
-							r19Out.u0 = <invalid>;
+							r6Out = (struct Eq_n *) <invalid>;
+							r7Out = (struct Eq_n *) <invalid>;
+							r8Out = (struct Eq_n *) <invalid>;
+							r19Out = (struct Eq_n *) <invalid>;
 							r21Out = r21_n;
-							r22Out.u0 = <invalid>;
-							r23Out.u0 = <invalid>;
-							r24Out.u0 = <invalid>;
-							r25Out.u0 = <invalid>;
-							r26Out.u0 = <invalid>;
-							r27Out.u0 = <invalid>;
-							r28Out.u0 = <invalid>;
-							r29Out.u0 = <invalid>;
+							r22Out = (struct Eq_n *) <invalid>;
+							r23Out = (struct Eq_n *) <invalid>;
+							r24Out = (struct Eq_n *) <invalid>;
+							r25Out = (struct Eq_n *) <invalid>;
+							r26Out = (struct Eq_n *) <invalid>;
+							r27Out = (struct Eq_n *) <invalid>;
+							r28Out = (struct Eq_n *) <invalid>;
+							r29Out = (struct Eq_n *) <invalid>;
 							return <invalid>;
 						}
 					}
@@ -19818,11 +19818,11 @@ word32 fn0001EA18(Eq_n r0, Eq_n r5, Eq_n r19, struct Eq_n * r21, Eq_n r23, union
 	}
 }
 
-// 0001EB58: Register ptr32 fn0001EB58(Register Eq_n r0, Register Eq_n r5, Register Eq_n r19, Register (ptr32 Eq_n) r21, Register Eq_n r23, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r8Out, Register out Eq_n r19Out, Register out Eq_n r21Out, Register out Eq_n r22Out, Register out Eq_n r23Out)
+// 0001EB58: Register ptr32 fn0001EB58(Register Eq_n r0, Register Eq_n r5, Register Eq_n r19, Register (ptr32 Eq_n) r21, Register Eq_n r23, Register out ptr32 r6Out, Register out ptr32 r7Out, Register out ptr32 r8Out, Register out (ptr32 Eq_n) r19Out, Register out (ptr32 Eq_n) r21Out, Register out (ptr32 Eq_n) r22Out, Register out (ptr32 Eq_n) r23Out)
 // Called from:
 //      fn0001EA08
 //      fn0001EA0C
-ptr32 fn0001EB58(Eq_n r0, Eq_n r5, Eq_n r19, struct Eq_n * r21, Eq_n r23, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, union Eq_n & r19Out, union Eq_n & r21Out, union Eq_n & r22Out, union Eq_n & r23Out)
+ptr32 fn0001EB58(Eq_n r0, Eq_n r5, Eq_n r19, struct Eq_n * r21, Eq_n r23, ptr32 & r6Out, ptr32 & r7Out, ptr32 & r8Out, struct Eq_n & r19Out, struct Eq_n & r21Out, struct Eq_n & r22Out, struct Eq_n & r23Out)
 {
 	word32 r3_n = r21->dw003C;
 	struct Eq_n * r3_n = r3_n ^ 0x03;
@@ -19895,10 +19895,10 @@ ptr32 fn0001EB58(Eq_n r0, Eq_n r5, Eq_n r19, struct Eq_n * r21, Eq_n r23, ptr32 
 		r6Out = 0x02;
 		r7Out = 0x03;
 		r8Out = 0x06;
-		r19Out.u0 = <invalid>;
-		r21Out.u0 = <invalid>;
-		r22Out.u0 = <invalid>;
-		r23Out.u0 = <invalid>;
+		r19Out = (struct Eq_n *) <invalid>;
+		r21Out = (struct Eq_n *) <invalid>;
+		r22Out = (struct Eq_n *) <invalid>;
+		r23Out = (struct Eq_n *) <invalid>;
 		return 0x01;
 	}
 	else
@@ -19968,10 +19968,10 @@ ptr32 fn0001EB58(Eq_n r0, Eq_n r5, Eq_n r19, struct Eq_n * r21, Eq_n r23, ptr32 
 		r6Out = 0x3F;
 		r7Out = 0x01;
 		r8Out = 0x00;
-		r19Out.u0 = <invalid>;
-		r21Out.u0 = <invalid>;
-		r22Out.u0 = <invalid>;
-		r23Out.u0 = <invalid>;
+		r19Out = (struct Eq_n *) <invalid>;
+		r21Out = (struct Eq_n *) <invalid>;
+		r22Out = (struct Eq_n *) <invalid>;
+		r23Out = (struct Eq_n *) <invalid>;
 		return r3_n;
 	}
 }

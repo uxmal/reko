@@ -98,11 +98,11 @@ namespace Reko.Arch.X86
         {
             if (IsValid(reg))
             {
-                var val = (regs[reg.Number] & reg.BitMask) >> (int)reg.BitAddress;
+                var val = (regs[reg.Number] & reg.BitMask) >> (int) reg.BitAddress;
                 return Constant.Create(reg.DataType, val);
             }
             else
-                return Constant.Invalid;
+                return InvalidConstant.Create(reg.DataType);
         }
 
 		public override void SetRegister(RegisterStorage reg, Constant c)
@@ -172,7 +172,7 @@ namespace Reko.Arch.X86
             }
             else 
             {
-                return Constant.Invalid;
+                return InvalidConstant.Create(PrimitiveType.Byte);
             }
         }
 

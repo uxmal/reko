@@ -64,11 +64,12 @@ namespace Reko.UnitTests.Evaluation
         public void Identifier_GetValue()
         {
             var id = m.Register("r3");
-            ctx.Setup(c => c.GetValue(id)).Returns(Constant.Invalid);
+            var invalid = InvalidConstant.Create(id.DataType);
+            ctx.Setup(c => c.GetValue(id)).Returns(invalid);
 
             var subst = new Substitutor(ctx.Object);
             var cInvalid = id.Accept(subst);
-            Assert.AreSame(Constant.Invalid, cInvalid);
+            Assert.AreSame(invalid, cInvalid);
         }
 
         [Test]
@@ -76,12 +77,13 @@ namespace Reko.UnitTests.Evaluation
         {
             var id = m.Register("r3");
             var e = m.IAdd(id, m.Word32(12));
-            ctx.Setup(c => c.GetValue(id)).Returns(Constant.Invalid);
+            var invalid = InvalidConstant.Create(id.DataType);
+            ctx.Setup(c => c.GetValue(id)).Returns(invalid);
 
             var subst = new Substitutor(ctx.Object);
             var cInvalid = e.Accept(subst);
 
-            Assert.AreSame(Constant.Invalid, cInvalid);
+            Assert.AreSame(invalid, cInvalid);
         }
 
         [Test]
@@ -115,12 +117,13 @@ namespace Reko.UnitTests.Evaluation
         {
             var id = m.Register("r3");
             var e = m.Not(id);
-            ctx.Setup(c => c.GetValue(id)).Returns(Constant.Invalid);
+            var invalid = InvalidConstant.Create(id.DataType);
+            ctx.Setup(c => c.GetValue(id)).Returns(invalid);
 
             var subst = new Substitutor(ctx.Object);
             var e2 = e.Accept(subst);
 
-            Assert.AreSame(Constant.Invalid, e2);
+            Assert.AreSame(invalid, e2);
         }
 
         [Test]
@@ -141,12 +144,13 @@ namespace Reko.UnitTests.Evaluation
         {
             var id = m.Register("r3");
             var e = m.Mem16(id);
-            ctx.Setup(c => c.GetValue(id)).Returns(Constant.Invalid);
+            var invalid = InvalidConstant.Create(id.DataType);
+            ctx.Setup(c => c.GetValue(id)).Returns(invalid);
 
             var subst = new Substitutor(ctx.Object);
             var e2 = e.Accept(subst);
 
-            Assert.AreSame(Constant.Invalid, e2);
+            Assert.IsTrue(e2 is InvalidConstant);
         }
 
         [Test]
@@ -170,13 +174,14 @@ namespace Reko.UnitTests.Evaluation
             var es = m.Frame.CreateTemporary("es", PrimitiveType.Word16);
             var bx = m.Frame.CreateTemporary("bx", PrimitiveType.Word16);
             var e = m.SegMem16(es, bx);
+            var invalid = InvalidConstant.Create(bx.DataType);
             ctx.Setup(c => c.GetValue(es)).Returns(es);
-            ctx.Setup(c => c.GetValue(bx)).Returns(Constant.Invalid);
+            ctx.Setup(c => c.GetValue(bx)).Returns(invalid);
 
             var subst = new Substitutor(ctx.Object);
             var e2 = e.Accept(subst);
 
-            Assert.AreSame(Constant.Invalid, e2);
+            Assert.AreSame(invalid, e2);
         }
 
         [Test]
@@ -197,12 +202,12 @@ namespace Reko.UnitTests.Evaluation
         {
             var id = m.Register("r3");
             var e = m.Cond(id);
-            ctx.Setup(c => c.GetValue(id)).Returns(Constant.Invalid);
+            ctx.Setup(c => c.GetValue(id)).Returns(InvalidConstant.Create(id.DataType));
 
             var subst = new Substitutor(ctx.Object);
             var e2 = e.Accept(subst);
 
-            Assert.AreSame(Constant.Invalid, e2);
+            Assert.IsTrue(e2 is InvalidConstant);
         }
     }
 }

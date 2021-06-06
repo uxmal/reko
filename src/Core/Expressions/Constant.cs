@@ -315,10 +315,7 @@ namespace Reko.Core.Expressions
             }
 		}
 
-		public bool IsValid
-		{
-			get { return !Object.ReferenceEquals(this, Constant.Invalid); }
-		}
+        public virtual bool IsValid => true;
 
         /// <summary>
         /// Create a new Constant whose bits are the inverse of
@@ -540,8 +537,8 @@ namespace Reko.Core.Expressions
             return new StringConstant(strType, str);
         }
 
-		public static readonly Constant Invalid = new ConstantUInt32(VoidType.Instance, 0xBADDCAFE);
-        public static readonly Constant Unknown = new ConstantUInt32(VoidType.Instance, 0xDEADFACE);
+		//public static readonly Constant Invalid = new ConstantUInt32(VoidType.Instance, 0xBADDCAFE);
+        //public static readonly Constant Unknown = new ConstantUInt32(VoidType.Instance, 0xDEADFACE);
 
         //public abstract string ToString(string format, IFormatProvider formatProvider)
         //{
@@ -1536,7 +1533,7 @@ namespace Reko.Core.Expressions
             case 64: return new ConstantReal64(pt, value);
             }
             // Unsupported floating point constant sizes cannot be represented yet.
-            return Constant.Invalid;
+            return InvalidConstant.Create(dt);
         }
     }
 

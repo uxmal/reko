@@ -33,7 +33,7 @@ namespace Reko.Core.Operators
         public override Constant ApplyConstants(Constant c1, Constant c2)
         {
             if (!ValidArgs(c1, c2))
-                return Constant.Invalid;
+                return InvalidConstant.Create(PrimitiveType.Bool);
             return Constant.Bool(c1.ToReal64() == c2.ToReal64());
         }
 
@@ -47,7 +47,7 @@ namespace Reko.Core.Operators
         public override Constant ApplyConstants(Constant c1, Constant c2)
         {
             if (!ValidArgs(c1, c2))
-                return Constant.Invalid;
+                return InvalidConstant.Create(PrimitiveType.Bool);
             return Constant.Bool(c1.ToReal64() != c2.ToReal64());
         }
 
@@ -60,7 +60,7 @@ namespace Reko.Core.Operators
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
-                return Constant.Invalid;
+                return InvalidConstant.Create(c1.DataType);
             return Constant.Bool(c1.ToReal64() < c2.ToReal64());
 		}
 
@@ -74,7 +74,7 @@ namespace Reko.Core.Operators
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
-                return Constant.Invalid;
+                return InvalidConstant.Create(PrimitiveType.Bool);
             return Constant.Bool(c1.ToReal64() > c2.ToReal64());
         }
 
@@ -90,7 +90,7 @@ namespace Reko.Core.Operators
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
-                return Constant.Invalid;
+                return InvalidConstant.Create(PrimitiveType.Bool);
             return Constant.Bool(c1.ToReal64() <= c2.ToReal64());
         }
 
@@ -104,7 +104,7 @@ namespace Reko.Core.Operators
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
-                return Constant.Invalid;
+                return InvalidConstant.Create(c1.DataType);
             return Constant.Bool(c1.ToReal64() >= c2.ToReal64());
         }
 

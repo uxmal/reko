@@ -218,7 +218,7 @@ namespace Reko.Scanning
 
                 //$BUG: this is rubbish, the simplifier should _just_
                 // perform simplification, no substitutions.
-                var src = assSrc == Constant.Invalid ? ass.Item2 : assSrc;
+                var src = assSrc is InvalidConstant ? ass.Item2 : assSrc;
                 var cvtSrc = src as Conversion;
                 if (cvtSrc != null)
                     src = cvtSrc.Expression;

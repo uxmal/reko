@@ -521,7 +521,7 @@ namespace Reko.UnitTests.Mocks
 		{
             if (!regValues.TryGetValue(r, out Constant c))
             {
-                c = Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
             }
             return c;
 		}

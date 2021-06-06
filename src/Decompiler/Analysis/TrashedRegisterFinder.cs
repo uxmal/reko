@@ -345,8 +345,9 @@ namespace Reko.Analysis
             {
                 foreach (var d in ci.Definitions)
                 {
-                    ctx.SetValue((Identifier) d.Expression, Constant.Invalid);
-                    trace.Verbose("  {0} = [{1}]", d.Expression, Constant.Invalid);
+                    var invalid = InvalidConstant.Create(d.Expression.DataType);
+                    ctx.SetValue((Identifier) d.Expression, invalid);
+                    trace.Verbose("  {0} = [{1}]", d.Expression, invalid);
                 }
                 return true;
             }
@@ -381,8 +382,9 @@ namespace Reko.Analysis
             {
                 if (flow.Trashed.Contains(d.Storage))
                 {
-                    ctx.SetValue((Identifier)d.Expression, Constant.Invalid);
-                    trace.Verbose("  {0} = [{1}]", d.Expression, Constant.Invalid);
+                    var invalid = InvalidConstant.Create(d.Expression.DataType);
+                    ctx.SetValue((Identifier) d.Expression, invalid);
+                    trace.Verbose("  {0} = [{1}]", d.Expression, invalid);
                 }
                 if (flow.Preserved.Contains(d.Storage))
                 {
@@ -422,7 +424,10 @@ namespace Reko.Analysis
 
         public bool VisitGotoInstruction(GotoInstruction g)
         {
-            g.Condition.Accept(eval!);
+            if (g.Condition != null)
+            {
+                g.Condition.Accept(eval!);
+            }
             g.Target.Accept(eval!);
             return true;
         }
@@ -446,7 +451,7 @@ namespace Reko.Analysis
                 }
                 else if (value != null && !cmp.Equals(value, total))
                 {
-                    total = Constant.Invalid;
+                    total = InvalidConstant.Create(phiarg.DataType);
                     break;
                 }
             }
@@ -507,7 +512,7 @@ namespace Reko.Analysis
                     var value = ctx.GetValue(id);
                     var range = ctx.GetBitRange(id);
                     var stg = arch.GetRegister(id.Storage.Domain, range) ?? id.Storage;
-                    if (value == Constant.Invalid)
+                    if (value is InvalidConstant)
                     {
                         ctx.ProcFlow.Trashed.Add(stg);
                         ctx.ProcFlow.Preserved.Remove(stg);
@@ -665,10 +670,10 @@ namespace Reko.Analysis
                         changed = true;
                         this.StackState.Add(de.Key, de.Value);
                     }
-                    else if (oldValue != Constant.Invalid && !cmp.Equals(oldValue, de.Value))
+                    else if (!(oldValue is InvalidConstant) && !cmp.Equals(oldValue, de.Value))
                     {
                         changed = true;
-                        this.StackState[de.Key] = Constant.Invalid;
+                        this.StackState[de.Key] = InvalidConstant.Create(oldValue.DataType);
                     }
                 }
                 return changed;
@@ -691,7 +696,7 @@ namespace Reko.Analysis
                 {
                     return value;
                 }
-                return Constant.Invalid;
+                return InvalidConstant.Create(access.DataType);
             }
 
             public Expression GetValue(Application appl)
@@ -703,10 +708,10 @@ namespace Reko.Analysis
                         continue;
                     if (outArg.Expression is Identifier outId)
                     {
-                        SetValue(outId, Constant.Invalid);
+                        SetValue(outId, InvalidConstant.Create(outId.DataType));
                     }
                 }
-                return Constant.Invalid;
+                return InvalidConstant.Create(appl.DataType);
             }
 
             public Expression GetValue(MemoryAccess access, SegmentMap segmentMap)
@@ -716,7 +721,7 @@ namespace Reko.Analysis
                 {
                     return value;
                 }
-                return Constant.Invalid;
+                return InvalidConstant.Create(access.DataType);
             }
 
             public Expression? GetValue(Identifier id)
@@ -786,11 +791,11 @@ namespace Reko.Analysis
                         IsDirty = true;
                         StackState.Add(stack.StackOffset, value);
                     }
-                    else if (!cmp.Equals(oldValue, value) && oldValue != Constant.Invalid)
+                    else if (!(oldValue is InvalidConstant) && !cmp.Equals(oldValue, value))
                     {
                         trace.Verbose("Trf: Stack offset {0:X4} now has value {1}, was {2}", stack.StackOffset, value, oldValue);
                         IsDirty = true;
-                        StackState[stack.StackOffset] = Constant.Invalid;
+                        StackState[stack.StackOffset] = InvalidConstant.Create(id.DataType);
                     }
                 }
                 else
@@ -801,11 +806,11 @@ namespace Reko.Analysis
                         IsDirty = true;
                         IdState.Add(id, Tuple.Create(value, range));
                     }
-                    else if (!cmp.Equals(oldValue.Item1, value) && oldValue.Item1 != Constant.Invalid)
+                    else if (!(oldValue.Item1 is InvalidConstant) && !cmp.Equals(oldValue.Item1, value))
                     {
                         trace.Verbose("Trf: id {0} now has value {1}, was {2}", id, value, oldValue);
                         IsDirty = true;
-                        IdState[id] = Tuple.Create((Expression)Constant.Invalid, range);
+                        IdState[id] = Tuple.Create((Expression)InvalidConstant.Create(id.DataType), range);
                     }
                 }
             }
@@ -822,11 +827,12 @@ namespace Reko.Analysis
                     trace.Verbose("Trf: Stack offset {0:X4} now has value {1}", offset.Value, value);
                     StackState.Add(offset.Value, value);
                 }
-                else if (!cmp.Equals(oldValue, value) && oldValue != Constant.Invalid)
+                else if (!cmp.Equals(oldValue, value) && !(oldValue is InvalidConstant))
                 {
                     IsDirty = true;
                     trace.Verbose("Trf: Stack offset {0:X4} now has value {1}, was {2}", offset.Value, value, oldValue);
-                    StackState[offset.Value] = Constant.Invalid;
+                    //$BUG: need the data width here.
+                    StackState[offset.Value] = InvalidConstant.Create(PrimitiveType.Word32);
                 }
             }
 

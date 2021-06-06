@@ -205,7 +205,7 @@ namespace Reko.Environments.C64
 
             public override Core.Expressions.Constant GetRegister(RegisterStorage r)
             {
-                return Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
             }
 
             public override void SetRegister(RegisterStorage r, Core.Expressions.Constant v)

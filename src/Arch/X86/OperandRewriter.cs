@@ -169,7 +169,7 @@ namespace Reko.Arch.X86
                 }
             }
 
-            if (mem.Offset!.IsValid)
+            if (mem.Offset != null)
             {
                 if (ripRelative)
                 {

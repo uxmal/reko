@@ -38,7 +38,7 @@ namespace Reko.Evaluation
             if (pt is null)
                 return false;
 			this.slice = slice;
-            if (slice.Expression is Constant c && c != Constant.Invalid)
+            if (slice.Expression is Constant c && !(c is InvalidConstant))
             {
                 var ct = c.DataType.ResolveAs<PrimitiveType>();
                 if (ct != null && pt.BitSize <= ct.BitSize)
