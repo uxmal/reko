@@ -183,12 +183,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
         }
 
-        public Tuple<TextModelNode, int, int> GetPositionAsNode()
+        public (TextModelNode, int, int) GetPositionAsNode()
         {
             var node = Nodes[position.iModel];
             node.Model.MoveToLine(position.InnerLocation, 0);
             var frac = node.Model.GetPositionAsFraction();
-            return Tuple.Create(node, frac.Item1, frac.Item2);
+            return (node, frac.Item1, frac.Item2);
         }
 
         public class NodeCollection : Collection<TextModelNode>

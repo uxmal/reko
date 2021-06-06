@@ -49,7 +49,7 @@ namespace Reko.Scanning
 
         public SegmentMap SegmentMap => Program.SegmentMap;
 
-        public Tuple<Expression, Expression> AsAssignment(RtlInstruction instr)
+        public (Expression?, Expression?) AsAssignment(RtlInstruction instr)
         {
             throw new NotImplementedException();
         }

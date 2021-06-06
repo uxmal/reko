@@ -596,10 +596,7 @@ namespace Reko.UserInterfaces.WindowsForms
 
         private void CodeView_PositionChanged()
         {
-            var pos = nestedTextModel.GetPositionAsNode();
-            var node = pos.Item1;
-            var numer = pos.Item2;
-            var denom = pos.Item3;
+            var (node, numer, denom) = nestedTextModel.GetPositionAsNode();
 
             var dataItemNode = nodeByAddress.Where(n => n.Value.ModelNode == node).
                 Select(n => n.Value).SingleOrDefault();

@@ -53,7 +53,7 @@ namespace Reko.ImageLoaders.MzExe
         const ushort SIGNATURE = 0x584C;
 
         private readonly SortedList<Address, ImageSymbol> imageSymbols;
-        private readonly Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
+        private readonly Dictionary<uint, (Address, ImportReference)> importStubs;
         private readonly DecompilerEventListener listener;
         private readonly uint lfaNew;
         private IProcessorArchitecture arch;
@@ -64,7 +64,7 @@ namespace Reko.ImageLoaders.MzExe
         {
             listener = Services.RequireService<DecompilerEventListener>();
             lfaNew = e_lfanew;
-            importStubs = new Dictionary<uint, Tuple<Address, ImportReference>>();
+            importStubs = new Dictionary<uint, (Address, ImportReference)>();
             imageSymbols = new SortedList<Address, ImageSymbol>();
             PreferredBaseAddress = Address.Ptr32(0x0010_0000);  //$REVIEW: arbitrary address.
             this.arch = null!;

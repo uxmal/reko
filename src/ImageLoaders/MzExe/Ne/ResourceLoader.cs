@@ -332,7 +332,7 @@ namespace Reko.ImageLoaders.MzExe.Ne
                 short dirEntries = r.ReadInt16();
                 w.Write(dirEntries);
 
-                var icIds = new List<Tuple<ushort, int>>();
+                var icIds = new List<(ushort, int)>();
                 for (int i = 0; i < dirEntries; ++i)
                 {
                     w.Write(r.ReadInt32());
@@ -340,7 +340,7 @@ namespace Reko.ImageLoaders.MzExe.Ne
                     w.Write(r.ReadInt32());
                     var iconId = r.ReadUInt16();
                     w.Flush();
-                    icIds.Add(Tuple.Create(iconId, (int) stm.Position));
+                    icIds.Add((iconId, (int) stm.Position));
                     w.Write(0);
                 }
                 foreach (var id in icIds)

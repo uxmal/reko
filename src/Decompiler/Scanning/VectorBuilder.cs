@@ -56,11 +56,11 @@ namespace Reko.Scanning
         public int TableByteSize { get; private set; }
         public Program Program => program;
 
-        public Tuple<Expression,Expression>? AsAssignment(Instruction instr)
+        public (Expression?,Expression?) AsAssignment(Instruction instr)
         {
             if (instr is Assignment ass)
-                return Tuple.Create((Expression) ass.Dst, ass.Src);
-            return null;
+                return (ass.Dst, ass.Src);
+            return (null,null);
         }
 
         public Expression? AsBranch(Instruction instr)

@@ -52,7 +52,7 @@ namespace Reko.ImageLoaders.LLVM
         public LLVMType? BaseType;
         public LLVMType? PointerType;
         public Value? Pointer;
-        public List<Tuple<LLVMType, Value?>>? Indices;
+        public List<(LLVMType, Value?)>? Indices;
 
         public override void Write(Formatter w)
         {

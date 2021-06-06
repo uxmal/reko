@@ -185,7 +185,7 @@ namespace Reko.ImageLoaders.Elf
             return Segments.FirstOrDefault(s => s.IsValidAddress(uAddr));
         }
 
-        public static SortedList<Address, ByteMemoryArea> AllocateMemoryAreas(IEnumerable<Tuple<Address, uint>> segments)
+        public static SortedList<Address, ByteMemoryArea> AllocateMemoryAreas(IEnumerable<(Address, uint)> segments)
         {
             var mems = new SortedList<Address, ByteMemoryArea>();
             Address? addr = null;

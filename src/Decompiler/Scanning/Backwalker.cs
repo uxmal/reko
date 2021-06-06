@@ -116,9 +116,9 @@ namespace Reko.Scanning
         public bool BackwalkInstruction(TInstr instr)
         {
             var ass = host.AsAssignment(instr);
-            if (ass != null)
+            if (ass.Item1 != null)
             {
-                var assSrc = ass.Item2.Accept(eval);
+                var assSrc = ass.Item2!.Accept(eval);
                 var assDst = ass.Item1;
                 var regSrc = RegisterOf(assSrc);
                 if (assSrc is BinaryExpression binSrc)

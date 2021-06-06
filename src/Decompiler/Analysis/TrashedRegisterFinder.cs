@@ -209,7 +209,7 @@ namespace Reko.Analysis
                 procFlow.Constants.Clear();
 
                 procCtx.Add(proc, procFlow);
-                var idState = new Dictionary<Identifier, Tuple<Expression,BitRange>>();
+                var idState = new Dictionary<Identifier, (Expression,BitRange)>();
                 //$REVIEW: this assumes the existence of a frame pointer.
                 Identifier? fp;
                 if (sst.SsaState.Identifiers.TryGetValue(proc.Frame.FramePointer, out var sidFp))
@@ -608,7 +608,7 @@ namespace Reko.Analysis
         public class Context : EvaluationContext
         {
             public readonly Identifier FramePointer;
-            public readonly Dictionary<Identifier, Tuple<Expression, BitRange>> IdState;
+            public readonly Dictionary<Identifier, (Expression, BitRange)> IdState;
             public readonly Dictionary<int, Expression> StackState;
             public ProcedureFlow ProcFlow;
             private readonly SsaState ssa;
@@ -617,7 +617,7 @@ namespace Reko.Analysis
             public Context(
                 SsaState ssa,
                 Identifier fp,
-                Dictionary<Identifier, Tuple<Expression, BitRange>> idState,
+                Dictionary<Identifier, (Expression, BitRange)> idState,
                 ProcedureFlow procFlow)
                 : this(
                       ssa,
@@ -632,7 +632,7 @@ namespace Reko.Analysis
             private Context(
                 SsaState ssa,
                 Identifier fp,
-                Dictionary<Identifier, Tuple<Expression, BitRange>> idState,
+                Dictionary<Identifier, (Expression, BitRange)> idState,
                 ProcedureFlow procFlow,
                 Dictionary<int, Expression> stack,
                 ExpressionValueComparer cmp)
@@ -728,7 +728,7 @@ namespace Reko.Analysis
             {
                 if (id.Storage is StackStorage stack)
                     return StackState!.Get(stack.StackOffset);
-                if (!IdState.TryGetValue(id, out Tuple<Expression, BitRange> value))
+                if (!IdState.TryGetValue(id, out (Expression, BitRange) value))
                     return null;
                 else
                     return value.Item1;
@@ -736,7 +736,7 @@ namespace Reko.Analysis
 
             public BitRange GetBitRange(Identifier id)
             {
-                if (!IdState.TryGetValue(id, out Tuple<Expression, BitRange> value))
+                if (!IdState.TryGetValue(id, out (Expression, BitRange) value))
                     return BitRange.Empty;
                 else
                     return value.Item2;
@@ -800,17 +800,17 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    if (!IdState.TryGetValue(id, out Tuple<Expression, BitRange> oldValue))
+                    if (!IdState.TryGetValue(id, out (Expression, BitRange) oldValue))
                     {
                         trace.Verbose("Trf: id {0} now has value {1}", id, value);
                         IsDirty = true;
-                        IdState.Add(id, Tuple.Create(value, range));
+                        IdState.Add(id, (value, range));
                     }
                     else if (!(oldValue.Item1 is InvalidConstant) && !cmp.Equals(oldValue.Item1, value))
                     {
                         trace.Verbose("Trf: id {0} now has value {1}, was {2}", id, value, oldValue);
                         IsDirty = true;
-                        IdState[id] = Tuple.Create((Expression)InvalidConstant.Create(id.DataType), range);
+                        IdState[id] = ((Expression)InvalidConstant.Create(id.DataType), range);
                     }
                 }
             }

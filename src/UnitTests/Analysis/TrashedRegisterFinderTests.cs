@@ -784,8 +784,8 @@ Constants: cl:0x00
         [Category(Categories.UnitTests)]
         public void TrfCtx_MergeState_Stack()
         {
-            var state = new Dictionary<Identifier, Tuple<Expression, BitRange>>();
-            var stateOther = new Dictionary<Identifier, Tuple<Expression, BitRange>>();
+            var state = new Dictionary<Identifier, (Expression, BitRange)>();
+            var stateOther = new Dictionary<Identifier, (Expression, BitRange)>();
             var procFlow = new ProcedureFlow(null);
             var proc = Procedure.Create(arch, Address.Ptr32(0x00123400), arch.CreateFrame());
             var ssa = new SsaState(proc);

@@ -413,7 +413,7 @@ namespace Reko.Scanning
             // Remember, the graph is backwards!
             var activeBlocks = new List<RtlBlock>();
             var allBlocks = new DiGraph<RtlBlock>();
-            var edges = new List<Tuple<RtlBlock, Address>>();
+            var edges = new List<(RtlBlock, Address)>();
             var mpBlocks = new Dictionary<Address, RtlBlock>();
             var wl = sr.Instructions.Keys.ToSortedSet();
 
@@ -445,7 +445,7 @@ namespace Reko.Scanning
                         var addrDst = DestinationAddress(instr);
                         if (addrDst != null && (instr.Class & InstrClass.Call) == 0)
                         {
-                            edges.Add(Tuple.Create(block, addrDst));
+                            edges.Add((block, addrDst));
                         }
 
                         if ((instr.Class & DT) == DT)
@@ -480,7 +480,7 @@ namespace Reko.Scanning
                     }
                     if (addFallthroughEdge)
                     {
-                        edges.Add(Tuple.Create(block, addrInstrEnd));
+                        edges.Add((block, addrInstrEnd));
                     }
 
                     if (endBlockNow || 
@@ -501,7 +501,7 @@ namespace Reko.Scanning
                         
                         if (!endBlockNow && !addFallthroughEdge)
                         {
-                            edges.Add(Tuple.Create(block, addrInstrEnd));
+                            edges.Add((block, addrInstrEnd));
                         }
                         break;
                     }

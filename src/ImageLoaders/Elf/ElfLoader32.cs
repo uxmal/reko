@@ -338,7 +338,7 @@ namespace Reko.ImageLoaders.Elf
                 Segments
                     .Where(p => IsLoadable(p.p_pmemsz, p.p_type))
                     .OrderBy(p => p.p_vaddr)
-                    .Select(p => Tuple.Create(
+                    .Select(p => (
                         Address.Ptr32((uint) p.p_vaddr),
                         (uint) p.p_pmemsz)));
 

@@ -398,18 +398,18 @@ namespace Reko.ImageLoaders.LLVM
 
         private ArrayValue ParseArrayValue()
         {
-            var values = new List<Tuple<LLVMType,Value?>>();
+            var values = new List<(LLVMType,Value?)>();
             Expect(TokenType.LBRACKET);
             if (Peek().Type != TokenType.RBRACKET)
             {
                 var type = ParseType();
                 var value = ParseValue();
-                values.Add(Tuple.Create(type, value));
+                values.Add((type, value));
                 while (PeekAndDiscard(TokenType.COMMA))
                 {
                     type = ParseType();
                     value = ParseValue();
-                    values.Add(Tuple.Create(type, value));
+                    values.Add((type, value));
                 }
             }
             Expect(TokenType.RBRACKET);

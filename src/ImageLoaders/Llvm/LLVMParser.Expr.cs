@@ -57,12 +57,12 @@ namespace Reko.ImageLoaders.LLVM
             Expect(TokenType.COMMA);
             var ptrType = ParseType();
             var ptr = ParseValue();
-            var indices = new List<Tuple<LLVMType, Value?>>();
+            var indices = new List<(LLVMType, Value?)>();
             while (PeekAndDiscard(TokenType.COMMA))
             {
                 var type = ParseType();
                 var val = ParseValue();
-                indices.Add(Tuple.Create(type, val));
+                indices.Add((type, val));
             }
             Expect(TokenType.RPAREN);
             return new GetElementPtrExpr

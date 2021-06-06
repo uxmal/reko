@@ -45,7 +45,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 curPos = Pos(curPos.Address, curPos.Offset + 1);
                 return true;
             }
-            line = default(LineSpan);
+            line = default;
             return false;
         }
 
@@ -82,8 +82,8 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     var tuple = sp.GenerateSpan();
                     if (tuple != null)
                     {
-                        curPos = tuple.Item1;
-                        spans.Add(tuple.Item2);
+                        curPos = tuple.Value.Item1;
+                        spans.Add(tuple.Value.Item2);
                         --count;
                     }
                     else
@@ -137,7 +137,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
 
         private abstract class SpanGenerator
         {
-            public abstract Tuple<ModelPosition, LineSpan> GenerateSpan();
+            public abstract (ModelPosition, LineSpan)? GenerateSpan();
 
             public void DecorateLastLine(LineSpan line)
             {
@@ -174,7 +174,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 this.program = program;
             }
 
-            public override Tuple<ModelPosition, LineSpan> GenerateSpan()
+            public override (ModelPosition, LineSpan)? GenerateSpan()
             {
                 if (offset >= instrs.Length || offset < 0)
                     return null;
@@ -193,7 +193,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                     DecorateLastLine(asmLine);
                 }
                 this.position = Pos(instr.Address + instr.Length);
-                return Tuple.Create(position, asmLine);
+                return (position, asmLine);
             }
         }
 
@@ -213,7 +213,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 this.position = pos;
             }
 
-            public override Tuple<ModelPosition, LineSpan> GenerateSpan()
+            public override (ModelPosition, LineSpan)? GenerateSpan()
             {
                 var addr = this.position.Address;
                 var line = new List<TextSpan>
@@ -275,7 +275,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 {
                     DecorateLastLine(memLine);
                 }
-                return Tuple.Create(position, memLine);
+                return (position, memLine);
             }
 
             private string RenderBytesAsText(byte[] abCode)
@@ -306,7 +306,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// </summary>
         public class MemoryTextSpan : TextSpan
         {
-            private string text;
+            private readonly string text;
 
             public Address Address { get; private set; }
 
@@ -339,7 +339,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// </summary>
         public class InertTextSpan : TextSpan
         {
-            private string text;
+            private readonly string text;
 
             public InertTextSpan(string text, string style)
             {

@@ -47,13 +47,13 @@ namespace Reko.Core.Types
         private const int Unk = 14;
         private const int Void = 15;
 
-        private IDictionary<Tuple<DataType, DataType>, int> compareResult;
+        private IDictionary<(DataType, DataType), int> compareResult;
 
 		private static DataTypeComparer ourGlobalComparer = new DataTypeComparer();
 
         public DataTypeComparer()
         {
-            this.compareResult = new Dictionary<Tuple<DataType, DataType>, int>();
+            this.compareResult = new Dictionary<(DataType, DataType), int>();
         }
 
         /// <summary>
@@ -72,12 +72,10 @@ namespace Reko.Core.Types
 
         public int Compare(DataType x, DataType y, int count)
         {
-            var typePair = new Tuple<DataType, DataType>(x, y);
-
-            int d;
+            var typePair = (x, y);
 
             // avoid infinite recursion
-            if (compareResult.TryGetValue(typePair, out d))
+            if (compareResult.TryGetValue(typePair, out int d))
                 return d;
 
             compareResult[typePair] = 0;

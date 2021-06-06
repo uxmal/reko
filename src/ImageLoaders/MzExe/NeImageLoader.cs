@@ -102,7 +102,7 @@ namespace Reko.ImageLoaders.MzExe
         const ushort TI_BIT = 0x04;         // TI = Table indicator.
 
         private readonly SortedList<Address, ImageSymbol> imageSymbols;
-        private readonly Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
+        private readonly Dictionary<uint, (Address, ImportReference)> importStubs;
         private readonly DecompilerEventListener listener;
         private readonly uint lfaNew;
         private ByteMemoryArea mem;
@@ -129,7 +129,7 @@ namespace Reko.ImageLoaders.MzExe
         {
             this.listener = Services.RequireService<DecompilerEventListener>();
             this.lfaNew = e_lfanew;
-            this.importStubs = new Dictionary<uint, Tuple<Address, ImportReference>>();
+            this.importStubs = new Dictionary<uint, (Address, ImportReference)>();
             this.imageSymbols = new SortedList<Address, ImageSymbol>();
             this.addrEntry = null!;
             this.addrImportStubs = null!;
@@ -649,7 +649,7 @@ namespace Reko.ImageLoaders.MzExe
                 // If additive, there is no target chain list. Instead, add source
                 //  and target.
                 bool additive = (rep.relocation_type & NE_RELTYPE.ADDITIVE) != 0;
-                Tuple<Address, ImportReference> impRef;
+                (Address, ImportReference) impRef;
                 uint lp;
                 string module = "";
                 switch (rep.relocation_type & (NE_RELTYPE)3)
@@ -665,7 +665,7 @@ namespace Reko.ImageLoaders.MzExe
                     else
                     {
                         address = addrImportStubs;
-                        importStubs.Add(lp, new Tuple<Address, ImportReference>(
+                        importStubs.Add(lp, (
                             address,
                             new OrdinalImportReference(address, module, rep.target2, SymbolType.ExternalProcedure)));
                         addrImportStubs += 8;
@@ -688,7 +688,7 @@ namespace Reko.ImageLoaders.MzExe
                     {
                         address = addrImportStubs;
                         string fnName = Encoding.ASCII.GetString(abFnName);
-                        importStubs.Add(lp, new Tuple<Address, ImportReference>(
+                        importStubs.Add(lp, (
                             address,
                             new NamedImportReference(address, module, fnName, SymbolType.ExternalProcedure)));
                         addrImportStubs += 8;
