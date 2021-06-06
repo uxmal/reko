@@ -145,8 +145,6 @@ namespace Reko.Environments.MacOS.Classic
             if (vector == 0)
                 return null;
 
-            if (vector == 0xA0AC)
-                vector.ToString();
             int offset = 4;
             var sStackValues = new List<StackValue_v1>();
             while (stackValues.Count > 0)

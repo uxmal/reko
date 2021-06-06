@@ -24,7 +24,8 @@ namespace Reko.Tools.specGen
         {
             { "", "9C3E003B-43CB-47B3-B5B8-DC6373A38AE1" },
             { "os2-16", "0444AAFF-1B7C-4182-AEEF-7DFCCDBC426C" },
-            { "os2-32", "17698BD8-9701-44F7-8D05-F42F450334C6" }
+            { "os2-32", "17698BD8-9701-44F7-8D05-F42F450334C6" },
+            { "macos", "2D226794-2492-4E46-91C7-05B51E071D0D" },
         };
 
         private const string NAMESPACE = "http://schemas.microsoft.com/wix/2006/wi";
