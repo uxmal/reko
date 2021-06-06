@@ -46,6 +46,7 @@
       <Directory Id="$(var.PlatformProgramFilesFolder)">
         <Directory Id="jklSoftFolder" Name="jklSoft">
           <Directory Id="ProductComponentFolder" Name="Reko">
+            <Directory Id="macosFolder" Name="macos" />   <!-- Folder for MacOS-specific files-->
             <Directory Id="os2_16Folder" Name="os2-16" /> <!-- Folder for OS/2 16-bit specific files-->
             <Directory Id="os2_32Folder" Name="os2-32" /> <!-- Folder for OS/2 32-bit specific files-->
           </Directory>
@@ -73,6 +74,7 @@
     <Feature Id="ProductFeature" Title="Complete" Level="1">
       <ComponentRef Id="ProductComponent" />
       <ComponentRef Id="ApplicationShortcut" />
+      <ComponentRef Id="macos" />
       <ComponentRef Id="os2_16" />
       <ComponentRef Id="os2_32" />
     </Feature>

@@ -817,7 +817,6 @@
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BinaryFiles.wxi" />
     <Content Include="Os2_16Metadata.wxi" />
     <Content Include="Os2_32Metadata.wxi" />
     <Content Include="Properties.wxi" />

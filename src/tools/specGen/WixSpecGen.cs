@@ -20,7 +20,7 @@ namespace Reko.Tools.specGen
             this.pathPrefix = this.outDir.EnsureTrailingSlash();
         }
 
-        private static Dictionary<string, string> componentGuids = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> componentGuids = new Dictionary<string, string>()
         {
             { "", "9C3E003B-43CB-47B3-B5B8-DC6373A38AE1" },
             { "os2-16", "0444AAFF-1B7C-4182-AEEF-7DFCCDBC426C" },
