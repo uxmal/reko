@@ -26,9 +26,10 @@ using System.Linq;
 namespace Reko.Core.Expressions
 {
 	/// <summary>
-	/// Creates a sequence out of multiple expressions.
+	/// Models a sequence consisting of multiple expressions.
 	/// </summary>
-    /// <remarks>The elements of the sequence form a whole. The DataType indicates what kind of whole it is.
+    /// <remarks>The elements of the sequence form a whole.
+    /// The <see cref="DataType"/> indicates what kind of whole it is.
 	public class MkSequence : Expression
 	{
         public MkSequence(DataType dt, params Expression [] exprs) : base(dt)

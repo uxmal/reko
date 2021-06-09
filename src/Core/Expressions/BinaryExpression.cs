@@ -24,8 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-#nullable enable
-
 namespace Reko.Core.Expressions
 {
     /// <summary>
@@ -47,8 +45,8 @@ namespace Reko.Core.Expressions
             }
         }
 
-        public Operator Operator { get; private set; } 
-        public Expression Left { get; private set; }
+        public Operator Operator { get; } 
+        public Expression Left { get; }
         public Expression Right { get; set; }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
@@ -72,9 +70,9 @@ namespace Reko.Core.Expressions
 		}
 
         /// <summary>
-        /// Creates a BinaryExpression with the operands commuted.
+        /// Creates a <see cref="BinaryExpression"/> with the operands commuted.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A new, commuted <see cref="BinaryExpression"/>.</returns>
         public BinaryExpression Commute()
         {
             return new BinaryExpression(

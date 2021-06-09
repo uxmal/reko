@@ -45,9 +45,9 @@ namespace Reko.Core.Expressions
             this.FalseExp = fa;
         }
 
-        public Expression Condition { get; private set; }
-        public Expression ThenExp { get; private set; }
-        public Expression FalseExp { get; private set; }
+        public Expression Condition { get; }
+        public Expression ThenExp { get; }
+        public Expression FalseExp { get; }
 
         public override IEnumerable<Expression> Children
         {

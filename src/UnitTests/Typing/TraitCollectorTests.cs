@@ -210,7 +210,6 @@ namespace Reko.UnitTests.Typing
 			e = e.Accept(en);
 			e.Accept(eqb);
 			e.Accept(coll);
-			Assert.IsNotNull(mps.BasePointer.TypeVariable, "Base pointer should have type variable");
 			Verify(null, "Typing/TrcoMemberPointer.txt");
 		}
 

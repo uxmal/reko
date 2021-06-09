@@ -43,8 +43,8 @@ namespace Reko.Core.Expressions
             this.Expression = expr;
         }
 
-        public ConditionCode ConditionCode { get; set; }
-        public Expression Expression { get; set; }
+        public ConditionCode ConditionCode { get; }
+        public Expression Expression { get; }
 
         public override IEnumerable<Expression> Children
         {

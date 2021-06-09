@@ -52,7 +52,9 @@ namespace Reko.Core.Machine
         }
     }
 
-
+    /// <summary>
+    /// Decoder for use with opcodes that are wider than 32 bits.
+    /// </summary>
     public abstract class WideDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
         where TInstr : MachineInstruction
         where TMnemonic : struct

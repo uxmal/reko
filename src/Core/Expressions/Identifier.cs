@@ -31,8 +31,8 @@ namespace Reko.Core.Expressions
 	/// Represents an access to a named "register" or "variable". 
 	/// </summary>
     /// <remarks>
-    /// Identifiers inherit a data type from the Expression base
-    /// class. They also have a Storage property, which identifies
+    /// Identifiers inherit a <see cref="DataType"/> from the <see cref="Expression"/> base
+    /// class. They also have a <see cref="Storage"/> property, which identifies
     /// which "memory space" the identifier lives in.
     /// </remarks>
 	public class Identifier : Expression
@@ -60,7 +60,7 @@ namespace Reko.Core.Expressions
             return new Identifier(name, dt, globalStorage);
         }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
         public override IEnumerable<Expression> Children
         {

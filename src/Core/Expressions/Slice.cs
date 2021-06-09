@@ -42,7 +42,7 @@ namespace Reko.Core.Expressions
         /// <summary>
         /// The expression being sliced.
         /// </summary>
-        public readonly Expression Expression;
+        public Expression Expression { get; }
 
         /// <summary>
         /// Bit offset of the slice.

@@ -58,8 +58,8 @@ namespace Reko.Core.Expressions
             this.EffectiveAddress = effectiveAddress ?? throw new ArgumentNullException(nameof(effectiveAddress));
         }
 
-        public readonly MemoryIdentifier MemoryId;
-        public readonly Expression EffectiveAddress;
+        public MemoryIdentifier MemoryId { get; }
+        public Expression EffectiveAddress { get; }
 
         public override IEnumerable<Expression> Children
         {
@@ -113,7 +113,10 @@ namespace Reko.Core.Expressions
             this.BasePointer = basePtr;
         }
 
-        public readonly Expression BasePointer;         // Segment selector
+        /// <summary>
+        /// The base pointer models the segment selector in segmented addresses.
+        /// </summary>
+        public Expression BasePointer { get; }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {

@@ -41,11 +41,11 @@ namespace Reko.Arch.Mos6502
         private readonly Mos6502Architecture arch;
         private readonly EndianImageReader rdr;
         private readonly IEnumerator<Instruction> dasm;
+        private readonly List<RtlInstruction> instrs;
+        private readonly RtlEmitter m;
         private Instruction instrCur;
         private InstrClass iclass;
-        private RtlEmitter m;
 
-#nullable disable
         public Rewriter(Mos6502Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
@@ -54,8 +54,10 @@ namespace Reko.Arch.Mos6502
             this.host = host;
             this.rdr = rdr;
             this.dasm = new Disassembler(arch, rdr).GetEnumerator();
+            this.instrs = new List<RtlInstruction>();
+            this.m = new RtlEmitter(instrs);
+            this.instrCur = default!;
         }
-#nullable enable
 
         private AddressCorrelatedException NYI()
         {
@@ -70,9 +72,7 @@ namespace Reko.Arch.Mos6502
             while (dasm.MoveNext())
             {
                 this.instrCur = dasm.Current;
-                var instrs = new List<RtlInstruction>();
                 this.iclass = instrCur.InstructionClass;
-                this.m = new RtlEmitter(instrs);
                 switch (instrCur.Mnemonic)
                 {
                 default:
@@ -139,6 +139,7 @@ namespace Reko.Arch.Mos6502
                 case Mnemonic.tya: Copy(Registers.a, Registers.y); break;
                 }
                 yield return m.MakeCluster(instrCur.Address, instrCur.Length, iclass);
+                instrs.Clear();
             }
         }
 
