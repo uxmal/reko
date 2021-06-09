@@ -242,7 +242,7 @@ namespace Reko.Core
             {
                 namedTypes[typedef.Key] = typedef.Value.Accept(dtSer);
             }
-            return new SymbolTable(Platform, primitiveTypes, namedTypes);
+            return new SymbolTable(Platform, primitiveTypes, namedTypes, Platform.PointerType.Size);
         }
 
         /// <summary>

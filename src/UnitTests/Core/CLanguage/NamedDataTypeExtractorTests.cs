@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Core.CLanguage
             var sc = new ServiceContainer();
             this.arch = new FakeArchitecture(sc);
             this.platform = new DefaultPlatform(sc, arch);
-            symbolTable = new SymbolTable(platform);
+            symbolTable = new SymbolTable(platform, platform.PointerType.Size);
         }
 
         public void Given_16bitPlatform()
@@ -57,13 +57,14 @@ namespace Reko.UnitTests.Core.CLanguage
             platformMock.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Int)).Returns(16);
             platformMock.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Long)).Returns(32);
             platformMock.Setup(p => p.Architecture).Returns(arch);
+            platformMock.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
             this.platform = platformMock.Object;
-            symbolTable = new SymbolTable(platform);
+            symbolTable = new SymbolTable(platform, platform.PointerType.Size);
         }
 
         private void Run(DeclSpec[] declSpecs, Declarator decl)
         {
-            var ndte = new NamedDataTypeExtractor(platform, declSpecs, symbolTable);
+            var ndte = new NamedDataTypeExtractor(platform, declSpecs, symbolTable, platform.PointerType.Size);
             this.nt = ndte.GetNameAndType(decl);
         }
 
@@ -184,7 +185,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test(Description = "If no reko attributes are present, don't explicitly state the kind, but let the ABI rules decide.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_OtherAttrs()
         {
-            var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable);
+            var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable, platform.PointerType.Size);
             var kind = ndte.GetArgumentKindFromAttributes("arg", null);
             Assert.IsNull(kind);
         }
@@ -192,7 +193,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test(Description = "If no reko attributes are present, don't explicitly state the kind, but let the ABI rules decide.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_null()
         {
-            var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable);
+            var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable, platform.PointerType.Size);
             var kind = ndte.GetArgumentKindFromAttributes(
                 "arg",
                 new List<CAttribute>
@@ -207,7 +208,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test(Description = "If there is a reko::arg attribute present, use it to determine kind.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_reko_reg()
         {
-            var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable);
+            var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable, platform.PointerType.Size);
             var kind = ndte.GetArgumentKindFromAttributes(
                 "arg", 
                 new List<CAttribute>
@@ -229,7 +230,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test(Description = "If there is a reko::fpu attribute present, use it to determine kind.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_reko_x87_fpu()
         {
-            var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable);
+            var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable, platform.PointerType.Size);
             var kind = ndte.GetArgumentKindFromAttributes(
                 "arg",
                 new List<CAttribute>
@@ -334,6 +335,21 @@ namespace Reko.UnitTests.Core.CLanguage
                 },
                 new IdDeclarator { Name = "DWORD" });
             Assert.AreEqual("prim(UnsignedInt,4)", nt.DataType.ToString());
+        }
+
+        [Test(Description = "Near pointers are always 16 bit")]
+        public void Ndte_near_pointer()
+        {
+            Run(
+                new[] { SType(CTokenType.Char), },
+                new PointerDeclarator
+                {
+                    TypeQualifierList = new List<TypeQualifier> { new TypeQualifier { Qualifier = CTokenType._Near } },
+                    Pointee = new IdDeclarator { Name = "Sue" }
+                });
+            var ptrType = (PointerType_v1) nt.DataType;
+            Assert.AreEqual("ptr(prim(Character,1))", ptrType.ToString());
+            Assert.AreEqual(2, ptrType.PointerSize);
         }
     }
 }

@@ -171,12 +171,12 @@ function(add_c2xml_target)
 
 	add_custom_command(
 		OUTPUT ${c2xml_OUTPUT}
-		COMMAND ${c2xml_exe}
-			-a "${c2xml_REKO_ARCH}"
-			-e "${c2xml_REKO_ENV}"
-			-d "${c2xml_DIALECT}"
-			${c2xml_HEADER}
-			${c2xml_OUTPUT}
+			COMMAND ${c2xml_exe}
+				-a "${c2xml_REKO_ARCH}"
+				-e "${c2xml_REKO_ENV}"
+				-d "${c2xml_DIALECT}"
+				${c2xml_HEADER}
+				${c2xml_OUTPUT}
 	)
 
 	add_custom_target(

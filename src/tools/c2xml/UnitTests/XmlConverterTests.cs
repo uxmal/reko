@@ -162,7 +162,7 @@ namespace Reko.Tools.C2Xml.UnitTests
                 };
                 var arch = new FakeArchitecture(new ServiceContainer());
                 var platform = new DefaultPlatform(null, arch);
-                var xc = new XmlConverter(reader, xWriter, platform, dialect);
+                var xc = new XmlConverter(reader, xWriter, platform, true, dialect);
                 xc.Convert();
                 writer.Flush();
                 Assert.AreEqual(expectedXml, writer.ToString());

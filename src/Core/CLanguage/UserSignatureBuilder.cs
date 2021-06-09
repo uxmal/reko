@@ -81,7 +81,7 @@ namespace Reko.Core.CLanguage
         {
             if (!string.IsNullOrEmpty(userProc.CSignature))
             {
-                return ParseFunctionDeclaration(userProc.CSignature!);
+                return ParseFunctionDeclaration(userProc.CSignature);
             }
             return null;
         }

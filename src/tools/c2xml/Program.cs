@@ -46,6 +46,7 @@ Options:
   -a <arch>        Processor architecture
   -e <env>         Operating environment
   -d <dialect>     Dialect of C/C++ used to parse
+  -p               Explicitly generate pointer sizes
 ";
 
         public static int Main(string[] args)
@@ -118,12 +119,16 @@ Options:
             {
                 dialect = (string) optDialect.Value;
             }
+            bool explicitPointerSizes = options.ContainsKey("-p");
+            if (explicitPointerSizes)
+                Console.WriteLine($"********************* POINTER EXPLICIT SPECIFIED for {output} ******************");
+
             var xWriter = new XmlTextWriter(output, new UTF8Encoding(false))
             {
                 Formatting = Formatting.Indented
             };
 
-            XmlConverter c = new XmlConverter(input, xWriter, platform, dialect);
+            XmlConverter c = new XmlConverter(input, xWriter, platform, explicitPointerSizes, dialect);
             c.Convert();
             output.Flush();
             output.Close();

@@ -33,9 +33,8 @@ namespace Reko.Core
     {
         private readonly Stream stream;
 
-        public CHeaderLoader(
-            IServiceProvider services, string filename, byte[] bytes)
-        : base(services, filename, bytes)
+        public CHeaderLoader(IServiceProvider services, string filename, byte[] bytes)
+            : base(services, filename, bytes)
         {
             this.stream = new MemoryStream(bytes);
         }
@@ -61,6 +60,7 @@ namespace Reko.Core
             var tlib = tldser.Load(slib);
             return tlib;
         }
+
         private SymbolTable CreateSymbolTable(
             IPlatform platform, TypeLibrary typeLib)
         {
@@ -75,7 +75,7 @@ namespace Reko.Core
             {
                 namedTypes[typedef.Key] = typedef.Value.Accept(dtSer);
             }
-            return new SymbolTable(platform, primitiveTypes, namedTypes);
+            return new SymbolTable(platform, primitiveTypes, namedTypes, platform.PointerType.Size);
         }
     }
 }
