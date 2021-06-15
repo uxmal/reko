@@ -124,7 +124,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x87010183u);
             AssertCode(
                "0|L--|0000000000010000(4): 1 instructions",
-               "1|L--|gp = CONVERT(Mem0[sp + -1936<i32>:int8], int8, int64)");
+               "1|L--|gp = CONVERT(Mem0[sp + -1936<i64>:int8], int8, int64)");
         }
 
         [Test]
@@ -169,7 +169,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x003780E7);    // jalr ra,a5,0
             AssertCode(
                 "0|T--|0000000000010000(4): 1 instructions",
-                "1|T--|call a5 + 3<i32> (0)");
+                "1|T--|call a5 + 3<i64> (0)");
         }
 
         [Test]
@@ -196,7 +196,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x03131083u);   // lh
             AssertCode(
                  "0|L--|0000000000010000(4): 1 instructions",
-                 "1|L--|ra = CONVERT(Mem0[t1 + 49<i32>:int16], int16, int64)");
+                 "1|L--|ra = CONVERT(Mem0[t1 + 49<i64>:int16], int16, int64)");
         }
 
         [Test]
@@ -254,7 +254,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0xFFF00413); // addi s0,zero,-00000001
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|s0 = 0xFFFFFFFFFFFFFFFF<64>");
+                "1|L--|s0 = -1<i64>");
         }
 
         [Test]
@@ -691,7 +691,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x00446703u);    // lwu\ta4,s0,+00000004
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a4 = CONVERT(Mem0[s0 + 4<i32>:uint32], uint32, word64)");
+                "1|L--|a4 = CONVERT(Mem0[s0 + 4<i64>:uint32], uint32, word64)");
         }
 
         [Test]
@@ -1135,7 +1135,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_RiscVInstructions(0x0014B493);	// sltiu	s1,s1,+00000001
             AssertCode(
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|s1 = CONVERT(s1 <u 1<i32>, bool, word64)");
+                "1|L--|s1 = CONVERT(s1 <u 1<i64>, bool, word64)");
         }
 
         [Test]
@@ -1153,7 +1153,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Given_HexString("93A72700");
             AssertCode(     // slti	a5,a5,+00000002
                 "0|L--|0000000000010000(4): 1 instructions",
-                "1|L--|a5 = CONVERT(a5 < 2<i32>, bool, word64)");
+                "1|L--|a5 = CONVERT(a5 < 2<i64>, bool, word64)");
         }
 
         [Test]
