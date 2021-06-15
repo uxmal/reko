@@ -119,10 +119,7 @@ Options:
             {
                 dialect = (string) optDialect.Value;
             }
-            bool explicitPointerSizes = options.ContainsKey("-p");
-            if (explicitPointerSizes)
-                Console.WriteLine($"********************* POINTER EXPLICIT SPECIFIED for {output} ******************");
-
+            bool explicitPointerSizes = options["-p"].IsTrue;
             var xWriter = new XmlTextWriter(output, new UTF8Encoding(false))
             {
                 Formatting = Formatting.Indented
