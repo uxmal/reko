@@ -59,7 +59,7 @@ namespace Reko.ImageLoaders.Xbe
                 return XbeBuildType.SegaChihiro;
             }
 
-            if ((ImageHeader.EntryPoint ^ XBE_XORKEY_ENTRYPOINT_RELEASE) > ImageHeader.BaseAddress)
+            if ((ImageHeader.EntryPoint ^ XBE_XORKEY_ENTRYPOINT_RELEASE) > 0x1000000)
             {
                 return XbeBuildType.Debug;
             }
@@ -148,6 +148,8 @@ namespace Reko.ImageLoaders.Xbe
     {
         private readonly LeImageReader rdr;
 
+        private const int XBE_MAX_THUNK = 378;
+
 
         public XbeLoader(IServiceProvider services, string filename, byte[] rawImage)
             : base(services, filename, rawImage)
@@ -186,8 +188,6 @@ namespace Reko.ImageLoaders.Xbe
                     return rdr.ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString();
                 });
 
-                long sectionOffset = section.Address - ctx.EntryPointAddress;
-
                 AccessMode accessFlgs = AccessMode.Read;
                 if (sectionHeader.Flags.HasFlag(XbeSectionFlags.Executable))
                 {
@@ -200,9 +200,9 @@ namespace Reko.ImageLoaders.Xbe
 
                 ImageSegment segment = new ImageSegment(
                     sectionName,
-                    new ByteMemoryArea(section.Address, rdr.ReadAt<byte[]>(sectionOffset, (rdr) =>
+                    new ByteMemoryArea(new Address32(sectionHeader.VirtualAddress), rdr.ReadAt<byte[]>(sectionHeader.RawAddress, (rdr) =>
                     {
-                        return rdr.CreateBinaryReader().ReadBytes((int) sectionHeader.RawSize);
+                        return rdr.ReadBytes(sectionHeader.RawSize);
                     })), accessFlgs);
 
                 segments.Add(segment);
@@ -244,7 +244,7 @@ namespace Reko.ImageLoaders.Xbe
 
             rdr.Seek(ctx.KernelThunkAddress - ctx.BaseAddress, System.IO.SeekOrigin.Begin);
 
-            for (uint i = 0; ; i++)
+            for (uint i = 0; i<XBE_MAX_THUNK; i++)
             {
                 Address32 ordinalAddress = (Address32) ctx.KernelThunkAddress.Add(i * 4);
                 if(!rdr.TryReadUInt32(out uint dword))
