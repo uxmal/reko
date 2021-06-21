@@ -234,8 +234,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
             var S = symbol.Value;
             uint PP = P;
-            var relR = program.CreateImageReader(program.Architecture, addr);
-            var relW = program.CreateImageWriter(program.Architecture, addr);
             int sh = 0;
             uint mask = 0;
             uint A = 0;
@@ -281,6 +279,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 R_MIPS_CALLHI16  30 T-hi16   external (G - (short)G) >> 16 + A
                 R_MIPS_CALLLO16  31 T-lo16   external G & 0xffff */
             }
+            var relR = program.CreateImageReader(program.Architecture, addr);
+            var relW = program.CreateImageWriter(program.Architecture, addr);
             var w = relR.ReadUInt32();
             w += ((uint)(S + A + P) >> sh) & mask;
             relW.WriteUInt32(w);

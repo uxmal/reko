@@ -59,6 +59,11 @@ namespace Reko.Core.Machine
             }
             return dasm.MakeInstruction(this.iclass, this.mnemonic);
         }
+
+        public override string ToString()
+        {
+            return $"{iclass}:{mnemonic}";
+        }
     }
 
     public class WideInstrDecoder<TDasm, TMnemonic, TInstr> : WideDecoder<TDasm, TMnemonic, TInstr>

@@ -735,7 +735,7 @@ namespace Reko.Scanning
             if (program.User.Calls.TryGetUpperBound(ric!.Address, out var userCall))
             {
                 var linStart = ric.Address.ToLinear();
-                var linEnd = linStart + ric.Length;
+                var linEnd = linStart + (uint)ric.Length;
                 var linUserCall = userCall.Address!.ToLinear();
                 if (linStart > linUserCall || linUserCall >= linEnd)
                     userCall = null!;

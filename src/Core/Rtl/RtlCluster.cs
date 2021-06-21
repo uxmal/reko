@@ -36,23 +36,23 @@ namespace Reko.Core.Rtl
         public RtlInstructionCluster(Address addr, int instrLength, params RtlInstruction[] instrs)
         {
             this.Address = addr;
-            this.Length = (byte) instrLength;
+            this.Length = instrLength;
             this.Instructions = instrs;
         }
 
         /// <summary>
         /// The address of the original machine instruction.
         /// </summary>
-        public Address Address { get; private set; }
+        public Address Address { get; }
 
         public InstrClass Class { get; set; }
 
-        public RtlInstruction[] Instructions { get; private set; }
+        public RtlInstruction[] Instructions { get; }
 
         /// <summary>
         /// The length of the original machine instruction, in bytes.
         /// </summary>
-        public byte Length { get; private set; }
+        public int Length { get; }
 
         public override string ToString()
         {
@@ -68,6 +68,5 @@ namespace Reko.Core.Rtl
                 writer.WriteLine();
             }
         }
-
     }
 }
