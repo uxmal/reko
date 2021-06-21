@@ -57,7 +57,7 @@ namespace Reko.Environments.Xbox
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override int GetBitSizeFromCBasicType(CBasicType cb)
