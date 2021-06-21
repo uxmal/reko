@@ -364,11 +364,11 @@ namespace Reko.Scanning
             Address addr, 
             IDictionary<Address, IEnumerator<RtlInstructionCluster>> pool)
         {
-            if (!pool.TryGetValue(addr, out var e))
+            if (!pool.Remove(addr, out var e))
             {
                 var rdr = program.CreateImageReader(arch, addr);
                 var rw = arch.CreateRewriter(
-                    program.CreateImageReader(arch, addr),
+                    rdr,
                     arch.CreateProcessorState(),
                     storageBinder,
                     this.host);
@@ -376,7 +376,6 @@ namespace Reko.Scanning
             }
             else
             {
-                pool.Remove(addr);
                 return e;
             }
         }
@@ -411,7 +410,6 @@ namespace Reko.Scanning
         public IcfgBuilder BuildBlocks(DiGraph<Address> graph)
         {
             // Remember, the graph is backwards!
-            var activeBlocks = new List<RtlBlock>();
             var allBlocks = new DiGraph<RtlBlock>();
             var edges = new List<(RtlBlock, Address)>();
             var mpBlocks = new Dictionary<Address, RtlBlock>();
@@ -460,7 +458,6 @@ namespace Reko.Scanning
                     else if (instr.Class == InstrClass.Terminates)
                     {
                         endBlockNow = true;
-                        addFallthroughEdge = false;
                         addFallthroughEdge = false;
                     }
                     else
@@ -636,21 +633,6 @@ namespace Reko.Scanning
                 return xfer.Target as Address;
             }
             return null;
-        }
-
-        /// <summary>
-        /// Grab a single instruction.
-        /// </summary>
-        /// <param name="segment"></param>
-        /// <param name="a"></param>
-        /// <returns></returns>
-        private MachineInstruction? Dasm(ImageSegment segment, int a)
-        {
-            var addr = segment.Address + a;
-            if (!segment.IsInRange(addr) || !segment.MemoryArea.IsValidAddress(addr))
-                return null;
-            var dasm = program.CreateDisassembler(program.Architecture, addr);
-            return dasm.FirstOrDefault();
         }
 
         public IEnumerable<KeyValuePair<Address, int>> SpeculateCallDests(IDictionary<ImageSegment, byte[]> map)

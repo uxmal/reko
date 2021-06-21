@@ -110,7 +110,7 @@ namespace Reko.Arch.X86
 
         /// <summary>
         /// Decodes instructions whose meaning depends on whether REX prefixes
-        /// are to be interpretd or not.
+        /// are to be interpreted or not.
         /// </summary>
         public class Rex_or_InstructionDecoder : Decoder
         {
