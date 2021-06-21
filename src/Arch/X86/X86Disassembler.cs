@@ -32,6 +32,8 @@ using System.Runtime.CompilerServices;
 
 namespace Reko.Arch.X86
 {
+    using Decoder = Decoder<X86Disassembler, Mnemonic, X86Instruction>;
+
     /// <summary>
     /// Intel x86 machine code disassembler 
     /// </summary>
@@ -141,8 +143,6 @@ namespace Reko.Arch.X86
             X86LegacyCodeRegisterExtension registerExtension;
 
             // These fields are for synthesis.
-            public Mnemonic mnemonic;
-            public InstrClass iclass;
             public PrimitiveType dataWidth;
             public PrimitiveType addressWidth;
             public List<MachineOperand> ops;
@@ -178,11 +178,11 @@ namespace Reko.Arch.X86
                 this.ops.Clear();
             }
 
-            public X86Instruction MakeInstruction()
+            public X86Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
             {
-                return new X86Instruction(this.mnemonic, this.iclass, this.iWidth, this.addressWidth, this.ops.ToArray())
+                return new X86Instruction(mnemonic, iclass, this.iWidth, this.addressWidth, this.ops.ToArray())
                 {
-                    repPrefix = this.iclass.HasFlag(InstrClass.Invalid)
+                    repPrefix = iclass.HasFlag(InstrClass.Invalid)
                         ? 0
                         : this.F2Prefix 
                             ? 2 :
@@ -335,18 +335,15 @@ namespace Reko.Arch.X86
             this.decodingContext.addressWidth = defaultAddressWidth;
             this.decodingContext.iWidth = defaultDataWidth;
 
-            X86Instruction instr;
-            if (rootDecoders[op].Decode(this, op))
-            {
-                instr = decodingContext.MakeInstruction();
-            }
-            else 
-            {
-                instr = CreateInvalidInstruction();
-            }
+            X86Instruction instr = rootDecoders[op].Decode(op, this);
             instr.Address = addr;
             instr.Length = (int)(rdr.Address - addr);
             return instr;
+        }
+
+        public override X86Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
+        {
+            return decodingContext.MakeInstruction(iclass, mnemonic);
         }
 
         public override X86Instruction CreateInvalidInstruction()
@@ -1243,19 +1240,14 @@ namespace Reko.Arch.X86
         private static readonly Mutator<X86Disassembler> s4 = Reg(Registers.fs);
         private static readonly Mutator<X86Disassembler> s5 = Reg(Registers.gs);
 
-        public static InstructionDecoder Instr(Mnemonic op)
+        public static InstrDecoder<X86Disassembler, Mnemonic, X86Instruction> Instr(Mnemonic mnemonic, params Mutator<X86Disassembler> [] mutators)
         {
-            return new InstructionDecoder(op, InstrClass.Linear);
+            return new InstrDecoder<X86Disassembler, Mnemonic, X86Instruction>(InstrClass.Linear, mnemonic, mutators);
         }
 
-        public static InstructionDecoder Instr(Mnemonic op, params Mutator<X86Disassembler> [] mutators)
+        public static InstrDecoder<X86Disassembler, Mnemonic, X86Instruction> Instr(Mnemonic mnemonic, InstrClass iclass, params Mutator<X86Disassembler> [] mutators)
         {
-            return new InstructionDecoder(op, InstrClass.Linear, mutators);
-        }
-
-        public static InstructionDecoder Instr(Mnemonic op, InstrClass iclass, params Mutator<X86Disassembler> [] mutators)
-        {
-            return new InstructionDecoder(op, iclass, mutators);
+            return new InstrDecoder<X86Disassembler, Mnemonic, X86Instruction>(iclass, mnemonic, mutators);
         }
 
         public static MemRegDecoder MemReg(Decoder mem, Decoder reg)
@@ -1263,9 +1255,16 @@ namespace Reko.Arch.X86
             return new MemRegDecoder(mem, reg);
         }
 
-        public static NyiDecoder nyi(string message)
+        /// <summary>
+        /// Use the <see cref="NyiDecoder{TDasm, TMnemonic, TInstr}"/> to mark instructions for which no decoder has 
+        /// been written yet.
+        /// </summary>
+        /// <remarks>
+        /// The x86 instruction set is large and keeps growing....
+        /// </remarks>
+        public static NyiDecoder<X86Disassembler, Mnemonic, X86Instruction> nyi(string message)
         {
-            return new NyiDecoder(message);
+            return new NyiDecoder<X86Disassembler, Mnemonic, X86Instruction>(message);
         }
 
 		/// <summary>

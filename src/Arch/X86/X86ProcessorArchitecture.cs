@@ -36,7 +36,7 @@ using Reko.Core.Memory;
 
 namespace Reko.Arch.X86
 {
-    using Decoder = X86Disassembler.Decoder;
+    using Decoder = Decoder<X86Disassembler, Mnemonic, X86Instruction>;
 
 	// X86 flag masks.
 
