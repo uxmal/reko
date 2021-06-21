@@ -166,7 +166,7 @@ namespace Reko.Arch.X86
                     disasm.decodingContext.dataWidth = w64;
                     disasm.decodingContext.iWidth = w64;
                 }
-                if (!disasm.rdr.TryReadByte(out var op2))
+                if (!disasm.TryReadByte(out var op2))
                     return false;
                 return decoders[op2].Decode(disasm, op2);
             }
@@ -187,7 +187,7 @@ namespace Reko.Arch.X86
             public override bool Decode(X86Disassembler disasm, byte op)
             {
                 disasm.decodingContext.SegmentOverride = SegFromBits(seg);
-                if (!disasm.rdr.TryReadByte(out var op2))
+                if (!disasm.TryReadByte(out var op2))
                     return false;
                 return disasm.rootDecoders[op2].Decode(disasm, op2);
             }
@@ -360,7 +360,7 @@ namespace Reko.Arch.X86
 
             public override bool Decode(X86Disassembler disasm, byte op)
             {
-                if (!disasm.rdr.TryReadByte(out op))
+                if (!disasm.TryReadByte(out op))
                     return false;
                 return decoders[op].Decode(disasm, op);
             }
@@ -383,7 +383,7 @@ namespace Reko.Arch.X86
                 var ctx = disasm.decodingContext;
                 if (ctx.SizeOverridePrefix | ctx.F2Prefix | ctx.F3Prefix)
                     return false;
-                if (!disasm.rdr.TryReadByte(out op))
+                if (!disasm.TryReadByte(out op))
                     return false;
                 var r = (~op >> 5) & 4;
                 var vvvv = (~op >> 3) & 0xF;
@@ -395,7 +395,7 @@ namespace Reko.Arch.X86
                 ctx.F2Prefix = pp == 3;
                 ctx.F3Prefix = pp == 2;
                 ctx.SizeOverridePrefix = pp == 1;
-                if (!disasm.rdr.TryReadByte(out op))
+                if (!disasm.TryReadByte(out op))
                     return false;
                 if (op == 0x38 || op == 0x3A)
                     return false;
@@ -424,12 +424,12 @@ namespace Reko.Arch.X86
                 var ctx = disasm.decodingContext;
                 if (ctx.RegisterExtension.ByteValue != 0 || ctx.SizeOverridePrefix || ctx.F2Prefix || ctx.F3Prefix)
                     return false;
-                if (!disasm.rdr.TryReadByte(out byte evex1))
+                if (!disasm.TryReadByte(out byte evex1))
                     return false;
                 var rxb = evex1 >> 5;
                 var mmmmm = evex1 & 0x1F;
 
-                if (!disasm.rdr.TryReadByte(out byte evex2))
+                if (!disasm.TryReadByte(out byte evex2))
                     return false;
                 var w = evex2 >> 7;
                 var vvvv = (~evex2 >> 3) & 0xF;
@@ -455,7 +455,7 @@ namespace Reko.Arch.X86
                 case 3: decoders = decoders0F3A; break;
                 default: return false;
                 }
-                if (!disasm.rdr.TryReadByte(out op))
+                if (!disasm.TryReadByte(out op))
                     return false;
                 return decoders[op].Decode(disasm, op);
             }
@@ -494,9 +494,9 @@ namespace Reko.Arch.X86
                 // The EVEX prefix consists of a leading 0x62 byte, and three
                 // packed payload bytes P0, P1, and P2.
                 //$TODO: this is incomplete: there are many missing flags.
-                if (!disasm.rdr.TryReadByte(out byte p0)) return false;
-                if (!disasm.rdr.TryReadByte(out byte p1)) return false;
-                if (!disasm.rdr.TryReadByte(out byte p2)) return false;
+                if (!disasm.TryReadByte(out byte p0)) return false;
+                if (!disasm.TryReadByte(out byte p1)) return false;
+                if (!disasm.TryReadByte(out byte p2)) return false;
                 if (p0Reserved.Read(p0) != 0)
                     return false;
                 if (p1Reserved.Read(p1) != 1)
@@ -523,7 +523,7 @@ namespace Reko.Arch.X86
                 case 3: decoders = decoders0F3A; break;
                 default: decoders = decoders0F; break;
                 }
-                if (!disasm.rdr.TryReadByte(out op))
+                if (!disasm.TryReadByte(out op))
                     return false;
                 return decoders[op].Decode(disasm, op);
             }
@@ -541,7 +541,7 @@ namespace Reko.Arch.X86
             public override bool Decode(X86Disassembler disasm, byte op)
             {
                 disasm.decodingContext.F2Prefix = true;
-                if (!disasm.rdr.TryReadByte(out op))
+                if (!disasm.TryReadByte(out op))
                     return false;
                 return rootDecoders[op].Decode(disasm, op);
             }
@@ -563,12 +563,12 @@ namespace Reko.Arch.X86
                 if (b == 0xC3)
                 {
                     // rep ret idiom.
-                    if (!disasm.rdr.TryReadByte(out op))
+                    if (!disasm.TryReadByte(out op))
                         return false;
                     return rootDecoders[b].Decode(disasm, op);
                 }
                 disasm.decodingContext.F3Prefix = true;
-                if (!disasm.rdr.TryReadByte(out op))
+                if (!disasm.TryReadByte(out op))
                     return false;
                 return rootDecoders[op].Decode(disasm, op);
             }
@@ -589,7 +589,7 @@ namespace Reko.Arch.X86
                     ? PrimitiveType.Word32
                     : PrimitiveType.Word16;
                 disasm.decodingContext.iWidth = disasm.decodingContext.dataWidth;
-                if (!disasm.rdr.TryReadByte(out byte op2))
+                if (!disasm.TryReadByte(out byte op2))
                     return false;
                 return rootDecoders[op2].Decode(disasm, op2);
             }
@@ -621,7 +621,7 @@ namespace Reko.Arch.X86
                         addrWidth = PrimitiveType.Word32;
                 }
                 disasm.decodingContext.addressWidth = addrWidth;
-                if (!disasm.rdr.TryReadByte(out op))
+                if (!disasm.TryReadByte(out op))
                     return false;
                 return rootDecoders[op].Decode(disasm, op);
             }

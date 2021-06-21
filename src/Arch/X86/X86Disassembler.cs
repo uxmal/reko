@@ -21,20 +21,21 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
-using System.Linq;
-using Reko.Core.Services;
-using Reko.Core.Memory;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace Reko.Arch.X86
 {
-	/// <summary>
-	/// Intel x86 machine code disassembler 
-	/// </summary>
-	public partial class X86Disassembler : DisassemblerBase<X86Instruction, Mnemonic>
+    /// <summary>
+    /// Intel x86 machine code disassembler 
+    /// </summary>
+    public partial class X86Disassembler : DisassemblerBase<X86Instruction, Mnemonic>
 	{
 #pragma warning disable IDE1006
         private class X86LegacyCodeRegisterExtension
@@ -267,6 +268,10 @@ namespace Reko.Arch.X86
             public bool VexLong { get; set; } // If true, use YMM or 256-bit memory access.
         }
 
+        //$REVIEW: Instructions longer than this cause exceptions on modern x86 processors.
+        // On 8086's though you could have an aribitrary number of prefixes.
+        private const int MaxInstructionLength = 15;
+
         private readonly IServiceProvider services;
         private readonly Decoder[] rootDecoders;
         private readonly ProcessorMode mode;
@@ -278,6 +283,7 @@ namespace Reko.Arch.X86
         private readonly X86InstructionDecodeInfo decodingContext;
 
         private Address addr;
+        private long rdrOffset;
 
 		/// <summary>
 		/// Creates a disassembler that uses the specified reader to fetch bytes
@@ -319,6 +325,7 @@ namespace Reko.Arch.X86
         public override X86Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
+            this.rdrOffset = rdr.Offset;
             if (!rdr.TryReadByte(out byte op))
                 return null;
 
@@ -352,6 +359,30 @@ namespace Reko.Arch.X86
             var testGenSvc = services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("X86Dis", this.addr, this.rdr, message);
             return CreateInvalidInstruction();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool TryReadByte(out byte b)
+        {
+            return (rdr.TryReadByte(out b) &&
+                rdr.Offset - rdrOffset <= MaxInstructionLength);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool TryReadLeUInt16(out ushort us)
+        {
+            return rdr.TryReadLeUInt16(out us) &&
+                rdr.Offset - rdrOffset <= MaxInstructionLength;
+        }
+
+        private bool TryReadLe(PrimitiveType offsetWidth, [MaybeNullWhen(false)] out Constant? offset)
+        {
+            offset = null;
+            if (!rdr.IsValidOffset(rdr.Offset + (uint) offsetWidth.Size - 1))
+                return false;
+            if (!rdr.TryReadLe(offsetWidth, out offset))
+                return false;
+            return (rdr.Offset - this.rdrOffset <= MaxInstructionLength);
         }
 
         private RegisterStorage RegFromBitsRexB(int bits, PrimitiveType dataWidth)
@@ -562,10 +593,9 @@ namespace Reko.Arch.X86
         /// </summary>
         public static bool Ap(uint op, X86Disassembler dasm)
         {
-            var rdr = dasm.rdr;
-            if (!rdr.TryReadLeUInt16(out ushort off))
+            if (!dasm.TryReadLeUInt16(out ushort off))
                 return false;
-            if (!rdr.TryReadLeUInt16(out ushort seg))
+            if (!dasm.TryReadLeUInt16(out ushort seg))
                 return false;
             var addr = dasm.mode.CreateSegmentedAddress(seg, off);
             if (addr == null)
@@ -780,9 +810,9 @@ namespace Reko.Arch.X86
             return (u, d) =>
             {
                 var width = d.OperandWidth(opType);
-                if (!d.rdr.TryRead(width, out Constant cOffset))
+                if (!d.TryReadLe(width, out Constant? cOffset))
                     return false;
-                long jOffset = cOffset.ToInt64();
+                long jOffset = cOffset!.ToInt64();
                 ulong uAddr = (ulong) ((long) d.rdr.Address.Offset + jOffset);
                 MachineOperand op;
                 if (d.defaultAddressWidth.BitSize == 64)      //$REVIEW: not too keen on the switch statement here.
@@ -806,7 +836,7 @@ namespace Reko.Arch.X86
         /// </summary>
         public static bool Lx(uint op, X86Disassembler d)
         {
-            if (!d.rdr.TryReadByte(out var lReg))
+            if (!d.TryReadByte(out var lReg))
                 return false;
             var ops = d.decodingContext.ops;
             var width =  ops[ops.Count-1].Width; // Use width of the previous operand.
@@ -878,7 +908,7 @@ namespace Reko.Arch.X86
             return (u, d) =>
             {
                 var width = d.OperandWidth(opType);
-                if (!d.rdr.TryReadLe(d.decodingContext.addressWidth, out var offset))
+                if (!d.TryReadLe(d.decodingContext.addressWidth, out var offset))
                     return false;
                 var memOp = new MemoryOperand(width, offset)
                 {
@@ -1246,7 +1276,7 @@ namespace Reko.Arch.X86
 		{
             if (!this.decodingContext.IsModRegMemByteActive())
             {
-                if (!rdr.TryReadByte(out byte modrm))
+                if (!TryReadByte(out byte modrm))
                 {
                     modRm = 0;
                     return false;
@@ -1402,9 +1432,9 @@ namespace Reko.Arch.X86
 
 		public ImmediateOperand? CreateImmediateOperand(PrimitiveType immWidth)
 		{
-            if (!rdr.TryReadLe(immWidth, out Constant c))
+            if (!TryReadLe(immWidth, out Constant? c))
                 return null;
-			return new ImmediateOperand(c);
+			return new ImmediateOperand(c!);
 		}
 
 		private MachineOperand? DecodeModRM(PrimitiveType dataWidth, RegisterStorage segOverride, Func<int, PrimitiveType, RegisterStorage> regFn)
@@ -1498,7 +1528,7 @@ namespace Reko.Arch.X86
 				{
                     // We have SIB'ness, your majesty!
 
-                    if (!rdr.TryReadByte(out byte sib))
+                    if (!TryReadByte(out byte sib))
                         return null;
 					if (((this.decodingContext.ModRegMemByte & 0xC0) == 0) && ((sib & 0x7) == 5))
 					{
@@ -1521,9 +1551,7 @@ namespace Reko.Arch.X86
             Constant? offset;
             if (offsetWidth != null)
             {
-                if (!rdr.IsValidOffset(rdr.Offset + (uint)offsetWidth.Size -1))
-                    return null;
-                if (!rdr.TryReadLe(offsetWidth, out offset))
+                if (!TryReadLe(offsetWidth, out offset))
                     return null;
             }
             else

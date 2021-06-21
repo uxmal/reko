@@ -2499,7 +2499,6 @@ movzx	ax,byte ptr [bp+4h]
             Assert.AreEqual("verr\tsp", instr.ToString());
         }
 
-
         [Test]
         public void X86Dis_vfmadd213ps()
         {
@@ -3227,6 +3226,13 @@ movzx	ax,byte ptr [bp+4h]
             AssertCode64("pextrd\tdword ptr [rbx],xmm0,4h", "66 0F 3A 16 03 04");
             AssertCode64("pextrq\trbx,xmm0,4h",             "66 48 0f 3a 16 c3 04");
             AssertCode64("pextrq\tqword ptr [rbx],xmm0,4h", "66 48 0f 3a 16 03 04");
+        }
+
+        [Test]
+        public void X86Dis_instr_tool_long_prefixes()
+        {
+            AssertCode32("xor\teax,fs:[eax]", "64 64 64 64  64 64 64 64  64 64 64 64  64 33 00");
+            AssertCode32("illegal",           "64 64 64 64  64 64 64 64  64 64 64 64  64 64 33 00");
         }
     }
 }
