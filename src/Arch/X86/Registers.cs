@@ -77,6 +77,7 @@ namespace Reko.Arch.X86
         public static readonly FlagGroupStorage CZP;
         public static readonly FlagGroupStorage SCZ;
         public static readonly FlagGroupStorage SCZO;
+        public static readonly FlagGroupStorage SCZOP;
         public static readonly FlagGroupStorage SO;
         public static readonly FlagGroupStorage SZ;
         public static readonly FlagGroupStorage SZO;
@@ -276,6 +277,7 @@ namespace Reko.Arch.X86
             CZP = FlagRegister("CZP", eflags, FlagM.CF | FlagM.ZF | FlagM.PF);
             SCZ = FlagRegister("SCZ", eflags, FlagM.SF | FlagM.CF | FlagM.ZF);
             SCZO = FlagRegister("SCZO", eflags, FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF);
+            SCZOP = FlagRegister("SCZOP", eflags, FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF | FlagM.PF);
             SO = FlagRegister("SO", eflags, FlagM.SF | FlagM.OF);
             SZ = FlagRegister("SZ", eflags, FlagM.SF | FlagM.ZF);
             SZO = FlagRegister("SZO", eflags, FlagM.SF | FlagM.ZF | FlagM.OF);
