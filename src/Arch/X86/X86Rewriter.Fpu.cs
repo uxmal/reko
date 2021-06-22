@@ -504,6 +504,7 @@ namespace Reko.Arch.X86
                     }
                 case Mnemonic.fstp: this.instrCur = nextInstr; RewriteFst(true); break;
                 case Mnemonic.fst: this.instrCur = nextInstr; RewriteFst(false); break;
+                case Mnemonic.mov: this.instrCur = nextInstr; RewriteMov(); break;
                 default:
                     host.Warn(instrCur.Address, "Expected a use of FPU status. Last test instruction at {0}", instrCur.Address);
                     return false;
