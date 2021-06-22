@@ -52,6 +52,11 @@ namespace Reko.ImageLoaders.Xbe
         public Address KernelLibraryAddress;
         public Address XapiLibraryAddress;
 
+        /// <summary>
+        /// Upper bound for the load address in Release mode
+        /// </summary>
+        const uint LoadAddressUpperBound = 0x1000000;
+
         private XbeBuildType DetectBuildType()
         {
             if ((ImageHeader.EntryPoint & 0xf0000000) == 0x40000000)
@@ -59,7 +64,7 @@ namespace Reko.ImageLoaders.Xbe
                 return XbeBuildType.SegaChihiro;
             }
 
-            if ((ImageHeader.EntryPoint ^ XBE_XORKEY_ENTRYPOINT_RELEASE) > 0x1000000)
+            if ((ImageHeader.EntryPoint ^ XBE_XORKEY_ENTRYPOINT_RELEASE) > LoadAddressUpperBound)
             {
                 return XbeBuildType.Debug;
             }
