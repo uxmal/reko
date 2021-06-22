@@ -115,13 +115,13 @@ namespace Reko.ImageLoaders.Xbe
     {
         public readonly XbeSectionHeader SectionHeader;
 
-        public readonly Address Address;
+        public readonly Address VirtualAddress;
         public readonly Address NameAddress;
 
         public XbeSection(XbeSectionHeader hdr)
         {
             SectionHeader = hdr;
-            Address = Address.Ptr32(SectionHeader.RawAddress);
+            VirtualAddress = Address.Ptr32(SectionHeader.VirtualAddress);
             NameAddress = Address.Ptr32(SectionHeader.SectionNameAddress);
         }
     }
@@ -200,7 +200,7 @@ namespace Reko.ImageLoaders.Xbe
 
                 ImageSegment segment = new ImageSegment(
                     sectionName,
-                    new ByteMemoryArea(new Address32(sectionHeader.VirtualAddress), rdr.ReadAt<byte[]>(sectionHeader.RawAddress, (rdr) =>
+                    new ByteMemoryArea(section.VirtualAddress, rdr.ReadAt<byte[]>(sectionHeader.RawAddress, (rdr) =>
                     {
                         return rdr.ReadBytes(sectionHeader.RawSize);
                     })), accessFlgs);
