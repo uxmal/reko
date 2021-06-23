@@ -48,7 +48,7 @@ namespace Reko.Core.Lib
         {
             //$TODO: This is quick and dirty and doesn't handle
             // corner cases well. Feel free to improve it, but 
-            // we're hoping the .NET Framework and .NET Core will
+            // .NET 5 will provide full support.
 
             ulong dBitPattern = (ulong) BitConverter.DoubleToInt64Bits(d);
             ulong hSign = ((dBitPattern >> 48) & SignBit);
@@ -73,6 +73,13 @@ namespace Reko.Core.Lib
         {
             var negated = (ushort)(a.value ^ 0x8000);
             return new Float16(negated);
+        }
+
+        public static bool IsNaN(Float16 a)
+        {
+            var exp = (a.value >> ExponentBitOffset) & ExponentMask;
+            int significand = a.value & ((1 << ExponentBitOffset) - 1);
+            return exp == ExponentMask && significand != 0;
         }
 
         private bool IsZero()

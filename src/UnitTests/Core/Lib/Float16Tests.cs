@@ -136,5 +136,11 @@ namespace Reko.UnitTests.Core.Lib
             Assert.AreEqual("10", RoundTrip(10.0));
         }
 
+        [Test]
+        public void F16_IsNan()
+        {
+            Assert.IsTrue(Float16.IsNaN(new Float16(0b1_11111_00_0000_0001)));
+            Assert.IsFalse(Float16.IsNaN(new Float16(0b1_11111_00_0000_0000)));
+        }
     }
 }

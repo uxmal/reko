@@ -260,7 +260,8 @@ namespace Reko.Core.Output
 
         public virtual void VisitConstant(Constant c)
         {
-            if (!c.IsValid)
+            var pt = c.DataType.ResolveAs<PrimitiveType>();
+            if (!c.IsValid && (c is InvalidConstant || pt is null || pt.Domain != Domain.Real))
             {
                 InnerFormatter.Write("<invalid>");
                 return;
@@ -276,7 +277,6 @@ namespace Reko.Core.Output
                 return;
             }
 
-            var pt = c.DataType.ResolveAs<PrimitiveType>();
             if (pt != null)
             {
                 switch (pt.Domain)

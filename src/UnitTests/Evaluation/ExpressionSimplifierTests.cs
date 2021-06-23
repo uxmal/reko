@@ -657,5 +657,15 @@ namespace Reko.UnitTests.Evaluation
             var expr = m.Mem32(m.IAdd(Constant.Word32(0x00123456), t2));
             Assert.AreEqual("Mem0[(t1_2 << 3<8>) + 0x123456<32>:word32]", expr.Accept(simplifier).ToString());
         }
+
+        [Test]
+        public void Exs_Dont_simplify_nans()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.ISub(
+                Constant.Create(PrimitiveType.Real32, 0xFFFFFFFF),
+                Constant.Int32(-1));
+            Assert.AreEqual("NaN.0F - -1<i32>", expr.Accept(simplifier).ToString());
+        }
     }
 }
