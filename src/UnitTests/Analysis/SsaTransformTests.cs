@@ -252,6 +252,7 @@ namespace Reko.UnitTests.Analysis
                 Console.WriteLine(">> Actual ==========");
                 Console.WriteLine(sActual);
             }
+            
             Assert.AreEqual(sExp, sActual);
         }
 
@@ -4679,6 +4680,41 @@ Ssa_SliceSequence_exit:
                 m.MStore(m.Word32(0x0010110), bx);
                 m.MStore(m.Word32(0x0010114), ebx);
 
+            });
+
+            When_RunSsaTransform();
+            AssertProcedureCode(sExp);
+        }
+
+        [Test]
+        public void SsaSequenceAliasing()
+        {
+            var sExp =
+            #region Expected 
+@"SsaSequenceAliasing_entry:
+	def ebx
+	def Mem0
+l1:
+	edx_eax_2 = CONVERT(ebx, word32, word64)
+	edx_16_16_5 = SLICE(edx_eax_2, word16, 48) (alias)
+	dx_4 = Mem0[0x123400<32>:word16]
+	edx_6 = SEQ(edx_16_16_5, dx_4) (alias)
+	Mem7[0x123404<32>:word32] = edx_6
+SsaSequenceAliasing_exit:
+";
+            #endregion
+            Given_X86_32_Architecture();
+            Given_Procedure(nameof(SsaSequenceAliasing), m =>
+            {
+                var ebx = m.Frame.EnsureRegister(Registers.ebx);
+                var eax = m.Frame.EnsureRegister(Registers.eax);
+                var edx = m.Frame.EnsureRegister(Registers.edx);
+                var dx = m.Frame.EnsureRegister(Registers.dx);
+                var edx_eax = m.Frame.EnsureSequence(PrimitiveType.Word64, edx.Storage, eax.Storage);
+                m.Assign(edx_eax, m.Convert(ebx, PrimitiveType.Word32, PrimitiveType.Word64));
+                m.Assign(dx, m.Mem16(m.Word32(0x00123400)));
+
+                m.MStore(m.Word32(0x00123404), edx);
             });
 
             When_RunSsaTransform();
