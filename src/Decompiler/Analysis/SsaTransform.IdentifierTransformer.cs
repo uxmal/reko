@@ -969,6 +969,7 @@ namespace Reko.Analysis
                 foreach (var use in sidFrom.Uses)
                 {
                     if (use.Instruction is AliasAssignment alias && 
+                        alias.Dst.Storage is StackStorage &&
                         alias.Src is Slice slice && 
                         slice.Offset == e.Offset && 
                         slice.DataType.BitSize == e.DataType.BitSize)
