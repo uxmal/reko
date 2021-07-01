@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Reko.Core
 {
@@ -61,6 +62,19 @@ namespace Reko.Core
             if (trace != null && trace.TraceVerbose)
             {
                 Debug.Print(message, args);
+            }
+        }
+
+        [Conditional("DEBUG")]
+        public static void LauchDebugger()
+        {
+            if (!Debugger.IsAttached)
+            {
+                Debugger.Launch();
+                while (!Debugger.IsAttached)
+                {
+                    Thread.Sleep(200);
+                }
             }
         }
     }
