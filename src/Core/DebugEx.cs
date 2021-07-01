@@ -66,15 +66,22 @@ namespace Reko.Core
         }
 
         [Conditional("DEBUG")]
-        public static void LauchDebugger()
+        public static void Break(bool cond = true)
         {
-            if (!Debugger.IsAttached)
+            // should we break?
+            if (!cond) return;
+
+            if (Debugger.IsAttached) {
+                // yes, but we're already attached. break instead
+                Debugger.Break();
+                return;
+            }
+
+            // yes, but we're not attached. launch & break
+            Debugger.Launch();
+            while (!Debugger.IsAttached)
             {
-                Debugger.Launch();
-                while (!Debugger.IsAttached)
-                {
-                    Thread.Sleep(200);
-                }
+                Thread.Sleep(200);
             }
         }
     }
