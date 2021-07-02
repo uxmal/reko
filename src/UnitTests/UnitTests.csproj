@@ -129,6 +129,9 @@
     <PackageReference Include="NUnit" Version="3.13.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ImageLoaders\MzExe\Pe\" />
+  </ItemGroup>
   <Target Name="CopyAllTheFiles" AfterTargets="CopyFilesToOutputDirectory">
     <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />
     <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
