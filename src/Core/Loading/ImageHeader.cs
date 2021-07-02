@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core
+namespace Reko.Core.Loading
 {
     /// <summary>
     /// Abstraction of an executable image header.

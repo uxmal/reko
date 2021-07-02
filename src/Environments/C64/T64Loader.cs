@@ -22,6 +22,7 @@ using Reko.Arch.Mos6502;
 using Reko.Core;
 using Reko.Core.Archives;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
@@ -232,7 +233,7 @@ directory.
             public FileType FileType { get; }
             public ushort LoadAddress { get; }
 
-            private byte[] bytes;
+            private readonly byte[] bytes;
 
             public byte[] GetBytes()
             {

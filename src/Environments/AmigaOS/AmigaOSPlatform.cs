@@ -20,8 +20,9 @@
 
 using Reko.Arch.M68k;
 using Reko.Core;
+using Reko.Core.CLanguage;
+using Reko.Core.Configuration;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
@@ -32,10 +33,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Reko.Core.CLanguage;
-using Reko.Core.Configuration;
-using Reko.Core.Memory;
 
 namespace Reko.Environments.AmigaOS
 {
@@ -69,11 +66,6 @@ namespace Reko.Environments.AmigaOS
             {
                 return EnsureMapKickstartToListOfLibraries();
             }
-        }
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
         }
 
         private Dictionary<string, object> EnsureMapKickstartToListOfLibraries()

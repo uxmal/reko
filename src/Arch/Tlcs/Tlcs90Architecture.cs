@@ -18,19 +18,18 @@
  */
 #endregion
 
+using Reko.Arch.Tlcs.Tlcs90;
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Reko.Core.Expressions;
-using Reko.Core.Machine;
-using Reko.Core.Rtl;
-using Reko.Core.Types;
-using Reko.Arch.Tlcs.Tlcs90;
-using Reko.Core.Lib;
-using Reko.Core.Memory;
 
 namespace Reko.Arch.Tlcs
 {
@@ -158,11 +157,6 @@ namespace Reko.Arch.Tlcs
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new Tlcs90Disassembler(this, rdr);
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

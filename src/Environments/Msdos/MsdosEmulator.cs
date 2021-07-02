@@ -20,6 +20,7 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;

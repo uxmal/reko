@@ -33,6 +33,7 @@ using Reko.Core.Code;
 using Reko.Core.Operators;
 using Reko.Core.Assemblers;
 using Reko.Core.Memory;
+using Reko.Core.Emulation;
 
 namespace Reko.Arch.X86
 {

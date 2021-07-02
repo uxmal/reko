@@ -30,6 +30,7 @@ using TWord = System.UInt32;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Core.Memory;
+using Reko.Core.Emulation;
 
 namespace Reko.Environments.Windows
 {

@@ -19,15 +19,10 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.CLanguage;
+using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Reko.Core.CLanguage;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
-using Reko.Core.Rtl;
 
 namespace Reko.Environments.Dreamcast
 {
@@ -47,10 +42,6 @@ namespace Reko.Environments.Dreamcast
             }
         }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             throw new NotImplementedException();

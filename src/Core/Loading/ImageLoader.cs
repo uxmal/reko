@@ -22,7 +22,7 @@ using Reko.Core;
 using System;
 using System.Collections.Generic;
 
-namespace Reko.Core
+namespace Reko.Core.Loading
 {
 	/// <summary>
 	/// Abstract base class for image loaders. These examine a raw image, and 

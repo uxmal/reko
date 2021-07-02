@@ -51,11 +51,6 @@ namespace Reko.Arch.Z80
             return new Z80Disassembler(this, imageReader);
         }
 
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return new Z80InstructionComparer(norm);

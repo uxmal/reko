@@ -24,7 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Core
+namespace Reko.Core.Emulation
 {
     public class DefaultPlatformEmulator : IPlatformEmulator
     {

@@ -18,17 +18,12 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Arch.Tlcs;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
 
 namespace Reko.Environments.NeoGeo
 {
@@ -41,11 +36,6 @@ namespace Reko.Environments.NeoGeo
         public override string DefaultCallingConvention
         {
             get { return ""; }
-        }
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()

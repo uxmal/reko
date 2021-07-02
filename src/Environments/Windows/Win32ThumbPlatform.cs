@@ -122,11 +122,6 @@ namespace Reko.Environments.Windows
             return Address.Ptr32((uint)addr.ToLinear() & ~1u);
         }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
-
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             return new[] { "r11", "sp", "lr", "pc" }

@@ -18,13 +18,12 @@
  */
 #endregion
 
-using Reko.Core.Emulation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core
+namespace Reko.Core.Emulation
 {
     /// <summary>
     /// Interface for processor emulation.

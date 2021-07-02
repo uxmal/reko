@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.CLanguage;
+using Reko.Core.Emulation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,10 +35,6 @@ namespace Reko.Arch.Cray
 
         public override string DefaultCallingConvention => "";
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {

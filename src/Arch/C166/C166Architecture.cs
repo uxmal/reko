@@ -58,11 +58,6 @@ DPP3	If DPP3 is modified in the assembler subroutine, it must be reset to 3 (SYS
             return new C166Disassembler(this, rdr);
         }
 
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();

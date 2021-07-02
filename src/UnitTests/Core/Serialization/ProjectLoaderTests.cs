@@ -21,6 +21,8 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.CLanguage;
+using Reko.Core.Configuration;
 using Reko.Core.Scripts;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
@@ -28,14 +30,11 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections;
-using System.ComponentModel.Design;
-using System.Xml;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.Design;
 using System.IO;
-using Reko.Core.Configuration;
-using Reko.Core.CLanguage;
 using System.Linq;
+using System.Text;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -150,11 +149,6 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                     throw new NotImplementedException();
                 }
-            }
-
-            public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-            {
-                throw new NotImplementedException();
             }
 
             public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()

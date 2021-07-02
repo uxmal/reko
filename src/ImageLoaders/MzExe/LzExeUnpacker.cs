@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Reko.Core.Configuration;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.ImageLoaders.MzExe
 {

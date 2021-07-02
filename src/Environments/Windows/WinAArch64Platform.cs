@@ -43,10 +43,6 @@ namespace Reko.Environments.Windows
 
         public override string DefaultCallingConvention => "";
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
 
         // https://docs.microsoft.com/en-us/cpp/build/arm64-windows-abi-conventions?view=vs-2020
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()

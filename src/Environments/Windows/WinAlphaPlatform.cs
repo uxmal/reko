@@ -24,8 +24,6 @@ using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Environments.Windows
 {
@@ -43,11 +41,6 @@ namespace Reko.Environments.Windows
         public override string DefaultCallingConvention
         {
             get { return null!; }
-        }
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()

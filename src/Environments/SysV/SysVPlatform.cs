@@ -24,7 +24,6 @@ using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
-using Reko.Core.Services;
 using Reko.Environments.SysV.ArchSpecific;
 using System;
 using System.Collections.Generic;
@@ -49,11 +48,6 @@ namespace Reko.Environments.SysV
         public override string DefaultCallingConvention
         {
             get { return ""; }
-        }
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
         }
 
         public override CallingConvention GetCallingConvention(string? ccName)

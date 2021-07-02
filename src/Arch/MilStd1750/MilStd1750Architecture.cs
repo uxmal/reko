@@ -59,11 +59,6 @@ namespace Reko.Arch.MilStd1750
             return new MilStd1750Disassembler(this, rdr);
         }
 
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
-        }
-
         public override MemoryArea CreateMemoryArea(Address addr, byte[] bytes)
         {
             // NOTE: assumes the bytes are provided in big-endian form.

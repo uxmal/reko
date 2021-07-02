@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.PowerPC;
 using Reko.Core;
+using Reko.Core.Emulation;
 using Reko.Core.Memory;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -54,7 +55,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
             var envEmu = new DefaultPlatformEmulator();
 
-            emu = (Reko.Arch.PowerPC.PowerPcEmulator) arch.CreateEmulator(segmap, envEmu);
+            emu = (PowerPcEmulator) arch.CreateEmulator(segmap, envEmu);
             emu.InstructionPointer = program.ImageMap.BaseAddress;
             emu.ExceptionRaised += (sender, e) => { throw e.Exception; };
         }

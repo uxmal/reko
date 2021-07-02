@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using Reko.Core.Configuration;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -36,8 +37,8 @@ namespace Reko.ImageLoaders.MzExe
     /// </summary>
     public class ExePackLoader : ImageLoader
     {
-        private IProcessorArchitecture arch;
-        private IPlatform platform;
+        private readonly IProcessorArchitecture arch;
+        private readonly IPlatform platform;
         private SegmentMap segmentMap;
 
         private uint exeHdrSize;

@@ -20,14 +20,11 @@
 
 using Reko.Core;
 using Reko.Core.CLanguage;
-using Reko.Core.Lib;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Environments.Cpm
 {
@@ -53,11 +50,6 @@ namespace Reko.Environments.Cpm
         {
             get { return base.MemoryMap; }
             set { base.MemoryMap = value; OnMemoryMapChanged(); }
-        }
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

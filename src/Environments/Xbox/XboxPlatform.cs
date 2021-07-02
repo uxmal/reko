@@ -22,7 +22,6 @@ using Reko.Core;
 using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Environments.Xbox
 {
@@ -43,11 +42,6 @@ namespace Reko.Environments.Xbox
             {
                 throw new NotImplementedException();
             }
-        }
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

@@ -18,17 +18,11 @@
  */
 #endregion
 
+using Reko.Arch.Z80;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Reko.Core.Lib;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
-using Reko.Arch.Z80;
-using Reko.Core.CLanguage;
 
 namespace Reko.Environments.Trs80
 {
@@ -41,11 +35,6 @@ namespace Reko.Environments.Trs80
 
         // http://fjkraan.home.xs4all.nl/comp/trs80-4p/dmkeilImages/trstech.htm
         public override string DefaultCallingConvention => "";
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

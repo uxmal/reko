@@ -19,30 +19,19 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Reko.Core.CLanguage;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
-using Reko.Arch.PowerPC;
 
 namespace Reko.Environments.Wii
 {
-	public class WiiPlatform : Platform {
+    public class WiiPlatform : Platform {
 
 		public WiiPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "wii")
         {
 		}
 
 		public override string DefaultCallingConvention { get { return ""; } }
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

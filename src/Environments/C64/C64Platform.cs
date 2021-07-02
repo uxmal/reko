@@ -22,14 +22,8 @@ using Reko.Arch.Mos6502;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
-using Reko.Core.Rtl;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Environments.C64
 {
@@ -46,11 +40,6 @@ namespace Reko.Environments.C64
         public override string DefaultCallingConvention
         {
             get { return ""; }
-        }
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()

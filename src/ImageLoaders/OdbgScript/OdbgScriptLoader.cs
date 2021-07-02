@@ -19,6 +19,8 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Emulation;
+using Reko.Core.Loading;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
