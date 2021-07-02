@@ -321,13 +321,20 @@ namespace Reko.Arch.Etrax
             return dasm.swapBits != 0;
         }
 
+        private static bool skip4(uint uInstr, EtraxDisassembler dasm)
+        {
+            return dasm.rdr.TryReadUInt32(out uint _);
+        }
+
         #endregion
 
         public override EtraxInstruction NotYetImplemented(string message)
         {
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingDecoder("EtraxDis", this.addr, rdr, message);
-            return CreateInvalidInstruction();
+            var instr = CreateInvalidInstruction();
+            instr.Mnemonic = Mnemonic.nyi;
+            return instr;
         }
 
         private static InstrDecoder<EtraxDisassembler, Mnemonic, EtraxInstruction> Instr(Mnemonic mnemonic, params Mutator<EtraxDisassembler> [] mutators)
@@ -348,7 +355,6 @@ namespace Reko.Arch.Etrax
                 variableSize,
                 fixedSize);
         }
-
 
         private static NyiDecoder<EtraxDisassembler,Mnemonic,EtraxInstruction> Nyi(string message)
         {
@@ -513,8 +519,12 @@ namespace Reko.Arch.Etrax
                 return true;
             });
 
+            /// <summary>
+            /// Sets the prefix to the register to use 8-bit signed displacement.
+            /// </summary>
             var bdapImm = Prefix((u, d) =>
             {
+                Decoder.DumpMaskedInstruction(32, u, 0xFF, "  bdap prefix");
                 // Offset Addressing Mode Prefix Word, Immediate byte Offset
                 var baseReg = Registers.GpRegisters[(u >> 12) & 0xF];
                 d.prefix = new MemoryOperand(PrimitiveType.Byte)
@@ -577,7 +587,7 @@ namespace Reko.Arch.Etrax
                     Instr(Mnemonic.subs, z, R0, R12)),
                 SizedInstr(
                     Instr(Mnemonic.lsl, zz, R0, NpcRd),
-                    Nyi("btst")),
+                    Instr(Mnemonic.btst, R0,R12)),
 
                 Select(u => u == 0x050F,
                     Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding),
@@ -589,7 +599,7 @@ namespace Reko.Arch.Etrax
                     reserved),
                 SizedInstr(
                     Instr(Mnemonic.neg, zz, R0, NpcRd),
-                    Nyi("setf")),
+                    Instr(Mnemonic.setf, AllFlags(0xFFFF))),
                 SizedInstr(
                     Instr(Mnemonic.bound, zz, R0, NpcRd), // Index    0 1  0 1 1 1 z z Bound
                     Instr(Mnemonic.clearf, AllFlags(0x7FFF))),
@@ -599,7 +609,12 @@ namespace Reko.Arch.Etrax
                     Instr(Mnemonic.move, R0,P12)),
                 SizedInstr(
                     Instr(Mnemonic.move, R0, R12),
-                    Instr(Mnemonic.move, P0, R12)),
+                    Select((0, 4), u => u == 0b1111,
+                        // Assignments to PC are jumps.
+                        Select((12, 4), u => u == 0b1011,
+                            Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return),
+                            Instr(Mnemonic.move, InstrClass.Transfer, P0, R12)),
+                        Instr(Mnemonic.move, P0, R12))),
                 SizedInstr(
                     Instr(Mnemonic.sub, zz, R0, R12),
                     Instr(Mnemonic.abs, R0,R12)),
@@ -622,49 +637,57 @@ namespace Reko.Arch.Etrax
 
             var mode1x = Mask(6, 4, "  mode1x",
                 Mask(5, 1,
-                    Instr(Mnemonic.addu,z,Mem, R12),     // Dest.reg. 1 m 0 0 0 0 0 z Source
-                    Instr(Mnemonic.adds,z,Mem, R12)),     // Dest.reg. 1 m 0 0 0 0 1 z Source
+                    Instr(Mnemonic.addu,z,Mem, R12),        // Dest.reg. 1 m 0 0 0 0 0 z Source
+                    Instr(Mnemonic.adds,z,Mem, R12)),       // Dest.reg. 1 m 0 0 0 0 1 z Source
                 Mask(5, 1,
-                    Instr(Mnemonic.movu,z,Mem, R12),     // Dest.reg. 1 m 0 0 0 1 0 z Source
-                    Instr(Mnemonic.movs,z,Mem, R12)),     // Dest.reg. 1 m 0 0 0 1 1 z Source
+                    Instr(Mnemonic.movu,z,Mem, R12),        // Dest.reg. 1 m 0 0 0 1 0 z Source
+                    Instr(Mnemonic.movs,z,Mem, R12)),       // Dest.reg. 1 m 0 0 0 1 1 z Source
 
                 Mask(5, 1,
-                    Instr(Mnemonic.subu,z,Mem, R12),     // Dest.reg. 1 m 0 0 1 0 0 z Source
-                    Instr(Mnemonic.subs,z,Mem, R12)),     // Dest.reg. 1 m 0 0 1 0 1 z Source
+                    Instr(Mnemonic.subu,z,Mem, R12),        // Dest.reg. 1 m 0 0 1 0 0 z Source
+                    Instr(Mnemonic.subs,z,Mem, R12)),       // Dest.reg. 1 m 0 0 1 0 1 z Source
                 Mask(5, 1,
-                    Instr(Mnemonic.cmpu,z,Mem, R12),     // Dest.reg. 1 m 0 0 1 1 0 z Source
-                    Instr(Mnemonic.cmps,z,Mem, R12)),     // Dest.reg. 1 m 0 0 1 1 1 z Source
+                    Instr(Mnemonic.cmpu,z,Mem, R12),        // Dest.reg. 1 m 0 0 1 1 0 z Source
+                    Instr(Mnemonic.cmps,z,Mem, R12)),       // Dest.reg. 1 m 0 0 1 1 1 z Source
 
                 SizedInstr(
                     Mask(10, 1, 
                         Instr(Mnemonic.muls,zz, R0, NpcRd),    // Dest.reg. 1 0  0 1 0 0 z z Source reg.
                         Instr(Mnemonic.mulu,zz, R0, NpcRd)),   // Dest.reg. 1 1  0 1 0 0 z z Source reg.
-                    Sparse(12, 4, Nyi("jbrc / jsrc / jirc []"), // specreg -8 1 m 0 1 0 0 1 1 Source
+                    Sparse(12, 4, "  jbrc/jsrc", reserved, // specreg -8 1 m 0 1 0 0 1 1 Source
                         (0x0, Instr(Mnemonic.jump, InstrClass.Transfer, MemJ)),    // 0 0 0 0 1 m 0 1 0 0 1 1 Source
+                        (0x2, Instr(Mnemonic.jirc, InstrClass.Transfer, MemJ, skip4)),    // 0 0 0 0 1 m 0 1 0 0 1 1 Source
+                        (0x3, Instr(Mnemonic.jsrc, InstrClass.Transfer|InstrClass.Call, MemJ)),    // 0 0 0 0 1 m 0 1 0 0 1 1 Source
+                        (0x6, Instr(Mnemonic.jbrc, InstrClass.Transfer, MemJ, skip4)),    // 0 1 1 0 1 m 0 1 0 0 1 1 Source
+                        (0x8, Instr(Mnemonic.jmpu, InstrClass.Transfer, MemJ, skip4)),
+                        (0xA, Instr(Mnemonic.jir, InstrClass.Transfer, MemJ)),    // 0 0 0 0 1 m 0 1 0 0 1 1 Source
                         (0xB, Instr(Mnemonic.jsr, InstrClass.Transfer|InstrClass.Call, MemJ)),    // 0 0 0 0 1 m 0 1 0 0 1 1 Source
-                        (0x8, Nyi("jmpu[]")))),              //         1 0 0 0 1 m 0 1 0 0 1 1 Source
-                        //Nyi("jsr / jir[ ]         "),    //    Special reg. 1 m 0 1 0 0 1 1 Source
-                        //Nyi("break                "),    //       n 1 1 1 0 1 0 0 1 0 0 1 1 n
+                        (0xF, reserved))),             //         1 0 0 0 1 m 0 1 0 0 1 1 Source
+                        //Nyi("jsr / jir[ ]         "),     //    Special reg. 1 m 0 1 0 0 1 1 Source
+                        //Nyi("break                "),     //       n 1 1 1 0 1 0 0 1 0 0 1 1 n
                 SizedInstr(
-                    bdap,                                  // Base      1 m  0 1 0 1 z z Source note9
-                    dip),                                  //         0 0 0 0 1 m 0 1 0 1 1 1 Source note10
+                    bdap,                                   //         Base   1 m  0 1 0 1 z z Source note9
+                    dip),                                   //         0 0 0 0 1 m 0 1 0 1 1 1 Source note10
                 SizedInstr(
                     reserved,
-                    Sparse(12, 4, Nyi("jsr rs"),
-                        (0x0, Instr(Mnemonic.jump, InstrClass.Transfer, R0))    // 0 0 0 0 1 m 0 1 0 0 1 1 Source
+                    Sparse(12, 4, reserved,
+                        (0x0, Instr(Mnemonic.jump, InstrClass.Transfer, R0)),   // 0 0 0 0 1 m 0 1 0 0 1 1 Source
+                        (0x2, Instr(Mnemonic.jirc, InstrClass.Transfer, R0, skip4)),    // 0 0 0 0 1 m 0 1 0 0 1 1 Source
+                        (0x3, Instr(Mnemonic.jsr, InstrClass.Transfer|InstrClass.Call, R0, skip4)),     // 1 0 1 1 1 m 0 1 0 0 1 1 Source
+                        (0x6, Instr(Mnemonic.jbrc, InstrClass.Transfer, R0, skip4)),    // 0 1 1 0 1 m 0 1 0 0 1 1 Source
+                        (0xA, Instr(Mnemonic.jir, InstrClass.Transfer, R0)),    // 0 0 0 0 1 m 0 1 0 0 1 1 Source
+                        (0xB, Instr(Mnemonic.jsr, InstrClass.Transfer|InstrClass.Call, R0))     // 1 0 1 1 1 m 0 1 0 0 1 1 Source
                     )),
-                    //Nyi("jbrc / jsrc / jirc rs"),     // spec reg. - 8 1 0 0 1 1 0 1 1 Source reg.
-                    //Nyi("jump / jsr / jir rs  "),     //   0 0 0 0 1 0 0 1 1 0 1 1 Source reg.
                 SizedInstr(
                     Instr(Mnemonic.bound,zz, Mem, R12),  // index     1 m 0 1 1 1 z z Bound
                     bccW),      //           1 m 0 1 1 1 1 1 1 1 1 1
 
                 SizedInstr(
-                    Instr(Mnemonic.add,zz, Mem, R12),    // Dest.reg. 1 m 1 0 0 0 z z Source
-                    Nyi("move[], pd           ")),      // Spec reg. 1 m 1 0 0 0 1 1 Source
+                    Instr(Mnemonic.add,zz, Mem, R12),           // Dest.reg. 1 m 1 0 0 0 z z Source
+                    Instr(Mnemonic.move, Mem, P12)),            // Spec reg. 1 m 1 0 0 0 1 1 Source
                 SizedInstr(
-                    Instr(Mnemonic.move, zz, Mem, R12),  // Dest.reg. 1 m 1 0 0 1 z z Source
-                    Instr(Mnemonic.move, P12,Mem)),        // Spec reg. 1 m 1 0 0 1 1 1 Dest.note11
+                    Instr(Mnemonic.move, zz, Mem, R12),         // Dest.reg. 1 m 1 0 0 1 z z Source
+                    Instr(Mnemonic.move, P12,Mem)),             // Spec reg. 1 m 1 0 0 1 1 1 Dest.note11
                 SizedInstr(
                     Instr(Mnemonic.sub,zz, Mem, R12),    // Dest.reg. 1 m 1 0 1 0 z z Source
                     reserved),                          // Dest.reg. 1 m 1 0 1 0 1 1 Source
@@ -673,11 +696,15 @@ namespace Reko.Arch.Etrax
                     reserved),                          // Dest.reg. 1 m 1 0 1 1 1 1 Source
 
                 SizedInstr(
-                    Instr(Mnemonic.and,zz, Mem, R12),    // Dest.reg. 1 m 1 1 0 0 z z Source
-                    Nyi("rbf[]")),                      //   0 0 1 1 1 m 1 1 0 0 1 1 Source
+                    Instr(Mnemonic.and,zz, Mem, R12),   // Dest.reg. 1 m 1 1 0 0 z z Source
+                    Select((12, 4), u => u == 3,
+                        Instr(Mnemonic.rbf, Mem),       //   0 0 1 1 1 m 1 1 0 0 1 1 Source
+                        reserved)),
                 SizedInstr(
-                    Instr(Mnemonic.or,zz, Mem, R12),     // Dest.reg. 1 m 1 1 0 1 z z Source
-                    Nyi("sbfs[]")),                     //   0 0 1 1 1 m 1 1 0 1 1 1 Dest.
+                    Instr(Mnemonic.or,zz, Mem, R12),    // Dest.reg. 1 m 1 1 0 1 z z Source
+                    Select((12, 4), u => u == 3,        //   0 0 1 1 1 m 1 1 0 1 1 1 Dest.
+                        Instr(Mnemonic.sbfs, Mem),
+                        reserved)),
                 SizedInstr(
                     Instr(Mnemonic.test,zz, Mem),       //   0 0 0 0 1 m 1 1 1 0 z z Source
                     Instr(Mnemonic.movem, Mem,R12)),                // Dest.reg. 1 m 1 1 1 0 1 1 Source

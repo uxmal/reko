@@ -23,9 +23,7 @@ using Reko.Arch.Etrax;
 using Reko.Core;
 using Reko.Core.Memory;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Arch.Etrax
 {
@@ -37,7 +35,7 @@ namespace Reko.UnitTests.Arch.Etrax
 
         public EtraxDisassemblerTests()
         {
-            this.arch = new EtraxArchitecture(CreateServiceContainer(),  "etrax", null);
+            this.arch = new EtraxArchitecture(CreateServiceContainer(), "etrax", null);
             this.addr = Address.Ptr32(0x0010_0000);
         }
 
@@ -71,6 +69,12 @@ namespace Reko.UnitTests.Arch.Etrax
         public void EtraxDis_not()
         {
             AssertCode("not\tr0", "7087");
+        }
+
+        [Test]
+        public void EtraxDis_setf()
+        {
+            AssertCode("setf\tMBINZC", "0011BDE5");
         }
 
         [Test]
@@ -134,6 +138,12 @@ namespace Reko.UnitTests.Arch.Etrax
         }
 
         [Test]
+        public void EtraxDis_btst()
+        {
+            AssertCode("btst\tr10,r9", "00B1FA94");
+        }
+
+        [Test]
         public void EtraxDis_bvs()
         {
             AssertCode("bvs\t00100002", "0050");
@@ -146,9 +156,27 @@ namespace Reko.UnitTests.Arch.Etrax
         }
 
         [Test]
+        public void EtraxDis_jir_indirect()
+        {
+            AssertCode("jir\t[r9+0x4]", "04913FAD");
+        }
+
+        [Test]
         public void EtraxDis_jsr()
         {
             AssertCode("jsr\t00100044", "3FBD42000000");
+        }
+
+        [Test]
+        public void EtraxDis_jsr_reg()
+        {
+            AssertCode("jsr\tr1", "0191B1B9");
+        }
+
+        [Test]
+        public void EtraxDis_jsr_rs()
+        {
+            AssertCode("jsr\tr0", "B0B9");
         }
 
         [Test]
@@ -203,6 +231,30 @@ namespace Reko.UnitTests.Arch.Etrax
         public void EtraxDis_or_d_imm()
         {
             AssertCode("or.d\t0xC0000400,r2", "6F2F 0004 00C0");
+        }
+
+        [Test]
+        public void EtraxDis_pop_sp()
+        {
+            AssertCode("move\t[sp+],srp", "3EBE");
+        }
+
+        [Test]
+        public void EtraxDis_rbf()
+        {
+            AssertCode("rbf\t[r11]", "00B13B3F");
+        }
+
+        [Test]
+        public void EtraxDis_ret()
+        {
+            AssertCode("ret", "7FB6");
+        }
+
+        [Test]
+        public void EtraxDis_sbfs()
+        {
+            AssertCode("sbfs\t[r3+0x12]", "1231723B");
         }
 
         [Test]
