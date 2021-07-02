@@ -29,12 +29,14 @@ namespace Reko.Core
     public class ProgramResource
     {
         public string? Name { get; set; }
+
+        public override string ToString() => Name ?? "(null)";
     }
 
     [Designer("Reko.Gui.Design.ProgramResourceGroupDesigner,Reko.Gui")]
     public class ProgramResourceGroup : ProgramResource
     {
-        public List<ProgramResource> Resources { get; private set; }
+        public List<ProgramResource> Resources { get; }
 
         public ProgramResourceGroup()
         {
@@ -47,5 +49,13 @@ namespace Reko.Core
     {
         public byte[]? Bytes { get; set; }
         public string? Type { get; set; }
+
+        public string? FileExtension { get; set; }
+        public string? TextEncoding { get; set; }
+
+        public override string ToString()
+        {
+            return $"id:{this.Name}, type:{this.Type}, ext:{FileExtension}, enc:{TextEncoding}";
+        }
     }
 }

@@ -71,7 +71,7 @@ namespace Reko.Core
             this.InductionVariables = new Dictionary<Identifier, LinearInductionVariable>();
             this.TypeFactory = new TypeFactory();
             this.TypeStore = new TypeStore();
-            this.Resources = new ProgramResourceGroup();
+            this.Resources = new List<ProgramResource>();
             this.User = new UserData();
             this.GlobalFields = TypeFactory.CreateStructureType("Globals", 0);
             this.NamingPolicy = new NamingPolicy();
@@ -348,7 +348,7 @@ namespace Reko.Core
         /// List of resources stored in the binary. Some executable file formats support the
         /// inclusion of resources in the binary itself (MacOS classic resource forks also count)
         /// </summary>
-        public ProgramResourceGroup Resources { get; private set; }
+        public List<ProgramResource> Resources { get; private set; }
     
 		public TypeFactory TypeFactory { get; private set; }
 		

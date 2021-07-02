@@ -600,7 +600,7 @@ namespace Reko.UnitTests.Core.Serialization
                     {
                         User = new UserData_v4
                         {
-                             ExtractResources= true
+                            ExtractResources = true
                         }
                     }
                 }

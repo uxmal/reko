@@ -264,19 +264,19 @@ namespace Reko.ImageLoaders.MzExe
 
             switch (bTargetOs)
             {
-                case NE_TARGETOS.Windows:
-                case NE_TARGETOS.Windows386:
-                    program.Resources.Name = "NE resources";
-                    if (offRsrcTable != offResidentNameTable) // Some NE images contain no resources (indicated by offRsrcTable == offResidentNameTable)
-                        program.Resources.Resources.AddRange(rsrcLoader.LoadResources());
-                    break;
-                case NE_TARGETOS.Os2:
-                    program.Resources.Name = "OS/2 resources";
-                    program.Resources.Resources.AddRange(rsrcLoader.LoadOs2Resources(segments, cSeg, cbFileAlignmentShift));
+            case NE_TARGETOS.Windows:
+            case NE_TARGETOS.Windows386:
+                if (offRsrcTable != offResidentNameTable) // Some NE images contain no resources (indicated by offRsrcTable == offResidentNameTable)
+                {
+                    program.Resources.AddRange(rsrcLoader.LoadResources());
+                }
                 break;
-                default:
-                    // Don´t support resources
-                    break;
+            case NE_TARGETOS.Os2:
+                program.Resources.AddRange(rsrcLoader.LoadOs2Resources(segments, cSeg, cbFileAlignmentShift));
+                break;
+            default:
+                // Don't support resources
+                break;
             }
 
             foreach (var impRef in this.importStubs.Values)

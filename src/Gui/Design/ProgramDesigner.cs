@@ -56,7 +56,11 @@ namespace Reko.Gui.Design
                 var des = new ImportDesigner(program);
                 Host.AddComponent(program, des);
             }
-            Host.AddComponent(program, program.Resources);
+            if (program.Resources.Count > 0)
+            {
+                var r = new TreeNodeCollectionDesigner("Resources", "", program.Resources);
+                Host.AddComponent(program, r);
+            }
             SetTreeNodeProperties(program);
         }
 
