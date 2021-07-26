@@ -38,21 +38,9 @@ namespace Reko.UnitTests.Arch.Pdp11
         private Pdp11Architecture arch = new Pdp11Architecture(CreateServiceContainer(), "pdp11", new Dictionary<string, object>());
         private Address addrBase = Address.Ptr16(0x0200);
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
+        public override IProcessorArchitecture Architecture => arch;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var dasm = new Pdp11Disassembler(arch.CreateImageReader(mem, 0), arch);
-            return new Pdp11Rewriter(arch, dasm, binder, base.CreateHost());
-        }
-
-        public override Address LoadAddress
-        {
-            get { return addrBase; }
-        }
+        public override Address LoadAddress => addrBase;
 
         [Test]
         public void Pdp11Rw_xor()

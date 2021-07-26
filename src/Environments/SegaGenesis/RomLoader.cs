@@ -21,6 +21,7 @@
 using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;

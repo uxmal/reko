@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 Pavel Tomin.
  *
@@ -76,9 +76,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             return spans;
         }
 
-        public Tuple<int, int> GetPositionAsFraction()
+        public (int, int) GetPositionAsFraction()
         {
-            return Tuple.Create(position, LineCount);
+            return (position, LineCount);
         }
 
         public int MoveToLine(object position, int offset)

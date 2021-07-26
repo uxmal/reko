@@ -40,20 +40,6 @@ namespace Reko.UnitTests.Arch.Arm
 
         public override Address LoadAddress => baseAddress;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return arch.CreateRewriter(mem.CreateLeReader(0), new AArch32ProcessorState(arch), binder, host);
-        }
-
-
-
-        //private void Given_BitStrings(params uint[] words)
-        //{
-        //    var bytes = words
-        //        .SelectMany(u => new byte[] { (byte)u, (byte)(u >> 8), (byte)(u >> 16), (byte)(u >> 24) })
-        //        .ToArray();
-        //    image = new MemoryArea(Address.Ptr32(0x00100000), bytes);
-        //}
 
         [Test]
         public void ArmRw_mov_r1_r2()

@@ -233,7 +233,7 @@ namespace Reko.ImageLoaders.LLVM
         private Expression GetElementPtr(
             LLVMType ptrType, 
             Value ptrValue, 
-            List<Tuple<LLVMType, Value?>> indices)
+            List<(LLVMType, Value?)> indices)
         {
             var type = builder.TranslateType(ptrType);
             var e = MakeValueExpression(ptrValue, type);

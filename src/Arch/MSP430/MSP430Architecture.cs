@@ -19,17 +19,15 @@
 #endregion
 
 using Reko.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
-using Reko.Core.Lib;
-using Reko.Core.Memory;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Reko.Arch.Msp430
 {
@@ -51,11 +49,6 @@ namespace Reko.Arch.Msp430
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new Msp430Disassembler(this, imageReader);
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

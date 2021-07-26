@@ -10,8 +10,8 @@
   "profiles": {
     "CmdLine": {
       "commandName": "Project",
-      "commandLineArgs": "--base 08048000 adddf3.o",
-      "workingDirectory": "D:\\dev\\uxmal\\reko\\master\\subjects\\Elf\\nanoMips\\adddf3"
+      "commandLineArgs": "fft.dcproject",
+      "workingDirectory": "D:\\dev\\uxmal\\reko\\master\\subjects\\Raw\\1750A"
     }
   }
 }

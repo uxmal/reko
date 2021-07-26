@@ -182,7 +182,7 @@ namespace Reko.Analysis
 
         public override Expression VisitPhiFunction(PhiFunction phi)
         {
-            return Constant.Invalid;
+            return InvalidConstant.Create(phi.DataType);
         }
     }
 
@@ -248,9 +248,11 @@ namespace Reko.Analysis
             return arg.Accept(argumentTransformer);
         }
 
-        private Expression InvalidArgument()
+        private Expression InvalidArgument(DataType dt)
         {
-            return Constant.Word32(Constant.Invalid.ToUInt32());
+            return InvalidConstant.Create(dt);
+
+            //return Constant.Word32(Constant.Invalid.ToUInt32());
         }
 
         public override Expression VisitIdentifier(Identifier id)
@@ -310,7 +312,7 @@ namespace Reko.Analysis
                 var usedId = outer.FindUsedId(outer.call!, id.Storage);
                 if (usedId != null)
                     usedId.Accept(outer);
-                return usedId ?? outer.InvalidArgument();
+                return usedId ?? outer.InvalidArgument(id.DataType);
             }
         }
 

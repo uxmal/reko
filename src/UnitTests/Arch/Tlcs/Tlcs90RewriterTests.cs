@@ -42,12 +42,6 @@ namespace Reko.UnitTests.Arch.Tlcs
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => baseAddr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var state = arch.CreateProcessorState();
-            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, binder, host);
-        }
-
         [SetUp]
         public void Setup()
         {

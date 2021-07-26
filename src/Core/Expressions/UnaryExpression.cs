@@ -37,7 +37,7 @@ namespace Reko.Core.Expressions
 		}
 
         public UnaryOperator Operator { get; }
-        public Expression Expression { get; set; }
+        public Expression Expression { get; }
 
         public override IEnumerable<Expression> Children
         {

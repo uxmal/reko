@@ -37,11 +37,6 @@ namespace Reko.Environments.MacOS.Classic
 
         public override string DefaultCallingConvention => "";
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
-
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             var arch = (PowerPcArchitecture)Architecture;

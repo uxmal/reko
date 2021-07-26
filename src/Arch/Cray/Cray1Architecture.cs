@@ -26,7 +26,6 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Arch.Cray
 {
@@ -47,11 +46,6 @@ namespace Reko.Arch.Cray
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new Cray1.Cray1Disassembler(this, rdr);
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

@@ -105,7 +105,7 @@ namespace Reko.Scanning
             };
         }
 
-        public IServiceProvider Services { get; private set; }
+        public IServiceProvider Services { get; }
 
         private class BlockRange
         {
@@ -124,7 +124,7 @@ namespace Reko.Scanning
                 Debug.Assert(start < end);
             }
 
-            public Block Block { get; private set; }
+            public Block Block { get; }
             public ulong Start { get; set; }
             public ulong End { get; set; }
 
@@ -867,7 +867,7 @@ namespace Reko.Scanning
                 {
                     var reg = Program.Architecture.GetRegister(rv.Register)!;
                     var val = rv.Value == "*"
-                        ? Constant.Invalid
+                        ? InvalidConstant.Create(reg.DataType)
                         : Constant.Create(reg.DataType, Convert.ToUInt64(rv.Value, 16));
                     st.SetValue(reg, val);
                 }

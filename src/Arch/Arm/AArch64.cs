@@ -28,7 +28,6 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Registers64 = Reko.Arch.Arm.AArch64.Registers;
@@ -128,11 +127,6 @@ namespace Reko.Arch.Arm
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new AArch64Disassembler(this, rdr);
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownLinAddresses, PointerScannerFlags flags)

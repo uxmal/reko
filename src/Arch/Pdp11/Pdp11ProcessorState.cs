@@ -91,7 +91,7 @@ namespace Reko.Arch.Pdp11
             }
             else
             {
-                return Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
             }
         }
 

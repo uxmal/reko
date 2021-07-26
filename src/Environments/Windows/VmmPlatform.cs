@@ -51,11 +51,6 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
-
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             return new[] { X86Registers.eax, X86Registers.edx, X86Registers.ecx }

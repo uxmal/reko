@@ -44,14 +44,7 @@ namespace Reko.UnitTests.Arch.Avr
 
         public override IProcessorArchitecture Architecture => arch;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var state = (Avr8State)arch.CreateProcessorState();
-            return new Avr8Rewriter(arch, mem.CreateLeReader(0), state, new Frame(arch.FramePointerType), host);
-        }
-
         public override Address LoadAddress => baseAddr;
-
 
 
         [SetUp]

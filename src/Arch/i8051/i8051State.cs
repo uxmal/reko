@@ -59,7 +59,7 @@ namespace Reko.Arch.i8051
             if (regValues.TryGetValue(r, out var v))
                 return v;
             else
-                return Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
         }
 
         public override void OnAfterCall(FunctionType? sigCallee)

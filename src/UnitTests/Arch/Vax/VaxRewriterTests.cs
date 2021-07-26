@@ -41,11 +41,6 @@ namespace Reko.UnitTests.Arch.Vax
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => baseAddr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
-        }
-
         [SetUp]
         public void Setup()
         {
@@ -1406,10 +1401,11 @@ namespace Reko.UnitTests.Arch.Vax
         [Test]
         public void VaxRw_movf()
         {
+            //$TODO: support true VAX formats.
             Given_Bytes(0x50, 0x8F, 0x43, 0x00, 0x00, 0x00, 0x57);	// movf	#4.76441477870438E-44,r7
             AssertCode(
                 "0|L--|00010000(7): 4 instructions",
-                "1|L--|r7 = 4.8e-44F",
+                "1|L--|r7 = 9.4e-44F",
                 "2|L--|ZN = cond(r7)",
                 "3|L--|C = false",
                 "4|L--|V = false");

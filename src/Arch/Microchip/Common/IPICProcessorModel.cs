@@ -54,15 +54,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr);
 
         /// <summary>
-        /// Creates an emulator for the target processor.
-        /// </summary>
-        /// <param name="arch">The architecture of the processor.</param>
-        /// <param name="segmentMap">The memory of the program to be emulated.</param>
-        /// <param name="envEmulator">Emulated environment.</param>
-        /// <returns>The created emulator.</returns>
-        IProcessorEmulator CreateEmulator(PICArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator);
-
-        /// <summary>
         /// Creates the registers for the PIC.
         /// </summary>
         /// <param name="pic">The PIC descriptor.</param>

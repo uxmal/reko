@@ -33,10 +33,11 @@ using Reko.Core.Code;
 using Reko.Core.Operators;
 using Reko.Core.Assemblers;
 using Reko.Core.Memory;
+using Reko.Core.Emulation;
 
 namespace Reko.Arch.X86
 {
-    using Decoder = X86Disassembler.Decoder;
+    using Decoder = Decoder<X86Disassembler, Mnemonic, X86Instruction>;
 
 	// X86 flag masks.
 

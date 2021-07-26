@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -11,19 +11,19 @@ namespace Reko.UiPrototype.WinForms
 {
     public partial class MemoryTyperControl : UserControl
     {
-        private Tuple<string, string, string>[] tuples;
+        private (string, string, string)[] tuples;
         private int step;
 
         public MemoryTyperControl()
         {
             InitializeComponent();
 
-            tuples = new Tuple<string, string, string>[] {
-                Tuple.Create("", "", ""),
-                Tuple.Create("a", "array", "g00410000[]"),
-                Tuple.Create("ap", "array of pointer", "__ * g00410000[]"),
-                Tuple.Create("apf", "array of pointer to bool", "bool *g00410000[]"),
-                Tuple.Create("apfn", "array of pointer to function", "void (*g00410000[])()"),
+            tuples = new ValueTuple<string, string, string>[] {
+                ("", "", ""),
+                ("a", "array", "g00410000[]"),
+                ("ap", "array of pointer", "__ * g00410000[]"),
+                ("apf", "array of pointer to bool", "bool *g00410000[]"),
+                ("apfn", "array of pointer to function", "void (*g00410000[])()"),
             };
             step = 0;
         }

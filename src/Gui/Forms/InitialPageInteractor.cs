@@ -114,10 +114,20 @@ namespace Reko.Gui.Forms
             this.Decompiler = CreateDecompiler(ldr);
             var svc = Services.RequireService<IWorkerDialogService>();
             bool successfullyLoaded = false;
-            svc.StartBackgroundWork("Loading program", () =>
+            bool exceptionThrown = !svc.StartBackgroundWork("Loading program", () =>
             {
                 successfullyLoaded = Decompiler.Load(file);
             });
+            if (exceptionThrown)
+            {
+                // We've already reported the exception, so we should stop in our tracks.
+                //$REFACTOR: the logic for opening binaries is convoluted and needs 
+                // refactoring. See GitHub #1051.
+                //$BUG: we're lying here, we should be catching an Exception at this level.
+                // The 'true' will prevent the OpenAs dialog from opening, but it will
+                // put the shell in an incorrect state.
+                return true;
+            }
             if (!successfullyLoaded)
             {
                 return false;

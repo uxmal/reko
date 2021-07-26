@@ -42,15 +42,17 @@ namespace Reko.Tools.C2Xml
     {
         private readonly TextReader rdr;
         private readonly XmlWriter writer;
+        private readonly bool explicitPointerSizes;
         private readonly string dialect;
         private readonly ParserState parserState;
         private readonly IPlatform platform;
 
-        public XmlConverter(TextReader rdr, XmlWriter writer, IPlatform platform, string dialect)
+        public XmlConverter(TextReader rdr, XmlWriter writer, IPlatform platform, bool explicitPointerSizes, string dialect)
         {
             this.rdr = rdr;
             this.writer = writer;
             this.platform = platform ?? throw new ArgumentNullException(nameof(platform));
+            this.explicitPointerSizes = explicitPointerSizes;
             this.dialect = dialect;
             this.parserState = CreateParserState(dialect);
         }
@@ -116,7 +118,10 @@ namespace Reko.Tools.C2Xml
 
         private SymbolTable CreateSymbolTable()
         {
-            var symtab = new SymbolTable(platform)
+            int pointerSize = this.explicitPointerSizes
+                ? platform.PointerType.Size
+                : 0;
+            var symtab = new SymbolTable(platform, pointerSize)
             {
                 NamedTypes = {
                     { "off_t", new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = platform.PointerType.Size } },

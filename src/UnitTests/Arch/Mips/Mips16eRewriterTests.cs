@@ -51,15 +51,6 @@ namespace Reko.UnitTests.Arch.Mips
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => addr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return arch.CreateRewriter(
-                arch.Endianness.CreateImageReader(mem, mem.BaseAddress),
-                arch.CreateProcessorState(),
-                binder,
-                host);
-        }
-
         private void AssertCode(string sHex, params string[] sExp)
         {
             Given_HexString(sHex);

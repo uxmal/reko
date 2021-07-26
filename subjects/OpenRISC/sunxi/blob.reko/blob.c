@@ -7236,8 +7236,8 @@ word32 fn000101A8(Eq_n r15, word32 VR)
 						word16 * r22_n;
 						Eq_n r2_n = fn00009DDC(r2_n, VR, out r11_n, out r22_n);
 						*r22_n = (word16) r11_n;
-						word32 r15_n;
 						word32 r22_n;
+						word32 r15_n;
 						fn00009C2C(r2_n, *r14_n, r15, VR, out r15_n, out r22_n);
 					}
 				}
@@ -7260,8 +7260,8 @@ word32 fn000101A8(Eq_n r15, word32 VR)
 					Eq_n r4_n = (int32) *((word64) r14_n + 0x00013744);
 					if (r4_n == 0x00)
 					{
-						word32 r14_n;
 						word32 r16_n;
+						word32 r14_n;
 						fn00009ED0(r14_n, r4_n, VR, out r14_n, out r16_n);
 					}
 				}
@@ -7295,8 +7295,8 @@ word32 fn000103C0(Eq_n r15, word32 VR, ptr32 & r9Out, ptr32 & r18Out, ptr32 & r2
 			{
 				if ((*r18_n >> r2_n & 0x01) != 0x00)
 				{
-					word32 r15_n;
 					word32 r22_n;
+					word32 r15_n;
 					fn00009C2C(r2_n, (word32) *r22_n, r15, VR, out r15_n, out r22_n);
 				}
 				r2_n = (word64) r2_n - 1;

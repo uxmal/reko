@@ -33,7 +33,7 @@ namespace Reko.Core.Operators
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
-                return Constant.Invalid;
+                return InvalidConstant.Create(c1.DataType);
             ulong v1 = c1.ToUInt64();
 			ulong v2 = c2.ToUInt64();
 			return Constant.Bool(v1 < v2);
@@ -49,7 +49,7 @@ namespace Reko.Core.Operators
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
-                return Constant.Invalid;
+                return InvalidConstant.Create(c1.DataType);
             ulong v1 = c1.ToUInt64();
 			ulong v2 = c2.ToUInt64();
             return Constant.Bool(v1 <= v2);
@@ -65,7 +65,7 @@ namespace Reko.Core.Operators
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
-                return Constant.Invalid;
+                return InvalidConstant.Create(c1.DataType);
 
             ulong v1 = c1.ToUInt64();
 			ulong v2 = c2.ToUInt64();
@@ -82,7 +82,7 @@ namespace Reko.Core.Operators
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
-                return Constant.Invalid;
+                return InvalidConstant.Create(c1.DataType);
 
             ulong v1 = c1.ToUInt64();
 			ulong v2 = c2.ToUInt64();

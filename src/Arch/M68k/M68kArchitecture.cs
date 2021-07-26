@@ -23,9 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
-using Reko.Core.Operators;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -53,11 +51,6 @@ namespace Reko.Arch.M68k
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return M68kDisassembler.Create68020(this.Services, rdr);
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public IEnumerable<M68kInstruction> CreateDisassemblerImpl(EndianImageReader rdr)

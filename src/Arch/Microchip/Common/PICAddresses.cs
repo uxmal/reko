@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -36,7 +36,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public const uint MAXPROGBYTADDR = 0x3FFFFFu;
         public readonly Constant Value;
-        public static readonly PICProgAddress Invalid = new PICProgAddress(Constant.Invalid);
+        public static readonly PICProgAddress Invalid = new PICProgAddress(InvalidConstant.Create(PrimitiveType.Ptr32));
 
         public PICProgAddress(uint addr) : base(PrimitiveType.Ptr32)
         {
@@ -114,7 +114,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public const uint MAXDATABYTADDR = 0x3FFFu;
         public readonly Constant Value;
-        public static readonly PICDataAddress Invalid = new PICDataAddress(Constant.Invalid);
+        public static readonly PICDataAddress Invalid = new PICDataAddress(InvalidConstant.Create(PrimitiveType.Ptr16));
 
 
         public PICDataAddress(uint addr) : base(PrimitiveType.Ptr16)

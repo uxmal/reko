@@ -113,11 +113,11 @@ void fn000016D0(word32 d6, struct Eq_n * a5, byte * dwArg08)
 word16 g_a1758[] = // 00001758
 	{
 	};
-// 00001C40: Register (ptr32 Eq_n) fn00001C40(Register (ptr32 Eq_n) a5, Stack Eq_n bArg04, Stack (ptr32 Eq_n) dwArg08, Register out (ptr32 Eq_n) d4Out, Register out (ptr32 Eq_n) d5Out, Register out (ptr32 Eq_n) a5Out, Register out ptr32 a6Out)
+// 00001C40: Register (ptr32 Eq_n) fn00001C40(Register (ptr32 Eq_n) a5, Stack Eq_n bArg04, Stack (ptr32 Eq_n) dwArg08, Register out Eq_n d4Out, Register out Eq_n d5Out, Register out Eq_n a5Out, Register out ptr32 a6Out)
 // Called from:
 //      fn00001C84
 //      fn00001CC4
-struct Eq_n * fn00001C40(struct Eq_n * a5, Eq_n bArg04, struct Eq_n * dwArg08, struct Eq_n & d4Out, struct Eq_n & d5Out, struct Eq_n & a5Out, ptr32 & a6Out)
+struct Eq_n * fn00001C40(struct Eq_n * a5, Eq_n bArg04, struct Eq_n * dwArg08, union Eq_n & d4Out, union Eq_n & d5Out, union Eq_n & a5Out, ptr32 & a6Out)
 {
 	byte bArg07_n = (byte) dwArg04;
 	int32 d0_n;
@@ -144,9 +144,9 @@ struct Eq_n * fn00001C40(struct Eq_n * a5, Eq_n bArg04, struct Eq_n * dwArg08, s
 	{
 		++*a0_n;
 		ptr32 a6_n = a6_n->ptr0000;
-		d4Out = (struct Eq_n *) <invalid>;
-		d5Out = (struct Eq_n *) <invalid>;
-		a5Out = (struct Eq_n *) <invalid>;
+		d4Out.u1 = <invalid>;
+		d5Out.u1 = <invalid>;
+		a5Out.u1 = <invalid>;
 		a6Out = a6_n;
 		return (struct Eq_n *) <invalid>;
 	}
@@ -154,9 +154,9 @@ struct Eq_n * fn00001C40(struct Eq_n * a5, Eq_n bArg04, struct Eq_n * dwArg08, s
 	{
 		*a0_n = d0_n;
 		ptr32 a6_n = a6_n->ptr0000;
-		d4Out = (struct Eq_n *) <invalid>;
-		d5Out = (struct Eq_n *) <invalid>;
-		a5Out = (struct Eq_n *) <invalid>;
+		d4Out.u1 = <invalid>;
+		d5Out.u1 = <invalid>;
+		a5Out.u1 = <invalid>;
 		a6Out = a6_n;
 		return (struct Eq_n *) <invalid>;
 	}
@@ -214,10 +214,10 @@ void fn00001D0C(word32 * dwArg04)
 	*dwArg04 += 4;
 }
 
-// 00001D24: Register int32 fn00001D24(Register (ptr32 Eq_n) a5, Stack (ptr32 Eq_n) dwArg04, Register out ptr32 d3Out, Register out Eq_n d4Out, Register out (ptr32 Eq_n) d5Out, Register out (ptr32 Eq_n) d6Out, Register out (ptr32 Eq_n) d7Out, Register out Eq_n a2Out, Register out (ptr32 Eq_n) a5Out, Register out (ptr32 ptr32) a6Out)
+// 00001D24: Register int32 fn00001D24(Register (ptr32 Eq_n) a5, Stack (ptr32 Eq_n) dwArg04, Register out ptr32 d3Out, Register out Eq_n d4Out, Register out Eq_n d5Out, Register out Eq_n d6Out, Register out Eq_n d7Out, Register out Eq_n a2Out, Register out (ptr32 Eq_n) a5Out, Register out (ptr32 ptr32) a6Out)
 // Called from:
 //      fn00001E04
-int32 fn00001D24(struct Eq_n * a5, struct Eq_n * dwArg04, ptr32 & d3Out, union Eq_n & d4Out, struct Eq_n & d5Out, struct Eq_n & d6Out, struct Eq_n & d7Out, union Eq_n & a2Out, struct Eq_n & a5Out, ptr32 & a6Out)
+int32 fn00001D24(struct Eq_n * a5, struct Eq_n * dwArg04, ptr32 & d3Out, union Eq_n & d4Out, union Eq_n & d5Out, union Eq_n & d6Out, union Eq_n & d7Out, union Eq_n & a2Out, struct Eq_n & a5Out, ptr32 & a6Out)
 {
 	if (dwArg04 != null)
 	{
@@ -235,9 +235,9 @@ int32 fn00001D24(struct Eq_n * a5, struct Eq_n * dwArg04, ptr32 & d3Out, union E
 				ptr32 * a6_n = *a6_n;
 				d3Out = d3_n;
 				d4Out = d4_n;
-				d5Out = (struct Eq_n *) <invalid>;
-				d6Out = (struct Eq_n *) <invalid>;
-				d7Out = (struct Eq_n *) <invalid>;
+				d5Out.u1 = <invalid>;
+				d6Out.u1 = <invalid>;
+				d7Out.u1 = <invalid>;
 				a2Out = a2_n;
 				a5Out = a5_n;
 				a6Out = a6_n;
@@ -257,9 +257,9 @@ int32 fn00001D24(struct Eq_n * a5, struct Eq_n * dwArg04, ptr32 & d3Out, union E
 				ptr32 * a6_n = *a6_n;
 				d3Out = d3_n;
 				d4Out = d4_n;
-				d5Out = (struct Eq_n *) <invalid>;
-				d6Out = (struct Eq_n *) <invalid>;
-				d7Out = (struct Eq_n *) <invalid>;
+				d5Out.u1 = <invalid>;
+				d6Out.u1 = <invalid>;
+				d7Out.u1 = <invalid>;
 				a2Out = a2_n;
 				a5Out = a5_n;
 				a6Out = a6_n;
@@ -272,9 +272,9 @@ int32 fn00001D24(struct Eq_n * a5, struct Eq_n * dwArg04, ptr32 & d3Out, union E
 			ptr32 * a6_n = *a6_n;
 			d3Out = d3_n;
 			d4Out = d4_n;
-			d5Out = (struct Eq_n *) <invalid>;
-			d6Out = (struct Eq_n *) <invalid>;
-			d7Out = (struct Eq_n *) <invalid>;
+			d5Out.u1 = <invalid>;
+			d6Out.u1 = <invalid>;
+			d7Out.u1 = <invalid>;
 			a2Out = a2_n;
 			a5Out = a5_n;
 			a6Out = a6_n;
@@ -291,9 +291,9 @@ int32 fn00001D24(struct Eq_n * a5, struct Eq_n * dwArg04, ptr32 & d3Out, union E
 		ptr32 * a6_n = *a6_n;
 		d3Out = d3_n;
 		d4Out = d4_n;
-		d5Out = (struct Eq_n *) <invalid>;
-		d6Out = (struct Eq_n *) <invalid>;
-		d7Out = (struct Eq_n *) <invalid>;
+		d5Out.u1 = <invalid>;
+		d6Out.u1 = <invalid>;
+		d7Out.u1 = <invalid>;
 		a2Out = a2;
 		a5Out = a5_n;
 		a6Out = a6_n;

@@ -48,15 +48,6 @@ namespace Reko.UnitTests.Arch.zSeries
 
         public override Address LoadAddress { get; }
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return Architecture.CreateRewriter(
-                mem.CreateBeReader(mem.BaseAddress),
-                Architecture.CreateProcessorState(),
-                binder,
-                host);
-        }
-
         [Test]
         public void zSeriesRw_a()
         {

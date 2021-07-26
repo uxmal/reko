@@ -19,16 +19,16 @@
 #endregion
 
 using Reko.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
-using Reko.Core.Lib;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Reko.Arch.Avr
 {
@@ -121,11 +121,6 @@ namespace Reko.Arch.Avr
 		public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new Avr8Disassembler(this, rdr);
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

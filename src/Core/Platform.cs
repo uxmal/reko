@@ -20,6 +20,7 @@
 
 using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
+using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -268,7 +269,10 @@ namespace Reko.Core
             return addr;
         }
 
-        public abstract IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences);
+        public virtual IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            throw new NotImplementedException("Emulation has not been implemented for this platform yet.");
+        }
 
         /// <summary>
         /// Creates a set that represents those registers that are never used
@@ -598,11 +602,6 @@ namespace Reko.Core
         public override string DefaultCallingConvention
         {
             get { return ""; }
-        }
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotSupportedException();
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

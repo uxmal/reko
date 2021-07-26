@@ -93,7 +93,7 @@ spare time, so adjust your response-time expectations accordingly.
 
 To build reko, start by cloning https://github.com/uxmal/reko. You
 can use an IDE or the command line to build the solution file
-`Reko-decompiler.sln`. Reko requires .NET Core 3.1 and C# 8
+`src/Reko-decompiler.sln`. Reko requires .NET Core 3.1 and C# 8
 to compile. If you are an Windows IDE user, use Visual Studio 2019 or
 VS Code. If you wish to build using the command line, use the command
 

@@ -18,20 +18,14 @@
  */
 #endregion
 
-using Reko.Arch.PowerPC;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ImmediateOperand = Reko.Core.Machine.ImmediateOperand;
 
 namespace Reko.Environments.Ps3
 {
@@ -55,11 +49,6 @@ namespace Reko.Environments.Ps3
         public override string DefaultCallingConvention { get { return ""; } }
 
         public override PrimitiveType PointerType { get { return PrimitiveType.Ptr32; } }
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

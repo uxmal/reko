@@ -21,8 +21,8 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
-using Reko.Core.Memory;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -48,11 +48,6 @@ namespace Reko.Arch.Arc
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new ArcDisassembler(this, rdr);
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

@@ -567,7 +567,7 @@ namespace Reko.Analysis
                         var bitrangeR = sidElem == null
                             ? useRange
                             : new BitRange(offsetLo, usedRange.Lsb);
-                        var idR = MakeTmpIdentifier(bitrangeR);
+                        var idR = MakeTmpIdentifier(id.Storage, bitrangeR);
                         var rx = new RegisterTransformer(idR, stm, this.outer)
                         {
                             liveBits = bitrangeR
@@ -594,7 +594,7 @@ namespace Reko.Analysis
                     var elems = new List<Expression>();
                     foreach (var (sidElem, bitrange) in sids)
                     {
-                        var idSlice = MakeTmpIdentifier(bitrange);
+                        var idSlice = MakeTmpIdentifier(sidElem.Identifier.Storage, bitrange);
                         var sidSlice = MakeSlice(sidElem, bitrange, idSlice);
                         alias.ExactAliases[sidSlice.OriginalIdentifier.Storage] = sidSlice;
                         elems.Add(sidSlice.Identifier);
@@ -630,9 +630,18 @@ namespace Reko.Analysis
                 return result;
             }
 
-            private Identifier MakeTmpIdentifier(BitRange bitrange)
+            private Identifier MakeTmpIdentifier(Storage storage, BitRange bitrange)
             {
-                var reg = outer.ssa.Procedure.Architecture.GetRegister(id.Storage.Domain, bitrange)!;
+                RegisterStorage reg;
+                if (storage is SequenceStorage seq)
+                {
+                    (reg, bitrange) = FindRegisterInSequence(bitrange, seq);
+                }
+                else
+                {
+                    Debug.Assert(id.Storage is RegisterStorage);
+                    reg = outer.ssa.Procedure.Architecture.GetRegister(id.Storage.Domain, bitrange)!;
+                }
                 var frame = outer.ssa.Procedure.Frame;
                 if (reg.GetBitRange() != bitrange)
                 {
@@ -644,6 +653,24 @@ namespace Reko.Analysis
                         PrimitiveType.CreateWord(bitrange.Extent));
                 }
                 return frame.EnsureRegister(reg);
+            }
+
+            private (RegisterStorage, BitRange) FindRegisterInSequence(BitRange bitrange, SequenceStorage seq)
+            {
+                int offset = 0;
+                for (int i = seq.Elements.Length-1; i >= 0; --i)
+                {
+                    var stg = seq.Elements[i];
+                    if (!stg.GetBitRange().Offset(offset).Intersect(bitrange).IsEmpty)
+                    {
+                        var subBitrange = bitrange.Offset(-offset);
+                        var reg = (RegisterStorage) stg;
+                        reg = outer.ssa.Procedure.Architecture.GetRegister(reg.Domain, subBitrange)!;
+                        return (reg, subBitrange);
+                    }
+                    offset += (int)stg.BitSize;
+                }
+                throw new InvalidOperationException("Expected the bitrange to intersect with a subregister of the sequence.");
             }
 
             private SsaIdentifier MakeSlice(SsaIdentifier sidSrc, BitRange range, Identifier idSlice)
@@ -942,6 +969,7 @@ namespace Reko.Analysis
                 foreach (var use in sidFrom.Uses)
                 {
                     if (use.Instruction is AliasAssignment alias && 
+                        alias.Dst.Storage is StackStorage &&
                         alias.Src is Slice slice && 
                         slice.Offset == e.Offset && 
                         slice.DataType.BitSize == e.DataType.BitSize)

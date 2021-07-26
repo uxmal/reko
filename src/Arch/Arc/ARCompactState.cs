@@ -49,7 +49,7 @@ namespace Reko.Arch.Arc
         public override Constant GetRegister(RegisterStorage r)
         {
             if (!values.TryGetValue(r, out var value))
-                return Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
             else
                 return value;
         }

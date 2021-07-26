@@ -46,13 +46,6 @@ namespace Reko.UnitTests.Arch.XCore
 
         public override Address LoadAddress => addr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var state = arch.CreateProcessorState();
-            var rdr = arch.CreateImageReader(mem, 0);
-            return arch.CreateRewriter(rdr, state, binder, host);
-        }
-
         // This spams the CI builds [Test]
         public void XCore200Rw_foo()
         {

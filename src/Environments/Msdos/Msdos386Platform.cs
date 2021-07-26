@@ -28,7 +28,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Reko.Environments.Msdos
 {
@@ -45,11 +44,6 @@ namespace Reko.Environments.Msdos
         }
 
         public override string DefaultCallingConvention => "cdecl";
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

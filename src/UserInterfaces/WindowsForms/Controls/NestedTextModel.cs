@@ -108,10 +108,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             return spans.ToArray();
         }
 
-        public Tuple<int, int> GetPositionAsFraction()
+        public (int, int) GetPositionAsFraction()
         {
             if (position.iModel >= Nodes.Count)
-                return Tuple.Create(1, 1);
+                return (1, 1);
             int c = 0;
             for (int i = 0; i < position.iModel; ++i)
             {
@@ -119,7 +119,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
             var node = Nodes[position.iModel];
             var frac = node.Model.GetPositionAsFraction();
-            return Tuple.Create(
+            return (
                 c + (node.cLines * frac.Item1) / frac.Item2,
                 CountLines());
         }
@@ -183,12 +183,12 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             }
         }
 
-        public Tuple<TextModelNode, int, int> GetPositionAsNode()
+        public (TextModelNode, int, int) GetPositionAsNode()
         {
             var node = Nodes[position.iModel];
             node.Model.MoveToLine(position.InnerLocation, 0);
             var frac = node.Model.GetPositionAsFraction();
-            return Tuple.Create(node, frac.Item1, frac.Item2);
+            return (node, frac.Item1, frac.Item2);
         }
 
         public class NodeCollection : Collection<TextModelNode>

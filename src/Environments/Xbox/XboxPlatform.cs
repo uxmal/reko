@@ -22,7 +22,6 @@ using Reko.Core;
 using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Environments.Xbox
 {
@@ -45,19 +44,14 @@ namespace Reko.Environments.Xbox
             }
         }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
-
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
-            throw new NotImplementedException();
+            return new HashSet<RegisterStorage>();
         }
 
         public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override int GetBitSizeFromCBasicType(CBasicType cb)

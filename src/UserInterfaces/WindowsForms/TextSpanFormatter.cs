@@ -209,9 +209,9 @@ namespace Reko.UserInterfaces.WindowsForms
                 return spans;
             }
 
-            public Tuple<int, int> GetPositionAsFraction()
+            public (int, int) GetPositionAsFraction()
             {
-                return Tuple.Create((int)position, lines.Length);
+                return ((int)position, lines.Length);
             }
 
             public void SetPositionAsFraction(int numer, int denom)

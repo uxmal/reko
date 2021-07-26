@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
+using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Rtl;

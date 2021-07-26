@@ -20,11 +20,9 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -93,11 +91,6 @@ namespace Reko.Arch.Mips
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return CreateDisassemblerInternal(imageReader);
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         private IEnumerable<MipsInstruction> CreateDisassemblerInternal(EndianImageReader imageReader)

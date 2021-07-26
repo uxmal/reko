@@ -662,7 +662,7 @@ void fn0B06(int16 r3, Eq_n r4, word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	struct Eq_n * stackArg0 = (struct Eq_n *) <invalid>;
+	ci16 * stackArg0 = (ci16 *) <invalid>;
 	fn13AA(stackArg0);
 	2828 = 0x0B0D;
 	if (2828 != 0x00)
@@ -918,7 +918,7 @@ word16 fn0E32()
 	} while (g_w00AE >= 0xC0);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	struct Eq_n * stackArg0 = (struct Eq_n *) <invalid>;
+	ci16 * stackArg0 = (ci16 *) <invalid>;
 	fn13AA(stackArg0);
 	__reset();
 	word16 r5_n;
@@ -1730,17 +1730,17 @@ l1304:
 	goto l1304;
 }
 
-// 13AA: void fn13AA(Stack (ptr16 Eq_n) ptrArg00)
+// 13AA: void fn13AA(Stack (ptr16 ci16) ptrArg00)
 // Called from:
 //      fn0856
 //      fn0B06
 //      fn0E32
 //      fn34E0
-void fn13AA(struct Eq_n * ptrArg00)
+void fn13AA(ci16 * ptrArg00)
 {
 	ci16 r0_n;
 	g_w25C0 = 0xF700;
-	ci16 r0_n = ptrArg00->w0000;
+	ci16 r0_n = *ptrArg00;
 	cu16 r1_n = g_w0070;
 	r0_n = r0_n;
 	if (r0_n <= 0x00)
@@ -1977,7 +1977,7 @@ void fn34E0()
 	fn355A();
 	*(word16 *) ~0x99 = 0x40;
 	*(word16 *) 0xF400 = 13666;
-	fn13AA(*(struct Eq_n **) 0x3FFC);
+	fn13AA(*(ci16 **) 0x3FFC);
 }
 
 // 355A: void fn355A()

@@ -114,7 +114,7 @@ namespace Reko.Arch.X86
             switch (operand)
             {
             case RegisterOperand reg:
-                renderer.WriteString(reg.Register.Name);
+                RenderRegister(reg.Register.Name, renderer);
                 break;
             case ImmediateOperand imm:
                 RenderImmediate(imm, instr, renderer);
@@ -163,6 +163,11 @@ namespace Reko.Arch.X86
             }
         }
 
+        protected virtual void RenderRegister(string regName, MachineInstructionRenderer renderer)
+        {
+            renderer.WriteString(regName);
+        }
+
         protected void RenderImmediate(
             ImmediateOperand imm,
             X86Instruction instr,
@@ -200,13 +205,13 @@ namespace Reko.Arch.X86
 
             if (mem.SegOverride != RegisterStorage.None)
             {
-                renderer.WriteString(mem.SegOverride.ToString());
+                RenderRegister(mem.SegOverride.Name, renderer);
                 renderer.WriteString(":");
             }
             renderer.WriteString("[");
             if (mem.Base != RegisterStorage.None)
             {
-                renderer.WriteString(mem.Base.ToString());
+                RenderRegister(mem.Base.Name, renderer);
             }
             else
             {
@@ -217,7 +222,7 @@ namespace Reko.Arch.X86
             if (mem.Index != RegisterStorage.None)
             {
                 renderer.WriteString("+");
-                renderer.WriteString(mem.Index.ToString());
+                RenderRegister(mem.Index.Name, renderer);
                 if (mem.Scale > 1)
                 {
                     renderer.WriteString("*");

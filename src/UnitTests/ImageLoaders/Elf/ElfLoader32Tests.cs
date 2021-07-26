@@ -166,9 +166,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Assert.AreEqual(8, segText.Size);
         }
 
-        private Tuple<Address, uint> ElfSeg(uint addr, uint size)
+        private (Address, uint) ElfSeg(uint addr, uint size)
         {
-            return Tuple.Create(Address.Ptr32(addr), size);
+            return (Address.Ptr32(addr), size);
         }
 
         [Test]

@@ -228,7 +228,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="off">The offset in the unknown memory bank.</param>
         public PICOperandBankedMemory(ushort off) : base(PrimitiveType.Byte)
         {
-            BankSelector = Constant.Invalid;
+            BankSelector = InvalidConstant.Create(PrimitiveType.Word16);
             Offset = (byte)off;
             IsAccess = false;
         }
@@ -252,7 +252,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="access">The Access RAM indicator.</param>
         public PICOperandBankedMemory(ushort off, ushort access) : base(PrimitiveType.Byte)
         {
-            BankSelector = Constant.Invalid;
+            BankSelector = InvalidConstant.Create(PrimitiveType.Word16);
             Offset = (byte)off;
             IsAccess = (access == 0);
         }

@@ -304,33 +304,31 @@ l0001183C:
 	i1_n = i1_n + o0_n
 l00011840:
 	bool v27_n = l0_n <= 0x00
-	goto l00011844
-l00011840_ds_f:
-	Eq_n o0_n = (uint32) read(o0, i1_n, l0_n)
-	branch o0_n >= 0x00 l0001184C_ds_t
-	goto l0001184C_ds_f
 l00011844:
-	branch v27_n l00011840_ds_t
-	goto l00011840_ds_f
+	branch v27_n l00011848_ds_t
+l00011848_ds_f:
+	Eq_n o0_n = (uint32) read(o0, i1_n, l0_n)
+	branch o0_n >= 0x00 l00011860_ds_t
+	goto l00011860_ds_f
 l0001184C:
-l0001184C_ds_f:
+l00011860_ds_f:
 	char * o0_n = errno
-	branch o0_n == (char *) 0x04 l00011864_ds_t
-	goto l00011864_ds_f
-l0001184C_ds_t:
-	branch o0_n != 0x00 l00011874_ds_t
+	branch o0_n == (char *) 0x04 l0001186C_ds_t
+	goto l0001186C_ds_f
+l00011860_ds_t:
+	branch o0_n != 0x00 l00011878_ds_t
 l00011864:
-l00011864_ds_f:
-	branch l0_n != 0x00 l00011874_ds_t
-l00011864_ds_t:
+l0001186C_ds_f:
+	branch l0_n != 0x00 l00011878_ds_t
+l0001186C_ds_t:
 	v27_n = l0_n <= 0x00
 	goto l00011844
 l00011870:
 l00011874:
-l00011874_ds_t:
+l00011878_ds_t:
 	l0_n = l0_n - o0_n
 	goto l0001183C
-l00011874_ds_t:
+l00011878_ds_t:
 	l0_n = l0_n - o0_n
 	goto l0001183C
 l0001187C:

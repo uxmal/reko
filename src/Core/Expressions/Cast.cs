@@ -23,8 +23,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-#nullable enable
-
 namespace Reko.Core.Expressions
 {
     /// <summary>
@@ -37,7 +35,7 @@ namespace Reko.Core.Expressions
 			this.Expression = expr;
 		}
 
-        public readonly Expression Expression;
+        public Expression Expression { get; }
 
         public override IEnumerable<Expression> Children
         {

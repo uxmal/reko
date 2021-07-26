@@ -67,8 +67,11 @@ namespace Reko.Environments.MacOS.Classic
             IPlatform platform,
             TypeLibrary typelib)
         {
-            var module = new ModuleDescriptor("");
-            typelib.Modules.Add("", module);
+            if (!typelib.Modules.TryGetValue("", out var module))
+            {
+                module = new ModuleDescriptor("");
+                typelib.Modules.Add("", module);
+            }
             foreach (var decl in declarations.OfType<CallableDeclaration>())
             {
                 var ft = (SerializedSignature) decl.Accept(typeImporter);

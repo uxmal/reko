@@ -251,6 +251,7 @@ test_exit:
             platform.Setup(p => p.GetCallingConvention(null))
                 .Returns(new X86CallingConvention(4, 4, 4, true, false));
             platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Int)).Returns(32);
+            platform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
 
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
             program.Platform = platform.Object;

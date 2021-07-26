@@ -42,16 +42,18 @@ namespace Reko.Core.CLanguage
         private readonly SerializedType? dt;
         private readonly CConstantEvaluator eval;
         private readonly IPlatform platform;
+        private readonly int pointerSize;
         private Domain domain;
         private int byteSize;
         private CTokenType callingConvention;
         private CBasicType basicType;
 
-        public NamedDataTypeExtractor(IPlatform platform, IEnumerable<DeclSpec> specs, SymbolTable converter)
+        public NamedDataTypeExtractor(IPlatform platform, IEnumerable<DeclSpec> specs, SymbolTable converter, int pointerSize)
         {
             this.platform = platform ?? throw new ArgumentNullException("platform");
             this.specs = specs;
             this.symbolTable = converter;
+            this.pointerSize = pointerSize;
             this.callingConvention = CTokenType.None;
             this.eval = new CConstantEvaluator(platform, converter.Constants);
             this.basicType = CBasicType.None;
@@ -123,13 +125,13 @@ namespace Reko.Core.CLanguage
             }
             return (nt) =>
             {
-                var size = PointerSize();
+                var size = PointerSize(pointer.TypeQualifierList);
                 nt.DataType = new PointerType_v1
                 {
                     DataType = nt.DataType,
                     PointerSize = size,
                 };
-                nt.Size = PointerSize();
+                nt.Size = size;
                 return fn(nt);
             };
         }
@@ -147,24 +149,27 @@ namespace Reko.Core.CLanguage
             }
             return (nt) =>
             {
-                var size = PointerSize();
+                var size = PointerSize(reference.TypeQualifierList);
                 nt.DataType = new ReferenceType_v1
                 {
                     Referent = nt.DataType,
                     Size = size,
                     //$TODO: Qualifier
                 };
-                nt.Size = PointerSize();
+                nt.Size = size;
                 return fn(nt);
             };
         }
 
-        private int PointerSize()
+        private int PointerSize(List<TypeQualifier> typeQualifiers)
         {
-            if (specs.OfType<TypeQualifier>()
-                    .Any(t => t.Qualifier == CTokenType._Near))
+            if (typeQualifiers != null && 
+                typeQualifiers.Any(t => t.Qualifier == CTokenType._Near))
                 return 2;
-            return platform.PointerType.Size;
+            if (specs != null &&
+                specs.Any(s => s is TypeQualifier t && t.Qualifier == CTokenType._Near))
+                return 2;
+            return this.pointerSize;
         }
 
         public Func<NamedDataType, NamedDataType> VisitFunction(FunctionDeclarator function)
@@ -219,7 +224,7 @@ namespace Reko.Core.CLanguage
             }
             else
             {
-                var ntde = new NamedDataTypeExtractor(platform, decl.DeclSpecs, symbolTable);
+                var ntde = new NamedDataTypeExtractor(platform, decl.DeclSpecs, symbolTable, pointerSize);
                 var ntTmp = ntde.GetNameAndType(decl.Declarator);
                 var nt = ConvertArrayToPointer(ntTmp);
                 var kind = GetArgumentKindFromAttributes("arg", decl.Attributes);
@@ -516,7 +521,7 @@ namespace Reko.Core.CLanguage
             int offset = 0;
             foreach (var decl in decls)
             {
-                var ntde = new NamedDataTypeExtractor(platform, decl.SpecQualifierList, symbolTable);
+                var ntde = new NamedDataTypeExtractor(platform, decl.SpecQualifierList, symbolTable, pointerSize);
                 foreach (var declarator in decl.FieldDeclarators)
                 {
                     var nt = ntde.GetNameAndType(declarator);
@@ -539,7 +544,7 @@ namespace Reko.Core.CLanguage
         {
             foreach (var decl in decls)
             {
-                var ndte = new NamedDataTypeExtractor(platform, decl.SpecQualifierList, symbolTable);
+                var ndte = new NamedDataTypeExtractor(platform, decl.SpecQualifierList, symbolTable, pointerSize);
                 foreach (var declarator in decl.FieldDeclarators)
                 {
                     var nt = ndte.GetNameAndType(declarator);

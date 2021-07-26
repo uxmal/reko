@@ -116,9 +116,9 @@ namespace Reko.Scanning
         public bool BackwalkInstruction(TInstr instr)
         {
             var ass = host.AsAssignment(instr);
-            if (ass != null)
+            if (ass.Item1 != null)
             {
-                var assSrc = ass.Item2.Accept(eval);
+                var assSrc = ass.Item2!.Accept(eval);
                 var assDst = ass.Item1;
                 var regSrc = RegisterOf(assSrc);
                 if (assSrc is BinaryExpression binSrc)
@@ -218,7 +218,7 @@ namespace Reko.Scanning
 
                 //$BUG: this is rubbish, the simplifier should _just_
                 // perform simplification, no substitutions.
-                var src = assSrc == Constant.Invalid ? ass.Item2 : assSrc;
+                var src = assSrc is InvalidConstant ? ass.Item2 : assSrc;
                 var cvtSrc = src as Conversion;
                 if (cvtSrc != null)
                     src = cvtSrc.Expression;

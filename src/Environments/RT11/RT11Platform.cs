@@ -20,12 +20,9 @@
 
 using Reko.Arch.Pdp11;
 using Reko.Core;
-using System;
 using Reko.Core.CLanguage;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
+using System;
 using System.Collections.Generic;
-using Reko.Core.Rtl;
 using System.Linq;
 
 namespace Reko.Environments.RT11
@@ -46,11 +43,6 @@ namespace Reko.Environments.RT11
         public override string DefaultCallingConvention
         {
             get { return "";  }
-        }
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()

@@ -145,6 +145,7 @@ namespace Reko.Gui
             {
             case NotifyCollectionChangedAction.Add:
                 AddComponents(e.NewItems);
+                SelectedObject = e.NewItems.OfType<object>().First();
                 break;
             default:
                 throw new NotImplementedException();

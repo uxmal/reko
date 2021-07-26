@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Scanning
         public Program Program => program;
         public SegmentMap SegmentMap => program.SegmentMap;
 
-        public Tuple<Expression, Expression> AsAssignment(RtlInstruction instr)
+        public (Expression, Expression) AsAssignment(RtlInstruction instr)
         {
             throw new NotImplementedException();
         }

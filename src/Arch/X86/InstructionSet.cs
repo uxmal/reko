@@ -27,6 +27,8 @@ using System.Text;
 
 namespace Reko.Arch.X86
 {
+    using Decoder = Decoder<X86Disassembler, Mnemonic, X86Instruction>;
+
     public partial class X86Disassembler
     {
         /// <summary>

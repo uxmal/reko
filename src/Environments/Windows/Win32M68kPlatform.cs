@@ -1,16 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
+using System;
+using System.Collections.Generic;
 
 namespace Reko.Environments.Windows
 {
-	public class Win32M68kPlatform : Platform
+    public class Win32M68kPlatform : Platform
 	{
 		public Win32M68kPlatform(IServiceProvider services, IProcessorArchitecture arch) : 
             base(services, arch, "winM68k")
@@ -21,11 +18,6 @@ namespace Reko.Environments.Windows
 		{
 			get { return ""; }
 		}
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
 		{

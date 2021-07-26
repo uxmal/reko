@@ -185,7 +185,7 @@ namespace Reko.ImageLoaders.Elf
             return Segments.FirstOrDefault(s => s.IsValidAddress(uAddr));
         }
 
-        public static SortedList<Address, ByteMemoryArea> AllocateMemoryAreas(IEnumerable<Tuple<Address, uint>> segments)
+        public static SortedList<Address, ByteMemoryArea> AllocateMemoryAreas(IEnumerable<(Address, uint)> segments)
         {
             var mems = new SortedList<Address, ByteMemoryArea>();
             Address? addr = null;
@@ -278,6 +278,9 @@ namespace Reko.ImageLoaders.Elf
                 break;
             case ElfMachine.EM_VAX:
                 arch = "vax";
+                break;
+            case ElfMachine.EM_ALTERA_NIOS2:
+                arch = "nios2";
                 break;
             default:
                 throw new NotSupportedException($"Processor format {machine} is not supported.");

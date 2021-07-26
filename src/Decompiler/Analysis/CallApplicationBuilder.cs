@@ -248,7 +248,7 @@ namespace Reko.Analysis
             Statement stm,
             SsaIdentifier sid)
         {
-            var value = Constant.Invalid;
+            var value = InvalidConstant.Create(sid.Identifier.DataType);
             var ass = new Assignment(sid.Identifier, value);
             var newStm = InsertStatementBefore(ass, stm);
             sid.DefExpression = value;

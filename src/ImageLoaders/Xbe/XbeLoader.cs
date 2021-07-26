@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Pascal;
 using Reko.Core.Types;
@@ -52,6 +53,11 @@ namespace Reko.ImageLoaders.Xbe
         public Address KernelLibraryAddress;
         public Address XapiLibraryAddress;
 
+        /// <summary>
+        /// Upper bound for the load address in Release mode
+        /// </summary>
+        const uint LoadAddressUpperBound = 0x1000000;
+
         private XbeBuildType DetectBuildType()
         {
             if ((ImageHeader.EntryPoint & 0xf0000000) == 0x40000000)
@@ -59,7 +65,7 @@ namespace Reko.ImageLoaders.Xbe
                 return XbeBuildType.SegaChihiro;
             }
 
-            if ((ImageHeader.EntryPoint ^ XBE_XORKEY_ENTRYPOINT_RELEASE) > ImageHeader.BaseAddress)
+            if ((ImageHeader.EntryPoint ^ XBE_XORKEY_ENTRYPOINT_RELEASE) > LoadAddressUpperBound)
             {
                 return XbeBuildType.Debug;
             }
@@ -115,13 +121,13 @@ namespace Reko.ImageLoaders.Xbe
     {
         public readonly XbeSectionHeader SectionHeader;
 
-        public readonly Address Address;
+        public readonly Address VirtualAddress;
         public readonly Address NameAddress;
 
         public XbeSection(XbeSectionHeader hdr)
         {
             SectionHeader = hdr;
-            Address = Address.Ptr32(SectionHeader.RawAddress);
+            VirtualAddress = Address.Ptr32(SectionHeader.VirtualAddress);
             NameAddress = Address.Ptr32(SectionHeader.SectionNameAddress);
         }
     }
@@ -147,6 +153,8 @@ namespace Reko.ImageLoaders.Xbe
     public class XbeLoader : ImageLoader
     {
         private readonly LeImageReader rdr;
+
+        private const int XBE_MAX_THUNK = 378;
 
 
         public XbeLoader(IServiceProvider services, string filename, byte[] rawImage)
@@ -186,8 +194,6 @@ namespace Reko.ImageLoaders.Xbe
                     return rdr.ReadCString(PrimitiveType.Char, Encoding.ASCII).ToString();
                 });
 
-                long sectionOffset = section.Address - ctx.EntryPointAddress;
-
                 AccessMode accessFlgs = AccessMode.Read;
                 if (sectionHeader.Flags.HasFlag(XbeSectionFlags.Executable))
                 {
@@ -200,9 +206,9 @@ namespace Reko.ImageLoaders.Xbe
 
                 ImageSegment segment = new ImageSegment(
                     sectionName,
-                    new ByteMemoryArea(section.Address, rdr.ReadAt<byte[]>(sectionOffset, (rdr) =>
+                    new ByteMemoryArea(section.VirtualAddress, rdr.ReadAt<byte[]>(sectionHeader.RawAddress, (rdr) =>
                     {
-                        return rdr.CreateBinaryReader().ReadBytes((int) sectionHeader.RawSize);
+                        return rdr.ReadBytes(sectionHeader.RawSize);
                     })), accessFlgs);
 
                 segments.Add(segment);
@@ -244,7 +250,7 @@ namespace Reko.ImageLoaders.Xbe
 
             rdr.Seek(ctx.KernelThunkAddress - ctx.BaseAddress, System.IO.SeekOrigin.Begin);
 
-            for (uint i = 0; ; i++)
+            for (uint i = 0; i<XBE_MAX_THUNK; i++)
             {
                 Address32 ordinalAddress = (Address32) ctx.KernelThunkAddress.Add(i * 4);
                 if(!rdr.TryReadUInt32(out uint dword))

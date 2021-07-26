@@ -85,10 +85,6 @@ namespace Reko.Core.Output
             return result;
         }
 
-
-
-
-
         public override Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>> GetItemPlacements(string fileExtension)
         {
             var mappedItems = program.GetItemsBySegment();

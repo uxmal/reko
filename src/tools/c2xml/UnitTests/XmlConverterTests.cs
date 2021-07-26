@@ -50,11 +50,6 @@ namespace Reko.Tools.C2Xml.UnitTests
                 throw new NotImplementedException();
             }
 
-            public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-            {
-                throw new NotImplementedException();
-            }
-
             public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
             {
                 throw new NotImplementedException();
@@ -162,7 +157,7 @@ namespace Reko.Tools.C2Xml.UnitTests
                 };
                 var arch = new FakeArchitecture(new ServiceContainer());
                 var platform = new DefaultPlatform(null, arch);
-                var xc = new XmlConverter(reader, xWriter, platform, dialect);
+                var xc = new XmlConverter(reader, xWriter, platform, true, dialect);
                 xc.Convert();
                 writer.Flush();
                 Assert.AreEqual(expectedXml, writer.ToString());

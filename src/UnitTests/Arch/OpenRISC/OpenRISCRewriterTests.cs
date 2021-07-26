@@ -49,15 +49,6 @@ namespace Reko.UnitTests.Arch.OpenRISC
 
         public override Address LoadAddress => addr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return arch.CreateRewriter(
-                arch.CreateImageReader(mem, 0),
-                new OpenRISCState(arch),
-                binder,
-                host);
-        }
-
         [Test]
         public void OpenRiscRw_add()
         {

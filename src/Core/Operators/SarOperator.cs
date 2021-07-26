@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2021 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace Reko.Core.Operators
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
-                return Constant.Invalid;
+                return InvalidConstant.Create(c1.DataType);
             return Constant.Create(
                 PrimitiveType.Create(Domain.SignedInt, c1.DataType.BitSize),
                 c1.ToInt64() >> c2.ToInt32());

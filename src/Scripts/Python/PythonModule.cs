@@ -21,11 +21,13 @@
 using Microsoft.Scripting.Hosting;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Lib;
 using Reko.Core.Scripts;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace Reko.Scripts.Python
 {
@@ -38,6 +40,7 @@ namespace Reko.Scripts.Python
         private readonly TextWriter outputWriter;
         private readonly DecompilerEventListener eventListener;
         private readonly IConfigurationService cfgSvc;
+        private readonly IFileSystemService fsSvc;
         private RekoEventsAPI eventsAPI;
 
         public PythonModule(
@@ -46,19 +49,20 @@ namespace Reko.Scripts.Python
         {
             this.eventListener = services.RequireService<DecompilerEventListener>();
             this.cfgSvc = services.RequireService<IConfigurationService>();
+            this.fsSvc = services.RequireService<IFileSystemService>();
             var outputService = services.RequireService<IOutputService>();
             this.outputWriter = outputService.EnsureOutputSource("Scripting");
             var stream = new MemoryStream(bytes);
             using var rdr = new StreamReader(stream);
             this.eventsAPI = Evaluate(
-                outputWriter, eventListener, cfgSvc, rdr.ReadToEnd(),
+                outputWriter, eventListener, cfgSvc, fsSvc, rdr.ReadToEnd(),
                 filename);
         }
 
         public override void Evaluate(string script)
         {
             this.eventsAPI = Evaluate(
-                outputWriter, eventListener, cfgSvc, script, Filename);
+                outputWriter, eventListener, cfgSvc, fsSvc, script, Filename);
         }
 
         public override void FireEvent(ScriptEvent @event, Program program)
@@ -67,7 +71,7 @@ namespace Reko.Scripts.Python
             var engine = eventsAPI.Engine;
             try
             {
-                var pythonAPI = new PythonAPI(cfgSvc, engine);
+                var pythonAPI = new PythonAPI(cfgSvc, fsSvc, engine);
                 var programAPI = new RekoProgramAPI(program);
                 var programWrapper = pythonAPI.CreateProgramWrapper(
                     programAPI);
@@ -89,12 +93,13 @@ namespace Reko.Scripts.Python
             TextWriter outputWriter,
             DecompilerEventListener eventListener,
             IConfigurationService cfgSvc,
+            IFileSystemService fsSvc,
             string script,
             string filename)
         {
-            outputWriter.WriteLine($"Evaluating {filename}");
             var engine = CreateEngine(outputWriter);
-            var pythonAPI = new PythonAPI(cfgSvc, engine);
+            outputWriter.WriteLine($"Evaluating {filename}");
+            var pythonAPI = new PythonAPI(cfgSvc, fsSvc, engine);
             var eventsAPI = new RekoEventsAPI(engine);
             var scope = CreateRekoVariable(engine, pythonAPI, eventsAPI);
             var src = engine.CreateScriptSourceFromString(script, filename);
@@ -156,20 +161,33 @@ namespace Reko.Scripts.Python
             }
         }
 
-        private static ScriptEngine CreateEngine(TextWriter outputWriter)
+        private static ScriptEngine CreateEngine(
+            TextWriter outputWriter,
+            int recursionLimit = 100)
         {
-            var engine = IronPython.Hosting.Python.CreateEngine();
-            RedirectConsoleOutput(outputWriter, engine);
+            // Set recursion limit to avoid application crash if there is
+            // infinite recursion
+            var options = new Dictionary<string, object>()
+            {
+                { "RecursionLimit", recursionLimit },
+            };
+            // Redirect console output before engine was created
+            // See https://github.com/IronLanguages/ironpython3/issues/961
+            // $TODO: remove this workaround when new IronPython will be
+            // released
+            var runtime = IronPython.Hosting.Python.CreateRuntime(options);
+            RedirectConsoleOutput(outputWriter, runtime);
+            var engine = IronPython.Hosting.Python.GetEngine(runtime);
+            outputWriter.WriteLine(engine.Setup.DisplayName);
             return engine;
         }
 
         private static void RedirectConsoleOutput(
-            TextWriter writer, ScriptEngine engine)
+            TextWriter writer, ScriptRuntime runtime)
         {
-            var stream = new MemoryStream();
-            engine.Runtime.IO.SetOutput(stream, writer);
-            engine.Runtime.IO.SetErrorOutput(stream, writer);
-            writer.WriteLine(engine.Setup.DisplayName);
+            var stream = new TextWriterStream(writer);
+            runtime.IO.SetOutput(stream, writer.Encoding);
+            runtime.IO.SetErrorOutput(stream, writer.Encoding);
         }
     }
 }

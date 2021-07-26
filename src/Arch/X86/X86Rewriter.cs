@@ -48,12 +48,12 @@ namespace Reko.Arch.X86
         private readonly X86State state;
         private readonly EndianImageReader rdr;
         private readonly LookaheadEnumerator<X86Instruction> dasm;
-        private RtlEmitter m;
+        private readonly RtlEmitter m;
+        private readonly List<RtlInstruction> rtlInstructions;
         private OperandRewriter orw;
         private X86Instruction instrCur;
         private InstrClass iclass;
         private int len;
-        private List<RtlInstruction> rtlInstructions;
 
 #nullable disable
         public X86Rewriter(
@@ -69,6 +69,8 @@ namespace Reko.Arch.X86
             this.rdr = rdr;
             this.binder = binder;
             this.dasm = new LookaheadEnumerator<X86Instruction>(arch.CreateDisassemblerImpl(rdr));
+            this.rtlInstructions = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtlInstructions);
         }
 #nullable enable
 
@@ -82,9 +84,7 @@ namespace Reko.Arch.X86
             {
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
-                this.rtlInstructions = new List<RtlInstruction>();
                 this.iclass = instrCur.InstructionClass;
-                m = new RtlEmitter(rtlInstructions);
                 orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, binder, host);
                 switch (instrCur.Mnemonic)
                 {
@@ -639,10 +639,9 @@ namespace Reko.Arch.X86
                 }
                 var len = (int)(dasm.Current.Address - addr) + dasm.Current.Length;
                 yield return m.MakeCluster(addr, len, iclass);
+                rtlInstructions.Clear();
             }
         }
-
-
 
         public Expression Intrinsic(IntrinsicProcedure intrinsic, DataType retType, params Expression[] args)
         {

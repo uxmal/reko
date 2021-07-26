@@ -21,6 +21,7 @@
 using Reko.Arch.Z80;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Environments.Trs80.Dmk;

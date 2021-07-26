@@ -41,13 +41,6 @@ namespace Reko.UnitTests.Arch.Microchip.Common
 
         public override IProcessorArchitecture Architecture => arch;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder frame, IRewriterHost host)
-        {
-            var disasm = picModel.CreateDisassembler(arch, arch.CreateImageReader(mem, 0));
-            var rwtr = picModel.CreateRewriter(arch, disasm, (PICProcessorState)arch.CreateProcessorState(), frame, host);
-            return rwtr;
-        }
-
         public override Address LoadAddress => baseAddr;
 
         protected void Given_UInt16s(uint[] words)

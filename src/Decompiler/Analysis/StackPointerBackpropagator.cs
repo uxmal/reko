@@ -121,7 +121,7 @@ namespace Reko.Analysis
             (Identifier?, int) noMatch = (null, 0);
             var sid = ssa.Identifiers[sp];
             var def = sid.DefStatement!;
-            if (!(def.Instruction is Assignment ass))
+            if (def is null || !(def.Instruction is Assignment ass))
                 return noMatch;
             if (!(ass.Src is BinaryExpression bin))
                 return noMatch;

@@ -234,16 +234,18 @@ namespace Reko.Arch.RiscV
 
         private ImmediateOperand GetImmediate(uint wInstr, int bitPos, char sign)
         {
+            Constant c;
             if (sign == 's')
             {
                 int s = ((int)wInstr) >> bitPos;
-                return ImmediateOperand.Int32(s);
+                c = Constant.Create(arch.NaturalSignedInteger, s);
             }
             else
             {
                 uint u = wInstr >> bitPos;
-                return ImmediateOperand.Word32(u);
+                c = Constant.Create(arch.WordWidth, u);
             }
+            return new ImmediateOperand(c);
         }
 
         private ImmediateOperand GetShiftAmount(uint wInstr, int length)

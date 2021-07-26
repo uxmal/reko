@@ -68,16 +68,19 @@ namespace Reko.ImageLoaders.Elf
                 .First();
         }
 
+        /// <summary>
+        /// Collects all unresolved symbols and add them as external procedures.
+        /// </summary>
+        /// <param name="interceptedCalls">List of intercepted calls, into which we add 
+        /// the external procedures.</param>
         public void LoadExternalProcedures(Dictionary<Address, ExternalProcedure> interceptedCalls)
         {
-            // Find all unresolved symbols and add them as external procedures.
             ElfImageLoader.trace.Verbose("== Adjusted unresolved procedures");
             foreach (var sym in unresolvedSymbols)
             {
                 var addr =
                     loader.Sections[(int) sym.SectionIndex].Address! +
                     sym.Value;
-                sym.Value = addr.ToLinear();
                 ElfImageLoader.trace.Verbose("  {0}", sym.Value);
 
                 //$TODO: try guessing the signature based on the symbol name.
@@ -101,6 +104,8 @@ namespace Reko.ImageLoaders.Elf
         public override Program LinkObject(IPlatform platform, Address? addrLoad, byte[] rawImage)
         {
             var addrBase = addrLoad ?? ComputeBaseAddressFromSections(loader.Sections)!;
+            CollectCommonSymbolsIntoSection();
+            CollectUndefinedSymbolsIntoSection();
             var segments = ComputeSegmentSizes();
             var imageMap = CreateSegments(addrBase, segments);
             var program = new Program(imageMap, platform.Architecture, platform);
@@ -115,7 +120,7 @@ namespace Reko.ImageLoaders.Elf
         /// synthesized section called ".reko.common", and which will
         /// be placed into its own segment later.
         /// </summary>
-        protected void CollectCommonSymbolsIntoSection()
+        public void CollectCommonSymbolsIntoSection()
         {
             var rekoCommon = new ElfSection
             {
@@ -145,7 +150,7 @@ namespace Reko.ImageLoaders.Elf
         /// Allocate an arbitrary 16 bytes for each unresolved
         /// external symbol.
         /// </summary>
-        protected void CollectUndefinedSymbolsIntoSection()
+        public void CollectUndefinedSymbolsIntoSection()
         {
             static bool IsUnresolved(ElfSymbol s)
             {
@@ -213,9 +218,6 @@ namespace Reko.ImageLoaders.Elf
         /// <returns></returns>
         public override Dictionary<ElfSection, Elf64_PHdr> ComputeSegmentSizes()
         {
-            CollectCommonSymbolsIntoSection();
-            CollectUndefinedSymbolsIntoSection();
-
             var mpToSegment = new Dictionary<ulong, Elf64_PHdr>();
             var mpSectionToSegment = new Dictionary<ElfSection, Elf64_PHdr>();
             foreach (var section in loader.Sections
@@ -308,9 +310,6 @@ namespace Reko.ImageLoaders.Elf
         /// <returns></returns>
         public override Dictionary<ElfSection, Elf32_PHdr> ComputeSegmentSizes()
         {
-            CollectCommonSymbolsIntoSection();
-            CollectUndefinedSymbolsIntoSection();
-
             var mpToSegment = new Dictionary<ulong, Elf32_PHdr>();
             var mpSectionToSegment = new Dictionary<ElfSection, Elf32_PHdr>();
             foreach (var section in loader.Sections

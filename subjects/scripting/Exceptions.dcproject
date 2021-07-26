@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>x86-real-16</arch>
+  <input>
+    <filename>segmented.bin</filename>
+    <asmDir>exceptions.reko</asmDir>
+    <srcDir>exceptions.reko</srcDir>
+    <includeDir>exceptions.reko</includeDir>
+    <resources>exceptions.reko\resources</resources>
+    <user>
+      <address>1000:0000</address>
+      <loader>raw</loader>
+      <processor name="x86-real-16">
+        <item key="ISA">80386</item>
+        <item key="FPUCoproc">false</item>
+      </processor>
+      <registerValues />
+      <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+  <script>
+    <filename>exceptions.py</filename>
+  </script>
+</project>

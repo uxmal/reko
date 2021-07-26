@@ -43,11 +43,6 @@ namespace Reko.UnitTests.Arch.Arm
 
         public override Address LoadAddress => baseAddress;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return arch.CreateRewriter(mem.CreateLeReader(0), new Arm64State(arch), binder, host);
-        }
-
         private void Given_Instruction(params string[] bitStrings)
         {
             var bytes = bitStrings.Select(bits => base.BitStringToUInt32(bits))

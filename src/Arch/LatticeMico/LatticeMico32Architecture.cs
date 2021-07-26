@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -46,11 +47,6 @@ namespace Reko.Arch.LatticeMico
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new LatticeMico32Disassembler(this,rdr);
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

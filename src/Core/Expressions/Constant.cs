@@ -107,7 +107,7 @@ namespace Reko.Core.Expressions
                 switch (p.Domain)
                 {
                 case Domain.SignedInt: return new ConstantInt32(p, (int) value);
-                case Domain.Real: return new ConstantReal32(p,  (uint) value);
+                case Domain.Real: return FloatFromBitpattern(value);
                 default: return new ConstantUInt32(p, (uint) value);
                 }
             case 36:        // PDP-10 <3
@@ -120,7 +120,7 @@ namespace Reko.Core.Expressions
                 switch (p.Domain)
                 {
                 case Domain.SignedInt: return new ConstantInt64(p, (long) value);
-                case Domain.Real: return new ConstantReal64(p, (ulong) value);
+                case Domain.Real: return DoubleFromBitpattern(value);
                 default: return new ConstantUInt64(p, (ulong) value);
                 }
             case 96:
@@ -179,17 +179,12 @@ namespace Reko.Core.Expressions
 
 		public static Constant FloatFromBitpattern(long bits)
 		{
-            return Constant.Real32(Int32BitsToFloat((int)bits));
+            return ConstantReal32.CreateFromBits(PrimitiveType.Real32, (int)bits);
 		}
 
         public static float Int32BitsToFloat(int bits)
         {
-            long mant = bits & 0x007FFFFF;
-            int exp = (int)(bits >> 23) & 0xFF;
-            float sign = (bits < 0) ? -1.0F : 1.0F;
-            if (mant == 0 && exp == 0)
-                return 0.0F;
-            return sign * (float)MakeReal(exp, 0x7F, mant, 23);
+            return ConstantReal32.FloatToInt.ConvertFromBits(bits);
         }
 
         public static Constant DoubleFromBitpattern(long bits)
@@ -315,10 +310,7 @@ namespace Reko.Core.Expressions
             }
 		}
 
-		public bool IsValid
-		{
-			get { return !Object.ReferenceEquals(this, Constant.Invalid); }
-		}
+        public virtual bool IsValid => true;
 
         /// <summary>
         /// Create a new Constant whose bits are the inverse of
@@ -540,8 +532,8 @@ namespace Reko.Core.Expressions
             return new StringConstant(strType, str);
         }
 
-		public static readonly Constant Invalid = new ConstantUInt32(VoidType.Instance, 0xBADDCAFE);
-        public static readonly Constant Unknown = new ConstantUInt32(VoidType.Instance, 0xDEADFACE);
+		//public static readonly Constant Invalid = new ConstantUInt32(VoidType.Instance, 0xBADDCAFE);
+        //public static readonly Constant Unknown = new ConstantUInt32(VoidType.Instance, 0xDEADFACE);
 
         //public abstract string ToString(string format, IFormatProvider formatProvider)
         //{
@@ -1536,7 +1528,7 @@ namespace Reko.Core.Expressions
             case 64: return new ConstantReal64(pt, value);
             }
             // Unsupported floating point constant sizes cannot be represented yet.
-            return Constant.Invalid;
+            return InvalidConstant.Create(dt);
         }
     }
 
@@ -1582,6 +1574,9 @@ namespace Reko.Core.Expressions
         }
 
         public override bool IsMaxUnsigned => false;
+
+        public override bool IsValid => !Float16.IsNaN(value);
+
 
         public override Constant Negate()
         {
@@ -1641,22 +1636,36 @@ namespace Reko.Core.Expressions
         // .NET doesn't seem to have a way of doing this for 32-bit floats.
         // Code from one of the answers to https://stackoverflow.com/questions/27237776/convert-int-bits-to-float-bits
         [StructLayout(LayoutKind.Explicit)]
-        struct FloatToInt
+        internal struct FloatToInt
         {
             [FieldOffset(0)] private float f;
             [FieldOffset(0)] private int i;
-            private static FloatToInt inst = new FloatToInt();
             public static int ConvertToBits(float value)
             {
+                var inst = new FloatToInt();
                 inst.f = value;
                 return inst.i;
             }
+
+            public static float ConvertFromBits(int bits)
+            {
+                var inst = new FloatToInt();
+                inst.i = bits;
+                return inst.f;
+            }
+
         }
 
         public ConstantReal32(DataType dt, float value)
             : base(dt)
         {
             this.value = value;
+        }
+
+        public static ConstantReal32 CreateFromBits(DataType dt, int bits)
+        {
+            var value = FloatToInt.ConvertFromBits(bits);
+            return new ConstantReal32(dt, value);
         }
 
         public override Expression CloneExpression()
@@ -1687,6 +1696,8 @@ namespace Reko.Core.Expressions
         }
 
         public override bool IsMaxUnsigned => false;
+
+        public override bool IsValid => !float.IsNaN(value);
 
         public override Constant Negate()
         {
@@ -1851,6 +1862,9 @@ namespace Reko.Core.Expressions
         }
 
         public override bool IsMaxUnsigned => false;
+
+        public override bool IsValid => !double.IsNaN(value);
+
 
         public override Constant Negate()
         {

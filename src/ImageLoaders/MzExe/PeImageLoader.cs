@@ -33,6 +33,7 @@ using Reko.Core.Types;
 using Reko.Core.Serialization;
 using Reko.ImageLoaders.MzExe.Pe;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -306,8 +307,10 @@ namespace Reko.ImageLoaders.MzExe
 
             var rsrcLoader = new ResourceLoader(this.imgLoaded, rvaResources);
             List<ProgramResource> items = rsrcLoader.Load();
-            program.Resources.Resources.AddRange(items);
-            program.Resources.Name = "PE resources";
+            if (items.Count > 0)
+            {
+                program.Resources.AddRange(items);
+            }
             return program;
         }
 

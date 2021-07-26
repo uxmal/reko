@@ -25,13 +25,11 @@ using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Environments.C64
 {
@@ -79,11 +77,6 @@ namespace Reko.Environments.C64
             {
                 yield return program.Values[i];
             }
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -205,7 +198,7 @@ namespace Reko.Environments.C64
 
             public override Core.Expressions.Constant GetRegister(RegisterStorage r)
             {
-                return Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
             }
 
             public override void SetRegister(RegisterStorage r, Core.Expressions.Constant v)

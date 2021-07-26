@@ -23,6 +23,7 @@ using Reko.Core.Pascal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -232,9 +233,18 @@ end.
 @"myunit; interface 
 CONST pi : double_t = 3.1415926535;
 end.";
-            Given_Parser(src);
-            var decls = parser.ParseUnit();
-            Assert.AreEqual("const pi : double_t = 3.1415926535", decls[0].ToString());
+            var culture = CultureInfo.CurrentCulture;
+            try
+            {
+                CultureInfo.CurrentCulture = CultureInfo.CreateSpecificCulture("ru");
+                Given_Parser(src);
+                var decls = parser.ParseUnit();
+                Assert.AreEqual("const pi : double_t = 3.1415926535", decls[0].ToString());
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = culture;
+            }
         }
 
         [Test]

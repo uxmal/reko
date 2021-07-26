@@ -160,7 +160,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             m.Assign(dst, m.IAddS(dst, dt.Size));
             m.Assign(cnt, m.ISub(cnt, 1));
             m.Branch(m.Ne0(cnt), instr.Address, InstrClass.ConditionalTransfer);
-            EmitCc(Constant.Invalid, flags);
+            EmitCc(InvalidConstant.Create(PrimitiveType.Word16), flags);
         }
 
         private void RewriteMul(Func<Expression,Expression,Expression> fn)

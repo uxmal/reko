@@ -775,7 +775,7 @@ namespace Reko.Arch.X86
         {
             var reg = (RegisterOperand)instrCur.Operands[0];
             MemoryOperand mem = (MemoryOperand)instrCur.Operands[1];
-            if (!mem.Offset!.IsValid)
+            if (mem.Offset is null)
             {
                 mem = new MemoryOperand(mem.Width, mem.Base, mem.Index, mem.Scale, Constant.Create(instrCur.addrWidth, 0));
             }

@@ -83,8 +83,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// <summary>
         /// Returns the current position as a fraction.
         /// </summary>
-        /// <returns></returns>
-        Tuple<int, int> GetPositionAsFraction();
+        /// <returns>A (numerator,denominator) tuple describing the current
+        /// position.
+        /// </returns>
+        (int, int) GetPositionAsFraction();
 
         /// <summary>
         /// Sets the current position to approximately numer / denom.
@@ -99,10 +101,10 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
     /// </summary>
     public class EmptyEditorModel : TextViewModel
     {
-        public object CurrentPosition { get { return this; } }
-        public object StartPosition { get { return this; } }
-        public object EndPosition{ get { return this; } }
-        public int LineCount { get { return 0; } }
+        public object CurrentPosition => this;
+        public object StartPosition => this;
+        public object EndPosition => this;
+        public int LineCount => 0;
 
         public EmptyEditorModel()
         {
@@ -123,9 +125,9 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
             return new LineSpan[0];
         }
 
-        public Tuple<int, int> GetPositionAsFraction()
+        public (int, int) GetPositionAsFraction()
         {
-            return Tuple.Create(0, 1);
+            return (0, 1);
         }
 
         public void SetPositionAsFraction(int numer, int denom)

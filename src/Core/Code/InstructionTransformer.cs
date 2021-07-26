@@ -214,9 +214,9 @@ namespace Reko.Core.Code
 
 		public virtual Expression VisitMemberPointerSelector(MemberPointerSelector mps)
 		{
-			mps.BasePointer = mps.BasePointer.Accept(this);
-			mps.MemberPointer = mps.MemberPointer.Accept(this);
-			return mps;
+            var b = mps.BasePointer.Accept(this);
+            var m = mps.MemberPointer.Accept(this);
+			return new MemberPointerSelector(mps.DataType, b, m);
 		}
 		
 		public virtual Expression VisitMemoryAccess(MemoryAccess access)
@@ -281,11 +281,11 @@ namespace Reko.Core.Code
 			return new Slice(slice.DataType, e, slice.Offset);
 		}
 
-		public virtual Expression VisitTestCondition(TestCondition tc)
-		{
-			tc.Expression = tc.Expression.Accept(this);
-			return tc;
-		}
+        public virtual Expression VisitTestCondition(TestCondition tc)
+        {
+            var e = tc.Expression.Accept(this);
+            return new TestCondition(tc.ConditionCode, e);
+        }
 
 		public virtual Expression VisitUnaryExpression(UnaryExpression unary)
 		{

@@ -121,6 +121,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
             Given_Linker(false);
 
+            linker.CollectCommonSymbolsIntoSection();
+            linker.CollectUndefinedSymbolsIntoSection();
+
             linker.ComputeSegmentSizes();
             Assert.AreEqual(0x4000, linker.Segments[3].p_pmemsz);
         }
@@ -142,6 +145,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
                 0);
 
             Given_Linker(false);
+            linker.CollectCommonSymbolsIntoSection();
+            linker.CollectUndefinedSymbolsIntoSection();
 
             linker.ComputeSegmentSizes();
             Assert.AreEqual(0x0030, linker.Segments[0].p_pmemsz, "Each external symbol is simulated with 16 bytes and added to executable section");

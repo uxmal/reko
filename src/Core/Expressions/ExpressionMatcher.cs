@@ -441,7 +441,6 @@ namespace Reko.Core.Expressions
 
             public override void Accept(IExpressionVisitor visit)
             {
-                throw new NotImplementedException();
             }
 
             public override Expression CloneExpression()

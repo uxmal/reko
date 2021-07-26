@@ -27,11 +27,9 @@ using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Reko.UnitTests.Mocks
@@ -118,11 +116,6 @@ namespace Reko.UnitTests.Mocks
 		}
 
         #region IProcessorArchitecture Members
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
-        }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -398,11 +391,6 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
@@ -521,7 +509,7 @@ namespace Reko.UnitTests.Mocks
 		{
             if (!regValues.TryGetValue(r, out Constant c))
             {
-                c = Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
             }
             return c;
 		}

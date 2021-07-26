@@ -177,6 +177,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_VAX: return new VaxRelocator(this, imageSymbols);
             // Support for 32-bit pointers.
             case ElfMachine.EM_X86_64: return new x86Relocator(this, imageSymbols);
+            case ElfMachine.EM_ALTERA_NIOS2: return new Nios2Relocator(this, imageSymbols);
             }
             return base.CreateRelocator(machine, imageSymbols);
         }
@@ -337,7 +338,7 @@ namespace Reko.ImageLoaders.Elf
                 Segments
                     .Where(p => IsLoadable(p.p_pmemsz, p.p_type))
                     .OrderBy(p => p.p_vaddr)
-                    .Select(p => Tuple.Create(
+                    .Select(p => (
                         Address.Ptr32((uint) p.p_vaddr),
                         (uint) p.p_pmemsz)));
 

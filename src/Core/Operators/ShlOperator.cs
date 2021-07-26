@@ -29,10 +29,9 @@ namespace Reko.Core.Operators
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
-                return Constant.Invalid;
-            var pt = c1.DataType as PrimitiveType;
+                return InvalidConstant.Create(c1.DataType);
             var dom = Domain.Integer;
-            if (pt != null)
+            if (c1.DataType is PrimitiveType pt)
                 dom = pt.Domain & Domain.Integer;
             if (dom == 0)
                 dom = Domain.Integer;

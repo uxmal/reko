@@ -26,6 +26,7 @@ using System.Diagnostics;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Services;
+using Reko.Core.Loading;
 
 namespace Reko.ImageLoaders.TekHex
 {

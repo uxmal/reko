@@ -24,6 +24,7 @@ using Reko.Arch.Pdp11;
 using System.Collections.Generic;
 using Reko.Core.Types;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.Environments.RT11
 {

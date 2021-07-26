@@ -21,8 +21,6 @@
 using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.CLanguage;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
@@ -36,11 +34,6 @@ namespace Reko.Environments.SegaGenesis
         }
 
         public override string DefaultCallingConvention { get { return ""; } }
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

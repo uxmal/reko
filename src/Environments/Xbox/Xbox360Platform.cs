@@ -26,9 +26,6 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Environments.Xbox
 {
@@ -49,11 +46,6 @@ namespace Reko.Environments.Xbox
         public override string DefaultCallingConvention { get { return ""; } }
 
         public override PrimitiveType PointerType { get { return PrimitiveType.Ptr32; } }
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

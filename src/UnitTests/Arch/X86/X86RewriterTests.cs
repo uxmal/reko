@@ -61,15 +61,6 @@ namespace Reko.UnitTests.Arch.X86
 
         public override Address LoadAddress => baseAddr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return arch.CreateRewriter(
-                mem.CreateLeReader(0),
-                arch.CreateProcessorState(),
-                binder,
-                this.host);
-        }
-
         [SetUp]
         public void Setup()
         {
@@ -4172,6 +4163,25 @@ namespace Reko.UnitTests.Arch.X86
                 "0|T--|10000000(7): 2 instructions",
                 "1|L--|SCZO = FPUF",
                 "2|T--|if (Test(GT,FPUF)) branch 10000009");
+        }
+
+        [Test]
+        public void X86Rw_fstsw_ah_44_pe()
+        {
+            Run32bitTest(
+                "D8 5C 24 24" + // fcomp dword ptr [esp+24h]
+                "DF E0" +       // fstsw ax
+                "89 54 24 2C" + // mov [esp+2Ch],edx
+                "F6 C4 44" +    // test ah,44h
+                "7A 26");       // jpe 0D2316h
+            AssertCode(
+                "0|L--|10000000(4): 2 instructions",
+                "1|L--|FPUF = cond(ST[Top:real64] - Mem0[esp + 0x24<32>:real32])",
+                "2|L--|Top = Top + 1<i8>",
+                "3|T--|10000004(11): 3 instructions",
+                "4|L--|Mem0[esp + 0x2C<32>:word32] = edx",
+                "5|L--|SCZO = FPUF",
+                "6|T--|if (Test(NE,FPUF)) branch 10000035");
         }
 
         [Test]

@@ -44,7 +44,7 @@ namespace Reko.Arch.X86
 			Scale = 1;
 		}
 
-		public MemoryOperand(PrimitiveType width, Constant off) : base(width)
+		public MemoryOperand(PrimitiveType width, Constant? off) : base(width)
 		{
             SegOverride = RegisterStorage.None;
             Base = RegisterStorage.None;
@@ -53,7 +53,7 @@ namespace Reko.Arch.X86
 			Scale = 1;
 		}
 
-		public MemoryOperand(PrimitiveType width, RegisterStorage @base, Constant off) : base(width)
+		public MemoryOperand(PrimitiveType width, RegisterStorage @base, Constant? off) : base(width)
 		{
             SegOverride = RegisterStorage.None;
 			Base = @base;
@@ -62,7 +62,7 @@ namespace Reko.Arch.X86
 			Scale = 1;
 		}
 
-		public MemoryOperand(PrimitiveType width, RegisterStorage @base, RegisterStorage index, byte scale,  Constant off) : base(width)
+		public MemoryOperand(PrimitiveType width, RegisterStorage @base, RegisterStorage index, byte scale, Constant? off) : base(width)
 		{
             SegOverride = RegisterStorage.None;
 			Base = @base;

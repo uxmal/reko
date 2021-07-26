@@ -272,7 +272,12 @@ namespace Reko.Core
                     dt = new UnknownType(platform.PointerType.Size);
                 }
             }
-            return new Pointer(dt, platform.PointerType.BitSize) { Qualifier = pointer.Qualifier };
+            int bitSize = platform.PointerType.BitSize;
+            if (pointer.PointerSize != 0)
+            {
+                bitSize = pointer.PointerSize * platform.Architecture.MemoryGranularity;
+            }
+            return new Pointer(dt, bitSize) { Qualifier = pointer.Qualifier };
         }
 
         public DataType VisitMemberPointer(MemberPointer_v1 memptr)

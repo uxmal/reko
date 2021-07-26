@@ -69,7 +69,7 @@ namespace Reko.Arch.Arm.AArch32
             if (regData.TryGetValue(r.Number, out ulong uVal))
                 return Constant.Create(r.DataType, uVal);
             else
-                return Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)

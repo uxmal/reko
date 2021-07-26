@@ -39,7 +39,7 @@ namespace Reko.Arch.M68k
     /// http://www.easy68k.com/paulrsm/doc/trick68k.htm
     public partial class Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private static Dictionary<int, double> fpuRomConstants;
+        private static readonly Dictionary<int, double> fpuRomConstants;
 
         // These fields are internal so that the OperandRewriter can use them.
         private readonly M68kArchitecture arch;

@@ -11,7 +11,7 @@ Eq_48: (fn word32 ())
 	T_49 (in signature of deregister_tm_clones @ 80000080 : void)
 Eq_51: (struct "Eq_51" (FFFFFFFC ptr32 ptrFFFFFFFC))
 	T_51 (in a7_53 @ 8000012C : (ptr32 Eq_51))
-	T_52 (in <invalid> @ 8000012C : void)
+	T_52 (in <invalid> @ 8000012C : word32)
 Eq_86: (struct "Eq_86" (FFFFFFFC ptr32 ptrFFFFFFFC))
 	T_86 (in a7_23 @ 80000160 : (ptr32 Eq_86))
 	T_87 (in fp - 4<32> @ 00000000 : word32)
@@ -248,10 +248,10 @@ T_51: (in a7_53 @ 8000012C : (ptr32 Eq_51))
   Class: Eq_51
   DataType: (ptr32 Eq_51)
   OrigDataType: (ptr32 (struct (FFFFFFFC T_77 tFFFFFFFC)))
-T_52: (in <invalid> @ 8000012C : void)
+T_52: (in <invalid> @ 8000012C : word32)
   Class: Eq_51
   DataType: (ptr32 Eq_51)
-  OrigDataType: void
+  OrigDataType: word32
 T_53: (in 00000000 @ 80000138 : ptr32)
   Class: Eq_53
   DataType: ptr32

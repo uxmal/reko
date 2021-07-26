@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 
 namespace Reko.Core.Operators
@@ -31,7 +32,7 @@ namespace Reko.Core.Operators
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
             if (!ValidArgs(c1, c2))
-                return Constant.Invalid;
+                return InvalidConstant.Create(PrimitiveType.Bool);
 			try
 			{
                 //$BUG: we're truncating here. We need a way to pass in the expected result as a first parameter

@@ -150,6 +150,8 @@ namespace Reko.Core.Expressions
                 (ea, eb) =>
                 {
                     Constant a = (Constant) ea, b = (Constant) eb;
+                    if (!a.IsValid || !b.IsValid)
+                        return false;
                     if (a.IsReal)
                     {
                         if (b.IsReal)

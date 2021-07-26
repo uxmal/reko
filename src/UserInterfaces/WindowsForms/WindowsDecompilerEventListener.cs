@@ -156,6 +156,7 @@ namespace Reko.UserInterfaces.WindowsForms
             catch (Exception ex)
             {
                 Error(new NullCodeLocation(""), ex, "An internal error occurred.");
+                throw;
             }
         }
 

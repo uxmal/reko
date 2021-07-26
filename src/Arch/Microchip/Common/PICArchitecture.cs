@@ -294,9 +294,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
             => CreateDisassemblerImpl(imageReader);
 
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-            => ProcessorModel.CreateEmulator(this, segmentMap, envEmulator);
-
         public override ProcessorState CreateProcessorState()
             => ProcessorModel.CreateProcessorState(this);
 

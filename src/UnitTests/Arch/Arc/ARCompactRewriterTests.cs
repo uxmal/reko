@@ -53,13 +53,6 @@ namespace Reko.UnitTests.Arch.Arc
 
         public override Address LoadAddress => addr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var state = new ARCompactState(arch);
-            var rdr = arch.CreateImageReader(mem, 0);
-            return new ARCompactRewriter(arch, rdr, state, binder, host);
-        }
-
         [Test]
         public void ARCompactRw_adc()
         {

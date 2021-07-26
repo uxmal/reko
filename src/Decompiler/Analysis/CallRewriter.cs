@@ -461,7 +461,7 @@ namespace Reko.Analysis
                     InsertOutArgumentAssignment(
                         ssa,
                         p,
-                        idStg?.Expression ?? Constant.Invalid,
+                        idStg?.Expression ?? InvalidConstant.Create(p.DataType),
                         block,
                         insertPos);
                     ++insertPos;
@@ -475,7 +475,7 @@ namespace Reko.Analysis
             Identifier idRet,
             CallBinding idStg)
         {
-            var e = idStg?.Expression ?? Constant.Invalid;
+            var e = idStg?.Expression ?? InvalidConstant.Create(idRet.DataType);
             for (int i = block.Statements.Count-1; i >=0; --i)
             {
                 var stm = block.Statements[i];

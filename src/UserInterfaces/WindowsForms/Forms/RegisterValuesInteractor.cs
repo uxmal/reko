@@ -65,7 +65,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 {
                     var value = sValue != "*"
                         ? Constant.Create(stg.DataType, Convert.ToUInt64(sValue, 16))
-                        : Constant.Invalid;
+                        : InvalidConstant.Create(stg.DataType);
                     items[stg] = value;
                 }
             }

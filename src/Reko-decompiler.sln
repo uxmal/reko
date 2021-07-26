@@ -156,7 +156,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installers", "Installers", "{2426E4D6-D2C7-4F06-B54C-5CFEA0804F02}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "WixInstaller", "WixInstaller\WixInstaller.wixproj", "{B1916638-EF20-4692-8C95-1C5AD6C67D30}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "WixInstaller", "Installers\WixInstaller\WixInstaller.wixproj", "{B1916638-EF20-4692-8C95-1C5AD6C67D30}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9292F9E7-2CE7-470D-B5F0-72D775720BC0} = {9292F9E7-2CE7-470D-B5F0-72D775720BC0}
 	EndProjectSection
@@ -437,7 +437,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nro", "ImageLoaders\Nro\Nro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRISC", "Arch\OpenRISC\OpenRISC.csproj", "{A2D0EB22-6807-4C6F-9974-3B9721980F06}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Runtime", "Drivers\Runtime\Runtime.csproj", "{E88BC325-A10E-4FDA-9F84-7DB2C5E3B054}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Runtime", "Installers\Runtime\Runtime.csproj", "{E88BC325-A10E-4FDA-9F84-7DB2C5E3B054}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MorphOS", "Environments\MorphOS\MorphOS.csproj", "{22B34DDF-36CF-48F1-8E62-DC7F18E42594}"
 EndProject
@@ -469,12 +469,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pef", "ImageLoaders\Pef\Pef
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{9626EFDC-FB54-4DF3-A2C3-6A54A840406E}"
 	ProjectSection(SolutionItems) = preProject
-		NuGetPackage\NuGetPackage.template = NuGetPackage\NuGetPackage.template
-		NuGetPackage\README.md = NuGetPackage\README.md
-		NuGetPackage\reko-64x64.png = NuGetPackage\reko-64x64.png
-		NuGetPackage\reko-files.xml = NuGetPackage\reko-files.xml
-		NuGetPackage\update_packagers.py = NuGetPackage\update_packagers.py
-		NuGetPackage\WixInstallerProduct.template = NuGetPackage\WixInstallerProduct.template
+		Installers\NuGetPackage\.gitignore = Installers\NuGetPackage\.gitignore
+		Installers\NuGetPackage\NuGetPackage.nuspec = Installers\NuGetPackage\NuGetPackage.nuspec
+		Installers\NuGetPackage\NuGetPackage.template = Installers\NuGetPackage\NuGetPackage.template
+		Installers\NuGetPackage\pack_nuget.bat = Installers\NuGetPackage\pack_nuget.bat
+		Installers\NuGetPackage\README.md = Installers\NuGetPackage\README.md
+		Installers\NuGetPackage\reko-64x64.png = Installers\NuGetPackage\reko-64x64.png
+		Installers\NuGetPackage\reko-files.xml = Installers\NuGetPackage\reko-files.xml
+		Installers\NuGetPackage\update_packagers.py = Installers\NuGetPackage\update_packagers.py
+		Installers\NuGetPackage\WixInstallerProduct.template = Installers\NuGetPackage\WixInstallerProduct.template
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "regressionTests", "tools\regressionTests\regressionTests.csproj", "{E5A881F7-C1F4-4DA0-B0B1-EE790BB0A77D}"
@@ -490,6 +493,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Etrax", "Arch\Etrax\Etrax.csproj", "{A40B086E-365F-4557-A02A-DE5BA94C8C48}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WixRuntime", "Drivers\WixRuntime\WixRuntime.csproj", "{FF564BC3-7299-462D-B6C9-1C9D768E9256}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altera", "Arch\Altera\Altera.csproj", "{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gameboy", "Environments\Gameboy\Gameboy.csproj", "{6392A487-B691-4D21-A289-72C448E6B816}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -3351,6 +3358,54 @@ Global
 		{FF564BC3-7299-462D-B6C9-1C9D768E9256}.UnixRelease|Any CPU.Build.0 = Debug|x86
 		{FF564BC3-7299-462D-B6C9-1C9D768E9256}.UnixRelease|x64.ActiveCfg = Release|x64
 		{FF564BC3-7299-462D-B6C9-1C9D768E9256}.UnixRelease|x86.ActiveCfg = Release|x86
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.Debug|x64.Build.0 = Debug|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.Debug|x86.Build.0 = Debug|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.Release|x64.ActiveCfg = Release|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.Release|x64.Build.0 = Release|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.Release|x86.ActiveCfg = Release|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.Release|x86.Build.0 = Release|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.UnixDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.UnixDebug|Any CPU.Build.0 = Debug|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.UnixDebug|x64.ActiveCfg = Debug|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.UnixDebug|x64.Build.0 = Debug|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.UnixDebug|x86.ActiveCfg = Debug|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.UnixDebug|x86.Build.0 = Debug|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.UnixRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.UnixRelease|Any CPU.Build.0 = Release|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.UnixRelease|x64.ActiveCfg = Release|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.UnixRelease|x64.Build.0 = Release|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.UnixRelease|x86.ActiveCfg = Release|Any CPU
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8}.UnixRelease|x86.Build.0 = Release|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.Debug|x64.Build.0 = Debug|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.Debug|x86.Build.0 = Debug|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.Release|x64.ActiveCfg = Release|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.Release|x64.Build.0 = Release|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.Release|x86.ActiveCfg = Release|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.Release|x86.Build.0 = Release|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.UnixDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.UnixDebug|Any CPU.Build.0 = Debug|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.UnixDebug|x64.ActiveCfg = Debug|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.UnixDebug|x64.Build.0 = Debug|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.UnixDebug|x86.ActiveCfg = Debug|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.UnixDebug|x86.Build.0 = Debug|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.UnixRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.UnixRelease|Any CPU.Build.0 = Release|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.UnixRelease|x64.ActiveCfg = Release|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.UnixRelease|x64.Build.0 = Release|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.UnixRelease|x86.ActiveCfg = Release|Any CPU
+		{6392A487-B691-4D21-A289-72C448E6B816}.UnixRelease|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -3452,7 +3507,7 @@ Global
 		{A518EC80-144C-4761-9508-4C2140518CCB} = {18994109-C4D5-49F9-86E0-3B5B1046C08E}
 		{0AB0AAB7-292E-4827-A480-A32561B07FD7} = {E34BB92E-9C1E-41E8-8333-8BB69831BB63}
 		{A2D0EB22-6807-4C6F-9974-3B9721980F06} = {18994109-C4D5-49F9-86E0-3B5B1046C08E}
-		{E88BC325-A10E-4FDA-9F84-7DB2C5E3B054} = {583D1273-7630-480B-9020-D16B3A15D15D}
+		{E88BC325-A10E-4FDA-9F84-7DB2C5E3B054} = {2426E4D6-D2C7-4F06-B54C-5CFEA0804F02}
 		{22B34DDF-36CF-48F1-8E62-DC7F18E42594} = {E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}
 		{6369AAEC-5946-412B-929B-024C4FB1CFD6} = {E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}
 		{4F48595F-967A-438E-9B62-00DE972E2719} = {18994109-C4D5-49F9-86E0-3B5B1046C08E}
@@ -3474,6 +3529,8 @@ Global
 		{383C909A-9214-4769-AD9A-12489D51E2EC} = {6E165FA2-DCAC-4D15-9D8D-04F6939383D4}
 		{A40B086E-365F-4557-A02A-DE5BA94C8C48} = {18994109-C4D5-49F9-86E0-3B5B1046C08E}
 		{FF564BC3-7299-462D-B6C9-1C9D768E9256} = {583D1273-7630-480B-9020-D16B3A15D15D}
+		{02CA5C70-1AA3-4F10-81F8-47B9BB122EE8} = {18994109-C4D5-49F9-86E0-3B5B1046C08E}
+		{6392A487-B691-4D21-A289-72C448E6B816} = {E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8B012B36-B0A2-4412-A22A-023C9B7C2EDD}

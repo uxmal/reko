@@ -98,7 +98,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                     foreach (var sreg in preg.AttachedRegs!)
                     {
                         if (!IsValid(sreg))
-                            return Constant.Invalid;
+                            return InvalidConstant.Create(reg.DataType);
                         ival |= ValidRegsValues[sreg].ActualValue << (int)sreg.BitAddress;
                     }
                 }
@@ -108,7 +108,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 }
                 return Constant.Create(reg.DataType, ival);
             }
-            return Constant.Invalid;
+            return InvalidConstant.Create(reg.DataType);
         }
 
         /// <summary>

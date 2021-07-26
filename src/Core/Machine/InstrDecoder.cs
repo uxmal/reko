@@ -26,7 +26,13 @@ using System.Threading.Tasks;
 
 namespace Reko.Core.Machine
 {
-
+    /// <summary>
+    /// This class uses 0 or more <see cref="Mutator{TDasm}"/>s to mutate the disassembler
+    /// state, finaly producing a <see cref="MachineInstruction"/>.
+    /// </summary>
+    /// <typeparam name="TDasm"></typeparam>
+    /// <typeparam name="TMnemonic"></typeparam>
+    /// <typeparam name="TInstr"></typeparam>
     public class InstrDecoder<TDasm, TMnemonic, TInstr> : Decoder<TDasm, TMnemonic, TInstr>
         where TDasm : DisassemblerBase<TInstr, TMnemonic>
         where TMnemonic : struct
@@ -52,6 +58,11 @@ namespace Reko.Core.Machine
                     return dasm.CreateInvalidInstruction();
             }
             return dasm.MakeInstruction(this.iclass, this.mnemonic);
+        }
+
+        public override string ToString()
+        {
+            return $"{iclass}:{mnemonic}";
         }
     }
 

@@ -110,10 +110,10 @@ namespace Reko.Core.Serialization
             return LoadProject(filename, stm);
         }
 
-        private static readonly Tuple<Type, string>[] supportedProjectFileFormats =
+        private static readonly (Type, string)[] supportedProjectFileFormats =
         {
-            Tuple.Create(typeof(Project_v5), SerializedLibrary.Namespace_v5),
-            Tuple.Create(typeof(Project_v4), SerializedLibrary.Namespace_v4),
+            (typeof(Project_v5), SerializedLibrary.Namespace_v5),
+            (typeof(Project_v4), SerializedLibrary.Namespace_v4),
         };
 
         /// <summary>
@@ -457,7 +457,7 @@ namespace Reko.Core.Serialization
                     {
                         var c = sRegValue.Value != "*"
                             ? Constant.Create(stg.DataType, Convert.ToUInt64(sRegValue.Value, 16))
-                            : Constant.Invalid;
+                            : InvalidConstant.Create(stg.DataType);
                         list.Add(new UserRegisterValue
                         {
                             Register = stg,

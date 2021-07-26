@@ -76,7 +76,7 @@ namespace Reko.Analysis
         {
             if (!(stm.Instruction is Assignment ass))
                 return false;
-            return ass.Src == Constant.Invalid;
+            return ass.Src is InvalidConstant;
         }
 
         /// <summary>

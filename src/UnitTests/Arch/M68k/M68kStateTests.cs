@@ -46,8 +46,9 @@ namespace Reko.UnitTests.Arch.M68k
         [Test]
         public void M68ks_SetIllegalValue()
         {
-            state.SetValue(Registers.a7, Constant.Invalid);
-            Assert.AreSame(Constant.Invalid, state.GetValue(Registers.a7));
+            var invalid = InvalidConstant.Create(Registers.a7.DataType);
+            state.SetValue(Registers.a7, invalid);
+            Assert.AreSame(invalid, state.GetValue(Registers.a7));
         }
     }
 }

@@ -36,6 +36,7 @@ using System.Collections;
 using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Arch.Arm.AArch32;
+using Reko.Core.Emulation;
 
 namespace Reko.Arch.Arm
 {
@@ -137,11 +138,6 @@ namespace Reko.Arch.Arm
                 }
             }
 #endif
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)

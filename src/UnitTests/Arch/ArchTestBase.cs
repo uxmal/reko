@@ -41,9 +41,18 @@ namespace Reko.UnitTests.Arch
 
         public abstract Address LoadAddress { get; }
 
+        /// <summary>
+        /// Generates a stream of <see cref="RtlInstructionCluster"/>s. 
+        /// </summary>
+        /// <remarks>
+        /// The default implementation should work for most architectures, but you have the option
+        /// of overriding for specialized testing.
+        /// </remarks>
         protected virtual IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
         {
-            yield break;
+            var state = Architecture.CreateProcessorState();
+            var rdr = Architecture.Endianness.CreateImageReader(mem, 0);
+            return Architecture.CreateRewriter(rdr, state, binder, host);
         }
 
         public class RewriterHost : IRewriterHost

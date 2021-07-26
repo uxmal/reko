@@ -150,7 +150,7 @@ namespace Reko.Scanning
             var vse = new ValueSetEvaluator(host.Architecture, host.SegmentMap, ctx, this.processorState);
             var (values, accesses) = vse.Evaluate(jumpExpr!);
             var vector = values.Values
-                .TakeWhile(c => c != Constant.Invalid)
+                .TakeWhile(c => !(c is InvalidConstant))
                 .Take(2000)             // Arbitrary limit
                 .Select(ForceToAddress)
                 .TakeWhile(a => !(a is null))
@@ -386,7 +386,7 @@ namespace Reko.Scanning
 
             public Constant ReinterpretAsFloat(Constant rawBits)
             {
-                return Constant.Invalid;
+                return InvalidConstant.Create(rawBits.DataType);
             }
 
             public void RemoveExpressionUse(Expression expr)

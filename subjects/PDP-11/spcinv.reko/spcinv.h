@@ -386,7 +386,7 @@ Eq_273: (fn (ptr16 byte) ((ptr16 byte), Eq_2, ptr16))
 	T_274 (in signature of fn0AF6 @ 00000AF6 : void)
 Eq_287: (struct "Eq_287" (FFFFFFFD Eq_2 tFFFFFFFD) (FFFFFFFF byte bFFFFFFFF) (0 byte b0000))
 	T_287 (in sp_300 @ 0000040A : (ptr16 Eq_287))
-	T_288 (in <invalid> @ 0000040A : void)
+	T_288 (in <invalid> @ 0000040A : word16)
 	T_496 (in sp_107 @ 000004BC : (ptr16 Eq_287))
 	T_499 (in fp - 2<16> @ 00000000 : word16)
 	T_1111 (in sp_103 @ 00000724 : (ptr16 Eq_287))
@@ -1884,10 +1884,10 @@ T_287: (in sp_300 @ 0000040A : (ptr16 Eq_287))
   Class: Eq_287
   DataType: (ptr16 Eq_287)
   OrigDataType: (ptr16 (struct (FFFFFFFD T_2 tFFFFFFFD) (FFFFFFFF T_292 tFFFFFFFF) (0 T_296 t0000)))
-T_288: (in <invalid> @ 0000040A : void)
+T_288: (in <invalid> @ 0000040A : word16)
   Class: Eq_287
   DataType: (ptr16 Eq_287)
-  OrigDataType: void
+  OrigDataType: word16
 T_289: (in 1<8> @ 0000040E : byte)
   Class: Eq_289
   DataType: byte

@@ -119,7 +119,8 @@ namespace Reko.UnitTests.Mocks
 
         public CallInstruction Call(string procedureName, int retSizeOnStack)
         {
-            var ci = new CallInstruction(Constant.Invalid, new CallSite(retSizeOnStack, 0)); 
+            var tmp = InvalidConstant.Create(PrimitiveType.Word32);
+            var ci = new CallInstruction(tmp, new CallSite(retSizeOnStack, 0)); 
             unresolvedProcedures.Add(new ProcedureConstantUpdater(procedureName, ci));
             Emit(ci);
             return ci;
@@ -158,7 +159,8 @@ namespace Reko.UnitTests.Mocks
                IEnumerable<Identifier> uses,
                IEnumerable<Identifier> definitions)
         {
-            var ci = new CallInstruction(Constant.Invalid, new CallSite(retSizeOnStack, 0));
+            var tmp = InvalidConstant.Create(PrimitiveType.Word32);
+            var ci = new CallInstruction(tmp, new CallSite(retSizeOnStack, 0));
             ci.Uses.UnionWith(uses.Select(u => new CallBinding(u.Storage, u)));
             ci.Definitions.UnionWith(definitions.Select(d => new CallBinding(d.Storage, d)));
             unresolvedProcedures.Add(new ProcedureConstantUpdater(procedureName, ci));
@@ -171,7 +173,8 @@ namespace Reko.UnitTests.Mocks
             IEnumerable<(Storage stg, Expression e)> uses,
             IEnumerable<(Storage stg, Identifier e)> definitions)
         {
-            var ci = new CallInstruction(Constant.Invalid, new CallSite(retSizeOnStack, 0));
+            var tmp = InvalidConstant.Create(PrimitiveType.Word32);
+            var ci = new CallInstruction(tmp, new CallSite(retSizeOnStack, 0));
             ci.Uses.UnionWith(uses.Select(u => new CallBinding(u.stg, u.e)));
             ci.Definitions.UnionWith(definitions.Select(d => new CallBinding(d.stg, d.e)));
             unresolvedProcedures.Add(new ProcedureConstantUpdater(procedureName, ci));

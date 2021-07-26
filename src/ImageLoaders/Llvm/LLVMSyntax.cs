@@ -363,7 +363,7 @@ namespace Reko.ImageLoaders.LLVM
 
     public class ArrayValue : Value
     {
-        public Tuple<LLVMType,Value?>[]? Values;
+        public (LLVMType,Value?)[]? Values;
 
         public override void Write(Formatter w)
         {

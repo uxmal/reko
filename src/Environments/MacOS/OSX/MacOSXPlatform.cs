@@ -22,9 +22,6 @@ using Reko.Core;
 using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Environments.MacOS.OSX
 {
@@ -37,11 +34,6 @@ namespace Reko.Environments.MacOS.OSX
         public override string DefaultCallingConvention
         {
             get { return ""; }
-        }
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()

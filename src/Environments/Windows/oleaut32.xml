@@ -9,8 +9,8 @@
   <procedure name="SysFreeString" ordinal="6">
     <signature>
       <arg name= "bstrString">
-        <ptr size="4"><prim domain="Character" size="2"/>"</ptr>
-        <stack size="4"/>
+        <ptr><prim domain="Character" size="2"/>"</ptr>
+        <stack/>
       </arg>
     </signature>
   </procedure>

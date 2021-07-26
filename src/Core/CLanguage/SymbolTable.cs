@@ -32,19 +32,23 @@ namespace Reko.Core.CLanguage
     public class SymbolTable 
     {
         private readonly IPlatform platform;
+        private readonly int pointerSize;
 
-        public SymbolTable(IPlatform platform) : this(platform,
+        public SymbolTable(IPlatform platform, int pointerSize) : this(platform,
             new Dictionary<string, PrimitiveType_v1>(),
-            new Dictionary<string, SerializedType>())
+            new Dictionary<string, SerializedType>(),
+            pointerSize)
         {
         }
 
         public SymbolTable(
             IPlatform platform,
             Dictionary<string, PrimitiveType_v1> primitiveTypes,
-            Dictionary<string, SerializedType> namedTypes)
+            Dictionary<string, SerializedType> namedTypes,
+            int pointerSize)
         {
             this.platform = platform;
+            this.pointerSize = pointerSize;
 
             this.Types = new List<SerializedType>();
             this.StructsSeen = new Dictionary<string, StructType_v1>();
@@ -92,7 +96,7 @@ namespace Reko.Core.CLanguage
                 isTypedef = true;
             }
 
-            var ntde = new NamedDataTypeExtractor(platform, declspecs, this);
+            var ntde = new NamedDataTypeExtractor(platform, declspecs, this, pointerSize);
             foreach (var declarator in decl.init_declarator_list)
             {
                 var nt = ntde.GetNameAndType(declarator.Declarator);

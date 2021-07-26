@@ -28,6 +28,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Configuration;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.ImageLoaders.Hunk
 {
@@ -164,7 +165,7 @@ namespace Reko.ImageLoaders.Hunk
                     {
                     }
                     else
-                        throw new BadImageFormatException(string.Format("Expected hunk start in loadseg: {0) {1}/{1:X}", e.HunkType, (int) hunk_type));
+                        throw new BadImageFormatException(string.Format("Expected hunk start in loadseg: {0} {1}/{1:X}", e.HunkType, (int) hunk_type));
                 }
                 else
                 {

@@ -23,12 +23,8 @@
 using Reko.Arch.Z80;
 using Reko.Core;
 using Reko.Core.CLanguage;
-using Reko.Core.Lib;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Reko.Environments.ZX81
@@ -44,11 +40,6 @@ namespace Reko.Environments.ZX81
             : base(services, arch, "zx81")
         {
             encoding = new ZX81Encoding();
-        }
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            return new DefaultPlatformEmulator();
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
