@@ -21,21 +21,19 @@
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.CLanguage;
-using Reko.Core.Configuration;
 using Reko.Core.Emulation;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
-using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Reko.Environments.Windows
 {
-	public class Win32Platform : Platform
+    public class Win32Platform : Platform
 	{
         private Dictionary<int, SystemService> services;
 
@@ -83,6 +81,14 @@ namespace Reko.Environments.Windows
                     }
                 }
             };
+        }
+
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
+        {
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
         }
 
         public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
@@ -299,11 +305,9 @@ namespace Reko.Environments.Windows
         public override ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
             EnsureTypeLibraries(PlatformIdentifier);
-            ModuleDescriptor mod;
-            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
                 return null;
-            SystemService svc;
-            if (mod.ServicesByOrdinal.TryGetValue(ordinal, out svc))
+            if (mod.ServicesByOrdinal.TryGetValue(ordinal, out SystemService svc))
             {
                 var chr = LookupCharacteristicsByName(svc.Name!);
                 return new ExternalProcedure(svc.Name!, svc.Signature!, chr);
@@ -314,8 +318,7 @@ namespace Reko.Environments.Windows
 
 		public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
 		{
-            SystemService svc;
-            if (!services.TryGetValue(vector, out svc))
+            if (!services.TryGetValue(vector, out SystemService svc))
                 return null;
             return svc;
 		}

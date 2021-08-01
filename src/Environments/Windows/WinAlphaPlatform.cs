@@ -23,6 +23,7 @@ using Reko.Core.CLanguage;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Reko.Environments.Windows
@@ -41,6 +42,14 @@ namespace Reko.Environments.Windows
         public override string DefaultCallingConvention
         {
             get { return null!; }
+        }
+
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
+        {
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()

@@ -28,6 +28,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 #nullable disable
@@ -72,6 +73,14 @@ namespace Reko.ImageLoaders.LLVM
         public SegmentMap CreateAbsoluteMemoryMap()
         {
             throw new NotImplementedException();
+        }
+
+        public CParser CreateCParser(TextReader rdr, ParserState? state = null)
+        {
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.StdKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
         }
 
         public IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)

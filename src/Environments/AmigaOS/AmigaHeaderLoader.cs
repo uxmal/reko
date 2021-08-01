@@ -49,9 +49,7 @@ namespace Reko.Environments.AmigaOS
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             var rdr = new StreamReader(new MemoryStream(bytes));
-            var lexer = new CLexer(rdr, CLexer.StdKeywords);
-            var state = new ParserState();
-            var parser = new CParser(state, lexer);
+            var parser = platform.CreateCParser(rdr);
             var symbolTable = new SymbolTable(platform, 4);
             var declarations = parser.Parse();
             var tldser = new TypeLibraryDeserializer(platform, true, dstLib);

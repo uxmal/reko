@@ -21,12 +21,8 @@
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.CLanguage;
-using Reko.Core.Configuration;
 using Reko.Core.Emulation;
-using Reko.Core.Lib;
 using Reko.Core.Serialization;
-using Reko.Core.Services;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,6 +40,14 @@ namespace Reko.Environments.Windows
         public override string DefaultCallingConvention
         {
             get { return "pascal"; }
+        }
+
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
+        {
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
         }
 
         public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)

@@ -380,12 +380,11 @@ namespace Reko.Analysis
             if (!(sidOrigLo.DefExpression is BinaryExpression shift) || shift.Operator != Operator.Shl)
                 return assRolc;
 
-            var block = sidOrigHi.DefStatement!.Block;
             var expShlSrc = shift.Left;
             var expRorSrc = rolc.Arguments[0];
 
             // Discard the use of the carry that tied the SHL and ROLC together.
-            sidCarryUsedInRolc.Uses.Remove(sidOrigHi.DefStatement);
+            sidCarryUsedInRolc.Uses.Remove(sidOrigHi.DefStatement!);
 
             var tmpLo = ssa.Procedure.Frame.CreateTemporary(expShlSrc.DataType);
             var sidTmpLo = mutator.InsertAssignmentBefore(tmpLo, expShlSrc, sidOrigLo.DefStatement!);

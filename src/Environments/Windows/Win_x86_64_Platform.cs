@@ -28,14 +28,15 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Reko.Environments.Windows
 {
     public class Win_x86_64_Platform : Platform
     {
-        private SystemService int29svc;
-        private SystemService int3svc;
+        private readonly SystemService int29svc;
+        private readonly SystemService int3svc;
 
         public Win_x86_64_Platform(IServiceProvider sp, IProcessorArchitecture arch)
             : base(sp, arch, "win64")
@@ -71,6 +72,14 @@ namespace Reko.Environments.Windows
         public override string DefaultCallingConvention
         {
             get { return ""; }
+        }
+
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
+        {
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
@@ -164,11 +173,9 @@ namespace Reko.Environments.Windows
 
         public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
-            ModuleDescriptor mod;
-            if (moduleName == null || !Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+            if (moduleName == null || !Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
                 return null;
-            SystemService svc;
-            if (mod.ServicesByName.TryGetValue(procName, out svc))
+            if (mod.ServicesByName.TryGetValue(procName, out SystemService svc))
             {
                 return new ExternalProcedure(svc.Name!, svc.Signature!);
             }

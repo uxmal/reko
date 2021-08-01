@@ -23,6 +23,7 @@ using Reko.Core.CLanguage;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,6 +44,13 @@ namespace Reko.Environments.Windows
 
         public override string DefaultCallingConvention => "";
 
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
+        {
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
+        }
 
         // https://docs.microsoft.com/en-us/cpp/build/arm64-windows-abi-conventions?view=vs-2020
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()

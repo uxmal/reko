@@ -42,9 +42,7 @@ namespace Reko.Core
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             var rdr = new StreamReader(stream);
-            var lexer = new CLexer(rdr, CLexer.StdKeywords);
-            var state = new ParserState();
-            var parser = new CParser(state, lexer);
+            var parser = platform.CreateCParser(rdr);
             var symbolTable = CreateSymbolTable(platform, dstLib);
             var declarations = parser.Parse();
             foreach (var decl in declarations)

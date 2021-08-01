@@ -83,7 +83,6 @@ namespace Reko.UnitTests.Mocks
             mockPlatform.Setup(p => p.GetCallingConvention(null)).Returns(ccCdecl);
             mockPlatform.Setup(p => p.GetCallingConvention("__stdcall")).Returns(ccStdcall);
             mockPlatform.Setup(p => p.SaveUserOptions()).Returns((Dictionary<string,object>) null);
-
             this.mockPlatform = mockPlatform;
             return mockPlatform;
         }

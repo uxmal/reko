@@ -19,17 +19,15 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Types;
 using Reko.Core.CLanguage;
-using Reko.Core.Expressions;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using Reko.Core.Serialization;
 using X86Registers = Reko.Arch.X86.Registers;
-
 
 namespace Reko.Environments.Windows
 {
@@ -49,6 +47,14 @@ namespace Reko.Environments.Windows
             {
                 throw new NotImplementedException();
             }
+        }
+
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
+        {
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

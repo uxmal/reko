@@ -571,6 +571,7 @@ IGNORE tab + cr + lf
             case CTokenType.Auto:
             case CTokenType.Register:
             case CTokenType.__Cdecl:
+            case CTokenType.__Fastcall:
             case CTokenType.__ForceInline:
             case CTokenType.__Inline:
             case CTokenType.__LoadDs:
@@ -900,10 +901,11 @@ IGNORE tab + cr + lf
                     ptr.TypeQualifierList.Add(tq);
                 }
                 break;
-            case CTokenType.__Stdcall:
-            case CTokenType.__Pascal:
-            case CTokenType.__Thiscall:
             case CTokenType.__Cdecl:
+            case CTokenType.__Fastcall:
+            case CTokenType.__Pascal:
+            case CTokenType.__Stdcall:
+            case CTokenType.__Thiscall:
                 lexer.Read();
                 decl = Parse_Declarator();
                 return grammar.CallConventionDeclarator(token, decl);

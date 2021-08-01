@@ -26,6 +26,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Reko.Environments.Windows
@@ -122,6 +123,14 @@ namespace Reko.Environments.Windows
             return Address.Ptr32((uint)addr.ToLinear() & ~1u);
         }
 
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
+        {
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcCeKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
+        }
+
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             return new[] { "r11", "sp", "lr", "pc" }
@@ -149,8 +158,7 @@ namespace Reko.Environments.Windows
 
         public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
-            SystemService svc;
-            systemServices.TryGetValue(vector, out svc);
+            systemServices.TryGetValue(vector, out SystemService svc);
             return svc;
         }
 

@@ -2,6 +2,7 @@ using Reko.Core;
 using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Reko.Environments.OS2
 {
@@ -18,6 +19,14 @@ namespace Reko.Environments.OS2
         }
 
         public override string DefaultCallingConvention => "__cdecl";
+
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
+        {
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
+        }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {

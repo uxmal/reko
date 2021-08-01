@@ -140,11 +140,11 @@ namespace Reko.Core.CLanguage
             if (string.IsNullOrEmpty(fnDecl))
                 return null;
             try {
-                var lexer = new CLexer(new StringReader(fnDecl + ";"), CLexer.GccKeywords);
+                var rdr = new StringReader(fnDecl + ";");
                 var symbols = program.CreateSymbolTable();
                 var oldProcs = symbols.Procedures.Count;
                 var cstate = new ParserState(symbols);
-                var cParser = new CParser(cstate, lexer);
+                var cParser = program.Platform.CreateCParser(rdr, cstate);
                 var decl = cParser.Parse_ExternalDecl();
                 if (decl == null)
                     return null;

@@ -252,6 +252,12 @@ test_exit:
                 .Returns(new X86CallingConvention(4, 4, 4, true, false));
             platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Int)).Returns(32);
             platform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
+            platform.Setup(p => p.CreateCParser(It.IsAny<TextReader>(), It.IsAny<ParserState>()))
+                .Returns(new Func<TextReader, ParserState, CParser>((r, s) =>
+                {
+                    var lex = new CLexer(r, CLexer.MsvcKeywords);
+                    return new CParser(s ?? new ParserState(), lex);
+                }));
 
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
             program.Platform = platform.Object;

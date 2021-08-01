@@ -28,6 +28,7 @@ using Reko.Environments.SysV.ArchSpecific;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace Reko.Environments.SysV
@@ -45,9 +46,14 @@ namespace Reko.Environments.SysV
             archSpecificFactory = new ArchSpecificFactory(services, arch);
         }
 
-        public override string DefaultCallingConvention
+        public override string DefaultCallingConvention => "";
+
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
         {
-            get { return ""; }
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.GccKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
         }
 
         public override CallingConvention GetCallingConvention(string? ccName)

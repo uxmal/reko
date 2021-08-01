@@ -42,14 +42,23 @@ namespace Reko.UnitTests.Core.CLanguage
         private CommonMockFactory mockFactory;
         private Program program;
         private Procedure proc;
-        private IPlatform platform;
 
         [SetUp]
         public void Setup()
         {
             this.mockFactory = new CommonMockFactory();
-            this.platform = mockFactory.CreateMockPlatform().Object;
-            this.program = mockFactory.CreateProgram();
+            var platform = mockFactory.CreateMockPlatform();
+            platform.Setup(p => p.CreateCParser(It.IsAny<TextReader>(), It.IsAny<ParserState>()))
+                .Returns(new Func<TextReader, ParserState, CParser>((r, s) =>
+                {
+                    var lex = new CLexer(r, CLexer.MsvcKeywords);
+                    return new CParser(s ?? new ParserState(), lex);
+                }));
+            this.program = new Program
+            {
+                Platform = platform.Object,
+                Architecture = platform.Object.Architecture,
+            };
         }
 
         private void Given_UserSignature(uint address, string str)
