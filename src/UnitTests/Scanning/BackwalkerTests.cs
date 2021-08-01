@@ -187,7 +187,7 @@ namespace Reko.UnitTests.Scanning
                 program.Platform = platform;
             }
             var dynlinker = new Mock<IDynamicLinker>();
-            var scanner = new Scanner(program, dynlinker.Object, sc);
+            var scanner = new Scanner(program, new TypeLibrary(), dynlinker.Object, sc);
             scanner.EnqueueImageSymbol(ImageSymbol.Procedure(program.Architecture, program.ImageMap.BaseAddress), true);
             scanner.ScanImage();
             using (var fut = new FileUnitTester(outputFile))

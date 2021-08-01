@@ -58,16 +58,14 @@ namespace Reko.Core
             this.Signatures = procedures;
             this.Characteristics = characteristics;
             this.Globals = globals;
+            this.Procedures = new Dictionary<Address, (string, FunctionType)>();
             this.Modules = new Dictionary<string, ModuleDescriptor>();
         }
 
+        public IDictionary<Address, (string Name, FunctionType Signature)> Procedures { get; private set; }
         public IDictionary<string, DataType> Types { get; private set; }
         public IDictionary<string, FunctionType> Signatures { get; private set; }
-        public IDictionary<string, ProcedureCharacteristics> Characteristics
-        {
-            get;
-            private set;
-        }
+        public IDictionary<string, ProcedureCharacteristics> Characteristics { get; private set; }
         public IDictionary<string, DataType> Globals { get; private set; }
         public IDictionary<string, ModuleDescriptor> Modules { get; private set; }
 
@@ -83,6 +81,7 @@ namespace Reko.Core
                 Types = new Dictionary<string, DataType>(this.Types),
                 Signatures = new Dictionary<string, FunctionType>(this.Signatures, Comparer(this.isCaseInsensitive)),
                 Globals = new Dictionary<string, DataType>(this.Globals),
+                Procedures = new Dictionary<Address, (string, FunctionType)>(this.Procedures),
                 Modules = this.Modules.ToDictionary(k => k.Key, v => v.Value.Clone(), StringComparer.InvariantCultureIgnoreCase),
                 isCaseInsensitive = this.isCaseInsensitive
             };

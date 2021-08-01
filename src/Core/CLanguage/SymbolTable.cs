@@ -158,7 +158,7 @@ namespace Reko.Core.CLanguage
             throw new CParserException("Incorrect syntax for [[reko::convention]].");
         }
 
-        private ProcedureBase_v1 MakeProcedure(string name, SerializedSignature sSig, List<CAttribute> attributes)
+        private ProcedureBase_v1 MakeProcedure(string name, SerializedSignature sSig, List<CAttribute>? attributes)
         {
             var attrService = attributes?.Find(a =>
                 a.Name.Components.Length == 2 && 
@@ -171,10 +171,23 @@ namespace Reko.Core.CLanguage
             }
             else
             {
+                string? addr = null;
+                var attrAddress = attributes?.Find(a =>
+                    a.Name.Components.Length == 2 &&
+                    a.Name.Components[0] == "reko" &&
+                    a.Name.Components[1] == "address");
+                if (attrAddress != null)
+                {
+                    if (attrAddress.Tokens.Count != 1 ||
+                        attrAddress.Tokens[0].Type != CTokenType.StringLiteral)
+                        throw new FormatException("[[reko::address]] attribute is malformed. Expected a string constant.");
+                    addr = (string?) attrAddress.Tokens[0].Value;
+                }
                 return new Procedure_v1
                 {
                     Name = name,
                     Signature = sSig,
+                    Address = addr,
                 };
             }
         }

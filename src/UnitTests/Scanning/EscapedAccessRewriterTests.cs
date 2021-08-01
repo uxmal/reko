@@ -84,6 +84,7 @@ namespace Reko.UnitTests.Scanning
             var project = new Project { Programs = { program } };
 			var scan = new Scanner(
                 program, 
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, null), null);
 			foreach (ImageSymbol ep in program.EntryPoints.Values)
 			{

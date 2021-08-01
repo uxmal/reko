@@ -128,18 +128,25 @@ namespace Reko.Core
                 if (signature is null)
                     return;
                 library.Signatures[sp.Name] = signature;
-                var mod = EnsureModule(this.moduleName, this.library);
-                var svc = new SystemService
+                if (platform.TryParseAddress(sp.Address, out var addr))
                 {
-                    ModuleName = mod.ModuleName,
-                    Name = sp.Name,
-                    Signature = signature,
-                };
-                mod.ServicesByName[sp.Name] = svc;    //$BUGBUG: catch dupes?
+                    this.library.Procedures[addr] = (sp.Name, signature);
+                }
+                else
+                {
+                    var mod = EnsureModule(this.moduleName, this.library);
+                    var svc = new SystemService
+                    {
+                        ModuleName = mod.ModuleName,
+                        Name = sp.Name,
+                        Signature = signature,
+                    };
+                    mod.ServicesByName[sp.Name] = svc;    //$BUGBUG: catch dupes?
 
-                if (sp.Ordinal != Procedure_v1.NoOrdinal)
-                {
-                    mod.ServicesByOrdinal[sp.Ordinal] = svc;
+                    if (sp.Ordinal != Procedure_v1.NoOrdinal)
+                    {
+                        mod.ServicesByOrdinal[sp.Ordinal] = svc;
+                    }
                 }
             }
             catch (Exception ex)

@@ -110,10 +110,10 @@ namespace Reko.UnitTests.Structure
 
         private Program RewriteProgram()
         {
-            var eventListener = new FakeDecompilerEventListener();
             var dynamicLinker = new Mock<IDynamicLinker>();
             var scan = new Scanner(
                 program,
+                new TypeLibrary(),
                 dynamicLinker.Object,
                 sc);
             foreach (ImageSymbol ep in program.EntryPoints.Values)

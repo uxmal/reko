@@ -250,6 +250,7 @@ namespace Reko.UnitTests.Analysis
                 : new ProjectLoader(sc, loader, eventListener).LoadProject(FileUnitTester.MapTestPath(configFile));
             var scan = new Scanner(
                 program,
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
                 sc);
 
@@ -280,6 +281,7 @@ namespace Reko.UnitTests.Analysis
             postLoad(program);
             var scan = new Scanner(
                 program,
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
                 sc);
 

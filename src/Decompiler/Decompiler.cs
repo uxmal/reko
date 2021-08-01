@@ -599,6 +599,7 @@ namespace Reko
         {
             return new Scanner(
                 program,
+                project!.LoadedMetadata,
                 new DynamicLinker(project!, program, eventListener),
                 services);
         }

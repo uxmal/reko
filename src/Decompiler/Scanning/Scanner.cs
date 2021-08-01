@@ -61,6 +61,7 @@ namespace Reko.Scanning
         protected DecompilerEventListener eventListener;
 
         private PriorityQueue<WorkItem> procQueue;
+        private TypeLibrary metadata;
         private SegmentMap segmentMap;
         private ImageMap imageMap;
         private IDynamicLinker dynamicLinker;
@@ -75,10 +76,12 @@ namespace Reko.Scanning
         
         public Scanner(
             Program program,
+            TypeLibrary metadata,
             IDynamicLinker dynamicLinker,
             IServiceProvider services)
             : base(program, services.RequireService<DecompilerEventListener>())
         {
+            this.metadata = metadata;
             this.segmentMap = program.SegmentMap;
             this.dynamicLinker = dynamicLinker;
             this.Services = services;
@@ -99,10 +102,15 @@ namespace Reko.Scanning
             this.cinj = new CommentInjector(program.User.Annotations);
             this.sr = new ScanResults
             {
-                KnownProcedures = program.User.Procedures.Keys.ToHashSet(),
+                KnownProcedures = CollectKnownProcedures(program),
                 KnownAddresses = program.ImageSymbols.ToDictionary(de => de.Key, de => de.Value),
                 ICFG = new DiGraph<RtlBlock>(),
             };
+        }
+
+        private static HashSet<Address> CollectKnownProcedures(Program program)
+        {
+            return program.User.Procedures.Keys.ToHashSet();
         }
 
         public IServiceProvider Services { get; }
@@ -384,6 +392,15 @@ namespace Reko.Scanning
                 proc.Signature = sig!;
             }
             Program.CallGraph.EntryPoints.Add(proc);
+        }
+
+        protected Procedure? EnsureProcedure(IProcessorArchitecture arch, Address addr, string name, FunctionType signature)
+        {
+            if (Program.Procedures.TryGetValue(addr, out var proc))
+                return null; // Already scanned. Do nothing.
+            proc = Program.EnsureProcedure(arch, addr, name);
+            proc.Signature = signature;
+            return proc;
         }
 
         protected KeyValuePair<Address, Procedure>? EnsureUserProcedure(IProcessorArchitecture arch, UserProcedure sp)
@@ -1001,6 +1018,15 @@ namespace Reko.Scanning
                     }
                 }
             }
+            foreach (var de in metadata.Procedures)
+            {
+                var proc = EnsureProcedure(Program.Architecture, de.Key, de.Value.Name, de.Value.Signature);
+                if (proc != null)
+                {
+                    sr.KnownProcedures.Add(proc.EntryAddress);
+                }
+            }
+
             EnqueueImageSymbolProcedures(Program.EntryPoints.Values, noDecompiles);
             EnqueueImageSymbolProcedures(Program.ImageSymbols.Values
                 .Where(sym => sym.Type == SymbolType.Procedure ||

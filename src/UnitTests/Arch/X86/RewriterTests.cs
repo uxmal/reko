@@ -96,6 +96,7 @@ namespace Reko.UnitTests.Arch.X86
             project.Programs.Add(this.program);
             scanner = new Scanner(
                 this.program, 
+                project.LoadedMetadata,
                 new DynamicLinker(project, this.program, eventListener),
                 sc);
             var ep = ImageSymbol.Procedure(this.program.Architecture, baseAddress);

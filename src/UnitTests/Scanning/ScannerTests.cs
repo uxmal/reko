@@ -59,9 +59,9 @@ namespace Reko.UnitTests.Scanning
 
         public class TestScanner : Scanner
         {
-            public TestScanner(Program program, IDynamicLinker dynamicLinker,
+            public TestScanner(Program program, TypeLibrary metadata, IDynamicLinker dynamicLinker,
                 IServiceProvider services)
-                : base(program, dynamicLinker, services)
+                : base(program, metadata, dynamicLinker, services)
             {
             }
 
@@ -165,6 +165,7 @@ namespace Reko.UnitTests.Scanning
 
             var sc = new Scanner(
                 this.program,
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
                 this.sc);
             sc.EnqueueImageSymbol(ImageSymbol.Procedure(arch, Address.Ptr32(0x12314)), true);
@@ -226,6 +227,7 @@ namespace Reko.UnitTests.Scanning
             };
             return new TestScanner(
                 program,
+                new TypeLibrary(),
                 dynamicLinker.Object,
                 sc);
         }
@@ -235,6 +237,7 @@ namespace Reko.UnitTests.Scanning
             this.program = program;
             return new TestScanner(
                 program, 
+                new TypeLibrary(),
                 dynamicLinker.Object,
                 sc);
         }
@@ -248,7 +251,7 @@ namespace Reko.UnitTests.Scanning
             program.SegmentMap = new SegmentMap(
                 bmem.BaseAddress,
                 new ImageSegment("progseg", this.bmem, AccessMode.ReadExecute));
-            return new TestScanner(program, dynamicLinker.Object, sc);
+            return new TestScanner(program, project.LoadedMetadata, dynamicLinker.Object, sc);
         }
 
         private DataScanner CreateDataScanner(Program program)
@@ -349,7 +352,8 @@ namespace Reko.UnitTests.Scanning
             Given_Project();
 
             var scan = new Scanner(
-                program, 
+                program,
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
                 sc);
             var sym = ImageSymbol.Procedure(arch, addr);
@@ -911,6 +915,7 @@ fn00001200_exit:
 
             var sc = new Scanner(
                 this.program,
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
                 this.sc
             );
@@ -977,6 +982,7 @@ fn00001200_exit:
 
             var sc = new Scanner(
                 this.program,
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
                 this.sc
             );
@@ -1031,6 +1037,7 @@ fn00001200_exit:
 
             var scanner = new Scanner(
                 this.program,
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
                 this.sc);
             scanner.EnqueueUserGlobalData(Address.Ptr32(0x43210000), str, null);
@@ -1055,6 +1062,7 @@ fn00001200_exit:
 
             var scanner = new Scanner(
                 this.program,
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
                 this.sc);
             var proc = scanner.ScanProcedure(
@@ -1092,10 +1100,29 @@ fn00001200_exit:
             var sym = ImageSymbol.DataObject(arch, Address.Ptr32(0x00100000), "data_blob", dt);
             program.ImageSymbols.Add(sym.Address, sym);
 
-            var scanner = new Scanner(program, dynamicLinker.Object, sc);
+            var scanner = new Scanner(program, project.LoadedMetadata, dynamicLinker.Object, sc);
             var sr = scanner.ScanDataItems();
             Assert.AreEqual(1, sr.KnownProcedures.Count);
             Assert.AreEqual("00100010", sr.KnownProcedures.First().ToString());
+        }
+
+        [Test(Description = "Procedures in metadata should be respected")]
+        public void Scanner_Metadata_procedure()
+        {
+            Given_Program(Address.Ptr32(0x00100000), new byte[100]);
+            Given_Project();
+            var address = Address.Ptr32(0x00100010);
+            project.LoadedMetadata.Procedures.Add(address, ("foo", FunctionType.Action()));
+
+            var scanner = new Scanner(
+                this.program,
+                project.LoadedMetadata,
+                new DynamicLinker(project, program, eventListener),
+                this.sc);
+            scanner.ScanImage();
+
+            Assert.AreEqual(1, program.Procedures.Count);
+            Assert.AreEqual("(fn void ())", program.Procedures.Values.First().Signature.ToString());
         }
     }
 }

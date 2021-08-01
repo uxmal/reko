@@ -396,5 +396,37 @@ namespace Reko.UnitTests.Core
             var expected = @"(struct ""sized_struct"" 0008 (0 int64 foo))";
             Assert.AreEqual(expected, str.ToString());
         }
+
+        [Test]
+        public void Tlldr_procedure_with_address()
+        {
+            Given_ArchitectureStub();
+            var addr = Address.SegPtr(0x1234, 0x4567);
+            platform.Setup(p => p.TryParseAddress("0123:4567", out addr)).Returns(true);
+            Given_ProcedureSignature(FunctionType.Action());
+
+            var tlLdr = new TypeLibraryDeserializer(platform.Object, true, new TypeLibrary());
+            var slib = new SerializedLibrary
+            {
+                Procedures = {
+                    new Procedure_v1 {
+                        Name="foo",
+                        Signature = new SerializedSignature
+                        {
+                            Convention="__cdecl",
+                            ReturnValue = new Argument_v1 {
+                                Type = new VoidType_v1()
+                            },
+                        },
+                        Address = "0123:4567"
+                    }
+                }
+            };
+            var lib = tlLdr.Load(slib);
+
+            var (name, sig) = lib.Procedures[addr];
+            Assert.AreEqual("foo", name);
+            Assert.AreEqual("(fn void ())", sig.ToString());
+        }
     }
 }
