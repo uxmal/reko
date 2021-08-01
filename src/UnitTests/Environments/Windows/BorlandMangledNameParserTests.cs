@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -100,6 +100,12 @@ namespace Reko.UnitTests.Environments.Windows
         public void Bmnp_Unsigned_short()
         {
             RunTest("Fnord::DoState(uint16_t)", "@Fnord@0DoState$qus");
+        }
+
+        [Test]
+        public void Bmnp_near_ptr_argument()
+        {
+            RunTest("DBG_SerialFlash_ReadCommand0(char, char *, uint16_t)", "@DBG_SerialFlash_ReadCommand0$qucpucus");
         }
     }
 }

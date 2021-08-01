@@ -205,6 +205,9 @@ namespace Reko.Environments.Windows
         const char cLongDouble = 'g';
         const char cEllipsis = 'e';
 
+        const char cNearPtr = 'p';
+        const char cNearRef = 'r';
+
         const char cFarPtr = 'n';
         const char cFarRef = 'm';
 
@@ -225,6 +228,16 @@ namespace Reko.Environments.Windows
                 case cShort: return new PrimitiveType_v1 { ByteSize = 2, Domain = domain };
                 case cInt: return new PrimitiveType_v1 { ByteSize = 2, Domain = domain };
                 case cLong: return new PrimitiveType_v1 { ByteSize = 4, Domain = domain };
+                case cNearPtr:
+                    type = ParseArgumentType(domain);
+                    if (type == null)
+                        return null;
+                    return new PointerType_v1 { PointerSize = 2, DataType = type };
+                case cNearRef:
+                    type = ParseArgumentType(domain);
+                    if (type == null)
+                        return null;
+                    return new ReferenceType_v1 { Size = 2, Referent = type };
                 case cFarPtr:
                     type = ParseArgumentType(domain);
                     if (type == null)
