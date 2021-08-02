@@ -7,7 +7,7 @@
     <asmDir>pyFuncNames.reko</asmDir>
     <srcDir>pyFuncNames.reko</srcDir>
     <includeDir>pyFuncNames.reko</includeDir>
-    <resources>pyFuncNames.reko\resources</resources>
+    <resources>pyFuncNames.reko/resources</resources>
     <user>
       <processor />
       <registerValues />
