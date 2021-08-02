@@ -33,23 +33,28 @@ namespace Reko.UnitTests.Arch.Vax
     [TestFixture]
     public class VaxDisassemblerTests : DisassemblerTestBase<VaxInstruction>
     {
-        private VaxArchitecture arch;
+        private readonly VaxArchitecture arch;
+        private readonly Address addr;
 
         public VaxDisassemblerTests()
         {
-            this.arch = new VaxArchitecture(new ServiceContainer(), "vax", new Dictionary<string, object>());
+            this.arch = new VaxArchitecture(CreateServiceContainer(), "vax", new Dictionary<string, object>());
+            this.addr = Address.Ptr32(0x00100000);
         }
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
+        public override IProcessorArchitecture Architecture => arch;
 
-        public override Address LoadAddress { get { return Address.Ptr32(0x00100000); } }
+        public override Address LoadAddress => addr;
 
         private void AssertCode(string sExp, params byte[] bytes)
         {
             var i = DisassembleBytes(bytes);
+            Assert.AreEqual(sExp, i.ToString());
+        }
+
+        private void AssertCode(string sExp, string bytes)
+        {
+            var i = DisassembleHexBytes(bytes);
             Assert.AreEqual(sExp, i.ToString());
         }
 
@@ -63,6 +68,12 @@ namespace Reko.UnitTests.Arch.Vax
         public void VaxDis_movl_reg_reg()
         {
             AssertCode("movl\tr0,r1", 0xD0, 0x50, 0x51);
+        }
+
+        [Test]
+        public void VaxDis_movw_IndexedDisplacementDeferred()
+        {
+            AssertCode("movw\t00120454[r0],r0", "b0 40 ef 4d 04 02 00 50");
         }
 
         [Test]

@@ -13,9 +13,10 @@ file(GLOB WIX_FILES
 
 if(WIX_FILES)
     list(GET WIX_FILES -1 WIX_LATEST_FILE)
+    unset(${WIX_FILES})
 endif()
 
-unset(${WIX_FILES})
+
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(WIX REQUIRED_VARS WIX_LATEST_FILE)

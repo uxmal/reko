@@ -71,6 +71,12 @@ namespace Reko.UnitTests.Arch.PowerPC
             Assert.AreEqual(sExp, i.ToString());
         }
 
+        private void AssertCode(string sExp, string hexBytes)
+        {
+            var i = DisassembleHexBytes(hexBytes);
+            Assert.AreEqual(sExp, i.ToString());
+        }
+
         private void Given_PowerPcBe64()
         {
             this.arch = new PowerPcBe64Architecture(new ServiceContainer(), "ppc-be-64", new Dictionary<string, object>());
@@ -166,6 +172,19 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCDis_mtfsb1()
+        {
+            AssertCode("mtfsb1\t1F", "FFC0004C");
+        }
+
+        [Test]
+        public void PPCDis_nop()
+        {
+            AssertCode("nop", "60000000");
+        }
+
+
+        [Test]
         public void PPCDis_mtlr()
         {
             var instr = DisassembleWord(0x7C0803A6);
@@ -184,6 +203,12 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             var instr = DisassembleWord(0x803F0005);
             Assert.AreEqual("lwz\tr1,5(r31)", instr.ToString());
+        }
+
+        [Test]
+        public void PPCDis_stswx()
+        {
+            AssertCode("stswx\tr5,r0,r3", "7CA01D2A");
         }
 
         [Test]
@@ -722,6 +747,12 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCDis_lswx()
+        {
+            AssertCode("lswx\tr5,r0,r4", "7CA0242A");
+        }
+
+        [Test]
         public void PPCDis_lvlx()
         {
             AssertCode(0x7c6b040e, "lvlx\tv3,r11,r0");
@@ -1126,6 +1157,5 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x114948ab, "vperm\tv10,v9,v9,v2");
         }
-
     }
 }

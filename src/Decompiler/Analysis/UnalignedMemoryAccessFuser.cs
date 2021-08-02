@@ -42,7 +42,7 @@ namespace Reko.Analysis
     /// </remarks>
     public class UnalignedMemoryAccessFuser : InstructionVisitorBase
     {
-        private SsaState ssa;
+        private readonly SsaState ssa;
 
         public UnalignedMemoryAccessFuser(SsaState ssa)
         {
@@ -154,7 +154,7 @@ namespace Reko.Analysis
             ssa.AddUses(stmR!);
         }
 
-        private void FuseUnalignedPairs(List<Tuple<UnalignedAccess, UnalignedAccess>> pairs)
+        private void FuseUnalignedPairs(List<(UnalignedAccess, UnalignedAccess)> pairs)
         {
             foreach (var pair in pairs)
             {
@@ -162,7 +162,7 @@ namespace Reko.Analysis
             }
         }
 
-        private void FuseStorePair(Tuple<UnalignedAccess, UnalignedAccess> pair)
+        private void FuseStorePair((UnalignedAccess, UnalignedAccess) pair)
         {
             Statement stmL, stmR;
             if (pair.Item1.isLeft)
@@ -196,9 +196,9 @@ namespace Reko.Analysis
             ssa.AddUses(stmR);
         }
 
-        private List<Tuple<UnalignedAccess, UnalignedAccess>> GroupUnalignedStorePairs(Dictionary<Identifier, List<UnalignedAccess>> unalignedStores)
+        private List<(UnalignedAccess, UnalignedAccess)> GroupUnalignedStorePairs(Dictionary<Identifier, List<UnalignedAccess>> unalignedStores)
         {
-            var pairs = new List<Tuple<UnalignedAccess, UnalignedAccess>>();
+            var pairs = new List<(UnalignedAccess, UnalignedAccess)>();
             foreach (var de in unalignedStores)
             {
                 var sorted = de.Value.ToSortedList(k => k.offset);
@@ -209,7 +209,7 @@ namespace Reko.Analysis
                     if (se.Value.isLeft == other.isLeft)
                         continue;
 
-                    var pair = Tuple.Create(se.Value, other);
+                    var pair = (se.Value, other);
                     pairs.Add(pair);
                 }
             }

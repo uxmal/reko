@@ -37,7 +37,7 @@ namespace Reko.Core.Types
         DataType GetDataTypeOf(Expression exp);
         void SetDataTypeOf(Expression exp, DataType dt);
         EquivalenceClass MergeClasses(TypeVariable tv1, TypeVariable tv2);
-        void Write(TextWriter writer);
+        void Write(bool showExprAddresses, TextWriter writer);
         void BuildEquivalenceClassDataTypes(TypeFactory factory);
         TypeVariable CreateTypeVariable(TypeFactory factory);
     }
@@ -45,13 +45,13 @@ namespace Reko.Core.Types
     public class TypeStore : ITypeStore
     {
         private readonly SortedList<int, EquivalenceClass> usedClasses;
-        private readonly Dictionary<TypeVariable, Expression> tvSources;
+        private readonly Dictionary<TypeVariable, (ulong uAddr, Expression e)> tvSources;
 
         public TypeStore()
         {
             TypeVariables = new List<TypeVariable>();
             usedClasses = new SortedList<int, EquivalenceClass>();
-            tvSources = new Dictionary<TypeVariable, Expression>();
+            tvSources = new Dictionary<TypeVariable, (ulong,Expression)>();
             SegmentTypes = new Dictionary<ImageSegment, StructureType>();
         }
 
@@ -62,9 +62,9 @@ namespace Reko.Core.Types
 
         public Dictionary<ImageSegment, StructureType> SegmentTypes { get; private set; }
 
-        public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Expression e)
+        public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, ulong uAddr, Expression e)
         {
-            return EnsureExpressionTypeVariable(factory, e, null);
+            return EnsureExpressionTypeVariable(factory, uAddr, e, null);
         }
 
         //$TODO: pass dt and dtOriginal
@@ -77,13 +77,13 @@ namespace Reko.Core.Types
             return tv;
         }
 
-        public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, Expression e, string? name)
+        public TypeVariable EnsureExpressionTypeVariable(TypeFactory factory, ulong uAddr, Expression e, string? name)
         {
             if (e != null && e.TypeVariable != null)
                 return e.TypeVariable;
 
             TypeVariable tv = name != null ? factory.CreateTypeVariable(name) : factory.CreateTypeVariable();
-            AddDebugSource(tv, e!);
+            AddDebugSource(tv, uAddr, e!);
             tv.Class = new EquivalenceClass(tv);
             if (e != null)
                 e.TypeVariable = tv;
@@ -92,15 +92,15 @@ namespace Reko.Core.Types
             return tv;
         }
 
-        public void SetTypeVariableExpression(TypeVariable typeVariable, Expression binExp)
+        public void SetTypeVariableExpression(TypeVariable typeVariable, ulong uAddr, Expression binExp)
         {
-            tvSources[typeVariable] = binExp;
+            tvSources[typeVariable] = (uAddr, binExp);
         }
 
-        private void AddDebugSource(TypeVariable tv, Expression e)
+        private void AddDebugSource(TypeVariable tv, ulong uAddr, Expression e)
         {
             if (e != null)
-                tvSources.Add(tv, e);
+                tvSources.Add(tv, (uAddr, e));
         }
 
         public void BuildEquivalenceClassDataTypes(TypeFactory factory)
@@ -125,16 +125,12 @@ namespace Reko.Core.Types
             }
         }
 
-        public TypeVariable EnsureFieldTypeVariable(TypeFactory factory, StructureField field)
-        {
-            throw new NotImplementedException();
-        }
 
         [Conditional("DEBUG")]
         public void Dump()
         {
             var sw = new StringWriter();
-            Write(sw);
+            Write(false, sw);
             Debug.WriteLine(sw.ToString());
         }
 
@@ -142,17 +138,26 @@ namespace Reko.Core.Types
         public void Dump(string dir, string filename)
         {
             using var w = new StreamWriter(Path.Combine(dir, filename));
-            Write(w);
+            Write(false, w);
             Debug.WriteLine(w.ToString());
         }
 
         public Expression? ExpressionOf(TypeVariable tv)
         {
-            if (tvSources.TryGetValue(tv, out Expression e))
-                return e;
+            if (tvSources.TryGetValue(tv, out (ulong, Expression) dbg))
+                return dbg.Item2;
             else
                 return null;
         }
+
+        public ulong? LinearAddressOf(TypeVariable tv)
+        {
+            if (tvSources.TryGetValue(tv, out (ulong, Expression) dbg))
+                return dbg.Item1;
+            else
+                return null;
+        }
+
 
         public EquivalenceClass MergeClasses(TypeVariable tv1, TypeVariable tv2)
         {
@@ -185,7 +190,9 @@ namespace Reko.Core.Types
             get { return usedClasses.Values; }
         }
 
-        public void Write(TextWriter w)
+        public void Write(TextWriter w) => Write(false, w);
+
+        public void Write(bool showExprAddresses, TextWriter w)
         {
             var writer = new TextFormatter(w);
             writer.WriteLine("// Equivalence classes ////////////");
@@ -197,7 +204,7 @@ namespace Reko.Core.Types
                     foreach (TypeVariable tvMember in tv.Class.ClassMembers)
                     {
                         writer.Write("\t{0}", tvMember);
-                        WriteExpressionOf(tvMember, writer);
+                        WriteExpressionOf(tvMember, showExprAddresses, writer);
                         writer.WriteLine();
                     }
                 }
@@ -206,29 +213,33 @@ namespace Reko.Core.Types
             writer.WriteLine("// Type Variables ////////////");
             foreach (TypeVariable tv in TypeVariables)
             {
-                WriteEntry(tv, writer);
+                WriteEntry(tv, showExprAddresses, writer);
             }
         }
 
-        public void WriteExpressionOf(TypeVariable tvMember, Formatter writer)
+        public void WriteExpressionOf(TypeVariable tvMember, bool showExprAddresses, Formatter writer)
         {
-            if (tvSources.TryGetValue(tvMember, out Expression e) && e != null)
+            if (tvSources.TryGetValue(tvMember, out (ulong uAddr, Expression e) dbg) && dbg.e != null)
             {
-                writer.Write(" (in {0}", e);
-                if (e.DataType != null)
+                writer.Write(" (in {0}", dbg.e);
+                if (showExprAddresses)
+                {
+                    writer.Write(" @ {0:X8}", dbg.uAddr);
+                }
+                if (dbg.e.DataType != null)
                 {
                     writer.Write(" : ");
-                    writer.Write(e.DataType);
+                    writer.Write(dbg.e.DataType);
                 }
                 writer.Write(")");
             }
         }
 
-        public void WriteEntry(TypeVariable tv, Formatter writer)
+        public void WriteEntry(TypeVariable tv, bool showExprAddresses, Formatter writer)
         {
             writer.Write(tv.Name);
             writer.Write(":");
-            WriteExpressionOf(tv, writer);
+            WriteExpressionOf(tv, showExprAddresses, writer);
             writer.WriteLine();
 
             writer.Write("  Class: ");
@@ -241,13 +252,13 @@ namespace Reko.Core.Types
             writer.WriteLine(tv.OriginalDataType);
         }
 
-        private void WriteEntry(TypeVariable tv, DataType dt, Formatter writer)
+        private void WriteEntry(TypeVariable tv, DataType dt, bool showExprAddresses, Formatter writer)
         {
             writer.Write("{0}: ", tv);
             if (dt != null)
             {
                 dt.Accept(new TypeGraphWriter(writer));
-                WriteExpressionOf(tv, writer);
+                WriteExpressionOf(tv, showExprAddresses, writer);
             }
             writer.WriteLine();
         }
@@ -265,10 +276,10 @@ namespace Reko.Core.Types
 
         public void Clear()
         {
-            foreach(var e in tvSources.Values)
+            foreach(var dbg in tvSources.Values)
             {
-                e.TypeVariable = null;
-                if (e is ProcedureConstant pc)
+                dbg.e.TypeVariable = null;
+                if (dbg.e is ProcedureConstant pc)
                     pc.Procedure.Signature.TypeVariable = null;
             }
             TypeVariables.Clear();

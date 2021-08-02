@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Typing
         {
             using (FileUnitTester fut = new FileUnitTester(outputFileName))
             {
-                store.Write(fut.TextWriter);
+                store.Write(false, fut.TextWriter);
                 fut.AssertFilesEqual();
             }
         }
@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Typing
         private void RunTest(Expression e, string outputFileName)
         {
             var globals = new Identifier("globals", PrimitiveType.Ptr32, RegisterStorage.None);
-            store.EnsureExpressionTypeVariable(factory, globals, "globals_t");
+            store.EnsureExpressionTypeVariable(factory, 0, globals, "globals_t");
             var eq = new EquivalenceClassBuilder(factory, store, new FakeDecompilerEventListener());
             e.Accept(eq);
 

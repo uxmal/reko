@@ -27,7 +27,7 @@ namespace Reko.Arch.Arm.AArch64
     public class AArch64Instruction : MachineInstruction
     {
         public Mnemonic shiftCode;
-        public MachineOperand shiftAmount;
+        public MachineOperand? shiftAmount;
         public VectorData vectorData;
 
         public Mnemonic Mnemonic { get; set; }
@@ -55,7 +55,7 @@ namespace Reko.Arch.Arm.AArch64
             renderer.WriteChar(',');
             renderer.WriteMnemonic(shiftCode.ToString());
             renderer.WriteChar(' ');
-            RenderOperand(shiftAmount, renderer, options);
+            RenderOperand(shiftAmount!, renderer, options);
         }
 
         private int WriteMnemonic(MachineInstructionRenderer renderer)

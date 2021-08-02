@@ -18,19 +18,18 @@
  */
 #endregion
 
+using Reko.Arch.Tlcs.Tlcs90;
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Reko.Core.Expressions;
-using Reko.Core.Machine;
-using Reko.Core.Rtl;
-using Reko.Core.Types;
-using Reko.Arch.Tlcs.Tlcs90;
-using Reko.Core.Lib;
-using Reko.Core.Memory;
 
 namespace Reko.Arch.Tlcs
 {
@@ -160,11 +159,6 @@ namespace Reko.Arch.Tlcs
             return new Tlcs90Disassembler(this, rdr);
         }
 
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return new Tlcs90InstructionComparer(norm);
@@ -232,7 +226,7 @@ namespace Reko.Arch.Tlcs
             return Registers.allRegs.FirstOrDefault(r => r.Name == name);
         }
 
-        public override RegisterStorage GetRegister(StorageDomain regDomain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain regDomain, BitRange range)
         {
             if (!Subregisters.TryGetValue(regDomain, out var subs))
                 return null;
@@ -276,7 +270,7 @@ namespace Reko.Arch.Tlcs
             return Address.Ptr16(c.ToUInt16());
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -287,7 +281,7 @@ namespace Reko.Arch.Tlcs
             return reg != null;
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse16(txtAddr, out addr);
         }

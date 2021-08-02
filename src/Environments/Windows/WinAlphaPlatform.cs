@@ -23,9 +23,8 @@ using Reko.Core.CLanguage;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Environments.Windows
 {
@@ -36,17 +35,21 @@ namespace Reko.Environments.Windows
         public WinAlphaPlatform(IServiceProvider services, IProcessorArchitecture arch) 
             : base(services, arch, "winAlpha")
         {
-            arch.StackRegister = arch.GetRegister("r30");
+            arch.StackRegister = arch.GetRegister("r30")!;
+            cc = null!;
         }
 
         public override string DefaultCallingConvention
         {
-            get { return null; }
+            get { return null!; }
         }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
         {
-            throw new NotImplementedException();
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
@@ -59,17 +62,17 @@ namespace Reko.Environments.Windows
             return new HashSet<RegisterStorage>(new[] {
                 "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8",
                    "r16", "r17", "r18", "r9", "r20", "r21",
-                   "r22", "r23", "r24", "r25", "r26", "r27", "r28"}.Select(n => Architecture.GetRegister(n)).ToHashSet());
+                   "r22", "r23", "r24", "r25", "r26", "r27", "r28"}.Select(n => Architecture.GetRegister(n)!).ToHashSet());
         }
 
-        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
         {
             Services.RequireService<DecompilerEventListener>().Warn(new NullCodeLocation(program.Name),
                            "Win32 Alpha main procedure finder not supported.");
             return null;
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -79,7 +82,7 @@ namespace Reko.Environments.Windows
             throw new NotImplementedException();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             if (this.cc == null)
             {
@@ -88,7 +91,7 @@ namespace Reko.Environments.Windows
             return cc;
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             return null;
         }

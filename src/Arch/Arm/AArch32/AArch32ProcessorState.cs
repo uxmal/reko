@@ -69,7 +69,7 @@ namespace Reko.Arch.Arm.AArch32
             if (regData.TryGetValue(r.Number, out ulong uVal))
                 return Constant.Create(r.DataType, uVal);
             else
-                return Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)
@@ -97,7 +97,7 @@ namespace Reko.Arch.Arm.AArch32
             return new CallSite(0, 0);
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
     }

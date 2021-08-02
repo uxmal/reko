@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -46,17 +46,23 @@ namespace Reko.ImageLoaders.LLVM
         // table entries
         public List<ModuleEntry> Entries;
 
+        public Module(List<TargetSpecification> targets, List<ModuleEntry> entries)
+        {
+            Targets = targets;
+            Entries = entries;
+        }
+
         public override void Write(Formatter w)
         {
             bool sep = false;
-            foreach (var target in Targets)
+            foreach (var target in Targets!)
             {
                 target.Write(w);
                 w.WriteLine();
             }
 
             sep = false;
-            foreach (var entry in Entries)
+            foreach (var entry in Entries!)
             {
                 if (sep)
                     w.WriteLine();
@@ -70,7 +76,7 @@ namespace Reko.ImageLoaders.LLVM
     public class TargetSpecification : LLVMSyntax
     {
         public TokenType Type;
-        public string Specification;
+        public string? Specification;
 
         public override void Write(Formatter w)
         {
@@ -79,7 +85,7 @@ namespace Reko.ImageLoaders.LLVM
             w.WriteKeyword(Type.ToString());
             w.Write(" = ");
             w.Write("\"");
-            w.Write(Specification);
+            w.Write(Specification!);
             w.Write("\"");
         }
     }
@@ -91,13 +97,13 @@ namespace Reko.ImageLoaders.LLVM
 
     public class TypeDefinition : ModuleEntry
     {
-        public LocalId Name;
-        public LLVMType Type;
+        public LocalId? Name;
+        public LLVMType? Type;
         public bool Opaque;
 
         public override void Write(Formatter w)
         {
-            Name.Write(w);
+            Name!.Write(w);
             w.Write(" = ");
             w.WriteKeyword("type");
             w.Write(" ");
@@ -107,27 +113,27 @@ namespace Reko.ImageLoaders.LLVM
             }
             else
             {
-                Type.Write(w); 
+                Type!.Write(w); 
             }
         }
     }
 
     public class GlobalDefinition : ModuleEntry
     {
-        public string Linkage;
-        public string Visibility;
-        public string DLLStorageClass;
+        public string? Linkage;
+        public string? Visibility;
+        public string? DLLStorageClass;
         public bool ThreadLocal;
         public bool unnamed_addr;
         public bool local_unnamed_addr;
-        public string AddrSpace;
-        public string ExternallyInitialized;
+        public string? AddrSpace;
+        public string? ExternallyInitialized;
         public bool constant;
-        public string Name;
-        public LLVMType Type;
-        public Value Initializer;
-        public string section;
-        public string comdat;
+        public string? Name;
+        public LLVMType? Type;
+        public Value? Initializer;
+        public string? section;
+        public string? comdat;
         public int Alignment;
 
         public override void Write(Formatter w)
@@ -153,7 +159,7 @@ namespace Reko.ImageLoaders.LLVM
                 w.WriteKeyword("global");
             }
             w.Write(' ');
-            Type.Write(w);
+            Type!.Write(w);
             if (Initializer != null)
             {
                 w.Write(' ');
@@ -168,19 +174,19 @@ namespace Reko.ImageLoaders.LLVM
 
     public class Declaration : ModuleEntry
     {
-        public string Name;
-        public LLVMFunctionType Type;
+        public string? Name;
+        public LLVMFunctionType? Type;
 
         public override void Write(Formatter w)
         {
             w.WriteKeyword("declare");
             w.Write(" ");
-            Type.ReturnType.Write(w);
+            Type!.ReturnType!.Write(w);
             w.Write(" ");
             w.Write("@" + Name);
             w.Write('(');
             var sep = "";
-            foreach (var arg in Type.Parameters)
+            foreach (var arg in Type.Parameters!)
             {
                 w.Write(sep);
                 sep = ", ";
@@ -194,7 +200,7 @@ namespace Reko.ImageLoaders.LLVM
                     }
                 } else
                 {
-                    w.Write(arg.name);
+                    w.Write(arg.name!);
                 }
             }
             w.Write(')');
@@ -203,15 +209,15 @@ namespace Reko.ImageLoaders.LLVM
 
     public class FunctionDefinition : ModuleEntry
     {
-        public string linkage;
-        public string visibility;
-        public string DLLStorageClass;
-        public string cconv;
-        public ParameterAttributes ret_attrs;
-        public LLVMType ResultType;
-        public string FunctionName;
-        public List<LLVMParameter> Parameters;
-        public List<Instruction> Instructions;
+        public string? linkage;
+        public string? visibility;
+        public string? DLLStorageClass;
+        public string? cconv;
+        public ParameterAttributes? ret_attrs;
+        public LLVMType? ResultType;
+        public string? FunctionName;
+        public List<LLVMParameter>? Parameters;
+        public List<Instruction>? Instructions;
 
         public bool unnamed_addr;
         public bool local_unnamed_addr;
@@ -232,16 +238,16 @@ namespace Reko.ImageLoaders.LLVM
                 ret_attrs.Write(w);
                 w.Write(' ');
             }
-            ResultType.Write(w);
+            ResultType!.Write(w);
             w.Write(' ');
             w.Write("@" + FunctionName);
             w.Write('(');
             var sep = "";
-            foreach (var param in Parameters)
+            foreach (var param in Parameters!)
             {
                 w.Write(sep);
                 sep = ", ";
-                param.Type.Write(w);
+                param.Type!.Write(w);
                 if (param.name != null)
                 {
                     w.Write(' ');
@@ -256,7 +262,7 @@ namespace Reko.ImageLoaders.LLVM
             w.Write(')');
             w.Write(' ');
             w.WriteLine("{");
-            foreach (var instr in Instructions)
+            foreach (var instr in Instructions!)
             {
                 w.Indent();
                 instr.Write(w);
@@ -274,9 +280,9 @@ namespace Reko.ImageLoaders.LLVM
     
     public class Constant : Value
     {
-        public readonly object Value;
+        public readonly object? Value;
 
-        public Constant(object value)
+        public Constant(object? value)
         {
             this.Value = value;
         }
@@ -323,15 +329,15 @@ namespace Reko.ImageLoaders.LLVM
     public class Literal : Value
     {
         public TokenType Type;
-        public string Value;
+        public string? Value;
 
         public override void Write(Formatter w)
         {
             switch (Type)
             {
-            case TokenType.HexInteger: w.Write("0x{0}", Value); break;
-            case TokenType.DoubleLiteral: w.Write(Value); break;
-            case TokenType.X86_fp80_Literal: w.Write("0xK{0}", Value); break;
+            case TokenType.HexInteger: w.Write("0x{0}", Value!); break;
+            case TokenType.DoubleLiteral: w.Write(Value!); break;
+            case TokenType.X86_fp80_Literal: w.Write("0xK{0}", Value!); break;
             default: throw new NotImplementedException(Type.ToString());
             }
         }
@@ -339,13 +345,13 @@ namespace Reko.ImageLoaders.LLVM
 
     public class AggregateValue : Value
     {
-        public TypedValue[] Values;
+        public TypedValue[]? Values;
 
         public override void Write(Formatter w)
         {
             w.Write('{');
             var sep = "";
-            foreach (var value in Values)
+            foreach (var value in Values!)
             {
                 w.Write(sep);
                 sep = ", ";
@@ -357,19 +363,19 @@ namespace Reko.ImageLoaders.LLVM
 
     public class ArrayValue : Value
     {
-        public Tuple<LLVMType,Value> [] Values;
+        public (LLVMType,Value?)[]? Values;
 
         public override void Write(Formatter w)
         {
             w.Write('[');
             var sep = "";
-            foreach (var value in Values)
+            foreach (var value in Values!)
             {
                 w.Write(sep);
                 sep = ", ";
                 value.Item1.Write(w);
                 w.Write(" ");
-                value.Item2.Write(w);
+                value.Item2!.Write(w);
             }
             w.Write(']');
         }
@@ -407,14 +413,14 @@ namespace Reko.ImageLoaders.LLVM
 
     public class TypedValue : LLVMSyntax
     {
-        public LLVMType Type;
-        public Value Value;
+        public LLVMType? Type;
+        public Value? Value;
 
         public override void Write(Formatter w)
         {
-            Type.Write(w);
+            Type!.Write(w);
             w.Write(' ');
-            Value.Write(w);
+            Value!.Write(w);
         }
     }
 }

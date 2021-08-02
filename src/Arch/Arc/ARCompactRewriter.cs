@@ -53,6 +53,8 @@ namespace Reko.Arch.Arc
             this.binder = binder;
             this.host = host;
             this.dasm = new ArcDisassembler(arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -537,9 +539,9 @@ namespace Reko.Arch.Arc
             m.Assign(dst, src);
         }
 
-        private (RegisterStorage baseReg, Expression ea) RewriteEa(MemoryOperand mem, bool scaleOffset)
+        private (RegisterStorage? baseReg, Expression? ea) RewriteEa(MemoryOperand mem, bool scaleOffset)
         {
-            Expression ea = null;
+            Expression? ea = null;
             int offset = mem.Offset;
             if (scaleOffset)
             {
@@ -588,7 +590,7 @@ namespace Reko.Arch.Arc
             m.Assign(satReg, m.Cond(dst));
         }
 
-        private void RewriteAluOp(Func<Expression, Expression> fn, FlagGroupStorage grf = null)
+        private void RewriteAluOp(Func<Expression, Expression> fn, FlagGroupStorage? grf = null)
         {
             MaybeSkip(instr.Condition);
             var src = Operand(1);
@@ -710,7 +712,7 @@ namespace Reko.Arch.Arc
             if (instr.Operands[0] is MemoryOperand mop)
             {
                 var (_, ea) = RewriteEa(mop, false);
-                m.Call(ea, 0, instr.InstructionClass);
+                m.Call(ea!, 0, instr.InstructionClass);
                 return;
             }
             EmitUnitTest(instr, "Unimplemented J instruction");
@@ -737,12 +739,12 @@ namespace Reko.Arch.Arc
                 MaybeCast(dst, m.Mem(dt, ea));
                 break;
             case AddressWritebackMode.ab:
-                var reg = binder.EnsureRegister(baseReg);
+                var reg = binder.EnsureRegister(baseReg!);
                 MaybeCast(dst, m.Mem(dt, reg));
                 m.Assign(reg, ea);
                 break;
             case AddressWritebackMode.aw:
-                reg = binder.EnsureRegister(baseReg);
+                reg = binder.EnsureRegister(baseReg!);
                 m.Assign(reg, ea);
                 MaybeCast(dst, m.Mem(dt, reg));
                 break;
@@ -855,12 +857,12 @@ namespace Reko.Arch.Arc
                 MaybeSlice(m.Mem(dt, ea), src);
                 break;
             case AddressWritebackMode.aw:
-                var reg = binder.EnsureRegister(baseReg);
+                var reg = binder.EnsureRegister(baseReg!);
                 m.Assign(reg, ea);
                 MaybeSlice(m.Mem(dt, reg), src);
                 break;
             case AddressWritebackMode.ab:
-                reg = binder.EnsureRegister(baseReg);
+                reg = binder.EnsureRegister(baseReg!);
                 MaybeSlice(m.Mem(dt, reg), src);
                 m.Assign(reg, ea);
                 break;

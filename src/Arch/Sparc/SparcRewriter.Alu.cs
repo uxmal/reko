@@ -35,8 +35,8 @@ namespace Reko.Arch.Sparc
         private void RewriteAddxSubx(Func<Expression,Expression,Expression> op, bool emitCc)
         {
             var dst = RewriteRegister(2);
-            var src1 = RewriteOp(0);
-            var src2 = RewriteOp(1);
+            var src1 = RewriteOp(0)!;
+            var src2 = RewriteOp(1)!;
             var C = binder.EnsureFlagGroup(arch.Registers.C);
             m.Assign(
                 dst,
@@ -50,8 +50,8 @@ namespace Reko.Arch.Sparc
         private void RewriteAlu(Func<Expression,Expression,Expression> op, bool negateOp2)
         {
             var dst = RewriteRegister(2);
-            var src1 = RewriteOp(0);
-            var src2 = RewriteOp(1);
+            var src1 = RewriteOp(0)!;
+            var src2 = RewriteOp(1)!;
             if (negateOp2)
             {
                 src2 = m.Comp(src2);
@@ -73,8 +73,8 @@ namespace Reko.Arch.Sparc
 
         private void RewriteLdstub()
         {
-            var mem = (MemoryAccess)RewriteOp(0);
-            var dst = RewriteOp(1);
+            var mem = (MemoryAccess)RewriteOp(0)!;
+            var dst = RewriteOp(1)!;
             var bTmp = binder.CreateTemporary(PrimitiveType.Byte);
             var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(dst.DataType.BitSize - bTmp.DataType.BitSize));
             var intrinsic = host.Intrinsic("__ldstub", false, bTmp.DataType, m.AddrOf(arch.PointerType, mem));
@@ -85,8 +85,8 @@ namespace Reko.Arch.Sparc
 
         private void RewriteLoad(PrimitiveType size)
         {
-            var dst = RewriteOp(instrCur.Operands[1]);
-            var src = RewriteMemOp(instrCur.Operands[0], size);
+            var dst = RewriteOp(instrCur.Operands[1])!;
+            var src = RewriteMemOp(instrCur.Operands[0], size)!;
             if (size.Size < dst.DataType.Size)
             {
                 size = PrimitiveType.Create(size.Domain, dst.DataType.BitSize);
@@ -97,9 +97,9 @@ namespace Reko.Arch.Sparc
 
         private void RewriteMulscc()
         {
-            var dst = RewriteOp(instrCur.Operands[2]);
-            var src1 = RewriteOp(instrCur.Operands[0]);
-            var src2 = RewriteOp(instrCur.Operands[1]);
+            var dst = RewriteOp(instrCur.Operands[2])!;
+            var src1 = RewriteOp(instrCur.Operands[0])!;
+            var src2 = RewriteOp(instrCur.Operands[1])!;
             m.Assign(
                 dst,
                 host.Intrinsic("__mulscc", true, PrimitiveType.Int32, src1, src2));
@@ -108,15 +108,15 @@ namespace Reko.Arch.Sparc
 
         private void RewriteRestore()
         {
-            var dst = RewriteOp(instrCur.Operands[2]);
-            var src1 = RewriteOp(instrCur.Operands[0]);
-            var src2 = RewriteOp(instrCur.Operands[1]);
+            var dst = RewriteOp(instrCur.Operands[2])!;
+            var src1 = RewriteOp(instrCur.Operands[0])!;
+            var src2 = RewriteOp(instrCur.Operands[1])!;
             RestoreRegisterWindow(dst, src1, src2);
         }
 
         private void RestoreRegisterWindow(Expression dst, Expression src1, Expression src2)
         {
-            Identifier tmp = null;
+            Identifier? tmp = null;
             if (dst is Identifier identifier && identifier.Storage != arch.Registers.g0)
             {
                 tmp = binder.CreateTemporary(dst.DataType);
@@ -135,10 +135,10 @@ namespace Reko.Arch.Sparc
 
         private void RewriteSave()
         {
-            var dst = RewriteOp(2);
-            var src1 = RewriteOp(0);
-            var src2 = RewriteOp(1);
-            Identifier tmp = null;
+            var dst = RewriteOp(2)!;
+            var src1 = RewriteOp(0)!;
+            var src2 = RewriteOp(1)!;
+            Identifier? tmp = null;
             if (dst is Identifier)
             {
                 tmp = binder.CreateTemporary(dst.DataType);
@@ -180,7 +180,7 @@ namespace Reko.Arch.Sparc
 
         private void RewriteStore(PrimitiveType size)
         {
-            var src = RewriteOp(instrCur.Operands[0]);
+            var src = RewriteOp(instrCur.Operands[0])!;
             var dst = RewriteMemOp(instrCur.Operands[1], size);
             if (size.Size < src.DataType.Size)
             {

@@ -19,6 +19,8 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Emulation;
+using Reko.Core.Loading;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -46,6 +48,11 @@ namespace Reko.ImageLoaders.OdbgScript
             : base(imageLoader.Services, imageLoader.Filename, imageLoader.RawImage)
         {
             this.originalImageLoader = imageLoader;
+            this.Architecture = null!;
+            this.debugger = null!;
+            this.scriptInterpreter = null!;
+            this.ImageMap = null!;
+            this.OriginalEntryPoint = null!;
         }
 
         public override Address PreferredBaseAddress
@@ -62,7 +69,7 @@ namespace Reko.ImageLoaders.OdbgScript
         /// </summary>
         public Address OriginalEntryPoint { get; set; }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             // First load the file. This gives us a (writeable) image and 
             // the packed entry point.
@@ -82,8 +89,8 @@ namespace Reko.ImageLoaders.OdbgScript
             emu.BeforeStart += emu_BeforeStart;
             emu.ExceptionRaised += emu_ExceptionRaised;
 
-            var stackSeg = envEmu.InitializeStack(emu, rr.EntryPoints[0].ProcessorState);
-            scriptInterpreter.Script = LoadScript(scriptInterpreter.Host, Argument);
+            var stackSeg = envEmu.InitializeStack(emu, rr.EntryPoints[0].ProcessorState!);
+            scriptInterpreter.Script = LoadScript(scriptInterpreter.Host, Argument!);
             emu.Start();
             envEmu.TearDownStack(stackSeg);
 
@@ -94,7 +101,7 @@ namespace Reko.ImageLoaders.OdbgScript
             return program;
         }
 
-        public override ImageSegment AddSegmentReference(Address addr, ushort seg)
+        public override ImageSegment? AddSegmentReference(Address addr, ushort seg)
         {
             return originalImageLoader.AddSegmentReference(addr, seg);
         }

@@ -34,7 +34,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
         {
             var rt = (RiscVRt) (rela.Info & 0xFF);
             ulong S = symbol.Value;
@@ -93,7 +93,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rela)
         {
             var rt = (RiscVRt)(rela.Info & 0xFF);
             ulong S = symbol.Value;

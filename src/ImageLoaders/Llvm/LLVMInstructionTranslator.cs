@@ -118,12 +118,12 @@ namespace Reko.ImageLoaders.LLVM
             var args = new List<Expression>();
             foreach (var arg in call.Arguments)
             {
-                var type = builder.TranslateType(arg.Type);
-                var irArg = MakeValueExpression(arg.Value, type);
+                var type = builder.TranslateType(arg.Type!);
+                var irArg = MakeValueExpression(arg.Value!, type);
                 args.Add(irArg);
             }
             var retType = builder.TranslateType(call.FnType);
-            var fn = MakeValueExpression(call.FnPtr, null);
+            var fn = MakeValueExpression(call.FnPtr, null!);
             var app = m.Fn(fn, retType, args.ToArray());
             if (call.Result != null)
             {
@@ -139,9 +139,9 @@ namespace Reko.ImageLoaders.LLVM
 
         public int VisitCmp(CmpInstruction cmp)
         {
-            var srcType = builder.TranslateType(cmp.Type);
-            var op1 = MakeValueExpression(cmp.Op1, srcType);
-            var op2 = MakeValueExpression(cmp.Op2, srcType);
+            var srcType = builder.TranslateType(cmp.Type!);
+            var op1 = MakeValueExpression(cmp.Op1!, srcType);
+            var op2 = MakeValueExpression(cmp.Op2!, srcType);
             var dst = m.CreateLocalId("loc", PrimitiveType.Bool);
             Func<Expression, Expression, Expression> fn;
             if (cmp.Operator == TokenType.icmp)
@@ -233,7 +233,7 @@ namespace Reko.ImageLoaders.LLVM
         private Expression GetElementPtr(
             LLVMType ptrType, 
             Value ptrValue, 
-            List<Tuple<LLVMType, Value>> indices)
+            List<(LLVMType, Value?)> indices)
         {
             var type = builder.TranslateType(ptrType);
             var e = MakeValueExpression(ptrValue, type);
@@ -241,7 +241,7 @@ namespace Reko.ImageLoaders.LLVM
             {
                 long? idx = null;
                 var dt = builder.TranslateType(index.Item1);
-                var i = MakeValueExpression(index.Item2, dt);
+                var i = MakeValueExpression(index.Item2!, dt);
                 if (i is IrConstant con)
                 {
                     idx = Convert.ToInt64(con.ToInt64());
@@ -274,7 +274,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public int VisitLoad(Load load)
         {
-            m.EnsureBlock(null);
+            m.EnsureBlock(null!);
             var dstType = builder.TranslateType(load.DstType);
             var srcType = builder.TranslateType(load.SrcType);
             var ea = MakeValueExpression(load.Src, srcType);
@@ -285,7 +285,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public int VisitPhi(PhiInstruction phi)
         {
-            m.EnsureBlock(null);
+            m.EnsureBlock(null!);
             var dstType = builder.TranslateType(phi.Type);
             var dst = m.CreateLocalId("loc", dstType);
             var stm = m.Emit(new PhiAssignment(dst));
@@ -396,7 +396,7 @@ namespace Reko.ImageLoaders.LLVM
             case GlobalId global:
                 return builder.Globals[global.Name];
             case GetElementPtrExpr get:
-                return GetElementPtr(get.PointerType, get.Pointer, get.Indices);
+                return GetElementPtr(get.PointerType!, get.Pointer!, get.Indices!);
             }
             throw new NotImplementedException(string.Format("MakeValueExpression: {0} {1}", value.GetType().Name, value.ToString() ?? "(null)"));
         }

@@ -260,7 +260,7 @@ namespace Reko.ImageLoaders.Hunk
         /// Read a length-prefixed string.
         /// </summary>
         /// <returns>null if the string runs off the end of the image.</returns>
-        public virtual string ReadString()
+        public virtual string? ReadString()
         {
             int num_longs;
             num_longs = this.read_long();
@@ -278,7 +278,7 @@ namespace Reko.ImageLoaders.Hunk
             }
         }
 
-        public string ReadSizedString(int num_longs)
+        public string? ReadSizedString(int num_longs)
         {
             int size = (num_longs & 0xFFFFFF) * 4;
             var data = f.ReadBytes(size);
@@ -550,7 +550,7 @@ namespace Reko.ImageLoaders.Hunk
             }
         }
 
-        public virtual TextHunk FindFirstCodeHunk()
+        public virtual TextHunk? FindFirstCodeHunk()
         {
             foreach (var hunk in this.hunks)
             {
@@ -586,7 +586,7 @@ namespace Reko.ImageLoaders.Hunk
                 throw new BadImageFormatException(string.Format("{0} has no overlay manager hunk.", hunk.HunkType));
             
             // check overlay manager
-            var overlay_mgr_data = overlayManagerHunk.Data;
+            var overlay_mgr_data = overlayManagerHunk.Data!;
             uint magic = ByteMemoryArea.ReadBeUInt32(overlay_mgr_data, 4);
             if (magic != 0xABCD)
                 throw new BadImageFormatException("No valid overlay manager found.");
@@ -745,7 +745,7 @@ namespace Reko.ImageLoaders.Hunk
                 if (ext_size < 0)
                     throw new BadImageFormatException(string.Format("{0} has invalid size.", hunk.HunkType));
                 // ext name
-                string ext_name = this.ReadSizedString(ext_size);
+                string? ext_name = this.ReadSizedString(ext_size);
                 if (ext_name == null)
                     throw new BadImageFormatException(string.Format("{0} has invalid name.", hunk.HunkType));
                 else if (ext_name.Length == 0)
@@ -889,8 +889,8 @@ namespace Reko.ImageLoaders.Hunk
 
     public class Lib
     {
-        public List<LibUnit> units;
+        public List<LibUnit>? units;
         public int lib_no;
-        public IndexHunk index;
+        public IndexHunk? index;
     }
 }

@@ -42,7 +42,7 @@ namespace Reko.ImageLoaders.Elf
         public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
             var entries = shdr.Size / shdr.EntrySize;
-            var symtab = shdr.LinkedSection;
+            var symtab = shdr.LinkedSection!;
             var rdr = loader.CreateReader(shdr.FileOffset);
             for (ulong i = 0; i < entries; ++i)
             {
@@ -75,7 +75,7 @@ namespace Reko.ImageLoaders.Elf
         public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
             var entries = shdr.EntryCount();
-            var symtab = shdr.LinkedSection;
+            var symtab = shdr.LinkedSection!;
             if (symtab.FileOffset == 0)
                 return;
             var rdr = loader.CreateReader(shdr.FileOffset);

@@ -68,17 +68,17 @@ namespace Reko.Environments.Windows
         {
             this.arch = arch;
             this.iregs = new[] { "r4", "r5", "r6", "r7" }
-                .Select(r => arch.GetRegister(r))
+                .Select(r => arch.GetRegister(r)!)
                 .ToArray();
             this.fregs = new[] { "f12", "f13", "f14", "f15" }
-                .Select(r => arch.GetRegister(r))
+                .Select(r => arch.GetRegister(r)!)
                 .ToArray();
-            this.iretLo = arch.GetRegister("r2");
-            this.iretHi = arch.GetRegister("r3");
-            this.fret = arch.GetRegister("f0");
+            this.iretLo = arch.GetRegister("r2")!;
+            this.iretHi = arch.GetRegister("r3")!;
+            this.fret = arch.GetRegister("f0")!;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(arch.WordWidth.Size, 0x10);
             if (dtRet != null)

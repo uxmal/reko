@@ -455,7 +455,7 @@ namespace Reko.Analysis
             {
                 foreach (var de in grfs)
                 {
-                    var grfNew = arch.GetFlagGroup(de.Key, de.Value);
+                    var grfNew = arch.GetFlagGroup(de.Key, de.Value)!;
                     yield return binder.EnsureFlagGroup(grfNew);
                 }
             }
@@ -630,7 +630,7 @@ namespace Reko.Analysis
                 }
                 foreach (var de in calleeFlow.grfTrashed)
                 {
-                    var grfs = arch.GetFlagGroup(de.Key, de.Value);
+                    var grfs = arch.GetFlagGroup(de.Key, de.Value)!;
                     foreach (var grf in arch.GetSubFlags(grfs))
                     {
                         var d = ssa.Procedure.Frame.EnsureFlagGroup(grf);

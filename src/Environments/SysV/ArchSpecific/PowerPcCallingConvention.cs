@@ -31,22 +31,22 @@ namespace Reko.Environments.SysV.ArchSpecific
 {
     public class PowerPcCallingConvention : CallingConvention
     {
-        private IProcessorArchitecture arch;
-        private RegisterStorage[] fregs;
-        private RegisterStorage[] iregs;
+        private readonly IProcessorArchitecture arch;
+        private readonly RegisterStorage[] fregs;
+        private readonly RegisterStorage[] iregs;
 
-        public PowerPcCallingConvention(IProcessorArchitecture  arch)
+        public PowerPcCallingConvention(IProcessorArchitecture arch)
         {
             this.arch = arch;
             this.iregs = new[] { "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10" }
-                .Select(r => arch.GetRegister(r))
+                .Select(r => arch.GetRegister(r)!)
                 .ToArray();
             this.fregs = new[] { "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8" }
-                .Select(r => arch.GetRegister(r))
+                .Select(r => arch.GetRegister(r)!)
                 .ToArray();
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             int stackOffset = 0x40; //$BUG: look this up!
             ccr.LowLevelDetails(arch.WordWidth.Size, stackOffset);

@@ -171,12 +171,12 @@ function(add_c2xml_target)
 
 	add_custom_command(
 		OUTPUT ${c2xml_OUTPUT}
-		COMMAND ${c2xml_exe}
-			-a "${c2xml_REKO_ARCH}"
-			-e "${c2xml_REKO_ENV}"
-			-d "${c2xml_DIALECT}"
-			${c2xml_HEADER}
-			${c2xml_OUTPUT}
+			COMMAND ${c2xml_exe}
+				-a "${c2xml_REKO_ARCH}"
+				-e "${c2xml_REKO_ENV}"
+				-d "${c2xml_DIALECT}"
+				${c2xml_HEADER}
+				${c2xml_OUTPUT}
 	)
 
 	add_custom_target(
@@ -247,6 +247,24 @@ function(add_c2xml_target_windows main_target header)
 	add_c2xml_target(
 		REKO_ARCH "x86-protected-32"
 		REKO_ENV "win32"
+		REQUIRED_ARCHITECTURES "X86"
+		REQUIRED_ENVIRONMENTS "Windows"
+		DIALECT "msvc"
+		TARGET_NAME "${target_name}"
+		HEADER ${REKO_SRC}/Environments/Windows/${header}.inc
+		OUTPUT ${REKO_SRC}/Environments/Windows/${header}.xml
+	)
+	add_dependencies(${main_target} ${target_name})
+endfunction()
+
+
+function(add_c2xml_target_win16 main_target header)
+	string(REPLACE "/" "_" target ${header})
+	set(target_name "gen_c2xml_windows_${target}")
+
+	add_c2xml_target(
+		REKO_ARCH "x86-protected-16"
+		REKO_ENV "win16"
 		REQUIRED_ARCHITECTURES "X86"
 		REQUIRED_ENVIRONMENTS "Windows"
 		DIALECT "msvc"
@@ -378,6 +396,7 @@ elseif("${TARGET}" STREQUAL "gen_c2xml_windows")
 	add_custom_target(gen_c2xml_windows)
 	add_c2xml_target_windows(gen_c2xml_windows msvcrt)
 	add_c2xml_target_windows(gen_c2xml_windows ntoskrnl)
+	add_c2xml_target_win16(gen_c2xml_windows win16c)
 elseif("${TARGET}" STREQUAL "gen_c2xml_os2")
 	add_custom_target(gen_c2xml_os2)
 	add_c2xml_target_os2(gen_c2xml_os2 os2-16)
@@ -387,6 +406,7 @@ elseif("${TARGET}" STREQUAL "gen_c2xml_os2")
 elseif("${TARGET}" STREQUAL "gen_c2xml_sysv")
 	add_custom_target(gen_c2xml_sysv)
 	add_c2xml_target_sysv(gen_c2xml_sysv lp32)
+	add_c2xml_target_sysv(gen_c2xml_sysv lp64)
 	add_c2xml_target_sysv(gen_c2xml_sysv libc.so)
 	add_c2xml_target_sysv(gen_c2xml_sysv Xlib)
 	add_c2xml_target_sysv(gen_c2xml_sysv opengl)
@@ -480,7 +500,7 @@ elseif("${TARGET}" STREQUAL "create_runtime_nupkg")
 			-c ${CMAKE_BUILD_TYPE}
 			-p:Platform=${REKO_PLATFORM}
 			-p:PackageVersion=${REKO_VERSION}
-			${REKO_SRC}/Drivers/Runtime/Runtime.csproj
+			${REKO_SRC}/Installers/Runtime/Runtime.csproj
 	)
 elseif("${TARGET}" STREQUAL "create_msi_wix")
 	if(NOT DEFINED WIX_ROOT)
@@ -501,9 +521,9 @@ elseif("${TARGET}" STREQUAL "create_msi_wix")
 			${REKO_SRC}/Drivers/WindowsDecompiler
 			${WINDRIVER_OUTDIR}
 			${REKO_EXE_FRAMEWORK}
-			${REKO_SRC}/WixInstaller/Components.wxi.template
+			${REKO_SRC}/Installers/WixInstaller/Components.wxi.template
 		OUTPUT
-			${REKO_SRC}/WixInstaller/.skipwixpecupdate
+			${REKO_SRC}/Installers/WixInstaller/.skipwixpecupdate
 		TARGET_NAME "update_wix_spec"
 	)
 
@@ -516,7 +536,7 @@ elseif("${TARGET}" STREQUAL "create_msi_wix")
 		REQUIRED
 	)
 
-	set(WIX_CANDLE_INPUT ${REKO_SRC}/WixInstaller/Product.wxs)
+	set(WIX_CANDLE_INPUT ${REKO_SRC}/Installers/WixInstaller/Product.wxs)
 	set(WIX_CANDLE_OUTPUT ${CMAKE_BINARY_DIR}/wix/Reko.wixobj)
 	set(WIX_LIGHT_OUTPUT ${CMAKE_BINARY_DIR}/wix/Reko-${REKO_VERSION}.msi)
 
@@ -579,7 +599,7 @@ elseif("${TARGET}" STREQUAL "update_runtime_nuspec")
 	#
 	# Create a new target to update the Runtime nuspec
 	#
-	set(RUNTIME_OUTDIR ${REKO_SRC}/Drivers/Runtime/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_LIB_FRAMEWORK})
+	set(RUNTIME_OUTDIR ${REKO_SRC}/Installers/Runtime/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_LIB_FRAMEWORK})
 	RUN_DOTNET(${REKO_SRC}/tools/specGen/specGen.csproj
 		NO_RESTORE
 		NO_CLEAN
@@ -587,12 +607,12 @@ elseif("${TARGET}" STREQUAL "update_runtime_nuspec")
 		PLATFORM ${REKO_PLATFORM}
 		ARGUMENTS 
 			nuget
-			${REKO_SRC}/Drivers/Runtime
+			${REKO_SRC}/Installers/Runtime
 			${RUNTIME_OUTDIR}
 			${REKO_LIB_FRAMEWORK}
-			${REKO_SRC}/Drivers/Runtime/Runtime.nuspec.template
+			${REKO_SRC}/Installers/Runtime/Runtime.nuspec.template
 		OUTPUT
-			${REKO_SRC}/Drivers/Runtime/.skipnuspecupdate
+			${REKO_SRC}/Installers/Runtime/.skipnuspecupdate
 		TARGET_NAME "update_runtime_nuspec"
 	)
 elseif("${TARGET}" STREQUAL "create_release")
@@ -640,7 +660,7 @@ elseif("${TARGET}" STREQUAL "create_release")
 	add_dependencies(create_release create_release_zip_cmdline)
 
 	add_copy_target(
-		SRC_PATH ${REKO_SRC}/Drivers/Runtime/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/Reko.Runtime.${REKO_VERSION}.nupkg
+		SRC_PATH ${REKO_SRC}/Installers/Runtime/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/Reko.Runtime.${REKO_VERSION}.nupkg
 		DEST_PATH ${artifacts_dir}/Reko.Runtime.${build_version}-${build_shorthash}.nupkg
 		OUT_TARGET_NAME copy_runtime_nupkg_target
 	)

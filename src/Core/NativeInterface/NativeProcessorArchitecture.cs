@@ -1,19 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
-using Reko.Core.Rtl;
-using Reko.Core.Types;
-using Reko.Core.NativeInterface.Interfaces;
-using System.Runtime.InteropServices;
 using Reko.Core.Memory;
+using Reko.Core.NativeInterface.Interfaces;
+using Reko.Core.Rtl;
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Reko.Core.NativeInterface
 {
-	public class NativeProcessorArchitecture : ProcessorArchitecture
+    public class NativeProcessorArchitecture : ProcessorArchitecture
 	{
 		private IntPtr handle;
 		private ILibraryLoader loader;
@@ -45,11 +41,6 @@ namespace Reko.Core.NativeInterface
 		{
 			throw new NotImplementedException();
 		}
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
-        }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
 		{

@@ -37,12 +37,6 @@ namespace Reko.UnitTests.Arch.LatticeMico
 
         public override Address LoadAddress => addrLoad;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var rdr = arch.CreateImageReader(mem, 0);
-            return arch.CreateRewriter(rdr, arch.CreateProcessorState(), binder, host);
-        }
-
         [Test]
         public void Lm32Rw_Invalid()
         {

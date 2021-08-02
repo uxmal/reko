@@ -23,12 +23,8 @@
 using Reko.Arch.Z80;
 using Reko.Core;
 using Reko.Core.CLanguage;
-using Reko.Core.Lib;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Reko.Environments.ZX81
@@ -46,11 +42,6 @@ namespace Reko.Environments.ZX81
             encoding = new ZX81Encoding();
         }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            return new DefaultPlatformEmulator();
-        }
-
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             return new HashSet<RegisterStorage> { Registers.sp };
@@ -62,12 +53,12 @@ namespace Reko.Environments.ZX81
             return new HashSet<RegisterStorage> { Registers.a };
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -95,7 +86,7 @@ namespace Reko.Environments.ZX81
             }
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }

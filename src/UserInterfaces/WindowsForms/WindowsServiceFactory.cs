@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
@@ -25,6 +27,7 @@ using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
 using Reko.Loading;
+using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.ComponentModel.Design;
@@ -55,6 +58,16 @@ namespace Reko.UserInterfaces.WindowsForms
         public ICodeViewerService CreateCodeViewerService()
         {
             return new CodeViewerServiceImpl(services);
+        }
+
+        public ITextFileEditorService CreateTextFileEditorService()
+        {
+            return new TextFileViewerServiceImpl(services);
+        }
+
+        public ITextFileEditor CreateTextFileEditor()
+        {
+            return new TextFileEditor();
         }
 
         public IConfigurationService CreateDecompilerConfiguration()
@@ -216,6 +229,23 @@ namespace Reko.UserInterfaces.WindowsForms
         public IUserEventService CreateUserEventService()
         {
             return new UserEventService();
+        }
+
+        public IOutputService CreateOutputService()
+        {
+            var outputSvc = new OutputWindowInteractor();
+            outputSvc.Attach(mainForm.OutputWindowSources, mainForm.OutputWindowPanel);
+            return outputSvc;
+        }
+
+        public IStackTraceService CreateStackTraceService()
+        {
+            return new StackTraceService(services, mainForm);
+        }
+
+        public IHexDisassemblerService CreateHexDisassemblerService()
+        {
+            return new HexDisassemblerService(services);
         }
     }
 }

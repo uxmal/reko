@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Typing
             this.program = new Program { Architecture = arch, Platform = new DefaultPlatform(sc, arch) };
             this.exa = new ExpressionTypeAscender(program, store, factory);
             this.exd = new ExpressionTypeDescender(program, store, factory);
-            store.EnsureExpressionTypeVariable(factory, program.Globals, "globals_t");
+            store.EnsureExpressionTypeVariable(factory, 0, program.Globals, "globals_t");
         }
 
         private void Given_GlobalVariable(Address addr, DataType dt)
@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Typing
         {
             using (FileUnitTester fut = new FileUnitTester(outputFileName))
             {
-                store.Write(fut.TextWriter);
+                store.Write(false, fut.TextWriter);
                 fut.AssertFilesEqual();
             }
         }
@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Typing
         {
             var p = Id("p", PrimitiveType.Word32);
             var sig = FunctionType.Action(new[] { Id("r", PrimitiveType.Real32) });
-            store.EnsureExpressionTypeVariable(factory, p);
+            store.EnsureExpressionTypeVariable(factory, 0, p);
             p.TypeVariable.OriginalDataType = PointerTo(sig);
             p.TypeVariable.DataType = PointerTo(sig);
             RunTest(
@@ -275,7 +275,7 @@ namespace Reko.UnitTests.Typing
         public void ExdReferenceToUnknown()
         {
             var p = Id("p", PrimitiveType.Word32);
-            store.EnsureExpressionTypeVariable(factory, p);
+            store.EnsureExpressionTypeVariable(factory, 0, p);
             p.TypeVariable.OriginalDataType = PointerTo(
                 new TypeReference("UNKNOWN_TYPE", new UnknownType()));
             p.TypeVariable.DataType = PointerTo(

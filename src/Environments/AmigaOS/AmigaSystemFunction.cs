@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -30,7 +30,7 @@ namespace Reko.Environments.AmigaOS
     public class AmigaSystemFunction
     {
         public int Offset;
-        public string Name;
-        public SerializedSignature Signature;
+        public string? Name;    //$TODO: C#9.0 init
+        public SerializedSignature? Signature;
     }
 }

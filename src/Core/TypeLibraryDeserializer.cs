@@ -84,7 +84,7 @@ namespace Reko.Core
                     var globalType = g.Type!;
                     var globalName = g.Name!;
                     var dt = this.LoadType(globalType);
-                    var sym = ImageSymbol.Create(SymbolType.Data, platform.Architecture, null, globalName);
+                    var sym = ImageSymbol.Create(SymbolType.Data, platform.Architecture, null!, globalName);
                     mod.GlobalsByName[globalName] = sym;
                     if (g.Ordinal != GlobalVariable_v1.NoOrdinal)
                     {
@@ -128,18 +128,25 @@ namespace Reko.Core
                 if (signature is null)
                     return;
                 library.Signatures[sp.Name] = signature;
-                var mod = EnsureModule(this.moduleName, this.library);
-                var svc = new SystemService
+                if (platform.TryParseAddress(sp.Address, out var addr))
                 {
-                    ModuleName = mod.ModuleName,
-                    Name = sp.Name,
-                    Signature = signature,
-                };
-                mod.ServicesByName[sp.Name] = svc;    //$BUGBUG: catch dupes?
+                    this.library.Procedures[addr] = (sp.Name, signature);
+                }
+                else
+                {
+                    var mod = EnsureModule(this.moduleName, this.library);
+                    var svc = new SystemService
+                    {
+                        ModuleName = mod.ModuleName,
+                        Name = sp.Name,
+                        Signature = signature,
+                    };
+                    mod.ServicesByName[sp.Name] = svc;    //$BUGBUG: catch dupes?
 
-                if (sp.Ordinal != Procedure_v1.NoOrdinal)
-                {
-                    mod.ServicesByOrdinal[sp.Ordinal] = svc;
+                    if (sp.Ordinal != Procedure_v1.NoOrdinal)
+                    {
+                        mod.ServicesByOrdinal[sp.Ordinal] = svc;
+                    }
                 }
             }
             catch (Exception ex)
@@ -272,7 +279,12 @@ namespace Reko.Core
                     dt = new UnknownType(platform.PointerType.Size);
                 }
             }
-            return new Pointer(dt, platform.PointerType.BitSize) { Qualifier = pointer.Qualifier };
+            int bitSize = platform.PointerType.BitSize;
+            if (pointer.PointerSize != 0)
+            {
+                bitSize = pointer.PointerSize * platform.Architecture.MemoryGranularity;
+            }
+            return new Pointer(dt, bitSize) { Qualifier = pointer.Qualifier };
         }
 
         public DataType VisitMemberPointer(MemberPointer_v1 memptr)

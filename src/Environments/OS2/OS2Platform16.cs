@@ -37,9 +37,12 @@ namespace Reko.Environments.OS2
 
         public override string DefaultCallingConvention => "pascal";
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
         {
-            throw new NotImplementedException();
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
@@ -66,7 +69,7 @@ namespace Reko.Environments.OS2
             };
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             if (vector == 3)
             {
@@ -96,7 +99,7 @@ namespace Reko.Environments.OS2
             throw new NotImplementedException();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             if (ccName == null)
                 ccName = "";
@@ -115,7 +118,7 @@ namespace Reko.Environments.OS2
             throw new NotSupportedException(string.Format("Calling convention '{0}' is not supported.", ccName));
         }
 
-        public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
+        public override ExternalProcedure? LookupProcedureByOrdinal(string? moduleName, int ordinal)
         {
             EnsureTypeLibraries(PlatformIdentifier);
             foreach (var tl in Metadata.Modules.Values.Where(t => string.Compare(t.ModuleName, moduleName, true) == 0))
@@ -123,10 +126,10 @@ namespace Reko.Environments.OS2
                 if (tl.ServicesByOrdinal.TryGetValue(ordinal, out SystemService svc))
                 {
                     // Found the name of the imported procedure, now try to find its signature.
-                    string procName = svc.Name;
+                    string procName = svc.Name!;
                     if (!Metadata.Signatures.TryGetValue(procName, out var sig))
                     {
-                        return new ExternalProcedure(svc.Name, svc.Signature);
+                        return new ExternalProcedure(procName, svc.Signature!);
                     }
                     else
                     {
@@ -138,15 +141,15 @@ namespace Reko.Environments.OS2
             return null;
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             EnsureTypeLibraries(PlatformIdentifier);
             if (moduleName != null && Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
             {
                 if (mod.ServicesByName.TryGetValue(procName, out SystemService svc))
                 {
-                    var chr = LookupCharacteristicsByName(svc.Name);
-                    return new ExternalProcedure(svc.Name, svc.Signature, chr);
+                    var chr = LookupCharacteristicsByName(svc.Name!);
+                    return new ExternalProcedure(svc.Name!, svc.Signature!, chr);
                 }
                 else
                 {

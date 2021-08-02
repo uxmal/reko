@@ -47,11 +47,6 @@ namespace Reko.UnitTests.Arch.i8051
         public override Address LoadAddress => Address.Ptr16(0);
 
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return new i8051Rewriter(arch, mem.CreateBeReader(0), new i8051State(arch), binder, host);
-        }
-
         [Test]
         public void I8051_rw_nop()
         {

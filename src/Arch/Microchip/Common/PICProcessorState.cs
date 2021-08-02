@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -95,10 +95,10 @@ namespace Reko.Arch.MicrochipPIC.Common
                 if (preg.HasAttachedRegs)
                 {
                     ival = 0;
-                    foreach (var sreg in preg.AttachedRegs)
+                    foreach (var sreg in preg.AttachedRegs!)
                     {
                         if (!IsValid(sreg))
-                            return Constant.Invalid;
+                            return InvalidConstant.Create(reg.DataType);
                         ival |= ValidRegsValues[sreg].ActualValue << (int)sreg.BitAddress;
                     }
                 }
@@ -108,7 +108,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 }
                 return Constant.Create(reg.DataType, ival);
             }
-            return Constant.Invalid;
+            return InvalidConstant.Create(reg.DataType);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 }
                 if (preg.HasAttachedRegs)
                 {
-                    preg.AttachedRegs.ForEach((sreg) => ValidRegs.Remove(sreg));
+                    preg.AttachedRegs!.ForEach((sreg) => ValidRegs.Remove(sreg));
                     return;
                 }
             }
@@ -138,7 +138,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             if (preg.HasAttachedRegs)
             {
-                preg.AttachedRegs.ForEach((sreg) => SetRegister(sreg, (uint)((ival >> (int)sreg.BitAddress) & sreg.BitMask)));
+                preg.AttachedRegs!.ForEach((sreg) => SetRegister(sreg, (uint)((ival >> (int)sreg.BitAddress) & sreg.BitMask)));
                 return;
             }
             ValidRegs.Add(preg);
@@ -179,7 +179,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// the specified signature.
         /// </summary>
         /// <param name="sigCallee">The signature of the called procedure.</param>
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
             ShrinkHWStack(-1);
         }

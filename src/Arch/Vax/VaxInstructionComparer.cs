@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -56,7 +56,7 @@ namespace Reko.Arch.Vax
                 if (NormalizeRegisters)
                     return true;
                 var rB = b as RegisterOperand;
-                return rA.Register == rB.Register;
+                return rB != null && rA.Register == rB.Register;
             }
             throw new NotImplementedException();
         }

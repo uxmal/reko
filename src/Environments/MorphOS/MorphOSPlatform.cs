@@ -34,17 +34,12 @@ namespace Reko.Environments.MorphOS
 
         public override string DefaultCallingConvention => "";
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
-
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -54,12 +49,12 @@ namespace Reko.Environments.MorphOS
             throw new NotImplementedException();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }

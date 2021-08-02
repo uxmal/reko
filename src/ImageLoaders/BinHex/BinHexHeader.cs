@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -26,9 +26,9 @@ namespace Reko.ImageLoaders.BinHex
 {
     public class BinHexHeader
     {
-        public string FileName;
-        public string FileType;
-        public string FileCreator;
+        public string? FileName;
+        public string? FileType;
+        public string? FileCreator;
         public ushort Flags;
         public int DataForkLength;
         public int ResourceForkLength;

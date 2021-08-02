@@ -18,22 +18,18 @@
  */
 #endregion
 
-using Reko.Scanning;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
-using Reko.Core.Operators;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Reko.Core.Serialization;
-using System.Linq;
 using System.ComponentModel.Design;
-using Reko.Core.Memory;
+using System.Linq;
 
 namespace Reko.UnitTests.Core
 {
@@ -111,11 +107,6 @@ namespace Reko.UnitTests.Core
         #region IProcessorArchitecture Members
 
             public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
             {
                 throw new NotImplementedException();
             }
@@ -216,26 +207,6 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg)
-            {
-                throw new NotImplementedException();
-            }
-
             public override void LoadUserOptions(Dictionary<string, object> options)
             {
                 throw new NotImplementedException();
@@ -297,7 +268,7 @@ namespace Reko.UnitTests.Core
             public override Constant GetRegister(RegisterStorage r)
             {
                 if (!regs.TryGetValue(r, out Constant c))
-                    c = Constant.Invalid;
+                    c = InvalidConstant.Create(r.DataType);
                 return c;
             }
 

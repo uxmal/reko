@@ -20,14 +20,11 @@
 
 using Reko.Core;
 using Reko.Core.CLanguage;
-using Reko.Core.Lib;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Environments.Cpm
 {
@@ -55,22 +52,17 @@ namespace Reko.Environments.Cpm
             set { base.MemoryMap = value; OnMemoryMapChanged(); }
         }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
-
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             return new HashSet<RegisterStorage>();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -93,12 +85,12 @@ namespace Reko.Environments.Cpm
             }
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }
 
-        public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             var e = instrs.GetEnumerator();
             if (!e.MoveNext())
@@ -127,15 +119,15 @@ namespace Reko.Environments.Cpm
                     var svcs = sDisp.Services
                         .Where(s => s.SyscallInfo != null)
                         .Select(s => (
-                            s.SyscallInfo.Build(this),
+                            s.SyscallInfo!.Build(this),
                             new ExternalProcedure(
-                                s.Name,
-                                sser.Deserialize(s.Signature, Architecture.CreateFrame()))))
+                                s.Name!,
+                                sser.Deserialize(s.Signature!, Architecture.CreateFrame())!)))
                         .ToList();
                     if (Architecture.TryParseAddress(sDisp.Address, out var addr))
                     {
                         var disp = new DispatchProcedure(
-                            sDisp.Name,
+                            sDisp.Name!,
                             svcs);
                         disps.Add(addr, disp);
                     }

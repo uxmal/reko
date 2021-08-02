@@ -285,14 +285,14 @@ complex) in f1:f4.
         {
             this.arch = arch;
             this.iregs = new[] { "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10" }
-                .Select(r => arch.GetRegister(r))
+                .Select(r => arch.GetRegister(r)!)
                 .ToArray();
             this.fregs = new[] { "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8" }
-                .Select(r => arch.GetRegister(r))
+                .Select(r => arch.GetRegister(r)!)
                 .ToArray();
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             //$TODO: full implementation needed. Currently can't handle varargs, args whose bit size > 64, or more than 8 args.
             int stackSaveOffset = 0x48;
@@ -322,7 +322,7 @@ complex) in f1:f4.
             }
         }
 
-        private (int, int)  GenerateReturn(ICallingConventionEmitter ccr, DataType dtRet)
+        private (int, int)  GenerateReturn(ICallingConventionEmitter ccr, DataType? dtRet)
         {
             if (dtRet == null || dtRet is VoidType)
             {

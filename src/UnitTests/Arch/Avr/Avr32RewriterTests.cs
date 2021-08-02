@@ -44,13 +44,6 @@ namespace Reko.UnitTests.Arch.Avr
 
         public override Address LoadAddress { get; }
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var rdr = Architecture.CreateImageReader(mem, 0);
-            var state = Architecture.CreateProcessorState();
-            return Architecture.CreateRewriter(rdr, state, binder, host);
-        }
-
         private void Given_Instruction(string hexBytes)
         {
             Given_HexString(hexBytes);

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Scripts;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -56,6 +57,7 @@ namespace Reko.Core.Services
         void Error(ICodeLocation location, string message, params object[] args);
         void Error(ICodeLocation location, Exception ex, string message);
         void Error(ICodeLocation location, Exception ex, string message, params object[] args);
+        void Error(ScriptError scriptError);
 
         void ShowStatus(string caption);
         void ShowProgress(string caption, int numerator, int denominator);
@@ -155,6 +157,15 @@ namespace Reko.Core.Services
                 location, 
                 string.Format(message, args),
                 ex.Message);
+        }
+
+        public void Error(ScriptError scriptError)
+        {
+            Debug.Print(
+                "Error: {0}: {1} {2}",
+                scriptError.FileName,
+                scriptError.Message,
+                scriptError.Exception.Message);
         }
 
         public void AddDiagnostic(Diagnostic d)

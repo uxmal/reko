@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Reko.Core.Configuration;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -51,10 +52,12 @@ namespace Reko.ImageLoaders.MzExe
             : base(loader.Services, loader.Filename, loader.RawImage)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            this.arch = cfgSvc.GetArchitecture("x86-real-16");
+            this.arch = cfgSvc.GetArchitecture("x86-real-16")!;
             this.platform = cfgSvc.GetEnvironment("ms-dos")
                 .Load(Services, arch);
             Validate(loader.ExeLoader);
+            this.imgLoaded = null!;
+            this.segmentMap = null!;
         }
 
         private void Validate(ExeImageLoader exe)
@@ -102,18 +105,18 @@ namespace Reko.ImageLoaders.MzExe
 
             var sym = ImageSymbol.Procedure(
                 program.Architecture,
-                Address.SegPtr((ushort)(lzCs + addrLoad.Selector), lzIp),
+                Address.SegPtr((ushort)(lzCs + addrLoad.Selector!), lzIp),
                 state: arch.CreateProcessorState());
             
             var imageSymbols = new SortedList<Address, ImageSymbol> { { sym.Address, sym } };
             List<ImageSymbol> entryPoints = new List<ImageSymbol>() { sym };
 			if (isLz91)
 			{
-				Relocate91(RawImage, addrLoad.Selector.Value, imgLoaded);
+				Relocate91(RawImage, addrLoad.Selector!.Value, imgLoaded);
 			}
 			else
 			{
-				Relocate90(RawImage, addrLoad.Selector.Value, imgLoaded);
+				Relocate90(RawImage, addrLoad.Selector!.Value, imgLoaded);
 			}
             return new RelocationResults(entryPoints, imageSymbols);
 		}
@@ -193,9 +196,9 @@ namespace Reko.ImageLoaders.MzExe
 			return segmentMap;
 		}
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
 		{
-			Unpack(RawImage, addrLoad);
+			Unpack(RawImage, addrLoad ?? PreferredBaseAddress );
             return new Program(segmentMap, arch, platform);
 		}
 

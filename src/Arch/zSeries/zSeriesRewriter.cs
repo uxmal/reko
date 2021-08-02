@@ -63,6 +63,8 @@ namespace Reko.Arch.zSeries
             this.host = host;
             this.dasm = new zSeriesDisassembler(arch, rdr).GetEnumerator();
             this.cmp = new ExpressionValueComparer();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

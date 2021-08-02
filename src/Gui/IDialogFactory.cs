@@ -40,7 +40,7 @@ namespace Reko.Gui
         IFindStringsDialog CreateFindStringDialog();
         IKeyBindingsDialog CreateKeyBindingsDialog(Dictionary<string, Dictionary<int, CommandID>> keyBindings);
         IOpenAsDialog CreateOpenAsDialog();
-        IProcedureDialog CreateProcedureDialog(Program program, Core.Serialization.Procedure_v1 sProc);
+        IProcedureDialog CreateProcedureDialog(Program program, Core.UserProcedure proc);
         IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program);
         IResourceEditor CreateResourceEditor();
         ISearchDialog CreateSearchDialog();

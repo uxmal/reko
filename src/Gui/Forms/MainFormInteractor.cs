@@ -23,6 +23,7 @@ using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
 using Reko.Core.Memory;
 using Reko.Core.Output;
+using Reko.Core.Scripts;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -67,6 +68,7 @@ namespace Reko.Gui.Forms
         private MruList mru;
         private string projectFileName;
         private IServiceContainer sc;
+        private ProjectFilesWatcher projectFilesWatcher;
         private IConfigurationService config;
         private ICommandTarget subWindowCommandTarget;
         private static string dirSettings;
@@ -94,6 +96,7 @@ namespace Reko.Gui.Forms
             CreateServices(svcFactory, sc);
             CreatePhaseInteractors(svcFactory);
             projectBrowserSvc.Clear();
+            this.projectFilesWatcher = new ProjectFilesWatcher(sc);
 
             var uiPrefsSvc = sc.RequireService<IUiPreferencesService>();
             // It's ok if we can't load settings, just proceed with defaults.
@@ -150,6 +153,9 @@ namespace Reko.Gui.Forms
 
             var codeViewSvc = svcFactory.CreateCodeViewerService();
             sc.AddService<ICodeViewerService>(codeViewSvc);
+
+            var textEditorSvc = svcFactory.CreateTextFileEditorService();
+            sc.AddService<ITextFileEditorService>(textEditorSvc);
 
             var segmentViewSvc = svcFactory.CreateImageSegmentService();
             sc.AddService(typeof(ImageSegmentService), segmentViewSvc);
@@ -211,6 +217,15 @@ namespace Reko.Gui.Forms
 
             var userEventSvc = svcFactory.CreateUserEventService();
             sc.AddService<IUserEventService>(userEventSvc);
+
+            var outputSvc = svcFactory.CreateOutputService();
+            sc.AddService<IOutputService>(outputSvc);
+
+            var stackTraceSvc = svcFactory.CreateStackTraceService();
+            sc.AddService<IStackTraceService>(stackTraceSvc);
+
+            var hexDasmSvc = svcFactory.CreateHexDisassemblerService();
+            sc.AddService<IHexDisassemblerService>(hexDasmSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
@@ -235,12 +250,6 @@ namespace Reko.Gui.Forms
             get { return form; }
         }
 
-        //$REFACTOR: only seems to be opened in unit tests?
-        public void OpenBinary(string file)
-        {
-            OpenBinary(file, (f) => pageInitial.OpenBinary(f), f => OpenBinaryAs(f));
-        }
-
         /// <summary>
         /// Master function for opening a new project.
         /// </summary>
@@ -254,7 +263,7 @@ namespace Reko.Gui.Forms
                 SwitchInteractor(InitialPageInteractor);
                 if (openAction(file) || onFailAction(file))
                 {
-                    if (file.EndsWith(Project_v3.FileExtension))
+                    if (file.EndsWith(Project_v5.FileExtension))
                     {
                         ProjectFileName = file;
                     }
@@ -263,7 +272,7 @@ namespace Reko.Gui.Forms
             catch (Exception ex)
             {
                 Debug.Print("Caught exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
-                uiSvc.ShowError(ex, "Couldn't open file '{0}'.", file);
+                uiSvc.ShowError(ex, "Couldn't open file '{0}'. {1}", file, ex.Message);
             }
             finally
             {
@@ -314,6 +323,80 @@ namespace Reko.Gui.Forms
             catch (Exception e)
             {
                 uiSvc.ShowError(e, "An error occured while parsing the metadata file {0}", fileName);
+            }
+        }
+
+        /// <summary>
+        /// Prompts the user for a script file and adds to the project.
+        /// </summary>
+        private void AddScriptFile()
+        {
+            var fileName = uiSvc.ShowOpenFileDialog(null);
+            if (fileName == null)
+                return;
+            AddScriptFile(fileName);
+        }
+
+        /// <summary>
+        /// Prompts the user for a creating new script file and adds it to the
+        /// project.
+        /// </summary>
+        private void CreateScriptFile()
+        {
+            var fileName = uiSvc.ShowSaveFileDialog(GetDefaultScriptPath());
+            if (fileName == null)
+                return;
+            var fsSvc = sc.RequireService<IFileSystemService>();
+            try
+            {
+                fsSvc.CopyFile(GetScriptTemplatePath(), fileName, true);
+                AddScriptFile(fileName);
+            }
+            catch (Exception e)
+            {
+                uiSvc.ShowError(
+                    e,
+                    "An error occured while creating the script file {0}.",
+                    fileName);
+            }
+        }
+
+        private string GetDefaultScriptPath()
+        {
+            var defaultFileName = "new_script.py";
+            return ProjectPersister.ConvertToAbsolutePath(
+                ProjectFileName, defaultFileName);
+        }
+
+        private string GetScriptTemplatePath()
+        {
+            var cfgSvc = sc.RequireService<IConfigurationService>();
+            var templDir = "Python";
+            var templName = "_new_script_template.py";
+            return cfgSvc.GetInstallationRelativePath(templDir, templName);
+        }
+
+        /// <summary>
+        /// Adds scripts file to the project.
+        /// </summary>
+        private void AddScriptFile(string fileName)
+        {
+            try
+            {
+                var script = loader.LoadScript(fileName);
+                if (script is null)
+                    return;
+                var project = decompilerSvc.Decompiler.Project;
+                if (project is null)
+                    return;
+                project.ScriptFiles.Add(script);
+            }
+            catch (Exception e)
+            {
+                uiSvc.ShowError(
+                    e,
+                    "An error occured while parsing the script file {0}.",
+                    fileName);
             }
         }
 
@@ -413,6 +496,7 @@ namespace Reko.Gui.Forms
             CloseAllDocumentWindows();
             sc.RequireService<IProjectBrowserService>().Clear();
             sc.RequireService<IProcedureListService>().Clear();
+            sc.RequireService<IStackTraceService>().Clear();
             diagnosticsSvc.ClearDiagnostics();
             decompilerSvc.Decompiler = null;
             this.ProjectFileName = null;
@@ -463,6 +547,7 @@ namespace Reko.Gui.Forms
             SwitchInteractor(this.InitialPageInteractor);
             
             CloseAllDocumentWindows();
+            sc.RequireService<IStackTraceService>().Clear();
             diagnosticsSvc.ClearDiagnostics();
             projectBrowserSvc.Reload();
             projectBrowserSvc.Show();
@@ -690,6 +775,12 @@ namespace Reko.Gui.Forms
             cgvSvc.ShowCallgraph(program, title);
         }
 
+        public void ToolsHexDisassembler()
+        {
+            var hexDasmSvc = sc.RequireService<IHexDisassemblerService>();
+            hexDasmSvc.Show();
+        }
+
         public void ToolsOptions()
         {
             using (var dlg = dlgFactory.CreateUserPreferencesDialog())
@@ -729,7 +820,7 @@ namespace Reko.Gui.Forms
                 string newName = uiSvc.ShowSaveFileDialog(
                     Path.ChangeExtension(
                         decompilerSvc.Decompiler.Project.Programs[0].Filename,
-                        Project_v3.FileExtension));
+                        Project_v5.FileExtension));
                 if (newName == null)
                     return false;
                 ProjectFileName = newName;
@@ -838,6 +929,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.FileAssemble:
                 case CmdIds.ViewProjectBrowser:
                 case CmdIds.ViewProcedureList:
+                case CmdIds.ToolsHexDisassembler:
                 case CmdIds.ToolsOptions:
                 case CmdIds.WindowsCascade: 
                 case CmdIds.WindowsTileVertical:
@@ -861,8 +953,10 @@ namespace Reko.Gui.Forms
                         ? MenuStatus.Enabled | MenuStatus.Visible
                         : MenuStatus.Visible;
                     return true;
+                case CmdIds.FileNewScript:
                 case CmdIds.FileAddBinary:
                 case CmdIds.FileAddMetadata:
+                case CmdIds.FileAddScript:
                 case CmdIds.FileSave:
                 case CmdIds.FileCloseProject:
                 case CmdIds.EditFind:
@@ -925,6 +1019,8 @@ namespace Reko.Gui.Forms
                 case CmdIds.FileAssemble: retval = AssembleFile(); break;
                 case CmdIds.FileSave: Save(); retval = true; break;
                 case CmdIds.FileAddMetadata: AddMetadataFile(); retval = true; break;
+                case CmdIds.FileNewScript: CreateScriptFile(); retval = true; break;
+                case CmdIds.FileAddScript: AddScriptFile(); retval = true; break;
                 case CmdIds.FileCloseProject: CloseProject(); retval = true; break;
                 case CmdIds.FileExit: form.Close(); retval = true; break;
 
@@ -942,6 +1038,7 @@ namespace Reko.Gui.Forms
                 case CmdIds.ViewFindAllProcedures: FindProcedures(srSvc); retval = true; break;
                 case CmdIds.ViewFindStrings: FindStrings(srSvc); retval = true; break;
 
+                case CmdIds.ToolsHexDisassembler: ToolsHexDisassembler(); retval = true; break;
                 case CmdIds.ToolsOptions: ToolsOptions(); retval = true; break;
                 case CmdIds.ToolsKeyBindings: ToolsKeyBindings(); retval = true; break;
 

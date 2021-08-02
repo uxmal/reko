@@ -1,10 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items"/>
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <nullable>enable</nullable>
-    <LangVersion>8.0</LangVersion>
     <RootNamespace>Reko.Arch.MCore</RootNamespace>
     <AssemblyName>Reko.Arch.MCore</AssemblyName>
     <Configurations>Debug;Release</Configurations>

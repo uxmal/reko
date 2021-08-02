@@ -25,13 +25,11 @@ using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Environments.C64
 {
@@ -79,11 +77,6 @@ namespace Reko.Environments.C64
             {
                 yield return program.Values[i];
             }
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -162,7 +155,7 @@ namespace Reko.Environments.C64
             return new Identifier("sp" + cbOffset, dataType, stg);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -177,7 +170,7 @@ namespace Reko.Environments.C64
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse16(txtAddress, out addr);
         }
@@ -205,7 +198,7 @@ namespace Reko.Environments.C64
 
             public override Core.Expressions.Constant GetRegister(RegisterStorage r)
             {
-                return Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
             }
 
             public override void SetRegister(RegisterStorage r, Core.Expressions.Constant v)
@@ -225,7 +218,7 @@ namespace Reko.Environments.C64
                 return new CallSite(2, 0);
             }
 
-            public override void OnAfterCall(FunctionType sigCallee)
+            public override void OnAfterCall(FunctionType? sigCallee)
             {
             }
         }

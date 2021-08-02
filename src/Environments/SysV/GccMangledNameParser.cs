@@ -43,10 +43,10 @@ namespace Reko.Environments.SysV
             this.substitutions = new Dictionary<string, object>();
         }
 
-        public string Modifier { get; set; }
-        public string Scope { get; set; }
+        public string? Modifier { get; set; }
+        public string? Scope { get; set; }
 
-        public StructField_v1 Parse()
+        public StructField_v1? Parse()
         {
             this.i = 0;
             if (!PeekAndDiscard('_'))
@@ -61,7 +61,7 @@ namespace Reko.Environments.SysV
             else if (Peek('N'))
             {
                 var qname = NestedName();
-                SerializedType type = null;
+                SerializedType? type = null;
                 if (i < str.Length)
                 {
                     type = new SerializedSignature
@@ -93,8 +93,8 @@ namespace Reko.Environments.SysV
             CvQualifier();
             var items = Prefix();
             var name = UnqualifiedName();
-            name = string.Format(name, items != null ? items.LastOrDefault() : "");
-            items.Add(name);
+            name = string.Format(name, items.Count > 0 ? items.LastOrDefault() : "");
+            items!.Add(name);
             Expect('E');
             return items;
         }
@@ -316,7 +316,7 @@ namespace Reko.Environments.SysV
             return args.ToArray();
         }
 
-        private Argument_v1 Argument()
+        private Argument_v1? Argument()
         {
             switch (str[i])
             {

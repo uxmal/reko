@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -30,18 +30,18 @@ namespace Reko.ImageLoaders.LLVM
     public class ConversionExpr : Value
     {
         public TokenType Operator;
-        public TypedValue Value;
-        public LLVMType Type;
+        public TypedValue? Value;
+        public LLVMType? Type;
 
         public override void Write(Formatter w)
         {
             w.WriteKeyword(Operator.ToString());
             w.Write(" (");
-            Value.Write(w);
+            Value!.Write(w);
             w.Write(' ');
             w.WriteKeyword("to");
             w.Write(' ');
-            Type.Write(w);
+            Type!.Write(w);
             w.Write(")");
         }
     }
@@ -49,10 +49,10 @@ namespace Reko.ImageLoaders.LLVM
     public class GetElementPtrExpr : Value
     {
         public bool Inbounds;
-        public LLVMType BaseType;
-        public LLVMType PointerType;
-        public Value Pointer;
-        public List<Tuple<LLVMType, Value>> Indices;
+        public LLVMType? BaseType;
+        public LLVMType? PointerType;
+        public Value? Pointer;
+        public List<(LLVMType, Value?)>? Indices;
 
         public override void Write(Formatter w)
         {
@@ -63,17 +63,17 @@ namespace Reko.ImageLoaders.LLVM
                 w.WriteKeyword("inbounds");
             }
             w.Write(" (");
-            BaseType.Write(w);
+            BaseType!.Write(w);
             w.Write(", ");
-            PointerType.Write(w);
+            PointerType!.Write(w);
             w.Write(' ');
-            Pointer.Write(w);
-            foreach (var index in Indices)
+            Pointer!.Write(w);
+            foreach (var index in Indices!)
             {
                 w.Write(", ");
                 index.Item1.Write(w);
                 w.Write(' ');
-                index.Item2.Write(w);
+                index.Item2!.Write(w);
             }
             w.Write(")");
         }

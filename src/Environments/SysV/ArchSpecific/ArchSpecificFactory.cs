@@ -39,9 +39,11 @@ namespace Reko.Environments.SysV.ArchSpecific
         {
             this.services = services;
             this.arch = arch;
+            this.ccX86 = null!;
+            this.ccRiscV = null!;
         }
 
-        public Func<IProcessorArchitecture, Address, IEnumerable<RtlInstruction>, IRewriterHost, Expression> CreateTrampolineDestinationFinder(IProcessorArchitecture arch)
+        public Func<IProcessorArchitecture, Address, IEnumerable<RtlInstruction>, IRewriterHost, Expression?> CreateTrampolineDestinationFinder(IProcessorArchitecture arch)
         {
             switch (arch.Name)
             {
@@ -126,6 +128,10 @@ namespace Reko.Environments.SysV.ArchSpecific
                 return new HexagonCallingConvention(arch);
             case "ia64":
                 return new Ia64CallingConvention(arch);
+            case "vax":
+                return new VaxCallingConvention(arch);
+            case "nios2":
+                return new Nios2CallingConvention(arch);
             default:
                 throw new NotImplementedException(string.Format("ELF calling convention for {0} not implemented yet.", arch.Description));
             }

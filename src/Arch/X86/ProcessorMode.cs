@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -32,7 +33,7 @@ using System.Linq;
 
 namespace Reko.Arch.X86
 {
-    using Decoder = X86Disassembler.Decoder;
+    using Decoder = Decoder<X86Disassembler, Mnemonic, X86Instruction>;
 
     public abstract class ProcessorMode
     {
@@ -73,7 +74,7 @@ namespace Reko.Arch.X86
             get { return Registers.sp; }
         }
 
-        public abstract X86Disassembler CreateDisassembler(IServiceProvider services, X86Disassembler.Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string, object> options);
+        public abstract X86Disassembler CreateDisassembler(IServiceProvider services, Decoder[] rootDecoders, EndianImageReader rdr, Dictionary<string, object> options);
 
         public abstract IProcessorEmulator CreateEmulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator);
 
@@ -81,7 +82,7 @@ namespace Reko.Arch.X86
 
         public abstract OperandRewriter CreateOperandRewriter(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder binder, IRewriterHost host);
 
-        public abstract X86Disassembler.Decoder[] CreateRootDecoders(Dictionary<string, object> options);
+        public abstract Decoder[] CreateRootDecoders(Dictionary<string, object> options);
 
         public abstract Address? CreateSegmentedAddress(ushort seg, uint offset);
 
@@ -170,7 +171,7 @@ namespace Reko.Arch.X86
         {
         }
 
-        public override X86Disassembler.Decoder[] CreateRootDecoders(Dictionary<string, object> options)
+        public override Decoder[] CreateRootDecoders(Dictionary<string, object> options)
         {
             var isa = X86Disassembler.InstructionSet.Create(false, false, options);
             return isa.CreateRootDecoders();
@@ -254,7 +255,7 @@ namespace Reko.Arch.X86
             return new OperandRewriter16(arch, m, binder, host);
         }
 
-        public override X86Disassembler.Decoder[] CreateRootDecoders(Dictionary<string, object> options)
+        public override Decoder[] CreateRootDecoders(Dictionary<string, object> options)
         {
             var isa = X86Disassembler.InstructionSet.Create(false, false, options);
             return isa.CreateRootDecoders();

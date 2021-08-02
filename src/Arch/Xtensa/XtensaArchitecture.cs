@@ -19,15 +19,14 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Reko.Core.Expressions;
-using Reko.Core.Machine;
-using Reko.Core.Rtl;
-using Reko.Core.Types;
-using Reko.Core.Memory;
 
 namespace Reko.Arch.Xtensa
 {
@@ -164,11 +163,6 @@ namespace Reko.Arch.Xtensa
             return new XtensaDisassembler(this, rdr);
         }
 
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
@@ -207,7 +201,7 @@ namespace Reko.Arch.Xtensa
             return fregs[i];
         }
 
-        public RegisterStorage GetMac16Register(int i)
+        public RegisterStorage? GetMac16Register(int i)
         {
             if (0 <= i && i < mac16regs.Length)
                 return mac16regs[i];
@@ -215,7 +209,7 @@ namespace Reko.Arch.Xtensa
                 return null;
         }
 
-        public RegisterStorage GetSpecialRegister(int sr)
+        public RegisterStorage? GetSpecialRegister(int sr)
         {
             if (sregs.TryGetValue(sr, out var sreg))
                 return sreg;
@@ -259,7 +253,7 @@ namespace Reko.Arch.Xtensa
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             var ireg = domain - StorageDomain.Register;
             if (0 <= ireg && ireg < allRegs.Length)
@@ -284,7 +278,7 @@ namespace Reko.Arch.Xtensa
             return Address.Ptr32(uAddr);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -294,7 +288,7 @@ namespace Reko.Arch.Xtensa
             return regsByName.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }

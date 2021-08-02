@@ -77,6 +77,7 @@ namespace Reko.UnitTests.Typing
             var project = new Project { Programs = { program } };
             var scan = new Scanner(
                 program,
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
                 sc);
 			scan.EnqueueImageSymbol(ep, true);
@@ -112,7 +113,7 @@ namespace Reko.UnitTests.Typing
             var project = new Project { Programs = { program } };
             var ep = ImageSymbol.Procedure(program.Architecture, program.ImageMap.BaseAddress);
             var dynamicLinker = new DynamicLinker(project, program, eventListener);
-            var scan = new Scanner(program, dynamicLinker, svc);
+            var scan = new Scanner(program, project.LoadedMetadata, dynamicLinker, svc);
             scan.EnqueueImageSymbol(ep, true);
             scan.ScanImage();
 

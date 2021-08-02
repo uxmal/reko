@@ -68,6 +68,13 @@ namespace Reko.Environments.Trs80.Dmk
 
         public Track()
         {
+            m_data = null!;
+        }
+
+        public Track(int number, int side) : this()
+        {
+            this.TrackNumber = number;
+            this.Side = side;
         }
 
         public byte ReadByte(long index)
@@ -83,11 +90,7 @@ namespace Reko.Environments.Trs80.Dmk
             return this.m_data[(int)(checked((IntPtr)index))];
         }
 
-        public Track(int number, int side)
-        {
-            this.TrackNumber = number;
-            this.Side = side;
-        }
+
 
         public byte dataMarker(int index)
         {
@@ -207,7 +210,7 @@ namespace Reko.Environments.Trs80.Dmk
             return index >= 0 && index < this.m_sectors.Count && this.m_sectors[index].doubleDensity;
         }
 
-        public IByteSource sectorData(int index)
+        public IByteSource? sectorData(int index)
         {
             if (index < 0)
             {

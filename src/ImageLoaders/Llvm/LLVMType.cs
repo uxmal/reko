@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -159,7 +159,7 @@ namespace Reko.ImageLoaders.LLVM
 
     public class StructureType : LLVMType
     {
-        public List<LLVMType> Fields;
+        public List<LLVMType>? Fields;
 
         public override T Accept<T>(LLVMTypeVisitor<T> visitor)
         {
@@ -169,7 +169,7 @@ namespace Reko.ImageLoaders.LLVM
         public override void Write(Formatter w)
         {
             w.Write("{");
-            if (Fields.Count > 0)
+            if (Fields!.Count > 0)
             {
                 var sep = " ";
                 foreach (var field in Fields)
@@ -186,10 +186,10 @@ namespace Reko.ImageLoaders.LLVM
 
     public class LLVMFunctionType : LLVMType
     {
-        public string Convention;
-        public LLVMType ReturnType;
-        public ParameterAttributes ret_attrs;
-        public List<LLVMParameter> Parameters;
+        public string? Convention;
+        public LLVMType? ReturnType;
+        public ParameterAttributes? ret_attrs;
+        public List<LLVMParameter>? Parameters;
 
         public override T Accept<T>(LLVMTypeVisitor<T> visitor)
         {
@@ -198,10 +198,10 @@ namespace Reko.ImageLoaders.LLVM
 
         public override void Write(Formatter w)
         {
-            ReturnType.Write(w);
+            ReturnType!.Write(w);
             w.Write(" (");
             var sep = "";
-            foreach (var arg in Parameters)
+            foreach (var arg in Parameters!)
             {
                 w.Write(sep);
                 sep = ", ";
@@ -225,13 +225,13 @@ namespace Reko.ImageLoaders.LLVM
 
     public class LLVMParameter : LLVMSyntax
     {
-        public LLVMType Type; // [parameter Attrs]
-        public string name;
-        public ParameterAttributes attrs;
+        public LLVMType? Type; // [parameter Attrs]
+        public string? name;
+        public ParameterAttributes? attrs;
 
         public override void Write(Formatter w)
         {
-            Type.Write(w);
+            Type!.Write(w);
             if (string.IsNullOrEmpty(name))
                 return;
             w.Write(' ');

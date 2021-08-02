@@ -36,7 +36,7 @@ namespace Reko.Core.Lib
         {
             this.Position = position;
             this.Length = length;
-            this.Mask = (1U << length) - 1U;
+            this.Mask = (uint)((1UL << length) - 1U);
         }
 
         public Bitfield(int position, int length, uint mask)    

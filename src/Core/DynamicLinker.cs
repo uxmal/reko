@@ -63,14 +63,14 @@ namespace Reko.Core
                 .ToDictionary(g => g.Key!, g => g.First());
         }
 
-        private void EnsureSignature(Program program, SystemService svc)
+        private FunctionType? EnsureSignature(Program program, SystemService svc)
         {
-            if (svc.Signature == null)
+            // If there is a signature in 'Signatures', it should override the signature in the service.
+            if (program.EnvironmentMetadata.Signatures.TryGetValue(svc.Name!, out var fnc))
             {
-                if (program.EnvironmentMetadata.Signatures.TryGetValue(svc.Name!, out var fnc)) {
-                    svc.Signature = fnc;
-                }
+                return fnc;
             }
+            return svc.Signature;
         }
 
         public ExternalProcedure? ResolveProcedure(string? moduleName, string importName, IPlatform platform)
@@ -145,10 +145,10 @@ namespace Reko.Core
 
                 if (mod.ServicesByOrdinal.TryGetValue(ordinal, out var svc))
                 {
-                    EnsureSignature(program, svc);
-                    if (svc.Signature != null)
+                    var signature = EnsureSignature(program, svc);
+                    if (signature != null)
                     {
-                        return new ExternalProcedure(svc.Name!, svc.Signature, svc.Characteristics);
+                        return new ExternalProcedure(svc.Name!, signature, svc.Characteristics);
                     }
                     else
                     {
@@ -156,7 +156,7 @@ namespace Reko.Core
                         // So we make a "dumb" one. It's better than nothing.
                         eventListener.Warn(
                             new NullCodeLocation(moduleName),
-                            "Unable to resolve signature for {0}", svc.Name!);
+                            "Unable to find a signature for {0}", svc.Name!);
                         return new ExternalProcedure(svc.Name!, new FunctionType());
                     }
                 }
@@ -164,10 +164,10 @@ namespace Reko.Core
             if (project.LoadedMetadata.Modules.TryGetValue(moduleName, out var module) &&
                 module.ServicesByOrdinal.TryGetValue(ordinal, out var service))
             {
-                EnsureSignature(program, service);
-                if (service.Signature != null)
+                var signature = EnsureSignature(program, service);
+                if (signature != null)
                 {
-                    return new ExternalProcedure(service.Name!, service.Signature, service.Characteristics);
+                    return new ExternalProcedure(service.Name!, signature, service.Characteristics);
                 }
                 else
                 {
@@ -175,7 +175,7 @@ namespace Reko.Core
                     // So we make a "dumb" one. It's better than nothing.
                     eventListener.Warn(
                         new NullCodeLocation(moduleName),
-                        "Unable to resolve signature for {0}", service.Name!);
+                        "Unable to find a signature for {0}", service.Name!);
                     return new ExternalProcedure(service.Name!, new FunctionType());
                 }
             }
@@ -259,8 +259,8 @@ namespace Reko.Core
 
                 if (mod.ServicesByOrdinal.TryGetValue(ordinal, out var svc))
                 {
-                    EnsureSignature(program, svc);
-                    var ep = new ExternalProcedure(svc.Name!, svc.Signature!, svc.Characteristics);
+                    var signature = EnsureSignature(program, svc);
+                    var ep = new ExternalProcedure(svc.Name!, signature!, svc.Characteristics);
                     return new ProcedureConstant(platform.PointerType, ep);
                 }
 
@@ -313,7 +313,7 @@ namespace Reko.Core
                     return null;
                 var dt = PrimitiveType.CreateWord(impref.ReferenceAddress.DataType.BitSize);
                 if (!program.Architecture.TryRead(seg.MemoryArea, impref.ReferenceAddress, dt, out Constant cIndirect))
-                    return Constant.Invalid;
+                    return InvalidConstant.Create(program.Architecture.WordWidth);
                 return Constant.Create(program.Architecture.WordWidth, cIndirect.ToInt64());
             }
             else

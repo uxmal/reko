@@ -255,7 +255,6 @@ namespace Reko.Analysis
         private static (HashSet<Statement> deadStms, HashSet<Storage> deadStgs) FindDeadStatementsInExitBlock(
             SsaState ssa,
             Dictionary<Storage, BitRange> liveOutStorages)
-            //Dictionary<StorageDomain, BitRange> liveOutStorages)
         {
             var deadStms = new HashSet<Statement>();
             var deadStgs = new HashSet<Storage>();

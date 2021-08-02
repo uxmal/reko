@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -77,14 +77,14 @@ namespace Reko.ImageLoaders.Hunk
         public uint FileOffset;
         public int size;
         public int alloc_size;
-        public string memf;
+        public string? memf;
         public bool in_lib;
-        public string fixes;
-        public string Name;
+        public string? fixes;
+        public string? Name;
         public int hunk_no;
-        public byte[] Data;
+        public byte[]? Data;
         public uint hunk_lib_offset;
-        public IHunk index_hunk;
+        public IHunk? index_hunk;
 
         public override string ToString()
         {
@@ -94,17 +94,17 @@ namespace Reko.ImageLoaders.Hunk
 
     public class HeaderHunk : Hunk
     {
-        public List<string> HunkNames;
+        public List<string>? HunkNames;
         public int table_size;
         public int FirstHunkId;
         public int LastHunkId;
-        public List<HunkInfo> HunkInfos;
+        public List<HunkInfo>? HunkInfos;
     }
 
     public class HunkInfo
     {
         public int Size;
-        public string Flags;
+        public string? Flags;
     }
 
     public class BssHunk : Hunk 
@@ -119,9 +119,9 @@ namespace Reko.ImageLoaders.Hunk
     public class DebugHunk : Hunk
     {
         public uint debug_offset;
-        public string debug_type;
-        public string src_file;
-        public Dictionary<int, uint> src_map;
+        public string? debug_type;
+        public string? src_file;
+        public Dictionary<int, uint>? src_map;
     }
 
     public class UnitHunk : Hunk
@@ -135,17 +135,17 @@ namespace Reko.ImageLoaders.Hunk
 
     public class LibUnit
     {
-        public List<List<Hunk>> segments;
-        public object name;
+        public List<List<Hunk>>? segments;
+        public object? name;
         public int unit_no;
-        public Unit index_unit;
+        public Unit? index_unit;
     }
 
     public class ExtHunk : Hunk
     {
-        public List<ExtObject> ext_def;
-        public List<ExtObject> ext_ref;
-        public List<ExtObject> ext_common;
+        public List<ExtObject>? ext_def;
+        public List<ExtObject>? ext_ref;
+        public List<ExtObject>? ext_common;
     }
 
     public enum ExtType
@@ -185,33 +185,33 @@ namespace Reko.ImageLoaders.Hunk
 
     public class IndexHunk : Hunk
     {
-        public List<Unit> units;
+        public List<Unit>? units;
     }
 
     public class LibHunk : Hunk
     {
         //public uint lib_file_offset;
-        public List<Unit> units;
+        public List<Unit>? units;
         public int lib_no;
-        public Hunk index;
+        public Hunk? index;
         public uint lib_file_offset;
     }
 
     public class OverlayHunk : Hunk
     {
-        public byte[] ov_data;
+        public byte[]? ov_data;
         public bool ov_std;
-        public byte[] custom_data;
+        public byte[]? custom_data;
     }
 
     public class RelocHunk : Hunk
     {
-        public Dictionary<int, List<uint>> reloc;
+        public Dictionary<int, List<uint>>? reloc;
     }
 
     public class SymbolHunk : Hunk
     {
-        public Dictionary<string, int> symbols;
+        public Dictionary<string, int>? symbols;
     }
 
     public class TextHunk : Hunk
@@ -221,11 +221,11 @@ namespace Reko.ImageLoaders.Hunk
 
     public class IHunk
     {
-        public string name;
+        public string? name;
         public short size;
         public int type;
-        public string memf;
-        public List<Reference> refs;
-        public List<Definition> defs;
+        public string? memf;
+        public List<Reference>? refs;
+        public List<Definition>? defs;
     }
 }

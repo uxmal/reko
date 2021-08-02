@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Types;
 using System;
@@ -39,11 +40,12 @@ namespace Reko.ImageLoaders.HpSom
             base(services, filename, imgRaw)
         {
             PreferredBaseAddress = Address.Ptr32(0x00100000);
+            pltEntries = null!;
         }
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             var somHeader = MakeReader(0).ReadStruct<SOM_Header>();
 
@@ -92,7 +94,7 @@ namespace Reko.ImageLoaders.HpSom
                 pltEntries.ToSortedList(e => e.Address));
         }
 
-        private object ReadDynamicLibraryInfo(
+        private object? ReadDynamicLibraryInfo(
             SOM_Exec_aux_hdr exeAuxHdr, 
             IProcessorArchitecture arch)
         {
@@ -144,14 +146,14 @@ namespace Reko.ImageLoaders.HpSom
             {
                 var str = ReadString(rdr.ReadUInt32(), strTable);
                 rdr.ReadUInt32();   //$TODO: do something with the flags?
-                result.Add(str);
+                result.Add(str ?? "");
             }
             return result;
         }
 
-        private List<(string, SpaceDictionaryRecord)> ReadSpaces(uint space_location, uint count, uint uStrings)
+        private List<(string?, SpaceDictionaryRecord)> ReadSpaces(uint space_location, uint count, uint uStrings)
         {
-            var spaces = new List<(string, SpaceDictionaryRecord)>();
+            var spaces = new List<(string?, SpaceDictionaryRecord)>();
             var rdr = new StructureReader<SpaceDictionaryRecord>(MakeReader(space_location));
             for (; count > 0; --count)
             {
@@ -162,9 +164,9 @@ namespace Reko.ImageLoaders.HpSom
             return spaces;
         }
 
-        private List<(string,SubspaceDictionaryRecord)> ReadSubspaces(uint subspace_location, uint count, uint uStrings)
+        private List<(string?,SubspaceDictionaryRecord)> ReadSubspaces(uint subspace_location, uint count, uint uStrings)
         {
-            var subspaces = new List<(string, SubspaceDictionaryRecord)>();
+            var subspaces = new List<(string?, SubspaceDictionaryRecord)>();
             var rdr = new StructureReader<SubspaceDictionaryRecord>(MakeReader(subspace_location));
             for (; count > 0; --count)
             {
@@ -176,7 +178,7 @@ namespace Reko.ImageLoaders.HpSom
             return subspaces;
         }
 
-        private string ReadString(uint uIndex, uint uStringsOffset)
+        private string? ReadString(uint uIndex, uint uStringsOffset)
         {
             int iStrStart = (int) (uIndex + uStringsOffset);
             int i = Array.IndexOf<byte>(RawImage, 0, iStrStart);
@@ -196,7 +198,7 @@ namespace Reko.ImageLoaders.HpSom
             var execAux = rdr.ReadStruct<SOM_Exec_aux_hdr>();
 
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch = cfgSvc.GetArchitecture("paRisc");
+            var arch = cfgSvc.GetArchitecture("paRisc")!;
 
             var dlHeaderRdr = ReadDynamicLibraryInfo(execAux, arch);
 

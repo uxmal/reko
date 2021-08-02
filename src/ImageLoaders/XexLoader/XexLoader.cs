@@ -19,6 +19,7 @@
 #endregion
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -69,7 +70,7 @@ namespace Reko.ImageLoaders.Xex
 		{
 			get
 			{
-				return null; //the format is self describing
+				return null!; //the format is self describing
 			}
 
 			set
@@ -245,7 +246,7 @@ namespace Reko.ImageLoaders.Xex
 						{
 							XexImportLibaryHeader imp_header = rdr.ReadStruct<XexImportLibaryHeader>();
 
-							string name = null;
+							string? name = null;
 							int name_index = (byte)imp_header.name_index;
 							if (name_index < blockHeader.count)
 							{
@@ -372,7 +373,7 @@ namespace Reko.ImageLoaders.Xex
 			byte[] sourceData = rdr.ReadAt<byte[]>(sourceDataOff, r => r.ReadBytes(memorySize));
 
 			DecryptBuffer(
-				xexData.session_key,
+				xexData.session_key!,
 				sourceData, memorySize,
 				memory, memorySize
 			);
@@ -385,7 +386,7 @@ namespace Reko.ImageLoaders.Xex
 		private void LoadImageDataBasic()
 		{
 			UInt32 memorySize = 0;
-			int blockCount = xexData.file_format_info.basic_blocks.Count;
+			int blockCount = xexData.file_format_info.basic_blocks!.Count;
 			for (int i = 0; i < blockCount; i++)
 			{
 				XexFileBasicCompressionBlock block = xexData.file_format_info.basic_blocks[i];
@@ -492,7 +493,7 @@ namespace Reko.ImageLoaders.Xex
 		{
 			long fileDataSize = rdr.Bytes.Length - xexData.header.header_size;
 
-			BeImageReader memRdr = new BeImageReader(xexData.memoryData);
+			BeImageReader memRdr = new BeImageReader(xexData.memoryData!);
 			DOSHeader dosHeader = memRdr.ReadStruct<DOSHeader>();
 			dosHeader.Validate();
 
@@ -628,7 +629,7 @@ namespace Reko.ImageLoaders.Xex
 
 		private void PopulateImports()
 		{
-			BeImageReader memRdr = new BeImageReader(xexData.memoryData);
+			BeImageReader memRdr = new BeImageReader(xexData.memoryData!);
 
 			for (int i = 0; i < xexData.import_records.Count; i++)
 			{
@@ -674,11 +675,11 @@ namespace Reko.ImageLoaders.Xex
 			}
 		}
 
-		public override Program Load(Address addrLoad)
+		public override Program Load(Address? addrLoad)
 		{
 			var cfgSvc = Services.RequireService<IConfigurationService>();
-			var arch = cfgSvc.GetArchitecture("ppc-be-64");
-			var platform = cfgSvc.GetEnvironment("xbox360").Load(Services, arch);
+			var arch = cfgSvc.GetArchitecture("ppc-be-64")!;
+			var platform = cfgSvc.GetEnvironment("xbox360").Load(Services, arch)!;
             arch.LoadUserOptions(new Dictionary<string, object>
             {
                 { "Model", "xenon" }

@@ -37,7 +37,7 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.arch = arch;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             //$BUG: this is all just to get the ELF loader up and running.
             // fill in with details from 
@@ -45,11 +45,11 @@ namespace Reko.Environments.SysV.ArchSpecific
             ccr.LowLevelDetails(4, 0);
             if (dtRet != null && !(dtRet is VoidType))
             {
-                ccr.RegReturn(arch.GetRegister("R0"));
+                ccr.RegReturn(arch.GetRegister("R0")!);
             }
             foreach (var dt in dtParams)
             {
-                ccr.RegParam(arch.GetRegister("R0"));
+                ccr.RegParam(arch.GetRegister("R0")!);
             }
         }
 

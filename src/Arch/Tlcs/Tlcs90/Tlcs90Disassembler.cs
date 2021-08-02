@@ -38,9 +38,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private readonly EndianImageReader rdr;
         private readonly Tlcs90Architecture arch;
         private readonly List<MachineOperand> ops;
-        private PrimitiveType dataWidth;
-        private RegisterOperand byteReg;
-        private RegisterOperand wordReg;
+        private PrimitiveType? dataWidth;
+        private RegisterOperand? byteReg;
+        private RegisterOperand? wordReg;
         private int backPatchOp;
 
         public Tlcs90Disassembler(Tlcs90Architecture arch, EndianImageReader rdr)
@@ -48,9 +48,10 @@ namespace Reko.Arch.Tlcs.Tlcs90
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override Tlcs90Instruction DisassembleInstruction()
+        public override Tlcs90Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte b))
@@ -354,9 +355,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private class RegDecoder : Decoder
         {
             private readonly RegisterStorage regByte;
-            private readonly RegisterStorage regWord;
+            private readonly RegisterStorage? regWord;
 
-            public RegDecoder(RegisterStorage regByte, RegisterStorage regWord)
+            public RegDecoder(RegisterStorage regByte, RegisterStorage? regWord)
             {
                 this.regByte = regByte;
                 this.regWord = regWord;
@@ -365,7 +366,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
             public override Tlcs90Instruction Decode(uint bPrev, Tlcs90Disassembler dasm)
             {
                 if (!dasm.rdr.TryReadByte(out byte b))
-                    return null;
+                    return dasm.CreateInvalidInstruction();
                 dasm.byteReg = new RegisterOperand(regByte);
                 if (regWord != null)
                     dasm.wordReg = new RegisterOperand(regWord);
@@ -384,20 +385,20 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
             public override Tlcs90Instruction Decode(uint bPrev, Tlcs90Disassembler dasm)
             {
-                RegisterStorage baseReg = null;
-                RegisterStorage idxReg = null;
+                RegisterStorage? baseReg = null;
+                RegisterStorage? idxReg = null;
                 ushort? absAddr = null;
-                Constant offset = null;
+                Constant? offset = null;
                 switch (format[0])
                 {
                 case 'M':
                     if (!dasm.rdr.TryReadLeUInt16(out ushort a))
-                        return null;
+                        return dasm.CreateInvalidInstruction();
                     absAddr = a;
                     break;
                 case 'm':
                     if (!dasm.rdr.TryReadByte(out byte bb))
-                        return null;
+                        return dasm.CreateInvalidInstruction();
                     absAddr = (ushort)(0xFF00 | bb);
                     break;
                 case 'B': baseReg = Registers.bc; break;
@@ -418,19 +419,19 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     if (idxReg == null)
                     {
                         if (!dasm.rdr.TryReadByte(out byte bOff))
-                            return null;
+                            return dasm.CreateInvalidInstruction();
                         offset = Constant.SByte((sbyte)bOff);
                     }
                     break;
                 default: throw new NotImplementedException(string.Format("Tlcs-90: dst {0}", format));
                 }
                 if (!dasm.rdr.TryReadByte(out byte b))
-                    return null;
+                    return dasm.CreateInvalidInstruction();
                 var instr = dstEncodings[b].Decode(b, dasm);
                 if (instr == null)
-                    return null;
+                    return dasm.CreateInvalidInstruction();
 
-                var operand = new MemoryOperand(dasm.dataWidth)
+                var operand = new MemoryOperand(dasm.dataWidth!)
                 {
                     Base = baseReg,
                     Offset = absAddr.HasValue
@@ -475,7 +476,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     }
                 }
                 else
-                    return null;
+                    return dasm.CreateInvalidInstruction();
                 return instr;
             }
         }
@@ -492,9 +493,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
             public override Tlcs90Instruction Decode(uint bPrev, Tlcs90Disassembler dasm)
             {
                 Tlcs90Instruction instr;
-                Constant offset = null;
-                RegisterStorage baseReg = null;
-                RegisterStorage idxReg = null;
+                Constant? offset = null;
+                RegisterStorage? baseReg = null;
+                RegisterStorage? idxReg = null;
 
                 switch (format[0])
                 {
@@ -510,7 +511,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     if (idxReg == null)
                     {
                         if (!dasm.rdr.TryReadByte(out byte bOff))
-                            return null;
+                            return dasm.CreateInvalidInstruction();
                         offset = Constant.SByte((sbyte)bOff);
                     }
                     break;
@@ -523,25 +524,25 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 case 'M':
                     ushort us;
                     if (!dasm.rdr.TryReadLeUInt16(out us))
-                        return null;
+                        return dasm.CreateInvalidInstruction();
                     offset = Constant.UInt16(us);
                     break;
                 case 'm':
                     byte pageAddr;
                     if (!dasm.rdr.TryReadByte(out pageAddr))
-                        return null;
+                        return dasm.CreateInvalidInstruction();
                     offset = Constant.UInt16((ushort)(0xFF00 | pageAddr));
                     break;
                 default: throw new NotImplementedException(string.Format("Tlcs-90: src {0}", format));
                 }
 
                 if (!dasm.rdr.TryReadByte(out byte b))
-                    return null;
+                    return dasm.CreateInvalidInstruction();
                 instr = srcEncodings[b].Decode(b, dasm);
                 if (instr == null)
-                    return null;
+                    return dasm.CreateInvalidInstruction();
 
-                var operand = new MemoryOperand(dasm.dataWidth)
+                var operand = new MemoryOperand(dasm.dataWidth!)
                 {
                     Base = baseReg,
                     Index = idxReg,
@@ -568,11 +569,11 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     if (operand != null)
                     {
                         instr.Operands = new MachineOperand[] { instr.Operands[0], operand };
+                        operand.Width = instr.Operands[0].Width;
                     }
-                    operand.Width = instr.Operands[0].Width;
                 }
                 else
-                    return null;
+                    return dasm.CreateInvalidInstruction();
                 return instr;
             }
         }

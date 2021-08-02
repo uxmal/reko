@@ -21,8 +21,9 @@
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
-using Reko.Core.Serialization;
+using Reko.Core.Scripts;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -315,6 +316,12 @@ namespace Reko.Loading
             return result;
         }
 
+        public ScriptFile? LoadScript(string fileName)
+        {
+            var rawBytes = LoadImageBytes(fileName, 0);
+            return FindImageLoader<ScriptFile>(fileName, rawBytes);
+        }
+
         /// <summary>
         /// Loads the contents of a file with the specified filename into an array 
         /// of bytes, optionally at the offset <paramref>offset</paramref>. No interpretation
@@ -326,24 +333,19 @@ namespace Reko.Loading
         public virtual byte[] LoadImageBytes(string fileName, int offset)
         {
             var fsSvc = Services.RequireService<IFileSystemService>();
-            using (var stm = fsSvc.CreateFileStream(fileName, FileMode.Open, FileAccess.Read))
-            {
-                byte[] bytes = new byte[stm.Length + offset];
-                stm.Read(bytes, offset, (int)stm.Length);
-                return bytes;
-            }
+            return fsSvc.ReadAllBytes(fileName);
         }
 
         /// <summary>
-        /// Locates an image loader from the Decompiler configuration file, based on the magic number in the
-        /// begining of the program image.
+        /// Locates an image loader from the Decompiler configuration file, based on the magic
+        /// number in the begining of the program image.
         /// </summary>
         /// <param name="rawBytes"></param>
         /// <returns>An appropriate image loader if one can be found, otherwise null.
         public T? FindImageLoader<T>(string filename, byte[] rawBytes)
             where T : class
         {
-            foreach (LoaderDefinition  e in cfgSvc.GetImageLoaders())
+            foreach (LoaderDefinition e in cfgSvc.GetImageLoaders())
             {
                 if (e.TypeName is null)
                     continue;
@@ -371,23 +373,6 @@ namespace Reko.Loading
                     return false;
             }
             return true;
-        }
-
-        /// <summary>
-        /// Converts the offset, which is expressed as a string, into a hexadecimal value.
-        /// </summary>
-        /// <param name="sOffset"></param>
-        /// <returns></returns>
-        private int ConvertOffset(string sOffset)
-        {
-            if (string.IsNullOrEmpty(sOffset))
-                return 0;
-            if (Int32.TryParse(
-                sOffset, NumberStyles.HexNumber,
-                CultureInfo.InvariantCulture,
-                out int offset))
-                return offset;
-            return 0;
         }
 
         private byte[] ConvertHexStringToBytes(string hexString)

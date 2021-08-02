@@ -147,7 +147,7 @@ namespace Reko.UnitTests.Typing
                 proc.Write(false, writer);
                 writer.WriteLine();
             }
-            program.TypeStore.Write(writer);
+            program.TypeStore.Write(false, writer);
         }
 
         [Test]
@@ -346,11 +346,7 @@ namespace Reko.UnitTests.Typing
                 Globals =
                 {
                     {
-                        addrUserData, new GlobalDataItem_v2
-                        {
-                            Name = "xAcceleration",
-                            DataType = PrimitiveType_v1.Real64()
-                        }
+                        addrUserData, new UserGlobal(addrUserData, "xAcceleration", PrimitiveType_v1.Real64())
                     }
                 }
             };
@@ -376,11 +372,7 @@ namespace Reko.UnitTests.Typing
                 Globals =
                 {
                     {
-                        addrUserData, new GlobalDataItem_v2
-                        {
-                            Name = "myGlobal",
-                            DataType = PrimitiveType_v1.Real32(),
-                        }
+                        addrUserData, new UserGlobal(addrUserData, "myGlobal", PrimitiveType_v1.Real32())
                     }
                 }
             };

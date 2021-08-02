@@ -27,11 +27,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// http://www.felix-colibri.com/papers/compilers/pascal_grammar/pascal_grammar.html
+// https://freepascal.org/docs-html/current/prog/progch1.html
 namespace Reko.Core.Pascal
 {
     public class PascalParser
     {
-        private PascalLexer lexer;
+        private readonly PascalLexer lexer;
 
         public PascalParser(PascalLexer lexer)
         {
@@ -109,14 +111,15 @@ namespace Reko.Core.Pascal
             var type = ParseType();
             Expect(TokenType.Semi);
 
+            var callingConvention = ParseCallingConvention();
             var body = ParseSubroutine();
             return new CallableDeclaration(name, type, pps)
             {
-                Body = body
+                Body = body,
+                CallingConvention = callingConvention,
             };
         }
 
- 
         private CallableDeclaration ParseProcedure()
         {
             var name = Expect<string>(TokenType.Id);
@@ -124,10 +127,33 @@ namespace Reko.Core.Pascal
             Expect(TokenType.Semi);
 
             var body = ParseSubroutine();
+            var callingConvention = ParseCallingConvention();
             return new CallableDeclaration(name, null, pps)
             {
                 Body = body,
+                CallingConvention = callingConvention,
             };
+        }
+
+        private string ParseCallingConvention()
+        {
+            if (lexer.Peek().Type == TokenType.Id)
+            {
+                var id = (string) lexer.Peek().Value;
+                if (string.Compare(id, "builtin", true) == 0)
+                {
+                    lexer.Read();
+                    Expect(TokenType.Semi);
+                    return id;
+                }
+                else if (string.Compare(id, "c", true) == 0)
+                {
+                    lexer.Read();
+                    Expect(TokenType.Semi);
+                    return id;
+                }
+            }
+            return null;
         }
 
         private List<ParameterDeclaration> ParseParameters()
@@ -149,9 +175,18 @@ namespace Reko.Core.Pascal
 
         private ParameterDeclaration ParseParameterDeclaration()
         {
+            if (PeekAndDiscard(TokenType.DotDotDot))
+            {
+                return new ParameterDeclaration
+                {
+                    ParameterNames = new List<string> { "..." },
+                };
+            }
             bool byReference = PeekAndDiscard(TokenType.Var);
             var name = Expect<string>(TokenType.Id);
-            if (string.Compare(name, "opt", true) == 0)
+            /* More recent MPW files don't seem to use 'opt', 
+               so maybe we don't need this hack?
+            if (!byReference && string.Compare(name, "opt", true) == 0)
             {
                 byReference |= PeekAndDiscard(TokenType.Var);
                 name = Expect<string>(TokenType.Id);
@@ -165,6 +200,7 @@ namespace Reko.Core.Pascal
                     };
                 }
             }
+            */
             var names = new List<string> { name };
             while (PeekAndDiscard(TokenType.Comma))
             {
@@ -200,15 +236,8 @@ namespace Reko.Core.Pascal
                     Opcodes = opcodes
                 };
             }
-            else if (lexer.Peek().Type == TokenType.Id &&
-                     string.Compare((string)lexer.Peek().Value, "builtin", true) == 0)
-            {
-                lexer.Read();
-                Expect(TokenType.Semi);
-                return null;
-            }
             else
-            { 
+            {
                 return null;
             }
         }
@@ -219,9 +248,14 @@ namespace Reko.Core.Pascal
             while (lexer.Peek().Type == TokenType.Id)
             {
                 var name = Expect<string>(TokenType.Id);
+                PascalType type = null;
+                if (PeekAndDiscard(TokenType.Colon))
+                {
+                    type = ParseType();
+                }
                 Expect(TokenType.Eq);
                 var exp = ParseExp();
-                consts.Add(new ConstantDeclaration(name, exp));
+                consts.Add(new ConstantDeclaration(name, exp, type));
                 Expect(TokenType.Semi);
             }
             return consts;
@@ -235,8 +269,12 @@ namespace Reko.Core.Pascal
                 var name = Expect<string>(TokenType.Id);
                 Expect(TokenType.Eq);
                 var type = ParseType();
-                typedefs.Add(new TypeDeclaration(name, type));
                 Expect(TokenType.Semi);
+                if (type is CallableType callable)
+                {
+                    callable.CallingConvention = ParseCallingConvention();
+                }
+                typedefs.Add(new TypeDeclaration(name, type));
             }
             return typedefs;
         }
@@ -272,7 +310,21 @@ namespace Reko.Core.Pascal
                 lexer.Read();
                 return new Primitive(Serialization.PrimitiveType_v1.Real80());
             case TokenType.Id:
+                // The MPW header files contain both the keyword 'object' as
+                // well as variables named 'object'...
                 var id = Expect<string>(TokenType.Id);
+                if (string.Compare(id, "object", true) == 0)
+                {
+                    return ParseObject();
+                } 
+                else if (string.Compare(id, "single", true) == 0)
+                {
+                    return new Primitive(Serialization.PrimitiveType_v1.Real32());
+                }
+                else if (string.Compare(id, "double", true) == 0)
+                {
+                    return new Primitive(Serialization.PrimitiveType_v1.Real64());
+                }
                 return new TypeReference(id);
             case TokenType.Ptr:
                 lexer.Read();
@@ -323,6 +375,16 @@ namespace Reko.Core.Pascal
             case TokenType.Minus:
             case TokenType.Number:
                 return ParseRange();
+            case TokenType.Procedure:
+                lexer.Read();
+                var procParameters = ParseParameters();
+                return new CallableType(procParameters, null);
+            case TokenType.Function:
+                lexer.Read();
+                var funcParameters = ParseParameters();
+                Expect(TokenType.Colon);
+                var retType = ParseType();
+                return new CallableType(funcParameters, retType);
             default:
                 Unexpected(lexer.Peek());
                 return null;
@@ -340,6 +402,33 @@ namespace Reko.Core.Pascal
             };
         }
 
+        public ObjectType ParseObject()
+        {
+            var members = new List<Declaration>();
+            for (; ;)
+            {
+                switch (lexer.Peek().Type)
+                {
+                case TokenType.End:
+                    lexer.Read();
+                    return new ObjectType(members);
+                case TokenType.Function:
+                    lexer.Read();
+                    var fn = ParseFunction();
+                    members.Add(fn);
+                    break;
+                case TokenType.Procedure:
+                    lexer.Read();
+                    var proc = ParseProcedure();
+                    members.Add(proc);
+                    break;
+                default:
+                    Expect(TokenType.End);
+                    break;
+                }
+            }
+        }
+
         private (List<Field>, VariantPart) ParseFieldList()
         {
             var fields = new List<Field>();
@@ -349,6 +438,7 @@ namespace Reko.Core.Pascal
                 {
                     // Always last.
                     var vp = ParseVariantPart();
+                    PeekAndDiscard(TokenType.Semi);
                     return (fields, vp);
                 }
                 else
@@ -369,6 +459,7 @@ namespace Reko.Core.Pascal
                         break;
                 }
             }
+            PeekAndDiscard(TokenType.Semi);
             return (fields, null);
         }
 
@@ -400,6 +491,7 @@ namespace Reko.Core.Pascal
                 var variant = ParseVariant();
                 variants.Add(variant);
             } while (PeekAndDiscard(TokenType.Semi) &&
+                lexer.Peek().Type != TokenType.RParen &&
                 lexer.Peek().Type != TokenType.End);
             return new VariantPart
             {
@@ -515,15 +607,42 @@ namespace Reko.Core.Pascal
             };
         }
 
-        private Exp ParseExp()
+        public Exp ParseExp()
         {
-            var term = ParseFactor();
-            while (PeekAndDiscard(TokenType.Minus))
+            var term = ParseTerm();
+            for (; ;)
             {
-                var term2 = ParseFactor();
-                term = new BinExp(TokenType.Minus, term, term2);
+                var type = lexer.Peek().Type;
+                switch (type)
+                {
+                case TokenType.Plus: break;
+                case TokenType.Minus: break;
+                default: return term;
+                }
+                lexer.Read();
+                var term2 = ParseTerm();
+                term = new BinExp(type, term, term2);
             }
-            return term;
+        }
+
+        private Exp ParseTerm()
+        {
+            var factor = ParseFactor();
+            for (; ; )
+            {
+                var opType = lexer.Peek().Type;
+                switch (opType)
+                {
+                case TokenType.Star:
+                case TokenType.Slash:
+                    break;
+                default:
+                    return factor;
+                }
+                lexer.Read();
+                var factor2 = ParseFactor();
+                factor = new BinExp(opType, factor, factor2);
+            }
         }
 
         private Exp ParseFactor()
@@ -555,6 +674,11 @@ namespace Reko.Core.Pascal
                 return new RealLiteral(Expect<double>(TokenType.RealLiteral));
             case TokenType.Id:
                 return new Id(Expect<string>(TokenType.Id));
+            case TokenType.LParen:
+                lexer.Read();
+                var exp = ParseExp();
+                Expect(TokenType.RParen);
+                return exp;
             default:
                 Unexpected(lexer.Peek());
                 return null;

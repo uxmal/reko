@@ -59,9 +59,9 @@ namespace Reko.UnitTests.Scanning
 
         public class TestScanner : Scanner
         {
-            public TestScanner(Program program, IDynamicLinker dynamicLinker,
+            public TestScanner(Program program, TypeLibrary metadata, IDynamicLinker dynamicLinker,
                 IServiceProvider services)
-                : base(program, dynamicLinker, services)
+                : base(program, metadata, dynamicLinker, services)
             {
             }
 
@@ -165,6 +165,7 @@ namespace Reko.UnitTests.Scanning
 
             var sc = new Scanner(
                 this.program,
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
                 this.sc);
             sc.EnqueueImageSymbol(ImageSymbol.Procedure(arch, Address.Ptr32(0x12314)), true);
@@ -226,6 +227,7 @@ namespace Reko.UnitTests.Scanning
             };
             return new TestScanner(
                 program,
+                new TypeLibrary(),
                 dynamicLinker.Object,
                 sc);
         }
@@ -235,6 +237,7 @@ namespace Reko.UnitTests.Scanning
             this.program = program;
             return new TestScanner(
                 program, 
+                new TypeLibrary(),
                 dynamicLinker.Object,
                 sc);
         }
@@ -248,7 +251,7 @@ namespace Reko.UnitTests.Scanning
             program.SegmentMap = new SegmentMap(
                 bmem.BaseAddress,
                 new ImageSegment("progseg", this.bmem, AccessMode.ReadExecute));
-            return new TestScanner(program, dynamicLinker.Object, sc);
+            return new TestScanner(program, project.LoadedMetadata, dynamicLinker.Object, sc);
         }
 
         private DataScanner CreateDataScanner(Program program)
@@ -349,7 +352,8 @@ namespace Reko.UnitTests.Scanning
             Given_Project();
 
             var scan = new Scanner(
-                program, 
+                program,
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
                 sc);
             var sym = ImageSymbol.Procedure(arch, addr);
@@ -603,11 +607,11 @@ fn00001000_exit:
         public void Scanner_NoDecompiledProcedure()
         {
             Given_Program(Address.Ptr32(0x1000), new byte[0x2000]);
+            var address = Address.Ptr32(0x2000);
             program.User.Procedures.Add(
-                Address.Ptr32(0x2000),
-                new Procedure_v1()
+                address,
+                new UserProcedure(address, "ndProc")
                 {
-                    Name = "ndProc",
                     CSignature = "int ndProc(double dVal)",
                     Decompile = false,
                 }
@@ -627,9 +631,10 @@ fn00001000_exit:
         public void Scanner_NoDecompiledProcedure_NullSignature()
         {
             Given_Program(Address.Ptr32(0x1000), new byte[0x2000]);
+            var address = Address.Ptr32(0x2000);
             program.User.Procedures.Add(
-                Address.Ptr32(0x2000),
-                new Procedure_v1()
+                address,
+                new UserProcedure(address, NamingPolicy.Instance.ProcedureName(address))
                 {
                     CSignature = null,
                     Decompile = false,
@@ -652,19 +657,14 @@ fn00001000_exit:
             var sc = CreateScanner(program);
             sc.EnqueueUserProcedure(
                 program.Architecture,
-                new Procedure_v1
+                new UserProcedure(Address.Ptr32(0x1000), "proc1")
                 {
-                    Address = "0x1010",
-                    Name = "proc1",
                     Decompile = false
                 });
             sc.EnqueueUserProcedure(
                 program.Architecture,
-                new Procedure_v1
-                {
-                    Address = "0x1020",
-                    Name = "proc2",
-                });
+                new UserProcedure(Address.Ptr32(0x1020), "proc2")
+                );
             sc.ScanImage();
             Assert.AreEqual(1, program.Procedures.Count);
             Assert.AreEqual("proc2", program.Procedures.Values[0].Name);
@@ -674,9 +674,10 @@ fn00001000_exit:
         public void Scanner_NoDecompiledEntryPoint()
         {
             Given_Program(Address.Ptr32(0x12314), new byte[20]);
+            var address = Address.Ptr32(0x12314);
             program.User.Procedures.Add(
-                Address.Ptr32(0x12314),
-                new Procedure_v1()
+                address,
+                new UserProcedure(address, NamingPolicy.Instance.ProcedureName(address))
                 {
                     Decompile = false,
                 }
@@ -700,9 +701,10 @@ fn00001000_exit:
         {
             Given_Program(Address.Ptr32(0x12314), new byte[20]);
             fakeArch.Test_IgnoreAllUnkownTraces();
+            var address = Address.Ptr32(0x12314);
             program.User.Procedures.Add(
-                Address.Ptr32(0x12314),
-                new Procedure_v1()
+                address,
+                new UserProcedure(address, NamingPolicy.Instance.ProcedureName(address))
                 {
                     Decompile = false,
                 }
@@ -730,9 +732,10 @@ fn00001000_exit:
         public void Scanner_ScanData_NoDecompiledProcedureFromUserGlobal()
         {
             Given_Program(Address.Ptr32(0x12314), new byte[20]);
+            var address = Address.Ptr32(0x12314);
             program.User.Procedures.Add(
-                Address.Ptr32(0x12314),
-                new Procedure_v1()
+                address,
+                new UserProcedure(address, NamingPolicy.Instance.ProcedureName(address))
                 {
                     Decompile = false,
                 }
@@ -853,11 +856,13 @@ fn00001200_exit:
         public void Scanner_ScanProcedure_AssumeRegisterValues()
         {
             var scanner = CreateScanner(0x1000, 0x2000);
-            program.User.Procedures.Add(Address.Ptr32(0x1000), new Reko.Core.Serialization.Procedure_v1
+
+            var address = Address.Ptr32(0x1000);
+            program.User.Procedures.Add(Address.Ptr32(0x1000), new UserProcedure(address, NamingPolicy.Instance.ProcedureName(address))
             {
-                Assume = new RegisterValue_v2[] {
+                Assume = {
                      new RegisterValue_v2 { Register="r1", Value="0DC0" }
-                 }
+                }
             });
             Given_Trace(new RtlTrace(0x1000)
             {
@@ -910,6 +915,7 @@ fn00001200_exit:
 
             var sc = new Scanner(
                 this.program,
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
                 this.sc
             );
@@ -976,6 +982,7 @@ fn00001200_exit:
 
             var sc = new Scanner(
                 this.program,
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
                 this.sc
             );
@@ -1030,6 +1037,7 @@ fn00001200_exit:
 
             var scanner = new Scanner(
                 this.program,
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
                 this.sc);
             scanner.EnqueueUserGlobalData(Address.Ptr32(0x43210000), str, null);
@@ -1044,15 +1052,17 @@ fn00001200_exit:
         {
             Given_Program(Address.Ptr32(0x00100000), new byte[100]);
             Given_Project();
+            var address = Address.Ptr32(0x00100010);
             program.User.Procedures.Add(
-                Address.Ptr32(0x00100010),
-                new Procedure_v1
+                address,
+                new UserProcedure(address, NamingPolicy.Instance.ProcedureName(address))
                 {
                     CSignature = "int foo(char * a, float b)"
                 });
 
             var scanner = new Scanner(
                 this.program,
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
                 this.sc);
             var proc = scanner.ScanProcedure(
@@ -1090,10 +1100,29 @@ fn00001200_exit:
             var sym = ImageSymbol.DataObject(arch, Address.Ptr32(0x00100000), "data_blob", dt);
             program.ImageSymbols.Add(sym.Address, sym);
 
-            var scanner = new Scanner(program, dynamicLinker.Object, sc);
+            var scanner = new Scanner(program, project.LoadedMetadata, dynamicLinker.Object, sc);
             var sr = scanner.ScanDataItems();
             Assert.AreEqual(1, sr.KnownProcedures.Count);
             Assert.AreEqual("00100010", sr.KnownProcedures.First().ToString());
+        }
+
+        [Test(Description = "Procedures in metadata should be respected")]
+        public void Scanner_Metadata_procedure()
+        {
+            Given_Program(Address.Ptr32(0x00100000), new byte[100]);
+            Given_Project();
+            var address = Address.Ptr32(0x00100010);
+            project.LoadedMetadata.Procedures.Add(address, ("foo", FunctionType.Action()));
+
+            var scanner = new Scanner(
+                this.program,
+                project.LoadedMetadata,
+                new DynamicLinker(project, program, eventListener),
+                this.sc);
+            scanner.ScanImage();
+
+            Assert.AreEqual(1, program.Procedures.Count);
+            Assert.AreEqual("(fn void ())", program.Procedures.Values.First().Signature.ToString());
         }
     }
 }

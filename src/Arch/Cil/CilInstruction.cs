@@ -44,6 +44,6 @@ namespace Reko.Arch.Cil
             renderer.WriteMnemonic(mpopcodetostring[Opcode]);
         }
 
-        public object Operand { get; set; }
+        public object? Operand { get; set; }
     }
 }

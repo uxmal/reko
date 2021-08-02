@@ -31,10 +31,10 @@ namespace Reko.Scanning
     public class IcfgBuilder
     {
         public DiGraph<RtlBlock> Blocks;
-        public List<Tuple<RtlBlock, Address>> Edges;
+        public List<(RtlBlock, Address)> Edges;
         public Dictionary<Address, RtlBlock> AddrToBlock;
 
-        public IcfgBuilder(List<Tuple<RtlBlock, Address>> edges, Dictionary<Address, RtlBlock> mpBlocks, DiGraph<RtlBlock> allBlocks)
+        public IcfgBuilder(List<(RtlBlock, Address)> edges, Dictionary<Address, RtlBlock> mpBlocks, DiGraph<RtlBlock> allBlocks)
         {
             Edges = edges;
             AddrToBlock = mpBlocks;

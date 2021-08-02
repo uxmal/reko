@@ -50,6 +50,7 @@ namespace Reko.Core.Memory
         ulong ReadUInt64();
 
         bool TryPeekUInt32(int offset, out uint value);
+        bool TryPeekUInt64(int offset, out ulong  value);
         bool TryRead(PrimitiveType dataType, out Constant value);
         bool TryReadInt16(out short value);
         bool TryReadInt32(out int value);
@@ -182,6 +183,7 @@ namespace Reko.Core.Memory
 		public abstract bool TryRead(PrimitiveType dataType, out Constant c);
 
 		public abstract bool TryPeekUInt32(int offset, out uint value);
+		public abstract bool TryPeekUInt64(int offset, out ulong value);
 	}
 
 	/// <summary>
@@ -219,6 +221,7 @@ namespace Reko.Core.Memory
 		public override uint ReadUInt32() { return ReadLeUInt32(); }
 		public override ulong ReadUInt64() { return ReadLeUInt64(); }
 		public override bool TryPeekUInt32(int offset, out uint value) { return TryPeekLeUInt32(offset, out value); }
+		public override bool TryPeekUInt64(int offset, out ulong value) { return TryPeekLeUInt64(offset, out value); }
 
 		public override bool TryReadInt16(out short i16) { return TryReadLeInt16(out i16); }
 		public override bool TryReadInt32(out int i32) { return TryReadLeInt32(out i32); }
@@ -273,6 +276,7 @@ namespace Reko.Core.Memory
 		public override uint ReadUInt32() { return ReadBeUInt32(); }
 		public override ulong ReadUInt64() { return ReadBeUInt64(); }
 		public override bool TryPeekUInt32(int offset, out uint value) { return TryPeekBeUInt32(offset, out value); }
+		public override bool TryPeekUInt64(int offset, out ulong value) { return TryPeekBeUInt64(offset, out value); }
 		public override bool TryReadInt16(out short i16) { return TryReadBeInt16(out i16); }
 		public override bool TryReadInt32(out int i32) { return TryReadBeInt32(out i32); }
 		public override bool TryReadInt64(out long value) { return TryReadBeInt64(out value); }

@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Typing
 						fut.TextWriter.WriteLine();
 					}
 				}
-				store.Write(fut.TextWriter);
+				store.Write(false, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}

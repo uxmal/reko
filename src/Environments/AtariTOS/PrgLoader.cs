@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
@@ -46,14 +47,15 @@ namespace Reko.Environments.AtariTOS
             set { throw new NotImplementedException(); }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             var rdr = new BeImageReader(RawImage);
             if (!TryLoadHeader(rdr, out var hdr))
                 throw new BadImageFormatException();
 
+            addrLoad ??= PreferredBaseAddress;
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch = cfgSvc.GetArchitecture("m68k");
+            var arch = cfgSvc.GetArchitecture("m68k")!;
             var env = cfgSvc.GetEnvironment("atariTOS");
             var platform = env.Load(Services, arch);
 

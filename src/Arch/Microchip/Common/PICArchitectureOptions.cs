@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -31,7 +31,10 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// </summary>
     public class PICArchitectureOptions
     {
-        public PICArchitectureOptions() { }
+        public PICArchitectureOptions() {
+            ProcessorModel = null!;
+            LoaderType = null!;
+        }
 
         public PICArchitectureOptions(IPICProcessorModel processorModel, PICExecMode execMode, string ldrType)
         {
@@ -41,7 +44,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         }
 
         public PICArchitectureOptions(string picName, PICExecMode execMode, string ldrType = "raw")
-            : this(PICProcessorModel.GetModel(picName), execMode, ldrType)
+            : this(PICProcessorModel.GetModel(picName)!, execMode, ldrType)
         {
         }
 
@@ -49,7 +52,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             if (picker == null)
                 throw new ArgumentNullException(nameof(picker));
-            ProcessorModel = PICProcessorModel.GetModel(picker.PICName);
+            ProcessorModel = PICProcessorModel.GetModel(picker.PICName)!;
             PICExecutionMode = (picker.AllowExtended ? PICExecMode.Extended : PICExecMode.Traditional);
             LoaderType = picker.LoaderType;
         }
@@ -80,7 +83,9 @@ namespace Reko.Arch.MicrochipPIC.Common
     public class PICArchitectureOptionsPicker
     {
         public PICArchitectureOptionsPicker()
-        { }
+        {
+            PICName = null!;
+        }
 
         public PICArchitectureOptionsPicker(PICArchitectureOptions opts)
         {

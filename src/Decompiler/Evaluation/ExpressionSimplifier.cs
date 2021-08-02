@@ -77,6 +77,7 @@ namespace Reko.Evaluation
         private readonly LogicalNotFollowedByNegRule logicalNotFollowedByNeg;
         private readonly LogicalNotFromArithmeticSequenceRule logicalNotFromBorrow;
         private readonly UnaryNegEqZeroRule unaryNegEqZero;
+        private readonly ScaledIndexRule scaledIndexRule;
 
         public ExpressionSimplifier(SegmentMap segmentMap, EvaluationContext ctx, DecompilerEventListener listener)
         {
@@ -115,6 +116,7 @@ namespace Reko.Evaluation
             this.logicalNotFollowedByNeg = new LogicalNotFollowedByNegRule();
             this.logicalNotFromBorrow = new LogicalNotFromArithmeticSequenceRule();
             this.unaryNegEqZero = new UnaryNegEqZeroRule();
+            this.scaledIndexRule = new ScaledIndexRule(ctx);
         }
 
         public bool Changed { get { return changed; } set { changed = value; } }
@@ -277,6 +279,13 @@ namespace Reko.Evaluation
                 Changed = true;
                 return distributedSlice.Transform(ctx).Accept(this);
             }
+            // (exp >> n) << n => __align(exp, 1<<n)
+            var eNew = ShiftRightShiftLeft(binExp);
+            if (eNew != null)
+            {
+                Changed = true;
+                return eNew;
+            }
 
             var left = binExp.Left.Accept(this);
             var right = binExp.Right.Accept(this);
@@ -345,8 +354,8 @@ namespace Reko.Evaluation
             }
 
             //$REVIEW: this is evaluation! Shouldn't the be done by the evaluator?
-            if (left == Constant.Invalid || right == Constant.Invalid)
-                return Constant.Invalid;
+            if (left is InvalidConstant || right is InvalidConstant)
+                return InvalidConstant.Create(binExp.DataType);
 
             binExp = new BinaryExpression(binExp.Operator, binExp.DataType, left, right);
             if (constConstBin.Match(binExp))
@@ -495,7 +504,8 @@ namespace Reko.Evaluation
                 Changed = true;
                 return shiftShift.Transform();
             }
-            var eNew = ShiftLeftShiftRight(binExp, cRight);
+
+            eNew = ShiftLeftShiftRight(binExp, cRight);
             if (eNew != null)
             {
                 Changed = true;
@@ -560,6 +570,33 @@ namespace Reko.Evaluation
             return null;
         }
 
+        private Expression? ShiftRightShiftLeft(BinaryExpression bin)
+        {
+            if (bin.Operator != Operator.Shl || !(bin.Right is Constant cRight))
+                return null;
+            if (bin.Left is Identifier idLeft)
+            {
+                var innerExp = ctx.GetDefiningExpression(idLeft);
+                if (innerExp is null)
+                    return null;
+                if (innerExp is BinaryExpression binInner && 
+                    (binInner.Operator == Operator.Shr || binInner.Operator == Operator.Sar) &&
+                    cmp.Equals(cRight, binInner.Right))
+                {
+                    ctx.RemoveExpressionUse(idLeft);
+                    ctx.UseExpression(binInner.Left);
+                    var sig = FunctionType.Func(
+                        new Identifier("", bin.DataType, null!),
+                        new Identifier("x", binInner.Left.DataType, null!),
+                        new Identifier("y", PrimitiveType.Int32, null!));
+                    var align = new IntrinsicProcedure(IntrinsicProcedure.Align, true, sig);
+                    return m.Fn(align, binInner.Left, Constant.Int32(1 << cRight.ToInt32()));
+                }
+            }
+            return null;
+        }
+
+
         public static Constant SimplifyTwoConstants(Operator op, Constant l, Constant r)
         {
             PrimitiveType lType = (PrimitiveType) l.DataType;
@@ -574,7 +611,7 @@ namespace Reko.Evaluation
         public virtual Expression VisitConversion(Conversion conversion)
         {
             var exp = conversion.Expression.Accept(this);
-            if (exp != Constant.Invalid)
+            if (!(exp is InvalidConstant))
             {
                 var ptCvt = conversion.DataType.ResolveAs<PrimitiveType>();
                 var ptSrc = conversion.SourceDataType.ResolveAs<PrimitiveType>();
@@ -783,9 +820,15 @@ namespace Reko.Evaluation
 
         public virtual Expression VisitMemoryAccess(MemoryAccess access)
         {
+            var offset = access.EffectiveAddress.Accept(this);
+            if (this.scaledIndexRule.Match(offset))
+            {
+                Changed = true;
+                offset = scaledIndexRule.Transform().Accept(this);
+            }
             var value = new MemoryAccess(
                 access.MemoryId,
-                access.EffectiveAddress.Accept(this),
+                offset,
                 access.DataType);
             var newValue = ctx.GetValue(value, segmentMap);
             if (newValue != value)
@@ -801,7 +844,7 @@ namespace Reko.Evaluation
             var newSeq = seq.Expressions.Select(e =>
             {
                 var eNew = e.Accept(this);
-                if (eNew == Constant.Invalid)
+                if (eNew is InvalidConstant)
                     eNew = e;
                 return eNew;
             }).ToArray();
@@ -1089,6 +1132,11 @@ namespace Reko.Evaluation
         {
             var basePtr = segMem.BasePointer.Accept(this);
             var offset = segMem.EffectiveAddress.Accept(this);
+            if (this.scaledIndexRule.Match(offset))
+            {
+                Changed = true;
+                offset = scaledIndexRule.Transform().Accept(this);
+            }
             if (basePtr is Constant cBase && offset is Constant cOffset)
             {
                 var addr = ctx.MakeSegmentedAddress(cBase, cOffset);

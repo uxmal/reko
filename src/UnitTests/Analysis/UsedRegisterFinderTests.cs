@@ -127,16 +127,17 @@ namespace Reko.UnitTests.Analysis
             return RunTest(sExp, sst.SsaState);
         }
 
-        private Procedure RunSsaTest(string sExp, Action<SsaProcedureBuilder> builder)
+        private Procedure RunSsaTest(string sExp, Action<SsaProcedureBuilder> builder, Func<Procedure, ProcedureFlow> mkFlow = null)
         {
             var m = new SsaProcedureBuilder();
             builder(m);
-            return RunTest(sExp, m.Ssa);
+            return RunTest(sExp, m.Ssa, mkFlow);
         }
 
-        private Procedure RunTest(string sExp, SsaState ssa)
+        private Procedure RunTest(string sExp, SsaState ssa, Func<Procedure, ProcedureFlow> mkFlow = null)
         {
-            pf.ProcedureFlows[ssa.Procedure] = new ProcedureFlow(ssa.Procedure);
+            mkFlow ??= p => new ProcedureFlow(p);
+            pf.ProcedureFlows[ssa.Procedure] = mkFlow(ssa.Procedure);
             var urf = new UsedRegisterFinder(
                 pf,
                 new Procedure[] { ssa.Procedure },
@@ -153,6 +154,34 @@ namespace Reko.UnitTests.Analysis
                 Assert.AreEqual(sExp, sActual);
             }
             return ssa.Procedure;
+        }
+
+        private void RunClassifyTest(
+            string sExp,
+            string sidName,
+            Action<SsaProcedureBuilder> gen,
+            Func<Procedure, ProcedureFlow> mkFlow)
+        {
+            var m = new SsaProcedureBuilder();
+            gen(m);
+            var ssa = m.Ssa;
+            pf.ProcedureFlows[ssa.Procedure] = mkFlow(ssa.Procedure);
+            var urf = new UsedRegisterFinder(
+                pf,
+                new Procedure[] { ssa.Procedure },
+                NullDecompilerEventListener.Instance);
+            var sid = ssa.Identifiers.Single(s => s.Identifier.Name == sidName);
+            var flow = urf.Classify(ssa, sid, sid.Identifier.Storage, true);
+            var sw = new StringWriter();
+            sw.Write("Used: ");
+            sw.Write(string.Join(",", flow));
+            var sActual = sw.ToString();
+            if (sActual != sExp)
+            {
+                ssa.Procedure.Dump(true);
+                Debug.WriteLine(sActual);
+                Assert.AreEqual(sExp, sActual);
+            }
         }
 
         [Test]
@@ -300,6 +329,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void UrfDpb()
         {
             var sExp = "Used: [bx, [0..15]]";
@@ -325,6 +355,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void UrfDpb2()
         {
             var sExp = "Used: [bx, [0..15]],[cl, [0..7]]";
@@ -345,6 +376,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void UrfSequence2()
         {
             var sExp = "Used: [Sequence r1:r2, [32..63]]";
@@ -360,6 +392,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void UrfMkSequence()
         {
             var sExp = "Used: [r1, [0..31]],[r2, [0..31]]";
@@ -377,6 +410,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void UrfMkSequence_unused()
         {
             var sExp = "Used: ";
@@ -393,6 +427,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void UrfArray()
         {
             var sExp = "Used: [r1, [0..31]],[r2, [0..31]]";
@@ -409,6 +444,36 @@ namespace Reko.UnitTests.Analysis
 
                 m.AddUseToExitBlock(r3);
             });
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void UrfXXX()
+        {
+            var sExp = "Used: [0..31]";
+            var regDx = new RegisterStorage("dx", 2, 0, PrimitiveType.Word16);
+            var regAx = new RegisterStorage("ax", 0, 0, PrimitiveType.Word16);
+            var seqDxAx = new SequenceStorage(regDx, regAx);
+            RunClassifyTest(
+                sExp,
+                "dx_ax",
+                m =>
+                {
+                    var ax = m.Reg("dx", regAx);
+                    var dx = m.Reg("ax", regDx);
+                    var dx_ax = m.SeqId("dx_ax", PrimitiveType.Word32, regDx, regAx);
+                    m.Assign(dx_ax, m.Mem32(m.Word32(0x00123400)));
+                    m.Alias(ax, m.Slice(ax.DataType, dx_ax, 0));
+                    m.Alias(dx, m.Slice(ax.DataType, dx_ax, 16));
+                    m.AddUseToExitBlock(ax);
+                    m.AddUseToExitBlock(dx);
+                },
+                p =>
+                {
+                    var flow = new ProcedureFlow(p);
+                    flow.BitsLiveOut.Add(seqDxAx, new BitRange(0, 32));
+                    return flow;
+                });
         }
     }
 }

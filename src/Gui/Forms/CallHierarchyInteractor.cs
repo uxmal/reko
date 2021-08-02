@@ -73,7 +73,7 @@ namespace Reko.Gui.Forms
         public void Show(Program program, Procedure proc)
         {
             AddProcedure(program, proc);
-            Services.RequireService<IWindowFrame>().Show();
+            Frame?.Show();
         }
 
         /// <summary>

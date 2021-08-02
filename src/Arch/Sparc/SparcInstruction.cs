@@ -29,9 +29,6 @@ namespace Reko.Arch.Sparc
 {
     public class SparcInstruction : MachineInstruction
     {
-        public SparcInstruction()
-        {
-        }//$DEBUG
         public Mnemonic Mnemonic { get; set; }
 
         public override int MnemonicAsInteger => (int) Mnemonic;

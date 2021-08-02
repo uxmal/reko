@@ -84,11 +84,6 @@ namespace Reko.Arch.RiscV
             return new RiscVDisassembler(this, decoders!, imageReader);
         }
 
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return new RiscVInstructionComparer(norm);

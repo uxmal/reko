@@ -65,7 +65,7 @@ namespace Reko.Arch.Mips
             }
             else
             {
-                return Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
             }
         }
 
@@ -108,7 +108,7 @@ namespace Reko.Arch.Mips
             return new CallSite(0, 0);
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
     }

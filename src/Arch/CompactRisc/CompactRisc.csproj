@@ -1,12 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items"/>
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>Reko.Arch.CompactRisc</RootNamespace>
     <AssemblyName>Reko.Arch.CompactRisc</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <nullable>enable</nullable>
-    <LangVersion>8.0</LangVersion>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 

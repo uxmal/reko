@@ -19,17 +19,15 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Types;
 using Reko.Core.CLanguage;
-using Reko.Core.Expressions;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using Reko.Core.Serialization;
 using X86Registers = Reko.Arch.X86.Registers;
-
 
 namespace Reko.Environments.Windows
 {
@@ -51,9 +49,12 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
         {
-            throw new NotImplementedException();
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
@@ -62,9 +63,9 @@ namespace Reko.Environments.Windows
                 .ToHashSet();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
-            if (vector == 0x20)
+            if (vector == 0x20 && state != null && segmentMap != null)
             {
                 // Dynamic VxD call.
                 //$TODO: look up the call to determine what parameters it uses.
@@ -88,17 +89,17 @@ namespace Reko.Environments.Windows
             throw new NotImplementedException();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
 
-        public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             return base.GetTrampolineDestination(addrInstr, instrs, host);
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }

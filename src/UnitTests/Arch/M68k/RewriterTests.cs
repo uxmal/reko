@@ -44,12 +44,6 @@ namespace Reko.UnitTests.Arch.M68k
 
         public override Address LoadAddress => addrBase;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var state = arch.CreateProcessorState();
-            return arch.CreateRewriter(mem.CreateBeReader(0), state, arch.CreateFrame(), host);
-        }
-
         public void Given_Assembler(Action<M68kAssembler> build)
         {
             var asm = new M68kAssembler(arch, addrBase, new List<ImageSymbol>());

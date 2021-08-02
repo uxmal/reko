@@ -19,6 +19,9 @@ struct Eq_n g_tFFFF801B = // 801B
 						
 						{
 							;
+Eq_n g_aFFFF8030[] = // 8030
+							{
+							};
 real48 g_rFFFF8054 = ;
 real48 g_r8057 = ;
 union Eq_n g_uFFFF805D = // 805D
@@ -28,6 +31,9 @@ union Eq_n g_uFFFF805D = // 805D
 Eq_n g_t805F = // 805F
 							{
 								0x00
+							};
+Eq_n g_aFFFF8060[] = // 8060
+							{
 							};
 real48 g_rFFFF8061 = ;
 real48 g_r8064 = ;

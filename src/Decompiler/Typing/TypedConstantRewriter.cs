@@ -122,16 +122,25 @@ namespace Reko.Typing
                 this.c = Constant.Create(
                     PrimitiveType.CreateWord(addr.DataType.BitSize - ptrSeg.BitSize),
                     addr.Offset);
+                DataType pointee;
+                if (dt != null)
+                {
+                    pointee = dt.Pointee;
+                }
+                else
+                {
+                    pointee = new UnknownType();
+                }
 
-                var f = EnsureFieldAtOffset(baseType, dt.Pointee, c.ToInt32());
+                var f = EnsureFieldAtOffset(baseType, pointee, c.ToInt32());
                 Expression ex = new FieldAccess(f.DataType, new Dereference(ptrSeg, segId), f);
-                if (dereferenced || dt.Pointee is ArrayType)
+                if (dereferenced || pointee is ArrayType)
                 {
                     return ex;
                 }
                 else
                 {
-                    var un = new UnaryExpression(Operator.AddrOf, dt, ex);
+                    var un = new UnaryExpression(Operator.AddrOf, addr.TypeVariable!.DataType, ex);
                     return un;
                 }
             }
@@ -488,7 +497,7 @@ namespace Reko.Typing
 
         public Expression VisitUnknownType(UnknownType ut)
 		{
-			throw new NotImplementedException();
+            return c!;
 		}
 
         public Expression VisitVoidType(VoidType vt)

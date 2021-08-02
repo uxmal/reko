@@ -144,7 +144,7 @@ namespace Reko.Arch.PaRisc
             MaybeBranchAndAnnul(((AddressOperand)instr.Operands[2]).Address, left, right);
         }
 
-        private void MaybeBranchAndAnnul(Address addrDest, Expression reg, Expression right = null)
+        private void MaybeBranchAndAnnul(Address addrDest, Expression reg, Expression? right = null)
         {
             if (instr.Annul)
             {

@@ -21,6 +21,7 @@
 using Reko.Arch.Mos6502;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
@@ -42,10 +43,10 @@ namespace Reko.Environments.C64
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            return Load(addrLoad, null, null);
+            return Load(addrLoad!, null!, null!);
         }
 
         public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
@@ -66,7 +67,7 @@ namespace Reko.Environments.C64
             var cfgSvc = Services.RequireService<IConfigurationService>();
             arch = new C64Basic(Services, lines);
             platform = cfgSvc.GetEnvironment("c64").Load(Services, arch);
-            var arch6502 = cfgSvc.GetArchitecture("m6502");
+            var arch6502 = cfgSvc.GetArchitecture("m6502")!;
             SegmentMap segMap = CreateSegmentMap(platform, image, lines);
             var program = new Program(segMap, arch, platform);
             program.Architectures.Add(arch6502.Name, arch6502);
@@ -89,7 +90,7 @@ namespace Reko.Environments.C64
 
         private SegmentMap CreateSegmentMap(IPlatform platform, ByteMemoryArea bmem, IDictionary<ushort, C64BasicInstruction> lines)
         {
-            var segMap = platform.CreateAbsoluteMemoryMap();
+            var segMap = platform.CreateAbsoluteMemoryMap()!;
             Address addrStart = bmem.BaseAddress;
             if (lines.Count > 0)
             {

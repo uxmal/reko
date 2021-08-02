@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -24,6 +24,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Reko.Core.Output;
+
+#nullable disable
 
 namespace Reko.ImageLoaders.LLVM
 {
@@ -167,7 +169,7 @@ namespace Reko.ImageLoaders.LLVM
     public class PhiInstruction : OtherInstruction
     {
         public LLVMType Type;
-        public List<Tuple<Value, LocalId>> Arguments;
+        public List<(Value, LocalId)> Arguments;
 
         public override T Accept<T>(InstructionVisitor<T> visitor)
         {
@@ -287,7 +289,7 @@ namespace Reko.ImageLoaders.LLVM
 
     public class GetElementPtr : MemoryInstruction
     {
-        public List<Tuple<LLVMType, Value>> Indices;
+        public List<(LLVMType, Value)> Indices;
 
         public LLVMType BaseType;
         public LLVMType PtrType;
@@ -555,7 +557,7 @@ namespace Reko.ImageLoaders.LLVM
         public LLVMType Type;
         public Value Value;
         public LocalId Default;
-        public List<Tuple<LLVMType, Value, LocalId>> Destinations;
+        public List<(LLVMType, Value, LocalId)> Destinations;
 
         public override T Accept<T>(InstructionVisitor<T> visitor)
         {

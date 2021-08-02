@@ -53,6 +53,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public Color ForeColor { get { return ctrl.ForeColor; } set { ctrl.ForeColor = value; } }
         public bool Enabled { get { return ctrl.Enabled; } set { ctrl.Enabled = value; } }
 
+        public void BringToFront() { ctrl.Focus(); }
         public void Focus() { ctrl.Focus(); }
     }
 }

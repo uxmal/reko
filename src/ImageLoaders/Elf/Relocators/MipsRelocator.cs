@@ -24,6 +24,7 @@ using Reko.Core;
 using System.Linq;
 using System.Diagnostics;
 using Reko.Core.Configuration;
+using Reko.Core.Lib;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {
@@ -36,6 +37,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public MipsRelocator(ElfLoader32 loader, SortedList<Address, ImageSymbol> imageSymbols) : base(loader, imageSymbols)
         {
+            archMips16e = null!;
         }
 
         public override ImageSymbol AdjustImageSymbol(ImageSymbol sym)
@@ -44,16 +46,17 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 sym.Type != SymbolType.ExternalProcedure &&
                 sym.Type != SymbolType.Procedure)
                 return sym;
-            if ((sym.Address.ToLinear() & 1) == 0)
+            if ((sym.Address!.ToLinear() & 1) == 0)
                 return sym;
             if (archMips16e == null)
             {
                 var cfgSvc = loader.Services.RequireService<IConfigurationService>();
-                this.archMips16e = cfgSvc.GetArchitecture(loader.Architecture.Name);
-                archMips16e.LoadUserOptions(new Dictionary<string, object>
-                {
-                    { "decoder", "mips16e" }
-                });
+                this.archMips16e = cfgSvc.GetArchitecture(
+                    loader.Architecture.Name, 
+                    new Dictionary<string, object>
+                    {
+                        { "decoder", "mips16e" }
+                    })!;
             }
             var addrNew = sym.Address - 1;
             var symNew = ImageSymbol.Create(
@@ -213,7 +216,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rel)
+        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rel)
         {
             if (symbol == null || loader.Sections.Count <= symbol.SectionIndex)
                 return (null, null);
@@ -231,8 +234,6 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
             var S = symbol.Value;
             uint PP = P;
-            var relR = program.CreateImageReader(program.Architecture, addr);
-            var relW = program.CreateImageWriter(program.Architecture, addr);
             int sh = 0;
             uint mask = 0;
             uint A = 0;
@@ -278,6 +279,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 R_MIPS_CALLHI16  30 T-hi16   external (G - (short)G) >> 16 + A
                 R_MIPS_CALLLO16  31 T-lo16   external G & 0xffff */
             }
+            var relR = program.CreateImageReader(program.Architecture, addr);
+            var relW = program.CreateImageWriter(program.Architecture, addr);
             var w = relR.ReadUInt32();
             w += ((uint)(S + A + P) >> sh) & mask;
             relW.WriteUInt32(w);
@@ -361,6 +364,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
     public class MipsRelocator64 : ElfRelocator64
     {
+        private readonly Bitfield targ26 = new Bitfield(0, 26);
+
         public MipsRelocator64(ElfLoader64 elfLoader, SortedList<Address, ImageSymbol> imageSymbols) : base(elfLoader, imageSymbols)
         {
         }
@@ -377,17 +382,64 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return elfNew;
         }
 
-        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rel)
         {
-            switch ((Mips64Rt)rela.Info)
+            if (symbol == null || loader.Sections.Count <= symbol.SectionIndex)
+                return (null, null);
+            Address addr;
+            ulong P;
+            if (referringSection?.Address != null)
+            {
+                addr = referringSection.Address + rel.Offset;
+                P = addr.ToLinear();
+            }
+            else
+            {
+                addr = Address.Ptr64(rel.Offset);
+                P = 0;
+            }
+            if (addr.ToLinear() == 0)
+                return (addr, symbol);
+            var uAddrSection = (symbol.SectionIndex != 0)
+                ? loader.Sections[(int) symbol.SectionIndex].Address?.ToLinear() ?? 0
+                : 0;
+            uint S = (uint) (symbol.Value + uAddrSection);
+
+            ulong PP = P;
+            var relR = program.CreateImageReader(program.Architecture, addr);
+            var relW = program.CreateImageWriter(program.Architecture, addr);
+            int sh = 0;
+            uint mask = 0;
+            if (!relR.TryPeekBeUInt32(0, out uint w))
+                return (null, null);
+            uint A = (rel.Addend.HasValue)
+                ? (uint) rel.Addend.Value
+                : w;
+            uint ww = w;
+
+            switch ((Mips64Rt)rel.Info)
             {
             case Mips64Rt.R_MIPS_NONE:
                 return (null, null);
-            default:
-                ElfImageLoader.trace.Warn("Unimplemented MIPS64 relocation type: {0}", RelocationTypeToString((uint) rela.Info));
+            case Mips64Rt.R_MIPS_64:
+                ulong A64;
+                if (rel.Addend.HasValue)
+                    A64 = (ulong) rel.Addend.Value;
+                else if (!relR.TryPeekUInt64(0, out A64))
+                    return (null, null);
+                relW.WriteUInt64(S + A64);
+                return (addr, symbol);
+            case Mips64Rt.R_MIPS_26:
+                long sA = targ26.ReadSigned(A) << 2;
+                uint n = (uint) ((S + (ulong) sA) >> 2);
+                ww = (w & 0xFC000000u) | n;
                 break;
+            default:
+                ElfImageLoader.trace.Warn("Unimplemented MIPS64 relocation type: {0}", RelocationTypeToString((uint) rel.Info));
+                return (addr, symbol);
             }
-            return (null, null);
+            relW.WriteUInt32(ww);
+            return (addr, symbol);
         }
 
         public override string RelocationTypeToString(uint type)
@@ -414,50 +466,34 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     //local sign_extend(A) + S + GP0 - GP
         R_MIPS_LITERAL = 8, // V-lit16 local sign_extend(A) + L
                             //R_MIPS_GOT
-        R_MIPS_GOT16 = 9, // V-rel16
-                          //external G
-                          //local f
-        /*
-        R_MIPS_PC16 10 V-pc16 external sign_extend(A) + S - P
-        R_MIPS_CALL16 e, m
-        R_MIPS_CALLm 11 V-rel16 external G
-        R_MIPS_GPREL32 12 T-word32 local A + S + GP0 - GP
-        R_MIPS_SHIFT5 16 V-sh5 any S
-        R_MIPS_SHIFT6 17 V-sh6 any S
-        R_MIPS_64 g 18 T-word64 any S + A
-        R_MIPS_GOT_DISP 19 V-rel16 any G
-        R_MIPS_GOT_PAGE 20 V-rel16 any
-        h
-        R_MIPS_GOT_OFST 21 V-rel16 any
-        h
-        R_MIPS_GOT_HI16 22 T-hi16 any %high(G)d
-        R_MIPS_GOT_LO16 23 T-lo16 any G
-        R_MIPS_SUB 24 T-word64 any S - A
-        R_MIPS_INSERT_A 25 T-word32 any Insert addend as instruction immediately prior to addressed location. R_MIPS_INSERT_B i
-        26 T-word32 any
-        R_MIPS_DELETE 27 T-word32 any Remove the addressed 32-bit object (normally an instruction). j
-        R_MIPS_HIGHER 28 T-hi16 any %higher(A+S)k
-        R_MIPS_HIGHEST 29 T-hi16 any %highest(A+S)l
-        R_MIPS_CALL_HI16m 30 T-hi16 any %high(G)d
-        R_MIPS_CALL_LO16m 31 T-lo16 any G
-        R_MIPS_SCN_DISP 32 T-word32 any
-        n
-         S+A-scn_addr
-        (Section displacement)
-        R_MIPS_REL16 33 V-hw16 any S + A
-        Table 32 Relocation Types
-        Name Value
-        Field Symbol Calculation
-        ELF-64 Object File Format Page 47
-        11/3/98 SiliconGraphics
-        Computer Systems
-        R_MIPS_ADD_IMMEDIATE 34 V-half16 any
-        oS + sign_extend(A)
-        R_MIPS_PJUMP 35 T-word32 any Deprecated (protected jump)
-        R_MIPS_RELGOT 36 T-word32 any
-        qS + A - EA
-        R_MIPS_JALR 37 T-word32 any
-        pProtected jump conversion
-        */
+        R_MIPS_GOT16 = 9,   // V-rel16
+                            //external G
+                            //local f
+        R_MIPS_PC16  = 10,          // V-pc16 external sign_extend(A) + S - P
+        R_MIPS_CALL16 = 11,         // e, m
+        R_MIPS_CALL = 11,           // V-rel16 external G
+        R_MIPS_GPREL32 = 12,        // T-word32 local A + S + GP0 - GP
+        R_MIPS_SHIFT5 = 16,         // V-sh5 any S
+        R_MIPS_SHIFT6 = 17,         // V-sh6 any S
+        R_MIPS_64 = 18,             // T-word64 any S + A
+        R_MIPS_GOT_DISP = 19,       // V-rel16 any G
+        R_MIPS_GOT_PAGE = 20,       // V-rel16 any
+        R_MIPS_GOT_OFST = 21,       // V-rel16 any
+        R_MIPS_GOT_HI16 = 22,       // T-hi16 any %high(G)d
+        R_MIPS_GOT_LO16 = 23,       // T-lo16 any G
+        R_MIPS_SUB  = 24,           // T-word64 any S - A
+        R_MIPS_INSERT_A = 25,       // T-word32 any Insert addend as instruction immediately prior to addressed location. 
+        R_MIPS_INSERT_B = 26,       // T-word32 any
+        R_MIPS_DELETE = 27,         // T-word32 any Remove the addressed 32-bit object (normally an instruction). j
+        R_MIPS_HIGHER = 28,         // T-hi16 any %higher(A+S)k
+        R_MIPS_HIGHEST = 29,        // T-hi16 any %highest(A+S)l
+        R_MIPS_CALL_HI16 = 30,      // T-hi16 any %high(G)d
+        R_MIPS_CALL_LO16 = 31,      // T-lo16 any G
+        R_MIPS_SCN_DISP = 32,       // T-word32 any S+A-scn_addr (Section displacement)
+        R_MIPS_REL16 = 33,          // V-hw16 any S + A
+        R_MIPS_ADD_IMMEDIATE = 34,  // V-half16 any oS + sign_extend(A)
+        R_MIPS_PJUMP = 35,          // T-word32 any Deprecated (protected jump)
+        R_MIPS_RELGOT = 36,         // T-word32 any qS + A - EA
+        R_MIPS_JALR = 37,           // T-word32 any pProtected jump conversion
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +8,6 @@ namespace Reko.ImageLoaders.OdbgScript
 {
     public class LOAD_DLL_DEBUG_INFO
     {
-        public object lpBaseOfDll;
+        public object? lpBaseOfDll;
     }
 }

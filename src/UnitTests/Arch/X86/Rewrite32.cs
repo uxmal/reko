@@ -170,6 +170,7 @@ namespace Reko.UnitTests.Arch.X86
             var project = new Project { Programs = { program } };
             Scanner scan = new Scanner(
                 program,
+                project.LoadedMetadata,
                 new DynamicLinker(project, program, eventListener),
                 services);
             foreach (var ep in asm.EntryPoints)

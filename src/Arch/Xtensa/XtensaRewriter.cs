@@ -47,8 +47,8 @@ namespace Reko.Arch.Xtensa
         private XtensaInstruction instr;
         private InstrClass iclass;
         private RtlEmitter m;
-        private Address lbegin;
-        private Address lend;
+        private Address? lbegin;
+        private Address? lend;
 
         public XtensaRewriter(XtensaArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -58,6 +58,8 @@ namespace Reko.Arch.Xtensa
             this.binder = binder;
             this.host = host;
             this.dasm = new XtensaDisassembler(this.arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -368,7 +370,7 @@ namespace Reko.Arch.Xtensa
                 var lcount = binder.EnsureRegister(Registers.LCOUNT);
                 m.BranchInMiddleOfInstruction(m.Eq0(lcount), addrNext, InstrClass.ConditionalTransfer);
                 m.Assign(lcount, m.ISub(lcount, 1));
-                m.Goto(this.lbegin);
+                m.Goto(this.lbegin!);
 
                 lbegin = null;
                 lend = null;

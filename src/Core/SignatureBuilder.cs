@@ -49,7 +49,7 @@ namespace Reko.Core
 
 		public void AddFlagGroupReturnValue(KeyValuePair<RegisterStorage, uint> bits, IStorageBinder binder)
 		{
-            var grf = arch.GetFlagGroup(bits.Key, bits.Value);
+            var grf = arch.GetFlagGroup(bits.Key, bits.Value)!;
 			ret = binder.EnsureFlagGroup(grf);
 		}
 

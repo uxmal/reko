@@ -43,6 +43,7 @@ namespace Reko.Environments.C64
         public C64BasicInstruction()
         {
             this.InstructionClass = InstrClass.Linear;
+            this.Line = null!;
         }
 
         public override int MnemonicAsInteger => throw new NotImplementedException(); 

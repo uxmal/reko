@@ -30,6 +30,7 @@
 using Reko.Arch.MilStd1750;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
@@ -623,7 +624,7 @@ namespace Reko.ImageLoaders.Ldm
 
             public ushort Value { get; set; }
         }
-        mmureg [,,] pagereg = new mmureg[2,16,16];
+        readonly mmureg [,,] pagereg = new mmureg[2,16,16];
 
     }
 }

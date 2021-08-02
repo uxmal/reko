@@ -1550,5 +1550,16 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
             var decl = parser.Parse()[1];
 
         }
+
+        [Test]
+        public void CParser_huge_ptr()
+        {
+            MsvcLex(@"
+typedef unsigned int UINT;
+typedef int         HFILE;
+UINT __far __pascal _lread(HFILE, void __huge *, UINT );");
+            var decl = parser.Parse()[2];
+            Assert.AreEqual("(decl UINT _Far __Pascal ((init-decl (func _lread ((HFILE ) (Void _Huge (ptr )) (UINT ))))))", decl.ToString());
+        }
     }
 }

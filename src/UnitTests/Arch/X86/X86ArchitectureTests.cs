@@ -224,16 +224,6 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
-        public void X86arch_SetAxAliasesTrue()
-        {
-            arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());
-            var aliases = arch.GetAliases(Registers.ax).ToHashSet();
-            Assert.IsTrue(aliases.Contains(Registers.ax), "Expected ax set");
-            Assert.IsTrue(aliases.Contains(Registers.ah), "Expected ah set");
-            Assert.IsTrue(aliases.Contains(Registers.al), "Expected al set");
-        }
-
-        [Test]
         public void X86arch_GetMnemonicNames()
         {
             arch = new X86ArchitectureFlat32(new ServiceContainer(), "x86-protected-32", new Dictionary<string, object>());

@@ -37,7 +37,7 @@ namespace Reko.Core.Types
 
 		private readonly TypeFactory factory;
         private readonly TraceSwitch trace;
-		private readonly IDictionary<Tuple<DataType, DataType>, bool> cache = new Dictionary<Tuple<DataType, DataType>, bool>();
+		private readonly IDictionary<(DataType, DataType), bool> cache = new Dictionary<(DataType, DataType), bool>();
 
         public Unifier()
             : this(new TypeFactory(), classTrace)
@@ -62,7 +62,7 @@ namespace Reko.Core.Types
 		
 		private bool AreCompatible(DataType a, DataType b, int depth)
 		{
-			var typePair = new Tuple<DataType, DataType>(a, b);
+			var typePair = (a, b);
 
 			if (cache.TryGetValue(typePair, out bool d))
 				return d;

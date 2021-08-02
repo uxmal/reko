@@ -58,8 +58,8 @@ namespace Reko.Arch.Sparc
         public readonly RegisterStorage[] DFloatRegisters;
         public readonly RegisterStorage[] FFloatRegisters;
 
-        private static Dictionary<string, RegisterStorage> mpNameToReg;
-        private static Dictionary<StorageDomain, RegisterStorage> mpDomainToReg;
+        private readonly Dictionary<string, RegisterStorage> mpNameToReg;
+        private readonly Dictionary<StorageDomain, RegisterStorage> mpDomainToReg;
 
         public Registers(PrimitiveType wordSize)
         {
@@ -143,7 +143,7 @@ namespace Reko.Arch.Sparc
             return mpNameToReg.TryGetValue(regName, out reg);
         }
 
-        public RegisterStorage GetRegister(StorageDomain domain)
+        public RegisterStorage? GetRegister(StorageDomain domain)
         {
             if (mpDomainToReg.TryGetValue(domain, out var reg))
                 return reg;

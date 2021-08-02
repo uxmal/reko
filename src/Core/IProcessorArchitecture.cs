@@ -20,6 +20,7 @@
 
 using Reko.Core.Assemblers;
 using Reko.Core.Code;
+using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -152,13 +153,13 @@ namespace Reko.Core
         bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value);
 
         /// <summary>
-        /// Creates a comparer that compares instructions for equality. 
+        /// Optionally creates a comparer that compares instructions for equality. 
         /// Normalization means some attributes of the instruction are 
         /// treated as wildcards.
         /// </summary>
         /// <param name="norm"></param>
-        /// <returns></returns>
-        IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
+        /// <returns>An instruction comparer if the architecture supports it.</returns>
+        IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm);
 
         /// <summary>
         /// Creates a frame application builder for this architecture.
@@ -197,14 +198,6 @@ namespace Reko.Core
         IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator);
 
         /// <summary>
-        /// Given a register <paramref name="reg"/>, retrieves all architectural
-        /// registers that overlap all or part of it.
-        /// </summary>
-        /// <param name="reg">Register whose alias we're interested in.</param>
-        /// <returns>A sequence of aliases.</returns>
-        IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg);
-
-        /// <summary>
         /// Provide an architecture-defined CallingConvention.
         /// </summary>
         CallingConvention? GetCallingConvention(string? ccName);
@@ -237,28 +230,14 @@ namespace Reko.Core
         /// <param name="offset">Bit offset of expected subregister.</param>
         /// <param name="width">Bit size of subregister.</param>
         /// <returns>If an invalid domain is passed, null is returned.</returns>
-        RegisterStorage? GetRegister(StorageDomain domain, BitRange range);  
+        RegisterStorage? GetRegister(StorageDomain domain, BitRange range);
 
-        RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
         /// <summary>
         /// If the <paramref name="flags"/> parameter consists of multiple sub fields, separate them
         /// into distinct fields.
         /// </summary>
         /// <param name="flags"></param>
         IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags);
-
-        /// <summary>
-        /// Given a set, removes any aliases of reg from the set.
-        /// </summary>
-        void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg); 
-
-        /// <summary>
-        /// Find the widest sub-register that covers the register reg.
-        /// </summary>
-        /// <param name="reg"></param>
-        /// <param name="bits"></param>
-        /// <returns></returns>
-        RegisterStorage? GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs);
 
         /// <summary>
         /// Returns all registers of this architecture.
@@ -273,7 +252,7 @@ namespace Reko.Core
         /// <returns></returns>
         FlagGroupStorage[] GetFlags();
 
-        FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf);          // Returns flag group matching the bitflags.
+        FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf);          // Returns flag group matching the bitflags.
 
         /// <summary>
         /// Given the name of a flag register bit group, returns the corresponding
@@ -289,7 +268,7 @@ namespace Reko.Core
         /// <param name="flagRegister"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        FlagGroupStorage GetFlagGroup(string name);
+        FlagGroupStorage? GetFlagGroup(string name);
         Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
         //$REFACTOR: this should probably live in FrameApplicationBuilder instead.
         Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType);  //$REVIEW: generalize these two methods?
@@ -487,13 +466,15 @@ namespace Reko.Core
         public ImageWriter CreateImageWriter(MemoryArea mem, Address addr) => Endianness.CreateImageWriter(mem, addr);
         public bool TryRead(MemoryArea mem, Address addr, PrimitiveType dt, out Constant value) => Endianness.TryRead(mem, addr, dt, out value);
 
-        public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
+        public abstract IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
-        public abstract IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator);
-
-        public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
+        
+        public virtual IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
+        {
+            throw new NotImplementedException("Emulation has been implemented for this processor architecture yet.");
+        }
 
         public virtual CallingConvention? GetCallingConvention(string? name)
         {
@@ -560,34 +541,10 @@ namespace Reko.Core
         /// <returns></returns>
         public abstract SortedList<string, int> GetMnemonicNames();
 
-        /// <summary>
-        /// Get the improper sub-register of <paramref name="reg"/> that starts
-        /// at offset <paramref name="offset"/> and is of size 
-        /// <paramref name="width"/>.
-        /// </summary>
-        /// <remarks>
-        /// Most architectures do not have sub-registers, and will use this 
-        /// default implementation. This method is overridden for 
-        /// architectures like x86 and Z80, where sub-registers <code>(ah, al, etc)</code>
-        /// do exist.
-        /// </remarks>
-        /// <param name="reg"></param>
-        /// <param name="offset"></param>
-        /// <param name="width"></param>
-        /// <returns></returns>
-        public virtual RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            return reg;
-        }
-
         public virtual IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
         {
             throw new NotImplementedException($"Your architecture must implement {nameof(GetSubFlags)}.");
         }
-
-
-        public virtual RegisterStorage? GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs) { return (regs.Contains(reg)) ? reg : null; }
-        public virtual void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg) { ids.Remove(reg); }
 
         public virtual string RenderInstructionOpcode(MachineInstruction instr, EndianImageReader rdr)
         {
@@ -616,8 +573,8 @@ namespace Reko.Core
         }
             
         public abstract bool TryGetRegister(string name, out RegisterStorage reg);
-        public abstract FlagGroupStorage GetFlagGroup(RegisterStorage flagRegister, uint grf);
-        public abstract FlagGroupStorage GetFlagGroup(string name);
+        public abstract FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf);
+        public abstract FlagGroupStorage? GetFlagGroup(string name);
         public abstract string GrfToString(RegisterStorage flagRegister, string prefix, uint grf);
         public virtual List<RtlInstruction>? InlineCall(Address addrCallee, Address addrContinuation, EndianImageReader rdr, IStorageBinder binder)
         {

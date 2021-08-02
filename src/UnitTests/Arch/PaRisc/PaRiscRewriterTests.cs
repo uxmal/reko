@@ -46,16 +46,6 @@ namespace Reko.UnitTests.Arch.PaRisc
 
         public override Address LoadAddress => Address.Ptr32(0x00100000);
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return new PaRiscRewriter(
-                arch,
-                mem.CreateBeReader(0),
-                arch.CreateProcessorState(),
-                binder,
-                host);
-        }
-
         [Test]
         public void PaRiscRw_add()
         {

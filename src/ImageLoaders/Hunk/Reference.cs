@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -28,14 +28,14 @@ namespace Reko.ImageLoaders.Hunk
     public class Reference
     {
         public int bits;
-        public string name;
+        public string? name;
     }
 
     public class Definition
     {
-        public string name;
+        public string? name;
         public short value;
         public int type;
-        public string memf;
+        public string? memf;
     }
 }

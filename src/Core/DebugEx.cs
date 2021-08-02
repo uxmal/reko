@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Reko.Core
 {
@@ -61,6 +62,41 @@ namespace Reko.Core
             if (trace != null && trace.TraceVerbose)
             {
                 Debug.Print(message, args);
+            }
+        }
+
+        /// <summary>
+        /// Launch the Debugger and Break
+        /// </summary>
+        /// <param name="launchIfTrue"></param>
+        /// <remarks>
+        /// Example usage: start reko with Ctrl+F5.
+        /// When this function is hit, the debugger will be started if <paramref name="launchIfTrue"/> is true.
+        /// Can be used with the result of a boolean expression as an alternative
+        /// to conventional breakpoints when debugging large executables
+        /// </remarks>
+        [Conditional("DEBUG")]
+        public static void Break(bool launchIfTrue = true)
+        {
+            // should we break?
+            if (!launchIfTrue) return;
+
+            if (Debugger.IsAttached) {
+                // yes, but we're already attached. break instead
+                Debugger.Break();
+                return;
+            }
+
+            // yes, but we're not attached. launch & break
+            if (!Debugger.Launch())
+            {
+                // user clicked Cancel or this operation is not supported (e.g. Linux)
+                return;
+            }
+
+            while (!Debugger.IsAttached)
+            {
+                Thread.Sleep(200);
             }
         }
     }

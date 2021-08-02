@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2021 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  */
 #endregion
 
-using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
@@ -35,9 +35,9 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         protected ProcedureDialog dlg;
 
         private Program program;
-        private Procedure_v1 proc;
+        private UserProcedure proc;
 
-        public ProcedureDialogInteractor(Program program, Procedure_v1 proc)
+        public ProcedureDialogInteractor(Program program, UserProcedure proc)
         {
             this.program = program;
             this.proc = proc;
@@ -57,10 +57,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             dlg.ProcedureName.Text = proc.Name;
             EnableProcedureName();
             dlg.Decompile.Checked = proc.Decompile;
-            var characteristics = (proc.Characteristics != null) ?
-                proc.Characteristics : DefaultProcedureCharacteristics.Instance;
-            dlg.Allocator.Checked = characteristics.Allocator;
-            dlg.Terminates.Checked = characteristics.Terminates;
+            dlg.Allocator.Checked = proc.Characteristics.Allocator;
+            dlg.Terminates.Checked = proc.Characteristics.Terminates;
         }
 
         private void EnableProcedureName()
@@ -113,6 +111,5 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 EnableProcedureName();
             }
         }
-
     }
 }

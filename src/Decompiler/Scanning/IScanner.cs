@@ -69,7 +69,7 @@ namespace Reko.Scanning
         void ScanImageSymbol(ImageSymbol sym, bool isEntryPoint);
 
         Block? EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
-        Address? EnqueueUserProcedure(IProcessorArchitecture arch, Procedure_v1 sp);
+        Address? EnqueueUserProcedure(IProcessorArchitecture arch, UserProcedure sp);
 
         ExternalProcedure? GetImportedProcedure(IProcessorArchitecture arch, Address addrImportThunk, Address addrInstruction);
 

@@ -22,14 +22,8 @@ using Reko.Arch.Mos6502;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
-using Reko.Core.Rtl;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Environments.C64
 {
@@ -48,11 +42,6 @@ namespace Reko.Environments.C64
             get { return ""; }
         }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
-
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             return new HashSet<RegisterStorage>
@@ -69,12 +58,12 @@ namespace Reko.Environments.C64
             };
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -97,7 +86,7 @@ namespace Reko.Environments.C64
             }
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }

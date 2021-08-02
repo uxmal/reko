@@ -97,9 +97,6 @@ namespace Reko.Scanning
 
         public Identifier VisitTemporaryStorage(TemporaryStorage tmp)
         {
-            var tmp2 = frameNew.FindTemporary(tmp.Name);
-            if (tmp2 != null)
-                return tmp2;
             return frameNew.CreateTemporary(id!.DataType);
         }
 

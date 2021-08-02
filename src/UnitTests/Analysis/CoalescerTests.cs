@@ -227,7 +227,7 @@ call r2() + 4<32> (retsize: 4;)
         {
             var a = m.Reg32("a");
             var b = m.Reg32("b");
-            m.Assign(a, Constant.Invalid);
+            m.Assign(a, InvalidConstant.Create(a.DataType));
             m.Assign(b, m.IAdd(a, 4));
 
             RunCoalescer();

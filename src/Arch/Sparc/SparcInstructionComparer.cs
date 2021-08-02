@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -60,7 +60,7 @@ namespace Reko.Arch.Sparc
                 return CompareValues(immA.Value, ((ImmediateOperand)b).Value);
             }
             var addrA = a as AddressOperand;
-            if (a != null)
+            if (addrA != null)
             {
                 return NormalizeConstants ||
                     addrA.Address.ToLinear() == ((AddressOperand)b).Address.ToLinear();

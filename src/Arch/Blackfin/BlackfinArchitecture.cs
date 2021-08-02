@@ -27,8 +27,6 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.Blackfin
 {
@@ -48,11 +46,6 @@ namespace Reko.Arch.Blackfin
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new BlackfinDisassembler(this, imageReader);
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -81,7 +74,7 @@ namespace Reko.Arch.Blackfin
             {
                 return Registers.AStatFlags.TryGetValue(grf, out FlagGroupStorage flags)
                     ? flags
-                    : null;
+                    : null!;
             }
             throw new NotImplementedException();
         }
@@ -129,7 +122,7 @@ namespace Reko.Arch.Blackfin
             throw new NotImplementedException();
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -139,7 +132,7 @@ namespace Reko.Arch.Blackfin
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse32(txtAddr, out addr);
         }

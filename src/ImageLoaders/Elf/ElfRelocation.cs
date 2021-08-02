@@ -30,7 +30,7 @@ namespace Reko.ImageLoaders.Elf
     {
         public ulong Offset;
         public ulong Info;
-        public long Addend;
+        public long? Addend;    // Will have value for a SHT_RELA relocation, and not for SHT_REL
         public int SymbolIndex;
 
         public override string ToString()
@@ -38,9 +38,9 @@ namespace Reko.ImageLoaders.Elf
             var sb = new StringBuilder();
             sb.AppendFormat("offs: {0:X}", Offset);
             sb.AppendFormat(" info: {0:X}", Info);
-            if (Addend != 0)
+            if (Addend.HasValue)
             {
-                sb.AppendFormat(" info: {0:X}", Addend);
+                sb.AppendFormat(" addend: {0:X}", Addend);
             };
             sb.AppendFormat(" symbol index: {0}", SymbolIndex);
             return sb.ToString();

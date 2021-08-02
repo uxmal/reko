@@ -134,7 +134,7 @@ namespace Reko.Arch.Arm.AArch32
         private void RewriteMrc()
         {
             int cArgs = 0;
-            Expression dst = null;
+            Expression? dst = null;
             var args = new List<Expression>();
             foreach (var op in instr.Operands)
             {
@@ -149,7 +149,7 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 ++cArgs;
             }
-            var intrinsicCall = host.Intrinsic("__mrc", false, dst.DataType, args.ToArray());
+            var intrinsicCall = host.Intrinsic("__mrc", false, dst!.DataType, args.ToArray());
             m.Assign(dst, intrinsicCall);
         }
 

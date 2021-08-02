@@ -23,12 +23,6 @@ namespace Reko.UnitTests.Arch.MilStd1750
 
         public override Address LoadAddress => Address.Ptr16(0x0100);
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var rdr = arch.CreateImageReader(mem, LoadAddress);
-            return arch.CreateRewriter(rdr, arch.CreateProcessorState(), binder, host);
-        }
-
         [Test]
         public void MS1750Rw_a()
         {

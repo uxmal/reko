@@ -45,6 +45,18 @@ namespace Reko.Core.Expressions
         }
 
         /// <summary>
+        /// Generates an integer two's complement addition-with-carry expression.
+        /// </summary>
+        /// <param name="left">Augend</param>
+        /// <param name="right">Addend</param>
+        /// <param name="carry">Carry flag</param>
+        /// <returns>A binary expression for the add-with-carry.</returns>
+        public BinaryExpression IAddC(Expression left, Expression right, Expression carry)
+        {
+            return IAdd(IAdd(left, right), carry);
+        }
+
+        /// <summary>
         /// Generates an integer two's complement addition expression. Signedness
         /// doesn't matter here.
         /// </summary>
@@ -1271,6 +1283,18 @@ namespace Reko.Core.Expressions
         public BinaryExpression Shr(Expression e, int sh)
         {
             return new BinaryExpression(Operator.Shr, e.DataType, e, Constant.Byte((byte) sh));
+        }
+
+        /// <summary>
+        /// Generates an integer two's complement subtraction-with-borow expression.
+        /// </summary>
+        /// <param name="left">Augend</param>
+        /// <param name="right">Addend</param>
+        /// <param name="borrow">Carry flag</param>
+        /// <returns>A binary expression for the subtraction-with-borrow.</returns>
+        public BinaryExpression ISubB(Expression left, Expression right, Expression borrow)
+        {
+            return ISub(ISub(left, right), borrow);
         }
 
         /// <summary>

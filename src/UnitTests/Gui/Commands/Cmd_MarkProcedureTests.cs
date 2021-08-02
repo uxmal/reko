@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Gui.Commands
             brSvc.Verify();
             Assert.AreEqual(1, program.User.Procedures.Count);
             var uproc = program.User.Procedures.Values[0];
-            Assert.AreEqual("0C20:0000", uproc.Address);
+            Assert.AreEqual("0C20:0000", uproc.Address.ToString());
         }
     }
 }

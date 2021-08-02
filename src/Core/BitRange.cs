@@ -38,7 +38,14 @@ namespace Reko.Core
             this.Msb = (short)msb;
         }
 
+        /// <summary>
+        /// Inclusive lower endpoint of the range.
+        /// </summary>
         public short Lsb { get; private set; }
+
+        /// <summary>
+        /// Inclusive upper endpoint of the range.
+        /// </summary>
         public short Msb { get; private set; }
 
 

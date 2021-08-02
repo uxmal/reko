@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
@@ -88,7 +89,7 @@ struct exec {
             A_PMT_C90 = 8,          // CRAY C90 
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             var rdr = new BeImageReader(RawImage);
             if (!rdr.TryReadBeUInt64(out ulong magic))
@@ -143,7 +144,7 @@ struct exec {
                 throw new NotImplementedException($"Architecture {machineType} not implemented.");
             }
             //$REFACTOR: don't need the dict.
-            return cfgSvc.GetArchitecture(sArch, new Dictionary<string,object>());
+            return cfgSvc.GetArchitecture(sArch, new Dictionary<string,object>())!;
         }
 
         private ushort[] ReadWords16(EndianImageReader rdr, ulong count)

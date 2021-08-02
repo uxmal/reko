@@ -305,9 +305,8 @@ l000012F6:
 	word32 d2_33 = d2_16 - 1<32>
 	branch d2_33 == 0<32> l00001308
 l000012FA:
-	word32 d0_38 = d2_33 << 2<32>
-	call Mem11[0x000014D0<p32> + d0_38:word32] (retsize: 4;)
-		uses: d0:d0_38,Stack +0014:dwArg04
+	call Mem11[0x000014D0<p32> + (d2_33 << 2<32>):word32] (retsize: 4;)
+		uses: d0:d2_36 << 2<32>,Stack +0014:dwArg04
 	d2_33 = d2_33 - 1<32>
 	branch d2_33 != 0<32> l000012FA
 l00001308:

@@ -292,7 +292,7 @@ namespace Reko.Analysis
                 var cond = FindConditionOf(stmtsOrig, i, loInstr.Dst!);
                 if (cond == null)
                     continue;
-                var hiInstr = FindUsingInstruction(cond.FlagGroup, loInstr);
+                var hiInstr = FindUsingInstruction(block, cond.FlagGroup, loInstr);
                 if (hiInstr == null)
                     continue;
 
@@ -301,22 +301,28 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// Determines if the carry flag reaches a using instruction.
+        /// Determines if the carry flag reaches a using instruction, and 
+        /// if that using instruction is an ADC or SBC type instruction.
         /// </summary>
-        /// <param name="instrs"></param>
-        /// <param name="i"></param>
-        /// <param name="next"></param>
-        /// <returns></returns>
-        public AddSubCandidate? FindUsingInstruction(Identifier cy, AddSubCandidate loInstr)
+        /// <param name="block">The block in which the ADD was found. The ADC
+        /// must be in the same block.</param>
+        /// <param name="cy">The identifier that tracks the carry flag.</param>
+        /// <param name="loInstr">The candidate instruction for the low half
+        /// of the addition.</param>
+        /// <returns>The MSB part of the ADD/ADC - SUB/SBC pair if successful,
+        /// otherwise null.</returns>
+        public AddSubCandidate? FindUsingInstruction(
+            Block block,
+            Identifier cy,
+            AddSubCandidate loInstr)
         {
             var queue = new Queue<Statement>(ssa.Identifiers[cy].Uses);
             while (queue.Count > 0)
             {
                 var use = queue.Dequeue();
                 var asc = MatchAdcSbc(use);
-                if (asc != null)
+                if (asc != null && asc.Statement != null && asc.Statement.Block == block)
                 {
-                    //Debug.Print("Left sides: [{0}] [{1}]", asc.Left, loInstr.Left);
                     if (asc.Left.GetType() != loInstr.Left.GetType())
                         return null;
                     asc.Statement = use;

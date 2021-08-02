@@ -94,7 +94,7 @@ namespace Reko.ImageLoaders.Hunk
                 if (txt != null)
                 {
                     Debug.Assert(txt.size <= alloc_size);
-                    data = txt.Data;
+                    data = txt.Data!;
                 }
                 else
                 {
@@ -107,7 +107,7 @@ namespace Reko.ImageLoaders.Hunk
                     .Where(h => h.HunkType == HunkType.HUNK_ABSRELOC32)
                     .Cast<RelocHunk>())
                 {
-                    foreach (var hunkNo in relocHunk.reloc.Keys)
+                    foreach (var hunkNo in relocHunk.reloc!.Keys)
                     {
                         // Get address of other hunk
                         var hunk_addr = addr[hunkNo];

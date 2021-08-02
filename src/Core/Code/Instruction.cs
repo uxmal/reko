@@ -134,7 +134,7 @@ namespace Reko.Core.Code
 			this.Expression = e;
 		}
 
-		public UseInstruction(Expression e, Identifier argument)
+		public UseInstruction(Expression e, Identifier? argument)
 		{
 			this.Expression = e;
 			this.OutArgument = argument;

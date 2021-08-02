@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -28,11 +28,11 @@ using System.Text;
 
 namespace Reko.Assemblers.Pdp11
 {
-    public  class ParsedOperand
+    public class ParsedOperand
     {
         public AddressMode Type;
         public int Offset;
-        public Symbol Symbol;
-        public RegisterStorage Register;
+        public Symbol? Symbol;
+        public RegisterStorage? Register;
     }
 }

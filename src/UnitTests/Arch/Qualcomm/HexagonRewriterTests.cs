@@ -47,11 +47,6 @@ namespace Reko.UnitTests.Arch.Qualcomm
 
         public override IProcessorArchitecture Architecture => arch;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), arch.CreateProcessorState(), binder, host);
-        }
-
         [Test]
         public void HexagonRw_add()
         {

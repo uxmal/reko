@@ -96,12 +96,13 @@ namespace Reko.UnitTests.Arch.X86
             project.Programs.Add(this.program);
             scanner = new Scanner(
                 this.program, 
+                project.LoadedMetadata,
                 new DynamicLinker(project, this.program, eventListener),
                 sc);
             var ep = ImageSymbol.Procedure(this.program.Architecture, baseAddress);
             this.program.EntryPoints.Add(ep.Address, ep);
             var program =  project.Programs[0];
-            foreach (Procedure_v1 sp in program.User.Procedures.Values)
+            foreach (var sp in program.User.Procedures.Values)
             {
                 scanner.EnqueueUserProcedure(program.Architecture, sp);
             }

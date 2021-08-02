@@ -1,4 +1,4 @@
-﻿using Reko.Core.Serialization;
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,17 +9,17 @@ namespace Reko.ImageLoaders.MzExe.Borland
 {
     public class BorlandType
     {
-        public string name;
+        public string? name;
     }
 
     public class SimpleType : BorlandType
     {
-        public SerializedType DataType;
+        public SerializedType? DataType;
     }
 
     public class ComplexType : BorlandType
     {
-        public Func<SerializedType, SerializedType> ConstructType;
+        public Func<SerializedType, SerializedType>? ConstructType;
 
         public ushort SubType { get; internal set; }
     }

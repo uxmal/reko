@@ -150,6 +150,16 @@ namespace Reko.Arch.RiscV
         private static readonly Mutator<RiscVDisassembler> F3 = Ff(27);
         private static readonly Mutator<RiscVDisassembler> Fd = Ff(7);
 
+        /// <summary>
+        /// Acquire/release bits
+        /// </summary>
+        private static bool aq_rl(uint uInstr, RiscVDisassembler dasm)
+        {
+            dasm.state.instr.Acquire = Bits.IsBitSet(uInstr, 26);
+            dasm.state.instr.Release = Bits.IsBitSet(uInstr, 25);
+            return true;
+        }
+
         private static bool Csr20(uint uInstr, RiscVDisassembler dasm)
         {
             var iCsr = bf20_12.Read(uInstr);
@@ -224,16 +234,18 @@ namespace Reko.Arch.RiscV
 
         private ImmediateOperand GetImmediate(uint wInstr, int bitPos, char sign)
         {
+            Constant c;
             if (sign == 's')
             {
                 int s = ((int)wInstr) >> bitPos;
-                return ImmediateOperand.Int32(s);
+                c = Constant.Create(arch.NaturalSignedInteger, s);
             }
             else
             {
                 uint u = wInstr >> bitPos;
-                return ImmediateOperand.Word32(u);
+                c = Constant.Create(arch.WordWidth, u);
             }
+            return new ImmediateOperand(c);
         }
 
         private ImmediateOperand GetShiftAmount(uint wInstr, int length)

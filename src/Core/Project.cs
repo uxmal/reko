@@ -18,9 +18,8 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Lib;
-using Reko.Core.Serialization;
+using Reko.Core.Scripts;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -40,6 +39,7 @@ namespace Reko.Core
         {
             Programs = new ObservableRangeCollection<Program>();
             MetadataFiles = new ObservableRangeCollection<MetadataFile>();
+            ScriptFiles = new ConcurrentObservableCollection<ScriptFile>();
             LoadedMetadata = new TypeLibrary();
         }
 
@@ -54,9 +54,32 @@ namespace Reko.Core
         public ObservableRangeCollection<MetadataFile> MetadataFiles { get; private set; }
 
         /// <summary>
+        /// A list of user-provided script files that can customize the process
+        /// of decompilation.
+        /// </summary>
+        public readonly ConcurrentObservableCollection<ScriptFile> ScriptFiles;
+
+        /// <summary>
         /// All the metadata collected from both platforms and user-provided metadata
         /// files.
         /// </summary>
         public TypeLibrary LoadedMetadata { get; set; }
+
+        /// <summary>
+        /// Call event handlers defined at user-defined scripts.
+        /// </summary>
+        /// <param name="event">
+        /// Fired event.
+        /// </param>
+        public void FireScriptEvent(ScriptEvent @event)
+        {
+            foreach (var scriptFile in ScriptFiles)
+            {
+                foreach (var program in Programs)
+                {
+                    scriptFile.FireEvent(@event, program);
+                }
+            }
+        }
     }
 }

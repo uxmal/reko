@@ -210,7 +210,6 @@ namespace Reko.UnitTests.Typing
 			e = e.Accept(en);
 			e.Accept(eqb);
 			e.Accept(coll);
-			Assert.IsNotNull(mps.BasePointer.TypeVariable, "Base pointer should have type variable");
 			Verify(null, "Typing/TrcoMemberPointer.txt");
 		}
 
@@ -233,7 +232,7 @@ namespace Reko.UnitTests.Typing
 		public void TrcoSegmentedDirectAddress()
 		{
             Program program = CreateProgram();
-			program.TypeStore.EnsureExpressionTypeVariable(program.TypeFactory, program.Globals);
+			program.TypeStore.EnsureExpressionTypeVariable(program.TypeFactory, 0, program.Globals);
 
             ProcedureBuilder m = new ProcedureBuilder();
             Identifier ds = m.Local16("ds");

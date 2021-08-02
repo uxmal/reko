@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 Pavel Tomin.
  *
@@ -38,7 +38,19 @@ namespace Reko.UnitTests.Mocks
         public Color BackColor { get; set; }
         public Color ForeColor { get; set; }
 
+        public bool Modified { get; set; }
+
+        public void BringToFront()
+        {
+            throw new NotImplementedException();
+        }
+
         public void SelectAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ScrollToEnd()
         {
             throw new NotImplementedException();
         }

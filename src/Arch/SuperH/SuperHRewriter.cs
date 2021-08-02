@@ -55,6 +55,8 @@ namespace Reko.Arch.SuperH
             this.binder = binder;
             this.host = host;
             this.dasm = new SuperHDisassembler(arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -200,7 +202,7 @@ namespace Reko.Arch.SuperH
             testGenSvc?.ReportMissingRewriter("SHRw", instr, instr.Mnemonic.ToString(), rdr, "");
         }
 
-        private Expression SrcOp(MachineOperand op, Func<int, int> immediateFn=null)
+        private Expression SrcOp(MachineOperand op, Func<int, int>? immediateFn = null)
         {
             switch (op)
             {
@@ -208,7 +210,7 @@ namespace Reko.Arch.SuperH
                 var id = binder.EnsureRegister(regOp.Register);
                 return id;
             case ImmediateOperand immOp:
-                return Constant.Word32(immediateFn(immOp.Value.ToInt32()));
+                return Constant.Word32(immediateFn!(immOp.Value.ToInt32()));
 
             case AddressOperand addrOp:
                 return addrOp.Address;
@@ -281,7 +283,7 @@ namespace Reko.Arch.SuperH
             throw new NotImplementedException(op.GetType().Name);
         }
 
-        private Expression DstOp(MachineOperand op, Expression src, Func<Expression, Expression> fn)
+        private Expression? DstOp(MachineOperand op, Expression src, Func<Expression, Expression> fn)
         {
             switch (op)
             {
@@ -363,7 +365,7 @@ namespace Reko.Arch.SuperH
 
         private void RewriteBinOp(
             Func<Expression, Expression, Expression> fn,
-            Func<int, int> immediateFn)
+            Func<int, int>? immediateFn)
         {
             var src = SrcOp(instr.Operands[0], immediateFn);
             var dst = DstOp(instr.Operands[1], src, fn);

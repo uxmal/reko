@@ -19,16 +19,13 @@
 #endregion
 
 using Reko.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
-using Reko.Core.Memory;
+using System;
+using System.Collections.Generic;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
@@ -49,11 +46,6 @@ namespace Reko.ImageLoaders.WebAssembly
             return new WasmDisassembler(this, imageReader);
         }
 
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
@@ -66,7 +58,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new DefaultProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)

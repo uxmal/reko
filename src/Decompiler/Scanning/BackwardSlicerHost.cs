@@ -49,7 +49,7 @@ namespace Reko.Scanning
 
         public SegmentMap SegmentMap => Program.SegmentMap;
 
-        public Tuple<Expression, Expression> AsAssignment(RtlInstruction instr)
+        public (Expression?, Expression?) AsAssignment(RtlInstruction instr)
         {
             throw new NotImplementedException();
         }
@@ -133,9 +133,9 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        public RegisterStorage GetSubregister(RegisterStorage rIdx, int v1, int v2)
+        public RegisterStorage GetSubregister(RegisterStorage reg, BitRange range)
         {
-            throw new NotImplementedException();
+            return Architecture.GetRegister(reg.Domain, range)!;
         }
 
         public bool IsFallthrough(RtlInstruction instr, RtlBlock block)

@@ -24,7 +24,7 @@ namespace Reko.ImageLoaders.OdbgScript
 {
     public class MEMORY_BASIC_INFORMATION
     {
-        public Address BaseAddress;
+        public Address? BaseAddress;
         public ulong RegionSize;
         public ulong AllocationBase;
     }

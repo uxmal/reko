@@ -24,6 +24,7 @@ using Reko.Arch.Pdp11;
 using System.Collections.Generic;
 using Reko.Core.Types;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.Environments.RT11
 {
@@ -36,8 +37,9 @@ namespace Reko.Environments.RT11
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
+            addrLoad ??= PreferredBaseAddress;
             var arch = new Pdp11Architecture(Services, "pdp11", new Dictionary<string, object>());
 
             return new Program(

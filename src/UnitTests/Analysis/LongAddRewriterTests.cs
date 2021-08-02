@@ -213,7 +213,7 @@ namespace Reko.UnitTests.Analysis
             m.Procedure.Dump(true);
             var cm = rw.FindConditionOf(block.Statements, 0, GetId("ax_3"));
             //Assert.AreEqual("ax_3,0,SCZ_4,SCZ_4 = cond(ax_3),SCZ_4", string.Format("{0},{1},{2},{3}", cm.src, cm.StatementIndex, cm.Statement, cm.FlagGroup));
-            var asc = rw.FindUsingInstruction(cm.FlagGroup, new AddSubCandidate(Operator.IAdd, ax, cx));
+            var asc = rw.FindUsingInstruction(block, cm.FlagGroup, new AddSubCandidate(Operator.IAdd, ax, cx));
             Assert.AreEqual("dx_8 = dx + bx + C_7", asc.Statement.ToString());
         }
 
@@ -386,6 +386,37 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(dx, m.ISub(m.ISub(dx, bx), this.CF));
                 m.MStore(m.Ptr16(0x21A), dx);
                 block = m.Block;
+            });
+        }
+
+        // We don't wish to carry out a long-add replacement if the ADC part is in 
+        // a different block from the ADD part. A really pathological program might
+        // have this behavior, at which point we might need to reconsider.
+        [Test]
+        public void Larw_do_not_span_multiple_blocks()
+        {
+            var sExp =
+            #region Expected
+@"l1:
+	ax_2 = Mem0[0x0210<p16>:word16]
+	dx_3 = Mem0[0x0212<p16>:word16]
+	ax_4 = ax_2 + Mem0[0x0220<p16>:word16]
+	SCZ_5 = cond(ax_4)
+	C_6 = SLICE(SCZ_5, bool, 2) (alias)
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                m.Assign(ax, m.Mem16(m.Ptr16(0x210)));
+                block = m.Block;
+                m.Assign(dx, m.Mem16(m.Ptr16(0x212)));
+                m.Assign(ax, m.IAdd(ax, m.Mem16(m.Ptr16(0x0220))));
+                m.Assign(this.SCZ, m.Cond(ax));
+                m.Goto("m2");
+
+                m.Label("m2");
+                m.Assign(dx, m.IAdd(m.IAdd(dx, m.Mem16(m.Ptr16(0x0222))), this.CF));
             });
         }
     }

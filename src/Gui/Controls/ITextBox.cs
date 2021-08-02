@@ -32,7 +32,9 @@ namespace Reko.Gui.Controls
         event EventHandler<KeyEventArgs> KeyUp;
 
         string Text { get; set; }
+        bool Modified { get; set; }
 
         void SelectAll();
+        void ScrollToEnd();
     }
 }

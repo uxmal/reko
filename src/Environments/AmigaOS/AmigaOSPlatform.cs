@@ -20,8 +20,9 @@
 
 using Reko.Arch.M68k;
 using Reko.Core;
+using Reko.Core.CLanguage;
+using Reko.Core.Configuration;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
@@ -32,10 +33,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Reko.Core.CLanguage;
-using Reko.Core.Configuration;
-using Reko.Core.Memory;
 
 namespace Reko.Environments.AmigaOS
 {
@@ -46,8 +43,8 @@ namespace Reko.Environments.AmigaOS
     public class AmigaOSPlatform : Platform
     {
         private RtlInstructionMatcher a6Pattern;
-        private Dictionary<int, SystemService> funcs; //$TODO: This should take a type of base pointer the reference is from ?
-        private static Dictionary<string, object> mapKickstartToListOfLibraries;
+        private Dictionary<int, SystemService>? funcs; //$TODO: This should take a type of base pointer the reference is from ?
+        private static Dictionary<string, object>? mapKickstartToListOfLibraries;
 
         public AmigaOSPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "amigaOS")
@@ -71,11 +68,6 @@ namespace Reko.Environments.AmigaOS
             }
         }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
-
         private Dictionary<string, object> EnsureMapKickstartToListOfLibraries()
         {
             if (mapKickstartToListOfLibraries != null)
@@ -87,7 +79,7 @@ namespace Reko.Environments.AmigaOS
             {
                 mapKickstartToListOfLibraries = (Dictionary<string, object>)option;
             }
-            return mapKickstartToListOfLibraries;
+            return mapKickstartToListOfLibraries!;
         }
 
         /// <summary>
@@ -117,7 +109,7 @@ namespace Reko.Environments.AmigaOS
             return segmentMap;
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             return new M68kCallingConvention((M68kArchitecture) this.Architecture);
         }
@@ -136,18 +128,18 @@ namespace Reko.Environments.AmigaOS
             };
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             return null;
         }
 
-        public override SystemService FindService(RtlInstruction rtl, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(RtlInstruction rtl, ProcessorState? state, SegmentMap? segmentMap)
         {
             EnsureTypeLibraries(PlatformIdentifier);
             if (!a6Pattern.Match(rtl))
                 return null;
-            var reg = ((Identifier) a6Pattern.CapturedExpressions("addrReg")).Storage as RegisterStorage;
-            var offset = ((Constant) a6Pattern.CapturedExpressions("offset")).ToInt32();
+            var reg = ((Identifier?) a6Pattern.CapturedExpressions("addrReg")!).Storage as RegisterStorage;
+            var offset = ((Constant?) a6Pattern.CapturedExpressions("offset")!).ToInt32();
             if (reg != Registers.a6)
                 return null;
             if (funcs == null)
@@ -193,7 +185,7 @@ namespace Reko.Environments.AmigaOS
             for (int ver_idx = idx_version_to_select; ver_idx >= 0; --ver_idx) 
             {
                 int try_version = keys.ElementAt(ver_idx);
-                foreach (string lib in (IEnumerable<object>)mapKickstartToListOfLibraries[try_version.ToString()])
+                foreach (string lib in (IEnumerable<object>)mapKickstartToListOfLibraries![try_version.ToString()])
                 {
                     string base_libname = GetLibraryBaseName(lib);
                     if (selected_librarties.ContainsKey(base_libname))
@@ -236,7 +228,7 @@ namespace Reko.Environments.AmigaOS
             }
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }
@@ -270,7 +262,7 @@ namespace Reko.Environments.AmigaOS
                         Signature = sser.Deserialize(amiSvc.Signature, Architecture.CreateFrame()),   //$BUGBUG: catch dupes?   
                         Characteristics = new ProcedureCharacteristics { }
                     })
-                    .ToDictionary(de => de.SyscallInfo.Vector, de => de);
+                    .ToDictionary(de => de.SyscallInfo!.Vector, de => de);
             };
         }
     }

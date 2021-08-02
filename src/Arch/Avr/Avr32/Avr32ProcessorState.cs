@@ -48,10 +48,10 @@ namespace Reko.Arch.Avr.Avr32
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            return Constant.Invalid;
+            return InvalidConstant.Create(r.DataType);
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
 

@@ -271,20 +271,20 @@ namespace Reko.Scanning
                 scanner.TerminateBlock(blockCur, fallthruAddress);
 
             Block blockThen;
-            if (!program.SegmentMap.IsValidAddress((Address)b.Target))
+            if (!program.SegmentMap.IsValidAddress((Address) b.Target))
             {
                 var label = program.NamingPolicy.BlockName(ric.Address) + "_then";
-                blockThen = proc.AddBlock((Address)b.Target, label);
+                blockThen = proc.AddBlock((Address) b.Target, label);
                 if (program.User.BlockLabels.TryGetValue(label, out var userLabel))
                     blockThen.UserLabel = userLabel;
                 var jmpSite = state.OnBeforeCall(stackReg!, arch.PointerType.Size);
-                GenerateCallToOutsideProcedure(jmpSite, (Address)b.Target);
+                GenerateCallToOutsideProcedure(jmpSite, (Address) b.Target);
                 Emit(new ReturnInstruction());
                 blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
             }
             else
             {
-                blockThen = BlockFromAddress(ric.Address, (Address)b.Target, proc, state.Clone());
+                blockThen = BlockFromAddress(ric.Address, (Address) b.Target, proc, state.Clone());
             }
 
             var blockElse = FallthroughBlock(ric.Address, proc, fallthruAddress);
@@ -292,45 +292,32 @@ namespace Reko.Scanning
                 ? blockCur
                 : scanner.FindContainingBlock(ric.Address)!;
 
-            if ((b.Class & InstrClass.Delay) != 0 &&
-                ricDelayed!.Instructions.Length > 0)
+            if (HasNonEmptyDelaySlot(b, ricDelayed))
             {
                 // Introduce stubs for the delay slot, but only
                 // if the delay slot isn't empty.
 
-                if ((b.Class & InstrClass.Annul) != 0)
+                var delaySlotName = program.NamingPolicy.BlockName(ricDelayed!.Address);
+                if (b.Class.HasFlag(InstrClass.Annul))
                 {
                     EnsureEdge(proc, branchingBlock, blockElse);
                 }
                 else
                 {
-                    var blockDsF = proc.AddSyntheticBlock(
-                        ricDelayed.Address,
-                        branchingBlock.Id + "_ds_f");
-                    blockCur = blockDsF;
-                    ProcessRtlCluster(ricDelayed);
-                    EnsureEdge(proc, blockDsF, blockElse);
-                    EnsureEdge(proc, branchingBlock, blockDsF);
+                    AddSyntheticDelayBlock(proc, delaySlotName + "_ds_f", ricDelayed!, blockElse, branchingBlock);
                 }
-
-                var blockDsT = proc.AddSyntheticBlock(
-                    ricDelayed.Address,
-                    branchingBlock.Id + "_ds_t");
-                blockCur = blockDsT;
-                ProcessRtlCluster(ricDelayed);
-                EnsureEdge(proc, blockDsT, blockThen);
-                branch.Target = blockDsT;
-                EnsureEdge(proc, branchingBlock, blockDsT);
+                blockThen = AddSyntheticDelayBlock(proc, delaySlotName + "_ds_t", ricDelayed!, blockThen, branchingBlock);
             }
             else
             {
-                branch.Target = blockThen;      // The back-patch referred to above.
                 EnsureEdge(proc, branchingBlock, blockElse);
                 if (blockElse != blockThen)
                     EnsureEdge(proc, branchingBlock, blockThen);
                 else
                     proc.ControlGraph.AddEdge(branchingBlock, blockThen);
             }
+            branch.Target = blockThen;      // The back-patch referred to above.
+
             if (BlockHasBeenScanned(blockElse))
             {
                 return false;
@@ -340,6 +327,27 @@ namespace Reko.Scanning
                 blockCur = blockElse;
                 return true;
             }
+        }
+
+        private Block AddSyntheticDelayBlock(Procedure proc, string name, RtlInstructionCluster ricDelayed, Block blockSucc, Block blockPred)
+        {
+            var blockDelay = proc.AddSyntheticBlock(
+                ricDelayed.Address,
+                name);
+            blockCur = blockDelay;
+            ProcessRtlCluster(ricDelayed);
+            EnsureEdge(proc, blockDelay, blockSucc);
+            EnsureEdge(proc, blockPred, blockDelay);
+            return blockDelay;
+        }
+
+        private static bool HasNonEmptyDelaySlot(RtlBranch b, RtlInstructionCluster? ricDelayed)
+        {
+            if (!b.Class.HasFlag(InstrClass.Delay))
+                return false;
+            if (ricDelayed!.Instructions.Length <= 0)
+                return false;
+            return !(ricDelayed.Instructions[0] is RtlNop);
         }
 
         /// <summary>
@@ -727,7 +735,7 @@ namespace Reko.Scanning
             if (program.User.Calls.TryGetUpperBound(ric!.Address, out var userCall))
             {
                 var linStart = ric.Address.ToLinear();
-                var linEnd = linStart + ric.Length;
+                var linEnd = linStart + (uint)ric.Length;
                 var linUserCall = userCall.Address!.ToLinear();
                 if (linStart > linUserCall || linUserCall >= linEnd)
                     userCall = null!;
@@ -809,7 +817,7 @@ namespace Reko.Scanning
                 // $REVIEW: do not trash stack register. It gives regression
                 // on some MSDOS binaries
                 if (reg != arch.StackRegister)
-                    state.SetValue(reg, Constant.Invalid);
+                    state.SetValue(reg, InvalidConstant.Create(reg.DataType));
             }
         }
 
@@ -1237,7 +1245,7 @@ namespace Reko.Scanning
             switch (stg)
             {
             case RegisterStorage reg:
-                state.SetValue(reg, Constant.Invalid);
+                state.SetValue(reg, InvalidConstant.Create(stg.DataType));
                 break;
             case SequenceStorage seq:
                 foreach (var e in seq.Elements)

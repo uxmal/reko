@@ -18,39 +18,22 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Loading;
+using Reko.Core.Memory;
+using Reko.Environments.Windows;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using Reko.Core;
 using System.IO;
-using Reko.Core.Memory;
+using System.Text;
 
 namespace Reko.ImageLoaders.MzExe.Pe
 {
+    /// <summary>
+    /// Loads resources from the resource section of a PE executable file.
+    /// </summary>
     public class ResourceLoader
     {
-        const uint RT_NEWRESOURCE = 0x2000;
-        const uint RT_ERROR = 0x7fff;
-        const uint RT_CURSOR = 1;
-        const uint RT_BITMAP = 2;
-        const uint RT_ICON = 3;
-        const uint RT_MENU = 4;
-        const uint RT_DIALOG = 5;
-        const uint RT_STRING = 6;
-        const uint RT_FONTDIR = 7;
-        const uint RT_FONT = 8;
-        const uint RT_ACCELERATOR = 9;
-        const uint RT_RCDATA = 10;
-        const uint RT_MESSAGETABLE = 11;
-        const uint RT_GROUP_CURSOR = 12;
-        const uint RT_GROUP_ICON = 14;
-        const uint RT_VERSION = 16;
-        const uint RT_NEWBITMAP = (RT_BITMAP | RT_NEWRESOURCE);
-        const uint RT_NEWMENU = (RT_MENU | RT_NEWRESOURCE);
-        const uint RT_NEWDIALOG = (RT_DIALOG | RT_NEWRESOURCE);
-
         private readonly ByteMemoryArea imgLoaded;
         private readonly uint rvaResources;
 
@@ -60,6 +43,18 @@ namespace Reko.ImageLoaders.MzExe.Pe
             this.rvaResources = rvaResources;
         }
 
+        /// <summary>
+        /// Loads the resources from the resource file.
+        /// </summary>
+        /// <remarks>
+        /// Although the design of the PE resource format is such that there can be 
+        /// up to 255 levels of directories/leaf nodes, in practice PE files are organized 
+        /// so that the resource are in three levels. The first level is the type of resource
+        /// (icons, cursors, dialogs &c). The second level is the language level (e.g. localized 
+        /// versions of dialogs in various languages). The leaf nodes of the resource tree
+        /// are on the third level.
+        /// </remarks>
+        /// <returns>A list of <see cref="ProgramResource"/>s.</returns>
         public List<ProgramResource> Load()
         {
             if (rvaResources == 0)
@@ -71,6 +66,12 @@ namespace Reko.ImageLoaders.MzExe.Pe
             return ReadResourceDirectory(rdr);
         }
 
+        /// <summary>
+        /// Reads a resource directory, starting at the position of the given image 
+        /// reader.
+        /// </summary>
+        /// <param name="rdr">A little endian <see cref="EndianImageReader"/>.</param>
+        /// <returns>A list of the resources found in the directory.</returns>
         public List<ProgramResource> ReadResourceDirectory(EndianImageReader rdr)
         {
             const uint DIR_MASK = 0x80000000;
@@ -80,6 +81,8 @@ namespace Reko.ImageLoaders.MzExe.Pe
             var cNameEntries = rdr.ReadUInt16();
             var cIdEntries = rdr.ReadUInt16();
             var entries = new List<ProgramResource>();
+
+            // Read the named entries.
             for (int i = 0; i < cNameEntries; ++i)
             {
                 var rvaName = rdr.ReadUInt32();
@@ -94,28 +97,32 @@ namespace Reko.ImageLoaders.MzExe.Pe
                         //Name = ReadResourceString(rvaName),
                         Name = ReadResourceUtf16leString(rvaResources + (rvaName & ~DIR_MASK)),
                     };
-                    e.Resources.AddRange(ReadNameDirectory(subRdr, 0));
+                    e.Resources.AddRange(ReadNameDirectory(subRdr, PeResourceType.FromInt(0)));
                     entries.Add(e);
                 }
             }
+            // Read the entries accessed by numeric ID.
             for (int i = 0; i < cIdEntries; ++i)
             {
-                var id = rdr.ReadUInt32();
+                var id = rdr.ReadInt32();
                 var rvaEntry = rdr.ReadUInt32();
                 var subRdr = new LeImageReader(imgLoaded, rvaResources + (rvaEntry & ~DIR_MASK));
                 if ((rvaEntry & DIR_MASK) == 0)
                     throw new BadImageFormatException();
+                var rt = PeResourceType.FromInt(id);
                 var e = new ProgramResourceGroup
                 {
-                    Name = GenerateResourceName(id),
+                    Name = rt.Name
                 };
-                e.Resources.AddRange(ReadNameDirectory(subRdr, id));
+                e.Resources.AddRange(ReadNameDirectory(subRdr, rt));
                 entries.Add(e);
             }
             return entries;
         }
 
-        public List<ProgramResource> ReadNameDirectory(EndianImageReader rdr, uint resourceType)
+        public List<ProgramResource> ReadNameDirectory(
+            EndianImageReader rdr,
+            ResourceType resourceType)
         {
             const uint DIR_MASK = 0x80000000;
             var flags = rdr.ReadUInt32();
@@ -155,7 +162,10 @@ namespace Reko.ImageLoaders.MzExe.Pe
             return entries;
         }
 
-        public List<ProgramResource> ReadLanguageDirectory(EndianImageReader rdr, uint resourceType, string resourceId)
+        public List<ProgramResource> ReadLanguageDirectory(
+            EndianImageReader rdr, 
+            ResourceType resourceType, 
+            string resourceId)
         {
             const uint DIR_MASK = 0x80000000;
             var flags = rdr.ReadUInt32();
@@ -175,7 +185,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
             }
             for (int i = 0; i < cIdEntries; ++i)
             {
-                var id = rdr.ReadUInt32();
+                var id = rdr.ReadInt32();
                 var rvaEntry = rdr.ReadUInt32();
                 var subRdr = new LeImageReader(imgLoaded, rvaResources + (rvaEntry & ~DIR_MASK));
                 if ((rvaEntry & DIR_MASK) != 0)
@@ -185,47 +195,53 @@ namespace Reko.ImageLoaders.MzExe.Pe
             return entries;
         }
 
-        public ProgramResourceInstance ReadResourceEntry(EndianImageReader rdr, string resourceId, string langId, uint resourceType)
+        public ProgramResourceInstance ReadResourceEntry(
+            EndianImageReader rdr, 
+            string resourceId, 
+            string sLcid, 
+            ResourceType resourceType)
         {
             var rvaData = rdr.ReadUInt32();
             var size = rdr.ReadUInt32();
-            var codepage = rdr.ReadUInt32();
+            var codepage = rdr.ReadInt32();
             var padding = rdr.ReadUInt32();
             var abResource = new byte[size];
             Array.Copy(imgLoaded.Bytes, (int) rvaData, abResource, 0, abResource.Length);
 
-            if (resourceType == RT_BITMAP)
+            if (resourceType == PeResourceType.BITMAP)
             {
                 abResource = PostProcessBitmap(abResource);
             }
 
-            string localeName = GetLocaleName(langId);
+            string? encodingName = GetEncodingName(codepage);
+            string? langTag = GetLanguageTag(sLcid);
             return new ProgramResourceInstance
             {
-                Name = string.Format("{0}:{1}", resourceId, localeName),
-                Type = GetResourceType(resourceType),
+                Name = $"{resourceId}-{langTag}",
+                Type = resourceType.Name,
+                TextEncoding = encodingName,
+                FileExtension = resourceType.FileExtension,
                 Bytes = abResource,
             };
         }
 
-        private string GetLocaleName(string langId)
+        private string? GetEncodingName(int codepage)
         {
-            if (Int32.TryParse(langId, out int localeId) && localeId > 0)
-            {
-                try
-                {
-                    var ci = CultureInfo.GetCultureInfo(localeId);
-                    return ci.EnglishName;
-                }
-                catch
-                {
-                    return langId;
-                }
-            }
-            else
-            {
-                return langId;
-            }
+            if (codepage == 0)
+                return null;
+            if (CodePages.ToEncodings.TryGetValue(codepage, out string encoding))
+                return encoding;
+            return $"CP{codepage}";
+        }
+
+        private string? GetLanguageTag(string sLcid)
+        {
+            if (!int.TryParse(sLcid, out int lcid))
+                return sLcid;
+            lcid &= 0b11_1111_1111;
+            if (LocaleIds.ToLanguageTags.TryGetValue(lcid, out string langTag))
+                return langTag;
+            return $"x{sLcid:X4}";
         }
 
         /// <summary>
@@ -233,7 +249,8 @@ namespace Reko.ImageLoaders.MzExe.Pe
         /// resource files.
         /// </summary>
         /// <param name="abResource">DIB image (BITMAPINFOHEADER + bitmap data)</param>
-        /// <returns>A BITMAPFILEHEADER</returns>
+        /// <returns>A byte image containing the BITMAPFILEHEADER which can be 
+        /// saved as a .BMP file.</returns>
         private byte[] PostProcessBitmap(byte[] abResource)
         {
             var stm = new MemoryStream();
@@ -249,41 +266,6 @@ namespace Reko.ImageLoaders.MzExe.Pe
             return stm.ToArray();
         }
 
-        private string GenerateResourceName(uint id)
-        {
-            switch (id)
-            {
-            case RT_NEWRESOURCE: return "NEWRESOURCE";
-            case RT_ERROR: return "ERROR";
-            case RT_CURSOR: return "CURSOR";
-            case RT_BITMAP: return "BITMAP";
-            case RT_ICON: return "ICON";
-            case RT_MENU: return "MENU";
-            case RT_DIALOG: return "DIALOG";
-            case RT_STRING: return "STRING";
-            case RT_FONTDIR: return "FONTDIR";
-            case RT_FONT: return "FONT";
-            case RT_ACCELERATOR: return "ACCELERATOR";
-            case RT_RCDATA: return "RCDATA";
-            case RT_MESSAGETABLE: return "MESSAGETABLE";
-            case RT_GROUP_CURSOR: return "GROUP_CURSOR";
-            case RT_GROUP_ICON: return "GROUP_ICON";
-            case RT_VERSION: return "VERSION";
-            case RT_NEWBITMAP: return "NEWBITMAP";
-            case RT_NEWMENU: return "NEWMENU";
-            case RT_NEWDIALOG: return "NEWDIALOG";
-            default: return id.ToString();
-            }
-        }
-
-        public string GetResourceType(uint resourceType)
-        {
-            switch (resourceType)
-            {
-            case RT_BITMAP: return "Windows.BMP";
-            default: return "";
-            }
-        }
 
         public string ReadResourceString(uint rva)
         {

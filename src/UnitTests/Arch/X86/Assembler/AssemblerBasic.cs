@@ -98,9 +98,9 @@ namespace Reko.UnitTests.Arch.X86.Assembler
                 {
                     var bmem = (ByteMemoryArea) segment.MemoryArea;
                     var formatter = new TextFormatter(fut.TextWriter);
-                    dumper.DumpData(program.SegmentMap, program.Architecture, bmem.BaseAddress, bmem.Length, formatter);
+                    dumper.DumpData(program.Architecture, bmem, bmem.BaseAddress, bmem.Length, formatter);
                     fut.TextWriter.WriteLine();
-                    dumper.DumpAssembler(program.SegmentMap, program.Architecture, bmem.BaseAddress, bmem.EndAddress, formatter);
+                    dumper.DumpAssembler(program.Architecture, bmem, bmem.BaseAddress, bmem.Length, formatter);
                     if (program.ImportReferences.Count > 0)
                     {
                         foreach (var de in program.ImportReferences.OrderBy(d => d.Key))
@@ -142,7 +142,7 @@ hello	endp
 			{
 				var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
 				var d = new Dumper(program);
-				d.DumpData(program.SegmentMap, arch, segment.Address, segment.ContentSize, new TextFormatter(fut.TextWriter));
+				d.DumpData(arch, segment.MemoryArea, segment.Address, segment.ContentSize, new TextFormatter(fut.TextWriter));
 				fut.AssertFilesEqual();
 			}
 		}
@@ -252,7 +252,7 @@ foo		endp
 				Dumper dump = new Dumper(program);
                 var arch = program.Architecture;
                 var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
-				dump.DumpData(program.SegmentMap, arch, mem.BaseAddress, mem.Length, new TextFormatter(fut.TextWriter));
+				dump.DumpData(arch, mem, mem.BaseAddress, mem.Length, new TextFormatter(fut.TextWriter));
 				fut.AssertFilesEqual();
 			}
 		}
@@ -335,21 +335,21 @@ foo		endp
 			MemoryOperand m;
 			PrimitiveType w = PrimitiveType.Word16;
 			ModRmBuilder mrm = new ModRmBuilder(w, null);
-			m = new MemoryOperand(w, Registers.bx, Registers.si, 1, Constant.Invalid);
+			m = new MemoryOperand(w, Registers.bx, Registers.si, 1, null);
 			Assert.AreEqual(0, mrm.Get16AddressingModeMask(m));
-			m = new MemoryOperand(w, Registers.bx, Registers.di, 1, Constant.Invalid);
+			m = new MemoryOperand(w, Registers.bx, Registers.di, 1, null);
 			Assert.AreEqual(1, mrm.Get16AddressingModeMask(m));
-			m = new MemoryOperand(w, Registers.bp, Registers.si, 1, Constant.Invalid);
+			m = new MemoryOperand(w, Registers.bp, Registers.si, 1, null);
 			Assert.AreEqual(2, mrm.Get16AddressingModeMask(m));
-			m = new MemoryOperand(w, Registers.bp, Registers.di, 1, Constant.Invalid);
+			m = new MemoryOperand(w, Registers.bp, Registers.di, 1, null);
 			Assert.AreEqual(3, mrm.Get16AddressingModeMask(m));
-			m = new MemoryOperand(w, Registers.si, Constant.Invalid);
+			m = new MemoryOperand(w, Registers.si, null);
 			Assert.AreEqual(4, mrm.Get16AddressingModeMask(m));
-			m = new MemoryOperand(w, Registers.di, Constant.Invalid);
+			m = new MemoryOperand(w, Registers.di, null);
 			Assert.AreEqual(5, mrm.Get16AddressingModeMask(m));
-			m = new MemoryOperand(w, Registers.bp, Constant.Invalid);
+			m = new MemoryOperand(w, Registers.bp, null);
 			Assert.AreEqual(0x46, mrm.Get16AddressingModeMask(m));
-			m = new MemoryOperand(w, Registers.bx, Constant.Invalid);
+			m = new MemoryOperand(w, Registers.bx, null);
 			Assert.AreEqual(7, mrm.Get16AddressingModeMask(m));
 		}
 
@@ -393,7 +393,7 @@ foo		endp
 				fut.TextWriter.WriteLine();
 				dump.ShowAddresses = true;
 				dump.ShowCodeBytes = true;
-				dump.DumpAssembler(program.SegmentMap, program.Architecture, bmem.BaseAddress, bmem.EndAddress, formatter);
+				dump.DumpAssembler(program.Architecture, bmem, bmem.BaseAddress, bmem.Length, formatter);
 
 				fut.AssertFilesEqual();
 			}	

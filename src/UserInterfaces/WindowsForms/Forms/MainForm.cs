@@ -233,6 +233,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             get { return projectToolBar; }
         }
 
+        public ToolStripComboBox OutputWindowSources => ddlOutputWindowSources;
+
+        public Panel OutputWindowPanel => this.outputWindowPanel;
+
         public Gui.DialogResult ShowDialog(CommonDialog dialog)
         {
             return (Gui.DialogResult)dialog.ShowDialog(this);

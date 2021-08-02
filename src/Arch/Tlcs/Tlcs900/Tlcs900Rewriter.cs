@@ -55,6 +55,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
             this.binder = binder;
             this.host = host;
             this.dasm = new Tlcs900Disassembler(this.arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -193,7 +195,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             }
             else
             {
-                ea = arch.MakeAddressFromConstant(mem.Offset, false);
+                ea = arch.MakeAddressFromConstant(mem.Offset!, false);
             }
             return ea;
         }
@@ -216,7 +218,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 }
                 else
                 {
-                    ea = arch.MakeAddressFromConstant(mem.Offset, false);
+                    ea = arch.MakeAddressFromConstant(mem.Offset!, false);
                 }
                 if (mem.Increment < 0)
                 {

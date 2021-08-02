@@ -33,7 +33,7 @@ namespace Reko.Arch.Arc
         private readonly ARCompactArchitecture arch;
         private readonly Dictionary<RegisterStorage, Constant> values;
 
-        public ARCompactState(ARCompactArchitecture arch, Dictionary<RegisterStorage, Constant> values = null)
+        public ARCompactState(ARCompactArchitecture arch, Dictionary<RegisterStorage, Constant>? values = null)
         {
             this.arch = arch;
             this.values = values ?? new Dictionary<RegisterStorage, Constant>();
@@ -49,12 +49,12 @@ namespace Reko.Arch.Arc
         public override Constant GetRegister(RegisterStorage r)
         {
             if (!values.TryGetValue(r, out var value))
-                return Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
             else
                 return value;
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
 

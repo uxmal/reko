@@ -31,13 +31,13 @@ namespace Reko.Environments.SysV.ArchSpecific
 {
     public class SuperHCallingConvention : CallingConvention
     {
-        private IProcessorArchitecture arch;
-        private RegisterStorage[] iregs;
-        private RegisterStorage[] fregs;
-        private RegisterStorage[] dregs;
-        private RegisterStorage iret;
-        private RegisterStorage fret;
-        private RegisterStorage dret;
+        private readonly IProcessorArchitecture arch;
+        private readonly RegisterStorage[] iregs;
+        private readonly RegisterStorage[] fregs;
+        private readonly RegisterStorage[] dregs;
+        private readonly RegisterStorage iret;
+        private readonly RegisterStorage fret;
+        private readonly RegisterStorage dret;
 
         public SuperHCallingConvention(IProcessorArchitecture arch)
         {
@@ -45,21 +45,21 @@ namespace Reko.Environments.SysV.ArchSpecific
             this.iregs = NamesToRegs("r4", "r5", "r6", "r7");
             this.fregs = NamesToRegs("fr4", "fr5", "fr6", "fr7");
             this.dregs = NamesToRegs("dr4", "dr6");
-            this.iret = arch.GetRegister("r0");
-            this.fret = arch.GetRegister("fr0");
-            this.dret = arch.GetRegister("dr0");
+            this.iret = arch.GetRegister("r0")!;
+            this.fret = arch.GetRegister("fr0")!;
+            this.dret = arch.GetRegister("dr0")!;
 
         }
 
         private RegisterStorage[] NamesToRegs(params string [] regNames)
         {
-            return regNames.Select(n => arch.GetRegister(n)).ToArray();
+            return regNames.Select(n => arch.GetRegister(n)!).ToArray();
         }
 
 
         // https://en.wikipedia.org/wiki/Calling_convention#SuperH
         // https://www.renesas.com/en-eu/doc/products/tool/001/rej10b0152_sh.pdf
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 0x14);
             if (dtRet != null && !(dtRet is VoidType))

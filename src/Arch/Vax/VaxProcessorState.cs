@@ -58,13 +58,20 @@ namespace Reko.Arch.Vax
 
         public override Constant GetRegister(RegisterStorage reg)
         {
-            if (reg != null && isValid[(int)reg.Domain])
-                return Constant.Create(reg.DataType, regs[(int)reg.Domain]);
+            if (reg != null)
+            {
+                if (isValid[(int) reg.Domain])
+                    return Constant.Create(reg.DataType, regs[(int) reg.Domain]);
+                else
+                    return InvalidConstant.Create(reg.DataType);
+            }
             else
-                return Constant.Invalid;
+            {
+                return InvalidConstant.Create(PrimitiveType.Word32);
+            }
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
 
@@ -83,14 +90,17 @@ namespace Reko.Arch.Vax
 
         public override void SetRegister(RegisterStorage reg, Constant v)
         {
-            if (reg != null && v != null && v.IsValid)
+            if (reg != null)
             {
-                isValid[(int)reg.Domain] = true;
-                regs[(int)reg.Domain] = v.ToByte();
-            }
-            else
-            {
-                isValid[(int)reg.Domain] = false;
+                if (v != null && v.IsValid)
+                {
+                    isValid[(int) reg.Domain] = true;
+                    regs[(int) reg.Domain] = v.ToByte();
+                }
+                else
+                {
+                    isValid[(int) reg.Domain] = false;
+                }
             }
         }
     }

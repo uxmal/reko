@@ -24,6 +24,8 @@ using System;
 
 namespace Reko.Arch.X86
 {
+    using Decoder = Reko.Core.Machine.Decoder<X86Disassembler, Mnemonic, X86Instruction>;
+
     public partial class X86Disassembler
     {
         private bool IsEmulated8087Vector(byte vectorNumber)

@@ -20,6 +20,7 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using Reko.Analysis;
@@ -74,11 +75,11 @@ namespace Reko.UnitTests.Analysis
 
         private void SetCSignatures(Program program)
         {
-            foreach (var addr in program.Procedures.Keys)
+            foreach (var proc in program.Procedures)
             {
                 program.User.Procedures.Add(
-                    addr,
-                    new Procedure_v1
+                    proc.Key,
+                    new UserProcedure(proc.Key, proc.Value.Name)
                     {
                         CSignature = this.CSignature
                     });

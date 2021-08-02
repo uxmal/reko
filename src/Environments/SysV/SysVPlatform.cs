@@ -24,11 +24,11 @@ using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
-using Reko.Core.Services;
 using Reko.Environments.SysV.ArchSpecific;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace Reko.Environments.SysV
@@ -42,34 +42,32 @@ namespace Reko.Environments.SysV
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "elf-neutral")
         {
-            LoadTrashedRegisters();
+            this.trashedRegs = LoadTrashedRegisters();
             archSpecificFactory = new ArchSpecificFactory(services, arch);
         }
 
-        public override string DefaultCallingConvention
+        public override string DefaultCallingConvention => "";
+
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
         {
-            get { return ""; }
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.GccKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
         }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             var Architecture = this.Architecture;
             return archSpecificFactory.CreateCallingConverion(Architecture);
-                }
-
-
+        }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             return new HashSet<RegisterStorage>(this.trashedRegs);
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             return null;
         }
@@ -93,22 +91,22 @@ namespace Reko.Environments.SysV
             }
         }
 
-        public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rw, IRewriterHost host)
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rw, IRewriterHost host)
         {
             var finder = archSpecificFactory.CreateTrampolineDestinationFinder(this.Architecture);
             var target = finder(Architecture, addrInstr, rw, host);
             if (target is ProcedureConstant pc)
             {
-                    return pc.Procedure;
+                return pc.Procedure;
             }
             else if (target is Address addrTarget)
-                {
-            var arch = this.Architecture;
-            ProcedureBase proc = host.GetImportedProcedure(arch, addrTarget, addrInstr);
-            if (proc != null)
-                return proc;
-            return host.GetInterceptedCall(arch, addrTarget);
-        }
+            {
+                var arch = this.Architecture;
+                ProcedureBase? proc = host.GetImportedProcedure(arch, addrTarget, addrInstr);
+                if (proc != null)
+                    return proc;
+                return host.GetInterceptedCall(arch, addrTarget);
+            }
             else
                 return null;
         }
@@ -120,12 +118,12 @@ namespace Reko.Environments.SysV
             case "mips-be-32":
             case "mips-le-32":
                 // MIPS ELF ABI: r25 is _always_ set to the address of a procedure on entry.
-                m.Assign(proc.Frame.EnsureRegister(Architecture.GetRegister("r25")), Constant.Word32((uint)addr.ToLinear()));
+                m.Assign(proc.Frame.EnsureRegister(Architecture.GetRegister("r25")!), Constant.Word32((uint)addr.ToLinear()));
                 break;
             case "mips-be-64":
             case "mips-le-64":
                 // MIPS ELF ABI: r25 is _always_ set to the address of a procedure on entry.
-                m.Assign(proc.Frame.EnsureRegister(Architecture.GetRegister("r25")), Constant.Word64((uint) addr.ToLinear()));
+                m.Assign(proc.Frame.EnsureRegister(Architecture.GetRegister("r25")!), Constant.Word64((uint) addr.ToLinear()));
                 break;
             case "x86-protected-32":
             case "x86-protected-64":
@@ -138,7 +136,7 @@ namespace Reko.Environments.SysV
                 // stack; everything at lower addresses is local to the called procedure's
                 // frame.
                 m.Assign(
-                    proc.Frame.EnsureRegister(Architecture.GetRegister("r15")),
+                    proc.Frame.EnsureRegister(Architecture.GetRegister("r15")!),
                     m.ISub(
                         proc.Frame.FramePointer,
                         Constant.Int(proc.Frame.FramePointer.DataType, 160)));
@@ -146,7 +144,7 @@ namespace Reko.Environments.SysV
             }
         }
 
-        private void LoadTrashedRegisters()
+        private RegisterStorage[] LoadTrashedRegisters()
         {
             if (Services != null)
             {
@@ -154,17 +152,16 @@ namespace Reko.Environments.SysV
                 var pa = cfgSvc.GetEnvironment(this.PlatformIdentifier).Architectures.SingleOrDefault(a => a.Name == Architecture.Name);
                 if (pa != null)
                 {
-                    this.trashedRegs = pa.TrashedRegisters
-                        .Select(r => Architecture.GetRegister(r))
+                    return pa.TrashedRegisters
+                        .Select(r => Architecture.GetRegister(r)!)
                         .Where(r => r != null)
                         .ToArray();
-                    return;
                 }
             }
-            this.trashedRegs = new RegisterStorage[0];
+            return new RegisterStorage[0];
         } 
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             //$REVIEW: looks a lot like Win32library, perhaps push to parent class?
             EnsureTypeLibraries(PlatformIdentifier);
@@ -180,9 +177,9 @@ namespace Reko.Environments.SysV
             return proc;
         }
 
-        public override ProcedureBase_v1 SignatureFromName(string fnName)
+        public override ProcedureBase_v1? SignatureFromName(string fnName)
         {
-            StructField_v1 field;
+            StructField_v1? field;
             try
             {
                 var gcc = new GccMangledNameParser(fnName, this.PointerType.Size);

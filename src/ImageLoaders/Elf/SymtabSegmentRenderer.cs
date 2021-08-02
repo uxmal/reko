@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -41,27 +41,21 @@ namespace Reko.ImageLoaders.Elf
         public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
             var entries = shdr.EntryCount();
-            var symtab = shdr.LinkedSection;
+            var symtab = shdr.LinkedSection!;
             var rdr = loader.CreateReader(shdr.FileOffset);
             for (int i = 0; i < entries; ++i)
             {
-                uint iName;
-                if (!rdr.TryReadUInt32(out iName))
+                if (!rdr.TryReadUInt32(out uint iName))
                     return;
-                uint value;
-                if (!rdr.TryReadUInt32(out value))
+                if (!rdr.TryReadUInt32(out uint value))
                     return;
-                uint size;
-                if (!rdr.TryReadUInt32(out size))
+                if (!rdr.TryReadUInt32(out uint size))
                     return;
-                byte info;
-                if (!rdr.TryReadByte(out info))
+                if (!rdr.TryReadByte(out byte info))
                     return;
-                byte other;
-                if (!rdr.TryReadByte(out other))
+                if (!rdr.TryReadByte(out byte other))
                     return;
-                ushort shIndex;
-                if (!rdr.TryReadUInt16(out shIndex))
+                if (!rdr.TryReadUInt16(out ushort shIndex))
                     return;
                 string symStr = loader.GetStrPtr(symtab, iName);
                 string segName = loader.GetSectionName(shIndex);
@@ -86,27 +80,21 @@ namespace Reko.ImageLoaders.Elf
         public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
             var entries = shdr.EntryCount();
-            var symtab = shdr.LinkedSection;
+            var symtab = shdr.LinkedSection!;
             var rdr = loader.CreateReader(shdr.FileOffset);
             for (var i = 0; i < entries; ++i)
             {
-                uint iName;
-                if (!rdr.TryReadUInt32(out iName))
+                if (!rdr.TryReadUInt32(out uint iName))
                     return;
-                byte info;
-                if (!rdr.TryReadByte(out info))
+                if (!rdr.TryReadByte(out byte info))
                     return;
-                byte other;
-                if (!rdr.TryReadByte(out other))
+                if (!rdr.TryReadByte(out byte other))
                     return;
-                ushort shIndex;
-                if (!rdr.TryReadUInt16(out shIndex))
+                if (!rdr.TryReadUInt16(out ushort shIndex))
                     return;
-                ulong value;
-                if (!rdr.TryReadUInt64(out value))
+                if (!rdr.TryReadUInt64(out ulong value))
                     return;
-                ulong size;
-                if (!rdr.TryReadUInt64(out size))
+                if (!rdr.TryReadUInt64(out ulong size))
                     return;
                 string symStr = loader.GetStrPtr(symtab, iName);
                 string segName = loader.GetSectionName(shIndex);

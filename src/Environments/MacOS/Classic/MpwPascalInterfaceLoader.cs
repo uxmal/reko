@@ -48,7 +48,7 @@ namespace Reko.Environments.MacOS.Classic
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             var rdr = new StreamReader(new MemoryStream(bytes));
-            var lexer = new PascalLexer(rdr);
+            var lexer = new PascalLexer(rdr, false);    // It seems MPW pascal doesn't allow nesting comments.
             var parser = new PascalParser(lexer);
             var symbolTable = new SymbolTable(platform);
             var declarations = parser.Parse();
@@ -67,8 +67,11 @@ namespace Reko.Environments.MacOS.Classic
             IPlatform platform,
             TypeLibrary typelib)
         {
-            var module = new ModuleDescriptor("");
-            typelib.Modules.Add("", module);
+            if (!typelib.Modules.TryGetValue("", out var module))
+            {
+                module = new ModuleDescriptor("");
+                typelib.Modules.Add("", module);
+            }
             foreach (var decl in declarations.OfType<CallableDeclaration>())
             {
                 var ft = (SerializedSignature) decl.Accept(typeImporter);
@@ -80,7 +83,7 @@ namespace Reko.Environments.MacOS.Classic
                 {
                     var svc = syscall.Build(platform, typelib);
                     PostProcessSignature(platform, svc);
-                    if (!module.ServicesByVector.TryGetValue(svc.SyscallInfo.Vector, out List<SystemService> svcs))
+                    if (!module.ServicesByVector.TryGetValue(svc.SyscallInfo!.Vector, out List<SystemService> svcs))
                     {
                         svcs = new List<SystemService>();
                         module.ServicesByVector.Add(svc.SyscallInfo.Vector, svcs);
@@ -92,7 +95,7 @@ namespace Reko.Environments.MacOS.Classic
 
         private void PostProcessSignature(IPlatform platform, SystemService svc)
         {
-            var parameters = svc.Signature.Parameters;
+            var parameters = svc.Signature!.Parameters!;
             for (int i = 0; i < parameters.Length; ++i)
             {
                 var p = parameters[i];
@@ -127,7 +130,10 @@ namespace Reko.Environments.MacOS.Classic
 
         private Dictionary<string,Constant> EvaluateConstants(IEnumerable<Declaration> decls)
         {
-            var evaluated = new Dictionary<string, Constant>();
+            var evaluated = new Dictionary<string, Constant>
+            {
+                { "nil", Constant.Word32(0) }
+            };
 
             var dict = new SortedDictionary<string, Exp>();
             foreach (var qq in decls.OfType<ConstantDeclaration>())

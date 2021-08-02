@@ -72,8 +72,8 @@ namespace Reko.Arch.Blackfin
         public static readonly RegisterStorage[] RPIB_Lo;
         public static readonly RegisterStorage[] RPI_Hi;
 
-        public static readonly FlagGroupStorage AZ;
-        public static readonly FlagGroupStorage AN;
+        //public static readonly FlagGroupStorage AZ;
+        //public static readonly FlagGroupStorage AN;
         public static readonly FlagGroupStorage AC0_COPY;
         public static readonly FlagGroupStorage V_COPY;
 
@@ -149,10 +149,10 @@ namespace Reko.Arch.Blackfin
             RPI_Hi = Data
                 .Concat(Pointers)
                 .Concat(Indices)
-                .Concat(Enumerable.Range(0, 8).Select(i => (RegisterStorage) null))
+                .Concat(Enumerable.Range(0, 8).Select(i => (RegisterStorage) null!))
                 .Select(r => r != null
                     ? new RegisterStorage(r.Name + ".H", r.Number, 16, PrimitiveType.Word16)
-                    : null)
+                    : null!)
                 .ToArray();
 
             AllReg = MakeAllReg(true);
@@ -202,8 +202,8 @@ namespace Reko.Arch.Blackfin
 
         private static RegisterStorage[] MakeAllReg(bool keepDataPtrRegs)
         {
-            return Data.Select(d => keepDataPtrRegs ? d : null)
-                .Concat(Pointers.Select(p => keepDataPtrRegs ? p : null))
+            return Data.Select(d => keepDataPtrRegs ? d : null!)
+                .Concat(Pointers.Select(p => keepDataPtrRegs ? p : null!))
                 .Concat(Indices)
                 .Concat(Ms)
                 .Concat(Bases)
@@ -214,19 +214,19 @@ namespace Reko.Arch.Blackfin
                     A0_W,
                     A1_X,
                     A1_W,
-                    null,
-                    null,
+                    null!,
+                    null!,
                     ASTAT,
                     RETS ,
 
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
+                    null!,
+                    null!,
+                    null!,
+                    null!,
+                    null!,
+                    null!,
+                    null!,
+                    null!,
 
                     LC0,
                     LT0,

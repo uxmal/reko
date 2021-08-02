@@ -32,8 +32,6 @@ namespace Reko.Core.Serialization
     {
         public const string Namespace_v5 = "http://schemata.jklnet.org/Reko/v5";
         public const string Namespace_v4 = "http://schemata.jklnet.org/Reko/v4";
-        public const string Namespace_v3 = "http://schemata.jklnet.org/Reko/v3";
-        public const string Namespace_v2 = "http://schemata.jklnet.org/Decompiler/v2";
         public const string Namespace_v1 = "http://schemata.jklnet.org/Decompiler";
 
         [XmlAttribute("module")]
@@ -94,16 +92,6 @@ namespace Reko.Core.Serialization
         public static XmlSerializer CreateSerializer_v4(Type rootType)
         {
             return CreateSerializer(rootType, Namespace_v4);
-        }
-
-        public static XmlSerializer CreateSerializer_v3(Type rootType)
-        {
-            return CreateSerializer(rootType, Namespace_v3);
-        }
-
-        public static XmlSerializer CreateSerializer_v2(Type rootType)
-        {
-            return CreateSerializer(rootType, Namespace_v2);
         }
 
         public static XmlSerializer CreateSerializer_v1(Type rootType)

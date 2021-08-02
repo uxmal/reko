@@ -53,9 +53,11 @@ namespace Reko.Arch.Arm.AArch64
         {
             this.arch = arch;
             this.rdr = rdr;
+            this.addr = null!;
+            this.state = null!;
         }
 
-        public override AArch64Instruction DisassembleInstruction()
+        public override AArch64Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt32(out var wInstr))
@@ -74,7 +76,7 @@ namespace Reko.Arch.Arm.AArch64
             public InstrClass iclass;
             public List<MachineOperand> ops = new List<MachineOperand>();
             public Mnemonic shiftCode = Mnemonic.Invalid;
-            public MachineOperand shiftAmount = null;
+            public MachineOperand? shiftAmount = null;
             public bool useQ;
             public VectorData vectorData;
             public uint elemsize;

@@ -54,11 +54,6 @@ namespace Reko.Arch.Avr
             return new Avr32Disassembler(this, rdr);
         }
 
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
@@ -105,7 +100,7 @@ namespace Reko.Arch.Avr
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
             if (Registers.RegistersByName.TryGetValue(name, out var reg))
                 return reg;
@@ -113,7 +108,7 @@ namespace Reko.Arch.Avr
                 return null;
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             return Registers.RegistersByDomain.TryGetValue(domain, out var reg)
                 ? reg
@@ -149,7 +144,7 @@ namespace Reko.Arch.Avr
             return Address.Ptr32(c.ToUInt32());
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -159,7 +154,7 @@ namespace Reko.Arch.Avr
             return Registers.RegistersByName.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse32(txtAddr, out addr);
         }

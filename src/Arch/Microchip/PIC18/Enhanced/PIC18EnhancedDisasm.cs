@@ -236,7 +236,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
                 // PCL, TOSL, TOSH, TOSU are invalid destinations.
                 if (PICRegisters.NotAllowedDest(dstaddr))
-                    return null;
+                    return dasm.CreateInvalidInstruction();
 
                 return new PICInstructionMem2Mem(mnemonic, srcaddr, dstaddr);
             }
@@ -258,7 +258,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             {
                 byte fsrnum = (byte)uInstr.Extract(6, 2);
                 if (fsrnum >= 3)
-                    return null;
+                    return dasm.CreateInvalidInstruction();
                 var imm6 = (byte)uInstr.Extract(0, 6);
                 return new PICInstructionFSRUArith(mnemonic, fsrnum, imm6);
             }
@@ -414,7 +414,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             {
                 byte fsrnum = (byte)uInstr.Extract(4, 4);
                 if (fsrnum >= 3)
-                    return null;
+                    return dasm.CreateInvalidInstruction();
 
                 // This is a 2-word instruction.
                 if (!GetAddlInstrWord(dasm.rdr, out ushort word2))

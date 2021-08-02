@@ -54,6 +54,8 @@ namespace Reko.Arch.Arm.AArch64
             this.binder = binder;
             this.host = host;
             this.dasm = new AArch64Disassembler(arch, rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -306,7 +308,7 @@ namespace Reko.Arch.Arm.AArch64
                     return vreg;
                 }
             case MemoryOperand mem:
-                var ea = binder.EnsureRegister(mem.Base);
+                var ea = binder.EnsureRegister(mem.Base!);
                 return m.Mem(mem.Width, ea);
             }
             throw new NotImplementedException($"Rewriting {op.GetType().Name} not implemented yet.");
@@ -354,8 +356,8 @@ namespace Reko.Arch.Arm.AArch64
         {
             switch (cond)
             {
-            //default:
-            //	throw new NotImplementedException(string.Format("ARM condition code {0} not implemented.", cond));
+            default:
+                throw new NotImplementedException(string.Format("ARM condition code {0} not implemented.", cond));
             case ArmCondition.HS:
                 return m.Test(ConditionCode.UGE, FlagGroup(Registers.C));
             case ArmCondition.LO:
@@ -385,7 +387,6 @@ namespace Reko.Arch.Arm.AArch64
             case ArmCondition.VS:
                 return m.Test(ConditionCode.OV, FlagGroup(Registers.V));
             }
-            return null;
         }
 
         protected ArmCondition Invert(ArmCondition cc)

@@ -59,6 +59,7 @@ Architecture */
             this.dasm = instrs.GetEnumerator();
             this.binder = binder;
             this.host = host;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

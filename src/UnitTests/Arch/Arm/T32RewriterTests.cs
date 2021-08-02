@@ -45,12 +45,6 @@ namespace Reko.UnitTests.Arch.Arm
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => baseAddress;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            AArch32ProcessorState state = new AArch32ProcessorState(arch);
-            return arch.CreateRewriter(mem.CreateLeReader(0), state, binder, host);
-        }
-
         private class FakeRewriterHost : IRewriterHost
         {
             public IntrinsicProcedure EnsureIntrinsic(string name, bool isIdempotent, DataType returnType, int arity)

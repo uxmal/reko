@@ -474,17 +474,24 @@ namespace Reko.Arch.Vax
         {
             var sp = binder.EnsureRegister(Registers.sp);
             m.Assign(sp, m.ISub(sp, PrimitiveType.Word32.Size));
-            if (!(RewriteSrcOp(0, PrimitiveType.Word32) is MemoryAccess op0))
+            Expression ea = RewriteSrcOp(0, PrimitiveType.Word32);
+            switch (ea)
             {
+            case MemoryAccess op0:
+                ea = op0.EffectiveAddress;
+                if (!(ea is Identifier || ea is Constant))
+                {
+                    var t = binder.CreateTemporary(PrimitiveType.Word32);
+                    m.Assign(t, ea);
+                    ea = t;
+                }
+                break;
+            case Address addr:
+                ea = addr;
+                break;
+            default:
                 EmitInvalid();
                 return;
-            }
-            var ea = op0.EffectiveAddress;
-            if (!(ea is Identifier || ea is Constant))
-            {
-                var t = binder.CreateTemporary(PrimitiveType.Word32);
-                m.Assign(t, ea);
-                ea = t;
             }
             m.Assign(m.Mem(PrimitiveType.Word32, sp), ea);
             NZ00(ea);

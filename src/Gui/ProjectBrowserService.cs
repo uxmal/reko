@@ -83,7 +83,11 @@ namespace Reko.Gui
             {
                 AddComponents(project.Programs);
                 AddComponents(project.MetadataFiles);
-                project.MetadataFiles.CollectionChanged += TypeLibraries_CollectionChanged;
+                AddComponents(project.ScriptFiles);
+                project.MetadataFiles.CollectionChanged +=
+                    TypeLibraries_CollectionChanged;
+                project.ScriptFiles.CollectionChanged +=
+                    ScriptFiles_CollectionChanged;
                 tree.ShowNodeToolTips = true;
                 tree.ShowRootLines = true;
             }
@@ -127,6 +131,21 @@ namespace Reko.Gui
             {
             case NotifyCollectionChangedAction.Add:
                 AddComponents(e.NewItems);
+                break;
+            default:
+                throw new NotImplementedException();
+            }
+        }
+
+        void ScriptFiles_CollectionChanged(
+            object sender,
+            NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+            case NotifyCollectionChangedAction.Add:
+                AddComponents(e.NewItems);
+                SelectedObject = e.NewItems.OfType<object>().First();
                 break;
             default:
                 throw new NotImplementedException();

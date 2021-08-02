@@ -23,6 +23,7 @@ using Reko.Core.CLanguage;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,15 +38,18 @@ namespace Reko.Environments.Windows
         public WinAArch64Platform(IServiceProvider services, IProcessorArchitecture arch) :
             base(services, arch, "winArm64")
         {
-            this.framePointer = arch.GetRegister("x29");
-            this.linkRegister = arch.GetRegister("x30");
+            this.framePointer = arch.GetRegister("x29")!;
+            this.linkRegister = arch.GetRegister("x30")!;
         }
 
         public override string DefaultCallingConvention => "";
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
         {
-            throw new NotImplementedException();
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
         }
 
         // https://docs.microsoft.com/en-us/cpp/build/arm64-windows-abi-conventions?view=vs-2020
@@ -63,7 +67,7 @@ namespace Reko.Environments.Windows
             return new HashSet<RegisterStorage>();
         }
 
-        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
         {
             {
                 Services.RequireService<DecompilerEventListener>().Warn(new NullCodeLocation(program.Name),
@@ -72,7 +76,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -82,12 +86,12 @@ namespace Reko.Environments.Windows
             throw new NotImplementedException();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             return new AArch64CallingConvention(this.Architecture);
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }

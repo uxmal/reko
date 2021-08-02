@@ -41,8 +41,8 @@ namespace Reko.Arch.OpenRISC
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<OpenRISCInstruction> dasm;
-        private OpenRISCInstruction instrCur;
         private InstrClass iclass;
+        private OpenRISCInstruction instrCur;
         private RtlEmitter m;
 
         public OpenRISCRewriter(OpenRISCArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -53,6 +53,8 @@ namespace Reko.Arch.OpenRISC
             this.binder = binder;
             this.host = host;
             this.dasm = new OpenRISCDisassembler(arch, rdr).GetEnumerator();
+            this.instrCur = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -365,8 +367,8 @@ namespace Reko.Arch.OpenRISC
             var mem = Mem(instrCur.Operands[1]);
             var ea = mem.EffectiveAddress;
             var fnType = new FunctionType(
-                new Identifier("", PrimitiveType.Word32, null),
-                new Identifier("ea", new Pointer(PrimitiveType.Word32, 32), null));
+                new Identifier("", PrimitiveType.Word32, null!),
+                new Identifier("ea", new Pointer(PrimitiveType.Word32, 32), null!));
             var e = host.CallIntrinsic("__atomic_load_w32", false, fnType, ea);
             if (mem.DataType.BitSize < dtDst.BitSize)
             {

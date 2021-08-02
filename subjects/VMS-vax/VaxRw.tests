@@ -84,6 +84,15 @@
         }
 
         [Test]
+        public void VaxRw_crc()
+        {
+            Given_HexString("0B564158435254");
+            AssertCode(     // crc	r6,r8[r1],r2[r3],r4
+                "0|L--|00001140(7): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
         public void VaxRw_movc5()
         {
             Given_HexString("2C");
@@ -134,15 +143,6 @@
             Given_HexString("F001000000");
             AssertCode(     // insv	#00000001,#00000000,#00,#00
                 "0|L--|000013D4(5): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void VaxRw_crc()
-        {
-            Given_HexString("0B001E001E");
-            AssertCode(     // crc	#00,#0000001E,#0000,#1E
-                "0|L--|0000144C(5): 1 instructions",
                 "1|L--|@@@");
         }
 
@@ -273,20 +273,20 @@
         }
 
         [Test]
+        public void VaxRw_remque()
+        {
+            Given_HexString("0F410F81");
+            AssertCode(     // remque	0F[r1],(r1)+
+                "0|L--|00007505(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
         public void VaxRw_cmpzv()
         {
             Given_HexString("ED");
             AssertCode(     // cmpzv
                 "0|L--|00007C81(1): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void VaxRw_remque()
-        {
-            Given_HexString("0FFF1FFF3FFF7F");
-            AssertCode(     // remque	@FF407BE2,-(pc)
-                "0|L--|00007CBD(7): 1 instructions",
                 "1|L--|@@@");
         }
 

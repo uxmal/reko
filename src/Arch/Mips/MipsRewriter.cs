@@ -57,6 +57,7 @@ namespace Reko.Arch.Mips
             this.dasm = instrs.GetEnumerator();
             this.host = host;
             this.cmp = new ExpressionValueComparer();
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()

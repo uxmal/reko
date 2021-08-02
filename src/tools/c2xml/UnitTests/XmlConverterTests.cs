@@ -50,11 +50,6 @@ namespace Reko.Tools.C2Xml.UnitTests
                 throw new NotImplementedException();
             }
 
-            public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-            {
-                throw new NotImplementedException();
-            }
-
             public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
             {
                 throw new NotImplementedException();
@@ -155,13 +150,14 @@ namespace Reko.Tools.C2Xml.UnitTests
             {
                 reader = new StringReader(c_code);
                 writer = new StringWriter();
+                //var xWriter = new XmlTextWriter(writer)
                 var xWriter = new XmlnsHidingWriter(writer)
                 {
                     Formatting = Formatting.Indented
                 };
                 var arch = new FakeArchitecture(new ServiceContainer());
                 var platform = new DefaultPlatform(null, arch);
-                var xc = new XmlConverter(reader, xWriter, platform, dialect);
+                var xc = new XmlConverter(reader, xWriter, platform, true, dialect);
                 xc.Convert();
                 writer.Flush();
                 Assert.AreEqual(expectedXml, writer.ToString());
@@ -1019,6 +1015,61 @@ namespace Reko.Tools.C2Xml.UnitTests
   </procedure>
 </library>";
             RunTest("int __pascal __loadds fn();", sExp, "msvc");
+        }
+
+        [Test]
+        public void C2X_Service()
+        {
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types />
+  <service name=""foo"">
+    <signature>
+      <return>
+        <prim domain=""Character"" size=""1"" />
+        <reg>D0</reg>
+      </return>
+    </signature>
+    <syscallinfo>
+      <vector>10</vector>
+      <regvalue reg=""al"">42</regvalue>
+      <regvalue reg=""ah"">43</regvalue>
+    </syscallinfo>
+  </service>
+</library>";
+            RunTest(
+                "[[reko::service(vector=0x10, regs={al:0x42,ah:0x43})]] [[reko::returns(register,\"D0\")]] char foo();",
+                sExp, "");
+        }
+
+        [Test]
+        public void C2x_Convention()
+        {
+            var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types />
+  <procedure name=""read"">
+    <signature convention=""amd64kernel"">
+      <return>
+        <prim domain=""SignedInt"" size=""4"" />
+      </return>
+      <arg name=""fd"">
+        <prim domain=""SignedInt"" size=""4"" />
+      </arg>
+      <arg name=""buffer"">
+        <ptr size=""4"">
+          <prim domain=""Character"" size=""1"" />
+        </ptr>
+      </arg>
+      <arg name=""length"">
+        <type>size_t</type>
+      </arg>
+    </signature>
+  </procedure>
+</library>";
+            RunTest(
+                "[[reko::convention(amd64kernel)]] int read(int fd, char * buffer, size_t length);",
+                sExp, "");
         }
     }
 }

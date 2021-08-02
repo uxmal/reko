@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Archives;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Environments.MacOS.Classic;
@@ -39,10 +40,14 @@ namespace Reko.ImageLoaders.BinHex
 
         public BinHexImageLoader(IServiceProvider services, string filename, byte [] imgRaw) : base(services, filename, imgRaw)
         {
+            rsrcFork = null!;
+            bmem = null!;
+            segmentMap = null!;
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
+            addrLoad ??= PreferredBaseAddress;
             BinHexDecoder dec = new BinHexDecoder(new StringReader(Encoding.ASCII.GetString(RawImage)));
             IEnumerator<byte> stm = dec.GetBytes().GetEnumerator();
             BinHexHeader hdr = LoadBinHexHeader(stm);
@@ -50,7 +55,7 @@ namespace Reko.ImageLoaders.BinHex
             byte[] rsrcFork = LoadFork(hdr.ResourceForkLength, stm);
 
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch = cfgSvc.GetArchitecture("m68k");
+            var arch = cfgSvc.GetArchitecture("m68k")!;
             var platform = (MacOSClassic) cfgSvc.GetEnvironment("macOs").Load(Services, arch);
             if (hdr.FileType == "PACT")
             {

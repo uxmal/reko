@@ -564,7 +564,7 @@ namespace Reko.Arch.X86
 
         private void RewriteEnter()
         {
-            var bp = orw.AluRegister(arch.GetSubregister(Registers.ebp, 0, instrCur.dataWidth.BitSize));
+            var bp = orw.AluRegister(Registers.ebp, instrCur.dataWidth)!;
             RewritePush(instrCur.dataWidth, bp);
             var sp = StackPointer();
             m.Assign(bp, sp);
@@ -765,7 +765,7 @@ namespace Reko.Arch.X86
         private void RewriteLeave()
         {
             var sp = orw.AluRegister(arch.StackRegister);
-            var bp = orw.AluRegister(arch.GetSubregister(Registers.rbp, 0, arch.StackRegister.DataType.BitSize));
+            var bp = orw.AluRegister(Registers.rbp, arch.StackRegister.DataType)!;
             m.Assign(sp, bp);
             m.Assign(bp, orw.StackAccess(sp, bp.DataType));
             m.Assign(sp, m.IAddS(sp, bp.DataType.Size));
@@ -775,7 +775,7 @@ namespace Reko.Arch.X86
         {
             var reg = (RegisterOperand)instrCur.Operands[0];
             MemoryOperand mem = (MemoryOperand)instrCur.Operands[1];
-            if (!mem.Offset!.IsValid)
+            if (mem.Offset is null)
             {
                 mem = new MemoryOperand(mem.Width, mem.Base, mem.Index, mem.Scale, Constant.Create(instrCur.addrWidth, 0));
             }

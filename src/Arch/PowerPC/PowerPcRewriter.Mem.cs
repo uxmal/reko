@@ -136,7 +136,7 @@ namespace Reko.Arch.PowerPC
             m.Assign(tmp, ea);
             while (r <= 31)
             {
-                var reg = binder.EnsureRegister(arch.GetRegister(r));
+                var reg = binder.EnsureRegister(arch.GetRegister(r)!);
                 if (reg.DataType.BitSize > 32)
                 {
                     var tmp2 = binder.CreateTemporary(PrimitiveType.Word32);
@@ -163,10 +163,25 @@ namespace Reko.Arch.PowerPC
                 m.Invalid();
                 return;
             }
-            var rDstNext = arch.GetRegister(rDst.Number + 1);
+            var rDstNext = arch.GetRegister(rDst.Number + 1)!;
             var regPair = binder.EnsureSequence(PrimitiveType.Word128, rDst, rDstNext);
             var ea = EffectiveAddress_r0(instr.Operands[1], m);
             m.Assign(regPair, m.Mem(regPair.DataType, ea));
+        }
+
+        private void RewriteLswi()
+        {
+            var nDst = ((RegisterOperand) instr.Operands[0]).Register.Number;
+            var ea = RewriteOperand(1);
+            int n = ((Constant) ImmOperand(2)).ToInt32();
+            if (n == 0) n = 32;
+            int cRegs = (n + 3) / 4;
+            for (int i = 0; i < cRegs; ++i)
+            {
+                var r = arch.Registers[(nDst + i) & 0x1F];
+                m.Assign(binder.EnsureRegister(r), m.Mem32(ea));
+                m.Assign(ea, m.IAddS(ea, 4));
+            }
         }
 
         private void RewriteLvewx()
@@ -323,7 +338,7 @@ namespace Reko.Arch.PowerPC
             var tmp = binder.CreateTemporary(ea.DataType);
             while (r <= 31)
             {
-                var reg = arch.GetRegister(r);
+                var reg = arch.GetRegister(r)!;
                 Expression w = binder.EnsureRegister(reg);
                 if (reg.DataType.Size > 4)
                 {
@@ -332,6 +347,21 @@ namespace Reko.Arch.PowerPC
                 m.Assign(m.Mem32(tmp), w);
                 m.Assign(tmp, m.IAddS(tmp, 4));
                 ++r;
+            }
+        }
+
+        private void RewriteStswi()
+        {
+            var nDst = ((RegisterOperand) instr.Operands[0]).Register.Number;
+            var ea = RewriteOperand(1);
+            int n = ((Constant) ImmOperand(2)).ToInt32();
+            if (n == 0) n = 32;
+            int cRegs = (n + 3) / 4;
+            for (int i = 0; i < cRegs; ++i)
+            {
+                var r = arch.Registers[(nDst + i) & 0x1F];
+                m.Assign(m.Mem32(ea), binder.EnsureRegister(r));
+                m.Assign(ea, m.IAddS(ea, 4));
             }
         }
 
@@ -427,7 +457,7 @@ namespace Reko.Arch.PowerPC
             var c = (Constant) RewriteOperand(instr.Operands[0]);
             var ra = RewriteOperand(instr.Operands[1]);
             var rb = RewriteOperand(instr.Operands[2]);
-            Func<Expression,Expression,Expression> op = null;
+            Func<Expression,Expression,Expression>? op = null;
             switch (c.ToInt32())
             {
             case 0x01: op = m.Ugt; break;

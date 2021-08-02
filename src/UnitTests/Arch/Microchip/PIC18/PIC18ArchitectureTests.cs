@@ -280,16 +280,19 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         {
             var arch = GetArch(PIC18EggName);
             PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
-            Assert.AreSame(PIC18Registers.FSR0L, arch.GetSubregister(PIC18Registers.FSR0, 0, 8));
-            Assert.AreSame(PIC18Registers.FSR0H, arch.GetSubregister(PIC18Registers.FSR0, 8, 8));
-            Assert.AreSame(PIC18Registers.FSR0, arch.GetSubregister(PIC18Registers.FSR0, 0, 16));
+            var lowByte = new BitRange(0, 8);
+            var highByte = new BitRange(8, 16);
+            var word = new BitRange(0, 16);
+            Assert.AreSame(PIC18Registers.FSR0L, arch.GetRegister(PIC18Registers.FSR0.Domain, lowByte));
+            Assert.AreSame(PIC18Registers.FSR0H, arch.GetRegister(PIC18Registers.FSR0.Domain, highByte));
+            Assert.AreSame(PIC18Registers.FSR0, arch.GetRegister(PIC18Registers.FSR0.Domain, word));
 
             PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
-            Assert.AreSame(PIC18Registers.FSR1L, arch.GetSubregister(PIC18Registers.FSR1, 0, 8));
-            Assert.AreSame(PIC18Registers.FSR1H, arch.GetSubregister(PIC18Registers.FSR1, 8, 8));
-            Assert.AreSame(PIC18Registers.FSR2L, arch.GetSubregister(PICRegisters.GetRegister("FSR2"), 0, 8));
-            Assert.AreSame(PIC18Registers.FSR2H, arch.GetSubregister(PICRegisters.GetRegister("FSR2"), 8, 8));
-            Assert.AreSame(PIC18Registers.FSR2, arch.GetSubregister(PICRegisters.GetRegister("FSR2"), 0, 16));
+            Assert.AreSame(PIC18Registers.FSR1L, arch.GetRegister(PIC18Registers.FSR1.Domain, lowByte));
+            Assert.AreSame(PIC18Registers.FSR1H, arch.GetRegister(PIC18Registers.FSR1.Domain, highByte));
+            Assert.AreSame(PIC18Registers.FSR2L, arch.GetRegister(PICRegisters.GetRegister("FSR2").Domain, lowByte));
+            Assert.AreSame(PIC18Registers.FSR2H, arch.GetRegister(PICRegisters.GetRegister("FSR2").Domain, highByte));
+            Assert.AreSame(PIC18Registers.FSR2, arch.GetRegister(PICRegisters.GetRegister("FSR2").Domain, word));
         }
 
         [Test]

@@ -54,9 +54,11 @@ namespace Reko.Arch.Arm.AArch32
         {
             this.arch = arch;
             this.rdr = rdr;
+            this.addr = null!;
+            this.state = null!;
         }
 
-        public override AArch32Instruction DisassembleInstruction()
+        public override AArch32Instruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt32(out uint wInstr))
@@ -78,7 +80,7 @@ namespace Reko.Arch.Arm.AArch32
             public bool updateFlags = false;
             public bool writeback = false;
             public Mnemonic shiftOp = Mnemonic.Invalid;
-            public MachineOperand shiftValue = null;
+            public MachineOperand? shiftValue = null;
             public bool useQ = false;
             public bool userStmLdm = false;
             public ArmVectorData vectorData;
@@ -684,8 +686,8 @@ namespace Reko.Arch.Arm.AArch32
         private (MemoryOperand, bool) MakeMemoryOperand(
             uint wInstr,
             RegisterStorage n,
-            RegisterStorage m,
-            Constant offset,
+            RegisterStorage? m,
+            Constant? offset,
             Mnemonic shiftType,
             int shiftAmt,
             PrimitiveType dt)
@@ -1477,7 +1479,7 @@ namespace Reko.Arch.Arm.AArch32
             if (dasm.state.shiftOp != Mnemonic.Invalid)
             {
                 dasm.state.mnemonic = dasm.state.shiftOp;
-                dasm.state.ops.Add(dasm.state.shiftValue);
+                dasm.state.ops.Add(dasm.state.shiftValue!);
                 dasm.state.shiftValue = null;
                 dasm.state.shiftOp = Mnemonic.Invalid;
             }

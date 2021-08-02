@@ -35,7 +35,7 @@ namespace Reko.ImageLoaders.MachO.Arch
         {
         }
 
-        public override Address ReadStub(Address addrStub, ByteMemoryArea mem)
+        public override Address? ReadStub(Address addrStub, ByteMemoryArea mem)
         {
             var offsetInSection = (uint) (addrStub - mem.BaseAddress);
             var opcode = mem.ReadBeUInt16(offsetInSection);

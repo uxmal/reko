@@ -47,9 +47,10 @@ namespace Reko.Arch.Vax
             this.arch = arch;
             this.rdr = imageReader;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override VaxInstruction DisassembleInstruction()
+        public override VaxInstruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadByte(out byte op))
@@ -63,8 +64,6 @@ namespace Reko.Arch.Vax
             {
                 instr = CreateInvalidInstruction();
             }
-            if (instr == null)
-                return null;
             instr.Address = addr;
             instr.Length = (int)(rdr.Address - addr);
             ops.Clear();
@@ -101,12 +100,12 @@ namespace Reko.Arch.Vax
 
         private bool TryDecodeOperand(PrimitiveType width, int maxReg, out MachineOperand op)
         {
-            op = null;
+            op = null!;
             if (!rdr.TryReadByte(out byte bSpecifier))
             {
                 return false;
             }
-            var reg = arch.GetRegister(bSpecifier & 0xF);
+            var reg = arch.GetRegister(bSpecifier & 0xF)!;
             switch (bSpecifier >> 4)
             {
             case 0: // Literal mode
@@ -116,7 +115,7 @@ namespace Reko.Arch.Vax
                 op = LiteralOperand(width, bSpecifier);
                 break;
             case 4: // Index mode
-                op = IndexOperand(width, reg);
+                op = IndexOperand(width, reg)!;
                 if (op == null)
                     return false;
                 break;
@@ -128,26 +127,28 @@ namespace Reko.Arch.Vax
             case 6: // Register deferred
                 op = new MemoryOperand(width)
                 {
-                    Base = reg
+                    Base = new RegisterOperand(reg)
                 };
                 break;
             case 7: // Autodecrement mode
                 op = new MemoryOperand(width)
                 {
-                    Base = reg,
+                    Base = new RegisterOperand(reg),
                     AutoDecrement = true,
                 };
                 break;
             case 8: // Autoincrement mode
                 if (reg.Number == 0x0F)
                 {
-                    op = ImmediateOperand(width);
+                    op = ImmediateOperand(width)!;
+                    return op != null;
+
                 }
                 else
                 {
                     op = new MemoryOperand(width)
                     {
-                        Base = reg,
+                        Base = new RegisterOperand(reg),
                         AutoIncrement = true,
                     };
                 }
@@ -155,7 +156,7 @@ namespace Reko.Arch.Vax
             case 9: // Deferred Autoincrement mode
                 op = new MemoryOperand(width)
                 {
-                    Base = reg,
+                    Base = new RegisterOperand(reg),
                     AutoIncrement = true,
                     Deferred = true,
                 };
@@ -184,21 +185,18 @@ namespace Reko.Arch.Vax
             return true;
         }
 
-        private MachineOperand ImmediateOperand(PrimitiveType width)
+        private MachineOperand? ImmediateOperand(PrimitiveType width)
         {
             if (!rdr.TryRead(width, out Constant imm))
                 return null;
             return new ImmediateOperand(imm);
         }
 
-        private MachineOperand IndexOperand(PrimitiveType width, RegisterStorage reg)
+        private MachineOperand? IndexOperand(PrimitiveType width, RegisterStorage reg)
         {
             if (!TryDecodeOperand(width, 15, out MachineOperand op))
                 return null;
-            if (!(op is MemoryOperand aOp))
-                return null;
-            aOp.Index = reg;
-            return aOp;
+            return new IndexOperand(width, op, reg);
         }
 
         private MachineOperand DisplacementOperand(PrimitiveType width, RegisterStorage reg, Constant c, byte bSpecifier)
@@ -223,7 +221,7 @@ namespace Reko.Arch.Vax
             }
             return new MemoryOperand(width)
             {
-                Base = reg,
+                Base = new RegisterOperand(reg),
                 Offset = c,
                 Deferred = deferred
             };
@@ -356,7 +354,5 @@ namespace Reko.Arch.Vax
         private static readonly Mutator md = w(PrimitiveType.Real64, 13);  //$TODO: this is not IEEE
         private static readonly Mutator mg = w(PrimitiveType.Real64, 13);  //$TODO: this is not IEEE
         private static readonly Mutator mh = w(PrimitiveType.Real128, 11);  //$TODO: this is not IEEE
-
-
     }
 }

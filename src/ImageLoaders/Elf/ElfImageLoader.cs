@@ -22,6 +22,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -60,11 +61,12 @@ namespace Reko.ImageLoaders.Elf
         private byte osAbi;
         private Address addrPreferred;
 
-        protected ElfLoader innerLoader;
+        protected ElfLoader? innerLoader;
 
         public ElfImageLoader(IServiceProvider services, string filename, byte[] rawBytes)
             : base(services, filename, rawBytes)
         {
+            this.addrPreferred = Address.Ptr32(0);
         }
 
         public override Address PreferredBaseAddress 
@@ -73,7 +75,7 @@ namespace Reko.ImageLoaders.Elf
             set { addrPreferred = value; }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             var rdr = new BeImageReader(this.RawImage, 0);
             LoadElfIdentification(rdr);
@@ -95,6 +97,8 @@ namespace Reko.ImageLoaders.Elf
                 {
                     addrLoad = innerLoader.CreateAddress(addrLoad.ToLinear());
                 }
+                innerLoader.Dump(addrLoad ?? innerLoader.CreateAddress(0), Console.Out);
+
                 // The file we're loading is an object file, and needs to be 
                 // linked before we can load it.
                 var linker = innerLoader.CreateLinker();
@@ -102,14 +106,9 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        private Address ComputeBaseAddressFromSections(List<ElfSection> sections)
-        {
-            throw new NotImplementedException();
-        }
-
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            var reloc = innerLoader.Relocate(program, addrLoad);
+            var reloc = innerLoader!.Relocate(program, addrLoad);
             return reloc;
         }
 
@@ -169,6 +168,17 @@ namespace Reko.ImageLoaders.Elf
             if (fileClass == ELFCLASS64)
             {
                 var header64 = Elf64_EHdr.Load(rdr);
+                trace.Verbose("== ELF header =================");
+                trace.Verbose("  e_entry: {0}", header64.e_entry);
+                trace.Verbose("  e_phoff: {0}", header64.e_phoff);
+                trace.Verbose("  e_shoff: {0}", header64.e_shoff);
+                trace.Verbose("  e_flags: {0}", header64.e_flags);
+                trace.Verbose("  e_ehsize: {0}", header64.e_ehsize);
+                trace.Verbose("  e_phentsize: {0}", header64.e_phentsize);
+                trace.Verbose("  e_phnum: {0}", header64.e_phnum);
+                trace.Verbose("  e_shentsize: {0}", header64.e_shentsize);
+                trace.Verbose("  e_shnum: {0}", header64.e_shnum);
+                trace.Verbose("  e_shstrndx: {0}", header64.e_shstrndx);
                 return new ElfLoader64(this.Services, header64, osAbi, endianness, RawImage);
             }
             else

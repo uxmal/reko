@@ -19,16 +19,16 @@
 #endregion
 
 using Reko.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
-using Reko.Core.Lib;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Reko.Arch.Avr
 {
@@ -123,11 +123,6 @@ namespace Reko.Arch.Avr
             return new Avr8Disassembler(this, rdr);
         }
 
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
@@ -177,7 +172,15 @@ namespace Reko.Arch.Avr
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
         {
-            return regs[domain - StorageDomain.Register];
+            var reg= regs[domain - StorageDomain.Register];
+            if (domain == z.Domain)
+            {
+                if (range.Lsb == 0)
+                    return regs[30];
+                else
+                    return regs[31];
+            }
+            return reg;
         }
 
         public RegisterStorage GetRegister(int i)
@@ -188,18 +191,6 @@ namespace Reko.Arch.Avr
         public override RegisterStorage[] GetRegisters()
         {
             return regs;
-        }
-
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            if (reg == z)
-            {
-                if (offset == 0)
-                    return regs[30];
-                else
-                    return regs[31];
-            }
-            return reg;
         }
 
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)
@@ -223,7 +214,7 @@ namespace Reko.Arch.Avr
             return Address.Ptr16((ushort)uAddr);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -233,7 +224,7 @@ namespace Reko.Arch.Avr
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             return Address.TryParse16(txtAddr, out addr);
         }

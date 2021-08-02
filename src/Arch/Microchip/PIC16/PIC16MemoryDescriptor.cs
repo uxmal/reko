@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -128,11 +128,11 @@ namespace Reko.Arch.MicrochipPIC.PIC16
             {
                 if (bAddr == null)
                     throw new ArgumentNullException(nameof(bAddr));
-                absAddr = null;
-                IMemoryRegion regn = null;
+                absAddr = null!;
+                IMemoryRegion? regn = null;
                 if (PICRegisters.TryGetAlwaysAccessibleRegister(bAddr, out var reg))
                 {
-                    regn = PICMemoryDescriptor.GetDataRegionByAddress(reg.Traits.RegAddress.Addr);
+                    regn = PICMemoryDescriptor.GetDataRegionByAddress(reg.Traits.RegAddress.Addr!);
                 }
                 else if (bAddr.BankSelect.IsValid)
                 {

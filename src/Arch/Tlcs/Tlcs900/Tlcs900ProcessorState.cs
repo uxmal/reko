@@ -65,10 +65,10 @@ namespace Reko.Arch.Tlcs
             if (valid[r.Number])
                 return Constant.Create(r.DataType, regs[r.Number]);
             else
-                return Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
 

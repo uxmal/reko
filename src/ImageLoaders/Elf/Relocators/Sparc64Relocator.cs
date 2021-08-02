@@ -32,6 +32,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         public Sparc64Relocator(ElfLoader64 elfLoader, SortedList<Address, ImageSymbol> symbols) : 
             base(elfLoader, symbols)
         {
+            importReferences = null!;
         }
 
         public override void Relocate(Program program)
@@ -40,14 +41,14 @@ namespace Reko.ImageLoaders.Elf.Relocators
             base.Relocate(program);
         }
 
-        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, ElfRelocation rela)
+        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol sym, ElfSection? referringSection, ElfRelocation rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
                 return (null, null);
             var rt = (SparcRt) (rela.Info & 0xFF);
 
             var addr = referringSection != null
-                 ? referringSection.Address + rela.Offset
+                 ? referringSection.Address! + rela.Offset
                  : loader.CreateAddress(rela.Offset);
             if (sym.SectionIndex == 0)
             {
@@ -72,7 +73,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             uint mask = ~0u;
             if (referringSection != null)
             {
-                addr = referringSection.Address + rela.Offset;
+                addr = referringSection.Address! + rela.Offset;
             }
             else
             {
@@ -86,7 +87,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 rela.Offset,
                 (SparcRt) (rela.Info & 0xFF),
                 sym.Name,
-                rela.Addend,
+                rela.Addend.HasValue ? rela.Addend.Value : 0,
                 (int) (rela.Info >> 8),
                 "section?");
 
@@ -95,37 +96,37 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case 0:
                 return (null, null);
             case SparcRt.R_SPARC_HI22:
-                A = (int) rela.Addend;
+                A = (int) rela.Addend!.Value;
                 sh = 10;
                 P = 0;
                 mask = 0x3FFFFF;
                 return Relocate32(program, sym, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_LM22:
-                A = (int) rela.Addend;
+                A = (int) rela.Addend!.Value;
                 S = sym.Value;
                 sh = 10;
                 P = 0;
                 mask = 0x3FFFFF;
                 return Relocate32(program, sym, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_LO10:
-                A = (int) rela.Addend;
+                A = (int) rela.Addend!.Value;
                 S = sym.Value;
                 mask = 0x3FF;
                 P = 0;
                 return Relocate32(program, sym, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_32:
-                A = (int) rela.Addend;
+                A = (int) rela.Addend!.Value;
                 S = sym.Value;
                 mask = 0xFFFFFFFF;
                 P = 0;
                 return Relocate32(program, sym, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_WDISP30:
-                A = (int) rela.Addend;
+                A = (int) rela.Addend!.Value;
                 P = ~P + 1;
                 sh = 2;
                 return Relocate32(program, sym, addr, S, A, sh, mask, P, B);
             case SparcRt.R_SPARC_RELATIVE:
-                A = (int) rela.Addend;
+                A = (int) rela.Addend!.Value;
                 B = program.SegmentMap.BaseAddress.ToLinear();
                 P = 0;
                 return Relocate64(program, sym, addr, S, A, sh, mask, P, B);
@@ -140,7 +141,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             }
         }
 
-        private (Address, ElfSymbol) Relocate32(Program program, ElfSymbol sym, Address addr, ulong S, int A, int sh, uint mask, ulong P, ulong B)
+        private (Address?, ElfSymbol?) Relocate32(Program program, ElfSymbol sym, Address addr, ulong S, int A, int sh, uint mask, ulong P, ulong B)
         {
             var arch = program.Architecture;
             var relR = program.CreateImageReader(arch, addr);
@@ -154,7 +155,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             return (addr, null);
         }
 
-        private (Address, ElfSymbol) Relocate64(Program program, ElfSymbol sym, Address addr, ulong S, int A, int sh, uint mask, ulong P, ulong B)
+        private (Address?, ElfSymbol?) Relocate64(Program program, ElfSymbol sym, Address addr, ulong S, int A, int sh, uint mask, ulong P, ulong B)
         {
             var arch = program.Architecture;
             var relR = program.CreateImageReader(arch, addr);

@@ -59,6 +59,11 @@ namespace Reko.UnitTests.Core.Output
         private void Given_Executable(string name, uint uAddr, uint uSize)
         {
             var addr = Address.Ptr32(uAddr);
+            Given_Executable(name, addr, uSize);
+        }
+
+        private void Given_Executable(string name, Address addr, uint uSize)
+        {
             var seg = new ImageSegment(
                 name,
                 new ByteMemoryArea(addr, new byte[uSize]),
@@ -69,6 +74,11 @@ namespace Reko.UnitTests.Core.Output
         private void Given_Segment(string name, uint uAddr, uint uSize)
         {
             var addr = Address.Ptr32(uAddr);
+            Given_Segment(name, addr, uSize);
+        }
+
+        private void Given_Segment(string name, Address addr, uint uSize)
+        {
             var seg = new ImageSegment(
                 name,
                 new ByteMemoryArea(addr, new byte[uSize]),
@@ -86,10 +96,8 @@ namespace Reko.UnitTests.Core.Output
         private void Given_UserProcedure(uint uAddr, string procName, string placement)
         {
             var addr = Address.Ptr32(uAddr);
-            var uProc = new Reko.Core.Serialization.Procedure_v1
+            var uProc = new UserProcedure(addr, procName)
             {
-                Address = addr.ToString(),
-                Name = procName,
                 OutputFile = placement
             };
             program.User.Procedures.Add(addr, uProc);
@@ -98,6 +106,11 @@ namespace Reko.UnitTests.Core.Output
         private void Given_Data(uint uAddr, string hexBytes)
         {
             var addr = Address.Ptr32(uAddr);
+            Given_Data(addr, hexBytes);
+        }
+
+        private void Given_Data(Address addr, string hexBytes)
+        {
             bool foundSeg = program.SegmentMap.TryFindSegment(addr, out var seg);
             Assert.IsTrue(foundSeg);
             var w = seg.MemoryArea.CreateLeWriter(addr);
@@ -107,6 +120,23 @@ namespace Reko.UnitTests.Core.Output
         private void Given_GlobalVariable(int uOffset, DataType dt)
         {
             program.GlobalFields.Fields.Add(uOffset, dt);
+        }
+
+        private void Given_SegmentVariable(ushort uSeg, uint off, DataType dt)
+        {
+            var addr = Address.SegPtr(uSeg, off);
+            bool found = program.SegmentMap.TryFindSegment(addr, out var seg);
+            Assert.IsTrue(found, "Segment is not found");
+            seg.Fields.Fields.Add((int)off, dt);
+            CreateSegmentTypeVariable(seg);
+        }
+
+        private void CreateSegmentTypeVariable(ImageSegment seg)
+        {
+            var store = new TypeStore();
+            var factory = new TypeFactory();
+            seg.Identifier.TypeVariable = store.CreateTypeVariable(factory);
+            seg.Identifier.TypeVariable.Class.DataType = seg.Fields;
         }
 
         [Test]
@@ -204,6 +234,22 @@ namespace Reko.UnitTests.Core.Output
             Given_Segment(".data", 0x0020_0000, 0x4000);
             Given_Data(0x0020_0010, "78 56 34 12");
             Given_GlobalVariable(0x0020_0010, PrimitiveType.Int32);
+
+            var ofp = new SegmentFilePolicy(program);
+            var placements = ofp.GetObjectPlacements(".c", listener).ToArray();
+            Assert.AreEqual(1, placements.Length);
+            Assert.AreEqual("myprogram_data.c", placements[0].Key);
+            var objs = placements[0].Value.OrderBy(k => k.Key).ToArray();
+            Assert.AreEqual(1, objs.Length);
+        }
+
+        [Test]
+        public void SegFp_segmented_global_placement()
+        {
+            Given_Executable(".text", Address.SegPtr(0x0010, 0x0000), 0x4000);
+            Given_Segment(".data", Address.SegPtr(0x0020, 0x0000), 0x4000);
+            Given_Data(Address.SegPtr(0x0020, 0010), "78 56 34 12");
+            Given_SegmentVariable(0x0020, 0010, PrimitiveType.Int32);
 
             var ofp = new SegmentFilePolicy(program);
             var placements = ofp.GetObjectPlacements(".c", listener).ToArray();

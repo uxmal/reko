@@ -51,7 +51,7 @@ namespace Reko.Core
         {
             var name = "v" + ids.Count;
             var tmp = new TemporaryStorage(name, ids.Count, dt);
-            var id = new Identifier(name, dt, tmp);
+            var id = Identifier.Create(tmp);
             ids.Add(id);
             return id;
         }
@@ -59,7 +59,7 @@ namespace Reko.Core
         public Identifier CreateTemporary(string name, DataType dt)
         {
             var tmp = new TemporaryStorage(name, ids.Count, dt);
-            var id = new Identifier(name, dt, tmp);
+            var id = Identifier.Create(tmp);
             ids.Add(id);
             return id;
         }
@@ -79,7 +79,7 @@ namespace Reko.Core
             if (grfs.TryGetValue(flagGroupBits, out var id))
                 return id;
             var grf = new FlagGroupStorage(flagRegister, flagGroupBits, name, dataType);
-            id = new Identifier(name, dataType, grf);
+            id = Identifier.Create(grf);
             grfs.Add(flagGroupBits, id);
             ids.Add(id);
             return id;
@@ -90,7 +90,7 @@ namespace Reko.Core
             if (this.fpus.TryGetValue(v, out var id))
                 return id;
             var fpu = new FpuStackStorage(v, dataType);
-            id = new Identifier(fpu.Name, fpu.DataType, fpu);
+            id = Identifier.Create(fpu);
             this.fpus.Add(v, id);
             ids.Add(id);
             return id;
@@ -115,7 +115,7 @@ namespace Reko.Core
         {
             if (regs.TryGetValue(reg, out var id))
                 return id;
-            id = new Identifier(reg.Name, reg.DataType, reg);
+            id = Identifier.Create(reg);
             regs.Add(reg, id);
             ids.Add(id);
             return id;
@@ -129,8 +129,8 @@ namespace Reko.Core
                 return idSeq;
             }
             var name = string.Join("_", elements.Select(e => e.Name));
-            var seq = new SequenceStorage(dataType, elements);
-            var id = new Identifier(name, dataType, seq);
+            var seq = new SequenceStorage(name, dataType, elements);
+            var id = Identifier.Create(seq);
             seqs.Add(seq.Elements, id);
             ids.Add(id);
             return id;
@@ -143,8 +143,8 @@ namespace Reko.Core
             {
                 return idSeq;
             }
-            var seq = new SequenceStorage(dataType, elements);
-            var id = new Identifier(name, dataType, seq);
+            var seq = new SequenceStorage(name, dataType, elements);
+            var id = Identifier.Create(seq);
             seqs.Add(seq.Elements, id);
             ids.Add(id);
             return id;

@@ -89,7 +89,7 @@
 85  pascal -ret16 _lopen(str word) _lopen16
 86  pascal -ret16 _lwrite(word ptr word) _lwrite16
 87  pascal -ret16 Reserved5(str str) KERNEL_lstrcmp16
-88  pascal   lstrcpy(segptr str) lstrcpy16
+88  pascal   lstrcpy(segstr str) lstrcpy16
 89  pascal   lstrcat(segstr str) lstrcat16
 90  pascal -ret16 lstrlen(str) lstrlen16
 91  pascal -register InitTask() InitTask16

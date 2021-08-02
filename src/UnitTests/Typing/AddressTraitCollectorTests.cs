@@ -163,7 +163,7 @@ namespace Reko.UnitTests.Typing
 			store = program.TypeStore;
 			handler = new TestTraitHandler(store);
 			eqb = new EquivalenceClassBuilder(factory, store, listener);
-			store.EnsureExpressionTypeVariable(factory, program.Globals);
+			store.EnsureExpressionTypeVariable(factory, 0, program.Globals);
 			
 			atrco = new AddressTraitCollector(factory, store, handler, program);
 			m = new ProcedureBuilder();

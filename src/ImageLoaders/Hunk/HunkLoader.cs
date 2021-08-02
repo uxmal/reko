@@ -28,6 +28,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Configuration;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.ImageLoaders.Hunk
 {
@@ -40,12 +41,14 @@ namespace Reko.ImageLoaders.Hunk
     public partial class HunkLoader : ImageLoader
     {
         private M68kArchitecture arch;
-        private TextHunk firstCodeHunk;
+        private TextHunk? firstCodeHunk;
         private HunkFile hunkFile;
 
         public HunkLoader(IServiceProvider services, string filename, byte[] imgRaw)
             : base(services, filename, imgRaw)
         {
+            this.arch = null!;
+            this.hunkFile = null!;
         }
 
         public HunkFile HunkFile { get { return hunkFile; } }
@@ -58,10 +61,11 @@ namespace Reko.ImageLoaders.Hunk
             set { throw new NotImplementedException(); }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
+            addrLoad ??= PreferredBaseAddress;
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            arch = (M68kArchitecture) cfgSvc.GetArchitecture("m68k");
+            arch = (M68kArchitecture) cfgSvc.GetArchitecture("m68k")!;
             var imgReader = new BeImageReader(RawImage, 0);
             var parse = new HunkFileParser(imgReader, false);
             this.hunkFile = parse.Parse();
@@ -83,7 +87,7 @@ namespace Reko.ImageLoaders.Hunk
         {
             bool inHeader = true;
             bool beginSeek = false;
-            List<Hunk> segment = null;
+            List<Hunk>? segment = null;
             var segments = this.hunkFile.segments;
             int hunk_no = 0;
             foreach (Hunk e in this.hunkFile.hunks)
@@ -103,8 +107,8 @@ namespace Reko.ImageLoaders.Hunk
                         if (this.hunkFile.overlay != null)
                         {
                             segments = new List<List<Hunk>>();
-                            this.hunkFile.overlay_segments.Add(segments);
-                            this.hunkFile.overlay_headers.Add((HeaderHunk) e);
+                            this.hunkFile.overlay_segments!.Add(segments);
+                            this.hunkFile.overlay_headers!.Add((HeaderHunk) e);
                         }
                         else
                         {
@@ -119,7 +123,7 @@ namespace Reko.ImageLoaders.Hunk
                     }
                     else if (hunk_type == HunkType.HUNK_DEBUG)
                     {
-                        segment.Add(e);
+                        segment!.Add(e);
                     }
                     else
                         throw new BadImageFormatException(string.Format("Expected header in loadseg: {0}. {1}/{1:X}", e.HunkType, (int) hunk_type));
@@ -133,7 +137,7 @@ namespace Reko.ImageLoaders.Hunk
                         segments.Add(segment);
                         beginSeek = false;
                         e.hunk_no = hunk_no;
-                        e.alloc_size = this.hunkFile.header.HunkInfos[hunk_no].Size;
+                        e.alloc_size = this.hunkFile.header!.HunkInfos![hunk_no].Size;
                         hunk_no += 1;
                     }
                     else if (hunk_type == HunkType.HUNK_OVERLAY)
@@ -161,7 +165,7 @@ namespace Reko.ImageLoaders.Hunk
                     {
                     }
                     else
-                        throw new BadImageFormatException(string.Format("Expected hunk start in loadseg: {0) {1}/{1:X}", e.HunkType, (int) hunk_type));
+                        throw new BadImageFormatException(string.Format("Expected hunk start in loadseg: {0} {1}/{1:X}", e.HunkType, (int) hunk_type));
                 }
                 else
                 {
@@ -173,7 +177,7 @@ namespace Reko.ImageLoaders.Hunk
                     else if (loadseg_valid_extra_hunks.Contains(hunk_type))
                     {
                         // contents of hunk
-                        segment.Add(e);
+                        segment!.Add(e);
                     }
                     else if (loadseg_valid_begin_hunks.Contains(hunk_type))
                     {
@@ -182,7 +186,7 @@ namespace Reko.ImageLoaders.Hunk
                         segments.Add(segment);
                         beginSeek = false;
                         e.hunk_no = hunk_no;
-                        e.alloc_size = this.hunkFile.header.HunkInfos[hunk_no].Size;
+                        e.alloc_size = this.hunkFile.header!.HunkInfos![hunk_no].Size;
                         ++hunk_no;
                     }
                     else
@@ -215,9 +219,9 @@ namespace Reko.ImageLoaders.Hunk
         {
             var force_unit = true;
             var in_hunk = false;
-            string name = null;
-            List<Hunk> segment = null;
-            Unit unit = null;
+            string? name = null;
+            List<Hunk>? segment = null;
+            Unit? unit = null;
             this.hunkFile.units = new List<Unit>();
             var unit_no = 0;
             int hunk_no = 0;
@@ -254,7 +258,7 @@ namespace Reko.ImageLoaders.Hunk
                         segment = new List<Hunk> {
                             e
                         };
-                        unit.segments.Add(segment);
+                        unit!.segments!.Add(segment);
                         // give main block the NAME
                         if (name != null)
                         {
@@ -282,7 +286,7 @@ namespace Reko.ImageLoaders.Hunk
                     else if (HunkLoader.unit_valid_extra_hunks.Contains(hunk_type))
                     {
                         // contents of hunk
-                        segment.Add(e);
+                        segment!.Add(e);
                     }
                     // unexpected hunk?!
                     else
@@ -326,8 +330,8 @@ namespace Reko.ImageLoaders.Hunk
             var seek_main = false;
             int hunk_no = -1;
             uint lib_file_offset = ~0u;
-            List<List<Hunk>> segment_list = null;
-            List<Hunk> segment = null;
+            List<List<Hunk>>? segment_list = null;
+            List<Hunk>? segment = null;
             foreach (var e in this.hunkFile.hunks)
             {
                 var hunk_type = e.HunkType;
@@ -355,7 +359,7 @@ namespace Reko.ImageLoaders.Hunk
                         seek_main = false;
                         seek_lib = true;
                         var lib_units = new List<LibUnit>();
-                        if (!this.resolve_index_hunks((IndexHunk) e, segment_list, lib_units))
+                        if (!this.resolve_index_hunks((IndexHunk) e, segment_list!, lib_units))
                             throw new BadImageFormatException("Error resolving index hunks.");
                         var lib = new Lib
                         {
@@ -371,7 +375,7 @@ namespace Reko.ImageLoaders.Hunk
                         segment = new List<Hunk> { e };
                         e.hunk_no = hunk_no;
                         ++hunk_no;
-                        segment_list.Add(segment);
+                        segment_list!.Add(segment);
                         seek_main = false;
                         // calculate relative lib address
                         var hunk_lib_offset = e.FileOffset - lib_file_offset;
@@ -390,7 +394,7 @@ namespace Reko.ImageLoaders.Hunk
                     }
                     else if (unit_valid_extra_hunks.Contains(hunk_type))
                     {
-                        segment.Add(e);
+                        segment!.Add(e);
                     }
                     else
                         throw new BadImageFormatException(string.Format("Unexpected hunk in lib: {0} {1}/{1:X}.", e.HunkType, (int) hunk_type));
@@ -404,7 +408,7 @@ namespace Reko.ImageLoaders.Hunk
             var units = index.units;
             var no = 0;
             bool found = false;
-            foreach (var unit in units)
+            foreach (var unit in units!)
             {
                 var unit_segments = new List<List<Hunk>>();
                 var lib_unit = new LibUnit
@@ -426,7 +430,7 @@ namespace Reko.ImageLoaders.Hunk
                     if (lib_off == hunk_offset)
                     {
                         // found segment
-                        int num_segs = unit.hunk_infos.Count;
+                        int num_segs = unit.hunk_infos!.Count;
                         for (var i = 0; i < num_segs; ++i)
                         {
                             var info = unit.hunk_infos[i];
@@ -524,7 +528,7 @@ namespace Reko.ImageLoaders.Hunk
             return this.get_struct_summary(this.hunkFile.segments);
         }
 
-        public virtual object get_overlay_segment_summary()
+        public virtual object? get_overlay_segment_summary()
         {
             if (this.hunkFile.overlay_segments != null)
             {
@@ -536,7 +540,7 @@ namespace Reko.ImageLoaders.Hunk
             }
         }
 
-        public virtual object get_libs_summary()
+        public virtual object? get_libs_summary()
         {
             if (this.hunkFile.libs != null)
             {
@@ -548,7 +552,7 @@ namespace Reko.ImageLoaders.Hunk
             }
         }
 
-        public virtual object get_units_summary()
+        public virtual object? get_units_summary()
         {
             if (this.hunkFile.units != null)
             {

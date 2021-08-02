@@ -48,9 +48,10 @@ namespace Reko.Arch.Blackfin
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override BlackfinInstruction DisassembleInstruction()
+        public override BlackfinInstruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadLeUInt16(out ushort uInstr))

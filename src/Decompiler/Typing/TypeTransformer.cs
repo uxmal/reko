@@ -270,7 +270,7 @@ namespace Reko.Typing
 			if (writer == null)
 				return;
 			writer.WriteLine("// Store dump: iteration {0} ///////////////////////");
-			store.Write(writer);
+			store.Write(false, writer);
 			writer.WriteLine();
 			writer.Flush();
 		}

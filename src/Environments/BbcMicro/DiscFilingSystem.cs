@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Archives;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
@@ -132,9 +133,8 @@ namespace Reko.Environments.BbcMicro
                 var bDir = rdr.ReadByte();
                 var dir = (char) bDir & 0x7F;
                 var locked = (bDir & 0x80) != 0;
-                var de = new DFSEntry
+                var de = new DFSEntry(fname)
                 {
-                    Name = fname
                 };
                 entries[i] = de;
             }
@@ -165,6 +165,13 @@ namespace Reko.Environments.BbcMicro
 
     public class DFSEntry : ArchiveDirectoryEntry
     {
+        public DFSEntry(string name)
+        {
+            this.Name = name;
+            this.LoadAddress = null!;
+            this.ExecAddress = null!;
+        }
+
         public Address LoadAddress { get; set; }
         public Address ExecAddress { get; set; }
         public uint Length { get; set; }

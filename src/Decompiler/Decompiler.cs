@@ -20,9 +20,9 @@
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Assemblers;
-using Reko.Core.Configuration;
 using Reko.Core.Lib;
 using Reko.Core.Output;
+using Reko.Core.Scripts;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -201,6 +201,7 @@ namespace Reko
             BuildImageMaps();
             WriteEntryPoints();
             eventListener.ShowStatus("Source program loaded.");
+            Project.FireScriptEvent(ScriptEvent.OnProgramLoaded);
             return true;
         }
 
@@ -319,96 +320,66 @@ namespace Reko
         }
 
         public void ExtractResources(Program program)
-        {
+        { 
             var prg = program.Resources;
-            if (prg == null)
+            if (prg.Count == 0)
                 return;
             var fsSvc = services.RequireService<IFileSystemService>();
             var resourceDir = program.ResourcesDirectory;
-            if (prg.Name == "PE resources")
+            try
             {
-                try
-                {
-                    fsSvc.CreateDirectory(resourceDir);
-                }
-                catch (Exception ex)
-                {
-                    eventListener.Error(ex, $"Unable to create directory '{resourceDir}'.");
-                    return;
-                }
-                foreach (ProgramResourceGroup pr in prg.Resources)
-                {
-                    switch (pr.Name)
-                    {
-                    case "CURSOR":
-                        {
-                            if (!WriteResourceFile(fsSvc, resourceDir, "Cursor", ".cur", pr))
-                                return;
-                        }
-                        break;
-                    case "BITMAP":
-                        {
-                            if (!WriteResourceFile(fsSvc, resourceDir, "Bitmap", ".bmp", pr))
-                                return;
-                        }
-                        break;
-                    case "ICON":
-                        {
-                            if (!WriteResourceFile(fsSvc, resourceDir, "Icon", ".ico", pr))
-                                return;
-                        }
-                        break;
-                    case "FONT":
-                        {
-                            if (!WriteResourceFile(fsSvc, resourceDir, "Font", ".bin", pr))
-                                return;
-                        }
-                        break;
-                    case "NEWBITMAP":
-                        {
-                            if (!WriteResourceFile(fsSvc, resourceDir, "NewBitmap", ".bmp", pr))
-                                return;
-                        }
-                        break;
-
-                    default:
-                        break;
-                    }
-                }
+                fsSvc.CreateDirectory(resourceDir);
+            }
+            catch (Exception ex)
+            {
+                eventListener.Error(ex, $"Unable to create directory '{resourceDir}'.");
+                return;
+            }
+            foreach (var resource in program.Resources)
+            {
+                WriteResource(resource, fsSvc, resourceDir, "", null!);
             }
         }
 
-        private bool WriteResourceFile(IFileSystemService fsSvc, string outputDir, string ResourceType, string ext, ProgramResourceGroup pr)
+        private bool WriteResource(ProgramResource? resource, IFileSystemService fsSvc, string outputDir, string ResourceType, ProgramResourceGroup pr)
         {
-            var dirPath = Path.Combine(outputDir, ResourceType);
-            try
+            if (resource is ProgramResourceGroup grp)
             {
-                fsSvc.CreateDirectory(dirPath);
-            }
-            catch (Exception ex)
-            {
-                eventListener.Error(ex, $"Unable to create directory '{dirPath}'.");
-                return false;
-            }
-            string path = "";
-            try
-            {
-                foreach (ProgramResourceGroup pr1 in pr.Resources)
+                outputDir = Path.Combine(outputDir, grp.Name);
+                try
                 {
-                    foreach (ProgramResourceInstance pr2 in pr1.Resources)
+                    fsSvc.CreateDirectory(outputDir);
+                }
+                catch (Exception ex)
+                {
+                    eventListener.Error(ex, $"Unable to create directory '{outputDir}'.");
+                    return false;
+                }
+                foreach (var res in grp.Resources)
+                {
+                    if (!WriteResource(res, fsSvc, outputDir, "", null!))
+                        return false;
+                }
+                return true;
+            }
+            else if (resource is ProgramResourceInstance pr2)
+            {
+                string path = "";
+                try
+                {
+                    if (pr2.Bytes != null)
                     {
-                        if (pr2.Bytes != null)
-                        {
-                            path = Path.Combine(dirPath, pr1.Name + ext);
-                            fsSvc.WriteAllBytes(path, pr2.Bytes);
-                        }
+                        var filename = $"{pr2.Type}_{pr2.Name}{pr2.FileExtension}";
+                        path = Path.Combine(outputDir, filename);
+                        fsSvc.WriteAllBytes(path, pr2.Bytes);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                eventListener.Error(ex, $"Unable to write file '{path}'");
-                return false;
+                catch (Exception ex)
+                {
+                    eventListener.Error(ex, $"Unable to write file '{path}'.");
+                    return false;
+                }
+                return true;
             }
             return true;
         }
@@ -523,7 +494,7 @@ namespace Reko
         public void WriteDecompiledTypes(Program program, string headerFilename, TextWriter w)
         {
             WriteHeaderComment(headerFilename, program, w);
-            w.WriteLine("/*"); program.TypeStore.Write(w); w.WriteLine("*/");
+            w.WriteLine("/*"); program.TypeStore.Write(true, w); w.WriteLine("*/");
             var tf = new TextFormatter(w)
             {
                 Indentation = 0,
@@ -571,12 +542,13 @@ namespace Reko
 		{
 			if (Project is null || Project.Programs.Count == 0)
 				throw new InvalidOperationException("Programs must be loaded first.");
-
+            Project.FireScriptEvent(ScriptEvent.OnProgramDecompiling);
             foreach (Program program in Project.Programs)
             {
                 ScanProgram(program);
             }
-		}
+            Project.FireScriptEvent(ScriptEvent.OnProgramScanned);
+        }
 
         private void ScanProgram(Program program)
         {
@@ -627,6 +599,7 @@ namespace Reko
         {
             return new Scanner(
                 program,
+                project!.LoadedMetadata,
                 new DynamicLinker(project!, program, eventListener),
                 services);
         }
@@ -662,9 +635,10 @@ namespace Reko
                             "An error occurred while rewriting procedure to high-level language.");
                     }
                 }
-                WriteDecompilerProducts();
             }
-			eventListener.ShowStatus("Rewriting complete.");
+            project.FireScriptEvent(ScriptEvent.OnProgramDecompiled);
+            WriteDecompilerProducts();
+            eventListener.ShowStatus("Rewriting complete.");
 		}
 
 		public void WriteDecompilerProducts()

@@ -76,7 +76,7 @@ namespace Reko.Core.CLanguage
             CTokenType.Char, CTokenType.Wchar_t, CTokenType.Short, CTokenType.Int, 
             CTokenType.__Int64, CTokenType.Long,CTokenType.Double, CTokenType.Float,
             CTokenType.Signed, CTokenType.Unsigned,CTokenType.Struct, CTokenType.Union,
-            CTokenType.Enum, CTokenType._Far, CTokenType._Near,
+            CTokenType.Enum, CTokenType._Huge, CTokenType._Far, CTokenType._Huge, CTokenType._Near,
             CTokenType.__Unaligned, CTokenType.__Inline);
         static readonly BitArray startOfDeclarator = NewBitArray(
             CTokenType.Star, CTokenType.Ampersand, CTokenType.LParen, CTokenType.LBracket,
@@ -231,7 +231,8 @@ namespace Reko.Core.CLanguage
                    x.Type == CTokenType.__Ptr64 ||
                    x.Type == CTokenType.__Fastcall || x.Type == CTokenType.__Stdcall ||
                    x.Type == CTokenType.__Thiscall || x.Type == CTokenType.__Cdecl ||
-                   x.Type == CTokenType.__Pascal || x.Type == CTokenType._Far ||
+                   x.Type == CTokenType.__Pascal ||
+                   x.Type == CTokenType._Far || x.Type == CTokenType._Huge ||
                    x.Type == CTokenType._Near || x.Type == CTokenType.__Unaligned)
             {
                 x = lexer.Peek(++i);
@@ -570,6 +571,7 @@ IGNORE tab + cr + lf
             case CTokenType.Auto:
             case CTokenType.Register:
             case CTokenType.__Cdecl:
+            case CTokenType.__Fastcall:
             case CTokenType.__ForceInline:
             case CTokenType.__Inline:
             case CTokenType.__LoadDs:
@@ -583,6 +585,7 @@ IGNORE tab + cr + lf
             case CTokenType.__Ptr64:
             case CTokenType._Atomic:
             case CTokenType._Far:
+            case CTokenType._Huge:
             case CTokenType._Near:
             case CTokenType.__Unaligned:
                 return grammar.TypeQualifier(lexer.Read().Type);
@@ -764,6 +767,7 @@ IGNORE tab + cr + lf
             case CTokenType.RBrace:
             case CTokenType._Atomic:
             case CTokenType._Far:
+            case CTokenType._Huge:
             case CTokenType._Near:
             case CTokenType.__Unaligned:
                 return null;
@@ -881,8 +885,9 @@ IGNORE tab + cr + lf
                 return Parse_Pointer();
             case CTokenType.Ampersand:
                 return Parse_Reference();
-            case CTokenType._Near:
             case CTokenType._Far:
+            case CTokenType._Huge:
+            case CTokenType._Near:
             case CTokenType.__Unaligned:
             case CTokenType.Const:
             case CTokenType.Volatile:
@@ -896,10 +901,11 @@ IGNORE tab + cr + lf
                     ptr.TypeQualifierList.Add(tq);
                 }
                 break;
-            case CTokenType.__Stdcall:
-            case CTokenType.__Pascal:
-            case CTokenType.__Thiscall:
             case CTokenType.__Cdecl:
+            case CTokenType.__Fastcall:
+            case CTokenType.__Pascal:
+            case CTokenType.__Stdcall:
+            case CTokenType.__Thiscall:
                 lexer.Read();
                 decl = Parse_Declarator();
                 return grammar.CallConventionDeclarator(token, decl);

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -46,10 +46,10 @@ namespace Reko.Environments.Windows
             this.i = 0;
         }
 
-        public string Modifier { get; set; }
-        public string Scope { get; set; }
+        public string? Modifier { get; set; }
+        public string? Scope { get; set; }
 
-        public Tuple<string, SerializedType, SerializedType> Parse()
+        public (string?, SerializedType?, SerializedType?) Parse()
         {
             //$HACK: names with two leading @@ are special, so we treat them specially.
             // There is no indication of what signature such a function has, 
@@ -57,11 +57,11 @@ namespace Reko.Environments.Windows
             if (s.StartsWith("@@"))
             {
                 var sig = new SerializedSignature();
-                return new Tuple<string, SerializedType, SerializedType>(s, sig, null);
+                return (s, sig, null);
             }
             var qname = ParseName();
             if (qname == null)
-                return null;
+                return (null, null, null);
             if (i >= s.Length)
             {
                 // Vtable.
@@ -74,24 +74,24 @@ namespace Reko.Environments.Windows
             throw new NotImplementedException();
         }
 
-        private Tuple<string, SerializedType, SerializedType> ParseArguments(List<string> qname)
+        private (string?, SerializedType?, SerializedType?) ParseArguments(List<string> qname)
         {
             const char cBackReference = 't';
 
             if (!Expect('$'))
-                return null;
+                return (null, null, null);
             if (s[i] == 'b')
             {
                 ++i;
                 // Special function
                 var fnName = ParseSpecialFnName(qname.Last());
                 if (fnName == null)
-                    return null;
+                    return (null, null, null);
                 qname.Add(fnName);
             }
             if (!Expect('q'))
             {
-                return null;
+                return (null, null, null);
             }
 
             var args = new List<Argument_v1>();
@@ -102,7 +102,7 @@ namespace Reko.Environments.Windows
                 {
                     // Back reference to a previous arg.
                     if (i >= s.Length - 1)
-                        return null;
+                        return (null, null, null);
                     char c = s[i + 1];
                     if ('1' <= c && c <= '9')
                     {
@@ -115,7 +115,7 @@ namespace Reko.Environments.Windows
                 {
                     var argType = ParseArgumentType(domain);
                     if (argType == null)
-                        return null;
+                        return (null, null, null);
                     args.Add(new Argument_v1 { Type = argType, });
                 }
             }
@@ -123,7 +123,7 @@ namespace Reko.Environments.Windows
             {
                 args.Clear();
             }
-            return new Tuple<string,SerializedType,SerializedType>(
+            return (
                 string.Join("::", qname),
                 new SerializedSignature
                 {
@@ -182,14 +182,13 @@ namespace Reko.Environments.Windows
             { "dla", "operator delete []" },
         };
 
-        private string ParseSpecialFnName(string className)
+        private string? ParseSpecialFnName(string className)
         {
             int iStart = i;
             i = s.IndexOf('$', iStart);
             if (i < 0 || i == iStart)
                 return null;
-            string specialName;
-            if (!specialFnNames.TryGetValue(s.Substring(iStart, i - iStart), out specialName))
+            if (!specialFnNames.TryGetValue(s.Substring(iStart, i - iStart), out string specialName))
                 return null;
 
             ++i;    // skip by terminating '$'.
@@ -206,6 +205,9 @@ namespace Reko.Environments.Windows
         const char cLongDouble = 'g';
         const char cEllipsis = 'e';
 
+        const char cNearPtr = 'p';
+        const char cNearRef = 'r';
+
         const char cFarPtr = 'n';
         const char cFarRef = 'm';
 
@@ -213,12 +215,12 @@ namespace Reko.Environments.Windows
         const char cUnsigned = 'u';
         const char cSigned = 'z';
 
-        private SerializedType ParseArgumentType(Domain domain)
+        private SerializedType? ParseArgumentType(Domain domain)
         {
             var charDomain = Domain.Character;
             while (i < s.Length)
             {
-                SerializedType type;
+                SerializedType? type;
                 switch (s[i++])
                 {
                 case cVoid: return new VoidType_v1();
@@ -226,6 +228,16 @@ namespace Reko.Environments.Windows
                 case cShort: return new PrimitiveType_v1 { ByteSize = 2, Domain = domain };
                 case cInt: return new PrimitiveType_v1 { ByteSize = 2, Domain = domain };
                 case cLong: return new PrimitiveType_v1 { ByteSize = 4, Domain = domain };
+                case cNearPtr:
+                    type = ParseArgumentType(domain);
+                    if (type == null)
+                        return null;
+                    return new PointerType_v1 { PointerSize = 2, DataType = type };
+                case cNearRef:
+                    type = ParseArgumentType(domain);
+                    if (type == null)
+                        return null;
+                    return new ReferenceType_v1 { Size = 2, Referent = type };
                 case cFarPtr:
                     type = ParseArgumentType(domain);
                     if (type == null)
@@ -255,7 +267,7 @@ namespace Reko.Environments.Windows
             return null;
         }
 
-        private List<string> ParseName()
+        private List<string>? ParseName()
         {
             var names = new List<string>();
             if (!Expect('@'))
@@ -288,7 +300,7 @@ namespace Reko.Environments.Windows
             return names;
         }
 
-        private TypeReference_v1 ParseEnumClassName()
+        private TypeReference_v1? ParseEnumClassName()
         {
             var len = ParseLength();
             if (!len.HasValue)

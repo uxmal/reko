@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -74,7 +74,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                 return bits;
             }
         }
-        private PICRegisterAccessMasks bits;
+        private PICRegisterAccessMasks? bits;
 
         public uint ActualValue
         {

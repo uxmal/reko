@@ -304,6 +304,13 @@ namespace Reko.Core.Configuration
                 return cfg;
             }
 
+        /// <summary>
+        /// Converts a number, which is expressed as a string, to a numeric value.
+        /// </summary>
+        /// <param name="sNumber">Number, expressed as a string, with an optional prefix
+        /// to represent different bases</param>
+        /// <returns>The converted number, or 0 of the string couldn't be interpreted as a 
+        /// number.</returns>
         private long ConvertNumber(string? sNumber)
         {
             if (string.IsNullOrEmpty(sNumber))

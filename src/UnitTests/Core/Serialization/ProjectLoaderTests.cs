@@ -21,22 +21,20 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
-using Reko.Core.Code;
-using Reko.Core.Lib;
+using Reko.Core.CLanguage;
+using Reko.Core.Configuration;
+using Reko.Core.Scripts;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections;
-using System.ComponentModel.Design;
-using System.Xml;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.Design;
 using System.IO;
-using Reko.Core.Configuration;
-using Reko.Core.CLanguage;
 using System.Linq;
+using System.Text;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -89,6 +87,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             this.oe = new Mock<PlatformDefinition>();
             this.platform = new Mock<IPlatform>();
+            this.platform.Setup(a => a.Name).Returns("testOS");
             this.cfgSvc.Setup(c => c.GetEnvironment("testOS")).Returns(oe.Object);
             oe.Setup(e => e.Load(sc, It.IsAny<IProcessorArchitecture>())).Returns(platform.Object);
             this.platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
@@ -108,33 +107,6 @@ namespace Reko.UnitTests.Core.Serialization
             sc.AddService<ITypeLibraryLoaderService>(this.tlSvc.Object);
         }
 
-        [Test(Description = "If the project file just has a single metadata file, we don't know what the platform is; so ask the user.")]
-        public void Prld_LoadMetadata_NoPlatform_ShouldQuery()
-        {
-            var ldr = new Mock<ILoader>();
-            var oracle = new Mock<IOracleService>();
-            var platform = mockFactory.CreateMockPlatform();
-            var typeLib = new TypeLibrary();
-            ldr.Setup(l => l.LoadMetadata(It.IsNotNull<string>(), platform.Object, It.IsNotNull<TypeLibrary>()))
-                .Returns(typeLib);
-            oracle.Setup(o => o.QueryPlatform(It.IsNotNull<string>())).Returns(platform.Object).Verifiable();
-            sc.AddService<IOracleService>(oracle.Object);
-
-            var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            prld.LoadProject(
-                "project.dcproj",
-                new Project_v2
-                {
-                    Inputs = {
-                        new MetadataFile_v2 {
-                            Filename = "foo",
-                        }
-                    }
-                });
-
-            oracle.VerifyAll();
-        }
-
         private void Given_Binary(Mock<ILoader> ldr, IPlatform platform)
         {
             ldr.Setup(l => l.LoadImageBytes(
@@ -150,6 +122,22 @@ namespace Reko.UnitTests.Core.Serialization
                 });
         }
 
+        private void Given_Script(Mock<ILoader> ldr, string fileName)
+        {
+            var scriptFile = new Mock<ScriptFile>(
+                null, fileName, new byte[100]);
+            ldr.Setup(l => l.LoadScript(fileName))
+                .Returns(scriptFile.Object);
+        }
+
+        private void Expect_Arch_ParseAddress(string sExp, Address result)
+        {
+            arch.Setup(a => a.TryParseAddress(
+                sExp,
+                out result))
+                .Returns(true);
+        }
+
         public class TestPlatform : Platform
         {
             public Dictionary<string, object> Test_Options;
@@ -161,11 +149,6 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                     throw new NotImplementedException();
                 }
-            }
-
-            public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-            {
-                throw new NotImplementedException();
             }
 
             public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
@@ -318,7 +301,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v4
                     {
@@ -350,7 +333,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v4
                     {
@@ -360,6 +343,8 @@ namespace Reko.UnitTests.Core.Serialization
                             LoadAddress = "00123400"
                         }
                     },
+                },
+                MetadataFiles = {
                     new MetadataFile_v3 {
                         Filename = "meta1.xml",
                     },
@@ -426,76 +411,44 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
-        public void Prld_v2()
+        public void Prld_LoadScripts()
         {
-            var sExp =
+            var xml =
 @"<?xml version=""1.0"" encoding=""utf-8""?>
-<project xmlns=""http://schemata.jklnet.org/Decompiler/v2"">
-  <input>
-     <filename>/foo/foo</filename>
-  </input>
+<project xmlns=""http://schemata.jklnet.org/Reko/v5"">
+  <arch>testArch</arch>
+  <platform>testOS</platform>
+  <script>
+    <filename>fake.script</filename>
+  </script>
 </project>";
             var ldr = new Mock<ILoader>();
-            var platform = new TestPlatform(sc);
-            Given_Binary(ldr, platform);
-            Given_TypeLibraryLoaderService();
-            cfgSvc.Setup(c => c.GetEnvironment("testOS")).Returns(new PlatformDefinition
-            {
-
-            });
-
-            var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            var project = prld.LoadProject("/foo/bar", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
-
-            Assert.AreEqual(1, project.Programs.Count);
-        }
-
-        [Test(Description = "Failure to load v3 project file")]
-        public void Prld_issue_299()
-        {
-            var sExp =
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<project xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://schemata.jklnet.org/Reko/v3"">
-  <input>
-    <filename>switch.dll</filename>
-    <disassembly>switch.asm</disassembly>
-    <intermediate-code>switch.dis</intermediate-code>
-    <output>switch.c</output>
-    <types-file>switch.h</types-file>
-    <global-vars>switch.globals.c</global-vars>
-    <user>
-      <procedure name=""get"">
-        <address>10071000</address>
-        <CSignature>char * get(unsigned int n)</CSignature>
-      </procedure>
-      <heuristic name=""shingle"" />
-    </user>
-  </input>
-</project>
-";
-            var ldr = new Mock<ILoader>();
-            var platform = new TestPlatform(sc);
             Given_TestArch();
             Given_TestOS();
-            Given_Binary(ldr, platform);
-            Given_TypeLibraryLoaderService();
-            oe.Setup(o => o.TypeLibraries).Returns(new List<TypeLibraryDefinition>());
-            oe.Setup(o => o.CharacteristicsLibraries).Returns(new List<TypeLibraryDefinition>());
+            Given_Script(ldr, AbsolutePathEndingWith("dir", "fake.script"));
 
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            var project = prld.LoadProject("/foo/bar", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
+            var project = prld.LoadProject(
+                AbsolutePathEndingWith("dir", "script.proj"), stream);
 
-            Assert.AreEqual(1, project.Programs.Count);
+            Assert.AreEqual(
+                AbsolutePathEndingWith("dir", "fake.script"),
+                project.ScriptFiles.Single().Filename);
         }
-       
+
         [Test]
         public void Prld_LoadGlobalUserData()
         {
+            Given_TestArch();
+            Given_TestOS();
+            Expect_Arch_ParseAddress("10000010", Address.Ptr32(0x10000010));
+
             var sproject = new Project_v4
             {
-                ArchitectureName = "testArch",
-                PlatformName = "testOS",
-                Inputs =
+                ArchitectureName = arch.Object.Name,
+                PlatformName = platform.Object.Name,
+                InputFiles =
                 {
                     new DecompilerInput_v4
                     {
@@ -520,12 +473,9 @@ namespace Reko.UnitTests.Core.Serialization
                             }
                         }
                     },
-                   
                 }
             };
             var ldr = mockFactory.CreateLoader();
-            Given_TestArch();
-            Given_TestOS();
 
             var prld = new ProjectLoader(sc, ldr, listener.Object);
             var project = prld.LoadProject(
@@ -535,7 +485,7 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual(1, project.Programs.Count);
             Assert.AreEqual(1, project.Programs[0].User.Globals.Count);
             var globalVariable = project.Programs[0].User.Globals.Values[0];
-            Assert.AreEqual("10000010", globalVariable.Address);
+            Assert.AreEqual("10000010", globalVariable.Address.ToString());
             Assert.AreEqual("testVar", globalVariable.Name);
             Assert.AreEqual("arr(Blob,10)", globalVariable.DataType.ToString());
         }
@@ -547,7 +497,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v4
                     {
@@ -594,7 +544,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v4
                     {
@@ -638,13 +588,13 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v4
                     {
                         User = new UserData_v4
                         {
-                             ExtractResources= true
+                            ExtractResources = true
                         }
                     }
                 }
@@ -667,7 +617,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v4
                     {
@@ -725,7 +675,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v5
                     {

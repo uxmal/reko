@@ -37,10 +37,10 @@ namespace Reko.Environments.SysV.ArchSpecific
         public M68kCallingConvention(IProcessorArchitecture arch)
         {
             this.arch = arch;
-            this.d0 = arch.GetRegister("d0");
+            this.d0 = arch.GetRegister("d0")!;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(4, 4);
             if (dtRet != null)

@@ -166,7 +166,7 @@ namespace Reko.UnitTests.Typing
                 fut.TextWriter.WriteLine();
             }
 
-            program.TypeStore.Write(fut.TextWriter);
+            program.TypeStore.Write(false, fut.TextWriter);
             fut.AssertFilesEqual();
         }
 

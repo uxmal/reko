@@ -32,16 +32,14 @@ void deregister_tm_clones()
 // Preserved: sp
 deregister_tm_clones_entry:
 l00000670:
-	branch Mem0[0x10AA4<32>:word32] == 0x10A84<32> l00000670_ds_t
-l00000670_ds_t:
-l00000670_ds_f:
+	branch Mem0[0x10AA4<32>:word32] == 0x10A84<32> l0000068C_ds_t
+l0000068C_ds_t:
+l0000068C_ds_f:
 	word32 r25_12 = Mem0[0x10AE4<32>:word32]
 l00000690:
-	branch r25_12 == 0<32> l00000690_ds_t
-l00000690_ds_t:
+	branch r25_12 == 0<32> l000006A0
 l000006A0:
 	return
-l00000690_ds_f:
 l00000698:
 	call r25_12 (retsize: 0;)
 	return
@@ -60,16 +58,14 @@ void register_tm_clones()
 register_tm_clones_entry:
 l000006A8:
 	word32 r5_12 = Mem0[0x10AA4<32>:word32] - 0x10A84<32> >> 2<8>
-	branch (r5_12 >>u 0x1F<8>) + r5_12 >> 1<8> == 0<32> l000006A8_ds_t
-l000006A8_ds_t:
-l000006A8_ds_f:
+	branch (r5_12 >>u 0x1F<8>) + r5_12 >> 1<8> == 0<32> l000006D8_ds_t
+l000006D8_ds_t:
+l000006D8_ds_f:
 	word32 r25_17 = Mem0[0x10AD4<32>:word32]
 l000006DC:
-	branch r25_17 == 0<32> l000006DC_ds_t
-l000006DC_ds_t:
+	branch r25_17 == 0<32> l000006EC
 l000006EC:
 	return
-l000006DC_ds_f:
 l000006E4:
 	call r25_17 (retsize: 0;)
 	return
@@ -85,13 +81,13 @@ void __do_global_dtors_aux()
 // Preserved: r16 r17 r18 r19 ra sp
 __do_global_dtors_aux_entry:
 l000006F4:
-	branch CONVERT(Mem19[0x10AF0<32>:byte], byte, word32) != 0<32> l000006F4_ds_t
-l000006F4_ds_t:
-l000006F4_ds_f:
+	branch CONVERT(Mem19[0x10AF0<32>:byte], byte, word32) != 0<32> l00000728_ds_t
+l00000728_ds_t:
+l00000728_ds_f:
 l0000072C:
-	branch __cxa_finalize == 0<32> l0000072C_ds_t
-l0000072C_ds_t:
-l0000072C_ds_f:
+	branch __cxa_finalize == 0<32> l00000730_ds_t
+l00000730_ds_t:
+l00000730_ds_f:
 	word32 r2_24 = Mem19[0x10AAC<32>:word32]
 l00000734:
 	word32 r25_27
@@ -102,9 +98,9 @@ l00000734:
 l00000744:
 	word32 r2_40 = Mem19[0x10AF4<32>:word32]
 	word32 r16_42 = (Mem19[0x10AB0<32>:word32] - 0x10A68<32> >> 2<8>) + -1<i32>
-	branch CONVERT(r2_40 <u r16_42, bool, word32) == 0<32> l00000744_ds_t
-l00000744_ds_t:
-l00000744_ds_f:
+	branch CONVERT(r2_40 <u r16_42, bool, word32) == 0<32> l00000770_ds_t
+l00000770_ds_t:
+l00000770_ds_f:
 l00000774:
 	word32 r2_47 = r2_40 + 1<i32>
 	Mem50[0x10AF4<32>:word32] = r2_47
@@ -114,9 +110,9 @@ l00000774:
 		uses: r2:r2_52,r3:r2_47 << 2<8>,r4:r4_60
 		defs: r4:r4_60
 	r2_40 = Mem50[0x10AF4<32>:word32]
-	branch CONVERT(r2_40 <u r16_42, bool, word32) != 0<32> l00000774_ds_t
-l00000774_ds_t:
-l00000774_ds_f:
+	branch CONVERT(r2_40 <u r16_42, bool, word32) != 0<32> l0000079C_ds_t
+l0000079C_ds_t:
+l0000079C_ds_f:
 l000007A0:
 l000007A4:
 	deregister_tm_clones()
@@ -175,18 +171,18 @@ l000008C0:
 	_init()
 	word32 r16_35 = Mem30[0x10ABC<32>:word32]
 	word32 r18_37 = Mem30[0x10ABC<32>:word32] - r16_35
-	branch r18_37 >> 2<8> == 0<32> l000008C0_ds_t
-l000008C0_ds_t:
-l000008C0_ds_f:
+	branch r18_37 >> 2<8> == 0<32> l0000091C_ds_t
+l0000091C_ds_t:
+l0000091C_ds_f:
 	word32 r17_40 = 0<32>
 l00000920:
 	call Mem30[r16_35:word32] (retsize: 0;)
 		uses: r4:r4,r5:r5,r6:r6
 	r17_40 = r17_40 + 1<i32>
-	branch r18_37 >> 2<8> != r17_40 l00000920_ds_t
-l00000920_ds_t:
+	branch r18_37 >> 2<8> != r17_40 l0000093C_ds_t
+l0000093C_ds_t:
 	r16_35 = r16_35 + 4<i32>
-l00000920_ds_f:
+l0000093C_ds_f:
 l00000940:
 	return
 __libc_csu_init_exit:
@@ -215,18 +211,16 @@ void __do_global_ctors_aux()
 __do_global_ctors_aux_entry:
 l00000970:
 	word32 r25_18 = Mem17[0x10A60<32>:word32]
-	branch r25_18 == -1<i32> l00000970_ds_t
-l00000970_ds_t:
-l00000970_ds_f:
+	branch r25_18 == -1<i32> l000009A0_ds_t
+l000009A0_ds_t:
+l000009A0_ds_f:
 l000009A4:
 	word32 r16_21 = 0x10A60<32>
 l000009A8:
 	call r25_18 (retsize: 0;)
 	r16_21 = r16_21 + -4<i32>
 	r25_18 = Mem17[r16_21:word32]
-	branch r25_18 != -1<i32> l000009A8_ds_t
-l000009A8_ds_t:
-l000009A8_ds_f:
+	branch r25_18 != -1<i32> l000009A8
 l000009BC:
 	return
 __do_global_ctors_aux_exit:

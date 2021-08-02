@@ -12,7 +12,7 @@ Eq_n g_t0044 = // 0044
 	{
 		0
 	};
-ci16 g_w0046 = 0x00; // 0046
+int16 g_w0046 = 0; // 0046
 wchar_t g_w0048 = L'\0'; // 0048
 Eq_n g_t004A = // 004A
 	{
@@ -34,7 +34,7 @@ Eq_n g_t0052 = // 0052
 	{
 		0
 	};
-ci16 g_w0054 = 0x00; // 0054
+int16 g_w0054 = 0; // 0054
 wchar_t g_w0056 = L'\0'; // 0056
 Eq_n g_t0058 = // 0058
 	{
@@ -109,10 +109,6 @@ word16 * g_a013E[] = // 013E
 	};
 Eq_n g_t021C = // 021C
 	{
-		
-		{
-			-0x00004000
-		},
 		
 		{
 			13536
@@ -278,7 +274,7 @@ void fn03CE(word16 * r0)
 //      fn103C
 void fn0444()
 {
-	ci16 r0_n = g_w0046;
+	int16 r0_n = g_w0046;
 	if (r0_n <= 0x00)
 	{
 		while (r0_n >= 65356)
@@ -300,8 +296,8 @@ void fn0444()
 	g_w0046 = r0_n;
 	if (r0_n <= 0x00)
 		r0_n += 0x0168;
+	g_t004A = *((char *) g_a31DC + r0_n * 0x02);
 	struct Eq_n * r0_n = r0_n << 1;
-	g_t004A = r0_n->t31DC;
 	if (r0_n <= &g_t021C)
 		r0_n -= 0x02D0;
 	g_t004C = r0_n->t3290;
@@ -493,7 +489,7 @@ l0888:
 		}
 		else
 			r0_n = 0x21CE;
-		ci16 r0_n;
+		int16 r0_n;
 		word16 r1_n;
 		g_w34C2 = 0x00;
 		g_w34CA = r0_n;
@@ -510,7 +506,7 @@ l0964:
 			{
 				int16 r1_n = g_w0078;
 				r0_n = g_a28F2[r1_n * 0x02] - (&g_w28F0)[r1_n * 0x02];
-				ci16 r2_n = r0_n;
+				int16 r2_n = r0_n;
 				if (r0_n <= 0x00)
 					r2_n = -r0_n;
 				if (r2_n > 0x30)
@@ -666,7 +662,7 @@ void fn0B06(int16 r3, Eq_n r4, word16 * r5)
 {
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	struct Eq_n * stackArg0 = (struct Eq_n *) <invalid>;
+	ci16 * stackArg0 = (ci16 *) <invalid>;
 	fn13AA(stackArg0);
 	2828 = 0x0B0D;
 	if (2828 != 0x00)
@@ -922,7 +918,7 @@ word16 fn0E32()
 	} while (g_w00AE >= 0xC0);
 	// Failed to bind call argument.
 	// Please report this issue at https://github.com/uxmal/reko
-	struct Eq_n * stackArg0 = (struct Eq_n *) <invalid>;
+	ci16 * stackArg0 = (ci16 *) <invalid>;
 	fn13AA(stackArg0);
 	__reset();
 	word16 r5_n;
@@ -1734,17 +1730,17 @@ l1304:
 	goto l1304;
 }
 
-// 13AA: void fn13AA(Stack (ptr16 Eq_n) ptrArg00)
+// 13AA: void fn13AA(Stack (ptr16 ci16) ptrArg00)
 // Called from:
 //      fn0856
 //      fn0B06
 //      fn0E32
 //      fn34E0
-void fn13AA(struct Eq_n * ptrArg00)
+void fn13AA(ci16 * ptrArg00)
 {
 	ci16 r0_n;
 	g_w25C0 = 0xF700;
-	ci16 r0_n = ptrArg00->w0000;
+	ci16 r0_n = *ptrArg00;
 	cu16 r1_n = g_w0070;
 	r0_n = r0_n;
 	if (r0_n <= 0x00)
@@ -1944,6 +1940,9 @@ word16 g_a28F2[] = // 28F2
 Eq_n g_a28F8[] = // 28F8
 	{
 	};
+Eq_n g_a31DC[] = // 31DC
+	{
+	};
 word16 g_w34B4 = 0x00; // 34B4
 word16 g_w34B6 = 0x00; // 34B6
 word16 g_w34BA = 0x00; // 34BA
@@ -1978,7 +1977,7 @@ void fn34E0()
 	fn355A();
 	*(word16 *) ~0x99 = 0x40;
 	*(word16 *) 0xF400 = 13666;
-	fn13AA(*(struct Eq_n **) 0x3FFC);
+	fn13AA(*(ci16 **) 0x3FFC);
 }
 
 // 355A: void fn355A()

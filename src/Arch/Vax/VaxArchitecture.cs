@@ -19,18 +19,16 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
+using Reko.Core.Memory;
+using Reko.Core.Rtl;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Reko.Core.Expressions;
-using Reko.Core.Machine;
-using Reko.Core.Rtl;
-using Reko.Core.Types;
-using System.Globalization;
-using Reko.Core.Lib;
-using Reko.Core.Memory;
 
 namespace Reko.Arch.Vax
 {
@@ -76,11 +74,6 @@ namespace Reko.Arch.Vax
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new VaxDisassembler(this, imageReader);
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -129,18 +122,18 @@ namespace Reko.Arch.Vax
             return (int)result;
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
-            throw new NotImplementedException();
+            return regsByName.TryGetValue(name, out var reg) ? reg : null;
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             int i = domain - StorageDomain.Register;
             return GetRegister(i);
         }
 
-        public RegisterStorage GetRegister(int i)
+        public RegisterStorage? GetRegister(int i)
         {
             if (0 <= i && i < regs.Length)
                 return regs[i];
@@ -186,7 +179,7 @@ namespace Reko.Arch.Vax
             return Address.Ptr32(c.ToUInt32());
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -196,18 +189,9 @@ namespace Reko.Arch.Vax
             return regsByName.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
-            if (!uint.TryParse(txtAddr, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint uAddr))
-            {
-                addr = null;
-                return false;
-            }
-            else
-            {
-                addr = Address.Ptr32(uAddr);
-                return true;
-            }
+            return Address.TryParse32(txtAddr, out addr);
         }
     }
 }

@@ -41,22 +41,25 @@ namespace Reko.Core.Output
 
         public override void VisitConstant(Constant c)
         {
-            var pt = c.DataType.ResolveAs<PrimitiveType>();
-            if (pt != null)
+            if (c.IsValid)
             {
-                switch (pt.Domain)
+                var pt = c.DataType.ResolveAs<PrimitiveType>();
+                if (pt != null)
                 {
-                case Domain.Boolean:
-                case Domain.Character:
-                case Domain.Real:
-                    base.VisitConstant(c);
-                    return;
-                case Domain.SignedInt:
-                    InnerFormatter.Write(SignedRepresentation(c.ToInt64()));
-                    return;
-                default:
-                    InnerFormatter.Write(UnsignedRepresentation(c));
-                    return;
+                    switch (pt.Domain)
+                    {
+                    case Domain.Boolean:
+                    case Domain.Character:
+                    case Domain.Real:
+                        base.VisitConstant(c);
+                        return;
+                    case Domain.SignedInt:
+                        InnerFormatter.Write(SignedRepresentation(c.ToInt64()));
+                        return;
+                    default:
+                        InnerFormatter.Write(UnsignedRepresentation(c));
+                        return;
+                    }
                 }
             }
             base.VisitConstant(c);

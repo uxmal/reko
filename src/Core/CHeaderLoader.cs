@@ -33,9 +33,8 @@ namespace Reko.Core
     {
         private readonly Stream stream;
 
-        public CHeaderLoader(
-            IServiceProvider services, string filename, byte[] bytes)
-        : base(services, filename, bytes)
+        public CHeaderLoader(IServiceProvider services, string filename, byte[] bytes)
+            : base(services, filename, bytes)
         {
             this.stream = new MemoryStream(bytes);
         }
@@ -43,9 +42,7 @@ namespace Reko.Core
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             var rdr = new StreamReader(stream);
-            var lexer = new CLexer(rdr, CLexer.StdKeywords);
-            var state = new ParserState();
-            var parser = new CParser(state, lexer);
+            var parser = platform.CreateCParser(rdr);
             var symbolTable = CreateSymbolTable(platform, dstLib);
             var declarations = parser.Parse();
             foreach (var decl in declarations)
@@ -61,6 +58,7 @@ namespace Reko.Core
             var tlib = tldser.Load(slib);
             return tlib;
         }
+
         private SymbolTable CreateSymbolTable(
             IPlatform platform, TypeLibrary typeLib)
         {
@@ -75,7 +73,7 @@ namespace Reko.Core
             {
                 namedTypes[typedef.Key] = typedef.Value.Accept(dtSer);
             }
-            return new SymbolTable(platform, primitiveTypes, namedTypes);
+            return new SymbolTable(platform, primitiveTypes, namedTypes, platform.PointerType.Size);
         }
     }
 }

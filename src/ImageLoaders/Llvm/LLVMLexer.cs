@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -37,7 +37,7 @@ namespace Reko.ImageLoaders.LLVM
         {
             this.rdr = rdr;
             this.LineNumber = 1;
-
+            this.sb = new StringBuilder();
         }
 
         public int LineNumber { get; private set; }
@@ -69,7 +69,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public Token GetToken()
         {
-            sb = null;
+            sb.Clear();
             var st = State.Start;
             this.lineStart = LineNumber;
             EatWs();
@@ -432,7 +432,7 @@ namespace Reko.ImageLoaders.LLVM
             return new Token(this.lineStart, reservedWords[sb.ToString()]);
         }
 
-        private Token Tok(TokenType type, StringBuilder sb = null)
+        private Token Tok(TokenType type, StringBuilder? sb = null)
         {
             return new Token(lineStart, type, 
                 sb != null ? sb.ToString() : null);

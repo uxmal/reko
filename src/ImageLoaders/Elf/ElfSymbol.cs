@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -27,15 +27,20 @@ namespace Reko.ImageLoaders.Elf
 {
     public class ElfSymbol
     {
-        public string Name;
+        public string Name { get; }
         public ElfSymbolType Type;
         public ulong Value;
-        public int Bind;
+        public ElfSymbolBinding Bind;
         public uint SectionIndex;
         /// <summary>
         /// Size in bytes
         /// </summary>
         public ulong Size; 
+
+        public ElfSymbol(string name)
+        {
+            this.Name = name;
+        }
 
         public override string ToString()
         {

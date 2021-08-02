@@ -5,113 +5,113 @@
 /*
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
-	globals_t (in globals : (ptr16 (struct "Globals")))
+	globals_t (in globals @ 00000000 : (ptr16 (struct "Globals")))
 Eq_3: (segment "Eq_3" (1D byte b001D) (80F0 byte b80F0))
-	T_3 (in __data : (ptr16 Eq_3))
+	T_3 (in __data @ 00000000 : (ptr16 Eq_3))
 Eq_11: (segment "Eq_11" (157 byte b0157) (80EA bcu8 b80EA))
-	T_11 (in __data_23 : (ptr16 Eq_11))
+	T_11 (in __data_23 @ 00000797 : (ptr16 Eq_11))
 // Type Variables ////////////
-globals_t: (in globals : (ptr16 (struct "Globals")))
+globals_t: (in globals @ 00000000 : (ptr16 (struct "Globals")))
   Class: Eq_1
   DataType: (ptr16 Eq_1)
   OrigDataType: (ptr16 (struct "Globals"))
-T_2: (in R1 : byte)
+T_2: (in R1 @ 00000000 : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte
-T_3: (in __data : (ptr16 Eq_3))
+T_3: (in __data @ 00000000 : (ptr16 Eq_3))
   Class: Eq_3
   DataType: (ptr16 Eq_3)
   OrigDataType: (ptr16 (segment (1D T_6 t001D) (80F0 T_9 t80F0)))
-T_4: (in 0<8> : byte)
+T_4: (in 0<8> @ 0000077C : byte)
   Class: Eq_4
   DataType: byte
   OrigDataType: byte
-T_5: (in 0x001D<p16> : mp16)
+T_5: (in 0x001D<p16> @ 0000077C : mp16)
   Class: Eq_5
   DataType: (memptr (ptr16 Eq_3) byte)
   OrigDataType: (memptr T_3 (struct (0 T_6 t0000)))
-T_6: (in Mem8[__data:0x001D<p16>:byte] : byte)
+T_6: (in Mem8[__data:0x001D<p16>:byte] @ 0000077C : byte)
   Class: Eq_4
   DataType: byte
   OrigDataType: byte
-T_7: (in A_12 : byte)
+T_7: (in A_12 @ 00000781 : byte)
   Class: Eq_7
   DataType: byte
   OrigDataType: byte
-T_8: (in 0x80F0<16> : word16)
+T_8: (in 0x80F0<16> @ 00000781 : word16)
   Class: Eq_8
   DataType: (memptr (ptr16 Eq_3) byte)
   OrigDataType: (memptr T_3 (struct (0 T_9 t0000)))
-T_9: (in Mem8[__data:0x80F0<16>:byte] : byte)
+T_9: (in Mem8[__data:0x80F0<16>:byte] @ 00000781 : byte)
   Class: Eq_7
   DataType: byte
   OrigDataType: byte
-T_10: (in R1_21 : byte)
+T_10: (in R1_21 @ 00000797 : byte)
   Class: Eq_10
   DataType: byte
   OrigDataType: byte
-T_11: (in __data_23 : (ptr16 Eq_11))
+T_11: (in __data_23 @ 00000797 : (ptr16 Eq_11))
   Class: Eq_11
   DataType: (ptr16 Eq_11)
   OrigDataType: (ptr16 (segment (157 T_16 t0157) (80EA T_18 t80EA)))
-T_12: (in fn4EF3 : ptr16)
+T_12: (in fn4EF3 @ 00000797 : ptr16)
   Class: Eq_12
   DataType: (ptr16 code)
   OrigDataType: (ptr16 code)
-T_13: (in signature of fn4EF3 : void)
+T_13: (in signature of fn4EF3 @ 00000000 : void)
   Class: Eq_13
   DataType: Eq_13
   OrigDataType: 
-T_14: (in 5<8> : byte)
+T_14: (in 5<8> @ 0000079F : byte)
   Class: Eq_14
   DataType: byte
   OrigDataType: byte
-T_15: (in 0x157<16> : word16)
+T_15: (in 0x157<16> @ 0000079F : word16)
   Class: Eq_15
   DataType: (memptr (ptr16 Eq_11) byte)
   OrigDataType: (memptr T_11 (struct (0 T_16 t0000)))
-T_16: (in Mem32[__data_23:0x157<16>:byte] : byte)
+T_16: (in Mem32[__data_23:0x157<16>:byte] @ 0000079F : byte)
   Class: Eq_14
   DataType: byte
   OrigDataType: byte
-T_17: (in 0x80EA<16> : word16)
+T_17: (in 0x80EA<16> @ 000007A4 : word16)
   Class: Eq_17
   DataType: (memptr (ptr16 Eq_11) bcu8)
   OrigDataType: (memptr T_11 (struct (0 T_18 t0000)))
-T_18: (in Mem32[__data_23:0x80EA<16>:byte] : byte)
+T_18: (in Mem32[__data_23:0x80EA<16>:byte] @ 000007A4 : byte)
   Class: Eq_18
   DataType: bcu8
   OrigDataType: bcu8
-T_19: (in 2<8> : byte)
+T_19: (in 2<8> @ 000007A4 : byte)
   Class: Eq_19
   DataType: byte
   OrigDataType: byte
-T_20: (in __data_23->b80EA >> 2<8> : byte)
+T_20: (in __data_23->b80EA >> 2<8> @ 00000000 : byte)
   Class: Eq_20
   DataType: uint8
   OrigDataType: uint8
-T_21: (in 1<8> : byte)
+T_21: (in 1<8> @ 000007A4 : byte)
   Class: Eq_21
   DataType: byte
   OrigDataType: byte
-T_22: (in __data_23->b80EA >> 2<8> & 1<8> : byte)
+T_22: (in __data_23->b80EA >> 2<8> & 1<8> @ 00000000 : byte)
   Class: Eq_22
   DataType: byte
   OrigDataType: byte
-T_23: (in 0<8> : byte)
+T_23: (in 0<8> @ 000007A4 : byte)
   Class: Eq_22
   DataType: byte
   OrigDataType: byte
-T_24: (in (__data_23->b80EA >> 2<8> & 1<8>) != 0<8> : bool)
+T_24: (in (__data_23->b80EA >> 2<8> & 1<8>) != 0<8> @ 00000000 : bool)
   Class: Eq_24
   DataType: bool
   OrigDataType: bool
-T_25: (in fn4AC0 : ptr16)
+T_25: (in fn4AC0 @ 000007A7 : ptr16)
   Class: Eq_25
   DataType: (ptr16 code)
   OrigDataType: (ptr16 code)
-T_26: (in signature of fn4AC0 : void)
+T_26: (in signature of fn4AC0 @ 00000000 : void)
   Class: Eq_26
   DataType: Eq_26
   OrigDataType: 

@@ -35,7 +35,7 @@ namespace Reko.Core.Expressions
 			this.Arguments = arguments;
 		}
 
-        public PhiArgument[] Arguments { get; private set; }
+        public PhiArgument[] Arguments { get; }
 
         public override IEnumerable<Expression> Children
         {

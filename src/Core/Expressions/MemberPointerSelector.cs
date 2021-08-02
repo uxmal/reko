@@ -37,8 +37,8 @@ namespace Reko.Core.Expressions
 			MemberPointer = memberPtr;
 		}
 
-        public Expression BasePointer { get; set; }
-        public Expression MemberPointer { get; set; }
+        public Expression BasePointer { get; }
+        public Expression MemberPointer { get; }
 
         public override IEnumerable<Expression> Children
         {

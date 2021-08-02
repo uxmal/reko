@@ -52,9 +52,11 @@ namespace Reko.Arch.Sparc
             this.rootDecoder = rootDecoder;
             this.imageReader = imageReader;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
+            this.instrCur = null!;
         }
 
-        public override SparcInstruction DisassembleInstruction()
+        public override SparcInstruction? DisassembleInstruction()
         {
             this.addr = imageReader.Address;
             if (!imageReader.TryReadBeUInt32(out uint wInstr))
@@ -327,7 +329,7 @@ namespace Reko.Arch.Sparc
             return new RegisterOperand(registers.DFloatRegisters[reg >> 1]);
         }
 
-        private static RegisterOperand GetQuadRegisterOperand(Registers registers, uint wInstr, int offset)
+        private static RegisterOperand? GetQuadRegisterOperand(Registers registers, uint wInstr, int offset)
         {
             int encodedReg = (int) (wInstr >> offset) & 0x1F;
             int reg = ((encodedReg & 1) << 5) | (encodedReg & ~1);

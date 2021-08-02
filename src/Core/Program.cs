@@ -71,7 +71,7 @@ namespace Reko.Core
             this.InductionVariables = new Dictionary<Identifier, LinearInductionVariable>();
             this.TypeFactory = new TypeFactory();
             this.TypeStore = new TypeStore();
-            this.Resources = new ProgramResourceGroup();
+            this.Resources = new List<ProgramResource>();
             this.User = new UserData();
             this.GlobalFields = TypeFactory.CreateStructureType("Globals", 0);
             this.NamingPolicy = new NamingPolicy();
@@ -242,7 +242,7 @@ namespace Reko.Core
             {
                 namedTypes[typedef.Key] = typedef.Value.Accept(dtSer);
             }
-            return new SymbolTable(Platform, primitiveTypes, namedTypes);
+            return new SymbolTable(Platform, primitiveTypes, namedTypes, Platform.PointerType.Size);
         }
 
         /// <summary>
@@ -348,7 +348,7 @@ namespace Reko.Core
         /// List of resources stored in the binary. Some executable file formats support the
         /// inclusion of resources in the binary itself (MacOS classic resource forks also count)
         /// </summary>
-        public ProgramResourceGroup Resources { get; private set; }
+        public List<ProgramResource> Resources { get; private set; }
     
 		public TypeFactory TypeFactory { get; private set; }
 		
@@ -485,11 +485,8 @@ namespace Reko.Core
             else
                 this.ImageMap.AddItem(address, item);
 
-            this.User.Globals.Add(address, new Serialization.GlobalDataItem_v2
-            {
-                Address = address.ToString(),
-                DataType = dataType.Accept(new Serialization.DataTypeSerializer()),
-            });
+            this.User.Globals.Add(address, new UserGlobal(address, UserGlobal.GenerateDefaultName(address), dataType.Accept(new Serialization.DataTypeSerializer())));
+
             return item;
         }
 
@@ -530,9 +527,7 @@ namespace Reko.Core
                 {
                     this.ImageMap.AddItem(kv.Key, item);
                 }
-                //$BUGBUG: what about x86 segmented binaries?
-                int offset = (int)kv.Key.ToLinear();
-                GlobalFields.Fields.Add(offset, dt, kv.Value.Name!);
+                AddGlobalField(kv.Key, dt, kv.Value.Name);
             }
         }
 
@@ -647,34 +642,32 @@ namespace Reko.Core
             return intrinsic;
         }
 
-        public Procedure_v1 EnsureUserProcedure(Address address, string? name, bool decompile = true)
+        public UserProcedure EnsureUserProcedure(Address address, string? name, bool decompile = true)
         {
             if (!User.Procedures.TryGetValue(address, out var up))
             {
-                up = new Procedure_v1
+                up = new UserProcedure(address, name ?? NamingPolicy.ProcedureName(address))
                 {
-                    Address = address.ToString(),
-                    Name = name,
                     Decompile = decompile,
                 };
                 User.Procedures.Add(address, up);
             }
+
             return up;
         }
 
-        public GlobalDataItem_v2 ModifyUserGlobal(IProcessorArchitecture arch, Address address, SerializedType dataType, string name)
+        public UserGlobal ModifyUserGlobal(IProcessorArchitecture arch, Address address, SerializedType dataType, string name)
         {
             if (!User.Globals.TryGetValue(address, out var gbl))
             {
-                gbl = new GlobalDataItem_v2()
-                {
-                    Address = address.ToString(),
-                };
+                gbl = new UserGlobal(address, name, dataType);
                 User.Globals.Add(address, gbl);
             }
-
-            gbl.Name = name;
-            gbl.DataType = dataType;
+            else
+            {
+                gbl.Name = name;
+                gbl.DataType = dataType;
+            }
 
             this.ImageMap.RemoveItem(address);
 
@@ -691,7 +684,7 @@ namespace Reko.Core
                 this.ImageMap.AddItemWithSize(address, item);
             else
                 this.ImageMap.AddItem(address, item);
-
+            AddGlobalField(address, dt, name);
             return gbl;
         }
 
@@ -714,6 +707,29 @@ namespace Reko.Core
             TypeStore.Clear();
             GlobalFields = TypeFactory.CreateStructureType("Globals", 0);
             BuildImageMap();
+        }
+
+        private void AddGlobalField(Address address, DataType dt, string name)
+        {
+            int offset;
+            StructureFieldCollection fields;
+            if (address.Selector.HasValue &&
+                SegmentMap.TryFindSegment(address, out var seg))
+            {
+                offset = (int) address.Offset;
+                fields = seg.Fields.Fields;
+            }
+            else
+            {
+                offset = (int) address.ToLinear();
+                fields = GlobalFields.Fields;
+            }
+            var globalField = fields.AtOffset(offset);
+            if (globalField != null)
+            {
+                fields.Remove(globalField);
+            }
+            fields.Add(offset, dt, name);
         }
     } 
 }

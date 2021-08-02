@@ -18,16 +18,20 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Reko.Core;
 using Reko.Core.CLanguage;
+using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+
+#nullable disable
 
 namespace Reko.ImageLoaders.LLVM
 {
@@ -69,6 +73,14 @@ namespace Reko.ImageLoaders.LLVM
         public SegmentMap CreateAbsoluteMemoryMap()
         {
             throw new NotImplementedException();
+        }
+
+        public CParser CreateCParser(TextReader rdr, ParserState? state = null)
+        {
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.StdKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
         }
 
         public IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)

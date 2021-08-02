@@ -33,11 +33,11 @@ namespace Reko.ImageLoaders.OdbgScript
         public class Line
         {
             public int LineNumber;
-            public string Label;
-            public string RawLine;
+            public string? Label;
+            public string? RawLine;
             public bool IsCommand;
-            public string Command;
-            public Func<Expression[], bool> CommandPtr;
+            public string? Command;
+            public Func<Expression[], bool>? CommandPtr;
             public Expression[] Args = new Expression[0];
 
             public override string ToString()

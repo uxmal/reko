@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.CLanguage;
+using Reko.Core.Emulation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,17 +35,13 @@ namespace Reko.Arch.Cray
 
         public override string DefaultCallingConvention => "";
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             return new HashSet<RegisterStorage>();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -54,12 +51,12 @@ namespace Reko.Arch.Cray
             throw new NotImplementedException();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }

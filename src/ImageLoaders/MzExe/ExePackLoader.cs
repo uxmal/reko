@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using Reko.Core.Configuration;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -36,8 +37,8 @@ namespace Reko.ImageLoaders.MzExe
     /// </summary>
     public class ExePackLoader : ImageLoader
     {
-        private IProcessorArchitecture arch;
-        private IPlatform platform;
+        private readonly IProcessorArchitecture arch;
+        private readonly IPlatform platform;
         private SegmentMap segmentMap;
 
         private uint exeHdrSize;
@@ -57,7 +58,7 @@ namespace Reko.ImageLoaders.MzExe
             : base(loader.Services, loader.Filename, loader.RawImage)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            arch = cfgSvc.GetArchitecture("x86-real-16");
+            arch = cfgSvc.GetArchitecture("x86-real-16")!;
             platform =cfgSvc.GetEnvironment("ms-dos")
                 .Load(Services, arch);
 
@@ -84,6 +85,8 @@ namespace Reko.ImageLoaders.MzExe
             }
             else
                 throw new ApplicationException("Not a recognized EXEPACK image.");
+            this.imgU = null!;
+            this.segmentMap = null!;
         }
 
         static public bool IsCorrectUnpacker(ExeImageLoader exe, byte[] rawImg)
@@ -98,12 +101,12 @@ namespace Reko.ImageLoaders.MzExe
             return (exe.e_cparHeader + exe.e_cs) * 0x10 + exe.e_ip;
         }
 
-        public override Program Load(Address addr)
+        public override Program Load(Address? addr)
         {
             byte[] abC = RawImage;
             byte[] abU = new byte[cpUncompressed * 0x10U + ExeImageLoader.CbPsp];
             Array.Copy(abC, exeHdrSize, abU, ExeImageLoader.CbPsp, abC.Length - exeHdrSize);
-            imgU = new ByteMemoryArea(addr, abU);
+            imgU = new ByteMemoryArea(addr!, abU);
 
             uint SI = hdrOffset - 1;
             while (abC[SI] == 0xFF)
@@ -159,7 +162,7 @@ namespace Reko.ImageLoaders.MzExe
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             EndianImageReader rdr = new LeImageReader(RawImage, hdrOffset + relocationsOffset);
-            ushort segCode = (ushort)(addrLoad.Selector.Value + (ExeImageLoader.CbPsp >> 4));
+            ushort segCode = (ushort)(addrLoad.Selector!.Value + (ExeImageLoader.CbPsp >> 4));
             ushort dx = 0;
             for (; ; )
             {

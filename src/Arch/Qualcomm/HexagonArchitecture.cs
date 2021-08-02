@@ -26,7 +26,6 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Arch.Qualcomm
 {
@@ -46,11 +45,6 @@ namespace Reko.Arch.Qualcomm
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new HexagonDisassembler(this, rdr);
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -93,7 +87,7 @@ namespace Reko.Arch.Qualcomm
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
             if (Registers.ByName.TryGetValue(name, out var reg))
                 return reg;
@@ -105,7 +99,7 @@ namespace Reko.Arch.Qualcomm
         {
             return Registers.ByDomain.TryGetValue(domain, out var reg)
                 ? reg
-                : null;
+                : null!;
         }
 
         public override RegisterStorage[] GetRegisters()
@@ -123,7 +117,7 @@ namespace Reko.Arch.Qualcomm
             return Address.Ptr32(c.ToUInt32());
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -133,9 +127,9 @@ namespace Reko.Arch.Qualcomm
             return Registers.ByName.TryGetValue(name, out reg);
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse32(txtAddr, out addr);
         }
     }
 }

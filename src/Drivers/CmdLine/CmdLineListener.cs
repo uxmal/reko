@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Scripts;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -170,6 +171,14 @@ namespace Reko.CmdLine
         public void Error(ICodeLocation location, Exception ex, string message, params object[] args)
         {
             Error(location, ex, string.Format(message, args));
+        }
+
+        public void Error(ScriptError scriptError)
+        {
+            Error(
+                new NullCodeLocation(scriptError.FileName),
+                scriptError.Exception,
+                scriptError.Message);
         }
 
         public void ShowStatus(string caption)

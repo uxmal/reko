@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -61,7 +61,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public static bool Normalize { get; set; } = false;
 
-        public int CompareTo(PICRegisterSizedUniqueAddress other)
+        public int CompareTo(PICRegisterSizedUniqueAddress? other)
         {
             if (other is null)
                 return 1;

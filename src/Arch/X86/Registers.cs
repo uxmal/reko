@@ -77,6 +77,7 @@ namespace Reko.Arch.X86
         public static readonly FlagGroupStorage CZP;
         public static readonly FlagGroupStorage SCZ;
         public static readonly FlagGroupStorage SCZO;
+        public static readonly FlagGroupStorage SCZOP;
         public static readonly FlagGroupStorage SO;
         public static readonly FlagGroupStorage SZ;
         public static readonly FlagGroupStorage SZO;
@@ -276,6 +277,7 @@ namespace Reko.Arch.X86
             CZP = FlagRegister("CZP", eflags, FlagM.CF | FlagM.ZF | FlagM.PF);
             SCZ = FlagRegister("SCZ", eflags, FlagM.SF | FlagM.CF | FlagM.ZF);
             SCZO = FlagRegister("SCZO", eflags, FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF);
+            SCZOP = FlagRegister("SCZOP", eflags, FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF | FlagM.PF);
             SO = FlagRegister("SO", eflags, FlagM.SF | FlagM.OF);
             SZ = FlagRegister("SZ", eflags, FlagM.SF | FlagM.ZF);
             SZO = FlagRegister("SZO", eflags, FlagM.SF | FlagM.ZF | FlagM.OF);
@@ -541,22 +543,22 @@ namespace Reko.Arch.X86
                 { r13.Domain, new [] { r13, r13d, r13w, r13b, } },
                 { r14.Domain, new [] { r14, r14d, r14w, r14b, } },
                 { r15.Domain, new [] { r15, r15d, r15w, r15b, } },
-                { ymm0.Domain, new [] { xmm0 } },
-                { ymm1.Domain, new [] { xmm1 } },
-                { ymm2.Domain, new [] { xmm2 } },
-                { ymm3.Domain, new [] { xmm3 } },
-                { ymm4.Domain, new [] { xmm4 } },
-                { ymm5.Domain, new [] { xmm5 } },
-                { ymm6.Domain, new [] { xmm6 } },
-                { ymm7.Domain, new [] { xmm7 } },
-                { ymm8.Domain, new [] { xmm8 } },
-                { ymm9.Domain, new [] { xmm9 } },
-                { ymm10.Domain, new [] { xmm10 } },
-                { ymm11.Domain, new [] { xmm11 } },
-                { ymm12.Domain, new [] { xmm12 } },
-                { ymm13.Domain, new [] { xmm13 } },
-                { ymm14.Domain, new [] { xmm14 } },
-                { ymm15.Domain, new [] { xmm15 } },
+                { ymm0.Domain, new [] { ymm0, xmm0 } },
+                { ymm1.Domain, new [] { ymm1, xmm1 } },
+                { ymm2.Domain, new [] { ymm2, xmm2 } },
+                { ymm3.Domain, new [] { ymm3, xmm3 } },
+                { ymm4.Domain, new [] { ymm4, xmm4 } },
+                { ymm5.Domain, new [] { ymm5, xmm5 } },
+                { ymm6.Domain, new [] { ymm6, xmm6 } },
+                { ymm7.Domain, new [] { ymm7, xmm7 } },
+                { ymm8.Domain, new [] { ymm8, xmm8 } },
+                { ymm9.Domain, new [] { ymm9, xmm9 } },
+                { ymm10.Domain, new [] { ymm10, xmm10 } },
+                { ymm11.Domain, new [] { ymm11, xmm11 } },
+                { ymm12.Domain, new [] { ymm12, xmm12 } },
+                { ymm13.Domain, new [] { ymm13, xmm13 } },
+                { ymm14.Domain, new [] { ymm14, xmm14 } },
+                { ymm15.Domain, new [] { ymm15, xmm15 } },
             };
 
             Gp64BitRegisters = new[]

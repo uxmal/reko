@@ -823,5 +823,83 @@ ProcedureBuilder_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        public void CceLongShiftInLoop()
+        {
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+define ProcedureBuilder
+ProcedureBuilder_entry:
+	def cx
+	def ax
+	def dx
+	// succ:  l1
+l1:
+	branch cx == 0<16> m1Done
+	// succ:  m0Loop m1Done
+m0Loop:
+	cx_10 = PHI((cx, l1), (cx_11, m0Loop))
+	dx_5 = PHI((dx, l1), (dx_8, m0Loop))
+	ax_2 = PHI((ax, l1), (ax_3, m0Loop))
+	v10_20 = SEQ(dx_5, ax_2) << 1<8>
+	ax_3 = SLICE(v10_20, word16, 0)
+	dx_8 = SLICE(v10_20, word16, 16)
+	cx_11 = cx_10 - 1<16>
+	branch cx_11 != 0<16> m0Loop
+	// succ:  m1Done m0Loop
+m1Done:
+	dx_15 = PHI((dx, l1), (dx_8, m0Loop))
+	ax_12 = PHI((ax, l1), (ax_3, m0Loop))
+	Mem14[0x123400<32>:word16] = ax_12
+	Mem17[0x123402<32>:word16] = dx_15
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+";
+            #endregion
+            RunStringTest(sExp, m =>
+            {
+                static Expression RolC(ExpressionEmitter m, Expression e, Expression sh, Expression c)
+                {
+                    var sig = FunctionType.Func(
+                        new Identifier("", e.DataType, null!),
+                        new Identifier("e", e.DataType, null!),
+                        new Identifier("sh", e.DataType, null!),
+                        new Identifier("c", e.DataType, null!));
+                    return m.Fn(new IntrinsicProcedure(IntrinsicProcedure.RolC, true, sig), e, sh, c);
+                }
+
+                var ax = m.Reg16("ax", 0);
+                var cx = m.Reg16("cx", 1);
+                var dx = m.Reg16("dx", 2);
+                var psw = new RegisterStorage("psw", 2, 0, PrimitiveType.Word16);
+                var CF = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 1, "C", PrimitiveType.Bool));
+                var SCZO = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "SCZO", PrimitiveType.Word16));
+                var tmp = m.Frame.CreateTemporary(PrimitiveType.Bool);
+
+                m.BranchIf(m.Eq0(cx), "m1Done");
+
+                m.Label("m0Loop");
+                m.Assign(ax, m.Shl(ax, 1));
+                m.Assign(SCZO, m.Cond(ax));
+                m.Assign(tmp, m.Ne0(m.And(dx, 0x8000)));
+                m.Assign(dx, RolC(m, dx, Constant.Byte(1), CF));
+                m.Assign(CF, tmp);
+                m.Assign(cx, m.ISub(cx, 1));
+                m.BranchIf(m.Ne0(cx), "m0Loop");
+
+                m.Label("m1Done");
+                m.MStore(m.Word32(0x00123400), ax);
+                m.MStore(m.Word32(0x00123402), dx);
+                m.Return();
+
+                m.Use(SCZO);
+            });
+        }
+
     }
 }

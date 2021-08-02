@@ -569,13 +569,12 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         protected override PICInstruction DecodeEEPROMInstruction()
         {
-
             if (!rdr.TryReadByte(out byte uEEByte))
                 return new PICInstructionNoOpnd(Mnemonic.invalid);
             var bl = new List<byte>() { uEEByte };
             for (int i = 0; i < 7; i++)
             {
-                if (!lastusedregion.Contains(rdr.Address))
+                if (!lastusedregion!.Contains(rdr.Address))
                     break;
                 if (!rdr.TryReadByte(out uEEByte))
                     break;

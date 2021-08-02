@@ -27,11 +27,9 @@ using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Reko.UnitTests.Mocks
@@ -118,11 +116,6 @@ namespace Reko.UnitTests.Mocks
 		}
 
         #region IProcessorArchitecture Members
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
-        }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -226,11 +219,6 @@ namespace Reko.UnitTests.Mocks
             }
         }
 
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            return reg;
-        }
-
         public override RegisterStorage[] GetRegisters()
         {
             return registers;
@@ -329,22 +317,6 @@ namespace Reko.UnitTests.Mocks
             return Address.SegPtr(seg.ToUInt16(), offset.ToUInt16());
         }
 
-        public override IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg)
-        {
-            yield return reg;
-        }
-
-        public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> bits)
-        {
-            ulong mask = bits.Where(b => b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
-            return mask != 0 ? reg : null;
-        }
-
-        public override void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg)
-        {
-            ids.Remove(reg);
-        }
-
         public override void LoadUserOptions(Dictionary<string, object> options)
         {
             throw new NotImplementedException();
@@ -415,11 +387,6 @@ namespace Reko.UnitTests.Mocks
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
         {
             throw new NotImplementedException();
         }
@@ -542,7 +509,7 @@ namespace Reko.UnitTests.Mocks
 		{
             if (!regValues.TryGetValue(r, out Constant c))
             {
-                c = Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
             }
             return c;
 		}

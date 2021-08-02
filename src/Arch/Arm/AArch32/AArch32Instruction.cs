@@ -138,7 +138,7 @@ namespace Reko.Arch.Arm.AArch32
                     if (ShiftType != Mnemonic.rrx)
                     {
                         renderer.WriteChar(' ');
-                        RenderOperand(ShiftValue, renderer, options);
+                        RenderOperand(ShiftValue!, renderer, options);
                     }
                 }
             }
@@ -270,7 +270,7 @@ namespace Reko.Arch.Arm.AArch32
         private void RenderMemoryOperand(MemoryOperand mem, MachineInstructionRenderer renderer)
         {
             renderer.WriteChar('[');
-            renderer.WriteString(mem.BaseRegister.Name);
+            renderer.WriteString(mem.BaseRegister!.Name);
             if (this.Writeback && !mem.PreIndex)
             {
                 // Post-indexed
@@ -360,7 +360,7 @@ namespace Reko.Arch.Arm.AArch32
         public bool UserStmLdm;
         public bool Wide;               // (Thumb only) wide form of instruction.
         public Mnemonic ShiftType;
-        public MachineOperand ShiftValue;
+        public MachineOperand? ShiftValue;
         public ArmVectorData vector_data;
         public int vector_size;         // only valid if vector_data is valid
         public byte itmask;

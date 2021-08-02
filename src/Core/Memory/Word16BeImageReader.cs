@@ -72,6 +72,7 @@ namespace Reko.Core.Memory
         public ulong ReadUInt64() => ReadUInt64();
 
         public bool TryPeekUInt32(int offset, out uint value) => TryPeekBeUInt32(offset, out value);
+        public bool TryPeekUInt64(int offset, out ulong value) => TryPeekBeUInt64(offset, out value);
 
         public bool TryRead(PrimitiveType dataType, out Constant value) => TryReadBe(dataType, out value);
 

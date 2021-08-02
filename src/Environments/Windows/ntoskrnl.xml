@@ -18,7 +18,7 @@
       <struct name="_EPROCESS" />
     </typedef>
     <typedef name="PEPROCESS">
-      <ptr size="4">
+      <ptr>
         <struct name="_EPROCESS" />
       </ptr>
     </typedef>
@@ -27,12 +27,12 @@
       <struct name="_KTHREAD" />
     </typedef>
     <typedef name="PKTHREAD">
-      <ptr size="4">
+      <ptr>
         <struct name="_KTHREAD" />
       </ptr>
     </typedef>
     <typedef name="PUNICODE_STRING">
-      <ptr size="4">
+      <ptr>
         <prim domain="Character" size="1" />
       </ptr>
     </typedef>
@@ -41,7 +41,7 @@
       <struct name="_DEVICE_OBJECT" />
     </typedef>
     <typedef name="PDEVICE_OBJECT">
-      <ptr size="4">
+      <ptr>
         <struct name="_DEVICE_OBJECT" />
       </ptr>
     </typedef>
@@ -50,7 +50,7 @@
       <struct name="_DRIVER_OBJECT" />
     </typedef>
     <typedef name="PDRIVER_OBJECT">
-      <ptr size="4">
+      <ptr>
         <struct name="_DRIVER_OBJECT" />
       </ptr>
     </typedef>
@@ -61,7 +61,7 @@
         <type>ULONG</type>
       </return>
       <arg name="format">
-        <ptr size="4">
+        <ptr>
           <prim domain="Character" size="1" />
         </ptr>
       </arg>
@@ -106,7 +106,7 @@
         <type>BOOLEAN</type>
       </arg>
       <arg name="DeviceObject">
-        <ptr size="4">
+        <ptr>
           <type>PDEVICE_OBJECT</type>
         </ptr>
       </arg>

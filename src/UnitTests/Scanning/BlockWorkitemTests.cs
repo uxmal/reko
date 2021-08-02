@@ -657,16 +657,16 @@ testProc_exit:
             var wi = CreateWorkItem(Address.Ptr32(0x100000));
             wi.Process();
 
-            Assert.AreEqual("branch r1 l00100000_ds_t", block.Statements[0].ToString());
+            Assert.AreEqual("branch r1 l00100004_ds_t", block.Statements[0].ToString());
             var blFalse = block.ElseBlock;
             var blTrue = block.ThenBlock;
-            Assert.AreEqual("l00100000_ds_f", blFalse.DisplayName);     // delay-slot-false
+            Assert.AreEqual("l00100004_ds_f", blFalse.DisplayName);     // delay-slot-false
             Assert.AreEqual(1, blFalse.Statements.Count);
             Assert.AreEqual("r0 = r1", blFalse.Statements[0].ToString());
             Assert.AreEqual(1, blFalse.Succ.Count);
             Assert.AreEqual("l00100008", blFalse.Succ[0].DisplayName);
 
-            Assert.AreEqual("l00100000_ds_t", blTrue.DisplayName);      // delay-slot-true
+            Assert.AreEqual("l00100004_ds_t", blTrue.DisplayName);      // delay-slot-true
             Assert.AreEqual(1, blTrue.Statements.Count);
             Assert.AreEqual("r0 = r1", blTrue.Statements[0].ToString());
             Assert.AreEqual(1, blTrue.Succ.Count);
@@ -766,14 +766,14 @@ testProc_exit:
             var wi = CreateWorkItem(Address.Ptr32(0x100000));
             wi.Process();
 
-            Assert.AreEqual("branch r1 l00100000_ds_t", block.Statements[0].ToString());
+            Assert.AreEqual("branch r1 l00100004_ds_t", block.Statements[0].ToString());
             var blFalse = block.ElseBlock;
             var blTrue = block.ThenBlock;
             Assert.AreEqual("l00100008", blFalse.DisplayName);     // delay-slot was anulled.
             Assert.AreEqual(1, blFalse.Statements.Count);
             Assert.AreEqual("r2 = r1", blFalse.Statements[0].ToString());
 
-            Assert.AreEqual("l00100000_ds_t", blTrue.DisplayName);      // delay-slot-true
+            Assert.AreEqual("l00100004_ds_t", blTrue.DisplayName);      // delay-slot-true
             Assert.AreEqual(1, blTrue.Statements.Count);
             Assert.AreEqual("r0 = r1", blTrue.Statements[0].ToString());
             Assert.AreEqual(1, blTrue.Succ.Count);
@@ -841,7 +841,7 @@ testProc_exit:
 
             program.User.Procedures.Add(
                 addrCallee,
-                new Procedure_v1
+                new UserProcedure(addrCallee, NamingPolicy.Instance.ProcedureName(addrCallee))
                 {
                     CSignature = "int testFn(char * str, float f)"
                 });

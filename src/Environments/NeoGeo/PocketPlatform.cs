@@ -18,17 +18,12 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Arch.Tlcs;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Rtl;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
 
 namespace Reko.Environments.NeoGeo
 {
@@ -43,17 +38,12 @@ namespace Reko.Environments.NeoGeo
             get { return ""; }
         }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
-
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             return new HashSet<RegisterStorage>();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
@@ -63,7 +53,7 @@ namespace Reko.Environments.NeoGeo
             return new HashSet<RegisterStorage>();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -73,12 +63,12 @@ namespace Reko.Environments.NeoGeo
             throw new NotImplementedException();
         }
 
-        public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             return null;
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }

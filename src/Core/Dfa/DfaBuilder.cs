@@ -31,7 +31,7 @@ namespace Reko.Core.Dfa
     public class DfaBuilder
     {
         private readonly Dictionary<IntermediateState, IntermediateState> Dstates;
-        private readonly List<Tuple<int, int, int>> Dtran;
+        private readonly List<(int, int, int)> Dtran;
         private readonly NodeComparer nodeComparer;
 
         public DfaBuilder(string pattern)
@@ -44,7 +44,7 @@ namespace Reko.Core.Dfa
             this.ParseTree = node;
             this.nodeComparer = new NodeComparer();
             Dstates = new Dictionary<IntermediateState, IntermediateState>();
-            Dtran = new List<Tuple<int, int, int>>();
+            Dtran = new List<(int, int, int)>();
         }
 
         public TreeNode ParseTree { get; private set; }
@@ -135,7 +135,7 @@ namespace Reko.Core.Dfa
                     }
                     dstate.Starts |= p.Node.Starts;
                     dstate.Accepts |= p.Node.FollowPos.Any(n => n.Type == NodeType.EOS);
-                    Dtran.Add(Tuple.Create(T.Number, (int) p.Value, dstate.Number));
+                    Dtran.Add((T.Number, (int) p.Value, dstate.Number));
                 }
             }
             this.States = Dstates.Values
@@ -160,7 +160,7 @@ namespace Reko.Core.Dfa
                         : (object)(char)n.Value))));
         }
 
-        private int[,] Compact(List<Tuple<int, int, int>> Dtran)
+        private int[,] Compact(List<(int, int, int)> Dtran)
         {
             var states = new int[Dstates.Count, 256];   //$TODO: alphabet size hard-wired to 256.
             foreach (var tuple in Dtran)

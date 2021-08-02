@@ -48,11 +48,6 @@ namespace Reko.Analysis
             this.listener = listener;
         }
 
-        public void AddStackArgument(Identifier id, ProcedureFlow flow, SignatureBuilder sb)
-		{
-			sb.AddInParam(id);
-		}
-
         private void AdjustLiveIn(Procedure proc, ProcedureFlow flow)
         {
             var liveDefStms = proc.EntryBlock.Statements
@@ -117,11 +112,13 @@ namespace Reko.Analysis
         /// <returns>A valid function signature.</returns>
         public FunctionType MakeSignature(SsaState ssa, IStorageBinder frame, ProcedureFlow flow)
         {
+            if (ssa.Procedure.Name == "fn0800_C779")
+                ssa.ToString(); //$DEBUG
             var allLiveOut = flow.BitsLiveOut;
 			var sb = new SignatureBuilder(frame, platform.Architecture);
             var implicitRegs = platform.CreateImplicitArgumentRegisters();
 
-            var liveOutFlagGroups = flow.grfLiveOut.Select(de => platform.Architecture.GetFlagGroup(de.Key, de.Value));
+            var liveOutFlagGroups = flow.grfLiveOut.Select(de => platform.Architecture.GetFlagGroup(de.Key, de.Value)!);
             AddModifiedFlags(frame, liveOutFlagGroups, sb);
 
             var mayUseSeqs = flow.BitsUsed.Keys.OfType<SequenceStorage>().ToHashSet();
@@ -132,16 +129,14 @@ namespace Reko.Analysis
             {
                 sb.AddSequenceArgument(seq);
             }
-            var mayUseRegs = flow.BitsUsed.Where(b =>
+            var mayUseRegs = flow.BitsUsed
+                .Select(de => (Key: de.Key as RegisterStorage, de.Value))
+                .Where(b =>
                 {
                     return b.Key is RegisterStorage reg && !implicitRegs.Contains(reg);
                 })
-                .ToDictionary(
-                    de => platform.Architecture.GetSubregister(
-                        (RegisterStorage) de.Key,
-                        de.Value.Lsb,
-                        de.Value.Extent) ?? (RegisterStorage)de.Key,
-                    de=>de.Value);
+                .Select(MakeRegisterParameter)
+                .ToDictionary(de => de.Item1, de => de.Item2);
             
             //$BUG: should be sorted by ABI register order. Need a new method
             // IPlatform.CreateAbiRegisterCollator().
@@ -156,7 +151,7 @@ namespace Reko.Analysis
 
 			foreach (var id in GetSortedStackArguments((Frame)frame, flow.BitsUsed))
 			{
-				AddStackArgument(id.Item2, flow, sb);
+                sb.AddInParam(id.Item2);
 			}
 
             foreach (var oFpu in flow.BitsUsed
@@ -175,12 +170,8 @@ namespace Reko.Analysis
                     return de.Key != null 
                         && !implicitRegs.Contains(de.Key);
                 })
-                .ToDictionary(
-                     de => platform.Architecture.GetSubregister(
-                        de.Key!,
-                        de.Value.Lsb,
-                        de.Value.Extent)! ?? de.Key!,
-                    de => de.Value);
+                .Select(MakeRegisterParameter)
+                .ToDictionary(de => de.Item1, de => de.Item2);
 
             // Sort the names in a stable way to avoid regression tests failing.
             foreach (var r in liveOut.OrderBy(r => r.Key.Number).ThenBy(r => r.Key.BitAddress))
@@ -191,7 +182,7 @@ namespace Reko.Analysis
                     if (regOut.Storage is OutArgumentStorage && 
                         !ssa.Identifiers.TryGetValue(regOut, out var sidOut))
                     {
-                        // Ensure there are SSA identifer for 'out' registers.
+                        // Ensure there are SSA identifiers for 'out' registers.
                         ssa.Identifiers.Add(regOut, null, null, false);
                     }
 				}
@@ -204,6 +195,19 @@ namespace Reko.Analysis
 
             var sig = sb.BuildSignature();
             return sig;
+        }
+
+        private (RegisterStorage, BitRange) MakeRegisterParameter((RegisterStorage?, BitRange) de)
+        {
+            var (reg, range) = de;
+            var offsetWithinDomain = (int)reg!.BitAddress;
+            var regParam = reg;
+            if (range.Lsb != 0 || range.Msb != (int) reg.BitSize)
+            {
+                var regSliced = platform.Architecture.GetRegister(reg.Domain, range.Offset(offsetWithinDomain));
+                regParam = regSliced ?? regParam;
+            }
+            return (regParam, range);
         }
 
         /// <summary>
@@ -457,7 +461,7 @@ namespace Reko.Analysis
                     InsertOutArgumentAssignment(
                         ssa,
                         p,
-                        idStg?.Expression ?? Constant.Invalid,
+                        idStg?.Expression ?? InvalidConstant.Create(p.DataType),
                         block,
                         insertPos);
                     ++insertPos;
@@ -471,7 +475,7 @@ namespace Reko.Analysis
             Identifier idRet,
             CallBinding idStg)
         {
-            var e = idStg?.Expression ?? Constant.Invalid;
+            var e = idStg?.Expression ?? InvalidConstant.Create(idRet.DataType);
             for (int i = block.Statements.Count-1; i >=0; --i)
             {
                 var stm = block.Statements[i];

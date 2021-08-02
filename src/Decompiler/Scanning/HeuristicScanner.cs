@@ -220,22 +220,25 @@ namespace Reko.Scanning
         /// been identified as code/data yet.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Tuple<MemoryArea, Address, uint>> FindUnscannedRanges()
+        public IEnumerable<(MemoryArea, Address, uint)> FindUnscannedRanges()
         {
             return this.program.ImageMap.Items
-                .Where(de => de.Value.DataType is UnknownType)
-                .Select(de => CreateUnscannedArea(de))
-                .Where(tup => tup != null)!;
+                .Where(de => IsExecutable(de))
+                .Select(de => CreateUnscannedArea(de));
         }
 
-        private Tuple<MemoryArea, Address, uint>? CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
+        private bool IsExecutable(KeyValuePair<Address,ImageMapItem> de)
         {
-            if (!this.program.SegmentMap.TryFindSegment(de.Key, out var seg))
-                return null;
-            if (!seg.IsExecutable)
-                return null;
-            return Tuple.Create(
-                seg.MemoryArea,
+            return 
+                de.Value.DataType is UnknownType &&
+                this.program.SegmentMap.TryFindSegment(de.Key, out var seg) &&
+                seg.IsExecutable;
+        }
+
+        private (MemoryArea, Address, uint) CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
+        {
+            this.program.SegmentMap.TryFindSegment(de.Key, out var seg);
+            return (seg.MemoryArea,
                 de.Key,
                 de.Value.Size);
         }

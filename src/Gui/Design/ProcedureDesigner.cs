@@ -34,13 +34,13 @@ namespace Reko.Gui.Design
         private Program program;
         private Procedure procedure;
         private string? name;
-        private Procedure_v1? userProc;
+        private UserProcedure? userProc;
         private bool isEntryPoint;
 
         public ProcedureDesigner(
             Program program,
             Procedure procedure,
-            Procedure_v1? userProc,
+            UserProcedure? userProc,
             Address address,
             bool isEntryPoint)
         {
@@ -181,11 +181,9 @@ namespace Reko.Gui.Design
 
         private Dictionary<RegisterStorage, string> GetAssumedRegisterValues(Address Address)
         {
-            if (!program.User.Procedures.TryGetValue(this.Address, out Procedure_v1 up) ||
-                up.Assume == null)
-            {
+            if (!program.User.Procedures.TryGetValue(this.Address, out var up))
                 return new Dictionary<RegisterStorage, string>();
-            }
+
             return up.Assume
                 .Select(ass => new
                 {
@@ -209,7 +207,7 @@ namespace Reko.Gui.Design
                     Register = de.Key.Name,
                     Value = de.Value
                 })
-                .ToArray();
+                .ToList();
         }
 
         public override int GetHashCode()

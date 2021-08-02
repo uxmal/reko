@@ -31,7 +31,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 {
 					fn04B9(&g_tFFFF8000);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80CE;
-					Eq_n gp0_gp1_n = <invalid>;
+					int32 gp0_gp1_n = <invalid>;
 					word16 gp8_n;
 					word16 gp9_n;
 					word16 gp10_n;
@@ -41,7 +41,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF800D);
 					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80CE + 3);
-					Eq_n gp0_gp1_n = <invalid>;
+					int32 gp0_gp1_n = <invalid>;
 					word16 gp8_n;
 					word16 gp9_n;
 					word16 gp10_n;
@@ -51,7 +51,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF801A);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80D4;
-					Eq_n gp0_gp1_n = <invalid>;
+					int32 gp0_gp1_n = <invalid>;
 					word16 gp8_n;
 					word16 gp9_n;
 					word16 gp10_n;
@@ -61,7 +61,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF8027);
 					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80D4 + 3);
-					Eq_n gp0_gp1_n = <invalid>;
+					int32 gp0_gp1_n = <invalid>;
 					struct Eq_n * gp11_n;
 					word16 gp8_n;
 					word16 gp9_n;
@@ -71,8 +71,8 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF8036);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80DA;
-					Eq_n gp12_gp13_n = <invalid>;
-					Eq_n gp0_gp1_n = <invalid>;
+					int32 gp12_gp13_n = <invalid>;
+					int32 gp0_gp1_n = <invalid>;
 					struct Eq_n * gp11_n;
 					word16 gp8_n;
 					word16 gp9_n;
@@ -82,135 +82,135 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF8042);
 					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80DA + 3);
-					Eq_n gp15_n = <invalid>;
-					Eq_n gp12_gp13_n = <invalid>;
-					Eq_n gp0_gp1_n = <invalid>;
+					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
+					int32 gp12_gp13_n = <invalid>;
+					int32 gp0_gp1_n = <invalid>;
 					struct Eq_n * gp11_n;
 					word16 gp8_n;
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp14_n;
-					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, *((word32) gp15_n + 66), *((word32) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, gp15_n->w0042, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF804F);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80E0;
-					Eq_n gp15_n = <invalid>;
-					Eq_n gp12_gp13_n = <invalid>;
-					Eq_n gp0_gp1_n = <invalid>;
+					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
+					int32 gp12_gp13_n = <invalid>;
+					int32 gp0_gp1_n = <invalid>;
 					struct Eq_n * gp11_n;
 					word16 gp8_n;
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp14_n;
-					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, *((word32) gp15_n + 66), *((word32) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, gp15_n->w0042, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF805C);
 					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80E0 + 3);
-					Eq_n gp15_n = <invalid>;
-					Eq_n gp12_gp13_n = <invalid>;
-					Eq_n gp0_gp1_n = <invalid>;
+					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
+					int32 gp12_gp13_n = <invalid>;
+					int32 gp0_gp1_n = <invalid>;
 					struct Eq_n * gp11_n;
 					word16 gp8_n;
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp14_n;
-					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, *((word32) gp15_n + 66), *((word32) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, gp15_n->w0042, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF806B);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80E6;
-					Eq_n gp15_n = <invalid>;
-					Eq_n gp12_gp13_n = <invalid>;
-					Eq_n gp0_gp1_n = <invalid>;
+					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
+					int32 gp12_gp13_n = <invalid>;
+					int32 gp0_gp1_n = <invalid>;
 					struct Eq_n * gp11_n;
 					word16 gp8_n;
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp14_n;
-					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, *((word32) gp15_n + 66), *((word32) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, gp15_n->w0042, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF8076);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80CE;
-					Eq_n gp15_n = <invalid>;
-					Eq_n gp12_gp13_n = <invalid>;
-					Eq_n gp0_gp1_n = <invalid>;
+					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
+					int32 gp12_gp13_n = <invalid>;
+					int32 gp0_gp1_n = <invalid>;
 					word16 gp10_n;
 					struct Eq_n * gp11_n;
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, *((word32) gp15_n + 66), *((word32) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, gp15_n->w0042, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF8082);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80DA;
-					Eq_n gp15_n = <invalid>;
-					Eq_n gp12_gp13_n = <invalid>;
-					Eq_n gp0_gp1_n = <invalid>;
+					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
+					int32 gp12_gp13_n = <invalid>;
+					int32 gp0_gp1_n = <invalid>;
 					word16 gp10_n;
 					struct Eq_n * gp11_n;
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word32) gp15_n + 100), *((word32) gp15_n + 0x00C4)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0064, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF808E);
 					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80DA + 3);
-					Eq_n gp15_n = <invalid>;
-					Eq_n gp12_gp13_n = <invalid>;
-					Eq_n gp0_gp1_n = <invalid>;
+					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
+					int32 gp12_gp13_n = <invalid>;
+					int32 gp0_gp1_n = <invalid>;
 					word16 gp10_n;
 					struct Eq_n * gp11_n;
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word32) gp15_n + 0x0066), *((word32) gp15_n + 0x00C6)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF809B);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80E0;
-					Eq_n gp15_n = <invalid>;
-					Eq_n gp12_gp13_n = <invalid>;
-					Eq_n gp0_gp1_n = <invalid>;
+					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
+					int32 gp12_gp13_n = <invalid>;
+					int32 gp0_gp1_n = <invalid>;
 					word16 gp10_n;
 					struct Eq_n * gp11_n;
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word32) gp15_n + 0x0066), *((word32) gp15_n + 0x00C6)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF80A8);
 					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80E0 + 3);
-					Eq_n gp15_n = <invalid>;
-					Eq_n gp12_gp13_n = <invalid>;
-					Eq_n gp0_gp1_n = <invalid>;
+					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
+					int32 gp12_gp13_n = <invalid>;
+					int32 gp0_gp1_n = <invalid>;
 					word16 gp10_n;
 					struct Eq_n * gp11_n;
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word32) gp15_n + 0x0066), *((word32) gp15_n + 0x00C6)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF80B7);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80E6;
-					Eq_n gp15_n = <invalid>;
-					Eq_n gp12_gp13_n = <invalid>;
-					Eq_n gp0_gp1_n = <invalid>;
+					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
+					int32 gp12_gp13_n = <invalid>;
+					int32 gp0_gp1_n = <invalid>;
 					word16 gp10_n;
 					struct Eq_n * gp11_n;
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word32) gp15_n + 0x0066), *((word32) gp15_n + 0x00C6)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF80C2);
 					Eq_n gp0_gp1_gp2_n = g_uFFFF80CE;
-					Eq_n gp15_n = <invalid>;
-					Eq_n gp12_gp13_n = <invalid>;
-					Eq_n gp0_gp1_n = <invalid>;
+					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
+					int32 gp12_gp13_n = <invalid>;
+					int32 gp0_gp1_n = <invalid>;
 					word16 gp8_n;
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp11_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, *((word32) gp15_n + 0x0066), *((word32) gp15_n + 0x00C6)), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 }
 
@@ -266,15 +266,15 @@ word16 fn02BF(ci16 gp1, cui16 wArgC8, ptr16 & gp1Out, ptr16 & gp14Out)
 					}
 }
 
-// 032A: Register word16 fn032A(Sequence Eq_n gp0_gp1, Sequence Eq_n gp12_gp13, Register word16 gp2, Register cui16 gp3, Register (ptr16 Eq_n) gp11, Stack word16 wArg44, Stack cui16 wArgC6)
+// 032A: Register word16 fn032A(Sequence Eq_n gp0_gp1, Sequence int32 gp12_gp13, Register word16 gp2, Register cui16 gp3, Register (ptr16 Eq_n) gp11, Stack word16 wArg44, Stack cui16 wArgC6)
 // Called from:
 //      fn0111
-word16 fn032A(Eq_n gp0_gp1, Eq_n gp12_gp13, word16 gp2, cui16 gp3, struct Eq_n * gp11, word16 wArg44, cui16 wArgC6)
+word16 fn032A(Eq_n gp0_gp1, int32 gp12_gp13, word16 gp2, cui16 gp3, struct Eq_n * gp11, word16 wArg44, cui16 wArgC6)
 {
 					cui16 gp1 = (word16) gp0_gp1;
 					struct Eq_n * gp0 = SLICE(gp0_gp1, word16, 16);
 					struct Eq_n * gp12 = SLICE(gp12_gp13, word16, 16);
-					Eq_n gp1_gp2_n = SEQ(gp1, gp2);
+					int32 gp1_gp2_n = SEQ(gp1, gp2);
 					if (gp0_gp1 >= 0x00)
 					{
 						if (gp0_gp1 != 0x00)
@@ -359,10 +359,10 @@ word16 fn032A(Eq_n gp0_gp1, Eq_n gp12_gp13, word16 gp2, cui16 gp3, struct Eq_n *
 					}
 }
 
-// 034E: Register word16 fn034E(Sequence Eq_n gp0_gp1, Sequence Eq_n gp12_gp13, Register word16 gp2, Register word16 gp8, Register cui16 gp9, Register word16 gp10, Register (ptr16 Eq_n) gp11, Stack word16 wArg66, Stack cui16 wArgC6)
+// 034E: Register word16 fn034E(Sequence Eq_n gp0_gp1, Sequence int32 gp12_gp13, Register word16 gp2, Register word16 gp8, Register cui16 gp9, Register word16 gp10, Register (ptr16 Eq_n) gp11, Stack word16 wArg66, Stack cui16 wArgC6)
 // Called from:
 //      fn0111
-word16 fn034E(Eq_n gp0_gp1, Eq_n gp12_gp13, word16 gp2, word16 gp8, cui16 gp9, word16 gp10, struct Eq_n * gp11, word16 wArg66, cui16 wArgC6)
+word16 fn034E(Eq_n gp0_gp1, int32 gp12_gp13, word16 gp2, word16 gp8, cui16 gp9, word16 gp10, struct Eq_n * gp11, word16 wArg66, cui16 wArgC6)
 {
 					word32 gp1_gp2_n = SEQ((word16) gp0_gp1, gp2);
 					if (gp0_gp1 >= 0x00)
@@ -399,11 +399,11 @@ word16 fn034E(Eq_n gp0_gp1, Eq_n gp12_gp13, word16 gp2, word16 gp8, cui16 gp9, w
 					}
 }
 
-// 000003B2: Register word16 fn000003B2(Sequence word32 gp1_gp2, Sequence Eq_n gp12_gp13, Register cui16 gp9, Register word16 gp10, Register (ptr16 Eq_n) gp11, Register Eq_n gp14, Register out ptr16 gp1Out, Register out ptr16 gp2Out)
+// 000003B2: Register word16 fn000003B2(Sequence word32 gp1_gp2, Sequence int32 gp12_gp13, Register cui16 gp9, Register word16 gp10, Register (ptr16 Eq_n) gp11, Register Eq_n gp14, Register out ptr16 gp1Out, Register out ptr16 gp2Out)
 // Called from:
 //      fn032A
 //      fn034E
-word16 fn000003B2(word32 gp1_gp2, Eq_n gp12_gp13, cui16 gp9, word16 gp10, struct Eq_n * gp11, Eq_n gp14, ptr16 & gp1Out, ptr16 & gp2Out)
+word16 fn000003B2(word32 gp1_gp2, int32 gp12_gp13, cui16 gp9, word16 gp10, struct Eq_n * gp11, Eq_n gp14, ptr16 & gp1Out, ptr16 & gp2Out)
 {
 					word16 gp1 = SLICE(gp1_gp2, word16, 16);
 					word16 gp2 = (word16) gp1_gp2;
@@ -427,11 +427,11 @@ word16 fn000003B2(word32 gp1_gp2, Eq_n gp12_gp13, cui16 gp9, word16 gp10, struct
 					}
 }
 
-// 000003B3: Register word16 fn000003B3(Sequence Eq_n gp12_gp13, Register word16 gp1, Register word16 gp2, Register cui16 gp9, Register word16 gp10, Register (ptr16 Eq_n) gp11, Register Eq_n gp14, Register out ptr16 gp1Out, Register out ptr16 gp2Out)
+// 000003B3: Register word16 fn000003B3(Sequence int32 gp12_gp13, Register word16 gp1, Register word16 gp2, Register cui16 gp9, Register word16 gp10, Register (ptr16 Eq_n) gp11, Register Eq_n gp14, Register out ptr16 gp1Out, Register out ptr16 gp2Out)
 // Called from:
 //      fn032A
 //      fn000003B2
-word16 fn000003B3(Eq_n gp12_gp13, word16 gp1, word16 gp2, cui16 gp9, word16 gp10, struct Eq_n * gp11, Eq_n gp14, ptr16 & gp1Out, ptr16 & gp2Out)
+word16 fn000003B3(int32 gp12_gp13, word16 gp1, word16 gp2, cui16 gp9, word16 gp10, struct Eq_n * gp11, Eq_n gp14, ptr16 & gp1Out, ptr16 & gp2Out)
 {
 					ptr16 gp1_n;
 					ptr16 gp2_n;
@@ -441,11 +441,11 @@ word16 fn000003B3(Eq_n gp12_gp13, word16 gp1, word16 gp2, cui16 gp9, word16 gp10
 					return gp0_n;
 }
 
-// 000003B4: Register word16 fn000003B4(Sequence word32 gp1_gp2, Sequence Eq_n gp12_gp13, Register cui16 gp9, Register word16 gp10, Register (ptr16 Eq_n) gp11, Register Eq_n gp14, Register out ptr16 gp1Out, Register out ptr16 gp2Out)
+// 000003B4: Register word16 fn000003B4(Sequence word32 gp1_gp2, Sequence int32 gp12_gp13, Register cui16 gp9, Register word16 gp10, Register (ptr16 Eq_n) gp11, Register Eq_n gp14, Register out ptr16 gp1Out, Register out ptr16 gp2Out)
 // Called from:
 //      fn032A
 //      fn000003B2
-word16 fn000003B4(word32 gp1_gp2, Eq_n gp12_gp13, cui16 gp9, word16 gp10, struct Eq_n * gp11, Eq_n gp14, ptr16 & gp1Out, ptr16 & gp2Out)
+word16 fn000003B4(word32 gp1_gp2, int32 gp12_gp13, cui16 gp9, word16 gp10, struct Eq_n * gp11, Eq_n gp14, ptr16 & gp1Out, ptr16 & gp2Out)
 {
 					int32 gp1_gp2_n = -gp1_gp2;
 					word16 gp5_n = (word16) (gp1_gp2_n - (gp1_gp2_n / 0x0A) * 0x0A);
@@ -457,11 +457,11 @@ word16 fn000003B4(word32 gp1_gp2, Eq_n gp12_gp13, cui16 gp9, word16 gp10, struct
 					return gp0_n;
 }
 
-// 000003C0: Register word16 fn000003C0(Sequence Eq_n gp12_gp13, Sequence int32 gp7_gp8, Register word16 gp5, Register cui16 gp9, Register word16 gp10, Register (ptr16 Eq_n) gp11, Register Eq_n gp14, Register out ptr16 gp1Out, Register out ptr16 gp2Out)
+// 000003C0: Register word16 fn000003C0(Sequence int32 gp12_gp13, Sequence int32 gp7_gp8, Register word16 gp5, Register cui16 gp9, Register word16 gp10, Register (ptr16 Eq_n) gp11, Register Eq_n gp14, Register out ptr16 gp1Out, Register out ptr16 gp2Out)
 // Called from:
 //      fn034E
 //      fn000003B4
-word16 fn000003C0(Eq_n gp12_gp13, int32 gp7_gp8, word16 gp5, cui16 gp9, word16 gp10, struct Eq_n * gp11, Eq_n gp14, ptr16 & gp1Out, ptr16 & gp2Out)
+word16 fn000003C0(int32 gp12_gp13, int32 gp7_gp8, word16 gp5, cui16 gp9, word16 gp10, struct Eq_n * gp11, Eq_n gp14, ptr16 & gp1Out, ptr16 & gp2Out)
 {
 					if (Z)
 					{
@@ -483,11 +483,11 @@ word16 fn000003C0(Eq_n gp12_gp13, int32 gp7_gp8, word16 gp5, cui16 gp9, word16 g
 					}
 }
 
-// 000003C1: Register word16 fn000003C1(Sequence Eq_n gp12_gp13, Sequence int32 gp7_gp8, Register word16 gp5, Register cui16 gp9, Register word16 gp10, Register (ptr16 Eq_n) gp11, Register Eq_n gp14, Register out ptr16 gp1Out, Register out ptr16 gp2Out)
+// 000003C1: Register word16 fn000003C1(Sequence int32 gp12_gp13, Sequence int32 gp7_gp8, Register word16 gp5, Register cui16 gp9, Register word16 gp10, Register (ptr16 Eq_n) gp11, Register Eq_n gp14, Register out ptr16 gp1Out, Register out ptr16 gp2Out)
 // Called from:
 //      fn032A
 //      fn000003C0
-word16 fn000003C1(Eq_n gp12_gp13, int32 gp7_gp8, word16 gp5, cui16 gp9, word16 gp10, struct Eq_n * gp11, Eq_n gp14, ptr16 & gp1Out, ptr16 & gp2Out)
+word16 fn000003C1(int32 gp12_gp13, int32 gp7_gp8, word16 gp5, cui16 gp9, word16 gp10, struct Eq_n * gp11, Eq_n gp14, ptr16 & gp1Out, ptr16 & gp2Out)
 {
 					gp11->t0000 = SEQ((byte) gp5, gp11->t0000);
 					ptr16 gp2_n;
@@ -498,11 +498,11 @@ word16 fn000003C1(Eq_n gp12_gp13, int32 gp7_gp8, word16 gp5, cui16 gp9, word16 g
 					return gp0_n;
 }
 
-// 000003C5: Register word16 fn000003C5(Sequence Eq_n gp12_gp13, Sequence int32 gp7_gp8, Register word16 gp5, Register cui16 gp9, Register word16 gp10, Register (ptr16 Eq_n) gp11, Register Eq_n gp14, Register out ptr16 gp1Out, Register out ptr16 gp2Out)
+// 000003C5: Register word16 fn000003C5(Sequence int32 gp12_gp13, Sequence int32 gp7_gp8, Register word16 gp5, Register cui16 gp9, Register word16 gp10, Register (ptr16 Eq_n) gp11, Register Eq_n gp14, Register out ptr16 gp1Out, Register out ptr16 gp2Out)
 // Called from:
 //      fn032A
 //      fn000003C0
-word16 fn000003C5(Eq_n gp12_gp13, int32 gp7_gp8, word16 gp5, cui16 gp9, word16 gp10, struct Eq_n * gp11, Eq_n gp14, ptr16 & gp1Out, ptr16 & gp2Out)
+word16 fn000003C5(int32 gp12_gp13, int32 gp7_gp8, word16 gp5, cui16 gp9, word16 gp10, struct Eq_n * gp11, Eq_n gp14, ptr16 & gp1Out, ptr16 & gp2Out)
 {
 					byte bArg01_n = (byte) wArg00;
 					byte bArg02 = (byte) wArg02;
@@ -529,11 +529,11 @@ word16 fn000003C5(Eq_n gp12_gp13, int32 gp7_gp8, word16 gp5, cui16 gp9, word16 g
 					}
 }
 
-// 03E0: Register (ptr16 Eq_n) fn03E0(Sequence Eq_n gp1_gp2, Register (ptr16 Eq_n) gp0, Register cui16 gp3, Register out ptr16 gp1Out, Register out ptr16 gp2Out, Register out ptr16 gp3Out, Register out ptr16 gp8Out, Register out ptr16 gp12Out, Register out ptr16 gp13Out, Register out ptr16 gp14Out)
+// 03E0: Register (ptr16 Eq_n) fn03E0(Sequence int32 gp1_gp2, Register (ptr16 Eq_n) gp0, Register cui16 gp3, Register out ptr16 gp1Out, Register out ptr16 gp2Out, Register out ptr16 gp3Out, Register out ptr16 gp8Out, Register out ptr16 gp12Out, Register out ptr16 gp13Out, Register out ptr16 gp14Out)
 // Called from:
 //      fn032A
 //      fn04AE
-struct Eq_n * fn03E0(Eq_n gp1_gp2, struct Eq_n * gp0, cui16 gp3, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp3Out, ptr16 & gp8Out, ptr16 & gp12Out, ptr16 & gp13Out, ptr16 & gp14Out)
+struct Eq_n * fn03E0(int32 gp1_gp2, struct Eq_n * gp0, cui16 gp3, ptr16 & gp1Out, ptr16 & gp2Out, ptr16 & gp3Out, ptr16 & gp8Out, ptr16 & gp12Out, ptr16 & gp13Out, ptr16 & gp14Out)
 {
 					cui16 gp2 = (word16) gp1_gp2;
 					struct Eq_n * gp1 = SLICE(gp1_gp2, word16, 16);
@@ -695,10 +695,10 @@ word16 fn045D(byte * gp0, ptr16 & gp10Out, ptr16 & gp11Out)
 					return gp10;
 }
 
-// 04AE: Register word16 fn04AE(Sequence Eq_n gp0_gp1, Register cui16 gp2, Register out ptr16 gp8Out, Register out ptr16 gp9Out, Register out ptr16 gp10Out, Register out ptr16 gp11Out, Register out ptr16 gp14Out)
+// 04AE: Register word16 fn04AE(Sequence int32 gp0_gp1, Register cui16 gp2, Register out ptr16 gp8Out, Register out ptr16 gp9Out, Register out ptr16 gp10Out, Register out ptr16 gp11Out, Register out ptr16 gp14Out)
 // Called from:
 //      fn0111
-word16 fn04AE(Eq_n gp0_gp1, cui16 gp2, ptr16 & gp8Out, ptr16 & gp9Out, ptr16 & gp10Out, ptr16 & gp11Out, ptr16 & gp14Out)
+word16 fn04AE(int32 gp0_gp1, cui16 gp2, ptr16 & gp8Out, ptr16 & gp9Out, ptr16 & gp10Out, ptr16 & gp11Out, ptr16 & gp14Out)
 {
 					word16 gp12_n;
 					word16 gp13_n;

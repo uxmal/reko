@@ -7,7 +7,7 @@
     <asmDir>shingledPySample.reko</asmDir>
     <srcDir>shingledPySample.reko</srcDir>
     <includeDir>shingledPySample.reko</includeDir>
-    <resources>shingledPySample.reko\resources</resources>
+    <resources>shingledPySample.reko/resources</resources>
     <user>
       <processor />
       <procedure name="py_unused">

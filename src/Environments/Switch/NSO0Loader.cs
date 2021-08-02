@@ -21,6 +21,7 @@
 using K4os.Compression.LZ4;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.ImageLoaders.Elf;
 using System;
@@ -119,7 +120,7 @@ namespace Reko.Environments.Switch
         {
             foreach (var entry in entries.OrderBy(e => e.Key))
             {
-                var sTag = ElfDynamicEntry.TagInfos.Get(entry.Key)?.Name ?? $"{entry.Key:X8}";
+                var sTag = ElfDynamicEntry.TagInfos!.Get(entry.Key)?.Name ?? $"{entry.Key:X8}";
 
                 Console.WriteLine("  {0,-20} {1:X20}", sTag, entry.Value);
             }
@@ -156,11 +157,11 @@ namespace Reko.Environments.Switch
         {
             if (!Elf32_Sym.TryLoad(rdr, out var sym))
                 return null;
-            return new ElfSymbol
+            var name = ReadAsciiString(map, addrStrtab + sym.st_name);
+            return new ElfSymbol(name)
             {
-                Name = ReadAsciiString(map, addrStrtab + sym.st_name),
                 Type = (ElfSymbolType) (sym.st_info & 0xF),
-                Bind = sym.st_info >> 4,
+                Bind = (ElfSymbolBinding) (sym.st_info >> 4),
                 SectionIndex = sym.st_shndx,
                 Value = sym.st_value,
                 Size = sym.st_size,

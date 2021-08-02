@@ -22,6 +22,7 @@ using Reko.Arch.Mos6502;
 using Reko.Core;
 using Reko.Core.Archives;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using System;
@@ -95,6 +96,7 @@ namespace Reko.Environments.C64
         public D64Loader(IServiceProvider services, string filename, byte[] rawImage)
             : base(services, filename, rawImage)
         {
+            this.program = null!;
         }
 
         public override Address PreferredBaseAddress
@@ -119,7 +121,7 @@ namespace Reko.Environments.C64
 
         public class C64ImageHeader : ImageHeader
         {
-            private D64FileEntry dirEntry;
+            private readonly D64FileEntry dirEntry;
 
             public C64ImageHeader(D64FileEntry dirEntry)
             {
@@ -130,8 +132,9 @@ namespace Reko.Environments.C64
             public override Address PreferredBaseAddress { get; set; }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
+            addrLoad ??= PreferredBaseAddress;
             List<ArchiveDirectoryEntry> entries = LoadDiskDirectory();
             IArchiveBrowserService abSvc = Services.GetService<IArchiveBrowserService>();
             if (abSvc != null)

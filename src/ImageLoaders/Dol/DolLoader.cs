@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Environments.Wii;
 using System;
@@ -89,6 +90,7 @@ namespace Reko.ImageLoaders.Dol
 		private DolHeader hdr;
 
 		public DolLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw) {
+            this.hdr = null!;
 		}
 
 		public override Address PreferredBaseAddress {
@@ -100,11 +102,11 @@ namespace Reko.ImageLoaders.Dol
 			}
 		}
 
-		public override Program Load(Address addrLoad) {
+		public override Program Load(Address? addrLoad) {
 			var cfgSvc = Services.RequireService<IConfigurationService>();
-			var arch = cfgSvc.GetArchitecture("ppc-32-be");
+			var arch = cfgSvc.GetArchitecture("ppc-32-be")!;
 			var platform = cfgSvc.GetEnvironment("wii").Load(Services, arch);
-			return Load(addrLoad, arch, platform);
+			return Load(addrLoad ?? PreferredBaseAddress, arch, platform);
 		}
 
         public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform) {

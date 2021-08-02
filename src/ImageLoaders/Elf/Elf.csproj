@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items"/>
   <PropertyGroup>
     <ProjectGuid>{33DCEC6D-66F2-4AB7-9DD9-293DBB5414B1}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -7,7 +8,7 @@
     <AssemblyName>Reko.ImageLoaders.Elf</AssemblyName>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>

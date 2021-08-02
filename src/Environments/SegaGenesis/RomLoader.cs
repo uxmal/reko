@@ -21,6 +21,7 @@
 using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
@@ -40,13 +41,13 @@ namespace Reko.Environments.SegaGenesis
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             if (RawImage.Length <= 0x200)
                 throw new BadImageFormatException("The file is too small for a Sega Genesis ROM image.");
-            var mem = new ByteMemoryArea(addrLoad, RawImage);
+            var mem = new ByteMemoryArea(addrLoad ?? PreferredBaseAddress, RawImage);
             var cfgService = Services.RequireService<IConfigurationService>();
-            var arch = cfgService.GetArchitecture("m68k");
+            var arch = cfgService.GetArchitecture("m68k")!;
             var env = cfgService.GetEnvironment("sega-genesis");
             var platform = env.Load(Services, arch);
 
@@ -57,7 +58,7 @@ namespace Reko.Environments.SegaGenesis
 
         private SegmentMap CreateSegmentMap(ByteMemoryArea bmem, IPlatform platform)
         {
-            var segmentMap = platform.CreateAbsoluteMemoryMap();
+            var segmentMap = platform.CreateAbsoluteMemoryMap()!;
             var romSegment = segmentMap.Segments.Values.First(s => s.Name == ".text");
             romSegment.ContentSize = (uint)bmem.Length;
             romSegment.MemoryArea = bmem;
@@ -75,7 +76,7 @@ namespace Reko.Environments.SegaGenesis
             if (program.SegmentMap.IsValidAddress(addrReset))
             {
                 var sym = ImageSymbol.Procedure(program.Architecture, addrReset, "Reset", state: program.Architecture.CreateProcessorState());
-                syms.Add(sym.Address, sym);
+                syms.Add(sym.Address!, sym);
                 eps.Add(sym);
             }
             return new RelocationResults(eps, syms);

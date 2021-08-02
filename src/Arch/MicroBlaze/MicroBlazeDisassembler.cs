@@ -45,9 +45,10 @@ namespace Reko.Arch.MicroBlaze
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override MicroBlazeInstruction DisassembleInstruction()
+        public override MicroBlazeInstruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt32(out uint wInstr))

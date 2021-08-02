@@ -23,6 +23,7 @@ using Reko.Core.Pascal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -38,10 +39,14 @@ namespace Reko.UnitTests.Core.Pascal
 
         private void Given_Parser(string src)
         {
-            var lexer = new PascalLexer(new StringReader(src));
+            var lexer = new PascalLexer(new StringReader(src), true);
             this.parser = new PascalParser(lexer);
         }
-
+        private void Given_ParserNoNesting(string src)
+        {
+            var lexer = new PascalLexer(new StringReader(src), false);
+            this.parser = new PascalParser(lexer);
+        }
 
         [Test]
         public void PParser_Function_WithInline()
@@ -52,6 +57,15 @@ namespace Reko.UnitTests.Core.Pascal
             Assert.AreEqual("function foo(quux : integer^; var bar : integer) : boolean; inline $BADD, $FACE", decls[0].ToString());
         }
 
+
+        [Test]
+        public void PParser_Function_WithCdecl()
+        {
+            var src = "my_unit; interface FUNCTION myFn({CONST}VAR theAEDesc: AEDesc): Size; C; end.";
+            Given_Parser(src);
+            var decls = parser.ParseUnit();
+            Assert.AreEqual("function myFn(var theAEDesc : AEDesc) : Size; C", decls[0].ToString());
+        }
 
         [Test]
         public void PParser_Variant_Record()
@@ -109,6 +123,143 @@ END";
                     "a, b : integer " +
                 "end",
                 record.ToString());
+        }
+
+        [Test]
+        public void PParser_ProcedurePtr_Type_Definition()
+        {
+            var src =
+@"PROCEDURE(sourceCCB: TPCCB);
+";
+            Given_Parser(src);
+            var procPtr = parser.ParseType();
+            Assert.AreEqual("procedure(sourceCCB : TPCCB)", procPtr.ToString());
+        }
+
+        [Test]
+        public void PParser_FunctionPtr_Type_Definition()
+        {
+            var src =
+            "FUNCTION(typeCode: DescType; dataPtr: UNIV Ptr; dataSize: Size; toType: DescType; handlerRefcon: LONGINT; VAR result: AEDesc): OSErr";
+            Given_Parser(src);
+            var funcPtr = parser.ParseType();
+            Assert.AreEqual("function(typeCode : DescType; dataPtr : Ptr; dataSize : Size; toType : DescType; handlerRefcon : longint; var result : AEDesc) : OSErr", funcPtr.ToString());
+        }
+
+        [Test]
+        public void PParser_Div_Expression()
+        {
+            var src ="d/200";
+            Given_Parser(src);
+            var exp = parser.ParseExp();
+            Assert.AreEqual("(d / 200)", exp.ToString());
+        }
+
+        [Test]
+        public void PParser_C_Style_Ellipsis()
+        {
+            var src = 
+@" myunit; 
+interface 
+PROCEDURE printf(format: Str; ...); C;
+end.";
+            Given_Parser(src);
+            var decls = parser.ParseUnit();
+            Assert.AreEqual("procedure printf(format : Str; ...); C", decls[0].ToString());
+        }
+
+        [Test]
+        public void PParser_nested_comments()
+        {
+            var src =
+@"myunit;
+interface 
+const c = $0001; { (1 << 0); (* nest *) }
+end.";
+
+            Given_Parser(src);
+            var decls = parser.ParseUnit();
+            Assert.AreEqual("const c = 1", decls[0].ToString());
+        }
+
+        [Test]
+        public void PParser_comment_match_delimiters()
+        {
+            var src =
+@"
+myunit; interface
+const
+    a = 0;   (* simple *)
+    b = 42;     { (thing *) } 
+    c = $7E;   (* ASCII code for '}' *)
+end.
+";
+            Given_Parser(src);
+            var decls = parser.ParseUnit();
+            Assert.AreEqual("const a = 0", decls[0].ToString());
+            Assert.AreEqual("const b = 42", decls[1].ToString());
+            Assert.AreEqual("const c = 126", decls[2].ToString());
+        }
+
+        [Test]
+        public void PParser_comment_no_nesting()
+        {
+            var src =
+@"
+myunit; interface
+const
+    a = 0;   { (* simple *) }
+    b = 42;     { (thing *) } 
+end.
+";
+            Given_ParserNoNesting(src);
+            var decls = parser.ParseUnit();
+            Assert.AreEqual("const a = 0", decls[0].ToString());
+            Assert.AreEqual("const b = 42", decls[1].ToString());
+        }
+
+        [Test]
+        public void PParser_Parenthesized_Exp()
+        {
+            Given_Parser("(a + b)");
+            var e = parser.ParseExp();
+            Assert.AreEqual("(a + b)", e.ToString());
+        }
+
+        [Test]
+        public void PParser_Constant_with_type()
+        {
+            var src = 
+@"myunit; interface 
+CONST pi : double_t = 3.1415926535;
+end.";
+            var culture = CultureInfo.CurrentCulture;
+            try
+            {
+                CultureInfo.CurrentCulture = CultureInfo.CreateSpecificCulture("ru");
+                Given_Parser(src);
+                var decls = parser.ParseUnit();
+                Assert.AreEqual("const pi : double_t = 3.1415926535", decls[0].ToString());
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = culture;
+            }
+        }
+
+        [Test]
+        public void PParser_Object()    // MPW extension
+        {
+            var src =
+@"OBJECT
+    FUNCTION  a: TObject;
+    PROCEDURE b;
+    END;
+";
+            Given_Parser(src);
+            var t = parser.ParseType();
+            var sExp = @"object function a : TObject; procedure b end";
+            Assert.AreEqual(sExp, t.ToString());
         }
     }
 }

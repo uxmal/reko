@@ -36,7 +36,7 @@ namespace Reko.ImageLoaders.OdbgScript
         bool DialogMSG(string msg, out int input);
         bool DialogMSGYN(string msg, out int dialogResult);
         string Disassemble(byte[] buffer, Address addr, out int opsize);
-        MachineInstruction Disassemble(Address addr);
+        MachineInstruction? Disassemble(Address addr);
         ulong FindHandle(ulong var, string sClassName, ulong x, ulong y);
         bool FreeMemory(Address addr);
         bool FreeMemory(Address addr, ulong size);

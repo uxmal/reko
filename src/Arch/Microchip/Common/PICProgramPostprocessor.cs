@@ -45,6 +45,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             program = prog;
             architecture = arch;
             newMap = new SegmentMap(PICProgAddress.Ptr(0));
+            renamingCounter = null!;
         }
 
         public static Program Validate(Program prog, PICArchitecture arch)
@@ -164,7 +165,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             if (dcf != null)
             {
                 var dcr = PICMemoryDescriptor.GetDCR(dcf.RegAddress);
-                if (program.SegmentMap.TryFindSegment(dcr.Address, out ImageSegment xinstsegt))
+                if (dcr != null && program.SegmentMap.TryFindSegment(dcr.Address, out ImageSegment xinstsegt))
                 {
                     var mem = (ByteMemoryArea) xinstsegt.MemoryArea;
                     uint xinstval;

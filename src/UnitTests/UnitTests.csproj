@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)..\Drivers\Common.items" />
+    <Import Project="$(ProjectDir)..\Drivers\Common.items" />
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -16,13 +16,16 @@
   <ItemGroup>
     <ProjectReference Include="..\Arch\Alpha\Alpha.csproj">
     </ProjectReference>
+    <ProjectReference Include="..\Arch\Altera\Altera.csproj" />
     <ProjectReference Include="..\Arch\Arc\Arc.csproj" />
     <ProjectReference Include="..\Arch\Arm\Arm.csproj" />
     <ProjectReference Include="..\Arch\Avr\Avr.csproj" />
     <ProjectReference Include="..\Arch\Blackfin\Blackfin.csproj" />
+    <ProjectReference Include="..\Arch\C166\C166.csproj" />
     <ProjectReference Include="..\Arch\Cil\Cil.csproj" />
     <ProjectReference Include="..\Arch\CompactRisc\CompactRisc.csproj" />
     <ProjectReference Include="..\Arch\Cray\Cray.csproj" />
+    <ProjectReference Include="..\Arch\Etrax\Etrax.csproj" />
     <ProjectReference Include="..\Arch\H8\H8.csproj" />
     <ProjectReference Include="..\Arch\i8051\i8051.csproj" />
     <ProjectReference Include="..\Arch\IA64\IA64.csproj" />
@@ -63,6 +66,7 @@
     <ProjectReference Include="..\Environments\C64\C64.csproj" />
     <ProjectReference Include="..\Environments\Cpm\Cpm.csproj" />
     <ProjectReference Include="..\Environments\Dreamcast\Dreamcast.csproj" />
+    <ProjectReference Include="..\Environments\Gameboy\Gameboy.csproj" />
     <ProjectReference Include="..\Environments\Hpux\Hpux.csproj" />
     <ProjectReference Include="..\Environments\MacOS\MacOS.csproj" />
     <ProjectReference Include="..\Environments\MorphOS\MorphOS.csproj" />
@@ -95,6 +99,7 @@
     <ProjectReference Include="..\ImageLoaders\Nro\Nro.csproj" />
     <ProjectReference Include="..\ImageLoaders\OdbgScript\OdbgScript.csproj" />
     <ProjectReference Include="..\ImageLoaders\Omf\Omf.csproj" />
+    <ProjectReference Include="..\ImageLoaders\Pef\Pef.csproj" />
     <ProjectReference Include="..\ImageLoaders\Srec\Srec.csproj" />
     <ProjectReference Include="..\ImageLoaders\TypeLib\TypeLib.csproj" />
     <ProjectReference Include="..\ImageLoaders\VmsExe\VmsExe.csproj" />
@@ -105,6 +110,7 @@
     <ProjectReference Include="..\Libraries\Microchip\Utils\Microchip.Utils.csproj" />
     <ProjectReference Include="..\Libraries\Python\Python.csproj" />
     <ProjectReference Include="..\Native\NativeProxy.csproj" />
+    <ProjectReference Include="..\Scripts\Python\Python.csproj" />
     <ProjectReference Include="..\Symbols\LGSymLoader\LGSymLoader.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -118,13 +124,13 @@
     <None Remove="WindowsForms\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Moq" Version="4.13.1" />
-    <PackageReference Include="NUnit" Version="3.12.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0-preview-20200116-01" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
+    <PackageReference Include="Moq" Version="4.16.1" />
+    <PackageReference Include="NUnit" Version="3.13.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ImageLoaders\MzExe\Pe\" />
   </ItemGroup>
   <Target Name="CopyAllTheFiles" AfterTargets="CopyFilesToOutputDirectory">
     <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />

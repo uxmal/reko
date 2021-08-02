@@ -36,6 +36,7 @@ using System.Collections;
 using Reko.Core.Lib;
 using Reko.Core.Operators;
 using Reko.Arch.Arm.AArch32;
+using Reko.Core.Emulation;
 
 namespace Reko.Arch.Arm
 {
@@ -139,12 +140,7 @@ namespace Reko.Arch.Arm
 #endif
         }
 
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
+        public override IEqualityComparer<MachineInstruction>? CreateInstructionComparer(Normalize norm)
         {
             return null;
         }
@@ -168,14 +164,14 @@ namespace Reko.Arch.Arm
 #endif
         }
 
-        public override Core.CallingConvention GetCallingConvention(string name)
+        public override Core.CallingConvention GetCallingConvention(string? name)
         {
             // At this point, we're falling back onto the architecture-defined
             // calling convention.
             return new Arm32CallingConvention();
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
         {
             if (Registers.RegistersByDomain.TryGetValue(domain, out var reg))
                 return reg;
@@ -183,7 +179,7 @@ namespace Reko.Arch.Arm
                 return null;
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
             if (Registers.RegistersByName.TryGetValue(name, out var reg))
                 return reg;
@@ -274,12 +270,12 @@ namespace Reko.Arch.Arm
             return Address.Ptr32(uAddr);
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string txtAddress, out Address addr)
+        public override bool TryParseAddress(string? txtAddress, out Address addr)
         {
             return Address.TryParse32(txtAddress, out addr);
         }

@@ -68,7 +68,7 @@ namespace Reko.Arch.Sparc
             if (arch.Registers.IsGpRegister(reg) && valid[reg.Number])
                 return Constant.Create(reg.DataType, regs[reg.Number]);
             else
-                return Constant.Invalid;
+                return InvalidConstant.Create(reg.DataType);
         }
 
         public override void SetRegister(RegisterStorage reg, Constant v)
@@ -100,7 +100,7 @@ namespace Reko.Arch.Sparc
             return new CallSite(0, 0);
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
     }

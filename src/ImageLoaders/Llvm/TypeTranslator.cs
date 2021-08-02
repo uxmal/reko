@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -67,7 +67,7 @@ namespace Reko.ImageLoaders.LLVM
 
         public DataType VisitFunction(LLVMFunctionType fn)
         {
-            return TranslateFn(fn.ReturnType, fn.Parameters, new StorageBinder());
+            return TranslateFn(fn.ReturnType!, fn.Parameters!, new StorageBinder());
         }
 
         private DataType TranslateFn(LLVMType retType, List<LLVMParameter> parameters, IStorageBinder binder)
@@ -85,7 +85,7 @@ namespace Reko.ImageLoaders.LLVM
                 }
                 else
                 {
-                    var pt = param.Type.Accept(this);
+                    var pt = param.Type!.Accept(this);
                     var id = binder.CreateTemporary(pt);
                     sigParameters.Add(id);
                 }
@@ -103,7 +103,7 @@ namespace Reko.ImageLoaders.LLVM
         {
             var str = new Reko.Core.Types.StructureType(null, 0, true);
             int offset = 0;
-            foreach (var field in s.Fields)
+            foreach (var field in s.Fields!)
             {
                 var ft = field.Accept(this);
                 str.Fields.Add(offset, ft);

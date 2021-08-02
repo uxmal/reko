@@ -91,7 +91,7 @@ namespace Reko.Arch.Pdp11
             }
             else
             {
-                return Constant.Invalid;
+                return InvalidConstant.Create(r.DataType);
             }
         }
 
@@ -108,7 +108,7 @@ namespace Reko.Arch.Pdp11
             return new CallSite(returnSize, 0);
         }
 
-        public override void OnAfterCall(FunctionType sigCallee)
+        public override void OnAfterCall(FunctionType? sigCallee)
         {
         }
     }

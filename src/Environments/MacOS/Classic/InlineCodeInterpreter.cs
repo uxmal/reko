@@ -25,6 +25,7 @@ using Reko.Core.Pascal;
 using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,14 +41,17 @@ namespace Reko.Environments.MacOS.Classic
         private IDictionary<string, Constant> constants;
         private ushort[] uOpcodes;
         private List<SerializedRegValue> regValues;
-        private Stack<Tuple<int, string>> stackValues;
+        private Stack<(int, string?)> stackValues;
 
         public InlineCodeInterpreter(IDictionary<string, Constant> constants)
         {
             this.constants = constants;
+            this.uOpcodes = null!;
+            this.regValues = null!;
+            this.stackValues = null!;
         }
 
-        public SerializedService BuildSystemCallFromMachineCode(
+        public SerializedService? BuildSystemCallFromMachineCode(
             string name,
             SerializedSignature ssig,
             List<Exp> opcodes)
@@ -61,11 +65,11 @@ namespace Reko.Environments.MacOS.Classic
             {
                 return PascalSystemCall(name, ssig, uOpcodes[0]);
             }
-            int iArg = ssig.Arguments.Length-1;
+            int iArg = ssig.Arguments!.Length-1;
             int vector = 0;
             int iOpcode;
             this.regValues = new List<SerializedRegValue>();
-            this.stackValues = new Stack<Tuple<int, string>>();
+            this.stackValues = new Stack<(int, string?)>();
             for (iOpcode = 0; iOpcode < uOpcodes.Length; ++iOpcode)
             {
                 ushort uInstr = uOpcodes[iOpcode];
@@ -89,7 +93,7 @@ namespace Reko.Environments.MacOS.Classic
                     continue;
                 }
                 var stackValue = PushConstant(uInstr, uOpcodes, ref iOpcode);
-                if (stackValue != null)
+                if (stackValue.sValue != null)
                 {
                     stackValues.Push(stackValue);
                     continue;
@@ -101,16 +105,23 @@ namespace Reko.Environments.MacOS.Classic
                     regValue = regValues[i];
                     regValues.RemoveAt(i);
 
-                    stackValues.Push(Tuple.Create(4, regValue.Value));
+                    stackValues.Push((4, regValue.Value));
                     continue;
                 }
+                if (IsIgnorable(uInstr, ref iOpcode))
+                {
+                    continue;
+                }
+
                 if (IsALineTrap(uInstr))
                 {
                     vector = uInstr;
                     ++iOpcode;
                     break;
                 }
-                throw new NotImplementedException(string.Format("uInstr: {0:X4}", uInstr));
+                Debug.Print("****** pre: uInstr: {0:X4}", uInstr);
+                return null;
+                //throw new NotImplementedException(string.Format("uInstr: {0:X4}", uInstr));
             }
             if (iOpcode < uOpcodes.Length)
             {
@@ -126,7 +137,9 @@ namespace Reko.Environments.MacOS.Classic
                         ssig.ReturnValue.Kind = new Register_v1 { Name = reg.Name };
                         continue;
                     }
-                    throw new NotImplementedException(string.Format("uInstr: {0:X4}", uInstr));
+                    Debug.Print("****** post: uInstr: {0:X4}", uInstr);
+                    return null;
+                    //throw new NotImplementedException(string.Format("uInstr: {0:X4}", uInstr));
                 }
             }
             if (vector == 0)
@@ -159,16 +172,21 @@ namespace Reko.Environments.MacOS.Classic
             };
         }
 
-        private RegisterStorage PushRegister(ushort uInstr)
+        private RegisterStorage? PushRegister(ushort uInstr)
         {
-            if ((uInstr & 0xFFF8) == 0x2F00)    // move.l dN,-(a7)
+            var opcode = (uInstr & 0xFFF8);
+            switch (opcode)
             {
+            case 0x2F00:    // move.l dN,-(a7)
+            case 0x3F00:    // move.w dN,-(a7)
                 return Registers.DataRegister(uInstr & 7);
+            case 0x2F08:    // move.l aN,-(a7)
+                return Registers.AddressRegister(uInstr & 7);
             }
             return null;
         }
 
-        private SerializedRegValue InlineConstant(ushort uInstr, ushort[] uOpcodes, ref int i)
+        private SerializedRegValue? InlineConstant(ushort uInstr, ushort[] uOpcodes, ref int i)
         {
             RegisterStorage reg;
             switch (uInstr & 0xF1FF)
@@ -188,42 +206,63 @@ namespace Reko.Environments.MacOS.Classic
             }
         }
 
-        private Tuple<int, string> PushConstant(ushort uInstr, ushort[] uOpcodes, ref int i)
+        bool IsIgnorable(ushort uInstr, ref int i)
+        {
+            switch (uInstr)
+            {
+            case 0x1010:    // move.l (a0),d0
+                return true;
+            case 0x2038:    // move.l   <w16>,dN
+                i += 1;     // Skip short address
+                return true;
+            case 0x4840:    // swap.l d0
+                return true;
+            }
+            return false;
+        }
+
+        private (int cBytes, string? sValue) PushConstant(ushort uInstr, ushort[] uOpcodes, ref int i)
         {
             switch (uInstr)
             {
             case 0x2F3C:        // move.l <w32>,-(a7)
                 i += 2; 
-                return Tuple.Create(4, (uOpcodes[i - 1] << 16 | uOpcodes[i]).ToString("X8"));
+                return (4, (uOpcodes[i - 1] << 16 | uOpcodes[i]).ToString("X8"));
             case 0x3F3C:        // move.w <w16>,-(a7)
                 i += 1;
-                return Tuple.Create(2, (uOpcodes[i]).ToString("X4"));
+                return (2, (uOpcodes[i]).ToString("X4"));
             case 0x4267:        // clr.w -(a7)
-                return Tuple.Create(2, "0000");
+                return (2, "0000");
             case 0x42A7:        // clr.l -(a7)
-                return Tuple.Create(4, "00000000");
+                return (4, "00000000");
             default:
-                return null;
+                return (0, null);
             }
         }
 
-        private RegisterStorage PostCallRegisterStore(ushort uInstr)
+        private RegisterStorage? PostCallRegisterStore(ushort uInstr)
         {
             var uMasked = uInstr & 0xFFF8;
             switch (uMasked)
             {
             case 0x1E80:    // move.b (sp),dX
             case 0x2E80:    // move.w (sp),dX
+            case 0x2080:    // move.l dX,(a0)
+            case 0x2280:    // move.w d0,(a1)
             case 0x3E80:    // move.l (sp),dX
+            case 0x5240:    // addq.w #1,dX
+            case 0x1080:    // move.b dX,(a0)
                 return Registers.DataRegister(uInstr & 7);
             case 0x2E88:    // movea  (sp),aX
+            case 0x2288:    // move.l aX,aY
                 return Registers.AddressRegister(uInstr & 7);
-            default:
-                return null;
             }
+            //case 0x2257:    // move.w (sp+),aX
+            //if (uInstr == )
+            return null;
         }
 
-        private SerializedRegValue QuickConstant(ushort uInstr)
+        private SerializedRegValue? QuickConstant(ushort uInstr)
         {
             if ((uInstr & 0xF100) == 0x7000)
             {
@@ -235,16 +274,16 @@ namespace Reko.Environments.MacOS.Classic
             return null;
         }
 
-        private RegisterStorage PopRegister(ushort uInstr)
+        private RegisterStorage? PopRegister(ushort uInstr)
         {
             switch (uInstr & 0xF1FF)
             {
-            case 0x205F:
-                // movea $(sp)+,aX
+            case 0x205F:    // movea $(sp)+,aX
+            case 0x305F:    // movea.w $(sp)+,aX
                 return Registers.AddressRegister((uInstr >> 9) & 7);
-            case 0x201F:
-            case 0x301F:
-                // move $(sp)+,dX
+            case 0x101F:    // move.b $(sp)+,dX
+            case 0x201F:    // move.l $(sp)+,dX
+            case 0x301F:    // move.w $(sp)+,dX
                 return Registers.DataRegister((uInstr >> 9) & 7);
             default:
                 return null;
@@ -267,16 +306,14 @@ namespace Reko.Environments.MacOS.Classic
 
         public ushort EvaluateOpcode(Exp exp)
         {
-            Id id = exp as Id;
-            if (id != null)
+            if (exp is Id id)
             {
                 var n = constants[id.Name];
-                return (ushort)n.ToInt64();
+                return (ushort) n.ToInt64();
             }
-            var num = exp as NumericLiteral;
-            if (num != null)
+            if (exp is NumericLiteral num)
             {
-                return (ushort)num.Value;
+                return (ushort) num.Value;
             }
             throw new NotImplementedException();
         }

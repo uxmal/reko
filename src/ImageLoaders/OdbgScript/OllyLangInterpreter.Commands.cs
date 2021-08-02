@@ -60,17 +60,17 @@ namespace Reko.ImageLoaders.OdbgScript
                 {
                     return SetFloat(args[0], flt1 + dw2);
                 }
-                else if (GetString(args[0], out string str1) && GetRulong(args[1], out dw2))
+                else if (GetString(args[0], out string? str1) && GetRulong(args[1], out dw2))
                 {
                     Var v1 = Var.Create(str1), v2 = Var.Create(dw2);
                     Var v3 = v1 + v2;
-                    return SetString(args[0], v3.str);
+                    return SetString(args[0], v3.str!);
                 }
-                else if ((GetString(args[0], out str1) && GetAnyValue(args[1], out string str2)) || (GetAnyValue(args[0], out str1) && GetAnyValue(args[1], out str2)))
+                else if ((GetString(args[0], out str1) && GetAnyValue(args[1], out string? str2)) || (GetAnyValue(args[0], out str1) && GetAnyValue(args[1], out str2)))
                 {
-                    Var v1 = Var.Create(str1), v2 = Var.Create(str2);
+                    Var v1 = Var.Create(str1!), v2 = Var.Create(str2!);
                     Var v3 = v1 + v2;
-                    return SetString(args[0], v3.str);
+                    return SetString(args[0], v3.str!);
                 }
             }
             return false;
@@ -215,7 +215,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 if (args.Length == 2 && !GetRulong(args[1], out @base))
                     return false;
 
-                variables["$RESULT"] = Var.Create(Helper.str2rul(str, (uint)@base));
+                variables["$RESULT"] = Var.Create(Helper.str2rul(str, (uint) @base));
                 return true;
             }
             return false;
@@ -463,7 +463,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 expression = 'C' + expression; // 0x43
                 Insertname(addr, NM_BREAKEXPR, expression);
                 return true;
-                */ 
+                */
             }
             return false;
         }
@@ -607,7 +607,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 case Var.etype.STR: // empty buf + str . buf
                     if (!v.IsBuf)
                     {
-                        v = Var.Create("##") + v.str;
+                        v = Var.Create("##") + v.str!;
                         variables[id.Name] = v;
                     }
                     break;
@@ -688,19 +688,19 @@ rulong hwnd;
                     v1 = Var.Create(flt1);
                     v2 = Var.Create(flt2);
                 }
-                else if (GetAnyValue(args[0], out string s1, true) && GetAnyValue(args[1], out string s2, true))
+                else if (GetAnyValue(args[0], out string? s1, true) && GetAnyValue(args[1], out string? s2, true))
                 {
                     // see also SCMP command, code is not finished here...
-                    v1 = Var.Create(s1);
-                    v2 = Var.Create(s2);
+                    v1 = Var.Create(s1!);
+                    v2 = Var.Create(s2!);
                 }
                 else
                     return false;
 
                 if (size > 0)
                 {
-                    v1.resize((int)size);
-                    v2.resize((int)size);
+                    v1.resize((int) size);
+                    v2.resize((int) size);
                 }
 
                 int res = v1.Compare(v2); //Error if -2 (type mismatch)
@@ -825,7 +825,7 @@ rulong hwnd;
 
                 // Truncate existing file
                 var fsSvc = services.RequireService<IFileSystemService>();
-                using (Stream hfile =  fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write))
+                using (Stream hfile = fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write))
                 {
                 }
                 return DoDMA(args);
@@ -839,14 +839,14 @@ rulong hwnd;
                 GetAddress(args[0], out Address addr) &&
                 GetRulong(args[1], out ulong uSize) &&
                 GetString(args[2], out string filename))
-	{
+            {
                 int size = (int) uSize;
                 if (!Path.IsPathRooted(filename))
                     filename = Path.Combine(Host.TE_GetTargetDirectory(), filename);
 
-		variables["$RESULT"] = Var.Create(size);
+                variables["$RESULT"] = Var.Create(size);
 
-                Stream hFile = null;
+                Stream? hFile = null;
                 try
                 {
                     hFile = new FileStream(filename, FileMode.Append, FileAccess.Write);
@@ -879,7 +879,7 @@ rulong hwnd;
                 }
                 finally
                 {
-                    hFile.Close();
+                    hFile?.Close();
                 }
             }
             return false;
@@ -1026,7 +1026,7 @@ rulong hwnd;
 
                     for (int i = first; i < ende; i++)
                     {
-                        string line = InterpolateVariables(Script.Lines[(int)i].RawLine, true);
+                        string line = InterpolateVariables(Script.Lines[(int)i].RawLine!, true);
                         len = Host.Assemble(line, pmemforexec + totallen);
                         if (len == 0)
                         {
@@ -1158,7 +1158,7 @@ rulong hwnd;
             //$REVIEW: extremely inefficient O(n*m) algorithm, do we care?
             if (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo))
             {
-                int memlen = (int) ((MemInfo.BaseAddress - addr) + (long) MemInfo.RegionSize);
+                int memlen = (int) ((MemInfo.BaseAddress! - addr) + (long) MemInfo.RegionSize);
                 if (maxsize != 0 && (int)maxsize < memlen)
                     memlen = (int)maxsize;
 
@@ -1526,7 +1526,7 @@ rulong hwnd;
                     // search in current mem block
                     if (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo))
                     {
-                        rulong memlen = (rulong) (MemInfo.BaseAddress - addr) + MemInfo.RegionSize;
+                        rulong memlen = (rulong) (MemInfo.BaseAddress! - addr) + MemInfo.RegionSize;
                         if (maxsize != 0 && maxsize < memlen)
                             memlen = maxsize;
 
@@ -1569,16 +1569,16 @@ rulong hwnd;
         {
             if (args.Length >= 1 && args.Length <= 2)
             {
-                Address addr = null;
+                Address addr = null!;
                 if (args.Length == 2 && !GetAddress(args[1], out addr))
                     return false;
 
                 variables["$RESULT"] = Var.Create(0);
-                while (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo) && variables["$RESULT"].ToUInt64() == 0)
+                while (Host.TE_GetMemoryInfo(addr!, out MEMORY_BASIC_INFORMATION MemInfo) && variables["$RESULT"].ToUInt64() == 0)
                 {
                     if (!DoFIND(addr, args[0]))
                         return false;
-                    addr = MemInfo.BaseAddress + MemInfo.RegionSize;
+                    addr = MemInfo.BaseAddress! + MemInfo.RegionSize;
                 }
                 return true;
             }
@@ -1692,9 +1692,8 @@ rulong hwnd;
                 var param = cmd.Name.ToUpperInvariant();
                 if (param == "COMMAND")
                 {
-                    int size = 0;
                     var instr = Host.Disassemble(addr);
-                    if (size != 0)
+                    if (instr != null)
                         variables["$RESULT"] = Var.Create(instr.ToString());
                     else
                         variables["$RESULT"] = Var.Create(0);
@@ -1795,12 +1794,12 @@ rulong addr;
                 {
                     for (int i = 0; i < modules.Count; i++)
                     {
-                        string cur = modules[i].szModule;
+                        string cur = modules[i].szModule!;
                         if (cur.Length > 8)
                             cur = cur.Remove(8);
                         if (cur.ToLowerInvariant() == mod)
                         {
-                            return DoGMI(modules[i].modBaseAddr, args[1]);
+                            return DoGMI(modules[i].modBaseAddr!, args[1]);
                         }
                     }
                 }
@@ -1820,7 +1819,7 @@ rulong addr;
                 {
                     var val = cmd.Name.ToUpperInvariant();
 
-                    if (val == "MEMORYBASE") variables["$RESULT"] = Var.Create(MemInfo.BaseAddress);
+                    if (val == "MEMORYBASE") variables["$RESULT"] = Var.Create(MemInfo.BaseAddress!);
                     else if (val == "MEMORYSIZE") variables["$RESULT"] = Var.Create(MemInfo.RegionSize);
                     else if (val == "MEMORYOWNER") variables["$RESULT"] = Var.Create((rulong) MemInfo.AllocationBase);
                     else
@@ -2517,7 +2516,7 @@ string str = "";
 
                 if (Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo))
                 {
-                    rulong memsize = (rulong) (MemInfo.BaseAddress - addr) + MemInfo.RegionSize;
+                    rulong memsize = (rulong) (MemInfo.BaseAddress! - addr) + MemInfo.RegionSize;
 
                     byte[] buffer;
 
@@ -3138,10 +3137,10 @@ string filename;
 
         private bool DoMSG(Expression[] args)
         {
-            if (args.Length == 1 && GetAnyValue(args[0], out string msg))
+            if (args.Length == 1 && GetAnyValue(args[0], out string? msg))
             {
                 Debug.Print("OllyLang: {0}", msg);
-                if (Host.DialogMSG(msg, out int input))
+                if (Host.DialogMSG(msg!, out int input))
                 {
                     if (input == -1) // IDCANCEL)
                         return Pause();
@@ -3359,7 +3358,7 @@ string param;
         {
             if (args.Length >= 0 && args.Length <= 1)
             {
-                Address addr = null;
+                Address? addr = null;
                 if (args.Length == 1 && !GetAddress(args[0], out addr))
                     return false;
                 else if (args.Length == 0)
@@ -3367,10 +3366,10 @@ string param;
 
                 variables["$RESULT"] = Var.Create(0);
 
-                int prevsize = Host.LengthDisassembleBackEx(addr);
+                int prevsize = Host.LengthDisassembleBackEx(addr!);
                 if (prevsize != 0)
                 {
-                    variables["$RESULT"] = Var.Create(addr - prevsize);
+                    variables["$RESULT"] = Var.Create(addr! - prevsize);
                 }
                 return true;
             }
@@ -3534,7 +3533,7 @@ string param;
                     if (!Host.TE_GetMemoryInfo(addr, out MEMORY_BASIC_INFORMATION MemInfo))
                         return true;
 
-                    len = (rulong) (MemInfo.BaseAddress - addr) + MemInfo.RegionSize;
+                    len = (rulong) (MemInfo.BaseAddress! - addr) + MemInfo.RegionSize;
                 }
                 int oplen = v1.Length;
                 if (oplen != v2.Length)
@@ -3543,7 +3542,7 @@ string param;
                     return false;
                 }
 
-                byte[] membuf = null, mask1 = null, mask2 = null, bytes1 = null, bytes2;
+                byte[]? membuf = null, mask1 = null, mask2 = null, bytes1 = null, bytes2;
                 membuf = new byte[len];
                 if (Host.TryReadBytes(addr, (int)len, membuf))
                 {
@@ -4147,7 +4146,7 @@ string filename, data;
         private bool DoWRTA(Expression[] args)
         {
             string @out = "\r\n";
-            if (args.Length >= 2 && args.Length <= 3 && GetString(args[0], out string filename) && GetAnyValue(args[1], out string data))
+            if (args.Length >= 2 && args.Length <= 3 && GetString(args[0], out string filename) && GetAnyValue(args[1], out string? data))
             {
                 if (args.Length == 3 && !GetString(args[2], out @out))
                     return false;

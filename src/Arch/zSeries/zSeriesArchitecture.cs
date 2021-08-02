@@ -26,9 +26,6 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.Arch.zSeries
 {
@@ -50,11 +47,6 @@ namespace Reko.Arch.zSeries
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new zSeriesDisassembler(this, imageReader);
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -132,11 +124,6 @@ namespace Reko.Arch.zSeries
         public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
         {
             yield return Registers.CC;
-        }
-
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            return reg;
         }
 
         public override string GrfToString(RegisterStorage flagRegister, string prefix, uint grf)

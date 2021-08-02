@@ -30,6 +30,7 @@ using TWord = System.UInt32;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Core.Memory;
+using Reko.Core.Emulation;
 
 namespace Reko.Environments.Windows
 {
@@ -80,11 +81,12 @@ namespace Reko.Environments.Windows
             Module module, 
             string procName,
             Action<IProcessorEmulator> emulator,
-            ProcedureCharacteristics chars = null)
+            ProcedureCharacteristics? chars = null)
         {
             if (!module.Procedures.TryGetValue(procName, out SimulatedProc proc))
             {
-                var extProc = platform.LookupProcedureByName(module.Name, procName);
+                //$REVIEW: LookupProcedureByName could return null.
+                var extProc = platform.LookupProcedureByName(module.Name, procName)!;
                 proc = new SimulatedProc(procName, emulator)
                 {
                     Signature = extProc.Signature
@@ -104,13 +106,15 @@ namespace Reko.Environments.Windows
         {
             foreach (var imp in importReferences)
             {
-                uint pseudoPfn = ((SimulatedProc)imp.Value.ResolveImportedProcedure(this, null, null)).uFakedAddress;
+                uint pseudoPfn = ((SimulatedProc)imp.Value.ResolveImportedProcedure(this, null!, null!)).uFakedAddress;
                 WriteLeUInt32(imp.Key, pseudoPfn);
             }
         }
 
-        ExternalProcedure IDynamicLinker.ResolveProcedure(string moduleName, string importName, IPlatform platform)
+        ExternalProcedure? IDynamicLinker.ResolveProcedure(string? moduleName, string importName, IPlatform platform)
         {
+            if (moduleName is null)
+                return null;
             Module module = EnsureModule(moduleName);
             return EnsureProc(module, importName, NYI);
         }
@@ -267,9 +271,12 @@ namespace Reko.Environments.Windows
             return stackSeg;
         }
 
-        public void TearDownStack(ImageSegment stackSeg)
+        public void TearDownStack(ImageSegment? stackSeg)
         {
-            this.map.Segments.Remove(stackSeg.Address);
+            if (stackSeg != null)
+            {
+                this.map.Segments.Remove(stackSeg.Address);
+            }
         }
 
         public bool InterceptCall(IProcessorEmulator emu, TWord l)
@@ -285,7 +292,7 @@ namespace Reko.Environments.Windows
             throw new NotImplementedException();
         }
 
-        public Expression ResolveImport(string moduleName, string name, IPlatform platform)
+        public Expression ResolveImport(string? moduleName, string name, IPlatform platform)
         {
             throw new NotImplementedException();
         }

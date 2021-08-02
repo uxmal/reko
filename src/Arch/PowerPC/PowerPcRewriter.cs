@@ -53,6 +53,10 @@ namespace Reko.Arch.PowerPC
             this.binder = binder;
             this.host = host;
             this.dasm = instrs.GetEnumerator();
+            this.rdr = null!;
+            this.instr = null!;
+            this.m = null!;
+            this.rtlInstructions = null!;
         }
 
         public PowerPcRewriter(PowerPcArchitecture arch, EndianImageReader rdr, IStorageBinder binder, IRewriterHost host)
@@ -62,6 +66,9 @@ namespace Reko.Arch.PowerPC
             this.host = host;
             this.rdr = rdr;
             this.dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();
+            this.instr = null!;
+            this.m = null!;
+            this.rtlInstructions = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -148,10 +155,12 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.cmpwi: RewriteCmpwi(); break;
                 case Mnemonic.cntlzd: RewriteCntlz("__cntlzd", PrimitiveType.Word64); break;
                 case Mnemonic.cntlzw: RewriteCntlz("__cntlzw", PrimitiveType.Word32); break;
-                case Mnemonic.creqv: RewriteCreqv(); break;
-                case Mnemonic.cror: RewriteCror(); break;
-                case Mnemonic.crnor: RewriteCrnor(); break;
-                case Mnemonic.crxor: RewriteCrxor(); break;
+                case Mnemonic.creqv: RewriteCrLogical("__creqv"); break;
+                case Mnemonic.cror:  RewriteCrLogical("__cror"); break;
+                case Mnemonic.crorc: RewriteCrLogical("__crorc"); break;
+                case Mnemonic.crnand: RewriteCrLogical("__crnand"); break;
+                case Mnemonic.crnor: RewriteCrLogical("__crnor"); break;
+                case Mnemonic.crxor: RewriteCrLogical("__crxor"); break;
                 case Mnemonic.dcbf: RewriteDcbf(); break;
                 case Mnemonic.dcbi: RewriteDcbi(); break;
                 case Mnemonic.dcbst: RewriteDcbst(); break;
@@ -228,6 +237,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.lhzx: RewriteLzx(PrimitiveType.Word16, arch.WordWidth); break;
                 case Mnemonic.lmw: RewriteLmw(); break;
                 case Mnemonic.lq: RewriteLq(); break;
+                case Mnemonic.lswi: RewriteLswi(); break;
                 case Mnemonic.lvewx: RewriteLvewx(); break;
                 case Mnemonic.lvlx:
                 case Mnemonic.lvlx128: RewriteLvlx(); break;
@@ -265,6 +275,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.mullw: RewriteMull(); break;
                 case Mnemonic.neg: RewriteNeg(); break;
                 case Mnemonic.nand: RewriteAnd(true); break;
+                case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.nor: RewriteOr(true); break;
                 case Mnemonic.or: RewriteOr(false); break;
                 case Mnemonic.orc: RewriteOrc(); break;
@@ -339,6 +350,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.sthu: RewriteStu(PrimitiveType.Word16); break;
                 case Mnemonic.sthx: RewriteStx(PrimitiveType.Word16); break;
                 case Mnemonic.stmw: RewriteStmw(); break;
+                case Mnemonic.stswi: RewriteStswi(); break;
                 case Mnemonic.stvewx: RewriteStvewx(); break;
                 case Mnemonic.stvx: RewriteStx(PrimitiveType.Word128); break;
                 case Mnemonic.stvx128: RewriteStx(PrimitiveType.Word128); break;
@@ -398,6 +410,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.vmrghw128: RewriteVmrghw(); break;
                 case Mnemonic.vmrglw:
                 case Mnemonic.vmrglw128: RewriteVmrglw(); break;
+                case Mnemonic.vmsumshm: RewriteVectorTernaryOp("__vmsumshm", false, PrimitiveType.Int16); break;
                 case Mnemonic.vmsub3fp128: RewriteVectorBinOp("__vmsub3fp", false, PrimitiveType.Real32); break;
                 case Mnemonic.vmsub4fp128: RewriteVectorBinOp("__vmsub4fp", false, PrimitiveType.Real32); break;  //$REVIEW: is it correct?
                 case Mnemonic.vmulfp128: RewriteVectorBinOp("__vmulfp", false, PrimitiveType.Real32); break;         //$REVIEW: is it correct?
@@ -445,10 +458,16 @@ namespace Reko.Arch.PowerPC
             return Constant.Create(arch.WordWidth, imm.Value.ToInt32() << 16);
         }
 
+
+        private Expression ImmOperand(int iop) => ImmOperand(instr.Operands[iop]);
+
         private Expression ImmOperand(MachineOperand op)
         {
             return ((ImmediateOperand) op).Value;
         }
+
+        private Expression RewriteOperand(int iop, bool maybe0 = false) =>
+            RewriteOperand(instr.Operands[iop], maybe0);
 
         private Expression RewriteOperand(MachineOperand op, bool maybe0 = false)
         {
@@ -459,7 +478,7 @@ namespace Reko.Arch.PowerPC
                     return Constant.Zero(rOp.Register.DataType);
                 if (arch.IsCcField(rOp.Register))
                 {
-                    return binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(rOp.Register));
+                    return binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(rOp.Register)!);
                 }
                 else
                 {
@@ -485,7 +504,7 @@ namespace Reko.Arch.PowerPC
                     return Constant.Zero(rOp.Register.DataType);
                 if (arch.IsCcField(rOp.Register))
                 {
-                    return binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(rOp.Register));
+                    return binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(rOp.Register)!);
                 }
                 else
                 {

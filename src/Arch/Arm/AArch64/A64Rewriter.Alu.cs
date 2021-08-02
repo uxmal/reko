@@ -35,7 +35,7 @@ namespace Reko.Arch.Arm.AArch64
 {
     public partial class A64Rewriter
     {
-        private void RewriteAdcSbc(Func<Expression,Expression,Expression> opr, Action<Expression> setFlags = null)
+        private void RewriteAdcSbc(Func<Expression,Expression,Expression> opr, Action<Expression>? setFlags = null)
         {
             var opSrc1 = RewriteOp(instr.Operands[1]);
             var opSrc2 = RewriteOp(instr.Operands[2]);
@@ -63,7 +63,7 @@ namespace Reko.Arch.Arm.AArch64
             Func<Expression, Expression, Expression> fn,
             string simdFormat, 
             Domain domain = Domain.None, 
-            Action<Expression> setFlags = null)
+            Action<Expression>? setFlags = null)
         {
             if (instr.vectorData != VectorData.Invalid || instr.Operands[0] is VectorRegisterOperand vr)
             {
@@ -91,7 +91,7 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
-        private void RewriteBinary(Func<Expression, Expression, Expression> fn, Action<Expression> setFlags = null)
+        private void RewriteBinary(Func<Expression, Expression, Expression> fn, Action<Expression>? setFlags = null)
         {
             var dst = RewriteOp(instr.Operands[0]);
             var left = RewriteOp(instr.Operands[1], true);
@@ -110,7 +110,7 @@ namespace Reko.Arch.Arm.AArch64
                 !(instr.shiftAmount is ImmediateOperand imm) ||
                 !imm.Value.IsIntegerZero))
             {
-                var amt = RewriteOp(instr.shiftAmount);
+                var amt = RewriteOp(instr.shiftAmount!);
                 switch (instr.shiftCode)
                 {
                 case Mnemonic.asr: right = m.Sar(right, amt); break;
@@ -246,7 +246,7 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteLoadAcquire(string nameFormat, DataType dtDst)
         {
             var mem = (MemoryOperand) instr.Operands[1];
-            var ptr = new Pointer(dtDst, (int)mem.Base.BitSize);
+            var ptr = new Pointer(dtDst, (int)mem.Base!.BitSize);
             var ea = m.AddrOf(ptr, m.Mem(dtDst, binder.EnsureRegister(mem.Base)));
             var value = host.Intrinsic(string.Format(nameFormat, dtDst.Name), false, dtDst, ea);
             var dst = RewriteOp(0);
@@ -260,18 +260,18 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
-        private void RewriteLoadStorePair(bool load, DataType dtDst = null, DataType dtCast = null)
+        private void RewriteLoadStorePair(bool load, DataType? dtDst = null, DataType? dtCast = null)
         {
             var reg1 = RewriteOp(instr.Operands[0], !load);
             var reg2 = RewriteOp(instr.Operands[1], !load);
             var mem = (MemoryOperand)instr.Operands[2];
-            Expression regBase = binder.EnsureRegister(mem.Base);
-            Expression offset = RewriteEffectiveAddressOffset(mem);
+            Expression regBase = binder.EnsureRegister(mem.Base!);
+            Expression? offset = RewriteEffectiveAddressOffset(mem);
             Expression ea = regBase;
-            dtDst = dtDst ?? reg1.DataType;
+            dtDst ??= reg1.DataType;
             if (mem.PreIndex)
             {
-                m.Assign(ea, m.IAdd(ea, offset));
+                m.Assign(ea, m.IAdd(ea, offset!));
             }
             else
             {
@@ -316,14 +316,14 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
-        private void RewriteLdr(DataType dt, DataType dtDst = null)
+        private void RewriteLdr(DataType? dt, DataType? dtDst = null)
         {
             var dst = RewriteOp(instr.Operands[0]);
-            dtDst = dtDst ?? dst.DataType;
+            dtDst ??= dst.DataType;
             Expression ea;
-            MemoryOperand mem = null;
-            Identifier baseReg = null;
-            Expression postIndex = null;
+            MemoryOperand? mem = null;
+            Identifier? baseReg = null;
+            Expression? postIndex = null;
             if (instr.Operands[1] is AddressOperand aOp)
             {
                 ea = aOp.Address;
@@ -354,7 +354,7 @@ namespace Reko.Arch.Arm.AArch64
             }
             if (postIndex != null)
             {
-                m.Assign(baseReg, postIndex);
+                m.Assign(baseReg!, postIndex);
             }
         }
 
@@ -406,7 +406,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             var dst = (Identifier)RewriteOp(instr.Operands[0]);
             var imm = ((ImmediateOperand)instr.Operands[1]).Value;
-            var shift = ((ImmediateOperand)instr.shiftAmount).Value;
+            var shift = ((ImmediateOperand)instr.shiftAmount!).Value;
             m.Assign(dst, m.Dpb(dst, imm, shift.ToInt32()));
         }
 
@@ -429,7 +429,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             var dst = RewriteOp(instr.Operands[0]);
             var imm = ((ImmediateOperand)instr.Operands[1]).Value;
-            var shift = ((ImmediateOperand)instr.shiftAmount).Value;
+            var shift = ((ImmediateOperand)instr.shiftAmount!).Value;
             m.Assign(dst, Constant.Word(dst.DataType.BitSize, imm.ToInt64() << shift.ToInt32()));
         }
 
@@ -474,9 +474,9 @@ namespace Reko.Arch.Arm.AArch64
         /// </summary>
         private (Expression, Identifier) RewriteEffectiveAddress(MemoryOperand mem)
         {
-            Identifier baseReg = binder.EnsureRegister(mem.Base);
+            Identifier baseReg = binder.EnsureRegister(mem.Base!);
             Expression ea = baseReg;
-            Expression offset = RewriteEffectiveAddressOffset(mem);
+            Expression? offset = RewriteEffectiveAddressOffset(mem);
             if (offset != null)
             {
                 ea = m.IAdd(ea, offset);
@@ -484,11 +484,11 @@ namespace Reko.Arch.Arm.AArch64
             return (ea, baseReg);
         }
 
-        private Expression RewriteEffectiveAddressOffset(MemoryOperand mem)
+        private Expression? RewriteEffectiveAddressOffset(MemoryOperand mem)
         { 
             if (mem.Offset != null && !mem.Offset.IsIntegerZero)
             {
-                return Constant.Int(mem.Base.DataType, mem.Offset.ToInt32());
+                return Constant.Int(mem.Base!.DataType, mem.Offset.ToInt32());
             }
             else if (mem.Index != null)
             {
@@ -628,17 +628,17 @@ namespace Reko.Arch.Arm.AArch64
         {
             var src1 = RewriteOp(0, false);
             var ea = binder.CreateTemporary(new Pointer(dataType, arch.PointerType.BitSize));
-            m.Assign(ea, m.AddrOf(ea.DataType, m.Mem(dataType, binder.EnsureRegister(((MemoryOperand) instr.Operands[1]).Base))));
+            m.Assign(ea, m.AddrOf(ea.DataType, m.Mem(dataType, binder.EnsureRegister(((MemoryOperand) instr.Operands[1]).Base!))));
             m.SideEffect(host.Intrinsic($"__store_release_{dataType.BitSize}", false, VoidType.Instance, ea, src1));
         }
 
-        private void RewriteStr(PrimitiveType dt)
+        private void RewriteStr(PrimitiveType? dt)
         {
             var rSrc = (RegisterOperand)instr.Operands[0];
             Expression src = MaybeZeroRegister(rSrc.Register, dt ?? rSrc.Width);
             var mem = (MemoryOperand)instr.Operands[1];
             var (ea, baseReg) = RewriteEffectiveAddress(mem);
-            Expression postIndex = null;
+            Expression? postIndex = null;
             if (mem.PreIndex)
             {
                 m.Assign(baseReg, ea);

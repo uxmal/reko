@@ -151,28 +151,31 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void SlibCodeWrite()
         {
-            var proj = new Project_v2
+            var proj = new Project_v5
             {
-                Inputs = {
-                    new DecompilerInput_v2 {
-                        UserGlobalData = {
-                            new GlobalDataItem_v2 
-                            {
-                                 Address = "00100000",
-                                 Name = "foo",
-                                 DataType = new ArrayType_v1 {
-                                     ElementType = new PointerType_v1 {
-                                          PointerSize = 4,
-                                          DataType = new CodeType_v1()
-                                     },
-                                     Length = 10,
-                                 }
+                InputFiles = {
+                    new DecompilerInput_v5 {
+                        User = new UserData_v4
+                        {
+                            GlobalData = {
+                                new GlobalDataItem_v2
+                                {
+                                     Address = "00100000",
+                                     Name = "foo",
+                                     DataType = new ArrayType_v1 {
+                                         ElementType = new PointerType_v1 {
+                                              PointerSize = 4,
+                                              DataType = new CodeType_v1()
+                                         },
+                                         Length = 10,
+                                     }
+                                }
                             }
                         }
                     }
                 }
             };
-            var ser = SerializedLibrary.CreateSerializer_v2(typeof(Project_v2));
+            var ser = SerializedLibrary.CreateSerializer_v5(typeof(Project_v5));
             var sw = new StringWriter();
             var writer = new FilteringXmlWriter(sw);
             writer.Formatting = Formatting.Indented;
@@ -180,19 +183,21 @@ namespace Reko.UnitTests.Core.Serialization
 
             Debug.Print(sw.ToString());
             var sExp = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns=""http://schemata.jklnet.org/Decompiler/v2"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v5"">
   <input>
-    <global>
-      <Address>00100000</Address>
-      <arr length=""10"">
-        <ptr size=""4"">
-          <code />
-        </ptr>
-      </arr>
-      <Name>foo</Name>
-    </global>
+    <user>
+      <global>
+        <Address>00100000</Address>
+        <arr length=""10"">
+          <ptr size=""4"">
+            <code />
+          </ptr>
+        </arr>
+        <Name>foo</Name>
+      </global>
+      <extractResources>false</extractResources>
+    </user>
   </input>
-  <output />
 </project>";
             Assert.AreEqual(sExp, sw.ToString());
         }
@@ -201,33 +206,32 @@ namespace Reko.UnitTests.Core.Serialization
         public void SlibCodeRead()
         {
             var src = @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns=""http://schemata.jklnet.org/Decompiler/v2"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v5"">
   <input>
-    <procedure name=""Nilz"">
-      <address>00112233</address>
-    </procedure>
-    <global>
-      <Address>00100000</Address>
-      <arr length=""10"">
-        <ptr size=""4"">
-          <code />
-        </ptr>
-      </arr>
-      <Name>foo</Name>
-    </global>
+    <user>
+      <global>
+        <Address>00100000</Address>
+        <arr length=""10"">
+          <ptr size=""4"">
+            <code />
+          </ptr>
+        </arr>
+        <Name>foo</Name>
+      </global>
+      <extractResources>false</extractResources>
+    </user>
   </input>
-  <output />
 </project>";
 
-            var ser = SerializedLibrary.CreateSerializer_v2(typeof(Project_v2));
+            var ser = SerializedLibrary.CreateSerializer_v5(typeof(Project_v5));
             var sr = new StringReader(src);
             var rdr = new XmlTextReader(sr);
-            var proj = (Project_v2)ser.Deserialize(rdr);
+            var proj = (Project_v5)ser.Deserialize(rdr);
 
-            Assert.AreEqual(1, proj.Inputs.Count);
-            var input = (DecompilerInput_v2)proj.Inputs[0];
-            Assert.AreEqual(1, input.UserGlobalData.Count);
-            Assert.AreEqual("arr(ptr(code),10)", input.UserGlobalData[0].DataType.ToString());
+            Assert.AreEqual(1, proj.InputFiles.Count);
+            var input = (DecompilerInput_v5)proj.InputFiles[0];
+            Assert.AreEqual(1, input.User.GlobalData.Count);
+            Assert.AreEqual("arr(ptr(code),10)", input.User.GlobalData[0].DataType.ToString());
         }
     }
 }

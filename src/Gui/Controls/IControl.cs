@@ -32,6 +32,7 @@ namespace Reko.Gui.Controls
         Color BackColor { get; set; }
         bool Enabled { get; set; }
 
+        void BringToFront();
         void Focus();
     }
 }

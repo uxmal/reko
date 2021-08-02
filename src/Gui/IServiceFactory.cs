@@ -37,6 +37,8 @@ namespace Reko.Gui
         DecompilerEventListener CreateDecompilerEventListener();
         IArchiveBrowserService CreateArchiveBrowserService();
         ICodeViewerService CreateCodeViewerService();
+        ITextFileEditorService CreateTextFileEditorService();
+        ITextFileEditor CreateTextFileEditor();
         IConfigurationService CreateDecompilerConfiguration();
         IDecompilerService CreateDecompilerService();
         IDiagnosticsService CreateDiagnosticsService();
@@ -66,5 +68,8 @@ namespace Reko.Gui
         IDecompiledFileService CreateDecompiledFileService();
         ITestGenerationService CreateTestGenerationService();
         IUserEventService CreateUserEventService();
+        IOutputService CreateOutputService();
+        IStackTraceService CreateStackTraceService();
+        IHexDisassemblerService CreateHexDisassemblerService();
     }
 }

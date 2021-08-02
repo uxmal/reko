@@ -18,21 +18,13 @@
  */
 #endregion
 
-using Reko.Arch.Arm;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
-using Reko.Core.Operators;
-using Reko.Core.Rtl;
 using Reko.Core.Serialization;
-using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Environments.RiscOS
 {
@@ -47,11 +39,6 @@ namespace Reko.Environments.RiscOS
             get { return ""; }
         }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
-
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             return new HashSet<RegisterStorage>();
@@ -62,12 +49,12 @@ namespace Reko.Environments.RiscOS
             return new HashSet<RegisterStorage>();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             switch (vector)
             {
@@ -81,7 +68,7 @@ namespace Reko.Environments.RiscOS
                     },
                     Signature = FunctionType.Action(
                         new Identifier[] {
-                            new Identifier("r0", PrimitiveType.Ptr32, Architecture.GetRegister("r0"))
+                            new Identifier("r0", PrimitiveType.Ptr32, Architecture.GetRegister("r0")!)
                         })
                 };
             }
@@ -107,7 +94,7 @@ namespace Reko.Environments.RiscOS
             }
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }

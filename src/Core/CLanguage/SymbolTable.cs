@@ -32,19 +32,23 @@ namespace Reko.Core.CLanguage
     public class SymbolTable 
     {
         private readonly IPlatform platform;
+        private readonly int pointerSize;
 
-        public SymbolTable(IPlatform platform) : this(platform,
+        public SymbolTable(IPlatform platform, int pointerSize) : this(platform,
             new Dictionary<string, PrimitiveType_v1>(),
-            new Dictionary<string, SerializedType>())
+            new Dictionary<string, SerializedType>(),
+            pointerSize)
         {
         }
 
         public SymbolTable(
             IPlatform platform,
             Dictionary<string, PrimitiveType_v1> primitiveTypes,
-            Dictionary<string, SerializedType> namedTypes)
+            Dictionary<string, SerializedType> namedTypes,
+            int pointerSize)
         {
             this.platform = platform;
+            this.pointerSize = pointerSize;
 
             this.Types = new List<SerializedType>();
             this.StructsSeen = new Dictionary<string, StructType_v1>();
@@ -92,7 +96,7 @@ namespace Reko.Core.CLanguage
                 isTypedef = true;
             }
 
-            var ntde = new NamedDataTypeExtractor(platform, declspecs, this);
+            var ntde = new NamedDataTypeExtractor(platform, declspecs, this, pointerSize);
             foreach (var declarator in decl.init_declarator_list)
             {
                 var nt = ntde.GetNameAndType(declarator.Declarator);
@@ -100,16 +104,14 @@ namespace Reko.Core.CLanguage
 
                 if (nt.DataType is SerializedSignature sSig)
                 {
+                    sSig.Convention ??= GetCallingConventionFromAttributes(decl.attribute_list);
                     if (sSig.ReturnValue != null)
                     {
                         sSig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(
                             "returns", decl.attribute_list);
                     }
-                    Procedures.Add(new Procedure_v1
-                    {
-                        Name = nt.Name,
-                        Signature = sSig,
-                    });
+                    var sProc = MakeProcedure(nt.Name!, sSig, decl.attribute_list);
+                    Procedures.Add(sProc);
                     types.Add(sSig);
                 }
                 else if (!isTypedef)
@@ -138,6 +140,68 @@ namespace Reko.Core.CLanguage
                 }
             }
             return types;
+        }
+
+        private string? GetCallingConventionFromAttributes(List<CAttribute> attributes)
+        {
+            var attrConvention = attributes?.Find(a =>
+                a.Name.Components.Length == 2 &&
+                a.Name.Components[0] == "reko" &&
+                a.Name.Components[1] == "convention");
+            if (attrConvention is null)
+                return null;
+            if (attrConvention.Tokens.Count == 1 && 
+                attrConvention.Tokens[0].Type == CTokenType.Id)
+            {
+                return (string?) attrConvention.Tokens[0].Value;
+            }
+            throw new CParserException("Incorrect syntax for [[reko::convention]].");
+        }
+
+        private ProcedureBase_v1 MakeProcedure(string name, SerializedSignature sSig, List<CAttribute>? attributes)
+        {
+            var attrService = attributes?.Find(a =>
+                a.Name.Components.Length == 2 && 
+                a.Name.Components[0] == "reko" &&
+                a.Name.Components[1] == "service");
+            if (attrService != null)
+            {
+                var sService = MakeService(name, sSig, attrService);
+                return sService;
+            }
+            else
+            {
+                string? addr = null;
+                var attrAddress = attributes?.Find(a =>
+                    a.Name.Components.Length == 2 &&
+                    a.Name.Components[0] == "reko" &&
+                    a.Name.Components[1] == "address");
+                if (attrAddress != null)
+                {
+                    if (attrAddress.Tokens.Count != 1 ||
+                        attrAddress.Tokens[0].Type != CTokenType.StringLiteral)
+                        throw new FormatException("[[reko::address]] attribute is malformed. Expected a string constant.");
+                    addr = (string?) attrAddress.Tokens[0].Value;
+                }
+                return new Procedure_v1
+                {
+                    Name = name,
+                    Signature = sSig,
+                    Address = addr,
+                };
+            }
+        }
+
+        private SerializedService MakeService(string name, SerializedSignature sSig, CAttribute attrService)
+        {
+            var sap = new ServiceAttributeParser(attrService);
+            var syscall = sap.Parse();
+            return new SerializedService
+            {
+                Signature = sSig,
+                Name = name,
+                SyscallInfo = syscall,
+            };
         }
     }
 }

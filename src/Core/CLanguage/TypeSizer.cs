@@ -21,6 +21,7 @@
 using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -122,7 +123,12 @@ namespace Reko.Core.CLanguage
 
         public int VisitTypeReference(TypeReference_v1 typeReference)
         {
-            return typedefs[typeReference.TypeName!].Accept(this);
+            if (!typedefs.TryGetValue(typeReference.TypeName!, out var dataType))
+            {
+                Debug.WriteLine("Unable to determine size of {0}", typeReference.TypeName!);
+                return 4;
+            }
+            return dataType.Accept(this);
         }
 
         public int VisitUnion(UnionType_v1 union)

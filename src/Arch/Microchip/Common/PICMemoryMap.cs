@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -172,6 +172,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             ///                                             memory traits.</exception>
             public MemoryRegionBase(MemTraits traits, string sRegion, AddressRange regnAddr, PICMemoryDomain memDomain, PICMemorySubDomain memSubDomain)
             {
+                this.Trait = null!;
                 this.traits = traits;
                 RegionName = sRegion;
                 if (regnAddr != null)
@@ -441,7 +442,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             /// <returns>
             /// The data memory address or null.
             /// </returns>
-            public Address RemapAddress(Address aFSRAddr)
+            public Address? RemapAddress(Address aFSRAddr)
             {
                 if (!Contains(aFSRAddr))
                     return null;
@@ -616,7 +617,7 @@ namespace Reko.Arch.MicrochipPIC.Common
                     throw new ArgumentOutOfRangeException("Too low data memory size. Check PIC definition.");
                 remapTable = new Address[pic.DataSpaceSize];
                 for (int i = 0; i < remapTable.Length; i++)
-                    remapTable[i] = null;
+                    remapTable[i] = null!;
 
                 foreach (var regn in pic.DataMemoryRegions(mode))
                 {
@@ -694,6 +695,10 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         protected PICMemoryMap()
         {
+            this.PIC = null!;
+            this.dataMap = null!;
+            this.progMap = null!;
+            this.traits = null!;
         }
 
         protected PICMemoryMap(IPICDescriptor thePIC)

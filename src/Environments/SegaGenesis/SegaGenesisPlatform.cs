@@ -21,8 +21,6 @@
 using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.CLanguage;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
@@ -37,11 +35,6 @@ namespace Reko.Environments.SegaGenesis
 
         public override string DefaultCallingConvention { get { return ""; } }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
-
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             return new HashSet<RegisterStorage> { Registers.a7 };
@@ -52,12 +45,12 @@ namespace Reko.Environments.SegaGenesis
             return new HashSet<RegisterStorage>();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             //$TODO: implement some services;
             return null;
@@ -68,7 +61,7 @@ namespace Reko.Environments.SegaGenesis
             throw new NotImplementedException();
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }

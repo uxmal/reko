@@ -26,6 +26,25 @@ Some binary files will contain incomplete metadata. For instance, an MS-DOS `com
 ## Loading external metadata files
 Reko supports loading extra metadata to assist the decompilation process. Such metadata files contain symbolic and type information that supplement the machine code in the binary file being decompiled. To load a metadata file, use the `File > Add metadata file...` menu command.
 
+## Adding script files
+User-defined [scripts](scripting.md) can be created to customize the Reko
+decompilation process. To create a new script
+[file](scripting.md#reko-script-files), use the `File > New script file...` menu
+command. Existing files can be added to project with the `File > Add script file...`
+menu command. Scripts can be viewed and edited using the Reko text editor.
+
+<img src="img/new-script.png" border="0" />
+
+If exception was raised during script execution, it's possible to view the stack
+trace by double clicking on the error in the `Diagnostic` tab. Double clicking on each stack
+frame moves text editor to corresponding script line.
+
+<img src="img/script-stack-trace.png" border="0" />
+
+Console output from scripts can be viewed in the `Output` tab.
+
+<img src="img/script-output.png" border="0" />
+
 ## The project browser
 Once a binary file is loaded, Reko displays an overview of its contents in the **project browser**, located on the left side of the screen. Any metadata found in the file or supplied by the user is displayed there. One of the most important pieces of metadata are the **sections** or **segments** of the file.
 

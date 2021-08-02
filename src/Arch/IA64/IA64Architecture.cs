@@ -26,7 +26,6 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Arch.IA64
 {
@@ -46,11 +45,6 @@ namespace Reko.Arch.IA64
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new IA64Disassembler(this, imageReader);
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -93,7 +87,7 @@ namespace Reko.Arch.IA64
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
             if (Registers.RegistersByName.TryGetValue(name, out var reg))
                 return reg;
@@ -121,7 +115,7 @@ namespace Reko.Arch.IA64
             throw new NotImplementedException();
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -131,8 +125,9 @@ namespace Reko.Arch.IA64
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
+            return Address.TryParse64(txtAddr, out addr);
             throw new NotImplementedException();
         }
     }

@@ -72,7 +72,7 @@ namespace Reko.Arch.X86
 
         public Identifier AluRegister(RegisterStorage reg, PrimitiveType vt)
         {
-            return binder.EnsureRegister(arch.GetSubregister(reg, 0, vt.BitSize));
+            return binder.EnsureRegister(arch.GetRegister(reg.Domain, new BitRange(0, vt.BitSize))!);
         }
 
         public Constant CreateConstant(ImmediateOperand imm, PrimitiveType dataWidth)
@@ -169,7 +169,7 @@ namespace Reko.Arch.X86
                 }
             }
 
-            if (mem.Offset!.IsValid)
+            if (mem.Offset != null)
             {
                 if (ripRelative)
                 {

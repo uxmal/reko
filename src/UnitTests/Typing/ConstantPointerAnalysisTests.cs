@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Typing
 
         private Expression EnsureTypeVariable(Expression e, DataType dt)
         {
-            var tv = store.EnsureExpressionTypeVariable(factory, e);
+            var tv = store.EnsureExpressionTypeVariable(factory, 0, e);
             tv.DataType = dt;
             return e;
         }
@@ -177,7 +177,7 @@ namespace Reko.UnitTests.Typing
 						fut.TextWriter.WriteLine();
 					}
 				}
-				store.Write(fut.TextWriter);
+				store.Write(false, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}

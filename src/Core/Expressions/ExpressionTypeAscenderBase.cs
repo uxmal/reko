@@ -104,13 +104,25 @@ namespace Reko.Core.Expressions
                     dt = dtField;
                 }
                 else
-                { 
-                    dt = PullSumDataType(dtLeft, dtRight);
+                {
+                    dtField = GetPossibleFieldType(dtRight, dtLeft, binExp.Left);
+                    if (dtField != null)
+                    {
+                        dt = dtField;
+                    }
+                    else
+                    {
+                        dt = PullSumDataType(dtLeft, dtRight);
+                    }
                 }
             }
             else if (binExp.Operator == Operator.ISub)
             {
-                dt = PullDiffDataType(dtLeft, dtRight);
+                dt = PullDiffDataType(dtLeft, dtRight, Domain.SignedInt);
+            }
+            else if (binExp.Operator == Operator.USub)
+            {
+                dt = PullDiffDataType(dtLeft, dtRight, Domain.UnsignedInt);
             }
             else if (binExp.Operator == Operator.And || 
                 binExp.Operator == Operator.Or)
@@ -258,7 +270,7 @@ namespace Reko.Core.Expressions
             return dtLeft;
         }
 
-        private DataType PullDiffDataType(DataType dtLeft, DataType dtRight)
+        private DataType PullDiffDataType(DataType dtLeft, DataType dtRight, Domain sign)
         {
             var ptLeft = dtLeft as PrimitiveType;
             var ptRight = dtRight.ResolveAs<PrimitiveType>();
@@ -270,10 +282,10 @@ namespace Reko.Core.Expressions
                     if ((ptRight.Domain & Domain.Integer) != 0)
                         return PrimitiveType.Create(Domain.Pointer, dtLeft.BitSize);
                     else if ((ptRight.Domain & Domain.Pointer) != 0)
-                        return PrimitiveType.Create(Domain.SignedInt, dtLeft.BitSize);
+                        return PrimitiveType.Create(sign, dtLeft.BitSize);
                 }
                 if (dtRight is Pointer)
-                    return PrimitiveType.Create(Domain.SignedInt, dtLeft.BitSize);
+                    return PrimitiveType.Create(sign, dtLeft.BitSize);
                 // We are unable to reconcile the differences here. 
                 return PrimitiveType.CreateWord(dtLeft.BitSize);
                 //$TODO: should be a warning? throw new TypeInferenceException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));

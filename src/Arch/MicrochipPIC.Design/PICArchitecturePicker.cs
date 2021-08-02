@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -37,7 +37,7 @@ namespace Reko.Arch.MicrochipPIC.Design
             new PICArchitectureInteractor().Attach(this);
         }
 
-        public PICArchitectureOptionsPicker Value { get; set; }
+        public PICArchitectureOptionsPicker? Value { get; set; }
 
         public CheckBox ExtendedModeCheckBox => chkExtendedMode;
         public RadioButton PIC16RadioButton => rdbPIC16;

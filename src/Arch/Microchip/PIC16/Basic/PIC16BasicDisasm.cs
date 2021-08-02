@@ -139,7 +139,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         {
             public override PICInstruction Decode(ushort uInstr, PICDisassemblerBase dasm)
             {
-                return null;
+                return null!;
             }
         }
 

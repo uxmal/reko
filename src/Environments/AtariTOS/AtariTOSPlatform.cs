@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 using Reko.Core.CLanguage;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
+using Reko.Core.Emulation;
 
 namespace Reko.Environments.AtariTOS
 {
@@ -42,16 +43,12 @@ namespace Reko.Environments.AtariTOS
             get { return ""; }
         }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             throw new NotImplementedException();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             if (ccName == "TOSCall")
                 return new TOSCallingConvention(this.Architecture);
@@ -69,12 +66,12 @@ namespace Reko.Environments.AtariTOS
             };
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             if (Metadata == null)
             { }
             EnsureTypeLibraries(PlatformIdentifier);
-            foreach (var module in this.Metadata.Modules.Values)
+            foreach (var module in this.Metadata!.Modules.Values)
             {
                 if (!module.ServicesByVector.TryGetValue(vector, out var svc))
                     continue;
@@ -88,7 +85,7 @@ namespace Reko.Environments.AtariTOS
             throw new NotImplementedException();
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }

@@ -240,15 +240,15 @@ namespace Reko.Environments.MacOS.Classic
                 for (int i = 0; i < count; ++i)
                 {
                     ushort rsrcID = ByteMemoryArea.ReadBeUInt16(bytes, offset);
-                    string name = ReadName(ByteMemoryArea.ReadBeUInt16(bytes, offset + 2));
+                    string? name = ReadName(ByteMemoryArea.ReadBeUInt16(bytes, offset + 2));
                     uint dataOff = ByteMemoryArea.ReadBeUInt32(bytes, offset + 4) & 0x00FFFFFFU;
-                    yield return new ResourceReference(rsrcID, name, dataOff);
+                    yield return new ResourceReference(rsrcID, name!, dataOff);
 
                     offset += 0x0C;
                 }
             }
 
-            private string ReadName(ushort rsrcInstanceNameOffset)
+            private string? ReadName(ushort rsrcInstanceNameOffset)
             {
                 if (rsrcInstanceNameOffset == 0xFFFF)
                     return null;
@@ -284,6 +284,7 @@ namespace Reko.Environments.MacOS.Classic
             }
         }
 
+        // References: Inside Macintosh: Processes (Segment Manager)
         public void AddResourcesToImageMap(
             Address addrLoad, 
             ByteMemoryArea mem,
@@ -291,7 +292,7 @@ namespace Reko.Environments.MacOS.Classic
             List<ImageSymbol> entryPoints,
             SortedList<Address, ImageSymbol> symbols)
         {
-            JumpTable jt = null;
+            JumpTable? jt = null;
             var codeSegs = new Dictionary<int, ImageSegment>();
             foreach (ResourceType type in ResourceTypes)
             {
@@ -308,7 +309,8 @@ namespace Reko.Environments.MacOS.Classic
                     var abSegment = new byte[segmentSize];
                     Array.Copy(mem.Bytes, uSegOffset + bytesToSkip, abSegment, 0, segmentSize);
 
-                    Address addrSegment = addrLoad + uSegOffset + bytesToSkip;    //$TODO pad to 16-byte boundary?
+                    var uAddr = (uSegOffset + bytesToSkip) & ~1u;
+                    Address addrSegment = addrLoad + uAddr;    //$TODO pad to 16-byte boundary?
                     var memSeg = new ByteMemoryArea(addrSegment, abSegment);
                     var segment = segmentMap.AddSegment(new ImageSegment(
                         ResourceDescriptiveName(type, rsrc),
@@ -322,14 +324,27 @@ namespace Reko.Environments.MacOS.Classic
                         }
                         else
                         {
-                            codeSegs.Add(rsrc.ResourceID, segment);
-                            var macsBug = new MacsBugSymbolScanner(arch, memSeg);
-                            var mbSymbols = macsBug.ScanForSymbols();
-                            foreach (var symbol in mbSymbols)
-                            {
-                                symbols[symbol.Address] = symbol;
-                            }
+                            AddCodeSegment(symbols, codeSegs, rsrc, memSeg, segment);
                         }
+                    }
+                    if (type.Name == "INIT")
+                    {
+                        AddCodeSegment(symbols, codeSegs, rsrc, memSeg, segment);
+                        var symInit = ImageSymbol.Procedure(arch, segment.Address, $"Init_{segment.Address}");
+                        entryPoints.Add(symInit);
+                    }
+                    else if (type.Name == "cdev")
+                    {
+                        AddCodeSegment(symbols, codeSegs, rsrc, memSeg, segment);
+                        var symInit = ImageSymbol.Procedure(arch, segment.Address, $"CDev_{segment.Address}");
+                        entryPoints.Add(symInit);
+                    }
+                    else if (type.Name == "DRVR")
+                    {
+                        AddCodeSegment(symbols, codeSegs, rsrc, memSeg, segment);
+                        var symInit = ImageSymbol.Procedure(arch, segment.Address, $"Drvr_{segment.Address}");
+                        entryPoints.Add(symInit);
+                        AddDriverMethods(symbols, memSeg);
                     }
                 }
             }
@@ -372,7 +387,20 @@ namespace Reko.Environments.MacOS.Classic
             }
         }
 
-        private static BeImageReader GetA5InitImageReader(ImageSegment a5dataSegment)
+
+        private void AddCodeSegment(SortedList<Address, ImageSymbol> symbols, Dictionary<int, ImageSegment> codeSegs, ResourceReference rsrc, ByteMemoryArea memSeg, ImageSegment segment)
+        {
+            segment.Access |= AccessMode.Execute;
+            codeSegs.Add(rsrc.ResourceID, segment);
+            var macsBug = new MacsBugSymbolScanner(arch, memSeg);
+            var mbSymbols = macsBug.ScanForSymbols();
+            foreach (var symbol in mbSymbols)
+            {
+                symbols[symbol.Address] = symbol;
+            }
+        }
+
+        private static BeImageReader? GetA5InitImageReader(ImageSegment a5dataSegment)
         {
             var a5data = a5dataSegment.MemoryArea;
             var a5dr = new BeImageReader((ByteMemoryArea) a5data, 0);
@@ -393,6 +421,35 @@ namespace Reko.Environments.MacOS.Classic
             a5dr.Seek(a5dheaderOffset - 2);
             return a5dr;
         }
+
+        /// <summary>
+        /// Create symbols for the driver routines.
+        /// </summary>
+        private void AddDriverMethods(SortedList<Address, ImageSymbol> symbols, ByteMemoryArea memSeg)
+        {
+            void MakeSymbol(ByteMemoryArea mem, string prefix, string routineName, uint offset)
+            {
+                var name = $"{prefix}_{routineName}";
+                var sym = ImageSymbol.Procedure(this.arch, mem.BaseAddress + offset + 4, name);
+                symbols.Add(sym.Address, sym);
+            }
+            var rdr = memSeg.CreateBeReader(4 + 8);
+            var offsetOpen = rdr.ReadBeUInt16();
+            var offsetPrime = rdr.ReadBeUInt16();
+            var offsetCtl = rdr.ReadBeUInt16();
+            var offsetStatus = rdr.ReadBeUInt16();
+            var offsetClose = rdr.ReadBeUInt16();
+            var cbName = rdr.ReadByte();
+            var abName = rdr.ReadBytes(cbName);
+            var driverName = Encoding.UTF8.GetString(abName);
+            var driverPrefix = NamingPolicy.SanitizeIdentifierName(driverName);
+            MakeSymbol(memSeg, driverPrefix, "Open", offsetOpen);
+            MakeSymbol(memSeg, driverPrefix, "Prime", offsetPrime);
+            MakeSymbol(memSeg, driverPrefix, "Ctl", offsetCtl);
+            MakeSymbol(memSeg, driverPrefix, "Status", offsetStatus);
+            MakeSymbol(memSeg, driverPrefix, "Close", offsetClose);
+        }
+
 
         private static bool SegmentNamedA5Init(ImageSegment segment)
         {

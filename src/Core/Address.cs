@@ -22,6 +22,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Reko.Core
 {
@@ -229,12 +230,11 @@ namespace Reko.Core
         {
             if (s != null)
             {
-                try
+                if (ushort.TryParse(s, NumberStyles.HexNumber, null, out var uAddr))
                 {
-                    result = Ptr16(Convert.ToUInt16(s, 16));
+                    result = Ptr16(uAddr);
                     return true;
                 }
-                catch { }
             }
             result = null!;
             return false;
@@ -244,12 +244,11 @@ namespace Reko.Core
         {
             if (s != null)
             {
-                try
+                if (uint.TryParse(s, NumberStyles.HexNumber, null, out var uAddr))
                 {
-                    result = Ptr32(Convert.ToUInt32(s, 16));
+                    result = Ptr32(uAddr);
                     return true;
                 }
-                catch { }
             }
             result = default!;
             return false;
@@ -259,14 +258,13 @@ namespace Reko.Core
         {
             if (s != null)
             {
-                try
+                if (ulong.TryParse(s, NumberStyles.HexNumber, null, out var uAddr))
                 {
-                    result = Ptr64(Convert.ToUInt64(s, 16));
+                    result = Ptr64(uAddr);
                     return true;
                 }
-                catch { }
             }
-            result = default!;
+            result = null!;
             return false;
         }
 

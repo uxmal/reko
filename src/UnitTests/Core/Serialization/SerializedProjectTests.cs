@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
 using Reko.Core.Memory;
+using Reko.Core.Scripts;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -103,7 +104,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             Project_v5 ud = new Project_v5
             {
-                Inputs =
+                InputFiles =
                 {
                     new DecompilerInput_v5
                     {
@@ -205,9 +206,8 @@ namespace Reko.UnitTests.Core.Serialization
                             {
                                 {
                                     Address.SegPtr(0x1000, 0x10),
-                                    new Procedure_v1
+                                    new UserProcedure(Address.SegPtr(0x1000, 0x10), "foo")
                                     {
-                                        Name = "foo",
                                         Signature = new SerializedSignature
                                         {
                                             ReturnValue = new Argument_v1 { Kind = new Register_v1("eax") },
@@ -232,13 +232,10 @@ namespace Reko.UnitTests.Core.Serialization
                             {
                                 {
                                   Address.SegPtr(0x2000, 0),
-                                  new GlobalDataItem_v2 {
-                                       Address = Address.SegPtr(0x2000, 0).ToString(),
-                                       DataType = new StringType_v2 {
+                                  new UserGlobal(Address.SegPtr(0x2000, 0), "g_20000", new StringType_v2 {
                                            Termination=StringType_v2.ZeroTermination,
                                            CharType = new PrimitiveType_v1 { Domain = Domain.Character, ByteSize = 1 }
-                                       }
-                                  }
+                                       })
                                 }
                             },
                             Calls =
@@ -296,35 +293,76 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
-        public void Sud_LoadProject_Inputs_v2()
+        public void SudSaveScripts()
+        {
+            var project = new Project
+            {
+                ScriptFiles =
+                {
+                    new Mock<ScriptFile>(
+                        null, "/var/foo/script.fake", new byte[100]).Object
+                },
+            };
+            var sw = new StringWriter();
+            var writer = new FilteringXmlWriter(sw)
+            {
+                Formatting = System.Xml.Formatting.Indented
+            };
+            var ser = SerializedLibrary.CreateSerializer_v5(
+                typeof(Project_v5));
+
+            var saver = new ProjectSaver(sc);
+            var sProject = saver.Serialize("/var/foo/foo.proj", project);
+            ser.Serialize(writer, sProject);
+
+            var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
+<project xmlns=""http://schemata.jklnet.org/Reko/v5"">
+  <script>
+    <filename>script.fake</filename>
+  </script>
+</project>";
+            if (sw.ToString() != expected)
+                Console.WriteLine("{0}", sw.ToString());
+            Assert.AreEqual(expected, sw.ToString());
+        }
+
+        [Test]
+        public void Sud_LoadProject_Inputs_v5()
         {
             Given_Loader();
             Given_Architecture();
+            Given_TestOS_Platform();
             Expect_Arch_ParseAddress("1000:0400", Address.SegPtr(0x1000, 0x0400));
             Given_ExecutableProgram("foo.exe", Address.SegPtr(0x1000, 0x0000));
             Given_BinaryFile("foo.bin", Address.SegPtr(0x1000, 0x0000));
 
-
-            var sProject = new Project_v2
+            var sProject = new Project_v5
             {
-                Inputs = {
-                    new DecompilerInput_v2 {
+                ArchitectureName = arch.Object.Name,
+                PlatformName = platform.Object.Name,
+                InputFiles = {
+                    new DecompilerInput_v5 {
                         Filename = "foo.exe",
-                        Address = "1000:0000",
+                        User = {
+                            LoadAddress = "1000:0000",
+                            GlobalData = {
+                                new GlobalDataItem_v2 { Address = "1000:0400", DataType = new StringType_v2 {
+                                    Termination=StringType_v2.ZeroTermination,
+                                    CharType= new PrimitiveType_v1 { ByteSize = 1, Domain=Domain.Character} }
+                                }
+                            }
+                        },
                         Comment = "main file",
-                        UserGlobalData = new List<GlobalDataItem_v2>
-                        {
-                            new GlobalDataItem_v2 { Address = "1000:0400", DataType = new StringType_v2 { 
-                                Termination=StringType_v2.ZeroTermination,
-                                CharType= new PrimitiveType_v1 { ByteSize = 1, Domain=Domain.Character} } 
+                    },
+                    new DecompilerInput_v5 {
+                        Filename = "foo.bin",
+                        Comment = "overlay",
+                        User = { 
+                            LoadAddress = "1000:D000",
+                            Processor = new ProcessorOptions_v4 {
+                                Name = "x86-real-16",
                             }
                         }
-                    },
-                    new DecompilerInput_v2 {
-                        Filename = "foo.bin",
-                        Address = "1000:D000",
-                        Comment = "overlay",
-                        Processor = "x86-real-16",
                     }
                 }
             };
@@ -334,7 +372,7 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual(2, project.Programs.Count);
             var input0 = project.Programs[0];
             Assert.AreEqual(1, input0.User.Globals.Count);
-            Assert.AreEqual("1000:0400", input0.User.Globals.Values[0].Address);
+            Assert.AreEqual("1000:0400", input0.User.Globals.Values[0].Address.ToString());
             var str_t = (StringType_v2)input0.User.Globals.Values[0].DataType;
             Assert.AreEqual("prim(Character,1)", str_t.CharType.ToString());
         }
@@ -434,10 +472,15 @@ namespace Reko.UnitTests.Core.Serialization
         [Test]
         public void SudLoadMetadata()
         {
-            var sProject = new Project_v2 {
-                Inputs =
+            Given_Architecture();
+            Given_TestOS_Platform();
+
+            var sProject = new Project_v5 {
+                ArchitectureName = arch.Object.Name,
+                PlatformName = platform.Object.Name,
+                MetadataFiles =
                 {
-                    new MetadataFile_v2
+                    new MetadataFile_v3
                     {
                         Filename = "c:\\tmp\\foo.def"
                     }
@@ -450,14 +493,11 @@ namespace Reko.UnitTests.Core.Serialization
                 It.IsAny<IPlatform>(),
                 It.IsAny<TypeLibrary>()))
                 .Returns(typelib);
-            var oracle = new Mock<IOracleService>();
-            oracle.Setup(o => o.QueryPlatform(It.IsNotNull<string>())).Returns(mockFactory.CreateMockPlatform().Object);
-            sc.AddService<IOracleService>(oracle.Object);
 
             var ploader = new ProjectLoader(sc, loader.Object, listener.Object);
             var project = ploader.LoadProject("c:\\bar\\bar.dcproj", sProject);
             Assert.AreEqual(1, project.MetadataFiles.Count);
-            Assert.AreEqual("c:\\tmp\\foo.def", project.MetadataFiles[0].Filename);
+            Assert.AreEqual("foo.def", project.MetadataFiles[0].Filename[^7..]);
         }
 
         [Test]
@@ -468,7 +508,7 @@ namespace Reko.UnitTests.Core.Serialization
             {
                 ArchitectureName = "testArch",
                 PlatformName = "testOS",
-                Inputs = 
+                InputFiles =
                 {
                     new DecompilerInput_v4
                     {
@@ -541,7 +581,7 @@ namespace Reko.UnitTests.Core.Serialization
             var saver = new ProjectSaver(sc);
             var sProj = new Project_v5
             {
-                Inputs = { saver.VisitProgram("foo.exe", program) }
+                InputFiles = { saver.VisitProgram("foo.exe", program) }
             };
             var writer = new FilteringXmlWriter(sw);
             writer.Formatting = System.Xml.Formatting.Indented;
@@ -695,11 +735,7 @@ namespace Reko.UnitTests.Core.Serialization
                     {
                         {
                             Address.Ptr32(0x01234),
-                            new GlobalDataItem_v2
-                            {
-                                 DataType = PrimitiveType_v1.Real32(),
-                                 Name = "pi"
-                            }
+                            new UserGlobal(Address.Ptr32(0x01234), "pi", PrimitiveType_v1.Real32())
                         }
                     }
                 }
@@ -724,6 +760,5 @@ namespace Reko.UnitTests.Core.Serialization
                 Debug.Print("{0}", sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
         }
-
     }
 }

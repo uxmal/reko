@@ -20,14 +20,15 @@
  */
 #endregion
 
-using Reko.Libraries.Microchip;
 using NUnit.Framework;
 using Reko.Arch.MicrochipPIC.Common;
 using Reko.Arch.MicrochipPIC.PIC18;
+using Reko.Libraries.Microchip;
 
 namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
 {
     using Common;
+    using Reko.Core;
     using System.Collections.Generic;
     using System.ComponentModel.Design;
     using static Common.Sample;
@@ -35,6 +36,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
     [TestFixture]
     public class PIC18EnhdExtd_RegistersTests : PICRegistersTestsBase
     {
+        private readonly BitRange lowByte = new BitRange(0, 8);
+        private readonly BitRange highByte = new BitRange(8, 16);
+        private readonly BitRange upperByte = new BitRange(16, 24);
 
         private PICArchitecture GetArch(string picName, PICExecMode mode = PICExecMode.Traditional)
         {
@@ -60,48 +64,48 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Registers
         }
 
         [Test]
-        public void PIC18EnhdExtd_Registers_GetSubRegisterOfFSR0()
+        public void PIC18EnhdExtd_Registers_GetRegisterOfFSR0()
         {
-            Assert.AreSame(PIC18Registers.FSR0L, arch.GetSubregister(PIC18Registers.FSR0, 0, 8));
-            Assert.AreSame(PIC18Registers.FSR0H, arch.GetSubregister(PIC18Registers.FSR0, 8, 8));
+            Assert.AreSame(PIC18Registers.FSR0L, arch.GetRegister(PIC18Registers.FSR0.Domain, lowByte));
+            Assert.AreSame(PIC18Registers.FSR0H, arch.GetRegister(PIC18Registers.FSR0.Domain, highByte));
         }
 
         [Test]
-        public void PIC18EnhdExtd_Registers_GetSubRegisterOfFSR1()
+        public void PIC18EnhdExtd_Registers_GetRegisterOfFSR1()
         {
-            Assert.AreSame(PIC18Registers.FSR1L, arch.GetSubregister(PIC18Registers.FSR1, 0, 8));
-            Assert.AreSame(PIC18Registers.FSR1H, arch.GetSubregister(PIC18Registers.FSR1, 8, 8));
+            Assert.AreSame(PIC18Registers.FSR1L, arch.GetRegister(PIC18Registers.FSR1.Domain, lowByte));
+            Assert.AreSame(PIC18Registers.FSR1H, arch.GetRegister(PIC18Registers.FSR1.Domain, highByte));
         }
 
         [Test]
-        public void PIC18EnhdExtd_Registers_GetSubRegisterOfFSR2()
+        public void PIC18EnhdExtd_Registers_GetRegisterOfFSR2()
         {
-            Assert.AreSame(PIC18Registers.FSR2L, arch.GetSubregister(PIC18Registers.FSR2, 0, 8));
-            Assert.AreSame(PIC18Registers.FSR2H, arch.GetSubregister(PIC18Registers.FSR2, 8, 8));
+            Assert.AreSame(PIC18Registers.FSR2L, arch.GetRegister(PIC18Registers.FSR2.Domain, lowByte));
+            Assert.AreSame(PIC18Registers.FSR2H, arch.GetRegister(PIC18Registers.FSR2.Domain, highByte));
         }
 
         [Test]
-        public void PIC18EnhdExtd_Registers_GetSubRegisterOfTOS()
+        public void PIC18EnhdExtd_Registers_GetRegisterOfTOS()
         {
-            Assert.AreSame(PIC18Registers.TOSL, arch.GetSubregister(PIC18Registers.TOS, 0, 8));
-            Assert.AreSame(PIC18Registers.TOSH, arch.GetSubregister(PIC18Registers.TOS, 8, 8));
-            Assert.AreSame(PIC18Registers.TOSU, arch.GetSubregister(PIC18Registers.TOS, 16, 8));
+            Assert.AreSame(PIC18Registers.TOSL, arch.GetRegister(PIC18Registers.TOS.Domain, lowByte));
+            Assert.AreSame(PIC18Registers.TOSH, arch.GetRegister(PIC18Registers.TOS.Domain, highByte));
+            Assert.AreSame(PIC18Registers.TOSU, arch.GetRegister(PIC18Registers.TOS.Domain, upperByte));
         }
 
         [Test]
-        public void PIC18Lgcy_GetSubRegisterOfPC()
+        public void PIC18Lgcy_GetRegisterOfPC()
         {
-            Assert.AreSame(PICRegisters.PCL, arch.GetSubregister(PIC18Registers.PCLAT, 0, 8));
-            Assert.AreSame(PICRegisters.PCLATH, arch.GetSubregister(PIC18Registers.PCLAT, 8, 8));
-            Assert.AreSame(PIC18Registers.PCLATU, arch.GetSubregister(PIC18Registers.PCLAT, 16, 8));
+            Assert.AreSame(PICRegisters.PCL, arch.GetRegister(PIC18Registers.PCLAT.Domain, lowByte));
+            Assert.AreSame(PICRegisters.PCLATH, arch.GetRegister(PIC18Registers.PCLAT.Domain, highByte));
+            Assert.AreSame(PIC18Registers.PCLATU, arch.GetRegister(PIC18Registers.PCLAT.Domain, upperByte));
         }
 
         [Test]
-        public void PIC18EnhdExtd_Registers_GetSubRegisterOfTBLPTR()
+        public void PIC18EnhdExtd_Registers_GetRegisterOfTBLPTR()
         {
-            Assert.AreSame(PIC18Registers.TBLPTRL, arch.GetSubregister(PIC18Registers.TBLPTR, 0, 8));
-            Assert.AreSame(PIC18Registers.TBLPTRH, arch.GetSubregister(PIC18Registers.TBLPTR, 8, 8));
-            Assert.AreSame(PIC18Registers.TBLPTRU, arch.GetSubregister(PIC18Registers.TBLPTR, 16, 8));
+            Assert.AreSame(PIC18Registers.TBLPTRL, arch.GetRegister(PIC18Registers.TBLPTR.Domain, lowByte));
+            Assert.AreSame(PIC18Registers.TBLPTRH, arch.GetRegister(PIC18Registers.TBLPTR.Domain, highByte));
+            Assert.AreSame(PIC18Registers.TBLPTRU, arch.GetRegister(PIC18Registers.TBLPTR.Domain, upperByte));
         }
 
         [Test]

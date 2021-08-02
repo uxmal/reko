@@ -45,14 +45,14 @@ namespace Reko.Evaluation
         public Expression VisitApplication(Application appl)
         {
             var fn = appl.Procedure.Accept(this);
-            if (fn == Constant.Invalid)
-                return fn;
+            if (fn is InvalidConstant)
+                return InvalidConstant.Create(appl.DataType);
             var exprs = new Expression[appl.Arguments.Length];
             for (int i = 0; i < exprs.Length; ++i)
             {
                 var exp = appl.Arguments[i].Accept(this);
-                if (exp == Constant.Invalid)
-                    return exp;
+                if (fn is InvalidConstant)
+                    return InvalidConstant.Create(appl.DataType);
                 exprs[i] = exp;
             }
             return new Application(fn, appl.DataType, exprs);
@@ -62,8 +62,8 @@ namespace Reko.Evaluation
         {
             var arr = acc.Array.Accept(this);
             var idx = acc.Index.Accept(this);
-            if (arr == Constant.Invalid || idx == Constant.Invalid)
-                return Constant.Invalid;
+            if (arr is InvalidConstant || idx is InvalidConstant)
+                return InvalidConstant.Create(acc.DataType);
             return new ArrayAccess(acc.DataType, arr, idx);
         }
 
@@ -71,8 +71,8 @@ namespace Reko.Evaluation
         {
             var left = binExp.Left.Accept(this);
             var right = binExp.Right.Accept(this);
-            if (left == Constant.Invalid || right == Constant.Invalid)
-                return Constant.Invalid;
+            if (left is InvalidConstant || right is InvalidConstant)
+                return InvalidConstant.Create(binExp.DataType);
             return new BinaryExpression(
                 binExp.Operator,
                 binExp.DataType,
@@ -83,32 +83,32 @@ namespace Reko.Evaluation
         public Expression VisitCast(Cast cast)
         {
             var exp = cast.Expression.Accept(this);
-            if (exp == Constant.Invalid)
-                return exp;
+            if (exp is InvalidConstant)
+                return InvalidConstant.Create(cast.DataType);
             if (exp is Constant ||
                 exp is Identifier)
                 return new Cast(cast.DataType, exp);
-            return Constant.Invalid;
+            return InvalidConstant.Create(cast.DataType);
         }
 
         public Expression VisitConditionalExpression(ConditionalExpression c)
         {
             var cond = c.Condition.Accept(this);
-            if (cond == Constant.Invalid)
-                return cond;
+            if (cond is InvalidConstant)
+                return InvalidConstant.Create(c.DataType);
             var then = c.ThenExp.Accept(this);
-            if (then == Constant.Invalid)
-                return then;
+            if (then is InvalidConstant)
+                return InvalidConstant.Create(c.DataType);
             var fals = c.FalseExp.Accept(this);
-            if (fals == Constant.Invalid)
-                return fals;
+            if (fals is InvalidConstant)
+                return InvalidConstant.Create(c.DataType);
             return new ConditionalExpression(c.DataType, cond, then, fals);
         }
 
         public Expression VisitConditionOf(ConditionOf cof)
         {
             var exp = cof.Expression.Accept(this);
-            if (exp == Constant.Invalid)
+            if (exp is InvalidConstant)
                 return exp;
             return new ConditionOf(exp);
         }
@@ -121,12 +121,12 @@ namespace Reko.Evaluation
         public Expression VisitConversion(Conversion conversion)
         {
             var exp = conversion.Expression.Accept(this);
-            if (exp == Constant.Invalid)
-                return exp;
+            if (exp is InvalidConstant)
+                return InvalidConstant.Create(conversion.DataType);
             if (exp is Constant ||
                 exp is Identifier)
                 return new Conversion(exp, conversion.SourceDataType, conversion.DataType);
-            return Constant.Invalid;
+           return InvalidConstant.Create(conversion.DataType);
         }
 
 
@@ -153,23 +153,23 @@ namespace Reko.Evaluation
         public Expression VisitMemoryAccess(MemoryAccess access)
         {
             var ea = access.EffectiveAddress.Accept(this);
-            if (ea == Constant.Invalid)
-                return Constant.Invalid;
+            if (ea is InvalidConstant)
+                return InvalidConstant.Create(access.DataType);
             return new MemoryAccess(access.MemoryId, ea, access.DataType);
         }
 
         public Expression VisitMkSequence(MkSequence seq)
         {
             var newSeq = seq.Expressions.Select(e => e.Accept(this)).ToArray();
-            if (newSeq.Any(e => e == Constant.Invalid))
-                return Constant.Invalid;
+            if (newSeq.Any(e => e is InvalidConstant))
+                return InvalidConstant.Create(seq.DataType);
             else
                 return new MkSequence(seq.DataType, newSeq);
         }
 
         public Expression VisitOutArgument(OutArgument outArg)
         {
-            return Constant.Invalid;
+            return InvalidConstant.Create(outArg.DataType);
         }
 
         public Expression VisitPhiFunction(PhiFunction phi)
@@ -178,7 +178,7 @@ namespace Reko.Evaluation
             for (int i = 0; i < args.Length; ++i)
             {
                 var exp = phi.Arguments[i].Value.Accept(this);
-                if (exp == Constant.Invalid)
+                if (exp is InvalidConstant)
                     return exp;
                 args[i] = new PhiArgument(phi.Arguments[i].Block, exp);
             }
@@ -203,10 +203,10 @@ namespace Reko.Evaluation
         public Expression VisitSegmentedAccess(SegmentedAccess access)
         {
             var seg = access.BasePointer.Accept(this);
-            if (seg == Constant.Invalid)
+            if (seg is InvalidConstant)
                 return seg;
             var off = access.EffectiveAddress.Accept(this);
-            if (off == Constant.Invalid)
+            if (off is InvalidConstant)
                 return off;
             return new SegmentedAccess(access.MemoryId, seg, off, access.DataType);
         }
@@ -214,7 +214,7 @@ namespace Reko.Evaluation
         public Expression VisitSlice(Slice slice)
         {
             var exp = slice.Expression.Accept(this);
-            if (exp == Constant.Invalid)
+            if (exp is InvalidConstant)
                 return exp;
             return new Slice(slice.DataType, exp, slice.Offset);
         }
@@ -222,7 +222,7 @@ namespace Reko.Evaluation
         public Expression VisitTestCondition(TestCondition tc)
         {
             var cond = tc.Expression.Accept(this);
-            if (cond == Constant.Invalid)
+            if (cond is InvalidConstant)
                 return tc;
             return new TestCondition(tc.ConditionCode, cond);
         }
@@ -230,7 +230,7 @@ namespace Reko.Evaluation
         public Expression VisitUnaryExpression(UnaryExpression unary)
         {
             var e = unary.Expression.Accept(this);
-            if (e == Constant.Invalid)
+            if (e is InvalidConstant)
                 return e;
             return new UnaryExpression(
                 unary.Operator,

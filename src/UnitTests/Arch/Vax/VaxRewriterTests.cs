@@ -41,11 +41,6 @@ namespace Reko.UnitTests.Arch.Vax
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => baseAddr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, new Frame(arch.WordWidth), host);
-        }
-
         [SetUp]
         public void Setup()
         {
@@ -1406,10 +1401,11 @@ namespace Reko.UnitTests.Arch.Vax
         [Test]
         public void VaxRw_movf()
         {
+            //$TODO: support true VAX formats.
             Given_Bytes(0x50, 0x8F, 0x43, 0x00, 0x00, 0x00, 0x57);	// movf	#4.76441477870438E-44,r7
             AssertCode(
                 "0|L--|00010000(7): 4 instructions",
-                "1|L--|r7 = 4.8e-44F",
+                "1|L--|r7 = 9.4e-44F",
                 "2|L--|ZN = cond(r7)",
                 "3|L--|C = false",
                 "4|L--|V = false");
@@ -1427,8 +1423,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "4|L--|V = false");
         }
 
- 
-
         [Test]
         public void VaxRw_movw()
         {
@@ -1440,6 +1434,20 @@ namespace Reko.UnitTests.Arch.Vax
                 "3|L--|ZN = cond(v3)",
                 "4|L--|C = false",
                 "5|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_movw_IndexedDisplacementDeferred()
+        {
+            Given_HexString("b0 40 ef 4d 04 02 00 50");     // movw 00120454[r0],r0
+            AssertCode(
+                "0|L--|00010000(8): 6 instructions",
+                "1|L--|v3 = Mem0[0x00030454<p32> + r0 * 2<i32>:word16]",
+                "2|L--|v4 = SLICE(r0, word16, 16)",
+                "3|L--|r0 = SEQ(v4, v3)",
+                "4|L--|ZN = cond(v3)",
+                "5|L--|C = false",
+                "6|L--|V = false");
         }
 
         [Test]
@@ -1636,7 +1644,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "5|L--|C = false");
         }
 
-  
         [Test]
         public void VaxRw_pushab()
         {
@@ -1649,6 +1656,19 @@ namespace Reko.UnitTests.Arch.Vax
                 "4|L--|ZN = cond(v4)",
                 "5|L--|C = false",
                 "6|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_pushab_addr()
+        {
+            Given_HexString("9F EF A7 39 02 00 ");
+            AssertCode(
+                "0|L--|00010000(6): 5 instructions",
+                "1|L--|sp = sp - 4<32>",
+                "2|L--|Mem0[sp:word32] = 000339AD",
+                "3|L--|ZN = cond(0x000339AD<p32>)",
+                "4|L--|C = false",
+                "5|L--|V = false");
         }
 
         [Test]
@@ -1678,6 +1698,8 @@ namespace Reko.UnitTests.Arch.Vax
                 "5|L--|C = false",
                 "6|L--|V = false");
         }
+
+
 
         [Test]
         public void VaxRw_pushaw()
@@ -2025,7 +2047,7 @@ namespace Reko.UnitTests.Arch.Vax
         [Test]
         public void VaxRw_movaw()
         {
-            Given_Bytes(0x3E, 0x42, 0x63, 0x51);	// movaw	
+            Given_HexString("3E426351");	// movaw	
             AssertCode(
                 "0|L--|00010000(4): 4 instructions",
                 "1|L--|r1 = r3 + r2 * 2<i32>",
@@ -2033,8 +2055,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "3|L--|C = false",
                 "4|L--|V = false");
         }
-
-
 
         [Test]
         public void VaxRw_xorb2()

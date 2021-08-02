@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.CLanguage;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
@@ -439,7 +440,14 @@ namespace Reko.Analysis
         /// <returns>The SsaTransform for the procedure.</returns>
         public SsaTransform ConvertToSsa(Procedure proc)
         {
-            if (program.NeedsSsaTransform)
+            if (!program.NeedsSsaTransform)
+            {
+                // Some formats, like LLVM, already have phi functions.
+                var sst = new SsaTransform(program, proc, sccProcs!, dynamicLinker, this.ProgramDataFlow);
+                return sst;
+            }
+
+            try
             {
                 // Transform the procedure to SSA state. When encountering 'call'
                 // instructions, they can be to functions already visited. If so,
@@ -493,6 +501,7 @@ namespace Reko.Analysis
 
                 var fpuGuesser = new FpuStackReturnGuesser(ssa, eventListener);
                 fpuGuesser.Transform();
+                DumpWatchedProcedure("fpug", "After FPU stack guesser", ssa.Procedure);
 
                 // By placing use statements in the exit block, we will collect
                 // reaching definitions in the use statements.
@@ -510,11 +519,13 @@ namespace Reko.Analysis
 
                 return sst;
             }
-            else
+            catch (Exception ex)
             {
-                // We are assuming phi functions are already generated.
-                var sst = new SsaTransform(program, proc, sccProcs!, dynamicLinker, this.ProgramDataFlow);
-                return sst;
+                var nl = Environment.NewLine;
+                var banner = $"// {proc.Name} ==========={nl}{ex.Message}{nl}{ex.StackTrace}{nl}{nl}";
+                services.GetService<ITestGenerationService>()?
+                    .ReportProcedure($"analysis_{99:00}_crash.txt", banner, proc);
+                throw;
             }
         }
 
@@ -549,9 +560,8 @@ namespace Reko.Analysis
         [Conditional("DEBUG")]
         public void DumpWatchedProcedure(string phase, string caption, Procedure proc)
         {
-            if (program.User.DebugTraceProcedures.Contains(proc.Name)
-                ||
-                proc.Name == "")
+            if (program.User.DebugTraceProcedures.Contains(proc.Name) ||
+                proc.Name == "usb_device_info")
             {
                 Debug.Print("// {0}: {1} ==================", proc.Name, caption);
                 //MockGenerator.DumpMethod(proc);

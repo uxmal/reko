@@ -39,7 +39,7 @@ namespace Reko.Arch.M68k
     /// http://www.easy68k.com/paulrsm/doc/trick68k.htm
     public partial class Rewriter : IEnumerable<RtlInstructionCluster>
     {
-        private static Dictionary<int, double> fpuRomConstants;
+        private static readonly Dictionary<int, double> fpuRomConstants;
 
         // These fields are internal so that the OperandRewriter can use them.
         private readonly M68kArchitecture arch;
@@ -54,7 +54,6 @@ namespace Reko.Arch.M68k
         private InstrClass iclass;
         private OperandRewriter orw;
 
-#nullable disable
         public Rewriter(M68kArchitecture m68kArchitecture, EndianImageReader rdr, M68kState m68kState, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = m68kArchitecture;
@@ -63,8 +62,11 @@ namespace Reko.Arch.M68k
             this.host = host;
             this.rdr = rdr;
             this.dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();
+            this.instr = default!;
+            this.m = default!;
+            this.orw = default!;
+            this.rtlInstructions = new List<RtlInstruction>();
         }
-#nullable enable
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
@@ -73,7 +75,6 @@ namespace Reko.Arch.M68k
                 instr = dasm.Current;
                 var addr = instr.Address;
                 var len = instr.Length;
-                rtlInstructions = new List<RtlInstruction>();
                 iclass = instr.InstructionClass;
                 m = new RtlEmitter(rtlInstructions);
                 orw = new OperandRewriter(arch, this.m, this.binder, instr.DataWidth!);
@@ -326,6 +327,7 @@ VS Overflow Set 1001 V
                 case Mnemonic.unpk: RewriteUnpk(); break;
                 }
                 yield return m.MakeCluster(addr, len, iclass);
+                rtlInstructions.Clear();
             }
         }
 

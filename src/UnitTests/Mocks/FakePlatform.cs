@@ -37,11 +37,6 @@ namespace Reko.UnitTests.Mocks
             Metadata = new TypeLibrary();
         }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
-
         public Func<HashSet<RegisterStorage>> Test_CreateImplicitArgumentRegisters;
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {

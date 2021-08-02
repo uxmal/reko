@@ -201,7 +201,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
         /// 100% precise, but it shouldn't be insanely wrong either.
         /// </summary>
         /// <returns></returns>
-        public Tuple<int, int> GetPositionAsFraction()
+        public (int, int) GetPositionAsFraction()
         {
             long numer = 0;
             foreach (var item in imageMap.Items.Values)
@@ -222,7 +222,7 @@ namespace Reko.UserInterfaces.WindowsForms.Controls
                 numer >>= 1;
                 denom >>= 1;
             }
-            return Tuple.Create((int)numer, (int)denom);
+            return ((int)numer, (int)denom);
         }
 
         private int GetLineOffset(ImageMapItem item, Address addr)

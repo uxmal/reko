@@ -105,6 +105,7 @@ namespace Reko.UserInterfaces.WindowsForms
             framesByTab.Add(tabPage, frame);
             this.form.DocumentTabs.TabPages.Add(tabPage);
             this.form.DocumentTabs.SelectedTab = tabPage;
+            pane.Frame = frame;
             pane.SetSite(services);
             return frame;
         }
@@ -130,6 +131,7 @@ namespace Reko.UserInterfaces.WindowsForms
             framesByTab.Add(tabPage, frame);
             this.form.DocumentTabs.TabPages.Add(tabPage);
             this.form.DocumentTabs.SelectedTab = tabPage;
+            pane.Frame = frame;
             pane.SetSite(services);
             return frame;   
         }

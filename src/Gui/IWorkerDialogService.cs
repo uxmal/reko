@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -28,6 +28,12 @@ namespace Reko.Gui
 {
     public interface IWorkerDialogService
     {
+        /// <summary>
+        /// Starts working in a background thread.
+        /// </summary>
+        /// <param name="caption">Caption to display in the worker dialog.</param>
+        /// <param name="backgroundWork"></param>
+        /// <returns>True it task completed, false if it threw an exception.</returns>
         bool StartBackgroundWork(string caption, Action backgroundWork);
 
         /// <summary>

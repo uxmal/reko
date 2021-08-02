@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items"/>
   <PropertyGroup>
     <ProjectGuid>{2882376F-663A-4FC8-842C-B0300A6829E8}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -7,7 +8,6 @@
     <AssemblyName>Reko.ImageLoaders.OdbgScript</AssemblyName>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <LangVersion>8.0</LangVersion>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>

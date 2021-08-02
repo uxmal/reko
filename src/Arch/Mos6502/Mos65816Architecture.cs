@@ -58,11 +58,6 @@ namespace Reko.Arch.Mos6502
             return new Mos65816Disassembler(this, rdr);
         }
 
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
@@ -140,7 +135,7 @@ namespace Reko.Arch.Mos6502
 
         public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse16(txtAddr, out addr);
         }
 
         static Mos65816Architecture()

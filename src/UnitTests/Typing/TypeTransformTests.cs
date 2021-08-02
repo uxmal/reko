@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Typing
                 proc.Write(false, writer);
                 writer.WriteLine();
             }
-            store.Write(writer);
+            store.Write(false, writer);
         }
 
         [Test]

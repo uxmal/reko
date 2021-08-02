@@ -153,7 +153,7 @@ namespace Reko.Arch.X86.Assembler
 						case 2: sib = 0x40; break;
 						case 4: sib = 0x80; break;
 						case 8: sib = 0xC0; break;
-						default: OnError("Scale factor must be 1, 2, 4, or 8"); return Constant.Invalid;
+						default: OnError("Scale factor must be 1, 2, 4, or 8"); return InvalidConstant.Create(this.defaultWordSize);
 						}
 
 						if (memOp.Base == RegisterStorage.None)

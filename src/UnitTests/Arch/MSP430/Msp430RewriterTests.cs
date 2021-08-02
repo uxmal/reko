@@ -44,12 +44,6 @@ namespace Reko.UnitTests.Arch.Msp430
         public override IProcessorArchitecture Architecture => arch;
         public override Address LoadAddress => Address.Ptr16(0x0100);
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var rdr = mem.CreateLeReader(mem.BaseAddress);
-            return arch.CreateRewriter(rdr, arch.CreateProcessorState(), binder, host);
-        }
-
         [Test]
         public void Msp430Rw_mov()
         {
@@ -58,7 +52,6 @@ namespace Reko.UnitTests.Arch.Msp430
                 "0|L--|0100(4): 1 instructions",
                 "1|L--|r12 = 0xEEA0<16>");
         }
-
 
         [Test]
         public void Msp430Rw_xor()

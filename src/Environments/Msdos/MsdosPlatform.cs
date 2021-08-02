@@ -21,6 +21,7 @@
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.CLanguage;
+using Reko.Core.Emulation;
 using Reko.Core.Lib;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
@@ -44,7 +45,16 @@ namespace Reko.Environments.Msdos
 
 		public MsdosPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "ms-dos")
 		{
+            this.realModeServices = null!;
 		}
+
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
+        {
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
+        }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
@@ -78,7 +88,7 @@ namespace Reko.Environments.Msdos
             };
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             return new X86CallingConvention(
                 4,      //$REVIEW: this is a far call, what about near calls?
@@ -89,7 +99,7 @@ namespace Reko.Environments.Msdos
         }
 
 
-        public override string DetermineCallingConvention(FunctionType signature)
+        public override string? DetermineCallingConvention(FunctionType signature)
         {
             if (!signature.HasVoidReturn)
             {
@@ -120,18 +130,18 @@ namespace Reko.Environments.Msdos
             LoadRealmodeServices(Architecture);
         }
 
-        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
         {
             var sf = new StartupFinder(Services, program, addrStart);
             return sf.FindMainAddress();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
 		{
             EnsureTypeLibraries(PlatformIdentifier);
 			foreach (SystemService svc in realModeServices)
 			{
-				if (svc.SyscallInfo.Matches(vector, state))
+				if (svc.SyscallInfo!.Matches(vector, state))
 					return svc;
 			}
 			return null;
@@ -160,7 +170,7 @@ namespace Reko.Environments.Msdos
             m.Assign(proc.Frame.EnsureRegister(Registers.Top), 0);
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -28,9 +28,9 @@ namespace Reko.ImageLoaders.Hunk
     public class ExtObject
     {
         public ExtType type;
-        public string name;
+        public string? name;
         public uint common_size;
         public uint def;
-        public List<uint> refs;
+        public List<uint>? refs;
     }
 }

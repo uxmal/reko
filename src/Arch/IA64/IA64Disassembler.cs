@@ -64,6 +64,7 @@ namespace Reko.Arch.IA64
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
             this.qpReg = Registers.PredicateRegisters[0];
+            this.addr = null!;
         }
 
         public override IEnumerator<IA64Instruction> GetEnumerator()
@@ -256,11 +257,13 @@ namespace Reko.Arch.IA64
 
         #endregion
 
+#nullable disable
         static IA64Disassembler()
         {
             BuildDecoders();
             templates = BuildTemplateDecoders();
         }
+#nullable enable
 
         private static void BuildDecoders()
         {

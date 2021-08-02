@@ -33,7 +33,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
         {
         }
 
-        public override (Address, ElfSymbol) RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, ElfRelocation rel)
+        public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation rel)
         {
             if (symbol == null ||
                 loader.Sections.Count <= symbol.SectionIndex)

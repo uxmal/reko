@@ -1,16 +1,34 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+#region License
+/* 
+ * Copyright (C) 1999-2021 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Reko.Environments.Windows
 {
-	public class Win32M68kPlatform : Platform
+    public class Win32M68kPlatform : Platform
 	{
 		public Win32M68kPlatform(IServiceProvider services, IProcessorArchitecture arch) : 
             base(services, arch, "winM68k")
@@ -22,9 +40,12 @@ namespace Reko.Environments.Windows
 			get { return ""; }
 		}
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
         {
-            throw new NotImplementedException();
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
@@ -32,25 +53,25 @@ namespace Reko.Environments.Windows
 			return new HashSet<RegisterStorage>();
 		}
 
-		public override CallingConvention GetCallingConvention(string ccName)
+		public override CallingConvention GetCallingConvention(string? ccName)
 		{
 			return new M68kCallingConvention(this.Architecture);
 		}
 
-		public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+		public override ImageSymbol? FindMainProcedure(Program program, Address addrStart)
 		{
 			Services.RequireService<DecompilerEventListener>().Warn(new NullCodeLocation(program.Name),
 				"Win32 M68k main procedure finder not supported.");
 			return null;
 		}
 
-		public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+		public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
 		{
 			//throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
 			return null;
 		}
 
-		public override ProcedureBase GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rtls, IRewriterHost host)
+		public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rtls, IRewriterHost host)
 		{
 			return null;
 		}
@@ -73,34 +94,32 @@ namespace Reko.Environments.Windows
 			}
 		}
 
-		public override ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
+		public override ExternalProcedure? LookupProcedureByOrdinal(string moduleName, int ordinal)
 		{
 			EnsureTypeLibraries(PlatformIdentifier);
-			ModuleDescriptor mod;
-			if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+			if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
 				return null;
-			SystemService svc;
-			if (mod.ServicesByOrdinal.TryGetValue(ordinal, out svc))
+			if (mod.ServicesByOrdinal.TryGetValue(ordinal, out SystemService svc))
 			{
-				return new ExternalProcedure(svc.Name, svc.Signature);
+				return new ExternalProcedure(svc.Name!, svc.Signature!);
 			}
 			else
 				return null;
 		}
 
-		public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+		public override ExternalProcedure? LookupProcedureByName(string? moduleName, string procName)
 		{
+            if (moduleName is null)
+                return null;
 			EnsureTypeLibraries(PlatformIdentifier);
-			ModuleDescriptor mod;
-			if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+			if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out ModuleDescriptor mod))
 				return null;
-			SystemService svc;
-			if (mod.ServicesByName.TryGetValue(moduleName, out svc))
-			{
-				return new ExternalProcedure(svc.Name, svc.Signature);
-			}
-			else
-				throw new NotImplementedException();
-		}
+            if (mod.ServicesByName.TryGetValue(moduleName, out SystemService svc))
+            {
+                return new ExternalProcedure(svc.Name!, svc.Signature!);
+            }
+            else
+                throw new NotImplementedException();
+        }
 	}
 }

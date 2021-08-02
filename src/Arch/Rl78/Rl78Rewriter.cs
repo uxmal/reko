@@ -54,6 +54,8 @@ namespace Reko.Arch.Rl78
             this.binder = binder;
             this.host = host;
             this.dasm = new LookaheadEnumerator<Rl78Instruction>(new Rl78Disassembler(arch, rdr));
+            this.instr = null!;
+            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -385,13 +387,13 @@ namespace Reko.Arch.Rl78
 
         private void RewriteIncDec(Func<Expression, Expression, Expression> fn)
         {
-            var dst = RewriteDst(instr.Operands[0], null, fn);
+            var dst = RewriteDst(instr.Operands[0], null!, fn);
             EmitCond(dst, Z());
         }
 
         private void RewriteIncwDecw(Func<Expression,Expression,Expression> fn)
         {
-            RewriteDst(instr.Operands[0], null, fn);
+            RewriteDst(instr.Operands[0], null!, fn);
         }
 
         private void RewriteLogical(Func<Expression,Expression,Expression> fn)

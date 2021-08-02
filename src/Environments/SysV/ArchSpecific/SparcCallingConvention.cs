@@ -41,14 +41,14 @@ namespace Reko.Environments.SysV.ArchSpecific
         {
             this.arch = arch;
             this.regs = new[] { "o0", "o1", "o2", "o3", "o4", "o5" }
-                .Select(r => arch.GetRegister(r))
+                .Select(r => arch.GetRegister(r)!)
                 .ToArray();
-            this.iret = arch.GetRegister("o0");
-            this.fret0 = arch.GetRegister("f0");
-            this.fret1 = arch.GetRegister("f1");
+            this.iret = arch.GetRegister("o0")!;
+            this.fret0 = arch.GetRegister("f0")!;
+            this.fret1 = arch.GetRegister("f1")!;
         }
 
-        public void Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List<DataType> dtParams)
+        public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
         {
             ccr.LowLevelDetails(arch.WordWidth.Size, 0x0018);
             if (dtRet != null)

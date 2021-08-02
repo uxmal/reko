@@ -49,10 +49,8 @@ namespace Reko.Environments.AmigaOS
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
             var rdr = new StreamReader(new MemoryStream(bytes));
-            var lexer = new CLexer(rdr, CLexer.StdKeywords);
-            var state = new ParserState();
-            var parser = new CParser(state, lexer);
-            var symbolTable = new SymbolTable(platform);
+            var parser = platform.CreateCParser(rdr);
+            var symbolTable = new SymbolTable(platform, 4);
             var declarations = parser.Parse();
             var tldser = new TypeLibraryDeserializer(platform, true, dstLib);
             foreach (var decl in declarations)
@@ -69,12 +67,12 @@ namespace Reko.Environments.AmigaOS
             int? vectorOffset = GetVectorOffset(declaration);
             if (vectorOffset.HasValue)
             {
-                var ntde = new NamedDataTypeExtractor(platform, declaration.decl_specs, symbolTable);
+                var ntde = new NamedDataTypeExtractor(platform, declaration.decl_specs, symbolTable, 4);
                 foreach (var declarator in declaration.init_declarator_list)
                 {
                     var nt = ntde.GetNameAndType(declarator.Declarator);
-                    var ssig = (SerializedSignature)nt.DataType;
-                    if (ssig.ReturnValue != null)
+                    var ssig = (SerializedSignature?)nt.DataType;
+                    if (ssig != null && ssig.ReturnValue != null)
                     {
                         ssig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(
                             "returns", declaration.attribute_list);
@@ -104,7 +102,7 @@ namespace Reko.Environments.AmigaOS
                 .Where(a =>
                     a.Name.Components[0] == "reko" &&
                     a.Name.Components[1] == "amiga_function_vector")
-                .Select(a => (int?)(int)a.Tokens[2].Value)
+                .Select(a => (int?)(int)a.Tokens[2].Value!)
                 .FirstOrDefault();
         }
     }

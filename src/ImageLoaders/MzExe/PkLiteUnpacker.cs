@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Loading;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Types;
@@ -53,7 +54,7 @@ namespace Reko.ImageLoaders.MzExe
             : base(loader.Services, loader.Filename, loader.RawImage)
 		{
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            this.arch = cfgSvc.GetArchitecture("x86-real-16");
+            this.arch = cfgSvc.GetArchitecture("x86-real-16")!;
             platform = cfgSvc.GetEnvironment("ms-dos")
                 .Load(Services, arch);
 
@@ -68,6 +69,8 @@ namespace Reko.ImageLoaders.MzExe
 				throw new ApplicationException(string.Format("Expected ADD BX,+XX at offset 0x{0:X4}.", pkLiteHdrOffset + 0x04C));
 			uint offCompressedData = pkLiteHdrOffset + RawImage[pkLiteHdrOffset + 0x04E] * 0x10u - PspSize;
 			bitStm = new BitStream(RawImage, (int) offCompressedData);
+            this.imgU = null!;
+            this.segmentMap = null!;
 		}
 
 		static public bool IsCorrectUnpacker(ExeImageLoader exe, byte [] rawImg)
@@ -78,7 +81,7 @@ namespace Reko.ImageLoaders.MzExe
 			return ByteMemoryArea.CompareArrays(rawImg, (int) signatureOffset, signature, signature.Length);
 		}
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
 		{
 			uint dst = PspSize;
 
@@ -208,7 +211,7 @@ l01C8:
 2DE9:01CB 83C310        ADD	BX,+10				// BX => unpackedBase + 0x100
 */
 			l01C8:
-			imgU = new ByteMemoryArea(addrLoad, abU);
+			imgU = new ByteMemoryArea(addrLoad!, abU);
             segmentMap = new SegmentMap(imgU.BaseAddress,
                 new ImageSegment("image", imgU, AccessMode.ReadWriteExecute));
 			return new Program(segmentMap, arch, platform);
@@ -240,7 +243,7 @@ l01C8:
         public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
             var relocations = imgU.Relocations;
-			ushort segCode = (ushort) (addrLoad.Selector.Value + (PspSize >> 4));
+			ushort segCode = (ushort) (addrLoad.Selector!.Value + (PspSize >> 4));
 			for (;;)
 			{
 				int relocs = (ushort) bitStm.GetByte();

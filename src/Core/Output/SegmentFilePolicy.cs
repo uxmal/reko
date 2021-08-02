@@ -85,10 +85,6 @@ namespace Reko.Core.Output
             return result;
         }
 
-
-
-
-
         public override Dictionary<string, Dictionary<ImageSegment, List<ImageMapItem>>> GetItemPlacements(string fileExtension)
         {
             var mappedItems = program.GetItemsBySegment();
@@ -161,7 +157,7 @@ namespace Reko.Core.Output
         {
             if (!segmentFilenames.TryGetValue(seg, out var filename))
             {
-                var sanitizedSegName = SanitizeSegmentName(seg.Name);
+                var sanitizedSegName = NamingPolicy.SanitizeIdentifierName(seg.Name);
                 filename = $"{progname}_{sanitizedSegName}";
                 segmentFilenames.Add(seg, filename);
             }
@@ -175,43 +171,5 @@ namespace Reko.Core.Output
             return Path.ChangeExtension(filename, fileExtension);
         }
 
-        /// <summary>
-        /// Replace non-identifier characters in the segment name with underscores.
-        /// </summary>
-        /// <param name="name">Segment name to sanitize.</param>
-        /// <returns>Sanitized segment name.</returns>
-        private string SanitizeSegmentName(string name)
-        {
-            var sb = new StringBuilder();
-            int n = name.Length;
-            int i;
-
-            // Skip leading unprintables.
-            for (i = 0; i < n; ++i)
-            {
-                if (char.IsLetterOrDigit(name[i]))
-                    break;
-            }
-
-            bool emitUnderscore = false;
-            for (; i < n; ++i)
-            {
-                char ch = name[i];
-                if (char.IsLetterOrDigit(ch))
-                {
-                    if (emitUnderscore)
-                    {
-                        sb.Append('_');
-                        emitUnderscore = false;
-                    }
-                    sb.Append(ch);
-                }
-                else
-                {
-                    emitUnderscore = true;
-                }
-            }
-            return sb.ToString();
-        }
     }
 }

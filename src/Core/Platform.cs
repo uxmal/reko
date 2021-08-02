@@ -20,6 +20,7 @@
 
 using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
+using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -29,6 +30,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -80,6 +82,13 @@ namespace Reko.Core
         /// <returns>A <see cref="SegmentMap"/> or null if this platform doesn't support 
         /// memory maps.</returns>
         SegmentMap? CreateAbsoluteMemoryMap();
+
+        /// <summary>
+        /// Create a <see cref="CParser"/> capable of parsing header files for this platform. 
+        /// Platforms may have different dialects of C. 
+        /// </summary>
+        /// <returns>An instance of a <see cref="CParser"/>.</returns>
+        CParser CreateCParser(TextReader rdr, ParserState? state = null);
 
         /// <summary>
         /// Given a procedure signature, determines whether it conforms to any
@@ -268,7 +277,10 @@ namespace Reko.Core
             return addr;
         }
 
-        public abstract IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences);
+        public virtual IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        {
+            throw new NotImplementedException("Emulation has not been implemented for this platform yet.");
+        }
 
         /// <summary>
         /// Creates a set that represents those registers that are never used
@@ -339,6 +351,15 @@ namespace Reko.Core
             return new SegmentMap(
                 segs.Values.First().Address,
                 segs.Values.ToArray());
+        }
+
+
+        public virtual CParser CreateCParser(TextReader rdr, ParserState? state)
+        {
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.StdKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
         }
 
         public virtual string? DetermineCallingConvention(FunctionType signature)
@@ -598,11 +619,6 @@ namespace Reko.Core
         public override string DefaultCallingConvention
         {
             get { return ""; }
-        }
-
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotSupportedException();
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

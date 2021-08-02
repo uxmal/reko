@@ -32,10 +32,10 @@ namespace Reko.ImageLoaders.LLVM
     public class ProcedureBuilder : CodeEmitter
     {
         private Procedure proc;
-        private Block block;
+        private Block? block;
         private Dictionary<string, Block> labelMap;
         private Dictionary<string, Block> deferredBlocks;
-        private Block lastBlock;
+        private Block? lastBlock;
         private int tmpCounter;
         private Dictionary<string, Identifier> llvmNametoId;
         private ulong linearAddress;
@@ -59,14 +59,14 @@ namespace Reko.ImageLoaders.LLVM
         public override Statement Emit(IrInstruction instr)
         {
             EnsureBlock(null);
-            block.Statements.Add(linearAddress++, instr);
-            return block.Statements.Last;
+            block!.Statements.Add(linearAddress++, instr);
+            return block.Statements.Last!;
         }
 
         public override void Return()
         {
             base.Return();
-            Procedure.ControlGraph.AddEdge(block, Procedure.ExitBlock);
+            Procedure.ControlGraph.AddEdge(block!, Procedure.ExitBlock);
             TerminateBlock();
             lastBlock = null;
         }
@@ -74,7 +74,7 @@ namespace Reko.ImageLoaders.LLVM
         public override void Return(Expression exp)
         {
             base.Return(exp);
-            Procedure.ControlGraph.AddEdge(block, Procedure.ExitBlock);
+            Procedure.ControlGraph.AddEdge(block!, Procedure.ExitBlock);
             TerminateBlock();
             lastBlock = null;
         }
@@ -89,7 +89,7 @@ namespace Reko.ImageLoaders.LLVM
         {
             EnsureBlock(null);
             Block blockTo = BlockOf(name, true);
-            Procedure.ControlGraph.AddEdge(this.block, blockTo);
+            Procedure.ControlGraph.AddEdge(this.block!, blockTo);
             TerminateBlock();
             EnsureBlock(null);
         }
@@ -120,7 +120,7 @@ namespace Reko.ImageLoaders.LLVM
             }
             if (!labelMap.TryGetValue(label, out b))
             {
-                b = proc.AddBlock(null, "l" + label);
+                b = proc.AddBlock(null!, "l" + label);
                 if (defer)
                     deferredBlocks.Add(label, b);
                 else
@@ -129,7 +129,7 @@ namespace Reko.ImageLoaders.LLVM
             return b;
         }
 
-        public Block EnsureBlock(string name)
+        public Block EnsureBlock(string? name)
         {
             if (block != null)
                 return block;

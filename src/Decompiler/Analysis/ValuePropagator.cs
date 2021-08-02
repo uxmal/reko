@@ -90,6 +90,8 @@ namespace Reko.Analysis
 
         public void Transform(Statement stm)
         {
+            if (stm.LinearAddress == 0x151C)
+                stm.ToString(); //$DEBUG
             evalCtx.Statement = stm;
             trace.Verbose("From: {0}", stm.Instruction.ToString());
             stm.Instruction = stm.Instruction.Accept(this);

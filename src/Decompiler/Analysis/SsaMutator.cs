@@ -122,6 +122,52 @@ namespace Reko.Analysis
         }
 
         /// <summary>
+        /// Inserts an assignment statement into a <see cref="Block" /> after the statement <paramref name="stmAfter"/>.
+        /// </summary>
+        /// <remarks>
+        /// The method generates an <see cref="SsaIdentifier"/> from the the supplied identifier <paramref name="dst"/>,
+        /// creates an <see cref="Assignment"/> from the source expression <paramref name="src"/> to the new SSA Identifier, 
+        /// and inserts the resulting Assignment after the statement <paramref name="stmAfter"/>.
+        /// </remarks>
+        /// <param name="instr"><see cref="Instruction"/> to insert.</param>
+        /// <param name="stmAfter">The <see cref="Statement"/> after which to insert the 
+        /// instruction.</param>
+        /// <returns>The <see cref="SsaIdentifier"/> of the newly inserted assignment.</returns>
+        public SsaIdentifier InsertAssignmentAfter(Identifier dst, Expression src, Statement stmAfter)
+        {
+            var stmts = stmAfter.Block.Statements;
+            var iPos = stmts.IndexOf(stmAfter);
+            var stm = stmts.Insert(iPos + 1, stmAfter.LinearAddress, null!);
+            var sid = ssa.Identifiers.Add(dst, stm, src, false);
+            stm.Instruction = new Assignment(sid.Identifier, src);
+            ssa.AddUses(stm);
+            return sid;
+        }
+
+        /// <summary>
+        /// Inserts an assignment <see cref="Block" /> before the statement <paramref name="stmBefore"/>.
+        /// </summary>
+        /// <remarks>
+        /// The method generates an <see cref="SsaIdentifier"/> from the the supplied identifier <paramref name="dst"/>,
+        /// creates an <see cref="Assignment"/> from the source expression <paramref name="src"/> to the new SSA Identifier, 
+        /// and inserts the resulting Assignment before the given statement <paramref name="stmBefore"/>.
+        /// </remarks>
+        /// <param name="instr"><see cref="Instruction"/> to insert.</param>
+        /// <param name="stmBefore">The <see cref="Statement"/> before which to insert the 
+        /// instruction.</param>
+        /// <returns>The <see cref="SsaIdentifier"/> of the newly inserted assignment.</returns>
+        public SsaIdentifier InsertAssignmentBefore(Identifier dst, Expression src, Statement stmBefore)
+        {
+            var stmts = stmBefore.Block.Statements;
+            var iPos = stmts.IndexOf(stmBefore);
+            var stm =  stmts.Insert(iPos, stmBefore.LinearAddress, null!);
+            var sid = ssa.Identifiers.Add(dst, stm, src, false);
+            stm.Instruction = new Assignment(sid.Identifier, src);
+            ssa.AddUses(stm);
+            return sid;
+        }
+
+        /// <summary>
         /// After CallInstruction to Application rewriting some identifiers
         /// defined in CallInstruction can become undefined. Create
         /// '<id> = Constant.Invalid' instruction for each of undefined
@@ -149,7 +195,7 @@ namespace Reko.Analysis
             Statement stm,
             SsaIdentifier sid)
         {
-            var value = Constant.Invalid;
+            var value = InvalidConstant.Create(sid.Identifier.DataType);
             var ass = new Assignment(sid.Identifier, value);
             var newStm = InsertStatementAfter(ass, stm);
             sid.DefExpression = value;
@@ -163,6 +209,14 @@ namespace Reko.Analysis
             ssa.AddDefinitions(stm);
             ssa.AddUses(stm);
             DefineUninitializedIdentifiers(stm, call);
+        }
+
+        public void ReplaceAssigment(SsaIdentifier sid, Assignment ass)
+        {
+            var stm = sid.DefStatement!;
+            ssa.RemoveUses(stm);
+            sid.DefStatement!.Instruction = ass;
+            ssa.AddUses(stm);
         }
     }
 }

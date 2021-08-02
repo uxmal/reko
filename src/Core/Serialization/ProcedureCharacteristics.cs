@@ -85,13 +85,13 @@ namespace Reko.Core.Serialization
         [DefaultValue(0)]
         public int ReturnAddressAdjustment { get; set; }
 
-        public void Write()
-        {
-            foreach (PropertyDescriptor prop in TypeDescriptor.GetProperties(this))
-            {
-                var dv = (DefaultValueAttribute)
-                    prop.Attributes[typeof(DefaultValueAttribute)];
-            }
+        public bool IsDefaultCharactaristics { get =>
+                IsAlloca == false &&
+                Terminates == false &&
+                Allocator == false &&
+                ArraySize == null &&
+                VarargsParserClass == null &&
+                ReturnAddressAdjustment == 0;
         }
     }
 

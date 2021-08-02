@@ -19,19 +19,13 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Reko.Core.CLanguage;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
-using Reko.Arch.PowerPC;
 
 namespace Reko.Environments.Wii
 {
-	public class WiiPlatform : Platform {
+    public class WiiPlatform : Platform {
 
 		public WiiPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "wii")
         {
@@ -39,18 +33,13 @@ namespace Reko.Environments.Wii
 
 		public override string DefaultCallingConvention { get { return ""; } }
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
-        {
-            throw new NotImplementedException();
-        }
-
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
 			//$TODO: find out what registers are always preserved
 			return new HashSet<RegisterStorage>();
 		}
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
@@ -60,7 +49,7 @@ namespace Reko.Environments.Wii
 			return new HashSet<RegisterStorage>();
 		}
 
-		public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap) {
+		public override SystemService? FindService(int vector, ProcessorState? state, SegmentMap? segmentMap) {
 			//$TODO: implement some services;
 			return null;
 		}
@@ -69,7 +58,7 @@ namespace Reko.Environments.Wii
 			throw new NotImplementedException();
 		}
 
-		public override ExternalProcedure LookupProcedureByName(string moduleName, string procName) {
+		public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName) {
 			throw new NotImplementedException();
 		}
 	}

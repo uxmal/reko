@@ -30,12 +30,11 @@ namespace Reko.Arch.Vax
     {
         public MemoryOperand(PrimitiveType width) : base(width) { }
 
-        public RegisterStorage Base;
-        public Constant Offset;
+        public MachineOperand? Base;
+        public Constant? Offset;
         public bool Deferred;
         internal bool AutoDecrement;
         internal bool AutoIncrement;
-        internal RegisterStorage Index;
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
@@ -56,15 +55,13 @@ namespace Reko.Arch.Vax
             }
             if (Base != null)
             {
-                renderer.WriteFormat("({0})", Base.Name);
+                renderer.WriteChar('(');
+                Base.Render(renderer, options);
+                renderer.WriteChar(')');
             }
             if (AutoIncrement)
             {
                 renderer.WriteString("+");
-            }
-            if (Index != null)
-            {
-                renderer.WriteFormat("[{0}]", Index.Name);
             }
         }
     }

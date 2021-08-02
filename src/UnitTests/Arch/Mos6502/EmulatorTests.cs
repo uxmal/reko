@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Mos6502;
 using Reko.Core;
+using Reko.Core.Emulation;
 using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;

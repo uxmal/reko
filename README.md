@@ -1,6 +1,7 @@
 
 # reko - a general purpose decompiler.
 
+[![GitHub workflow status](https://github.com/uxmal/reko/workflows/Reko/badge.svg)]
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/uxmal/reko?branch=master&svg=true)](https://ci.appveyor.com/project/uxmal/reko)
  [![Build Status](https://travis-ci.org/uxmal/reko.svg?branch=master)](https://travis-ci.org/uxmal/reko) 
  [![Join us on Discord](https://img.shields.io/static/v1?link=https://discord.gg/9PMWVxEjqr&message=Join%20Discord&logo=discord&style=flat&color=107090&labelColor=5E5E5E&label=&logoColor=white)](https://discord.gg/9PMWVxEjqr)
@@ -59,7 +60,7 @@ below.
 ### Windows users
 
 The following prerequisite software must be installed on your machine first:
-* .NET Framework 4.7.2 (https://www.microsoft.com/net/download/dotnet-framework-runtime)
+* .NET Core 3.1 (https://www.microsoft.com/net/download/dotnet-framework-runtime)
 
 Download an MSI file from one of the places mentioned above, then simply run
 the installer.
@@ -67,11 +68,12 @@ the installer.
 ### Non-Windows users
 
 The following prerequisite software must be installed on your machine first:
-* mono version 5.18.0 or later (https://download.mono-project.com/archive/5.18.0/)
+* .NET Core 3.1 for Linux (https://docs.microsoft.com/en-us/dotnet/core/install/linux)
+* .NET Core 3.1 for macOS (https://docs.microsoft.com/en-us/dotnet/core/install/macos)
 
-After installing mono, you can proceed by either downloading binaries directly
-from the integration build server, or by building Reko from sources (see `Hacking` 
-below).
+After installing .NET Core as appropriate for your operating system, you can proceed 
+by either downloading binaries directly from the integration build server, or by 
+building Reko from sources (see `Hacking` below).
 
 ## Documentation
 
@@ -91,9 +93,9 @@ spare time, so adjust your response-time expectations accordingly.
 
 To build reko, start by cloning https://github.com/uxmal/reko. You
 can use an IDE or the command line to build the solution file
-`Reko-decompiler.sln`. Reko requires .NET Framework 4.7.2 and C# 8
-to compile. If you are an IDE user, use Visual Studio 2019.
-If you wish to build using the command line, use the command
+`src/Reko-decompiler.sln`. Reko requires .NET Core 3.1 and C# 8
+to compile. If you are an Windows IDE user, use Visual Studio 2019 or
+VS Code. If you wish to build using the command line, use the command
 
 ```cmd
 msbuild /p:Configuration={config} /p:Platform={platform} Reko-decompiler.sln

@@ -36,6 +36,7 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Collections.Generic;
 using Reko.Core.Services;
+using Moq;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -52,6 +53,8 @@ namespace Reko.UnitTests.Scanning
         private IBackWalkHost<Block, Instruction> host;
         private FakeDecompilerEventListener listener;
 
+#nullable enable
+
         private class BackwalkerHost : IBackWalkHost<Block, Instruction>
         {
             private IProcessorArchitecture arch;
@@ -65,30 +68,28 @@ namespace Reko.UnitTests.Scanning
 
             public IProcessorArchitecture Architecture => arch;
 
-            public Program Program => null;
+            public Program Program => null!;
 
             public SegmentMap SegmentMap => throw new NotImplementedException();
 
-            public Tuple<Expression, Expression> AsAssignment(Instruction instr)
+            public (Expression?, Expression?) AsAssignment(Instruction instr)
             {
-                var ass = instr as Assignment;
-                if (ass == null)
-                    return null;
-                return Tuple.Create((Expression)ass.Dst, ass.Src);
+                if (!(instr is Assignment ass))
+                    return (null,null);
+                return (ass.Dst, ass.Src);
             }
 
-            public Expression AsBranch(Instruction instr)
+            public Expression? AsBranch(Instruction instr)
             {
-                var bra = instr as Branch;
-                if (bra == null)
+                if (instr is Branch bra)
+                    return bra.Condition;
+                else 
                     return null;
-                return bra.Condition;
             }
 
             public bool IsFallthrough(Instruction instr, Block block)
             {
-                var bra = instr as Branch;
-                if (bra == null)
+                if (!(instr is Branch bra))
                     return false;
                 return bra.Target != block;
             }
@@ -113,9 +114,15 @@ namespace Reko.UnitTests.Scanning
                 return block.Pred.ToList();
             }
 
+
+            public RegisterStorage GetSubregister(RegisterStorage reg, BitRange range)
+            {
+                return arch.GetRegister(reg.Domain, range)!;
+            }
+
             public RegisterStorage GetSubregister(RegisterStorage reg, int off, int width)
             {
-                return arch.GetSubregister(reg, off, width);
+                throw new NotImplementedException();
             }
 
             public bool IsStackRegister(Storage stg)
@@ -179,7 +186,8 @@ namespace Reko.UnitTests.Scanning
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
                 program.Platform = platform;
             }
-            var scanner = new Scanner(program, null, sc);
+            var dynlinker = new Mock<IDynamicLinker>();
+            var scanner = new Scanner(program, new TypeLibrary(), dynlinker.Object, sc);
             scanner.EnqueueImageSymbol(ImageSymbol.Procedure(program.Architecture, program.ImageMap.BaseAddress), true);
             scanner.ScanImage();
             using (var fut = new FileUnitTester(outputFile))
@@ -227,9 +235,9 @@ namespace Reko.UnitTests.Scanning
 
             var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
             Assert.IsTrue(bw.CanBackwalk());
-            Assert.AreEqual("a5", bw.Index.Name);
+            Assert.AreEqual("a5", bw.Index!.Name);
             bw.BackWalk(m.Block);
-            Assert.AreEqual("v40", bw.IndexExpression.ToString());
+            Assert.AreEqual("v40", bw.IndexExpression!.ToString());
         }
 
         [Test]
@@ -265,7 +273,7 @@ namespace Reko.UnitTests.Scanning
             var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
             Assert.IsTrue(bw.CanBackwalk());
             var ops = bw.BackWalk(m.Block);
-            Assert.AreEqual(3, ops.Count);
+            Assert.AreEqual(3, ops!.Count);
             Assert.AreEqual("cmp 120", ops[0].ToString());
             Assert.AreEqual("branch UGT", ops[1].ToString());
             Assert.AreEqual("* 8", ops[2].ToString());
@@ -294,7 +302,7 @@ namespace Reko.UnitTests.Scanning
             var bw = new Backwalker<Block, Instruction>(host, xfer, expSimp);
             Assert.IsTrue(bw.CanBackwalk());
             var ops = bw.BackWalk(block);
-            Assert.AreEqual(3, ops.Count);
+            Assert.AreEqual(3, ops!.Count);
             Assert.AreEqual("cmp 48", ops[0].ToString());
             Assert.AreEqual("branch UGT", ops[1].ToString());
             Assert.AreEqual("* 4", ops[2].ToString());

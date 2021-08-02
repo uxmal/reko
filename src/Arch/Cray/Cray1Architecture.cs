@@ -26,7 +26,6 @@ using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Reko.Arch.Cray
 {
@@ -40,18 +39,13 @@ namespace Reko.Arch.Cray
             this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;
             this.PointerType = PrimitiveType.Ptr32;
-            this.StackRegister = null; //$TODO: Ax?
+            this.StackRegister = null!; //$TODO: Ax?
             this.WordWidth = PrimitiveType.Word64;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
             return new Cray1.Cray1Disassembler(this, rdr);
-        }
-
-        public override IProcessorEmulator CreateEmulator(SegmentMap segmentMap, IPlatformEmulator envEmulator)
-        {
-            throw new NotImplementedException();
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -119,7 +113,7 @@ namespace Reko.Arch.Cray
             throw new NotImplementedException();
         }
 
-        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState? state)
         {
             throw new NotImplementedException();
         }
@@ -129,7 +123,7 @@ namespace Reko.Arch.Cray
             throw new NotImplementedException();
         }
 
-        public override bool TryParseAddress(string txtAddr, out Address addr)
+        public override bool TryParseAddress(string? txtAddr, out Address addr)
         {
             throw new NotImplementedException();
         }

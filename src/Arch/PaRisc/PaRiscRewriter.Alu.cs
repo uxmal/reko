@@ -70,6 +70,13 @@ namespace Reko.Arch.PaRisc
             m.Assign(dst, m.IAdd(src1, src2));
             if (trapIfCondition)
             {
+                if (instr.Condition is null)
+                {
+                    host.Error(instr.Address, "Expected a condition in instruction {0}.", instr);
+                    this.iclass = InstrClass.Invalid;
+                    m.Invalid();
+                    return;
+                }
                 var zero = Constant.Zero(SizeFromCondition(instr.Condition.Type));
                 var c = RewriteCondition(dst, zero);
                 if (!c.IsZero)

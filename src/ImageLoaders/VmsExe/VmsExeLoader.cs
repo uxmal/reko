@@ -21,6 +21,7 @@
 using Reko.Arch.Vax;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
@@ -37,22 +38,24 @@ namespace Reko.ImageLoaders.VmsExe
     // http://fossies.org/linux/freevms/sys/src/sysimgact.c
     public class VmsExeLoader : ImageLoader
     {
-        public VmsExeLoader(IServiceProvider services, string filename, byte[] imgRaw) 
+        public VmsExeLoader(IServiceProvider services, string filename, byte[] imgRaw)
             : base(services, filename, imgRaw)
         {
+            this.PreferredBaseAddress = Address.Ptr32(0x1000);      //$REVIEW: what should this really be?
+
         }
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program Load(Address addrLoad)
+        public override Program Load(Address? addrLoad)
         {
             var rdr = new LeImageReader(RawImage);
             var hdr = LoadHeader(rdr);
             var isds = LoadImageSectionDescriptors(hdr.HdrSize);
 
-            var addr = Address.Ptr32(0x1000);   //$REVIEW: what should this really be?
+            var addr = addrLoad ?? PreferredBaseAddress;
             var arch = (VaxArchitecture)Services.RequireService<IConfigurationService>()
-                .GetArchitecture("vax");
+                .GetArchitecture("vax")!;
             return new Program(
                 new SegmentMap(
                     addr,

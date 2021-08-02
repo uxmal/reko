@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -85,7 +85,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <param name="attachedRegs">The attached (children) PIC registers.</param>
         /// <exception cref="ArgumentNullException">Thrown if one of the arguments is null.</exception>
         public PICRegisterTraits(IJoinedRegister joinedSFR, IEnumerable<PICRegisterStorage> attachedRegs)
-            : this(joinedSFR, attachedRegs?.Select(e => e.Traits).ToList())
+            : this(joinedSFR, attachedRegs?.Select(e => e.Traits).ToList()!)
         {
         }
 
@@ -132,7 +132,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the register memory address or null if not memory-mapped.
         /// </summary>
-        public PICDataAddress Address => RegAddress.Addr;
+        public PICDataAddress Address => RegAddress.Addr!;
 
         /// <summary>
         /// Gets the Non-Memory-Mapped ID of the register or null if memory mapped.
@@ -179,7 +179,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         public bool IsMemoryMapped => !(Address is null);
 
-        public int CompareTo(PICRegisterTraits other)
+        public int CompareTo(PICRegisterTraits? other)
         {
             if (other is null)
                 return 1;

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -35,7 +35,7 @@ namespace Reko.Environments.C64
         public FileType FileType;
         public byte FileTrack;
         public byte FileSector;
-        public byte[] FileName;         // 16 bytes padded with A0
+        public byte[]? FileName;         // 16 bytes padded with A0
         public byte SideSectorTrack;    // REL files only
         public byte SideSectorSector;    // REL files only
         public byte RelRecordLength;

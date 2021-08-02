@@ -20,8 +20,10 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\Arm\bin\$(StandardOutputDir)\Reko.Arch.Arm.*" />
     <Architectures Include="$(SolutionDir)Arch\Avr\bin\$(StandardOutputDir)\Reko.Arch.Avr.*" />
     <Architectures Include="$(SolutionDir)Arch\Blackfin\bin\$(StandardOutputDir)\Reko.Arch.Blackfin.*" />
+    <Architectures Include="$(SolutionDir)Arch\C166\bin\$(StandardOutputDir)\Reko.Arch.C166.*" />
     <Architectures Include="$(SolutionDir)Arch\CompactRisc\bin\$(StandardOutputDir)\Reko.Arch.CompactRisc.*" />
     <Architectures Include="$(SolutionDir)Arch\Cray\bin\$(StandardOutputDir)\Reko.Arch.Cray.*" />
+    <Architectures Include="$(SolutionDir)Arch\Etrax\bin\$(StandardOutputDir)\Reko.Arch.Etrax.*" />
     <Architectures Include="$(SolutionDir)Arch\H8\bin\$(StandardOutputDir)\Reko.Arch.H8.*" />
     <Architectures Include="$(SolutionDir)Arch\i8051\bin\$(StandardOutputDir)\Reko.Arch.i8051.*" />
     <Architectures Include="$(SolutionDir)Arch\IA64\bin\$(StandardOutputDir)\Reko.Arch.IA64.*" />
@@ -49,7 +51,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\SuperH\bin\$(StandardOutputDir)\Reko.Arch.SuperH.*" />
     <Architectures Include="$(SolutionDir)Arch\Tlcs\bin\$(StandardOutputDir)\Reko.Arch.Tlcs.*" />
     <Architectures Include="$(SolutionDir)Arch\Tms7000\bin\$(StandardOutputDir)\Reko.Arch.Tms7000.*" />
-    <Architectures Include="$(SolutionDir)Arch\V850\bin\$(StandardOutputDir)\Reko.Arch.Vax.*" />
+    <Architectures Include="$(SolutionDir)Arch\V850\bin\$(StandardOutputDir)\Reko.Arch.V850.*" />
     <Architectures Include="$(SolutionDir)Arch\Vax\bin\$(StandardOutputDir)\Reko.Arch.Vax.*" />
     <Architectures Include="$(SolutionDir)Arch\WE32100\bin\$(StandardOutputDir)\Reko.Arch.WE32100.*" />
     <Architectures Include="$(SolutionDir)Arch\X86\bin\$(StandardOutputDir)\Reko.Arch.X86.*" />
@@ -65,6 +67,7 @@ by the PreBuild.targets file.
     <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\realmodeintservices.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\msvcrt.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\ntoskrnl.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\win16c.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows32.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\windows_CE.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wsock32.xml" />
@@ -77,8 +80,10 @@ by the PreBuild.targets file.
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wince.inc" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\C64\*.xml" />
-    <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\Classic\Mac MPW Interfaces 1991 PASCAL.pas" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\NeoGeo\NeoGeoPocket.xml" />
+
+    <DecompilerMetadataMacos Include="$(SolutionDir)Environments\MacOS\Classic\Mac MPW Interfaces 1991 PASCAL.pas" />
+    <DecompilerMetadataMacos Include="$(SolutionDir)Environments\MacOS\Classic\MacOSClassicInterfaces.p" />
 
     <DecompilerMetadataOs2_16 Include="$(SolutionDir)Environments\OS2\16\ANSICALL.def" />
     <DecompilerMetadataOs2_16 Include="$(SolutionDir)Environments\OS2\16\BKSCALLS.def" />
@@ -166,6 +171,8 @@ by the PreBuild.targets file.
     <DecompilerMetadata Include="$(SolutionDir)Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SegaGenesis\SegaGenesis.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\lp32.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\lp64.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\Xlib.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\opengl.xml" />
@@ -195,6 +202,7 @@ by the PreBuild.targets file.
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Nro\bin\$(StandardOutputDir)\Reko.ImageLoaders.Nro.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\OdbgScript\bin\$(StandardOutputDir)\Reko.ImageLoaders.OdbgScript.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Omf\bin\$(StandardOutputDir)\Reko.ImageLoaders.Omf.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Pef\bin\$(StandardOutputDir)\Reko.ImageLoaders.Pef.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Srec\bin\$(StandardOutputDir)\Reko.ImageLoaders.Srec.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\TekHex\bin\$(StandardOutputDir)\Reko.ImageLoaders.TekHex.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\VmsExe\bin\$(StandardOutputDir)\Reko.ImageLoaders.VmsExe.*" />
@@ -209,6 +217,7 @@ by the PreBuild.targets file.
     <Environments Include="$(SolutionDir)Environments\C64\bin\$(StandardOutputDir)\Reko.Environments.C64.*" />
     <Environments Include="$(SolutionDir)Environments\Cpm\bin\$(StandardOutputDir)\Reko.Environments.Cpm.*" />
     <Environments Include="$(SolutionDir)Environments\Dreamcast\bin\$(StandardOutputDir)\Reko.Environments.Dreamcast.*" />
+    <Environments Include="$(SolutionDir)Environments\Gameboy\bin\$(StandardOutputDir)\Reko.Environments.Gameboy.*" />
     <Environments Include="$(SolutionDir)Environments\Hpux\bin\$(StandardOutputDir)\Reko.Environments.Hpux.*" />
     <Environments Include="$(SolutionDir)Environments\MacOS\bin\$(StandardOutputDir)\Reko.Environments.MacOS.*" />
     <Environments Include="$(SolutionDir)Environments\MorphOS\bin\$(StandardOutputDir)\Reko.Environments.MorphOS.*" />
@@ -228,6 +237,8 @@ by the PreBuild.targets file.
     <Environments Include="$(SolutionDir)Environments\Windows\bin\$(StandardOutputDir)\Reko.Environments.Windows.*" />
     <Environments Include="$(SolutionDir)Environments\Xbox\bin\$(StandardOutputDir)\Reko.Environments.Xbox.*" />
     <Environments Include="$(SolutionDir)Environments\ZX81\bin\$(StandardOutputDir)\Reko.Environments.ZX81.*" />
+
+    <PythonScripts Include="$(SolutionDir)Scripts\Python\*.py" />
 
     <SymbolSources Include="$(SolutionDir)Sources\LGSymLoader\bin\$(Configuration)\Reko.Symbols.LGSymLoader.*" />
 

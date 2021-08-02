@@ -50,7 +50,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// Specialised default constructor for use only by derived class.
         /// </summary>
         protected PICProcessorModel()
-        { }
+        {
+            PICDescriptor = null!;
+        }
 
         /// <summary>
         /// Gets the PIC processor model corresponding to the given processor name.
@@ -61,7 +63,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="procName"/> is null.</exception>
         /// <exception cref="InvalidOperationException">Thrown the PIC database is not accessible.</exception>
-        public static IPICProcessorModel GetModel(string procName)
+        public static IPICProcessorModel? GetModel(string procName)
         {
             if (string.IsNullOrEmpty(procName))
                 procName = DefaultPICName;
@@ -87,7 +89,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <summary>
         /// Gets the PIC name.
         /// </summary>
-        string IPICProcessorModel.PICName => PICDescriptor?.PICName;
+        string IPICProcessorModel.PICName => PICDescriptor?.PICName!;
 
         /// <summary>
         /// Creates a disassembler for the target processor.
@@ -98,16 +100,6 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// The new disassembler.
         /// </returns>
         public abstract PICDisassemblerBase CreateDisassembler(PICArchitecture arch, EndianImageReader rdr);
-
-        /// <summary>
-        /// Creates an emulator for the target processor.
-        /// </summary>
-        /// <param name="arch">The architecture of the processor.</param>
-        /// <param name="segmentMap">The memory of the program to be emulated.</param>
-        /// <param name="envEmulator">Emulated environment.</param>
-        /// <returns>The created emulator.</returns>
-        public virtual IProcessorEmulator CreateEmulator(PICArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
-            => throw new NotImplementedException();
 
         /// <summary>
         /// Creates the registers for the PIC.

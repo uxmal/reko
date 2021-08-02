@@ -26,12 +26,10 @@ void fn00010C90(word32 o7, word32 i0, word32 i1, word32 i2, word32 i3, word32 i4
 fn00010C90_entry:
 l00010C90:
 	word32 l0_7 = Mem0[o7 + Mem0[o7 + 8<i32>:word32] + -8<i32>:word32]
-	branch l0_7 == 0<32> l00010C90_ds_t
-l00010C90_ds_t:
+	branch l0_7 == 0<32> l00010CB0
 l00010CB0:
 	return
 fn00010C90_exit:
-l00010C90_ds_f:
 l00010CA8:
 	call l0_7 (retsize: 0;)
 		uses: i0:i0,i1:i1,i2:i2,i3:i3,i4:i4,i5:i5,i6:i6,i7:i7,o7:0x00010CA8<p32>

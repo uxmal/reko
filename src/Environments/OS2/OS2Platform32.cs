@@ -2,7 +2,7 @@ using Reko.Core;
 using Reko.Core.CLanguage;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace Reko.Environments.OS2
 {
@@ -20,9 +20,12 @@ namespace Reko.Environments.OS2
 
         public override string DefaultCallingConvention => "__cdecl";
 
-        public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
+        public override CParser CreateCParser(TextReader rdr, ParserState? state)
         {
-            throw new NotImplementedException();
+            state ??= new ParserState();
+            var lexer = new CLexer(rdr, CLexer.MsvcKeywords);
+            var parser = new CParser(state, lexer);
+            return parser;
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
@@ -30,7 +33,7 @@ namespace Reko.Environments.OS2
             throw new NotImplementedException();
         }
 
-        public override SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public override SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -40,12 +43,12 @@ namespace Reko.Environments.OS2
             throw new NotImplementedException();
         }
 
-        public override CallingConvention GetCallingConvention(string ccName)
+        public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
 
-        public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public override ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }

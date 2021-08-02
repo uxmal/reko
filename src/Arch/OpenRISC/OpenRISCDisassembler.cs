@@ -48,9 +48,10 @@ namespace Reko.Arch.OpenRISC
             this.arch = arch;
             this.rdr = rdr;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override OpenRISCInstruction DisassembleInstruction()
+        public override OpenRISCInstruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt32(out uint wInstr))

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>c166</arch>
+  <input>
+    <filename>Rmm68jx.bin</filename>
+    <asmDir>Rmm68jx.reko</asmDir>
+    <srcDir>Rmm68jx.reko</srcDir>
+    <includeDir>Rmm68jx.reko</includeDir>
+    <resources>Rmm68jx.reko\resources</resources>
+    <user>
+      <address>0000</address>
+      <loader>raw</loader>
+      <processor name="c166" />
+      <procedure name="fn0000">
+        <address>0000</address>
+      </procedure>
+      <procedure name="fn0034">
+        <address>0034</address>
+      </procedure>
+      <registerValues />
+      <extractResources>false</extractResources>
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+</project>

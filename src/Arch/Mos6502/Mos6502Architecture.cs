@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Emulation;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
@@ -117,11 +118,6 @@ namespace Reko.Arch.Mos6502
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
-        }
-
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            return reg;
         }
 
         public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)

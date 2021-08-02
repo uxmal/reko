@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -79,7 +79,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A <see cref="PICDevConfigRegister"/> instance or null.
         /// </returns>
-        public PICDevConfigRegister GetDCR(string name)
+        public PICDevConfigRegister? GetDCR(string name)
             => dcregisters.FirstOrDefault(dcr => dcr.Value.Name == name).Value;
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// <returns>
         /// A <see cref="PICDevConfigRegister"/> instance or null.
         /// </returns>
-        public PICDevConfigRegister GetDCR(Address addr)
+        public PICDevConfigRegister? GetDCR(Address addr)
             => dcregisters.ContainsKey(addr) ? dcregisters[addr] : null;
 
         public DevConfigField GetDCRField(string name)

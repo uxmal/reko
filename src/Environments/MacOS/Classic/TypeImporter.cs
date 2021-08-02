@@ -54,6 +54,7 @@ namespace Reko.Environments.MacOS.Classic
             this.namedTypes = new Dictionary<string, SerializedType>(StringComparer.InvariantCultureIgnoreCase);
             this.sizes= new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
             this.sizer = new TypeSizer(platform, namedTypes);
+            this.pascalTypes = null!;
         }
 
         public SerializedType VisitArrayType(Core.Pascal.Array array)
@@ -149,14 +150,24 @@ namespace Reko.Environments.MacOS.Classic
             throw new NotImplementedException();
         }
 
+        public SerializedType VisitCallableType(CallableType ct)
+        {
+            return DoCallableType(ct.Parameters, ct.ReturnType);
+        }
+
         public SerializedType VisitCallableDeclaration(CallableDeclaration cd)
         {
-            var dtRet = cd.ReturnType != null
-                ? cd.ReturnType.Accept(this)
+            return DoCallableType(cd.Parameters, cd.ReturnType);
+        }
+
+        private SerializedType DoCallableType(List<ParameterDeclaration> pParameters, PascalType? ret)
+        {
+            var dtRet = ret != null
+                ? ret.Accept(this)
                 : new VoidType_v1();
 
             var parameters = new List<Argument_v1>();
-            foreach (var pc in cd.Parameters)
+            foreach (var pc in pParameters)
             {
                 if (pc.Type == null)
                 {
@@ -220,6 +231,15 @@ namespace Reko.Environments.MacOS.Classic
         public SerializedType VisitNumericLiteral(NumericLiteral number)
         {
             throw new NotImplementedException();
+        }
+
+        public SerializedType VisitObject(ObjectType objectType)
+        {
+            //$TODO: what do we translate Pascal OBJECT to?
+            return new StructType_v1
+            {
+
+            };
         }
 
         public SerializedType VisitPointerType(Core.Pascal.Pointer pointer)

@@ -49,11 +49,6 @@ namespace Reko.UnitTests.Arch.Cray.Ymp
 
         public override Address LoadAddress => addr;
 
-        protected override IEnumerable<RtlInstructionCluster> GetRtlStream(MemoryArea mem, IStorageBinder binder, IRewriterHost host)
-        {
-            var state = new CrayProcessorState(arch);
-            return arch.CreateRewriter(arch.CreateImageReader(mem, 0), state, binder, host);
-        }
 
         protected void Given_OctalString(string octalBytes)
         {

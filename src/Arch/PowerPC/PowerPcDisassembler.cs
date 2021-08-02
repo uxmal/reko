@@ -54,9 +54,10 @@ namespace Reko.Arch.PowerPC
             this.defaultWordWidth = defaultWordWidth;
             this.primaryDecoders = primaryDecoders;
             this.ops = new List<MachineOperand>();
+            this.addr = null!;
         }
 
-        public override PowerPcInstruction DisassembleInstruction()
+        public override PowerPcInstruction? DisassembleInstruction()
         {
             this.addr = rdr.Address;
             if (!rdr.TryReadUInt32(out uint wInstr))
@@ -338,6 +339,7 @@ namespace Reko.Arch.PowerPC
         internal static readonly Mutator<PowerPcDisassembler> u21_1 = u(21, 1);
         internal static readonly Mutator<PowerPcDisassembler> u21_4 = u(21, 4);
         internal static readonly Mutator<PowerPcDisassembler> u22_3 = u(22, 3);
+        internal static readonly Mutator<PowerPcDisassembler> u22_5 = u(22, 5);
 
         internal static Mutator<PowerPcDisassembler> s(int bitOffset, int len)
         {
