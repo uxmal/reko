@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items"/>
+  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items" />
   <PropertyGroup>
     <AssemblyName>Reko.Environments.Switch</AssemblyName>
     <RootNamespace>Reko.Environments.Switch</RootNamespace>
@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="K4os.Compression.LZ4" Version="1.2.6" />
+    <PackageReference Include="K4os.Compression.LZ4" Version="1.2.12" />
   </ItemGroup>
 
   <ItemGroup>
