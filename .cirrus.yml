@@ -57,7 +57,7 @@ windows_x64_task:
   windows_container:
     cpu: 4
     memory: 4G
-    image: smxdev4/reko:1.0
+    dockerfile: .ci/windows/Dockerfile
     os_version: 2019
 
   clone_script:
