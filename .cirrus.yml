@@ -57,8 +57,8 @@ darwin_x64_task:
 
 windows_x64_task:
   windows_container:
-    cpu: 4
-    memory: 4G
+    cpu: 8
+    memory: 8G
     dockerfile: .ci/windows/Dockerfile
     os_version: 2019
 
