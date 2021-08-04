@@ -39,13 +39,15 @@ namespace Reko.Core
         Transfer = 2,           // Control flow transfer like JMP, CALL
         Conditional = 4,        // Conditionally executed (like branches or CMOV instructions)
         Call = 8,               // Instruction saves its continuation, and may resume execution to the following instruction.
-        Delay = 16,             // The following instruction is in a delay slot.
-        Annul = 32,             // The following instruction is anulled.
-        Terminates = 64,        // Instruction terminates execution.
-        System = 128,           // Privileged instruction
-        Padding = 256,          // Instruction _could_ be used as alignment padding between procedures.
-        Invalid = 512,          // The instruction is invalid
-        Zero = 1024,            // The instruction first "unit" was zero.
+        Return = 16,            // Return instruction
+        Delay = 32,             // The following instruction is in a delay slot.
+        Annul = 64,             // The following instruction is anulled.
+        Terminates = 128,       // Instruction terminates execution.
+        Privileged = 256,       // Privileged instruction
+        [Obsolete("Use 'Privileged' instead.")]System = 256,           // Privileged instruction
+        Padding = 512,          // Instruction _could_ be used as alignment padding between procedures.
+        Invalid = 1024,         // The instruction is invalid
+        Zero = 2048,            // The instruction first "unit" was zero.
 
         ConditionalTransfer = Conditional | Transfer,
     }

@@ -1081,13 +1081,13 @@ namespace Reko.Arch.Mips
                 Mask(11, 4, "  P.LS.E0",
                     Nyi("LBE"),
                     Nyi("SBE"),
-                    Instr(Mnemonic.lbue, InstrClass.System, R21,Ms(PrimitiveType.Byte, 16, Bf((15,1), (0, 8)))),
+                    Instr(Mnemonic.lbue, InstrClass.Privileged, R21,Ms(PrimitiveType.Byte, 16, Bf((15,1), (0, 8)))),
                     Nyi("P.PREFE"),
 
                     Instr(Mnemonic.lhe, R21,Ms(PrimitiveType.Int16, 16, Bf((15,1), (0, 8)))),
                     Instr(Mnemonic.she, R21, Ms(PrimitiveType.Word16, 16, Bf((15, 1), (0, 8)))),
                     Instr(Mnemonic.lhue, R21,Ms(PrimitiveType.Word16, 16, Bf((15,1), (0, 8)))),
-                    Instr(Mnemonic.cachee, InstrClass.System, U(21,5), Ms(PrimitiveType.Word16, 16, Bf((15, 1), (0, 8)))),
+                    Instr(Mnemonic.cachee, InstrClass.Privileged, U(21,5), Ms(PrimitiveType.Word16, 16, Bf((15, 1), (0, 8)))),
 
                     Instr(Mnemonic.lwe, R21, Ms(PrimitiveType.Word32, 16, Bf((15, 1), (0, 8)))),
                     Nyi("SWE"),

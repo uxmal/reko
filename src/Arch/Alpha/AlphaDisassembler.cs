@@ -373,7 +373,7 @@ namespace Reko.Arch.Alpha
             // 00
             new PalDecoder(new Dictionary<uint, (Mnemonic, InstrClass)>
             {       //$REVIEW: these palcodes are OS-dependent....
-                { 0, (Mnemonic.halt,InstrClass.System|InstrClass.Terminates) }
+                { 0, (Mnemonic.halt,InstrClass.Privileged|InstrClass.Terminates) }
             }),
             new InvalidDecoder(),
             new InvalidDecoder(),

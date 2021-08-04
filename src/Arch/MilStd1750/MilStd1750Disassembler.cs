@@ -540,7 +540,7 @@ namespace Reko.Arch.MilStd1750
                 invalid,
                 invalid,
 
-                Instr(Mnemonic.xio, InstrClass.Linear|InstrClass.System, Xio), // ab
+                Instr(Mnemonic.xio, InstrClass.Linear|InstrClass.Privileged, Xio), // ab
                 Instr(Mnemonic.vio, _("vio")), // ab
                 Mask(0, 4, "  imm",  // ab
                     invalid,

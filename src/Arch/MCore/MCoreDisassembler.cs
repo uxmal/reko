@@ -264,8 +264,8 @@ namespace Reko.Arch.MCore
                 Instr(Mnemonic.cmpne, R0, R4));
 
             var decode_1 = Mask(8, 4, "  0001",
-                Instr(Mnemonic.mfcr, InstrClass.System, R0, CR4),
-                Instr(Mnemonic.mfcr, InstrClass.System, R0, CR4),
+                Instr(Mnemonic.mfcr, InstrClass.Privileged, R0, CR4),
+                Instr(Mnemonic.mfcr, InstrClass.Privileged, R0, CR4),
                 Instr(Mnemonic.mov, R0, R4),
                 Instr(Mnemonic.bgenr, R0, R4),
 
@@ -274,8 +274,8 @@ namespace Reko.Arch.MCore
                 Instr(Mnemonic.and, R0, R4),
                 Instr(Mnemonic.xor, R0, R4),
 
-                Instr(Mnemonic.mtcr, InstrClass.System, R0, CR4),
-                Instr(Mnemonic.mtcr, InstrClass.System, R0, CR4),
+                Instr(Mnemonic.mtcr, InstrClass.Privileged, R0, CR4),
+                Instr(Mnemonic.mtcr, InstrClass.Privileged, R0, CR4),
                 Instr(Mnemonic.asr, R0, R4),
                 Instr(Mnemonic.lsl, R0, R4),
 

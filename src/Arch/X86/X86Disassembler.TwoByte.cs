@@ -37,8 +37,8 @@ namespace Reko.Arch.X86
 				// 0F 00
 				d[0x00] = new GroupDecoder(Grp6);
                 d[0x01] = new GroupDecoder(Grp7);
-                d[0x02] = Instr(Mnemonic.lar, InstrClass.System, Gv,Ew);
-                d[0x03] = Instr(Mnemonic.lsl, InstrClass.System, Gv,Ew);
+                d[0x02] = Instr(Mnemonic.lar, InstrClass.Privileged, Gv,Ew);
+                d[0x03] = Instr(Mnemonic.lsl, InstrClass.Privileged, Gv,Ew);
                 d[0x04] = s_invalid;
                 d[0x05] = Amd64Instr(
                     s_invalid,
@@ -48,8 +48,8 @@ namespace Reko.Arch.X86
                     s_invalid,
                     Instr(Mnemonic.sysret, InstrClass.Transfer));
 
-                d[0x08] = Instr(Mnemonic.invd, InstrClass.System);
-                d[0x09] = Instr(Mnemonic.wbinvd, InstrClass.System);
+                d[0x08] = Instr(Mnemonic.invd, InstrClass.Privileged);
+                d[0x09] = Instr(Mnemonic.wbinvd, InstrClass.Privileged);
                 d[0x0A] = s_invalid;
                 d[0x0B] = Instr(Mnemonic.ud2, InstrClass.Invalid);
                 d[0x0C] = s_invalid;
@@ -161,14 +161,14 @@ namespace Reko.Arch.X86
                     dec66:VexInstr(Mnemonic.comisd, Mnemonic.vcomisd, Vsd,Wsd));
 
 				// 0F 30
-				d[0x30] = Instr(Mnemonic.wrmsr, InstrClass.System);
+				d[0x30] = Instr(Mnemonic.wrmsr, InstrClass.Privileged);
                 d[0x31] = Instr(Mnemonic.rdtsc);
-                d[0x32] = Instr(Mnemonic.rdmsr, InstrClass.System);
+                d[0x32] = Instr(Mnemonic.rdmsr, InstrClass.Privileged);
                 d[0x33] = Instr(Mnemonic.rdpmc);
                 d[0x34] = Instr(Mnemonic.sysenter);
                 d[0x35] = Instr(Mnemonic.sysexit, InstrClass.Transfer);
                 d[0x36] = s_invalid;
-                d[0x37] = Instr(Mnemonic.getsec, InstrClass.System);
+                d[0x37] = Instr(Mnemonic.getsec, InstrClass.Privileged);
 
                 d[0x38] = new AdditionalByteDecoder(s_decoders0F38); // 0F 38
                 d[0x39] = s_invalid;
@@ -346,15 +346,15 @@ namespace Reko.Arch.X86
                     Instr(Mnemonic.pcmpeqd, Pq,Qq),
                     dec66:VexInstr(Mnemonic.pcmpeqd, Mnemonic.vpcmpeqd, Vx,Wx));
                 d[0x77] = VexInstr(
-                    Instr(Mnemonic.emms, InstrClass.System),
+                    Instr(Mnemonic.emms, InstrClass.Privileged),
                     VexLong(
                         Instr(Mnemonic.vzeroupper),
                         Instr(Mnemonic.vzeroall)));
 
 				d[0x78] = new PrefixedDecoder(
-                    dec:Instr(Mnemonic.vmread, InstrClass.System, Ey,Gy));
+                    dec:Instr(Mnemonic.vmread, InstrClass.Privileged, Ey,Gy));
 				d[0x79] = new PrefixedDecoder(
-                    dec:Instr(Mnemonic.vmwrite, InstrClass.System, Gy,Ey));
+                    dec:Instr(Mnemonic.vmwrite, InstrClass.Privileged, Gy,Ey));
 				d[0x7A] = s_invalid;
 				d[0x7B] = s_invalid;
 
@@ -427,7 +427,7 @@ namespace Reko.Arch.X86
 
 				d[0xA8] = Instr(Mnemonic.push, s5);
 				d[0xA9] = Instr(Mnemonic.pop, s5);
-				d[0xAA] = Instr(Mnemonic.rsm, InstrClass.System);
+				d[0xAA] = Instr(Mnemonic.rsm, InstrClass.Privileged);
                 d[0xAB] = Instr(Mnemonic.bts, Ev,Gv);
 				d[0xAC] = Instr(Mnemonic.shrd, Ev,Gv,Ib);
 				d[0xAD] = Instr(Mnemonic.shrd, Ev,Gv,c);

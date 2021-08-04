@@ -35,7 +35,7 @@ namespace Reko.Arch.Vax
 
         private static Decoder[] oneByteInstructions = new[]
         {
- /* 00 */ Instr(Mnemonic.halt, InstrClass.System|InstrClass.Terminates|InstrClass.Zero), 
+ /* 00 */ Instr(Mnemonic.halt, InstrClass.Privileged|InstrClass.Terminates|InstrClass.Zero), 
  /* 01 */ Instr(Mnemonic.nop, InstrClass.Padding|InstrClass.Linear), 
  /* 02 */ Instr(Mnemonic.rei, InstrClass.Transfer), 
  /* 03 */ Instr(Mnemonic.bpt), 

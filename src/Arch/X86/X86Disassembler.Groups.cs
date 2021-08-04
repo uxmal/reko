@@ -91,15 +91,15 @@ namespace Reko.Arch.X86
 
                 // 0F 00
                 Grp6[0] = MemReg(
-                        Instr(Mnemonic.sldt, InstrClass.System, Ew),
-                        Instr(Mnemonic.sldt, InstrClass.System, Rv));
+                        Instr(Mnemonic.sldt, InstrClass.Privileged, Ew),
+                        Instr(Mnemonic.sldt, InstrClass.Privileged, Rv));
                 Grp6[1] = MemReg(
-                        Instr(Mnemonic.str, InstrClass.System, Ew),
-                        Instr(Mnemonic.str, InstrClass.System, Rw));
+                        Instr(Mnemonic.str, InstrClass.Privileged, Ew),
+                        Instr(Mnemonic.str, InstrClass.Privileged, Rw));
                 Grp6[2] = MemReg(
-                        Instr(Mnemonic.lldt, InstrClass.System, Ms),
-                        Instr(Mnemonic.lldt, InstrClass.System, Rw));
-                Grp6[3] = Instr(Mnemonic.ltr, InstrClass.System, Ew);
+                        Instr(Mnemonic.lldt, InstrClass.Privileged, Ms),
+                        Instr(Mnemonic.lldt, InstrClass.Privileged, Rw));
+                Grp6[3] = Instr(Mnemonic.ltr, InstrClass.Privileged, Ew);
                 Grp6[4] = Instr(Mnemonic.verr, Ew);
                 Grp6[5] = Instr(Mnemonic.verw, Ew);
                 Grp6[6] = s_invalid;
@@ -127,7 +127,7 @@ namespace Reko.Arch.X86
                         s_invalid,
                         s_invalid);
                 Grp7[2] = new Group7Decoder(
-                        Instr(Mnemonic.lgdt, InstrClass.System, Ms),
+                        Instr(Mnemonic.lgdt, InstrClass.Privileged, Ms),
 
                         Instr(Mnemonic.xgetbv),
                         Instr(Mnemonic.xsetbv),
@@ -139,7 +139,7 @@ namespace Reko.Arch.X86
                         Instr(Mnemonic.xtest),
                         s_invalid);
                 Grp7[3] = MemReg(
-                        Instr(Mnemonic.lidt, InstrClass.System, Ms),
+                        Instr(Mnemonic.lidt, InstrClass.Privileged, Ms),
                         s_invalid);
 
                 Grp7[4] = MemReg(
@@ -156,9 +156,9 @@ namespace Reko.Arch.X86
                         s_invalid,
                         Instr(Mnemonic.rdpkru),
                         Instr(Mnemonic.wrpkru));
-                Grp7[6] = Instr(Mnemonic.lmsw, InstrClass.System, Ew);
+                Grp7[6] = Instr(Mnemonic.lmsw, InstrClass.Privileged, Ew);
                 Grp7[7] = new Group7Decoder(
-                        Instr(Mnemonic.invlpg, InstrClass.System, Mb),
+                        Instr(Mnemonic.invlpg, InstrClass.Privileged, Mb),
 
                         Instr(Mnemonic.swapgs),
                         Instr(Mnemonic.rdtscp),

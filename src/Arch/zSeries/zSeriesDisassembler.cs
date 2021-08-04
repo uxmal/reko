@@ -2140,8 +2140,8 @@ namespace Reko.Arch.zSeries
                 // 80
                 Instr32(Mnemonic.ssm, S),
                 invalid,
-                Instr32(Mnemonic.lpsw, InstrClass.System|InstrClass.Linear, S),
-                Instr32(Mnemonic.diag, InstrClass.System|InstrClass.Linear),
+                Instr32(Mnemonic.lpsw, InstrClass.Privileged|InstrClass.Linear, S),
+                Instr32(Mnemonic.diag, InstrClass.Privileged|InstrClass.Linear),
 
                 Instr32(Mnemonic.brxh, InstrClass.ConditionalTransfer, RSI),
                 Instr32(Mnemonic.brxle, InstrClass.ConditionalTransfer, RSI),
@@ -2244,19 +2244,19 @@ namespace Reko.Arch.zSeries
 
                 Instr32(Mnemonic.stnsm, SI),
                 Instr32(Mnemonic.stosm, SI),
-                Instr32(Mnemonic.sigp, InstrClass.System, RSa),
+                Instr32(Mnemonic.sigp, InstrClass.Privileged, RSa),
                 Instr32(Mnemonic.mc, SI),
 
                 // B0
                 invalid,
-                Instr32(Mnemonic.lra, InstrClass.System, RXa),
+                Instr32(Mnemonic.lra, InstrClass.Privileged, RXa),
                 b2_decoders,
                 b3_decoders,
 
                 invalid,
                 invalid,
-                Instr32(Mnemonic.stctl,InstrClass.System,  RSa),
-                Instr32(Mnemonic.lctl, InstrClass.System, RSa),
+                Instr32(Mnemonic.stctl,InstrClass.Privileged,  RSa),
+                Instr32(Mnemonic.lctl, InstrClass.Privileged, RSa),
 
                 invalid,
                 b9_decoders,
@@ -2337,8 +2337,8 @@ namespace Reko.Arch.zSeries
 
                 invalid,
                 Instr48(Mnemonic.mvck, SSd),
-                Instr48(Mnemonic.mvcp, InstrClass.Linear|InstrClass.System, SSd),
-                Instr48(Mnemonic.mvcs, InstrClass.Linear|InstrClass.System, SSd),
+                Instr48(Mnemonic.mvcp, InstrClass.Linear|InstrClass.Privileged, SSd),
+                Instr48(Mnemonic.mvcs, InstrClass.Linear|InstrClass.Privileged, SSd),
 
                 Instr48(Mnemonic.tr, SSa),
                 Instr48(Mnemonic.trt, SSa),

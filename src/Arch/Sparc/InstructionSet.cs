@@ -410,7 +410,7 @@ namespace Reko.Arch.Sparc
                     invalid,
                     Instr(Mnemonic.rdpsr, nyi)),
                 Instr64(
-                    Instr(Mnemonic.rdpr, InstrClass.System, nyi),
+                    Instr(Mnemonic.rdpr, InstrClass.Privileged, nyi),
                     Instr(Mnemonic.rdtbr, nyi)),
                 Instr64(
                     Instr(Mnemonic.flushw, nyi),
@@ -446,11 +446,11 @@ namespace Reko.Arch.Sparc
                         (1, Instr(Mnemonic.restored, nyi))),
                     Instr(Mnemonic.wrpsr, nyi)),
                 Instr64(
-                    Instr(Mnemonic.wrpr, InstrClass.System, nyi),
+                    Instr(Mnemonic.wrpr, InstrClass.Privileged, nyi),
                     Instr(Mnemonic.wrwim, nyi)),
                 Instr64(
                     invalid,
-                    Instr(Mnemonic.wrtbr, InstrClass.System, r14, R0)),
+                    Instr(Mnemonic.wrtbr, InstrClass.Privileged, r14, R0)),
 
                 SparcDisassembler.Sparse(5, 9, "  FOp1", invalid, fpDecoders),
                 SparcDisassembler.Sparse(5, 9, "  FOp2", invalid, fpDecoders),

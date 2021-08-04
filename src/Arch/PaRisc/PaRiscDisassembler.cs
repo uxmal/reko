@@ -1444,11 +1444,11 @@ namespace Reko.Arch.PaRisc
                 (0x00, Instr(Mnemonic.@break, InstrClass.Call|InstrClass.Transfer, u8(27,5), u16(6,13))),
                 (0x20, Nyi(Mnemonic.sync, "")),
                 (0x20, Nyi(Mnemonic.syncdma, "")),
-                (0x60, Instr(Mnemonic.rfi, InstrClass.System | InstrClass.Transfer)),
-                (0x65, Instr(Mnemonic.rfi_r, InstrClass.System | InstrClass.Transfer)),
+                (0x60, Instr(Mnemonic.rfi, InstrClass.Privileged | InstrClass.Transfer)),
+                (0x65, Instr(Mnemonic.rfi_r, InstrClass.Privileged | InstrClass.Transfer)),
                 (0x6B, Nyi(Mnemonic.ssm, "")),
                 (0x73, Nyi(Mnemonic.rsm, "")),
-                (0xC3, Instr(Mnemonic.mtsm, InstrClass.System|InstrClass.Transfer, r11)),
+                (0xC3, Instr(Mnemonic.mtsm, InstrClass.Privileged|InstrClass.Transfer, r11)),
                 (0x85, Cond(16,2, Eq0,
                     Instr(Mnemonic.ldsid, r6,r27),
                     Instr(Mnemonic.ldsid, sr(16),r27))),
@@ -1724,7 +1724,7 @@ namespace Reko.Arch.PaRisc
                 indexMem,
 
                 spopN,
-                Instr(Mnemonic.diag, InstrClass.Linear|InstrClass.System, u(6, 26, PrimitiveType.Int32)),
+                Instr(Mnemonic.diag, InstrClass.Linear|InstrClass.Privileged, u(6, 26, PrimitiveType.Int32)),
                 Instr(Mnemonic.fmpyadd, fpFmt1, fmo6,fmo11,fmo27,fmo21,fmo16),
                 invalid,
 

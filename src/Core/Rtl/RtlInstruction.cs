@@ -66,18 +66,18 @@ namespace Reko.Core.Rtl
         public static string FormatClass(InstrClass rtlClass)
         {
             var sb = new StringBuilder();
-            switch (rtlClass & (InstrClass.Transfer | InstrClass.Linear | InstrClass.Terminates | InstrClass.System))
+            switch (rtlClass & (InstrClass.Transfer | InstrClass.Linear | InstrClass.Terminates | InstrClass.Privileged))
             {
             case InstrClass.Linear: sb.Append('L'); break;
             case InstrClass.Transfer:
             case InstrClass.Transfer | InstrClass.Linear:
                 sb.Append('T'); break;
             case InstrClass.Terminates:
-            case InstrClass.Terminates | InstrClass.System:
+            case InstrClass.Terminates | InstrClass.Privileged:
                 sb.Append('H'); break;
-            case InstrClass.System:
-            case InstrClass.System | InstrClass.Linear:
-            case InstrClass.System | InstrClass.Transfer:
+            case InstrClass.Privileged:
+            case InstrClass.Privileged | InstrClass.Linear:
+            case InstrClass.Privileged | InstrClass.Transfer:
                 sb.Append('S'); break;
             default: sb.Append('-'); break;
             }

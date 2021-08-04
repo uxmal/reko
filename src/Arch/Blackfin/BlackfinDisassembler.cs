@@ -668,7 +668,7 @@ namespace Reko.Arch.Blackfin
                         (0x5, Instr(Mnemonic.EMUEXCEPT)),
                         (0xF, Instr(Mnemonic.ABORT)))),
                     (0x03, Mask(3, 1,
-                        Instr(Mnemonic.CLI, InstrClass.System|InstrClass.Linear, D0),
+                        Instr(Mnemonic.CLI, InstrClass.Privileged|InstrClass.Linear, D0),
                         invalid)),
                     (0x04, Mask(3, 1,
                         Instr(Mnemonic.STI, D0),

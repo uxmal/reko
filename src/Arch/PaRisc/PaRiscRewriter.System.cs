@@ -49,7 +49,7 @@ namespace Reko.Arch.PaRisc
             }
             if (!(n == 11 || n == 26 || n == 27 || n == 16))
             {
-                iclass |= InstrClass.System;
+                iclass |= InstrClass.Privileged;
             }
             m.Assign(binder.EnsureRegister(rDst), src);
         }
@@ -66,7 +66,7 @@ namespace Reko.Arch.PaRisc
             }
             if (n != 11)
             {
-                iclass |= InstrClass.System;
+                iclass |= InstrClass.Privileged;
             }
             m.Assign(binder.EnsureRegister(rDst), src);
         }

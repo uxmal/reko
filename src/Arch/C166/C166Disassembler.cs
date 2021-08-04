@@ -837,7 +837,7 @@ namespace Reko.Arch.C166
             Instr(Mnemonic.cmpi1, RFnw, data16),
             Read16(
                 Select(u => u == 0x87877887,
-                    Instr(Mnemonic.idle, InstrClass.Linear|InstrClass.System),
+                    Instr(Mnemonic.idle, InstrClass.Linear|InstrClass.Privileged),
                     invalid)),
             Instr(Mnemonic.mov, PreDec8w,R12w),
             Instr(Mnemonic.movb, PreDec8b,R12b),
@@ -862,7 +862,7 @@ namespace Reko.Arch.C166
             Instr(Mnemonic.cmpi2, RFnw, data16),
             Read16(
                 Select(u => u == 0x97976897,
-                    Instr(Mnemonic.pwrdn, InstrClass.Linear|InstrClass.System),
+                    Instr(Mnemonic.pwrdn, InstrClass.Linear|InstrClass.Privileged),
                     invalid)),
             
             Instr(Mnemonic.mov, R12w, PostInc8w),
@@ -886,12 +886,12 @@ namespace Reko.Arch.C166
                 invalid),
             Read16(
                 Select(u => u == 0xA5A55AA5,
-                    Instr(Mnemonic.diswdt, InstrClass.Linear|InstrClass.System),
+                    Instr(Mnemonic.diswdt, InstrClass.Linear|InstrClass.Privileged),
                     invalid)),
             Instr(Mnemonic.cmpd1, RFnw, data16),
             Read16(
                 Select(u => u== 0xA7A758A7,
-                    Instr(Mnemonic.srvwdt, InstrClass.Linear|InstrClass.System),
+                    Instr(Mnemonic.srvwdt, InstrClass.Linear|InstrClass.Privileged),
                     invalid)),
 
             Instr(Mnemonic.mov, R12w, Rdmw),
@@ -915,12 +915,12 @@ namespace Reko.Arch.C166
             Instr(Mnemonic.movb, mem8, R0nb),
             Read16(
                 Select(u => u == 0xB5B54AB5,
-                    Instr(Mnemonic.einit, InstrClass.Linear|InstrClass.System),
+                    Instr(Mnemonic.einit, InstrClass.Linear|InstrClass.Privileged),
                     invalid)),
             Instr(Mnemonic.cmpd2, RFnw, data16),
             Read16(
                 Select(u => u == 0xB7B748B7,
-                    Instr(Mnemonic.srst, InstrClass.Terminates|InstrClass.System),
+                    Instr(Mnemonic.srst, InstrClass.Terminates|InstrClass.Privileged),
                     invalid)),
             Instr(Mnemonic.mov, Rdmw, R12w),
             Instr(Mnemonic.movb, Rdmb, R12b),
