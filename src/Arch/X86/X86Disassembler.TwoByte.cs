@@ -37,8 +37,8 @@ namespace Reko.Arch.X86
 				// 0F 00
 				d[0x00] = new GroupDecoder(Grp6);
                 d[0x01] = new GroupDecoder(Grp7);
-                d[0x02] = Instr(Mnemonic.lar, InstrClass.Privileged, Gv,Ew);
-                d[0x03] = Instr(Mnemonic.lsl, InstrClass.Privileged, Gv,Ew);
+                d[0x02] = Instr(Mnemonic.lar, InstrClass.Linear | InstrClass.Privileged, Gv,Ew);
+                d[0x03] = Instr(Mnemonic.lsl, InstrClass.Linear | InstrClass.Privileged, Gv,Ew);
                 d[0x04] = s_invalid;
                 d[0x05] = Amd64Instr(
                     s_invalid,
@@ -352,9 +352,9 @@ namespace Reko.Arch.X86
                         Instr(Mnemonic.vzeroall)));
 
 				d[0x78] = new PrefixedDecoder(
-                    dec:Instr(Mnemonic.vmread, InstrClass.Privileged, Ey,Gy));
+                    dec:Instr(Mnemonic.vmread, InstrClass.Linear | InstrClass.Privileged, Ey,Gy));
 				d[0x79] = new PrefixedDecoder(
-                    dec:Instr(Mnemonic.vmwrite, InstrClass.Privileged, Gy,Ey));
+                    dec:Instr(Mnemonic.vmwrite, InstrClass.Linear | InstrClass.Privileged, Gy,Ey));
 				d[0x7A] = s_invalid;
 				d[0x7B] = s_invalid;
 

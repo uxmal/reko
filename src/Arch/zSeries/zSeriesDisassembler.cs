@@ -2244,19 +2244,19 @@ namespace Reko.Arch.zSeries
 
                 Instr32(Mnemonic.stnsm, SI),
                 Instr32(Mnemonic.stosm, SI),
-                Instr32(Mnemonic.sigp, InstrClass.Privileged, RSa),
+                Instr32(Mnemonic.sigp, InstrClass.Linear | InstrClass.Privileged, RSa),
                 Instr32(Mnemonic.mc, SI),
 
                 // B0
                 invalid,
-                Instr32(Mnemonic.lra, InstrClass.Privileged, RXa),
+                Instr32(Mnemonic.lra, InstrClass.Linear | InstrClass.Privileged, RXa),
                 b2_decoders,
                 b3_decoders,
 
                 invalid,
                 invalid,
-                Instr32(Mnemonic.stctl,InstrClass.Privileged,  RSa),
-                Instr32(Mnemonic.lctl, InstrClass.Privileged, RSa),
+                Instr32(Mnemonic.stctl, InstrClass.Linear | InstrClass.Privileged,  RSa),
+                Instr32(Mnemonic.lctl, InstrClass.Linear | InstrClass.Privileged, RSa),
 
                 invalid,
                 b9_decoders,
