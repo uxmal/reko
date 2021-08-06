@@ -35,19 +35,28 @@ namespace Reko.Core
     public enum InstrClass
     {
         None,
-        Linear  = 1,            // ALU instruction, computational (like ADD, SHR, or MOVE)
-        Transfer = 2,           // Control flow transfer like JMP, CALL
-        Conditional = 4,        // Conditionally executed (like branches or CMOV instructions)
-        Call = 8,               // Instruction saves its continuation, and may resume execution to the following instruction.
-        Return = 16,            // Return instruction
-        Delay = 32,             // The following instruction is in a delay slot.
-        Annul = 64,             // The following instruction is anulled.
-        Terminates = 128,       // Instruction terminates execution.
-        Privileged = 256,       // Privileged instruction
-        [Obsolete("Use 'Privileged' instead.")]System = 256,           // Privileged instruction
-        Padding = 512,          // Instruction _could_ be used as alignment padding between procedures.
-        Invalid = 1024,         // The instruction is invalid
-        Zero = 2048,            // The instruction first "unit" was zero.
+
+        // Main instruction types
+        Linear =      0x0001,   // ALU instruction, computational (like ADD, SHR, or MOVE)
+        Transfer =    0x0002,   // Control flow transfer like JMP, CALL
+        Terminates =  0x0004,   // Instruction terminates execution.
+
+        // Modifiers
+        Conditional = 0x0008,   // Conditionally executed (like branches or CMOV instructions)
+        Privileged =  0x0010,   // Privileged instruction
+        [Obsolete("Use 'Privileged' instead.")] System = 0x0010,           // Privileged instruction
+
+        // Transfer instructions
+        Call =        0x0020,   // Instruction saves its continuation, and may resume execution to the following instruction.
+        Return =      0x0040,   // Return instruction
+        Indirect =    0x0080,   // Indirect transfer instruction
+        Delay =       0x0100,   // The following instruction is in a delay slot.
+        Annul =       0x0200,   // The following instruction is anulled.
+
+        // Further classification used by scanners
+        Padding =     0x0400,   // Instruction _could_ be used as alignment padding between procedures.
+        Invalid =     0x0800,   // The instruction is invalid
+        Zero =        0x1000,   // The instruction first "unit" was zero.
 
         ConditionalTransfer = Conditional | Transfer,
     }
