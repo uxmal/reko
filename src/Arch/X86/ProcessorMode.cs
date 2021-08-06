@@ -45,11 +45,12 @@ namespace Reko.Arch.X86
         protected RegisterStorage[] controlRegs;
         protected RegisterStorage[] debugRegs;
 
-        protected ProcessorMode(PrimitiveType wordSize, PrimitiveType framePointerType, PrimitiveType pointerType)
+        protected ProcessorMode(PrimitiveType wordSize, PrimitiveType framePointerType, PrimitiveType pointerType, bool isProtected)
         {
             this.WordWidth = wordSize;
             this.FramePointerType = framePointerType;
             this.PointerType = pointerType;
+            this.IsProtected = isProtected; 
             this.controlRegs = Enumerable.Range(0, 9)
                 .Select(n => new RegisterStorage($"cr{n}", Registers.ControlRegisterMin, 0, PrimitiveType.Word32))
                 .ToArray();
@@ -62,6 +63,8 @@ namespace Reko.Arch.X86
         {
             return state.AddressFromSegOffset(seg, offset);
         }
+
+        public bool IsProtected { get; }
 
         public PrimitiveType FramePointerType { get; private set ; }
 
@@ -167,7 +170,7 @@ namespace Reko.Arch.X86
     internal class RealMode : ProcessorMode
     {
         public RealMode()
-            : base(PrimitiveType.Word16, PrimitiveType.Offset16, PrimitiveType.SegPtr32)
+            : base(PrimitiveType.Word16, PrimitiveType.Offset16, PrimitiveType.SegPtr32, false)
         {
         }
 
@@ -230,7 +233,7 @@ namespace Reko.Arch.X86
     internal class SegmentedMode : ProcessorMode
     {
         public SegmentedMode()
-            : base(PrimitiveType.Word16, PrimitiveType.Offset16, PrimitiveType.SegPtr32)
+            : base(PrimitiveType.Word16, PrimitiveType.Offset16, PrimitiveType.SegPtr32, true)
         {
         }
 
@@ -285,7 +288,7 @@ namespace Reko.Arch.X86
     internal class FlatMode32 : ProcessorMode
     {
         internal FlatMode32()
-            : base(PrimitiveType.Word32, PrimitiveType.Ptr32, PrimitiveType.Ptr32)
+            : base(PrimitiveType.Word32, PrimitiveType.Ptr32, PrimitiveType.Ptr32, true)
         {
         }
 
@@ -408,7 +411,7 @@ namespace Reko.Arch.X86
     internal class FlatMode64 : ProcessorMode
     {
         internal FlatMode64()
-            : base(PrimitiveType.Word64, PrimitiveType.Ptr64, PrimitiveType.Ptr64)
+            : base(PrimitiveType.Word64, PrimitiveType.Ptr64, PrimitiveType.Ptr64, true)
         {
             this.controlRegs = Enumerable.Range(0, 9)
                 .Select(n => new RegisterStorage($"cr{n}", Registers.ControlRegisterMin, 0, PrimitiveType.Word64))

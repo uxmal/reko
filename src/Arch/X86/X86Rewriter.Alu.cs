@@ -259,7 +259,6 @@ namespace Reko.Arch.X86
 
         private void RewriteRdpmc()
         {
-            iclass = InstrClass.Privileged;
             Identifier edx_eax = binder.EnsureSequence(
                 PrimitiveType.Word64,
                 Registers.edx,

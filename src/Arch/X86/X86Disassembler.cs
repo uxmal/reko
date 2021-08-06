@@ -269,7 +269,7 @@ namespace Reko.Arch.X86
         }
 
         //$REVIEW: Instructions longer than this cause exceptions on modern x86 processors.
-        // On 8086's though you could have an aribitrary number of prefixes.
+        // On 8086's though you could have an arbitrary number of prefixes.
         private const int MaxInstructionLength = 15;
 
         private readonly IServiceProvider services;
@@ -278,6 +278,7 @@ namespace Reko.Arch.X86
 		private readonly PrimitiveType defaultDataWidth;
 		private readonly PrimitiveType defaultAddressWidth;
 		private readonly EndianImageReader rdr;
+        private readonly InstrClass privilegedMask;
 
         private readonly bool isRegisterExtensionEnabled;
         private readonly X86InstructionDecodeInfo decodingContext;
@@ -304,6 +305,7 @@ namespace Reko.Arch.X86
             this.rootDecoders = rootDecoders;
             Debug.Assert(rootDecoders != null);
             this.mode = mode;
+            this.privilegedMask = mode.IsProtected ? InstrClass.None : InstrClass.Privileged;
 			this.rdr = rdr;
             this.addr = rdr.Address;
 			this.defaultDataWidth = defaultWordSize;
@@ -343,6 +345,7 @@ namespace Reko.Arch.X86
 
         public override X86Instruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
         {
+            iclass &= ~privilegedMask;
             return decodingContext.MakeInstruction(iclass, mnemonic);
         }
 
@@ -851,11 +854,11 @@ namespace Reko.Arch.X86
         {
             return (u, d) =>
             {
-                var width = d.OperandWidth(opType);
                 if (!d.TryEnsureModRM(out byte modRm))
                     return false;
                 if ((modRm & 0xC0) == 0xC0)
                     return false;
+                var width = d.OperandWidth(opType);
                 if (!(d.DecodeModRM(width, d.decodingContext.SegmentOverride, d.GpRegFromBits) is MemoryOperand mem))
                     return false;
                 d.decodingContext.ops.Add(mem);

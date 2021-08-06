@@ -552,7 +552,6 @@ namespace Reko.Scanning
                 &&
                 (i.Class &
                   (InstrClass.Linear 
-                   | InstrClass.Privileged
                    | InstrClass.Conditional 
                    | InstrClass.Call)) != 0;        //$REVIEW: what if you call a terminating function?
         }

@@ -43,13 +43,13 @@ namespace Reko.Arch.X86
                 d[0x05] = Amd64Instr(
                     s_invalid,
                     Instr(Mnemonic.syscall, InstrClass.Transfer|InstrClass.Call));
-                d[0x06] = Instr(Mnemonic.clts);
+                d[0x06] = Instr(Mnemonic.clts, InstrClass.Linear|InstrClass.Privileged);
                 d[0x07] = Amd64Instr(
                     s_invalid,
                     Instr(Mnemonic.sysret, InstrClass.Transfer | InstrClass.Return));
 
-                d[0x08] = Instr(Mnemonic.invd, InstrClass.Privileged);
-                d[0x09] = Instr(Mnemonic.wbinvd, InstrClass.Privileged);
+                d[0x08] = Instr(Mnemonic.invd, InstrClass.Linear | InstrClass.Privileged);
+                d[0x09] = Instr(Mnemonic.wbinvd, InstrClass.Linear | InstrClass.Privileged);
                 d[0x0A] = s_invalid;
                 d[0x0B] = Instr(Mnemonic.ud2, InstrClass.Invalid);
                 d[0x0C] = s_invalid;
@@ -161,14 +161,14 @@ namespace Reko.Arch.X86
                     dec66:VexInstr(Mnemonic.comisd, Mnemonic.vcomisd, Vsd,Wsd));
 
 				// 0F 30
-				d[0x30] = Instr(Mnemonic.wrmsr, InstrClass.Privileged);
-                d[0x31] = Instr(Mnemonic.rdtsc);
-                d[0x32] = Instr(Mnemonic.rdmsr, InstrClass.Privileged);
-                d[0x33] = Instr(Mnemonic.rdpmc);
+				d[0x30] = Instr(Mnemonic.wrmsr, InstrClass.Linear|InstrClass.Privileged);
+                d[0x31] = Instr(Mnemonic.rdtsc, InstrClass.Linear | InstrClass.Privileged);
+                d[0x32] = Instr(Mnemonic.rdmsr, InstrClass.Linear|InstrClass.Privileged);
+                d[0x33] = Instr(Mnemonic.rdpmc, InstrClass.Linear | InstrClass.Privileged);
                 d[0x34] = Instr(Mnemonic.sysenter);
                 d[0x35] = Instr(Mnemonic.sysexit, InstrClass.Transfer|InstrClass.Return);
                 d[0x36] = s_invalid;
-                d[0x37] = Instr(Mnemonic.getsec, InstrClass.Privileged);
+                d[0x37] = Instr(Mnemonic.getsec, InstrClass.Linear|InstrClass.Privileged);
 
                 d[0x38] = new AdditionalByteDecoder(s_decoders0F38); // 0F 38
                 d[0x39] = s_invalid;

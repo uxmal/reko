@@ -194,10 +194,10 @@ namespace Reko.Arch.X86
 				d[0x69] = Instr186(Mnemonic.imul, Gv,Ev,Iz);
 				d[0x6A] = Instr186(Mnemonic.push, Ib);
 				d[0x6B] = Instr186(Mnemonic.imul, Gv,Ev,Ib);
-				d[0x6C] = Instr186(Mnemonic.insb, b);
-				d[0x6D] = Instr186(Mnemonic.ins);
-				d[0x6E] = Instr186(Mnemonic.outsb, b);
-				d[0x6F] = Instr186(Mnemonic.outs);
+				d[0x6C] = Instr186(Mnemonic.insb, InstrClass.Linear|InstrClass.Privileged, b);
+				d[0x6D] = Instr186(Mnemonic.ins, InstrClass.Linear | InstrClass.Privileged);
+				d[0x6E] = Instr186(Mnemonic.outsb, InstrClass.Linear | InstrClass.Privileged, b);
+				d[0x6F] = Instr186(Mnemonic.outs, InstrClass.Linear | InstrClass.Privileged);
 
 				// 70
 				d[0x70] = Instr(Mnemonic.jo, InstrClass.Transfer|InstrClass.Conditional, Jb);
@@ -370,10 +370,10 @@ namespace Reko.Arch.X86
                     bit16:Instr(Mnemonic.jcxz, InstrClass.ConditionalTransfer, Jb),
                     bit32:Instr(Mnemonic.jecxz, InstrClass.ConditionalTransfer, Jb),
                     bit64:Instr(Mnemonic.jrcxz, InstrClass.ConditionalTransfer, Jb));
-                d[0xE4] = Instr(Mnemonic.@in, AL,Ib);
-				d[0xE5] = Instr(Mnemonic.@in, eAX,Ib);
-				d[0xE6] = Instr(Mnemonic.@out, Ib,AL);
-				d[0xE7] = Instr(Mnemonic.@out, Ib,eAX);
+                d[0xE4] = Instr(Mnemonic.@in,  InstrClass.Linear|InstrClass.Privileged, AL,Ib);
+				d[0xE5] = Instr(Mnemonic.@in,  InstrClass.Linear|InstrClass.Privileged, eAX,Ib);
+				d[0xE6] = Instr(Mnemonic.@out, InstrClass.Linear|InstrClass.Privileged, Ib,AL);
+				d[0xE7] = Instr(Mnemonic.@out, InstrClass.Linear|InstrClass.Privileged, Ib,eAX);
 
 				d[0xE8] = Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Jv);
 				d[0xE9] = Instr(Mnemonic.jmp, InstrClass.Transfer, Jv);
@@ -391,7 +391,7 @@ namespace Reko.Arch.X86
 				d[0xF1] = Instr(Mnemonic.icebp, InstrClass.Invalid);
 				d[0xF2] = new F2PrefixDecoder(rootDecoders);
 				d[0xF3] = new F3PrefixDecoder(rootDecoders);
-				d[0xF4] = Instr(Mnemonic.hlt, InstrClass.Terminates);
+				d[0xF4] = Instr(Mnemonic.hlt, InstrClass.Terminates|InstrClass.Privileged);
 				d[0xF5] = Instr(Mnemonic.cmc);
 				d[0xF6] = new GroupDecoder(Grp3, Eb);
 				d[0xF7] = new GroupDecoder(Grp3, Ev);

@@ -20,15 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
-using Reko.Core.Machine;
-using Reko.Core.Operators;
-using Reko.Core.Rtl;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 
 namespace Reko.Arch.X86
 {
@@ -47,7 +39,6 @@ namespace Reko.Arch.X86
 
         public void RewriteClts()
         {
-            iclass = InstrClass.Privileged;
             var cr0 = binder.EnsureRegister(arch.GetControlRegister(0)!);
             m.Assign(cr0, host.Intrinsic("__clts", false, cr0.DataType, cr0));
         }
@@ -111,7 +102,6 @@ namespace Reko.Arch.X86
 
         private void RewriteLxdt(string intrinsicName)
         {
-            iclass = InstrClass.Privileged;
             m.SideEffect(
                 host.Intrinsic(
                     intrinsicName,
@@ -122,7 +112,6 @@ namespace Reko.Arch.X86
 
         private void RewriteSxdt(string intrinsicName)
         {
-            iclass = InstrClass.Privileged;
             m.Assign(
                 SrcOp(0),
                 host.Intrinsic(
@@ -179,7 +168,6 @@ namespace Reko.Arch.X86
 
         private void RewriteWbinvd()
         {
-            iclass = InstrClass.Privileged;
             m.SideEffect(host.Intrinsic("__wbinvd", false, VoidType.Instance));
         }
 

@@ -195,6 +195,11 @@ namespace Reko.Arch.X86
                 return instr186(mnemonic, Core.InstrClass.Linear, mutators);
             }
 
+            public Decoder Instr186(Mnemonic mnemonic, InstrClass iclass, params Mutator<X86Disassembler>[] mutators)
+            {
+                return instr186(mnemonic, iclass, mutators);
+            }
+
             public Decoder Instr286(Mnemonic mnemonic, params Mutator<X86Disassembler>[] mutators)
             {
                 return instr286(Instr(mnemonic, Core.InstrClass.Linear, mutators));
