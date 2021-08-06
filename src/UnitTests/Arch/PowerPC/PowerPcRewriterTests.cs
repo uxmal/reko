@@ -580,8 +580,8 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCRw_blr()
         {
             AssertCode(0x4E800020, // blr
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|return (0,0)");
+                "0|R--|00100000(4): 1 instructions",
+                "1|R--|return (0,0)");
         }
 
         [Test]
@@ -1055,9 +1055,9 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCrw_beqlr()
         {
             AssertCode(0x4d9e0020, // beqlr\tcr7");
-                "0|T--|00100000(4): 2 instructions",
+                "0|R--|00100000(4): 2 instructions",
                 "1|T--|if (Test(NE,cr7)) branch 00100004",
-                "2|T--|return (0,0)");
+                "2|R--|return (0,0)");
         }
 
         [Test]
@@ -1093,9 +1093,9 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCrw_blelr()
         {
             AssertCode(0x4c9d0020, //"blelr\tcr7");
-                "0|T--|00100000(4): 2 instructions",
+                "0|R--|00100000(4): 2 instructions",
                 "1|T--|if (Test(GT,cr7)) branch 00100004",
-                "2|T--|return (0,0)");
+                "2|R--|return (0,0)");
         }
 
         [Test]
@@ -1274,9 +1274,9 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCRw_bnelr()
         {
             AssertCode(0x4c820020, // bnelr	
-                "0|T--|00100000(4): 2 instructions",
+                "0|R--|00100000(4): 2 instructions",
                 "1|T--|if (Test(EQ,cr0)) branch 00100004",
-                "2|T--|return (0,0)");
+                "2|R--|return (0,0)");
         }
 
         [Test]
@@ -1585,7 +1585,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCrw_rfi()
         {
             AssertCode(0x4C000024, //  rfi
-                "0|T--|00100000(4): 2 instructions",
+                "0|R--|00100000(4): 2 instructions",
                 "1|L--|__write_msr(srr1)",
                 "2|T--|goto srr0");
         }
@@ -1594,9 +1594,9 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCrw_bgtlr()
         {
             AssertCode(0x4D9D0020, // bgtlrcr7
-                "0|T--|00100000(4): 2 instructions",
+                "0|R--|00100000(4): 2 instructions",
                 "1|T--|if (Test(LE,cr7)) branch 00100004",
-                "2|T--|return (0,0)");
+                "2|R--|return (0,0)");
         }
 
         [Test]
@@ -1791,9 +1791,9 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCRw_bltlr()
         {
             AssertCode(0x4D980020,   // bltlr	cr6
-                "0|T--|00100000(4): 2 instructions",
+                "0|R--|00100000(4): 2 instructions",
                 "1|T--|if (Test(GE,cr6)) branch 00100004",
-                "2|T--|return (0,0)");
+                "2|R--|return (0,0)");
         }
 
         [Test]
@@ -1841,9 +1841,9 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCRw_bgelr()
         {
             AssertCode(0x4C980020,   // bgelr	cr6
-                "0|T--|00100000(4): 2 instructions",
+                "0|R--|00100000(4): 2 instructions",
                 "1|T--|if (Test(LT,cr6)) branch 00100004",
-                "2|T--|return (0,0)");
+                "2|R--|return (0,0)");
         }
 
         [Test]
@@ -2803,9 +2803,9 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCRw_bsolr()
         {
             AssertCode(0x4D830020,   // bsolr	cr0
-                "0|T--|00100000(4): 2 instructions",
+                "0|R--|00100000(4): 2 instructions",
                 "1|T--|if (Test(NO,cr0)) branch 00100004",
-                "2|T--|return (0,0)");
+                "2|R--|return (0,0)");
         }
 
         [Test]

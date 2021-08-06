@@ -46,7 +46,7 @@ namespace Reko.Arch.X86
                 d[0x06] = Instr(Mnemonic.clts);
                 d[0x07] = Amd64Instr(
                     s_invalid,
-                    Instr(Mnemonic.sysret, InstrClass.Transfer));
+                    Instr(Mnemonic.sysret, InstrClass.Transfer | InstrClass.Return));
 
                 d[0x08] = Instr(Mnemonic.invd, InstrClass.Privileged);
                 d[0x09] = Instr(Mnemonic.wbinvd, InstrClass.Privileged);
@@ -166,7 +166,7 @@ namespace Reko.Arch.X86
                 d[0x32] = Instr(Mnemonic.rdmsr, InstrClass.Privileged);
                 d[0x33] = Instr(Mnemonic.rdpmc);
                 d[0x34] = Instr(Mnemonic.sysenter);
-                d[0x35] = Instr(Mnemonic.sysexit, InstrClass.Transfer);
+                d[0x35] = Instr(Mnemonic.sysexit, InstrClass.Transfer|InstrClass.Return);
                 d[0x36] = s_invalid;
                 d[0x37] = Instr(Mnemonic.getsec, InstrClass.Privileged);
 

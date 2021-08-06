@@ -313,8 +313,8 @@ namespace Reko.Arch.X86
 				// C0
 				d[0xC0] = Instr286(new GroupDecoder(Grp2, Eb,Ib));
 				d[0xC1] = Instr286(new GroupDecoder(Grp2, Ev,Ib));
-				d[0xC2] = Instr(Mnemonic.ret, InstrClass.Transfer, Iw);
-				d[0xC3] = Instr(Mnemonic.ret, InstrClass.Transfer);
+				d[0xC2] = Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return, Iw);
+				d[0xC3] = Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return);
 				d[0xC4] = Amd64Instr(
                     Instr(Mnemonic.les,	Gv,Mp),
                     new VexDecoder3(decoders0F, s_decoders0F38, s_decoders0F3A));
@@ -330,14 +330,14 @@ namespace Reko.Arch.X86
 
                 d[0xC8] = Instr186(Mnemonic.enter, Iw, Ib);
 				d[0xC9] = Instr186(Mnemonic.leave);
-				d[0xCA] = Instr(Mnemonic.retf, InstrClass.Transfer, Iw);
-				d[0xCB] = Instr(Mnemonic.retf, InstrClass.Transfer);
+				d[0xCA] = Instr(Mnemonic.retf, InstrClass.Transfer | InstrClass.Return, Iw);
+				d[0xCB] = Instr(Mnemonic.retf, InstrClass.Transfer | InstrClass.Return);
 				d[0xCC] = Instr(Mnemonic.@int, InstrClass.Linear|InstrClass.Padding, n3);
 				d[0xCD] = new InterruptDecoder(Mnemonic.@int, Ib);
 				d[0xCE] = Amd64Instr(
                     Instr(Mnemonic.into),
                     s_invalid);
-				d[0xCF] = Instr(Mnemonic.iret, InstrClass.Transfer);
+				d[0xCF] = Instr(Mnemonic.iret, InstrClass.Transfer | InstrClass.Return);
 
 				// D0
 				d[0xD0] = new GroupDecoder(Grp2, Eb,n1);

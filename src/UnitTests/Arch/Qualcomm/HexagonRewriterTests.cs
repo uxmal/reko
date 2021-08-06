@@ -226,7 +226,6 @@ namespace Reko.UnitTests.Arch.Qualcomm
                 "1|L--|r0 = r0 | r1 << 1<32>");
         }
 
-
         //[Test]
         public void HexagonRw_Read_Write_register_pair()
         {
@@ -241,9 +240,9 @@ namespace Reko.UnitTests.Arch.Qualcomm
         {
             Given_HexString("00C0E057");
             AssertCode(     // { rte }
-                "0|T--|00100000(4): 2 instructions",
+                "0|R--|00100000(4): 2 instructions",
                 "1|L--|rte()",
-                "2|T--|return (0,0)");
+                "2|R--|return (0,0)");
         }
         [Test]
         public void HexagonRw_stop()
@@ -312,7 +311,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
             Given_HexString("6040E0D200C09F52");
             AssertCode(     // { jumpr	r31; p0 = dfcmp.uo(r1:r0,r1:r0) }
                 "0|T--|00100000(8): 2 instructions",
-                "1|T--|return (0,0)",
+                "1|R--|return (0,0)",
                 "2|L--|p0 = isunordered(r1_r0, r1_r0)");
         }
 
@@ -322,7 +321,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
             Given_HexString("00409C8400C09F52");
             AssertCode(     // { jumpr	r31; r1:r0 = convert_sf2df(r28) }
                 "0|T--|00100000(8): 2 instructions",
-                "1|T--|return (0,0)",
+                "1|R--|return (0,0)",
                 "2|L--|r1_r0 = CONVERT(r28, real32, real64)");
         }
 
@@ -382,8 +381,6 @@ namespace Reko.UnitTests.Arch.Qualcomm
                 "3|L--|r13_r12 = r5_r4 << r10");
         }
 
-
-
         [Test]
         public void HexagonRw_dcfetch()
         {
@@ -391,7 +388,7 @@ namespace Reko.UnitTests.Arch.Qualcomm
             AssertCode(     // { dcfetch	r1,00000000; if (p1) jumpr:nt	r31; p2 = bitsclr(r14,00000007) }
                 "0|T--|00100000(12): 3 instructions",
                 "1|L--|dcfetch(r1, 0<32>)",
-                "2|T--|return (0,0)",
+                "2|R--|return (0,0)",
                 "3|L--|p2 = bitsclr(r14, 7<32>)");
         }
 

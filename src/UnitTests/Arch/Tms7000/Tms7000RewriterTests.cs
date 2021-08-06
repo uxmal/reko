@@ -298,7 +298,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0x0B);
             AssertCode(
                  "0|T--|0100(1): 1 instructions",
-                 "1|T--|return (2,1)");
+                 "1|R--|return (2,1)");
         }
 
         [Test]
@@ -307,7 +307,7 @@ namespace Reko.UnitTests.Arch.Tms7000
             Given_Bytes(0x0A);
             AssertCode(
                  "0|T--|0100(1): 1 instructions",
-                 "1|T--|return (2,0)");
+                 "1|R--|return (2,0)");
         }
 
         [Test]

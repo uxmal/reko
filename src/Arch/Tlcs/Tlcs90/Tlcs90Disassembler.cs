@@ -631,8 +631,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
             Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Jw),
             Instr(Mnemonic.callr, InstrClass.Transfer|InstrClass.Call, jw),
-            Instr(Mnemonic.ret, InstrClass.Transfer),
-            Instr(Mnemonic.reti, InstrClass.Transfer), 
+            Instr(Mnemonic.ret, InstrClass.Transfer|InstrClass.Return),
+            Instr(Mnemonic.reti, InstrClass.Transfer|InstrClass.Return), 
 
             // 20
             Instr(Mnemonic.ld, a,r),

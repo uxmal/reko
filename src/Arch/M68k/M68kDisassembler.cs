@@ -3059,11 +3059,11 @@ namespace Reko.Arch.M68k
 	Instr(sw,D9,D0, 0xf1f8, 0xe170, 0x000, Mnemonic.roxl),      // d68000_roxl_r_16
 	Instr(sl,D9,D0, 0xf1f8, 0xe1b0, 0x000, Mnemonic.roxl),      // d68000_roxl_r_32
 	Instr(sl,E0, 0xffc0, 0xe5c0, 0x3f8, Mnemonic.roxl),         // d68000_roxl_ea 
-	Instr(Iw, 0xffff, 0x4e74, 0x000, Mnemonic.rtd, InstrClass.Transfer),      // d68010_rtd
-	Instr(0xffff, 0x4e73, 0x000, Mnemonic.rte, InstrClass.Transfer|InstrClass.Privileged),        // d68000_rte
-	Instr(d68020_rtm, 0xfff0, 0x06c0, 0x000, iclass:InstrClass.Transfer),
-	Instr(0xffff, 0x4e77, 0x000, Mnemonic.rtr, InstrClass.Transfer),        // d68000_rtr
-	Instr(0xffff, 0x4e75, 0x000, Mnemonic.rts, InstrClass.Transfer),        // d68000_rts
+	Instr(Iw, 0xffff, 0x4e74, 0x000, Mnemonic.rtd, InstrClass.Transfer|InstrClass.Return),      // d68010_rtd
+	Instr(0xffff, 0x4e73, 0x000, Mnemonic.rte, InstrClass.Transfer|InstrClass.Privileged),      // d68000_rte
+	Instr(d68020_rtm, 0xfff0, 0x06c0, 0x000, iclass:InstrClass.Transfer|InstrClass.Return),
+	Instr(0xffff, 0x4e77, 0x000, Mnemonic.rtr, InstrClass.Transfer|InstrClass.Return),          // d68000_rtr
+	Instr(0xffff, 0x4e75, 0x000, Mnemonic.rts, InstrClass.Transfer|InstrClass.Return),          // d68000_rts
 	Instr(D0,D9, 0xf1f8, 0x8100, 0x000, Mnemonic.sbcd),         // d68000_sbcd_rr
 	Instr(Pre0,Pre9, 0xf1f8, 0x8108, 0x000, Mnemonic.sbcd),     // d68000_sbcd_mm
 	Instr(d68000_scc          , 0xf0c0, 0x50c0, 0xbf8),

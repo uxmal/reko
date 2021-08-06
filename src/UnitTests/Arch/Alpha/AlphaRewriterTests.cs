@@ -244,7 +244,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_HexString("0180FA6B");	// ret	zero,r26
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|return (0,0)");
+                "1|R--|return (0,0)");
         }
 
         [Test]

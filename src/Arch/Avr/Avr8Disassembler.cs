@@ -512,8 +512,8 @@ namespace Reko.Arch.Avr
                 Instr(Mnemonic.clt),
                 Instr(Mnemonic.cli),
 
-                Instr(Mnemonic.ret, InstrClass.Transfer),
-                Instr(Mnemonic.reti, InstrClass.Transfer),
+                Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return),
+                Instr(Mnemonic.reti, InstrClass.Transfer | InstrClass.Return),
                 invalid,
                 invalid,
 
@@ -535,8 +535,8 @@ namespace Reko.Arch.Avr
 
             var decoders95_8 = new Decoder[]
             {
-                Instr(Mnemonic.ret, InstrClass.Transfer),
-                Instr(Mnemonic.reti, InstrClass.Transfer),
+                Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return),
+                Instr(Mnemonic.reti, InstrClass.Transfer | InstrClass.Return),
                 invalid,
                 invalid,
 

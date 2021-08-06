@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Arch.LatticeMico
             Given_HexString("C3A00000");    // b ra
             AssertCode(
                 "0|T--|00100000(4): 1 instructions",
-                "1|T--|return (0,0)");
+                "1|R--|return (0,0)");
         }
 
         [Test]

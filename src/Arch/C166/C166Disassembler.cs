@@ -948,7 +948,7 @@ namespace Reko.Arch.C166
                 Instr(Mnemonic.calla, InstrClass.Call|InstrClass.ConditionalTransfer, c, caddr),
                 invalid),
             Select((8,8), Is0,
-                Instr(Mnemonic.ret, InstrClass.Transfer),
+                Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return),
                 invalid),
             
             Select((8,8), Is0,
@@ -980,7 +980,7 @@ namespace Reko.Arch.C166
             Instr(Mnemonic.movb, PostInc12b, Rdmb),
             Instr(Mnemonic.calls, InstrClass.Call|InstrClass.Transfer, seg, caddr),
             Select((8,8), Is0,
-                Instr(Mnemonic.rets),
+                Instr(Mnemonic.rets, InstrClass.Transfer| InstrClass.Return),
                 invalid),
 
             Select((14,2), u => u == 0b01,
@@ -1006,7 +1006,7 @@ namespace Reko.Arch.C166
             Select((8,4), Is0,
                 Instr(Mnemonic.jmpa, InstrClass.ConditionalTransfer, c, caddr),
                 invalid),
-            Instr(Mnemonic.retp, InstrClass.Transfer, reg16),
+            Instr(Mnemonic.retp, InstrClass.Transfer| InstrClass.Return, reg16),
             
             Instr(Mnemonic.push, reg16),
             Instr(Mnemonic.jmpr, InstrClass.ConditionalTransfer, c4, rel),
@@ -1028,7 +1028,7 @@ namespace Reko.Arch.C166
             invalid,
             Instr(Mnemonic.jmps, InstrClass.Transfer, seg, caddr),
             Select((8, 8), u => u == 0x88u, "  FB",
-                Instr(Mnemonic.reti, InstrClass.Transfer),
+                Instr(Mnemonic.reti, InstrClass.Transfer| InstrClass.Return),
                 invalid),  // 2 - – 
 
             Instr(Mnemonic.pop, reg16),

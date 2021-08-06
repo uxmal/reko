@@ -709,7 +709,7 @@ namespace Reko.Arch.XCore
                         (0xC, Instr(Mnemonic.brbu, InstrClass.Transfer, u6_m_pc)),
                         (0xD, Instr(Mnemonic.entsp, u6)),
                         (0xE, Instr(Mnemonic.extsp, u6)),
-                        (0xF, Instr(Mnemonic.retsp, u6)))),
+                        (0xF, Instr(Mnemonic.retsp, InstrClass.Transfer | InstrClass.Return, u6)))),
                 Select((10, 1), u => u == 0, "  0F",
                     Sparse(6, 4, "  0F_0", 
                         Instr(Mnemonic.brff, InstrClass.ConditionalTransfer, ru6_p_pc),

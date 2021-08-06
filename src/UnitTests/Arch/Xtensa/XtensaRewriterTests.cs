@@ -1141,8 +1141,8 @@ namespace Reko.UnitTests.Arch.Xtensa
         {
             Given_HexString("800000");  // ret
             AssertCode(
-                 "0|T--|00010000(3): 1 instructions",
-                 "1|T--|return (0,0)");
+                 "0|R--|00010000(3): 1 instructions",
+                 "1|R--|return (0,0)");
         }
 
         [Test]
@@ -1151,8 +1151,8 @@ namespace Reko.UnitTests.Arch.Xtensa
             // ret.n\t",
             Given_UInt32s(0xF00D);
             AssertCode(
-                "0|T--|00010000(2): 1 instructions",
-                "1|T--|return (0,0)");
+                "0|R--|00010000(2): 1 instructions",
+                "1|R--|return (0,0)");
         }
 
         [Test]
@@ -1161,8 +1161,8 @@ namespace Reko.UnitTests.Arch.Xtensa
             // rfe\t
             Given_UInt32s(0x003000);
             AssertCode(
-                "0|T--|00010000(3): 1 instructions",
-                "1|T--|return (0,0)");
+                "0|R--|00010000(3): 1 instructions",
+                "1|R--|return (0,0)");
         }
 
         [Test]
@@ -1171,8 +1171,8 @@ namespace Reko.UnitTests.Arch.Xtensa
             //rfi\t02
             Given_UInt32s(0x003210);
             AssertCode(
-                "0|T--|00010000(3): 1 instructions",
-                "1|T--|return (0,0)");
+                "0|R--|00010000(3): 1 instructions",
+                "1|R--|return (0,0)");
         }
 
         [Test]

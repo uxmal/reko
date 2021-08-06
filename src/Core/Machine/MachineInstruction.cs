@@ -50,17 +50,17 @@ namespace Reko.Core.Machine
         /// Some architectures, e.g. M68k, x86, and most 8-bit microprocessors, have
         /// variable length instructions.
         /// </summary>
-        public int Length;
+        public int Length { get; set; }
 
         /// <summary>
         /// The kind of instruction.
         /// </summary>
-        public InstrClass InstructionClass;
+        public InstrClass InstructionClass { get; set; }
 
         /// <summary>
         /// 0 or more operands of the instruction.
         /// </summary>
-        public MachineOperand[] Operands;
+        public MachineOperand[] Operands { get; set; }
 
         /// <summary>
         /// Returns true if the instruction is valid.

@@ -693,7 +693,7 @@ namespace Reko.Arch.PowerPC
                         Instr(InstrClass.ConditionalTransfer | InstrClass.Call, Mnemonic.bcctrl, I1, I2))),
                     (0b10001, Nyi(Mnemonic.bctar)))),                   // v2.07 bctar[l] Branch Conditional to BTAR [& Link]
                 (0b10010, Sparse(21, 5,
-                    (0b00000, Instr(InstrClass.Transfer, Mnemonic.rfid)),   //  PPC  P  rfid Return from Interrupt Dword
+                    (0b00000, Instr(InstrClass.Transfer | InstrClass.Return, Mnemonic.rfid)),   //  PPC  P  rfid Return from Interrupt Dword
                     (0b00010, Nyi(Mnemonic.rfscv)),                     // v3.0 P  rfscv Return From System Call Vectored
                     (0b00100, Nyi(Mnemonic.rfebb)),                     // v2.07   rfebb Return from Event Based Branch
                     (0b01000, Nyi(Mnemonic.hrfid)),                     // v2.02 H hrfid Return From Interrupt Dword Hypervisor

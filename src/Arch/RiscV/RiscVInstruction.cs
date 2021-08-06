@@ -30,8 +30,8 @@ namespace Reko.Arch.RiscV
     public class RiscVInstruction : MachineInstruction
     {
         private static readonly Dictionary<Mnemonic, string> mnemonicNames;
-
-        public Mnemonic Mnemonic;
+         
+        public Mnemonic Mnemonic { get; set; }
 
         static RiscVInstruction()
         {

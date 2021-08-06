@@ -34,15 +34,17 @@ namespace Reko.UnitTests.Arch.Msp430
 {
     public class Msp430RewriterTests : RewriterTestBase
     {
-        private Msp430Architecture arch;
+        private readonly Msp430Architecture arch;
+        private readonly Address addr;
 
         public Msp430RewriterTests()
         {
             this.arch = new Msp430Architecture(CreateServiceContainer(), "msp430", new Dictionary<string, object>());
+            this.addr = Address.Ptr16(0x0100);
         }
 
         public override IProcessorArchitecture Architecture => arch;
-        public override Address LoadAddress => Address.Ptr16(0x0100);
+        public override Address LoadAddress => addr;
 
         [Test]
         public void Msp430Rw_mov()
@@ -415,8 +417,8 @@ namespace Reko.UnitTests.Arch.Msp430
         {
             Given_Bytes(0x30, 0x41);
             AssertCode(         // ret
-                "0|T--|0100(2): 1 instructions",
-                "1|T--|return (2,0)");
+                "0|R--|0100(2): 1 instructions",
+                "1|R--|return (2,0)");
         }
 
         [Test]

@@ -438,9 +438,9 @@ namespace Reko.Arch.RiscV
                         Nyi("system 000"),
                         (0, Instr(Mnemonic.ecall, InstrClass.Transfer | InstrClass.Call)),
                         (1, Instr(Mnemonic.ebreak, InstrClass.Terminates)),
-                        (0b0000000_00010, Instr(Mnemonic.uret, InstrClass.Transfer)),
-                        (0b0001000_00010, Instr(Mnemonic.sret, InstrClass.Transfer)),
-                        (0b0011000_00010, Instr(Mnemonic.mret, InstrClass.Transfer)),
+                        (0b0000000_00010, Instr(Mnemonic.uret, InstrClass.Transfer | InstrClass.Return)),
+                        (0b0001000_00010, Instr(Mnemonic.sret, InstrClass.Transfer | InstrClass.Return)),
+                        (0b0011000_00010, Instr(Mnemonic.mret, InstrClass.Transfer | InstrClass.Return)),
                         (0b0001000_00101, Instr(Mnemonic.wfi, InstrClass.Linear))),
 
                     Instr(Mnemonic.csrrw, d, Csr20, r2),
@@ -486,7 +486,7 @@ namespace Reko.Arch.RiscV
                     Nyi("48-bit instruction"),
 
                     new MaskDecoder(12, 3, "branches", branches),
-                    Instr(Mnemonic.jalr, InstrClass.Transfer, d, r1, i),
+                    Instr(Mnemonic.jalr, InstrClass.Transfer | InstrClass.Return, d, r1, i),
                     Nyi("Reserved"),
                     Instr(Mnemonic.jal, InstrClass.Transfer | InstrClass.Call, Rd, J),
 
@@ -565,10 +565,10 @@ namespace Reko.Arch.RiscV
                     Instr(Mnemonic.c_j, InstrClass.Transfer, Jc),
                     Instr(Mnemonic.c_beqz, InstrClass.ConditionalTransfer, Rc(7), PcRel(1, (12,1), (5,2), (2,1), (10,2), (3, 2))),
                     Instr(Mnemonic.c_bnez, InstrClass.ConditionalTransfer, Rc(7), PcRel(1, (12,1), (5,2), (2,1), (10,2), (3, 2))),
-                    };
+                };
 
-                    var compressed2 = new Decoder[8]
-                    {
+                var compressed2 = new Decoder[8]
+                {
                     Instr(Mnemonic.c_slli, R_nz(7), ImmB((12, 1), (2, 5))),
                     WordSize(
                         rv32: FpInstr64(Mnemonic.c_fldsp, F(2), ImmSh(3, (12,1),(7,3),(10,3))),
@@ -579,12 +579,12 @@ namespace Reko.Arch.RiscV
 
                     new MaskDecoder(12, 1,  "",
                         Select((2, 5), u => u == 0, "",
-                            Instr(Mnemonic.c_jr, InstrClass.Transfer, R(7)),
+                            Instr(Mnemonic.c_jr, InstrClass.Transfer, R(7), useLr(7)),
                             Instr(Mnemonic.c_mv, R(7), R(2))),
                         Select((2, 5), Eq0,
                             Select((7, 5), Eq0,
                                 Instr(Mnemonic.c_ebreak, InstrClass.Terminates),
-                                Instr(Mnemonic.c_jalr, InstrClass.Transfer, R(7))),
+                                Instr(Mnemonic.c_jalr, InstrClass.Transfer|InstrClass.Return, R(7))),
                             Instr(Mnemonic.c_add, R(7), R(2)))),
                     WordSize(
                         rv32: FpInstr64(Mnemonic.c_fsdsp, F(2), ImmSh(3, (7,3), (10,3))),

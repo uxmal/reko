@@ -921,8 +921,8 @@ namespace Reko.Arch.Xtensa
                 reserved);
 
             var decoderJR = new n_Rec(
-                Instr(Mnemonic.ret, InstrClass.Transfer),
-                Instr(Mnemonic.retw, InstrClass.Transfer),
+                Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return),
+                Instr(Mnemonic.retw, InstrClass.Transfer | InstrClass.Return),
                 Instr(Mnemonic.jx, InstrClass.Transfer, Rs),
                 reserved);
 
@@ -960,7 +960,7 @@ namespace Reko.Arch.Xtensa
                 Instr(Mnemonic.nop, InstrClass.Linear|InstrClass.Padding));
 
             var decoderRFET = new s_Rec(
-                Instr(Mnemonic.rfe),
+                Instr(Mnemonic.rfe, InstrClass.Transfer|InstrClass.Return),
                 Instr(Mnemonic.rfue),
                 Instr(Mnemonic.rfde),
                 reserved,
@@ -982,7 +982,7 @@ namespace Reko.Arch.Xtensa
 
             var decoderRFEI = new t_Decoder(
                 decoderRFET,
-                Instr(Mnemonic.rfi, Is),
+                Instr(Mnemonic.rfi, InstrClass.Transfer|InstrClass.Return, Is),
                 Instr(Mnemonic.rfme),
                 reserved,
 
@@ -1132,8 +1132,8 @@ namespace Reko.Arch.Xtensa
                 Instr2byte(Mnemonic.bnez_n, InstrClass.ConditionalTransfer, Rs, jrt));
 
             var decoderS3 = new t_Decoder(
-                Instr2byte(Mnemonic.ret_n, InstrClass.Transfer),
-                Instr2byte(Mnemonic.retw_n, InstrClass.Transfer),
+                Instr2byte(Mnemonic.ret_n, InstrClass.Transfer | InstrClass.Return),
+                Instr2byte(Mnemonic.retw_n, InstrClass.Transfer | InstrClass.Return),
                 Instr2byte(Mnemonic.break_n, InstrClass.Transfer|InstrClass.Call, Is),
                 Instr2byte(Mnemonic.nop_n, InstrClass.Linear|InstrClass.Padding),
 

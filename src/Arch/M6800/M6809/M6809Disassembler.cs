@@ -39,6 +39,7 @@ namespace Reko.Arch.M6800.M6809
         private readonly EndianImageReader rdr;
         private readonly List<MachineOperand> ops;
         private Address addr;
+        private InstrClass iclass;
 
         public M6809Disassembler(M6809Architecture arch, EndianImageReader rdr)
         {
@@ -54,6 +55,7 @@ namespace Reko.Arch.M6800.M6809
             if (!rdr.TryReadByte(out byte b))
                 return null;
             this.ops.Clear();
+            this.iclass = InstrClass.None;
             var instr = rootDecoders[b].Decode(b, this);
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - addr);
@@ -294,7 +296,7 @@ namespace Reko.Arch.M6800.M6809
             Registers.A,
             Registers.CC
         };
-        private static Mutator<M6809Disassembler> Mregs(RegisterStorage[] regs)
+        private static Mutator<M6809Disassembler> Mregs(bool writeRegs, RegisterStorage[] regs)
         {
             return (uint wInstr, M6809Disassembler dasm) =>
             {
@@ -302,12 +304,14 @@ namespace Reko.Arch.M6800.M6809
                     return false;
                 var addr = dasm.rdr.Address + (sbyte) b;
                 dasm.ops.Add(new MultipleRegisterOperand(regs, b));
+                if (writeRegs && (b & 0x80) != 0)
+                {
+                    // PCR register was written.
+                    dasm.iclass = InstrClass.Transfer | InstrClass.Return;
+                }
                 return true;
             };
         }
-        private static readonly Mutator<M6809Disassembler> MregsS = Mregs(regsS);
-        private static readonly Mutator<M6809Disassembler> MregsU = Mregs(regsU);
-
 
         private static readonly RegisterStorage?[] exgRegs = new RegisterStorage?[16]
         {
@@ -368,6 +372,9 @@ namespace Reko.Arch.M6800.M6809
                     if (!m(wInstr, dasm))
                         return dasm.CreateInvalidInstruction();
                 }
+                var iclass = dasm.iclass != InstrClass.None
+                    ? dasm.iclass
+                    : this.iclass;
                 var instr = new M6809Instruction
                 {
                     InstructionClass = iclass,
@@ -1160,15 +1167,15 @@ namespace Reko.Arch.M6800.M6809
                 Instr(Mnemonic.leas, Idx),
                 Instr(Mnemonic.leau, Idx),
 
-                Instr(Mnemonic.pshs, MregsU),
-                Instr(Mnemonic.puls, MregsU),
-                Instr(Mnemonic.pshu, MregsS),
-                Instr(Mnemonic.pulu, MregsS),
+                Instr(Mnemonic.pshs, Mregs(false, regsU)),
+                Instr(Mnemonic.puls, Mregs(true, regsU)),
+                Instr(Mnemonic.pshu, Mregs(false, regsS)),
+                Instr(Mnemonic.pulu, Mregs(true, regsS)),
 
                 invalid,
-                Instr(Mnemonic.rts, InstrClass.Transfer),
+                Instr(Mnemonic.rts, InstrClass.Transfer|InstrClass.Return),
                 Instr(Mnemonic.abx),
-                Instr(Mnemonic.rti, InstrClass.Transfer),
+                Instr(Mnemonic.rti, InstrClass.Transfer|InstrClass.Return),
 
                 Instr(Mnemonic.cwai, Ib),
                 Instr(Mnemonic.mul),

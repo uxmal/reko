@@ -569,10 +569,10 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Given_HexString("4E77");
             AssertCode(     // rtr
-                "0|T--|00010000(2): 3 instructions",
+                "0|R--|00010000(2): 3 instructions",
                 "1|L--|ccr = Mem0[a7:word16]",
                 "2|L--|a7 = a7 + 2<i32>",
-                "3|T--|return (4,0)");
+                "3|R--|return (4,0)");
         }
 
         [Test]
@@ -580,8 +580,8 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Given_UInt16s(0x4E75);    // rts
             AssertCode(
-                "0|T--|00010000(2): 1 instructions",
-                "1|T--|return (4,0)");
+                "0|R--|00010000(2): 1 instructions",
+                "1|R--|return (4,0)");
         }
 
         [Test]
@@ -1660,7 +1660,7 @@ namespace Reko.UnitTests.Arch.M68k
                 "0|S--|00010000(2): 3 instructions",
                 "1|L--|sr = Mem0[a7:word16]",
                 "2|L--|a7 = a7 + 2<i32>",
-                "3|T--|return (4,0)");
+                "3|R--|return (4,0)");
         }
 
         [Test]
@@ -1909,8 +1909,8 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Given_UInt16s(0x4E74, 0x0006);    // rtd #$0006
             AssertCode(
-                "0|T--|00010000(4): 1 instructions",
-                "1|T--|return (4,6)");
+                "0|R--|00010000(4): 1 instructions",
+                "1|R--|return (4,6)");
         }
 
         [Test]

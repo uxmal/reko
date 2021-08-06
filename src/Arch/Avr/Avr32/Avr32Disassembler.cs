@@ -615,7 +615,7 @@ namespace Reko.Arch.Avr.Avr32
 
                 );
 
-            var returnConditionally = Instr(Mnemonic.ret, InstrClass.Transfer, Cond(4, 4), R0);
+            var returnConditionally = Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return, Cond(4, 4), R0);
 
             var setRegisterConditionally = Instr(Mnemonic.sr, Cond(4, 4), Rw0);
 

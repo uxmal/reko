@@ -210,8 +210,8 @@ namespace Reko.UnitTests.Arch.Z80
         {
             Given_Bytes(0xC9);
             AssertCode(
-                "0|T--|0100(1): 1 instructions",
-                "1|T--|return (2,0)");
+                "0|R--|0100(1): 1 instructions",
+                "1|R--|return (2,0)");
         }
 
         [Test]

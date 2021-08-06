@@ -715,7 +715,7 @@ namespace Reko.Arch.Z80
             Instr(Mnemonic.cmp, Mnemonic.cp, a,R),
 
             // C0
-            Instr(Mnemonic.illegal, Mnemonic.ret, C, InstrClass.ConditionalTransfer),
+            Instr(Mnemonic.illegal, Mnemonic.ret, C, InstrClass.ConditionalTransfer|InstrClass.Return),
             Instr(Mnemonic.illegal, Mnemonic.pop, Wb),
             Instr(Mnemonic.jnz, Mnemonic.jp, C, A,InstrClass.ConditionalTransfer),
             Instr(Mnemonic.jmp, Mnemonic.jp, A, InstrClass.Transfer),
@@ -724,8 +724,8 @@ namespace Reko.Arch.Z80
             Instr(Mnemonic.adi, Mnemonic.add, a,Ib),
             Instr(Mnemonic.illegal, Mnemonic.rst, x(00), InstrClass.Transfer|InstrClass.Call),
 
-            Instr(Mnemonic.illegal, Mnemonic.ret, C, InstrClass.ConditionalTransfer),
-            Instr(Mnemonic.illegal, Mnemonic.ret, InstrClass.Transfer),
+            Instr(Mnemonic.illegal, Mnemonic.ret, C, InstrClass.ConditionalTransfer|InstrClass.Return),
+            Instr(Mnemonic.illegal, Mnemonic.ret, InstrClass.Transfer|InstrClass.Return),
             Instr(Mnemonic.jz, Mnemonic.jp, C, A,InstrClass.ConditionalTransfer),
             new CbPrefixDecoder(),
             Instr(Mnemonic.illegal, Mnemonic.call, C, A,InstrClass.ConditionalTransfer|InstrClass.Call),
@@ -734,7 +734,7 @@ namespace Reko.Arch.Z80
             Instr(Mnemonic.illegal, Mnemonic.rst, x(0x08), InstrClass.Transfer|InstrClass.Call),
 
             // D0
-            Instr(Mnemonic.illegal, Mnemonic.ret, C, InstrClass.ConditionalTransfer),
+            Instr(Mnemonic.illegal, Mnemonic.ret, C, InstrClass.ConditionalTransfer|InstrClass.Return),
             Instr(Mnemonic.illegal, Mnemonic.pop, Wd),
             Instr(Mnemonic.jnc, Mnemonic.jp, C, A,InstrClass.ConditionalTransfer),
             Instr(Mnemonic.illegal, Mnemonic.@out, ob,a),
@@ -743,7 +743,7 @@ namespace Reko.Arch.Z80
             Instr(Mnemonic.sui, Mnemonic.sub, a,Ib),
             Instr(Mnemonic.illegal, Mnemonic.rst, x(0x10), InstrClass.Transfer|InstrClass.Call),
 
-            Instr(Mnemonic.illegal, Mnemonic.ret, C, InstrClass.ConditionalTransfer),
+            Instr(Mnemonic.illegal, Mnemonic.ret, C, InstrClass.ConditionalTransfer|InstrClass.Return),
             Instr(Mnemonic.illegal, Mnemonic.exx),
             Instr(Mnemonic.jc, Mnemonic.jp, C, A,InstrClass.ConditionalTransfer),
             Instr(Mnemonic.illegal, Mnemonic.@in, a,ob),
@@ -753,7 +753,7 @@ namespace Reko.Arch.Z80
             Instr(Mnemonic.illegal, Mnemonic.rst, x(0x18), InstrClass.Transfer|InstrClass.Call),
 
             // E0
-            Instr(Mnemonic.illegal, Mnemonic.ret, C, InstrClass.ConditionalTransfer),
+            Instr(Mnemonic.illegal, Mnemonic.ret, C, InstrClass.ConditionalTransfer|InstrClass.Return),
             Instr(Mnemonic.illegal, Mnemonic.pop, Wh),
             Instr(Mnemonic.jpo, Mnemonic.jp, C, A,InstrClass.ConditionalTransfer),
             Instr(Mnemonic.illegal, Mnemonic.ex, Sw,Wh),
@@ -799,7 +799,7 @@ namespace Reko.Arch.Z80
             Instr(Mnemonic.illegal, Mnemonic.sbc,  Wh,Wb),
             Instr(Mnemonic.illegal, Mnemonic.ld,  Ow,Wb),
             Instr(Mnemonic.illegal, Mnemonic.neg  ),
-            Instr(Mnemonic.illegal, Mnemonic.retn, InstrClass.Transfer),
+            Instr(Mnemonic.illegal, Mnemonic.retn, InstrClass.Transfer|InstrClass.Return),
             Instr(Mnemonic.illegal, Mnemonic.im,  x(0)),
             Instr(Mnemonic.illegal, Mnemonic.ld,  Li,a),
 
@@ -808,7 +808,7 @@ namespace Reko.Arch.Z80
             Instr(Mnemonic.illegal, Mnemonic.adc,  Wh,Wb),
             Instr(Mnemonic.illegal, Mnemonic.ld,  Wb,Ow),
             Instr(Mnemonic.illegal, Mnemonic.illegal  ),
-            Instr(Mnemonic.illegal, Mnemonic.reti, InstrClass.Transfer),
+            Instr(Mnemonic.illegal, Mnemonic.reti, InstrClass.Transfer|InstrClass.Return),
             Instr(Mnemonic.illegal, Mnemonic.illegal  ),
             Instr(Mnemonic.illegal, Mnemonic.ld,  Lr,a),
             

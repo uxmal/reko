@@ -1733,11 +1733,11 @@ namespace Reko.UnitTests.Arch.Vax
         {
             Given_Bytes(0x04);	// ret	
             AssertCode(
-                "0|T--|00010000(1): 4 instructions",
+                "0|R--|00010000(1): 4 instructions",
                 "1|L--|sp = fp - 4<32>",
                 "2|L--|fp = Mem0[sp + 0x10<32>:word32]",
                 "3|L--|ap = Mem0[sp + 0xC<32>:word32]",
-                "4|T--|return (4,0)");
+                "4|R--|return (4,0)");
         }
 
         [Test]
@@ -1758,8 +1758,8 @@ namespace Reko.UnitTests.Arch.Vax
         {
             Given_Bytes(0x05);	// rsb	
             AssertCode(
-                "0|T--|00010000(1): 1 instructions",
-                "1|T--|return (4,0)");
+                "0|R--|00010000(1): 1 instructions",
+                "1|R--|return (4,0)");
         }
 
         [Test]

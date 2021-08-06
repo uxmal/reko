@@ -967,8 +967,6 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteRETLW()
         {
-            iclass = InstrClass.Transfer;
-
             var k = instrCurr.Operands[0] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[0]}");
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
@@ -981,7 +979,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         private void RewriteRETURN()
         {
             var fast = instrCurr.Operands[0] as PICOperandFast ?? throw new InvalidOperationException($"Invalid FAST indicator operand: {instrCurr.Operands[0]}.");
-            iclass = InstrClass.Transfer;
+            iclass = InstrClass.Transfer | InstrClass.Return;
 
             Identifier tos = binder.EnsureRegister(PIC18Registers.TOS);
             Identifier? statuss = PIC18Registers.STATUS_CSHAD != null
@@ -1082,8 +1080,6 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteSUBULNK()
         {
-            iclass = InstrClass.Transfer;
-
             var k = instrCurr.Operands[1] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[1]}");
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 

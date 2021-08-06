@@ -1482,6 +1482,18 @@ namespace Reko.Arch.Arm.AArch32
                 dasm.state.ops.Add(dasm.state.shiftValue!);
                 dasm.state.shiftValue = null;
                 dasm.state.shiftOp = Mnemonic.Invalid;
+                return true;
+            }
+            if (((RegisterOperand) dasm.state.ops[0]).Register == Registers.pc)
+            {
+                if (((RegisterOperand) dasm.state.ops[1]).Register == Registers.lr)
+                {
+                    dasm.state.iclass = InstrClass.Transfer | InstrClass.Return;
+                }
+                else
+                {
+                    dasm.state.iclass = InstrClass.Transfer;
+                }
             }
             return true;
         }
@@ -1893,7 +1905,7 @@ namespace Reko.Arch.Arm.AArch32
             var Bxj = Instr(Mnemonic.bxj, InstrClass.Transfer, r(0));
             var Blx = Instr(Mnemonic.blx, J);
             var Clz = Instr(Mnemonic.clz, r(3),r(0));
-            var Eret = Instr(Mnemonic.eret, InstrClass.Transfer);
+            var Eret = Instr(Mnemonic.eret, InstrClass.Transfer | InstrClass.Return);
 
             var ChangeProcessState = Mask(16, 1, "Change Process State", 
                 Mask(17, 3, "  imod:M",
@@ -2003,13 +2015,13 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Mnemonic.cmp, r(4),r(0),Shi),
                 Instr(Mnemonic.cmn, r(4),r(0),Shi));
 
-            var LogicalArithmeticImmShift = Mask(21, 2,
+            var LogicalArithmeticImmShift = Mask(21, 2, "Logic arithmetic immediate shift",
                 Instr(Mnemonic.orr, s,r(3),r(4),r(0),Shi),
                 Instr(Mnemonic.mov, s,r(3),r(0),Shi,MovToShift),
                 Instr(Mnemonic.bic, s,r(3),r(4),r(0),Shi),
                 Instr(Mnemonic.mvn, s,r(3),r(0),Shi));
 
-            var DataProcessingImmediateShift = Mask(23, 2,
+            var DataProcessingImmediateShift = Mask(23, 2, "Data processing immediate shift",
                 IntegerDataProcessingImmShift, // 3 reg, imm shift
                 IntegerDataProcessingImmShift,
                 IntegerTestAndCompareImmShift,
@@ -2660,8 +2672,8 @@ namespace Reko.Arch.Arm.AArch32
 
             var BranchImmediate = new PcDecoder(28,
                 Mask(24, 1,
-                    Instr(Mnemonic.b, J),
-                    Instr(Mnemonic.bl, J)),
+                    Instr(Mnemonic.b, InstrClass.Transfer, J),
+                    Instr(Mnemonic.bl, InstrClass.Transfer|InstrClass.Call, J)),
                 Instr(Mnemonic.blx, X));
 
             var Branch_BranchLink_BlockDataTransfer = Mask(25, 1, "Branch_BranchLink_BlockDataTransfer",

@@ -112,6 +112,7 @@ namespace Reko.Arch.Arm.AArch32
                 off <<= 1;
                 return new T32Instruction
                 {
+                    InstructionClass = InstrClass.Transfer|InstrClass.Call,
                     Mnemonic = Mnemonic.bl,
                     Operands = new MachineOperand[] { AddressOperand.Create(dasm.addr + (off + 4)) }
                 };

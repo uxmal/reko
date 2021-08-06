@@ -357,7 +357,7 @@ namespace Reko.UnitTests.Arch.Avr
                 "0|T--|00100000(4): 3 instructions",
                 "1|L--|r6 = Mem0[sp + 4<i32>:word32]",
                 "2|L--|sp = sp + 8<i32>",
-                "3|T--|return (0,0)");
+                "3|R--|return (0,0)");
         }
 
         [Test]
@@ -541,7 +541,7 @@ namespace Reko.UnitTests.Arch.Avr
                 "3|L--|r5 = Mem0[sp + 12<i32>:word32]",
                 "4|L--|r4 = Mem0[sp + 16<i32>:word32]",
                 "5|L--|sp = sp + 0x14<32>",
-                "6|T--|return (0,0)");
+                "6|R--|return (0,0)");
         }
 
         [Test]
@@ -575,13 +575,13 @@ namespace Reko.UnitTests.Arch.Avr
         {
             Given_Instruction("5E0B");	// reteq	r11
             AssertCode(
-                "0|T--|00100000(2): 6 instructions",
+                "0|R--|00100000(2): 6 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100002",
                 "2|L--|r12 = r11",
                 "3|L--|NZ = cond(r12)",
                 "4|L--|V = false",
                 "5|L--|C = false",
-                "6|T--|return (0,0)");
+                "6|R--|return (0,0)");
         }
 
         [Test]
@@ -589,14 +589,14 @@ namespace Reko.UnitTests.Arch.Avr
         {
             Given_Instruction("5E0D");	// reteq	sp
             AssertCode(
-                "0|T--|00100000(2): 7 instructions",
+                "0|R--|00100000(2): 7 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100002",
                 "2|L--|r12 = 0<32>",
                 "3|L--|N = false",
                 "4|L--|Z = true",
                 "5|L--|V = false",
                 "6|L--|C = false",
-                "7|T--|return (0,0)");
+                "7|R--|return (0,0)");
         }
 
         [Test]
@@ -604,14 +604,14 @@ namespace Reko.UnitTests.Arch.Avr
         {
             Given_Instruction("5E0E");	// reteq	lr
             AssertCode(
-                "0|T--|00100000(2): 7 instructions",
+                "0|R--|00100000(2): 7 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100002",
                 "2|L--|r12 = 0xFFFFFFFF<32>",
                 "3|L--|N = true",
                 "4|L--|Z = false",
                 "5|L--|V = false",
                 "6|L--|C = false",
-                "7|T--|return (0,0)");
+                "7|R--|return (0,0)");
         }
 
         [Test]
@@ -619,14 +619,14 @@ namespace Reko.UnitTests.Arch.Avr
         {
             Given_Instruction("5E0F");	// reteq	pc
             AssertCode(
-                "0|T--|00100000(2): 7 instructions",
+                "0|R--|00100000(2): 7 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100002",
                 "2|L--|r12 = 1<32>",
                 "3|L--|N = false",
                 "4|L--|Z = false",
                 "5|L--|V = false",
                 "6|L--|C = false",
-                "7|T--|return (0,0)");
+                "7|R--|return (0,0)");
         }
 
         [Test]

@@ -37,10 +37,10 @@ namespace Reko.Arch.Vax
         {
  /* 00 */ Instr(Mnemonic.halt, InstrClass.Privileged|InstrClass.Terminates|InstrClass.Zero), 
  /* 01 */ Instr(Mnemonic.nop, InstrClass.Padding|InstrClass.Linear), 
- /* 02 */ Instr(Mnemonic.rei, InstrClass.Transfer), 
+ /* 02 */ Instr(Mnemonic.rei, InstrClass.Transfer|InstrClass.Return), 
  /* 03 */ Instr(Mnemonic.bpt), 
- /* 04 */ Instr(Mnemonic.ret, InstrClass.Transfer), 
- /* 05 */ Instr(Mnemonic.rsb, InstrClass.Transfer), 
+ /* 04 */ Instr(Mnemonic.ret, InstrClass.Transfer|InstrClass.Return), 
+ /* 05 */ Instr(Mnemonic.rsb, InstrClass.Transfer|InstrClass.Return), 
  /* 06 */ Instr(Mnemonic.ldpctx), 
  /* 07 */ Instr(Mnemonic.svpctx), 
  /* 08 */ Instr(Mnemonic.cvtps, rw,ab,rw,ab), 

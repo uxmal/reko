@@ -45,8 +45,8 @@ namespace Reko.Arch.Qualcomm
         private readonly HashSet<RegisterStorage> registersRead;
         private readonly List<RtlAssignment> deferredWrites;
         private readonly List<RtlTransfer> deferredTransfers;
-
         private readonly RtlEmitter m;
+        private InstrClass iclass;
 
         public HexagonRewriter(HexagonArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
@@ -104,6 +104,7 @@ namespace Reko.Arch.Qualcomm
         {
             foreach (var instr in packet.Instructions)
             {
+                this.iclass = instr.InstructionClass;
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -135,7 +136,7 @@ namespace Reko.Arch.Qualcomm
                 case Mnemonic.syncht:
                     m.SideEffect(RewriteIntrinsic(instr.Mnemonic.ToString(), false, VoidType.Instance)); break;
                 }
-                m.Instructions.Last().Class = instr.InstructionClass;
+                m.Instructions.Last().Class = this.iclass;
             }
         }
 
@@ -513,6 +514,7 @@ namespace Reko.Arch.Qualcomm
             var rop = (RegisterOperand) opDst;
             if (rop.Register == Registers.lr)
             {
+                this.iclass = InstrClass.Transfer | InstrClass.Return;
                 m.Return(0, 0);
             }
             else

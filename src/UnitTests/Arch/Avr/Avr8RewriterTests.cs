@@ -34,8 +34,8 @@ namespace Reko.UnitTests.Arch.Avr
     [TestFixture]
     public class Avr8RewriterTests : RewriterTestBase
     {
-        private Avr8Architecture arch;
-        private Address baseAddr = Address.Ptr16(0x0100);
+        private readonly Avr8Architecture arch;
+        private readonly Address baseAddr = Address.Ptr16(0x0100);
 
         public Avr8RewriterTests()
         {
@@ -142,8 +142,8 @@ namespace Reko.UnitTests.Arch.Avr
         {
             Given_UInt16s(0x9508); // "ret"
             AssertCode(
-                "0|T--|0100(2): 1 instructions",
-                "1|T--|return (2,0)");
+                "0|R--|0100(2): 1 instructions",
+                "1|R--|return (2,0)");
         }
 
         [Test]

@@ -737,7 +737,7 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, DE),
                 Instr(Mnemonic.rol, A,n(1)),
 
-                Instr(Mnemonic.retb, InstrClass.Transfer),
+                Instr(Mnemonic.retb, InstrClass.Transfer|InstrClass.Return),
                 Instr(Mnemonic.halt, InstrClass.Terminates),
                 Instr(Mnemonic.rolwc, AX,n(1)),
                 Instr(Mnemonic.sel, RB2), // Note
@@ -757,7 +757,7 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, HL),
                 Instr(Mnemonic.rorc, A,n(1)),
 
-                Instr(Mnemonic.reti, InstrClass.Transfer),
+                Instr(Mnemonic.reti, InstrClass.Transfer|InstrClass.Return),
                 Instr(Mnemonic.stop, InstrClass.Terminates),
                 Instr(Mnemonic.rolwc, BC,n(1)),
                 Instr(Mnemonic.sel, RB3)
@@ -1729,7 +1729,7 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.cmp0, saddr),
                 Instr(Mnemonic.cmp0, Maddr16b),
                 Instr(Mnemonic.mulu, X),
-                Instr(Mnemonic.ret, InstrClass.Transfer),
+                Instr(Mnemonic.ret, InstrClass.Transfer|InstrClass.Return),
 
                 Instr(Mnemonic.mov, X, saddr),
                 Instr(Mnemonic.mov, X,Maddr16b),

@@ -232,8 +232,8 @@ namespace Reko.UnitTests.Arch.C166
         {
             Given_HexString("CB00");
             AssertCode(     // ret
-                "0|T--|0100(2): 1 instructions",
-                "1|T--|return (2,0)");
+                "0|R--|0100(2): 1 instructions",
+                "1|R--|return (2,0)");
         }
 
         [Test]
@@ -241,9 +241,9 @@ namespace Reko.UnitTests.Arch.C166
         {
             Given_HexString("FB88");
             AssertCode(     // reti
-                "0|T--|0100(2): 2 instructions",
+                "0|R--|0100(2): 2 instructions",
                 "1|L--|PSW = Mem0[SP + 2<i16>:word16]",
-                "2|T--|return (2,2)");
+                "2|R--|return (2,2)");
         }
     }
 }

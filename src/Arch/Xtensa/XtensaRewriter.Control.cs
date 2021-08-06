@@ -213,7 +213,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteRet()
         {
-            iclass = InstrClass.Transfer;
+            iclass = InstrClass.Transfer | InstrClass.Return;
             m.Return(0, 0);
         }
     }

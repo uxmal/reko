@@ -338,7 +338,7 @@ namespace Reko.Core.Rtl
             int returnAddressBytes,
             int extraBytesPopped)
         {
-            Instructions.Add(new RtlReturn(returnAddressBytes, extraBytesPopped, InstrClass.Transfer));
+            Instructions.Add(new RtlReturn(returnAddressBytes, extraBytesPopped, InstrClass.Transfer|InstrClass.Return));
             return this;
         }
 
@@ -353,7 +353,7 @@ namespace Reko.Core.Rtl
             int returnAddressBytes,
             int extraBytesPopped)
         {
-            var ret = new RtlReturn(returnAddressBytes, extraBytesPopped, InstrClass.Transfer | InstrClass.Delay);
+            var ret = new RtlReturn(returnAddressBytes, extraBytesPopped, InstrClass.Transfer | InstrClass.Return | InstrClass.Delay);
             Instructions.Add(ret);
             return this;
         }

@@ -79,7 +79,6 @@ namespace Reko.Arch.Arm.AArch32
             {
                 this.instr = dasm.Current;
                 var addrInstr = instr.Address;
-                // Most instructions are linear.
                 this.iclass = instr.InstructionClass;
                 var rtls = new List<RtlInstruction>();
                 this.m = new RtlEmitter(rtls);
@@ -613,14 +612,13 @@ namespace Reko.Arch.Arm.AArch32
             }
             if (link)
             {
-                iclass = InstrClass.Transfer | InstrClass.Call;
                 if (instr.Condition == ArmCondition.AL)
                 {
                     m.Call(dst, 0);
                 }
                 else
                 {
-                    iclass = InstrClass.ConditionalTransfer | InstrClass.Call;
+                    iclass |= InstrClass.Call;
                     ConditionalSkip(true);
                     m.Call(dst, 0);
                 }
@@ -629,7 +627,6 @@ namespace Reko.Arch.Arm.AArch32
             {
                 if (instr.Condition == ArmCondition.AL)
                 {
-                    iclass = InstrClass.Transfer;
                     if (Dst() is RegisterOperand rop && rop.Register == Registers.lr)
                     {
                         //$TODO: cheating a little since

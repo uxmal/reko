@@ -691,6 +691,8 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly Mutator<T32Disassembler> R12 = R(12);
         private static readonly Mutator<T32Disassembler> R16 = R(16);
 
+
+
         /// <summary>
         /// Register bitfield, but don't allow PC
         /// </summary>
@@ -1342,6 +1344,7 @@ namespace Reko.Arch.Arm.AArch32
             new Bitfield(12, 3),
             new Bitfield(7, 1)
         };
+
         private static bool M(uint wInstr, T32Disassembler dasm)
         {
             var i_imm3_a = Bitfield.ReadFields(modifiedImmediateFields, wInstr);
@@ -1891,6 +1894,18 @@ namespace Reko.Arch.Arm.AArch32
         }
         private static readonly Mutator<T32Disassembler> B0_4 = B(0);
 
+        /// <summary>
+        /// If the current operand is the LR register, make the instruction
+        /// a return instruction.
+        /// </summary>
+        private static bool useLr(uint uInstr, T32Disassembler dasm)
+        {
+            var reg = ((RegisterOperand) dasm.state.ops[^1]).Register;
+            if (reg == Registers.lr)
+                dasm.state.iclass = InstrClass.Transfer | InstrClass.Return;
+            return true;
+        }
+
         private static Mutator<T32Disassembler> nyi(string message)
         {
             return (u, d) =>
@@ -2043,8 +2058,8 @@ namespace Reko.Arch.Arm.AArch32
                         decDataHiRegisters,
                         decDataHiRegisters,
                         Mask(7,1,
-                            Instr(Mnemonic.bx, R3),
-                            Instr(Mnemonic.blx, R3))),
+                            Instr(Mnemonic.bx, InstrClass.Transfer, R3, useLr),
+                            Instr(Mnemonic.blx, InstrClass.Transfer|InstrClass.Call, R3))),
                     LdrLiteral,
                     LdrLiteral,
 

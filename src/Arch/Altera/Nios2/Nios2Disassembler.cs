@@ -272,15 +272,15 @@ namespace Reko.Arch.Altera.Nios2
             var invalid = Instr(Mnemonic.Invalid, InstrClass.Invalid);
 
             var rType = Sparse(11, 6, "  R-type", invalid,
-                (0x01, Instr(Mnemonic.eret, InstrClass.Transfer | InstrClass.Privileged)),
+                (0x01, Instr(Mnemonic.eret, InstrClass.Transfer | InstrClass.Return | InstrClass.Privileged)),
                 (0x02, Instr(Mnemonic.roli, Rsh)),
                 (0x03, Instr(Mnemonic.rol, R)),
                 (0x04, Instr(Mnemonic.flushp)),
-                (0x05, Instr(Mnemonic.ret, InstrClass.Transfer)),
+                (0x05, Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return)),
                 (0x06, Instr(Mnemonic.nor, R)),
                 (0x07, Instr(Mnemonic.mulxuu, R)),
                 (0x08, Instr(Mnemonic.cmpge, R)),
-                (0x09, Instr(Mnemonic.bret, InstrClass.Transfer | InstrClass.Privileged)),
+                (0x09, Instr(Mnemonic.bret, InstrClass.Transfer | InstrClass.Return | InstrClass.Privileged)),
                 (0x0B, Instr(Mnemonic.ror, R)),
                 (0x0C, Instr(Mnemonic.flushi, InstrClass.Linear|InstrClass.Privileged, M_addr)),
                 (0x0D, Instr(Mnemonic.jmp, InstrClass.Transfer, Ra)),
@@ -337,6 +337,7 @@ namespace Reko.Arch.Altera.Nios2
                 Instr(Mnemonic.bge, InstrClass.ConditionalTransfer, Br),
                 Instr(Mnemonic.ldh, Im_i16),
 
+                // 0x10
                 Instr(Mnemonic.cmplti, Is),
                 invalid,
                 invalid,
@@ -355,7 +356,7 @@ namespace Reko.Arch.Altera.Nios2
                 Instr(Mnemonic.bne, InstrClass.ConditionalTransfer, Br),
                 invalid,
 
-                // 20
+                // 0x20
                 Instr(Mnemonic.cmpeqi, Is),
                 invalid,
                 invalid,
@@ -374,6 +375,7 @@ namespace Reko.Arch.Altera.Nios2
                 Instr(Mnemonic.bgeu, InstrClass.ConditionalTransfer, Br),
                 Instr(Mnemonic.ldhio, Im_i16),
 
+                // 0x30
                 Instr(Mnemonic.cmpltui, I),
                 invalid,
                 Nyi(Mnemonic.custom),

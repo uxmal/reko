@@ -1326,6 +1326,10 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode("clo\tr24,r12", 0x7186C4E1);
         }
 
- 
+        [Test]
+        public void MipsDis_wsbh()
+        {
+            AssertCode("wsbh\tr18,r20", 0x7C1490A0);
+        }
     }
 }

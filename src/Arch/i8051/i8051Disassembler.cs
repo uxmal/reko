@@ -292,7 +292,7 @@ namespace Reko.Arch.i8051
 
 /*20	3	*/ Instr(Mnemonic.jb, InstrClass.ConditionalTransfer, b,o),
 /*21	2	*/ Instr(Mnemonic.ajmp, InstrClass.Transfer, j),
-/*22	1	*/ Instr(Mnemonic.ret, InstrClass.Transfer),
+/*22	1	*/ Instr(Mnemonic.ret, InstrClass.Transfer|InstrClass.Return),
 /*23	1	*/ Instr(Mnemonic.rl, A),
 /*24	2	*/ Instr(Mnemonic.add, A,i),
 /*25	2	*/ Instr(Mnemonic.add, A,d),
@@ -309,7 +309,7 @@ namespace Reko.Arch.i8051
 
 /*30	3	*/ Instr(Mnemonic.jnb, InstrClass.ConditionalTransfer, b,o),
 /*31	2	*/ Instr(Mnemonic.acall, InstrClass.Transfer|InstrClass.Call, j),
-/*32	1	*/ Instr(Mnemonic.reti, InstrClass.Transfer),
+/*32	1	*/ Instr(Mnemonic.reti, InstrClass.Transfer|InstrClass.Return),
 /*33	1	*/ Instr(Mnemonic.rlc, A),
 /*34	2	*/ Instr(Mnemonic.addc, A,i),
 /*35	2	*/ Instr(Mnemonic.addc, A,d),

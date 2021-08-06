@@ -245,8 +245,8 @@ namespace Reko.UnitTests.Arch.H8
         {
             Given_HexString("5470");
             AssertCode(     // rts
-                "0|T--|8000(2): 1 instructions",
-                "1|T--|return (2,0)");
+                "0|R--|8000(2): 1 instructions",
+                "1|R--|return (2,0)");
         }
 
         [Test]

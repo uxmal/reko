@@ -174,9 +174,9 @@ namespace Reko.UnitTests.Environments.Gameboy
         {
             Given_HexString("D0");
             AssertCode(     // ret	nc
-                "0|T--|0100(1): 2 instructions",
+                "0|R--|0100(1): 2 instructions",
                 "1|T--|if (Test(ULT,C)) branch 0101",
-                "2|T--|return (2,0)");
+                "2|R--|return (2,0)");
         }
 
         [Test]
@@ -219,9 +219,9 @@ namespace Reko.UnitTests.Environments.Gameboy
         {
             Given_HexString("D9");
             AssertCode(     // reti
-                "0|L--|0100(1): 2 instructions",
+                "0|R--|0100(1): 2 instructions",
                 "1|L--|__enable_interrupts()",
-                "2|T--|return (2,0)");
+                "2|R--|return (2,0)");
         }
 
         [Test]

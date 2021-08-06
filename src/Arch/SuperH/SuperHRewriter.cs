@@ -64,7 +64,7 @@ namespace Reko.Arch.SuperH
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                this.iclass = InstrClass.Linear;
+                this.iclass = this.instr.InstructionClass;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
                 switch (instr.Mnemonic)
@@ -631,7 +631,6 @@ namespace Reko.Arch.SuperH
 
         private void RewriteRts()
         {
-            this.iclass = InstrClass.Transfer | InstrClass.Delay;
             m.Return(0, 0);
         }
 

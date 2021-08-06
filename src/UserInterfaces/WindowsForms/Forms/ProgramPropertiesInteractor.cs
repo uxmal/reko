@@ -32,7 +32,8 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         private ProgramPropertiesDialog dlg;
         private Dictionary<string, string> heuristicDescriptions = new Dictionary<string, string>
         {
-            { "shingle", "Shingle heuristic" }
+            { "shingle", "Shingle heuristic" },
+            { "usermode", "Only allow user mode instructions" }
         };
 
         public void Attach(ProgramPropertiesDialog dlg)

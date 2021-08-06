@@ -918,8 +918,8 @@ namespace Reko.UnitTests.Arch.MilStd1750
         {
             Given_HexString("7FF0");
             AssertCode(     // urs	gp15
-                "0|T--|0100(1): 1 instructions",
-                "1|T--|return (2,0)");
+                "0|R--|0100(1): 1 instructions",
+                "1|R--|return (2,0)");
         }
 
         [Test]

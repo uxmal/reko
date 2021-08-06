@@ -759,6 +759,14 @@ namespace Reko.Arch.Mips
                 m.Convert(result, result.DataType, dst.DataType));
         }
 
+        private void RewriteWsbh(MipsInstruction instr)
+        {
+            var src = RewriteOperand0(instr.Operands[1]);
+            var dst = RewriteOperand0(instr.Operands[0]);
+            m.Assign(dst,
+                host.Intrinsic("__word_swap_bytes_in_halfwords", true, dst.DataType, src));
+        }
+
         private void RewriteXor(MipsInstruction instr)
         {
             var opLeft = RewriteOperand0(instr.Operands[1]);

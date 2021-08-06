@@ -33,8 +33,8 @@ namespace Reko.UnitTests.Arch.Arm
     [TestFixture]
     public class ArmRewriterTests : RewriterTestBase
     {
-        private Arm32Architecture arch = new Arm32Architecture(CreateServiceContainer(), "arm32", new Dictionary<string, object>());
-        private Address baseAddress = Address.Ptr32(0x00100000);
+        private readonly Arm32Architecture arch = new Arm32Architecture(CreateServiceContainer(), "arm32", new Dictionary<string, object>());
+        private readonly Address baseAddress = Address.Ptr32(0x00100000);
 
         public override IProcessorArchitecture Architecture => arch;
 
@@ -149,8 +149,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_UInt32s(0xE1B0F00E);  // mov pc,lr
             AssertCode(
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|return (0,0)");
+                "0|R--|00100000(4): 1 instructions",
+                "1|R--|return (0,0)");
         }
 
         [Test]
@@ -1214,7 +1214,7 @@ means
                 "7|L--|fp = Mem0[r1 - 20<i32>:word32]",
                 "8|L--|sp = Mem0[r1 - 24<i32>:word32]",
                 "9|L--|lr = Mem0[r1 - 28<i32>:word32]",
-                "10|T--|return (0,0)");
+                "10|R--|return (0,0)");
         }
 
         [Test]
@@ -1423,7 +1423,7 @@ means
             AssertCode(
                 "0|T--|00100000(4): 2 instructions",
                 "1|L--|sp = sp + 4<i32>",
-                "2|T--|return (0,0)");
+                "2|R--|return (0,0)");
         }
 
         [Test]
@@ -1515,8 +1515,8 @@ means
         {
             Given_UInt32s(0xE167B760);        // eret
             AssertCode(
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|return (0,0)");
+                "0|R--|00100000(4): 1 instructions",
+                "1|R--|return (0,0)");
         }
 
         [Test]

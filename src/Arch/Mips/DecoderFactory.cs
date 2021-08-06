@@ -53,7 +53,7 @@ namespace Reko.Arch.Mips
                 };
             }
             internal static readonly Mutator<MipsDisassembler> R1 = R(21);
-            internal static readonly Mutator<MipsDisassembler> R2 = R(16);
+            internal static readonly Mutator<MipsDisassembler> R2 = R(16); 
             internal static readonly Mutator<MipsDisassembler> R3 = R(11);
             internal static readonly Mutator<MipsDisassembler> R4 = R(6);
 
@@ -622,7 +622,7 @@ namespace Reko.Arch.Mips
                     (0x02, Instr(Mnemonic.tlbwi)),
                     (0x06, Instr(Mnemonic.tlbwr)),
                     (0x08, Instr(Mnemonic.tlbp)),
-                    (0x18, Instr(Mnemonic.eret)),
+                    (0x18, Instr(InstrClass.Transfer|InstrClass.Return, Mnemonic.eret)),
                     (0x20, Instr(Mnemonic.wait)));
                 var cop1 = Mask(21, 5, "COP1",
                     Instr(Mnemonic.mfc1, R2, F3),
@@ -757,7 +757,7 @@ namespace Reko.Arch.Mips
                 var bshfl = Mask(6, 5,
                      invalid,
                      invalid,
-                     Instr(Mnemonic.wsbh, x("")),
+                     Instr(Mnemonic.wsbh, R3, R2),
                      invalid,
 
                      invalid,

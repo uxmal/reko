@@ -203,7 +203,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("0E");	// ret
             AssertCode(
                 "0|T--|00010000(1): 1 instructions",
-                "1|T--|return (4,0)");
+                "1|R--|return (4,0)");
         }
 
         [Test]
@@ -458,7 +458,7 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "0|T--|00010000(1): 3 instructions",
                 "1|L--|sr = Mem0[xsp:word16]",
                 "2|L--|xsp = xsp + 2<i32>",
-                "3|T--|return (4,0)");
+                "3|R--|return (4,0)");
         }
 
         [Test]
@@ -507,7 +507,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             Given_HexString("0F0400"); // retd
             AssertCode(
                 "0|T--|00010000(3): 1 instructions",
-                "1|T--|return (4,4)");
+                "1|R--|return (4,4)");
         }
 
         [Test]
@@ -645,7 +645,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|T--|00010000(2): 2 instructions",
                 "1|T--|if (Test(GE,SV)) branch 00010002",
-                "2|T--|return (4,0)");
+                "2|R--|return (4,0)");
         }
 
         public void Tlcs900_rw_sla()

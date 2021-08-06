@@ -1356,8 +1356,8 @@ namespace Reko.Arch.M6800.M6812
 
                 Instr(Mnemonic.inx),
                 Instr(Mnemonic.dex),
-                Instr(Mnemonic.rtc, InstrClass.Transfer),
-                Instr(Mnemonic.rti, InstrClass.Transfer),
+                Instr(Mnemonic.rtc, InstrClass.Transfer|InstrClass.Return),
+                Instr(Mnemonic.rti, InstrClass.Transfer|InstrClass.Return),
 
                 Instr(Mnemonic.bset, XB, I),
                 Instr(Mnemonic.bclr, XB, I),

@@ -21,15 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Rl78;
 using Reko.Core;
-using Reko.Core.Configuration;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.Rl78
 {
@@ -288,8 +280,8 @@ namespace Reko.UnitTests.Arch.Rl78
         {
             Given_HexString("D7");	// ret
             AssertCode(
-                "0|T--|00001000(1): 1 instructions",
-                "1|T--|return (4,0)");
+                "0|R--|00001000(1): 1 instructions",
+                "1|R--|return (4,0)");
         }
 
         [Test]
@@ -400,8 +392,8 @@ namespace Reko.UnitTests.Arch.Rl78
         {
             Given_HexString("61 FC");	// reti
             AssertCode(
-                "0|T--|00001000(2): 1 instructions",
-                "1|T--|return (4,0)");
+                "0|R--|00001000(2): 1 instructions",
+                "1|R--|return (4,0)");
         }
 
         [Test]

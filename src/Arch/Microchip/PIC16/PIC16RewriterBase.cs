@@ -377,7 +377,6 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_RETFIE()
         {
-            iclass = InstrClass.Transfer;
             PICRegisterBitFieldStorage gie = PIC16Registers.GIE;
             byte mask = (byte)(1 << gie.BitPos);
             var intcon = binder.EnsureRegister(PIC16Registers.INTCON);
@@ -388,7 +387,6 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_RETLW()
         {
-            iclass = InstrClass.Transfer;
             var k = instrCurr.Operands[0] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[0]}");
             m.Assign(Wreg, k.ImmediateValue);
             PopFromHWStackAccess();
@@ -397,7 +395,6 @@ namespace Reko.Arch.MicrochipPIC.PIC16
 
         private void Rewrite_RETURN()
         {
-            iclass = InstrClass.Transfer;
             PopFromHWStackAccess();
             m.Return(0, 0);
         }

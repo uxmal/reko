@@ -18,25 +18,18 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.Pdp11;
 using Reko.Core;
-using Reko.Core.Machine;
-using Reko.Core.Rtl;
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel.Design;
-using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Arch.Pdp11
 {
     [TestFixture]
     public class RewriterTests : RewriterTestBase
     {
-        private Pdp11Architecture arch = new Pdp11Architecture(CreateServiceContainer(), "pdp11", new Dictionary<string, object>());
-        private Address addrBase = Address.Ptr16(0x0200);
+        private readonly Pdp11Architecture arch = new Pdp11Architecture(CreateServiceContainer(), "pdp11", new Dictionary<string, object>());
+        private readonly Address addrBase = Address.Ptr16(0x0200);
 
         public override IProcessorArchitecture Architecture => arch;
 
@@ -299,8 +292,8 @@ namespace Reko.UnitTests.Arch.Pdp11
         {
             Given_UInt16s(0x0087); // rts pc
             AssertCode(
-                  "0|T--|0200(2): 1 instructions",
-                  "1|T--|return (2,0)");
+                  "0|R--|0200(2): 1 instructions",
+                  "1|R--|return (2,0)");
         }
 
         [Test]
@@ -415,7 +408,7 @@ namespace Reko.UnitTests.Arch.Pdp11
         {
             Given_UInt16s(0x0085);
             AssertCode(
-              "0|T--|0200(2): 4 instructions",
+              "0|R--|0200(2): 4 instructions",
               "1|L--|v2 = r5",
               "2|L--|r5 = Mem0[sp:word16]",
               "3|L--|sp = sp + 2<i16>",

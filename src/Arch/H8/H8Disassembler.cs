@@ -623,11 +623,11 @@ namespace Reko.Arch.H8
                 Nyi("divxu"),
 
                 Select((0, 8), u => u == 0x70, "  54",
-                    Instr(Mnemonic.rts, InstrClass.Transfer),
+                    Instr(Mnemonic.rts, InstrClass.Transfer|InstrClass.Return),
                     invalid),
                 Nyi("bsr"),
                 Select((0, 8), u => u == 0x70, "  56",
-                    Instr(Mnemonic.rte, InstrClass.Transfer),
+                    Instr(Mnemonic.rte, InstrClass.Transfer|InstrClass.Return),
                     invalid),
                 Nyi("trapa"),
 

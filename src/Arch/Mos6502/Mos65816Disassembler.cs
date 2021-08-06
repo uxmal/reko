@@ -497,9 +497,8 @@ namespace Reko.Arch.Mos6502
     Instr(Mnemonic.rol, abx),
     Instr(Mnemonic.and, alx),
 
-
     // $40
-    Instr(Mnemonic.rti, InstrClass.Transfer),
+    Instr(Mnemonic.rti, InstrClass.Transfer|InstrClass.Return),
     Instr(Mnemonic.eor, idx),
      Instr(Mnemonic.wdm, InstrClass.Invalid),
     Instr(Mnemonic.eor, sr),

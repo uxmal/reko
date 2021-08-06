@@ -36,7 +36,6 @@ using System.Linq;
 namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
-    [Category(Categories.Capstone)]
     public class T32RewriterTests : RewriterTestBase
     {
         private ThumbArchitecture arch;
@@ -5492,7 +5491,7 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|T--|00100000(4): 3 instructions",
                 "1|L--|fp = Mem0[sp:word32]",
                 "2|L--|sp = sp + 8<i32>",
-                "3|T--|return (0,0)");
+                "3|R--|return (0,0)");
         }
 
         [Test]
@@ -7924,8 +7923,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("7047");// bx lr
             AssertCode(
-                "0|T--|00100000(2): 1 instructions",
-                "1|T--|return (0,0)");
+                "0|R--|00100000(2): 1 instructions",
+                "1|R--|return (0,0)");
         }
 
         [Test]

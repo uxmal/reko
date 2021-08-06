@@ -324,7 +324,7 @@ namespace Reko.Arch.i8051
 
         private void RewriteRet()
         {
-            iclass = InstrClass.Transfer;
+            iclass = InstrClass.Transfer|InstrClass.Return;
             m.Return(2, 0);
         }
 

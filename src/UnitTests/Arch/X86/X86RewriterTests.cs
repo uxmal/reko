@@ -424,8 +424,8 @@ namespace Reko.UnitTests.Arch.X86
                 m.Ret();
             });
             AssertCode(
-                "0|T--|0C00:0000(1): 1 instructions",
-                "1|T--|return (2,0)");
+                "0|R--|0C00:0000(1): 1 instructions",
+                "1|R--|return (2,0)");
         }
 
         [Test]
@@ -448,8 +448,8 @@ namespace Reko.UnitTests.Arch.X86
                 m.Ret(8);
             });
             AssertCode(
-                "0|T--|0C00:0000(3): 1 instructions",
-                "1|T--|return (2,8)");
+                "0|R--|0C00:0000(3): 1 instructions",
+                "1|R--|return (2,8)");
         }
 
         [Test]
@@ -682,8 +682,8 @@ namespace Reko.UnitTests.Arch.X86
                 "3|L--|di = di + 1<i16>",
                 "4|L--|cx = cx - 1<16>",
                 "5|T--|if (Test(NE,Z)) branch 0C00:0000",
-                "6|T--|0C00:0002(1): 1 instructions",
-                "7|T--|return (2,0)");
+                "6|R--|0C00:0002(1): 1 instructions",
+                "7|R--|return (2,0)");
         }
 
         [Test]
@@ -2573,9 +2573,9 @@ namespace Reko.UnitTests.Arch.X86
         {
             Run32bitTest(0x0F, 0x35);    // sysexit
             AssertCode(
-                "0|T--|10000000(2): 2 instructions",
+                "0|R--|10000000(2): 2 instructions",
                 "1|L--|__sysexit()",
-                "2|T--|return (0,0)");
+                "2|R--|return (0,0)");
         }
 
         [Test]
@@ -2583,9 +2583,9 @@ namespace Reko.UnitTests.Arch.X86
         {
             Run64bitTest(0x0F, 0x07);    // sysret
             AssertCode(
-                "0|T--|0000000140000000(2): 2 instructions",
+                "0|R--|0000000140000000(2): 2 instructions",
                 "1|L--|__sysret()",
-                "2|T--|return (0,0)");
+                "2|R--|return (0,0)");
             Run32bitTest(0x0F, 0x07);    // illegal
             AssertCode(
                 "0|---|10000000(2): 1 instructions",
@@ -3977,7 +3977,7 @@ namespace Reko.UnitTests.Arch.X86
             Run32bitTest(0x0F, 0xAA);	// rsm
             AssertCode(
                 "0|S--|10000000(2): 1 instructions",
-                "1|T--|return (0,0)");
+                "1|R--|return (0,0)");
         }
 
         [Test]

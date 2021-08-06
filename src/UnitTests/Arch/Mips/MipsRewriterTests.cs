@@ -832,8 +832,8 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_eret()
         {
             AssertCode(0x43564D58,   // eret
-                "0|L--|00100000(4): 1 instructions",
-                "1|T--|return (0,0)");
+                "0|R--|00100000(4): 1 instructions",
+                "1|R--|return (0,0)");
         }
 
         [Test]
@@ -909,7 +909,7 @@ namespace Reko.UnitTests.Arch.Mips
             Given_NanoDecoder();
             Given_HexString("1DAA");
             AssertCode(
-                "0|T--|00100000(2): 12 instructions",
+                "0|R--|00100000(2): 12 instructions",
                 "1|L--|r30 = Mem0[sp + 156<i32>:word32]",
                 "2|L--|ra = Mem0[sp + 152<i32>:word32]",
                 "3|L--|r16 = Mem0[sp + 148<i32>:word32]",
@@ -921,7 +921,7 @@ namespace Reko.UnitTests.Arch.Mips
                 "9|L--|r22 = Mem0[sp + 124<i32>:word32]",
                 "10|L--|r23 = Mem0[sp + 120<i32>:word32]",
                 "11|L--|sp = sp + 160<i32>",
-                "12|T--|return (0,0)");
+                "12|R--|return (0,0)");
         }
 
         [Test]
@@ -1439,6 +1439,14 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x4D0999C8,   // swxc1	f19,r9(r8)
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem0[r8 + r9:word32] = f19");
+        }
+
+        [Test]
+        public void MipsRw_wsbh()
+        {
+            AssertCode(0x7C1490A0, // wsbh r18,r20
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r18 = __word_swap_bytes_in_halfwords(r20)");
         }
     }
 }

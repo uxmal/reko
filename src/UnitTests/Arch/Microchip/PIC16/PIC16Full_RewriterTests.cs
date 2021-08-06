@@ -249,7 +249,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
         public void PIC16Full_Rewriter_MOVLB()
         {
             ExecTest(Words(0x0025),
-            "0|L--|000200(2): 1 instructions",
+            "0|---|000200(2): 1 instructions",
                 "1|---|<invalid>"
             );
             ExecTest(Words(0x0145),
@@ -332,7 +332,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
         public void PIC16Full_Rewriter_RESET()
         {
             ExecTest(Words(0x0001),
-            "0|L--|000200(2): 1 instructions",
+            "0|T--|000200(2): 1 instructions",
                 "1|L--|nop"
             );
         }

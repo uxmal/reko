@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2021 Christian Hostelet.
  * inspired by work from:
@@ -53,7 +53,5 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         {
             base.RewriteInstr(); // All is done with the base rewriter.
         }
-
     }
-
 }

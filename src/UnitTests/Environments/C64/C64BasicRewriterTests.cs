@@ -270,8 +270,8 @@ namespace Reko.UnitTests.Environments.C64
         {
             m.Add(10, Token.RETURN);
             AssertCode(
-                "0|T--|0801(1): 1 instructions",
-                "1|T--|return (2,0)");
+                "0|R--|0801(1): 1 instructions",
+                "1|R--|return (2,0)");
         }
 
         [Test]

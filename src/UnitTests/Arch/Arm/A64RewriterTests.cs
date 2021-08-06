@@ -379,8 +379,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0xD65F03C0);
             AssertCode(     // ret\tx30
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|return (0,0)");
+                "0|R--|00100000(4): 1 instructions",
+                "1|R--|return (0,0)");
         }
 
         [Test]
@@ -1087,9 +1087,9 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_HexString("E0039FD6");
             AssertCode(     // eret
-                "0|T--|0000000000100000(4): 2 instructions",
+                "0|R--|0000000000100000(4): 2 instructions",
                 "1|L--|__eret()",
-                "2|T--|return (0,0)");
+                "2|R--|return (0,0)");
         }
 
         [Test]

@@ -421,9 +421,9 @@ namespace Reko.Arch.Tms7000
             { 0xd8, Instr(Mnemonic.push, F_Rn) },
             { 0x0e, Instr(Mnemonic.push, F_ST) },
 
-            { 0x0b, Instr(Mnemonic.reti, F_None) },
+            { 0x0b, Instr(Mnemonic.reti, InstrClass.Transfer|InstrClass.Return, F_None) },
 
-            { 0x0a, Instr(Mnemonic.rets, F_None) },
+            { 0x0a, Instr(Mnemonic.rets, InstrClass.Transfer|InstrClass.Return, F_None) },
 
             { 0xbe, Instr(Mnemonic.rl, F_A) },
             { 0xce, Instr(Mnemonic.rl, F_B) },

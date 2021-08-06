@@ -280,6 +280,7 @@ namespace Reko.Arch.Mips
                 case Mnemonic.tnei: RewriteTrapi(instr, m.Ne); break;
                 case Mnemonic.trunc_l_d: RewriteTrunc(instr, "trunc", PrimitiveType.Real64, PrimitiveType.Int64); break;
                 case Mnemonic.wait: RewriteWait(instr); break;
+                case Mnemonic.wsbh: RewriteWsbh(instr); break;
                 case Mnemonic.xor:
                 case Mnemonic.xori: RewriteXor(instr); break;
 

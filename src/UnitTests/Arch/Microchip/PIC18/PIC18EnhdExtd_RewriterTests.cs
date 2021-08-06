@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                     "1|L--|FSR2 = FSR2 + 6<8>",
                     "2|L--|STKPTR = STKPTR - 1<8>",
                     "3|L--|TOS = Stack[STKPTR]",
-                    "4|T--|return (0,0)"
+                    "4|R--|return (0,0)"
                 );
 
         }
@@ -1516,13 +1516,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 "0|T--|000200(2): 3 instructions",
                     "1|L--|STKPTR = STKPTR - 1<8>",
                     "2|L--|TOS = Stack[STKPTR]",
-                    "3|T--|return (0,0)"
+                    "3|R--|return (0,0)"
                 );
             ExecTest(Words(0x0011),
                 "0|T--|000200(2): 3 instructions",
                     "1|L--|STKPTR = STKPTR - 1<8>",
                     "2|L--|TOS = Stack[STKPTR]",
-                    "3|T--|return (0,0)"
+                    "3|R--|return (0,0)"
                 );
         }
 
@@ -1530,25 +1530,25 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         public void PIC18EnhdExtd_Rewriter_RETLW()
         {
             ExecTest(Words(0x0C00),
-                "0|T--|000200(2): 4 instructions",
+                "0|R--|000200(2): 4 instructions",
                     "1|L--|WREG = 0<8>",
                     "2|L--|STKPTR = STKPTR - 1<8>",
                     "3|L--|TOS = Stack[STKPTR]",
-                    "4|T--|return (0,0)"
+                    "4|R--|return (0,0)"
                 );
             ExecTest(Words(0x0C55),
-                "0|T--|000200(2): 4 instructions",
+                "0|R--|000200(2): 4 instructions",
                     "1|L--|WREG = 0x55<8>",
                     "2|L--|STKPTR = STKPTR - 1<8>",
                     "3|L--|TOS = Stack[STKPTR]",
-                    "4|T--|return (0,0)"
+                    "4|R--|return (0,0)"
                 );
             ExecTest(Words(0x0CCC),
-                "0|T--|000200(2): 4 instructions",
+                "0|R--|000200(2): 4 instructions",
                     "1|L--|WREG = 0xCC<8>",
                     "2|L--|STKPTR = STKPTR - 1<8>",
                     "3|L--|TOS = Stack[STKPTR]",
-                    "4|T--|return (0,0)"
+                    "4|R--|return (0,0)"
                 );
         }
 
@@ -1556,19 +1556,19 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         public void PIC18EnhdExtd_Rewriter_RETURN()
         {
             ExecTest(Words(0x0012),
-                "0|T--|000200(2): 3 instructions",
+                "0|R--|000200(2): 3 instructions",
                     "1|L--|STKPTR = STKPTR - 1<8>",
                     "2|L--|TOS = Stack[STKPTR]",
-                    "3|T--|return (0,0)"
+                    "3|R--|return (0,0)"
                 );
             ExecTest(Words(0x0013),
-                "0|T--|000200(2): 6 instructions",
+                "0|R--|000200(2): 6 instructions",
                     "1|L--|STKPTR = STKPTR - 1<8>",
                     "2|L--|TOS = Stack[STKPTR]",
                     "3|L--|BSR = BSR_CSHAD",
                     "4|L--|WREG = WREG_CSHAD",
                     "5|L--|STATUS = STATUS_CSHAD",
-                    "6|T--|return (0,0)"
+                    "6|R--|return (0,0)"
                 );
         }
 
@@ -1912,11 +1912,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         public void PIC18EnhdExtd_Rewriter_SUBULNK()
         {
             ExecTest(Words(0xE9C6),
-                "0|T--|000200(2): 4 instructions",
-                    "1|L--|FSR2 = FSR2 - 6<8>",
-                    "2|L--|STKPTR = STKPTR - 1<8>",
-                    "3|L--|TOS = Stack[STKPTR]",
-                    "4|T--|return (0,0)"
+                "0|R--|000200(2): 4 instructions",
+                "1|L--|FSR2 = FSR2 - 6<8>",
+                "2|L--|STKPTR = STKPTR - 1<8>",
+                "3|L--|TOS = Stack[STKPTR]",
+                "4|R--|return (0,0)"
                 );
 
         }
@@ -2329,24 +2329,24 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
         public void PIC18EnhdExtd_Rewriter__Invalid()
         {
             ExecTest(Words(0x0001),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x0002),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x0002, 0xF000),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>",
                 "2|L--|000202(2): 1 instructions",
                     "3|L--|nop"
                 );
 
             ExecTest(Words(0x0002, 0xF000, 0x1234),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>",
                 "2|L--|000202(2): 1 instructions",
                     "3|L--|nop",
@@ -2356,77 +2356,77 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
 
             ExecTest(Words(0x0015),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x0016),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x0017),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x0018),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x0019),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x001A),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x001B),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x001C),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x001D),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x001E),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x001F),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x0020),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x0040),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x0060),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x0067, 0x1234),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>",
                 "2|L--|000202(2): 2 instructions",
                     "3|L--|Data[FSR2 + 0x34<8>:byte] = WREG | Data[FSR2 + 0x34<8>:byte]",
@@ -2434,14 +2434,14 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
 
             ExecTest(Words(0x006F, 0xF000),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>",
                 "2|L--|000202(2): 1 instructions",
                     "3|L--|nop"
                 );
 
             ExecTest(Words(0x006F, 0xF000, 0x1234),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>",
                 "2|L--|000202(2): 1 instructions",
                     "3|L--|nop",
@@ -2451,49 +2451,49 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
 
             ExecTest(Words(0x0080),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x00F0),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x0140),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x0180),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0x01E0),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0xC000),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0xC000, 0x0123),
-                "0|L--|000200(2): 1 instructions",
-                "1|---|<invalid>",
+                "0|---|000200(2): 1 instructions",
+                    "1|---|<invalid>",
                 "2|L--|000202(2): 1 instructions",
-                "3|L--|BSR = 0x23<8>"
+                    "3|L--|BSR = 0x23<8>"
                 );
 
             ExecTest(Words(0xEB00),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0xEB00, 0x1234),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>",
                 "2|L--|000202(2): 2 instructions",
                     "3|L--|Data[FSR2 + 0x34<8>:byte] = WREG | Data[FSR2 + 0x34<8>:byte]",
@@ -2501,12 +2501,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
 
             ExecTest(Words(0xEB80),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0xEB80, 0x1234),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>",
                 "2|L--|000202(2): 2 instructions",
                     "3|L--|Data[FSR2 + 0x34<8>:byte] = WREG | Data[FSR2 + 0x34<8>:byte]",
@@ -2514,12 +2514,12 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
 
             ExecTest(Words(0xEC00),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0xEC00, 0x1234),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>",
                 "2|L--|000202(2): 2 instructions",
                     "3|L--|Data[FSR2 + 0x34<8>:byte] = WREG | Data[FSR2 + 0x34<8>:byte]",
@@ -2527,24 +2527,24 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
                 );
 
             ExecTest(Words(0xED00),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0xED00, 0x989D),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>",
                 "2|L--|000202(2): 1 instructions",
                     "3|L--|T5CLK = T5CLK & 0xEF<8>"
                 );
 
             ExecTest(Words(0xEE00),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0xEE00, 0x64F3),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>",
                 "2|T--|000202(2): 1 instructions",
                     "3|T--|if (PRODL >u WREG) branch 000206"
@@ -2552,38 +2552,38 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18.Rewriter
 
 
             ExecTest(Words(0xEE00, 0xF400),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>",
                 "2|L--|000202(2): 1 instructions",
                     "3|L--|nop"
                 );
 
             ExecTest(Words(0xEE30, 0xF000),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>",
                 "2|L--|000202(2): 1 instructions",
                     "3|L--|nop"
                 );
 
             ExecTest(Words(0xEE40),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0xEEF0),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0xEF00),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>"
                 );
 
             ExecTest(Words(0xEF00, 0xEDCB),
-                "0|L--|000200(2): 1 instructions",
+                "0|---|000200(2): 1 instructions",
                     "1|---|<invalid>",
-                "2|L--|000202(2): 1 instructions",
+                "2|---|000202(2): 1 instructions",
                     "3|---|<invalid>"
                 );
 

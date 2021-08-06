@@ -21,8 +21,6 @@
 using NUnit.Framework;
 using Reko.Arch.M6800;
 using Reko.Core;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
 using System.Collections.Generic;
 
 namespace Reko.UnitTests.Arch.M6800
@@ -455,14 +453,14 @@ namespace Reko.UnitTests.Arch.M6800
         {
             Given_HexString("35AA"); // puls	pcr,y,dp,a
             AssertCode(
-                "0|L--|0100(2): 7 instructions",
+                "0|R--|0100(2): 7 instructions",
                 "1|L--|a = Mem0[s:byte]",
                 "2|L--|s = s + 1<i16>",
                 "3|L--|dp = Mem0[s:byte]",
                 "4|L--|s = s + 1<i16>",
                 "5|L--|y = Mem0[s:word16]",
                 "6|L--|s = s + 2<i16>",
-                "7|T--|return (2,0)");
+                "7|R--|return (2,0)");
         }
 
         [Test]
@@ -470,7 +468,7 @@ namespace Reko.UnitTests.Arch.M6800
         {
             Given_HexString("37B7"); // pulu	pcr,y,x,b,a,cc
             AssertCode(
-                "0|L--|0100(2): 11 instructions",
+                "0|R--|0100(2): 11 instructions",
                 "1|L--|cc = Mem0[u:byte]",
                 "2|L--|u = u + 1<i16>",
                 "3|L--|a = Mem0[u:byte]",
@@ -481,7 +479,7 @@ namespace Reko.UnitTests.Arch.M6800
                 "8|L--|u = u + 2<i16>",
                 "9|L--|y = Mem0[u:word16]",
                 "10|L--|u = u + 2<i16>",
-                "11|T--|return (2,0)");
+                "11|R--|return (2,0)");
         }
 
         [Test]
@@ -538,7 +536,7 @@ namespace Reko.UnitTests.Arch.M6800
         {
             Given_HexString("3B"); // rti
             AssertCode(
-                "0|T--|0100(1): 15 instructions",
+                "0|R--|0100(1): 15 instructions",
                 "1|L--|cc = Mem0[s:byte]",
                 "2|L--|s = s + 1<i16>",
                 "3|L--|a = Mem0[s:byte]",
@@ -553,7 +551,7 @@ namespace Reko.UnitTests.Arch.M6800
                 "12|L--|s = s + 2<i16>",
                 "13|L--|u = Mem0[s:word16]",
                 "14|L--|s = s + 2<i16>",
-                "15|T--|return (2,0)");
+                "15|R--|return (2,0)");
         }
 
         [Test]
@@ -561,8 +559,8 @@ namespace Reko.UnitTests.Arch.M6800
         {
             Given_HexString("39"); // rts
             AssertCode(
-                "0|T--|0100(1): 1 instructions",
-                "1|T--|return (2,0)");
+                "0|R--|0100(1): 1 instructions",
+                "1|R--|return (2,0)");
         }
 
         [Test]

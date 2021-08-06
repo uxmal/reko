@@ -624,8 +624,8 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             Given_HexString("0B00"); // rts
             AssertCode(
-                "0|TD-|00100000(2): 1 instructions",
-                "1|T--|return (0,0)");
+                "0|RD-|00100000(2): 1 instructions",
+                "1|R--|return (0,0)");
         }
 
         [Test]

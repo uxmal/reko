@@ -630,7 +630,7 @@ namespace Reko.Arch.MilStd1750
                 Instr(Mnemonic.lsti, _("lsti")), // b
                 Instr(Mnemonic.lst, _("lst")), // b
                 Instr(Mnemonic.sjs, InstrClass.Transfer|InstrClass.Call, Ra,Ax),
-                Instr(Mnemonic.urs, InstrClass.Transfer, Ra),
+                Instr(Mnemonic.urs, InstrClass.Transfer|InstrClass.Return, Ra),
 
                 // 80
                 Instr(Mnemonic.l, Ra,Dx_w16),

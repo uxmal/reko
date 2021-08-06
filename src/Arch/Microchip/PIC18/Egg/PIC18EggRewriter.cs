@@ -101,7 +101,6 @@ namespace Reko.Arch.MicrochipPIC.PIC18
             m.Assign(Fsr2, m.IAdd(Fsr2, k.ImmediateValue));
             var src = PopFromHWStackAccess();
             m.Assign(tos, src);
-            iclass = InstrClass.Transfer;
             m.Return(0, 0);
         }
 
@@ -144,15 +143,12 @@ namespace Reko.Arch.MicrochipPIC.PIC18
 
         private void RewriteSUBULNK()
         {
-            iclass = InstrClass.Transfer;
-
             var k = instrCurr.Operands[0] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[0]}");
             var tos = binder.EnsureRegister(PIC18Registers.TOS);
 
             m.Assign(Fsr2, m.ISub(Fsr2, k.ImmediateValue));
             var src = PopFromHWStackAccess();
             m.Assign(tos, src);
-            iclass = InstrClass.Transfer;
             m.Return(0, 0);
         }
 

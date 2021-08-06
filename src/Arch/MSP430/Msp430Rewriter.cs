@@ -64,7 +64,7 @@ namespace Reko.Arch.Msp430
                 this.instr = dasm.Current;
                 var instrs = new List<RtlInstruction>();
                 this.m = new RtlEmitter(instrs);
-                this.iclass = InstrClass.Linear;
+                this.iclass = instr.InstructionClass;
                 switch (instr.Mnemonic)
                 {
                 case Mnemonics.invalid: Invalid(); break;
@@ -452,13 +452,11 @@ namespace Reko.Arch.Msp430
 
         private void RewriteRet()
         {
-            iclass = InstrClass.Transfer;
             m.Return(2, 0);
         }
 
         private void RewriteReti()
         {
-            iclass = InstrClass.Transfer;
             m.Return(2, 0);
         }
 

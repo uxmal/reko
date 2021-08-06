@@ -231,8 +231,8 @@ namespace Reko.UnitTests.Arch.i8051
         {
             Given_Bytes(0x32); // reti
             AssertCode(
-                "0|T--|0000(1): 1 instructions",
-                "1|T--|return (2,0)");
+                "0|R--|0000(1): 1 instructions",
+                "1|R--|return (2,0)");
         }
 
         [Test]
@@ -379,8 +379,8 @@ namespace Reko.UnitTests.Arch.i8051
         {
             Given_Bytes(0x22); // ret
             AssertCode(
-                "0|T--|0000(1): 1 instructions",
-                "1|T--|return (2,0)");
+                "0|R--|0000(1): 1 instructions",
+                "1|R--|return (2,0)");
         }
 
         [Test]

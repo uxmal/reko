@@ -72,6 +72,7 @@ namespace Reko.Arch.Msp430
             int rep = (this.uExtension & 0x0F);
             var instr = new Msp430Instruction
             {
+                InstructionClass = iclass,
                 Mnemonic = mnemonic,
                 dataWidth = this.dataWidth,
                 Operands = this.ops.ToArray(),
@@ -95,6 +96,7 @@ namespace Reko.Arch.Msp430
                         mem.Base == Registers.sp)
                     {
                         instr.Mnemonic = Mnemonics.ret;
+                        instr.InstructionClass |= InstrClass.Return;
                         instr.Operands = MachineInstruction.NoOperands;
                     }
                     else
@@ -565,7 +567,7 @@ namespace Reko.Arch.Msp430
                     ( 0x09, nyi ),
                     ( 0x0A, nyi ),
                     ( 0x0C, Sparse(0, 6,  "  0C", invalid,
-                        ( 0x00, Instr(Mnemonics.reti, InstrClass.Transfer))))),
+                        ( 0x00, Instr(Mnemonics.reti, InstrClass.Transfer|InstrClass.Return))))),
                 invalid,
                 invalid,
 

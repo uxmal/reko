@@ -18,17 +18,10 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using Reko.Arch.Arc;
 using Reko.Core;
-using Reko.Core.Memory;
-using Reko.Core.Rtl;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Arch.Arc
 {
@@ -922,8 +915,8 @@ namespace Reko.UnitTests.Arch.Arc
         {
             Given_HexString("202007C0"); // j.d	[blink]
             AssertCode(
-                "0|TD-|00100000(4): 1 instructions",
-                "1|TD-|return (0,0)");
+                "0|RD-|00100000(4): 1 instructions",
+                "1|RD-|return (0,0)");
         }
 
         [Test]
@@ -931,8 +924,8 @@ namespace Reko.UnitTests.Arch.Arc
         {
             Given_HexString("7EE0"); // j_s	[blink]
             AssertCode(
-                "0|T--|00100000(2): 1 instructions",
-                "1|T--|return (0,0)");
+                "0|R--|00100000(2): 1 instructions",
+                "1|R--|return (0,0)");
         }
 
         [Test]
@@ -940,9 +933,9 @@ namespace Reko.UnitTests.Arch.Arc
         {
             Given_HexString("20E007C1"); // jeq.d	[blink]
             AssertCode(
-                "0|TD-|00100000(4): 2 instructions",
+                "0|RD-|00100000(4): 2 instructions",
                 "1|T--|if (Test(NE,Z)) branch 00100004",
-                "2|TD-|return (0,0)");
+                "2|RD-|return (0,0)");
         }
 
         public void ARCompactRw_jl()

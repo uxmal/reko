@@ -146,13 +146,11 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteRti()
         {
-            this.iclass = InstrClass.Transfer;
             m.Return(2, 2);
         }
 
         private void RewriteRts()
         {
-            this.iclass = InstrClass.Transfer;
             var regLink = (RegisterOperand)instr.Operands[0];
             if (regLink.Register == Registers.pc)
             {
@@ -173,7 +171,6 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteRtt()
         {
-            this.iclass = InstrClass.Transfer;
             m.Return(2, 2);
         }
 

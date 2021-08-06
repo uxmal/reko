@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Arch.OpenRISC
             Given_HexString("44004800");	// l.jr	r9
             AssertCode(
                 "0|TD-|00100000(4): 1 instructions",
-                "1|TD-|return (0,0)");
+                "1|RD-|return (0,0)");
         }
 
         [Test]
@@ -330,8 +330,8 @@ namespace Reko.UnitTests.Arch.OpenRISC
         {
             Given_HexString("24000000");	// l.rfe
             AssertCode(
-                "0|TD-|00100000(4): 1 instructions",
-                "1|TD-|return (0,0)");
+                "0|RD-|00100000(4): 1 instructions",
+                "1|RD-|return (0,0)");
         }
 
         [Test]

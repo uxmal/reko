@@ -82,7 +82,9 @@ namespace Reko.Arch.RiscV
         public override RiscVInstruction MakeInstruction(InstrClass iclass, Mnemonic mnemonic)
         {
             var i = state.instr;
-            i.InstructionClass = iclass;
+            i.InstructionClass = state.iclass != InstrClass.None
+                ? state.iclass
+                : iclass;
             i.Mnemonic = mnemonic;
             i.Address = this.addrInstr;
             i.Operands = this.state.ops.ToArray();
@@ -309,6 +311,7 @@ namespace Reko.Arch.RiscV
         {
             public RiscVInstruction instr = new RiscVInstruction();
             public List<MachineOperand> ops = new List<MachineOperand>();
+            public InstrClass iclass;
         }
 
         #region Decoders
@@ -425,6 +428,22 @@ namespace Reko.Arch.RiscV
                 d.state.ops.Add(reg);
                 return true;
             };
+        }
+
+        /// <summary>
+        /// If the LR register is used, mark the instruction as 'return'.
+        /// </summary>
+        private static Mutator<RiscVDisassembler> useLr(int bitpos)
+        {
+            var regMask = new Bitfield(bitpos, 5);
+            return (u, d) =>
+            {
+                var iReg = (int) regMask.Read(u);
+                if (iReg == d.arch.LinkRegister.Number)
+                    d.state.iclass = InstrClass.Transfer | InstrClass.Return;
+                return true;
+            };
+
         }
 
         /// <summary>

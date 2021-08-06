@@ -437,18 +437,20 @@ namespace Reko.Arch.PowerPC
                 {
                     return new PowerPcInstruction(Mnemonic.blr)
                     {
-                        InstructionClass = InstrClass.Transfer,
+                        InstructionClass = InstrClass.Transfer|InstrClass.Return,
                         Operands = new MachineOperand[0]
                     };
                 }
 
-                var iclass = link ? InstrClass.Call : 0;
+                var iclass = link 
+                    ? InstrClass.Transfer | InstrClass.Call 
+                    : InstrClass.Transfer | InstrClass.Return;
                 switch (condCode)
                 {
                 default:
                     return new PowerPcInstruction(link ? Mnemonic.bclrl : Mnemonic.bclr)
                     {
-                        InstructionClass = iclass | InstrClass.Transfer,
+                        InstructionClass = iclass,
                         Operands = new MachineOperand[]
                         {
                             new ImmediateOperand(Constant.Byte((byte)((wInstr >> 21) & 0x1F))),
@@ -466,7 +468,7 @@ namespace Reko.Arch.PowerPC
                 }
                 return new PowerPcInstruction(mnemonic)
                 {
-                    InstructionClass = iclass | InstrClass.ConditionalTransfer,
+                    InstructionClass = iclass | InstrClass.Conditional,
                     Operands = new MachineOperand[] { dasm.CRegFromBits(crf) },
                 };
             }

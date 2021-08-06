@@ -503,7 +503,7 @@ namespace Reko.Arch.WE32100
                 Instr(Mnemonic.movaw, X("")),         // 0x04 Move address(word)
                 Instr(Mnemonic.spoprt, X("")),         // 0x06 Coprocessor operation read triple
                 Instr(Mnemonic.spopt2, X("")),         // 0x07 Coprocessor operation triple, 2 - address
-                Instr(Mnemonic.ret, X("")),         // 0x08 Return from procedure
+                Instr(Mnemonic.ret, InstrClass.Transfer|InstrClass.Return, X("")),         // 0x08 Return from procedure
 
                 invalid,
                 invalid,
@@ -672,22 +672,22 @@ namespace Reko.Arch.WE32100
     //Instr(Mnemonic.Branch),         // on less than or equal byte(unsigned)
 
                 // 0x60
-                Instr(Mnemonic.rvc, X("")),         // 0x60 Return on overflow clear
+                Instr(Mnemonic.rvc, InstrClass.Transfer|InstrClass.Return, X("")),         // 0x60 Return on overflow clear
                 invalid,
                 Instr(Mnemonic.bvch, X("")),         // 0x62 Branch on overflow clear, halfword displacement
                 Instr(Mnemonic.bvcb, X("")),         // 0x63 Branch on overflow clear, byte displacement
 
-                Instr(Mnemonic.rnequ, X("")),         // 0x64 Return on not equal(unsigned)
+                Instr(Mnemonic.rnequ, InstrClass.Transfer|InstrClass.Return, X("")),         // 0x64 Return on not equal(unsigned)
                 invalid,
                 Instr(Mnemonic.bneh, X("")),         // 0x66 Branch on not equal halfword(duplicate)
                 Instr(Mnemonic.bneb, X("")),         // 0x67 Branch on not equal byte(duplicate)
 
-                Instr(Mnemonic.rvs, X("")),         // 0x68 Return on overflow set
+                Instr(Mnemonic.rvs, InstrClass.Transfer|InstrClass.Return, X("")),         // 0x68 Return on overflow set
                 invalid,
                 Instr(Mnemonic.bvsh, X("")),         // 0x6A Branch on overflow set, halfword displacement
                 Instr(Mnemonic.bvsb, X("")),         // 0x6B Branch on overflow set, byte displacement
 
-                Instr(Mnemonic.reqlu, X("")),         // 0x6C Return on equal(unsigned)
+                Instr(Mnemonic.reqlu, InstrClass.Transfer|InstrClass.Return, X("")),         // 0x6C Return on equal(unsigned)
                 invalid,
                 Instr(Mnemonic.beh, X("")),         // 0x6E Branch on equal halfword(duplicate)
                 Instr(Mnemonic.beb, X("")),         // 0x6F Branch on equal byte(duplicate)
@@ -698,17 +698,17 @@ namespace Reko.Arch.WE32100
                 Instr(Mnemonic.nop3, X("")),         // 0x72 No operation, 3 bytes
                 Instr(Mnemonic.nop2, X("")),         // 0x73 No operation, 2 bytes
 
-                Instr(Mnemonic.rneq, X("")),         // 0x74 Return on not equal(signed)
+                Instr(Mnemonic.rneq, InstrClass.Transfer|InstrClass.Return, X("")),         // 0x74 Return on not equal(signed)
                 invalid,
                 Instr(Mnemonic.bneh, X("")),         // 0x76 Branch on not equal halfword
                 Instr(Mnemonic.bneb, X("")),         // 0x77 Branch on not equal
 
-                Instr(Mnemonic.rsb, X("")),         // 0x78 Return from subroutine
+                Instr(Mnemonic.rsb, InstrClass.Transfer|InstrClass.Return, X("")),         // 0x78 Return from subroutine
                 invalid,
                 Instr(Mnemonic.brh, X("")),         // 0x7A Branch with halfword(J 6 - bit) displacement
                 Instr(Mnemonic.brh, X("")),         // 0x7B Branch with byte(8 - bit) displacement
 
-                Instr(Mnemonic.reql, X("")),         // 0x7C Return on equal(signed)
+                Instr(Mnemonic.reql, InstrClass.Transfer|InstrClass.Return, X("")),         // 0x7C Return on equal(signed)
                 invalid,
                 Instr(Mnemonic.beh, X("")),         // 0x7E Branch on equal halfword
                 Instr(Mnemonic.beb, X("")),         // 0x7F Branch on equal byte

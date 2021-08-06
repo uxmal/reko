@@ -77,8 +77,8 @@ namespace Reko.UnitTests.Arch.Mos6502
         {
             Given_Bytes(0x60);
             AssertCode(
-                "0|T--|0200(1): 1 instructions",
-                "1|T--|return (2,0)");
+                "0|R--|0200(1): 1 instructions",
+                "1|R--|return (2,0)");
         }
 
         [Test]

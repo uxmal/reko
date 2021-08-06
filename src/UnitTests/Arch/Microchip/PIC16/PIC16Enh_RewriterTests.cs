@@ -253,11 +253,11 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
                 "1|L--|BSR = 5<8>"
             );
             ExecTest(Words(0x0145),
-            "0|L--|000200(2): 1 instructions",
+            "0|---|000200(2): 1 instructions",
                 "1|---|<invalid>"
             );
             ExecTest(Words(0x0175),
-                "0|L--|000200(2): 1 instructions",
+            "0|---|000200(2): 1 instructions",
                 "1|---|<invalid>"
             );
         }
@@ -336,7 +336,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
         public void PIC16Enhd_Rewriter_RESET()
         {
             ExecTest(Words(0x0001),
-            "0|L--|000200(2): 1 instructions",
+            "0|T--|000200(2): 1 instructions",
                 "1|L--|nop"
             );
         }

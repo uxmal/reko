@@ -329,7 +329,6 @@ namespace Reko.Arch.Avr
 
         private void RewriteBranch(FlagGroupStorage grf, bool set)
         {
-            iclass = InstrClass.ConditionalTransfer;
             Expression test = binder.EnsureFlagGroup(grf);
             if (!set)
                 test = m.Not(test);
@@ -353,7 +352,6 @@ namespace Reko.Arch.Avr
 
         private void RewriteCall()
         {
-            iclass = InstrClass.Transfer | InstrClass.Call;
             m.Call(RewriteOp(0), 2);    //$TODO: 3-byte mode in architecture.
         }
 
@@ -520,7 +518,6 @@ namespace Reko.Arch.Avr
 
         private void RewriteRet()
         {
-            iclass = InstrClass.Transfer;
             m.Return(2, 0);
         }
 

@@ -503,7 +503,6 @@ namespace Reko.Arch.Arm.AArch32
         {
             if (Dst() is RegisterOperand rOp && rOp.Register == Registers.pc)
             {
-                iclass = InstrClass.Transfer;
                 if (Src1() is RegisterOperand ropSrc && ropSrc.Register == Registers.lr)
                 {
                     m.Return(0, 0);

@@ -80,8 +80,8 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             Given_HexString("1E");	// ret
             AssertCode(
-                "0|T--|0100(1): 1 instructions",
-                "1|T--|return (2,0)");
+                "0|R--|0100(1): 1 instructions",
+                "1|R--|return (2,0)");
         }
 
         [Test]
@@ -176,10 +176,10 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             Given_HexString("1F");  // reti
             AssertCode(
-                "0|T--|0100(1): 3 instructions",
+                "0|R--|0100(1): 3 instructions",
                 "1|L--|af = Mem0[sp:word16]",
                 "2|L--|sp = sp + 2<i16>",
-                "3|T--|return (2,0)");
+                "3|R--|return (2,0)");
         }
 
         [Test]

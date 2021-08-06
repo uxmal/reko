@@ -81,7 +81,7 @@ namespace Reko.Arch.MicrochipPIC.Common
             while (dasm.MoveNext())
             {
                 instrCurr = dasm.Current;
-                iclass = InstrClass.Linear;
+                iclass = instrCurr.InstructionClass;
                 rtlInstructions = new List<RtlInstruction>();
                 m = new RtlEmitter(rtlInstructions);
 

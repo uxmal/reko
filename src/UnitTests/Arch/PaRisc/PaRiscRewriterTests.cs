@@ -147,7 +147,7 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexString("E840D002");  // bv,n\tr0(r2)
             AssertCode(
                 "0|TDA|00100000(4): 1 instructions",
-                "1|TD-|return (0,0)");
+                "1|RD-|return (0,0)");
         }
 
         [Test]
@@ -732,9 +732,9 @@ namespace Reko.UnitTests.Arch.PaRisc
         {
             Given_HexString("00002C00");	// rfi
             AssertCode(
-                "0|S--|00100000(4): 2 instructions",
+                "0|R--|00100000(4): 2 instructions",
                 "1|L--|__rfi()",
-                "2|T--|return (0,0)");
+                "2|R--|return (0,0)");
         }
 
         [Test]
@@ -742,9 +742,9 @@ namespace Reko.UnitTests.Arch.PaRisc
         {
             Given_HexString("00002CA0");	// rfi,r
             AssertCode(
-                "0|S--|00100000(4): 2 instructions",
+                "0|R--|00100000(4): 2 instructions",
                 "1|L--|__rfi_r()",
-                "2|T--|return (0,0)");
+                "2|R--|return (0,0)");
         }
 
         [Test]

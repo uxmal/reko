@@ -704,7 +704,7 @@ namespace Reko.Arch.Mips
                 Instr(Mnemonic.bc, InstrClass.Transfer, pcrel_0_9),
                 Mask(8, 1, "P16.SR",
                     Instr(Mnemonic.save, Us(4, 4, 4), r(9, 1, gpr1_save_restore), U(0, 4)),
-                    Instr(Mnemonic.restore_jrc, InstrClass.Transfer, Us(4, 4, 4), r(9, 1, gpr1_save_restore), U(0, 4))),
+                    Instr(Mnemonic.restore_jrc, InstrClass.Transfer|InstrClass.Return, Us(4, 4, 4), r(9, 1, gpr1_save_restore), U(0, 4))),
 
                 Mask(3, 1, "P16.SHIFT",
                     Instr(Mnemonic.sll, r7, r4, Ish3),

@@ -1391,13 +1391,13 @@ namespace Reko.Arch.Qualcomm
                         Mask(6, 2, "  0b1",
                             Instr(Mnemonic.deallocframe),
                             Mask(2, 1, "  0b11",
-                                Instr(Mnemonic.dealloc_return, InstrClass.Transfer),
-                                Instr(Mnemonic.dealloc_return, InstrClass.ConditionalTransfer,
+                                Instr(Mnemonic.dealloc_return, InstrClass.Transfer|InstrClass.Return),
+                                Instr(Mnemonic.dealloc_return, InstrClass.ConditionalTransfer | InstrClass.Return,
                                     Conditional_p0(1, -1, 0))),
                             invalid,
                             Mask(2, 1, "  0b11",
-                                Instr(Mnemonic.jumpr, InstrClass.Transfer, Reg(Registers.lr)),
-                                Instr(Mnemonic.jumpr, InstrClass.ConditionalTransfer, Reg(Registers.lr),
+                                Instr(Mnemonic.jumpr, InstrClass.Transfer | InstrClass.Return, Reg(Registers.lr)),
+                                Instr(Mnemonic.jumpr, InstrClass.ConditionalTransfer | InstrClass.Return, Reg(Registers.lr),
                                     Conditional_p0(1, -1, 0)))))));
 
             /*
@@ -2051,8 +2051,8 @@ namespace Reko.Arch.Qualcomm
                     (0b010, Instr(Mnemonic.ickill)))),
                 (0b1110, Instr(Mnemonic.isync)),
                 (0b1111, Mask(12, 1, "  0b1111",
-                    Instr(Mnemonic.rte, InstrClass.Transfer),
-                    Instr(Mnemonic.rteunlock, InstrClass.Transfer))));
+                    Instr(Mnemonic.rte, InstrClass.Transfer|InstrClass.Return),
+                    Instr(Mnemonic.rteunlock, InstrClass.Transfer|InstrClass.Return))));
             /*
             0,1,0,1, 1,0,0, j,j,j,j,j,j,j,j,j,P,P,j,j,j,j,j,j,j,j,j,j,j,j,j,-,"jump #r22:2"
             0,1,0,1, 1,0,1, j,j,j,j,j,j,j,j,j,P,P,j,j,j,j,j,j,j,j,j,j,j,j,j,0,"call #r22:2"
@@ -3255,8 +3255,8 @@ namespace Reko.Arch.Qualcomm
             var decoder_96 = Mask(21, 3, "  96",
                 Select(Bf((16,5),(0,5)), u=> u == 0b11110_11110,
                     Select(Bf((10, 4)), u => u == 0,
-                        Instr(Mnemonic.dealloc_return, InstrClass.Transfer),
-                        Instr(Mnemonic.dealloc_return, InstrClass.ConditionalTransfer, Conditional(8, 11, 12, 13))),
+                        Instr(Mnemonic.dealloc_return, InstrClass.Transfer | InstrClass.Return),
+                        Instr(Mnemonic.dealloc_return, InstrClass.ConditionalTransfer | InstrClass.Return, Conditional(8, 11, 12, 13))),
                     invalid),
                 decoder_9_0jj0,
                 decoder_9_0jj0,

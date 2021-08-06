@@ -102,8 +102,8 @@ namespace Reko.UnitTests.Arch.Blackfin
         {
             Given_HexString("1300");
             AssertCode(
-                "0|T--|00100000(2): 1 instructions",
-                "1|T--|return (0,0)");
+                "0|R--|00100000(2): 1 instructions",
+                "1|R--|return (0,0)");
         }
 
         [Test]
@@ -138,8 +138,8 @@ namespace Reko.UnitTests.Arch.Blackfin
         {
             Given_HexString("1000");
             AssertCode(
-                "0|T--|00100000(2): 1 instructions",
-                "1|T--|return (0,0)");
+                "0|R--|00100000(2): 1 instructions",
+                "1|R--|return (0,0)");
         }
 
         [Test]

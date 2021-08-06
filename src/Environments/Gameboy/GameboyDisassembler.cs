@@ -863,7 +863,7 @@ namespace Reko.Environments.Gameboy
                 Instr(Mnemonic.cp, A),                  // Z 1 H C
 
                 // C0
-                Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Conditional, NZ),                // - - - -
+                Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return | InstrClass.Conditional, NZ),                // - - - -
                 Instr(Mnemonic.pop, BC),                // - - - -
                 Instr(Mnemonic.jp, InstrClass.ConditionalTransfer, NZ, a16),            // - - - -
                 Instr(Mnemonic.jp, InstrClass.Transfer, a16),                // - - - -
@@ -871,9 +871,9 @@ namespace Reko.Environments.Gameboy
                 Instr(Mnemonic.push, BC),               // - - - -
                 Instr(Mnemonic.add, A, d8),             // Z 0 H C
                 Instr(Mnemonic.rst, Implicit(00)),      // - - - -
-                Instr(Mnemonic.ret, InstrClass.Transfer|InstrClass.Conditional, Z),                 // - - - -
-                Instr(Mnemonic.ret, InstrClass.Transfer),                    // - - - -
-                Instr(Mnemonic.jp, InstrClass.ConditionalTransfer, Z, a16),             // - - - -
+                Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return | InstrClass.Conditional, Z),
+                Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return),      
+                Instr(Mnemonic.jp, InstrClass.ConditionalTransfer, Z, a16),
                 new PrefixDecoder(cbDecoders),
                 Instr(Mnemonic.call, InstrClass.ConditionalTransfer | InstrClass.Call, Z, a16),           // - - - -
                 Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, a16),              // - - - -
@@ -881,7 +881,7 @@ namespace Reko.Environments.Gameboy
                 Instr(Mnemonic.rst, Implicit(08)),      // - - - -
 
                 // D0
-                Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Conditional , NC),                // - - - -
+                Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return | InstrClass.Conditional , NC),                // - - - -
                 Instr(Mnemonic.pop, DE),                // - - - -
                 Instr(Mnemonic.jp, InstrClass.ConditionalTransfer, NC, a16),            // - - - -
                 invalid,
@@ -889,8 +889,8 @@ namespace Reko.Environments.Gameboy
                 Instr(Mnemonic.push, DE),               // - - - -
                 Instr(Mnemonic.sub, d8),                // Z 1 H C
                 Instr(Mnemonic.rst, Implicit(0x10)),    // - - - -
-                Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Conditional, Cy),                // - - - -
-                Instr(Mnemonic.reti),                   // - - - -
+                Instr(Mnemonic.ret, InstrClass.Transfer | InstrClass.Return | InstrClass.Conditional, Cy),                // - - - -
+                Instr(Mnemonic.reti, InstrClass.Transfer| InstrClass.Return),
                 Instr(Mnemonic.jp, InstrClass.ConditionalTransfer, Cy, a16),            // - - - -
                 invalid,
                 Instr(Mnemonic.call, InstrClass.ConditionalTransfer | InstrClass.Call, Cy, a16),          // - - - -

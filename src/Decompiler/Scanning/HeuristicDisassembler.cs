@@ -132,8 +132,7 @@ namespace Reko.Scanning
                         {
                             if (program.SegmentMap.IsValidAddress(addrOp))
                             {
-                                int c;
-                                if (!sr.DirectlyCalledAddresses.TryGetValue(addrOp, out c))
+                                if (!sr.DirectlyCalledAddresses.TryGetValue(addrOp, out int c))
                                     c = 0;
                                 sr.DirectlyCalledAddresses[addrOp] = c + 1;
                             }
@@ -173,6 +172,8 @@ namespace Reko.Scanning
                             }
                             return current;
                         }
+                        return current;
+                    case InstrClass.Transfer | InstrClass.Return:
                         return current;
                     case InstrClass.Transfer | InstrClass.Conditional:
                         FallthroughToInvalid(instr);

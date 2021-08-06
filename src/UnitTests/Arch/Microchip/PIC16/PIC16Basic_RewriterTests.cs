@@ -378,10 +378,10 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
         public void PIC16Basic_Rewriter_RETFIE()
         {
             ExecTest(Words(0x0009),
-            "0|T--|000200(2): 3 instructions",
+                "0|R--|000200(2): 3 instructions",
                 "1|L--|INTCON = INTCON | 0x80<8>",
                 "2|L--|STKPTR = STKPTR - 1<8>",
-                "3|T--|return (0,0)"
+                "3|R--|return (0,0)"
             );
         }
 
@@ -389,10 +389,10 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
         public void PIC16Basic_Rewriter_RETLW()
         {
             ExecTest(Words(0x3401),
-            "0|T--|000200(2): 3 instructions",
+                "0|R--|000200(2): 3 instructions",
                 "1|L--|WREG = 1<8>",
                 "2|L--|STKPTR = STKPTR - 1<8>",
-                "3|T--|return (0,0)"
+                "3|R--|return (0,0)"
             );
         }
 
@@ -400,9 +400,9 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16.Rewriter
         public void PIC16Basic_Rewriter_RETURN()
         {
             ExecTest(Words(0x0008),
-            "0|T--|000200(2): 2 instructions",
+            "0|R--|000200(2): 2 instructions",
                 "1|L--|STKPTR = STKPTR - 1<8>",
-                "2|T--|return (0,0)"
+                "2|R--|return (0,0)"
             );
         }
 

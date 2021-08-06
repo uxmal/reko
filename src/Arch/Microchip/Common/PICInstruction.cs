@@ -35,18 +35,19 @@ namespace Reko.Arch.MicrochipPIC.Common
         public const InstrClass CondTransfer = InstrClass.Conditional | InstrClass.Transfer;
         public const InstrClass LinkTransfer = InstrClass.Call | InstrClass.Transfer;
         public const InstrClass Transfer = InstrClass.Transfer;
+        public const InstrClass Return = InstrClass.Transfer | InstrClass.Return;
 
         private static readonly Dictionary<Mnemonic, InstrClass> classOf = new Dictionary<Mnemonic, InstrClass>()
         {
-                { Mnemonic.ADDULNK,   Transfer },
+                { Mnemonic.ADDULNK,   Return },
                 { Mnemonic.BRA,       Transfer },
                 { Mnemonic.BRW,       Transfer },
                 { Mnemonic.GOTO,      Transfer },
                 { Mnemonic.RESET,     Transfer },
-                { Mnemonic.RETFIE,    Transfer },
-                { Mnemonic.RETLW,     Transfer },
-                { Mnemonic.RETURN,    Transfer },
-                { Mnemonic.SUBULNK,   Transfer },
+                { Mnemonic.RETFIE,    Return },
+                { Mnemonic.RETLW,     Return },
+                { Mnemonic.RETURN,    Return },
+                { Mnemonic.SUBULNK,   Return },
                 { Mnemonic.BC,        CondTransfer },
                 { Mnemonic.BN,        CondTransfer },
                 { Mnemonic.BNC,       CondTransfer },
@@ -84,7 +85,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         /// <summary>
         /// Instantiates a new <see cref="PICInstruction"/> with given <see cref="Mnemonic"/> and operands.
-        /// Throws an <see cref="ArgumentException"/> in more than 3 operands are provided.
+        /// Throws an <see cref="ArgumentException"/> if more than 3 operands are provided.
         /// </summary>
         /// <param name="mnemonic">The PIC mnemonic.</param>
         /// <param name="ops">Zero, one, two or three instruction's operands ops.</param>
@@ -95,8 +96,9 @@ namespace Reko.Arch.MicrochipPIC.Common
                 throw new ArgumentException(nameof(ops), "Too many PIC instruction operands.");
             Mnemonic = mnemonic;
 
-            if (!classOf.TryGetValue(Mnemonic, out this.InstructionClass))
-                this.InstructionClass = InstrClass.Linear;
+            if (!classOf.TryGetValue(Mnemonic, out var iclass))
+                iclass = InstrClass.Linear;
+            this.InstructionClass = iclass;
             Operands = ops;
         }
 

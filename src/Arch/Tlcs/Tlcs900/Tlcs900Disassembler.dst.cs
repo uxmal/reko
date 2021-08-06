@@ -335,25 +335,25 @@ namespace Reko.Arch.Tlcs.Tlcs900
             new InvDecoder(Mnemonic.call, C,Zx),
             new InvDecoder(Mnemonic.call, C,Zx),
             // F0
-            Instr(Mnemonic.ret, clr,C),
-            Instr(Mnemonic.ret, clr,C),
-            Instr(Mnemonic.ret, clr,C),
-            Instr(Mnemonic.ret, clr,C),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer|InstrClass.Return, clr,C),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer|InstrClass.Return, clr,C),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer|InstrClass.Return, clr,C),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer|InstrClass.Return, clr,C),
 
-            Instr(Mnemonic.ret, clr,C),
-            Instr(Mnemonic.ret, clr,C),
-            Instr(Mnemonic.ret, clr,C),
-            Instr(Mnemonic.ret, clr,C),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer|InstrClass.Return, clr,C),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer|InstrClass.Return, clr,C),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer|InstrClass.Return, clr,C),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer|InstrClass.Return, clr,C),
 
-            Instr(Mnemonic.ret, clr,C),
-            Instr(Mnemonic.ret, clr,C),
-            Instr(Mnemonic.ret, clr,C),
-            Instr(Mnemonic.ret, clr,C),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer|InstrClass.Return, clr,C),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer|InstrClass.Return, clr,C),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer|InstrClass.Return, clr,C),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer|InstrClass.Return, clr,C),
 
-            Instr(Mnemonic.ret, clr,C),
-            Instr(Mnemonic.ret, clr,C),
-            Instr(Mnemonic.ret, clr,C),
-            Instr(Mnemonic.ret, clr,C),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer|InstrClass.Return, clr,C),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer|InstrClass.Return, clr,C),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer|InstrClass.Return, clr,C),
+            Instr(Mnemonic.ret, InstrClass.ConditionalTransfer|InstrClass.Return, clr,C),
         };
     }
 }

@@ -412,8 +412,8 @@ namespace Reko.UnitTests.Arch.MicroBlaze
         {
             Given_HexString("B60F0008"); // rtsd\tr15,00000008
             AssertCode(
-                "0|TD-|00100000(4): 1 instructions",
-                "1|TD-|return (0,0)");
+                "0|RD-|00100000(4): 1 instructions",
+                "1|RD-|return (0,0)");
         }
 
         [Test]

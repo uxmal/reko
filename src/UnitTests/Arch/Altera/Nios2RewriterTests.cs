@@ -221,8 +221,8 @@ namespace Reko.UnitTests.Arch.Altera
         {
             Given_HexString("3A2800F8");
             AssertCode(     // ret
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|return (0,0)");
+                "0|R--|00100000(4): 1 instructions",
+                "1|R--|return (0,0)");
         }
 
         [Test]

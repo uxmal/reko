@@ -773,7 +773,7 @@ namespace Reko.Environments.C64
         
         private void RewriteReturn()
         {
-            iclass = InstrClass.Transfer;
+            iclass = InstrClass.Transfer|InstrClass.Return;
             m.Return(2, 0);
         }
 

@@ -34,6 +34,7 @@ namespace Reko.Arch.OpenRISC
     public class OpenRISCDisassembler : DisassemblerBase<OpenRISCInstruction, Mnemonic>
     {
         private const InstrClass TD = InstrClass.Transfer | InstrClass.Delay;
+        private const InstrClass TDR = InstrClass.Transfer | InstrClass.Delay | InstrClass.Return;
         private const InstrClass TDC = InstrClass.Transfer | InstrClass.Delay | InstrClass.Call;
 
         private static readonly Decoder rootDecoder;
@@ -310,7 +311,7 @@ namespace Reko.Arch.OpenRISC
                     (0b100, Instr(Mnemonic.l_msync)),
                     (0b101, Instr(Mnemonic.l_psync)),
                     (0b110, Instr(Mnemonic.l_csync))),
-                Instr(Mnemonic.l_rfe, TD),
+                Instr(Mnemonic.l_rfe, TDR),
                 Nyi("0x0A"),
                 invalid,
 
