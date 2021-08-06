@@ -266,7 +266,7 @@ namespace Reko.Arch.X86
 				Instr(Mnemonic.fxch, f,F),
 						
 				// D9 D0
-				Instr(Mnemonic.fnop),
+				Instr(Mnemonic.fnop, InstrClass.Linear|InstrClass.Padding),
 				s_invalid,
 				s_invalid,
 				s_invalid,

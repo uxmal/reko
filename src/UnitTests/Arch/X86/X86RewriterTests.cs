@@ -2924,7 +2924,7 @@ namespace Reko.UnitTests.Arch.X86
         {
             Run32bitTest(0x0F, 0x31);
             AssertCode(
-                "0|L--|10000000(2): 1 instructions",
+                "0|S--|10000000(2): 1 instructions",
                 "1|L--|edx_eax = __rdtsc()");
         }
 

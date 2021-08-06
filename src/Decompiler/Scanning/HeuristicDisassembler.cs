@@ -38,13 +38,13 @@ namespace Reko.Scanning
     /// </summary>
     public class HeuristicDisassembler
     {
-        private Program program;
-        private IStorageBinder binder;
-        private IRewriterHost host;
-        private Dictionary<Address, RtlBlock> blockMap;
-        private ScanResults sr;
-        private Func<Address, bool> isAddrValid;
-        private bool assumeCallsDiverge;
+        private readonly Program program;
+        private readonly IStorageBinder binder;
+        private readonly IRewriterHost host;
+        private readonly Dictionary<Address, RtlBlock> blockMap;
+        private readonly ScanResults sr;
+        private readonly Func<Address, bool> isAddrValid;
+        private readonly bool assumeCallsDiverge;
 
         public HeuristicDisassembler(
             Program program,
@@ -120,6 +120,7 @@ namespace Reko.Scanning
                         return current;
                     case InstrClass.Linear:
                     case InstrClass.Linear | InstrClass.Conditional:
+                    case InstrClass.Linear | InstrClass.Privileged:
                         if (FallthroughToInvalid(instr))
                         {
                             current.IsValid = false;
@@ -219,7 +220,7 @@ namespace Reko.Scanning
         {
             var last = i.Instructions[i.Instructions.Length - 1];
             var xfer = last as RtlTransfer;
-            if (xfer == null)
+            if (xfer is null)
             {
                 var cond = last as RtlIf;
                 if (cond == null)

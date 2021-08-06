@@ -107,19 +107,19 @@ namespace Reko.Arch.X86
 
                 // 0F 01
                 Grp7[0] = new Group7Decoder(
-                        Instr(Mnemonic.sgdt, Ms),
-                        Instr(Mnemonic.monitor),
-                        Instr(Mnemonic.vmcall),
-                        Instr(Mnemonic.vmlaunch),
-                        Instr(Mnemonic.vmresume),
-                        Instr(Mnemonic.vmxoff),
+                        Instr(Mnemonic.sgdt, InstrClass.Linear | InstrClass.Privileged, Ms),
+                        Instr(Mnemonic.monitor, InstrClass.Linear | InstrClass.Privileged),
+                        Instr(Mnemonic.vmcall, InstrClass.Linear | InstrClass.Privileged),
+                        Instr(Mnemonic.vmlaunch, InstrClass.Linear | InstrClass.Privileged),
+                        Instr(Mnemonic.vmresume, InstrClass.Linear | InstrClass.Privileged),
+                        Instr(Mnemonic.vmxoff, InstrClass.Linear | InstrClass.Privileged),
                         s_invalid,
                         s_invalid,
                         s_invalid);
                 Grp7[1] = new Group7Decoder(
-                        Instr(Mnemonic.sidt, Ms),
-                        Instr(Mnemonic.monitor),
-                        Instr(Mnemonic.mwait),
+                        Instr(Mnemonic.sidt, InstrClass.Linear|InstrClass.Privileged, Ms),
+                        Instr(Mnemonic.monitor, InstrClass.Linear | InstrClass.Privileged),
+                        Instr(Mnemonic.mwait, InstrClass.Linear | InstrClass.Privileged),
                         Instr(Mnemonic.clac),
                         Instr(Mnemonic.stac),
                         s_invalid,
@@ -130,7 +130,7 @@ namespace Reko.Arch.X86
                         Instr(Mnemonic.lgdt, InstrClass.Linear | InstrClass.Privileged, Ms),
 
                         Instr(Mnemonic.xgetbv),
-                        Instr(Mnemonic.xsetbv),
+                        Instr(Mnemonic.xsetbv, InstrClass.Linear | InstrClass.Privileged),
                         s_invalid,
                         s_invalid,
 
@@ -196,13 +196,13 @@ namespace Reko.Arch.X86
                 Grp9[6] = MemReg(
                         new PrefixedDecoder(
                             Instr(Mnemonic.vmptrld, Mq),
-                            dec66: Instr(Mnemonic.vmclear, Mq),
-                            decF3: Instr(Mnemonic.vmxon, Mq)),
+                            dec66: Instr(Mnemonic.vmclear, InstrClass.Linear|InstrClass.Privileged, Mq),
+                            decF3: Instr(Mnemonic.vmxon, InstrClass.Linear | InstrClass.Privileged, Mq)),
                         Instr(Mnemonic.rdrand, Rv));
                 Grp9[7] = MemReg(
                         new PrefixedDecoder(
-                            dec:Instr(Mnemonic.vmptrst, Mq),
-                            decF3:Instr(Mnemonic.vmptrst, Mq)),
+                            dec:Instr(Mnemonic.vmptrst, InstrClass.Linear | InstrClass.Privileged, Mq),
+                            decF3:Instr(Mnemonic.vmptrst, InstrClass.Linear | InstrClass.Privileged, Mq)),
                         Instr(Mnemonic.rdseed, Rv));
 
                 // 0F B9
