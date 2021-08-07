@@ -75,14 +75,14 @@ namespace Reko.ImageLoaders.HpSom
             {
                 program.Architecture.LoadUserOptions(new Dictionary<string, object>
                 {
-                    { "WordSize", 64 }
+                    { ProcessorOption.WordSize, 64 }
                 });
             }
             else
             {
                 program.Architecture.LoadUserOptions(new Dictionary<string, object>
                 {
-                    { "WordSize", 32 }
+                    { ProcessorOption.WordSize, 32 }
                 });
             }
         }

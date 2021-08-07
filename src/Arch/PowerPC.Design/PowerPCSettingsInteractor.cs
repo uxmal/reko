@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -89,14 +89,14 @@ namespace Reko.Arch.PowerPC.Design
                 return;
             arch.LoadUserOptions(new Dictionary<string, object>
             {
-                { "Model", ((ListOption_v1) control.ProcessorModel.SelectedItem).Value }
+                { ProcessorOption.Model, ((ListOption_v1) control.ProcessorModel.SelectedItem).Value }
             });
         }
 
         private void SelectModel(IComboBox ddlProcessorModel)
         {
             int index = 0;
-            if (arch.Options.TryGetValue("Model", out var model))
+            if (arch.Options.TryGetValue(ProcessorOption.Model, out var model))
             {
                 var sModel = (string)model;
                 if (!string.IsNullOrEmpty(sModel))

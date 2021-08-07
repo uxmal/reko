@@ -49,7 +49,7 @@ namespace Reko.Arch.Mips
         public RegisterStorage lo;
         public RegisterStorage pc;
         private string? instructionSetEncoding;
-        private Dictionary<string, RegisterStorage> mpNameToReg;
+        private readonly Dictionary<string, RegisterStorage> mpNameToReg;
         private Decoder<MipsDisassembler, Mnemonic, MipsInstruction>? rootDecoder;
 
         public MipsProcessorArchitecture(IServiceProvider services, string archId, EndianServices endianness, PrimitiveType wordSize, PrimitiveType ptrSize, Dictionary<string, object> options) 
@@ -208,7 +208,7 @@ namespace Reko.Arch.Mips
         public override void LoadUserOptions(Dictionary<string, object>? options)
         {
             this.Options = options ?? new Dictionary<string, object>();
-            if (Options.TryGetValue("decoder", out var oDecoderName) && 
+            if (Options.TryGetValue(ProcessorOption.InstructionSet, out var oDecoderName) && 
                 oDecoderName is string decoderName)
             {
                 this.instructionSetEncoding = decoderName;

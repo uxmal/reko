@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.RiscV
                 "riscV", 
                 new Dictionary<string, object>
                 {
-                    { "WordSize", "64" },
+                    { ProcessorOption.WordSize, "64" },
                     { "FloatAbi", 64 }
                 });
             this.addrLoad = Address.Ptr32(0x00100000);
@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             arch.LoadUserOptions(new Dictionary<string, object>
             {
-                { "WordSize", "32" },
+                { ProcessorOption.WordSize, "32" },
                 { "FloatAbi", 32 }
             });
         }

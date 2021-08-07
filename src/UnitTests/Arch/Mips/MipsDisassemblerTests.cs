@@ -72,7 +72,11 @@ namespace Reko.UnitTests.Arch.Mips
             arch = new MipsBe32Architecture(
                 new ServiceContainer(), 
                 "mips-be-32",
-                new Dictionary<string, object> { { "decoder", "v6" } });
+                new Dictionary<string, object> {
+                    { ProcessorOption.Endianness, "be" },
+                    { ProcessorOption.InstructionSet, "v6" },
+                    { ProcessorOption.WordSize, 32 },
+                });
         }
 
         private void Given_Mips64_Architecture()
@@ -80,7 +84,10 @@ namespace Reko.UnitTests.Arch.Mips
             arch = new MipsBe64Architecture(
                 new ServiceContainer(),
                 "mips-be-64",
-                new Dictionary<string, object>());
+                new Dictionary<string, object> {
+                    { ProcessorOption.Endianness, "be" },
+                    { ProcessorOption.WordSize, 64 },
+                });
         }
 
         private void Given_Mips64_v6_Architecture()
@@ -88,7 +95,11 @@ namespace Reko.UnitTests.Arch.Mips
             arch = new MipsBe64Architecture(
                 new ServiceContainer(), 
                 "mips-be-32",
-                new Dictionary<string, object> { { "decoder", "v6" } });
+                new Dictionary<string, object> { 
+                    { ProcessorOption.Endianness, "be" },
+                    { ProcessorOption.InstructionSet, "v6" },
+                    { ProcessorOption.WordSize, 32 }
+                });
         }
 
         private void VerifyRegisterOperand(MachineOperand op, RegisterStorage reg, PrimitiveType type)

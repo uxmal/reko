@@ -143,7 +143,7 @@ namespace Reko.Arch.Arc
 
         public override void LoadUserOptions(Dictionary<string, object>? options)
         {
-            Endianness = (options != null && options.TryGetValue("Endianness", out var oEndian)
+            Endianness = (options != null && options.TryGetValue(ProcessorOption.Endianness, out var oEndian)
                 && oEndian is string sEndian
                 && string.Compare(sEndian, "be") == 0)
                 ? EndianServices.Big

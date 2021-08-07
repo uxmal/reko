@@ -254,7 +254,7 @@ namespace Reko.Arch.PowerPC
         {
             if (this.primaryDecoders == null)
             {
-                this.Options.TryGetValue("Model", out var model);
+                this.Options.TryGetValue(ProcessorOption.Model, out var model);
                 var iset = InstructionSet.Create((string)model);
                 this.primaryDecoders = iset.CreateDecoders();
             }

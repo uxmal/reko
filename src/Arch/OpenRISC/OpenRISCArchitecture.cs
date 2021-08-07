@@ -129,7 +129,7 @@ namespace Reko.Arch.OpenRISC
         {
             this.Endianness = 
                 options != null &&
-                options.TryGetValue("Endianness", out var oEnd) && 
+                options.TryGetValue(ProcessorOption.Endianness, out var oEnd) && 
                 (string) oEnd == "le"
                 ? EndianServices.Little
                 : EndianServices.Big;

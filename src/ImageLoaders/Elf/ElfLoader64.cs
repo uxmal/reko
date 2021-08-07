@@ -90,11 +90,11 @@ namespace Reko.ImageLoaders.Elf
                 break;
             case ElfMachine.EM_PARISC:
                 archName = "paRisc";
-                options["WordSize"] = "64";
+                options[ProcessorOption.WordSize] = 64;
                 break;
             case ElfMachine.EM_RISCV: 
                 archName = "risc-v";
-                options["WordSize"] = "64";
+                options[ProcessorOption.WordSize] = 64;
                 var flags = (RiscVFlags) Header64.e_flags;
                 // According to the Risc-V ELF spec, a RV64G implementation is strongly
                 // encouraged to support the LP64D ABI
@@ -106,7 +106,7 @@ namespace Reko.ImageLoaders.Elf
                 break;
             case ElfMachine.EM_S390: //$REVIEW: any pertinent differences?
                 archName = "zSeries";
-                options["WordSize"] = "64";
+                options[ProcessorOption.WordSize] = 64;
                 break;
             default:
                 return base.CreateArchitecture(endianness);

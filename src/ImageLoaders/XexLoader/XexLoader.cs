@@ -682,7 +682,7 @@ namespace Reko.ImageLoaders.Xex
 			var platform = cfgSvc.GetEnvironment("xbox360").Load(Services, arch)!;
             arch.LoadUserOptions(new Dictionary<string, object>
             {
-                { "Model", "xenon" }
+                { ProcessorOption.Model, "xenon" }
             });
 			LoadHeaders();
 			LoadImageData();

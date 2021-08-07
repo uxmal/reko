@@ -116,7 +116,7 @@ namespace Reko.Arch.PaRisc
         public bool Is64Bit()
         {
             return
-                Options.TryGetValue("WordSize", out var oWordSize) &&
+                Options.TryGetValue(ProcessorOption.WordSize, out var oWordSize) &&
                 int.TryParse(oWordSize.ToString(), out var wordSize) &&
                 wordSize == 64;
         }

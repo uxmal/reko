@@ -38,7 +38,9 @@ namespace Reko.Arch.Mips
     {
         private const InstrClass TD = InstrClass.Transfer | InstrClass.Delay;
         private const InstrClass CTD = InstrClass.Call | InstrClass.Transfer | InstrClass.Delay;
+        private const InstrClass RTD = InstrClass.Return | InstrClass.Transfer | InstrClass.Delay;
         private const InstrClass DCT = InstrClass.ConditionalTransfer | InstrClass.Delay;
+        private const InstrClass PRIV = InstrClass.Linear | InstrClass.Privileged;
 
         private readonly MipsProcessorArchitecture arch;
         private readonly Decoder rootDecoder;

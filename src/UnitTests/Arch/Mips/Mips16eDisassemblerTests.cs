@@ -42,7 +42,11 @@ namespace Reko.UnitTests.Arch.Mips
             this.arch = new MipsBe32Architecture(
                 CreateServiceContainer(),
                 "mips-be-32",
-                new Dictionary<string, object> { { "decoder", "mips16e" } });
+                new Dictionary<string, object> {
+                    { ProcessorOption.Endianness, "be" },
+                    { ProcessorOption.InstructionSet, "mips16e" },
+                    { ProcessorOption.WordSize, 32 },
+                });
             this.LoadAddress = Address.Ptr32(0x00100000);
         }
 

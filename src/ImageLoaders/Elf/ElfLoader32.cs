@@ -86,6 +86,9 @@ namespace Reko.ImageLoaders.Elf
             string arch;
             var options = new Dictionary<string, object>();
             string? stackRegName = null;
+            options[ProcessorOption.Endianness] = (endianness == EndianServices.Little)
+                ? "le"
+                : "be";
             switch (machine)
             {
             case ElfMachine.EM_MIPS:
@@ -101,10 +104,10 @@ namespace Reko.ImageLoaders.Elf
                     break;
                 case MIPSflags.EF_MIPS_ARCH_64R2:
                     is64 = true;
-                    options["decoder"] = "v6";
+                    options[ProcessorOption.InstructionSet] = "v6";
                     break;
                 case MIPSflags.EF_MIPS_ARCH_32R2:
-                    options["decoder"] = "v6";
+                    options[ProcessorOption.InstructionSet] = "v6";
                     break;
                 }
                 if (endianness == EndianServices.Little)
@@ -121,12 +124,12 @@ namespace Reko.ImageLoaders.Elf
                 }
                 else
                 {
-                    throw new NotSupportedException(string.Format("The MIPS architecture does not support ELF endianness value {0}", endianness));
+                    throw new NotSupportedException($"The MIPS architecture does not support ELF endianness value {endianness}.");
                 }
                 break;
             case ElfMachine.EM_RISCV:
                 arch = "risc-v";
-                options["WordSize"] = "32";
+                options[ProcessorOption.WordSize] = "32";
                 RiscVElf.SetOptions((RiscVFlags) Header.e_flags, options);
                 break;
             default:

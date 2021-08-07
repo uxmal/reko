@@ -618,12 +618,12 @@ namespace Reko.Arch.Mips
 
                 var cop0_C0_decoder = Sparse(0, 6, "COP0 C0",
                     invalid,
-                    (0x01, Instr(Mnemonic.tlbr)),
-                    (0x02, Instr(Mnemonic.tlbwi)),
-                    (0x06, Instr(Mnemonic.tlbwr)),
-                    (0x08, Instr(Mnemonic.tlbp)),
-                    (0x18, Instr(InstrClass.Transfer|InstrClass.Return, Mnemonic.eret)),
-                    (0x20, Instr(Mnemonic.wait)));
+                    (0x01, Instr(PRIV, Mnemonic.tlbr)),
+                    (0x02, Instr(PRIV, Mnemonic.tlbwi)),
+                    (0x06, Instr(PRIV, Mnemonic.tlbwr)),
+                    (0x08, Instr(PRIV, Mnemonic.tlbp)),
+                    (0x18, Instr(InstrClass.Transfer|InstrClass.Return|InstrClass.Privileged, Mnemonic.eret)),
+                    (0x20, Instr(PRIV, Mnemonic.wait)));
                 var cop1 = Mask(21, 5, "COP1",
                     Instr(Mnemonic.mfc1, R2, F3),
                     new A64Decoder(Mnemonic.dmfc1, R2, F3),
@@ -894,7 +894,9 @@ namespace Reko.Arch.Mips
                     Instr(Mnemonic.srlv, R3, R2, R1),
                     Instr(Mnemonic.srav, R3, R2, R1),
 
-                    Instr(TD, Mnemonic.jr, R1),
+                    Select((21, 5), u => u == 0b11111,
+                        Instr(RTD, Mnemonic.jr, R1),
+                        Instr(TD, Mnemonic.jr, R1)),
                     Instr(CTD, Mnemonic.jalr, R3, R1),
                     Instr(Mnemonic.movz, R3, R1, R2),
                     Instr(Mnemonic.movn, R3, R1, R2),
@@ -1060,8 +1062,8 @@ namespace Reko.Arch.Mips
                         Instr(Mnemonic.lui, R2, i),
                         // 10
                         Mask(21, 5, "Coprocessor",
-                            Instr(Mnemonic.mfc0, R2, R3),
-                            Instr(Mnemonic.dmfc0, R2, R3),
+                            Instr(PRIV, Mnemonic.mfc0, R2, R3),
+                            Instr(PRIV, Mnemonic.dmfc0, R2, R3),
                             invalid,
                             invalid,
                             Instr(Mnemonic.mtc0, R2, R3),
@@ -1144,7 +1146,7 @@ namespace Reko.Arch.Mips
                         Instr(Mnemonic.sdr, R2, Ew),
                         Instr(Mnemonic.swr, R2, Ew),
                         V6Decoder(
-                            Instr(Mnemonic.cache, Imm(PrimitiveType.Byte, 16, 5), Ew),
+                            Instr(PRIV, Mnemonic.cache, Imm(PrimitiveType.Byte, 16, 5), Ew),
                             invalid),
 
                         // 30

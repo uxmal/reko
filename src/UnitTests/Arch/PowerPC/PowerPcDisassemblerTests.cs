@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             this.arch.LoadUserOptions(new Dictionary<string, object>
             {
-                { "Model", "750cl" }
+                { ProcessorOption.Model, "750cl" }
             });
         }
 
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             this.arch.LoadUserOptions(new Dictionary<string, object>
             {
-                { "Model", "Xenon" }
+                { ProcessorOption.Model, "Xenon" }
             });
         }
 

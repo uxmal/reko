@@ -261,13 +261,13 @@ namespace Reko.ImageLoaders.Elf
                 break;
             case ElfMachine.EM_NANOMIPS:
                 arch = endianness == EndianServices.Little ? "mips-le-32" : "mips-be-32";
-                options["decoder"] = "nano";
+                options[ProcessorOption.InstructionSet] = "nano";
                 break;
             case ElfMachine.EM_BLACKFIN: arch = "blackfin"; break;
             case ElfMachine.EM_MORPHOS_PPC: arch = "ppc-be-32"; break;
             case ElfMachine.EM_PARISC:
                 arch = "paRisc";
-                options["WordSize"] = "32";
+                options[ProcessorOption.WordSize] = "32";
                 break;
             case ElfMachine.EM_AVR32:
             case ElfMachine.EM_AVR32a:

@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Arch.RiscV
         {
             arch.LoadUserOptions(new Dictionary<string, object>
             {
-                { "WordSize" , "64" },
+                { ProcessorOption.WordSize , "64" },
                 { "FloatAbi", 64 },
             });
             baseAddr = Address.Ptr64(0x0010000);
