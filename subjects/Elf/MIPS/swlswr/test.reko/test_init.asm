@@ -20,7 +20,7 @@ l000005AC:
 	nop
 
 l000005B8:
-	bgezal	r0,000005C0
+	bal	000005C0
 	nop
 	lui	r28,+0002
 	addiu	r28,r28,-00007B40
@@ -29,7 +29,7 @@ l000005B8:
 	addiu	r25,r25,+000007D4
 	jalr	ra,r25
 	nop
-	bgezal	r0,000005E4
+	bal	000005E4
 	nop
 	lui	r28,+0002
 	addiu	r28,r28,-00007B64

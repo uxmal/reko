@@ -49,26 +49,31 @@ namespace Reko.Arch.Mips
             m.Call(ea, 0);
         }
 
+        private void RewriteBal(MipsInstruction instr, int iop)
+        {
+            // A special case is when we call to the location after
+            // the delay slot. This is an idiom to capture the 
+            // program counter in the la register.
+            var dst = ((AddressOperand) instr.Operands[iop]).Address;
+            if (instr.Address.ToLinear() + 8 == dst.ToLinear())
+            {
+                iclass = InstrClass.Linear;
+                var ra = binder.EnsureRegister(arch.LinkRegister);
+                m.Assign(ra, dst);
+            }
+            else
+            {
+                m.CallD(dst, 0);
+            }
+        }
+
         private void RewriteBgezal(MipsInstruction instr)
         {
             // The bgezal r0,XXXX instruction is aliased to bal (branch and link, or fn call)
             // We handle that case here explicitly.
             if (((RegisterOperand)instr.Operands[0]).Register.Number == 0)
             {
-                // A special case is when we call to the location after
-                // the delay slot. This is an idiom to capture the 
-                // program counter in the la register.
-                var dst = ((AddressOperand)instr.Operands[1]).Address;
-                if (instr.Address.ToLinear() + 8 == dst.ToLinear())
-                {
-                    iclass = InstrClass.Linear;
-                    var ra = binder.EnsureRegister(arch.LinkRegister);
-                    m.Assign(ra, dst);
-                }
-                else
-                {
-                    m.CallD(dst, 0);
-                }
+                RewriteBal(instr, 1);
                 return;
             }
             RewriteBranch0(instr, m.Ge, false);

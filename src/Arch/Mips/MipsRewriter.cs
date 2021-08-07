@@ -46,7 +46,8 @@ namespace Reko.Arch.Mips
         private readonly MipsProcessorArchitecture arch;
         private readonly IRewriterHost host;
         private readonly ExpressionValueComparer cmp;
-        private RtlEmitter m;
+        private readonly RtlEmitter m;
+        private readonly List<RtlInstruction> rtlInstructions;
         private InstrClass iclass;
 
         public MipsRewriter(MipsProcessorArchitecture arch, EndianImageReader rdr, IEnumerable<MipsInstruction> instrs, IStorageBinder binder, IRewriterHost host)
@@ -57,7 +58,8 @@ namespace Reko.Arch.Mips
             this.dasm = instrs.GetEnumerator();
             this.host = host;
             this.cmp = new ExpressionValueComparer();
-            this.m = null!;
+            this.rtlInstructions = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtlInstructions);
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -65,9 +67,8 @@ namespace Reko.Arch.Mips
             while (dasm.MoveNext())
             {
                 var instr = dasm.Current;
-                var rtlInstructions = new List<RtlInstruction>();
                 this.iclass = instr.InstructionClass;
-                this.m = new RtlEmitter(rtlInstructions);
+                rtlInstructions.Clear();
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -88,6 +89,8 @@ namespace Reko.Arch.Mips
                 case Mnemonic.and:
                 case Mnemonic.andi:
                     RewriteAnd(instr); break;
+                case Mnemonic.bal:
+                    RewriteBal(instr, 0); break;
                 case Mnemonic.bc1f: RewriteBranchConditional1(instr, false); break;
                 case Mnemonic.bc1t: RewriteBranchConditional1(instr, true); break;
                 case Mnemonic.beq: RewriteBranch(instr, m.Eq, false); break;

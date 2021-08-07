@@ -734,7 +734,9 @@ namespace Reko.Arch.Mips
                     invalid,
 
                     Instr(CTD, Mnemonic.bltzal, R1, j),
-                    Instr(CTD, Mnemonic.bgezal, R1, j),
+                    Select((21, 5),  u => u == 0,
+                        Instr(TD, Mnemonic.bal, j),
+                        Instr(CTD, Mnemonic.bgezal, R1, j)),
                     Instr(CTD, Mnemonic.bltzall, R1, j),
                     Instr(CTD, Mnemonic.bgezall, R1, j),
 

@@ -3,7 +3,7 @@
 ;; __start: 00000610
 __start proc
 	or	r0,ra,r0
-	bgezal	r0,0000061C
+	bal	0000061C
 	nop
 	lui	r28,+0002
 	addiu	r28,r28,-00007B9C
@@ -143,7 +143,7 @@ l000007A0:
 
 l000007A4:
 	addiu	r25,r25,+00000670
-	bgezal	r0,00000670
+	bal	00000670
 	nop
 	addiu	r2,r0,+00000001
 	sb	r2,0AF0(r19)
@@ -239,7 +239,7 @@ __libc_csu_init proc
 	sw	r18,0024(sp)
 	sw	r16,001C(sp)
 	sw	ra,0034(sp)
-	bgezal	r0,00000588
+	bal	00000588
 	sw	r17,0020(sp)
 	lw	r28,0010(sp)
 	lw	r16,-7FC4(r28)

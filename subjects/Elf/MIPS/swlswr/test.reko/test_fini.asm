@@ -10,7 +10,7 @@ _fini proc
 	addiu	sp,sp,-00000020
 	sw	r28,0010(sp)
 	sw	ra,001C(sp)
-	bgezal	r0,00000A30
+	bal	00000A30
 	nop
 	lui	r28,+0002
 	addiu	r28,r28,-00007FB0

@@ -37,6 +37,7 @@ namespace Reko.Arch.Mips
         add_s,
         and,
         andi,
+        bal,
         bc1f,
         bc1t,
         beq,
