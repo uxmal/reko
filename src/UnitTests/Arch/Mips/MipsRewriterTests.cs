@@ -321,8 +321,8 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_jr_returns()
         {
             AssertCode(0x03E00008, // jr ra
-                "0|TD-|00100000(4): 1 instructions",
-                "1|TD-|return (0,0)");
+                "0|RD-|00100000(4): 1 instructions",
+                "1|RD-|return (0,0)");
         }
 
         [Test]
@@ -801,7 +801,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_tlbp()
         {
             AssertCode(0x42000008,   // tlbp
-                "0|L--|00100000(4): 1 instructions",
+                "0|S--|00100000(4): 1 instructions",
                 "1|L--|__tlbp()");
         }
 
@@ -817,7 +817,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_dmfc0()
         {
             AssertCode(0x40224807,   // dmfc0	r2,r9
-                "0|L--|00100000(4): 1 instructions",
+                "0|S--|00100000(4): 1 instructions",
                 "1|L--|r2 = __counter__");
         }
 
@@ -840,7 +840,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_wait()
         {
             AssertCode(0x43415320,   // wait
-                "0|L--|00100000(4): 1 instructions",
+                "0|S--|00100000(4): 1 instructions",
                 "1|L--|__wait()");
         }
 
@@ -848,7 +848,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_tlbr()
         {
             AssertCode(0x43415041,   // tlbr
-                "0|L--|00100000(4): 1 instructions",
+                "0|S--|00100000(4): 1 instructions",
                 "1|L--|__tlbr()");
         }
 
@@ -1274,7 +1274,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_cache()
         {
             AssertCode(0xBCC80000,   // cache	08,0000(r6)
-                "0|L--|00100000(4): 1 instructions",
+                "0|S--|00100000(4): 1 instructions",
                 "1|L--|__cache(8<8>, &Mem0[r6:word32])");
         }
 
