@@ -2207,7 +2207,6 @@ namespace Reko.Arch.M68k
             dasm.LIMIT_CPU_TYPES(uInstr, M68020_ONLY);
             uint reg = uInstr & 7;
             dasm.mnemonic = Mnemonic.rtm;
-            dasm.iclass = InstrClass.Transfer | InstrClass.Call;
             dasm.ops.Add(BIT_3(uInstr)
                 ? get_addr_reg(reg)
                 : get_data_reg(reg));
@@ -2230,7 +2229,7 @@ namespace Reko.Arch.M68k
             if (!dasm.get_imm_str_s16(out var imm))
                 return false;
             dasm.mnemonic = Mnemonic.stop;
-            dasm.iclass = InstrClass.Linear | InstrClass.Privileged;
+            dasm.iclass = InstrClass.Terminates | InstrClass.Privileged;
             dasm.ops.Add(imm);
             return true;
         }

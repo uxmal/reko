@@ -65,7 +65,7 @@ namespace Reko.Arch.Arm.AArch64
             Domain domain = Domain.None, 
             Action<Expression>? setFlags = null)
         {
-            if (instr.vectorData != VectorData.Invalid || instr.Operands[0] is VectorRegisterOperand vr)
+            if (instr.VectorData != VectorData.Invalid || instr.Operands[0] is VectorRegisterOperand vr)
             {
                 RewriteSimdBinary(simdFormat, domain, setFlags);
             }
@@ -80,7 +80,7 @@ namespace Reko.Arch.Arm.AArch64
             string simdFormat,
             Domain domain = Domain.None)
         {
-            if (instr.vectorData != VectorData.Invalid || 
+            if (instr.VectorData != VectorData.Invalid || 
                 (instr.Operands[0] is VectorRegisterOperand vr && vr.Index < 0))
             {
                 RewriteSimdUnary(simdFormat, domain);
@@ -105,13 +105,13 @@ namespace Reko.Arch.Arm.AArch64
 
         private Expression MaybeExtendExpression(Expression right, int toBitSize)
         {
-            if (instr.shiftCode != Mnemonic.Invalid &&
-                (instr.shiftCode != Mnemonic.lsl ||
-                !(instr.shiftAmount is ImmediateOperand imm) ||
+            if (instr.ShiftCode != Mnemonic.Invalid &&
+                (instr.ShiftCode != Mnemonic.lsl ||
+                !(instr.ShiftAmount is ImmediateOperand imm) ||
                 !imm.Value.IsIntegerZero))
             {
-                var amt = RewriteOp(instr.shiftAmount!);
-                switch (instr.shiftCode)
+                var amt = RewriteOp(instr.ShiftAmount!);
+                switch (instr.ShiftCode)
                 {
                 case Mnemonic.asr: right = m.Sar(right, amt); break;
                 case Mnemonic.lsl: right = m.Shl(right, amt); break;
@@ -406,7 +406,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             var dst = (Identifier)RewriteOp(instr.Operands[0]);
             var imm = ((ImmediateOperand)instr.Operands[1]).Value;
-            var shift = ((ImmediateOperand)instr.shiftAmount!).Value;
+            var shift = ((ImmediateOperand)instr.ShiftAmount!).Value;
             m.Assign(dst, m.Dpb(dst, imm, shift.ToInt32()));
         }
 
@@ -429,7 +429,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             var dst = RewriteOp(instr.Operands[0]);
             var imm = ((ImmediateOperand)instr.Operands[1]).Value;
-            var shift = ((ImmediateOperand)instr.shiftAmount!).Value;
+            var shift = ((ImmediateOperand)instr.ShiftAmount!).Value;
             m.Assign(dst, Constant.Word(dst.DataType.BitSize, imm.ToInt64() << shift.ToInt32()));
         }
 

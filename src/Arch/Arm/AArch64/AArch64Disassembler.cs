@@ -105,9 +105,9 @@ namespace Reko.Arch.Arm.AArch64
                     Mnemonic = mnemonic,
                     InstructionClass = iclass,
                     Operands = ops.ToArray(),
-                    shiftCode = shiftCode,
-                    shiftAmount = shiftAmount,
-                    vectorData = vectorData,
+                    ShiftCode = shiftCode,
+                    ShiftAmount = shiftAmount,
+                    VectorData = vectorData,
                 };
                 return instr;
             }

@@ -241,7 +241,7 @@ namespace Reko.Arch.Arm.AArch64
                 var intType = PrimitiveType.Create(Domain.SignedInt, (int)srcReg.BitSize);
                 m.Assign(dst, m.Convert(src, intType, realType));
             }
-            else if (instr.vectorData == VectorData.Invalid)
+            else if (instr.VectorData == VectorData.Invalid)
             {
                 var intType = PrimitiveType.Create(Domain.SignedInt, (int)srcReg.BitSize);
                 m.Assign(dst, m.Convert(src, intType, realType));
@@ -289,7 +289,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteUaddw()
         {
-            if (instr.vectorData != VectorData.Invalid || instr.Operands[1] is VectorRegisterOperand)
+            if (instr.VectorData != VectorData.Invalid || instr.Operands[1] is VectorRegisterOperand)
             {
                 var domain = Domain.UnsignedInt;
                 var arrayLeft = MakeArrayType(instr.Operands[1], domain);
@@ -314,7 +314,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteUmlal()
         {
-            if (instr.vectorData != VectorData.Invalid || instr.Operands[1] is VectorRegisterOperand)
+            if (instr.VectorData != VectorData.Invalid || instr.Operands[1] is VectorRegisterOperand)
             {
                 var domain = Domain.UnsignedInt;
                 var arrayLeft = MakeArrayType(instr.Operands[1], domain);

@@ -809,7 +809,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_tlbwi()
         {
             AssertCode(0x42000002,   // tlbwi
-                "0|L--|00100000(4): 1 instructions",
+                "0|S--|00100000(4): 1 instructions",
                 "1|L--|__tlbwi()");
         }
 
@@ -1275,7 +1275,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0xBCC80000,   // cache	08,0000(r6)
                 "0|S--|00100000(4): 1 instructions",
-                "1|L--|__cache(8<8>, &Mem0[r6:word32])");
+                "1|S--|__cache(8<8>, &Mem0[r6:word32])");
         }
 
         [Test]

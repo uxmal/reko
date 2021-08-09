@@ -26,14 +26,15 @@ namespace Reko.Arch.Arm.AArch64
 {
     public class AArch64Instruction : MachineInstruction
     {
-        public Mnemonic shiftCode;
-        public MachineOperand? shiftAmount;
-        public VectorData vectorData;
-
         public Mnemonic Mnemonic { get; set; }
         public override int MnemonicAsInteger => (int)Mnemonic;
 
         public override string MnemonicAsString => Mnemonic.ToString();
+
+        public Mnemonic ShiftCode { get; set; }
+        public MachineOperand? ShiftAmount { get; set; }
+        public VectorData VectorData { get; set; }
+
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
@@ -48,14 +49,14 @@ namespace Reko.Arch.Arm.AArch64
                 renderer.WriteChar(',');
                 RenderOperand(op, renderer, options);
             }
-            if (this.shiftCode == Mnemonic.Invalid)
+            if (this.ShiftCode == Mnemonic.Invalid)
                 return;
-            if (shiftCode == Mnemonic.lsl && (shiftAmount is ImmediateOperand imm && imm.Value.IsIntegerZero))
+            if (ShiftCode == Mnemonic.lsl && (ShiftAmount is ImmediateOperand imm && imm.Value.IsIntegerZero))
                 return;
             renderer.WriteChar(',');
-            renderer.WriteMnemonic(shiftCode.ToString());
+            renderer.WriteMnemonic(ShiftCode.ToString());
             renderer.WriteChar(' ');
-            RenderOperand(shiftAmount!, renderer, options);
+            RenderOperand(ShiftAmount!, renderer, options);
         }
 
         private int WriteMnemonic(MachineInstructionRenderer renderer)
@@ -110,7 +111,7 @@ namespace Reko.Arch.Arm.AArch64
         {
             int elemSize;
             string elemName;
-            switch (vectorData)
+            switch (VectorData)
             {
             case VectorData.F32:
             case VectorData.I32:

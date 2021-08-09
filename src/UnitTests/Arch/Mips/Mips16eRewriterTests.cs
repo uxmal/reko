@@ -35,16 +35,18 @@ namespace Reko.UnitTests.Arch.Mips
     [TestFixture]
     public class Mips16eRewriterTests : RewriterTestBase
     {
-        private MipsProcessorArchitecture arch;
-        private Address addr;
+        private readonly MipsProcessorArchitecture arch;
+        private readonly Address addr;
 
-        [SetUp]
-        public void Setup()
+        public Mips16eRewriterTests()
         {
             this.arch = new MipsBe32Architecture(
                 CreateServiceContainer(),
                 "mips-be-32",
-                new Dictionary<string, object> { { "decoder", "mips16e" } });
+                new Dictionary<string, object> { 
+                    { ProcessorOption.InstructionSet, "mips16e" },
+                    { ProcessorOption.Endianness, "be" }
+                });
             this.addr = Address.Ptr32(0x00100000);
         }
 

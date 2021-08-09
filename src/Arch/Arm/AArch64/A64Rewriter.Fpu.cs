@@ -47,7 +47,7 @@ namespace Reko.Arch.Arm.AArch64
             var arrayBitsize = mop.Width.BitSize;
             var elemBitsize = Bitsize((mop is VectorRegisterOperand vector)
                 ? vector.ElementType
-                : instr.vectorData);
+                : instr.VectorData);
             var celem = arrayBitsize / elemBitsize;
             DataType elemType;
             if (domain == 0)
