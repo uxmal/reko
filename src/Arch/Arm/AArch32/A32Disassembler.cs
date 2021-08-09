@@ -821,13 +821,13 @@ namespace Reko.Arch.Arm.AArch32
 
         // Multiple registers
         private static Mutator<A32Disassembler> Mr(int pos, int size) {
-            var bitfields = new[]
-            {
-                new Bitfield(pos, size)
-            };
+            var bitfield = new Bitfield(pos, size);
             return (u, d) =>
             {
-                var imm = Bitfield.ReadFields(bitfields, u);
+                var imm = bitfield.Read(u);
+                // Test (L)oad and r15 bits.
+                if ((u & 0x0010_8000) == 0x0010_8000)
+                    d.state.iclass = InstrClass.Transfer;
                 d.state.ops.Add(new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (ushort) imm));
                 return true;
             };
@@ -1408,6 +1408,18 @@ namespace Reko.Arch.Arm.AArch32
         }
 
         /// <summary>
+        /// If the current operand is the LR register, make the instruction
+        /// a return instruction.
+        /// </summary>
+        private static bool useLr(uint uInstr, A32Disassembler dasm)
+        {
+            var reg = ((RegisterOperand) dasm.state.ops[^1]).Register;
+            if (reg == Registers.lr)
+                dasm.state.iclass = InstrClass.Transfer | InstrClass.Return;
+            return true;
+        }
+
+        /// <summary>
         /// Not yet implemented decoder.
         /// </summary>
         private static Mutator<A32Disassembler> x(string message)
@@ -1474,7 +1486,7 @@ namespace Reko.Arch.Arm.AArch32
 
         // Alias mutators that morph the disassembled instruction
         // if special cases are present
-        private static bool MovToShift(uint wInstr, A32Disassembler dasm)
+        private static bool MovPostProcess(uint wInstr, A32Disassembler dasm)
         {
             if (dasm.state.shiftOp != Mnemonic.Invalid)
             {
@@ -1484,16 +1496,28 @@ namespace Reko.Arch.Arm.AArch32
                 dasm.state.shiftOp = Mnemonic.Invalid;
                 return true;
             }
-            if (((RegisterOperand) dasm.state.ops[0]).Register == Registers.pc)
+            var regDst = (RegisterOperand) dasm.state.ops[0];
+            var regSrc = (RegisterOperand) dasm.state.ops[1];
+            if (regDst.Register == Registers.pc)
             {
-                if (((RegisterOperand) dasm.state.ops[1]).Register == Registers.lr)
+                if (regSrc.Register == Registers.lr)
                 {
                     dasm.state.iclass = InstrClass.Transfer | InstrClass.Return;
                 }
                 else
                 {
-                    dasm.state.iclass = InstrClass.Transfer;
+                    dasm.state.iclass = InstrClass.Transfer | InstrClass.Indirect;
                 }
+            }
+            return true;
+        }
+
+        private static bool maybePcSet(uint uInstr, A32Disassembler dasm)
+        {
+            if (dasm.state.ops[0] is RegisterOperand regDst && 
+                regDst.Register == Registers.pc)
+            {
+                dasm.state.iclass = InstrClass.Transfer | InstrClass.Indirect;
             }
             return true;
         }
@@ -1901,9 +1925,9 @@ namespace Reko.Arch.Arm.AArch32
                 Hvc,
                 Smc);
 
-            var Bx = Instr(Mnemonic.bx, InstrClass.Transfer, r(0));
+            var Bx = Instr(Mnemonic.bx, InstrClass.Transfer, r(0), useLr);
             var Bxj = Instr(Mnemonic.bxj, InstrClass.Transfer, r(0));
-            var Blx = Instr(Mnemonic.blx, J);
+            var Blx = Instr(Mnemonic.blx, InstrClass.Transfer|InstrClass.Call, J);
             var Clz = Instr(Mnemonic.clz, r(3),r(0));
             var Eret = Instr(Mnemonic.eret, InstrClass.Transfer | InstrClass.Return);
 
@@ -1950,7 +1974,7 @@ namespace Reko.Arch.Arm.AArch32
                 MoveSpecialRegister,
                 Bx,
                 Bxj,
-                Instr(Mnemonic.blx, r(0)),
+                Instr(Mnemonic.blx, InstrClass.Transfer|InstrClass.Call, r(0)),
 
                 CyclicRedundancyCheck,
                 IntegerSaturatingArithmetic,
@@ -2017,7 +2041,7 @@ namespace Reko.Arch.Arm.AArch32
 
             var LogicalArithmeticImmShift = Mask(21, 2, "Logic arithmetic immediate shift",
                 Instr(Mnemonic.orr, s,r(3),r(4),r(0),Shi),
-                Instr(Mnemonic.mov, s,r(3),r(0),Shi,MovToShift),
+                Instr(Mnemonic.mov, s,r(3),r(0),Shi,MovPostProcess),
                 Instr(Mnemonic.bic, s,r(3),r(4),r(0),Shi),
                 Instr(Mnemonic.mvn, s,r(3),r(0),Shi));
 
@@ -2195,7 +2219,7 @@ namespace Reko.Arch.Arm.AArch32
                     Instr(Mnemonic.ldrb, r(3),Mo(w1))));
 
             var StrReg = Instr(Mnemonic.str, r(3),Mx(w4));
-            var LdrReg = Instr(Mnemonic.ldr, r(3),Mx(w4));
+            var LdrReg = Instr(Mnemonic.ldr, r(3),Mx(w4), maybePcSet);
             var StrbReg = Instr(Mnemonic.strb, r(3),Mx(w1));
             var LdrbReg = Instr(Mnemonic.ldrb, r(3),Mx(w1));
             var StrtReg = Instr(Mnemonic.strt, r(3),Mx(w4));
@@ -2674,7 +2698,7 @@ namespace Reko.Arch.Arm.AArch32
                 Mask(24, 1,
                     Instr(Mnemonic.b, InstrClass.Transfer, J),
                     Instr(Mnemonic.bl, InstrClass.Transfer|InstrClass.Call, J)),
-                Instr(Mnemonic.blx, X));
+                Instr(Mnemonic.blx, InstrClass.Transfer | InstrClass.Call, X));
 
             var Branch_BranchLink_BlockDataTransfer = Mask(25, 1, "Branch_BranchLink_BlockDataTransfer",
                 new PcDecoder(28,

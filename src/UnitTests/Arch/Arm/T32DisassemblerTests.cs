@@ -77,6 +77,14 @@ namespace Reko.UnitTests.Arch.Arm
             Assert.AreEqual(sExp, instr.ToString());
         }
 
+        private void Expect_Code(string sExp, InstrClass iclassExp)
+        {
+            Assert.IsTrue(dasm.MoveNext());
+            var instr = dasm.Current;
+            Assert.AreEqual(sExp, instr.ToString());
+            Assert.AreEqual(iclassExp, instr.InstructionClass);
+        }
+
         protected override IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, EndianImageReader rdr)
         {
             return arch.CreateDisassembler(rdr).GetEnumerator();
@@ -794,7 +802,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ThumbDis_nop()
         {
             Given_Instructions(0xBF00);
-            Expect_Code("nop");
+            Expect_Code("nop", InstrClass.Linear | InstrClass.Padding);
         }
 
         [Test]

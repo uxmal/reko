@@ -158,13 +158,16 @@ namespace Reko.Arch.Arm.AArch32
                 var registers = (ushort)wInstr;
                 var w = SBitfield(wInstr, 16 + 5, 1) != 0;
                 var l = SBitfield(wInstr, 16 + 4, 1);
+                var iclass = (l != 0 && (registers & 0x8000) != 0)
+                    ? InstrClass.Transfer
+                    : InstrClass.Linear;
                 // writeback
                 if (rn == Registers.sp)
                 {
                     return new T32Instruction
                     {
                         Mnemonic = l != 0 ? Mnemonic.pop : Mnemonic.push,
-                        InstructionClass = InstrClass.Linear,
+                        InstructionClass = iclass,
                         Wide = true,
                         Writeback = w,
                         Operands = new MachineOperand[] { new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, registers) }

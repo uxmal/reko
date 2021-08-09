@@ -114,15 +114,18 @@ namespace Reko.UnitTests.Arch.Arm
     [TestFixture]
     public class A32DisassemblerTests : ArmTestBase
     {
-        private const string ArmObsolete = "Obsolete instrction? can't find it in ARM Architecture Reference Manual - ARMv8, for ARMv8";
         protected override IProcessorArchitecture CreateArchitecture()
         {
             return new Arm32Architecture(new ServiceContainer(), "arm32", new Dictionary<string, object>());
         }
 
-        private void Expect_Code(string sExp)
+        private void Expect_Code(string sExp, InstrClass iclassExp = InstrClass.None)
         {
             Assert.AreEqual(sExp, armInstr.ToString());
+            if (iclassExp != InstrClass.None)
+            {
+                Assert.AreEqual(iclassExp, armInstr.InstructionClass);
+            }
         }
 
         [Test]
@@ -173,6 +176,7 @@ namespace Reko.UnitTests.Arch.Arm
             var instr = Disassemble32(0x40721023);
             Assert.AreEqual("rsbsmi\tr1,r2,r3,lsr #&20", instr.ToString());
         }
+
 
         [Test]
         public void ArmDasm_addpls_rr_asr_32()
@@ -329,17 +333,31 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmDasm_lsl_same_register()
+        {
+            Disassemble32(0xE1A0_3103);
+            Expect_Code("lsl\tr3,r3,#2", InstrClass.Linear);
+        }
+
+        [Test]
         public void ArmDasm_mov_2()
         {
-            var instr = Disassemble32(0xE1a03000);
+            var instr = Disassemble32(0xE1A03000);
             Assert.AreEqual("mov\tr3,r0", instr.ToString());
         }
 
         [Test]
         public void ArmDasm_ldm()
         {
-            var instr = Disassemble32(0xE89B000F);
-            Assert.AreEqual("ldm\tfp,{r0-r3}", instr.ToString());
+            Disassemble32(0xE89B000F);
+            Expect_Code("ldm\tfp,{r0-r3}", InstrClass.Linear);
+        }
+
+        [Test]
+        public void ArmDasm_ldm_read_pc()
+        {
+            Disassemble32(0xE89B800F);
+            Expect_Code("ldm\tfp,{r0-r3,pc}", InstrClass.Transfer);
         }
 
         [Test]
@@ -381,14 +399,14 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmDasm_pop_one()
         {
-            var instr = Disassemble32(0xE49DE004);
+            Disassemble32(0xE49DE004);
             Expect_Code("pop\tlr");
         }
 
         [Test]
         public void ArmDasm_blx()
         {
-            var instr = Disassemble32(0xFB000000);
+            Disassemble32(0xFB000000);
             Expect_Code("blx\t$0010000A");
         }
 
@@ -418,6 +436,13 @@ namespace Reko.UnitTests.Arch.Arm
         {
             var instr = Disassemble32(0xE1F322D1);
             Assert.AreEqual("ldrsb\tr2,[r3,#&21]!", instr.ToString());
+        }
+
+        [Test]
+        public void ArmDasm_ldrls_pc()
+        {
+            Disassemble32(0x979FF103);
+            Expect_Code("ldrls\tpc,[pc,r3,lsl #2]", InstrClass.ConditionalTransfer|InstrClass.Indirect);   // 
         }
 
         [Test]
@@ -455,10 +480,12 @@ namespace Reko.UnitTests.Arch.Arm
             Assert.AreEqual("ldr\tr0,[pc,#&10]", instr.ToString());
         }
 
+
+
         [Test]
         public void ArmDasm_orr()
         {
-            var instr = Disassemble32(0xe3812001);
+            var instr = Disassemble32(0xE3812001);
             Assert.AreEqual("orr\tr2,r1,#1", instr.ToString());
         }
 
@@ -481,13 +508,6 @@ namespace Reko.UnitTests.Arch.Arm
         {
             var instr = Disassemble32(0xE4D43001);
             Assert.AreEqual("ldrb\tr3,[r4],#&1", instr.ToString());
-        }
-
-        [Test]
-        public void ArmDasm_ldrls_pc()
-        {
-            var instr = Disassemble32(0x979FF103);
-            Assert.AreEqual("ldrls\tpc,[pc,r3,lsl #2]", instr.ToString());
         }
 
         [Test]
