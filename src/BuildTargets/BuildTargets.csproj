@@ -32,12 +32,15 @@
 
   <!-- Updates the NuSpec file to contain all the build outputs. This must be done after the build_solution build
        or no files will be found. -->
-  <Target Name="update_runtime_nuspec">
+  <Target Name="update_runtime_nuspec"
+          Inputs="$(ProjectDir)../Installers/NuGetPackage/reko-files.xml"
+          Outputs="$(ProjectDir)../Installers/Runtime/Runtime.nuspec">
     <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=update_runtime_nuspec -P $(RekoCMake)" />
   </Target>
 
-  <!-- This actually build the nupkg, requiring the `update_runtime_spec` step above. -->
-  <Target Name="create_runtime_nupkg">
+  <!-- This actually build the nupkg, requiring the `update_runtime_nuspec` step above. -->
+  <Target Name="create_runtime_nupkg"
+          DependsOnTargets="update_runtime_nuspec">
     <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=create_runtime_nupkg -P $(RekoCMake)" />
   </Target>
 

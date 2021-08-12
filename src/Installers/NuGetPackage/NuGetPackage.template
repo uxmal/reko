@@ -12,11 +12,11 @@
     <iconUrl>https://github.com/uxmal/reko/blob/master/web/images/reko.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Runtime components for the Reko decompiler toolchain</description>
-    <releaseNotes>First release of a NuGet package.</releaseNotes>
+    <releaseNotes>Reko has been ported to .NET Standard 2.1.</releaseNotes>
     <copyright>Copyright (C) 1999-2021 John Källén</copyright>
     <tags>decompiler disassembler</tags>
     <dependencies>
-      <group targetFramework=".NETStandard2.0" />
+      <group targetFramework=".NETStandard2.1" />
     </dependencies>
 
     <!-- Copy Reko metadata into output directory -->

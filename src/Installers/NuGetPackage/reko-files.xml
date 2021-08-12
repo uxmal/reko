@@ -312,6 +312,10 @@
         
     </Component>
 
+    <Component Id="Comp_macos" Directory="MacosFolder" Guid="{47F3E2E0-A65C-4D9C-AF43-CB90713AE305}">
+      <File Id="File_Macos_MpwInterfaces"     Source="$(var.MacOS.ProjectDir)Classic\Mac MPW Interfaces 1991 PASCAL.pas" nuget_target="c:/macos" />
+      <File Id="File_Macos_ClassicInterfaces" Source="$(var.MacOS.ProjectDir)Classic\MacOSClassicInterfaces.p" nuget_target="c:/macos" />
+    </Component>
 
     <Component Id="Comp_Os2_16" Directory="Os2_16Folder" Guid="0444AAFF-1B7C-4182-AEEF-7DFCCDBC426C">
       <File Source="$(var.OS2.ProjectDir)os2-16.xml" nuget_target="c:/os-16" />

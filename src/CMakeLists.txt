@@ -23,7 +23,7 @@ endif()
 
 # The path to the Reko's "src" directory, used for relative path
 set(REKO_SRC ${CMAKE_CURRENT_LIST_DIR})
-set(REKO_VERSION "0.9.3")
+set(REKO_VERSION "0.9.4")
 
 set(artifacts_dir ${REKO_SRC}/../bin)
 file(MAKE_DIRECTORY ${artifacts_dir})
@@ -518,10 +518,10 @@ elseif("${TARGET}" STREQUAL "create_msi_wix")
 		PLATFORM ${REKO_PLATFORM}
 		ARGUMENTS 
 			wix
-			${REKO_SRC}/Drivers/WindowsDecompiler
-			${WINDRIVER_OUTDIR}
-			${REKO_EXE_FRAMEWORK}
+			${CMAKE_BUILD_TYPE}
+			${REKO_SRC}/Installers/NuGetPackage/reko-files.xml
 			${REKO_SRC}/Installers/WixInstaller/Components.wxi.template
+			${REKO_SRC}/Installers/WixInstaller/Components.wxi
 		OUTPUT
 			${REKO_SRC}/Installers/WixInstaller/.skipwixpecupdate
 		TARGET_NAME "update_wix_spec"
@@ -607,10 +607,11 @@ elseif("${TARGET}" STREQUAL "update_runtime_nuspec")
 		PLATFORM ${REKO_PLATFORM}
 		ARGUMENTS 
 			nuget
-			${REKO_SRC}/Installers/Runtime
-			${RUNTIME_OUTDIR}
-			${REKO_LIB_FRAMEWORK}
-			${REKO_SRC}/Installers/Runtime/Runtime.nuspec.template
+			${CMAKE_BUILD_TYPE}
+			${REKO_SRC}/Installers/NuGetPackage/reko-files.xml
+			${REKO_SRC}/Installers/NuGetPackage/NuGetPackage.template
+			${REKO_SRC}/Installers/Runtime/Runtime.nuspec
+			${REKO_SRC}
 		OUTPUT
 			${REKO_SRC}/Installers/Runtime/.skipnuspecupdate
 		TARGET_NAME "update_runtime_nuspec"
