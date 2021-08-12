@@ -522,6 +522,7 @@ elseif("${TARGET}" STREQUAL "create_msi_wix")
 			${REKO_SRC}/Installers/NuGetPackage/reko-files.xml
 			${REKO_SRC}/Installers/WixInstaller/Components.wxi.template
 			${REKO_SRC}/Installers/WixInstaller/Components.wxi
+			${REKO_SRC}
 		OUTPUT
 			${REKO_SRC}/Installers/WixInstaller/.skipwixpecupdate
 		TARGET_NAME "update_wix_spec"
@@ -556,7 +557,9 @@ elseif("${TARGET}" STREQUAL "create_msi_wix")
 			-arch ${REKO_PLATFORM}
 			-o ${WIX_CANDLE_OUTPUT}
 			${WIX_CANDLE_INPUT}
-		DEPENDS ${WIX_CANDLE_INPUT}
+		DEPENDS
+			${WIX_CANDLE_INPUT} 
+			${REKO_SRC}/Installers/WixInstaller/Component.wxi
 	)
 	# 
 	# This target is linked with WIX_CANDLE_OUTPUT (.wixobj)

@@ -46,8 +46,8 @@
       <Directory Id="$(var.PlatformProgramFilesFolder)">
         <Directory Id="jklSoftFolder" Name="jklSoft">
           <Directory Id="INSTALLFOLDER" Name="Reko">
-            <Directory Id="Os2_16Folder" Name="os2-16" /> <!-- Folder for OS/2 16-bit specific files-->
-            <Directory Id="Os2_32Folder" Name="os2-32" /> <!-- Folder for OS/2 32-bit specific files-->
+            <Directory Id="os2_16Folder" Name="os2-16" /> <!-- Folder for OS/2 16-bit specific files-->
+            <Directory Id="os2_32Folder" Name="os2-32" /> <!-- Folder for OS/2 32-bit specific files-->
           </Directory>
         </Directory>
       </Directory>
@@ -74,10 +74,10 @@
       </Component>
     </ComponentGroup>
 
-    <Component Id="Comp_Os2_16" Directory="Os2_16Folder" Guid="0444AAFF-1B7C-4182-AEEF-7DFCCDBC426C">
+    <Component Id="Comp_Os2_16" Directory="os2_16Folder" Guid="0444AAFF-1B7C-4182-AEEF-7DFCCDBC426C">
     </Component>
 
-    <Component Id="Comp_Os2_32" Directory="Os2_32Folder" Guid="17698BD8-9701-44F7-8D05-F42F450334C6">
+    <Component Id="Comp_Os2_32" Directory="os2_32Folder" Guid="17698BD8-9701-44F7-8D05-F42F450334C6">
     </Component>
 
     <Feature Id="ProductFeature" Title="Complete" Level="1">

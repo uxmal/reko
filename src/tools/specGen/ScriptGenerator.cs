@@ -122,7 +122,7 @@ namespace Reko.Tools.specGen
 
         // Validates that all the files referred to by the `vars` dictionary
         // exist in the filesystem.
-        public static bool ValidateVariables(Dictionary<string, string> vars, string configuration,string solutionDir)
+        public static bool ValidateVariables(string configuration, Dictionary<string, string> vars, string solutionDir)
         {
             var filesMissing = false;
             foreach (var (k, vv) in vars)
@@ -133,7 +133,7 @@ namespace Reko.Tools.specGen
                 v = v.Replace("$TargetFwk472Dir$", "bin/$Configuration$/netcoreapp3.1");
                 v = v.Replace("$TargetDir_x64$", "bin/x64/$Configuration$/netcoreapp3.1");
                 v = v.Replace("$Configuration$", configuration);
-                v = v.Replace("../..", solutionDir);
+                v = v.Replace("$SolutionDir$", solutionDir);
                 if (v.EndsWith('/'))
                 {
                     if (!Directory.Exists(v))
@@ -154,7 +154,7 @@ namespace Reko.Tools.specGen
         // Replace macros inside of the variable definitions. Macros have the syntax
         // $macroname$. 
         // Only a set of well-known macros are replaced.
-        public static Dictionary<string, string> ExpandVariables(string configuration, Dictionary<string, string> vars)
+        public static Dictionary<string, string> ExpandVariables(string configuration, string solutionDir, Dictionary<string, string> vars)
         {
             var result = new Dictionary<string, string> { };
             foreach (var (k, vv) in vars)
@@ -165,6 +165,7 @@ namespace Reko.Tools.specGen
                 v = v.Replace("$TargetFwk472Dir$", "bin/$Configuration$/netcoreapp3.1");
                 v = v.Replace("$TargetDir_x64$", "bin/x64/$Configuration$/netcoreapp3.1");
                 v = v.Replace("$Configuration$", configuration);
+                v = v.Replace("$SolutionDir$", solutionDir);
                 result[k] = v;
             }
             return result;
@@ -182,12 +183,12 @@ namespace Reko.Tools.specGen
         // For each given source line, parses it, extracts attributes, and either
         // copies it verbatim to the output if there were no relevant attributes, or generate a 
         // WiX <File... element and writes it to the output.
-        public static void InjectItemIntoWixFile(IEnumerable<string> items, TextWriter output)
+        public static void InjectItemIntoWixFile(IEnumerable<string> items, Dictionary<string,string> vars, TextWriter output)
         {
             foreach (var item in items)
             {
                 var attrs = ParseLineAttributes(item);
-                var wix_item = RenderWixLine(attrs);
+                var wix_item = RenderWixLine(attrs, vars);
                 if (!(wix_item is null))
                 {
                     output.WriteLine(wix_item);
@@ -201,7 +202,7 @@ namespace Reko.Tools.specGen
 
         // Locates the <Component...> elements in the WiX file template, and copies
         // all items into that element.
-        public static void InjectFileItemsIntoWixFile(Dictionary<string, List<string>> spec, string templateFile, string targetFile)
+        public static void InjectFileItemsIntoWixFile(Dictionary<string, List<string>> spec, Dictionary<string,string> vars,  string templateFile, string targetFile)
         {
             var reComponent = new Regex(".*<Component Id=\"(.*?)\".*");
             using var input = File.OpenText(templateFile);
@@ -215,7 +216,7 @@ namespace Reko.Tools.specGen
                 {
                     output.WriteLine("<!-- Caution! Do not edit these values, they are generated automatically");
                     output.WriteLine("     by a script. Edit reko-files.xml instead. -->");
-                    InjectItemIntoWixFile(spec[m.Groups[1].Value], output);
+                    InjectItemIntoWixFile(spec[m.Groups[1].Value], vars, output);
                 }
                 line = input.ReadLine();
             }
@@ -272,12 +273,12 @@ namespace Reko.Tools.specGen
         }
 
         // Renders a WiX <File... element if there is a 'Source' attribute present.
-        public static string RenderWixLine(Dictionary<string, string> attrs)
+        public static string RenderWixLine(Dictionary<string, string> attrs, Dictionary<string,string> vars)
         {
             if (attrs.ContainsKey("Source"))
             {
                 var line = new StringBuilder();
-                line.AppendFormat("<File Source=\"{0}\"", attrs["Source"]);
+                line.AppendFormat("<File Source=\"{0}\"", InterpolateVariables(attrs["Source"], vars));
                 if (attrs.ContainsKey("Id"))
                 {
                     line.AppendFormat(" Id=\"{0}\"", attrs["Id"]);
@@ -338,6 +339,11 @@ namespace Reko.Tools.specGen
                     {
                         var += c;
                     }
+                    else if (sawDollar)
+                    {
+                        s += '$';
+                        s += c;
+                    }
                     else
                     {
                         s += c;
@@ -375,7 +381,7 @@ namespace Reko.Tools.specGen
         public static void UpdateWixFile(string configuration, string masterSpecFile, string template, string generatedFile, string solutionDir)
         {
             var (vars, spec) = LoadSpecification(configuration, masterSpecFile, solutionDir);
-            InjectFileItemsIntoWixFile(spec, template, generatedFile);
+            InjectFileItemsIntoWixFile(spec, vars, template, generatedFile);
         }
 
         public static void UpdateNugetFile(string configuration, string masterSpecFile, string template, string generatedFile, string solutionDir)
@@ -394,12 +400,15 @@ namespace Reko.Tools.specGen
             //    PrintMissingVariables(missing_vars);
             //    Environment.Exit(-1);
             //}
-            if (ValidateVariables(vars, configuration, solutionDir))
-            {
-                Console.WriteLine("Some files are missing. Stopping.");
-                Environment.Exit(-1);
-            }
-            vars = ExpandVariables(configuration, vars);
+            //if (ValidateVariables(configuration, vars, solutionDir))
+            //{
+            //    Console.WriteLine("Some files are missing. Stopping.");
+            //    Environment.Exit(-1);
+            //}
+            //$TODO: inject platform as a variable from command line.
+            vars.Add("var.Platform", "x64");
+            vars.Add("var.Configuration", configuration);
+            vars = ExpandVariables(configuration, solutionDir, vars);
             return (vars, spec);
         }
     }

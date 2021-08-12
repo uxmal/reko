@@ -12,7 +12,6 @@ namespace Reko.Tools.specGen
             var outputFile = args[4];
             var solutionDir = args[5];
 
-
             switch (mode)
             {
             case "nuget":

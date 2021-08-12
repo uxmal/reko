@@ -74,9 +74,9 @@
     <Feature Id="ProductFeature" Title="Complete" Level="1">
       <ComponentRef Id="ProductComponent" />
       <ComponentRef Id="ApplicationShortcut" />
-      <ComponentRef Id="macos" />
-      <ComponentRef Id="os2_16" />
-      <ComponentRef Id="os2_32" />
+      <ComponentRef Id="Comp_macos" />
+      <ComponentRef Id="Comp_Os2_16" />
+      <ComponentRef Id="Comp_Os2_32" />
     </Feature>
 
     <Property Id="WIXUI_INSTALLDIR" Value="ProductComponentFolder" />
