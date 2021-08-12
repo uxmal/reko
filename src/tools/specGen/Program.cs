@@ -6,18 +6,20 @@ namespace Reko.Tools.specGen
 	{
 		static void Main(string[] args) {
             var mode = args[0];
-            var projectDir = args[1];
-            var outDir = args[2];
-            var targetFramework = args[3];
-            var inputFilePath = args[4];
+            var configuration = args[1];
+            var masterSpecFile = args[2];
+            var template = args[3];
+            var outputFile = args[4];
+            var solutionDir = args[5];
+
 
             switch (mode)
             {
             case "nuget":
-                new NugetSpecGen(projectDir, outDir, targetFramework, inputFilePath).Generate();
+                ScriptGenerator.UpdateNugetFile(configuration, masterSpecFile, template, outputFile, solutionDir);
                 break;
             case "wix":
-                new WixSpecGen(projectDir, outDir, targetFramework, inputFilePath).Generate();
+                ScriptGenerator.UpdateWixFile(configuration, masterSpecFile, template, outputFile, solutionDir);
                 break;
             default:
                 Console.Error.WriteLine($"Unsupported mode '{mode}'");
