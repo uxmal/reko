@@ -122,17 +122,17 @@ namespace Reko.Tools.specGen
 
         // Validates that all the files referred to by the `vars` dictionary
         // exist in the filesystem.
-        public static bool ValidateVariables(Dictionary<string, string> vars, string solutionDir)
+        public static bool ValidateVariables(Dictionary<string, string> vars, string configuration,string solutionDir)
         {
             var filesMissing = false;
             foreach (var (k, vv) in vars)
             {
                 var v = vv;
-                v = v.Replace("$TargetDir$", "bin/Debug/netstandard2.1");
-                v = v.Replace("$TargetFwkDir$", "bin/Debug/netcoreapp3.1");
-                v = v.Replace("$TargetFwk472Dir$", "bin/Debug/netcoreapp3.1");
-                v = v.Replace("$TargetDir_x64$", "bin/x64/Debug/netcoreapp3.1");
-                v = v.Replace("$Configuration$", "Debug");
+                v = v.Replace("$TargetDir$", "bin/$Configuration$/netstandard2.1");
+                v = v.Replace("$TargetFwkDir$", "bin/$Configuration$/netcoreapp3.1");
+                v = v.Replace("$TargetFwk472Dir$", "bin/$Configuration$/netcoreapp3.1");
+                v = v.Replace("$TargetDir_x64$", "bin/x64/$Configuration$/netcoreapp3.1");
+                v = v.Replace("$Configuration$", configuration);
                 v = v.Replace("../..", solutionDir);
                 if (v.EndsWith('/'))
                 {
@@ -394,7 +394,7 @@ namespace Reko.Tools.specGen
             //    PrintMissingVariables(missing_vars);
             //    Environment.Exit(-1);
             //}
-            if (ValidateVariables(vars, solutionDir))
+            if (ValidateVariables(vars, configuration, solutionDir))
             {
                 Console.WriteLine("Some files are missing. Stopping.");
                 Environment.Exit(-1);
