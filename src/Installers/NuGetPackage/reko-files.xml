@@ -296,6 +296,11 @@
         <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.Drawing.dll" />
         <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Msagl.GraphViewerGdi.dll" />
         <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\K4os.Compression.LZ4.dll" />
+        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Dynamic.dll" />
+        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Scripting.dll" />
+        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Scripting.Metadata.dll" />
+        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\IronPython.dll" />
+        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\IronPython.Modules.dll" />
         
         <File Source="$(var.SolutionDir)..\external\reactos\coredll.def" nuget_target="c:" />
         <File Source="$(var.SolutionDir)..\external\wine\commdlg.dll16.spec" nuget_target="c:" />
