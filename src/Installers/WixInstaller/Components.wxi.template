@@ -12,4 +12,7 @@
     <Component Id="Comp_macos" Directory="macosFolder" Guid="79036EF4-61B0-4D28-99FE-D5B824A20DCA">
     </Component>
 
+    <Component Id="Comp_Python" Directory="PythonFolder" Guid="8417D79A-A1D6-48D0-8F36-E6F9066C9521">
+    </Component>
+
 </Include>
