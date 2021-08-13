@@ -126,18 +126,12 @@ namespace Reko.Environments.Windows
 
         public override CallingConvention GetCallingConvention(string? ccName)
         {
-            if (ccName == null)
-                return new X86CallingConvention(
-                    Architecture.PointerType.Size,
-                    Architecture.WordWidth.Size,
-                    Architecture.PointerType.Size,
-                    true,
-                    false);
+            ccName = ccName?.TrimStart('_') ?? string.Empty; // Default to cdecl (same as empty string)
+
             switch (ccName)
             {
             case "":
             case "cdecl":
-            case "__cdecl":
                 return new X86CallingConvention(
                     Architecture.PointerType.Size,
                     Architecture.WordWidth.Size,
@@ -145,7 +139,6 @@ namespace Reko.Environments.Windows
                     true,
                     false);
             case "stdcall":
-            case "__stdcall":
             case "stdapi":
                 return new X86CallingConvention(
                     Architecture.PointerType.Size,
@@ -160,12 +153,12 @@ namespace Reko.Environments.Windows
                     Architecture.PointerType.Size,
                     false,
                     true);
-            case "__thiscall":
+            case "thiscall":
                 return new ThisCallConvention(
                     Registers.ecx,
                     Architecture.WordWidth.Size,
                     Architecture.PointerType.Size);
-            case "__fastcall":
+            case "fastcall":
                 return new FastcallConvention(
                     Registers.ecx,
                     Registers.edx,
