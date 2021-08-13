@@ -158,7 +158,7 @@
         <!-- Environments -->
         <File Source="$(var.AmigaOS.TargetPath)" nuget_target="f:" />
         <File Source="$(var.AmigaOS.ProjectDir)exec.funcs" nuget_target="c:" />
-        <File Source="$(var.AmigaOS_Design.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.AmigaOS_Design.TargetPath)" />
         <File Source="$(var.AtariTOS.TargetPath)" nuget_target="f:" />
         <File Source="$(var.AtariTOS.ProjectDir)atariTOS.xml" nuget_target="c:" />
         <File Source="$(var.BbcMicro.TargetPath)" nuget_target="f:" />
@@ -174,7 +174,7 @@
         <File Source="$(var.MorphOS.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Msdos.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Msdos.ProjectDir)realmodeintservices.xml" nuget_target="c:" />
-        <File Source="$(var.Msdos.Design.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.Msdos.Design.TargetPath)" />
         <File Source="$(var.Ps3.TargetPath)" nuget_target="f:" />
         <File Source="$(var.OS2.TargetPath)" nuget_target="f:" />
         <File Source="$(var.RiscOS.TargetPath)" nuget_target="f:" />
@@ -232,11 +232,11 @@
         <File Source="$(var.LatticeMico.TargetPath)" nuget_target="f:" />
         <File Source="$(var.M6800.TargetPath)" nuget_target="f:" />
         <File Source="$(var.M68k.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.M68k.Design.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.M68k.Design.TargetPath)" />
         <File Source="$(var.MCore.TargetPath)" nuget_target="f:" />
         <File Source="$(var.MicroBlaze.TargetPath)" nuget_target="f:" />
         <File Source="$(var.MicrochipPIC.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.MicrochipPIC.Design.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.MicrochipPIC.Design.TargetPath)" />
         <File Source="$(var.MilStd1750.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Mips.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Mos6502.TargetPath)" nuget_target="f:" />
@@ -245,7 +245,7 @@
         <File Source="$(var.PaRisc.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Pdp11.TargetPath)" nuget_target="f:" />
         <File Source="$(var.PowerPC.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.PowerPC.Design.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.PowerPC.Design.TargetPath)" />
         <File Source="$(var.Qualcomm.TargetPath)" nuget_target="f:" />
         <File Source="$(var.RiscV.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Rl78.TargetPath)" nuget_target="f:" />
@@ -257,7 +257,7 @@
         <File Source="$(var.V850.TargetPath)" nuget_target="f:" />
         <File Source="$(var.WE32100.TargetPath)" nuget_target="f:" />
         <File Source="$(var.X86.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.X86.Design.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.X86.Design.TargetPath)" />
         <File Source="$(var.XCore.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Xtensa.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Z80.TargetPath)" nuget_target="f:" />
