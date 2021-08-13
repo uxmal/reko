@@ -122,6 +122,7 @@
         <var id="var.Libc.TargetPath"   >$SolutionDir$/Libraries/Libc/$TargetDir$/Reko.Libraries.Libc.dll</var>
         <var id="var.Python.TargetPath" >$SolutionDir$/Libraries/Python/$TargetDir$/Reko.Libraries.Python.dll</var>
 
+        <var id="var.Scripts.Python.ProjectDir" >$SolutionDir$/Scripts/Python/</var>
         <var id="var.Scripts.Python.TargetPath" >$SolutionDir$/Scripts/Python/$TargetDir$/Reko.Scripts.Python.dll</var>
     </vars>
     
@@ -410,6 +411,12 @@
       <File Source="$(var.OS2.ProjectDir)32\uconv.def" nuget_target="c:/os-32" />
       <File Source="$(var.OS2.ProjectDir)32\upm32.def" nuget_target="c:/os-32" />
       <File Source="$(var.OS2.ProjectDir)32\viocalls.def" nuget_target="c:/os-32" />
+    </Component>
+
+    <Component Id="Comp_Python" Directory="PythonFolder" Guid="8417D79A-A1D6-48D0-8F36-E6F9066C9521">
+      <File Id="File_Python_new_script_template" Source="$(var.Scripts.Python.ProjectDir)_new_script_template.py" nuget_target="c:/Python" />
+      <File Id="File_Python_program" Source="$(var.Scripts.Python.ProjectDir)_program.py" nuget_target="c:/Python" />
+      <File Id="File_Python_reko" Source="$(var.Scripts.Python.ProjectDir)_reko.py" nuget_target="c:/Python" />
     </Component>
 
 </reko-files>
