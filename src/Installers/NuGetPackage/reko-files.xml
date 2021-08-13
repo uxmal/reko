@@ -6,7 +6,7 @@
         <var id="var.Decompiler.ProjectDir">$SolutionDir$/Decompiler/</var>
         <var id="var.Decompiler.TargetPath">$SolutionDir$/Decompiler/$TargetDir$/Reko.dll</var>
         <var id="var.Gui.TargetPath">$SolutionDir$/Gui/$TargetDir$/Reko.Gui.dll</var>
-        <var id="var.CmdLine.TargetPath">$SolutionDir$/Drivers/CmdLine/$TargetDir_x64$/decompile.exe</var>
+        <var id="var.CmdLine.TargetDir">$SolutionDir$/Drivers/CmdLine/$TargetDir_x64$/</var>
         <var id="var.WindowsDecompiler.ProjectDir">$SolutionDir$/Drivers/WindowsDecompiler/</var>
         <var id="var.WindowsDecompiler.TargetDir">$SolutionDir$/Drivers/WindowsDecompiler/$TargetDir_x64$/</var>
         <var id="var.WindowsDecompiler.TargetPath">$SolutionDir$/Drivers/WindowsDecompiler/$TargetDir_x64$/WindowsDecompiler.exe</var>
@@ -129,11 +129,16 @@
         <File Source="$(var.Core.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Decompiler.TargetPath)" nuget_target="f:" />
         <File Source="$(var.WindowsDecompiler.ProjectDir)..\reko.config" Name="reko.config" nuget_target="c:" />
+        
+        <!-- User interfaces -->
         <File Source="$(var.Gui.TargetPath)" />
         <File Source="$(var.WindowsForms.TargetPath)" />
-        <File Source="$(var.WindowsDecompiler.TargetPath)" Id="F_DecompilerExecutable"/>
+        <File Source="$(var.WindowsDecompiler.TargetDir)WindowsDecompiler.exe" />
+        <File Source="$(var.WindowsDecompiler.TargetDir)WindowsDecompiler.dll" />
         <File Source="$(var.WindowsDecompiler.TargetDir)WindowsDecompiler.runtimeconfig.json" Id="F_WindowsDecompilerRuntimeConfig" />
-        <File Source="$(var.CmdLine.TargetPath)" />
+        <File Source="$(var.CmdLine.TargetDir)decompile.exe" />
+        <File Source="$(var.CmdLine.TargetDir)decompile.dll" />
+        <File Source="$(var.CmdLine.TargetDir)decompile.runtimeconfig.json" />
         
         <!-- Image loaders -->
         <File Source="$(var.BinHex.TargetPath)" nuget_target="f:" />
