@@ -90,12 +90,34 @@ namespace Reko.Environments.Msdos
 
         public override CallingConvention GetCallingConvention(string? ccName)
         {
-            return new X86CallingConvention(
-                4,      //$REVIEW: this is a far call, what about near calls?
-                2,
-                4,      //$REVIEW: this is a far ptr.
-                true,
-                false);
+            ccName = ccName?.TrimStart('_') ?? string.Empty; // Default to cdecl (same as empty string)
+
+            switch (ccName)
+            {
+            case "":
+            case "cdecl":
+                return new X86CallingConvention(
+                    4,      //$REVIEW: this is a far call, what about near calls?
+                    2,
+                    4,      //$REVIEW: this is a far ptr.
+                    true,
+                    false);
+            case "stdcall":
+                return new X86CallingConvention(
+                    4,      //$REVIEW: this is a far call, what about near calls?
+                    2,
+                    4,      //$REVIEW: this is a far ptr.
+                    false,
+                    false);
+            case "pascal":
+                return new X86CallingConvention(
+                    4,      //$REVIEW: this is a far call, what about near calls?
+                    2,
+                    4,      //$REVIEW: this is a far ptr.
+                    false,
+                    true);
+            }
+            throw new ArgumentOutOfRangeException(string.Format("Unknown calling convention '{0}'.", ccName));
         }
 
 
