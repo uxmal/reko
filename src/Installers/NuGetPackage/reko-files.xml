@@ -263,7 +263,7 @@
         <File Source="$(var.Z80.TargetPath)" nuget_target="f:" />
         <File Source="$(var.zSeries.TargetPath)" nuget_target="f:" />
 
-        <File Source="$SolutionDir$/Native/build/$(var.Platform)/$(var.Configuration)/ArmNative/ArmNative.dll" />
+        <File Source="$(var.SolutionDir)Native/build/$(var.Platform)/$(var.Configuration)/ArmNative/ArmNative.dll" />
 
         <!-- Symbol sources -->
         <File Source="$(var.LGSymLoader.TargetPath)" nuget_target="f:" />
