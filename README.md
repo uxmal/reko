@@ -1,7 +1,7 @@
 
 # reko - a general purpose decompiler.
 
-[![GitHub workflow status](https://github.com/uxmal/reko/workflows/Reko/badge.svg)]
+![GitHub workflow status](https://github.com/uxmal/reko/workflows/Reko/badge.svg)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/uxmal/reko?branch=master&svg=true)](https://ci.appveyor.com/project/uxmal/reko)
  [![Build Status](https://travis-ci.org/uxmal/reko.svg?branch=master)](https://travis-ci.org/uxmal/reko) 
  [![Join us on Discord](https://img.shields.io/static/v1?link=https://discord.gg/9PMWVxEjqr&message=Join%20Discord&logo=discord&style=flat&color=107090&labelColor=5E5E5E&label=&logoColor=white)](https://discord.gg/9PMWVxEjqr)
@@ -51,7 +51,7 @@ decompiler only if you have legal rights to decompile the binary
 Official releases are published every few months on [Github](https://github.com/uxmal/reko/releases)
 and [SourceForge](https://sourceforge.net/projects/decompiler/files/). 
 Users who can't or won't build Reko themselves can download the output
-of the [AppVeyor integration builder](https://ci.appveyor.com/project/uxmal/reko/build/artifacts).
+of the [Cirrus CI integration builder](https://cirrus-ci.com/uxmal/reko) or the [Github Actions integration builder](https://github.com/uxmal/reko/actions/workflows/reko.yml).
 Naturally you can build the project from the sources: see "Hacking" 
 below.
 

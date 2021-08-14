@@ -1,5 +1,7 @@
 env:
   CIRRUS_CLONE_DEPTH: 1
+  MSBUILDDISABLENODEREUSE: 1
+
 
 linux_x64_task:
   container:
@@ -23,3 +25,68 @@ linux_x64_task:
     - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_runtime_nupkg -m ./src/BuildTargets/BuildTargets.csproj
   release_script:
     - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
+
+  binaries_artifacts:
+    path: "bin/*"
+
+darwin_x64_task:
+  macos_instance:
+    image: big-sur-xcode-12.4
+
+  install_script:
+    - brew install pkg-config cmake capstone p7zip
+    - brew install --cask dotnet-sdk
+    - brew tap isen-ng/dotnet-sdk-versions
+    - brew install --cask dotnet-sdk3-1-400
+
+  prepare_script:
+    - dotnet nuget locals all --clear
+  build_script:
+    - dotnet msbuild -p:Platform=x64 -p:Configuration=UnixRelease -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
+  test_script:
+    - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
+  regressions_script:
+    - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
+  nupkg_script:
+    - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_runtime_nupkg -m ./src/BuildTargets/BuildTargets.csproj
+  release_script:
+    - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
+
+  binaries_artifacts:
+    path: "bin/*"
+
+windows_x64_task:
+  windows_container:
+    cpu: 8
+    memory: 8G
+    dockerfile: .ci/windows/Dockerfile
+    os_version: 2019
+
+  clone_script:
+    # Use custom cloning to set the autocrlf to true
+    CMD.exe /C ECHO ON &
+      IF NOT DEFINED CIRRUS_PR (
+      git config --global core.autocrlf true &
+      git clone --depth %CIRRUS_CLONE_DEPTH% --recursive --branch=%CIRRUS_BRANCH% https://x-access-token:%CIRRUS_REPO_CLONE_TOKEN%@github.com/%CIRRUS_REPO_FULL_NAME%.git %CIRRUS_WORKING_DIR% &
+      git reset --hard %CIRRUS_CHANGE_IN_REPO%
+    ) ELSE (
+      git config --global core.autocrlf true &
+      git clone --depth %CIRRUS_CLONE_DEPTH% --recursive https://x-access-token:%CIRRUS_REPO_CLONE_TOKEN%@github.com/%CIRRUS_REPO_FULL_NAME%.git %CIRRUS_WORKING_DIR% &
+      git fetch origin pull/%CIRRUS_PR%/head:pull/%CIRRUS_PR% &
+      git reset --hard %CIRRUS_CHANGE_IN_REPO%
+    )
+  build_script:
+    - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -v:m -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
+  test_script:
+    - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -v:m -t:run_unit_tests -m ./src/BuildTargets/BuildTargets.csproj
+  regressions_script:
+    - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -v:m -t:run_regressions -m ./src/BuildTargets/BuildTargets.csproj
+  nupkg_script:
+    - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -v:m -t:create_runtime_nupkg -m ./src/BuildTargets/BuildTargets.csproj
+  installer_script:
+    - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -v:m -t:create_msi_wix -m ./src/BuildTargets/BuildTargets.csproj
+  release_script:
+    - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -v:m -t:create_release -m ./src/BuildTargets/BuildTargets.csproj
+
+  binaries_artifacts:
+    path: "bin/*"
