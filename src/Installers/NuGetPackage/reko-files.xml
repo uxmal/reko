@@ -307,7 +307,7 @@
         <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Scripting.Metadata.dll" />
         <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\IronPython.dll" />
         <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\IronPython.Modules.dll" />
-        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\System.CodeDom.dll" />
+        <File Source="$(var.CmdLine.TargetDir)System.CodeDom.dll" />
         
         <File Source="$(var.SolutionDir)..\external\reactos\coredll.def" nuget_target="c:" />
         <File Source="$(var.SolutionDir)..\external\wine\commdlg.dll16.spec" nuget_target="c:" />
