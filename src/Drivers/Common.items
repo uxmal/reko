@@ -53,6 +53,7 @@ by the PreBuild.targets file.
     <ProjectReference Include="$(SolutionDir)Arch\SuperH\SuperH.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Tlcs\Tlcs.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Tms7000\Tms7000.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Tms320C28\Tms320C28.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\V850\V850.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Vax\Vax.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\WE32100\WE32100.csproj" />
@@ -154,6 +155,7 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\SuperH\bin\$(StandardOutputDir)\Reko.Arch.SuperH.*" />
     <Architectures Include="$(SolutionDir)Arch\Tlcs\bin\$(StandardOutputDir)\Reko.Arch.Tlcs.*" />
     <Architectures Include="$(SolutionDir)Arch\Tms7000\bin\$(StandardOutputDir)\Reko.Arch.Tms7000.*" />
+    <Architectures Include="$(SolutionDir)Arch\Tms320C28\bin\$(StandardOutputDir)\Reko.Arch.Tms320C28.*" />
     <Architectures Include="$(SolutionDir)Arch\V850\bin\$(StandardOutputDir)\Reko.Arch.V850.*" />
     <Architectures Include="$(SolutionDir)Arch\Vax\bin\$(StandardOutputDir)\Reko.Arch.Vax.*" />
     <Architectures Include="$(SolutionDir)Arch\WE32100\bin\$(StandardOutputDir)\Reko.Arch.WE32100.*" />
