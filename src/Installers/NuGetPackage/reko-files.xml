@@ -210,6 +210,8 @@
       <File Source="$(var.SysV.ProjectDir)lp32.xml" nuget_target="c:" />
       <File Source="$(var.SysV.ProjectDir)lp64.xml" nuget_target="c:" />
       <File Source="$(var.SysV.ProjectDir)libc.so.xml" nuget_target="c:" />
+      <File Source="$(var.SysV.ProjectDir)linux-syscalls-i386.xml" nuget_target="c:" />
+      <File Source="$(var.SysV.ProjectDir)opengl.xml" nuget_target="c:" />
       <File Source="$(var.SysV.ProjectDir)Xlib.xml" nuget_target="c:" />
       <File Source="$(var.SysV.ProjectDir)sysvcharacteristics.xml" nuget_target="c:" />
       <File Source="$(var.Trs80.ProjectDir)CoCoMemoryMap.xml" nuget_target="c:" />
@@ -224,12 +226,14 @@
       <File Source="$(var.Windows.ProjectDir)kernel32.xml" nuget_target="c:" />
       <File Source="$(var.Windows.ProjectDir)msvcrt.xml" nuget_target="c:" />
       <File Source="$(var.Windows.ProjectDir)ntoskrnl.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)oleaut32.def" nuget_target="c:" />
       <File Source="$(var.Windows.ProjectDir)oleaut32.xml" nuget_target="c:" />
       <File Source="$(var.Windows.ProjectDir)shell32.xml" nuget_target="c:" />
       <File Source="$(var.Windows.ProjectDir)user32.xml" nuget_target="c:" />
       <File Source="$(var.Windows.ProjectDir)win16characteristics.xml" nuget_target="c:" />
       <File Source="$(var.Windows.ProjectDir)win32characteristics.xml" nuget_target="c:" />
       <File Source="$(var.Windows.ProjectDir)win64characteristics.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)wince.inc" nuget_target="c:" />
       <File Source="$(var.Windows.ProjectDir)windows_CE.xml" nuget_target="c:" />
       <File Source="$(var.Windows.ProjectDir)windows32.xml" nuget_target="c:" />
       <File Source="$(var.Windows.ProjectDir)windows64.xml" nuget_target="c:" />
@@ -332,9 +336,11 @@
       <File Source="$(var.CmdLine.TargetDir)K4os.Compression.LZ4.dll" nuget_target="f:" />
 
       <File Source="$(var.SolutionDir)..\external\reactos\coredll.def" nuget_target="c:" />
+      <File Source="$(var.SolutionDir)..\external\wine\comctl32.spec" nuget_target="c:" />
       <File Source="$(var.SolutionDir)..\external\wine\commdlg.dll16.spec" nuget_target="c:" />
       <File Source="$(var.SolutionDir)..\external\wine\gdi.exe16.spec" nuget_target="c:" />
       <File Source="$(var.SolutionDir)..\external\wine\krnl386.exe16.spec" nuget_target="c:" />
+      <File Source="$(var.SolutionDir)..\external\wine\oleaut32.spec" nuget_target="c:" />
       <File Source="$(var.SolutionDir)..\external\wine\user.exe16.spec" nuget_target="c:" />
 
         <!-- License files -->
