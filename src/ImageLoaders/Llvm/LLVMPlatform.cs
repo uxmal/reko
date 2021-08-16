@@ -31,7 +31,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-#nullable disable
 
 namespace Reko.ImageLoaders.LLVM
 {
@@ -39,11 +38,13 @@ namespace Reko.ImageLoaders.LLVM
     {
         private IServiceProvider services;
 
+#nullable disable
         public LLVMPlatform(IServiceProvider services)
         {
             this.services = services;
             this.Name = "LLVM";
         }
+#nullable enable
 
         public IProcessorArchitecture Architecture { get; set; }
 
@@ -75,6 +76,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
+#nullable enable
         public CParser CreateCParser(TextReader rdr, ParserState? state = null)
         {
             state ??= new ParserState();
@@ -103,7 +105,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public CallingConvention GetCallingConvention(string ccName)
+        public CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
         }
@@ -133,12 +135,12 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public SystemService FindService(RtlInstruction call, ProcessorState state, SegmentMap segmentMap)
+        public SystemService FindService(RtlInstruction call, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
         }
 
-        public SystemService FindService(int vector, ProcessorState state, SegmentMap segmentMap)
+        public SystemService FindService(int vector, ProcessorState? state, SegmentMap? segmentMap)
         {
             throw new NotImplementedException();
         }
@@ -178,12 +180,12 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public ExternalProcedure LookupProcedureByAddress(Address addr)
+        public ExternalProcedure? LookupProcedureByAddress(Address addr)
         {
             return null;
         }
 
-        public ExternalProcedure LookupProcedureByName(string moduleName, string procName)
+        public ExternalProcedure LookupProcedureByName(string? moduleName, string procName)
         {
             throw new NotImplementedException();
         }
@@ -203,17 +205,17 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public Expression ResolveImportByName(string moduleName, string globalName)
+        public Expression ResolveImportByName(string? moduleName, string globalName)
         {
             throw new NotImplementedException();
         }
 
-        public Expression ResolveImportByOrdinal(string moduleName, int ordinal)
+        public Expression ResolveImportByOrdinal(string? moduleName, int ordinal)
         {
             throw new NotImplementedException();
         }
 
-        public Address ResolveIndirectCall(RtlCall call)
+        public Address? ResolveIndirectCall(RtlCall call)
         {
             return null;
         }
@@ -228,7 +230,7 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public bool TryParseAddress(string sAddress, out Address addr)
+        public bool TryParseAddress(string? sAddress, out Address addr)
         {
             throw new NotImplementedException();
         }
