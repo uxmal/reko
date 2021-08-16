@@ -21,6 +21,7 @@
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -64,6 +65,7 @@ namespace Reko.Core.Configuration
     public class RekoConfigurationService : IConfigurationService
     {
         private readonly string configFileRoot;
+        private readonly IPluginLoaderService pluginSvc;
         private readonly IServiceProvider services;
         private readonly List<LoaderDefinition> loaders;
         private readonly List<SignatureFileDefinition> sigFiles;
@@ -75,6 +77,10 @@ namespace Reko.Core.Configuration
 
         public RekoConfigurationService(IServiceProvider services, string rekoConfigPath, RekoConfiguration_v1 config)
         {
+            var pluginSvc = services.GetService<IPluginLoaderService>();
+            if (pluginSvc is null)
+                pluginSvc = new PluginLoaderService();
+            this.pluginSvc = pluginSvc;
             this.configFileRoot = Path.GetDirectoryName(rekoConfigPath);
             this.services = services;
             this.loaders = LoadCollection(config.Loaders, LoadLoaderConfiguration);
@@ -288,21 +294,37 @@ namespace Reko.Core.Configuration
         /// </summary>
         /// <remarks>
         /// For now, we assume the config file is called "reko.config" located in the same directory as the assembly we're executing.
-        /// It's possible that on Un*x systems, the Reko binary could be installed in /usr/bin, while 
+        /// It's possible that on Un*x systems, the Reko binary could be installed in /usr/bin, while the configuration
+        /// file is located somewhere else.
         /// </remarks>
-        /// <returns></returns>
+        /// <returns>A loaded instance of <see cref="RekoConfigurationService"/>.</returns>
         public static RekoConfigurationService Load(IServiceProvider services)
         {
             string configFileName = "reko.config";
-            var appDir = AppDomain.CurrentDomain.BaseDirectory;
-            configFileName = Path.Combine(appDir, configFileName);
+            return Load(services, configFileName);
+        }
+
+        /// <summary>
+        /// Loads the Reko configuration settings from the provided <paramref name="configFileName"/> file.
+        /// </summary>
+        /// <param name="services">Environmental services.</param>
+        /// <param name="configFileName">Path to the reko.config file name. If the path is not absolute, it 
+        /// will be taken relative to the current executing assembly.</param>
+        /// <returns>A loaded instance of <see cref="RekoConfigurationService"/>.</returns>
+        public static RekoConfigurationService Load(IServiceProvider services, string configFileName)
+        {
+            if (!Path.IsPathRooted(configFileName))
+            {
+                var appDir = AppDomain.CurrentDomain.BaseDirectory;
+                configFileName = Path.Combine(appDir, configFileName);
+            }
 
             using var stm = File.Open(configFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-                var ser = new XmlSerializer(typeof(RekoConfiguration_v1));
-                var sConfig = (RekoConfiguration_v1)ser.Deserialize(stm);
-                var cfg = new RekoConfigurationService(services, configFileName, sConfig);
-                return cfg;
-            }
+            var ser = new XmlSerializer(typeof(RekoConfiguration_v1));
+            var sConfig = (RekoConfiguration_v1) ser.Deserialize(stm);
+            var cfg = new RekoConfigurationService(services, configFileName, sConfig);
+            return cfg;
+        }
 
         /// <summary>
         /// Converts a number, which is expressed as a string, to a numeric value.
@@ -319,7 +341,7 @@ namespace Reko.Core.Configuration
             if (sNumber.StartsWith("0x", StringComparison.InvariantCultureIgnoreCase))
             {
                 if (Int64.TryParse(
-                    sNumber.Substring(2),
+                    sNumber[2..],
                     NumberStyles.HexNumber,
                     CultureInfo.InvariantCulture,
                     out long offset))
@@ -415,12 +437,11 @@ namespace Reko.Core.Configuration
         {
             var elem = GetArchitectures()
                 .Where(e => e.Name == archLabel).SingleOrDefault();
-            if (elem == null || elem.TypeName == null)
+            if (elem is null || elem.TypeName is null)
                 return null;
             options ??= new Dictionary<string, object>();
-            var svc = services.RequireService<IPluginLoaderService>();
-            var t = svc.GetType(elem.TypeName);
-            if (t == null)
+            var t = pluginSvc.GetType(elem.TypeName);
+            if (t is null)
                 return null;
             var arch = (IProcessorArchitecture)Activator.CreateInstance(
                 t, 
