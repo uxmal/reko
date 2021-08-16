@@ -4,8 +4,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <RootNamespace>Reko.Runtime</RootNamespace>
-    <AssemblyName>Reko.Runtime</AssemblyName>
+    <RootNamespace>Reko.Decompiler.Runtime</RootNamespace>
+    <AssemblyName>Reko.Decompiler.Runtime</AssemblyName>
     <Platforms>x86;x64</Platforms>
     <Configurations>Debug;Release</Configurations>
     <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile>
