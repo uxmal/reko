@@ -13,11 +13,13 @@
         <var id="var.WindowsForms.TargetPath">$SolutionDir$/UserInterfaces/WindowsForms/$TargetFwkDir$/Reko.UserInterfaces.WindowsForms.dll</var>
 
         <var id="var.Alpha.TargetPath"  >$SolutionDir$/Arch/Alpha/$TargetDir$/Reko.Arch.Alpha.dll</var>
+        <var id="var.Altera.TargetPath"  >$SolutionDir$/Arch/Altera/$TargetDir$/Reko.Arch.Altera.dll</var>
         <var id="var.Arc.TargetPath" >$SolutionDir$/Arch/Arc/$TargetDir$/Reko.Arch.Arc.dll</var>
         <var id="var.Arm.TargetPath" >$SolutionDir$/Arch/Arm/$TargetDir$/Reko.Arch.Arm.dll</var>
         <var id="var.Avr.TargetPath" >$SolutionDir$/Arch/Avr/$TargetDir$/Reko.Arch.Avr.dll</var>
         <var id="var.Blackfin.TargetPath" >$SolutionDir$/Arch/Blackfin/$TargetDir$/Reko.Arch.Blackfin.dll</var>
         <var id="var.C166.TargetPath" >$SolutionDir$/Arch/C166/$TargetDir$/Reko.Arch.C166.dll</var>
+        <var id="var.Cil.TargetPath" >$SolutionDir$/Arch/Cil/$TargetDir$/Reko.Arch.Cil.dll</var>
         <var id="var.CompactRisc.TargetPath" >$SolutionDir$/Arch/CompactRisc/$TargetDir$/Reko.Arch.CompactRisc.dll</var>
         <var id="var.Cray.TargetPath" >$SolutionDir$/Arch/Cray/$TargetDir$/Reko.Arch.Cray.dll</var>
         <var id="var.Etrax.TargetPath" >$SolutionDir$/Arch/Etrax/$TargetDir$/Reko.Arch.Etrax.dll</var>
@@ -35,7 +37,7 @@
         <var id="var.MilStd1750.TargetPath" >$SolutionDir$/Arch/MilStd1750/$TargetDir$/Reko.Arch.MilStd1750.dll</var>
         <var id="var.Mips.TargetPath" >$SolutionDir$/Arch/Mips/$TargetDir$/Reko.Arch.Mips.dll</var>
         <var id="var.Mos6502.TargetPath" >$SolutionDir$/Arch/Mos6502/$TargetDir$/Reko.Arch.Mos6502.dll</var>
-        <var id="var.MSP430.TargetPath" >$SolutionDir$/Arch/MSP430/$TargetDir$/Reko.Arch.MSP430.dll</var>
+        <var id="var.Msp430.TargetPath" >$SolutionDir$/Arch/MSP430/$TargetDir$/Reko.Arch.Msp430.dll</var>
         <var id="var.OpenRISC.TargetPath" >$SolutionDir$/Arch/OpenRISC/$TargetDir$/Reko.Arch.OpenRISC.dll</var>
         <var id="var.PaRisc.TargetPath" >$SolutionDir$/Arch/PaRisc/$TargetDir$/Reko.Arch.PaRisc.dll</var>
         <var id="var.Pdp11.TargetPath" >$SolutionDir$/Arch/Pdp11/$TargetDir$/Reko.Arch.Pdp11.dll</var>
@@ -59,181 +61,198 @@
         <var id="var.zSeries.TargetPath" >$SolutionDir$/Arch/zSeries/$TargetDir$/Reko.Arch.zSeries.dll</var>
         <var id="var.i8051.TargetPath" >$SolutionDir$/Arch/i8051/$TargetDir$/Reko.Arch.i8051.dll</var>
 
-        <var id="var.AmigaOS.ProjectDir">$SolutionDir$/Environments/AmigaOS/</var>
-        <var id="var.AmigaOS.TargetPath">$SolutionDir$/Environments/AmigaOS/$TargetDir$/Reko.Environments.AmigaOS.dll</var>
-        <var id="var.AmigaOS_Design.TargetPath">$SolutionDir$/Environments/AmigaOS.Design/$TargetFwk472Dir$/Reko.Environments.AmigaOS.Design.dll</var>
-        <var id="var.AtariTOS.ProjectDir">$SolutionDir$/Environments/AtariTOS/</var>
-        <var id="var.AtariTOS.TargetPath">$SolutionDir$/Environments/AtariTOS/$TargetDir$/Reko.Environments.AtariTOS.dll</var>
-        <var id="var.BbcMicro.TargetPath">$SolutionDir$/Environments/BbcMicro/$TargetDir$/Reko.Environments.BbcMicro.dll</var>
-        <var id="var.C64.ProjectDir" >$SolutionDir$/Environments/C64/</var>
-        <var id="var.C64.TargetPath" >$SolutionDir$/Environments/C64/$TargetDir$/Reko.Environments.C64.dll</var>
-        <var id="var.Cpm.ProjectDir" >$SolutionDir$/Environments/Cpm/</var>
-        <var id="var.Cpm.TargetPath" >$SolutionDir$/Environments/Cpm/$TargetDir$/Reko.Environments.Cpm.dll</var>
-        <var id="var.Dreamcast.TargetPath" >$SolutionDir$/Environments/Dreamcast/$TargetDir$/Reko.Environments.Dreamcast.dll</var>
-        <var id="var.Hpux.TargetPath" >$SolutionDir$/Environments/Hpux/$TargetDir$/Reko.Environments.Hpux.dll</var>
-        <var id="var.MacOS.ProjectDir" >$SolutionDir$/Environments/MacOS/</var>
-        <var id="var.MacOS.TargetPath" >$SolutionDir$/Environments/MacOS/$TargetDir$/Reko.Environments.MacOS.dll</var>
-        <var id="var.MorphOS.TargetPath" >$SolutionDir$/Environments/MorphOS/$TargetDir$/Reko.Environments.MorphOS.dll</var>
-        <var id="var.Msdos.Design.TargetPath" >$SolutionDir$/Environments/Msdos.Design/$TargetFwk472Dir$/Reko.Environments.Msdos.Design.dll</var>
-        <var id="var.Msdos.ProjectDir" >$SolutionDir$/Environments/Msdos/</var>
-        <var id="var.Msdos.TargetPath" >$SolutionDir$/Environments/Msdos/$TargetDir$/Reko.Environments.Msdos.dll</var>
-        <var id="var.OS2.ProjectDir" >$SolutionDir$/Environments/OS2/</var>
-        <var id="var.OS2.TargetPath" >$SolutionDir$/Environments/OS2/$TargetDir$/Reko.Environments.OS2.dll</var>
-        <var id="var.Ps3.TargetPath" >$SolutionDir$/Environments/Ps3/$TargetDir$/Reko.Environments.Ps3.dll</var>
-        <var id="var.RT11.ProjectDir" >$SolutionDir$/Environments/RT11/</var>
-        <var id="var.RT11.TargetPath" >$SolutionDir$/Environments/RT11/$TargetDir$/Reko.Environments.RT11.dll</var>
-        <var id="var.RiscOS.TargetPath" >$SolutionDir$/Environments/RiscOS/$TargetDir$/Reko.Environments.RiscOS.dll</var>
-        <var id="var.SegaGenesis.ProjectDir" >$SolutionDir$/Environments/SegaGenesis/</var>
-        <var id="var.SegaGenesis.TargetPath" >$SolutionDir$/Environments/SegaGenesis/$TargetDir$/Reko.Environments.SegaGenesis.dll</var>
-        <var id="var.Snes.TargetPath" >$SolutionDir$/Environments/Snes/$TargetDir$/Reko.Environments.Snes.dll</var>
-        <var id="var.Switch.TargetPath" >$SolutionDir$/Environments/Switch/$TargetDir$/Reko.Environments.Switch.dll</var>
-        <var id="var.SysV.ProjectDir" >$SolutionDir$/Environments/SysV/</var>
-        <var id="var.SysV.TargetPath" >$SolutionDir$/Environments/SysV/$TargetDir$/Reko.Environments.SysV.dll</var>
-        <var id="var.Trs80.ProjectDir" >$SolutionDir$/Environments/Trs80/</var>
-        <var id="var.Wii.TargetPath" >$SolutionDir$/Environments/Wii/$TargetDir$/Reko.Environments.Wii.dll</var>
-        <var id="var.Windows.ProjectDir" >$SolutionDir$/Environments/Windows/</var>
-        <var id="var.Windows.TargetPath" >$SolutionDir$/Environments/Windows/$TargetDir$/Reko.Environments.Windows.dll</var>
-        <var id="var.Xbox.ProjectDir" >$SolutionDir$/Environments/Xbox/</var>
-        <var id="var.Xbox.TargetPath" >$SolutionDir$/Environments/Xbox/$TargetDir$/Reko.Environments.Xbox.dll</var>
-        <var id="var.ZX81.TargetPath" >$SolutionDir$/Environments/ZX81/$TargetDir$/Reko.Environments.ZX81.dll</var>
+      <var id="var.AmigaOS.ProjectDir">$SolutionDir$/Environments/AmigaOS/</var>
+      <var id="var.AmigaOS.TargetPath">$SolutionDir$/Environments/AmigaOS/$TargetDir$/Reko.Environments.AmigaOS.dll</var>
+      <var id="var.AmigaOS_Design.TargetPath">$SolutionDir$/Environments/AmigaOS.Design/$TargetFwk472Dir$/Reko.Environments.AmigaOS.Design.dll</var>
+      <var id="var.AtariTOS.ProjectDir">$SolutionDir$/Environments/AtariTOS/</var>
+      <var id="var.AtariTOS.TargetPath">$SolutionDir$/Environments/AtariTOS/$TargetDir$/Reko.Environments.AtariTOS.dll</var>
+      <var id="var.BbcMicro.TargetPath">$SolutionDir$/Environments/BbcMicro/$TargetDir$/Reko.Environments.BbcMicro.dll</var>
+      <var id="var.C64.ProjectDir" >$SolutionDir$/Environments/C64/</var>
+      <var id="var.C64.TargetPath" >$SolutionDir$/Environments/C64/$TargetDir$/Reko.Environments.C64.dll</var>
+      <var id="var.Cpm.ProjectDir" >$SolutionDir$/Environments/Cpm/</var>
+      <var id="var.Cpm.TargetPath" >$SolutionDir$/Environments/Cpm/$TargetDir$/Reko.Environments.Cpm.dll</var>
+      <var id="var.Dreamcast.TargetPath" >$SolutionDir$/Environments/Dreamcast/$TargetDir$/Reko.Environments.Dreamcast.dll</var>
+      <var id="var.Gameboy.TargetPath" >$SolutionDir$/Environments/Gameboy/$TargetDir$/Reko.Environments.Gameboy.dll</var>
+      <var id="var.Hpux.TargetPath" >$SolutionDir$/Environments/Hpux/$TargetDir$/Reko.Environments.Hpux.dll</var>
+      <var id="var.MacOS.ProjectDir" >$SolutionDir$/Environments/MacOS/</var>
+      <var id="var.MacOS.TargetPath" >$SolutionDir$/Environments/MacOS/$TargetDir$/Reko.Environments.MacOS.dll</var>
+      <var id="var.MorphOS.TargetPath" >$SolutionDir$/Environments/MorphOS/$TargetDir$/Reko.Environments.MorphOS.dll</var>
+      <var id="var.Msdos.Design.TargetPath" >$SolutionDir$/Environments/Msdos.Design/$TargetFwk472Dir$/Reko.Environments.Msdos.Design.dll</var>
+      <var id="var.Msdos.ProjectDir" >$SolutionDir$/Environments/Msdos/</var>
+      <var id="var.Msdos.TargetPath" >$SolutionDir$/Environments/Msdos/$TargetDir$/Reko.Environments.Msdos.dll</var>
+      <var id="var.NeoGeo.TargetPath" >$SolutionDir$/Environments/NeoGeo/$TargetDir$/Reko.Environments.NeoGeo.dll</var>
+      <var id="var.OS2.ProjectDir" >$SolutionDir$/Environments/OS2/</var>
+      <var id="var.OS2.TargetPath" >$SolutionDir$/Environments/OS2/$TargetDir$/Reko.Environments.OS2.dll</var>
+      <var id="var.Ps3.TargetPath" >$SolutionDir$/Environments/Ps3/$TargetDir$/Reko.Environments.Ps3.dll</var>
+      <var id="var.RT11.ProjectDir" >$SolutionDir$/Environments/RT11/</var>
+      <var id="var.RT11.TargetPath" >$SolutionDir$/Environments/RT11/$TargetDir$/Reko.Environments.RT11.dll</var>
+      <var id="var.RiscOS.TargetPath" >$SolutionDir$/Environments/RiscOS/$TargetDir$/Reko.Environments.RiscOS.dll</var>
+      <var id="var.SegaGenesis.ProjectDir" >$SolutionDir$/Environments/SegaGenesis/</var>
+      <var id="var.SegaGenesis.TargetPath" >$SolutionDir$/Environments/SegaGenesis/$TargetDir$/Reko.Environments.SegaGenesis.dll</var>
+      <var id="var.Snes.TargetPath" >$SolutionDir$/Environments/Snes/$TargetDir$/Reko.Environments.Snes.dll</var>
+      <var id="var.Switch.TargetPath" >$SolutionDir$/Environments/Switch/$TargetDir$/Reko.Environments.Switch.dll</var>
+      <var id="var.SysV.ProjectDir" >$SolutionDir$/Environments/SysV/</var>
+      <var id="var.SysV.TargetPath" >$SolutionDir$/Environments/SysV/$TargetDir$/Reko.Environments.SysV.dll</var>
+      <var id="var.Trs80.ProjectDir" >$SolutionDir$/Environments/Trs80/</var>
+      <var id="var.Trs80.TargetPath" >$SolutionDir$/Environments/Trs80/$TargetDir$/Reko.Environments.Trs80.dll</var>
+      <var id="var.Wii.TargetPath" >$SolutionDir$/Environments/Wii/$TargetDir$/Reko.Environments.Wii.dll</var>
+      <var id="var.Windows.ProjectDir" >$SolutionDir$/Environments/Windows/</var>
+      <var id="var.Windows.TargetPath" >$SolutionDir$/Environments/Windows/$TargetDir$/Reko.Environments.Windows.dll</var>
+      <var id="var.Xbox.ProjectDir" >$SolutionDir$/Environments/Xbox/</var>
+      <var id="var.Xbox.TargetPath" >$SolutionDir$/Environments/Xbox/$TargetDir$/Reko.Environments.Xbox.dll</var>
+      <var id="var.ZX81.TargetPath" >$SolutionDir$/Environments/ZX81/$TargetDir$/Reko.Environments.ZX81.dll</var>
 
-        <var id="var.BinHex.TargetPath" >$SolutionDir$/ImageLoaders/BinHex/$TargetDir$/Reko.ImageLoaders.BinHex.dll</var>
-        <var id="var.Coff.TargetPath" >$SolutionDir$/ImageLoaders/Coff/$TargetDir$/Reko.ImageLoaders.Coff.dll</var>
-        <var id="var.Dol.TargetPath" >$SolutionDir$/ImageLoaders/Dol/$TargetDir$/Reko.ImageLoaders.Dol.dll</var>
-        <var id="var.Elf.TargetPath" >$SolutionDir$/ImageLoaders/Elf/$TargetDir$/Reko.ImageLoaders.Elf.dll</var>
-        <var id="var.HpSom.TargetPath" >$SolutionDir$/ImageLoaders/HpSom/$TargetDir$/Reko.ImageLoaders.HpSom.dll</var>
-        <var id="var.Hunk.TargetPath" >$SolutionDir$/ImageLoaders/Hunk/$TargetDir$/Reko.ImageLoaders.Hunk.dll</var>
-        <var id="var.IntelHex.TargetPath" >$SolutionDir$/ImageLoaders/IntelHex/$TargetDir$/Reko.ImageLoaders.IntelHex.dll</var>
-        <var id="var.Ldm.TargetPath" >$SolutionDir$/ImageLoaders/Ldm/$TargetDir$/Reko.ImageLoaders.Ldm.dll</var>
-        <var id="var.MachO.TargetPath" >$SolutionDir$/ImageLoaders/MachO/$TargetDir$/Reko.ImageLoaders.MachO.dll</var>
-        <var id="var.MzExe.TargetPath" >$SolutionDir$/ImageLoaders/MzExe/$TargetDir$/Reko.ImageLoaders.MzExe.dll</var>
-        <var id="var.Nro.TargetPath" >$SolutionDir$/ImageLoaders/Nro/$TargetDir$/Reko.ImageLoaders.Nro.dll</var>
-        <var id="var.OdbgScript.ProjectDir" >$SolutionDir$/ImageLoaders/OdbgScript/</var>
-        <var id="var.OdbgScript.TargetPath" >$SolutionDir$/ImageLoaders/OdbgScript/$TargetDir$/Reko.ImageLoaders.OdbgScript.dll</var>
-        <var id="var.Pef.TargetPath" >$SolutionDir$/ImageLoaders/Pef/$TargetDir$/Reko.ImageLoaders.Pef.dll</var>
-        <var id="var.Srec.TargetPath" >$SolutionDir$/ImageLoaders/Srec/$TargetDir$/Reko.ImageLoaders.Srec.dll</var>
-        <var id="var.TekHex.TargetPath" >$SolutionDir$/ImageLoaders/TekHex/$TargetDir$/Reko.ImageLoaders.TekHex.dll</var>
-        <var id="var.VmsExe.TargetPath" >$SolutionDir$/ImageLoaders/VmsExe/$TargetDir$/Reko.ImageLoaders.VmsExe.dll</var>
-        <var id="var.WebAssembly.TargetPath" >$SolutionDir$/ImageLoaders/WebAssembly/$TargetDir$/Reko.ImageLoaders.WebAssembly.dll</var>
-        <var id="var.Xex.TargetPath" >$SolutionDir$/ImageLoaders/XexLoader/$TargetDir$/Reko.ImageLoaders.Xex.dll</var>
-        <var id="var.Xbe.TargetPath" >$SolutionDir$/ImageLoaders/Xbe/$TargetDir$/Reko.ImageLoaders.Xbe.dll</var>
+      <var id="var.BinHex.TargetPath" >$SolutionDir$/ImageLoaders/BinHex/$TargetDir$/Reko.ImageLoaders.BinHex.dll</var>
+      <var id="var.Coff.TargetPath" >$SolutionDir$/ImageLoaders/Coff/$TargetDir$/Reko.ImageLoaders.Coff.dll</var>
+      <var id="var.Dol.TargetPath" >$SolutionDir$/ImageLoaders/Dol/$TargetDir$/Reko.ImageLoaders.Dol.dll</var>
+      <var id="var.Elf.TargetPath" >$SolutionDir$/ImageLoaders/Elf/$TargetDir$/Reko.ImageLoaders.Elf.dll</var>
+      <var id="var.HpSom.TargetPath" >$SolutionDir$/ImageLoaders/HpSom/$TargetDir$/Reko.ImageLoaders.HpSom.dll</var>
+      <var id="var.Hunk.TargetPath" >$SolutionDir$/ImageLoaders/Hunk/$TargetDir$/Reko.ImageLoaders.Hunk.dll</var>
+      <var id="var.IntelHex.TargetPath" >$SolutionDir$/ImageLoaders/IntelHex/$TargetDir$/Reko.ImageLoaders.IntelHex.dll</var>
+      <var id="var.Ldm.TargetPath" >$SolutionDir$/ImageLoaders/Ldm/$TargetDir$/Reko.ImageLoaders.Ldm.dll</var>
+      <var id="var.LLVM.TargetPath" >$SolutionDir$/ImageLoaders/LLVM/$TargetDir$/Reko.ImageLoaders.LLVM.dll</var>
+      <var id="var.MachO.TargetPath" >$SolutionDir$/ImageLoaders/MachO/$TargetDir$/Reko.ImageLoaders.MachO.dll</var>
+      <var id="var.MzExe.TargetPath" >$SolutionDir$/ImageLoaders/MzExe/$TargetDir$/Reko.ImageLoaders.MzExe.dll</var>
+      <var id="var.Nro.TargetPath" >$SolutionDir$/ImageLoaders/Nro/$TargetDir$/Reko.ImageLoaders.Nro.dll</var>
+      <var id="var.OdbgScript.ProjectDir" >$SolutionDir$/ImageLoaders/OdbgScript/</var>
+      <var id="var.OdbgScript.TargetPath" >$SolutionDir$/ImageLoaders/OdbgScript/$TargetDir$/Reko.ImageLoaders.OdbgScript.dll</var>
+      <var id="var.Omf.TargetPath" >$SolutionDir$/ImageLoaders/Omf/$TargetDir$/Reko.ImageLoaders.Omf.dll</var>
+      <var id="var.Pef.TargetPath" >$SolutionDir$/ImageLoaders/Pef/$TargetDir$/Reko.ImageLoaders.Pef.dll</var>
+      <var id="var.Srec.TargetPath" >$SolutionDir$/ImageLoaders/Srec/$TargetDir$/Reko.ImageLoaders.Srec.dll</var>
+      <var id="var.TekHex.TargetPath" >$SolutionDir$/ImageLoaders/TekHex/$TargetDir$/Reko.ImageLoaders.TekHex.dll</var>
+      <var id="var.TypeLib.TargetPath" >$SolutionDir$/ImageLoaders/TypeLib/$TargetDir$/Reko.ImageLoaders.TypeLib.dll</var>
+      <var id="var.VmsExe.TargetPath" >$SolutionDir$/ImageLoaders/VmsExe/$TargetDir$/Reko.ImageLoaders.VmsExe.dll</var>
+      <var id="var.WebAssembly.TargetPath" >$SolutionDir$/ImageLoaders/WebAssembly/$TargetDir$/Reko.ImageLoaders.WebAssembly.dll</var>
+      <var id="var.Xex.TargetPath" >$SolutionDir$/ImageLoaders/XexLoader/$TargetDir$/Reko.ImageLoaders.Xex.dll</var>
+      <var id="var.Xbe.TargetPath" >$SolutionDir$/ImageLoaders/Xbe/$TargetDir$/Reko.ImageLoaders.Xbe.dll</var>
 
-        <var id="var.LGSymLoader.TargetPath" >$SolutionDir$/Symbols/LGSymLoader/$TargetDir$/Reko.Symbols.LGSymLoader.dll</var>
-        <var id="var.Libc.TargetPath"   >$SolutionDir$/Libraries/Libc/$TargetDir$/Reko.Libraries.Libc.dll</var>
-        <var id="var.Python.TargetPath" >$SolutionDir$/Libraries/Python/$TargetDir$/Reko.Libraries.Python.dll</var>
+      <var id="var.LGSymLoader.TargetPath" >$SolutionDir$/Symbols/LGSymLoader/$TargetDir$/Reko.Symbols.LGSymLoader.dll</var>
+      <var id="var.Libc.TargetPath"   >$SolutionDir$/Libraries/Libc/$TargetDir$/Reko.Libraries.Libc.dll</var>
+      <var id="var.Python.TargetPath" >$SolutionDir$/Libraries/Python/$TargetDir$/Reko.Libraries.Python.dll</var>
 
-        <var id="var.Scripts.Python.ProjectDir" >$SolutionDir$/Scripts/Python/</var>
-        <var id="var.Scripts.Python.TargetPath" >$SolutionDir$/Scripts/Python/$TargetDir$/Reko.Scripts.Python.dll</var>
+      <var id="var.Scripts.Python.ProjectDir" >$SolutionDir$/Scripts/Python/</var>
+      <var id="var.Scripts.Python.TargetPath" >$SolutionDir$/Scripts/Python/$TargetDir$/Reko.Scripts.Python.dll</var>
     </vars>
     
     <Component Id="ProductComponent" Guid="9C3E003B-43CB-47B3-B5B8-DC6373A38AE1">
 
-        <!-- Core binaries -->
-        <File Source="$(var.Core.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Decompiler.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.WindowsDecompiler.ProjectDir)..\reko.config" Name="reko.config" nuget_target="c:" />
+      <!-- Core binaries -->
+      <File Source="$(var.Core.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Decompiler.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.WindowsDecompiler.ProjectDir)..\reko.config" Name="reko.config" nuget_target="c:" />
         
-        <!-- User interfaces -->
-        <File Source="$(var.Gui.TargetPath)" />
-        <File Source="$(var.WindowsForms.TargetPath)" />
-        <File Source="$(var.WindowsDecompiler.TargetDir)WindowsDecompiler.exe" />
-        <File Source="$(var.WindowsDecompiler.TargetDir)WindowsDecompiler.dll" />
-        <File Source="$(var.WindowsDecompiler.TargetDir)WindowsDecompiler.runtimeconfig.json" Id="F_WindowsDecompilerRuntimeConfig" />
-        <File Source="$(var.CmdLine.TargetDir)decompile.exe" />
-        <File Source="$(var.CmdLine.TargetDir)decompile.dll" />
-        <File Source="$(var.CmdLine.TargetDir)decompile.runtimeconfig.json" />
+      <!-- User interfaces -->
+      <File Source="$(var.Gui.TargetPath)" />
+      <File Source="$(var.WindowsForms.TargetPath)" />
+      <File Source="$(var.WindowsDecompiler.TargetDir)WindowsDecompiler.exe" />
+      <File Source="$(var.WindowsDecompiler.TargetDir)WindowsDecompiler.dll" />
+      <File Source="$(var.WindowsDecompiler.TargetDir)WindowsDecompiler.runtimeconfig.json" Id="F_WindowsDecompilerRuntimeConfig" />
+      <File Source="$(var.CmdLine.TargetDir)decompile.exe" />
+      <File Source="$(var.CmdLine.TargetDir)decompile.dll" />
+      <File Source="$(var.CmdLine.TargetDir)decompile.runtimeconfig.json" />
         
-        <!-- Image loaders -->
-        <File Source="$(var.BinHex.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Coff.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Dol.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Elf.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.HpSom.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Hunk.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.IntelHex.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.MachO.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.MzExe.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Nro.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.OdbgScript.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Pef.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Srec.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.TekHex.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.VmsExe.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.WebAssembly.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Xbe.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Xex.TargetPath)" nuget_target="f:" />
+      <!-- Image loaders -->
+      <File Source="$(var.BinHex.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Coff.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Dol.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Elf.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.HpSom.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Hunk.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.IntelHex.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Ldm.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.LLVM.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.MachO.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.MzExe.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Nro.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.OdbgScript.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Omf.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Pef.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Srec.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.TekHex.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.TypeLib.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.VmsExe.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.WebAssembly.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Xbe.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Xex.TargetPath)" nuget_target="f:" />
 
-        <!-- Environments -->
-        <File Source="$(var.AmigaOS.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.AmigaOS.ProjectDir)exec.funcs" nuget_target="c:" />
-        <File Source="$(var.AmigaOS_Design.TargetPath)" />
-        <File Source="$(var.AtariTOS.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.AtariTOS.ProjectDir)atariTOS.xml" nuget_target="c:" />
-        <File Source="$(var.BbcMicro.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.C64.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.C64.ProjectDir)C64.xml" nuget_target="c:" />
-        <File Source="$(var.Cpm.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Cpm.ProjectDir)cpm_map.xml" nuget_target="c:" />
-        <File Source="$(var.Dreamcast.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Hpux.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.MacOS.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.MacOS.ProjectDir)Classic/macos_classic.xml" nuget_target="c:" />
-        <File Source="$(var.MacOS.ProjectDir)Classic/MacOSClassicInterfaces.p" nuget_target="c:" />
-        <File Source="$(var.MorphOS.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Msdos.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Msdos.ProjectDir)realmodeintservices.xml" nuget_target="c:" />
-        <File Source="$(var.Msdos.Design.TargetPath)" />
-        <File Source="$(var.Ps3.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.OS2.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.RiscOS.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.RT11.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.RT11.ProjectDir)rt11_services.xml" nuget_target="c:" />
-        <File Source="$(var.SegaGenesis.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.SegaGenesis.ProjectDir)SegaGenesis.xml" nuget_target="c:" />
-        <File Source="$(var.Snes.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Switch.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.SysV.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.SysV.ProjectDir)lp32.xml" nuget_target="c:" />
-        <File Source="$(var.SysV.ProjectDir)lp64.xml" nuget_target="c:" />
-        <File Source="$(var.SysV.ProjectDir)libc.so.xml" nuget_target="c:" />
-        <File Source="$(var.SysV.ProjectDir)Xlib.xml" nuget_target="c:" />
-        <File Source="$(var.SysV.ProjectDir)sysvcharacteristics.xml" nuget_target="c:" />
-        <File Source="$(var.Trs80.ProjectDir)CoCoMemoryMap.xml" nuget_target="c:" />
-        <File Source="$(var.Trs80.ProjectDir)Trs80Rom.xml" nuget_target="c:" />
-        <File Source="$(var.Wii.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Windows.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Windows.ProjectDir)advapi32.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)comdlg32.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)commctrl.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)gdi32.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)kernel32.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)msvcrt.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)ntoskrnl.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)oleaut32.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)shell32.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)user32.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)win16characteristics.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)win32characteristics.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)win64characteristics.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)windows_CE.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)windows32.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)windows64.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)wininet.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)winspool.xml" nuget_target="c:" />
-        <File Source="$(var.Windows.ProjectDir)wsock32.xml" nuget_target="c:" />
-        <File Source="$(var.Xbox.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Xbox.ProjectDir)Xbox/xboxkernel.def" nuget_target="c:" />
-        <File Source="$(var.Xbox.ProjectDir)Xbox360/xbox360krnl.def" nuget_target="c:" />
-        <File Source="$(var.ZX81.TargetPath)" nuget_target="f:" />
+      <!-- Environments -->
+      <File Source="$(var.AmigaOS.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.AmigaOS.ProjectDir)exec.funcs" nuget_target="c:" />
+      <File Source="$(var.AmigaOS_Design.TargetPath)" />
+      <File Source="$(var.AtariTOS.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.AtariTOS.ProjectDir)atariTOS.xml" nuget_target="c:" />
+      <File Source="$(var.BbcMicro.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.C64.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.C64.ProjectDir)C64.xml" nuget_target="c:" />
+      <File Source="$(var.Cpm.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Cpm.ProjectDir)cpm_map.xml" nuget_target="c:" />
+      <File Source="$(var.Dreamcast.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Gameboy.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Hpux.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.MacOS.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.MacOS.ProjectDir)Classic/macos_classic.xml" nuget_target="c:" />
+      <File Source="$(var.MacOS.ProjectDir)Classic/MacOSClassicInterfaces.p" nuget_target="c:" />
+      <File Source="$(var.MorphOS.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Msdos.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Msdos.ProjectDir)realmodeintservices.xml" nuget_target="c:" />
+      <File Source="$(var.Msdos.Design.TargetPath)" />
+      <File Source="$(var.NeoGeo.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.OS2.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Ps3.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.RiscOS.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.RT11.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.RT11.ProjectDir)rt11_services.xml" nuget_target="c:" />
+      <File Source="$(var.SegaGenesis.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.SegaGenesis.ProjectDir)SegaGenesis.xml" nuget_target="c:" />
+      <File Source="$(var.Snes.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Switch.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.SysV.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.SysV.ProjectDir)lp32.xml" nuget_target="c:" />
+      <File Source="$(var.SysV.ProjectDir)lp64.xml" nuget_target="c:" />
+      <File Source="$(var.SysV.ProjectDir)libc.so.xml" nuget_target="c:" />
+      <File Source="$(var.SysV.ProjectDir)Xlib.xml" nuget_target="c:" />
+      <File Source="$(var.SysV.ProjectDir)sysvcharacteristics.xml" nuget_target="c:" />
+      <File Source="$(var.Trs80.ProjectDir)CoCoMemoryMap.xml" nuget_target="c:" />
+      <File Source="$(var.Trs80.ProjectDir)Trs80Rom.xml" nuget_target="c:" />
+      <File Source="$(var.Trs80.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Wii.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Windows.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Windows.ProjectDir)advapi32.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)comdlg32.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)commctrl.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)gdi32.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)kernel32.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)msvcrt.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)ntoskrnl.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)oleaut32.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)shell32.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)user32.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)win16characteristics.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)win32characteristics.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)win64characteristics.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)windows_CE.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)windows32.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)windows64.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)wininet.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)winspool.xml" nuget_target="c:" />
+      <File Source="$(var.Windows.ProjectDir)wsock32.xml" nuget_target="c:" />
+      <File Source="$(var.Xbox.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Xbox.ProjectDir)Xbox/xboxkernel.def" nuget_target="c:" />
+      <File Source="$(var.Xbox.ProjectDir)Xbox360/xbox360krnl.def" nuget_target="c:" />
+      <File Source="$(var.ZX81.TargetPath)" nuget_target="f:" />
 
         <!-- Architectures -->
         <File Source="$(var.Alpha.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.Altera.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Arc.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Arm.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Avr.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Blackfin.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.C166.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.Cil.TargetPath)" nuget_target="f:" />
         <File Source="$(var.CompactRisc.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Cray.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.Etrax.TargetPath)" nuget_target="f:" />
         <File Source="$(var.H8.TargetPath)" nuget_target="f:" />
         <File Source="$(var.i8051.TargetPath)" nuget_target="f:" />
         <File Source="$(var.IA64.TargetPath)" nuget_target="f:" />
@@ -248,7 +267,7 @@
         <File Source="$(var.MilStd1750.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Mips.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Mos6502.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.MSP430.TargetPath)" nuget_target="f:" />
+        <File Source="$(var.Msp430.TargetPath)" nuget_target="f:" />
         <File Source="$(var.OpenRISC.TargetPath)" nuget_target="f:" />
         <File Source="$(var.PaRisc.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Pdp11.TargetPath)" nuget_target="f:" />
@@ -298,17 +317,19 @@
         <File Source="$(var.OdbgScript.ProjectDir)Exepack-3.60-unpacker.osc" nuget_target="c:" />
 
         <!-- External files -->
-        <File Source="$(var.SolutionDir)..\external\Capstone\$(var.Platform)\capstone.dll" />
-        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.dll" />
-        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.Drawing.dll" />
-        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Msagl.GraphViewerGdi.dll" />
-        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\K4os.Compression.LZ4.dll" />
-        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Dynamic.dll" />
-        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Scripting.dll" />
-        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Scripting.Metadata.dll" />
-        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\IronPython.dll" />
-        <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\IronPython.Modules.dll" />
-        <File Source="$(var.CmdLine.TargetDir)System.CodeDom.dll" />
+      <File Source="$(var.SolutionDir)..\external\Capstone\$(var.Platform)\capstone.dll" />
+      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.dll" />
+      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.Drawing.dll" />
+      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Msagl.GraphViewerGdi.dll" />
+      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\K4os.Compression.LZ4.dll" nuget_target="f:" />
+      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Dynamic.dll" />
+      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Scripting.dll" />
+      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Scripting.Metadata.dll" />
+      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\IronPython.dll" />
+      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\IronPython.Modules.dll" />
+      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\IronPython.SQLite.dll" />
+      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\IronPython.Wpf.dll" />
+      <File Source="$(var.CmdLine.TargetDir)System.CodeDom.dll" />
         
         <File Source="$(var.SolutionDir)..\external\reactos\coredll.def" nuget_target="c:" />
         <File Source="$(var.SolutionDir)..\external\wine\commdlg.dll16.spec" nuget_target="c:" />
