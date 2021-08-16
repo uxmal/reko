@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Reko.Runtime</id>
-    <version>0.9.4-prerelease</version>
+    <version>0.10.0</version>
     <title>Reko Decompiler Runtime</title>
     <authors>Reko Decompiler contributors</authors>
     <owners>John Källén</owners>

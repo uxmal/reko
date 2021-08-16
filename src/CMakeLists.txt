@@ -23,7 +23,7 @@ endif()
 
 # The path to the Reko's "src" directory, used for relative path
 set(REKO_SRC ${CMAKE_CURRENT_LIST_DIR})
-set(REKO_VERSION "0.9.4")
+set(REKO_VERSION "0.10.0")
 
 set(artifacts_dir ${REKO_SRC}/../bin)
 file(MAKE_DIRECTORY ${artifacts_dir})
@@ -706,11 +706,11 @@ elseif("${TARGET}" STREQUAL "reko_all")
 	)
 	add_dependencies(reko_run_regressions reko_run_unit_tests)
 
-	if(WIN32 and DEFINED WIX_ROOT)
+	#if(WIN32 and DEFINED WIX_ROOT)
 		add_custom_target(reko_create_msi_installer
 			COMMAND ${invoke_buildtarget} ${prop_config_generic} -t:create_msi_wix ${buildtarget_csproj}
 		)
-	endif()
+	#endif()
 
 	add_custom_target(reko_create_runtime_nupkg
 		COMMAND ${invoke_buildtarget} ${prop_config_generic} -t:create_runtime_nupkg ${buildtarget_csproj}
