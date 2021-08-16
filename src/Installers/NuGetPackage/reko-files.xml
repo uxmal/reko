@@ -110,7 +110,7 @@
       <var id="var.Hunk.TargetPath" >$SolutionDir$/ImageLoaders/Hunk/$TargetDir$/Reko.ImageLoaders.Hunk.dll</var>
       <var id="var.IntelHex.TargetPath" >$SolutionDir$/ImageLoaders/IntelHex/$TargetDir$/Reko.ImageLoaders.IntelHex.dll</var>
       <var id="var.Ldm.TargetPath" >$SolutionDir$/ImageLoaders/Ldm/$TargetDir$/Reko.ImageLoaders.Ldm.dll</var>
-      <var id="var.LLVM.TargetPath" >$SolutionDir$/ImageLoaders/LLVM/$TargetDir$/Reko.ImageLoaders.LLVM.dll</var>
+      <var id="var.LLVM.TargetPath" >$SolutionDir$/ImageLoaders/Llvm/$TargetDir$/Reko.ImageLoaders.LLVM.dll</var>
       <var id="var.MachO.TargetPath" >$SolutionDir$/ImageLoaders/MachO/$TargetDir$/Reko.ImageLoaders.MachO.dll</var>
       <var id="var.MzExe.TargetPath" >$SolutionDir$/ImageLoaders/MzExe/$TargetDir$/Reko.ImageLoaders.MzExe.dll</var>
       <var id="var.Nro.TargetPath" >$SolutionDir$/ImageLoaders/Nro/$TargetDir$/Reko.ImageLoaders.Nro.dll</var>
