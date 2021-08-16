@@ -61,8 +61,8 @@ windows_x64_docker_builder:
   os_version: 2019
   env:
     GCR_REPOSITORY_ID: 369e96be8e7885dad57b5e27c0ffe845
-  build_script: docker build --cache-from gcr.io/cirrus-ci-community/${GCR_REPOSITORY_ID}:latest --tag gcr.io/cirrus-ci-community/${GCR_REPOSITORY_ID}:latest --file .ci/windows/Dockerfile .
-  push_script: docker push gcr.io/cirrus-ci-community/${GCR_REPOSITORY_ID}:latest
+  build_script: docker build --cache-from gcr.io/cirrus-ci-community/%GCR_REPOSITORY_ID%:latest --tag gcr.io/cirrus-ci-community/%GCR_REPOSITORY_ID%:latest --file .ci/windows/Dockerfile .
+  push_script: docker push gcr.io/cirrus-ci-community/%GCR_REPOSITORY_ID%:latest
 
 windows_x64_task:
   windows_container:
