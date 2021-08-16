@@ -40,7 +40,7 @@ namespace Reko.Core
         string? DefaultToFormat { get; set; }
 
         /// <summary>
-        /// Opens the specified files and loads the contents of the file,
+        /// Opens the specified file and reads the contents of the file,
         /// starting at file offset <paramref name="offset"/>. No interpretation
         /// of the file data is done.
         /// </summary>

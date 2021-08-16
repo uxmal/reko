@@ -166,19 +166,18 @@ namespace Reko.CmdLine
                 if (!decompiler.Load(filePath, (string) loader, addrLoad))
                     return;
 
-                decompiler.Project.Programs[0].User.ExtractResources =
-                   !pArgs.TryGetValue("extract-resources", out var oExtractResources) ||
-                   ((string) oExtractResources != "no" && (string) oExtractResources != "false");
+                var program = decompiler.Project.Programs[0];
+                program.User.ExtractResources = ShouldExtractResources(program, pArgs);
 
                 if (pArgs.TryGetValue("heuristics", out var oHeur))
                 {
-                    decompiler.Project.Programs[0].User.Heuristics = ((string[])oHeur).ToSortedSet();
+                    decompiler.Project.Programs[0].User.Heuristics = ((string[]) oHeur).ToSortedSet();
                 }
                 if (pArgs.TryGetValue("metadata", out var oMetadata))
                 {
                     decompiler.Project.MetadataFiles.Add(new MetadataFile
                     {
-                        Filename = (string)oMetadata
+                        Filename = (string) oMetadata
                     });
                 }
                 if (pArgs.ContainsKey("dasm-address"))
@@ -217,6 +216,17 @@ namespace Reko.CmdLine
             {
                 listener.Error(ex, "An error occurred during decompilation.");
             }
+        }
+
+        /// <summary>
+        /// Determine whether to overrid the extract resources flag in the userdata.
+        /// </summary>
+        private static bool ShouldExtractResources(Program program, Dictionary<string, object> pArgs)
+        {
+            if (!pArgs.TryGetValue("extract-resources", out var oExtractResources))
+                return program.User.ExtractResources;
+            var sExtractResources = (string) oExtractResources;
+            return sExtractResources != "no" && sExtractResources != "false";
         }
 
         private Address ParseAddress(Dictionary<string, object> pArgs, string key)
