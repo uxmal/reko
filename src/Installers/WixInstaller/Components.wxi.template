@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include>
-    <Component Id="ProductComponent" Directory="ProductComponentFolder" Guid="9C3E003B-43CB-47B3-B5B8-DC6373A38AE1">
+    <Component Id="ProductComponent" Directory="INSTALLFOLDER" Guid="9C3E003B-43CB-47B3-B5B8-DC6373A38AE1">
     </Component>
 
     <Component Id="Comp_Os2_16" Directory="os2_16Folder" Guid="0444AAFF-1B7C-4182-AEEF-7DFCCDBC426C">
