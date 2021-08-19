@@ -283,7 +283,7 @@
         <File Source="$(var.Sparc.TargetPath)" nuget_target="f:" />
         <File Source="$(var.SuperH.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Tlcs.TargetPath)" nuget_target="f:" />
-        <File Source="$(var.Tms7000.TargetPath)" nuget_traget="f:" />
+        <File Source="$(var.Tms7000.TargetPath)" nuget_target="f:" />
         <File Source="$(var.Vax.TargetPath)" nuget_target="f:" />
         <File Source="$(var.V850.TargetPath)" nuget_target="f:" />
         <File Source="$(var.WE32100.TargetPath)" nuget_target="f:" />

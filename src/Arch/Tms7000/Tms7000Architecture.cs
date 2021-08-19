@@ -14,12 +14,12 @@ namespace Reko.Arch.Tms7000
 {
     public class Tms7000Architecture : ProcessorArchitecture
     {
-        private readonly Dictionary<uint, FlagGroupStorage> flagGroups = new Dictionary<uint, FlagGroupStorage>();
-        
         public Tms7000Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)
         {
             this.Endianness = EndianServices.Big;
+            this.InstructionBitSize = 8;
+            this.MemoryGranularity = 8;
             this.GpRegs = Enumerable.Range(0, 256)
                 .Select(n => RegisterStorage.Reg8($"r{n}", n))
                 .ToArray();
@@ -77,11 +77,8 @@ namespace Reko.Arch.Tms7000
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage st, uint grf)
         {
-            if (flagGroups.TryGetValue(grf, out var flagGroup))
-                return flagGroup;
             var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
             var fl = new FlagGroupStorage(this.st, grf, GrfToString(this.st, "", grf), dt);
-            flagGroups.Add(grf, fl);
             return fl;
         }
 

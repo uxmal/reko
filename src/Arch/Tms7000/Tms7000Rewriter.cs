@@ -40,9 +40,11 @@ namespace Reko.Arch.Tms7000
         private readonly IRewriterHost host;
         private readonly IStorageBinder binder;
         private readonly IEnumerator<Tms7000Instruction> dasm;
+        private readonly List<RtlInstruction> rtls;
+        private readonly RtlEmitter m;
+
         private Tms7000Instruction instr;
         private InstrClass iclass;
-        private RtlEmitter m;
 
         public Tms7000Rewriter(Tms7000Architecture arch, EndianImageReader rdr, Tms7000State state, IStorageBinder binder, IRewriterHost host)
         {
@@ -51,8 +53,9 @@ namespace Reko.Arch.Tms7000
             this.host = host;
             this.binder = binder;
             this.dasm = new Tms7000Disassembler(arch, rdr).GetEnumerator();
+            this.rtls = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtls);
             this.instr = null!;
-            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -61,8 +64,6 @@ namespace Reko.Arch.Tms7000
             {
                 this.instr = dasm.Current;
                 this.iclass = InstrClass.Linear;
-                var rtls = new List<RtlInstruction>();
-                this.m = new RtlEmitter(rtls);
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -150,6 +151,7 @@ namespace Reko.Arch.Tms7000
                 case Mnemonic.xorp: RewriteLogical(m.Xor); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                rtls.Clear();
             }
         }
 
@@ -198,7 +200,7 @@ namespace Reko.Arch.Tms7000
             return binder.EnsureSequence(
                         PrimitiveType.Word16,
                 reg,
-                arch.GpRegs[reg.Number - 1]);
+                arch.GpRegs[(reg.Number - 1) & 0xFF]);
         }
 
         private void CNZ(Expression e)
