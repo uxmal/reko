@@ -134,8 +134,6 @@ namespace Reko.Arch.Tms7000
         {
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
-            if (b >= 16)
-                return false;
             dasm.ops.Add(MemoryOperand.Indirect(dasm.arch.GpRegs[b]));
             return true;
         }
