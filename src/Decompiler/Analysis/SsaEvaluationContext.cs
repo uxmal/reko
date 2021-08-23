@@ -104,7 +104,7 @@ namespace Reko.Analysis
             var wl = new WorkList<SsaIdentifier>();
             var stms = new List<Statement>();
             wl.Add(ssaIds[id]);
-            while (wl.GetWorkItem(out var sid))
+            while (wl.TryGetWorkItem(out var sid))
             {
                 if (visited.Contains(sid))
                     continue;

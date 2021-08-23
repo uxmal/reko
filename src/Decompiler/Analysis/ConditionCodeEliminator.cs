@@ -116,7 +116,7 @@ namespace Reko.Analysis
             var wl = new WorkList<SsaIdentifier>();
             var visited = new HashSet<Statement>();
             wl.Add(sidUse);
-            while (wl.GetWorkItem(out var sid))
+            while (wl.TryGetWorkItem(out var sid))
             {
                 var def = sid.DefStatement;
                 if (def != null)

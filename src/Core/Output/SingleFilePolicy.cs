@@ -56,11 +56,11 @@ namespace Reko.Core.Output
             }
 
             // Place all global objects.
-            var wl = new WorkList<(StructureField, Address)>(
+            var wl = WorkList.Create(
                 MakeGlobalWorkItems()
                 .Concat(MakeSegmentWorkitems()));
             var objectTracer = new GlobalObjectTracer(program, wl, listener);
-            while (wl.GetWorkItem(out var item))
+            while (wl.TryGetWorkItem(out var item))
             {
                 var (field, addr) = item;
                 var globalVar = new GlobalVariable(addr, field.DataType, program.NamingPolicy.GlobalName(field));

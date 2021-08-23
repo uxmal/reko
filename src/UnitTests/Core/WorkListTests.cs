@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Core
 			w.Add(3);
 			Assert.IsFalse(w.IsEmpty);
             int x;
-            Assert.IsTrue(w.GetWorkItem(out x));
+            Assert.IsTrue(w.TryGetWorkItem(out x));
 			Assert.AreEqual(3, x);
 			Assert.IsTrue(w.IsEmpty);
 		}
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Core
 			w.Remove(2);
 			Assert.IsTrue(w.IsEmpty);
             int x;
-			Assert.IsFalse(w.GetWorkItem(out x));
+			Assert.IsFalse(w.TryGetWorkItem(out x));
 		}
 	}
 }

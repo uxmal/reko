@@ -60,8 +60,8 @@ namespace Reko.Typing
         {
             List<StructureType> types = new List<StructureType>();
             int commonOffset = CommonOffset(fields);
-            WorkList<StructureField> worklist = new WorkList<StructureField>(fields);
-            while (worklist.GetWorkItem(out StructureField field))
+            var worklist = WorkList.Create(fields);
+            while (worklist.TryGetWorkItem(out StructureField field))
             {
                 StructureType? s = FindStructureToFitIn(field, commonOffset, types);
                 if (s == null)

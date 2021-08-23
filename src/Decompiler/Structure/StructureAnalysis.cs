@@ -1336,8 +1336,8 @@ refinement on the loop body, which we describe below.
             var excluded = new HashSet<Region>();
             FindReachableRegions(follow, head, excluded);
             var lexNodes = new HashSet<Region>();
-            var wl = new  WorkList<Region>(loopNodes);
-            while (wl.GetWorkItem(out var item))
+            var wl = WorkList.Create(loopNodes);
+            while (wl.TryGetWorkItem(out var item))
             {
                 if (loopNodes.Contains(item))
                 {

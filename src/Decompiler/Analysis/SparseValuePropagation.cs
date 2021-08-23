@@ -56,7 +56,7 @@ namespace Reko.Analysis
             SetInitialValues();
             var wl = new WorkList<SsaIdentifier>();
             wl.AddRange(ssa.Identifiers);
-            while (wl.GetWorkItem(out var sid) && !listener.IsCanceled())
+            while (wl.TryGetWorkItem(out var sid) && !listener.IsCanceled())
             {
                 var oldValue = ctx.GetValue(sid.Identifier);
                 if (oldValue is InvalidConstant)

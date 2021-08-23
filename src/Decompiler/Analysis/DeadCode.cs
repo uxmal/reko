@@ -156,7 +156,7 @@ namespace Reko.Analysis
 			
 			// Each identifier is live, so its defining statement is also live.
 
-			while (liveIds.GetWorkItem(out SsaIdentifier sid))
+			while (liveIds.TryGetWorkItem(out SsaIdentifier sid))
 			{
 				Statement? def = sid.DefStatement;
 				if (def != null)

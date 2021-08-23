@@ -231,7 +231,7 @@ namespace Reko.Scanning
             SliceState state;
             for (; ; )
             {
-                if (!worklist.GetWorkItem(out state))
+                if (!worklist.TryGetWorkItem(out state))
                     return false;
                 this.state = state;
                 if (!state!.IsInBeginningOfBlock())

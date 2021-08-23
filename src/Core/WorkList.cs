@@ -77,7 +77,7 @@ namespace Reko.Core
             return inQ.Contains(item);
         }
 
-		public bool GetWorkItem(out T item)
+		public bool TryGetWorkItem(out T item)
 		{
 			while (!IsEmpty)
 			{
@@ -98,6 +98,16 @@ namespace Reko.Core
 			inQ.Remove(t);
 		}
 	}
+
+    public static class WorkList
+    {
+        /// <summary>
+        /// Convenience function to create a worklist of items.
+        /// </summary>
+        public static WorkList<T> Create<T>(IEnumerable<T> items) =>
+            new WorkList<T>(items);
+    }
+
 
     /// <summary>
     /// A WorkStack contains a stack of items to be processed.

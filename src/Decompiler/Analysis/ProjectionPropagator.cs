@@ -66,8 +66,8 @@ namespace Reko.Analysis
 
         public void Transform()
         {
-            var wl = new WorkList<Statement>(ssa.Procedure.Statements);
-            while (wl.GetWorkItem(out var stm))
+            var wl = WorkList.Create(ssa.Procedure.Statements);
+            while (wl.TryGetWorkItem(out var stm))
             {
                 var prjf = new ProjectionFilter(ssa, stm, sac);
                 var instr = stm.Instruction.Accept(prjf);

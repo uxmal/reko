@@ -203,8 +203,8 @@ namespace Reko.Scanning
             if (totalCount > 0)
             {
                 listener.ShowProgress("Finding procedure candidates", 0, totalCount);
-                var wl = new WorkList<RtlBlock>(nodesLeft);
-                while (wl.GetWorkItem(out var node))
+                var wl = WorkList.Create(nodesLeft);
+                while (wl.TryGetWorkItem(out var node))
                 {
                     if (listener.IsCanceled())
                         break;
@@ -296,8 +296,8 @@ namespace Reko.Scanning
         /// <param name="cluster"></param>
         public void FuseLinearBlocks(Cluster cluster)
         {
-            var wl = new WorkList<RtlBlock>(cluster.Blocks);
-            while (wl.GetWorkItem(out var block))
+            var wl = WorkList.Create(cluster.Blocks);
+            while (wl.TryGetWorkItem(out var block))
             {
                 if (sr.ICFG.Successors(block).Count != 1)
                     continue;

@@ -139,7 +139,7 @@ namespace Reko.Scanning
             WorkList<State> worklist = new WorkList<State>();
 			worklist.Add(s0);
             State t;
-			while (worklist.GetWorkItem(out t))
+			while (worklist.TryGetWorkItem(out t))
 			{
 				Debug.WriteLine(t.ToString());
 				for (int a = 0; a != charClasses; ++a)

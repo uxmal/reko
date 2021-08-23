@@ -168,8 +168,8 @@ namespace Reko.Analysis
                 .ToHashSet();
             if (orphans.Count == 0)
                 return;
-            var wl = new WorkList<Block>(ssa.Procedure.ControlGraph.Blocks.Except(orphans));
-            while (wl.GetWorkItem(out var item))
+            var wl = WorkList.Create(ssa.Procedure.ControlGraph.Blocks.Except(orphans));
+            while (wl.TryGetWorkItem(out var item))
             {
                 var allPredsOrphan = item.Pred.All(p => orphans.Contains(p));
                 if (allPredsOrphan && item != item.Procedure.EntryBlock)
@@ -355,7 +355,7 @@ namespace Reko.Analysis
             var wl = new WorkList<Block>();
             var preds = new HashSet<Block>();
             wl.Add(start);
-            while (wl.GetWorkItem(out var b))
+            while (wl.TryGetWorkItem(out var b))
             {
                 foreach (var p in b.Pred)
                 {
