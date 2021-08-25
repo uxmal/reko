@@ -151,8 +151,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             switch (op)
             {
-            case RegisterOperand reg:
-                return binder.EnsureRegister(reg.Register);
+            case RegisterStorage reg:
+                return binder.EnsureRegister(reg);
             case AddressOperand addr:
                 return addr.Address;
             case ImmediateOperand imm:
@@ -204,8 +204,8 @@ namespace Reko.Arch.Tlcs.Tlcs900
         {
             switch (op)
             {
-            case RegisterOperand reg:
-                var id = binder.EnsureRegister(reg.Register);
+            case RegisterStorage reg:
+                var id = binder.EnsureRegister(reg);
                 m.Assign(id, fn(id, src));
                 return id;
             case AddressOperand addr:

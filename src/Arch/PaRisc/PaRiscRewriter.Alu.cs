@@ -157,7 +157,7 @@ namespace Reko.Arch.PaRisc
         {
             var src1 = RewriteOp(0);
             var src2 = RewriteOp(1);
-            var dst = binder.EnsureIdentifier(((RegisterOperand)instr.Operands[2]).Register);
+            var dst = binder.EnsureIdentifier((RegisterStorage)instr.Operands[2]);
             m.Assign(dst, host.Intrinsic("__division_step", false, dst.DataType, src1, src2));
         }
 
@@ -218,7 +218,7 @@ namespace Reko.Arch.PaRisc
         {
             var src1 = RewriteOp(0);
             var src2 = RewriteOp(1);
-            var rDst = ((RegisterOperand) instr.Operands[2]).Register;
+            var rDst = (RegisterStorage) instr.Operands[2];
             if (rDst == arch.Registers.GpRegs[0])
             {
                 // Result thrown away == NOP.
@@ -245,8 +245,8 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteShrp(PrimitiveType dt, PrimitiveType dtSeq)
         {
-            var rHi = ((RegisterOperand) instr.Operands[0]).Register;
-            var rLo = ((RegisterOperand) instr.Operands[1]).Register;
+            var rHi = (RegisterStorage) instr.Operands[0];
+            var rLo = (RegisterStorage) instr.Operands[1];
             var regp = binder.EnsureSequence(dtSeq, rHi, rLo);
             m.Assign(regp, m.Seq(binder.EnsureRegister(rHi), binder.EnsureRegister(rLo)));
             var shamt = RewriteOp(2);

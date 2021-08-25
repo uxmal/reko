@@ -84,10 +84,9 @@ namespace Reko.Arch.Tms320C28
 
         private static Mutator<Tms320C28Disassembler> Reg(RegisterStorage reg)
         {
-            var op = new RegisterOperand(reg);
             return (u, d) =>
             {
-                d.ops.Add(op);
+                d.ops.Add(reg);
                 return true;
             };
         }

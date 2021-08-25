@@ -153,7 +153,7 @@ namespace Reko.Arch.Sanyo
         private static MachineOperand DReg(uint n)
         {
             if (Registers.SFR.TryGetValue((int) n, out var reg))
-                return new RegisterOperand(reg);
+                return reg;
             else
                 return new MemoryOperand(PrimitiveType.Byte, (ushort) n);
         }
@@ -169,7 +169,7 @@ namespace Reko.Arch.Sanyo
         private static bool reg(uint uInstr, LC8670Disassembler dasm)
         {
             var n = uInstr & 0x3;
-            var reg = new RegisterOperand(Registers.Reg(n));
+            var reg = Registers.Reg(n);
             dasm.ops.Add(reg);
             return true;
         }

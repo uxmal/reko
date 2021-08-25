@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 
@@ -41,15 +42,15 @@ namespace Reko.Arch.Pdp10
         {
             switch (operand)
             {
-            case RegisterOperand reg:
-                if (reg.Register.Number < 16)
+            case RegisterStorage reg:
+                if (reg.Number < 16)
                 {
-                    var sReg = Convert.ToString(reg.Register.Number, 8);
+                    var sReg = Convert.ToString(reg.Number, 8);
                     renderer.WriteString(sReg);
                 }
                 else
                 {
-                    renderer.WriteString(reg.Register.Name);
+                    renderer.WriteString(reg.Name);
                 }
                 return;
             case ImmediateOperand imm:

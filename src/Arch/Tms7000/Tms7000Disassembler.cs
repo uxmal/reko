@@ -62,31 +62,31 @@ namespace Reko.Arch.Tms7000
         #region Mutators
 
         private static bool A(uint b, Tms7000Disassembler dasm) {
-            dasm.ops.Add(new RegisterOperand(dasm.arch.a));
+            dasm.ops.Add(dasm.arch.a);
             return true;
         }
 
         private static bool B(uint b, Tms7000Disassembler dasm) {
-            dasm.ops.Add(new RegisterOperand(dasm.arch.b));
+            dasm.ops.Add(dasm.arch.b);
             return true;
         }
 
         private static bool R(uint u, Tms7000Disassembler dasm) {
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
-            dasm.ops.Add(new RegisterOperand(dasm.arch.GpRegs[b]));
+            dasm.ops.Add(dasm.arch.GpRegs[b]);
             return true;
         }
 
         private static bool P(uint u, Tms7000Disassembler dasm) {
             if (!dasm.rdr.TryReadByte(out byte b))
                 return false;
-            dasm.ops.Add(new RegisterOperand(dasm.arch.Ports[b]));
+            dasm.ops.Add(dasm.arch.Ports[b]);
             return true;
         }
 
         private static bool S(uint b, Tms7000Disassembler dasm) {
-            dasm.ops.Add(new RegisterOperand(dasm.arch.st));
+            dasm.ops.Add(dasm.arch.st);
             return true;
         }
 

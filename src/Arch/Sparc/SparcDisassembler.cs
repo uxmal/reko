@@ -106,7 +106,7 @@ namespace Reko.Arch.Sparc
             return (wInstr, dasm) =>
             {
                 var reg = dasm.arch.Registers.GetRegister((wInstr >> pos) & 0x1F);
-                dasm.ops.Add(new RegisterOperand(reg));
+                dasm.ops.Add(reg);
                 return true;
             };
         }
@@ -118,7 +118,7 @@ namespace Reko.Arch.Sparc
         {
             return (u, d) =>
             {
-                d.ops.Add(new RegisterOperand(getreg(d.arch)));
+                d.ops.Add(getreg(d.arch));
                 return true;
             };
         }
@@ -135,7 +135,7 @@ namespace Reko.Arch.Sparc
                 if ((ireg & 1) != 0)
                     return false;   // odd numbered registers are not allowed.
                 var reg = dasm.arch.Registers.GetRegister(ireg);
-                dasm.ops.Add(new RegisterOperand(reg));
+                dasm.ops.Add(reg);
                 return true;
             };
         }
@@ -147,7 +147,7 @@ namespace Reko.Arch.Sparc
             return (u, d) =>
             {
                 var freg = d.arch.Registers.FFloatRegisters[(u >> pos) & 0x1F];
-                d.ops.Add(new RegisterOperand(freg));
+                d.ops.Add(freg);
                 return true;
             };
         }
@@ -337,20 +337,20 @@ namespace Reko.Arch.Sparc
             }
         }
 
-        private static RegisterOperand GetDoubleRegisterOperand(Registers registers, uint wInstr, int offset)
+        private static RegisterStorage GetDoubleRegisterOperand(Registers registers, uint wInstr, int offset)
         {
             int encodedReg = (int) (wInstr >> offset) & 0x1F;
             int reg = ((encodedReg & 1) << 5) | (encodedReg & ~1);
-            return new RegisterOperand(registers.DFloatRegisters[reg >> 1]);
+            return registers.DFloatRegisters[reg >> 1];
         }
 
-        private static RegisterOperand? GetQuadRegisterOperand(Registers registers, uint wInstr, int offset)
+        private static RegisterStorage? GetQuadRegisterOperand(Registers registers, uint wInstr, int offset)
         {
             int encodedReg = (int) (wInstr >> offset) & 0x1F;
             int reg = ((encodedReg & 1) << 5) | (encodedReg & ~1);
             if ((reg & 0x3) != 0)
                 return null;
-            return new RegisterOperand(registers.QFloatRegisters[reg>>2]);
+            return registers.QFloatRegisters[reg>>2];
         }
 
         private MachineOperand GetRegImmOperand(Registers registers, uint wInstr, bool signed, int bits)
@@ -368,7 +368,7 @@ namespace Reko.Arch.Sparc
             }
             else
             {
-                return new RegisterOperand(registers.GetRegister(wInstr & 0x1Fu));
+                return registers.GetRegister(wInstr & 0x1Fu);
             }
         }
         
@@ -382,7 +382,7 @@ namespace Reko.Arch.Sparc
             }
             else
             {
-                return new RegisterOperand(registers.GetRegister(wInstr & 0x1Fu));
+                return registers.GetRegister(wInstr & 0x1Fu);
             }
         }
 

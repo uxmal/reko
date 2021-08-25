@@ -96,7 +96,7 @@ namespace Reko.Arch.V850
             {
                 var iReg = field.Read(u);
                 var reg = Registers.GpRegs[iReg];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }

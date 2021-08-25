@@ -452,8 +452,8 @@ namespace Reko.Arch.zSeries
         {
             switch (instr.Operands[iop])
             {
-            case RegisterOperand reg:
-                var r =  binder.EnsureRegister(reg.Register);
+            case RegisterStorage reg:
+                var r =  binder.EnsureRegister(reg);
                 if (r.DataType.BitSize > dt.BitSize)
                 {
                     var tmp = binder.CreateTemporary(dt);
@@ -477,7 +477,7 @@ namespace Reko.Arch.zSeries
 
         private Identifier FReg(int iOp)
         {
-            var freg = Registers.FpRegisters[((RegisterOperand) instr.Operands[iOp]).Register.Number];
+            var freg = Registers.FpRegisters[((RegisterStorage) instr.Operands[iOp]).Number];
             return binder.EnsureRegister(freg);
         }
 
@@ -495,7 +495,7 @@ namespace Reko.Arch.zSeries
 
         private Identifier NextGpReg(int iop, PrimitiveType dt)
         {
-            var reg = ((RegisterOperand) instr.Operands[iop]).Register;
+            var reg = ((RegisterStorage) instr.Operands[iop]);
             var n = (reg.Number + 1) & 0xF;
             reg = Registers.GpRegisters[n];
             var id = binder.EnsureRegister(reg);
@@ -519,7 +519,7 @@ namespace Reko.Arch.zSeries
 
         private Identifier Reg(int iOp)
         {
-            return binder.EnsureRegister(((RegisterOperand)instr.Operands[iOp]).Register);
+            return binder.EnsureRegister((RegisterStorage)instr.Operands[iOp]);
         }
 
         private Expression Rel(int iOp, PrimitiveType dt)
@@ -529,7 +529,7 @@ namespace Reko.Arch.zSeries
 
         private Identifier Reg(int iOp, DataType dt)
         {
-            var reg = binder.EnsureRegister(((RegisterOperand) instr.Operands[iOp]).Register);
+            var reg = binder.EnsureRegister((RegisterStorage) instr.Operands[iOp]);
             if (reg.DataType.BitSize > dt.BitSize)
             {
                 var tmp = binder.CreateTemporary(dt);
@@ -544,7 +544,7 @@ namespace Reko.Arch.zSeries
 
         private Identifier? FpRegPair(int iop, PrimitiveType dt)
         {
-            var reghi = ((RegisterOperand) instr.Operands[iop]).Register;
+            var reghi = (RegisterStorage) instr.Operands[iop];
             var iregLo = reghi.Number - Registers.FpRegisters[0].Number + 1;
             if (iregLo >= Registers.FpRegisters.Length)
                 return null;
@@ -559,8 +559,8 @@ namespace Reko.Arch.zSeries
 
         private Identifier Seq(PrimitiveType dt, int iopHi, int iopLo)
         {
-            var regHi = ((RegisterOperand) instr.Operands[iopHi]).Register;
-            var regLo = ((RegisterOperand) instr.Operands[iopLo]).Register;
+            var regHi = (RegisterStorage) instr.Operands[iopHi];
+            var regLo = (RegisterStorage) instr.Operands[iopLo];
             return binder.EnsureSequence(dt, regHi, regLo);
         }
         private void SetCc(Expression e)

@@ -107,8 +107,8 @@ namespace Reko.Arch.Mips
         private static readonly Bitfield[] bf_extend5 = Bf((0, 5), (5, 6));
         #endregion
 
-        private static readonly RegisterOperand[] registerEncoding = new uint[8] { 16, 17, 2, 3, 4, 5, 6, 7 }
-            .Select(iReg => new RegisterOperand(Registers.generalRegs[iReg]))
+        private static readonly RegisterStorage[] registerEncoding = new uint[8] { 16, 17, 2, 3, 4, 5, 6, 7 }
+            .Select(iReg => Registers.generalRegs[iReg])
             .ToArray();
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Reko.Arch.Mips
             {
                 var ireg = Bitfield.ReadFields(bitfields, u);
                 var reg = d.arch.GeneralRegs[ireg];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -146,7 +146,7 @@ namespace Reko.Arch.Mips
         /// </summary>
         private static bool sp(uint uInstr, Mips16eDisassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(dasm.arch.StackRegister));
+            dasm.ops.Add(dasm.arch.StackRegister);
             return true;
         }
 
@@ -155,7 +155,7 @@ namespace Reko.Arch.Mips
         /// </summary>
         private static bool pc(uint uInstr, Mips16eDisassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(dasm.arch.pc));
+            dasm.ops.Add(dasm.arch.pc);
             return true;
         }
 
@@ -164,7 +164,7 @@ namespace Reko.Arch.Mips
         /// </summary>
         private static bool ra(uint uInstr, Mips16eDisassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(dasm.arch.GeneralRegs[31]));
+            dasm.ops.Add(dasm.arch.GeneralRegs[31]);
             return true;
         }
 
@@ -512,7 +512,7 @@ namespace Reko.Arch.Mips
                     offset = (int) (fieldOffset.Read(u) * dt.Size);
                 }
                 var encReg = fieldreg.Read(u);
-                var reg = registerEncoding[encReg].Register;
+                var reg = registerEncoding[encReg];
                 var mem = new IndirectOperand(dt, offset, reg);
                 d.ops.Add(mem);
                 return true;

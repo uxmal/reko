@@ -507,8 +507,8 @@ namespace Reko.Arch.Z80
         {
             switch (op)
             {
-            case RegisterOperand rOp:
-                return binder.EnsureRegister(rOp.Register);
+            case RegisterStorage rOp:
+                return binder.EnsureRegister(rOp);
             case ImmediateOperand immOp:
                 return immOp.Value;
             case MemoryOperand memOp:

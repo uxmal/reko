@@ -51,18 +51,13 @@ namespace Reko.Arch.X86
         {
             switch (op)
             {
-            case RegisterOperand reg: return AluRegister(reg);
+            case RegisterStorage reg: return AluRegister(reg);
             case MemoryOperand mem: return CreateMemoryAccess(instr, mem, opWidth);
             case ImmediateOperand imm: return CreateConstant(imm, (PrimitiveType) opWidth);
             case FpuOperand fpu: return FpuRegister(fpu.StNumber);
             case AddressOperand addr: return addr.Address;
             default: throw new NotImplementedException(string.Format("Operand {0}", op));
             }
-        }
-
-        public Identifier AluRegister(RegisterOperand reg)
-        {
-            return binder.EnsureRegister(reg.Register);
         }
 
         public Identifier AluRegister(RegisterStorage reg)

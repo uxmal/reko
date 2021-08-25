@@ -143,8 +143,8 @@ namespace Reko.Arch.H8
         {
             switch (op)
             {
-            case RegisterOperand reg:
-                return binder.EnsureRegister(reg.Register);
+            case RegisterStorage reg:
+                return binder.EnsureRegister(reg);
             case ImmediateOperand imm:
                 return imm.Value;
             case MemoryOperand mem:
@@ -181,8 +181,8 @@ namespace Reko.Arch.H8
             Expression dst;
             switch (op)
             {
-            case RegisterOperand reg:
-                dst = binder.EnsureRegister(reg.Register);
+            case RegisterStorage reg:
+                dst = binder.EnsureRegister(reg);
                 m.Assign(dst, fn(dst, src));
                 return dst;
             case MemoryOperand mem:

@@ -206,11 +206,11 @@ namespace Reko.Arch.PaRisc
         {
             switch (instr.Operands[iOp])
             {
-            case RegisterOperand r:
-                if (r.Register == arch.Registers.GpRegs[0])
-                    return Constant.Zero(r.Register.DataType);
+            case RegisterStorage r:
+                if (r == arch.Registers.GpRegs[0])
+                    return Constant.Zero(r.DataType);
                 else
-                    return binder.EnsureRegister(r.Register);
+                    return binder.EnsureRegister(r);
             case ImmediateOperand i:
                 return i.Value;
             case LeftImmediateOperand l:

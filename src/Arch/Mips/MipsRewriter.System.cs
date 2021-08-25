@@ -46,7 +46,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteMfc0(MipsInstruction instr)
         {
-            var cpregFrom = ((RegisterOperand)instr.Operands[1]).Register;
+            var cpregFrom = (RegisterStorage)instr.Operands[1];
             Identifier from;
             switch (cpregFrom.Number)
             {
@@ -58,7 +58,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteMtc0(MipsInstruction instr)
         {
-            var cpregTo = ((RegisterOperand)instr.Operands[1]).Register;
+            var cpregTo = (RegisterStorage)instr.Operands[1];
             Identifier to;
             switch (cpregTo.Number)
             {

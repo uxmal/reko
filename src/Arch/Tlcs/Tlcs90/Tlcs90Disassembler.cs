@@ -39,8 +39,8 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private readonly Tlcs90Architecture arch;
         private readonly List<MachineOperand> ops;
         private PrimitiveType? dataWidth;
-        private RegisterOperand? byteReg;
-        private RegisterOperand? wordReg;
+        private RegisterStorage? byteReg;
+        private RegisterStorage? wordReg;
         private int backPatchOp;
 
         public Tlcs90Disassembler(Tlcs90Architecture arch, EndianImageReader rdr)
@@ -105,7 +105,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         /// </summary>
         private static bool a(uint b, Tlcs90Disassembler dasm) {
             dasm.dataWidth = PrimitiveType.Byte;
-            dasm.ops.Add(new RegisterOperand(Registers.a));
+            dasm.ops.Add(Registers.a);
             return true;
         }
 
@@ -115,7 +115,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private static bool af_(uint b, Tlcs90Disassembler dasm)
         {
             dasm.dataWidth = PrimitiveType.Word16;
-            dasm.ops.Add(new RegisterOperand(Registers.af_));
+            dasm.ops.Add(Registers.af_);
             return true;
         }
 
@@ -125,7 +125,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private static bool A(uint b, Tlcs90Disassembler dasm)
         {
             dasm.dataWidth = PrimitiveType.Word16;
-            dasm.ops.Add(new RegisterOperand(Registers.af));
+            dasm.ops.Add(Registers.af);
             return true;
         }
 
@@ -135,7 +135,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private static bool B(uint b, Tlcs90Disassembler dasm)
         {
             dasm.dataWidth = PrimitiveType.Word16;
-            dasm.ops.Add(new RegisterOperand(Registers.bc));
+            dasm.ops.Add(Registers.bc);
             return true;
         }
 
@@ -154,7 +154,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private static bool D(uint b, Tlcs90Disassembler dasm)
         {
             dasm.dataWidth = PrimitiveType.Word16;
-            dasm.ops.Add(new RegisterOperand(Registers.de));
+            dasm.ops.Add(Registers.de);
             return true;
         }
 
@@ -213,7 +213,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         /// </summary>
         private static bool H(uint b, Tlcs90Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(Registers.hl));
+            dasm.ops.Add(Registers.hl);
             return true;
         }
 
@@ -295,7 +295,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         /// </summary>
         private static bool S(uint b, Tlcs90Disassembler dasm) {
             dasm.dataWidth = PrimitiveType.Word16;
-            dasm.ops.Add(new RegisterOperand(Registers.sp));
+            dasm.ops.Add(Registers.sp);
             return true;
         }
 
@@ -304,7 +304,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         /// </summary>
         private static bool X(uint b, Tlcs90Disassembler dasm) {
             dasm.dataWidth = PrimitiveType.Word16;
-            dasm.ops.Add(new RegisterOperand(Registers.ix));
+            dasm.ops.Add(Registers.ix);
             return true;
         }
 
@@ -314,7 +314,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private static bool Y(uint b, Tlcs90Disassembler dasm)
         {
             dasm.dataWidth = PrimitiveType.Word16;
-            dasm.ops.Add(new RegisterOperand(Registers.iy));
+            dasm.ops.Add(Registers.iy);
             return true;
         }
 
@@ -324,7 +324,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private static bool r(uint b, Tlcs90Disassembler dasm)
         {
             dasm.dataWidth = PrimitiveType.Byte;
-            dasm.ops.Add(new RegisterOperand(Registers.byteRegs[b & 7]));
+            dasm.ops.Add(Registers.byteRegs[b & 7]);
             return true;
         }
 
@@ -367,9 +367,9 @@ namespace Reko.Arch.Tlcs.Tlcs90
             {
                 if (!dasm.rdr.TryReadByte(out byte b))
                     return dasm.CreateInvalidInstruction();
-                dasm.byteReg = new RegisterOperand(regByte);
+                dasm.byteReg = regByte;
                 if (regWord != null)
-                    dasm.wordReg = new RegisterOperand(regWord);
+                    dasm.wordReg = regWord;
                 return regEncodings[b].Decode(b, dasm);
             }
         }
@@ -463,7 +463,6 @@ namespace Reko.Arch.Tlcs.Tlcs90
                     {
                         // JP cc,(XXXX) should be JP cc,XXXX
                         var op = AddressOperand.Ptr16(operand.Offset.ToUInt16());
-                        op.Width = PrimitiveType.Ptr16;
                         instr.Operands = new MachineOperand[] { instr.Operands[0], op };
                     }
                     else

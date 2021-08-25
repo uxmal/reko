@@ -99,7 +99,7 @@ namespace Reko.Arch.C166
             return (u, d) =>
             {
                 var reg = regs[regField.Read(u)];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -117,8 +117,8 @@ namespace Reko.Arch.C166
             {
                 var nReg = Bits.ZeroExtend(uInstr >> 12, 4);
                 var mReg = Bits.ZeroExtend(uInstr >> 8, 4);
-                dasm.ops.Add(new RegisterOperand(regs[nReg]));
-                dasm.ops.Add(new RegisterOperand(regs[mReg]));
+                dasm.ops.Add(regs[nReg]);
+                dasm.ops.Add(regs[mReg]);
                 return true;
             };
         }
@@ -135,7 +135,7 @@ namespace Reko.Arch.C166
             var mReg = Bits.ZeroExtend(uInstr >> 8, 4);
             if (nReg != mReg)
                 return false;
-            dasm.ops.Add(new RegisterOperand(regs[nReg]));
+            dasm.ops.Add(regs[nReg]);
             return true;
         }
 
@@ -192,7 +192,7 @@ namespace Reko.Arch.C166
                 if (n != highNybble)
                     return false;
                 var nReg = Bits.ZeroExtend(uInstr >> 8, 4);
-                dasm.ops.Add(new RegisterOperand(regs[nReg]));
+                dasm.ops.Add(regs[nReg]);
                 return true;
             };
         }
@@ -212,7 +212,7 @@ namespace Reko.Arch.C166
                 if (n != highNybble)
                     return false;
                 var nReg = Bits.ZeroExtend(uInstr >> 12, 4);
-                dasm.ops.Add(new RegisterOperand(regs[nReg]));
+                dasm.ops.Add(regs[nReg]);
                 return true;
             };
         }
@@ -302,7 +302,7 @@ namespace Reko.Arch.C166
             {
                 var uAddr = 0xFE00 + 2 * reg;
                 if (Registers.SpecialFunctionRegs.TryGetValue(uAddr, out var sreg))
-                    return new RegisterOperand(sreg);
+                    return sreg;
                 return new MemoryOperand(dt)
                 {
                     Offset = uAddr,
@@ -310,7 +310,7 @@ namespace Reko.Arch.C166
             }
             else
             {
-                return new RegisterOperand(regs[reg & 0xF]);
+                return regs[reg & 0xF];
             }
         }
 

@@ -139,8 +139,8 @@ namespace Reko.Arch.Sparc
 
         private void RewriteFitos()
         {
-            var dst = (RegisterOperand) instrCur.Operands[1];
-            var fpDst = binder.EnsureRegister(dst.Register);
+            var dst = (RegisterStorage) instrCur.Operands[1];
+            var fpDst = binder.EnsureRegister(dst);
             var dt = PrimitiveType.Real32;
             m.Assign(fpDst, m.Convert(MaybeSlice(RewriteOp(0), PrimitiveType.Int32), PrimitiveType.Int32, dt));
         }

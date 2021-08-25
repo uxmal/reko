@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             switch (o)
             {
-            case RegisterStorage reg: return new RegisterOperand(reg);
+            case RegisterStorage reg: return reg;
             case Constant c: return new ImmediateOperand(c);
             default: throw new NotImplementedException(string.Format("Unsupported: {0} ({1})", o, o.GetType().Name));
             }

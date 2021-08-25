@@ -241,14 +241,14 @@ namespace Reko.Arch.Alpha
         {
             switch (op)
             {
-            case RegisterOperand rop:
+            case RegisterStorage rop:
             {
-                if (rop.Register.Number == 31)
+                if (rop.Number == 31)
                     return Constant.Word64(0);
-                else if (rop.Register.Number == 63)
+                else if (rop.Number == 63)
                     return Constant.Real64(0.0);
                 else
-                    return this.binder.EnsureRegister(rop.Register);
+                    return this.binder.EnsureRegister(rop);
             }
             case ImmediateOperand imm:
                 return imm.Value;

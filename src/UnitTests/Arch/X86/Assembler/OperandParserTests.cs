@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 		{
 			OperandParser opp = Create16BitParser("eax");
 			ParsedOperand po = opp.ParseOperand();
-			Assert.AreEqual("RegisterOperand", po.Operand.GetType().Name);
+			Assert.AreEqual("RegisterStorage", po.Operand.GetType().Name);
 			Assert.AreEqual("eax", po.Operand.ToString());
 		}
 

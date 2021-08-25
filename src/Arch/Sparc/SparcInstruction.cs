@@ -71,8 +71,8 @@ namespace Reko.Arch.Sparc
         {
             switch (op)
             {
-            case RegisterOperand reg:
-                renderer.WriteFormat("%{0}", reg.Register.Name);
+            case RegisterStorage reg:
+                renderer.WriteFormat("%{0}", reg.Name);
                 return;
             default:
                 op.Render(renderer, options);

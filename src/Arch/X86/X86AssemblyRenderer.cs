@@ -131,8 +131,8 @@ namespace Reko.Arch.X86
         {
             switch (operand)
             {
-            case RegisterOperand reg:
-                RenderRegister(reg.Register.Name, renderer);
+            case RegisterStorage reg:
+                RenderRegister(reg.Name, renderer);
                 break;
             case ImmediateOperand imm:
                 RenderImmediate(imm, instr, renderer);
@@ -328,7 +328,7 @@ namespace Reko.Arch.X86
 
         protected bool HasImplicitWidth(MachineOperand op)
         {
-            return op is RegisterOperand || op is AddressOperand || op is FpuOperand;
+            return op is RegisterStorage || op is AddressOperand || op is FpuOperand;
         }
     }
 }

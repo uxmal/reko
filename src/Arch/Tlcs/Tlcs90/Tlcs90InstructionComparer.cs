@@ -52,11 +52,11 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 return false;
             switch (opA)
             {
-            case RegisterOperand regOpA:
+            case RegisterStorage regOpA:
                 if (NormalizeRegisters)
                     return true;
-                var regOpB = (RegisterOperand)opB;
-                return regOpA.Register == regOpB.Register;
+                var regOpB = (RegisterStorage)opB;
+                return regOpA == regOpB;
             case ImmediateOperand immOpA:
                 if (NormalizeConstants)
                     return true;
@@ -90,41 +90,29 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private int HashOp(MachineOperand op)
         {
-            if (op == null)
+            if (op is null)
                 return 0;
             int h = op.GetType().GetHashCode();
-            var regOp = op as RegisterOperand;
-            if (regOp != null)
+            switch (op)
             {
+            case RegisterStorage regOp:
                 if (NormalizeRegisters)
                     return h;
                 else
-                    return h * 29 ^ regOp.Register.GetHashCode();
-            }
-            var immOp = op as ImmediateOperand;
-            if (immOp != null)
-            {
+                    return h * 29 ^ regOp.GetHashCode();
+            case ImmediateOperand immOp:
                 if (NormalizeConstants)
                     return h;
                 else
                     return h * 13 ^ GetConstantHash(immOp.Value);
-            }
-            var addrOp = op as AddressOperand;
-            if (addrOp != null)
-            {
+            case AddressOperand addrOp:
                 if (NormalizeConstants)
                     return h;
                 else
                     return h * 29 ^ addrOp.Address.GetHashCode();
-            }
-            var condOp = op as ConditionOperand;
-            if (condOp != null)
-            {
+            case ConditionOperand condOp:
                 return h * 19 ^ condOp.Code.GetHashCode();
-            }
-            var memOp = op as MemoryOperand;
-            if (memOp != null)
-            {
+            case MemoryOperand memOp:
                 if (!NormalizeRegisters && memOp.Base != null)
                     h = h * 23 ^ memOp.Base.GetHashCode();
                 if (!NormalizeConstants && memOp.Offset != null)

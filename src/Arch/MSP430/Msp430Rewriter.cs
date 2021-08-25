@@ -139,8 +139,8 @@ namespace Reko.Arch.Msp430
             dt ??= op.Width ?? instr.dataWidth!;
             switch (op)
             {
-            case RegisterOperand rop:
-                return binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                return binder.EnsureRegister(rop);
             case MemoryOperand mop:
                 Expression ea;
                 if (mop.Base != null)
@@ -192,8 +192,8 @@ namespace Reko.Arch.Msp430
         {
             switch (op)
             {
-            case RegisterOperand rop:
-                var dst = binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                var dst = binder.EnsureRegister(rop);
                 var ev = fn(dst, src);
                 if (dst.Storage == Registers.sp && ev is Constant)
                 {
@@ -244,8 +244,8 @@ namespace Reko.Arch.Msp430
         {
             switch (op)
             {
-            case RegisterOperand rop:
-                var dst = binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                var dst = binder.EnsureRegister(rop);
                 if (dst.Storage == Registers.sp && src is Constant)
                 {
                     m.SideEffect(host.Intrinsic("__set_stackpointer", true, VoidType.Instance, src));
@@ -307,8 +307,8 @@ namespace Reko.Arch.Msp430
         private void RewriteBinop(Func<Expression,Expression,Expression> fn, FlagGroupStorage? vnzc)
         {
             var src = RewriteOp(instr.Operands[0]);
-            if (instr.Operands[1] is RegisterOperand rop &&
-                rop.Register == Registers.pc)
+            if (instr.Operands[1] is RegisterStorage rop &&
+                rop == Registers.pc)
             {
                 if (instr.Operands[0] is MemoryOperand mop &&
                     mop.PostIncrement &&
@@ -372,8 +372,8 @@ namespace Reko.Arch.Msp430
         private void RewriteLogop(Func<Expression, Expression, Expression> fn)
         {
             var src = RewriteOp(instr.Operands[0]);
-            if (instr.Operands[1] is RegisterOperand rop &&
-                rop.Register == Registers.pc)
+            if (instr.Operands[1] is RegisterStorage rop &&
+                rop == Registers.pc)
             {
                 if (instr.Operands[0] is MemoryOperand mop &&
                     mop.PostIncrement &&
@@ -391,8 +391,8 @@ namespace Reko.Arch.Msp430
         private void RewriteMov()
         {
             var src = RewriteOp(instr.Operands[0]);
-            if (instr.Operands[1] is RegisterOperand rop &&
-                rop.Register == Registers.pc)
+            if (instr.Operands[1] is RegisterStorage rop &&
+                rop == Registers.pc)
             {
                 if (instr.Operands[0] is MemoryOperand mop &&
                     mop.PostIncrement &&
@@ -408,7 +408,7 @@ namespace Reko.Arch.Msp430
         private void RewritePopm()
         {
             int c = ((ImmediateOperand)instr.Operands[0]).Value.ToInt32();
-            int iReg = ((RegisterOperand)instr.Operands[1]).Register.Number - c + 1;
+            int iReg = ((RegisterStorage)instr.Operands[1]).Number - c + 1;
             if (iReg < 0)
             {
                 Invalid();
@@ -436,7 +436,7 @@ namespace Reko.Arch.Msp430
         {
             int c = ((ImmediateOperand)instr.Operands[0]).Value.ToInt32();
             var sp = binder.EnsureRegister(Registers.sp);
-            int iReg = ((RegisterOperand)instr.Operands[1]).Register.Number;
+            int iReg = ((RegisterStorage)instr.Operands[1]).Number;
             if (iReg < c)
             {
                 Invalid();

@@ -110,20 +110,21 @@ namespace Reko.Arch.X86
 
         private void RewriteCvts2si(PrimitiveType floatType)
         {
-            instrCur.Operands[0].Width = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
+//            instrCur.Operands[0].Width = ;
             var src = SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]);
             if (src.DataType.BitSize != floatType.BitSize)
             {
                 src = m.Slice(floatType, src, 0);
             }
-            m.Assign(SrcOp(0), m.Convert(src, floatType, instrCur.Operands[0].Width));
+            var dt = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
+            m.Assign(SrcOp(0), m.Convert(src, floatType, dt));
         }
 
         private void RewriteCvtts2si(PrimitiveType floatType)
         {
-            instrCur.Operands[0].Width = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize);
             var src = MaybeSlice(floatType, SrcOp(instrCur.Operands[instrCur.Operands.Length == 3 ? 2 : 1]));
-            m.Assign(SrcOp(0), m.Convert(src, floatType, instrCur.Operands[0].Width));
+            var dt = PrimitiveType.Create(Domain.SignedInt, instrCur.Operands[0].Width.BitSize); 
+            m.Assign(SrcOp(0), m.Convert(src, floatType, dt));
         }
 
         private void RewriteCvtToReal(PrimitiveType dtFrom, PrimitiveType dtTo)

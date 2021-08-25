@@ -74,8 +74,8 @@ namespace Reko.UnitTests.Arch.X86
 		[Test]
 		public void X86Orw32_Register()
 		{
-			var r = new RegisterOperand(Registers.ebp);
-			var id = (Identifier) orw.Transform(null, r, r.Width);
+			var r = Registers.ebp;
+			var id = (Identifier) orw.Transform(null, r, r.DataType);
 			Assert.AreEqual("ebp", id.Name);
 			Assert.IsNotNull(proc.Frame.FramePointer);
 		}

@@ -87,8 +87,8 @@ namespace Reko.Arch.Msp430
         {
             if (instr.Mnemonic == Mnemonics.mov)
             {
-                if (instr.Operands[1] is RegisterOperand dst &&
-                    dst.Register == Registers.pc)
+                if (instr.Operands[1] is RegisterStorage dst &&
+                    dst == Registers.pc)
                 {
                     instr.InstructionClass = InstrClass.Transfer;
                     if (instr.Operands[0] is MemoryOperand mem &&
@@ -337,7 +337,7 @@ namespace Reko.Arch.Msp430
             {
                 if (iReg == 3)
                     return false;
-                op2 = new RegisterOperand(reg);
+                op2 = reg;
             }
             else
             {
@@ -365,7 +365,7 @@ namespace Reko.Arch.Msp430
                         ? null
                         : new ImmediateOperand(Constant.Create(dataWidth, 0));
                 }
-                return new RegisterOperand(reg);
+                return reg;
             case 1:
                 if (iReg == 3)
                 {

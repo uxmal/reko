@@ -167,7 +167,7 @@ namespace Reko.Arch.RiscV
             var iCsr = bf20_12.Read(uInstr);
             if (!dasm.arch.Csrs.TryGetValue(iCsr, out var csr))
                 return false;       //$REVIEW: should raise a warning? This could be model-specific.
-            dasm.state.ops.Add(new RegisterOperand(csr));
+            dasm.state.ops.Add(csr);
             return true;
         }
 
@@ -222,16 +222,16 @@ namespace Reko.Arch.RiscV
             return true;
         }
 
-        private RegisterOperand GetRegister(uint wInstr, int bitPos)
+        private RegisterStorage GetRegister(uint wInstr, int bitPos)
         {
             var reg = arch.GetRegister((int)(wInstr >> bitPos) & 0x1F)!;
-            return new RegisterOperand(reg);
+            return reg;
         }
 
-        private RegisterOperand GetFpuRegister(uint wInstr, int bitPos)
+        private RegisterStorage GetFpuRegister(uint wInstr, int bitPos)
         {
             var reg = arch.GetRegister(32 + ((int)(wInstr >> bitPos) & 0x1F))!;
-            return new RegisterOperand(reg);
+            return reg;
         }
 
         private ImmediateOperand GetImmediate(uint wInstr, int bitPos, char sign)
@@ -424,7 +424,7 @@ namespace Reko.Arch.RiscV
             return (u, d) =>
             {
                 var iReg = (int) regMask.Read(u);
-                var reg = new RegisterOperand(d.arch.GetRegister(iReg)!);
+                var reg = d.arch.GetRegister(iReg)!;
                 d.state.ops.Add(reg);
                 return true;
             };
@@ -457,7 +457,7 @@ namespace Reko.Arch.RiscV
                 var iReg = (int) regMask.Read(u);
                 if (iReg == 0)
                     return false;
-                var reg = new RegisterOperand(d.arch.GetRegister(iReg)!);
+                var reg = d.arch.GetRegister(iReg)!;
                 d.state.ops.Add(reg);
                 return true;
             };
@@ -476,7 +476,7 @@ namespace Reko.Arch.RiscV
             return (u, d) =>
             {
                 var iReg = (int) regMask.Read(u);
-                var reg = new RegisterOperand(d.arch.FpRegs[iReg]);
+                var reg = d.arch.FpRegs[iReg];
                 d.state.ops.Add(reg);
                 return true;
             };
@@ -489,7 +489,7 @@ namespace Reko.Arch.RiscV
             return (u, d) =>
             {
                 var iReg = compressedRegs[regMask.Read(u)];
-                var reg = new RegisterOperand(d.arch.GetRegister(iReg)!);
+                var reg = d.arch.GetRegister(iReg)!;
                 d.state.ops.Add(reg);
                 return true;
             };
@@ -502,7 +502,7 @@ namespace Reko.Arch.RiscV
             return (u, d) =>
             {
                 var iReg = compressedRegs[regMask.Read(u)];
-                var reg = new RegisterOperand(d.arch.FpRegs[iReg]);
+                var reg = d.arch.FpRegs[iReg];
                 d.state.ops.Add(reg);
                 return true;
             };

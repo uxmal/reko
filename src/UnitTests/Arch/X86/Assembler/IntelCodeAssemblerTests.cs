@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Arch.X86.Assembler
 
         private ParsedOperand Reg(RegisterStorage reg)
         {
-            return new ParsedOperand(new RegisterOperand(reg));
+            return new ParsedOperand(reg);
         }
 
         [Test]

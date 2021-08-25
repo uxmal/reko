@@ -29,22 +29,22 @@ namespace Reko.UnitTests.Arch.X86
 {
     public abstract class AssemblerFragment
     {
-        protected ParsedOperand eax = new ParsedOperand(new RegisterOperand(Registers.eax));
-        protected ParsedOperand ecx = new ParsedOperand(new RegisterOperand(Registers.ecx));
-        protected ParsedOperand edx = new ParsedOperand(new RegisterOperand(Registers.edx));
-        protected ParsedOperand ebx = new ParsedOperand(new RegisterOperand(Registers.ebx));
-        protected ParsedOperand ebp = new ParsedOperand(new RegisterOperand(Registers.ebp));
-        protected ParsedOperand esp = new ParsedOperand(new RegisterOperand(Registers.esp));
-        protected ParsedOperand esi = new ParsedOperand(new RegisterOperand(Registers.esi));
-        protected ParsedOperand edi = new ParsedOperand(new RegisterOperand(Registers.edi));
-        protected ParsedOperand ax = new ParsedOperand(new RegisterOperand(Registers.ax));
-        protected ParsedOperand cx = new ParsedOperand(new RegisterOperand(Registers.cx));
-        protected ParsedOperand dx = new ParsedOperand(new RegisterOperand(Registers.dx));
-        protected ParsedOperand bx = new ParsedOperand(new RegisterOperand(Registers.bx));
-        protected ParsedOperand bp = new ParsedOperand(new RegisterOperand(Registers.bp));
-        protected ParsedOperand sp = new ParsedOperand(new RegisterOperand(Registers.sp));
-        protected ParsedOperand si = new ParsedOperand(new RegisterOperand(Registers.si));
-        protected ParsedOperand di = new ParsedOperand(new RegisterOperand(Registers.di));
+        protected ParsedOperand eax = new ParsedOperand(Registers.eax);
+        protected ParsedOperand ecx = new ParsedOperand(Registers.ecx);
+        protected ParsedOperand edx = new ParsedOperand(Registers.edx);
+        protected ParsedOperand ebx = new ParsedOperand(Registers.ebx);
+        protected ParsedOperand ebp = new ParsedOperand(Registers.ebp);
+        protected ParsedOperand esp = new ParsedOperand(Registers.esp);
+        protected ParsedOperand esi = new ParsedOperand(Registers.esi);
+        protected ParsedOperand edi = new ParsedOperand(Registers.edi);
+        protected ParsedOperand ax = new ParsedOperand(Registers.ax);
+        protected ParsedOperand cx = new ParsedOperand(Registers.cx);
+        protected ParsedOperand dx = new ParsedOperand(Registers.dx);
+        protected ParsedOperand bx = new ParsedOperand(Registers.bx);
+        protected ParsedOperand bp = new ParsedOperand(Registers.bp);
+        protected ParsedOperand sp = new ParsedOperand(Registers.sp);
+        protected ParsedOperand si = new ParsedOperand(Registers.si);
+        protected ParsedOperand di = new ParsedOperand(Registers.di);
 
         public abstract void Build(X86Assembler m);
     }

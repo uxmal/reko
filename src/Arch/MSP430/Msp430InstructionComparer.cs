@@ -46,11 +46,10 @@ namespace Reko.Arch.Msp430
                 return false;
             if (op1.GetType() != op2.GetType())
                 return false;
-            var r1 = op1 as RegisterOperand;
-            if (r1 != null)
+            if (op1 is RegisterStorage r1)
             {
-                var r2 = (RegisterOperand)op2;
-                return CompareRegisters(r1.Register, r2.Register);
+                var r2 = (RegisterStorage) op2;
+                return CompareRegisters(r1, r2);
             }
             throw new NotImplementedException();
         }
@@ -65,10 +64,9 @@ namespace Reko.Arch.Msp430
         private int GetOperandHash(MachineOperand op)
         {
             var h = op.GetType().GetHashCode();
-            var r = op as RegisterOperand;
-            if (r != null)
+            if (op is RegisterStorage r)
             {
-                return GetRegisterHash(r.Register);
+                return GetRegisterHash(r);
             }
             throw new NotImplementedException();
         }

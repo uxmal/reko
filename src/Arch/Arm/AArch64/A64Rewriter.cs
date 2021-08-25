@@ -442,15 +442,15 @@ namespace Reko.Arch.Arm.AArch64
         {
             switch (op)
             {
-            case RegisterOperand regOp:
+            case RegisterStorage regOp:
                 if (maybe0)
                 {
-                    if (regOp.Register == Registers.GpRegs32[31])
+                    if (regOp == Registers.GpRegs32[31])
                         return m.Word32(0);
-                    if (regOp.Register == Registers.GpRegs64[31])
+                    if (regOp == Registers.GpRegs64[31])
                         return m.Word64(0);
                 }
-                return binder.EnsureRegister(regOp.Register);
+                return binder.EnsureRegister(regOp);
             case ImmediateOperand immOp:
                 return immOp.Value;
             case AddressOperand addrOp:

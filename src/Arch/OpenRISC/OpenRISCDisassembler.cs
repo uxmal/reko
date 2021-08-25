@@ -105,7 +105,7 @@ namespace Reko.Arch.OpenRISC
             {
                 var iReg = field.Read(u);
                 var reg = Registers.GpRegs[iReg];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -121,7 +121,7 @@ namespace Reko.Arch.OpenRISC
                 var iSpr = (int) Bitfield.ReadFields(fields, u);
                 if (Registers.SpecialRegisters.TryGetValue(iSpr, out var spr))
                 {
-                    d.ops.Add(new RegisterOperand(spr));
+                    d.ops.Add(spr);
                 }
                 else
                 {

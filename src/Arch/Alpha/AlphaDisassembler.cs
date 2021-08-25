@@ -56,14 +56,14 @@ namespace Reko.Arch.Alpha
             return instr;
         }
 
-        private RegisterOperand AluRegister(uint n)
+        private RegisterStorage AluRegister(uint n)
         {
-            return new RegisterOperand(Registers.AluRegisters[n & 0x1F]);
+            return Registers.AluRegisters[n & 0x1F];
         }
 
-        private RegisterOperand FpuRegister(uint n)
+        private RegisterStorage FpuRegister(uint n)
         {
-            return new RegisterOperand(Registers.FpuRegisters[n & 0x1F]);
+            return Registers.FpuRegisters[n & 0x1F];
         }
 
         public override AlphaInstruction CreateInvalidInstruction()
@@ -101,7 +101,7 @@ namespace Reko.Arch.Alpha
                         dasm.AluRegister(uInstr >> 21),
                         new MemoryOperand(
                             PrimitiveType.Word32,    // Dummy value
-                            dasm.AluRegister(uInstr >> 16).Register,
+                            dasm.AluRegister(uInstr >> 16),
                             (short)uInstr)
                     }
                 };
@@ -128,7 +128,7 @@ namespace Reko.Arch.Alpha
                         dasm.FpuRegister(uInstr >> 21),
                         new MemoryOperand(
                             PrimitiveType.Word32,    // Dummy value
-                            dasm.AluRegister(uInstr >> 16).Register,
+                            dasm.AluRegister(uInstr >> 16),
                             (short)uInstr)
                     }
                 };

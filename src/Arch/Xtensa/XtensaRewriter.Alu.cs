@@ -59,7 +59,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteAll(int n, Func<Expression, Expression, Expression> fn)
         {
-            var bReg = ((RegisterOperand) this.instr.Operands[1]).Register;
+            var bReg = (RegisterStorage) this.instr.Operands[1];
             var bNumber = bReg.Number - Registers.b0.Number;
             Debug.Assert(n >= 0);
             Expression e = binder.EnsureRegister(bReg);

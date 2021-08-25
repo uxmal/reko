@@ -145,7 +145,7 @@ namespace Reko.Arch.Qualcomm
         {
             switch (op)
             {
-            case RegisterOperand rop: return binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop: return binder.EnsureRegister(rop);
             case ImmediateOperand imm: return imm.Value;
             case AddressOperand addr: return addr.Address;
             case ApplicationOperand app: return RewriteApplication(app);
@@ -172,7 +172,7 @@ namespace Reko.Arch.Qualcomm
             if (dec.Carry)
             {
                 var app = (ApplicationOperand) dec.Operand;
-                var p = binder.EnsureRegister(((RegisterOperand)app.Operands[2]).Register);
+                var p = binder.EnsureRegister((RegisterStorage)app.Operands[2]);
                 exp = m.IAdd(exp!, p);
                 //$TODO: what about carry-out? it's in p.
                 return exp;
@@ -189,8 +189,8 @@ namespace Reko.Arch.Qualcomm
         {
             switch (op)
             {
-            case RegisterOperand rop:
-                write(binder.EnsureRegister(rop.Register), src);
+            case RegisterStorage rop:
+                write(binder.EnsureRegister(rop), src);
                 return;
             case MemoryOperand mem:
                 write(RewriteMemoryOperand(mem), src);
@@ -202,7 +202,7 @@ namespace Reko.Arch.Qualcomm
             case DecoratorOperand dec:
                 if (dec.Width.BitSize < dec.Operand.Width.BitSize)
                 {
-                    var dst = binder.EnsureRegister(((RegisterOperand) dec.Operand).Register);
+                    var dst = binder.EnsureRegister((RegisterStorage) dec.Operand);
                     var dt = PrimitiveType.CreateWord(32 - dec.Width.BitSize);
                     if (dec.BitOffset == 0)
                     {
@@ -511,15 +511,15 @@ namespace Reko.Arch.Qualcomm
 
         private void RewriteJumpr(MachineOperand opDst)
         {
-            var rop = (RegisterOperand) opDst;
-            if (rop.Register == Registers.lr)
+            var rop = (RegisterStorage) opDst;
+            if (rop == Registers.lr)
             {
                 this.iclass = InstrClass.Transfer | InstrClass.Return;
                 m.Return(0, 0);
             }
             else
             {
-                var dst = binder.EnsureRegister(rop.Register);
+                var dst = binder.EnsureRegister(rop);
                 m.Goto(dst);
             }
         }

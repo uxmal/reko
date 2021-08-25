@@ -138,8 +138,8 @@ Architecture */
         {
             switch (op)
             {
-            case RegisterOperand rop:
-                return binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                return binder.EnsureRegister(rop);
             case ImmediateOperand imm:
                 return imm.Value;
             case AddressOperand addr:
@@ -168,14 +168,14 @@ Architecture */
 
         private void RewriteBeqz(MipsInstruction instr)
         {
-            var reg = binder.EnsureRegister(((RegisterOperand) instr.Operands[0]).Register);
+            var reg = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
             var dst = ((AddressOperand) instr.Operands[1]).Address;
             m.Branch(m.Eq0(reg), dst);    // No jump delay slot
         }
 
         private void RewriteBnez(MipsInstruction instr)
         {
-            var reg = binder.EnsureRegister(((RegisterOperand) instr.Operands[0]).Register);
+            var reg = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
             var dst = ((AddressOperand) instr.Operands[1]).Address;
             m.Branch(m.Ne0(reg), dst);    // No jump delay slot
         }

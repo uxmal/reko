@@ -144,8 +144,8 @@ namespace Reko.Arch.Sanyo
         {
             switch (instr.Operands[op])
             {
-            case RegisterOperand reg:
-                return binder.EnsureRegister(reg.Register);
+            case RegisterStorage reg:
+                return binder.EnsureRegister(reg);
             case ImmediateOperand imm:
                 return imm.Value;
             case MemoryOperand mem:

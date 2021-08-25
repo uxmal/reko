@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Globalization;
@@ -33,7 +34,7 @@ namespace Reko.Core.Machine
     /// </summary>
 	public interface MachineOperand
 	{
-        PrimitiveType Width { get; set; }
+        DataType Width { get; set; }
         string ToString(MachineInstructionRendererOptions options);
         public void Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options);
     }

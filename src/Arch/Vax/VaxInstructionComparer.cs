@@ -50,13 +50,11 @@ namespace Reko.Arch.Vax
         {
             if (a.GetType() != b.GetType())
                 return false;
-            var rA = a as RegisterOperand;
-            if (rA != null)
+            if (a is RegisterStorage rA)
             {
                 if (NormalizeRegisters)
                     return true;
-                var rB = b as RegisterOperand;
-                return rB != null && rA.Register == rB.Register;
+                return b is RegisterStorage rB && rA == rB;
             }
             throw new NotImplementedException();
         }

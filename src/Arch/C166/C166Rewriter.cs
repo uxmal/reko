@@ -158,8 +158,8 @@ namespace Reko.Arch.C166
             Expression dst;
             switch (instr.Operands[iop])
             {
-            case RegisterOperand reg:
-                dst = binder.EnsureRegister(reg.Register);
+            case RegisterStorage reg:
+                dst = binder.EnsureRegister(reg);
                 m.Assign(dst, src);
                 return dst;
             case MemoryOperand mem:
@@ -185,8 +185,8 @@ namespace Reko.Arch.C166
             Expression dst;
             switch (instr.Operands[iop])
             {
-            case RegisterOperand reg:
-                dst = binder.EnsureRegister(reg.Register); break;
+            case RegisterStorage reg:
+                dst = binder.EnsureRegister(reg); break;
             case MemoryOperand mem:
                 dst = Mem(mem); break;
             default:
@@ -218,8 +218,8 @@ namespace Reko.Arch.C166
         {
             switch (op)
             {
-            case RegisterOperand reg:
-                return binder.EnsureRegister(reg.Register);
+            case RegisterStorage reg:
+                return binder.EnsureRegister(reg);
             case ImmediateOperand imm:
                 return imm.Value;
             case AddressOperand addr:

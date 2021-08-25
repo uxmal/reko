@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -49,33 +49,23 @@ namespace Reko.Arch.Mips
                 return false;
             if (a.GetType() != b.GetType())
                 return false;
-            var rA = a as RegisterOperand;
-            if (rA != null)
-            {
+            switch (a) {
+            case RegisterStorage rA:
                 if (NormalizeRegisters)
                     return true;
-                var rB = (RegisterOperand)b;
-                return rA.Register == rB.Register;
-            }
-            var iA = a as ImmediateOperand;
-            if (iA != null)
-            {
+                var rB = (RegisterStorage)b;
+                return rA == rB;
+            case ImmediateOperand iA:
                 if (NormalizeConstants)
                     return true;
                 var iB = (ImmediateOperand)b;
                 return CompareValues(iA.Value, iB.Value);
-            }
-            var aA = a as AddressOperand;
-            if (aA != null)
-            {
+            case AddressOperand aA:
                 if (NormalizeConstants)
                     return true;
                 var aB = (AddressOperand)b;
                 return aA.Address.ToLinear() == aB.Address.ToLinear();
-            }
-            var mA = a as IndirectOperand;
-            if (mA != null)
-            {
+            case IndirectOperand mA:
                 var mB = (IndirectOperand)b;
                 if (!NormalizeRegisters && mA.Base != mB.Base)
                     return false;
@@ -101,33 +91,24 @@ namespace Reko.Arch.Mips
         {
             if (op == null)
                 return 0;
-            var r = op as RegisterOperand;
-            if (r != null)
+            switch (op)
             {
+            case RegisterStorage r:
                 if (NormalizeRegisters)
                     return 0;
                 else
-                    return GetRegisterHash(r.Register);
-            }
-            var i = op as ImmediateOperand;
-            if (i != null)
-            {
+                    return GetRegisterHash(r);
+            case ImmediateOperand i:
                 if (NormalizeConstants)
                     return 0;
                 else
                     return GetConstantHash(i.Value);
-            }
-            var a = op as AddressOperand;
-            if (a != null)
-            {
+            case AddressOperand a:
                 if (NormalizeConstants)
                     return 0;
                 else
                     return a.Address.GetHashCode();
-            }
-            var m = op as IndirectOperand;
-            if (m != null)
-            {
+            case IndirectOperand m:
                 int h = 0;
                 if (!NormalizeRegisters)
                     h = GetRegisterHash(m.Base);

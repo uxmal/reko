@@ -108,7 +108,7 @@ namespace Reko.Arch.Avr.Avr32
             {
                 var iReg = bitfield.Read(u);
                 var reg = Registers.GpRegisters[iReg];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -144,7 +144,7 @@ namespace Reko.Arch.Avr.Avr32
                 if (iReg == 0xF)
                     d.iclass = InstrClass.Transfer;
                 var reg = Registers.GpRegisters[iReg];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -421,25 +421,25 @@ namespace Reko.Arch.Avr.Avr32
                 }
                 if ((regMask & 8) != 0)
                 {
-                    dasm.ops.Add(new RegisterOperand(gp[10]));
+                    dasm.ops.Add(gp[10]);
                 }
                 if ((regMask & 16) != 0)
                 {
-                    dasm.ops.Add(new RegisterOperand(gp[11]));
+                    dasm.ops.Add(gp[11]);
                 }
                 if ((regMask & 32) != 0)
                 {
-                    dasm.ops.Add(new RegisterOperand(gp[12]));
+                    dasm.ops.Add(gp[12]);
                 }
                 if ((regMask & 64) != 0 && !(pop && setr12))
                 {
-                    dasm.ops.Add(new RegisterOperand(gp[14]));
+                    dasm.ops.Add(gp[14]);
                 }
                 if ((regMask & 128) != 0)
                 {
                     if (pop)
                         dasm.iclass = InstrClass.Transfer;
-                    dasm.ops.Add(new RegisterOperand(gp[15]));
+                    dasm.ops.Add(gp[15]);
                     if (setr12)
                     {
                         switch (Bits.ZeroExtend(regMask >> 5, 2))

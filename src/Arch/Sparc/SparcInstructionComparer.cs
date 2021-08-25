@@ -48,40 +48,26 @@ namespace Reko.Arch.Sparc
                 return false;
             if (a.GetType() != b.GetType())
                 return false;
-            var rA = a as RegisterOperand;
-            if (rA != null)
+            switch (a)
             {
-                return CompareRegisters(rA.Register, ((RegisterOperand)b).Register);
-            }
-
-            var immA = a as ImmediateOperand;
-            if (immA != null)
-            {
-                return CompareValues(immA.Value, ((ImmediateOperand)b).Value);
-            }
-            var addrA = a as AddressOperand;
-            if (addrA != null)
-            {
+            case RegisterStorage rA:
+                return CompareRegisters(rA, (RegisterStorage) b);
+            case ImmediateOperand immA:
+                return CompareValues(immA.Value, ((ImmediateOperand) b).Value);
+            case AddressOperand addrA:
                 return NormalizeConstants ||
-                    addrA.Address.ToLinear() == ((AddressOperand)b).Address.ToLinear();
-            }
-            var mA = a as MemoryOperand;
-            if (mA != null)
-            {
-                var mB = (MemoryOperand)b;
+                    addrA.Address.ToLinear() == ((AddressOperand) b).Address.ToLinear();
+            case MemoryOperand mA:
+                var mB = (MemoryOperand) b;
                 if (!CompareRegisters(mA.Base, mB.Base))
                     return false;
                 return CompareValues(mA.Offset, mB.Offset);
-            }
-            var xA = a as IndexedMemoryOperand;
-            if (xA != null)
-            {
-                var xB = (IndexedMemoryOperand)b;
+            case IndexedMemoryOperand xA:
+                var xB = (IndexedMemoryOperand) b;
                 if (!CompareRegisters(xA.Base, xB.Base))
                     return false;
                 return CompareRegisters(xA.Index, xB.Index);
             }
-
             throw new NotImplementedException();
         }
 
@@ -98,32 +84,20 @@ namespace Reko.Arch.Sparc
         {
             if (op == null)
                 return 0;
-            var r = op as RegisterOperand;
-            if (r != null)
+            switch (op)
             {
-                return GetRegisterHash(r.Register);
-            }
-            var i = op as ImmediateOperand;
-            if (i != null)
-            {
+            case RegisterStorage r:
+                return GetRegisterHash(r);
+            case ImmediateOperand i:
                 return GetConstantHash(i.Value);
-            }
-            var a = op as AddressOperand;
-            if (a != null)
-            {
+            case AddressOperand a:
                 return a.Address.GetHashCode();
-            }
-            var m = op as MemoryOperand;
-            if (m != null)
-            {
+            case MemoryOperand m:
                 var h = GetRegisterHash(m.Base);
                 h = h ^ 29 * GetConstantHash(m.Offset);
                 return h;
-            }
-            var x = op as IndexedMemoryOperand;
-            if (x != null)
-            {
-                var h = GetRegisterHash(x.Base);
+            case IndexedMemoryOperand x:
+                h = GetRegisterHash(x.Base);
                 h = h ^ 59 * GetRegisterHash(x.Index);
                 return h;
             }

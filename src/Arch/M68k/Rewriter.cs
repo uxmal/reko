@@ -343,8 +343,8 @@ VS Overflow Set 1001 V
 
         private RegisterStorage? GetRegister(MachineOperand op)
         {
-            var rOp = op as RegisterOperand;
-            return rOp?.Register;
+            var rOp = op as RegisterStorage;
+            return rOp;
         }
 
         private void EmitInvalid()

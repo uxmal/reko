@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Arch.X86
 /*			IntelInstructionTrie trie = new IntelInstructionTrie();
 			IntelInstruction inst = new IntelInstruction();
 			inst.code = Mnemonic.push;
-			inst.op1 = new RegisterOperand(Register.bp);
+			inst.op1 = new RegisterStorage(Register.bp);
 			inst.cOperands = 1;
 			trie.Add(inst);
 			Assertion.AssertEquals(trie.Instructions == 1);

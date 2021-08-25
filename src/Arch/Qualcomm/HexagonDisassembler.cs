@@ -214,7 +214,7 @@ namespace Reko.Arch.Qualcomm
             {
                 var regEnc = regField.Read(u);
                 var reg = Registers.GpRegs[regEnc];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -232,7 +232,7 @@ namespace Reko.Arch.Qualcomm
             {
                 var regEnc = regField.Read(u);
                 var reg = Registers.GpRegs[regEnc];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -250,7 +250,7 @@ namespace Reko.Arch.Qualcomm
                 return (u, d) =>
                 {
                     var regEnc = regField.Read(u);
-                    var reg = new RegisterOperand(Registers.GpRegs[regEnc]);
+                    var reg = Registers.GpRegs[regEnc];
                     d.ops.Add(new DecoratorOperand(PrimitiveType.Word16, reg)
                     {
                         BitOffset = offset
@@ -275,7 +275,7 @@ namespace Reko.Arch.Qualcomm
             {
                 var regEnc = regField.Read(u);
                 var reg = subInstrRegs[regEnc];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -330,7 +330,7 @@ namespace Reko.Arch.Qualcomm
             {
                 var predEnc = field.Read(u);
                 var pred = Registers.PredicateRegisters[predEnc];
-                d.ops.Add(new RegisterOperand(pred));
+                d.ops.Add(pred);
                 return true;
             };
         }
@@ -353,7 +353,7 @@ namespace Reko.Arch.Qualcomm
             {
                 var regEnc = regField.Read(u);
                 var reg = Registers.ControlRegisters[regEnc];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -387,7 +387,7 @@ namespace Reko.Arch.Qualcomm
             {
                 var regEnc = regField.Read(u);
                 var reg = Registers.GuestControlRegisters[regEnc];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -422,7 +422,7 @@ namespace Reko.Arch.Qualcomm
                 var regEnc = regField.Read(u);
                 if (!Registers.SystemRegisters.TryGetValue(regEnc, out var reg))
                     return false;
-                d.ops.Add(new RegisterOperand(reg));    
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -454,7 +454,7 @@ namespace Reko.Arch.Qualcomm
         {
             return (u, d) =>
             {
-                d.ops.Add(new RegisterOperand(register));
+                d.ops.Add(register);
                 return true;
             };
         }
@@ -489,9 +489,9 @@ namespace Reko.Arch.Qualcomm
                 d.ops = ops;
                 d.addrInstr = addrInstr;
                 if (instrProducer.Mnemonic == Mnemonic.ASSIGN &&
-                    instrProducer.Operands[0] is RegisterOperand reg)
+                    instrProducer.Operands[0] is RegisterStorage reg)
                 {
-                    d.ops.Add(new DecoratorOperand(reg.Width, reg) { NewValue = true });
+                    d.ops.Add(new DecoratorOperand(reg.DataType, reg) { NewValue = true });
                     return true;
                 }
                 else
@@ -835,7 +835,7 @@ namespace Reko.Arch.Qualcomm
             var bfPredicate = new Bitfield(bitposPrediate, 2);
             return (u, d) =>
             {
-                d.conditionPredicate = new RegisterOperand(Registers.PredicateRegisters[bfPredicate.Read(u)]);
+                d.conditionPredicate = Registers.PredicateRegisters[bfPredicate.Read(u)];
                 d.conditionPredicateNew = bitposNew >= 0 && Bits.IsBitSet(u, bitposNew);
                 d.directionHint = bitposHint >= 0
                     ? Bits.IsBitSet(u, bitposHint) ? DirectionHint.Taken : DirectionHint.NotTaken
@@ -848,7 +848,7 @@ namespace Reko.Arch.Qualcomm
         {
             return (u, d) =>
             {
-                d.conditionPredicate = new RegisterOperand(Registers.PredicateRegisters[0]);
+                d.conditionPredicate = Registers.PredicateRegisters[0];
                 d.conditionPredicateNew = bitposNew >= 0 && Bits.IsBitSet(u, bitposNew);
                 d.directionHint = bitposHint >= 0
                     ? Bits.IsBitSet(u, bitposHint) ? DirectionHint.Taken : DirectionHint.NotTaken
@@ -862,7 +862,7 @@ namespace Reko.Arch.Qualcomm
         {
             return (u, d) =>
             {
-                d.conditionPredicate = new RegisterOperand(Registers.PredicateRegisters[0]);
+                d.conditionPredicate = Registers.PredicateRegisters[0];
                 d.conditionPredicateNew = true;
                 d.directionHint = bitposHint >= 0
                     ? Bits.IsBitSet(u, bitposHint) ? DirectionHint.Taken : DirectionHint.NotTaken
@@ -876,7 +876,7 @@ namespace Reko.Arch.Qualcomm
         {
             return (u, d) =>
             {
-                d.conditionPredicate = new RegisterOperand(Registers.PredicateRegisters[1]);
+                d.conditionPredicate = Registers.PredicateRegisters[1];
                 d.conditionPredicateNew = true;
                 d.directionHint = bitposHint >= 0
                     ? Bits.IsBitSet(u, bitposHint) ? DirectionHint.Taken : DirectionHint.NotTaken

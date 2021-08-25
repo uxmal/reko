@@ -150,21 +150,21 @@ namespace Reko.Arch.Xtensa
         private static bool Rr(uint wInstr, XtensaDisassembler dasm)
         {
             var reg = dasm.arch.GetAluRegister(dasm.state.r);
-            dasm.ops.Add(new RegisterOperand(reg));
+            dasm.ops.Add(reg);
             return true;
         }
 
         private static bool Rs(uint wInstr, XtensaDisassembler dasm)
         {
             var reg = dasm.arch.GetAluRegister(dasm.state.s);
-            dasm.ops.Add(new RegisterOperand(reg));
+            dasm.ops.Add(reg);
             return true;
         }
 
         private static bool Rt(uint wInstr, XtensaDisassembler dasm)
         {
             var reg = dasm.arch.GetAluRegister(dasm.state.t);
-            dasm.ops.Add(new RegisterOperand(reg));
+            dasm.ops.Add(reg);
             return true;
         }
 
@@ -172,21 +172,21 @@ namespace Reko.Arch.Xtensa
         private static bool Fr(uint wInstr, XtensaDisassembler dasm)
         {
             var freg = dasm.arch.GetFpuRegister(dasm.state.r);
-            dasm.ops.Add(new RegisterOperand(freg));
+            dasm.ops.Add(freg);
             return true;
         }
 
         private static bool Fs(uint wInstr, XtensaDisassembler dasm)
         {
             var freg = dasm.arch.GetFpuRegister(dasm.state.s);
-            dasm.ops.Add(new RegisterOperand(freg));
+            dasm.ops.Add(freg);
             return true;
         }
 
         private static bool Ft(uint wInstr, XtensaDisassembler dasm)
         {
             var freg = dasm.arch.GetFpuRegister(dasm.state.t);
-            dasm.ops.Add(new RegisterOperand(freg));
+            dasm.ops.Add(freg);
             return true;
         }
 
@@ -197,7 +197,7 @@ namespace Reko.Arch.Xtensa
             var mac16reg = dasm.arch.GetMac16Register(dasm.state.r & 3);
             if (mac16reg == null)
                 return false;
-            dasm.ops.Add(new RegisterOperand(mac16reg));
+            dasm.ops.Add(mac16reg);
             return true;
         }
 
@@ -207,7 +207,7 @@ namespace Reko.Arch.Xtensa
             var mac16reg = dasm.arch.GetMac16Register((dasm.state.r >> 2) & 1);
             if (mac16reg == null)
                 return false;
-            dasm.ops.Add(new RegisterOperand(mac16reg));
+            dasm.ops.Add(mac16reg);
             return true;
         }
 
@@ -216,7 +216,7 @@ namespace Reko.Arch.Xtensa
             var mac16reg = dasm.arch.GetMac16Register(dasm.state.t);
             if (mac16reg == null)
                 return false;
-            dasm.ops.Add(new RegisterOperand(mac16reg));
+            dasm.ops.Add(mac16reg);
             return true;
         }
 
@@ -227,7 +227,7 @@ namespace Reko.Arch.Xtensa
             var mac16reg = dasm.arch.GetMac16Register((dasm.state.t >> 2) | 0b10);
             if (mac16reg == null)
                 return false;
-            dasm.ops.Add(new RegisterOperand(mac16reg));
+            dasm.ops.Add(mac16reg);
             return true;
         }
 
@@ -238,7 +238,7 @@ namespace Reko.Arch.Xtensa
             var reg = dasm.arch.GetSpecialRegister((dasm.state.r << 4) | dasm.state.s);
             if (reg == null)
                 return false;
-            dasm.ops.Add(new RegisterOperand(reg));
+            dasm.ops.Add(reg);
             return true;
         }
 
@@ -246,14 +246,14 @@ namespace Reko.Arch.Xtensa
         private static bool Ust(uint wINstr, XtensaDisassembler dasm)
         {
             var reg = dasm.arch.GetUserRegister((dasm.state.s << 4) | dasm.state.t);
-            dasm.ops.Add(new RegisterOperand(reg));
+            dasm.ops.Add(reg);
             return true;
         }
 
         private static bool Usr(uint wINstr, XtensaDisassembler dasm)
         {
             var reg = dasm.arch.GetUserRegister((dasm.state.s << 4) | dasm.state.r);
-            dasm.ops.Add(new RegisterOperand(reg));
+            dasm.ops.Add(reg);
             return true;
         }
 
@@ -269,14 +269,14 @@ namespace Reko.Arch.Xtensa
         private static bool Br(uint wInstr, XtensaDisassembler dasm)
         {
             var reg = dasm.arch.GetBoolRegister(dasm.state.r);
-            dasm.ops.Add(new RegisterOperand(reg));
+            dasm.ops.Add(reg);
             return true;
         }
 
         private static bool Bs(uint wInstr, XtensaDisassembler dasm)
         {
             var reg = dasm.arch.GetBoolRegister(dasm.state.s);
-            dasm.ops.Add(new RegisterOperand(reg));
+            dasm.ops.Add(reg);
             return true;
         }
 
@@ -288,7 +288,7 @@ namespace Reko.Arch.Xtensa
                 if (iReg % multiple != 0)
                     return false;
                 var reg = dasm.arch.GetBoolRegister(iReg);
-                dasm.ops.Add(new RegisterOperand(reg));
+                dasm.ops.Add(reg);
                 return true;
             };
         }
@@ -296,7 +296,7 @@ namespace Reko.Arch.Xtensa
         private static bool Bt(uint wInstr, XtensaDisassembler dasm)
         {
             var reg = dasm.arch.GetBoolRegister(dasm.state.t);
-            dasm.ops.Add(new RegisterOperand(reg));
+            dasm.ops.Add(reg);
             return true;
         }
 
@@ -555,7 +555,7 @@ namespace Reko.Arch.Xtensa
 
         private MachineOperand GetAluRegister(byte r)
         {
-            return new RegisterOperand(arch.GetAluRegister(r));
+            return arch.GetAluRegister(r);
         }
 
         public class Op1Decoder : Decoder

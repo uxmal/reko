@@ -40,7 +40,7 @@ namespace Reko.Arch.PaRisc
         private void RewriteMfctl()
         {
             var src = RewriteOp(0);
-            var rDst = ((RegisterOperand) instr.Operands[1]).Register;
+            var rDst = (RegisterStorage) instr.Operands[1];
             var n = rDst.Number - Registers.ControlRegisters[0].Number;
             if (1 <= n && n <= 7)
             {
@@ -57,7 +57,7 @@ namespace Reko.Arch.PaRisc
         private void RewriteMtctl()
         {
             var src = RewriteOp(0);
-            var rDst = ((RegisterOperand) instr.Operands[1]).Register;
+            var rDst = (RegisterStorage) instr.Operands[1];
             var n = rDst.Number - Registers.ControlRegisters[0].Number;
             if (1 <= n && n <= 7)
             {

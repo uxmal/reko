@@ -71,10 +71,10 @@ namespace Reko.Arch.X86.Assembler
 		}
 
 
-		public void EmitModRM(int reg, RegisterOperand op)
+		public void EmitModRM(int reg, RegisterStorage op)
 		{
 			reg <<= 3;
-			emitter.EmitByte(0xC0 | reg | X86Assembler.RegisterEncoding(op.Register));
+			emitter.EmitByte(0xC0 | reg | X86Assembler.RegisterEncoding(op));
 		}
 
 		/// <summary>

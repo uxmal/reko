@@ -161,9 +161,9 @@ namespace Reko.Arch.M68k.Assembler
             var eaDst = ExpectEffectiveAddress();
             if (eaDst is null)
                 return;
-            if (eaDst is RegisterOperand rDst)
+            if (eaDst is RegisterStorage rDst)
             {
-                if (rDst.Register is AddressRegister)
+                if (rDst is AddressRegister)
                 {
                     Emit(eaSrc, rDst, width, ByteWidthIllegal, asm.Adda_w, asm.Adda_l);
                 }
@@ -174,7 +174,7 @@ namespace Reko.Arch.M68k.Assembler
             }
             else
             {
-                var dSrc = (RegisterOperand) eaSrc;
+                var dSrc = (RegisterStorage) eaSrc;
                 Emit(dSrc, eaDst, width, asm.Add_b, asm.Add_w, asm.Add_l);
             }
         }
@@ -210,9 +210,9 @@ namespace Reko.Arch.M68k.Assembler
             var eaDst = ExpectEffectiveAddress();
             if (eaDst is null)
                 return;
-            if (eaDst is RegisterOperand rDst)
+            if (eaDst is RegisterStorage rDst)
             {
-                if (rDst.Register is AddressRegister)
+                if (rDst is AddressRegister)
                 {
                     Emit(eaSrc, rDst, code, ByteWidthIllegal, asm.Cmpa_w, asm.Cmpa_l);
                 }
@@ -262,7 +262,7 @@ namespace Reko.Arch.M68k.Assembler
             var aReg = ExpectAddressRegister();
             if (aReg is null)
                 return;
-            asm.Lea(ea, new RegisterOperand(aReg));
+            asm.Lea(ea, aReg);
         }
 
         private void ProcessMove()
@@ -386,11 +386,11 @@ namespace Reko.Arch.M68k.Assembler
                 Debug.Assert(!string.IsNullOrEmpty(name));
                 if (name.Length == 2 && "dD".IndexOf(name[0]) >= 0 && '0' <= name[1] && name[1] <= '7')
                 {
-                    return new RegisterOperand(Registers.DataRegister(name[1] - '0'));
+                    return Registers.DataRegister(name[1] - '0');
                 }
                 if (name.Length == 2 && "aA".IndexOf(name[0]) >= 0 && '0' <= name[1] && name[1] <= '7')
                 {
-                    return new RegisterOperand(Registers.AddressRegister(name[1] - '0'));
+                    return Registers.AddressRegister(name[1] - '0');
                 }
                 // It's some identifier we haven't seen yet. Register our interest
                 return ForwardEa(asm.Symbols.CreateSymbol(name));

@@ -165,8 +165,8 @@ namespace Reko.Arch.Tms7000
         {
             switch (op)
             {
-            case RegisterOperand rop:
-                return binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                return binder.EnsureRegister(rop);
             case ImmediateOperand imm:
                 return imm.Value;
             case MemoryOperand mem:
@@ -324,7 +324,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteIncdDecd(Func<Expression, Expression, Expression> fn)
         {
-            var hireg = ((RegisterOperand)instr.Operands[0]).Register;
+            var hireg = (RegisterStorage)instr.Operands[0];
             var loreg = arch.GpRegs[(hireg.Number - 1 & 0xFF)];
             var reg = binder.EnsureSequence(PrimitiveType.Word16, hireg, loreg);
             m.Assign(reg, fn(reg, Constant.Word(reg.DataType.BitSize, 1)));
@@ -398,7 +398,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteMovd()
         {
-            var dst = RegisterPair(((RegisterOperand)instr.Operands[1]).Register);
+            var dst = RegisterPair((RegisterStorage)instr.Operands[1]);
             var src = Operand(instr.Operands[0]);
             if (src is MemoryAccess mem)
             {
@@ -423,8 +423,8 @@ namespace Reko.Arch.Tms7000
             var dst = Operand(instr.Operands[0]);
             m.Assign(dst, m.Mem8(sp));
             m.Assign(sp, m.ISub(sp, 1));
-            if (!(instr.Operands[0] is RegisterOperand reg &&
-                reg.Register == arch.st))
+            if (!(instr.Operands[0] is RegisterStorage reg &&
+                reg == arch.st))
             {
                 NZ0(dst);
             }

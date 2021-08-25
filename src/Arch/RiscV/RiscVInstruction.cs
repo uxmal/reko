@@ -123,8 +123,8 @@ namespace Reko.Arch.RiscV
         {
             switch (op)
             {
-            case RegisterOperand rop:
-                renderer.WriteString(rop.Register.Name);
+            case RegisterStorage rop:
+                renderer.WriteString(rop.Name);
                 return;
             case ImmediateOperand immop:
                 immop.Render(renderer, options);

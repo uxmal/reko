@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
@@ -41,8 +42,8 @@ namespace Reko.Arch.WE32100
         {
             switch (operand)
             {
-            case RegisterOperand rop:
-                renderer.WriteFormat("%{0}", rop.Register.Name);
+            case RegisterStorage rop:
+                renderer.WriteFormat("%{0}", rop.Name);
                 break;
             default:
                 base.RenderOperand(operand, renderer, options);

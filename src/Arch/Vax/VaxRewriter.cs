@@ -495,10 +495,8 @@ namespace Reko.Arch.Vax
         {
             switch (op)
             {
-            case RegisterOperand regOp:
-                var reg = binder.EnsureRegister(regOp.Register);
-                if (reg == null)
-                    return null!;
+            case RegisterStorage regOp:
+                var reg = binder.EnsureRegister(regOp);
                 if (width.Size == 4)
                 {
                     return reg;
@@ -531,9 +529,9 @@ namespace Reko.Arch.Vax
 
             case MemoryOperand memOp:
                 Expression ea;
-                if (memOp.Base is RegisterOperand rbaseOp)
+                if (memOp.Base is RegisterStorage rbaseOp)
                 {
-                    reg = binder.EnsureRegister(rbaseOp.Register);
+                    reg = binder.EnsureRegister(rbaseOp);
                     if (memOp.AutoDecrement)
                     {
                         m.Assign(reg, m.ISub(reg, width.Size));
@@ -563,7 +561,7 @@ namespace Reko.Arch.Vax
                         load = m.Mem(width, ea);
                     if (memOp.AutoIncrement)
                     {
-                        reg = binder.EnsureRegister(rbaseOp.Register);
+                        reg = binder.EnsureRegister(rbaseOp);
                         int inc = (memOp.Deferred) ? 4 : width.Size;
                         m.Assign(reg, m.IAdd(reg, inc));
                     }
@@ -629,10 +627,8 @@ namespace Reko.Arch.Vax
         {
             switch (op)
             {
-            case RegisterOperand regOp:
-                var reg = binder.EnsureRegister(regOp.Register);
-                if (reg == null)
-                    return null!;
+            case RegisterStorage regOp:
+                var reg = binder.EnsureRegister(regOp);
                 if (width.BitSize < 32)
                 {
                     var tmpLo = binder.CreateTemporary(width);
@@ -665,9 +661,9 @@ namespace Reko.Arch.Vax
             case MemoryOperand memOp:
                 Expression ea;
                 Identifier? regEa = null;
-                if (memOp.Base is RegisterOperand rbase)
+                if (memOp.Base is RegisterStorage rbase)
                 {
-                    regEa = binder.EnsureRegister(rbase.Register);
+                    regEa = binder.EnsureRegister(rbase);
                     if (memOp.AutoDecrement)
                     {
                         m.Assign(regEa, m.ISub(regEa, width.Size));

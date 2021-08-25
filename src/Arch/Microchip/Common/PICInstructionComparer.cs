@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 2017-2022 Christian Hostelet.
  * inspired by work from:
@@ -49,9 +49,9 @@ namespace Reko.Arch.MicrochipPIC.Common
 
             switch (opA)
             {
-                case RegisterOperand regOpA:
-                    var regOpB = (RegisterOperand)opB;
-                    return NormalizeRegisters || regOpA.Register == regOpB.Register;
+                case RegisterStorage regOpA:
+                    var regOpB = (RegisterStorage)opB;
+                    return NormalizeRegisters || regOpA == regOpB;
 
                 case ImmediateOperand immOpA:
                     var immOpB = (ImmediateOperand)opB;
@@ -173,8 +173,8 @@ namespace Reko.Arch.MicrochipPIC.Common
         {
             switch (op)
             {
-                case RegisterOperand regOp:
-                    return GetRegisterHash(regOp.Register);
+                case RegisterStorage regOp:
+                    return GetRegisterHash(regOp);
 
                 case ImmediateOperand immOp:
                     return GetConstantHash(immOp.Value);

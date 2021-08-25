@@ -109,8 +109,8 @@ namespace Reko.Arch.WE32100
             var op = instr.Operands[iop];
             switch (op)
             {
-            case RegisterOperand rop:
-                return binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                return binder.EnsureRegister(rop);
             case ImmediateOperand imm:
                 return imm.Value;
             case MemoryOperand mem:
@@ -130,8 +130,8 @@ namespace Reko.Arch.WE32100
             var op = instr.Operands[iop];
             switch (op)
             {
-            case RegisterOperand rop:
-                var reg = binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                var reg = binder.EnsureRegister(rop);
                 m.Assign(reg, src);
                 return reg;
             case MemoryOperand mem:
@@ -163,8 +163,8 @@ namespace Reko.Arch.WE32100
             var op = instr.Operands[iop];
             switch (op)
             {
-            case RegisterOperand rop:
-                var reg = binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                var reg = binder.EnsureRegister(rop);
                 m.Assign(reg, binary(reg, src));
                 return src;
             case MemoryOperand mem:
@@ -192,8 +192,8 @@ namespace Reko.Arch.WE32100
             var op = instr.Operands[iop];
             switch (op)
             {
-            case RegisterOperand rop:
-                var reg = binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                var reg = binder.EnsureRegister(rop);
                 m.Assign(reg, unary(src));
                 return src;
             case MemoryOperand mem:

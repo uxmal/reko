@@ -77,8 +77,8 @@ namespace Reko.Arch.RiscV
 
         private void RewriteCompressedJr()
         {
-            var reg = (RegisterOperand) instr.Operands[0];
-            if (reg.Register == arch.LinkRegister)
+            var reg = (RegisterStorage) instr.Operands[0];
+            if (reg == arch.LinkRegister)
                 m.Return(0, 0);
             else 
                 m.Goto(RewriteOp(instr.Operands[0]));
@@ -112,7 +112,7 @@ namespace Reko.Arch.RiscV
 
         private void RewriteJal()
         {
-            var continuation = ((RegisterOperand)instr.Operands[0]).Register;
+            var continuation = (RegisterStorage)instr.Operands[0];
             var dst = RewriteOp(instr.Operands[1]);
             iclass = InstrClass.Transfer;
             if (continuation.Number == 0)
@@ -128,8 +128,8 @@ namespace Reko.Arch.RiscV
 
         private void RewriteJalr()
         {
-            var continuation = ((RegisterOperand)instr.Operands[0]).Register;
-            var rDst = ((RegisterOperand)instr.Operands[1]).Register;
+            var continuation = (RegisterStorage)instr.Operands[0];
+            var rDst = (RegisterStorage)instr.Operands[1];
             var dst = RewriteOp(instr.Operands[1]);
             var off = RewriteOp(instr.Operands[2]);
             iclass = InstrClass.Transfer;

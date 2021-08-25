@@ -116,7 +116,7 @@ namespace Reko.Arch.Arm.AArch32
                 RenderOperand(ops[0], renderer, options);
                 if (writeback &&
                     blockDataXferMnemonics.Contains(Mnemonic) &&
-                    ops[0] is RegisterOperand)
+                    ops[0] is RegisterStorage)
                 {
                     renderer.WriteChar('!');
                 }
@@ -150,7 +150,7 @@ namespace Reko.Arch.Arm.AArch32
 
         public bool IsStackPointer(int iOp)
         {
-            return Operands[iOp] is RegisterOperand r && r.Register == Registers.sp;
+            return Operands[iOp] is RegisterStorage r && r == Registers.sp;
         }
 
         public bool IsSinglePop()

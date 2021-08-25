@@ -125,7 +125,7 @@ namespace Reko.Arch.Pdp10.Disassembler
         private static bool AC(ulong u, Pdp10Disassembler dasm)
         {
             var reg = Registers.Accumulators[dasm.ac];
-            dasm.ops.Add(new RegisterOperand(reg));
+            dasm.ops.Add(reg);
             return true;
         }
 
@@ -138,7 +138,7 @@ namespace Reko.Arch.Pdp10.Disassembler
             if (dasm.ac != 0)
             {
                 var reg = Registers.Accumulators[dasm.ac];
-                dasm.ops.Add(new RegisterOperand(reg));
+                dasm.ops.Add(reg);
             }
             return true;
         }

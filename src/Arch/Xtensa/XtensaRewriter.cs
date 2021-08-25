@@ -387,8 +387,8 @@ namespace Reko.Arch.Xtensa
         {
             switch (op)
             {
-            case RegisterOperand rOp:
-                return binder.EnsureRegister(rOp.Register);
+            case RegisterStorage rOp:
+                return binder.EnsureRegister(rOp);
             case AddressOperand aOp:
                 return aOp.Address;
             case ImmediateOperand iOp:

@@ -213,7 +213,7 @@ namespace Reko.Arch.PowerPC
             if (!e.MoveNext() || (e.Current.Mnemonic != Mnemonic.addis && e.Current.Mnemonic != Mnemonic.oris))
                 return null;
             var addrInstr = e.Current.Address;
-            var reg = ((RegisterOperand)e.Current.Operands[0]).Register;
+            var reg = (RegisterStorage)e.Current.Operands[0];
             var uAddr = ((ImmediateOperand)e.Current.Operands[2]).Value.ToUInt32() << 16;
              
             if (!e.MoveNext() || e.Current.Mnemonic != Mnemonic.lwz)
@@ -223,11 +223,11 @@ namespace Reko.Arch.PowerPC
             if (mem.BaseRegister != reg)
                 return null;
             uAddr = (uint)((int)uAddr + mem.Offset);
-            reg = ((RegisterOperand)e.Current.Operands[0]).Register;
+            reg = (RegisterStorage)e.Current.Operands[0];
 
             if (!e.MoveNext() || e.Current.Mnemonic != Mnemonic.mtctr)
                 return null;
-            if (((RegisterOperand)e.Current.Operands[0]).Register != reg)
+            if ((RegisterStorage)e.Current.Operands[0] != reg)
                 return null;
 
             if (!e.MoveNext() || e.Current.Mnemonic != Mnemonic.bcctr)

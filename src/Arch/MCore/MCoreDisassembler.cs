@@ -99,7 +99,7 @@ namespace Reko.Arch.MCore
             {
                 var iReg = regField.Read(u);
                 var reg = regs[iReg];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }

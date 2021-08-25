@@ -736,16 +736,16 @@ namespace Reko.Arch.X86
             if (isVex)
             {
                 return
-                    instrCur.Operands[1] is RegisterOperand reg1 &&
-                    instrCur.Operands[2] is RegisterOperand reg2 &&
-                    reg1.Register == reg2.Register;
+                    instrCur.Operands[1] is RegisterStorage reg1 &&
+                    instrCur.Operands[2] is RegisterStorage reg2 &&
+                    reg1 == reg2;
             }
             else
             {
                 return
-                    instrCur.Operands[0] is RegisterOperand reg1 &&
-                    instrCur.Operands[1] is RegisterOperand reg2 &&
-                    reg1.Register == reg2.Register;
+                    instrCur.Operands[0] is RegisterStorage reg1 &&
+                    instrCur.Operands[1] is RegisterStorage reg2 &&
+                    reg1 == reg2;
             }
         }
 

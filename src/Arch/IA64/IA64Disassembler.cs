@@ -137,7 +137,7 @@ namespace Reko.Arch.IA64
             return (u, d) =>
             {
                 var iReg = field.Read(u);
-                var reg = new RegisterOperand(Registers.GpRegisters[iReg]);
+                var reg = Registers.GpRegisters[iReg];
                 d.ops.Add(reg);
                 return true;
             };

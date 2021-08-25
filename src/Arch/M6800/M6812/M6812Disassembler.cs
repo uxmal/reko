@@ -119,43 +119,43 @@ namespace Reko.Arch.M6800.M6812
 
         private static bool A(uint bInstr, M6812Disassembler dasm)
         {
-            dasm.operands.Add(new RegisterOperand(Registers.a));
+            dasm.operands.Add(Registers.a);
             return true;
         }
 
         private static bool B(uint bInstr, M6812Disassembler dasm)
         {
-            dasm.operands.Add(new RegisterOperand(Registers.b));
+            dasm.operands.Add(Registers.b);
             return true;
         }
 
         private static bool D(uint bInstr, M6812Disassembler dasm)
         {
-            dasm.operands.Add(new RegisterOperand(Registers.d));
+            dasm.operands.Add(Registers.d);
             return true;
         }
 
         private static bool S(uint bInstr, M6812Disassembler dasm)
         {
-            dasm.operands.Add(new RegisterOperand(Registers.sp));
+            dasm.operands.Add(Registers.sp);
             return true;
         }
 
         private static bool X(uint bInstr, M6812Disassembler dasm)
         {
-            dasm.operands.Add(new RegisterOperand(Registers.x));
+            dasm.operands.Add(Registers.x);
             return true;
         }
 
         private static bool Y(uint bInstr, M6812Disassembler dasm)
         {
-            dasm.operands.Add(new RegisterOperand(Registers.y));
+            dasm.operands.Add(Registers.y);
             return true;
         }
 
         private static bool CCR(uint bInstr, M6812Disassembler dasm)
         {
-            dasm.operands.Add(new RegisterOperand(Registers.ccr));
+            dasm.operands.Add(Registers.ccr);
             return true;
         }
 

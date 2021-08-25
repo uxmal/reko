@@ -128,7 +128,7 @@ namespace Reko.Arch.H8
             var iReg = r0_4.Read(uInstr);
             if ((iReg & 8) != 0)
                 return false;
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegisters[iReg]));
+            dasm.ops.Add(Registers.GpRegisters[iReg]);
             return true;
         }
 
@@ -139,7 +139,7 @@ namespace Reko.Arch.H8
         private static bool rbl(uint uInstr, H8Disassembler dasm)
         {
             var iReg = r0_4.Read(uInstr);
-            dasm.ops.Add(new RegisterOperand(Registers.Gp8Registers[iReg]));
+            dasm.ops.Add(Registers.Gp8Registers[iReg]);
             return true;
         }
 
@@ -151,7 +151,7 @@ namespace Reko.Arch.H8
             var iReg = r0_4.Read(uInstr);
             if (iReg >= dasm.regs.Length)
                 return false;
-            dasm.ops.Add(new RegisterOperand(dasm.regs[iReg]));
+            dasm.ops.Add(dasm.regs[iReg]);
             return true;
         }
 
@@ -163,7 +163,7 @@ namespace Reko.Arch.H8
             var iReg = r4_4.Read(uInstr);
             if (iReg >= dasm.regs.Length)
                 return false;
-            dasm.ops.Add(new RegisterOperand(dasm.regs[iReg]));
+            dasm.ops.Add(dasm.regs[iReg]);
             return true;
         }
 
@@ -172,7 +172,7 @@ namespace Reko.Arch.H8
             var iReg = r4_3.Read(uInstr);
             if (iReg >= dasm.regs.Length)
                 return false;
-            dasm.ops.Add(new RegisterOperand(dasm.regs[iReg]));
+            dasm.ops.Add(dasm.regs[iReg]);
             return true;
         }
 
@@ -181,7 +181,7 @@ namespace Reko.Arch.H8
             var iReg = r0_3.Read(uInstr);
             if (iReg >= dasm.regs.Length)
                 return false;
-            dasm.ops.Add(new RegisterOperand(dasm.regs[iReg]));
+            dasm.ops.Add(dasm.regs[iReg]);
             return true;
         }
         /// <summary>
@@ -192,7 +192,7 @@ namespace Reko.Arch.H8
             var iReg = r8_4.Read(uInstr);
             if (iReg >= dasm.regs.Length)
                 return false;
-            dasm.ops.Add(new RegisterOperand(dasm.regs[iReg]));
+            dasm.ops.Add(dasm.regs[iReg]);
             return true;
         }
         private static readonly Bitfield r0_3 = new Bitfield(0, 3);
@@ -207,7 +207,7 @@ namespace Reko.Arch.H8
         private static bool rb0(uint uInstr, H8Disassembler dasm)
         {
             var iReg = r0_4.Read(uInstr);
-            dasm.ops.Add(new RegisterOperand(Registers.Gp8Registers[iReg]));
+            dasm.ops.Add(Registers.Gp8Registers[iReg]);
             return true;
         }
 
@@ -217,13 +217,13 @@ namespace Reko.Arch.H8
         private static bool rb8(uint uInstr, H8Disassembler dasm)
         {
             var iReg = r8_4.Read(uInstr);
-            dasm.ops.Add(new RegisterOperand(Registers.Gp8Registers[iReg]));
+            dasm.ops.Add(Registers.Gp8Registers[iReg]);
             return true;
         }
 
         private static bool ccr(uint _, H8Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(Registers.CcRegister));
+            dasm.ops.Add(Registers.CcRegister);
             return true;
         }
 

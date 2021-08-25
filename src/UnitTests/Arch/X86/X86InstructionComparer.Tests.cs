@@ -36,15 +36,15 @@ namespace Reko.UnitTests.Core.Machine
         {
             if (o == null)
                 return null;
-            if (o is MachineOperand)
-                return (MachineOperand)o;
-            if (o is int)
+            if (o is MachineOperand mop)
+                return mop;
+            if (o is int i)
             {
-                return new ImmediateOperand(Constant.Word32((int)o));
+                return new ImmediateOperand(Constant.Word32(i));
             }
-            else if (o is string)
+            else if (o is string s)
             {
-                return new RegisterOperand(Registers.GetRegister((string)o));
+                return Registers.GetRegister(s);
             }
             else
                 throw new NotImplementedException();

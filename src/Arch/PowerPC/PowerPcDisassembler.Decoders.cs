@@ -355,7 +355,7 @@ namespace Reko.Arch.PowerPC
                     iclass |= InstrClass.Conditional;
                     if (grfBi >= 4)
                     {
-                        ops.Add(new RegisterOperand(dasm.arch.CrRegisters[(int)grfBi >> 2]));
+                        ops.Add(dasm.arch.CrRegisters[(int)grfBi >> 2]);
                     }
                     ops.Add(dst);
                     break;
@@ -384,7 +384,7 @@ namespace Reko.Arch.PowerPC
                     iclass |= InstrClass.Conditional;
                     if (grfBi >= 4)
                     {
-                        ops.Add(new RegisterOperand(dasm.arch.CrRegisters[(int)grfBi >> 2]));
+                        ops.Add(dasm.arch.CrRegisters[(int)grfBi >> 2]);
                     }
                     ops.Add(dst);
                     break;

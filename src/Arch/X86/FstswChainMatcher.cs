@@ -70,14 +70,14 @@ namespace Reko.Arch.X86
             }
             if (instrs[i].Mnemonic == Mnemonic.test)
             {
-                if (!(instrs[i].Operands[0] is RegisterOperand acc))
+                if (!(instrs[i].Operands[0] is RegisterStorage acc))
                     return false;
                 if (!(instrs[i].Operands[1] is ImmediateOperand imm))
                     return false;
                 int mask = imm.Value.ToInt32();
-                if (acc.Register == Registers.ax || acc.Register == Registers.eax)
+                if (acc == Registers.ax || acc == Registers.eax)
                     mask >>= 8;
-                else if (acc.Register != Registers.ah)
+                else if (acc != Registers.ah)
                     return false;
                 zappedInstructions.Add(i, Mnemonic.nop);
                 rewritten.Add(new Assignment(

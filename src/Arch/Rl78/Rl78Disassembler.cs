@@ -105,7 +105,7 @@ namespace Reko.Arch.Rl78
         {
             return (u, d) =>
             {
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }

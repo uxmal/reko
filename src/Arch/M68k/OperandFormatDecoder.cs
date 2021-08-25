@@ -69,7 +69,7 @@ namespace Reko.Arch.M68k
                 op = DataRegisterOperand(operandBits, 0);
                 return true;
             case 1: // Address register direct
-                op = new RegisterOperand(AddressRegister(operandBits, 0));
+                op = AddressRegister(operandBits, 0);
                 return true;
             case 2:  // Address register indirect
                 op = MemoryOperand.Indirect(dataWidth, AddressRegister(operandBits, 0));
@@ -310,9 +310,9 @@ namespace Reko.Arch.M68k
             return (AddressRegister)Registers.GetRegister(8 + ((opcode >> bitOffset) & 0x7));
         }
 
-        private static RegisterOperand DataRegisterOperand(ushort opcode, int bitOffset)
+        private static RegisterStorage DataRegisterOperand(ushort opcode, int bitOffset)
         {
-            return new RegisterOperand(Registers.GetRegister((opcode >> bitOffset) & 0x7));
+            return Registers.GetRegister((opcode >> bitOffset) & 0x7);
         }
 
         private static M68kImmediateOperand SignedImmediateByte(ushort opcode, int bitOffset, int mask)

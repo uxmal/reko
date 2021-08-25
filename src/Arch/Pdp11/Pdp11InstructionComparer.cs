@@ -53,30 +53,21 @@ namespace Reko.Arch.Pdp11
                 return false;
             if (opA.GetType() != opB.GetType())
                 return false;
-            var ropA = opA as RegisterOperand;
-            if (ropA != null)
+            switch (opA)
             {
-                var ropB = (RegisterOperand)opB;
-                return ropA.Register == ropB.Register; 
-            }
-            var addrA = opA as AddressOperand;
-            if (addrA != null)
-            {
+            case RegisterStorage ropA:
+                var ropB = (RegisterStorage) opB;
+                return ropA == ropB;
+            case AddressOperand addrA:
                 if (NormalizeConstants)
                     return true;
                 var addrB = opB as AddressOperand;
                 return addrB != null && addrA.Address.ToLinear() == addrB.Address.ToLinear();
-            }
-            var immA = opA as ImmediateOperand;
-            if (immA != null)
-            {
-                var immB = (ImmediateOperand)opB;
+            case ImmediateOperand immA:
+                var immB = (ImmediateOperand) opB;
                 return CompareValues(immA.Value, immB.Value);
-            }
-            var memA = opA as MemoryOperand;
-            if (memA != null)
-            {
-                var memB = (MemoryOperand)opB;
+            case MemoryOperand memA:
+                var memB = (MemoryOperand) opB;
                 if (memA.PreDec != memB.PreDec)
                     return false;
                 if (memA.PostInc != memB.PostInc)
@@ -103,29 +94,25 @@ namespace Reko.Arch.Pdp11
                 return 0;
             var op = instr.Operands[iOp];
             int hash = op.GetType().GetHashCode();
-            var rop = op as RegisterOperand;
-            if (rop != null)
+            if (op is RegisterStorage rop)
             {
                 if (NormalizeRegisters)
                     return 0;
-                else 
-                    return rop.Register.GetHashCode();
+                else
+                    return rop.GetHashCode();
             }
-            var immop = op as ImmediateOperand;
-            if (immop != null)
+            if (op is ImmediateOperand immop)
             {
                 return base.GetConstantHash(immop.Value);
             }
-            var addrop = op as AddressOperand;
-            if (addrop != null)
+            if (op is AddressOperand addrop)
             {
                 if (NormalizeRegisters)
                     return 0;
                 else
                     return addrop.Address.GetHashCode();
             }
-            var mem = op as MemoryOperand;
-            if (mem != null)
+            if (op is MemoryOperand mem)
             {
                 var r = NormalizeRegisters || mem.Register == null
                     ? 0

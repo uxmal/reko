@@ -122,18 +122,18 @@ namespace Reko.Arch.Vax
             case 5: // Register mode
                 if (reg.Number > maxReg)
                     return false;
-                op = new RegisterOperand(reg);
+                op = reg;
                 break;
             case 6: // Register deferred
                 op = new MemoryOperand(width)
                 {
-                    Base = new RegisterOperand(reg)
+                    Base = reg
                 };
                 break;
             case 7: // Autodecrement mode
                 op = new MemoryOperand(width)
                 {
-                    Base = new RegisterOperand(reg),
+                    Base = reg,
                     AutoDecrement = true,
                 };
                 break;
@@ -148,7 +148,7 @@ namespace Reko.Arch.Vax
                 {
                     op = new MemoryOperand(width)
                     {
-                        Base = new RegisterOperand(reg),
+                        Base = reg,
                         AutoIncrement = true,
                     };
                 }
@@ -156,7 +156,7 @@ namespace Reko.Arch.Vax
             case 9: // Deferred Autoincrement mode
                 op = new MemoryOperand(width)
                 {
-                    Base = new RegisterOperand(reg),
+                    Base = reg,
                     AutoIncrement = true,
                     Deferred = true,
                 };
@@ -221,7 +221,7 @@ namespace Reko.Arch.Vax
             }
             return new MemoryOperand(width)
             {
-                Base = new RegisterOperand(reg),
+                Base = reg,
                 Offset = c,
                 Deferred = deferred
             };

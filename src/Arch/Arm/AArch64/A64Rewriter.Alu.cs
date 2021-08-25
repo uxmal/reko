@@ -236,8 +236,8 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteCsinc()
         {
             var dst = RewriteOp(instr.Operands[0]);
-            var rTrue = ((RegisterOperand)instr.Operands[1]).Register;
-            var rFalse = ((RegisterOperand)instr.Operands[2]).Register;
+            var rTrue = (RegisterStorage)instr.Operands[1];
+            var rFalse = (RegisterStorage)instr.Operands[2];
             var cond = ((ConditionOperand)instr.Operands[3]).Condition;
             Expression src;
             if (rTrue.Number == 31 && rFalse.Number == 31)
@@ -676,8 +676,8 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteStr(PrimitiveType? dt)
         {
-            var rSrc = (RegisterOperand)instr.Operands[0];
-            Expression src = MaybeZeroRegister(rSrc.Register, dt ?? rSrc.Width);
+            var rSrc = (RegisterStorage)instr.Operands[0];
+            Expression src = MaybeZeroRegister(rSrc, dt ?? rSrc.DataType);
             var mem = (MemoryOperand)instr.Operands[1];
             var (ea, baseReg) = RewriteEffectiveAddress(mem);
             Expression? postIndex = null;

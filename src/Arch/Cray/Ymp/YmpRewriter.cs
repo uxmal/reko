@@ -130,8 +130,8 @@ namespace Reko.Arch.Cray.Ymp
         {
             switch (instrCur.Operands[iop])
             {
-            case RegisterOperand rop:
-                var reg = this.binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                var reg = this.binder.EnsureRegister(rop);
                 return reg;
             case ImmediateOperand imm:
                 return imm.Value;

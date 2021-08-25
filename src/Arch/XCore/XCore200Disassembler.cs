@@ -97,9 +97,9 @@ namespace Reko.Arch.XCore
             iReg1 += (base3 % 3) << 2;
             if (iReg1 >= 12)
                 return false;
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg1]));
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg2]));
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg3]));
+            dasm.ops.Add(Registers.GpRegs[iReg1]);
+            dasm.ops.Add(Registers.GpRegs[iReg2]);
+            dasm.ops.Add(Registers.GpRegs[iReg3]);
             return true;
         }
 
@@ -126,8 +126,8 @@ namespace Reko.Arch.XCore
             iReg1 += (base3 % 3) << 2;
             if (iReg1 >= 12)
                 return false;
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg1]));
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg2]));
+            dasm.ops.Add(Registers.GpRegs[iReg1]);
+            dasm.ops.Add(Registers.GpRegs[iReg2]);
             dasm.ops.Add(ImmediateOperand.Word32(imm3));
             return true;
         }
@@ -158,8 +158,8 @@ namespace Reko.Arch.XCore
             if (iReg1 >= 12)
                 return false;
             imm3 = bitpos32[imm3];
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg1]));
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg2]));
+            dasm.ops.Add(Registers.GpRegs[iReg1]);
+            dasm.ops.Add(Registers.GpRegs[iReg2]);
             dasm.ops.Add(ImmediateOperand.Word32(imm3));
             return true;
         }
@@ -175,7 +175,7 @@ namespace Reko.Arch.XCore
         {
             var iReg = (uInstr >> 6) & 0xF;
             var imm = (uInstr & 0x3F);
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+            dasm.ops.Add(Registers.GpRegs[iReg]);
             dasm.ops.Add(ImmediateOperand.Word32(imm));
             return true;
         }
@@ -186,7 +186,7 @@ namespace Reko.Arch.XCore
             var iReg = (uInstr >> 6) & 0xF;
             var imm = (uInstr & 0x3F) << 1;
             var addr = dasm.addr + imm;
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+            dasm.ops.Add(Registers.GpRegs[iReg]);
             dasm.ops.Add(AddressOperand.Create(addr));
             return true;
         }
@@ -199,7 +199,7 @@ namespace Reko.Arch.XCore
             if ((imm & 1) != 0)
                 return false;       // Illegal address.
             var addr = dasm.addr - imm;
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+            dasm.ops.Add(Registers.GpRegs[iReg]);
             dasm.ops.Add(AddressOperand.Create(addr));
             return true;
         }
@@ -302,8 +302,8 @@ namespace Reko.Arch.XCore
             base3 = base3 / 3;
             iReg1 += (base3 % 3) << 2;
 
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg1]));
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg2]));
+            dasm.ops.Add(Registers.GpRegs[iReg1]);
+            dasm.ops.Add(Registers.GpRegs[iReg2]);
             return true;
         }
 
@@ -327,8 +327,8 @@ namespace Reko.Arch.XCore
             base3 = base3 / 3;
             iReg1 += (base3 % 3) << 2;
 
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg2]));
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg1]));
+            dasm.ops.Add(Registers.GpRegs[iReg2]);
+            dasm.ops.Add(Registers.GpRegs[iReg1]);
             return true;
         }
 
@@ -365,8 +365,8 @@ namespace Reko.Arch.XCore
             iReg += (base3 % 3) << 2;
             if (iReg >= 12)
                 return false;
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[imm]));
+            dasm.ops.Add(Registers.GpRegs[iReg]);
+            dasm.ops.Add(Registers.GpRegs[imm]);
             return true;
         }
 
@@ -392,7 +392,7 @@ namespace Reko.Arch.XCore
             if (iReg >= 12 || imm >= bitpos32.Length)
                 return false;
             imm = bitpos32[imm];
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+            dasm.ops.Add(Registers.GpRegs[iReg]);
             dasm.ops.Add(ImmediateOperand.Word32(imm));
             return true;
         }
@@ -401,17 +401,16 @@ namespace Reko.Arch.XCore
         private static bool r1(uint uInstr, XCore200Disassembler dasm)
         {
             var iReg = uInstr & 0xF;
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+            dasm.ops.Add(Registers.GpRegs[iReg]);
             return true;
         }
 
         // Specific register
         private static Mutator<XCore200Disassembler> Reg(RegisterStorage reg)
         {
-            var op = new RegisterOperand(reg);
             return (u, d) =>
             {
-                d.ops.Add(op);
+                d.ops.Add(reg);
                 return true;
             };
         }

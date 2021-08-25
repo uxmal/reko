@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -31,7 +32,7 @@ namespace Reko.Arch.PowerPC
 {
     public partial class PowerPcRewriter
     {
-        private static ArrayType fpPair = new ArrayType(PrimitiveType.Real32, 2);
+        private static readonly ArrayType fpPair = new ArrayType(PrimitiveType.Real32, 2);
 
         private void Rewrite_psq_l(bool update) {
 
@@ -81,7 +82,7 @@ namespace Reko.Arch.PowerPC
         {
             Expression ea;
             Expression baseReg;
-            if (((RegisterOperand)instr.Operands[1]).Register.Number == 0)
+            if (((RegisterStorage)instr.Operands[1]).Number == 0)
             {
                 ea = RewriteOperand(instr.Operands[2]);
                 baseReg = ea;
@@ -90,11 +91,11 @@ namespace Reko.Arch.PowerPC
             {
                 ea = RewriteOperand(instr.Operands[1]);
                 baseReg = ea;
-                if (instr.Operands[2] is RegisterOperand rIdx)
+                if (instr.Operands[2] is RegisterStorage rIdx)
                 {
-                    if (rIdx.Register.Number != 0)
+                    if (rIdx.Number != 0)
                     {
-                        ea = m.IAdd(ea, binder.EnsureRegister(rIdx.Register));
+                        ea = m.IAdd(ea, binder.EnsureRegister(rIdx));
                     }
                 }
                 else

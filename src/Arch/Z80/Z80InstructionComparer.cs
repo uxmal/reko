@@ -47,33 +47,26 @@ namespace Reko.Arch.Z80
                 return false;
             if (opA.GetType() != opB.GetType())
                 return false;
-            if (opA is RegisterOperand regOpA)
+            switch (opA)
             {
+            case RegisterStorage regOpA:
                 if (NormalizeRegisters)
                     return true;
-                var regOpB = (RegisterOperand) opB;
-                return regOpA.Register == regOpB.Register;
-            }
-            if (opA is ImmediateOperand immOpA)
-            {
+                var regOpB = (RegisterStorage) opB;
+                return regOpA == regOpB;
+            case ImmediateOperand immOpA:
                 if (NormalizeConstants)
                     return true;
                 var immOpB = (ImmediateOperand) opB;
                 return CompareValues(immOpA.Value, immOpB.Value);
-            }
-            if (opA is AddressOperand addrOpA)
-            {
+            case AddressOperand addrOpA:
                 if (NormalizeConstants)
                     return true;
                 var addrOpB = (AddressOperand) opB;
                 return addrOpA.Address.ToLinear() == addrOpB.Address.ToLinear();
-            }
-            if (opA is ConditionOperand condOpA)
-            {
+            case ConditionOperand condOpA:
                 return condOpA.Code == ((ConditionOperand) opB).Code;
-            }
-            if (opA is MemoryOperand memOpA)
-            {
+            case MemoryOperand memOpA:
                 var memOpB = (MemoryOperand) opB;
                 if (NormalizeRegisters && !CompareRegisters(memOpA.Base, memOpB.Base))
                     return false;
@@ -95,15 +88,15 @@ namespace Reko.Arch.Z80
 
         private int HashOp(MachineOperand op)
         {
-            if (op == null)
+            if (op is null)
                 return 0;
             int h = op.GetType().GetHashCode();
-            if (op is RegisterOperand regOp)
+            if (op is RegisterStorage regOp)
             {
                 if (NormalizeRegisters)
                     return h;
                 else
-                    return h * 29 ^ regOp.Register.GetHashCode();
+                    return h * 29 ^ regOp.GetHashCode();
             }
             if (op is ImmediateOperand immOp)
             {

@@ -85,20 +85,20 @@ namespace Reko.Arch.Sparc
         private void RewriteJmpl()
         {
             iclass = InstrClass.Transfer;
-            var rDst = (RegisterOperand) instrCur.Operands[2];
+            var rDst = (RegisterStorage) instrCur.Operands[2];
             var src1 = RewriteOp(instrCur.Operands[0]);
             var src2 = RewriteOp(instrCur.Operands[1]);
-            if (rDst.Register != arch.Registers.g0)
+            if (rDst != arch.Registers.g0)
             {
                 var dst = RewriteOp(instrCur.Operands[2])!;
                 m.Assign(dst, instrCur.Address);
             }
             var target = SimplifySum(src1, src2);
-            if (rDst.Register == arch.Registers.o7)
+            if (rDst == arch.Registers.o7)
             {
                 m.CallD(target, 0);
             }
-            else if (rDst.Register == arch.Registers.g0)
+            else if (rDst == arch.Registers.g0)
             {
                 m.ReturnD(0, 0);
             }

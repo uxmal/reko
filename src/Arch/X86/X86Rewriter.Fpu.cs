@@ -436,14 +436,14 @@ namespace Reko.Arch.X86
                     }
                 case Mnemonic.and:
                     {
-                        var acc = nextInstr.Operands[0] as RegisterOperand;
+                        var acc = nextInstr.Operands[0] as RegisterStorage;
                         var imm = nextInstr.Operands[1] as ImmediateOperand;
                         if (imm == null || acc == null)
                             return false;
                         int mask = imm.Value.ToInt32();
-                        if (acc.Register == Registers.ax || acc.Register == Registers.eax)
+                        if (acc == Registers.ax || acc == Registers.eax)
                             mask >>= 8;
-                        else if (acc.Register != Registers.ah)
+                        else if (acc != Registers.ah)
                             return false;
                         nextInstr = dasm.Peek(i+1);       // peek at the instruction past the 'and'
                         if (nextInstr is null)
@@ -452,19 +452,19 @@ namespace Reko.Arch.X86
                         if (nextOp != Mnemonic.cmp && nextOp != Mnemonic.xor)
                             return false;
                         dasm.Skip(i);
-                        acc = nextInstr.Operands[0] as RegisterOperand;
+                        acc = nextInstr.Operands[0] as RegisterStorage;
                         imm = nextInstr.Operands[1] as ImmediateOperand;
                         if (imm == null || acc == null)
                             return false;
                         mask = imm.Value.ToInt32() & mask;
-                        if (acc.Register == Registers.ax || acc.Register == Registers.eax)
+                        if (acc == Registers.ax || acc == Registers.eax)
                             mask >>= 8;
-                        else if (acc.Register != Registers.ah)
+                        else if (acc != Registers.ah)
                             return false;
                         dasm.Skip(i);       // over the 'cmp'
                         if (!IgnoreIntermediateInstructions())
                         {
-                            host.Warn(instrCur.Address, "Expected branch instruction after fstsw;and {0},{1}.", acc.Register, imm.Value);
+                            host.Warn(instrCur.Address, "Expected branch instruction after fstsw;and {0},{1}.", acc, imm.Value);
                             return false;
                         }
                         if (nextOp == Mnemonic.cmp)
@@ -478,14 +478,14 @@ namespace Reko.Arch.X86
                     }
                 case Mnemonic.test:
                     {
-                        var acc = nextInstr.Operands[0] as RegisterOperand;
+                        var acc = nextInstr.Operands[0] as RegisterStorage;
                         var imm = nextInstr.Operands[1] as ImmediateOperand;
                         if (imm == null || acc == null)
                             return false;
                         int mask = imm.Value.ToInt32();
-                        if (acc.Register == Registers.ax || acc.Register == Registers.eax)
+                        if (acc == Registers.ax || acc == Registers.eax)
                             mask >>= 8;
-                        else if (acc.Register != Registers.ah)
+                        else if (acc != Registers.ah)
                             return false;
                         this.len += nextInstr.Length;
                         m.Assign(
@@ -496,7 +496,7 @@ namespace Reko.Arch.X86
                         dasm.Skip(i);
                         if (!IgnoreIntermediateInstructions())
                         {
-                            host.Warn(instrCur.Address, "Expected conditinal branch instruction after fstsw;test {0},{1}.", acc.Register, imm.Value);
+                            host.Warn(instrCur.Address, "Expected conditinal branch instruction after fstsw;test {0},{1}.", acc, imm.Value);
                             return false;
                         }
                         return EvaluateFstswTestInstructions(mask);

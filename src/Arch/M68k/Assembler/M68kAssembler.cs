@@ -59,23 +59,23 @@ namespace Reko.Arch.M68k.Assembler
         public SymbolTable Symbols { get; private set; }
         public IEmitter Emitter { get; private set; }
 
-        public RegisterOperand d0 { get { return new RegisterOperand(Registers.d0); } }
-        public RegisterOperand d1 { get { return new RegisterOperand(Registers.d1); } }
-        public RegisterOperand d2 { get { return new RegisterOperand(Registers.d2); } }
-        public RegisterOperand d3 { get { return new RegisterOperand(Registers.d3); } }
-        public RegisterOperand d4 { get { return new RegisterOperand(Registers.d4); } }
-        public RegisterOperand d5 { get { return new RegisterOperand(Registers.d5); } }
-        public RegisterOperand d6 { get { return new RegisterOperand(Registers.d6); } }
-        public RegisterOperand d7 { get { return new RegisterOperand(Registers.d7); } }
+        public RegisterStorage d0 { get { return Registers.d0; } }
+        public RegisterStorage d1 { get { return Registers.d1; } }
+        public RegisterStorage d2 { get { return Registers.d2; } }
+        public RegisterStorage d3 { get { return Registers.d3; } }
+        public RegisterStorage d4 { get { return Registers.d4; } }
+        public RegisterStorage d5 { get { return Registers.d5; } }
+        public RegisterStorage d6 { get { return Registers.d6; } }
+        public RegisterStorage d7 { get { return Registers.d7; } }
 
-        public RegisterOperand a0 { get { return new RegisterOperand(Registers.a0); } }
-        public RegisterOperand a1 { get { return new RegisterOperand(Registers.a1); } }
-        public RegisterOperand a2 { get { return new RegisterOperand(Registers.a2); } }
-        public RegisterOperand a3 { get { return new RegisterOperand(Registers.a3); } }
-        public RegisterOperand a4 { get { return new RegisterOperand(Registers.a4); } }
-        public RegisterOperand a5 { get { return new RegisterOperand(Registers.a5); } }
-        public RegisterOperand a6 { get { return new RegisterOperand(Registers.a6); } }
-        public RegisterOperand a7 { get { return new RegisterOperand(Registers.a7); } }
+        public RegisterStorage a0 { get { return Registers.a0; } }
+        public RegisterStorage a1 { get { return Registers.a1; } }
+        public RegisterStorage a2 { get { return Registers.a2; } }
+        public RegisterStorage a3 { get { return Registers.a3; } }
+        public RegisterStorage a4 { get { return Registers.a4; } }
+        public RegisterStorage a5 { get { return Registers.a5; } }
+        public RegisterStorage a6 { get { return Registers.a6; } }
+        public RegisterStorage a7 { get { return Registers.a7; } }
 
         public Program GetImage()
         {
@@ -105,19 +105,15 @@ namespace Reko.Arch.M68k.Assembler
 
         private int Ea(MachineOperand op)
         {
-            var rop = op as RegisterOperand;
-            if (rop != null)
+            if (op is RegisterStorage rop)
             {
-                var dReg = rop.Register as DataRegister;
-                if (dReg != null)
+                if (rop is DataRegister dReg)
                     return (dReg.Number & 7);
-                var aReg = rop.Register as AddressRegister;
-                if (aReg != null)
+                if (rop is AddressRegister aReg)
                     return (aReg.Number & 7) | 8;
                 throw new NotImplementedException(op.ToString());
             }
-            var mop = op as MemoryOperand;
-            if (mop != null)
+            if (op is MemoryOperand mop)
             {
                 var aReg = mop.Base;
                 if (mop.Offset == null || mop.Offset.ToInt32() == 0)
@@ -167,15 +163,15 @@ namespace Reko.Arch.M68k.Assembler
             }
         }
 
-        public MachineOperand Mem(RegisterOperand rop)
+        public MachineOperand Mem(RegisterStorage rop)
         {
-            var a = (AddressRegister) rop.Register;
+            var a = (AddressRegister) rop;
             return new MemoryOperand(null!, a);
         }
 
-        public MemoryOperand Mem(int offset, RegisterOperand rop)
+        public MemoryOperand Mem(int offset, RegisterStorage rop)
         {
-            var a = (AddressRegister) rop.Register;
+            var a = (AddressRegister) rop;
             return new MemoryOperand(null!, a, Constant.Int16((short)offset));
             throw new NotImplementedException();
         }
@@ -197,26 +193,26 @@ namespace Reko.Arch.M68k.Assembler
 
         private int AReg(MachineOperand op)
         {
-            var rop = (RegisterOperand) op;
-            var addr = (AddressRegister) rop.Register;
+            var rop = (RegisterStorage) op;
+            var addr = (AddressRegister) rop;
             return addr.Number & 7;
         }
 
         private int DReg(MachineOperand op)
         {
-            var rop = (RegisterOperand) op;
-            var data = (DataRegister) rop.Register;
+            var rop = (RegisterStorage) op;
+            var data = (DataRegister) rop;
             return data.Number & 7;
         }
 
-        public PostIncrementMemoryOperand Post(RegisterOperand a)
+        public PostIncrementMemoryOperand Post(RegisterStorage a)
         {
-            return new PostIncrementMemoryOperand(null!, (AddressRegister) a.Register);
+            return new PostIncrementMemoryOperand(null!, (AddressRegister) a);
         }
 
-        public PredecrementMemoryOperand Pre(RegisterOperand a)
+        public PredecrementMemoryOperand Pre(RegisterStorage a)
         {
-            return new PredecrementMemoryOperand(null!, (AddressRegister) a.Register);
+            return new PredecrementMemoryOperand(null!, (AddressRegister) a);
         }
 
         private void EmitConstants()
@@ -240,37 +236,37 @@ namespace Reko.Arch.M68k.Assembler
             }
         }
 
-        public void Add_b(MachineOperand eaSrc, RegisterOperand dDst)
+        public void Add_b(MachineOperand eaSrc, RegisterStorage dDst)
         {
             Emit(0xD000 | Ea(eaSrc, 0) | DReg(dDst) << 9);
         }
-        public void Add_w(MachineOperand eaSrc, RegisterOperand dDst)
+        public void Add_w(MachineOperand eaSrc, RegisterStorage dDst)
         {
             Emit(0xD040 | Ea(eaSrc, 0) | DReg(dDst) << 9);
         }
-        public void Add_l(MachineOperand eaSrc, RegisterOperand dDst)
+        public void Add_l(MachineOperand eaSrc, RegisterStorage dDst)
         {
             Emit(0xD080 | Ea(eaSrc, 0) | DReg(dDst) << 9);
         }
 
-        public void Add_b(RegisterOperand dSrc, MachineOperand eaDst)
+        public void Add_b(RegisterStorage dSrc, MachineOperand eaDst)
         {
             Emit(0xD000 | Ea(eaDst, 0) | DReg(dSrc) << 9);
         }
-        public void Add_w(RegisterOperand dSrc, MachineOperand eaDst)
+        public void Add_w(RegisterStorage dSrc, MachineOperand eaDst)
         {
             Emit(0xD040 | Ea(eaDst, 0) | DReg(dSrc) << 9);
         }
-        public void Add_l(RegisterOperand dSrc, MachineOperand eaDst)
+        public void Add_l(RegisterStorage dSrc, MachineOperand eaDst)
         {
             Emit(0xD080 | Ea(eaDst, 0) | DReg(dSrc) << 9);
         }
 
-        public void Adda_w(MachineOperand eaSrc, RegisterOperand aDst)
+        public void Adda_w(MachineOperand eaSrc, RegisterStorage aDst)
         {
             Emit(0xD0C0 | Ea(eaSrc, 0) | AReg(aDst) << 9);
         }
-        public void Adda_l(MachineOperand eaSrc, RegisterOperand aDst)
+        public void Adda_l(MachineOperand eaSrc, RegisterStorage aDst)
         {
             Emit(0xD1C0 | Ea(eaSrc, 0) | AReg(aDst) << 9);
         }
@@ -294,7 +290,7 @@ namespace Reko.Arch.M68k.Assembler
             Emit(0x5080 | Ea(eaDst) & 0x3F | (SmallQ(c) << 9));
         }
 
-        public void Asl_l(int c, RegisterOperand dDst)
+        public void Asl_l(int c, RegisterStorage dDst)
         {
             Emit(0xE180 | SmallQ(c) << 9 | DReg(dDst));
         }
@@ -305,7 +301,7 @@ namespace Reko.Arch.M68k.Assembler
             Emitter.EmitBeUInt16(c);
         }
 
-        public void Bchg(RegisterOperand dSrc, MachineOperand eaDst)
+        public void Bchg(RegisterStorage dSrc, MachineOperand eaDst)
         {
             Emit(0x0140 | DReg(dSrc) << 9 | Ea(eaDst));
         }
@@ -359,24 +355,24 @@ namespace Reko.Arch.M68k.Assembler
             Emit(0x4280 | Ea(ea, 0));
         }
 
-        public void Cmp_b(MachineOperand eaSrc, RegisterOperand dDst)
+        public void Cmp_b(MachineOperand eaSrc, RegisterStorage dDst)
         {
             Emit(0xB000 | Ea(eaSrc, 0) | DReg(dDst) << 9);
         }
-        public void Cmp_w(MachineOperand eaSrc, RegisterOperand dDst)
+        public void Cmp_w(MachineOperand eaSrc, RegisterStorage dDst)
         {
             Emit(0xB040 | Ea(eaSrc, 0) | DReg(dDst) << 9);
         }
-        public void Cmp_l(MachineOperand eaSrc, RegisterOperand dDst)
+        public void Cmp_l(MachineOperand eaSrc, RegisterStorage dDst)
         {
             Emit(0xB080 | Ea(eaSrc, 0) | DReg(dDst) << 9);
         }
 
-        public void Cmpa_w(MachineOperand eaSrc, RegisterOperand aDst)
+        public void Cmpa_w(MachineOperand eaSrc, RegisterStorage aDst)
         {
             Emit(0xB0C0 | Ea(eaSrc, 0) | AReg(aDst) << 9);
         }
-        public void Cmpa_l(MachineOperand eaSrc, RegisterOperand aDst)
+        public void Cmpa_l(MachineOperand eaSrc, RegisterStorage aDst)
         {
             Emit(0xB1C0 | Ea(eaSrc, 0) | AReg(aDst) << 9);
         }
@@ -399,12 +395,12 @@ namespace Reko.Arch.M68k.Assembler
             ReferToSymbol(Symbols.CreateSymbol(target), Emitter.Position - 4, PrimitiveType.Word32);
         }
 
-        public void Lea(MachineOperand ea, RegisterOperand aReg)
+        public void Lea(MachineOperand ea, RegisterStorage aReg)
         {
             Emit(0x41C0 | Ea(ea, 0) | AReg(aReg) << 9);
         }
 
-        public void Lsl_l(int c, RegisterOperand dDst)
+        public void Lsl_l(int c, RegisterStorage dDst)
         {
             Emit(0xE188 | SmallQ(c) << 9 | DReg(dDst));
         }

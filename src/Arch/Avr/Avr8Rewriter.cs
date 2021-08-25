@@ -180,7 +180,7 @@ namespace Reko.Arch.Avr
 
         private Identifier RegisterPair(MachineOperand operand)
         {
-            var regN = ((RegisterOperand)operand).Register;
+            var regN = (RegisterStorage)operand;
             var regN1 = arch.GetRegister(regN.Number + 1);
             var regPair = binder.EnsureSequence(PrimitiveType.Word16, regN1, regN);
             return regPair;
@@ -251,8 +251,8 @@ namespace Reko.Arch.Avr
             var op = instr.Operands[iOp];
             switch (op)
             {
-            case RegisterOperand rop:
-                return binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                return binder.EnsureRegister(rop);
             case ImmediateOperand iop:
                 return iop.Value;
             case AddressOperand aop:

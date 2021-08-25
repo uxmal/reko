@@ -24,7 +24,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.Sanyo
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public MemoryOperand(PrimitiveType dt, RegisterStorage @base, bool indirect)
             : base(dt)

@@ -246,7 +246,7 @@ namespace Reko.Arch.X86.Assembler
 					Expect(Token.BRA);
 					return ParseMemoryOperand(reg);
 				default:
-					return new ParsedOperand(new RegisterOperand(reg));
+					return new ParsedOperand(reg);
 				}
 			}
 			case Token.OFFSET:

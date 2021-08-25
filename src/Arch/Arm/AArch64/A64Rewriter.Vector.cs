@@ -289,8 +289,8 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteExtr()
         {
-            var rHi = ((RegisterOperand) instr.Operands[1]).Register;
-            var rLo = ((RegisterOperand) instr.Operands[1]).Register;
+            var rHi = (RegisterStorage) instr.Operands[1];
+            var rLo = (RegisterStorage) instr.Operands[1];
             var opDst = RewriteOp(0);
             var lsb = ((ImmediateOperand) instr.Operands[3]).Value;
             if (rHi == rLo) // ROR

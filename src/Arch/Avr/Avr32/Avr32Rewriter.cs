@@ -247,11 +247,11 @@ namespace Reko.Arch.Avr.Avr32
         {
             switch (instr.Operands[iOp])
             {
-            case RegisterOperand reg:
-                if (reg.Register == Registers.pc)
+            case RegisterStorage reg:
+                if (reg == Registers.pc)
                     return instr.Address;
                 else
-                    return binder.EnsureRegister(reg.Register);
+                    return binder.EnsureRegister(reg);
             case ImmediateOperand imm:
                 return imm.Value;
             case AddressOperand addr:
@@ -285,15 +285,15 @@ namespace Reko.Arch.Avr.Avr32
         {
             switch (instr.Operands[iOp])
             {
-            case RegisterOperand reg:
-                if (reg.Register == Registers.pc)
+            case RegisterStorage reg:
+                if (reg == Registers.pc)
                 {
                     m.Goto(src);
                     return src;
                 }
                 else
                 {
-                    var id = binder.EnsureRegister(reg.Register);
+                    var id = binder.EnsureRegister(reg);
                     m.Assign(id, src);
                     return id;
                 }
@@ -627,7 +627,7 @@ namespace Reko.Arch.Avr.Avr32
             }
             else
             {
-                sp = binder.EnsureRegister(((RegisterOperand) instr.Operands[0]).Register);
+                sp = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
             }
 
             bool emitReturn = false;
@@ -679,7 +679,7 @@ namespace Reko.Arch.Avr.Avr32
 
         private void RewriteMac_d(Func<Expression, Expression, Expression> fn)
         {
-            var rDst = ((RegisterOperand) instr.Operands[0]).Register;
+            var rDst = (RegisterStorage) instr.Operands[0];
             if ((rDst.Number & 1) == 1)
             {
                 m.Invalid();
@@ -743,7 +743,7 @@ namespace Reko.Arch.Avr.Avr32
 
         private void RewriteMul_d(Func<Expression,Expression, Expression> fn)
         {
-            var rDst = ((RegisterOperand) instr.Operands[0]).Register;
+            var rDst = (RegisterStorage) instr.Operands[0];
             if ((rDst.Number & 1) == 1)
             {
                 m.Invalid();
@@ -795,7 +795,7 @@ namespace Reko.Arch.Avr.Avr32
                 {
                     switch(op)
                     {
-                    case RegisterOperand reg: registers.Add(reg.Register); break;
+                    case RegisterStorage reg: registers.Add(reg); break;
                     case RegisterRange range:
                         for (int i = 0; i < range.Count; ++i)
                         {
@@ -837,8 +837,8 @@ namespace Reko.Arch.Avr.Avr32
             {
                 switch (op)
                 {
-                case RegisterOperand reg:
-                    Push(Registers.sp, reg.Register);
+                case RegisterStorage reg:
+                    Push(Registers.sp, reg);
                     break;
                 case RegisterRange range:
                     for (int i = 0; i < range.Count; ++i)
@@ -855,7 +855,7 @@ namespace Reko.Arch.Avr.Avr32
         private void RewriteRet()
         {
             MaybeSkip();
-            var regSrc = ((RegisterOperand) instr.Operands[0]).Register;
+            var regSrc = (RegisterStorage) instr.Operands[0];
             var r12 = binder.EnsureRegister(Registers.GpRegisters[12]);
             var v = binder.EnsureFlagGroup(V);
             var c = binder.EnsureFlagGroup(C);
@@ -1038,7 +1038,7 @@ namespace Reko.Arch.Avr.Avr32
             }
             else
             {
-                sp = binder.EnsureRegister(((RegisterOperand) instr.Operands[0]).Register);
+                sp = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
             }
             int offset = 0;
             foreach (var reg in regs)

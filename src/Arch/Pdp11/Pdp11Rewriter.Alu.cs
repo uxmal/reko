@@ -56,7 +56,7 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteAshc()
         {
-            var r = ((RegisterOperand)instr.Operands[1]).Register;
+            var r = (RegisterStorage)instr.Operands[1];
             if (r == Registers.pc)
             {
                 m.Invalid();
@@ -179,7 +179,7 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteDiv()
         {
-            var reg = ((RegisterOperand)instr.Operands[1]).Register;
+            var reg = (RegisterStorage)instr.Operands[1];
             var reg1 = arch.GetRegister(reg.Number | 1)!;
             var reg_reg = binder.EnsureSequence(PrimitiveType.Int32, reg, reg1);
             var dividend = binder.CreateTemporary(PrimitiveType.Int32);
@@ -257,7 +257,7 @@ namespace Reko.Arch.Pdp11
         {
             var src = RewriteSrc(instr.Operands[0]);
             Expression dst;
-            if (instr.Operands[1] is RegisterOperand && instr.DataWidth!.Size == 1)
+            if (instr.Operands[1] is RegisterStorage && instr.DataWidth!.Size == 1)
             {
                 dst = RewriteDst(instr.Operands[1], src, s => m.Convert(s, s.DataType, PrimitiveType.Int16))!;
             }
@@ -272,7 +272,7 @@ namespace Reko.Arch.Pdp11
         private void RewriteMul()
         {
             var src = RewriteSrc(instr.Operands[0]);
-            var reg = ((RegisterOperand)instr.Operands[1]).Register;
+            var reg = (RegisterStorage)instr.Operands[1];
             // Even numbered register R_2n means result
             // goes into the pair [R_2n:R_2n+1]
             Identifier dst;

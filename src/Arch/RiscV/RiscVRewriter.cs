@@ -252,12 +252,12 @@ namespace Reko.Arch.RiscV
         {
             switch (op)
             {
-            case RegisterOperand rop:
-                if (rop.Register.Number == 0)
+            case RegisterStorage rop:
+                if (rop.Number == 0)
                 {
                     return Constant.Zero(arch.WordWidth);
                 }
-                return binder.EnsureRegister(rop.Register);
+                return binder.EnsureRegister(rop);
             case ImmediateOperand immop:
                 return immop.Value;
             case AddressOperand addrop:

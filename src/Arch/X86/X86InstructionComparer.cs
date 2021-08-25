@@ -44,10 +44,10 @@ namespace Reko.Arch.X86
 			if (opA.GetType() != opB.GetType())
 				return false;
 
-            if (opA is RegisterOperand regOpA)
+            if (opA is RegisterStorage regOpA)
             {
-                RegisterOperand regOpB = (RegisterOperand) opB;
-                return NormalizeRegisters || regOpA.Register == regOpB.Register;
+                RegisterStorage regOpB = (RegisterStorage) opB;
+                return NormalizeRegisters || regOpA == regOpB;
             }
             if (opA is ImmediateOperand immOpA)
             {
@@ -134,7 +134,7 @@ namespace Reko.Arch.X86
         {
             return op switch
             {
-                RegisterOperand regOp => base.GetRegisterHash(regOp.Register),
+                RegisterStorage regOp => base.GetRegisterHash(regOp),
                 ImmediateOperand immOp => base.GetConstantHash(immOp.Value),
                 AddressOperand addrOp => base.NormalizeConstants
                         ? 1

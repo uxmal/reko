@@ -132,7 +132,7 @@ namespace Reko.Arch.CompactRisc
             return (u, d) =>
             {
                 var ireg = regfield.Read(u);
-                d.ops.Add(new RegisterOperand(Registers.GpRegisters[ireg]));
+                d.ops.Add(Registers.GpRegisters[ireg]);
                 return true;
             };
         }

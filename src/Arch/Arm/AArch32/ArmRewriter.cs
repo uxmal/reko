@@ -45,10 +45,11 @@ namespace Reko.Arch.Arm.AArch32
         private readonly IRewriterHost host;
         private readonly IStorageBinder binder;
         private readonly IEnumerator<AArch32Instruction> dasm;
+        private readonly List<RtlInstruction> rtls;
+        protected readonly RtlEmitter m;
         protected int pcValueOffset;        // The offset to add to the current instruction's address when reading the PC register. 
         protected AArch32Instruction instr;
         protected InstrClass iclass;
-        protected RtlEmitter m;
 
         public ArmRewriter(Arm32Architecture arch, EndianImageReader rdr, IRewriterHost host, IStorageBinder binder) : this(arch, rdr, host, binder, new A32Disassembler(arch, rdr).GetEnumerator())
         {
@@ -62,17 +63,13 @@ namespace Reko.Arch.Arm.AArch32
             this.binder = binder;
             this.dasm = dasm;
             this.pcValueOffset = 8;
+            this.rtls = new List<RtlInstruction>();
+            this.m = new RtlEmitter(rtls);
             this.instr = null!;
-            this.m = null!;
         }
 
         protected virtual void PostRewrite() { }
         protected virtual void RewriteIt() { }
-
-        MachineOperand Dst() => instr.Operands[0];
-        MachineOperand Src1() => instr.Operands[1];
-        MachineOperand Src2() => instr.Operands[2];
-        MachineOperand Src3() => instr.Operands[3];
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
@@ -81,8 +78,6 @@ namespace Reko.Arch.Arm.AArch32
                 this.instr = dasm.Current;
                 var addrInstr = instr.Address;
                 this.iclass = instr.InstructionClass;
-                var rtls = new List<RtlInstruction>();
-                this.m = new RtlEmitter(rtls);
                 // Most instructions have a conditional mode of operation.
                 //$TODO: make sure non-conditional instructions are handled correctly here.
                 ConditionalSkip(false);
@@ -535,6 +530,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vtst: RewriteVectorBinOp("__vtst_{0}"); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                this.rtls.Clear();
             }
         }
 
@@ -600,14 +596,14 @@ namespace Reko.Arch.Arm.AArch32
         {
             Expression dst;
             bool dstIsAddress;
-            if (Dst() is AddressOperand aOp)
+            if (instr.Operands[0] is AddressOperand aOp)
             {
                 dst = aOp.Address;
                 dstIsAddress = true;
             }
             else
             {
-                dst = Operand(Dst(), PrimitiveType.Word32, true);
+                dst = Operand(0, PrimitiveType.Word32, true);
                 dstIsAddress = false;
             }
             if (link)
@@ -627,7 +623,7 @@ namespace Reko.Arch.Arm.AArch32
             {
                 if (instr.Condition == ArmCondition.AL)
                 {
-                    if (Dst() is RegisterOperand rop && rop.Register == Registers.lr)
+                    if (instr.Operands[0] is RegisterStorage rop && rop == Registers.lr)
                     {
                         //$TODO: cheating a little since
                         // one could consider lr being set explitly.
@@ -658,9 +654,8 @@ namespace Reko.Arch.Arm.AArch32
         void RewriteCbnz(Func<Expression, Expression> ctor)
         {
             iclass = InstrClass.ConditionalTransfer;
-            var cond = Operand(Dst(), PrimitiveType.Word32, true);
-            m.Branch(ctor(Operand(Dst())),
-                    ((AddressOperand) Src1()).Address,
+            m.Branch(ctor(Operand(0)),
+                    ((AddressOperand) instr.Operands[1]).Address,
                     InstrClass.ConditionalTransfer);
         }
 
@@ -739,19 +734,20 @@ namespace Reko.Arch.Arm.AArch32
         //    return &op == &instr->detail->arm.operands[instr->detail->arm.op_count - 1];
         //}
 
-        Expression Operand(MachineOperand op, PrimitiveType? dt = null, bool write = false)
+        Expression Operand(int iop, PrimitiveType? dt = null, bool write = false)
         {
             dt ??= PrimitiveType.Word32;
+            var op = instr.Operands[iop];
             switch (op)
             {
-            case RegisterOperand rOp:
+            case RegisterStorage rOp:
                 {
-                    if (!write && rOp.Register == Registers.pc)
+                    if (!write && rOp == Registers.pc)
                     {
                         return instr.Address + pcValueOffset;
                     }
-                    var reg = Reg(rOp.Register);
-                    return MaybeShiftOperand(reg, op);
+                    var reg = Reg(rOp);
+                    return MaybeShiftOperand(reg, iop);
                 }
             case ImmediateOperand iOp:
                 return iOp.Value;
@@ -880,23 +876,24 @@ namespace Reko.Arch.Arm.AArch32
             case Mnemonic.strht: return PrimitiveType.Word16;
             case Mnemonic.swp: return PrimitiveType.Word32;
             case Mnemonic.swpb: return PrimitiveType.Byte;
-            case Mnemonic.vldr: return Dst().Width;
-            case Mnemonic.vstr: return Dst().Width;
+            case Mnemonic.vldr: return instr.Operands[0].Width;
+            case Mnemonic.vstr: return instr.Operands[0].Width;
             }
             return VoidType.Instance;
         }
 
 
-        Expression MaybeShiftOperand(Expression exp, MachineOperand op)
+        Expression MaybeShiftOperand(Expression exp, int iop)
         {
-            if (op != instr.Operands[instr.Operands.Length - 1])
+            if (iop != instr.Operands.Length - 1)
                 return exp;
+            var ops = instr.Operands[iop];
             if (instr.ShiftType == Mnemonic.Invalid)
                 return exp;
 
             Expression sh;
-            if (instr.ShiftValue is RegisterOperand reg)
-                sh = binder.EnsureRegister(reg.Register);
+            if (instr.ShiftValue is RegisterStorage reg)
+                sh = binder.EnsureRegister(reg);
             else
                 sh = ((ImmediateOperand) instr.ShiftValue!).Value;
 
@@ -916,8 +913,9 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        void MaybePostOperand(MachineOperand op)
+        void MaybePostOperand(int iop)
         {
+            var op = instr.Operands[iop];
             if (!(op is MemoryOperand mop))
                 return;
             if (!instr.Writeback || mop.PreIndex)
@@ -953,7 +951,7 @@ namespace Reko.Arch.Arm.AArch32
             switch (cond)
             {
             default:
-                throw new NotImplementedException(string.Format("ARM condition code {0} not implemented.", cond));
+                throw new NotImplementedException($"ARM condition code {cond} not implemented.");
             case ArmCondition.HS:
                 return m.Test(ConditionCode.UGE, FlagGroup(FlagM.CF, "C", PrimitiveType.Bool));
             case ArmCondition.LO:
@@ -1028,10 +1026,10 @@ namespace Reko.Arch.Arm.AArch32
             {
                 fnName = "std::atomic_exchange<int32_t>";
             }
-            var dst = Operand(Dst(), PrimitiveType.Word32, true);
+            var dst = Operand(0, PrimitiveType.Word32, true);
             var intrinsic = host.Intrinsic(fnName, true, type,
-                Operand(Src1()),
-                Operand(Src2()));
+                Operand(1),
+                Operand(2));
             m.Assign(dst, intrinsic);
         }
 
@@ -1044,9 +1042,11 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteIntrinsic(string name, bool hasSideEffect, Domain returnDomain)
         {
-            var args = instr.Operands.Skip(1).Select(o => Operand(o)).ToArray();
-            var dst = Operand(Dst());
-            var dtRet = PrimitiveType.Create(returnDomain, Dst().Width.BitSize);
+            var args = Enumerable.Range(1, instr.Operands.Length-1)
+                .Select(i => Operand(i))
+                .ToArray();
+            var dst = Operand(0);
+            var dtRet = PrimitiveType.Create(returnDomain, dst.DataType.BitSize);
             var intrinsic = host.Intrinsic(name, hasSideEffect, dtRet, args);
             m.Assign(dst, intrinsic);
         }

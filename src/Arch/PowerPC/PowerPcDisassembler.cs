@@ -215,7 +215,7 @@ namespace Reko.Arch.PowerPC
             {
                 var op = d.FRegFromBits(u >> offset);
                 // The floating point register must be even.
-                if ((op.Register.Number & 1) == 1)
+                if ((op.Number & 1) == 1)
                     return false;
                 d.ops.Add(op);
                 return true;
@@ -408,7 +408,7 @@ namespace Reko.Arch.PowerPC
             var nSpr = ((wInstr >> 16) & 0x1F) | ((wInstr >> 6) & 0x3E0);
             if (dasm.arch.SpRegisters.TryGetValue((int)nSpr, out var spr))
             {
-                dasm.ops.Add(new RegisterOperand(spr));
+                dasm.ops.Add(spr);
             }
             else
             {
@@ -437,24 +437,24 @@ namespace Reko.Arch.PowerPC
             return new MemoryOperand(PrimitiveType.Word32, arch.Registers[(int)reg & 0x1F], (short) wInstr);
         }
 
-        private RegisterOperand CRegFromBits(uint r)
+        private RegisterStorage CRegFromBits(uint r)
         {
-            return new RegisterOperand(arch.CrRegisters[(int)r & 0x7]);
+            return arch.CrRegisters[(int)r & 0x7];
         }
 
-        private RegisterOperand RegFromBits(uint r)
+        private RegisterStorage RegFromBits(uint r)
         {
-            return new RegisterOperand(arch.Registers[(int)r & 0x1F]);
+            return arch.Registers[(int)r & 0x1F];
         }
 
-        private RegisterOperand FRegFromBits(uint r)
+        private RegisterStorage FRegFromBits(uint r)
         {
-            return new RegisterOperand(arch.FpRegisters[(int)r & 0x1F]);
+            return arch.FpRegisters[(int)r & 0x1F];
         }
 
-        private RegisterOperand VRegFromBits(uint r)
+        private RegisterStorage VRegFromBits(uint r)
         {
-            return new RegisterOperand(arch.VecRegisters[(int)r]);
+            return arch.VecRegisters[(int)r];
         }
 
         private PowerPcInstruction EmitUnknown(uint instr)

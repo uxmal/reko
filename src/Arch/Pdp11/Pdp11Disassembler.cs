@@ -129,14 +129,14 @@ namespace Reko.Arch.Pdp11
 
         private static bool R0(uint wOpcode, Pdp11Disassembler dasm)
         {
-            var op = new RegisterOperand(dasm.arch.GetRegister(((int) wOpcode) & 7)!);
+            var op = dasm.arch.GetRegister(((int) wOpcode) & 7)!;
             dasm.ops.Add(op);
             return true;
         }
 
         private static bool r(uint wOpcode, Pdp11Disassembler dasm)
         {
-            var op = new RegisterOperand(dasm.arch.GetRegister(((int)wOpcode >> 6) & 7)!);
+            var op = dasm.arch.GetRegister(((int)wOpcode >> 6) & 7)!;
             dasm.ops.Add(op);
             return true;
         }
@@ -375,12 +375,12 @@ namespace Reko.Arch.Pdp11
             return new AddressOperand(rdr.Address - offset);
         }
 
-        private RegisterOperand? FpuAccumulator(uint opcode)
+        private RegisterStorage? FpuAccumulator(uint opcode)
         {
             var freg= arch.GetFpuRegister((int)opcode & 0x7);
             if (freg == null)
                 return null;
-            return new RegisterOperand(freg);
+            return freg;
         }
 
         /// <summary>
@@ -401,7 +401,7 @@ namespace Reko.Arch.Pdp11
                     if (fpuReg)
                         return FpuAccumulator(operandBits & 7);
                     else
-                        return new RegisterOperand(reg);
+                        return reg;
                 case 1: return new MemoryOperand(AddressMode.RegDef, this.dataWidth, reg);
                 case 2:
                     if (!this.rdr.TryReadLeUInt16(out u))
@@ -433,7 +433,7 @@ namespace Reko.Arch.Pdp11
             {
                 switch ((operandBits >> 3) & 7)
                 {
-                case 0: return new RegisterOperand(reg);                                 //   Reg           Direct addressing of the register
+                case 0: return reg;                                 //   Reg           Direct addressing of the register
                 case 1: return new MemoryOperand(AddressMode.RegDef, this.dataWidth, reg);      //   Reg Def       Contents of Reg is the address
                 case 2: return new MemoryOperand(AddressMode.AutoIncr, this.dataWidth, reg);   //   AutoIncr      Contents of Reg is the address, then Reg incremented
                 case 3: return new MemoryOperand(AddressMode.AutoIncrDef, this.dataWidth, reg);    //   AutoIncrDef   Content of Reg is addr of addr, then Reg Incremented

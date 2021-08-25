@@ -124,7 +124,7 @@ namespace Reko.Arch.i8051
         // The accumulator.
         private static bool A(uint uInstr, i8051Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(Registers.A));
+            dasm.ops.Add(Registers.A);
             return true;
         }
 
@@ -234,9 +234,9 @@ namespace Reko.Arch.i8051
         
         #endregion
 
-        private RegisterOperand Reg(int r)
+        private RegisterStorage Reg(int r)
         {
-            return new RegisterOperand(Registers.GetRegister(r));
+            return Registers.GetRegister(r);
         }
 
         private BitOperand BitReg(int b, bool neg)

@@ -101,13 +101,13 @@ namespace Reko.Arch.M6800.M6809
 
         private static bool A(uint wInstr, M6809Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(Registers.A));
+            dasm.ops.Add(Registers.A);
             return true;
         }
 
         private static bool B(uint wInstr, M6809Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(Registers.B));
+            dasm.ops.Add(Registers.B);
             return true;
         }
 
@@ -343,8 +343,8 @@ namespace Reko.Arch.M6800.M6809
             var r1 = exgRegs[b & 0xF];
             if (r0 == null || r1 == null)
                 return false;
-            dasm.ops.Add(new RegisterOperand(r0));
-            dasm.ops.Add(new RegisterOperand(r1));
+            dasm.ops.Add(r0);
+            dasm.ops.Add(r1);
             return true;
         }
 

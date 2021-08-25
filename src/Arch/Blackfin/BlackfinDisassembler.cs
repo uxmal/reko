@@ -240,7 +240,7 @@ namespace Reko.Arch.Blackfin
                 var reg = regs[iReg];
                 if (reg == null)
                     return false;
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -257,7 +257,7 @@ namespace Reko.Arch.Blackfin
                 var reg = regs[iReg];
                 if (reg == null)
                     return false;
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -298,13 +298,13 @@ namespace Reko.Arch.Blackfin
 
         private static bool A0(uint u, BlackfinDisassembler d)
         {
-            d.ops.Add(new RegisterOperand(Registers.A0));
+            d.ops.Add(Registers.A0);
             return true;
         }
 
         private static bool A1(uint u, BlackfinDisassembler d)
         {
-            d.ops.Add(new RegisterOperand(Registers.A0));
+            d.ops.Add(Registers.A1);
             return true;
         }
 

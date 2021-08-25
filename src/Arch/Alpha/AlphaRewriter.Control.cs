@@ -39,7 +39,7 @@ namespace Reko.Arch.Alpha
 
         private void RewriteBr()
         {
-            var ret = ((RegisterOperand)instr.Operands[0]).Register;
+            var ret = (RegisterStorage)instr.Operands[0];
             var dst = ((AddressOperand)instr.Operands[1]).Address;
             RewriteTransfer(ret, dst);
         }
@@ -94,7 +94,7 @@ namespace Reko.Arch.Alpha
 
         private void RewriteJmp()
         {
-            var ret = ((RegisterOperand)instr.Operands[0]).Register;
+            var ret = (RegisterStorage)instr.Operands[0];
             var dst = Rewrite(instr.Operands[1]);
             RewriteTransfer(ret, dst);
         }

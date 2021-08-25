@@ -74,9 +74,9 @@ namespace Reko.Arch.Arm.AArch64
         {
             switch (op)
             {
-            case RegisterOperand reg:
+            case RegisterStorage reg:
                 renderer.BeginOperand();
-                WriteRegister(reg.Register, renderer);
+                WriteRegister(reg, renderer);
                 renderer.EndOperand();
                 break;
             case ImmediateOperand imm:

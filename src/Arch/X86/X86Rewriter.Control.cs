@@ -45,7 +45,7 @@ namespace Reko.Arch.X86
                 return tc;
             if (instrs[i-1].code != Mnemonic.test)
                 return tc;
-            var ah = instrs[i-1].op1 as RegisterOperand;
+            var ah = instrs[i-1].op1 as RegisterStorage;
             if (ah == null || ah.Register != Registers.ah)
                 return tc;
             var m = instrs[i-1].op2 as ImmediateOperand;
@@ -96,7 +96,7 @@ namespace Reko.Arch.X86
                     if (next is not null &&
                         next.Mnemonic == Mnemonic.pop && 
                         next.Operands.Length > 0 &&
-                        next.Operands[0] is RegisterOperand reg)
+                        next.Operands[0] is RegisterStorage reg)
                     {
                         // call $+5,pop<reg> idiom
                         dasm.MoveNext();

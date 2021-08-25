@@ -115,7 +115,7 @@ namespace Reko.Arch.MicroBlaze
             {
                 var iReg = field.Read(u);
                 var reg = Registers.GpRegs[iReg];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }

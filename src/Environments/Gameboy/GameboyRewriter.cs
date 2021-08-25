@@ -245,8 +245,8 @@ namespace Reko.Environments.Gameboy
         {
             switch (instr.Operands[iop])
             {
-            case RegisterOperand reg:
-                return binder.EnsureRegister(reg.Register);
+            case RegisterStorage reg:
+                return binder.EnsureRegister(reg);
             case ImmediateOperand imm:
                 return imm.Value;
             case AddressOperand addr:

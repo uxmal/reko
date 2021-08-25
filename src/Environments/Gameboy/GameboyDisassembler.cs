@@ -106,8 +106,7 @@ namespace Reko.Environments.Gameboy
         {
             return (uint uInstr, GameboyDisassembler dasm) =>
             {
-                var regOp = new RegisterOperand(reg);
-                dasm.operands.Add(regOp);
+                dasm.operands.Add(reg);
                 return true;
             };
         }

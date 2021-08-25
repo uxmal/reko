@@ -452,8 +452,8 @@ namespace Reko.Arch.Arc
         {
             switch (instr.Operands[iOp])
             {
-            case RegisterOperand rop:
-                return binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                return binder.EnsureRegister(rop);
             case ImmediateOperand iop:
                 return iop.Value;
             case AddressOperand aop:

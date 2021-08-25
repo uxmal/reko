@@ -315,7 +315,7 @@ namespace Reko.Arch.Avr
 
         private MachineOperand Register(int v)
         {
-            return new RegisterOperand(arch.GetRegister(v & 0x1F));
+            return arch.GetRegister(v & 0x1F);
         }
 
         private MachineOperand MemD(RegisterStorage baseReg, short displacement)

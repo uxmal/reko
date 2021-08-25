@@ -283,9 +283,9 @@ namespace Reko.Arch.X86
 
         private TWord Read(MachineOperand op)
         {
-            if (op is RegisterOperand r)
+            if (op is RegisterStorage r)
             {
-                return (TWord) ReadRegister(r.Register);
+                return (TWord) ReadRegister(r);
             }
             if (op is ImmediateOperand i)
                 return i.Value.ToUInt32();
@@ -318,9 +318,9 @@ namespace Reko.Arch.X86
 
         private void Write(MachineOperand op, TWord w)
         {
-            if (op is RegisterOperand r)
+            if (op is RegisterStorage r)
             {
-                WriteRegister(r.Register, w);
+                WriteRegister(r, w);
                 return;
             }
             if (op is MemoryOperand m)

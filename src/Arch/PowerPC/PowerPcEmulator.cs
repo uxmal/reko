@@ -117,8 +117,8 @@ namespace Reko.Arch.PowerPC
         {
             switch (op)
             {
-            case RegisterOperand r:
-                return ReadRegister(r.Register);
+            case RegisterStorage r:
+                return ReadRegister(r);
             case ImmediateOperand i:
                 return i.Value.ToUInt64();
             default:
@@ -128,9 +128,9 @@ namespace Reko.Arch.PowerPC
 
         private void Write(MachineOperand op, ulong value)
         {
-            if (op is RegisterOperand r)
+            if (op is RegisterStorage reg)
             {
-                WriteRegister(r.Register, value);
+                WriteRegister(reg, value);
                 return;
             }
             throw new NotImplementedException();

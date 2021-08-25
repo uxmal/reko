@@ -656,6 +656,15 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
+        public void M68krw_bset()
+        {
+            Given_UInt16s(0x08C3, 0x0001);
+            AssertCode(     // bset #$0001,d3
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|Z = __bset(d3, 1<16>, out d3)");
+        }
+
+        [Test]
         public void M68krw_dbra()
         {
             Given_UInt16s(0x51CD, 0xFFFA);        // dbra -$6

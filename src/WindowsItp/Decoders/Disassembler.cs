@@ -15,7 +15,6 @@ namespace Reko.WindowsItp.Decoders
     public class Disassembler : IEnumerable<TestInstruction>
     {
         private static readonly RegisterStorage[] Registers;
-        private static readonly RegisterOperand[] RegOps;
 
         private readonly EndianImageReader rdr;
         private readonly Decoder root;
@@ -84,7 +83,7 @@ namespace Reko.WindowsItp.Decoders
                         ++i;
                         int n = ReadDecimal(format, ref i);
                         var iReg = Bits.ZeroExtend(wInstr >> n, 4);
-                        operands.Add(new RegisterOperand(Registers[iReg]));
+                        operands.Add(Registers[iReg]);
                     }
                     break;
                 default:
@@ -132,7 +131,7 @@ namespace Reko.WindowsItp.Decoders
             return (u, d) =>
             {
                 var nReg = regField.Read(u);
-                d.operands.Add(RegOps[nReg]);
+                d.operands.Add(Registers[nReg]);
                 return true;
             };
         }
@@ -142,7 +141,6 @@ namespace Reko.WindowsItp.Decoders
             Registers = Enumerable.Range(0, 16)
                 .Select(n => new RegisterStorage($"r{n}", n, 0, PrimitiveType.Word32))
                 .ToArray();
-            RegOps = Registers.Select(r => new RegisterOperand(r)).ToArray();
         }
 
         public struct Enumerator : IEnumerator<TestInstruction>

@@ -74,7 +74,7 @@ namespace Reko.Arch.Sparc
         private void RewriteLdd()
         {
             var size = PrimitiveType.Word64;
-            var rDstHi = ((RegisterOperand) instrCur.Operands[1]).Register;
+            var rDstHi = (RegisterStorage) instrCur.Operands[1];
             var rDstLo = arch.Registers.GetRegister((uint)rDstHi.Number + 1);
             var dst = binder.EnsureSequence(size, rDstHi, rDstLo);
             var src = RewriteMemOp(instrCur.Operands[0], size)!;
@@ -180,15 +180,15 @@ namespace Reko.Arch.Sparc
 
         private void RewriteSethi()
         {
-            var rDst = (RegisterOperand)instrCur.Operands[1];
-            if (rDst.Register == arch.Registers.g0)
+            var rDst = (RegisterStorage)instrCur.Operands[1];
+            if (rDst == arch.Registers.g0)
             {
                 m.Nop();
             }
             else
             {
                 //$TODO: check relocations for a symbol at instrCur.Address.
-                var dst = binder.EnsureRegister(rDst.Register);
+                var dst = binder.EnsureRegister(rDst);
                 var src = (ImmediateOperand)instrCur.Operands[0];
                 m.Assign(dst, Constant.Word32(src.Value.ToUInt32() << 10));
             }
@@ -197,7 +197,7 @@ namespace Reko.Arch.Sparc
         private void RewriteStd()
         {
             var size = PrimitiveType.Word64;
-            var rSrcHi = ((RegisterOperand) instrCur.Operands[0]).Register;
+            var rSrcHi = (RegisterStorage) instrCur.Operands[0];
             var rSrcLo = arch.Registers.GetRegister((uint) rSrcHi.Number + 1);
             Expression src = binder.EnsureSequence(size, rSrcHi, rSrcLo);
             //$TODO: sparc64 deprecates this instruction.

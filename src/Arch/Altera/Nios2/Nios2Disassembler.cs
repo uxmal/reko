@@ -97,8 +97,8 @@ namespace Reko.Arch.Altera.Nios2
             var regA = Registers.GpRegisters[i_regA.Read(uInstr)];
             var regB = Registers.GpRegisters[i_regB.Read(uInstr)];
             var imm = i_imm.Read(uInstr);
-            dasm.ops.Add(new RegisterOperand(regB));
-            dasm.ops.Add(new RegisterOperand(regA));
+            dasm.ops.Add(regB);
+            dasm.ops.Add(regA);
             dasm.ops.Add(ImmediateOperand.UInt32(imm));
             return true;
         }
@@ -108,8 +108,8 @@ namespace Reko.Arch.Altera.Nios2
             var regA = Registers.GpRegisters[i_regA.Read(uInstr)];
             var regB = Registers.GpRegisters[i_regB.Read(uInstr)];
             var imm = i_imm.ReadSigned(uInstr);
-            dasm.ops.Add(new RegisterOperand(regB));
-            dasm.ops.Add(new RegisterOperand(regA));
+            dasm.ops.Add(regB);
+            dasm.ops.Add(regA);
             dasm.ops.Add(ImmediateOperand.Int32(imm));
             return true;
         }
@@ -121,7 +121,7 @@ namespace Reko.Arch.Altera.Nios2
                 var regA = Registers.GpRegisters[i_regA.Read(uInstr)];
                 var regB = Registers.GpRegisters[i_regB.Read(uInstr)];
                 var imm = i_imm.ReadSigned(uInstr);
-                dasm.ops.Add(new RegisterOperand(regB));
+                dasm.ops.Add(regB);
                 dasm.ops.Add(new MemoryOperand(dt)
                 {
                     Base = regA,
@@ -160,8 +160,8 @@ namespace Reko.Arch.Altera.Nios2
             var regA = Registers.GpRegisters[i_regA.Read(uInstr)];
             var regB = Registers.GpRegisters[i_regB.Read(uInstr)];
             var offset = i_imm.ReadSigned(uInstr);
-            dasm.ops.Add(new RegisterOperand(regA));
-            dasm.ops.Add(new RegisterOperand(regB));
+            dasm.ops.Add(regA);
+            dasm.ops.Add(regB);
             dasm.ops.Add(AddressOperand.Create(dasm.rdr.Address + offset));
             return true;
         }
@@ -182,16 +182,16 @@ namespace Reko.Arch.Altera.Nios2
             var regA = Registers.GpRegisters[i_regA.Read(uInstr)];
             var regB = Registers.GpRegisters[i_regB.Read(uInstr)];
             var regC = Registers.GpRegisters[i_regC.Read(uInstr)];
-            dasm.ops.Add(new RegisterOperand(regC));
-            dasm.ops.Add(new RegisterOperand(regA));
-            dasm.ops.Add(new RegisterOperand(regB));
+            dasm.ops.Add(regC);
+            dasm.ops.Add(regA);
+            dasm.ops.Add(regB);
             return true;
         }
 
         private static bool Ra(uint uInstr, Nios2Disassembler dasm)
         {
             var regA = Registers.GpRegisters[i_regA.Read(uInstr)];
-            dasm.ops.Add(new RegisterOperand(regA));
+            dasm.ops.Add(regA);
             return true;
         }
 
@@ -201,15 +201,15 @@ namespace Reko.Arch.Altera.Nios2
             if (!Registers.TryGetControlRegister(iregS, out var regS))
                 return false;
             var regA = Registers.GpRegisters[i_regA.Read(uInstr)];
-            dasm.ops.Add(new RegisterOperand(regS));
-            dasm.ops.Add(new RegisterOperand(regA));
+            dasm.ops.Add(regS);
+            dasm.ops.Add(regA);
             return true;
         }
 
         private static bool Rc(uint uInstr, Nios2Disassembler dasm)
         {
             var regC = Registers.GpRegisters[i_regC.Read(uInstr)];
-            dasm.ops.Add(new RegisterOperand(regC));
+            dasm.ops.Add(regC);
             return true;
         }
 
@@ -220,8 +220,8 @@ namespace Reko.Arch.Altera.Nios2
             var regA = Registers.GpRegisters[i_regA.Read(uInstr)];
             var immSh = (int)sh_amt.Read(uInstr);
             var regC = Registers.GpRegisters[i_regC.Read(uInstr)];
-            dasm.ops.Add(new RegisterOperand(regC));
-            dasm.ops.Add(new RegisterOperand(regA));
+            dasm.ops.Add(regC);
+            dasm.ops.Add(regA);
             dasm.ops.Add(ImmediateOperand.Int32(immSh));
             return true;
         }
@@ -230,8 +230,8 @@ namespace Reko.Arch.Altera.Nios2
         {
             var regA = Registers.GpRegisters[i_regA.Read(uInstr)];
             var regC = Registers.GpRegisters[i_regC.Read(uInstr)];
-            dasm.ops.Add(new RegisterOperand(regC));
-            dasm.ops.Add(new RegisterOperand(regA));
+            dasm.ops.Add(regC);
+            dasm.ops.Add(regA);
             return true;
         }
 
@@ -241,7 +241,7 @@ namespace Reko.Arch.Altera.Nios2
             var regA = Registers.GpRegisters[i_regA.Read(uInstr)];
             var immN = (int) sh_amt.Read(uInstr);
             dasm.ops.Add(ImmediateOperand.Int32(immN));
-            dasm.ops.Add(new RegisterOperand(regA));
+            dasm.ops.Add(regA);
             return true;
         }
 

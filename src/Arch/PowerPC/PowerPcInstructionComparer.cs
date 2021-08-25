@@ -58,35 +58,23 @@ namespace Reko.Arch.PowerPC
 
             if (opA.GetType() != opB.GetType())
                 return false;
-            var regA = opA as RegisterOperand;
-            if (regA != null)
+            switch (opA)
             {
-                var regB = (RegisterOperand) opB;
-                return CompareRegisters(regA.Register, regB.Register);
-            }
-            var immA = opA as ImmediateOperand;
-            if (immA != null)
-            {
-                var immB = (ImmediateOperand)opB;
+            case RegisterStorage regA:
+                var regB = (RegisterStorage) opB;
+                return CompareRegisters(regA, regB);
+            case ImmediateOperand immA:
+                var immB = (ImmediateOperand) opB;
                 return CompareValues(immA.Value, immB.Value);
-            }
-            var addrA = opA as AddressOperand;
-            if (addrA != null)
-            {
-                var addrB = (AddressOperand)opB;
+            case AddressOperand addrA:
+                var addrB = (AddressOperand) opB;
                 return NormalizeConstants || addrA.Address == addrB.Address;
-            }
-            var memA = opA as MemoryOperand;
-            if (memA != null)
-            {
-                var memB = (MemoryOperand)opB;
+            case MemoryOperand memA:
+                var memB = (MemoryOperand) opB;
                 return CompareRegisters(memA.BaseRegister, memB.BaseRegister) &&
                     memB.Offset == memB.Offset;
-            }
-            var cA = opA as ConditionOperand;
-            if (cA != null)
-            {
-                var cB = (ConditionOperand)opB;
+            case ConditionOperand cA:
+                var cB = (ConditionOperand) opB;
                 return cA.condition == cB.condition;
             }
             throw new NotImplementedException(string.Format("PowerPC operand type {0} not implemented.", opA.GetType().Name));
@@ -108,39 +96,27 @@ namespace Reko.Arch.PowerPC
             if (op == null)
                 return 0;
             int h = op.GetType().GetHashCode();
-            var reg = op as RegisterOperand;
-            if (reg != null)
+            switch (op)
             {
+            case RegisterStorage reg:
                 if (!NormalizeRegisters)
-                    h ^= GetRegisterHash(reg.Register);
+                    h ^= GetRegisterHash(reg);
                 return h;
-            }
-            var imm = op as ImmediateOperand;
-            if (imm != null)
-            {
+            case ImmediateOperand imm:
                 if (!NormalizeConstants)
                     h ^= base.GetConstantHash(imm.Value);
                 return h;
-            }
-            var addr = op as AddressOperand;
-            if (addr != null)
-            {
+            case AddressOperand addr:
                 if (!NormalizeConstants)
                     h ^= addr.Address.GetHashCode();
                 return h;
-            }
-            var mem = op as MemoryOperand;
-            if (mem != null)
-            {
+            case MemoryOperand mem:
                 if (!NormalizeRegisters)
                     h ^= GetRegisterHash(mem.BaseRegister);
                 if (!NormalizeConstants)
                     h ^= mem.Offset.GetHashCode();
                 return h;
-            }
-            var c = op as ConditionOperand;
-            if (c != null)
-            {
+            case ConditionOperand c:
                 h ^= c.condition.GetHashCode();
                 return h;
             }

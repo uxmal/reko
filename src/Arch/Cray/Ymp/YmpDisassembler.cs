@@ -115,7 +115,7 @@ namespace Reko.Arch.Cray.Ymp
             {
                 var iReg = field.Read(u);
                 var reg = regs[iReg];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -130,7 +130,7 @@ namespace Reko.Arch.Cray.Ymp
             {
                 var iReg = field.Read(u);
                 var reg = iReg != 0 ? regs[iReg] : r0;
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -152,10 +152,9 @@ namespace Reko.Arch.Cray.Ymp
 
         internal static Mutator<YmpDisassembler> Reg(RegisterStorage reg)
         {
-            var r = new RegisterOperand(reg);
             return (u, d) =>
             {
-                d.ops.Add(r);
+                d.ops.Add(reg);
                 return true;
             };
         }

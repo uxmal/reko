@@ -50,8 +50,8 @@ namespace Reko.Arch.Rl78
         {
             switch (op)
             {
-            case RegisterOperand reg:
-                renderer.WriteString(reg.Register.Name);
+            case RegisterStorage reg:
+                renderer.WriteString(reg.Name);
                 return;
             case ImmediateOperand imm:
                 renderer.WriteChar('#');

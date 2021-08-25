@@ -282,7 +282,7 @@ namespace Reko.Arch.Z80
 
         private static bool a(uint op, Z80Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(Registers.a));
+            dasm.ops.Add(Registers.a);
             return true;
         }
 
@@ -331,27 +331,27 @@ namespace Reko.Arch.Z80
         // register encoded in bits 3..5 of op
         private static bool r(uint op, Z80Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(ByteRegister[(op >> 3)&7]));
+            dasm.ops.Add(ByteRegister[(op >> 3)&7]);
             return true;
         }
 
         // register encoded in bits 0..2 of op.
         private static bool R(uint op, Z80Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(ByteRegister[op & 7]));
+            dasm.ops.Add(ByteRegister[op & 7]);
             return true;
         }
 
         // Literal registers
         private static bool Li(uint op, Z80Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(Registers.i));
+            dasm.ops.Add(Registers.i);
             return true;
         }
 
         private static bool Lr(uint op, Z80Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(Registers.r));
+            dasm.ops.Add(Registers.r);
             return true;
         }
 
@@ -382,31 +382,31 @@ namespace Reko.Arch.Z80
 
         private static bool Wa(uint op, Z80Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(Registers.af));
+            dasm.ops.Add(Registers.af);
             return true;
         }
 
         private static bool Wb(uint op, Z80Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(Registers.bc));
+            dasm.ops.Add(Registers.bc);
             return true;
         }
 
         private static bool Wd(uint op, Z80Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(Registers.de));
+            dasm.ops.Add(Registers.de);
             return true;
         }
 
         private static bool Wh(uint op, Z80Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(dasm.IndexRegister ?? Registers.hl));
+            dasm.ops.Add(dasm.IndexRegister ?? Registers.hl);
             return true;
         }
 
         private static bool Ws(uint op, Z80Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(Registers.sp));
+            dasm.ops.Add(Registers.sp);
             return true;
         }
 

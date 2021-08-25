@@ -159,12 +159,12 @@ namespace Reko.Arch.X86
         {
             switch (operand)
             {
-            case RegisterOperand reg:
+            case RegisterStorage reg:
                 if (instr.Mnemonic == Mnemonic.call || instr.Mnemonic== Mnemonic.jmp)
                 {
                     renderer.WriteChar('*');
                 }
-                this.RenderRegister(reg.Register.Name, renderer);
+                this.RenderRegister(reg.Name, renderer);
                 break;
             case ImmediateOperand imm:
                 renderer.WriteChar('$');

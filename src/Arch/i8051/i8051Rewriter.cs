@@ -374,8 +374,8 @@ namespace Reko.Arch.i8051
         {
             switch (op)
             {
-            case RegisterOperand reg:
-                return binder.EnsureRegister(reg.Register);
+            case RegisterStorage reg:
+                return binder.EnsureRegister(reg);
             case FlagGroupOperand flg:
                 return binder.EnsureFlagGroup(flg.FlagGroup);
             case ImmediateOperand imm:
@@ -474,8 +474,8 @@ namespace Reko.Arch.i8051
         {
             switch (op)
             {
-            case RegisterOperand reg:
-                m.Assign(binder.EnsureRegister(reg.Register), src);
+            case RegisterStorage reg:
+                m.Assign(binder.EnsureRegister(reg), src);
                 break;
             case FlagGroupOperand flg:
                 m.Assign(binder.EnsureFlagGroup(flg.FlagGroup), src);

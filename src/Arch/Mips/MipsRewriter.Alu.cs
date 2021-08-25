@@ -286,7 +286,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteLdc2(MipsInstruction instr)
         {
-            var iRegDst = ((RegisterOperand) instr.Operands[0]).Register.Number;
+            var iRegDst = ((RegisterStorage) instr.Operands[0]).Number;
             var opSrcMem = RewriteOperand(instr.Operands[1]);
             m.SideEffect(host.Intrinsic("__write_cpr2", true, 
                 VoidType.Instance,
@@ -297,7 +297,7 @@ namespace Reko.Arch.Mips
         private void RewriteLe(MipsInstruction instr, PrimitiveType dt, string name)
         {
             var src = host.Intrinsic(name, true, dt, m.AddrOf(arch.PointerType, RewriteOperand(instr.Operands[1])));
-            var dst = binder.EnsureRegister(((RegisterOperand) instr.Operands[0]).Register);
+            var dst = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
             if (dst.DataType.Size != dt.Size)
             {
                 // If the source is smaller than the destination register,
@@ -311,7 +311,7 @@ namespace Reko.Arch.Mips
         private void RewriteLwm(MipsInstruction instr)
         {
             int i = 0;
-            int rt = ((RegisterOperand) instr.Operands[0]).Register.Number;
+            int rt = ((RegisterStorage) instr.Operands[0]).Number;
             var mem = ((IndirectOperand) instr.Operands[1]);
             var rs = binder.EnsureRegister(mem.Base);
             int offset = mem.Offset;
@@ -533,7 +533,7 @@ namespace Reko.Arch.Mips
         {
             var sp = binder.EnsureRegister(arch.GetRegister(29)!);
             int count = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
-            int rt = ((RegisterOperand) instr.Operands[1]).Register.Number;
+            int rt = ((RegisterStorage) instr.Operands[1]).Number;
             int u = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
             int i = 0;
             bool gp = false;
@@ -559,7 +559,7 @@ namespace Reko.Arch.Mips
         {
             var sp = binder.EnsureRegister(arch.GetRegister(29)!);
             int count = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
-            int rt = ((RegisterOperand) instr.Operands[1]).Register.Number;
+            int rt = ((RegisterStorage) instr.Operands[1]).Number;
             int u = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
             bool gp = false;
             int i = 0;
@@ -598,7 +598,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteSdc2(MipsInstruction instr)
         {
-            var iRegSrc = ((RegisterOperand) instr.Operands[0]).Register.Number;
+            var iRegSrc = ((RegisterStorage) instr.Operands[0]).Number;
             var opDstMem = RewriteOperand(instr.Operands[1]);
             m.Assign(opDstMem, host.Intrinsic(
                 "__read_cpr2",
@@ -715,7 +715,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteSwm(MipsInstruction instr)
         {
-            var rt = ((RegisterOperand) instr.Operands[0]).Register.Number;
+            var rt = ((RegisterStorage) instr.Operands[0]).Number;
             var count = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
             var ind = (IndirectOperand) instr.Operands[1];
             var offset = ind.Offset;

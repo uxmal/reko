@@ -146,9 +146,9 @@ namespace Reko.Arch.zSeries
 
         private void RewriteClcl(PrimitiveType dt)
         {
-            var leftHi = ((RegisterOperand) instr.Operands[0]).Register;
+            var leftHi = (RegisterStorage) instr.Operands[0];
             var leftLo = NextGpReg(leftHi);
-            var rightHi = ((RegisterOperand) instr.Operands[1]).Register;
+            var rightHi = (RegisterStorage) instr.Operands[1];
             var rightLo = NextGpReg(rightHi);
             var left = binder.EnsureSequence(dt, leftHi, leftLo);
             var right = binder.EnsureSequence(dt, rightHi, rightLo);
@@ -210,7 +210,7 @@ namespace Reko.Arch.zSeries
             var rem = binder.CreateTemporary(PrimitiveType.Int32);
             m.Assign(quo, m.SDiv(dividend, divisor));
             m.Assign(rem, m.Mod(dividend, divisor));
-            var quoReg = ((RegisterOperand) instr.Operands[0]).Register;
+            var quoReg = (RegisterStorage) instr.Operands[0];
             var remReg = NextGpReg(quoReg);
             Assign(binder.EnsureRegister(quoReg), quo);
             Assign(binder.EnsureRegister(remReg), rem);
@@ -245,7 +245,7 @@ namespace Reko.Arch.zSeries
             var rem = binder.CreateTemporary(PrimitiveType.Int32);
             m.Assign(quo, m.SDiv(dividend, divisor));
             m.Assign(rem, m.Mod(dividend, divisor));
-            var quoReg = ((RegisterOperand) instr.Operands[0]).Register;
+            var quoReg = (RegisterStorage) instr.Operands[0];
             var remReg = NextGpReg(quoReg);
             Assign(binder.EnsureRegister(quoReg), quo);
             Assign(binder.EnsureRegister(remReg), rem);
@@ -399,8 +399,8 @@ namespace Reko.Arch.zSeries
 
         private void RewriteLmg()
         {
-            var rStart = ((RegisterOperand)instr.Operands[0]).Register;
-            var rEnd = ((RegisterOperand)instr.Operands[1]).Register;
+            var rStart = (RegisterStorage)instr.Operands[0];
+            var rEnd = (RegisterStorage)instr.Operands[1];
             var ea = EffectiveAddress(2);
             var tmp = binder.CreateTemporary(ea.DataType);
             m.Assign(tmp, ea);
@@ -515,7 +515,7 @@ namespace Reko.Arch.zSeries
         {
             var left = Reg(0, dtSrc);
             var right = Reg(1, dtSrc);
-            var dstlo = NextGpReg(((RegisterOperand) instr.Operands[0]).Register);
+            var dstlo = NextGpReg((RegisterStorage) instr.Operands[0]);
             var dst = binder.EnsureSequence(dtDst, left.Storage, dstlo);
             m.Assign(dst, fn(dtDst, left, right));
         }
@@ -691,8 +691,8 @@ namespace Reko.Arch.zSeries
 
         private void RewriteStmg()
         {
-            var rStart = ((RegisterOperand)instr.Operands[0]).Register;
-            var rEnd = ((RegisterOperand)instr.Operands[1]).Register;
+            var rStart = (RegisterStorage)instr.Operands[0];
+            var rEnd = (RegisterStorage)instr.Operands[1];
             var ea = EffectiveAddress(2);
             var tmp = binder.CreateTemporary(ea.DataType);
             m.Assign(tmp, ea);

@@ -106,21 +106,21 @@ namespace Reko.Arch.Mips
             return CreateInvalidInstruction();
         }
 
-        private RegisterOperand Reg(uint regNumber)
+        private RegisterStorage Reg(uint regNumber)
         {
-            return new RegisterOperand(arch.GetRegister((int) regNumber & 0x1F)!);
+            return arch.GetRegister((int) regNumber & 0x1F)!;
         }
 
-        private RegisterOperand FReg(uint regNumber)
+        private RegisterStorage FReg(uint regNumber)
         {
-            return new RegisterOperand(arch.fpuRegs[regNumber & 0x1F]);
+            return arch.fpuRegs[regNumber & 0x1F];
         }
 
-        private bool TryGetFCReg(uint regNumber, out RegisterOperand op)
+        private bool TryGetFCReg(uint regNumber, out RegisterStorage op)
         {
             if (arch.fpuCtrlRegs.TryGetValue(regNumber & 0x1F, out RegisterStorage fcreg))
             {
-                op = new RegisterOperand(fcreg);
+                op = fcreg;
                 return true;
             }
             else
@@ -130,16 +130,16 @@ namespace Reko.Arch.Mips
             }
         }
 
-        private RegisterOperand CCodeFlag(uint wInstr, int regPos)
+        private RegisterStorage CCodeFlag(uint wInstr, int regPos)
         {
             var regNo = (wInstr >> regPos) & 0x7;
-            return new RegisterOperand(arch.ccRegs[regNo]);
+            return arch.ccRegs[regNo];
         }
 
-        private RegisterOperand FpuCCodeFlag(uint wInstr, int regPos)
+        private RegisterStorage FpuCCodeFlag(uint wInstr, int regPos)
         {
             var regNo = (wInstr >> regPos) & 0x7;
-            return new RegisterOperand(arch.fpuCcRegs[regNo]);
+            return arch.fpuCcRegs[regNo];
         }
 
         private AddressOperand RelativeBranch(uint wInstr)

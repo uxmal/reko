@@ -110,8 +110,8 @@ namespace Reko.Arch.Blackfin
         {
             switch (instr.Operands[iOperand])
             {
-            case RegisterOperand rop:
-                return binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                return binder.EnsureRegister(rop);
             case ImmediateOperand imm:
                 return imm.Value;
             case MemoryOperand mem:
@@ -128,8 +128,8 @@ namespace Reko.Arch.Blackfin
         {
             switch (instr.Operands[iOperand])
             {
-            case RegisterOperand rop:
-                var dst = binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                var dst = binder.EnsureRegister(rop);
                 m.Assign(dst, src);
                 return dst;
             case ImmediateOperand imm:
@@ -194,7 +194,7 @@ namespace Reko.Arch.Blackfin
 
         private Identifier Reg(int iOperand)
         {
-            return binder.EnsureRegister(((RegisterOperand) instr.Operands[iOperand]).Register);
+            return binder.EnsureRegister((RegisterStorage) instr.Operands[iOperand]);
         }
 
         private void RewriteCli()

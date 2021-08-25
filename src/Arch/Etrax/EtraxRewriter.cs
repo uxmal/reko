@@ -131,8 +131,8 @@ namespace Reko.Arch.Etrax
             Expression dst;
             switch (instr.Operands[iop])
             {
-            case RegisterOperand reg:
-                dst = binder.EnsureRegister(reg.Register);
+            case RegisterStorage reg:
+                dst = binder.EnsureRegister(reg);
                 if (func != null)
                 {
                     src = func(dst, src);
@@ -169,7 +169,7 @@ namespace Reko.Arch.Etrax
         {
             switch (op)
             {
-            case RegisterOperand r: return binder.EnsureRegister(r.Register);
+            case RegisterStorage r: return binder.EnsureRegister(r);
             case ImmediateOperand imm: return imm.Value;
             case AddressOperand a: return a.Address;
             case MemoryOperand mem:

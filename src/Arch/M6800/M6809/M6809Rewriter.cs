@@ -421,8 +421,8 @@ namespace Reko.Arch.M6800.M6809
             Expression tmp;
             switch (instr.Operands[0])
             {
-            case RegisterOperand reg:
-                tmp = binder.EnsureRegister(reg.Register);
+            case RegisterStorage reg:
+                tmp = binder.EnsureRegister(reg);
                 m.Assign(tmp, bin(dst, tmp));
                 break;
 
@@ -671,16 +671,16 @@ namespace Reko.Arch.M6800.M6809
 
         private void RewriteTfr()
         {
-            var src = binder.EnsureRegister(((RegisterOperand) instr.Operands[0]).Register);
-            var dst = binder.EnsureRegister(((RegisterOperand) instr.Operands[1]).Register);
+            var src = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
+            var dst = binder.EnsureRegister((RegisterStorage) instr.Operands[1]);
             m.Assign(dst, src);
         }
 
         private void RewriteTst()
         {
-            if (instr.Operands[0] is RegisterOperand reg)
+            if (instr.Operands[0] is RegisterStorage reg)
             {
-                RewriteBinaryTest(reg.Register, Tst, NZ0_);
+                RewriteBinaryTest(reg, Tst, NZ0_);
             }
             else
             {

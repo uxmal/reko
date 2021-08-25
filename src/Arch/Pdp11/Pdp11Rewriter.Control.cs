@@ -100,7 +100,7 @@ namespace Reko.Arch.Pdp11
             var callDst = RewriteJmpSrc(instr.Operands[1]);
             if (callDst != null)
             {
-                var regLink = binder.EnsureRegister(((RegisterOperand)instr.Operands[0]).Register);
+                var regLink = binder.EnsureRegister((RegisterStorage)instr.Operands[0]);
                 if (regLink.Storage != Registers.pc)
                 {
                     var sp = binder.EnsureRegister(Registers.sp);
@@ -151,19 +151,19 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteRts()
         {
-            var regLink = (RegisterOperand)instr.Operands[0];
-            if (regLink.Register == Registers.pc)
+            var regLink = (RegisterStorage)instr.Operands[0];
+            if (regLink == Registers.pc)
             {
                 m.Return(2, 0);
                 return;
             }
             else
             {
-                var tmp = binder.CreateTemporary(regLink.Width);
+                var tmp = binder.CreateTemporary(regLink.DataType);
                 var sp = binder.EnsureRegister(Registers.sp);
-                var reg = binder.EnsureRegister(regLink.Register);
+                var reg = binder.EnsureRegister(regLink);
                 m.Assign(tmp, reg);
-                m.Assign(reg, m.Mem(regLink.Width, sp));
+                m.Assign(reg, m.Mem(regLink.DataType, sp));
                 m.Assign(sp, m.IAddS(sp, reg.DataType.Size));
                 m.Goto(tmp);
             }

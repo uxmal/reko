@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -472,9 +473,9 @@ namespace Reko.Core
     /// <summary>
     /// Used to represent a machine register.
     /// </summary>
-	public class RegisterStorage : Storage, IComparable<RegisterStorage>
+	public class RegisterStorage : Storage, MachineOperand, IComparable<RegisterStorage>
     {
-        public RegisterStorage(string regName, int number, uint bitAddress, PrimitiveType dataType) 
+        public RegisterStorage(string regName, int number, uint bitAddress, PrimitiveType dataType)
             : base("Register", StorageDomain.Register + number, regName, dataType)
         {
             this.Number = number;
@@ -486,7 +487,7 @@ namespace Reko.Core
             }
             else
             {
-                BitMask = ((1ul << bitSize) - 1) << (int)bitAddress;
+                BitMask = ((1ul << bitSize) - 1) << (int) bitAddress;
             }
         }
 
@@ -523,12 +524,12 @@ namespace Reko.Core
         // Create a system register.
         public static RegisterStorage Sysreg(string name, int number, PrimitiveType size)
         {
-            return new RegisterStorage(name, number + (int)StorageDomain.SystemRegister, 0, size);
+            return new RegisterStorage(name, number + (int) StorageDomain.SystemRegister, 0, size);
         }
 
         public override ulong BitSize
         {
-            get { return (ulong)DataType.BitSize; }
+            get { return (ulong) DataType.BitSize; }
             set { throw new NotSupportedException(); }
         }
 
@@ -572,22 +573,21 @@ namespace Reko.Core
 
         public override bool Equals(object obj)
         {
-            if (obj is not RegisterStorage that)
-                return false;
-            return this.Domain == that.Domain &&
+            return obj is RegisterStorage that &&
+                this.Domain == that.Domain &&
                 this.BitAddress == that.BitAddress &&
                 this.BitSize == that.BitSize;
         }
 
         public override int GetHashCode()
         {
-            return (int)Domain * 17 ^ BitAddress.GetHashCode() ^ BitSize.GetHashCode();
+            return (int) Domain * 17 ^ BitAddress.GetHashCode() ^ BitSize.GetHashCode();
         }
 
         public override BitRange GetBitRange()
         {
-            int bitOffset = (int)BitAddress;
-            int bitSize = (int)BitSize;
+            int bitOffset = (int) BitAddress;
+            int bitSize = (int) BitSize;
             return new BitRange(bitOffset, bitOffset + bitSize);
         }
 
@@ -610,7 +610,7 @@ namespace Reko.Core
                 return -1;
             if (!this.OverlapsWith(that))
                 return -1;
-            return (int)that.BitAddress;
+            return (int) that.BitAddress;
         }
 
         public override bool OverlapsWith(Storage sThat)
@@ -646,10 +646,11 @@ namespace Reko.Core
             writer.Write(Name);
         }
 
-        public static RegisterStorage None { get; } = 
+        public static RegisterStorage None { get; } =
             new RegisterStorage("None", -1, 0, PrimitiveType.Create(Types.Domain.Any, 0))
             {
             };
+
 
         public Expression GetSlice(Expression value)
         {
@@ -669,6 +670,29 @@ namespace Reko.Core
                 return d;
             return this.BitMask.CompareTo(that.BitMask);
         }
+
+        DataType MachineOperand.Width
+        {
+            get => this.DataType;
+            set => throw new NotSupportedException();
+        }
+
+        string MachineOperand.ToString(MachineInstructionRendererOptions options)
+        {
+            var sr = new StringRenderer();
+            Render(sr, options);
+            return sr.ToString();
+        }
+
+        private void Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            renderer.BeginOperand();
+            renderer.WriteString(this.Name);
+            renderer.EndOperand();
+        }
+
+        void MachineOperand.Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options) =>
+            Render(renderer, options);
     }
 
     public class SequenceStorage : Storage

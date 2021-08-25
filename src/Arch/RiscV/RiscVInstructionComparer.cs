@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2022 John Källén.
  *
@@ -50,25 +50,20 @@ namespace Reko.Arch.RiscV
             if (opA.GetType() != opB.GetType())
                 return false;
 
-            var ropA = opA as RegisterOperand;
-            if (ropA != null)
+            switch (opA)
             {
-                var ropB = (RegisterOperand)opB;
-                return NormalizeRegisters || ropA.Register == ropB.Register;
-            }
-            var immA = opA as ImmediateOperand;
-            if (immA != null)
-            {
-                var immB = (ImmediateOperand)opB;
+            case RegisterStorage ropA:
+                var ropB = (RegisterStorage) opB;
+                return NormalizeRegisters || ropA == ropB;
+            case ImmediateOperand immA:
+                var immB = (ImmediateOperand) opB;
                 return NormalizeConstants || base.CompareValues(immA.Value, immB.Value);
-            }
-            var addrA = opA as AddressOperand;
-            if (addrA != null)
-            {
-                var addrB = (AddressOperand)opB;
+            case AddressOperand addrA:
+                var addrB = (AddressOperand) opB;
                 return NormalizeConstants || addrA.Address == addrB.Address;
+            default:
+                throw new NotImplementedException();
             }
-            throw new NotImplementedException();
         }
 
         public override int GetOperandsHash(MachineInstruction instr)
@@ -83,34 +78,27 @@ namespace Reko.Arch.RiscV
 
         private int GetOperandHash(MachineOperand op)
         {
-            if (op == null)
-                return 0;
-            var rop = op as RegisterOperand;
-            if (rop != null)
+            return op switch
             {
-                if (NormalizeRegisters)
-                    return 0;
-                else
-                    return rop.Register.Number.GetHashCode();
-            }
-            var immop = op as ImmediateOperand;
-            if (immop != null)
-            {
-                if (NormalizeConstants)
-                    return 0;
-                else
-                    return base.GetConstantHash(immop.Value);
-            }
-            var aop = op as AddressOperand;
-            if (aop != null)
-            {
-                if (NormalizeConstants)
-                    return 0;
-                else
-                    return aop.Address.GetHashCode();
-            }
-            throw new NotImplementedException(
-                string.Format("RiscV operand {0} ({1}) not implemented.", op, op.GetType().Name));
+                RegisterStorage rop =>
+                    (NormalizeRegisters)
+                        ? 0
+                        : rop.Number.GetHashCode(),
+
+                ImmediateOperand immop =>
+                    (NormalizeConstants)
+                        ? 0
+                        : base.GetConstantHash(immop.Value),
+
+                AddressOperand aop =>
+                    (NormalizeConstants)
+                        ? 0
+                        : aop.Address.GetHashCode(),
+                null => 0,
+                _ =>
+                throw new NotImplementedException(
+                    string.Format("RiscV operand {0} ({1}) not implemented.", op, op.GetType().Name))
+            };
         }
     }
 }

@@ -184,8 +184,8 @@ namespace Reko.Arch.Rl78
         {
             switch (op)
             {
-            case RegisterOperand rop:
-                return binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                return binder.EnsureRegister(rop);
             case ImmediateOperand iop:
                 return iop.Value;
             case AddressOperand aop:
@@ -229,8 +229,8 @@ namespace Reko.Arch.Rl78
         {
             switch (op)
             {
-            case RegisterOperand rop:
-                var rDst = binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                var rDst = binder.EnsureRegister(rop);
                 m.Assign(rDst, fn(rDst, src));
                 return rDst;
             case FlagGroupOperand fop:

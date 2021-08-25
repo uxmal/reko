@@ -107,7 +107,7 @@ namespace Reko.Arch.Etrax
             {
                 var ireg = regField.Read(u);
                 var reg = Registers.GpRegisters[ireg];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -135,7 +135,7 @@ namespace Reko.Arch.Etrax
         {
             var ireg = (int) Bits.ZeroExtend(uInstr, 4);
             var reg = Registers.GpRegisters[ireg];
-            dasm.ops.Add(new RegisterOperand(reg));
+            dasm.ops.Add(reg);
             return true;
         }
 
@@ -146,7 +146,7 @@ namespace Reko.Arch.Etrax
         {
             var ireg = (int) Bits.ZeroExtend(uInstr >> 12, 4);
             var reg = Registers.SystemRegisters[ireg];
-            dasm.ops.Add(new RegisterOperand(reg));
+            dasm.ops.Add(reg);
             return true;
         }
 
@@ -159,7 +159,7 @@ namespace Reko.Arch.Etrax
             if (ireg == 0xF)    // PC is not valid
                 return false;
             var reg = Registers.GpRegisters[ireg];
-            dasm.ops.Add(new RegisterOperand(reg));
+            dasm.ops.Add(reg);
             return true;
         }
 
@@ -172,7 +172,7 @@ namespace Reko.Arch.Etrax
             if (ireg == 0xF)    // PC is not valid
                 return false;
             var reg = Registers.GpRegisters[ireg];
-            dasm.ops.Add(new RegisterOperand(reg));
+            dasm.ops.Add(reg);
             return true;
         }
 
@@ -252,7 +252,7 @@ namespace Reko.Arch.Etrax
                     {
                         var mem = new MemoryOperand(dasm.dataWidth ?? PrimitiveType.Word32);
                         var reg = Registers.GpRegisters[iReg];
-                        mem.Base = new RegisterOperand(reg);
+                        mem.Base = reg;
                         mem.PostIncrement = postInc;
                         op = mem;
                     }
@@ -470,7 +470,7 @@ namespace Reko.Arch.Etrax
                     var baseReg = Registers.GpRegisters[u & 0xF];
                     inner = new MemoryOperand(baseReg.DataType)
                     {
-                        Base = new RegisterOperand(baseReg),
+                        Base = baseReg,
                         PostIncrement = postInc,
                     };
                 }
@@ -499,7 +499,7 @@ namespace Reko.Arch.Etrax
                 {
                     var mem = new MemoryOperand(dt ?? PrimitiveType.Word32);
                     var reg = Registers.GpRegisters[iReg];
-                    mem.Base = new RegisterOperand(reg);
+                    mem.Base = reg;
                     mem.PostIncrement = postInc;
                     op = mem;
                 }
@@ -507,7 +507,7 @@ namespace Reko.Arch.Etrax
                     return false;
                 d.prefix = new MemoryOperand(PrimitiveType.Word32)
                 {
-                    Base = new RegisterOperand(baseReg),
+                    Base = baseReg,
                     Offset = op,
                 };
                 return true;
@@ -519,7 +519,7 @@ namespace Reko.Arch.Etrax
                 var baseReg = Registers.GpRegisters[(u >> 12) & 0xF];
                 d.prefix = new MemoryOperand(PrimitiveType.Byte)
                 {
-                    Base = new RegisterOperand(baseReg),
+                    Base = baseReg,
                     Offset = ImmediateOperand.Int32((int)Bits.SignExtend(u, 8)),
                 };
                 return true;
@@ -533,8 +533,8 @@ namespace Reko.Arch.Etrax
                 var scale = dataWidths[(u >> 4) & 3];
                 d.prefix = new MemoryOperand(PrimitiveType.Byte)
                 {
-                    Base = new RegisterOperand(baseReg),
-                    Offset = new RegisterOperand(idxReg),
+                    Base = baseReg,
+                    Offset = idxReg,
                     IndexScale = scale,
                 };
                 return true;

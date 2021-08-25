@@ -108,8 +108,8 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 InstrClass.Linear,
                 PrimitiveType.Word16,
                 PrimitiveType.Word16,
-                new RegisterOperand(regDst),
-                new RegisterOperand(regSrc));
+                regDst,
+                regSrc);
 			return inst;
 		}
 
@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Decompiler.Scanning
                 InstrClass.Linear,
                 reg.DataType,
                 reg.DataType,
-                new RegisterOperand(reg));
+                reg);
 			return inst;
 		}
 	}

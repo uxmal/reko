@@ -363,8 +363,8 @@ namespace Reko.Arch.Mips
         {
             switch (op)
             {
-            case RegisterOperand regOp:
-                return binder.EnsureRegister(regOp.Register);
+            case RegisterStorage regOp:
+                return binder.EnsureRegister(regOp);
             case ImmediateOperand immOp:
                 return immOp.Value;
             case IndirectOperand indOp:
@@ -425,10 +425,10 @@ namespace Reko.Arch.Mips
         {
             switch (op)
             {
-            case RegisterOperand regOp:
-                if (regOp.Register.Number == 0)
-                    return Constant.Zero(regOp.Register.DataType);
-                return binder.EnsureRegister(regOp.Register);
+            case RegisterStorage regOp:
+                if (regOp.Number == 0)
+                    return Constant.Zero(regOp.DataType);
+                return binder.EnsureRegister(regOp);
             case ImmediateOperand immOp:
                 return immOp.Value;
             case AddressOperand addrOp:

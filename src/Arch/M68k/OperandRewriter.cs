@@ -67,9 +67,9 @@ namespace Reko.Arch.M68k
             Expression r;
             switch (operand)
             {
-            case RegisterOperand reg:
-                r = binder.EnsureRegister(reg.Register);
-                if (DataWidth != null && DataWidth.Size != reg.Width.Size)
+            case RegisterStorage reg:
+                r = binder.EnsureRegister(reg);
+                if (DataWidth != null && DataWidth.Size != reg.DataType.Size)
                 {
                     if (DataWidth.Domain == Domain.Real)
                         r = m.Convert(r, r.DataType, DataWidth);
@@ -203,13 +203,13 @@ namespace Reko.Arch.M68k
         {
             switch (operand)
             {
-            case RegisterOperand reg:
+            case RegisterStorage reg:
                 {
-                    var r = binder.EnsureRegister(reg.Register);
+                    var r = binder.EnsureRegister(reg);
                     Expression tmpLo = r;
                     if (dataWidth != null &&
-                        reg.Width.BitSize > dataWidth.BitSize &&
-                        !reg.Width.IsReal)
+                        reg.DataType.BitSize > dataWidth.BitSize &&
+                        !reg.DataType.IsReal)
                     {
                         Expression rSub = m.Slice(dataWidth, r, 0);
                         var srcExp = opGen(src, rSub);
@@ -222,7 +222,7 @@ namespace Reko.Arch.M68k
                             tmpLo = binder.CreateTemporary(dataWidth);
                             m.Assign(tmpLo, srcExp);
                         }
-                        var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(reg.Width.BitSize - tmpLo.DataType.BitSize));
+                        var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(reg.DataType.BitSize - tmpLo.DataType.BitSize));
                         m.Assign(tmpHi, m.Slice(tmpHi.DataType, r, tmpLo.DataType.BitSize));
                         src = m.Seq(tmpHi, tmpLo);
                     }
@@ -329,9 +329,9 @@ namespace Reko.Arch.M68k
         {
             switch (operand)
             {
-            case RegisterOperand reg:
+            case RegisterStorage reg:
                 {
-                    Expression r = binder.EnsureRegister(reg.Register);
+                    Expression r = binder.EnsureRegister(reg);
                     if (r.DataType.BitSize > dataWidth.BitSize)
                     {
                         var tmpLo = binder.CreateTemporary(dataWidth);
@@ -422,9 +422,9 @@ namespace Reko.Arch.M68k
         {
             switch (opDst)
             {
-            case RegisterOperand reg:
+            case RegisterStorage reg:
                 {
-                    var r = binder.EnsureRegister(reg.Register);
+                    var r = binder.EnsureRegister(reg);
                     if (r.DataType.BitSize > src.DataType.BitSize)
                     {
                         var tmpLo = binder.CreateTemporary(src.DataType);

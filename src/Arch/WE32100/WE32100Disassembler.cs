@@ -153,7 +153,7 @@ namespace Reko.Arch.WE32100
             MachineOperand op;
             if (register != 0xF)
             {
-                op = new RegisterOperand(Registers.GpRegs[register]);
+                op = Registers.GpRegs[register];
             }
             else
             {
@@ -321,7 +321,7 @@ namespace Reko.Arch.WE32100
         private static bool Register(int opDescriptor, PrimitiveType dt, WE32100Disassembler dasm)
         {
             var register = opDescriptor & 0xF;
-            dasm.ops.Add(new RegisterOperand(Registers.GpRegs[register]));
+            dasm.ops.Add(Registers.GpRegs[register]);
             return true;
         }
 

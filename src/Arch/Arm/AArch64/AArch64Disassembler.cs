@@ -275,7 +275,7 @@ namespace Reko.Arch.Arm.AArch64
             return (u, d) =>
             {
                 uint iReg = field.Read(u);
-                d.state.ops.Add(new RegisterOperand(Registers.GpRegs32[iReg]));
+                d.state.ops.Add(Registers.GpRegs32[iReg]);
                 return true;
             };
         }
@@ -289,14 +289,11 @@ namespace Reko.Arch.Arm.AArch64
         /// </summary>
         private static Mutator<AArch64Disassembler> Ws(int pos, int size)
         {
-            var fields = new[]
-            {
-                new Bitfield(pos, size)
-            };
+            var field = new Bitfield(pos, size);
             return (u, d) =>
             {
-                uint iReg = Bitfield.ReadFields(fields, u);
-                d.state.ops.Add(new RegisterOperand(Registers.AddrRegs32[iReg]));
+                uint iReg = field.Read(u);
+                d.state.ops.Add(Registers.AddrRegs32[iReg]);
                 return true;
             };
         }
@@ -316,7 +313,7 @@ namespace Reko.Arch.Arm.AArch64
             return (u, d) =>
             {
                 uint iReg = Bitfield.ReadFields(fields, u);
-                d.state.ops.Add(new RegisterOperand(Registers.GpRegs64[iReg]));
+                d.state.ops.Add(Registers.GpRegs64[iReg]);
                 return true;
             };
         }
@@ -365,7 +362,7 @@ namespace Reko.Arch.Arm.AArch64
             return (u, d) =>
             {
                 uint iReg = Bitfield.ReadFields(fields, u);
-                d.state.ops.Add(new RegisterOperand(Registers.AddrRegs64[iReg]));
+                d.state.ops.Add(Registers.AddrRegs64[iReg]);
                 return true;
             };
         }
@@ -383,7 +380,7 @@ namespace Reko.Arch.Arm.AArch64
             return (u, d) =>
             {
                 uint iReg = Bitfield.ReadFields(fields, u);
-                d.state.ops.Add(new RegisterOperand(Registers.SimdRegs8[iReg]));
+                d.state.ops.Add(Registers.SimdRegs8[iReg]);
                 return true;
             };
         }
@@ -395,7 +392,7 @@ namespace Reko.Arch.Arm.AArch64
             return (u, d) =>
             {
                 uint iReg = field.Read(u);
-                d.state.ops.Add(new RegisterOperand(Registers.SimdRegs16[iReg]));
+                d.state.ops.Add(Registers.SimdRegs16[iReg]);
                 return true;
             };
         }
@@ -418,7 +415,7 @@ namespace Reko.Arch.Arm.AArch64
                 }
                 else
                 {
-                    op = new RegisterOperand(Registers.SimdRegs16[iReg]);
+                    op = Registers.SimdRegs16[iReg];
                 }
                 d.state.ops.Add(op);
                 return true;
@@ -432,7 +429,7 @@ namespace Reko.Arch.Arm.AArch64
             return (u, d) =>
             {
                 uint iReg = field.Read(u);
-                d.state.ops.Add(new RegisterOperand(Registers.SimdRegs32[iReg]));
+                d.state.ops.Add(Registers.SimdRegs32[iReg]);
                 return true;
             };
         }
@@ -455,7 +452,7 @@ namespace Reko.Arch.Arm.AArch64
                 }
                 else
                 {
-                    op = new RegisterOperand(Registers.SimdRegs32[iReg]);
+                    op = Registers.SimdRegs32[iReg];
                 }
                 d.state.ops.Add(op);
                 return true;
@@ -471,7 +468,7 @@ namespace Reko.Arch.Arm.AArch64
             return (u, d) =>
             {
                 uint iReg = field.Read(u);
-                d.state.ops.Add(new RegisterOperand(Registers.SimdRegs64[iReg]));
+                d.state.ops.Add(Registers.SimdRegs64[iReg]);
                 return true;
             };
         }
@@ -496,7 +493,7 @@ namespace Reko.Arch.Arm.AArch64
                 }
                 else
                 {
-                    op = new RegisterOperand(Registers.SimdRegs64[iReg]);
+                    op = Registers.SimdRegs64[iReg];
                 }
                 d.state.ops.Add(op);
                 return true;
@@ -512,7 +509,7 @@ namespace Reko.Arch.Arm.AArch64
             return (u, d) =>
             {
                 uint iReg = bitfield.Read(u);
-                d.state.ops.Add(new RegisterOperand(Registers.SimdRegs128[iReg]));
+                d.state.ops.Add(Registers.SimdRegs128[iReg]);
                 return true;
             };
         }
@@ -533,7 +530,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 uint iReg = bitfield.Read(u);
                 var regs = d.state.useQ ? Registers.SimdRegs128 : Registers.SimdRegs64;
-                d.state.ops.Add(new RegisterOperand(regs[iReg]));
+                d.state.ops.Add(regs[iReg]);
                 return true;
             };
         }
@@ -551,7 +548,7 @@ namespace Reko.Arch.Arm.AArch64
                 var reg = regs[iArr];
                 if (reg is null)
                     return false;
-                d.state.ops.Add(new RegisterOperand(reg[iReg]));
+                d.state.ops.Add(reg[iReg]);
                 return true;
             };
         }
@@ -767,7 +764,7 @@ namespace Reko.Arch.Arm.AArch64
                 else
                 {
                     var reg = Vs_BHSD![elemSize]![iReg]!;
-                    d.state.ops.Add(new RegisterOperand(reg));
+                    d.state.ops.Add(reg);
                 }
                 return true;
             };
@@ -938,7 +935,7 @@ namespace Reko.Arch.Arm.AArch64
                 var reg = (opt == 0b011 || opt == 0b111)
                     ? Registers.GpRegs64[iReg]
                     : Registers.GpRegs32[iReg];
-                d.state.ops.Add(new RegisterOperand(reg));
+                d.state.ops.Add(reg);
                 return true;
             };
         }
@@ -1726,22 +1723,22 @@ namespace Reko.Arch.Arm.AArch64
             }
             if (immr == 0)
             {
-                var reg = ((RegisterOperand)dasm.state.ops[1]).Register;
+                var reg = (RegisterStorage)dasm.state.ops[1];
                 switch (imms)
                 {
                 case 0b00111:
                     dasm.state.mnemonic = Mnemonic.sxtb;
-                    dasm.state.ops[1] = new RegisterOperand(Registers.GpRegs32[reg.Number]);
+                    dasm.state.ops[1] = Registers.GpRegs32[reg.Number];
                     dasm.state.ops.RemoveRange(2, 2);
                     return true;
                 case 0b01111:
                     dasm.state.mnemonic = Mnemonic.sxth;
-                    dasm.state.ops[1] = new RegisterOperand(Registers.GpRegs32[reg.Number]);
+                    dasm.state.ops[1] = Registers.GpRegs32[reg.Number];
                     dasm.state.ops.RemoveRange(2, 2);
                     return true;
                 case 0b11111:
                     dasm.state.mnemonic = Mnemonic.sxtw;
-                    dasm.state.ops[1] = new RegisterOperand(Registers.GpRegs32[reg.Number]);
+                    dasm.state.ops[1] = Registers.GpRegs32[reg.Number];
                     dasm.state.ops.RemoveRange(2, 2);
                     return true;
                 }
@@ -1905,7 +1902,7 @@ namespace Reko.Arch.Arm.AArch64
                     Debug.Print("AArch64Dis: unknown system register {0} {1:X}", sregName, uSysreg);
                     sreg = RegisterStorage.Sysreg(sregName, (int)uSysreg, w64);
                 }
-                d.state.ops.Add(new RegisterOperand(sreg));
+                d.state.ops.Add(sreg);
                 return true;
             };
         }
@@ -3093,7 +3090,7 @@ namespace Reko.Arch.Arm.AArch64
             var msr_reg = Instr(Mnemonic.msr, Sysreg((19,2),(16,3),(12,4),(8,4),(5,3)), X_0);
             var msr_imm = Instr(Mnemonic.msr, (u, d) =>
                 {
-                    d.state.ops.Add(new RegisterOperand(RegisterStorage.Sysreg("pstate", 4711, w64)));
+                    d.state.ops.Add(RegisterStorage.Sysreg("pstate", 4711, w64));
                     return true;
                 },
                 U(8, 4, PrimitiveType.Byte));

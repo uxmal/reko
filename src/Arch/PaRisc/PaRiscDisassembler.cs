@@ -304,7 +304,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var iReg = field.Read(u);
-                d.ops.Add(new RegisterOperand(d.regs.GpRegs[iReg]));
+                d.ops.Add(d.regs.GpRegs[iReg]);
                 return true;
             };
         }
@@ -318,7 +318,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var iReg = field.Read(u);
-                d.ops.Add(new RegisterOperand(d.regs.FpRegs[iReg]));
+                d.ops.Add(d.regs.FpRegs[iReg]);
                 return true;
             };
         }
@@ -335,7 +335,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var iReg = Bitfield.ReadFields(fields, u);
-                d.ops.Add(new RegisterOperand(d.regs.FpRegs32[iReg]));
+                d.ops.Add(d.regs.FpRegs32[iReg]);
                 return true;
             };
         }
@@ -370,7 +370,7 @@ namespace Reko.Arch.PaRisc
                     iReg = (iReg & 0x0F) | 0x10;
                     freg = d.regs.FpRegs32[iReg | bank];
                 }
-                d.ops.Add(new RegisterOperand(freg));
+                d.ops.Add(freg);
                 return true;
             };
         }
@@ -387,7 +387,7 @@ namespace Reko.Arch.PaRisc
         {
             return (u, d) =>
             {
-                d.ops.Add(new RegisterOperand(d.regs.GpRegs[r]));
+                d.ops.Add(d.regs.GpRegs[r]);
                 return true;
             };
         }
@@ -399,7 +399,7 @@ namespace Reko.Arch.PaRisc
         {
             return (u, d) =>
             {
-                d.ops.Add(new RegisterOperand(r));
+                d.ops.Add(r);
                 return true;
             };
         }
@@ -413,7 +413,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var iReg = field.Read(u);
-                d.ops.Add(new RegisterOperand(Registers.SpaceRegs[iReg]));
+                d.ops.Add(Registers.SpaceRegs[iReg]);
                 return true;
             };
         }
@@ -431,7 +431,7 @@ namespace Reko.Arch.PaRisc
                 {
                     return false;
                 }
-                d.ops.Add(new RegisterOperand(cReg));
+                d.ops.Add(cReg);
                 return true;
             };
         }

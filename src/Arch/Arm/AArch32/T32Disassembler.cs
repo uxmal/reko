@@ -363,16 +363,16 @@ namespace Reko.Arch.Arm.AArch32
             return ArmVectorData.INVALID;
         }
 
-        private RegisterOperand Coprocessor(uint wInstr, int bitPos)
+        private RegisterStorage Coprocessor(uint wInstr, int bitPos)
         {
             var cp = Registers.Coprocessors[SBitfield(wInstr, bitPos, 4)];
-            return new RegisterOperand(cp);
+            return cp;
         }
 
-        private RegisterOperand CoprocessorRegister(uint wInstr, int bitPos)
+        private RegisterStorage CoprocessorRegister(uint wInstr, int bitPos)
         {
             var cr = Registers.CoprocessorRegisters[SBitfield(wInstr, bitPos, 4)];
-            return new RegisterOperand(cr);
+            return cr;
         }
 
         private static int SBitfield(uint word, int offset, int size)
@@ -680,7 +680,7 @@ namespace Reko.Arch.Arm.AArch32
             return (u, d) =>
             {
                 var iReg = field.Read(u);
-                d.state.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+                d.state.ops.Add(Registers.GpRegs[iReg]);
                 return true;
             };
         }
@@ -704,7 +704,7 @@ namespace Reko.Arch.Arm.AArch32
                 var iReg = field.Read(u);
                 if (iReg == ArmRegPC)
                     return false;
-                d.state.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+                d.state.ops.Add(Registers.GpRegs[iReg]);
                 return true;
             };
         }
@@ -724,7 +724,7 @@ namespace Reko.Arch.Arm.AArch32
             return (u, d) =>
             {
                 var iReg = field.Read(u);
-                d.state.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+                d.state.ops.Add(Registers.GpRegs[iReg]);
                 return true;
             };
         }
@@ -739,7 +739,7 @@ namespace Reko.Arch.Arm.AArch32
         private static bool T(uint wInstr, T32Disassembler dasm)
         {
             var tReg = ((wInstr & 0x80) >> 4) | (wInstr & 7);
-            dasm.state.ops.Add(new RegisterOperand(Registers.GpRegs[tReg]));
+            dasm.state.ops.Add(Registers.GpRegs[tReg]);
             return true;
         }
 
@@ -747,7 +747,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             return (u, d) =>
             {
-                d.state.ops.Add(new RegisterOperand(reg));
+                d.state.ops.Add(reg);
                 return true;
             };
         }
@@ -765,7 +765,7 @@ namespace Reko.Arch.Arm.AArch32
                 var reg = simdSysRegisters[iReg];
                 if (reg == null)
                     return false;
-                d.state.ops.Add(new RegisterOperand(reg));
+                d.state.ops.Add(reg);
                 return true;
             };
         }
@@ -811,8 +811,8 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 else
                 {
-                    d.state.ops.Add(new RegisterOperand(Registers.GpRegs[imm]));
-                    d.state.ops.Add(new RegisterOperand(Registers.GpRegs[imm + 1]));
+                    d.state.ops.Add(Registers.GpRegs[imm]);
+                    d.state.ops.Add(Registers.GpRegs[imm + 1]);
                     return true;
                 }
             };
@@ -903,8 +903,8 @@ namespace Reko.Arch.Arm.AArch32
                 var iReg = Bitfield.ReadFields(fields, u);
                 if (iReg >= 31)
                     return false;
-                d.state.ops.Add(new RegisterOperand(Registers.SRegs[iReg]));
-                d.state.ops.Add(new RegisterOperand(Registers.SRegs[iReg + 1]));
+                d.state.ops.Add(Registers.SRegs[iReg]);
+                d.state.ops.Add(Registers.SRegs[iReg + 1]);
                 return true;
             };
         }
@@ -915,7 +915,7 @@ namespace Reko.Arch.Arm.AArch32
             return (u, d) =>
             {
                 var iReg = field.Read(u);
-                d.state.ops.Add(new RegisterOperand(Registers.DRegs[iReg]));
+                d.state.ops.Add(Registers.DRegs[iReg]);
                 return true;
             };
         }
@@ -994,21 +994,21 @@ namespace Reko.Arch.Arm.AArch32
         private static bool F12_22(uint wInstr, T32Disassembler dasm)
         {
             var d = ((wInstr >> 11) & 0x1E) | ((wInstr >> 22) & 1);
-            dasm.state.ops.Add(new RegisterOperand(Registers.SRegs[d]));
+            dasm.state.ops.Add(Registers.SRegs[d]);
             return true;
         }
 
         private static bool D22_12(uint wInstr, T32Disassembler dasm)
         {
             var d = ((wInstr >> 18) & 0x10) | ((wInstr >> 12) & 0xF);
-            dasm.state.ops.Add(new RegisterOperand(Registers.DRegs[d]));
+            dasm.state.ops.Add(Registers.DRegs[d]);
             return true;
         }
 
         private static bool Q22_12(uint wInstr, T32Disassembler dasm)
         {
             var q = ((wInstr >> 18) & 0x10) | ((wInstr >> 12) & 0xF);
-            dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[q >> 1]));
+            dasm.state.ops.Add(Registers.QRegs[q >> 1]);
             return true;
         }
 
@@ -1035,7 +1035,7 @@ namespace Reko.Arch.Arm.AArch32
                 }
                 var iReg = Bitfield.ReadFields(fields, u);
                 var reg = regs[iReg];
-                d.state.ops.Add(new RegisterOperand(reg));
+                d.state.ops.Add(reg);
                 return true;
             };
         }
@@ -1065,12 +1065,12 @@ namespace Reko.Arch.Arm.AArch32
                     }
                     else
                     {
-                        d.state.ops.Add(new RegisterOperand(Registers.QRegs[imm >> 1]));
+                        d.state.ops.Add(Registers.QRegs[imm >> 1]);
                     }
                 }
                 else
                 {
-                    d.state.ops.Add(new RegisterOperand(Registers.DRegs[imm]));
+                    d.state.ops.Add(Registers.DRegs[imm]);
                 }
                 return true;
             };
@@ -1082,7 +1082,7 @@ namespace Reko.Arch.Arm.AArch32
         private static bool Q22_12_times2(uint wInstr, T32Disassembler dasm)
         {
             var q = ((wInstr >> 18) & 0x10) | ((wInstr >> 12) & 0xF);
-            dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[q >> 1]));
+            dasm.state.ops.Add(Registers.QRegs[q >> 1]);
             return true;
         }
 
@@ -1090,21 +1090,21 @@ namespace Reko.Arch.Arm.AArch32
         private static bool F16_7(uint wInstr, T32Disassembler dasm)
         {
             var s = ((wInstr >> 15) & 0x1E) | ((wInstr >> 7) & 0x1);
-            dasm.state.ops.Add(new RegisterOperand(Registers.SRegs[s]));
+            dasm.state.ops.Add(Registers.SRegs[s]);
             return true;
         }
 
         private static bool D7_16(uint wInstr, T32Disassembler dasm)
         {
             var d = ((wInstr >> 3) & 0x10) | ((wInstr >> 16) & 0xF);
-            dasm.state.ops.Add(new RegisterOperand(Registers.DRegs[d]));
+            dasm.state.ops.Add(Registers.DRegs[d]);
             return true;
         }
 
         private static bool Q7_16(uint wInstr, T32Disassembler dasm)
         {
             var q = ((wInstr >> 3) & 0x10) | ((wInstr >> 16) & 0xF);
-            dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[q >> 1]));
+            dasm.state.ops.Add(Registers.QRegs[q >> 1]);
             return true;
         }
 
@@ -1112,28 +1112,28 @@ namespace Reko.Arch.Arm.AArch32
         private static bool F0_5(uint wInstr, T32Disassembler dasm)
         {
             var s = ((wInstr & 0xF) << 1) | ((wInstr >> 0x5) & 1);
-            dasm.state.ops.Add(new RegisterOperand(Registers.SRegs[s]));
+            dasm.state.ops.Add(Registers.SRegs[s]);
             return true;
         }
 
         private static bool D5_0(uint wInstr, T32Disassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.DRegs[
-                ((wInstr >> 1) & 0x10) | (wInstr & 0xF)]));
+            dasm.state.ops.Add(Registers.DRegs[
+                ((wInstr >> 1) & 0x10) | (wInstr & 0xF)]);
             return true;
         }
 
         private static bool Q5_0(uint wInstr, T32Disassembler dasm)
         {
             var q = ((wInstr >> 1) & 0x10) | (wInstr & 0xF);
-            dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[q >> 1]));
+            dasm.state.ops.Add(Registers.QRegs[q >> 1]);
             return true;
         }
 
         private static bool Q5_0_times2(uint wInstr, T32Disassembler dasm)
         {
             var q = ((wInstr >> 1) & 0x10) | (wInstr & 0xF);
-            dasm.state.ops.Add(new RegisterOperand(Registers.QRegs[q >> 1]));
+            dasm.state.ops.Add(Registers.QRegs[q >> 1]);
             return true;
         }
 
@@ -1147,7 +1147,7 @@ namespace Reko.Arch.Arm.AArch32
                 //{
                 //    offset = ReadDecimal(format, ref i);
                 //    var cp = Registers.Coprocessors[offset];
-                //    op = new RegisterOperand(cp);
+                //    op = new RegisterStorage(cp);
                 //}
                 //else
                 var op = d.Coprocessor(u, n);
@@ -1162,8 +1162,7 @@ namespace Reko.Arch.Arm.AArch32
             return (u, d) =>
             {
                 var cp = Registers.Coprocessors[n];
-                var op = new RegisterOperand(cp);
-                d.state.ops.Add(op);
+                d.state.ops.Add(cp);
                 return true;
             };
         }
@@ -1650,9 +1649,9 @@ namespace Reko.Arch.Arm.AArch32
             {
                 var imm = (int) Bitfield.ReadFields(fields, u);
                 int iLastOp = d.state.ops.Count - 1;
-                var rLast = (RegisterOperand) d.state.ops[iLastOp];
+                var rLast = (RegisterStorage) d.state.ops[iLastOp];
                 var dtElem = Arm32Architecture.VectorElementDataType(d.state.vectorData);
-                var ixOp = new IndexedOperand(dtElem, rLast.Register, imm);
+                var ixOp = new IndexedOperand(dtElem, rLast, imm);
                 d.state.ops[iLastOp] = ixOp;
                 return true;
             };
@@ -1896,7 +1895,7 @@ namespace Reko.Arch.Arm.AArch32
         /// </summary>
         private static bool useLr(uint uInstr, T32Disassembler dasm)
         {
-            var reg = ((RegisterOperand) dasm.state.ops[^1]).Register;
+            var reg = (RegisterStorage) dasm.state.ops[^1];
             if (reg == Registers.lr)
                 dasm.state.iclass = InstrClass.Transfer | InstrClass.Return;
             return true;

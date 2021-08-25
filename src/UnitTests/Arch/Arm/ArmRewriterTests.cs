@@ -295,7 +295,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_UInt32s(0xE6EF2471);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = CONVERT(SLICE(r1 >>u 8<i32>, byte, 0), byte, uint32)");
+                "1|L--|r2 = CONVERT(SLICE(__ror<word32,int32>(r1, 8<i32>), byte, 0), byte, uint32)");
         }
 
         [Test]
@@ -450,7 +450,7 @@ means
             Given_UInt32s(0xE6AF1472);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = CONVERT(SLICE(r2 >>u 8<i32>, int8, 0), int8, int32)");
+                "1|L--|r1 = CONVERT(SLICE(__ror<word32,int32>(r2, 8<i32>), int8, 0), int8, int32)");
         }
 
         [Test]
@@ -459,7 +459,7 @@ means
             Given_UInt32s(0xE6FF1472);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r1 = CONVERT(SLICE(r2 >>u 8<i32>, uint16, 0), uint16, uint32)");
+                "1|L--|r1 = CONVERT(SLICE(__ror<word32,int32>(r2, 8<i32>), uint16, 0), uint16, uint32)");
         }
 
         [Test]

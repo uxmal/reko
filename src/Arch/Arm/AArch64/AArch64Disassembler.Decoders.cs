@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Reko.Arch.Arm.AArch64
 {
-    using Decoder = Reko.Core.Machine.Decoder<AArch64Disassembler, Mnemonic, AArch64Instruction>;
+    using Decoder = Decoder<AArch64Disassembler, Mnemonic, AArch64Instruction>;
 
     public partial class AArch64Disassembler
     {

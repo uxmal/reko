@@ -71,7 +71,7 @@ namespace Reko.Arch.Mips
         {
             // The bgezal r0,XXXX instruction is aliased to bal (branch and link, or fn call)
             // We handle that case here explicitly.
-            if (((RegisterOperand)instr.Operands[0]).Register.Number == 0)
+            if (((RegisterStorage)instr.Operands[0]).Number == 0)
             {
                 RewriteBal(instr, 1);
                 return;
@@ -97,8 +97,8 @@ namespace Reko.Arch.Mips
                 var addr = (Address)RewriteOperand0(instr.Operands[2]);
                 var cond = condOp(reg1, reg2);
                 if (condOp == m.Eq &&
-                    ((RegisterOperand)instr.Operands[0]).Register ==
-                    ((RegisterOperand)instr.Operands[1]).Register)
+                    (RegisterStorage)instr.Operands[0] ==
+                    (RegisterStorage)instr.Operands[1])
                 {
                     m.Goto(addr, instr.InstructionClass & ~InstrClass.Conditional);
                 }
@@ -158,8 +158,8 @@ namespace Reko.Arch.Mips
             var addr = (Address)RewriteOperand0(instr.Operands[2]);
             var cond = condOp(reg1, reg2);
             if (condOp == m.Eq &&
-                ((RegisterOperand)instr.Operands[0]).Register ==
-                ((RegisterOperand)instr.Operands[1]).Register)
+                ((RegisterStorage)instr.Operands[0] ==
+                 (RegisterStorage)instr.Operands[1]))
             {
                 m.GotoD(addr);
             }
@@ -208,7 +208,7 @@ namespace Reko.Arch.Mips
             // use the line below
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
             var dst = RewriteOperand0(instr.Operands[1]);
-            var lr = ((RegisterOperand)instr.Operands[0]).Register;
+            var lr = (RegisterStorage)instr.Operands[0];
             if (lr == arch.LinkRegister)
             {
                 m.Call(dst, 0, instr.InstructionClass);

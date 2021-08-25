@@ -229,14 +229,14 @@ namespace Reko.Arch.MicroBlaze
         private Identifier Reg(int iOp)
         {
             var op = instrCur.Operands[iOp];
-            var id = binder.EnsureRegister(((RegisterOperand) op).Register);
+            var id = binder.EnsureRegister((RegisterStorage) op);
             return id;
         }
 
         private Expression Reg0(int iOp)
         {
             var op = instrCur.Operands[iOp];
-            var reg = ((RegisterOperand) op).Register;
+            var reg = (RegisterStorage) op;
             if (reg == Registers.GpRegs[0])
                 return Constant.Zero(reg.DataType);
             var id = binder.EnsureRegister(reg);
@@ -253,8 +253,8 @@ namespace Reko.Arch.MicroBlaze
         private void RewriteAdd(bool setCy)
         {
             var dst = Reg(0);
-            var regA = ((RegisterOperand) instrCur.Operands[1]).Register;
-            var regB = ((RegisterOperand) instrCur.Operands[2]).Register;
+            var regA = (RegisterStorage) instrCur.Operands[1];
+            var regB = (RegisterStorage) instrCur.Operands[2];
             Expression src;
             if (regA == Registers.GpRegs[0])
             {
@@ -292,8 +292,8 @@ namespace Reko.Arch.MicroBlaze
         private void RewriteAddc(bool setCy)
         {
             var dst = Reg(0);
-            var regA = ((RegisterOperand) instrCur.Operands[1]).Register;
-            var regB = ((RegisterOperand) instrCur.Operands[2]).Register;
+            var regA = (RegisterStorage) instrCur.Operands[1];
+            var regB = (RegisterStorage) instrCur.Operands[2];
             var cy = binder.EnsureFlagGroup(Registers.C);
             Expression src;
             if (regA == Registers.GpRegs[0])
@@ -333,7 +333,7 @@ namespace Reko.Arch.MicroBlaze
         private void RewriteAddi(bool setCy)
         {
             var dst = Reg(0);
-            var reg = ((RegisterOperand) instrCur.Operands[1]).Register;
+            var reg = (RegisterStorage) instrCur.Operands[1];
             var imm = ((ImmediateOperand) instrCur.Operands[2]).Value;
             Expression src;
             if (reg == Registers.GpRegs[0])
@@ -486,8 +486,8 @@ namespace Reko.Arch.MicroBlaze
         private void RewriteOr()
         {
             var dst = Reg(0);
-            var regA = ((RegisterOperand) instrCur.Operands[1]).Register;
-            var regB = ((RegisterOperand) instrCur.Operands[2]).Register;
+            var regA = (RegisterStorage) instrCur.Operands[1];
+            var regB = (RegisterStorage) instrCur.Operands[2];
             Expression src;
             if (regA == Registers.GpRegs[0])
             {
@@ -519,7 +519,7 @@ namespace Reko.Arch.MicroBlaze
         private void RewriteOri()
         {
             var dst = Reg(0);
-            var reg = ((RegisterOperand) instrCur.Operands[1]).Register;
+            var reg = (RegisterStorage) instrCur.Operands[1];
             var imm = Imm(2);
             Expression src;
             if (reg == Registers.GpRegs[0])
@@ -551,8 +551,8 @@ namespace Reko.Arch.MicroBlaze
         private void RewriteRsub(bool setCy)
         {
             var dst = Reg(0);
-            var regA = ((RegisterOperand) instrCur.Operands[2]).Register;
-            var regB = ((RegisterOperand) instrCur.Operands[1]).Register;
+            var regA = (RegisterStorage) instrCur.Operands[2];
+            var regB = (RegisterStorage) instrCur.Operands[1];
             Expression src;
             if (regA == Registers.GpRegs[0])
             {
@@ -591,7 +591,7 @@ namespace Reko.Arch.MicroBlaze
         {
             var dst = Reg(0);
             var imm = ((ImmediateOperand) instrCur.Operands[2]).Value;
-            var reg = ((RegisterOperand) instrCur.Operands[1]).Register;
+            var reg = (RegisterStorage) instrCur.Operands[1];
             Expression src;
             if (reg == Registers.GpRegs[0])
             {

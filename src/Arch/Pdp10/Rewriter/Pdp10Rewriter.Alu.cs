@@ -169,7 +169,7 @@ namespace Reko.Arch.Pdp10.Rewriter
         {
             var src = AccessEa(1);
             src.DataType = word72;
-            var reg_hi = ((RegisterOperand) instr.Operands[0]).Register;
+            var reg_hi = (RegisterStorage) instr.Operands[0];
             var reg_lo = Registers.Accumulators[(reg_hi.Number + 1) & 0xF];
             var dst = binder.EnsureSequence(src.DataType, reg_hi, reg_lo);
             m.Assign(dst, m.IAdd(dst, src));

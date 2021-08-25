@@ -91,8 +91,8 @@ namespace Reko.Arch.zSeries
         {
             var index = Reg(0,dt);
             Expression dst;
-            if (instr.Operands[1] is RegisterOperand r)
-                dst = binder.EnsureRegister(r.Register);
+            if (instr.Operands[1] is RegisterStorage r)
+                dst = binder.EnsureRegister(r);
             else
                 dst = EffectiveAddress(1);
             m.Assign(index, m.ISub(index, 1));
@@ -116,7 +116,7 @@ namespace Reko.Arch.zSeries
             // " and odd registers of the pair are used as the increment and the compare value, respectively.
             // When the R3 field is odd, it designates a single register, the contents of which are
             // used as both the increment and the compare value
-            var r3 = ((RegisterOperand) instr.Operands[1]).Register;
+            var r3 = (RegisterStorage) instr.Operands[1];
             Identifier inc = binder.EnsureRegister(r3);
             Identifier val;
             if ((r3.Number & 1) == 0)
@@ -149,7 +149,7 @@ namespace Reko.Arch.zSeries
             // " and odd registers of the pair are used as the increment and the compare value, respectively.
             // When the R3 field is odd, it designates a single register, the contents of which are
             // used as both the increment and the compare value
-            var r3 = ((RegisterOperand) instr.Operands[1]).Register;
+            var r3 = (RegisterStorage) instr.Operands[1];
             Identifier inc = binder.EnsureRegister(r3);
             Identifier val;
             if ((r3.Number & 1) == 0)

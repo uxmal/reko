@@ -328,13 +328,13 @@ namespace Reko.Arch.Pdp10.Rewriter
 
         private Identifier Ac()
         {
-            var id = binder.EnsureRegister(((RegisterOperand) instr.Operands[0]).Register);
+            var id = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
             return id;
         }
 
         private Identifier Ac_plus_1()
         {
-            var iReg = ((RegisterOperand) instr.Operands[0]).Register.Number + 1;
+            var iReg = ((RegisterStorage) instr.Operands[0]).Number + 1;
             //$REVIEW: what if iReg > 15?
             var id = binder.EnsureRegister(Registers.Accumulators[iReg]);
             return id;
@@ -346,7 +346,7 @@ namespace Reko.Arch.Pdp10.Rewriter
         private Identifier AcPair()
         {
             //$REVIEW: is RegHi == 15 valid?
-            var regHi = ((RegisterOperand) instr.Operands[0]).Register;
+            var regHi = (RegisterStorage) instr.Operands[0];
             var regLo = Registers.Accumulators[(regHi.Number + 1) & 0xF];
             var id = binder.EnsureSequence(word72, regHi, regLo);
             return id;

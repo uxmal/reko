@@ -148,11 +148,11 @@ namespace Reko.Arch.Altera.Nios2
             return m.Mem(dt, ea);
         }
 
-        private RegisterStorage Reg(int iop) => ((RegisterOperand)instr.Operands[iop]).Register;
+        private RegisterStorage Reg(int iop) => (RegisterStorage) instr.Operands[iop];
 
         private Expression Reg0(int iop)
         {
-            var reg = ((RegisterOperand) instr.Operands[iop]).Register;
+            var reg = (RegisterStorage) instr.Operands[iop];
             if (reg.Number == 0)
                 return Constant.Word32(0);
             else

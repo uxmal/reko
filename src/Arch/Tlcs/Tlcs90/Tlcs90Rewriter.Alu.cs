@@ -302,14 +302,14 @@ namespace Reko.Arch.Tlcs.Tlcs90
             MachineOperand op;
             if (instr.Operands.Length == 0)
             {
-                op = new RegisterOperand(Registers.a);
+                op = Registers.a;
             }
             else
             {
                 op = instr.Operands[0];
-                op.Width = PrimitiveType.Byte;
             }
             var src = RewriteSrc(op);
+            src.DataType = PrimitiveType.Byte;
             var dst = RewriteDst(op, src, (a, b) => fn(b, Constant.SByte(1)));
             EmitCc(dst, "**-0XP0*");
         }

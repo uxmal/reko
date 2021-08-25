@@ -280,9 +280,9 @@ namespace Reko.Arch.Sparc
 
         private Expression RewriteOp(MachineOperand op, bool g0_becomes_null)
         {
-            if (op is RegisterOperand r)
+            if (op is RegisterStorage reg)
             {
-                if (r.Register == arch.Registers.g0)
+                if (reg == arch.Registers.g0)
                 {
                     //$REVIEW: handle null
                     if (g0_becomes_null)
@@ -291,7 +291,7 @@ namespace Reko.Arch.Sparc
                         return Constant.Zero(PrimitiveType.Word32);
                 }
                 else
-                    return binder.EnsureRegister(r.Register);
+                    return binder.EnsureRegister(reg);
             }
             if (op is ImmediateOperand imm)
                 return imm.Value;
@@ -301,7 +301,7 @@ namespace Reko.Arch.Sparc
         private Expression RewriteRegister(int iop)
         {
             var op = this.instrCur.Operands[iop];
-            return binder.EnsureRegister(((RegisterOperand)op).Register);
+            return binder.EnsureRegister((RegisterStorage)op);
         }
 
         private Expression RewriteMemOp(MachineOperand op, PrimitiveType size)

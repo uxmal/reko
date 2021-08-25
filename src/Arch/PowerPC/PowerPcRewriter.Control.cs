@@ -73,7 +73,7 @@ namespace Reko.Arch.PowerPC
         private void RewriteBranch(bool updateLinkregister, bool toLinkRegister, ConditionCode cc)
         {
             Expression cr;
-            var ccrOp = instr.Operands[0] as RegisterOperand;
+            var ccrOp = instr.Operands[0] as RegisterStorage;
             if (ccrOp != null)
             {
                 cr = RewriteOperand(instr.Operands[0]);

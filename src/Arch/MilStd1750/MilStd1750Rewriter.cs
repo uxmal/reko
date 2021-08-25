@@ -252,7 +252,7 @@ namespace Reko.Arch.MilStd1750
         /// </summary>
         private Identifier DReg(int iOp)
         {
-            var regHi = ((RegisterOperand) instr.Operands[iOp]).Register;
+            var regHi = (RegisterStorage) instr.Operands[iOp];
             var regLo = Registers.GpRegs[(regHi.Number + 1) & 0xF];
             return binder.EnsureSequence(PrimitiveType.Word32, regHi, regLo);
         }
@@ -262,21 +262,21 @@ namespace Reko.Arch.MilStd1750
         /// </summary>
         private Identifier Ef(int iOp)
         {
-            var regHi = ((RegisterOperand) instr.Operands[iOp]).Register;
+            var regHi = (RegisterStorage) instr.Operands[iOp];
             var regMi = Registers.GpRegs[(regHi.Number + 1) & 0xF];
             var regLo = Registers.GpRegs[(regHi.Number + 2) & 0xF];
             return binder.EnsureSequence(MilStd1750Architecture.Real48, regHi, regMi, regLo);
         }
 
         private Constant Imm(int iOp) => ((ImmediateOperand) instr.Operands[iOp]).Value;
-        private Identifier Reg(int iOp) => binder.EnsureRegister(((RegisterOperand) instr.Operands[iOp]).Register);
+        private Identifier Reg(int iOp) => binder.EnsureRegister((RegisterStorage) instr.Operands[iOp]);
 
         private Expression Op(int iOp)
         {
             switch (instr.Operands[iOp])
             {
-            case RegisterOperand reg:
-                return binder.EnsureRegister(reg.Register);
+            case RegisterStorage reg:
+                return binder.EnsureRegister(reg);
             case ImmediateOperand imm:
                 return imm.Value;
             case AddressOperand addr:
@@ -375,7 +375,7 @@ namespace Reko.Arch.MilStd1750
 
         private void RewriteD()
         {
-            var ra0 = ((RegisterOperand) instr.Operands[0]).Register;
+            var ra0 = (RegisterStorage) instr.Operands[0];
             var ra1 = Registers.GpRegs[(ra0.Number + 1) & 0xF];
             var dividend = binder.EnsureSequence(PrimitiveType.Int32, ra0, ra1);
             var divisor = binder.CreateTemporary(instr.Operands[1].Width);
@@ -405,7 +405,7 @@ namespace Reko.Arch.MilStd1750
 
         private void RewriteDb()
         {
-            var ra0 = ((RegisterOperand) instr.Operands[0]).Register;
+            var ra0 = (RegisterStorage) instr.Operands[0];
             var ra1 = Registers.GpRegs[(ra0.Number + 1) & 0xF];
             var dividend = binder.EnsureSequence(PrimitiveType.Int32, Registers.GpRegs[0], Registers.GpRegs[1]);
             var divisor = binder.CreateTemporary(instr.Operands[1].Width);
@@ -419,7 +419,7 @@ namespace Reko.Arch.MilStd1750
 
         private void RewriteDv()
         {
-            var ra0 = ((RegisterOperand) instr.Operands[0]).Register;
+            var ra0 = (RegisterStorage) instr.Operands[0];
             var ra1 = Registers.GpRegs[(ra0.Number + 1) & 0xF];
             var dividend = binder.EnsureRegister(ra0);
             var divisor = binder.CreateTemporary(instr.Operands[1].Width);
@@ -806,8 +806,8 @@ namespace Reko.Arch.MilStd1750
 
         private void RewritePopm()
         {
-            var ra = ((RegisterOperand) instr.Operands[0]).Register;
-            var rb = ((RegisterOperand) instr.Operands[1]).Register;
+            var ra = (RegisterStorage) instr.Operands[0];
+            var rb = (RegisterStorage) instr.Operands[1];
             var r15 = binder.EnsureRegister(Registers.GpRegs[15]);
             if (ra.Number == rb.Number)
             {
@@ -840,8 +840,8 @@ namespace Reko.Arch.MilStd1750
 
         private void RewritePshm()
         {
-            var ra = ((RegisterOperand) instr.Operands[0]).Register;
-            var rb = ((RegisterOperand) instr.Operands[1]).Register;
+            var ra = (RegisterStorage) instr.Operands[0];
+            var rb = (RegisterStorage) instr.Operands[1];
             var r15 = binder.EnsureRegister(Registers.GpRegs[15]);
             if (ra.Number == rb.Number)
             {

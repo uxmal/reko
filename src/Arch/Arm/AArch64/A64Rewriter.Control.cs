@@ -63,7 +63,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteCb(Func<Expression, Expression> fn)
         {
-            var reg = binder.EnsureRegister(((RegisterOperand)instr.Operands[0]).Register);
+            var reg = binder.EnsureRegister((RegisterStorage)instr.Operands[0]);
             m.Branch(fn(reg), ((AddressOperand)instr.Operands[1]).Address, iclass);
         }
 
@@ -80,7 +80,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteRet()
         {
-            var reg = ((RegisterOperand)instr.Operands[0]).Register;
+            var reg = ((RegisterStorage)instr.Operands[0]);
             if (reg == Registers.GpRegs64[30])
             {
                 // Link register

@@ -36,7 +36,7 @@ namespace Reko.Arch.Mips
     {
         private Identifier GetFpuRegPair(MachineOperand op)
         {
-            var freg0 = ((RegisterOperand)op).Register;
+            var freg0 = (RegisterStorage)op;
             var freg1 = arch.fpuRegs[1 + (freg0.Number & 0x1F)];
             var seq = binder.EnsureSequence(
                 PrimitiveType.Real64,

@@ -140,10 +140,9 @@ namespace Reko.Arch.M68k
         public void RewriteBclrBset(string name)
         {
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
-            PrimitiveType w = (instr.Operands[1] is RegisterOperand)
+            PrimitiveType w = (instr.Operands[1] is RegisterStorage)
                  ? PrimitiveType.Word32 
                  : PrimitiveType.Byte;
-            instr.Operands[1].Width = w;
             orw.DataWidth = w;
             var opDst = orw.RewriteSrc(instr.Operands[1], instr.Address);
             m.Assign(
@@ -181,7 +180,7 @@ namespace Reko.Arch.M68k
                 dtSrc = PrimitiveType.SByte;
                 dtDst = PrimitiveType.Int16;
             }
-            var dReg = binder.EnsureRegister(((RegisterOperand) instr.Operands[0]).Register);
+            var dReg = binder.EnsureRegister((RegisterStorage) instr.Operands[0]);
             m.Assign(
                 dReg,
                 m.Convert(
@@ -233,11 +232,10 @@ namespace Reko.Arch.M68k
         private void RewriteAddSubq(Func<Expression,Expression,Expression> opGen)
         {
             var opSrc = (Constant) orw.RewriteSrc(instr.Operands[0], instr.Address);
-            var regDst = instr.Operands[1] as RegisterOperand;
-            if (regDst != null && regDst.Register is AddressRegister)
+            if (instr.Operands[1] is AddressRegister regDst)
             {
                 opSrc = Constant.Int32(opSrc.ToInt32());
-                var opDst = binder.EnsureRegister(regDst.Register);
+                var opDst = binder.EnsureRegister(regDst);
                 m.Assign(opDst, opGen(opSrc, opDst));
             }
             else
@@ -280,8 +278,8 @@ namespace Reko.Arch.M68k
         
         private void RewriteSwap()
         {
-            var r = (RegisterOperand) instr.Operands[0];
-            var reg = binder.EnsureRegister(r.Register);
+            var r = (RegisterStorage) instr.Operands[0];
+            var reg = binder.EnsureRegister(r);
             m.Assign(reg, host.Intrinsic("__swap", true, PrimitiveType.Word32, reg));
             m.Assign(binder.EnsureFlagGroup(Registers.ZN), m.Cond(reg));
             m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
@@ -313,7 +311,7 @@ namespace Reko.Arch.M68k
 
         private void RewriteBtst()
         {
-            orw.DataWidth = instr.Operands[0] is RegisterOperand ? PrimitiveType.Word32 : PrimitiveType.Byte;
+            orw.DataWidth = instr.Operands[0] is RegisterStorage ? PrimitiveType.Word32 : PrimitiveType.Byte;
             var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
             var opDst = orw.RewriteSrc(instr.Operands[1], instr.Address);
             m.Assign(
@@ -383,7 +381,7 @@ namespace Reko.Arch.M68k
                 instr.DataWidth = PrimitiveType.UInt32;
                 rem = binder.CreateTemporary(dt);
                 quot = binder.CreateTemporary(dt);
-                dividend = binder.EnsureRegister(((RegisterOperand) instr.Operands[1]).Register);
+                dividend = binder.EnsureRegister((RegisterStorage) instr.Operands[1]);
                 var r = m.Remainder(dividend, src);
                 if (r.DataType.BitSize != rem.DataType.BitSize)
                 {
@@ -633,7 +631,7 @@ namespace Reko.Arch.M68k
         public void RewriteMoveq()
         {
             var opSrc = (sbyte) ((M68kImmediateOperand) instr.Operands[0]).Constant.ToInt32();
-            var opDst = binder.EnsureRegister(((RegisterOperand)instr.Operands[1]).Register);
+            var opDst = binder.EnsureRegister((RegisterStorage)instr.Operands[1]);
             m.Assign(opDst, Constant.Int32(opSrc));
             m.Assign(
                 binder.EnsureFlagGroup(Registers.CVZN),

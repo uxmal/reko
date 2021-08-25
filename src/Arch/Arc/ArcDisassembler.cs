@@ -121,7 +121,7 @@ namespace Reko.Arch.Arc
             {
                 var iReg = field.Read(u);
                 var reg = Registers.CoreRegisters[iReg];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -132,7 +132,7 @@ namespace Reko.Arch.Arc
             {
                 var iReg = Bitfield.ReadFields(bitfields, u);
                 var reg = Registers.CoreRegisters[iReg];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -155,7 +155,7 @@ namespace Reko.Arch.Arc
                 else
                 {
                     var reg = Registers.CoreRegisters[iReg];
-                    d.ops.Add(new RegisterOperand(reg));
+                    d.ops.Add(reg);
                 }
                 return true;
             };
@@ -185,7 +185,7 @@ namespace Reko.Arch.Arc
             return (u, d) =>
             {
                 var reg = bRegs[field.Read(u)];
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -198,7 +198,7 @@ namespace Reko.Arch.Arc
         {
             return (u, d) =>
             {
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }

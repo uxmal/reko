@@ -130,7 +130,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteLmw()
         {
-            var r = ((RegisterOperand)instr.Operands[0]).Register.Number;
+            var r = ((RegisterStorage)instr.Operands[0]).Number;
             var ea = EffectiveAddress_r0(instr.Operands[1], m);
             var tmp = binder.CreateTemporary(ea.DataType);
             m.Assign(tmp, ea);
@@ -156,7 +156,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteLq()
         {
-            var rDst = ((RegisterOperand)instr.Operands[0]).Register;
+            var rDst = (RegisterStorage)instr.Operands[0];
             if ((rDst.Number & 1) == 1)
             {
                 iclass = InstrClass.Invalid;
@@ -171,7 +171,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteLswi()
         {
-            var nDst = ((RegisterOperand) instr.Operands[0]).Register.Number;
+            var nDst = ((RegisterStorage) instr.Operands[0]).Number;
             var ea = RewriteOperand(1);
             int n = ((Constant) ImmOperand(2)).ToInt32();
             if (n == 0) n = 32;
@@ -333,7 +333,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteStmw()
         {
-            var r = ((RegisterOperand)instr.Operands[0]).Register.Number;
+            var r = ((RegisterStorage)instr.Operands[0]).Number;
             var ea = EffectiveAddress_r0(instr.Operands[1], m);
             var tmp = binder.CreateTemporary(ea.DataType);
             while (r <= 31)
@@ -352,7 +352,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteStswi()
         {
-            var nDst = ((RegisterOperand) instr.Operands[0]).Register.Number;
+            var nDst = ((RegisterStorage) instr.Operands[0]).Number;
             var ea = RewriteOperand(1);
             int n = ((Constant) ImmOperand(2)).ToInt32();
             if (n == 0) n = 32;

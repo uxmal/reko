@@ -41,8 +41,8 @@ namespace Reko.Arch.PaRisc
             }
             else
             {
-                var src = (RegisterOperand) instr.Operands[0];
-                m.Assign(reg, m.IAdd(reg, binder.EnsureRegister(src.Register)));
+                var src = (RegisterStorage) instr.Operands[0];
+                m.Assign(reg, m.IAdd(reg, binder.EnsureRegister(src)));
             }
             MaybeBranchAndAnnul(2, RewriteCondition, reg);
         }
@@ -78,7 +78,7 @@ namespace Reko.Arch.PaRisc
         private void RewriteBranch()
         {
             var dest = RewriteOp(0);
-            var linkReg = ((RegisterOperand) instr.Operands[1]).Register;
+            var linkReg = (RegisterStorage) instr.Operands[1];
             if (linkReg == arch.Registers.GpRegs[0])
             {
                 // continuation thrown away == goto
@@ -193,7 +193,7 @@ namespace Reko.Arch.PaRisc
             var tmpRight = binder.CreateTemporary(right.DataType);
             m.Assign(tmpLeft, left);
             m.Assign(tmpRight, right);
-            var reg = ((RegisterOperand) instr.Operands[2]).Register;
+            var reg = (RegisterStorage) instr.Operands[2];
             if (reg.Number != 0)
                 m.Assign(binder.EnsureIdentifier(reg), 0);
             var condition = RewriteCondition(tmpLeft, tmpRight);

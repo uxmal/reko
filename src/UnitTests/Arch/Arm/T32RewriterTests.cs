@@ -6438,7 +6438,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("5BFA94F8");	// uxtab r8, fp, r4, ror #8
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r8 = fp + CONVERT(SLICE(r4 >>u 8<i32>, byte, 0), byte, word32)");
+                "1|L--|r8 = fp + CONVERT(SLICE(__ror<word32,int32>(r4, 8<i32>), byte, 0), byte, word32)");
         }
 
         [Test]
@@ -6447,7 +6447,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("11FAFEF7");	// uxtah r7, r1, lr, ror #24
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r7 = r1 + CONVERT(SLICE(lr >>u 24<i32>, uint16, 0), uint16, word32)");
+                "1|L--|r7 = r1 + CONVERT(SLICE(__ror<word32,int32>(lr, 24<i32>), uint16, 0), uint16, word32)");
         }
 
         [Test]
@@ -7186,7 +7186,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("00FAFEFF");	// sxtah pc, r0, lr, ror #24
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|pc = r0 + CONVERT(SLICE(lr >>u 24<i32>, int16, 0), int16, word32)");
+                "1|L--|pc = r0 + CONVERT(SLICE(__ror<word32,int32>(lr, 24<i32>), int16, 0), int16, word32)");
         }
 
         [Test]

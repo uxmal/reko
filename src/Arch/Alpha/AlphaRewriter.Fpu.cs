@@ -37,9 +37,9 @@ namespace Reko.Arch.Alpha
 
         private void RewriteCpys(string intrinsic)
         {
-            var r1 = ((RegisterOperand)instr.Operands[0]).Register.Number;
-            var r2 = ((RegisterOperand)instr.Operands[1]).Register.Number;
-            var r3 = ((RegisterOperand)instr.Operands[2]).Register.Number;
+            var r1 = ((RegisterStorage)instr.Operands[0]).Number;
+            var r2 = ((RegisterStorage)instr.Operands[1]).Number;
+            var r3 = ((RegisterStorage)instr.Operands[2]).Number;
             if (r1 == r2 && r2 == r3 && r1 == FpuZeroRegister)
             {
                 m.Nop();
@@ -74,7 +74,7 @@ namespace Reko.Arch.Alpha
 
         private void RewriteCvt(DataType dtFrom, DataType dtTo)
         {
-            var rSrc = ((RegisterOperand)instr.Operands[0]).Register;
+            var rSrc = (RegisterStorage)instr.Operands[0];
             Expression src;
             if (rSrc.Number == ZeroRegister || rSrc.Number == FpuZeroRegister)
             {

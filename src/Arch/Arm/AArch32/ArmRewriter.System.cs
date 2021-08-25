@@ -32,7 +32,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             if (instr.Operands.Length > 0)
             {
-                m.SideEffect(host.Intrinsic("__breakpoint", true, VoidType.Instance, Operand(instr.Operands[0])));
+                m.SideEffect(host.Intrinsic("__breakpoint", true, VoidType.Instance, Operand(0)));
             }
             else
             {
@@ -42,7 +42,9 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteCdp(string name)
         {
-            var ops = instr.Operands.Select(o => Operand(o)).ToArray();
+            var ops = Enumerable.Range(0, instr.Operands.Length)
+                .Select(i => Operand(i))
+                .ToArray();
             m.SideEffect(host.Intrinsic("__cdp", true, VoidType.Instance, ops));
         }
 
@@ -90,7 +92,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteHvc()
         {
-            var n = Operand(instr.Operands[0]);
+            var n = Operand(0);
             m.SideEffect(host.Intrinsic("__hypervisor", true, VoidType.Instance, n));
         }
 
@@ -103,22 +105,22 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteLdc(string fnName)
         {
-            var src2 = Operand(Src2());
+            var src2 = Operand(2);
             var tmp = binder.CreateTemporary(PrimitiveType.Word32);
             m.Assign(tmp, src2);
             var  intrinsic = host.Intrinsic(fnName, false, PrimitiveType.Word32, 
-                Operand(Src1()),
+                Operand(1),
                 tmp);
-            var dst = Operand(Dst(), PrimitiveType.Word32, true);
+            var dst = Operand(0, PrimitiveType.Word32, true);
             m.Assign(dst, intrinsic);
         }
 
         private void RewriteMcr()
         {
             var args = new List<Expression>();
-            foreach (var op in instr.Operands)
+            for (int i = 0; i < instr.Operands.Length; ++i)
             {
-                args.Add(Operand(op));
+                args.Add(Operand(i));
             }
             var intrinsicCall = host.Intrinsic("__mcr", true, VoidType.Instance, args.ToArray());
             m.SideEffect(intrinsicCall);
@@ -126,11 +128,11 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteMcrr()
         {
-            var cop = Operand(instr.Operands[0]);
-            var cmd = Operand(instr.Operands[1]);
-            var cr = Operand(instr.Operands[4]);
-            var rhi = ((RegisterOperand) instr.Operands[2]).Register;
-            var rlo = ((RegisterOperand) instr.Operands[3]).Register;
+            var cop = Operand(0);
+            var cmd = Operand(1);
+            var cr = Operand(4);
+            var rhi = (RegisterStorage) instr.Operands[2];
+            var rlo = (RegisterStorage) instr.Operands[3];
             var nBits = (int) (rhi.BitSize + rlo.BitSize);
             var rseq = binder.EnsureSequence(PrimitiveType.CreateWord(nBits), rhi, rlo);
             m.Assign(rseq, host.Intrinsic("__mcrr", true, VoidType.Instance, cop, cmd, cr, rseq));
@@ -141,9 +143,9 @@ namespace Reko.Arch.Arm.AArch32
             int cArgs = 0;
             Expression? dst = null;
             var args = new List<Expression>();
-            foreach (var op in instr.Operands)
+            for (int i = 0; i < instr.Operands.Length; ++i)
             {
-                var a = Operand(op);
+                var a = Operand(i);
                 if (cArgs == 2)
                 {
                     dst = a;
@@ -160,11 +162,11 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteMrrc()
         {
-            var cop = Operand(instr.Operands[0]);
-            var cmd = Operand(instr.Operands[1]);
-            var cr = Operand(instr.Operands[4]);
-            var rhi = ((RegisterOperand) instr.Operands[2]).Register;
-            var rlo = ((RegisterOperand) instr.Operands[3]).Register;
+            var cop = Operand(0);
+            var cmd = Operand(1);
+            var cr = Operand(4);
+            var rhi = (RegisterStorage) instr.Operands[2];
+            var rlo = (RegisterStorage) instr.Operands[3];
             var nBits = (int) (rhi.BitSize + rlo.BitSize);
             var rseq = binder.EnsureSequence(PrimitiveType.CreateWord(nBits), rhi, rlo);
             m.Assign(rseq, host.Intrinsic("__mrrc", true, rseq.DataType, cop, cmd, cr));
@@ -172,13 +174,13 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteMrs()
         {
-            var intrinsic = host.Intrinsic("__mrs", true, PrimitiveType.Word32, Operand(Src1()));
-            m.Assign(Operand(Dst()), intrinsic);
+            var intrinsic = host.Intrinsic("__mrs", true, PrimitiveType.Word32, Operand(1));
+            m.Assign(Operand(0), intrinsic);
         }
 
         private void RewriteMsr()
         {
-            var intrinsic = host.Intrinsic("__msr", true, PrimitiveType.Word32, Operand(Dst()), Operand(Src1()));
+            var intrinsic = host.Intrinsic("__msr", true, PrimitiveType.Word32, Operand(0), Operand(1));
             m.SideEffect(intrinsic);
         }
 
@@ -191,22 +193,22 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteSmc()
         {
-            var n = Operand(instr.Operands[0]);
+            var n = Operand(0);
             m.SideEffect(host.Intrinsic("__smc", true, VoidType.Instance, n));
         }
 
         private void RewriteStc(string name)
         {
             var intrinsic = host.Intrinsic("__stc", true, PrimitiveType.Word32,
-                Operand(Dst()),
-                Operand(Src1()),
-                Operand(Src2()));
+                Operand(0),
+                Operand(1),
+                Operand(2));
             m.SideEffect(intrinsic);
         }
 
         private void RewriteSvc()
         {
-            var intrinsic = host.Intrinsic("__syscall", true, VoidType.Instance, Operand(Dst()));
+            var intrinsic = host.Intrinsic("__syscall", true, VoidType.Instance, Operand(0));
             m.SideEffect(intrinsic);
         }
 

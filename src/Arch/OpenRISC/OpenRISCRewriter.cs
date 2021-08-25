@@ -183,12 +183,12 @@ namespace Reko.Arch.OpenRISC
 
         private Identifier Reg(MachineOperand op)
         {
-            return binder.EnsureRegister(((RegisterOperand) op).Register);
+            return binder.EnsureRegister((RegisterStorage) op);
         }
 
         private Expression Reg0(MachineOperand op)
         {
-            var reg = ((RegisterOperand) op).Register;
+            var reg = (RegisterStorage) op;
             if (reg == Registers.GpRegs[0])
             {
                 return Constant.Zero(arch.WordWidth);
@@ -201,9 +201,9 @@ namespace Reko.Arch.OpenRISC
 
         private Expression Spr(MachineOperand op)
         {
-            if (op is RegisterOperand reg)
+            if (op is RegisterStorage reg)
             {
-                return binder.EnsureRegister(reg.Register);
+                return binder.EnsureRegister(reg);
             }
             return ((ImmediateOperand) op).Value;
         }
@@ -340,13 +340,13 @@ namespace Reko.Arch.OpenRISC
 
         private void RewriteJr()
         {
-            var reg = (RegisterOperand) instrCur.Operands[0];
+            var reg = (RegisterStorage) instrCur.Operands[0];
             //$TODO: Reko should have a 'paranoid mode' where we don't 
             // trust idioms like this.
-            if (reg.Register == Registers.GpRegs[9])
+            if (reg == Registers.GpRegs[9])
                 m.ReturnD(0, 0);
             else
-                m.GotoD(binder.EnsureRegister(reg.Register));
+                m.GotoD(binder.EnsureRegister(reg));
         }
 
         private void RewriteLoad(PrimitiveType dtDst)

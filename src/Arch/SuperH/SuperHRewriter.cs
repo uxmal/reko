@@ -203,8 +203,8 @@ namespace Reko.Arch.SuperH
         {
             switch (op)
             {
-            case RegisterOperand regOp:
-                var id = binder.EnsureRegister(regOp.Register);
+            case RegisterStorage regOp:
+                var id = binder.EnsureRegister(regOp);
                 return id;
             case ImmediateOperand immOp:
                 return Constant.Word32(immediateFn!(immOp.Value.ToInt32()));
@@ -255,8 +255,8 @@ namespace Reko.Arch.SuperH
         {
             switch (op)
             {
-            case RegisterOperand regOp:
-                var id = binder.EnsureRegister(regOp.Register);
+            case RegisterStorage regOp:
+                var id = binder.EnsureRegister(regOp);
                 m.Assign(id, fn(id, src));
                 return id;
 
@@ -284,8 +284,8 @@ namespace Reko.Arch.SuperH
         {
             switch (op)
             {
-            case RegisterOperand regOp:
-                var id = binder.EnsureRegister(regOp.Register);
+            case RegisterStorage regOp:
+                var id = binder.EnsureRegister(regOp);
                 m.Assign(id, fn(src));
                 return id;
             case MemoryOperand mem:
@@ -383,7 +383,7 @@ namespace Reko.Arch.SuperH
         private void RewriteBraf()
         {
             this.iclass = InstrClass.Delay | InstrClass.Transfer;
-            var reg = binder.EnsureRegister(((RegisterOperand)instr.Operands[0]).Register);
+            var reg = binder.EnsureRegister((RegisterStorage)instr.Operands[0]);
             m.GotoD(m.IAdd(instr.Address + 4, reg));
         }
 
@@ -403,7 +403,7 @@ namespace Reko.Arch.SuperH
         {
             this.iclass = InstrClass.Transfer | InstrClass.Delay;
             var src = SrcOp(instr.Operands[0], null);
-            var reg = binder.EnsureRegister(((RegisterOperand)instr.Operands[0]).Register);
+            var reg = binder.EnsureRegister((RegisterStorage)instr.Operands[0]);
             m.CallD(m.IAdd(instr.Address + 4, src), 0);
         }
 

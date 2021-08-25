@@ -111,33 +111,33 @@ namespace Reko.Arch.SuperH
         private static bool r1(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = (uInstr >> 8) & 0xF;
-            dasm.state.ops.Add(new RegisterOperand(Registers.gpregs[reg]));
+            dasm.state.ops.Add(Registers.gpregs[reg]);
             return true;
         }
 
         private static bool r2(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = (uInstr >> 4) & 0xF;
-            dasm.state.ops.Add(new RegisterOperand(Registers.gpregs[reg]));
+            dasm.state.ops.Add(Registers.gpregs[reg]);
             return true;
         }
 
         private static bool r3(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = uInstr & 0xF;
-            dasm.state.ops.Add(new RegisterOperand(Registers.gpregs[reg]));
+            dasm.state.ops.Add(Registers.gpregs[reg]);
             return true;
         }
 
         private static bool R0(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.r0));
+            dasm.state.ops.Add(Registers.r0);
             return true;
         }
         private static bool RBank2_3bit(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = (uInstr >> 4) & 0b0111;
-            dasm.state.ops.Add(new RegisterOperand(Registers.rbank[reg]));
+            dasm.state.ops.Add(Registers.rbank[reg]);
             return true;
         }
 
@@ -145,34 +145,34 @@ namespace Reko.Arch.SuperH
         private static bool f1(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = (uInstr >> 8) & 0xF;
-            dasm.state.ops.Add(new RegisterOperand(Registers.fpregs[reg]));
+            dasm.state.ops.Add(Registers.fpregs[reg]);
             return true;
         }
 
         private static bool f2(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = (uInstr >> 4) & 0xF;
-            dasm.state.ops.Add(new RegisterOperand(Registers.fpregs[reg]));
+            dasm.state.ops.Add(Registers.fpregs[reg]);
             return true;
         }
 
         private static bool F0(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.fr0));
+            dasm.state.ops.Add(Registers.fr0);
             return true;
         }
 
         private static bool d1(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = (uInstr >> (1 + 8)) & 0x7;
-            dasm.state.ops.Add(new RegisterOperand(Registers.dfpregs[reg]));
+            dasm.state.ops.Add(Registers.dfpregs[reg]);
             return true;
         }
 
         private static bool d2(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = (uInstr >> (1 + 4)) & 0x7;
-            dasm.state.ops.Add(new RegisterOperand(Registers.dfpregs[reg]));
+            dasm.state.ops.Add(Registers.dfpregs[reg]);
             return true;
         }
 
@@ -180,123 +180,123 @@ namespace Reko.Arch.SuperH
         private static bool xd2(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = (uInstr >> (1 + 4)) & 0x7;
-            dasm.state.ops.Add(new RegisterOperand(Registers.XdRegisters[reg]));
+            dasm.state.ops.Add(Registers.XdRegisters[reg]);
             return true;
         }
 
         private static bool v1(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = (uInstr >> 10) & 0x3;
-            dasm.state.ops.Add(new RegisterOperand(Registers.vfpregs[reg]));
+            dasm.state.ops.Add(Registers.vfpregs[reg]);
             return true;
         }
 
         private static bool v2(uint uInstr, SuperHDisassembler dasm)
         {
             var reg = (uInstr >> 8) & 0x3;
-            dasm.state.ops.Add(new RegisterOperand(Registers.vfpregs[reg]));
+            dasm.state.ops.Add(Registers.vfpregs[reg]);
             return true;
         }
 
         private static bool pr(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.pr));
+            dasm.state.ops.Add(Registers.pr);
             return true;
         }
 
         private static bool sr(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.sr));
+            dasm.state.ops.Add(Registers.sr);
             return true;
         }
 
         private static bool gbr(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.gbr));
+            dasm.state.ops.Add(Registers.gbr);
             return true;
         }
 
         private static bool RK(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.spc));
+            dasm.state.ops.Add(Registers.spc);
             return true;
         }
 
         private static bool tbr(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.tbr));
+            dasm.state.ops.Add(Registers.tbr);
             return true;
         }
 
         private static bool RV(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.vbr));
+            dasm.state.ops.Add(Registers.vbr);
             return true;
         }
 
         private static bool mod(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.mod));
+            dasm.state.ops.Add(Registers.mod);
             return true;
         }
 
         private static bool ssr(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.ssr));
+            dasm.state.ops.Add(Registers.ssr);
             return true;
         }
 
         private static bool rs(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.rs));
+            dasm.state.ops.Add(Registers.rs);
             return true;
         }
 
         private static bool spc(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.spc));
+            dasm.state.ops.Add(Registers.spc);
             return true;
         }
 
         private static bool mh(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.mach));
+            dasm.state.ops.Add(Registers.mach);
             return true;
         }
 
         private static bool ml(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.macl));
+            dasm.state.ops.Add(Registers.macl);
             return true;
         }
 
         private static bool fpul(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.fpul));
+            dasm.state.ops.Add(Registers.fpul);
             return true;
         }
 
         private static bool xmtrx(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.xmtrx));
+            dasm.state.ops.Add(Registers.xmtrx);
             return true;
         }
 
         private static bool dsr(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.dsr));
+            dasm.state.ops.Add(Registers.dsr);
             return true;
         }
 
         private static bool dbr(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.dbr));
+            dasm.state.ops.Add(Registers.dbr);
             return true;
         }
 
         private static bool sgr(uint uInstr, SuperHDisassembler dasm)
         {
-            dasm.state.ops.Add(new RegisterOperand(Registers.sgr));
+            dasm.state.ops.Add(Registers.sgr);
             return true;
         }
 

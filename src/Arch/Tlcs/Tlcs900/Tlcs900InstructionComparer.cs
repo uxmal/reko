@@ -50,38 +50,26 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 return false;
             if (opA.GetType() != opB.GetType())
                 return false;
-            var regOpA = opA as RegisterOperand;
-            if (regOpA != null)
+            switch (opA)
             {
+            case RegisterStorage regOpA:
                 if (NormalizeRegisters)
                     return true;
-                var regOpB = (RegisterOperand)opB;
-                return regOpA.Register == regOpB.Register;
-            }
-            var immOpA = opA as ImmediateOperand;
-            if (immOpA != null)
-            {
+                var regOpB = (RegisterStorage)opB;
+                return regOpA == regOpB;
+            case ImmediateOperand immOpA:
                 if (NormalizeConstants)
                     return true;
                 var immOpB = (ImmediateOperand)opB;
                 return CompareValues(immOpA.Value, immOpB.Value);
-            }
-            var addrOpA = opA as AddressOperand;
-            if (addrOpA != null)
-            {
+            case AddressOperand addrOpA:
                 if (NormalizeConstants)
                     return true;
                 var addrOpB = (AddressOperand)opB;
                 return addrOpA.Address.ToLinear() == addrOpB.Address.ToLinear();
-            }
-            var condOpA = opA as ConditionOperand;
-            if (condOpA != null)
-            {
+            case ConditionOperand condOpA:
                 return condOpA.Code == ((ConditionOperand)opB).Code;
-            }
-            var memOpA = opA as MemoryOperand;
-            if (memOpA != null)
-            {
+            case MemoryOperand memOpA:
                 var memOpB = (MemoryOperand) opB;
                 if (NormalizeRegisters && !CompareRegisters(memOpA.Base, memOpB.Base))
                     return false;
@@ -105,24 +93,21 @@ namespace Reko.Arch.Tlcs.Tlcs900
             if (op == null)
                 return 0;
             int h = op.GetType().GetHashCode();
-            var regOp = op as RegisterOperand;
-            if (regOp != null)
+            if (op is RegisterStorage regOp)
             {
                 if (NormalizeRegisters)
                     return h;
                 else
-                    return h * 29 ^ regOp.Register.GetHashCode();
+                    return h * 29 ^ regOp.GetHashCode();
             }
-            var immOp = op as ImmediateOperand;
-            if (immOp != null)
+            if (op is ImmediateOperand immOp)
             {
                 if (NormalizeConstants)
                     return h;
                 else
                     return h * 13 ^ GetConstantHash(immOp.Value);
             }
-            var addrOp = op as AddressOperand;
-            if (addrOp != null)
+            if (op is AddressOperand addrOp)
             {
                 if (NormalizeConstants)
                     return h;

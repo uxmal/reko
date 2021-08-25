@@ -151,7 +151,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var iReg = (int)field.Read(u);
-                d.ops.Add(new RegisterOperand(d.arch.GetRegister(iReg)!));
+                d.ops.Add(d.arch.GetRegister(iReg)!);
                 return true;
             };
         }
@@ -166,7 +166,7 @@ namespace Reko.Arch.Mips
             {
                 var iReg = field.Read(u);
                 var iReg32 = encoding[iReg];
-                d.ops.Add(new RegisterOperand(d.arch.GetRegister(iReg32)!));
+                d.ops.Add(d.arch.GetRegister(iReg32)!);
                 return true;
             };
         }
@@ -181,7 +181,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var iReg = (int) field.Read(u);
-                d.ops.Add(new RegisterOperand(d.arch.fpuRegs[iReg]));
+                d.ops.Add(d.arch.fpuRegs[iReg]);
                 return true;
             };
         }

@@ -278,11 +278,11 @@ namespace Reko.Arch.Pdp11
         {
             switch (op)
             {
-            case RegisterOperand regOp:
-                if (regOp.Register == Registers.pc)
+            case RegisterStorage regOp:
+                if (regOp == Registers.pc)
                     return instr.Address + instr.Length;
                 else
-                    return binder.EnsureRegister(regOp.Register);
+                    return binder.EnsureRegister(regOp);
             case ImmediateOperand immOp:
                 if (dasm.Current.DataWidth!.Size == 1)
                 {
@@ -368,8 +368,8 @@ namespace Reko.Arch.Pdp11
         {
             switch (op)
             {
-            case RegisterOperand regOp:
-                var dst = binder.EnsureRegister(regOp.Register);
+            case RegisterStorage regOp:
+                var dst = binder.EnsureRegister(regOp);
                 src = gen(src);
                 if (src.DataType.Size < dst.DataType.Size)
                 {
@@ -483,8 +483,8 @@ namespace Reko.Arch.Pdp11
         {
             switch (op)
             {
-            case RegisterOperand regOp:
-                var dst = binder.EnsureRegister(regOp.Register);
+            case RegisterStorage regOp:
+                var dst = binder.EnsureRegister(regOp);
                 m.Assign(dst, gen(dst, src));
                 return dst;
             case MemoryOperand memOp:

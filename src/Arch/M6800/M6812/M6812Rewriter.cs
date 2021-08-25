@@ -279,8 +279,8 @@ namespace Reko.Arch.M6800.M6812
         {
             switch (op)
             {
-            case RegisterOperand rop:
-                return binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                return binder.EnsureRegister(rop);
             case ImmediateOperand immop:
                 return immop.Value;
             case MemoryOperand memop:

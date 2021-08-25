@@ -124,7 +124,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         // A register
         private static bool A(uint b, Tlcs900Disassembler dasm) {
 
-            dasm.ops.Add(new RegisterOperand(Tlcs900Registers.a));
+            dasm.ops.Add(Tlcs900Registers.a);
             return true;
         }
 
@@ -221,7 +221,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
         private static Mutator<Tlcs900Disassembler> R(PrimitiveType? size)
         {
             return (b, dasm) => {
-                dasm.ops.Add(new RegisterOperand(dasm.Reg(size, (int)b & 0x7)));
+                dasm.ops.Add(dasm.Reg(size, (int)b & 0x7));
                 dasm.SetSize(size);
                 return true;
             };
@@ -234,13 +234,13 @@ namespace Reko.Arch.Tlcs.Tlcs900
         // status/flag register
         private static bool Sb(uint b, Tlcs900Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(Tlcs900Registers.f));
+            dasm.ops.Add(Tlcs900Registers.f);
             return true;
         }
 
         private static bool Sw(uint b, Tlcs900Disassembler dasm)
         {
-            dasm.ops.Add(new RegisterOperand(Tlcs900Registers.sr));
+            dasm.ops.Add(Tlcs900Registers.sr);
             return true;
         }
 
@@ -320,7 +320,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
             //$TODO: 'r' may encode other registers. manual is dense
             return (b, dasm) =>
             {
-                dasm.ops.Add(new RegisterOperand(dasm.Reg(size, (int) b & 0x7)));
+                dasm.ops.Add(dasm.Reg(size, (int) b & 0x7));
                 dasm.SetSize(size);
                 return true;
             };
@@ -518,12 +518,12 @@ namespace Reko.Arch.Tlcs.Tlcs900
             return AddressOperand.Ptr32(uAddr);
         }
 
-        private RegisterOperand? ExtraRegister(byte b)
+        private RegisterStorage? ExtraRegister(byte b)
         {
             switch (b)
             {
-            case 0x31: return new RegisterOperand(Tlcs900Registers.w);
-            case 0xE6: return new RegisterOperand(Tlcs900Registers.bc);
+            case 0x31: return Tlcs900Registers.w;
+            case 0xE6: return Tlcs900Registers.bc;
             }
             return null;
         }
@@ -600,7 +600,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
                 if (!mutator(bPrev, dasm) || !dasm.rdr.TryReadByte(out byte b))
                     return dasm.CreateInvalidInstruction();
                 var instr = dstDecoders[b].Decode(b, dasm);
-                if (instr.Operands.Length >= 2)
+                if (instr.Operands.Length >= 2 && !(instr.Operands[0] is RegisterStorage))
                 {
                     instr.Operands[0].Width = instr.Operands[1].Width;
                 }

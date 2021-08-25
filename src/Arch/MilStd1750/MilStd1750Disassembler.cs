@@ -100,7 +100,7 @@ namespace Reko.Arch.MilStd1750
             return (u, d) =>
             {
                 var iReg = bitfield.Read(u);
-                d.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+                d.ops.Add(Registers.GpRegs[iReg]);
                 return true;
             };
         }
@@ -173,7 +173,7 @@ namespace Reko.Arch.MilStd1750
                 if (ixReg != 0)
                 {
                     var xReg = Registers.GpRegs[ixReg];
-                    d.ops.Add(new RegisterOperand(xReg));
+                    d.ops.Add(xReg);
                 }
                 return true;
             };
@@ -185,11 +185,10 @@ namespace Reko.Arch.MilStd1750
         /// </summary>
         private static Mutator<MilStd1750Disassembler> br(RegisterStorage reg)
         {
-            var regOp = new RegisterOperand(reg);
             return (u, d) =>
             {
                 var disp = bf0_8.Read(u);
-                d.ops.Add(regOp);
+                d.ops.Add(reg);
                 d.ops.Add(ImmediateOperand.Word16((ushort) disp));
                 return true;
             };
@@ -204,12 +203,11 @@ namespace Reko.Arch.MilStd1750
         /// </summary>
         private static Mutator<MilStd1750Disassembler> bx(RegisterStorage reg)
         {
-            var regOp = new RegisterOperand(reg);
             return (u, d) =>
             {
-                d.ops.Add(regOp);
+                d.ops.Add(reg);
                 var idxReg = Registers.GpRegs[bf0_4.Read(u)];
-                d.ops.Add(new RegisterOperand(idxReg));
+                d.ops.Add(idxReg);
                 return true;
             };
         }
@@ -232,7 +230,7 @@ namespace Reko.Arch.MilStd1750
                 var op = new ImmediateOperand(Constant.Create(PrimitiveType.Word16, imm));
                 dasm.ops.Add(op);
                 var xReg = Registers.GpRegs[ixReg];
-                dasm.ops.Add(new RegisterOperand(xReg));
+                dasm.ops.Add(xReg);
             }
             else
             {
@@ -304,7 +302,7 @@ namespace Reko.Arch.MilStd1750
             {
             case 0:
                 dasm.mnemonic = Mnemonic.xio_po;
-                dasm.ops.Add(new RegisterOperand(ra));
+                dasm.ops.Add(ra);
                 dasm.ops.Add(ImmediateOperand.Word16((ushort) (cmd & 0x03FF)));
                 return true;
             case 0x4:
@@ -312,7 +310,7 @@ namespace Reko.Arch.MilStd1750
                 {
                 case 0x4000:
                     dasm.mnemonic = Mnemonic.xio_co;
-                    dasm.ops.Add(new RegisterOperand(ra));
+                    dasm.ops.Add(ra);
                     return true;
                 case 0x4001:
                     dasm.mnemonic = Mnemonic.xio_clc;

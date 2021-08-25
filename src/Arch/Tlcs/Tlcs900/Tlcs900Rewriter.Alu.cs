@@ -93,7 +93,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteDiv(Func<Expression, Expression, Expression> fn, string flags)
         {
-            var reg = ((RegisterOperand)this.instr.Operands[0]).Register;
+            var reg = (RegisterStorage)this.instr.Operands[0];
             var op2 = RewriteSrc(this.instr.Operands[1]);
             var div = binder.EnsureRegister(arch.GetRegister(reg.Domain, new BitRange(0, (int)reg.BitSize * 2))!);
             var tmp = binder.CreateTemporary(reg.DataType);
@@ -165,7 +165,7 @@ namespace Reko.Arch.Tlcs.Tlcs900
 
         private void RewriteMul(Func<Expression,Expression,Expression> fn)
         {
-            var op1 = ((RegisterOperand)instr.Operands[0]).Register;
+            var op1 = (RegisterStorage)instr.Operands[0];
             var op2 = RewriteSrc(instr.Operands[1]);
             var dst = binder.EnsureRegister(Registers.regs[op1.Number]);
             m.Assign(dst, fn(binder.EnsureRegister(op1), op2));

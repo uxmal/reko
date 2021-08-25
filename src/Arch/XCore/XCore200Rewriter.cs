@@ -122,8 +122,8 @@ namespace Reko.Arch.XCore
         {
             switch (op)
             {
-            case RegisterOperand rop:
-                return binder.EnsureRegister(rop.Register);
+            case RegisterStorage rop:
+                return binder.EnsureRegister(rop);
             case ImmediateOperand imm:
                 return imm.Value;
             default:

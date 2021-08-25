@@ -107,7 +107,7 @@ namespace Reko.Arch.Mips
             {
                 var iReg = (int) field.Read(u);
                 var reg = d.arch.GetRegister(iReg)!;
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -124,7 +124,7 @@ namespace Reko.Arch.Mips
             return (u, d) =>
             {
                 var reg = d.arch.GetRegister(regNumber)!;
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -137,7 +137,7 @@ namespace Reko.Arch.Mips
             {
                 var iReg = (int) field.Read(u);
                 var reg = d.arch.GetRegister(iReg)!;
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -162,7 +162,7 @@ namespace Reko.Arch.Mips
                 var iEncodedReg = (int) field.Read(u);
                 var iReg = gprEncoding[iEncodedReg];
                 var reg = d.arch.GetRegister(iReg)!;
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -179,7 +179,7 @@ namespace Reko.Arch.Mips
                 var iEncodedReg = (int) Bitfield.ReadFields(fields, u);
                 var iReg = gprEncoding[iEncodedReg];
                 var reg = d.arch.GetRegister(iReg)!;
-                d.ops.Add(new RegisterOperand(reg));
+                d.ops.Add(reg);
                 return true;
             };
         }
@@ -192,7 +192,7 @@ namespace Reko.Arch.Mips
         {
             return (u, d) =>
             {
-                d.ops.Add(new RegisterOperand(d.arch.GeneralRegs[iReg]));
+                d.ops.Add(d.arch.GeneralRegs[iReg]);
                 return true;
             };
         }
@@ -573,7 +573,7 @@ namespace Reko.Arch.Mips
                 var offset = (int) Bitfield.ReadFields(offFields, u);
                 var rt = d.arch.GetRegister(gpr4_encoding[iRtCode])!;
                 var rs = d.arch.GetRegister(gpr4_encoding[iRsCode])!;
-                d.ops.Add(new RegisterOperand(rt));
+                d.ops.Add(rt);
                 d.ops.Add(new IndirectOperand(PrimitiveType.Word32, offset, rs));
                 return true;
             };

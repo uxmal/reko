@@ -96,7 +96,7 @@ namespace Reko.Arch.Mips
             {
                 return (u, d) =>
                 {
-                    if (!d.TryGetFCReg(u >> offset, out RegisterOperand fcreg))
+                    if (!d.TryGetFCReg(u >> offset, out RegisterStorage fcreg))
                         return false;
                     d.ops.Add(fcreg);
                     return true;

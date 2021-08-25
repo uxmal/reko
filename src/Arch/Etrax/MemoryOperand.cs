@@ -69,9 +69,9 @@ namespace Reko.Arch.Etrax
                         renderer.WriteFormat("0x{0:X}", offset);
                     }
                     break;
-                case RegisterOperand index:
+                case RegisterStorage index:
                     renderer.WriteChar('+');
-                    renderer.WriteFormat("{0}:{1}", index.Register.Name, EtraxInstruction.SizeFormat(IndexScale!));
+                    renderer.WriteFormat("{0}:{1}", index.Name, EtraxInstruction.SizeFormat(IndexScale!));
                     break;
                 }
             }

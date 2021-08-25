@@ -167,11 +167,11 @@ namespace Reko.Arch.LatticeMico
         {
             switch (op)
             {
-            case RegisterOperand rop:
-                if (rop.Register.Number == 0)
-                    return Constant.Create(rop.Register.DataType, 0);
+            case RegisterStorage rop:
+                if (rop.Number == 0)
+                    return Constant.Create(rop.DataType, 0);
                 else
-                    return binder.EnsureRegister(rop.Register);
+                    return binder.EnsureRegister(rop);
             case ImmediateOperand imm:
                 return imm.Value;
             case MemoryOperand mem:
@@ -229,7 +229,7 @@ namespace Reko.Arch.LatticeMico
 
         private void RewriteIndirectGoto()
         {
-            var reg = ((RegisterOperand) instr.Operands[0]).Register;
+            var reg = (RegisterStorage) instr.Operands[0];
             if (reg == Registers.ra)
             {
                 m.Return(0, 0);

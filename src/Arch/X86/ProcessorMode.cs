@@ -327,7 +327,7 @@ namespace Reko.Arch.X86
 
                 if (instrs[1].Operands.Length > 0)
                     return null; 
-                var reg = binder.EnsureRegister(((RegisterOperand)instrs[0].Operands[0]).Register);
+                var reg = binder.EnsureRegister((RegisterStorage)instrs[0].Operands[0]);
                 var rtls = new List<RtlInstruction>();
                 var m = new RtlEmitter(rtls);
                 m.Assign(reg, addrContinuation);

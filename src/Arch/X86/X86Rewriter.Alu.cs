@@ -357,7 +357,7 @@ namespace Reko.Arch.X86
 
         public void RewriteBswap()
         {
-            Identifier reg = orw.AluRegister(((RegisterOperand)instrCur.Operands[0]).Register);
+            Identifier reg = orw.AluRegister((RegisterStorage)instrCur.Operands[0]);
             m.Assign(reg, host.Intrinsic("__bswap", false, (PrimitiveType)reg.DataType, reg));
         }
 
@@ -609,8 +609,8 @@ namespace Reko.Arch.X86
         {
             if (instrCur.Mnemonic == Mnemonic.and)
             {
-                if (instrCur.Operands[0] is RegisterOperand r &&
-                    r.Register == arch.StackRegister &&
+                if (instrCur.Operands[0] is RegisterStorage r &&
+                    r == arch.StackRegister &&
                     instrCur.Operands[1] is ImmediateOperand)
                 {
                     m.SideEffect(host.Intrinsic("__align", true, VoidType.Instance, SrcOp(0)));
@@ -706,8 +706,8 @@ namespace Reko.Arch.X86
             var opR = SrcOp(3);
             var bits = instrCur.Operands[0].Width.BitSize + instrCur.Operands[1].Width.BitSize;
             var dt = PrimitiveType.Create(Domain.UnsignedInt, bits);
-            var hi = ((RegisterOperand) instrCur.Operands[0]).Register;
-            var lo = ((RegisterOperand) instrCur.Operands[1]).Register;
+            var hi = (RegisterStorage) instrCur.Operands[0];
+            var lo = (RegisterStorage) instrCur.Operands[1];
             var opDst = binder.EnsureSequence(dt, hi, lo);
             var mul = m.UMul(opL, opR);
             mul.DataType = dt;
@@ -780,17 +780,17 @@ namespace Reko.Arch.X86
 
         private void RewriteLxs(RegisterStorage seg)
         {
-            var reg = (RegisterOperand)instrCur.Operands[0];
+            var reg = (RegisterStorage)instrCur.Operands[0];
             MemoryOperand mem = (MemoryOperand)instrCur.Operands[1];
             if (mem.Offset is null)
             {
                 mem = new MemoryOperand(mem.Width, mem.Base, mem.Index, mem.Scale, Constant.Create(instrCur.addrWidth, 0));
             }
 
-            var ptr = PrimitiveType.Create(Domain.Pointer, seg.DataType.BitSize + reg.Width.BitSize);
-            var segptr = PrimitiveType.Create(Domain.SegPointer, seg.DataType.BitSize + reg.Width.BitSize);
+            var ptr = PrimitiveType.Create(Domain.Pointer, seg.DataType.BitSize + reg.DataType.BitSize);
+            var segptr = PrimitiveType.Create(Domain.SegPointer, seg.DataType.BitSize + reg.DataType.BitSize);
             m.Assign(
-                binder.EnsureSequence(ptr, seg, reg.Register),
+                binder.EnsureSequence(ptr, seg, reg),
                 orw.Transform(instrCur, mem, segptr));
         }
 
@@ -874,7 +874,7 @@ namespace Reko.Arch.X86
 
         private void RewritePush()
         {
-            if (instrCur.Operands[0] is RegisterOperand reg && reg.Register == Registers.cs)
+            if (instrCur.Operands[0] is RegisterStorage reg && reg == Registers.cs)
             {
                 // Is it a 'push cs;call near XXXX' sequence that simulates a far call?
                 X86Instruction? p1 = dasm.Peek(1);
@@ -891,7 +891,7 @@ namespace Reko.Arch.X86
                     }
                     else
                     {
-                        m.Assign(StackPointer(), m.ISubS(StackPointer(), reg.Register.DataType.Size));
+                        m.Assign(StackPointer(), m.ISubS(StackPointer(), reg.DataType.Size));
                     }
 
                     RewriteCall(targetOperand, targetOperand.Width);

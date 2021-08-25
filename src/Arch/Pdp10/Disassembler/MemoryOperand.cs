@@ -23,7 +23,7 @@ using System;
 
 namespace Reko.Arch.Pdp10.Disassembler
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public MemoryOperand(RegisterStorage idxRegister, uint offset, bool indirect)
             : base(Pdp10Architecture.Word36)

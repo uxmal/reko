@@ -136,7 +136,7 @@ namespace Reko.Arch.Arm.AArch32
                     InstructionClass = InstrClass.Linear,
                     Writeback = w,
                     Operands = new MachineOperand[] {
-                            new RegisterOperand(rn),
+                            rn,
                             new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, (registers)) }
                 };
             }
@@ -181,7 +181,7 @@ namespace Reko.Arch.Arm.AArch32
                         InstructionClass = InstrClass.Linear,
                         Writeback = w,
                         Operands = new MachineOperand[] {
-                            new RegisterOperand(rn),
+                            rn,
                             new MultiRegisterOperand(Registers.GpRegs, PrimitiveType.Word16, registers)
                         }
                     };

@@ -617,7 +617,7 @@ namespace Reko.Arch.X86
             var creg = dasm.mode.GetControlRegister((modRm >> 3) & 7);
             if (creg == null)
                 return false;
-            var operand = new RegisterOperand(creg);
+            var operand = creg;
             dasm.decodingContext.ops.Add(operand);
             return true;
         }
@@ -632,7 +632,7 @@ namespace Reko.Arch.X86
             var dreg = dasm.mode.GetDebugRegister((modRm >> 3) & 7);
             if (dreg == null)
                 return false;
-            var operand = new RegisterOperand(dreg);
+            var operand = dreg;
             dasm.decodingContext.ops.Add(operand);
             return true;
 
@@ -694,7 +694,7 @@ namespace Reko.Arch.X86
                 var op = d.GpRegFromBits(d.decodingContext.VexRegister, width);
                 if (op == null)
                     return false;
-                d.decodingContext.ops.Add(new RegisterOperand(op));
+                d.decodingContext.ops.Add(op);
                 return true;
             };
         }
@@ -730,11 +730,10 @@ namespace Reko.Arch.X86
                 var width = d.OperandWidth(opType);
                 if (!d.TryEnsureModRM(out byte modRm))
                     return false;
-                var op = new RegisterOperand(
-                    d.RegFromBitsRexR(
+                var op = d.RegFromBitsRexR(
                         modRm >> 3,
                         width,
-                        d.GpRegFromBits));
+                        d.GpRegFromBits);
                 d.decodingContext.ops.Add(op);
                 return true;
             };
@@ -755,9 +754,9 @@ namespace Reko.Arch.X86
                 if (d.decodingContext.IsVex)
                 {
                     var width = d.SseOperandWidth(opType);
-                    var op = new RegisterOperand(d.XmmRegFromBits(
+                    var op = d.XmmRegFromBits(
                         d.decodingContext.VexRegister,
-                        width));
+                        width);
                     d.decodingContext.ops.Add(op);
                 }
                 return true;
@@ -845,7 +844,7 @@ namespace Reko.Arch.X86
             var width =  ops[ops.Count-1].Width; // Use width of the previous operand.
             d.decodingContext.iWidth = width;
             //width = OperandWidth(strFormat, ref i); //  Don't use the width of the previous operand.
-            var operand = new RegisterOperand(d.XmmRegFromBits((lReg >> 4) & 0xF, width));
+            var operand = d.XmmRegFromBits(lReg >> 4 & 0xF, width);
             ops.Add(operand);
             return true;
         }
@@ -896,7 +895,7 @@ namespace Reko.Arch.X86
                 var width = d.SseOperandWidth(opType);
                 if (!d.TryEnsureModRM(out byte modRm))
                     return false;
-                var op = new RegisterOperand(d.RegFromBitsRexR(modRm, width, d.MmxRegFromBits));
+                var op = d.RegFromBitsRexR(modRm, width, d.MmxRegFromBits);
                 d.decodingContext.ops.Add(op);
                 return true;
             };
@@ -934,7 +933,7 @@ namespace Reko.Arch.X86
                 var width = d.SseOperandWidth(opType);
                 if (!d.TryEnsureModRM(out byte modRm))
                     return false;
-                var op = new RegisterOperand(d.RegFromBitsRexR(modRm >> 3, width, d.MmxRegFromBits));
+                var op = d.RegFromBitsRexR(modRm >> 3, width, d.MmxRegFromBits);
                 d.decodingContext.ops.Add(op);
                 return true;
             };
@@ -975,11 +974,10 @@ namespace Reko.Arch.X86
                 var width = d.OperandWidth(opType);
                 if (!d.TryEnsureModRM(out byte modRm))
                     return false;
-                var op = new RegisterOperand(
-                    d.RegFromBitsRexR(
+                var op = d.RegFromBitsRexR(
                         modRm,
                         width,
-                        d.GpRegFromBits));
+                        d.GpRegFromBits);
                 d.decodingContext.ops.Add(op);
                 return true;
             };
@@ -1001,10 +999,10 @@ namespace Reko.Arch.X86
                 var width = d.SseOperandWidth(opType);
                 if (!d.TryEnsureModRM(out byte modRm))
                     return false;
-                var op = new RegisterOperand(d.RegFromBitsRexR(
+                var op = d.RegFromBitsRexR(
                     modRm, 
                     width, 
-                    d.XmmRegFromBits));
+                    d.XmmRegFromBits);
                 d.decodingContext.ops.Add(op);
                 return true;
             };
@@ -1025,10 +1023,9 @@ namespace Reko.Arch.X86
                 var width = d.SseOperandWidth(opType);
                 if (!d.TryEnsureModRM(out byte modRm))
                     return false;
-                var op = new RegisterOperand(
-                    d.RegFromBitsRexR(modRm >> 3,
+                var op = d.RegFromBitsRexR(modRm >> 3,
                     width,
-                    d.XmmRegFromBits));
+                    d.XmmRegFromBits);
                 d.decodingContext.ops.Add(op);
                 return true;
             };
@@ -1078,7 +1075,7 @@ namespace Reko.Arch.X86
         {
             if (!d.TryEnsureModRM(out byte modRm))
                 return false;
-            d.decodingContext.ops.Add(new RegisterOperand(SegFromBits(modRm >> 3)));
+            d.decodingContext.ops.Add(SegFromBits(modRm >> 3));
             return true;
         }
 
@@ -1087,13 +1084,13 @@ namespace Reko.Arch.X86
         /// </summary>
         private static bool AL(uint uInstr, X86Disassembler dasm)
         {
-            dasm.decodingContext.ops.Add(new RegisterOperand(Registers.al));
+            dasm.decodingContext.ops.Add(Registers.al);
             return true;
         }
 
         private static bool AX(uint uInstr, X86Disassembler dasm)
         {
-            dasm.decodingContext.ops.Add(new RegisterOperand(Registers.ax));
+            dasm.decodingContext.ops.Add(Registers.ax);
             return true;
         }
 
@@ -1104,7 +1101,7 @@ namespace Reko.Arch.X86
                 reg = Registers.ax;
             else
                 reg = Registers.eax;
-            dasm.decodingContext.ops.Add(new RegisterOperand(reg));
+            dasm.decodingContext.ops.Add(reg);
             return true;
         }
 
@@ -1118,7 +1115,7 @@ namespace Reko.Arch.X86
                 reg = Registers.eax;
             else
                 reg = Registers.rax;
-            dasm.decodingContext.ops.Add(new RegisterOperand(reg));
+            dasm.decodingContext.ops.Add(reg);
             return true;
         }
 
@@ -1129,11 +1126,11 @@ namespace Reko.Arch.X86
                 reg = dasm.RegFromBitsRexB((int)uInstr & 7, dasm.decodingContext.dataWidth);
             else
                 reg = dasm.RegFromBitsRexB((int) uInstr & 7, dasm.mode.WordWidth);
-            dasm.decodingContext.ops.Add(new RegisterOperand(reg));
+            dasm.decodingContext.ops.Add(reg);
             return true;
         }
         /*                d.decodingContext.iWidth = d.OperandWidth(width);
-                var op = new RegisterOperand(d.RegFromBitsRexB(
+                var op = new RegisterStorage(d.RegFromBitsRexB(
                     (byte)u, 
                     d.decodingContext.iWidth));
                 d.decodingContext.ops.Add(op);
@@ -1153,7 +1150,7 @@ namespace Reko.Arch.X86
         /// </summary>
         private static bool c(uint u, X86Disassembler d)
         {
-            d.decodingContext.ops.Add(new RegisterOperand(Registers.cl));
+            d.decodingContext.ops.Add(Registers.cl);
             return true;
         }
 
@@ -1162,7 +1159,7 @@ namespace Reko.Arch.X86
         /// </summary>
         private static bool DX(uint u, X86Disassembler dasm)
         {
-            dasm.decodingContext.ops.Add(new RegisterOperand(Registers.dx));
+            dasm.decodingContext.ops.Add(Registers.dx);
             return true;
         }
 
@@ -1181,7 +1178,7 @@ namespace Reko.Arch.X86
                 else
                     reg = Registers.edx;
             }
-            dasm.decodingContext.ops.Add(new RegisterOperand(reg));
+            dasm.decodingContext.ops.Add(reg);
             return true;
         }
 
@@ -1213,9 +1210,9 @@ namespace Reko.Arch.X86
             return (u, d) =>
             {
                 d.decodingContext.iWidth = d.OperandWidth(width);
-                var op = new RegisterOperand(d.RegFromBitsRexB(
+                var op = d.RegFromBitsRexB(
                     (byte)u, 
-                    d.decodingContext.iWidth));
+                    d.decodingContext.iWidth);
                 d.decodingContext.ops.Add(op);
                 return true;
             };
@@ -1231,10 +1228,9 @@ namespace Reko.Arch.X86
         /// </summary>
         private static Mutator<X86Disassembler> Reg(RegisterStorage reg)
         {
-            var op = new RegisterOperand(reg);
             return (u, d) =>
             {
-                d.decodingContext.ops.Add(op);
+                d.decodingContext.ops.Add(reg);
                 return true;
             };
         }
@@ -1484,7 +1480,7 @@ namespace Reko.Arch.X86
 					offsetWidth = PrimitiveType.Word16;
 					break;
 				case 3:
-					return new RegisterOperand(RegFromBitsRexB(rm, dataWidth, regFn));
+					return RegFromBitsRexB(rm, dataWidth, regFn);
 				}
 			}
 			else 
@@ -1522,7 +1518,7 @@ namespace Reko.Arch.X86
                     offsetWidth = PrimitiveType.Word32;
 					break;
 				case 3:
-					return new RegisterOperand(RegFromBitsRexB(rm, dataWidth, regFn));
+					return RegFromBitsRexB(rm, dataWidth, regFn);
                 default:
                     throw new InvalidOperationException("Impossiburu.");
 				}

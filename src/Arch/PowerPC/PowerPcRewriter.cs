@@ -475,16 +475,16 @@ namespace Reko.Arch.PowerPC
         {
             switch (op)
             {
-            case RegisterOperand rOp:
-                if (maybe0 && rOp.Register.Number == 0)
-                    return Constant.Zero(rOp.Register.DataType);
-                if (arch.IsCcField(rOp.Register))
+            case RegisterStorage rOp:
+                if (maybe0 && rOp.Number == 0)
+                    return Constant.Zero(rOp.DataType);
+                if (arch.IsCcField(rOp))
                 {
-                    return binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(rOp.Register)!);
+                    return binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(rOp)!);
                 }
                 else
                 {
-                    return binder.EnsureRegister(rOp.Register);
+                    return binder.EnsureRegister(rOp);
                 }
             case ImmediateOperand iOp:
                 // Extend the immediate value to word size. If this is not wanted,
@@ -501,16 +501,16 @@ namespace Reko.Arch.PowerPC
         {
             switch (op)
             {
-            case RegisterOperand rOp:
-                if (maybe0 && rOp.Register.Number == 0)
-                    return Constant.Zero(rOp.Register.DataType);
-                if (arch.IsCcField(rOp.Register))
+            case RegisterStorage rOp:
+                if (maybe0 && rOp.Number == 0)
+                    return Constant.Zero(rOp.DataType);
+                if (arch.IsCcField(rOp))
                 {
-                    return binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(rOp.Register)!);
+                    return binder.EnsureFlagGroup(arch.GetCcFieldAsFlagGroup(rOp)!);
                 }
                 else
                 {
-                    return binder.EnsureRegister(rOp.Register);
+                    return binder.EnsureRegister(rOp);
                 }
             case ImmediateOperand iOp:
                 // Extend the immediate value to word size. If this is not wanted,
