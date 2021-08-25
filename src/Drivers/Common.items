@@ -12,6 +12,110 @@ by the PreBuild.targets file.
     <!-- Use this for assemblies that are targetting the  .NET Standard profile -->
     <StandardOutputDir>$(Configuration)\netstandard2.1</StandardOutputDir>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <!-- All the plug-ins that don't involve user interfaces and are
+         environment agnostic. -->
+
+    <ProjectReference Include="$(SolutionDir)Arch\Alpha\Alpha.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Altera\Altera.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Arc\Arc.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Arm\Arm.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Avr\Avr.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Blackfin\Blackfin.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\C166\C166.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Cil\Cil.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\CompactRisc\CompactRisc.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Cray\Cray.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Etrax\Etrax.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\H8\H8.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\i8051\i8051.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\IA64\IA64.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\LatticeMico\LatticeMico.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\M6800\M6800.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\M68k\M68k.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\MCore\MCore.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\MicroBlaze\MicroBlaze.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Microchip\MicrochipPIC.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\MilStd1750\MilStd1750.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Mips\Mips.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Mos6502\Mos6502.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\MSP430\MSP430.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\OpenRISC\OpenRISC.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\PaRisc\PaRisc.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Pdp11\Pdp11.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\PowerPC\PowerPC.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Qualcomm\Qualcomm.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\RiscV\RiscV.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Rl78\Rl78.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Sparc\Sparc.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\SuperH\SuperH.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Tlcs\Tlcs.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Tms7000\Tms7000.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\V850\V850.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Vax\Vax.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\WE32100\WE32100.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\X86\X86.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\XCore\XCore.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Xtensa\Xtensa.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Z80\Z80.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\zSeries\zSeries.csproj" />
+    <ProjectReference Include="$(SolutionDir)Core\Core.csproj" />
+    <ProjectReference Include="$(SolutionDir)Decompiler\Decompiler.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\AmigaOS\AmigaOS.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\AtariTOS\AtariTOS.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\BbcMicro\BbcMicro.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\C64\C64.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\Cpm\Cpm.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\Dreamcast\Dreamcast.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\Gameboy\Gameboy.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\Hpux\Hpux.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\MacOS\MacOS.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\MorphOS\MorphOS.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\Msdos\Msdos.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\NeoGeo\NeoGeo.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\OS2\OS2.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\Ps3\Ps3.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\RiscOS\RiscOS.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\RT11\RT11.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\SegaGenesis\SegaGenesis.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\Snes\Snes.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\Switch\Switch.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\SysV\SysV.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\Trs80\Trs80.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\Wii\Wii.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\Windows\Windows.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\Xbox\Xbox.csproj" />
+    <ProjectReference Include="$(SolutionDir)Environments\ZX81\ZX81.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\BinHex\BinHex.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\Coff\Coff.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\Dol\Dol.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\Elf\Elf.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\HpSom\HpSom.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\Hunk\Hunk.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\IntelHex\IntelHex.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\Ldm\Ldm.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\Llvm\LLVM.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\MachO\MachO.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\MzExe\MzExe.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\Nro\Nro.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\OdbgScript\OdbgScript.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\Omf\Omf.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\Pef\Pef.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\Srec\Srec.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\TekHex\TekHex.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\TypeLib\TypeLib.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\VmsExe\VmsExe.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\WebAssembly\WebAssembly.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\Xbe\Xbe.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\XexLoader\Xex.csproj" />
+    <ProjectReference Include="$(SolutionDir)Libraries\Libc\Libc.csproj" />
+    <ProjectReference Include="$(SolutionDir)Libraries\Python\Python.csproj" />
+    <ProjectReference Include="$(SolutionDir)Native\NativeProxy.csproj" />
+    <ProjectReference Include="$(SolutionDir)Scripts\Python\Python.csproj" />
+    <ProjectReference Include="$(SolutionDir)Symbols\LGSymLoader\LGSymLoader.csproj" />
+  </ItemGroup>
+
   <ItemGroup>
     <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
 
@@ -30,11 +134,9 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\LatticeMico\bin\$(StandardOutputDir)\Reko.Arch.LatticeMico.*" />
     <Architectures Include="$(SolutionDir)Arch\M6800\bin\$(StandardOutputDir)\Reko.Arch.M6800.*" />
     <Architectures Include="$(SolutionDir)Arch\M68k\bin\$(StandardOutputDir)\Reko.Arch.M68k.*" />
-    <Architectures Include="$(SolutionDir)Arch\M68k.Design\bin\$(Configuration)\Reko.Arch.M68k.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\MCore\bin\$(StandardOutputDir)\Reko.Arch.MCore.*" />
     <Architectures Include="$(SolutionDir)Arch\MicroBlaze\bin\$(StandardOutputDir)\Reko.Arch.MicroBlaze.*" />
     <Architectures Include="$(SolutionDir)Arch\Microchip\bin\$(Configuration)\Reko.Arch.MicrochipPIC.*" />
-    <Architectures Include="$(SolutionDir)Arch\Microchip.Design\bin\$(Configuration)\Reko.Arch.MicrochipPIC.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\MilStd1750\bin\$(StandardOutputDir)\Reko.Arch.MilStd1750.*" />
     <Architectures Include="$(SolutionDir)Arch\Mips\bin\$(StandardOutputDir)\Reko.Arch.Mips.*" />
     <Architectures Include="$(SolutionDir)Arch\Mos6502\bin\$(StandardOutputDir)\Reko.Arch.Mos6502.*" />
@@ -43,7 +145,6 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\PaRisc\bin\$(StandardOutputDir)\\Reko.Arch.PaRisc.*" />
     <Architectures Include="$(SolutionDir)Arch\Pdp11\bin\$(StandardOutputDir)\Reko.Arch.Pdp11.*" />
     <Architectures Include="$(SolutionDir)Arch\PowerPC\bin\$(StandardOutputDir)\Reko.Arch.PowerPC.*" />
-    <Architectures Include="$(SolutionDir)Arch\PowerPC.Design\bin\$(StandardOutputDir)\Reko.Arch.PowerPC.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\Qualcomm\bin\$(StandardOutputDir)\Reko.Arch.Qualcomm.*" />
     <Architectures Include="$(SolutionDir)Arch\RiscV\bin\$(StandardOutputDir)\Reko.Arch.RiscV.*" />
     <Architectures Include="$(SolutionDir)Arch\Rl78\bin\$(StandardOutputDir)\Reko.Arch.Rl78.*" />
@@ -55,7 +156,6 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\Vax\bin\$(StandardOutputDir)\Reko.Arch.Vax.*" />
     <Architectures Include="$(SolutionDir)Arch\WE32100\bin\$(StandardOutputDir)\Reko.Arch.WE32100.*" />
     <Architectures Include="$(SolutionDir)Arch\X86\bin\$(StandardOutputDir)\Reko.Arch.X86.*" />
-    <Architectures Include="$(SolutionDir)Arch\X86.Design\bin\$(Configuration)\Reko.Arch.X86.Design.*" />
     <Architectures Include="$(SolutionDir)Arch\XCore\bin\$(StandardOutputDir)\Reko.Arch.XCore.*" />
     <Architectures Include="$(SolutionDir)Arch\Xtensa\bin\$(StandardOutputDir)\Reko.Arch.Xtensa.*" />
     <Architectures Include="$(SolutionDir)Arch\Z80\bin\$(StandardOutputDir)\Reko.Arch.Z80.*" />
@@ -211,7 +311,6 @@ by the PreBuild.targets file.
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Xex\bin\$(StandardOutputDir)\Reko.ImageLoaders.Xex.*" />
 
     <Environments Include="$(SolutionDir)Environments\AmigaOS\bin\$(StandardOutputDir)\Reko.Environments.AmigaOS.*" />
-    <Environments Include="$(SolutionDir)Environments\AmigaOS.Design\bin\$(Configuration)\Reko.Environments.AmigaOS.Design.*" />
     <Environments Include="$(SolutionDir)Environments\AtariTOS\bin\$(StandardOutputDir)\Reko.Environments.AtariTOS.*" />
     <Environments Include="$(SolutionDir)Environments\BbcMicro\bin\$(StandardOutputDir)\Reko.Environments.BbcMicro.*" />
     <Environments Include="$(SolutionDir)Environments\C64\bin\$(StandardOutputDir)\Reko.Environments.C64.*" />
@@ -222,7 +321,6 @@ by the PreBuild.targets file.
     <Environments Include="$(SolutionDir)Environments\MacOS\bin\$(StandardOutputDir)\Reko.Environments.MacOS.*" />
     <Environments Include="$(SolutionDir)Environments\MorphOS\bin\$(StandardOutputDir)\Reko.Environments.MorphOS.*" />
     <Environments Include="$(SolutionDir)Environments\Msdos\bin\$(StandardOutputDir)\Reko.Environments.Msdos.*" />
-    <Environments Include="$(SolutionDir)Environments\Msdos.Design\bin\$(Configuration)\Reko.Environments.Msdos.Design.*" />
     <Environments Include="$(SolutionDir)Environments\NeoGeo\bin\$(StandardOutputDir)\Reko.Environments.NeoGeo.*" />
     <Environments Include="$(SolutionDir)Environments\OS2\16\bin\$(StandardOutputDir)\Reko.Environments.OS2.*" />
     <Environments Include="$(SolutionDir)Environments\Ps3\bin\$(StandardOutputDir)\Reko.Environments.Ps3.*" />
