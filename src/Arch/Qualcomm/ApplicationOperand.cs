@@ -28,7 +28,7 @@ namespace Reko.Arch.Qualcomm
 {
     public class ApplicationOperand : MachineOperand
     {
-        public ApplicationOperand(PrimitiveType width, Mnemonic mnemonic, params MachineOperand[] ops) : base(width)
+        public ApplicationOperand(DataType width, Mnemonic mnemonic, params MachineOperand[] ops) : base(width)
         {
             this.Mnemonic = mnemonic;
             this.Operands = ops;

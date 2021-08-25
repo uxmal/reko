@@ -384,7 +384,7 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
-        private void RewriteLdx(PrimitiveType dt)
+        private void RewriteLdx(DataType dt)
         {
             var src = RewriteOp(1);
             var dst = RewriteOp(0);
@@ -666,7 +666,7 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, host.Intrinsic(fnName, true, dst.DataType, src1, src2, src3));
         }
 
-        private void RewriteStlr(PrimitiveType dataType)
+        private void RewriteStlr(DataType dataType)
         {
             var src1 = RewriteOp(0, false);
             var ea = binder.CreateTemporary(new Pointer(dataType, arch.PointerType.BitSize));
@@ -705,7 +705,7 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
-        private void RewriteStx(PrimitiveType dt)
+        private void RewriteStx(DataType dt)
         {
             var src = RewriteOp(1);
             var dst = RewriteOp(2);

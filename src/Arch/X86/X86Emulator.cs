@@ -304,7 +304,7 @@ namespace Reko.Arch.X86
             return (Registers[r.Number] & r.BitMask) >> (int) r.BitAddress;
         }
 
-        public TWord ReadMemory(ulong ea, PrimitiveType dt)
+        public TWord ReadMemory(ulong ea, DataType dt)
         {
             switch (dt.Size)
             {
@@ -338,7 +338,7 @@ namespace Reko.Arch.X86
             return value;
         }
 
-        public void WriteMemory(TWord w, ulong ea, PrimitiveType dt)
+        public void WriteMemory(TWord w, ulong ea, DataType dt)
         {
             switch (dt.Size)
             {
@@ -489,11 +489,11 @@ namespace Reko.Arch.X86
                 (r == 0 ? Zmask : 0u);      // Zero
         }
 
-        protected abstract void Lods(PrimitiveType dt);
-        protected abstract void Movs(PrimitiveType dt);
+        protected abstract void Lods(DataType dt);
+        protected abstract void Movs(DataType dt);
 
-        protected abstract void Scas(PrimitiveType dt);
-        protected abstract void Stos(PrimitiveType dt);
+        protected abstract void Scas(DataType dt);
+        protected abstract void Stos(DataType dt);
 
         private void Sar(MachineOperand dst, MachineOperand src)
         {
@@ -709,7 +709,7 @@ namespace Reko.Arch.X86
             Push((uint)Registers[X86.Registers.edi.Number], dt);
         }
 
-        protected abstract TWord Pop(PrimitiveType dt);
+        protected abstract TWord Pop(DataType dt);
 
         public void Push(MachineOperand op)
         {
@@ -717,7 +717,7 @@ namespace Reko.Arch.X86
             Push(value, op.Width);
         }
 
-        protected abstract void Push(ulong dw, PrimitiveType dt);
+        protected abstract void Push(ulong dw, DataType dt);
 
         private void Stc()
         {

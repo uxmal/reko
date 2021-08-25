@@ -41,7 +41,7 @@ namespace Reko.Arch.X86.Assembler
 		private Symbol? sym;
 		private SymbolTable symtab; 
 		private readonly Address addrBase;
-		private PrimitiveType defaultWordWidth;
+		private DataType defaultWordWidth;
 		private PrimitiveType defaultAddressWidth;
 		private RegisterStorage segOverride;
 		private int totalInt;
@@ -61,7 +61,7 @@ namespace Reko.Arch.X86.Assembler
 			get { return addrWidth; }
 		}
 
-		public PrimitiveType DataWidth
+		public DataType DataWidth
 		{
 			get { return defaultWordWidth; }
 			set { defaultWordWidth = value; }

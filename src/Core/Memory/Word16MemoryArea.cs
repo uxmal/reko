@@ -84,7 +84,7 @@ namespace Reko.Core.Memory
             throw new NotSupportedException("Byte reads are not supported.");
         }
 
-        public override bool TryReadBe(long imageOffset, PrimitiveType type, out Constant c)
+        public override bool TryReadBe(long imageOffset, DataType type, out Constant c)
         {
             throw new NotImplementedException();
         }
@@ -104,7 +104,7 @@ namespace Reko.Core.Memory
             throw new NotImplementedException();
         }
 
-        public override bool TryReadLe(long imageOffset, PrimitiveType type, out Constant c)
+        public override bool TryReadLe(long imageOffset, DataType type, out Constant c)
         {
             throw new NotImplementedException();
         }

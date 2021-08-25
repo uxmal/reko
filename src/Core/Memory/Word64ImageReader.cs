@@ -235,7 +235,7 @@ namespace Reko.Core.Memory
             throw new NotImplementedException();
         }
 
-        public bool TryReadBe(PrimitiveType dataType, out Constant value)
+        public bool TryReadBe(DataType dataType, out Constant value)
         {
             throw new NotImplementedException();
         }
@@ -265,7 +265,7 @@ namespace Reko.Core.Memory
             throw new NotImplementedException();
         }
 
-        public bool TryReadLe(PrimitiveType dataType, out Constant value)
+        public bool TryReadLe(DataType dataType, out Constant value)
         {
             throw new NotImplementedException();
         }
@@ -275,7 +275,7 @@ namespace Reko.Core.Memory
             throw new NotImplementedException();
         }
 
-        public bool TryReadLeSigned(PrimitiveType dataType, out long value)
+        public bool TryReadLeSigned(DataType dataType, out long value)
         {
             throw new NotImplementedException();
         }

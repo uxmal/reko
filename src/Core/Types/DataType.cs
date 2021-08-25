@@ -52,6 +52,8 @@ namespace Reko.Core.Types
         public virtual bool IsComplex { get { return false; } }
         public virtual bool IsPointer { get { return false; } }
         public virtual bool IsIntegral { get { return false; } }
+        public virtual bool IsReal => false;
+
         public virtual string Name { get { return name!; }  set { name = value; } }
         public Qualifier Qualifier { get; set; }
 

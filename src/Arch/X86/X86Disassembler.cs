@@ -146,7 +146,7 @@ namespace Reko.Arch.X86
             public PrimitiveType dataWidth;
             public PrimitiveType addressWidth;
             public List<MachineOperand> ops;
-            public PrimitiveType iWidth;
+            public DataType iWidth;
 
 #nullable disable
             internal X86InstructionDecodeInfo()
@@ -375,7 +375,7 @@ namespace Reko.Arch.X86
                 rdr.Offset - rdrOffset <= MaxInstructionLength;
         }
 
-        private bool TryReadLe(PrimitiveType offsetWidth, [MaybeNullWhen(false)] out Constant? offset)
+        private bool TryReadLe(DataType offsetWidth, [MaybeNullWhen(false)] out Constant? offset)
         {
             offset = null;
             if (!rdr.IsValidOffset(rdr.Offset + (uint) offsetWidth.Size - 1))
@@ -385,7 +385,7 @@ namespace Reko.Arch.X86
             return (rdr.Offset - this.rdrOffset <= MaxInstructionLength);
         }
 
-        private RegisterStorage RegFromBitsRexB(int bits, PrimitiveType dataWidth)
+        private RegisterStorage RegFromBitsRexB(int bits, DataType dataWidth)
         {
             int reg_bits = bits & 7;
             reg_bits |= this.decodingContext.RegisterExtension.FlagTargetModrmRegOrMem ? 8 : 0;
@@ -431,7 +431,7 @@ namespace Reko.Arch.X86
             return fnReg(reg_bits, dataWidth);
         }
 
-        private RegisterStorage GpRegFromBits(int bits, PrimitiveType dataWidth)
+        private RegisterStorage GpRegFromBits(int bits, DataType dataWidth)
 		{
             int bitSize = dataWidth.BitSize;
 			switch (bitSize)
@@ -524,7 +524,7 @@ namespace Reko.Arch.X86
 			throw new ArgumentOutOfRangeException("Unsupported data width: " + dataWidth.ToString());
 		}
 
-        private RegisterStorage XmmRegFromBits(int bits, PrimitiveType dataWidth)
+        private RegisterStorage XmmRegFromBits(int bits, DataType dataWidth)
         {
             if (dataWidth.BitSize == 256)
             {
@@ -781,7 +781,7 @@ namespace Reko.Arch.X86
                 var ops = d.decodingContext.ops;
                 if (opType == OperandType.x)
                 {
-                    width = ops[ops.Count - 1].Width;
+                    width = (PrimitiveType) ops[ops.Count - 1].Width;
                     d.decodingContext.iWidth = width;
                 }
                 else
@@ -1432,7 +1432,7 @@ namespace Reko.Arch.X86
 			RegisterStorage.None,
 		};
 
-		public ImmediateOperand? CreateImmediateOperand(PrimitiveType immWidth)
+		public ImmediateOperand? CreateImmediateOperand(DataType immWidth)
 		{
             if (!TryReadLe(immWidth, out Constant? c))
                 return null;

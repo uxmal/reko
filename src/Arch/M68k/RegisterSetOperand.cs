@@ -77,7 +77,7 @@ namespace Reko.Arch.M68k
         public void WriteRegisterSet(uint data, MachineInstructionRenderer renderer)
         {
             string sep = "";
-            int maxReg = this.Width.Domain == Domain.Real ? 8 : 16;
+            int maxReg = this.Width.IsReal ? 8 : 16;
             int bitPos = maxReg - 1;
             for (int i = 0; i < maxReg; i++, --bitPos)
             {
@@ -104,7 +104,7 @@ namespace Reko.Arch.M68k
 
         private RegisterStorage GetRegister(int n)
         {
-            if (this.Width.Domain == Domain.Real)
+            if (this.Width.IsReal)
                 return Registers.GetRegister(n + Registers.fp0.Number);
             else
                 return Registers.GetRegister(n);

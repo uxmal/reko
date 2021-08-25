@@ -181,7 +181,7 @@ namespace Reko.Core.Memory
         /// </summary>
         /// <param name="type">Enough bytes read </param>
         /// <returns>The read value as a <see cref="Constant"/>.</returns>
-        public bool TryReadLe(PrimitiveType dataType, out Constant c)
+        public bool TryReadLe(DataType dataType, out Constant c)
         {
             bool ret;
             if (mem is null)
@@ -198,7 +198,7 @@ namespace Reko.Core.Memory
         /// </summary>
         /// <param name="type">Enough bytes read </param>
         /// <returns>The read value as a <see cref="Constant"/>.</returns>
-        public bool TryReadBe(PrimitiveType dataType, out Constant c)
+        public bool TryReadBe(DataType dataType, out Constant c)
         {
             bool ret = mem!.TryReadBe(off, dataType, out c);
             if (ret)
@@ -206,31 +206,27 @@ namespace Reko.Core.Memory
             return ret;
         }
 
-        public bool TryReadLeSigned(PrimitiveType w, out long value)
+        public bool TryReadLeSigned(DataType w, out long value)
         {
-            if ((w.Domain & Domain.Integer) != 0)
+            bool retval;
+            switch (w.Size)
             {
-                bool retval;
-                switch (w.Size)
-                {
-                case 1:
-                    retval = TryReadByte(out var b);
-                    value = (sbyte) b;
-                    return retval;
-                case 2:
-                    retval = TryReadLeInt16(out var s);
-                    value = s;
-                    return retval;
-                case 4:
-                    retval = TryReadLeInt32(out var i);
-                    value = i;
-                    return retval;
-                case 8:
-                    return TryReadLeInt64(out value);
-                default: throw new ArgumentOutOfRangeException();
-                }
+            case 1:
+                retval = TryReadByte(out var b);
+                value = (sbyte) b;
+                return retval;
+            case 2:
+                retval = TryReadLeInt16(out var s);
+                value = s;
+                return retval;
+            case 4:
+                retval = TryReadLeInt32(out var i);
+                value = i;
+                return retval;
+            case 8:
+                return TryReadLeInt64(out value);
+            default: throw new ArgumentOutOfRangeException();
             }
-            throw new ArgumentOutOfRangeException();
         }
 
         public ushort ReadLeUInt16()

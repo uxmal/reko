@@ -44,7 +44,7 @@ namespace Reko.Environments.Gameboy
             if (operand is ImmediateOperand imm)
             {
                 var number = imm.Value.ToUInt32();
-                if (imm.Width.Domain == Domain.SignedInt)
+                if (imm.Width is PrimitiveType pt && pt.Domain == Domain.SignedInt)
                 {
                     int sNumber = (short) number;
                     if (sNumber < 0)

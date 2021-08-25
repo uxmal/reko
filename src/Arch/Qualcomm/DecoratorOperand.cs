@@ -26,7 +26,7 @@ namespace Reko.Arch.Qualcomm
 {
     public class DecoratorOperand : MachineOperand
     {
-        public DecoratorOperand(PrimitiveType width, MachineOperand op) : base(width)
+        public DecoratorOperand(DataType width, MachineOperand op) : base(width)
         {
             this.Operand = op;
         }

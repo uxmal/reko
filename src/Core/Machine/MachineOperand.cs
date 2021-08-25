@@ -33,9 +33,9 @@ namespace Reko.Core.Machine
     /// </summary>
 	public abstract class MachineOperand
 	{
-        public PrimitiveType Width { get; set; }
+        public DataType Width { get; set; }
 
-		protected MachineOperand(PrimitiveType width)
+		protected MachineOperand(DataType width)
 		{
 			this.Width = width;
 		}

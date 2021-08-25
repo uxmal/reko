@@ -279,9 +279,9 @@ namespace Reko.Arch.X86.Assembler
                 new MemoryOperand(PrimitiveType.Byte, Constant.Create(AddressWidth, offset)));
         }
 
-        internal PrimitiveType? EnsureValidOperandSize(ParsedOperand op)
+        internal DataType? EnsureValidOperandSize(ParsedOperand op)
         {
-            PrimitiveType w = op.Operand.Width;
+            DataType w = op.Operand.Width;
             if (w is null)
                 Error("Width of the operand is unknown");
             return w;
@@ -374,7 +374,7 @@ namespace Reko.Arch.X86.Assembler
 
         public void ProcessImul(params ParsedOperand[] ops)
         {
-            PrimitiveType? dataWidth;
+            DataType? dataWidth;
             if (ops.Length == 1)
             {
                 dataWidth = EnsureValidOperandSize(ops[0]);
@@ -419,7 +419,7 @@ namespace Reko.Arch.X86.Assembler
 
         internal void ProcessIncDec(bool fDec, ParsedOperand op)
         {
-            PrimitiveType? dataWidth = EnsureValidOperandSize(op);
+            DataType? dataWidth = EnsureValidOperandSize(op);
             if (dataWidth is null)
                 return;
             if (op.Operand is RegisterOperand regOp)
@@ -536,7 +536,7 @@ namespace Reko.Arch.X86.Assembler
 
         internal void ProcessMov(params ParsedOperand[] ops)
         {
-            PrimitiveType? dataWidth = EnsureValidOperandSizes(ops, 2);
+            DataType? dataWidth = EnsureValidOperandSizes(ops, 2);
             if (dataWidth is null)
                 return;
 
@@ -646,7 +646,7 @@ namespace Reko.Arch.X86.Assembler
 
         internal void ProcessMovx(int opcode, ParsedOperand[] ops)
         {
-            PrimitiveType? dataWidth = EnsureValidOperandSize(ops[1]);
+            DataType? dataWidth = EnsureValidOperandSize(ops[1]);
             if (dataWidth is null)
                 return;
 
@@ -662,7 +662,7 @@ namespace Reko.Arch.X86.Assembler
 
         public void Mul(ParsedOperand op)
         {
-            PrimitiveType? dataWidth = EnsureValidOperandSize(op);
+            DataType? dataWidth = EnsureValidOperandSize(op);
             if (dataWidth is null)
                 return;
 
@@ -695,7 +695,7 @@ namespace Reko.Arch.X86.Assembler
                 return;
             }
 
-            PrimitiveType? dataWidth = EnsureValidOperandSize(op);
+            DataType? dataWidth = EnsureValidOperandSize(op);
             if (dataWidth is null)
                 return;
 
@@ -731,7 +731,7 @@ namespace Reko.Arch.X86.Assembler
 
         internal void ProcessSetCc(byte bits, ParsedOperand op)
         {
-            PrimitiveType? dataWidth = EnsureValidOperandSize(op);
+            DataType? dataWidth = EnsureValidOperandSize(op);
             if (dataWidth is null)
                 return;
             if (dataWidth != PrimitiveType.Byte)
@@ -744,7 +744,7 @@ namespace Reko.Arch.X86.Assembler
 
         internal void ProcessShiftRotation(byte subOpcode, ParsedOperand dst, ParsedOperand count)
         {
-            PrimitiveType? dataWidth = EnsureValidOperandSize(dst);
+            DataType? dataWidth = EnsureValidOperandSize(dst);
             if (dataWidth is null)
                 return;
             if (count.Operand is ImmediateOperand immOp)
@@ -847,7 +847,7 @@ namespace Reko.Arch.X86.Assembler
 
         internal void ProcessUnary(int operation, ParsedOperand op)
         {
-            PrimitiveType? dataWidth = EnsureValidOperandSize(op);
+            DataType? dataWidth = EnsureValidOperandSize(op);
             if (dataWidth is null)
                 return;
             EmitOpcode(0xF6 | IsWordWidth(dataWidth), dataWidth);
@@ -935,15 +935,15 @@ namespace Reko.Arch.X86.Assembler
 
         public RegisterStorage SegmentOverride { get; set; }
 
-        private bool IsDataWidthOverridden(PrimitiveType? dataWidth)
+        private bool IsDataWidthOverridden(DataType? dataWidth)
         {
             return dataWidth != null &&
-                dataWidth.Domain != Domain.Real &&
+                !dataWidth.IsReal &&
                 dataWidth.Size != 1 &&
                 dataWidth != SegmentDataWidth;
         }
 
-		public void EmitOpcode(int b, PrimitiveType? dataWidth)
+		public void EmitOpcode(int b, DataType? dataWidth)
 		{
 			if (SegmentOverride != RegisterStorage.None)
 			{
@@ -1006,9 +1006,9 @@ namespace Reko.Arch.X86.Assembler
             return seg;
         }
 
-        private PrimitiveType? EnsureValidOperandSizes(ParsedOperand[] ops, int count)
+        private DataType? EnsureValidOperandSizes(ParsedOperand[] ops, int count)
         {
-            PrimitiveType? w = ops[0].Operand.Width;
+            DataType? w = ops[0].Operand.Width;
             if (count == 1 && ops[0].Operand.Width == null)
             {
                 Error("Width of the first operand is unknown");
@@ -1067,7 +1067,7 @@ namespace Reko.Arch.X86.Assembler
         }
 
 
-        private int IsWordWidth(PrimitiveType? width)
+        private int IsWordWidth(DataType? width)
         {
             if (width is null)
                 Error("Operand width is undefined");
@@ -1098,7 +1098,7 @@ namespace Reko.Arch.X86.Assembler
             return registerEncodings[reg];
         }
 
-        public static Constant IntegralConstant(int i, PrimitiveType? width)
+        public static Constant IntegralConstant(int i, DataType? width)
         {
             if (-0x80 <= i && i < 0x80)
                 width = PrimitiveType.SByte;
@@ -1292,7 +1292,7 @@ namespace Reko.Arch.X86.Assembler
 
         public void Fstsw(ParsedOperand dst)
         {
-            PrimitiveType? dataWidth = EnsureValidOperandSize(dst);
+            DataType? dataWidth = EnsureValidOperandSize(dst);
             if (dataWidth is null)
                 return;
             if (dst.Operand is RegisterOperand regOp)
@@ -1423,7 +1423,7 @@ namespace Reko.Arch.X86.Assembler
             return Imm((int)constant);
         }
 
-        public ParsedOperand Imm(PrimitiveType width, int constant)
+        public ParsedOperand Imm(DataType width, int constant)
         {
             return new ParsedOperand(new ImmediateOperand(X86Assembler.IntegralConstant(constant, width)));
         }
@@ -1645,7 +1645,7 @@ namespace Reko.Arch.X86.Assembler
 
         internal void ProcessBinop(int binop, params ParsedOperand[] ops)
         {
-            PrimitiveType? dataWidth = EnsureValidOperandSizes(ops, 2);
+            DataType? dataWidth = EnsureValidOperandSizes(ops, 2);
             if (dataWidth is null)
                 return;
             if (ops[1].Operand is ImmediateOperand immOp)
@@ -1703,7 +1703,7 @@ namespace Reko.Arch.X86.Assembler
 
         internal void ProcessBitOp(ParsedOperand[] ops)
         {
-            PrimitiveType? dataWidth = EnsureValidOperandSize(ops[0]);
+            DataType? dataWidth = EnsureValidOperandSize(ops[0]);
             if (dataWidth is null)
                 return;
 
@@ -1724,7 +1724,7 @@ namespace Reko.Arch.X86.Assembler
 
         internal void ProcessBitScan(byte opCode, ParsedOperand dst, ParsedOperand src)
         {
-            PrimitiveType? dataWidth = EnsureValidOperandSize(src);
+            DataType? dataWidth = EnsureValidOperandSize(src);
             if (dataWidth is null)
                 return;
 
@@ -1765,7 +1765,7 @@ namespace Reko.Arch.X86.Assembler
 
         internal void ProcessDiv(int operation, ParsedOperand op)
         {
-            PrimitiveType? dataWidth = EnsureValidOperandSize(op);
+            DataType? dataWidth = EnsureValidOperandSize(op);
             if (dataWidth is null)
                 return;
 
@@ -1775,7 +1775,7 @@ namespace Reko.Arch.X86.Assembler
 
         internal void ProcessDoubleShift(byte bits, ParsedOperand op0, ParsedOperand op1, ParsedOperand count)
         {
-            PrimitiveType? dataWidth = EnsureValidOperandSize(op0);
+            DataType? dataWidth = EnsureValidOperandSize(op0);
             if (dataWidth is null)
                 return;
 
@@ -2052,7 +2052,7 @@ namespace Reko.Arch.X86.Assembler
 
         internal void Xchg(ParsedOperand[] ops)
         {
-            PrimitiveType? dataWidth = EnsureValidOperandSizes(ops, 2);
+            DataType? dataWidth = EnsureValidOperandSizes(ops, 2);
             if (dataWidth is null)
                 return;
             ParsedOperand otherOp = ops[1];

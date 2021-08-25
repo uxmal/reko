@@ -541,7 +541,7 @@ namespace Reko.Arch.Qualcomm
             return m.IMul(a, b);
         }
 
-        private Expression RewriteMpyu(PrimitiveType dtResult, Expression a, Expression b)
+        private Expression RewriteMpyu(DataType dtResult, Expression a, Expression b)
         {
             if (dtResult.BitSize == 64)
             {

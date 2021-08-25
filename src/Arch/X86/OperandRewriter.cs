@@ -70,7 +70,7 @@ namespace Reko.Arch.X86
             return binder.EnsureRegister(reg);
         }
 
-        public Identifier AluRegister(RegisterStorage reg, PrimitiveType vt)
+        public Identifier AluRegister(RegisterStorage reg, DataType vt)
         {
             return binder.EnsureRegister(arch.GetRegister(reg.Domain, new BitRange(0, vt.BitSize))!);
         }

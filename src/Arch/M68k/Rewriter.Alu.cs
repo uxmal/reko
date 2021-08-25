@@ -640,10 +640,10 @@ namespace Reko.Arch.M68k
                 m.Cond(opDst));
         }
 
-        public IEnumerable<Identifier> RegisterMaskIncreasing(Domain dom, uint bitSet, Func<int,RegisterStorage> regGenerator)
+        public IEnumerable<Identifier> RegisterMaskIncreasing(bool isReal, uint bitSet, Func<int,RegisterStorage> regGenerator)
         {
-            int maxReg = dom == Domain.Real ? 8 : 16;
-            int mask = dom == Domain.Real ? 0x80 : 0x8000;
+            int maxReg = isReal ? 8 : 16;
+            int mask = isReal ? 0x80 : 0x8000;
 
             for (int i = 0; i < maxReg; ++i, mask >>= 1)
             {
@@ -654,9 +654,9 @@ namespace Reko.Arch.M68k
             }
         }
 
-        public IEnumerable<Identifier> RegisterMaskDecreasing(Domain dom, uint bitSet, Func<int, RegisterStorage> regGenerator)
+        public IEnumerable<Identifier> RegisterMaskDecreasing(bool isReal, uint bitSet, Func<int, RegisterStorage> regGenerator)
         {
-            int maxReg = dom == Domain.Real ? 8 : 16;
+            int maxReg = isReal ? 8 : 16;
             for (int i = maxReg-1, mask = 1; i >= 0; --i, mask <<= 1)
             {
                 if ((bitSet & mask) != 0)
@@ -685,7 +685,7 @@ namespace Reko.Arch.M68k
                     srcReg = binder.CreateTemporary(src.EffectiveAddress.DataType);
                     m.Assign(srcReg, src.EffectiveAddress);
                 }
-                foreach (var reg in RegisterMaskIncreasing(dstRegs.Width.Domain, dstRegs.BitSet, regGenerator))
+                foreach (var reg in RegisterMaskIncreasing(dstRegs.Width.IsReal, dstRegs.BitSet, regGenerator))
                 {
                     m.Assign(reg, m.Mem(dataWidth, srcReg));
                     m.Assign(srcReg, m.IAddS(srcReg, dataWidth.Size));
@@ -698,7 +698,7 @@ namespace Reko.Arch.M68k
                 {
                 case PredecrementMemoryOperand preDec:
                     var dstReg = binder.EnsureRegister(preDec.Register);
-                    foreach (var reg in RegisterMaskDecreasing(dstRegs2.Width.Domain, dstRegs2.BitSet, regGenerator))
+                    foreach (var reg in RegisterMaskDecreasing(dstRegs2.Width.IsReal, dstRegs2.BitSet, regGenerator))
                     {
                         m.Assign(dstReg, m.ISubS(dstReg, dataWidth.Size));
                         m.Assign(m.Mem(dataWidth, dstReg), reg);
@@ -707,7 +707,7 @@ namespace Reko.Arch.M68k
                 case PostIncrementMemoryOperand postDec:
                     var srcReg = binder.CreateTemporary(dataWidth);
                     m.Assign(srcReg, binder.EnsureRegister(postDec.Register));
-                    foreach (var reg in RegisterMaskIncreasing(dstRegs2.Width.Domain, dstRegs2.BitSet, regGenerator))
+                    foreach (var reg in RegisterMaskIncreasing(dstRegs2.Width.IsReal, dstRegs2.BitSet, regGenerator))
                     {
                         m.Assign(reg, m.Mem(dataWidth, srcReg));
                         m.Assign(srcReg, m.IAddS(srcReg, dataWidth.Size));

@@ -481,7 +481,7 @@ namespace Reko.Arch.Arm.AArch64
             throw new NotImplementedException($"Rewriting {op.GetType().Name} not implemented yet.");
         }
 
-        private Expression MaybeZeroRegister(RegisterStorage reg, PrimitiveType dt)
+        private Expression MaybeZeroRegister(RegisterStorage reg, DataType dt)
         {
             if (reg == Registers.GpRegs32[31] ||
                 reg == Registers.GpRegs64[31])

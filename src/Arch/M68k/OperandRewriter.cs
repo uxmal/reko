@@ -78,7 +78,7 @@ namespace Reko.Arch.M68k
                 }
                 return r;
             case M68kImmediateOperand imm:
-                if (imm.Width.Domain == Domain.Real)
+                if (imm.Width.IsReal)
                     return imm.Constant.CloneExpression();
                 if (DataWidth != null && DataWidth.BitSize > imm.Width.BitSize)
                     return Constant.Create(DataWidth, imm.Constant.ToInt64());
@@ -209,7 +209,7 @@ namespace Reko.Arch.M68k
                     Expression tmpLo = r;
                     if (dataWidth != null &&
                         reg.Width.BitSize > dataWidth.BitSize &&
-                        reg.Width.Domain != Domain.Real)
+                        !reg.Width.IsReal)
                     {
                         Expression rSub = m.Slice(dataWidth, r, 0);
                         var srcExp = opGen(src, rSub);

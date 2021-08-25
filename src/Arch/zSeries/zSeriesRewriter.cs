@@ -447,7 +447,7 @@ namespace Reko.Arch.zSeries
             return ea;
         }
 
-        private Expression Op(int iop, PrimitiveType dt)
+        private Expression Op(int iop, DataType dt)
         {
             switch (instr.Operands[iop])
             {

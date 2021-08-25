@@ -33,7 +33,7 @@ namespace Reko.Arch.X86
     /// </summary>
     public class IntelAssemblyRenderer : X86AssemblyRenderer
     {
-        protected override string ExplicitOperandPrefix(PrimitiveType width)
+        protected override string ExplicitOperandPrefix(DataType width)
         {
             string s;
             if (width == PrimitiveType.Byte)

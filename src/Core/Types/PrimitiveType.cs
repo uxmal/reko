@@ -267,8 +267,10 @@ namespace Reko.Core.Types
         /// <summary>
         /// True if the type can only be some kind of integral numeric type
         /// </summary>
-		public override bool IsIntegral
-		    => (Domain & Domain.Integer) != 0 && (Domain & ~Domain.Integer) == 0;
+		public override bool IsIntegral =>
+            (Domain & Domain.Integer) != 0 && (Domain & ~Domain.Integer) == 0;
+        public override bool IsReal =>
+            Domain == Domain.Real;
 
         public override bool IsWord { get; }
 

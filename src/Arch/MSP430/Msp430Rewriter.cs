@@ -133,7 +133,7 @@ namespace Reko.Arch.Msp430
             return host.Intrinsic("__dadd", false, a.DataType, a, b);
         }
 
-        private Expression RewriteOp(MachineOperand op, PrimitiveType? dt = null)
+        private Expression RewriteOp(MachineOperand op, DataType? dt = null)
         {
             dt ??= op.Width ?? instr.dataWidth!;
             switch (op)

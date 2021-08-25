@@ -31,10 +31,10 @@ namespace Reko.Arch.X86
 	{
 		public Mnemonic Mnemonic { get; set; }  // Instruction mnemonic.
         public int repPrefix;                   // 0 = no prefix, 2 = repnz, 3 = repz
-		public PrimitiveType dataWidth;	        // Width of the data (if it's a word).
+		public DataType dataWidth;	            // Width of the data (if it's a word).
 		public PrimitiveType addrWidth;	        // width of the address mode.	// TODO: belongs in MemoryOperand
 
-		public X86Instruction(Mnemonic mnemonic, InstrClass iclass, PrimitiveType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
+		public X86Instruction(Mnemonic mnemonic, InstrClass iclass, DataType dataWidth, PrimitiveType addrWidth, params MachineOperand [] ops)
 		{
 			this.Mnemonic = mnemonic;
             this.InstructionClass = iclass;

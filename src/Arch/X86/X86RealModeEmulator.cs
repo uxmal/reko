@@ -69,7 +69,7 @@ namespace Reko.Arch.X86
             return ToLinear(seg, off);
         }
 
-        protected override void Lods(PrimitiveType dt)
+        protected override void Lods(DataType dt)
         {
             var ds = (ushort) ReadRegister(X86.Registers.ds);
             var si = (uint) ReadRegister(X86.Registers.si);
@@ -83,7 +83,7 @@ namespace Reko.Arch.X86
             WriteRegister(X86.Registers.si, si);
         }
 
-        protected override void Movs(PrimitiveType dt)
+        protected override void Movs(DataType dt)
         {
             var ds = (ushort) ReadRegister(X86.Registers.ds);
             var es = (ushort) ReadRegister(X86.Registers.es);
@@ -98,7 +98,7 @@ namespace Reko.Arch.X86
             WriteRegister(X86.Registers.di, di);
         }
 
-        protected override void Scas(PrimitiveType dt)
+        protected override void Scas(DataType dt)
         {
             var mask = masks[dt.Size];
             var a = ReadRegister(X86.Registers.eax) & mask.value;
@@ -112,7 +112,7 @@ namespace Reko.Arch.X86
             Flags |= (a == value ? Zmask : 0u);
         }
 
-        protected override void Stos(PrimitiveType dt)
+        protected override void Stos(DataType dt)
         {
             var es = (ushort) ReadRegister(X86.Registers.es);
             var di = (uint) ReadRegister(X86.Registers.di);
@@ -123,7 +123,7 @@ namespace Reko.Arch.X86
             WriteRegister(X86.Registers.di, di);
         }
 
-        protected override uint Pop(PrimitiveType dt)
+        protected override uint Pop(DataType dt)
         {
             var ss = (ushort) ReadRegister(X86.Registers.ss);
             var sp = (ushort) ReadRegister(X86.Registers.sp);
@@ -132,7 +132,7 @@ namespace Reko.Arch.X86
             return value;
         }
 
-        protected override void Push(ulong value, PrimitiveType dt)
+        protected override void Push(ulong value, DataType dt)
         {
             var ss = (ushort) ReadRegister(X86.Registers.ss);
             var sp = (ushort) ReadRegister(X86.Registers.sp) - (uint)dt.Size;

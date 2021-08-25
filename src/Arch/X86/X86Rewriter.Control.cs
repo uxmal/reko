@@ -83,7 +83,7 @@ namespace Reko.Arch.X86
                 "FSTSW/TEST AH,0x{0:X2}/J{1} not implemented.", mask, cc));
              */
 
-        private void RewriteCall(MachineOperand callTarget, PrimitiveType opsize)
+        private void RewriteCall(MachineOperand callTarget, DataType opsize)
         {
             Address? addr = OperandAsCodeAddress(callTarget);
             if (addr != null)

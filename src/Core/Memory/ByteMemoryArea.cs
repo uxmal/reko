@@ -207,7 +207,7 @@ namespace Reko.Core.Memory
         /// <param name="imageOffset">Offset from image start, in bytes.</param>
         /// <param name="type">Size of the word being requested.</param>
         /// <returns>Typed constant from the image.</returns>
-        public override bool TryReadLe(long imageOffset, PrimitiveType type, out Constant c)
+        public override bool TryReadLe(long imageOffset, DataType type, out Constant c)
         {
             var rc = ReadRelocation(imageOffset);
             if (rc != null && rc.DataType.Size == type.Size)
@@ -218,7 +218,7 @@ namespace Reko.Core.Memory
             return TryReadLe(this.Bytes, imageOffset, type, out c);
         }
 
-        public override bool TryReadBe(long imageOffset, PrimitiveType type, out Constant c)
+        public override bool TryReadBe(long imageOffset, DataType type, out Constant c)
         {
             var rc = ReadRelocation(imageOffset);
             if (rc != null && rc.DataType.Size == type.Size)
@@ -234,9 +234,9 @@ namespace Reko.Core.Memory
             return TryReadBe(Bytes, imageOffset, type, out c);
         }
 
-        public static bool TryReadLe(byte[] abImage, long imageOffset, PrimitiveType type, out Constant c)
+        public static bool TryReadLe(byte[] abImage, long imageOffset, DataType type, out Constant c)
         {
-            if (type.Domain == Domain.Real)
+            if (type.IsReal)
             {
                 switch (type.Size)
                 {
@@ -291,9 +291,9 @@ namespace Reko.Core.Memory
             return false;
         }
 
-        public static bool TryReadBe(byte[] abImage, long imageOffset, PrimitiveType type, out Constant value)
+        public static bool TryReadBe(byte[] abImage, long imageOffset, DataType type, out Constant value)
         {
-            if (type.Domain == Domain.Real)
+            if (type.IsReal)
             {
                 switch (type.Size)
                 {

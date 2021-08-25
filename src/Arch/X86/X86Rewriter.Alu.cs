@@ -681,11 +681,20 @@ namespace Reko.Arch.X86
                 EmitCcInstr(product, X86Instruction.DefCc(instrCur.Mnemonic));
                 return;
             case 2:
-                EmitBinOp(op, instrCur.Operands[0], instrCur.Operands[0].Width.MaskDomain(resultDomain), SrcOp(0), SrcOp(1), 
+                EmitBinOp(
+                    op,
+                    instrCur.Operands[0], 
+                    PrimitiveType.Create(resultDomain, instrCur.Operands[0].Width.BitSize),
+                    SrcOp(0),
+                    SrcOp(1), 
                     CopyFlags.EmitCc);
                 return;
             case 3:
-                EmitBinOp(op, instrCur.Operands[0], instrCur.Operands[0].Width.MaskDomain(resultDomain), SrcOp(1), SrcOp(2),
+                EmitBinOp(op,
+                    instrCur.Operands[0],
+                    PrimitiveType.Create(resultDomain, instrCur.Operands[0].Width.BitSize),
+                    SrcOp(1),
+                    SrcOp(2),
                     CopyFlags.EmitCc);
                 return;
             default:
@@ -1001,14 +1010,14 @@ namespace Reko.Arch.X86
             RewritePop(dasm.Current.Operands[0], dasm.Current.Operands[0].Width);
         }
 
-        private void RewritePop(MachineOperand op, PrimitiveType width)
+        private void RewritePop(MachineOperand op, DataType width)
         {
             var sp = StackPointer();
             m.Assign(SrcOp(op), orw.StackAccess(sp, width));
             m.Assign(sp, m.IAddS(sp, width.Size));
         }
 
-        private void RewritePop(Identifier dst, PrimitiveType width)
+        private void RewritePop(Identifier dst, DataType width)
         {
             var sp = StackPointer();
             m.Assign(dst, orw.StackAccess(sp, width));

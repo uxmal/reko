@@ -54,17 +54,17 @@ namespace Reko.Arch.X86
             return GetEffectiveOffset(m);
         }
 
-        protected override void Lods(PrimitiveType dt)
+        protected override void Lods(DataType dt)
         {
             throw new NotImplementedException();
         }
 
-        protected override void Movs(PrimitiveType dt)
+        protected override void Movs(DataType dt)
         {
             throw new NotImplementedException();
         }
 
-        protected override void Scas(PrimitiveType dt)
+        protected override void Scas(DataType dt)
         {
             var mask = masks[dt.Size];
             var a = ReadRegister(X86.Registers.eax) & mask.value;
@@ -77,13 +77,13 @@ namespace Reko.Arch.X86
             Flags |= (a == value ? Zmask : 0u);
         }
 
-        protected override void Stos(PrimitiveType dt)
+        protected override void Stos(DataType dt)
         {
             throw new NotImplementedException();
         }
 
 
-        protected override uint Pop(PrimitiveType dt)
+        protected override uint Pop(DataType dt)
         {
             var esp = ReadRegister(X86.Registers.esp);
             var word = ReadLeUInt32(esp);
@@ -91,7 +91,7 @@ namespace Reko.Arch.X86
             return word;
         }
 
-        protected override void Push(ulong word, PrimitiveType dt)
+        protected override void Push(ulong word, DataType dt)
         {
             var esp = (uint) Registers[X86.Registers.esp.Number] - 4;
             WriteLeUInt32(esp, (uint) word);

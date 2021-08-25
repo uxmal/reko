@@ -43,8 +43,8 @@ namespace Reko.Core.Assemblers
         void EmitBeUInt32(int ui);
         void EmitByte(int b);
         void EmitBytes(int b, int count);
-        void EmitLe(PrimitiveType width, int value);
-        void EmitLeImmediate(Constant c, PrimitiveType dt);
+        void EmitLe(DataType width, int value);
+        void EmitLeImmediate(Constant c, DataType dt);
         void EmitLeUInt16(int us);
         void EmitLeUInt32(uint ui);
         void EmitString(string str, Encoding encoding);
@@ -123,7 +123,7 @@ namespace Reko.Core.Assemblers
 			stmOut.WriteByte((byte)(l));
 		}
 
-		public void EmitLeImmediate(Constant c, PrimitiveType dt)
+		public void EmitLeImmediate(Constant c, DataType dt)
 		{
 			switch (dt.Size)
 			{
@@ -134,7 +134,7 @@ namespace Reko.Core.Assemblers
 			}
 		}
 
-		public void EmitLe(PrimitiveType vt, int v)
+		public void EmitLe(DataType vt, int v)
 		{
 			switch (vt.Size)
 			{

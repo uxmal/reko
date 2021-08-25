@@ -267,7 +267,7 @@ namespace Reko.Arch.X86
 
         protected abstract string FormatUnsignedValue(ulong n, string? format = null);
 
-        protected abstract string ExplicitOperandPrefix(PrimitiveType width);
+        protected abstract string ExplicitOperandPrefix(DataType width);
 
         private bool NeedsExplicitMemorySize(X86Instruction instr)
         {

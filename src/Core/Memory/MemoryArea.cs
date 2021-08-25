@@ -90,7 +90,7 @@ namespace Reko.Core.Memory
             return offset < (ulong) Length;
         }
 
-        public abstract bool TryReadBe(long imageOffset, PrimitiveType type, out Constant c);
+        public abstract bool TryReadBe(long imageOffset, DataType type, out Constant c);
 
         public bool TryReadBe(Address addr, PrimitiveType type, out Constant c)
         {
@@ -120,7 +120,7 @@ namespace Reko.Core.Memory
         public bool TryReadBeUInt64(Address off, out ulong retvalue) => TryReadBeUInt64(off - BaseAddress, out retvalue);
 
 
-        public abstract bool TryReadLe(long imageOffset, PrimitiveType type, out Constant c);
+        public abstract bool TryReadLe(long imageOffset, DataType type, out Constant c);
 
         public bool TryReadLe(Address addr, PrimitiveType type, out Constant c)
         {
