@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch32
 {
-    public class BarrierOperand : MachineOperand
+    public class BarrierOperand : AbstractMachineOperand
     {
         public BarrierOperand(BarrierOption barrierOption) : base(PrimitiveType.Byte)
         {

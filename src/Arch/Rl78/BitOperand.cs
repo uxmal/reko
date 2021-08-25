@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Rl78
 {
-    public class BitOperand : MachineOperand
+    public class BitOperand : AbstractMachineOperand
     {
         public BitOperand(MachineOperand op, int bitPos) : base(PrimitiveType.Bool)
         {

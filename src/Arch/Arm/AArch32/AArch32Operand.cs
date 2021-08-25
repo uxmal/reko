@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch32
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public RegisterStorage? BaseRegister;
         public Constant? Offset;
@@ -54,7 +54,7 @@ namespace Reko.Arch.Arm.AArch32
     /// <summary>
     /// Used by AArch32 to express endianness.
     /// </summary>
-    public class EndiannessOperand : MachineOperand
+    public class EndiannessOperand : AbstractMachineOperand
     {
         public EndiannessOperand(bool bigEndian) : base(PrimitiveType.Bool)
         {

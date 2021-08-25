@@ -60,7 +60,7 @@ namespace Reko.Arch.PowerPC
         }
     }
 
-    public class AddressOperand : MachineOperand
+    public class AddressOperand : AbstractMachineOperand
     {
         public Address Address;
 
@@ -76,7 +76,7 @@ namespace Reko.Arch.PowerPC
         }
     }
 
-    public class ConditionOperand : MachineOperand
+    public class ConditionOperand : AbstractMachineOperand
     {
         public uint condition;
 

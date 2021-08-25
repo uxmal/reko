@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.RiscV
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
 
         public MemoryOperand(PrimitiveType width, RegisterStorage baseRegister, int offset) : base(width)

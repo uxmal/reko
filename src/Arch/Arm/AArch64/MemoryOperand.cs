@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch64
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public RegisterStorage? Base;
         public Constant? Offset;
@@ -40,7 +40,7 @@ namespace Reko.Arch.Arm.AArch64
         public bool PreIndex;
         public bool PostIndex;
 
-        public MemoryOperand(PrimitiveType dt)  : base(dt)
+        public MemoryOperand(PrimitiveType dt) : base(dt)
         {
         }
 

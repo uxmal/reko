@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch64
 {
-    public class ConditionOperand : MachineOperand
+    public class ConditionOperand : AbstractMachineOperand
     {
         public ConditionOperand(ArmCondition cond) : base(PrimitiveType.Byte)
         {

@@ -26,7 +26,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.PaRisc
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public int Offset;
         public RegisterStorage Base;

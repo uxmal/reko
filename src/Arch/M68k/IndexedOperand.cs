@@ -32,7 +32,7 @@ namespace Reko.Arch.M68k
     /// <summary>
     /// The Godzilla of address operands, supporting Indirect pre- and post-indexed operation.
     /// </summary>
-    public class IndexedOperand : MachineOperand, M68kOperand
+    public class IndexedOperand : AbstractMachineOperand, M68kOperand
     {
         public Constant? BaseDisplacement;
         public Constant? OuterDisplacement;
@@ -133,7 +133,7 @@ namespace Reko.Arch.M68k
             if (OuterDisplacement != null)
             {
                 renderer.WriteString(sep);
-                renderer.WriteString(MachineOperand.FormatSignedValue(OuterDisplacement));
+                renderer.WriteString(FormatSignedValue(OuterDisplacement));
             }
             renderer.WriteString(")");
         }

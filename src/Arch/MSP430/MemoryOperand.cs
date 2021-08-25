@@ -25,7 +25,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.Msp430
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public RegisterStorage? Base;
         public short Offset;

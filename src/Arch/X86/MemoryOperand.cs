@@ -27,9 +27,9 @@ using System.Text;
 
 namespace Reko.Arch.X86
 {
-	public class MemoryOperand : MachineOperand
+	public class MemoryOperand : AbstractMachineOperand
 	{
-		public RegisterStorage SegOverride  {get;set;}
+		public RegisterStorage SegOverride { get; set; }
         public RegisterStorage Base { get; set; }
         public RegisterStorage Index { get; set; }
         public byte Scale { get; set; }

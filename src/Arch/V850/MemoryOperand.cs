@@ -24,7 +24,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.V850
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public MemoryOperand(PrimitiveType dt, RegisterStorage ep, int offset) : base(dt)
         {

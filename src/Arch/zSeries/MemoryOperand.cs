@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.zSeries
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public RegisterStorage? Base;
         public RegisterStorage? Index;

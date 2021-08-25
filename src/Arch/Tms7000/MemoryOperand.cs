@@ -25,7 +25,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.Tms7000
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public RegisterStorage? Register;
         public Address? Address;

@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.Arch.MCore
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public MemoryOperand(PrimitiveType width, RegisterStorage baseReg, int offset) : base(width)
         {

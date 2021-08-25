@@ -30,7 +30,7 @@ using System.Diagnostics;
 
 namespace Reko.Arch.Mips
 {
-    public class IndexedOperand : MachineOperand
+    public class IndexedOperand : AbstractMachineOperand
     {
         public readonly RegisterStorage Base;
         public readonly RegisterStorage Index;

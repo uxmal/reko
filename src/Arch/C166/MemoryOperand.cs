@@ -4,7 +4,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.C166
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public MemoryOperand(PrimitiveType width) : base(width)
         {

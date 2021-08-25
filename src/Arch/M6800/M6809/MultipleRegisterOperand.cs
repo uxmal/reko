@@ -25,7 +25,7 @@ using System.Collections.Generic;
 
 namespace Reko.Arch.M6800.M6809
 {
-    public class MultipleRegisterOperand : MachineOperand
+    public class MultipleRegisterOperand : AbstractMachineOperand
     {
         private readonly RegisterStorage[] regs;
         private readonly byte b;

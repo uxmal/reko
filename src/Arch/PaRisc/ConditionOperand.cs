@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.PaRisc
 {
-    public class ConditionOperand : MachineOperand
+    public class ConditionOperand : AbstractMachineOperand
     {
         public readonly ConditionType Type;
         public readonly string Display;

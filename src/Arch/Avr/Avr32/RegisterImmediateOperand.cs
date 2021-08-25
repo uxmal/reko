@@ -27,9 +27,9 @@ using System.Xml.Schema;
 namespace Reko.Arch.Avr.Avr32
 {
     /// <summary>
-    /// Combines a register with an immedate using an operato
+    /// Combines a register with an immedate using an operator
     /// </summary>
-    public class RegisterImmediateOperand : MachineOperand
+    public class RegisterImmediateOperand : AbstractMachineOperand
     {
         private static readonly Dictionary<Mnemonic, string> mpMnemonicToString = new Dictionary<Mnemonic, string>
         {

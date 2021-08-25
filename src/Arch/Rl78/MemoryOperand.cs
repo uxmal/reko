@@ -25,7 +25,7 @@ using System;
 
 namespace Reko.Arch.Rl78
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public MemoryOperand(PrimitiveType dt) : base(dt)
         {

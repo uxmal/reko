@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Reko.Arch.Sparc
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public readonly RegisterStorage Base;
         public readonly Constant Offset;
@@ -52,7 +52,7 @@ namespace Reko.Arch.Sparc
         }
     }
 
-    public class IndexedMemoryOperand : MachineOperand
+    public class IndexedMemoryOperand : AbstractMachineOperand
     {
         public readonly RegisterStorage Base;
         public readonly RegisterStorage Index;

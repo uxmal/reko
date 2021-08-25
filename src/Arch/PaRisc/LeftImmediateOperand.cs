@@ -32,7 +32,7 @@ namespace Reko.Arch.PaRisc
     /// <summary>
     /// Represents a signed left side of a constant.
     /// </summary>
-    public class LeftImmediateOperand : MachineOperand
+    public class LeftImmediateOperand : AbstractMachineOperand
     {
         public LeftImmediateOperand(int value) : base(PrimitiveType.Word32)
         {

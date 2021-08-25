@@ -30,7 +30,7 @@ namespace Reko.Core.Machine
     /// Represents a register operand of a <see cref="MachineInstruction"/>. Most
     /// modern architectures support this.
     /// </summary>
-    public class RegisterOperand : MachineOperand
+    public class RegisterOperand : AbstractMachineOperand
     {
         public RegisterOperand(RegisterStorage reg) :
             base(reg.DataType)
@@ -46,7 +46,7 @@ namespace Reko.Core.Machine
         }
     }
 
-    public class FlagGroupOperand : MachineOperand
+    public class FlagGroupOperand : AbstractMachineOperand
     {
         public FlagGroupOperand(FlagGroupStorage grf) : base((PrimitiveType)grf.DataType)
         {
@@ -61,7 +61,7 @@ namespace Reko.Core.Machine
         }
     }
 
-    public class SequenceOperand : MachineOperand
+    public class SequenceOperand : AbstractMachineOperand
     {
         public SequenceOperand(SequenceStorage seq) : base((PrimitiveType) seq.DataType)
         {

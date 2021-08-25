@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Reko.Arch.Z80
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public RegisterStorage? Base;
         public Constant? Offset;

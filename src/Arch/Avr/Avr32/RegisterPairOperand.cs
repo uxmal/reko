@@ -24,7 +24,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.Avr.Avr32
 {
-    public class RegisterPairOperand : MachineOperand
+    public class RegisterPairOperand : AbstractMachineOperand
     {
         public RegisterPairOperand(RegisterStorage hiRegister, RegisterStorage loRegister)
             : base(PrimitiveType.Word64)

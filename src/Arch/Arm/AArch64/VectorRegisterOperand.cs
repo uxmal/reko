@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch64
 {
-    public class VectorRegisterOperand : MachineOperand
+    public class VectorRegisterOperand : AbstractMachineOperand
     {
         public VectorRegisterOperand(PrimitiveType dt, RegisterStorage reg) : base(dt)
         {

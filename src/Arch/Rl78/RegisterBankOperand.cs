@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Rl78
 {
-    public class RegisterBankOperand : MachineOperand
+    public class RegisterBankOperand : AbstractMachineOperand
     {
         public RegisterBankOperand(int bankNo) : base(PrimitiveType.Byte)
         {

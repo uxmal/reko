@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.Arch.Tlcs.Tlcs900
 {
-    public class ConditionOperand : MachineOperand
+    public class ConditionOperand : AbstractMachineOperand
     {
         public CondCode Code;
 

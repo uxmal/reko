@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Alpha
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public RegisterStorage Base;
         public short Offset;

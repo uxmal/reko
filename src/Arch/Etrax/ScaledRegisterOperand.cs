@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.Arch.Etrax
 {
-    public class ScaledRegisterOperand : MachineOperand
+    public class ScaledRegisterOperand : AbstractMachineOperand
     {
         public ScaledRegisterOperand(RegisterStorage reg, PrimitiveType scale)
             : base(reg.DataType)

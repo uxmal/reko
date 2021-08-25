@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace Reko.Arch.Avr.Avr32
 {
-    public class RegisterRange : MachineOperand
+    public class RegisterRange : AbstractMachineOperand
     {
         public RegisterStorage[] Registers { get; }
         public int RegisterIndex { get; }

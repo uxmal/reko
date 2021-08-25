@@ -24,7 +24,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.Altera.Nios2
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public MemoryOperand(PrimitiveType width) : base(width)
         {

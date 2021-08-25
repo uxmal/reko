@@ -29,7 +29,7 @@ namespace Reko.Arch.C166
     /// <summary>
     /// Decorate another operand with a bit.
     /// </summary>
-    public class BitOfOperand : MachineOperand
+    public class BitOfOperand : AbstractMachineOperand
     {
         public BitOfOperand(int bit, MachineOperand innerOp) : base(PrimitiveType.Bool)
         {

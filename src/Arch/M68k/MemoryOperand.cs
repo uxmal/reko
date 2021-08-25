@@ -49,7 +49,7 @@ namespace Reko.Arch.M68k
         T Visit(BitfieldOperand bitfield);
     }
 
-    public abstract class M68kOperandImpl : MachineOperand, M68kOperand
+    public abstract class M68kOperandImpl : AbstractMachineOperand, M68kOperand
     {
         public M68kOperandImpl(PrimitiveType dataWidth)
             : base(dataWidth)
@@ -76,7 +76,7 @@ namespace Reko.Arch.M68k
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
             renderer.WriteString("#");
-            renderer.WriteString(MachineOperand.FormatValue(Constant, false, M68kDisassembler.HexStringFormat));
+            renderer.WriteString(FormatValue(Constant, false, M68kDisassembler.HexStringFormat));
         }
     }
 
@@ -151,7 +151,7 @@ namespace Reko.Arch.M68k
         {
             if (Offset != null)
             {
-                renderer.WriteString(MachineOperand.FormatValue(Offset, false, M68kDisassembler.HexStringFormat));
+                renderer.WriteString(FormatValue(Offset, false, M68kDisassembler.HexStringFormat));
             }
             renderer.WriteString("(");
             renderer.WriteString(Base.Name);

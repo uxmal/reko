@@ -30,7 +30,7 @@ using System.Diagnostics;
 
 namespace Reko.Arch.Mips
 {
-    public class IndirectOperand : MachineOperand
+    public class IndirectOperand : AbstractMachineOperand
     {
         public int Offset;
         public RegisterStorage Base;

@@ -25,7 +25,7 @@ using System;
 
 namespace Reko.Arch.WE32100
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public MemoryOperand(PrimitiveType width) : base(width)
         {

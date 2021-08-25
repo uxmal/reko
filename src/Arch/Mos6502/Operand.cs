@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Reko.Arch.Mos6502
 {
-    public class Operand : MachineOperand
+    public class Operand : AbstractMachineOperand
     {
         public AddressMode Mode;
         public RegisterStorage? Register;

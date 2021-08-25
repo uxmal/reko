@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Reko.Arch.Avr.Avr32
 {
-    public class LiteralOperand : MachineOperand
+    public class LiteralOperand : AbstractMachineOperand
     {
         public LiteralOperand(string literal) : base(PrimitiveType.Word32)
         {

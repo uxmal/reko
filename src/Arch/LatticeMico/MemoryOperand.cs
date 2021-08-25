@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.Arch.LatticeMico
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public readonly RegisterStorage Base;
         public readonly int Offset;

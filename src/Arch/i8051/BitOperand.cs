@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.i8051
 {
-    public class BitOperand : MachineOperand
+    public class BitOperand : AbstractMachineOperand
     {
         public BitOperand(RegisterStorage sfr, int bit, bool negated) : base(PrimitiveType.Bool)
         {

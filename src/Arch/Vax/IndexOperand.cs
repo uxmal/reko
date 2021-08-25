@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.Arch.Vax
 {
-    public class IndexOperand : MachineOperand
+    public class IndexOperand : AbstractMachineOperand
     {
         public IndexOperand(PrimitiveType width, MachineOperand baseOperand, RegisterStorage indexRegister) 
             : base(width)

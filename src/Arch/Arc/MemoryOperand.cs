@@ -27,7 +27,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.Arc
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public MemoryOperand(PrimitiveType dt) : base(dt)
         {

@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Reko.Arch.Qualcomm
 {
-    public class ApplicationOperand : MachineOperand
+    public class ApplicationOperand : AbstractMachineOperand
     {
         public ApplicationOperand(DataType width, Mnemonic mnemonic, params MachineOperand[] ops) : base(width)
         {

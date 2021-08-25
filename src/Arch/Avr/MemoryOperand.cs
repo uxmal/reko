@@ -26,7 +26,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.Avr
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public RegisterStorage? Base;
         public short Displacement;

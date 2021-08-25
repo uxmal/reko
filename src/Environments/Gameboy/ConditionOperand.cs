@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Reko.Environments.Gameboy
 {
-    public class ConditionOperand : MachineOperand
+    public class ConditionOperand : AbstractMachineOperand
     {
         public ConditionOperand(CCode cc) : base(PrimitiveType.Byte)
         {

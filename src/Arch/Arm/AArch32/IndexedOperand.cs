@@ -32,7 +32,7 @@ namespace Reko.Arch.Arm.AArch32
     /// <summary>
     /// Models an ARM indexed SIMD register.
     /// </summary>
-    public class IndexedOperand : MachineOperand
+    public class IndexedOperand : AbstractMachineOperand
     {
         public IndexedOperand(PrimitiveType dt, RegisterStorage reg, int index) : base(dt)
         {

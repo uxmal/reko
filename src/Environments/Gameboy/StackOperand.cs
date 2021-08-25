@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.Environments.Gameboy
 {
-    public class StackOperand : MachineOperand
+    public class StackOperand : AbstractMachineOperand
     {
         public StackOperand(RegisterStorage sp, int offset) : base(PrimitiveType.Ptr16)
         {

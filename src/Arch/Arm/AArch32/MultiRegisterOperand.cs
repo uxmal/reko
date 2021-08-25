@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Arm.AArch32
 {
-    public class MultiRegisterOperand : MachineOperand
+    public class MultiRegisterOperand : AbstractMachineOperand
     {
         private readonly RegisterStorage[] registers;
         private readonly uint bitmask;

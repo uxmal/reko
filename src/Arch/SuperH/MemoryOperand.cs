@@ -31,7 +31,7 @@ using Reg = Reko.Core.RegisterStorage;
 
 namespace Reko.Arch.SuperH
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public AddressingMode mode;
         public Reg reg;

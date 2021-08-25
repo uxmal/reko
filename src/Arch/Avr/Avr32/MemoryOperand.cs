@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.Arch.Avr.Avr32
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         private MemoryOperand(PrimitiveType dt) 
             : base(dt)

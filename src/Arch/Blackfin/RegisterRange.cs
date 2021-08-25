@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.Blackfin
 {
-    public class RegisterRange : MachineOperand
+    public class RegisterRange : AbstractMachineOperand
     {
         public RegisterRange(PrimitiveType width, RegisterStorage [] regs, int max, int min) : base(width)
         {

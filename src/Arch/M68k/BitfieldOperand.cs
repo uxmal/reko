@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Arch.M68k
 {
-    public class BitfieldOperand : MachineOperand, M68kOperand
+    public class BitfieldOperand : AbstractMachineOperand, M68kOperand
     {
         public MachineOperand BitOffset;
         public MachineOperand BitWidth;

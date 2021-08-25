@@ -25,7 +25,7 @@ using System.Runtime.InteropServices;
 
 namespace Reko.Arch.Qualcomm
 {
-    public class RegisterPairOperand : MachineOperand
+    public class RegisterPairOperand : AbstractMachineOperand
     {
 
         public RegisterPairOperand(RegisterStorage regHi, RegisterStorage regLo) : base(PrimitiveType.Word64)

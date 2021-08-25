@@ -43,7 +43,7 @@ namespace Reko.Arch.M6800.M6812
             switch (op)
             {
             case ImmediateOperand immOp:
-                renderer.WriteString(MachineOperand.FormatUnsignedValue(immOp.Value, "#${1}"));
+                renderer.WriteString(AbstractMachineOperand.FormatUnsignedValue(immOp.Value, "#${1}"));
                 return;
             }
             op.Render(renderer, options);

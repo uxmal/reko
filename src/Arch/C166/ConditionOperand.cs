@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Reko.Arch.C166
 {
-    public class ConditionalOperand : MachineOperand
+    public class ConditionalOperand : AbstractMachineOperand
     {
         public ConditionalOperand(CondCode cc) : base(PrimitiveType.Bool)
         {

@@ -30,7 +30,7 @@ using System.Text;
 
 namespace Reko.Arch.Tlcs.Tlcs900
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public RegisterStorage? Base;
         public RegisterStorage? Index;

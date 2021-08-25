@@ -25,7 +25,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.M6800.M6809
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public Mode AccessMode;
         public int Offset;

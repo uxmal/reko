@@ -31,11 +31,18 @@ namespace Reko.Core.Machine
     /// <summary>
     /// Abstraction of a processor instruction operand.
     /// </summary>
-	public abstract class MachineOperand
+	public interface MachineOperand
+	{
+        PrimitiveType Width { get; set; }
+        string ToString(MachineInstructionRendererOptions options);
+        public void Render(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options);
+    }
+
+    public abstract class AbstractMachineOperand : MachineOperand
 	{
         public DataType Width { get; set; }
 
-		protected MachineOperand(DataType width)
+		protected AbstractMachineOperand(DataType width)
 		{
 			this.Width = width;
 		}
@@ -139,7 +146,7 @@ namespace Reko.Core.Machine
     /// <summary>
     /// Represents an immediate constant value used by a MachineInstruction.
     /// </summary>
-	public class ImmediateOperand : MachineOperand
+	public class ImmediateOperand : AbstractMachineOperand
 	{
         public ImmediateOperand(Constant c) : base((PrimitiveType)c.DataType)
 		{
@@ -208,12 +215,12 @@ namespace Reko.Core.Machine
             return new ImmediateOperand(Constant.Int32(value));
         }
 
-        public static MachineOperand Int16(short value)
+        public static AbstractMachineOperand Int16(short value)
         {
             return new ImmediateOperand(Constant.Int16(value));
         }
 
-        public static MachineOperand Word16(ushort value)
+        public static AbstractMachineOperand Word16(ushort value)
         {
             return new ImmediateOperand(Constant.Word16(value));
         }
@@ -222,7 +229,7 @@ namespace Reko.Core.Machine
     /// <summary>
     /// Represents a machine address.
     /// </summary>
-    public class AddressOperand : MachineOperand
+    public class AddressOperand : AbstractMachineOperand
     {
         public Address Address;
 
@@ -263,7 +270,7 @@ namespace Reko.Core.Machine
     /// <summary>
     /// Represents a FPU operand.
     /// </summary>
-	public class FpuOperand : MachineOperand
+	public class FpuOperand : AbstractMachineOperand
 	{
 		private readonly int fpuReg;
 

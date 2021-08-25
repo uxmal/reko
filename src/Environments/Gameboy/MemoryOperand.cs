@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Reko.Environments.Gameboy
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public MemoryOperand(PrimitiveType size) : base(size)
         {

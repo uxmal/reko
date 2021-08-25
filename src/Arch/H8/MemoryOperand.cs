@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Reko.Arch.H8
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         private MemoryOperand(PrimitiveType dt) : base(dt)
         {

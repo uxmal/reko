@@ -34,7 +34,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// <summary>
     /// A PIC immediate operand.
     /// </summary>
-    public class PICOperandImmediate : MachineOperand, IOperand
+    public class PICOperandImmediate : AbstractMachineOperand, IOperand
     {
 
         public PICOperandImmediate(uint immValue, PrimitiveType dataWidth) : base(dataWidth)
@@ -71,7 +71,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// <summary>
     /// A PIC FAST operand.
     /// </summary>
-    public class PICOperandFast : MachineOperand, IOperand
+    public class PICOperandFast : AbstractMachineOperand, IOperand
     {
 
         public PICOperandFast(ushort uFast, bool withTab = true) : base(PrimitiveType.Bool)
@@ -104,7 +104,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// <summary>
     /// A PIC register operand.
     /// </summary>
-    public class PICOperandRegister : MachineOperand, IOperand
+    public class PICOperandRegister : AbstractMachineOperand, IOperand
     {
 
         public PICOperandRegister(PICRegisterStorage reg) : base(reg.DataType)
@@ -131,7 +131,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// <summary>
     /// A PIC program memory full address.
     /// </summary>
-    public class PICOperandProgMemoryAddress : MachineOperand, IOperand
+    public class PICOperandProgMemoryAddress : AbstractMachineOperand, IOperand
     {
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// <summary>
     /// A PIC data memory full address.
     /// </summary>
-    public class PICOperandDataMemoryAddress : MachineOperand, IOperand
+    public class PICOperandDataMemoryAddress : AbstractMachineOperand, IOperand
     {
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// <summary>
     /// Operand for "Instr f".
     /// </summary>
-    public class PICOperandBankedMemory : MachineOperand, IOperand
+    public class PICOperandBankedMemory : AbstractMachineOperand, IOperand
     {
 
         /// <summary>
@@ -299,7 +299,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// <summary>
     /// Operand for "Instr f,b".
     /// </summary>
-    public class PICOperandMemBitNo : MachineOperand, IOperand
+    public class PICOperandMemBitNo : AbstractMachineOperand, IOperand
     {
 
         public PICOperandMemBitNo(ushort bitno) : base(PrimitiveType.Byte)
@@ -326,7 +326,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// <summary>
     /// Operand for "Instr f,d".
     /// </summary>
-    public class PICOperandMemWRegDest : MachineOperand, IOperand
+    public class PICOperandMemWRegDest : AbstractMachineOperand, IOperand
     {
 
         public PICOperandMemWRegDest(ushort dest) : base(PrimitiveType.Bool)
@@ -353,7 +353,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// <summary>
     /// A PIC FSR register number operand.
     /// </summary>
-    public class PICOperandFSRNum : MachineOperand, IOperand
+    public class PICOperandFSRNum : AbstractMachineOperand, IOperand
     {
         /// <summary>
         /// Instantiates a FSR number operand.
@@ -388,7 +388,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// <summary>
     /// A PIC FSR indexation mode operand.
     /// </summary>
-    public class PICOperandFSRIndexation : MachineOperand, IOperand
+    public class PICOperandFSRIndexation : AbstractMachineOperand, IOperand
     {
         /// <summary>
         /// Instantiates a FSR indexation mode operand.
@@ -485,7 +485,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// <summary>
     /// A TBLRD/TBLWT Increment Change mode operand. Applicable to PIC18 only.
     /// </summary>
-    public class PICOperandTBLRW : MachineOperand, IOperand
+    public class PICOperandTBLRW : AbstractMachineOperand, IOperand
     {
         /// <summary>
         /// Gets the TBL increment mode.
@@ -518,7 +518,7 @@ namespace Reko.Arch.MicrochipPIC.Common
     /// <summary>
     /// A TRIS register operand. Applicable to PIC16 only.
     /// </summary>
-    public class PICOperandTris : MachineOperand, IOperand
+    public class PICOperandTris : AbstractMachineOperand, IOperand
     {
         /// <summary>
         /// Instantiates a TRIS instruction operand.
@@ -557,7 +557,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
     }
 
-    public abstract class PICOperandPseudo : MachineOperand
+    public abstract class PICOperandPseudo : AbstractMachineOperand
     {
 
         public PICOperandPseudo(byte config) : base(PrimitiveType.Byte)

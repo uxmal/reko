@@ -29,7 +29,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.Arm.AArch64
 {
-    public class VectorMultipleRegisterOperand : MachineOperand
+    public class VectorMultipleRegisterOperand : AbstractMachineOperand
     {
         private readonly RegisterStorage[] registers;
         private readonly int iRegStart;

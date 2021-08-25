@@ -24,7 +24,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.Qualcomm
 {
-    public class DecoratorOperand : MachineOperand
+    public class DecoratorOperand : AbstractMachineOperand
     {
         public DecoratorOperand(DataType width, MachineOperand op) : base(width)
         {

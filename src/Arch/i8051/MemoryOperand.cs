@@ -25,7 +25,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.i8051
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         private MemoryOperand() : base(PrimitiveType.Byte)
         {

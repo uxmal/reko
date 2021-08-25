@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Reko.Arch.PowerPC
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public MemoryOperand(PrimitiveType size, RegisterStorage reg, int offset) : base(size)
         {

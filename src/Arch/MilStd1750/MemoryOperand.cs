@@ -25,13 +25,12 @@ using System;
 
 namespace Reko.Arch.MilStd1750
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         private MemoryOperand(PrimitiveType dt) : base(dt)
         {
-
         }
-
+        
         public ushort Displacement { get; set; }
         public RegisterStorage? Index { get; set; }
         public bool Indirected { get; set; }

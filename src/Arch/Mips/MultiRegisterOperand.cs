@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Reko.Arch.Mips
 {
-    public class MultiRegisterOperand : MachineOperand
+    public class MultiRegisterOperand : AbstractMachineOperand
     {
         private readonly RegisterStorage[] registers;
 

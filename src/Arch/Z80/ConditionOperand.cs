@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.Arch.Z80
 {
-    public class ConditionOperand : MachineOperand
+    public class ConditionOperand : AbstractMachineOperand
     {
         public CondCode Code;
 

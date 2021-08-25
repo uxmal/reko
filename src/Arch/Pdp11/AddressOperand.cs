@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Reko.Arch.Pdp11
 {
-    public class AddressOperand : MachineOperand
+    public class AddressOperand : AbstractMachineOperand
     {
         public Address Address;
 

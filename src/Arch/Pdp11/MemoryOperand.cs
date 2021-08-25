@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Reko.Arch.Pdp11
 {
-    public class MemoryOperand : MachineOperand
+    public class MemoryOperand : AbstractMachineOperand
     {
         public MemoryOperand(AddressMode mode, PrimitiveType type, RegisterStorage reg) : base(type)
         {
