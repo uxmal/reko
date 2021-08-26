@@ -76,6 +76,8 @@ windows_x64_task:
       git fetch origin pull/%CIRRUS_PR%/head:pull/%CIRRUS_PR% &
       git reset --hard %CIRRUS_CHANGE_IN_REPO%
     )
+  prepare_script:
+    - dotnet nuget locals all --clear
   build_script:
     - dotnet msbuild -p:Platform=x64 -p:Configuration=Release -v:m -t:build_solution -m ./src/BuildTargets/BuildTargets.csproj
   test_script:
