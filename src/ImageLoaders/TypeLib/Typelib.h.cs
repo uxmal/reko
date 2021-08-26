@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-#if VISUALBASIC
-namespace TypeLib
+namespace Reko.ImageLoaders.TypeLib
 {
     using INT = System.Int32;
     using INT16 = System.Int16;
+
+#if VISUALBASIC
 
     class Typelib
     {
@@ -629,3 +630,4 @@ DEFINE_OLEGUID( CLSID_PSTypeComp,    0x00020425, 0x0000, 0x0000 );
     }
 }
 #endif
+}

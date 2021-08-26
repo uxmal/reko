@@ -18,121 +18,121 @@
 //This file is GPL 2008, by TheirCorp
 //¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
 
-#if VISUALBASIC
 namespace Decompiler.TypeLib
 {
     public class DisTypeLib
     {
 
 
-//¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
+        //¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
 
-//%Debug		= 1 //enable/disable debugging code
-const int Study		= 1 ; // enable/disable code to help study the format
-const int Priority	= 0 ; // set minimum priority level for logging and alerts
+        //%Debug		= 1 //enable/disable debugging code
+        const int Study = 1; // enable/disable code to help study the format
+        const int Priority = 0; // set minimum priority level for logging and alerts
 
 #if DEBUG
-const int ProfileOn		= 1;
+        const int ProfileOn = 1;
 
-public static int dbg;		
-public static string  dbs;	
+        public static int dbg;
+        public static string dbs = "";
 
 
 #else
 
 #endif
 
-//¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
+        //¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
 
-public const string Caption = "TheirCorp's Type Library Dumper";
+        public const string Caption = "TheirCorp's Type Library Dumper";
 
-public short GoBtn   = 1001;
-public short PathTxt = 1101;
-public short LogTxt  = 1102;
-public short FileLbl = 1103;
-public short MsgLbl  = 1104;
+        public short GoBtn = 1001;
+        public short PathTxt = 1101;
+        public short LogTxt = 1102;
+        public short FileLbl = 1103;
+        public short MsgLbl = 1104;
 
-public short LogLines = 8;
-//%fo  	  = 10 // output file// s number
-Macro fo = 10 // output file's number
-%IsOpen		= 0
+        public short LogLines = 8;
+        //%fo  	  = 10 // output file's number
+        //Macro fo = 10 // output file's number
+        //% IsOpen = 0
 
-Global ghDlg		As Dword
-Global LocalPath	As String   // local path
-
-//¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
-
-Declare Function GetDroppedFile(ByVal hDrop As Long, fs As String) As Long
-Declare Function ProcessFile(fs As String) As Long
-Declare CallBack Function ShowDlgProc()
-Declare Sub UpdateLog(ps As String)
-Declare Function DisSltg(cs As String) As Dword
+//Global ghDlg        As Dword
+//Global LocalPath    As String   // local path
 
 //¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
 
+//        Declare Function GetDroppedFile(ByVal hDrop As Long, fs As String) As Long
+//Declare Function ProcessFile(fs As String) As Long
+//Declare CallBack Function ShowDlgProc()
+//Declare Sub UpdateLog(ps As String)
+//Declare Function DisSltg(cs As String) As Dword
 
 //¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
 
-Declare Function GetResource( _
-	cs As String,       _
-	ByVal ird As IMAGE_RESOURCE_DIRECTORY Ptr, _
-	ByVal de As Dword,  _   // value to subtract from ".link" offsets's
-	ByVal ss As Dword,   _   // section size
-	ByVal Offset As Dword _   // offset to resource section
-	) As Long
-Declare Function GetTypeLibData(cs As String, fs As String) As Long
 
-Declare Function Locale(lcid As Long) As String
-Declare Function VarType(ByVal pn As Long) As String
-Declare Function tlName(cs As String, SegDir As MSFT_SegDir, ByVal offs As Long) As String
-Declare Function tlString(cs As String, SegDir As MSFT_SegDir, ByVal offs As Long) As String
-Declare Function DisFunction(cs As String, SegDir As MSFT_SegDir, ByVal pBase As Dword, ByVal nFunc As Long, ByVal nProp As Long) As Long
-Declare Function DisTypeLib(cs As String) As Dword
+        //¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
 
-//¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
+        //public uint GetResource( 
+        //	byte[] cs,
+        //    in IMAGE_RESOURCE_DIRECTORY ird,
+        //	uint de,    // value to subtract from ".link" offsets's
+        //	uint ss ,   // section size
+        //	uint Offset // offset to resource section
+        //	) As Long
+        //Declare Function GetTypeLibData(cs As String, fs As String) As Long
 
-Sub UpdateLog(ps As String)
-Static ct   As Long
-Static ls   As String
-Static ts   As String
+        //Declare Function Locale(lcid As Long) As String
+        //Declare Function VarType(ByVal pn As Long) As String
+        //Declare Function tlName(cs As String, SegDir As MSFT_SegDir, ByVal offs As Long) As String
+        //Declare Function tlString(cs As String, SegDir As MSFT_SegDir, ByVal offs As Long) As String
+        //Declare Function DisFunction(cs As String, SegDir As MSFT_SegDir, ByVal pBase As Dword, ByVal nFunc As Long, ByVal nProp As Long) As Long
+        //Declare Function DisTypeLib(cs As String) As Dword
 
-	If Len(Command$) Then
-		// MsgBox ps
+        //¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
 
-	Else
-		Incr ct
+        public static int ct;
+        public static string ls = "";
+        public static string ts = "";
 
-		If Len(ps) Then
-			// Control Get Text ghDlg, %LogTxt To ls
-			// Dialog DoEvents
-			ps = ps & $CrLf
-		Else
-			ct = 1
-			ls = ""
-			ts = ""
-		End If
+        public static void UpdateLog(string ps) {
+            //Static ct   As Long
+            //Static ls   As String
+            //Static ts   As String
 
-		If ct > %LogLines Then ts = Remain$(ts, $CrLf) & ps
-		ls = ls & ps
+            ++ct;
 
-		If Left$(ps, 5) = "Ready" Then
-			Control Set Text ghDlg, %LogTxt, LTrim$(Left$(ls, 32000), Any $CrLf)
-			Dialog DoEvents
-			Control Send ghDlg, %LogTxt, %EM_SETSEL, 65536, 65536
-			Dialog DoEvents
-			Control Send ghDlg, %LogTxt, %EM_SCROLLCARET, 0, 0
-			Dialog DoEvents
-		Else
-			Control Set Text ghDlg, %LogTxt, ts
-		End If
+            if (ps.Length > 0) {
+                // Control Get Text ghDlg, %LogTxt To ls
+                // Dialog DoEvents
+                ps = ps + "\r\n";
+            } else {
+                ct = 1;
+                ls = "";
+                ts = "";
+            }
 
-	End If
+            //if (ct > LogLines) ts = Remain$(ts, $CrLf) & ps
+            //ls = ls & ps
 
-End Sub // UpdateLog
+            //If Left$(ps, 5) = "Ready" Then
+            //	Control Set Text ghDlg, %LogTxt, LTrim$(Left$(ls, 32000), Any $CrLf)
+            //	Dialog DoEvents
+            //	Control Send ghDlg, %LogTxt, %EM_SETSEL, 65536, 65536
+            //	Dialog DoEvents
+            //	Control Send ghDlg, %LogTxt, %EM_SCROLLCARET, 0, 0
+            //	Dialog DoEvents
+            //Else
+            //	Control Set Text ghDlg, %LogTxt, ts
+            //End If
 
-//¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
-//returns %true, if any files were received
-Function GetDroppedFile(ByVal hDrop As Long, fs As String) As Long
+        }
+
+    } // UpdateLog
+
+#if VB
+    //¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
+    //returns %true, if any files were received
+    Function GetDroppedFile(ByVal hDrop As Long, fs As String) As Long
 Local ct  As Dword
 Local az  As Asciiz * %MAX_PATH
 
@@ -157,7 +157,7 @@ int n		;
 byte [] cs	;
 string ls	;
 
-	If Len(Dir$(fs)) Then
+	if (Len(Dir$(fs)) Then
 
         n = GetTypeLibData(cs, fs);
 
@@ -181,7 +181,7 @@ string ls	;
 				Exit Function
 			End Try
 
-			If n = 1 Then DisTypeLib(cs)
+			If n = 1 Then DisTypeLib(cs);
 
 		End If
 
@@ -219,15 +219,15 @@ $EndIf
 			If (GetDroppedFile(CbWParam, fs)) Then
 				Control Set Text ghDlg, %PathTxt, fs
 			End If
-			DragFinish CbWParam
+			DragFinish(CbWParam);
 
 		Case %WM_COMMAND
 			Select Case As Long CbCtl
 				Case %GoBtn
 					If CbCtlMsg = %BN_CLICKED Or CbCtlMsg = 1 Then
 						Control Get Text ghDlg, %PathTxt To fs
-						UpdateLog ""
-						ProcessFile(fs)
+						UpdateLog("");
+						ProcessFile(fs);
 						UpdateLog "Ready..."
 					End If
 			End Select
@@ -294,7 +294,6 @@ $EndIf
 	End If
 
 End Function
-
-//¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
-
 #endif
+    //¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
+}
