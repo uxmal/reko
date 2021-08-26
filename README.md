@@ -57,23 +57,14 @@ below.
 
 ## Installing Reko
 
-### Windows users
-
 The following prerequisite software must be installed on your machine first:
-* .NET Core 3.1 (https://www.microsoft.com/net/download/dotnet-framework-runtime)
+* .NET 5.0 (https://www.microsoft.com/net/download/dotnet-framework-runtime)
 
-Download an MSI file from one of the places mentioned above, then simply run
-the installer.
+Download an appropriate installer and run it on the target machine.
 
-### Non-Windows users
-
-The following prerequisite software must be installed on your machine first:
-* .NET Core 3.1 for Linux (https://docs.microsoft.com/en-us/dotnet/core/install/linux)
-* .NET Core 3.1 for macOS (https://docs.microsoft.com/en-us/dotnet/core/install/macos)
-
-After installing .NET Core as appropriate for your operating system, you can proceed 
-by either downloading binaries directly from the integration build server, or by 
-building Reko from sources (see `Hacking` below).
+After installation, you can proceed by either downloading binaries directly
+from the integration build server, or by building Reko from sources (see `Hacking` 
+below).
 
 ## Documentation
 
@@ -93,16 +84,15 @@ spare time, so adjust your response-time expectations accordingly.
 
 To build reko, start by cloning https://github.com/uxmal/reko. You
 can use an IDE or the command line to build the solution file
-`src/Reko-decompiler.sln`. Reko requires .NET Core 3.1 and C# 8
-to compile. If you are an Windows IDE user, use Visual Studio 2019 or
-VS Code. If you wish to build using the command line, use the command
+`Reko-decompiler.sln`. Reko requires .NET 5.0 and C# 9
+to compile. If you are an IDE user, use a recent version of Visual Studio 2019.
+If you wish to build using the command line, use the command
 
 ```cmd
-msbuild /p:Configuration={config} /p:Platform={platform} Reko-decompiler.sln
+msbuild -p:Configuration={config} -p:Platform={platform} -v:m -m Reko-decompiler.sln
 ```
 (provided you have ```msbuild``` installed). Replace `{config}` with either
-`Debug` or `Release`, and `{platform}` with `x64` or `x86`. All external
-dependencies needed to build Reko are included in the `external` directory.
+`Debug` or `Release`, and `{platform}` with `x64` or `x86`.
 
 **Note**: please let us know if you still are not able to compile,
 so we can help you fix the issue.
@@ -116,13 +106,13 @@ about the Reko project's internal workings. Please consult the
 ### Warnings and errors related to WiX
 
 You will receive warnings or errors when loading the solution in Visual Studio
-or MonoDevelop if you haven't installed the WiX toolset on your
+if you haven't installed the WiX toolset on your
 development machine. You can safely ignore the warnings; the WiX
-toolset is only used when making MSI installer packages, and isn't even
-supported in MonoDevelop. You will not need to build an installer if
-you're already able to compile the project: the build process copies
-all the necessary files into If you do want to build an MSI installer
-with the WiX toolchain, you can download it here:
+toolset is only used when making MSI installer packages. You will not need
+to build an installer if you're already able to compile the project: the build
+process copies all the necessary files into a single directory. 
+If you do want to build an MSI installer with the WiX toolchain, you can
+ download it here:
 http://wixtoolset.org/releases/
 
 ### Errors related to CMake in Visual Studio
@@ -140,8 +130,7 @@ you to add it to PATH during the installation.
 
 The solution folder `Drivers` contains the executables that act
 as user interfaces: the directory `WindowsDecompiler` contains
-the GUI client for Windows users; `MonoDecompiler` contains the GUI
-client for Mono users; `CmdLine` is a command line driver.
+the GUI client for Windows users; `CmdLine` is a command line driver.
 
 ## Recent versions
 
