@@ -78,7 +78,6 @@ namespace Reko.Core.Types
 			return s;
 		}
 
-        public bool UserDefined { get; private set; }
         public StructureFieldCollection Fields { get; private set; }
 		public override bool IsComplex  { get { return true; } }
 

@@ -41,7 +41,6 @@ namespace Reko.Core.Types
             Bases = new List<ClassBase>();
         }
 
-        public bool UserDefined { get; set; }
         public List<ClassField> Fields { get; private set; }
         public List<ClassMethod> Methods { get; private set; }
         public List<ClassBase> Bases { get; private set; }

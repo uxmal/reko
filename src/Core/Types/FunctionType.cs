@@ -44,11 +44,12 @@ namespace Reko.Core.Types
     /// </remarks>
     //$TODO: consider breaking out a base class "CallableType" and have 
     // a sibling class "LowLevelFunctionType".
-    public class FunctionType : DataType
+    public class FunctionType : CompositeType
 	{
         private Identifier? retValue;
 
         public FunctionType()
+            : base(null)
         {
             this.ParametersValid = false;
             this.FpuStackArgumentMax = -1;
@@ -57,6 +58,7 @@ namespace Reko.Core.Types
         public FunctionType(
             Identifier? returnValue,    // 'null' means Void return value.
             params Identifier [] parameters)
+            : base(null)
         {
             this.Parameters = parameters;
             this.ParametersValid = true;

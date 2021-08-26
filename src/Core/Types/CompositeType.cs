@@ -29,5 +29,7 @@ namespace Reko.Core.Types
     {
         protected CompositeType(string? name) : base(name)
         { }
+
+        public bool UserDefined { get; protected set; }
     }
 }
