@@ -129,9 +129,9 @@ namespace Reko.Tools.specGen
             {
                 var v = vv;
                 v = v.Replace("$TargetDir$", "bin/$Configuration$/netstandard2.1");
-                v = v.Replace("$TargetFwkDir$", "bin/$Configuration$/netcoreapp3.1");
-                v = v.Replace("$TargetFwk472Dir$", "bin/$Configuration$/netcoreapp3.1");
-                v = v.Replace("$TargetDir_x64$", "bin/x64/$Configuration$/netcoreapp3.1");
+                v = v.Replace("$TargetFwkDir$", "bin/$Configuration$/net5.0");
+                v = v.Replace("$TargetNetWinForms$", "bin/$Configuration$/net5.0-windows");
+                v = v.Replace("$TargetDir_x64$", "bin/x64/$Configuration$/net5.0");
                 v = v.Replace("$Configuration$", configuration);
                 v = v.Replace("$SolutionDir$", solutionDir);
                 if (v.EndsWith('/'))
@@ -161,9 +161,10 @@ namespace Reko.Tools.specGen
             {
                 var v = vv;
                 v = v.Replace("$TargetDir$", "bin/$Configuration$/netstandard2.1");
-                v = v.Replace("$TargetFwkDir$", "bin/$Configuration$/netcoreapp3.1");
-                v = v.Replace("$TargetFwk472Dir$", "bin/$Configuration$/netcoreapp3.1");
-                v = v.Replace("$TargetDir_x64$", "bin/x64/$Configuration$/netcoreapp3.1");
+                v = v.Replace("$TargetFwkDir$", "bin/$Configuration$/net5.0");
+                v = v.Replace("$TargetFwkWindowsDir$", "bin/$Configuration$/net5.0-windows");
+                v = v.Replace("$TargetFwkWindowsDir_x64$", "bin/x64/$Configuration$/net5.0-windows");
+                v = v.Replace("$TargetDir_x64$", "bin/x64/$Configuration$/net5.0");
                 v = v.Replace("$Configuration$", configuration);
                 v = v.Replace("$SolutionDir$", solutionDir);
                 result[k] = v;

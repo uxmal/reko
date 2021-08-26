@@ -575,7 +575,7 @@ Options:
   -p PLATFORM, --platform=PLATFORM
                         define platform (x86, x64)
   -f FRAMEWORK, --framework=FRAMEWORK
-                        define .NET framework (netcoreapp3.1)
+                        define .NET framework (net5.0)
   --strip-suffixes=STRIP_SUFFIXES
                         strip number suffixes from SSA identifiers (yes, no)
   -v, --verbose         produce verbose output

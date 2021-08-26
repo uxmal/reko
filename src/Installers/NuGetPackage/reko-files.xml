@@ -8,9 +8,9 @@
         <var id="var.Gui.TargetPath">$SolutionDir$/Gui/$TargetDir$/Reko.Gui.dll</var>
         <var id="var.CmdLine.TargetDir">$SolutionDir$/Drivers/CmdLine/$TargetDir_x64$/</var>
         <var id="var.WindowsDecompiler.ProjectDir">$SolutionDir$/Drivers/WindowsDecompiler/</var>
-        <var id="var.WindowsDecompiler.TargetDir">$SolutionDir$/Drivers/WindowsDecompiler/$TargetDir_x64$/</var>
-        <var id="var.WindowsDecompiler.TargetPath">$SolutionDir$/Drivers/WindowsDecompiler/$TargetDir_x64$/WindowsDecompiler.exe</var>
-        <var id="var.WindowsForms.TargetPath">$SolutionDir$/UserInterfaces/WindowsForms/$TargetFwkDir$/Reko.UserInterfaces.WindowsForms.dll</var>
+        <var id="var.WindowsDecompiler.TargetDir">$SolutionDir$/Drivers/WindowsDecompiler/$TargetFwkWindowsDir_x64$/</var>
+        <var id="var.WindowsDecompiler.TargetPath">$SolutionDir$/Drivers/WindowsDecompiler/$TargetFwkWindowsDir_x64$/WindowsDecompiler.exe</var>
+        <var id="var.WindowsForms.TargetPath">$SolutionDir$/UserInterfaces/WindowsForms/$TargetFwkWindowsDir$/Reko.UserInterfaces.WindowsForms.dll</var>
 
         <var id="var.Alpha.TargetPath"  >$SolutionDir$/Arch/Alpha/$TargetDir$/Reko.Arch.Alpha.dll</var>
         <var id="var.Altera.TargetPath"  >$SolutionDir$/Arch/Altera/$TargetDir$/Reko.Arch.Altera.dll</var>
@@ -27,12 +27,12 @@
         <var id="var.IA64.TargetPath" >$SolutionDir$/Arch/IA64/$TargetDir$/Reko.Arch.IA64.dll</var>
         <var id="var.LatticeMico.TargetPath" >$SolutionDir$/Arch/LatticeMico/$TargetDir$/Reko.Arch.LatticeMico.dll</var>
         <var id="var.M6800.TargetPath" >$SolutionDir$/Arch/M6800/$TargetDir$/Reko.Arch.M6800.dll</var>
-        <var id="var.M68k.Design.TargetPath" >$SolutionDir$/Arch/M68k.Design/$TargetFwk472Dir$/Reko.Arch.M68k.Design.dll</var>
+        <var id="var.M68k.Design.TargetPath" >$SolutionDir$/Arch/M68k.Design/$TargetFwkWindowsDir$/Reko.Arch.M68k.Design.dll</var>
         <var id="var.M68k.TargetPath" >$SolutionDir$/Arch/M68k/$TargetDir$/Reko.Arch.M68k.dll</var>
         <var id="var.MCore.TargetPath">$SolutionDir$/Arch/MCore/$TargetDir$/Reko.Arch.MCore.dll</var>
         <var id="var.MicroBlaze.TargetPath" >$SolutionDir$/Arch/MicroBlaze/$TargetDir$/Reko.Arch.MicroBlaze.dll</var>
         <var id="var.Microchip.Utils.TargetPath" >$SolutionDir$/Libraries/Microchip/Utils/$TargetDir$/Reko.Libraries.Microchip.Utils.dll</var>
-        <var id="var.MicrochipPIC.Design.TargetPath" >$SolutionDir$/Arch/MicrochipPIC.Design/$TargetFwk472Dir$/Reko.Arch.MicrochipPIC.Design.dll</var>
+        <var id="var.MicrochipPIC.Design.TargetPath" >$SolutionDir$/Arch/MicrochipPIC.Design/$TargetFwkWindowsDir$/Reko.Arch.MicrochipPIC.Design.dll</var>
         <var id="var.MicrochipPIC.TargetPath" >$SolutionDir$/Arch/Microchip/$TargetDir$/Reko.Arch.MicrochipPIC.dll</var>
         <var id="var.MilStd1750.TargetPath" >$SolutionDir$/Arch/MilStd1750/$TargetDir$/Reko.Arch.MilStd1750.dll</var>
         <var id="var.Mips.TargetPath" >$SolutionDir$/Arch/Mips/$TargetDir$/Reko.Arch.Mips.dll</var>
@@ -41,7 +41,7 @@
         <var id="var.OpenRISC.TargetPath" >$SolutionDir$/Arch/OpenRISC/$TargetDir$/Reko.Arch.OpenRISC.dll</var>
         <var id="var.PaRisc.TargetPath" >$SolutionDir$/Arch/PaRisc/$TargetDir$/Reko.Arch.PaRisc.dll</var>
         <var id="var.Pdp11.TargetPath" >$SolutionDir$/Arch/Pdp11/$TargetDir$/Reko.Arch.Pdp11.dll</var>
-        <var id="var.PowerPC.Design.TargetPath" >$SolutionDir$/Arch/PowerPC.Design/$TargetFwk472Dir$/Reko.Arch.PowerPC.Design.dll</var>
+        <var id="var.PowerPC.Design.TargetPath" >$SolutionDir$/Arch/PowerPC.Design/$TargetFwkWindowsDir$/Reko.Arch.PowerPC.Design.dll</var>
         <var id="var.PowerPC.TargetPath" >$SolutionDir$/Arch/PowerPC/$TargetDir$/Reko.Arch.PowerPC.dll</var>
         <var id="var.Qualcomm.TargetPath" >$SolutionDir$/Arch/Qualcomm/$TargetDir$/Reko.Arch.Qualcomm.dll</var>
         <var id="var.RiscV.TargetPath" >$SolutionDir$/Arch/RiscV/$TargetDir$/Reko.Arch.RiscV.dll</var>
@@ -53,7 +53,7 @@
         <var id="var.Vax.TargetPath" >$SolutionDir$/Arch/Vax/$TargetDir$/Reko.Arch.Vax.dll</var>
         <var id="var.V850.TargetPath" >$SolutionDir$/Arch/V850/$TargetDir$/Reko.Arch.V850.dll</var>
         <var id="var.WE32100.TargetPath" >$SolutionDir$/Arch/WE32100/$TargetDir$/Reko.Arch.WE32100.dll</var>
-        <var id="var.X86.Design.TargetPath" >$SolutionDir$/Arch/X86.Design/$TargetFwk472Dir$/Reko.Arch.X86.Design.dll</var>
+        <var id="var.X86.Design.TargetPath" >$SolutionDir$/Arch/X86.Design/$TargetFwkWindowsDir$/Reko.Arch.X86.Design.dll</var>
         <var id="var.X86.TargetPath" >$SolutionDir$/Arch/X86/$TargetDir$/Reko.Arch.X86.dll</var>
         <var id="var.XCore.TargetPath" >$SolutionDir$/Arch/XCore/$TargetDir$/Reko.Arch.XCore.dll</var>
         <var id="var.Xtensa.TargetPath" >$SolutionDir$/Arch/Xtensa/$TargetDir$/Reko.Arch.Xtensa.dll</var>
@@ -63,7 +63,7 @@
 
       <var id="var.AmigaOS.ProjectDir">$SolutionDir$/Environments/AmigaOS/</var>
       <var id="var.AmigaOS.TargetPath">$SolutionDir$/Environments/AmigaOS/$TargetDir$/Reko.Environments.AmigaOS.dll</var>
-      <var id="var.AmigaOS_Design.TargetPath">$SolutionDir$/Environments/AmigaOS.Design/$TargetFwk472Dir$/Reko.Environments.AmigaOS.Design.dll</var>
+      <var id="var.AmigaOS_Design.TargetPath">$SolutionDir$/Environments/AmigaOS.Design/$TargetFwkWindowsDir$/Reko.Environments.AmigaOS.Design.dll</var>
       <var id="var.AtariTOS.ProjectDir">$SolutionDir$/Environments/AtariTOS/</var>
       <var id="var.AtariTOS.TargetPath">$SolutionDir$/Environments/AtariTOS/$TargetDir$/Reko.Environments.AtariTOS.dll</var>
       <var id="var.BbcMicro.TargetPath">$SolutionDir$/Environments/BbcMicro/$TargetDir$/Reko.Environments.BbcMicro.dll</var>
@@ -77,7 +77,7 @@
       <var id="var.MacOS.ProjectDir" >$SolutionDir$/Environments/MacOS/</var>
       <var id="var.MacOS.TargetPath" >$SolutionDir$/Environments/MacOS/$TargetDir$/Reko.Environments.MacOS.dll</var>
       <var id="var.MorphOS.TargetPath" >$SolutionDir$/Environments/MorphOS/$TargetDir$/Reko.Environments.MorphOS.dll</var>
-      <var id="var.Msdos.Design.TargetPath" >$SolutionDir$/Environments/Msdos.Design/$TargetFwk472Dir$/Reko.Environments.Msdos.Design.dll</var>
+      <var id="var.Msdos.Design.TargetPath" >$SolutionDir$/Environments/Msdos.Design/$TargetFwkWindowsDir$/Reko.Environments.Msdos.Design.dll</var>
       <var id="var.Msdos.ProjectDir" >$SolutionDir$/Environments/Msdos/</var>
       <var id="var.Msdos.TargetPath" >$SolutionDir$/Environments/Msdos/$TargetDir$/Reko.Environments.Msdos.dll</var>
       <var id="var.NeoGeo.TargetPath" >$SolutionDir$/Environments/NeoGeo/$TargetDir$/Reko.Environments.NeoGeo.dll</var>
@@ -322,16 +322,16 @@
 
       <!-- External files -->
       <File Source="$(var.SolutionDir)..\external\Capstone\$(var.Platform)\capstone.dll" />
-      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.dll" />
-      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\AutomaticGraphLayout.Drawing.dll" />
-      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Msagl.GraphViewerGdi.dll" />
-      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Dynamic.dll" />
-      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Scripting.dll" />
-      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\Microsoft.Scripting.Metadata.dll" />
-      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\IronPython.dll" />
-      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\IronPython.Modules.dll" />
-      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\IronPython.SQLite.dll" />
-      <File Source="$(var.WindowsDecompiler.ProjectDir)bin\$(var.Platform)\$(var.Configuration)\netcoreapp3.1\IronPython.Wpf.dll" />
+      <File Source="$(var.WindowsDecompiler.TargetDir)AutomaticGraphLayout.dll" />
+      <File Source="$(var.WindowsDecompiler.TargetDir)AutomaticGraphLayout.Drawing.dll" />
+      <File Source="$(var.WindowsDecompiler.TargetDir)Microsoft.Msagl.GraphViewerGdi.dll" />
+      <File Source="$(var.WindowsDecompiler.TargetDir)Microsoft.Dynamic.dll" />
+      <File Source="$(var.WindowsDecompiler.TargetDir)Microsoft.Scripting.dll" />
+      <File Source="$(var.WindowsDecompiler.TargetDir)Microsoft.Scripting.Metadata.dll" />
+      <File Source="$(var.CmdLine.TargetDir)IronPython.dll" />
+      <File Source="$(var.CmdLine.TargetDir)IronPython.Modules.dll" />
+      <File Source="$(var.CmdLine.TargetDir)IronPython.SQLite.dll" />
+      <File Source="$(var.WindowsDecompiler.TargetDir)IronPython.Wpf.dll" />
       <File Source="$(var.CmdLine.TargetDir)System.CodeDom.dll" />
       <File Source="$(var.CmdLine.TargetDir)K4os.Compression.LZ4.dll" nuget_target="f:" />
 
