@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.SDK">
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{197A1FBD-B56C-4CB4-93DE-B908D63E52BA}</ProjectGuid>
     <OutputType>WinExe</OutputType>

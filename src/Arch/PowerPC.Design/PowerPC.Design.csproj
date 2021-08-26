@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.SDK">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{16550DF3-0916-4BDD-AA7A-7E1BAD7ABA3B}</ProjectGuid>
     <OutputType>Library</OutputType>
