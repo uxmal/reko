@@ -46,6 +46,7 @@
         <var id="var.Qualcomm.TargetPath" >$SolutionDir$/Arch/Qualcomm/$TargetDir$/Reko.Arch.Qualcomm.dll</var>
         <var id="var.RiscV.TargetPath" >$SolutionDir$/Arch/RiscV/$TargetDir$/Reko.Arch.RiscV.dll</var>
         <var id="var.Rl78.TargetPath" >$SolutionDir$/Arch/Rl78/$TargetDir$/Reko.Arch.Rl78.dll</var>
+        <var id="var.Sanyo.TargetPath" >$SolutionDir$/Arch/Sparc/$TargetDir$/Reko.Arch.Sanyo.dll</var>
         <var id="var.Sparc.TargetPath" >$SolutionDir$/Arch/Sparc/$TargetDir$/Reko.Arch.Sparc.dll</var>
         <var id="var.SuperH.TargetPath" >$SolutionDir$/Arch/SuperH/$TargetDir$/Reko.Arch.SuperH.dll</var>
         <var id="var.Tlcs.TargetPath" >$SolutionDir$/Arch/Tlcs/$TargetDir$/Reko.Arch.Tlcs.dll</var>
@@ -187,6 +188,7 @@
       <File Source="$(var.Cpm.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Cpm.ProjectDir)cpm_map.xml" nuget_target="c:" />
       <File Source="$(var.Dreamcast.TargetPath)" nuget_target="f:" />
+      <File Source="$(var.Dreamcast.TargetPath)vmu.xml" nuget_target="c:" />
       <File Source="$(var.Gameboy.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Hpux.TargetPath)" nuget_target="f:" />
       <File Source="$(var.MacOS.TargetPath)" nuget_target="f:" />
