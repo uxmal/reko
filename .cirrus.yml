@@ -34,11 +34,8 @@ darwin_x64_task:
     image: big-sur-xcode-12.4
 
   install_script:
-    - brew update
     - brew install pkg-config cmake capstone p7zip
-    - brew install --cask dotnet-sdk
-    - brew tap isen-ng/dotnet-sdk-versions
-    - brew install --cask dotnet-sdk3-1-400
+    - curl -L https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.sh | bash -s - --channel 3.1
 
   prepare_script:
     - dotnet nuget locals all --clear
