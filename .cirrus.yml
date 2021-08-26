@@ -33,6 +33,9 @@ darwin_x64_task:
   macos_instance:
     image: big-sur-xcode-12.4
 
+  env:
+    PATH: $HOME/.dotnet:$PATH
+
   install_script:
     - brew install pkg-config cmake capstone p7zip
     - curl -L https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.sh | bash -s - --channel 3.1
