@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -29,6 +29,8 @@ namespace Reko.Core.NativeInterface
     /// <summary>
     /// This attribute is used to indicate an interface is to be generated as C++
     /// </summary>
+    /// The hdrgen tool reflects the Reko.Core assembly for types decorated with this
+    /// attribute, and generates C++ equivalents.
     [AttributeUsage(
         AttributeTargets.Class |
         AttributeTargets.Struct | 

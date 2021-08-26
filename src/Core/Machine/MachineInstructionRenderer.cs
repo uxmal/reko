@@ -45,7 +45,6 @@ namespace Reko.Core.Machine
         /// </summary>
         void EndInstruction();
 
-
         /// <summary>
         /// Indicate to the renderer that an operand is about to be rendered.
         /// </summary>

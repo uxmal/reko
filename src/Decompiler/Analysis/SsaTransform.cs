@@ -462,7 +462,7 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// Iterates through a list of Identifiers, expading every flag group
+        /// Iterates through a list of Identifiers, expanding every flag group
         /// into its constituent flag bits.
         /// </summary>
         /// <param name="ids"></param>

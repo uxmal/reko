@@ -87,7 +87,7 @@ namespace Reko.Arch.X86
                 if (useRexPrefix)
                     isa.rexInstr = isa.MakeRexDecoder;
                 else
-                    isa.rexInstr = X86Disassembler.Instr;
+                    isa.rexInstr = Instr;
 
                 if (options.TryGetValue(ProcessorOption.InstructionSet, out var oIsa))
                 {

@@ -64,12 +64,16 @@ namespace Reko.Core.Machine
         /// <summary>
         /// Converts a signed integer constant to string representatioon.
         /// </summary>
-        /// <param name="forceSign">sign Should signed integers always be formatted with a leading sign character?
-        /// Setting this to true allows chaining a sequence of numbers into an expression,
-        ///  like "+5+7-3+9".
-        /// Setting this to false will format numbers like "5" and "-3" which is normal for standalone numbers.</param>
-        /// <param name="format">Format string; allows injecting platform-specific characters before/between/after sign and value
-        /// when printing an integer value as hex. {0} will be the sign character (if any) and {1} will be the absolute value.</param>
+        /// <param name="forceSign">Should signed integers always be
+        /// formatted with a leading sign character? Setting this to true
+        /// allows chaining a sequence of numbers into an expression,
+        /// like "+5+7-3+9". Setting this to false will format numbers like
+        /// "5" and "-3" which is normal for standalone numbers.</param>
+        /// <param name="format">Format string; allows injecting platform-
+        /// specific characters before/between/after sign and value when
+        /// printing an integer value as hex. {0} will be the sign character
+        /// (if any) and {1} will be the absolute value.
+        /// </param>
         public static string FormatSignedValue(Constant c, bool forceSign = true, string format = "{0}{1}")
         {
             string s = (forceSign ? "+" : "");
@@ -87,12 +91,17 @@ namespace Reko.Core.Machine
         /// <summary>
         /// Converts a numeric constant to string representatioon.
         /// </summary>
-        /// <param name="forceSignForSignedIntegers">sign Should signed integers always be formatted with a leading sign character?
-        /// Setting this to true allows chaining a sequence of numbers into an expression,
-        ///  like "+5+7-3+9".
-        /// Setting this to false will format numbers like "5" and "-3" which is normal for standalone numbers.</param>
-        /// <param name="integerFormat">Format string; allows injecting platform-specific characters before/between/after sign and value
-        /// when printing an integer value as hex. {0} will be the sign character (if any) and {1} will be the absolute value.</param>
+        /// <param name="forceSignForSignedIntegers">sign Should signed
+        /// integers always be formatted with a leading sign character?
+        /// Setting this to true allows chaining a sequence of numbers into an
+        /// expression,like "+5+7-3+9". Setting this to false will format
+        /// numbers like "5" and "-3" which is normal for standalone numbers.
+        /// </param>
+        /// <param name="integerFormat">Format string; allows injecting 
+        /// platform-specific characters before/between/after sign and
+        /// value when printing an integer value as hex. {0} will be the sign
+        /// character (if any) and {1} will be the absolute value.
+        /// </param>
         public static string FormatValue(Constant c, bool forceSignForSignedIntegers = true, string integerFormat = "{0}{1}")
         {
             var pt = (PrimitiveType)c.DataType;

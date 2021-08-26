@@ -18,12 +18,9 @@
  */
 #endregion
 
-using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
-using Reko.Core.Machine;
-using Reko.Core.Types;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -151,7 +148,6 @@ namespace Reko.Core
                 return h;
             }
         }
-
     }
 
     public enum StorageDomain
