@@ -18,8 +18,6 @@
  */
 #endregion
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -33,6 +31,14 @@ namespace Reko.Core.CLanguage
     /// </summary>
     public class CDirectiveLexer
     {
+        private readonly Dictionary<string, Directive> directives = new()
+        {
+            { "define", Directive.Define },
+            { "line", Directive.Line },
+            { "pragma", Directive.Pragma },
+            { "__pragma", Directive.Pragma }
+        };
+
         private readonly CLexer lexer;
         private readonly ParserState state;
         private CToken tokenPrev;
@@ -41,15 +47,24 @@ namespace Reko.Core.CLanguage
         {
             this.state = state;
             this.lexer = lexer;
-            this.tokenPrev = new CToken(    CTokenType.EOF);
+            this.tokenPrev = new CToken(CTokenType.EOF);
         }
 
-        public int LineNumber { get { return lexer.LineNumber; } }
+        public int LineNumber => lexer.LineNumber;
 
         private enum State
         {
             Start = 0,
             Strings = 1,
+            Hash = 2,
+        }
+
+        private enum Directive
+        {
+            Define,
+            Line,
+            Pragma,
+            __Pragma,
         }
 
         public CToken Read()
@@ -62,9 +77,9 @@ namespace Reko.Core.CLanguage
             }
 
             var token = lexer.Read();
-            string lastString = null;
+            string? lastString = null;
             var state = State.Start;
-            StringBuilder sb = null;
+            StringBuilder? sb = null;
             for (; ; )
             {
                 switch (state)
@@ -72,22 +87,43 @@ namespace Reko.Core.CLanguage
                 case State.Start:
                     switch (token.Type)
                     {
-                    case CTokenType.LineDirective:
-                        Expect(CTokenType.NumericLiteral);
-                        Expect(CTokenType.StringLiteral);
+                    case CTokenType.Hash:
+                        state = State.Hash;
                         token = lexer.Read();
                         break;
-                    case CTokenType.PragmaDirective:
-                        token = ReadPragma((string) lexer.Read().Value);
-                        break;
-                    case CTokenType.__Pragma:
-                        Expect(CTokenType.LParen);
-                        ReadPragma((string) lexer.Read().Value);
-                        token = lexer.Read();
+                    default:
+                        return token;
+                    }
+                    break;
+                case State.Hash:
+                    switch (token.Type)
+                    {
+                    case CTokenType.Id:
+                        if (!directives.TryGetValue((string) token.Value!, out var directive))
+                            throw new FormatException($"Unknown preprocessor directive '{token.Value!}'.");
+                        switch (directive)
+                        {
+                        case Directive.Line:
+                            Expect(CTokenType.NumericLiteral);
+                            Expect(CTokenType.StringLiteral);
+                            state = State.Start;
+                            token = lexer.Read();
+                            break;
+                        case Directive.Pragma:
+                            token = ReadPragma((string) lexer.Read().Value!);
+                            state = State.Start;
+                            break;
+                        case Directive.__Pragma:
+                            Expect(CTokenType.LParen);
+                            ReadPragma((string) lexer.Read().Value!);
+                            state = State.Start;
+                            token = lexer.Read();
+                            break;
+                        }
                         break;
                     case CTokenType.StringLiteral:
                         state = State.Strings;
-                        lastString = (string) token.Value;
+                        lastString = (string) token.Value!;
                         break;
                     default:
                         return token;
@@ -103,7 +139,7 @@ namespace Reko.Core.CLanguage
                         }
                         else
                         {
-                            sb.Append(token.Value);
+                            sb!.Append(token.Value);
                         }
                         token = lexer.Read();
                     }
@@ -117,7 +153,7 @@ namespace Reko.Core.CLanguage
                         }
                         else
                         {
-                            return new CToken(CTokenType.StringLiteral, sb.ToString());
+                            return new CToken(CTokenType.StringLiteral, sb!.ToString());
                         }
                     }
                     break;
@@ -134,7 +170,7 @@ namespace Reko.Core.CLanguage
             else if (pragma == "warning")
             {
                 Expect(CTokenType.LParen);
-                var value = (string) Expect(CTokenType.Id);
+                var value = (string) Expect(CTokenType.Id)!;
                 if (value == "disable" || value == "default")
                 {
                     Expect(CTokenType.Colon);
@@ -187,20 +223,20 @@ namespace Reko.Core.CLanguage
                 switch (token.Type)
                 {
                 case CTokenType.NumericLiteral:
-                    this.state.PushAlignment((int) token.Value);
+                    this.state.PushAlignment((int) token.Value!);
                     Expect(CTokenType.RParen);
                     break;
                 case CTokenType.RParen:
                     this.state.PopAlignment();
                     break;
                 case CTokenType.Id:
-                    var verb = (string) token.Value;
+                    var verb = (string) token.Value!;
                     if (verb == "push")
                     {
                         token = lexer.Read();
                         if (token.Type == CTokenType.Comma)
                         {
-                            this.state.PushAlignment((int) Expect(CTokenType.NumericLiteral));
+                            this.state.PushAlignment((int) Expect(CTokenType.NumericLiteral)!);
                             token = lexer.Read();
                         }
                         Expect(CTokenType.RParen, token);
@@ -248,26 +284,17 @@ namespace Reko.Core.CLanguage
         }
 
 
-        private object Expect(CTokenType expected)
+        private object? Expect(CTokenType expected)
         {
             var token = lexer.Read();
             return Expect(expected, token);
         }
 
-        private object Expect(CTokenType expected, CToken actualToken)
+        private object? Expect(CTokenType expected, CToken actualToken)
         {
             if (actualToken.Type != expected)
                 throw new FormatException(string.Format("Expected '{0}' but got '{1}' on line {2}.", expected, actualToken.Type, lexer.LineNumber));
             return actualToken.Value;
-        }
-
-        private void Expect(CTokenType expected, object expectedValue)
-        {
-            var token = lexer.Read();
-            if (token.Type != expected)
-                throw new FormatException(string.Format("Expected '{0}' but got '{1}'.", expected, token.Type));
-            if (!expectedValue.Equals(token.Value))
-                throw new FormatException(string.Format("Expected '{0}' but got '{1}.", expectedValue, token.Value));
         }
     }
 }

@@ -51,6 +51,17 @@ namespace Reko.UnitTests.Core.CLanguage
             Assert.AreEqual(expectedValue, token.Value);
         }
 
+        public void ExpectLexerError()
+        {
+            try
+            {
+                lex.Read();
+                Assert.Fail("Expected lexer to throw an exception.");
+            } catch(NotImplementedException)
+            {
+            }
+        }
+
         [Test]
         public void CLexer_Eatws()
         {
@@ -91,7 +102,8 @@ namespace Reko.UnitTests.Core.CLanguage
         public void CLexer_LineDirective()
         {
             Lex(" #line");
-            AssertToken(CTokenType.LineDirective);
+            AssertToken(CTokenType.Hash);
+            AssertToken(CTokenType.Id, "line");
         }
 
         [Test]
@@ -119,7 +131,8 @@ namespace Reko.UnitTests.Core.CLanguage
         public void CLexer_Pragma()
         {
             Lex("  #pragma ");
-            AssertToken(CTokenType.PragmaDirective);
+            AssertToken(CTokenType.Hash);
+            AssertToken(CTokenType.Id, "pragma");
         }
 
         [Test]
@@ -492,6 +505,22 @@ namespace Reko.UnitTests.Core.CLanguage
             AssertToken(CTokenType.Id, "L");
             AssertToken(CTokenType.Semicolon);
             AssertToken(CTokenType.Id, "L");
+        }
+
+        [Test]
+        public void CLexer_PreprocessingDirective()
+        {
+            Lex(" #define");
+            AssertToken(CTokenType.Hash);
+            AssertToken(CTokenType.Id, "define");
+        }
+
+        [Test]
+        public void CLexer_InvalidPreprocessingDirective()
+        {
+            Lex(" hello # world");
+            AssertToken(CTokenType.Id, "hello");
+            ExpectLexerError();
         }
     }
 }

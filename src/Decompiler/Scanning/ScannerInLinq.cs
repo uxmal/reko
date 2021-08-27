@@ -195,7 +195,7 @@ namespace Reko.Scanning
         /// <returns>A sequence of triples</returns>
         private static IEnumerable<(T, T, T)> MakeTriples<T>(IEnumerable<T> items)
         {
-            T prev = default(T);
+            T prev = default(T)!;
             var e = items.GetEnumerator();
             if (!e.MoveNext())
                 yield break;

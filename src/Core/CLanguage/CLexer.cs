@@ -19,13 +19,10 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace Reko.Core.CLanguage
@@ -35,6 +32,7 @@ namespace Reko.Core.CLanguage
         private readonly TextReader rdr;
         private readonly StringBuilder sb;
         private readonly Dictionary<string, CTokenType> keywordHash;
+        private State state;
 
         public CLexer(TextReader rdr, Dictionary<string, CTokenType> keywords)
         {
@@ -42,10 +40,12 @@ namespace Reko.Core.CLanguage
             this.sb = new StringBuilder();
             this.LineNumber = 1;
             this.keywordHash = keywords;
+            this.state = State.StartOfLine;
         }
 
         private enum State
         {
+            StartOfLine,
             Start,
             Zero,
             DecimalNumber,
@@ -119,7 +119,6 @@ namespace Reko.Core.CLanguage
             if (!EatWs())
                 return Tok(CTokenType.EOF);
 
-            State state = State.Start;
             bool wideLiteral = false;
             ClearBuffer();
             for (; ; )
@@ -128,6 +127,16 @@ namespace Reko.Core.CLanguage
                 char ch = (char) c;
                 switch (state)
                 {
+                case State.StartOfLine:
+                    if (c < 0)
+                        return Tok(CTokenType.EOF);
+                    if (c == '#')
+                    {
+                        rdr.Read();
+                        return Tok(CTokenType.Hash);
+                    }
+                    state = State.Start;
+                    break;
                 case State.Start:
                     if (c < 0)
                         return Tok(CTokenType.EOF);
@@ -141,8 +150,8 @@ namespace Reko.Core.CLanguage
                         state = State.StringLiteral;
                         break;
                     case '#':
-                        sb.Append(ch);
-                        state = State.Id;
+                        Nyi(this.state, ch);
+                        state = State.Start;
                         break;
                     case '%': state = State.Percent; break;
                     case '\'': state = State.CharLiteral; break;
@@ -692,7 +701,7 @@ namespace Reko.Core.CLanguage
                     case '\r':
                     case '\n':
                         EatWs();
-                        state = State.Start;
+                        state = State.StartOfLine;
                         break;
                     default:
                         rdr.Read(); break;
@@ -706,6 +715,7 @@ namespace Reko.Core.CLanguage
                     case '\r':
                     case '\n':
                         EatWs();
+                        state = State.MultiLineComment;
                         break;
                     case '*':
                         rdr.Read();
@@ -784,21 +794,24 @@ namespace Reko.Core.CLanguage
 
         private void ClearBuffer()
         {
-            sb.Remove(0, sb.Length);
+            sb.Clear();
         }
 
         private CToken Tok(CTokenType type)
         {
+            this.state = State.Start;
             return new CToken(type);
         }
 
         private CToken Tok(CTokenType type, object value)
         {
+            this.state = State.Start;
             return new CToken(type, value);
         }
 
         private CToken LookupId()
         {
+            this.state = State.Start;
             string id = sb.ToString();
             if (keywordHash.TryGetValue(id, out CTokenType type))
             {
@@ -812,13 +825,14 @@ namespace Reko.Core.CLanguage
 
         private bool EatWs()
         {
-            if (rdr == null)
-                return false;
             int ch = rdr.Peek();
             while (ch >= 0 && Char.IsWhiteSpace((char)ch))
             {
                 if (ch == '\n')
+                {
                     ++LineNumber;
+                    state = State.StartOfLine;
+                }
                 rdr.Read();
                 ch = rdr.Peek();
             }
@@ -877,8 +891,6 @@ namespace Reko.Core.CLanguage
         {
             StdKeywords = new Dictionary<string, CTokenType>
             {
-                { "#line", CTokenType.LineDirective },
-                { "#pragma", CTokenType.PragmaDirective },
                 { "auto", CTokenType.Auto },
                 { "bool", CTokenType.Bool },
                 { "char", CTokenType.Char },
@@ -934,7 +946,6 @@ namespace Reko.Core.CLanguage
                 { "__near", CTokenType._Near },
                 { "__out_bcount_opt", CTokenType.__Out_Bcount_Opt },
                 { "__pascal", CTokenType.__Pascal },
-                { "__pragma", CTokenType.__Pragma },
                 { "__restrict", CTokenType.Restrict },
                 { "__ptr64", CTokenType.__Ptr64 },
                 { "__signed__", CTokenType.Signed },
@@ -971,7 +982,6 @@ namespace Reko.Core.CLanguage
                 { "__out", CTokenType.__Out },
                 { "__out_bcount_opt", CTokenType.__Out_Bcount_Opt },
                 { "__pascal", CTokenType.__Pascal },
-                { "__pragma", CTokenType.__Pragma },
                 { "__restrict", CTokenType.Restrict },
                 { "__ptr64", CTokenType.__Ptr64 },
                 { "__stdcall", CTokenType.__Stdcall },
@@ -990,21 +1000,18 @@ namespace Reko.Core.CLanguage
 
     public struct CToken
     {
-        private CTokenType type;
-        private object? value;
-
         public CToken(CTokenType type) : this(type, null)
         {
         }
 
         public CToken(CTokenType type, object? value)
         {
-            this.type = type;
-            this.value = value;
+            this.Type = type;
+            this.Value = value;
         }
 
-        public CTokenType Type { get { return type; } }
-        public object? Value { get { return value; } }
+        public CTokenType Type { get; }
+        public object? Value { get; }
     }
 
     public enum CTokenType
@@ -1020,8 +1027,6 @@ namespace Reko.Core.CLanguage
         WideCharLiteral,
 
         Id,
-        LineDirective,
-        PragmaDirective,
 
         Ampersand,
         Assign,
@@ -1118,7 +1123,6 @@ namespace Reko.Core.CLanguage
         __Out,
         __Out_Bcount_Opt,
         __Pascal,
-        __Pragma,
         __Ptr64,
         __Stdcall,
         __Success,
@@ -1134,5 +1138,6 @@ namespace Reko.Core.CLanguage
         Break,
         If,
         Ellipsis,
+        Hash,
     }
 }
