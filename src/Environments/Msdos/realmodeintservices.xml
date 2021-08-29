@@ -23,11 +23,12 @@
 	  </arg>
 	</signature>
   </service>
+
   <service name="bios_video_set_text_mode_cursor_shape">
-	<syscallinfo>
-	  <vector>10</vector>
-	  <regvalue reg="ah">01</regvalue>
-	</syscallinfo>
+	  <syscallinfo>
+	    <vector>10</vector>
+	    <regvalue reg="ah">01</regvalue>
+	  </syscallinfo>
 	<signature>
 	  <arg>
 		<reg>ch</reg>
@@ -37,6 +38,7 @@
 	  </arg>
 	</signature>
   </service>
+  
   <service name="bios_video_set_cursor_position">
 	<syscallinfo>
 	  <vector>10</vector>
@@ -785,31 +787,60 @@
 	  </arg>
 	</signature>
   </service>
-  <service name="msdos_unknown_2143">
+
+  <service name="msdos_get_file_attributes">
 	<syscallinfo>
 	  <vector>21</vector>
-	  <regvalue reg="ah">43</regvalue>
-	</syscallinfo>
-	<signature></signature>
-  </service>
-  <service name="msdos_ioctl_get_device_info">
-	<syscallinfo>
-	  <vector>21</vector>
-	  <regvalue reg="ah">44</regvalue>
-	  <regvalue reg="al">00</regvalue>
-	</syscallinfo>
+    <regvalue reg="ah">43</regvalue>
+    <regvalue reg="al">00</regvalue>
+  </syscallinfo>
 	<signature>
-	  <return>
-		<flag>C</flag>
-	  </return>
-	  <arg>
-		<reg>bx</reg>
-	  </arg>
-	  <arg out="true">
-		<reg>dx</reg>
-	  </arg>
-	</signature>
+    <return>
+      <flag>C</flag>
+    </return>
+    <arg>
+      <seq><reg>ds</reg><reg>dx</reg></seq>
+        <ptr><prim domain="Character" size="1" /></ptr>
+      </arg>
+	  <arg out="true"><reg>cx</reg></arg>
+	  <arg out="true"><reg>ax</reg></arg>
+    </signature>
   </service>
+
+  <service name="msdos_set_file_attributes">
+	<syscallinfo>
+	  <vector>21</vector>
+    <regvalue reg="ah">43</regvalue>
+    <regvalue reg="al">01</regvalue>
+  </syscallinfo>
+	<signature>
+    <return>
+      <flag>C</flag>
+    </return>
+    <arg>
+      <seq><reg>ds</reg><reg>dx</reg></seq>
+        <ptr><prim domain="Character" size="1" /></ptr>
+      </arg>
+	  <arg out="true"><reg>cx</reg></arg>
+	  <arg out="true"><reg>ax</reg></arg>
+    </signature>
+  </service>
+
+  <service name="msdos_ioctl_get_device_info">
+	  <syscallinfo>
+	    <vector>21</vector>
+	    <regvalue reg="ah">44</regvalue>
+	    <regvalue reg="al">00</regvalue>
+	  </syscallinfo>
+	  <signature>
+	    <return><flag>C</flag></return>
+	    <arg>
+          <reg>bx</reg>
+      </arg>
+	    <arg out="true"><reg>dx</reg></arg>
+	  </signature>
+  </service>
+
   <service name="msdos_ioctl_get_output_status">
 	<syscallinfo>
 	  <vector>21</vector>
