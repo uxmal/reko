@@ -352,6 +352,9 @@
 	  </arg>
 	</signature>
   </service>
+  
+  <!-- MS-DOS interrupt services -->
+  
   <service name="msdos_terminate_program20">
 	<syscallinfo>
 	  <vector>20</vector>
@@ -361,6 +364,7 @@
 	  <terminates>true</terminates>
 	</characteristics>
   </service>
+  
   <service name="msdos_terminate_program">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -371,6 +375,7 @@
 	  <terminates>true</terminates>
 	</characteristics>
   </service>
+  
   <service name="msdos_write_console_char">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -378,10 +383,12 @@
 	</syscallinfo>
 	<signature>
 	  <arg>
-		<reg>dl</reg>
+      <prim domain="Character" size="1" />
+		  <reg>dl</reg>
 	  </arg>
 	</signature>
   </service>
+  
   <service name="msdos_direct_console_output">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -389,10 +396,12 @@
 	</syscallinfo>
 	<signature>
 	  <arg>
-		<reg>dl</reg>
+      <prim domain="Character" size="1" />
+      <reg>dl</reg>
 	  </arg>
 	</signature>
   </service>
+
   <service name="msdos_direct_character_input_without_echo">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -400,10 +409,12 @@
 	</syscallinfo>
 	<signature>
 	  <return>
-		<reg>al</reg>
+      <prim domain="Character" size="1" />
+      <reg>al</reg>
 	  </return>
 	</signature>
   </service>
+  
   <service name="msdos_character_input_without_echo">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -411,10 +422,12 @@
 	</syscallinfo>
 	<signature>
 	  <return>
-		<reg>al</reg>
+      <prim domain="Character" size="1" />
+      <reg>al</reg>
 	  </return>
 	</signature>
   </service>
+
   <service name="msdos_display_string">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -423,13 +436,11 @@
 	<signature>
 	  <arg>
       <ptr><prim domain="Character" size="1" /></ptr>
-      <seq>
-		<reg>ds</reg>
-		<reg>dx</reg>
-      </seq>  
+      <seq><reg>ds</reg><reg>dx</reg></seq>  
 	  </arg>
 	</signature>
   </service>
+  
   <service name="msdos_get_stdin_status">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -437,6 +448,7 @@
 	</syscallinfo>
 	<signature></signature>
   </service>
+  
   <service name="msdos_flush_buffer_and_read_stdin">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -451,20 +463,18 @@
 	  </arg>
 	</signature>
   </service>
+  
   <service name="msdos_set_default_drive">
 	<syscallinfo>
 	  <vector>21</vector>
 	  <regvalue reg="ah">0E</regvalue>
 	</syscallinfo>
 	<signature>
-	  <return>
-		<reg>al</reg>
-	  </return>
-	  <arg>
-		<reg>dl</reg>
-	  </arg>
+	  <return><reg>al</reg></return>
+	  <arg><reg>dl</reg></arg>
 	</signature>
   </service>
+  
   <service name="msdos_get_current_default_drive">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -476,6 +486,7 @@
 	  </return>
 	</signature>
   </service>
+  
   <service name="msdos_set_DTA">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -483,31 +494,25 @@
 	</syscallinfo>
 	<signature>
 	  <arg>
-		<reg>ds</reg>
-	  </arg>
-	  <arg>
-		<reg>dx</reg>
-	  </arg>
+      <seq><reg>ds</reg><reg>dx</reg></seq>
+    </arg>
 	</signature>
   </service>
+  
   <service name="msdos_set_interrupt_vector">
 	<syscallinfo>
 	  <vector>21</vector>
 	  <regvalue reg="ah">25</regvalue>
 	</syscallinfo>
 	<signature>
-	  <arg>
-		<reg>al</reg>
-	  </arg>
+	  <arg><reg>al</reg></arg>
 	  <arg>
       <ptr><code /></ptr>
-		<seq>
-		<reg>ds</reg>
-		<reg>dx</reg>
-	  </seq>
+		  <seq><reg>ds</reg><reg>dx</reg></seq>
 	  </arg>
 	</signature>
   </service>
+  
   <service name="msdos_parse_filename_into_fcb">
     <syscallinfo>
       <vector>21</vector>
@@ -538,6 +543,7 @@
       </arg>
     </signature>
   </service>
+  
   <service name="msdos_get_system_date">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -556,6 +562,19 @@
 	</signature>
   </service>
 
+  <service name="msdos_set_system_date">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">2B</regvalue>
+    </syscallinfo>
+    <signature>
+      <arg><reg>cx</reg></arg>
+      <arg><reg>dh</reg></arg>
+      <arg><reg>dl</reg></arg>
+      <return><reg>al</reg></return>
+    </signature>
+  </service>
+
   <service name="msdos_get_system_time">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -568,6 +587,22 @@
 	  <arg out="true"><reg>dl</reg></arg>
 	</signature>
   </service>
+  
+  <service name="msdos_get_system_time">
+	  <syscallinfo>
+	    <vector>21</vector>
+	    <regvalue reg="ah">2D</regvalue>
+	  </syscallinfo>
+	  <signature>
+	    <return><reg>al</reg></return>
+	    <arg><reg>cl</reg></arg>
+	    <arg><reg>ch</reg></arg>
+	    <arg><reg>dh</reg></arg>
+	    <arg><reg>dl</reg></arg>
+	  </signature>
+  </service>
+  
+    
   <service name="msdos_get_disk_transfer_area_address">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -629,6 +664,7 @@
       <return><reg>dl</reg></return>
     </signature>
   </service>
+  
   <service name="msdos_set_switch_character">
     <syscallinfo>
       <vector>21</vector>
@@ -642,50 +678,84 @@
     </signature>
   </service>
 
+  <service name="msdos_mkdir">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">39</regvalue>
+    </syscallinfo>
+    <signature>
+      <return><flag>C</flag></return>
+      <arg>
+        <ptr><prim domain="Character" size="1" /></ptr>
+        <seq><reg>ds</reg><reg>dx</reg></seq>
+      </arg>
+      <arg out="true"><reg>ax</reg></arg>
+    </signature>
+  </service>
+
+  <service name="msdos_rmdir">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">3A</regvalue>
+    </syscallinfo>
+    <signature>
+      <return><flag>C</flag></return>
+      <arg>
+        <ptr><prim domain="Character" size="1" /></ptr>
+        <seq><reg>ds</reg><reg>dx</reg></seq>
+      </arg>
+      <arg out="true"><reg>ax</reg></arg>
+    </signature>
+  </service>
+
+  <service name="msdos_chdir">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg="ah">3B</regvalue>
+    </syscallinfo>
+    <signature>
+      <return><flag>C</flag></return>
+      <arg>
+        <ptr><prim domain="Character" size="1" /></ptr>
+        <seq><reg>ds</reg><reg>dx</reg></seq>
+      </arg>
+      <arg out="true"><reg>ax</reg></arg>
+    </signature>
+  </service>
+  
   <service name="msdos_create_truncate_file">
 	<syscallinfo>
 	  <vector>21</vector>
 	  <regvalue reg="ah">3C</regvalue>
 	</syscallinfo>
 	<signature>
-	  <return>
-		<flag>C</flag>
-	  </return>
+	  <return><flag>C</flag></return>
 	  <arg>
-		<reg>cx</reg>
-	  </arg>
-	  <arg>
-		<reg>ds</reg>
-	  </arg>
-	  <arg>
-		<reg>dx</reg>
-	  </arg>
-	  <arg out="true">
-		<reg>ax</reg>
-	  </arg>
+      <ptr><prim domain="Character" size="1" /></ptr>
+      <seq><reg>ds</reg><reg>dx</reg></seq>
+    </arg>
+    <arg><reg>cx</reg></arg>
+	  <arg out="true"><reg>ax</reg></arg>
 	</signature>
   </service>
+  
   <service name="msdos_open_file">
 	<syscallinfo>
 	  <vector>21</vector>
 	  <regvalue reg="ah">3D</regvalue>
 	</syscallinfo>
 	<signature>
-	  <return>
-		<flag>C</flag>
-	  </return>
-	  <arg>
-		<seq><reg>ds</reg><reg>dx</reg>
-	  </seq>
+	  <return><flag>C</flag></return>
+	    <arg>
+        <ptr><prim domain="Character" size="1" /></ptr>
+		    <seq><reg>ds</reg><reg>dx</reg>
+	    </seq>
 	  </arg>
-	  <arg>
-		<reg>al</reg>
-	  </arg>
-	  <arg out="true">
-		<reg>ax</reg>
-	  </arg>
+	  <arg><reg>al</reg></arg>
+	  <arg out="true"><reg>ax</reg></arg>
 	</signature>
   </service>
+  
   <service name="msdos_close_file">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -700,6 +770,7 @@
 	  </arg>
 	</signature>
   </service>
+
   <service name="msdos_read_file">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -723,6 +794,7 @@
 	  </arg>
 	</signature>
   </service>
+  
   <service name="msdos_write_file">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -742,28 +814,25 @@
       <ptr><prim domain="Character" size="1" /></ptr>
 		<seq><reg>ds</reg><reg>dx</reg></seq>
 	  </arg>
-	  <arg out="true">
-		<reg>ax</reg>
-	  </arg>
+	  <arg out="true"><reg>ax</reg></arg>
 	</signature>
   </service>
+  
   <service name="msdos_delete_file">
-	<syscallinfo>
-	  <vector>21</vector>
-	  <regvalue reg="ah">41</regvalue>
-	</syscallinfo>
-	<signature>
-	  <return>
-		<flag>C</flag>
-	  </return>
-	  <arg>
-		<reg>ds</reg>
-	  </arg>
-	  <arg>
-		<reg>dx</reg>
-	  </arg>
-	</signature>
+	  <syscallinfo>
+	    <vector>21</vector>
+	    <regvalue reg="ah">41</regvalue>
+	  </syscallinfo>
+	  <signature>
+	    <return><flag>C</flag></return>
+	    <arg>
+        <ptr><prim domain="Character" size="1" /></ptr>
+        <seq><reg>ds</reg><reg>dx</reg></seq>
+      </arg>
+  	  <arg out="true"><reg>ax</reg></arg>
+    </signature>
   </service>
+
   <service name="msdos_set_file_position">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -954,6 +1023,7 @@
 	  </arg>
 	</signature>
   </service>
+  
   <service name="msdos_resize_memory_block">
 	<syscallinfo>
 	  <vector>21</vector>
