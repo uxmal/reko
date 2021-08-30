@@ -27,12 +27,13 @@ using System.Text;
 
 namespace Reko.Core.CLanguage
 {
-    public class CLexer 
+    public class CLexer : IEnumerator<CToken>
     {
         private readonly TextReader rdr;
         private readonly StringBuilder sb;
         private readonly Dictionary<string, CTokenType> keywordHash;
         private State state;
+        private CToken currentToken; // used by IEnumerator.
 
         public CLexer(TextReader rdr, Dictionary<string, CTokenType> keywords)
         {
@@ -42,6 +43,30 @@ namespace Reko.Core.CLanguage
             this.keywordHash = keywords;
             this.state = State.StartOfLine;
         }
+
+        public void Dispose()
+        {
+        }
+
+        public void Reset() => throw new NotSupportedException();
+
+        public bool MoveNext()
+        {
+            this.currentToken = Read();
+            return currentToken.Type != CTokenType.EOF;
+        }
+
+        public CToken Current
+        {
+            get
+            {
+                if (this.currentToken.Type == CTokenType.None)
+                    throw new InvalidOperationException();
+                return this.currentToken;
+            }
+        }
+
+        object System.Collections.IEnumerator.Current => this.Current;
 
         private enum State
         {
@@ -108,11 +133,6 @@ namespace Reko.Core.CLanguage
         /// Keywords used by the MSVC compiler for Windows CE.
         /// </summary>
         public static Dictionary<string, CTokenType> MsvcCeKeywords { get; }
-
-        public CToken Peek()
-        {
-            throw new NotImplementedException();
-        }
 
         public CToken Read()
         {

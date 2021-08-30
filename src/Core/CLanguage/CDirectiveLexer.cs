@@ -39,14 +39,17 @@ namespace Reko.Core.CLanguage
             { "__pragma", Directive.Pragma }
         };
 
-        private readonly CLexer lexer;
         private readonly ParserState state;
+        private readonly Dictionary<string, List<CToken>> macros;
+        private CLexer lexer;
+        private IEnumerator<CToken>? expandedTokens;
         private CToken tokenPrev;
 
         public CDirectiveLexer(ParserState state, CLexer lexer)
         {
             this.state = state;
             this.lexer = lexer;
+            this.macros = new();
             this.tokenPrev = new CToken(CTokenType.EOF);
         }
 
@@ -76,7 +79,7 @@ namespace Reko.Core.CLanguage
                 return t;
             }
 
-            var token = lexer.Read();
+            var token = ReadToken();
             string? lastString = null;
             var state = State.Start;
             StringBuilder? sb = null;
@@ -89,7 +92,14 @@ namespace Reko.Core.CLanguage
                     {
                     case CTokenType.Hash:
                         state = State.Hash;
-                        token = lexer.Read();
+                        token = ReadToken();
+                        break;
+                    case CTokenType.Id:
+                        if (!macros.TryGetValue((string) token.Value!, out var macro))
+                            return token;
+                        this.expandedTokens = macro.GetEnumerator();
+                        state = State.Start;
+                        token = ReadToken();
                         break;
                     default:
                         return token;
@@ -107,17 +117,21 @@ namespace Reko.Core.CLanguage
                             Expect(CTokenType.NumericLiteral);
                             Expect(CTokenType.StringLiteral);
                             state = State.Start;
-                            token = lexer.Read();
+                            token = ReadToken();
                             break;
                         case Directive.Pragma:
-                            token = ReadPragma((string) lexer.Read().Value!);
+                            token = ReadPragma((string) ReadToken().Value!);
                             state = State.Start;
                             break;
                         case Directive.__Pragma:
                             Expect(CTokenType.LParen);
-                            ReadPragma((string) lexer.Read().Value!);
+                            ReadPragma((string) ReadToken().Value!);
+                            token = ReadToken();
                             state = State.Start;
-                            token = lexer.Read();
+                            break;
+                        case Directive.Define:
+                            token = ReadDefine();
+                            state = State.Start;
                             break;
                         }
                         break;
@@ -141,7 +155,7 @@ namespace Reko.Core.CLanguage
                         {
                             sb!.Append(token.Value);
                         }
-                        token = lexer.Read();
+                        token = ReadToken();
                     }
                     else
                     {
@@ -161,11 +175,31 @@ namespace Reko.Core.CLanguage
             }
         }
 
+        private CToken ReadToken()
+        {
+            if (this.expandedTokens != null)
+            {
+                if (this.expandedTokens.MoveNext())
+                    return this.expandedTokens.Current;
+                this.expandedTokens = null;
+            }
+            return lexer.Read();
+        }
+
+        public CToken ReadDefine()
+        {
+            var macroName = (string)Expect(CTokenType.Id)!;
+            var token = ReadToken();
+            var tokens = new List<CToken> { token };
+            this.macros.Add(macroName, tokens);
+            return ReadToken();
+        }
+
         public virtual CToken ReadPragma(string pragma)
         {
             if (pragma == "once")
             {
-                return lexer.Read();
+                return ReadToken();
             }
             else if (pragma == "warning")
             {
@@ -175,30 +209,30 @@ namespace Reko.Core.CLanguage
                 {
                     Expect(CTokenType.Colon);
                     Expect(CTokenType.NumericLiteral);
-                    var token = lexer.Read();
+                    var token = ReadToken();
                     while (token.Type == CTokenType.NumericLiteral)
                     {
-                        token = lexer.Read();
+                        token = ReadToken();
                     }
                     Expect(CTokenType.RParen, token);
-                    return lexer.Read();
+                    return ReadToken();
                 }
                 else if (value == "push" || value == "pop")
                 {
                 }
                 Expect(CTokenType.RParen);
-                return lexer.Read();
+                return ReadToken();
             }
             else if (pragma == "prefast")
             {
                 Expect(CTokenType.LParen);
                 for (;;)
                 {
-                    var token = lexer.Read();
+                    var token = ReadToken();
                     if (token.Type == CTokenType.RParen)
                         break;
                 }
-                return lexer.Read();
+                return ReadToken();
             }
             else if (pragma == "intrinsic" || pragma == "function")
             {
@@ -206,7 +240,7 @@ namespace Reko.Core.CLanguage
                 Expect(CTokenType.Id);
                 for (; ;)
                 {
-                    var tok = lexer.Read();
+                    var tok = ReadToken();
                     if (tok.Type != CTokenType.Comma)
                     {
                         Expect(CTokenType.RParen, tok);
@@ -214,12 +248,12 @@ namespace Reko.Core.CLanguage
                     }
                     Expect(CTokenType.Id);
                 }
-                return lexer.Read();
+                return ReadToken();
             }
             else if (pragma == "pack")
             {
                 Expect(CTokenType.LParen);
-                var token = lexer.Read();
+                var token = ReadToken();
                 switch (token.Type)
                 {
                 case CTokenType.NumericLiteral:
@@ -233,11 +267,11 @@ namespace Reko.Core.CLanguage
                     var verb = (string) token.Value!;
                     if (verb == "push")
                     {
-                        token = lexer.Read();
+                        token = ReadToken();
                         if (token.Type == CTokenType.Comma)
                         {
                             this.state.PushAlignment((int) Expect(CTokenType.NumericLiteral)!);
-                            token = lexer.Read();
+                            token = ReadToken();
                         }
                         Expect(CTokenType.RParen, token);
                     }
@@ -252,14 +286,14 @@ namespace Reko.Core.CLanguage
                 default:
                     throw new FormatException(string.Format("Unexpected token {0}.", token.Type));
                 }
-                return lexer.Read();
+                return ReadToken();
             }
             else if (pragma == "deprecated")
             {
                 Expect(CTokenType.LParen);
                 Expect(CTokenType.Id);
                 Expect(CTokenType.RParen);
-                return lexer.Read();
+                return ReadToken();
             }
             else if (pragma == "comment")
             {
@@ -268,25 +302,25 @@ namespace Reko.Core.CLanguage
                 Expect(CTokenType.Comma);
                 Expect(CTokenType.StringLiteral);
                 Expect(CTokenType.RParen);
-                return lexer.Read();
+                return ReadToken();
             }
             else if (pragma == "region" || pragma == "endregion")
             {
                 lexer.SkipToNextLine();
-                return lexer.Read();
+                return ReadToken();
             }
             else
             {
                 // Ignore unknown #pragmas
                 lexer.SkipToNextLine();
-                return lexer.Read();
+                return ReadToken();
             }
         }
 
 
         private object? Expect(CTokenType expected)
         {
-            var token = lexer.Read();
+            var token = ReadToken();
             return Expect(expected, token);
         }
 

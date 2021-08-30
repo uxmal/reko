@@ -27,7 +27,7 @@ using System.Xml;
 namespace Reko.Core
 {
     /// <summary>
-    /// Reads XML into a Dictionary&lt;string,object&gt; (JSON envy!)
+    /// Reads XML into a <see cref="Dictionary{TKey, TValue}"/> (JSON envy!)
     /// Handles the following XML as follows:
     /// &lt;dict&gt;
     ///   &lt;item key="UK"&gt;United Kingdom&lt/item&gt;

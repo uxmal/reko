@@ -134,5 +134,14 @@ namespace Reko.UnitTests.Core.CLanguage
                 "#pragma pack()\r\nx");
             Assert.AreEqual("x", lexer.Read().Value);
         }
+
+        [Test]
+        public void CDirectiveLexer_define_constant()
+        {
+            Lex(
+                "// Constant coming up\r\n" +
+                "# define X 42\r\nX");
+            Assert.AreEqual(42, lexer.Read().Value);
+        }
     }
 }

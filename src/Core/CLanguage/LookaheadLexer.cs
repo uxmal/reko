@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -27,8 +27,8 @@ namespace Reko.Core.CLanguage
 {
     public class LookAheadLexer
     {
-        private CDirectiveLexer lexer;
-        private List<CToken> queue;
+        private readonly CDirectiveLexer lexer;
+        private readonly List<CToken> queue;
         private int iRead;
 
         public LookAheadLexer(CDirectiveLexer lexer)
@@ -38,7 +38,7 @@ namespace Reko.Core.CLanguage
             iRead= 0;
         }
 
-        public int LineNumber { get { return lexer.LineNumber; } }
+        public int LineNumber => lexer.LineNumber;
 
         public CToken Read()
         {
