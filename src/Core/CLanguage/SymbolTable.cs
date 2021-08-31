@@ -142,7 +142,7 @@ namespace Reko.Core.CLanguage
             return types;
         }
 
-        private string? GetCallingConventionFromAttributes(List<CAttribute> attributes)
+        private string? GetCallingConventionFromAttributes(List<CAttribute>? attributes)
         {
             var attrConvention = attributes?.Find(a =>
                 a.Name.Components.Length == 2 &&

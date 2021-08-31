@@ -379,6 +379,8 @@ namespace Reko.UnitTests.Core.CLanguage
             Assert.AreEqual(1, lex.LineNumber);
             AssertToken(CTokenType.Id, "a");
             Assert.AreEqual(1, lex.LineNumber);
+            AssertToken(CTokenType.NewLine);
+            Assert.AreEqual(2, lex.LineNumber);
             AssertToken(CTokenType.Id, "b");
             Assert.AreEqual(2, lex.LineNumber);
         }
@@ -432,6 +434,7 @@ namespace Reko.UnitTests.Core.CLanguage
         public void CLexer_LineComment()
         {
             Lex("// foo\nid");
+            AssertToken(CTokenType.NewLine);
             AssertToken(CTokenType.Id);
         }
 
@@ -454,6 +457,7 @@ namespace Reko.UnitTests.Core.CLanguage
         {
             Lex("a // foo\r\n b");
             AssertToken(CTokenType.Id, "a");
+            AssertToken(CTokenType.NewLine);
             AssertToken(CTokenType.Id, "b");
         }
 
@@ -475,6 +479,7 @@ namespace Reko.UnitTests.Core.CLanguage
             AssertToken(CTokenType.NumericLiteral, 0x42);
             AssertToken(CTokenType.Comma);
             AssertToken(CTokenType.NumericLiteral, 0x44);
+            AssertToken(CTokenType.NewLine);
             AssertToken(CTokenType.Comma);
             AssertToken(CTokenType.NumericLiteral, 0x48);
         }
@@ -516,11 +521,43 @@ namespace Reko.UnitTests.Core.CLanguage
         }
 
         [Test]
-        public void CLexer_InvalidPreprocessingDirective()
+        public void CLexer_Macos_NewLine()
         {
-            Lex(" hello # world");
+            Lex("hello\rworld");
             AssertToken(CTokenType.Id, "hello");
-            ExpectLexerError();
+            AssertToken(CTokenType.NewLine);
+            AssertToken(CTokenType.Id, "world");
+            AssertToken(CTokenType.EOF);
+        }
+
+        [Test]
+        public void CLexer_Unix_NewLine()
+        {
+            Lex("hello\nworld");
+            AssertToken(CTokenType.Id, "hello");
+            AssertToken(CTokenType.NewLine);
+            AssertToken(CTokenType.Id, "world");
+            AssertToken(CTokenType.EOF);
+        }
+
+        [Test]
+        public void CLexer_DEC_NewLine()
+        {
+            Lex("hello\nworld");
+            AssertToken(CTokenType.Id, "hello");
+            AssertToken(CTokenType.NewLine);
+            AssertToken(CTokenType.Id, "world");
+            AssertToken(CTokenType.EOF);
+        }
+
+        [Test]
+        public void CLexer_LineComment_WithNewline()
+        {
+            Lex("a // hello\nb");
+            AssertToken(CTokenType.Id, "a");
+            AssertToken(CTokenType.NewLine);
+            AssertToken(CTokenType.Id, "b");
+            AssertToken(CTokenType.EOF);
         }
     }
 }

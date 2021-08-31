@@ -39,12 +39,14 @@ namespace Reko.UnitTests.Core.CLanguage
         {
             parserState = new ParserState();
         }
+
         private void Lexer(string input)
         {
             var dlexer = new CDirectiveLexer(
                 parserState, 
                 new CLexer(new StringReader(input), CLexer.GccKeywords));
-            lexer = new LookAheadLexer(dlexer);
+            var sc = new StringConcatenator(dlexer);
+            lexer = new LookAheadLexer(sc);
         }
 
         private void Expect(CTokenType expectedType, string expectedValue)
@@ -104,6 +106,5 @@ namespace Reko.UnitTests.Core.CLanguage
             Expect(CTokenType.Id, "b");
             Expect(CTokenType.Id, "c");
         }
-
     }
 }

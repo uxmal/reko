@@ -27,8 +27,13 @@ using System.Text;
 namespace Reko.Core.CLanguage
 {
     /// <summary>
-    /// Lexer that deals with #pragma, #line and other directives that can happen at any time.
+    /// Lexer that deals with #pragma, #line and other preprocessor directives that can happen at any time.
+    /// Each directive occupies one logical line, terminated by a newline.
     /// </summary>
+    /// <remarks>
+    /// This class performs the processing of phases 4 and 5 of described here:
+    /// https://en.cppreference.com/w/c/language/translation_phases
+    /// </remarks>
     public class CDirectiveLexer
     {
         private readonly Dictionary<string, Directive> directives = new()
@@ -39,27 +44,27 @@ namespace Reko.Core.CLanguage
             { "__pragma", Directive.Pragma }
         };
 
-        private readonly ParserState state;
+        private readonly ParserState parserState;
         private readonly Dictionary<string, List<CToken>> macros;
-        private CLexer lexer;
+        private readonly CLexer lexer;
         private IEnumerator<CToken>? expandedTokens;
-        private CToken tokenPrev;
+        private State state;
 
         public CDirectiveLexer(ParserState state, CLexer lexer)
         {
-            this.state = state;
+            this.parserState = state;
             this.lexer = lexer;
             this.macros = new();
-            this.tokenPrev = new CToken(CTokenType.EOF);
+            this.state = State.StartLine;
         }
 
         public int LineNumber => lexer.LineNumber;
 
         private enum State
         {
-            Start = 0,
-            Strings = 1,
-            Hash = 2,
+            StartLine,
+            InsideLine,
+            Hash,
         }
 
         private enum Directive
@@ -72,34 +77,53 @@ namespace Reko.Core.CLanguage
 
         public CToken Read()
         {
-            if (tokenPrev.Type != CTokenType.EOF)
-            {
-                var t = tokenPrev;
-                tokenPrev = new CToken(CTokenType.EOF);
-                return t;
-            }
-
             var token = ReadToken();
-            string? lastString = null;
-            var state = State.Start;
-            StringBuilder? sb = null;
             for (; ; )
             {
                 switch (state)
                 {
-                case State.Start:
+                case State.StartLine:
                     switch (token.Type)
                     {
+                    case CTokenType.NewLine:
+                        token = ReadToken();
+                        break;
                     case CTokenType.Hash:
                         state = State.Hash;
                         token = ReadToken();
                         break;
                     case CTokenType.Id:
-                        if (!macros.TryGetValue((string) token.Value!, out var macro))
-                            return token;
-                        this.expandedTokens = macro.GetEnumerator();
-                        state = State.Start;
+                    case CTokenType.__Pragma:
+                        state = State.InsideLine;
+                        break;
+                    default:
+                        state = State.InsideLine;
+                        return token;
+                    }
+                    break;
+                case State.InsideLine:
+                    switch (token.Type)
+                    {
+                    case CTokenType.NewLine:
                         token = ReadToken();
+                        state = State.StartLine;
+                        break;
+                    case CTokenType.Hash:
+                        throw new FormatException("Preprocessor directive not allowed here.");
+                    case CTokenType.Id:
+                        var id = (string) token.Value!;
+                        if (macros.TryGetValue(id, out var macro))
+                        {
+                            this.expandedTokens = macro.GetEnumerator();
+                            token = ReadToken();
+                            break;
+                        }
+                        return token;
+                    case CTokenType.__Pragma:
+                        Expect(CTokenType.LParen);
+                        ReadPragma((string) ReadToken().Value!);
+                        token = ReadToken();
+                        state = State.InsideLine;
                         break;
                     default:
                         return token;
@@ -108,6 +132,11 @@ namespace Reko.Core.CLanguage
                 case State.Hash:
                     switch (token.Type)
                     {
+                    case CTokenType.NewLine:
+                        // Null directive is acceptable, and ignored.
+                        token = ReadToken();
+                        state = State.StartLine;
+                        break;
                     case CTokenType.Id:
                         if (!directives.TryGetValue((string) token.Value!, out var directive))
                             throw new FormatException($"Unknown preprocessor directive '{token.Value!}'.");
@@ -116,59 +145,21 @@ namespace Reko.Core.CLanguage
                         case Directive.Line:
                             Expect(CTokenType.NumericLiteral);
                             Expect(CTokenType.StringLiteral);
-                            state = State.Start;
                             token = ReadToken();
+                            state = State.StartLine;
                             break;
                         case Directive.Pragma:
                             token = ReadPragma((string) ReadToken().Value!);
-                            state = State.Start;
-                            break;
-                        case Directive.__Pragma:
-                            Expect(CTokenType.LParen);
-                            ReadPragma((string) ReadToken().Value!);
-                            token = ReadToken();
-                            state = State.Start;
+                            state = State.StartLine;
                             break;
                         case Directive.Define:
                             token = ReadDefine();
-                            state = State.Start;
+                            state = State.StartLine;
                             break;
                         }
                         break;
-                    case CTokenType.StringLiteral:
-                        state = State.Strings;
-                        lastString = (string) token.Value!;
-                        break;
                     default:
-                        return token;
-                    }
-                    break;
-                case State.Strings:
-                    if (token.Type == CTokenType.StringLiteral)
-                    {
-                        if (lastString != null)
-                        {
-                            sb = new StringBuilder(lastString);
-                            lastString = null;
-                        }
-                        else
-                        {
-                            sb!.Append(token.Value);
-                        }
-                        token = ReadToken();
-                    }
-                    else
-                    {
-                        tokenPrev = token;
-                        if (lastString != null)
-                        {
-                            var tok = new CToken(CTokenType.StringLiteral, lastString);
-                            return tok;
-                        }
-                        else
-                        {
-                            return new CToken(CTokenType.StringLiteral, sb!.ToString());
-                        }
+                        throw new FormatException($"Unexpected token {token.Type} on line {lexer.LineNumber}.");
                     }
                     break;
                 }
@@ -189,10 +180,18 @@ namespace Reko.Core.CLanguage
         public CToken ReadDefine()
         {
             var macroName = (string)Expect(CTokenType.Id)!;
-            var token = ReadToken();
-            var tokens = new List<CToken> { token };
-            this.macros.Add(macroName, tokens);
-            return ReadToken();
+            //$TODO: arguments #define(A,B) A##B
+            var tokens = new List<CToken>();
+            for (; ; )
+            {
+                var token = ReadToken();
+                if (token.Type == CTokenType.EOF || token.Type == CTokenType.NewLine)
+                {
+                    this.macros.Add(macroName, tokens);
+                    return token;
+                }
+                tokens.Add(token);
+            }
         }
 
         public virtual CToken ReadPragma(string pragma)
@@ -257,11 +256,13 @@ namespace Reko.Core.CLanguage
                 switch (token.Type)
                 {
                 case CTokenType.NumericLiteral:
-                    this.state.PushAlignment((int) token.Value!);
+                    this.parserState.PushAlignment((int) token.Value!);
                     Expect(CTokenType.RParen);
+                    Expect(CTokenType.NewLine);
                     break;
                 case CTokenType.RParen:
-                    this.state.PopAlignment();
+                    this.parserState.PopAlignment();
+                    Expect(CTokenType.NewLine);
                     break;
                 case CTokenType.Id:
                     var verb = (string) token.Value!;
@@ -270,14 +271,14 @@ namespace Reko.Core.CLanguage
                         token = ReadToken();
                         if (token.Type == CTokenType.Comma)
                         {
-                            this.state.PushAlignment((int) Expect(CTokenType.NumericLiteral)!);
+                            this.parserState.PushAlignment((int) Expect(CTokenType.NumericLiteral)!);
                             token = ReadToken();
                         }
                         Expect(CTokenType.RParen, token);
                     }
                     else if (verb == "pop")
                     {
-                        this.state.PopAlignment();
+                        this.parserState.PopAlignment();
                         Expect(CTokenType.RParen);
                     }
                     else

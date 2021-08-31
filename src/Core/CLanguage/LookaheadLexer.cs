@@ -27,18 +27,18 @@ namespace Reko.Core.CLanguage
 {
     public class LookAheadLexer
     {
-        private readonly CDirectiveLexer lexer;
+        private readonly StringConcatenator sc;
         private readonly List<CToken> queue;
         private int iRead;
 
-        public LookAheadLexer(CDirectiveLexer lexer)
+        public LookAheadLexer(StringConcatenator sc)
         {
-            this.lexer = lexer;
+            this.sc = sc;
             this.queue = new List<CToken>();
             iRead= 0;
         }
 
-        public int LineNumber => lexer.LineNumber;
+        public int LineNumber => sc.LineNumber;
 
         public CToken Read()
         {
@@ -52,7 +52,7 @@ namespace Reko.Core.CLanguage
                 }
                 return token;
             }
-            return lexer.Read();
+            return sc.Read();
         }
 
         public CToken Peek(int n)
@@ -62,7 +62,7 @@ namespace Reko.Core.CLanguage
             int i = iRead + n;
             while (IsSlotEmpty(i))
             {
-                queue.Add(lexer.Read());
+                queue.Add(sc.Read());
             }
             return queue[i];
         }

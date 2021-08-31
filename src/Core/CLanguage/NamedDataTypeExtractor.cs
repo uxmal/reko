@@ -243,7 +243,7 @@ namespace Reko.Core.CLanguage
         /// </summary>
         /// <param name="attrs"></param>
         /// <returns></returns>
-        public SerializedKind? GetArgumentKindFromAttributes(string paramType, List<CAttribute> attrs)
+        public SerializedKind? GetArgumentKindFromAttributes(string paramType, List<CAttribute>? attrs)
         {
             if (attrs == null)
                 return null;

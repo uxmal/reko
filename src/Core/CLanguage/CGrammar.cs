@@ -372,7 +372,7 @@ namespace Reko.Core.CLanguage
             };
         }
 
-        internal Decl Decl(List<CAttribute> attrs, List<DeclSpec> list, List<InitDeclarator> listDecls)
+        public Decl Decl(List<CAttribute>? attrs, List<DeclSpec> list, List<InitDeclarator> listDecls)
         {
             return new Decl
             {

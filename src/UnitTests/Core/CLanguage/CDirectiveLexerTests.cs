@@ -50,6 +50,7 @@ namespace Reko.UnitTests.Core.CLanguage
             var token = lexer.Read();
             Assert.AreEqual(expectedType, token.Type);
         }
+
         private void Expect(CTokenType expectedType, object expectedValue)
         {
             var token = lexer.Read();
@@ -57,17 +58,29 @@ namespace Reko.UnitTests.Core.CLanguage
             Assert.AreEqual(expectedValue, token.Value);
         }
 
+        public void ExpectLexerError()
+        {
+            try
+            {
+                lexer.Read();
+                Assert.Fail("Expected lexer to throw an exception.");
+            }
+            catch (FormatException)
+            {
+            }
+        }
+
         [Test]
         public void CDirectiveLexer_NotTerminated_ReturnEof()
         {
-            Lex("#line 1\n \"foo.h\"");
+            Lex("#line 1 \"foo.h\"");
             Expect(CTokenType.EOF);
         }
 
         [Test]
         public void CDirectiveLexer_LineDirective_ReturnFollowingToken()
         {
-            Lex("#line 1\n \"foo.h\"\na");
+            Lex("#line 1 \"foo.h\"\na");
             Expect(CTokenType.Id, "a");
         }
 
@@ -113,17 +126,26 @@ namespace Reko.UnitTests.Core.CLanguage
         }
 
         [Test]
+        public void CDirectiveLexer_InvalidPreprocessingDirective()
+        {
+            Lex(" hello # world");
+            Assert.AreEqual(CTokenType.Id, lexer.Read().Type);
+            ExpectLexerError();
+        }
+
+        [Test]
+        public void CDirectiveLexer_Preprocessing_directives_must_start_line()
+        {
+            Lex(" hello # define X 42");
+            Assert.AreEqual(CTokenType.Id, lexer.Read().Type);
+            ExpectLexerError();
+        }
+
+        [Test]
         public void CDirectiveLexer_Pragma_region()
         {
             Lex("#pragma region stuf stuff stuff\r\nx");
             Assert.AreEqual("x", lexer.Read().Value);
-        }
-
-        [Test]
-        public void CDirectiveLexer_Concatenate_string_literals()
-        {
-            Lex("\"foo\"    \"bar\"");
-            Assert.AreEqual("foobar", lexer.Read().Value);
         }
 
         [Test]
@@ -143,5 +165,32 @@ namespace Reko.UnitTests.Core.CLanguage
                 "# define X 42\r\nX");
             Assert.AreEqual(42, lexer.Read().Value);
         }
+
+        [Test]
+        public void CDirectiveLexer_define_multiple_tokens()
+        {
+            Lex(
+                "// Multiple tokens coming up\r\n" +
+                "# define X (A B)\r\nX");
+            Assert.AreEqual(CTokenType.LParen, lexer.Read().Type);
+            Assert.AreEqual("A", lexer.Read().Value);
+            Assert.AreEqual("B", lexer.Read().Value);
+            Assert.AreEqual(CTokenType.RParen, lexer.Read().Type);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+        }
+
+        [Test]
+        public void CDirectiveLexer_multiline()
+        {
+            Lex(
+@"#pragma read_only_file;
+#pragma pack( push, 1 )
+typedef int");
+            Assert.AreEqual(CTokenType.Typedef, lexer.Read().Type);
+            Assert.AreEqual(1, state.Alignment);
+            Assert.AreEqual(CTokenType.Int, lexer.Read().Type);
+            Assert.AreEqual(CTokenType.EOF, lexer.Read().Type);
+        }
+
     }
 }

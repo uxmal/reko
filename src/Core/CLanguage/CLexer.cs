@@ -27,12 +27,31 @@ using System.Text;
 
 namespace Reko.Core.CLanguage
 {
+    /// <summary>
+    /// This class lexes the contents of a <see cref="TextReader"/> into C/C++ tokens.
+    /// </summary>
+    /// <remarks>
+    /// This class performs the processing of stages 1..3 described in the 
+    /// https://en.cppreference.com/w/c/language/translation_phases
+    /// i.e.
+    /// 1) Conversion from UTF-8 to UTF-16 (done by the TextReader itself). Trigraphs are
+    ///    NYI.
+    /// 2) Combines lines ending with backslash into a single logical line.
+    /// 3) Decomposes the textual input into preprocessing tokens, which are
+    ///     - header names (NYI)
+    ///     - identifiers
+    ///     - numeric constants
+    ///     - character constants and string literals
+    ///     - operators and punctuators (the ## token is NYI)
+    ///    Each comment is replaced by a single space character
+    /// 4) Newlines are kept.
+    /// 
+    /// </remarks>
     public class CLexer : IEnumerator<CToken>
     {
         private readonly TextReader rdr;
         private readonly StringBuilder sb;
         private readonly Dictionary<string, CTokenType> keywordHash;
-        private State state;
         private CToken currentToken; // used by IEnumerator.
 
         public CLexer(TextReader rdr, Dictionary<string, CTokenType> keywords)
@@ -41,7 +60,6 @@ namespace Reko.Core.CLanguage
             this.sb = new StringBuilder();
             this.LineNumber = 1;
             this.keywordHash = keywords;
-            this.state = State.StartOfLine;
         }
 
         public void Dispose()
@@ -70,7 +88,6 @@ namespace Reko.Core.CLanguage
 
         private enum State
         {
-            StartOfLine,
             Start,
             Zero,
             DecimalNumber,
@@ -110,6 +127,7 @@ namespace Reko.Core.CLanguage
             HexNumberSuffix,
             DecimalNumberSuffix,
             L,
+            BackSlash,
         }
 
         public int LineNumber { get; private set; }
@@ -136,10 +154,9 @@ namespace Reko.Core.CLanguage
 
         public CToken Read()
         {
-            if (!EatWs())
-                return Tok(CTokenType.EOF);
-
             bool wideLiteral = false;
+            var state = State.Start;
+
             ClearBuffer();
             for (; ; )
             {
@@ -147,32 +164,33 @@ namespace Reko.Core.CLanguage
                 char ch = (char) c;
                 switch (state)
                 {
-                case State.StartOfLine:
-                    if (c < 0)
-                        return Tok(CTokenType.EOF);
-                    if (c == '#')
-                    {
-                        rdr.Read();
-                        return Tok(CTokenType.Hash);
-                    }
-                    state = State.Start;
-                    break;
                 case State.Start:
                     if (c < 0)
                         return Tok(CTokenType.EOF);
                     rdr.Read();
                     switch (ch)
                     {
+                    case ' ':
+                    case '\t':
+                    case '\v':
+                        break;
+                    case '\r':
+                        if (rdr.Peek() != '\n')
+                        { // MacOS \r line separator/ending.
+                            ++LineNumber;
+                            return Tok(CTokenType.NewLine);
+                        }
+                        break;
+                    case '\n':
+                        ++LineNumber;
+                        return Tok(CTokenType.NewLine);
                     case '!':
                         state = State.Bang;
                         break;
                     case '"':
                         state = State.StringLiteral;
                         break;
-                    case '#':
-                        Nyi(this.state, ch);
-                        state = State.Start;
-                        break;
+                    case '#': return Tok(CTokenType.Hash);
                     case '%': state = State.Percent; break;
                     case '\'': state = State.CharLiteral; break;
                     case '&': state = State.Ampersand; break;
@@ -199,6 +217,7 @@ namespace Reko.Core.CLanguage
                         break;
                     case '?': return Tok(CTokenType.Question);
                     case '[': return Tok(CTokenType.LBracket);
+                    case '\\': state = State.BackSlash; break;
                     case ']': return Tok(CTokenType.RBracket);
                     case '^': state = State.Caret; break;
                     case '{': return Tok(CTokenType.LBrace);
@@ -431,9 +450,8 @@ namespace Reko.Core.CLanguage
                         var tokenId = LookupId();
                         if (tokenId.Type != CTokenType.__Extension)
                             return tokenId;
-                        EatWs();
-                        state = State.Start;
                         sb.Clear();
+                        state = State.Start;
                     }
                     break;
                 case State.CharLiteral:
@@ -720,8 +738,7 @@ namespace Reko.Core.CLanguage
                     {
                     case '\r':
                     case '\n':
-                        EatWs();
-                        state = State.StartOfLine;
+                        state = State.Start;
                         break;
                     default:
                         rdr.Read(); break;
@@ -733,9 +750,16 @@ namespace Reko.Core.CLanguage
                     switch (ch)
                     {
                     case '\r':
-                    case '\n':
-                        EatWs();
+                        rdr.Read();
+                        if (rdr.Peek() != '\n')
+                        {
+                            ++LineNumber;
+                        }
                         state = State.MultiLineComment;
+                        break;
+                    case '\n':
+                        rdr.Read();
+                        ++LineNumber;
                         break;
                     case '*':
                         rdr.Read();
@@ -751,8 +775,16 @@ namespace Reko.Core.CLanguage
                     switch (ch)
                     {
                     case '\r':
+                        rdr.Read();
+                        if (rdr.Peek() != '\n')
+                        {
+                            ++LineNumber;
+                        }
+                        state = State.MultiLineComment;
+                        break;
                     case '\n':
-                        EatWs();
+                        rdr.Read();
+                        ++LineNumber;
                         state = State.MultiLineComment;
                         break;
                     case '*':
@@ -761,8 +793,6 @@ namespace Reko.Core.CLanguage
                         break;
                     case '/':
                         rdr.Read();
-                        if (!EatWs())
-                            return Tok(CTokenType.EOF);
                         state = State.Start;
                         break;
                     default:
@@ -800,6 +830,30 @@ namespace Reko.Core.CLanguage
                         break;
                     }
                     break;
+                case State.BackSlash:
+                    if (c < 0)
+                        return Tok(CTokenType.EOF); //$REVIEW: or error?
+                    switch (ch)
+                    {
+                    case '\r':
+                        rdr.Read();
+                        if (rdr.Peek() == '\n')
+                        {
+                            rdr.Read();
+                        }
+                        ++LineNumber;
+                        state = State.Start;    // Fuse this into a logical line.
+                        break;
+                    case '\n':
+                        rdr.Read();
+                        ++LineNumber;
+                        state = State.Start;
+                        break;
+                    default:
+                        Nyi(state, ch);
+                        break;
+                    }
+                    break;
                 default:
                     Nyi(state, ch);
                     break;
@@ -809,7 +863,7 @@ namespace Reko.Core.CLanguage
 
         private void Nyi(State state, char ch)
         {
-            throw new NotImplementedException(string.Format("State {0}, ch: {1} (U+{2:X4})", state, ch, (uint)ch));
+            throw new NotImplementedException($"State {state}, ch: {ch} (U+{(int)ch:X4}) on line {LineNumber}.");
         }
 
         private void ClearBuffer()
@@ -819,19 +873,16 @@ namespace Reko.Core.CLanguage
 
         private CToken Tok(CTokenType type)
         {
-            this.state = State.Start;
             return new CToken(type);
         }
 
         private CToken Tok(CTokenType type, object value)
         {
-            this.state = State.Start;
             return new CToken(type, value);
         }
 
         private CToken LookupId()
         {
-            this.state = State.Start;
             string id = sb.ToString();
             if (keywordHash.TryGetValue(id, out CTokenType type))
             {
@@ -851,7 +902,6 @@ namespace Reko.Core.CLanguage
                 if (ch == '\n')
                 {
                     ++LineNumber;
-                    state = State.StartOfLine;
                 }
                 rdr.Read();
                 ch = rdr.Peek();
@@ -966,6 +1016,7 @@ namespace Reko.Core.CLanguage
                 { "__near", CTokenType._Near },
                 { "__out_bcount_opt", CTokenType.__Out_Bcount_Opt },
                 { "__pascal", CTokenType.__Pascal },
+                { "__pragma", CTokenType.__Pragma },
                 { "__restrict", CTokenType.Restrict },
                 { "__ptr64", CTokenType.__Ptr64 },
                 { "__signed__", CTokenType.Signed },
@@ -1143,6 +1194,7 @@ namespace Reko.Core.CLanguage
         __Out,
         __Out_Bcount_Opt,
         __Pascal,
+        __Pragma,
         __Ptr64,
         __Stdcall,
         __Success,
@@ -1159,5 +1211,6 @@ namespace Reko.Core.CLanguage
         If,
         Ellipsis,
         Hash,
+        NewLine,
     }
 }

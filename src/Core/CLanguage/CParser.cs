@@ -49,7 +49,8 @@ namespace Reko.Core.CLanguage
         {
             this.ParserState = parserState;
             this.lexer = new LookAheadLexer(
-                new CDirectiveLexer(parserState, lexer));
+                new StringConcatenator(
+                    new CDirectiveLexer(parserState, lexer)));
             this.grammar = new CGrammar();
         }
 
@@ -436,7 +437,7 @@ IGNORE tab + cr + lf
                 return grammar.FunctionDefinition(attrs, decl_spec_list, declarator, statements);
             }
             else
-                throw new CParserException("Expected ';'");
+                throw new CParserException($"Expected ';' on line {lexer.LineNumber}.");
         }
 
         private List<CAttribute> MergeAttributeLists(params List<CAttribute> [] lists)
