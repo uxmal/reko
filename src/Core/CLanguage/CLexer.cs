@@ -158,7 +158,7 @@ namespace Reko.Core.CLanguage
             var state = State.Start;
 
             ClearBuffer();
-            for (; ; )
+            for (;;)
             {
                 int c = rdr.Peek();
                 char ch = (char) c;
@@ -892,21 +892,6 @@ namespace Reko.Core.CLanguage
             {
                 return new CToken(CTokenType.Id, id);
             }
-        }
-
-        private bool EatWs()
-        {
-            int ch = rdr.Peek();
-            while (ch >= 0 && Char.IsWhiteSpace((char)ch))
-            {
-                if (ch == '\n')
-                {
-                    ++LineNumber;
-                }
-                rdr.Read();
-                ch = rdr.Peek();
-            }
-            return true;
         }
 
         private bool IsHexDigit(char ch)
