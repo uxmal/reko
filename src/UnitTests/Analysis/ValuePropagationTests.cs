@@ -1425,5 +1425,48 @@ SsaProcedureBuilder_exit:
             #endregion
             AssertStringsEqual(sExp, m.Ssa);
         }
+
+        [Test]
+        public void VpGithub1074()
+        {
+            var x1 = m.Reg64("x1");
+            var x2 = m.Reg64("x2");
+            var x3 = m.Reg64("x3");
+            m.Assign(x1, m.Mem64(m.Word64(0x00123400)));
+            m.Assign(x2, m.Shl(x1, 3));
+            m.Assign(x3, m.ISub(x2, x1));
+            m.MStore(m.Word64(0x00123408), x3);
+
+            RunValuePropagator();
+            var sExp =
+            #region Expected
+@"x1: orig: x1
+    def:  x1 = Mem3[0x123400<64>:word64]
+    uses: x2 = x1 << 3<8>
+          x3 = x1 * 7<64>
+          Mem4[0x123408<64>:word64] = x1 * 7<64>
+x2: orig: x2
+    def:  x2 = x1 << 3<8>
+x3: orig: x3
+    def:  x3 = x1 * 7<64>
+Mem3: orig: Mem0
+    uses: x1 = Mem3[0x123400<64>:word64]
+Mem4: orig: Mem0
+    def:  Mem4[0x123408<64>:word64] = x1 * 7<64>
+// SsaProcedureBuilder
+// Return size: 0
+define SsaProcedureBuilder
+SsaProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	x1 = Mem3[0x123400<64>:word64]
+	x2 = x1 << 3<8>
+	x3 = x1 * 7<64>
+	Mem4[0x123408<64>:word64] = x1 * 7<64>
+SsaProcedureBuilder_exit:
+";
+            #endregion
+            AssertStringsEqual(sExp, m.Ssa);
+        }
     }
 }

@@ -36,6 +36,7 @@ namespace Reko.Evaluation
         private Identifier? id;
         private Constant? c;
         private Operator? op;
+        private int factor;
 
         public Shl_add_Rule(EvaluationContext ctx)
         {
@@ -43,10 +44,15 @@ namespace Reko.Evaluation
         }
 
         // (x << c) + x ==> x * ((1<<c) + 1)
+        // (x << c) - x ==> x * ((1<<c) - 1)
         public bool Match(BinaryExpression b)
         {
             this.op = b.Operator;
-            if (op != Operator.IAdd)
+            if (op == Operator.IAdd)
+                factor = 1;
+            else if (op == Operator.ISub)
+                factor = -1;
+            else
                 return false;
             var bin = b.Left as BinaryExpression;
             id = b.Right as Identifier;
@@ -65,7 +71,7 @@ namespace Reko.Evaluation
         public Expression Transform()
         {
             ctx.RemoveIdentifierUse(id!);
-            var cc = Constant.Create(id!.DataType, (1 << c!.ToInt32()) + 1);
+            var cc = Constant.Create(id!.DataType, (1 << c!.ToInt32()) + factor);
             return new BinaryExpression(Operator.IMul, dt!, id, cc);
         }
     }

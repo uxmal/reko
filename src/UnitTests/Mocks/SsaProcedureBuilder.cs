@@ -295,6 +295,16 @@ namespace Reko.UnitTests.Mocks
                 access.DataType);
         }
 
+        public override MemoryAccess Mem64(Expression ea)
+        {
+            var access = base.Mem64(ea);
+            var memId = AddMemIdToSsa(access.MemoryId);
+            return new MemoryAccess(
+                memId,
+                access.EffectiveAddress,
+                access.DataType);
+        }
+
         public override SegmentedAccess SegMem(DataType dt, Expression basePtr, Expression ptr)
         {
             var access = base.SegMem(dt, basePtr, ptr);
