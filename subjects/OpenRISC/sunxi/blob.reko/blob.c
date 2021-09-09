@@ -812,13 +812,12 @@ l0000606C:
 		Eq_n r15_n;
 		fn0000FEDC(r22_n, -1000, r15_n, out r11_n, out r15_n);
 		uint32 r20_n = r20_n + (r14_n >> 0x01);
-		Eq_n r20_n = (r20_n << 0x04) - r20_n;
 		ui32 r11_n;
 		Eq_n r15_n;
-		fn0001003C(r20_n, -1000, r15_n, out r11_n, out r15_n);
+		fn0001003C(r20_n * 0x0F, -1000, r15_n, out r11_n, out r15_n);
 		word32 r11_n;
 		Eq_n r15_n;
-		fn0000FEDC(r20_n, -1000, r15_n, out r11_n, out r15_n);
+		fn0000FEDC(r20_n * 0x0F, -1000, r15_n, out r11_n, out r15_n);
 		struct Eq_n * r1_n = (struct Eq_n *) <invalid>;
 		r1_n[28] = (struct Eq_n) (((0x00 - r11_n | r11_n) >> 0x1F) + r11_n & 0xFF);
 		Eq_n r20_n = (r14_n >> 0x01) *s -7800;
@@ -971,13 +970,12 @@ l0000606C:
 		else
 			r1_n[0x0C] = (struct Eq_n) (r7_n & 0xFF);
 		uint32 r20_n = (r14_n >> 0x01) * 0x02 + (r14_n >> 0x01);
-		ui32 r20_n = (r20_n << 0x03) - r20_n;
 		word32 r11_n;
 		Eq_n r15_n;
-		fn0000FEDC(r20_n * 0x02, -1000, r15_n, out r11_n, out r15_n);
+		fn0000FEDC(r20_n * 0x0E, -1000, r15_n, out r11_n, out r15_n);
 		ui32 r11_n;
 		Eq_n r15_n;
-		fn0001003C(r20_n * 0x02, -1000, r15_n, out r11_n, out r15_n);
+		fn0001003C(r20_n * 0x0E, -1000, r15_n, out r11_n, out r15_n);
 		struct Eq_n * r1_n = (struct Eq_n *) <invalid>;
 		r1_n[28] = (struct Eq_n) (r11_n + ((0x00 - r11_n | r11_n) >> 0x1F) & 0xFF);
 		Eq_n r20_n = (r14_n >> 0x01) *s -3900;
@@ -1111,13 +1109,12 @@ l00005874:
 			else
 				r1_n[0x0C] = (struct Eq_n) (r7_n & 0xFF);
 			uint32 r20_n = (r14_n >> 0x01) * 0x02 + (r14_n >> 0x01);
-			ui32 r20_n = (r20_n << 0x03) - r20_n;
 			word32 r11_n;
 			Eq_n r15_n;
-			fn0000FEDC(r20_n * 0x02, -1000, r15_n, out r11_n, out r15_n);
+			fn0000FEDC(r20_n * 0x0E, -1000, r15_n, out r11_n, out r15_n);
 			ui32 r11_n;
 			Eq_n r15_n;
-			fn0001003C(r20_n * 0x02, -1000, r15_n, out r11_n, out r15_n);
+			fn0001003C(r20_n * 0x0E, -1000, r15_n, out r11_n, out r15_n);
 			struct Eq_n * r1_n = (struct Eq_n *) <invalid>;
 			r1_n[28] = (struct Eq_n) (r11_n + ((0x00 - r11_n | r11_n) >> 0x1F) & 0xFF);
 			Eq_n r20_n = (r14_n >> 0x01) *s -3900;

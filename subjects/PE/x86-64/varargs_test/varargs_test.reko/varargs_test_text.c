@@ -318,7 +318,7 @@ l00000001400015F2:
 //      Win32CrtStartup
 void fn0000000140001600(word32 ecx, word32 edx)
 {
-	byte al_n = (byte) (uint64) (word32) g_b400035F0;
+	byte al_n = (byte) (uint64) g_b400035F0;
 	if (ecx == 0x00)
 		al_n = 0x01;
 	g_b400035F0 = al_n;
@@ -404,8 +404,8 @@ word64 fn0000000140001718(<anonymous> ** rcx, <anonymous> & r8Out)
 			rax_56_8_n = 0x02;
 			if (rcx_n->w0018 == 0x020B)
 			{
-				uint64 rax_n = (uint64) (word32) rcx_n->w0006;
-				struct Eq_n * rdx_n = &rcx_n->w0018 + (uint64) ((word32) rcx_n->w0014);
+				uint64 rax_n = (uint64) rcx_n->w0006;
+				struct Eq_n * rdx_n = &rcx_n->w0018 + (uint64) rcx_n->w0014;
 				r8_n = rcx - 0x140000000;
 				word56 rax_56_8_n = SLICE(rax_n, word56, 8);
 				struct Eq_n * r9_n = rdx_n + rax_n;
@@ -821,7 +821,7 @@ void fn0000000140001E9C(Eq_n rcx, struct Eq_n * rdx, struct Eq_n * r8, word64 qw
 	word64 rdx_n = *((word64) r10_n + (int64) r11d_n);
 	struct Eq_n * rcx_n = (uint64) rdx->ptr0010->dw0008 + rdx->qw0008;
 	if ((rcx_n->b0003 & 0x0F) != 0x00)
-		r9_n = (word64) rcx + (uint64) ((word32) ((uint64) ((word32) rcx_n->b0003)) & ~0x0F);
+		r9_n = (word64) rcx + (uint64) ((word32) ((uint64) rcx_n->b0003) & ~0x0F);
 	ui64 r9_n = r9_n ^ rdx_n;
 	fn00000001400011B0(r9_n, qwArg00);
 }

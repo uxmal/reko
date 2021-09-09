@@ -667,5 +667,26 @@ namespace Reko.UnitTests.Evaluation
                 Constant.Int32(-1));
             Assert.AreEqual("NaN.0F - -1<i32>", expr.Accept(simplifier).ToString());
         }
+
+        [Test]
+        public void Exs_Nested_Converts()
+        {
+            Given_ExpressionSimplifier();
+            var exp = m.Convert(
+                m.Convert(m.Mem8(foo), PrimitiveType.Byte, PrimitiveType.Word32),
+                PrimitiveType.Word32, PrimitiveType.UInt64);
+            Assert.AreEqual("CONVERT(Mem0[foo_1:byte], byte, uint64)", exp.Accept(simplifier).ToString());
+        }
+
+        [Test]
+        public void Exs_Nested_Converts_Real()
+        {
+            Given_ExpressionSimplifier();
+            var exp = m.Convert(
+                m.Convert(m.Mem8(foo), PrimitiveType.Byte, PrimitiveType.Word32),
+                PrimitiveType.Word32, PrimitiveType.Real64);
+            Assert.AreEqual("CONVERT(Mem0[foo_1:byte], byte, real64)", exp.Accept(simplifier).ToString());
+        }
+
     }
 }

@@ -3,7 +3,7 @@ void fn80000000()
 
 // MayUse: 
 // LiveOut:
-// Trashed: CVZN d0 d1 fp1
+// Trashed: CVZN d0 d1 fp0 fp1
 // Preserved: a7
 fn80000000_entry:
 l80000000:
@@ -87,7 +87,7 @@ l8000028A:
 	return fp1_83
 fn800001F2_exit:
 l80000224:
-	real96 fp0_81 = CONVERT(CONVERT(CONVERT(CONVERT(fn80000132(rArg04, CONVERT(dwLoc20_119, word32, real96)), real96, real80), real80, real96) /96 CONVERT(fn8000018E(CONVERT(dwLoc20_119, word32, real96)), real96, real80), real96, real80), real80, real96) * rLoc1C_114
+	real96 fp0_81 = fn80000132(rArg04, CONVERT(dwLoc20_119, word32, real96)) /96 CONVERT(fn8000018E(CONVERT(dwLoc20_119, word32, real96)), real96, real80) * rLoc1C_114
 	fp1_83 = rLoc10_115 + CONVERT(fp0_81, real96, real80)
 	rLoc1C_114 = fp0_81
 	dwLoc20_119 = dwLoc20_119 + 2<32>
@@ -115,7 +115,7 @@ l80000348:
 	return fp0_14
 fn800002AE_exit:
 l800002E2:
-	real96 fp0_81 = CONVERT(CONVERT(CONVERT(CONVERT(fn80000132(rArg04, CONVERT(dwLoc20_118, word32, real96)), real96, real80), real80, real96) /96 CONVERT(fn8000018E(CONVERT(dwLoc20_118, word32, real96)), real96, real80), real96, real80), real80, real96) * rLoc1C_113
+	real96 fp0_81 = fn80000132(rArg04, CONVERT(dwLoc20_118, word32, real96)) /96 CONVERT(fn8000018E(CONVERT(dwLoc20_118, word32, real96)), real96, real80) * rLoc1C_113
 	fp0_14 = rLoc10_114 + CONVERT(fp0_81, real96, real80)
 	rLoc1C_113 = fp0_81
 	dwLoc20_118 = dwLoc20_118 + 2<32>
@@ -128,7 +128,7 @@ void fn8000036C(real96 rArg04)
 //      fn800003CC
 // MayUse:  Stack +0004:[0..95]
 // LiveOut:
-// Trashed: CVZN d0 d1 fp1
+// Trashed: CVZN d0 d1 fp0 fp1
 // Preserved: a6 a7 d2 fp2
 fn8000036C_entry:
 l8000036C:
@@ -145,7 +145,7 @@ void fn800003CC()
 //      fn80000000
 // MayUse: 
 // LiveOut:
-// Trashed: CVZN d0 d1 fp1
+// Trashed: CVZN d0 d1 fp0 fp1
 // Preserved: a6 a7
 fn800003CC_entry:
 l800003CC:

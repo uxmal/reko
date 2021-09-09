@@ -804,12 +804,11 @@ l00000000000166C4:
 	a5_31 = CONVERT(Mem23[a0_22:int32], int32, int64)
 	branch a5_31 != 0<64> l0000000000016690
 l00000000000166CC:
-	word64 a4_32 = CONVERT(CONVERT(a0_28, word64, word32), word32, int64)
-	branch a0_28 != a4_32 l00000000000166E0
+	branch a0_28 != a0_28 l00000000000166E0
 l00000000000166E0:
 	a5_31 = -34<i64>
 l00000000000166D8:
-	Mem35[a1:word32] = SLICE(a4_32, word32, 0)
+	Mem35[a1:word32] = SLICE(a0_28, word32, 0)
 l000000000001668C:
 	a5_31 = CONVERT(Mem23[a0_22:int32], int32, int64)
 l0000000000016690:
@@ -2249,7 +2248,7 @@ l0000000000018134:
 	word64 t5_16 = CONVERT(SLICE(a1, word32, 0) >>u 3<i32>, word32, int64)
 	branch (a1 & 7<i64>) == 4<i64> l0000000000018264
 l0000000000018264:
-	branch CONVERT(Mem12[a0 + CONVERT(SLICE(CONVERT(CONVERT(CONVERT(SLICE(CONVERT(CONVERT(a1, word64, word32) + 4<i64>, word32, int64), word32, 0) >>u 3<i32>, word32, int64), int64, word32) + -1<i32>, word32, int64), word32, 0), word32, word64):byte], byte, word64) >>u 4<u32> >u 9<i64> l0000000000018294
+	branch CONVERT(Mem12[a0 + CONVERT(SLICE(CONVERT((SLICE(CONVERT(CONVERT(a1, word64, word32) + 4<i64>, word32, int64), word32, 0) >>u 3<i32>) + -1<i32>, word32, int64), word32, 0), word32, word64):byte], byte, word64) >>u 4<u32> >u 9<i64> l0000000000018294
 l0000000000018290:
 l0000000000018294:
 	t4_108 = 2<i64>

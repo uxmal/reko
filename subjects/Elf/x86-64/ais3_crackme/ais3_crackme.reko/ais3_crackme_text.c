@@ -72,17 +72,17 @@ word32 verify(byte rdi[])
 	while (true)
 	{
 		uint64 rax_n;
-		if ((byte) (uint64) (word32) rdi[(int64) (word32) (uint64) dwLoc0C_n] == 0x00)
+		if ((byte) (uint64) rdi[(int64) (word32) (uint64) dwLoc0C_n] == 0x00)
 			break;
-		byte al_n = (byte) (uint64) ((word32) (uint64) dwLoc0C_n ^ (word32) ((uint64) ((word32) ((uint64) ((word32) rdi[(int64) ((word32) ((uint64) dwLoc0C_n))])))));
-		if ((byte) (uint64) (word32) g_a601020[(int64) (word32) (uint64) dwLoc0C_n] != (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_n)) >> (byte) ((uint64) ((word32) ((uint64) (0x08 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_n) ^ 0x09)) & 0x03)))))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) al_n)) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_n) ^ 0x09)) & 0x03)))))))))))) + 0x08)
+		byte al_n = (byte) (uint64) ((word32) (uint64) dwLoc0C_n ^ (word32) ((uint64) ((word32) ((uint64) rdi[(int64) ((word32) ((uint64) dwLoc0C_n))]))));
+		if ((byte) (uint64) g_a601020[(int64) (word32) (uint64) dwLoc0C_n] != (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) al_n) >> (byte) ((uint64) ((word32) ((uint64) (0x08 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_n) ^ 0x09)) & 0x03)))))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) al_n) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_n) ^ 0x09)) & 0x03)))))))))))) + 0x08)
 		{
 			rax_n = 0x00;
 			return (word32) rax_n;
 		}
 		++dwLoc0C_n;
 	}
-	rax_n = (uint64) (word32) (int8) (dwLoc0C_n == 0x17);
+	rax_n = (uint64) (dwLoc0C_n == 0x17);
 	return (word32) rax_n;
 }
 

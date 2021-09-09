@@ -456,7 +456,7 @@ void fn0000000140001600(word32 ecx, word32 edx)
 // Preserved: rbx rsp
 fn0000000140001600_entry:
 l0000000140001600:
-	byte al_17 = SLICE(CONVERT(CONVERT(Mem5[0x00000001400035F0<p64>:byte], byte, word32), word32, uint64), byte, 0)
+	byte al_17 = SLICE(CONVERT(Mem5[0x00000001400035F0<p64>:byte], byte, uint64), byte, 0)
 	branch ecx != 0<32> l0000000140001617
 l0000000140001614_1:
 	al_17 = 1<8> (alias)
@@ -565,8 +565,8 @@ l0000000140001747:
 l00000001400017A6:
 	rax_105 = SEQ(rax_56_8_95, 0<8>) (alias)
 l0000000140001752:
-	word64 rax_32 = CONVERT(CONVERT(Mem0[rcx_14 + 6<64>:word16], word16, word32), word32, uint64)
-	word64 rdx_29 = rcx_14 + 0x18<64> + CONVERT(CONVERT(Mem0[rcx_14 + 0x14<64>:word16], word16, word32), word32, uint64)
+	word64 rax_32 = CONVERT(Mem0[rcx_14 + 6<64>:word16], word16, uint64)
+	word64 rdx_29 = rcx_14 + 0x18<64> + CONVERT(Mem0[rcx_14 + 0x14<64>:word16], word16, uint64)
 	r8_25 = rcx - 0x0000000140000000<p64>
 	word56 rax_56_8_100 = SLICE(rax_32, word56, 8)
 	word64 r9_34 = rdx_29 + rax_32 * 0x28<64>
@@ -1218,7 +1218,7 @@ l0000000140001EC7:
 	word64 rcx_42 = CONVERT(Mem5[Mem5[rdx + 0x10<64>:word64] + 8<64>:word32], word32, uint64) + Mem5[rdx + 8<64>:word64]
 	branch (Mem5[rcx_42 + 3<64>:byte] & 0xF<8>) == 0<8> l0000000140001EE9
 l0000000140001EDF:
-	r9_15 = rcx + CONVERT(SLICE(CONVERT(CONVERT(Mem5[rcx_42 + 3<64>:byte], byte, word32), word32, uint64), word32, 0) & 0xFFFFFFF0<32>, word32, uint64)
+	r9_15 = rcx + CONVERT(SLICE(CONVERT(Mem5[rcx_42 + 3<64>:byte], byte, uint64), word32, 0) & 0xFFFFFFF0<32>, word32, uint64)
 l0000000140001EE9:
 	word64 r9_56 = r9_15 ^ rdx_37
 l0000000140001EF0_thunk_fn00000001400011B0:

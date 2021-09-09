@@ -41,8 +41,8 @@ Eq_183: (ref int32)
 	T_183 (in tArg14 + 0<32> @ 80000608 : word32)
 Eq_188: (union "Eq_188" ((ptr32 word32) u0) ((ref int32) u1))
 	T_188 (in tArg14 + 0<32> @ 80000608 : word32)
-Eq_241: (struct "Eq_241" (FFFFFFFC (ptr32 code) ptrFFFFFFFC))
-	T_241 (in a2_23 @ 8000063C : (ptr32 Eq_241))
+Eq_233: (struct "Eq_233" (FFFFFFFC (ptr32 code) ptrFFFFFFFC))
+	T_233 (in a2_23 @ 8000063C : (ptr32 Eq_233))
 // Type Variables ////////////
 globals_t: (in globals @ 00000000 : (ptr32 (struct "Globals")))
   Class: Eq_1
@@ -207,7 +207,7 @@ T_40: (in Mem13[0x80002726<p32>:word32] @ 800000FA : word32)
 T_41: (in a2_18 @ 800000F4 : (arr (ptr32 code)))
   Class: Eq_41
   DataType: (ptr32 (arr (ptr32 code)))
-  OrigDataType: (ptr32 (struct (0 (arr T_250) a0000)))
+  OrigDataType: (ptr32 (struct (0 (arr T_242) a0000)))
 T_42: (in 80002714 @ 800000F4 : ptr32)
   Class: Eq_41
   DataType: (ptr32 (arr (ptr32 code)))
@@ -820,228 +820,196 @@ T_194: (in (real96) rLoc0C_109 *96 v9_14 @ 00000000 : real96)
   Class: Eq_194
   DataType: real96
   OrigDataType: real96
-T_195: (in CONVERT(CONVERT(rLoc0C_109, real64, real96) *96 v9_14, real96, real64) @ 800005BE : real64)
+T_195: (in (real96) rLoc0C_109 *96 v9_14 *96 v9_14 @ 00000000 : real96)
   Class: Eq_195
-  DataType: real64
-  OrigDataType: real64
-T_196: (in CONVERT(CONVERT(CONVERT(rLoc0C_109, real64, real96) *96 v9_14, real96, real64), real64, real96) @ 800005BE : real96)
-  Class: Eq_196
   DataType: real96
   OrigDataType: real96
-T_197: (in (real96) (real64) ((real96) rLoc0C_109 *96 v9_14) *96 v9_14 @ 00000000 : real96)
-  Class: Eq_197
-  DataType: real96
-  OrigDataType: real96
-T_198: (in CONVERT(CONVERT(CONVERT(CONVERT(rLoc0C_109, real64, real96) *96 v9_14, real96, real64), real64, real96) *96 v9_14, real96, real64) @ 800005BE : real64)
+T_196: (in CONVERT(CONVERT(rLoc0C_109, real64, real96) *96 v9_14 *96 v9_14, real96, real64) @ 800005BE : real64)
   Class: Eq_164
   DataType: real64
   OrigDataType: real64
-T_199: (in 3<32> @ 800005E0 : word32)
-  Class: Eq_199
+T_197: (in 3<32> @ 800005E0 : word32)
+  Class: Eq_197
   DataType: word32
   OrigDataType: word32
-T_200: (in v18_53 + 3<32> @ 00000000 : word32)
+T_198: (in v18_53 + 3<32> @ 00000000 : word32)
   Class: Eq_178
   DataType: word32
   OrigDataType: word32
-T_201: (in CONVERT(rLoc14_117, real64, real96) @ 800005F6 : real96)
-  Class: Eq_201
+T_199: (in CONVERT(rLoc14_117, real64, real96) @ 800005F6 : real96)
+  Class: Eq_199
   DataType: real96
   OrigDataType: real96
-T_202: (in CONVERT(v18_53, word32, real96) @ 800005F6 : real96)
+T_200: (in CONVERT(v18_53, word32, real96) @ 800005F6 : real96)
+  Class: Eq_200
+  DataType: real96
+  OrigDataType: real96
+T_201: (in CONVERT(CONVERT(v18_53, word32, real96), real96, real80) @ 800005F6 : real80)
+  Class: Eq_201
+  DataType: real80
+  OrigDataType: real80
+T_202: (in (real96) rLoc14_117 *96 (real80) ((real96) v18_53) @ 00000000 : real96)
   Class: Eq_202
   DataType: real96
   OrigDataType: real96
-T_203: (in CONVERT(CONVERT(v18_53, word32, real96), real96, real80) @ 800005F6 : real80)
+T_203: (in 1<32> @ 800005F6 : word32)
   Class: Eq_203
-  DataType: real80
-  OrigDataType: real80
-T_204: (in (real96) rLoc14_117 *96 (real80) ((real96) v18_53) @ 00000000 : real96)
-  Class: Eq_204
-  DataType: real96
-  OrigDataType: real96
-T_205: (in CONVERT(CONVERT(rLoc14_117, real64, real96) *96 CONVERT(CONVERT(v18_53, word32, real96), real96, real80), real96, real64) @ 800005F6 : real64)
-  Class: Eq_205
-  DataType: real64
-  OrigDataType: real64
-T_206: (in CONVERT(CONVERT(CONVERT(rLoc14_117, real64, real96) *96 CONVERT(CONVERT(v18_53, word32, real96), real96, real80), real96, real64), real64, real96) @ 800005F6 : real96)
-  Class: Eq_206
-  DataType: real96
-  OrigDataType: real96
-T_207: (in 1<32> @ 800005F6 : word32)
-  Class: Eq_207
   DataType: word32
   OrigDataType: word32
-T_208: (in v18_53 + 1<32> @ 00000000 : word32)
+T_204: (in v18_53 + 1<32> @ 00000000 : word32)
+  Class: Eq_204
+  DataType: word32
+  OrigDataType: word32
+T_205: (in CONVERT(v18_53 + 1<32>, word32, real96) @ 800005F6 : real96)
+  Class: Eq_205
+  DataType: real96
+  OrigDataType: real96
+T_206: (in CONVERT(CONVERT(v18_53 + 1<32>, word32, real96), real96, real80) @ 800005F6 : real80)
+  Class: Eq_206
+  DataType: real80
+  OrigDataType: real80
+T_207: (in (real96) rLoc14_117 *96 (real80) ((real96) v18_53) *96 (real80) ((real96) (v18_53 + 1<32>)) @ 00000000 : real96)
+  Class: Eq_207
+  DataType: real96
+  OrigDataType: real96
+T_208: (in 2<32> @ 800005F6 : word32)
   Class: Eq_208
   DataType: word32
   OrigDataType: word32
-T_209: (in CONVERT(v18_53 + 1<32>, word32, real96) @ 800005F6 : real96)
+T_209: (in v18_53 + 2<32> @ 00000000 : word32)
   Class: Eq_209
+  DataType: word32
+  OrigDataType: word32
+T_210: (in CONVERT(v18_53 + 2<32>, word32, real96) @ 800005F6 : real96)
+  Class: Eq_210
   DataType: real96
   OrigDataType: real96
-T_210: (in CONVERT(CONVERT(v18_53 + 1<32>, word32, real96), real96, real80) @ 800005F6 : real80)
-  Class: Eq_210
+T_211: (in CONVERT(CONVERT(v18_53 + 2<32>, word32, real96), real96, real80) @ 800005F6 : real80)
+  Class: Eq_211
   DataType: real80
   OrigDataType: real80
-T_211: (in (real96) (real64) ((real96) rLoc14_117 *96 (real80) ((real96) v18_53)) *96 (real80) ((real96) (v18_53 + 1<32>)) @ 00000000 : real96)
-  Class: Eq_211
-  DataType: real96
-  OrigDataType: real96
-T_212: (in CONVERT(CONVERT(CONVERT(CONVERT(rLoc14_117, real64, real96) *96 CONVERT(CONVERT(v18_53, word32, real96), real96, real80), real96, real64), real64, real96) *96 CONVERT(CONVERT(v18_53 + 1<32>, word32, real96), real96, real80), real96, real64) @ 800005F6 : real64)
+T_212: (in (real96) rLoc14_117 *96 (real80) ((real96) v18_53) *96 (real80) ((real96) (v18_53 + 1<32>)) *96 (real80) ((real96) (v18_53 + 2<32>)) @ 00000000 : real96)
   Class: Eq_212
-  DataType: real64
-  OrigDataType: real64
-T_213: (in CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(rLoc14_117, real64, real96) *96 CONVERT(CONVERT(v18_53, word32, real96), real96, real80), real96, real64), real64, real96) *96 CONVERT(CONVERT(v18_53 + 1<32>, word32, real96), real96, real80), real96, real64), real64, real96) @ 800005F6 : real96)
-  Class: Eq_213
   DataType: real96
   OrigDataType: real96
-T_214: (in 2<32> @ 800005F6 : word32)
+T_213: (in v18_53 + 3<32> @ 00000000 : word32)
+  Class: Eq_213
+  DataType: word32
+  OrigDataType: word32
+T_214: (in CONVERT(v18_53 + 3<32>, word32, real96) @ 800005F6 : real96)
   Class: Eq_214
-  DataType: word32
-  OrigDataType: word32
-T_215: (in v18_53 + 2<32> @ 00000000 : word32)
+  DataType: real96
+  OrigDataType: real96
+T_215: (in CONVERT(CONVERT(v18_53 + 3<32>, word32, real96), real96, real80) @ 800005F6 : real80)
   Class: Eq_215
-  DataType: word32
-  OrigDataType: word32
-T_216: (in CONVERT(v18_53 + 2<32>, word32, real96) @ 800005F6 : real96)
+  DataType: real80
+  OrigDataType: real80
+T_216: (in (real96) rLoc14_117 *96 (real80) ((real96) v18_53) *96 (real80) ((real96) (v18_53 + 1<32>)) *96 (real80) ((real96) (v18_53 + 2<32>)) *96 (real80) ((real96) (v18_53 + 3<32>)) @ 00000000 : real96)
   Class: Eq_216
   DataType: real96
   OrigDataType: real96
-T_217: (in CONVERT(CONVERT(v18_53 + 2<32>, word32, real96), real96, real80) @ 800005F6 : real80)
-  Class: Eq_217
-  DataType: real80
-  OrigDataType: real80
-T_218: (in (real96) (real64) ((real96) (real64) ((real96) rLoc14_117 *96 (real80) ((real96) v18_53)) *96 (real80) ((real96) (v18_53 + 1<32>))) *96 (real80) ((real96) (v18_53 + 2<32>)) @ 00000000 : real96)
-  Class: Eq_218
-  DataType: real96
-  OrigDataType: real96
-T_219: (in CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(rLoc14_117, real64, real96) *96 CONVERT(CONVERT(v18_53, word32, real96), real96, real80), real96, real64), real64, real96) *96 CONVERT(CONVERT(v18_53 + 1<32>, word32, real96), real96, real80), real96, real64), real64, real96) *96 CONVERT(CONVERT(v18_53 + 2<32>, word32, real96), real96, real80), real96, real64) @ 800005F6 : real64)
-  Class: Eq_219
-  DataType: real64
-  OrigDataType: real64
-T_220: (in CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(rLoc14_117, real64, real96) *96 CONVERT(CONVERT(v18_53, word32, real96), real96, real80), real96, real64), real64, real96) *96 CONVERT(CONVERT(v18_53 + 1<32>, word32, real96), real96, real80), real96, real64), real64, real96) *96 CONVERT(CONVERT(v18_53 + 2<32>, word32, real96), real96, real80), real96, real64), real64, real96) @ 800005F6 : real96)
-  Class: Eq_220
-  DataType: real96
-  OrigDataType: real96
-T_221: (in v18_53 + 3<32> @ 00000000 : word32)
-  Class: Eq_221
-  DataType: word32
-  OrigDataType: word32
-T_222: (in CONVERT(v18_53 + 3<32>, word32, real96) @ 800005F6 : real96)
-  Class: Eq_222
-  DataType: real96
-  OrigDataType: real96
-T_223: (in CONVERT(CONVERT(v18_53 + 3<32>, word32, real96), real96, real80) @ 800005F6 : real80)
-  Class: Eq_223
-  DataType: real80
-  OrigDataType: real80
-T_224: (in (real96) (real64) ((real96) (real64) ((real96) (real64) ((real96) rLoc14_117 *96 (real80) ((real96) v18_53)) *96 (real80) ((real96) (v18_53 + 1<32>))) *96 (real80) ((real96) (v18_53 + 2<32>))) *96 (real80) ((real96) (v18_53 + 3<32>)) @ 00000000 : real96)
-  Class: Eq_224
-  DataType: real96
-  OrigDataType: real96
-T_225: (in CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(rLoc14_117, real64, real96) *96 CONVERT(CONVERT(v18_53, word32, real96), real96, real80), real96, real64), real64, real96) *96 CONVERT(CONVERT(v18_53 + 1<32>, word32, real96), real96, real80), real96, real64), real64, real96) *96 CONVERT(CONVERT(v18_53 + 2<32>, word32, real96), real96, real80), real96, real64), real64, real96) *96 CONVERT(CONVERT(v18_53 + 3<32>, word32, real96), real96, real80), real96, real64) @ 800005F6 : real64)
+T_217: (in CONVERT(CONVERT(rLoc14_117, real64, real96) *96 CONVERT(CONVERT(v18_53, word32, real96), real96, real80) *96 CONVERT(CONVERT(v18_53 + 1<32>, word32, real96), real96, real80) *96 CONVERT(CONVERT(v18_53 + 2<32>, word32, real96), real96, real80) *96 CONVERT(CONVERT(v18_53 + 3<32>, word32, real96), real96, real80), real96, real64) @ 800005F6 : real64)
   Class: Eq_180
   DataType: real64
   OrigDataType: real64
-T_226: (in CONVERT(rLoc0C_109, real64, real96) @ 8000052C : real96)
-  Class: Eq_226
+T_218: (in CONVERT(rLoc0C_109, real64, real96) @ 8000052C : real96)
+  Class: Eq_218
   DataType: real96
   OrigDataType: real96
-T_227: (in (real96) rLoc0C_109 /96 rLoc14_117 @ 00000000 : real96)
-  Class: Eq_227
+T_219: (in (real96) rLoc0C_109 /96 rLoc14_117 @ 00000000 : real96)
+  Class: Eq_219
   DataType: real96
   OrigDataType: real96
-T_228: (in CONVERT(CONVERT(rLoc0C_109, real64, real96) /96 rLoc14_117, real96, real64) @ 8000052C : real64)
+T_220: (in CONVERT(CONVERT(rLoc0C_109, real64, real96) /96 rLoc14_117, real96, real64) @ 8000052C : real64)
   Class: Eq_165
   DataType: real64
   OrigDataType: real64
-T_229: (in (real64) ((real96) rLoc0C_109 /96 rLoc14_117) < rArg0C @ 00000000 : bool)
-  Class: Eq_229
+T_221: (in (real64) ((real96) rLoc0C_109 /96 rLoc14_117) < rArg0C @ 00000000 : bool)
+  Class: Eq_221
   DataType: bool
   OrigDataType: bool
-T_230: (in a0_11 @ 8000062A : (ptr32 code))
-  Class: Eq_230
+T_222: (in a0_11 @ 8000062A : (ptr32 code))
+  Class: Eq_222
   DataType: (ptr32 code)
   OrigDataType: (ptr32 code)
-T_231: (in 8000270C @ 8000062A : ptr32)
-  Class: Eq_231
+T_223: (in 8000270C @ 8000062A : ptr32)
+  Class: Eq_223
   DataType: (ptr32 (ptr32 code))
-  OrigDataType: (ptr32 (struct (0 T_232 t0000)))
-T_232: (in Mem10[0x8000270C<p32>:word32] @ 8000062A : word32)
-  Class: Eq_230
+  OrigDataType: (ptr32 (struct (0 T_224 t0000)))
+T_224: (in Mem10[0x8000270C<p32>:word32] @ 8000062A : word32)
+  Class: Eq_222
   DataType: (ptr32 code)
   OrigDataType: word32
-T_233: (in a6_18 @ 80000624 : ptr32)
-  Class: Eq_233
+T_225: (in a6_18 @ 80000624 : ptr32)
+  Class: Eq_225
   DataType: ptr32
   OrigDataType: ptr32
-T_234: (in fp @ 80000624 : ptr32)
-  Class: Eq_234
+T_226: (in fp @ 80000624 : ptr32)
+  Class: Eq_226
   DataType: ptr32
   OrigDataType: ptr32
-T_235: (in 4<32> @ 80000624 : word32)
-  Class: Eq_235
+T_227: (in 4<32> @ 80000624 : word32)
+  Class: Eq_227
   DataType: ui32
   OrigDataType: ui32
-T_236: (in fp - 4<32> @ 00000000 : word32)
-  Class: Eq_233
+T_228: (in fp - 4<32> @ 00000000 : word32)
+  Class: Eq_225
   DataType: ptr32
   OrigDataType: ptr32
-T_237: (in a2_12 @ 80000630 : ptr32)
-  Class: Eq_237
+T_229: (in a2_12 @ 80000630 : ptr32)
+  Class: Eq_229
   DataType: ptr32
   OrigDataType: ptr32
-T_238: (in 8000270C @ 80000630 : ptr32)
-  Class: Eq_237
+T_230: (in 8000270C @ 80000630 : ptr32)
+  Class: Eq_229
   DataType: ptr32
   OrigDataType: ptr32
-T_239: (in -1<i32> @ 8000063A : int32)
-  Class: Eq_230
+T_231: (in -1<i32> @ 8000063A : int32)
+  Class: Eq_222
   DataType: (ptr32 code)
   OrigDataType: int32
-T_240: (in a0_11 == (<anonymous> *) -1<i32> @ 00000000 : bool)
+T_232: (in a0_11 == (<anonymous> *) -1<i32> @ 00000000 : bool)
+  Class: Eq_232
+  DataType: bool
+  OrigDataType: bool
+T_233: (in a2_23 @ 8000063C : (ptr32 Eq_233))
+  Class: Eq_233
+  DataType: (ptr32 Eq_233)
+  OrigDataType: (ptr32 (struct (FFFFFFFC T_236 tFFFFFFFC)))
+T_234: (in -4<i32> @ 8000063E : int32)
+  Class: Eq_234
+  DataType: int32
+  OrigDataType: int32
+T_235: (in a2_23 + -4<i32> @ 8000063E : word32)
+  Class: Eq_235
+  DataType: word32
+  OrigDataType: word32
+T_236: (in Mem10[a2_23 + -4<i32>:word32] @ 8000063E : word32)
+  Class: Eq_222
+  DataType: (ptr32 code)
+  OrigDataType: word32
+T_237: (in 4<i32> @ 8000063E : int32)
+  Class: Eq_237
+  DataType: int32
+  OrigDataType: int32
+T_238: (in a2_23 - 4<i32> @ 00000000 : word32)
+  Class: Eq_229
+  DataType: ptr32
+  OrigDataType: ptr32
+T_239: (in -1<i32> @ 80000644 : int32)
+  Class: Eq_222
+  DataType: (ptr32 code)
+  OrigDataType: int32
+T_240: (in a0_11 != (<anonymous> *) -1<i32> @ 00000000 : bool)
   Class: Eq_240
   DataType: bool
   OrigDataType: bool
-T_241: (in a2_23 @ 8000063C : (ptr32 Eq_241))
-  Class: Eq_241
-  DataType: (ptr32 Eq_241)
-  OrigDataType: (ptr32 (struct (FFFFFFFC T_244 tFFFFFFFC)))
-T_242: (in -4<i32> @ 8000063E : int32)
-  Class: Eq_242
-  DataType: int32
-  OrigDataType: int32
-T_243: (in a2_23 + -4<i32> @ 8000063E : word32)
-  Class: Eq_243
-  DataType: word32
-  OrigDataType: word32
-T_244: (in Mem10[a2_23 + -4<i32>:word32] @ 8000063E : word32)
-  Class: Eq_230
-  DataType: (ptr32 code)
-  OrigDataType: word32
-T_245: (in 4<i32> @ 8000063E : int32)
-  Class: Eq_245
-  DataType: int32
-  OrigDataType: int32
-T_246: (in a2_23 - 4<i32> @ 00000000 : word32)
-  Class: Eq_237
-  DataType: ptr32
-  OrigDataType: ptr32
-T_247: (in -1<i32> @ 80000644 : int32)
-  Class: Eq_230
-  DataType: (ptr32 code)
-  OrigDataType: int32
-T_248: (in a0_11 != (<anonymous> *) -1<i32> @ 00000000 : bool)
-  Class: Eq_248
-  DataType: bool
-  OrigDataType: bool
-T_249:
+T_241:
   Class: Eq_38
   DataType: uint32
   OrigDataType: word32
-T_250:
-  Class: Eq_250
+T_242:
+  Class: Eq_242
   DataType: (ptr32 code)
   OrigDataType: (struct 0004 (0 T_65 t0000))
 */
@@ -1086,7 +1054,7 @@ typedef union Eq_188 {
 	int32 & u1;
 } Eq_188;
 
-typedef struct Eq_241 {
+typedef struct Eq_233 {
 	<anonymous> * ptrFFFFFFFC;	// FFFFFFFC
-} Eq_241;
+} Eq_233;
 

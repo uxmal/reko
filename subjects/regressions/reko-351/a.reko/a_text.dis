@@ -287,9 +287,9 @@ _Z4_sinddRi_exit:
 l80000530:
 	Mem101[tArg14:word32] = Mem94[tArg14:word32] + 1<32>
 	word32 v18_53 = dwLoc20_115 + 0<32>
-	rLoc0C_109 = CONVERT(CONVERT(CONVERT(CONVERT(rLoc0C_109, real64, real96) *96 v9_14, real96, real64), real64, real96) *96 v9_14, real96, real64)
+	rLoc0C_109 = CONVERT(CONVERT(rLoc0C_109, real64, real96) *96 v9_14 *96 v9_14, real96, real64)
 	dwLoc20_115 = v18_53 + 3<32>
-	rLoc14_117 = CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(CONVERT(rLoc14_117, real64, real96) *96 CONVERT(CONVERT(v18_53, word32, real96), real96, real80), real96, real64), real64, real96) *96 CONVERT(CONVERT(v18_53 + 1<32>, word32, real96), real96, real80), real96, real64), real64, real96) *96 CONVERT(CONVERT(v18_53 + 2<32>, word32, real96), real96, real80), real96, real64), real64, real96) *96 CONVERT(CONVERT(v18_53 + 3<32>, word32, real96), real96, real80), real96, real64)
+	rLoc14_117 = CONVERT(CONVERT(rLoc14_117, real64, real96) *96 CONVERT(CONVERT(v18_53, word32, real96), real96, real80) *96 CONVERT(CONVERT(v18_53 + 1<32>, word32, real96), real96, real80) *96 CONVERT(CONVERT(v18_53 + 2<32>, word32, real96), real96, real80) *96 CONVERT(CONVERT(v18_53 + 3<32>, word32, real96), real96, real80), real96, real64)
 
 
 void __do_global_ctors_aux()

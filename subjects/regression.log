@@ -674,7 +674,7 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0000F196: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 0000F19C: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 0000D648: error: An error occurred while processing the statement r1 = r9_1067 + (r11_1016 - 0x30<32>).
-    Not handling (ptr32 (struct 0001 (FFFFFFD8 T_27022 tFFFFFFD8) (FFFFFFEC word32 dwFFFFFFEC) (0 T_27242 t0000) (4 T_27248 t0004))) and (union ((ptr32 (struct 0001 (FFFFFFEC word32 dwFFFFFFEC))) u0) (ptr32 u1)) yet
+    Not handling (ptr32 (struct 0001 (FFFFFFD8 T_27011 tFFFFFFD8) (FFFFFFEC word32 dwFFFFFFEC) (0 T_27231 t0000) (4 T_27237 t0004))) and (union ((ptr32 (struct 0001 (FFFFFFEC word32 dwFFFFFFEC))) u0) (ptr32 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 422
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 257
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -2187,4 +2187,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 79 binaries in 83.75 seconds.
+Decompiled 79 binaries in 101.74 seconds.

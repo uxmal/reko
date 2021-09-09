@@ -18395,7 +18395,7 @@ l0040B9F8:
 				goto l0040B662;
 			}
 			int32 r7_n = (word16) r23_n.u0 - 9;
-			int32 r7_n = r7_n - (r7_n << 0x02) + (r7_n << 0x02);
+			int32 r7_n = r7_n * 0x03 + (r7_n << 0x02);
 			if (r7_n < 0x1F && r4 >> r7_n != 0x00)
 				goto l0040B668;
 			r18_n = __floatsidf(*((char *) g_a413240 + ((word16) r23_n.u0 - 0x0A) *32 0x04));

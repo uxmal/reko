@@ -28,8 +28,9 @@ namespace Reko.Evaluation
     {
         private EvaluationContext ctx;
         private Expression? origExp;
+        private Conversion? innerConv;
         private PrimitiveType? ptC;
-        private PrimitiveType? ptCc;
+        private PrimitiveType? ptInner;
         private PrimitiveType? ptExp;
 
         public ConvertConvertRule(EvaluationContext ctx)
@@ -39,33 +40,39 @@ namespace Reko.Evaluation
 
         public bool Match(Conversion c)
         {
-            if (!(c.Expression is Conversion cc))
+            if (c.Expression is not Conversion innerC)
                 return false;
-            this.origExp = cc.Expression;
+            this.origExp = innerC.Expression;
+            this.innerConv = innerC;
 
             this.ptC = c.DataType as PrimitiveType;
-            this.ptCc = cc.DataType as PrimitiveType;
+            this.ptInner = innerC.DataType as PrimitiveType;
             this.ptExp = origExp.DataType as PrimitiveType;
-            if (ptC == null || ptCc == null || ptExp == null)
+            if (ptC == null || ptInner == null || ptExp == null)
                 return false;
 
             // If the cast is identical, we don't have to do it twice.
-            if (ptC == ptCc)
+            if (ptC == ptInner)
             {
-                this.origExp = cc;
+                this.origExp = innerC;
                 return true;
             }
             // Only match widening / narrowing. 
-            if (ptC.Domain != ptCc.Domain || ptC.Domain != ptExp.Domain)
-                return false;
-            //$TODO: for now, only eliminate the casts if the 
-            // original size == new size.
-            return ptC.Size == ptExp.Size && ptC.Size <= ptCc.Size;
+            return ptC.IsWord || ptInner.IsWord ||
+                (ptC.Domain == ptInner.Domain && ptC.Domain == ptExp.Domain);
         }
 
         public Expression Transform()
         {
-            return origExp!;
+            // ptExp <= ptInner <= ptC
+            if (ptExp!.BitSize <= ptInner!.BitSize && ptInner.BitSize <= ptC!.BitSize)
+            {
+                if (ptExp.BitSize == ptC.BitSize)
+                    return this.origExp!;
+                else
+                    return new Conversion(this.origExp!, this.innerConv!.SourceDataType, ptC);
+            }
+            return this.origExp!;
         }
     }
 }

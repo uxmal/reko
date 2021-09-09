@@ -575,7 +575,7 @@ l0000168A:
 	branch Mem332[a2_131:byte] != 0x74<8> l00001696
 l00001690:
 	a2_131 = a2_131 + 1<i32>
-	d4_367 = CONVERT(CONVERT(SLICE(CONVERT(Mem332[a2_131:byte], byte, uint32), int8, 0), int8, int16), int16, int32)
+	d4_367 = CONVERT(SLICE(CONVERT(Mem332[a2_131:byte], byte, uint32), int8, 0), int8, int32)
 l00001696:
 	branch d4_367 != 0x68<32> l000016A8
 l0000169E:

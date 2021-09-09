@@ -680,15 +680,14 @@ Eq_n fn0000000000016630(struct Eq_n * gp, Eq_n a0, word32 * a1)
 	Eq_n a5_n = gp->tFFFFF870;
 	int32 * a0_n = __errno_location();
 	*a0_n = 0x00;
-	Eq_n a0_n = (uint64) strtol(a0);
+	uint64 a0_n = (uint64) strtol(a0);
 	if (false && (a0 != 0x00 && (word64) null == 0x00))
 	{
 		a5_n = (int64) *a0_n;
 		if (a5_n == 0x00)
 		{
-			Eq_n a4_n = (int64) (word32) a0_n;
-			if (a0_n == a4_n)
-				*a1 = (word32) a4_n;
+			if (a0_n == a0_n)
+				*a1 = (word32) a0_n;
 			else
 				a5_n.u0 = -0x0022;
 			goto l0000000000016698;

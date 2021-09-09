@@ -1370,8 +1370,7 @@ word32 fn00003334(Eq_n r4, word32 r8, Eq_n r9, word32 r10, Eq_n r11, Eq_n lr, Eq
 	Eq_n lr_n;
 	struct Eq_n * r10_n = r6_n->ptr0008;
 	Eq_n r8_n = r10_n->t000C;
-	ui32 r9_n = (r8_n << 0x05) - r8_n;
-	word32 r4_n = r10_n->ptr0014 + (r9_n << 0x02) / 0x0C;
+	word32 r4_n = r10_n->ptr0014 + (r8_n * 0x7C) / 0x0C;
 	Eq_n r5_n;
 	Eq_n r3_r2_n;
 	word32 r11_n;
@@ -15018,8 +15017,7 @@ Eq_n fn0000CD78(Eq_n r8, int32 r9, int32 r10, word32 r11, Eq_n r12, int32 dwArg0
 	int32 r0_n = (dwArg00 >> 0x02) + 0x01DB - (word32) (r5_n == 0x00);
 	Eq_n lr_n = r10 - dwArg08 + (((((((lr_n + r11) + (r12 - dwArg00) * 0x016D) - dwArg04) + (r1_n >> 0x02)) - r0_n) - (r0_n / 0x19 >> 0x02)) - (r1_n - r0_n / 0x19)) * 0x18;
 	lrOut = lr_n;
-	ui32 r10_n = r9 - dwArg0C + ((lr_n << 0x04) - lr_n << 0x02);
-	return r8 - dwArg10 + ((r10_n << 0x04) - r10_n << 0x02);
+	return r8 - dwArg10 + ((r9 - dwArg0C) + lr_n * 0x3C) * 0x3C;
 }
 
 // 0000CE10: Register Eq_n fn0000CE10(Register Eq_n r8, Register int32 r9, Register int32 r10, Register word32 r11, Register Eq_n r12, Stack (ptr32 Eq_n) dwArg00, Stack (ptr32 Eq_n) dwArg04, Register out Eq_n lrOut)

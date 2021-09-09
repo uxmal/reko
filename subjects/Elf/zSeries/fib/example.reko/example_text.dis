@@ -168,12 +168,11 @@ l000000000000078A:
 	r1_75 = r2
 l00000000000007CA:
 	word64 v28_86 = r11_21 + 248<i64>
-	word64 r1_81 = CONVERT(CONVERT(r1_75, word64, word32), word32, int64)
 	word64 r10_99
 	word64 r11_100
 	word64 r2_104
 	call Mem24[r11_21 + 280<i64>:word64] (retsize: 0;)
-		uses: r1:r1_81,r10:Mem24[v28_86:word64],r11:Mem24[v28_86 + 8<i64>:word64],r12:Mem24[v28_86 + 16<i64>:word64],r13:Mem24[v28_86 + 24<i64>:word64],r14:Mem24[v28_86 + 32<i64>:word64],r2:r1_81
+		uses: r1:r1_79,r10:Mem24[v28_86:word64],r11:Mem24[v28_86 + 8<i64>:word64],r12:Mem24[v28_86 + 16<i64>:word64],r13:Mem24[v28_86 + 24<i64>:word64],r14:Mem24[v28_86 + 32<i64>:word64],r2:r1_79
 		defs: r10:r10_99,r11:r11_100,r2:r2_104
 	r10Out = r10_99
 	r11Out = r11_100
@@ -192,7 +191,7 @@ main_entry:
 l00000000000007E0:
 	word64 r11_29
 	word64 r10_70
-	word64 r1_38 = CONVERT(CONVERT(fib(0xA<64>, out r10_70, out r11_29), word64, word32), word32, int64)
+	word64 r1_38 = fib(0xA<64>, out r10_70, out r11_29)
 	call Mem24[r11_29 + 288<i64>:word64] (retsize: 0;)
 		uses: r1:r1_38,r11:Mem24[r11_29 + 264<i64>:word64],r12:Mem24[r11_29 + 272<i64>:word64],r13:Mem24[r11_29 + 280<i64>:word64],r14:Mem24[r11_29 + 288<i64>:word64],r2:r1_38,r3:r3
 	return

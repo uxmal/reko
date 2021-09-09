@@ -1954,7 +1954,7 @@ Eq_n fn00002F34(Eq_n d0, struct Eq_n * dwArg04, byte * dwArg08, Eq_n dwArg0C)
 				if (*a2_n == 0x68 || (*a2_n == 0x6C || (*a2_n == 0x4C || (*a2_n == 0x6A || (*a2_n == 122 || *a2_n == 116)))))
 				{
 					++a2_n;
-					d4_n = (int32) (int16) (int8) (uint32) *a2_n;
+					d4_n = (int32) (int8) (uint32) *a2_n;
 				}
 				if (d4_n == 0x68 && *a2_n == 0x68)
 				{

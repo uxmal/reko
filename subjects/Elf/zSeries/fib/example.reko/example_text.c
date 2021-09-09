@@ -118,7 +118,6 @@ Eq_n fib(Eq_n r2, ptr64 & r10Out, ptr64 & r11Out)
 		r1_n = SEQ(SLICE(r2_n, word32, 32), (int32) (r2_n + r10_n));
 	}
 	ptr64 v28_n = (char *) r11_n + 0x00F8;
-	int64 r1_n = (int64) (word32) r1_n;
 	ptr64 r10_n;
 	ptr64 r11_n;
 	Eq_n r2_n;
@@ -133,7 +132,7 @@ void main(word64 r3)
 {
 	struct Eq_n * r11_n;
 	word64 r10_n;
-	int64 r1_n = (int64) (word32) fib(0x0A, out r10_n, out r11_n);
+	word64 r1_n = fib(0x0A, out r10_n, out r11_n);
 	r11_n->ptr0120();
 }
 
