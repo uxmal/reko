@@ -633,7 +633,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.xorpd: RewritePackedBinop(false, "__xorpd", PrimitiveType.Word64); break;
                 case Mnemonic.vxorpd: RewritePackedBinop(true, "__xorpd", PrimitiveType.Word64); break;
                 case Mnemonic.xorps: RewritePackedBinop(false, "__xorps", PrimitiveType.Word32); break;
-
+                case Mnemonic.vzeroupper: RewriteVZeroUpper(); break;
                 case Mnemonic.BOR_exp: RewriteFUnary("exp", false); break;
                 case Mnemonic.BOR_ln: RewriteFUnary("log", false); break;
                 }

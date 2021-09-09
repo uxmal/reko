@@ -205,6 +205,8 @@ namespace Reko.Arch.X86
         internal static readonly RegisterStorage[] All;
 
         internal static readonly RegisterStorage[] Gp64BitRegisters;
+        internal static readonly RegisterStorage[] XmmRegisters;
+        internal static readonly RegisterStorage[] YmmRegisters;
 
         public const int ControlRegisterMin = 80;
         public const int DebugRegisterMin = 89;
@@ -564,6 +566,18 @@ namespace Reko.Arch.X86
             Gp64BitRegisters = new[]
             {
                 rax, rcx, rdx, rbx, rsp, rbp, rsi, rdi, r8, r9, r10, r11, r12, r13, r14, r15,
+            };
+
+            XmmRegisters = new[]
+            {
+                xmm0, xmm1, xmm2, xmm3, xmm4, xmm5, xmm6, xmm7,
+                xmm8, xmm9, xmm10, xmm11, xmm12, xmm13, xmm14, xmm15
+            };
+
+            YmmRegisters = new[]
+            {
+                ymm0, ymm1, ymm2, ymm3, ymm4, ymm5, ymm6, ymm7,
+                ymm8, ymm9, ymm10, ymm11, ymm12, ymm13, ymm14, ymm15
             };
         }
 

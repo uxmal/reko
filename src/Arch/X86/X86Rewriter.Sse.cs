@@ -719,5 +719,16 @@ namespace Reko.Arch.X86
             var newState = SrcOp(0);
             VexAssign(isVex, newState, host.Intrinsic("__aesenc", false, newState.DataType, state, roundKey));
         }
+
+        private void RewriteVZeroUpper()
+        {
+            int nregs = arch.ProcessorMode.WordWidth.BitSize == 64 ? 16 : 8;
+            for (int i = 0; i < nregs; ++i)
+            {
+                var idNarrow = binder.EnsureRegister(Registers.XmmRegisters[i]);
+                var idWide = binder.EnsureRegister(Registers.YmmRegisters[i]);
+                m.Assign(idWide, m.Convert(idNarrow, idNarrow.DataType, idWide.DataType));
+            }
+        }
     }
 }

@@ -4555,6 +4555,31 @@ namespace Reko.UnitTests.Arch.X86
                 "1|L--|ST[Top:real64] = ST[Top:real64] / CONVERT(Mem0[esi + 0x13C<32>:real32], real32, real64)");
         }
 
+
+        [Test]
+        public void X86Rw_vzeroupper()
+        {
+            Run64bitTest("C5F877");
+            AssertCode(     // vzeroupper
+                "0|L--|0000000140000000(3): 16 instructions",
+                "1|L--|ymm0 = CONVERT(xmm0, word128, word256)",
+                "2|L--|ymm1 = CONVERT(xmm1, word128, word256)",
+                "3|L--|ymm2 = CONVERT(xmm2, word128, word256)",
+                "4|L--|ymm3 = CONVERT(xmm3, word128, word256)",
+                "5|L--|ymm4 = CONVERT(xmm4, word128, word256)",
+                "6|L--|ymm5 = CONVERT(xmm5, word128, word256)",
+                "7|L--|ymm6 = CONVERT(xmm6, word128, word256)",
+                "8|L--|ymm7 = CONVERT(xmm7, word128, word256)",
+                "9|L--|ymm8 = CONVERT(xmm8, word128, word256)",
+                "10|L--|ymm9 = CONVERT(xmm9, word128, word256)",
+                "11|L--|ymm10 = CONVERT(xmm10, word128, word256)",
+                "12|L--|ymm11 = CONVERT(xmm11, word128, word256)",
+                "13|L--|ymm12 = CONVERT(xmm12, word128, word256)",
+                "14|L--|ymm13 = CONVERT(xmm13, word128, word256)",
+                "15|L--|ymm14 = CONVERT(xmm14, word128, word256)",
+                "16|L--|ymm15 = CONVERT(xmm15, word128, word256)");
+        }
+
         /*
         [Test]
         public void X86Rw_fstsw_and_cmp_jz()

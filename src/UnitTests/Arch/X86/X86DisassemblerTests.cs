@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Arch.X86
             EndianImageReader rdr = mem.CreateLeReader(mem.BaseAddress);
             var decoders = ProcessorMode.Real.CreateRootDecoders(options);
             var dasm = ProcessorMode.Real.CreateDisassembler(sc, decoders, rdr, options);
-            if (options.ContainsKey("Emuate8087"))
+            if (options.ContainsKey("Emulate8087"))
             {
                 dasm.Emulate8087 = true;
             }
