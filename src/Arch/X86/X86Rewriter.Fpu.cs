@@ -305,7 +305,7 @@ namespace Reko.Arch.X86
         {
             Expression op1 = FpuRegister(1);
             Expression op2 = FpuRegister(0);
-            m.Assign(FpuRegister(1), host.Intrinsic("atan", true, PrimitiveType.Real64, op1, op2));
+            m.Assign(FpuRegister(1), host.Intrinsic("atan2", true, PrimitiveType.Real64, op1, op2));
             ShrinkFpuStack(1);
         }
 
