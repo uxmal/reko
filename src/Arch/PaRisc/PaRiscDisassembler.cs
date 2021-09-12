@@ -49,6 +49,7 @@ namespace Reko.Arch.PaRisc
         private readonly EndianImageReader rdr;
         private readonly bool is64bit;
         private readonly PrimitiveType dtSignedWord;
+        private readonly Registers regs;
 
         private Address addr;
         private readonly List<MachineOperand> ops;
@@ -69,6 +70,7 @@ namespace Reko.Arch.PaRisc
             this.ops = new List<MachineOperand>();
             is64bit = arch.Is64Bit();
             this.dtSignedWord = is64bit ? PrimitiveType.Int64 : PrimitiveType.Int32;
+            this.regs = arch.Registers;
             this.addr = null!;
         }
 
@@ -302,7 +304,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var iReg = field.Read(u);
-                d.ops.Add(new RegisterOperand(Registers.GpRegs[iReg]));
+                d.ops.Add(new RegisterOperand(d.regs.GpRegs[iReg]));
                 return true;
             };
         }
@@ -316,7 +318,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var iReg = field.Read(u);
-                d.ops.Add(new RegisterOperand(Registers.FpRegs[iReg]));
+                d.ops.Add(new RegisterOperand(d.regs.FpRegs[iReg]));
                 return true;
             };
         }
@@ -333,7 +335,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var iReg = Bitfield.ReadFields(fields, u);
-                d.ops.Add(new RegisterOperand(Registers.FpRegs32[iReg]));
+                d.ops.Add(new RegisterOperand(d.regs.FpRegs32[iReg]));
                 return true;
             };
         }
@@ -358,7 +360,7 @@ namespace Reko.Arch.PaRisc
                 RegisterStorage freg;
                 if (d.fpFormat == FpFormat.dbl)
                 {
-                    freg = Registers.FpRegs[iReg];
+                    freg = d.regs.FpRegs[iReg];
                 }
                 else
                 {
@@ -366,7 +368,7 @@ namespace Reko.Arch.PaRisc
                         return false;       // 16L is invalid according to HP.
                     var bank = iReg & 0x10;
                     iReg = (iReg & 0x0F) | 0x10;
-                    freg = Registers.FpRegs32[iReg | bank];
+                    freg = d.regs.FpRegs32[iReg | bank];
                 }
                 d.ops.Add(new RegisterOperand(freg));
                 return true;
@@ -378,6 +380,17 @@ namespace Reko.Arch.PaRisc
         private static readonly Mutator<PaRiscDisassembler> fmo21 = fmo(21);
         private static readonly Mutator<PaRiscDisassembler> fmo27 = fmo(27);
 
+        /// <summary>
+        /// Specific GP register, referred to by number.
+        /// </summary>
+        private static Mutator<PaRiscDisassembler> gpreg(int r)
+        {
+            return (u, d) =>
+            {
+                d.ops.Add(new RegisterOperand(d.regs.GpRegs[r]));
+                return true;
+            };
+        }
 
         /// <summary>
         /// Specific register.
@@ -843,7 +856,7 @@ namespace Reko.Arch.PaRisc
                 var disp = (int) Bits.SignExtend(permutator(d.is64bit, u, dispFields), totalLength);
                 var iBaseReg = baseRegField.Read(u);
                 var am = Bitfield.ReadFields(amFields, u);
-                d.ops.Add(MemoryOperand.Indirect(dt, disp, Registers.GpRegs[iBaseReg]));
+                d.ops.Add(MemoryOperand.Indirect(dt, disp, d.regs.GpRegs[iBaseReg]));
                 return true;
             };
         }
@@ -863,7 +876,7 @@ namespace Reko.Arch.PaRisc
                 d.addrMod = disp > 0
                     ? AddrRegMod.ma
                     : AddrRegMod.mb;
-                d.ops.Add(MemoryOperand.Indirect(dt, disp, Registers.GpRegs[iBaseReg]));
+                d.ops.Add(MemoryOperand.Indirect(dt, disp, d.regs.GpRegs[iBaseReg]));
                 return true;
             };
         }
@@ -912,7 +925,7 @@ namespace Reko.Arch.PaRisc
             return (u, d) =>
             {
                 var iBaseReg = baseRegField.Read(u);
-                var baseReg = Registers.GpRegs[iBaseReg];
+                var baseReg = d.regs.GpRegs[iBaseReg];
                 var iSpaceReg = spaceRegField.Read(u);
                 var spaceReg = Registers.SpaceRegs[iSpaceReg];
                 MemoryOperand mem;
@@ -930,7 +943,7 @@ namespace Reko.Arch.PaRisc
                 {
                     // Index
                     var iIndexReg = dispField.Read(u);
-                    var indexReg = Registers.GpRegs[iIndexReg];
+                    var indexReg = d.regs.GpRegs[iIndexReg];
                     var um = Bitfield.ReadFields(amFields, u);
                     d.addrMod = indexRegMods[um];
                     mem = MemoryOperand.Indexed(dt, baseReg, indexReg, spaceReg);
@@ -957,7 +970,7 @@ namespace Reko.Arch.PaRisc
                 d.addrMod = (am == 1 && disp == 0)
                     ? AddrRegMod.o
                     : baseRegMods[am];
-                d.ops.Add(MemoryOperand.Indirect(dt, disp, Registers.GpRegs[iBaseReg], Registers.SpaceRegs[iSpaceReg]));
+                d.ops.Add(MemoryOperand.Indirect(dt, disp, d.regs.GpRegs[iBaseReg], Registers.SpaceRegs[iSpaceReg]));
                 return true;
             };
         }
@@ -974,7 +987,7 @@ namespace Reko.Arch.PaRisc
                 var disp = Bitfield.ReadSignedFields(fields, u) * dt.Size;
                 var iBaseReg = baseRegField.Read(u);
                 var iSpaceReg = spaceRegField.Read(u);
-                d.ops.Add(MemoryOperand.Indirect(dt, disp, Registers.GpRegs[iBaseReg], Registers.SpaceRegs[iSpaceReg]));
+                d.ops.Add(MemoryOperand.Indirect(dt, disp, d.regs.GpRegs[iBaseReg], Registers.SpaceRegs[iSpaceReg]));
                 return true;
             };
         }
@@ -990,7 +1003,7 @@ namespace Reko.Arch.PaRisc
             {
                 var iBaseReg = baseRegField.Read(u);
                 var iIdxReg = idxRegField.Read(u);
-                d.ops.Add(MemoryOperand.Indexed(dt, Registers.GpRegs[iBaseReg], Registers.GpRegs[iIdxReg]));
+                d.ops.Add(MemoryOperand.Indexed(dt, d.regs.GpRegs[iBaseReg], d.regs.GpRegs[iIdxReg]));
                 return true;
             };
         }
@@ -1010,7 +1023,7 @@ namespace Reko.Arch.PaRisc
                 var iSpaceRegField = spaceRegField.Read(u);
                 var um = Bitfield.ReadFields(amFields, u);
                 d.addrMod = indexRegMods[um];
-                d.ops.Add(MemoryOperand.Indexed(dt, Registers.GpRegs[iBaseReg], Registers.GpRegs[iIdxReg], Registers.SpaceRegs[iSpaceRegField]));
+                d.ops.Add(MemoryOperand.Indexed(dt, d.regs.GpRegs[iBaseReg], d.regs.GpRegs[iIdxReg], Registers.SpaceRegs[iSpaceRegField]));
                 return true;
             };
         }
@@ -1711,7 +1724,7 @@ namespace Reko.Arch.PaRisc
                 invalid,
 
                 Instr(Mnemonic.b_l_push, r11,r6,Annul(30)),
-                Instr(Mnemonic.b_l, PcRel(assemble_22, BeFields((6,5),(11,5),(19,11),(31,1))),reg(Registers.GpRegs[2]), Annul(30)),
+                Instr(Mnemonic.b_l, PcRel(assemble_22, BeFields((6,5),(11,5),(19,11),(31,1))),gpreg(2), Annul(30)),
                 Mask(19, 1,
                     Instr(Mnemonic.bv, Mx(PrimitiveType.Ptr32, 6, 11), Annul(30)),
                     Instr(Mnemonic.bv, Mx(PrimitiveType.Ptr32, 6, 11), Annul(30))),
@@ -1730,7 +1743,7 @@ namespace Reko.Arch.PaRisc
 
                 Instr(Mnemonic.ldil, u(11, 21, PrimitiveType.Word32), r6),
                 coprW,
-                Instr(Mnemonic.addil, Left(BeFields((11,21)), assemble_21, 11), r6,reg(Registers.GpRegs[1])),
+                Instr(Mnemonic.addil, Left(BeFields((11,21)), assemble_21, 11), r6,gpreg(1)),
                 coprDW,
 
                 copr,

@@ -979,7 +979,8 @@ namespace Reko.Scanning
                 var dt = global.Value.DataType!.Accept(tlDeser);
                 dataScanner.EnqueueUserGlobalData(addr, dt, global.Value.Name!);
             }
-            foreach (var sym in Program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Data))
+            foreach (var sym in Program.ImageSymbols.Values.Where(
+                s => s.Type == SymbolType.Data && s.DataType != null))
             {
                 dataScanner.EnqueueUserGlobalData(sym.Address!, sym.DataType!, sym.Name!);
             }

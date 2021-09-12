@@ -192,7 +192,7 @@ namespace Reko.Arch.PaRisc
             switch (op)
             {
             case RegisterOperand r:
-                if (r.Register == Registers.GpRegs[0])
+                if (r.Register == arch.Registers.GpRegs[0])
                     return Constant.Zero(r.Register.DataType);
                 else
                     return binder.EnsureRegister(r.Register);
@@ -207,7 +207,7 @@ namespace Reko.Arch.PaRisc
                 Expression ea = rb;
                 if (mem.Index != null)
                 {
-                    if (mem.Index != Registers.GpRegs[0])
+                    if (mem.Index != arch.Registers.GpRegs[0])
                     {
                         var idx = binder.EnsureRegister(mem.Index);
                         ea = m.IAdd(ea, idx);

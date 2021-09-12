@@ -499,7 +499,7 @@ namespace Reko.Core
                 return;
             this.ImageMap = SegmentMap.CreateImageMap();
             foreach (var sym in this.ImageSymbols.Values.Where(
-                s => s.Type == SymbolType.Data && s.DataType!.BitSize != 0))
+                s => s.Type == SymbolType.Data && s.DataType != null && s.DataType.BitSize != 0))
             {
                 this.ImageMap.AddItemWithSize(
                     sym.Address!,

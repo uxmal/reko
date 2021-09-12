@@ -185,7 +185,7 @@ namespace Reko.Arch.PaRisc
             var src1 = RewriteOp(instr.Operands[0]);
             var src2 = RewriteOp(instr.Operands[1]);
             var rDst = ((RegisterOperand) instr.Operands[2]).Register;
-            if (rDst == Registers.GpRegs[0])
+            if (rDst == arch.Registers.GpRegs[0])
             {
                 // Result thrown away == NOP.
                 iclass = InstrClass.Padding | InstrClass.Linear;

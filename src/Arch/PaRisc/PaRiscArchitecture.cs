@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Memory;
 using Reko.Core.Rtl;
@@ -35,12 +36,13 @@ namespace Reko.Arch.PaRisc
         public PaRiscArchitecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)
         {
-            InstructionBitSize = 32;
-            StackRegister = Registers.GpRegs[30];
-            Endianness = EndianServices.Big;
-            SetOptionDependentProperties();
             LoadUserOptions(options);
+            InstructionBitSize = 32;
+            StackRegister = this.Registers!.GpRegs[30];
+            Endianness = EndianServices.Big;
         }
+
+        public Registers Registers { get; private set; }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
@@ -72,7 +74,9 @@ namespace Reko.Arch.PaRisc
 
         public override FlagGroupStorage GetFlagGroup(RegisterStorage reg, uint grf)
         {
-            throw new NotImplementedException();
+            var dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var f = new FlagGroupStorage(reg, grf, GrfToString(reg, "", grf), dt);
+            return f;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -108,9 +112,14 @@ namespace Reko.Arch.PaRisc
             return Registers.GpRegs;
         }
 
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            return new FlagGroupStorage[] { flags };
+        }
+
         public override string GrfToString(RegisterStorage reg, string str, uint grf)
         {
-            return "";
+            return "C";
         }
 
         public bool Is64Bit()
@@ -123,11 +132,12 @@ namespace Reko.Arch.PaRisc
 
         public override void LoadUserOptions(Dictionary<string, object>? options)
         {
-            if (options == null)
-                return;
-            foreach (var option in options.ToList())
+            if (options != null)
             {
-                this.Options[option.Key] = option.Value;
+                foreach (var option in options.ToList())
+                {
+                    this.Options[option.Key] = option.Value;
+                }
             }
             SetOptionDependentProperties();
         }
@@ -175,6 +185,7 @@ namespace Reko.Arch.PaRisc
                 PointerType = PrimitiveType.Ptr32;
                 FramePointerType = PrimitiveType.Ptr32;
             }
+            this.Registers = new Registers(WordWidth);
         }
 
 

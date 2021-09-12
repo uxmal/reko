@@ -52,13 +52,13 @@ namespace Reko.Arch.PaRisc
         {
             var dest = RewriteOp(instr.Operands[0]);
             var linkReg = ((RegisterOperand) instr.Operands[1]).Register;
-            if (linkReg == Registers.GpRegs[0])
+            if (linkReg == arch.Registers.GpRegs[0])
             {
                 // continuation thrown away == goto
                 iclass = InstrClass.Transfer | InstrClass.Delay;
                 m.GotoD(dest);
             }
-            else if (linkReg == Registers.GpRegs[2] || linkReg == Registers.GpRegs[31])
+            else if (linkReg == arch.Registers.GpRegs[2] || linkReg == arch.Registers.GpRegs[31])
             {
                 iclass = InstrClass.Transfer | InstrClass.Delay | InstrClass.Call;
                 m.CallD(dest, 0);
@@ -96,11 +96,11 @@ namespace Reko.Arch.PaRisc
             Expression idx;
             if (dst.Index != null)
             {
-                if (dst.Index == Registers.GpRegs[0])
+                if (dst.Index == arch.Registers.GpRegs[0])
                 {
                     //$REVIEW: r2 hardwired as link register. A "purist" approach
                     // would leave this to the SSA / Value propagation steps.
-                    if (dst.Base == Registers.GpRegs[2])
+                    if (dst.Base == arch.Registers.GpRegs[2])
                     {
                         m.ReturnD(0, 0);
                     }
@@ -121,7 +121,7 @@ namespace Reko.Arch.PaRisc
                 {
                     //$REVIEW: r2 hardwired as link register. A "purist" approach
                     // would leave this to the SSA / Value propagation steps.
-                    if (dst.Base == Registers.GpRegs[2])
+                    if (dst.Base == arch.Registers.GpRegs[2])
                     {
                         m.ReturnD(0, 0);
                     }

@@ -30,13 +30,13 @@ namespace Reko.Arch.PaRisc
 {
     public class Registers
     {
-        public static readonly RegisterStorage[] GpRegs;
-        public static readonly RegisterStorage[] SpaceRegs;
-        public static readonly RegisterStorage[] FpRegs;
-        public static readonly RegisterStorage[] FpLefts;
-        public static readonly RegisterStorage[] FpRights;
-        public static readonly RegisterStorage[] FpRegs32;
+        public readonly RegisterStorage[] GpRegs;
+        public readonly RegisterStorage[] FpRegs;
+        public readonly RegisterStorage[] FpLefts;
+        public readonly RegisterStorage[] FpRights;
+        public readonly RegisterStorage[] FpRegs32;
 
+        public static readonly RegisterStorage[] SpaceRegs;
         public static readonly RegisterStorage PSW; // Program Status Word
 
         public static readonly RegisterStorage SAR; // Shift amount register
@@ -44,13 +44,12 @@ namespace Reko.Arch.PaRisc
         public static readonly Dictionary<int, RegisterStorage> ControlRegisters;
 
         public static readonly FlagGroupStorage CF;
-        public static Dictionary<StorageDomain, RegisterStorage> RegistersByStorageDomain { get; }
+        public Dictionary<StorageDomain, RegisterStorage> RegistersByStorageDomain { get; }
 
-        static Registers()
+        public Registers(PrimitiveType gpRegSize)
         {
             var factory = new StorageFactory();
-            GpRegs = factory.RangeOfReg64(32, "r{0}");
-            SpaceRegs = factory.RangeOfReg32(8, "sr{0}");
+            GpRegs = factory.RangeOfReg(32, i => $"r{i}", gpRegSize);
             FpRegs = factory.RangeOfReg64(32, "fr{0}");
             FpLefts = FpRegs
                 .Select(fr => new RegisterStorage(fr.Name + "L", fr.Number, 32, PrimitiveType.Word32))
@@ -61,7 +60,14 @@ namespace Reko.Arch.PaRisc
             //$BUG: triple-check the formatting of 6-bit floating point
             // register identifiers.
             FpRegs32 = FpLefts.Concat(FpRights).ToArray();
+            RegistersByStorageDomain =
+                GpRegs.ToDictionary(r => r.Domain);
+        }
 
+        static Registers()
+        {
+            var factory = new StorageFactory(StorageDomain.SystemRegister);
+            SpaceRegs = factory.RangeOfReg32(8, "sr{0}");
             PSW = factory.Reg64("psw");
             ControlRegisters = new[] {
                 "rctr",
@@ -112,9 +118,6 @@ namespace Reko.Arch.PaRisc
             SAR = ControlRegisters[11];
 
             CF = new FlagGroupStorage(PSW, 0xF000, "C", PrimitiveType.Byte);
-
-            RegistersByStorageDomain =
-                GpRegs.ToDictionary(r => r.Domain);
         }
     }
 }
