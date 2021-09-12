@@ -90,7 +90,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
             case i386Rt.R_386_COPY:
                 break;
             case i386Rt.R_386_RELATIVE: // B + A
-                A = (int)rela.Addend;
+                A = (int)(rela.Addend ?? 0);
                 B = program.SegmentMap.BaseAddress.ToUInt32();
                 break;
             case i386Rt.R_386_JMP_SLOT:
@@ -105,7 +105,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 break;
             case i386Rt.R_386_32: // S + A
                                   // Read the symTabIndex'th symbol.
-                A = (int)rela.Addend;
+                A = (int) (rela.Addend ?? 0);
                 P = 0;
                 break;
             case i386Rt.R_386_PC32: // S + A - P
@@ -121,7 +121,7 @@ namespace Reko.ImageLoaders.Elf.Relocators
                     //loader.AddSymbol(S, sym.Name);
                     //}
                 }
-                A = (int)rela.Addend;
+                A = (int) (rela.Addend ?? 0);
                 P = ~P + 1;
                 break;
             case i386Rt.R_386_GLOB_DAT:
@@ -131,9 +131,8 @@ namespace Reko.ImageLoaders.Elf.Relocators
                 P = 0;
                 break;
             default:
-                throw new NotImplementedException(string.Format(
-                    "i386 ELF relocation type {0} not implemented yet.",
-                    rt));
+                throw new NotImplementedException(
+                    $"i386 ELF relocation type {rt} not implemented yet.");
             }
             var w = relR.ReadLeUInt32();
             w += ((uint)(B + S + A + P) >> sh) & mask;
