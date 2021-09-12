@@ -74,6 +74,7 @@ namespace Reko.Arch.Arm.AArch64
         cls,
         clz,
         cmeq,
+        cmhi,
         cmhs,
         cmp,
         crc32b,

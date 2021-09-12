@@ -39,15 +39,9 @@ namespace Reko.UnitTests.Arch.Arm
             this.baseAddress = Address.Ptr64(0x00100000);
         }
 
-        public override IProcessorArchitecture Architecture
-        {
-            get { return arch; }
-        }
+        public override IProcessorArchitecture Architecture => arch;
 
-        public override Address LoadAddress
-        {
-            get { return baseAddress; }
-        }
+        public override Address LoadAddress => baseAddress;
 
         private void Given_Instruction(uint wInstr)
         {
@@ -62,7 +56,7 @@ namespace Reko.UnitTests.Arch.Arm
         private void AssertCode(string sExpected, string hexBytes)
         {
             var instr = DisassembleHexBytes(hexBytes);
-            if (instr.ToString() != sExpected && instr.ToString().StartsWith("Nyi"))
+            if (instr.ToString() != sExpected) // && instr.ToString().StartsWith("Nyi"))
             {
                 Assert.AreEqual(sExpected, instr.ToString());
             }
@@ -367,7 +361,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_ldxr()
         {
-            AssertCode("@@@", "A1235D88");
+            AssertCode("ldxr\tw1,[x29]", "A1235D88");
         }
 
         [Test]
@@ -642,6 +636,12 @@ namespace Reko.UnitTests.Arch.Arm
         public void AArch64Dis_cmeq()
         {
             AssertCode("cmeq\tv0.4s,v2.4s", "4098A04E");
+        }
+
+        [Test]
+        public void AArch64Dis_cmhi_vs()
+        {
+            AssertCode("cmhi\tv0.4s,v7.4s,v0.4s,#0", "E034A06E");
         }
 
         [Test]
@@ -1381,6 +1381,24 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_ld1_q()
+        {
+            AssertCode("ld1\t{v1.4s},[x2],#&10", "4178DF4C");
+        }
+
+        [Test]
+        public void AArch64Dis_ld1_4s_post()
+        {
+            AssertCode("ld1\t{v0.4s},[x1],#&10", "2078DF4C");
+        }
+
+        [Test]
+        public void AArch64Dis_ld1_d()
+        {
+            AssertCode("ld1\t{v1.2s},[x2],#&8", "4178DF0C");
+        }
+
+        [Test]
         public void AArch64Dis_ld1r_i8()
         {
             Given_Instruction(0x4D40C220);
@@ -1860,12 +1878,10 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore("Advanced SIMD lanes")]
-        public void AArch64Dis_st4()
+        public void AArch64Dis_st4_post()
         {
-            AssertCode("st4 {v0.8h-v3.8h},[x11], #64", "60059F4C");
+            AssertCode("st4\t{v0.8h-v3.8h},[x11],#&40", "60059F4C");
         }
-
 
         /*
          * //$BORED: amuse yourself by making these tests pass.

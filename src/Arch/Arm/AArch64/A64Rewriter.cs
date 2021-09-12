@@ -41,9 +41,10 @@ namespace Reko.Arch.Arm.AArch64
         private readonly ProcessorState state;
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
-        private IEnumerator<AArch64Instruction> dasm;
+        private readonly List<RtlInstruction> cluster;
+        private readonly RtlEmitter m;
+        private readonly IEnumerator<AArch64Instruction> dasm;
         private AArch64Instruction instr;
-        private RtlEmitter m;
         private InstrClass iclass;
 
         public A64Rewriter(Arm64Architecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -55,7 +56,8 @@ namespace Reko.Arch.Arm.AArch64
             this.host = host;
             this.dasm = new AArch64Disassembler(arch, rdr).GetEnumerator();
             this.instr = null!;
-            this.m = null!;
+            this.cluster = new List<RtlInstruction>();
+            this.m = new RtlEmitter(cluster);
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -63,8 +65,6 @@ namespace Reko.Arch.Arm.AArch64
             while (dasm.MoveNext())
             {
                 this.instr = dasm.Current;
-                var cluster = new List<RtlInstruction>();
-                m = new RtlEmitter(cluster);
                 iclass = instr.InstructionClass;
                 switch (instr.Mnemonic)
                 {
@@ -98,6 +98,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.blr: RewriteBlr(); break;
                 case Mnemonic.br: RewriteBr(); break;
                 case Mnemonic.brk: RewriteBrk(); break;
+                case Mnemonic.bsl: RewriteBsl(); break;
                 case Mnemonic.cbnz: RewriteCb(m.Ne0); break;
                 case Mnemonic.cbz: RewriteCb(m.Eq0); break;
                 case Mnemonic.ccmn: RewriteCcmn(); break;
@@ -105,6 +106,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.clz: RewriteClz(); break;
                 case Mnemonic.cmp: RewriteCmp(); break;
                 case Mnemonic.cmeq: RewriteCm("__cmeq"); break;
+                case Mnemonic.cmhi: RewriteCm("__cmhi"); break;
                 case Mnemonic.cmhs: RewriteCm("__cmhs"); break;
                 case Mnemonic.csel: RewriteCsel(); break;
                 case Mnemonic.csinc: RewriteCsinc(); break;
@@ -116,6 +118,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.eor: RewriteBinary(m.Xor); break;
                 case Mnemonic.eon: RewriteBinary((a, b) => m.Xor(a, m.Comp(b))); break;
                 case Mnemonic.eret: RewriteEret(); break;
+                case Mnemonic.ext: RewriteExt(); break;
                 case Mnemonic.extr: RewriteExtr(); break;
                 case Mnemonic.fabs: RewriteFabs(); break;
                 case Mnemonic.fadd: RewriteFadd(); break;
@@ -139,6 +142,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.fsub: RewriteMaybeSimdBinary(m.FSub, "__fsub_{0}", Domain.Real); break;
                 case Mnemonic.hlt: RewriteHlt(); break;
                 case Mnemonic.isb: RewriteIsb(); break;
+                case Mnemonic.ld1: RewriteLdN("__ld1"); break;
                 case Mnemonic.ld1r: RewriteLdNr("__ld1r"); break;
                 case Mnemonic.ld2: RewriteLdN("__ld2"); break;
                 case Mnemonic.ld3: RewriteLdN("__ld3"); break;
@@ -245,6 +249,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.xtn: RewriteSimdUnary("__xtn_{0}", Domain.None); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                cluster.Clear();
             }
         }
 

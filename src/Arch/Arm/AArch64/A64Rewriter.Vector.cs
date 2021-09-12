@@ -126,6 +126,18 @@ namespace Reko.Arch.Arm.AArch64
             RewriteSimdReduce("__sum_{0}", Domain.Integer);
         }
 
+        private void RewriteBsl()
+        {
+            // This instruction sets each bit in the destination register to
+            // the corresponding bit from the first source register when the
+            // original destination bit was 1, otherwise from the second
+            // source register.
+            var dst = this.RewriteOp(0);
+            var src1 = this.RewriteOp(1);
+            var src2 = this.RewriteOp(2);
+            m.Assign(dst, m.Xor(dst, m.And(m.Xor(dst, src2), src1)));
+        }
+
         private void RewriteCm(string name)
         {
             RewriteSimdBinary(name, Domain.None);
@@ -134,6 +146,11 @@ namespace Reko.Arch.Arm.AArch64
         private void RewriteDup()
         {
             RewriteSimdExpand("__dup_{0}");
+        }
+
+        private void RewriteExt()
+        {
+            RewriteSimdWithScalar("__ext_{0}", Domain.None);
         }
 
         private void RewriteExtr()
@@ -156,7 +173,14 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteLdN(string fnName)
         {
-            var (ea,_) = RewriteEffectiveAddress((MemoryOperand)instr.Operands[1]);
+            Expression? postIndex = null;
+            var mem = (MemoryOperand) instr.Operands[1];
+            var (ea, baseReg) = RewriteEffectiveAddress(mem);
+            if (mem.PostIndex)
+            {
+                postIndex = ea;
+                ea = baseReg;
+            }
             var vec = ((VectorMultipleRegisterOperand)instr.Operands[0]);
             if (vec.Index < 0)
             {
@@ -168,6 +192,10 @@ namespace Reko.Arch.Arm.AArch64
             else
             {
                 NotImplementedYet();
+            }
+            if (postIndex != null)
+            {
+                m.Assign(baseReg!, postIndex);
             }
         }
 
@@ -194,7 +222,14 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteStN(string fnName)
         {
-            var (ea, _) = RewriteEffectiveAddress((MemoryOperand)instr.Operands[1]);
+            Expression? postIndex = null;
+            var mem = (MemoryOperand) instr.Operands[1];
+            var (ea, baseReg) = RewriteEffectiveAddress(mem);
+            if (mem.PostIndex)
+            {
+                postIndex = ea;
+                ea = baseReg;
+            }
             var vec = ((VectorMultipleRegisterOperand)instr.Operands[0]);
             if (vec.Index < 0)
             {
@@ -215,6 +250,10 @@ namespace Reko.Arch.Arm.AArch64
                     m.Assign(m.Mem(dtElem, eaOffset), indexed);
                     offset += dtElem.Size;
                 }
+            }
+            if (postIndex != null)
+            {
+                m.Assign(baseReg!, postIndex);
             }
         }
 

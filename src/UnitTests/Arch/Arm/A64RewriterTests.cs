@@ -384,6 +384,16 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_st4_post()
+        {
+            Given_HexString("60059F4C");
+            AssertCode(//"st4 {v0.8h-v3.8h},[x11], #64");
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|__st4(x11, v0, v1, v2, v3)",
+                "2|L--|x11 = x11 + 64<i64>");
+        }
+
+        [Test]
         public void AArch64Rw_stlrh()
         {
             Given_HexString("01FC9F48");
@@ -1111,13 +1121,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore("Not yet")]
         public void AArch64Rw_ext()
         {
             Given_HexString("0240016E");
             AssertCode(     // ext	v2.16b,v0.16b,v1.16b,#8
-                "0|L--|0000000000000C9C(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q0",
+                "2|L--|q2 = __ext_i8(v2, q1)");
         }
 
         [Test]
@@ -1579,6 +1589,17 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_mul_vector_s()
+        {
+            Given_HexString("009CAC4E");
+            AssertCode(
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q0",
+                "2|L--|v3 = q12",
+                "3|L--|q0 = __mul_i32(v2, v3)");
+        }
+
+        [Test]
         public void AArch64Rw_addv_i32()
         {
             Given_Instruction(0x4EB1B821);
@@ -1952,6 +1973,17 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_cmhs_v()
+        {
+            Given_HexString("213CA26E");
+            AssertCode(//cmhs\tv1.16b,v1.16b,v2.16b,#0
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|v3 = q2",
+                "3|L--|q1 = __cmhs(v2, v3)");
+        }
+
+        [Test]
         public void AArch64Rw_st1()
         {
             Given_Instruction(0x0D0041B5);	// st1	{v21.h}[0],[x13]
@@ -2280,12 +2312,63 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_bsl()
+        {
+            Given_HexString("831C606E");
+            AssertCode(     // bsl	v3.16b,v4.16b,v0.16b
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q3 = q3 ^ (q3 ^ q0) & q4");
+        }
+
+        [Test]
         public void AArch64Rw_hlt()
         {
             Given_HexString("000046D4");
             AssertCode(     // hlt	#&3000
                 "0|H--|0000000000100000(4): 1 instructions",
                 "1|L--|__hlt(0x3000<16>)");
+        }
+
+        [Test]
+        public void AArch64Rw_add_v_s()
+        {
+            Given_HexString("6384EB4E");
+            AssertCode(
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q3",
+                "2|L--|v3 = q11",
+                "3|L--|q3 = __add_i64(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_cmhi_vs()
+        {
+            Given_HexString("E034A06E");
+            AssertCode( //cmhi\tv0.4s,v7.4s,v0.4s,#0
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q7",
+                "2|L--|v3 = q0",
+                "3|L--|q0 = __cmhi(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_ld1_q()
+        {
+            Given_HexString("4178DF4C");
+            AssertCode(     // ld1\t{v1.4s},[x2],#&10
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|__ld1(x2, out v1)",
+                "2|L--|x2 = x2 + 16<i64>");
+        }
+
+        [Test]
+        public void AArch64Rw_ld1_d()
+        {
+            Given_HexString("4178DF0C");
+            AssertCode( // ld1\t{v1.2s},[x2],#&10
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|__ld1(x2, out v1)",
+                "2|L--|x2 = x2 + 8<i64>");
         }
     }
 }

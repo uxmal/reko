@@ -2238,14 +2238,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        [Ignore("Discovered by RekoSifter tool")]
-        public void ArmDasm_tsteq()
+        public void ArmDasm_ldcmi()
         {
-            Disassemble32(0x2E1F0E01);
-            Expect_Code("tsteq\tlr, lr, lsr #0");
+            AssertCode("ldcmi\tp8,cr7,[pc],#&80", "2078DF4C");
         }
 
-       //////////////////////////
+        //////////////////////////
 
 #if BORED
 /// If you're bored and want something to do, why not implement a 
