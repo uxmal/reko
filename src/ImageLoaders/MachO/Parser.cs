@@ -594,10 +594,14 @@ namespace Reko.ImageLoaders.MachO
                     var indirects = LoadIndirectSymbols(rdrIndirect, dysymtab.nindirectsyms);
                     var lazySection = FindSectionByType(S_LAZY_SYMBOL_POINTERS);
                     if (lazySection != null)
+                    {
                         LoadImports(lazySection, indirects, arch);
+                    }
                     var nonLazySection = FindSectionByType(S_NON_LAZY_SYMBOL_POINTERS);
                     if (nonLazySection != null)
+                    {
                         LoadImports(nonLazySection, indirects, arch);
+                    }
                 }
             }
             else
@@ -829,6 +833,8 @@ namespace Reko.ImageLoaders.MachO
             while (rdr.TryReadUInt64(out ulong uImport))
             {
                 var indsym = (int) indirects[i];
+                if (indsym < 0 || indsym >= indirects.Count)
+                    continue;
                 if (indsym < ldr.machoSymbols.Count)
                 {
                     var msym = ldr.machoSymbols[indsym];
