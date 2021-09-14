@@ -169,10 +169,10 @@ namespace Reko.ImageLoaders.Elf
             {
                 var header64 = Elf64_EHdr.Load(rdr);
                 trace.Verbose("== ELF header =================");
-                trace.Verbose("  e_entry: {0}", header64.e_entry);
-                trace.Verbose("  e_phoff: {0}", header64.e_phoff);
-                trace.Verbose("  e_shoff: {0}", header64.e_shoff);
-                trace.Verbose("  e_flags: {0}", header64.e_flags);
+                trace.Verbose("  e_entry: {0:X16}", header64.e_entry);
+                trace.Verbose("  e_phoff: {0:X16}", header64.e_phoff);
+                trace.Verbose("  e_shoff: {0:X16}", header64.e_shoff);
+                trace.Verbose("  e_flags: {0:X8}", header64.e_flags);
                 trace.Verbose("  e_ehsize: {0}", header64.e_ehsize);
                 trace.Verbose("  e_phentsize: {0}", header64.e_phentsize);
                 trace.Verbose("  e_phnum: {0}", header64.e_phnum);
@@ -185,10 +185,10 @@ namespace Reko.ImageLoaders.Elf
             {
                 var header32 = Elf32_EHdr.Load(rdr);
                 trace.Verbose("== ELF header =================");
-                trace.Verbose("  e_entry: {0}", header32.e_entry);
-                trace.Verbose("  e_phoff: {0}", header32.e_phoff);
-                trace.Verbose("  e_shoff: {0}", header32.e_shoff);
-                trace.Verbose("  e_flags: {0}", header32.e_flags);
+                trace.Verbose("  e_entry: {0:X8}", header32.e_entry);
+                trace.Verbose("  e_phoff: {0:X8}", header32.e_phoff);
+                trace.Verbose("  e_shoff: {0:X8}", header32.e_shoff);
+                trace.Verbose("  e_flags: {0:X8}", header32.e_flags);
                 trace.Verbose("  e_ehsize: {0}", header32.e_ehsize);
                 trace.Verbose("  e_phentsize: {0}", header32.e_phentsize);
                 trace.Verbose("  e_phnum: {0}", header32.e_phnum);

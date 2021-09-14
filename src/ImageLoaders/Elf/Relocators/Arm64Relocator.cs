@@ -37,17 +37,17 @@ namespace Reko.ImageLoaders.Elf.Relocators
         public override (Address?, ElfSymbol?) RelocateEntry(Program program, ElfSymbol symbol, ElfSection? referringSection, ElfRelocation  rela)
         {
             var addr = Address.Ptr64(rela.Offset);
-            var rt = (RtAarch64) (rela.Info & 0xFFFF);
+            var rt = (Aarch64Rt) (rela.Info & 0xFFFF);
             ulong A = (ulong) rela.Addend;
             ulong S = symbol.Value;
 
             switch (rt)
             {
-            case RtAarch64.R_AARCH64_RELATIVE:
+            case Aarch64Rt.R_AARCH64_RELATIVE:
                 A = S = 0;
                 break;
-            case RtAarch64.R_AARCH64_JUMP_SLOT: // A + S
-            case RtAarch64.R_AARCH64_GLOB_DAT:  // A + S
+            case Aarch64Rt.R_AARCH64_JUMP_SLOT: // A + S
+            case Aarch64Rt.R_AARCH64_GLOB_DAT:  // A + S
                 break;
             default:
                 var listener = this.loader.Services.RequireService<DecompilerEventListener>();
@@ -68,12 +68,11 @@ namespace Reko.ImageLoaders.Elf.Relocators
 
         public override string RelocationTypeToString(uint type)
         {
-            //throw new NotImplementedException();
-            return "";
+            return ((Aarch64Rt) type).ToString();
         }
     }
 
-    public enum RtAarch64
+    public enum Aarch64Rt
     {
         R_AARCH64_COPY = 1024, //  	See note below.
         R_AARCH64_GLOB_DAT = 1025, // S + A	See note below
