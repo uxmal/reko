@@ -72,6 +72,60 @@ namespace Reko.Environments.SysV.ArchSpecific
             else return null;
         }
 
+        public static Expression? AArch64(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
+        {
+            // adrp x16,#&13000
+            //ldr x17,[x16]
+            //add x16, x16,#0
+            //br x17
+
+            var stubInstrs = instrs.Take(4).ToArray();
+            if (stubInstrs.Length != 4)
+                return null;
+
+            if (stubInstrs[0] is RtlAssignment ass &&
+                ass.Dst is Identifier idPage &&
+                ass.Src is Address addrPage && 
+                idPage.Name == "x16")
+            {
+            }
+            else return null;
+            Address addr;
+            if (stubInstrs[1] is RtlAssignment load &&
+                load.Dst is Identifier ptrGotSlot &&
+                load.Src is MemoryAccess gotslot)
+            {
+                if (gotslot.EffectiveAddress is BinaryExpression bin &&
+                    bin.Operator == Operator.IAdd &&
+                    bin.Left == idPage &&
+                    bin.Right is Constant offset)
+                {
+                    addr = addrPage + offset.ToInt32();
+                }
+                else if (gotslot.EffectiveAddress is Identifier idEa &&
+                  idEa == idPage)
+                {
+                    addr = addrPage;
+                }
+                else
+                    return null;
+            }
+            else return null;
+
+            if (stubInstrs[2] is RtlAssignment addrOf &&
+                addrOf.Dst != ptrGotSlot)
+            {
+            }
+            else return null;
+
+            if (stubInstrs[3] is RtlGoto g && 
+                g.Target == ptrGotSlot)
+            {
+                return addr;
+            }
+            return null;
+        }
+
         /// <summary>
         /// Find the destination of a Risc-V PLT stub.
         /// </summary>
@@ -83,8 +137,6 @@ namespace Reko.Environments.SysV.ArchSpecific
         /// <param name="addrInstr">Address of the beginning of the stub.</param>
         public static Expression? RiscV(IProcessorArchitecture arch, Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
-            if (addrInstr.ToLinear() == 0x0000000000014F30)
-                addrInstr.ToString();
             var stubInstrs = instrs.Take(4).ToArray();
             if (stubInstrs.Length != 4)
                 return null;
