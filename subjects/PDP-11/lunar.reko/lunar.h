@@ -6182,17 +6182,17 @@ T_1334: (in fn1578() @ 00000C8A : void)
   Class: Eq_644
   DataType: void
   OrigDataType: void
-T_1335: (in bArg04_46 @ 00000C90 : byte)
+T_1335: (in bArg04_46 @ 00000C90 : ui8)
   Class: Eq_1335
-  DataType: byte
-  OrigDataType: byte
+  DataType: ui8
+  OrigDataType: ui8
 T_1336: (in wArg04 @ 00000C90 : word16)
   Class: Eq_1336
-  DataType: cui16
-  OrigDataType: cui16
+  DataType: word16
+  OrigDataType: word16
 T_1337: (in SLICE(wArg04, byte, 0) @ 00000C90 : byte)
   Class: Eq_1335
-  DataType: byte
+  DataType: ui8
   OrigDataType: byte
 T_1338: (in 1<i16> @ 00000C98 : int16)
   Class: Eq_1338
@@ -6298,18 +6298,18 @@ T_1363: (in Mem24[(wArg02 >> 1<i16>) + 0x3013<16>:byte] @ 00000CAA : byte)
   Class: Eq_1359
   DataType: byte
   OrigDataType: byte
-T_1364: (in 4<i16> @ 00000CA6 : int16)
+T_1364: (in SLICE(wArg04, byte, 0) @ 00000CA6 : byte)
   Class: Eq_1364
-  DataType: int16
-  OrigDataType: int16
-T_1365: (in wArg04 << 4<i16> @ 00000000 : word16)
-  Class: Eq_1365
-  DataType: ui16
-  OrigDataType: ui16
-T_1366: (in SLICE(wArg04 << 4<i16>, byte, 0) @ 00000CA6 : byte)
-  Class: Eq_1335
   DataType: byte
   OrigDataType: byte
+T_1365: (in 4<8> @ 00000CA6 : byte)
+  Class: Eq_1365
+  DataType: byte
+  OrigDataType: byte
+T_1366: (in (byte) wArg04 << 4<8> @ 00000000 : byte)
+  Class: Eq_1335
+  DataType: ui8
+  OrigDataType: ui8
 T_1367: (in wArg02 >> 1<i16> @ 00000000 : word16)
   Class: Eq_1367
   DataType: (ptr16 Eq_1367)

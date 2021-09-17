@@ -14,8 +14,8 @@ void fn0000C02A(struct Eq_n * a0, word32 * a1)
 	while (g_dwFF0F04 - g_dwFF0F08 < 0x00)
 	{
 		ui32 d3_n = SEQ(SLICE(a4_n, word24, 8), a0->a0004[a4_n]);
-		cui16 v27_n = (word16) (d3_n & 0xFF) & 0xF0;
-		uip32 d0_n = SEQ(SLICE(SEQ(SLICE(d3_n & 0xFF, word16, 16), v27_n), word24, 8), (byte) v27_n >> 0x02);
+		cui16 v27_n = (word16) d3_n & 0xFF & 0xF0;
+		uip32 d0_n = SEQ(SLICE((uint32) v27_n, word24, 8), (byte) v27_n >> 0x02);
 		++a4_n;
 		if ((word16) d0_n <= 44)
 		{

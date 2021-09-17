@@ -10,7 +10,7 @@ l0C00_0005:
 	ax = ax - 3<16> >> 1<16>
 	// succ:  l0C00_000A
 l0C00_000A:
-	word16 ax_13 = SLICE(ax *s32 ax, word16, 0)
+	word16 ax_13 = ax *s ax
 	ax = ax_13
 	branch ax_13 != 0<16> l0C00_0005
 	// succ:  l0C00_0011 l0C00_0005
@@ -27,7 +27,7 @@ void fn0C00_0000(word16 ax, selector ds)
 l0C00_0005:
 		ax = ax - 3<16> >> 1<16>;
 	}
-	word16 ax_13 = SLICE(ax *s32 ax, word16, 0);
+	word16 ax_13 = ax *s ax;
 	ax = ax_13;
 	if (ax_13 == 0<16>)
 	{

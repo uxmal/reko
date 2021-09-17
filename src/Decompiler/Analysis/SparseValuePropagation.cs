@@ -90,7 +90,7 @@ namespace Reko.Analysis
             switch (sid.DefStatement!.Instruction)
             {
             case Assignment ass:
-                e = ass.Src.Accept(eval);
+                (e, _) = ass.Src.Accept(eval);
                 return e;
             case PhiAssignment phi:
                 foreach (var phiArg in phi.Src.Arguments)

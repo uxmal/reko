@@ -7,7 +7,7 @@ void foo(byte sil, word64 rdi)
 // Preserved: rsp
 foo_entry:
 l0000000000000F9E:
-	branch (SLICE(CONVERT(SLICE(CONVERT(Mem0[rdi:word32], word32, uint64), word32, 0) >>u 0xA<32>, word32, uint64), byte, 0) ^ sil) == 0<8> l0000000000000FB4
+	branch (SLICE(Mem0[rdi:word32] >>u 0xA<32>, byte, 0) ^ sil) == 0<8> l0000000000000FB4
 l0000000000000FA6_thunk_bar:
 	bar()
 	return

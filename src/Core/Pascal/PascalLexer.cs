@@ -65,7 +65,7 @@ namespace Reko.Core.Pascal
         private readonly bool allowNestedComments;
         private Token? token;
         private int sign;
-        internal int lineNumber;    //$DEBUG
+        private int lineNumber;
         private State st;
 
         public PascalLexer(TextReader rdr, bool allowNestedComments)

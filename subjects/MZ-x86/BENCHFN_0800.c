@@ -988,7 +988,7 @@ l0800_nCC1:
 		{
 			uint32 dx_ax_n = (uint32) cx_n;
 			uint32 dx_ax_n = SEQ((uint16) (dx_ax_n % wArg06), ax_n);
-			ds->*si_n = (byte) (uint16) (dx_ax_n % wArg06);
+			ds->*si_n = (byte) (dx_ax_n % wArg06);
 			Eq_n ax_n = (uint16) (dx_ax_n /u wArg06);
 			cx_n = ax_n;
 			ax_n = (uint16) (dx_ax_n /u wArg06);
@@ -1015,7 +1015,7 @@ l0800_nCA4:
 		}
 	}
 	uint32 dx_ax_n = (uint32) ax_n;
-	ds->*si_n = (byte) (uint16) (dx_ax_n % wArg06);
+	ds->*si_n = (byte) (dx_ax_n % wArg06);
 	ax_n = (uint16) (dx_ax_n /u wArg06);
 	++si_n;
 	goto l0800_nCA4;
@@ -1116,7 +1116,7 @@ word16 _printf(Eq_n cx, Eq_n dx, Eq_n bx, Eq_n ds, Eq_n wArg02)
 void __fputc(struct Eq_n * ds, byte bArg02, struct Eq_n Eq_n::* wArg04)
 {
 	--(ds->*wArg04).w0000;
-	_fputc(ds, (byte) (int16) bArg02, wArg04);
+	_fputc(ds, bArg02, wArg04);
 }
 
 // 0800:0E7D: void _fputc(Register (ptr16 Eq_n) ds, Stack byte bArg02, Stack (memptr (ptr16 Eq_n) Eq_n) wArg04)
@@ -1223,7 +1223,8 @@ l0800_nDA:
 					cx = SEQ(ch_n, 0x00);
 					if (bl_n >= 0x80)
 						break;
-					bx = SEQ(bh_n, ds->*((word16) bx + 0x04F9));
+					byte bl_n = ds->*((word16) bx + 0x04F9);
+					bx = SEQ(bh_n, bl_n);
 					cx = SEQ(ch_n, 0x00);
 					if (bx > 0x17)
 						goto l0800_n;
@@ -1240,7 +1241,6 @@ l0800_nDA:
 					Eq_n dx_n;
 					Eq_n ax_n;
 					bx <<= 0x01;
-					byte bl_n = (byte) (bx << 0x01);
 					cx = SEQ(ch_n, 0x00);
 					switch (bx)
 					{
@@ -1342,13 +1342,13 @@ l0800_nE5:
 						bLoc95_n = 0x01;
 						ax_n = (word16) dx_ax_n;
 						dx_n = SLICE(dx_ax_n, word16, 16);
-						bx_n = SEQ(0x0A, bl_n);
+						bx_n = SEQ(0x0A, bl_n << 0x01);
 						goto l0800_nA2;
 					case 11:
-						bx_n = SEQ(0x08, bl_n);
+						bx_n = SEQ(0x08, bl_n << 0x01);
 						goto l0800_nA;
 					case 0x0C:
-						bx_n = SEQ(0x0A, bl_n);
+						bx_n = SEQ(0x0A, bl_n << 0x01);
 						goto l0800_nF;
 					case 0x0D:
 						bx_n = SEQ(0x10, dl_n + 233);
@@ -1940,7 +1940,7 @@ l0800_n:
 					if (wLoc24_n >= 0x00)
 					{
 						dx = SLICE(wLoc24_n *32 0x0A, word16, 16);
-						wLoc24_n = ax_n - 0x30 + SLICE(wLoc24_n *u32 0x0A, word16, 0);
+						wLoc24_n = ax_n - 0x30 + wLoc24_n *u 0x0A;
 					}
 					break;
 				case 0x06:
@@ -2461,7 +2461,7 @@ void fn0800-1B2C(struct Eq_n * ss_bp)
 			}
 			ch_n = (word16) ch_n + 0x0A;
 		}
-		dx_n = SEQ(SLICE(dx_n << 0x04, byte, 8), (word16) ch_n + (byte) (dx_n << 0x04));
+		dx_n = SEQ(SLICE(dx_n << 0x04, byte, 8), (word16) ch_n + ((byte) dx_n << 0x04));
 		cx_n = SEQ(ch_n, cl_n - 0x01);
 	}
 	if (cl_n == 0x04)

@@ -4,38 +4,9 @@
 
 #include "subject.h"
 
-<anonymous> * g_ptr1FE90 = &g_t0DA0; // 000000000001FE90
-<anonymous> * g_ptr1FE98 = &g_t0DA0; // 000000000001FE98
-<anonymous> * g_ptr1FEA0 = &g_t0DA0; // 000000000001FEA0
-<anonymous> * g_ptr1FEA8 = &g_t0DA0; // 000000000001FEA8
-<anonymous> * g_ptr1FEB0 = &g_t0DA0; // 000000000001FEB0
-<anonymous> * g_ptr1FEB8 = &g_t0DA0; // 000000000001FEB8
-<anonymous> * g_ptr1FEC0 = &g_t0DA0; // 000000000001FEC0
-<anonymous> * g_ptr1FEC8 = &g_t0DA0; // 000000000001FEC8
-<anonymous> * g_ptr1FED0 = &g_t0DA0; // 000000000001FED0
-<anonymous> * g_ptr1FED8 = &g_t0DA0; // 000000000001FED8
-<anonymous> * g_ptr1FEE0 = &g_t0DA0; // 000000000001FEE0
-<anonymous> * g_ptr1FEE8 = &g_t0DA0; // 000000000001FEE8
-<anonymous> * g_ptr1FEF0 = &g_t0DA0; // 000000000001FEF0
-<anonymous> * g_ptr1FEF8 = &g_t0DA0; // 000000000001FEF8
-<anonymous> * g_ptr1FF00 = &g_t0DA0; // 000000000001FF00
-<anonymous> * g_ptr1FF08 = &g_t0DA0; // 000000000001FF08
-<anonymous> * g_ptr1FF10 = &g_t0DA0; // 000000000001FF10
-<anonymous> * g_ptr1FF18 = &g_t0DA0; // 000000000001FF18
-<anonymous> * g_ptr1FF20 = &g_t0DA0; // 000000000001FF20
-<anonymous> * g_ptr1FF28 = &g_t0DA0; // 000000000001FF28
-<anonymous> * g_ptr1FF30 = &g_t0DA0; // 000000000001FF30
-<anonymous> * g_ptr1FF38 = &g_t0DA0; // 000000000001FF38
-<anonymous> * g_ptr1FF40 = &g_t0DA0; // 000000000001FF40
-<anonymous> * g_ptr1FF48 = &g_t0DA0; // 000000000001FF48
-<anonymous> * g_ptr1FF50 = &g_t0DA0; // 000000000001FF50
-<anonymous> * g_ptr1FF58 = &g_t0DA0; // 000000000001FF58
-<anonymous> * g_ptr1FF60 = &g_t0DA0; // 000000000001FF60
-<anonymous> * g_ptr1FF68 = &g_t0DA0; // 000000000001FF68
-<anonymous> * g_ptr1FF70 = &g_t0DA0; // 000000000001FF70
-<anonymous> * g_ptr1FF78 = &g_t0DA0; // 000000000001FF78
-<anonymous> * g_ptr1FF80 = &g_t0DA0; // 000000000001FF80
-<anonymous> * g_ptr1FF88 = &g_t0DA0; // 000000000001FF88
+void (* g_ptr1FF98)() = &g_t1738; // 000000000001FF98
 <anonymous> * g_ptr1FFA0 = null; // 000000000001FFA0
 word64 g_qw1FFD0 = 0x00; // 000000000001FFD0
-word64 g_qw1FFD8 = 130080; // 000000000001FFD8
+void ** g_ptr1FFD8 = &g_ptr1FC20; // 000000000001FFD8
+void (* g_ptr1FFE0)() = &g_t16B8; // 000000000001FFE0
+int32 (* g_ptr1FFE8)(int32 x0, char ** x1, char ** x2) = &g_t0FC0; // 000000000001FFE8

@@ -47,10 +47,10 @@ void frame_dummy()
 	register_tm_clones();
 }
 
-// 0000000000400560: void my1(Register word32 esi, Register word32 edi)
+// 0000000000400560: void my1(Register int32 esi, Register int32 edi)
 // Called from:
 //      branches
-void my1(word32 esi, word32 edi)
+void my1(int32 esi, int32 edi)
 {
 	calloc((int64) edi, (int64) esi);
 }
@@ -65,14 +65,14 @@ void my2(byte sil, byte * rdi)
 void branches(int32 esi, int32 edi)
 {
 	int32 edi = (word32) rdi;
-	if ((word32) (uint64) edi >= esi || ((word32) ((uint64) ((word32) ((uint64) edi) << 0x01)) >= (word32) ((uint64) ((word32) ((uint64) esi) << 0x01)) || ((word32) ((uint64) (edi *s 0x03)) >= (word32) ((uint64) (esi *s 0x03)) || (word32) ((uint64) ((word32) ((uint64) edi) << 0x02)) >= (word32) ((uint64) ((word32) ((uint64) esi) << 0x02)))))
+	if (edi >= esi || (edi << 0x01 >= esi << 0x01 || ((word32) ((uint64) (edi *s 0x03)) >= (word32) ((uint64) (esi *s 0x03)) || edi << 0x02 >= esi << 0x02)))
 		return;
-	uint64 rax_n = (uint64) (word32) (uint64) esi;
+	uint64 rax_n = (uint64) esi;
 	int32 eax_n = (int32) ((int64) (word32) rax_n /32 0x02);
 	void * rax_n = SEQ(SLICE(rax_n, word32, 32), eax_n);
-	if ((word32) (uint64) (int32) ((int64) (word32) (uint64) (word32) (uint64) edi /32 0x02) >= eax_n)
+	if ((word32) (uint64) (int32) ((int64) edi /32 0x02) >= eax_n)
 		return;
-	my1((word32) (uint64) esi, (word32) (uint64) edi);
+	my1(esi, edi);
 	free(rax_n);
 }
 
@@ -104,7 +104,6 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 {
 	word32 edi = (word32) rdi;
 	_init();
-	word32 r15d_n = (word32) (uint64) edi;
 	int64 rbp_n = 0x00600E18 - 0x00600E10;
 	if (rbp_n >> 0x03 != 0x00)
 	{

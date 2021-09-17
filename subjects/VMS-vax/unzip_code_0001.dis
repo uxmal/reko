@@ -2720,7 +2720,7 @@ l00013817:
 	call r2_1879 + 2<i32> (retsize: 4;)
 		uses: ap:ap_1857,fp:fp_1863,r10:r10_1866,r2:r2_1879,r4:r4_1864,r5:r5_1859,r6:r6_1860,r8:r8_1867,r9:r9_1865
 		defs: ap:ap_1884,fp:fp_1890,r10:r10_1893,r3:r3_1889,r4:r4_1891,r5:r5_1886,r6:r6_1887,r8:r8_1894,sp:sp_1883
-	Mem1901[sp_1883 + 14<i32>:word16] = SLICE(CONVERT(Mem1878[r5_1886 + 0xC67C<32>:word16], word16, uint32), word16, 0) & ~0<16>
+	Mem1901[sp_1883 + 14<i32>:word16] = Mem1878[r5_1886 + 0xC67C<32>:word16] & ~0<16>
 	word32 r9_1902 = CONVERT(Mem1901[sp_1883 + 2<i32>:word16], word16, uint32)
 	branch r9_1902 == 2<32> l00013854
 l00013854:
@@ -4315,7 +4315,7 @@ l00015106:
 	word32 r9_158 = SEQ(SLICE(r9, word16, 16), SLICE(r1_7, word16, 0) & ~0xFFE0<16>)
 	word32 r8_120 = SEQ(SLICE(r8, word16, 16), CONVERT(r2_27 >> 11<i8> & ~0xFFFFFFE0<32>, word32, int16))
 	word32 r7_116 = SEQ(SLICE(r7, word16, 16), CONVERT(r2_27 >> 5<i8> & ~0xFFFFFFC0<32>, word32, int16))
-	word32 r6_187 = SEQ(SLICE(r6, word16, 16), SLICE((r2_27 & ~0xFFFFFFE0<32>) * 2<32>, word16, 0))
+	word32 r6_187 = SEQ(SLICE(r6, word16, 16), SLICE(r2_27 & ~0xFFFFFFE0<32>, word16, 0) * 2<16>)
 	word32 r2_46 = CONVERT(v16_18, int16, uint32)
 	branch r2_46 == 0<32> l00015189
 l00015184:

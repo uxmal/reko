@@ -40,7 +40,7 @@ l00100068:
 	// succ:  l00100073
 l00100073:
 	word32 edx_23 = SLICE(esi_19 *u64 0xCCCCCCCD<32>, word32, 32)
-	Mem33[ecx_32 + 0<32>:byte] = SLICE(esi_19 - ((edx_23 >>u 3<32>) + (edx_23 >>u 3<32>) * 4<32>) * 2<32>, byte, 0) + 0x30<8>
+	Mem33[ecx_32 + 0<32>:byte] = SLICE(esi_19, byte, 0) - (SLICE(edx_23 >>u 3<32>, byte, 0) + SLICE(edx_23 >>u 3<32>, byte, 0) * 4<8>) * 2<8> + 0x30<8>
 	ecx_32 = ecx_32 + 1<32>
 	esi_19 = edx_23 >>u 3<32>
 	branch ecx_32 <u edi_10 l00100073
@@ -247,79 +247,87 @@ T_48: (in SLICE(esi_19 *u64 0xCCCCCCCD<32>, word32, 32) : word32)
   Class: Eq_45
   DataType: word32
   OrigDataType: word32
-T_49: (in 3<32> : word32)
+T_49: (in SLICE(esi_19, byte, 0) : byte)
   Class: Eq_49
+  DataType: byte
+  OrigDataType: byte
+T_50: (in 3<32> : word32)
+  Class: Eq_50
   DataType: word32
   OrigDataType: word32
-T_50: (in edx_23 >>u 3<32> : word32)
-  Class: Eq_50
-  DataType: uint32
-  OrigDataType: uint32
 T_51: (in edx_23 >>u 3<32> : word32)
   Class: Eq_51
   DataType: uint32
   OrigDataType: uint32
-T_52: (in 4<32> : word32)
+T_52: (in SLICE(edx_23 >>u 3<32>, byte, 0) : byte)
   Class: Eq_52
-  DataType: ui32
-  OrigDataType: ui32
-T_53: (in (edx_23 >>u 3<32>) * 4<32> : word32)
+  DataType: bui8
+  OrigDataType: bui8
+T_53: (in edx_23 >>u 3<32> : word32)
   Class: Eq_53
-  DataType: ui32
-  OrigDataType: ui32
-T_54: (in (edx_23 >>u 3<32>) + (edx_23 >>u 3<32>) * 4<32> : word32)
+  DataType: uint32
+  OrigDataType: uint32
+T_54: (in SLICE(edx_23 >>u 3<32>, byte, 0) : byte)
   Class: Eq_54
-  DataType: uint32
-  OrigDataType: uint32
-T_55: (in 2<32> : word32)
+  DataType: bui8
+  OrigDataType: bui8
+T_55: (in 4<8> : byte)
   Class: Eq_55
-  DataType: ui32
-  OrigDataType: ui32
-T_56: (in ((edx_23 >>u 3<32>) + (edx_23 >>u 3<32>) * 4<32>) * 2<32> : word32)
+  DataType: bui8
+  OrigDataType: bui8
+T_56: (in SLICE(edx_23 >>u 3<32>, byte, 0) * 4<8> : byte)
   Class: Eq_56
-  DataType: uint32
-  OrigDataType: uint32
-T_57: (in esi_19 - ((edx_23 >>u 3<32>) + (edx_23 >>u 3<32>) * 4<32>) * 2<32> : word32)
+  DataType: ui8
+  OrigDataType: ui8
+T_57: (in SLICE(edx_23 >>u 3<32>, byte, 0) + SLICE(edx_23 >>u 3<32>, byte, 0) * 4<8> : byte)
   Class: Eq_57
-  DataType: uint32
-  OrigDataType: uint32
-T_58: (in SLICE(esi_19 - ((edx_23 >>u 3<32>) + (edx_23 >>u 3<32>) * 4<32>) * 2<32>, byte, 0) : byte)
+  DataType: bui8
+  OrigDataType: bui8
+T_58: (in 2<8> : byte)
   Class: Eq_58
-  DataType: byte
-  OrigDataType: byte
-T_59: (in 0x30<8> : byte)
+  DataType: bui8
+  OrigDataType: bui8
+T_59: (in (SLICE(edx_23 >>u 3<32>, byte, 0) + SLICE(edx_23 >>u 3<32>, byte, 0) * 4<8>) * 2<8> : byte)
   Class: Eq_59
-  DataType: byte
-  OrigDataType: byte
-T_60: (in SLICE(esi_19 - ((edx_23 >>u 3<32>) + (edx_23 >>u 3<32>) * 4<32>) * 2<32>, byte, 0) + 0x30<8> : byte)
+  DataType: ui8
+  OrigDataType: ui8
+T_60: (in SLICE(esi_19, byte, 0) - (SLICE(edx_23 >>u 3<32>, byte, 0) + SLICE(edx_23 >>u 3<32>, byte, 0) * 4<8>) * 2<8> : byte)
   Class: Eq_60
   DataType: byte
   OrigDataType: byte
-T_61: (in 0<32> : word32)
+T_61: (in 0x30<8> : byte)
   Class: Eq_61
+  DataType: byte
+  OrigDataType: byte
+T_62: (in SLICE(esi_19, byte, 0) - (SLICE(edx_23 >>u 3<32>, byte, 0) + SLICE(edx_23 >>u 3<32>, byte, 0) * 4<8>) * 2<8> + 0x30<8> : byte)
+  Class: Eq_62
+  DataType: byte
+  OrigDataType: byte
+T_63: (in 0<32> : word32)
+  Class: Eq_63
   DataType: word32
   OrigDataType: word32
-T_62: (in ecx_32 + 0<32> : word32)
-  Class: Eq_62
+T_64: (in ecx_32 + 0<32> : word32)
+  Class: Eq_64
   DataType: (ptr32 byte)
   OrigDataType: (ptr32 byte)
-T_63: (in Mem33[ecx_32 + 0<32>:byte] : byte)
-  Class: Eq_60
+T_65: (in Mem33[ecx_32 + 0<32>:byte] : byte)
+  Class: Eq_62
   DataType: byte
   OrigDataType: byte
-T_64: (in 1<32> : word32)
-  Class: Eq_64
+T_66: (in 1<32> : word32)
+  Class: Eq_66
   DataType: int32
   OrigDataType: int32
-T_65: (in ecx_32 + 1<32> : word32)
+T_67: (in ecx_32 + 1<32> : word32)
   Class: Eq_5
   DataType: ptr32
   OrigDataType: ptr32
-T_66: (in edx_23 >>u 3<32> : word32)
+T_68: (in edx_23 >>u 3<32> : word32)
   Class: Eq_4
   DataType: uint32
   OrigDataType: uint32
-T_67: (in ecx_32 <u edi_10 : bool)
-  Class: Eq_67
+T_69: (in ecx_32 <u edi_10 : bool)
+  Class: Eq_69
   DataType: bool
   OrigDataType: bool

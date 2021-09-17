@@ -206,7 +206,7 @@ l0000000000000949:
 l0000000000000998:
 	branch qwLoc18_211 <u 0x400<64> l0000000000000953
 l0000000000000953:
-	word32 eax_102 = SLICE(qwLoc18_211 + 1<64>, word32, 0)
+	word32 eax_102 = SLICE(qwLoc18_211, word32, 0) + 1<32>
 	word64 rcx_96 = qwLoc18_211 * 8<64> + rax_29
 	branch qwLoc18_211 < 1<64> l000000000000097A
 l000000000000097A:
@@ -252,14 +252,13 @@ __libc_csu_init_entry:
 	word32 edi = SLICE(rdi, word32, 0)
 l0000000000000A70:
 	_init()
-	word32 r15d_87 = SLICE(CONVERT(edi, word32, uint64), word32, 0)
 	word64 rbp_31 = 0x0000000000200DF0<p64> - 0x0000000000200DE8<p64>
 	branch rbp_31 >> 3<64> == 0<64> l0000000000000AC6
 l0000000000000AA6:
 	word64 rbx_44 = 0<u64>
 l0000000000000AB0:
 	call Mem26[0x0000000000200DE8<p64> + rbx_44 * 8<64>:word64] (retsize: 8;)
-		uses: rdi:CONVERT(r15d_87, word32, uint64),rdx:rdx,rsi:rsi
+		uses: rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
 	rbx_44 = rbx_44 + 1<64>
 	branch rbp_31 >> 3<64> != rbx_44 l0000000000000AB0
 l0000000000000AC6:

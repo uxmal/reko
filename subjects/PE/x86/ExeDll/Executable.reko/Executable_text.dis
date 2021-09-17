@@ -77,7 +77,7 @@ l004012CE:
 l0040115F:
 	word32 ebp_19 = fn00401980(ebx, esi, edi, dwLoc0C, 0x14<32>)
 	word32 esp_35 = fp - 8<i32>
-	branch SLICE(CONVERT(fn00401474(edx, 1<32>), uint8, uint32), byte, 0) != 0<8> l0040117E
+	branch fn00401474(edx, 1<32>) != 0<8> l0040117E
 l00401177:
 	esp_35 = esp_35 - 4<i32>
 	Mem42[esp_35:word32] = 7<32>
@@ -86,7 +86,7 @@ l0040117E:
 	Mem53[ebp_19 - 0x19<32>:byte] = 0<8>
 	Mem55[ebp_19 - 4<32>:word32] = 0<32>
 	word32 edx_137
-	Mem68[ebp_19 - 0x24<32>:byte] = SLICE(CONVERT(fn0040143F(out edx_137), uint8, uint32), byte, 0)
+	Mem68[ebp_19 - 0x24<32>:byte] = fn0040143F(out edx_137)
 	word32 ebp_132 = ebp_19
 	word32 eax_69 = Mem68[0x00403334<p32>:word32]
 	word32 ebx_125 = SEQ(ebx_24_8_127, 0<8>)
@@ -122,7 +122,7 @@ l00401203:
 	Mem123[esp_107:word32] = eax_117
 	esp_116 = esp_107 + 4<i32>
 	word32 esi_136
-	branch SLICE(CONVERT(fn00401544(ebx_125, eax_117, 0<32>, out edx_137, out ebx_125, out ebp_132, out esi_136, out edi_119), uint8, uint32), byte, 0) == 0<8> l0040121D
+	branch fn00401544(ebx_125, eax_117, 0<32>, out edx_137, out ebx_125, out ebp_132, out esi_136, out edi_119) == 0<8> l0040121D
 l0040120E:
 	Mem149[esp_107:word32] = edi_119
 	Mem151[esp_107 - 4<i32>:word32] = 2<32>
@@ -140,7 +140,7 @@ l00401228:
 	Mem173[esp_172:word32] = eax_165
 	word32 esi_181
 	word32 edi_345
-	branch SLICE(CONVERT(fn00401544(ebx_125, eax_165, edi_119, out edx_137, out ebx_125, out ebp_132, out esi_181, out edi_345), uint8, uint32), byte, 0) == 0<8> l0040123B
+	branch fn00401544(ebx_125, eax_165, edi_119, out edx_137, out ebx_125, out ebp_132, out esi_181, out edi_345) == 0<8> l0040123B
 l00401233:
 	Mem195[esp_172:word32] = Mem173[esi_181:word32]
 	call register_thread_local_exe_atexit_callback (retsize: 4;)
@@ -169,7 +169,7 @@ l0040123B:
 	word32 eax_242 = fn00401000()
 	byte bl_261 = SLICE(ebx_125, byte, 0)
 	word32 esp_248 = esp_228
-	branch SLICE(CONVERT(fn0040188F(), uint8, uint32), byte, 0) != 0<8> l0040126C
+	branch fn0040188F() != 0<8> l0040126C
 l0040126C:
 	branch bl_261 != 0<8> l00401275
 l00401270:
@@ -339,7 +339,7 @@ l004014C0:
 l004014C9:
 	branch dwArg04 != 0<32> l004014F3
 l004014F3:
-	word32 eax_76 = __ror(0xFFFFFFFF<32>, SLICE(0x20<32> - (Mem11[0x00403004<p32>:word32] & 0x1F<32>), byte, 0)) ^ Mem68[0x00403004<p32>:word32]
+	word32 eax_76 = __ror(0xFFFFFFFF<32>, 0x20<8> - (Mem11[0x00403004<p32>:byte] & 0x1F<8>)) ^ Mem68[0x00403004<p32>:word32]
 	Mem83[0x0040333C<p32>:word32] = eax_76
 	Mem87[0x00403340<p32>:word32] = eax_76
 	Mem91[0x00403344<p32>:word32] = eax_76
@@ -473,7 +473,7 @@ fn00401613_entry:
 l00401613:
 	word32 eax_23
 	word32 eax_8 = Mem6[0x00403004<p32>:word32]
-	branch __ror(eax_8 ^ Mem6[0x0040333C<p32>:word32], SLICE(eax_8 & 0x1F<32>, byte, 0)) != 0xFFFFFFFF<32> l00401637
+	branch __ror(eax_8 ^ Mem6[0x0040333C<p32>:word32], SLICE(eax_8, byte, 0) & 0x1F<8>) != 0xFFFFFFFF<32> l00401637
 l00401637:
 	call register_onexit_function (retsize: 4;)
 		uses: Stack +0004:0x40333C<32>,Stack +0014:dwArg04

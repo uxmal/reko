@@ -285,7 +285,7 @@ union Eq_n * fn00400E04(union Eq_n * r2, Eq_n r3, Eq_n r4, Eq_n r5, ptr32 r25, p
 		Eq_n r6_n = *r4;
 		word32 r7_n = (word32) *r6_n;
 		*r4 = (word64) r6_n + 1;
-		r11_n = (int32) (int16) ((int32) (int8) r7_n & 0xFF);
+		r11_n = (int32) ((int16) (int32) (int8) r7_n & 0x00FF);
 	}
 	else
 	{
@@ -736,7 +736,7 @@ void fn004014A4(struct Eq_n * r2, ptr32 r3, word16 * r4, int32 r5)
 					*r2->ptr007C = 0x2A;
 					return;
 				}
-				r3 + r3_n = (byte *) (byte) (int32) (int8) (r11_n & 0xFF);
+				r3 + r3_n = (byte *) (byte) (int32) (int8) r11_n;
 				++r4;
 				if ((word32) *r4 == 0x00)
 					return;
@@ -762,7 +762,7 @@ void fn00401554(struct Eq_n * r2, byte * r3, ui32 r4)
 	if (r3 == null)
 		return;
 	if ((r4 & 0xFFFF) <= 0xFF)
-		*r3 = (byte) (int32) (int8) (r4 & 0xFFFF & 0xFF);
+		*r3 = (byte) (int32) (int8) r4;
 	else
 		*r2->ptr007C = 0x2A;
 }

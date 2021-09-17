@@ -2253,7 +2253,7 @@ l000134E9:
 					word32 r10_n;
 					word32 r8_n;
 					(r2_n + 2)();
-					sp_n->w000E = (word16) (uint32) r5_n->wC67C & ~0x00;
+					sp_n->w000E = r5_n->wC67C & ~0x00;
 					uint32 r9_n = (uint32) sp_n->w0002;
 					if (r9_n == 0x02)
 					{
@@ -3633,7 +3633,7 @@ struct Eq_n * fn00015106(word32 r3, struct Eq_n * r4, word32 r6, word32 r7, word
 	uipr32 r9_n = SEQ(SLICE(r9, word16, 16), (word16) r1_n & ~~0x1F);
 	uipr32 r8_n = SEQ(SLICE(r8, word16, 16), (int16) (r2_n >> 11 & ~~0x1F));
 	uipr32 r7_n = SEQ(SLICE(r7, word16, 16), (int16) (r2_n >> 5 & ~~0x3F));
-	uipr32 r6_n = SEQ(SLICE(r6, word16, 16), (word16) ((r2_n & ~~0x1F) * 0x02));
+	uipr32 r6_n = SEQ(SLICE(r6, word16, 16), (word16) (r2_n & ~~0x1F) * 0x02);
 	uint32 r2_n = (uint32) v16_n;
 	if (r2_n != 0x00 && r2_n <= 0x0C)
 		r5_n = r3 + 0x00001555 + (r2_n - 0x01 << 2);

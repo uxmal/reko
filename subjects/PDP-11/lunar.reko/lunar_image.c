@@ -748,11 +748,11 @@ void fn0C76()
 //      fn0E06
 void fn0C90(int16 wArg02, Eq_n bArg04)
 {
-	byte bArg04_n = (byte) wArg04;
+	ui8 bArg04_n = (byte) wArg04;
 	if (wArg02 >> 1 < 0x00)
 	{
 		(wArg02 >> 1)->b3013 = (wArg02 >> 1)->b3013 & ~0xF0;
-		bArg04_n = (byte) (wArg04 << 4);
+		bArg04_n = (byte) wArg04 << 0x04;
 	}
 	else
 		(wArg02 >> 1)->b3013 = (wArg02 >> 1)->b3013 & ~0x0F;

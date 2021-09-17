@@ -117,15 +117,12 @@ union Eq_n g_uFFFF812B = // 812B
 					{
 						0x00
 					};
-Eq_n g_t812D = // 812D
-					{
-						0x00
-					};
+word16 g_w812D = 0x00; // 812D
 real48 g_rFFFF812F = ;
 real48 g_r8132 = ;
 real48 g_rFFFF8135 = ;
-word32 g_dw8138 = 0x00; // 8138
-word32 g_dw813A = 0x00; // 813A
+word16 g_w8138 = 0x00; // 8138
+word16 g_w813A = 0x00; // 813A
 struct Eq_n g_tFFFF813C = // 813C
 					{
 						

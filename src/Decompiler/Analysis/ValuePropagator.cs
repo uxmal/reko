@@ -40,7 +40,7 @@ namespace Reko.Analysis
     /// later transforms. Calling it will flush out lots of dead expressions
     /// that can be removed with DeadCode.Eliminate()
     /// </remarks>
-    public class ValuePropagator : InstructionVisitor<Instruction>
+    public class ValuePropagator : InstructionVisitor<(Instruction, bool)>
     {
         private static readonly TraceSwitch trace = new TraceSwitch("ValuePropagation", "Traces value propagation");
 
@@ -69,55 +69,58 @@ namespace Reko.Analysis
             this.eval = new ExpressionSimplifier(segmentMap, evalCtx, eventListener);
         }
 
-        public bool Changed { get { return eval.Changed; } set { eval.Changed = value; } }
 
         public void Transform()
         {
+            bool changed;
             do
             {
                 //$PERFORMANCE: consider changing this to a work list, where 
                 // every time we process the 
-                Changed = false;
+                changed = false;
                 foreach (Statement stm in ssa.Procedure.Statements.ToArray())
                 {
                     if (eventListener.IsCanceled())
                         return;
                     this.stmCur = stm;
-                    Transform(stm);
+                    changed |= Transform(stm);
                 }
-            } while (Changed);
+            } while (changed);
         }
 
-        public void Transform(Statement stm)
+        public bool Transform(Statement stm)
         {
-            if (stm.LinearAddress == 0x151C)
-                stm.ToString(); //$DEBUG
+            bool changed;
             evalCtx.Statement = stm;
             trace.Verbose("From: {0}", stm.Instruction.ToString());
-            stm.Instruction = stm.Instruction.Accept(this);
+            (stm.Instruction, changed) = stm.Instruction.Accept(this);
             trace.Verbose("  To: {0}", stm.Instruction.ToString());
+            return changed;
         }
 
         #region InstructionVisitor<Instruction> Members
 
-        public Instruction VisitAssignment(Assignment a)
+        public (Instruction, bool) VisitAssignment(Assignment a)
         {
-            a.Src = a.Src.Accept(eval);
+            bool changed;
+            (a.Src, changed) = a.Src.Accept(eval);
             ssa.Identifiers[a.Dst].DefExpression = a.Src;
-            return a;
+            return (a, changed);
         }
 
-        public Instruction VisitBranch(Branch b)
+        public (Instruction, bool) VisitBranch(Branch b)
         {
-            b.Condition = b.Condition.Accept(eval);
-            return b;
+            bool changed;
+            (b.Condition, changed) = b.Condition.Accept(eval);
+            return (b, changed);
         }
 
-        public Instruction VisitCallInstruction(CallInstruction ci)
+        public (Instruction, bool) VisitCallInstruction(CallInstruction ci)
         {
             var stmCur = this.stmCur!;
             var oldCallee = ci.Callee;
-            ci.Callee = ci.Callee.Accept(eval);
+            bool changed;
+            (ci.Callee, changed) = ci.Callee.Accept(eval);
             if (ci.Callee is ProcedureConstant pc)
             {
                 if (pc.Procedure.Signature.ParametersValid)
@@ -125,7 +128,7 @@ namespace Reko.Analysis
                     var sig = pc.Procedure.Signature;
                     var chr = pc.Procedure.Characteristics;
                     RewriteCall(stmCur, ci, sig, chr);
-                    return stmCur.Instruction;
+                    return (stmCur.Instruction, true);
                 }
                 if (oldCallee != pc && pc.Procedure is Procedure procCallee)
                 {
@@ -137,80 +140,87 @@ namespace Reko.Analysis
             }
             foreach (var use in ci.Uses)
             {
-                use.Expression = use.Expression.Accept(eval);
+                var (e, c) = use.Expression.Accept(eval);
+                use.Expression = e;
+                changed |= c;
             }
             foreach (var def in ci.Definitions
                 .Where(d => !( d.Expression is Identifier)))
             {
-                def.Expression = def.Expression.Accept(eval);
+                var (e, c) = def.Expression.Accept(eval);
+                def.Expression = e;
+                changed |= c;
             }
-            return ci;
+            return (ci, changed);
         }
 
-        public Instruction VisitComment(CodeComment comment)
+        public (Instruction, bool) VisitComment(CodeComment comment)
         {
-            return comment;
+            return (comment, false);
         }
 
-        public Instruction VisitDeclaration(Declaration decl)
+        public (Instruction, bool) VisitDeclaration(Declaration decl)
         {
+            bool changed = false;
             if (decl.Expression != null)
-                decl.Expression = decl.Expression.Accept(eval);
-            return decl;
+                (decl.Expression, changed) = decl.Expression.Accept(eval);
+            return (decl, changed);
         }
 
-        public Instruction VisitDefInstruction(DefInstruction def)
+        public (Instruction, bool) VisitDefInstruction(DefInstruction def)
         {
-            return def;
+            return (def, false);
         }
 
-        public Instruction VisitGotoInstruction(GotoInstruction gotoInstruction)
+        public (Instruction, bool) VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
-            return gotoInstruction;
+            return (gotoInstruction, false);
         }
 
-        public Instruction VisitPhiAssignment(PhiAssignment phi)
+        public (Instruction, bool) VisitPhiAssignment(PhiAssignment phi)
         {
-            var src = phi.Src.Accept(eval);
+            var (src, changed) = phi.Src.Accept(eval);
             if (src is PhiFunction f)
-                return new PhiAssignment(phi.Dst, f);
+                return (new PhiAssignment(phi.Dst, f), changed);
             else
-                return new Assignment(phi.Dst, src);
+                return (new Assignment(phi.Dst, src), changed);
         }
 
-        public Instruction VisitReturnInstruction(ReturnInstruction ret)
+        public (Instruction, bool) VisitReturnInstruction(ReturnInstruction ret)
         {
+            bool changed = false;
             if (ret.Expression != null)
-                ret.Expression = ret.Expression.Accept(eval);
-            return ret;
+                (ret.Expression, changed) = ret.Expression.Accept(eval);
+            return (ret, changed);
         }
 
-        public Instruction VisitSideEffect(SideEffect side)
+        public (Instruction, bool) VisitSideEffect(SideEffect side)
         {
-            var exp = side.Expression.Accept(eval);
-            return new SideEffect(exp);
+            var (exp, changed) = side.Expression.Accept(eval);
+            return (new SideEffect(exp), changed);
         }
 
-        public Instruction VisitStore(Store store)
+        public (Instruction, bool) VisitStore(Store store)
         {
-            store.Src = store.Src.Accept(eval);
-            var idDst = store.Dst as Identifier;
-            if (idDst == null || (!(idDst.Storage is OutArgumentStorage)))
+            bool srcChanged;
+            bool dstChanged = false;
+            (store.Src, srcChanged) = store.Src.Accept(eval);
+            if (store.Dst is not Identifier idDst || (!(idDst.Storage is OutArgumentStorage)))
             {
-                store.Dst = store.Dst.Accept(eval);
+                (store.Dst, dstChanged) = store.Dst.Accept(eval);
             }
-            return store;
+            return (store, srcChanged|dstChanged);
         }
 
-        public Instruction VisitSwitchInstruction(SwitchInstruction si)
+        public (Instruction, bool) VisitSwitchInstruction(SwitchInstruction si)
         {
-            var exp = si.Expression.Accept(eval);
-            return new SwitchInstruction(exp, si.Targets);
+            var (exp, changed) = si.Expression.Accept(eval);
+            return (new SwitchInstruction(exp, si.Targets), changed);
         }
 
-        public Instruction VisitUseInstruction(UseInstruction u)
+        public (Instruction, bool) VisitUseInstruction(UseInstruction u)
         {
-            return u;
+            return (u, false);
         }
 
         #endregion

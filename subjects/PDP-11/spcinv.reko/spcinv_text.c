@@ -280,10 +280,10 @@ byte * fn04A0(byte * r4, struct Eq_n * pc, union Eq_n & r5Out)
 				struct Eq_n * sp_n = fp - 0x02;
 				r4 = r4_n + 1;
 				Eq_n r0_n = r0_n - 0x01;
-				if ((g_t0F02 > 0x00 || r0_n - 0x01 < 0x04) && r0_n - 0x01 != 0x02)
+				if ((g_t0F02 > 0x00 || r0_n < 0x05) && r0_n != 0x03)
 				{
 					*((word32) r5_n + 0x0EF3) = r0_n - 0x01;
-					if (r0_n - 0x01 <= 22)
+					if (r0_n <= 0x17 && r0_n >= 0x01)
 					{
 						sp_n = (struct Eq_n *) <invalid>;
 						if (!fn067C(r0_n - 0x01, r3_n, r4_n + 1, r5_n, out r0_n, out r4, out r5_n))
@@ -319,7 +319,7 @@ l0524:
 														if (*r0_n - *((word32) r5_n + 0x0EF0) < 0x00)
 															break;
 														Eq_n r1_n = *r0_n;
-														r0_n->u0 = *r0_n | 0x8000;
+														*r0_n |= 0x8000;
 														Eq_n r0_n = r0_n - r2_n[0x06D6];
 														g_t0F0A = r0_n;
 														--*((word32) r0_n + 0x0DC4);

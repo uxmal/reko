@@ -4321,7 +4321,7 @@ l00009D0C:
 l00009D10:
 	word32 r3_111 = r3 * 0x18<32> + 0x12E90<32>
 	Mem115[r1_108 + 3<i32>:byte] = Mem113[r3_111 + 3<i32>:byte]
-	Mem121[r1_108 + 2<i32>:byte] = SLICE(Mem115[r3_111 + 20<i32>:word32] & CONVERT(Mem115[r1_108 + 2<i32>:byte], byte, word32), byte, 0)
+	Mem121[r1_108 + 2<i32>:byte] = Mem115[r3_111 + 0x14<32>:byte] & Mem115[r1_108 + 2<i32>:byte]
 	word32 r14_109 = r1_108 + -3<i32>
 	word32 r24_261
 	word32 r22_259
@@ -4579,7 +4579,7 @@ l0000A088:
 	branch (r11_105 & 1<32>) == 0<32> l0000A0CC_ds_t
 l0000A0CC_ds_t:
 l0000A0DC:
-	Mem110[r2_84 + -2<i32>:byte] = SLICE(r11_105 & 1<32>, byte, 0)
+	Mem110[r2_84 + -2<i32>:byte] = SLICE(r11_105, byte, 0) & 1<8>
 l0000A0CC_ds_f:
 l0000A0D0:
 	Mem115[r2_84 + -2<i32>:byte] = 0xFF<8>
@@ -7051,7 +7051,7 @@ l0000D580:
 l0000D594_ds_t:
 l0000D594_ds_f:
 l0000D598:
-	Mem120[r2_150:byte] = SLICE((CONVERT(Mem115[r28_101 + r14_148:byte], byte, word32) ^ 0xFF<32>) & CONVERT(Mem115[r2_150:byte], byte, word32), byte, 0)
+	Mem120[r2_150:byte] = ~Mem115[r28_101 + r14_148:byte] & Mem115[r2_150:byte]
 l0000D5B4:
 	word32 r22_130
 	word32 r24_131
@@ -8464,7 +8464,7 @@ l0000EEC0:
 	word32 r11_355
 	word32 r15_360
 	fn0000FEDC(r18_346, r2_347, r15_334, out r11_355, out r15_360)
-	Mem370[r14_330:byte] = SLICE(r11_355 + -48<i32>, byte, 0)
+	Mem370[r14_330:byte] = SLICE(r11_355, byte, 0) + 0xD0<8>
 	word32 r11_374
 	word32 r15_376
 	fn0001003C(r18_346, r2_347, r15_360, out r11_374, out r15_376)
@@ -8484,7 +8484,7 @@ l0000EF00:
 	word32 r15_435
 	fn0000FEDC(r11_412, -100<i32>, r15_414, out r11_430, out r15_435)
 	word32 r1_429 = <invalid>
-	Mem444[r1_429 + 22<i32>:byte] = SLICE(r11_430 + -48<i32>, byte, 0)
+	Mem444[r1_429 + 22<i32>:byte] = SLICE(r11_430, byte, 0) + 0xD0<8>
 	word32 r11_447
 	word32 r15_449
 	fn0001003C(r11_412, -100<i32>, r15_435, out r11_447, out r15_449)
@@ -8492,7 +8492,7 @@ l0000EF00:
 	word32 r15_621
 	fn0000FEDC(r11_447, -10<i32>, r15_449, out r11_464, out r15_621)
 	word32 r1_463 = <invalid>
-	Mem479[r1_463 + 23<i32>:byte] = SLICE(r11_464 + -48<i32>, byte, 0)
+	Mem479[r1_463 + 23<i32>:byte] = SLICE(r11_464, byte, 0) + 0xD0<8>
 	fn0000D8D8(r1_463 + -16<i32>)
 
 

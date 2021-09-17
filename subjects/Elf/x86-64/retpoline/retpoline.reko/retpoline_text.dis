@@ -134,21 +134,21 @@ void branches(word32 esi, word32 edi)
 branches_entry:
 	word32 edi = SLICE(rdi, word32, 0)
 l00000000004005B0:
-	branch SLICE(CONVERT(edi, word32, uint64), word32, 0) >= esi l000000000040064F
+	branch edi >= esi l000000000040064F
 l00000000004005CA:
-	branch SLICE(CONVERT(SLICE(CONVERT(edi, word32, uint64), word32, 0) << 1<32>, word32, uint64), word32, 0) >= SLICE(CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0) << 1<32>, word32, uint64), word32, 0) l000000000040064F
+	branch edi << 1<32> >= esi << 1<32> l000000000040064F
 l00000000004005DE:
 	branch SLICE(CONVERT(edi *s 3<32>, int32, uint64), word32, 0) >= SLICE(CONVERT(esi *s 3<32>, int32, uint64), word32, 0) l000000000040064F
 l00000000004005EE:
-	branch SLICE(CONVERT(SLICE(CONVERT(edi, word32, uint64), word32, 0) << 2<32>, word32, uint64), word32, 0) >= SLICE(CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0) << 2<32>, word32, uint64), word32, 0) l000000000040064F
+	branch edi << 2<32> >= esi << 2<32> l000000000040064F
 l0000000000400602:
-	word64 rax_77 = CONVERT(SLICE(CONVERT(esi, word32, uint64), word32, 0), word32, uint64)
+	word64 rax_77 = CONVERT(esi, word32, uint64)
 	word32 eax_84 = CONVERT(CONVERT(SLICE(rax_77, word32, 0), word32, int64) /32 2<32>, word32, int32)
 	word64 rax_105 = SEQ(SLICE(rax_77, word32, 32), eax_84)
-	branch SLICE(CONVERT(CONVERT(CONVERT(SLICE(CONVERT(SLICE(CONVERT(edi, word32, uint64), word32, 0), word32, uint64), word32, 0), word32, int64) /32 2<32>, word32, int32), int32, uint64), word32, 0) >= eax_84 l000000000040064F
+	branch SLICE(CONVERT(CONVERT(CONVERT(edi, word32, int64) /32 2<32>, word32, int32), int32, uint64), word32, 0) >= eax_84 l000000000040064F
 l000000000040064F:
 l000000000040062B:
-	my1(SLICE(CONVERT(esi, word32, uint64), word32, 0), SLICE(CONVERT(edi, word32, uint64), word32, 0))
+	my1(esi, edi)
 	free(rax_105)
 l0000000000400656:
 	return
@@ -213,14 +213,13 @@ __libc_csu_init_entry:
 	word32 edi = SLICE(rdi, word32, 0)
 l0000000000400710:
 	_init()
-	word32 r15d_87 = SLICE(CONVERT(edi, word32, uint64), word32, 0)
 	word64 rbp_31 = 0x0000000000600E18<p64> - 0x0000000000600E10<p64>
 	branch rbp_31 >> 3<64> == 0<64> l0000000000400766
 l0000000000400746:
 	word64 rbx_44 = 0<u64>
 l0000000000400750:
 	call Mem26[0x0000000000600E10<p64> + rbx_44 * 8<64>:word64] (retsize: 8;)
-		uses: rdi:CONVERT(r15d_87, word32, uint64),rdx:rdx,rsi:rsi
+		uses: rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
 	rbx_44 = rbx_44 + 1<64>
 	branch rbp_31 >> 3<64> != rbx_44 l0000000000400750
 l0000000000400766:

@@ -40,12 +40,14 @@ namespace Reko.Evaluation
             if (slice.Expression is Conversion conv)
             {
                 // Zero extension?
-                if (conv.SourceDataType.IsWord && conv.DataType.IsWord)
+                if (conv.SourceDataType.IsWord || conv.DataType.IsWord)
                 {
                     // Is extension useless?
                     if (slice.DataType.BitSize <= conv.SourceDataType.BitSize)
                     {
-                        this.result = new Slice(slice.DataType, conv.Expression, 0);
+                        this.result = slice.DataType.BitSize == conv.SourceDataType.BitSize
+                            ? conv.Expression
+                            : new Slice(slice.DataType, conv.Expression, 0);
                         return true;
                     } 
                 }

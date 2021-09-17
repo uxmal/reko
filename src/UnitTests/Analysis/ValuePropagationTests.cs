@@ -298,7 +298,7 @@ namespace Reko.UnitTests.Analysis
 				Constant.Word32(0));
 			Assert.AreEqual("foo - 1<32> == 0<32>", expr.ToString());
 
-			Expression simpler = vp.VisitBinaryExpression(expr);
+			var (simpler, _) = vp.VisitBinaryExpression(expr);
 			Assert.AreEqual("foo == 1<32>", simpler.ToString());
 		}
 
@@ -317,7 +317,7 @@ namespace Reko.UnitTests.Analysis
 
             var sub = new BinaryExpression(Operator.ISub, PrimitiveType.Word32, new MemoryAccess(MemoryIdentifier.GlobalMemory, r, PrimitiveType.Word32), Constant.Word32(0));
             var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, dynamicLinker.Object), listener);
-			var exp = sub.Accept(vp);
+			var exp = sub.Accept(vp).Item1;
 			Assert.AreEqual("Mem0[r:word32]", exp.ToString());
 		}
 
@@ -378,7 +378,7 @@ namespace Reko.UnitTests.Analysis
 		public void VpSliceConstant()
 		{
             var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, null, dynamicLinker.Object), listener);
-            Expression c = new Slice(PrimitiveType.Byte, Constant.Word32(0x10FF), 0).Accept(vp);
+            var (c, _) = new Slice(PrimitiveType.Byte, Constant.Word32(0x10FF), 0).Accept(vp);
 			Assert.AreEqual("0xFF<8>", c.ToString());
 		}
 
@@ -389,7 +389,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier x = m.Reg32("x");
 			Identifier y = m.Reg32("y");
             var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, dynamicLinker.Object), listener);
-			Expression e = vp.VisitUnaryExpression(
+			var (e, _) = vp.VisitUnaryExpression(
 				new UnaryExpression(Operator.Neg, PrimitiveType.Word32, new BinaryExpression(
 				Operator.ISub, PrimitiveType.Word32, x, y)));
 			Assert.AreEqual("y - x", e.ToString());
@@ -410,7 +410,7 @@ namespace Reko.UnitTests.Analysis
 					new BinaryExpression(Operator.SMul, t, id, Constant.Create(t, 4)),
 					id),
 				Constant.Create(t, 2));
-			Expression e = vp.VisitBinaryExpression(b);
+			var (e, _) = vp.VisitBinaryExpression(b);
 			Assert.AreEqual("id *s 20<i32>", e.ToString());
 		}
 
@@ -421,7 +421,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier id = m.Reg32("id");
 			Expression e = m.Shl(m.Shl(id, 1), 4);
             var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, dynamicLinker.Object), listener);
-			e = e.Accept(vp);
+			(e, _) = e.Accept(vp);
 			Assert.AreEqual("id << 5<8>", e.ToString());
 		}
 
@@ -432,7 +432,7 @@ namespace Reko.UnitTests.Analysis
 			ProcedureBuilder m = new ProcedureBuilder();
 			Expression e = m.Shl(1, m.ISub(Constant.Byte(32), 1));
             var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, null, dynamicLinker.Object), listener);
-			e = e.Accept(vp);
+			(e, _) = e.Accept(vp);
 			Assert.AreEqual("0x80000000<32>", e.ToString());
 		}
 
@@ -444,7 +444,7 @@ namespace Reko.UnitTests.Analysis
 			Constant fix = Constant.Word16(0x0002);
 			Expression e = new MkSequence(PrimitiveType.Word32, pre, fix);
             var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, null, dynamicLinker.Object), listener);
-			e = e.Accept(vp);
+			(e, _) = e.Accept(vp);
 			Assert.AreEqual("0x10002<32>", e.ToString());
 		}
 
@@ -456,7 +456,7 @@ namespace Reko.UnitTests.Analysis
             Identifier C = m.Reg8("C");
             Expression e = new Slice(PrimitiveType.Byte, new BinaryExpression(Operator.Shl, PrimitiveType.Word16, C, eight), 8);
             var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, m.Ssa.Identifiers, dynamicLinker.Object), listener);
-            e = e.Accept(vp);
+            (e, _) = e.Accept(vp);
             Assert.AreEqual("C", e.ToString());
         }
 
@@ -472,7 +472,7 @@ namespace Reko.UnitTests.Analysis
 
             Expression e = new MkSequence(PrimitiveType.Word32, seg, off);
             var vp = new ExpressionSimplifier(segmentMap, new SsaEvaluationContext(arch.Object, null, dynamicLinker.Object), listener);
-            e = e.Accept(vp);
+            (e, _) = e.Accept(vp);
             Assert.IsInstanceOf(typeof(Address), e);
             Assert.AreEqual("4711:4111", e.ToString());
 
@@ -720,7 +720,6 @@ d3:d3
     uses: d3_5 = SEQ(SLICE(d3, word16, 16), tmp_3)
 d3_5: orig: d3
     def:  d3_5 = SEQ(SLICE(d3, word16, 16), tmp_3)
-    uses: Mem6[a2 + 4<32>:byte] = SLICE(tmp_3, byte, 0)
 Mem6: orig: Mem0
     def:  Mem6[a2 + 4<32>:byte] = SLICE(tmp_3, byte, 0)
 // ProcedureBuilder

@@ -23,7 +23,7 @@ l0C00_000F:
 	branch wArg02 == 1<16> l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
-	ax_13 = SLICE(wArg02 *s32 fn0C00_000F(wArg02 - 1<16>), word16, 0) (alias)
+	ax_13 = wArg02 *s fn0C00_000F(wArg02 - 1<16>) (alias)
 	goto l0C00_0029
 	// succ:  l0C00_0029
 l0C00_0026:
@@ -38,7 +38,7 @@ word16 fn0C00_000F(word16 wArg02)
 {
 	word16 ax_13;
 	if (wArg02 != 1<16>)
-		ax_13 = SLICE(wArg02 *s32 fn0C00_000F(wArg02 - 1<16>), word16, 0);
+		ax_13 = wArg02 *s fn0C00_000F(wArg02 - 1<16>);
 	else
 		ax_13 = 1<16>;
 	return ax_13;

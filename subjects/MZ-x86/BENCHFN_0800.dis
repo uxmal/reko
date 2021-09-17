@@ -1308,7 +1308,7 @@ l0800_0C89:
 l0800_0C8E:
 	word32 dx_ax_55 = CONVERT(cx_33, word16, uint32)
 	word32 dx_ax_63 = SEQ(CONVERT(dx_ax_55 % wArg06, word32, uint16), ax_31)
-	Mem71[ds:si_107:byte] = SLICE(CONVERT(dx_ax_63 % wArg06, word32, uint16), byte, 0)
+	Mem71[ds:si_107:byte] = SLICE(dx_ax_63 % wArg06, byte, 0)
 	word16 ax_59 = CONVERT(dx_ax_55 /u wArg06, word16, uint16)
 	cx_33 = ax_59
 	ax_31 = CONVERT(dx_ax_63 /u wArg06, word16, uint16)
@@ -1318,7 +1318,7 @@ l0800_0CA4:
 	branch ax_31 != 0<16> l0800_0C9D
 l0800_0C9D:
 	word32 dx_ax_82 = CONVERT(ax_31, word16, uint32)
-	Mem96[ds:si_107:byte] = SLICE(CONVERT(dx_ax_82 % wArg06, word32, uint16), byte, 0)
+	Mem96[ds:si_107:byte] = SLICE(dx_ax_82 % wArg06, byte, 0)
 	ax_31 = CONVERT(dx_ax_82 /u wArg06, word16, uint16)
 	si_107 = si_107 + 1<16>
 l0800_0CA8:
@@ -1468,7 +1468,7 @@ void __fputc(selector ds, byte bArg02, word16 wArg04)
 __fputc_entry:
 l0800_0E64:
 	Mem12[ds:wArg04:word16] = Mem7[ds:wArg04:word16] - 1<16>
-	_fputc(ds, SLICE(CONVERT(bArg02, byte, int16), byte, 0), wArg04)
+	_fputc(ds, bArg02, wArg04)
 l0800_0E7B:
 	return
 __fputc_exit:
@@ -1626,7 +1626,8 @@ l0800_1120:
 	cx = SEQ(ch_1149, 0<8>) (alias)
 	branch bl_68 >=u 0x80<8> l0800_1175
 l0800_112E:
-	bx = SEQ(bh_73, Mem75[ds:bx + 0x4F9<16>:byte]) (alias)
+	byte bl_76 = Mem75[ds:bx + 0x4F9<16>:byte]
+	bx = SEQ(bh_73, bl_76) (alias)
 	cx = SEQ(ch_1149, 0<8>) (alias)
 	branch bx <=u 0x17<16> l0800_113C
 l0800_113C:
@@ -1643,7 +1644,6 @@ l0800_113C:
 	word16 dx_354
 	word16 ax_353
 	bx = bx << 1<16>
-	byte bl_449 = SLICE(bx << 1<16>, byte, 0)
 	cx = SEQ(ch_1149, 0<8>) (alias)
 	switch (bx) { l0800_1190 l0800_1178 l0800_11D1 l0800_1184 l0800_11F6 l0800_1200 l0800_1242 l0800_124C l0800_125C l0800_11B7 l0800_1291 l0800_126C l0800_1270 l0800_1274 l0800_1316 l0800_13C8 l0800_1369 l0800_1389 l0800_1533 l0800_1560 l0800_1560 l0800_1560 l0800_11A3 l0800_11AD }
 l0800_11AD:
@@ -1767,9 +1767,9 @@ l0800_1366:
 l0800_1274:
 	bx_1906 = SEQ(0x10<8>, dl_131 + 0xE9<8>) (alias)
 l0800_1270:
-	bx_1896 = SEQ(0xA<8>, bl_449) (alias)
+	bx_1896 = SEQ(0xA<8>, bl_76 << 1<8>) (alias)
 l0800_126C:
-	bx_1906 = SEQ(8<8>, bl_449) (alias)
+	bx_1906 = SEQ(8<8>, bl_76 << 1<8>) (alias)
 l0800_127A:
 	bLoc8F_1225 = 0<8>
 	bx_1896 = bx_1906 (alias)
@@ -1783,7 +1783,7 @@ l0800_1291:
 	bLoc95_1269 = 1<8>
 	ax_353 = SLICE(dx_ax_362, word16, 0) (alias)
 	dx_354 = SLICE(dx_ax_362, word16, 16) (alias)
-	bx_1886 = SEQ(0xA<8>, bl_449) (alias)
+	bx_1886 = SEQ(0xA<8>, bl_76 << 1<8>) (alias)
 l0800_12A2:
 	word16 di_364 = wArg02 + 1<16>
 	byte bh_429 = SLICE(bx_1886, byte, 8)
@@ -2672,7 +2672,7 @@ l0800_17EF:
 	branch wLoc24_1513 < 0<16> l0800_1794
 l0800_17F9:
 	dx = SLICE(wLoc24_1513 *u32 0xA<16>, word16, 16) (alias)
-	wLoc24_1040 = ax_58 - 0x30<16> + SLICE(wLoc24_1513 *u32 0xA<16>, word16, 0)
+	wLoc24_1040 = ax_58 - 0x30<16> + wLoc24_1513 *u 0xA<16>
 l0800_17E9:
 	bLoc2B_1041 = bLoc2B_1041 | 1<8>
 l0800_17E3:
@@ -3007,7 +3007,7 @@ fn0800_1B2C_exit:
 l0800_1B6C:
 	ch_108 = ch_56 + 0xA<8>
 l0800_1B6F:
-	dx_123 = SEQ(SLICE(dx_40 << 4<16>, byte, 8), SLICE(dx_40 << 4<16>, byte, 0) + ch_108) (alias)
+	dx_123 = SEQ(SLICE(dx_40 << 4<16>, byte, 8), (SLICE(dx_40, byte, 0) << 4<8>) + ch_108) (alias)
 	cx_126 = SEQ(ch_108, cl_45 - 1<8>) (alias)
 
 

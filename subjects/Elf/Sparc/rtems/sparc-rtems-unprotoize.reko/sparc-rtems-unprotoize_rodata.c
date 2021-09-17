@@ -37,13 +37,19 @@ char g_str178F0[] = "TMP"; // 000178F0
 char g_str178F8[] = "TEMP"; // 000178F8
 byte g_b17918 = 99; // 00017918
 byte g_b17919 = 99; // 00017919
-byte g_b1791A = 88; // 0001791A
+int8 g_b1791A = 88; // 0001791A
 byte g_b1791B = 88; // 0001791B
-byte g_b1791C = 88; // 0001791C
+Eq_n g_t1791C = // 0001791C
+	{
+		88
+	};
 byte g_b1791D = 88; // 0001791D
 byte g_b1791E = 88; // 0001791E
 byte g_b1791F = 88; // 0001791F
-byte g_b17920 = 0x00; // 00017920
+Eq_n g_t17920 = // 00017920
+	{
+		null
+	};
 char g_str17928[] = "POSIXLY_CORRECT"; // 00017928
 char g_str17940[] = "%s: option `%s' is ambiguous\n"; // 00017940
 char g_str17960[] = "%s: option `--%s' doesn't allow an argument\n"; // 00017960

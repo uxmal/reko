@@ -4,14 +4,12 @@
 
 #include "subject.h"
 
-// 0000000000001460: void fn0000000000001460()
-void fn0000000000001460()
+Eq_n g_t0FC0 = ??/* Unexpected function type (fn int32 (int32, (ptr64 (ptr64 char)), (ptr64 (ptr64 char)))) */ ; // 0000000000000FC0
+// 0000000000001460: void fn0000000000001460(Register (ptr64 Eq_n) x0, Stack Eq_n qwArg00)
+void fn0000000000001460(void (* x0)(), Eq_n qwArg00)
 {
-	fn0000000000000E70();
-	fn0000000000000EC0();
-	if (g_qw1FFD0 == 0x00)
-		return;
-	fn00000000000014A4();
+	x0_n = (uint64) __libc_start_main(g_ptr1FFE8, qwArg00, (char *) fp + 8, g_ptr1FFE0, g_ptr1FF98, x0, fp);
+	abort();
 }
 
 // 0000000000001498: void fn0000000000001498()
@@ -21,16 +19,7 @@ void fn0000000000001498()
 {
 	if (g_qw1FFD0 == 0x00)
 		return;
-	fn00000000000014A4();
-}
-
-// 00000000000014A4: void fn00000000000014A4()
-// Called from:
-//      fn0000000000001460
-//      fn0000000000001498
-void fn00000000000014A4()
-{
-	g_ptr1FF08();
+	__gmon_start__();
 }
 
 // 00000000000014B0: void fn00000000000014B0()
@@ -44,9 +33,15 @@ void fn00000000000014B0()
 	x1_n();
 }
 
-// 0000000000001740: void fn0000000000001740()
-void fn0000000000001740()
+Eq_n g_t16B8 = ??/* Unexpected function type (fn void ()) */ ; // 00000000000016B8
+Eq_n g_t1738 = ??/* Unexpected function type (fn void ()) */ ; // 0000000000001738
+// 0000000000001740: void fn0000000000001740(Register (ptr64 Eq_n) x0)
+void fn0000000000001740(void (* x0)(void * x0))
 {
-	g_ptr1FEB0();
+	void * x2_n = null;
+	void ** x1_n = g_ptr1FFD8;
+	if (x1_n != null)
+		x2_n = (void *) *x1_n;
+	x0_n = (uint64) __cxa_atexit(x0, null, x2_n);
 }
 

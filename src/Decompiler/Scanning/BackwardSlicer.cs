@@ -282,7 +282,8 @@ namespace Reko.Scanning
 
         internal Expression Simplify(Expression e)
         {
-            return e.Accept(simp);
+            var (ee, _) = e.Accept(simp);
+            return ee;
         }
 
         /// <summary>

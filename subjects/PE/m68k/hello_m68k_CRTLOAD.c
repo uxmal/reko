@@ -89,9 +89,9 @@ l00001556:
 				uint32 d0_n = (uint32) v22_n;
 				if (v22_n != 0x00)
 				{
-					uip32 d0_n = SEQ(SLICE(__swap(SEQ(SLICE(SEQ(SLICE(d0_n, word16, 16), (word16) d0_n << 0x08), word24, 8), a3_n[1])), word24, 8), a3_n[2]);
+					word24 v29_n = SLICE(__swap(SEQ(SLICE((uint32) ((word16) d0_n << 0x08), word24, 8), a3_n[1])), word24, 8);
 					a3_n += 4;
-					d0_n = SEQ(SLICE(SEQ(SLICE(d0_n, word16, 16), (word16) d0_n << 0x08), word24, 8), a3_n[3]) * 0x02;
+					d0_n = SEQ(SLICE(SEQ(SLICE(v29_n, word16, 8), (word16) SEQ(v29_n, a3_n[2]) << 0x08), word24, 8), a3_n[3]) * 0x02;
 l00001578:
 					a2_n = (union Eq_n *) ((char *) a2_n + d0_n);
 					if (dwArg02 != 0x00 && *a2_n >= 0x00)
@@ -105,9 +105,9 @@ l0000159A:
 				return;
 			}
 			++a3_n;
-			d0_n = SEQ(SLICE(SEQ(SLICE(d0_n, word16, 16), (word16) d0_n << 0x08), word24, 8), a3_n->b0000);
+			d0_n = SEQ(SLICE((uint32) ((word16) d0_n << 0x08), word24, 8), a3_n->b0000);
 		}
-		d0_n = SEQ(SLICE(d0_n, word16, 16), (word16) (d0_n * 0x02));
+		d0_n = SEQ(SLICE(d0_n, word16, 16), (word16) d0_n * 0x02);
 		goto l00001578;
 	}
 }

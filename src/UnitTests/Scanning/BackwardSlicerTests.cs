@@ -599,7 +599,7 @@ namespace Reko.UnitTests.Scanning
                 ;
             Assert.AreEqual(2, bwslc.Live.Count);
             Console.WriteLine(bwslc.JumpTableFormat.ToString());
-            Assert.AreEqual("CONVERT(Mem0[CONVERT(SLICE(SEQ(d1, d0) * 2<32>, word16, 0), word16, word32) + 0x10EC32<32>:word16], word16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("CONVERT(Mem0[CONVERT(SLICE(d0, word16, 0) * 2<16>, word16, word32) + 0x10EC32<32>:word16], word16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("SLICE(d0, byte, 0)", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
@@ -684,7 +684,7 @@ namespace Reko.UnitTests.Scanning
             while (bwslc.Step())
                 ;
             Assert.AreEqual(2, bwslc.Live.Count);
-            Assert.AreEqual("CONVERT(Mem0[CONVERT(SLICE(SEQ(d1, d0) * 2<32>, word16, 0), word16, word32) + 0x10EC32<32>:word16], word16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("CONVERT(Mem0[CONVERT(SLICE(d0, word16, 0) * 2<16>, word16, word32) + 0x10EC32<32>:word16], word16, int32) + 0x10EC30<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("d0", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("SLICE(d0, byte, 0)", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[0,17]", bwslc.JumpTableIndexInterval.ToString());
@@ -812,7 +812,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(bwslc.Start(b2, 6, Target(b2)));
             while (bwslc.Step())
                 ;
-            Assert.AreEqual("CONVERT(SLICE(SLICE(v3 *32 2<32>, word16, 0) *32 2<32>, word16, 0), word16, int32) + 0xA8B4<32>", bwslc.JumpTableFormat.ToString());
+            Assert.AreEqual("CONVERT(v3 * 4<16>, word16, int32) + 0xA8B4<32>", bwslc.JumpTableFormat.ToString());
             Assert.AreEqual("v3", bwslc.JumpTableIndex.ToString());
             Assert.AreEqual("v3", bwslc.JumpTableIndexToUse.ToString(), "Expression to use when indexing");
             Assert.AreEqual("1[20,7FFFFFFFFFFFFFFF]", bwslc.JumpTableIndexInterval.ToString());

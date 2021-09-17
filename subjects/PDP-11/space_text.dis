@@ -105,7 +105,7 @@ l04FE:
 	wLoc02_36 = v10_15
 	branch v10_15 >= 0<16> l04FE
 l0506:
-	byte bLoc02_41 = SLICE(v10_15 + 0x3A<16>, byte, 0)
+	byte bLoc02_41 = SLICE(v10_15, byte, 0) + 0x3A<8>
 	branch r0_11 == 1<16> l0512
 l050E:
 	fn04FA(r0_11 - 1<16>)

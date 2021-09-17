@@ -73,7 +73,6 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 {
 	word32 edi = (word32) rdi;
 	_init();
-	word32 r15d_n = (word32) (uint64) edi;
 	int64 rbp_n = 0x00600E18 - 0x00600E10;
 	Eq_n rbx_n = 0x00;
 	if (rbp_n >> 0x03 != 0x00)

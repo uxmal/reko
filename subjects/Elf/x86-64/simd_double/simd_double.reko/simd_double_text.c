@@ -119,7 +119,7 @@ void main(Eq_n xmm0)
 	Eq_n qwLoc18_n = 0x00;
 	while (qwLoc18_n < 0x0400)
 	{
-		ui32 eax_n = (word32) ((word64) qwLoc18_n + 1);
+		ui32 eax_n = (word32) qwLoc18_n + 0x01;
 		real64 * rcx_n = rax_n + qwLoc18_n;
 		if (qwLoc18_n >= 0x01)
 			xmm0 = SEQ(SLICE(xmm0, word64, 64), (real64) ((word64) qwLoc18_n + 1));
@@ -151,7 +151,6 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 {
 	word32 edi = (word32) rdi;
 	_init();
-	word32 r15d_n = (word32) (uint64) edi;
 	int64 rbp_n = 0x00200DF0 - 2100712;
 	if (rbp_n >> 0x03 != 0x00)
 	{

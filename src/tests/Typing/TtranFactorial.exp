@@ -19,7 +19,7 @@ l0C00_000F:
 	branch wArg02 == 1<16> l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
-	ax_13 = SLICE(wArg02 *s32 fn0C00_000F(wArg02 - 1<16>), word16, 0) (alias)
+	ax_13 = wArg02 *s fn0C00_000F(wArg02 - 1<16>) (alias)
 	goto l0C00_0029
 	// succ:  l0C00_0029
 l0C00_0026:
@@ -84,12 +84,12 @@ T_10: (in Mem17[ds:0x64<16>:word16] : word16)
   OrigDataType: word16
 T_11: (in ax : word16)
   Class: Eq_11
-  DataType: word16
+  DataType: int16
   OrigDataType: word16
 T_12: (in ax_13 : word16)
   Class: Eq_11
-  DataType: word16
-  OrigDataType: word16
+  DataType: int16
+  OrigDataType: int16
 T_13: (in 1<16> : word16)
   Class: Eq_6
   DataType: int16
@@ -100,7 +100,7 @@ T_14: (in wArg02 == 1<16> : bool)
   OrigDataType: bool
 T_15: (in 1<16> : word16)
   Class: Eq_11
-  DataType: word16
+  DataType: int16
   OrigDataType: word16
 T_16: (in fn0C00_000F : segptr32)
   Class: Eq_4
@@ -114,11 +114,7 @@ T_18: (in fn0C00_000F(wArg02 - 1<16>) : word16)
   Class: Eq_8
   DataType: int16
   OrigDataType: int16
-T_19: (in wArg02 *s32 fn0C00_000F(wArg02 - 1<16>) : int32)
-  Class: Eq_19
-  DataType: int32
-  OrigDataType: int32
-T_20: (in SLICE(wArg02 *s32 fn0C00_000F(wArg02 - 1<16>), word16, 0) : word16)
+T_19: (in wArg02 *s fn0C00_000F(wArg02 - 1<16>) : word16)
   Class: Eq_11
-  DataType: word16
-  OrigDataType: word16
+  DataType: int16
+  OrigDataType: int16

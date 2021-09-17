@@ -139,7 +139,7 @@ void vUART_ISR(Eq_n lr, ptr32 cpsr)
 			if (r1_n << 26 >= 0x00)
 				r1_n = g_ptr8174;
 			r1_n->dw0000 = r3_n;
-			*r2_n = (byte) (r3_n + 0x01);
+			*r2_n = (byte) r3_n + 0x01;
 		}
 	}
 	if (false)
@@ -717,7 +717,7 @@ up32 vParTestSetLED(up32 r0, word32 r1, ptr32 cpsr)
 	if (r0 <= 0x07)
 	{
 		byte * r3_n = g_ptr862C;
-		uint32 r0_n = (uint32) (byte) (0x01 << r0);
+		uint32 r0_n = (uint32) (0x01 << (byte) r0);
 		ui32 r2_n = (word32) *r3_n;
 		if (r1 != 0x00)
 			*r3_n = (byte) (r0_n | r2_n);
@@ -742,9 +742,9 @@ void vParTestToggleLED(up32 r0, ptr32 cpsr)
 		ui32 r0_n = 0x01 << r0;
 		uint32 r2_n = (uint32) (byte) r0_n + (word32) (*r3_n) + (r0 < 0x07);
 		if (r2_n == 0x00)
-			*r3_n = (byte) (r2_n | (word32) (*r3_n));
+			*r3_n = (byte) r2_n | *r3_n;
 		else
-			*r3_n = (byte) ((word32) *r3_n & ~r0_n);
+			*r3_n &= (byte) ~r0_n;
 		PDCWrite(&g_dw0005, (word32) *r3_n);
 	}
 	MPU_xTaskResumeAll(cpsr);
@@ -1563,7 +1563,7 @@ void GPIODirModeSet(struct Eq_n * r0, ui32 r1, ui32 r2)
 // 00009134: void GPIODirModeGet(Register (ptr32 Eq_n) r0, Register word32 r1)
 void GPIODirModeGet(struct Eq_n * r0, word32 r1)
 {
-	uint32 r1_n = (uint32) (byte) (0x01 << r1);
+	uint32 r1_n = (uint32) (0x01 << (byte) r1);
 	word32 r2_n = r0->dw0420;
 	up32 r4_n = (bool) C + (r0->dw0400 + r1_n);
 }
@@ -1588,7 +1588,7 @@ void GPIOIntTypeSet(struct Eq_n * r0, ui32 r1, ui32 r2)
 // 00009194: void GPIOIntTypeGet(Register (ptr32 Eq_n) r0, Register word32 r1)
 void GPIOIntTypeGet(struct Eq_n * r0, word32 r1)
 {
-	uint32 r1_n = (uint32) (byte) (0x01 << r1);
+	uint32 r1_n = (uint32) (0x01 << (byte) r1);
 	word32 r3_n = r0->dw0404;
 	up32 r2_n = (bool) C + (r0->dw0408 + r1_n);
 	word32 r0_n = r0->dw040C;
@@ -1641,7 +1641,7 @@ void GPIOPadConfigSet(struct Eq_n * r0, ui32 r1, ui32 r2, ui32 r3)
 // 0000925C: void GPIOPadConfigGet(Register (ptr32 Eq_n) r0, Register word32 r1, Register (ptr32 word32) r2, Register (ptr32 word32) r3)
 void GPIOPadConfigGet(struct Eq_n * r0, word32 r1, word32 * r2, word32 * r3)
 {
-	uint32 r1_n = (uint32) (byte) (0x01 << r1);
+	uint32 r1_n = (uint32) (0x01 << (byte) r1);
 	word32 r4_n = r0->dw0504;
 	up32 r5_n = (bool) C + (r0->dw0500 + r1_n);
 	word32 r5_n = r0->dw0508;

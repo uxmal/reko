@@ -326,7 +326,7 @@ namespace Reko.Analysis
 
         public bool VisitAssignment(Assignment ass)
         {
-            var value = ass.Src.Accept(eval!);
+            var (value, _) = ass.Src.Accept(eval!);
             trace.Verbose("{0} = [{1}]", ass.Dst, value);
             ctx!.SetValue(ass.Dst, value);
             return true;
@@ -390,7 +390,11 @@ namespace Reko.Analysis
                 {
                     var before = ci.Uses
                         .Where(u => u.Storage == d.Storage)
-                        .Select(u => u.Expression.Accept(eval!))
+                        .Select(u =>
+                        {
+                            var (e, _) = u.Expression.Accept(eval!);
+                            return e;
+                        })
                         .SingleOrDefault();
                     ctx.SetValue((Identifier)d.Expression, before);
                     trace.Verbose("  {0} = [{1}]", d.Expression, before);
@@ -408,7 +412,7 @@ namespace Reko.Analysis
         {
             if (decl.Expression != null)
             {
-                var value = decl.Expression.Accept(eval!);
+                var (value, _) = decl.Expression.Accept(eval!);
                 trace.Verbose("{0} = [{1}]", decl.Identifier, value);
                 ctx!.SetValue(decl.Identifier, value);
             }
@@ -480,7 +484,7 @@ namespace Reko.Analysis
 
         public bool VisitStore(Store store)
         {
-            var value = store.Src.Accept(eval!);
+            var (value, _) = store.Src.Accept(eval!);
             if (store.Dst is MemoryAccess mem)
             {
                 ctx!.SetValueEa(mem.EffectiveAddress, value);

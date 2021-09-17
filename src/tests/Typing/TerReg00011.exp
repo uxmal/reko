@@ -21,7 +21,7 @@ l0C00_0004:
 l0C00_000C:
 	byte bl_10 = SLICE(bx_39, byte, 0)
 	Mem23[0x4DE1<16>:bx_39:byte] = bl_10 & 0xF0<8> | SLICE((bl_10 & 0xF<8>) *u16 (SLICE(bx_39, byte, 8) + 1<8>) << 4<16>, byte, 8) & 0xF<8>
-	bx_36 = bx_39 - 1<16> (alias)
+	bx_36 = SEQ(SLICE(bx_39 - 1<16>, byte, 8), bl_10 - 1<8>) (alias)
 	bx_39 = bx_36
 	branch bx_39 >= 1<16> l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
@@ -53,7 +53,7 @@ l0C00_0004:
 l0C00_000C:
 	byte bl_10 = (byte) bx_39
 	0x4DE1<16>->*bx_39 = bl_10 & 0xF0<8> | SLICE((bl_10 & 0xF<8>) *16 (SLICE(bx_39, byte, 8) + 1<8>) << 4<16>, byte, 8) & 0xF<8>
-	bx_36 = bx_39 - 1<16>
+	bx_36 = SEQ(SLICE(bx_39 - 1<16>, byte, 8), bl_10 - 1<8>)
 	bx_39 = bx_36
 	branch bx_39 >= 1<16> l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
@@ -75,7 +75,7 @@ Eq_6: (union "Eq_6" (int16 u0) ((memptr (ptr16 Eq_25) byte) u1))
 	T_7 (in 0xFFF<16> : cui16)
 	T_9 (in bx_39 : word16)
 	T_29 (in 1<16> : word16)
-	T_30 (in bx_39 - 1<16> : word16)
+	T_34 (in SEQ(SLICE(bx_39 - 1<16>, byte, 8), bl_10 - 1<8>) : word16)
 Eq_25: (segment "Eq_25")
 	T_25 (in 0x4DE1<16> : selector)
 // Type Variables ////////////
@@ -102,7 +102,7 @@ T_5: (in fn0C00_0004() : void)
 T_6: (in bx_36 : Eq_6)
   Class: Eq_6
   DataType: Eq_6
-  OrigDataType: (union (cui16 u0) ((memptr T_25 (struct (0 T_28 t0000))) u1))
+  OrigDataType: cui16
 T_7: (in 0xFFF<16> : cui16)
   Class: Eq_6
   DataType: int16
@@ -114,7 +114,7 @@ T_8: (in bl_10 : byte)
 T_9: (in bx_39 : word16)
   Class: Eq_6
   DataType: Eq_6
-  OrigDataType: (union (ci16 u0) ((memptr T_25 (struct (0 T_28 t0000))) u1))
+  OrigDataType: (union (int16 u1) ((memptr (ptr16 Eq_25) byte) u0))
 T_10: (in SLICE(bx_39, byte, 0) : byte)
   Class: Eq_8
   DataType: byte
@@ -196,10 +196,26 @@ T_29: (in 1<16> : word16)
   DataType: int16
   OrigDataType: int16
 T_30: (in bx_39 - 1<16> : word16)
+  Class: Eq_30
+  DataType: (memptr (ptr16 Eq_25) byte)
+  OrigDataType: (memptr T_25 (struct (0 T_28 t0000)))
+T_31: (in SLICE(bx_39 - 1<16>, byte, 8) : byte)
+  Class: Eq_31
+  DataType: byte
+  OrigDataType: byte
+T_32: (in 1<8> : byte)
+  Class: Eq_32
+  DataType: byte
+  OrigDataType: byte
+T_33: (in bl_10 - 1<8> : byte)
+  Class: Eq_33
+  DataType: byte
+  OrigDataType: byte
+T_34: (in SEQ(SLICE(bx_39 - 1<16>, byte, 8), bl_10 - 1<8>) : word16)
   Class: Eq_6
   DataType: Eq_6
-  OrigDataType: (memptr T_25 (struct (0 T_28 t0000)))
-T_31: (in bx_39 >= 1<16> : bool)
-  Class: Eq_31
+  OrigDataType: word16
+T_35: (in bx_39 >= 1<16> : bool)
+  Class: Eq_35
   DataType: bool
   OrigDataType: bool

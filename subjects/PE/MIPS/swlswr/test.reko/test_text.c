@@ -83,7 +83,7 @@ void fn00011278(Eq_n r4)
 //      fn00011434
 void fn000112A8(Eq_n r4, int32 r5, int32 r6)
 {
-	g_b13038 = (byte) (int32) (byte) r6;
+	g_b13038 = (byte) r6;
 	if (r5 != 0x00)
 	{
 		fn0001147C(&g_dw12018, &g_dw1201C);

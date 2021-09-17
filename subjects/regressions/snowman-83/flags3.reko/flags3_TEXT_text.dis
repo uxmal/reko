@@ -7,7 +7,7 @@ void foo(word64 rdi)
 // Preserved: rsp
 foo_entry:
 l0000000000000FA8:
-	branch SLICE(CONVERT(Mem0[rdi:word32], word32, uint64), word32, 0) < 0x101<32> l0000000000000FB7
+	branch Mem0[rdi:word32] < 0x101<32> l0000000000000FB7
 l0000000000000FB4_1:
 l0000000000000FB7:
 	return

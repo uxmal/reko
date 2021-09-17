@@ -898,11 +898,11 @@ void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, word32 r
 	{
 		bzero((word32) r2_n + 6040, 16);
 		*((word32) r2_n + 6040) = 0x02;
-		*((word32) r2_n + 6042) = (word16) (word32) r4->w0002;
+		*((word32) r2_n + 6042) = r4->w0002;
 		*((word32) r2_n + 6044) = r4->dw0004;
 		*r2_n = accept(r6, (word32) r2_n + 6040, fp + -32);
 		*((word32) r2_n + 6056) = 0x02;
-		*((word32) r2_n + 0x000017AA) = (word16) (word32) r5->w0002;
+		*((word32) r2_n + 0x000017AA) = r5->w0002;
 		*((word32) r2_n + 6060) = r5->dw0004;
 		*((word32) r2_n + 6032) = r7;
 		word32 r5_n;

@@ -3,7 +3,7 @@ void fn0000000000000D88()
 
 // MayUse: 
 // LiveOut:
-// Trashed: sp x0 x16 x17 x29 x30
+// Trashed: sp x0 x29 x30
 // Preserved:
 fn0000000000000D88_entry:
 l0000000000000D88:

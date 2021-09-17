@@ -542,7 +542,7 @@ void fn04FA(ci16 r0)
 		++r0_n;
 		wLoc02_n = v10_n;
 	} while (v10_n >= 0x00);
-	byte bLoc02_n = (byte) (v10_n + 0x3A);
+	byte bLoc02_n = (byte) v10_n + 0x3A;
 	if (r0_n != 0x01)
 		fn04FA(r0_n - 0x01);
 	Eq_n r0_n = (int16) bLoc02_n;

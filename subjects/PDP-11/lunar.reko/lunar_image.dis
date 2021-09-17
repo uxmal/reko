@@ -847,7 +847,7 @@ l0CB2:
 	Mem11[(wArg02 >> 1<i16>) + 0x3013<16>:byte] = Mem5[(wArg02 >> 1<i16>) + 0x3013<16>:byte] & ~0xF<8>
 l0C9A:
 	Mem24[(wArg02 >> 1<i16>) + 0x3013<16>:byte] = Mem21[(wArg02 >> 1<i16>) + 0x3013<16>:byte] & ~0xF0<8>
-	bArg04_46 = SLICE(wArg04 << 4<i16>, byte, 0) (alias)
+	bArg04_46 = SLICE(wArg04, byte, 0) << 4<8> (alias)
 l0CB8:
 	Mem31[(wArg02 >> 1<i16>) + 0x3013<16>:byte] = Mem28[(wArg02 >> 1<i16>) + 0x3013<16>:byte] | bArg04_46
 	return

@@ -154,7 +154,7 @@ void fn037C(int32 gp0_gp1, int32 gp12_gp13, word16 gp2, cui16 gp3, struct Eq_n *
 			if (gp0_gp1 >= 0x00)
 				fn03F7(gp0_gp1_n, gp12_gp13, gp1, gp11);
 			else
-				fn0311(SLICE(gp0_gp1_n + Mem0[0x805F<p16>:word32], word16, 0), wArg18);
+				fn0311(*((char *) &g_uFFFF805D + 2) + (word16) gp0_gp1_n /16 39491, wArg18);
 		}
 	}
 }
@@ -176,7 +176,7 @@ void fn03A0(int32 gp0_gp1, int32 gp12_gp13, word16 gp2, word16 gp8, cui16 gp9, w
 		if (gp5_gp6_gp7_n >= 0.0)
 			fn0412(gp12_gp13, SEQ(gp7_n, gp8), gp5_n, gp9, gp10, gp11);
 		else
-			fn0311((word16) (*((char *) &g_dwFFFF806A + 2) + (gp0_gp1_n + g_dwFFFF806A) / 39491), wArg18);
+			fn0311((word16) gp0_gp1_n + g_wFFFF806A + g_wFFFF806C, wArg18);
 	}
 }
 
@@ -306,7 +306,7 @@ void fn0406(Eq_n gp1_gp2, int32 gp12_gp13, cui16 gp9, word16 gp10, struct Eq_n *
 //      fn037C
 void fn0407(Eq_n gp1_gp2, int32 gp12_gp13, cui16 gp9, word16 gp10, struct Eq_n * gp11)
 {
-	word16 gp5_n = (word16) (gp1_gp2 - (gp1_gp2 / 0x0A) * 0x0A);
+	word16 gp5_n = (word16) gp1_gp2 - (word16) (gp1_gp2 / 0x0A) * 0x0A;
 	if (Test(EQ,(gp9 + 0x01 & 0x8000) == 0x00))
 		fn0417(gp12_gp13, 0x0A, gp5_n + 0x30, gp9 + 0x01, gp10, gp11);
 	else
@@ -422,7 +422,7 @@ l0458:
 					else
 						gp11[6] = (struct Eq_n) (gp2_n | 0x3030);
 					int32 gp2_gp3_n = (int32) gp12_gp13_gp14_n;
-					gp11->t0000.u1 = SEQ(gp11[1], (byte) ((word16) gp2_gp3_n + 0x30));
+					gp11->t0000.u1 = SEQ(gp11[1], (byte) (word16) gp2_gp3_n + 0x30);
 					gp11[1] = (struct Eq_n) SEQ(0x2E, gp11[1]);
 					cui16 gp7_n = 0x00;
 					real48 gp12_gp13_gp14_n = gp12_gp13_gp14_n - (real48) gp2_gp3_n;
@@ -434,10 +434,10 @@ l0458:
 						gp12_gp13_gp14_n = gp12_gp13_gp14_n - (real48) gp2_gp3_n;
 						++gp7_n;
 						if ((gp7_n & 0x8000) != 0x00)
-							gp11[1] = (struct Eq_n) SEQ((byte) (gp3_n + 0x30), gp11[1]);
+							gp11[1] = (struct Eq_n) SEQ((byte) gp3_n + 0x30, gp11[1]);
 						else
 						{
-							gp11[1] = (struct Eq_n) SEQ(gp11[2], (byte) (gp3_n + 0x30));
+							gp11[1] = (struct Eq_n) SEQ(gp11[2], (byte) gp3_n + 0x30);
 							++gp11;
 						}
 						--gp1;

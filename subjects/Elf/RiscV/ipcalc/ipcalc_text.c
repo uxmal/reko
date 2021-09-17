@@ -29,7 +29,7 @@ void fn0000000000015180(word64 ra, struct Eq_n * gp, Eq_n a0, char ** a1, word64
 				if (a1_n < a0)
 				{
 					s4_n = s2_n->t0008;
-					gp->dw0890 = (word32) (int64) ((word32) a4_n + 2);
+					gp->dw0890 = (word32) a4_n + 2;
 				}
 			}
 			else
@@ -154,7 +154,7 @@ l0000000000015CB0:
 			}
 			if (false)
 			{
-				qwLoc0188_n = SEQ(nLoc0187, (byte) (qwLoc0190 & 1 | -4));
+				qwLoc0188_n = SEQ(nLoc0187, (byte) qwLoc0190 & 0x01 | 252);
 				if (fn00000000000164D0(fp + -391, 0x0F) >= 0x00 && inet_ntop(0x0A, fp + -0x0188, fp + -0x00B8, 64) != null)
 					goto l00000000000154DC;
 				goto l0000000000015CB0;
@@ -422,7 +422,7 @@ l00000000000156FC:
 				if (a5_n > 111)
 					goto l00000000000157A0;
 				word64 a5_n;
-				gp = fn000000000001654C(ra, gp, s0_n, 0x00012000, 0x00011B08, 72672, (int64) (word32) (0x0080 - a5_n), fp + -296, a5_n, a6_n, a7, s2_n, s3_n, out a4_n, out a5_n, out a6_n, out a7);
+				gp = fn000000000001654C(ra, gp, s0_n, 0x00012000, 0x00011B08, 72672, (int64) (0x80 - (word32) a5_n), fp + -296, a5_n, a6_n, a7, s2_n, s3_n, out a4_n, out a5_n, out a6_n, out a7);
 			}
 			else
 			{
@@ -628,7 +628,7 @@ void * fn00000000000164D0(void * a0, Eq_n a1)
 	{
 		uint64 a0_n = (uint64) read(a0_n, a0, (word64) (word32) a1);
 		a0_n = (uint64) close(a0_n);
-		a0_n = (int64) (word32) (0x00 - (word64) ((int64) ((word32) (a0_n - a1)) != 0x00));
+		a0_n = (int64) (0x00 - (word32) ((word64) ((int64) ((word32) (a0_n - a1)) != 0x00)));
 	}
 	else
 		a0_n = (void *) -1;
@@ -696,7 +696,7 @@ Eq_n fn0000000000016630(struct Eq_n * gp, Eq_n a0, word32 * a1)
 	else
 		a5_n = (int64) *a0_n;
 	if (a5_n > 0x00)
-		a5_n = (int64) (word32) (0x00 - a5_n);
+		a5_n = (int64) (0x00 - (word32) a5_n);
 	else
 		a5_n.u0 = -22;
 l0000000000016698:
@@ -798,7 +798,7 @@ char * fn0000000000016830(struct Eq_n * gp, char * a0)
 	{
 		word64 a3_n;
 		word64 a4_n;
-		dwLoc20_n = (word32) fn00000000000182B4((int64) (~0x00 << (int64) ((word32) (32 - a0))), out a3_n, out a4_n);
+		dwLoc20_n = (word32) fn00000000000182B4((int64) (~0x00 << (int64) (0x20 - (word32) a0)), out a3_n, out a4_n);
 	}
 	char * a0_n = (int64) dwLoc20_n;
 	if (a5_n == gp->tFFFFF870)
@@ -1238,7 +1238,7 @@ char * fn000000000001730C(struct Eq_n * gp, char * a0, void * a1)
 	if (a0 <= (char *) 0x0080)
 	{
 		byte * a5_n = fp + -0x00B8;
-		int64 a4_n = (int64) (word32) (8 - a0);
+		int64 a4_n = (int64) (0x08 - (word32) a0);
 		if (a0 != null)
 		{
 			do
@@ -1246,7 +1246,7 @@ char * fn000000000001730C(struct Eq_n * gp, char * a0, void * a1)
 				if (a0 > (char *) 7)
 					*a5_n = ~0x00;
 				else
-					*a5_n = (byte) (int64) (0xFF << a4_n);
+					*a5_n = ~0x00 << (byte) a4_n;
 				a0 = (int64) ((word32) a0 + -8);
 				++a5_n;
 				a4_n = (int64) ((word32) a4_n + 8);
@@ -1375,7 +1375,7 @@ l0000000000017768:
 				byte * a3_n = fp + -0x0188;
 				do
 				{
-					*a2_n = (byte) ((word64) *a5_n & (word64) (*a3_n));
+					*a2_n = *a5_n & *a3_n;
 					++a5_n;
 					++a3_n;
 					++a2_n;
@@ -1397,13 +1397,13 @@ l0000000000017768:
 					do
 					{
 						++s8_n;
-						s8_n[0x0FFF] = (struct Eq_n) (byte) (~(word64) *s9_n | (word64) s8_n->b0000);
+						s8_n[0x0FFF] = (struct Eq_n) ((byte) ~(word64) *s9_n | s8_n->b0000);
 						++s9_n;
 					} while (fp + -360 != s8_n);
 					if (inet_ntop(0x0A, fp + -376, fp + -360, 0x00FA) != null)
 					{
 						a2->ptr00B0 = __strdup(fp + -360);
-						if ((int64) (word32) (0x0080 - s2_n) == 0x0080)
+						if ((int64) (0x80 - (word32) s2_n) == 0x0080)
 							goto l0000000000017740;
 l0000000000017740:
 						a0_n = (uint64) snprintf(&a2->b0060, 64, "%s", 0x00);
@@ -2083,9 +2083,9 @@ int64 fn00000000000182B4(int64 a0, union Eq_n & a3Out, union Eq_n & a4Out)
 {
 	Eq_n a3_n = (int64) ((word32) a0 >> 24) | (int64) ((word32) a0 << 0x18);
 	a3Out = a3_n;
-	Eq_n a4_n = (int64) ((word32) (a0 & 0x00FF0000) >> 0x08);
+	Eq_n a4_n = (int64) (((word32) a0 & 0x00FF0000) >> 0x08);
 	a4Out = a4_n;
-	return a3_n | a4_n | (int64) ((word32) (a0 & 0x0000FF00) << 0x08);
+	return a3_n | a4_n | (int64) (((word32) a0 & 0xFF00) << 0x08);
 }
 
 // 00000000000182E8: void fn00000000000182E8(Register word64 ra, Register word64 a0, Register word64 a1, Register word64 a2)

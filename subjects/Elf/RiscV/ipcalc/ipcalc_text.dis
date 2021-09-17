@@ -31,7 +31,7 @@ l0000000000015350:
 	branch a1_68 >= a0 l0000000000015378
 l000000000001536C:
 	s4_327 = Mem71[s2_70 + 8<i64>:word64]
-	Mem76[gp + 2192<i64>:word32] = SLICE(CONVERT(CONVERT(a4_65, word64, word32) + 2<i32>, word32, int64), word32, 0)
+	Mem76[gp + 2192<i64>:word32] = CONVERT(a4_65, word64, word32) + 2<i32>
 l0000000000015378:
 	branch false l0000000000015588
 l0000000000015588:
@@ -114,7 +114,7 @@ l0000000000015C7C:
 l0000000000015C84:
 	branch inet_ntop(2<i64>, fp + -424<i64>, fp + -184<i64>, 64<i64>) != 0<64> l00000000000154DC
 l0000000000015498:
-	qwLoc0188_2013 = SEQ(nLoc0187, SLICE(qwLoc0190 & 1<i64> | -4<i64>, byte, 0)) (alias)
+	qwLoc0188_2013 = SEQ(nLoc0187, SLICE(qwLoc0190, byte, 0) & 1<8> | 0xFC<8>) (alias)
 	branch fn00000000000164D0(fp + -391<i64>, 15<i64>) < 0<64> l0000000000015CB0
 l00000000000154BC:
 	branch inet_ntop(10<i64>, fp + -392<i64>, fp + -184<i64>, 64<i64>) == 0<64> l0000000000015CB0
@@ -429,7 +429,7 @@ l0000000000015794:
 	branch a5_1210 <=u 111<i64> l0000000000015E3C
 l0000000000015E3C:
 	word64 a5_3426
-	gp = fn000000000001654C(ra, gp, s0_1038, 0x12000<64>, 0x11B08<64>, 0x11BE0<64>, CONVERT(SLICE(128<i64> - a5_1210, word32, 0), word32, int64), fp + -296<i64>, a5_1210, a6_1010, a7, s2_1034, s3_1001, out a4_1006, out a5_3426, out a6_1010, out a7)
+	gp = fn000000000001654C(ra, gp, s0_1038, 0x12000<64>, 0x11B08<64>, 0x11BE0<64>, CONVERT(0x80<32> - SLICE(a5_1210, word32, 0), word32, int64), fp + -296<i64>, a5_1210, a6_1010, a7, s2_1034, s3_1001, out a4_1006, out a5_3426, out a6_1010, out a7)
 l00000000000157A0:
 	word64 a5_3425
 	gp = fn000000000001654C(ra, gp, s0_1038, 0x12000<64>, 0x11B08<64>, 0x11BE0<64>, fp + -296<i64>, a4_1006, a5_1210, a6_1010, a7, s2_1034, s3_1001, out a4_1006, out a5_3425, out a6_1010, out a7)
@@ -725,7 +725,7 @@ l0000000000016544:
 l0000000000016500:
 	word64 a0_25 = CONVERT(read(a0_19, a0, CONVERT(SLICE(a1, word32, 0), word32, word64)), ssize_t, uint64)
 	a0_28 = CONVERT(close(a0_19), int32, uint64)
-	a0_20 = CONVERT(SLICE(0<64> - CONVERT(CONVERT(SLICE(a0_25 - a1, word32, 0), word32, int64) != 0<64>, bool, word64), word32, 0), word32, int64)
+	a0_20 = CONVERT(0<32> - SLICE(CONVERT(CONVERT(SLICE(a0_25 - a1, word32, 0), word32, int64) != 0<64>, bool, word64), word32, 0), word32, int64)
 l000000000001652C:
 	return a0_20
 fn00000000000164D0_exit:
@@ -816,7 +816,7 @@ l0000000000016690:
 l00000000000166E8:
 	a5_31 = -22<i64>
 l0000000000016694:
-	a5_31 = CONVERT(SLICE(0<64> - a5_31, word32, 0), word32, int64)
+	a5_31 = CONVERT(0<32> - SLICE(a5_31, word32, 0), word32, int64)
 l0000000000016698:
 	branch a5_7 != Mem45[gp + -1936<i64>:word64] l00000000000166F0
 l00000000000166F0:
@@ -924,7 +924,7 @@ l0000000000016830:
 l000000000001684C:
 	word64 a3_42
 	word64 a4_43
-	dwLoc20_33 = SLICE(fn00000000000182B4(CONVERT(0xFFFFFFFF<32> << CONVERT(SLICE(32<i64> - a0, word32, 0), word32, int64), word32, int64), out a3_42, out a4_43), word32, 0)
+	dwLoc20_33 = SLICE(fn00000000000182B4(CONVERT(0xFFFFFFFF<32> << CONVERT(0x20<32> - SLICE(a0, word32, 0), word32, int64), word32, int64), out a3_42, out a4_43), word32, 0)
 l0000000000016864:
 	word64 a0_27 = CONVERT(dwLoc20_33, word32, int64)
 	branch a5_7 != Mem23[gp + -1936<i64>:word64] l0000000000016884
@@ -1375,12 +1375,12 @@ l000000000001730C:
 	branch a0 >u 128<i64> l00000000000173BC
 l000000000001732C:
 	word64 a5_20 = fp + -184<i64>
-	word64 a4_21 = CONVERT(SLICE(8<i64> - a0, word32, 0), word32, int64)
+	word64 a4_21 = CONVERT(8<32> - SLICE(a0, word32, 0), word32, int64)
 	branch a0 == 0<64> l000000000001736C
 l0000000000017354:
 	branch a0 <= 7<i64> l00000000000173C4
 l00000000000173C4:
-	Mem31[a5_20:byte] = SLICE(CONVERT(0xFF<32> << a4_21, word32, int64), byte, 0)
+	Mem31[a5_20:byte] = 0xFF<8> << SLICE(a4_21, byte, 0)
 l0000000000017358:
 	Mem33[a5_20:byte] = 0xFF<8>
 l000000000001735C:
@@ -1528,7 +1528,7 @@ l0000000000017688:
 	word64 a2_104 = fp + -376<i64>
 	word64 a3_105 = fp + -392<i64>
 l000000000001769C:
-	Mem115[a2_104:byte] = SLICE(CONVERT(Mem107[a5_102:byte], byte, word64) & CONVERT(Mem107[a3_105:byte], byte, word64), byte, 0)
+	Mem115[a2_104:byte] = Mem107[a5_102:byte] & Mem107[a3_105:byte]
 	a5_102 = a5_102 + 1<i64>
 	a3_105 = a3_105 + 1<i64>
 	a2_104 = a2_104 + 1<i64>
@@ -1545,7 +1545,7 @@ l0000000000017870:
 	Mem160[a2 + 168<i64>:word64] = __strdup(fp + -360<i64>)
 l000000000001787C:
 	s8_101 = s8_101 + 1<i64>
-	Mem169[s8_101 + 4095<i64>:byte] = SLICE(~CONVERT(Mem162[s9_103:byte], byte, word64) | CONVERT(Mem162[s8_101:byte], byte, word64), byte, 0)
+	Mem169[s8_101 + 4095<i64>:byte] = SLICE(~CONVERT(Mem162[s9_103:byte], byte, word64), byte, 0) | Mem162[s8_101:byte]
 	s9_103 = s9_103 + 1<i64>
 	branch fp + -360<i64> != s8_101 l000000000001787C
 l000000000001789C:
@@ -1557,7 +1557,7 @@ l0000000000017804:
 	a0_100 = -1<i64>
 l00000000000178B4:
 	Mem193[a2 + 176<i64>:word64] = __strdup(fp + -360<i64>)
-	branch CONVERT(SLICE(128<i64> - s2_20, word32, 0), word32, int64) != 128<i64> l0000000000017728
+	branch CONVERT(0x80<32> - SLICE(s2_20, word32, 0), word32, int64) != 128<i64> l0000000000017728
 l00000000000178D0:
 l0000000000017714:
 	word64 a5_199 = Mem156[a2 + 32<i64>:word64]
@@ -2248,7 +2248,7 @@ l0000000000018134:
 	word64 t5_16 = CONVERT(SLICE(a1, word32, 0) >>u 3<i32>, word32, int64)
 	branch (a1 & 7<i64>) == 4<i64> l0000000000018264
 l0000000000018264:
-	branch CONVERT(Mem12[a0 + CONVERT(SLICE(CONVERT((SLICE(CONVERT(CONVERT(a1, word64, word32) + 4<i64>, word32, int64), word32, 0) >>u 3<i32>) + -1<i32>, word32, int64), word32, 0), word32, word64):byte], byte, word64) >>u 4<u32> >u 9<i64> l0000000000018294
+	branch CONVERT(Mem12[a0 + CONVERT((CONVERT(a1, word64, word32) + 4<i64> >>u 3<i32>) + -1<i32>, word32, word64):byte], byte, word64) >>u 4<u32> >u 9<i64> l0000000000018294
 l0000000000018290:
 l0000000000018294:
 	t4_108 = 2<i64>
@@ -2316,9 +2316,9 @@ fn00000000000182B4_entry:
 l00000000000182B4:
 	word64 a3_6 = CONVERT(SLICE(a0, word32, 0) >>u 24<i32>, word32, int64) | CONVERT(SLICE(a0, word32, 0) << 0x18<64>, word32, int64)
 	a3Out = a3_6
-	word64 a4_11 = CONVERT(SLICE(a0 & 0xFF0000<64>, word32, 0) >> 8<u32>, word32, int64)
+	word64 a4_11 = CONVERT((SLICE(a0, word32, 0) & 0xFF0000<32>) >> 8<u32>, word32, int64)
 	a4Out = a4_11
-	return a3_6 | a4_11 | CONVERT(SLICE(a0 & 65280<i64>, word32, 0) << 8<64>, word32, int64)
+	return a3_6 | a4_11 | CONVERT((SLICE(a0, word32, 0) & 0xFF00<32>) << 8<64>, word32, int64)
 fn00000000000182B4_exit:
 
 

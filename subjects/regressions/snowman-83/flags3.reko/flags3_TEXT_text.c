@@ -4,9 +4,9 @@
 
 #include "flags3.h"
 
-// 0000000000000FA8: void foo(Register (ptr64 word32) rdi)
-void foo(word32 * rdi)
+// 0000000000000FA8: void foo(Register (ptr64 int32) rdi)
+void foo(int32 * rdi)
 {
-	(word32) (uint64) *rdi < 0x0101;
+	*rdi < 0x0101;
 }
 

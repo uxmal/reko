@@ -72,10 +72,10 @@ word32 verify(byte rdi[])
 	while (true)
 	{
 		uint64 rax_n;
-		if ((byte) (uint64) rdi[(int64) (word32) (uint64) dwLoc0C_n] == 0x00)
+		if (rdi[(int64) dwLoc0C_n] == 0x00)
 			break;
-		byte al_n = (byte) (uint64) ((word32) (uint64) dwLoc0C_n ^ (word32) ((uint64) ((word32) ((uint64) rdi[(int64) ((word32) ((uint64) dwLoc0C_n))]))));
-		if ((byte) (uint64) g_a601020[(int64) (word32) (uint64) dwLoc0C_n] != (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) al_n) >> (byte) ((uint64) ((word32) ((uint64) (0x08 - (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_n) ^ 0x09)) & 0x03)))))))))))) | (word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) al_n) << (byte) ((uint64) ((word32) ((uint64) ((word32) ((uint64) ((word32) ((uint64) dwLoc0C_n) ^ 0x09)) & 0x03)))))))))))) + 0x08)
+		byte al_n = (byte) (dwLoc0C_n ^ (word32) ((uint64) rdi[(int64) dwLoc0C_n]));
+		if (g_a601020[(int64) dwLoc0C_n] != ((byte) ((word32) ((uint64) al_n) >> 0x08 - (((byte) dwLoc0C_n ^ 0x09) & 0x03)) | (byte) ((word32) ((uint64) al_n)) << (((byte) dwLoc0C_n ^ 0x09) & 0x03)) + 0x08)
 		{
 			rax_n = 0x00;
 			return (word32) rax_n;
@@ -91,7 +91,7 @@ void main(struct Eq_n * rsi, word32 edi)
 {
 	if (edi != 0x02)
 		puts("You need to enter the secret key!");
-	else if ((word32) (uint64) verify(rsi->ptr0008) != 0x00)
+	else if (verify(rsi->ptr0008) != 0x00)
 		puts("Correct! that is the secret key!");
 	else
 		puts("I'm sorry, that's the wrong secret key!");
@@ -103,7 +103,6 @@ void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
 	word32 edi = (word32) rdi;
 	_init();
 	int64 rbp_n = 0x00600E00 - 0x00600DF8;
-	word32 r13d_n = (word32) (uint64) edi;
 	if (rbp_n >> 0x03 != 0x00)
 	{
 		Eq_n rbx_n = 0x00;

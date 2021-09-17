@@ -15,8 +15,8 @@ l0000C3DE:
 	branch Mem60[0x00FF0F04<p32>:word32] - Mem60[0x00FF0F08<p32>:word32] < 0<32> l0000C050
 l0000C050:
 	word32 d3_71 = SEQ(SLICE(a4_56, word24, 8), Mem60[a0 + 4<i32> + a4_56:byte])
-	word16 v27_75 = SLICE(d3_71 & 0xFF<32>, word16, 0) & 0xF0<16>
-	word32 d0_80 = SEQ(SLICE(SEQ(SLICE(d3_71 & 0xFF<32>, word16, 16), v27_75), word24, 8), SLICE(v27_75, byte, 0) >>u 2<8>)
+	word16 v27_75 = SLICE(d3_71, word16, 0) & 0xFF<16> & 0xF0<16>
+	word32 d0_80 = SEQ(SLICE(CONVERT(v27_75, word16, uint32), word24, 8), SLICE(v27_75, byte, 0) >>u 2<8>)
 	a4_56 = a4_56 + 1<i32>
 	branch SLICE(d0_80, word16, 0) > 0x2C<16> l0000C3DE
 l0000C06A:

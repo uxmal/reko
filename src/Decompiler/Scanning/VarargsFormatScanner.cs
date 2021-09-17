@@ -93,7 +93,8 @@ namespace Reko.Scanning
 
         private Expression GetValue(Expression op)
         {
-            return op.Accept<Expression>(eval);
+            var (e, _) = op.Accept(eval);
+            return e;
         }
 
         private string? ReadVarargsFormat(Address addrInstr, Expression callee, FunctionType sig)

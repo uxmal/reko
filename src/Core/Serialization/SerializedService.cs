@@ -47,8 +47,6 @@ namespace Reko.Core.Serialization
 		public SystemService Build(IPlatform platform, TypeLibrary library)
 		{
 			SystemService svc = new SystemService();
-            if (Name!= null && Name.Contains("mkdir"))
-                Name.ToString();//$DEBUG
 			svc.Name = Name;
             if (this.SyscallInfo != null)
             {

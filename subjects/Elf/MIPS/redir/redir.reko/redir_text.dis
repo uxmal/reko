@@ -1720,11 +1720,11 @@ l00401BC8_ds_t:
 l00401BFC:
 	bzero(r2_29 + 6040<i32>, 16<i32>)
 	Mem52[r2_29 + 0x1798<32>:word16] = 2<16>
-	Mem56[r2_29 + 0x179A<32>:word16] = SLICE(CONVERT(Mem52[r4 + 2<32>:uint16], uint16, word32), word16, 0)
+	Mem56[r2_29 + 0x179A<32>:word16] = Mem52[r4 + 2<32>:uint16]
 	Mem60[r2_29 + 0x179C<32>:word32] = Mem56[r4 + 4<32>:word32]
 	Mem77[r2_29:word32] = accept(r6, r2_29 + 6040<i32>, fp + -32<i32>)
 	Mem82[r2_29 + 0x17A8<32>:word16] = 2<16>
-	Mem86[r2_29 + 0x17AA<32>:word16] = SLICE(CONVERT(Mem82[r5 + 2<32>:uint16], uint16, word32), word16, 0)
+	Mem86[r2_29 + 0x17AA<32>:word16] = Mem82[r5 + 2<32>:uint16]
 	Mem90[r2_29 + 0x17AC<32>:word32] = Mem86[r5 + 4<32>:word32]
 	Mem93[r2_29 + 0x1790<32>:word32] = r7
 	word32 r5_100

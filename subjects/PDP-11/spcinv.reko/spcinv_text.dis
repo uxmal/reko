@@ -256,12 +256,12 @@ l04B4:
 	word16 r0_36 = r0_28 - 1<16>
 	branch Mem34[0x0F02<p16>:word16] > 0<16> l04D8
 l04D2:
-	branch r0_28 - 1<16> >=u 4<8> l0584
+	branch r0_28 >=u 5<16> l0584
 l04D8:
-	branch r0_28 - 1<16> == 2<8> l0584
+	branch r0_28 == 3<16> l0584
 l04DE:
 	Mem51[r5_10 + 0xEF3<16>:byte] = r0_28 - 1<16>
-	branch r0_28 - 1<16> >u 0x16<8> l04EE
+	branch r0_28 >u 0x17<16> || r0_28 <u 1<16> l04EE
 l04E8:
 	sp_107 = <invalid>
 	branch fn067C(r0_28 - 1<16>, r3_15, r4_29 + 1<16>, r5_10, out r0_36, out r4, out r5_10) l0584

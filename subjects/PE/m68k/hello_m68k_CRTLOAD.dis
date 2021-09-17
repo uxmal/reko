@@ -95,9 +95,9 @@ l0000155C:
 	branch v18_81 < 0<8> l00001572
 l00001572:
 	a3_131 = a3_131 + 1<i32>
-	d0_84 = SEQ(SLICE(SEQ(SLICE(d0_84, word16, 16), SLICE(d0_84, word16, 0) << 8<16>), word24, 8), Mem80[a3_131:byte])
+	d0_84 = SEQ(SLICE(CONVERT(SLICE(d0_84, word16, 0) << 8<16>, word16, uint32), word24, 8), Mem80[a3_131:byte])
 l00001576:
-	d0_100 = SEQ(SLICE(d0_84, word16, 16), SLICE(d0_84 * 2<32>, word16, 0))
+	d0_100 = SEQ(SLICE(d0_84, word16, 16), SLICE(d0_84, word16, 0) * 2<16>)
 l0000155E:
 	byte v22_102 = Mem80[a3_131:byte]
 	word32 d0_105 = CONVERT(v22_102, byte, uint32)
@@ -107,9 +107,9 @@ l0000159A:
 	return
 fn000014E8_exit:
 l00001562:
-	word32 d0_126 = SEQ(SLICE(__swap(SEQ(SLICE(SEQ(SLICE(d0_105, word16, 16), SLICE(d0_105, word16, 0) << 8<16>), word24, 8), Mem80[a3_131 + 1<i32>:byte])), word24, 8), Mem80[a3_131 + 2<i32>:byte])
+	word24 v29_125 = SLICE(__swap(SEQ(SLICE(CONVERT(SLICE(d0_105, word16, 0) << 8<16>, word16, uint32), word24, 8), Mem80[a3_131 + 1<i32>:byte])), word24, 8)
 	a3_131 = a3_131 + 4<i32>
-	d0_100 = SEQ(SLICE(SEQ(SLICE(d0_126, word16, 16), SLICE(d0_126, word16, 0) << 8<16>), word24, 8), Mem80[a3_131 + 3<i32>:byte]) * 2<32>
+	d0_100 = SEQ(SLICE(SEQ(SLICE(v29_125, word16, 8), SLICE(SEQ(v29_125, Mem80[a3_131 + 2<i32>:byte]), word16, 0) << 8<16>), word24, 8), Mem80[a3_131 + 3<i32>:byte]) * 2<32>
 l00001578:
 	a2_137 = a2_137 + d0_100
 	branch dwArg02 == 0<32> l00001582

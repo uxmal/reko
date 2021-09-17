@@ -118,7 +118,7 @@ namespace Reko.Scanning
             var ass = host.AsAssignment(instr);
             if (ass.Item1 != null)
             {
-                var assSrc = ass.Item2!.Accept(eval);
+                var (assSrc, _) = ass.Item2!.Accept(eval);
                 var assDst = ass.Item1;
                 var regSrc = RegisterOf(assSrc);
                 if (assSrc is BinaryExpression binSrc)
@@ -509,7 +509,8 @@ namespace Reko.Scanning
                 return;
             if (mem is SegmentedAccess segmem)
             {
-                if (segmem.BasePointer.Accept(eval) is Constant selector)
+                var (e, _) = segmem.BasePointer.Accept(eval);
+                if (e is Constant selector)
                 {
                     VectorAddress = host.MakeSegmentedAddress(selector, vector);
                 }

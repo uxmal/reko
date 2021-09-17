@@ -207,7 +207,8 @@ namespace Reko.Scanning
 
         public Expression GetValue(Expression op)
         {
-            return op.Accept<Expression>(eval);
+            var (e, _) = op.Accept(eval);
+            return e;
         }
 
         public void SetValue(Expression dst, Expression value)
@@ -660,7 +661,7 @@ namespace Reko.Scanning
 
         private Address? CallTargetAsAddress(RtlCall call)
         {
-            var callTarget = call.Target.Accept(eval);
+            var (callTarget, _) = call.Target.Accept(eval);
             if (callTarget is Constant c)
             {
                 if (c.IsValid)
@@ -724,7 +725,7 @@ namespace Reko.Scanning
                         Constant.Create(
                             PrimitiveType.CreateWord(sizeOfRetAddrOnStack * DataType.BitsPerByte),
                             sizeOfRetAddrOnStack));
-                newVal = newVal.Accept(eval);
+                (newVal, _) = newVal.Accept(eval);
                 SetValue(stackReg, newVal);
             }
             return state.OnBeforeCall(stackReg, sizeOfRetAddrOnStack);
@@ -759,7 +760,7 @@ namespace Reko.Scanning
                     Constant.Create(
                         PrimitiveType.CreateWord(stackReg.DataType.BitSize),
                         sigCallee.StackDelta));
-                newVal = newVal.Accept(eval);
+                (newVal, _) = newVal.Accept(eval);
                 SetValue(stackReg, newVal);
             }
             state.OnAfterCall(sigCallee);

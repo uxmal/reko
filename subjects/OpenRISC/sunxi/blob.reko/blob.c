@@ -3427,7 +3427,7 @@ int32 fn00009C2C(Eq_n r3, Eq_n r4, Eq_n r15, word32 VR, union Eq_n & r15Out, ptr
 l00009D10:
 	struct Eq_n * r3_n = r3 *32 0x18 + 77456;
 	r1_n[3] = (struct Eq_n) r3_n->b0003;
-	r1_n[2] = (struct Eq_n) (byte) (r3_n->dw0014 & (word32) r1_n[2]);
+	r1_n[2] = (struct Eq_n) (r3_n->b0014 & r1_n[2]);
 	ptr32 r14_n = (char *) &r1_n->dwFFFFFFF8 + 5;
 	word32 r24_n;
 	word32 r22_n;
@@ -3638,7 +3638,7 @@ Eq_n fn0000A070(Eq_n r3, word32 VR)
 			r11_n.u0 = -1;
 		}
 		else
-			r2_n->bFFFFFFFE = (byte) (r11_n & 0x01);
+			r2_n->bFFFFFFFE = (byte) r11_n & 0x01;
 		return r11_n;
 	}
 }
@@ -5495,7 +5495,7 @@ int32 fn0000D49C(union Eq_n * r3, Eq_n r15, word32 VR, struct Eq_n & r14Out, ptr
 		word32 r22_n;
 		fn0000D214((word64) r14_n + (fp - 100), r2_n, -1, VR, out r22_n, out r28_n);
 		if (r30_n == 0x00)
-			*r2_n = (byte) (((word32) *((word64) r14_n + r28_n) ^ 0xFF) & (word32) (*r2_n));
+			*r2_n = ~*((word64) r14_n + r28_n) & *r2_n;
 		int32 r22_n;
 		ptr32 r24_n;
 		int32 r11_n = fn0000D298(fp - 100, fp - 76, r18_n, VR, out r22_n, out r24_n);
@@ -6515,7 +6515,7 @@ l0000F0B0:
 			word32 r11_n;
 			Eq_n r15_n;
 			fn0000FEDC(r18_n, r2_n, r15_n, out r11_n, out r15_n);
-			*r14_n = (byte) (r11_n + -48);
+			*r14_n = (byte) r11_n + 0xD0;
 			Eq_n r11_n;
 			Eq_n r15_n;
 			fn0001003C(r18_n, r2_n, r15_n, out r11_n, out r15_n);
@@ -6534,7 +6534,7 @@ l0000F0B0:
 		Eq_n r15_n;
 		fn0000FEDC(r11_n, -100, r15_n, out r11_n, out r15_n);
 		struct Eq_n * r1_n = (struct Eq_n *) <invalid>;
-		r1_n[22] = (struct Eq_n) (byte) (r11_n + -48);
+		r1_n[22] = (struct Eq_n) ((byte) r11_n + 0xD0);
 		Eq_n r11_n;
 		Eq_n r15_n;
 		fn0001003C(r11_n, -100, r15_n, out r11_n, out r15_n);
@@ -6542,7 +6542,7 @@ l0000F0B0:
 		word32 r15_n;
 		fn0000FEDC(r11_n, -0x0A, r15_n, out r11_n, out r15_n);
 		struct Eq_n * r1_n = (struct Eq_n *) <invalid>;
-		r1_n[23] = (struct Eq_n) (byte) (r11_n + -48);
+		r1_n[23] = (struct Eq_n) ((byte) r11_n + 0xD0);
 		fn0000D8D8(&r1_n->ptrFFFFFFF0);
 	}
 }

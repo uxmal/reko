@@ -344,7 +344,7 @@ l00400E2C:
 	word32 r6_50 = Mem49[r4:word32]
 	word32 r7_51 = CONVERT(Mem49[r6_50:byte], byte, word32)
 	Mem53[r4:word32] = r6_50 + 1<32>
-	r11_46 = CONVERT(SLICE(CONVERT(SLICE(r7_51, int8, 0), int8, int32) & 0xFF<32>, int16, 0), int16, int32)
+	r11_46 = CONVERT(SLICE(CONVERT(SLICE(r7_51, int8, 0), int8, int32), int16, 0) & 255<i16>, int16, int32)
 l00400E68:
 	branch r11_46 != 0xFFFFFFFF<32> l00400E7C
 l00400E7C:
@@ -889,7 +889,7 @@ l00401538:
 	Mem21[Mem15[r2 + 124<i32>:word32]:word32] = 0x2A<32>
 	return
 l0040150C:
-	Mem28[r3 + r3_27:byte] = SLICE(CONVERT(SLICE(r11_16 & 0xFF<32>, int8, 0), int8, int32), byte, 0)
+	Mem28[r3 + r3_27:byte] = SLICE(CONVERT(SLICE(r11_16, int8, 0), int8, int32), byte, 0)
 	r4 = r4 + 2<32>
 	branch CONVERT(Mem28[r4:word16], word16, word32) == 0<32> l0040154C
 l0040154C:
@@ -927,7 +927,7 @@ l00401554:
 l00401568:
 	branch (r4 & 0xFFFF<32>) <= 0xFF<32> l00401584
 l00401584:
-	Mem12[r3:byte] = SLICE(CONVERT(SLICE(r4 & 0xFFFF<32> & 0xFF<32>, int8, 0), int8, int32), byte, 0)
+	Mem12[r3:byte] = SLICE(CONVERT(SLICE(r4, int8, 0), int8, int32), byte, 0)
 	return
 l00401570:
 	Mem18[Mem0[r2 + 124<i32>:word32]:word32] = 0x2A<32>

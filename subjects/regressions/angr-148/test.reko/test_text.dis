@@ -143,14 +143,13 @@ __libc_csu_init_entry:
 	word32 edi = SLICE(rdi, word32, 0)
 l0000000000400550:
 	_init()
-	word32 r15d_84 = SLICE(CONVERT(edi, word32, uint64), word32, 0)
 	word64 rbp_31 = 0x0000000000600E18<p64> - 0x0000000000600E10<p64>
 	word64 rbx_33 = 0<u64>
 	branch rbp_31 >> 3<64> == 0<64> l00000000004005A6
 l0000000000400588:
 l0000000000400590:
 	call Mem30[0x0000000000600E10<p64> + rbx_33 * 8<64>:word64] (retsize: 8;)
-		uses: rdi:CONVERT(r15d_84, word32, uint64),rdx:rdx,rsi:rsi
+		uses: rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
 	rbx_33 = rbx_33 + 1<64>
 	branch rbx_33 != rbp_31 >> 3<64> l0000000000400590
 l00000000004005A6:

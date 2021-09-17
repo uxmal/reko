@@ -39,7 +39,7 @@ namespace Reko.Evaluation
     /// Partially evaluates expressions, using an <see cref="EvaluationContext"/> to obtain the values
     /// of identifiers and optionally modifies the expression being evaluated.
     /// </summary>
-    public class ExpressionSimplifier : ExpressionVisitor<Expression>
+    public class ExpressionSimplifier : ExpressionVisitor<(Expression, bool)>
     {
         private readonly SegmentMap segmentMap;
         private EvaluationContext ctx;
@@ -119,9 +119,6 @@ namespace Reko.Evaluation
             this.scaledIndexRule = new ScaledIndexRule(ctx);
         }
 
-        public bool Changed { get { return changed; } set { changed = value; } }
-        private bool changed;
-
         private bool IsAddOrSub(Operator op)
         {
             return op == Operator.IAdd || op == Operator.ISub;
@@ -150,22 +147,24 @@ namespace Reko.Evaluation
             return op.ApplyConstants(l, r);
         }
 
-        public virtual Expression VisitAddress(Address addr)
+        public virtual (Expression, bool) VisitAddress(Address addr)
         {
-            return addr;
+            return (addr, false);
         }
 
-        public virtual Expression VisitApplication(Application appl)
+        public virtual (Expression, bool) VisitApplication(Application appl)
         {
+            bool changed = false;
             var args = new Expression[appl.Arguments.Length];
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
-                var arg = appl.Arguments[i];
-                args[i] = arg.Accept(this);
+                var (arg, argChanged) = appl.Arguments[i].Accept(this);
+                args[i] = arg;
+                changed |= argChanged;
             }
             // Rotations-with-carries that rotate in a false carry 
             // flag can be simplified to shifts.
-            if (appl.Procedure is ProcedureConstant pc && 
+            if (appl.Procedure is ProcedureConstant pc &&
                 pc.Procedure is IntrinsicProcedure intrinsic)
             {
                 switch (intrinsic.Name)
@@ -173,40 +172,49 @@ namespace Reko.Evaluation
                 case IntrinsicProcedure.RolC:
                     if (IsSingleBitRotationWithClearCarryIn(args))
                     {
-                        Changed = true;
-                        return new BinaryExpression(Operator.Shl, appl.DataType, args[0], args[1]);
+                        return (new BinaryExpression(Operator.Shl, appl.DataType, args[0], args[1]), true);
                     }
                     break;
                 case IntrinsicProcedure.RorC:
                     if (IsSingleBitRotationWithClearCarryIn(args))
                     {
-                        Changed = true;
-                        return new BinaryExpression(Operator.Shr, appl.DataType, args[0], args[1]);
+                        return (new BinaryExpression(Operator.Shr, appl.DataType, args[0], args[1]), true);
                     }
                     break;
                 case IntrinsicProcedure.Rol:
                     var rol = CombineRotations(intrinsic.Name, appl, args);
                     if (rol != null)
                     {
-                        Changed = true;
-                        return rol;
+                        return (rol, true);
                     }
                     break;
                 case IntrinsicProcedure.Ror:
                     var ror = CombineRotations(intrinsic.Name, appl, args);
                     if (ror != null)
                     {
-                        Changed = true;
-                        return ror;
+                        return (ror, true);
                     }
                     break;
                 }
             }
-            appl = new Application(
-                appl.Procedure.Accept(this),
-                appl.DataType,
-                args);
-            return ctx.GetValue(appl);
+            var (proc, procChanged) = appl.Procedure.Accept(this);
+            changed |= procChanged;
+            if (changed)
+            {
+                appl = new Application(
+                    proc,
+                    appl.DataType,
+                    args);
+            }
+            var newAppl = ctx.GetValue(appl);
+            if (newAppl != appl)
+            {
+                return (newAppl, true);
+            }
+            else
+            {
+                return (appl, changed);
+            }
         }
 
         private Expression? CombineRotations(string rotationName, Application appl, Expression[] args)
@@ -221,7 +229,6 @@ namespace Reko.Evaluation
                     if (appInner.Arguments[1] is Constant cInner)
                     {
                         var cTot = Operator.IAdd.ApplyConstants(cOuter, cInner);
-                        Changed = true;
                         return new Application(
                             appl.Procedure,
                             appl.DataType,
@@ -242,53 +249,59 @@ namespace Reko.Evaluation
                                     c.IsIntegerZero;
         }
 
-        public virtual Expression VisitArrayAccess(ArrayAccess acc)
+        public virtual (Expression, bool) VisitArrayAccess(ArrayAccess acc)
         {
-            return new ArrayAccess(
-                acc.DataType,
-                acc.Array.Accept(this),
-                acc.Index.Accept(this));
+            var (a, aChanged) = acc.Array.Accept(this);
+            var (i, iChanged) = acc.Index.Accept(this);
+            if (aChanged || iChanged)
+            {
+                return (new ArrayAccess(acc.DataType, a, i), true);
+            }
+            else
+            {
+                return (acc, false);
+            }
         }
 
-        public virtual Expression VisitBinaryExpression(BinaryExpression binExp)
+        public virtual (Expression, bool) VisitBinaryExpression(BinaryExpression binExp)
         {
             // (+ id1 id1) ==> (* id1 2)
 
             if (add2ids.Match(binExp))
             {
-                Changed = true;
-                return add2ids.Transform().Accept(this);
+                var (e, _) = add2ids.Transform().Accept(this);
+                return (e, true);
             }
             if (binopWithSelf.Match(binExp))
             {
-                Changed = true;
-                return binopWithSelf.Transform(ctx).Accept(this);
+                var (e, _) = binopWithSelf.Transform(ctx).Accept(this);
+                return (e, true);
             }
             if (distributedConvert.Match(binExp))
             {
-                Changed = true;
-                return distributedConvert.Transform(ctx).Accept(this);
-            }
-            if (distributedCast.Match(binExp))
-            {
-                Changed = true;
-                return distributedCast.Transform(ctx).Accept(this);
+                var (e, _) = distributedConvert.Transform(ctx).Accept(this);
+                return (e, true);
             }
             if (distributedSlice.Match(binExp))
             {
-                Changed = true;
-                return distributedSlice.Transform(ctx).Accept(this);
+                var (e, _) = distributedSlice.Transform(ctx).Accept(this);
+                return (e, true);
+            }
+            if (distributedCast.Match(binExp))
+            {
+                var (e, _) = distributedCast.Transform(ctx).Accept(this);
+                return (e, true);
             }
             // (exp >> n) << n => __align(exp, 1<<n)
             var eNew = ShiftRightShiftLeft(binExp);
             if (eNew != null)
             {
-                Changed = true;
-                return eNew;
+                return (eNew, true);
             }
 
-            var left = binExp.Left.Accept(this);
-            var right = binExp.Right.Accept(this);
+            var (left, lChanged) = binExp.Left.Accept(this);
+            var (right, rChanged) = binExp.Right.Accept(this);
+            bool changed = lChanged | rChanged;
             Constant? cLeft = left as Constant;
             Constant? cRight = right as Constant;
             if (cLeft != null && BinaryExpression.Commutes(binExp.Operator))
@@ -306,22 +319,19 @@ namespace Reko.Evaluation
                 // (+ X 0) ==> X
                 if (cRight.IsIntegerZero && IsAddOrSub(binExp.Operator))
                 {
-                    Changed = true;
-                    return left;
+                    return (left, true);
                 }
                 if (binExp.Operator == Operator.Or)
                 {
                     if (cRight.IsIntegerZero)
                     {
-                        Changed = true;
-                        return left;
+                        return (left, true);
                     }
                     // (| X 0xFFFF...F) ==> 0xFFFF...F
                     if (cRight.IsMaxUnsigned && sameBitsize && !CriticalInstruction.IsCritical(left))
                     {
                         ctx.RemoveExpressionUse(left);
-                        Changed = true;
-                        return right;
+                        return (right, true);
                     }
                 }
                 if (binExp.Operator == Operator.And)
@@ -329,53 +339,51 @@ namespace Reko.Evaluation
                     if (cRight.IsIntegerZero && sameBitsize && !CriticalInstruction.IsCritical(left))
                     {
                         ctx.RemoveExpressionUse(left);
-                        Changed = true;
-                        return cRight;
+                        return (cRight, true);
                     }
                     if (cRight.IsMaxUnsigned && sameBitsize)
                     {
-                        Changed = true;
-                        return left;
+                        return (left, true);
                     }
                 }
                 if (binExp.Operator == Operator.Xor)
                 {
                     if (cRight.IsIntegerZero)
                     {
-                        Changed = true;
-                        return left;
+                        return (left, true);
                     }
                     if (cRight.IsMaxUnsigned && sameBitsize)
                     {
-                        Changed = true;
-                        return new UnaryExpression(Operator.Comp, left.DataType, left).Accept(this);
+                        var (e, _) = new UnaryExpression(Operator.Comp, left.DataType, left).Accept(this);
+                        return (e, true);
                     }
                 }
             }
 
             //$REVIEW: this is evaluation! Shouldn't the be done by the evaluator?
             if (left is InvalidConstant || right is InvalidConstant)
-                return InvalidConstant.Create(binExp.DataType);
+                return (InvalidConstant.Create(binExp.DataType), lChanged | rChanged);
 
             binExp = new BinaryExpression(binExp.Operator, binExp.DataType, left, right);
             if (constConstBin.Match(binExp))
             {
-                Changed = true;
-                return constConstBin.Transform();
+                return (constConstBin.Transform(), true);
             }
+
             Identifier? idLeft = left as Identifier;
             Identifier? idRight = right as Identifier;
 
             // (rel? id1 c) should just pass.
 
             if (IsIntComparison(binExp.Operator) && cRight != null && idLeft != null)
-                return binExp;
+                return (binExp!, changed);
 
             // Floating point expressions with "integer" constants 
             if (IsFloatComparison(binExp.Operator) && IsNonFloatConstant(cRight))
             {
                 cRight = ctx.ReinterpretAsFloat(cRight!);
                 right = cRight;
+                changed = true;
                 binExp = new BinaryExpression(
                     binExp.Operator,
                     binExp.DataType,
@@ -396,7 +404,6 @@ namespace Reko.Evaluation
                 if (IsAddOrSub(binExp.Operator) && IsAddOrSub(binLeft.Operator) &&
                 !cLeftRight.IsReal && !cRight.IsReal)
                 {
-                    Changed = true;
                     var binOperator = binExp.Operator;
                     Constant c;
                     if (binLeft.Operator == binOperator)
@@ -419,17 +426,16 @@ namespace Reko.Evaluation
                         }
                     }
                     if (c.IsIntegerZero)
-                        return binLeft.Left;
-                    return new BinaryExpression(binOperator, binExp.DataType, binLeft.Left, c);
+                        return (binLeft.Left, true);
+                    return (new BinaryExpression(binOperator, binExp.DataType, binLeft.Left, c), true);
                 }
                 if (binExp.Operator == Operator.IMul && binLeft.Operator == Operator.IMul)
                 {
-                    Changed = true;
                     var c = Operator.IMul.ApplyConstants(cLeftRight, cRight);
                     if (c.IsIntegerZero)
-                        return c;
+                        return (c, true);
                     else
-                        return new BinaryExpression(binExp.Operator, binExp.DataType, binLeft.Left, c);
+                        return (new BinaryExpression(binExp.Operator, binExp.DataType, binLeft.Left, c), true);
                 }
             }
 
@@ -440,11 +446,11 @@ namespace Reko.Evaluation
                 binLeft.Left is Constant cBinLeft &&
                 binLeft.Operator == Operator.ISub)
             {
-                return new BinaryExpression(
+                return (new BinaryExpression(
                     ((ConditionalOperator) binExp.Operator).Negate(),
                     binExp.DataType,
                     binLeft.Right,
-                    cBinLeft);
+                    cBinLeft), true);
             }
 
             // (rel (- e c1) c2) => (rel e c1+c2)
@@ -458,76 +464,66 @@ namespace Reko.Evaluation
                     binLeft.Operator == Operator.ISub &&
                     !cRight.IsIntegerZero)
                 {
-                    Changed = true;
                     ctx.UseExpression(binLeft.Left);
                     var c = ExpressionSimplifier.SimplifyTwoConstants(Operator.IAdd, cLeftRight, cRight);
-                    return new BinaryExpression(Operator.Cor, PrimitiveType.Bool,
+                    return (m.Cor(
                         new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c),
-                        new BinaryExpression(Operator.Ult, PrimitiveType.Bool, binLeft.Left, cLeftRight));
+                        new BinaryExpression(Operator.Ult, PrimitiveType.Bool, binLeft.Left, cLeftRight)),
+                        true);
                 }
                 else
                 {
-                    Changed = true;
                     ctx.RemoveIdentifierUse(idLeft!);
                     var op = binLeft.Operator == Operator.IAdd ? Operator.ISub : Operator.IAdd;
                     var c = ExpressionSimplifier.SimplifyTwoConstants(op, cLeftRight, cRight);
-                    return new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c);
+                    return (new BinaryExpression(binExp.Operator, PrimitiveType.Bool, binLeft.Left, c), true);
                 }
             }
 
             // (rel C non-C) => (trans(rel) non-C C)
             if (constOnLeft.Match(binExp))
             {
-                Changed = true;
-                return constOnLeft.Transform().Accept(this);
+                var (e, _) = constOnLeft.Transform().Accept(this);
+                return (e, true);
             }
             if (addMici.Match(binExp))
             {
-                Changed = true;
-                return addMici.Transform();
+                return (addMici.Transform(), true);
             }
 
             if (shAdd.Match(binExp))
             {
-                Changed = true;
-                return shAdd.Transform();
+                return (shAdd.Transform(), true);
             }
 
             if (shMul.Match(binExp))
             {
-                Changed = true;
-                return shMul.Transform();
+                return (shMul.Transform(), true);
             }
 
             if (shiftShift.Match(binExp))
             {
-                Changed = true;
-                return shiftShift.Transform();
+                return (shiftShift.Transform(), true);
             }
 
             eNew = ShiftLeftShiftRight(binExp, cRight);
             if (eNew != null)
             {
-                Changed = true;
-                return eNew;
+                return (eNew, true);
             }
 
             // (-exp == 0) => (exp == 0)
             if (unaryNegEqZero.Match(binExp))
             {
-                Changed = true;
-                return unaryNegEqZero.Transform();
+                return (unaryNegEqZero.Transform(), true);
             }
 
             if (logicalNotFromBorrow.Match(binExp))
             {
-                Changed = true;
-                return logicalNotFromBorrow.Transform();
+                return (logicalNotFromBorrow.Transform(), true);
             }
 
-            // No change, just return as is.
-
-            return binExp;
+            return (binExp, changed);
         }
 
         private bool IsNonFloatConstant(Constant? cRight)
@@ -608,9 +604,9 @@ namespace Reko.Evaluation
             throw new ArgumentException(string.Format("Can't add types of different domains {0} and {1}", l.DataType, r.DataType));
         }
 
-        public virtual Expression VisitConversion(Conversion conversion)
+        public virtual (Expression, bool) VisitConversion(Conversion conversion)
         {
-            var exp = conversion.Expression.Accept(this);
+            var (exp, changed) = conversion.Expression.Accept(this);
             if (!(exp is InvalidConstant))
             {
                 var ptCvt = conversion.DataType.ResolveAs<PrimitiveType>();
@@ -626,21 +622,18 @@ namespace Reko.Evaluation
                                 if (ptCvt.Size < ptSrc.Size)
                                 {
                                     // Real-to-real conversion.
-                                    Changed = true;
-                                    return ConstantReal.Create(ptCvt, c.ToReal64());
+                                    return (ConstantReal.Create(ptCvt, c.ToReal64()), true);
                                 }
                             }
                             else if (ptSrc.IsWord)
                             {
                                 // Raw bit pattern reinterpretation.
-                                Changed = true;
-                                return CastRawBitsToReal(ptCvt, c);
+                                return (CastRawBitsToReal(ptCvt, c), true);
                             }
                             else
                             {
                                 // integer to real conversion
-                                Changed = true;
-                                return ConstantReal.Create(ptCvt, c.ToInt64());
+                                return (ConstantReal.Create(ptCvt, c.ToInt64()), true);
                             }
                         }
                         else if ((ptSrc.Domain & Domain.Integer) != 0)
@@ -649,13 +642,11 @@ namespace Reko.Evaluation
                             {
                                 if (ptSrc.Domain == Domain.SignedInt)
                                 {
-                                    Changed = true;
-                                    return Constant.Create(ptCvt, c.ToInt64());
+                                    return (Constant.Create(ptCvt, c.ToInt64()), true);
                                 }
                                 else if (ptSrc.Domain.HasFlag(Domain.SignedInt))
                                 {
-                                    Changed = true;
-                                    return Constant.Create(ptCvt, c.ToUInt64());
+                                    return (Constant.Create(ptCvt, c.ToUInt64()), true);
                                 }
                             }
                         }
@@ -675,38 +666,36 @@ namespace Reko.Evaluation
                             ctx.RemoveExpressionUse(elem);
                         }
                         ctx.UseExpression(lsbElem);
-                        Changed = true;
                         if (sizeDiff > 0)
                         {
-                            return new Conversion(lsbElem, lsbElem.DataType, conversion.DataType);
+                            return (new Conversion(lsbElem, lsbElem.DataType, conversion.DataType), true);
                         }
                         else
                         {
-                            return lsbElem;
+                            return (lsbElem, true);
                         }
                     }
                 }
                 if (exp is ProcedureConstant pc && conversion.DataType.BitSize == pc.DataType.BitSize)
                 {
                     // (wordnn) procedure_const => procedure_const
-                    return pc;
+                    return (pc, true);
                 }
                 if (exp.DataType.BitSize == conversion.DataType.BitSize)
                 {
                     // Redundant word-casts can be stripped.
                     if (conversion.DataType.IsWord)
                     {
-                        return exp;
+                        return (exp, true);
                     }
                 }
                 conversion = new Conversion(exp, exp.DataType, conversion.DataType);
             }
             if (convertConvertRule.Match(conversion))
             {
-                Changed = true;
-                return convertConvertRule.Transform();
+                return (convertConvertRule.Transform(), true);
             }
-            return conversion;
+            return (conversion, changed);
         }
 
         /// <summary>
@@ -734,97 +723,107 @@ namespace Reko.Evaluation
             }
         }
 
-        public virtual Expression VisitCast(Cast cast)
+        public virtual (Expression, bool) VisitCast(Cast cast)
         {
-            var e = cast.Expression.Accept(this);
-            return new Cast(cast.DataType, e);
+            var (e, changed) = cast.Expression.Accept(this);
+            if (changed)
+                cast = new Cast(cast.DataType, e);
+            return (cast, changed);
         }
 
-        public virtual Expression VisitConditionalExpression(ConditionalExpression c)
+        public virtual (Expression, bool) VisitConditionalExpression(ConditionalExpression c)
         {
-            var cond = c.Condition.Accept(this);
-            var t = c.ThenExp.Accept(this);
-            var f = c.FalseExp.Accept(this);
+            var (cond, cChanged) = c.Condition.Accept(this);
+            var (t, tChanged) = c.ThenExp.Accept(this);
+            var (f, fChanged) = c.FalseExp.Accept(this);
             if (cond is Constant cCond && cCond.DataType == PrimitiveType.Bool)
             {
+                //$TODO: side effects?
                 if (cCond.IsZero)
-                    return f;
+                    return (f, true);
                 else
-                    return t;
+                    return (t, true);
             }
-            return new ConditionalExpression(c.DataType, cond, t, f);
+            bool changed = (cChanged | tChanged | fChanged);
+            if (changed)
+                c = new ConditionalExpression(c.DataType, cond, t, f);
+            return (c, changed);
         }
 
-        public virtual Expression VisitConditionOf(ConditionOf c)
+        public virtual (Expression, bool) VisitConditionOf(ConditionOf c)
         {
-            var e = c.Expression.Accept(this);
+            var (e, changed) = c.Expression.Accept(this);
             //$REVIEW: if e == 0, then Z flags could be set to 1. But that's architecture specific, so
             // we leave that as an exercise to re reader
-            if (e != c.Expression)
+            if (changed)
                 c = new ConditionOf(e);
-            return c;
+            return (c, changed);
         }
 
-        public virtual Expression VisitConstant(Constant c)
+        public virtual (Expression, bool) VisitConstant(Constant c)
         {
-            return c;
+            return (c, false);
         }
 
-        public virtual Expression VisitDereference(Dereference deref)
+        public virtual (Expression, bool) VisitDereference(Dereference deref)
         {
-            var e = deref.Expression.Accept(this);
-            return new Dereference(deref.DataType, e);
+            var (e, changed) = deref.Expression.Accept(this);
+            if (changed)
+                deref = new Dereference(deref.DataType, e);
+            return (deref, changed);
         }
 
-        public virtual Expression VisitFieldAccess(FieldAccess acc)
+        public virtual (Expression, bool) VisitFieldAccess(FieldAccess acc)
         {
             throw new NotImplementedException();
         }
 
-        public virtual Expression VisitIdentifier(Identifier id)
+        public virtual (Expression, bool) VisitIdentifier(Identifier id)
         {
             if (idConst.Match(id))
             {
-                Changed = true;
-                return idConst.Transform();
+                return (idConst.Transform(), true);
             }
             if (idProcConstRule.Match(id))
             {
-                Changed = true;
-                return idProcConstRule.Transform();
+                return (idProcConstRule.Transform(), true);
             }
             // jkl: Copy propagation causes real problems when used during trashed register analysis.
             // If needed in other passes, it should be an option for expression e
             if (idCopyPropagation.Match(id))
             {
-                Changed = true;
-                return idCopyPropagation.Transform();
+                return (idCopyPropagation.Transform(), true);
             }
             if (idBinIdc.Match(id))
             {
-                Changed = true;
-                return idBinIdc.Transform();
+                return (idBinIdc.Transform(), true);
             }
-            return id;
+            return (id, false);
         }
 
-        public virtual Expression VisitMemberPointerSelector(MemberPointerSelector mps)
+        public virtual (Expression, bool) VisitMemberPointerSelector(MemberPointerSelector mps)
         {
-            if (mpsRule.Match(mps))
-            {
-                Changed = true;
-                return mpsRule.Transform();
-            }
-            return mps;
+            //$TODO: this has been disabled.
+            //if (mpsRule.Match(mps))
+            //{
+            //    var (e, _) = mpsRule.Transform().Accept(this);
+            //    return 
+            //}
+            var basePtr = mps.BasePointer.Accept(this);
+            var memberPtr = mps.MemberPointer.Accept(this);
+            var changed = basePtr.Item2 | memberPtr.Item2;
+            if (changed)
+                mps = new MemberPointerSelector(mps.DataType, basePtr.Item1, memberPtr.Item1);
+            return (mps, changed);
         }
 
-        public virtual Expression VisitMemoryAccess(MemoryAccess access)
+        public virtual (Expression, bool) VisitMemoryAccess(MemoryAccess access)
         {
-            var offset = access.EffectiveAddress.Accept(this);
+            var (offset, changed) = access.EffectiveAddress.Accept(this);
             if (this.scaledIndexRule.Match(offset))
             {
-                Changed = true;
-                offset = scaledIndexRule.Transform().Accept(this);
+                changed = true;
+                (offset, _) = scaledIndexRule.Transform().Accept(this);
             }
             var value = new MemoryAccess(
                 access.MemoryId,
@@ -835,17 +834,20 @@ namespace Reko.Evaluation
             {
                 ctx.RemoveExpressionUse(value);
                 ctx.UseExpression(newValue);
+                changed = true;
             }
-            return newValue;
+            return (newValue, changed);
         }
 
-        public virtual Expression VisitMkSequence(MkSequence seq)
+        public virtual (Expression, bool) VisitMkSequence(MkSequence seq)
         {
+            bool changed = false;
             var newSeq = seq.Expressions.Select(e =>
             {
-                var eNew = e.Accept(this);
+                var (eNew, eChanged) = e.Accept(this);
                 if (eNew is InvalidConstant)
                     eNew = e;
+                changed |= eChanged;
                 return eNew;
             }).ToArray();
             if (newSeq.Length == 2)
@@ -857,16 +859,15 @@ namespace Reko.Evaluation
                     PrimitiveType tHead = (PrimitiveType) c1.DataType;
                     PrimitiveType tTail = (PrimitiveType) c2.DataType;
                     PrimitiveType t;
-                    Changed = true;
                     if (tHead.Domain == Domain.Selector)            //$REVIEW: seems to require Address, SegmentedAddress?
                     {
                         t = PrimitiveType.Create(Domain.Pointer, tHead.BitSize + tTail.BitSize);
-                        return ctx.MakeSegmentedAddress(c1, c2);
+                        return (ctx.MakeSegmentedAddress(c1, c2), true);
                     }
                     else
                     {
                         t = PrimitiveType.Create(tHead.Domain, tHead.BitSize + tTail.BitSize);
-                        return Constant.Create(t, (c1.ToUInt64() << tTail.BitSize) | c2.ToUInt64());
+                        return (Constant.Create(t, (c1.ToUInt64() << tTail.BitSize) | c2.ToUInt64()), true);
                     }
                 }
             }
@@ -879,20 +880,22 @@ namespace Reko.Evaluation
                     var c = (Constant) newSeq[i];
                     value = (value << c.DataType.BitSize) | c.ToUInt64();
                 }
-                return Constant.Create(seq.DataType, value);
+                return (Constant.Create(seq.DataType, value), true);
             }
             if (newSeq.Take(newSeq.Length - 1).All(e => e.IsZero))
             {
                 var tail = newSeq.Last();
                 // leading zeros imply a conversion to unsigned.
-                return new Conversion(
+                return (new Conversion(
                     tail,
                     PrimitiveType.Create(Domain.UnsignedInt, tail.DataType.BitSize),
-                    PrimitiveType.Create(Domain.UnsignedInt, seq.DataType.BitSize));
+                    PrimitiveType.Create(Domain.UnsignedInt, seq.DataType.BitSize)),
+                    true);
             }
             var mem = FuseAdjacentMemoryAccesses(seq.DataType, newSeq);
             if (mem != null)
-                return mem;
+                return (mem, true);
+            //$TODO: fix changed here.
             return FuseAdjacentSlices(seq.DataType, newSeq);
         }
 
@@ -988,7 +991,7 @@ namespace Reko.Evaluation
             return (access, seg, eaStripped, offset);
         }
 
-        private Expression FuseAdjacentSlices(DataType dataType, Expression[] elems)
+        private (Expression, bool) FuseAdjacentSlices(DataType dataType, Expression[] elems)
         {
             var fused = new List<Expression> { AsSlice(elems[0]) ?? elems[0] };
             bool changed = false;
@@ -1004,7 +1007,7 @@ namespace Reko.Evaluation
                         PrimitiveType.CreateWord(slPrev.DataType.BitSize + slNext.DataType.BitSize),
                         slNext.Expression,
                         slNext.Offset);
-                    fused[fused.Count - 1] = newSlice.Accept(this);
+                    (fused[fused.Count - 1], _) = newSlice.Accept(this);
                     changed = true;
                 }
                 else
@@ -1019,13 +1022,13 @@ namespace Reko.Evaluation
                 foreach (var f in fused)
                     ctx.UseExpression(f);
                 if (fused.Count == 1)
-                    return fused[0];
+                    return (fused[0], true);
                 else
-                    return new MkSequence(dataType, fused.ToArray());
+                    return (new MkSequence(dataType, fused.ToArray()), true);
             }
             else
             {
-                return new MkSequence(dataType, elems);
+                return (new MkSequence(dataType, elems), false);
             }
         }
 
@@ -1045,42 +1048,43 @@ namespace Reko.Evaluation
             }
         }
 
-        public virtual Expression VisitOutArgument(OutArgument outArg)
+        public virtual (Expression, bool) VisitOutArgument(OutArgument outArg)
         {
-            Expression exp;
-            if (outArg.Expression is Identifier)
-                exp = outArg.Expression;
-            else 
-                exp = outArg.Expression.Accept(this);
-            return new OutArgument(outArg.DataType, exp);
+            if (!(outArg.Expression is Identifier))
+            {
+                var (exp, change) = outArg.Expression.Accept(this);
+                if (change)
+                {
+                    return (new OutArgument(outArg.DataType, exp), true);
+                }
+            }
+            return (outArg, false);
         }
 
-        public virtual Expression VisitPhiFunction(PhiFunction pc)
+        public virtual (Expression, bool) VisitPhiFunction(PhiFunction pc)
         {
-            var oldChanged = Changed;
             var args = pc.Arguments
                 .Select(a =>
                 {
-                    var arg = SimplifyPhiArg(a.Value.Accept(this));
+                    var (e, _) = a.Value.Accept(this);
+                    var (arg, _) = SimplifyPhiArg(e);
                     ctx.RemoveExpressionUse(arg);
                     return arg;
                 })
                 .Where(a => ctx.GetValue((a as Identifier)!) != pc)
                 .ToArray();
-            Changed = oldChanged;
 
             var cmp = new ExpressionValueComparer();
             var e = args.FirstOrDefault();
             if (e != null && args.All(a => cmp.Equals(a, e)))
             {
-                Changed = true;
                 ctx.UseExpression(e);
-                return e;
+                return (e, true);
             }
             else
             {
                 ctx.UseExpression(pc);
-                return pc;
+                return (pc, false);
             }
         }
 
@@ -1096,12 +1100,12 @@ namespace Reko.Evaluation
         /// IdBinIdc rule class processes y as 'used in phi' and prevents propagation.
         /// This method could be used to do such simplification (y + const ==> x)
         /// </summary
-        private Expression SimplifyPhiArg(Expression arg)
+        private (Expression, bool) SimplifyPhiArg(Expression arg)
         {
             if (!(arg is BinaryExpression bin &&
                   bin.Left is Identifier idLeft &&
                   ctx.GetValue(idLeft) is BinaryExpression binLeft))
-                return arg;
+                return (arg, false);
 
             ctx.RemoveIdentifierUse(idLeft);
             ctx.UseExpression(binLeft);
@@ -1113,78 +1117,97 @@ namespace Reko.Evaluation
             return bin.Accept(this);
         }
 
-        public virtual Expression VisitPointerAddition(PointerAddition pa)
+        public virtual (Expression, bool) VisitPointerAddition(PointerAddition pa)
         {
-            return pa;
+            return (pa, false);
         }
 
-        public virtual Expression VisitProcedureConstant(ProcedureConstant pc)
+        public virtual (Expression, bool) VisitProcedureConstant(ProcedureConstant pc)
         {
-            return pc;
+            return (pc, false);
         }
 
-        public virtual Expression VisitScopeResolution(ScopeResolution sc)
+        public virtual (Expression, bool) VisitScopeResolution(ScopeResolution sc)
         {
-            return sc;
+            return (sc, false);
         }
 
-        public virtual Expression VisitSegmentedAccess(SegmentedAccess segMem)
+        public virtual (Expression, bool) VisitSegmentedAccess(SegmentedAccess segMem)
         {
-            var basePtr = segMem.BasePointer.Accept(this);
-            var offset = segMem.EffectiveAddress.Accept(this);
+            var (basePtr, bChanged) = segMem.BasePointer.Accept(this);
+            var (offset, oChanged) = segMem.EffectiveAddress.Accept(this);
+            bool changed = bChanged | oChanged;
             if (this.scaledIndexRule.Match(offset))
             {
-                Changed = true;
-                offset = scaledIndexRule.Transform().Accept(this);
+                changed = true;
+                (offset, _) = scaledIndexRule.Transform().Accept(this);
             }
             if (basePtr is Constant cBase && offset is Constant cOffset)
             {
                 var addr = ctx.MakeSegmentedAddress(cBase, cOffset);
                 var mem = new MemoryAccess(segMem.MemoryId, addr, segMem.DataType);
-                return ctx.GetValue(mem, segmentMap);
+                return (ctx.GetValue(mem, segmentMap), true);
             }
-            segMem = new SegmentedAccess(segMem.MemoryId, basePtr, offset, segMem.DataType);
-            if (sliceSegPtr.Match(segMem))
+            var value = new SegmentedAccess(segMem.MemoryId, basePtr, offset, segMem.DataType);
+            if (sliceSegPtr.Match(value))
             {
-                Changed = true;
-                return sliceSegPtr.Transform();
+                return (sliceSegPtr.Transform(), true);
             }
-            return ctx.GetValue(segMem, segmentMap);
+            var newVal = ctx.GetValue(value, segmentMap);
+            if (newVal != value)
+            {
+                ctx.RemoveExpressionUse(value);
+                ctx.UseExpression(newVal);
+                return (newVal, changed);
+            }
+            return (value, changed);
         }
 
-        public virtual Expression VisitSlice(Slice slice)
+        public virtual (Expression, bool) VisitSlice(Slice slice)
         {
-            var e = slice.Expression.Accept(this);
+            var e = slice.Expression;
+            if (e is BinaryExpression bin)
+            {
+                if (CanBeSliced(slice, bin))
+                {
+                    var left = m.Slice(bin.Left, slice.DataType, slice.Offset).Accept(this);
+                    var right = m.Slice(bin.Right, slice.DataType, slice.Offset).Accept(this);
+                    if (left.Item2 | right.Item2)
+                    {
+                        var exp = new BinaryExpression(bin.Operator, slice.DataType,
+                            left.Item1, right.Item1);
+                        return (exp, true);
+                    }
+                }
+            }
+            bool changed;
+            (e, changed) = e.Accept(this);
+
             // Is the slice the same size as the expression?
             if (slice.Offset == 0 && slice.DataType.BitSize == e.DataType.BitSize)
-                return e;
+                return (e, true);
             slice = new Slice(slice.DataType, e, slice.Offset);
             if (sliceConst.Match(slice))
             {
-                Changed = true;
-                return sliceConst.Transform();
+                return (sliceConst.Transform(), true);
             }
             if (sliceMem.Match(slice))
             {
-                Changed = true;
-                return sliceMem.Transform();
+                return (sliceMem.Transform(), true);
             }
 
             // (slice (shl e n) n) ==> e
             if (sliceShift.Match(slice))
             {
-                Changed = true;
-                return sliceShift.Transform();
+                return (sliceShift.Transform(), true);
             }
             if (sliceSeq.Match(slice))
             {
-                Changed = true;
-                return sliceSeq.Transform();
+                return (sliceSeq.Transform(), true);
             }
             if (sliceConvert.Match(slice))
             {
-                Changed = true;
-                return sliceConvert.Transform();
+                return (sliceConvert.Transform(), true);
             }
             if (e is Identifier id &&
                 ctx.GetDefiningExpression(id) is MkSequence seq)
@@ -1200,42 +1223,66 @@ namespace Reko.Evaluation
                         ctx.RemoveExpressionUse(elem);
                     }
                     ctx.UseExpression(lsbElem);
-                    Changed = true;
                     if (sizeDiff > 0)
                     {
-                        return new Slice(slice.DataType, lsbElem, slice.Offset);
+                        return (new Slice(slice.DataType, lsbElem, slice.Offset), true);
                     }
                     else
                     {
-                        return lsbElem;
+                        return (lsbElem, true);
                     }
                 }
             }
-            return slice;
+            return (slice, changed);
         }
 
-        public virtual Expression VisitTestCondition(TestCondition tc)
+        private static bool CanBeSliced(Slice slice, BinaryExpression bin)
         {
-            return new TestCondition(tc.ConditionCode, tc.Expression.Accept(this));
+            if (
+                bin.Operator == Operator.And ||
+                bin.Operator == Operator.Or ||
+                bin.Operator == Operator.Xor)
+            {
+                return true;
+            }
+
+            if (bin.Operator == Operator.IAdd ||
+                bin.Operator == Operator.ISub ||
+                bin.Operator == Operator.Shl ||
+                bin.Operator == Operator.IMul ||
+                bin.Operator == Operator.UMul ||
+                bin.Operator == Operator.SMul)
+            {
+                return slice.Offset == 0;
+            }
+            return false;
         }
 
-        public virtual Expression VisitUnaryExpression(UnaryExpression unary)
+        public virtual (Expression, bool) VisitTestCondition(TestCondition tc)
         {
-            unary = new UnaryExpression(unary.Operator, unary.DataType, unary.Expression.Accept(this));
+            var (e, changed) = tc.Expression.Accept(this);
+            if (changed)
+                tc = new TestCondition(tc.ConditionCode, e);
+            return (tc, changed);
+        }
+
+        public virtual (Expression, bool) VisitUnaryExpression(UnaryExpression unary)
+        {
+            var (e, changed) = unary.Expression.Accept(this);
+            if (changed)
+                unary = new UnaryExpression(unary.Operator, unary.DataType, e);
             if (negSub.Match(unary))
             {
-                Changed = true;
-                return negSub.Transform();
+                return (negSub.Transform(), true);
             }
 
             // (!-exp) >= (!exp)
             if (logicalNotFollowedByNeg.Match(unary))
             {
-                Changed = true;
-                return logicalNotFollowedByNeg.Transform();
+                return (logicalNotFollowedByNeg.Transform(), true);
             }
 
-            return unary;
+            return (unary, changed);
         }
     }
 }

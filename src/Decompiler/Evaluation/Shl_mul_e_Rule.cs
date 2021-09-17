@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Types;
 using Reko.Analysis;
 using System;
 
@@ -32,6 +33,7 @@ namespace Reko.Evaluation
 		private Constant? cMul;
 		private Operator? op;
 		private Expression? e;
+        private DataType? dt;
 
 		public Shl_mul_e_Rule(EvaluationContext ctx)
 		{
@@ -56,12 +58,13 @@ namespace Reko.Evaluation
 				return false;
 
 			e = bLeft.Left;
+            dt = b.DataType;
 			return true;
 		}
 
 		public Expression Transform()
 		{
-			return new BinaryExpression(op!, e!.DataType, e, Operator.Shl.ApplyConstants(cMul!, cShift!));
+			return new BinaryExpression(op!, dt!, e!, Operator.Shl.ApplyConstants(cMul!, cShift!));
 		}
 	}
 }

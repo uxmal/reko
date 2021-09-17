@@ -1711,15 +1711,15 @@ T_136: (in bLoc02_41 @ 00000506 : byte)
   Class: Eq_136
   DataType: byte
   OrigDataType: byte
-T_137: (in 0x3A<16> @ 00000506 : word16)
+T_137: (in SLICE(v10_15, byte, 0) @ 00000506 : byte)
   Class: Eq_137
-  DataType: ci16
-  OrigDataType: ci16
-T_138: (in v10_15 + 0x3A<16> @ 00000000 : word16)
+  DataType: byte
+  OrigDataType: byte
+T_138: (in 0x3A<8> @ 00000506 : byte)
   Class: Eq_138
-  DataType: ci16
-  OrigDataType: ci16
-T_139: (in SLICE(v10_15 + 0x3A<16>, byte, 0) @ 00000506 : byte)
+  DataType: byte
+  OrigDataType: byte
+T_139: (in (byte) v10_15 + 0x3A<8> @ 00000000 : byte)
   Class: Eq_136
   DataType: byte
   OrigDataType: byte

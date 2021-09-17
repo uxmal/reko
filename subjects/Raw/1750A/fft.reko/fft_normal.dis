@@ -234,7 +234,7 @@ l0397_thunk_fn03F7:
 	fn03F7(gp0_gp1_110, gp12_gp13, gp1, gp11)
 	return
 l0398:
-	fn0311(SLICE(gp0_gp1_110 + Mem0[0x805F<p16>:word32], word16, 0), wArg18)
+	fn0311(SLICE(gp0_gp1_110, word16, 0) + Mem0[0x805F<p16>:word16], wArg18)
 	return
 fn037C_exit:
 
@@ -265,7 +265,7 @@ l03B2_thunk_fn0412:
 	fn0412(gp12_gp13, SEQ(gp7_72, gp8), gp5_74, gp9, gp10, gp11)
 	return
 l03B3:
-	fn0311(SLICE(gp0_gp1_62 + Mem0[0x806A<p16>:word32] + Mem0[0x806C<p16>:word32], word16, 0), wArg18)
+	fn0311(SLICE(gp0_gp1_62, word16, 0) + Mem0[0x806A<p16>:word16] + Mem0[0x806C<p16>:word16], wArg18)
 	return
 fn03A0_exit:
 
@@ -492,7 +492,7 @@ void fn0407(word32 gp1_gp2, word32 gp12_gp13, word16 gp9, word16 gp10, word16 gp
 // Preserved: gp15
 fn0407_entry:
 l0407:
-	word16 gp5_26 = SLICE(gp1_gp2 - (gp1_gp2 / 0xA<32>) * 0xA<32>, word16, 0)
+	word16 gp5_26 = SLICE(gp1_gp2, word16, 0) - SLICE(gp1_gp2 / 0xA<32>, word16, 0) * 0xA<16>
 	branch Test(EQ,(gp9 + 1<16> & 0x8000<u16>) == 0<16>) l0417
 l0412_thunk_fn0417:
 	fn0417(gp12_gp13, 0xA<32>, gp5_26 + 0x30<16>, gp9 + 1<16>, gp10, gp11)
@@ -536,7 +536,7 @@ void fn0413(word32 gp12_gp13, word32 gp7_gp8, word16 gp5, word16 gp9, word16 gp1
 // Preserved: gp15
 fn0413_entry:
 l0413:
-	Mem8[gp11:word16] = SEQ(SLICE(gp5, byte, 0), Mem0[gp11:byte])
+	Mem8[gp11:word16] = SEQ(SLICE(gp5, byte, 0), Mem0[gp11 + 0<16>:byte])
 l0416_thunk_fn0417:
 	fn0417(gp12_gp13, gp7_gp8, gp5, gp9, gp10, gp11 - 1<16>)
 	return
@@ -564,7 +564,7 @@ l041A_thunk_fn046A:
 l041B:
 	branch Test(NE,(gp9 + 1<16> & 0x8000<u16>) == 0<16>) l0422
 l0422:
-	Mem37[gp11:word16] = SEQ(SLICE(gp10, byte, 0), Mem8[gp11:byte])
+	Mem37[gp11:word16] = SEQ(SLICE(gp10, byte, 0), Mem8[gp11 + 0<16>:byte])
 l041F:
 	Mem40[gp11:word16] = SEQ(Mem8[gp11 + 1<16>:byte], SLICE(gp10, byte, 0))
 l0424:
@@ -672,7 +672,7 @@ l047F:
 	Mem93[gp11 + 9<16>:word16] = gp2_86 | 0x3030<16>
 l0484:
 	word32 gp2_gp3_108 = CONVERT(gp12_gp13_gp14_178, real48, int32)
-	Mem124[gp11:word16] = SEQ(Mem122[gp11 + 1<16>:byte], SLICE(SLICE(gp2_gp3_108, word16, 0) + 0x30<16>, byte, 0))
+	Mem124[gp11:word16] = SEQ(Mem122[gp11 + 1<16>:byte], SLICE(SLICE(gp2_gp3_108, word16, 0), byte, 0) + 0x30<8>)
 	Mem129[gp11 + 1<16>:word16] = SEQ(0x2E<8>, Mem124[gp11 + 1<16>:byte])
 	word16 gp7_155 = 0<16>
 	real48 gp12_gp13_gp14_117 = gp12_gp13_gp14_178 - CONVERT(gp2_gp3_108, word32, real48)
@@ -684,10 +684,10 @@ l0493:
 	gp7_155 = gp7_155 + 1<16>
 	branch (gp7_155 & 0x8000<u16>) == 0<16> l04A2
 l04A2:
-	Mem163[gp11 + 1<16>:word16] = SEQ(Mem134[gp11 + 2<16>:byte], SLICE(gp3_146 + 0x30<16>, byte, 0))
+	Mem163[gp11 + 1<16>:word16] = SEQ(Mem134[gp11 + 2<16>:byte], SLICE(gp3_146, byte, 0) + 0x30<8>)
 	gp11 = gp11 + 1<16>
 l049F:
-	Mem168[gp11 + 1<16>:word16] = SEQ(SLICE(gp3_146 + 0x30<16>, byte, 0), Mem134[gp11 + 1<16>:byte])
+	Mem168[gp11 + 1<16>:word16] = SEQ(SLICE(gp3_146, byte, 0) + 0x30<8>, Mem134[gp11 + 1<16>:byte])
 l04A5:
 	gp1 = gp1 - 1<16>
 	branch gp1 != 0<16> l0493

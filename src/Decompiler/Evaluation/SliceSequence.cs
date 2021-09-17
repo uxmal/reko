@@ -45,17 +45,21 @@ namespace Reko.Evaluation
             if (IsSequence(e, out var seq))
             {
                 var bitsUsed = slice.DataType.BitSize;
-                int bitoffset = seq.DataType.BitSize;
-                foreach (var elem in seq.Expressions)
+                int bitoffset = 0;
+                for (int i = seq.Expressions.Length - 1; i >= 0; --i)
                 {
+                    var elem = seq.Expressions[i];
                     var bitsElem = elem.DataType.BitSize;
-                    bitoffset -= bitsElem;
-                    if (slice.Offset == bitoffset && bitsElem == bitsUsed)
+                    var offset = slice.Offset - bitoffset;
+                    if (0 <= offset && offset + bitsUsed <= bitsElem)
                     {
                         this.eOld = e;
-                        this.result = elem;
+                        this.result = offset == 0 && bitsUsed == bitsElem
+                            ? elem
+                            : new Slice(slice.DataType, elem, offset);
                         return true;
                     }
+                    bitoffset += bitsElem;
                 }
             }
             return false;

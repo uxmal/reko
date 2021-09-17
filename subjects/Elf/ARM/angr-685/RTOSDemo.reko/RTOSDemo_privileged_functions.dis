@@ -19,12 +19,12 @@ l0000006E:
 l00000080:
 	branch xTaskRemoveFromEventList(r0 + 0x24<32>) == 0<32> l00000074
 l00000074:
-	word32 r3_41 = CONVERT(SLICE(r4_133 - 1<32>, byte, 0), byte, uint32)
+	word32 r3_41 = CONVERT(SLICE(r4_133, byte, 0) - 1<8>, byte, uint32)
 	r4_133 = CONVERT(SLICE(r3_41, int8, 0), int8, int32)
 	branch r3_41 == 0<32> l00000098
 l0000008A:
 	vTaskMissedYield()
-	word32 r3_47 = CONVERT(SLICE(r4_133 - 1<32>, byte, 0), byte, uint32)
+	word32 r3_47 = CONVERT(SLICE(r4_133, byte, 0) - 1<8>, byte, uint32)
 	r4_133 = CONVERT(SLICE(r3_47, int8, 0), int8, int32)
 	branch r3_47 != 0<32> l0000007C
 l0000007C:
@@ -41,12 +41,12 @@ l000000B4:
 l000000C6:
 	branch xTaskRemoveFromEventList(r0 + 0x10<32>) == 0<32> l000000BA
 l000000BA:
-	word32 r3_94 = CONVERT(SLICE(r4_101 - 1<32>, byte, 0), byte, uint32)
+	word32 r3_94 = CONVERT(SLICE(r4_101, byte, 0) - 1<8>, byte, uint32)
 	r4_101 = CONVERT(SLICE(r3_94, int8, 0), int8, int32)
 	branch r3_94 == 0<32> l000000DE
 l000000D0:
 	vTaskMissedYield()
-	word32 r3_100 = CONVERT(SLICE(r4_101 - 1<32>, byte, 0), byte, uint32)
+	word32 r3_100 = CONVERT(SLICE(r4_101, byte, 0) - 1<8>, byte, uint32)
 	r4_101 = CONVERT(SLICE(r3_100, int8, 0), int8, int32)
 	branch r3_100 != 0<32> l000000C2
 l000000C2:
@@ -502,7 +502,7 @@ l000004B8:
 l000004BC:
 	Mem66[r7_44:word32] = 1<32>
 l00000496:
-	Mem70[r0 + 69<i32>:byte] = SLICE(CONVERT(SLICE(r4_32 + 1<32>, int8, 0), int8, int32), byte, 0)
+	Mem70[r0 + 69<i32>:byte] = SLICE(CONVERT(SLICE(r4_32, int8, 0) + 1<i8>, int8, int32), byte, 0)
 l0000049E:
 	__msr(cpsr, r6_17)
 	return
@@ -544,7 +544,7 @@ l0000051A:
 l0000051E:
 	Mem51[r1:word32] = 1<32>
 l000004F0:
-	Mem55[r0 + 69<i32>:byte] = SLICE(CONVERT(SLICE(r3_28 + 1<32>, int8, 0), int8, int32), byte, 0)
+	Mem55[r0 + 69<i32>:byte] = SLICE(CONVERT(SLICE(r3_28, int8, 0) + 1<i8>, int8, int32), byte, 0)
 l000004F8:
 l000004FA:
 	__msr(cpsr, r4_13)
@@ -583,7 +583,7 @@ l00000584:
 l0000058A:
 	Mem57[r2:word32] = 1<32>
 l00000560:
-	Mem61[r7_35 + 68<i32>:byte] = SLICE(CONVERT(SLICE(r5_33 + 1<32>, int8, 0), int8, int32), byte, 0)
+	Mem61[r7_35 + 68<i32>:byte] = SLICE(CONVERT(SLICE(r5_33, int8, 0) + 1<i8>, int8, int32), byte, 0)
 l00000568:
 	__msr(cpsr, r6_17)
 	return

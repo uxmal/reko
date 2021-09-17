@@ -112,8 +112,6 @@ namespace Reko.Analysis
         /// <returns>A valid function signature.</returns>
         public FunctionType MakeSignature(SsaState ssa, IStorageBinder frame, ProcedureFlow flow)
         {
-            if (ssa.Procedure.Name == "fn0800_C779")
-                ssa.ToString(); //$DEBUG
             var allLiveOut = flow.BitsLiveOut;
 			var sb = new SignatureBuilder(frame, platform.Architecture);
             var implicitRegs = platform.CreateImplicitArgumentRegisters();
