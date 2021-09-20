@@ -330,7 +330,6 @@ if("${TARGET}" STREQUAL "gen_decompiler_menus")
 		NO_RESTORE
 		NO_CLEAN
 		CONFIG ${CMAKE_BUILD_TYPE}
-		PLATFORM ${REKO_PLATFORM}
 		ARGUMENTS
 			${GUI_BASEDIR}/cmdids.xslt
 			${GUI_BASEDIR}/decompiler-menus.xml
@@ -382,7 +381,7 @@ elseif("${TARGET}" STREQUAL "run_hdrgen")
 		NO_RESTORE
 		NO_CLEAN
 		CONFIG ${CMAKE_BUILD_TYPE}
-		PLATFORM ${REKO_PLATFORM}
+		# PLATFORM ${REKO_PLATFORM}
 		ARGUMENTS
 			${reko_core_dll}
 			${REKO_SRC}/Native/include/reko.h
@@ -476,7 +475,6 @@ elseif("${TARGET}" STREQUAL "run_regressions")
 		NO_RESTORE
 		NO_CLEAN
 		CONFIG ${CMAKE_BUILD_TYPE}
-		PLATFORM ${REKO_PLATFORM}
 		ARGUMENTS
 			-c ${CMAKE_BUILD_TYPE}
 			-p ${REKO_PLATFORM}
@@ -515,10 +513,10 @@ elseif("${TARGET}" STREQUAL "create_msi_wix")
 		NO_RESTORE
 		NO_CLEAN
 		CONFIG ${CMAKE_BUILD_TYPE}
-		PLATFORM ${REKO_PLATFORM}
 		ARGUMENTS 
 			wix
 			${CMAKE_BUILD_TYPE}
+			${REKO_PLATFORM}
 			${REKO_SRC}/Installers/NuGetPackage/reko-files.xml
 			${REKO_SRC}/Installers/WixInstaller/Components.wxi.template
 			${REKO_SRC}/Installers/WixInstaller/Components.wxi
@@ -607,13 +605,13 @@ elseif("${TARGET}" STREQUAL "update_runtime_nuspec")
 		NO_RESTORE
 		NO_CLEAN
 		CONFIG ${CMAKE_BUILD_TYPE}
-		PLATFORM ${REKO_PLATFORM}
 		ARGUMENTS 
 			nuget
 			${CMAKE_BUILD_TYPE}
+			${REKO_PLATFORM}
 			${REKO_SRC}/Installers/NuGetPackage/reko-files.xml
 			${REKO_SRC}/Installers/NuGetPackage/NuGetPackage.template
-			${REKO_SRC}/Installers/Runtime/Runtime.nuspec
+			${REKO_SRC}/Installers/Runtime/bin/Runtime-${REKO_PLATFORM}-${CMAKE_BUILD_TYPE}.nuspec
 			${REKO_SRC}
 		OUTPUT
 			${REKO_SRC}/Installers/Runtime/.skipnuspecupdate
@@ -643,14 +641,14 @@ elseif("${TARGET}" STREQUAL "create_release")
 	if(WIN32 AND NOT UNIX)
 		add_custom_target(create_release_zip_windowsdecompiler
 			COMMENT "Compressing WindowsDecompiler..."
-			COMMAND ${SEVENZIP_BIN} a ${artifacts_dir}/WindowsDecompiler-${build_version}-${build_shorthash}.zip
+			COMMAND ${SEVENZIP_BIN} a ${artifacts_dir}/WindowsDecompiler-${build_version}-${REKO_PLATFORM}-${build_shorthash}.zip
 				${REKO_SRC}/Drivers/WindowsDecompiler/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/${REKO_WINFORMS_EXE_FRAMEWORK}/*
 		)
 		add_dependencies(create_release create_release_zip_windowsdecompiler)
 
 		add_copy_target(
 			SRC_PATH ${CMAKE_BINARY_DIR}/../create_msi_wix/wix/Reko-${REKO_VERSION}.msi
-			DEST_PATH ${artifacts_dir}/Reko-${build_version}-${build_shorthash}.msi
+			DEST_PATH ${artifacts_dir}/Reko-${build_version}-${REKO_PLATFORM}-${build_shorthash}.msi
 			OUT_TARGET_NAME copy_msi_target
 		)
 		add_dependencies(create_release ${copy_msi_target})
@@ -665,7 +663,7 @@ elseif("${TARGET}" STREQUAL "create_release")
 
 	add_copy_target(
 		SRC_PATH ${REKO_SRC}/Installers/Runtime/bin/${REKO_PLATFORM}/${CMAKE_BUILD_TYPE}/Reko.Decompiler.Runtime.${REKO_VERSION}.nupkg
-		DEST_PATH ${artifacts_dir}/Reko.Decompiler.Runtime.${build_version}-${build_shorthash}.nupkg
+		DEST_PATH ${artifacts_dir}/Reko.Decompiler.Runtime.${build_version}-${REKO_PLATFORM}-${build_shorthash}.nupkg
 		OUT_TARGET_NAME copy_runtime_nupkg_target
 	)
 	add_dependencies(create_release ${copy_runtime_nupkg_target})

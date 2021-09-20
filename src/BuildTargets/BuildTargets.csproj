@@ -33,7 +33,7 @@
        or no files will be found. -->
   <Target Name="update_runtime_nuspec"
           Inputs="$(ProjectDir)../Installers/NuGetPackage/reko-files.xml"
-          Outputs="$(ProjectDir)../Installers/Runtime/Runtime.nuspec">
+          Outputs="$(ProjectDir)../Installers/Runtime/bin/Runtime-$(Platform)-($Configuration).nuspec">
     <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=update_runtime_nuspec -P $(RekoCMake)" />
   </Target>
 

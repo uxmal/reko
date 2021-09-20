@@ -122,17 +122,21 @@ namespace Reko.Tools.specGen
 
         // Validates that all the files referred to by the `vars` dictionary
         // exist in the filesystem.
-        public static bool ValidateVariables(string configuration, Dictionary<string, string> vars, string solutionDir)
+        public static bool ValidateVariables(string configuration, string platform, Dictionary<string, string> vars, string solutionDir)
         {
             var filesMissing = false;
             foreach (var (k, vv) in vars)
             {
+                if (vv.Contains("x64"))
+                    Console.WriteLine("****** {0}", vv);
+                    Console.WriteLine("   platform: {0}", platform);
                 var v = vv;
                 v = v.Replace("$TargetDir$", "bin/$Configuration$/netstandard2.1");
                 v = v.Replace("$TargetFwkDir$", "bin/$Configuration$/net5.0");
                 v = v.Replace("$TargetNetWinForms$", "bin/$Configuration$/net5.0-windows");
-                v = v.Replace("$TargetDir_x64$", "bin/x64/$Configuration$/net5.0");
+                v = v.Replace("$TargetDir_x64$", "bin/$Platform$/$Configuration$/net5.0");
                 v = v.Replace("$Configuration$", configuration);
+                v = v.Replace("$Platform$", platform);
                 v = v.Replace("$SolutionDir$", solutionDir);
                 if (v.EndsWith('/'))
                 {
@@ -154,7 +158,7 @@ namespace Reko.Tools.specGen
         // Replace macros inside of the variable definitions. Macros have the syntax
         // $macroname$. 
         // Only a set of well-known macros are replaced.
-        public static Dictionary<string, string> ExpandVariables(string configuration, string solutionDir, Dictionary<string, string> vars)
+        public static Dictionary<string, string> ExpandVariables(string configuration, string platform, string solutionDir, Dictionary<string, string> vars)
         {
             var result = new Dictionary<string, string> { };
             foreach (var (k, vv) in vars)
@@ -163,9 +167,10 @@ namespace Reko.Tools.specGen
                 v = v.Replace("$TargetDir$", "bin/$Configuration$/netstandard2.1");
                 v = v.Replace("$TargetFwkDir$", "bin/$Configuration$/net5.0");
                 v = v.Replace("$TargetFwkWindowsDir$", "bin/$Configuration$/net5.0-windows");
-                v = v.Replace("$TargetFwkWindowsDir_x64$", "bin/x64/$Configuration$/net5.0-windows");
-                v = v.Replace("$TargetDir_x64$", "bin/x64/$Configuration$/net5.0");
+                v = v.Replace("$TargetFwkWindowsDir_x64$", "bin/$Platform$/$Configuration$/net5.0-windows");
+                v = v.Replace("$TargetDir_x64$", "bin/$Platform$/$Configuration$/net5.0");
                 v = v.Replace("$Configuration$", configuration);
+                v = v.Replace("$Platform$", platform);
                 v = v.Replace("$SolutionDir$", solutionDir);
                 result[k] = v;
             }
@@ -379,19 +384,19 @@ namespace Reko.Tools.specGen
 
         // Generates a WiX installer script and a NuGet spec file from the controlling
         // file 'reko-files.xml'
-        public static void UpdateWixFile(string configuration, string masterSpecFile, string template, string generatedFile, string solutionDir)
+        public static void UpdateWixFile(string configuration, string platform, string masterSpecFile, string template, string generatedFile, string solutionDir)
         {
-            var (vars, spec) = LoadSpecification(configuration, masterSpecFile, solutionDir);
+            var (vars, spec) = LoadSpecification(configuration, platform, masterSpecFile, solutionDir);
             InjectFileItemsIntoWixFile(spec, vars, template, generatedFile);
         }
 
-        public static void UpdateNugetFile(string configuration, string masterSpecFile, string template, string generatedFile, string solutionDir)
+        public static void UpdateNugetFile(string configuration, string platmform, string masterSpecFile, string template, string generatedFile, string solutionDir)
         {
-            var (vars, spec) = LoadSpecification(configuration, masterSpecFile, solutionDir);
+            var (vars, spec) = LoadSpecification(configuration, platmform, masterSpecFile, solutionDir);
             InjectFilesIntoNuspecFile(spec, vars, template, generatedFile);
         }
 
-        private static (Dictionary<string,string>, Dictionary<string, List<string>> spec) LoadSpecification(string configuration, string specPath, string solutionDir)
+        private static (Dictionary<string,string>, Dictionary<string, List<string>> spec) LoadSpecification(string configuration, string platform, string specPath, string solutionDir)
         {
             var (vars, spec) = LoadRekoFileSpec(specPath);
             var missing_vars = CollectMissingVariables(vars, spec);
@@ -407,9 +412,9 @@ namespace Reko.Tools.specGen
             //    Environment.Exit(-1);
             //}
             //$TODO: inject platform as a variable from command line.
-            vars.Add("var.Platform", "x64");
+            vars.Add("var.Platform", platform);
             vars.Add("var.Configuration", configuration);
-            vars = ExpandVariables(configuration, solutionDir, vars);
+            vars = ExpandVariables(configuration, platform, solutionDir, vars);
             return (vars, spec);
         }
     }

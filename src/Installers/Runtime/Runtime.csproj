@@ -8,7 +8,7 @@
     <AssemblyName>Reko.Decompiler.Runtime</AssemblyName>
     <Platforms>x86;x64</Platforms>
     <Configurations>Debug;Release</Configurations>
-    <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile>
+    <NuspecFile>$(MSBuildThisFileDirectory)/bin/Runtime-$(Platform)-$(Configuration).nuspec</NuspecFile>
   </PropertyGroup>
   <Import Project="$(ProjectDir)..\..\Drivers\PreBuild.targets" />
 
@@ -16,6 +16,7 @@
     <PropertyGroup>
       <NuspecProperties>$(NuspecProperties);id=$(AssemblyName)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);config=$(Configuration)</NuspecProperties>
+      <NuspecProperties>$(NuspecProperties);platform=$(Platform)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);version=$(PackageVersion)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);authors=$(Authors)</NuspecProperties>
     </PropertyGroup>

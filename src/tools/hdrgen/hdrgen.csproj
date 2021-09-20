@@ -3,17 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <RootNamespace>Reko.Tools.HdrGen</RootNamespace>
     <AssemblyName>hdrgen</AssemblyName>
     <OutputType>Exe</OutputType>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
     <Configurations>Debug;Release</Configurations>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.13.2" />

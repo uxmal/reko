@@ -148,7 +148,6 @@ void * memset(void *, int value, size_t num);
 int memcmp(void *, void *, size_t);
 void *mempcpy(void *dest, const void *src, size_t n);
 int printf(char * format, ...);
-int __printf_chk(int n, char * format, ...);
 int putc(int c, FILE * stream);
 int putchar(int c);
 int puts(const char * s);
