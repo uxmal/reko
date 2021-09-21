@@ -45,7 +45,8 @@
 
   <!-- This build the MSI installer (Windows only) -->
   <Target Name="create_msi_wix">
-    <Exec Command="$(CMake) $(CMakeArguments) -DTARGET=create_msi_wix -P $(RekoCMake)" />
+    <Exec Condition="'$(OS)'=='Windows_NT'"
+          Command="$(CMake) $(CMakeArguments) -DTARGET=create_msi_wix -P $(RekoCMake)" />
   </Target>
 
   <!-- Builds and runs the Reko unit test. This may build Reko twice. -->
