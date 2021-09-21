@@ -74,6 +74,7 @@ namespace Reko.Core
         /// stack register, if any, or at the least the size of a pointer.</param>
 		public Frame(PrimitiveType framePointerSize)
 		{
+            if (framePointerSize is null) throw new ArgumentNullException(nameof(framePointerSize));
 			identifiers = new List<Identifier>();
             this.namingPolicy = NamingPolicy.Instance;
 
