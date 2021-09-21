@@ -22,6 +22,6 @@
   <ItemGroup>
     <PackageReference Include="K4os.Compression.LZ4" Version="1.2.12" />
   </ItemGroup>
-  
+
   <Import Project="$(ProjectDir)..\PreBuild.targets" />
 </Project>

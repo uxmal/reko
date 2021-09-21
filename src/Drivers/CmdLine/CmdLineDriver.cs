@@ -554,7 +554,14 @@ namespace Reko.CmdLine
             if (attrs.Length < 1)
                 return;
             var attr = (AssemblyFileVersionAttribute)attrs[0];
-            w.WriteLine("Decompile.exe version {0}", attr.Version);
+            w.Write("Decompile.exe version {0}", attr.Version);
+            var githashAttr = typeof(AssemblyMetadata).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
+                .FirstOrDefault(a => a.Key == "GitHash");
+            if (githashAttr != null)
+            {
+                w.Write(" (git:{0})", githashAttr.Value);
+            }
+            w.WriteLine();
         }
 
         private void Usage(TextWriter w)

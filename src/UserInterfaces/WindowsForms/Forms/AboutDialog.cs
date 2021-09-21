@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -39,6 +40,10 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                 "Version {0} ({1})",
                 AssemblyVersion,
                 Environment.Is64BitProcess ? "64-bit" : "32-bit");
+            var gitHash = this.GitHash;
+            lblGitHash.Text = String.IsNullOrEmpty(gitHash)
+                ? ""
+                : $"Git hash: {gitHash}";
             linkLabel1.LinkClicked += delegate(object o, LinkLabelLinkClickedEventArgs e)
             {
                 System.Diagnostics.Process.Start(linkLabel1.Text);
@@ -121,6 +126,18 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                     return "";
                 }
                 return ((AssemblyCompanyAttribute)attributes[0]).Company;
+            }
+        }
+
+        public string GitHash
+        {
+            get
+            {
+                AssemblyMetadataAttribute attribute = typeof(Reko.AssemblyMetadata).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
+                    .FirstOrDefault(a => a.Key == "GitHash");
+                if (attribute == null)
+                    return "";
+                return attribute.Value;
             }
         }
         #endregion
