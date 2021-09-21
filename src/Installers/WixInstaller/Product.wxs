@@ -63,7 +63,7 @@
         <Shortcut Id="ApplicationStartMenuShortcut"
                   Name="Reko Decompiler"
                   Description="Decompiles binary executable files"
-                  Target="[ProductComponentFolder]WindowsDecompiler.exe"
+                  Target="[#WindowsDecompiler.exe]"
                   WorkingDirectory="ProductComponentFolder"/>
         <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
         <RegistryValue Root="HKCU" Key="Software\jklSoft\Decompiler" Name="installed" Type="integer" Value="1" KeyPath="yes"/>

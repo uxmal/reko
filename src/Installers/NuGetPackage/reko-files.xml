@@ -144,7 +144,7 @@
       <!-- User interfaces -->
       <File Source="$(var.Gui.TargetPath)" />
       <File Source="$(var.WindowsForms.TargetPath)" />
-      <File Source="$(var.WindowsDecompiler.TargetDir)WindowsDecompiler.exe" />
+      <File Id="WindowsDecompiler.exe" Source="$(var.WindowsDecompiler.TargetDir)WindowsDecompiler.exe" />
       <File Source="$(var.WindowsDecompiler.TargetDir)WindowsDecompiler.dll" />
       <File Source="$(var.WindowsDecompiler.TargetDir)WindowsDecompiler.runtimeconfig.json" Id="F_WindowsDecompilerRuntimeConfig" />
       <File Source="$(var.CmdLine.TargetDir)decompile.exe" />
