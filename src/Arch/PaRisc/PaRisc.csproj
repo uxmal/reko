@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items"/>
+  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items" />
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AssemblyName>Reko.Arch.PaRisc</AssemblyName>
     <RootNamespace>Reko.Arch.PaRisc</RootNamespace>
     <Configurations>Debug;Release</Configurations>
