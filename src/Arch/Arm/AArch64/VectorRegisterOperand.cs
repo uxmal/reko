@@ -37,6 +37,27 @@ namespace Reko.Arch.Arm.AArch64
             this.Index = -1;
         }
 
+        public VectorRegisterOperand(
+            PrimitiveType dt, 
+            RegisterStorage reg,
+            VectorData elementType) : this(dt, reg, elementType, -1)
+        {
+            this.VectorRegister = reg;
+            this.ElementType = elementType;
+            this.Index = -1;
+        }
+
+        public VectorRegisterOperand(
+            PrimitiveType dt,
+            RegisterStorage reg,
+            VectorData elementType,
+            int index) : base(dt)
+        {
+            this.VectorRegister = reg;
+            this.ElementType = elementType;
+            this.Index = index;
+        }
+
         public RegisterStorage VectorRegister { get; }
         public VectorData ElementType { get; set; }
         public int Index { get; set; }
@@ -87,6 +108,14 @@ namespace Reko.Arch.Arm.AArch64
                     renderer.WriteString("1d");
                 else
                     renderer.WriteString("2d");
+                break;
+            case VectorData.I128:
+                if (Index >= 0)
+                    renderer.WriteString("q");
+                else if (bitSize == 64)
+                    renderer.WriteString("1q??");
+                else
+                    renderer.WriteString("1q");
                 break;
             default:
                 throw new NotImplementedException($"{ElementType}");

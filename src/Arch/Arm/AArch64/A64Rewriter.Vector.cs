@@ -348,7 +348,6 @@ namespace Reko.Arch.Arm.AArch64
             {
                 NotImplementedYet();
             }
-
         }
 
         private void RewriteUmlal()

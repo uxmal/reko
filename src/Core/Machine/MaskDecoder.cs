@@ -45,21 +45,6 @@ namespace Reko.Core.Machine
             this.tag = tag;
         }
 
-        public MaskDecoder(int bitPos, int bitSize, string tag, params (int, Decoder<TDasm, TMnemonic, TInstr>) [] decoders)
-        {
-            this.bitfield = new Bitfield(bitPos, bitSize);
-            Decoder<TDasm, TMnemonic, TInstr> nyiDecoder = new NyiDecoder<TDasm, TMnemonic, TInstr>(tag);
-            this.decoders = Enumerable.Range(0, 1 << bitSize)
-               .Select(n => nyiDecoder)
-               .ToArray();
-            foreach (var (value, decoder) in decoders)
-            {
-                Debug.Assert(this.decoders[value] == null, $"Duplicate value {value}");
-                this.decoders[value] = decoder;
-            }
-            this.tag = tag;
-        }
-
         public override TInstr Decode(uint wInstr, TDasm dasm)
         {
             TraceDecoder(wInstr);
@@ -76,7 +61,7 @@ namespace Reko.Core.Machine
 
         public override string ToString()
         {
-            return $"{{Mask {bitfield}}}";
+            return $"{{Mask {bitfield} {tag}}}";
         }
     }
 
@@ -96,27 +81,6 @@ namespace Reko.Core.Machine
             this.decoders = decoders;
             this.tag = tag;
         }
-
-        /*
-        public WideMaskDecoder(int bitPos, int bitSize, string tag, params (int, WideDecoder<TDasm, TMnemonic, TInstr>)[] decoders)
-        {
-            this.bitfield = new Bitfield(bitPos, bitSize);
-            Decoder<TDasm, TMnemonic, TInstr> nyiDecoder = new WideNyiDecoder<TDasm, TMnemonic, TInstr>(tag);
-            this.decoders = Enumerable.Range(0, 1 << bitSize)
-               .Select(n => nyiDecoder)
-               .ToArray();
-            foreach (var (value, decoder) in decoders)
-            {
-                this.decoders[value] = decoder;
-            }
-            foreach (var (value, decoder) in decoders)
-            {
-                Debug.Assert(this.decoders[value] == null, $"Duplicate value {value}");
-                this.decoders[value] = decoder;
-            }
-            this.tag = tag;
-        }
-        */
 
         public override TInstr Decode(ulong wInstr, TDasm dasm)
         {

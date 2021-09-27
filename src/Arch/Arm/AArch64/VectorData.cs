@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -28,6 +28,7 @@ namespace Reko.Arch.Arm.AArch64
         I16,
         I32,
         I64,
+        I128,
 
         F16,
         F32,

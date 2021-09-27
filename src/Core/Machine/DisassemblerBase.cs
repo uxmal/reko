@@ -31,7 +31,7 @@ namespace Reko.Core.Machine
     /// <summary>
     /// A disassembler can be considered an enumerator of disassembled
     /// instructions. This convenience class lets implementors focus on the
-    /// important method, DisassembleInstruction.
+    /// important method, <see cref="DisassembleInstruction" />.
     /// </summary>
     /// <remarks>
     /// All methods and properties that are specific to the instruction type 
@@ -65,12 +65,28 @@ namespace Reko.Core.Machine
         /// throw an exception. Instead, they should return an invalid instruction
         /// and possibly spew a diagnostic message.
         /// </remarks>
-        /// <returns>Return a disassembled machine instruction, or null
+        /// <returns>Returns a disassembled machine instruction, or null
         /// if the end of the reader has been reached</returns>
         public abstract TInstr? DisassembleInstruction();
 
+        /// <summary>
+        /// This method is called by the <see cref="NyiDecoder{TDasm, TMnemonic, TInstr}"/> and
+        /// is used in partially completed disassembler implementations. Subclasses will typically
+        /// request the <see cref="Reko.Core.Services.ITestGenerationService"/> in order to generate
+        /// the skeleton of a unit test for ease of implementation.
+        /// </summary>
+        /// <param name="message">A message describing why the instruction is not yet implemented.</param>
+        /// <returns></returns>
         public abstract TInstr NotYetImplemented(string message);
 
+
+        /// <summary>
+        /// After the instruction has been fully decoded, this method is called to construct 
+        /// an instance of a class derived from <see cref="MachineInstruction"/>.
+        /// </summary>
+        /// <param name="iclass">The <see cref="InstrClass"/> of the instruction.</param>
+        /// <param name="mnemonic">The mnemonic of this instruction.</param>
+        /// <returns></returns>
         public virtual TInstr MakeInstruction(InstrClass iclass, TMnemonic mnemonic)
         {
             return default!;

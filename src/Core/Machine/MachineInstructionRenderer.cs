@@ -50,6 +50,7 @@ namespace Reko.Core.Machine
         /// Indicate to the renderer that an operand is about to be rendered.
         /// </summary>
         void BeginOperand();
+
         /// <summary>
         /// Indicate to the renderer that an operand is finished.
         /// </summary>

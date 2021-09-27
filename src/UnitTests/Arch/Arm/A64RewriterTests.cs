@@ -1798,11 +1798,11 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Rw_uaddw_i16()
         {
-            Given_Instruction(0x6E231082);
+            Given_HexString("8210232E");
             AssertCode(     // uaddw\tv2.8h,v4.8h,v3.16b
-                "0|L--|00100000(4): 3 instructions",
+                "0|L--|0000000000100000(4): 3 instructions",
                 "1|L--|v2 = q4",
-                "2|L--|v3 = q3",
+                "2|L--|v3 = d3",
                 "3|L--|q2 = __uaddw_u16(v2, v3)");
         }
 
