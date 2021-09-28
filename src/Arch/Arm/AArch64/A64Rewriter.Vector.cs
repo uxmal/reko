@@ -264,25 +264,25 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteScvtf()
         {
-            var srcReg = ((RegisterOperand)instr.Operands[1]).Register;
-            var dstReg = ((RegisterOperand)instr.Operands[0]).Register;
-            var src = binder.EnsureRegister(srcReg);
-            var dst = binder.EnsureRegister(dstReg);
-            var realType = PrimitiveType.Create(Domain.Real, (int)dstReg.BitSize);
+            var src = RewriteOp(1);
+            var dst = RewriteOp(0);
+            int srcBitSize = src.DataType.BitSize;
+            int dstBitSize = dst.DataType.BitSize;
+            var realType = PrimitiveType.Create(Domain.Real, dstBitSize);
             if (instr.Operands.Length == 3)
             {
                 // fixed point conversion.
                 var fprec = RewriteOp(instr.Operands[2]);
                 m.Assign(dst, host.Intrinsic("__scvtf_fixed", false, realType, src, fprec));
             }
-            else if (Registers.IsIntegerRegister(srcReg))
+            else if (src is Identifier idSrc && Registers.IsIntegerRegister((RegisterStorage)idSrc.Storage))
             {
-                var intType = PrimitiveType.Create(Domain.SignedInt, (int)srcReg.BitSize);
+                var intType = PrimitiveType.Create(Domain.SignedInt, srcBitSize);
                 m.Assign(dst, m.Convert(src, intType, realType));
             }
             else if (instr.VectorData == VectorData.Invalid)
             {
-                var intType = PrimitiveType.Create(Domain.SignedInt, (int)srcReg.BitSize);
+                var intType = PrimitiveType.Create(Domain.SignedInt, srcBitSize);
                 m.Assign(dst, m.Convert(src, intType, realType));
             }
             else

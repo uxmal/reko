@@ -1570,9 +1570,9 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Rw_scvtf_vector_i32()
         {
-            Given_Instruction(0x4E21DA10);
+            Given_HexString("10DA214E");
             AssertCode(     // scvtf\tv16.4s,v16.4s
-                "0|L--|00100000(4): 2 instructions",
+                "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|v3 = q16",
                 "2|L--|q16 = __scvtf_i32(v3)");
         }
