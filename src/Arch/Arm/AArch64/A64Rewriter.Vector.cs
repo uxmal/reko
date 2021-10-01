@@ -306,6 +306,25 @@ namespace Reko.Arch.Arm.AArch64
             RewriteSimdReduce("__smax_{0}", Domain.SignedInt);
         }
 
+        private void RewriteTbl()
+        {
+            var arraySrc = MakeArrayType(instr.Operands[2], Domain.None);
+            var tmpSrc = binder.CreateTemporary(arraySrc);
+            var arrayDst = MakeArrayType(instr.Operands[0], Domain.None);
+            var idxs = (VectorMultipleRegisterOperand) instr.Operands[1];
+            int n = idxs.Repeat;
+            var src = RewriteOp(2);
+            m.Assign(tmpSrc, src);
+            var dst = RewriteOp(0);
+            var args = new List<Expression>();
+            foreach (var reg in idxs.GetRegisters())
+            {
+                args.Add(binder.EnsureRegister(reg));
+            }
+            args.Add(tmpSrc);
+            m.Assign(dst, host.Intrinsic($"__tbl_{idxs.Repeat}", false, arrayDst, args.ToArray()));
+        }
+
         private void RewriteUabd()
         {
             if (instr.Operands[1] is VectorRegisterOperand vop)

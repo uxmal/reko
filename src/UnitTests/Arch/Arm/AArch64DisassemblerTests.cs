@@ -2776,6 +2776,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_ssubl()
+        {
+            AssertCode("ssubl\tv0.8h,v17.8b,v17.8b", "2022310E");
+            AssertCode("ssubl2\tv0.8h,v17.16b,v17.16b", "2022314E");
+        }
+
+        [Test]
         public void AArch64Dis_subhn()
         {
             AssertCode("subhn\tv0.8b,v12.8h,v0.8h", "8061200E");

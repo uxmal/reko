@@ -82,6 +82,8 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.adc: RewriteAdcSbc(m.IAdd); break;
                 case Mnemonic.adcs: RewriteAdcSbc(m.IAdd, this.NZCV); break;
                 case Mnemonic.add: RewriteMaybeSimdBinary(m.IAdd, "__add_{0}"); break;
+                case Mnemonic.addhn: RewriteSimdBinary("__addhn_{0}", Domain.None); break;
+                case Mnemonic.addhn2: RewriteSimdBinary("__addhn2_{0}", Domain.None); break;
                 case Mnemonic.adds: RewriteBinary(m.IAdd, this.NZCV); break;
                 case Mnemonic.addv: RewriteAddv(); break;
                 case Mnemonic.adr: RewriteUnary(n => n); break;
@@ -94,6 +96,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.bfm: RewriteBfm(); break;
                 case Mnemonic.bic: RewriteBinary((a, b) => m.And(a, m.Comp(b))); break;
                 case Mnemonic.bics: RewriteBinary((a, b) => m.And(a, m.Comp(b)), NZ00); break;
+                case Mnemonic.bit: RewriteSimdBinary("__bit_{0}", Domain.None); break;
                 case Mnemonic.bl: RewriteBl(); break;
                 case Mnemonic.blr: RewriteBlr(); break;
                 case Mnemonic.br: RewriteBr(); break;
@@ -207,6 +210,10 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.smsubl: RewriteSmsubl(); break;
                 case Mnemonic.smull: RewriteMull(PrimitiveType.Int32, PrimitiveType.Int64, m.SMul); break;
                 case Mnemonic.smulh: RewriteMulh(PrimitiveType.Int64, PrimitiveType.Int128, m.SMul); break;
+                case Mnemonic.sqdmulh: RewriteSimdBinary("__sqdmulh_{0}", Domain.SignedInt); break;
+                case Mnemonic.sshr: RewriteSimdWithScalar("__sshr_{0}", Domain.SignedInt); break;
+                case Mnemonic.ssubl: RewriteSimdBinary("__ssubl_{0}", Domain.SignedInt); break;
+                case Mnemonic.ssubl2: RewriteSimdBinary("__ssubl2_{0}", Domain.SignedInt); break;
                 case Mnemonic.st1: RewriteStN("__st1"); break;
                 case Mnemonic.st2: RewriteStN("__st2"); break;
                 case Mnemonic.st3: RewriteStN("__st3"); break;
@@ -230,6 +237,7 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.sxtl: RewriteSimdUnary("__sxtl_{0}", Domain.SignedInt); break;
                 case Mnemonic.sxtw: RewriteUSxt(Domain.SignedInt, 32); break;
                 case Mnemonic.tbnz: RewriteTb(m.Ne0); break;
+                case Mnemonic.tbl: RewriteTbl(); break;
                 case Mnemonic.tbz: RewriteTb(m.Eq0); break;
                 case Mnemonic.test: RewriteTest(); break;
                 case Mnemonic.uabd: RewriteUabd(); break;
@@ -242,9 +250,12 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.umull: RewriteMull(PrimitiveType.UInt32, PrimitiveType.UInt64, m.UMul); break;
                 case Mnemonic.umulh: RewriteMulh(PrimitiveType.UInt64, m.UMul); break;
                 case Mnemonic.ushr: RewriteMaybeSimdBinary(m.Shr, "__ushr_{0}", Domain.UnsignedInt); break;
+                case Mnemonic.usubl: RewriteSimdBinary("__usubl_{0}", Domain.UnsignedInt); break;
+                case Mnemonic.usubl2: RewriteSimdBinary("__usubl2_{0}", Domain.UnsignedInt); break;
                 case Mnemonic.uxtb: RewriteUSxt(Domain.UnsignedInt, 8); break;
                 case Mnemonic.uxth: RewriteUSxt(Domain.UnsignedInt, 16); break;
                 case Mnemonic.uxtl: RewriteSimdUnary("__uxtl_{0}", Domain.UnsignedInt); break;
+                case Mnemonic.uxtl2: RewriteSimdUnary("__uxtl2_{0}", Domain.UnsignedInt); break;
                 case Mnemonic.uxtw: RewriteUSxt(Domain.UnsignedInt, 32); break;
                 case Mnemonic.xtn: RewriteSimdUnary("__xtn_{0}", Domain.None); break;
                 }

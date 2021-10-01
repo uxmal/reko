@@ -34,7 +34,7 @@ using System.Threading.Tasks;
 namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
-    public class A64RewriterTests : RewriterTestBase
+    public partial class A64RewriterTests : RewriterTestBase
     {
         private readonly Arm64Architecture arch = new Arm64Architecture(CreateServiceContainer(), "aarch64", new Dictionary<string, object>());
         private readonly Address baseAddress = Address.Ptr64(0x00100000);
@@ -89,6 +89,17 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_addhn2()
+        {
+            Given_HexString("00402B4E");
+            AssertCode(     // addhn2	v0.16b,v0.8h,v11.8h
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q0",
+                "2|L--|v3 = q11",
+                "3|L--|q0 = __addhn2_i16(v2, v3)");
+        }
+
+        [Test]
         public void AArch64Rw_adds_Xn_imm()
         {
             Given_Instruction("101 10001 00 011111111111 10001 10011");
@@ -98,6 +109,16 @@ namespace Reko.UnitTests.Arch.Arm
                 "2|L--|NZCV = cond(x19)");
         }
 
+
+        [Test]
+        public void AArch64Rw_addv()
+        {
+            Given_HexString("0AB8310E");
+            AssertCode(     // addv b10,v0.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d0",
+                "2|L--|b10 = __sum_i8(v2)");
+        }
 
         [Test]
         public void AArch64Rw_b_label()
@@ -127,6 +148,17 @@ namespace Reko.UnitTests.Arch.Arm
                 "2|L--|NZ = cond(x3)",
                 "3|L--|C = false",
                 "4|L--|V = false");
+        }
+
+        [Test]
+        public void AArch64Rw_bit()
+        {
+            Given_HexString("BF1DA16E");
+            AssertCode(     // bit	v31.16b,v13.16b,v1.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q13",
+                "2|L--|v3 = q1",
+                "3|L--|q31 = __bit_i8(v2, v3)");
         }
 
         [Test]
@@ -248,18 +280,6 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // movk\tx7,#&AAA4
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|x7 = SEQ(SLICE(x7, word48, 16), 0xAAA4<16>)");
-        }
-
-
-
-
-        [Test]
-        public void AArch64Rw_tbz()
-        {
-            Given_Instruction(0x36686372);
-            AssertCode(     // tbz\tw18,#&D,#&100C6C
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|if ((w18 & 0x2000<32>) == 0<32>) branch 00100C6C");
         }
 
         [Test]
@@ -1993,7 +2013,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_not()
+        public void AArch64Rw_not_vector()
         {
             Given_Instruction(0x6E205821);	// not	v1.16b,v1.16b
             AssertCode(
@@ -2369,6 +2389,120 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|__ld1(x2, out v1)",
                 "2|L--|x2 = x2 + 8<i64>");
+        }
+
+        [Test]
+        public void AArch64Rw_sqdmulh()
+        {
+            Given_HexString("31B4600E");
+            AssertCode(     // sqdmulh	v17.4h,v1.4h,v0.4h
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d1",
+                "2|L--|v3 = d0",
+                "3|L--|d17 = __sqdmulh_i16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sshr()
+        {
+            Given_HexString("E107090F");
+            AssertCode(     // sshr	v1.8b,v31.16b,#7
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|d1 = __sshr_i8(v2, 7<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_sshr_imm()
+        {
+            Given_HexString("C1070F0F");
+            AssertCode(     // sshr	v1.8b,v30.16b,#1
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d30",
+                "2|L--|d1 = __sshr_i8(v2, 1<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_ssubl()
+        {
+            Given_HexString("2022310E");
+            AssertCode(     // ssubl	v0.8b,v17.4h,v17.4h
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d17",
+                "2|L--|v3 = d17",
+                "3|L--|q0 = __ssubl_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_ssubl2()
+        {
+            Given_HexString("7E212C4E");
+            AssertCode(     // ssubl2	v30.16b,v12.8h,v12.8h
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q11",
+                "2|L--|v3 = q12",
+                "3|L--|q30 = __ssubl2_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_tbl()
+        {
+            Given_HexString("5101010E");
+            AssertCode(     // tbl	v17.8b,{v10.8b},v17.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d1",
+                "2|L--|d17 = __tbl_1(v10, v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_tbl_r3l()
+        {
+            Given_HexString("4A41010E");
+            AssertCode(     // tbl	v10.8b,{v10.8b-v12.8b},v1.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d1",
+                "2|L--|d10 = __tbl_3(v10, v11, v12, v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_tbz()
+        {
+            Given_Instruction(0x36686372);
+            AssertCode(     // tbz\tw18,#&D,#&100C6C
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if ((w18 & 0x2000<32>) == 0<32>) branch 00100C6C");
+        }
+
+        [Test]
+        public void AArch64Rw_usubl()
+        {
+            Given_HexString("2C22202E");
+            AssertCode(     // usubl	v12.8h,v17.8b,v0.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d17",
+                "2|L--|v3 = d0",
+                "3|L--|q12 = __usubl_u16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_usubl2()
+        {
+            Given_HexString("8121216E");
+            AssertCode(     // usubl2	v1.16h,v12.8b,v1.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q12",
+                "2|L--|v3 = q1",
+                "3|L--|q1 = __usubl2_u16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uxtl2()
+        {
+            Given_HexString("11A4086F");
+            AssertCode(     // uxtl2	v17.8h,v0.16b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q0",
+                "2|L--|q17 = __uxtl2_u16(v2)");
         }
     }
 }
