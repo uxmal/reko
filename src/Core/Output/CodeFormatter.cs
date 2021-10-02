@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
+using System.Numerics;
 
 namespace Reko.Core.Output
 {
@@ -934,7 +935,7 @@ namespace Reko.Core.Output
             switch (type.Domain)
             {
             case Domain.SignedInt:
-                return ("{0}","<i{0}>");
+                return ("{0}", "<i{0}>");
             case Domain.Character:
                 switch (type.Size)
                 {
@@ -959,25 +960,32 @@ namespace Reko.Core.Output
                 {
                     format = "{0}";
                 }
-                return(format, "<u{0}>");
+                return (format, "<u{0}>");
             case Domain.Pointer:
             case Domain.Offset:
                 return (unsignedConstantFormatStrings[type.Size], "<p{0}>");
             case Domain.SegPointer:
-                 return ("{0:X}", "p{0}");
+                return ("{0:X}", "p{0}");
             default:
-                if (!(value is ulong w))
-                {
-                    w = (ulong) Convert.ToInt64(value);
-                }
-                if (w > 9)
+                if (value is BigInteger big)
                 {
                     format = "0x{0:X}";
-            }
+                }
                 else
                 {
-                    format = "{0}";
-        }
+                    if (!(value is ulong w))
+                    {
+                        w = (ulong) Convert.ToInt64(value);
+                    }
+                    if (w > 9)
+                    {
+                        format = "0x{0:X}";
+                    }
+                    else
+                    {
+                        format = "{0}";
+                    }
+                }
                 return (format, "<{0}>");
             }
         }

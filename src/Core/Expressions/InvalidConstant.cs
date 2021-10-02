@@ -21,6 +21,7 @@
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 using System.Threading;
 
@@ -39,6 +40,8 @@ namespace Reko.Core.Expressions
         private InvalidConstant(DataType dt) : base(dt)
         {
         }
+
+        public override bool IsZero => false;
 
         public static InvalidConstant Create(DataType dt)
         {
@@ -81,5 +84,7 @@ namespace Reko.Core.Expressions
         public override uint ToUInt32() => pseudoValue;
 
         public override ulong ToUInt64() => pseudoValue;
+
+        public override BigInteger ToBigInteger() => pseudoValue;
     }
 }

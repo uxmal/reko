@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 
 namespace Reko.Core.Expressions
@@ -412,6 +413,8 @@ namespace Reko.Core.Expressions
             {
                 throw new InvalidOperationException();
             }
+
+            public override BigInteger ToBigInteger() => throw new InvalidOperationException();
         }
 
         private class WildExpression : Expression, IWildExpression

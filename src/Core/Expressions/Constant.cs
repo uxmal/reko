@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Xml.Schema;
+using System.Numerics;
 
 namespace Reko.Core.Expressions
 {
@@ -127,8 +128,8 @@ namespace Reko.Core.Expressions
             case 128:
                 switch (p.Domain)
                 {
-                case Domain.SignedInt: return new ConstantInt128(p, (long)value);
-                default: return new ConstantUInt128(p, (ulong)value);
+                case Domain.SignedInt: return new BigConstant(p, (long)value);
+                default: return BigConstant.CreateUnsigned(p, value);
                 }
             case 136:
             case 144:
@@ -137,8 +138,8 @@ namespace Reko.Core.Expressions
             case 256:
                 switch (p.Domain)
                 {
-                case Domain.SignedInt: return new ConstantInt256(p, (long)value);
-                default: return new ConstantUInt256(p, (ulong)value);
+                case Domain.SignedInt: return new BigConstant(p, (long)value);
+                default: return BigConstant.CreateUnsigned(p, (ulong)value);
                 }
             default:
                 //$TODO: if we encounter less common bit sizes, do them in a cascading if statement.
@@ -264,13 +265,7 @@ namespace Reko.Core.Expressions
 			return negativeExp ? 1.0 / acc : acc;
 		}
 
-        public override bool IsZero
-        {
-            get
-            {
-                return IsIntegerZero;
-            }
-        }
+        public override bool IsZero => IsIntegerZero;
 
 		public bool IsIntegerZero
 		{
@@ -396,6 +391,7 @@ namespace Reko.Core.Expressions
         public abstract short ToInt16();
         public abstract int ToInt32();
         public abstract long ToInt64();
+        public abstract BigInteger ToBigInteger();
 
 
 		public double ToDouble()
@@ -616,6 +612,8 @@ namespace Reko.Core.Expressions
         {
             return value ? 1 : 0;
         }
+
+        public override BigInteger ToBigInteger() => ToInt32();
     }
 
     internal class ConstantSByte : Constant
@@ -684,6 +682,8 @@ namespace Reko.Core.Expressions
         {
             return value;
         }
+
+        public override BigInteger ToBigInteger() => value;
     }
 
     internal class ConstantChar : Constant
@@ -752,6 +752,9 @@ namespace Reko.Core.Expressions
         {
             return (long)value;
         }
+
+        public override BigInteger ToBigInteger() => value;
+
     }
 
     internal class ConstantByte : Constant
@@ -821,6 +824,9 @@ namespace Reko.Core.Expressions
         {
             return (sbyte)value;
         }
+
+        public override BigInteger ToBigInteger() => value;
+
     }
 
     internal class ConstantInt16 : Constant
@@ -889,6 +895,9 @@ namespace Reko.Core.Expressions
         {
             return value;
         }
+
+        public override BigInteger ToBigInteger() => value;
+
     }
 
     internal class ConstantUInt16 : Constant
@@ -957,6 +966,9 @@ namespace Reko.Core.Expressions
         {
             return (short)value;
         }
+
+        public override BigInteger ToBigInteger() => value;
+
     }
 
     internal class ConstantInt32 : Constant
@@ -1025,6 +1037,9 @@ namespace Reko.Core.Expressions
         {
             return value;
         }
+
+        public override BigInteger ToBigInteger() => value;
+
     }
 
     internal class ConstantUInt32 : Constant
@@ -1094,7 +1109,11 @@ namespace Reko.Core.Expressions
         {
             return (int)value;
         }
+
+        public override BigInteger ToBigInteger() => value;
+
     }
+
 
     internal class ConstantInt64 : Constant
     {
@@ -1163,6 +1182,9 @@ namespace Reko.Core.Expressions
         {
             return value;
         }
+
+        public override BigInteger ToBigInteger() => value;
+
     }
 
     internal class ConstantUInt64 : Constant
@@ -1236,280 +1258,10 @@ namespace Reko.Core.Expressions
         {
             return (long) value;
         }
+
+        public override BigInteger ToBigInteger() => value;
+
     }
-
-    internal class ConstantInt128 : Constant
-    {
-        private readonly long value;
-
-        public ConstantInt128(DataType dt, long value)
-            : base(dt)
-        {
-            this.value = value;
-        }
-
-        public override Expression CloneExpression()
-        {
-            return new ConstantInt128(DataType, value);
-        }
-
-        public override Constant Complement()
-        {
-            throw new NotImplementedException("ConstantInt128 needs to be implemented.");
-        }
-
-        public override object GetValue()
-        {
-            return value;
-        }
-
-        public override int GetHashOfValue()
-        {
-            return value.GetHashCode();
-        }
-
-        public override bool IsMaxUnsigned => throw new NotImplementedException();
-
-        public override byte ToByte()
-        {
-            return (byte)value;
-        }
-
-        public override ushort ToUInt16()
-        {
-            return (ushort)value;
-        }
-
-        public override uint ToUInt32()
-        {
-            return (uint)value;
-        }
-
-        public override ulong ToUInt64()
-        {
-            return (ulong)value;
-        }
-
-        public override short ToInt16()
-        {
-            return (short)value;
-        }
-
-        public override int ToInt32()
-        {
-            return (int)value;
-        }
-
-        public override long ToInt64()
-        {
-            return (long)value;
-        }
-    }
-
-    internal class ConstantUInt128 : Constant
-    {
-        private readonly ulong value;
-
-        public ConstantUInt128(DataType dt, ulong value)
-            : base(dt)
-        {
-            this.value = value;
-        }
-
-        public override Expression CloneExpression()
-        {
-            return new ConstantUInt128(DataType, value);
-        }
-
-        public override Constant Complement()
-        {
-            throw new NotImplementedException("ConstantUInt128 needs to be implemented.");
-        }
-
-        public override object GetValue()
-        {
-            return value;
-        }
-
-        public override int GetHashOfValue()
-        {
-            return value.GetHashCode();
-        }
-
-        public override bool IsMaxUnsigned => throw new NotImplementedException();
-
-        public override byte ToByte()
-        {
-            return (byte)value;
-        }
-
-        public override ushort ToUInt16()
-        {
-            return (ushort)value;
-        }
-
-        public override uint ToUInt32()
-        {
-            return (uint)value;
-        }
-
-        public override ulong ToUInt64()
-        {
-            return value;
-        }
-
-        public override short ToInt16()
-        {
-            return (short)value;
-        }
-
-        public override int ToInt32()
-        {
-            return (int)value;
-        }
-
-        public override long ToInt64()
-        {
-            return (long)value;
-        }
-    }
-
-    internal class ConstantInt256 : Constant
-    {
-        private readonly long value;
-
-        public ConstantInt256(DataType dt, long value)
-            : base(dt)
-        {
-            this.value = value;
-        }
-
-        public override Expression CloneExpression()
-        {
-            return new ConstantInt128(DataType, value);
-        }
-
-        public override Constant Complement()
-        {
-            throw new NotImplementedException("ConstantInt256 needs to be implemented.");
-        }
-
-        public override object GetValue()
-        {
-            return value;
-        }
-
-        public override int GetHashOfValue()
-        {
-            return value.GetHashCode();
-        }
-
-        public override bool IsMaxUnsigned => throw new NotImplementedException();
-
-        public override byte ToByte()
-        {
-            return (byte)value;
-        }
-
-        public override ushort ToUInt16()
-        {
-            return (ushort)value;
-        }
-
-        public override uint ToUInt32()
-        {
-            return (uint)value;
-        }
-
-        public override ulong ToUInt64()
-        {
-            return (ulong)value;
-        }
-
-        public override short ToInt16()
-        {
-            return (short)value;
-        }
-
-        public override int ToInt32()
-        {
-            return (int)value;
-        }
-
-        public override long ToInt64()
-        {
-            return (long)value;
-        }
-    }
-
-    internal class ConstantUInt256 : Constant
-    {
-        private readonly ulong value;
-
-        public ConstantUInt256(DataType dt, ulong value)
-            : base(dt)
-        {
-            this.value = value;
-        }
-
-        public override Expression CloneExpression()
-        {
-            return new ConstantUInt256(DataType, value);
-        }
-
-        public override Constant Complement()
-        {
-            throw new NotImplementedException("ConstantUInt256 needs to be implemented.");
-        }
-
-        public override object GetValue()
-        {
-            return value;
-        }
-
-        public override int GetHashOfValue()
-        {
-            return value.GetHashCode();
-        }
-
-        public override bool IsMaxUnsigned => throw new NotImplementedException();
-
-        public override byte ToByte()
-        {
-            return (byte)value;
-        }
-
-        public override ushort ToUInt16()
-        {
-            return (ushort)value;
-        }
-
-        public override uint ToUInt32()
-        {
-            return (uint)value;
-        }
-
-        public override ulong ToUInt64()
-        {
-            return value;
-        }
-
-        public override short ToInt16()
-        {
-            return (short)value;
-        }
-
-        public override int ToInt32()
-        {
-            return (int)value;
-        }
-
-        public override long ToInt64()
-        {
-            return (long)value;
-        }
-    }
-
 
     public abstract class ConstantReal : Constant
     {
@@ -1627,6 +1379,9 @@ namespace Reko.Core.Expressions
         {
             return value.ToDouble(CultureInfo.InvariantCulture);
         }
+
+        public override BigInteger ToBigInteger() => throw new InvalidCastException();
+
     }
 
     internal class ConstantReal32 : ConstantReal
@@ -1743,6 +1498,9 @@ namespace Reko.Core.Expressions
         {
             return value;
         }
+
+        public override BigInteger ToBigInteger() => throw new InvalidCastException();
+
     }
 
     internal class ConstantReal80 : ConstantReal
@@ -1822,6 +1580,9 @@ namespace Reko.Core.Expressions
         {
             return Convert.ToInt64(value);
         }
+
+        public override BigInteger ToBigInteger() => throw new InvalidCastException();
+
     }
 
     internal class ConstantReal64 : ConstantReal
@@ -1905,6 +1666,9 @@ namespace Reko.Core.Expressions
         {
             return Convert.ToInt64(value);
         }
+
+        public override BigInteger ToBigInteger() => throw new InvalidCastException();
+
     }
 
     public class StringConstant : Constant
@@ -1984,6 +1748,9 @@ namespace Reko.Core.Expressions
         {
             throw new InvalidCastException();
         }
+
+        public override BigInteger ToBigInteger() => throw new InvalidCastException();
+
 
         public override string ToString()
         {

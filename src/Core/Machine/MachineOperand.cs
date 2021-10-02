@@ -191,7 +191,7 @@ namespace Reko.Core.Machine
 
         public static ImmediateOperand Word128(ulong value)
         {
-            return new ImmediateOperand(new ConstantUInt128(PrimitiveType.Word128, value));
+            return new ImmediateOperand(new BigConstant(PrimitiveType.Word128, value));
         }
 
         public static ImmediateOperand Int32(int value)
