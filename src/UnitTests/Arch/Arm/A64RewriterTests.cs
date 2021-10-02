@@ -59,6 +59,15 @@ namespace Reko.UnitTests.Arch.Arm
             Given_MemoryArea(new ByteMemoryArea(Address.Ptr32(0x00100000), bytes));
         }
 
+        [Test]
+        public void AArch64Rw_abs()
+        {
+            Given_HexString("21BA200E");
+            AssertCode(     // abs	v1.8b,v17.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d17",
+                "2|L--|d1 = __abs_i8(v2)");
+        }
 
         [Test]
         public void AArch64Rw_adc()
@@ -109,6 +118,16 @@ namespace Reko.UnitTests.Arch.Arm
                 "2|L--|NZCV = cond(x19)");
         }
 
+        [Test]
+        public void AArch64Rw_addp()
+        {
+            Given_HexString("21BC210E");
+            AssertCode(     // addp	v1.8b,v1.8b,v1.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d1",
+                "2|L--|v3 = d1",
+                "3|L--|d1 = __addp_i8(v2, v3)");
+        }
 
         [Test]
         public void AArch64Rw_addv()
@@ -121,62 +140,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_b_label()
+        public void AArch64Rw_adrp()
         {
-            Given_Instruction("00010111 11111111 11111111 00000000");
-            AssertCode(
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|goto 000FFC00");
-        }
-
-        [Test]
-        public void AArch64Rw_bic_reg_32()
-        {
-            Given_Instruction(0x0A350021);
-            AssertCode(     // bic\tw1,w1,w21
+            Given_Instruction(0xF00000E2);
+            AssertCode(     // adrp\tx2,#&1F000
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|w1 = w1 & ~w21");
-        }
-
-        [Test]
-        public void AArch64Rw_bics()
-        {
-            Given_HexString("E3E4EDEA");
-            AssertCode(     // bics	x3,x7,x13,ror #&39
-                "0|L--|0000000000100000(4): 4 instructions",
-                "1|L--|x3 = x7 & ~__ror(x13, 57<i32>)",
-                "2|L--|NZ = cond(x3)",
-                "3|L--|C = false",
-                "4|L--|V = false");
-        }
-
-        [Test]
-        public void AArch64Rw_bit()
-        {
-            Given_HexString("BF1DA16E");
-            AssertCode(     // bit	v31.16b,v13.16b,v1.16b
-                "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q13",
-                "2|L--|v3 = q1",
-                "3|L--|q31 = __bit_i8(v2, v3)");
-        }
-
-        [Test]
-        public void AArch64Rw_bl_label()
-        {
-            Given_Instruction("10010111 11111111 11111111 00000000");
-            AssertCode(     // bl\t#&FFC00
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|call 000FFC00 (0)");
-        }
-
-        [Test]
-        public void AArch64Rw_br_Xn()
-        {
-            Given_Instruction("11010110 00011111 00000011 11000000");
-            AssertCode(
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|goto x30");
+                "1|L--|x2 = 000000000011F000");
         }
 
         [Test]
@@ -219,6 +188,221 @@ namespace Reko.UnitTests.Arch.Arm
                 "2|L--|NZ = cond(x7)",
                 "3|L--|C = false",
                 "4|L--|V = false");
+        }
+
+
+        [Test]
+        public void AArch64Rw_b_label()
+        {
+            Given_Instruction("00010111 11111111 11111111 00000000");
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|goto 000FFC00");
+        }
+
+        [Test]
+        public void AArch64Rw_bic_reg_32()
+        {
+            Given_Instruction(0x0A350021);
+            AssertCode(     // bic\tw1,w1,w21
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w1 = w1 & ~w21");
+        }
+
+        [Test]
+        public void AArch64Rw_bics()
+        {
+            Given_HexString("E3E4EDEA");
+            AssertCode(     // bics	x3,x7,x13,ror #&39
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|x3 = x7 & ~__ror(x13, 57<i32>)",
+                "2|L--|NZ = cond(x3)",
+                "3|L--|C = false",
+                "4|L--|V = false");
+        }
+
+        [Test]
+        public void AArch64Rw_bic_vector_imm()
+        {
+            Given_HexString("FE94052F");
+            AssertCode(     // bic	v30.4h,#&A700A7
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|d30 = d30 & ~0x0A700A700A700A7<64>");
+        }
+
+        [Test]
+        public void AArch64Rw_bif()
+        {
+            Given_HexString("C11FEA2E");
+            AssertCode(     // bif	v1.8b,v30.8b,v10.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d30",
+                "2|L--|v3 = d10",
+                "3|L--|d1 = __bif_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_bit()
+        {
+            Given_HexString("BF1DA16E");
+            AssertCode(     // bit	v31.16b,v13.16b,v1.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q13",
+                "2|L--|v3 = q1",
+                "3|L--|q31 = __bit_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_bl_label()
+        {
+            Given_Instruction("10010111 11111111 11111111 00000000");
+            AssertCode(     // bl\t#&FFC00
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|call 000FFC00 (0)");
+        }
+
+        [Test]
+        public void AArch64Rw_br_Xn()
+        {
+            Given_Instruction("11010110 00011111 00000011 11000000");
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|goto x30");
+        }
+
+        [Test]
+        public void AArch64Rw_brk()
+        {
+            Given_HexString("007D20D4");
+            AssertCode(     // brk	#&3E8
+                "0|H--|0000000000100000(4): 1 instructions",
+                "1|L--|__brk(0x3E8<16>)");
+        }
+
+        [Test]
+        public void AArch64Rw_bsl()
+        {
+            Given_HexString("831C606E");
+            AssertCode(     // bsl	v3.16b,v4.16b,v0.16b
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q3 = q3 ^ (q3 ^ q0) & q4");
+        }
+
+        [Test]
+        public void AArch64Rw_cls()
+        {
+            Given_HexString("3E48200E");
+            AssertCode(     // cls	v30.8b,v1.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d1",
+                "2|L--|d30 = __cls_i8(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_cmeq()
+        {
+            Given_Instruction(0x6E208C21);	// cmeq	v1.16b,v1.16b,v0.16b
+            AssertCode(
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|v3 = q0",
+                "3|L--|q1 = __cmeq_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_cmge()
+        {
+            Given_HexString("513D2B0E");
+            AssertCode(     // cmge	v17.8b,v10.8b,v11.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d10",
+                "2|L--|v3 = d11",
+                "3|L--|d17 = __cmge_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_cmgt()
+        {
+            Given_HexString("2D34200E");
+            AssertCode(     // cmgt	v13.8b,v1.8b,v0.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d1",
+                "2|L--|v3 = d0",
+                "3|L--|d13 = __cmgt_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_cmhi_vs()
+        {
+            Given_HexString("E034A06E");
+            AssertCode( //cmhi\tv0.4s,v7.4s,v0.4s
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q7",
+                "2|L--|v3 = q0",
+                "3|L--|q0 = __cmhi_i32(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_cmhs()
+        {
+            Given_HexString("233C236E");
+            AssertCode(     // cmhs	v3.16b,v1.16b,v3.16b,#0
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|v3 = q3",
+                "3|L--|q3 = __cmhs_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_cmhs_v()
+        {
+            Given_HexString("213CA26E");
+            AssertCode(//cmhs\tv1.16b,v1.16b,v2.16b,#0
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|v3 = q2",
+                "3|L--|q1 = __cmhs_i32(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_cmle()
+        {
+            Given_HexString("5E99202E");
+            AssertCode(     // cmle	v30.8b,v10.8b,#0
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d10",
+                "2|L--|d30 = __cmle_i8(v2, 0<32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_cmlt()
+        {
+            Given_HexString("E0AB200E");
+            AssertCode(     // cmlt	v0.2s,v31.2s,#0
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|d0 = __cmlt_i32(v2, 0<64>)");
+        }
+
+        [Test]
+        public void AArch64Rw_cmtst()
+        {
+            Given_HexString("AB8D210E");
+            AssertCode(     // cmtst	v11.8b,v13.8b,v1.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d13",
+                "2|L--|v3 = d1",
+                "3|L--|d11 = __cmtst_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_cnt()
+        {
+            Given_HexString("6C59200E");
+            AssertCode(     // cnt	v12.8b,v11.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d11",
+                "2|L--|d12 = __cnt_i8(v2)");
         }
 
         [Test]
@@ -274,21 +458,36 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_mla_by_element()
+        {
+            Given_HexString("81016D2F");
+            AssertCode(     // mla	v1.4h,v12.4h,v13.h[2]
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v2 = d1",
+                "2|L--|v3 = d12",
+                "3|L--|v4 = d13[2<i32>]",
+                "4|L--|d1 = __mla_i16(v2, v3, v4)");
+        }
+
+        [Test]
+        public void AArch64Rw_mls_by_element()
+        {
+            Given_HexString("3E42502F");
+            AssertCode(     // mls	v30.8h,v17.8h,v0.h[1]
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v2 = q30",
+                "2|L--|v3 = q17",
+                "3|L--|v4 = q0[1<i32>]",
+                "4|L--|q30 = __mls_i16(v2, v3, v4)");
+        }
+
+        [Test]
         public void AArch64Rw_movk_imm()
         {
             Given_Instruction("111 10010 100 1010 1010 1010 0100 00111"); // 87 54 95 F2");
             AssertCode(     // movk\tx7,#&AAA4
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|x7 = SEQ(SLICE(x7, word48, 16), 0xAAA4<16>)");
-        }
-
-        [Test]
-        public void AArch64Rw_adrp()
-        {
-            Given_Instruction(0xF00000E2);
-            AssertCode(     // adrp\tx2,#&1F000
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|x2 = 000000000011F000");
         }
 
         [Test]
@@ -299,6 +498,8 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|x2 = Mem0[x2 + 4040<i64>:word64]");
         }
+
+
 
         [Test]
         public void AArch64Rw_mov_reg64()
@@ -334,6 +535,25 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // movz\tw0,#6
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|w0 = 6<32>");
+        }
+
+        [Test]
+        public void AArch64Rw_mvni()
+        {
+            Given_HexString("7F86016F");
+            AssertCode(     // mvni	v31.8h,#&330033
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|q31 = 0x0FFCCFFCCFFCCFFCCFFCCFFCCFFCCFFCC<128>");
+        }
+
+        [Test]
+        public void AArch64Rw_neg()
+        {
+            Given_HexString("CBBB202E");
+            AssertCode(     // neg	v11.8b,v30.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d30",
+                "2|L--|d11 = __neg_i8(v2)");
         }
 
         [Test]
@@ -1014,12 +1234,14 @@ namespace Reko.UnitTests.Arch.Arm
                  "2|L--|w0 = CONVERT(v5, word16, word32)");
         }
 
-        public void AArch64Rw_3873C800()
+        [Test]
+        public void AArch64Rw_ldrb_sxtw()
         {
-            Given_Instruction(0x3873C800);
-            AssertCode(     // @@@
-                 "0|L--|00100000(4): 1 instructions",
-                 "1|L--|@@@");
+            Given_HexString("00C87338");
+            AssertCode(     // ldrb w0,[x0,w19,sxtw]
+                 "0|L--|0000000000100000(4): 2 instructions",
+                 "1|L--|v5 = Mem0[x0 + CONVERT(w19, int32, int64):byte]",
+                 "2|L--|w0 = CONVERT(v5, byte, word32)");
         }
 
         [Test]
@@ -1151,6 +1373,15 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_extr()
+        {
+            Given_HexString("410CC193");
+            AssertCode(     // extr	x1,x2,x1,#3
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|x1 = __ror(x2, 3<i32>)");
+        }
+
+        [Test]
         public void AArch64Rw_sub_reg_ext_64()
         {
             Given_Instruction(0xCB214F18);
@@ -1188,17 +1419,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_uabd()
-        {
-            Given_HexString("6174696E");
-            AssertCode(     // uabd	v1.8h,v3.8h,v9.8h
-                "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q3",
-                "2|L--|v3 = q9",
-                "3|L--|q1 = __uabd_u16(v2, v3)");
-        }
-
-        [Test]
         public void AArch64Rw_umulh()
         {
             Given_Instruction(0x9BC57C00);
@@ -1216,14 +1436,7 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|w2 = w3 >>u w2");
         }
 
-        [Test]
-        public void AArch64Rw_smull()
-        {
-            Given_Instruction(0x9B237C43);
-            AssertCode(     // smull\tx3,w2,w3
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|x3 = CONVERT(w2 *s w3, int32, int64)");
-        }
+
 
         [Test]
         public void AArch64Rw_smaddl()
@@ -1385,7 +1598,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // sxtl\tv19.4s,v19.4h
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v2 = d19",
-                "2|L--|q19 = __sxtl_i32(v2)");
+                "2|L--|q19 = __sxtl_i16(v2)");
         }
 
         [Test]
@@ -1395,7 +1608,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // fcvtzs\tv21.4s,v21.4s
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v2 = q21",
-                "2|L--|q21 = __trunc_f32(v2)");
+                "2|L--|q21 = __trunc_i8(v2)");
         }
 
         [Test]
@@ -1517,25 +1730,11 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|q2 = q9");
         }
 
-        [Test]
-        public void AArch64Rw_uxtl()
-        {
-            Given_Instruction(0x2F08A400);
-            AssertCode(     // uxtl\tv0.8h,v0.8b
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = d0",
-                "2|L--|q0 = __uxtl_u16(v2)");
-        }
 
-        [Test]
-        public void AArch64Rw_xtn()
-        {
-            Given_Instruction(0x0E612A10);
-            AssertCode(     // xtn\tv16.4h,v16.4s
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|v2 = q16",
-                "2|L--|d16 = __xtn_i16(v2)");
-        }
+
+
+
+        
 
 
         [Test]
@@ -1555,6 +1754,15 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v2 = 1.0F",
                 "2|L--|q0 = __fmov_f32(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_dsb()
+        {
+            Given_Instruction(0xD5033F9F);	// dsb	#&F
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__dsb_sy()");
         }
 
         [Test]
@@ -1636,6 +1844,17 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // mov\tv19.h[2],v17.h[5]
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|q19[2<i32>] = q17[5<i32>]");
+        }
+
+        [Test]
+        public void AArch64Rw_add_vector_s64()
+        {
+            Given_HexString("6384EB4E");
+            AssertCode(
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q3",
+                "2|L--|v3 = q11",
+                "3|L--|q3 = __add_i64(v2, v3)");
         }
 
         [Test]
@@ -1759,16 +1978,7 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|d16 = CONVERT(d0, int64, real64)");
         }
 
-        [Test]
-        public void AArch64Rw_umlal_vector()
-        {
-            Given_Instruction(0x2E208045);
-            AssertCode(     // umlal\tv5.4h,v2.8b,v0.8b
-                "0|L--|00100000(4): 3 instructions",
-                "1|L--|v2 = d2",
-                "2|L--|v3 = d0",
-                "3|L--|q5 = __umlal_u8(v2, v3, q5)");
-        }
+
 
  
 
@@ -1790,7 +2000,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // smaxv\ts0,v0.4s
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|v2 = q0",
-                "2|L--|s0 = __smax_i32(v2)");
+                "2|L--|s0 = __smaxv_i32(v2)");
         }
 
         [Test]
@@ -1815,16 +2025,9 @@ namespace Reko.UnitTests.Arch.Arm
                 "3|L--|q4 = __mull_i8(v2, v3)");
         }
 
-        [Test]
-        public void AArch64Rw_uaddw_i16()
-        {
-            Given_HexString("8210232E");
-            AssertCode(     // uaddw\tv2.8h,v4.8h,v3.16b
-                "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q4",
-                "2|L--|v3 = d3",
-                "3|L--|q2 = __uaddw_u16(v2, v3)");
-        }
+
+
+
 
         [Test]
         public void AArch64Rw_add_with_extension()
@@ -1901,14 +2104,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
 
-        [Test]
-        public void AArch64Rw_add()
-        {
-            Given_Instruction(0x8B8C6D6D);	// add	x13,x11,x12,asr #&1B
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|x13 = x11 + (x12 >> 27<i32>)");
-        }
 
         [Test]
         public void AArch64Rw_csneg()
@@ -1970,40 +2165,6 @@ namespace Reko.UnitTests.Arch.Arm
 
 
         [Test]
-        public void AArch64Rw_cmeq()
-        {
-            Given_Instruction(0x6E208C21);	// cmeq	v1.16b,v1.16b,v0.16b
-            AssertCode(
-                "0|L--|00100000(4): 3 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|v3 = q0",
-                "3|L--|q1 = __cmeq(v2, v3)");
-        }
-
-        [Test]
-        [Ignore("Not yet")]
-        public void AArch64Rw_cmhs()
-        {
-            Given_HexString("233C236E");
-            AssertCode(     // cmhs	v3.16b,v1.16b,v3.16b,#0
-                "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|v3 = q3",
-                "3|L--|q3 = __cmhs(v2, v3)");
-        }
-
-        [Test]
-        public void AArch64Rw_cmhs_v()
-        {
-            Given_HexString("213CA26E");
-            AssertCode(//cmhs\tv1.16b,v1.16b,v2.16b,#0
-                "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q1",
-                "2|L--|v3 = q2",
-                "3|L--|q1 = __cmhs(v2, v3)");
-        }
-
-        [Test]
         public void AArch64Rw_st1()
         {
             Given_Instruction(0x0D0041B5);	// st1	{v21.h}[0],[x13]
@@ -2048,15 +2209,6 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|w3 = CONVERT(SLICE(w19, uint8, 0), uint8, uint32)");
-        }
-
-        [Test]
-        public void AArch64Rw_uxth()
-        {
-            Given_Instruction(0x53003C00);	// uxth	w0,w0
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|w0 = CONVERT(SLICE(w0, uint16, 0), uint16, uint32)");
         }
 
         [Test]
@@ -2163,15 +2315,6 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|x0 = __mrs(CTR_EL0)");
-        }
-
-        [Test]
-        public void AArch64Rw_dsb()
-        {
-            Given_Instruction(0xD5033F9F);	// dsb	#&F
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|__dsb_sy()");
         }
 
         [Test]
@@ -2287,15 +2430,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_extr()
-        {
-            Given_HexString("410CC193");
-            AssertCode(     // extr	x1,x2,x1,#3
-                "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|x1 = __ror(x2, 3<i32>)");
-        }
-
-        [Test]
         public void AArch64Rw_rev32()
         {
             Given_HexString("C608C0DA");
@@ -2323,52 +2457,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_brk()
-        {
-            Given_HexString("007D20D4");
-            AssertCode(     // brk	#&3E8
-                "0|H--|0000000000100000(4): 1 instructions",
-                "1|L--|__brk(0x3E8<16>)");
-        }
-
-        [Test]
-        public void AArch64Rw_bsl()
-        {
-            Given_HexString("831C606E");
-            AssertCode(     // bsl	v3.16b,v4.16b,v0.16b
-                "0|L--|0000000000100000(4): 1 instructions",
-                "1|L--|q3 = q3 ^ (q3 ^ q0) & q4");
-        }
-
-        [Test]
         public void AArch64Rw_hlt()
         {
             Given_HexString("000046D4");
             AssertCode(     // hlt	#&3000
                 "0|H--|0000000000100000(4): 1 instructions",
                 "1|L--|__hlt(0x3000<16>)");
-        }
-
-        [Test]
-        public void AArch64Rw_add_v_s()
-        {
-            Given_HexString("6384EB4E");
-            AssertCode(
-                "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q3",
-                "2|L--|v3 = q11",
-                "3|L--|q3 = __add_i64(v2, v3)");
-        }
-
-        [Test]
-        public void AArch64Rw_cmhi_vs()
-        {
-            Given_HexString("E034A06E");
-            AssertCode( //cmhi\tv0.4s,v7.4s,v0.4s,#0
-                "0|L--|0000000000100000(4): 3 instructions",
-                "1|L--|v2 = q7",
-                "2|L--|v3 = q0",
-                "3|L--|q0 = __cmhi(v2, v3)");
         }
 
         [Test]
@@ -2392,6 +2486,525 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_orr_vector()
+        {
+            Given_HexString("4195060F");
+            AssertCode(     // orr	v1.4h,#&CA00CA
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|d1 = d1 | 0x0CA00CA00CA00CA<64>");
+        }
+
+        [Test]
+        public void AArch64Rw_orr_vector_lsl()
+        {
+            Given_HexString("41B5060F");
+            AssertCode(     // orr	v1.4h,#&CA00CA,lsl #8
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|d1 = d1 | 0x0CA00CA00CA00CA00<64>");
+        }
+
+        [Test]
+        public void AArch64Rw_pmul()
+        {
+            Given_HexString("019C2C2E");
+            AssertCode(     // pmul	v1.8b,v0.8b,v12.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d0",
+                "2|L--|v3 = d12",
+                "3|L--|d1 = __pmul_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_pmull()
+        {
+            Given_HexString("81E13E0E");
+            AssertCode(     // pmull	v1.8h,v12.8b,v30.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d12",
+                "2|L--|v3 = d30",
+                "3|L--|q1 = __pmull_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_pmull2()
+        {
+            Given_HexString("3FE02D4E");
+            AssertCode(     // pmull2	v31.8h,v1.16b,v13.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|v3 = q13",
+                "3|L--|q31 = __pmull2_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_raddhn()
+        {
+            Given_HexString("2140312E");
+            AssertCode(     // raddhn	v1.8b,v1.8h,v17.8h
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|v3 = q17",
+                "3|L--|d1 = __raddhn_i16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_raddhn2()
+        {
+            Given_HexString("2D402B6E");
+            AssertCode(     // raddhn2	v13.16b,v1.8h,v11.8h
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|v3 = q11",
+                "3|L--|q13 = __raddhn2_i16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_rev64()
+        {
+            Given_HexString("1108200E");
+            AssertCode(     // rev64	v17.8b,v0.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d0",
+                "2|L--|d17 = __rev64_i8(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_rshrn()
+        {
+            Given_HexString("4B8D0B0F");
+            AssertCode(     // rshrn	v11.8b,v10.8h,#5
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q10",
+                "2|L--|d11 = __rshrn_i16(v2, 5<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_rshrn2()
+        {
+            Given_HexString("0A8C094F");
+            AssertCode(     // rshrn2	v10.16b,v0.8h,#7
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q0",
+                "2|L--|q10 = __rshrn2_i16(v2, 7<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_rsubhn()
+        {
+            Given_HexString("4D61312E");
+            AssertCode(     // rsubhn	v13.8b,v10.8h,v17.8h
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q10",
+                "2|L--|v3 = q17",
+                "3|L--|d13 = __rsubhn_i16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_rsubhn2()
+        {
+            Given_HexString("5F613E6E");
+            AssertCode(     // rsubhn2	v31.16b,v10.8h,v30.8h
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q10",
+                "2|L--|v3 = q30",
+                "3|L--|q31 = __rsubhn2_i16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_saba()
+        {
+            Given_HexString("7E7D3F0E");
+            AssertCode(     // saba	v30.8b,v11.8b,v31.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d11",
+                "2|L--|v3 = d31",
+                "3|L--|d30 = __saba_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sabal()
+        {
+            Given_HexString("6151210E");
+            AssertCode(     // sabal	v1.8h,v11.8b,v1.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d11",
+                "2|L--|v3 = d1",
+                "3|L--|q1 = __sabal_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sabal2()
+        {
+            Given_HexString("20523E4E");
+            AssertCode(     // sabal2	v0.8h,v17.8b,v30.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d17",
+                "2|L--|v3 = d30",
+                "3|L--|q0 = __sabal2_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sabd()
+        {
+            Given_HexString("FE773E0E");
+            AssertCode(     // sabd	v30.8b,v31.8b,v30.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|v3 = d30",
+                "3|L--|d30 = __sabd_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sabdl()
+        {
+            Given_HexString("6D712D0E");
+            AssertCode(     // sabdl	v13.8h,v11.8b,v13.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d11",
+                "2|L--|v3 = d13",
+                "3|L--|q13 = __sabdl_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sabdl2()
+        {
+            Given_HexString("AB712A4E");
+            AssertCode(     // sabdl2	v11.8h,v13.16b,v10.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q13",
+                "2|L--|v3 = q10",
+                "3|L--|q11 = __sabdl2_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sadalp()
+        {
+            Given_HexString("BE69200E");
+            AssertCode(     // sadalp	v30.4h,v13.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d30",
+                "2|L--|v3 = d13",
+                "3|L--|d30 = __sadalp_i8(v3, v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_saddl()
+        {
+            Given_HexString("9F012A0E");
+            AssertCode(     // saddl	v31.8h,v12.8b,v10.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d12",
+                "2|L--|v3 = d10",
+                "3|L--|q31 = __saddl_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_saddl2()
+        {
+            Given_HexString("31003E4E");
+            AssertCode(     // saddl2	v17.8h,v1.16b,v30.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|v3 = q30",
+                "3|L--|q17 = __saddl2_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_saddlp()
+        {
+            Given_HexString("E02B200E");
+            AssertCode(     // saddlp	v0.4h,v31.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|d0 = __saddlp_i8(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_saddlv()
+        {
+            Given_HexString("2B38300E");
+            AssertCode(     // saddlv	h11,v1.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d1",
+                "2|L--|h11 = __saddlv_i8(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_saddw()
+        {
+            Given_HexString("6A113F0E");
+            AssertCode(     // saddw	v10.8h,v11.8h,v31.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q11",
+                "2|L--|v3 = d31",
+                "3|L--|q10 = __saddw_i16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_saddw2()
+        {
+            Given_HexString("3F10314E");
+            AssertCode(     // saddw2	v31.8h,v1.8h,v17.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|v3 = q17",
+                "3|L--|q31 = __saddw2_i16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_shadd()
+        {
+            Given_HexString("1E042A0E");
+            AssertCode(     // shadd	v30.8b,v0.8b,v10.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d0",
+                "2|L--|v3 = d10",
+                "3|L--|d30 = __shadd_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_shl()
+        {
+            Given_HexString("2C560D0F");
+            AssertCode(     // shl	v12.8b,v17.8b,#5
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d17",
+                "2|L--|d12 = __shl_i8(v2, 5<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_shll()
+        {
+            Given_HexString("8C39212E");
+            AssertCode(     // shll	v12.8h,v12.8b,#8
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d12",
+                "2|L--|q12 = __shll_i8(v2, 8<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_shll2()
+        {
+            Given_HexString("1E38216E");
+            AssertCode(     // shll2	v30.8h,v0.16b,lsl #8
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q0",
+                "2|L--|q30 = __shll2_i8(v2, 8<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_shsub()
+        {
+            Given_HexString("4A253F0E");
+            AssertCode(     // shsub	v10.8b,v10.8b,v31.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d10",
+                "2|L--|v3 = d31",
+                "3|L--|d10 = __shsub_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sli()
+        {
+            Given_HexString("3F56082F");
+            AssertCode(     // sli	v31.8b,v17.8b,#8
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d17",
+                "2|L--|d31 = __sli_i8(v2, 8<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_smaxp()
+        {
+            Given_HexString("2BA63E0E");
+            AssertCode(     // smaxp	v11.8b,v17.8b,v30.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d17",
+                "2|L--|v3 = d30",
+                "3|L--|d11 = __smaxp_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_smin()
+        {
+            Given_HexString("0B6C310E");
+            AssertCode(     // smin	v11.8b,v0.8b,v17.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d0",
+                "2|L--|v3 = d17",
+                "3|L--|d11 = __smin_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sminp()
+        {
+            Given_HexString("CBAF3F0E");
+            AssertCode(     // sminp	v11.8b,v30.8b,v31.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d30",
+                "2|L--|v3 = d31",
+                "3|L--|d11 = __sminp_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sminv()
+        {
+            Given_HexString("0DA8310E");
+            AssertCode(     // sminv	b13,v0.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d0",
+                "2|L--|b13 = __sminv_i8(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_smlal()
+        {
+            Given_HexString("2B80210E");
+            AssertCode(     // smlal	v11.8h,v1.8b,v1.8b
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v2 = q11",
+                "2|L--|v3 = d1",
+                "3|L--|v4 = d1",
+                "4|L--|q11 = __smlal_i16(v2, v3, v4)");
+        }
+
+        [Test]
+        public void AArch64Rw_smlal2()
+        {
+            Given_HexString("4081314E");
+            AssertCode(     // smlal2	v0.8h,v10.16b,v17.16b
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v2 = q0",
+                "2|L--|v3 = q10",
+                "3|L--|v4 = q17",
+                "4|L--|q0 = __smlal2_i16(v2, v3, v4)");
+        }
+
+        [Test]
+        public void AArch64Rw_smlsl()
+        {
+            Given_HexString("C1A33E0E");
+            AssertCode(     // smlsl	v1.8h,v30.8b,v30.8b
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|v3 = d30",
+                "3|L--|v4 = d30",
+                "4|L--|q1 = __smlsl_i16(v2, v3, v4)");
+        }
+
+        [Test]
+        public void AArch64Rw_smlsl2()
+        {
+            //$BUG: should be ternary
+            Given_HexString("C0A32C4E");
+            AssertCode(     // smlsl2	v0.8h,v30.16b,v12.16b
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v2 = q0",
+                "2|L--|v3 = q30",
+                "3|L--|v4 = q12",
+                "4|L--|q0 = __smlsl2_i16(v2, v3, v4)");
+        }
+
+        [Test]
+        public void AArch64Rw_smov()
+        {
+            Given_HexString("E42F170E");
+            AssertCode(     // smov	w4,v31.b[11]
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q31",
+                "2|L--|w4 = CONVERT(v2[11<i32>], int8, int32)");
+        }
+
+        [Test]
+        public void AArch64Rw_smull()
+        {
+            Given_Instruction(0x9B237C43);
+            AssertCode(     // smull\tx3,w2,w3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x3 = CONVERT(w2 *s w3, int32, int64)");
+        }
+
+        [Test]
+        public void AArch64Rw_smull2_vector()
+        {
+            Given_HexString("E1C3314E");
+            AssertCode(     // smull2	v1.8h,v31.16b,v17.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q31",
+                "2|L--|v3 = q17",
+                "3|L--|q1 = __smull2_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqabs()
+        {
+            Given_HexString("ED7B200E");
+            AssertCode(     // sqabs	v13.8b,v31.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|d13 = __sqabs_i8(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqadd()
+        {
+            Given_HexString("F10F2A0E");
+            AssertCode(     // sqadd	v17.8b,v31.8b,v10.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|v3 = d10",
+                "3|L--|d17 = __sqadd_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqdmlal_by_element()
+        {
+            Given_HexString("D13B5B0F");
+            AssertCode(     // sqdmlal	v17.4s,v30.4h,v11.h[5]
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v2 = q17",
+                "2|L--|v3 = d30",
+                "3|L--|v4 = d11[5<i32>]",
+                "4|L--|q17 = __sqdmlal_i32(v2, v3, v4)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqdmlal2_by_element()
+        {
+            Given_HexString("BE39514F");
+            AssertCode(     // sqdmlal2	v30.4s,v13.8h,v1.h[5]
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v2 = q30",
+                "2|L--|v3 = q13",
+                "3|L--|v4 = q1[5<i32>]",
+                "4|L--|q30 = __sqdmlal2_i32(v2, v3, v4)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqdmlsl_by_element()
+        {
+            Given_HexString("AB715D0F");
+            AssertCode(     // sqdmlsl	v11.4s,v13.4h,v13.h[1]
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v2 = q11",
+                "2|L--|v3 = d13",
+                "3|L--|v4 = d13[1<i32>]",
+                "4|L--|q11 = __sqdmlsl_i32(v2, v3, v4)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqdmlsl2_by_element()
+        {
+            Given_HexString("6079614F");
+            AssertCode(     // sqdmlsl2	v0.4s,v11.8h,v1.h[6]
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v2 = q0",
+                "2|L--|v3 = q11",
+                "3|L--|v4 = q1[6<i32>]",
+                "4|L--|q0 = __sqdmlsl2_i32(v2, v3, v4)");
+        }
+
+        [Test]
         public void AArch64Rw_sqdmulh()
         {
             Given_HexString("31B4600E");
@@ -2400,6 +3013,308 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|v2 = d1",
                 "2|L--|v3 = d0",
                 "3|L--|d17 = __sqdmulh_i16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqdmulh_element()
+        {
+            Given_HexString("BFC95D5F");
+            AssertCode(     // sqdmulh	h31,h13,v13.h[5]
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|h31 = __sqdmulh(h13, d13[5<i32>])");
+        }
+
+        [Test]
+        public void AArch64Rw_sqdmull_by_element()
+        {
+            Given_HexString("D1BB4D0F");
+            AssertCode(     // sqdmull	v17.4s,v30.4h,v13.h[4]
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d30",
+                "2|L--|v3 = d13[4<i32>]",
+                "3|L--|q17 = __sqdmull_i16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqdmull2_by_element()
+        {
+            Given_HexString("01B0414F");
+            AssertCode(     // sqdmull2	v1.4s,v0.8h,v1.h[0]
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q0",
+                "2|L--|v3 = q1[0<i32>]",
+                "3|L--|q1 = __sqdmull2_i16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqneg()
+        {
+            Given_HexString("9F79202E");
+            AssertCode(     // sqneg	v31.8b,v12.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d12",
+                "2|L--|d31 = __sqneg_i8(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqrdmlah()
+        {
+            Given_HexString("6BD97D2F");
+            AssertCode(     // sqrdmlah	v11.4h,v11.4h,v13.h[7]
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v2 = d11",
+                "2|L--|v3 = d11",
+                "3|L--|v4 = d13[7<i32>]",
+                "4|L--|d11 = __sqrdmlah_i16(v2, v3, v4)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqrdmlsh()
+        {
+            Given_HexString("EAFB7B2F");
+            AssertCode(     // sqrdmlsh	v10.4h,v31.4h,v11.h[7]
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v2 = d10",
+                "2|L--|v3 = d31",
+                "3|L--|v4 = d11[7<i32>]",
+                "4|L--|d10 = __sqrdmlsh_i16(v2, v3, v4)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqrdmulh_by_element()
+        {
+            Given_HexString("8CD97B0F");
+            AssertCode(     // sqrdmulh	v12.4h,v12.4h,v11.h[7]
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d12",
+                "2|L--|v3 = d11[7<i32>]",
+                "3|L--|d12 = __sqrdmulh_i16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqrshl()
+        {
+            Given_HexString("8A5D210E");
+            AssertCode(     // sqrshl	v10.8b,v12.8b,v1.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d12",
+                "2|L--|v3 = d1",
+                "3|L--|d10 = __sqrshl_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqrshrn()
+        {
+            Given_HexString("2D9C0B0F");
+            AssertCode(     // sqrshrn	v13.8b,v1.8h,#5
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|d13 = __sqrshrn_i16(v2, 5<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqrshrn2()
+        {
+            Given_HexString("AC9D094F");
+            AssertCode(     // sqrshrn2	v12.16b,v13.8h,#7
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q13",
+                "2|L--|q12 = __sqrshrn2_i16(v2, 7<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqrshrun()
+        {
+            Given_HexString("CD8F0A2F");
+            AssertCode(     // sqrshrun	v13.8b,v30.8h,#6
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q30",
+                "2|L--|d13 = __sqrshrun_i16(v2, 6<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqrshrun2()
+        {
+            Given_HexString("B18D0A6F");
+            AssertCode(     // sqrshrun2	v17.16b,v13.8h,#6
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q13",
+                "2|L--|q17 = __sqrshrun2_i16(v2, 6<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqshl()
+        {
+            Given_HexString("EA4F3E0E");
+            AssertCode(     // sqshl	v10.8b,v31.8b,v30.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|v3 = d30",
+                "3|L--|d10 = __sqshl_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqshlu()
+        {
+            Given_HexString("00640D2F");
+            AssertCode(     // sqshlu	v0.8b,v0.8b,#5
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d0",
+                "2|L--|d0 = __sqshlu_i8(v2, 5<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqshrn()
+        {
+            Given_HexString("8B950B0F");
+            AssertCode(     // sqshrn	v11.8b,v12.8h,#5
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q12",
+                "2|L--|d11 = __sqshrn_i16(v2, 5<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqshrn2()
+        {
+            Given_HexString("7F950B4F");
+            AssertCode(     // sqshrn2	v31.16b,v11.8h,#5
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q11",
+                "2|L--|q31 = __sqshrn2_i16(v2, 5<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqsub()
+        {
+            Given_HexString("4D2D2C0E");
+            AssertCode(     // sqsub	v13.8b,v10.8b,v12.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d10",
+                "2|L--|v3 = d12",
+                "3|L--|d13 = __sqsub_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqxtn()
+        {
+            Given_HexString("6049210E");
+            AssertCode(     // sqxtn	v0.8b,v11.8h
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q11",
+                "2|L--|d0 = __sqxtn_i16(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqxtn2()
+        {
+            Given_HexString("0048214E");
+            AssertCode(     // sqxtn2	v0.16b,v0.8h
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q0",
+                "2|L--|q0 = __sqxtn2_i16(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqxtun()
+        {
+            Given_HexString("A129212E");
+            AssertCode(     // sqxtun	v1.8b,v13.8h
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q13",
+                "2|L--|d1 = __sqxtun_i16(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_sqxtun2()
+        {
+            Given_HexString("2D2A216E");
+            AssertCode(     // sqxtun2	v13.16b,v17.8h
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q17",
+                "2|L--|q13 = __sqxtun2_i16(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_srhadd()
+        {
+            Given_HexString("2A162A0E");
+            AssertCode(     // srhadd	v10.8b,v17.8b,v10.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d17",
+                "2|L--|v3 = d10",
+                "3|L--|d10 = __srhadd_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sri()
+        {
+            Given_HexString("F147092F");
+            AssertCode(     // sri	v17.8b,v31.8b,#7
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|d17 = __sri_i8(v2, 7<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_srshl()
+        {
+            Given_HexString("6B55200E");
+            AssertCode(     // srshl	v11.8b,v11.8b,v0.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d11",
+                "2|L--|v3 = d0",
+                "3|L--|d11 = __srshl_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_srshr()
+        {
+            Given_HexString("AC250C0F");
+            AssertCode(     // srshr	v12.8b,v13.8b,#4
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d13",
+                "2|L--|d12 = __srshr_i8(v2, 4<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_srsra()
+        {
+            Given_HexString("2A340D0F");
+            AssertCode(     // srsra	v10.8b,v1.8b,#3
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d1",
+                "2|L--|d10 = __srsra_i8(v2, 3<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_sshl()
+        {
+            Given_HexString("2A443E0E");
+            AssertCode(     // sshl	v10.8b,v1.8b,v30.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d1",
+                "2|L--|v3 = d30",
+                "3|L--|d10 = __sshl_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_sshll()
+        {
+            Given_HexString("01A40E0F");
+            AssertCode(     // sshll	v1.8h,v0.8b,#6
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d0",
+                "2|L--|q1 = __sshll_i8(v2, 6<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_sshll2()
+        {
+            Given_HexString("3EA4094F");
+            AssertCode(     // sshll2	v30.8h,v1.16b,#1
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|q30 = __sshll2_i8(v2, 1<i32>)");
         }
 
         [Test]
@@ -2423,6 +3338,16 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_ssra()
+        {
+            Given_HexString("4B150D0F");
+            AssertCode(     // ssra	v11.8b,v10.8b,#3
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d10",
+                "2|L--|d11 = __ssra_i8(v2, 3<i32>)");
+        }
+
+        [Test]
         public void AArch64Rw_ssubl()
         {
             Given_HexString("2022310E");
@@ -2434,6 +3359,28 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_ssubw()
+        {
+            Given_HexString("AB312C0E");
+            AssertCode(     // ssubw	v11.8h,v13.8h,v12.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q13",
+                "2|L--|v3 = d12",
+                "3|L--|q11 = __ssubw_i16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_ssubw2()
+        {
+            Given_HexString("EC33314E");
+            AssertCode(     // ssubw2	v12.8h,v31.8h,v17.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q31",
+                "2|L--|v3 = q17",
+                "3|L--|q12 = __ssubw2_i16(v2, v3)");
+        }
+
+        [Test]
         public void AArch64Rw_ssubl2()
         {
             Given_HexString("7E212C4E");
@@ -2442,6 +3389,39 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|v2 = q11",
                 "2|L--|v3 = q12",
                 "3|L--|q30 = __ssubl2_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_subhn()
+        {
+            Given_HexString("2D602C0E");
+            AssertCode(     // subhn	v13.8b,v1.8h,v12.8h
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|v3 = q12",
+                "3|L--|d13 = __subhn_i16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_subhn2()
+        {
+            Given_HexString("6A612B4E");
+            AssertCode(     // subhn2	v10.16b,v11.8h,v11.8h
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q11",
+                "2|L--|v3 = q11",
+                "3|L--|q10 = __subhn2_i16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_suqadd()
+        {
+            Given_HexString("AA39200E");
+            AssertCode(     // suqadd	v10.8b,v13.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d10",
+                "2|L--|v3 = d13",
+                "3|L--|d10 = __suqadd_i8(v3, v2)");
         }
 
         [Test]
@@ -2465,12 +3445,569 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_tbx()
+        {
+            Given_HexString("5E110A0E");
+            AssertCode(     // tbx	v30.8b,{v10.16b},v10.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d10",
+                "2|L--|d30 = __tbx_1(v10, v2)");
+        }
+
+        [Test]
         public void AArch64Rw_tbz()
         {
             Given_Instruction(0x36686372);
             AssertCode(     // tbz\tw18,#&D,#&100C6C
                 "0|T--|00100000(4): 1 instructions",
                 "1|T--|if ((w18 & 0x2000<32>) == 0<32>) branch 00100C6C");
+        }
+
+        [Test]
+        public void AArch64Rw_trn1()
+        {
+            Given_HexString("01281F0E");
+            AssertCode(     // trn1	v1.8b,v0.8b,v31.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d0",
+                "2|L--|v3 = d31",
+                "3|L--|d1 = __trn1_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_trn2()
+        {
+            Given_HexString("8D690C0E");
+            AssertCode(     // trn2	v13.8b,v12.8b,v12.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d12",
+                "2|L--|v3 = d12",
+                "3|L--|d13 = __trn2_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uaba()
+        {
+            Given_HexString("207E3F2E");
+            AssertCode(     // uaba	v0.8b,v17.8b,v31.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d17",
+                "2|L--|v3 = d31",
+                "3|L--|d0 = __uaba_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uabal()
+        {
+            Given_HexString("8D512B2E");
+            AssertCode(     // uabal	v13.8h,v12.8b,v11.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d12",
+                "2|L--|v3 = d11",
+                "3|L--|q13 = __uabal_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uabal2()
+        {
+            Given_HexString("81512A6E");
+            AssertCode(     // uabal2	v1.8h,v12.16b,v10.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q12",
+                "2|L--|v3 = q10",
+                "3|L--|q1 = __uabal2_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uabd()
+        {
+            Given_HexString("6174696E");
+            AssertCode(     // uabd	v1.8h,v3.8h,v9.8h
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q3",
+                "2|L--|v3 = q9",
+                "3|L--|q1 = __uabd_u16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uabdl()
+        {
+            Given_HexString("AC71312E");
+            AssertCode(     // uabdl	v12.8h,v13.8b,v17.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d13",
+                "2|L--|v3 = d17",
+                "3|L--|q12 = __uabdl_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uabdl2()
+        {
+            Given_HexString("6B71206E");
+            AssertCode(     // uabdl2	v11.8h,v11.16b,v0.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q11",
+                "2|L--|v3 = q0",
+                "3|L--|q11 = __uabdl2_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uadalp()
+        {
+            Given_HexString("C06B202E");
+            AssertCode(     // uadalp	v0.4h,v30.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d0",
+                "2|L--|v3 = d30",
+                "3|L--|d0 = __uadalp_u8(v3, v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_uaddl()
+        {
+            Given_HexString("80012C2E");
+            AssertCode(     // uaddl	v0.8h,v12.8b,v12.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d12",
+                "2|L--|v3 = d12",
+                "3|L--|q0 = __uaddl_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uaddl2()
+        {
+            Given_HexString("DF032A6E");
+            AssertCode(     // uaddl2	v31.8h,v30.16b,v10.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q30",
+                "2|L--|v3 = q10",
+                "3|L--|q31 = __uaddl2_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uaddlp()
+        {
+            Given_HexString("AD29202E");
+            AssertCode(     // uaddlp	v13.4h,v13.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d13",
+                "2|L--|v3 = d13",
+                "3|L--|d13 = __uaddlp_u8(v3, v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_uaddlv()
+        {
+            Given_HexString("1138302E");
+            AssertCode(     // uaddlv	h17,v0.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d0",
+                "2|L--|h17 = __uaddlv_u8(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_uaddw_i16()
+        {
+            Given_HexString("8210232E");
+            AssertCode(     // uaddw\tv2.8h,v4.8h,v3.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q4",
+                "2|L--|v3 = d3",
+                "3|L--|q2 = __uaddw_u16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uaddw2()
+        {
+            Given_HexString("2A102D6E");
+            AssertCode(     // uaddw2	v10.8h,v1.8h,v13.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|v3 = q13",
+                "3|L--|q10 = __uaddw_u16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_ucvtf_vector()
+        {
+            Given_HexString("EBDB792E");
+            AssertCode(     // ucvtf	v11.4h,v31.4h
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|d11 = __ucvtf_u16(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_uhadd()
+        {
+            Given_HexString("E1073E2E");
+            AssertCode(     // uhadd	v1.8b,v31.8b,v30.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|v3 = d30",
+                "3|L--|d1 = __uhadd_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uhsub()
+        {
+            Given_HexString("8125312E");
+            AssertCode(     // uhsub	v1.16b,v12.16b,v17.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q12",
+                "2|L--|v3 = q17",
+                "3|L--|q1 = __uhsub_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_umax()
+        {
+            Given_HexString("C1672B2E");
+            AssertCode(     // umax	v1.8b,v30.8b,v11.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d30",
+                "2|L--|v3 = d11",
+                "3|L--|d1 = __umax_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_umaxp()
+        {
+            Given_HexString("1EA4212E");
+            AssertCode(     // umaxp	v30.8b,v0.8b,v1.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d0",
+                "2|L--|v3 = d1",
+                "3|L--|d30 = __umaxp_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_umaxv()
+        {
+            Given_HexString("AAA9302E");
+            AssertCode(     // umaxv	b10,v13.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d13",
+                "2|L--|b10 = __umaxv_u8(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_umin()
+        {
+            Given_HexString("116C3E2E");
+            AssertCode(     // umin	v17.8b,v0.8b,v30.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d0",
+                "2|L--|v3 = d30",
+                "3|L--|d17 = __umin_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uminp()
+        {
+            Given_HexString("4BAD2B2E");
+            AssertCode(     // uminp	v11.8b,v10.8b,v11.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d10",
+                "2|L--|v3 = d11",
+                "3|L--|d11 = __uminp_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uminv()
+        {
+            Given_HexString("2BAA312E");
+            AssertCode(     // uminv	b11,v17.8b
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d17",
+                "2|L--|b11 = __uminv_u8(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_umlal_vector()
+        {
+            Given_Instruction(0x2E208045);
+            AssertCode(     // umlal\tv5.4h,v2.8b,v0.8b
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|v2 = q5",
+                "2|L--|v3 = d2",
+                "3|L--|v4 = d0",
+                "4|L--|q5 = __umlal_u16(v2, v3, v4)");
+        }
+
+        [Test]
+        public void AArch64Rw_umlal2()
+        {
+            Given_HexString("EC83216E");
+            AssertCode(     // umlal2	v12.8h,v31.16b,v1.16b
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v2 = q12",
+                "2|L--|v3 = q31",
+                "3|L--|v4 = q1",
+                "4|L--|q12 = __umlal2_u16(v2, v3, v4)");
+        }
+
+        [Test]
+        public void AArch64Rw_umlsl()
+        {
+            Given_HexString("CDA3312E");
+            AssertCode(     // umlsl	v13.8h,v30.8b,v17.8b
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v2 = q13",
+                "2|L--|v3 = d30",
+                "3|L--|v4 = d17",
+                "4|L--|q13 = __umlsl_u16(v2, v3, v4)");
+        }
+
+        [Test]
+        public void AArch64Rw_umlsl2()
+        {
+            Given_HexString("9FA12B6E");
+            AssertCode(     // umlsl2	v31.8h,v12.16b,v11.16b
+                "0|L--|0000000000100000(4): 4 instructions",
+                "1|L--|v2 = q31",
+                "2|L--|v3 = q12",
+                "3|L--|v4 = q11",
+                "4|L--|q31 = __umlsl2_u16(v2, v3, v4)");
+        }
+
+        [Test]
+        public void AArch64Rw_umov()
+        {
+            Given_HexString("043C0D0E");
+            AssertCode(     // umov	w4,v0.b[6]
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d0",
+                "2|L--|w4 = CONVERT(v2[6<i32>], uint8, uint32)");
+        }
+
+        [Test]
+        public void AArch64Rw_umull2()
+        {
+            Given_HexString("20C02D6E");
+            AssertCode(     // umull2	v0.8h,v1.16b,v13.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q1",
+                "2|L--|v3 = q13",
+                "3|L--|q0 = __umull2_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uqadd()
+        {
+            Given_HexString("810D2A2E");
+            AssertCode(     // uqadd	v1.8b,v12.8b,v10.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d12",
+                "2|L--|v3 = d10",
+                "3|L--|d1 = __uqadd_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uqrshl()
+        {
+            Given_HexString("715D3F2E");
+            AssertCode(     // uqrshl	v17.8b,v11.8b,v31.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d11",
+                "2|L--|v3 = d31",
+                "3|L--|d17 = __uqrshl_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uqrshrn()
+        {
+            Given_HexString("FE9F0C2F");
+            AssertCode(     // uqrshrn	v30.8b,v31.4h,#4
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|d30 = __uqrshrn_u16(v2, 4<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_uqrshrn2()
+        {
+            Given_HexString("EA9F0D6F");
+            AssertCode(     // uqrshrn2	v10.8b,v31.4h,#3
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|d10 = __uqrshrn2_u16(v2, 3<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_uqshl()
+        {
+            Given_HexString("CD4F3F2E");
+            AssertCode(     // uqshl	v13.8b,v30.8b,v31.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d30",
+                "2|L--|v3 = d31",
+                "3|L--|d13 = __uqshl_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uqshrn()
+        {
+            Given_HexString("AA950D2F");
+            AssertCode(     // uqshrn	v10.8b,v13.4h,#3
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d13",
+                "2|L--|d10 = __uqshrn_u16(v2, 3<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_uqshrn2()
+        {
+            Given_HexString("1F940B6F");
+            AssertCode(     // uqshrn2	v31.8b,v0.4h,#5
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d0",
+                "2|L--|d31 = __uqshrn2_u16(v2, 5<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_uqsub()
+        {
+            Given_HexString("BE2D2A2E");
+            AssertCode(     // uqsub	v30.16b,v13.16b,v10.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q13",
+                "2|L--|v3 = q10",
+                "3|L--|q30 = __uqsub_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uqxtn()
+        {
+            Given_HexString("5F49212E");
+            AssertCode(     // uqxtn	v31.8b,v10.4h
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d10",
+                "2|L--|d31 = __uqxtn_u16(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_uqxtn2()
+        {
+            Given_HexString("E04B216E");
+            AssertCode(     // uqxtn2	v0.8b,v31.4h
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|d0 = __uqxtn2_u16(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_urecpe()
+        {
+            Given_HexString("DFCBA10E");
+            AssertCode(     // urecpe	v31.2s,v30.2s
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d30",
+                "2|L--|d31 = __urecpe_u32(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_urhadd()
+        {
+            Given_HexString("AA153F2E");
+            AssertCode(     // urhadd	v10.8b,v13.8b,v31.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d13",
+                "2|L--|v3 = d31",
+                "3|L--|d10 = __urhadd_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_urshl()
+        {
+            Given_HexString("F157202E");
+            AssertCode(     // urshl	v17.8b,v31.8b,v0.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|v3 = d0",
+                "3|L--|d17 = __urshl_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_urshr()
+        {
+            Given_HexString("3F24082F");
+            AssertCode(     // urshr	v31.8b,v1.8b,#8
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d1",
+                "2|L--|d31 = __urshr_u8(v2, 8<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_ursqrte()
+        {
+            Given_HexString("21C8A12E");
+            AssertCode(     // ursqrte	v1.2s,v1.2s
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d1",
+                "2|L--|d1 = __ursqrte_u32(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_ursra()
+        {
+            Given_HexString("6A350D2F");
+            AssertCode(     // ursra	v10.8b,v11.8b,#3
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d11",
+                "2|L--|d10 = __ursra_u8(v2, 3<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_ushl()
+        {
+            Given_HexString("E147312E");
+            AssertCode(     // ushl	v1.8b,v31.8b,v17.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|v3 = d17",
+                "3|L--|d1 = __ushl_u8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_ushll()
+        {
+            Given_HexString("EDA70B2F");
+            AssertCode(     // ushll	v13.8h,v31.8b,#3
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|q13 = __ushll_u8(v2, 3<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_ushll2()
+        {
+            Given_HexString("11A40C6F");
+            AssertCode(     // ushll2	v17.8h,v0.16b,#4
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q0",
+                "2|L--|q17 = __ushll2_u8(v2, 4<i32>)");
+        }
+
+        [Test]
+        public void AArch64Rw_usqadd()
+        {
+            Given_HexString("B139202E");
+            AssertCode(     // usqadd	v17.8b,v13.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d17",
+                "2|L--|v3 = d13",
+                "3|L--|d17 = __usqadd_u8(v3, v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_usra()
+        {
+            Given_HexString("8C15092F");
+            AssertCode(     // usra	v12.8b,v12.8b,#7
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = d12",
+                "2|L--|d12 = __usra_u8(v2, 7<i32>)");
         }
 
         [Test]
@@ -2496,13 +4033,118 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_usubw()
+        {
+            Given_HexString("11302A2E");
+            AssertCode(     // usubw	v17.8h,v0.8h,v10.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q0",
+                "2|L--|v3 = d10",
+                "3|L--|q17 = __usubw_u16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_usubw2()
+        {
+            Given_HexString("40312D6E");
+            AssertCode(     // usubw2	v0.8h,v10.8h,v13.16b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q10",
+                "2|L--|v3 = q13",
+                "3|L--|q0 = __usubw2_u16(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uxth()
+        {
+            Given_Instruction(0x53003C00);	// uxth	w0,w0
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|w0 = CONVERT(SLICE(w0, uint16, 0), uint16, uint32)");
+        }
+
+        [Test]
+        public void AArch64Rw_uxtl()
+        {
+            Given_Instruction(0x2F08A400);
+            AssertCode(     // uxtl\tv0.8h,v0.8b
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v2 = d0",
+                "2|L--|q0 = __uxtl_u8(v2)");
+        }
+
+        [Test]
         public void AArch64Rw_uxtl2()
         {
             Given_HexString("11A4086F");
             AssertCode(     // uxtl2	v17.8h,v0.16b
                 "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|v2 = q0",
-                "2|L--|q17 = __uxtl2_u16(v2)");
+                "2|L--|q17 = __uxtl2_u8(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_uzp1()
+        {
+            Given_HexString("51190B0E");
+            AssertCode(     // uzp1	v17.8b,v10.8b,v11.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d10",
+                "2|L--|v3 = d11",
+                "3|L--|d17 = __uzp1_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_uzp2()
+        {
+            Given_HexString("9159110E");
+            AssertCode(     // uzp2	v17.8b,v12.8b,v17.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d12",
+                "2|L--|v3 = d17",
+                "3|L--|d17 = __uzp2_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_xtn()
+        {
+            Given_Instruction(0x0E612A10);
+            AssertCode(     // xtn\tv16.4h,v16.4s
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v2 = q16",
+                "2|L--|d16 = __xtn_i32(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_xtn2()
+        {
+            Given_HexString("C02B214E");
+            AssertCode(     // xtn2	v0.16b,v30.8h
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v2 = q30",
+                "2|L--|q0 = __xtn2_i16(v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_zip1()
+        {
+            Given_HexString("2D3A0B0E");
+            AssertCode(     // zip1	v13.8b,v17.8b,v11.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d17",
+                "2|L--|v3 = d11",
+                "3|L--|d13 = __zip1_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_zip2()
+        {
+            Given_HexString("F17B110E");
+            AssertCode(     // zip2	v17.8b,v31.8b,v17.8b
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d31",
+                "2|L--|v3 = d17",
+                "3|L--|d17 = __zip2_i8(v2, v3)");
         }
     }
 }

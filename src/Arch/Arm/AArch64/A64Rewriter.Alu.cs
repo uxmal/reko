@@ -75,6 +75,20 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
+        private void RewriteMaybeSimdBinary(Domain domain = Domain.None)
+        {
+            if (instr.VectorData != VectorData.Invalid || instr.Operands[0] is VectorRegisterOperand vr)
+            {
+                var sIntrinsic = $"__{instr.Mnemonic}_{{0}}";
+                RewriteSimdBinary(sIntrinsic, domain, null);
+            }
+            else
+            {
+                var sIntrinsic = $"__{instr.Mnemonic}";
+                RewriteBinary(sIntrinsic);
+            }
+        }
+
         private void RewriteMaybeSimdUnary(
             Func<Expression, Expression> fn,
             string simdFormat,
@@ -100,6 +114,19 @@ namespace Reko.Arch.Arm.AArch64
             var toBitSize = left.DataType.BitSize;
             right = MaybeExtendExpression(right, toBitSize);
             m.Assign(dst, fn(left, right));
+            setFlags?.Invoke(m.Cond(dst));
+        }
+
+        private void RewriteBinary(string sIntrinsic, Action<Expression>? setFlags = null)
+        {
+            var dst = RewriteOp(instr.Operands[0]);
+            var left = RewriteOp(instr.Operands[1], true);
+            var right = RewriteOp(instr.Operands[2], true);
+
+            var toBitSize = left.DataType.BitSize;
+            right = MaybeExtendExpression(right, toBitSize);
+            var intrinsic = host.Intrinsic(sIntrinsic, true, dst.DataType, left, right);
+            m.Assign(dst, intrinsic);
             setFlags?.Invoke(m.Cond(dst));
         }
 
@@ -376,6 +403,22 @@ namespace Reko.Arch.Arm.AArch64
             }
         }
 
+        private void RewriteLogical(Func<Expression, Expression, Expression> fn)
+        {
+            if (instr.Operands.Length == 2 && instr.Operands[1] is ImmediateOperand immOp)
+            {
+                var reg = RewriteOp(0);
+                var c = BigConstant.Replicate(reg.DataType, immOp.Value);
+
+                // fn Vector,immediate
+                m.Assign(reg, fn(reg, c));
+            }
+            else
+            {
+                RewriteBinary(fn);
+            }
+        }
+
         private void RewriteMaddSub(Func<Expression, Expression, Expression> op)
         {
             var op1 = RewriteOp(instr.Operands[1]);
@@ -404,7 +447,7 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteMovk()
         {
-            var dst = (Identifier)RewriteOp(instr.Operands[0]);
+            var dst = (Identifier) RewriteOp(0);
             var imm = ((ImmediateOperand)instr.Operands[1]).Value;
             var shift = ((ImmediateOperand)instr.ShiftAmount!).Value;
             m.Assign(dst, m.Dpb(dst, imm, shift.ToInt32()));

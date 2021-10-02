@@ -930,21 +930,26 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_cmeq()
         {
+            AssertCode("cmeq\tv1.16b,v1.16b,v0.16b", "218C206E");
+        }
+
+        [Test]
+        public void AArch64Dis_cmeq_zero()
+        {
             AssertCode("cmeq\tv0.4s,v2.4s", "4098A04E");
         }
 
         [Test]
         public void AArch64Dis_cmhi_vs()
         {
-            AssertCode("cmhi\tv0.4s,v7.4s,v0.4s,#0", "E034A06E");
+            AssertCode("cmhi\tv0.4s,v7.4s,v0.4s", "E034A06E");
         }
 
         [Test]
         public void AArch64Dis_cmhs()
         {
-            AssertCode("cmhs\tv1.16b,v1.16b,v2.16b,#0", "213C226E");
+            AssertCode("cmhs\tv1.16b,v1.16b,v2.16b", "213C226E");
         }
-
 
         [Test]
         public void AArch64Dis_cmp_32_uxtb()
@@ -2516,8 +2521,8 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_shll()
         {
-            AssertCode("shll\tv13.2d,v10.2s,lsl #&20", "4D39A12E");
-            AssertCode("shll2\tv13.2d,v10.4s,lsl #&20", "4D39A16E");
+            AssertCode("shll\tv13.2d,v10.2s,#&20", "4D39A12E");
+            AssertCode("shll2\tv13.2d,v10.4s,#&20", "4D39A16E");
         }
 
         [Test]

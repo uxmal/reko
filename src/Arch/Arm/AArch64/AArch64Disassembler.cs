@@ -1747,6 +1747,18 @@ namespace Reko.Arch.Arm.AArch64
             };
         }
 
+        private static Mutator<AArch64Disassembler> ShiftImm(int bitPos, int bitLength, int[] sizes)
+        {
+            var sizeField = new Bitfield(bitPos, bitLength);
+            return (u, d) =>
+            {
+                var shIndex = sizeField.Read(u);
+                var amt = sizes[shIndex];
+                d.state.ops.Add(ImmediateOperand.Int32(amt));
+                return true;
+            };
+        }
+
         private static Mutator<AArch64Disassembler> Sysreg(params (int pos, int len)[] fields)
         {
             var bitfields = fields.Select(f => new Bitfield(f.pos, f.len)).ToArray();
@@ -3510,8 +3522,8 @@ namespace Reko.Arch.Arm.AArch64
                         
                         Instr(Mnemonic.uhsub, q1, Vr(0, 5, BHS_), Vr(5, 5, BHS_), Vr(16, 5, BHS_)),
                         Instr(Mnemonic.uqsub, q1, Vr(0, 5, BHSD), Vr(5, 5, BHSD), Vr(16, 5, BHSD)),
-                        Instr(Mnemonic.cmhi, q1, Vr(0,5,BHSD),Vr(5,5,BHSD),Vr(16,5,BHSD), UImm(0)),
-                        Instr(Mnemonic.cmhs, q1, Vr(0,5,BHSD),Vr(5,5,BHSD),Vr(16,5,BHSD), UImm(0)),
+                        Instr(Mnemonic.cmhi, q1, Vr(0,5,BHSD),Vr(5,5,BHSD),Vr(16,5,BHSD)),
+                        Instr(Mnemonic.cmhs, q1, Vr(0,5,BHSD),Vr(5,5,BHSD),Vr(16,5,BHSD)),
                         
                         Instr(Mnemonic.ushl, q30, Vr(0, 5, BHSD), Vr(5, 5, BHSD), Vr(16, 5, BHSD)),
                         Instr(Mnemonic.uqshl, q30, Vr(0, 5, BHSD), Vr(5, 5, BHSD), Vr(16, 5, BHSD)),
@@ -3524,7 +3536,7 @@ namespace Reko.Arch.Arm.AArch64
                         Instr(Mnemonic.uaba, q30, Vr(0, 5, BHS_, 30), Vr(5, 5, BHS_, 30), Vr(16, 5, BHS_, 30)),
 
                         Instr(Mnemonic.sub, q30, Vr(0,5,BHSD), Vr(5,5, BHSD), Vr(16,5, BHSD)),
-                        Instr(Mnemonic.cmeq, q1, Vr(0,5,BBBB),Vr(5,5,BBBB),Vr(16,5,BBBB), UImm(0)),
+                        Instr(Mnemonic.cmeq, q1, Vr(0,5,BBBB),Vr(5,5,BBBB),Vr(16,5,BBBB)),
                         Instr(Mnemonic.mls, q30, Vr(0, 5, BHS_), Vr(5, 5, BHS_), Vr(16, 5, BHS_)),
                         Instr(Mnemonic.pmul, q30, Vr(0,5,B___),Vr(5,5,B___),Vr(16,5,B___)),
 
@@ -4455,8 +4467,8 @@ namespace Reko.Arch.Arm.AArch64
                             Instr(Mnemonic.sqxtun, q30, Vr(0,5,BHS_), q1, Vr(5,5,HSD_)),
                             Instr(Mnemonic.sqxtun2, q30, Vr(0,5,BHS_), q1, Vr(5,5,HSD_))),
                         Mask(30, 1, 
-                            Instr(Mnemonic.shll, q1, Vr(0,5,HSD_), q30, Vr(5,5,BHS_), ShiftImm(22,2,sShifts, Mnemonic.lsl)),
-                            Instr(Mnemonic.shll2, q1, Vr(0, 5, HSD_), q30, Vr(5, 5, BHS_), ShiftImm(22, 2, sShifts, Mnemonic.lsl))),
+                            Instr(Mnemonic.shll, q1, Vr(0,5,HSD_), q30, Vr(5,5,BHS_), ShiftImm(22,2,sShifts)),
+                            Instr(Mnemonic.shll2, q1, Vr(0, 5, HSD_), q30, Vr(5, 5, BHS_), ShiftImm(22, 2, sShifts))),
 
                         Mask(30, 1,
                             Instr(Mnemonic.uqxtn, q0, Vr(0,5,BHS_), Vr(5,5,HSD_)),

@@ -281,7 +281,7 @@ namespace Reko.UnitTests.Arch.X86
             Run64bitTest("F30FC2C805");
             AssertCode(     // cmpss	xmm1,xmm0,5h
                 "0|L--|0000000140000000(5): 1 instructions",
-                "1|L--|xmm1 = SLICE(xmm1, real32, 0) >= SLICE(xmm0, real32, 0) ? 0xFFFFFFFFFFFFFFFF<128> : 0<128>");
+                "1|L--|xmm1 = SLICE(xmm1, real32, 0) >= SLICE(xmm0, real32, 0) ? 0x0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF<128> : 0<128>");
         }
 
         [Test]
@@ -4406,7 +4406,7 @@ namespace Reko.UnitTests.Arch.X86
             Run64bitTest("F20FC2E806");
             AssertCode(     // cmpsd	xmm5,xmm0,6h
                 "0|L--|0000000140000000(5): 1 instructions",
-                "1|L--|xmm5 = SLICE(xmm5, real64, 0) > SLICE(xmm0, real64, 0) ? 0xFFFFFFFFFFFFFFFF<128> : 0<128>");
+                "1|L--|xmm5 = SLICE(xmm5, real64, 0) > SLICE(xmm0, real64, 0) ? 0x0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF<128> : 0<128>");
         }
 
         [Test]
@@ -4415,7 +4415,7 @@ namespace Reko.UnitTests.Arch.X86
             Run64bitTest("F20FC244241800");
             AssertCode(     // cmpsd	xmm0,[esp+18],00
                 "0|L--|0000000140000000(7): 1 instructions",
-                "1|L--|xmm0 = SLICE(xmm0, real64, 0) == SLICE(Mem0[rsp + 0x18<64>:word128], real64, 0) ? 0xFFFFFFFFFFFFFFFF<128> : 0<128>");
+                "1|L--|xmm0 = SLICE(xmm0, real64, 0) == SLICE(Mem0[rsp + 0x18<64>:word128], real64, 0) ? 0x0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF<128> : 0<128>");
         }
 
         [Test]

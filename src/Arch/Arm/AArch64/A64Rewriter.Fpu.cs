@@ -42,6 +42,17 @@ namespace Reko.Arch.Arm.AArch64
             return PrimitiveType.Create(domain, dt.BitSize);
         }
 
+        private DataType MakeOperandType(MachineOperand mop, Domain domain = 0)
+        {
+            if (mop is VectorRegisterOperand vrop)
+                return MakeArrayType(vrop, domain);
+            var bitsize = mop.Width.BitSize;
+            if (domain == 0)
+                return PrimitiveType.CreateWord(bitsize);
+            else
+                return PrimitiveType.Create(domain, bitsize);
+        }
+
         private ArrayType MakeArrayType(MachineOperand mop, Domain domain = 0)
         {
             var arrayBitsize = mop.Width.BitSize;
@@ -55,6 +66,14 @@ namespace Reko.Arch.Arm.AArch64
             else
                 elemType = PrimitiveType.Create(domain, elemBitsize);
             return new ArrayType(elemType, celem);
+        }
+
+        private PrimitiveType? ElementDataType(DataType dt)
+        {
+            if (dt is ArrayType at)
+                return (PrimitiveType) at.ElementType;
+            else
+                return null;
         }
 
         private static int Bitsize(VectorData data)
@@ -220,11 +239,11 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, host.Intrinsic(fn, false, src.DataType, src));
         }
 
-        private void RewriteIcvt(Domain domain)
+        private void RewriteIcvt(string simdFormat, Domain domain)
         {
             if (instr.Operands[0] is VectorRegisterOperand)
             {
-                throw new NotImplementedException();
+                RewriteSimdUnary(simdFormat, domain);
             }
             else
             {
