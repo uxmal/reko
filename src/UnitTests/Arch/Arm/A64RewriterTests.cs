@@ -119,7 +119,18 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_addp()
+        public void AArch64Rw_addp_scalar()
+        {
+            Given_HexString("21B8F15E");
+            AssertCode(     // addp	d1,v1.2d
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d1",
+                "2|L--|v3 = q1",
+                "3|L--|d1 = __addp_i64(v3, v2)");
+        }
+
+        [Test]
+        public void AArch64Rw_addp_vector()
         {
             Given_HexString("21BC210E");
             AssertCode(     // addp	v1.8b,v1.8b,v1.8b
@@ -2526,6 +2537,17 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_pmull_word64()
+        {
+            Given_HexString("60E1E00E");
+            AssertCode(     // pmull	v0.1q,v11.1d,v0.1d
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = d11",
+                "2|L--|v3 = d0",
+                "3|L--|q0 = __pmull_i64(v2, v3)");
+        }
+
+        [Test]
         public void AArch64Rw_pmull2()
         {
             Given_HexString("3FE02D4E");
@@ -2534,6 +2556,17 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|v2 = q1",
                 "2|L--|v3 = q13",
                 "3|L--|q31 = __pmull2_i8(v2, v3)");
+        }
+
+        [Test]
+        public void AArch64Rw_pmull2_word64()
+        {
+            Given_HexString("DFE3ED4E");
+            AssertCode(     // pmull2	v31.1q,v30.2d,v13.2d
+                "0|L--|0000000000100000(4): 3 instructions",
+                "1|L--|v2 = q30",
+                "2|L--|v3 = q13",
+                "3|L--|q31 = __pmull2_i64(v2, v3)");
         }
 
         [Test]
@@ -2969,6 +3002,15 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_sqdmlal_scalar_by_element()
+        {
+            Given_HexString("4B317D5F");
+            AssertCode(     // sqdmlal	s11,h10,v13.h[3]
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|s11 = __sqdmlal(s11, h10, d13[3<i32>])");
+        }
+
+        [Test]
         public void AArch64Rw_sqdmlal2_by_element()
         {
             Given_HexString("BE39514F");
@@ -2981,7 +3023,16 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_sqdmlsl_by_element()
+        public void AArch64Rw_sqdmlsl2_scalar_by_element()
+        {
+            Given_HexString("6171705F");
+            AssertCode(     // sqdmlsl2	s1,h11,v0.h[3]
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|s1 = __sqdmlsl2(s1, h11, d0[3<i32>])");
+        }
+
+        [Test]
+        public void AArch64Rw_sqdmlsl_vector_by_element()
         {
             Given_HexString("AB715D0F");
             AssertCode(     // sqdmlsl	v11.4s,v13.4h,v13.h[1]
@@ -2993,7 +3044,7 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_sqdmlsl2_by_element()
+        public void AArch64Rw_sqdmlsl2_vector_by_element()
         {
             Given_HexString("6079614F");
             AssertCode(     // sqdmlsl2	v0.4s,v11.8h,v1.h[6]
@@ -3025,7 +3076,16 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_sqdmull_by_element()
+        public void AArch64Rw_sqdmull_scalar_by_element()
+        {
+            Given_HexString("1FB87B5F");
+            AssertCode(     // sqdmull	s31,h0,v11.h[7]
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|s31 = __sqdmull(s31, h0, d11[7<i32>])");
+        }
+
+        [Test]
+        public void AArch64Rw_sqdmull_vector_by_element()
         {
             Given_HexString("D1BB4D0F");
             AssertCode(     // sqdmull	v17.4s,v30.4h,v13.h[4]
@@ -3057,7 +3117,16 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_sqrdmlah()
+        public void AArch64Rw_sqrdmlah_scalar_by_element()
+        {
+            Given_HexString("0DD8A17F");
+            AssertCode(     // sqrdmlah	s13,s0,v1.s[3]
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|s13 = __sqrdmlah(s13, s0, d1[3<i32>])");
+        }
+
+        [Test]
+        public void AArch64Rw_sqrdmlah_vector_by_element()
         {
             Given_HexString("6BD97D2F");
             AssertCode(     // sqrdmlah	v11.4h,v11.4h,v13.h[7]
@@ -3069,7 +3138,16 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_sqrdmlsh()
+        public void AArch64Rw_sqrdmlsh_scalar_by_element()
+        {
+            Given_HexString("2CF8AD7F");
+            AssertCode(     // sqrdmlsh	s12,s1,v13.s[3]
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|s12 = __sqrdmlsh(s12, s1, d13[3<i32>])");
+        }
+
+        [Test]
+        public void AArch64Rw_sqrdmlsh_vector_by_element()
         {
             Given_HexString("EAFB7B2F");
             AssertCode(     // sqrdmlsh	v10.4h,v31.4h,v11.h[7]
@@ -3081,7 +3159,16 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_sqrdmulh_by_element()
+        public void AArch64Rw_sqrdmulh_scalar_by_element()
+        {
+            Given_HexString("3ED2715F");
+            AssertCode(     // sqrdmulh	h30,h17,v1.h[3]
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|h30 = __sqrdmulh(h30, h17, d1[3<i32>])");
+        }
+
+        [Test]
+        public void AArch64Rw_sqrdmulh_vector_by_element()
         {
             Given_HexString("8CD97B0F");
             AssertCode(     // sqrdmulh	v12.4h,v12.4h,v11.h[7]

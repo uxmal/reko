@@ -87,6 +87,7 @@ namespace Reko.Arch.Arm.AArch64
             case VectorData.F16: return 16;
             case VectorData.F32: return 32;
             case VectorData.F64: return 64;
+            case VectorData.I128: return 128;
             }
             return 0;
         }

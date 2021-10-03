@@ -3557,10 +3557,11 @@ namespace Reko.Arch.Arm.AArch64
                             Nyi("FABD"),
                             Nyi("FABD")),
                         Mask(23, 2, // U=1 opcode=00011 size=?x
-                            Instr(Mnemonic.fmul, VectorData.F32, q30,V(0,5),V(5,5),V(16,5)),
-                            Instr(Mnemonic.fmul, VectorData.F64, q30,V(0,5),V(5,5),V(16,5)),
+                            Instr(Mnemonic.fmul, VectorData.F32, q30,Vr(0,5,SD__),Vr(5,5,SD__),Vr(16,5,SD__)),
+                            Instr(Mnemonic.fmul, VectorData.F64, q30,Vr(0,5,SD__),Vr(5,5,SD__),Vr(16,5,SD__)),
                             invalid,
                             invalid),
+
                         Mask(23, 1,
                             Nyi("FCMGE (register)"),
                             Nyi("FCMGT (register)")),

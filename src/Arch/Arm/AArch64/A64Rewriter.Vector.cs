@@ -35,35 +35,47 @@ namespace Reko.Arch.Arm.AArch64
     {
         private void RewriteSimdBinary(string simdFormat, Domain domain, Action<Expression>? setFlags = null)
         {
-            var arrayLeft = MakeArrayType(instr.Operands[1], domain);
-            var tmpLeft = binder.CreateTemporary(arrayLeft);
             if (instr.Operands.Length == 3)
             {
-                Expression? tmpRight = null;
-                if (!(instr.Operands[2] is ImmediateOperand imm))
+                if (instr.Operands[0] is VectorRegisterOperand)
                 {
-                    var arrayRight = MakeArrayType(instr.Operands[2], domain);
-                    tmpRight = binder.CreateTemporary(arrayRight);
-                }
-                var dst = RewriteOp(instr.Operands[0]);
-                var dtDst = MakeOperandType(instr.Operands[0], domain);
-                var left = RewriteOp(instr.Operands[1], true);
-                var right = RewriteOp(instr.Operands[2], true);
-                var name = GenerateSimdIntrinsicName(simdFormat, (PrimitiveType) arrayLeft.ElementType);
-                m.Assign(tmpLeft, left);
-                if (tmpRight != null)
-                {
-                    m.Assign(tmpRight, right);
+                    var arrayLeft = MakeArrayType(instr.Operands[1], domain);
+                    var tmpLeft = binder.CreateTemporary(arrayLeft);
+                    Expression? tmpRight = null;
+                    if (!(instr.Operands[2] is ImmediateOperand imm))
+                    {
+                        var arrayRight = MakeArrayType(instr.Operands[2], domain);
+                        tmpRight = binder.CreateTemporary(arrayRight);
+                    }
+                    var dst = RewriteOp(instr.Operands[0]);
+                    var dtDst = MakeOperandType(instr.Operands[0], domain);
+                    var left = RewriteOp(instr.Operands[1], true);
+                    var right = RewriteOp(instr.Operands[2], true);
+                    var name = GenerateSimdIntrinsicName(simdFormat, (PrimitiveType) arrayLeft.ElementType);
+                    m.Assign(tmpLeft, left);
+                    if (tmpRight != null)
+                    {
+                        m.Assign(tmpRight, right);
+                    }
+                    else
+                    {
+                        tmpRight = right;
+                    }
+                    m.Assign(dst, host.Intrinsic(name, false, dtDst, tmpLeft, tmpRight));
+                    setFlags?.Invoke(dst);
                 }
                 else
                 {
-                    tmpRight = right;
+                    var op1 = RewriteOp(instr.Operands[0]);
+                    var op2 = RewriteOp(instr.Operands[1]);
+                    var op3 = RewriteOp(instr.Operands[2]);
+                    m.Assign(op1, host.Intrinsic($"__{instr.Mnemonic}", false, op1.DataType, op1, op2, op3));
                 }
-                m.Assign(dst, host.Intrinsic(name, false, dtDst, tmpLeft, tmpRight));
-                setFlags?.Invoke(dst);
             }
-            else
+            else if (instr.Operands[0] is VectorRegisterOperand)
             {
+                var arrayLeft = MakeArrayType(instr.Operands[1], domain);
+                var tmpLeft = binder.CreateTemporary(arrayLeft);
                 var arrayRight = MakeArrayType(instr.Operands[0], domain);
                 var tmpRight = binder.CreateTemporary(arrayRight);
                 var dst = RewriteOp(instr.Operands[0]);
@@ -76,29 +88,56 @@ namespace Reko.Arch.Arm.AArch64
                 m.Assign(dst, host.Intrinsic(name, false, dtDst, tmpRight, tmpLeft));
                 setFlags?.Invoke(dst);
             }
+            else
+            {
+                var arrayLeft = MakeArrayType(instr.Operands[1], domain);
+                var tmpLeft = binder.CreateTemporary(arrayLeft);
+                var tmpRight = binder.CreateTemporary(arrayLeft);
+                var dst = RewriteOp(instr.Operands[0]);
+                var dtDst = MakeOperandType(instr.Operands[0], domain);
+                var left = RewriteOp(instr.Operands[0], true);
+                var right = RewriteOp(instr.Operands[1], true);
+                var name = GenerateSimdIntrinsicName(simdFormat, (PrimitiveType) arrayLeft.ElementType);
+                m.Assign(tmpLeft, left);
+                m.Assign(tmpRight, right);
+                m.Assign(dst, host.Intrinsic(name, false, dtDst, tmpRight, tmpLeft));
+                setFlags?.Invoke(dst);
+
+            }
         }
 
-        private void RewriteSimdTrinary(string simdFormat, Domain domain)
+        private void RewriteSimdTrinary(Domain domain)
         {
             // Trinary operations mutate the first argument.
-            var array1 = MakeArrayType(instr.Operands[0], domain);
-            var tmp1 = binder.CreateTemporary(array1);
+            if (instr.Operands[0] is VectorRegisterOperand)
+            {
+                var array1 = MakeArrayType(instr.Operands[0], domain);
+                var tmp1 = binder.CreateTemporary(array1);
 
-            var array2 = MakeArrayType(instr.Operands[1], domain);
-            var tmp2 = binder.CreateTemporary(array2);
+                var array2 = MakeArrayType(instr.Operands[1], domain);
+                var tmp2 = binder.CreateTemporary(array2);
 
-            var array3 = MakeArrayType(instr.Operands[2], domain);
-            var tmp3 = binder.CreateTemporary(array3);
+                var array3 = MakeArrayType(instr.Operands[2], domain);
+                var tmp3 = binder.CreateTemporary(array3);
 
-            var op1 = RewriteOp(instr.Operands[0]);
-            m.Assign(tmp1, op1);
-            var op2 = RewriteOp(instr.Operands[1]);
-            m.Assign(tmp2, op2);
-            var op3 = RewriteOp(instr.Operands[2]);
-            m.Assign(tmp3, op3);
+                var op1 = RewriteOp(instr.Operands[0]);
+                m.Assign(tmp1, op1);
+                var op2 = RewriteOp(instr.Operands[1]);
+                m.Assign(tmp2, op2);
+                var op3 = RewriteOp(instr.Operands[2]);
+                m.Assign(tmp3, op3);
 
-            var name = GenerateSimdIntrinsicName(simdFormat, (PrimitiveType) array1.ElementType);
-            m.Assign(op1, host.Intrinsic(name, false, op1.DataType, tmp1, tmp2, tmp3));
+                var name = GenerateSimdIntrinsicName($"__{instr.Mnemonic}_{{0}}", (PrimitiveType) array1.ElementType);
+                m.Assign(op1, host.Intrinsic(name, false, op1.DataType, tmp1, tmp2, tmp3));
+            }
+            else
+            {
+                var op1 = RewriteOp(instr.Operands[0]);
+                var op2 = RewriteOp(instr.Operands[1]);
+                var op3 = RewriteOp(instr.Operands[2]);
+
+                m.Assign(op1, host.Intrinsic($"__{instr.Mnemonic}", false, op1.DataType, op1, op2, op3));
+            }
         }
 
         private void RewriteSimdWithScalar(string simdFormat, Domain domain, Action<Expression>? setFlags = null)
