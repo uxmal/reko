@@ -267,7 +267,7 @@ namespace Reko.Core.Expressions
 
         public override bool IsZero => IsIntegerZero;
 
-		public bool IsIntegerZero
+		public virtual bool IsIntegerZero
 		{
 			get 
 			{

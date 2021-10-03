@@ -969,7 +969,14 @@ namespace Reko.Core.Output
             default:
                 if (value is BigInteger big)
                 {
-                    format = "0x{0:X}";
+                    if (big > 9)
+                    {
+                        format = "0x{0:X}";
+                    }
+                    else
+                    {
+                        format = "{0}";
+                    }
                 }
                 else
                 {

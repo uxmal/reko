@@ -58,7 +58,9 @@ namespace Reko.Core.Expressions
         }
 
 
-        public override bool IsMaxUnsigned => throw new NotImplementedException();
+        public override bool IsMaxUnsigned => false;    //$TODO: consider implementing this.
+
+        public override bool IsIntegerZero => this.Value.IsZero;
 
         public override bool IsZero => this.Value.IsZero;
 
@@ -81,7 +83,7 @@ namespace Reko.Core.Expressions
             {
                 var mask = ~0ul >> (64 - dt.BitSize);
                 var n = (this.Value >> offset) & mask;
-                return Constant.Create(dt, (long) n);
+                return Constant.Create(dt, (ulong) n);
             }
             else
             {
