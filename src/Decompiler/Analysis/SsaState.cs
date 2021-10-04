@@ -351,12 +351,12 @@ namespace Reko.Analysis
         /// Remove all uses <paramref name="stm"/> makes.
         /// </summary>
         /// <param name="stm"></param>
-		public void RemoveUses(Statement stm)
+		public void RemoveUses(Statement? stm)
 		{
-			foreach (var sid in Identifiers)
-			{
-                sid.Uses.RemoveAll(u => u == stm);
-			}
+            if (stm is not null)
+            {
+                IdentifierUseRemover.Remove(stm, Identifiers);
+            }
 		}
 
         /// <summary>

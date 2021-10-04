@@ -120,11 +120,12 @@ namespace Reko.Analysis
                 -ft.FpuStackDelta);
             var ab = program.Architecture.CreateFrameApplicationBuilder(
                  proc.Frame, call.CallSite, call.Callee);
+            ssa.RemoveUses(stm);
             stm.Instruction = ab.CreateInstruction(ft, null);
             ssaIdTransformer.Transform(stm, call);
             ssam.DefineUninitializedIdentifiers(stm, call);
         }
-            }
+    }
 
     /// <summary>
     /// Pulling type information from the leaves of expression trees to their

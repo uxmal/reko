@@ -139,8 +139,8 @@ namespace Reko.Analysis
             else
                 return;
 
-            ssa.RemoveUses(stmL!);
-            ssa.RemoveUses(stmR!);
+            ssa.RemoveUses(stmL);
+            ssa.RemoveUses(stmR);
             if (assL != null)
             {
                 assL.Src = appL.Arguments[0];

@@ -374,6 +374,7 @@ namespace Reko.Analysis
                 if (sigCallee == null || !sigCallee.ParametersValid)
                     return false;
                 ApplicationBuilder ab = CreateApplicationBuilder(ssaCaller, stm, call, fn);
+                ssaCaller.RemoveUses(stm);
                 var instr = ab.CreateInstruction(sigCallee, procCallee.Characteristics);
                 var instrOld = stm.Instruction;
                 stm.Instruction = instr;
