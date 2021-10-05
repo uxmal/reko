@@ -265,26 +265,74 @@ namespace Reko.Evaluation
 
         public virtual (Expression, bool) VisitBinaryExpression(BinaryExpression binExp)
         {
-            Expression? eNew = PreVisitBinaryExpression(binExp);
-            if (eNew != null)
+            // BinaryExpressions are the most common and occur in clusters that sometimes
+            // are so deep that attempting to simplify using recursion. The code below
+            // traverses a tree of BinaryExpressions iteratively, using an explicit stack
+            // to keep track of intermediate results.
+            var stack = new Stack<(BinaryExpression, (Expression,bool)[])>();
+            stack.Push((binExp, new (Expression,bool)[2]));
+            (Expression, bool) result = default!;
+            while (stack.Count > 0)
             {
-                return (eNew, true);
+                var (subBin, child) = stack.Pop();
+                if (child[0].Item1 is null)
+                {
+                    result = PreVisitBinaryExpression(subBin);
+                    if (result.Item2)
+                    {
+                        if (stack.TryPeek(out var parent))
+                        {
+                            if (parent.Item2[0].Item1 is null)
+                                parent.Item2[0] = result;
+                            else
+                                parent.Item2[1] = result;
+                        }
+                    }
+                    else
+                    {
+                        if (subBin.Left is BinaryExpression subLeft)
+                        {
+                            stack.Push((subBin, child));
+                            stack.Push((subLeft, new (Expression, bool)[2]));
+                            continue;
+                        }
+                        child[0] = subBin.Left.Accept(this);
+                        stack.Push((subBin, child));
+                    }
+                }
+                else if (child[1].Item1 is null)
+                {
+                    if (subBin.Right is BinaryExpression subRight)
+                    {
+                        stack.Push((subBin, child));
+                        stack.Push((subRight, new (Expression, bool)[2]));
+                        continue;
+                    }
+                    child[1] = subBin.Right.Accept(this);
+                    stack.Push((subBin, child));
+                }
+                else
+                {
+                    result = PostVisitBinaryExpression(subBin, child);
+                    if (stack.TryPeek(out var parent))
+                    {
+                        if (parent.Item2[0].Item1 is null)
+                            parent.Item2[0] = result;
+                        else
+                            parent.Item2[1] = result;
+                    }
+                }
             }
-
-            var left = binExp.Left.Accept(this);
-            var right  = binExp.Right.Accept(this);
-
-            return PostVisitBinaryExpression(binExp, left, right);
+            return result!;
         }
 
         private (Expression, bool) PostVisitBinaryExpression(
             BinaryExpression binExp, 
-            (Expression, bool) l, 
-            (Expression, bool) r)
+            (Expression, bool) [] simpExps) 
         {
-            var (left, lChanged) = l;
-            var (right, rChanged) = r;
-            bool changed = lChanged | lChanged;
+            var (left, lChanged) = simpExps[0];
+            var (right, rChanged) = simpExps[1];
+            bool changed = lChanged | rChanged;
             Constant? cLeft = left as Constant;
             Constant? cRight = right as Constant;
             if (cLeft != null && BinaryExpression.Commutes(binExp.Operator))
@@ -509,42 +557,42 @@ namespace Reko.Evaluation
             return (binExp, changed);
         }
 
-        private Expression? PreVisitBinaryExpression(BinaryExpression binExp)
+        private (Expression, bool) PreVisitBinaryExpression(BinaryExpression binExp)
         {
             // (+ id1 id1) ==> (* id1 2)
             if (add2ids.Match(binExp))
             {
                 var (e, _)= add2ids.Transform().Accept(this);
-                return e;
+                return (e, true);
             }
             if (binopWithSelf.Match(binExp))
             {
                 var (e, _) = binopWithSelf.Transform(ctx).Accept(this);
-                return e;
+                return (e, true);
             }
             if (distributedConvert.Match(binExp))
             {
                 var (e, _) = distributedConvert.Transform(ctx).Accept(this);
-                return e;
+                return (e, true);
             }
             if (distributedSlice.Match(binExp))
             {
                 var (e, _) = distributedSlice.Transform(ctx).Accept(this);
-                return e;
+                return (e, true);
             }
             if (distributedCast.Match(binExp))
             {
                 var (e, _) = distributedCast.Transform(ctx).Accept(this);
-                return e;
+                return (e, true);
             }
 
             // (exp >> n) << n => __align(exp, 1<<n)
             var eNew = ShiftRightShiftLeft(binExp);
             if (eNew != null)
             {
-                return eNew;
+                return (eNew, true);
             }
-            return null;
+            return (binExp, false);
         }
 
         private bool IsNonFloatConstant(Constant? cRight)
