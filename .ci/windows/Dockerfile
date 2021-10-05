@@ -10,5 +10,5 @@ RUN powershell -Command "`
     choco install -y -i wixtoolset; `
     Remove-Item $env:TEMP\* -recurse; `
     & $Env:ProgramFiles\dotnet\dotnet nuget locals all --clear; `
-    & $Env:ProgramFiles\dotnet\dotnet nuget add source https://api.nuget.org/v3/index.json `
+    # reserved for cache eviction: 0
 "
