@@ -265,43 +265,26 @@ namespace Reko.Evaluation
 
         public virtual (Expression, bool) VisitBinaryExpression(BinaryExpression binExp)
         {
-            // (+ id1 id1) ==> (* id1 2)
-
-            if (add2ids.Match(binExp))
-            {
-                var (e, _) = add2ids.Transform().Accept(this);
-                return (e, true);
-            }
-            if (binopWithSelf.Match(binExp))
-            {
-                var (e, _) = binopWithSelf.Transform(ctx).Accept(this);
-                return (e, true);
-            }
-            if (distributedConvert.Match(binExp))
-            {
-                var (e, _) = distributedConvert.Transform(ctx).Accept(this);
-                return (e, true);
-            }
-            if (distributedSlice.Match(binExp))
-            {
-                var (e, _) = distributedSlice.Transform(ctx).Accept(this);
-                return (e, true);
-            }
-            if (distributedCast.Match(binExp))
-            {
-                var (e, _) = distributedCast.Transform(ctx).Accept(this);
-                return (e, true);
-            }
-            // (exp >> n) << n => __align(exp, 1<<n)
-            var eNew = ShiftRightShiftLeft(binExp);
+            Expression? eNew = PreVisitBinaryExpression(binExp);
             if (eNew != null)
             {
                 return (eNew, true);
             }
 
-            var (left, lChanged) = binExp.Left.Accept(this);
-            var (right, rChanged) = binExp.Right.Accept(this);
-            bool changed = lChanged | rChanged;
+            var left = binExp.Left.Accept(this);
+            var right  = binExp.Right.Accept(this);
+
+            return PostVisitBinaryExpression(binExp, left, right);
+        }
+
+        private (Expression, bool) PostVisitBinaryExpression(
+            BinaryExpression binExp, 
+            (Expression, bool) l, 
+            (Expression, bool) r)
+        {
+            var (left, lChanged) = l;
+            var (right, rChanged) = r;
+            bool changed = lChanged | lChanged;
             Constant? cLeft = left as Constant;
             Constant? cRight = right as Constant;
             if (cLeft != null && BinaryExpression.Commutes(binExp.Operator))
@@ -460,7 +443,7 @@ namespace Reko.Evaluation
                 !cLeftRight.IsReal && !cRight.IsReal)
             {
                 // (>u (- e c1) c2) => (>u e c1+c2) || (<u e c2)
-                if (binExp.Operator == Operator.Ugt && 
+                if (binExp.Operator == Operator.Ugt &&
                     binLeft.Operator == Operator.ISub &&
                     !cRight.IsIntegerZero)
                 {
@@ -506,7 +489,7 @@ namespace Reko.Evaluation
                 return (shiftShift.Transform(), true);
             }
 
-            eNew = ShiftLeftShiftRight(binExp, cRight);
+            var eNew = ShiftLeftShiftRight(binExp, cRight);
             if (eNew != null)
             {
                 return (eNew, true);
@@ -524,6 +507,44 @@ namespace Reko.Evaluation
             }
 
             return (binExp, changed);
+        }
+
+        private Expression? PreVisitBinaryExpression(BinaryExpression binExp)
+        {
+            // (+ id1 id1) ==> (* id1 2)
+            if (add2ids.Match(binExp))
+            {
+                var (e, _)= add2ids.Transform().Accept(this);
+                return e;
+            }
+            if (binopWithSelf.Match(binExp))
+            {
+                var (e, _) = binopWithSelf.Transform(ctx).Accept(this);
+                return e;
+            }
+            if (distributedConvert.Match(binExp))
+            {
+                var (e, _) = distributedConvert.Transform(ctx).Accept(this);
+                return e;
+            }
+            if (distributedSlice.Match(binExp))
+            {
+                var (e, _) = distributedSlice.Transform(ctx).Accept(this);
+                return e;
+            }
+            if (distributedCast.Match(binExp))
+            {
+                var (e, _) = distributedCast.Transform(ctx).Accept(this);
+                return e;
+            }
+
+            // (exp >> n) << n => __align(exp, 1<<n)
+            var eNew = ShiftRightShiftLeft(binExp);
+            if (eNew != null)
+            {
+                return eNew;
+            }
+            return null;
         }
 
         private bool IsNonFloatConstant(Constant? cRight)
