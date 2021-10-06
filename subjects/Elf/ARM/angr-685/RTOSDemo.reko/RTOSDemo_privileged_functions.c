@@ -88,7 +88,7 @@ void prvUnlockQueue(Eq_n r0, ptr32 cpsr)
 			}
 		} while (*((word32) r0 + 36) != 0x00);
 	}
-	((word32) r0 + 69)->u0 = ~0x00;
+	*((word32) r0 + 69) = ~0x00;
 	vPortExitCritical(cpsr);
 	vPortEnterCritical(cpsr);
 	int32 r4_n = (int32) *((word32) r0 + 0x0044);
@@ -295,7 +295,7 @@ Eq_n xQueueGenericSend(Eq_n r0, Eq_n r1, up32 r2, Eq_n r3, Eq_n lr, ptr32 cpsr)
 		if ((word32) *((word32) r0 + 0x0044) == 0xFF)
 			((word32) r0 + 0x0044)->u0 = 0x00;
 		if ((word32) *((word32) r0 + 69) == 0xFF)
-			((word32) r0 + 69)->u0 = 0x00;
+			*((word32) r0 + 69) = 0x00;
 		vPortExitCritical(cpsr);
 		if (xTaskCheckForTimeOut(fp - 40, fp - 44, cpsr) != 0x00)
 		{
@@ -395,7 +395,7 @@ l000003A4:
 		if ((word32) *((word32) r0 + 0x0044) == 0xFF)
 			((word32) r0 + 0x0044)->u0 = 0x00;
 		if ((word32) *((word32) r0 + 69) == 0xFF)
-			((word32) r0 + 69)->u0 = 0x00;
+			*((word32) r0 + 69) = 0x00;
 		vPortExitCritical(cpsr);
 		if (xTaskCheckForTimeOut(fp - 40, fp - 44, cpsr) != 0x00)
 		{
@@ -511,7 +511,7 @@ void xQueueGenericSendFromISR(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r3, Eq_n lr, ptr32
 		word32 * r7_n;
 		word32 lr_n;
 		if (!prvCopyDataToQueue(r0, r1, r3, r2, lr, out r0_n, out r7_n, out lr_n))
-			((word32) r0 + 69)->u0 = (byte) (int32) ((int8) r4_n + 1);
+			*((word32) r0 + 69) = (int8) r4_n + 1;
 		else if (*((word32) r0 + 36) != 0x00 && (xTaskRemoveFromEventList((word32) r0 + 36) != 0x00 && r7_n != null))
 		{
 			*r7_n = 0x01;
@@ -542,7 +542,7 @@ void xQueueGiveFromISR(struct Eq_n * r0, word32 * r1, ptr32 cpsr)
 	int32 r3_n = (int32) r0->b0045;
 	r0->dw0038 = r2_n + 0x01;
 	if (r2_n != 0x01)
-		r0->b0045 = (byte) (int32) ((int8) r3_n + 1);
+		r0->b0045 = (int8) r3_n + 1;
 	else if (r0->dw0024 != 0x00 && (xTaskRemoveFromEventList(&r0->dw0024) != 0x00 && r1 != null))
 	{
 		*r1 = 0x01;
@@ -569,7 +569,7 @@ void xQueueReceiveFromISR(Eq_n r0, Eq_n r1, word32 * r2, Eq_n lr, ptr32 cpsr)
 		struct Eq_n * r4_n = prvCopyDataFromQueue(r0, r1, r4_n, (int32) *((word32) r0 + 0x0044), r6_n, r0, lr, out r5_n, out r6_n, out r7_n, out lr_n);
 		r7_n->dw0038 = r4_n - &g_dw0001;
 		if (r4_n != &g_dw0001)
-			r7_n->b0044 = (byte) (int32) ((int8) r5_n + 1);
+			r7_n->b0044 = (int8) r5_n + 1;
 		else if (r7_n->dw0010 != 0x00 && (xTaskRemoveFromEventList(&r7_n->dw0010) != 0x00 && r2 != null))
 		{
 			*r2 = 0x01;

@@ -1111,7 +1111,7 @@ l0000000000016E24:
 		}
 		a2->ptr0030 = __strdup(fp + -0x0188);
 		a2->dw00A0 = (word32) s5_n;
-		word32 dwLoc01A0_n = (word32) (~fn0000000000016830(gp, s5_n) | (int64) dwLoc01B8);
+		ui32 dwLoc01A0_n = (word32) ~fn0000000000016830(gp, s5_n) | dwLoc01B8;
 		if (inet_ntop(2, fp + -416, fp + -0x0188, 16) == null)
 		{
 			a0_n = gp->ptrFFFFF880;

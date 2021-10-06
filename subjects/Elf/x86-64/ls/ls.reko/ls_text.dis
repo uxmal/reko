@@ -3623,12 +3623,12 @@ l0000000000407FFD:
 l0000000000408001:
 	r15_604 = r9_120 + (rcx_124 << 6<64>) + 0x10<64>
 	esi_668 = 0<32> (alias)
-	edx_673 = SLICE(CONVERT(__lxstat(1<u64>, r12_463, r15_604), int32, uint64), word32, 0) (alias)
+	edx_673 = __lxstat(1<u64>, r12_463, r15_604) (alias)
 l0000000000408015:
 	branch edx_673 != 0<32> l0000000000407FB1
 l0000000000407F92:
 	r15_604 = r14_129 + 0x10<64>
-	edx_673 = SLICE(CONVERT(__xstat(1<u64>, r12_463, r14_129 + 0x10<64>), int32, uint64), word32, 0) (alias)
+	edx_673 = __xstat(1<u64>, r12_463, r14_129 + 0x10<64>) (alias)
 	esi_668 = 1<32> (alias)
 	branch edx_673 == 0<32> l0000000000408019
 l0000000000408019:
@@ -3757,7 +3757,7 @@ l00000000004080C3:
 l00000000004080CC_2:
 	sil_1057 = r13b_1064 (alias)
 l00000000004080D0:
-	eax_1097 = SLICE(CONVERT(CONVERT(SLICE(r13b_1064, bool, 0), bool, int32), int32, uint64), word32, 0) + 2<32> (alias)
+	eax_1097 = CONVERT(SLICE(r13b_1064, bool, 0), bool, int32) + 2<32> (alias)
 l00000000004080D9:
 	Mem1107[0x000000000061B17C<p64>:byte] = Mem1101[0x000000000061B17C<p64>:byte] | sil_1057
 	Mem1125[r14_129 + 0xB4<64>:word32] = eax_1097

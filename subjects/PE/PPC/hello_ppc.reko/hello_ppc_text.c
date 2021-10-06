@@ -281,7 +281,7 @@ union Eq_n * fn00400E04(union Eq_n * r2, Eq_n r3, Eq_n r4, Eq_n r5, ptr32 r25, p
 	Eq_n r31_n = r5;
 	if (r5_n > 0x00)
 	{
-		**r4 = (byte) (int32) (int8) r3;
+		**r4 = (int8) r3;
 		Eq_n r6_n = *r4;
 		word32 r7_n = (word32) *r6_n;
 		*r4 = (word64) r6_n + 1;
@@ -736,7 +736,7 @@ void fn004014A4(struct Eq_n * r2, ptr32 r3, word16 * r4, int32 r5)
 					*r2->ptr007C = 0x2A;
 					return;
 				}
-				r3 + r3_n = (byte *) (byte) (int32) (int8) r11_n;
+				r3 + r3_n = (int8 *) (int8) r11_n;
 				++r4;
 				if ((word32) *r4 == 0x00)
 					return;
@@ -756,13 +756,13 @@ void fn004014A4(struct Eq_n * r2, ptr32 r3, word16 * r4, int32 r5)
 	}
 }
 
-// 00401554: void fn00401554(Register (ptr32 Eq_n) r2, Register (ptr32 byte) r3, Register ui32 r4)
-void fn00401554(struct Eq_n * r2, byte * r3, ui32 r4)
+// 00401554: void fn00401554(Register (ptr32 Eq_n) r2, Register (ptr32 int8) r3, Register ui32 r4)
+void fn00401554(struct Eq_n * r2, int8 * r3, ui32 r4)
 {
 	if (r3 == null)
 		return;
 	if ((r4 & 0xFFFF) <= 0xFF)
-		*r3 = (byte) (int32) (int8) r4;
+		*r3 = (int8) r4;
 	else
 		*r2->ptr007C = 0x2A;
 }
@@ -848,7 +848,7 @@ union Eq_n * fn00401598(union Eq_n * r2, Eq_n r3, Eq_n r4, ptr32 r25, ptr32 r26,
 			}
 			else if ((CONVERT(Mem202[Mem202[r2 + 0x0078:word32] + r30_n:byte], byte, int32) & 0x20) != 0x00)
 				r2 = fn004026B8(r2, r30_n, 0x02, r26, r27_n, r28_n, r29_n, r30_n, r31, out r26, out r27_n, out r28_n, out r29_n, out r31_n);
-			**((word64) r31_n + 8) = (byte) (int32) (int8) r27_n;
+			**((word64) r31_n + 8) = (int8) r27_n;
 		}
 		else
 		{
@@ -1499,10 +1499,10 @@ union Eq_n * fn00402404(union Eq_n * r2, struct Eq_n * r29, word32 * r30, ptr32 
 //      fn004035A0
 union Eq_n * fn004024F0(union Eq_n * r2, word32 * r3, word32 r4, ptr32 * r5, struct Eq_n * r29, struct Eq_n * r30, <anonymous> ** r31, ptr32 & r29Out, ptr32 & r31Out)
 {
-	byte * r4_n = *((char *) r2 + 112);
+	int8 * r4_n = *((char *) r2 + 112);
 	v8->ptr0000 = r30;
 	v8->ptr0004 = r31;
-	*r4_n = (byte) (int32) (int8) r5;
+	*r4_n = (int8) r5;
 	word32 * r30_n = r3;
 	ptr32 * r31_n = r5;
 	if (r4 == 0x00)
@@ -2126,7 +2126,7 @@ void fn004032AC(Eq_n r3)
 		int32 r9_n = 0xFF;
 		if (r10_n < 0xFF)
 			r9_n = r10_n;
-		r3->u0 = (byte) (int32) (int8) r9_n;
+		r3->u0 = (int8) r9_n;
 	}
 }
 
@@ -2151,7 +2151,7 @@ union Eq_n * fn004032FC(union Eq_n * r2, byte * r4, word32 r13, word32 r14, word
 	Eq_n r30_n = r3_n;
 	if (r4_n > 0x00)
 	{
-		(*r31_n)->u0 = 0x00;
+		**r31_n = 0x00;
 		*r31_n = (word64) *r31_n + 1;
 	}
 	else

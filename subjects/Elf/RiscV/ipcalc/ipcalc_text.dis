@@ -1242,7 +1242,7 @@ l0000000000017300:
 l0000000000016F24:
 	Mem142[a2 + 48<i64>:word64] = __strdup(fp + -392<i64>)
 	Mem144[a2 + 160<i64>:word32] = SLICE(s5_116, word32, 0)
-	word32 dwLoc01A0_501 = SLICE(~fn0000000000016830(gp, s5_116) | CONVERT(dwLoc01B8, int32, int64), word32, 0)
+	word32 dwLoc01A0_501 = SLICE(~fn0000000000016830(gp, s5_116), word32, 0) | dwLoc01B8
 	branch inet_ntop(2<i64>, fp + -416<i64>, fp + -392<i64>, 16<i64>) == 0<64> l00000000000172F4
 l00000000000172F4:
 	a0_138 = Mem163[gp + -1920<i64>:word64]

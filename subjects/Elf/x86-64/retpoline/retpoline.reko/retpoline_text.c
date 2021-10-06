@@ -65,12 +65,12 @@ void my2(byte sil, byte * rdi)
 void branches(int32 esi, int32 edi)
 {
 	int32 edi = (word32) rdi;
-	if (edi >= esi || (edi << 0x01 >= esi << 0x01 || ((word32) ((uint64) (edi *s 0x03)) >= (word32) ((uint64) (esi *s 0x03)) || edi << 0x02 >= esi << 0x02)))
+	if (edi >= esi || (edi << 0x01 >= esi << 0x01 || (edi *s 0x03 >= esi *s 0x03 || edi << 0x02 >= esi << 0x02)))
 		return;
 	uint64 rax_n = (uint64) esi;
 	int32 eax_n = (int32) ((int64) (word32) rax_n /32 0x02);
 	void * rax_n = SEQ(SLICE(rax_n, word32, 32), eax_n);
-	if ((word32) (uint64) (int32) ((int64) edi /32 0x02) >= eax_n)
+	if ((int32) ((int64) edi /32 0x02) >= eax_n)
 		return;
 	my1(esi, edi);
 	free(rax_n);

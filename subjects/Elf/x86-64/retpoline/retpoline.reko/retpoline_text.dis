@@ -138,14 +138,14 @@ l00000000004005B0:
 l00000000004005CA:
 	branch edi << 1<32> >= esi << 1<32> l000000000040064F
 l00000000004005DE:
-	branch SLICE(CONVERT(edi *s 3<32>, int32, uint64), word32, 0) >= SLICE(CONVERT(esi *s 3<32>, int32, uint64), word32, 0) l000000000040064F
+	branch edi *s 3<32> >= esi *s 3<32> l000000000040064F
 l00000000004005EE:
 	branch edi << 2<32> >= esi << 2<32> l000000000040064F
 l0000000000400602:
 	word64 rax_77 = CONVERT(esi, word32, uint64)
 	word32 eax_84 = CONVERT(CONVERT(SLICE(rax_77, word32, 0), word32, int64) /32 2<32>, word32, int32)
 	word64 rax_105 = SEQ(SLICE(rax_77, word32, 32), eax_84)
-	branch SLICE(CONVERT(CONVERT(CONVERT(edi, word32, int64) /32 2<32>, word32, int32), int32, uint64), word32, 0) >= eax_84 l000000000040064F
+	branch CONVERT(CONVERT(edi, word32, int64) /32 2<32>, word32, int32) >= eax_84 l000000000040064F
 l000000000040064F:
 l000000000040062B:
 	my1(esi, edi)

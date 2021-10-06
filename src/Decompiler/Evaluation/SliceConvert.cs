@@ -39,20 +39,34 @@ namespace Reko.Evaluation
             result = null;
             if (slice.Expression is Conversion conv)
             {
-                // Zero extension?
-                if (conv.SourceDataType.IsWord || conv.DataType.IsWord)
+                if (IsUselessIntegralExtension(slice, conv))
                 {
-                    // Is extension useless?
-                    if (slice.DataType.BitSize <= conv.SourceDataType.BitSize)
-                    {
-                        this.result = slice.DataType.BitSize == conv.SourceDataType.BitSize
-                            ? conv.Expression
-                            : new Slice(slice.DataType, conv.Expression, 0);
-                        return true;
-                    } 
+                    this.result = slice.DataType.BitSize == conv.SourceDataType.BitSize
+                        ? conv.Expression
+                        : new Slice(slice.DataType, conv.Expression, 0);
+                    return true;
                 }
             }
             return false;
+        }
+
+        private static bool IsUselessIntegralExtension(Slice slice, Conversion conv)
+        {
+            if (IsSliceable(slice.DataType) &&
+                IsSliceable(conv.DataType) &&
+                IsSliceable(conv.SourceDataType))
+            {
+                return
+                    slice.DataType.BitSize <= conv.SourceDataType.BitSize;
+            }
+            else return false;
+        }
+
+        private static bool IsSliceable(DataType dataType)
+        {
+            if (dataType.IsWord || dataType.IsIntegral)
+                return true;
+            return (dataType is PrimitiveType pt && pt.Domain.HasFlag(Domain.Character));
         }
 
         public Expression Transform()

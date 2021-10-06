@@ -502,7 +502,7 @@ l000004B8:
 l000004BC:
 	Mem66[r7_44:word32] = 1<32>
 l00000496:
-	Mem70[r0 + 69<i32>:byte] = SLICE(CONVERT(SLICE(r4_32, int8, 0) + 1<i8>, int8, int32), byte, 0)
+	Mem70[r0 + 69<i32>:byte] = SLICE(r4_32, int8, 0) + 1<i8>
 l0000049E:
 	__msr(cpsr, r6_17)
 	return
@@ -544,7 +544,7 @@ l0000051A:
 l0000051E:
 	Mem51[r1:word32] = 1<32>
 l000004F0:
-	Mem55[r0 + 69<i32>:byte] = SLICE(CONVERT(SLICE(r3_28, int8, 0) + 1<i8>, int8, int32), byte, 0)
+	Mem55[r0 + 69<i32>:byte] = SLICE(r3_28, int8, 0) + 1<i8>
 l000004F8:
 l000004FA:
 	__msr(cpsr, r4_13)
@@ -583,7 +583,7 @@ l00000584:
 l0000058A:
 	Mem57[r2:word32] = 1<32>
 l00000560:
-	Mem61[r7_35 + 68<i32>:byte] = SLICE(CONVERT(SLICE(r5_33, int8, 0) + 1<i8>, int8, int32), byte, 0)
+	Mem61[r7_35 + 68<i32>:byte] = SLICE(r5_33, int8, 0) + 1<i8>
 l00000568:
 	__msr(cpsr, r6_17)
 	return

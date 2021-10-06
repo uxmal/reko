@@ -6966,7 +6966,7 @@ l00008788:
 	lr = r1_n & 0x10;
 	sp_n[8] = (struct Eq_n) lr;
 	if (lr != 0x00)
-		r7_n = (byte) (int32) *((char *) *r6_n->ptrFFFFFFE0 + r7_n * 0x02);
+		r7_n = *((char *) *r6_n->ptrFFFFFFE0 + r7_n * 0x02);
 	r5_n = (word32) r5_n + 1;
 	if ((byte) r7_n == 33)
 	{
@@ -7019,7 +7019,7 @@ l00008764:
 									goto l000087A8;
 								lr = sp_n[8];
 								if (lr != 0x00)
-									r7_n = (byte) (int32) *((char *) *r6_n->ptrFFFFFFE0 + r7_n * 0x02);
+									r7_n = *((char *) *r6_n->ptrFFFFFFE0 + r7_n * 0x02);
 								r5_n = (word32) r5_n + 1;
 							}
 							r8_n = sp_n[4];
@@ -7080,7 +7080,7 @@ l00008764:
 					if (lr == 0x00)
 						r2 = r10;
 					else
-						r2 = (byte) (int32) *((char *) *r6_n->ptrFFFFFFE0 + r10 * 0x02);
+						r2 = *((char *) *r6_n->ptrFFFFFFE0 + r10 * 0x02);
 					r11 = (word32) *r5_n;
 					sp_n->dw0000 = (word32) SLICE(r1_n, bool, 1);
 					r5_n = (word32) r5_n + 1;
@@ -7100,7 +7100,7 @@ l000084F0:
 							if (lr == 0x00)
 								r11 = r9;
 							else
-								r11 = (byte) (int32) *((char *) *r6_n->ptrFFFFFFE0 + r9 * 0x02);
+								r11 = *((char *) *r6_n->ptrFFFFFFE0 + r9 * 0x02);
 							r7_n = (word32) r5_n + 1;
 							goto l000085BE;
 						}
@@ -7319,7 +7319,7 @@ l0000862A:
 					if (r11 == 0x00)
 						goto l000087A8;
 					if (sp_n[8] != 0x00)
-						r11 = (byte) (int32) *((char *) *r6_n->ptrFFFFFFE0 + r11 * 0x02);
+						r11 = *((char *) *r6_n->ptrFFFFFFE0 + r11 * 0x02);
 					goto l000085BE;
 				}
 				goto l00008720;
@@ -11152,7 +11152,7 @@ void fn0000A968(int32 r10, ptr32 r11, byte * r12)
 		--r11_n;
 		if (r10 == ~0x00)
 			break;
-		*r11_n = (byte) (int32) *((char *) *r6_n->ptrFFFFFFE0 + (word32) (*r12_n) * 0x02);
+		*r11_n = (byte) *((char *) *r6_n->ptrFFFFFFE0 + (word32) (*r12_n) * 0x02);
 	}
 }
 
@@ -11172,7 +11172,7 @@ void fn0000A998(int32 r10, Eq_n r11, byte * r12)
 		--r11_n;
 		if (r10 == ~0x00)
 			break;
-		*r11_n = (byte) (int32) *((char *) *r6_n->ptr0214 + (word32) (*r12_n) * 0x02);
+		*r11_n = (byte) *((char *) *r6_n->ptr0214 + (word32) (*r12_n) * 0x02);
 	}
 }
 
@@ -13615,7 +13615,7 @@ void fn0000BCDC()
 //      fn0000B818
 void fn0000BD82(int16 * r12)
 {
-	*r12 = (word16) (int32) *r12 | 0x08;
+	*r12 |= 0x08;
 }
 
 // 0000BD8C: Register (ptr32 byte) fn0000BD8C(Register Eq_n r0, Register Eq_n r1, Register Eq_n r2, Register (ptr32 byte) r3, Register (ptr32 byte) r4, Register (ptr32 byte) r5, Register (ptr32 Eq_n) r6, Register Eq_n r7, Register Eq_n lr, Register out ptr32 lrOut)

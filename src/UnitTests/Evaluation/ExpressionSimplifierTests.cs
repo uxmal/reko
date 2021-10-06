@@ -712,5 +712,39 @@ namespace Reko.UnitTests.Evaluation
             var (result, _) = expr.Accept(simplifier);
             Assert.AreEqual("SLICE(t2_3, word16, 0)", result.ToString());
         }
+
+        [Test]
+        public void Exs_Slice_1072()
+        {
+            var int16 = PrimitiveType.Int16;
+            var int32 = PrimitiveType.Int32;
+            var uint16 = PrimitiveType.UInt16;
+            var uint32 = PrimitiveType.UInt32;
+            var word16 = PrimitiveType.Word16;
+            Given_ExpressionSimplifier();
+            var expr = m.Slice(m.Convert(m.Slice(m.Convert(
+                m.Slice(
+                    m.Convert(
+                        m.Mem(int16,
+                            m.IAddS(m.Mem64(m.Word64(0x00000000001F2F80)), 2)),
+                        int16, uint32),
+                    uint16, 0), uint16, uint32), int16, 0), int16, int32), word16, 0);
+            var (result, _) = expr.Accept(simplifier);
+            Assert.AreEqual("Mem0[Mem0[0x1F2F80<64>:word64] + 2<i64>:int16]", result.ToString());
+        }
+
+        [Test]
+        public void Exs_Slice_Convert_Slice()
+        {
+            var int16 = PrimitiveType.Int16;
+            var int32 = PrimitiveType.Int32;
+            var uint16 = PrimitiveType.UInt16;
+            var uint32 = PrimitiveType.UInt32;
+            var word16 = PrimitiveType.Word16;
+            Given_ExpressionSimplifier();
+            var expr = m.Slice(m.Convert(m.Slice(foo, int16, 0), int16, int32), word16, 0);
+            var (result, _) = expr.Accept(simplifier);
+            Assert.AreEqual("SLICE(foo_1, int16, 0)", result.ToString());
+        }
     }
 }

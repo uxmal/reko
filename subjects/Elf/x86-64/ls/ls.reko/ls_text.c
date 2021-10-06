@@ -3550,7 +3550,7 @@ l0000000000407F68:
 						if (ecx_n == 0x05)
 						{
 							r15_n = (struct stat *) (r14_n + 2);
-							edx_n = (word32) (uint64) __xstat(0x01, r12_n, r14_n + 2);
+							edx_n = __xstat(0x01, r12_n, r14_n + 2);
 							esi_n = 0x01;
 							if (edx_n != 0x00)
 								goto l0000000000407FB1;
@@ -3703,14 +3703,14 @@ l00000000004080AA:
 									edx_n = edx_n;
 								}
 l00000000004080BA:
-								word32 eax_n = 0x00;
+								int32 eax_n = 0x00;
 								byte sil_n = (byte) ecx_n | r13b_n;
 								if (sil_n != 0x00)
 								{
 									byte r13b_n = r13b_n & ((byte) ecx_n ^ 0x01);
 									if (r13b_n != 0x00)
 										sil_n = r13b_n;
-									eax_n = (word32) (uint64) (int32) (bool) r13b_n + 0x02;
+									eax_n = (int32) (bool) r13b_n + 0x02;
 								}
 								g_b61B17C |= sil_n;
 								r14_n->dw00B4 = eax_n;
@@ -3919,7 +3919,7 @@ l00000000004080B8:
 l0000000000408001:
 						r15_n = (word64) r9_n + (rcx_n << 0x06) + 0x10;
 						esi_n = 0x00;
-						edx_n = (word32) (uint64) __lxstat(0x01, r12_n, r15_n);
+						edx_n = __lxstat(0x01, r12_n, r15_n);
 						goto l0000000000408015;
 					}
 				}
