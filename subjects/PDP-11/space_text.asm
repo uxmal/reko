@@ -1093,6 +1093,11 @@ l0D50:
 0D70 4E 4F 56 44 45 43 E6 15 AA 12                   NOVDEC....     
 
 ;; fn0D7A: 0D7A
+;;   Called from:
+;;     2BFA (in fn2B96)
+;;     2C0E (in fn2B96)
+;;     2C3A (in fn2B96)
+;;     2C5A (in fn2B96)
 fn0D7A proc
 	jsr	r3,@#123C
 0D7E                                           F7 09               ..
@@ -1160,6 +1165,11 @@ l0EA2:
 	br	0EDA
 
 ;; fn0EA8: 0EA8
+;;   Called from:
+;;     2BFE (in fn2B96)
+;;     2C12 (in fn2B96)
+;;     2C3E (in fn2B96)
+;;     2C5E (in fn2B96)
 fn0EA8 proc
 	mov	r3,-(sp)
 	mov	@#5426,r3
@@ -2717,47 +2727,224 @@ fn243A proc
 ;; fn2B90: 2B90
 fn2B90 proc
 	jsr	r4,@#0EF8
-2B94             AA 4D FF 15 05 00 8A 28 C5 15 1C 50     .M.....(...P
-2BA0 F7 09 D8 19 BF 0A 7E 28 C5 15 1C 50 F7 09 80 14 ......~(...P....
-2BB0 BF 0A 72 28 F7 15 01 00 FE 2A C4 15 1E 00 C5 15 ..r(.....*......
-2BC0 98 58 FF 15 08 00 5E 28 D5 95 20 00 FF 15 09 00 .X....^(.. .....
-2BD0 54 28 C4 0A F6 06 BF 0A 4C 28 C5 15 1E 50 F7 09 T(......L(...P..
-2BE0 5A 15 BF 0A 40 28 C5 15 22 50 F7 09 84 14 BF 0A Z...@(.."P......
-2BF0 34 28 E6 15 06 50 E6 15 E6 4D F7 09 7C E1 F7 09 4(...P...M..|...
-2C00 A6 E2 BF 0A 20 28 E6 15 06 50 E6 15 12 4F F7 09 .... (...P...O..
-2C10 68 E1 F7 09 92 E2 BF 0A 0C 28 C5 15 28 50 F7 09 h........(..(P..
-2C20 1A 15 BF 0A 00 28 C5 15 2C 50 F7 09 44 14 BF 0A .....(..,P..D...
-2C30 F4 27 E6 15 06 50 E6 15 A0 4F F7 09 3C E1 F7 09 .'...P...O..<...
-2C40 66 E2 BF 0A E0 27 C5 15 32 50 F7 09 24 14 BF 0A f....'..2P..$...
-2C50 D4 27 E6 15 06 50 E6 15 BD 4F F7 09 1C E1 F7 09 .'...P...O......
-2C60 46 E2 BF 0A C0 27 F7 15 01 00 4E 2A BF 0A B6 27 F....'....N*...'
-2C70 F7 15 02 00 46 2A BF 0A AC 27 F7 15 01 00 3E 2A ....F*...'....>*
-2C80 BF 0A A2 27 F7 15 0A 00 36 2A FF 15 17 00 96 27 ...'....6*.....'
-2C90 F7 0B 2A 2A 06 07 BF 0A 8C 27 C5 15 38 50 F7 09 ..**.....'..8P..
-2CA0 8E 15 FF 15 19 00 7E 27 F7 0B 12 2A 06 04 BF 0A ......~'...*....
-2CB0 74 27 C5 15 42 50 F7 09 76 15 FF 15 1B 00 66 27 t'..BP..v.....f'
-2CC0 F7 0B FA 29 06 07 BF 0A 5C 27 C5 15 4C 50 F7 09 ...)....\'..LP..
-2CD0 5E 15 FF 15 1D 00 4E 27 F7 0B E2 29 06 04 BF 0A ^.....N'...)....
-2CE0 44 27 C5 15 56 50 F7 09 46 15 FF 15 1F 00 36 27 D'..VP..F.....6'
-2CF0 C5 15 1E 50 F7 09 44 14 BF 0A 2A 27 F7 0B BE 29 ...P..D...*'...)
-2D00 06 07 BF 0A 20 27 C5 15 60 50 F7 09 22 15 FF 15 .... '..`P.."...
-2D10 22 00 12 27 F7 0B A6 29 06 04 BF 0A 08 27 C5 15 "..'...).....'..
-2D20 6A 50 F7 09 0A 15 FF 15 24 00 FA 26 C5 15 28 50 jP......$..&..(P
-2D30 F7 09 08 14 BF 0A EE 26 C5 15 1C 50 F7 09 50 2D .......&...P..P-
-2D40 01 90 77 90 70 29 FF 15 26 00 DA 26 57 A0 0D 00 ..w.p)..&..&W...
-2D50 63 03 FF 15 28 00 CE 26 57 A0 20 00 33 05 FF 15 c...(..&W. .3...
-2D60 2A 00 C2 26 57 A0 7F 00 16 03 FF 15 2C 00 B6 26 *..&W.......,..&
-2D70 C2 1D 46 29 97 20 1F 00 25 03 FF 15 2E 00 A6 26 ..F). ..%......&
-2D80 72 90 97 58 BF 0A 9E 26 B7 10 2E 29 B7 0A 2A 29 r..X...&...)..*)
-2D90 BF 0A 92 26 17 01 FF 15 31 00 8A 26 F7 0A 1A 29 ...&....1..&...)
-2DA0 BF 0A 82 26 F7 0B 12 29 05 06 BF 0A 78 26 F7 15 ...&...)....x&..
-2DB0 01 00 06 29 FF 15 34 00 6C 26 C0 1D FC 28 F0 95 ...)..4.l&...(..
-2DC0 20 00 97 58 FF 15 35 00 5C 26 C5 15 74 50 F7 09  ..X..5.\&..tP..
-2DD0 5E 14 BF 0A 50 26 37 0B E4 28 BF 0A 48 26 F7 6D ^...P&7..(..H&.m
-2DE0 DA 28 DC 28 BF 0A 3E 26 D7 2D D4 28 3C 00 04 07 .(.(..>&.-.(<...
-2DF0 BF 0A 32 26 37 0B C4 28 FF 15 3A 00 28 26 D7 2D ..2&7..(..:.(&.-
-2E00 BE 28 08 00 04 04 BF 0A 1C 26 37 0B AE 28 FF 15 .(.......&7..(..
-2E10 3C 00 12 26 77 00 72 FE FF 15 3D 00 08 26 87 00 <..&w.r...=..&..
+2B94             AA 4D                                   .M         
+
+;; fn2B96: 2B96
+;;   Called from:
+;;     0F34 (in fn0EF8)
+fn2B96 proc
+	mov	#0005,@(5424)
+	mov	#501C,r5
+	jsr	pc,@#457C
+	inc	@(5426)
+	mov	#501C,r5
+	jsr	pc,@#4030
+	inc	@(5426)
+	mov	#0001,@#56B6
+	mov	#001E,r4
+	mov	#5898,r5
+
+l2BC2:
+	mov	#0008,@(5424)
+	movb	#0020,(r5)+
+	mov	#0009,@(5424)
+	dec	r4
+	bgt	2BC2
+
+l2BD6:
+	inc	@(5426)
+	mov	#501E,r5
+	jsr	pc,@#413C
+	inc	@(5426)
+	mov	#5022,r5
+	jsr	pc,@#4072
+	inc	@(5426)
+	mov	#5006,-(sp)
+	mov	#4DE6,-(sp)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
+	inc	@(5426)
+	mov	#5006,-(sp)
+	mov	#4F12,-(sp)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
+	inc	@(5426)
+	mov	#5028,r5
+	jsr	pc,@#413C
+	inc	@(5426)
+	mov	#502C,r5
+	jsr	pc,@#4072
+	inc	@(5426)
+	mov	#5006,-(sp)
+	mov	#4FA0,-(sp)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
+	inc	@(5426)
+	mov	#5032,r5
+	jsr	pc,@#4072
+	inc	@(5426)
+	mov	#5006,-(sp)
+	mov	#4FBD,-(sp)
+	jsr	pc,@#0D7A
+	jsr	pc,@#0EA8
+	inc	@(5426)
+	mov	#0001,@#56B8
+	inc	@(5426)
+	mov	#0002,@#56BA
+	inc	@(5426)
+	mov	#0001,@#56BC
+	inc	@(5426)
+	mov	#000A,@#56BE
+
+l2C8A:
+	mov	#0017,@(5424)
+	tst	@#56BE
+	ble	2CA2
+
+l2C96:
+	inc	@(5426)
+	mov	#5038,r5
+	jsr	pc,@#4230
+
+l2CA2:
+	mov	#0019,@(5424)
+	tst	@#56BE
+	bge	2CBA
+
+l2CAE:
+	inc	@(5426)
+	mov	#5042,r5
+	jsr	pc,@#4230
+
+l2CBA:
+	mov	#001B,@(5424)
+	tst	@#56BE
+	ble	2CD2
+
+l2CC6:
+	inc	@(5426)
+	mov	#504C,r5
+	jsr	pc,@#4230
+
+l2CD2:
+	mov	#001D,@(5424)
+	tst	@#56BE
+	bge	2CEA
+
+l2CDE:
+	inc	@(5426)
+	mov	#5056,r5
+	jsr	pc,@#4230
+
+l2CEA:
+	mov	#001F,@(5424)
+	mov	#501E,r5
+	jsr	pc,@#413C
+	inc	@(5426)
+	tst	@#56BE
+	ble	2D0E
+
+l2D02:
+	inc	@(5426)
+	mov	#5060,r5
+	jsr	pc,@#4230
+
+l2D0E:
+	mov	#0022,@(5424)
+	tst	@#56BE
+	bge	2D26
+
+l2D1A:
+	inc	@(5426)
+	mov	#506A,r5
+	jsr	pc,@#4230
+
+l2D26:
+	mov	#0024,@(5424)
+	mov	#5028,r5
+	jsr	pc,@#413C
+	inc	@(5426)
+	mov	#501C,r5
+	jsr	pc,@#5A90
+	movb	r0,r1
+	movb	r1,@#56B6
+	mov	#0026,@(5424)
+	cmpb	r1,#000D
+	beq	2E18
+
+l2D52:
+	mov	#0028,@(5424)
+	cmpb	r1,#0020
+	blt	2DC4
+
+l2D5E:
+	mov	#002A,@(5424)
+	cmpb	r1,#007F
+	beq	2D96
+
+l2D6A:
+	mov	#002C,@(5424)
+	mov	@#56BA,r2
+	cmp	r2,#001F
+	beq	2DC4
+
+l2D7A:
+	mov	#002E,@(5424)
+	movb	r1,5897(r2)
+	inc	@(5426)
+	mov	r2,@#56BA
+	inc	@#56BA
+	inc	@(5426)
+	br	2DC4
+
+l2D96:
+	mov	#0031,@(5424)
+	dec	@#56BA
+	inc	@(5426)
+	tst	@#56BA
+	bgt	2DB4
+
+l2DAA:
+	inc	@(5426)
+	mov	#0001,@#56B8
+
+l2DB4:
+	mov	#0034,@(5424)
+	mov	@#56BA,r0
+	movb	#0020,5897(r0)
+
+l2DC4:
+	mov	#0035,@(5424)
+	mov	#5074,r5
+	jsr	pc,@#4230
+	inc	@(5426)
+	neg	@#56BE
+	inc	@(5426)
+	add	@#56BC,@#56BE
+	inc	@(5426)
+	cmp	@#56C0,#003C
+	ble	2DF8
+
+l2DF0:
+	inc	@(5426)
+	neg	@#56BC
+
+l2DF8:
+	mov	#003A,@(5424)
+	cmp	@#56C0,#0008
+	bge	2E0E
+
+l2E06:
+	inc	@(5426)
+	neg	@#56BC
+
+l2E0E:
+	mov	#003C,@(5424)
+	jmp	@#2C8A
+
+l2E18:
+	mov	#003D,@(5424)
+	rts	pc
 
 ;; fn2E20: 2E20
 fn2E20 proc
@@ -3084,6 +3271,8 @@ fn3F42 proc
 4020 AA 17 57 20 05 00 E0 07 FF 15 12 00 F8 13 87 00 ..W ............
 
 ;; fn4030: 4030
+;;   Called from:
+;;     2BAC (in fn2B96)
 fn4030 proc
 	jsr	r4,@#0EF8
 4034             30 53 FF 15 03 00 EA 13 F7 95 9B 00     0S..........
@@ -3093,6 +3282,10 @@ fn4030 proc
 4070 87 00                                           ..             
 
 ;; fn4072: 4072
+;;   Called from:
+;;     2BEA (in fn2B96)
+;;     2C2A (in fn2B96)
+;;     2C4A (in fn2B96)
 fn4072 proc
 	jsr	r4,@#0EF8
 4076                   44 53 FF 15 03 00 A8 13 F7 1F       DS........
@@ -3110,6 +3303,11 @@ fn4072 proc
 4130 4E 53 F7 09 FE 03 BF 0A EC 12 87 00             NS..........   
 
 ;; fn413C: 413C
+;;   Called from:
+;;     2BDE (in fn2B96)
+;;     2C1E (in fn2B96)
+;;     2CF4 (in fn2B96)
+;;     2D30 (in fn2B96)
 fn413C proc
 	jsr	r4,@#0EF8
 4140 54 53 FF 15 03 00 DE 12 F7 95 9B 00 98 16 BF 0A TS..............
@@ -3133,6 +3331,14 @@ fn4180 proc
 4220 DE 15 C0 6D DE 15 37 10 8E 16 BF 0A F8 11 87 00 ...m..7.........
 
 ;; fn4230: 4230
+;;   Called from:
+;;     2C9E (in fn2B96)
+;;     2CB6 (in fn2B96)
+;;     2CCE (in fn2B96)
+;;     2CE6 (in fn2B96)
+;;     2D0A (in fn2B96)
+;;     2D22 (in fn2B96)
+;;     2DCE (in fn2B96)
 fn4230 proc
 	jsr	r4,@#0EF8
 4234             7A 53 FF 15 04 00 EA 11 F7 1F C8 15     zS..........
@@ -3195,6 +3401,8 @@ fn4534 proc
 4570 85 0A C4 0A EC 06 BF 0A AC 0E 87 00             ............   
 
 ;; fn457C: 457C
+;;   Called from:
+;;     2BA0 (in fn2B96)
 fn457C proc
 	jsr	r4,@#0EF8
 4580 C0 53 FF 15 03 00 9E 0E F7 95 9B 00 E0 12 BF 0A .S..............
@@ -3681,6 +3889,8 @@ l47DC:
 ; ...
 
 ;; fn5A90: 5A90
+;;   Called from:
+;;     2D3C (in fn2B96)
 fn5A90 proc
 	tst	(r5)+
 	clr	r0

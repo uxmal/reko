@@ -4,18 +4,16 @@
 
 #include "a.h"
 
-// 80000080: Register word32 deregister_tm_clones()
+// 80000080: void deregister_tm_clones()
 // Called from:
 //      __do_global_dtors_aux
-word32 deregister_tm_clones()
+void deregister_tm_clones()
 {
-	word32 * a6_n = fp - 0x04;
 	if (false && 0x00 != 0x00)
 	{
 		word32 a0_n;
-		null();
+		fn00000000();
 	}
-	return *a6_n;
 }
 
 // 800000AE: void register_tm_clones()
@@ -30,7 +28,7 @@ void register_tm_clones()
 	if (d0_n != 0x00 && 0x00 != 0x00)
 	{
 		word32 a0_n;
-		null();
+		fn00000000();
 	}
 }
 
@@ -38,6 +36,7 @@ void register_tm_clones()
 void __do_global_dtors_aux()
 {
 	ptr32 a6_n = fp - 0x04;
+	struct Eq_n * a7_n = fp - 0x0C;
 	if (g_b80002724 == 0x00)
 	{
 		uint32 d0_n = dtor_idx.3228;
@@ -55,15 +54,14 @@ void __do_global_dtors_aux()
 				d0_n = dtor_idx.3228;
 			} while (d2_n - d0_n > 0x00);
 		}
-		word32 a6_n = deregister_tm_clones();
-		struct Eq_n * a7_n = (struct Eq_n *) <invalid>;
+		deregister_tm_clones();
 		if (0x00 != 0x00)
 		{
 			a7_n->ptrFFFFFFFC = 0x8000065C;
 			word32 d0_n;
 			word32 a0_n;
 			word32 d1_n;
-			null();
+			fn00000000();
 		}
 		g_b80002724 = 0x01;
 	}
@@ -83,14 +81,14 @@ void frame_dummy()
 	{
 		word32 a7_n;
 		word32 a1_n;
-		null();
+		fn00000000();
 		a7_n = a7_n + 8;
 	}
 	if (g_dw8000271C != 0x00 && 0x00 != 0x00)
 	{
 		a7_n->ptrFFFFFFFC = 0x8000271C;
 		word32 a1_n;
-		null();
+		fn00000000();
 		register_tm_clones();
 	}
 	else

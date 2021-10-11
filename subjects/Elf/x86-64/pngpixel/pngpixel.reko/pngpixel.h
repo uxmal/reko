@@ -561,7 +561,7 @@ T_94: (in format @ 00400ED8 : (ptr64 char))
   Class: Eq_94
   DataType: (ptr64 char)
   OrigDataType: 
-T_95: (in  @ 00400ED8 : uint64)
+T_95: (in  @ 00400ED8 : uint32)
   Class: Eq_95
   DataType: uint64
   OrigDataType: 
@@ -1009,7 +1009,7 @@ T_206: (in format @ 00400F83 : (ptr64 char))
   Class: Eq_206
   DataType: (ptr64 char)
   OrigDataType: 
-T_207: (in  @ 00400F83 : uint64)
+T_207: (in  @ 00400F83 : uint32)
   Class: Eq_207
   DataType: uint64
   OrigDataType: 
@@ -1057,15 +1057,15 @@ T_218: (in signature of printf @ 00000000 : void)
   Class: Eq_217
   DataType: (ptr64 Eq_217)
   OrigDataType: 
-T_219: (in  @ 004011C8 : uint64)
+T_219: (in  @ 004011C8 : uint32)
   Class: Eq_219
   DataType: uint64
   OrigDataType: 
-T_220: (in  @ 004011C8 : uint64)
+T_220: (in  @ 004011C8 : uint32)
   Class: Eq_220
   DataType: uint64
   OrigDataType: 
-T_221: (in  @ 004011C8 : uint64)
+T_221: (in  @ 004011C8 : uint32)
   Class: Eq_221
   DataType: uint64
   OrigDataType: 
@@ -1213,11 +1213,11 @@ T_257: (in signature of printf @ 00000000 : void)
   Class: Eq_256
   DataType: (ptr64 Eq_256)
   OrigDataType: 
-T_258: (in  @ 00401220 : uint64)
+T_258: (in  @ 00401220 : uint32)
   Class: Eq_258
   DataType: uint64
   OrigDataType: 
-T_259: (in  @ 00401220 : uint64)
+T_259: (in  @ 00401220 : uint32)
   Class: Eq_259
   DataType: uint64
   OrigDataType: 
@@ -1285,19 +1285,19 @@ T_275: (in signature of printf @ 00000000 : void)
   Class: Eq_274
   DataType: (ptr64 Eq_274)
   OrigDataType: 
-T_276: (in  @ 004012C2 : uint64)
+T_276: (in  @ 004012C2 : uint32)
   Class: Eq_276
   DataType: uint64
   OrigDataType: 
-T_277: (in  @ 004012C2 : uint64)
+T_277: (in  @ 004012C2 : uint32)
   Class: Eq_277
   DataType: uint64
   OrigDataType: 
-T_278: (in  @ 004012C2 : uint64)
+T_278: (in  @ 004012C2 : uint32)
   Class: Eq_278
   DataType: uint64
   OrigDataType: 
-T_279: (in  @ 004012C2 : uint64)
+T_279: (in  @ 004012C2 : uint32)
   Class: Eq_279
   DataType: uint64
   OrigDataType: 
@@ -1445,7 +1445,7 @@ T_315: (in signature of printf @ 00000000 : void)
   Class: Eq_314
   DataType: (ptr64 Eq_314)
   OrigDataType: 
-T_316: (in  @ 00401146 : uint64)
+T_316: (in  @ 00401146 : uint32)
   Class: Eq_316
   DataType: uint64
   OrigDataType: 
@@ -1509,19 +1509,19 @@ T_331: (in signature of printf @ 00000000 : void)
   Class: Eq_330
   DataType: (ptr64 Eq_330)
   OrigDataType: 
-T_332: (in  @ 00401130 : uint64)
+T_332: (in  @ 00401130 : uint32)
   Class: Eq_332
   DataType: uint64
   OrigDataType: 
-T_333: (in  @ 00401130 : int64)
+T_333: (in  @ 00401130 : int32)
   Class: Eq_333
   DataType: uint64
   OrigDataType: 
-T_334: (in  @ 00401130 : int64)
+T_334: (in  @ 00401130 : int32)
   Class: Eq_334
   DataType: uint64
   OrigDataType: 
-T_335: (in  @ 00401130 : int64)
+T_335: (in  @ 00401130 : int32)
   Class: Eq_335
   DataType: uint64
   OrigDataType: 
@@ -1673,23 +1673,23 @@ T_372: (in signature of printf @ 00000000 : void)
   Class: Eq_371
   DataType: (ptr64 Eq_371)
   OrigDataType: 
-T_373: (in  @ 004010CA : uint64)
+T_373: (in  @ 004010CA : uint32)
   Class: Eq_373
   DataType: uint64
   OrigDataType: 
-T_374: (in  @ 004010CA : int64)
+T_374: (in  @ 004010CA : int32)
   Class: Eq_374
   DataType: uint64
   OrigDataType: 
-T_375: (in  @ 004010CA : int64)
+T_375: (in  @ 004010CA : int32)
   Class: Eq_375
   DataType: uint64
   OrigDataType: 
-T_376: (in  @ 004010CA : int64)
+T_376: (in  @ 004010CA : int32)
   Class: Eq_376
   DataType: uint64
   OrigDataType: 
-T_377: (in  @ 004010CA : int64)
+T_377: (in  @ 004010CA : int32)
   Class: Eq_377
   DataType: uint64
   OrigDataType: 

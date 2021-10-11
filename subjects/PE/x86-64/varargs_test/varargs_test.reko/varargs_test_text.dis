@@ -132,22 +132,22 @@ l00000001400011D4:
 	word64 r8_31
 	branch fn000000014000164C(1<32>, r8, out r8_31) == 0<8> l0000000140001279
 l0000000140001279:
-	word64 rcx_201
-	fn0000000140001974(7<32>, rbx, qwArg08, out rcx_201)
+	word64 rcx_200
+	fn0000000140001974(7<32>, rbx, qwArg08, out rcx_200)
 	int3()
 l000000014000120D:
 	fn0000000140001B5C()
 	fn0000000140001854(0x0000000140001BA8<p64>)
-	word32 eax_74 = fn0000000140001918()
-	word64 rax_78
-	word64 r8_79
+	word32 eax_73 = fn0000000140001918()
+	word64 rax_77
+	word64 r8_78
 	call configure_narrow_argv (retsize: 8;)
-		uses: eax:eax_74,r8:r8_31,rcx:CONVERT(eax_74, word32, uint64),Stack +0010:qwArg08
-		defs: r8:r8_79,rax:rax_78
-	branch SLICE(rax_78, word32, 0) != 0<32> l0000000140001284
+		uses: eax:eax_73,r8:r8_31,rcx:CONVERT(eax_73, word32, uint64),Stack +0010:qwArg08
+		defs: r8:r8_78,rax:rax_77
+	branch SLICE(rax_77, word32, 0) != 0<32> l0000000140001284
 l0000000140001284:
-	word64 rcx_202
-	fn0000000140001974(7<32>, rbx, qwArg08, out rcx_202)
+	word64 rcx_201
+	fn0000000140001974(7<32>, rbx, qwArg08, out rcx_201)
 	int3()
 	int3()
 l000000014000128F_thunk_fn0000000140001290:
@@ -161,15 +161,15 @@ l000000014000123C:
 l0000000140001248:
 	fn0000000140001DD0()
 	fn0000000140001DD0()
-	word32 eax_121 = fn0000000140001ABC()
-	word64 r8_129
+	word32 eax_120 = fn0000000140001ABC()
+	word64 r8_128
 	call configthreadlocale (retsize: 8;)
-		uses: eax:eax_121,r8:r8_79,rcx:CONVERT(eax_121, word32, uint64),Stack +0010:qwArg08
-		defs: r8:r8_129
+		uses: eax:eax_120,r8:r8_78,rcx:CONVERT(eax_120, word32, uint64),Stack +0010:qwArg08
+		defs: r8:r8_128
 	branch fn0000000140001938() == 0<8> l000000014000126C
 l0000000140001267:
 	call initialize_narrow_environment (retsize: 8;)
-		uses: r8:r8_129,Stack +0010:qwArg08
+		uses: r8:r8_128,Stack +0010:qwArg08
 l000000014000126C:
 	fn0000000140001ABC()
 	return
@@ -994,20 +994,19 @@ void fn0000000140001B5C()
 //      fn0000000140001B24
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rcx
-// Preserved: rbx rdi rsi rsp
+// Trashed: SCZO
+// Preserved: rbx rcx rdi rsi rsp
 fn0000000140001B5C_entry:
 l0000000140001B5C:
 	word64 rbx_12 = 0x0000000140002680<p64>
 l0000000140001B91:
 	branch rbx_12 <u 0x0000000140002680<p64> l0000000140001B7B
 l0000000140001B7B:
-	word64 rdi_19 = Mem9[rbx_12:word64]
-	branch rdi_19 == 0<64> l0000000140001B8D
+	branch Mem9[rbx_12:word64] == 0<64> l0000000140001B8D
 l0000000140001B83:
 	fn0000000140001BF4()
 	word64 rcx_25
-	call rdi_19 (retsize: 8;)
+	call fn0000000000000000 (retsize: 8;)
 		uses: rcx:rcx_25
 		defs: rcx:rcx_25
 l0000000140001B8D:
@@ -1022,20 +1021,19 @@ void fn0000000140001BA8()
 
 // MayUse: 
 // LiveOut:
-// Trashed: SCZO rcx
-// Preserved: rbx rdi rsi rsp
+// Trashed: SCZO
+// Preserved: rbx rcx rdi rsi rsp
 fn0000000140001BA8_entry:
 l0000000140001BA8:
 	word64 rbx_12 = 0x0000000140002690<p64>
 l0000000140001BDD:
 	branch rbx_12 <u 0x0000000140002690<p64> l0000000140001BC7
 l0000000140001BC7:
-	word64 rdi_19 = Mem9[rbx_12:word64]
-	branch rdi_19 == 0<64> l0000000140001BD9
+	branch Mem9[rbx_12:word64] == 0<64> l0000000140001BD9
 l0000000140001BCF:
 	fn0000000140001BF4()
 	word64 rcx_25
-	call rdi_19 (retsize: 8;)
+	call fn0000000000000000 (retsize: 8;)
 		uses: rcx:rcx_25
 		defs: rcx:rcx_25
 l0000000140001BD9:

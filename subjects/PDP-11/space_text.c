@@ -31,14 +31,26 @@ Eq_n t0000 = // 0000
 		0x00,
 		0x00,
 	};
-<anonymous> g_t0001 = <code>; // 0001
+Eq_n g_t0001 = // 0001
+	{
+		0x41,
+	};
 Eq_n g_t0002 = // 0002
 	{
-		66,
+		0
+	};
+Eq_n g_t0003 = // 0003
+	{
+		null,
 	};
 Eq_n g_t0004 = // 0004
 	{
-		0
+		
+		{
+			0x00
+		},
+		0x00,
+		0x00,
 	};
 Eq_n g_t0005 = // 0005
 	{
@@ -55,6 +67,7 @@ Eq_n g_t0005 = // 0005
 		44544,
 		0x1D,
 	};
+char g_str0006[] = ""; // 0006
 Eq_n g_t0007 = // 0007
 	{
 		0x00,
@@ -87,6 +100,15 @@ Eq_n g_t000F = // 000F
 Eq_n g_t0015 = // 0015
 	{
 		0
+	};
+Eq_n g_t0016 = // 0016
+	{
+		
+		{
+			0x00
+		},
+		0x00,
+		0x00,
 	};
 Eq_n g_t0019 = // 0019
 	{
@@ -174,6 +196,21 @@ Eq_n g_t002C = // 002C
 Eq_n g_t002D = // 002D
 	{
 		0x69,
+	};
+Eq_n g_t002F = // 002F
+	{
+		
+		{
+			0x00
+		},
+		null,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
 	};
 Eq_n g_t003B = // 003B
 	{
@@ -478,8 +515,8 @@ void fn0472(Eq_n r1, Eq_n wArg10)
 	if (r3_n != null)
 		r0_n = r3_n->ptr0002;
 	fn0528(r0_n);
-	struct Eq_n ** sp_n = (struct Eq_n **) <invalid>;
-	fn0528(*sp_n);
+	struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
+	fn0528(sp_n->ptr0000);
 	fn0468(&g_b05EF);
 	ci16 v21_n = *g_ptr5426;
 	if (v21_n == 0x00)
@@ -1043,7 +1080,7 @@ Eq_n g_t0AB7 = // 0AB7
 <anonymous> * g_ptr0ABE = &g_t0AC0; // 0ABE
 Eq_n g_t0ABF = // 0ABF
 	{
-		-0x00007FF6
+		~0x05,
 	};
 <anonymous> g_t0AC0 = <code>; // 0AC0
 Eq_n g_t0AC3 = // 0AC3
@@ -1386,10 +1423,15 @@ struct Eq_n * fn0D3E(struct Eq_n * r0, Eq_n r2)
 	return (char *) &r0->t0002 + 2;
 }
 
-// 0D7A: void fn0D7A(Register word16 r0, Stack word16 wArg00, Stack word16 wArg02, Stack word16 wArg04)
-void fn0D7A(word16 r0, word16 wArg00, word16 wArg02, word16 wArg04)
+// 0D7A: Register word16 fn0D7A(Register word16 r0, Stack word16 wArg00, Stack word16 wArg02, Stack (ptr16 Eq_n) wArg04, Register out ptr16 r3Out)
+// Called from:
+//      fn2B96
+word16 fn0D7A(word16 r0, word16 wArg00, word16 wArg02, struct Eq_n * wArg04, ptr16 & r3Out)
 {
+	word16 r0_n;
 	g_t0D7E();
+	r3Out = 3454;
+	return r0_n;
 }
 
 <anonymous> g_t0D7E = <code>; // 0D7E
@@ -1426,6 +1468,8 @@ l0E7C:
 }
 
 // 0EA8: void fn0EA8(Stack (ptr16 Eq_n) wArg00)
+// Called from:
+//      fn2B96
 void fn0EA8(struct Eq_n * wArg00)
 {
 	struct Eq_n * r3_n = g_ptr5424;
@@ -1434,22 +1478,12 @@ void fn0EA8(struct Eq_n * wArg00)
 		r3_n->ptr007E = wArg00;
 	wArg00();
 	struct Eq_n * r3_n = g_ptr5424;
-	if (r3_n->b0074 != 0x00)
-	{
-		r3_n->ptr0072 = null;
-		r3_n->ptr0070 = null;
-		r3_n->ptr0014 = null;
-		r3_n->w000C = r3_n->w0058;
-		r3_n->t00A2.u1 = 0x00;
-	}
-	else
-	{
-		r3_n->ptr0072 = null;
-		r3_n->ptr0070 = null;
-		r3_n->ptr0014 = null;
-		r3_n->w000C = r3_n->w0058;
-		r3_n->t00A2.u1 = 0x00;
-	}
+	r3_n->b0074 != 0x00;
+	r3_n->ptr0072 = null;
+	r3_n->ptr0070 = null;
+	r3_n->ptr0014 = null;
+	r3_n->w000C = r3_n->w0058;
+	r3_n->t00A2.u1 = 0x00;
 }
 
 Eq_n g_t0EF4 = // 0EF4
@@ -1533,7 +1567,7 @@ void fn0EF8(struct Eq_n * r4, word16 * r5)
 	r3_n->b0074 = 0x00;
 	if (true)
 	{
-		r4->ptr0002();
+		fn2B96(pc);
 		struct Eq_n * r4_n = g_ptr5424;
 		r4_n->t0000 = (<anonymous>) wLoc04_n;
 		r4_n->ptr000E = wLoc02_n;
@@ -2022,7 +2056,7 @@ void fn14A8(Eq_n r2, uint16 r5)
 	r3_n->ptr0014 = r0_n;
 	cui16 v13_n = r0_n->t0000 & 0x0800;
 	r0_n->t0000 = v13_n;
-	struct Eq_n ** sp_n = fp - 0x06;
+	struct Eq_n * sp_n = fp - 0x06;
 	if (v13_n != 0x00)
 	{
 		word16 ** sp_n;
@@ -2063,7 +2097,7 @@ void fn14A8(Eq_n r2, uint16 r5)
 					{
 						word16 r2_n;
 						fn1836(r3_n, r4_n, out r2_n, out r3_n, out r4_n);
-						sp_n = (struct Eq_n **) <invalid>;
+						sp_n = (struct Eq_n *) <invalid>;
 					}
 				}
 			}
@@ -2384,6 +2418,7 @@ word16 fn1836(struct Eq_n * r3, struct Eq_n * r4, ptr16 & r2Out, struct Eq_n & r
 	return r0_n;
 }
 
+<anonymous> g_t18A6 = <code>; // 18A6
 // 18BE: Register (ptr16 Eq_n) fn18BE(Register Eq_n r0, Register (ptr16 Eq_n) r3, Register (ptr16 Eq_n) r4, Register out (ptr16 Eq_n) r4Out)
 // Called from:
 //      fn16DA
@@ -2494,16 +2529,29 @@ word16 fn1932(struct Eq_n * r3, struct Eq_n * r4, struct Eq_n & r3Out, struct Eq
 		struct Eq_n * sp_n = r3->ptr0064;
 		sp_n->ptrFFFFFFFE = &g_t0EF4;
 		sp_n->ptrFFFFFFFC = r3;
-		if (r3->b0074 == 0x00)
+		if (r3->b0074 != 0x00)
+		{
+			r3->ptr0072 = null;
+			r3->ptr0070 = null;
+			r3->ptr0014 = null;
+			r3->w000C = r3->w0058;
+			r3->t00A2.u1 = 0x00;
+			r3Out = sp_n->ptrFFFFFFFC;
+			r4Out = r4_n;
+			return r2;
+		}
+		else
+		{
 			sp_n->ptrFFFFFFFE = r4_n;
-		r3->ptr0072 = null;
-		r3->ptr0070 = null;
-		r3->ptr0014 = null;
-		r3->w000C = r3->w0058;
-		r3->t00A2.u1 = 0x00;
-		r3Out = sp_n->ptrFFFFFFFC;
-		r4Out = r4_n;
-		return r2;
+			r3->ptr0072 = null;
+			r3->ptr0070 = null;
+			r3->ptr0014 = null;
+			r3->w000C = r3->w0058;
+			r3->t00A2.u1 = 0x00;
+			r3Out = sp_n->ptrFFFFFFFC;
+			r4Out = r4_n;
+			return r2;
+		}
 	}
 }
 
@@ -2895,6 +2943,10 @@ Eq_n g_t1F7C = // 1F7C
 		&g_t09F7,
 	};
 word16 g_w1FE6 = 0x15FF; // 1FE6
+Eq_n g_t2000 = // 2000
+	{
+		&g_t0ABF,
+	};
 Eq_n g_t2020 = // 2020
 	{
 		<code>,
@@ -2944,6 +2996,14 @@ Eq_n g_t2020 = // 2020
 Eq_n g_t2037 = // 2037
 	{
 		0
+	};
+Eq_n g_t203E = // 203E
+	{
+		13494
+	};
+Eq_n g_t2061 = // 2061
+	{
+		200,
 	};
 Eq_n g_t2072 = // 2072
 	{
@@ -3128,6 +3188,172 @@ struct Eq_n g_t2B94 = // 2B94
 		&g_t4DAA,
 		&g_t15FF,
 	};
+// 2B96: void fn2B96(Register (ptr16 Eq_n) pc)
+// Called from:
+//      fn0EF8
+void fn2B96(struct Eq_n * pc)
+{
+	*g_ptr5426 = 0x05;
+	fn457C();
+	++*g_ptr5426;
+	fn4030();
+	++*g_ptr5426;
+	g_ptr56B8 = (struct Eq_n *) ((char *) &t0000.w0000 + 1);
+	ci16 r4_n;
+	byte * r5_n = g_a5898;
+	for (r4_n = 0x1E; r4_n > 0x00; --r4_n)
+	{
+		*g_ptr5426 = 0x08;
+		*r5_n = 0x20;
+		*g_ptr5426 = 0x09;
+		++r5_n;
+	}
+	++*g_ptr5426;
+	fn413C();
+	++*g_ptr5426;
+	word16 r0_n = fn4072();
+	++*g_ptr5426;
+	word16 r3_n;
+	word16 r0_n = fn0D7A(r0_n, wLoc06, 19942, &g_t5006, out r3_n);
+	struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
+	fn0EA8(sp_n->ptrFFFFFFFE);
+	++*g_ptr5426;
+	sp_n->ptrFFFFFFFE = &g_t5006;
+	sp_n->wFFFFFFFC = 20242;
+	word16 r3_n;
+	fn0D7A(r0_n, sp_n->wFFFFFFFA, sp_n->wFFFFFFFC, sp_n->ptrFFFFFFFE, out r3_n);
+	struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
+	fn0EA8(sp_n->ptrFFFFFFFE);
+	++*g_ptr5426;
+	fn413C();
+	++*g_ptr5426;
+	word16 r0_n = fn4072();
+	++*g_ptr5426;
+	sp_n->ptrFFFFFFFE = &g_t5006;
+	sp_n->wFFFFFFFC = 0x4FA0;
+	word16 r3_n;
+	fn0D7A(r0_n, sp_n->wFFFFFFFA, sp_n->wFFFFFFFC, sp_n->ptrFFFFFFFE, out r3_n);
+	struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
+	fn0EA8(sp_n->ptrFFFFFFFE);
+	++*g_ptr5426;
+	word16 r0_n = fn4072();
+	++*g_ptr5426;
+	sp_n->ptrFFFFFFFE = &g_t5006;
+	sp_n->wFFFFFFFC = 0x4FBD;
+	word16 r3_n;
+	fn0D7A(r0_n, sp_n->wFFFFFFFA, sp_n->wFFFFFFFC, sp_n->ptrFFFFFFFE, out r3_n);
+	fn0EA8(&g_t5006);
+	++*g_ptr5426;
+	g_ptr56BA = (struct Eq_n *) ((char *) &t0000.w0000 + 1);
+	++*g_ptr5426;
+	g_w56BC = 0x02;
+	++*g_ptr5426;
+	g_w56BE = 0x01;
+	++*g_ptr5426;
+	g_w56C0 = 0x0A;
+	while (true)
+	{
+		*g_ptr5426 = 0x17;
+		if (g_w56BC > 0x00)
+		{
+			++*g_ptr5426;
+			fn4230();
+		}
+		*g_ptr5426 = 0x19;
+		if (g_w56BC < 0x00)
+		{
+			++*g_ptr5426;
+			fn4230();
+		}
+		*g_ptr5426 = 0x1B;
+		if (g_w56BC > 0x00)
+		{
+			++*g_ptr5426;
+			fn4230();
+		}
+		*g_ptr5426 = 0x1D;
+		if (g_w56BC < 0x00)
+		{
+			++*g_ptr5426;
+			fn4230();
+		}
+		*g_ptr5426 = 0x1F;
+		fn413C();
+		++*g_ptr5426;
+		if (g_w56BC > 0x00)
+		{
+			++*g_ptr5426;
+			fn4230();
+		}
+		*g_ptr5426 = 0x22;
+		if (g_w56BC < 0x00)
+		{
+			++*g_ptr5426;
+			fn4230();
+		}
+		*g_ptr5426 = 0x24;
+		fn413C();
+		++*g_ptr5426;
+		Eq_n r1_n = (int16) fn5A90();
+		g_t56B6 = r1_n;
+		*g_ptr5426 = 0x26;
+		if (r1_n == 0x0D)
+			break;
+		*g_ptr5426 = 0x28;
+		if (r1_n <= 0x20)
+		{
+			*g_ptr5426 = 0x2A;
+			if (r1_n != 0x7F)
+			{
+				*g_ptr5426 = 44;
+				struct Eq_n * r2_n = g_ptr56B8;
+				if (r2_n != (char *) (&t0000.w001E) + 1)
+				{
+					*g_ptr5426 = 0x2E;
+					r2_n->t5897 = r1_n;
+					++*g_ptr5426;
+					g_ptr56BA = r2_n;
+					g_ptr56BA = (struct Eq_n *) ((char *) g_ptr56B8 + 1);
+					++*g_ptr5426;
+				}
+			}
+			else
+			{
+				*g_ptr5426 = 0x31;
+				g_ptr56BA = g_ptr56B8 - 0x01;
+				++*g_ptr5426;
+				if (g_ptr56B8 <= null)
+				{
+					++*g_ptr5426;
+					g_ptr56BA = (struct Eq_n *) ((char *) &t0000.w0000 + 1);
+				}
+				*g_ptr5426 = 0x34;
+				g_ptr56B8->t5897.u0 = 0x20;
+			}
+		}
+		*g_ptr5426 = 0x35;
+		fn4230();
+		++*g_ptr5426;
+		g_w56BE = -g_w56BC;
+		++*g_ptr5426;
+		pc->w28DC = g_ptr56BA + pc->w28DC /16 0x00005899;
+		++*g_ptr5426;
+		if (g_w56BE < 0x3C)
+		{
+			++*g_ptr5426;
+			g_w56BC = -g_ptr56BA;
+		}
+		*g_ptr5426 = 0x3A;
+		if (g_w56BE > 0x08)
+		{
+			++*g_ptr5426;
+			g_w56BC = -g_ptr56BA;
+		}
+		*g_ptr5426 = 0x3C;
+	}
+	*g_ptr5426 = 0x3D;
+}
+
 Eq_n g_t2DD7 = // 2DD7
 	{
 		55,
@@ -3427,6 +3653,7 @@ struct Eq_n g_t3B40 = // 3B40
 		&g_t526E,
 		&g_t15FF,
 	};
+char g_str3C3E[] = "J\x1B\x02\x02w"; // 3C3E
 // 3E12: void fn3E12(Register (ptr16 word16) r5)
 void fn3E12(word16 * r5)
 {
@@ -3449,8 +3676,10 @@ struct Eq_n g_t3F46 = // 3F46
 		&g_t530A,
 		&g_t15FF,
 	};
-// 4030: void fn4030(Register (ptr16 word16) r5)
-void fn4030(word16 * r5)
+// 4030: void fn4030()
+// Called from:
+//      fn2B96
+void fn4030()
 {
 	fn0EF8(&g_t4034, r5);
 }
@@ -3475,10 +3704,13 @@ Eq_n g_t4066 = // 4066
 		0x1756,
 		0x175C,
 	};
-// 4072: void fn4072(Register (ptr16 word16) r5)
-void fn4072(word16 * r5)
+// 4072: Register (ptr16 Eq_n) fn4072()
+// Called from:
+//      fn2B96
+struct Eq_n * fn4072()
 {
 	fn0EF8(&g_t4076, r5);
+	return (struct Eq_n *) <invalid>;
 }
 
 struct Eq_n g_t4076 = // 4076
@@ -3490,8 +3722,10 @@ Eq_n g_t40C2 = // 40C2
 	{
 		&g_t1360,
 	};
-// 413C: void fn413C(Register (ptr16 word16) r5)
-void fn413C(word16 * r5)
+// 413C: void fn413C()
+// Called from:
+//      fn2B96
+void fn413C()
 {
 	fn0EF8(&g_t4140, r5);
 }
@@ -3512,8 +3746,10 @@ struct Eq_n g_t4184 = // 4184
 		&g_t5368,
 		&g_t15FF,
 	};
-// 4230: void fn4230(Register (ptr16 word16) r5)
-void fn4230(word16 * r5)
+// 4230: void fn4230()
+// Called from:
+//      fn2B96
+void fn4230()
 {
 	fn0EF8(&g_t4234, r5);
 }
@@ -3534,8 +3770,10 @@ struct Eq_n g_t4538 = // 4538
 		&g_t53B0,
 		&g_t15FF,
 	};
-// 457C: void fn457C(Register (ptr16 word16) r5)
-void fn457C(word16 * r5)
+// 457C: void fn457C()
+// Called from:
+//      fn2B96
+void fn457C()
 {
 	fn0EF8(&g_t4580, r5);
 }
@@ -3786,6 +4024,113 @@ Eq_n g_t4DAA = // 4DAA
 		0x3A,
 		0x00,
 		&g_w56B2,
+	};
+Eq_n g_t4DBC = // 4DBC
+	{
+		<code>,
+		&g_str3C3E,
+		&g_t2020,
+		0x2000,
+		0x2020,
+		&g_t7B7D,
+		0x2020,
+		&g_t2000,
+		
+		{
+			' '
+		},
+		32123,
+		&g_t2020,
+		&g_str613C,
+		&g_t203E,
+		&g_t18A6,
+		&g_t6120,
+		&g_t2020,
+		0x2020,
+		0x20,
+		0x6120,
+		0x6120,
+		0x2020,
+		
+		{
+			8289
+		},
+		8289,
+		&g_t6120,
+		0x6120,
+		&g_t6161,
+		&g_t2020,
+		&g_t6161,
+		0x61,
+		&g_t2061,
+		&g_t2061,
+		
+		{
+			-23032
+		},
+		40472,
+	};
+char g_str5004[] = "\x01"; // 5004
+Eq_n g_t5006 = // 5006
+	{
+		<code>,
+		&g_str0006,
+		&g_t0007,
+		0x1E,
+		0x00,
+		&g_t0016,
+		0x14,
+		&g_t0003,
+		
+		{
+			'\n'
+		},
+		0x08,
+		&g_t002F,
+		&g_str5004,
+		&g_t0002,
+		&g_t5014,
+		&g_t4DBC,
+		&g_t0004,
+		22208,
+		0x56,
+		0x5018,
+		19916,
+		0x04,
+		
+		{
+			22208
+		},
+		0x5008,
+		&g_t0004,
+		22208,
+		&g_t0004,
+		&g_t501A,
+		&g_t5014,
+		0x0C,
+		&g_t0001,
+		&g_t56C4,
+		
+		{
+			20628
+		},
+		0x5090,
+	};
+<anonymous> g_t5014 = <code>; // 5014
+Eq_n g_t501A = // 501A
+	{
+		
+		{
+			0x2F
+		},
+		null,
+		0x01,
+		0x01,
+		0x50,
+		20500,
+		0x02,
+		0x5006,
+		0x5004,
 	};
 Eq_n g_t507E = // 507E
 	{
@@ -4117,7 +4462,60 @@ Eq_n g_t54DC = // 54DC
 word16 g_w5506 = 0x00; // 5506
 word16 g_w55CC = 0x00; // 55CC
 word16 g_w56B2 = 0x00; // 56B2
-word16 g_w56C4 = 0x00; // 56C4
+Eq_n g_t56B6 = // 56B6
+	{
+		0
+	};
+struct Eq_n * g_ptr56B8 = null; // 56B8
+struct Eq_n * g_ptr56BA = null; // 56BA
+ci16 g_w56BC = 0x00; // 56BC
+ci16 g_w56BE = 0x00; // 56BE
+word16 g_w56C0 = 0x00; // 56C0
+Eq_n g_t56C4 = // 56C4
+	{
+		<code>,
+		null,
+		null,
+		0x00,
+		0x00,
+		null,
+		0x00,
+		null,
+		
+		{
+			'\0'
+		},
+		0x00,
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		0x00,
+		
+		{
+			0
+		},
+		0x00,
+		null,
+		0x00,
+		null,
+		null,
+		null,
+		0x00,
+		null,
+		null,
+		
+		{
+			0
+		},
+		0x00,
+	};
 word16 g_w56DE = 0x00; // 56DE
 word16 g_w56FE = 0x00; // 56FE
 word16 g_w571E = 0x00; // 571E
@@ -4257,6 +4655,9 @@ word16 g_w5808 = 0x00; // 5808
 word16 g_w5864 = 0x00; // 5864
 word16 g_w586E = 0x00; // 586E
 word16 g_w5874 = 0x00; // 5874
+byte g_a5898[] = // 5898
+	{
+	};
 Eq_n g_t58B8 = // 58B8
 	{
 		
@@ -4278,12 +4679,15 @@ Eq_n g_t58C2 = // 58C2
 char g_str5A18[] = ""; // 5A18
 word16 g_w5A2C = 0x00; // 5A2C
 <anonymous> g_t5A3E = <code>; // 5A3E
-// 5A90: void fn5A90()
-void fn5A90()
+// 5A90: Register word16 fn5A90()
+// Called from:
+//      fn2B96
+word16 fn5A90()
 {
 	t0000.w0024 |= 0x5040;
 	word16 r0_n;
 	TTYIN(out r0_n);
+	return r0_n;
 }
 
 Eq_n g_t5AA2 = // 5AA2

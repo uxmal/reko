@@ -668,12 +668,11 @@ void fn0000000140001B5C()
 	word64 * rbx_n;
 	for (rbx_n = &g_qw40002680; rbx_n < &g_qw40002680; ++rbx_n)
 	{
-		<anonymous> * rdi_n = *rbx_n;
-		if (rdi_n != null)
+		if (*rbx_n != 0x00)
 		{
 			fn0000000140001BF4();
 			word64 rcx_n;
-			rdi_n();
+			fn0000000000000000();
 		}
 	}
 }
@@ -684,12 +683,11 @@ void fn0000000140001BA8()
 	word64 * rbx_n;
 	for (rbx_n = &g_qw40002690; rbx_n < &g_qw40002690; ++rbx_n)
 	{
-		<anonymous> * rdi_n = *rbx_n;
-		if (rdi_n != null)
+		if (*rbx_n != 0x00)
 		{
 			fn0000000140001BF4();
 			word64 rcx_n;
-			rdi_n();
+			fn0000000000000000();
 		}
 	}
 }
