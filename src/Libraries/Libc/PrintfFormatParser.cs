@@ -41,6 +41,7 @@ namespace Reko.Libraries.Libc
         protected readonly int longSize;
         protected readonly int doubleSize;
         protected readonly int pointerSize;
+        protected readonly int wordSize;
         private readonly IServiceProvider services;
 
         public PrintfFormatParser(
@@ -58,6 +59,7 @@ namespace Reko.Libraries.Libc
             this.intSize = platform.GetBitSizeFromCBasicType(CBasicType.Int);
             this.longSize = platform.GetBitSizeFromCBasicType(CBasicType.Long);
             this.doubleSize = platform.GetBitSizeFromCBasicType(CBasicType.Double);
+            this.wordSize = platform.Architecture.WordWidth.BitSize;
             this.pointerSize = platform.PointerType.BitSize;
             this.services = services;
         }
@@ -103,6 +105,7 @@ namespace Reko.Libraries.Libc
             LongLong,
             I32,
             I64,
+            Size_t,
         }
 
         protected virtual DataType MakeDataType(PrintfSize size, char cDomain)
@@ -131,6 +134,7 @@ namespace Reko.Libraries.Libc
                 case PrintfSize.LongLong: bitSize = 64; break;
                 case PrintfSize.I32: bitSize = 32; break;
                 case PrintfSize.I64: bitSize = 64; break;
+                case PrintfSize.Size_t: bitSize = this.wordSize; break;
                 }
                 domain = Domain.UnsignedInt;
                 break;
@@ -144,6 +148,7 @@ namespace Reko.Libraries.Libc
                 case PrintfSize.LongLong: bitSize = 64; break;
                 case PrintfSize.I32: bitSize = 32; break;
                 case PrintfSize.I64: bitSize = 64; break;
+                case PrintfSize.Size_t: bitSize = this.wordSize; break;
                 }
                 domain = Domain.SignedInt;
                 break;
@@ -220,6 +225,10 @@ namespace Reko.Libraries.Libc
                 case 'L':
                     ++i;
                     size = PrintfSize.LongLong;
+                    break;
+                case 'z':
+                    ++i;
+                    size = PrintfSize.Size_t;
                     break;
                 default:
                     return PrintfSize.Default;
