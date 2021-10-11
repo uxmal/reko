@@ -268,7 +268,7 @@ namespace Reko.UnitTests.Scanning
             var c = Constant.Word32(666);
             var instr = vafs.BuildInstruction(c, new CallSite(8, 0), printfChr);
             Assert.AreEqual(
-                "0x29A<32>(rcx, rdx, xmm2, r9, Mem0[rsp + 32<i64>:uint64], Mem0[rsp + 40<i64>:uint64])",
+                "0x29A<32>(rcx, SLICE(rdx, int32, 0), SLICE(xmm2, real64, 0), r9, Mem0[rsp + 32<i64>:uint32], Mem0[rsp + 40<i64>:uint32])",
                 instr.ToString());
         }
 

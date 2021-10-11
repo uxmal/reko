@@ -249,6 +249,13 @@ namespace Reko.Core
 
         public Constant SetValue(RegisterStorage reg, Expression value)
         {
+            if (value is Address addr && !addr.Selector.HasValue)
+            {
+                var c = Constant.Create(addr.DataType, addr.ToLinear());
+                SetRegister(reg, c);
+                linearDerived.Remove(reg);
+                return c;
+            }
             if (value is Constant constVal)
             {
                 SetRegister(reg, constVal);

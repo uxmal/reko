@@ -48,6 +48,7 @@ namespace Reko.UnitTests.Core.Analysis
             var platform = new Mock<IPlatform>();
             arch.Setup(a => a.WordWidth).Returns(PrimitiveType.Word32);
             platform.Setup(p => p.Architecture).Returns(arch.Object);
+            platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Int)).Returns(32);
             platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Long)).Returns(32);
             platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Double)).Returns(64);
             platform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);

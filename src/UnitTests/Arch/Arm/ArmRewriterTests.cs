@@ -31,7 +31,7 @@ using System.Linq;
 namespace Reko.UnitTests.Arch.Arm
 {
     [TestFixture]
-    public class ArmRewriterTests : RewriterTestBase
+    public partial class ArmRewriterTests : RewriterTestBase
     {
         private readonly Arm32Architecture arch = new Arm32Architecture(CreateServiceContainer(), "arm32", new Dictionary<string, object>());
         private readonly Address baseAddress = Address.Ptr32(0x00100000);

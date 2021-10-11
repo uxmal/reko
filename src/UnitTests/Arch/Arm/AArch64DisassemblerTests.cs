@@ -60,10 +60,6 @@ namespace Reko.UnitTests.Arch.Arm
             {
                 Assert.AreEqual(sExpected, instr.ToString());
             }
-            else
-            {
-                System.Console.WriteLine(instr.ToString());
-            }
         }
 
         [Test]

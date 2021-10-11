@@ -143,8 +143,14 @@ namespace Reko.Core
                     var actualArg = Bind(formalArg);
                     //$REVIEW: what does null mean here? Forcing an error here generates
                     // regressions in the unit tests.
-                    if (!(actualArg is null))
+                    if (actualArg is not null)
+                    {
+                        if (actualArg.DataType.BitSize > formalArg.DataType.BitSize)
+                        {
+                            actualArg = new Slice(formalArg.DataType, actualArg, 0);
+                        }
                         actuals.Add(actualArg);
+                    }
                 }
             }
             if (isVariadic)

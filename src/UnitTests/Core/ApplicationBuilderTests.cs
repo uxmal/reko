@@ -161,5 +161,22 @@ namespace Reko.UnitTests.Core
             var instr = ab.CreateInstruction(sig, null);
             Assert.AreEqual("Mem0[esp + 8<i32>:int32] = fputs(Mem0[esp + 4<i32>:int32], Mem0[esp:int32])", instr.ToString());
         }
+
+        [Test(Description = "Argument in register wider than the API states")]
+        public void AppBld_SmallValueInWideRegister()
+        {
+            var caller = new Procedure(arch, "caller", Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
+            var testfn = new Procedure(arch, "testfn", Address.Ptr32(0x00123500), new Frame(PrimitiveType.Ptr32));
+            var ab = arch.CreateFrameApplicationBuilder(
+                caller.Frame,
+                new CallSite(4, 0),
+                new ProcedureConstant(PrimitiveType.Ptr32, testfn));
+            var sig = FunctionType.Func(
+                new Identifier("", PrimitiveType.Int32, arch.GetRegister("eax")),
+                new Identifier("cArg", PrimitiveType.Char, arch.GetRegister("ecx")));
+            var instr = ab.CreateInstruction(sig, null);
+            Assert.AreEqual("eax = testfn(SLICE(ecx, char, 0))", instr.ToString());
+
+        }
     }
 }

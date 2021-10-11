@@ -160,6 +160,15 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_adrp_00001()
+        {
+            Given_Instruction(0xB0000001);
+            AssertCode(     // adrp\tx1,#&1000
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x1 = 0000000000101000");
+        }
+
+        [Test]
         public void AArch64Rw_ands()
         {
             Given_HexString("4F67DCEA");
@@ -521,14 +530,7 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|L--|x20 = x1");
         }
 
-        [Test]
-        public void AArch64Rw_adrp_00001()
-        {
-            Given_Instruction(0xB0000001);
-            AssertCode(     // adrp\tx1,#&1000
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|x1 = 0000000000101000");
-        }
+
 
         [Test]
         public void AArch64Rw_mov_reg32()

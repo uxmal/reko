@@ -37,7 +37,7 @@ namespace Reko.Libraries.Libc
         protected readonly Address addr;
         protected int i;
         protected readonly string format;
-        protected readonly int wordBitSize;
+        protected readonly int intSize;
         protected readonly int longSize;
         protected readonly int doubleSize;
         protected readonly int pointerSize;
@@ -55,7 +55,7 @@ namespace Reko.Libraries.Libc
             this.format = format;
             var platform = program.Platform;
 
-            this.wordBitSize = platform.Architecture.WordWidth.BitSize;
+            this.intSize = platform.GetBitSizeFromCBasicType(CBasicType.Int);
             this.longSize = platform.GetBitSizeFromCBasicType(CBasicType.Long);
             this.doubleSize = platform.GetBitSizeFromCBasicType(CBasicType.Double);
             this.pointerSize = platform.PointerType.BitSize;
@@ -108,7 +108,7 @@ namespace Reko.Libraries.Libc
         protected virtual DataType MakeDataType(PrintfSize size, char cDomain)
         {
             Domain domain;
-            int bitSize = this.wordBitSize;
+            int bitSize = this.intSize;
             switch (cDomain)
             {
             case 'c':
