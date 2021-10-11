@@ -168,5 +168,13 @@ namespace Reko.UnitTests.Core.Analysis
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
             Assert.AreEqual("wchar_t", parser.ArgumentTypes[0].ToString());
         }
+
+        [Test]
+        public void PFP_long_double()
+        {
+            ParseChar32("%Lg");
+            Assert.AreEqual(1, parser.ArgumentTypes.Count);
+            Assert.AreEqual("real128", parser.ArgumentTypes[0].ToString());
+        }
     }
 }

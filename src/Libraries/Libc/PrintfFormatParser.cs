@@ -155,7 +155,15 @@ namespace Reko.Libraries.Libc
             case 'F':
             case 'g':
             case 'G':
-                bitSize = this.doubleSize;
+                switch (size)
+                {
+                case PrintfSize.LongLong:
+                    bitSize = 128; break;
+                default:
+                    // floats are promoted to doubles.
+                    bitSize = this.doubleSize;
+                    break;
+                }
                 domain = Domain.Real;
                 break;
             case 'p':
@@ -208,6 +216,10 @@ namespace Reko.Libraries.Libc
                         ++i;
                         size = PrintfSize.LongLong;
                     }
+                    break;
+                case 'L':
+                    ++i;
+                    size = PrintfSize.LongLong;
                     break;
                 default:
                     return PrintfSize.Default;
