@@ -59,7 +59,6 @@ void fn00200089()
 	fn00200557(0x04, 0x05, &g_b200165);
 	word32 xwa_n = fn00200557(0x04, 0x06, &g_b20017F);
 	byte a_n = (byte) xwa_n;
-	word16 xwa_16_16_n = SLICE(xwa_n, word16, 16);
 	byte * xde_n = (byte *) 0x7000;
 	byte * xhl_n = g_a200363;
 	word16 bc_n;
@@ -69,7 +68,7 @@ void fn00200089()
 		++xhl_n;
 		++xde_n;
 	}
-	fn002004F2(SEQ(xwa_16_16_n, 0x01, a_n));
+	fn002004F2(a_n);
 	word32 xsp_n;
 	word32 xhl_n;
 	(*(union Eq_n *) 0x7000)();
@@ -83,7 +82,6 @@ void fn00200089()
 	fn00200557(0x04, 0x09, &g_b200217);
 	word32 xwa_n = fn00200557(0x04, 0x0A, &g_b200231);
 	byte a_n = (byte) xwa_n;
-	word16 xwa_16_16_n = SLICE(xwa_n, word16, 16);
 	byte * xde_n = (byte *) 0x7000;
 	byte * xhl_n = g_a200492;
 	word16 bc_n;
@@ -93,7 +91,7 @@ void fn00200089()
 		++xhl_n;
 		++xde_n;
 	}
-	fn002004F2(SEQ(xwa_16_16_n, 0x01, a_n));
+	fn002004F2(a_n);
 	word32 xsp_n;
 	word32 xhl_n;
 	(*(union Eq_n *) 0x7000)();
@@ -107,7 +105,6 @@ void fn00200089()
 	fn00200557(0x04, 0x0D, &g_b2002CB);
 	word32 xwa_n = fn00200557(0x04, 0x0E, &g_b2002E5);
 	byte a_n = (byte) xwa_n;
-	word16 xwa_16_16_n = SLICE(xwa_n, word16, 16);
 	byte * xde_n = (byte *) 0x7000;
 	byte * xhl_n = g_a2004B5;
 	word16 bc_n;
@@ -117,7 +114,7 @@ void fn00200089()
 		++xhl_n;
 		++xde_n;
 	}
-	fn002004F2(SEQ(xwa_16_16_n, 0x01, a_n));
+	fn002004F2(a_n);
 	word32 xhl_n;
 	(*(union Eq_n *) 0x7000)();
 	word16 xhl_16_16_n = SLICE(xhl_n, word16, 16);
@@ -156,10 +153,10 @@ byte g_a200492[] = // 00200492
 byte g_a2004B5[] = // 002004B5
 	{
 	};
-// 002004F2: void fn002004F2(Register Eq_n w)
+// 002004F2: void fn002004F2(Register byte w)
 // Called from:
 //      fn00200089
-void fn002004F2(Eq_n w)
+void fn002004F2(byte w)
 {
 	byte w_n = SLICE(xwa, byte, 8);
 	*(byte *) 0x4004 = 0x00;
@@ -168,26 +165,26 @@ void fn002004F2(Eq_n w)
 	while (*(byte *) 0x4004 != w_n);
 }
 
-// 0020050A: FlagGroup bool fn0020050A(Register Eq_n hl)
+// 0020050A: FlagGroup bool fn0020050A(Register word16 hl)
 // Called from:
 //      fn00200532
-bool fn0020050A(Eq_n hl)
+bool fn0020050A(word16 hl)
 {
 	byte h_n = SLICE(xhl, byte, 8);
 	byte l_n = (byte) xhl;
 	return SLICE(cond((uint32) ((uint16) h_n * 0x02 + 0x9800 + (uint16) l_n * 0x40) + 0x01), bool, 4);
 }
 
-// 00200532: FlagGroup bool fn00200532(Register Eq_n xhl)
+// 00200532: FlagGroup bool fn00200532(Register word32 xhl)
 // Called from:
 //      fn00200089
-bool fn00200532(Eq_n xhl)
+bool fn00200532(word32 xhl)
 {
 	byte h_n = SLICE(xhl, byte, 8);
 	word16 xhl_16_16_n = SLICE(xhl, word16, 16);
 	byte l_n = (byte) xhl;
-	fn0020050A(xhl);
-	return fn0020050A(SEQ(xhl_16_16_n, h_n + 0x01, l_n));
+	fn0020050A((word16) xhl);
+	return fn0020050A((word16) SEQ(xhl_16_16_n, h_n + 0x01, l_n));
 }
 
 // 00200557: Register word32 fn00200557(Register bui8 c, Register byte b, Register (ptr32 byte) xhl)

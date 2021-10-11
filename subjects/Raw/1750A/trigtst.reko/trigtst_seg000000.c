@@ -30,47 +30,47 @@ void fn0100(word16 wArg40, word16 wArg7E, cui16 wArgC2)
 void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 {
 					fn04B9(&g_tFFFF8000);
-					Eq_n gp0_gp1_gp2_n = g_uFFFF80CE;
+					real48 gp0_gp1_gp2_n = g_rFFFF80CE;
 					int32 gp0_gp1_n = <invalid>;
 					word16 gp8_n;
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp11_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn01E6(gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn01E6((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF800D);
-					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80CE + 3);
+					real48 gp0_gp1_gp2_n = *((char *) &g_rFFFF80CE + 3);
 					int32 gp0_gp1_n = <invalid>;
 					word16 gp8_n;
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp11_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn01E6(gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn01E6((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF801A);
-					Eq_n gp0_gp1_gp2_n = g_uFFFF80D4;
+					real48 gp0_gp1_gp2_n = g_rFFFF80D4;
 					int32 gp0_gp1_n = <invalid>;
 					word16 gp8_n;
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp11_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn01E6(gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn01E6((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF8027);
-					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80D4 + 3);
+					real48 gp0_gp1_gp2_n = *((char *) &g_rFFFF80D4 + 3);
 					int32 gp0_gp1_n = <invalid>;
 					struct Eq_n * gp11_n;
 					word16 gp8_n;
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp14_n;
-					cui16 gp3_n = fn04AE(gp0_gp1_n, fn01E6(gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					cui16 gp3_n = fn04AE(gp0_gp1_n, fn01E6((word32) gp0_gp1_gp2_n, (word16) gp0_gp1_gp2_n), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF8036);
-					Eq_n gp0_gp1_gp2_n = g_uFFFF80DA;
+					real48 gp0_gp1_gp2_n = g_rFFFF80DA;
 					int32 gp12_gp13_n = <invalid>;
 					int32 gp0_gp1_n = <invalid>;
 					struct Eq_n * gp11_n;
@@ -78,10 +78,10 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp14_n;
-					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, wArg42, wArgC4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, wArg42, wArgC4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF8042);
-					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80DA + 3);
+					real48 gp0_gp1_gp2_n = *((char *) &g_rFFFF80DA + 3);
 					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
 					int32 gp12_gp13_n = <invalid>;
 					int32 gp0_gp1_n = <invalid>;
@@ -90,10 +90,10 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp14_n;
-					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, gp15_n->w0042, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, gp15_n->w0042, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF804F);
-					Eq_n gp0_gp1_gp2_n = g_uFFFF80E0;
+					real48 gp0_gp1_gp2_n = g_rFFFF80E0;
 					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
 					int32 gp12_gp13_n = <invalid>;
 					int32 gp0_gp1_n = <invalid>;
@@ -102,10 +102,10 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp14_n;
-					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, gp15_n->w0042, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, gp15_n->w0042, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF805C);
-					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80E0 + 3);
+					real48 gp0_gp1_gp2_n = *((char *) &g_rFFFF80E0 + 3);
 					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
 					int32 gp12_gp13_n = <invalid>;
 					int32 gp0_gp1_n = <invalid>;
@@ -114,10 +114,10 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp14_n;
-					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, gp15_n->w0042, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, gp15_n->w0042, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF806B);
-					Eq_n gp0_gp1_gp2_n = g_uFFFF80E6;
+					real48 gp0_gp1_gp2_n = g_rFFFF80E6;
 					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
 					int32 gp12_gp13_n = <invalid>;
 					int32 gp0_gp1_n = <invalid>;
@@ -126,10 +126,10 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp9_n;
 					word16 gp10_n;
 					word16 gp14_n;
-					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, gp15_n->w0042, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					cui16 gp3_n = fn04AE(gp0_gp1_n, fn032A((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, gp15_n->w0042, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF8076);
-					Eq_n gp0_gp1_gp2_n = g_uFFFF80CE;
+					real48 gp0_gp1_gp2_n = g_rFFFF80CE;
 					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
 					int32 gp12_gp13_n = <invalid>;
 					int32 gp0_gp1_n = <invalid>;
@@ -138,10 +138,10 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn032A(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, gp15_n->w0042, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn032A((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp3_n, gp11_n, gp15_n->w0042, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF8082);
-					Eq_n gp0_gp1_gp2_n = g_uFFFF80DA;
+					real48 gp0_gp1_gp2_n = g_rFFFF80DA;
 					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
 					int32 gp12_gp13_n = <invalid>;
 					int32 gp0_gp1_n = <invalid>;
@@ -150,10 +150,10 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0064, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0064, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF808E);
-					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80DA + 3);
+					real48 gp0_gp1_gp2_n = *((char *) &g_rFFFF80DA + 3);
 					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
 					int32 gp12_gp13_n = <invalid>;
 					int32 gp0_gp1_n = <invalid>;
@@ -162,10 +162,10 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF809B);
-					Eq_n gp0_gp1_gp2_n = g_uFFFF80E0;
+					real48 gp0_gp1_gp2_n = g_rFFFF80E0;
 					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
 					int32 gp12_gp13_n = <invalid>;
 					int32 gp0_gp1_n = <invalid>;
@@ -174,10 +174,10 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF80A8);
-					Eq_n gp0_gp1_gp2_n = *((char *) &g_uFFFF80E0 + 3);
+					real48 gp0_gp1_gp2_n = *((char *) &g_rFFFF80E0 + 3);
 					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
 					int32 gp12_gp13_n = <invalid>;
 					int32 gp0_gp1_n = <invalid>;
@@ -186,10 +186,10 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF80B7);
-					Eq_n gp0_gp1_gp2_n = g_uFFFF80E6;
+					real48 gp0_gp1_gp2_n = g_rFFFF80E6;
 					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
 					int32 gp12_gp13_n = <invalid>;
 					int32 gp0_gp1_n = <invalid>;
@@ -198,10 +198,10 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF80C2);
-					Eq_n gp0_gp1_gp2_n = g_uFFFF80CE;
+					real48 gp0_gp1_gp2_n = g_rFFFF80CE;
 					struct Eq_n * gp15_n = (struct Eq_n *) <invalid>;
 					int32 gp12_gp13_n = <invalid>;
 					int32 gp0_gp1_n = <invalid>;
@@ -210,14 +210,14 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp10_n;
 					word16 gp11_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E(gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 }
 
-// 01E6: Register word16 fn01E6(Sequence Eq_n gp0_gp1, Register word16 gp2)
+// 01E6: Register word16 fn01E6(Sequence word32 gp0_gp1, Register word16 gp2)
 // Called from:
 //      fn0111
-word16 fn01E6(Eq_n gp0_gp1, word16 gp2)
+word16 fn01E6(word32 gp0_gp1, word16 gp2)
 {
 					word16 gp0 = SLICE(gp0_gp1, word16, 16);
 					int16 gp1 = (word16) gp0_gp1;
@@ -266,10 +266,10 @@ word16 fn02BF(ci16 gp1, cui16 wArgC8, ptr16 & gp1Out, ptr16 & gp14Out)
 					}
 }
 
-// 032A: Register word16 fn032A(Sequence Eq_n gp0_gp1, Sequence int32 gp12_gp13, Register word16 gp2, Register cui16 gp3, Register (ptr16 Eq_n) gp11, Stack word16 wArg44, Stack cui16 wArgC6)
+// 032A: Register word16 fn032A(Sequence int32 gp0_gp1, Sequence int32 gp12_gp13, Register word16 gp2, Register cui16 gp3, Register (ptr16 Eq_n) gp11, Stack word16 wArg44, Stack cui16 wArgC6)
 // Called from:
 //      fn0111
-word16 fn032A(Eq_n gp0_gp1, int32 gp12_gp13, word16 gp2, cui16 gp3, struct Eq_n * gp11, word16 wArg44, cui16 wArgC6)
+word16 fn032A(int32 gp0_gp1, int32 gp12_gp13, word16 gp2, cui16 gp3, struct Eq_n * gp11, word16 wArg44, cui16 wArgC6)
 {
 					cui16 gp1 = (word16) gp0_gp1;
 					struct Eq_n * gp0 = SLICE(gp0_gp1, word16, 16);
@@ -359,10 +359,10 @@ word16 fn032A(Eq_n gp0_gp1, int32 gp12_gp13, word16 gp2, cui16 gp3, struct Eq_n 
 					}
 }
 
-// 034E: Register word16 fn034E(Sequence Eq_n gp0_gp1, Sequence int32 gp12_gp13, Register word16 gp2, Register word16 gp8, Register cui16 gp9, Register word16 gp10, Register (ptr16 Eq_n) gp11, Stack word16 wArg66, Stack cui16 wArgC6)
+// 034E: Register word16 fn034E(Sequence int32 gp0_gp1, Sequence int32 gp12_gp13, Register word16 gp2, Register word16 gp8, Register cui16 gp9, Register word16 gp10, Register (ptr16 Eq_n) gp11, Stack word16 wArg66, Stack cui16 wArgC6)
 // Called from:
 //      fn0111
-word16 fn034E(Eq_n gp0_gp1, int32 gp12_gp13, word16 gp2, word16 gp8, cui16 gp9, word16 gp10, struct Eq_n * gp11, word16 wArg66, cui16 wArgC6)
+word16 fn034E(int32 gp0_gp1, int32 gp12_gp13, word16 gp2, word16 gp8, cui16 gp9, word16 gp10, struct Eq_n * gp11, word16 wArg66, cui16 wArgC6)
 {
 					word32 gp1_gp2_n = SEQ((word16) gp0_gp1, gp2);
 					if (gp0_gp1 >= 0x00)

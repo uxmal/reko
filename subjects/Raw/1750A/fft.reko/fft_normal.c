@@ -56,9 +56,9 @@ void fn014E()
 		real48 gp5_gp6_gp7_n = g_aFFFF8030[gp9_n];
 		real48 gp2_gp3_gp4_n = g_aFFFF8060[gp9_n];
 		gp14_n[1] = (struct Eq_n) SEQ(gp8_n, gp9_n);
-		Eq_n gp5_gp6_gp7_n = gp5_gp6_gp7_n * gp5_gp6_gp7_n + gp2_gp3_gp4_n * gp2_gp3_gp4_n;
+		real48 gp5_gp6_gp7_n = gp5_gp6_gp7_n * gp5_gp6_gp7_n + gp2_gp3_gp4_n * gp2_gp3_gp4_n;
 		word16 gp7_n = (word16) gp5_gp6_gp7_n;
-		gp14_n = fn0245(gp5_gp6_gp7_n, gp7_n, gp7_n);
+		gp14_n = fn0245((word32) gp5_gp6_gp7_n, gp7_n, gp7_n);
 		real48 gp0_gp1_gp2_n = <invalid>;
 		*((word16) gp14_n[1].w0002 + 0x0000808E) = (struct Eq_n) gp0_gp1_gp2_n;
 		ci16 gp9_n = gp14_n[2];
@@ -82,10 +82,10 @@ void fn0226(cui16 gp1, struct Eq_n ** gp3)
 	gp5_n->w0000 = 0x4000;
 }
 
-// 0245: Register ptr16 fn0245(Sequence Eq_n gp0_gp1, Register word16 gp2, Register word16 gp7)
+// 0245: Register ptr16 fn0245(Sequence int32 gp0_gp1, Register word16 gp2, Register word16 gp7)
 // Called from:
 //      fn014E
-ptr16 fn0245(Eq_n gp0_gp1, word16 gp2, word16 gp7)
+ptr16 fn0245(int32 gp0_gp1, word16 gp2, word16 gp7)
 {
 	cui16 gp1 = (word16) gp0_gp1;
 	if (gp0_gp1 < 0x00)

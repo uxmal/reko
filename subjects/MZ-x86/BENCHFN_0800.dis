@@ -3201,7 +3201,7 @@ l0800_1C37:
 	branch al_130 != 0x30<8> l0800_1CA7
 l0800_1CA7:
 	ax_116 = ax_52
-	branch fn0800_1B9E(SLICE(wArg08, byte, 0), ax_52) l0800_1C61
+	branch fn0800_1B9E(SLICE(wArg08, byte, 0), SLICE(ax_52, byte, 0)) l0800_1C61
 l0800_1C61:
 	wLoc04_559 = 0<16>
 l0800_1C66:
@@ -3246,7 +3246,7 @@ l0800_1CCD:
 	word16 ax_284 = SLICE(di_ax_761, word16, 0)
 	di_125 = SLICE(di_ax_761, word16, 16) (alias)
 	word16 ax_294 = ax_284
-	branch fn0800_1B9E(SLICE(wArg08, byte, 0), ax_284) l0800_1CB4
+	branch fn0800_1B9E(SLICE(wArg08, byte, 0), SLICE(ax_284, byte, 0)) l0800_1CB4
 l0800_1CB4:
 	ui32 di_si_528 = di_ax_761 + wArg08 *u32 si_123
 	si_123 = SLICE(di_si_528, word16, 0) (alias)
@@ -3267,7 +3267,7 @@ l0800_1CEF:
 	wLoc06_536 = v48_316
 	sp_115 = sp_327 + 2<i16>
 	ax_294 = ax_329
-	branch fn0800_1B9E(SLICE(wArg08, byte, 0), ax_329) l0800_1CD9
+	branch fn0800_1B9E(SLICE(wArg08, byte, 0), Mem322[ss_278:bp_279 + 4<16>:byte]) l0800_1CD9
 l0800_1CD9:
 	int32 dx_ax_360 = wArg08 *u32 di_125
 	ui32 ax_si_531 = SEQ(SLICE(dx_ax_360, word16, 0), ax_329) + wArg08 *u32 si_123

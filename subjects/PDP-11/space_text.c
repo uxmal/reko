@@ -135,7 +135,7 @@ Eq_n g_t0020 = // 0020
 		null,
 		
 		{
-			'\0'
+			0x00
 		},
 		0x00,
 		null,
@@ -234,7 +234,7 @@ Eq_n g_t0050 = // 0050
 		null,
 		
 		{
-			'\0'
+			0x00
 		},
 		0x00,
 		null,
@@ -297,7 +297,7 @@ Eq_n g_t0080 = // 0080
 		null,
 		
 		{
-			'\0'
+			0x00
 		},
 		0x00,
 		null,
@@ -343,7 +343,7 @@ Eq_n g_t00B8 = // 00B8
 		null,
 		
 		{
-			'\0'
+			0x00
 		},
 		0x00,
 		null,
@@ -392,7 +392,7 @@ Eq_n g_t021D = // 021D
 		&g_tFFFFFD05,
 		
 		{
-			'\x88'
+			0x88
 		},
 		0x2817,
 		&g_t6600,
@@ -446,7 +446,7 @@ Eq_n g_t0305 = // 0305
 		&g_tFFFFC003,
 		
 		{
-			'\x15'
+			0x15
 		},
 		~0x02FC,
 		&g_tFFFFC088,
@@ -496,12 +496,12 @@ void fn0468(byte * r3)
 	while (true)
 	{
 		++r3;
-		Eq_n r0_n = (int16) *r3;
+		int16 r0_n = (int16) *r3;
 		if (r0_n == 0x00)
 			break;
 		do
 			;
-		while (TTYOUT(r0_n));
+		while (TTYOUT((char) r0_n));
 	}
 }
 
@@ -523,7 +523,7 @@ void fn0472(Eq_n r1, Eq_n wArg10)
 	{
 		do
 			;
-		while (TTYOUT(63));
+		while (TTYOUT('?'));
 	}
 	else
 		fn04FA(v21_n);
@@ -539,7 +539,7 @@ void fn0472(Eq_n r1, Eq_n wArg10)
 			Eq_n r0_n = __rcl(r0_n, 1, (r1_n & 0x8000) != 0x00);
 			do
 				;
-			while (TTYOUT(r0_n));
+			while (TTYOUT((char) r0_n));
 			r0_n.u0 = 0x0086;
 			do
 			{
@@ -549,7 +549,7 @@ void fn0472(Eq_n r1, Eq_n wArg10)
 				{
 					do
 						;
-					while (TTYOUT(41));
+					while (TTYOUT(')'));
 					goto l04F2;
 				}
 				r0_n = __rcl(r0_n, 1, C_n);
@@ -582,10 +582,10 @@ void fn04FA(ci16 r0)
 	byte bLoc02_n = (byte) v10_n + 0x3A;
 	if (r0_n != 0x01)
 		fn04FA(r0_n - 0x01);
-	Eq_n r0_n = (int16) bLoc02_n;
+	int16 r0_n = (int16) bLoc02_n;
 	do
 		;
-	while (TTYOUT(r0_n));
+	while (TTYOUT((char) r0_n));
 }
 
 Eq_n g_t0500 = // 0500
@@ -620,10 +620,10 @@ void fn0528(struct Eq_n * r0)
 	word16 r3_n = 0x03;
 	while (true)
 	{
-		Eq_n r0_n = (int16) r0_n->b05AF;
+		int16 r0_n = (int16) r0_n->b05AF;
 		do
 			;
-		while (TTYOUT(r0_n));
+		while (TTYOUT((char) r0_n));
 		--r3_n;
 		if (r3_n == 0x00)
 			break;
@@ -1248,7 +1248,7 @@ Eq_n g_t0BCE = // 0BCE
 		&g_t005A,
 		
 		{
-			'\xF2'
+			242
 		},
 		5030,
 		&g_t1CF6,
@@ -1293,7 +1293,7 @@ Eq_n g_t0BEC = // 0BEC
 		&g_t1580,
 		
 		{
-			'\x83'
+			131
 		},
 		0x1066,
 		&g_t10A6,
@@ -1724,7 +1724,7 @@ Eq_n g_t1037 = // 1037
 		&g_tFFFFC00A,
 		
 		{
-			'\f'
+			0x0C
 		},
 		0xB10C,
 		null,
@@ -1846,14 +1846,14 @@ void fn12CA(ptr16 r2, struct Eq_n * r3)
 	}
 	Eq_n v18_n = r4_n->t0000 & 0x20;
 	r4_n->t0000.u2 = v18_n;
-	Eq_n r0_n = 0x0A;
+	int16 r0_n = 0x0A;
 	if (v18_n != 0x00)
 	{
 		++r1_n;
 		Eq_n r5_n = (int16) *r1_n;
 		if (r5_n == 0x31)
 		{
-			r0_n.u0 = 0x0C;
+			r0_n = 0x0C;
 l1326:
 			word16 r2_n;
 			fn1366(r0_n, r3, r4_n, out r2_n, out r3, out r4_n);
@@ -1898,17 +1898,17 @@ Eq_n g_t1360 = // 1360
 	{
 		0x86,
 	};
-// 1366: Register Eq_n fn1366(Register Eq_n r0, Register (ptr16 Eq_n) r3, Register (ptr16 Eq_n) r4, Register out ptr16 r2Out, Register out (ptr16 Eq_n) r3Out, Register out (ptr16 Eq_n) r4Out)
+// 1366: Register int16 fn1366(Register int16 r0, Register (ptr16 Eq_n) r3, Register (ptr16 Eq_n) r4, Register out ptr16 r2Out, Register out (ptr16 Eq_n) r3Out, Register out (ptr16 Eq_n) r4Out)
 // Called from:
 //      fn12CA
-Eq_n fn1366(Eq_n r0, struct Eq_n * r3, struct Eq_n * r4, ptr16 & r2Out, struct Eq_n & r3Out, struct Eq_n & r4Out)
+int16 fn1366(int16 r0, struct Eq_n * r3, struct Eq_n * r4, ptr16 & r2Out, struct Eq_n & r3Out, struct Eq_n & r4Out)
 {
 	if (r4->t0000 > 0x00)
 	{
 		ptr16 r2_n;
 		struct Eq_n * r3_n;
 		struct Eq_n * r4_n;
-		Eq_n r0_n = fn1370(r0, r3, r4, out r2_n, out r3_n, out r4_n);
+		int16 r0_n = fn1370(r0, r3, r4, out r2_n, out r3_n, out r4_n);
 		r2Out = r2_n;
 		r3Out = r3_n;
 		r4Out = r4_n;
@@ -1918,7 +1918,7 @@ Eq_n fn1366(Eq_n r0, struct Eq_n * r3, struct Eq_n * r4, ptr16 & r2Out, struct E
 	{
 		do
 			;
-		while (TTYOUT(r0));
+		while (TTYOUT((char) r0));
 		r2Out = r2;
 		r3Out = r3;
 		r4Out = r4;
@@ -1926,14 +1926,14 @@ Eq_n fn1366(Eq_n r0, struct Eq_n * r3, struct Eq_n * r4, ptr16 & r2Out, struct E
 	}
 }
 
-// 1370: Register Eq_n fn1370(Register Eq_n r0, Register (ptr16 Eq_n) r3, Register (ptr16 Eq_n) r4, Register out (ptr16 Eq_n) r2Out, Register out (ptr16 Eq_n) r3Out, Register out (ptr16 Eq_n) r4Out)
+// 1370: Register int16 fn1370(Register int16 r0, Register (ptr16 Eq_n) r3, Register (ptr16 Eq_n) r4, Register out (ptr16 int16) r2Out, Register out (ptr16 Eq_n) r3Out, Register out (ptr16 Eq_n) r4Out)
 // Called from:
 //      fn12CA
 //      fn1366
-Eq_n fn1370(Eq_n r0, struct Eq_n * r3, struct Eq_n * r4, union Eq_n & r2Out, struct Eq_n & r3Out, struct Eq_n & r4Out)
+int16 fn1370(int16 r0, struct Eq_n * r3, struct Eq_n * r4, int16 & r2Out, struct Eq_n & r3Out, struct Eq_n & r4Out)
 {
 	word16 r2_n = Mem0[r4 + 0x0E:word16] + Mem0[r4 + 0x02:word16];
-	*r2_n = (union Eq_n *) r0;
+	*r2_n = r0;
 	r4[7] = (struct Eq_n) ((word16) r4[7].t0000 + 1);
 	cui16 v14_n = r4[7] & 0x01FF;
 	r4[7] = (struct Eq_n) v14_n;
@@ -1947,10 +1947,10 @@ Eq_n fn1370(Eq_n r0, struct Eq_n * r3, struct Eq_n * r4, union Eq_n & r2Out, str
 	else
 	{
 		r4[7] = (struct Eq_n) 0x00;
-		union Eq_n * r2_n;
+		int16 * r2_n;
 		struct Eq_n * r3_n;
 		struct Eq_n * r4_n;
-		Eq_n r0_n = fn1836(r3, r4, out r2_n, out r3_n, out r4_n);
+		int16 r0_n = fn1836(r3, r4, out r2_n, out r3_n, out r4_n);
 		r2Out = r2_n;
 		r3Out = r3_n;
 		r4Out = r4_n;
@@ -2259,7 +2259,7 @@ Eq_n g_t15E6 = // 15E6
 		&g_t40C2,
 		
 		{
-			'\xC2'
+			0xC2
 		},
 		0x48,
 		&g_t0C80,
@@ -2313,8 +2313,8 @@ Eq_n g_t15F7 = // 15F7
 	};
 <anonymous> g_t15FF = <code>; // 15FF
 char g_str16B4[] = "\x04\x80\xCCU\x02"; // 16B4
-// 16DA: void fn16DA(Register Eq_n r0, Register cui16 r2, Register (ptr16 Eq_n) r3, Register (ptr16 Eq_n) r4)
-void fn16DA(Eq_n r0, cui16 r2, struct Eq_n * r3, struct Eq_n * r4)
+// 16DA: void fn16DA(Register int16 r0, Register cui16 r2, Register (ptr16 Eq_n) r3, Register (ptr16 Eq_n) r4)
+void fn16DA(int16 r0, cui16 r2, struct Eq_n * r3, struct Eq_n * r4)
 {
 	r4[7] = (struct Eq_n) r2;
 	if (r3->w005E - r4[11] != 0x00)
@@ -2419,10 +2419,10 @@ word16 fn1836(struct Eq_n * r3, struct Eq_n * r4, ptr16 & r2Out, struct Eq_n & r
 }
 
 <anonymous> g_t18A6 = <code>; // 18A6
-// 18BE: Register (ptr16 Eq_n) fn18BE(Register Eq_n r0, Register (ptr16 Eq_n) r3, Register (ptr16 Eq_n) r4, Register out (ptr16 Eq_n) r4Out)
+// 18BE: Register (ptr16 Eq_n) fn18BE(Register int16 r0, Register (ptr16 Eq_n) r3, Register (ptr16 Eq_n) r4, Register out (ptr16 Eq_n) r4Out)
 // Called from:
 //      fn16DA
-struct Eq_n * fn18BE(Eq_n r0, struct Eq_n * r3, struct Eq_n * r4, struct Eq_n & r4Out)
+struct Eq_n * fn18BE(int16 r0, struct Eq_n * r3, struct Eq_n * r4, struct Eq_n & r4Out)
 {
 	if (r4[0x0C] == 0x00 || r4[0x0C] - r4[11] < 0x00)
 	{
@@ -2843,7 +2843,7 @@ Eq_n g_t1EB6 = // 1EB6
 		&g_t15F1,
 		
 		{
-			'\x01'
+			0x01
 		},
 		22722,
 		&g_t0ABF,
@@ -2888,7 +2888,7 @@ Eq_n g_t1EF0 = // 1EF0
 		&g_t35D8,
 		
 		{
-			'\xD7'
+			~0x28
 		},
 		0x35D4,
 		&g_t0005,
@@ -2959,7 +2959,7 @@ Eq_n g_t2020 = // 2020
 		&g_t06F7,
 		
 		{
-			'\xBF'
+			191
 		},
 		0x33F2,
 		&g_t15F7,
@@ -3017,7 +3017,7 @@ Eq_n g_t2072 = // 2072
 		&g_t0047,
 		
 		{
-			'\xA2'
+			0xA2
 		},
 		0x0AB7,
 		&g_t343C,
@@ -3081,7 +3081,7 @@ Eq_n g_t228C = // 228C
 		&g_t15FF,
 		
 		{
-			'v'
+			118
 		},
 		0x3186,
 		&g_t15C5,
@@ -3476,7 +3476,7 @@ Eq_n g_t3444 = // 3444
 		&g_t0AB7,
 		
 		{
-			'\xBA'
+			~0x45
 		},
 		0x2DD7,
 		&g_t22B6,
@@ -3585,7 +3585,7 @@ Eq_n g_t34F0 = // 34F0
 		&g_t0ABF,
 		
 		{
-			'$'
+			0x24
 		},
 		0x15F7,
 		&g_t0001,
@@ -4037,7 +4037,7 @@ Eq_n g_t4DBC = // 4DBC
 		&g_t2000,
 		
 		{
-			' '
+			0x20
 		},
 		32123,
 		&g_t2020,
@@ -4083,7 +4083,7 @@ Eq_n g_t5006 = // 5006
 		&g_t0003,
 		
 		{
-			'\n'
+			0x0A
 		},
 		0x08,
 		&g_t002F,
@@ -4169,7 +4169,7 @@ Eq_n g_t518E = // 518E
 		&g_t0023,
 		
 		{
-			'('
+			0x28
 		},
 		0x2D,
 		null,
@@ -4218,7 +4218,7 @@ Eq_n g_t51A8 = // 51A8
 		&g_t574A,
 		
 		{
-			'\x04'
+			0x04
 		},
 		22330,
 		&g_t573C,
@@ -4270,7 +4270,7 @@ Eq_n g_t51E8 = // 51E8
 		&g_t002A,
 		
 		{
-			'\x1E'
+			0x1E
 		},
 		0x0110,
 		&g_t0E06,
@@ -4426,7 +4426,7 @@ Eq_n g_t54DC = // 54DC
 		null,
 		
 		{
-			'\0'
+			0x00
 		},
 		0x00,
 		null,
@@ -4483,7 +4483,7 @@ Eq_n g_t56C4 = // 56C4
 		null,
 		
 		{
-			'\0'
+			0x00
 		},
 		0x00,
 		null,
@@ -4551,7 +4551,7 @@ Eq_n g_t5766 = // 5766
 		null,
 		
 		{
-			'\0'
+			0x00
 		},
 		0x00,
 		null,
@@ -4611,7 +4611,7 @@ Eq_n g_t577E = // 577E
 		null,
 		
 		{
-			'\0'
+			0x00
 		},
 		0x00,
 		null,

@@ -69,42 +69,15 @@ struct Eq_n g_tFFFF80C2 = // 80C2
 			{
 				0x00,
 			};
-union Eq_n g_uFFFF80CE = // 80CE
-			{
-				0x00
-			};
-Eq_n g_t80D1 = // 80D1
-			{
-				0x00
-			};
-union Eq_n g_uFFFF80D4 = // 80D4
-			{
-				0x00
-			};
-Eq_n g_t80D7 = // 80D7
-			{
-				0x00
-			};
-union Eq_n g_uFFFF80DA = // 80DA
-			{
-				0x00
-			};
-Eq_n g_t80DD = // 80DD
-			{
-				0x00
-			};
-union Eq_n g_uFFFF80E0 = // 80E0
-			{
-				0x00
-			};
-Eq_n g_t80E3 = // 80E3
-			{
-				0x00
-			};
-union Eq_n g_uFFFF80E6 = // 80E6
-			{
-				0x00
-			};
+real48 g_rFFFF80CE = ;
+real48 g_r80D1 = ;
+real48 g_rFFFF80D4 = ;
+real48 g_r80D7 = ;
+real48 g_rFFFF80DA = ;
+real48 g_r80DD = ;
+real48 g_rFFFF80E0 = ;
+real48 g_r80E3 = ;
+real48 g_rFFFF80E6 = ;
 struct Eq_n g_tFFFF80E9 = // 80E9
 			{
 				

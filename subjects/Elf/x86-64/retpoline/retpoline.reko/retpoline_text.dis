@@ -1,7 +1,7 @@
-void _start(word64 rdx, word64 qwArg00)
+void _start(word64 rdx, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rdx:[0..63] Stack +0000:[0..63]
+// MayUse:  rdx:[0..63] Stack +0000:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -10,7 +10,7 @@ _start_exit:
 _start_entry:
 l0000000000400480:
 	__align(fp + 8<i64>)
-	__libc_start_main(0x400660<64>, qwArg00, fp + 8<i64>, 0x400710<64>, 0x400780<64>, rdx, fp)
+	__libc_start_main(0x400660<64>, SLICE(qwArg00, int32, 0), fp + 8<i64>, 0x400710<64>, 0x400780<64>, rdx, fp)
 	__hlt()
 
 

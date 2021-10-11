@@ -2494,10 +2494,10 @@ void __scanpop(Eq_n ds)
 	(*((word16) ds + 1510))();
 }
 
-// 0800:1B9E: FlagGroup bool fn0800-1B9E(Register cu8 cl, Register Eq_n bl)
+// 0800:1B9E: FlagGroup bool fn0800-1B9E(Register cu8 cl, Register byte bl)
 // Called from:
 //      __scantol
-bool fn0800-1B9E(cu8 cl, Eq_n bl)
+bool fn0800-1B9E(cu8 cl, byte bl)
 {
 	cu8 bl_n = (byte) bx;
 	bool C_n;
@@ -2627,7 +2627,7 @@ l0800_nCCD:
 						Eq_n ax_n = (word16) di_ax_n;
 						di_n = SLICE(di_ax_n, word16, 16);
 						Eq_n ax_n = ax_n;
-						if (!fn0800-1B9E((byte) wArg08, ax_n))
+						if (!fn0800-1B9E((byte) wArg08, (byte) ax_n))
 						{
 l0800_nD03:
 							struct Eq_n Eq_n::* sp_n = sp_n - 2;
@@ -2667,7 +2667,7 @@ l0800_nD0F:
 								wLoc06_n = v48_n;
 								sp_n = sp_n + 2;
 								ax_n = ax_n;
-								if (!fn0800-1B9E((byte) wArg08, ax_n))
+								if (!fn0800-1B9E((byte) wArg08, (ss_n->*bp_n).b0004))
 									goto l0800_nD03;
 								Eq_n dx_ax_n = wArg08 *32 di_n;
 								uint32 ax_si_n = SEQ((word16) dx_ax_n, ax_n) + wArg08 *32 si_n;
@@ -2750,7 +2750,7 @@ l0800_nC78:
 		}
 l0800_nCA7:
 		ax_n = ax_n;
-		if (!fn0800-1B9E((byte) wArg08, ax_n))
+		if (!fn0800-1B9E((byte) wArg08, (byte) ax_n))
 		{
 			si_n = ax_n;
 			goto l0800_nCBE;

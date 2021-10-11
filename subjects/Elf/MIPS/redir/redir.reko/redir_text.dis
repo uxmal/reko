@@ -1420,7 +1420,7 @@ l00400D28:
 l00400D6C:
 	slist_add(r2_325, server_new(Mem330[0x10000A40<32>:word32] + 13<i32>, Mem330[Mem330[0x10000A40<32>:word32] + 0x12C<32>:word32], Mem330[Mem330[0x10000A40<32>:word32] + 0x554<32>:word32], 0<32>, ra))
 	slist_add(r2_325, server_new(Mem364[0x10000A40<32>:word32] + 13<i32>, Mem364[Mem364[0x10000A40<32>:word32] + 0x1C4<32>:word32], Mem364[Mem364[0x10000A40<32>:word32] + 0x554<32>:word32], 1<i32>, ra))
-	bzero(fp + -328<i32>, 16<i32>)
+	bzero(fp + -328<i32>, SLICE(16<i32>, size_t, 0))
 	word32 r2_419 = CONVERT(Mem417[Mem417[0x10000A40<32>:word32] + 0x2F6<32>:uint16], uint16, word32)
 	word32 r5_410 = <invalid>
 	word32 r25_424
@@ -1714,11 +1714,11 @@ void client_new(word32 r4, word32 r5, word32 r6, word32 r7, word32 ra)
 // Preserved: r30 ra sp
 client_new_entry:
 l00401B70:
-	word32 r2_29 = malloc(6100<i32>)
+	word32 r2_29 = malloc(SLICE(6100<i32>, size_t, 0))
 	branch r2_29 != 0<32> l00401BC8_ds_t
 l00401BC8_ds_t:
 l00401BFC:
-	bzero(r2_29 + 6040<i32>, 16<i32>)
+	bzero(r2_29 + 6040<i32>, SLICE(16<i32>, size_t, 0))
 	Mem52[r2_29 + 0x1798<32>:word16] = 2<16>
 	Mem56[r2_29 + 0x179A<32>:word16] = Mem52[r4 + 2<32>:uint16]
 	Mem60[r2_29 + 0x179C<32>:word32] = Mem56[r4 + 4<32>:word32]
@@ -1806,7 +1806,7 @@ l00402028:
 		uses: r2:r4,r25:r25_74,r4:Mem24[r4 + 0x179C<32>:word32]
 	call inet_ntoa (retsize: 0;)
 		uses: r2:r4,r25:r25_74,r4:Mem24[r4 + 0x179C<32>:word32]
-	word32 r2_76 = snprintf(fp + -280<i32>, 256<i32>, 0x409F94<32>, 0<32>)
+	word32 r2_76 = snprintf(fp + -280<i32>, SLICE(256<i32>, size_t, 0), 0x409F94<32>, 0<32>)
 	word32 r25_74 = <invalid>
 	word32 dwLoc18_124 = r2_76
 	branch CONVERT(r2_76 < 256<i32>, bool, word32) != 0<32> l00402158
@@ -1832,7 +1832,7 @@ void client_copy_request(word32 r4)
 // Preserved: r30 ra sp
 client_copy_request_entry:
 l004021A0:
-	memcpy(r4 + 2012<i32>, r4 + 8<i32>, Mem15[r4 + 0x7D8<32>:word32])
+	memcpy(r4 + 2012<i32>, r4 + 8<i32>, Mem15[r4 + 0x7D8<32>:size_t])
 	Mem34[r4 + 0xFB0<32>:word32] = r4 + 2012<i32>
 	Mem38[r4 + 0xFAC<32>:word32] = Mem34[r4 + 0x7D8<32>:word32]
 	return
@@ -2034,7 +2034,7 @@ l00402BC0:
 	Mem71[r4 + 0xFAC<32>:word32] = 0<32>
 	r2_103 = 0<32>
 l00402B88:
-	memcpy(r5, r6, r7)
+	memcpy(r5, r6, SLICE(r7, size_t, 0))
 	r7_130 = <invalid>
 	r6_129 = <invalid>
 	r5_128 = <invalid>
@@ -2175,7 +2175,7 @@ void client_read_reply(word32 r4)
 client_read_reply_entry:
 l0040307C:
 	Mem27[r4 + 0x17D0<32>:word32] = time(0<32>)
-	Mem44[r4 + 0x178C<32>:word32] = CONVERT(read(Mem27[r4 + 4<32>:word32], r4 + 4024<i32>, 1999<i32>), ssize_t, uint32)
+	Mem44[r4 + 0x178C<32>:word32] = CONVERT(read(Mem27[r4 + 4<32>:word32], r4 + 4024<i32>, SLICE(1999<i32>, size_t, 0)), ssize_t, uint32)
 	Mem48[r4 + 0x1788<32>:word32] = r4 + 4024<i32>
 	return
 client_read_reply_exit:
@@ -2465,7 +2465,7 @@ word32 clist_new(word32 ra, ptr32 & r4Out, ptr32 & r5Out)
 clist_new_entry:
 l00403C00:
 	word32 r2_30
-	word32 r2_18 = malloc(12<i32>)
+	word32 r2_18 = malloc(SLICE(12<i32>, size_t, 0))
 	word32 r5_19 = <invalid>
 	word32 r4_17 = <invalid>
 	branch r2_18 != 0<32> l00403C48_ds_t
@@ -2680,7 +2680,7 @@ word32 request_new(word32 r4, word32 ra)
 request_new_entry:
 l00404240:
 	word32 r2_56
-	word32 r2_20 = malloc(1372<i32>)
+	word32 r2_20 = malloc(SLICE(1372<i32>, size_t, 0))
 	branch r2_20 != 0<32> l0040428C_ds_t
 l0040428C_ds_t:
 l004042C0:
@@ -2743,7 +2743,7 @@ void request_save_line(word32 r4, word32 r5, word32 r6, word32 ra)
 
 // Called from:
 //      client_parse_request
-// MayUse:  r4:[0..31] r5:[0..31] r6:[0..31] ra:[0..31]
+// MayUse:  r4:[0..31] r5:[0..31] r6:[0..7] ra:[0..31]
 // LiveOut:
 // Trashed: r2 r25 r28 r3 r4 r5 r6 r7
 // Preserved: r30 ra sp
@@ -2755,11 +2755,11 @@ l004044D4:
 	branch CONVERT(Mem19[r4 + 0x558<32>:word32] < 63<i32>, bool, word32) != 0<32> l00404544
 l00404544:
 	Mem29[r4 + 0x558<32>:word32] = Mem19[r4 + 0x558<32>:word32] + 1<i32>
-	Mem48[r4 + 4<i32> + ((Mem29[r4 + 0x558<32>:word32] << 2<8>) + 1040<i32>):word32] = malloc(r6)
+	Mem48[r4 + 4<i32> + ((Mem29[r4 + 0x558<32>:word32] << 2<8>) + 1040<i32>):word32] = malloc(SLICE(r6, size_t, 0))
 	branch Mem48[r4 + 4<i32> + ((Mem48[r4 + 0x558<32>:word32] << 2<8>) + 1040<i32>):word32] != 0<32> l0040463C
 l0040463C:
 	Mem64[r4 + 4<i32> + (Mem48[r4 + 0x558<32>:word32] + 1296<i32>):byte] = bArg0B_150
-	memcpy(Mem64[r4 + 4<i32> + ((Mem64[r4 + 0x558<32>:word32] << 2<8>) + 1040<i32>):word32], r5, r6)
+	memcpy(Mem64[r4 + 4<i32> + ((Mem64[r4 + 0x558<32>:word32] << 2<8>) + 1040<i32>):word32], r5, SLICE(r6, size_t, 0))
 l004045DC:
 	word32 r5_172
 	word32 r6_173
@@ -2801,11 +2801,11 @@ l00404738:
 l004047D4:
 	branch CONVERT(Mem15[r4 + 0x114<32>:int8], int8, word32) != 47<i32> l0040485C
 l0040485C:
-	snprintf(r4 + 532<i32>, 256<i32>, 0x40A424<32>, 0<32>)
+	snprintf(r4 + 532<i32>, SLICE(256<i32>, size_t, 0), 0x40A424<32>, 0<32>)
 l004047EC:
-	snprintf(r4 + 532<i32>, 256<i32>, 0x40A410<32>, 0<32>)
+	snprintf(r4 + 532<i32>, SLICE(256<i32>, size_t, 0), 0x40A410<32>, 0<32>)
 l00404774:
-	snprintf(r4 + 532<i32>, 256<i32>, 0x40A404<32>, 0<32>)
+	snprintf(r4 + 532<i32>, SLICE(256<i32>, size_t, 0), 0x40A404<32>, 0<32>)
 l004046F8:
 	word32 r5_150
 	word32 r6_151
@@ -3160,14 +3160,14 @@ l004054D0:
 l0040555C:
 	branch r5 != 0<32> l00405698
 l0040556C:
-	word32 r2_52 = malloc(CONVERT(strlen(r4), size_t, uint32) + 11<i32>)
+	word32 r2_52 = malloc(SLICE(CONVERT(strlen(r4), size_t, uint32) + 11<i32>, size_t, 0))
 	dwArg04_530 = r2_52
 	branch r2_52 != 0<32> l004055F4
 l004055F4:
 	word32 dwLoc48_539
 	strcpy(r2_52, r4)
 	dwLoc30_535 = 1<i32>
-	word32 r2_78 = strrchr(r2_52, 47<i32>)
+	word32 r2_78 = strrchr(r2_52, '/')
 	branch r2_78 == 0<32> l00405668
 l00405668:
 	dwLoc48_539 = r2_52
@@ -3187,12 +3187,12 @@ l00405748:
 	word32 r2_151 = fgets(fp + -328<i32>, 255<i32>, r2_120)
 	branch r2_151 != 0<32> l00405788
 l00405788:
-	word32 r2_164 = strchr(r2_151, 10<i32>)
+	word32 r2_164 = strchr(r2_151, '\n')
 	branch r2_164 == 0<32> l004057C4
 l004057B8:
 	Mem172[r2_164:byte] = 0<8>
 l004057C4:
-	word32 r2_184 = strchr(r2_151, 35<i32>)
+	word32 r2_184 = strchr(r2_151, '#')
 	branch r2_184 == 0<32> l00405800
 l004057F4:
 	Mem192[r2_184:byte] = 0<8>
@@ -3210,7 +3210,7 @@ l00405858:
 		uses: r2:r2_212,r25:r25_239,r4:r2_212,r5:0x40A644<32>,Stack +014C:r2_212
 		defs: r2:r2_225
 	word32 r2_232 = r2_212 + r2_225
-	word32 r2_242 = strchr(r2_232, 61<i32>)
+	word32 r2_242 = strchr(r2_232, '=')
 	word32 r25_239 = <invalid>
 	branch r2_242 != 0<32> l00405920
 l00405920:
@@ -3259,7 +3259,7 @@ l00405AF8:
 l00405ADC:
 	branch r2_366 == 2<i32> l00405BBC
 l00405BBC:
-	Mem448[Mem367[0x10000A40<32>:word32] + 4<i32> + ((dwLoc014C_568 * 0x14<32> - dwLoc014C_568 << 3<8>) + 144<i32>):word32] = CONVERT(strchr(0x40A5C0<32>, CONVERT(Mem367[r2_266:int8], int8, word32)) >u 0<32>, bool, word32)
+	Mem448[Mem367[0x10000A40<32>:word32] + 4<i32> + ((dwLoc014C_568 * 0x14<32> - dwLoc014C_568 << 3<8>) + 144<i32>):word32] = CONVERT(strchr(0x40A5C0<32>, Mem367[r2_266:int8]) >u 0<32>, bool, word32)
 l00405AF0:
 l00405C2C:
 	dwLoc014C_568 = dwLoc014C_568 + 1<i32>
@@ -3604,7 +3604,7 @@ l0040697C:
 	call gmtime (retsize: 0;)
 		uses: r2:fp + -40<i32>,r25:r25_92,r3:r3_98,r4:fp + -40<i32>,r5:r5_30,r6:r6_95,r7:r7_33,Stack +0018:0x10008860<32>,Stack +0044:dwLoc24,Stack +0068:r4
 		defs: r2:r2_43
-	r2_57 = CONVERT(strftime(fp + -72<i32>, 28<i32>, 0x40A74C<32>, r2_43), size_t, uint32)
+	r2_57 = CONVERT(strftime(fp + -72<i32>, SLICE(28<i32>, size_t, 0), 0x40A74C<32>, r2_43), size_t, uint32)
 	fprintf(r4, 0x40A760<32>, 0<32>)
 	fflush(r4)
 	Mem106[Mem75[0x10000878<32>:word32] + 2084<i32>:word32] = Mem75[Mem75[0x10000878<32>:word32] + 2084<i32>:word32] + 1<i32>
@@ -3644,7 +3644,7 @@ server_new_entry:
 l00406BF0:
 	word32 r2_114
 	uint16 wArg06_110 = SLICE(r5, uint16, 0)
-	word32 r2_29 = malloc(36<i32>)
+	word32 r2_29 = malloc(SLICE(36<i32>, size_t, 0))
 	branch r2_29 != 0<32> l00406C48_ds_t
 l00406C48_ds_t:
 l00406C7C:
@@ -3653,7 +3653,7 @@ l00406C7C:
 	Mem42[r2_29 + 0x18<32>:word32] = 0<32>
 	Mem44[r2_29 + 0x1C<32>:word32] = 0<32>
 	Mem47[r2_29 + 4<32>:word32] = r6
-	bzero(r2_29 + 8<i32>, 16<i32>)
+	bzero(r2_29 + 8<i32>, SLICE(16<i32>, size_t, 0))
 	Mem63[r2_29 + 8<32>:word16] = 2<16>
 	word32 r2_65 = CONVERT(wArg06_110, uint16, word32)
 	Mem66[r2_29 + 0xA<32>:word16] = SLICE(r2_65, word16, 0)
@@ -3794,7 +3794,7 @@ word32 slist_new(word32 ra)
 slist_new_entry:
 l00407150:
 	word32 r2_30
-	word32 r2_18 = malloc(12<i32>)
+	word32 r2_18 = malloc(SLICE(12<i32>, size_t, 0))
 	branch r2_18 != 0<32> l00407198_ds_t
 l00407198_ds_t:
 l004071CC:

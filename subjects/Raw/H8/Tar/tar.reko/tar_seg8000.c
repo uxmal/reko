@@ -692,11 +692,11 @@ word16 * fn8866(word16 * er0, word16 r1, word16 er1_16_n, word16 r2, word16 er2_
 					er6_n = SEQ(er6_16_16_n, r6h_n, r6l_n + 0x0C);
 					int16 r5_n = *((word32) sp_n + 8);
 					cu8 r5l_n = (byte) r5_n;
-					Eq_n r0_n = *SEQ(er5_16_n, r5_n);
+					word16 r0_n = *SEQ(er5_16_n, r5_n);
 					*((word32) sp_n + 8) = SEQ((bool) (r5l_n < 0x0C) + SLICE(r5_n, byte, 8), r5l_n + 0x0C);
 					word16 r1_n = *er6_n;
 					*((word32) sp_n + 0x0A) = r3_n;
-					Eq_n r4_n = (word32) *((word32) sp_n + 6) + fn9E08(r0_n, SLICE(r1_n, byte, 8), (byte) r1_n);
+					Eq_n r4_n = (word32) *((word32) sp_n + 6) + fn9E08((byte) r0_n, SLICE(r1_n, byte, 8), (byte) r1_n);
 					*((word32) sp_n + 6) = r4_n;
 					cu8 r6l_n = (byte) er6_n;
 					int16 r3_n = *((word32) sp_n + 0x0A);
@@ -2229,10 +2229,10 @@ word32 fn9DF2(word16 er0_16_n, Eq_n r6, ptr16 & r6Out)
 	return er0_n;
 }
 
-// 9E08: Register word16 fn9E08(Register Eq_n r0h, Register bu8 r1h, Register bu8 r1l)
+// 9E08: Register word16 fn9E08(Register byte r0h, Register bu8 r1h, Register bu8 r1l)
 // Called from:
 //      fn8866
-word16 fn9E08(Eq_n r0h, bu8 r1h, bu8 r1l)
+word16 fn9E08(byte r0h, bu8 r1h, bu8 r1l)
 {
 	bu8 r0h_n = SLICE(r0, byte, 8);
 	uint16 r0_n = r0h_n *16 r1l;

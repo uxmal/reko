@@ -20,10 +20,10 @@ void fn0387()
 	hl_n();
 }
 
-// 0390: void fn0390(Register byte b, Register Eq_n c, Register byte e, Stack Eq_n bArg02)
+// 0390: void fn0390(Register byte b, Register Eq_n c, Register byte e, Stack byte bArg02)
 // Called from:
 //      fn0990
-void fn0390(byte b, Eq_n c, byte e, Eq_n bArg02)
+void fn0390(byte b, Eq_n c, byte e, byte bArg02)
 {
 	g_b1656 = e;
 	g_b1655 = b;
@@ -195,14 +195,14 @@ char fn0524(char c)
 	return 0x05;
 }
 
-// 0534: Register word16 fn0534(Register Eq_n c)
+// 0534: Register word16 fn0534(Register char c)
 // Called from:
 //      fn056B
-word16 fn0534(Eq_n c)
+word16 fn0534(char c)
 {
-	Eq_n c = (byte) bc;
-	g_t166B = c;
-	g_ptr14BC + g_w14BE = (union Eq_n *) g_t166B;
+	char c = (byte) bc;
+	g_b166B = c;
+	g_ptr14BC + g_w14BE = (char *) g_b166B;
 	int16 hl_n = g_w14BE;
 	g_w14BE = hl_n + 0x01;
 	word16 bc_n = bc;
@@ -215,7 +215,7 @@ word16 fn0534(Eq_n c)
 	return bc_n;
 }
 
-// 056B: FlagGroup bool fn056B(Register Eq_n bc, Register out Eq_n bcOut)
+// 056B: FlagGroup bool fn056B(Register ptr16 bc, Register out ptr16 bcOut)
 // Called from:
 //      fn05CE
 //      fn05EF
@@ -226,29 +226,29 @@ word16 fn0534(Eq_n c)
 //      fn0814
 //      fn100A
 //      fn1229
-bool fn056B(Eq_n bc, union Eq_n & bcOut)
+bool fn056B(ptr16 bc, ptr16 & bcOut)
 {
-	Eq_n c = (byte) bc;
+	char c = (byte) bc;
 	byte b = SLICE(bc, byte, 8);
-	Eq_n bc_n;
-	g_t166C = c;
+	ptr16 bc_n;
+	g_b166C = c;
 	if (g_b14F3 == 0x01)
-		bc_n = SEQ(b, fn0524(g_t166C));
+		bc_n = SEQ(b, fn0524(g_b166C));
 	else if (g_b14F3 == 0x02)
-		bc_n = SEQ(b, fn0473(g_t166C));
+		bc_n = SEQ(b, fn0473(g_b166C));
 	else
 	{
 		bc_n = bc;
 		if (g_b14F3 == 0x04)
-			bc_n = fn0534(SEQ(b, (byte) g_t166C));
+			bc_n = fn0534(g_b166C);
 	}
-	Eq_n a_n = g_t166C;
+	char a_n = g_b166C;
 	bool C_n = (bool) cond(a_n - 0x0D);
 	if (a_n == 0x0D)
 		g_b14F6 = 0x01;
 	else
 	{
-		Eq_n a_n = g_t166C;
+		char a_n = g_b166C;
 		C_n = (bool) cond(a_n - 0x0A);
 		if (a_n == 0x0A)
 		{
@@ -466,13 +466,13 @@ void fn075C(byte b, Eq_n c, byte d, Eq_n e)
 	fn0387();
 }
 
-// 07B3: void fn07B3(Register Eq_n b)
+// 07B3: void fn07B3(Register cu8 b)
 // Called from:
 //      fn0814
 //      fn100A
-void fn07B3(Eq_n b)
+void fn07B3(cu8 b)
 {
-	Eq_n b = SLICE(bc, byte, 8);
+	cu8 b = SLICE(bc, byte, 8);
 	if (__rcr(g_b14F9, 0x01, C) < 0x00)
 	{
 		word16 bc_n;
@@ -514,9 +514,8 @@ void fn0814(byte b)
 	word16 bc_n;
 	fn056B(SEQ(SLICE(bc_n, byte, 8), 0x0A), out bc_n);
 	cu8 a_n = g_b14F7;
-	Eq_n bc_n = SEQ(SLICE(bc_n, byte, 8), a_n - 0x03);
 	if (g_b14FD >= a_n - 0x03)
-		fn07B3(bc_n);
+		fn07B3(a_n - 0x03);
 }
 
 // 082F: Register byte fn082F(Register byte f, Register byte b, Register Eq_n c, Register byte e, Stack word16 wArg02, Stack word16 wArg04)
@@ -675,7 +674,7 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 	g_b1693 = b;
 	g_t1692 = c;
 	Eq_n hl_n = g_t168B;
-	fn0390(SLICE((word16) hl_n + 1, byte, 8), (byte) hl_n + 0x01, 0x20, SEQ(b, 11));
+	fn0390(SLICE((word16) hl_n + 1, byte, 8), (byte) hl_n + 0x01, 0x20, 11);
 	g_t1696 = *g_t1692;
 	Eq_n hl_n = g_t1692;
 	g_t1692 = (word16) hl_n + 1;
@@ -781,7 +780,7 @@ Eq_n fn0990(byte f, byte b, Eq_n c, byte d, Eq_n e, union Eq_n & afOut)
 	}
 	sp_n->tFFFFFFFE = SEQ(b_n, 0x03);
 	Eq_n hl_n = g_t168B;
-	fn0390(SLICE((word16) hl_n + 0x0C, byte, 8), (byte) hl_n + 0x0C, 0x00, sp_n->tFFFFFFFE);
+	fn0390(SLICE((word16) hl_n + 0x0C, byte, 8), (byte) hl_n + 0x0C, 0x00, sp_n->b0002);
 	((word16) g_t168B + 32)->u0 = 0x00;
 	g_b1697 = 0x00;
 	while (g_b1697 <= 0x07)
@@ -996,7 +995,7 @@ void fn100A(word16 af)
 	while (true)
 	{
 		byte a_n = 0x00 - (g_t16A8 < 0x01);
-		Eq_n bc_n = SEQ(a_n, a_n);
+		word16 bc_n = SEQ(a_n, a_n);
 		if ((0x00 - (g_t16A8 < ~0x00) & a_n) >> 0x01 >= 0x00)
 			break;
 		if (g_t16A8 == 0x20)
@@ -1081,7 +1080,7 @@ void fn100A(word16 af)
 	g_b14F4 = g_b14F3;
 	g_b14FD = g_b14F7 + 0x01;
 	g_b138A = 0x01;
-	fn07B3(bc_n);
+	fn07B3((byte) bc_n);
 	fn0BE4(f_n);
 	__ei();
 	__hlt();
@@ -1382,14 +1381,8 @@ byte g_b1665 = 0x1A; // 1665
 cu8 g_b1667 = 0x1A; // 1667
 char * g_ptr1668 = &g_str1A1A; // 1668
 char g_b166A = '\x1A'; // 166A
-Eq_n g_t166B = // 166B
-	{
-		0x1A
-	};
-Eq_n g_t166C = // 166C
-	{
-		0x1A
-	};
+char g_b166B = '\x1A'; // 166B
+char g_b166C = '\x1A'; // 166C
 Eq_n g_t166D = // 166D
 	{
 		0x1A

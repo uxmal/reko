@@ -4,11 +4,11 @@
 
 #include "pngpixel.h"
 
-// 0000000000400CD0: void _start(Register (ptr64 Eq_n) rdx, Stack Eq_n qwArg00)
-void _start(void (* rdx)(), Eq_n qwArg00)
+// 0000000000400CD0: void _start(Register (ptr64 Eq_n) rdx, Stack word32 dwArg00)
+void _start(void (* rdx)(), word32 dwArg00)
 {
 	__align((char *) fp + 8);
-	__libc_start_main(&g_t4012F9, qwArg00, (char *) fp + 8, &g_t401780, &g_t4017F0, rdx, fp);
+	__libc_start_main(&g_t4012F9, (int32) qwArg00, (char *) fp + 8, &g_t401780, &g_t4017F0, rdx, fp);
 	__hlt();
 }
 
@@ -60,13 +60,13 @@ void frame_dummy()
 word32 component(Eq_n ecx, word32 edx, uint32 esi, word64 rdi, int32 r8d)
 {
 	Eq_n ecx = (word32) rcx;
-	Eq_n eax_n = (edx + (esi & 0x3F) *s r8d) *s32 ecx;
-	struct Eq_n * v16_n = rdi + ((uint64) (((esi >> 0x06) *s r8d) *s32 ecx) << 0x03) + (uint64) (eax_n >> 0x03);
+	Eq_n eax_n = (edx + (esi & 0x3F) *s r8d) *s ecx;
+	struct Eq_n * v16_n = rdi + ((uint64) (((esi >> 0x06) *s r8d) *s ecx) << 0x03) + (uint64) (eax_n >> 0x03);
 	if (ecx > 0x10)
 	{
 l0000000000400EC1:
-		fprintf(stderr, "pngpixel: invalid bit depth %u\n", (uint64) ecx);
-		exit(0x01);
+		fprintf(stderr, "pngpixel: invalid bit depth %u\n", ecx);
+		exit(1);
 	}
 	else
 	{
@@ -115,7 +115,7 @@ void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 	word64 rcx_n;
 	word64 rax_n;
 	png_get_bit_depth();
-	word32 eax_n = (word32) (uint64) (byte) rax_n;
+	Eq_n eax_n = (word32) (uint64) (byte) rax_n;
 	word64 rdx_n;
 	word64 rcx_n;
 	word64 rax_n;
@@ -127,16 +127,16 @@ void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 		switch (g_a401958[(uint64) eax_n])
 		{
 		case 0x00:
-			printf("GRAY %u\n", (uint64) component((uint64) eax_n, 0x00, ecx, rdx, 0x01));
+			printf("GRAY %u\n", component(eax_n, 0x00, ecx, rdx, 0x01));
 			break;
 		case 0x01:
 		case 0x05:
 			goto l00000000004012C9;
 		case 0x02:
-			printf("RGB %u %u %u\n", (uint64) component((uint64) eax_n, 0x00, ecx, rdx, 0x03), (uint64) component((uint64) eax_n, 0x01, ecx, rdx, 0x03), (uint64) component((uint64) eax_n, 0x02, ecx, rdx, 0x03));
+			printf("RGB %u %u %u\n", component(eax_n, 0x00, ecx, rdx, 0x03), component(eax_n, 0x01, ecx, rdx, 0x03), component(eax_n, 0x02, ecx, rdx, 0x03));
 			break;
 		case 0x03:
-			up32 eax_n = component((uint64) eax_n, 0x00, ecx, rdx, 0x01);
+			uint32 eax_n = component(eax_n, 0x00, ecx, rdx, 0x01);
 			word64 rax_n;
 			png_get_PLTE();
 			if (((word32) rax_n & 0x08) != 0x00 && (false && false))
@@ -145,24 +145,24 @@ void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 				png_get_tRNS();
 				if (((word32) rax_n & 0x10) != 0x00 && (false && false))
 				{
-					word32 esi_n;
+					int32 esi_n;
 					if (eax_n < 0x00)
 						esi_n = (word32) (uint64) null[(uint64) eax_n];
 					else
 						esi_n = 0xFF;
-					printf("INDEXED %u = %d %d %d %d\n", (uint64) eax_n, (uint64) null[(uint64) eax_n].b0000, (uint64) ((Eq_n[]) 0x01)[(uint64) eax_n].b0000, (uint64) (word32) (uint64) ((Eq_n[]) 0x02)[(uint64) eax_n].b0000, (uint64) esi_n);
+					printf("INDEXED %u = %d %d %d %d\n", eax_n, (int32) (uint64) null[(uint64) eax_n].b0000, (int32) (uint64) ((Eq_n[]) 0x01)[(uint64) eax_n].b0000, (word32) (uint64) ((Eq_n[]) 0x02)[(uint64) eax_n].b0000, esi_n);
 				}
 				else
-					printf("INDEXED %u = %d %d %d\n", (uint64) eax_n, (uint64) null[(uint64) eax_n].b0000, (uint64) ((Eq_n[]) 0x01)[(uint64) eax_n].b0000, (uint64) (word32) (uint64) ((Eq_n[]) 0x02)[(uint64) eax_n]);
+					printf("INDEXED %u = %d %d %d\n", eax_n, (int32) (uint64) null[(uint64) eax_n].b0000, (int32) (uint64) ((Eq_n[]) 0x01)[(uint64) eax_n].b0000, (word32) (uint64) ((Eq_n[]) 0x02)[(uint64) eax_n]);
 			}
 			else
-				printf("INDEXED %u = invalid index\n", (uint64) eax_n);
+				printf("INDEXED %u = invalid index\n", eax_n);
 			break;
 		case 0x04:
-			printf("GRAY+ALPHA %u %u\n", (uint64) component((uint64) eax_n, 0x00, ecx, rdx, 0x02), (uint64) component((uint64) eax_n, 0x01, ecx, rdx, 0x02));
+			printf("GRAY+ALPHA %u %u\n", component(eax_n, 0x00, ecx, rdx, 0x02), component(eax_n, 0x01, ecx, rdx, 0x02));
 			break;
 		case 0x06:
-			printf("RGBA %u %u %u %u\n", (uint64) component((uint64) eax_n, 0x00, ecx, rdx, 0x04), (uint64) component((uint64) eax_n, 0x01, ecx, rdx, 0x04), (uint64) component((uint64) eax_n, 0x02, ecx, rdx, 0x04), (uint64) component((uint64) eax_n, 0x03, ecx, rdx, 0x04));
+			printf("RGBA %u %u %u %u\n", component(eax_n, 0x00, ecx, rdx, 0x04), component(eax_n, 0x01, ecx, rdx, 0x04), component(eax_n, 0x02, ecx, rdx, 0x04), component(eax_n, 0x03, ecx, rdx, 0x04));
 			break;
 		}
 	}

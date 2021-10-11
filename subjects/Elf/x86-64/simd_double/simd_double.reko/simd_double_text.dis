@@ -1,7 +1,7 @@
-void _start(word64 rdx, word64 qwArg00)
+void _start(word64 rdx, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rdx:[0..63] Stack +0000:[0..63]
+// MayUse:  rdx:[0..63] Stack +0000:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -10,7 +10,7 @@ _start_exit:
 _start_entry:
 l0000000000000620:
 	__align(fp + 8<i64>)
-	__libc_start_main(0x0000000000000898<p64>, qwArg00, fp + 8<i64>, 0x0000000000000A70<p64>, 0x0000000000000AE0<p64>, rdx, fp)
+	__libc_start_main(0x0000000000000898<p64>, SLICE(qwArg00, int32, 0), fp + 8<i64>, 0x0000000000000A70<p64>, 0x0000000000000AE0<p64>, rdx, fp)
 	__hlt()
 
 
@@ -231,7 +231,7 @@ l00000000000009D6:
 l0000000000000A2D:
 	branch qwLoc28_226 <u 0x400<64> l00000000000009F8
 l00000000000009F8:
-	printf(0x0000000000000AF8<p64>, CONVERT(Mem155[rax_42 + qwLoc28_226 * 8<64>:word64], word64, uint128))
+	printf(0x0000000000000AF8<p64>, SLICE(CONVERT(Mem155[rax_42 + qwLoc28_226 * 8<64>:word64], word64, uint128), real64, 0))
 	qwLoc28_226 = qwLoc28_226 + 1<64>
 l0000000000000A37:
 	_mm_free(rax_16)

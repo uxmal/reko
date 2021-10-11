@@ -1,7 +1,7 @@
-void _start(word64 rdx, word64 qwArg00)
+void _start(word64 rdx, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rdx:[0..63] Stack +0000:[0..63]
+// MayUse:  rdx:[0..63] Stack +0000:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -10,7 +10,7 @@ _start_exit:
 _start_entry:
 l0000000000400CD0:
 	__align(fp + 8<i64>)
-	__libc_start_main(0x4012F9<64>, qwArg00, fp + 8<i64>, 0x401780<64>, 0x4017F0<64>, rdx, fp)
+	__libc_start_main(0x4012F9<64>, SLICE(qwArg00, int32, 0), fp + 8<i64>, 0x401780<64>, 0x4017F0<64>, rdx, fp)
 	__hlt()
 
 
@@ -134,8 +134,8 @@ l0000000000400EE7:
 	return SLICE(rax_107, word32, 0)
 component_exit:
 l0000000000400EC1:
-	fprintf(Mem70[0x0000000000602100<p64>:word64], 0x401808<u64>, CONVERT(ecx, word32, uint64))
-	exit(1<u64>)
+	fprintf(Mem70[0x0000000000602100<p64>:word64], 0x401808<u64>, ecx)
+	exit(1<i32>)
 
 
 void print_pixel(word32 ecx, word64 rdx, word64 rsi, word64 rdi, selector fs)
@@ -168,11 +168,11 @@ l0000000000400EE9:
 l0000000000400F4C:
 	switch (Mem50[CONVERT(eax_67, word32, uint64) * 8<64> + 0x401958<32>:word32]) { l0000000000400F58 l00000000004012C9 l0000000000401155 l0000000000400F8D l00000000004011D2 l00000000004012C9 l000000000040122A }
 l000000000040122A:
-	printf(0x401926<u64>, CONVERT(component(CONVERT(eax_49, word32, uint64), 0<32>, ecx, rdx, 4<32>), word32, uint64), CONVERT(component(CONVERT(eax_49, word32, uint64), 1<32>, ecx, rdx, 4<32>), word32, uint64), CONVERT(component(CONVERT(eax_49, word32, uint64), 2<32>, ecx, rdx, 4<32>), word32, uint64), CONVERT(component(CONVERT(eax_49, word32, uint64), 3<32>, ecx, rdx, 4<32>), word32, uint64))
+	printf(0x401926<u64>, component(eax_49, 0<32>, ecx, rdx, 4<32>), component(eax_49, 1<32>, ecx, rdx, 4<32>), component(eax_49, 2<32>, ecx, rdx, 4<32>), component(eax_49, 3<32>, ecx, rdx, 4<32>))
 l00000000004011D2:
-	printf(0x401914<u64>, CONVERT(component(CONVERT(eax_49, word32, uint64), 0<32>, ecx, rdx, 2<32>), word32, uint64), CONVERT(component(CONVERT(eax_49, word32, uint64), 1<32>, ecx, rdx, 2<32>), word32, uint64))
+	printf(0x401914<u64>, component(eax_49, 0<32>, ecx, rdx, 2<32>), component(eax_49, 1<32>, ecx, rdx, 2<32>))
 l0000000000400F8D:
-	word32 eax_275 = component(CONVERT(eax_49, word32, uint64), 0<32>, ecx, rdx, 1<32>)
+	word32 eax_275 = component(eax_49, 0<32>, ecx, rdx, 1<32>)
 	word64 rax_288
 	call png_get_PLTE (retsize: 8;)
 		uses: rax:rdi,rcx:fp - 0x50<64>,rdi:rdi,rdx:fp - 0x40<64>,rsi:rsi,Stack +0030:0<32>,Stack +003C:eax_275,Stack +0040:0<64>
@@ -183,7 +183,7 @@ l0000000000400FE1:
 l0000000000400FEC:
 	branch true l0000000000401137
 l0000000000401137:
-	printf(0x4018EA<u64>, CONVERT(eax_275, word32, uint64))
+	printf(0x4018EA<u64>, eax_275)
 l0000000000400FF9:
 	word64 rax_333
 	call png_get_tRNS (retsize: 8;)
@@ -195,7 +195,7 @@ l0000000000401031:
 l000000000040103C:
 	branch true l00000000004010D1
 l00000000004010D1:
-	printf(0x4018D3<u64>, CONVERT(eax_275, word32, uint64), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, uint64), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<64>:byte], byte, uint64), CONVERT(SLICE(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<64>:byte], byte, uint64), word32, 0), word32, uint64))
+	printf(0x4018D3<u64>, eax_275, SLICE(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, uint64), int32, 0), SLICE(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<64>:byte], byte, uint64), int32, 0), SLICE(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<64>:byte], byte, uint64), word32, 0))
 l0000000000401049:
 	word32 esi_463
 	branch eax_275 >=u 0<32> l0000000000401063
@@ -204,15 +204,15 @@ l0000000000401063:
 l0000000000401051:
 	esi_463 = SLICE(CONVERT(Mem321[CONVERT(eax_275, word32, uint64):byte], byte, uint64), word32, 0) (alias)
 l0000000000401068:
-	printf(0x4018B9<u64>, CONVERT(eax_275, word32, uint64), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, uint64), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<64>:byte], byte, uint64), CONVERT(SLICE(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<64>:byte], byte, uint64), word32, 0), word32, uint64), CONVERT(esi_463, word32, uint64))
+	printf(0x4018B9<u64>, eax_275, SLICE(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, uint64), int32, 0), SLICE(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<64>:byte], byte, uint64), int32, 0), SLICE(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<64>:byte], byte, uint64), word32, 0), esi_463)
 l0000000000401150:
 l0000000000401155:
-	printf(0x401906<u64>, CONVERT(component(CONVERT(eax_49, word32, uint64), 0<32>, ecx, rdx, 3<32>), word32, uint64), CONVERT(component(CONVERT(eax_49, word32, uint64), 1<32>, ecx, rdx, 3<32>), word32, uint64), CONVERT(component(CONVERT(eax_49, word32, uint64), 2<32>, ecx, rdx, 3<32>), word32, uint64))
+	printf(0x401906<u64>, component(eax_49, 0<32>, ecx, rdx, 3<32>), component(eax_49, 1<32>, ecx, rdx, 3<32>), component(eax_49, 2<32>, ecx, rdx, 3<32>))
 l00000000004012C9:
 	call png_error (retsize: 8;)
 		uses: ecx:ecx_579,rax:rdi,rdi:rdi,rdx:rdx_58,rsi:0x401938<u64>
 l0000000000400F58:
-	printf(0x4018B0<u64>, CONVERT(component(CONVERT(eax_49, word32, uint64), 0<32>, ecx, rdx, 1<32>), word32, uint64))
+	printf(0x4018B0<u64>, component(eax_49, 0<32>, ecx, rdx, 1<32>))
 l00000000004012DA:
 	branch (rax_27 ^ Mem624[fs:0x28<32>:word64]) == 0<64> l00000000004012EE
 l00000000004012EE:

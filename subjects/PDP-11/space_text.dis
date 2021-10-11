@@ -16,7 +16,7 @@ l04F8:
 	return
 fn0468_exit:
 l046C:
-	branch TTYOUT(r0_7) l046C
+	branch TTYOUT(SLICE(r0_7, char, 0)) l046C
 l0470:
 
 
@@ -47,7 +47,7 @@ l04B2:
 	fn04FA(v21_59)
 l04A8:
 l04AC:
-	branch TTYOUT(63<i16>) l04AC
+	branch TTYOUT('?') l04AC
 l04B0:
 l04B6:
 	branch r1 == 0x3D<8> l04C2
@@ -62,7 +62,7 @@ l04D4:
 	r1_104 = __rcl(r1_104, 1<i16>, C_100)
 	word16 r0_111 = __rcl(r0_101, 1<i16>, (r1_104 & 0x8000<16>) != 0<16>)
 l04D8:
-	branch TTYOUT(r0_111) l04D8
+	branch TTYOUT(SLICE(r0_111, char, 0)) l04D8
 l04DC:
 	r0_101 = 134<i16>
 l04E0:
@@ -71,7 +71,7 @@ l04E0:
 	branch r1_104 == 0<16> l04EA
 l04EA:
 l04EE:
-	branch TTYOUT(41<i16>) l04EE
+	branch TTYOUT(')') l04EE
 l04F2:
 	PRINT(0x5E1<16>)
 l04F8_in_fn0472:
@@ -112,7 +112,7 @@ l050E:
 l0512:
 	word16 r0_31 = CONVERT(bLoc02_41, byte, int16)
 l0514:
-	branch TTYOUT(r0_31) l0514
+	branch TTYOUT(SLICE(r0_31, char, 0)) l0514
 l0518:
 	return
 fn04FA_exit:
@@ -160,7 +160,7 @@ l0528:
 l053C:
 	word16 r0_30 = CONVERT(Mem24[r0_17 + 0x5AF<16>:byte], byte, int16)
 l0540:
-	branch TTYOUT(r0_30) l0540
+	branch TTYOUT(SLICE(r0_30, char, 0)) l0540
 l0544:
 	r3_25 = r3_25 - 1<16>
 	branch r3_25 == 0<16> l04F8_in_fn0528
@@ -1334,7 +1334,7 @@ l1368_thunk_fn1370:
 	r4Out = r4_16
 	return r0_14
 l136A:
-	branch TTYOUT(r0) l136A
+	branch TTYOUT(SLICE(r0, char, 0)) l136A
 l136E_in_fn1366:
 	r2Out = r2
 	r3Out = r3

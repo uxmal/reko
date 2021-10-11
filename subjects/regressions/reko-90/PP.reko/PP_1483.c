@@ -19,13 +19,13 @@ void fn1483-0ADC(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx, ui1
 	*Top_n = (real64) es_di_n->rE086 - *Top_n;
 }
 
-// 1483:0C11: Register Eq_n fn1483-0C11(Sequence (ptr32 byte) ds_si, Sequence (ptr32 word16) es_di, Register Eq_n al, Register word16 cx, Register Eq_n bx, Register Eq_n bp)
+// 1483:0C11: Register Eq_n fn1483-0C11(Sequence (ptr32 byte) ds_si, Sequence (ptr32 word16) es_di, Register cu8 al, Register word16 cx, Register Eq_n bx, Register Eq_n bp)
 // Called from:
 //      fn1483-0C55
-Eq_n fn1483-0C11(byte * ds_si, word16 * es_di, Eq_n al, word16 cx, Eq_n bx, Eq_n bp)
+Eq_n fn1483-0C11(byte * ds_si, word16 * es_di, cu8 al, word16 cx, Eq_n bx, Eq_n bp)
 {
-	union Eq_n Eq_n::* si = (word16) ds_si;
-	Eq_n al = (byte) ax;
+	cu8 Eq_n::* si = (word16) ds_si;
+	cu8 al = (byte) ax;
 	struct Eq_n * ds = SLICE(ds_si, selector, 16);
 	Eq_n di = (word16) es_di;
 	Eq_n es = SLICE(es_di, selector, 16);
@@ -86,7 +86,7 @@ word32 fn1483-0C55()
 {
 	if (!Z)
 		return;
-	Eq_n ax_n = fn1483-0C11(si, di, ax_n, cx, bx, bp);
+	word16 ax_n = fn1483-0C11(si, di, (byte) ax_n, cx, bx, bp);
 	return;
 }
 

@@ -108,7 +108,7 @@ fn1483_0C55_entry:
 l1483_0C55:
 	branch Z l1483_0C55_thunk_fn1483_0C11
 l1483_0C55_thunk_fn1483_0C11:
-	word16 ax_6 = fn1483_0C11(SEQ(ds, si), SEQ(es, di), ax_6, cx, bx, bp)
+	word16 ax_6 = fn1483_0C11(SEQ(ds, si), SEQ(es, di), SLICE(ax_6, byte, 0), cx, bx, bp)
 	return
 l1483_0C57:
 	return

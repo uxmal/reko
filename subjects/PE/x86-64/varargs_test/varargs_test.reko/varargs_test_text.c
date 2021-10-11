@@ -72,7 +72,7 @@ word64 fn00000001400011B0(ui64 rcx, word64 qwArg00)
 void fn00000001400011D4(word64 rbx, word64 r8, word64 qwArg08)
 {
 	set_app_type();
-	_set_fmode((uint64) fn0000000140001920());
+	_set_fmode(fn0000000140001920());
 	*__p__commode() = fn0000000140001ABC();
 	word64 r8_n;
 	if (fn000000014000164C(0x01, r8, out r8_n) != 0x00)
@@ -215,7 +215,7 @@ word32 fn00000001400012BC(<anonymous> ** rax)
 	fn0000000140001AC0();
 	byte al_n = (byte) rax_n;
 	word56 rax_56_8_n = SLICE(rax_n, word56, 8);
-	word32 ebx_n = (word32) rax_n;
+	int32 ebx_n = (word32) rax_n;
 	if (al_n != 0x00)
 	{
 		if (sil_n == 0x00)
@@ -229,7 +229,7 @@ word32 fn00000001400012BC(<anonymous> ** rax)
 		return (word32) rax_n;
 	}
 	else
-		exit((uint64) ebx_n);
+		exit(ebx_n);
 }
 
 // 0000000140001434: Register Eq_n Win32CrtStartup()
@@ -592,12 +592,12 @@ uint64 fn0000000140001974(word32 ecx, word64 qwArg00, word64 qwArg10, ptr64 & rc
 	if (IsProcessorFeaturePresent(0x17) == 0x00)
 	{
 		g_dw40003610 = 0x00;
-		memset(fp - 0x04D8, 0x00, 0x04D0);
+		memset(fp - 0x04D8, 0, 0x04D0);
 		RtlCaptureContext(fp - 0x04D8);
 		Eq_n rax_n = RtlLookupFunctionEntry(qwLoc03E0, fp + 0x10, null);
 		if (rax_n != null)
 			KERNEL32.dll!RtlVirtualUnwind();
-		memset(fp - 1400, 0x00, 0x98);
+		memset(fp - 1400, 0, 0x98);
 		int8 bl_n = (int8) (IsDebuggerPresent() == 0x01);
 		word32 rax_32_32_n = SLICE(SetUnhandledExceptionFilter(null), word32, 32);
 		Eq_n eax_n = UnhandledExceptionFilter(fp - 0x0588);
@@ -702,10 +702,10 @@ void fn0000000140001BF4()
 	g_ptr40002190();
 }
 
-// 0000000140001BFC: void fn0000000140001BFC(Register word32 edx, Register Eq_n ebx)
+// 0000000140001BFC: void fn0000000140001BFC(Register word32 edx, Register word32 ebx)
 // Called from:
 //      fn0000000140001600
-void fn0000000140001BFC(word32 edx, Eq_n ebx)
+void fn0000000140001BFC(word32 edx, word32 ebx)
 {
 	word32 ebx_n = (word32) rbx;
 	g_dw4000301C = 0x02;

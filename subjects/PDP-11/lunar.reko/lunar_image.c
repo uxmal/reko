@@ -453,10 +453,10 @@ l0888:
 				else
 				{
 					g_w34CA = 0x237E;
-					Eq_n wLoc02_n = 0x03;
+					word16 wLoc02_n = 0x03;
 					if (g_w0054 >= 0x00)
-						wLoc02_n.u1 = 0x04;
-					fn0C90(r0_n, wLoc02_n);
+						wLoc02_n = 0x04;
+					fn0C90(r0_n, (byte) wLoc02_n);
 					g_w34B6 -= 0x10;
 					fn0F04(r0_n);
 				}
@@ -874,12 +874,12 @@ int16 fn0E06(int16 r0)
 {
 	int16 r1_n = g_w0072;
 	struct Eq_n * r1_n = (r1_n << 1) + 0x28F0;
-	Eq_n wLoc02_n = 0x03;
+	word16 wLoc02_n = 0x03;
 	word16 * r1_n = &r1_n->w0002;
 	word16 * r3_n = &r1_n->w0002;
 	if (r1_n->w0000 - r1_n->w0002 >= 0x00)
-		wLoc02_n.u1 = 0x04;
-	fn0C90(r1_n, wLoc02_n);
+		wLoc02_n = 0x04;
+	fn0C90(r1_n, (byte) wLoc02_n);
 	do
 	{
 		*r1_n -= r0;

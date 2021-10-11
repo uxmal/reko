@@ -9,11 +9,9 @@ word32 aux_info_suffix = 0x00016F00; // 00016F04
 word32 save_suffix = 93960; // 00016F10
 Eq_n g_t16F14 = // 00016F14
 	{
-		&g_str16F30
+		0x00
 	};
-char g_str16F30[] = "struct _iobuf"; // 00016F30
 word32 hash_mask = 0x01FF; // 00016F40
-char g_str17040[] = "/opt/rtems/lib/gcc-lib/sparc-rtems/2.95.2/../../../../include/g++-3"; // 00017040
 word32 other_var_style = 94344; // 00017090
 char g_str17218[] = ""; // 00017218
 char g_str17268[] = "%s: "; // 00017268
@@ -21,12 +19,11 @@ char g_str17270[] = ": %s\n"; // 00017270
 int8 g_b17468 = 46; // 00017468
 Eq_n g_t1753C = // 0001753C
 	{
-		&g_str17598
+		0x00
 	};
 Eq_n g_a17540[] = // 00017540
 	{
 	};
-char g_str17598[] = "if"; // 00017598
 int8 g_b17838 = 99; // 00017838
 char g_str17880[] = "%s: %s\n"; // 00017880
 char g_str17888[] = "PWD"; // 00017888
@@ -48,7 +45,7 @@ byte g_b1791E = 88; // 0001791E
 byte g_b1791F = 88; // 0001791F
 Eq_n g_t17920 = // 00017920
 	{
-		null
+		0x00
 	};
 char g_str17928[] = "POSIXLY_CORRECT"; // 00017928
 char g_str17940[] = "%s: option `%s' is ambiguous\n"; // 00017940

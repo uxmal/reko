@@ -83,8 +83,8 @@ void frame_dummy()
 // 000007F0: void main()
 void main()
 {
-	memset(fp + -20, 0x00, 5);
-	struct Eq_n * r2_n = calloc(1, 5);
+	memset(fp + -20, 0x00, (size_t) 5);
+	struct Eq_n * r2_n = calloc((size_t) 1, (size_t) 5);
 	r2_n->t0000 = dwLoc14;
 	r2_n->b0004 = bLoc10;
 	r2_n->t0000.u0 = 0x0C;

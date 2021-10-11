@@ -1,7 +1,7 @@
-void _start(word64 rdx, word64 qwArg00)
+void _start(word64 rdx, word32 dwArg00)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rdx:[0..63] Stack +0000:[0..63]
+// MayUse:  rdx:[0..63] Stack +0000:[0..31]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -10,7 +10,7 @@ _start_exit:
 _start_entry:
 l0000000000400440:
 	__align(fp + 8<i64>)
-	__libc_start_main(0x40053D<64>, qwArg00, fp + 8<i64>, 0x400550<64>, 0x4005C0<64>, rdx, fp)
+	__libc_start_main(0x40053D<64>, SLICE(qwArg00, int32, 0), fp + 8<i64>, 0x400550<64>, 0x4005C0<64>, rdx, fp)
 	__hlt()
 
 
@@ -114,7 +114,7 @@ word32 f()
 // Preserved: rbp rsp
 f_entry:
 l000000000040052D:
-	return putchar(0x78<u64>)
+	return putchar(120<i32>)
 f_exit:
 
 

@@ -146,8 +146,8 @@ void main()
 // Preserved: r30 ra sp
 main_entry:
 l000007F0:
-	memset(fp + -20<i32>, 0<32>, 5<i32>)
-	word32 r2_38 = calloc(1<i32>, 5<i32>)
+	memset(fp + -20<i32>, 0<32>, SLICE(5<i32>, size_t, 0))
+	word32 r2_38 = calloc(SLICE(1<i32>, size_t, 0), SLICE(5<i32>, size_t, 0))
 	Mem45[r2_38:word32] = dwLoc14
 	Mem48[r2_38 + 4<32>:byte] = bLoc10
 	Mem51[r2_38:byte] = 0xC<8>

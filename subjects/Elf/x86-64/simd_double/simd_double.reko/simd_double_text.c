@@ -4,11 +4,11 @@
 
 #include "simd_double.h"
 
-// 0000000000000620: void _start(Register (ptr64 Eq_n) rdx, Stack Eq_n qwArg00)
-void _start(void (* rdx)(), Eq_n qwArg00)
+// 0000000000000620: void _start(Register (ptr64 Eq_n) rdx, Stack word32 dwArg00)
+void _start(void (* rdx)(), word32 dwArg00)
 {
 	__align((char *) fp + 8);
-	__libc_start_main(&g_t0898, qwArg00, (char *) fp + 8, &g_t0A70, &g_t0AE0, rdx, fp);
+	__libc_start_main(&g_t0898, (int32) qwArg00, (char *) fp + 8, &g_t0A70, &g_t0AE0, rdx, fp);
 	__hlt();
 }
 
@@ -140,7 +140,7 @@ void main(Eq_n xmm0)
 	vec_add(0x0400);
 	uint64 qwLoc28_n;
 	for (qwLoc28_n = 0x00; qwLoc28_n < 0x0400; ++qwLoc28_n)
-		printf("%g\n", (double) rax_n[qwLoc28_n]);
+		printf("%g\n", (real64) (uint128) rax_n[qwLoc28_n]);
 	_mm_free(rax_n);
 	_mm_free(rax_n);
 	_mm_free(rax_n);

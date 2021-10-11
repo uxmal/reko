@@ -658,7 +658,7 @@ void main(ui32 * r4, Eq_n r5[], word32 r16, word32 ra)
 		{
 			slist_add(r2_n, server_new((char *) &(g_ptr10000A40->a0004 + 1)->ptr0000 + 1, g_ptr10000A40->dw012C, g_ptr10000A40->dw0554, 0x00, ra));
 			slist_add(r2_n, server_new((char *) &(g_ptr10000A40->a0004 + 1)->ptr0000 + 1, g_ptr10000A40->dw01C4, g_ptr10000A40->dw0554, 1, ra));
-			bzero((char *) fp - 328, 16);
+			bzero((char *) fp - 328, (size_t) 16);
 			word32 r2_n = (word32) g_ptr10000A40->w02F6;
 			Eq_n r5_n = <invalid>;
 			word32 r25_n;
@@ -885,7 +885,7 @@ l00401AA4:
 //      main
 void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, word32 ra)
 {
-	Eq_n r2_n = malloc(6100);
+	Eq_n r2_n = malloc((size_t) 6100);
 	if (r2_n == 0x00)
 	{
 		word32 r5_n;
@@ -896,7 +896,7 @@ void client_new(struct Eq_n * r4, struct Eq_n * r5, int32 r6, int32 r7, word32 r
 	}
 	else
 	{
-		bzero((word32) r2_n + 6040, 16);
+		bzero((word32) r2_n + 6040, (size_t) 16);
 		*((word32) r2_n + 6040) = 0x02;
 		*((word32) r2_n + 6042) = r4->w0002;
 		*((word32) r2_n + 6044) = r4->dw0004;
@@ -970,11 +970,11 @@ word32 client_prepare_connect(Eq_n r4, word32 ra, ptr32 & r6Out, ptr32 & r7Out)
 	getsockopt();
 	inet_ntoa();
 	inet_ntoa();
-	Eq_n r2_n = snprintf(fp + -0x0118, 0x0100, "CONNECT %s:%d HTTP/1.1\r\nHost: %s:%d\r\n\r\n", 0x00);
+	Eq_n r2_n = snprintf(fp + -0x0118, (size_t) 0x0100, "CONNECT %s:%d HTTP/1.1\r\nHost: %s:%d\r\n\r\n", 0x00);
 	Eq_n r25_n = (char *) <invalid>;
 	Eq_n dwLoc18_n = r2_n;
 	if ((word32) (r2_n < 0x0100) == 0x00)
-		dwLoc18_n = 0x0100;
+		dwLoc18_n.u0 = 0x0100;
 	ptr32 r7_n;
 	word32 r5_n;
 	ptr32 r6_n;
@@ -987,8 +987,8 @@ word32 client_prepare_connect(Eq_n r4, word32 ra, ptr32 & r6Out, ptr32 & r7Out)
 // 004021A0: void client_copy_request(Register (ptr32 Eq_n) r4)
 void client_copy_request(struct Eq_n * r4)
 {
-	memcpy(&r4->t07D8 + 1, (char *) r4 + 8, r4->t07D8);
-	r4->ptr0FB0 = &r4->t07D8 + 1;
+	memcpy((char *) &r4->t07D8 + 4, (char *) r4 + 8, r4->t07D8);
+	r4->ptr0FB0 = (char *) &r4->t07D8 + 4;
 	r4->t0FAC = r4->t07D8;
 }
 
@@ -1161,7 +1161,7 @@ void * add_to_request(Eq_n r4, void * r5, void * r6, Eq_n r7, word32 ra, union E
 		Mem51[r4 + 0x0FAC:word32] = Mem21[r4 + 0x0FAC:word32] + r7;
 		if ((word32) (*((word32) r4 + 0x0FAC) < 2000) != 0x00)
 		{
-			memcpy(r5, r6, r7);
+			memcpy(r5, r6, (size_t) r7);
 			r7_n.u0 = (char *) <invalid>;
 			r6_n.u0 = (char *) <invalid>;
 			r5_n.u0 = (char *) <invalid>;
@@ -1264,7 +1264,7 @@ Eq_n client_send_request(Eq_n r4, word32 ra, union Eq_n & r25Out)
 void client_read_reply(struct Eq_n * r4)
 {
 	r4->t17D0 = time(null);
-	r4->dw178C = (uint32) read(r4->dw0004, &r4->dw0004 + 1005, 1999);
+	r4->dw178C = (uint32) read(r4->dw0004, &r4->dw0004 + 1005, (size_t) 1999);
 	r4->ptr1788 = &r4->dw0004 + 1005;
 }
 
@@ -1457,7 +1457,7 @@ Eq_n open_destination(struct sockaddr * r4, word32 ra, union Eq_n & r5Out, union
 struct Eq_n * clist_new(word32 ra, union Eq_n & r4Out, union Eq_n & r5Out)
 {
 	struct Eq_n * r2_n;
-	struct Eq_n * r2_n = malloc(0x0C);
+	struct Eq_n * r2_n = malloc((size_t) 0x0C);
 	Eq_n r5_n = (char *) <invalid>;
 	Eq_n r4_n = (char *) <invalid>;
 	if (r2_n == null)
@@ -1579,7 +1579,7 @@ void clist_destroy(Eq_n r4, word32 ra)
 Eq_n request_new(ptr32 r4, word32 ra)
 {
 	Eq_n r2_n;
-	Eq_n r2_n = malloc(0x055C);
+	Eq_n r2_n = malloc((size_t) 0x055C);
 	if (r2_n == 0x00)
 	{
 		word32 r5_n;
@@ -1626,10 +1626,10 @@ int32 request_parse_line(Eq_n r4, ptr32 r5, word32 ra)
 	return r2_n;
 }
 
-// 00404458: void request_save_line(Register Eq_n r4, Register (ptr32 void) r5, Register Eq_n r6, Register word32 ra)
+// 00404458: void request_save_line(Register Eq_n r4, Register (ptr32 void) r5, Register word32 r6, Register word32 ra)
 // Called from:
 //      client_parse_request
-void request_save_line(Eq_n r4, void * r5, Eq_n r6, word32 ra)
+void request_save_line(Eq_n r4, void * r5, word32 r6, word32 ra)
 {
 	int8 bArg0B_n = (byte) r6;
 	if (r4 == 0x00)
@@ -1651,7 +1651,7 @@ void request_save_line(Eq_n r4, void * r5, Eq_n r6, word32 ra)
 	else
 	{
 		*((word32) r4 + 0x0558) = (word32) *((word32) r4 + 0x0558) + 1;
-		*((word32) ((word32) r4 + 4) + (*((word32) r4 + 0x0558) * 0x04 + 1040)) = malloc(r6);
+		*((word32) ((word32) r4 + 4) + (*((word32) r4 + 0x0558) * 0x04 + 1040)) = malloc((size_t) r6);
 		if (*((word32) ((word32) r4 + 4) + (*((word32) r4 + 0x0558) * 0x04 + 1040)) == 0x00)
 		{
 			word32 r5_n;
@@ -1664,7 +1664,7 @@ void request_save_line(Eq_n r4, void * r5, Eq_n r6, word32 ra)
 		else
 		{
 			(word32) r4 + 4 + ((word32) (*((word32) r4 + 0x0558)) + 0x0510) = (int8 *) bArg0B_n;
-			memcpy(*((word32) ((word32) r4 + 4) + (*((word32) r4 + 0x0558) * 0x04 + 1040)), r5, r6);
+			memcpy(*((word32) ((word32) r4 + 4) + (*((word32) r4 + 0x0558) * 0x04 + 1040)), r5, (size_t) r6);
 		}
 	}
 }
@@ -1683,11 +1683,11 @@ void request_make_url(Eq_n r4, word32 ra)
 		print_log(2, 4236228, out r5_n, out r6_n, out r7_n, out r25_n);
 	}
 	else if (strncasecmp((word32) r4 + 0x0114, "http://", 7) == 0x00)
-		snprintf((word32) r4 + 532, 0x0100, "%s %s %s\r\n", 0x00);
+		snprintf((word32) r4 + 532, (size_t) 0x0100, "%s %s %s\r\n", 0x00);
 	else if ((word32) *((word32) r4 + 0x0114) == 47)
-		snprintf((word32) r4 + 532, 0x0100, "%s http://%s%s %s\r\n", 0x00);
+		snprintf((word32) r4 + 532, (size_t) 0x0100, "%s http://%s%s %s\r\n", 0x00);
 	else
-		snprintf((word32) r4 + 532, 0x0100, "%s http://%s/%s %s\r\n", 0x00);
+		snprintf((word32) r4 + 532, (size_t) 0x0100, "%s http://%s/%s %s\r\n", 0x00);
 }
 
 // 004048DC: Register (ptr32 void) request_add_lines(Register Eq_n r4, Register Eq_n r5, Register (ptr32 void) r6)
@@ -1942,7 +1942,7 @@ void properties_load(Eq_n r4, Eq_n r5, word32 ra)
 		return;
 	if (r5 == 0x00)
 	{
-		Eq_n r2_n = malloc((uint32) strlen(r4) + 11);
+		Eq_n r2_n = malloc((size_t) ((uint32) strlen(r4) + 11));
 		dwArg04_n = r2_n;
 		if (r2_n == 0x00)
 		{
@@ -1956,7 +1956,7 @@ void properties_load(Eq_n r4, Eq_n r5, word32 ra)
 		Eq_n dwLoc48_n;
 		strcpy(r2_n, r4);
 		dwLoc30_n = 1;
-		struct Eq_n * r2_n = strrchr(r2_n, 47);
+		struct Eq_n * r2_n = strrchr(r2_n, '/');
 		if (r2_n != null)
 		{
 			r2_n->b0001 = 0x00;
@@ -1984,10 +1984,10 @@ void properties_load(Eq_n r4, Eq_n r5, word32 ra)
 			char * r2_n = fgets(fp + -328, 0x00FF, r2_n);
 			if (r2_n == null)
 				break;
-			char * r2_n = strchr(r2_n, 0x0A);
+			char * r2_n = strchr(r2_n, '\n');
 			if (r2_n != null)
 				*r2_n = 0x00;
-			char * r2_n = strchr(r2_n, 35);
+			char * r2_n = strchr(r2_n, '#');
 			if (r2_n != null)
 				*r2_n = 0x00;
 			word32 r25_n;
@@ -1999,7 +1999,7 @@ void properties_load(Eq_n r4, Eq_n r5, word32 ra)
 				int32 r2_n;
 				strcspn();
 				char * r2_n = r2_n + r2_n;
-				char * r2_n = strchr(r2_n, 61);
+				char * r2_n = strchr(r2_n, '=');
 				Eq_n r25_n = (char *) <invalid>;
 				if (r2_n == null)
 				{
@@ -2032,7 +2032,7 @@ void properties_load(Eq_n r4, Eq_n r5, word32 ra)
 								if ((word32) (r2_n < 1) == 0x00)
 								{
 									if (r2_n == 2)
-										*((char *) &g_ptr10000A40->a0004->ptr0000 + ((dwLoc014C_n * 0x14 - dwLoc014C_n) * 0x08 + 144)) = (word32) (strchr("1yY", (word32) *r2_n) > null);
+										*((char *) &g_ptr10000A40->a0004->ptr0000 + ((dwLoc014C_n * 0x14 - dwLoc014C_n) * 0x08 + 144)) = (word32) (strchr("1yY", *r2_n) > null);
 								}
 								else
 									strncpy((char *) &(g_ptr10000A40->a0004 + 1)->ptr0000 + 1 + (dwLoc014C_n * 0x14 - dwLoc014C_n << 0x03), r2_n, 20);
@@ -2305,7 +2305,7 @@ void log_string(FILE * r4, word32 r5, word32 r7, word32 ra)
 	Eq_n r5_n = (char *) <invalid>;
 	struct tm * r2_n;
 	gmtime();
-	r2_n = (uint32) strftime(fp + -72, 28, "%Y-%m-%d %H:%M:%S", r2_n);
+	r2_n = (uint32) strftime(fp + -72, (size_t) 28, "%Y-%m-%d %H:%M:%S", r2_n);
 	fprintf(r4, "%s:%s.%03d:%s\n", 0x00);
 	fflush(r4);
 	++g_ptr10000878->dw0824;
@@ -2335,7 +2335,7 @@ struct Eq_n * server_new(word32 r4, word32 r5, word32 r6, int32 r7, word32 ra)
 {
 	struct Eq_n * r2_n;
 	uint16 wArg06_n = (uint16) r5;
-	struct Eq_n * r2_n = malloc(36);
+	struct Eq_n * r2_n = malloc((size_t) 36);
 	if (r2_n == null)
 	{
 		word32 r5_n;
@@ -2352,7 +2352,7 @@ struct Eq_n * server_new(word32 r4, word32 r5, word32 r6, int32 r7, word32 ra)
 		r2_n->dw0018 = 0x00;
 		r2_n->dw001C = 0x00;
 		r2_n->dw0004 = r6;
-		bzero(&r2_n->w0008, 16);
+		bzero(&r2_n->w0008, (size_t) 16);
 		r2_n->w0008 = 0x02;
 		word32 r2_n = (word32) wArg06_n;
 		r2_n->w000A = (word16) r2_n;
@@ -2454,7 +2454,7 @@ void server_destroy(Eq_n r4, word32 ra)
 struct Eq_n * slist_new(word32 ra)
 {
 	struct Eq_n * r2_n;
-	struct Eq_n * r2_n = malloc(0x0C);
+	struct Eq_n * r2_n = malloc((size_t) 0x0C);
 	if (r2_n == null)
 	{
 		word32 r5_n;

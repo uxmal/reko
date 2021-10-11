@@ -4,11 +4,11 @@
 
 #include "test.h"
 
-// 0000000000400440: void _start(Register (ptr64 Eq_n) rdx, Stack Eq_n qwArg00)
-void _start(void (* rdx)(), Eq_n qwArg00)
+// 0000000000400440: void _start(Register (ptr64 Eq_n) rdx, Stack word32 dwArg00)
+void _start(void (* rdx)(), word32 dwArg00)
 {
 	__align((char *) fp + 8);
-	__libc_start_main(&g_t40053D, qwArg00, (char *) fp + 8, &g_t400550, &g_t4005C0, rdx, fp);
+	__libc_start_main(&g_t40053D, (int32) qwArg00, (char *) fp + 8, &g_t400550, &g_t4005C0, rdx, fp);
 	__hlt();
 }
 
@@ -59,7 +59,7 @@ void frame_dummy()
 //      main
 int32 f()
 {
-	return putchar(0x78);
+	return putchar(0x0078);
 }
 
 // 000000000040053D: void main()

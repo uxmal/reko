@@ -193,7 +193,7 @@ l00011660:
 xstrerror_exit:
 
 
-word32 xmalloc(word32 o0, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
+word32 xmalloc(ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
@@ -212,13 +212,13 @@ word32 xmalloc(word32 o0, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
 //      getpwd
 //      choose_temp_base
 //      make_temp_file
-// MayUse:  o0:[0..31]
+// MayUse: 
 // LiveOut: i0 i1 i2 i6
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7
 // Preserved: o1 o2 o3 o4 o5 o7 sp
 xmalloc_entry:
 l00011674:
-	branch malloc(o0) != 0<32> l000116A8
+	branch malloc(SLICE(o0, size_t, 0)) != 0<32> l000116A8
 l000116A8:
 	i1Out = o1
 	i2Out = o2
@@ -233,13 +233,13 @@ l0001168C:
 	exit(0x21<32>)
 
 
-word32 xrealloc(word32 o0, word32 o1, ptr32 & i1Out, ptr32 & i2Out)
+word32 xrealloc(word32 o0, ptr32 & i1Out, ptr32 & i2Out)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // Called from:
 //      unexpand_if_needed
 //      output_bytes
-// MayUse:  o0:[0..31] o1:[0..31]
+// MayUse:  o0:[0..31]
 // LiveOut: i0 i1 i2
 // Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7
 // Preserved: o1 o2 o3 o4 o5 o7 sp
@@ -249,10 +249,10 @@ l000116B0:
 	branch o0 == 0<32> l000116BC_ds_t
 l000116BC_ds_t:
 l000116D0:
-	v23_67 = malloc(o1) != 0<32>
+	v23_67 = malloc(SLICE(o1, size_t, 0)) != 0<32>
 l000116BC_ds_f:
 l000116C0:
-	v23_67 = realloc(o0, o1) != 0<32>
+	v23_67 = realloc(o0, SLICE(o1, size_t, 0)) != 0<32>
 l000116DC:
 	branch v23_67 l00011700
 l00011700:
@@ -303,7 +303,7 @@ l00011728:
 	word32 i1_24
 	word32 i6_29
 	word32 i2_50
-	xmalloc(o1 + 1<32>, out i1_24, out i2_50, out i6_29)
+	xmalloc(out i1_24, out i2_50, out i6_29)
 	strcpy(o1 + 1<32>, o0)
 	l0Out = o0
 	i0Out = o1 + 1<32>
@@ -324,11 +324,11 @@ word32 savestring2(word32 o0, word32 o1, word32 o3)
 // Preserved:
 savestring2_entry:
 l0001174C:
-	word32 o0_20 = o1 + o3
 	word32 i1_25
 	word32 i2_26
 	word32 i6_50
-	xmalloc(o0_20 + 1<32>, out i1_25, out i2_26, out i6_50)
+	xmalloc(out i1_25, out i2_26, out i6_50)
+	word32 o0_20 = o1 + o3
 	strcpy(o0_20 + 1<32>, o0)
 	strcpy(o0_20 + 1<32> + i1_25, i2_26)
 	return o0_20 + 1<32>
@@ -369,7 +369,7 @@ l000117A0:
 	word32 i1_24
 	word32 i6_29
 	word32 i2_51
-	xmalloc(o1 + 1<32>, out i1_24, out i2_51, out i6_29)
+	xmalloc(out i1_24, out i2_51, out i6_29)
 	strncpy(o1 + 1<32>, o0, i1_24)
 	Mem39[o1 + 1<32> + i1_24:byte] = 0<8>
 	l0Out = o0
@@ -443,7 +443,7 @@ l00011844:
 l00011848_ds_t:
 l00011848_ds_f:
 l0001184C:
-	word32 o0_34 = CONVERT(read(o0, i1_60, l0_21), ssize_t, uint32)
+	word32 o0_34 = CONVERT(read(o0, i1_60, SLICE(l0_21, size_t, 0)), ssize_t, uint32)
 	branch o0_34 >= 0<32> l00011860_ds_t
 l00011860_ds_t:
 l00011874:
@@ -487,7 +487,7 @@ l00011894_ds_t:
 l00011894_ds_f:
 l00011898:
 l000118A4:
-	word32 o0_33 = CONVERT(write(o0, i1_105, i2_30), ssize_t, uint32)
+	word32 o0_33 = CONVERT(write(o0, i1_105, SLICE(i2_30, size_t, 0)), ssize_t, uint32)
 	branch o0_33 >= 0<32> l000118B8_ds_t
 l000118B8_ds_t:
 	i2_30 = i2_30 - o0_33
@@ -803,7 +803,7 @@ l00011BC8:
 	word32 i1_23
 	word32 i6_28
 	word32 i2_46
-	Mem34[8<32>:word32] = xmalloc(8<32>, out i1_23, out i2_46, out i6_28)
+	Mem34[8<32>:word32] = xmalloc(out i1_23, out i2_46, out i6_28)
 	Mem35[0xC<32>:word32] = i1_23
 	i6Out = i6_28
 	return 8<32>
@@ -917,7 +917,7 @@ l00011D18_ds_t:
 l00011D1C:
 	word32 i2_174
 	word32 i6_175
-	Mem93[xmalloc(0xC<32>, out i1_100, out i2_174, out i6_175):word32] = 0xC<32>
+	Mem93[xmalloc(out i1_100, out i2_174, out i6_175):word32] = 0xC<32>
 	o0_79 = 0xC<32>
 l00011CC4:
 	o0_79 = i0_120
@@ -964,7 +964,7 @@ l00011D78:
 	Mem29[0x27F54<32>:word32] = 0x400<32>
 	word32 i2_451
 	word32 i6_452
-	i0_125 = xmalloc(0x400<32>, out i1_134, out i2_451, out i6_452)
+	i0_125 = xmalloc(out i1_134, out i2_451, out i6_452)
 	Mem43[0x27F50<32>:word32] = 0x400<32>
 l00011D88:
 	word32 l1_117
@@ -1009,7 +1009,7 @@ l00011E88_ds_t:
 l00011E8C:
 	Mem131[0x27F54<32>:word32] = l0_120 << 1<32>
 	word32 i2_455
-	i0_125 = xrealloc(o1_110, l0_120 << 1<32>, out i1_134, out i2_455)
+	i0_125 = xrealloc(o1_110, out i1_134, out i2_455)
 	Mem146[0x27F50<32>:word32] = o1_110
 	l1_117 = o1_110 + l0_120
 	o0_127 = CONVERT(Mem146[i0_125:byte], byte, ui32)
@@ -1026,10 +1026,9 @@ l00011E00:
 l00011E28_ds_t:
 l00011E28_ds_f:
 l00011E2C:
-	word32 o2_167 = (o2_160 << 1<32>) + o0_156
-	Mem171[0x27F54<32>:word32] = o2_167
+	Mem171[0x27F54<32>:word32] = (o2_160 << 1<32>) + o0_156
 	word32 i2_453
-	i0_125 = xrealloc(o1_158, o2_167, out i1_134, out i2_453)
+	i0_125 = xrealloc(o1_158, out i1_134, out i2_453)
 	Mem186[0x27F50<32>:word32] = o1_158
 	l1_117 = o1_158 + (l1_117 - o1_158)
 l00011E4C:
@@ -1050,7 +1049,7 @@ l00011EE0_ds_f:
 l00011EE4:
 	Mem234[0x27F54<32>:word32] = o1_223 << 1<32>
 	word32 i2_454
-	xrealloc(o2_217, o1_223 << 1<32>, out i1_134, out i2_454)
+	xrealloc(o2_217, out i1_134, out i2_454)
 	Mem250[0x27F50<32>:word32] = o2_217
 	l1_117 = o2_217 + (l1_117 - o2_217)
 l00011EFC:
@@ -1278,7 +1277,7 @@ l0001214C:
 	word32 i1_54
 	word32 i6_423
 	word32 i2_422
-	word32 i0_120 = xmalloc(o0_25, out i1_54, out i2_422, out i6_423)
+	word32 i0_120 = xmalloc(out i1_54, out i2_422, out i6_423)
 	word32 l2_125 = 0<32>
 	word32 o1_65 = CONVERT(Mem0[l0_113:int8], int8, int32)
 l00012198:
@@ -1435,7 +1434,7 @@ l00012330:
 	word32 l4_129
 	word32 i2_216
 	word32 i6_126
-	xmalloc(0xC<32>, out i1_121, out i2_216, out i6_126)
+	xmalloc(out i1_121, out i2_216, out i6_126)
 	branch i1_121 == 0<32> l00012340_ds_t
 l00012340_ds_t:
 	l4_129 = 0xC<32>
@@ -1609,7 +1608,7 @@ l0001251C:
 	word32 i1_1126
 	word32 i1_1123
 	word32 i6_1125
-	word32 i0_81 = check_aux_info(1<32> - ((CONVERT(Mem0[check_aux_info(1<32> - ((CONVERT(Mem0[check_aux_info(1<32> - ((CONVERT(Mem0[xmalloc(0x2C<32>, out i1_1123, out i2_1124, out i6_1125):int8], int8, int32) ^ 0x2F<32>) >u 0<32>), out i1_1126) + 1<i32>:int8], int8, int32) ^ 0x2A<32>) >u 0<32>), out i1_1127) + 2<i32>:int8], int8, int32) ^ 0x20<32>) >u 0<32>), out i1_1128)
+	word32 i0_81 = check_aux_info(1<32> - ((CONVERT(Mem0[check_aux_info(1<32> - ((CONVERT(Mem0[check_aux_info(1<32> - ((CONVERT(Mem0[xmalloc(out i1_1123, out i2_1124, out i6_1125):int8], int8, int32) ^ 0x2F<32>) >u 0<32>), out i1_1126) + 1<i32>:int8], int8, int32) ^ 0x2A<32>) >u 0<32>), out i1_1127) + 2<i32>:int8], int8, int32) ^ 0x20<32>) >u 0<32>), out i1_1128)
 	word32 i0_101 = i0_81 + 3<32>
 	branch CONVERT(Mem0[i0_81 + 3<i32>:int8], int8, int32) == 0x3A<32> l0001257C_ds_t
 l0001257C_ds_t:
@@ -1959,9 +1958,9 @@ l00012D00:
 	word32 i6_196
 	word32 i2_315
 	word32 i1_314
-	word32 i0_190 = xmalloc(o0_188, out i1_314, out i2_315, out i6_196)
+	word32 i0_190 = xmalloc(out i1_314, out i2_315, out i6_196)
 	Mem203[0x27F3C<32>:word32] = o0_188
-	memcpy(o0_188, sp_25 + 0x60<32>, l0_155 + 5<32> << 2<32>)
+	memcpy(o0_188, sp_25 + 0x60<32>, SLICE(l0_155 + 5<32> << 2<32>, size_t, 0))
 	i6Out = i6_196
 	return i0_190
 l00012C3C_ds_f:
@@ -2141,7 +2140,7 @@ l00013250:
 	word32 i1_551
 	word32 i2_552
 	word32 i6_553
-	xmalloc(l0 + 1<32>, out i1_551, out i2_552, out i6_553)
+	xmalloc(out i1_551, out i2_552, out i6_553)
 	Mem231[l0 + 1<32> + l0:byte] = 0<8>
 	word32 l2_554
 	l0 = safe_read(o0_209, l0 + 1<32>, l0, out l1, out l2_554)
@@ -2328,7 +2327,7 @@ l00013670:
 	word32 i6_129
 	notice(l0_84, out i1_127, out i2_128, out i6_129)
 l000136D4:
-	longjmp(0x2B240<32>, 1<32>)
+	longjmp(SLICE(0x2B240<32>, jmp_buf, 0), 1<32>)
 
 
 word32 check_source(word32 o0, word32 o1, ptr32 & i1Out, ptr32 & i2Out, ptr32 & i6Out)
@@ -2468,16 +2467,15 @@ l0001382C_ds_t:
 l0001382C_ds_f:
 l00013830:
 	word32 o0_32 = Mem0[0x281F0<32>:word32]
-	word32 l0_33 = l0_24 - o0_32
-	i0_37 = xrealloc(o0_32, l0_33 << 1<32>, out i1_38, out i2_39)
+	i0_37 = xrealloc(o0_32, out i1_38, out i2_39)
 	word32 o1_49 = Mem0[0x28210<32>:word32]
-	l0_24 = o0_32 + (l0_33 << 1<32>)
+	l0_24 = o0_32 + (l0_24 - o0_32 << 1<32>)
 	word32 o2_51 = Mem0[0x281F0<32>:word32]
 	Mem52[0x28200<32>:word32] = l0_24
 	Mem55[0x28210<32>:word32] = o0_32 + (o1_49 - o2_51)
 	Mem56[0x281F0<32>:word32] = o0_32
 l00013864:
-	memcpy(Mem58[0x28210<32>:word32] + 1<32>, i0_37, i1_38)
+	memcpy(Mem58[0x28210<32>:word32] + 1<32>, i0_37, SLICE(i1_38, size_t, 0))
 	Mem68[0x28210<32>:word32] = Mem58[0x28210<32>:word32] + i1_38
 	l1Out = 0x28000<32>
 	l2Out = 0x28000<32>
@@ -2574,7 +2572,7 @@ edit_fn_declaration_entry:
 l00013914:
 	o0_25 = CONVERT(strlen(Mem20[Mem20[o0 + 16<i32>:word32] + 4<i32>:word32]), size_t, uint32)
 	save_pointers()
-	branch setjmp(0x2B240<32>) == 0<32> l00013974
+	branch setjmp(SLICE(0x2B240<32>, jmp_buf, 0)) == 0<32> l00013974
 l00013974:
 l00013950:
 	restore_pointers()
@@ -2855,7 +2853,7 @@ void edit_fn_definition(word32 o1)
 edit_fn_definition_entry:
 l00013EDC:
 	save_pointers()
-	branch setjmp(0x2B240<32>) != 0<32> l00013FB0
+	branch setjmp(SLICE(0x2B240<32>, jmp_buf, 0)) != 0<32> l00013FB0
 l00013FB0:
 	restore_pointers()
 	word32 i1_47
@@ -3032,7 +3030,7 @@ l00014648_ds_t:
 l00014648_ds_f:
 l0001464C:
 	Mem122[i6_121 + -24<i32>:word32] = identify_lineno(l0_55)
-	branch setjmp(0x2B240<32>) != 0<32> l0001466C_ds_t
+	branch setjmp(SLICE(0x2B240<32>, jmp_buf, 0)) != 0<32> l0001466C_ds_t
 l0001466C_ds_t:
 l0001466C_ds_f:
 l00014670:
@@ -3245,7 +3243,7 @@ word32 main(word32 o1)
 // Preserved: sp
 main_entry:
 l00014EA4:
-	word32 o0_27 = strrchr(Mem20[o1:word32], 0x2F<32>)
+	word32 o0_27 = strrchr(Mem20[o1:word32], '/')
 	word32 o2_29 = o0_27 + 1<32>
 	branch o0_27 != 0<32> l00014ED8_ds_t
 l00014ED8_ds_t:
@@ -3295,12 +3293,11 @@ l0001509C:
 	munge_compile_params(Mem101[i6_130 + -24<i32>:word32], out i6_185)
 	word32 o1_204 = Mem101[i6_185 + 68<i32>:word32] - Mem101[l7_139 + 104<i32>:word32]
 	Mem206[l6_138 + 844<i32>:word32] = o1_204
-	word32 o0_207 = o1_204 + 1<32> << 2<32>
 	word32 i2_465
 	word32 i1_464
 	word32 i6_215
-	xmalloc(o0_207, out i1_464, out i2_465, out i6_215)
-	Mem222[0x28160<32>:word32] = o0_207
+	xmalloc(out i1_464, out i2_465, out i6_215)
+	Mem222[0x28160<32>:word32] = o1_204 + 1<32> << 2<32>
 	word32 o1_223 = Mem222[l7_139 + 104<i32>:word32]
 	Mem224[l6_138 + 844<i32>:word32] = 0<32>
 	branch o1_223 - Mem224[i6_215 + 68<i32>:word32] >= 0<32> l000150DC_ds_t
@@ -3431,9 +3428,9 @@ l0001537C:
 	word32 i6_183
 	word32 i2_182
 	word32 i1_181
-	xmalloc(l1_107, out i1_181, out i2_182, out i6_183)
+	xmalloc(out i1_181, out i2_182, out i6_183)
 	i0_108 = l1_107
-	branch getcwd(l1_107, l1_107) != 0<32> l00015398_ds_t
+	branch getcwd(l1_107, SLICE(l1_107, size_t, 0)) != 0<32> l00015398_ds_t
 l00015398_ds_t:
 l00015398_ds_f:
 	word32 l0_101 = Mem35[0x2B760<32>:word32]
@@ -4004,7 +4001,7 @@ l000159B0:
 	word32 i6_147
 	word32 i1_238
 	word32 i2_239
-	xmalloc(o0_137 + 0xA<32>, out i1_238, out i2_239, out i6_147)
+	xmalloc(out i1_238, out i2_239, out i6_147)
 	strcpy(o0_137 + 0xA<32>, l0_130)
 	word32 l1_138 = o0_137
 	branch o0_137 == 0<32> l000159D8_ds_t
@@ -4069,11 +4066,11 @@ l00015B24_ds_f:
 l00015B28:
 	l2_145 = CONVERT(strlen(o0), size_t, uint32)
 l00015B3C:
-	word32 o0_152 = o0_139 + l2_145
 	word32 i2_258
 	word32 i6_259
 	word32 i1_257
-	xmalloc(o0_152 + 0xA<32>, out i1_257, out i2_258, out i6_259)
+	xmalloc(out i1_257, out i2_258, out i6_259)
+	word32 o0_152 = o0_139 + l2_145
 	strcpy(o0_152 + 0xA<32>, l0_131)
 	word32 l1_150 = o0_139
 	branch o0_139 == 0<32> l00015B5C_ds_t
@@ -4664,7 +4661,7 @@ l0001694C_ds_f:
 l00016950:
 l00016910_ds_f:
 l00016914:
-	fprintf(0x2B640<32>, 0x17A70<32>, Mem707[i1_156:word32], CONVERT(SLICE(i0_668, byte, 0), byte, int32))
+	fprintf(0x2B640<32>, 0x17A70<32>, Mem707[i1_156:word32], SLICE(i0_668, byte, 0))
 l000168D4_ds_f:
 	o0_793 = Mem707[0x28068<32>:word32]
 l000168A8_ds_f:
@@ -4710,7 +4707,7 @@ l00016970:
 l00016974:
 l000165D8_ds_f:
 l000165DC:
-	fprintf(0x2B640<32>, 0x17A70<32>, Mem707[i1_156:word32], l0_127)
+	fprintf(0x2B640<32>, 0x17A70<32>, Mem707[i1_156:word32], SLICE(l0_127, char, 0))
 l00016598_ds_f:
 l0001659C:
 	word32 o0_865 = Mem707[0x28068<32>:word32]
@@ -4858,10 +4855,10 @@ l00016508:
 	branch Mem707[0x2B2E0<32>:word32] == 0<32> l00016514_ds_t
 l00016514_ds_t:
 l00016538:
-	fprintf(0x2B640<32>, 0x17A50<32>, Mem707[i1_156:word32], l0_127)
+	fprintf(0x2B640<32>, 0x17A50<32>, Mem707[i1_156:word32], SLICE(l0_127, char, 0))
 l00016514_ds_f:
 l00016518:
-	fprintf(0x2B640<32>, 0x17A30<32>, Mem707[i1_156:word32], l0_127)
+	fprintf(0x2B640<32>, 0x17A30<32>, Mem707[i1_156:word32], SLICE(l0_127, char, 0))
 l00016554:
 	Mem1220[0x28074<32>:word32] = CONVERT(SLICE(i0_668, byte, 0), byte, int32)
 l00016408_ds_f:
@@ -4878,7 +4875,7 @@ l00016420:
 	branch CONVERT(Mem402[o3_1235 + 1<i32>:int8], int8, int32) != 0x2D<32> l00016434_ds_t
 l00016434_ds_t:
 l00016458:
-	fprintf(0x2B640<32>, 0x17A08<32>, Mem402[i1_156:word32], CONVERT(Mem402[o3_1235:int8], int8, int32), Mem402[0x2B2C0<32>:word32])
+	fprintf(0x2B640<32>, 0x17A08<32>, Mem402[i1_156:word32], Mem402[o3_1235:int8], Mem402[0x2B2C0<32>:word32])
 l00016434_ds_f:
 l00016438:
 	fprintf(0x2B640<32>, 0x179E8<32>, Mem402[i1_156:word32], Mem402[0x2B2C0<32>:word32])
@@ -4938,7 +4935,7 @@ l00016280:
 	branch CONVERT(Mem1270[o3_1344 + 1<i32>:int8], int8, int32) != 0x2D<32> l00016294_ds_t
 l00016294_ds_t:
 l000162B8:
-	fprintf(0x2B640<32>, 0x17990<32>, Mem1270[i1_156:word32], CONVERT(Mem1270[o3_1344:int8], int8, int32), Mem1270[l3_478:word32])
+	fprintf(0x2B640<32>, 0x17990<32>, Mem1270[i1_156:word32], Mem1270[o3_1344:int8], Mem1270[l3_478:word32])
 	o0_1357 = Mem1270[0x2B2C0<32>:word32]
 l00016294_ds_f:
 l00016298:

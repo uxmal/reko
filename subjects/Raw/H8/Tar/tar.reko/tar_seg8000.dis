@@ -698,7 +698,7 @@ l8928:
 	Mem155[sp_116 + 8<i32>:word16] = SEQ(SLICE(r5_144, byte, 8) + (r5l_148 <u 0xC<8>), r5l_148 + 0xC<8>)
 	word16 r1_157 = Mem155[er6_156:word16]
 	Mem166[sp_116 + 10<i32>:word16] = r3_126
-	word16 r4_179 = Mem166[sp_116 + 6<i32>:word16] + fn9E08(r0_147, SLICE(r1_157, byte, 8), SLICE(r1_157, byte, 0))
+	word16 r4_179 = Mem166[sp_116 + 6<i32>:word16] + fn9E08(SLICE(r0_147, byte, 0), SLICE(r1_157, byte, 8), SLICE(r1_157, byte, 0))
 	Mem180[sp_116 + 6<i32>:word16] = r4_179
 	byte r6l_158 = SLICE(er6_156, byte, 0)
 	word16 r3_181 = Mem180[sp_116 + 10<i32>:word16]

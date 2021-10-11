@@ -472,7 +472,7 @@ l098C:
 	Mem192[sp_181:word16] = Mem182[sp_181:word16] + 1<16>
 l098E:
 	Mem197[sp_181 - 2<16>:word16] = r1_177
-	fn0C90(Mem197[sp_181 - 2<16>:word16], Mem197[sp_181:word16])
+	fn0C90(Mem197[sp_181 - 2<16>:word16], Mem197[sp_181:byte])
 	word16 r2_207 = Mem197[(r1_177 << 1<i16>) + 0x28F2<16>:word16] - Mem197[(r1_177 << 1<i16>) + 0x28F0<16>:word16]
 	word16 r2_213 = r2_207 - (r2_207 * 3<16> >> 2<i16>)
 	word16 sp_200 = <invalid>
@@ -543,7 +543,7 @@ l07FA:
 l080A:
 	wLoc02_343 = 4<16>
 l080C:
-	fn0C90(r0_85, wLoc02_343)
+	fn0C90(r0_85, SLICE(wLoc02_343, byte, 0))
 	Mem297[0x34B6<p16>:word16] = Mem288[0x34B6<p16>:word16] - 0x10<16>
 	fn0F04(r0_85)
 l0896_thunk_fn0790:
@@ -738,7 +738,7 @@ l0BD0:
 	word16 sp_125 = sp_124 - 2<16>
 	Mem126[sp_125:word16] = 1<16>
 	Mem129[sp_125 - 2<16>:word16] = Mem126[0x0078<p16>:word16]
-	fn0C90(Mem129[sp_125 - 2<16>:word16], Mem129[sp_125:word16])
+	fn0C90(Mem129[sp_125 - 2<16>:word16], Mem129[sp_125:byte])
 	word16 sp_132 = <invalid>
 	word16 r3_138 = 0x30<16>
 	branch (Mem129[0x0070<p16>:word16] & 1<16>) != 0<16> l0BEE
@@ -1019,7 +1019,7 @@ l0E06:
 l0E1E:
 	wLoc02_50 = 4<16>
 l0E20:
-	fn0C90(r1_4, wLoc02_50)
+	fn0C90(r1_4, SLICE(wLoc02_50, byte, 0))
 l0E26:
 	Mem35[r1_11:word16] = Mem32[r1_11:word16] - r0
 	r3_13 = r3_13 - 2<16>
