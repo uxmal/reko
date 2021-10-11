@@ -146,7 +146,7 @@ namespace Reko.Arch.Arm.AArch64
             var dtSrc = MakeReal(src.DataType);
             var dtDst = MakeInteger(domain, instr.Operands[0].Width);
             var fn = dtSrc.BitSize == 32 ? f32name : f64name;
-            src = host.Intrinsic(fn, false, dtDst, src);
+            src = host.Intrinsic(fn, false, dtSrc, src);
             return m.Convert(src, dtSrc, dtDst);
         }
 
