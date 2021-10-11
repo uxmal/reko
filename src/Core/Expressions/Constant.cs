@@ -236,6 +236,14 @@ namespace Reko.Core.Expressions
             return Create(dt, (val & mask) >> offset);
         }
 
+        protected virtual Constant DoDepositBits(Constant bits, int offset)
+        {
+            var val = this.ToUInt64();
+            ulong mask = Bits.Mask(offset, bits.DataType.BitSize);
+            var newVal = (val & ~mask) | ((bits.ToUInt64() << offset) & mask);
+            return Constant.Create(this.DataType, newVal);
+        }
+
         public abstract object GetValue();
 
         // Get the hash code of the value. We do it this way to avoid incurring the
@@ -313,6 +321,15 @@ namespace Reko.Core.Expressions
         /// </summary>
         public abstract Constant Complement();
  
+        public Constant DepositBits(Constant newBits, int bitOffset)
+        {
+            if (bitOffset < 0 || newBits.DataType.BitSize + bitOffset > this.DataType.BitSize)
+                throw new ArgumentException();
+            if (!newBits.IsValid)
+                return InvalidConstant.Create(this.DataType);
+            return DoDepositBits(newBits, bitOffset);
+        }
+
         public virtual Constant Negate()
 		{
 			PrimitiveType p = (PrimitiveType) DataType;
@@ -359,23 +376,18 @@ namespace Reko.Core.Expressions
             // log(10) of 2
             return Constant.Real64(0.30102999566398119521373889472449);
         }
-       
+
         /// <summary>
         /// Return a bit slice of this constant, treating the contents as bits.
         /// </summary>
         /// <param name="dt">Data type of the slice</param>
         /// <param name="offset">Bit offset from which to take the slice.</param>
         /// <returns></returns>
-        public Constant Slice(DataType dt, int offset)
+        public virtual Constant Slice(DataType dt, int offset)
         {
-            if (this.IsValid)
-            {
-                if (offset < 0 || offset + dt.BitSize > this.DataType.BitSize)
-                    throw new ArgumentException(nameof(dt), "Invalid bit size.");
-                return DoSlice(dt, offset);
-            }
-            else
-                return this;
+            if (offset < 0 || offset + dt.BitSize > this.DataType.BitSize)
+                throw new ArgumentException(nameof(dt), "Invalid bit size.");
+            return DoSlice(dt, offset);
         }
 
         public virtual bool ToBoolean()

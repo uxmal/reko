@@ -71,6 +71,11 @@ namespace Reko.Core.Expressions
 
         public override object GetValue() => throw new NotImplementedException();
 
+        public override Constant Slice(DataType dt, int offset)
+        {
+            return new InvalidConstant(dt);
+        }
+
         public override byte ToByte() => unchecked((byte) pseudoValue);
 
         public override short ToInt16() => unchecked((short)pseudoValue);

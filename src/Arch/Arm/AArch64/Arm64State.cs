@@ -30,8 +30,8 @@ namespace Reko.Arch.Arm.AArch64
 {
     public class Arm64State : ProcessorState
     {
-        private Arm64Architecture arch;
-        private Dictionary<StorageDomain, Constant> values;
+        private readonly Arm64Architecture arch;
+        private readonly Dictionary<StorageDomain, Constant> values;
 
         public Arm64State(Arm64Architecture arch)
         {
@@ -57,7 +57,21 @@ namespace Reko.Arch.Arm.AArch64
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            return InvalidConstant.Create(r.DataType);
+            if (!values.TryGetValue(r.Domain, out var value))
+                return InvalidConstant.Create(r.DataType);
+            if (value is InvalidConstant)
+            {
+                return InvalidConstant.Create(r.DataType);
+            }
+            if ((int)r.BitSize > value.DataType.BitSize)
+            {
+                return InvalidConstant.Create(r.DataType);
+            }
+            else if ((int)r.BitSize < value.DataType.BitSize)
+            {
+                return value.Slice(r.DataType, 0);
+            }
+            return value;
         }
 
         public override void OnAfterCall(FunctionType? sigCallee)
@@ -79,6 +93,22 @@ namespace Reko.Arch.Arm.AArch64
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
+            if (v is not InvalidConstant)
+            {
+                if (!values.TryGetValue(r.Domain, out var oldValue))
+                {
+                    values[r.Domain] = v;
+                }
+                else
+                {
+                    if (v.DataType.BitSize < oldValue.DataType.BitSize)
+                    {
+                        // Overwriting the low part of oldValue.
+                        v = oldValue.DepositBits(v, 0);
+                    }
+                }
+            }
+            values[r.Domain] = v;
         }
     }
-}
+} 
