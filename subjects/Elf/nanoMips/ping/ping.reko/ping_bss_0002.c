@@ -139,14 +139,20 @@ Eq_n rtt_addend = // 004544F8
 	{
 		0x00
 	};
-int32 sndbuf = 0; // 004544FC
+Eq_n sndbuf = // 004544FC
+	{
+		0x00
+	};
 Eq_n status_snapshot = // 00454500
 	{
 		0x00
 	};
 word32 tclass = 0x00; // 00454504
 word32 timing = 0x00; // 00454508
-int32 tmax = 0; // 0045450C
+Eq_n tmax = // 0045450C
+	{
+		0x00
+	};
 word32 ttl = 0x00; // 00454510
 Eq_n uid = // 00454514
 	{

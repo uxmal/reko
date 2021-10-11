@@ -76,6 +76,7 @@ exit proc
 ;; main: 00400170
 ;;   Called from:
 ;;     0040016C (in exit)
+;;     004049A4 (in __libc_start_main)
 main proc
 	save	00000060,ra,00000007
 	li	r6,00000020
@@ -402,6 +403,7 @@ _start proc
 
 ;; _start_c: 00400860
 ;;   Called from:
+;;     00400858 (in _start)
 ;;     0040085C (in _start)
 _start_c proc
 	save	00000010,ra,00000001
@@ -11990,7 +11992,13 @@ l00405FD0:
 	addiu	r4,r6,00000004
 	li	r6,00000004
 
-l00405FD4:
+;; fn00405FD4: 00405FD4
+;;   Called from:
+;;     00405FD2 (in copy_addr)
+;;     00406000 (in fn00405FFE)
+;;     00406008 (in copy_addr)
+;;     00406014 (in copy_addr)
+fn00405FD4 proc
 	bltuc	r8,r6,00405FE0
 
 l00405FD8:
@@ -12013,7 +12021,12 @@ l00405FF0:
 	andi	r6,r6,000000C0
 	beqc	r6,r10,00406018
 
-l00405FFE:
+;; fn00405FFE: 00405FFE
+;;   Called from:
+;;     00405FD4 (in fn00405FD4)
+;;     00405FFA (in copy_addr)
+;;     0040601C (in fn0040601C)
+fn00405FFE proc
 	li	r6,00000010
 	bc	00405FD4
 
@@ -12029,6 +12042,12 @@ l0040600C:
 
 l00406018:
 	sw	r9,0018(r16)
+
+;; fn0040601C: 0040601C
+;;   Called from:
+;;     00406018 (in copy_addr)
+;;     004075B6 (in __netlink_enumerate)
+fn0040601C proc
 	bc	00405FFE
 
 ;; netlink_msg_to_ifaddr: 0040601E
@@ -13863,7 +13882,20 @@ l00406C98:
 	xori	r7,r7,000000C0
 	movz	r4,r6,r7
 
-l00406CA8:
+;; fn00406CA8: 00406CA8
+;;   Called from:
+;;     00406C64 (in scopeof)
+;;     00406C8C (in scopeof)
+;;     00406C96 (in scopeof)
+;;     00406CA4 (in scopeof)
+;;     00406CA4 (in scopeof)
+;;     00409CDE (in sift)
+;;     00409D18 (in sift)
+;;     00409D20 (in sift)
+;;     00409DA0 (in trinkle)
+;;     00409DFE (in trinkle)
+;;     00409E06 (in trinkle)
+fn00406CA8 proc
 	jrc	ra
 
 ;; addrcmp: 00406CAA
@@ -14262,7 +14294,15 @@ l00406F40:
 fn00406F46 proc
 	bc	00406C30
 
+;; fn00406F48: 00406F48
+;;   Called from:
+;;     0040D1AE (in __dns_parse)
+fn00406F48 proc
+	movep	r7,r7,r4,r5
+
 ;; dns_parse_callback: 00406F4A
+;;   Called from:
+;;     00406F48 (in fn00406F48)
 dns_parse_callback proc
 	save	00000110,ra,00000002
 	movep	r16,r9,r4,r5
@@ -20938,7 +20978,7 @@ l0040A12A:
 ;;     0040590C (in realloc)
 ;;     00405EBA (in getaddrinfo)
 ;;     00405F74 (in getaddrinfo)
-;;     00405FDA (in copy_addr)
+;;     00405FDA (in fn00405FD4)
 ;;     00406104 (in netlink_msg_to_ifaddr)
 ;;     00406280 (in netlink_msg_to_ifaddr)
 ;;     0040628E (in fn0040628E)
@@ -23131,6 +23171,8 @@ setuid proc
 0040B00C                                     00 00 00 00             ....
 
 ;; do_setxid: 0040B010
+;;   Called from:
+;;     0040DF80 (in __synccall)
 do_setxid proc
 	save	00000010,ra,00000003
 	lw	r7,0010(r4)

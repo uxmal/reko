@@ -138,9 +138,9 @@ void main(Eq_n xmm0)
 		rax_n[qwLoc20_n] = (real64) xmm0;
 	}
 	vec_add(0x0400);
-	up64 qwLoc28_n;
+	uint64 qwLoc28_n;
 	for (qwLoc28_n = 0x00; qwLoc28_n < 0x0400; ++qwLoc28_n)
-		printf("%g\n", 0x00);
+		printf("%g\n", (double) rax_n[qwLoc28_n]);
 	_mm_free(rax_n);
 	_mm_free(rax_n);
 	_mm_free(rax_n);

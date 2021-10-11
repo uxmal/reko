@@ -6,14 +6,11 @@
 
 byte g_b0000; // 00000000
 Eq_n g_t0001;
-byte g_a0003[];
-byte g_a0004[];
+Eq_n g_t0002;
 Eq_n g_a000A[];
-byte g_b000D; // 0000000D
 Eq_n g_t0018;
 byte g_b001A; // 0000001A
 Eq_n g_t0020;
-byte g_b0021; // 00000021
 Eq_n g_t0025;
 Eq_n g_t002B;
 Eq_n g_t0054;
@@ -34,6 +31,7 @@ byte g_b0888; // 00000888
 Eq_n g_t088A;
 Eq_n g_t088E;
 Eq_n g_t0891;
+word32 g_dw0898; // 00000898
 Eq_n g_t0918;
 Eq_n g_t0919;
 Eq_n g_t091A;
@@ -86,7 +84,5 @@ Eq_n g_tFFFFF802;
 Eq_n g_tFFFFFC02;
 Eq_n g_tFFFFFFC6;
 Eq_n g_tFFFFFFF2;
-Eq_n g_tFFFFFFF5;
-Eq_n g_tFFFFFFF8;
 Eq_n g_tFFFFFFFC;
 byte g_bFFFFFFFF; // FFFFFFFF

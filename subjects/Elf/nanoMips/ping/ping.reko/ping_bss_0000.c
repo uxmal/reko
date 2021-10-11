@@ -114,7 +114,7 @@ Eq_n __block_new_threads = // 00432F00
 	{
 		0x00
 	};
-ptr32 context = 0x00; // 00432F04
+struct Eq_n * context = null; // 00432F04
 <anonymous> * callback = null; // 00432F08
 Eq_n target_tid = // 00432F0C
 	{

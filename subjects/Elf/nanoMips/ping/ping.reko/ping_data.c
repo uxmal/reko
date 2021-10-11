@@ -21,7 +21,10 @@ Eq_n pipesize = // 00430078
 	{
 		~0x00
 	};
-int32 tmin = 0x7FFFFFFF; // 0043007C
+Eq_n tmin = // 0043007C
+	{
+		~0x00
+	};
 Eq_n confirm_flag = // 00430080
 	{
 		0x0800

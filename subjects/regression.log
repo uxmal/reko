@@ -1,5 +1,10 @@
 === regressions\reko-351\a
+800000A6: warning: Call target address 00000000 is invalid.
 80000120: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
+80000140: warning: Call target address 00000000 is invalid.
+8000017A: warning: Call target address 00000000 is invalid.
+8000019A: warning: Call target address 00000000 is invalid.
+800000DC: warning: Call target address 00000000 is invalid.
 8000018A: warning: Procedure frame_dummy previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 800001A0: warning: Procedure frame_dummy previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 80002714: warning: Expected sizes of arrays to have been determined by now
@@ -763,7 +768,7 @@ fn0000CE88: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l0000CEAC' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 143
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 628
@@ -771,7 +776,7 @@ fn0000EE14: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l0000EE2C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 143
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 628
@@ -845,6 +850,9 @@ Error: An error occurred during decompilation.
    at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 274
 
 *** Elf\nanoMips\ping\ping
+004008F8: warning: Call target address 00000000 is invalid.
+00400912: warning: Call target address 00000000 is invalid.
+004008DC: warning: Call target address 00000000 is invalid.
 __isoc99_vfscanf: error: An internal error occurred while building the expressions of __isoc99_vfscanf
     Dominator graph calculation timed out.
        at Reko.Core.Lib.DominatorGraph`1.Intersect(Dictionary`2 postdoms, T b1, T b2) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 233
@@ -852,6 +860,51 @@ __isoc99_vfscanf: error: An internal error occurred while building the expressio
    at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 397
 l0040D4D6: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
+Warning: Recursion too deep in PtrPrimitiveReplacer
 l0040478C: warning: Non-integral switch expression
 00412060: warning: Expected sizes of arrays to have been determined by now
 00412170: warning: Expected sizes of arrays to have been determined by now
@@ -991,14 +1044,18 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 0800:9A95: error: An error occurred while processing the statement word16 di_325 = di_311 - (fp - 0x48<16>).
     Not handling (memptr T_33935 (struct (0 T_34635 t0000))) and (memptr T_3 <unknown>) yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 409
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 352
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 239
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 228
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in d:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 75
 1483:0C7D: error: An error occurred while processing the statement word16 ax_82 = bx_54 - 0x903<16> - (SLICE(dh_ax_142, byte, 16) <u 0<8>).
     Not handling (memptr T_41328 (struct (0 T_41378 t0000) (3303 T_41372 t3303))) and bool yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 409
-   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 352
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 239
+   at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 255
+   at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 228
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in d:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 75
 
 === scripting\pyFuncNames
@@ -1141,7 +1198,6 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\segmented.py
 0000000000000667: warning: Unable to resolve imported reference _ITM_deregisterTMCloneTable.
 0000000000000777: warning: Unable to resolve imported reference posix_memalign.
 0000000000000870: warning: x86 instruction 'vaddpd' is not supported yet.
-0000000000000A23: warning: Unable to determine format string for call to 'printf'.
 00000000000006B8: warning: Unable to resolve imported reference _ITM_registerTMCloneTable.
 00000000000006E9: warning: Unable to resolve imported reference __cxa_finalize.
 0000000000000610: warning: Unable to resolve imported reference __cxa_finalize.
@@ -1167,7 +1223,6 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\segmented.py
 192E: warning: Procedure fn1900 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 190E: warning: Procedure fn1900 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 136E: warning: Procedure fn1370 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
-2B90: warning: Procedure fn2B90 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0D22: error: An error occurred while processing the statement word16 r1_53 = (fp - 6<16> << 1<i16>) + (fp - 6<16>).
     Not handling ptr16 and (union (cui16 u1) (ptr16 u0)) yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 403
@@ -1180,8 +1235,10 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\segmented.py
    at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 75
 47E2: warning: Expected sizes of arrays to have been determined by now
 541C: warning: Expected sizes of arrays to have been determined by now
+5898: warning: Expected sizes of arrays to have been determined by now
 47E2: warning: Expected sizes of arrays to have been determined by now
 541C: warning: Expected sizes of arrays to have been determined by now
+5898: warning: Expected sizes of arrays to have been determined by now
 
 *** Elf\Sparc\rtems\sparc-rtems-unprotoize
 00011610: warning: Unable to resolve imported reference __register_frame_info.
@@ -2149,6 +2206,8 @@ varargs_test.exe: warning: Win32 X86-64 main procedure finder not implemented ye
 0000000140001E5E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_onexit_table.
 0000000140001E5E: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_initialize_onexit_table.
 0000000140001DEC: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_seh_filter_exe.
+0000000140001BD7: warning: Call target address 0000000000000000 is invalid.
+0000000140001B8B: warning: Call target address 0000000000000000 is invalid.
 0000000140001E70: warning: Unable to resolve imported reference api-ms-win-crt-runtime-l1-1-0.dll!terminate.
 0000000140001E6A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_crt_atexit.
 0000000140001E64: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_onexit_function.
@@ -2181,4 +2240,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 79 binaries in 55.72 seconds.
+Decompiled 79 binaries in 57.57 seconds.
