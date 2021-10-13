@@ -2166,7 +2166,6 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("vcvt.f32.s32\tq9,q8", "6026FBF3");
             AssertCode("vcvt.f32.u32\td17,d17", "A116FBF3");
             AssertCode("vcvt.s32.f32\td17,d17", "2117FBF3");
-            AssertCode("vcvt.u32.f32\td17,d17", "C417FBF3");
         }
 
         [Test]
@@ -2261,7 +2260,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void ArmDasm_vld1_all_lanes()
         {
-            AssertCode("vld1.i32\t{d18[]-d19[]},[r1:32]", "BF2CE1F4");
+            AssertCode("vld1.i32\t{d18[],d19[]},[r1:32]", "BF2CE1F4");
         }
 
         [Test]

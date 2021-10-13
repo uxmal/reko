@@ -467,7 +467,7 @@ namespace Reko.Arch.Arm.AArch32
                 return elemType != ArmVectorData.INVALID;
             };
         }
-        private static readonly Mutator<A32Disassembler> vi_HW_f_HS_ = ves(Bf((8, 1), (20, 2)), INVALID, I16, I32, INVALID,   INVALID, F16, F32, INVALID);
+        private static readonly Mutator<A32Disassembler> vi_HW_f_HS_ = ves(Bf((8, 1), (20, 2)), INVALID, I16, I32, INVALID, INVALID, F16, F32, INVALID);
 
         private static readonly Mutator<A32Disassembler> viBH__18 = ves(Bf((18, 2)), I8, I16, INVALID, INVALID);
         private static readonly Mutator<A32Disassembler> viBHW_18 = ves(Bf((18, 2)), I8, I16, I32, INVALID);
@@ -852,7 +852,7 @@ namespace Reko.Arch.Arm.AArch32
             };
             return (u, d) =>
             {
-                var baseReg = (int)Bitfield.ReadFields(velFields, u);
+                var baseReg = (int) Bitfield.ReadFields(velFields, u);
                 var regs = new RegisterStorage[count];
                 uint bitmask = 0;
                 for (int i = 0; i < count; ++i)
@@ -860,9 +860,9 @@ namespace Reko.Arch.Arm.AArch32
                     bitmask |= (1u << (baseReg + i * step));
                 }
                 d.state.ops.Add(new MultiRegisterOperand(
-                    Registers.DRegs, 
-                    Registers.DRegs[0].DataType, 
-                    bitmask)); 
+                    Registers.DRegs,
+                    Registers.DRegs[0].DataType,
+                    bitmask));
                 return true;
             };
         }
@@ -883,9 +883,9 @@ namespace Reko.Arch.Arm.AArch32
             return (u, d) =>
             {
                 var imm = Bitfield.ReadFields(bitfields, u);
-                var baseReg = (int)Bitfield.ReadFields(baseRegFields, u);
+                var baseReg = (int) Bitfield.ReadFields(baseRegFields, u);
                 var regs = d.SBitfield(u, 1, 7);
-                if(regs == 0 || regs > 16 || (baseReg + regs) > 32)
+                if (regs == 0 || regs > 16 || (baseReg + regs) > 32)
                 {
                     return false;
                 }
@@ -924,50 +924,56 @@ namespace Reko.Arch.Arm.AArch32
             };
         }
 
-        private static readonly int []mveAlignments = { 0, 64, 128, 256 };
+        private static readonly int[] mveAlignments = { 0, 64, 128, 256 };
+        private static readonly int[] mveaAlignments = { 0, 0, 0, 0,  0, 16, 32, 0 };
 
         /// <summary>
         /// Vector element access with alignment.
         /// </summary>
-        private static bool Mve(uint uInstr, A32Disassembler dasm)
+        private static Mutator<A32Disassembler> VectorElementAccess(Bitfield[] alignFields, int[] alignments)
         {
-            var regBase = Registers.GpRegs[bitmask(uInstr, 16, 0xF)];
-            var uIdx = bitmask(uInstr, 0, 0xF);
-            var align = mveAlignments[bitmask(uInstr, 4, 0x3)];
-            var dt = Registers.DRegs[0].DataType;
-            MemoryOperand mop;
-            switch (uIdx)
+            return (uint uInstr, A32Disassembler dasm) =>
             {
-            case 13:
-                dasm.state.writeback = true;
-                mop = new MemoryOperand(dt)
+                var regBase = Registers.GpRegs[bitmask(uInstr, 16, 0xF)];
+                var uIdx = bitmask(uInstr, 0, 0xF);
+                var align = alignments[Bitfield.ReadFields(alignFields, uInstr)];
+                var dt = Registers.DRegs[0].DataType;
+                MemoryOperand mop;
+                switch (uIdx)
                 {
-                    BaseRegister = regBase,
-                    Alignment = align,
-                    PreIndex = true,
-                };
-                break;
-            case 15:
-                mop = new MemoryOperand(dt)
-                {
-                    BaseRegister = regBase,
-                    Alignment = align
-                };
-                break;
-            default:
-                dasm.state.writeback = true;
-                mop = new MemoryOperand(dt)
-                {
-                    BaseRegister = regBase,
-                    Index = Registers.GpRegs[uIdx],
-                    Alignment = align,
-                    Add = true,
-                };
-                break;
-            }
-            dasm.state.ops.Add(mop);
-            return true;
+                case 13:
+                    dasm.state.writeback = true;
+                    mop = new MemoryOperand(dt)
+                    {
+                        BaseRegister = regBase,
+                        Alignment = align,
+                        PreIndex = true,
+                    };
+                    break;
+                case 15:
+                    mop = new MemoryOperand(dt)
+                    {
+                        BaseRegister = regBase,
+                        Alignment = align
+                    };
+                    break;
+                default:
+                    dasm.state.writeback = true;
+                    mop = new MemoryOperand(dt)
+                    {
+                        BaseRegister = regBase,
+                        Index = Registers.GpRegs[uIdx],
+                        Alignment = align,
+                        Add = true,
+                    };
+                    break;
+                }
+                dasm.state.ops.Add(mop);
+                return true;
+            };
         }
+        private static readonly Mutator<A32Disassembler> Mve = VectorElementAccess(Bf((4, 2)), mveAlignments);
+        private static readonly Mutator<A32Disassembler> Mvea = VectorElementAccess(Bf((4, 1), (6, 2)), mveaAlignments);
 
         private static Mutator<A32Disassembler> SR =>
             (u, d) =>
@@ -3662,10 +3668,10 @@ namespace Reko.Arch.Arm.AArch32
                     vrecpe,
                     vrsqrte,
 
-                    Instr(Mnemonic.vcvt, F32S32, q6, W22_12, D5_0),
-                    Instr(Mnemonic.vcvt, F32U32, q6, W22_12, D5_0),
-                    Instr(Mnemonic.vcvt, S32F32, q6, W22_12, D5_0),
-                    Instr(Mnemonic.vcvt, U32F32, q6, W22_12, D5_0)));
+                    Instr(Mnemonic.vcvt, F32S32, q6, W22_12, W5_0),
+                    Instr(Mnemonic.vcvt, F32U32, q6, W22_12, W5_0),
+                    Instr(Mnemonic.vcvt, S32F32, q6, W22_12, W5_0),
+                    Instr(Mnemonic.vcvt, U32F32, q6, W22_12, W5_0)));
 
             var AdvancedSimd_Duplicate_scalar = Select("  Advanced SIMD duplicate (scalar)", 7, 0b111, 
                 u => u == 0,
@@ -3807,7 +3813,6 @@ namespace Reko.Arch.Arm.AArch32
                 vcvt_between_fp_and_fixed_point,
                 vcvt_between_fp_and_fixed_point);
 
-
             var AdvancedSimd_ShiftsAndImmediate = Select(7, 0b111000000000001, n => n == 0,
                 AdvancedSimd_OneRegisterModifiedImmediate,
                 AdvancedSimd_TwoRegisterShiftAmount);
@@ -3908,8 +3913,8 @@ namespace Reko.Arch.Arm.AArch32
                 invalid,
                 Mask(8, 2, "  L=1 N",
                     Mask(5, 1, "  N=00 T",
-                        Instr(Mnemonic.vld1, vi_BHSD, vmr1a, Mve),
-                        Instr(Mnemonic.vld1, vi_BHSD, vmr2a, Mve)),
+                        Instr(Mnemonic.vld1, vi_BHSD, vmr1a, Mvea),
+                        Instr(Mnemonic.vld1, vi_BHSD, vmr2a, Mvea)),
                     nyi("VLD2(single 2 - element structure to all lanes)"),
                     Mask(4, 1, "  N=10 a",
                         nyi("VLD3(single 3 - element structure to all lanes)"),
