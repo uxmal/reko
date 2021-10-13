@@ -4,6 +4,7 @@ namespace Reko.Arch.Arm.AArch32
     {
         Unknown = -1,
         Invalid = 0,
+        Nyi,
 
         adc,
         add,

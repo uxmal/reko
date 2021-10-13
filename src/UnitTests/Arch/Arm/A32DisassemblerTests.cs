@@ -70,7 +70,6 @@ namespace Reko.UnitTests.Arch.Arm
             uint instr = ParseBitPattern(bitPattern);
             w.WriteLeUInt32(0, instr);
             var b = image.Bytes;
-            //Debug.Print("Instruction bytes: {0:X2} {1:X2} {2:X2} {3:X2}", b[0], b[1], b[2], b[3]); // Spews in the unit tests
             var arch = CreateArchitecture();
             var dasm = arch.CreateDisassembler(image.CreateLeReader(0));
             return dasm.First();
@@ -83,7 +82,11 @@ namespace Reko.UnitTests.Arch.Arm
             var arch = CreateArchitecture();
             var dasm = arch.CreateDisassembler(mem.CreateLeReader(0));
             var instr = dasm.First();
-            Assert.AreEqual(sExp, instr.ToString());
+
+            if (sExp != instr.ToString()) // && instr.MnemonicAsString == "Nyi")
+            {
+                Assert.AreEqual(sExp, instr.ToString());
+            }
         }
 
         protected abstract IProcessorArchitecture CreateArchitecture();
@@ -112,7 +115,7 @@ namespace Reko.UnitTests.Arch.Arm
     }
 
     [TestFixture]
-    public class A32DisassemblerTests : ArmTestBase
+    public partial class A32DisassemblerTests : ArmTestBase
     {
         protected override IProcessorArchitecture CreateArchitecture()
         {
@@ -442,7 +445,7 @@ namespace Reko.UnitTests.Arch.Arm
         public void ArmDasm_ldrls_pc()
         {
             Disassemble32(0x979FF103);
-            Expect_Code("ldrls\tpc,[pc,r3,lsl #2]", InstrClass.ConditionalTransfer|InstrClass.Indirect);   // 
+            Expect_Code("ldrls\tpc,[pc,r3,lsl #2]", InstrClass.ConditionalTransfer | InstrClass.Indirect);   // 
         }
 
         [Test]
@@ -710,13 +713,6 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Disassemble32(0xE7C3E198);
             Expect_Code("bfi\tlr,r8,#3,#1");
-        }
-
-        [Test]
-        public void ArmDasm_vstmdb()
-        {
-            Disassemble32(0xED2D8B02);
-            Expect_Code("vstmdb\tsp!,{d8}");
         }
 
         [Test]
@@ -1118,7 +1114,7 @@ namespace Reko.UnitTests.Arch.Arm
             Disassemble32(0xECC00B04);
             Expect_Code("vstmia\tr0,{d16-d17}");
         }
-        
+
         [Test]
         public void ArmDasm_invalid_vstmia()
         {
@@ -1497,6 +1493,12 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Disassemble32(0x06782BF0);
             Expect_Code("uhsub8eq\tr2,r8,r0");
+        }
+
+        [Test]
+        public void ArmDasm_vadd_f32()
+        {
+            AssertCode("vadd.f32\tq9,q10,q9", "E22D44F2");
         }
 
         [Test]
@@ -2063,6 +2065,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmDasm_uxtab16()
+        {
+            Disassemble32(0xE6C04778);
+            Expect_Code("uxtab16\tr4,r0,r8,ror #8");
+        }
+
+        [Test]
         public void ArmDasm_vcvtt_f32_f16()
         {
             Disassemble32(0xEEB20AC0);
@@ -2118,11 +2127,80 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vmov\tr4,r1,s12,s13");
         }
 
+
+
+
+
+
+
         [Test]
-        public void ArmDasm_uxtab16()
+        public void ArmDasm_vabal()
         {
-            Disassemble32(0xE6C04778);
-            Expect_Code("uxtab16\tr4,r0,r8,ror #8");
+            Disassemble32(0xF2814583);
+            Expect_Code("vabal.s8\tq2,d17,d3");
+        }
+
+        [Test]
+        public void ArmDasm_vacgt_f32()
+        {
+            AssertCode("vacgt.f32\td16,d5,d31", "3F0E65F3");
+        }
+
+        [Test]
+        public void ArmDasm_vbic_i32()
+        {
+            Disassemble32(0xF2814571);
+            Expect_Code("vbic.i32\tq2,#&11000000110000");
+        }
+
+        [Test]
+        public void ArmDasm_vcgt_f32()
+        {
+            AssertCode("vcgt.f32\tq9,q2,q8", "602E64F3");
+            AssertCode("vcgt.f32\td18,d4,d16", "202E64F3");
+        }
+
+        [Test]
+        public void ArmDasm_vcvt_f32_s32()
+        {
+            AssertCode("vcvt.f32.s32\tq9,q8", "6026FBF3");
+            AssertCode("vcvt.f32.u32\td17,d17", "A116FBF3");
+            AssertCode("vcvt.s32.f32\td17,d17", "2117FBF3");
+            AssertCode("vcvt.u32.f32\td17,d17", "C417FBF3");
+        }
+
+        [Test]
+        public void ArmDasm_vcvt_f32_s32_x()
+        {
+            AssertCode("vcvt.f32.s32\td17,d17", "2116FBF3");
+        }
+
+        [Test]
+        public void ArmDasm_vcvt_fixed()
+        {
+            AssertCode("vcvt.f32.s16\ts10,s10,#&FFFFFFF4", "4E5ABAEE"); 
+            AssertCode("vcvt.f32.s32\ts10,s10,#4",         "CE5ABAEE"); 
+            AssertCode("vcvt.f32.u16\ts10,s10,#&FFFFFFF4", "4E5ABBEE"); 
+            AssertCode("vcvt.f32.u32\ts10,s10,#4",         "CE5ABBEE"); 
+
+            AssertCode("vcvt.f64.u16\td5,d5,#&FFFFFFF4", "4E5BBBEE"); 
+            AssertCode("vcvt.f64.s16\td5,d5,#&FFFFFFF4","4E5BBAEE"); 
+            AssertCode("vcvt.u16.f64\td5,d5,#&FFFFFFF4","4E5BBFEE"); 
+            AssertCode("vcvt.s16.f64\td5,d5,#&FFFFFFF4", "4E5BBEEE"); 
+            AssertCode("vcvt.s16.f32\ts10,s10,#&FFFFFFF4", "4E5ABEEE");
+        }
+
+        [Test]
+        public void ArmDasm_vdup_scalar()
+        {
+            AssertCode("vdup.i32\td12,d0[1]", "00CCBCF3");
+        }
+
+        [Test]
+        public void ArmDasm_vfma_f32()
+        {
+            Disassemble32(0xF2002C15);
+            Expect_Code("vfma.f32\td2,d0,d5");
         }
 
         [Test]
@@ -2160,47 +2238,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmDasm_vdup_scalar()
-        {
-            AssertCode("vdup.i32\td12,d0[1]", "00CCBCF3");
-        }
-
-        [Test]
-        public void ArmDasm_vfma_f32()
-        {
-            Disassemble32(0xF2002C15);
-            Expect_Code("vfma.f32\td2,d0,d5");
-        }
-
-        [Test]
-        public void ArmDasm_vrhadd()
-        {
-            Disassemble32(0xF2449100);
-            Expect_Code("vrhadd.s8\td25,d4,d0");
-        }
-
-        [Test]
-        public void ArmDasm_vqshlu_i64()
-        {
-            Disassemble32(0xF3E8F7B4);
-            Expect_Code("vqshlu.i64\td31,d20,#&28");
-        }
-
-        [Test]
-        public void ArmDasm_vabal()
-        {
-            Disassemble32(0xF2814583);
-            Expect_Code("vabal.s8\tq2,d17,d3");
-        }
-
-        [Test]
-        public void ArmDasm_vbic_i32()
-        {
-            Disassemble32(0xF2814571);
-            Expect_Code("vbic.i32\tq2,#&11000000110000");
-        }
-
-        [Test]
         public void ArmDasm_vqshl()
         {
             Disassemble32(0xF2E8F710);
@@ -2222,10 +2259,85 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void ArmDasm_vacgt_f32()
+        public void ArmDasm_vld1_all_lanes()
         {
-            Disassemble32(0xF3650E3F);
-            Expect_Code("vacgt.f32\td16,d5,d31");
+            AssertCode("vld1.i32\t{d18[]-d19[]},[r1:32]", "BF2CE1F4");
+        }
+
+        [Test]
+        public void ArmDasm_vld1_multiple_preinc()
+        {
+            AssertCode("vld1.i32\t{d0},[r3]!", "8D0723F4");
+        }
+
+        [Test]
+        public void ArmDasm_vld1_32_postinc()
+        {
+            AssertCode("vld1.i32\t{d16,d17},[r1:128],r0", "A00A61F4");
+        }
+
+        [Test]
+        public void ArmDasm_vpadd_f32()
+        {
+            AssertCode("vpadd.f32\td2,d16,d16", "A02D00F3");
+        }
+
+        [Test]
+        public void ArmDasm_vqshlu_i64()
+        {
+            Disassemble32(0xF3E8F7B4);
+            Expect_Code("vqshlu.i64\td31,d20,#&28");
+
+        }
+
+        [Test]
+        public void ArmDasm_vrhadd()
+        {
+            Disassemble32(0xF2449100);
+            Expect_Code("vrhadd.s8\td25,d4,d0");
+        }
+
+        [Test]
+        public void ArmDasm_vrsqrts_f32()
+        {
+            AssertCode("vrsqrts.f32\tq14,q8,q14", "FCCF60F2");
+        }
+
+        [Test]
+        public void ArmDasm_vst1_multiple_align_128()
+        {
+            AssertCode("vst1.i64\t{d10,d11},[r0:128]", "EFAA00F4");
+        }
+
+        [Test]
+        public void ArmDasm_vst1_multi_pre()
+        {
+            AssertCode("vst1.i32\t{d16},[r0]!", "8D0740F4");
+        }
+
+        [Test]
+        public void ArmDasm_vst1_range()
+        {
+            AssertCode("vst1.i8\t{d18,d19},[r2],r1", "012A42F4");
+        }
+
+        [Test]
+        public void ArmDasm_vst2_multiple()
+        {
+            AssertCode("vst2.i32\t{d24,d25},[r3:128],r2", "A28843F4");
+        }
+
+        [Test]
+        public void ArmDasm_vstmdb()
+        {
+            Disassemble32(0xED2D8B02);
+            Expect_Code("vstmdb\tsp!,{d8}");
+        }
+
+        [Test]
+        public void ArmDasm_vsub_f32()
+        {
+            AssertCode("vsub.f32\tq10,q6,q5", "4A4D6CF2");
         }
 
         [Test]
@@ -2242,39 +2354,6 @@ namespace Reko.UnitTests.Arch.Arm
         {
             AssertCode("ldcmi\tp8,cr7,[pc],#&80", "2078DF4C");
         }
-
-        //////////////////////////
-
-#if BORED
-/// If you're bored and want something to do, why not implement a 
-/// A32 decoder or 10? :)
-
-// An A32 decoder for the instruction F4E7F270 (AdvancedSimdElementLoadStore) has not been implemented yet.
-[Test]
-public void ArmDasm_F4E7F270()
-{
-    Disassemble32(0xF4E7F270);
-    Expect_Code("@@@");
-}
-
-// An A32 decoder for the instruction F4E7B940 (AdvancedSimdElementLoadStore) has not been implemented yet.
-[Test]
-public void ArmDasm_F4E7B940()
-{
-    Disassemble32(0xF4E7B940);
-    Expect_Code("@@@");
-}
-
-// An A32 decoder for the instruction F4E7F370 (AdvancedSimdElementLoadStore) has not been implemented yet.
-[Test]
-public void ArmDasm_F4E7F370()
-{
-    Disassemble32(0xF4E7F370);
-    Expect_Code("@@@");
-}
-
-#endif
-
     }
 }
  

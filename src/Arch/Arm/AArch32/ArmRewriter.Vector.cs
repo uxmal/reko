@@ -426,11 +426,15 @@ namespace Reko.Arch.Arm.AArch32
         private static readonly Dictionary<ArmVectorData, string> vectorConversionNames = new Dictionary<ArmVectorData, string>
         {
             { ArmVectorData.S16F16, "i16_f16" },
+            { ArmVectorData.S16F32, "i16_f32" },
+            { ArmVectorData.S16F64, "i16_f64" },
             { ArmVectorData.S32F16, "i32_f16" },
             { ArmVectorData.S32F32, "i32_f32" },
             { ArmVectorData.S32F64, "i32_f64" },
 
             { ArmVectorData.U16F16, "u16_f16" },
+            { ArmVectorData.U16F32, "u16_f32" },
+            { ArmVectorData.U16F64, "u16_f64" },
             { ArmVectorData.U32F16, "u32_f16" },
             { ArmVectorData.U32F32, "u32_f32" },
             { ArmVectorData.U32F64, "u32_f64" },
@@ -442,12 +446,16 @@ namespace Reko.Arch.Arm.AArch32
             { ArmVectorData.F16U16, "f16_i16" },
             { ArmVectorData.F16U32, "f16_i32" },
 
+            { ArmVectorData.F32S16, "f32_i16" },
             { ArmVectorData.F32S32, "f32_i32" },
             { ArmVectorData.F32F16, "f32_f16" },
             { ArmVectorData.F32F64, "f32_f64" },
+            { ArmVectorData.F32U16, "f32_u16" },
             { ArmVectorData.F32U32, "f32_u32" },
 
+            { ArmVectorData.F64S16, "f64_i16" },
             { ArmVectorData.F64S32, "f64_i32" },
+            { ArmVectorData.F64U16, "f64_u16" },
             { ArmVectorData.F64U32, "f64_u32" },
             { ArmVectorData.F64F16, "f64_f16" },
             { ArmVectorData.F64F32, "f64_f32" },
