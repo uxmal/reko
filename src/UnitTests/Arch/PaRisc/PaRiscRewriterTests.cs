@@ -284,8 +284,8 @@ namespace Reko.UnitTests.Arch.PaRisc
         {
             Given_HexString("08200440");
             AssertCode(     // ds	r0,r1,r0
-                "0|L--|000016F0(4): 1 instructions",
-                "1|L--|@@@");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = __division_step(0<64>, r1)");
         }
 
         [Test]
@@ -871,24 +871,6 @@ namespace Reko.UnitTests.Arch.PaRisc
         }
 
         [Test]
-        public void PaRiscRw_cmpiclr()
-        {
-            Given_HexBytes("93A06000");	// cmpiclr,<=	+00000000,r29,r0
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void PaRiscRw_cmpclr()
-        {
-            Given_HexBytes("0A984880");	// cmpclr,<	r24,r20,r0
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
         public void PaRiscRw_cstd()
         {
             Given_HexBytes("2D363733");	// cstd,4,mb,bc	r19,11(r9)
@@ -1038,16 +1020,6 @@ namespace Reko.UnitTests.Arch.PaRisc
             Given_HexBytes("0D77A9D4");	// ldcw,s	r23(sr2,r11),r20
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
-
-
-        [Test]
-        public void PaRiscRw_movb()
-        {
-            Given_HexBytes("CA500580");	// movb	r16,r18,00001474
-            AssertCode(
-                "0|TD-|00100000(4): 1 instructions",
                 "1|L--|@@@");
         }
 

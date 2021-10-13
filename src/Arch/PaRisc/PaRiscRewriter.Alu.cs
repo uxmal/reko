@@ -126,6 +126,14 @@ namespace Reko.Arch.PaRisc
 
         }
 
+        private void RewriteDs()
+        {
+            var src1 = RewriteOp(instr.Operands[0]);
+            var src2 = RewriteOp(instr.Operands[1]);
+            var dst = binder.EnsureIdentifier(((RegisterOperand) instr.Operands[2]).Register);
+            m.Assign(dst, host.Intrinsic("__division_step", true, dst.DataType, src1, src2));
+        }
+
         private void RewriteExtrw()
         {
             var src = RewriteOp(instr.Operands[0]);

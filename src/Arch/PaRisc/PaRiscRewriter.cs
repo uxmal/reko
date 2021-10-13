@@ -95,6 +95,7 @@ namespace Reko.Arch.PaRisc
                 case Mnemonic.@break: RewriteBreak(); break;
                 case Mnemonic.depwi: RewriteDepwi(); break;
                 case Mnemonic.diag: RewriteDiag(); break;
+                case Mnemonic.ds: RewriteDs(); break;
                 case Mnemonic.extrw: RewriteExtrw(); break;
                 case Mnemonic.fadd: RewriteFpArithmetic(m.FAdd); break;
                 case Mnemonic.fcpy: RewriteFcpy(); break;
