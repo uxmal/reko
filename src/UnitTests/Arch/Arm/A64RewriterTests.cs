@@ -1643,6 +1643,15 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_fcvtzs_i32_from_f64()
+        {
+            Given_HexString("0C00781E");
+            AssertCode(     // fcvtzs	w12,d0
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|w12 = CONVERT(trunc(d0), real64, int32)");
+        }
+
+        [Test]
         public void AArch64Rw_ucvtf_real32_int32()
         {
             Given_Instruction(0x1E230101);
