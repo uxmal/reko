@@ -24,6 +24,9 @@ using System.Text;
 
 namespace Reko.Core.Configuration
 {
+    /// <summary>
+    /// This class describes a particular model of a CPU processor architecture.
+    /// </summary>
     public class ModelDefinition
     {
         public string? Name { get; set; }
