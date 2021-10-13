@@ -245,6 +245,21 @@ namespace Reko.Arch.PaRisc
             MaybeSkipNextInstruction(iclass, false, dst, null);
         }
 
+        private void RewriteSub_b()
+        {
+            var src1 = RewriteOp(instr.Operands[0]);
+            var src2 = RewriteOp(instr.Operands[1]);
+            var dst = RewriteOp(instr.Operands[2]);
+            // We do not take the trouble of widening the CF to the word size
+            // to simplify code analysis in later stages. 
+            var c = binder.EnsureFlagGroup(Registers.CF);
+            m.Assign(
+                dst,
+                m.ISub(
+                    m.ISub(src1, src2),
+                                c));
+        }
+
         private void RewriteSubi()
         {
             var src1 = RewriteOp(instr.Operands[1]);

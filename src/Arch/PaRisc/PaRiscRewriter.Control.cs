@@ -44,8 +44,35 @@ namespace Reko.Arch.PaRisc
                 var src = (RegisterOperand) instr.Operands[0];
                 m.Assign(reg, m.IAdd(reg, binder.EnsureRegister(src.Register)));
             }
-            var addrDest = ((AddressOperand) instr.Operands[2]).Address;
-            MaybeBranchAndAnnul(addrDest, reg);
+            MaybeBranchAndAnnul(2, RewriteCondition, reg);
+        }
+
+        private void RewriteBb()
+        {
+            var reg = RewriteOp(instr.Operands[0]);
+            Expression bitNumber;
+            if (instr.Operands[1] is ImmediateOperand imm)
+            {
+                bitNumber = Constant.Int32(imm.Value.ToInt32());
+            }
+            else
+            {
+                bitNumber = RewriteOp(instr.Operands[1]);
+            }
+            var test = host.Intrinsic("__is_bit_set", true, PrimitiveType.Bool, reg, bitNumber);
+            MaybeBranchAndAnnul(2, RewriteBbCondition, test);
+        }
+
+        private Expression RewriteBbCondition(Expression a, Expression b)
+        {
+            switch (instr.Condition!.Type)
+            {
+            case ConditionType.Lt:
+            case ConditionType.Lt64:
+                return a;
+            default:
+                return a.Invert();
+            }
         }
 
         private void RewriteBranch()
@@ -141,18 +168,39 @@ namespace Reko.Arch.PaRisc
         {
             var left = RewriteOp(instr.Operands[iLeft]);
             var right = RewriteOp(instr.Operands[iRight]);
-            MaybeBranchAndAnnul(((AddressOperand)instr.Operands[2]).Address, left, right);
+            MaybeBranchAndAnnul(2, RewriteCondition, left, right);
         }
 
-        private void MaybeBranchAndAnnul(Address addrDest, Expression reg, Expression? right = null)
+        private void RewriteCmpclr(int iLeft, int iRight)
         {
+            var left = RewriteOp(instr.Operands[iLeft]);
+            var right = RewriteOp(instr.Operands[iRight]);
+            var tmpLeft = binder.CreateTemporary(left.DataType);
+            var tmpRight = binder.CreateTemporary(right.DataType);
+            m.Assign(tmpLeft, left);
+            m.Assign(tmpRight, right);
+            var reg = ((RegisterOperand) instr.Operands[2]).Register;
+            if (reg.Number != 0)
+                m.Assign(binder.EnsureIdentifier(reg), 0);
+            var condition = RewriteCondition(tmpLeft, tmpRight);
+            var addrNext = instr.Address + 8;
+            m.Branch(condition, addrNext);
+        }
+
+        private void MaybeBranchAndAnnul(
+            int iop,  
+            Func<Expression,Expression,Expression> rewriteCondition,
+            Expression reg,
+            Expression? right = null)
+        {
+            var addrDest = ((AddressOperand) instr.Operands[iop]).Address;
             if (instr.Annul)
             {
                 if (addrDest <= instr.Address)
                 {
                     // We're jumping backward, so we annul the falling out of the loop.
                     // Generate the jump out of the loop, without delay slot.
-                    MaybeConditionalJump(InstrClass.ConditionalTransfer, instr.Address + 8, true, reg, right);
+                    MaybeConditionalJump(InstrClass.ConditionalTransfer, instr.Address + 8, rewriteCondition, true, reg, right);
                     // Generate jump to top of loop, with delay slot.
                     m.GotoD(addrDest);
                 }
@@ -161,7 +209,7 @@ namespace Reko.Arch.PaRisc
                     // We're jumping forward, so we annul only when the branch is taken. 
                     // This is equivalent to a branch on a "normal" architecture with no
                     // delay slots.
-                    MaybeConditionalJump(InstrClass.ConditionalTransfer, addrDest, false, reg, right);
+                    MaybeConditionalJump(InstrClass.ConditionalTransfer, addrDest, rewriteCondition, false, reg, right);
                     this.iclass = InstrClass.ConditionalTransfer;
                 }
             }
@@ -169,8 +217,16 @@ namespace Reko.Arch.PaRisc
             {
                 MaybeConditionalJump(
                     InstrClass.ConditionalTransfer | InstrClass.Delay,
-                    addrDest, false, reg, right);
+                    addrDest, rewriteCondition, false, reg, right);
             }
+        }
+
+        private void RewriteMovb()
+        {
+            var src = RewriteOp(instr.Operands[0]);
+            var dst = RewriteOp(instr.Operands[1]);
+            m.Assign(dst, src);
+            MaybeBranchAndAnnul(2, RewriteCondition, src);
         }
 
         private void RewriteRfi(string intrinsic)

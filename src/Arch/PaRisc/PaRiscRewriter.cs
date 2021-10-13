@@ -83,12 +83,15 @@ namespace Reko.Arch.PaRisc
                 case Mnemonic.addil: RewriteAddi(false); break;
                 case Mnemonic.and: RewriteLogical(m.And); break;
                 case Mnemonic.andcm: RewriteLogical((a, b) => m.And(a, m.Comp(b))); break;
+                case Mnemonic.bb: RewriteBb(); break;
                 case Mnemonic.b_l: RewriteBranch(); break;
                 case Mnemonic.be: RewriteBe(); break;
                 case Mnemonic.be_l: RewriteBe(); break;
                 case Mnemonic.bv: RewriteBv(); break;
                 case Mnemonic.cmpb: RewriteCmpb(0, 1); break;
+                case Mnemonic.cmpclr: RewriteCmpclr(0, 1); break;
                 case Mnemonic.cmpib: RewriteCmpb(1, 0); break;
+                case Mnemonic.cmpiclr: RewriteCmpclr(1, 0); break;
                 case Mnemonic.@break: RewriteBreak(); break;
                 case Mnemonic.depwi: RewriteDepwi(); break;
                 case Mnemonic.diag: RewriteDiag(); break;
@@ -112,6 +115,7 @@ namespace Reko.Arch.PaRisc
                 case Mnemonic.ldwa: RewriteLd(PrimitiveType.Word32); break;
                 case Mnemonic.mfctl: RewriteMfctl(); break;
                 case Mnemonic.mfctl_w: RewriteMfctl(); break;
+                case Mnemonic.movb: RewriteMovb(); break;
                 case Mnemonic.mtctl: RewriteMtctl(); break;
                 case Mnemonic.mtsm: RewriteMtsm(); break;
                 case Mnemonic.mtsp: RewriteMtsp(); break;
@@ -127,6 +131,7 @@ namespace Reko.Arch.PaRisc
                 case Mnemonic.sth: RewriteSt(PrimitiveType.Word16); break;
                 case Mnemonic.stw: RewriteSt(PrimitiveType.Word32); break;
                 case Mnemonic.sub: RewriteSub(); break;
+                case Mnemonic.sub_b: RewriteSub_b(); break;
                 case Mnemonic.subi: RewriteSubi(); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
@@ -147,13 +152,13 @@ namespace Reko.Arch.PaRisc
         private void MaybeAnnulNextInstruction(InstrClass iclass, Expression e)
         {
             var addrNext = instr.Address + 8;
-            MaybeConditionalJump(InstrClass.ConditionalTransfer, addrNext, false, e);
+            MaybeConditionalJump(InstrClass.ConditionalTransfer, addrNext, RewriteCondition, false, e);
         }
 
         private bool MaybeSkipNextInstruction(InstrClass iclass, bool invert, Expression left, Expression? right = null)
         {
             var addrNext = instr.Address + 8;
-            if (MaybeConditionalJump(iclass, addrNext, invert, left, right))
+            if (MaybeConditionalJump(iclass, addrNext, RewriteCondition, invert, left, right))
             {
                 this.iclass = InstrClass.ConditionalTransfer;
                 return true;
@@ -164,7 +169,13 @@ namespace Reko.Arch.PaRisc
             }
         }
 
-        private bool MaybeConditionalJump(InstrClass iclass, Address addrTaken, bool invert, Expression left, Expression? right = null)
+        private bool MaybeConditionalJump(
+            InstrClass iclass,
+            Address addrTaken,
+            Func<Expression,Expression,Expression> rewriteCondition,
+            bool invert, 
+            Expression left,
+            Expression? right = null)
         {
             if (instr.Condition == null ||
                 instr.Condition.Type == ConditionType.Never ||
@@ -172,7 +183,7 @@ namespace Reko.Arch.PaRisc
                 return false;
 
             right = right ?? Constant.Word(left.DataType.BitSize, 0);
-            Expression e = RewriteCondition(left, right);
+            Expression e = rewriteCondition(left, right);
             if (e is Constant c)
             {
                 if (!c.IsZero)

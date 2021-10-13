@@ -221,7 +221,6 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, m.Conditional(dst.DataType, TestCond(cond), srcTrue, srcFalse));
         }
 
-
         private void RewriteCsinc()
         {
             var dst = RewriteOp(instr.Operands[0]);
