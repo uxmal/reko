@@ -6035,7 +6035,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("FFBA");	// revsh r7, r7
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r7 = __rev(r7)");
+                "1|L--|r7 = __rev_8(r7)");
         }
 
         [Test]
@@ -6044,7 +6044,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("19BA");	// rev r1, r3
             AssertCode(
                 "0|L--|00100000(2): 1 instructions",
-                "1|L--|r1 = __rev(r3)");
+                "1|L--|r1 = __rev_8(r3)");
         }
 
         [Test]

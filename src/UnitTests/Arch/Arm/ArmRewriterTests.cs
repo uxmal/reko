@@ -51,6 +51,15 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmRw_adc()
+        {
+            Given_UInt32s(0xE0A22002); // adc r2,r2,r2
+            AssertCode(
+               "0|L--|00100000(4): 1 instructions",
+               "1|L--|r2 = r2 + r2 + C");
+        }
+
+        [Test]
         public void ArmRw_add_r1_r2_r3()
         {
             Given_BitStrings("1110 00 0 0100 0 0010 0001 00000000 0011");
@@ -173,6 +182,15 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void ArmRw_clrex()
+        {
+            Given_HexString("1FF07FF5");
+            AssertCode(     // clrex
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__clrex()");
+        }
+
+        [Test]
         public void ArmRw_cmp()
         {
             Given_UInt32s(0xE3530000);  // cmp r3,#0
@@ -188,6 +206,43 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|NZCV = cond(r3 + 1<32>)");
+        }
+
+        [Test]
+        public void ArmRw_lda()
+        {
+            Given_HexString("9F6C91E1");
+            AssertCode(     // lda	r6,[r1]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r6 = __load_acquire_32(r1)");
+        }
+
+        [Test]
+        public void ArmRw_ldab()
+        {
+            Given_HexString("9F0CD0E1");
+            AssertCode(     // ldab	r0,[r0]
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = __load_acquire_8(r0)",
+                "2|L--|r0 = CONVERT(v3, byte, word32)");
+        }
+
+        [Test]
+        public void ArmRw_ldaex()
+        {
+            Given_HexString("9F3E91E1");
+            AssertCode(     // ldaex	r3,[r1]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = __load_acquire_exclusive_32(r1)");
+        }
+
+        [Test]
+        public void ArmRw_ldaexd()
+        {
+            Given_HexString("9F2EB0E1");
+            AssertCode(     // ldaexd	r2,r3,[r0]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2_r3 = __load_acquire_exclusive_64(r0)");
         }
 
         [Test]
@@ -252,6 +307,16 @@ namespace Reko.UnitTests.Arch.Arm
                 "1|T--|if (Test(ULT,C)) branch 00100004",
                 "2|T--|goto lr");
         }
+
+        [Test]
+        public void ArmRw_bxj()
+        {
+            Given_UInt32s(0xE1204620);
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|goto r0");
+        }
+
 
         [Test]
         public void ArmRw_movt()
@@ -440,40 +505,15 @@ means
         }
 
         [Test]
-        public void ArmRw_rev()
+        public void ArmRw_ldr_literal()
         {
-            Given_UInt32s(0xE6BF2F32); // rev r2,r2
+            Given_UInt32s(0xE59F5254);        // ldr\tr5,[pc,#&254]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = __rev(r2)");
+                "1|L--|r5 = Mem0[0x0010025C<p32>:word32]");
         }
 
-        [Test]
-        public void ArmRw_vmov_i32_128bit()
-        {
-            Given_UInt32s(0xF2C00051); // vmov.i32 q8,#1
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|q8 = SEQ(0x100000001<64>, 0x100000001<64>)");    //$TODO: support for 128-bit and larger constants LIT: maybe a <128>?
-        }
 
-        [Test]
-        public void ArmRw_vmov_i32_64bit()
-        {
-            Given_UInt32s(0xF2C00011); // vmov.i32 d16,#1
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|d16 = 0x100000001<64>");
-        }
-
-        [Test]
-        public void ArmRw_adc()
-        {
-            Given_UInt32s(0xE0A22002); // adc r2,r2,r2
-            AssertCode(
-               "0|L--|00100000(4): 1 instructions",
-               "1|L--|r2 = r2 + r2 + C");
-        }
 
         [Test]
         public void ArmRw_sbc()
@@ -482,17 +522,6 @@ means
             AssertCode(
                "0|L--|00100000(4): 1 instructions",
                "1|L--|r2 = r2 - r2 - C");
-        }
-
-        [Test]
-        public void ArmRw_vstmia()
-        {
-            Given_UInt32s(0xECE30B04);  // vstmia r3, d16, d17
-            AssertCode(
-               "0|L--|00100000(4): 3 instructions",
-               "1|L--|Mem0[r3:word64] = d16",
-               "2|L--|Mem0[r3 + 8<i32>:word64] = d17",
-               "3|L--|r3 = r3 + 16<i32>");
         }
 
         [Test]
@@ -622,7 +651,7 @@ means
                 "1|L--|r3 = __mrc(p15, 0<32>, cr2, cr0, 0<32>)");
         }
 
-        [Test]
+        // Only present in old ARM models
         public void ArmRw_mrrc()
         {
             Given_UInt32s(0xEC565554);        // mrrc\tp5,#5,r5,r6,c4
@@ -856,8 +885,6 @@ means
                 "1|L--|q8 = q8 ^ q10");
         }
 
-
-
         [Test]
         public void ArmRw_vmov_32()
         {
@@ -865,6 +892,24 @@ means
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r2 = d16[0<i32>]");
+        }
+
+        [Test]
+        public void ArmRw_vmov_i32_128bit()
+        {
+            Given_UInt32s(0xF2C00051); // vmov.i32 q8,#1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|q8 = SEQ(0x100000001<64>, 0x100000001<64>)");    //$TODO: support for 128-bit and larger constants LIT: maybe a <128>?
+        }
+
+        [Test]
+        public void ArmRw_vmov_i32_64bit()
+        {
+            Given_UInt32s(0xF2C00011); // vmov.i32 d16,#1
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d16 = 0x100000001<64>");
         }
 
         [Test]
@@ -1105,7 +1150,7 @@ means
                 "1|L--|d16 = __vnmul_f64(d8, d16)");
         }
 
-        [Test]
+        // Only present in old ARM models
         public void ArmRw_cdplo()
         {
             Given_UInt32s(0x3e200000);  // cdplo p0, #2, c0, c0, c0, #0
@@ -1144,7 +1189,7 @@ means
                 "2|L--|NZC = cond(r0)");
         }
 
-        [Test]
+        // Only present in old ARM models
         public void ArmRw_stc()
         {
             Given_UInt32s(0xECCC5CED);  // stc p12, c12, [ip], {0xcd}
@@ -1153,7 +1198,7 @@ means
                 "1|L--|__stc(p12, cr5, Mem0[ip:word32])");
         }
 
-        [Test]
+        // Only present in old ARM models
         public void ArmRw_ldc()
         {
             Given_UInt32s(0xECDC5CED);
@@ -1427,20 +1472,82 @@ means
         }
 
         [Test]
-        public void ArmRw_switch()
+        public void ArmRw_rev()
         {
-            Given_UInt32s(0xE796F104);    // ldr pc,[r6,r4, lsl #2]
-            AssertCode(
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|goto Mem0[r6 + (r4 << 2<i32>):word32]");
-        }
-
-        public void ArmRw_ldr_literal()
-        {
-            Given_UInt32s(0xE59F5254);        // ldr\tr5,[pc,#&254]
+            Given_UInt32s(0xE6BF2F32); // rev r2,r2
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r5 = Mem0[@@@:word32]");
+                "1|L--|r2 = __rev_8(r2)");
+        }
+
+        [Test]
+        public void ArmRw_rev16()
+        {
+            Given_HexString("B00FBFE6");
+            AssertCode(     // rev16	r0,r0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r0 = __rev_16(r0)");
+        }
+
+        [Test]
+        public void ArmRw_stl()
+        {
+            Given_HexString("91FC80E1");
+            AssertCode(     // stl	r1,[r0]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__store_release_32(r0, r1)");
+        }
+
+        [Test]
+        public void ArmRw_stlex()
+        {
+            Given_HexString("948A8301");
+            AssertCode(     // stlexeq	r8,r4,[r3]
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00100004",
+                "2|L--|r8 = __store_release_exclusive_32(r3, r4)");
+        }
+
+        [Test]
+        public void ArmRw_stlexd()
+        {
+            Given_HexString("961EA0E1");
+            AssertCode(     // stlexd	r1,r6,r7,[r0]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = __store_release_exclusive_64(r0, r6_r7)");
+        }
+
+        [Test]
+        public void ArmRw_stlexh()
+        {
+            Given_HexString("94AAEB01");
+            AssertCode(     // stlexheq	r10,r4,[fp]
+                "0|L--|00100000(4): 3 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00100004",
+                "2|L--|v4 = SLICE(r4, word16, 0)",
+                "3|L--|r10 = __store_release_exclusive_16(fp, v4)");
+        }
+
+        [Test]
+        public void ArmRw_stlh()
+        {
+            Given_HexString("9460EA01");
+            AssertCode(     // stlheq	r4,[r10]
+                "0|L--|00100000(4): 3 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00100004",
+                "2|L--|v4 = SLICE(r4, word16, 0)",
+                "3|L--|__store_release_16(r10, v4)");
+        }
+
+        [Test]
+        public void ArmRw_strexh()
+        {
+            Given_HexString("98D3EA01");
+            AssertCode(     // strexheq	sp,r8,[r10]
+                "0|L--|00100000(4): 3 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00100004",
+                "2|L--|v4 = SLICE(r8, word16, 0)",
+                "3|L--|sp = __store_exclusive_16(r10, v4)");
         }
 
         [Test]
@@ -1483,6 +1590,15 @@ means
                 "4|L--|Mem0[r3 + 12<i32>:word32] = r9",
                 "5|L--|Mem0[r3 + 16<i32>:word32] = ip",
                 "6|L--|Mem0[r3 + 20<i32>:word32] = lr");
+        }
+
+        [Test]
+        public void ArmRw_switch()
+        {
+            Given_UInt32s(0xE796F104);    // ldr pc,[r6,r4, lsl #2]
+            AssertCode(
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|goto Mem0[r6 + (r4 << 2<i32>):word32]");
         }
 
         [Test]
@@ -1633,12 +1749,30 @@ means
         }
 
         [Test]
+        public void ArmRw_vcvt()
+        {
+            Given_HexString("400AB8EE");
+            AssertCode(     // vcvt.f32.u32	s0,s0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s0 = CONVERT(s0, uint32, real32)");
+        }
+
+        [Test]
         public void ArmRw_vcvtr()
         {
             Given_UInt32s(0xEEFD9AE9);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|s19 = CONVERT(trunc(s19), word32, int32)");
+        }
+
+        [Test]
+        public void ArmRw_vcvtr_u32_f32()
+        {
+            Given_HexString("C52ABCEE");
+            AssertCode(     // vcvtr.u32.f32	s4,s10
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s4 = CONVERT(trunc(s10), word32, uint32)");
         }
 
         [Test]
@@ -1696,15 +1830,7 @@ means
                 "2|L--|r8 = __crc32h(r4, v4)");
         }
 
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ArmRw_vst3()
-        {
-            Given_UInt32s(0xF44F249F);
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
 
         [Test]
         public void ArmRw_crc32cw()
@@ -1733,13 +1859,15 @@ means
                 "1|L--|r10 = __sasx(r5, r4)");
         }
 
+        public void fonko<T>(int x, T b) { }
+
         [Test]
-        public void ArmRw_bxj()
+        public void ArmRw_vrecps()
         {
-            Given_UInt32s(0xE1204620);
-            AssertCode(
-                "0|T--|00100000(4): 1 instructions",
-                "1|T--|goto r0");
+            Given_HexString("F48F46F2");
+            AssertCode(     // vrecps.f32	q12,q11,q10
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|q12 = __vrecps_f32(q11)");
         }
 
         [Test]
@@ -1812,15 +1940,7 @@ means
                 "1|L--|r8 = __uqadd_u8(r8, r1)");
         }
 
-        [Test]
-        [Ignore(Categories.FailedTests)]
-        public void ArmRw_vtbl()
-        {
-            Given_UInt32s(0xF3F36800);
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|@@@");
-        }
+
 
         [Test]
         public void ArmRw_vrsra()
@@ -1842,6 +1962,16 @@ means
         }
 
         [Test]
+        public void ArmRw_vfma()
+        {
+            Given_HexString("ABAAAA3E");
+            AssertCode(     // vfmalo.f32	s20,s21,s23
+                "0|L--|00100000(4): 2 instructions",
+                "1|T--|if (Test(UGE,C)) branch 00100004",
+                "2|L--|s20 = s20 + s21 * s23");
+        }
+
+        [Test]
         public void ArmRw_vmla()
         {
             Given_UInt32s(0xF2DEF14C);
@@ -1851,12 +1981,21 @@ means
         }
 
         [Test]
-        [Ignore(Categories.FailedTests)]
         public void ArmRw_vld4()
         {
             Given_UInt32s(0xF468F191);
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+
+        [Test]
+        public void ArmRw_vld4_vld4()
+        {
+            Given_HexString("8DA128F4");
+            AssertCode(     // vld4.i32	{d10-d13},[r8]
+                "0|L--|008E7468(4): 1 instructions",
                 "1|L--|@@@");
         }
 
@@ -1867,6 +2006,53 @@ means
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|q10 = __vmlsl_s32(d15, d5[1<i32>])");
+        }
+
+        [Test]
+        public void ArmRw_vst3()
+        {
+            Given_UInt32s(0xF44F249F);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ArmRw_vstmia()
+        {
+            Given_UInt32s(0xECE30B04);  // vstmia r3, d16, d17
+            AssertCode(
+               "0|L--|00100000(4): 3 instructions",
+               "1|L--|Mem0[r3:word64] = d16",
+               "2|L--|Mem0[r3 + 8<i32>:word64] = d17",
+               "3|L--|r3 = r3 + 16<i32>");
+        }
+
+        [Test]
+        public void ArmRw_vtbl()
+        {
+            Given_UInt32s(0xF3F36800);
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ArmRw_vtbl_2()
+        {
+            Given_HexString("2029F2F3");
+            AssertCode(     // vtbl.i8	d18,{d2-d3},d16
+                "0|L--|008E222C(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void ArmRw_vzip()
+        {
+            Given_HexString("E401FAF3");
+            AssertCode(     // vzip.i32	q8,q10
+                "0|L--|000377F8(4): 1 instructions",
+                "1|L--|@@@");
         }
 
         [Test]

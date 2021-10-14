@@ -75,6 +75,7 @@ namespace Reko.Arch.Arm.AArch32
             switch (instr.vector_data)
             {
             case ArmVectorData.F32S32: dstType = PrimitiveType.Real32; srcType = PrimitiveType.Int32; break;
+            case ArmVectorData.F32U32: dstType = PrimitiveType.Real32; srcType = PrimitiveType.UInt32; break;
             case ArmVectorData.F64S32: dstType = PrimitiveType.Real64; srcType = PrimitiveType.Int32; break;
             case ArmVectorData.F64F32: dstType = PrimitiveType.Real64; srcType = PrimitiveType.Real32; break;
             default: NotImplementedYet(); return;
@@ -102,6 +103,7 @@ namespace Reko.Arch.Arm.AArch32
             switch (instr.vector_data)
             {
             case ArmVectorData.S32F32: dstType = PrimitiveType.Int32; break;
+            case ArmVectorData.U32F32: dstType = PrimitiveType.UInt32; break;
             default: NotImplementedYet(); return;
             }
             src = host.Intrinsic("trunc", false, src.DataType, src);
@@ -169,7 +171,7 @@ namespace Reko.Arch.Arm.AArch32
                     return;
                 }
  
-                var fname = $"__vmov_{VectorElementType(instr.vector_data)}";
+                var fname = $"__vmov_{VectorElementTypeName(instr.vector_data)}";
                 var intrinsic = host.Intrinsic(fname,false,Dst().Width, src);
                 m.Assign(dst, m.Fn(intrinsic));
             }
@@ -325,6 +327,40 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, intrinsic);
         }
 
+        private void RewriteVfmas(string intrinsicName, Func<Expression,Expression,Expression> scalar)
+        {
+            Expression RegOperand(MachineOperand op, PrimitiveType dt)
+            {
+                var reg = binder.EnsureRegister(((RegisterOperand) op).Register);
+                if (reg.DataType.BitSize > dt.BitSize)
+                {
+                    var tmp = binder.CreateTemporary(dt);
+                    m.Assign(tmp, m.Slice(reg, dt, 0));
+                    return tmp;
+                }
+                return reg;
+            }
+            var dt = VectorElementType(instr.vector_data);
+            if (dt.BitSize > Src1().Width.BitSize)
+            {
+                EmitUnitTest(instr);
+                m.Invalid();
+                iclass = InstrClass.Invalid;
+            }
+            else
+            {
+                var op1 = RegOperand(Src1(), dt);
+                var op2 = RegOperand(Src2(), dt);
+                var dst = RegOperand(Dst(), dt);
+                var result = scalar(dst, m.FMul(op1, op2));
+                if (result.DataType.BitSize < Dst().Width.BitSize)
+                {
+                    result = m.Seq(m.Word(Dst().Width.BitSize - result.DataType.BitSize, 0), result);
+                }
+                m.Assign(Operand(Dst()), result);
+            }
+        }
+
         private void RewriteVmul()
         {
             var src1 = this.Operand(Src1());
@@ -336,7 +372,7 @@ namespace Reko.Arch.Arm.AArch32
             var celemSrc = srcType.BitSize / srcElemSize.BitSize;
             var arrSrc = new ArrayType(srcType, celemSrc);
             var arrDst = new ArrayType(dstType, celemSrc);
-            var fnName = $"__vmul_{VectorElementType(instr.vector_data)}";
+            var fnName = $"__vmul_{VectorElementTypeName(instr.vector_data)}";
             var intrinsic = host.Intrinsic(fnName, false, arrDst, src1, src2);
             m.Assign(dst, m.Fn(intrinsic));
         }
@@ -356,7 +392,7 @@ namespace Reko.Arch.Arm.AArch32
             var celemSrc = srcType.BitSize / srcElemSize.BitSize;
             var arrSrc = new ArrayType(srcType, celemSrc);
             var arrDst = new ArrayType(dstType, celemSrc);
-            var fnName = string.Format(fnNameFormat, VectorElementType(elemType));
+            var fnName = string.Format(fnNameFormat, VectorElementTypeName(elemType));
             var intrinsic = host.Intrinsic(fnName, false, arrDst, src1);
             m.Assign(dst, intrinsic);
         }
@@ -388,7 +424,7 @@ namespace Reko.Arch.Arm.AArch32
             var celemSrc = srcType.BitSize / (srcElemSize.BitSize != 0 ? srcElemSize.BitSize : 8);
             var arrSrc = new ArrayType(srcType, celemSrc);
             var arrDst = new ArrayType(dstType, celemSrc);
-            var fnName = string.Format(fnNameFormat, VectorElementType(elemType));
+            var fnName = string.Format(fnNameFormat, VectorElementTypeName(elemType));
             var intrinsic = host.Intrinsic(fnName, false, arrDst, src1, src2);
             m.Assign(dst, intrinsic);
         }
@@ -400,7 +436,30 @@ namespace Reko.Arch.Arm.AArch32
             m.Assign(dst, src);
         }
 
-        string VectorElementType(ArmVectorData elemType)
+        PrimitiveType VectorElementType(ArmVectorData elemType)
+        {
+            switch (elemType)
+            {
+            case ArmVectorData.I8: return PrimitiveType.Byte;
+            case ArmVectorData.S8: return PrimitiveType.Int8;
+            case ArmVectorData.U8: return PrimitiveType.UInt8;
+            case ArmVectorData.F16: return PrimitiveType.Real16;
+            case ArmVectorData.I16: return PrimitiveType.Word16;
+            case ArmVectorData.S16: return PrimitiveType.Int16;
+            case ArmVectorData.U16: return PrimitiveType.UInt16;
+            case ArmVectorData.F32: return PrimitiveType.Real32;
+            case ArmVectorData.I32: return PrimitiveType.Word32;
+            case ArmVectorData.S32: return PrimitiveType.Int32;
+            case ArmVectorData.U32: return PrimitiveType.UInt32;
+            case ArmVectorData.F64: return PrimitiveType.Real64;
+            case ArmVectorData.I64: return PrimitiveType.Word64;
+            case ArmVectorData.S64: return PrimitiveType.Int64;
+            case ArmVectorData.U64: return PrimitiveType.UInt64;
+            default: NotImplementedYet(); return PrimitiveType.Bool;
+            }
+        }
+
+        string VectorElementTypeName(ArmVectorData elemType)
         {
             switch (elemType)
             {

@@ -46,6 +46,11 @@ namespace Reko.Arch.Arm.AArch32
             m.SideEffect(host.Intrinsic("__cdp", false, VoidType.Instance, ops));
         }
 
+        private void RewriteClrex()
+        {
+            m.SideEffect(host.Intrinsic("__clrex", false, VoidType.Instance));
+        }
+
         private void RewriteCps(string name)
         {
             m.SideEffect(host.Intrinsic(name, false, VoidType.Instance));

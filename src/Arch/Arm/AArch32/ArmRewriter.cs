@@ -92,19 +92,11 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.aese:
                 case Mnemonic.aesimc:
                 case Mnemonic.aesmc:
-                case Mnemonic.clrex:
                 case Mnemonic.dbg:
                 case Mnemonic.fldmdbx:
                 case Mnemonic.fldmiax:
                 case Mnemonic.fstmdbx:
                 case Mnemonic.fstmiax:
-                case Mnemonic.lda:
-                case Mnemonic.ldab:
-                case Mnemonic.ldaex:
-                case Mnemonic.ldaexb:
-                case Mnemonic.ldaexd:
-                case Mnemonic.ldaexh:
-                case Mnemonic.ldah:
                 case Mnemonic.ldrexb:
                 case Mnemonic.ldrexd:
                 case Mnemonic.ldrexh:
@@ -115,7 +107,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.pli:
                 case Mnemonic.qsub8:
                 case Mnemonic.rbit:
-                case Mnemonic.rev16:
                 case Mnemonic.rfeda:
                 case Mnemonic.rfedb:
                 case Mnemonic.rfeia:
@@ -145,16 +136,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.srsia:
                 case Mnemonic.srsib:
                 case Mnemonic.ssax:
-                case Mnemonic.stl:
-                case Mnemonic.stlb:
-                case Mnemonic.stlex:
-                case Mnemonic.stlexb:
-                case Mnemonic.stlexd:
-                case Mnemonic.stlexh:
-                case Mnemonic.stlh:
-                case Mnemonic.strexb:
                 case Mnemonic.strexd:
-                case Mnemonic.strexh:
                 case Mnemonic.sxtab16:
                 case Mnemonic.sxtb16:
                 case Mnemonic.uhadd16:
@@ -181,8 +163,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vcvtn:
                 case Mnemonic.vcvtp:
                 case Mnemonic.vcvtt:
-                case Mnemonic.vfma:
-                case Mnemonic.vfms:
                 case Mnemonic.vfnma:
                 case Mnemonic.vfnms:
                 case Mnemonic.vld1:
@@ -215,7 +195,6 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vqsub:
                 case Mnemonic.vraddhn:
                 case Mnemonic.vrecpe:
-                case Mnemonic.vrecps:
                 case Mnemonic.vrev16:
                 case Mnemonic.vrev32:
                 case Mnemonic.vrev64:
@@ -275,6 +254,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.cbnz: RewriteCbnz(m.Ne0); break;
                 case Mnemonic.cdp: RewriteCdp("__cdp"); break;
                 case Mnemonic.cdp2: RewriteCdp("__cdp2"); break;
+                case Mnemonic.clrex: RewriteClrex(); break;
                 case Mnemonic.clz: RewriteClz(); break;
                 case Mnemonic.cmn: RewriteCmp(m.IAdd); break;
                 case Mnemonic.cmp: RewriteCmp(m.ISub); break;
@@ -295,6 +275,12 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.hvc: RewriteHvc(); break;
                 case Mnemonic.isb: RewriteIsb(); break;
                 case Mnemonic.it: RewriteIt(); break;
+                case Mnemonic.lda: RewriteLoadAcquire(lda_sig); break;
+                case Mnemonic.ldab: RewriteLoadAcquire(ldab_sig); break;
+                case Mnemonic.ldaex: RewriteLoadAcquire(ldaex_sig); break;
+                case Mnemonic.ldaexb: RewriteLoadAcquire(ldaexb_sig); break;
+                case Mnemonic.ldaexd: RewriteLoadAcquireDouble(ldaexd_sig); break;
+                case Mnemonic.ldah: RewriteLoadAcquire(ldah_sig); break;
                 case Mnemonic.ldc2l: RewriteLdc("__ldc2l"); break;
                 case Mnemonic.ldc2: RewriteLdc("__ldc2"); break;
                 case Mnemonic.ldcl: RewriteLdc("__ldcl"); break;
@@ -350,7 +336,8 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.qsub16: RewriteVectorBinOp("__qsub_{0}", ArmVectorData.S16); break;
                 case Mnemonic.ror: RewriteShift(Ror); break;
                 case Mnemonic.rrx: RewriteShift(Rrx); break;
-                case Mnemonic.rev: RewriteRev(); break;
+                case Mnemonic.rev: RewriteRev(PrimitiveType.Byte); break;
+                case Mnemonic.rev16: RewriteRev(PrimitiveType.Word16); break;
                 case Mnemonic.revsh: RewriteRevsh(); break;
                 case Mnemonic.rsb: RewriteRevBinOp(m.ISub, instr.SetFlags); break;
                 case Mnemonic.rsc: RewriteAdcSbc(m.ISub, true); break;
@@ -403,6 +390,13 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.stc2: RewriteStc("__stc2"); break;
                 case Mnemonic.stc: RewriteStc("__stc"); break;
                 case Mnemonic.stcl: RewriteStc("__stcl"); break;
+                case Mnemonic.stl:  RewriteStoreRelease("__store_release_32", PrimitiveType.Word32); break;
+                case Mnemonic.stlb: RewriteStoreRelease("__store_release_8", PrimitiveType.Byte); break;
+                case Mnemonic.stlh: RewriteStoreRelease("__store_release_16", PrimitiveType.Word16); break;
+                case Mnemonic.stlex:  RewriteStoreExclusive("__store_release_exclusive_32", PrimitiveType.Word32); break;
+                case Mnemonic.stlexb: RewriteStoreExclusive("__store_release_exclusive_8", PrimitiveType.Byte); break;
+                case Mnemonic.stlexh: RewriteStoreExclusive("__store_release_exclusive_16", PrimitiveType.Word16); break;
+                case Mnemonic.stlexd: RewriteStoreReleaseDoubleExclusive("__store_release_exclusive_64"); break;
                 case Mnemonic.stm: RewriteStm(true, true); break;
                 case Mnemonic.stmdb: RewriteStm(false, false); break;
                 case Mnemonic.stmda: RewriteStm(false, true); break;
@@ -411,7 +405,9 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.strb: RewriteStr(PrimitiveType.Byte); break;
                 case Mnemonic.strbt: RewriteStr(PrimitiveType.Byte); break;
                 case Mnemonic.strd: RewriteStrd(); break;
-                case Mnemonic.strex: RewriteStrex(); break;
+                case Mnemonic.strex: RewriteStoreExclusive("__store_exclusive_32", PrimitiveType.Word32); break;
+                case Mnemonic.strexb: RewriteStoreExclusive("__store_exclusive_8", PrimitiveType.Byte); break;
+                case Mnemonic.strexh: RewriteStoreExclusive("__store_exclusive_16", PrimitiveType.Word16); break;
                 case Mnemonic.strh: RewriteStr(PrimitiveType.UInt16); break;
                 case Mnemonic.strht: RewriteStr(PrimitiveType.UInt16); break;
                 case Mnemonic.strt: RewriteStr(PrimitiveType.Word32); break;
@@ -481,6 +477,8 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vdup: RewriteVdup(); break;
                 case Mnemonic.veor: RewriteVecBinOp(m.Xor); break;
                 case Mnemonic.vext: RewriteVext(); break;
+                case Mnemonic.vfma: RewriteVfmas("__vfma", m.FAdd); break;
+                case Mnemonic.vfms: RewriteVfmas("__vfms", m.FSub); break;
                 case Mnemonic.vhadd: RewriteVectorBinOp("__vhadd_{0}"); break;
                 case Mnemonic.vhsub: RewriteVectorBinOp("__vhsub_{0}"); break;
                 case Mnemonic.vldmia: RewriteVldmia(); break;
@@ -509,6 +507,7 @@ namespace Reko.Arch.Arm.AArch32
                 case Mnemonic.vqabs: RewriteVectorBinOp("__vqabs_{0}"); break;
                 case Mnemonic.vqadd: RewriteVectorBinOp("__vqadd_{0}"); break;
                 case Mnemonic.vqshl: RewriteVectorBinOp("__vqshl_{0}"); break;
+                case Mnemonic.vrecps: RewriteVectorUnaryOp("__vrecps_{0}"); break;
                 case Mnemonic.vrhadd: RewriteVectorBinOp("__vrhadd_{0}"); break;
                 case Mnemonic.vrshl: RewriteVectorBinOp("__vrshl_{0}"); break;
                 case Mnemonic.vrshr: RewriteVectorBinOp("__vrshr_{0}"); break;
@@ -1056,6 +1055,37 @@ namespace Reko.Arch.Arm.AArch32
         {
             var testgenSvc = arch.Services.GetService<ITestGenerationService>();
             testgenSvc?.ReportMissingRewriter("ArmRw", instr, instr.Mnemonic.ToString(), rdr, "");
+        }
+
+        private static readonly IntrinsicProcedure lda_sig;
+        private static readonly IntrinsicProcedure ldab_sig;
+        private static readonly IntrinsicProcedure ldah_sig;
+        private static readonly IntrinsicProcedure ldaex_sig;
+        private static readonly IntrinsicProcedure ldaexb_sig;
+        private static readonly IntrinsicProcedure ldaexd_sig;
+        private static readonly IntrinsicProcedure ldaexh_sig;
+
+
+        static ArmRewriter()
+        {
+            var pb = new Pointer(PrimitiveType.Byte, 32);
+            var p16 = new Pointer(PrimitiveType.Word16, 32);
+            var p32 = new Pointer(PrimitiveType.Word32, 32);
+            var p64 = new Pointer(PrimitiveType.Word64, 64);
+            lda_sig = new IntrinsicBuilder("__load_acquire_32", true)
+                .Param(p32).Returns(PrimitiveType.Word32);
+            ldab_sig = new IntrinsicBuilder("__load_acquire_8", true)
+                .Param(pb).Returns(PrimitiveType.Byte);
+            ldah_sig = new IntrinsicBuilder("__load_acquire_16", true)
+                .Param(p16).Returns(PrimitiveType.Byte);
+            ldaex_sig = new IntrinsicBuilder("__load_acquire_exclusive_32", true)
+                .Param(p32).Returns(PrimitiveType.Word32);
+            ldaexb_sig = new IntrinsicBuilder("__load_acquire_exclusive_8", true)
+                .Param(pb).Returns(PrimitiveType.Byte);
+            ldaexd_sig = new IntrinsicBuilder("__load_acquire_exclusive_64", true)
+                .Param(p64).Returns(PrimitiveType.Word64);
+            ldaexh_sig = new IntrinsicBuilder("__load_acquire_exclusive_16", true)
+                .Param(p16).Returns(PrimitiveType.Word16);
         }
     }
 

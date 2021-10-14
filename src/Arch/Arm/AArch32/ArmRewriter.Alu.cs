@@ -145,10 +145,11 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-        private void RewriteRev()
+        private void RewriteRev(PrimitiveType dt)
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var intrinsic = host.Intrinsic("__rev", true, PrimitiveType.Word32, this.Operand(Src1()));
+            var name = $"__rev_{dt.BitSize}";
+            var intrinsic = host.Intrinsic(name, true, PrimitiveType.Word32, this.Operand(Src1()));
             m.Assign(opDst, intrinsic);
         }
 
@@ -276,6 +277,34 @@ namespace Reko.Arch.Arm.AArch32
                 m.Cond(m.And(opDst, opSrc)));
         }
 
+        private void RewriteLoadAcquire(IntrinsicProcedure intrinsic)
+        {
+            var mem = (MemoryOperand) Src1();
+            var ea = binder.EnsureRegister(mem.BaseRegister!);
+            var dst = binder.EnsureRegister(((RegisterOperand) instr.Operands[0]).Register);
+            Expression src = m.Fn(intrinsic, ea);
+            if (src.DataType.BitSize != dst.DataType.BitSize)
+            {
+                var dt = intrinsic.ReturnType;
+                var tmp = binder.CreateTemporary(dt);
+                m.Assign(tmp, src);
+                src = m.Convert(tmp, dt, dst.DataType);
+            }
+            m.Assign(dst, src);
+        }
+
+        private void RewriteLoadAcquireDouble(IntrinsicProcedure intrinsic)
+        {
+            var mem = (MemoryOperand) Src2();
+            var ea = binder.EnsureRegister(mem.BaseRegister!);
+            ea.DataType = new Pointer(PrimitiveType.Word64, 32);
+            var regHi = ((RegisterOperand) instr.Operands[0]).Register;
+            var regLo = ((RegisterOperand) instr.Operands[1]).Register;
+            var dst = binder.EnsureSequence(PrimitiveType.Word64, regHi, regLo);
+            var src = m.Fn(intrinsic, ea);
+            m.Assign(dst, src);
+        }
+
         private void RewriteLdr(PrimitiveType dtDst, PrimitiveType dtSrc)
         {
             var mem = (MemoryOperand)Src1();
@@ -338,8 +367,6 @@ namespace Reko.Arch.Arm.AArch32
             }
         }
 
-
-
         private void RewriteLdrd()
         {
             var regLo = ((RegisterOperand)instr.Operands[0]).Register;
@@ -348,6 +375,52 @@ namespace Reko.Arch.Arm.AArch32
             var opSrc = this.Operand(instr.Operands[2]);
             m.Assign(opDst, opSrc);
             MaybePostOperand(instr.Operands[2]);
+        }
+
+        private void RewriteStoreRelease(string intrinsicName, PrimitiveType dt)
+        {
+            var src = binder.EnsureRegister(((RegisterOperand) instr.Operands[0]).Register);
+            if (src.DataType.BitSize != dt.BitSize)
+            {
+                var tmp = binder.CreateTemporary(dt);
+                m.Assign(tmp, m.Slice(src, dt, 0));
+                src = tmp;
+            }
+            var mem = (MemoryOperand) Src1();
+            var ea = binder.EnsureRegister(mem.BaseRegister!);
+            ea.DataType = new Pointer(dt, 32);
+            var store = host.Intrinsic(intrinsicName, false, dt, ea, src);
+            m.SideEffect(store);
+        }
+
+        private void RewriteStoreExclusive(string intrinsicName, PrimitiveType dt)
+        {
+            var src = binder.EnsureRegister(((RegisterOperand) instr.Operands[1]).Register);
+            if (src.DataType.BitSize != dt.BitSize)
+            {
+                var tmp = binder.CreateTemporary(dt);
+                m.Assign(tmp, m.Slice(src, dt, 0));
+                src = tmp;
+            }
+            var mem = (MemoryOperand) Src2();
+            var ea = binder.EnsureRegister(mem.BaseRegister!);
+            ea.DataType = new Pointer(dt, 32);
+            var store = host.Intrinsic(intrinsicName, false, dt, ea, src);
+            var dst = Operand(Dst());
+            m.Assign(dst, store);
+        }
+
+        private void RewriteStoreReleaseDoubleExclusive(string intrinsicName)
+        {
+            var mem = (MemoryOperand) Src3();
+            var ea = binder.EnsureRegister(mem.BaseRegister!);
+            ea.DataType = new Pointer(PrimitiveType.Word64, 32);
+            var regHi = ((RegisterOperand) instr.Operands[1]).Register;
+            var regLo = ((RegisterOperand) instr.Operands[2]).Register;
+            var src = binder.EnsureSequence(PrimitiveType.Word64, regHi, regLo);
+            var store = host.Intrinsic(intrinsicName, false, src.DataType, ea, src);
+            var dst = Operand(Dst());
+            m.Assign(dst, store);
         }
 
         private void RewriteStr(PrimitiveType size)
@@ -370,12 +443,6 @@ namespace Reko.Arch.Arm.AArch32
             var opDst = this.Operand(instr.Operands[2]);
             m.Assign(opDst, opSrc);
             MaybePostOperand(instr.Operands[2]);
-        }
-
-        private void RewriteStrex()
-        {
-            var intrinsic = host.Intrinsic("__strex", false, VoidType.Instance);
-            m.SideEffect(intrinsic);
         }
 
         private void RewriteSubw()

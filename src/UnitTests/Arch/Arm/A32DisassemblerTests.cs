@@ -295,7 +295,7 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("swpb\tr9,r0,[r0]");
         }
 
-        [Test]
+        // Only present in old ARM models
         public void ArmDasm_cdp()
         {
             var instr = Disassemble32(0xFECED300);
@@ -1319,7 +1319,7 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("stmlo\tr3,{r1-r2,r6,r9,ip,lr}^");
         }
 
-        [Test]
+        // Only present in old ARM models
         public void ArmDasm_mrrc()
         {
             Disassemble32(0xEC5F5554);
@@ -1410,7 +1410,7 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("hvc\t#&C742");
         }
 
-        [Test]
+        // Only present in old ARM models
         public void ArmDasm_stc()
         {
             Disassemble32(0x2C645520);
@@ -1467,7 +1467,7 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("shsub8\tr0,sp,r8");
         }
 
-        [Test]
+        // Only present in old ARM models
         public void ArmDasm_ldc()
         {
             Disassemble32(0x0CBF140F);
@@ -1767,7 +1767,7 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("vmov\tr0,r1,d6");
         }
 
-        [Test]
+        // Only present in old ARM models
         public void ArmDasm_stchs()
         {
             Disassemble32(0x2D207325);
@@ -2348,7 +2348,7 @@ namespace Reko.UnitTests.Arch.Arm
             // definitely causes an error
         }
 
-        [Test]
+        // Only present in old ARM models
         public void ArmDasm_ldcmi()
         {
             AssertCode("ldcmi\tp8,cr7,[pc],#&80", "2078DF4C");

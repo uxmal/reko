@@ -1648,7 +1648,7 @@ namespace Reko.Arch.Arm.AArch32
 
             var Stl = Instr(Mnemonic.stl, Rnp0, M(16, w4));
             var Stlex = Instr(Mnemonic.stlex, Rnp12, Rnp0, M(16, w4));
-            var Strex = Instr(Mnemonic.strex, Rnp12,Rnp0, M(16, w4));
+            var Strex = Instr(Mnemonic.strex, Rnp12, Rnp0, M(16, w4));
             var Lda = Instr(Mnemonic.lda, Rnp12, M(16, w4));
             var Ldaex = Instr(Mnemonic.ldaex, Rnp12, M(16, w4));
             var Ldrex = Instr(Mnemonic.ldrex, Rnp12, M(16, w4));
@@ -3201,7 +3201,7 @@ namespace Reko.Arch.Arm.AArch32
                                 Instr(Mnemonic.vmov, Rnp12, Rnp16, S_pair(0,5)),
                                 Instr(Mnemonic.vmov, Rnp12, Rnp16, D5_0))))));
 
-            var AdvancedSimd_LdSt_64bitmove = Select("AdvancedSimd_LdSt_64bitmove", 21, 0b1101, n => n == 0,
+            var AdvancedSimd_LdSt_64bitmove = Select("  Advanced SIMD load/store and 64-bit move", 21, 0b1101, n => n == 0,
                 AdvancedSimd_and_floatingpoint64bitmove,
                 AdvancedSimd_and_floatingpoint_LdSt);
 
@@ -3399,6 +3399,7 @@ namespace Reko.Arch.Arm.AArch32
                             nyi("Q=1")),
                         nyi("VMINNM"))));
 
+            var AdvancedSimd_ThreeRegisterExtension = nyi("Advanced SIMD three registers of the same length extension");
             var AdvancedSimd_TwoRegistersScalarExtension = Mask(23, 1, "AdvancedSimd_TwoRegistersScalarExtension",
                 nyi("AdvancedSimd_TwoRegistersScalarExtension op1=0"),
                 Mask(10, 1, 8, 1, "AdvancedSimd_TwoRegistersScalarExtension op1=1",
@@ -3414,6 +3415,8 @@ namespace Reko.Arch.Arm.AArch32
                 Instr(Mnemonic.cdp, CP(8), i(20,4), CR(12), CR(16), CR(0), i(5, 3)),
                 Instr(Mnemonic.cdp2, CP(8), i(20,4), CR(12), CR(16), CR(0), i(5, 3)));
 
+            // These decoders seem obsolete but are kept in order to support
+            // older ARM models.
             var CoprocessorInstructionsAndSupervisorCall = Select("CoprocessorInstructionsAndSupervisorCall coproc=???x", 9, 0b111,
                 u => u == 5,
                 Mask(24, 2, "coproc=101x op1=??xxxx",
@@ -3468,18 +3471,6 @@ namespace Reko.Arch.Arm.AArch32
                             invalid),
                         Select(10, 3, n => n == 2, AdvancedSimd_TwoRegistersScalarExtension, invalid))),
                     Instr(Mnemonic.svc, InstrClass.Transfer | InstrClass.Call, i(0,24)));
-
-            var ConditionalDecoder = new CondMaskDecoder(25, 3, "",
-                DataProcessingAndMisc,
-                DataProcessingAndMisc,
-                LoadStoreWordUnsignedByteImmLit,
-                Mask(4, 1,
-                    LoadStoreWordUnsignedByteRegister,
-                    Media),
-                Branch_BranchLink_BlockDataTransfer,
-                Branch_BranchLink_BlockDataTransfer,
-                CoprocessorInstructionsAndSupervisorCall,
-                CoprocessorInstructionsAndSupervisorCall);
 
             var VmullIntegerPolynomial = nyi("VmullIntegerPolynomial");
 
@@ -4093,17 +4084,66 @@ namespace Reko.Arch.Arm.AArch32
                     nyi("op1=1111110"),
                     invalid));
 
+
+            static bool Is15(uint wInstr)
+            {
+                return wInstr == 0xF;
+            }
+
             var SystemRegisterAccessAdvancedSimd = Mask(24, 2, "System register access, Advanced SIMD, floating-point, and Supervisor call",
-                Select("  op0=0b00", 9, 0b111, n => n == 0b111,
-                    SystemRegister_LdSt_64bitMove,
-                    invalid),
-                Select("  op0=0b01", 9, 0b111, n => n == 0b111,
-                    SystemRegister_LdSt_64bitMove,
-                    invalid),
-                nyi("  op0=0b10"),
+                Mask(9, 2, "  op0=0b00",
+                    Select("  op1=x00", 28, 0xF, Is15,
+                        AdvancedSimd_ThreeRegisterExtension,
+                        AdvancedSimd_LdSt_64bitmove),
+                    Select("  op1=x00", 28, 0xF, Is15,
+                        nyi("01"),
+                        AdvancedSimd_LdSt_64bitmove),
+                    Select("  op1=x00", 28, 0xF, Is15,
+                       AdvancedSimd_ThreeRegisterExtension,
+                       nyi("  x10")),
+                    SystemRegister_LdSt_64bitMove),
+                Mask(9, 2, "  op0=0b01",
+                    Select("  op1=x00", 28, 0xF, Is15,
+                       AdvancedSimd_ThreeRegisterExtension,
+                       AdvancedSimd_LdSt_64bitmove),
+                    Select("  op1=x00", 28, 0xF, Is15,
+                        nyi("01"),
+                        AdvancedSimd_LdSt_64bitmove),
+                    Select("  op1=x00", 28, 0xF, Is15,
+                       AdvancedSimd_ThreeRegisterExtension,
+                       nyi("  x10")),
+                    SystemRegister_LdSt_64bitMove),
+                Mask(9, 2, "  op0=0b10",
+                    Select("  op1=x00", 28, 0xF, Is15,
+                        AdvancedSimd_TwoRegistersScalarExtension,
+                        Mask(4, 1, "  op1=x00",
+                            FloatingPointDataProcessing,
+                            AdvancedSIMDandFloatingPoint32bitMove)),
+                    Mask(4, 1, "  op1=x01",
+                        FloatingPointDataProcessing,
+                        Mask(4, 1, "  op1=x00",
+                            nyi("  op2=0"),
+                            AdvancedSIMDandFloatingPoint32bitMove)),
+                    Select("  op1=x00", 28, 0xF, Is15,
+                        AdvancedSimd_TwoRegistersScalarExtension,
+                        nyi("10")),
+                    Mask(4, 1, "  op1=x01",
+                        nyi("   op=0"),
+                        SystemRegister32BitMove)),
                 Instr(Mnemonic.svc, InstrClass.Transfer | InstrClass.Call, i(0, 24)));
 
-            // Note: this decoder is ARM7. ARM8 looks different.
+            var ConditionalDecoder = new CondMaskDecoder(25, 3, "",
+                DataProcessingAndMisc,
+                DataProcessingAndMisc,
+                LoadStoreWordUnsignedByteImmLit,
+                Mask(4, 1,
+                    LoadStoreWordUnsignedByteRegister,
+                    Media),
+                Branch_BranchLink_BlockDataTransfer,
+                Branch_BranchLink_BlockDataTransfer,
+                SystemRegisterAccessAdvancedSimd,
+                SystemRegisterAccessAdvancedSimd);
+
             var UnconditionalDecoder = Mask(25, 3, "Unconditional instructions",
                 MemoryHintsAdvancedSimdMiscellaneous,
                 MemoryHintsAdvancedSimdMiscellaneous,
