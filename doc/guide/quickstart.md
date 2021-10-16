@@ -6,7 +6,7 @@ First, install reko as explained [here](reko.md).
 
 Start the GUI client.
 
-Use `File > Open` to open an binary executable  file.
+Use `File > Open` to open an binary executable file.
 
 Once the file is open, look at the area to the left. That is the Project Browser. You'll see the name of the loaded binary file. Expand this node. Depending on the kind of binary file you opened, you will see the various sections the binary file consists of. You can click on the sections in the Project Browser to quickly navigate to the start of each such section and look at both the data in the section and also a disassembly of that data using the processor architecture specified by the binary file.
 
