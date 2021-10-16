@@ -16,7 +16,7 @@ Some executable files have formats that that Reko doesn't support (yet!). If you
 
 <img src="img/open-binary-file.png" border="0" />
 
-You are then prompted to supply the missing pieces of information Reko requires to make sense of the binary. At the very least, you must supply the processor architecture corresponding to the machine code in the binary file. **Note**: if there is a binary file ormat or processor architecture you wish to work with, and that aren't currently supported by Reko, please [create an issue](https://github.com/uxmal/reko/issues) on GitHub.
+You are then prompted to supply the missing pieces of information Reko requires to make sense of the binary. At the very least, you must supply the processor architecture corresponding to the machine code in the binary file. **Note**: if there is a binary file format or processor architecture you wish to work with, and that aren't currently supported by Reko, please [create an issue](https://github.com/uxmal/reko/issues) on GitHub.
 
 ### Loading files with incomplete metadata
 Some binary files will contain incomplete metadata. For instance, an MS-DOS `com` file contains x86 machine code stored as a structureless chunk of bytes. There is no file header or any other clue that tells Reko that the contents are executable. In addition, the `com` file extension is also used by CP/M, which means the contents of the file might be Intel 8080 or Zilog Z80 machine code instead. Because of this ambiguity, the user must resolve this ambiguity by picking the appropriate file format from the Open Binary File dialog:
