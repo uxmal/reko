@@ -2488,6 +2488,27 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        [Ignore("Read up on the specs")]
+        public void AArch64Rw_ld1()
+        {
+            Given_HexString("0000400D");
+            AssertCode(     // ld1	{v0.b}[0],[x0]
+                "0|L--|0000000100002A50(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        [Ignore("Read up on the specs")]
+        public void AArch64Rw_ld1_1()
+        {
+            Given_HexString("0000400D");
+            AssertCode(     // ld1	{v0.b}[0],[x0]
+                "0|L--|0000000100002A50(4): 1 instructions",
+                "1|L--|@@@");
+        }
+
+
+        [Test]
         public void AArch64Rw_ld1_q()
         {
             Given_HexString("4178DF4C");
@@ -2505,6 +2526,16 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|__ld1(x2, out v1)",
                 "2|L--|x2 = x2 + 8<i64>");
+        }
+
+        [Test]
+        [Ignore("Read up on the specs")]
+        public void AArch64Rw_ld1_2()
+        {
+            Given_HexString("0070404C");
+            AssertCode(     // ld1 {v0.16b},[x0]
+                "0|L--|0000000100002884(4): 1 instructions",
+                "1|L--|@@@");
         }
 
         [Test]

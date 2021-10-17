@@ -1005,6 +1005,11 @@ namespace Reko.UnitTests.Arch.Arm
             Expect_Code("sdiv\tw3,w24,w0");
         }
 
+        [Test]
+        public void AArch64Dis_ld1()
+        {
+            AssertCode("ld1\t{v0.16b},[x0]", "0070404C");
+        }
 
         [Test]
         public void AArch64Dis_ldrb_preidx()
