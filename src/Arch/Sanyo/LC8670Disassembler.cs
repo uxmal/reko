@@ -153,9 +153,9 @@ namespace Reko.Arch.Sanyo
         private static MachineOperand DReg(uint n)
         {
             if (Registers.SFR.TryGetValue((int) n, out var reg))
-                return new MemoryOperand(PrimitiveType.Byte, reg, false);
+                return new RegisterOperand(reg);
             else
-                return new MemoryOperand(PrimitiveType.Byte, (ushort)n);
+                return new MemoryOperand(PrimitiveType.Byte, (ushort) n);
         }
 
         private static bool Ri(uint uInstr, LC8670Disassembler dasm)
@@ -280,7 +280,7 @@ namespace Reko.Arch.Sanyo
                 Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, a12),
 
                 Instr(Mnemonic.callr, InstrClass.Transfer|InstrClass.Call, r16),
-                Instr(Mnemonic.brf, r16),
+                Instr(Mnemonic.brf, InstrClass.Transfer, r16),
                 Instr(Mnemonic.st, d9),
                 Instr(Mnemonic.st, d9),
                 Instr(Mnemonic.st, Ri),
@@ -372,14 +372,14 @@ namespace Reko.Arch.Sanyo
                 Instr(Mnemonic.inc, Ri),
                 Instr(Mnemonic.inc, Ri),
                 Instr(Mnemonic.inc, Ri),
-                Instr(Mnemonic.bp, r),
-                Instr(Mnemonic.bp, r),
-                Instr(Mnemonic.bp, r),
-                Instr(Mnemonic.bp, r),
-                Instr(Mnemonic.bp, r),
-                Instr(Mnemonic.bp, r),
-                Instr(Mnemonic.bp, r),
-                Instr(Mnemonic.bp, r),
+                Instr(Mnemonic.bp, InstrClass.ConditionalTransfer, r),
+                Instr(Mnemonic.bp, InstrClass.ConditionalTransfer, r),
+                Instr(Mnemonic.bp, InstrClass.ConditionalTransfer, r),
+                Instr(Mnemonic.bp, InstrClass.ConditionalTransfer, r),
+                Instr(Mnemonic.bp, InstrClass.ConditionalTransfer, r),
+                Instr(Mnemonic.bp, InstrClass.ConditionalTransfer, r),
+                Instr(Mnemonic.bp, InstrClass.ConditionalTransfer, r),
+                Instr(Mnemonic.bp, InstrClass.ConditionalTransfer, r),
 
                 Instr(Mnemonic.pop, d9),
                 Instr(Mnemonic.pop, d9),

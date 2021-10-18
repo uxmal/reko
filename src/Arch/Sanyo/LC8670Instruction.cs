@@ -35,5 +35,18 @@ namespace Reko.Arch.Sanyo
             renderer.WriteMnemonic(MnemonicAsString);
             base.RenderOperands(renderer, options);
         }
+
+        protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        {
+            if (operand is ImmediateOperand imm)
+            {
+                renderer.WriteFormat("#${0:X2}", imm.Value.ToUInt32());
+            }
+            else
+            {
+                base.RenderOperand(operand, renderer, options);
+            }
+
+        }
     }
 }

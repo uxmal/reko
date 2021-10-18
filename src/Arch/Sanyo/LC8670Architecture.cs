@@ -35,10 +35,11 @@ namespace Reko.Arch.Sanyo
             : base(services, archId, options)
         {
             Endianness = EndianServices.Little;
-            this.FramePointerType = PrimitiveType.Ptr16;
+            this.FramePointerType = PrimitiveType.Byte;
             this.InstructionBitSize = 8;
             this.MemoryGranularity = 8;
             this.PointerType = PrimitiveType.Ptr16;
+            this.StackRegister = Registers.SFR[0x106];
             this.WordWidth = PrimitiveType.Byte;
         }
 
@@ -64,7 +65,7 @@ namespace Reko.Arch.Sanyo
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            throw new System.NotImplementedException();
+            return new LC8670Rewriter(this, rdr, state, binder, host);
         }
 
         public override FlagGroupStorage? GetFlagGroup(RegisterStorage flagRegister, uint grf)

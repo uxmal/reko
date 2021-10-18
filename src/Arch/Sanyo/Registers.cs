@@ -18,6 +18,8 @@
  */
 #endregion
 
+// https://mc.pp.se/dc/vms/sfr.html
+
 using Reko.Core;
 using Reko.Core.Types;
 using System;
@@ -33,6 +35,14 @@ namespace Reko.Arch.Sanyo
         public static RegisterStorage[] Regs { get; }
         public static Dictionary<int, RegisterStorage> SFR { get; }
 
+        public static RegisterStorage ACC { get; }
+        public static RegisterStorage PSW { get; }
+        public static RegisterStorage B { get; }
+        public static RegisterStorage C { get; }
+        public static RegisterStorage SP { get; }
+        public static RegisterStorage TRH { get; }
+        public static RegisterStorage TRL { get; }
+
         static Registers()
         {
             static RegisterStorage Reg(string name, int number) =>
@@ -45,15 +55,24 @@ namespace Reko.Arch.Sanyo
                 Reg("R2", 2),
                 Reg("R3", 3),
             };
+
+            ACC = Reg("ACC", 0x100);
+            PSW = Reg("PSW", 0x101);
+            B = Reg("B", 0x102);
+            C = Reg("C", 0x103);
+            TRL = Reg("TRL", 0x104);
+            TRH = Reg("TRH", 0x105);
+            SP = Reg("SP", 0x106);
+
             SFR = new RegisterStorage[]
             { 
-                Reg("ACC", 0x100),
-                Reg("PSW", 0x101),
-                Reg("B", 0x102),
-                Reg("C", 0x103),     // C Register 
-                Reg("TRL", 0x104),
-                Reg("TRH", 0x105),
-                Reg("SP", 0x106),
+                ACC,
+                PSW,
+                B,
+                C,     // C Register 
+                TRL,
+                TRH,
+                SP,       // Stack register
                 Reg("PCON", 0x107),
                 Reg("IE", 0x108),
                 Reg("IP", 0x109),    // Interrupt Priority Ranking Control Register 
@@ -132,5 +151,17 @@ namespace Reko.Arch.Sanyo
         {
             return Regs[n];
         }
+    }
+
+    [Flags]
+    public enum FlagM
+    {
+        P = 1,          // Parity
+        Rambk0 = 2, // RAM bank
+        OV = 4,     // Overflow
+        Irbk0 = 8,  // Indirect bank (used to set indirect addressing)
+        Irbk1 = 16, // Indirect bank
+        AC = 64,    // Auxiliary carry
+        CY = 128,   // Carry.
     }
 }
