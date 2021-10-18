@@ -72,6 +72,7 @@
       <var id="var.C64.TargetPath" >$SolutionDir$/Environments/C64/$TargetDir$/Reko.Environments.C64.dll</var>
       <var id="var.Cpm.ProjectDir" >$SolutionDir$/Environments/Cpm/</var>
       <var id="var.Cpm.TargetPath" >$SolutionDir$/Environments/Cpm/$TargetDir$/Reko.Environments.Cpm.dll</var>
+      <var id="var.Dreamcast.ProjectDir" >$SolutionDir$/Environments/Dreamcast/</var>
       <var id="var.Dreamcast.TargetPath" >$SolutionDir$/Environments/Dreamcast/$TargetDir$/Reko.Environments.Dreamcast.dll</var>
       <var id="var.Gameboy.TargetPath" >$SolutionDir$/Environments/Gameboy/$TargetDir$/Reko.Environments.Gameboy.dll</var>
       <var id="var.Hpux.TargetPath" >$SolutionDir$/Environments/Hpux/$TargetDir$/Reko.Environments.Hpux.dll</var>
@@ -188,7 +189,7 @@
       <File Source="$(var.Cpm.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Cpm.ProjectDir)cpm_map.xml" nuget_target="c:" />
       <File Source="$(var.Dreamcast.TargetPath)" nuget_target="f:" />
-      <File Source="$(var.Dreamcast.TargetPath)vmu.xml" nuget_target="c:" />
+      <File Source="$(var.Dreamcast.ProjectDir)vmu.xml" nuget_target="c:" />
       <File Source="$(var.Gameboy.TargetPath)" nuget_target="f:" />
       <File Source="$(var.Hpux.TargetPath)" nuget_target="f:" />
       <File Source="$(var.MacOS.TargetPath)" nuget_target="f:" />
