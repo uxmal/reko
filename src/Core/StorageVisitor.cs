@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2021 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ namespace Reko.Core
 		T VisitTemporaryStorage(TemporaryStorage temp);
     }
 
-    public interface StorageVisitor<C, T>
+    public interface StorageVisitor<T, C>
     {
         T VisitFlagGroupStorage(FlagGroupStorage grf, C context);
         T VisitFpuStackStorage(FpuStackStorage fpu, C context);

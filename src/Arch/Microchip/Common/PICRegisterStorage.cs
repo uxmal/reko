@@ -129,7 +129,7 @@ namespace Reko.Arch.MicrochipPIC.Common
 
         public override T Accept<T>(StorageVisitor<T> visitor) => visitor.VisitRegisterStorage(this);
 
-        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context) => visitor.VisitRegisterStorage(this, context);
+        public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context) => visitor.VisitRegisterStorage(this, context);
 
         public int CompareTo(PICRegisterStorage? other)
         {
