@@ -181,30 +181,6 @@ namespace Reko.Analysis
             }
 
             /// <summary>
-            /// Inserts the statement <paramref name="ass"/> after the statement
-            /// <paramref name="stmBefore"/>, skipping any AliasAssignments that
-            /// statements that may have been added after 
-            /// <paramref name="stmBefore"/>.
-            /// </summary>
-            /// <param name="stmBefore"></param>
-            /// <param name="ass"></param>
-            /// <returns></returns>
-            public SsaIdentifier InsertAfterDefinition(Statement stmBefore, AliasAssignment ass)
-            {
-                var b = stmBefore.Block;
-                int i = b.Statements.IndexOf(stmBefore);
-                // Skip alias statements
-                while (i < b.Statements.Count - 1 && b.Statements[i + 1].Instruction is AliasAssignment)
-                    ++i;
-                var stm = new Statement(stmBefore.LinearAddress, ass, stmBefore.Block);
-                stmBefore.Block.Statements.Insert(i + 1, stm);
-
-                var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
-                ass.Dst = sidTo.Identifier;
-                return sidTo;
-            }
-
-            /// <summary>
             /// Creates a phi statement with no slots for the predecessor blocks, then
             /// inserts the phi statement as the first statement of the block.
             /// </summary>
@@ -584,7 +560,7 @@ namespace Reko.Analysis
                 }
                 if (sids.Count == 1)
                 {
-                    var sidSlice = MakeSlice(sids[0].Item1, sids[0].Item2, this.id);
+                    var sidSlice = outer.MakeSlice(sids[0].Item1, sids[0].Item2, this.id);
                     alias.ExactAliases[this.id.Storage] = sidSlice;
                     return sidSlice;
                 }
@@ -595,7 +571,7 @@ namespace Reko.Analysis
                     foreach (var (sidElem, bitrange) in sids)
                     {
                         var idSlice = MakeTmpIdentifier(sidElem.Identifier.Storage, bitrange);
-                        var sidSlice = MakeSlice(sidElem, bitrange, idSlice);
+                        var sidSlice = outer.MakeSlice(sidElem, bitrange, idSlice);
                         alias.ExactAliases[sidSlice.OriginalIdentifier.Storage] = sidSlice;
                         elems.Add(sidSlice.Identifier);
                     }
@@ -671,21 +647,6 @@ namespace Reko.Analysis
                     offset += (int)stg.BitSize;
                 }
                 throw new InvalidOperationException("Expected the bitrange to intersect with a subregister of the sequence.");
-            }
-
-            private SsaIdentifier MakeSlice(SsaIdentifier sidSrc, BitRange range, Identifier idSlice)
-            {
-                if (range.Covers(sidSrc.Identifier.Storage.GetBitRange()))
-                    return sidSrc;
-                // Avoid creating an aliasing slice if it already exists.
-                if (outer.availableSlices.TryGetValue((sidSrc, range), out var sidAlias))
-                    return sidAlias;
-                var e = outer.m.Slice(idSlice.DataType, sidSrc.Identifier, range.Lsb - (int)sidSrc.Identifier.Storage.BitAddress);
-                var ass = new AliasAssignment(idSlice, e);
-                sidAlias = InsertAfterDefinition(sidSrc.DefStatement!, ass);
-                sidSrc.Uses.Add(sidAlias.DefStatement!);
-                outer.availableSlices.Add((sidSrc, range), sidAlias);
-                return sidAlias;
             }
         }
 
@@ -804,7 +765,7 @@ namespace Reko.Analysis
                 this.flagGroup = outer.arch.GetFlagGroup(grfFrom.FlagRegister, elem.mask)!;
                 var idSlice = outer.ssa.Procedure.Frame.EnsureFlagGroup(this.flagGroup);
                 var ass = new AliasAssignment(idSlice, e);
-                var sidSlice = InsertAfterDefinition(elem.sid.DefStatement!, ass);
+                var sidSlice = outer.InsertAfterDefinition(elem.sid.DefStatement!, ass);
                 elem.sid.Uses.Add(sidSlice.DefStatement!);
                 return sidSlice;
             }
@@ -981,7 +942,7 @@ namespace Reko.Analysis
 
                 //$TODO: perhaps this alias has already been computed?
                 var ass = new AliasAssignment(idSlice, e);
-                var sidAlias = InsertAfterDefinition(sidFrom.DefStatement!, ass);
+                var sidAlias = outer.InsertAfterDefinition(sidFrom.DefStatement!, ass);
                 sidUse.Uses.Add(sidAlias.DefStatement!);
                 return sidAlias;
             }

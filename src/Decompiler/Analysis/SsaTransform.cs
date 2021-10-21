@@ -1186,6 +1186,46 @@ namespace Reko.Analysis
             return idFrame;
         }
 
+        /// <summary>
+        /// Inserts the statement <paramref name="ass"/> after the statement
+        /// <paramref name="stmBefore"/>, skipping any AliasAssignments that
+        /// statements that may have been added after 
+        /// <paramref name="stmBefore"/>.
+        /// </summary>
+        /// <param name="stmBefore"></param>
+        /// <param name="ass"></param>
+        /// <returns></returns>
+        private SsaIdentifier InsertAfterDefinition(Statement stmBefore, AliasAssignment ass)
+        {
+            var b = stmBefore.Block;
+            int i = b.Statements.IndexOf(stmBefore);
+            // Skip alias statements
+            while (i < b.Statements.Count - 1 && b.Statements[i + 1].Instruction is AliasAssignment)
+                ++i;
+            var stm = new Statement(stmBefore.LinearAddress, ass, stmBefore.Block);
+            stmBefore.Block.Statements.Insert(i + 1, stm);
+
+            var sidTo = ssa.Identifiers.Add(ass.Dst, stm, ass.Src, false);
+            ass.Dst = sidTo.Identifier;
+            return sidTo;
+        }
+
+        private SsaIdentifier MakeSlice(SsaIdentifier sidSrc, BitRange range, Identifier idSlice)
+        {
+            if (range.Covers(sidSrc.Identifier.Storage.GetBitRange()))
+                return sidSrc;
+            // Avoid creating an aliasing slice if it already exists.
+            if (this.availableSlices.TryGetValue((sidSrc, range), out var sidAlias))
+                return sidAlias;
+            var e = m.Slice(idSlice.DataType, sidSrc.Identifier, range.Lsb - (int) sidSrc.Identifier.Storage.BitAddress);
+            var ass = new AliasAssignment(idSlice, e);
+            sidAlias = InsertAfterDefinition(sidSrc.DefStatement!, ass);
+            sidSrc.Uses.Add(sidAlias.DefStatement!);
+            this.availableSlices.Add((sidSrc, range), sidAlias);
+            return sidAlias;
+        }
+
+
         private void ProcessIncompletePhis()
         {
             while (incompletePhis.Count > 0)
