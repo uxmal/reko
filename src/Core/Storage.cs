@@ -77,7 +77,7 @@ namespace Reko.Core
         /// <returns>The offset in bits, or -1.</returns>
         public abstract int OffsetOf(Storage storage);
         public abstract T Accept<T>(StorageVisitor<T> visitor);
-        public abstract T Accept<C, T>(StorageVisitor<C, T> visitor, C context);
+        public abstract T Accept<T, C>(StorageVisitor<T, C> visitor, C context);
 
         /// <summary>
         /// Returns true if the Storage <paramref name="that"/> overlaps with this
@@ -193,7 +193,7 @@ namespace Reko.Core
             return visitor.VisitFlagGroupStorage(this);
         }
 
-        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitFlagGroupStorage(this, context);
         }
@@ -297,7 +297,7 @@ namespace Reko.Core
             return visitor.VisitFpuStackStorage(this);
         }
 
-        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitFpuStackStorage(this, context);
         }
@@ -369,7 +369,7 @@ namespace Reko.Core
             return visitor.VisitMemoryStorage(this);
         }
 
-        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitMemoryStorage(this, context);
         }
@@ -425,7 +425,7 @@ namespace Reko.Core
             return visitor.VisitOutArgumentStorage(this);
         }
 
-        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitOutArgumentStorage(this, context);
         }
@@ -541,7 +541,7 @@ namespace Reko.Core
             return visitor.VisitRegisterStorage(this);
         }
 
-        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitRegisterStorage(this, context);
         }
@@ -688,7 +688,7 @@ namespace Reko.Core
             return visitor.VisitSequenceStorage(this);
         }
 
-        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitSequenceStorage(this, context);
         }
@@ -837,7 +837,7 @@ namespace Reko.Core
             return visitor.VisitStackArgumentStorage(this);
         }
 
-        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitStackArgumentStorage(this, context);
         }
@@ -886,7 +886,7 @@ namespace Reko.Core
             return visitor.VisitStackLocalStorage(this);
         }
 
-        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitStackLocalStorage(this, context);
         }
@@ -949,7 +949,7 @@ namespace Reko.Core
             return visitor.VisitTemporaryStorage(this);
         }
 
-        public override T Accept<C, T>(StorageVisitor<C, T> visitor, C context)
+        public override T Accept<T, C>(StorageVisitor<T, C> visitor, C context)
         {
             return visitor.VisitTemporaryStorage(this, context);
         }
