@@ -896,6 +896,18 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86rw_Lahf()
+        {
+            Run16bitTest(m =>
+            {
+                m.Lahf();
+            });
+            AssertCode(
+                "0|L--|0C00:0000(1): 1 instructions",
+                "1|L--|ah = SCZOP");
+        }
+
+        [Test]
         public void X86rw_FstswTestAhEq()
         {
             Run16bitTest(m =>

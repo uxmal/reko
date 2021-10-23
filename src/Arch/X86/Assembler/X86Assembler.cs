@@ -217,6 +217,11 @@ namespace Reko.Arch.X86.Assembler
             emitter.EmitByte(0x9E);
         }
 
+        public void Lahf()
+        {
+            emitter.EmitByte(0x9F);
+        }
+
         public void Sar(ParsedOperand dst, byte c)
         {
             ProcessShiftRotation(0x07, dst, new ParsedOperand(new ImmediateOperand(Constant.Byte(c))));

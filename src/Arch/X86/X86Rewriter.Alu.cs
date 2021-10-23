@@ -738,7 +738,8 @@ namespace Reko.Arch.X86
 
         public void RewriteLahf()
         {
-            m.Assign(orw.AluRegister(Registers.ah), orw.AluRegister(Registers.FPUF));
+            //$TODO: it should actually be SCZAP, as the OF flag is not used but the AF one is
+            m.Assign(orw.AluRegister(Registers.ah), orw.FlagGroup(Registers.SCZOP));
         }
 
         public void RewriteLea()
