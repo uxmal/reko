@@ -52,7 +52,7 @@ namespace Reko.Arch.X86.Design
         public object CreateControl()
         {
             Control = new X86ArchitecturePanel();
-            Control.Emulate8087Checkbox.Checked = arch.Options.ContainsKey("Emulate8087") &&
+            Control.Emulate8087Checkbox.Checked = !arch.Options.ContainsKey("Emulate8087") ||
                 arch.Options["Emulate8087"].ToString() == "true";
             Control.Emulate8087Checkbox.CheckedChanged += Emulate8087Checkbox_CheckedChanged;
 
