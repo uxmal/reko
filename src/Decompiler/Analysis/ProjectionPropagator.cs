@@ -221,6 +221,8 @@ namespace Reko.Analysis
                     dtWide = PrimitiveType.CreateWord(sids.Sum(s => s.Identifier.DataType.BitSize));
                 }
                 Identifier? idWide = GenerateWideIdentifier(dtWide, sids);
+                if (idWide is not null && idWide.DataType.BitSize != dtWide.BitSize)
+                    return null;
                 var ass = sids.Select(s => s.DefStatement!.Instruction as Assignment).ToArray();
                 if (ass.All(a => a != null))
                 {
