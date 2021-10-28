@@ -108,10 +108,14 @@ namespace Reko.ImageLoaders.Srec
                     else
                     {
                         var segment = new ImageSegment(
-                            $"seg{de.Key}",
+                            $"seg{addrSegmentCur}",
                             new ByteMemoryArea(addrSegmentCur, dataCur!.ToArray()),
                             AccessMode.ReadWriteExecute);
                         segments.Add(segment);
+
+                        addrSegmentCur = de.Key;
+                        dataCur = new MemoryStream();
+                        dataCur.Write(de.Value, 0, de.Value.Length);
                     }
                 }
             }
@@ -124,7 +128,6 @@ namespace Reko.ImageLoaders.Srec
                 AccessMode.ReadWriteExecute);
             segments.Add(lastSegment);
             var map = new SegmentMap(
-                segments.Select(s => s.Address).OrderBy(s => s).First(),
                 segments.ToArray());
             return map;
         }
