@@ -271,6 +271,16 @@ namespace Reko.UnitTests.Arch.Z80
         }
 
         [Test]
+        public void Z80rw_ret_nz()
+        {
+            Given_Bytes(0xC0);
+            AssertCode(
+                "0|R--|0100(1): 2 instructions",
+                "1|T--|if (Test(EQ,Z)) branch 0101",
+                "2|R--|return (2,0)");
+        }
+
+        [Test]
         public void Z80rw_rla()
         {
             Given_Bytes(0x17);

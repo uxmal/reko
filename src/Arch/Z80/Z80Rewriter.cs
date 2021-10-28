@@ -42,6 +42,7 @@ namespace Reko.Arch.Z80
         private readonly IEnumerator<Z80Instruction> dasm;
         private InstrClass iclass;
         private RtlEmitter m;
+        private Z80Instruction instr;
 
 #nullable disable
         public Z80Rewriter(Z80ProcessorArchitecture arch, EndianImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
@@ -50,6 +51,7 @@ namespace Reko.Arch.Z80
             this.binder = binder;
             this.host = host;
             this.dasm = new Z80Disassembler(arch, rdr).GetEnumerator();
+            this.instr = default!;
         }
 #nullable enable
 
@@ -57,25 +59,26 @@ namespace Reko.Arch.Z80
         {
             while (dasm.MoveNext())
             {
-                var addr = dasm.Current.Address;
-                var len = dasm.Current.Length;
-                this.iclass = dasm.Current.InstructionClass;
+                instr = dasm.Current;
+                var addr = instr.Address;
+                var len = instr.Length;
+                this.iclass = instr.InstructionClass;
                 var rtlInstructions = new List<RtlInstruction>();
                 m = new RtlEmitter(rtlInstructions);
                 switch (dasm.Current.Mnemonic)
                 {
                 default:
                     host.Error(
-               dasm.Current.Address,
-               "Z80 instruction '{0}' is not supported yet.",
-               dasm.Current.Mnemonic);
+                        dasm.Current.Address,
+                        "Z80 instruction '{0}' is not supported yet.",
+                        dasm.Current.Mnemonic);
                     goto case Mnemonic.illegal;
                 case Mnemonic.illegal: m.Invalid(); break;
                 case Mnemonic.adc: RewriteAdc(); break;
                 case Mnemonic.add: RewriteAdd(); break;
                 case Mnemonic.and: RewriteAnd(); break;
                 case Mnemonic.bit: RewriteBit(); break;
-                case Mnemonic.call: RewriteCall(dasm.Current); break;
+                case Mnemonic.call: RewriteCall(); break;
                 case Mnemonic.ccf: RewriteCcf(); break;
                 case Mnemonic.cp: RewriteCp(); break;
                 case Mnemonic.cpd: RewriteCp(m.ISub, false); break;
@@ -86,7 +89,7 @@ namespace Reko.Arch.Z80
                 case Mnemonic.di: RewriteDi(); break;
                 case Mnemonic.daa: RewriteDaa(); break;
                 case Mnemonic.dec: RewriteDec(); break;
-                case Mnemonic.djnz: RewriteDjnz(dasm.Current.Operands[0]); break;
+                case Mnemonic.djnz: RewriteDjnz(); break;
                 case Mnemonic.ei: RewriteEi(); break;
                 case Mnemonic.ex: RewriteEx(); break;
                 case Mnemonic.ex_af: RewriteExAf(); break;
@@ -98,10 +101,10 @@ namespace Reko.Arch.Z80
                 case Mnemonic.ini: RewriteIn(m.IAdd, false); break;
                 case Mnemonic.inir: RewriteIn(m.IAdd, true); break;
                 case Mnemonic.im:
-                    m.SideEffect(host.Intrinsic("__im", false, VoidType.Instance, RewriteOp(dasm.Current.Operands[0])));
+                    m.SideEffect(host.Intrinsic("__im", false, VoidType.Instance, RewriteOp(instr.Operands[0])));
                     break;
                 case Mnemonic.inc: RewriteInc(); break;
-                case Mnemonic.jp: RewriteJp(dasm.Current); break;
+                case Mnemonic.jp: RewriteJp(); break;
                 case Mnemonic.jr: RewriteJr(); break;
                 case Mnemonic.ld: RewriteLd(); break;
                 case Mnemonic.rl: RewriteRotation(IntrinsicProcedure.RolC, true); break;
@@ -125,17 +128,17 @@ namespace Reko.Arch.Z80
                 case Mnemonic.outd: RewriteOutInstruction(-1, false); break;
                 case Mnemonic.outi: RewriteOutInstruction(1, false); break;
                 case Mnemonic.pop: RewritePop(); break;
-                case Mnemonic.push: RewritePush(dasm.Current); break;
+                case Mnemonic.push: RewritePush(); break;
                 case Mnemonic.res: RewriteResSet("__res"); break;
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.rst: RewriteRst(); break;
                 case Mnemonic.sbc: RewriteSbc(); break;
                 case Mnemonic.scf: RewriteScf(); break;
                 case Mnemonic.set: RewriteResSet("__set"); break;
-                case Mnemonic.sla: RewriteShift(dasm.Current, m.Shl); break;
-                case Mnemonic.sra: RewriteShift(dasm.Current, m.Sar); break;
-                case Mnemonic.srl: RewriteShift(dasm.Current, m.Shr); break;
-                case Mnemonic.sll: RewriteShift(dasm.Current, m.Shl); break;
+                case Mnemonic.sla: RewriteShift(m.Shl); break;
+                case Mnemonic.sra: RewriteShift(m.Sar); break;
+                case Mnemonic.srl: RewriteShift(m.Shr); break;
+                case Mnemonic.sll: RewriteShift(m.Shl); break;
                 case Mnemonic.sub: RewriteSub(); break;
                 case Mnemonic.xor: RewriteXor(); break;
 
@@ -306,7 +309,7 @@ namespace Reko.Arch.Z80
                 FlagGroup(flags!));
         }
 
-        private void RewriteCall(Z80Instruction instr)
+        private void RewriteCall()
         {
             if (instr.Operands[0] is ConditionOperand cOp)
             {
@@ -376,8 +379,9 @@ namespace Reko.Arch.Z80
             AssignCond(Registers.SZP, dst);
         }
 
-        private void RewriteDjnz(MachineOperand dst)
+        private void RewriteDjnz()
         {
+            var dst = instr.Operands[0];
             var b = binder.EnsureRegister(Registers.b);
             m.Assign(b, m.ISub(b, 1));
             m.Branch(m.Ne0(b), ((AddressOperand)dst).Address, InstrClass.Transfer);
@@ -441,7 +445,7 @@ namespace Reko.Arch.Z80
             AssignCond(Registers.SZP, dst);
         }
 
-        private void RewriteJp(Z80Instruction instr)
+        private void RewriteJp()
         {
             switch (instr.Operands[0])
             {
@@ -586,7 +590,7 @@ namespace Reko.Arch.Z80
             m.Assign(sp, m.IAdd(sp, op.DataType.Size));
         }
 
-        private void RewritePush(Z80Instruction instr)
+        private void RewritePush()
         {
             var sp = binder.EnsureRegister(Registers.sp);
             var op = RewriteOp(instr.Operands[0]);
@@ -619,6 +623,14 @@ namespace Reko.Arch.Z80
 
         private void RewriteRet()
         {
+            if (this.instr.Operands.Length != 0)
+            {
+                var cOp = (ConditionOperand) this.instr.Operands[0];
+                m.BranchInMiddleOfInstruction(
+                    GenerateTestExpression(cOp, true),
+                    instr.Address + instr.Length,
+                    InstrClass.ConditionalTransfer);
+            }
             m.Return(2, 0);
         }
 
@@ -630,7 +642,7 @@ namespace Reko.Arch.Z80
                 2);
         }
 
-        private void RewriteShift(Z80Instruction instr, Func<Expression, Expression, Expression> op)
+        private void RewriteShift(Func<Expression, Expression, Expression> op)
         {
             var reg = RewriteOp(instr.Operands[0]);
             var sh = m.Byte(1);
