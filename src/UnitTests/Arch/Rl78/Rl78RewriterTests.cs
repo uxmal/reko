@@ -172,12 +172,21 @@ namespace Reko.UnitTests.Arch.Rl78
         }
 
         [Test]
-        public void Rl78Rw_call()
+        public void Rl78Rw_call_absolute_16()
         {
-            Given_HexString("FC 3E 6E 00"); // call 00006E3E
+            Given_HexString("FD 3E 6E "); // call 00006E3E
+            AssertCode(
+                "0|T--|00001000(3): 1 instructions",
+                "1|T--|call 00006E3E (4)");
+        }
+
+        [Test]
+        public void Rl78Rw_call_absolute_20()
+        {
+            Given_HexString("FC 3E 6E 02"); // call 00026E3E
             AssertCode(
                 "0|T--|00001000(4): 1 instructions",
-                "1|T--|call 00006E3E (4)");
+                "1|T--|call 00026E3E (4)");
         }
 
         [Test]
@@ -517,7 +526,7 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("61 EE");	// rolwc	ax,0x01
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|ax = __rcl(ax, C, 1<8>)",
+                "1|L--|ax = __rcl(ax, 1<8>, C)",
                 "2|L--|C = cond(ax)");
         }
 
@@ -592,7 +601,17 @@ namespace Reko.UnitTests.Arch.Rl78
             Given_HexString("61 DC");	// rolc	a,0x01
             AssertCode(
                 "0|L--|00001000(2): 2 instructions",
-                "1|L--|a = __rcl(a, C, 1<8>)",
+                "1|L--|a = __rcl(a, 1<8>, C)",
+                "2|L--|C = cond(a)");
+        }
+
+        [Test]
+        public void Rl78Rw_rorc()
+        {
+            Given_HexString("61 FB");   // rorc a,0x01
+            AssertCode(
+                "0|L--|00001000(2): 2 instructions",
+                "1|L--|a = __rcr(a, 1<8>, C)",
                 "2|L--|C = cond(a)");
         }
 

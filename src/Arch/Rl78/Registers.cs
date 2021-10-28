@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +40,9 @@ namespace Reko.Arch.Rl78
         public static readonly RegisterStorage es;
         public static readonly RegisterStorage cs;
 
+
         public static readonly RegisterStorage[] ByteRegs;
+        public static readonly RegisterStorage[] WordRegs;
 
         public static readonly RegisterStorage x;
         public static readonly RegisterStorage a;
@@ -55,6 +58,7 @@ namespace Reko.Arch.Rl78
         public static readonly FlagGroupStorage CZ;
         public static readonly FlagGroupStorage Z;
 
+        public static readonly ReadOnlyDictionary<string, RegisterStorage> GpRegsByName;
 
         static Registers()
         {
@@ -70,14 +74,18 @@ namespace Reko.Arch.Rl78
 
             x = new RegisterStorage("x", ax.Number, 0, PrimitiveType.Byte);
             a = new RegisterStorage("a", ax.Number, 8, PrimitiveType.Byte);
-            c = new RegisterStorage("c", ax.Number, 0, PrimitiveType.Byte);
-            b = new RegisterStorage("b", ax.Number, 8, PrimitiveType.Byte);
-            e = new RegisterStorage("e", ax.Number, 0, PrimitiveType.Byte);
-            d = new RegisterStorage("d", ax.Number, 8, PrimitiveType.Byte);
-            l = new RegisterStorage("l", ax.Number, 0, PrimitiveType.Byte);
-            h = new RegisterStorage("h", ax.Number, 8, PrimitiveType.Byte);
+            c = new RegisterStorage("c", bc.Number, 0, PrimitiveType.Byte);
+            b = new RegisterStorage("b", bc.Number, 8, PrimitiveType.Byte);
+            e = new RegisterStorage("e", de.Number, 0, PrimitiveType.Byte);
+            d = new RegisterStorage("d", de.Number, 8, PrimitiveType.Byte);
+            l = new RegisterStorage("l", hl.Number, 0, PrimitiveType.Byte);
+            h = new RegisterStorage("h", hl.Number, 8, PrimitiveType.Byte);
 
+            WordRegs = new RegisterStorage[5] { ax, bc, de, hl, sp};
             ByteRegs = new RegisterStorage[8] { x, a, c, b, e, d, l, h };
+
+            GpRegsByName = new ReadOnlyDictionary<string, RegisterStorage>(WordRegs.Concat(ByteRegs)
+                .ToDictionary(r => r.Name));
 
             C = new FlagGroupStorage(psw, (uint) FlagM.CF, "C", PrimitiveType.Bool);
             cy = new FlagGroupStorage(psw, (uint) FlagM.CF, "cy", PrimitiveType.Bool);

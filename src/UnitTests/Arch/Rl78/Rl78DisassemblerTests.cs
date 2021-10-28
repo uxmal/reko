@@ -53,6 +53,30 @@ namespace Reko.UnitTests.Arch.Rl78
         }
 
         [Test]
+        public void Rl78Dis_call_absolute_16()
+        {
+            AssertCode("call\t!6E3E", "FD 3E 6E");
+        }
+
+        [Test]
+        public void Rl78Dis_call_absolute_20()
+        {
+            AssertCode("call\t!!26E3E", "FC 3E 6E 02"); 
+        }
+
+        [Test]
+        public void Rl78Dis_call_relative_16()
+        {
+            AssertCode("call\t$!0E41", "FE 3E FE");
+        }
+
+        [Test]
+        public void Rl78Dis_cmp_a_hl()
+        {
+            AssertCode("cmp\ta,[hl]", "4D");
+        }
+
+        [Test]
         public void Rl78Dis_nop()
         {
             AssertCode("nop", "00");
@@ -62,12 +86,6 @@ namespace Reko.UnitTests.Arch.Rl78
         public void Rl78Dis_mov_x_imm()
         {
             AssertCode("mov\tx,#42", "50 42");
-        }
-
-        [Test]
-        public void Rl78Dis_cmp_a_hl()
-        {
-            AssertCode("cmp\ta,[hl]", "4D");
         }
 
         [Test]

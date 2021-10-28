@@ -126,7 +126,7 @@ namespace Reko.Arch.Rl78
                 case Mnemonic.rolc: RewriteRotateC(IntrinsicProcedure.RolC); break;
                 case Mnemonic.rolwc: RewriteRotateC(IntrinsicProcedure.RolC); break;
                 case Mnemonic.ror: RewriteRotate(IntrinsicProcedure.Ror); break;
-                case Mnemonic.rorc: RewriteRotate(IntrinsicProcedure.RorC); break;
+                case Mnemonic.rorc: RewriteRotateC(IntrinsicProcedure.RorC); break;
                 case Mnemonic.sar: RewriteShift(m.Sar); break;
                 case Mnemonic.sarw: RewriteShiftw(m.Sar); break;
                 case Mnemonic.sel: RewriteSel(); break;
@@ -493,8 +493,8 @@ namespace Reko.Arch.Rl78
                     true,
                     b.DataType,
                     b,
-                    C(),
-                    RewriteSrc(instr.Operands[1])));
+                    RewriteSrc(instr.Operands[1]),
+                    C()));
             EmitCond(dst, C());
         }
 
@@ -562,6 +562,8 @@ namespace Reko.Arch.Rl78
 
         private void RewriteXch()
         {
+            if (instr.Address.ToLinear() == 0x862)
+                instr.ToString();       //$DEBUG
             var op1 = RewriteSrc(instr.Operands[0]);
             var op2 = RewriteSrc(instr.Operands[1]);
             var tmp = binder.CreateTemporary(op1.DataType);

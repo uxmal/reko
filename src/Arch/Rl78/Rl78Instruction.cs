@@ -36,6 +36,7 @@ namespace Reko.Arch.Rl78
 
         public override string MnemonicAsString => Mnemonic.ToString();
 
+        public bool IsAbsolute { get; set; }
 
         public RegisterStorage? Prefix { get; set; }
 
@@ -96,7 +97,20 @@ namespace Reko.Arch.Rl78
                 renderer.WriteFormat(".{0}", bit.BitPosition);
                 return;
             case AddressOperand aop:
-                renderer.WriteAddress(aop.Address.ToString(), aop.Address);
+                var sb = new StringBuilder();
+                if (this.IsAbsolute)
+                {
+                    if (aop.Width.BitSize == 20)
+                        sb.Append("!!");
+                    else
+                        sb.Append("!");
+                }
+                else
+                {
+                    sb.Append("$!");
+                }
+                sb.AppendFormat("{0:X4}", aop.Address.ToLinear());
+                renderer.WriteAddress(sb.ToString(), aop.Address);
                 return;
             case RegisterBankOperand rbop:
                 renderer.WriteFormat("rb{0}", rbop.Bank);

@@ -36,14 +36,17 @@ namespace Reko.Arch.Rl78
         public Rl78Architecture(IServiceProvider services, string archId, Dictionary<string, object> options)
             : base(services, archId, options)
         {
+            this.Ptr20 = PrimitiveType.Create(Domain.Pointer, 20);
             InstructionBitSize = 8;
-            FramePointerType = PrimitiveType.Ptr32;
-            PointerType = PrimitiveType.Ptr32;
-            WordWidth = PrimitiveType.Word32;
+            FramePointerType = PrimitiveType.Ptr16;
+            PointerType = PrimitiveType.Ptr16;
+            WordWidth = PrimitiveType.Word16;
             CarryFlagMask = (uint) FlagM.CF;
             StackRegister = Registers.sp;
             Endianness = EndianServices.Little;
         }
+
+        public PrimitiveType Ptr20 { get; }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader rdr)
         {
@@ -92,8 +95,20 @@ namespace Reko.Arch.Rl78
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(StorageDomain domain, BitRange range) {
-            throw new NotImplementedException();
+        public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)
+        {
+            uint iReg = (uint) domain;
+            if (iReg < Registers.WordRegs.Length)
+            {
+                if (range.Extent != 8)
+                    return Registers.WordRegs[iReg];
+                iReg *= 2;
+                if (range.Lsb == 8)
+                    ++iReg;
+                if (iReg < Registers.ByteRegs.Length)
+                    return Registers.ByteRegs[iReg];
+            }
+            return null;
         }
 
         public override RegisterStorage GetRegister(string name)
@@ -104,6 +119,13 @@ namespace Reko.Arch.Rl78
         public override RegisterStorage[] GetRegisters()
         {
             throw new NotImplementedException();
+        }
+
+        public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
+        {
+            uint grf = flags.FlagGroupBits;
+            if ((grf & Registers.C.FlagGroupBits) != 0) yield return Registers.C;
+            if ((grf & Registers.Z.FlagGroupBits) != 0) yield return Registers.Z;
         }
 
         public override string GrfToString(RegisterStorage reg, string str, uint grf)
@@ -128,7 +150,7 @@ namespace Reko.Arch.Rl78
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.GpRegsByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string? txtAddr, out Address addr)

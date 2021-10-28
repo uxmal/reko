@@ -45,6 +45,7 @@ namespace Reko.Arch.Rl78
         private readonly List<MachineOperand> ops;
         private Address addr;
         private RegisterStorage? prefix;
+        private bool isAbsolute;
 
         public Rl78Disassembler(Rl78Architecture arch, EndianImageReader rdr)
         {
@@ -61,6 +62,7 @@ namespace Reko.Arch.Rl78
                 return null;
             ops.Clear();
             prefix = null;
+            isAbsolute = false;
             var instr = s_decoders[op].Decode(op, this);
             instr.Address = addr;
             instr.Length = (int) (rdr.Address - addr);
@@ -74,6 +76,7 @@ namespace Reko.Arch.Rl78
                 InstructionClass = iclass,
                 Mnemonic = mnemonic,
                 Prefix = this.prefix,
+                IsAbsolute = this.isAbsolute,
                 Operands = this.ops.ToArray()
             };
             return instr;
@@ -315,17 +318,19 @@ namespace Reko.Arch.Rl78
                 return false;
             uint uAbsAddress = ((uint) seg << 16) | (uint) upcRelativeOffset;
             var addrOp = AddressOperand.Ptr32(uAbsAddress);
+            addrOp.Width = dasm.arch.Ptr20;
             dasm.ops.Add(addrOp);
+            dasm.isAbsolute = true;
             return true;
         }
 
         private static bool ImmAddr16(uint op, Rl78Disassembler dasm)
         {
-            if (!dasm.rdr.TryReadUInt16(out ushort upcRelativeOffset))
+            if (!dasm.rdr.TryReadUInt16(out ushort uAbsAddress))
                 return false;
-            uint uAbsAddress = (0xFu << 16) | (uint) upcRelativeOffset;
             var addrOp = AddressOperand.Ptr32(uAbsAddress);
             dasm.ops.Add(addrOp);
+            dasm.isAbsolute = true;
             return true;
         }
 
@@ -1443,7 +1448,7 @@ namespace Reko.Arch.Rl78
                 // 0x00
                 Instr(Mnemonic.nop, InstrClass.Linear | InstrClass.Padding | InstrClass.Zero),
                 Instr(Mnemonic.addw, AX, AX),
-                Instr(Mnemonic.addw, AX,Maddr16w),
+                Instr(Mnemonic.addw, AX, Maddr16w),
                 Instr(Mnemonic.addw, AX, BC),
 
                 Instr(Mnemonic.addw, AX,Iw ),
@@ -1484,7 +1489,7 @@ namespace Reko.Arch.Rl78
 
                 // 0x20
                 Instr(Mnemonic.subw, SP,Ib ),
-                Nyi("0x21"),
+                s_invalid,
                 Instr(Mnemonic.subw, AX,Maddr16w),
                 Instr(Mnemonic.subw, AX, BC),
 
@@ -1779,7 +1784,7 @@ namespace Reko.Arch.Rl78
                 Instr(Mnemonic.movw, HL,Maddr16w),
 
                 Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, ImmAddr20),
-                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, Maddr16w),
+                Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, ImmAddr16),
                 Instr(Mnemonic.call, InstrClass.Transfer|InstrClass.Call, PcRelative16),
                 s_invalid
             };
