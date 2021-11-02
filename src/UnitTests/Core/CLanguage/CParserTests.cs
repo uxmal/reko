@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Core.CLanguage
             parserState = new ParserState();
         }
 
-        private void Lex(string str)
+        private void GccLex(string str)
         {
             lexer = new CLexer(new StringReader(str), CLexer.GccKeywords);
             parser = new CParser(parserState, lexer);
@@ -59,14 +59,14 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_decl()
         {
-            Lex("  int x;");
+            GccLex("  int x;");
             parser.Parse_Decl();
         }
 
         [Test]
         public void CParser_empty_decl()
         {
-            Lex("");
+            GccLex("");
             var decl = parser.Parse_Decl();
             Assert.IsNull(decl);
         }
@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_Nested_Array()
         {
-            Lex("a[3][4]");
+            GccLex("a[3][4]");
             var decl = parser.Parse_Declarator();
             Debug.Print("{0}: ", decl);
             //var arr = (ArrayDeclarator) decl.DirectDeclarator;
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_typedef_struct()
         {
-            Lex("typedef struct tagFoo { int x; int y; } FOO, *PFOO;");
+            GccLex("typedef struct tagFoo { int x; int y; } FOO, *PFOO;");
             var decl = parser.Parse_Decl();
             var sExp =
                 "(decl Typedef (Struct tagFoo " +
@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_Initialized()
         {
-            Lex("int * p = &x;");
+            GccLex("int * p = &x;");
             var decl = parser.Parse_Decl();
             Debug.Write(decl.ToString());
         }
@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_Typedef_Ulong()
         {
-            Lex("typedef unsigned long ULONG;");
+            GccLex("typedef unsigned long ULONG;");
             var decl = parser.Parse_ExternalDecl();
             Debug.WriteLine(decl.ToString());
             Assert.IsTrue(parser.IsTypeName("ULONG"));
@@ -118,7 +118,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_Typef_Pulong()
         {
-            Lex("typedef unsigned long ULONG; typedef ULONG *PULONG;");
+            GccLex("typedef unsigned long ULONG; typedef ULONG *PULONG;");
             var decl = parser.Parse_ExternalDecl();
             decl = parser.Parse_ExternalDecl();
             Debug.WriteLine(decl.ToString());
@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_Function()
         {
-            Lex("int atoi(char * number);");
+            GccLex("int atoi(char * number);");
             var decl = parser.Parse_Decl();
             Debug.WriteLine(decl.ToString());
         }
@@ -136,7 +136,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_ZeroArityFn()
         {
-            Lex("void _mm_pause (void);");
+            GccLex("void _mm_pause (void);");
             var decl = parser.Parse_ExternalDecl();
             Assert.AreEqual("(decl Void ((init-decl (func _mm_pause ((Void ))))))", decl.ToString());
         }
@@ -144,7 +144,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_SelfReferencingStructure()
         {
-            Lex("typedef struct _LIST_ENTRY { " +
+            GccLex("typedef struct _LIST_ENTRY { " +
                 "    struct _LIST_ENTRY *Flink;" +
                 "    struct _LIST_ENTRY *Blink;" +
                 "} LIST_ENTRY, *PLIST_ENTRY, * PRLIST_ENTRY;");
@@ -161,7 +161,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_Regression1()
         {
-            Lex("__inline PVOID GetFiberData( void )    { return *(PVOID *) (ULONG_PTR) __readfsdword (0x10);}\r\n");
+            GccLex("__inline PVOID GetFiberData( void )    { return *(PVOID *) (ULONG_PTR) __readfsdword (0x10);}\r\n");
             parser.ParserState.Typedefs.Add("PVOID");
             parser.ParserState.Typedefs.Add("ULONG_PTR");
 
@@ -176,7 +176,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_Enum()
         {
-            Lex("typedef enum _S { Item = 1, Folder } S;");
+            GccLex("typedef enum _S { Item = 1, Folder } S;");
             var decl = parser.Parse_ExternalDecl();
             var sExp = "(decl Typedef Reko.Core.CLanguage.EnumeratorTypeSpec " +
                 "((init-decl S)))";
@@ -186,7 +186,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_declspec_align()
         {
-            Lex("struct __declspec(align(16)) _S { int x; };");
+            GccLex("struct __declspec(align(16)) _S { int x; };");
             var decl = parser.Parse_ExternalDecl();
             var sExp = "(decl (Struct 16 _S ((Int) ((x))))";
             Assert.AreEqual(sExp, decl.ToString());
@@ -195,7 +195,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_stdcall_in_typedef()
         {
-            Lex("typedef void (__stdcall *PFN) ();");
+            GccLex("typedef void (__stdcall *PFN) ();");
             var decl = parser.Parse_ExternalDecl();
             var sExp =
                 "(decl Typedef Void ((init-decl " +
@@ -206,7 +206,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_Bitfields()
         {
-            Lex("typedef struct _BitField { unsigned int : 1; } foo;");
+            GccLex("typedef struct _BitField { unsigned int : 1; } foo;");
             var decl = parser.Parse_ExternalDecl();
             var sExp =
                 "(decl Typedef (Struct _BitField ((Unsigned Int) (( 1))) " +
@@ -217,7 +217,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_DoWhile()
         {
-            Lex("do {__noop(TagBase);} while((0,0));");
+            GccLex("do {__noop(TagBase);} while((0,0));");
             var stat = parser.Parse_Stat();
             var sExp =
                 "(do " + Environment.NewLine +
@@ -231,7 +231,7 @@ namespace Reko.UnitTests.Core.CLanguage
         {
             parserState.Typedefs.Add("PVOID");
             parserState.Typedefs.Add("BOOLEAN");
-            Lex("typedef void (__stdcall * FOO) (PVOID, BOOLEAN );   ");
+            GccLex("typedef void (__stdcall * FOO) (PVOID, BOOLEAN );   ");
             var decl = parser.Parse_Decl();
             var sExp =
                 "(decl Typedef Void " +
@@ -242,14 +242,14 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_Derefs()
         {
-            Lex("CallbackEnviron->u.Flags = 0;");
+            GccLex("CallbackEnviron->u.Flags = 0;");
             var stat = parser.Parse_Stat();
         }
 
         [Test]
         public void CParser_Ptr_to_Const_Int()
         {
-            Lex(" int const * pint;");
+            GccLex(" int const * pint;");
             var decl = parser.Parse_Decl();
             var sExp =
                 "(decl Int Const ((init-decl (ptr pint))))";
@@ -259,7 +259,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_StructField_Ptr_to_Const_Int()
         {
-            Lex("struct { int const * pint; };");
+            GccLex("struct { int const * pint; };");
             var decl = parser.Parse_Decl();
             var sExp =
                 "(decl (Struct  ((Int Const) (((ptr pint)))))";
@@ -269,7 +269,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_ForwardTypedef()
         {
-            Lex("typedef struct _tagFoo Foo; ");
+            GccLex("typedef struct _tagFoo Foo; ");
             var decl = parser.Parse_Decl();
             Assert.AreEqual("(decl Typedef (Struct _tagFoo) ((init-decl Foo)))", decl.ToString());
         }
@@ -277,7 +277,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_typedef_struct_redef()
         {
-            Lex(
+            GccLex(
                 "typedef struct _M { int x; } M, *PM;" +
                 "typedef struct _M M, *PM;");
             parser.Parse_ExternalDecl();
@@ -288,7 +288,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_typedef_union_redef()
         {
-            Lex(
+            GccLex(
                 "typedef union _M { int x; } M, *PM;" +
                 "typedef union _M M, *PM;");
             parser.Parse_ExternalDecl();
@@ -300,7 +300,7 @@ namespace Reko.UnitTests.Core.CLanguage
         public void CParser_Use_typedefname_As_variable()
         {
             parserState.Typedefs.Add("Doc");
-            Lex("typeof struct vtbl {\r\n" +
+            GccLex("typeof struct vtbl {\r\n" +
                 "int (__stdcall * method)(\r\n" +
                     "int ** Doc);\r\n" +
                 "} vtbl;");
@@ -317,7 +317,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_vtable_method_With_pfn()
         {
-            Lex(
+            GccLex(
                 "typedef struct myVtbl { \n" +
                 "int (__stdcall  * Do) (\n" +
                 "    int x,\n" +
@@ -337,7 +337,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_typedef_array()
         {
-            Lex("typedef char (*array)[10];");
+            GccLex("typedef char (*array)[10];");
             var decl = parser.Parse_ExternalDecl();
             var sExp =
                 "(decl Typedef Char ((init-decl (arr (ptr array) 10))))";
@@ -347,7 +347,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_typedef_2darray()
         {
-            Lex("typedef char matrix[3][4];");
+            GccLex("typedef char matrix[3][4];");
             var decl = parser.Parse_ExternalDecl();
             var sExp =
                 "(decl Typedef Char ((init-decl (arr (arr matrix 3) 4))))";
@@ -357,7 +357,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_declspec_deprecated_with_text()
         {
-            Lex("__declspec(deprecated(\"foo\")) int bar(); ");
+            GccLex("__declspec(deprecated(\"foo\")) int bar(); ");
             var decl = parser.Parse_ExternalDecl();
             var sExp =
                 "(decl (__declspec deprecated) Int ((init-decl (func bar)))))";
@@ -367,7 +367,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_array_with_complex_size_expression()
         {
-            Lex(
+            GccLex(
                 "typedef long LONG;\n" + 
                 "typedef long LONG_PTR;\n" +
                 "typedef struct { int x; } XSAVE_AREA;\n"+
@@ -388,7 +388,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_legal_duplicate_typedef()
         {
-            Lex(
+            GccLex(
                 "typedef int FOO[1];\n" +
                 "typedef int FOO[1];\n");
             var decl = parser.Parse_ExternalDecl();
@@ -402,7 +402,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_legal_duplicate_typedef2()
         {
-            Lex(
+            GccLex(
                 "typedef __int64 __time64_t;\n" +
                 "typedef __time64_t time_t;\n");
             var decl = parser.Parse_ExternalDecl();
@@ -415,7 +415,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_legal_duplicate_typedef3()
         {
-            Lex(
+            GccLex(
                 "typedef wchar_t WCHAR;\n" +
                 "typedef const WCHAR *LPCWCH, *PCWCH;\n");
             var decl = parser.Parse_ExternalDecl();
@@ -428,7 +428,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_application_empty_arglist()
         {
-            Lex("void FOO(void) {\r\n" +
+            GccLex("void FOO(void) {\r\n" +
                     "bar();\r\n" + 
                 "}");
             var decl = parser.Parse_ExternalDecl();
@@ -439,7 +439,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_abstract_fn_parameter()
         {
-            Lex("int    __cdecl atexit(void (__cdecl *)(void));");
+            GccLex("int    __cdecl atexit(void (__cdecl *)(void));");
             var decl = parser.Parse_ExternalDecl();
             var sExp = "(decl Int __Cdecl ((init-decl (func atexit ((Void (func (__Cdecl (ptr )) ((Void )))))))))";
             Assert.AreEqual(sExp, decl.ToString());
@@ -448,7 +448,7 @@ namespace Reko.UnitTests.Core.CLanguage
         [Test]
         public void CParser_typedef__success()
         {
-            Lex("typedef __success(return >= 0) long HRESULT;");
+            GccLex("typedef __success(return >= 0) long HRESULT;");
             var decl = parser.Parse_ExternalDecl();
             var sExp = "(decl Typedef Long ((init-decl HRESULT)))"; 
             Assert.AreEqual(sExp, decl.ToString());
@@ -1086,7 +1086,7 @@ MemoryBarrier (
         [Test]
         public void CParser_Windows_h()
         {
-            Lex(windows_h);
+            GccLex(windows_h);
             var decls = parser.Parse();
             for (int i = 0; i < decls.Count; ++i)
             {
@@ -1099,7 +1099,7 @@ MemoryBarrier (
         [Test]
         public void CParser_FunctionPtr_Parameters()
         {
-            Lex("int __libc_start_main(int (*main) (int, char **, char **), int argc, char ** ubp_av, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void (* stack_end));");
+            GccLex("int __libc_start_main(int (*main) (int, char **, char **), int argc, char ** ubp_av, void (*init) (void), void (*fini) (void), void (*rtld_fini) (void), void (* stack_end));");
             var decl = parser.Parse_ExternalDecl();
             var sExp = 
                 "(decl Int ((init-decl (func __libc_start_main (" +
@@ -1117,7 +1117,7 @@ MemoryBarrier (
         [Test]
         public void CParser_FunctionPtr_AbstractParameters()
         {
-            Lex("int main(int, char **, char **);");
+            GccLex("int main(int, char **, char **);");
             var decl = parser.Parse_ExternalDecl();
             var sExp = "(decl Int ((init-decl (func main ((Int ) (Char (ptr (ptr ))) (Char (ptr (ptr ))))))))";
             Assert.AreEqual(sExp, decl.ToString());
@@ -1126,7 +1126,7 @@ MemoryBarrier (
         [Test]
         public void CParser_Attribute()
         {
-            Lex("[[reko::reg(\"D0\")]]");
+            GccLex("[[reko::reg(\"D0\")]]");
             var attr = parser.Parse_AttributeSpecifier();
             var sExp = "(attr reko::reg (StringLiteral D0))";
             Assert.AreEqual(sExp, attr.ToString());
@@ -1135,7 +1135,7 @@ MemoryBarrier (
         [Test]
         public void CParser_AttributedDeclaration()
         {
-            Lex("[[reko::reg(\"D0\")]] BYTE foo([[reko::reg(\"A1\")]] void * arg);");
+            GccLex("[[reko::reg(\"D0\")]] BYTE foo([[reko::reg(\"A1\")]] void * arg);");
             var decl = parser.Parse_ExternalDecl();
             var sExp = "(decl " +
                             "(attr reko::reg (StringLiteral D0)) " +
@@ -1148,7 +1148,7 @@ MemoryBarrier (
         [Test]
         public void CParser_Far_Pointer()
         {
-            Lex("typedef void _far*LPVOID;");
+            GccLex("typedef void _far*LPVOID;");
             var decl = parser.Parse_ExternalDecl();
             var sExp = "(decl Typedef Void _Far ((init-decl (ptr LPVOID))))";
             Assert.AreEqual(sExp, decl.ToString());
@@ -1157,7 +1157,7 @@ MemoryBarrier (
         [Test]
         public void CParser_Regression()
         {
-            Lex("char * get(int n);");
+            GccLex("char * get(int n);");
             var decl = parser.Parse_ExternalDecl();
             var sExp = "(decl Char ((init-decl (ptr (func get ((Int n)))))))";
             Assert.AreEqual(sExp, decl.ToString());
@@ -1169,7 +1169,7 @@ MemoryBarrier (
             // Even though 'a' is not defined, it should still be parseable. 
             // We make the assumption in a typedef that if it is followed by 
             // an id, the id is a reference to a type.
-            Lex("typedef a b;");
+            GccLex("typedef a b;");
             var decl = parser.Parse_ExternalDecl();
             var sExp = "(decl Typedef a ((init-decl b)))";
             Assert.AreEqual(sExp, decl.ToString());
@@ -1178,7 +1178,7 @@ MemoryBarrier (
         [Test]
         public void CParser_IncorrectStatement1()
         {
-            Lex("int a()b;");
+            GccLex("int a()b;");
             try
             {
                 parser.Parse_ExternalDecl();
@@ -1193,7 +1193,7 @@ MemoryBarrier (
         [Test]
         public void CParser_IncorrectStatement2()
         {
-            Lex("int a);");
+            GccLex("int a);");
             try
             {
                 parser.Parse_ExternalDecl();
@@ -1208,14 +1208,14 @@ MemoryBarrier (
         [Test]
         public void CParser_Argument_Attributes()
         {
-            Lex("int _ftol([[reko::x87_fpu_arg]]double);");
+            GccLex("int _ftol([[reko::x87_fpu_arg]]double);");
             var decl = parser.Parse_ExternalDecl();
         }
 
         [Test]
         public void CParser_Pragma_Prefast()
         {
-            Lex(
+            GccLex(
 @"
 #pragma prefast(push)
 #pragma prefast(disable: 6001 28113, ""The barrier variable is accessed only to create a side effect."")
@@ -1228,7 +1228,7 @@ int x;
         [Test]
         public void CParser_Semicolon_after_pragma()
         {
-            Lex(
+            GccLex(
 @"
 #pragma region
 
@@ -1243,7 +1243,7 @@ int x = 3;
         [Test(Description = "Test non-standard use of __thiscall keyword in a non-member function declaration.")]
         public void CParser_thiscall()
         {
-            Lex("int __thiscall foo(char * bar, const float * baz);");
+            GccLex("int __thiscall foo(char * bar, const float * baz);");
             var decl = parser.Parse_Decl();
             Assert.AreEqual(
                 "(decl Int __Thiscall ((init-decl (func foo ((Char (ptr bar)) (Const Float (ptr baz)))))))",
@@ -1253,7 +1253,7 @@ int x = 3;
         [Test]
         public void CParser_thiscall_return_pointer_to_int()
         {
-            Lex("int * __thiscall foo();");
+            GccLex("int * __thiscall foo();");
 
             var decl = parser.Parse_Decl();
 
@@ -1265,7 +1265,7 @@ int x = 3;
         [Test]
         public void CParser_thiscall_abstract_parameter()
         {
-            Lex("float func(int x, bool (__thiscall * fn)());");
+            GccLex("float func(int x, bool (__thiscall * fn)());");
             var decl = parser.Parse_Decl();
             Assert.AreEqual(
                 "(decl Float ((init-decl (func func ((Int x) (Bool (func (__Thiscall (ptr fn))))))))))",
@@ -1275,7 +1275,7 @@ int x = 3;
         [Test(Description = "#506 on Github")]
         public void CParser_Issue_506()
         {
-            Lex("[[reko::returns(register, \"d0\")]] bool _DATAINIT([[reko::arg(register, \"a5\")]] long a5);");
+            GccLex("[[reko::returns(register, \"d0\")]] bool _DATAINIT([[reko::arg(register, \"a5\")]] long a5);");
             var decl = parser.Parse_Decl();
             Assert.AreEqual(
                 "(decl (attr reko::returns (Register Comma StringLiteral d0)) " +
@@ -1287,7 +1287,7 @@ int x = 3;
         [Test]
         public void CParser_ExternalTypes()
         {
-            Lex("word32 fn00401410(Eq_25 ebp, Eq_26 dwArg04, word32 dwArg08, " +
+            GccLex("word32 fn00401410(Eq_25 ebp, Eq_26 dwArg04, word32 dwArg08, " +
                 "Eq_25 dwArg0C, ptr32 & ebxOut, ptr32 & esiOut);");
             parserState.Typedefs.UnionWith(new[]{
                 "Eq_25", "Eq_26", "ptr32", "word32" });
@@ -1306,7 +1306,7 @@ int x = 3;
         [Test]
         public void CParser_Far_Pascal_Pointer_to_function()
         {
-            Lex("typedef int (__pascal __far  *PFN)();");
+            GccLex("typedef int (__pascal __far  *PFN)();");
             var decl = parser.Parse_Decl();
             Assert.AreEqual(
                 "(decl Typedef Int ((init-decl (func (__Pascal (ptr _Far PFN)))))))",
@@ -1316,7 +1316,7 @@ int x = 3;
         [Test]
         public void CParser_loadds()
         {
-            Lex("int __pascal __loadds fn();");
+            GccLex("int __pascal __loadds fn();");
             var decl = parser.Parse_Decl();
             Assert.AreEqual(
                 "(decl Int __Pascal __LoadDs ((init-decl (func fn)))))",
@@ -1326,7 +1326,7 @@ int x = 3;
         [Test]
         public void CParser_Far_Ptr()
         {
-            Lex("int __pascal CHKDSK(int argc, char __far** argv, char __far** envp);");
+            GccLex("int __pascal CHKDSK(int argc, char __far** argv, char __far** envp);");
             var decl = parser.Parse_ExternalDecl();
             Assert.AreEqual("(decl Int __Pascal ((init-decl (func CHKDSK ((Int argc) (Char _Far (ptr (ptr argv))) (Char _Far (ptr (ptr envp))))))))", decl.ToString());
         }
@@ -1334,7 +1334,7 @@ int x = 3;
         [Test]
         public void CParser_MultilineComent()
         {
-            Lex(@"int /* This is a multi line
+            GccLex(@"int /* This is a multi line
 comment*/ x;");
             var decl = parser.Parse_Decl();
             Assert.AreEqual("(decl Int ((init-decl x)))", decl.ToString());
@@ -1343,7 +1343,7 @@ comment*/ x;");
         [Test]
         public void CParser_Far_ptr_struct_field()
         {
-            Lex(@"
+            GccLex(@"
 struct TheStruct {
     void _far * field;
 };");
@@ -1354,7 +1354,7 @@ struct TheStruct {
         [Test]
         public void CParser_Regression2()
         {
-            Lex(@"
+            GccLex(@"
 int __far __pascal FS_ALLOCATEPAGESPACE(struct sffsi __far * psffsi, struct sffsd __far * psffsd, unsigned long ulsize, unsigned short ulWantContig);
 ");
             var decl = parser.Parse_Decl();
@@ -1365,7 +1365,7 @@ int __far __pascal FS_ALLOCATEPAGESPACE(struct sffsi __far * psffsi, struct sffs
         [Test]
         public void CParser_Regression3()
         {
-            Lex(@"
+            GccLex(@"
 int __far __pascal FS_FILELOCKS(struct sffsi __far * psffsi, struct sffsd __far * psffsd, struct filelock __far * pUnLockRange, struct filelock __far * pLockRange, unsigned long timeout, unsigned long flags);
 ");
             var decl = parser.Parse();
@@ -1374,7 +1374,7 @@ int __far __pascal FS_FILELOCKS(struct sffsi __far * psffsi, struct sffsd __far 
         [Test]
         public void CParser_GccStyleAttributes()
         {
-            Lex(@"
+            GccLex(@"
 extern char *tempnam (const char *__dir, const char *__pfx)
      __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__malloc__));");
             var decls = parser.Parse();
@@ -1389,7 +1389,7 @@ extern char *tempnam (const char *__dir, const char *__pfx)
         [Test]
         public void CParser_restrict()
         {
-            Lex(@"
+            GccLex(@"
 extern struct __iob *fopen (const char *__restrict __filename,
       const char *__restrict __modes) ;");
             var decl = parser.Parse()[0];
@@ -1399,7 +1399,7 @@ extern struct __iob *fopen (const char *__restrict __filename,
         [Test]
         public void CParser_GccAsm()
         {
-            Lex(@"
+            GccLex(@"
 extern int myfunc() __asm__ ("""" ""__flub"");");
             var attrs = parser.Parse()[0].attribute_list;
             Assert.AreEqual(1, attrs.Count);
@@ -1411,7 +1411,7 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
         public void CParser_GccParserState_Float32()
         {
             parserState.Typedefs.Add("_Float32");
-            Lex(@"_Float32 x = 42;");
+            GccLex(@"_Float32 x = 42;");
             var decl = parser.Parse()[0];
             Assert.AreEqual("(decl _Float32 ((init-decl x 42)))", decl.ToString());
         }
@@ -1420,7 +1420,7 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
         public void CParser_GccRestrict()
         {
             parserState.Typedefs.Add("_Float32");
-            Lex(@"extern _Float32 strtof32 (const char *__restrict __nptr,char **__restrict __endptr)__attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));");
+            GccLex(@"extern _Float32 strtof32 (const char *__restrict __nptr,char **__restrict __endptr)__attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));");
             var decl = parser.Parse()[0];
             Assert.AreEqual("(decl (attr __nothrow__) (attr __leaf__) (attr __nonnull__ (NumericLiteral 1)) Extern _Float32 ((init-decl (func strtof32 ((Const Char (ptr Restrict __nptr)) (Char (ptr (ptr Restrict __endptr))))))))", decl.ToString());
         }
@@ -1428,7 +1428,7 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
         [Test]
         public void CParser_GccStructAttributes()
         {
-            Lex(
+            GccLex(
 @"typedef struct {
     long long __max_align_ll __attribute__((__aligned__(__alignof__(long long))));
 } max_align_t;");
@@ -1439,7 +1439,7 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
         [Test]
         public void CParser_Atomic()
         {
-            Lex("typedef _Atomic char atomic_char;");
+            GccLex("typedef _Atomic char atomic_char;");
             var decl = parser.Parse()[0];
             Assert.AreEqual("(decl Typedef _Atomic Char ((init-decl atomic_char)))", decl.ToString());
         }
@@ -1447,7 +1447,7 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
         [Test]
         public void CParser_declspec_restrict()
         {
-            Lex("  __declspec(noalias) __declspec(restrict)      void * __cdecl test();");
+            GccLex("  __declspec(noalias) __declspec(restrict)      void * __cdecl test();");
             var decl = parser.Parse()[0];
             
             Assert.AreEqual("(decl (__declspec noalias) (__declspec restrict) Void ((init-decl (ptr (__Cdecl (func test)))))))", decl.ToString());
@@ -1456,14 +1456,14 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
         [Test]
         public void CParser_pragma_function_many_args()
         {
-            Lex("  #pragma function(floor, floorf, ceil, ceilf)");
+            GccLex("  #pragma function(floor, floorf, ceil, ceilf)");
             parser.Parse();
         }
 
         [Test]
         public void CParser_pragma_pack2()
         {
-            Lex(
+            GccLex(
 @"#pragma pack(push)
 #pragma pack(push,4)
 ");
@@ -1473,7 +1473,7 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
         [Test]
         public void CParser_pragma_warning_disable()
         {
-            Lex("#pragma warning(default : 4200)\r\n");
+            GccLex("#pragma warning(default : 4200)\r\n");
             parser.Parse();
         }
 
@@ -1494,7 +1494,7 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
         [Test]
         public void CParser_If()
         {
-            Lex(
+            GccLex(
 @"{
     HRESULT hr;
     if (cchDest > 2147483647)
@@ -1514,7 +1514,7 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
         [Test]
         public void CParser_Parenthesized_Statements()
         {
-            Lex(@" {
+            GccLex(@" {
   	(hKey);    
 	(SecurityInformation);    
 	(pSecurityDescriptor);    
@@ -1526,14 +1526,14 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
         [Test]
         public void CParser_cdecl_declaration()
         {
-            Lex(@"size_t  __cdecl _msize(     void * _Memory);");
+            GccLex(@"size_t  __cdecl _msize(     void * _Memory);");
             parser.Parse();
         }
 
         [Test]
         public void CParser_const_before_ptr()
         {
-            Lex("typedef struct _REGINI const *LPCREGINI;");
+            GccLex("typedef struct _REGINI const *LPCREGINI;");
             var decl = parser.Parse()[0];
             Assert.AreEqual("(decl Typedef (Struct _REGINI) ((init-decl (ptr Const LPCREGINI))))", decl.ToString());
         }
@@ -1541,7 +1541,7 @@ extern int myfunc() __asm__ ("""" ""__flub"");");
         [Test]
         public void CParser_forward_decl()
         {
-            Lex(@"
+            GccLex(@"
             typedef unsigned int Request;
             struct test {
                 int Request[42];
@@ -1560,6 +1560,17 @@ typedef int         HFILE;
 UINT __far __pascal _lread(HFILE, void __huge *, UINT );");
             var decl = parser.Parse()[2];
             Assert.AreEqual("(decl UINT _Far __Pascal ((init-decl (func _lread ((HFILE ) (Void _Huge (ptr )) (UINT ))))))", decl.ToString());
+        }
+
+        [Test]
+        public void CParser_gcc_attribute()
+        {
+            GccLex(@"
+struct __attribute__((aligned(4))) yapl_vm
+{
+};");
+            var decl = parser.Parse()[0];
+            Assert.AreEqual("(decl (Struct 4 yapl_vm))", decl.ToString());
         }
     }
 }

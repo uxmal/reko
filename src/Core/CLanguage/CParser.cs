@@ -704,6 +704,15 @@ IGNORE tab + cr + lf
 
                     ExpectToken(CTokenType.RParen);
                 }
+                var attrs = Parse_GccExtensions();
+                if (attrs is not null)
+                {
+                    var alignAttr = attrs.FirstOrDefault(a => a.Name.ToString() == "aligned");
+                    if (alignAttr is not null && alignAttr.Tokens.Count == 1 && alignAttr.Tokens[0].Type == CTokenType.NumericLiteral)
+                    {
+                        alignment = (int) alignAttr.Tokens[0].Value;
+                    }
+                }
                 if (PeekToken().Type == CTokenType.Id)
                 {
                     tag = (string) lexer.Read().Value;
