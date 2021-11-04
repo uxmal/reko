@@ -1563,7 +1563,7 @@ UINT __far __pascal _lread(HFILE, void __huge *, UINT );");
         }
 
         [Test]
-        public void CParser_gcc_attribute()
+        public void CParser_gcc_attribute_struct()
         {
             GccLex(@"
 struct __attribute__((aligned(4))) yapl_vm
@@ -1571,6 +1571,22 @@ struct __attribute__((aligned(4))) yapl_vm
 };");
             var decl = parser.Parse()[0];
             Assert.AreEqual("(decl (Struct 4 yapl_vm))", decl.ToString());
+        }
+
+        [Test]
+        public void CParser_gcc_attribute_field()
+        {
+            GccLex(@"
+struct __attribute__((aligned(4))) yapl_vm
+{
+    int field0;
+    __attribute__((aligned(8))) double field8;
+};");
+            var decl = parser.Parse()[0];
+            Assert.AreEqual("(decl (Struct 4 yapl_vm " +
+                "((Int) ((field0)) " +
+                "(Double) ((field8)) ((attr aligned (NumericLiteral 8)))))",
+                decl.ToString());
         }
     }
 }

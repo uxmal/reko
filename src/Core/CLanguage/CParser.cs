@@ -790,6 +790,7 @@ IGNORE tab + cr + lf
 
         private StructDecl Parse_StructDecl()
         {
+            var gccAttr = Parse_GccExtensions();
             var sql = Parse_SpecifierQualifierList();
             List<FieldDeclarator> decls = new List<FieldDeclarator>();
             decls.Add(Parse_StructDeclarator());
@@ -797,9 +798,19 @@ IGNORE tab + cr + lf
             {
                 decls.Add(Parse_StructDeclarator());
             }
-            var gccAttr = Parse_GccExtensions();
+            var gccAttr2 = Parse_GccExtensions();
             ExpectToken(CTokenType.Semicolon);
-            return grammar.StructDecl(sql, decls, gccAttr);
+            return grammar.StructDecl(sql, decls, CollectAttributes(gccAttr, gccAttr2));
+        }
+
+        private List<CAttribute> CollectAttributes(List<CAttribute> list1, List<CAttribute> list2)
+        {
+            if (list1 is null)
+                return list2;
+            if (list2 is null)
+                return list1;
+            list1.AddRange(list2);
+            return list1;
         }
 
         //StructDeclarator = Declarator [':' ConstExpr] | ':'  ConstExpr.

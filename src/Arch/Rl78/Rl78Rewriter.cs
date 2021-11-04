@@ -562,8 +562,6 @@ namespace Reko.Arch.Rl78
 
         private void RewriteXch()
         {
-            if (instr.Address.ToLinear() == 0x862)
-                instr.ToString();       //$DEBUG
             var op1 = RewriteSrc(instr.Operands[0]);
             var op2 = RewriteSrc(instr.Operands[1]);
             var tmp = binder.CreateTemporary(op1.DataType);
