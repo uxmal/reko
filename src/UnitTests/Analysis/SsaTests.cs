@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Analysis
                 Debug.Print("SsaTest: {0}", new StackFrame(3).GetMethod().Name);
                 ssa = sst.SsaState;
                 ssa.Write(writer);
-                proc.Write(false, true, writer);
+                proc.Write(false, true, false, writer);
                 writer.WriteLine();
                 ssa.Validate(s => Assert.Fail(s));
             }

@@ -117,25 +117,27 @@ namespace Reko.UnitTests.Scanning
             scan.EnqueueImageSymbol(sym, true);
         }
 
-        private void AssertProgram(string sExpected, bool showEdges, Program program)
+        private void AssertProgram(
+            string sExpected, bool showEdges, bool lowLevelInfo,
+            Program program)
         {
             var sw = new StringWriter();
             foreach (var proc in program.Procedures.Values)
             {
-                proc.Write(false, showEdges, sw);
+                proc.Write(false, showEdges, lowLevelInfo, sw);
                 sw.WriteLine();
             }
             var sActual = sw.ToString();
             if (sExpected != sActual)
             {
-                Debug.WriteLine(sActual);
+                Console.WriteLine(sActual);
                 Assert.AreEqual(sExpected, sActual);
             }
         }
 
         private void AssertProgram(string sExpected, Program prog)
         {
-            AssertProgram(sExpected, false, prog);
+            AssertProgram(sExpected, false, false, prog);
         }
 
         private SerializedType Char()
@@ -574,7 +576,67 @@ l00001100:
 fn00001000_exit:
 
 ";
-            AssertProgram(sExp, true, program);
+            AssertProgram(sExp, true, false, program);
+        }
+
+        [Test]
+        public void Scanner_JumpToUserProcedureEntry()
+        {
+            var scan = CreateScanner(0x1000, 0x2000);
+            Given_Trace(new RtlTrace(0x1000)
+            {
+                // 0x1000:
+                m => { m.Goto(Address.Ptr32(0x1100)); }
+            });
+            Given_Trace(new RtlTrace(0x1100)
+            {
+                // 0x1100:
+                m => { m.Assign(reg1, m.Word32(1)); },
+                // 0x1104:
+                m => { m.Return(4, 8); },
+            });
+            var address = Address.Ptr32(0x1100);
+            var userProcedure = new UserProcedure(address, "user_proc");
+            scan.EnqueueUserProcedure(arch, userProcedure);
+            scan.EnqueueImageSymbol(
+                ImageSymbol.Procedure(
+                    arch,
+                    Address.Ptr32(0x1000),
+                    state: arch.CreateProcessorState()),
+                true);
+
+            scan.ScanImage();
+
+            var sExp =
+            #region Expected
+@"// fn00001000
+// Return size: 4
+define fn00001000
+// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1
+
+fn00001000_entry:
+	r63 = fp
+l00001000:
+l00001000_thunk_user_proc:
+	call user_proc (retsize: 0;)
+	return
+fn00001000_exit:
+
+// user_proc
+// Return size: 4
+define user_proc
+// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1
+
+user_proc_entry:
+	r63 = fp
+l00001100:
+	r1 = 1<32>
+	return
+user_proc_exit:
+
+";
+            #endregion
+            AssertProgram(sExp, false, true, program);
         }
 
         [Test]
