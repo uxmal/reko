@@ -29,7 +29,7 @@ using System.IO;
 using System.Linq;
 using System.Timers;
 
-namespace Reko.Core
+namespace Reko.Gui
 {
     using FileWatchersMap = ConcurrentDictionary<string, FileSystemWatcher>;
 
