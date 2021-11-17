@@ -357,11 +357,23 @@ namespace Reko.Core.Configuration
         public TypeLibraryReference_v1[]? TypeLibraries;
     }
 
+    /// <summary>
+    /// This class represents a byte pattern, including a mask for don't care bits.
+    /// </summary>
     public class BytePattern_v1
     {
+        /// <summary>
+        /// The byte pattern to match, expressed as a string of hexadecimal digits.
+        /// If the <see cref="Mask"/> field has no value, this string is interpreted
+        /// so that any '?' characters are nybble-wide mask characters.
+        /// </summary>
         [XmlElement("Bytes")]
         public string? Bytes;
 
+        /// <summary>
+        /// If present, the byte mask to apply when matching. 0 bits are masked out,
+        /// or "don't care" bits.
+        /// </summary>
         [XmlElement("Mask")]
         public string? Mask;
     }

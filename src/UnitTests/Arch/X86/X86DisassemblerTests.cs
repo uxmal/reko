@@ -143,7 +143,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private void AssertCode16(string sExp, string hexBytes)
         {
-            var instr = Disassemble16(BytePattern.FromHexBytes(hexBytes).ToArray());
+            var instr = Disassemble16(BytePattern.FromHexBytes(hexBytes));
             Assert.AreEqual(sExp, instr.ToString());
         }
 
@@ -155,7 +155,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private void AssertCode32(string sExp, string hexBytes)
         {
-            var instr = Disassemble32(BytePattern.FromHexBytes(hexBytes).ToArray());
+            var instr = Disassemble32(BytePattern.FromHexBytes(hexBytes));
             Assert.AreEqual(sExp, instr.ToString());
         }
 
@@ -168,7 +168,7 @@ namespace Reko.UnitTests.Arch.X86
 
         private void AssertCode64(string sExp, string hexBytes)
         {
-            var instr = Disassemble64(BytePattern.FromHexBytes(hexBytes).ToArray());
+            var instr = Disassemble64(BytePattern.FromHexBytes(hexBytes));
             Assert.AreEqual(sExp, instr.ToString());
         }
 

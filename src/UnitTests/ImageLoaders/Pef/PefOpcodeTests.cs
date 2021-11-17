@@ -40,7 +40,7 @@ namespace Reko.UnitTests.ImageLoaders.Pef
 
         byte[] RunProgram(string hexData)
         {
-            var data = Reko.Core.BytePattern.FromHexBytes(hexData).ToArray();
+            var data = Reko.Core.BytePattern.FromHexBytes(hexData);
             var interp = new PefOpcodeInterpreter(data, output);
             interp.RunProgram();
             return output.ToArray();

@@ -299,7 +299,7 @@ namespace Reko.CmdLine
             if (pArgs.ContainsKey("--data"))
             {
                 var hexBytes = (string) pArgs["--data"];
-                var image = BytePattern.FromHexBytes(hexBytes).ToArray();
+                var image = BytePattern.FromHexBytes(hexBytes);
                 return decompiler.LoadRawImage(image, loadDetails);
             }
             else

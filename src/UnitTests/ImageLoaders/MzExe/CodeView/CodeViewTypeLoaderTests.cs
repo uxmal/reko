@@ -44,7 +44,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.CodeView
 
         private void Given_TypeSection(string hexbytes)
         {
-            this.typeSection = BytePattern.FromHexBytes(hexbytes).ToArray();
+            this.typeSection = BytePattern.FromHexBytes(hexbytes);
         }
 
         private object ReadLeaf()

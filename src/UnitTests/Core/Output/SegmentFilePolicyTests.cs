@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Core.Output
             bool foundSeg = program.SegmentMap.TryFindSegment(addr, out var seg);
             Assert.IsTrue(foundSeg);
             var w = seg.MemoryArea.CreateLeWriter(addr);
-            w.WriteBytes(BytePattern.FromHexBytes(hexBytes).ToArray());
+            w.WriteBytes(BytePattern.FromHexBytes(hexBytes));
         }
 
         private void Given_GlobalVariable(int uOffset, DataType dt)

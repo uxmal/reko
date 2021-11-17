@@ -51,13 +51,13 @@ namespace Reko.UnitTests.Arch
 
         public void Given_HexString(string hexbytes)
         {
-            var bytes = BytePattern.FromHexBytes(hexbytes).ToArray();
+            var bytes = BytePattern.FromHexBytes(hexbytes);
             this.mem = Architecture.CreateMemoryArea(LoadAddress, bytes);
         }
 
         public void Given_OctalBytes(string octalBytes)
         {
-            var bytes = BytePattern.FromHexBytes(octalBytes).ToArray();
+            var bytes = OctalStringToBytes(octalBytes);
             this.mem = Architecture.CreateMemoryArea(LoadAddress, bytes);
         }
 

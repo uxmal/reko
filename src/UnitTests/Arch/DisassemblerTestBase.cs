@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Arch
 
         protected virtual TInstruction DisassembleHexBytes(string hexBytes)
         {
-            byte[] instr = HexStringToBytes(hexBytes);
+            byte[] instr = BytePattern.FromHexBytes(hexBytes);
             return DisassembleBytes(instr);
         }
 

@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Core.Output
             var isSeg = program.SegmentMap.TryFindSegment(addr, out var seg);
             Assert.IsTrue(isSeg);
             var w = program.Architecture.CreateImageWriter(seg.MemoryArea, addr);
-            w.WriteBytes(BytePattern.FromHexBytes(hexBytes).ToArray());
+            w.WriteBytes(BytePattern.FromHexBytes(hexBytes));
         }
 
         [Test]

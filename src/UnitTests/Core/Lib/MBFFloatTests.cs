@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Core.Lib
     {
         private void AssertEqual(float fExpected, string bytes)
         {
-            var mem = BytePattern.FromHexBytes(bytes).ToArray();
+            var mem = BytePattern.FromHexBytes(bytes);
             var uFloat = ByteMemoryArea.ReadLeUInt32(mem, 0);
             var mbf = new MBFFloat32(uFloat);
             var fActual = mbf.ToSingle(null);

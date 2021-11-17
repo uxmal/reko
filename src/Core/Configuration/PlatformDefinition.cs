@@ -127,14 +127,12 @@ namespace Reko.Core.Configuration
 
         public MaskedPattern? LoadMaskedPattern(BytePattern_v1 sPattern)
         {
-            List<byte> bytes;
-            List<byte> mask;
             if (sPattern.Bytes == null)
                 return null;
             if (sPattern.Mask == null)
             {
-                bytes = new List<byte>();
-                mask = new List<byte>();
+                var bytes = new List<byte>();
+                var mask = new List<byte>();
                 int shift = 4;
                 int bb = 0;
                 int mm = 0;
@@ -167,19 +165,26 @@ namespace Reko.Core.Configuration
                     }
                 }
                 Debug.Assert(bytes.Count == mask.Count);
+                if (bytes.Count == 0)
+                    return null;
+                return new MaskedPattern
+                {
+                    Bytes = bytes.ToArray(),
+                    Mask = mask.ToArray()
+                };
             }
             else
             {
-                bytes = BytePattern.FromHexBytes(sPattern.Bytes);
-                mask = BytePattern.FromHexBytes(sPattern.Mask);
+                var bytes = BytePattern.FromHexBytes(sPattern.Bytes);
+                var mask = BytePattern.FromHexBytes(sPattern.Mask);
+                if (bytes.Length == 0)
+                    return null;
+                return new MaskedPattern
+                {
+                    Bytes = bytes.ToArray(),
+                    Mask = mask.ToArray()
+                };
             }
-            if (bytes.Count == 0)
-                return null;
-            return new MaskedPattern
-            {
-                Bytes = bytes.ToArray(),
-                Mask = mask.ToArray()
-            };
         }
 
         private Dictionary<Address, ExternalProcedure> LoadPlatformProcedures(Platform platform)

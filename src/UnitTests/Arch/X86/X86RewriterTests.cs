@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Arch.X86
         private void Run32bitTest(string hexBytes)
         {
             arch = arch32;
-            Given_MemoryArea(new ByteMemoryArea(baseAddr32, BytePattern.FromHexBytes(hexBytes).ToArray()));
+            Given_MemoryArea(new ByteMemoryArea(baseAddr32, BytePattern.FromHexBytes(hexBytes)));
             host = new RewriterHost(null);
         }
 
@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Arch.X86
         private void Run64bitTest(string hexBytes)
         {
             arch = arch64;
-            Given_MemoryArea(new ByteMemoryArea(baseAddr64, BytePattern.FromHexBytes(hexBytes).ToArray()));
+            Given_MemoryArea(new ByteMemoryArea(baseAddr64, BytePattern.FromHexBytes(hexBytes))); 
             host = new RewriterHost(null);
         }
 

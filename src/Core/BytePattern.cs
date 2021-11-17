@@ -33,9 +33,9 @@ namespace Reko.Core
         /// </summary>
         /// <param name="sBytes">String containing hexadecimal digits. Non-hexadecimal characters 
         /// are ignored.</param>
-        /// <returns>A <see cref="List{byte}"/>.
+        /// <returns>An array of bytes.
         /// </returns>
-        public static List<byte> FromHexBytes(string sBytes)
+        public static byte[] FromHexBytes(string sBytes)
         {
             int shift = 4;
             int bb = 0;
@@ -55,7 +55,7 @@ namespace Reko.Core
                     }
                 }
             }
-            return bytes;
+            return bytes.ToArray();
         }
 
         public static bool TryParseHexDigit(char c, out byte b)

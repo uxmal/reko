@@ -180,12 +180,6 @@ namespace Reko.UnitTests.Arch
             return instr;
         }
 
-        public byte[] HexStringToBytes(string hexPattern)
-        {
-            return BytePattern.FromHexBytes(hexPattern)
-                .ToArray();
-        }
-
         public static byte[] OctalStringToBytes(string octalBytes)
         {
             var w = new BeImageWriter();

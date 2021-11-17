@@ -57,7 +57,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.CodeView
         private void Given_Type(int typeIndex, string hexString)
         {
             var bytes = BytePattern.FromHexBytes(hexString);
-            var rdr = new LeImageReader(bytes.ToArray());
+            var rdr = new LeImageReader(bytes);
             this.typesByIndex.Add(typeIndex, new TypeDefinition
             {
                 Leaves = new object[]

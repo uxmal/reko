@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Arch.Arm
 
         protected void AssertCode(string sExp, string hexBytes)
         {
-            var bytes = BytePattern.FromHexBytes(hexBytes).ToArray();
+            var bytes = BytePattern.FromHexBytes(hexBytes);
             var mem = new ByteMemoryArea(Address.Ptr32(0x0010_0000), bytes);
             var arch = CreateArchitecture();
             var dasm = arch.CreateDisassembler(mem.CreateLeReader(0));

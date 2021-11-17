@@ -44,7 +44,7 @@ namespace Reko.ImageLoaders.Srec
                     return null;
             } while (line.Length < 3 || line[0] != 'S');
 
-            var bytes = BytePattern.FromHexBytes(line.Substring(2)).ToArray();    //$PERF: use Span<T>.
+            var bytes = BytePattern.FromHexBytes(line.Substring(2));    //$PERF: use Span<T>.
             if (bytes.Length < 2)
                 throw new BadImageFormatException("Bad line format.");
             int dataOffset;

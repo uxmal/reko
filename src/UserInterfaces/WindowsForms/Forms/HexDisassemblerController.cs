@@ -80,7 +80,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                     return;
                 if (!arch.TryParseAddress(control.Address.Text, out var addr))
                     return;
-                var bytes = BytePattern.FromHexBytes(control.HexBytes.Text).ToArray();
+                var bytes = BytePattern.FromHexBytes(control.HexBytes.Text);
                 if (bytes.Length > 0)
                 {
                     var mem = arch.CreateMemoryArea(addr, bytes);
