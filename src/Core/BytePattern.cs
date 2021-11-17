@@ -26,7 +26,13 @@ namespace Reko.Core
 {
     public static class BytePattern
     {
-        private const string hexDigits = "0123456789ABCDEFabcdef";
+        private static readonly byte[] hexValues = new byte[]
+        {
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+            0xFF, 10, 11, 12, 13, 14, 15, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+            0xFF, 10, 11, 12, 13, 14, 15
+        };
 
         /// <summary>
         /// Generate an array of bytes from a string of hexadecimal digits.
@@ -60,20 +66,12 @@ namespace Reko.Core
 
         public static bool TryParseHexDigit(char c, out byte b)
         {
-            if ('0' <= c && c <= '9')
+            int i = c - '0';
+            if (0 <= i && i < hexValues.Length)
             {
-                b = (byte) (c - '0');
-                return true;
-            }
-            else if ('A' <= c && c <= 'F')
-            {
-                b = (byte) (c - 'A' + 10);
-                return true;
-            }
-            else if ('a' <= c && c <= 'f')
-            {
-                b = (byte) (c - 'a' + 10);
-                return true;
+                b = hexValues[i];
+                if (b <= 15)
+                    return true;
             }
             b = 0;
             return false;
@@ -81,7 +79,8 @@ namespace Reko.Core
 
         public static bool IsHexDigit(char c)
         {
-            return hexDigits.IndexOf(c) >= 0;
+            int i = c - '0';
+            return 0 <= i && i < hexValues.Length && hexValues[i] <= 15;
         }
     }
 }
