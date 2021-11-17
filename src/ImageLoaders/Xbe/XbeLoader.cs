@@ -150,7 +150,7 @@ namespace Reko.ImageLoaders.Xbe
     /// <remarks>
     /// http://www.caustik.com/cxbx/download/xbe.htm
     /// </remarks>
-    public class XbeLoader : ImageLoader
+    public class XbeLoader : ProgramImageLoader
     {
         private readonly LeImageReader rdr;
 

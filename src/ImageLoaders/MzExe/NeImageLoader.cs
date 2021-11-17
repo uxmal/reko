@@ -42,7 +42,7 @@ namespace Reko.ImageLoaders.MzExe
     /// <remarks>
     /// https://bytepointer.com/resources/win16_ne_exe_format_win3.0.htm
     /// </remarks>
-    public class NeImageLoader : ImageLoader
+    public class NeImageLoader : ProgramImageLoader
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(NeImageLoader), "NE Image loader tracing")
         {

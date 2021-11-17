@@ -32,7 +32,7 @@ namespace Reko.ImageLoaders.MzExe
 	/// <summary>
 	/// Loads EXE image files. These may contain executable code in varying formats. 
 	/// </summary>
-	public class ExeImageLoader : ImageLoader
+	public class ExeImageLoader : ProgramImageLoader
 	{
         private readonly IServiceProvider services;
         private ImageLoader? ldrDeferred;

@@ -31,7 +31,7 @@ using System.Text.RegularExpressions;
 
 namespace Reko.UnitTests
 {
-    class DchexLoader : ImageLoader
+    class DchexLoader : ProgramImageLoader
     {
         private Address addrStart;
         private MemoryStream memStm;

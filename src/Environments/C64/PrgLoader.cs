@@ -34,7 +34,7 @@ namespace Reko.Environments.C64
     /// <summary>
     /// Given a PRG image of a C64 basic program, loads it into a Reko <see cref="Program" />
     /// </summary>
-    public class PrgLoader : ImageLoader
+    public class PrgLoader : ProgramImageLoader
     {
         public PrgLoader(IServiceProvider services, string filename, byte[] rawImage): base(services, filename, rawImage)
         {

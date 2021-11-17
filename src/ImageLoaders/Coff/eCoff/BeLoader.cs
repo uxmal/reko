@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Coff.eCoff
 {
-    public class BeLoader : ImageLoader
+    public class BeLoader : ProgramImageLoader
     {
         private aouthdr? opthdr;
 

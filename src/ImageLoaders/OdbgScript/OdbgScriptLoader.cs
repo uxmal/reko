@@ -37,7 +37,7 @@ namespace Reko.ImageLoaders.OdbgScript
     /// </summary>
     /// <remarks>Uses the optional Argument property from the app.config
     /// file to specify the script file to use.</remarks>
-    public class OdbgScriptLoader : ImageLoader
+    public class OdbgScriptLoader : ProgramImageLoader
     {
         private readonly ImageLoader originalImageLoader;
         private Debugger debugger;

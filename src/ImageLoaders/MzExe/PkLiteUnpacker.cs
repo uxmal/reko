@@ -35,7 +35,7 @@ namespace Reko.ImageLoaders.MzExe
 	/// <summary>
 	/// A loader that understands how to unpack a binary packed with PkLite.
 	/// </summary>
-	public class PkLiteUnpacker : ImageLoader
+	public class PkLiteUnpacker : ProgramImageLoader
 	{
         private readonly IProcessorArchitecture arch;
         private readonly IPlatform platform;

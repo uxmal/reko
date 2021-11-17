@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Coff
 {
-    public class CoffLoader : ImageLoader
+    public class CoffLoader : ProgramImageLoader
     {
         private IProcessorArchitecture? arch;
 

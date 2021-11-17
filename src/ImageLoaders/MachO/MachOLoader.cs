@@ -35,7 +35,7 @@ namespace Reko.ImageLoaders.MachO
 {
     // http://newosxbook.com/articles/DYLD.html
     // http://www.m4b.io/reverse/engineering/mach/binaries/2015/03/29/mach-binaries.html
-    public class MachOLoader : ImageLoader
+    public class MachOLoader : ProgramImageLoader
     {
         const uint MH_MAGIC = 0xFEEDFACE;
         const uint MH_MAGIC_64 = 0xFEEDFACF;

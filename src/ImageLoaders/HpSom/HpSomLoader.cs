@@ -33,7 +33,7 @@ using System.Threading.Tasks;
 namespace Reko.ImageLoaders.HpSom
 {
     // http://webcache.googleusercontent.com/search?q=cache:xSnpsogDtIkJ:nixdoc.net/man-pages/HP-UX/man4/a.out.4.html+&cd=1&hl=en&ct=clnk&gl=se
-    public class HpSomLoader : ImageLoader
+    public class HpSomLoader : ProgramImageLoader
     {
         private static TraceSwitch trace = new TraceSwitch(nameof(HpSomLoader), "Trace HP SOM loader")
         {

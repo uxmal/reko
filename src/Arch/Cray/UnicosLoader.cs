@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Reko.Arch.Cray
 {
-    public class UnicosLoader : ImageLoader
+    public class UnicosLoader : ProgramImageLoader
     {
         private ulong a_entry;
 

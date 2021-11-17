@@ -39,7 +39,7 @@ namespace Reko.ImageLoaders.Elf
     /// <summary>
     /// Loader for ELF images.
     /// </summary>
-    public class ElfImageLoader : ImageLoader
+    public class ElfImageLoader : ProgramImageLoader
     {
         #region Constants
         private const int ELF_MAGIC = 0x7F454C46;         // "\x7FELF"

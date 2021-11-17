@@ -33,7 +33,7 @@ namespace Reko.ImageLoaders.Pef
     /// <summary>
     /// reference: https://developer.apple.com/library/archive/documentation/mac/pdf/MacOS_RT_Architectures.pdf
     /// </summary>
-    public class PefLoader : ImageLoader
+    public class PefLoader : ProgramImageLoader
     {
         private PefContainer? container;
 

@@ -28,7 +28,7 @@ using Reko.Core.Loading;
 
 namespace Reko.Environments.RT11
 {
-    public class SavFileLoader : ImageLoader
+    public class SavFileLoader : ProgramImageLoader
     {
         public SavFileLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
         {

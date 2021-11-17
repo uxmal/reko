@@ -21,7 +21,7 @@ namespace Reko.Environments.Snes
     //       https://github.com/gocha/ida-snes-ldr
     // Ported from Python to C# using pytocs:
     // https://github.com/uxmal/pytocs
-    public class SnesParser : ImageLoader
+    public class SnesParser : ProgramImageLoader
     {
 
         public const int FORMAT_LoROM = 0;

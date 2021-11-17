@@ -28,7 +28,7 @@ using Reko.Core.Loading;
 
 namespace Reko.Environments.RT11
 {
-    public class LdaFileLoader : ImageLoader
+    public class LdaFileLoader : ProgramImageLoader
     {
         private Address? addrEntry;
 

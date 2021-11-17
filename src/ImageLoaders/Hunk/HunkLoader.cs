@@ -38,7 +38,7 @@ namespace Reko.ImageLoaders.Hunk
     /// <remarks>
     /// http://amiga-dev.wikidot.com/file-format:hunk
     /// </remarks>
-    public partial class HunkLoader : ImageLoader
+    public partial class HunkLoader : ProgramImageLoader
     {
         private M68kArchitecture arch;
         private TextHunk? firstCodeHunk;

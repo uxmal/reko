@@ -31,7 +31,7 @@ using System.Text;
 
 namespace Reko.ImageLoaders.BinHex
 {
-    public class BinHexImageLoader : ImageLoader
+    public class BinHexImageLoader : ProgramImageLoader
     {
         private ResourceFork rsrcFork;
         private ByteMemoryArea bmem;

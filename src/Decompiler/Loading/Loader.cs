@@ -424,7 +424,7 @@ namespace Reko.Loading
         /// <param name="filename"></param>
         /// <param name="bytes"></param>
         /// <returns></returns>
-        public static ImageLoader CreateCustomImageLoader(IServiceProvider services, string? loader, string filename, byte[] bytes)
+        public static ProgramImageLoader CreateCustomImageLoader(IServiceProvider services, string? loader, string filename, byte[] bytes)
         {
             if (string.IsNullOrEmpty(loader))
             {
@@ -435,7 +435,7 @@ namespace Reko.Loading
             var ldrCfg = cfgSvc.GetImageLoader(loader!);
             if (ldrCfg != null && ldrCfg.TypeName != null)
             {
-                return CreateImageLoader<ImageLoader>(services, ldrCfg.TypeName, filename, bytes);
+                return CreateImageLoader<ProgramImageLoader>(services, ldrCfg.TypeName, filename, bytes);
             }
 
             //$TODO: detect file extensions and load appropriate interpreter.
@@ -443,7 +443,7 @@ namespace Reko.Loading
             var t = ass.GetTypes().SingleOrDefault(tt => typeof(ImageLoader).IsAssignableFrom(tt));
             if (t == null)
                 throw new ApplicationException(string.Format("Unable to find image loader in {0}.", loader));
-            return (ImageLoader) Activator.CreateInstance(t, services, filename, bytes);
+            return (ProgramImageLoader) Activator.CreateInstance(t, services, filename, bytes);
         }
 
         protected void CopyImportReferences(Dictionary<Address, ImportReference> importReference, Program program)

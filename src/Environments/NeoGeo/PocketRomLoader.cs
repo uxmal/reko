@@ -31,7 +31,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Environments.NeoGeo
 {
-    public class PocketRomLoader : ImageLoader
+    public class PocketRomLoader : ProgramImageLoader
     {
         private const uint RomLoadAddress = 0x00200000;
         private Address entryPoint;

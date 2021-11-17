@@ -31,7 +31,7 @@ namespace Reko.Loading
     /// The NullLoader is used when Reko is unable to determine what image
     /// loader to use. It doesn't support disassembly.
     /// </summary>
-    public class NullImageLoader : ImageLoader
+    public class NullImageLoader : ProgramImageLoader
     {
         private Address baseAddr;
         private readonly byte[] imageBytes;

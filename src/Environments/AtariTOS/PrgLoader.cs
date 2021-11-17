@@ -35,7 +35,7 @@ namespace Reko.Environments.AtariTOS
     /// Loads Atari TOS PRG files.
     /// </summary>
     /// // https://github.com/yegord/snowman/issues/131
-    public class PrgLoader : ImageLoader
+    public class PrgLoader : ProgramImageLoader
     {
         public PrgLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
         {

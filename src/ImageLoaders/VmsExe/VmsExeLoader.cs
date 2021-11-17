@@ -36,7 +36,7 @@ namespace Reko.ImageLoaders.VmsExe
     /// </summary>
     // https://mail.encompasserve.org/anon/htnotes/note?f1=DEC_SOFTWARE&f2=444.6
     // http://fossies.org/linux/freevms/sys/src/sysimgact.c
-    public class VmsExeLoader : ImageLoader
+    public class VmsExeLoader : ProgramImageLoader
     {
         public VmsExeLoader(IServiceProvider services, string filename, byte[] imgRaw)
             : base(services, filename, imgRaw)

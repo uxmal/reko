@@ -41,7 +41,7 @@ namespace Reko.ImageLoaders.MzExe
     /// Loads Windows NT PE images.
     /// http://geos.icc.ru:8080/scripts/wwwbinv.dll/ShowR?coff.rfi
     /// </summary>
-	public class PeImageLoader : ImageLoader
+	public class PeImageLoader : ProgramImageLoader
 	{
         internal static TraceSwitch trace = new TraceSwitch(nameof(PeImageLoader), "Traces the progress of loading PE binary images") { Level = TraceLevel.Verbose };
 

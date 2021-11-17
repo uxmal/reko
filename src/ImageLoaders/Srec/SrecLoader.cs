@@ -30,7 +30,7 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Srec
 {
-    public class SrecLoader : ImageLoader
+    public class SrecLoader : ProgramImageLoader
     {
         public SrecLoader(IServiceProvider services, string filename, byte[] rawBytes) 
             : base(services, filename, rawBytes)

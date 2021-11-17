@@ -85,7 +85,7 @@ namespace Reko.ImageLoaders.Dol
 	/// <summary>
 	/// Image loader for Nintendo DOL file format.
 	/// </summary>
-	public class DolLoader : ImageLoader
+	public class DolLoader : ProgramImageLoader
     {
 		private DolHeader hdr;
 

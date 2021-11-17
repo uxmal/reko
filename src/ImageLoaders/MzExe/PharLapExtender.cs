@@ -32,7 +32,7 @@ namespace Reko.ImageLoaders.MzExe
     /// Loader that understands how to load PharLap extensions to the MS-DOS executable file
     /// format.
     /// </summary>
-    public class PharLapExtender : ImageLoader
+    public class PharLapExtender : ProgramImageLoader
     {
         private const ushort FlagImagePacked = 1;
 

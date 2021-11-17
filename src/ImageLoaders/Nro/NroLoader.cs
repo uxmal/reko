@@ -33,7 +33,7 @@ namespace Reko.ImageLoaders.Nro
     /// <remarks>
     /// Reference: https://switchbrew.org/wiki/NRO
     /// </remarks>
-    public class NroLoader : ImageLoader
+    public class NroLoader : ProgramImageLoader
     {
         public const UInt32 MAGIC = 0x304f524e; //NRO0 in Little Endian
 

@@ -33,7 +33,7 @@ using System.Text;
 namespace Reko.Environments.Switch
 {
     // https://switchbrew.org/wiki/NSO
-    public class NSO0Loader : ImageLoader
+    public class NSO0Loader : ProgramImageLoader
     {
         public NSO0Loader(IServiceProvider services, string filename, byte[] rawBytes)
             : base(services, filename, rawBytes)

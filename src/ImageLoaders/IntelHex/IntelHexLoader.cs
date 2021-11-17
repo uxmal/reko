@@ -35,7 +35,7 @@ namespace Reko.ImageLoaders.IntelHex
     /// <summary>
     /// An Intel Hexadecimal 32-bit object format image (a.k.a. IHEX32) loader.
     /// </summary>
-    public class HexLoader : ImageLoader
+    public class HexLoader : ProgramImageLoader
     {
         //$TODO: As Intel Hex specs do not specify any ordering of records, we should be able, getting a new record,
         // to add it at tail, at head, or merge with already loaded records - or to create a new memory chunk.

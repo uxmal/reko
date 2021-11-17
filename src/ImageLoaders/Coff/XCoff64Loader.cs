@@ -29,7 +29,7 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Coff
 {
-    public class XCoff64Loader : ImageLoader
+    public class XCoff64Loader : ProgramImageLoader
     {
         public XCoff64Loader(IServiceProvider services, string filename, byte[]rawImage) :
             base(services, filename, rawImage)

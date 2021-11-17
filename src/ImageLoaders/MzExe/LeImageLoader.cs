@@ -42,7 +42,7 @@ namespace Reko.ImageLoaders.MzExe
     /// 
     /// https://defacto2.net/f/b22f966
     /// </remarks>
-    public class LeImageLoader : ImageLoader
+    public class LeImageLoader : ProgramImageLoader
     {
         /// <summary>
         ///     Linear Executable signature, "LE"

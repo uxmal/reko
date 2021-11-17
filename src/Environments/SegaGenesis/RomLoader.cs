@@ -31,7 +31,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Environments.SegaGenesis
 {
-    public class RomLoader : ImageLoader
+    public class RomLoader : ProgramImageLoader
     {
         public RomLoader(IServiceProvider services, string filename, byte[] imgRaw)
             : base(services, filename, imgRaw)

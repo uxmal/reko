@@ -30,7 +30,7 @@ namespace Reko.ImageLoaders.Coff.eCoff
     using coff_int = System.Int32;
     using coff_off = System.UInt32;
 
-    public class LeLoader : ImageLoader
+    public class LeLoader : ProgramImageLoader
     {
         public LeLoader(IServiceProvider services, string filename, byte[] rawImage)
             : base(services, filename, rawImage)

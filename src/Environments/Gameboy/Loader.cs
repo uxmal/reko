@@ -31,7 +31,7 @@ namespace Reko.Environments.Gameboy
     /// <summary>
     /// Loads Gameboy ROM images.
     /// </summary>
-    public class Loader : ImageLoader
+    public class Loader : ProgramImageLoader
     {
         public Loader(IServiceProvider services, string filename, byte[] imgRaw) 
             : base(services, filename, imgRaw)

@@ -44,7 +44,7 @@ namespace Reko.ImageLoaders.Ldm
 {
     using static Reko.Core.BytePattern;
 
-    public class LdmLoader : ImageLoader
+    public class LdmLoader : ProgramImageLoader
     {
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(LdmLoader), "Trace LDM loader");
 

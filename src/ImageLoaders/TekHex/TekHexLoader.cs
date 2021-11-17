@@ -33,7 +33,7 @@ namespace Reko.ImageLoaders.TekHex
     /// <summary>
     /// Loads (extended) Tektronix HEX files.
     /// </summary>
-    public class TekHexLoader : ImageLoader
+    public class TekHexLoader : ProgramImageLoader
     {
         private readonly TraceSwitch trace = new TraceSwitch(nameof(TekHexLoader), "Trace loading of Tektronix HEX files.")
         {

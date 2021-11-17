@@ -150,7 +150,7 @@ namespace Reko.UnitTests.Loading
             this.testImage = new byte[] { 0x2A, 0x2A, 0xA0, 0xA0 };
         }
 
-        private class FakeImageLoader  : ImageLoader
+        private class FakeImageLoader  : ProgramImageLoader
         {
             public FakeImageLoader(IServiceProvider services, string filename, byte[]imgRaw) :
                 base(services, filename, imgRaw)
@@ -193,7 +193,7 @@ namespace Reko.UnitTests.Loading
             var program = imgLoader.Load(null);
         }
 
-        public class TestImageLoader : ImageLoader
+        public class TestImageLoader : ProgramImageLoader
         {
             public TestImageLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
             {

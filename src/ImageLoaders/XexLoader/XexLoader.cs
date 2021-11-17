@@ -40,7 +40,7 @@ namespace Reko.ImageLoaders.Xex
 	/// https://github.com/rexdex/recompiler/blob/master/dev/src/xenon_decompiler/xenonImageLoader.cpp
 	/// https://github.com/xenia-project/xenia/blob/bc8b62909291017f4867ceaa1b46f1654a0aaefa/src/xenia/cpu/xex_module.cc
 	/// </remarks>
-	public class XexLoader : ImageLoader
+	public class XexLoader : ProgramImageLoader
 	{
 		private const uint IMAGE_SUBSYSTEM_XBOX = 14;
 		private DecompilerEventListener decompilerEventListener;

@@ -35,7 +35,7 @@ namespace Reko.ImageLoaders.MzExe
     /// <summary>
     /// Loader for MS-DOS executables packed with EXEPACK.
     /// </summary>
-    public class ExePackLoader : ImageLoader
+    public class ExePackLoader : ProgramImageLoader
     {
         private readonly IProcessorArchitecture arch;
         private readonly IPlatform platform;

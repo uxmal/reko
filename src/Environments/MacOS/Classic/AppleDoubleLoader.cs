@@ -32,7 +32,7 @@ using System.Text;
 
 namespace Reko.Environments.MacOS.Classic
 {
-    public class AppleDoubleLoader : ImageLoader
+    public class AppleDoubleLoader : ProgramImageLoader
     {
         private ResourceFork rsrcFork;
         private ByteMemoryArea mem;

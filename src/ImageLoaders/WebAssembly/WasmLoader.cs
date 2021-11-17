@@ -31,7 +31,7 @@ using System.Threading.Tasks;
 
 namespace Reko.ImageLoaders.WebAssembly
 {
-    public class WasmLoader : ImageLoader
+    public class WasmLoader : ProgramImageLoader
     {
         internal static string[] ExportKinds =
         {

@@ -32,7 +32,7 @@ namespace Reko.Environments.MorphOS
     /// For some reason, the MorphOS project chose to wrap the ELF image file format
     /// rather than to use it directly.
     /// </summary>
-    public class MorphosElfImageLoader : ImageLoader
+    public class MorphosElfImageLoader : ProgramImageLoader
     {
         private ElfImageLoader elfLdr;
 

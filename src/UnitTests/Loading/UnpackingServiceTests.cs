@@ -35,7 +35,7 @@ namespace Reko.UnitTests.Loading
     public class UnpackingServiceTests
     {
 
-        public class TestImageLoader : ImageLoader
+        public class TestImageLoader : ProgramImageLoader
         {
             public TestImageLoader(ImageLoader loader)
                 : base(loader.Services, loader.Filename, loader.RawImage)

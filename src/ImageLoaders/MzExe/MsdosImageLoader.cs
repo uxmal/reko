@@ -36,7 +36,7 @@ namespace Reko.ImageLoaders.MzExe
 	/// Loads MS-DOS binary executables that haven't had any packing or encryption
     /// done to them.
 	/// </summary>
-	public class MsdosImageLoader : ImageLoader
+	public class MsdosImageLoader : ProgramImageLoader
 	{
         // "640k should be enough for anybody" -- consider making this configurable?
         private const ushort segMemTop = 0xA000;

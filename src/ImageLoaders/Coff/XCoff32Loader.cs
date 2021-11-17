@@ -33,7 +33,7 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Coff
 {
-    public class XCoff32Loader : ImageLoader
+    public class XCoff32Loader : ProgramImageLoader
     {
         private ImageSegment? textSection;
         private ImageSegment? dataSection;
