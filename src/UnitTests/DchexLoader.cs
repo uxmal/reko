@@ -52,7 +52,7 @@ namespace Reko.UnitTests
             set { throw new NotImplementedException(); }
         }
 
-        public override Program Load(Address addrLoad)
+        public override Program LoadProgram(Address addrLoad)
         {
             return results;
         }

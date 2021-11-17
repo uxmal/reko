@@ -71,7 +71,7 @@ namespace Reko.ImageLoaders.MachO
             set { throw new NotImplementedException(); }
         }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             addrLoad ??= PreferredBaseAddress;
             this.program = new Program();

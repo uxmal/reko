@@ -80,7 +80,7 @@ namespace Reko.UnitTests.ImageLoaders.Srec
         {
             var file = Encoding.ASCII.GetBytes(sw.ToString());
             var srecLdr = new SrecLoader(new ServiceContainer(), "test.srec", file);
-            this.program = srecLdr.Load(null, arch, platform);
+            this.program = srecLdr.LoadProgram(null, arch, platform);
         }
 
         [Test]

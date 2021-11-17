@@ -33,6 +33,7 @@ using System.Text.RegularExpressions;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.Core
 {
@@ -45,7 +46,7 @@ namespace Reko.Core
     /// A Decompiler project may consist of several of these Programs.
     /// </remarks>
     [Designer("Reko.Gui.Design.ProgramDesigner,Reko.Gui")]
-    public class Program : INotifyPropertyChanged
+    public class Program : ILoadedImage, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

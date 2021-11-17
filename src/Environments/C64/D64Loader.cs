@@ -131,7 +131,7 @@ namespace Reko.Environments.C64
             public override Address PreferredBaseAddress { get; set; }
         }
 
-        public override Program Load(Address? addrLoad)
+        public override ILoadedImage Load(Address? addrLoad)
         {
             addrLoad ??= PreferredBaseAddress;
             List<ArchiveDirectoryEntry> entries = LoadDiskDirectory();
@@ -178,7 +178,7 @@ namespace Reko.Environments.C64
         private static Program LoadPrg(IServiceProvider services, byte[] imageBytes)
         {
             var prgLoader = new PrgLoader(services, "", imageBytes);
-            return prgLoader.Load(null);
+            return prgLoader.LoadProgram(null);
         }
 
         public static Program LoadSeq(IServiceProvider services, Address addrPreferred, byte[] imageBytes)
@@ -194,13 +194,6 @@ namespace Reko.Environments.C64
         }
 
 
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            return new RelocationResults(
-                new List<ImageSymbol>(),
-                new SortedList<Address, ImageSymbol>());
-        }
 
         public List<ArchiveDirectoryEntry> LoadDiskDirectory()
         {

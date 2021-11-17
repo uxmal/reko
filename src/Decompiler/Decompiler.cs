@@ -192,7 +192,8 @@ namespace Reko
             this.Project = projectLoader.LoadProject(fileName, image);
             if (Project == null)
             {
-                var program = loader.LoadImage(fileName, image, loaderName, addrLoad);
+                //$TODO: Handle archives.
+                var program = (Program?)loader.LoadImage(fileName, image, loaderName, addrLoad);
                 if (program == null)
                     return false;
                 this.Project = AddProgramToProject(fileName, program);

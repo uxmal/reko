@@ -89,7 +89,7 @@ struct exec {
             A_PMT_C90 = 8,          // CRAY C90 
         }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             var rdr = new BeImageReader(RawImage);
             if (!rdr.TryReadBeUInt64(out ulong magic))

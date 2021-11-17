@@ -39,7 +39,7 @@ namespace Reko.Environments.RT11
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             var arch = new Pdp11Architecture(Services, "pdp11", new Dictionary<string, object>());
 

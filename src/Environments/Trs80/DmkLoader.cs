@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 namespace Reko.Environments.Trs80
 {
     // http://www.classiccmp.org/cpmarchives/trs80/mirrors/www.discover-net.net/~dmkeil/coco/cocotech.htm#Technical-DMK-disks
-    public class DmkLoader : ImageLoader
+    public class DmkLoader : ProgramImageLoader
     {
         private int TrackLength;
         private bool m_singleDensityOnly;
@@ -54,7 +54,7 @@ namespace Reko.Environments.Trs80
             set { throw new NotImplementedException(); }
         }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             if (!ParseDMKHeader())
                 throw new BadImageFormatException("Unable to read DMK header.");

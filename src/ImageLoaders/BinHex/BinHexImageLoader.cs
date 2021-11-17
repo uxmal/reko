@@ -44,7 +44,7 @@ namespace Reko.ImageLoaders.BinHex
             segmentMap = null!;
         }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             addrLoad ??= PreferredBaseAddress;
             BinHexDecoder dec = new BinHexDecoder(new StringReader(Encoding.ASCII.GetString(RawImage)));

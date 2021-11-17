@@ -366,7 +366,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             var el = new ElfImageLoader(sc, "foo", rawImg);
             el.LoadElfIdentification();
-            var lr = el.Load(Address.Ptr32(0));
+            var lr = el.LoadProgram(Address.Ptr32(0));
             Assert.AreSame(arch.Object, lr.Architecture);
         }
 

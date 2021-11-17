@@ -101,7 +101,7 @@ namespace Reko.ImageLoaders.MzExe
             return (exe.e_cparHeader + exe.e_cs) * 0x10 + exe.e_ip;
         }
 
-        public override Program Load(Address? addr)
+        public override Program LoadProgram(Address? addr)
         {
             byte[] abC = RawImage;
             byte[] abU = new byte[cpUncompressed * 0x10U + ExeImageLoader.CbPsp];

@@ -60,7 +60,7 @@ namespace Reko.ImageLoaders.Pef
             return PefContainer.Load(rdr);
         }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             var rdr = new BeImageReader(RawImage, 0);
             this.container = this.LoadContainer(rdr);

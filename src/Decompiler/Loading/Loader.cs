@@ -28,8 +28,6 @@ using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -91,9 +89,10 @@ namespace Reko.Loading
         /// <param name="rawBytes">Image of the executable file.</param>
         /// <param name="loader">.NET Class name of a custom loader (may be null)</param>
         /// <param name="addrLoad">Address into which to load the file.</param>
-        /// <returns>A <see cref="Program"/> if the file format is recognized, or null 
-        /// if the file cannot be recognized.</returns>
-        public Program? LoadImage(string filename, byte[] image, string? loader, Address? addrLoad)
+        /// <returns>A <see cref="ILoadedImage"/> if the file format is recognized, or null 
+        /// if the file cannot be recognized. Callers will have to handle the different
+        /// possible implementations of the interface.</returns>
+        public ILoadedImage? LoadImage(string filename, byte[] image, string? loader, Address? addrLoad)
         {
             ImageLoader? imgLoader;
             if (!string.IsNullOrEmpty(loader))
@@ -116,8 +115,16 @@ namespace Reko.Loading
                 addrLoad = imgLoader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
             }
 
-            var program = imgLoader.Load(addrLoad);
+            var loadedImage = imgLoader.Load(addrLoad);
+            if (loadedImage is Program program)
+            {
+                return PostProcessProgram(filename, addrLoad, imgLoader, program);
+            }
+            return loadedImage;
+        }
 
+        private Program PostProcessProgram(string filename, Address addrLoad, ImageLoader imgLoader, Program program)
+        {
             // Sanity check of the 'Needs' properties.
             if (program.NeedsScanning && !program.NeedsSsaTransform)
                 throw new InvalidOperationException(
@@ -128,7 +135,7 @@ namespace Reko.Loading
             program.Name = Path.GetFileName(filename);
             if (program.NeedsScanning)
             {
-                var relocations = imgLoader.Relocate(program, addrLoad);
+                var relocations = ((ProgramImageLoader) imgLoader).Relocate(program, addrLoad);
                 foreach (var sym in relocations.Symbols.Values)
                 {
                     program.ImageSymbols[sym.Address!] = sym;
@@ -188,7 +195,7 @@ namespace Reko.Loading
             }
 
             var imgLoader = CreateCustomImageLoader(Services, details.LoaderName, filename, image);
-            var program = imgLoader.Load(addrLoad, arch, platform);
+            var program = imgLoader.LoadProgram(addrLoad, arch, platform);
             if (details.EntryPoint != null && arch.TryParseAddress(details.EntryPoint.Address, out Address addrEp))
             {
                 program.EntryPoints.Add(addrEp, ImageSymbol.Procedure(arch, addrEp));

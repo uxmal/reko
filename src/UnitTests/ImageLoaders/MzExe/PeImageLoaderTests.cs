@@ -405,7 +405,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
 
             Given_PeLoader();
 
-            var program = peldr.Load(addrLoad);
+            var program = peldr.LoadProgram(addrLoad);
             peldr.Relocate(program, addrLoad);
 
             Assert.AreEqual(2, program.ImportReferences.Count);
@@ -431,7 +431,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
 
             Given_PeLoader();
 
-            var program = peldr.Load(addrLoad);
+            var program = peldr.LoadProgram(addrLoad);
             peldr.Relocate(program, addrLoad);
 
             Assert.AreEqual(2, program.ImportReferences.Count);
@@ -452,7 +452,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                 Given_Ilt32("malloc", "free", "realloc"));
 
             Given_PeLoader();
-            var program = peldr.Load(addrLoad);
+            var program = peldr.LoadProgram(addrLoad);
 
             var rdrId = new LeImageReader(fileImage, (uint)rvaId);
             var ret = peldr.ReadImportDescriptor(rdrId, addrLoad);
@@ -495,7 +495,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
 
             Given_PeLoader();
 
-            var program = peldr.Load(addrLoad);
+            var program = peldr.LoadProgram(addrLoad);
 
             var rdrId = new LeImageReader(fileImage, (uint)rvaId);
             var ret = peldr.ReadImportDescriptor(rdrId, addrLoad);
@@ -547,7 +547,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             Given_Section("hehe", 0x2000, 0x2000);
 
             Given_PeLoader();
-            var program = peldr.Load(addrLoad);
+            var program = peldr.LoadProgram(addrLoad);
             Assert.AreEqual(3, program.SegmentMap.Segments.Count);
             Assert.AreEqual("hehe", program.SegmentMap.Segments[Address.Ptr32(0x00101000)].Name);
             Assert.AreEqual("hehe", program.SegmentMap.Segments[Address.Ptr32(0x00102000)].Name);
@@ -561,7 +561,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
 			Given_Section("\x00\x00\x00", 0x2000, 0x2000);
 
 			Given_PeLoader();
-			var program = peldr.Load(addrLoad);
+			var program = peldr.LoadProgram(addrLoad);
 			Assert.AreEqual(3, program.SegmentMap.Segments.Count);
 			Assert.AreEqual(".reko_0000000000001000", program.SegmentMap.Segments[Address.Ptr32(0x00101000)].Name);
 			Assert.AreEqual(".reko_0000000000002000", program.SegmentMap.Segments[Address.Ptr32(0x00102000)].Name);

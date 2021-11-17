@@ -41,7 +41,7 @@ namespace Reko.Environments.SegaGenesis
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             if (RawImage.Length <= 0x200)
                 throw new BadImageFormatException("The file is too small for a Sega Genesis ROM image.");

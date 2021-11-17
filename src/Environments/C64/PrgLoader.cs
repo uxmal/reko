@@ -43,13 +43,13 @@ namespace Reko.Environments.C64
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            return Load(addrLoad!, null!, null!);
+            return base.LoadProgram(addrLoad!, null!, null!);
         }
 
-        public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
+        public override Program LoadProgram(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
         {
             var stm = new MemoryStream();
             ushort preferredAddress = ByteMemoryArea.ReadLeUInt16(RawImage, 0);

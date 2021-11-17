@@ -109,14 +109,9 @@ namespace Reko.Environments.BbcMicro
             }
         }
 
-        public override Program Load(Address? addrLoad)
+        public override ILoadedImage Load(Address? addrLoad)
         {
             LoadDirectory();
-            throw new NotImplementedException();
-        }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
             throw new NotImplementedException();
         }
 

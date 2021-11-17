@@ -267,7 +267,7 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                program = loader.LoadImage(binAbsPath, bytes, sUser.Loader, address)
+                program = (Program?)loader.LoadImage(binAbsPath, bytes, sUser.Loader, address)
                     ?? new Program();   // A previous save of the project was able to read the file, 
                                         // but now we can't...
             }

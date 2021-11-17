@@ -35,7 +35,7 @@ namespace Reko.ImageLoaders.MzExe
 	public class ExeImageLoader : ProgramImageLoader
 	{
         private readonly IServiceProvider services;
-        private ImageLoader? ldrDeferred;
+        private ProgramImageLoader? ldrDeferred;
 
 		public ushort	e_magic;                     // 0000 - Magic number
 		public ushort   e_cbLastPage;                // 0002 - Bytes on last page of file
@@ -85,7 +85,7 @@ namespace Reko.ImageLoaders.MzExe
             } 
         }
 
-        private ImageLoader GetDeferredLoader()
+        private ProgramImageLoader GetDeferredLoader()
         {
             if (ldrDeferred == null)
                 ldrDeferred = CreateDeferredLoader();
@@ -118,12 +118,12 @@ namespace Reko.ImageLoaders.MzExe
         /// sub-formats, so we need to discover what flavour it is before we
         /// can proceed.
         /// </summary>
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
 		{
-			return GetDeferredLoader().Load(addrLoad);
+			return GetDeferredLoader().LoadProgram(addrLoad);
 		}
 
-        private ImageLoader CreateDeferredLoader()
+        private ProgramImageLoader CreateDeferredLoader()
         {
             // The image may have been packed. We ask the unpacker service 
             // whether it can determine if the image is packed, and if so 

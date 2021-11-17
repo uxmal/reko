@@ -675,7 +675,7 @@ namespace Reko.ImageLoaders.Xex
 			}
 		}
 
-		public override Program Load(Address? addrLoad)
+		public override Program LoadProgram(Address? addrLoad)
 		{
 			var cfgSvc = Services.RequireService<IConfigurationService>();
 			var arch = cfgSvc.GetArchitecture("ppc-be-64")!;

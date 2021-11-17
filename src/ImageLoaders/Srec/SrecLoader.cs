@@ -50,9 +50,9 @@ namespace Reko.ImageLoaders.Srec
             }
         }
 
-        public override Program Load(Address? addrLoad) => throw new NotSupportedException();
+        public override Program LoadProgram(Address? addrLoad) => throw new NotSupportedException();
 
-        public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
+        public override Program LoadProgram(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
         {
             var srecParser = new SrecParser(RawImage);
             var fragments = new Dictionary<Address, byte[]>();

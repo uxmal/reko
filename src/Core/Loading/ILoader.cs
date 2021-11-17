@@ -19,13 +19,9 @@
 #endregion
 
 using Reko.Core.Assemblers;
-using Reko.Core.Scripts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Reko.Core.Configuration;
-using System.Threading.Tasks;
+using Reko.Core.Scripts;
+using System.Collections.Generic;
 
 namespace Reko.Core.Loading
 {
@@ -61,10 +57,10 @@ namespace Reko.Core.Loading
         /// <param name="loadAddress">Address at which to load the binary. This may be null,
         /// in which case the default address of the image loader will be used.</param>
         /// <returns>
-        /// Either a successfully loaded <see cref="Reko.Core.Program"/>, or null if 
+        /// Either a successfully loaded <see cref="ILoadedImage"/>, or null if 
         /// an appropriate image loader could not be determined or loaded.
         /// </returns>
-        Program? LoadImage(string fileName, byte[] bytes, string? loader, Address? loadAddress);
+        ILoadedImage? LoadImage(string fileName, byte[] bytes, string? loader, Address? loadAddress);
 
         /// <summary>
         /// Given a sequence of raw bytes, loads it into memory and applies the 

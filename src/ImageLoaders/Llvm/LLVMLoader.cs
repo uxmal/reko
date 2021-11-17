@@ -47,7 +47,7 @@ namespace Reko.ImageLoaders.LLVM
             }
         }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             var rdr = new StreamReader(new MemoryStream(RawImage), Encoding.UTF8);
             var parser = new LLVMParser(new LLVMLexer(rdr));

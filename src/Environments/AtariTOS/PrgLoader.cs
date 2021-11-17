@@ -47,7 +47,7 @@ namespace Reko.Environments.AtariTOS
             set { throw new NotImplementedException(); }
         }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             var rdr = new BeImageReader(RawImage);
             if (!TryLoadHeader(rdr, out var hdr))

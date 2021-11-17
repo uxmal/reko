@@ -44,7 +44,7 @@ namespace Reko.Environments.Gameboy
             set { throw new NotSupportedException(); }
         }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             var configSvc = Services.RequireService<IConfigurationService>();
             var arch = configSvc.GetArchitecture("lr35902")!;

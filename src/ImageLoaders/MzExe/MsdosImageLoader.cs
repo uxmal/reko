@@ -69,7 +69,7 @@ namespace Reko.ImageLoaders.MzExe
             set { throw new NotImplementedException(); }
         }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             addrLoad ??= PreferredBaseAddress;
             this.segPsp = (ushort) (addrLoad.Selector!.Value - 0x10);

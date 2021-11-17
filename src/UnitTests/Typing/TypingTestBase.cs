@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Typing
             svc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             ILoader ldr = new Loader(svc);
             var imgLoader = new DchexLoader(FileUnitTester.MapTestPath( hexFile), svc, null);
-            var program = imgLoader.Load(null);
+            var program = imgLoader.LoadProgram(null);
             var project = new Project { Programs = { program } };
             var ep = ImageSymbol.Procedure(program.Architecture, program.ImageMap.BaseAddress);
             var dynamicLinker = new DynamicLinker(project, program, eventListener);

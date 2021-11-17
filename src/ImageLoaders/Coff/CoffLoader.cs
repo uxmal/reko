@@ -45,7 +45,7 @@ namespace Reko.ImageLoaders.Coff
             set { throw new NotImplementedException(); }
         }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             throw new NotImplementedException();
         }

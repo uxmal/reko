@@ -52,17 +52,17 @@ namespace Reko.Loading
             set { this.baseAddr = value; }
         }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             if (Architecture is null)
                 throw new InvalidOperationException("A processor architecture must be specified.");
             if (addrLoad is null)
                 addrLoad = PreferredBaseAddress;
             var platform = Platform ?? new DefaultPlatform(Services, Architecture);
-            return Load(addrLoad, Architecture, platform);
+            return LoadProgram(addrLoad, Architecture, platform);
         }
 
-        public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
+        public override Program LoadProgram(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
         {
             var segmentMap = CreatePlatformSegmentMap(platform, addrLoad, imageBytes);
             var program = new Program(

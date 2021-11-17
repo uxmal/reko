@@ -167,7 +167,7 @@ namespace Reko.ImageLoaders.IntelHex
         /// <returns>
         /// A <see cref="Program"/> instance.
         /// </returns>
-        public override Program Load(Address? addrLoad) => throw new NotImplementedException();
+        public override Program LoadProgram(Address? addrLoad) => throw new NotImplementedException();
 
         /// <summary>
         /// Loads the image into memory at the specified address, using the provided
@@ -180,7 +180,7 @@ namespace Reko.ImageLoaders.IntelHex
         /// <returns>
         /// A <see cref="Program"/> instance.
         /// </returns>
-        public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
+        public override Program LoadProgram(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
         {
             listener = Services.RequireService<DecompilerEventListener>();
             var memChunks = new MemoryChunksList();

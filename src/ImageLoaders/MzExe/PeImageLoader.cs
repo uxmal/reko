@@ -292,7 +292,7 @@ namespace Reko.ImageLoaders.MzExe
 			}
         }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             addrLoad ??= PreferredBaseAddress;
             SegmentMap = new SegmentMap(addrLoad);

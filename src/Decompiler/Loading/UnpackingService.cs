@@ -99,7 +99,7 @@ namespace Reko.Loading
         /// <param name="entryPointOffset">Offset of the program entry point.</param>
         /// <returns>If an unpacker was found, returns a new wrapping ImageLoader. Otherwise 
         /// the original loader is returned.</returns>
-        public ImageLoader FindUnpackerBySignature(ImageLoader loader, uint entryPointOffset)
+        public ProgramImageLoader FindUnpackerBySignature(ProgramImageLoader loader, uint entryPointOffset)
         {
             var listener = Services.RequireService<DecompilerEventListener>();
 
@@ -116,7 +116,7 @@ namespace Reko.Loading
             {
                 return loader;
             }
-            var unpacker = Loader.CreateOuterImageLoader<ImageLoader>(Services, le.TypeName, loader);
+            var unpacker = Loader.CreateOuterImageLoader<ProgramImageLoader>(Services, le.TypeName, loader);
             if (unpacker == null)
             {
                 listener.Warn("Unable to create loader for '{0}'.", signature.Name);

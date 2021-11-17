@@ -271,7 +271,7 @@ namespace Reko.ImageLoaders.Xbe
             return imports;
         }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("x86-protected-32")!;

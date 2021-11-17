@@ -49,7 +49,7 @@ namespace Reko.Environments.C64
             set { throw new NotImplementedException(); }
         }
 
-        public override Program Load(Address? addrLoad)
+        public override ILoadedImage Load(Address? addrLoad)
         {
             addrLoad ??= PreferredBaseAddress;
             List<ArchiveDirectoryEntry> entries = LoadTapeDirectory();
@@ -155,13 +155,6 @@ namespace Reko.Environments.C64
             Array.Copy(RawImage, fileOffset, bytes, 0, bytes.Length);
             return new T64FileEntry(name, (FileType) (fileType & 7), uAddrStart, bytes);
 
-        }
-
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            return new RelocationResults(
-                 new List<ImageSymbol>(),
-                 new SortedList<Address, ImageSymbol>());
         }
 
         public class T64Header

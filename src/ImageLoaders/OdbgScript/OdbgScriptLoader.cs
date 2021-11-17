@@ -39,12 +39,12 @@ namespace Reko.ImageLoaders.OdbgScript
     /// file to specify the script file to use.</remarks>
     public class OdbgScriptLoader : ProgramImageLoader
     {
-        private readonly ImageLoader originalImageLoader;
+        private readonly ProgramImageLoader originalImageLoader;
         private Debugger debugger;
         private OllyLangInterpreter scriptInterpreter;
         private rulong OldIP;
 
-        public OdbgScriptLoader(ImageLoader imageLoader) 
+        public OdbgScriptLoader(ProgramImageLoader imageLoader) 
             : base(imageLoader.Services, imageLoader.Filename, imageLoader.RawImage)
         {
             this.originalImageLoader = imageLoader;
@@ -69,12 +69,12 @@ namespace Reko.ImageLoaders.OdbgScript
         /// </summary>
         public Address OriginalEntryPoint { get; set; }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             // First load the file. This gives us a (writeable) image and 
             // the packed entry point.
             var origLdr = this.originalImageLoader;
-            var program = origLdr.Load(origLdr.PreferredBaseAddress);
+            var program = origLdr.LoadProgram(origLdr.PreferredBaseAddress);
             var rr = origLdr.Relocate(program, origLdr.PreferredBaseAddress);
             this.ImageMap = program.SegmentMap;
             this.Architecture = program.Architecture;

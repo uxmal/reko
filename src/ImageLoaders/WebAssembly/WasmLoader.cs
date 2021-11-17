@@ -48,7 +48,7 @@ namespace Reko.ImageLoaders.WebAssembly
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             var rdr = LoadHeader();
             var sections = LoadSections(rdr);

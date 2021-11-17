@@ -75,7 +75,7 @@ namespace Reko.ImageLoaders.Elf
             set { addrPreferred = value; }
         }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             var rdr = new BeImageReader(this.RawImage, 0);
             LoadElfIdentification(rdr);

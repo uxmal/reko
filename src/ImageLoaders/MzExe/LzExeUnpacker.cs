@@ -196,7 +196,7 @@ namespace Reko.ImageLoaders.MzExe
 			return segmentMap;
 		}
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
 		{
 			Unpack(RawImage, addrLoad ?? PreferredBaseAddress );
             return new Program(segmentMap, arch, platform);

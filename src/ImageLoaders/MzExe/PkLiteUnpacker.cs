@@ -81,7 +81,7 @@ namespace Reko.ImageLoaders.MzExe
 			return ByteMemoryArea.CompareArrays(rawImg, (int) signatureOffset, signature, signature.Length);
 		}
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
 		{
 			uint dst = PspSize;
 

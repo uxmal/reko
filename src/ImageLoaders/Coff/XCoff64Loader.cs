@@ -39,7 +39,7 @@ namespace Reko.ImageLoaders.Coff
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             BeImageReader rdr = new BeImageReader(this.RawImage, 0);
             FileHeader64? str = rdr.ReadStruct<FileHeader64>();

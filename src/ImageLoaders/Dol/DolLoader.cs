@@ -102,14 +102,14 @@ namespace Reko.ImageLoaders.Dol
 			}
 		}
 
-		public override Program Load(Address? addrLoad) {
+		public override Program LoadProgram(Address? addrLoad) {
 			var cfgSvc = Services.RequireService<IConfigurationService>();
 			var arch = cfgSvc.GetArchitecture("ppc-32-be")!;
 			var platform = cfgSvc.GetEnvironment("wii").Load(Services, arch);
-			return Load(addrLoad ?? PreferredBaseAddress, arch, platform);
+			return base.LoadProgram(addrLoad ?? PreferredBaseAddress, arch, platform);
 		}
 
-        public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform) {
+        public override Program LoadProgram(Address addrLoad, IProcessorArchitecture arch, IPlatform platform) {
             BeImageReader rdr = new BeImageReader(this.RawImage, 0);
             DolStructure? str = rdr.ReadStruct<DolStructure>();
             if (!str.HasValue)

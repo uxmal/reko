@@ -52,7 +52,7 @@ namespace Reko.ImageLoaders.HpSom
 
         public override Address PreferredBaseAddress { get; set; }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
 
             var somHeader = MakeReader(0).ReadStruct<SOM_Header>();

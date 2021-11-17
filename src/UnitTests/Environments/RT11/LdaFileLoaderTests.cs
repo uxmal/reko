@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Environments.RT11
                 0x00, 0x10,
                 0x00);
 
-            var program = ldaLdr.Load(Address.Ptr16(0));
+            var program = ldaLdr.LoadProgram(Address.Ptr16(0));
             var seg = program.SegmentMap.Segments.Values.First();
             var bmem = (ByteMemoryArea) seg.MemoryArea;
             Assert.AreEqual(0x1000ul, bmem.BaseAddress.ToLinear());

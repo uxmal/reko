@@ -29,7 +29,7 @@ namespace Reko.Core.Services
     public interface IUnpackerService
     {
         /// <summary>
-        /// Given an original <see cref="ImageLoader"/> and the offset into
+        /// Given an original <see cref="ProgramImageLoader"/> and the offset into
         /// the image where the main execution point is, searches the signature database
         /// to find an unpacker that matches.
         /// </summary>
@@ -37,6 +37,6 @@ namespace Reko.Core.Services
         /// <param name="entryPointOffset">The offset from the beginning of the image</param>
         /// <returns>An image loader that can unpack the image, or the original
         /// ImageLoader if no unpacker could be found.</returns>
-        ImageLoader FindUnpackerBySignature(ImageLoader imageLoader, uint entryPointOffset);
+        ProgramImageLoader FindUnpackerBySignature(ProgramImageLoader imageLoader, uint entryPointOffset);
     }
 }

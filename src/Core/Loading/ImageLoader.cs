@@ -67,33 +67,12 @@ namespace Reko.Core.Loading
         public ImageHeader LoadHeader(string argument) { throw new NotImplementedException();  }
 
         /// <summary>
-		/// Loads the image into memory starting at the specified address
+		/// Loads the image into memory.
 		/// </summary>
-		/// <param name="addrLoad">Optional base address of program image. If not specified,
-        /// use the image format's default loading address.</param>
-		/// <returns></returns>
-        public abstract Program Load(Address? addrLoad);
-
-        /// <summary>
-        /// Performs fix-ups of the loaded image, adding findings to the supplied collections.
-        /// </summary>
-        /// <param name="addrLoad">The address at which the program image is loaded.</param>
-        /// <returns></returns>
-		public abstract RelocationResults Relocate(Program program, Address addrLoad);
-
-        /// <summary>
-        /// Express the fact that memory at address <paramref name="addr"/> was relocated
-        /// to segment <paramref>seg</paramref>.
-        /// </summary>
-        /// <param name="addr">The address of the relocation.</param>
-        /// <param name="seg">The relocated segment reference.</param>
-        /// <remarks>
-        /// This method only makes sense for image formats that support
-        /// x86-style segments.
-        /// </remarks>
-        public virtual ImageSegment? AddSegmentReference(Address addr, ushort seg)
-        {
-            return null;
-        }
+		/// <param name="addrLoad">Optional base address of the  image. If not specified,
+        /// use the image format's default loading address. For some image types -- e.g. 
+        /// archives -- the parameter is ignored.</param>
+		/// <returns>An object implementing the <see cref="ILoadedImage>" /> interface.</returns>
+        public abstract ILoadedImage Load(Address? addrLoad);
     }
 }

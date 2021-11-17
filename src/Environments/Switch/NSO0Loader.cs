@@ -52,7 +52,7 @@ namespace Reko.Environments.Switch
             }
         }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             var @in = new LeImageReader(RawImage);
             NSOHeader nsoHeader = @in.ReadStruct<NSOHeader>();

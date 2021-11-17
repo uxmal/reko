@@ -49,7 +49,7 @@ namespace Reko.Environments.NeoGeo
             set;
         }
 
-        public override Program Load(Address? addrLoad)
+        public override Program LoadProgram(Address? addrLoad)
         {
             var romSegment = new ImageSegment(
                 ".text",

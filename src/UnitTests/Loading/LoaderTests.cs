@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Loading
             var testImage = new byte[] { 42, 42, 42, 42, };
             var ldr = new Mock<Loader>(sc);
 
-            Program program = ldr.Object.LoadImage("", testImage, null, null);
+            Program program = (Program) ldr.Object.LoadImage("", testImage, null, null);
 
             Assert.IsNull(program);
         }
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Loading
             var ldr = new Mock<Loader>(sc);
 
             ldr.Object.DefaultToFormat = "ms-dos-com";
-            Program program = ldr.Object.LoadImage("", testImage, null, null);
+            Program program = (Program) ldr.Object.LoadImage("", testImage, null, null);
 
             Assert.IsNull(eventListener.LastDiagnostic);
             Assert.AreEqual("0C00:0100", program.ImageMap.BaseAddress.ToString());
@@ -160,7 +160,7 @@ namespace Reko.UnitTests.Loading
 
             public override Address PreferredBaseAddress {get; set; }
 
-            public override Program Load(Address addrLoad)
+            public override Program LoadProgram(Address addrLoad)
             {
                 return new Program();
             }
@@ -205,7 +205,7 @@ namespace Reko.UnitTests.Loading
                 set { throw new NotImplementedException(); }
             }
 
-            public override Program Load(Address addrLoad)
+            public override Program LoadProgram(Address addrLoad)
             {
                 throw new NotImplementedException();
             }
