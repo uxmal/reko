@@ -18,9 +18,8 @@
  */
 #endregion
 
-using Moq;
 using NUnit.Framework;
-using Reko.Core.Archives;
+using Reko.Core.Loading;
 using Reko.Environments.C64;
 using System;
 using System.Collections.Generic;

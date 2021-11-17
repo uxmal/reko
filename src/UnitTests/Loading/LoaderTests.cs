@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Loading
             var testImage = new byte[] { 42, 42, 42, 42, };
             var ldr = new Mock<Loader>(sc);
 
-            Program program = ldr.Object.LoadExecutable("", testImage, null, null);
+            Program program = ldr.Object.LoadImage("", testImage, null, null);
 
             Assert.IsNull(program);
         }
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Loading
             var ldr = new Mock<Loader>(sc);
 
             ldr.Object.DefaultToFormat = "ms-dos-com";
-            Program program = ldr.Object.LoadExecutable("", testImage, null, null);
+            Program program = ldr.Object.LoadImage("", testImage, null, null);
 
             Assert.IsNull(eventListener.LastDiagnostic);
             Assert.AreEqual("0C00:0100", program.ImageMap.BaseAddress.ToString());

@@ -93,7 +93,7 @@ namespace Reko.Loading
         /// <param name="addrLoad">Address into which to load the file.</param>
         /// <returns>A <see cref="Program"/> if the file format is recognized, or null 
         /// if the file cannot be recognized.</returns>
-        public Program? LoadExecutable(string filename, byte[] image, string? loader, Address? addrLoad)
+        public Program? LoadImage(string filename, byte[] image, string? loader, Address? addrLoad)
         {
             ImageLoader? imgLoader;
             if (!string.IsNullOrEmpty(loader))
@@ -363,7 +363,7 @@ namespace Reko.Loading
 
         public bool ImageHasMagicNumber(byte[] image, string magicNumber, long offset)
         {
-            byte[] magic = ConvertHexStringToBytes(magicNumber);
+            byte[] magic = BytePattern.FromHexBytes(magicNumber);
             if (image.Length < offset + magic.Length)
                 return false;
 
@@ -373,18 +373,6 @@ namespace Reko.Loading
                     return false;
             }
             return true;
-        }
-
-        private byte[] ConvertHexStringToBytes(string hexString)
-        {
-            List<byte> bytes = new List<byte>();
-            for (int i = 0; i < hexString.Length; i += 2)
-            {
-                uint hi = HexDigit(hexString[i]);
-                uint lo = HexDigit(hexString[i + 1]);
-                bytes.Add((byte) ((hi << 4) | lo));
-            }
-            return bytes.ToArray();
         }
 
         public static uint HexDigit(char digit)

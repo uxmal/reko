@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Scripts;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
@@ -112,7 +113,7 @@ namespace Reko.UnitTests.Core.Serialization
             ldr.Setup(l => l.LoadImageBytes(
                 It.IsAny<string>(),
                 It.IsAny<int>())).Returns(new byte[100]);
-            ldr.Setup(l => l.LoadExecutable(
+            ldr.Setup(l => l.LoadImage(
                 It.IsAny<string>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
@@ -312,7 +313,7 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestArch();
             Given_TestOS();
             var ldr = new Mock<ILoader>();
-            ldr.Setup(l => l.LoadExecutable(
+            ldr.Setup(l => l.LoadImage(
                 It.IsAny<string>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),

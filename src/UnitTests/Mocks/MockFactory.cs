@@ -18,16 +18,16 @@
  */
 #endregion
 
-using Reko.Core;
+using Moq;
 using Reko.Arch.X86;
+using Reko.Core;
+using Reko.Core.CLanguage;
+using Reko.Core.Loading;
+using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
-using Reko.Core.CLanguage;
-using System;
 using System.Collections.Generic;
-using Moq;
 using System.ComponentModel.Design;
-using Reko.Core.Memory;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Mocks
                 new ImageSegment(".text", mem, AccessMode.ReadExecute));
             program.ImageMap = program.SegmentMap.CreateImageMap();
             mockLoader.Setup(
-                l => l.LoadExecutable(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<Address>())
+                l => l.LoadImage(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<Address>())
             ).Returns(program);
 
             mockLoader.Setup(

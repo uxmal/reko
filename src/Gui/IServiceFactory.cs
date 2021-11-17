@@ -18,13 +18,11 @@
 */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Services;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
-using Reko.Loading;
-using System;
 using System.ComponentModel.Design;
 
 namespace Reko.Gui

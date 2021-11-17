@@ -19,11 +19,9 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
-using Reko.Core.Output;
-using Reko.Core.Scripts;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -35,7 +33,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Xml;
 
 namespace Reko.Gui.Forms
 {

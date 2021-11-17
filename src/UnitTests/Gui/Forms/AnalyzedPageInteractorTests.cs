@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -79,7 +80,7 @@ namespace Reko.UnitTests.Gui.Forms
                 Platform = platform.Object,
             };
             var ldr = new Mock<ILoader>();
-            ldr.Setup(l => l.LoadExecutable(
+            ldr.Setup(l => l.LoadImage(
                 It.IsAny<string>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),

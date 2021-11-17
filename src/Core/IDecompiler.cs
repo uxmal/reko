@@ -18,6 +18,7 @@
 #endregion
 
 using Reko.Core.Assemblers;
+using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
 using System.Text;

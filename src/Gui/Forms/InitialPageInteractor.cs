@@ -18,19 +18,12 @@
  */
 #endregion
 
-using Reko.Core.Assemblers;
 using Reko.Core;
-using Reko.Core.Serialization;
-using Reko.Core.Services;
-using Reko.Core.Configuration;
-using Reko.Gui;
-using Reko.Loading;
+using Reko.Core.Assemblers;
+using Reko.Core.Loading;
 using System;
-using System.ComponentModel;
 using System.ComponentModel.Design;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Reko.Gui.Forms
 {

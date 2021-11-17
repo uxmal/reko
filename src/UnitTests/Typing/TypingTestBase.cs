@@ -39,6 +39,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
+using Reko.Core.Loading;
 
 namespace Reko.UnitTests.Typing
 {

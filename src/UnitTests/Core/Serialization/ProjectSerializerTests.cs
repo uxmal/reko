@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -110,7 +111,7 @@ namespace Reko.UnitTests.Core.Serialization
                 It.IsAny<string>(),
                 It.IsAny<int>())).
                 Returns(bytes);
-            loader.Setup(l => l.LoadExecutable(
+            loader.Setup(l => l.LoadImage(
                 It.IsAny<string>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
@@ -218,7 +219,7 @@ namespace Reko.UnitTests.Core.Serialization
                 It.IsAny<string>(),
                 It.IsAny<int>())).
                 Returns(bytes);
-            loader.Setup(l => l.LoadExecutable(
+            loader.Setup(l => l.LoadImage(
                 It.IsAny<string>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),

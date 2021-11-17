@@ -18,7 +18,7 @@
  */
 #endregion
 
-using Reko.Core.Archives;
+using Reko.Core.Loading;
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Reko.ImageLoaders.BinHex.Cpt
 {
-    public class CompactProArchive : Archive
+    public class CompactProArchive : IArchive
     {
         private byte[] cpt_data = null!;
         private uint cpt_datamax;

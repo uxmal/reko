@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Core.Archives
+namespace Reko.Core.Loading
 {
     public interface ArchiveDirectoryEntry
     {

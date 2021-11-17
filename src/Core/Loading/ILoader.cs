@@ -25,8 +25,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core.Configuration;
+using System.Threading.Tasks;
 
-namespace Reko.Core
+namespace Reko.Core.Loading
 {
     /// <summary>
     /// Implementors of this interface assume responsibility for loading 
@@ -63,7 +64,7 @@ namespace Reko.Core
         /// Either a successfully loaded <see cref="Reko.Core.Program"/>, or null if 
         /// an appropriate image loader could not be determined or loaded.
         /// </returns>
-        Program? LoadExecutable(string fileName, byte[] bytes, string? loader, Address? loadAddress);
+        Program? LoadImage(string fileName, byte[] bytes, string? loader, Address? loadAddress);
 
         /// <summary>
         /// Given a sequence of raw bytes, loads it into memory and applies the 

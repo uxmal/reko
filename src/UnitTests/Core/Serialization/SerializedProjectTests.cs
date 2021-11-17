@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Expressions;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Scripts;
 using Reko.Core.Serialization;
@@ -393,7 +394,7 @@ namespace Reko.UnitTests.Core.Serialization
             loader.Setup(l => l.LoadImageBytes(
                 It.Is<string>(s => s.EndsWith(exeName)),
                 It.IsAny<int>())).Returns(bytes);
-            loader.Setup(l => l.LoadExecutable(
+            loader.Setup(l => l.LoadImage(
                 It.Is<string>(s => s.EndsWith(exeName)),
                 It.IsNotNull<byte[]>(),
                 null,
@@ -416,7 +417,7 @@ namespace Reko.UnitTests.Core.Serialization
             loader.Setup(l => l.LoadImageBytes(
                 It.Is<string>(s => s.EndsWith(exeName)),
                 It.IsAny<int>())).Returns(bytes);
-            loader.Setup(l => l.LoadExecutable(
+            loader.Setup(l => l.LoadImage(
                 It.Is<string>(s => s.EndsWith(exeName)),
                 It.IsNotNull<byte[]>(),
                 null,
@@ -543,7 +544,7 @@ namespace Reko.UnitTests.Core.Serialization
             var loader = new Mock<ILoader>();
             loader.Setup(l => l.LoadImageBytes(It.IsAny<string>(), It.IsAny<int>()))
                 .Returns(new byte[10]);
-            loader.Setup(l => l.LoadExecutable(
+            loader.Setup(l => l.LoadImage(
                 It.IsAny<string>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),

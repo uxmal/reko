@@ -19,7 +19,7 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Archives;
+using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
 using System.IO;

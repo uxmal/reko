@@ -20,6 +20,7 @@
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Assemblers;
+using Reko.Core.Loading;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Scripts;
@@ -191,7 +192,7 @@ namespace Reko
             this.Project = projectLoader.LoadProject(fileName, image);
             if (Project == null)
             {
-                var program = loader.LoadExecutable(fileName, image, loaderName, addrLoad);
+                var program = loader.LoadImage(fileName, image, loaderName, addrLoad);
                 if (program == null)
                     return false;
                 this.Project = AddProgramToProject(fileName, program);

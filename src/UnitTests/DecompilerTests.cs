@@ -18,20 +18,19 @@
  */
 #endregion
 
+using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
 using Reko.UnitTests.Mocks;
-using Moq;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Text;
 
 namespace Reko.UnitTests
 {

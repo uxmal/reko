@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Gui;
@@ -82,7 +83,7 @@ namespace Reko.UnitTests.Gui.Forms
 
             var ldr = new Mock<ILoader>();
             ldr.Setup(l => l.LoadImageBytes("test.exe", 0)).Returns(new byte[400]);
-            ldr.Setup(l => l.LoadExecutable(
+            ldr.Setup(l => l.LoadImage(
                 It.IsNotNull<string>(),
                 It.IsNotNull<byte[]>(),
                 null,

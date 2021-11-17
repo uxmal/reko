@@ -21,9 +21,9 @@
 using Moq;
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
-using Reko.Gui;
 using Reko.UnitTests.Mocks;
 using System;
 using System.ComponentModel.Design;
@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Gui
             platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
             platform.Setup(p => p.Architecture).Returns(arch.Object);
             loader.Setup(l => l.LoadImageBytes(fileName, 0)).Returns(bytes);
-            loader.Setup(l => l.LoadExecutable(fileName, bytes, null, null)).Returns(program);
+            loader.Setup(l => l.LoadImage(fileName, bytes, null, null)).Returns(program);
             var dec = new Decompiler(loader.Object, sc);
 
             svc.Decompiler = dec;

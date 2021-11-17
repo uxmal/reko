@@ -1,6 +1,5 @@
 #region License
-/* 
- * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
+/* Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +17,19 @@
  */
 #endregion
 
-using Reko.Core.Loading;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Core.Services
+namespace Reko.Core.Loading
 {
-    /// <summary>
-    /// Used by loaders that have encountered an archive and need the user to select 
-    /// the file in the archive that is to be decompiled.
-    /// </summary>
-    public interface IArchiveBrowserService
+    public interface ILoadedImage
     {
-        ArchivedFile UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries);
+    }
+
+    public interface ILoadedImageVisitor<T, C>
+    {
+        T VisitProgram(Program program, C context);
+        T VisitArchive(IArchive archive, C context);
     }
 }

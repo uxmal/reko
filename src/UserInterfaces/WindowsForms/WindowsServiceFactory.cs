@@ -22,6 +22,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Controls;
@@ -31,7 +32,6 @@ using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.ComponentModel.Design;
-using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms
 {

@@ -33,6 +33,7 @@ using Reko.Core.Types;
 using Reko.Core.Expressions;
 using System.Globalization;
 using Reko.Core.Memory;
+using Reko.Core.Loading;
 
 namespace Reko.Core.Serialization
 {
@@ -266,7 +267,7 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                program = loader.LoadExecutable(binAbsPath, bytes, sUser.Loader, address)
+                program = loader.LoadImage(binAbsPath, bytes, sUser.Loader, address)
                     ?? new Program();   // A previous save of the project was able to read the file, 
                                         // but now we can't...
             }

@@ -20,7 +20,6 @@
 
 using Reko.Arch.Mos6502;
 using Reko.Core;
-using Reko.Core.Archives;
 using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Memory;

@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -24,8 +24,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Core
+namespace Reko.Core.Loading
 {
+    /// <summary>
+    /// Abstracts an entity that can retrieve symbols.
+    /// </summary>
     public interface ISymbolSource : IDisposable
     {
         /// <summary>

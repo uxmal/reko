@@ -20,14 +20,12 @@
 
 using Reko.Core;
 using Reko.Core.Assemblers;
-using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
-using System.Text;
 
 namespace Reko.UnitTests.Gui.Forms
 {
