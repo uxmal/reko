@@ -22,11 +22,11 @@
 
 using Reko.Core.Scripts;
 using Reko.Gui;
+using Reko.Gui.Services;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace Reko.UserInterfaces.WindowsForms
 {

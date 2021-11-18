@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2021 John Källén.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,38 +18,19 @@
  */
 #endregion
 
-using Reko.Core;
+#nullable enable
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
-    public interface IProjectBrowserService : ICommandTarget
+    /// <summary>
+    /// Service supporting the view and editing text files.
+    /// </summary>
+    public interface ITextFileEditorService
     {
-        event EventHandler<FileDropEventArgs> FileDropped;
-
-        Program CurrentProgram { get; }
-        bool ContainsFocus { get; }
-
-        /// <summary>
-        /// The currently selected object in the project browser tree.
-        /// </summary>
-        object SelectedObject { get; set; }
-
-
-        /// <summary>
-        /// Loads a project into the project browser and starts listening to changes. 
-        /// Loading a null project clears the project browser.
-        /// </summary>
-        /// <param name="project"></param>
-        void Load(Project project);
-
-        void Clear();
-
-        void Reload();
-
-        void Show();
+        void DisplayFile(string fileName, int? line = null);
     }
 }

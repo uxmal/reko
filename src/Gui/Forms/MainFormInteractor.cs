@@ -25,6 +25,7 @@ using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Gui.Services;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;

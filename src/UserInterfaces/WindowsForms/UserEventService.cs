@@ -18,12 +18,8 @@
  */
 #endregion
 
-using Reko.Gui;
+using Reko.Gui.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UserInterfaces.WindowsForms
 {

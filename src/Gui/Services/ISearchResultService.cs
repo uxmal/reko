@@ -18,17 +18,22 @@
  */
 #endregion
 
-using System;
+using Reko.Core;
+using Reko.Gui.Controls;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel;
+using System.Drawing;
+using System.Reflection;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
     /// <summary>
-    /// This service provides an interactive hex disassembler for testing.
+    /// The Search Result Service is used to show the results of some kind of
+    /// search.
     /// </summary>
-    public interface IHexDisassemblerService
+    public interface ISearchResultService 
     {
-        void Show();
+        void ShowAddressSearchResults(IEnumerable<AddressSearchHit> hits, AddressSearchDetails code);
+        void ShowSearchResults(ISearchResult result);
     }
 }

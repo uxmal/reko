@@ -26,6 +26,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
 using Reko.Gui.Visualizers;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
@@ -455,7 +456,7 @@ namespace Reko.UserInterfaces.WindowsForms
             using (ISearchDialog dlg = dlgFactory.CreateSearchDialog())
             {
                 dlg.InitialPattern = SelectionToHex(addrRange);
-                if (uiSvc.ShowModalDialog(dlg) == Gui.DialogResult.OK)
+                if (uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
                 {
                     var re = Core.Dfa.Automaton.CreateFromPattern(dlg.Patterns.Text);
                     var hits =
@@ -484,7 +485,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
             using (ITextEncodingDialog dlg = dlgFactory.CreateTextEncodingDialog())
             {
-                if (uiSvc.ShowModalDialog(dlg) == Gui.DialogResult.OK)
+                if (uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
                 {
                     var enc = dlg.GetSelectedTextEncoding();
                     this.control.MemoryView.Encoding = enc;
@@ -520,7 +521,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 var uiSvc = services.RequireService<IDecompilerShellUiService>();
                 using (var dlg = dlgFactory.CreateRegisterValuesDialog(this.program.Architecture, regValues))
                 {
-                    if (Gui.DialogResult.OK == uiSvc.ShowModalDialog(dlg))
+                    if (Gui.Services.DialogResult.OK == uiSvc.ShowModalDialog(dlg))
                     {
                         regValues = dlg.RegisterValues;
                         program.User.RegisterValues[instr.Address] = regValues;
@@ -538,7 +539,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var ucd = GetUserCallDataFromAddress(instr.Address);
             using (var dlg = dlgFactory.CreateCallSiteDialog(this.program, ucd))
             {
-                if (Gui.DialogResult.OK == uiSvc.ShowModalDialog(dlg))
+                if (Gui.Services.DialogResult.OK == uiSvc.ShowModalDialog(dlg))
                 {
                     ucd = dlg.GetUserCallData(null);
                     SetUserCallData(ucd);

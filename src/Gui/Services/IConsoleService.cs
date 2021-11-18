@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
     public interface IConsoleService
     {

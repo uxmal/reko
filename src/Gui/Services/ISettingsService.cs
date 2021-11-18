@@ -1,7 +1,7 @@
 #region License
 /* 
- * Copyright (C) 1999-2021 Pavel Tomin.
- *
+ * Copyright (C) 1999-2021 John Källén.
+ .
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -18,19 +18,27 @@
  */
 #endregion
 
-#nullable enable
-
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
     /// <summary>
-    /// Service supporting the view and editing text files.
+    /// Use this to save user settings to a platform-appropriate 
+    /// storage location.
     /// </summary>
-    public interface ITextFileEditorService
+    public interface ISettingsService
     {
-        void DisplayFile(string fileName, int? line = null);
+        object Get(string settingName, object defaultValue);
+        string[] GetList(string settingName);
+
+        void SetList(string name, IEnumerable<string> values);
+        void Set(string name, object value);
+        void Delete(string name);
+
+        void Load();        // Load settings from their persistent location
+        void Save();        // Save settings to their persistent location
     }
 }

@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
     /// <summary>
     /// Methods for creating windows in the shell. 

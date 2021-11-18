@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -19,21 +19,16 @@
 #endregion
 
 using Reko.Core;
-using Reko.Gui.Controls;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Reflection;
+using System.Text;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
-    /// <summary>
-    /// The Search Result Service is used to show the results of some kind of
-    /// search.
-    /// </summary>
-    public interface ISearchResultService 
+    public interface IDisassemblyViewService
     {
-        void ShowAddressSearchResults(IEnumerable<AddressSearchHit> hits, AddressSearchDetails code);
-        void ShowSearchResults(ISearchResult result);
+        void Clear();
+        void DisassembleStartingAtAddress(Program program, Address addr);
+        void ShowWindow(Program program);
     }
 }

@@ -21,30 +21,35 @@
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using System.Threading;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
-    public interface IWorkerDialogService
+    public interface IProjectBrowserService : ICommandTarget
     {
-        /// <summary>
-        /// Starts working in a background thread.
-        /// </summary>
-        /// <param name="caption">Caption to display in the worker dialog.</param>
-        /// <param name="backgroundWork"></param>
-        /// <returns>True it task completed, false if it threw an exception.</returns>
-        bool StartBackgroundWork(string caption, Action backgroundWork);
+        event EventHandler<FileDropEventArgs> FileDropped;
+
+        Program CurrentProgram { get; }
+        bool ContainsFocus { get; }
 
         /// <summary>
-        /// Allows the background thread to update the caption.
+        /// The currently selected object in the project browser tree.
         /// </summary>
-        void SetCaption(string newCaption);
+        object SelectedObject { get; set; }
 
-        void FinishBackgroundWork();
 
-        void ShowError(string p, Exception ex);
+        /// <summary>
+        /// Loads a project into the project browser and starts listening to changes. 
+        /// Loading a null project clears the project browser.
+        /// </summary>
+        /// <param name="project"></param>
+        void Load(Project project);
 
-        void Error(ICodeLocation location, Exception ex, string message);
+        void Clear();
+
+        void Reload();
+
+        void Show();
     }
 }

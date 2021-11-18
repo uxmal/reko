@@ -48,7 +48,7 @@ namespace Reko.UserInterfaces.WindowsForms
             this.instr = instr;
             this.line = line;
             this.annotations = new List<string>();
-            this.mnemonicStyle = Gui.UiStyles.DisassemblerOpcode;
+            this.mnemonicStyle = Gui.Services.UiStyles.DisassemblerOpcode;
         }
 
         public Address Address => addrInstr;
@@ -101,7 +101,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public void Tab()
         {
             TerminateSpan();
-            this.mnemonicStyle = Gui.UiStyles.DisassemblerOpcodeColor;
+            this.mnemonicStyle = Gui.Services.UiStyles.DisassemblerOpcodeColor;
         }
 
         private void TerminateSpan()
@@ -112,7 +112,7 @@ namespace Reko.UserInterfaces.WindowsForms
             {
                 Text = sb.ToString(),
                 Tag = null,
-                Style = Gui.UiStyles.Disassembler,
+                Style = Gui.Services.UiStyles.Disassembler,
             };
             line.Add(span);
             sb = new StringBuilder();

@@ -23,6 +23,7 @@ using Reko.Core.Assemblers;
 using Reko.Core.Loading;
 using Reko.Gui;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;

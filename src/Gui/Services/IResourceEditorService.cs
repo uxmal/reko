@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -18,20 +18,17 @@
  */
 #endregion
 
-using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core;
+using Reko.Gui.Forms;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
-    /// <summary>
-    /// The viewer service provides callers with a way to display
-    /// loaded and decompiled products.
-    /// </summary>
-    public interface IViewerService
+    public interface IResourceEditorService
     {
-        void DisplayProcedure(Procedure proc);
+        void Show(Program program, ProgramResourceInstance resource);
     }
 }

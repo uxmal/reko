@@ -18,20 +18,14 @@
  */
 #endregion
 
-#nullable enable
-
-using Reko.Core;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
-    public interface ICallHierarchyService
+    public interface IStatusBarService
     {
-        void Show(Program program, Procedure proc);
-        void AddProcedure(Program program, Procedure proc);
+        void SetText(string text);
     }
 }

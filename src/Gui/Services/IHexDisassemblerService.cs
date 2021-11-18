@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -18,17 +18,17 @@
  */
 #endregion
 
-using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
-    public interface IDisassemblyViewService
+    /// <summary>
+    /// This service provides an interactive hex disassembler for testing.
+    /// </summary>
+    public interface IHexDisassemblerService
     {
-        void Clear();
-        void DisassembleStartingAtAddress(Program program, Address addr);
-        void ShowWindow(Program program);
+        void Show();
     }
 }

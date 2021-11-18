@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Loading;
+using Reko.Gui.Services;
 using System;
 using System.ComponentModel.Design;
 using System.Linq;

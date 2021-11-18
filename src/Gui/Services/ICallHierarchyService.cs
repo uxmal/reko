@@ -18,22 +18,20 @@
  */
 #endregion
 
+#nullable enable
+
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
-    /// <summary>
-    /// The <see cref="IUserEventService"/> allows interested parties to 
-    /// subscribe to and to publish events triggered by user actions.
-    /// </summary>
-    public interface IUserEventService
+    public interface ICallHierarchyService
     {
-        public event EventHandler<string> UserEvent;
-
-        void RaiseEvent(object sender, string eventType);
+        void Show(Program program, Procedure proc);
+        void AddProcedure(Program program, Procedure proc);
     }
 }

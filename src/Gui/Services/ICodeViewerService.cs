@@ -18,18 +18,20 @@
  */
 #endregion
 
-using Reko.Core.Loading;
+using Reko.Core;
+using Reko.Core.Types;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Reko.Core.Services
+namespace Reko.Gui.Services
 {
-    /// <summary>
-    /// Used by loaders that have encountered an archive and need the user to select 
-    /// the file in the archive that is to be decompiled.
-    /// </summary>
-    public interface IArchiveBrowserService
+    // Service for presenting intermediate code.
+    public interface ICodeViewerService
     {
-        ArchivedFile UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries);
+        void DisplayProcedure(Program program, Procedure proc, bool mixedMode);
+        void DisplayGlobals(Program program, ImageSegment segment);
+        void DisplayDataType(Program program, DataType dt);
+        void DisplayStatement(Program program, Statement statement);
     }
 }

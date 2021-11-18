@@ -21,10 +21,9 @@
 #nullable enable
 
 using Reko.Gui.Controls;
+using Reko.Gui.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Reko.Gui
 {

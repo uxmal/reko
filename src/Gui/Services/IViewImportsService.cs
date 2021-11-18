@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -19,19 +19,15 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
-    // Service for presenting intermediate code.
-    public interface ICodeViewerService
+    public interface IViewImportsService
     {
-        void DisplayProcedure(Program program, Procedure proc, bool mixedMode);
-        void DisplayGlobals(Program program, ImageSegment segment);
-        void DisplayDataType(Program program, DataType dt);
-        void DisplayStatement(Program program, Statement statement);
+        void ShowImports(Program program);
     }
 }

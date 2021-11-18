@@ -20,23 +20,19 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
-using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Environments.Windows;
-using Reko.Gui;
-using Reko.Gui.Visualizers;
+using Reko.Gui.Services;
 using Reko.ImageLoaders.MzExe;
 using Reko.ImageLoaders.OdbgScript;
 using Reko.UserInterfaces.WindowsForms;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;

@@ -18,18 +18,12 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Configuration;
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using System.Globalization;
-using Reko.Gui.Controls;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
     public class UiStyle
     {

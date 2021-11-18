@@ -25,15 +25,13 @@ using Reko.Core.Expressions;
 using Reko.Core.Memory;
 using Reko.Core.Output;
 using Reko.Core.Types;
-using Reko.Gui;
+using Reko.Gui.Services;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
@@ -138,7 +136,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             };
         }
 
-        private Gui.UiStyle GetStyle(string styleName)
+        private Gui.Services.UiStyle GetStyle(string styleName)
         {
             return uipSvc.Styles[styleName];
         }
@@ -147,7 +145,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         {
             public  Control Control;
             public bool EnableFont;
-            public Gui.UiStyle Style { get; set; }
+            public Gui.Services.UiStyle Style { get; set; }
 
             public UserPreferencesInteractor outer;
 
@@ -416,7 +414,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         void WindowFgButton_Click(object sender, EventArgs e)
         {
             dlg.ColorPicker.Color = GetSelectedDesigner().GetForeColor();
-            if ((Gui.DialogResult)dlg.ColorPicker.ShowDialog(dlg) == Gui.DialogResult.OK)
+            if ((Gui.Services.DialogResult)dlg.ColorPicker.ShowDialog(dlg) == Gui.Services.DialogResult.OK)
             {
                 GetSelectedDesigner().SetForeColor(dlg.ColorPicker.Color);
             }
@@ -425,7 +423,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         void WindowBgButton_Click(object sender, EventArgs e)
         {
             dlg.ColorPicker.Color = GetSelectedDesigner().GetBackColor();
-            if ((Gui.DialogResult)dlg.ColorPicker.ShowDialog(dlg) == Gui.DialogResult.OK)
+            if ((Gui.Services.DialogResult)dlg.ColorPicker.ShowDialog(dlg) == Gui.Services.DialogResult.OK)
             {
                 GetSelectedDesigner().SetBackColor(dlg.ColorPicker.Color);
             }
@@ -434,7 +432,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
         void WindowFontButton_Click(object sender, EventArgs e)
         {
             dlg.FontPicker.Font = dlg.MemoryControl.Font;
-            if ((Gui.DialogResult)dlg.FontPicker.ShowDialog(dlg) == Gui.DialogResult.OK)
+            if ((Gui.Services.DialogResult)dlg.FontPicker.ShowDialog(dlg) == Gui.Services.DialogResult.OK)
             {
                 GetSelectedDesigner().SetFont(dlg.FontPicker.Font);
             }
@@ -463,7 +461,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         private void dlg_Closed(object sender, FormClosedEventArgs e)
         {
-            if ((Gui.DialogResult)dlg.DialogResult != Gui.DialogResult.OK)
+            if ((Gui.Services.DialogResult)dlg.DialogResult != Gui.Services.DialogResult.OK)
                 return;
             CopyStyles(localSettings, uipSvc);
         }

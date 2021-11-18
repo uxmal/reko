@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2021 John Källén.
+ * Copyright (C) 1999-2021 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,26 +18,18 @@
  */
 #endregion
 
-using Reko.Core;
+#nullable enable
+
+using Reko.Core.Scripts;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
-    public interface IProcedureListService : ICommandTarget
+    public interface IStackTraceService
     {
-        /// <summary>
-        /// Returns true if any of the controls has focus.
-        /// </summary>
-        bool ContainsFocus { get; }
-
+        void DisplayStackTrace(IList<ScriptStackFrame> stackFrames);
         void Clear();
-
-        void Load(Project project);
-
-        void Show();
     }
 }

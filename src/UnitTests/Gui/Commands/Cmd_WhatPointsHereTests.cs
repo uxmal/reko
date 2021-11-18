@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Memory;
 using Reko.Gui;
 using Reko.Gui.Commands;
+using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;

@@ -19,19 +19,17 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Machine;
+using Reko.Core.Output;
+using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
-using Reko.Core.Output;
-using Reko.Core.Services;
-using Reko.Core.Machine;
-using Reko.Core.Memory;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -132,7 +130,7 @@ namespace Reko.UserInterfaces.WindowsForms
 			var dlgFactory = sp.RequireService<IDialogFactory>();
             using (IAddressPromptDialog dlg = dlgFactory.CreateAddressPromptDialog())
             {
-                if (sp.GetService<IDecompilerShellUiService>().ShowModalDialog(dlg) == Gui.DialogResult.OK)
+                if (sp.GetService<IDecompilerShellUiService>().ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
                 {
                     StartAddress = dlg.Address;
                     DumpAssembler();

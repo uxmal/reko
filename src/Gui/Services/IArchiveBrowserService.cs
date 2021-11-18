@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -18,17 +18,20 @@
  */
 #endregion
 
-using System;
+using Reko.Core.Loading;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using Reko.Core;
-using Reko.Gui.Forms;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
-    public interface IResourceEditorService
+    /// <summary>
+    /// Used by loaders that have encountered an archive and need the user to select 
+    /// the file in the archive that is to be decompiled.
+    /// </summary>
+    public interface IArchiveBrowserService
     {
-        void Show(Program program, ProgramResourceInstance resource);
+        ArchivedFile? SelectFileFromArchive(IArchive archive);
+
+        ArchivedFile UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries);
     }
 }

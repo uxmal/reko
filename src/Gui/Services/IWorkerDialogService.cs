@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -18,14 +18,33 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
-    public interface IStatusBarService
+    public interface IWorkerDialogService
     {
-        void SetText(string text);
+        /// <summary>
+        /// Starts working in a background thread.
+        /// </summary>
+        /// <param name="caption">Caption to display in the worker dialog.</param>
+        /// <param name="backgroundWork"></param>
+        /// <returns>True it task completed, false if it threw an exception.</returns>
+        bool StartBackgroundWork(string caption, Action backgroundWork);
+
+        /// <summary>
+        /// Allows the background thread to update the caption.
+        /// </summary>
+        void SetCaption(string newCaption);
+
+        void FinishBackgroundWork();
+
+        void ShowError(string p, Exception ex);
+
+        void Error(ICodeLocation location, Exception ex, string message);
     }
 }

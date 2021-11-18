@@ -31,6 +31,7 @@ using System.Linq;
 using System;
 using Microsoft.Msagl.GraphViewerGdi;
 using C2 = Microsoft.Msagl.Drawing.Color;
+using Reko.Gui.Services;
 
 namespace Reko.UserInterfaces.WindowsForms
 {

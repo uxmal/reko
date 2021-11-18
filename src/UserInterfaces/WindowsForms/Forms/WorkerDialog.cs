@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -60,9 +60,9 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             base.Invoke(action);
         }
 
-        Gui.DialogResult IWorkerDialog.DialogResult
+        Reko.Gui.Services.DialogResult IWorkerDialog.DialogResult
         {
-            get { return (Gui.DialogResult)(int)this.DialogResult; }
+            get { return (Reko.Gui.Services.DialogResult)(int)this.DialogResult; }
             set { this.DialogResult = (System.Windows.Forms.DialogResult)(int)value; }
         }
     }

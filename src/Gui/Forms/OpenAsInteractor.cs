@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Gui.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;

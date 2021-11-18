@@ -30,5 +30,7 @@ namespace Reko.Core.Loading
     public interface IArchive : ILoadedImage
     {
         List<ArchiveDirectoryEntry> Load(Stream stm);
+
+        List<ArchiveDirectoryEntry> RootEntries { get; }
     }
 }

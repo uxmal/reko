@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -21,7 +21,7 @@
 using Reko.Core;
 using System;
 
-namespace Reko.Gui
+namespace Reko.Gui.Services
 {
     public class SelectionChangedEventArgs : EventArgs
     {

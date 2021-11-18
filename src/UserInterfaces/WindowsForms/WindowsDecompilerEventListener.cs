@@ -23,11 +23,11 @@ using Reko.Core.Scripts;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Threading;
-using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -72,7 +72,7 @@ namespace Reko.UserInterfaces.WindowsForms
             dlg.Worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Worker_RunWorkerCompleted);
             dlg.Worker.ProgressChanged += new ProgressChangedEventHandler(Worker_ProgressChanged);
             dlg.Worker.DoWork += new DoWorkEventHandler(Worker_DoWork);
-            dlg.DialogResult = Gui.DialogResult.Cancel;
+            dlg.DialogResult = DialogResult.Cancel;
             dlg.Caption.Text = caption;
             return dlg;
         }
@@ -91,7 +91,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 this.task = backgroundTask;
                 using (dlg = CreateDialog(caption))
                 {
-                    if (uiSvc.ShowModalDialog(dlg) == Gui.DialogResult.OK)
+                    if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                         return true;
                     if (lastException != null)
                         uiSvc.ShowError(lastException, "{0}", caption);
@@ -175,16 +175,16 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             if (e.Cancelled)
             {
-                dlg.DialogResult = Gui.DialogResult.Cancel;
+                dlg.DialogResult = DialogResult.Cancel;
             }
             else if (e.Error != null)
             {
                 lastException = e.Error;
-                dlg.DialogResult = Gui.DialogResult.Cancel;
+                dlg.DialogResult = DialogResult.Cancel;
             }
             else
             {
-                dlg.DialogResult = Gui.DialogResult.OK;
+                dlg.DialogResult = DialogResult.OK;
             }
             dlg.Close();
         }

@@ -22,6 +22,7 @@ using Microsoft.Msagl.Core.Geometry.Curves;
 using Microsoft.Msagl.Drawing;
 using Reko.Core;
 using Reko.Gui;
+using Reko.Gui.Services;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Diagnostics;

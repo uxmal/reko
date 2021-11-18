@@ -19,13 +19,10 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Serialization;
 using Reko.Core.Services;
+using Reko.Gui.Services;
 using System;
 using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.IO;
-using System.Threading;
 
 namespace Reko.Gui.Forms
 {
