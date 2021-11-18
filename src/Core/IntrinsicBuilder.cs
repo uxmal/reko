@@ -72,7 +72,9 @@ namespace Reko.Core
         {
             var signature = FunctionType.Func(
                 new Identifier("", dt, null!));
-            return new IntrinsicProcedure(intrinsicName, !hasSideEffect, signature);
+            var proc = new IntrinsicProcedure(intrinsicName, !hasSideEffect, signature);
+            proc.Characteristics = characteristics;
+            return proc;
         }
     }
 }

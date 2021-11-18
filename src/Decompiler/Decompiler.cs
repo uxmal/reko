@@ -190,7 +190,7 @@ namespace Reko
             var projectLoader = new ProjectLoader(this.services, loader, eventListener);
             projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
             this.Project = projectLoader.LoadProject(fileName, image);
-            if (Project == null)
+            if (Project is null)
             {
                 //$TODO: Handle archives.
                 var program = (Program?)loader.LoadImage(fileName, image, loaderName, addrLoad);
