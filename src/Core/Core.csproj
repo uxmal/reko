@@ -27,7 +27,7 @@
 
   <Target Name="GenerateGitHash" BeforeTargets="CoreCompile">
     <!-- names the obj/.../CustomAssemblyInfo.cs file -->
-    <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true">
+    <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="SourceRevisionId" />
     </Exec>
     <PropertyGroup>
