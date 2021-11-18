@@ -32,6 +32,8 @@ namespace Reko.Core.Loading
     public interface ArchivedFile : ArchiveDirectoryEntry
     {
         byte[] GetBytes();
+
+        ILoadedImage? LoadImage(IServiceProvider services, Address? addrPreferred);
     }
 
     public interface ArchivedFolder : ArchiveDirectoryEntry

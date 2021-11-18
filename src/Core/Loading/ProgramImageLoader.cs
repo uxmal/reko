@@ -37,7 +37,7 @@ namespace Reko.Core.Loading
         {
         }
 
-        public sealed override ILoadedImage Load(Address? addrLoad)
+        public override ILoadedImage Load(Address? addrLoad)
         {
             return LoadProgram(addrLoad);
         }

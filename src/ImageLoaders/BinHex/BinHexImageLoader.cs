@@ -31,62 +31,49 @@ using System.Text;
 
 namespace Reko.ImageLoaders.BinHex
 {
-    public class BinHexImageLoader : ProgramImageLoader
+    public class BinHexImageLoader : ImageLoader
     {
-        private ResourceFork rsrcFork;
-        private ByteMemoryArea bmem;
-        private SegmentMap segmentMap;
-
-        public BinHexImageLoader(IServiceProvider services, string filename, byte [] imgRaw) : base(services, filename, imgRaw)
+        public BinHexImageLoader(IServiceProvider services, string filename, byte [] imgRaw) 
+            : base(services, filename, imgRaw)
         {
-            rsrcFork = null!;
-            bmem = null!;
-            segmentMap = null!;
         }
 
-        public override Program LoadProgram(Address? addrLoad)
+        public override ILoadedImage Load(Address? addrLoad)
         {
             addrLoad ??= PreferredBaseAddress;
             BinHexDecoder dec = new BinHexDecoder(new StringReader(Encoding.ASCII.GetString(RawImage)));
             IEnumerator<byte> stm = dec.GetBytes().GetEnumerator();
             BinHexHeader hdr = LoadBinHexHeader(stm);
-            byte[] dataFork = LoadFork(hdr.DataForkLength, stm);
-            byte[] rsrcFork = LoadFork(hdr.ResourceForkLength, stm);
+            byte[] dataBytes = LoadFork(hdr.DataForkLength, stm);
+            byte[] rsrcBytes = LoadFork(hdr.ResourceForkLength, stm);
 
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture("m68k")!;
             var platform = (MacOSClassic) cfgSvc.GetEnvironment("macOs").Load(Services, arch);
             if (hdr.FileType == "PACT")
             {
-                Cpt.CompactProArchive archive = new Cpt.CompactProArchive();
-                List<ArchiveDirectoryEntry> items = archive.Load(new MemoryStream(dataFork));
-                IArchiveBrowserService abSvc = Services.GetService<IArchiveBrowserService>();
-                if (abSvc != null)
-                {
-                    var selectedFile = abSvc.UserSelectFileFromArchive(items);
-                    if (selectedFile != null)
-                    {
-                        var image = selectedFile.GetBytes();
-                        this.rsrcFork = new ResourceFork(platform, image);
-                        this.bmem = new ByteMemoryArea(addrLoad, image);
-                        this.segmentMap = new SegmentMap(addrLoad); 
-                        return new Program(this.segmentMap, arch, platform);
-                    }
-                }
+                Cpt.CompactProArchive archive = new Cpt.CompactProArchive(arch, platform);
+                archive.Load(new MemoryStream(dataBytes));
+                return archive;
             }
+            var rsrcFork = new ResourceFork(platform, rsrcBytes);
+            var bmem = new ByteMemoryArea(addrLoad, rsrcBytes);
+            Program program;
             if (hdr.FileType == "MPST" || hdr.FileType == "APPL")
             {
-                this.bmem = new ByteMemoryArea(addrLoad, rsrcFork);
-                this.rsrcFork = new ResourceFork(platform, rsrcFork);
-                this.segmentMap = new SegmentMap(addrLoad);
-                return new Program(this.segmentMap, arch, platform);
+                var segmentMap = new SegmentMap(addrLoad);
+                program = new Program(segmentMap, arch, platform);
             }
-            this.bmem = new ByteMemoryArea(addrLoad, dataFork);
-            return new Program(
-                new SegmentMap(bmem.BaseAddress,
-                    new ImageSegment("", bmem, AccessMode.ReadWriteExecute)),
-                arch,
-                platform);
+            else
+            {
+                program = new Program(
+                    new SegmentMap(bmem.BaseAddress,
+                        new ImageSegment("", bmem, AccessMode.ReadWriteExecute)),
+                    arch,
+                    platform);
+            }
+            Relocate(program, addrLoad, bmem, rsrcFork);
+            return program;
         }
 
         private byte[] LoadFork(int size, IEnumerator<byte> stm)
@@ -108,17 +95,15 @@ namespace Reko.ImageLoaders.BinHex
             set { throw new NotImplementedException(); }
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
+        public static void Relocate(Program program, Address addrLoad, ByteMemoryArea bmem, ResourceFork rsrcFork)
         {
             var entryPoints = new List<ImageSymbol>();
             var symbols = new SortedList<Address, ImageSymbol>();
-
             if (rsrcFork != null)
             {
                 rsrcFork.Dump();
-                rsrcFork.AddResourcesToImageMap(addrLoad, bmem, segmentMap, entryPoints, symbols);
+                rsrcFork.AddResourcesToImageMap(addrLoad, bmem, program.SegmentMap, entryPoints, symbols);
             }
-            return new RelocationResults(entryPoints, symbols);
         }
 
         public BinHexHeader LoadBinHexHeader(IEnumerator<byte> stm)

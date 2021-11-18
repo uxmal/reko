@@ -16,19 +16,31 @@
  * along with this program; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-#endregion 
+#endregion
 
-#nullable enable
-
+using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Reko.Core.Loading
+namespace Reko.Environments.C64
 {
-    public interface IArchive : ILoadedImage
+    public class D64Archive : IArchive
     {
-        List<ArchiveDirectoryEntry> RootEntries { get; }
+        private IServiceProvider services;
+
+        public D64Archive(IServiceProvider services, List<ArchiveDirectoryEntry> entries)
+        {
+            this.services = services;
+            this.RootEntries = entries;
+        }
+
+        public List<ArchiveDirectoryEntry> RootEntries { get; }
+
+        public List<ArchiveDirectoryEntry> Load(Stream stm)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

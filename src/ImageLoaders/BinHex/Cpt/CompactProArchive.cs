@@ -23,6 +23,9 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using Reko.Core;
+using Reko.Core.Memory;
+using Reko.Environments.MacOS.Classic;
 
 namespace Reko.ImageLoaders.BinHex.Cpt
 {
@@ -34,16 +37,30 @@ namespace Reko.ImageLoaders.BinHex.Cpt
 
         const int BYTEMASK = 0xFF;
 
+        public CompactProArchive(IProcessorArchitecture arch, MacOSClassic platform)
+        {
+            this.Architecture = arch;
+            this.Platform = platform;
+            this.RootEntries = new List<ArchiveDirectoryEntry>();
+
+        }
+
         CrcUpdater updcrc = null!;
         delegate uint CrcUpdater(uint crc, byte[] buf, int offset, int length);
         uint cpt_crc;
+
+        public IProcessorArchitecture Architecture { get; }
+
+        public MacOSClassic Platform { get; }
+
+        public List<ArchiveDirectoryEntry> RootEntries { get; private set; }
 
         private uint zip_updcrc(uint crc, byte[] buf, int offset, int length)
         {
             return crc;
         }
 
-        public List<ArchiveDirectoryEntry> Load(Stream infp)
+        public void Load(Stream infp)
         {
             CptHdr cpthdr;
             FileHdr filehdr;
@@ -139,7 +156,8 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                 }
                 cptptr += FILEHDRSIZE;
             }
-            return entries;
+            this.RootEntries.Clear();
+            this.RootEntries.AddRange(entries);
         }
 
         private int readcpthdr(Stream infp, out CptHdr s)
@@ -459,6 +477,18 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                 public byte[] GetBytes()
                 {
                     return archive.CreateUncompactor().Uncompact(offsetCompressed, lengthCompressed, lengthUncompressed, type);
+                }
+
+                public ILoadedImage LoadImage(IServiceProvider? services, Address? addrLoad)
+                {
+                    addrLoad ??= Address.Ptr32(0x00100000);
+                    var image = this.GetBytes();
+                    var rsrcFork = new ResourceFork(archive.Platform, image);
+                    var bmem = new ByteMemoryArea(addrLoad, image);
+                    var segmentMap = new SegmentMap(addrLoad);
+                    var program = new Program(segmentMap, archive.Architecture, archive.Platform);
+                    BinHexImageLoader.Relocate(program, addrLoad, bmem, rsrcFork);
+                    return program;
                 }
             }
 

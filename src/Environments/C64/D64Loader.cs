@@ -104,20 +104,7 @@ namespace Reko.Environments.C64
             set { throw new NotImplementedException(); }
         }
 
-        public ImageHeader LoadHeaderH()
-        {
-            var entries = LoadDiskDirectory();
-            var abSvc = Services.GetService<IArchiveBrowserService>();
-            if (abSvc != null)
-            {
-                if (abSvc.UserSelectFileFromArchive(entries) is D64FileEntry selectedFile)
-                {
-                    return new C64ImageHeader(selectedFile);
-                }
-            }
-            throw new NotImplementedException();
-        }
-
+        /*
         public class C64ImageHeader : ImageHeader
         {
             private readonly D64FileEntry dirEntry;
@@ -129,84 +116,27 @@ namespace Reko.Environments.C64
             }
 
             public override Address PreferredBaseAddress { get; set; }
-        }
+        }*/
 
         public override ILoadedImage Load(Address? addrLoad)
         {
-            addrLoad ??= PreferredBaseAddress;
-            List<ArchiveDirectoryEntry> entries = LoadDiskDirectory();
-            IArchiveBrowserService abSvc = Services.GetService<IArchiveBrowserService>();
-            if (abSvc != null)
-            {
-                if (abSvc.UserSelectFileFromArchive(entries) is D64FileEntry selectedFile)
-                {
-                    this.program = LoadImage(addrLoad, selectedFile);
-                    return program;
-                }
-            }
-            var arch = new Mos6502Architecture(Services, "mos6502", new Dictionary<string, object>());
-            var mem = new ByteMemoryArea(Address.Ptr16(0), RawImage);
-            var segmentMap = new SegmentMap(mem.BaseAddress);
-            segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
-            return new Program
-            {
-                SegmentMap = segmentMap,
-                Architecture = arch,
-                Platform = new DefaultPlatform(Services, arch)
-            };
+            var archive = LoadDiskDirectory();
+            return archive;
         }
 
-        private Program LoadImage(Address addrPreferred, D64FileEntry selectedFile)
-        {
-            byte[] imageBytes = selectedFile.GetBytes();
-            switch (selectedFile.FileType & FileType.FileTypeMask)
-            {
-            case FileType.PRG:
-                return LoadPrg(Services, imageBytes);
-            case FileType.SEQ:
-                return LoadSeq(Services, addrPreferred, imageBytes);
-            default:
-                throw new NotImplementedException();
-            }
-        }
-
-        /// <summary>
-        /// Load a Basic PRG.
-        /// </summary>
-        /// <param name="imageBytes"></param>
-        /// <returns></returns>
-        private static Program LoadPrg(IServiceProvider services, byte[] imageBytes)
-        {
-            var prgLoader = new PrgLoader(services, "", imageBytes);
-            return prgLoader.LoadProgram(null);
-        }
-
-        public static Program LoadSeq(IServiceProvider services, Address addrPreferred, byte[] imageBytes)
-        {
-            var mem = new ByteMemoryArea(addrPreferred, imageBytes);
-            var arch = new Mos6502Architecture(services, "mos6502", new Dictionary<string, object>());
-            return new Program(
-                new SegmentMap(
-                    mem.BaseAddress,
-                    new ImageSegment("c64", mem, AccessMode.ReadWriteExecute)),
-                arch,
-                new DefaultPlatform(services, arch));
-        }
-
-
-
-        public List<ArchiveDirectoryEntry> LoadDiskDirectory()
+        public IArchive LoadDiskDirectory()
         {
             var entries = new List<ArchiveDirectoryEntry>();
             var rdr = new ByteImageReader(RawImage, (uint)SectorOffset(18, 0));
             byte track = rdr.ReadByte();
-            if (track == 0)
-                return entries;
-            byte sector = rdr.ReadByte();
-            rdr.Offset = (uint) D64Loader.SectorOffset(track, sector);
-            while (ReadDirectorySector(rdr, entries))
-                ;
-            return entries;
+            if (track != 0)
+            {
+                byte sector = rdr.ReadByte();
+                rdr.Offset = (uint) D64Loader.SectorOffset(track, sector);
+                while (ReadDirectorySector(rdr, entries))
+                    ;
+            }
+            return new D64Archive(Services, entries);
         }
 
         public bool ReadDirectorySector(ImageReader rdr, List<ArchiveDirectoryEntry> entries)
@@ -290,6 +220,45 @@ namespace Reko.Environments.C64
                 stm.Write(data, 0, data.Length);
                 return stm.ToArray();
             }
+
+            public ILoadedImage? LoadImage(IServiceProvider Services, Address? addrPreferred)
+            {
+
+                byte[] imageBytes = this.GetBytes();
+                switch (this.FileType & FileType.FileTypeMask)
+                {
+                case FileType.PRG:
+                    return LoadPrg(Services, imageBytes);
+                case FileType.SEQ:
+                    return LoadSeq(Services, addrPreferred ?? Address.Ptr16(0x0800), imageBytes);
+                default:
+                    throw new NotImplementedException();
+                }
+            }
+
+            /// <summary>
+            /// Load a Basic PRG.
+            /// </summary>
+            /// <param name="imageBytes"></param>
+            /// <returns></returns>
+            private static Program LoadPrg(IServiceProvider services, byte[] imageBytes)
+            {
+                var prgLoader = new PrgLoader(services, "", imageBytes);
+                return prgLoader.LoadProgram(null);
+            }
+
+            public static Program LoadSeq(IServiceProvider services, Address addrPreferred, byte[] imageBytes)
+            {
+                var mem = new ByteMemoryArea(addrPreferred, imageBytes);
+                var arch = new Mos6502Architecture(services, "mos6502", new Dictionary<string, object>());
+                return new Program(
+                    new SegmentMap(
+                        mem.BaseAddress,
+                        new ImageSegment("c64", mem, AccessMode.ReadWriteExecute)),
+                    arch,
+                    new DefaultPlatform(services, arch));
+            }
+
         }
 
         public static int SectorOffset(byte track, byte sector)

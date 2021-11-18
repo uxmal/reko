@@ -135,14 +135,17 @@ namespace Reko.Loading
             program.Name = Path.GetFileName(filename);
             if (program.NeedsScanning)
             {
-                var relocations = ((ProgramImageLoader) imgLoader).Relocate(program, addrLoad);
-                foreach (var sym in relocations.Symbols.Values)
+                if (imgLoader is ProgramImageLoader piLoader)
                 {
-                    program.ImageSymbols[sym.Address!] = sym;
-                }
-                foreach (var ep in relocations.EntryPoints)
-                {
-                    program.EntryPoints[ep.Address!] = ep;
+                    var relocations = piLoader.Relocate(program, addrLoad);
+                    foreach (var sym in relocations.Symbols.Values)
+                    {
+                        program.ImageSymbols[sym.Address!] = sym;
+                    }
+                    foreach (var ep in relocations.EntryPoints)
+                    {
+                        program.EntryPoints[ep.Address!] = ep;
+                    }
                 }
                 if (program.Architecture != null)
                 {
