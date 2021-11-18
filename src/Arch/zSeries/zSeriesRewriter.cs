@@ -553,7 +553,7 @@ namespace Reko.Arch.zSeries
 
         private Expression Rol(Expression left, Expression right)
         {
-            return host.Intrinsic(IntrinsicProcedure.Rol, true, left.DataType, left, right);
+            return host.Intrinsic(IntrinsicProcedure.Rol, false, left.DataType, left, right);
         }
 
         private Identifier Seq(PrimitiveType dt, int iopHi, int iopLo)

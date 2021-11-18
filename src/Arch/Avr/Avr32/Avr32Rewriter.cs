@@ -335,7 +335,7 @@ namespace Reko.Arch.Avr.Avr32
             var i32 = PrimitiveType.Int32;
             var tmp = binder.CreateTemporary(i32);
             m.Assign(tmp, RewriteOp(0));
-            var src = host.Intrinsic("abs", true, i32, tmp);
+            var src = host.Intrinsic("abs", false, i32, tmp);
             var dst = RewriteOpDst(0, src);
             m.Assign(binder.EnsureFlagGroup(Z), m.Eq0(dst));
         }
@@ -498,7 +498,7 @@ namespace Reko.Arch.Avr.Avr32
             var reg = RewriteOp(0);
             var bit = ((ImmediateOperand) instr.Operands[1]).Value;
             var c = binder.EnsureFlagGroup(C);
-            var src = host.Intrinsic("__setbit", true, PrimitiveType.Word32, reg, bit, c);
+            var src = host.Intrinsic("__setbit", false, PrimitiveType.Word32, reg, bit, c);
             RewriteOpDst(0, src);
         }
 
@@ -536,7 +536,7 @@ namespace Reko.Arch.Avr.Avr32
         private void RewriteClz()
         {
             var src = RewriteOp(1);
-            var dst = RewriteOpDst(0, host.Intrinsic("__clz", true, PrimitiveType.Int32, src));
+            var dst = RewriteOpDst(0, host.Intrinsic("__clz", false, PrimitiveType.Int32, src));
             m.Assign(binder.EnsureFlagGroup(Z), m.Eq0(dst));
             m.Assign(binder.EnsureFlagGroup(C), m.Eq(dst, 32));
         }
@@ -697,7 +697,7 @@ namespace Reko.Arch.Avr.Avr32
         {
             var left = RewriteOp(1);
             var right = RewriteOp(2);
-            var src = host.Intrinsic("max", true, PrimitiveType.Int32, left, right);
+            var src = host.Intrinsic("max", false, PrimitiveType.Int32, left, right);
             RewriteOpDst(0, src);
         }
         
@@ -706,7 +706,7 @@ namespace Reko.Arch.Avr.Avr32
         {
             var left = RewriteOp(1);
             var right = RewriteOp(2);
-            var src = host.Intrinsic("min", true, PrimitiveType.Int32, left, right);
+            var src = host.Intrinsic("min", false, PrimitiveType.Int32, left, right);
             RewriteOpDst(0, src);
         }
 
@@ -889,7 +889,7 @@ namespace Reko.Arch.Avr.Avr32
         {
             var src = RewriteOp(0);
             var c = binder.EnsureFlagGroup(C);
-            var dst = RewriteOpDst(0, host.Intrinsic(IntrinsicProcedure.RolC, true, PrimitiveType.Word32, src, m.Int32(1), c));
+            var dst = RewriteOpDst(0, host.Intrinsic(IntrinsicProcedure.RolC, false, PrimitiveType.Word32, src, m.Int32(1), c));
             EmitCc(NZC, dst);
         }
 
@@ -897,7 +897,7 @@ namespace Reko.Arch.Avr.Avr32
         {
             var src = RewriteOp(0);
             var c = binder.EnsureFlagGroup(C);
-            var dst = RewriteOpDst(0, host.Intrinsic(IntrinsicProcedure.RorC, true, PrimitiveType.Word32, src, m.Int32(1), c));
+            var dst = RewriteOpDst(0, host.Intrinsic(IntrinsicProcedure.RorC, false, PrimitiveType.Word32, src, m.Int32(1), c));
             EmitCc(NZC, dst);
         }
 
@@ -926,7 +926,7 @@ namespace Reko.Arch.Avr.Avr32
             var left = RewriteOp(0);
             var right = RewriteOp(1);
             var dst = binder.EnsureRegister(((RegisterImmediateOperand) instr.Operands[0]).Register);
-            m.Assign(dst, host.Intrinsic(intrinsicName, true, dt, left, right));
+            m.Assign(dst, host.Intrinsic(intrinsicName, false, dt, left, right));
             EmitCc(Q, dst);
         }
 
@@ -934,12 +934,10 @@ namespace Reko.Arch.Avr.Avr32
         {
             var left = RewriteOp(0);
             var right = RewriteOp(1);
-            var src = host.Intrinsic("__satsub_w", true, PrimitiveType.Int32, left, right);
+            var src = host.Intrinsic("__satsub_w", false, PrimitiveType.Int32, left, right);
             var dst = RewriteOpDst(0, src);
             EmitCc(VNZC, dst);
             EmitCc(Q, dst);
-
-
         }
 
         private void RewriteSbc()
@@ -1015,7 +1013,7 @@ namespace Reko.Arch.Avr.Avr32
             var ea = ((MemoryAccess) RewriteOp(0)).EffectiveAddress;
             var tmp = binder.CreateTemporary(PrimitiveType.Ptr32);
             m.Assign(tmp, ea);
-            m.Assign(binder.EnsureFlagGroup(Z), host.Intrinsic("__stcond", false, PrimitiveType.Bool, tmp, src));
+            m.Assign(binder.EnsureFlagGroup(Z), host.Intrinsic("__stcond", true, PrimitiveType.Bool, tmp, src));
         }
 
         private void RewriteStdsp()

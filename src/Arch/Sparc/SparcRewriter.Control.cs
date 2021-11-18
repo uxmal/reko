@@ -133,7 +133,7 @@ namespace Reko.Arch.Sparc
             m.SideEffect(
                     host.Intrinsic(
                         IntrinsicProcedure.Syscall, 
-                        false,
+                        true,
                         VoidType.Instance, 
                     SimplifySum(src1, src2)));
         }

@@ -319,7 +319,7 @@ namespace Reko.Arch.i8051
         private void RewriteRotate(string rot)
         {
             var dst = OpSrc(instr.Operands[0], arch.DataMemory);
-            m.Assign(dst, host.Intrinsic(rot, true, dst.DataType, dst, m.Byte(1)));
+            m.Assign(dst, host.Intrinsic(rot, false, dst.DataType, dst, m.Byte(1)));
         }
 
         private void RewriteRet()

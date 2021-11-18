@@ -111,7 +111,7 @@ namespace Reko.Environments.C64
             {
             case Token.END:
                 var c = new ProcedureCharacteristics { Terminates = true };
-                var intrinsic = host.Intrinsic("__End", false, c, VoidType.Instance);
+                var intrinsic = host.Intrinsic("__End", true, c, VoidType.Instance);
                 m.SideEffect(intrinsic);
                 i = line.Length;        // We never return from end.
                 return;
@@ -358,15 +358,15 @@ namespace Reko.Environments.C64
                 Expect((byte)'(');
                 e = ExpectExpr()!;
                 Expect((byte)')');
-                return host.Intrinsic("__Chr", false, strType, e);
+                return host.Intrinsic("__Chr", true, strType, e);
             case Token.SPC_lp:
                 e = ExpectExpr()!;
                 Expect((byte)')');
-                return host.Intrinsic("__Spc", false, strType, e);
+                return host.Intrinsic("__Spc", true, strType, e);
             case Token.TAB_lp:
                 e = ExpectExpr()!;
                 Expect((byte)')');
-                return host.Intrinsic("__Tab", false, strType, e);
+                return host.Intrinsic("__Tab", true, strType, e);
             case Token.QUOTE:
                 return ParseStringLiteral();
             default:
@@ -447,14 +447,14 @@ namespace Reko.Environments.C64
             }
             iclass = InstrClass.Linear;
             m.SideEffect(
-                host.Intrinsic("__Close", false, VoidType.Instance,
+                host.Intrinsic("__Close", true, VoidType.Instance,
                 handle!));
         }
 
         private void RewriteClr()
         {
             m.SideEffect(
-                host.Intrinsic("__Clr", false, VoidType.Instance));
+                host.Intrinsic("__Clr", true, VoidType.Instance));
         }
 
         private void RewriteFor()
@@ -480,7 +480,7 @@ namespace Reko.Environments.C64
                 step = Constant.Int32(1);
             }
             iclass = InstrClass.Linear;
-            m.SideEffect(host.Intrinsic("__For", false, VoidType.Instance,
+            m.SideEffect(host.Intrinsic("__For", true, VoidType.Instance,
                 m.Out(PrimitiveType.Ptr16, id),
                 start!,
                 end!,
@@ -502,7 +502,7 @@ namespace Reko.Environments.C64
             iclass = InstrClass.Linear;
             m.SideEffect(
                 host.Intrinsic("__Get",
-                false,
+                true,
                 VoidType.Instance,
                 m.Out(strType, id)));
         }
@@ -591,11 +591,11 @@ namespace Reko.Environments.C64
                 var fnName = "__PrintLine";
                 if (PeekAndDiscard((byte)';'))
                     fnName = "__Print";
-                m.SideEffect(host.Intrinsic(fnName, false, VoidType.Instance, str));
+                m.SideEffect(host.Intrinsic(fnName, true, VoidType.Instance, str));
             }
             Expression lValue = ExpectLValue()!;
             iclass = InstrClass.Linear;
-            m.SideEffect(host.Intrinsic("__Input", false, VoidType.Instance,
+            m.SideEffect(host.Intrinsic("__Input", true, VoidType.Instance,
                 m.Out(PrimitiveType.Ptr16, lValue)));
         }
 
@@ -608,13 +608,13 @@ namespace Reko.Environments.C64
             if (lValue is null)
                 return;
             iclass = InstrClass.Linear;
-            m.SideEffect(host.Intrinsic("__InputStm", false, VoidType.Instance,
+            m.SideEffect(host.Intrinsic("__InputStm", true, VoidType.Instance,
                 logFileNo!,
                 m.Out(PrimitiveType.Ptr16, lValue)));
             while (EatSpaces() && PeekAndDiscard((byte)','))
             {
                 lValue = ExpectLValue()!;
-                m.SideEffect(host.Intrinsic("__InputStm", false, VoidType.Instance,
+                m.SideEffect(host.Intrinsic("__InputStm", true, VoidType.Instance,
                     logFileNo,
                     m.Out(PrimitiveType.Ptr16, lValue)));
             }
@@ -623,7 +623,7 @@ namespace Reko.Environments.C64
         private void RewriteNext()
         {
             GetIdentifier(out Identifier id); // The variable name is redundant.
-            m.SideEffect(host.Intrinsic("__Next", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__Next", true, VoidType.Instance));
         }
 
         private void RewriteOpen()
@@ -667,7 +667,7 @@ namespace Reko.Environments.C64
             }
             m.SideEffect(host.Intrinsic(
                 "__Open",
-                false,
+                true,
                 VoidType.Instance,
                 logicalFileNo!,
                 deviceNo!,
@@ -691,7 +691,7 @@ namespace Reko.Environments.C64
                 return;
             }
             m.SideEffect(host.Intrinsic("__Poke",
-                false,
+                true,
                 VoidType.Instance,
                 addr,
                 val));
@@ -709,7 +709,7 @@ namespace Reko.Environments.C64
             if (!EatSpaces() ||
                 line[i] == ':')
             {
-                m.SideEffect(host.Intrinsic("__PrintLine", false, VoidType.Instance));
+                m.SideEffect(host.Intrinsic("__PrintLine", true, VoidType.Instance));
                 return;
             }
             do
@@ -724,7 +724,7 @@ namespace Reko.Environments.C64
                         return;
                     }
                     Expect((byte)')');
-                    m.SideEffect(host.Intrinsic("__PrintTab", false, VoidType.Instance, expr));
+                    m.SideEffect(host.Intrinsic("__PrintTab", true, VoidType.Instance, expr));
                     PeekAndDiscard((byte)';');
                     continue;
                 }
@@ -741,11 +741,11 @@ namespace Reko.Environments.C64
                 }
                 if (expr != null)
                 {
-                    m.SideEffect(host.Intrinsic(fnName, false, VoidType.Instance, expr));
+                    m.SideEffect(host.Intrinsic(fnName, true, VoidType.Instance, expr));
                 }
                 else
                 {
-                    m.SideEffect(host.Intrinsic(fnName, false, VoidType.Instance));
+                    m.SideEffect(host.Intrinsic(fnName, true, VoidType.Instance));
                 }
             } while (EatSpaces() && line[i] != ':');
             
@@ -764,7 +764,7 @@ namespace Reko.Environments.C64
                     break;
                 m.SideEffect(
                     host.Intrinsic("__PrintStm", 
-                        false,
+                        true,
                         VoidType.Instance,
                         Constant.Int32(stm),
                         expr));

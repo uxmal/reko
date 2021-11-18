@@ -173,7 +173,7 @@ namespace Reko.Arch.PowerPC
             var b = RewriteOperand(instr.Operands[2]);
             m.Assign(
                 d,
-                host.Intrinsic("__bcdadd", true, d.DataType, a, b));
+                host.Intrinsic("__bcdadd", false, d.DataType, a, b));
         }
 
         private void RewriteCmp()
@@ -247,15 +247,16 @@ namespace Reko.Arch.PowerPC
             {
                 src = m.Convert(src, src.DataType, dt);
             }
-            m.Assign(dst, host.Intrinsic(name, true, PrimitiveType.UInt32, src));
+            m.Assign(dst, host.Intrinsic(name, false, PrimitiveType.UInt32, src));
         }
 
+        //$TODO: improve this.
         private void RewriteCrLogical(string intrinsic)
         {
             var cr = ImmOperand(instr.Operands[0]);
             var r = ImmOperand(instr.Operands[1]);
             var i = ImmOperand(instr.Operands[2]);
-            m.SideEffect(host.Intrinsic(intrinsic, true, VoidType.Instance, cr, r, i));
+            m.SideEffect(host.Intrinsic(intrinsic, false, VoidType.Instance, cr, r, i));
         }
 
         private void RewriteDivd(Func<Expression,Expression,Expression> div)
@@ -319,7 +320,7 @@ namespace Reko.Arch.PowerPC
         private void RewriteMftb()
         {
             var dst = RewriteOperand(instr.Operands[0]);
-            var src = host.Intrinsic("__mftb", true, dst.DataType);
+            var src = host.Intrinsic("__mftb", false, dst.DataType);
             m.Assign(dst, src);
         }
 
@@ -334,7 +335,7 @@ namespace Reko.Arch.PowerPC
         {
             var dst = RewriteOperand(instr.Operands[0]);
             var src = RewriteOperand(instr.Operands[1]);
-            m.SideEffect(host.Intrinsic("__mtcrf", true, VoidType.Instance, dst, src));
+            m.SideEffect(host.Intrinsic("__mtcrf", false, VoidType.Instance, dst, src));
         }
 
         private void RewriteMtctr()
@@ -460,7 +461,7 @@ namespace Reko.Arch.PowerPC
                 dst,
                 host.Intrinsic(
                     "__rlwimi",
-                    true,
+                    false,
                     PrimitiveType.Word32,
                     src,
                     ImmOperand(instr.Operands[2]),
@@ -496,7 +497,7 @@ namespace Reko.Arch.PowerPC
             }
             else if (mb == 0x00)
             {
-                m.Assign(rd, host.Intrinsic(IntrinsicProcedure.Rol, true, rd.DataType, rs, Constant.Byte((byte) sh)));
+                m.Assign(rd, host.Intrinsic(IntrinsicProcedure.Rol, false, rd.DataType, rs, Constant.Byte((byte) sh)));
             }
             else
             {
@@ -629,7 +630,7 @@ namespace Reko.Arch.PowerPC
                 // rotldi: The mask is 0b111.....111, so we have a full rotation
                 m.Assign(rd, host.Intrinsic(
                     IntrinsicProcedure.Rol,
-                    true,
+                    false, 
                     PrimitiveType.Word64,
                     rs, Constant.Byte(sh)));
             }
@@ -769,9 +770,9 @@ namespace Reko.Arch.PowerPC
             else if (mb == 0 && me == 31)
             {
                 if (sh < 16)
-                    m.Assign(rd, host.Intrinsic(IntrinsicProcedure.Rol, true, PrimitiveType.Word32, rs, Constant.Byte(sh)));
+                    m.Assign(rd, host.Intrinsic(IntrinsicProcedure.Rol, false, PrimitiveType.Word32, rs, Constant.Byte(sh)));
                 else
-                    m.Assign(rd, host.Intrinsic(IntrinsicProcedure.Ror, true, PrimitiveType.Word32, rs, Constant.Byte((byte)(32 - sh))));
+                    m.Assign(rd, host.Intrinsic(IntrinsicProcedure.Ror, false, PrimitiveType.Word32, rs, Constant.Byte((byte)(32 - sh))));
             }
             else if (me == 31)
             {
@@ -812,7 +813,7 @@ namespace Reko.Arch.PowerPC
                 m.Assign(rd,
                     host.Intrinsic(
                         "__rlwinm",
-                        true,
+                        false,
                         PrimitiveType.Word32,
                         rs,
                         Constant.Byte(sh),
@@ -838,7 +839,7 @@ namespace Reko.Arch.PowerPC
             var sh = RewriteOperand(instr.Operands[2]);
             byte mb = ((Constant)RewriteOperand(instr.Operands[3])).ToByte();
             byte me = ((Constant)RewriteOperand(instr.Operands[4])).ToByte();
-            var rol = host.Intrinsic(IntrinsicProcedure.Rol, true, rd.DataType, rs, sh );
+            var rol = host.Intrinsic(IntrinsicProcedure.Rol, false, rd.DataType, rs, sh );
             if (mb == 0 && me == 31)
             {
                 m.Assign(rd, rol);

@@ -41,7 +41,7 @@ namespace Reko.Arch.PowerPC
             m.Assign(tmp1, m.Mem64(ea));
             m.Assign(tmp2, host.Intrinsic(
                 "__unpack_quantized",
-                true,
+                false,
                 fpPair,
                 tmp1,
                 ImmOperand(instr.Operands[3]),
@@ -63,7 +63,7 @@ namespace Reko.Arch.PowerPC
 
             m.Assign(tmp2, host.Intrinsic(
                 "__pack_quantized",
-                true,
+                false,
                 fpPair,
                 tmp1,
                 RewriteOperand(instr.Operands[3]),
@@ -115,7 +115,7 @@ namespace Reko.Arch.PowerPC
             var tmpB = binder.CreateTemporary(fpPair);
             m.Assign(tmpA, opA);
             m.Assign(tmpB, opB);
-            m.Assign(cr, host.Intrinsic(intrinsic, true, cr.DataType, tmpA, tmpB));
+            m.Assign(cr, host.Intrinsic(intrinsic, false, cr.DataType, tmpA, tmpB));
         }
 
         private void Rewrite_ps_mr()
@@ -132,7 +132,7 @@ namespace Reko.Arch.PowerPC
             var tmpA = binder.CreateTemporary(fpPair);
             var tmpD = binder.CreateTemporary(fpPair);
             m.Assign(tmpA, src);
-            m.Assign(tmpD, host.Intrinsic(intrinsic, true, fpPair, tmpA));
+            m.Assign(tmpD, host.Intrinsic(intrinsic, false, fpPair, tmpA));
             m.Assign(dst, tmpD);
             MaybeEmitCr1(m.Array(PrimitiveType.Real32, dst, m.Int32(0)));
         }
@@ -147,7 +147,7 @@ namespace Reko.Arch.PowerPC
             var tmpD = binder.CreateTemporary(fpPair);
             m.Assign(tmpA, srcA);
             m.Assign(tmpB, srcB);
-            m.Assign(tmpD, host.Intrinsic(intrinsic, true, fpPair, tmpA, tmpB));
+            m.Assign(tmpD, host.Intrinsic(intrinsic, false, fpPair, tmpA, tmpB));
             m.Assign(dst, tmpD);
             MaybeEmitCr1(m.Array(PrimitiveType.Real32, dst, m.Int32(0)));
         }
@@ -165,7 +165,7 @@ namespace Reko.Arch.PowerPC
             m.Assign(tmpA, srcA);
             m.Assign(tmpB, srcB);
             m.Assign(tmpC, srcC);
-            m.Assign(tmpD, host.Intrinsic(intrinsic, true, fpPair, tmpA, tmpB, tmpC));
+            m.Assign(tmpD, host.Intrinsic(intrinsic, false, fpPair, tmpA, tmpB, tmpC));
             m.Assign(dst, tmpD);
             MaybeEmitCr1(m.Array(PrimitiveType.Real32, dst, m.Int32(0)));
         }

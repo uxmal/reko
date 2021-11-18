@@ -157,7 +157,7 @@ namespace Reko.Arch.Vax
             var bas = RewriteSrcOp(1, PrimitiveType.Word32);
             var dst = ((AddressOperand)this.instr.Operands[2]).Address;
             var tst = binder.CreateTemporary(PrimitiveType.Word32);
-            m.SideEffect(host.Intrinsic("__set_interlock", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__set_interlock", true, VoidType.Instance));
             m.Assign(tst, m.And(bas, m.Shl(Constant.Int32(1), pos)));
             if (testBit)
             {
@@ -167,7 +167,7 @@ namespace Reko.Arch.Vax
             {
                 m.Assign(bas, m.And(bas, m.Comp(m.Shl(Constant.Int32(1), pos))));
             }
-            m.SideEffect(host.Intrinsic("__release_interlock", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__release_interlock", true, VoidType.Instance));
             var t = testBit
                 ? m.Ne0(tst)
                 : m.Eq0(tst);

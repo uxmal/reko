@@ -480,7 +480,7 @@ namespace Reko.UnitTests.Scanning
             Given_SimpleTrace(trace);
 
             trace.Add(m => m.Call(Address.Ptr32(0x00102000), 4));
-            trace.Add(m => m.SideEffect(new ProcedureConstant(VoidType.Instance, new IntrinsicProcedure("shouldnt_decompile_this", false, VoidType.Instance, 0))));
+            trace.Add(m => m.SideEffect(new ProcedureConstant(VoidType.Instance, new IntrinsicProcedure("shouldnt_decompile_this", true, VoidType.Instance, 0))));
 
             var wi = CreateWorkItem(Address.Ptr32(0x2000));
             wi.Process();

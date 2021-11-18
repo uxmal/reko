@@ -232,7 +232,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.fcomip: RewriteFcomi(true); break;
                 case Mnemonic.fcomp: RewriteFcom(1); break;
                 case Mnemonic.fcompp: RewriteFcom(2); break;
-                case Mnemonic.fcos: RewriteFUnary("cos", false); break;
+                case Mnemonic.fcos: RewriteFUnary("cos", true); break;
                 case Mnemonic.fdecstp: RewriteFdecstp(); break;
                 case Mnemonic.fdiv: EmitCommonFpuInstruction(m.FDiv, false, false); break;
                 case Mnemonic.fdivp: EmitCommonFpuInstruction(m.FDiv, false, true); break;
@@ -275,13 +275,13 @@ namespace Reko.Arch.X86
                 case Mnemonic.fprem: RewriteFprem(); break;
                 case Mnemonic.fprem1: RewriteFprem1(); break;
                 case Mnemonic.fptan: RewriteFptan(); break;
-                case Mnemonic.frndint: RewriteFUnary("__rndint", false); break;
+                case Mnemonic.frndint: RewriteFUnary("__rndint", true); break;
                 case Mnemonic.frstor: RewriteFrstor(); break;
                 case Mnemonic.fsave: RewriteFsave(); break;
                 case Mnemonic.fscale: RewriteFscale(); break;
-                case Mnemonic.fsin: RewriteFUnary("sin", false); break;
+                case Mnemonic.fsin: RewriteFUnary("sin", true); break;
                 case Mnemonic.fsincos: RewriteFsincos(); break;
-                case Mnemonic.fsqrt: RewriteFUnary("sqrt", false); break;
+                case Mnemonic.fsqrt: RewriteFUnary("sqrt", true); break;
                 case Mnemonic.fst: RewriteFst(false); break;
                 case Mnemonic.fstenv: RewriteFstenv(); break;
                 case Mnemonic.fstcw: RewriterFstcw(); break;
@@ -634,8 +634,8 @@ namespace Reko.Arch.X86
                 case Mnemonic.vxorpd: RewritePackedBinop(true, "__xorpd", PrimitiveType.Word64); break;
                 case Mnemonic.xorps: RewritePackedBinop(false, "__xorps", PrimitiveType.Word32); break;
                 case Mnemonic.vzeroupper: RewriteVZeroUpper(); break;
-                case Mnemonic.BOR_exp: RewriteFUnary("exp", false); break;
-                case Mnemonic.BOR_ln: RewriteFUnary("log", false); break;
+                case Mnemonic.BOR_exp: RewriteFUnary("exp", true); break;
+                case Mnemonic.BOR_ln: RewriteFUnary("log", true); break;
                 }
                 var len = (int)(dasm.Current.Address - addr) + dasm.Current.Length;
                 yield return m.MakeCluster(addr, len, iclass);

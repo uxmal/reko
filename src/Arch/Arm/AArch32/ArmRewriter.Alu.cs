@@ -149,7 +149,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var name = $"__rev_{dt.BitSize}";
-            var intrinsic = host.Intrinsic(name, true, PrimitiveType.Word32, this.Operand(Src1()));
+            var intrinsic = host.Intrinsic(name, false, PrimitiveType.Word32, this.Operand(Src1()));
             m.Assign(opDst, intrinsic);
         }
 
@@ -157,7 +157,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var intrinsic = m.Convert(
-                host.Intrinsic("__rev_16", true, PrimitiveType.Word16, m.Slice(PrimitiveType.Word16, this.Operand(Src1()), 0)),
+                host.Intrinsic("__rev_16", false, PrimitiveType.Word16, m.Slice(PrimitiveType.Word16, this.Operand(Src1()), 0)),
                 PrimitiveType.Word16,
                 PrimitiveType.Int32);
             m.Assign(opDst, intrinsic);
@@ -193,7 +193,7 @@ namespace Reko.Arch.Arm.AArch32
         {
             var opDst = this.Operand(Dst(), PrimitiveType.Word32, true);
             var opSrc = this.Operand(Src1());
-            var intrinsic = host.Intrinsic("__clz", true, PrimitiveType.Int32, opSrc);
+            var intrinsic = host.Intrinsic("__clz", false, PrimitiveType.Int32, opSrc);
             m.Assign(opDst, intrinsic);
         }
 
@@ -215,7 +215,7 @@ namespace Reko.Arch.Arm.AArch32
                 src2 = EmitNarrowingSlice(src2, dt);
             }
             var dst = this.Operand(Dst());
-            var intrinsic = host.Intrinsic(fnName, true, PrimitiveType.UInt32, src1, src2);
+            var intrinsic = host.Intrinsic(fnName, false, PrimitiveType.UInt32, src1, src2);
             m.Assign(dst, intrinsic);
         }
 
@@ -389,7 +389,7 @@ namespace Reko.Arch.Arm.AArch32
             var mem = (MemoryOperand) Src1();
             var ea = binder.EnsureRegister(mem.BaseRegister!);
             ea.DataType = new Pointer(dt, 32);
-            var store = host.Intrinsic(intrinsicName, false, dt, ea, src);
+            var store = host.Intrinsic(intrinsicName, true, dt, ea, src);
             m.SideEffect(store);
         }
 
@@ -405,7 +405,7 @@ namespace Reko.Arch.Arm.AArch32
             var mem = (MemoryOperand) Src2();
             var ea = binder.EnsureRegister(mem.BaseRegister!);
             ea.DataType = new Pointer(dt, 32);
-            var store = host.Intrinsic(intrinsicName, false, dt, ea, src);
+            var store = host.Intrinsic(intrinsicName, true, dt, ea, src);
             var dst = Operand(Dst());
             m.Assign(dst, store);
         }
@@ -418,7 +418,7 @@ namespace Reko.Arch.Arm.AArch32
             var regHi = ((RegisterOperand) instr.Operands[1]).Register;
             var regLo = ((RegisterOperand) instr.Operands[2]).Register;
             var src = binder.EnsureSequence(PrimitiveType.Word64, regHi, regLo);
-            var store = host.Intrinsic(intrinsicName, false, src.DataType, ea, src);
+            var store = host.Intrinsic(intrinsicName, true, src.DataType, ea, src);
             var dst = Operand(Dst());
             m.Assign(dst, store);
         }
@@ -468,7 +468,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteHint()
         {
-            var ldrex = host.Intrinsic("__ldrex", false, VoidType.Instance, Operand(Dst()));
+            var ldrex = host.Intrinsic("__ldrex", true, VoidType.Instance, Operand(Dst()));
             m.SideEffect(m.Fn(ldrex));
         }
 
@@ -513,7 +513,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteLdrex()
         {
-            var intrinsic = host.Intrinsic("__ldrex", true, VoidType.Instance);
+            var intrinsic = host.Intrinsic("__ldrex", false, VoidType.Instance);
             m.SideEffect(intrinsic);
         }
 
@@ -540,13 +540,13 @@ namespace Reko.Arch.Arm.AArch32
 
         private Expression Ror(Expression left, Expression right)
         {
-            var intrinsic = host.Intrinsic(IntrinsicProcedure.Ror, true, left.DataType, left, right);
+            var intrinsic = host.Intrinsic(IntrinsicProcedure.Ror, false, left.DataType, left, right);
             return intrinsic;
         }
 
         private Expression Rrx(Expression left, Expression right)
         {
-            var intrinsic = host.Intrinsic(IntrinsicProcedure.RorC, true, left.DataType, left, right, C());
+            var intrinsic = host.Intrinsic(IntrinsicProcedure.RorC, false, left.DataType, left, right, C());
             return intrinsic;
         }
 
@@ -644,7 +644,7 @@ namespace Reko.Arch.Arm.AArch32
             var src1 = Operand(Src1());
             var src2 = Operand(Src2());
             var dst = Operand(Dst());
-            m.Assign(dst, host.Intrinsic(name,true,dst.DataType, src1, src2));
+            m.Assign(dst, host.Intrinsic(name, false, dst.DataType, src1, src2));
         }
 
         private void RewritePld(string name)
@@ -652,7 +652,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = ((MemoryAccess) this.Operand(Dst())).EffectiveAddress;
                m.SideEffect(host.Intrinsic(
                    name,
-                   false,
+                   true,
                    VoidType.Instance,
                    dst));
         }
@@ -686,7 +686,7 @@ namespace Reko.Arch.Arm.AArch32
             var src1 = Operand(Src1());
             var src2 = Operand(Src2());
             var sum = op(src1, src2);
-            var sat = host.Intrinsic("__signed_sat_32", true, PrimitiveType.Int32, sum);
+            var sat = host.Intrinsic("__signed_sat_32", false, PrimitiveType.Int32, sum);
             m.Assign(dst, sat);
             m.Assign(
                 Q(),
@@ -699,7 +699,7 @@ namespace Reko.Arch.Arm.AArch32
             var src2 = Operand(Src2());
             var dst = Operand(Dst());
             var dtArray = new ArrayType(PrimitiveType.Int16, 2);
-            var qasx = host.Intrinsic(name, true, dtArray, src1, src2);
+            var qasx = host.Intrinsic(name, false, dtArray, src1, src2);
             m.Assign(dst, qasx);
         }
 
@@ -707,11 +707,11 @@ namespace Reko.Arch.Arm.AArch32
         {
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
             var src2 = m.SMul(Operand(Src2()), m.Int32(2));
-            var sat = host.Intrinsic("__signed_sat_32", true, PrimitiveType.Int32, src2);
+            var sat = host.Intrinsic("__signed_sat_32", false, PrimitiveType.Int32, src2);
             src2 = sat;
             var src1 = Operand(Src1());
             var sum = op(src1, src2);
-            sat = host.Intrinsic("__signed_sat_32", true, PrimitiveType.Int32, sum);
+            sat = host.Intrinsic("__signed_sat_32", false, PrimitiveType.Int32, sum);
             m.Assign(dst, sat);
             m.Assign(
                 Q(),
@@ -864,7 +864,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst());
             var src1 = this.Operand(Src1());
             var src2 = this.Operand(Src2());
-            var intrinsic = host.Intrinsic("__ssat", true, PrimitiveType.Int32, src1, src2);
+            var intrinsic = host.Intrinsic("__ssat", false, PrimitiveType.Int32, src1, src2);
             m.Assign(dst, intrinsic);
             m.Assign(Q(), m.Cond(dst));
         }
@@ -1009,7 +1009,7 @@ namespace Reko.Arch.Arm.AArch32
             var vSrc2 = binder.CreateTemporary(ab_4);
             m.Assign(vSrc1, opSrc1);
             m.Assign(vSrc2, opSrc2);
-            var intrinsic = host.Intrinsic("__usada8", true, PrimitiveType.Word32, vSrc1, vSrc2);
+            var intrinsic = host.Intrinsic("__usada8", false, PrimitiveType.Word32, vSrc1, vSrc2);
             m.Assign(opDst, intrinsic);
         }
 
@@ -1018,7 +1018,7 @@ namespace Reko.Arch.Arm.AArch32
             var dst = this.Operand(Dst());
             var src1 = this.Operand(Src1());
             var src2 = this.Operand(Src2());
-            var intrinsic = host.Intrinsic("__usat", true, PrimitiveType.UInt32, src1, src2);
+            var intrinsic = host.Intrinsic("__usat", false, PrimitiveType.UInt32, src1, src2);
             m.Assign(dst, intrinsic);
             m.Assign(Q(), m.Cond(dst));
         }
@@ -1031,7 +1031,7 @@ namespace Reko.Arch.Arm.AArch32
             var arrSrc = new ArrayType(elemType, 2);
             var arrDst = new ArrayType(elemType, 2);
 
-            var intrinsic = host.Intrinsic(intrinsicName, true, arrDst, src1, src2);
+            var intrinsic = host.Intrinsic(intrinsicName, false, arrDst, src1, src2);
             m.Assign(dst, intrinsic);
             m.Assign(Q(), m.Cond(dst));
         }
@@ -1084,7 +1084,7 @@ namespace Reko.Arch.Arm.AArch32
 
         private void RewriteYield()
         {
-            var intrinsic = host.Intrinsic("__yield",  false,VoidType.Instance);
+            var intrinsic = host.Intrinsic("__yield", true, VoidType.Instance);
             m.SideEffect(intrinsic);
         }
     }

@@ -121,9 +121,9 @@ namespace Reko.Arch.Arm
             host.Error(m.CreateAddress(uAddress), error);
         }
 
-        public HExpr EnsureIntrinsicProcedure(string name, int isIdempotent, BaseType dt, int arity)
+        public HExpr EnsureIntrinsicProcedure(string name, int hasSideEffect, BaseType dt, int arity)
         {
-            var exp = host.EnsureIntrinsic(name, isIdempotent != 0, ntf.GetRekoType((HExpr) dt), arity);
+            var exp = host.EnsureIntrinsic(name, hasSideEffect != 0, ntf.GetRekoType((HExpr) dt), arity);
             var pc = new ProcedureConstant(PrimitiveType.Ptr32, exp);
             return m.MapToHandle(pc);
         }

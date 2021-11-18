@@ -47,7 +47,7 @@ namespace Reko.Arch.Vax
 
         private void RewriteHalt()
         {
-            m.SideEffect(host.Intrinsic("__halt", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__halt", true, VoidType.Instance));
         }
 
         private void RewriteInsque()
@@ -55,18 +55,18 @@ namespace Reko.Arch.Vax
             var entry = RewriteSrcOp(0, PrimitiveType.Word32);
             var queue = RewriteSrcOp(1, PrimitiveType.Word32);
             var grf = FlagGroup(Registers.CZN);
-            m.Assign(grf, host.Intrinsic("__insque", false, grf.DataType, queue, entry));
+            m.Assign(grf, host.Intrinsic("__insque", true, grf.DataType, queue, entry));
             m.Assign(FlagGroup(Registers.V), Constant.False());
         }
 
         private void RewriteBpt()
         {
-            m.SideEffect(host.Intrinsic("vax_bpt", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("vax_bpt", true, VoidType.Instance));
         }
 
         private void RewriteChm(string name)
         {
-            m.SideEffect(host.Intrinsic(name, false, VoidType.Instance,
+            m.SideEffect(host.Intrinsic(name, true, VoidType.Instance,
                 RewriteSrcOp(0, PrimitiveType.Word16)));
         }
 
@@ -95,7 +95,7 @@ namespace Reko.Arch.Vax
             var dst = RewriteSrcOp(2, PrimitiveType.Ptr32);
             m.SideEffect(host.Intrinsic(
                 "__movp", 
-                false,
+                true,
                 VoidType.Instance,
                 dst, src, len));
         }
@@ -108,7 +108,7 @@ namespace Reko.Arch.Vax
             var z = FlagGroup(Registers.Z);
             m.Assign(z, host.Intrinsic(
                 "__prober",
-                false,
+                true,
                 PrimitiveType.Bool,
                 @base, len, mode));
         }
@@ -125,7 +125,7 @@ namespace Reko.Arch.Vax
             var r3 = binder.EnsureRegister(Registers.r3);
             var z = FlagGroup(Registers.Z);
             m.Assign(r3, tbl);
-            m.Assign(z, host.Intrinsic("__scanc", false, z.DataType, len, addr, tbl, mask,
+            m.Assign(z, host.Intrinsic("__scanc", true, z.DataType, len, addr, tbl, mask,
                 m.Out(PrimitiveType.Word32, r0),
                 m.Out(PrimitiveType.Word32, r1)));
             m.Assign(r2, 0);

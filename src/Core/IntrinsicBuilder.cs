@@ -65,14 +65,14 @@ namespace Reko.Core
         public IntrinsicProcedure Void()
         {
             var signature = FunctionType.Action(parameters.ToArray());
-            return new IntrinsicProcedure(intrinsicName, !hasSideEffect, signature);
+            return new IntrinsicProcedure(intrinsicName, hasSideEffect, signature);
         }
 
         public IntrinsicProcedure Returns(DataType dt)
         {
             var signature = FunctionType.Func(
                 new Identifier("", dt, null!));
-            var proc = new IntrinsicProcedure(intrinsicName, !hasSideEffect, signature);
+            var proc = new IntrinsicProcedure(intrinsicName, hasSideEffect, signature);
             proc.Characteristics = characteristics;
             return proc;
         }

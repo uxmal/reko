@@ -267,12 +267,12 @@ namespace Reko.Arch.M6800.M6809
 
         private Expression Rol1(Expression e)
         {
-            return host.Intrinsic(IntrinsicProcedure.Rol, true, e.DataType, e, Constant.Byte(1));
+            return host.Intrinsic(IntrinsicProcedure.Rol, false, e.DataType, e, Constant.Byte(1));
         }
 
         private Expression Ror1(Expression e)
         {
-            return host.Intrinsic(IntrinsicProcedure.Ror, true, e.DataType, e, Constant.Byte(1));
+            return host.Intrinsic(IntrinsicProcedure.Ror, false, e.DataType, e, Constant.Byte(1));
         }
 
         private Expression Sbc(Expression a, Expression b)
@@ -541,7 +541,7 @@ namespace Reko.Arch.M6800.M6809
         private void RewriteDaa()
         {
             var a = binder.EnsureRegister(Registers.A);
-            m.Assign(a, host.Intrinsic("__daa", true, PrimitiveType.Byte, a));
+            m.Assign(a, host.Intrinsic("__daa", false, PrimitiveType.Byte, a));
             NZ_C(a);
         }
 
@@ -665,7 +665,7 @@ namespace Reko.Arch.M6800.M6809
 
         private void RewriteSync()
         {
-            m.SideEffect(host.Intrinsic("__sync", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__sync", true, VoidType.Instance));
         }
 
         private void RewriteTfr()

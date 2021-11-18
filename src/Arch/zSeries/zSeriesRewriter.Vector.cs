@@ -35,7 +35,7 @@ namespace Reko.Arch.zSeries
                 .Select(i => Op(i, instr.Operands[i].Width))
                 .ToArray();
             var dst = Op(0, instr.Operands[0].Width);
-            m.Assign(dst, host.Intrinsic(intrinsic, false, dst.DataType, args));
+            m.Assign(dst, host.Intrinsic(intrinsic, true, dst.DataType, args));
             if (instr.SetConditionCode)
             {
                 this.SetCc(dst);
@@ -64,7 +64,7 @@ namespace Reko.Arch.zSeries
                 : arraySrc;
             m.Assign(arg1, src1);
             m.Assign(arg2, src2);
-            m.Assign(dst, host.Intrinsic(name, false, arrayDst, arg1, arg2));
+            m.Assign(dst, host.Intrinsic(name, true, arrayDst, arg1, arg2));
         }
 
         private void RewriteVectorInstruction4Elem(string intrinsicFormat, bool doubleElements)
@@ -93,7 +93,7 @@ namespace Reko.Arch.zSeries
             m.Assign(arg1, src1);
             m.Assign(arg2, src2);
             m.Assign(arg3, src3);
-            m.Assign(dst, host.Intrinsic(name, false, arrayDst, arg1, arg2, arg3));
+            m.Assign(dst, host.Intrinsic(name, true, arrayDst, arg1, arg2, arg3));
         }
     }
 }

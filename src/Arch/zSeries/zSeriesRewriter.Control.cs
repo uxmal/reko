@@ -254,7 +254,7 @@ namespace Reko.Arch.zSeries
         private void RewriteSvc()
         {
             var svcNo = ((ImmediateOperand) instr.Operands[0]).Value;
-            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, svcNo));
+            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance, svcNo));
         }
 
         private void RewriteUnconditionalBranch()

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -29,12 +30,12 @@ namespace Reko.Arch.MilStd1750
     {
         private void RewriteXioCo()
         {
-            m.SideEffect(host.Intrinsic("__console_output", false, VoidType.Instance, Op(0)));
+            m.SideEffect(host.Intrinsic("__console_output", true, VoidType.Instance, Op(0)));
         }
 
         private void RewriteXioUnknown()
         {
-            m.SideEffect(host.Intrinsic("__xio_unknown", false, VoidType.Instance, Op(0)));
+            m.SideEffect(host.Intrinsic("__xio_unknown", true, VoidType.Instance, Op(0)));
         }
     }
 }

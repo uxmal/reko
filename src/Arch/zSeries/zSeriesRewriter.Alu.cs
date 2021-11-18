@@ -199,7 +199,7 @@ namespace Reko.Arch.zSeries
             var arg2 = Reg(1, dt);
             var mem = m.AddrOf(arch.PointerType, m.Mem(dt, EffectiveAddress(2)));
             var o = m.Out(dt, arg1);
-            SetCc(host.Intrinsic("__compare_and_swap", false, PrimitiveType.Byte, arg1, arg2, mem, o));
+            SetCc(host.Intrinsic("__compare_and_swap", true, PrimitiveType.Byte, arg1, arg2, mem, o));
         }
 
         private void RewriteD()
@@ -234,7 +234,7 @@ namespace Reko.Arch.zSeries
             var lenLeft = Constant.Create(PrimitiveType.Int32, eaLeft.Offset);
             var ptrRight= binder.EnsureRegister(eaRight.Base!);
             var lenRight = Constant.Create(PrimitiveType.Int32, eaRight.Offset);
-            SetCc(host.Intrinsic("__packed_divide", false, PrimitiveType.Byte, ptrLeft, lenLeft, ptrRight, lenRight, ptrLeft));
+            SetCc(host.Intrinsic("__packed_divide", true, PrimitiveType.Byte, ptrLeft, lenLeft, ptrRight, lenRight, ptrLeft));
         }
 
         private void RewriteDr()
@@ -486,7 +486,7 @@ namespace Reko.Arch.zSeries
         private void RewriteLrv(PrimitiveType dt)
         {
             var src = Reg(1, dt);
-            Assign(Reg(0), host.Intrinsic($"__load_reverse_{dt.BitSize}", false, dt, src));
+            Assign(Reg(0), host.Intrinsic($"__load_reverse_{dt.BitSize}", true, dt, src));
         }
 
         private void RewriteLt(PrimitiveType dt)
@@ -532,7 +532,7 @@ namespace Reko.Arch.zSeries
             //$BUG: this isn't 100% correct, but we need a starting point.
             var ea = EffectiveAddress(2);
             Identifier dst = Seq(PrimitiveType.Word128, 0, 1);
-            var result = Assign(dst, host.Intrinsic("__mvcle", true, dst.DataType, ea));
+            var result = Assign(dst, host.Intrinsic("__mvcle", false, dst.DataType, ea));
             SetCc(m.Cond(result));
         }
 
@@ -551,7 +551,7 @@ namespace Reko.Arch.zSeries
             var tmp = binder.CreateTemporary(dt);
             var eaDst = EffectiveAddress(0);
 
-            m.Assign(tmp, host.Intrinsic("__move_zones", false, dt, m.Mem(dt, eaDst), m.Mem(dt, eaSrc)));
+            m.Assign(tmp, host.Intrinsic("__move_zones", true, dt, m.Mem(dt, eaDst), m.Mem(dt, eaSrc)));
             m.Assign(m.Mem(dt, eaDst), tmp);
         }
 
@@ -602,7 +602,7 @@ namespace Reko.Arch.zSeries
         private void RewriteRisbg(string intrinsic)
         {
             var dt = PrimitiveType.Word64;
-            var e = host.Intrinsic(intrinsic, true, dt, Op(1, dt), Op(2, dt), Op(3, dt), Op(4, dt));
+            var e = host.Intrinsic(intrinsic, false, dt, Op(1, dt), Op(2, dt), Op(3, dt), Op(4, dt));
             var dst = Assign(Reg(0), e);
             SetCc(m.Cond(dst));
         }

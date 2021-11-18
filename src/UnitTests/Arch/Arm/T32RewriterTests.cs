@@ -46,22 +46,22 @@ namespace Reko.UnitTests.Arch.Arm
 
         private class FakeRewriterHost : IRewriterHost
         {
-            public IntrinsicProcedure EnsureIntrinsic(string name, bool isIdempotent, DataType returnType, int arity)
+            public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
             {
-                return new IntrinsicProcedure(name, isIdempotent, returnType, arity);
+                return new IntrinsicProcedure(name, hasSideEffect, returnType, arity);
             }
 
-            public Expression CallIntrinsic(string name, bool isIdempotent, FunctionType fnType, params Expression[] args)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Expression Intrinsic(string name, bool isIdempotent, DataType returnType, params Expression[] args)
+            public Expression CallIntrinsic(string name, bool hasSideEffect, FunctionType fnType, params Expression[] args)
             {
                 throw new NotImplementedException();
             }
 
-            public Expression Intrinsic(string name, bool isIdempotent, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+            public Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression Intrinsic(string name, bool hasSideEffect, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
             {
                 throw new NotImplementedException();
             }

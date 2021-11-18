@@ -85,7 +85,7 @@ namespace Reko.Arch.M68k
                 instr.Address + instr.Length,
                 InstrClass.ConditionalTransfer);
             m.SideEffect(
-                host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, m.Byte(6)));
+                host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance, m.Byte(6)));
         }
 
         private void RewriteChk2()
@@ -103,7 +103,7 @@ namespace Reko.Arch.M68k
                     instr.Address + instr.Length,
                     InstrClass.ConditionalTransfer);
                 m.SideEffect(
-                    host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, m.Byte(6)),
+                    host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance, m.Byte(6)),
                     InstrClass.Linear);
             }
             else
@@ -166,7 +166,7 @@ namespace Reko.Arch.M68k
         {
             if (this.instr.Operands.Length > 0)
             {
-                m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, RewriteSrcOperand(this.instr.Operands[0])));
+                m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance, RewriteSrcOperand(this.instr.Operands[0])));
                 iclass = InstrClass.Call | InstrClass.Transfer;
             }
             else
@@ -204,13 +204,13 @@ namespace Reko.Arch.M68k
 
         private void RewriteStop()
         {
-            m.SideEffect(host.Intrinsic("__stop", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__stop", true, VoidType.Instance));
         }
 
         private void RewriteTrap()
         {
             var vector = orw.RewriteSrc(instr.Operands[0], instr.Address);
-            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, vector));
+            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance, vector));
         }
 
         private void RewriteTrapCc(ConditionCode cc, FlagGroupStorage? flags)
@@ -233,7 +233,7 @@ namespace Reko.Arch.M68k
             {
                 args.Add(orw.RewriteSrc(instr.Operands[0], instr.Address));
             }
-            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, args.ToArray()));
+            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance, args.ToArray()));
         }
     }
 }

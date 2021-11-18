@@ -266,9 +266,9 @@ namespace Reko.Arch.C166
         private void RewriteBclr()
         {
             var (bit, reg) = BitOp(0);
-            EmitCc(Registers.N, host.Intrinsic("__bit", true, PrimitiveType.Bool, reg, bit));
+            EmitCc(Registers.N, host.Intrinsic("__bit", false, PrimitiveType.Bool, reg, bit));
             EmitCc(Registers.Z, m.Comp(binder.EnsureFlagGroup(Registers.N)));
-            m.Assign(reg, host.Intrinsic("__bit_clear", true, reg.DataType, reg, bit));
+            m.Assign(reg, host.Intrinsic("__bit_clear", false, reg.DataType, reg, bit));
             EmitCc(Registers.E, Constant.False());
             EmitCc(Registers.V, Constant.False());
             EmitCc(Registers.C, Constant.False());
@@ -277,9 +277,9 @@ namespace Reko.Arch.C166
         private void RewriteBset()
         {
             var (bit, reg) = BitOp(0);
-            EmitCc(Registers.N, host.Intrinsic("__bit", true, PrimitiveType.Bool, reg, bit));
+            EmitCc(Registers.N, host.Intrinsic("__bit", false, PrimitiveType.Bool, reg, bit));
             EmitCc(Registers.Z, m.Comp(binder.EnsureFlagGroup(Registers.N)));
-            m.Assign(reg, host.Intrinsic("__bit_set", true, reg.DataType, reg, bit));
+            m.Assign(reg, host.Intrinsic("__bit_set", false, reg.DataType, reg, bit));
             EmitCc(Registers.E, Constant.False());
             EmitCc(Registers.V, Constant.False());
             EmitCc(Registers.C, Constant.False());
@@ -314,12 +314,12 @@ namespace Reko.Arch.C166
 
         private void RewriteDiswdt()
         {
-            m.SideEffect(host.Intrinsic("__disable_watchdog_timer", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__disable_watchdog_timer", true, VoidType.Instance));
         }
 
         private void RewriteEinit()
         {
-            m.SideEffect(host.Intrinsic("__end_of_initialization", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__end_of_initialization", true, VoidType.Instance));
         }
 
         private void RewriteJmpa()
@@ -364,7 +364,7 @@ namespace Reko.Arch.C166
         {
             var (bit, exp) = BitOp(0);
             var addr = ((AddressOperand) instr.Operands[1]).Address;
-            m.Branch(m.Not(host.Intrinsic("__bit", true, PrimitiveType.Bool, exp, bit)), addr);
+            m.Branch(m.Not(host.Intrinsic("__bit", false, PrimitiveType.Bool, exp, bit)), addr);
         }
 
         private void RewriteLogical(Func<Expression,Expression,Expression> fn)

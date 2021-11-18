@@ -70,7 +70,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
         private void RewriteDaa()
         {
             var a = binder.EnsureRegister(Registers.a);
-            m.Assign(a, host.Intrinsic("__daa", true, PrimitiveType.Byte, a));
+            m.Assign(a, host.Intrinsic("__daa", false, PrimitiveType.Byte, a));
             EmitCc(a, "**-**P-*");
         }
 
@@ -231,11 +231,11 @@ namespace Reko.Arch.Tlcs.Tlcs90
             var one = m.Byte(1);
             if (useCarry)
             {
-                src = host.Intrinsic(pseudoOp, true, reg.DataType, reg, one, c);
+                src = host.Intrinsic(pseudoOp, false, reg.DataType, reg, one, c);
             }
             else
             {
-                src = host.Intrinsic(pseudoOp, true, reg.DataType, reg, one);
+                src = host.Intrinsic(pseudoOp, false, reg.DataType, reg, one);
             }
             Expression result;
             if (instr.Operands.Length >= 1)

@@ -550,10 +550,10 @@ namespace Reko.Core
             }
         }
 
-        public IntrinsicProcedure EnsureIntrinsicProcedure(string name, bool isIdempotent, DataType returnType, params Expression[] args)
+        public IntrinsicProcedure EnsureIntrinsicProcedure(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
         {
             var sig = MakeSignatureFromApplication(returnType, args);
-            return EnsureIntrinsicProcedure(name, isIdempotent, sig);
+            return EnsureIntrinsicProcedure(name, hasSideEffect, sig);
         }
 
         private static FunctionType MakeSignatureFromApplication(DataType returnType, Expression[] args)

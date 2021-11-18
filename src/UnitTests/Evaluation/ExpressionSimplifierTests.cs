@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Evaluation
         public void Setup()
         {
             m = new ProcedureBuilder();
-            this.rolc_8 = new IntrinsicProcedure(IntrinsicProcedure.RolC, true, PrimitiveType.Byte, 3);
+            this.rolc_8 = new IntrinsicProcedure(IntrinsicProcedure.RolC, false, PrimitiveType.Byte, 3);
             arch = new Mock<IProcessorArchitecture>();
         }
 
@@ -605,7 +605,7 @@ namespace Reko.UnitTests.Evaluation
                 new Identifier("", r0.DataType, r0),
                 new Identifier("value", r0.DataType, r0),
                 new Identifier("sh", r0.DataType, r1));
-            var rol = new IntrinsicProcedure(IntrinsicProcedure.Rol, true, sigRol);
+            var rol = new IntrinsicProcedure(IntrinsicProcedure.Rol, false, sigRol);
             var (exp, _) = m.Fn(rol, m.Fn(rol, foo, m.Word32(1)), m.Word32(1)).Accept(simplifier);
             Assert.AreEqual("__rol(foo_1, 2<32>)", exp.ToString());
         }
@@ -620,7 +620,7 @@ namespace Reko.UnitTests.Evaluation
                 new Identifier("", r0.DataType, r0),
                 new Identifier("value", r0.DataType, r0),
                 new Identifier("sh", r0.DataType, r1));
-            var ror = new IntrinsicProcedure(IntrinsicProcedure.Ror, true, sigRol);
+            var ror = new IntrinsicProcedure(IntrinsicProcedure.Ror, false, sigRol);
             var (expr, _) = m.Fn(ror, m.Fn(ror, foo, m.Word32(2)), m.Word32(1)).Accept(simplifier);
             Assert.AreEqual("__ror(foo_1, 3<32>)", expr.ToString());
         }

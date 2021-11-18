@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Analysis
             m.Assign(
                 reg,
                 m.Fn(
-                    new IntrinsicProcedure(IntrinsicProcedure.LwL, true, PrimitiveType.Word32, 2),
+                    new IntrinsicProcedure(IntrinsicProcedure.LwL, false, PrimitiveType.Word32, 2),
                     reg, mem));
         }
 
@@ -97,14 +97,14 @@ namespace Reko.UnitTests.Analysis
             m.Assign(
                 reg,
                 m.Fn(
-                    new IntrinsicProcedure(IntrinsicProcedure.LwR, true, PrimitiveType.Word32, 2),
+                    new IntrinsicProcedure(IntrinsicProcedure.LwR, false, PrimitiveType.Word32, 2),
                     reg, mem));
         }
 
         private void __swl(Expression mem, Expression reg)
         {
             var app = m.Fn(
-                    new IntrinsicProcedure(IntrinsicProcedure.SwL, false, PrimitiveType.Word32, 2),
+                    new IntrinsicProcedure(IntrinsicProcedure.SwL, true, PrimitiveType.Word32, 2),
                     mem, reg);
             if (mem is Identifier id)
             {
@@ -260,9 +260,9 @@ ProcedureBuilder_exit:
             m.Assign(
                 r8,
                 m.Fn(
-                    new IntrinsicProcedure(IntrinsicProcedure.LwR, true, PrimitiveType.Word32, 2),
+                    new IntrinsicProcedure(IntrinsicProcedure.LwR, false, PrimitiveType.Word32, 2),
                     m.Fn(
-                        new IntrinsicProcedure(IntrinsicProcedure.LwL, true, PrimitiveType.Word32, 2),
+                        new IntrinsicProcedure(IntrinsicProcedure.LwL, false, PrimitiveType.Word32, 2),
                         r8,
                         m.Mem32(m.IAdd(r4, 0x2B))),
                     m.Mem32(m.IAdd(r4, 0x28))));

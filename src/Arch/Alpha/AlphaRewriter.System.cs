@@ -33,7 +33,7 @@ namespace Reko.Arch.Alpha
                 Terminates = true,
             };
             m.SideEffect(
-                host.Intrinsic("__halt", false, c, VoidType.Instance), 
+                host.Intrinsic("__halt", true, c, VoidType.Instance), 
                 InstrClass.Terminates);
         }
     }

@@ -62,7 +62,7 @@ namespace Reko.Core
         /// <param name="name"></param>
         /// <param name="returnType"></param>
         /// <param name="arity"></param>
-		public IntrinsicProcedure(string name, bool isIdempotent, DataType returnType, int arity) : base(name, isIdempotent)
+		public IntrinsicProcedure(string name, bool hasSideEffect, DataType returnType, int arity) : base(name, hasSideEffect)
 		{
             this.returnType = returnType;
 			this.arity = arity;
@@ -72,9 +72,9 @@ namespace Reko.Core
         /// Creates an <see cref="IntrinsicProcedure"/> with a specific signature.
         /// </summary>
         /// <param name="name">The name of the intrinsic procedure.</param>
-        /// <param name="isIdempotent">True of the procedure is idempotent (<see cref="ProcedureBase.IsIdempotent"/></param>
+        /// <param name="hasSideEffect">True of the procedure is idempotent (<see cref="ProcedureBase.IsIdempotent"/></param>
         /// <param name="sig">The signature of the procedure.</param>
-		public IntrinsicProcedure(string name, bool isIdempotent, FunctionType sig) : base(name, isIdempotent)
+		public IntrinsicProcedure(string name, bool hasSideEffect, FunctionType sig) : base(name, hasSideEffect)
 		{
 			this.sig = sig;
             this.returnType = sig.ReturnValue?.DataType!;

@@ -51,13 +51,13 @@ namespace Reko.Arch.M68k
             {
                 var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
                 opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, (s, d) =>
-                    host.Intrinsic(procName, true, instr.DataWidth!, d, s));
+                    host.Intrinsic(procName, false, instr.DataWidth!, d, s));
             }
             else
             {
                 opDst = orw.RewriteDst(instr.Operands[0], instr.Address,
                     Constant.Byte(1), (s, d) =>
-                        host.Intrinsic(procName, true, PrimitiveType.Word32, d, s));
+                        host.Intrinsic(procName, false, PrimitiveType.Word32, d, s));
             }
             if (opDst == null)
             {
@@ -77,13 +77,13 @@ namespace Reko.Arch.M68k
             {
                 var opSrc = orw.RewriteSrc(instr.Operands[0], instr.Address);
                 opDst = orw.RewriteDst(instr.Operands[1], instr.Address, opSrc, (s, d) =>
-                    host.Intrinsic(procName, true, instr.DataWidth!, d, s, binder.EnsureFlagGroup(Registers.X)));
+                    host.Intrinsic(procName, false, instr.DataWidth!, d, s, binder.EnsureFlagGroup(Registers.X)));
             }
             else
             {
                 opDst = orw.RewriteDst(instr.Operands[0], instr.Address,
                     Constant.Byte(1), (s, d) =>
-                        host.Intrinsic(procName, true, PrimitiveType.Word32, d, s, binder.EnsureFlagGroup(Registers.X)));
+                        host.Intrinsic(procName, false, PrimitiveType.Word32, d, s, binder.EnsureFlagGroup(Registers.X)));
             }
             if (opDst == null)
             {
@@ -148,7 +148,7 @@ namespace Reko.Arch.M68k
             var opDst = orw.RewriteSrc(instr.Operands[1], instr.Address);
             m.Assign(
                 binder.EnsureFlagGroup(Registers.Z),
-                host.Intrinsic(name, false, PrimitiveType.Bool, opDst, opSrc, m.Out(PrimitiveType.Ptr32, opDst)));
+                host.Intrinsic(name, true, PrimitiveType.Bool, opDst, opSrc, m.Out(PrimitiveType.Ptr32, opDst)));
         }
 
         public void RewriteBfchg()
@@ -282,7 +282,7 @@ namespace Reko.Arch.M68k
         {
             var r = (RegisterOperand) instr.Operands[0];
             var reg = binder.EnsureRegister(r.Register);
-            m.Assign(reg, host.Intrinsic("__swap", false, PrimitiveType.Word32, reg));
+            m.Assign(reg, host.Intrinsic("__swap", true, PrimitiveType.Word32, reg));
             m.Assign(binder.EnsureFlagGroup(Registers.ZN), m.Cond(reg));
             m.Assign(binder.EnsureFlagGroup(Registers.C), Constant.False());
             m.Assign(binder.EnsureFlagGroup(Registers.V), Constant.False());
@@ -318,7 +318,7 @@ namespace Reko.Arch.M68k
             var opDst = orw.RewriteSrc(instr.Operands[1], instr.Address);
             m.Assign(
                 binder.EnsureFlagGroup(Registers.Z),
-                host.Intrinsic("__btst", true, PrimitiveType.Bool,
+                host.Intrinsic("__btst", false, PrimitiveType.Bool,
                     opDst, opSrc));
         }
 
@@ -326,7 +326,7 @@ namespace Reko.Arch.M68k
         {
             m.Assign(
                 binder.EnsureFlagGroup(Registers.CVZN),
-                host.Intrinsic("atomic_compare_exchange_weak", false, PrimitiveType.Bool,
+                host.Intrinsic("atomic_compare_exchange_weak", true, PrimitiveType.Bool,
                     m.AddrOf(PrimitiveType.Ptr32, orw.RewriteSrc(instr.Operands[2], instr.Address)),
                     orw.RewriteSrc(instr.Operands[1], instr.Address),
                     orw.RewriteSrc(instr.Operands[0], instr.Address)));
@@ -569,7 +569,7 @@ namespace Reko.Arch.M68k
             var adj = orw.RewriteSrc(instr.Operands[2], instr.Address);
             orw.DataWidth = PrimitiveType.Byte;
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
-                host.Intrinsic("__pack", false, PrimitiveType.Byte, s, adj));
+                host.Intrinsic("__pack", true, PrimitiveType.Byte, s, adj));
         }
 
         public void RewriteUnpk()
@@ -580,7 +580,7 @@ namespace Reko.Arch.M68k
             orw.DataWidth = PrimitiveType.UInt16;
             var dst = orw.RewriteDst(instr.Operands[1], instr.Address, src, (s, d) =>
                 //$REVIEW: shoud really be byte[2]...
-                host.Intrinsic("__unpk", false, PrimitiveType.Word16, s, adj));
+                host.Intrinsic("__unpk", true, PrimitiveType.Word16, s, adj));
         }
 
         public void RewritePea()
@@ -726,7 +726,7 @@ namespace Reko.Arch.M68k
                 : "__movep_w";
             var op1 = RewriteSrcOperand(instr.Operands[0]);
             var op2 = RewriteSrcOperand(instr.Operands[1]);
-            m.SideEffect(host.Intrinsic(pname, false, VoidType.Instance, op1, op2));
+            m.SideEffect(host.Intrinsic(pname, true, VoidType.Instance, op1, op2));
         }
 
         private Expression RewriteNegx(Expression expr)

@@ -836,25 +836,25 @@ namespace Reko.Scanning
             }
         }
 
-        public IntrinsicProcedure EnsureIntrinsic(string name, bool isIdempotent, DataType returnType, int arity)
+        public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
         {
             var args = Enumerable.Range(0, arity).Select(i => Constant.Create(Program.Architecture.WordWidth, 0)).ToArray();
-            var intrinsic = Program.EnsureIntrinsicProcedure(name, isIdempotent, returnType, args);
+            var intrinsic = Program.EnsureIntrinsicProcedure(name, hasSideEffect, returnType, args);
             return intrinsic;
         }
 
-        public Expression CallIntrinsic(string name, bool isIdempotent, FunctionType fnType, params Expression[] args)
+        public Expression CallIntrinsic(string name, bool hasSideEffect, FunctionType fnType, params Expression[] args)
         {
-            var intrinsic = Program.EnsureIntrinsicProcedure(name, isIdempotent, fnType);
+            var intrinsic = Program.EnsureIntrinsicProcedure(name, hasSideEffect, fnType);
             return new Application(
                 new ProcedureConstant(Program.Architecture.PointerType, intrinsic),
                 fnType.ReturnValue.DataType,
                 args);
         }
 
-        public Expression Intrinsic(string name, bool isIdempotent, DataType returnType, params Expression[] args)
+        public Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
         {
-            var intrinsic = Program.EnsureIntrinsicProcedure(name, isIdempotent, returnType, args);
+            var intrinsic = Program.EnsureIntrinsicProcedure(name, hasSideEffect, returnType, args);
             return new Application(
                 new ProcedureConstant(Program.Architecture.PointerType, intrinsic),
                 returnType,
@@ -862,9 +862,9 @@ namespace Reko.Scanning
         }
 
 
-        public Expression Intrinsic(string name, bool isIdempotent, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+        public Expression Intrinsic(string name, bool hasSideEffect, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
         {
-            var intrinsic = Program.EnsureIntrinsicProcedure(name, isIdempotent, returnType, args);
+            var intrinsic = Program.EnsureIntrinsicProcedure(name, hasSideEffect, returnType, args);
             intrinsic.Characteristics = c;
             return new Application(
                 new ProcedureConstant(Program.Architecture.PointerType, intrinsic),

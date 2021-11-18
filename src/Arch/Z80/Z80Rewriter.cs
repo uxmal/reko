@@ -101,7 +101,7 @@ namespace Reko.Arch.Z80
                 case Mnemonic.ini: RewriteIn(m.IAdd, false); break;
                 case Mnemonic.inir: RewriteIn(m.IAdd, true); break;
                 case Mnemonic.im:
-                    m.SideEffect(host.Intrinsic("__im", false, VoidType.Instance, RewriteOp(instr.Operands[0])));
+                    m.SideEffect(host.Intrinsic("__im", true, VoidType.Instance, RewriteOp(instr.Operands[0])));
                     break;
                 case Mnemonic.inc: RewriteInc(); break;
                 case Mnemonic.jp: RewriteJp(); break;
@@ -234,11 +234,11 @@ namespace Reko.Arch.Z80
             Expression src;
             if (useCarry)
             {
-                src = host.Intrinsic(pseudoOp, true, reg.DataType, reg, one, C);
+                src = host.Intrinsic(pseudoOp, false, reg.DataType, reg, one, C);
             }
             else 
             {
-                src = host.Intrinsic(pseudoOp, true, reg.DataType, reg, one);
+                src = host.Intrinsic(pseudoOp, false, reg.DataType, reg, one);
             }
             m.Assign(reg, src);
             m.Assign(C, m.Cond(reg));
@@ -367,7 +367,7 @@ namespace Reko.Arch.Z80
             var a = binder.EnsureRegister(Registers.a);
             m.Assign(
                 a,
-                host.Intrinsic("__daa", true, PrimitiveType.Byte, a));
+                host.Intrinsic("__daa", false, PrimitiveType.Byte, a));
             AssignCond(Registers.SZPC, a);
         }
 
@@ -389,12 +389,12 @@ namespace Reko.Arch.Z80
 
         private void RewriteDi()
         {
-            m.SideEffect(host.Intrinsic("__di",false,VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__di", true, VoidType.Instance));
         }
 
         private void RewriteEi()
         {
-            m.SideEffect(host.Intrinsic("__ei", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__ei", true, VoidType.Instance));
         }
 
         private void RewriteEx()
@@ -434,7 +434,7 @@ namespace Reko.Arch.Z80
             {
                 Terminates = true,
             };
-            m.SideEffect(host.Intrinsic("__hlt", false, c, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__hlt", true, c, VoidType.Instance));
         }
 
         private void RewriteInc()
@@ -538,7 +538,7 @@ namespace Reko.Arch.Z80
         {
             var dst = RewriteOp(dasm.Current.Operands[0]);
             var src = RewriteOp(dasm.Current.Operands[1]);
-            m.Assign(dst, host.Intrinsic("__in", false, PrimitiveType.Byte, src));
+            m.Assign(dst, host.Intrinsic("__in", true, PrimitiveType.Byte, src));
         }
 
         private void RewriteIn(Func<Expression,Expression,Expression> incDec, bool repeat)
@@ -549,7 +549,7 @@ namespace Reko.Arch.Z80
             var Z = binder.EnsureFlagGroup(arch.GetFlagGroup("Z"));
             m.Assign(
                 m.Mem8(hl),
-                host.Intrinsic("__in", false, PrimitiveType.Byte, c));
+                host.Intrinsic("__in", true, PrimitiveType.Byte, c));
             m.Assign(hl, incDec(hl, m.Int16(1)));
             m.Assign(b, m.ISub(b, 1));
             m.Assign(Z, m.Cond(b));
@@ -563,7 +563,7 @@ namespace Reko.Arch.Z80
         {
             var dst = RewriteOp(dasm.Current.Operands[0]);
             var src = RewriteOp(dasm.Current.Operands[1]);
-            m.SideEffect(host.Intrinsic("__out", false, PrimitiveType.Byte, dst, src));
+            m.SideEffect(host.Intrinsic("__out", true, PrimitiveType.Byte, dst, src));
         }
 
         private void RewriteOutInstruction(int increment, bool repeat)
@@ -572,7 +572,7 @@ namespace Reko.Arch.Z80
             var c = binder.EnsureRegister(Registers.c);
             var tmp = binder.CreateTemporary(PrimitiveType.Byte);
             m.Assign(tmp, m.Mem8(hl));
-            m.SideEffect(host.Intrinsic("__out", false, VoidType.Instance, c, tmp));
+            m.SideEffect(host.Intrinsic("__out", true, VoidType.Instance, c, tmp));
             m.Assign(hl, m.AddSubSignedInt(hl, increment));
             if (repeat)
             {
@@ -602,7 +602,7 @@ namespace Reko.Arch.Z80
         {
             var bit = RewriteOp(dasm.Current.Operands[0]);
             var op = RewriteOp(dasm.Current.Operands[1]);
-            AssignCond(Registers.Z, host.Intrinsic("__bit", true, PrimitiveType.Bool, op, bit));
+            AssignCond(Registers.Z, host.Intrinsic("__bit", false, PrimitiveType.Bool, op, bit));
         }
 
         private void RewriteResSet(string pseudocode)
@@ -614,7 +614,7 @@ namespace Reko.Arch.Z80
                 dst = binder.CreateTemporary(op.DataType);
             else
                 dst = op;
-            m.Assign(dst, host.Intrinsic(pseudocode, false, dst.DataType, op, bit));
+            m.Assign(dst, host.Intrinsic(pseudocode, true, dst.DataType, op, bit));
             if (dst != op)
             {
                 m.Assign(op, dst);

@@ -31,7 +31,7 @@ namespace Reko.Arch.zSeries
         {
             m.SideEffect(host.Intrinsic(
                 "__branch_prediction_relative_preload",
-                false,
+                true,
                 VoidType.Instance,
                 Op(0, arch.WordWidth),
                 Op(1, arch.WordWidth),
@@ -40,13 +40,13 @@ namespace Reko.Arch.zSeries
 
         private void RewriteEx()
         {
-            SetCc(host.Intrinsic("__execute", false, PrimitiveType.Byte, Reg(0), Op(1, arch.WordWidth)));
+            SetCc(host.Intrinsic("__execute", true, PrimitiveType.Byte, Reg(0), Op(1, arch.WordWidth)));
         }
 
         private void RewriteLra()
         {
             var r = Reg(0);
-            SetCc(host.Intrinsic("__load_real_address", false,
+            SetCc(host.Intrinsic("__load_real_address", true,
                 PrimitiveType.Byte,
                 EffectiveAddress(1),
                 m.Out(r.DataType, r)));
@@ -57,7 +57,7 @@ namespace Reko.Arch.zSeries
             var op2 = m.AddrOf(new Pointer(dt, arch.PointerType.BitSize), m.Mem(dt, EffectiveAddress(1)));
             m.SideEffect(host.Intrinsic(
                 "__store_control",
-                false,
+                true,
                 VoidType.Instance,
                 op1,
                 op2));

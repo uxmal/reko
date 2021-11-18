@@ -654,7 +654,7 @@ namespace Reko.Evaluation
                         new Identifier("", bin.DataType, null!),
                         new Identifier("x", binInner.Left.DataType, null!),
                         new Identifier("y", PrimitiveType.Int32, null!));
-                    var align = new IntrinsicProcedure(IntrinsicProcedure.Align, true, sig);
+                    var align = new IntrinsicProcedure(IntrinsicProcedure.Align, false, sig);
                     return m.Fn(align, binInner.Left, Constant.Int32(1 << cRight.ToInt32()));
                 }
             }

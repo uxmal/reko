@@ -186,7 +186,7 @@ namespace Reko.Arch.Arm.AArch64
             var dst = RewriteOp(instr.Operands[0]);
             var name = GenerateSimdIntrinsicName(simdFormat, (PrimitiveType)arraySrc.ElementType);
             m.Assign(tmpSrc, src);
-            m.Assign(dst, host.Intrinsic(name, false, arraySrc.ElementType, tmpSrc));
+            m.Assign(dst, host.Intrinsic(name, true, arraySrc.ElementType, tmpSrc));
         }
 
         /// <summary>
@@ -268,7 +268,7 @@ namespace Reko.Arch.Arm.AArch64
                 {
                     tmpRight = right;
                 }
-                m.Assign(dst, host.Intrinsic(name, false, arrayDst, tmpLeft, tmpRight));
+                m.Assign(dst, host.Intrinsic(name, true, arrayDst, tmpLeft, tmpRight));
             }
             else
             {
@@ -295,7 +295,7 @@ namespace Reko.Arch.Arm.AArch64
             if (rHi == rLo) // ROR
             {
                 var op = binder.EnsureRegister(rHi);
-                m.Assign(opDst, host.Intrinsic(IntrinsicProcedure.Ror, true, opDst.DataType, op, lsb));
+                m.Assign(opDst, host.Intrinsic(IntrinsicProcedure.Ror, false, opDst.DataType, op, lsb));
             }
             else
             {
@@ -320,7 +320,7 @@ namespace Reko.Arch.Arm.AArch64
                 var args = new List<Expression> { ea };
                 args.AddRange(vec.GetRegisters()
                     .Select(r => (Expression)m.Out(r.DataType, binder.EnsureRegister(r))));
-                m.SideEffect(host.Intrinsic(fnName, false, VoidType.Instance, args.ToArray()));
+                m.SideEffect(host.Intrinsic(fnName, true, VoidType.Instance, args.ToArray()));
             }
             else
             {
@@ -339,7 +339,7 @@ namespace Reko.Arch.Arm.AArch64
             var args = new List<Expression> { ea };
             args.AddRange(vec.GetRegisters()
                 .Select(r => (Expression)m.Out(r.DataType, binder.EnsureRegister(r))));
-            m.SideEffect(host.Intrinsic(fnName, false, VoidType.Instance, args.ToArray()));
+            m.SideEffect(host.Intrinsic(fnName, true, VoidType.Instance, args.ToArray()));
         }
 
         private void RewriteSmsubl()
@@ -369,7 +369,7 @@ namespace Reko.Arch.Arm.AArch64
                 var args = new List<Expression> { ea };
                 args.AddRange(vec.GetRegisters()
                     .Select(r => (Expression)binder.EnsureRegister(r)));
-                m.SideEffect(host.Intrinsic(fnName, false, VoidType.Instance, args.ToArray()));
+                m.SideEffect(host.Intrinsic(fnName, true, VoidType.Instance, args.ToArray()));
             }
             else
             {
@@ -406,7 +406,7 @@ namespace Reko.Arch.Arm.AArch64
             {
                 // fixed point conversion.
                 var fprec = RewriteOp(instr.Operands[2]);
-                m.Assign(dst, host.Intrinsic("__scvtf_fixed", false, realType, src, fprec));
+                m.Assign(dst, host.Intrinsic("__scvtf_fixed", true, realType, src, fprec));
             }
             else if (src is Identifier idSrc && Registers.IsIntegerRegister((RegisterStorage)idSrc.Storage))
             {
@@ -445,7 +445,7 @@ namespace Reko.Arch.Arm.AArch64
                 args.Add(binder.EnsureRegister(reg));
             }
             args.Add(tmpSrc);
-            m.Assign(dst, host.Intrinsic($"__tbl_{idxs.Repeat}", false, arrayDst, args.ToArray()));
+            m.Assign(dst, host.Intrinsic($"__tbl_{idxs.Repeat}", true, arrayDst, args.ToArray()));
         }
 
         private void RewriteTbx()
@@ -464,7 +464,7 @@ namespace Reko.Arch.Arm.AArch64
                 args.Add(binder.EnsureRegister(reg));
             }
             args.Add(tmpSrc);
-            m.Assign(dst, host.Intrinsic($"__tbx_{idxs.Repeat}", false, arrayDst, args.ToArray()));
+            m.Assign(dst, host.Intrinsic($"__tbx_{idxs.Repeat}", true, arrayDst, args.ToArray()));
         }
 
 
@@ -484,7 +484,7 @@ namespace Reko.Arch.Arm.AArch64
                 var name = GenerateSimdIntrinsicName("__uaddw_{0}", (PrimitiveType)arrayLeft.ElementType);
                 m.Assign(tmpLeft, left);
                 m.Assign(tmpRight, right);
-                m.Assign(dst, host.Intrinsic(name, false, arrayDst, tmpLeft, tmpRight));
+                m.Assign(dst, host.Intrinsic(name, true, arrayDst, tmpLeft, tmpRight));
             }
             else
             {

@@ -328,17 +328,17 @@ namespace Reko.Arch.MilStd1750
 
         private void RewriteBex()
         {
-            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, Op(0)));
+            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance, Op(0)));
         }
 
         private void RewriteBif()
         {
-            m.SideEffect(host.Intrinsic("__bif", false, VoidType.Instance, Op(0)));
+            m.SideEffect(host.Intrinsic("__bif", true, VoidType.Instance, Op(0)));
         }
 
         private void RewriteBpt()
         {
-            m.SideEffect(host.Intrinsic("__bpt", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__bpt", true, VoidType.Instance));
         }
 
         private void RewriteBr()
@@ -399,7 +399,7 @@ namespace Reko.Arch.MilStd1750
         {
             var src = DReg(1);
             var dst = DReg(0);
-            m.Assign(dst, host.Intrinsic("abs", true, PrimitiveType.Int32, src));
+            m.Assign(dst, host.Intrinsic("abs", false, PrimitiveType.Int32, src));
             AssignFlags(PZN, m.Cond(dst));
         }
 
@@ -491,7 +491,7 @@ namespace Reko.Arch.MilStd1750
         {
             var src = Reg(1);
             var dst = DReg(0);
-            m.Assign(dst, host.Intrinsic("__shift_arithmetic", true, dst.DataType, dst, src));
+            m.Assign(dst, host.Intrinsic("__shift_arithmetic", false, dst.DataType, dst, src));
             AssignFlags(PZN, m.Cond(dst));
         }
         private void RewriteDsra()
@@ -583,7 +583,7 @@ namespace Reko.Arch.MilStd1750
         {
             var src = DReg(1);
             var dst = DReg(0);
-            m.Assign(dst, host.Intrinsic("fabsf", true, PrimitiveType.Real32, src));
+            m.Assign(dst, host.Intrinsic("fabsf", false, PrimitiveType.Real32, src));
             AssignFlags(PZN, m.Cond(dst));
         }
 
@@ -758,7 +758,7 @@ namespace Reko.Arch.MilStd1750
             var tmpB = binder.CreateTemporary(PrimitiveType.Ptr16);
             m.Assign(tmpA, ra);
             m.Assign(tmpB, rb);
-            m.SideEffect(host.Intrinsic("__mov", true, VoidType.Instance, tmpA, tmpB));
+            m.SideEffect(host.Intrinsic("__mov", false, VoidType.Instance, tmpA, tmpB));
         }
 
         private void RewriteMisn()
@@ -855,7 +855,7 @@ namespace Reko.Arch.MilStd1750
         {
             var src = Reg(1);
             var dst = Reg(0);
-            m.Assign(dst, host.Intrinsic("__shift_arithmetic", true, dst.DataType, dst, src));
+            m.Assign(dst, host.Intrinsic("__shift_arithmetic", false, dst.DataType, dst, src));
             AssignFlags(PZN, m.Cond(dst));
         }
 
@@ -904,7 +904,7 @@ namespace Reko.Arch.MilStd1750
         {
             var src = Reg(1);
             var dst = Reg(0);
-            m.Assign(dst, host.Intrinsic("__shift_logical", true, dst.DataType, dst, src));
+            m.Assign(dst, host.Intrinsic("__shift_logical", false, dst.DataType, dst, src));
             AssignFlags(PZN, m.Cond(dst));
         }
 
@@ -987,7 +987,7 @@ namespace Reko.Arch.MilStd1750
         private void RewriteXbr()
         {
             var dst = Reg(0);
-            m.Assign(dst, host.Intrinsic("__xbr", true, PrimitiveType.Word32, dst));
+            m.Assign(dst, host.Intrinsic("__xbr", false, PrimitiveType.Word32, dst));
             AssignFlags(PZN, m.Cond(dst));
         }
 

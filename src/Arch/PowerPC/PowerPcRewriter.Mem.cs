@@ -42,7 +42,7 @@ namespace Reko.Arch.PowerPC
                 rb = m.IAdd(ra, rb);
             }
             m.SideEffect(
-                host.Intrinsic("__dcbtst", false, VoidType.Instance, rb));
+                host.Intrinsic("__dcbtst", true, VoidType.Instance, rb));
         }
 
         private void RewriteDcbz()
@@ -54,12 +54,12 @@ namespace Reko.Arch.PowerPC
                 rb = m.IAdd(ra, rb);
             }
             m.SideEffect(
-                host.Intrinsic("__dcbz", false, VoidType.Instance, rb));
+                host.Intrinsic("__dcbz", true, VoidType.Instance, rb));
         }
 
         private void RewriteEieio()
         {
-            m.SideEffect(host.Intrinsic("__eieio", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__eieio", true, VoidType.Instance));
         }
 
         private void RewriteLfd()
@@ -124,7 +124,7 @@ namespace Reko.Arch.PowerPC
             var ea = EffectiveAddress_r0(instr.Operands[1], instr.Operands[2]);
             var tmp = binder.CreateTemporary(PrimitiveType.Word16);
             m.Assign(tmp, m.Mem16(ea));
-            var swap = host.Intrinsic("__swap16", true, tmp.DataType, tmp);
+            var swap = host.Intrinsic("__swap16", false, tmp.DataType, tmp);
             m.Assign(opD, m.Convert(swap, PrimitiveType.Word16, opD.DataType));
         }
 
@@ -197,7 +197,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     "__lvewx",
-                    false,
+                    true,
                     PrimitiveType.Word128,
                     rb));
         }
@@ -214,7 +214,7 @@ namespace Reko.Arch.PowerPC
             m.SideEffect(
                 host.Intrinsic(
                     "__stvewx",
-                    false,
+                    true,
                     PrimitiveType.Word128,
                     vrs,
                     rb));
@@ -232,7 +232,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     "__lvsl",
-                    false,
+                    true,
                     PrimitiveType.Word128,
                     rb));
         }
@@ -248,7 +248,7 @@ namespace Reko.Arch.PowerPC
             }
             m.Assign(
                 dst,
-                host.Intrinsic(intrinsic, false, dt, m.AddrOf(arch.PointerType, m.Mem(dt, rb))));
+                host.Intrinsic(intrinsic, true, dt, m.AddrOf(arch.PointerType, m.Mem(dt, rb))));
         }
 
         private void RewriteLwbrx()
@@ -263,7 +263,7 @@ namespace Reko.Arch.PowerPC
                 op1,
                 host.Intrinsic(
                     "__reverse_bytes_32",
-                    true,
+                    false,
                     PrimitiveType.Word32,
                     m.Mem(PrimitiveType.Word32, ea)));
         }
@@ -412,8 +412,8 @@ namespace Reko.Arch.PowerPC
             m.Assign(
                 m.Mem(PrimitiveType.Word32, ea),
                 host.Intrinsic(
-                    "__reverse_bytes_32",
-                    false,
+                    "__stwbrx",
+                    true,
                     PrimitiveType.Word32,
                     op1));
         }
@@ -430,7 +430,7 @@ namespace Reko.Arch.PowerPC
             m.Assign(
                 cr0,
                 host.Intrinsic(
-                    intrinsic, false,
+                    intrinsic, true,
                     VoidType.Instance,
                     m.AddrOf(arch.PointerType, m.Mem(dataType, ea)),
                     MaybeNarrow(dataType, s)));
@@ -449,7 +449,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteSync()
         {
-            m.SideEffect(host.Intrinsic("__sync", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__sync", true, VoidType.Instance));
         }
 
         private void RewriteTrap(PrimitiveType size)
@@ -474,7 +474,7 @@ namespace Reko.Arch.PowerPC
                 m.SideEffect(
                     host.Intrinsic(
                         "__trap",
-                        false,
+                        true,
                         VoidType.Instance));
                 return;
             default:
@@ -492,7 +492,7 @@ namespace Reko.Arch.PowerPC
             m.SideEffect(
                 host.Intrinsic(
                     "__trap",
-                    false,
+                    true,
                     VoidType.Instance));
         }
     }

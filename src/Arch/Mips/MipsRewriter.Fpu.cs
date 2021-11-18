@@ -190,7 +190,7 @@ namespace Reko.Arch.Mips
         {
             var tmp = binder.CreateTemporary(dtSrc);
             m.Assign(tmp, RewriteOperand(instr.Operands[1]));
-            var intrinsic = host.Intrinsic(fn, true, dtSrc, tmp);
+            var intrinsic = host.Intrinsic(fn, false, dtSrc, tmp);
             m.Assign(
                 RewriteOperand(instr.Operands[0]),
                 m.Convert(intrinsic, intrinsic.DataType, dtDst));

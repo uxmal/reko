@@ -189,7 +189,7 @@ namespace Reko.Arch.Arm.AArch64
                         dt = PrimitiveType.Real32;
                         fname = name32;
                     }
-                    return host.Intrinsic(fname, true, dt, a, b);
+                    return host.Intrinsic(fname, false, dt, a, b);
                 },
                 "__max_{0}", Domain.Real);
         }
@@ -212,7 +212,7 @@ namespace Reko.Arch.Arm.AArch64
                 dt = PrimitiveType.Real32;
                 fname = name32;
             }
-            m.Assign(dst, host.Intrinsic(fname, false, dt, src1, src2, src3));
+            m.Assign(dst, host.Intrinsic(fname, true, dt, src1, src2, src3));
 
         }
         private void RewriteFmov()

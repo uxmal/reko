@@ -46,7 +46,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private void RewriteDi()
         {
-            m.SideEffect(host.Intrinsic("__disable_interrupts", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__disable_interrupts", true, VoidType.Instance));
         }
 
         private void RewriteDjnz()
@@ -72,7 +72,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
 
         private void RewriteEi()
         {
-            m.SideEffect(host.Intrinsic("__enable_interrupts", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__enable_interrupts", true, VoidType.Instance));
         }
 
         private void RewriteHalt()
@@ -82,7 +82,7 @@ namespace Reko.Arch.Tlcs.Tlcs90
                 Terminates = true,
             };
             m.SideEffect(
-                host.Intrinsic("__halt", false, c, VoidType.Instance),
+                host.Intrinsic("__halt", true, c, VoidType.Instance),
                 InstrClass.Terminates);
         }
 

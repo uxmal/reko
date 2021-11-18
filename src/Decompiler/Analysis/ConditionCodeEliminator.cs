@@ -594,7 +594,7 @@ namespace Reko.Analysis
             Expression e = new Application(
                 new ProcedureConstant(
                     program.Platform.PointerType,
-                    new IntrinsicProcedure("OVERFLOW", true, sig)),
+                    new IntrinsicProcedure("OVERFLOW", false, sig)),
                 PrimitiveType.Bool,
                 bin);
 			if (isNegated)
@@ -612,7 +612,7 @@ namespace Reko.Analysis
             Expression e = new Application(
                 new ProcedureConstant(
                     program.Platform.PointerType,
-                    new IntrinsicProcedure("PARITY_EVEN", true, sig)),
+                    new IntrinsicProcedure("PARITY_EVEN", false, sig)),
                 PrimitiveType.Bool,
                 bin);
             if (isNegated)
@@ -635,7 +635,7 @@ namespace Reko.Analysis
             Expression e = m.Fn(
                 new ProcedureConstant(
                     program.Platform.PointerType,
-                    new IntrinsicProcedure("isunordered", true, sig)),
+                    new IntrinsicProcedure("isunordered", false, sig)),
                 bin.Left,
                 bin.Right);
             if (isNegated)

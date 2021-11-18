@@ -34,7 +34,7 @@ namespace Reko.Arch.Vax
         private Expression Adawi(Expression a, Expression b)
         {
             return host.Intrinsic("atomic_fetch_add",
-                false,
+                true,
                 a.DataType,
                 a, b);
         }
@@ -96,7 +96,7 @@ namespace Reko.Arch.Vax
         {
             return host.Intrinsic(
                 IntrinsicProcedure.Rol,
-                true,
+                false,
                 a.DataType,
                 a, b);
         }
@@ -112,7 +112,7 @@ namespace Reko.Arch.Vax
                 grf,
                 host.Intrinsic(
                     op,
-                    false,
+                    true,
                     PrimitiveType.Byte,
                     op0, op1, op2, op3));
             var c = FlagGroup(Registers.C);
@@ -132,7 +132,7 @@ namespace Reko.Arch.Vax
                 grf,
                 host.Intrinsic(
                     op, 
-                    false,
+                    true,
                     PrimitiveType.Byte,
                     op0, op1, op2, op3, op4, op5));
             var c = FlagGroup(Registers.C);
@@ -215,7 +215,7 @@ namespace Reko.Arch.Vax
             else
             {
                 shift = RewriteSrcOp(0, width);
-                fn = (a, b) => host.Intrinsic("__ashift", false, width, a, b);
+                fn = (a, b) => host.Intrinsic("__ashift", true, width, a, b);
             }
             var op2 = RewriteSrcOp(1, width);
             var dst = RewriteDstOp(2, width, e => fn(op2, shift));
@@ -235,7 +235,7 @@ namespace Reko.Arch.Vax
                 grf,
                 host.Intrinsic(
                     "vax_ashp",
-                    false,
+                    true,
                     PrimitiveType.Byte,
                     op0, op1, op2, op3, op4, op5));
             var c = FlagGroup(Registers.C);
@@ -278,7 +278,7 @@ namespace Reko.Arch.Vax
             NZ00(
                 host.Intrinsic(
                     "vax_cmpp3",
-                    false,
+                    true,
                     PrimitiveType.Byte,
                     op0, op1, op2));
         }
@@ -292,7 +292,7 @@ namespace Reko.Arch.Vax
             NZ00(
                 host.Intrinsic(
                     "vax_cmpp4",
-                    false,
+                    true,
                     PrimitiveType.Byte,
                     op0, op1, op2, op3));
         }
@@ -318,7 +318,7 @@ namespace Reko.Arch.Vax
             var dstlen = RewriteSrcOp(2, PrimitiveType.Word16);
             var dstaddr = RewriteSrcOp(3, PrimitiveType.Word16);
             NZV0(host.Intrinsic(cvtfn,
-                false,
+                true,
                 PrimitiveType.Byte,
                 srclen,
                 srcaddr,
@@ -330,7 +330,7 @@ namespace Reko.Arch.Vax
         {
             var src = RewriteSrcOp(0, from);
             var dst = RewriteDstOp(1, to, e => m.Convert(
-                host.Intrinsic("round", false, from, src),
+                host.Intrinsic("round", true, from, src),
                 from,
                 to));
             NZV0(dst);
@@ -349,7 +349,7 @@ namespace Reko.Arch.Vax
                 grf,
                 host.Intrinsic(
                     "vax_divp",
-                    false,
+                    true,
                     PrimitiveType.Byte,
                     op0, op1, op2, op3, op4, op5));
             var c = FlagGroup(Registers.C);
@@ -398,7 +398,7 @@ namespace Reko.Arch.Vax
                 z,
                 host.Intrinsic(
                     fnname,
-                    false, 
+                    true, 
                     z.DataType,
                     bas, size, start,
                     m.Out(PrimitiveType.Ptr32, findPos)));
@@ -424,7 +424,7 @@ namespace Reko.Arch.Vax
                 grf,
                 host.Intrinsic(
                     "vax_mulp",
-                    false,
+                    true,
                     PrimitiveType.Byte,
                     op0, op1, op2, op3, op4, op5));
             var c = FlagGroup(Registers.C);
@@ -447,7 +447,7 @@ namespace Reko.Arch.Vax
                 ret,
                 host.Intrinsic(
                     "vax_poly",
-                    false,
+                    true,
                     width,
                     op0, op1, op2));
             m.Assign(grf, m.Cond(ret));

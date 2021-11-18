@@ -399,7 +399,7 @@ namespace Reko.Arch.Arc
 
         private Expression Bclr(Expression a, Expression b)
         {
-            return host.Intrinsic("__bclr", true, a.DataType, a, b);
+            return host.Intrinsic("__bclr", false, a.DataType, a, b);
         }
 
         private Expression AndNot(Expression a, Expression b)
@@ -409,37 +409,37 @@ namespace Reko.Arch.Arc
 
         private Expression Bset(Expression a, Expression b)
         {
-            return host.Intrinsic("__bset", true, a.DataType, a, b);
+            return host.Intrinsic("__bset", false, a.DataType, a, b);
         }
 
         private Expression Bmsk(Expression a, Expression b)
         {
-            return host.Intrinsic("__bitmask", true, a.DataType, a, b);
+            return host.Intrinsic("__bitmask", false, a.DataType, a, b);
         }
 
         private Expression Btst(Expression a, Expression b)
         {
-            return host.Intrinsic("__btst", true, a.DataType, a, b);
+            return host.Intrinsic("__btst", false, a.DataType, a, b);
         }
 
         private Expression Bxor(Expression a, Expression b)
         {
-            return host.Intrinsic("__bxor", true, a.DataType, a, b);
+            return host.Intrinsic("__bxor", false, a.DataType, a, b);
         }
 
         private Expression Max(Expression a, Expression b)
         {
-            return host.Intrinsic("max", true, PrimitiveType.Int32, a, b);
+            return host.Intrinsic("max", false, PrimitiveType.Int32, a, b);
         }
 
         private Expression Min(Expression a, Expression b)
         {
-            return host.Intrinsic("min", true, PrimitiveType.Int32, a, b);
+            return host.Intrinsic("min", false, PrimitiveType.Int32, a, b);
         }
 
         private Expression Ror(Expression a, Expression b)
         {
-            return host.Intrinsic(IntrinsicProcedure.Ror, true, a.DataType, a, b);
+            return host.Intrinsic(IntrinsicProcedure.Ror, false, a.DataType, a, b);
         }
 
         private Expression Rsub(Expression a, Expression b)
@@ -506,7 +506,7 @@ namespace Reko.Arch.Arc
         private Expression TestSaturation(bool isSaturated)
         {
             var flags = binder.EnsureFlagGroup(Registers.S);
-            var test = host.Intrinsic("__saturated", true, PrimitiveType.Bool, flags);
+            var test = host.Intrinsic("__saturated", false, PrimitiveType.Bool, flags);
             if (isSaturated)
             {
                 return test;
@@ -632,7 +632,7 @@ namespace Reko.Arch.Arc
         {
             var op1 = Operand(0);
             var op2 = Operand(1);
-            Expression cond = host.Intrinsic("__bit", true, PrimitiveType.Bool, op1, op2);
+            Expression cond = host.Intrinsic("__bit", false, PrimitiveType.Bool, op1, op2);
             if (!branchIfTrue)
             {
                 cond = cond.Invert();
@@ -672,7 +672,7 @@ namespace Reko.Arch.Arc
             var src1 = Operand(1);
             var src2 = Operand(2);
             var dst = Operand(0);
-            m.Assign(dst, host.Intrinsic("__divaw", true, dst.DataType, src1, src2));
+            m.Assign(dst, host.Intrinsic("__divaw", false, dst.DataType, src1, src2));
         }
 
         private void RewriteExt(PrimitiveType dtSlice, PrimitiveType dtExt)
@@ -685,7 +685,7 @@ namespace Reko.Arch.Arc
         private void RewriteFlag()
         {
             var src = Operand(0);
-            m.SideEffect(host.Intrinsic("__flag", true, VoidType.Instance, src));
+            m.SideEffect(host.Intrinsic("__flag", false, VoidType.Instance, src));
         }
 
         private void RewriteJ(ArcCondition cond)
@@ -773,7 +773,7 @@ namespace Reko.Arch.Arc
         {
             var dst = Operand(0);
             var src = (uint) ((MemoryOperand) instr.Operands[1]).Offset;
-            m.Assign(dst, host.Intrinsic("__load_aux_reg", true, PrimitiveType.Word32, m.Word32(src)));
+            m.Assign(dst, host.Intrinsic("__load_aux_reg", false, PrimitiveType.Word32, m.Word32(src)));
         }
 
         private void RewriteMov()
@@ -836,7 +836,7 @@ namespace Reko.Arch.Arc
         {
             var src = Operand(0);
             var dst = (uint) ((MemoryOperand) instr.Operands[1]).Offset;
-            m.SideEffect(host.Intrinsic("__store_aux_reg", false, VoidType.Instance, m.Word32(dst), src));
+            m.SideEffect(host.Intrinsic("__store_aux_reg", true, VoidType.Instance, m.Word32(dst), src));
         }
 
         private void RewriteStore(PrimitiveType dt)
@@ -876,7 +876,7 @@ namespace Reko.Arch.Arc
 
         private void RewriteTrap()
         {
-            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance), instr.InstructionClass);
+            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance), instr.InstructionClass);
         }
     }
 }

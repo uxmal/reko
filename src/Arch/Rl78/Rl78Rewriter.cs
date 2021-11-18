@@ -213,7 +213,7 @@ namespace Reko.Arch.Rl78
                 var bitSrc = RewriteSrc(bit.Operand);
                 return host.Intrinsic(
                     "__bit",
-                    true,
+                    false,
                     PrimitiveType.Bool,
                     bitSrc,
                     Constant.Byte((byte) bit.BitPosition));
@@ -263,7 +263,7 @@ namespace Reko.Arch.Rl78
                 var left = RewriteSrc(bit.Operand);
                 m.SideEffect(host.Intrinsic(
                     "__set_bit",
-                    false,
+                    true,
                     VoidType.Instance,
                     left,
                     Constant.Byte((byte) bit.BitPosition),
@@ -382,7 +382,7 @@ namespace Reko.Arch.Rl78
 
         private void RewriteHalt()
         {
-            m.SideEffect(host.Intrinsic("__halt", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__halt", true, VoidType.Instance));
         }
 
         private void RewriteIncDec(Func<Expression, Expression, Expression> fn)
@@ -477,7 +477,7 @@ namespace Reko.Arch.Rl78
             var dst = RewriteDst(instr.Operands[0], src, (a, b) =>
                 host.Intrinsic(
                     intrinsic,
-                    true,
+                    false,
                     b.DataType,
                     b,
                     RewriteSrc(instr.Operands[1])));
@@ -490,7 +490,7 @@ namespace Reko.Arch.Rl78
             var dst = RewriteDst(instr.Operands[0], src, (a, b) =>
                 host.Intrinsic(
                     intrinsic,
-                    true,
+                    false,
                     b.DataType,
                     b,
                     RewriteSrc(instr.Operands[1]),
@@ -501,7 +501,7 @@ namespace Reko.Arch.Rl78
         private void RewriteSel()
         {
             var bank = (RegisterBankOperand) instr.Operands[0];
-            m.SideEffect(host.Intrinsic("__select_register_bank", false, VoidType.Instance, Constant.Byte((byte) bank.Bank)));
+            m.SideEffect(host.Intrinsic("__select_register_bank", true, VoidType.Instance, Constant.Byte((byte) bank.Bank)));
         }
 
         private void RewriteSet1()

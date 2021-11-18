@@ -186,7 +186,7 @@ namespace Reko.Arch.zSeries
             var ea = EffectiveAddress(0);
             var mem = m.Mem8(ea);
             SetCc(host.Intrinsic("__test_and_set",
-                false,
+                true,
                 PrimitiveType.Byte,
                 m.AddrOf(arch.PointerType, mem)));
         }

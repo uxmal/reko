@@ -277,7 +277,7 @@ namespace Reko.Arch.Tms7000
             var c = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.CF));
             m.Assign(c, host.Intrinsic(
                 intrinsicName,
-                false,
+                true,
                 PrimitiveType.Bool,
                 opLeft,
                 opRight,
@@ -297,7 +297,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteDint()
         {
-            m.SideEffect(host.Intrinsic("__dint", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__dint", true, VoidType.Instance));
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.CF)), Constant.False());
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.NF)), Constant.False());
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.ZF)), Constant.False());
@@ -306,7 +306,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteEint()
         {
-            m.SideEffect(host.Intrinsic("__eint", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__eint", true, VoidType.Instance));
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.CF)), Constant.True());
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.NF)), Constant.True());
             m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.ZF)), Constant.True());
@@ -340,7 +340,7 @@ namespace Reko.Arch.Tms7000
 
         private void RewriteIdle()
         {
-            m.SideEffect(host.Intrinsic("__idle", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__idle", true, VoidType.Instance));
         }
 
         private void RewriteInv()
@@ -455,7 +455,7 @@ namespace Reko.Arch.Tms7000
             var C = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.CF));
             m.Assign(
                 op,
-                host.Intrinsic(rot, true, op.DataType, op));
+                host.Intrinsic(rot, false, op.DataType, op));
             m.Assign(C, m.Cond(op));
         }
 
@@ -465,7 +465,7 @@ namespace Reko.Arch.Tms7000
             var C = binder.EnsureFlagGroup(arch.GetFlagGroup(arch.st, (uint)FlagM.CF));
             m.Assign(
                 op,
-                host.Intrinsic(rot, true, op.DataType, op, C));
+                host.Intrinsic(rot, false, op.DataType, op, C));
             m.Assign(C, m.Cond(op));
         }
 
@@ -498,7 +498,7 @@ namespace Reko.Arch.Tms7000
         private void RewriteSwap()
         {
             var op = Operand(instr.Operands[0]);
-            m.Assign(op, host.Intrinsic("__swap_nybbles", true, op.DataType, op));
+            m.Assign(op, host.Intrinsic("__swap_nybbles", false, op.DataType, op));
             CNZ(op);
         }
 
@@ -506,7 +506,7 @@ namespace Reko.Arch.Tms7000
         {
             m.SideEffect(host.Intrinsic(
                 "__trap",
-                false,
+                true,
                 VoidType.Instance,
                 Constant.Byte((byte)n)));
         }

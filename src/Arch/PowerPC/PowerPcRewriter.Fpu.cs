@@ -43,7 +43,7 @@ namespace Reko.Arch.PowerPC
             //$TODO: require <math.h>
             var opS = RewriteOperand(instr.Operands[1]);
             var opD = RewriteOperand(instr.Operands[0]);
-            m.Assign(opD, host.Intrinsic("fabs", false, PrimitiveType.Real64, opS));
+            m.Assign(opD, host.Intrinsic("fabs", true, PrimitiveType.Real64, opS));
         }
 
         public void RewriteFadd()
@@ -87,7 +87,7 @@ namespace Reko.Arch.PowerPC
             //$TODO: require <math.h>
             var dst = RewriteOperand(instr.Operands[0]);
             var src = RewriteOperand(instr.Operands[1]);
-            m.Assign(dst, host.Intrinsic("round", false, PrimitiveType.Real64, src));
+            m.Assign(dst, host.Intrinsic("round", true, PrimitiveType.Real64, src));
         }
 
         private void RewriteFctidz()
@@ -95,7 +95,7 @@ namespace Reko.Arch.PowerPC
             //$TODO: require <math.h>
             var dst = RewriteOperand(instr.Operands[0]);
             var src = RewriteOperand(instr.Operands[1]);
-            m.Assign(dst, host.Intrinsic("trunc", false, PrimitiveType.Real64, src));
+            m.Assign(dst, host.Intrinsic("trunc", true, PrimitiveType.Real64, src));
         }
 
         private void RewriteFctiw()
@@ -104,7 +104,7 @@ namespace Reko.Arch.PowerPC
             var src = RewriteOperand(instr.Operands[1]);
             var tmp = binder.CreateTemporary(PrimitiveType.Real64);
             m.Assign(tmp, src);
-            m.Assign(dst, host.Intrinsic("__fctiw", false, PrimitiveType.Int32, tmp));
+            m.Assign(dst, host.Intrinsic("__fctiw", true, PrimitiveType.Int32, tmp));
         }
 
         private void RewriteFctiwz()
@@ -205,7 +205,7 @@ namespace Reko.Arch.PowerPC
             var src = RewriteOperand(instr.Operands[1]);
             m.Assign(
                 dst,
-                host.Intrinsic("sqrt", false, PrimitiveType.Real64, src));
+                host.Intrinsic("sqrt", true, PrimitiveType.Real64, src));
         }
 
         private void RewriteFrsqrte()
@@ -214,7 +214,7 @@ namespace Reko.Arch.PowerPC
             var src = RewriteOperand(instr.Operands[1]);
             m.Assign(
                 dst,
-                host.Intrinsic("__frsqrte", false, PrimitiveType.Real64, src));
+                host.Intrinsic("__frsqrte", true, PrimitiveType.Real64, src));
         }
 
         public void RewriteFsub()
@@ -240,7 +240,7 @@ namespace Reko.Arch.PowerPC
             var op2 = RewriteOperand(instr.Operands[1]);
             m.SideEffect(
                 host.Intrinsic("__mtfsf",
-                    false,
+                    true,
                     VoidType.Instance,
                     op2,
                     op1));

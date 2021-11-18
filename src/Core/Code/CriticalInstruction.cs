@@ -124,7 +124,7 @@ namespace Reko.Core.Code
                 return true;
             if (appl.Procedure is ProcedureConstant pc)
             {
-                return !pc.Procedure.IsIdempotent;
+                return pc.Procedure.HasSideEffect;
             }
             else
             {

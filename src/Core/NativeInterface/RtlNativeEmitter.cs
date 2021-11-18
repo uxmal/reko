@@ -268,14 +268,14 @@ namespace Reko.Core.NativeInterface
         {
             var aa = GetExpression(a);
             var bb = GetExpression(b);
-            return MapToHandle(host.Intrinsic(IntrinsicProcedure.Ror, true, PrimitiveType.Word32, aa, bb));
+            return MapToHandle(host.Intrinsic(IntrinsicProcedure.Ror, false, PrimitiveType.Word32, aa, bb));
         }
 
         public HExpr Rrc(HExpr a, HExpr b)
         {
             var aa = GetExpression(a);
             var bb = GetExpression(b);
-            return MapToHandle(host.Intrinsic(IntrinsicProcedure.Ror, true, PrimitiveType.Word32, aa, bb));
+            return MapToHandle(host.Intrinsic(IntrinsicProcedure.Ror, false, PrimitiveType.Word32, aa, bb));
         }
 
         public HExpr Sar(HExpr a, HExpr b)

@@ -33,37 +33,37 @@ namespace Reko.Arch.Arm.AArch64
         {
             var memBarrier = (BarrierOperand) instr.Operands[0];
             var name = $"__dsb_{memBarrier.Option.ToString().ToLower()}";
-            m.SideEffect(host.Intrinsic(name, false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic(name, true, VoidType.Instance));
         }
 
         private void RewriteIsb()
         {
             var memBarrier = (BarrierOperand) instr.Operands[0];
             var name = $"__isb_{memBarrier.Option.ToString().ToLower()}";
-            m.SideEffect(host.Intrinsic(name, false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic(name, true, VoidType.Instance));
         }
 
         private void RewriteMrs()
         {
-            var intrinsic = host.Intrinsic("__mrs", false, PrimitiveType.Word32, RewriteOp(instr.Operands[1]));
+            var intrinsic = host.Intrinsic("__mrs", true, PrimitiveType.Word32, RewriteOp(instr.Operands[1]));
             m.Assign(RewriteOp(instr.Operands[0]), intrinsic);
         }
 
         private void RewriteMsr()
         {
-            var intrinsic = host.Intrinsic("__msr", false, PrimitiveType.Word32, RewriteOp(instr.Operands[0]), RewriteOp(instr.Operands[1]));
+            var intrinsic = host.Intrinsic("__msr", true, PrimitiveType.Word32, RewriteOp(instr.Operands[0]), RewriteOp(instr.Operands[1]));
             m.SideEffect(intrinsic);
         }
 
         private void RewriteSmc()
         {
-            var intrinsic = host.Intrinsic("__secure_monitor_call", false, VoidType.Instance, RewriteOp(instr.Operands[0]));
+            var intrinsic = host.Intrinsic("__secure_monitor_call", true, VoidType.Instance, RewriteOp(instr.Operands[0]));
             m.SideEffect(intrinsic);
         }
 
         private void RewriteSvc()
         {
-            var intrinsic = host.Intrinsic("__supervisor_call", false, VoidType.Instance, RewriteOp(instr.Operands[0]));
+            var intrinsic = host.Intrinsic("__supervisor_call", true, VoidType.Instance, RewriteOp(instr.Operands[0]));
             m.SideEffect(intrinsic);
         }
 

@@ -87,8 +87,8 @@ namespace Reko.Arch.Cray.Ymp
                 case Mnemonic.jsz: RewriteJxx(Registers.SRegs[0], m.Eq0); break;
                 case Mnemonic.r: RewriteR(); break;
                 case Mnemonic._and: Rewrite3(m.And); break;
-                case Mnemonic._clz: RewriteIntrinsic("__clz", true); break;
-                case Mnemonic._popcnt: RewriteIntrinsic("__popcnt", true); break;
+                case Mnemonic._clz: RewriteIntrinsic("__clz", false); break;
+                case Mnemonic._popcnt: RewriteIntrinsic("__popcnt", false); break;
                 case Mnemonic._fmul: Rewrite3(m.FMul); break;
                 case Mnemonic._iadd: Rewrite3(m.IAdd); break;
                 case Mnemonic._isub: Rewrite3(m.ISub); break;
@@ -106,13 +106,13 @@ namespace Reko.Arch.Cray.Ymp
             }
         }
 
-        private void RewriteIntrinsic(string intrinsicName, bool isIntrinsic)
+        private void RewriteIntrinsic(string intrinsicName, bool hasSideEffect)
         {
             var dst = Op(0);
             var args = Enumerable.Range(1, instrCur.Operands.Length - 1)
                 .Select(i => Op(i))
                 .ToArray();
-            m.Assign(dst, host.Intrinsic(intrinsicName, isIntrinsic, dst.DataType, args));
+            m.Assign(dst, host.Intrinsic(intrinsicName, hasSideEffect, dst.DataType, args));
         }
 
         IEnumerator IEnumerable.GetEnumerator()

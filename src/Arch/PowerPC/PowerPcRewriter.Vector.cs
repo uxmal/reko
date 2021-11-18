@@ -52,7 +52,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     "__vaddfp",
-                    true,
+                    false,
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra,
                     vrb));
@@ -67,13 +67,13 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     "__vadduwm",
-                    true,
+                    false,
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra,
                     vrb));
         }
 
-        private void RewriteVectorBinOp(string intrinsic, bool isIdempotent, DataType elemType)
+        private void RewriteVectorBinOp(string intrinsic, bool hasSideEffect, DataType elemType)
         {
             var vrt = RewriteOperand(instr.Operands[0]);
             var vra = RewriteOperand(instr.Operands[1]);
@@ -85,10 +85,10 @@ namespace Reko.Arch.PowerPC
             m.Assign(tmp2, vrb);
             m.Assign(
                 vrt,
-                host.Intrinsic(intrinsic, isIdempotent, arrayType, tmp1, tmp2));
+                host.Intrinsic(intrinsic, hasSideEffect, arrayType, tmp1, tmp2));
         }
 
-        private void RewriteVectorTernaryOp(string intrinsic, bool isIdempotent, DataType elemType)
+        private void RewriteVectorTernaryOp(string intrinsic, bool hasSideEffect, DataType elemType)
         {
             var vrt = RewriteOperand(instr.Operands[0]);
             var vra = RewriteOperand(instr.Operands[1]);
@@ -103,10 +103,10 @@ namespace Reko.Arch.PowerPC
             m.Assign(tmp3, vrc);
             m.Assign(
                 vrt,
-                host.Intrinsic(intrinsic, isIdempotent, arrayType, tmp1, tmp2, tmp3));
+                host.Intrinsic(intrinsic, hasSideEffect, arrayType, tmp1, tmp2, tmp3));
         }
 
-        private void RewriteVectorPairOp(string intrinsic, bool isIdempotent, DataType elemType)
+        private void RewriteVectorPairOp(string intrinsic, bool hasSideEffect, DataType elemType)
         {
             var vrt = RewriteOperand(instr.Operands[0]);
             var vra = RewriteOperand(instr.Operands[1]);
@@ -118,7 +118,7 @@ namespace Reko.Arch.PowerPC
             m.Assign(tmp2, vrb);
             m.Assign(
                 vrt,
-                host.Intrinsic(intrinsic, isIdempotent, arrayType, tmp1, tmp2));
+                host.Intrinsic(intrinsic, hasSideEffect, arrayType, tmp1, tmp2));
             m.Assign(
                 binder.EnsureRegister(arch.acc),
                 vrt);
@@ -134,7 +134,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     fnName,
-                    true,
+                    false,
                     new ArrayType(PrimitiveType.Int32, 4),
                     vra,
                     vrb));
@@ -150,7 +150,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     fnName,
-                    true,
+                    false,
                     MakeArrayType(vra.DataType, elemType),
                     vra,
                     vrb));
@@ -163,7 +163,7 @@ namespace Reko.Arch.PowerPC
             var a = RewriteOperand(instr.Operands[1]);
             var b = RewriteOperand(instr.Operands[2]);
             m.Assign(d,
-                host.Intrinsic(name, true, d.DataType, a, b));
+                host.Intrinsic(name, false, d.DataType, a, b));
         }
 
         private void RewriteVcsxwfp(string name)
@@ -172,7 +172,7 @@ namespace Reko.Arch.PowerPC
             var a = RewriteOperand(instr.Operands[1]);
             var b = RewriteOperand(instr.Operands[2]);
             m.Assign(d,
-                host.Intrinsic(name, true, d.DataType, a, b));
+                host.Intrinsic(name, false, d.DataType, a, b));
         }
 
         public void RewriteVct(string name, PrimitiveType dt)
@@ -184,17 +184,17 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     name,
-                    false,
+                    true,
                     new ArrayType(dt, 4),
                     vrb,
                     uim));
         }
 
-        private void RewriteVectorUnary(string intrinsic, bool isIdempotent)
+        private void RewriteVectorUnary(string intrinsic, bool hasSideEffect)
         {
             var vrt = RewriteOperand(instr.Operands[0]);
             var vra = RewriteOperand(instr.Operands[1]);
-            m.Assign(vrt, host.Intrinsic(intrinsic, isIdempotent, vrt.DataType, vra));
+            m.Assign(vrt, host.Intrinsic(intrinsic, hasSideEffect, vrt.DataType, vra));
         }
 
         public void RewriteVmaddfp()
@@ -207,7 +207,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     "__vmaddfp",
-                    true,
+                    false,
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra,
                     vrb,
@@ -223,7 +223,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     "__vmrghw",
-                    true,
+                    false,
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra,
                     vrb));
@@ -238,7 +238,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     "__vmrglw",
-                    true,
+                    false,
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra,
                     vrb));
@@ -254,7 +254,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     "__vnmsubfp",
-                    true,
+                    false,
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra,
                     vrb,
@@ -286,7 +286,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     "__vperm",
-                    true,
+                    false,
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra,
                     vrb,
@@ -302,7 +302,7 @@ namespace Reko.Arch.PowerPC
             var vd = RewriteOperand(instr.Operands[4]);
             m.Assign(
                 vt,
-                host.Intrinsic("__vpkd3d", true, vt.DataType, va, vb, vc, vd));
+                host.Intrinsic("__vpkd3d", false, vt.DataType, va, vb, vc, vd));
         }
 
         public void RewriteVrefp()
@@ -313,7 +313,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     "__vrefp",
-                    true,
+                    false,
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra));
         }
@@ -328,7 +328,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     "__vrlimi",
-                    true,
+                    false,
                     PrimitiveType.Word128,
                     vra,
                     vrb,
@@ -343,7 +343,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     "__vrsqrtefp",
-                    false,
+                    true,
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra));
         }
@@ -358,7 +358,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     "__vsel",
-                    true,
+                    false,
                     PrimitiveType.Word128,
                     vra,
                     vrb,
@@ -375,7 +375,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     "__vsldoi",
-                    false,
+                    true,
                     PrimitiveType.Word128,
                     vra,
                     vrb,
@@ -391,7 +391,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     intrinsic,
-                    false,
+                    true,
                     new ArrayType(PrimitiveType.Word32, 4),
                     vra,
                     vrb));
@@ -405,7 +405,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     "__vspltisw",
-                    true,
+                    false,
                     PrimitiveType.Word128,
                     sha));
         }
@@ -416,7 +416,7 @@ namespace Reko.Arch.PowerPC
             var opS = RewriteOperand(instr.Operands[1]);
             var opI = RewriteOperand(instr.Operands[2]);
 
-            m.Assign(opD, host.Intrinsic("__vspltw", true, opD.DataType, opS, opI));
+            m.Assign(opD, host.Intrinsic("__vspltw", false, opD.DataType, opS, opI));
         }
 
         public void RewriteVsubfp()
@@ -428,7 +428,7 @@ namespace Reko.Arch.PowerPC
                 vrt,
                 host.Intrinsic(
                     "__vsubfp",
-                    true,
+                    false,
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra,
                     vrb));
@@ -442,7 +442,7 @@ namespace Reko.Arch.PowerPC
             var opS = RewriteOperand(instr.Operands[1]);
             var opI = RewriteOperand(instr.Operands[2]);
 
-            m.Assign(opD, host.Intrinsic("__lvlx", true, opD.DataType, opS, opI));
+            m.Assign(opD, host.Intrinsic("__lvlx", false, opD.DataType, opS, opI));
         }
 
         public void RewriteLvrx()
@@ -453,7 +453,7 @@ namespace Reko.Arch.PowerPC
             var opS = RewriteOperand(instr.Operands[1]);
             var opI = RewriteOperand(instr.Operands[2]);
 
-            m.Assign(opD, host.Intrinsic("__lvrx", true, opD.DataType, opS, opI));
+            m.Assign(opD, host.Intrinsic("__lvrx", false, opD.DataType, opS, opI));
         }
 
         // Very specific to XBOX 360
@@ -463,7 +463,7 @@ namespace Reko.Arch.PowerPC
             var opD = RewriteOperand(instr.Operands[0]);
             var opA = RewriteOperand(instr.Operands[1]);
             var opB = RewriteOperand(instr.Operands[2]);
-            m.Assign(opD, host.Intrinsic("__vupkd3d", true, opD.DataType, opA, opB));
+            m.Assign(opD, host.Intrinsic("__vupkd3d", false, opD.DataType, opA, opB));
         }
 
     }

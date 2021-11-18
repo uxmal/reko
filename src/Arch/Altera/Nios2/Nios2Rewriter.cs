@@ -289,27 +289,27 @@ namespace Reko.Arch.Altera.Nios2
 
         private void RewriteFlushd()
         {
-            m.SideEffect(host.Intrinsic("__flushd", false, VoidType.Instance, m.AddrOf(PrimitiveType.Ptr32, Mem(0, PrimitiveType.Word32))));
+            m.SideEffect(host.Intrinsic("__flushd", true, VoidType.Instance, m.AddrOf(PrimitiveType.Ptr32, Mem(0, PrimitiveType.Word32))));
         }
 
         private void RewriteFlushi()
         {
-            m.SideEffect(host.Intrinsic("__flushi", false, VoidType.Instance, m.AddrOf(PrimitiveType.Ptr32, Mem(0, PrimitiveType.Word32))));
+            m.SideEffect(host.Intrinsic("__flushi", true, VoidType.Instance, m.AddrOf(PrimitiveType.Ptr32, Mem(0, PrimitiveType.Word32))));
         }
 
         private void RewriteFlushp()
         {
-            m.SideEffect(host.Intrinsic("__flushp", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__flushp", true, VoidType.Instance));
         }
 
         private void RewriteInitd()
         {
-            m.SideEffect(host.Intrinsic("__initd", false, VoidType.Instance, m.AddrOf(PrimitiveType.Ptr32, Mem(0, PrimitiveType.Word32))));
+            m.SideEffect(host.Intrinsic("__initd", true, VoidType.Instance, m.AddrOf(PrimitiveType.Ptr32, Mem(0, PrimitiveType.Word32))));
         }
 
         private void RewriteIniti()
         {
-            m.SideEffect(host.Intrinsic("__initi", false, VoidType.Instance, Reg0(0)));
+            m.SideEffect(host.Intrinsic("__initi", true, VoidType.Instance, Reg0(0)));
         }
 
         private void RewriteJump(Expression dst)
@@ -476,7 +476,7 @@ namespace Reko.Arch.Altera.Nios2
 
         private void RewriteWrctl()
         {
-            m.SideEffect(host.Intrinsic("__wrctl", false, VoidType.Instance, Reg0(0), Reg0(1)));
+            m.SideEffect(host.Intrinsic("__wrctl", true, VoidType.Instance, Reg0(0), Reg0(1)));
         }
     }
 }

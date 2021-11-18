@@ -39,7 +39,7 @@ namespace Reko.Arch.Mips
             m.SideEffect(
                 host.Intrinsic(
                     "__break",
-                    false,
+                    true,
                     VoidType.Instance,
                     this.RewriteOperand0(instr.Operands[0])));
         }
@@ -71,7 +71,7 @@ namespace Reko.Arch.Mips
         private void RewritePrefx(MipsInstruction instr)
         {
             var opMem = (MemoryAccess)RewriteOperand(instr.Operands[1]);
-            var intrinsic = host.Intrinsic("__prefetch", false, VoidType.Instance, opMem.EffectiveAddress);
+            var intrinsic = host.Intrinsic("__prefetch", true, VoidType.Instance, opMem.EffectiveAddress);
             m.SideEffect(intrinsic);
         }
 
@@ -89,11 +89,11 @@ namespace Reko.Arch.Mips
             Expression trap;
             if (instr.Operands.Length == 3)
             {
-                trap = host.Intrinsic("__trap_code", false, VoidType.Instance, RewriteOperand(instr.Operands[2]));
+                trap = host.Intrinsic("__trap_code", true, VoidType.Instance, RewriteOperand(instr.Operands[2]));
             }
             else
             {
-                trap = host.Intrinsic("__trap", false, VoidType.Instance);
+                trap = host.Intrinsic("__trap", true, VoidType.Instance);
             }
             m.SideEffect(trap);
         }
@@ -108,7 +108,7 @@ namespace Reko.Arch.Mips
                         op(op1, op2).Invert(),
                         instr.Address + instr.Length,
                         InstrClass.ConditionalTransfer);
-            var trap = host.Intrinsic("__trap", false, VoidType.Instance);
+            var trap = host.Intrinsic("__trap", true, VoidType.Instance);
             m.SideEffect(trap);
         }
 
@@ -116,33 +116,33 @@ namespace Reko.Arch.Mips
         {
             //$REVIEW: MIPS documentation mentions 'EntryHi' and 'Index' registers. Contact
             // @uxmal if you care strongly about this.
-            m.SideEffect(host.Intrinsic("__tlbp",  false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__tlbp", true, VoidType.Instance));
         }
 
         private void RewriteTlbr(MipsInstruction instr)
         {
             //$REVIEW: MIPS documentation mentions 'Index' register. Contact
             // @uxmal if you care strongly about this.
-            m.SideEffect(host.Intrinsic("__tlbr", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__tlbr", true, VoidType.Instance));
         }
 
         private void RewriteTlbwi(MipsInstruction instr)
         {
             //$REVIEW: MIPS documentation mentions 'Index' register. Contact
             // @uxmal if you care strongly about this.
-            m.SideEffect(host.Intrinsic("__tlbwi", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__tlbwi", true, VoidType.Instance));
         }
 
         private void RewriteTlbwr(MipsInstruction instr)
         {
             //$REVIEW: MIPS documentation mentions 'Index' register. Contact
             // @uxmal if you care strongly about this.
-            m.SideEffect(host.Intrinsic("__tlbwr", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__tlbwr", true, VoidType.Instance));
         }
 
         private void RewriteWait(MipsInstruction instr)
         {
-            m.SideEffect(host.Intrinsic("__wait", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__wait", true, VoidType.Instance));
         }
 
         private void RewriteReadHardwareRegister(MipsInstruction instr)
@@ -152,13 +152,13 @@ namespace Reko.Arch.Mips
             switch (hs.ToInt32())
             {
             case 0:
-                value = host.Intrinsic("__read_cpu_number", false, PrimitiveType.UInt32);
+                value = host.Intrinsic("__read_cpu_number", true, PrimitiveType.UInt32);
                 break;
             case 0x1D:
-                value = host.Intrinsic("__read_user_local", false, PrimitiveType.Int32);
+                value = host.Intrinsic("__read_user_local", true, PrimitiveType.Int32);
                 break;
             default:
-                value = host.Intrinsic("__read_hardware_register", false, PrimitiveType.UInt32, this.RewriteOperand0(instr.Operands[1]));
+                value = host.Intrinsic("__read_hardware_register", true, PrimitiveType.UInt32, this.RewriteOperand0(instr.Operands[1]));
                 break;
             }
             m.Assign(this.RewriteOperand0(instr.Operands[0]), value);
@@ -167,17 +167,17 @@ namespace Reko.Arch.Mips
         private void RewriteSdbbp(MipsInstruction instr)
         {
             var arg = RewriteOperand(instr.Operands[0]);
-            m.SideEffect(host.Intrinsic("__software_debug_breakpoint", false, VoidType.Instance, arg), iclass);
+            m.SideEffect(host.Intrinsic("__software_debug_breakpoint", true, VoidType.Instance, arg), iclass);
         }
         
         private void RewriteSyscall(MipsInstruction instr)
         {
-            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, this.RewriteOperand0(instr.Operands[0])));
+            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance, this.RewriteOperand0(instr.Operands[0])));
         }
 
         private void RewriteSync(MipsInstruction instr)
         {
-            m.SideEffect(host.Intrinsic("__sync", false, VoidType.Instance, this.RewriteOperand0(instr.Operands[0])));
+            m.SideEffect(host.Intrinsic("__sync", true, VoidType.Instance, this.RewriteOperand0(instr.Operands[0])));
         }
     }
 }

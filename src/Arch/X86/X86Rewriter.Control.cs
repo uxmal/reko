@@ -152,7 +152,7 @@ namespace Reko.Arch.X86
 
         private void RewriteInt()
         {
-            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, SrcOp(0)));
+            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance, SrcOp(0)));
             iclass |= InstrClass.Call | InstrClass.Transfer;
         }
 
@@ -171,7 +171,7 @@ namespace Reko.Arch.X86
                 instrCur.Address + instrCur.Length,
                 InstrClass.ConditionalTransfer);
             m.SideEffect(
-                    host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance, Constant.Byte(4)));
+                    host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance, Constant.Byte(4)));
         }
 
         private void RewriteJcxz(RegisterStorage cx)
@@ -220,7 +220,7 @@ namespace Reko.Arch.X86
 
         private void RewriteJmpe()
         {
-            m.SideEffect(host.Intrinsic("__jmpe", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__jmpe", true, VoidType.Instance));
         }
 
         private void RewriteLoop(FlagGroupStorage? useFlags, ConditionCode cc)
@@ -245,7 +245,7 @@ namespace Reko.Arch.X86
         private void RewriteLtr()
         {
             m.SideEffect(host.Intrinsic("__load_task_register",
-                false,
+                true,
                 VoidType.Instance,
                 SrcOp(0)));
         }
@@ -286,29 +286,29 @@ namespace Reko.Arch.X86
         {
             m.Assign(
                 SrcOp(0),
-                host.Intrinsic("__store_task_register", false,
+                host.Intrinsic("__store_task_register", true,
                     PrimitiveType.Word16));
         }
 
         private void RewriteSyscall()
         {
-            m.SideEffect(host.Intrinsic("__syscall", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__syscall", true, VoidType.Instance));
         }
 
         private void RewriteSysenter()
         {
-            m.SideEffect(host.Intrinsic("__sysenter", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__sysenter", true, VoidType.Instance));
         }
 
         private void RewriteSysexit()
         {
-            m.SideEffect(host.Intrinsic("__sysexit", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__sysexit", true, VoidType.Instance));
             m.Return(0,0);
         }
 
         private void RewriteSysret()
         {
-            m.SideEffect(host.Intrinsic("__sysret", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__sysret", true, VoidType.Instance));
             m.Return(0,0);
         }
 
@@ -316,7 +316,7 @@ namespace Reko.Arch.X86
         {
             var z = binder.EnsureFlagGroup(Registers.Z);
             m.Assign(z, host.Intrinsic(intrinsicName,
-                false,
+                true,
                 z.DataType,
                 SrcOp(0)));
         }
@@ -324,7 +324,7 @@ namespace Reko.Arch.X86
         private void RewriteXabort()
         {
             var op = SrcOp(0);
-            m.SideEffect(host.Intrinsic("__xabort", false, VoidType.Instance, op),
+            m.SideEffect(host.Intrinsic("__xabort", true, VoidType.Instance, op),
                 InstrClass.Terminates);
         }
 

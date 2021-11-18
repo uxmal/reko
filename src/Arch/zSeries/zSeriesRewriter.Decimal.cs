@@ -28,7 +28,7 @@ namespace Reko.Arch.zSeries
     public partial class zSeriesRewriter
     {
         private void RewriteCvb(PrimitiveType dt) {
-            Assign(Reg(0), host.Intrinsic($"__convert_decimal_to_int{dt.BitSize}", false,
+            Assign(Reg(0), host.Intrinsic($"__convert_decimal_to_int{dt.BitSize}", true,
                 dt,
                 m.AddrOf(arch.PointerType,
                     m.Mem8(EffectiveAddress(1)))));
@@ -36,7 +36,7 @@ namespace Reko.Arch.zSeries
 
         private void RewriteCvd(PrimitiveType dt)
         {
-            m.SideEffect(host.Intrinsic($"__convert_int{dt.BitSize}_to_decimal", false,
+            m.SideEffect(host.Intrinsic($"__convert_int{dt.BitSize}_to_decimal", true,
                 dt,
                 Reg(0, dt),
                 m.AddrOf(arch.PointerType,

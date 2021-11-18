@@ -34,18 +34,18 @@ namespace Reko.Arch.X86
         {
             var dst = SrcOp(0);
             var src = SrcOp(1);
-            m.Assign(dst, host.Intrinsic("__aesimc", false, dst.DataType, src));
+            m.Assign(dst, host.Intrinsic("__aesimc", true, dst.DataType, src));
         }
 
         public void RewriteClts()
         {
             var cr0 = binder.EnsureRegister(arch.GetControlRegister(0)!);
-            m.Assign(cr0, host.Intrinsic("__clts", false, cr0.DataType, cr0));
+            m.Assign(cr0, host.Intrinsic("__clts", true, cr0.DataType, cr0));
         }
 
         public void RewriteEmms()
         {
-            m.SideEffect(host.Intrinsic("__emms", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__emms", true, VoidType.Instance));
         }
 
         private void RewriteGetsec()
@@ -54,18 +54,18 @@ namespace Reko.Arch.X86
             // depends on EAX.
             var arg = binder.EnsureRegister(Registers.eax);
             var result = binder.EnsureSequence(PrimitiveType.Word64, Registers.edx, Registers.ebx);
-            m.Assign(result, host.Intrinsic("__getsec", false, result.DataType, arg));
+            m.Assign(result, host.Intrinsic("__getsec", true, result.DataType, arg));
         }
 
         private void RewriteInvd()
         {
-            m.SideEffect(host.Intrinsic("__invd", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__invd", true, VoidType.Instance));
         }
 
         private void RewriteInvlpg()
         {
             var op = SrcOp(0);
-            m.SideEffect(host.Intrinsic("__invlpg", false, VoidType.Instance,
+            m.SideEffect(host.Intrinsic("__invlpg", true, VoidType.Instance,
                 op));
 
         }
@@ -76,7 +76,7 @@ namespace Reko.Arch.X86
                 SrcOp(0),
                 host.Intrinsic(
                     "__lar",
-                    false,
+                    true,
                     instrCur.Operands[0].Width,
                     SrcOp(1)));
             m.Assign(
@@ -86,7 +86,7 @@ namespace Reko.Arch.X86
 
         private void RewriteLmsw()
         {
-            m.SideEffect(host.Intrinsic("__lmsw", false, VoidType.Instance, SrcOp(0)));
+            m.SideEffect(host.Intrinsic("__lmsw", true, VoidType.Instance, SrcOp(0)));
         }
 
         private void RewriteLsl()
@@ -95,7 +95,7 @@ namespace Reko.Arch.X86
                 SrcOp(0),
                 host.Intrinsic(
                     "__lsl",
-                    false,
+                    true,
                     instrCur.Operands[0].Width,
                     SrcOp(1)));
         }
@@ -105,7 +105,7 @@ namespace Reko.Arch.X86
             m.SideEffect(
                 host.Intrinsic(
                     intrinsicName,
-                    false,
+                    true,
                     VoidType.Instance,
                     SrcOp(0)));
         }
@@ -116,51 +116,51 @@ namespace Reko.Arch.X86
                 SrcOp(0),
                 host.Intrinsic(
                     intrinsicName,
-                    false,
+                    true,
                     instrCur.Operands[0].Width));
         }
 
         public void RewriteLfence()
         {
-            m.SideEffect(host.Intrinsic("__lfence", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__lfence", true, VoidType.Instance));
         }
 
         public void RewriteMfence()
         {
-            m.SideEffect(host.Intrinsic("__mfence", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__mfence", true, VoidType.Instance));
         }
 
         public void RewritePause()
         {
-            m.SideEffect(host.Intrinsic("__pause", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__pause", true, VoidType.Instance));
         }
 
         public void RewritePrefetch(string name)
         {
-            m.SideEffect(host.Intrinsic(name, false, VoidType.Instance, SrcOp(0)));
+            m.SideEffect(host.Intrinsic(name, true, VoidType.Instance, SrcOp(0)));
         }
 
         private void RewriteSmsw()
         {
             var dst = SrcOp(0);
-            m.Assign(dst, host.Intrinsic("__smsw", false, dst.DataType));
+            m.Assign(dst, host.Intrinsic("__smsw", true, dst.DataType));
         }
 
         public void RewriteSfence()
         {
-            m.SideEffect(host.Intrinsic("__sfence", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__sfence", true, VoidType.Instance));
         }
 
         public void RewriteVmread()
         {
             m.Assign(
                 SrcOp(0),
-                host.Intrinsic("__vmread", false, instrCur.Operands[0].Width, SrcOp(1)));
+                host.Intrinsic("__vmread", true, instrCur.Operands[0].Width, SrcOp(1)));
         }
 
         public void RewriteVmwrite()
         {
-            m.SideEffect(host.Intrinsic("__vmwrite", false, VoidType.Instance,
+            m.SideEffect(host.Intrinsic("__vmwrite", true, VoidType.Instance,
                 SrcOp(0),
                 SrcOp(1)));
         }
@@ -168,19 +168,19 @@ namespace Reko.Arch.X86
 
         private void RewriteWbinvd()
         {
-            m.SideEffect(host.Intrinsic("__wbinvd", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__wbinvd", true, VoidType.Instance));
         }
 
         public void RewriteWrsmr()
         {
             var edx_eax = binder.EnsureSequence(PrimitiveType.Word64, Registers.edx, Registers.eax);
             var ecx = binder.EnsureRegister(Registers.ecx);
-            m.SideEffect(host.Intrinsic("__wrmsr", false, VoidType.Instance, ecx, edx_eax));
+            m.SideEffect(host.Intrinsic("__wrmsr", true, VoidType.Instance, ecx, edx_eax));
         }
 
         private void RewriteXsaveopt()
         {
-            m.SideEffect(host.Intrinsic("__xsaveopt", false, VoidType.Instance, m.AddrOf(arch.PointerType, SrcOp(0))));
+            m.SideEffect(host.Intrinsic("__xsaveopt", true, VoidType.Instance, m.AddrOf(arch.PointerType, SrcOp(0))));
         }
 
     }

@@ -38,7 +38,7 @@ namespace Reko.Core
 	{
         private readonly List<Block> blocks;
 
-		public Procedure(IProcessorArchitecture arch, string name, Address addrEntry, Frame frame) : base(name, false)
+		public Procedure(IProcessorArchitecture arch, string name, Address addrEntry, Frame frame) : base(name, true)
 		{
             this.EntryAddress = addrEntry;
             this.Architecture = arch ?? throw new ArgumentNullException(nameof(arch));

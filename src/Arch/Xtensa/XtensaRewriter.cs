@@ -81,7 +81,7 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.invalid:
                 case Mnemonic.reserved:
                     iclass = InstrClass.Invalid; m.Invalid(); break;
-                case Mnemonic.abs: RewriteIntrinsicFn("abs", true); break;
+                case Mnemonic.abs: RewriteIntrinsicFn("abs", false); break;
                 case Mnemonic.add:
                 case Mnemonic.add_n: RewriteBinOp(m.IAdd); break;
                 case Mnemonic.add_s: RewriteBinOp(m.FAdd); break;
@@ -267,30 +267,30 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.neg: RewriteUnaryOp(m.Neg); break;
                 case Mnemonic.nop: m.Nop(); break;
                 case Mnemonic.nop_n: m.Nop(); break;
-                case Mnemonic.nsa: RewriteIntrinsicFn("__nsa", false); break;
-                case Mnemonic.nsau: RewriteIntrinsicFn("__nsau", false); break;
+                case Mnemonic.nsa: RewriteIntrinsicFn("__nsa", true); break;
+                case Mnemonic.nsau: RewriteIntrinsicFn("__nsau", true); break;
                 case Mnemonic.oeq_s: RewriteBinOp(m.FEq); break;    //$REVIEW: what to do about 'ordered' and 'unordered'
                 case Mnemonic.ole_s: RewriteBinOp(m.FLe); break;    //$REVIEW: what to do about 'ordered' and 'unordered'
                 case Mnemonic.olt_s: RewriteBinOp(m.FLt); break;    //$REVIEW: what to do about 'ordered' and 'unordered'
                 case Mnemonic.or: RewriteOr(); break;
                 case Mnemonic.orb: RewriteOr(); break;
                 case Mnemonic.orbc: RewriteBinOp((a, b) => m.Or(a, m.Not(b))); break;
-                case Mnemonic.pitlb: RewriteIntrinsicFn("__pitlb", false); break;
+                case Mnemonic.pitlb: RewriteIntrinsicFn("__pitlb", true); break;
                 case Mnemonic.quos: RewriteBinOp(m.SDiv); break;
                 case Mnemonic.quou: RewriteBinOp(m.UDiv); break;
-                case Mnemonic.rdtlb0: RewriteIntrinsicFn("__rdtlb0", false); break;
-                case Mnemonic.rdtlb1: RewriteIntrinsicFn("__rdtlb1", false); break;
+                case Mnemonic.rdtlb0: RewriteIntrinsicFn("__rdtlb0", true); break;
+                case Mnemonic.rdtlb1: RewriteIntrinsicFn("__rdtlb1", true); break;
                 case Mnemonic.rems: RewriteBinOp(m.Mod); break;
                 case Mnemonic.remu: RewriteBinOp(m.Mod); break;
                 case Mnemonic.ret:
                 case Mnemonic.ret_n: RewriteRet(); break;
                 case Mnemonic.rfe: RewriteRet(); break;      //$REVIEW: emit some hint this is a return from exception?
                 case Mnemonic.rfi: RewriteRet(); break;      //$REVIEW: emit some hint this is a return from interrupt?
-                case Mnemonic.ritlb0: RewriteIntrinsicFn("__ritlb0", false); break;
-                case Mnemonic.ritlb1: RewriteIntrinsicFn("__ritlb1", false); break;
+                case Mnemonic.ritlb0: RewriteIntrinsicFn("__ritlb0", true); break;
+                case Mnemonic.ritlb1: RewriteIntrinsicFn("__ritlb1", true); break;
                 case Mnemonic.rotw: RewriteIntrinsicProc("__rotw"); break;
                 case Mnemonic.round_s: RewriteCvtFloatToIntegral("__round", PrimitiveType.Int32); break;
-                case Mnemonic.rsil: RewriteIntrinsicFn("__rsil", false); break;
+                case Mnemonic.rsil: RewriteIntrinsicFn("__rsil", true); break;
                 case Mnemonic.rer: RewriteRer(); break;
                 case Mnemonic.rfr: RewriteCopy(); break;
                 case Mnemonic.rsr: RewriteCopy(); break;
@@ -332,7 +332,7 @@ namespace Reko.Arch.Xtensa
                 case Mnemonic.umul_aa_hl: RewriteMul("__umul_hl", UInt40); break;
                 case Mnemonic.umul_aa_lh: RewriteMul("__umul_lh", UInt40); break;
                 case Mnemonic.umul_aa_ll: RewriteMul("__umul_ll", UInt40); break;
-                case Mnemonic.un_s: RewriteIntrinsicFn("isunordered", true); break;
+                case Mnemonic.un_s: RewriteIntrinsicFn("isunordered", false); break;
                 case Mnemonic.utrunc_s: RewriteCvtFloatToIntegral("__utrunc", PrimitiveType.UInt32); break;
                 case Mnemonic.waiti: RewriteIntrinsicProc("__waiti"); break;
                 case Mnemonic.wdtlb: RewriteIntrinsicProc("__wdtlb"); break;

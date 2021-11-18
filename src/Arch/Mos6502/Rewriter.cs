@@ -214,7 +214,7 @@ namespace Reko.Arch.Mos6502
 
         private void Brk()
         {
-            m.SideEffect(host.Intrinsic("__brk", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__brk", true, VoidType.Instance));
         }
 
         private void Cmp(RegisterStorage r)
@@ -349,7 +349,7 @@ namespace Reko.Arch.Mos6502
         {
             var c = FlagGroupStorage(FlagM.NF | FlagM.ZF | FlagM.CF);
             var arg = RewriteOperand(instrCur.Operands[0]);
-            m.Assign(arg, host.Intrinsic(rot, true, arg.DataType, arg, Constant.Byte(1)));
+            m.Assign(arg, host.Intrinsic(rot, false, arg.DataType, arg, Constant.Byte(1)));
             m.Assign(c, m.Cond(arg));
         }
 

@@ -39,7 +39,7 @@ namespace Reko.Arch.Vax
             var nzv = FlagGroup(Registers.VZN);
             m.Assign(
                 nzv,
-                host.Intrinsic(fnname, false, nzv.DataType, mulr, mulrx, muld,
+                host.Intrinsic(fnname, true, nzv.DataType, mulr, mulrx, muld,
                 m.Out(PrimitiveType.Word32, integral),
                 m.Out(floatType, frac)));
             m.Assign(FlagGroup(Registers.C), Constant.False());

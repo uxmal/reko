@@ -46,8 +46,8 @@ namespace Reko.ImageLoaders.OdbgScript
             Level = TraceLevel.Warning
         };
         private static readonly UnknownType unk = new UnknownType();
-        private static readonly ProcedureConstant interpolate = new ProcedureConstant(unk, new IntrinsicProcedure("Interpolate", true, unk, 1));
-        private static readonly ProcedureConstant hexString = new ProcedureConstant(unk, new IntrinsicProcedure("HexString", true, unk, 1));
+        private static readonly ProcedureConstant interpolate = new ProcedureConstant(unk, new IntrinsicProcedure("Interpolate", false, unk, 1));
+        private static readonly ProcedureConstant hexString = new ProcedureConstant(unk, new IntrinsicProcedure("HexString", false, unk, 1));
 
         private readonly string currentDir;
         private readonly IOdbgScriptHost host;

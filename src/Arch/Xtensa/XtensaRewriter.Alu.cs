@@ -89,13 +89,13 @@ namespace Reko.Arch.Xtensa
             m.Assign(dst, fn(src1, src2));
         }
 
-        private void RewriteIntrinsicFn(string name, bool isIdempotent)
+        private void RewriteIntrinsicFn(string name, bool hasSideEffect)
         {
             var aSrc = instr.Operands.Skip(1)
                 .Select(o => RewriteOp(o))
                 .ToArray();
             var dst = RewriteOp(instr.Operands[0]);
-            m.Assign(dst, host.Intrinsic(name, isIdempotent, dst.DataType, aSrc));
+            m.Assign(dst, host.Intrinsic(name, hasSideEffect, dst.DataType, aSrc));
         }
 
         private void RewriteIntrinsicProc(string name)
@@ -103,7 +103,7 @@ namespace Reko.Arch.Xtensa
             var aSrc = instr.Operands
                 .Select(o => RewriteOp(o))
                 .ToArray();
-            m.SideEffect(host.Intrinsic(name, false, VoidType.Instance, aSrc));
+            m.SideEffect(host.Intrinsic(name, true, VoidType.Instance, aSrc));
         }
 
         private void RewriteClamps()
@@ -111,7 +111,7 @@ namespace Reko.Arch.Xtensa
             var src = RewriteOp(instr.Operands[1]);
             var clampSize = RewriteOp(instr.Operands[2]);
             var dst = RewriteOp(instr.Operands[0]);
-            m.Assign(dst, host.Intrinsic("__clamps", true, PrimitiveType.Int32, src, clampSize));
+            m.Assign(dst, host.Intrinsic("__clamps", false, PrimitiveType.Int32, src, clampSize));
         }
 
         private void RewriteCopy()
@@ -130,7 +130,7 @@ namespace Reko.Arch.Xtensa
             {
                 src = m.FMul(src, scale);
             }
-            m.Assign(dst, host.Intrinsic(fnName, true, dtIntegral, src));
+            m.Assign(dst, host.Intrinsic(fnName, false, dtIntegral, src));
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace Reko.Arch.Xtensa
             var src1 = RewriteOp(this.instr.Operands[1]);
             var src2 = RewriteOp(this.instr.Operands[2]);
             var dst = RewriteOp(this.instr.Operands[0]);
-            m.Assign(dst, host.Intrinsic("max", true, PrimitiveType.Int32, src1, src2));
+            m.Assign(dst, host.Intrinsic("max", false, PrimitiveType.Int32, src1, src2));
         }
 
         private void RewriteMaxu()
@@ -180,7 +180,7 @@ namespace Reko.Arch.Xtensa
             var src1 = RewriteOp(this.instr.Operands[1]);
             var src2 = RewriteOp(this.instr.Operands[2]);
             var dst = RewriteOp(this.instr.Operands[0]);
-            m.Assign(dst, host.Intrinsic("__maxu", true, PrimitiveType.UInt32, src1, src2));
+            m.Assign(dst, host.Intrinsic("__maxu", false, PrimitiveType.UInt32, src1, src2));
         }
 
         private void RewriteMin()
@@ -188,7 +188,7 @@ namespace Reko.Arch.Xtensa
             var src1 = RewriteOp(this.instr.Operands[1]);
             var src2 = RewriteOp(this.instr.Operands[2]);
             var dst = RewriteOp(this.instr.Operands[0]);
-            m.Assign(dst, host.Intrinsic("min", true, PrimitiveType.Int32, src1, src2));
+            m.Assign(dst, host.Intrinsic("min", false, PrimitiveType.Int32, src1, src2));
         }
 
         private void RewriteMinu()
@@ -196,7 +196,7 @@ namespace Reko.Arch.Xtensa
             var src1 = RewriteOp(this.instr.Operands[1]);
             var src2 = RewriteOp(this.instr.Operands[2]);
             var dst = RewriteOp(this.instr.Operands[0]);
-            m.Assign(dst, host.Intrinsic("__minu", true, PrimitiveType.UInt32, src1, src2));
+            m.Assign(dst, host.Intrinsic("__minu", false, PrimitiveType.UInt32, src1, src2));
         }
 
         private void RewriteMovft(Func<Expression, Expression> fn)
@@ -327,7 +327,7 @@ namespace Reko.Arch.Xtensa
         {
             var src1 = RewriteOp(instr.Operands[0]);
             var src2 = RewriteOp(instr.Operands[1]);
-            var product = host.Intrinsic(fnName, true, dtProduct, src1, src2);
+            var product = host.Intrinsic(fnName, false, dtProduct, src1, src2);
             var dst = binder.EnsureSequence(PrimitiveType.CreateWord(40), Registers.ACCHI, Registers.ACCLO);
             m.Assign(dst, product);
         }
@@ -336,7 +336,7 @@ namespace Reko.Arch.Xtensa
         {
             var src1 = RewriteOp(instr.Operands[0]);
             var src2 = RewriteOp(instr.Operands[1]);
-            var product = host.Intrinsic(fnName, true, dtProduct, src1, src2);
+            var product = host.Intrinsic(fnName, false, dtProduct, src1, src2);
             var dst = binder.EnsureSequence(PrimitiveType.CreateWord(40), Registers.ACCHI, Registers.ACCLO);
             m.Assign(dst, m.IAdd(dst, product));
         }
@@ -347,7 +347,7 @@ namespace Reko.Arch.Xtensa
             m.Assign(addr, m.AddSubSignedInt(addr, increment));
             var src1 = RewriteOp(instr.Operands[2]);
             var src2 = RewriteOp(instr.Operands[3]);
-            var product = host.Intrinsic(fnName, true, dtProduct, src1, src2);
+            var product = host.Intrinsic(fnName, false, dtProduct, src1, src2);
             var dst = binder.EnsureSequence(PrimitiveType.CreateWord(40), Registers.ACCHI, Registers.ACCLO);
             m.Assign(dst, m.IAdd(dst, product));
             m.Assign(RewriteOp(instr.Operands[0]), m.Mem32(addr));
@@ -357,7 +357,7 @@ namespace Reko.Arch.Xtensa
         {
             var src1 = RewriteOp(instr.Operands[0]);
             var src2 = RewriteOp(instr.Operands[1]);
-            var product = host.Intrinsic(fnName, true, dtProduct, src1, src2);
+            var product = host.Intrinsic(fnName, false, dtProduct, src1, src2);
             var dst = binder.EnsureSequence(PrimitiveType.CreateWord(40), Registers.ACCHI, Registers.ACCLO);
             m.Assign(dst, m.ISub(dst, product));
         }
@@ -382,7 +382,7 @@ namespace Reko.Arch.Xtensa
             var src1 = RewriteOp(instr.Operands[1]);
             var src2 = RewriteOp(instr.Operands[2]);
             var dst = RewriteOp(instr.Operands[0]);
-            var mul = host.Intrinsic(fnName, true, dt, src1, src2);
+            var mul = host.Intrinsic(fnName, false, dt, src1, src2);
             m.Assign(dst, mul);
         }
 
@@ -408,7 +408,7 @@ namespace Reko.Arch.Xtensa
             var dst = RewriteOp(instr.Operands[0]);
             m.Assign(dst, host.Intrinsic(
                 "__sext",
-                true,
+                false,
                 PrimitiveType.Int32,
                 src, bits));
         }

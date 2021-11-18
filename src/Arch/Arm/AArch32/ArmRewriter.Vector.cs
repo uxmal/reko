@@ -91,7 +91,7 @@ namespace Reko.Arch.Arm.AArch32
                 var aDst = new ArrayType(dstType, cElems);
                 var tmpSrc = binder.CreateTemporary(aSrc);
                 m.Assign(tmpSrc, src);
-                m.Assign(dst, host.Intrinsic($"__vcvt_{vectorConversionNames[instr.vector_data]}", false, aDst, tmpSrc));
+                m.Assign(dst, host.Intrinsic($"__vcvt_{vectorConversionNames[instr.vector_data]}", true, aDst, tmpSrc));
             }
         }
 
@@ -106,7 +106,7 @@ namespace Reko.Arch.Arm.AArch32
             case ArmVectorData.U32F32: dstType = PrimitiveType.UInt32; break;
             default: NotImplementedYet(); return;
             }
-            src = host.Intrinsic("trunc", false, src.DataType, src);
+            src = host.Intrinsic("trunc", true, src.DataType, src);
             m.Assign(dst, m.Convert(src, src.DataType, dstType));
         }
 
@@ -116,7 +116,7 @@ namespace Reko.Arch.Arm.AArch32
             var src2 = Operand(Src2());
             var src3 = Operand(Src3());
             var dst = Operand(Dst(), PrimitiveType.Word32, true);
-            var intrinsic = host.Intrinsic("__vext", false, dst.DataType, src1, src2, src3);
+            var intrinsic = host.Intrinsic("__vext", true, dst.DataType, src1, src2, src3);
             m.Assign(dst, intrinsic);
         }
 
@@ -172,7 +172,7 @@ namespace Reko.Arch.Arm.AArch32
                 }
  
                 var fname = $"__vmov_{VectorElementTypeName(instr.vector_data)}";
-                var intrinsic = host.Intrinsic(fname,false,Dst().Width, src);
+                var intrinsic = host.Intrinsic(fname,true, Dst().Width, src);
                 m.Assign(dst, m.Fn(intrinsic));
             }
             else
@@ -309,7 +309,7 @@ namespace Reko.Arch.Arm.AArch32
             var dt = instr.vector_data == ArmVectorData.F32 ? PrimitiveType.Real32 : PrimitiveType.Real64;
             var src = this.Operand(Src1());
             var dst = this.Operand(Dst(), PrimitiveType.Word32, true);
-            var intrinsic = host.Intrinsic(fnname, false, dt, src);
+            var intrinsic = host.Intrinsic(fnname, true, dt, src);
             m.Assign(dst, intrinsic);
         }
 
@@ -323,7 +323,7 @@ namespace Reko.Arch.Arm.AArch32
             var celem = dstType.BitSize / elemBitSize;
             var arrType = new ArrayType(srcType, celem);
             var fnName = $"__vdup_{elemBitSize}";
-            var intrinsic = host.Intrinsic(fnName, false, arrType, src);
+            var intrinsic = host.Intrinsic(fnName, true, arrType, src);
             m.Assign(dst, intrinsic);
         }
 
@@ -373,7 +373,7 @@ namespace Reko.Arch.Arm.AArch32
             var arrSrc = new ArrayType(srcType, celemSrc);
             var arrDst = new ArrayType(dstType, celemSrc);
             var fnName = $"__vmul_{VectorElementTypeName(instr.vector_data)}";
-            var intrinsic = host.Intrinsic(fnName, false, arrDst, src1, src2);
+            var intrinsic = host.Intrinsic(fnName, true, arrDst, src1, src2);
             m.Assign(dst, m.Fn(intrinsic));
         }
 
@@ -393,7 +393,7 @@ namespace Reko.Arch.Arm.AArch32
             var arrSrc = new ArrayType(srcType, celemSrc);
             var arrDst = new ArrayType(dstType, celemSrc);
             var fnName = string.Format(fnNameFormat, VectorElementTypeName(elemType));
-            var intrinsic = host.Intrinsic(fnName, false, arrDst, src1);
+            var intrinsic = host.Intrinsic(fnName, true, arrDst, src1);
             m.Assign(dst, intrinsic);
         }
 
@@ -425,7 +425,7 @@ namespace Reko.Arch.Arm.AArch32
             var arrSrc = new ArrayType(srcType, celemSrc);
             var arrDst = new ArrayType(dstType, celemSrc);
             var fnName = string.Format(fnNameFormat, VectorElementTypeName(elemType));
-            var intrinsic = host.Intrinsic(fnName, false, arrDst, src1, src2);
+            var intrinsic = host.Intrinsic(fnName, true, arrDst, src1, src2);
             m.Assign(dst, intrinsic);
         }
 

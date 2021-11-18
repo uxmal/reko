@@ -38,11 +38,11 @@ namespace Reko.WindowsItp
                 this.intrinsics = new Dictionary<string, IntrinsicProcedure>();
             }
 
-            public Expression CallIntrinsic(string name, bool isIdempotent, FunctionType fnType, params Expression[] args)
+            public Expression CallIntrinsic(string name, bool hasSideEffect, FunctionType fnType, params Expression[] args)
             {
                 if (!intrinsics.TryGetValue(name, out var intrinsic))
                 {
-                    intrinsic = new IntrinsicProcedure(name, isIdempotent, fnType);
+                    intrinsic = new IntrinsicProcedure(name, hasSideEffect, fnType);
                     intrinsics.Add(name, intrinsic);
                 }
                 return new Application(
@@ -51,27 +51,27 @@ namespace Reko.WindowsItp
                     args);
             }
 
-            public IntrinsicProcedure EnsureIntrinsic(string name, bool isIdempotent, DataType returnType, int arity)
+            public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
             {
                 if (intrinsics.TryGetValue(name, out var intrinsic))
                     return intrinsic;
-                intrinsic = new IntrinsicProcedure(name, isIdempotent, returnType, arity);
+                intrinsic = new IntrinsicProcedure(name, hasSideEffect, returnType, arity);
                 intrinsics.Add(name, intrinsic);
                 return intrinsic;
             }
 
-            public Expression Intrinsic(string name, bool isIdempotent, DataType returnType, params Expression[] args)
+            public Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
             {
-                var intrinsic = EnsureIntrinsic(name, isIdempotent, returnType, args.Length);
+                var intrinsic = EnsureIntrinsic(name, hasSideEffect, returnType, args.Length);
                 return new Application(
                     new ProcedureConstant(PrimitiveType.Ptr32, intrinsic),
                     returnType,
                     args);
             }
 
-            public Expression Intrinsic(string name, bool isIdempotent, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+            public Expression Intrinsic(string name, bool hasSideEffect, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
             {
-                var intrinsic = EnsureIntrinsic(name, isIdempotent, returnType, args.Length);
+                var intrinsic = EnsureIntrinsic(name, hasSideEffect, returnType, args.Length);
                 intrinsic.Characteristics = c;
                 return new Application(
                     new ProcedureConstant(PrimitiveType.Ptr32, intrinsic),

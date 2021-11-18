@@ -84,12 +84,12 @@ namespace Reko.UnitTests.Core
         [Test]
 		public void Prog_EnsureIntrinsic()
 		{
-			var intrinsic = program.EnsureIntrinsicProcedure("foo", false, VoidType.Instance, new Identifier("", PrimitiveType.Int32, null));
+			var intrinsic = program.EnsureIntrinsicProcedure("foo", true, VoidType.Instance, new Identifier("", PrimitiveType.Int32, null));
 			Assert.IsNotNull(intrinsic);
 			Assert.AreEqual("foo", intrinsic.Name);
 			Assert.AreEqual(1, program.Intrinsics.Count);
 
-            var ppp2 = program.EnsureIntrinsicProcedure("foo", false, VoidType.Instance, new Identifier("", PrimitiveType.Int32, null));
+            var ppp2 = program.EnsureIntrinsicProcedure("foo", true, VoidType.Instance, new Identifier("", PrimitiveType.Int32, null));
 			Assert.IsNotNull(ppp2);
 			Assert.AreSame(intrinsic, ppp2);
 			Assert.AreEqual("foo", intrinsic.Name);

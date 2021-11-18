@@ -38,7 +38,7 @@ namespace Reko.Core
         private List<(SyscallInfo, ExternalProcedure)> services;
         private FunctionType dummySig;
 
-        public DispatchProcedure(string name, List<(SyscallInfo, ExternalProcedure)> services) : base(name, false)
+        public DispatchProcedure(string name, List<(SyscallInfo, ExternalProcedure)> services) : base(name, true)
         {
             this.services = services;
             this.dummySig = new FunctionType();

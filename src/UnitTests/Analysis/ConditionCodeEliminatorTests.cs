@@ -453,7 +453,7 @@ done:
                 m.Assign(r1, m.Shr(r1, 1));
                 m.Assign(C, m.Cond(r1));
                 m.Assign(r2, m.Fn(
-                    new IntrinsicProcedure(IntrinsicProcedure.RorC, true, r2.DataType, 2),
+                    new IntrinsicProcedure(IntrinsicProcedure.RorC, false, r2.DataType, 2),
                     r2, Constant.Byte(1), C));
                 m.Assign(C, m.Cond(r2));
                 m.MStore(m.Word32(0x3000), r2);
@@ -477,7 +477,7 @@ done:
                 m.Assign(r1, m.Shl(r1, 1));
                 m.Assign(C, m.Cond(r1));
                 m.Assign(r2, m.Fn(
-                    new IntrinsicProcedure(IntrinsicProcedure.RolC, true, r2.DataType, 2),
+                    new IntrinsicProcedure(IntrinsicProcedure.RolC, false, r2.DataType, 2),
                     r2, Constant.Byte(1), C));
                 m.Assign(C, m.Cond(r2));
                 m.MStore(m.Word32(0x3000), r1);
@@ -806,7 +806,7 @@ ProcedureBuilder_exit:
             #endregion
             RunStringTest(sExp, m => {
                 var RolC = new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure(
-                    IntrinsicProcedure.RolC, true, PrimitiveType.Word16, 3));
+                    IntrinsicProcedure.RolC, false, PrimitiveType.Word16, 3));
                 var r1 = m.Reg16("r1", 1);
                 var r0 = m.Reg16("r0", 0);
                 var psw = new RegisterStorage("psw", 2, 0, PrimitiveType.Word16);
@@ -870,7 +870,7 @@ ProcedureBuilder_exit:
                         new Identifier("e", e.DataType, null!),
                         new Identifier("sh", e.DataType, null!),
                         new Identifier("c", e.DataType, null!));
-                    return m.Fn(new IntrinsicProcedure(IntrinsicProcedure.RolC, true, sig), e, sh, c);
+                    return m.Fn(new IntrinsicProcedure(IntrinsicProcedure.RolC, false, sig), e, sh, c);
                 }
 
                 var ax = m.Reg16("ax", 0);

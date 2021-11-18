@@ -39,7 +39,7 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteFid()
         {
-            m.SideEffect(host.Intrinsic("__fid",false,VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__fid", true, VoidType.Instance));
         }
 
         private void RewriteFld(PrimitiveType dt)

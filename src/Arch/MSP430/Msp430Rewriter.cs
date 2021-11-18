@@ -130,7 +130,7 @@ namespace Reko.Arch.Msp430
 
         private Expression Dadd(Expression a, Expression b)
         {
-            return host.Intrinsic("__dadd", false, a.DataType, a, b);
+            return host.Intrinsic("__dadd", true, a.DataType, a, b);
         }
 
         private Expression RewriteOp(MachineOperand op, DataType? dt = null)
@@ -196,7 +196,7 @@ namespace Reko.Arch.Msp430
                 var ev = fn(dst, src);
                 if (dst.Storage == Registers.sp && ev is Constant)
                 {
-                    m.SideEffect(host.Intrinsic("__set_stackpointer", false, VoidType.Instance, src));
+                    m.SideEffect(host.Intrinsic("__set_stackpointer", true, VoidType.Instance, src));
                 }
                 else
                 {
@@ -247,7 +247,7 @@ namespace Reko.Arch.Msp430
                 var dst = binder.EnsureRegister(rop.Register);
                 if (dst.Storage == Registers.sp && src is Constant)
                 {
-                    m.SideEffect(host.Intrinsic("__set_stackpointer", false, VoidType.Instance, src));
+                    m.SideEffect(host.Intrinsic("__set_stackpointer", true, VoidType.Instance, src));
                 }
                 else
                 {
@@ -484,7 +484,7 @@ namespace Reko.Arch.Msp430
                 src, 
                 (a, b) => host.Intrinsic(
                     IntrinsicProcedure.RorC, 
-                    true,
+                    false,
                     a.DataType, 
                     a, 
                     m.Byte(1),
@@ -520,7 +520,7 @@ namespace Reko.Arch.Msp430
                 instr.Operands[0],
                 host.Intrinsic(
                     "__swpb",
-                    true,
+                    false,
                     PrimitiveType.Word16,
                     src));
         }

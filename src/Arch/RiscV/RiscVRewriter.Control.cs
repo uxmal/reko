@@ -89,7 +89,7 @@ namespace Reko.Arch.RiscV
             var csr = RewriteOp(1);
             var arg = RewriteOp(2);
             var dst = RewriteOp(0);
-            var intrinsic = host.Intrinsic(intrinsicName, false, dst.DataType, csr, arg);
+            var intrinsic = host.Intrinsic(intrinsicName, true, dst.DataType, csr, arg);
             if (dst is Constant)
             {
                 m.SideEffect(intrinsic);
@@ -102,12 +102,12 @@ namespace Reko.Arch.RiscV
 
         private void RewriteEbreak()
         {
-            m.SideEffect(host.Intrinsic("__ebreak", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__ebreak", true, VoidType.Instance));
         }
 
         private void RewriteEcall()
         {
-            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic(IntrinsicProcedure.Syscall, true, VoidType.Instance));
         }
 
         private void RewriteJal()
@@ -164,13 +164,13 @@ namespace Reko.Arch.RiscV
 
         private void RewriteRet(string intrinsicName)
         {
-            m.SideEffect(host.Intrinsic(intrinsicName, false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic(intrinsicName, true, VoidType.Instance));
             m.Return(0, 0);
         }
 
         private void RewriteWfi()
         {
-            m.SideEffect(host.Intrinsic("__wait_for_interrupt", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__wait_for_interrupt", true, VoidType.Instance));
         }
     }
 }

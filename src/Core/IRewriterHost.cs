@@ -27,7 +27,7 @@ namespace Reko.Core
 {
     public interface IRewriterHost
     {
-        IntrinsicProcedure EnsureIntrinsic(string name, bool isIdempotent, DataType returnType, int arity);
+        IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity);
         /// <summary>
         /// Generates a call to an intrinsic procedure named <paramref name="name"/>.
         /// </summary>
@@ -35,9 +35,9 @@ namespace Reko.Core
         /// <param name="returnType"></param>
         /// <param name="args"></param>
         /// <returns>An Application expression.</returns>
-        Expression Intrinsic(string name, bool isIdempotent, DataType returnType, params Expression [] args);
-        Expression CallIntrinsic(string name, bool isIdempotent, FunctionType fnType, params Expression [] args);
-        Expression Intrinsic(string name, bool isIdempotent, ProcedureCharacteristics c, DataType returnType, params Expression [] args);
+        Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression [] args);
+        Expression CallIntrinsic(string name, bool hasSideEffect, FunctionType fnType, params Expression [] args);
+        Expression Intrinsic(string name, bool hasSideEffect, ProcedureCharacteristics c, DataType returnType, params Expression [] args);
 
 
         /// <summary>
@@ -70,12 +70,12 @@ namespace Reko.Core
 
     public class NullRewriterHost : IRewriterHost
     {
-        public Expression CallIntrinsic(string name, bool isIdempotent, FunctionType fnType, params Expression[] args)
+        public Expression CallIntrinsic(string name, bool hasSideEffect, FunctionType fnType, params Expression[] args)
         {
             throw new NotSupportedException();
         }
 
-        public IntrinsicProcedure EnsureIntrinsic(string name, bool isIdempotent, DataType returnType, int arity)
+        public IntrinsicProcedure EnsureIntrinsic(string name, bool hasSideEffect, DataType returnType, int arity)
         {
             throw new NotSupportedException();
         }
@@ -104,12 +104,12 @@ namespace Reko.Core
             return null;
         }
 
-        public Expression Intrinsic(string name, bool isIdempotent, DataType returnType, params Expression[] args)
+        public Expression Intrinsic(string name, bool hasSideEffect, DataType returnType, params Expression[] args)
         {
             throw new NotSupportedException();
         }
 
-        public Expression Intrinsic(string name, bool isIdempotent, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+        public Expression Intrinsic(string name, bool hasSideEffect, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
         {
             throw new NotSupportedException();
             throw new NotImplementedException();

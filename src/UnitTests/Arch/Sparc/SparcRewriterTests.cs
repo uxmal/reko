@@ -173,13 +173,13 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             host.Setup(h => h.Intrinsic(
                 "__mulscc",
-                true,
+                false,
                 VoidType.Instance,
                 It.IsNotNull<Expression[]>()))
                 .Returns(new Application(
                      new ProcedureConstant(
                         PrimitiveType.Ptr32,
-                        new IntrinsicProcedure("__mulscc", true, PrimitiveType.Int32, 2)),
+                        new IntrinsicProcedure("__mulscc", false, PrimitiveType.Int32, 2)),
                 VoidType.Instance,
                 Constant.Word32(0x19)));
 
@@ -346,13 +346,13 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             host.Setup(h => h.Intrinsic(
                 IntrinsicProcedure.Syscall,
-                false,
+                true,
                 VoidType.Instance,
-                It.IsNotNull<Expression[] >()))
+                It.IsNotNull<Expression[]>()))
                 .Returns(new Application(
                     new ProcedureConstant(
                         PrimitiveType.Ptr32,
-                        new IntrinsicProcedure(IntrinsicProcedure.Syscall, false, VoidType.Instance, 1)),
+                        new IntrinsicProcedure(IntrinsicProcedure.Syscall, true, VoidType.Instance, 1)),
                     VoidType.Instance,
                     Constant.Word32(0x19)));
             Given_UInt32s(0x91D02999);  // ta\t%g1,0x00000019<32>"

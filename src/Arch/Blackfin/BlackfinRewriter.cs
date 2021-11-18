@@ -199,7 +199,7 @@ namespace Reko.Arch.Blackfin
 
         private void RewriteCli()
         {
-            m.SideEffect(host.Intrinsic("__cli", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__cli", true, VoidType.Instance));
         }
 
         private void RewriteJump()

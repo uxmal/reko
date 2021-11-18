@@ -895,7 +895,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                  "1|L--|r19 = __reverse_bytes_32(Mem0[r3:word32])");
             AssertCode(0x7c00252c, // stwbrx r0,0,r4
                  "0|L--|00100000(4): 1 instructions",
-                 "1|L--|Mem0[r4:word32] = __reverse_bytes_32(r0)");
+                 "1|L--|Mem0[r4:word32] = __stwbrx(r0)");
         }
 
         [Test]

@@ -77,7 +77,7 @@ namespace Reko.Arch.Sparc
             var dst = RewriteOp(1)!;
             var bTmp = binder.CreateTemporary(PrimitiveType.Byte);
             var tmpHi = binder.CreateTemporary(PrimitiveType.CreateWord(dst.DataType.BitSize - bTmp.DataType.BitSize));
-            var intrinsic = host.Intrinsic("__ldstub", false, bTmp.DataType, m.AddrOf(arch.PointerType, mem));
+            var intrinsic = host.Intrinsic("__ldstub", true, bTmp.DataType, m.AddrOf(arch.PointerType, mem));
             m.Assign(bTmp, intrinsic);
             m.Assign(tmpHi, m.Slice(tmpHi.DataType, dst, bTmp.DataType.BitSize));
             m.Assign(dst, m.Seq(tmpHi, bTmp));
@@ -102,7 +102,7 @@ namespace Reko.Arch.Sparc
             var src2 = RewriteOp(instrCur.Operands[1])!;
             m.Assign(
                 dst,
-                host.Intrinsic("__mulscc", true, PrimitiveType.Int32, src1, src2));
+                host.Intrinsic("__mulscc", false, PrimitiveType.Int32, src1, src2));
             EmitCc(dst);
         }
 

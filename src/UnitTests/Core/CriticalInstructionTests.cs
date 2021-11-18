@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Core
 		{
 			Assert.IsTrue(CriticalInstruction.IsCritical(new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, 
 				new Application(
-                    new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure("effect", false, PrimitiveType.Int32, 0)),
+                    new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure("effect", true, PrimitiveType.Int32, 0)),
                     PrimitiveType.Word32),
 				Constant.Word32(1))));
 		}

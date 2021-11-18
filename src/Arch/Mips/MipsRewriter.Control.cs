@@ -84,7 +84,7 @@ namespace Reko.Arch.Mips
             var reg = RewriteOperand0(instr.Operands[0]);
             var bit = RewriteOperand(instr.Operands[1]);
             var addr = (Address) RewriteOperand0(instr.Operands[2]);
-            var test = condOp(host.Intrinsic("__bit", true, PrimitiveType.Bool, reg, bit));
+            var test = condOp(host.Intrinsic("__bit", false, PrimitiveType.Bool, reg, bit));
             m.Branch(test, addr, instr.InstructionClass);
         }
 
@@ -223,7 +223,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteJalr_hb(MipsInstruction instr)
         {
-            m.SideEffect(host.Intrinsic("__clear_hazard_barrier", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__clear_hazard_barrier", true, VoidType.Instance));
             RewriteJalr(instr);
         }
 
@@ -263,7 +263,7 @@ namespace Reko.Arch.Mips
             {
                 Terminates = true
             };
-            m.SideEffect(host.Intrinsic("__reserved_instruction", false, chr,
+            m.SideEffect(host.Intrinsic("__reserved_instruction", true, chr,
                 VoidType.Instance, RewriteOperand(instr.Operands[0])));
         }
     }

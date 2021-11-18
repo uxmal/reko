@@ -344,7 +344,7 @@ namespace Reko.Environments.Gameboy
             var bit = Op(0);
             var exp = Op(1);
             var z = binder.EnsureFlagGroup(Registers.Z);
-            m.Assign(z, host.Intrinsic("__test_bit", true, PrimitiveType.Bool, exp, bit));
+            m.Assign(z, host.Intrinsic("__test_bit", false, PrimitiveType.Bool, exp, bit));
             Emit__01_();
         }
 
@@ -384,7 +384,7 @@ namespace Reko.Environments.Gameboy
         private void Rewrite_daa()
         {
             var a = binder.EnsureRegister(Registers.a);
-            m.Assign(a, host.Intrinsic("__decimal_adjust", true, a.DataType, a));
+            m.Assign(a, host.Intrinsic("__decimal_adjust", false, a.DataType, a));
             Emit_Z_0C(a);
         }
 
@@ -400,17 +400,17 @@ namespace Reko.Environments.Gameboy
 
         private void Rewrite_di()
         {
-            m.SideEffect(host.Intrinsic("__disable_interrupts", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__disable_interrupts", true, VoidType.Instance));
         }
 
         private void Rewrite_ei()
         {
-            m.SideEffect(host.Intrinsic("__enable_interrupts", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__enable_interrupts", true, VoidType.Instance));
         }
 
         private void Rewrite_halt()
         {
-            m.SideEffect(host.Intrinsic("__halt", false, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__halt", true, VoidType.Instance));
         }
 
         private void Rewrite_inc()
@@ -513,7 +513,7 @@ namespace Reko.Environments.Gameboy
         {
             var bit = Op(0);
             var exp = Op(1);
-            m.Assign(exp, host.Intrinsic("__reset_bit", true, exp.DataType, exp, bit));
+            m.Assign(exp, host.Intrinsic("__reset_bit", false, exp.DataType, exp, bit));
         }
 
         private void Rewrite_ret()
@@ -536,7 +536,7 @@ namespace Reko.Environments.Gameboy
         {
             var exp = Op(0);
             var cy = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.RolC, true, exp.DataType, exp, m.Byte(1), cy));
+            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.RolC, false, exp.DataType, exp, m.Byte(1), cy));
             Emit_Z00C(m.Cond(exp));
         }
 
@@ -544,7 +544,7 @@ namespace Reko.Environments.Gameboy
         {
             var exp = binder.EnsureRegister(Registers.a);
             var cy = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.RolC, true, exp.DataType, exp, m.Byte(1), cy));
+            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.RolC, false, exp.DataType, exp, m.Byte(1), cy));
             Emit_000C(m.Cond(exp));
         }
 
@@ -552,14 +552,14 @@ namespace Reko.Environments.Gameboy
         {
             var exp = Op(0);
             var cy = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.Rol, true, exp.DataType, exp, m.Byte(1), cy));
+            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.Rol, false, exp.DataType, exp, m.Byte(1), cy));
             Emit_Z00C(m.Cond(exp));
         }
 
         private void Rewrite_rlca()
         {
             var exp = binder.EnsureRegister(Registers.a);
-            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.Rol, true, exp.DataType, exp, m.Byte(1)));
+            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.Rol, false, exp.DataType, exp, m.Byte(1)));
             Emit_000C(m.Cond(exp));
         }
 
@@ -567,7 +567,7 @@ namespace Reko.Environments.Gameboy
         {
             var exp = Op(0);
             var cy = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.RorC, true, exp.DataType, exp, m.Byte(1), cy));
+            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.RorC, false, exp.DataType, exp, m.Byte(1), cy));
             Emit_Z00C(m.Cond(exp));
         }
 
@@ -575,21 +575,21 @@ namespace Reko.Environments.Gameboy
         {
             var exp = binder.EnsureRegister(Registers.a);
             var cy = binder.EnsureFlagGroup(Registers.C);
-            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.RorC, true, exp.DataType, exp, m.Byte(1), cy));
+            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.RorC, false, exp.DataType, exp, m.Byte(1), cy));
             Emit_000C(m.Cond(exp));
         }
 
         private void Rewrite_rrc()
         {
             var exp = Op(0);
-            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.Ror, true, exp.DataType, exp, m.Byte(1)));
+            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.Ror, false, exp.DataType, exp, m.Byte(1)));
             Emit_Z00C(exp);
         }
 
         private void Rewrite_rrca()
         {
             var exp = binder.EnsureRegister(Registers.a);
-            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.Ror, true, exp.DataType, exp, m.Byte(1)));
+            m.Assign(exp, host.Intrinsic(IntrinsicProcedure.Ror, false, exp.DataType, exp, m.Byte(1)));
             Emit_000C(m.Cond(exp));
         }
 
@@ -617,7 +617,7 @@ namespace Reko.Environments.Gameboy
         {
             var bit = Op(0);
             var exp = Op(1);
-            m.Assign(exp, host.Intrinsic("__set_bit", true, exp.DataType, exp, bit));
+            m.Assign(exp, host.Intrinsic("__set_bit", false, exp.DataType, exp, bit));
         }
 
         private void Rewrite_sla()
@@ -647,7 +647,7 @@ namespace Reko.Environments.Gameboy
             {
                 Terminates = true
             };
-            m.SideEffect(host.Intrinsic("__stop", false, ch, VoidType.Instance));
+            m.SideEffect(host.Intrinsic("__stop", true, ch, VoidType.Instance));
         }
 
         private void Rewrite_sub()
@@ -661,7 +661,7 @@ namespace Reko.Environments.Gameboy
         private void Rewrite_swap()
         {
             var exp = Op(0);
-            m.Assign(exp, host.Intrinsic("__swap_nybbles", true, exp.DataType, exp));
+            m.Assign(exp, host.Intrinsic("__swap_nybbles", false, exp.DataType, exp));
             Emit_Z000(m.Cond(exp));
         }
 
