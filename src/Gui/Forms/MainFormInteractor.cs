@@ -27,6 +27,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Gui.Services;
 using Reko.Scanning;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;

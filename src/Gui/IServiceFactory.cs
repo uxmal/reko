@@ -24,6 +24,7 @@ using Reko.Core.Services;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Services;
 using System.ComponentModel.Design;
 
 namespace Reko.Gui

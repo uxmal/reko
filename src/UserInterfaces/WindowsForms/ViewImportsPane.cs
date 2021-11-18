@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Services;
+using Reko.Services;
 using System;
 using System.Collections;
 using System.Diagnostics;

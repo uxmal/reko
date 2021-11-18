@@ -28,6 +28,7 @@ using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
 using Reko.Gui.Visualizers;
+using Reko.Services;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using System;
 using System.Collections.Generic;

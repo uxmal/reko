@@ -17,13 +17,12 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Loading;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Reko.Core
+namespace Reko
 {
     /// <summary>
     /// Interface to a running instance of the Reko decompiler.
@@ -37,7 +36,7 @@ namespace Reko.Core
         public event EventHandler? ProjectChanged;
 
         /// <summary>
-        /// The current <see cref="Core.Project"/> used by the decompiler, or
+        /// The current <see cref="Project"/> used by the decompiler, or
         /// null if no project has been loaded.
         /// </summary>
         Project? Project { get; }

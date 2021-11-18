@@ -22,8 +22,8 @@
 
 using Reko.Core;
 using Reko.Core.Serialization;
-using Reko.Core.Services;
 using Reko.Gui.Services;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

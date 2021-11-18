@@ -21,10 +21,10 @@
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Output;
-using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
 using Reko.Gui.Services;
+using Reko.Services;
 using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
