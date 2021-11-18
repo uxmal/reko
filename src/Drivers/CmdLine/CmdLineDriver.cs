@@ -24,6 +24,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Services;
 using Reko.Loading;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
