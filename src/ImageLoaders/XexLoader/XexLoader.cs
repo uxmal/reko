@@ -45,7 +45,7 @@ namespace Reko.ImageLoaders.Xex
 		private const uint IMAGE_SUBSYSTEM_XBOX = 14;
 		private DecompilerEventListener decompilerEventListener;
 
-		public XexLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
+		public XexLoader(IServiceProvider services, RekoUri imageUri, byte[] imgRaw) : base(services, imageUri, imgRaw)
 		{
 			decompilerEventListener = services.RequireService<DecompilerEventListener>();
 			rdr = new BeImageReader(RawImage, 0);

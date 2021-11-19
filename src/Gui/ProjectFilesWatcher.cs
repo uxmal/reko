@@ -35,7 +35,7 @@ using System.Timers;
 
 namespace Reko.Gui
 {
-    using FileWatchersMap = ConcurrentDictionary<string, FileSystemWatcher>;
+    using FileWatchersMap = ConcurrentDictionary<RekoUri, FileSystemWatcher>;
 
     /// <summary>
     /// Watch project files, reload them if they were changed.
@@ -102,12 +102,16 @@ namespace Reko.Gui
 
         private void AddScripts(IEnumerable<ScriptFile> newScripts)
         {
-            foreach(ScriptFile script in newScripts)
+            foreach (ScriptFile script in newScripts)
             {
-                var directoryName = Path.GetDirectoryName(script.Filename);
-                var fileName = Path.GetFileName(script.Filename);
+                if (UriTools.UriHasFragments(script.Uri))
+                    continue;
+                var fullPath = UriTools.FilePathFromUri(script.Uri);
+                var directoryName = Path.GetDirectoryName(fullPath);
+                var fileName = Path.GetFileName(fullPath);
+                
                 var watcher = new FileSystemWatcher(directoryName, fileName);
-                if (scriptWatchers.TryAdd(script.Filename, watcher))
+                if (scriptWatchers.TryAdd(script.Uri, watcher))
                 {
                     watcher.NotifyFilter = NotifyFilters.LastWrite;
                     watcher.Changed += OnScriptFileChanged;
@@ -124,7 +128,7 @@ namespace Reko.Gui
         {
             foreach (ScriptFile script in oldScripts)
             {
-                if (scriptWatchers.TryRemove(script.Filename, out var watcher))
+                if (scriptWatchers.TryRemove(script.Uri, out var watcher))
                 {
                     watcher.Changed -= OnScriptFileChanged;
                     watcher.EnableRaisingEvents = false;
@@ -135,17 +139,17 @@ namespace Reko.Gui
 
         private void ReloadScript(ScriptFile scriptFile)
         {
-            var fileName = scriptFile.Filename;
+            var scriptUri = scriptFile.Uri;
             try
             {
-                var bytes = loader.LoadImageBytes(fileName, 0);
+                var bytes = loader.LoadImageBytes(scriptUri, 0);
                 var stream = new MemoryStream(bytes);
                 using var rdr = new StreamReader(stream);
                 scriptFile.Evaluate(rdr.ReadToEnd());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                eventListener.Error(ex, $"Failed to load script {fileName}.");
+                eventListener.Error(ex, $"Failed to load script {scriptUri}.");
             }
         }
 
@@ -177,9 +181,9 @@ namespace Reko.Gui
                 return;
             var fullPath = Path.GetFullPath(fileName);
             var scriptFile = project.ScriptFiles.
-                Where(s => Path.GetFullPath(s.Filename) == fullPath).
+                Where(s => Path.GetFullPath(s.Uri.ExtractString()) == fullPath).
                 FirstOrDefault();
-            if (scriptFile != null)
+            if (scriptFile is not null)
             {
                 ReloadScript(scriptFile);
             }

@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Arch.X86
     [TestFixture]
     public class X86DisassemblerTests
     {
-        private ServiceContainer sc;
+        private readonly ServiceContainer sc;
         private X86Disassembler dasm;
         private Dictionary<string,object> options;
 

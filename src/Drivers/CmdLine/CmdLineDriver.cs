@@ -164,7 +164,8 @@ namespace Reko.CmdLine
             {
                 var fileName = (string) pArgs["filename"];
                 var filePath = Path.GetFullPath(fileName);
-                if (!decompiler.Load(filePath, (string) loader, addrLoad))
+                var imageUri = UriTools.UriFromFilePath(filePath);
+                if (!decompiler.Load(imageUri, (string) loader, addrLoad))
                     return;
 
                 var program = decompiler.Project.Programs[0];
@@ -178,7 +179,7 @@ namespace Reko.CmdLine
                 {
                     decompiler.Project.MetadataFiles.Add(new MetadataFile
                     {
-                        Filename = (string) oMetadata
+                        Uri = UriTools.UriFromFilePath((string) oMetadata)
                     });
                 }
                 if (pArgs.ContainsKey("dasm-address"))
@@ -305,7 +306,8 @@ namespace Reko.CmdLine
             }
             else
             {
-                return decompiler.LoadRawImage((string) pArgs["filename"], loadDetails);
+                var uri = UriTools.UriFromFilePath((string) pArgs["filename"]);
+                return decompiler.LoadRawImage(uri, loadDetails);
             }
         }
 

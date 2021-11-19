@@ -44,17 +44,17 @@ namespace Reko.Core.Serialization
         /// <summary>
         /// Given a <see cref="Project"/> serializes it into a <see cref="Project_v5"/>. 
         /// </summary>
-        /// <param name="projectAbsPath"></param>
-        /// <param name="project"></param>
+        /// <param name="projectUri">The URI of the project file.</param>
+        /// <param name="project">A <see cref="Project"/> instance.</param>
         /// <returns></returns>
-        public Project_v5 Serialize(string projectAbsPath, Project project)
+        public Project_v5 Serialize(RekoUri projectUri, Project project)
         {
             var inputFiles = project.Programs.Select(
-                p => VisitProgram(projectAbsPath, p)).ToList();
+                p => VisitProgram(projectUri, p)).ToList();
             var metadataFiles = project.MetadataFiles.Select(
-                m => VisitMetadataFile(projectAbsPath, m)).ToList();
+                m => VisitMetadataFile(projectUri, m)).ToList();
             var scriptFiles = project.ScriptFiles.Select(
-                s => VisitScriptFile(projectAbsPath, s)).ToList();
+                s => VisitScriptFile(projectUri, s)).ToList();
             var sp = new Project_v5
             {
                 // ".Single()" because there can be only one Architecture and Platform, realistically.
@@ -67,11 +67,12 @@ namespace Reko.Core.Serialization
             return sp;
         }
 
-        public DecompilerInput_v5 VisitProgram(string projectAbsPath, Program program)
+        public DecompilerInput_v5 VisitProgram(RekoUri projectUri, Program program)
         {
+            var projectPath = UriTools.FilePathFromUri(projectUri);
             return new DecompilerInput_v5
             {
-                Filename = ConvertToProjectRelativePath(projectAbsPath, program.Filename),
+                Uri = ConvertToProjectRelativeUri(projectUri, program.Uri),
                 User = new UserData_v4
                 {
                     Loader = program.User.Loader,
@@ -101,10 +102,10 @@ namespace Reko.Core.Serialization
                     OutputFilePolicy = program.User.OutputFilePolicy,
                     AggressiveBranchRemoval = program.User.AggressiveBranchRemoval,
                 },
-                DisassemblyDirectory =  ConvertToProjectRelativePath(projectAbsPath, program.DisassemblyDirectory),
-                SourceDirectory =       ConvertToProjectRelativePath(projectAbsPath, program.SourceDirectory),
-                IncludeDirectory =      ConvertToProjectRelativePath(projectAbsPath, program.IncludeDirectory),
-                ResourcesDirectory =    ConvertToProjectRelativePath(projectAbsPath, program.ResourcesDirectory),
+                DisassemblyDirectory =  ConvertToProjectRelativePath(projectPath, program.DisassemblyDirectory),
+                SourceDirectory =       ConvertToProjectRelativePath(projectPath, program.SourceDirectory),
+                IncludeDirectory =      ConvertToProjectRelativePath(projectPath, program.IncludeDirectory),
+                ResourcesDirectory =    ConvertToProjectRelativePath(projectPath, program.ResourcesDirectory),
             };
         }
 
@@ -311,22 +312,20 @@ namespace Reko.Core.Serialization
             throw new NotSupportedException(value.GetType().Name);
         }
 
-        public MetadataFile_v3 VisitMetadataFile(string projectAbsPath, MetadataFile metadata)
+        public MetadataFile_v3 VisitMetadataFile(RekoUri projectUri, MetadataFile metadata)
         {
             return new MetadataFile_v3
             {
-                 Filename = ConvertToProjectRelativePath(projectAbsPath, metadata.Filename!),
-                  ModuleName = metadata.ModuleName,
+                Uri = ConvertToProjectRelativeUri(projectUri, metadata.Uri!),
+                ModuleName = metadata.ModuleName,
             };
         }
 
-        private ScriptFile_v5 VisitScriptFile(
-            string projectAbsPath, ScriptFile script)
+        private ScriptFile_v5 VisitScriptFile(RekoUri projectUri, ScriptFile script)
         {
             return new ScriptFile_v5
             {
-                Filename = ConvertToProjectRelativePath(
-                    projectAbsPath, script.Filename),
+                Uri = ConvertToProjectRelativeUri(projectUri, script.Uri!),
             };
         }
     }

@@ -29,7 +29,7 @@ using System.Text;
 namespace Reko.Core.Types
 {
     /// <summary>
-    /// A Domain specifies the possible interpretation of a chunk of bytes.
+    /// A Domain specifies the possible interpretation of a datum.
     /// </summary>
     /// <remarks>
     /// A 32-bit load from memory could mean that the variable could be 
@@ -69,10 +69,11 @@ namespace Reko.Core.Types
 	/// </remarks>
 	public class PrimitiveType : DataType
 	{
-        private static ConcurrentDictionary<(Domain,int), PrimitiveType> cache;
-        private static ConcurrentDictionary<string, PrimitiveType> lookupByName;
-        private static Dictionary<int, Domain> mpBitWidthToAllowableDomain;
-        private static ConcurrentDictionary<int, PrimitiveType> mpBitsizeToWord;
+        private static readonly ConcurrentDictionary<(Domain,int), PrimitiveType> cache;
+        private static readonly ConcurrentDictionary<string, PrimitiveType> lookupByName;
+        private static readonly Dictionary<int, Domain> mpBitWidthToAllowableDomain;
+        private static readonly ConcurrentDictionary<int, PrimitiveType> mpBitsizeToWord;
+
         private readonly int bitSize;
         private readonly int byteSize;
 		
@@ -186,9 +187,9 @@ namespace Reko.Core.Types
 
 		public override bool Equals(object obj)
 		{
-            if (!(obj is PrimitiveType that))
-				return false;
-            return that.Domain == this.Domain && that.bitSize == this.bitSize;
+            return (obj is PrimitiveType that &&
+                    that.Domain == this.Domain && 
+                    that.bitSize == this.bitSize);
 		}
 	
         /// <summary>

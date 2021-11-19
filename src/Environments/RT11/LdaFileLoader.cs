@@ -32,7 +32,7 @@ namespace Reko.Environments.RT11
     {
         private Address? addrEntry;
 
-        public LdaFileLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
+        public LdaFileLoader(IServiceProvider services, RekoUri imageUri, byte[] imgRaw) : base(services, imageUri, imgRaw)
         {
             PreferredBaseAddress = Address.Ptr16(0);
         }

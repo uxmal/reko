@@ -287,7 +287,7 @@ namespace Reko.UnitTests.Core.Serialization
                 FilteringXmlWriter writer = new FilteringXmlWriter(fut.TextWriter);
                 writer.Formatting = System.Xml.Formatting.Indented;
                 XmlSerializer ser = SerializedLibrary.CreateSerializer_v5(typeof(Project_v5));
-                Project_v5 ud = new ProjectSaver(sc).Serialize("/var/foo/foo.proj", project);
+                Project_v5 ud = new ProjectSaver(sc).Serialize(UriTools.UriFromFilePath("/var/foo/foo.proj"), project);
                 ser.Serialize(writer, ud);
                 fut.AssertFilesEqual();
             }
@@ -301,7 +301,7 @@ namespace Reko.UnitTests.Core.Serialization
                 ScriptFiles =
                 {
                     new Mock<ScriptFile>(
-                        null, "/var/foo/script.fake", new byte[100]).Object
+                        null, UriTools.UriFromFilePath("/var/foo/script.fake"), new byte[100]).Object
                 },
             };
             var sw = new StringWriter();
@@ -313,13 +313,13 @@ namespace Reko.UnitTests.Core.Serialization
                 typeof(Project_v5));
 
             var saver = new ProjectSaver(sc);
-            var sProject = saver.Serialize("/var/foo/foo.proj", project);
+            var sProject = saver.Serialize(UriTools.UriFromFilePath("/var/foo/foo.proj"), project);
             ser.Serialize(writer, sProject);
 
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <project xmlns=""http://schemata.jklnet.org/Reko/v5"">
   <script>
-    <filename>script.fake</filename>
+    <uri>file:script.fake</uri>
   </script>
 </project>";
             if (sw.ToString() != expected)
@@ -369,7 +369,7 @@ namespace Reko.UnitTests.Core.Serialization
             };
 
             var ps = new ProjectLoader(sc, loader.Object, listener.Object);
-            var project = ps.LoadProject("project.dcproj", sProject);
+            var project = ps.LoadProject(UriTools.UriFromFilePath("/var/project.dcproj"), sProject);
             Assert.AreEqual(2, project.Programs.Count);
             var input0 = project.Programs[0];
             Assert.AreEqual(1, input0.User.Globals.Count);
@@ -392,10 +392,10 @@ namespace Reko.UnitTests.Core.Serialization
                         AccessMode.ReadWriteExecute))
             };
             loader.Setup(l => l.LoadImageBytes(
-                It.Is<string>(s => s.EndsWith(exeName)),
+                It.Is<RekoUri>(s => s.EndsWith(exeName)),
                 It.IsAny<int>())).Returns(bytes);
             loader.Setup(l => l.LoadImage(
-                It.Is<string>(s => s.EndsWith(exeName)),
+                It.Is<RekoUri>(s => s.EndsWith(exeName)),
                 It.IsNotNull<byte[]>(),
                 null,
                 null)).Returns(program);
@@ -415,10 +415,10 @@ namespace Reko.UnitTests.Core.Serialization
                 ImageMap = segmentMap.CreateImageMap()
             };
             loader.Setup(l => l.LoadImageBytes(
-                It.Is<string>(s => s.EndsWith(exeName)),
+                It.Is<RekoUri>(s => s.EndsWith(exeName)),
                 It.IsAny<int>())).Returns(bytes);
             loader.Setup(l => l.LoadImage(
-                It.Is<string>(s => s.EndsWith(exeName)),
+                It.Is<RekoUri>(s => s.EndsWith(exeName)),
                 It.IsNotNull<byte[]>(),
                 null,
                 null)).Returns(program);
@@ -450,24 +450,24 @@ namespace Reko.UnitTests.Core.Serialization
                     {
                         Architecture = arch.Object,
                         Platform = platform.Object,
-                        Filename = "c:\\test\\foo.exe",
+                        Uri = new RekoUri("file:///c:/test/foo.exe"),
                     }
                 },
                 MetadataFiles =
                 {
                     new MetadataFile
                     {
-                        Filename = "c:\\test\\foo.def",
+                        Uri = new RekoUri("file:///c:/test/foo.def"),
                         ModuleName = "foo.def",
                     }
                 }
             };
 
             var ps = new ProjectSaver(sc);
-            ps.Serialize("c:\\test\\foo.project", project);
-            Assert.AreEqual(1, project.MetadataFiles.Count);
-            Assert.AreEqual("c:\\test\\foo.def", project.MetadataFiles[0].Filename);
-            Assert.AreEqual("foo.def", project.MetadataFiles[0].ModuleName);
+            var sProject = ps.Serialize(UriTools.UriFromFilePath("c:\\test\\foo.project"), project);
+            Assert.AreEqual(1, sProject.MetadataFiles.Count);
+            Assert.AreEqual("file:foo.def", sProject.MetadataFiles[0].Uri);
+            Assert.AreEqual("foo.def", sProject.MetadataFiles[0].ModuleName);
         }
 
         [Test]
@@ -490,15 +490,15 @@ namespace Reko.UnitTests.Core.Serialization
             var loader = new Mock<ILoader>();
             var typelib = new TypeLibrary();
             loader.Setup(l => l.LoadMetadata(
-                It.IsAny<string>(),
+                It.IsAny<RekoUri>(),
                 It.IsAny<IPlatform>(),
                 It.IsAny<TypeLibrary>()))
                 .Returns(typelib);
 
             var ploader = new ProjectLoader(sc, loader.Object, listener.Object);
-            var project = ploader.LoadProject("c:\\bar\\bar.dcproj", sProject);
+            var project = ploader.LoadProject(UriTools.UriFromFilePath("c:\\bar\\bar.dcproj"), sProject);
             Assert.AreEqual(1, project.MetadataFiles.Count);
-            Assert.AreEqual("foo.def", project.MetadataFiles[0].Filename[^7..]);
+            Assert.IsTrue(project.MetadataFiles[0].Uri.EndsWith("foo.def"));
         }
 
         [Test]
@@ -542,10 +542,10 @@ namespace Reko.UnitTests.Core.Serialization
             Expect_TryGetRegister(arch, "eax", new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
             Expect_TryGetRegister(arch, "ecx", new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32));
             var loader = new Mock<ILoader>();
-            loader.Setup(l => l.LoadImageBytes(It.IsAny<string>(), It.IsAny<int>()))
+            loader.Setup(l => l.LoadImageBytes(It.IsAny<RekoUri>(), It.IsAny<int>()))
                 .Returns(new byte[10]);
             loader.Setup(l => l.LoadImage(
-                It.IsAny<string>(),
+                It.IsAny<RekoUri>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>()))
@@ -555,7 +555,7 @@ namespace Reko.UnitTests.Core.Serialization
                 });
 
             var ploader = new ProjectLoader(sc, loader.Object, listener.Object);
-            var project = ploader.LoadProject("c:\\tmp\\foo\\bar.proj", sProject);
+            var project = ploader.LoadProject(UriTools.UriFromFilePath("c:\\tmp\\foo\\bar.proj"), sProject);
             Assert.IsTrue(project.Programs[0].User.Heuristics.Contains("HeuristicScanning"));
             Assert.AreEqual("windows-1251", project.Programs[0].User.TextEncoding.WebName);
             Assert.AreEqual(1, project.Programs[0].User.RegisterValues.Count);
@@ -571,7 +571,7 @@ namespace Reko.UnitTests.Core.Serialization
             program.User.TextEncoding = Encoding.GetEncoding("windows-1251");
         
             var pSaver = new ProjectSaver(sc);
-            var file = pSaver.VisitProgram("foo.proj", program);
+            var file = pSaver.VisitProgram(new RekoUri("file:foo.proj"), program);
             var ip = (DecompilerInput_v5)file;
             Assert.IsTrue(ip.User.Heuristics.Any(h => h.Name == "shingle"));
             Assert.AreEqual("windows-1251", ip.User.TextEncoding);
@@ -582,7 +582,7 @@ namespace Reko.UnitTests.Core.Serialization
             var saver = new ProjectSaver(sc);
             var sProj = new Project_v5
             {
-                InputFiles = { saver.VisitProgram("foo.exe", program) }
+                InputFiles = { saver.VisitProgram(new RekoUri("file:foo.exe"), program) }
             };
             var writer = new FilteringXmlWriter(sw);
             writer.Formatting = System.Xml.Formatting.Indented;

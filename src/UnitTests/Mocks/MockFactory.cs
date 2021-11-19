@@ -112,26 +112,26 @@ namespace Reko.UnitTests.Mocks
                 new ImageSegment(".text", mem, AccessMode.ReadExecute));
             program.ImageMap = program.SegmentMap.CreateImageMap();
             mockLoader.Setup(
-                l => l.LoadImage(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<Address>())
+                l => l.LoadImage(It.IsAny<RekoUri>(), It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<Address>())
             ).Returns(program);
 
             mockLoader.Setup(
-                l => l.LoadImageBytes(It.IsAny<string>(), It.IsAny<int>())
+                l => l.LoadImageBytes(It.IsAny<RekoUri>(), It.IsAny<int>())
             ).Returns(new byte[1000]);
 
             return this.mockLoader.Object;
         }
 
         public void CreateLoadMetadataStub(
-            string metafileName, 
+            RekoUri metafileUri, 
             IPlatform platform,
             TypeLibrary loaderMetadata)
         {
             mockLoader.Setup(l => l.LoadMetadata(
-                metafileName,
+                metafileUri,
                 platform,
                 It.IsNotNull<TypeLibrary>()
-            )).Returns((string f, IPlatform p, TypeLibrary tl) =>
+            )).Returns((RekoUri uri, IPlatform p, TypeLibrary tl) =>
                 {
                     foreach (var module in loaderMetadata.Modules)
                         tl.Modules.Add(module);
@@ -185,8 +185,7 @@ namespace Reko.UnitTests.Mocks
             var loader = CreateLoader();
 
             var metafileName = moduleName + ".xml";
-
-            CreateLoadMetadataStub(metafileName, mockPlatform.Object, loaderMetadata);
+            CreateLoadMetadataStub(new RekoUri(metafileName), mockPlatform.Object, loaderMetadata);
         }
     }
 }

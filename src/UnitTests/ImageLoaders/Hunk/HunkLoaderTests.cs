@@ -66,7 +66,7 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
         {
             var bytes = File.ReadAllBytes(
                 FileUnitTester.MapTestPath("../../subjects/Hunk-m68k/FIBO"));
-            var ldr = new HunkLoader(sc, "FIBO", bytes);
+            var ldr = new HunkLoader(sc, new RekoUri("file:FIBO"), bytes);
             ldr.Load(Address.Ptr32(0x10000)); 
         }
 
@@ -80,7 +80,7 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
                 0,
                 0,
                 0);
-            var ldr = new HunkLoader(sc, "foo.bar", bytes);
+            var ldr = new HunkLoader(sc, new RekoUri("file:foo.bar"), bytes);
             var ldImg = ldr.LoadProgram(Address.Ptr32(0x00010000));
             Assert.AreEqual(1, ldImg.SegmentMap.Segments.Count);
             Assert.AreEqual(Address.Ptr32(0x00010000), ldImg.SegmentMap.Segments.Values[0].Address);
@@ -102,7 +102,7 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
                 (ushort) 0x4E75,
                 (ushort) 0,
                 HunkType.HUNK_END);
-            var ldr = new HunkLoader(sc, "foo.bar", bytes);
+            var ldr = new HunkLoader(sc, new RekoUri("file:foo.bar"), bytes);
             var program = ldr.LoadProgram(Address.Ptr32(0x00010000));
             var rlImg = ldr.Relocate(program, Address.Ptr32(0x00010000));
             Assert.AreEqual(1, rlImg.EntryPoints.Count);

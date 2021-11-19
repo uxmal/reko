@@ -56,7 +56,7 @@ namespace Reko.Core
         // Further classification used by scanners
         Padding =     0x0400,   // Instruction _could_ be used as alignment padding between procedures.
         Invalid =     0x0800,   // The instruction is invalid
-        Zero =        0x1000,   // The instruction first "unit" was zero.
+        Zero =        0x1000,   // The instruction's first "unit" was zero.
 
         ConditionalTransfer = Conditional | Transfer,
     }

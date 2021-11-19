@@ -151,7 +151,7 @@ namespace Reko
 
         public void WriteTypes(Program program, Action<string, TextWriter> writer)
         {
-            var incFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), ".h");
+            var incFilename = GenerateDerivedFilename(program, ".h");
             var incPath = Path.Combine(program.IncludeDirectory, incFilename);
             using (TextWriter output = CreateTextWriter(incPath))
             {
@@ -173,12 +173,18 @@ namespace Reko
 
         public void WriteGlobals(Program program, Action<string, TextWriter> writer)
         {
-            var globalsFilename = Path.ChangeExtension(Path.GetFileName(program.Filename), "globals.c");
+            var globalsFilename = GenerateDerivedFilename(program, "globals.c");
             var globalsPath = Path.Combine(program.SourceDirectory, globalsFilename);
             using (TextWriter output = CreateTextWriter(globalsPath))
             {
                 writer(globalsFilename, output);
             }
+        }
+
+        public static string GenerateDerivedFilename(Program program, string newExtension)
+        {
+            var fragment = UriTools.ParseLastFragment(program.Uri);
+            return Path.ChangeExtension(Path.GetFileName(fragment), newExtension);
         }
     }
 }

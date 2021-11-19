@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Loading
             var platform = new Mock<IPlatform>();
             platform.Setup(p => p.CreateAbsoluteMemoryMap()).Returns(mmap);
 
-            var ldr = new NullImageLoader(null, "foo.exe", new byte[0x1000]);
+            var ldr = new NullImageLoader(null, new RekoUri("foo.exe"), new byte[0x1000]);
             var segMap = ldr.CreatePlatformSegmentMap(platform.Object, Address.Ptr16(0x0100), new byte[] { 0x50 });
             Assert.AreEqual(2, segMap.Segments.Count);
             var bmemProg = (ByteMemoryArea) segMap.Segments.Values.ElementAt(1).MemoryArea;

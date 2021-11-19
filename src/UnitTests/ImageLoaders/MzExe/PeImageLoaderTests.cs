@@ -307,7 +307,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
 
         private void Given_PeLoader()
         {
-            peldr = new PeImageLoader(sc, "test.exe", fileImage, RvaPeHdr);
+            peldr = new PeImageLoader(sc, new RekoUri("file:test.exe"), fileImage, RvaPeHdr);
         }
 
         private int Given_ImportDescriptor32(
@@ -336,23 +336,22 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             writer.Position = rvaTable;                     // rewind to beginning of table.
             foreach (object imp in import)
             {
-                var s = imp as string;
-                if (s != null)
+                if (imp is string s)
                 {
-                    writer.WriteLeInt32((int)strWriter.Position);
+                    writer.WriteLeInt32((int) strWriter.Position);
                     strWriter.WriteLeInt16(0);
                     strWriter.WriteString(s, Encoding.UTF8);
                     strWriter.WriteByte(0);
                 }
-                else if (imp is uint)
+                else if (imp is uint u)
                 {
-                    if ((uint)imp != 0)
+                    if (u != 0)
                     {
-                        writer.WriteLeUInt32((uint)imp | 0x80000000);
+                        writer.WriteLeUInt32(u | 0x80000000);
                     }
                     else
                     {
-                        writer.WriteLeUInt32((uint)imp);
+                        writer.WriteLeUInt32(u);
                     }
                 }
             }
@@ -369,17 +368,16 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             writer.Position = rvaTable;                     // rewind to beginning of table.
             foreach (object imp in import)
             {
-                var s = imp as string;
-                if (s != null)
+                if (imp is string s)
                 {
-                    writer.WriteLeInt64((int)strWriter.Position);
+                    writer.WriteLeInt64((int) strWriter.Position);
                     strWriter.WriteLeInt16(0);
                     strWriter.WriteString(s, Encoding.UTF8);
                     strWriter.WriteByte(0);
                 }
                 else if (imp is uint)
                 {
-                    writer.WriteLeUInt64((ulong)imp | 0x8000000000000000);
+                    writer.WriteLeUInt64((ulong) imp | 0x8000000000000000);
                 }
             }
             writer.WriteLeInt32(0);

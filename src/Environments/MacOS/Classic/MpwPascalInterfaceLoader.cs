@@ -39,8 +39,8 @@ namespace Reko.Environments.MacOS.Classic
     {
         private readonly byte[] bytes;
 
-        public MpwPascalInterfaceLoader(IServiceProvider services, string filename, byte[] bytes)
-            : base(services, filename, bytes)
+        public MpwPascalInterfaceLoader(IServiceProvider services, RekoUri imageUri, byte[] bytes)
+            : base(services, imageUri, bytes)
         {
             this.bytes = bytes;
         }

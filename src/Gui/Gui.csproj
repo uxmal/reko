@@ -8,6 +8,7 @@
     <RootNamespace>Reko.Gui</RootNamespace>
     <AssemblyName>Reko.Gui</AssemblyName>
     <Configurations>Debug;Release</Configurations>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <!-- 
       The file CmdIds.cs is generated from decompiler-menus.xml and is not committed to the

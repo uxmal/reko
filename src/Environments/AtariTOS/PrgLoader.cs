@@ -37,7 +37,7 @@ namespace Reko.Environments.AtariTOS
     /// // https://github.com/yegord/snowman/issues/131
     public class PrgLoader : ProgramImageLoader
     {
-        public PrgLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
+        public PrgLoader(IServiceProvider services, RekoUri imageUri, byte[] imgRaw) : base(services, imageUri, imgRaw)
         {
         }
 

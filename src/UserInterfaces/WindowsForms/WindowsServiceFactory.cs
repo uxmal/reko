@@ -43,8 +43,8 @@ namespace Reko.UserInterfaces.WindowsForms
     /// </summary>
     public class WindowsServiceFactory : IServiceFactory
     {
-        private IServiceProvider services;
-        private MainForm mainForm;
+        private readonly IServiceProvider services;
+        private readonly MainForm mainForm;
 
         public WindowsServiceFactory(IServiceProvider services, MainForm mainForm)
         {

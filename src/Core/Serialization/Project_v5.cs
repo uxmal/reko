@@ -79,6 +79,10 @@ namespace Reko.Core.Serialization
             User = new UserData_v4();
         }
 
+        [XmlElement("uri")]
+        public string? Uri;
+
+        // Kept for backwards compatibility only, use Uri field wherever possible.
         [XmlElement("filename")]
         public string? Filename;
 
@@ -103,6 +107,10 @@ namespace Reko.Core.Serialization
 
     public class ScriptFile_v5
     {
+        [XmlElement("uri")]
+        public string? Uri;
+
+        // Kept for backwards compatibility only, use Uri field wherever possible.
         [XmlElement("filename")]
         public string? Filename;
     }

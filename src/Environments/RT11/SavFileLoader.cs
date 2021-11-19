@@ -30,7 +30,7 @@ namespace Reko.Environments.RT11
 {
     public class SavFileLoader : ProgramImageLoader
     {
-        public SavFileLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
+        public SavFileLoader(IServiceProvider services, RekoUri imageUri, byte[] imgRaw) : base(services, imageUri, imgRaw)
         {
             this.PreferredBaseAddress = Address.Ptr16(0);
         }

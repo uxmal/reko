@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
@@ -30,13 +31,16 @@ namespace Reko.Environments.C64
     {
         private IServiceProvider services;
 
-        public D64Archive(IServiceProvider services, List<ArchiveDirectoryEntry> entries)
+        public D64Archive(IServiceProvider services, RekoUri archiveUri, List<ArchiveDirectoryEntry> entries)
         {
             this.services = services;
+            this.Uri = archiveUri;
             this.RootEntries = entries;
         }
 
         public List<ArchiveDirectoryEntry> RootEntries { get; }
+
+        public RekoUri Uri { get; }
 
         public List<ArchiveDirectoryEntry> Load(Stream stm)
         {

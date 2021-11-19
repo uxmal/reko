@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Environments.SegaGenesis
             Given_AbsoluteMemoryMap(platform);
 
             var rawBytes = new byte[0x300];
-            var sgrom = new RomLoader(sc, "foo.bin", rawBytes);
+            var sgrom = new RomLoader(sc, new RekoUri("file:foo.bin"), rawBytes);
             var program = sgrom.LoadProgram(Address.Ptr32(0));
 
             var romSegment = program.SegmentMap.Segments.Values.First();

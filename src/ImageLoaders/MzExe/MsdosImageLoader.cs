@@ -49,7 +49,7 @@ namespace Reko.ImageLoaders.MzExe
         private ushort segPsp;
 
         public MsdosImageLoader(ExeImageLoader exe) 
-            : base(exe.Services, exe.Filename, exe.RawImage)
+            : base(exe.Services, exe.ImageUri, exe.RawImage)
 		{
 			this.ExeLoader = exe;
             var cfgSvc = Services.RequireService<IConfigurationService>();
@@ -204,7 +204,7 @@ namespace Reko.ImageLoaders.MzExe
 			{
                 var listener = Services.RequireService<DecompilerEventListener>();
                 listener.Error(
-                    new NullCodeLocation(Filename),
+                    new NullCodeLocation(ImageUri.ExtractString()),
                     ex,
                     "Detected debug symbols but failed to load them.");
 			}

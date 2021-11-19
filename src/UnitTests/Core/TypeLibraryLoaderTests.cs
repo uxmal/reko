@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Core
         {
             var sc = new ServiceContainer();
             this.platform = new Win32Platform(sc, new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>()));
-            tlldr = new TypeLibraryLoader(null, filename, Encoding.ASCII.GetBytes(contents));
+            tlldr = new TypeLibraryLoader(null, new RekoUri(filename), Encoding.ASCII.GetBytes(contents));
         }
 
         [Test]

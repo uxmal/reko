@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Loading
         public void ValidateImage()
         {
             ByteMemoryArea rawImage = new ByteMemoryArea(Address.SegPtr(0x0C00, 0), CreateMsdosHeader());
-            ExeImageLoader exe = new ExeImageLoader(null, "foo.exe", rawImage.Bytes);
+            ExeImageLoader exe = new ExeImageLoader(null, new RekoUri("file:foo.exe"), rawImage.Bytes);
             Assert.IsTrue(PkLiteUnpacker.IsCorrectUnpacker(exe, rawImage.Bytes));
         }
 

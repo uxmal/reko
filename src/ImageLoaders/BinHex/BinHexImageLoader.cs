@@ -33,8 +33,8 @@ namespace Reko.ImageLoaders.BinHex
 {
     public class BinHexImageLoader : ImageLoader
     {
-        public BinHexImageLoader(IServiceProvider services, string filename, byte [] imgRaw) 
-            : base(services, filename, imgRaw)
+        public BinHexImageLoader(IServiceProvider services, RekoUri absoluteUri, byte [] imgRaw) 
+            : base(services, absoluteUri, imgRaw)
         {
         }
 
@@ -52,7 +52,7 @@ namespace Reko.ImageLoaders.BinHex
             var platform = (MacOSClassic) cfgSvc.GetEnvironment("macOs").Load(Services, arch);
             if (hdr.FileType == "PACT")
             {
-                Cpt.CompactProArchive archive = new Cpt.CompactProArchive(arch, platform);
+                Cpt.CompactProArchive archive = new Cpt.CompactProArchive(base.ImageUri, arch, platform);
                 archive.Load(new MemoryStream(dataBytes));
                 return archive;
             }

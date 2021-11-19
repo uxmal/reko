@@ -40,7 +40,7 @@ namespace Reko.ImageLoaders.Nro
         private DecompilerEventListener decompilerEventListener;
         private LeImageReader rdr;
 
-        public NroLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
+        public NroLoader(IServiceProvider services, RekoUri imageUri, byte[] imgRaw) : base(services, imageUri, imgRaw)
         {
             decompilerEventListener = services.RequireService<DecompilerEventListener>();
             rdr = new LeImageReader(RawImage, 0);

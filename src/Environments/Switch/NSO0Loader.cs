@@ -35,8 +35,8 @@ namespace Reko.Environments.Switch
     // https://switchbrew.org/wiki/NSO
     public class NSO0Loader : ProgramImageLoader
     {
-        public NSO0Loader(IServiceProvider services, string filename, byte[] rawBytes)
-            : base(services, filename, rawBytes)
+        public NSO0Loader(IServiceProvider services, RekoUri imageUri, byte[] rawBytes)
+            : base(services, imageUri, rawBytes)
         {
         }
         public override Address PreferredBaseAddress

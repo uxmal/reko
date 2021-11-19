@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 Pavel Tomin.
  *
@@ -28,7 +28,7 @@ namespace Reko.Core
     {
         private Stream stream;
 
-        public TypeLibraryLoader(IServiceProvider services, string filename, byte[]  bytes) : base(services, filename, bytes)
+        public TypeLibraryLoader(IServiceProvider services, RekoUri imageUri, byte[]  bytes) : base(services, imageUri, bytes)
         {
             this.stream = new MemoryStream(bytes);
         }

@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Environments.C64;
 using System;
@@ -80,7 +81,7 @@ namespace Reko.UnitTests.Environments.C64
                 "CBM.COM",
                 0, 0,
                 new Dictionary<int, byte[]>());
-            var loader = new D64Loader(sc, "CBM.COM", image);
+            var loader = new D64Loader(sc, new RekoUri("file:CBM.COM"), image);
             var archive = loader.LoadDiskDirectory();
             Assert.AreEqual(0, archive.RootEntries.Count);
         }
@@ -163,7 +164,7 @@ namespace Reko.UnitTests.Environments.C64
                             Encoding.ASCII.GetBytes("Hello world"))
                     }
                 });
-            var loader = new D64Loader(sc, "CBM.COM", image);
+            var loader = new D64Loader(sc, new RekoUri("file:CBM.COM"), image);
             var archive = loader.LoadDiskDirectory();
 
             Assert.AreEqual(1, archive.RootEntries.Count);

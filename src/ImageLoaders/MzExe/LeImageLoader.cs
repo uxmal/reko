@@ -61,7 +61,7 @@ namespace Reko.ImageLoaders.MzExe
         private LXHeader hdr;
         private List<string> moduleNames;
 
-        public LeImageLoader(IServiceProvider services, string filename, byte[] imgRaw, uint e_lfanew) : base(services, filename, imgRaw)
+        public LeImageLoader(IServiceProvider services, RekoUri imageUri, byte[] imgRaw, uint e_lfanew) : base(services, imageUri, imgRaw)
         {
             listener = Services.RequireService<DecompilerEventListener>();
             lfaNew = e_lfanew;

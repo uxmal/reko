@@ -37,8 +37,9 @@ namespace Reko.ImageLoaders.BinHex.Cpt
 
         const int BYTEMASK = 0xFF;
 
-        public CompactProArchive(IProcessorArchitecture arch, MacOSClassic platform)
+        public CompactProArchive(RekoUri uri, IProcessorArchitecture arch, MacOSClassic platform)
         {
+            this.Uri = uri;
             this.Architecture = arch;
             this.Platform = platform;
             this.RootEntries = new List<ArchiveDirectoryEntry>();
@@ -54,6 +55,11 @@ namespace Reko.ImageLoaders.BinHex.Cpt
         public MacOSClassic Platform { get; }
 
         public List<ArchiveDirectoryEntry> RootEntries { get; private set; }
+
+        /// <summary>
+        /// The absolute path to the location of this archive.
+        /// </summary>
+        public RekoUri Uri { get; }
 
         private uint zip_updcrc(uint crc, byte[] buf, int offset, int length)
         {

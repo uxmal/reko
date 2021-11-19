@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Loading;
+using Reko.Core.Serialization;
 using Reko.Gui.Services;
 using System;
 using System.ComponentModel.Design;
@@ -110,7 +111,8 @@ namespace Reko.Gui.Forms
             bool successfullyLoaded = false;
             bool exceptionThrown = !svc.StartBackgroundWork("Loading program", () =>
             {
-                successfullyLoaded = Decompiler.Load(file);
+                var imageUri = UriTools.UriFromFilePath(file);
+                successfullyLoaded = Decompiler.Load(imageUri);
             });
             if (exceptionThrown)
             {
@@ -142,7 +144,8 @@ namespace Reko.Gui.Forms
             IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {
-                Program program = Decompiler.LoadRawImage(file, details);
+                var imageUri = UriTools.UriFromFilePath(file);
+                Program program = Decompiler.LoadRawImage(imageUri, details);
                 Decompiler.ExtractResources();
             });
             var browserSvc = Services.RequireService<IProjectBrowserService>();
@@ -178,7 +181,8 @@ namespace Reko.Gui.Forms
             var svc = Services.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {
-                Decompiler.Assemble(file, asm, platform);
+                var asmFileUri = UriTools.UriFromFilePath(file);
+                Decompiler.Assemble(asmFileUri, asm, platform);
             });
             if (Decompiler.Project == null)
                 return false;

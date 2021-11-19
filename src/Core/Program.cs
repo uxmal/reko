@@ -299,9 +299,14 @@ namespace Reko.Core
         public SortedList<Address, ImageSymbol> EntryPoints { get; set; }
 
         /// <summary>
-        /// Absolute path of the file from which this Program was loaded.
+        /// The location from which this Program was loaded. 
         /// </summary>
-        public string Filename { get; set; }
+        /// <remarks>
+        /// The URI should start with a 'file:' protocol prefix, followed by an absolute 
+        /// path to the file containing the program, followed by an optional '#' and further 
+        /// path segments to indicate the location within one or more archives.
+        /// </remarks>
+        public RekoUri Uri { get; set; }
 
         /// <summary>
         /// All the image locations that the loader was aware of.
@@ -384,9 +389,11 @@ namespace Reko.Core
         /// Given the absolute file name of a binary being decompiled, make sure that 
         /// absolute file names for each of the output directories.
         /// </summary>
-        /// <param name="absFileName">Absolute file name of the binary being decompiled.</param>
-        public void EnsureDirectoryNames(string absFileName)
+        /// <param name="absFileName">Absolute URI of the binary being decompiled.</param>
+        public void EnsureDirectoryNames(RekoUri absUri)
         {
+            //$TODO how to handle nested archives? 
+            var absFileName = UriTools.FilePathFromUri(absUri);
             var dir = Path.GetDirectoryName(absFileName) ?? "";
             var filename = Path.GetFileName(absFileName);
             var outputDir = Path.Combine(dir, Path.ChangeExtension(filename, ".reko"));

@@ -69,7 +69,7 @@ namespace Reko.ImageLoaders.Ldm
         private mem_t [] mem;
 
 
-        public LdmLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
+        public LdmLoader(IServiceProvider services, RekoUri imageUri, byte[] imgRaw) : base(services, imageUri, imgRaw)
         {
             this.load_ldmline = new Action<string>[] { load_tldline, load_xtcline };
             mem = new mem_t[128];

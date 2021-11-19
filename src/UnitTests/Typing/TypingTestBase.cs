@@ -40,6 +40,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using Reko.Core.Loading;
+using Reko.Core.Serialization;
 
 namespace Reko.UnitTests.Typing
 {
@@ -68,7 +69,7 @@ namespace Reko.UnitTests.Typing
             var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             ILoader ldr = new Loader(sc);
             var program = ldr.AssembleExecutable(
-                FileUnitTester.MapTestPath(relativePath),
+                UriTools.UriFromFilePath(FileUnitTester.MapTestPath(relativePath)),
                 new X86TextAssembler(arch),
                 null,
                 addrBase);
@@ -109,7 +110,8 @@ namespace Reko.UnitTests.Typing
             svc.AddService<DecompilerEventListener>(eventListener);
             svc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             ILoader ldr = new Loader(svc);
-            var imgLoader = new DchexLoader(FileUnitTester.MapTestPath( hexFile), svc, null);
+            var fileUri = UriTools.UriFromFilePath(FileUnitTester.MapTestPath(hexFile));
+            var imgLoader = new DchexLoader(svc, fileUri, null);
             var program = imgLoader.LoadProgram(null);
             var project = new Project { Programs = { program } };
             var ep = ImageSymbol.Procedure(program.Architecture, program.ImageMap.BaseAddress);

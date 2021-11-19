@@ -84,9 +84,11 @@ namespace Reko.UnitTests.Gui.Forms
             memSvc = AddService<ILowLevelViewService>();
 
             var ldr = new Mock<ILoader>();
-            ldr.Setup(l => l.LoadImageBytes("test.exe", 0)).Returns(new byte[400]);
+            ldr.Setup(l => l.LoadImageBytes(
+                It.IsNotNull<RekoUri>(),
+                0)).Returns(new byte[400]);
             ldr.Setup(l => l.LoadImage(
-                It.IsNotNull<string>(),
+                It.IsNotNull<RekoUri>(),
                 It.IsNotNull<byte[]>(),
                 null,
                 It.IsAny<Address>())).Returns(program)
@@ -95,7 +97,7 @@ namespace Reko.UnitTests.Gui.Forms
                     program.ToString();
                 });
             decSvc.Decompiler = new Decompiler(ldr.Object, sc);
-            decSvc.Decompiler.Load("test.exe");
+            decSvc.Decompiler.Load(new RekoUri("file:test.exe"));
 
             interactor = new ScannedPageInteractor(sc);
         }

@@ -20,7 +20,9 @@
 
 using Reko.Core.Services;
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Text;
 
 namespace Reko.Core.Serialization
 {
@@ -42,13 +44,26 @@ namespace Reko.Core.Serialization
         public static string? ConvertToAbsolutePath(
             string projectAbsPath, string? projectRelative)
         {
-            if (projectRelative == null)
+            if (projectRelative is null)
                 return null;
             var dir = Path.GetDirectoryName(projectAbsPath);
             if (string.IsNullOrEmpty(projectRelative))
                 return dir;
             var combined = Path.Combine(dir, projectRelative);
             return Path.GetFullPath(combined);
+        }
+
+        public static RekoUri? ConvertToAbsoluteUri(
+            RekoUri projectUri, string? projectRelativeUri)
+        {
+            if (projectUri is null || projectRelativeUri is null)
+                return null;
+            var projectDir = projectUri.ExtractString();
+            int i = projectDir.LastIndexOf('/');
+            if (i < 0)
+                return null;    // invalid uri
+            projectDir = projectDir.Remove(i);
+            return UriTools.Combine(new RekoUri(projectDir), projectRelativeUri);
         }
 
         /// <summary>
@@ -63,6 +78,13 @@ namespace Reko.Core.Serialization
                 return absPath;
             var fsSvc = Services.RequireService<IFileSystemService>();
             return fsSvc.MakeRelativePath(projectAbsPath, absPath);
+        }
+
+        public string? ConvertToProjectRelativeUri(RekoUri projectUri, RekoUri absoluteUri)
+        {
+            if (string.IsNullOrEmpty(projectUri.ExtractString()))
+                return absoluteUri.ExtractString()!;
+            return UriTools.MakeRelativeUri(projectUri, absoluteUri);
         }
     }
 }

@@ -44,8 +44,8 @@ namespace Reko.ImageLoaders.Hunk
         private TextHunk? firstCodeHunk;
         private HunkFile hunkFile;
 
-        public HunkLoader(IServiceProvider services, string filename, byte[] imgRaw)
-            : base(services, filename, imgRaw)
+        public HunkLoader(IServiceProvider services, RekoUri imageUri, byte[] imgRaw)
+            : base(services, imageUri, imgRaw)
         {
             this.arch = null!;
             this.hunkFile = null!;

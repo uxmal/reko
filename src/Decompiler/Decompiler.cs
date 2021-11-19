@@ -64,11 +64,11 @@ namespace Reko
         /// <summary>
         /// Main entry point of the decompiler. Loads, decompiles, and outputs the results.
         /// </summary>
-        public void Decompile(string filename, string? loaderName = null)
+        public void Decompile(RekoUri imageUri, string? loaderName = null)
         {
             try
             {
-                Load(filename, loaderName);
+                Load(imageUri, loaderName);
                 ExtractResources();
                 ScanPrograms();
                 AnalyzeDataFlow();
@@ -79,7 +79,7 @@ namespace Reko
             catch (Exception ex)
             {
                 eventListener.Error(
-                    new NullCodeLocation(filename),
+                    new NullCodeLocation(imageUri.ExtractString()),
                     ex,
                     "An internal error occurred while decompiling.");
             }
@@ -177,26 +177,26 @@ namespace Reko
         /// Loads (or assembles) the decompiler project. If a binary file is
         /// specified instead, we create a simple project for the file.
         /// </summary>
-        /// <param name="fileName">The filename to load.</param>
+        /// <param name="absoluteUri">The URI of the image to load.</param>
         /// <param name="loaderName">Optional .NET class name of a custom
         /// image loader</param>
         /// <param name="addrLoad">Optional address at which to load the image.
         /// </param>
         /// <returns>True if the file could be loaded.</returns>
-        public bool Load(string fileName, string? loaderName = null, Address? addrLoad = null)
+        public bool Load(RekoUri absoluteUri, string? loaderName = null, Address? addrLoad = null)
         {
             eventListener.ShowStatus("Loading source program.");
-            byte[] image = loader.LoadImageBytes(fileName, 0);
+            byte[] image = loader.LoadImageBytes(absoluteUri, 0);
             var projectLoader = new ProjectLoader(this.services, loader, eventListener);
             projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
-            this.Project = projectLoader.LoadProject(fileName, image);
+            this.Project = projectLoader.LoadProject(absoluteUri, image);
             if (Project is null)
             {
                 //$TODO: Handle archives.
-                var program = (Program?)loader.LoadImage(fileName, image, loaderName, addrLoad);
+                var program = (Program?)loader.LoadImage(absoluteUri, image, loaderName, addrLoad);
                 if (program == null)
                     return false;
-                this.Project = AddProgramToProject(fileName, program);
+                this.Project = AddProgramToProject(absoluteUri, program);
                 this.Project.LoadedMetadata = program.Platform.CreateMetadata();
                 program.EnvironmentMetadata = this.Project.LoadedMetadata;
             }
@@ -250,11 +250,11 @@ namespace Reko
             }
         }
 
-        public void Assemble(string fileName, IAssembler asm, IPlatform platform)
+        public void Assemble(RekoUri fileUri, IAssembler asm, IPlatform platform)
         {
             eventListener.ShowStatus("Assembling program.");
-            var program = loader.AssembleExecutable(fileName, asm, platform, null!);
-            Project = AddProgramToProject(fileName, program);
+            var program = loader.AssembleExecutable(fileUri, asm, platform, null!);
+            Project = AddProgramToProject(fileUri, program);
             WriteEntryPoints(program);
             eventListener.ShowStatus("Assembled program.");
         }
@@ -266,13 +266,13 @@ namespace Reko
         /// </summary>
         /// <param name="fileName">Name of the file to be loaded.</param>
         /// <param name="raw">Extra metadata supllied by the user.</param>
-        public Program LoadRawImage(string fileName, LoadDetails raw)
+        public Program LoadRawImage(RekoUri uri, LoadDetails raw)
         {
             eventListener.ShowStatus("Loading raw bytes.");
             raw.ArchitectureOptions ??= new Dictionary<string, object>();
-            byte[] image = loader.LoadImageBytes(fileName, 0);
-            var program = loader.LoadRawImage(fileName, image, null, raw);
-            Project = AddProgramToProject(fileName, program);
+            byte[] image = loader.LoadImageBytes(uri, 0);
+            var program = loader.LoadRawImage(uri, image, null, raw);
+            Project = AddProgramToProject(uri, program);
             WriteEntryPoints(program);
             eventListener.ShowStatus("Raw bytes loaded.");
             return program;
@@ -288,20 +288,21 @@ namespace Reko
         {
             eventListener.ShowStatus("Loading raw bytes.");
             raw.ArchitectureOptions ??= new Dictionary<string, object>();
-            var program = loader.LoadRawImage("image", image, null, raw);
-            Project = AddProgramToProject("image", program);
+            var inventedUri = new RekoUri("file:image");
+            var program = loader.LoadRawImage(inventedUri, image, null, raw);
+            Project = AddProgramToProject(inventedUri, program);
             eventListener.ShowStatus("Raw bytes loaded.");
             return program;
         }
 
-        protected Project AddProgramToProject(string fileNameWithPath, Program program)
+        protected Project AddProgramToProject(RekoUri absoluteUri, Program program)
         {
             if (this.project == null)
             {
                 this.project = new Project();
             }
-            program.Filename = fileNameWithPath;
-            program.EnsureDirectoryNames(fileNameWithPath);
+            program.Uri = absoluteUri;
+            program.EnsureDirectoryNames(absoluteUri);
             program.User.ExtractResources = true;
 
             project.Programs.Add(program);
@@ -417,7 +418,7 @@ namespace Reko
         {
             WriteHeaderComment(filename, program, w);
             //$REFACTOR: common code -- hardwired ".h"
-            var headerfile = Path.ChangeExtension(Path.GetFileName(program.Filename), ".h");
+            var headerfile = DecompiledFileService.GenerateDerivedFilename(program, ".h");
             w.WriteLine("#include \"{0}\"", headerfile);
             w.WriteLine();
             var fmt = new AbsynCodeFormatter(new TextFormatter(w));
@@ -484,7 +485,7 @@ namespace Reko
 
         public void WriteGlobals(Program program, string filename, TextWriter w)
         {
-            var headerfile = Path.ChangeExtension(Path.GetFileName(program.Filename), ".h");
+            var headerfile = DecompiledFileService.GenerateDerivedFilename(program, ".h");
             WriteHeaderComment(filename, program, w);
             w.WriteLine("#include \"{0}\"", headerfile);
             w.WriteLine();
@@ -668,14 +669,15 @@ namespace Reko
         {
             if (program.Platform == null)
                 return;
-            var irPath = Path.Combine(program.SourceDirectory, Path.GetFileNameWithoutExtension(program.Filename));
+            var irPath = Path.Combine(program.SourceDirectory, Path.GetFileNameWithoutExtension(UriTools.FilePathFromUri(program.Uri)));
             program.Platform.WriteMetadata(program, irPath);
         }
 
 		public void WriteHeaderComment(string filename, Program program, TextWriter w)
 		{
+            var fragment = UriTools.ParseLastFragment(program.Uri);
 			w.WriteLine("// {0}", filename);
-			w.WriteLine("// Generated by decompiling {0}", Path.GetFileName(program.Filename));
+			w.WriteLine("// Generated by decompiling {0}", Path.GetFileName(fragment));
 			w.WriteLine("// using Reko decompiler version {0}.", AssemblyMetadata.AssemblyFileVersion);
 			w.WriteLine();
 		}
@@ -691,7 +693,8 @@ namespace Reko
         /// </remarks>
         public void WriteSccs(Program program)
         {
-            var filename = Path.ChangeExtension(Path.GetFileName(program.Filename), "sccs");
+            var fragment = UriTools.ParseLastFragment(program.Uri);
+            var filename = Path.ChangeExtension(Path.GetFileName(fragment), "sccs");
             var globalsPath = Path.Combine(program.SourceDirectory, filename);
             using (TextWriter output = host.CreateTextWriter(globalsPath))
             {

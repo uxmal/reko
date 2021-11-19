@@ -116,14 +116,12 @@ namespace Reko.UnitTests.Arch.X86
             {
                 var absFile = FileUnitTester.MapTestPath(configFile);
                 var fsSvc = sc.RequireService<IFileSystemService>();
-                using (Stream stm = fsSvc.CreateFileStream(absFile, FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    project = new ProjectLoader(
-                        null, 
-                        new Loader(sc),
-                        new FakeDecompilerEventListener())
-                    .LoadProject(absFile, stm);
-                }
+                using Stream stm = fsSvc.CreateFileStream(absFile, FileMode.Open, FileAccess.Read, FileShare.Read);
+                project = new ProjectLoader(
+                    null,
+                    new Loader(sc),
+                    new FakeDecompilerEventListener())
+                .LoadProject(UriTools.UriFromFilePath(absFile), stm);
             }
             else
             {

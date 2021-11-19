@@ -116,7 +116,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
         private void When_CreateLoader64(bool big_endian)
         {
-            this.eil = new ElfImageLoader(sc, "foo", this.bytes);
+            this.eil = new ElfImageLoader(sc, new RekoUri("file:foo"), this.bytes);
             this.el64 = new ElfLoader64(sc, eih, 0, big_endian ? EndianServices.Big: EndianServices.Little, this.bytes);
             el64.Segments.AddRange(programHeaders);
             el64.Sections.AddRange(sections);

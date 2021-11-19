@@ -210,7 +210,7 @@ namespace Reko.Core
 
 		public int CompareTo(object a)
 		{
-            if (!(a is Address that))
+            if (a is not Address that)
                 return 1;
             return this.ToLinear().CompareTo(that.ToLinear());
 		}
@@ -228,7 +228,7 @@ namespace Reko.Core
 		/// <returns></returns>
         public static bool TryParse16(string? s, out Address result)
         {
-            if (s != null)
+            if (s is not null)
             {
                 if (ushort.TryParse(s, NumberStyles.HexNumber, null, out var uAddr))
                 {
@@ -242,7 +242,7 @@ namespace Reko.Core
 
         public static bool TryParse32(string? s, out Address result)
         {
-            if (s != null)
+            if (s is not null)
             {
                 if (uint.TryParse(s, NumberStyles.HexNumber, null, out var uAddr))
                 {
@@ -256,7 +256,7 @@ namespace Reko.Core
 
         public static bool TryParse64(string? s, out Address result)
         {
-            if (s != null)
+            if (s is not null)
             {
                 if (ulong.TryParse(s, NumberStyles.HexNumber, null, out var uAddr))
                 {

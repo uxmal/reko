@@ -32,8 +32,8 @@ namespace Reko.Core.Loading
     /// </summary>
     public abstract class ProgramImageLoader : ImageLoader
     {
-        public ProgramImageLoader(IServiceProvider services, string filename, byte[] imgRaw) 
-            : base(services, filename, imgRaw)
+        public ProgramImageLoader(IServiceProvider services, RekoUri imageUri, byte[] imgRaw) 
+            : base(services, imageUri, imgRaw)
         {
         }
 

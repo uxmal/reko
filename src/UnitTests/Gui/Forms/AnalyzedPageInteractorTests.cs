@@ -82,18 +82,18 @@ namespace Reko.UnitTests.Gui.Forms
             };
             var ldr = new Mock<ILoader>();
             ldr.Setup(l => l.LoadImage(
-                It.IsAny<string>(),
+                It.IsAny<RekoUri>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(program);
             ldr.Setup(l => l.LoadImageBytes(
-                It.IsAny<string>(),
+                It.IsAny<RekoUri>(),
                 It.IsAny<int>())).Returns(bytes);
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             this.decSvc = new DecompilerService();
             decSvc.Decompiler = new Decompiler(ldr.Object, sc);
-            decSvc.Decompiler.Load("test.exe");
+            decSvc.Decompiler.Load(new RekoUri("file:test.exe"));
             this.program = this.decSvc.Decompiler.Project.Programs.First();
             sc.AddService<IDecompilerService>(decSvc);
             sc.AddService<IWorkerDialogService>(new FakeWorkerDialogService());

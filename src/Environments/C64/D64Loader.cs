@@ -92,8 +92,8 @@ namespace Reko.Environments.C64
         };
         private Program program;
 
-        public D64Loader(IServiceProvider services, string filename, byte[] rawImage)
-            : base(services, filename, rawImage)
+        public D64Loader(IServiceProvider services, RekoUri imageUri, byte[] rawImage)
+            : base(services, imageUri, rawImage)
         {
             this.program = null!;
         }
@@ -129,17 +129,18 @@ namespace Reko.Environments.C64
             var entries = new List<ArchiveDirectoryEntry>();
             var rdr = new ByteImageReader(RawImage, (uint)SectorOffset(18, 0));
             byte track = rdr.ReadByte();
+            var archive = new D64Archive(Services, ImageUri, entries);
             if (track != 0)
             {
                 byte sector = rdr.ReadByte();
                 rdr.Offset = (uint) D64Loader.SectorOffset(track, sector);
-                while (ReadDirectorySector(rdr, entries))
+                while (ReadDirectorySector(rdr, archive, entries))
                     ;
             }
-            return new D64Archive(Services, entries);
+            return archive;
         }
 
-        public bool ReadDirectorySector(ImageReader rdr, List<ArchiveDirectoryEntry> entries)
+        public bool ReadDirectorySector(ImageReader rdr, D64Archive archive, List<ArchiveDirectoryEntry> entries)
         {
             byte nextDirTrack = 0;
             byte nextDirSector = 0;
@@ -167,6 +168,7 @@ namespace Reko.Environments.C64
                 if ((fileType & FileType.FileTypeMask) != FileType.DEL)
                 {
                     entries.Add(new D64FileEntry(
+                        archive,
                         sName,
                         RawImage, 
                         SectorOffset(fileTrack, fileSector), 
@@ -186,15 +188,17 @@ namespace Reko.Environments.C64
 
         public class D64FileEntry : ArchivedFile
         {
+            private readonly D64Archive archive;
             private readonly byte[] image;
             private readonly int offset;
 
-            public D64FileEntry(string name, byte[] diskImage, int offset, FileType fileType)
+            public D64FileEntry(D64Archive archive, string name, byte[] diskImage, int offset, FileType fileType)
             {
+                this.archive = archive;
                 this.Name = name;
                 this.image = diskImage;
                 this.offset = offset;
-                this.FileType = fileType;   
+                this.FileType = fileType;
             }
 
             public string Name { get; private set; }
@@ -223,7 +227,6 @@ namespace Reko.Environments.C64
 
             public ILoadedImage? LoadImage(IServiceProvider Services, Address? addrPreferred)
             {
-
                 byte[] imageBytes = this.GetBytes();
                 switch (this.FileType & FileType.FileTypeMask)
                 {
@@ -241,9 +244,10 @@ namespace Reko.Environments.C64
             /// </summary>
             /// <param name="imageBytes"></param>
             /// <returns></returns>
-            private static Program LoadPrg(IServiceProvider services, byte[] imageBytes)
+            private Program LoadPrg(IServiceProvider services, byte[] imageBytes)
             {
-                var prgLoader = new PrgLoader(services, "", imageBytes);
+                var prgUri = UriTools.AppendPathAsFragment(archive.Uri, this.Name);
+                var prgLoader = new PrgLoader(services, prgUri, imageBytes);
                 return prgLoader.LoadProgram(null);
             }
 

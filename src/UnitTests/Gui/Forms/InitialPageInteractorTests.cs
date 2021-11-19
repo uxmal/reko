@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Gui.Forms
         {
             Assert.IsFalse(i.CanAdvance);
 
-            dec.Setup(d => d.Load("floxe.exe", null, null)).Returns(false);
+            dec.Setup(d => d.Load(new RekoUri("floxe.exe"), null, null)).Returns(false);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
             memSvc.Setup(m => m.ViewImage(program));
@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Gui.Forms
 
             Assert.IsFalse(i.CanAdvance, "Page should not be ready to advance");
 
-            dec.Setup(d => d.Load("floxe.exe", null, null)).Returns(false);
+            dec.Setup(d => d.Load(new RekoUri("floxe.exe"), null, null)).Returns(false);
             memSvc.Setup(m => m.ViewImage(program));
 
             i.OpenBinary("floxe.exe");
@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Gui.Forms
         [Test]
         public void Ipi_OpenBinary_ShouldShowMemoryWindow()
         {
-            dec.Setup(d => d.Load("floxe.exe", null, null)).Returns(true);
+            dec.Setup(d => d.Load(new RekoUri("file:floxe.exe"), null, null)).Returns(true);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(d => d.Load(project));
             memSvc.Setup(s => s.ViewImage(program)).Verifiable();
@@ -141,7 +141,7 @@ namespace Reko.UnitTests.Gui.Forms
         [Test]
         public void Ipi_OpenBinary_ShouldBrowseProject()
         {
-            dec.Setup(d => d.Load("foo.exe", null, null)).Returns(true);
+            dec.Setup(d => d.Load(new RekoUri("file:foo.exe"), null, null)).Returns(true);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project)).Verifiable();
             memSvc.Setup(m => m.ViewImage(program));
@@ -154,7 +154,7 @@ namespace Reko.UnitTests.Gui.Forms
         [Test]
         public void Ipi_LeavePage()
         {
-            dec.Setup(d => d.Load("foo.exe", null, null)).Returns(false);
+            dec.Setup(d => d.Load(new RekoUri("file:foo.exe"), null, null)).Returns(false);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
             memSvc.Setup(m => m.ViewImage(program));
@@ -167,7 +167,7 @@ namespace Reko.UnitTests.Gui.Forms
         public void Ipi_NextPhaseButton_ScanningNotNeeded()
         {
             program.NeedsScanning = false;
-            dec.Setup(d => d.Load("foo.exe", null, null)).Returns(false);
+            dec.Setup(d => d.Load(new RekoUri("file:foo.exe"), null, null)).Returns(false);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
 
@@ -183,7 +183,7 @@ namespace Reko.UnitTests.Gui.Forms
         public void Ipi_FinishDecompilationButton()
         {
             program.NeedsScanning = false;
-            dec.Setup(d => d.Load("foo.exe", null, null)).Returns(false);
+            dec.Setup(d => d.Load(new RekoUri("file:foo.exe"), null, null)).Returns(false);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
             var status = new CommandStatus();

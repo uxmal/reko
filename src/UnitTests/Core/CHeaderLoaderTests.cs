@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Core
             var addr = Address.SegPtr(0123, 4567);
             platform.Setup(p => p.TryParseAddress("0123:4567", out addr)).Returns(true);
 
-            var chl = new CHeaderLoader(sc, "foo.inc", file);
+            var chl = new CHeaderLoader(sc, new RekoUri("file:foo.inc"), file);
             var typelib = chl.Load(platform.Object, new TypeLibrary());
 
             Assert.IsTrue(typelib.Procedures.TryGetValue(addr, out var proc));

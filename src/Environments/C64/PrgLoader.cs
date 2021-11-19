@@ -36,7 +36,7 @@ namespace Reko.Environments.C64
     /// </summary>
     public class PrgLoader : ProgramImageLoader
     {
-        public PrgLoader(IServiceProvider services, string filename, byte[] rawImage): base(services, filename, rawImage)
+        public PrgLoader(IServiceProvider services, RekoUri imageUri, byte[] rawImage) : base(services, imageUri, rawImage)
         {
             PreferredBaseAddress = Address.Ptr16(0x0801);
         }

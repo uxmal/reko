@@ -41,16 +41,16 @@ namespace Reko.Core.Loading
         /// starting at file offset <paramref name="offset"/>. No interpretation
         /// of the file data is done.
         /// </summary>
-        /// <param name="fileName">Name of the file to read.</param>
+        /// <param name="absoluteUri">The URI from which to read the image data.</param>
         /// <param name="offset">Offset at which to start reading.</param>
         /// <returns>An array of bytes containing the file data.</returns>
-        byte[] LoadImageBytes(string fileName, int offset);
+        byte[] LoadImageBytes(RekoUri absoluteUri, int offset);
 
         /// <summary>
         /// Given a executable file image in <param name="bytes">, determines which file 
         /// format the file has and delegates loading to a specific image loader.
         /// </summary>
-        /// <param name="fileName">The file name of the executable.</param>
+        /// <param name="absoluteUri">The URI from where the image was loaded.</param>
         /// <param name="bytes">The contents of the executable file.</param>
         /// <param name="loader">The (optional) name of a specific loader. Providing a non-zero loader will
         /// override the file format determination process.</param>
@@ -60,34 +60,34 @@ namespace Reko.Core.Loading
         /// Either a successfully loaded <see cref="ILoadedImage"/>, or null if 
         /// an appropriate image loader could not be determined or loaded.
         /// </returns>
-        ILoadedImage? LoadImage(string fileName, byte[] bytes, string? loader, Address? loadAddress);
+        ILoadedImage? LoadImage(RekoUri absoluteUri, byte[] bytes, string? loader, Address? loadAddress);
 
         /// <summary>
         /// Given a sequence of raw bytes, loads it into memory and applies the 
         /// <paramref name="details"/> to it. Use this method if the binary has no known file
         /// format.
         /// </summary>
-        /// <param name="fileName">The name of the file.</param>
+        /// <param name="absoluteUri">The URI from where the image was loaded.</param>
         /// <param name="image">The raw contents of the file.</param>
         /// <param name="loadAddress">The address at which the raw contents are to be loaded.</param>
         /// <param name="details">Details about the contents of the file.</param>
         /// <returns>A <see cref="Reko.Core.Program"/>.
         /// </returns>
-        Program LoadRawImage(string fileName, byte[] image, Address? loadAddress, LoadDetails details);
+        Program LoadRawImage(RekoUri absoluteUri, byte[] image, Address? loadAddress, LoadDetails details);
 
-        Program AssembleExecutable(string fileName, IAssembler asm, IPlatform platform, Address loadAddress);
-        Program AssembleExecutable(string fileName, byte[] bytes, IAssembler asm, IPlatform platform, Address loadAddress);
+        Program AssembleExecutable(RekoUri absoluteUri, IAssembler asm, IPlatform platform, Address loadAddress);
+        Program AssembleExecutable(RekoUri absoluteUri, byte[] bytes, IAssembler asm, IPlatform platform, Address loadAddress);
 
         /// <summary>
         /// Loads a file containing symbolic, type, or other metadata into a <see cref="Reko.Core.TypeLibrary>"/>.
         /// </summary>
-        /// <param name="fileName">The name of the file.</param>
+        /// <param name="matadataUri">The URI of the metadata information.</param>
         /// <param name="platform">The operating environment for the file.</param>
         /// <param name="typeLib">A type library into which the metadata will be added.</param>
         /// <returns>The updated <paramref name="typeLib"/> or null if no appropriate loader for the
         /// metadata could be found.
         /// </returns>
-        TypeLibrary? LoadMetadata(string fileName, IPlatform platform, TypeLibrary typeLib);
+        TypeLibrary? LoadMetadata(RekoUri matadataUri, IPlatform platform, TypeLibrary typeLib);
 
         /// <summary>
         /// Loads a file containing script.
@@ -97,7 +97,7 @@ namespace Reko.Core.Loading
         /// Evaluated script file or null if no appropriate loader for the
         /// script format could be found.
         /// </returns>
-        ScriptFile? LoadScript(string fileName);
+        ScriptFile? LoadScript(RekoUri fileName);
     }
 
     /// <summary>

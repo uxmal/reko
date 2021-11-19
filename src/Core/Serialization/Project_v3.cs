@@ -35,6 +35,10 @@ namespace Reko.Core.Serialization
 
     public class MetadataFile_v3
     {
+        [XmlElement("uri")]
+        public string? Uri;
+
+        // Kept for backwards compatibility only, use Uri field wherever possible.
         [XmlElement("filename")]
         public string? Filename;
 

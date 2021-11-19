@@ -33,8 +33,8 @@ namespace Reko.Core
     {
         private readonly Stream stream;
 
-        public CHeaderLoader(IServiceProvider services, string filename, byte[] bytes)
-            : base(services, filename, bytes)
+        public CHeaderLoader(IServiceProvider services, RekoUri imageUri, byte[] bytes)
+            : base(services, imageUri, bytes)
         {
             this.stream = new MemoryStream(bytes);
         }

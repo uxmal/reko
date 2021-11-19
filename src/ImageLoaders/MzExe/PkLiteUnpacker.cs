@@ -51,7 +51,7 @@ namespace Reko.ImageLoaders.MzExe
 		private const uint PspSize = 0x0100;
 
 		public PkLiteUnpacker(MsdosImageLoader loader) 
-            : base(loader.Services, loader.Filename, loader.RawImage)
+            : base(loader.Services, loader.ImageUri, loader.RawImage)
 		{
             var cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-real-16")!;

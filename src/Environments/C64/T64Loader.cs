@@ -35,12 +35,9 @@ namespace Reko.Environments.C64
     // https://ist.uwaterloo.ca/~schepers/formats/T64.TXT
     public class T64Loader : ImageLoader
     {
-        private Program program;
-
-        public T64Loader(IServiceProvider services, string filename, byte[] bytes)
-            : base(services, filename, bytes)
+        public T64Loader(IServiceProvider services, RekoUri imageUri, byte[] bytes)
+            : base(services, imageUri, bytes)
         {
-            this.program = null!;
         }
 
         public override Address PreferredBaseAddress
@@ -85,7 +82,7 @@ namespace Reko.Environments.C64
                     entries.Add(entry);
                 }
             }
-            return new T64Archive(entries);
+            return new T64Archive(base.ImageUri, entries);
         }
 
         private T64FileEntry ReadDirectoryEntry(ImageReader rdr)
@@ -108,10 +105,13 @@ namespace Reko.Environments.C64
 
         public class T64Archive : IArchive
         {
-            public T64Archive(List<ArchiveDirectoryEntry> entries)
+            public T64Archive(RekoUri archiveUri, List<ArchiveDirectoryEntry> entries)
             {
+                this.Uri = archiveUri;
                 this.RootEntries = entries;
             }
+
+            public RekoUri Uri { get; }
 
             public List<ArchiveDirectoryEntry> RootEntries { get; }
         }

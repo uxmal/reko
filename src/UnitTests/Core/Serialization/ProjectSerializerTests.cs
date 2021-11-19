@@ -108,11 +108,11 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var bytes = new byte[100];
             loader.Setup(l => l.LoadImageBytes(
-                It.IsAny<string>(),
+                It.IsAny<RekoUri>(),
                 It.IsAny<int>())).
                 Returns(bytes);
             loader.Setup(l => l.LoadImage(
-                It.IsAny<string>(),
+                It.IsAny<RekoUri>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(
@@ -194,20 +194,20 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             };
             var ps = new ProjectLoader(sc, loader.Object, listener.Object);
-            var p = ps.LoadProject("c:\\tmp\\fproj.proj", sp);
+            var p = ps.LoadProject(UriTools.UriFromFilePath("c:\\tmp\\fproj.proj"), sp);
             Assert.AreEqual(1, p.Programs.Count);
-            var inputFile = p.Programs[0]; 
-            Assert.AreEqual(1, inputFile.User.Procedures.Count);
-            Assert.AreEqual("Fn", inputFile.User.Procedures.First().Value.Name);
+            var inputFile0 = p.Programs[0]; 
+            Assert.AreEqual(1, inputFile0.User.Procedures.Count);
+            Assert.AreEqual("Fn", inputFile0.User.Procedures.First().Value.Name);
 
-            Assert.AreEqual(1, inputFile.User.JumpTables.Count);
-            var jumpTable = inputFile.User.JumpTables[Address.Ptr32(0x114000)];
+            Assert.AreEqual(1, inputFile0.User.JumpTables.Count);
+            var jumpTable = inputFile0.User.JumpTables[Address.Ptr32(0x114000)];
             Assert.AreEqual(Address.Ptr32(0x00115000), jumpTable.Addresses[0]);
             Assert.AreEqual(Address.Ptr32(0x00115012), jumpTable.Addresses[1]);
             Assert.AreEqual(Address.Ptr32(0x0011504F), jumpTable.Addresses[2]);
 
-            Assert.AreEqual(1, inputFile.User.IndirectJumps.Count);
-            var indJump = inputFile.User.IndirectJumps[Address.Ptr32(0x00113800)];
+            Assert.AreEqual(1, inputFile0.User.IndirectJumps.Count);
+            var indJump = inputFile0.User.IndirectJumps[Address.Ptr32(0x00113800)];
             Assert.AreSame(jumpTable, indJump.Table);
         }
 
@@ -216,15 +216,16 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var bytes = new byte[100];
             loader.Setup(l => l.LoadImageBytes(
-                It.IsAny<string>(),
+                It.IsAny<RekoUri>(),
                 It.IsAny<int>())).
                 Returns(bytes);
             loader.Setup(l => l.LoadImage(
-                It.IsAny<string>(),
+                It.IsAny<RekoUri>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(
-                new Program { Architecture = arch.Object });
+                    new Func<RekoUri, byte[], string, Address, Program>(
+                        (u, b, s, a) => new Program { Architecture = arch.Object }));
             Given_Architecture();
             Given_TestOS_Platform();
             Given_Platform_Address("113800", 0x113800);
@@ -307,32 +308,39 @@ namespace Reko.UnitTests.Core.Serialization
                                 }
                             }
                         }
+                    },
+                    new DecompilerInput_v5
+                    {
+                        Uri = "file:foo/i+am+positive%2b.exe",
                     }
                 }
             };
             var ps = new ProjectLoader(sc, loader.Object, listener.Object);
-            var p = ps.LoadProject("c:\\tmp\\fproj.proj", sp);
-            Assert.AreEqual(1, p.Programs.Count);
-            var inputFile = p.Programs[0];
-            Assert.AreEqual(1, inputFile.User.Procedures.Count);
-            Assert.AreEqual("Fn", inputFile.User.Procedures.First().Value.Name);
+            var p = ps.LoadProject(UriTools.UriFromFilePath("c:\\tmp\\fproj.proj"), sp);
 
-            Assert.AreEqual(1, inputFile.User.JumpTables.Count);
-            var jumpTable = inputFile.User.JumpTables[Address.Ptr32(0x114000)];
+            Assert.AreEqual(2, p.Programs.Count);
+            var inputFile0 = p.Programs[0];
+            var inputFile1 = p.Programs[1];
+            Assert.AreEqual(1, inputFile0.User.Procedures.Count);
+            Assert.AreEqual("Fn", inputFile0.User.Procedures.First().Value.Name);
+
+            Assert.AreEqual(1, inputFile0.User.JumpTables.Count);
+            var jumpTable = inputFile0.User.JumpTables[Address.Ptr32(0x114000)];
             Assert.AreEqual(Address.Ptr32(0x00115000), jumpTable.Addresses[0]);
             Assert.AreEqual(Address.Ptr32(0x00115012), jumpTable.Addresses[1]);
             Assert.AreEqual(Address.Ptr32(0x0011504F), jumpTable.Addresses[2]);
 
-            Assert.AreEqual(1, inputFile.User.IndirectJumps.Count);
-            var indJump = inputFile.User.IndirectJumps[Address.Ptr32(0x00113800)];
+            Assert.AreEqual(1, inputFile0.User.IndirectJumps.Count);
+            var indJump = inputFile0.User.IndirectJumps[Address.Ptr32(0x00113800)];
             Assert.AreSame(jumpTable, indJump.Table);
 
-            Assert.AreEqual(1, inputFile.User.BlockLabels.Count);
-            var blockLabel = inputFile.User.BlockLabels["115252"];
+            Assert.AreEqual(1, inputFile0.User.BlockLabels.Count);
+            var blockLabel = inputFile0.User.BlockLabels["115252"];
             Assert.AreEqual("errorExit", blockLabel);
-            Assert.AreEqual(Program.SegmentFilePolicy, inputFile.User.OutputFilePolicy);
-        }
+            Assert.AreEqual(Program.SegmentFilePolicy, inputFile0.User.OutputFilePolicy);
 
+            Assert.AreEqual("file:///c:/tmp/foo/i+am+positive%2b.exe", inputFile1.Uri.ExtractString());
+        }
 
         [Test]
         public void Save_v5()

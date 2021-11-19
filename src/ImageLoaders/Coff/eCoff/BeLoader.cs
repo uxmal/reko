@@ -33,8 +33,8 @@ namespace Reko.ImageLoaders.Coff.eCoff
     {
         private aouthdr? opthdr;
 
-        public BeLoader(IServiceProvider services, string filename, byte[] rawImage)
-            : base(services, filename, rawImage)
+        public BeLoader(IServiceProvider services, RekoUri imageUri, byte[] rawImage)
+            : base(services, imageUri, rawImage)
         {
             this.PreferredBaseAddress = Address.Ptr32(0x0010_0000);
         }

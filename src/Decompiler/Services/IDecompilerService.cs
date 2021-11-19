@@ -64,11 +64,16 @@ namespace Reko.Services
         {
             get
             { 
-                if (decompiler == null)
+                if (decompiler is null)
                     return "";
-                if (decompiler.Project== null)
+                if (decompiler.Project is null)
                     return "";
-                return Path.GetFileName(decompiler.Project.Programs[0].Filename);
+                if (decompiler.Project.Programs.Count == 0)
+                    return "";
+                var projectUri = decompiler.Project.Programs[0].Uri;
+                if (projectUri is null)
+                    return "";
+                return Path.GetFileName(UriTools.FilePathFromUri(projectUri));
             }
         }
 

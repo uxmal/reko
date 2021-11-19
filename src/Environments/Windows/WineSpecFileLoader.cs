@@ -38,34 +38,31 @@ namespace Reko.Environments.Windows
     /// </summary>
     public class WineSpecFileLoader : MetadataLoader
     {
-        private string filename;
         private Lexer lexer;
         private Token? bufferedToken;
         private TypeLibraryDeserializer tlLoader;
         private IPlatform platform;
         private string moduleName;
 
-        public WineSpecFileLoader(IServiceProvider services, string filename, byte[] bytes)
-            : base(services, filename, bytes)
+        public WineSpecFileLoader(IServiceProvider services, RekoUri imageUri, byte[] bytes)
+            : base(services, imageUri, bytes)
         {
-            this.filename = filename;
             var rdr = new StreamReader(new MemoryStream(bytes));
             this.lexer = new Lexer(rdr);
             this.tlLoader = null!;
             this.platform = null!;
             this.moduleName = null!;
-
         }
 
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
-            return Load(platform, DefaultModuleName(filename), dstLib);
+            return Load(platform, DefaultModuleName(base.ImageUri), dstLib);
         }
 
         public override TypeLibrary Load(IPlatform platform, string? module, TypeLibrary dstLib)
         {
             this.platform = platform;
-            module = module ?? DefaultModuleName(filename);
+            module = module ?? DefaultModuleName(base.ImageUri);
             this.tlLoader = new TypeLibraryDeserializer(platform, true, dstLib);
             this.moduleName = module;
             tlLoader.SetModuleName(module);
@@ -253,11 +250,15 @@ namespace Reko.Environments.Windows
             return true;
         }
 
-        private string DefaultModuleName(string filename)
+        private string DefaultModuleName(RekoUri fileUri)
         {
-			string libName = Path.GetFileNameWithoutExtension (filename).ToUpper ();
+            var lastFragment = UriTools.ParseLastFragment(fileUri);
+            int lastSlash = lastFragment.LastIndexOf('/');
+            if (lastSlash > 0)
+                lastFragment = lastFragment[lastSlash..];
+			string libName = Path.GetFileNameWithoutExtension(lastFragment).ToUpper();
 
-			if (Path.GetExtension (libName).Length > 0) {
+			if (Path.GetExtension(libName).Length > 0) {
 				return libName;
 			} else {
 				return libName + ".DLL";

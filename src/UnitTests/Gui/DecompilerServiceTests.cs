@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Gui
             arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.MemoryGranularity).Returns(8);
             var platform = new Mock<IPlatform>();
-            var fileName = OsPath.Relative("foo", "bar", "baz.exe");
+            var fileUri = UriTools.UriFromFilePath(OsPath.Relative("foo", "bar", "baz.exe"));
             var bytes = new byte[100];
             var mem = new ByteMemoryArea(Address.Ptr32(0x1000), bytes);
             var imageMap = new SegmentMap(
@@ -92,15 +92,15 @@ namespace Reko.UnitTests.Gui
             sc.AddService<IDecompiledFileService>(host.Object);
             platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
             platform.Setup(p => p.Architecture).Returns(arch.Object);
-            loader.Setup(l => l.LoadImageBytes(fileName, 0)).Returns(bytes);
-            loader.Setup(l => l.LoadImage(fileName, bytes, null, null)).Returns(program);
+            loader.Setup(l => l.LoadImageBytes(fileUri, 0)).Returns(bytes);
+            loader.Setup(l => l.LoadImage(fileUri, bytes, null, null)).Returns(program);
             var dec = new Decompiler(loader.Object, sc);
 
             svc.Decompiler = dec;
-            svc.Decompiler.Load(fileName);
+            svc.Decompiler.Load(fileUri);
 
             Assert.IsNotNull(svc.Decompiler.Project);
-            Assert.AreEqual("baz.exe",  svc.ProjectName, "Should have project name available.");
+            Assert.AreEqual("baz.exe", svc.ProjectName, "Should have project name available.");
         }
     }
 }

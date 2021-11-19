@@ -74,14 +74,14 @@ namespace Reko.Core.Serialization
         /// <param name="image"></param>
         /// <param name="loader"></param>
         /// <returns></returns>
-        public Project? LoadProject(string fileName, byte[] image)
+        public Project? LoadProject(RekoUri projectUri, byte[] image)
         {
             if (!IsXmlFile(image))
                 return null;
             try
             {
                 Stream stm = new MemoryStream(image);
-                return LoadProject(fileName, stm);
+                return LoadProject(projectUri, stm);
             }
             catch (XmlException)
             {
@@ -104,11 +104,12 @@ namespace Reko.Core.Serialization
             return false;
         }
 
-        public Project? LoadProject(string filename)
+        public Project? LoadProject(RekoUri projectUri)
         {
+            var filename = UriTools.FilePathFromUri(projectUri);
             var fsSvc = Services.RequireService<IFileSystemService>();
             using var stm = fsSvc.CreateFileStream(filename, FileMode.Open, FileAccess.Read);
-            return LoadProject(filename, stm);
+            return LoadProject(projectUri, stm);
         }
 
         private static readonly (Type, string)[] supportedProjectFileFormats =
@@ -124,7 +125,7 @@ namespace Reko.Core.Serialization
         /// <returns>
         /// The Project if the file format was recognized, otherwise null.
         /// </returns>
-        public Project? LoadProject(string filename, Stream stm)
+        public Project? LoadProject(RekoUri projectUri, Stream stm)
         {
             var rdr = new XmlTextReader(stm);
             foreach (var fileFormat in supportedProjectFileFormats)
@@ -132,7 +133,7 @@ namespace Reko.Core.Serialization
                 XmlSerializer ser = SerializedLibrary.CreateSerializer(fileFormat.Item1, fileFormat.Item2);
                 if (ser.CanDeserialize(rdr))
                 {
-                    var deser = new Deserializer(this, filename);
+                    var deser = new Deserializer(this, projectUri);
                     return ((SerializedProject)ser.Deserialize(rdr)).Accept(deser);
                 }
             }
@@ -143,47 +144,58 @@ namespace Reko.Core.Serialization
         class Deserializer : ISerializedProjectVisitor<Project>
         {
             private readonly ProjectLoader outer;
-            private readonly string filename;
+            private readonly RekoUri projectUri;
 
-            public Deserializer(ProjectLoader outer, string filename)
+            public Deserializer(ProjectLoader outer, RekoUri projectUri)
             {
-                this.outer = outer; this.filename = filename;
+                this.outer = outer; this.projectUri = projectUri;
             }
-            public Project VisitProject_v4(Project_v4 sProject) => outer.LoadProject(filename, sProject);
-            public Project VisitProject_v5(Project_v5 sProject) => outer.LoadProject(filename, sProject);
+            public Project VisitProject_v4(Project_v4 sProject) => outer.LoadProject(projectUri, sProject);
+            public Project VisitProject_v5(Project_v5 sProject) => outer.LoadProject(projectUri, sProject);
         }
 
         /// <summary>
         /// Loads a Project object from its serialized representation. First loads the
-        /// common architecture and platform then metadata, and finally any programs.
+        /// common architecture and platform, then metadata, and finally any programs.
         /// </summary>
         /// <param name="sp"></param>
         /// <returns></returns>
-        public Project LoadProject(string filename, Project_v5 sp)
+        public Project LoadProject(RekoUri projectUri, Project_v4 sp)
+        {
+            return LoadProject(projectUri, ProjectVersionMigrator.MigrateProject(sp));
+        }
+
+        /// <summary>
+        /// Loads a Project object from its serialized representation. First loads the
+        /// common architecture and platform, then metadata, and finally any programs.
+        /// </summary>
+        /// <param name="sp"></param>
+        /// <returns></returns>
+        public Project LoadProject(RekoUri projectUri, Project_v5 sp)
         {
             if (string.IsNullOrWhiteSpace(sp.ArchitectureName))
-                sp.ArchitectureName = GuessProjectProcessorArchitecture(filename, sp.InputFiles);
+                sp.ArchitectureName = GuessProjectProcessorArchitecture(projectUri, sp.InputFiles);
             if (string.IsNullOrWhiteSpace(sp.ArchitectureName))
                 throw new ApplicationException("Missing <arch> in project file. Please specify.");
             if (string.IsNullOrWhiteSpace(sp.PlatformName))
-                sp.PlatformName = GuessProjectPlatform(filename, sp.InputFiles);
+                sp.PlatformName = GuessProjectPlatform(projectUri, sp.InputFiles);
             var cfgSvc = Services.RequireService<IConfigurationService>();
             var arch = cfgSvc.GetArchitecture(sp.ArchitectureName);
             this.arch = arch ?? throw new ApplicationException(
                     string.Format("Unknown architecture '{0}' in project file.",
                         sp.ArchitectureName ?? "(null)"));
             var env = cfgSvc.GetEnvironment(sp.PlatformName!);
-            if (env == null)
+            if (env is null)
                 throw new ApplicationException(
                     string.Format("Unknown operating environment '{0}' in project file.",
                         sp.PlatformName ?? "(null)"));
             this.platform = env.Load(Services, arch);
             this.project.LoadedMetadata = this.platform.CreateMetadata();
-            var typelibs = sp.MetadataFiles.Select(m => VisitMetadataFile(filename, m));
-            var programs = sp.InputFiles.Select(s => VisitInputFile(filename, s));
-            var scripts = sp.ScriptFiles.
-                Select(s => VisitScriptFile(filename, s)).
-                OfType<ScriptFile>();
+            var typelibs = sp.MetadataFiles.Select(m => VisitMetadataFile(projectUri, m));
+            var programs = sp.InputFiles.Select(s => VisitInputFile(projectUri, s));
+            var scripts = sp.ScriptFiles
+                .Select(s => VisitScriptFile(projectUri, s))
+                .OfType<ScriptFile>();
             sp.AssemblerFiles.Select(s => VisitAssemblerFile(s));
             project.MetadataFiles.AddRange(typelibs);
             project.ScriptFiles.AddRange(scripts);
@@ -191,7 +203,7 @@ namespace Reko.Core.Serialization
             return this.project;
         }
 
-        private string? GuessProjectProcessorArchitecture(string projectFilename, IEnumerable<DecompilerInput_v5> inputs)
+        private string? GuessProjectProcessorArchitecture(RekoUri projectUri, IEnumerable<DecompilerInput_v5> inputs)
         {
             foreach (var input in inputs)
             {
@@ -203,13 +215,13 @@ namespace Reko.Core.Serialization
 
             foreach (var input in inputs)
             {
-                var program = LoadProgram(projectFilename, input);
+                var program = LoadProgram(projectUri, input);
                 return program.Architecture.Name;
             }
             return null;
         }
 
-        private string? GuessProjectPlatform(string projectFilename, IEnumerable<DecompilerInput_v5> inputs)
+        private string? GuessProjectPlatform(RekoUri projectUri, IEnumerable<DecompilerInput_v5> inputs)
         {
             foreach (var input in inputs)
             {
@@ -221,27 +233,25 @@ namespace Reko.Core.Serialization
 
             foreach (var input in inputs)
             {
-                var program = LoadProgram(projectFilename, input);
+                var program = LoadProgram(projectUri, input);
                 return program.Platform.Name;
             }
             return null;
         }
 
-        /// <summary>
-        /// Loads a Project object from its serialized representation. First loads the
-        /// common architecture and platform then metadata, and finally any programs.
-        /// </summary>
-        /// <param name="sp"></param>
-        /// <returns></returns>
-        public Project LoadProject(string filename, Project_v4 sp)
+        private Program LoadProgram(RekoUri projectUri, DecompilerInput_v5 sInput)
         {
-            return LoadProject(filename, ProjectVersionMigrator.MigrateProject(sp));
-        }
-
-        private Program LoadProgram(string projectFilePath, DecompilerInput_v5 sInput)
-        {
-            var binAbsPath = ConvertToAbsolutePath(projectFilePath, sInput.Filename)!;
-            var bytes = loader.LoadImageBytes(binAbsPath, 0);
+            RekoUri binUri;
+            if (!string.IsNullOrEmpty(sInput.Uri))
+            {
+                binUri = ConvertToAbsoluteUri(projectUri, sInput.Uri)!;
+            }
+            else
+            {
+                // Only legacy project files use sInput.Filename.
+                binUri = ConvertToAbsoluteUri(projectUri, sInput.Filename)!;
+            }
+            var bytes = loader.LoadImageBytes(binUri, 0);
             var sUser = sInput.User ?? new UserData_v4
             {
                 ExtractResources = true,
@@ -256,7 +266,7 @@ namespace Reko.Core.Serialization
                 // use the LoadRawImage path.
                 var archName = sUser.Processor?.Name;
                 var platform = sUser.PlatformOptions?.Name;
-                program = loader.LoadRawImage(binAbsPath, bytes, address, new LoadDetails
+                program = loader.LoadRawImage(binUri, bytes, address, new LoadDetails
                 {
                     LoaderName = sUser.Loader,
                     ArchitectureName = archName,
@@ -267,33 +277,49 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                program = (Program?)loader.LoadImage(binAbsPath, bytes, sUser.Loader, address)
+                program = (Program?)loader.LoadImage(binUri, bytes, sUser.Loader, address)
                     ?? new Program();   // A previous save of the project was able to read the file, 
                                         // but now we can't...
             }
             return program;
         }
 
-        public Program VisitInputFile(string projectFilePath, DecompilerInput_v5 sInput)
+        public Program VisitInputFile(RekoUri projectUri, DecompilerInput_v5 sInput)
         {
-            //$REVIEW: make this null
-            //if (sInput.Filename == null)
-            //    return null;
-            var binAbsPath = ConvertToAbsolutePath(projectFilePath, sInput.Filename)!;
+            RekoUri binAbsUri;  // file: URL to the location of the file.
+            string projectPath;
+            //$REVIEW: common code begins here
+            if (!string.IsNullOrEmpty(sInput.Uri))
+            {
+                projectPath = UriTools.FilePathFromUri(projectUri);
+                binAbsUri = ConvertToAbsoluteUri(projectUri, sInput.Uri)!;
+            }
+            else if (!string.IsNullOrEmpty(sInput.Filename))
+            {
+                // No URI present, this is an older project file.
+                projectPath = UriTools.FilePathFromUri(projectUri);
+                var binAbsPath = ConvertToAbsolutePath(projectPath, sInput.Filename);
+                binAbsUri = UriTools.UriFromFilePath(binAbsPath!);
+            }
+            else
+            {
+                throw new BadImageFormatException("Missing Uri property.");
+            }
+            //$REVIEW: common code ends here.
             var sUser = sInput.User ?? new UserData_v4
             {
                 ExtractResources = true,
                 OutputFilePolicy = Program.SingleFilePolicy,
             };
             var address = LoadAddress(sUser, this.arch!);
-            Program program = LoadProgram(projectFilePath, sInput);
-            LoadUserData(sUser, program, program.User, projectFilePath);
-            program.Filename = binAbsPath;
-            program.DisassemblyDirectory = ConvertToAbsolutePath(projectFilePath, sInput.DisassemblyDirectory)!;
-            program.SourceDirectory = ConvertToAbsolutePath(projectFilePath, sInput.SourceDirectory)!;
-            program.IncludeDirectory = ConvertToAbsolutePath(projectFilePath, sInput.IncludeDirectory)!;
-            program.ResourcesDirectory = ConvertToAbsolutePath(projectFilePath, sInput.ResourcesDirectory)!;
-            program.EnsureDirectoryNames(program.Filename);
+            Program program = LoadProgram(projectUri, sInput);
+            LoadUserData(sUser, program, program.User, projectUri);
+            program.Uri = binAbsUri;
+            program.DisassemblyDirectory = ConvertToAbsolutePath(projectPath, sInput.DisassemblyDirectory)!;
+            program.SourceDirectory = ConvertToAbsolutePath(projectPath, sInput.SourceDirectory)!;
+            program.IncludeDirectory = ConvertToAbsolutePath(projectPath, sInput.IncludeDirectory)!;
+            program.ResourcesDirectory = ConvertToAbsolutePath(projectPath, sInput.ResourcesDirectory)!;
+            program.EnsureDirectoryNames(program.Uri);
             program.User.LoadAddress = address;
             ProgramLoaded?.Fire(this, new ProgramEventArgs(program));
             return program;
@@ -301,7 +327,7 @@ namespace Reko.Core.Serialization
 
         private Address? LoadAddress(UserData_v4 user, IProcessorArchitecture arch)
         {
-            if (user == null || arch == null || user.LoadAddress == null)
+            if (user is null || arch is null || user.LoadAddress is null)
                 return null;
             if (!arch.TryParseAddress(user.LoadAddress, out Address addr))
                 return null;
@@ -314,10 +340,11 @@ namespace Reko.Core.Serialization
         /// <param name="sUser"></param>
         /// <param name="program"></param>
         /// <param name="user"></param>
-        public void LoadUserData(UserData_v4 sUser, Program program, UserData user, string projectFilePath)
+        public void LoadUserData(UserData_v4 sUser, Program program, UserData user, RekoUri projectUri)
         {
             if (sUser == null)
                 return;
+            var projectFilePath = UriTools.FilePathFromUri(projectUri);
             user.OnLoadedScript = sUser.OnLoadedScript;
             if (sUser.Processor != null)
             {
@@ -635,26 +662,34 @@ namespace Reko.Core.Serialization
             return up;
         }
 
-        public MetadataFile VisitMetadataFile(string projectFilePath, MetadataFile_v3 sMetadata)
+        public MetadataFile VisitMetadataFile(RekoUri projectUri, MetadataFile_v3 sMetadata)
         {
-            //$BUG: what if sMetata.Filename is null?
-            string filename = ConvertToAbsolutePath(projectFilePath, sMetadata.Filename)!;
-            return LoadMetadataFile(filename);
+            //$BUG: what if both sMetaData.Uri and sMetata.Filename are null?
+            RekoUri metadataUri;
+            if (!string.IsNullOrEmpty(sMetadata.Uri))
+            {
+                metadataUri = ConvertToAbsoluteUri(projectUri, sMetadata.Uri)!;
+            }
+            else
+            {
+                metadataUri = ConvertToAbsoluteUri(projectUri, sMetadata.Filename)!;
+            }
+            return LoadMetadataFile(metadataUri);
         }
 
-        public MetadataFile LoadMetadataFile(string filename)
+        public MetadataFile LoadMetadataFile(RekoUri metadataUri)
         {
-            var platform = DeterminePlatform(filename);
+            var platform = DeterminePlatform();
             this.project.LoadedMetadata = 
-                loader.LoadMetadata(filename, platform, this.project.LoadedMetadata)
+                loader.LoadMetadata(metadataUri, platform, this.project.LoadedMetadata)
                 ?? new TypeLibrary();   // was able to load before, but not now?
             return new MetadataFile
             {
-                Filename = filename,
+                Uri = metadataUri,
             };
         }
 
-        private IPlatform DeterminePlatform(string filename)
+        private IPlatform DeterminePlatform()
         {
             // If a platform was defined for the whole project use that.
             if (this.platform != null)
@@ -671,13 +706,23 @@ namespace Reko.Core.Serialization
         }
 
         public ScriptFile? VisitScriptFile(
-            string projectFilePath, ScriptFile_v5 sScript)
+            RekoUri projectUri, ScriptFile_v5 sScript)
         {
-            var filename = ConvertToAbsolutePath(
-                projectFilePath, sScript.Filename);
-            if (filename == null)
+            RekoUri scriptUri;
+            if (!string.IsNullOrEmpty(sScript.Uri))
+            {
+                scriptUri = ConvertToAbsoluteUri(projectUri, sScript.Uri)!;
+            }
+            else if (!string.IsNullOrEmpty(sScript.Filename))
+            {
+                // No URI present, this is an older project file.
+                var projectPath = UriTools.FilePathFromUri(projectUri);
+                var scriptAbsPath = ConvertToAbsolutePath(projectPath, sScript.Filename);
+                scriptUri = UriTools.UriFromFilePath(scriptAbsPath!);
+            }
+            else 
                 return null;
-            return loader.LoadScript(filename);
+            return loader.LoadScript(scriptUri);
         }
 
         public Program VisitAssemblerFile(AssemblerFile_v3 sAsmFile)
