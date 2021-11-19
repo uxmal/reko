@@ -51,13 +51,11 @@ namespace Reko.Environments.AmigaOS.Design
         {
             Control = new AmigaOSProperties();
             var mapKickstartToListOfLibraries = platform.MapKickstartToListOfLibraries;
-            if (mapKickstartToListOfLibraries != null)
+            if (mapKickstartToListOfLibraries is not null)
             {
                 this.Control.KickstartVersionList.DataSource =
                     mapKickstartToListOfLibraries
-                    .Select(kv => new ListOption(
-                        string.Format("Kickstart {0}", kv.Key),
-                        kv.Value))
+                    .Select(kv => new ListOption($"Kickstart {kv.Key}", kv))
                     .ToList();
                 this.Control.KickstartVersionList.SelectedIndex = 0;
             }
@@ -81,16 +79,23 @@ namespace Reko.Environments.AmigaOS.Design
         {
             PopulateLoadedLibraryList();
         }
+
         private void ImportButton_Click(object sender, EventArgs e)
         {
-            platform.SetKickstartVersion(33 + this.Control.KickstartVersionList.SelectedIndex);
+            if (this.Control.KickstartVersionList.SelectedValue is ListOption opt &&
+                opt.Value is KeyValuePair<string, object> kv &&
+                int.TryParse(kv.Key, out int ksVersion))
+            {
+                platform.SetKickstartVersion(ksVersion);
+            }
         }
+
         private void PopulateLoadedLibraryList()
         {
-            var listOption = (ListOption)Control.KickstartVersionList.SelectedValue;
-            if (listOption != null)
+            if (Control.KickstartVersionList.SelectedValue is ListOption listOption)
             {
-                var libList = (List<object>)listOption.Value;
+                var kv = (KeyValuePair<string, object>)listOption.Value;
+                var libList = (List<object>)kv.Value;
                 Control.LoadedLibraryList.Items.Clear();
                 foreach (object lib in libList)
                 {
