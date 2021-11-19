@@ -37,10 +37,13 @@ namespace Reko.Environments.AmigaOS.Design
         {
             InitializeComponent();
             KickstartVersionList = new ComboBoxWrapper(cmbKickstartVersions);
+            ImportButton = new ButtonWrapper(btnImportLibraries);
             LoadedLibraryList = lstLoadedLibs;      //$TODO: no wrapper for ListView available yet.
         }
 
         public IComboBox KickstartVersionList { get; private set; }
+        public IButton ImportButton { get; private set; }
+
         public ListView LoadedLibraryList { get; private set; }
     }
 }
