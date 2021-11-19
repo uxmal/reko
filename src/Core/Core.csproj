@@ -27,9 +27,16 @@
 
   <Target Name="GenerateGitHash" BeforeTargets="CoreCompile">
     <!-- names the obj/.../CustomAssemblyInfo.cs file -->
-    <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="SourceRevisionId" />
+    <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitRevParseOutput" />
+      <Output TaskParameter="ExitCode" PropertyName="GitRevParseExitCode" />
     </Exec>
+    <PropertyGroup Condition="$(GitRevParseExitCode)==0">
+      <SourceRevisionId>$(GitRevParseOutput)</SourceRevisionId>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(GitRevParseExitCode)!=0">
+      <SourceRevisionId>unknown</SourceRevisionId>
+    </PropertyGroup>
     <PropertyGroup>
       <CustomAssemblyInfoFile>$(IntermediateOutputPath)AssemblyData.Extra.cs</CustomAssemblyInfoFile>
     </PropertyGroup>
