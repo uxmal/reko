@@ -374,31 +374,30 @@ namespace Reko.Core
         /// <param name="envName"></param>
         public virtual void EnsureTypeLibraries(string envName)
         {
-            if (Metadata == null)
+            if (Metadata != null) 
+                return;
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var envCfg = cfgSvc.GetEnvironment(envName);
+            if (envCfg == null)
+                throw new ApplicationException(string.Format(
+                    "Environment '{0}' doesn't appear in the configuration file. Your installation may be out-of-date.",
+                    envName));
+            this.Metadata = new TypeLibrary(envCfg.CaseInsensitive);
+
+            var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
+
+            foreach (var tl in envCfg.TypeLibraries
+                .Where(t => t.Architecture == null ||
+                            t.Architecture.Contains(Architecture.Name))
+                .OfType<TypeLibraryDefinition>())
             {
-                var cfgSvc = Services.RequireService<IConfigurationService>();
-                var envCfg = cfgSvc.GetEnvironment(envName);
-                if (envCfg == null)
-                    throw new ApplicationException(string.Format(
-                        "Environment '{0}' doesn't appear in the configuration file. Your installation may be out-of-date.",
-                        envName));
-                this.Metadata = new TypeLibrary(envCfg.CaseInsensitive);
-
-                var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
-
-                foreach (var tl in envCfg.TypeLibraries
-                    .Where(t => t.Architecture == null ||
-                                t.Architecture.Contains(Architecture.Name))
-                    .OfType<TypeLibraryDefinition>())
-                {
-                    Metadata = tlSvc.LoadMetadataIntoLibrary(this, tl, Metadata); 
-                }
-                this.CharacteristicsLibs = envCfg.CharacteristicsLibraries
-                    .Select(cl => tlSvc.LoadCharacteristics(cl.Name!))
-                    .Where(cl => cl != null).ToArray();
-
-                ApplyCharacteristicsToServices(CharacteristicsLibs, Metadata);
+                Metadata = tlSvc.LoadMetadataIntoLibrary(this, tl, Metadata); 
             }
+            this.CharacteristicsLibs = envCfg.CharacteristicsLibraries
+                .Select(cl => tlSvc.LoadCharacteristics(cl.Name!))
+                .Where(cl => cl != null).ToArray();
+
+            ApplyCharacteristicsToServices(CharacteristicsLibs, Metadata);
         }
 
         private void ApplyCharacteristicsToServices(CharacteristicsLibrary[] characteristicsLibs, TypeLibrary metadata)

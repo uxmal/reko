@@ -64,7 +64,7 @@ namespace Reko.Environments.AmigaOS.Design
             PopulateLoadedLibraryList();
 
             this.Control.KickstartVersionList.SelectedIndexChanged += KickstartVersionList_SelectedIndexChanged;
-
+            this.Control.ImportButton.Click += ImportButton_Click;
             return Control;
         }
 
@@ -81,7 +81,10 @@ namespace Reko.Environments.AmigaOS.Design
         {
             PopulateLoadedLibraryList();
         }
-
+        private void ImportButton_Click(object sender, EventArgs e)
+        {
+            platform.SetKickstartVersion(33 + this.Control.KickstartVersionList.SelectedIndex);
+        }
         private void PopulateLoadedLibraryList()
         {
             var listOption = (ListOption)Control.KickstartVersionList.SelectedValue;
