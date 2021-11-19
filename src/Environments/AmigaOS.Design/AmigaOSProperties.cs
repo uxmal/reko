@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -41,9 +41,9 @@ namespace Reko.Environments.AmigaOS.Design
             LoadedLibraryList = lstLoadedLibs;      //$TODO: no wrapper for ListView available yet.
         }
 
-        public IComboBox KickstartVersionList { get; private set; }
-        public IButton ImportButton { get; private set; }
+        public IComboBox KickstartVersionList { get; }
+        public IButton ImportButton { get; }
 
-        public ListView LoadedLibraryList { get; private set; }
+        public ListView LoadedLibraryList { get; }
     }
 }

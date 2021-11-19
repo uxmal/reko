@@ -72,6 +72,7 @@
             // 
             // cmbKickstartVersions
             // 
+            this.cmbKickstartVersions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbKickstartVersions.FormattingEnabled = true;
             this.cmbKickstartVersions.Location = new System.Drawing.Point(173, 87);
             this.cmbKickstartVersions.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
