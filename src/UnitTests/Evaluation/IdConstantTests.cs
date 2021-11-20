@@ -47,7 +47,12 @@ namespace Reko.UnitTests.Evaluation
             listener = new FakeDecompilerEventListener();
 		}
 
-		[Test]
+        private void AssertTypedExpression(string sExp, Expression e)
+        {
+            Assert.AreEqual(sExp, $"{e}<{e.DataType}>");
+        }
+
+        [Test]
 		public void Idc_ConstantPropagate()
 		{
 			Identifier ds = m.Frame.EnsureRegister(Registers.ds);
@@ -127,8 +132,28 @@ namespace Reko.UnitTests.Evaluation
             var ic = new IdConstant(ctx.Object, new Unifier(null, null), listener);
             Assert.IsTrue(ic.Match(edx));
             var e = ic.Transform();
-            Assert.AreEqual("0.1875F", e.ToString());
-            Assert.AreEqual("real32", e.DataType.ToString());
+            AssertTypedExpression("0.1875F<real32>", e);
+        }
+
+        [Test]
+        public void Idc_TypeReferenceToReal64()
+        {
+            var r64 = new Identifier(
+                "r64",
+                new TypeReference("DOUBLE", PrimitiveType.Real64),
+                Registers.rdx);
+            var ctx = new Mock<EvaluationContext>();
+            var c = Constant.Word64(0x4028000000000000); // 12.0
+            ctx.Setup(c => c.GetValue(r64)).Returns(c);
+
+            var ic = new IdConstant(
+                ctx.Object,
+                new Unifier(null, null),
+                listener);
+            Assert.IsTrue(ic.Match(r64));
+            var e = ic.Transform();
+
+            AssertTypedExpression("12.0<DOUBLE>", e);
         }
     }
 }

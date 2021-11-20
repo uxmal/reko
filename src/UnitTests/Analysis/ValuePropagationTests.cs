@@ -35,6 +35,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Linq;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -178,6 +179,12 @@ namespace Reko.UnitTests.Analysis
                 Console.WriteLine(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
+        }
+
+        private void AssertLastStatement(string sExp)
+        {
+            var lastStatement = m.Ssa.Procedure.Statements.Last();
+            Assert.AreEqual(sExp, lastStatement.ToString());
         }
 
         private void RunValuePropagator()
@@ -1466,6 +1473,22 @@ SsaProcedureBuilder_exit:
 ";
             #endregion
             AssertStringsEqual(sExp, m.Ssa);
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void VpTypeReferenceToReal64()
+        {
+            var c = Constant.Word64(0x4028000000000000); // 12.0
+            var doubleRef = new TypeReference("DOUBLE", PrimitiveType.Real64);
+            var v1 = m.Temp(doubleRef, "v1");
+            var v2 = m.Temp(doubleRef, "v2");
+            m.Assign(v1, c);
+            m.Assign(v2, v1);
+
+            RunValuePropagator();
+
+            AssertLastStatement("v2 = 12.0");
         }
     }
 }

@@ -71,10 +71,11 @@ namespace Reko.Evaluation
             if (this.pt != null)
             {
                 ctx.RemoveIdentifierUse(idDst!);
+                var pt = idDst!.DataType.ResolveAs<PrimitiveType>();
                 var cNew = src!.CloneExpression();
                 if (src.DataType.IsWord &&
-                    src is Constant cSrc && 
-                    idDst!.DataType is PrimitiveType pt &&
+                    src is Constant cSrc &&
+                    pt != null &&
                     pt.Domain == Domain.Real)
                 {
                     // Raw bitvector assigned to an real-valued register. We need to interpret the bitvector
