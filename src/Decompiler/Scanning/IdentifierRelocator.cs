@@ -97,6 +97,8 @@ namespace Reko.Scanning
 
         public Identifier VisitTemporaryStorage(TemporaryStorage tmp)
         {
+            if (tmp is GlobalStorage)
+                return id!;
             return frameNew.CreateTemporary(id!.DataType);
         }
 
