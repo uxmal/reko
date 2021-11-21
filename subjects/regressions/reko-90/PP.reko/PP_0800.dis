@@ -125,7 +125,7 @@ l0800_0221:
 l0800_0235:
 	call SEQ(0x800<16>, Mem31[es:dx_13 + 2<16>:word16]) (retsize: 2;)
 l0800_022E:
-	call Mem31[es:dx_13 + 2<16>:ptr32] (retsize: 4;)
+	call Mem31[es:dx_13 + 2<16>:segptr32] (retsize: 4;)
 l0800_01FA:
 	branch Mem80[es:bx_15:byte] == 0xFF<8> l0800_0218
 l0800_0200:

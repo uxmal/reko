@@ -390,7 +390,7 @@ movzx	ax,byte ptr [bp+4h]
         {
             var instr = Disassemble16(0xC4, 0x5E, 0x6);		// les bx,[bp+06]
             Assert.AreEqual("les\tbx,[bp+6h]", instr.ToString());
-            Assert.AreSame(PrimitiveType.Ptr32, instr.Operands[1].Width);
+            Assert.AreSame(PrimitiveType.SegPtr32, instr.Operands[1].Width);
         }
 
         [Test]

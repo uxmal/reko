@@ -595,12 +595,15 @@ namespace Reko.Arch.X86
         {
             if (!dasm.TryReadLeUInt16(out ushort off))
                 return false;
+            //$BUG: what about 32-bit code?
             if (!dasm.TryReadLeUInt16(out ushort seg))
                 return false;
             var addr = dasm.mode.CreateSegmentedAddress(seg, off);
             if (addr == null)
                 return false;
-            dasm.decodingContext.ops.Add(AddressOperand.Create(addr));
+            var aop = AddressOperand.Create(addr);
+            aop.Width = PrimitiveType.SegPtr32; //$BUG: in 32-bit code this is SegPtr48
+            dasm.decodingContext.ops.Add(aop);
             return true;
         }
 
@@ -859,7 +862,7 @@ namespace Reko.Arch.X86
                 if ((modRm & 0xC0) == 0xC0)
                     return false;
                 var width = d.OperandWidth(opType);
-                if (!(d.DecodeModRM(width, d.decodingContext.SegmentOverride, d.GpRegFromBits) is MemoryOperand mem))
+                if (d.DecodeModRM(width, d.decodingContext.SegmentOverride, d.GpRegFromBits) is not MemoryOperand mem)
                     return false;
                 d.decodingContext.ops.Add(mem);
                 return true;
@@ -1030,7 +1033,6 @@ namespace Reko.Arch.X86
                 return true;
             };
         }
-
 
         private static readonly Mutator<X86Disassembler> Vdq = V(OperandType.dq);
         private static readonly Mutator<X86Disassembler> Vpd = V(OperandType.pd);
@@ -1349,7 +1351,8 @@ namespace Reko.Arch.X86
             case OperandType.pd:
                 return this.decodingContext.VexLong ? PrimitiveType.Word256 : PrimitiveType.Word128;
             case OperandType.p:
-				return PrimitiveType.Ptr32;     // Far pointer.
+				//$BUG: should be SegPtr48 in 32-bit mode.
+				return PrimitiveType.SegPtr32;     // Far pointer.
             case OperandType.f:
                 return PrimitiveType.Real32;
             case OperandType.g:

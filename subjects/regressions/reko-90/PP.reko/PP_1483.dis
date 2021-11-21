@@ -733,7 +733,7 @@ l1483_1B13:
 	word32 ecx_43
 	word16 ax_44
 	word16 bx_45
-	call Mem6[0x1483<16>:bx:ptr32] (retsize: 0;)
+	call Mem6[0x1483<16>:bx:segptr32] (retsize: 0;)
 		uses: ax:ax_44,bx:bx_45,cx:cx_256,dx:dx_42
 		defs: ax:ax_44,bx:bx_45,dx:dx_42,ecx:ecx_43
 	cxOut = <invalid>

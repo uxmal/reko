@@ -332,7 +332,7 @@ namespace Reko.UnitTests.Arch.X86
             Run16bitTest(0xFF, 0x6F, 0x34);
             AssertCode(
                 "0|T--|0C00:0000(3): 1 instructions",
-                "1|T--|goto Mem0[ds:bx + 0x34<16>:ptr32]");
+                "1|T--|goto Mem0[ds:bx + 0x34<16>:segptr32]");
         }
 
         [Test]
@@ -845,9 +845,6 @@ namespace Reko.UnitTests.Arch.X86
                 "2|L--|ecx = __bsr(eax)");
         }
 
-
-
-
         [Test]
         public void X86rw_RewriteIndirectCalls()
         {
@@ -863,7 +860,7 @@ namespace Reko.UnitTests.Arch.X86
                 "2|T--|0C00:0002(3): 1 instructions",
                 "3|T--|call SEQ(0xC00<16>, Mem0[ds:bx + 4<16>:word16]) (2)",
                 "4|T--|0C00:0005(3): 1 instructions",
-                "5|T--|call Mem0[ds:bx + 8<16>:ptr32] (4)");
+                "5|T--|call Mem0[ds:bx + 8<16>:segptr32] (4)");
         }
 
         [Test]
