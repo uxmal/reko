@@ -33,6 +33,7 @@ namespace Reko.Arch.X86
     {
         private static readonly char[] floatSpecials = new char[] { '.', 'e', 'E' };
 
+        public static X86AssemblyRenderer Att { get; } = new AttAssemblyRenderer();
         public static X86AssemblyRenderer Intel { get; } = new IntelAssemblyRenderer();
         public static X86AssemblyRenderer Nasm { get; } = new NasmAssemblyRenderer();
 
@@ -59,18 +60,22 @@ namespace Reko.Arch.X86
 
         public void Render(X86Instruction instr, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            if (instr.repPrefix == 3)
-            {
-                renderer.WriteMnemonic("rep");
-                renderer.WriteChar(' ');
-            }
-            else if (instr.repPrefix == 2)
-            {
-                renderer.WriteMnemonic("repne");
-                renderer.WriteChar(' ');
-            }
+            RenderPrefix(instr, renderer);
 
-            var s = new StringBuilder(instr.Mnemonic.ToString());
+            var s = new StringBuilder();
+            RenderMnemonic(instr, s);
+            renderer.WriteMnemonic(s.ToString());
+
+            if (instr.Operands.Length > 0)
+            {
+                renderer.Tab();
+                RenderOperands(instr, options, renderer);
+            }
+        }
+
+        protected virtual void RenderMnemonic(X86Instruction instr, StringBuilder s)
+        {
+            s.Append(instr.MnemonicAsString);
             switch (instr.Mnemonic)
             {
             case Mnemonic.ins:
@@ -90,26 +95,39 @@ namespace Reko.Arch.X86
                 }
                 break;
             }
-            renderer.WriteMnemonic(s.ToString());
+        }
 
+        protected virtual void RenderOperands(X86Instruction instr, MachineInstructionRendererOptions options, MachineInstructionRenderer renderer)
+        {
             var flags = options.Flags;
-            if (NeedsExplicitMemorySize(instr))
+            RenderOperand(instr.Operands[0], instr, renderer, options);
+            for (int i = 1; i < instr.Operands.Length; ++i)
             {
-                flags |= MachineInstructionRendererFlags.ExplicitOperandSize;
-            }
-            if (instr.Operands.Length > 0)
-            {
-                renderer.Tab();
-                RenderOperand(instr.Operands[0], instr, renderer, flags);
-                for (int i = 1; i < instr.Operands.Length; ++i)
-                {
-                    renderer.WriteString(options.OperandSeparator ?? ",");
-                    RenderOperand(instr.Operands[i], instr, renderer, flags);
-                }
+                renderer.WriteString(options.OperandSeparator ?? ",");
+                RenderOperand(instr.Operands[i], instr, renderer, options);
             }
         }
 
-        protected virtual void RenderOperand(MachineOperand operand, X86Instruction instr, MachineInstructionRenderer renderer, MachineInstructionRendererFlags flags)
+        protected void RenderPrefix(X86Instruction instr, MachineInstructionRenderer renderer)
+        {
+            //$TODO: make 'lock' a prefix
+            if (instr.repPrefix == 3)
+            {
+                renderer.WriteMnemonic("rep");
+                renderer.WriteChar(' ');
+            }
+            else if (instr.repPrefix == 2)
+            {
+                renderer.WriteMnemonic("repne");
+                renderer.WriteChar(' ');
+            }
+        }
+
+        protected virtual void RenderOperand(
+            MachineOperand operand, 
+            X86Instruction instr,
+            MachineInstructionRenderer renderer,
+            MachineInstructionRendererOptions options)
         {
             switch (operand)
             {
@@ -120,6 +138,12 @@ namespace Reko.Arch.X86
                 RenderImmediate(imm, instr, renderer);
                 break;
             case MemoryOperand memOp:
+                var flags = options.Flags;
+                if (NeedsExplicitMemorySize(instr))
+                {
+                    flags |= MachineInstructionRendererFlags.ExplicitOperandSize;
+                }
+
                 if (memOp.Base == Registers.rip)
                 {
                     var addr = instr.Address + instr.Length + memOp.Offset!.ToInt32();
@@ -161,6 +185,11 @@ namespace Reko.Arch.X86
 
             default: throw new NotImplementedException(operand.GetType().Name);
             }
+        }
+
+        internal void RenderSymbolReference(Address address, string name, long offset, MachineInstructionRenderer renderer)
+        {
+            throw new NotImplementedException();
         }
 
         protected virtual void RenderRegister(string regName, MachineInstructionRenderer renderer)
@@ -269,7 +298,7 @@ namespace Reko.Arch.X86
 
         protected abstract string ExplicitOperandPrefix(DataType width);
 
-        private bool NeedsExplicitMemorySize(X86Instruction instr)
+        protected bool NeedsExplicitMemorySize(X86Instruction instr)
         {
             switch (instr.Mnemonic)
             {
@@ -286,6 +315,8 @@ namespace Reko.Arch.X86
                 return false;
             default:
                 var ops = instr.Operands;
+                if (ops.Length == 0)
+                    return false;
                 if (ops.Length >= 2 && ops[0].Width.Size != ops[1].Width.Size)
                     return true;
                 return
@@ -295,7 +326,7 @@ namespace Reko.Arch.X86
             }
         }
 
-        private bool HasImplicitWidth(MachineOperand op)
+        protected bool HasImplicitWidth(MachineOperand op)
         {
             return op is RegisterOperand || op is AddressOperand || op is FpuOperand;
         }

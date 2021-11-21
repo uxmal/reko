@@ -22,6 +22,7 @@ using Reko.Core.Expressions;
 using Reko.Core.NativeInterface;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -89,6 +90,7 @@ namespace Reko.Core.Machine
             this.Flags = flags;
             this.OperandSeparator = operandSeparator;
             this.Platform = platform;
+            this.SymbolResolver = NullSymbolResolver;
         }
 
         /// <summary>
@@ -114,6 +116,25 @@ namespace Reko.Core.Machine
         public IPlatform? Platform { get; }
 
         /// <summary>
+        /// Delegate used to resolve address to symbols.
+        /// </summary>
+        public SymbolResolver SymbolResolver { get; set; }
+
+        /// <summary>
+        /// A default symbol resolver that does no work.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <param name="symbolName"></param>
+        /// <param name="offset"></param>
+        /// <returns>Always returns false, since no resolution is ever done.</returns>
+        public bool NullSymbolResolver(Address addr, [MaybeNullWhen(false)] out string symbolName, out long offset)
+        {
+            symbolName = null;
+            offset = 0;
+            return false;
+        }
+
+        /// <summary>
         /// A default instance of the <see cref="MachineInstructionRendererOptions"/>.
         /// </summary>
         public static MachineInstructionRendererOptions Default { get; } = new MachineInstructionRendererOptions(
@@ -122,6 +143,7 @@ namespace Reko.Core.Machine
             operandSeparator: ",");
     }
 
+    public delegate bool SymbolResolver(Address addr, [MaybeNullWhen(false)] out string? symbolName, out long offset);
 
     /// <summary>
     /// "Dumb" renderer that renders machine instructions as simple text.

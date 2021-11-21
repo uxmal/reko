@@ -65,6 +65,7 @@ namespace Reko.Arch.X86
                 return X86AssemblyRenderer.Intel;
             switch (options.Syntax![0])
             {
+            case 'A': case 'a': return X86AssemblyRenderer.Att;
             case 'I': case 'i': return X86AssemblyRenderer.Intel;
             case 'N': case 'n': return X86AssemblyRenderer.Nasm;
             default: return X86AssemblyRenderer.Intel;
