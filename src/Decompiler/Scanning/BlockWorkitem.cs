@@ -854,20 +854,8 @@ namespace Reko.Scanning
             int returnAddressBytes = ret.ReturnAddressBytes;
             var address = ric!.Address;
             scanner.SetProcedureReturnAddressBytes(proc, returnAddressBytes, address);
-
             int stackDelta = ret.ReturnAddressBytes + ret.ExtraBytesPopped;
-            if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != stackDelta)
-            {
-                scanner.Warn(
-                    ric.Address,
-                    "Multiple different values of stack delta in procedure {0} when processing RET instruction; was {1} previously.", 
-                    proc.Name,
-                    proc.Signature.StackDelta);
-            }
-            else
-            {
-                proc.Signature.StackDelta = stackDelta;
-            }
+            scanner.SetProcedureStackDelta(proc, stackDelta, address);
             state.OnProcedureLeft(proc.Signature);
             scanner.TerminateBlock(blockCur, rtlStream!.Current.Address + ric.Length);
             return false;

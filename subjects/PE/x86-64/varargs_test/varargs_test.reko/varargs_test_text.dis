@@ -1182,8 +1182,8 @@ void fn0000000140001E7C(word64 rdx, word64 r9)
 
 // MayUse:  r9:[0..63] rdx:[0..63]
 // LiveOut:
-// Trashed: SCZO r10 r8 r9 rax rcx rdx rsp
-// Preserved:
+// Trashed: SCZO r10 r8 r9 rax rcx rdx
+// Preserved: rsp
 fn0000000140001E7C_entry:
 l0000000140001E7C:
 	fn0000000140001E9C(rdx, r9, Mem0[r9 + 0x38<64>:word64], qwLoc30)

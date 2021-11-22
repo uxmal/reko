@@ -473,6 +473,7 @@ namespace Reko.Scanning
             callRetThunkBlock.Statements.Add(linFrom, new ReturnInstruction());
             procOld.ControlGraph.AddEdge(callRetThunkBlock, procOld.ExitBlock);
             SetProcedureReturnAddressBytes(procOld, procNew.Frame.ReturnAddressSize, addrFrom);
+            SetProcedureStackDelta(procOld, procNew.Signature.StackDelta, addrFrom);
             return callRetThunkBlock;
         }
 
@@ -888,6 +889,25 @@ namespace Reko.Scanning
                         : Constant.Create(reg.DataType, Convert.ToUInt64(rv.Value, 16));
                     st.SetValue(reg, val);
                 }
+            }
+        }
+
+        public void SetProcedureStackDelta(
+            Procedure proc, int stackDelta, Address address)
+        {
+            if (stackDelta == 0)
+                return;
+            if (proc.Signature.StackDelta != 0 && proc.Signature.StackDelta != stackDelta)
+            {
+                this.Warn(
+                    address,
+                    "Multiple different values of stack delta in procedure {0} when processing RET instruction; was {1} previously.",
+                    proc.Name,
+                    proc.Signature.StackDelta);
+            }
+            else
+            {
+                proc.Signature.StackDelta = stackDelta;
             }
         }
 

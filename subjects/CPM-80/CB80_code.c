@@ -848,7 +848,7 @@ void fn0BE4(byte f)
 	fn1326(0x07, fn1346(&g_w0108, &g_w0103), out l_n);
 	struct Eq_n * hl_n = (struct Eq_n *) <invalid>;
 	word16 hl_n = g_w0108;
-	fn040D(SLICE(hl_n, byte, 8), (byte) hl_n, (byte) hl_n, hl_n->wFFFFFFF8);
+	fn040D(SLICE(hl_n, byte, 8), (byte) hl_n, (byte) hl_n, hl_n->wFFFFFFFA);
 	struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
 	sp_n->tFFFFFFFE = SEQ(0x00 - (g_b138A < 0x01), f_n);
 	if ((0x00 - (g_b138A > 0x03) | sp_n->b0003) >> 0x01 < 0x00)

@@ -1067,40 +1067,40 @@ l0C1A:
 	Mem78[0x1645<16>:byte] = Mem13[0x138A<16>:byte] + 0x30<8>
 	Mem81[hl_73 - 2<16>:word16] = 0x231<16>
 	Mem84[hl_73 - 4<16>:word16] = 0x1642<16>
-	byte f_148 = fn082F(f, 0<8>, 0x5C<8>, 0x10<8>, Mem84[hl_73 - 4<16>:word16], Mem84[hl_73 - 2<16>:word16])
+	byte f_147 = fn082F(f, 0<8>, 0x5C<8>, 0x10<8>, Mem84[hl_73 - 4<16>:word16], Mem84[hl_73 - 2<16>:word16])
 	Mem101[hl_73 - 6<16>:word16] = 0x5C<16>
-	byte l_245
-	fn1326(7<8>, fn1346(0x108<16>, 0x103<16>), out l_245)
-	word16 hl_244 = <invalid>
-	word16 hl_126 = Mem101[0x108<16>:word16]
-	fn040D(SLICE(hl_126, byte, 8), SLICE(hl_126, byte, 0), SLICE(hl_244, byte, 0), Mem101[hl_73 - 8<16>:word16])
-	word16 sp_136 = <invalid>
-	Mem150[sp_136 - 2<16>:word16] = SEQ(0<8> - (Mem101[0x138A<16>:byte] <u 1<8>), f_148)
-	branch (0<8> - (Mem150[0x138A<16>:byte] >u 3<8>) | Mem150[sp_136 + 3<16>:byte]) >>u 1<8> >=u 0<8> l0C71
+	byte l_244
+	fn1326(7<8>, fn1346(0x108<16>, 0x103<16>), out l_244)
+	word16 hl_243 = <invalid>
+	word16 hl_125 = Mem101[0x108<16>:word16]
+	fn040D(SLICE(hl_125, byte, 8), SLICE(hl_125, byte, 0), SLICE(hl_243, byte, 0), Mem101[hl_73 - 6<16>:word16])
+	word16 sp_135 = <invalid>
+	Mem149[sp_135 - 2<16>:word16] = SEQ(0<8> - (Mem101[0x138A<16>:byte] <u 1<8>), f_147)
+	branch (0<8> - (Mem149[0x138A<16>:byte] >u 3<8>) | Mem149[sp_135 + 3<16>:byte]) >>u 1<8> >=u 0<8> l0C71
 l0C68:
 	fn075C(0<8>, 1<8>, 0<8>, 0<8>)
 l0C71:
-	branch Mem150[0x138A<16>:byte] != 1<8> l0C7C
+	branch Mem149[0x138A<16>:byte] != 1<8> l0C7C
 l0C7C:
-	branch Mem150[0x138A<16>:byte] != 2<8> l0C87
+	branch Mem149[0x138A<16>:byte] != 2<8> l0C87
 l0C87:
-	branch Mem150[0x138A<16>:byte] != 3<8> l0C92
+	branch Mem149[0x138A<16>:byte] != 3<8> l0C92
 l0C92:
 	return
 l0C8F:
 l0105:
 	call fn1729 (retsize: 0;)
-		uses: f:f_148
+		uses: f:f_147
 	return
 l0C84:
 l0224:
 	call fn177D (retsize: 0;)
-		uses: f:f_148
+		uses: f:f_147
 	return
 l0C79:
 l020A:
 	call fn172D (retsize: 0;)
-		uses: f:f_148
+		uses: f:f_147
 	return
 fn0BE4_exit:
 

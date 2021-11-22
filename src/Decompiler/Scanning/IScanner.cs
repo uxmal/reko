@@ -88,6 +88,8 @@ namespace Reko.Scanning
         Block SplitBlock(Block block, Address addr);
 
         Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew);
+        void SetProcedureStackDelta(
+            Procedure proc, int stackDelta, Address address);
         void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address);
 
         IEnumerable<RtlInstructionCluster> GetTrace(IProcessorArchitecture arch, Address addrStart, ProcessorState state, IStorageBinder binder);
