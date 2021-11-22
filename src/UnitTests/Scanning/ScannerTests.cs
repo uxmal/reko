@@ -843,17 +843,17 @@ l00001000:
 	r63 = r63 - 4<32>
 	Mem0[r63:word32] = r1
 	call fn00001200 (retsize: 4;)
-	r63 = r63 + 8<32>
+	r63 = r63 + 4<32>
 	r1 = 3<32>
 	r63 = r63 - 4<32>
 	Mem0[r63:word32] = r1
 	call fn00001100 (retsize: 4;)
-	r63 = r63 + 8<32>
+	r63 = r63 + 4<32>
 	return
 fn1000_exit:
 
 // fn00001100
-// Return size: 0
+// Return size: 4
 define fn00001100
 fn00001100_entry:
 	r63 = fp
@@ -876,7 +876,7 @@ l00001120:
 fn00001100_exit:
 
 // fn00001200
-// Return size: 0
+// Return size: 4
 define fn00001200
 fn00001200_entry:
 	r63 = fp

@@ -162,7 +162,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0064, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF809B);
 					real48 gp0_gp1_gp2_n = g_rFFFF80E0;
@@ -174,7 +174,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0064, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF80A8);
 					real48 gp0_gp1_gp2_n = *((char *) &g_rFFFF80E0 + 3);
@@ -186,7 +186,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0064, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF80B7);
 					real48 gp0_gp1_gp2_n = g_rFFFF80E6;
@@ -198,7 +198,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp8_n;
 					cui16 gp9_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0064, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 					fn04B9(&g_tFFFF80C2);
 					real48 gp0_gp1_gp2_n = g_rFFFF80CE;
@@ -210,7 +210,7 @@ void fn0111(word16 wArg42, word16 wArg80, cui16 wArgC4)
 					word16 gp10_n;
 					word16 gp11_n;
 					word16 gp14_n;
-					fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0066, gp15_n->w00C6), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
+					fn04AE(gp0_gp1_n, fn034E((word32) gp0_gp1_gp2_n, gp12_gp13_n, (word16) gp0_gp1_gp2_n, gp8_n, gp9_n, gp10_n, gp11_n, gp15_n->w0064, gp15_n->w00C4), out gp8_n, out gp9_n, out gp10_n, out gp11_n, out gp14_n);
 					fn045A(0x0A);
 }
 

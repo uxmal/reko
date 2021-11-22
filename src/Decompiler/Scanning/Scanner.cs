@@ -472,7 +472,11 @@ namespace Reko.Scanning
 
             callRetThunkBlock.Statements.Add(linFrom, new ReturnInstruction());
             procOld.ControlGraph.AddEdge(callRetThunkBlock, procOld.ExitBlock);
-            SetProcedureReturnAddressBytes(procOld, procNew.Frame.ReturnAddressSize, addrFrom);
+            if (procNew.Frame.ReturnAddressKnown)
+            {
+                SetProcedureReturnAddressBytes(
+                    procOld, procNew.Frame.ReturnAddressSize, addrFrom);
+            }
             SetProcedureStackDelta(procOld, procNew.Signature.StackDelta, addrFrom);
             return callRetThunkBlock;
         }

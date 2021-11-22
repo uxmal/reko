@@ -403,7 +403,6 @@ void fn0856(Eq_n r4, word16 wArg00)
 {
 l0856:
 	fn1578();
-	ptr16 sp_n = fp;
 	ci16 r5_n = g_w007E;
 	if (r5_n >= 0x00)
 	{
@@ -512,7 +511,6 @@ l0964:
 				if (r2_n > 0x30)
 				{
 					fn0B06(r3, r4_n, r5);
-					sp_n = fp + 0x02;
 					goto l0964;
 				}
 				r1_n = 8980;
@@ -525,12 +523,10 @@ l0964:
 l097C:
 			g_w34C2 = r1_n;
 			int16 r1_n = g_w0078;
-			struct Eq_n * sp_n = sp_n - 0x02;
-			sp_n->t0000.u1 = 0x03;
+			word16 wLoc02_n = 0x03;
 			if (r0_n >= 0x00)
-				sp_n->t0000.u1 = (word16) sp_n->t0000 + 1;
-			sp_n->wFFFFFFFE = r1_n;
-			fn0C90(sp_n->wFFFFFFFE, sp_n->t0000);
+				wLoc02_n = 0x04;
+			fn0C90(r1_n, (byte) wLoc02_n);
 			ui16 r2_n = g_a28F2[r1_n * 0x02] - (&g_w28F0)[r1_n * 0x02];
 			ci16 r2_n = r2_n - (r2_n * 0x03 >> 2);
 			struct Eq_n * sp_n = (struct Eq_n *) <invalid>;
