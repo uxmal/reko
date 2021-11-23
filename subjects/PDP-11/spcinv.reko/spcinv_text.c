@@ -295,7 +295,6 @@ l04EE:
 						Eq_n r1_n = (word32) r0_n + 1;
 						if (r0_n != 0x03 || (g_t0F02 <= 0x00 || !fn05D4(r0_n, r3_n, r4, r5_n, pc, out r0_n, out r3_n, out r4, out r5_n)))
 						{
-							ptr16 sp_n = &sp_n->b0000 + 2;
 							Eq_n r0_n;
 							if (!fn064A(r0_n, r1_n, r3_n, r4, r5_n, out r0_n, out r4, out r5_n))
 							{

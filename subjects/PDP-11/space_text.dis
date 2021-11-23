@@ -1281,32 +1281,32 @@ l1314:
 l131A:
 	r0_23 = fn1366(0xA<16>, r3, r4_10, out r2, out r3, out r4_10)
 l130A:
-	Mem59[r3 + 0x1C<16>:word16] = Mem27[r3 + 0x1C<16>:word16] - 1<16>
-	Mem60[r3 + 0x54<16>:word16] = 0<16>
+	Mem57[r3 + 0x1C<16>:word16] = Mem27[r3 + 0x1C<16>:word16] - 1<16>
+	Mem58[r3 + 0x54<16>:word16] = 0<16>
 l131E:
-	branch Mem66[r4_10:byte] > 0<8> l1326
+	branch Mem64[r4_10:byte] > 0<8> l1326
 l1322:
 	branch r2 == 0<16> l132A
 l12FA:
 	r0_23 = 0xC<16>
 l1326:
-	word16 r2_185
-	fn1366(r0_23, r3, r4_10, out r2_185, out r3, out r4_10)
+	word16 r2_182
+	fn1366(r0_23, r3, r4_10, out r2_182, out r3, out r4_10)
 l132A:
-	branch Mem106[r4_10:byte] > 0<8> l134C
+	branch Mem101[r4_10:byte] > 0<8> l134C
 l134C:
-	branch Mem106[r3 + 0x1C<16>:word16] - r1_11 >=u 0<16> l1346
+	branch Mem101[r3 + 0x1C<16>:word16] - r1_11 >=u 0<16> l1346
 l1352:
-	word16 r2_186
-	fn1370(CONVERT(Mem106[r1_11:byte], byte, int16), r3, r4_10, out r2_186, out r3, out r4_10)
+	word16 r2_183
+	fn1370(CONVERT(Mem101[r1_11:byte], byte, int16), r3, r4_10, out r2_183, out r3, out r4_10)
 	r1_11 = r1_11 + 1<16>
 l132E:
-	branch Mem106[r3 + 0x1C<16>:word16] - r1_11 >=u 0<16> l1346
+	branch Mem101[r3 + 0x1C<16>:word16] - r1_11 >=u 0<16> l1346
 l1334:
-	word16 r5_143 = CONVERT(Mem106[Mem106[r3 + 0x1C<16>:ptr16]:byte], byte, int16)
-	Mem144[Mem106[r3 + 0x1C<16>:byte]:ptr16] = 0x80<8>
+	word16 r5_136 = CONVERT(Mem101[Mem101[r3 + 0x1C<16>:ptr16]:byte], byte, int16)
+	Mem137[Mem101[r3 + 0x1C<16>:byte]:ptr16] = 0x80<8>
 	PRINT(r1_11)
-	Mem146[Mem144[r3 + 0x1C<16>:byte]:ptr16] = r5_143
+	Mem139[Mem137[r3 + 0x1C<16>:byte]:ptr16] = r5_136
 l1346:
 	return
 fn12CA_exit:
