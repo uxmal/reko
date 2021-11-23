@@ -23,6 +23,7 @@ using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -44,10 +45,22 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             lblGitHash.Text = String.IsNullOrEmpty(gitHash)
                 ? ""
                 : $"Git hash: {gitHash}";
-            linkLabel1.LinkClicked += delegate(object o, LinkLabelLinkClickedEventArgs e)
+            linkLabel1.LinkClicked += linkLabel_LinkClicked;
+        }
+
+        private void linkLabel_LinkClicked(object o, LinkLabelLinkClickedEventArgs e)
+        {
+            try
             {
-                System.Diagnostics.Process.Start(linkLabel1.Text);
-            };
+                Process.Start(new ProcessStartInfo
+                {
+                    UseShellExecute = true,
+                    FileName = linkLabel1.Text
+                });
+            }
+            catch (Exception)
+            {
+            }
         }
 
         #region Assembly Attribute Accessors
