@@ -167,16 +167,26 @@ namespace Reko.Core
         /// <param name="writer"></param>
 		public void Write(bool emitFrame, TextWriter writer)
         {
-            Write(emitFrame, true, writer);
+            Write(emitFrame, true, false, writer);
         }
 
-		public void Write(bool emitFrame, bool showEdges, TextWriter writer)
+		public void Write(
+            bool emitFrame, bool showEdges, bool lowLevelInfo, TextWriter writer)
         {
             writer.WriteLine("// {0}", QualifiedName());
             writer.WriteLine("// Return size: {0}", this.Signature.ReturnAddressOnStack);
             if (emitFrame)
                 Frame.Write(writer);
-            Signature.Emit(QualifiedName(), FunctionType.EmitFlags.None, new TextFormatter(writer));
+            FunctionType.EmitFlags flags;
+            if (lowLevelInfo)
+            {
+                flags = FunctionType.EmitFlags.LowLevelInfo;
+            }
+            else
+            {
+                flags = FunctionType.EmitFlags.None;
+            }
+            Signature.Emit(QualifiedName(), flags, new TextFormatter(writer));
             writer.WriteLine();
             WriteBody(showEdges, writer);
         }

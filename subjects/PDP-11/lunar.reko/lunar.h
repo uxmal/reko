@@ -564,7 +564,7 @@ Eq_797: (union "Eq_797" (byte u0) (word16 u1))
 	T_843 (in Mem182[sp_181 + 0<16>:word16] @ 0000098C : word16)
 	T_845 (in Mem182[sp_181 + 0<16>:word16] + 1<16> @ 0000098C : word16)
 	T_848 (in Mem192[sp_181 + 0<16>:word16] @ 0000098C : word16)
-	T_881 (in SLICE(wLoc02_343, byte, 0) @ 0000080E : byte)
+	T_881 (in SLICE(wLoc02_325, byte, 0) @ 0000080E : byte)
 	T_1193 (in 1<16> @ 00000BD0 : word16)
 	T_1196 (in Mem126[sp_125 + 0<16>:word16] @ 00000BD0 : word16)
 	T_1208 (in Mem129[sp_125 + 0<16>:byte] @ 00000BD8 : byte)
@@ -4330,11 +4330,11 @@ T_872: (in 34CA @ 000007FA : ptr16)
   Class: Eq_872
   DataType: (ptr16 word16)
   OrigDataType: (ptr16 (struct (0 T_873 t0000)))
-T_873: (in Mem273[0x34CA<p16>:word16] @ 000007FA : word16)
+T_873: (in Mem272[0x34CA<p16>:word16] @ 000007FA : word16)
   Class: Eq_674
   DataType: word16
   OrigDataType: word16
-T_874: (in wLoc02_343 @ 00000800 : word16)
+T_874: (in wLoc02_325 @ 00000800 : word16)
   Class: Eq_874
   DataType: word16
   OrigDataType: word16
@@ -4346,7 +4346,7 @@ T_876: (in 0054 @ 00000808 : ptr16)
   Class: Eq_876
   DataType: (ptr16 int16)
   OrigDataType: (ptr16 (struct (0 T_877 t0000)))
-T_877: (in Mem275[0x0054<p16>:word16] @ 00000808 : word16)
+T_877: (in Mem274[0x0054<p16>:word16] @ 00000808 : word16)
   Class: Eq_394
   DataType: int16
   OrigDataType: ci16
@@ -4362,11 +4362,11 @@ T_880: (in fn0C90 @ 0000080E : ptr16)
   Class: Eq_806
   DataType: (ptr16 Eq_806)
   OrigDataType: (ptr16 (fn T_882 (T_691, T_881)))
-T_881: (in SLICE(wLoc02_343, byte, 0) @ 0000080E : byte)
+T_881: (in SLICE(wLoc02_325, byte, 0) @ 0000080E : byte)
   Class: Eq_797
   DataType: Eq_797
   OrigDataType: byte
-T_882: (in fn0C90(r0_85, (byte) wLoc02_343) @ 0000080E : void)
+T_882: (in fn0C90(r0_85, (byte) wLoc02_325) @ 0000080E : void)
   Class: Eq_816
   DataType: void
   OrigDataType: void
@@ -4374,7 +4374,7 @@ T_883: (in 34B6 @ 00000812 : ptr16)
   Class: Eq_883
   DataType: (ptr16 word16)
   OrigDataType: (ptr16 (struct (0 T_884 t0000)))
-T_884: (in Mem288[0x34B6<p16>:word16] @ 00000812 : word16)
+T_884: (in Mem287[0x34B6<p16>:word16] @ 00000812 : word16)
   Class: Eq_884
   DataType: word16
   OrigDataType: word16
@@ -4390,7 +4390,7 @@ T_887: (in 34B6 @ 00000812 : ptr16)
   Class: Eq_887
   DataType: (ptr16 word16)
   OrigDataType: (ptr16 (struct (0 T_888 t0000)))
-T_888: (in Mem297[0x34B6<p16>:word16] @ 00000812 : word16)
+T_888: (in Mem296[0x34B6<p16>:word16] @ 00000812 : word16)
   Class: Eq_884
   DataType: word16
   OrigDataType: word16

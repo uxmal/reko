@@ -537,14 +537,14 @@ l084C:
 	Mem267[0x34CA<p16>:word16] = 0x23FE<16>
 	fn0E32()
 l07FA:
-	Mem273[0x34CA<p16>:word16] = 0x237E<16>
-	word16 wLoc02_343 = 3<16>
-	branch Mem275[0x0054<p16>:word16] < 0<16> l080C
+	Mem272[0x34CA<p16>:word16] = 0x237E<16>
+	word16 wLoc02_325 = 3<16>
+	branch Mem274[0x0054<p16>:word16] < 0<16> l080C
 l080A:
-	wLoc02_343 = 4<16>
+	wLoc02_325 = 4<16>
 l080C:
-	fn0C90(r0_85, SLICE(wLoc02_343, byte, 0))
-	Mem297[0x34B6<p16>:word16] = Mem288[0x34B6<p16>:word16] - 0x10<16>
+	fn0C90(r0_85, SLICE(wLoc02_325, byte, 0))
+	Mem296[0x34B6<p16>:word16] = Mem287[0x34B6<p16>:word16] - 0x10<16>
 	fn0F04(r0_85)
 l0896_thunk_fn0790:
 	fn0790()

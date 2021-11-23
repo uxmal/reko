@@ -2,8 +2,8 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse: 
 // LiveOut:
-// Trashed: eax ebx ecx esp Top
-// Preserved:
+// Trashed: eax ebx ecx Top
+// Preserved: esp
 // fn10000000
 // Return size: 0
 void fn10000000()

@@ -820,62 +820,59 @@ l0F9A:
 fn0F9A_exit:
 
 
-void fn164F(byte a, word16 bc, byte h, word16 ix, word16 wArg0C, byte bArg0F, word16 wArg13, word16 wArg15, byte bArg18, word16 wArg19, word16 wArg1B, byte bArg1D, byte bArg1E, word16 wArg1F, word16 wArg23)
+void fn164F(byte a, word16 bc, byte h, word16 ix, word16 wArg0E, byte bArg11, word16 wArg13, word16 wArg15, word16 wArg17, byte bArg1A, word16 wArg1B, byte bArg20, word16 wArg21, word16 wArg25)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  a:[0..7] bc:[0..15] h:[0..7] ix:[0..15] Stack +000C:[0..15] Stack +000F:[8..15] Stack +0013:[0..15] Stack +0015:[0..15] Stack +0018:[0..7] Stack +0019:[0..15] Stack +001B:[0..15] Stack +001D:[0..7] Stack +001E:[0..7] Stack +001F:[0..15] Stack +0023:[0..15]
+// MayUse:  a:[0..7] bc:[0..15] h:[0..7] ix:[0..15] Stack +000E:[0..15] Stack +0011:[8..15] Stack +0013:[0..15] Stack +0015:[0..15] Stack +0017:[0..15] Stack +001A:[0..7] Stack +001B:[0..15] Stack +0020:[0..7] Stack +0021:[0..15] Stack +0025:[0..15]
 // LiveOut:
-// Trashed: SZHVNC af bc de hl ix sp
-// Preserved:
+// Trashed: SZHVNC af bc de hl ix
+// Preserved: sp
 fn164F_entry:
-	byte bArg1B_264 = SLICE(wArg1B, byte, 0)
-	byte bArg1C_282 = SLICE(wArg1B, byte, 8)
-	byte bArg1A = SLICE(wArg19, byte, 8)
-	byte bArg1F_285 = SLICE(wArg1F, byte, 0)
-	byte bArg19 = SLICE(wArg19, byte, 0)
+	byte bArg1B_262 = SLICE(wArg1B, byte, 0)
+	byte bArg21_276 = SLICE(wArg21, byte, 0)
 l164F:
+	word16 wArg20_277
 	Mem5[ix + -20<i16>:byte] = a
 	Mem11[ix + -19<i16>:byte] = Mem5[ix + -7<i16>:byte] - h - C
-	ui16 a_a_241 = bc - Mem11[wArg1B:ui16]
+	ui16 a_a_239 = bc - Mem11[wArg1B:ui16]
 	byte a_40 = SLICE(Mem11[ix - 8<i16>:ui16] - Mem11[ix - 4<i16>:ui16], byte, 8)
 	word16 de_65
 	word16 hl_66
 	word16 ix_67
-	word16 bc_64 = fn02F4(a_40, SLICE(a_a_241, byte, 0), SLICE(a_a_241, byte, 8), wArg13, a_40, ix, SEQ(bArg1B_264, bArg1A), out de_65, out hl_66, out ix_67)
-	byte h_227 = SLICE(hl_66, byte, 8)
-	word16 wArg1C_283 = SEQ(bArg1D, bArg1C_282)
-	word16 wArg1E_286 = SEQ(bArg1F_285, bArg1E)
+	word16 bc_64 = fn02F4(a_40, SLICE(a_a_239, byte, 0), SLICE(a_a_239, byte, 8), wArg13, a_40, ix, SEQ(bArg1B_262, bArg1A), out de_65, out hl_66, out ix_67)
+	byte h_225 = SLICE(hl_66, byte, 8)
 	branch SLICE(hl_66, byte, 0) != 0<8> l1692
 l1692:
-	byte v31_87 = Mem61[wArg15:byte]
-	byte v32_90 = Mem61[wArg15 + 1<i16>:byte]
-	ui16 a_a_247 = SEQ(v32_90, v31_87) - Mem61[wArg13:ui16]
-	Mem102[ix_67 + -20<i16>:byte] = SLICE(a_a_247, byte, 0)
-	Mem106[ix_67 + -19<i16>:byte] = SLICE(a_a_247, byte, 8)
-	byte v39_109 = Mem106[wArg1F:byte]
-	byte v40_112 = Mem106[wArg1F + 1<i16>:byte]
-	ui16 a_a_250 = SEQ(v40_112, v39_109) - Mem106[wArg0C:ui16]
-	Mem125[ix_67 + -22<i16>:byte] = SLICE(a_a_250, byte, 0)
-	Mem129[ix_67 + -21<i16>:byte] = SLICE(a_a_250, byte, 8)
-	ui16 a_a_253 = SEQ(v32_90, v31_87) - Mem129[wArg19:ui16]
-	ui16 a_a_256 = SEQ(v40_112, v39_109) - Mem129[wArg23:ui16]
-	word16 de_181
-	word16 hl_182
-	word16 ix_183
-	word16 bc_180 = fn02F4(SLICE(a_a_256, byte, 8), SLICE(a_a_253, byte, 0), SLICE(a_a_253, byte, 8), a_a_256, SLICE(wArg0F, byte, 8), ix_67, SEQ(bArg19, bArg18), out de_181, out hl_182, out ix_183)
-	byte h_202 = SLICE(hl_182, byte, 8)
-	branch SLICE(hl_182, byte, 0) != 0<8> l1707
+	byte v31_86 = Mem61[wArg17:byte]
+	byte v32_89 = Mem61[wArg17 + 1<i16>:byte]
+	ui16 a_a_245 = SEQ(v32_89, v31_86) - Mem61[wArg15:ui16]
+	Mem101[ix_67 + -20<i16>:byte] = SLICE(a_a_245, byte, 0)
+	Mem105[ix_67 + -19<i16>:byte] = SLICE(a_a_245, byte, 8)
+	byte v39_108 = Mem105[wArg21:byte]
+	byte v40_111 = Mem105[wArg21 + 1<i16>:byte]
+	ui16 a_a_248 = SEQ(v40_111, v39_108) - Mem105[wArg0E:ui16]
+	Mem124[ix_67 + -22<i16>:byte] = SLICE(a_a_248, byte, 0)
+	Mem128[ix_67 + -21<i16>:byte] = SLICE(a_a_248, byte, 8)
+	ui16 a_a_251 = SEQ(v32_89, v31_86) - Mem128[wArg1B:ui16]
+	ui16 a_a_254 = SEQ(v40_111, v39_108) - Mem128[wArg25:ui16]
+	word16 de_180
+	word16 hl_181
+	word16 ix_182
+	word16 bc_179 = fn02F4(SLICE(a_a_254, byte, 8), SLICE(a_a_251, byte, 0), SLICE(a_a_251, byte, 8), a_a_254, SLICE(wArg11, byte, 8), ix_67, SEQ(bArg1B_262, bArg1A), out de_180, out hl_181, out ix_182)
+	byte h_200 = SLICE(hl_181, byte, 8)
+	wArg20_277 = SEQ(bArg21_276, bArg20) (alias)
+	branch SLICE(hl_181, byte, 0) != 0<8> l1707
 l1707:
 l1709_thunk_fn0C35:
-	fn0C35(bc_180, de_181, 0<8>, h_202, ix_183, wArg1C_283)
+	fn0C35(bc_179, de_180, 0<8>, h_200, ix_182, wArg20_277)
 	return
 l1702:
 l1704_thunk_fn0C35:
-	fn0C35(bc_180, de_181, 3<8>, h_202, ix_183, wArg1C_283)
+	fn0C35(bc_179, de_180, 3<8>, h_200, ix_182, wArg20_277)
 	return
 l168D:
 l168F_thunk_fn0C35:
-	fn0C35(bc_64, de_65, 3<8>, h_227, ix_67, wArg1E_286)
+	fn0C35(bc_64, de_65, 3<8>, h_225, ix_67, wArg20_277)
 	return
 fn164F_exit:
 

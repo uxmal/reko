@@ -151,7 +151,7 @@ fn0C00_0000_exit:
         {
             foreach (Procedure proc in procs)
             {
-                proc.Write(false, false, sw);
+                proc.Write(false, false, false, sw);
                 sw.WriteLine();
             }
         }

@@ -1392,7 +1392,6 @@ l0800_nA2:
 									{
 										dx = SEQ(dh_n, dl_n);
 										di_n = fn0800-1099(SEQ(ds, di_n), SEQ(ss, fp - 2), dl_n, cx, dx, bx_n);
-										sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 0x0000FFFE);
 										--cx;
 									} while (cx != 0x00);
 								}
@@ -1577,16 +1576,10 @@ l0800_nB5:
 								if ((wLoc9A_n & 0x02) == 0x00)
 								{
 									for (; bx_n > cx; --bx_n)
-									{
 										di_n = fn0800-1099(SEQ(ds, di_n), SEQ(ss, fp - 2), 0x20, cx, dx, bx_n);
-										sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 0x0000FFFE);
-									}
 								}
 								if ((wLoc9A_n & 0x40) != 0x00)
-								{
 									di_n = fn0800-1099(SEQ(ds, fn0800-1099(SEQ(ds, di_n), SEQ(ss, fp - 2), 0x30, cx, dx, bx_n)), SEQ(ss, fp - 2), dl_n, cx, dx, bx_n);
-									sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 0x0000FFFC);
-								}
 								dx = wLoc8E_n;
 								if (wLoc8E_n > 0x00)
 								{
@@ -1597,7 +1590,6 @@ l0800_nB5:
 									{
 										si_n = di_n + 1;
 										di_n = fn0800-1099(SEQ(ds, di_n), SEQ(ss, fp - 2), ds->*di_n, cx_n, wLoc8E_n, bx_n);
-										sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 0x0000FFFE);
 										--cx_n;
 										--bx_n;
 									}
@@ -1607,7 +1599,6 @@ l0800_nB5:
 										do
 										{
 											di_n = fn0800-1099(SEQ(ds, di_n), SEQ(ss, fp - 2), 0x30, cx_n, cx_n, bx_n);
-											sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 0x0000FFFE);
 											--cx_n;
 										} while (cx_n != 0x00);
 									}
@@ -1636,7 +1627,6 @@ l0800_nB5:
 									do
 									{
 										di_n = fn0800-1099(SEQ(ds, di_n), SEQ(ss, fp - 2), 0x20, cx, dx, bx_n);
-										sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 0x0000FFFE);
 										--cx;
 									} while (cx != 0x00);
 								}
@@ -1688,7 +1678,6 @@ l0800_n:
 				{
 					di_n = fn0800-1099(SEQ(ds, di_n), SEQ(ss, fp - 2), al_n, cx, dx, bx);
 					byte al_n = ds->*si_n;
-					sp_n = (struct Eq_n Eq_n::*) ((char *) &sp_n->t0000 + 0x0000FFFE);
 					si_n = (word16) si_n + 1;
 					al_n = al_n;
 				} while (al_n != 0x00);
