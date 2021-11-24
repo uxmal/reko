@@ -202,6 +202,7 @@ namespace Reko.Environments.C64
             }
 
             public string Name { get; private set; }
+
             public FileType FileType { get; private set; }
 
             public byte[] GetBytes()

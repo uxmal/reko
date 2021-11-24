@@ -385,6 +385,9 @@ namespace Reko.Core
         /// </summary>
         public string ResourcesDirectory { get; set; }
 
+        public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
+            => visitor.VisitProgram(this, context);
+
         /// <summary>
         /// Given the absolute file name of a binary being decompiled, make sure that 
         /// absolute file names for each of the output directories.

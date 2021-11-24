@@ -45,11 +45,14 @@ namespace Reko.Core.Loading
         ///     file:///home/username/outer.tar#archives/inner.tar#test.exe
         /// </remarks>
         RekoUri Uri { get; }
+
+        T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context);
     }
 
     public interface ILoadedImageVisitor<T, C>
     {
         T VisitProgram(Program program, C context);
+        T VisitProject(Project project, C context);
         T VisitArchive(IArchive archive, C context);
     }
 }

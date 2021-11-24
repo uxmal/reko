@@ -61,6 +61,9 @@ namespace Reko.ImageLoaders.BinHex.Cpt
         /// </summary>
         public RekoUri Uri { get; }
 
+        public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
+            => visitor.VisitArchive(this, context);
+
         private uint zip_updcrc(uint crc, byte[] buf, int offset, int length)
         {
             return crc;
@@ -157,7 +160,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                     }
                     else
                     {
-                        entries.Add(new MacFileEntry(this, filehdr));
+                        entries.Add(new MacFileEntry(this, null, filehdr));
                     }
                 }
                 cptptr += FILEHDRSIZE;
@@ -317,11 +320,11 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                     }
                     else
                     {
-                        entries.Add(new MacFileEntry(this, filehdr));
+                        entries.Add(new MacFileEntry(this, null, filehdr));
                     }
                 }
             }
-            return new MacFolderEntry(name, entries);
+            return new MacFolderEntry(null, name, entries);
         }
 
 
@@ -438,18 +441,21 @@ namespace Reko.ImageLoaders.BinHex.Cpt
         {
             private CompactProArchive archive;
             private FileHdr hdr;
-            private ForkFolder forks;
 
-            public MacFileEntry(CompactProArchive archive, FileHdr hdr)
+            public MacFileEntry(CompactProArchive archive, MacFolderEntry? parent, FileHdr hdr)
             {
                 this.archive = archive;
                 this.hdr = hdr;
-                this.forks = new ForkFolder(archive, hdr);
+                this.Items = new ForkFolder(archive, this, hdr);
             }
 
             public string Name { get { return hdr.fName!; } set { hdr.fName = value; } }
 
-            public ICollection<ArchiveDirectoryEntry> Items { get { return forks; } }
+            public RekoUri Uri => UriTools.UriFromFilePath(Name);
+
+            public ICollection<ArchiveDirectoryEntry> Items { get; }
+
+            public MacFolderEntry? Parent { get; }
 
             private class ForkEntry : ArchivedFile
             {
@@ -462,6 +468,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
 
                 public ForkEntry(
                     CompactProArchive archive,
+                    MacFileEntry parent,
                     string name,
                     uint offsetCompressed,
                     uint lengthCompressed,
@@ -469,6 +476,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                     ushort type)
                 {
                     this.archive = archive;
+                    this.Parent = parent;
                     this.name = name;
                     this.offsetCompressed = offsetCompressed;
                     this.lengthCompressed = lengthCompressed;
@@ -476,9 +484,13 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                     this.type = type;
                 }
 
-                public string Name { get { return name; } }
+                public string Name => name;
 
-                public uint Size { get { return lengthUncompressed; } }
+                public RekoUri Uri => UriTools.UriFromFilePath(Name);
+
+                public MacFileEntry Parent { get; }
+
+                public uint Size => lengthUncompressed;
 
                 public byte[] GetBytes()
                 {
@@ -494,6 +506,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                     var segmentMap = new SegmentMap(addrLoad);
                     var program = new Program(segmentMap, archive.Architecture, archive.Platform);
                     BinHexImageLoader.Relocate(program, addrLoad, bmem, rsrcFork);
+                    program.Uri = UriTools.AppendPathAsFragment(archive.Uri, Name);
                     return program;
                 }
             }
@@ -503,10 +516,10 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                 private ForkEntry dataFork;
                 private ForkEntry rsrcFork;
 
-                public ForkFolder(CompactProArchive archive, FileHdr hdr)
+                public ForkFolder(CompactProArchive archive, MacFileEntry parent, FileHdr hdr)
                 {
-                    rsrcFork = new ForkEntry(archive, "rsrc", hdr.filepos, hdr.compRLength, hdr.rsrcLength, ((ushort) (hdr.cptFlag & 2)));
-                    dataFork = new ForkEntry(archive, "data", hdr.filepos + hdr.compRLength, hdr.compDLength, hdr.dataLength, ((ushort)(hdr.cptFlag & 4)));
+                    rsrcFork = new ForkEntry(archive, parent, "rsrc", hdr.filepos, hdr.compRLength, hdr.rsrcLength, ((ushort) (hdr.cptFlag & 2)));
+                    dataFork = new ForkEntry(archive, parent, "data", hdr.filepos + hdr.compRLength, hdr.compDLength, hdr.dataLength, ((ushort)(hdr.cptFlag & 4)));
                 }
 
                 public IEnumerator<ArchiveDirectoryEntry> GetEnumerator()
@@ -580,25 +593,18 @@ namespace Reko.ImageLoaders.BinHex.Cpt
 
         public class MacFolderEntry : ArchivedFolder
         {
-            private string name;
-            private ICollection<ArchiveDirectoryEntry> items;
-
-            public MacFolderEntry(string name, ICollection<ArchiveDirectoryEntry> items)
+            public MacFolderEntry(MacFolderEntry? parent, string name, ICollection<ArchiveDirectoryEntry> items)
             {
-                this.name = name;
-                this.items = items;
+                this.Name = name;
+                this.Items = items;
+                this.Parent = parent;
             }
 
-            public ICollection<ArchiveDirectoryEntry> Items
-            {
-                get { return items; }
-            }
+            public ICollection<ArchiveDirectoryEntry> Items { get; }
 
-            public string Name
-            {
-                get { return name; }
-            }
+            public string Name { get; }
 
+            public MacFolderEntry? Parent { get; }
         }
 
 

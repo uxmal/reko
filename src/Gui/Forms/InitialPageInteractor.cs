@@ -26,6 +26,7 @@ using Reko.Core.Services;
 using Reko.Gui.Services;
 using System;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.Gui.Forms
@@ -129,7 +130,7 @@ namespace Reko.Gui.Forms
             }
             if (loadedImage is IArchive archive)
             {
-                loadedImage = LoadFromArchive(archive);
+                loadedImage = LoadFromArchive(archive, ldr);
             }
             if (loadedImage is not Project project)
             {
@@ -140,15 +141,10 @@ namespace Reko.Gui.Forms
             this.Decompiler = CreateDecompiler(project);
             Decompiler.ExtractResources();
             var browserSvc = Services.RequireService<IProjectBrowserService>();
-            browserSvc.Load(Decompiler.Project);
+            browserSvc.Load(project);
             browserSvc.Show();
             ShowLowLevelWindow();
             return true;
-        }
-
-        private ILoadedImage LoadFromArchive(IArchive archive)
-        {
-            throw new NotImplementedException();
         }
 
         public bool OpenBinaryAs(string file, LoadDetails details)
@@ -184,8 +180,29 @@ namespace Reko.Gui.Forms
             return false;   // We never open projects this way.
         }
 
+        private Project? LoadFromArchive(IArchive archive, ILoader loader)
+        {
+            var abSvc = Services.RequireService<IArchiveBrowserService>();
+            if (abSvc.SelectFileFromArchive(archive) is not ArchivedFile archiveFile)
+                return null;
+            switch (archiveFile.LoadImage(Services, null))
+            {
+            case Program program:
+                var project = new Project();
+                Debug.Assert(program.Uri is not null);
+                project.AddProgram(program.Uri, program);
+                return project;
+            case null:
+                return null;
+            default:
+                throw new NotImplementedException();
+            }
+        }
+
         private void ShowLowLevelWindow()
         {
+            if (Decompiler.Project is null)
+                return;
             if (Decompiler.Project.Programs.Any(p => p.NeedsScanning))
             {
                 var memSvc = Services.RequireService<ILowLevelViewService>();

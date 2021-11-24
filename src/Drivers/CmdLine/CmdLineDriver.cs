@@ -282,7 +282,6 @@ namespace Reko.CmdLine
                 var decompiler = new Decompiler(project, services);
                 dcSvc.Decompiler = decompiler;
 
-
                 var state = CreateInitialState(arch, program.SegmentMap, pArgs);
                 if (pArgs.TryGetValue("heuristics", out object oHeur))
                 {

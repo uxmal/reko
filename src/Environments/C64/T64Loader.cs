@@ -114,6 +114,9 @@ namespace Reko.Environments.C64
             public RekoUri Uri { get; }
 
             public List<ArchiveDirectoryEntry> RootEntries { get; }
+
+            public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
+                => visitor.VisitArchive(this, context);
         }
 
         /*  

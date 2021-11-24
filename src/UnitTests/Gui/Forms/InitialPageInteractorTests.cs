@@ -48,6 +48,7 @@ namespace Reko.UnitTests.Gui.Forms
         private Mock<IDecompiledFileService> host;
         private Mock<ILowLevelViewService> memSvc;
         private Mock<IFileSystemService> fsSvc;
+        private Mock<IArchiveBrowserService> abSvc;
         private Program program;
         private Project project;
 
@@ -63,6 +64,8 @@ namespace Reko.UnitTests.Gui.Forms
             host = new Mock<IDecompiledFileService>();
             memSvc = new Mock<ILowLevelViewService>();
             fsSvc = new Mock<IFileSystemService>();
+            abSvc = new Mock<IArchiveBrowserService>();
+
             var mem = new ByteMemoryArea(Address.Ptr32(0x10000), new byte[1000]);
             var imageMap = new SegmentMap(
                 mem.BaseAddress,
@@ -85,6 +88,7 @@ namespace Reko.UnitTests.Gui.Forms
             sc.AddService<ILoader>(loader.Object);
             sc.AddService<IDecompiledFileService>(host.Object);
             sc.AddService<IFileSystemService>(fsSvc.Object);
+            sc.AddService<IArchiveBrowserService>(abSvc.Object);
 
             i = new TestInitialPageInteractor(sc, dec.Object);
 		}
@@ -149,6 +153,28 @@ namespace Reko.UnitTests.Gui.Forms
             i.OpenBinary("foo.exe");
 
             browserSvc.VerifyAll();
+        }
+
+        [Test]
+        public void Ipi_OpenBinary_ShouldOpenArchiveDialog()
+        {
+            var archive = new Mock<IArchive>();
+            var archiveFile = new Mock<ArchivedFile>();
+            program.Uri = new RekoUri("file:test.archive#dir/test.exe");
+
+            loader.Setup(l => l.Load(new RekoUri("file:test.archive"), null, null))
+                .Returns(archive.Object);
+            archiveFile.Setup(l => l.LoadImage(sc, null))
+                .Returns(program)
+                .Verifiable();
+            abSvc.Setup(a => a.SelectFileFromArchive(archive.Object))
+                .Returns(archiveFile.Object)
+                .Verifiable();
+
+            i.OpenBinary("test.archive");
+
+            archiveFile.VerifyAll();
+            abSvc.VerifyAll();
         }
 
         [Test]

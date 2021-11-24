@@ -18,6 +18,8 @@
  */
 #endregion
 
+#nullable enable
+
 using Reko.Core.Loading;
 using System.Collections.Generic;
 using System.Text;
@@ -30,8 +32,15 @@ namespace Reko.Gui.Services
     /// </summary>
     public interface IArchiveBrowserService
     {
+        /// <summary>
+        /// Shows a dialog and waits for the user to select a file from the archive.
+        /// </summary>
+        /// <param name="archive">The archive to browse</param>
+        /// <returns>An instance of <see cref="ArchivedFile"/> if the user made a selection,
+        /// null otherwise.
+        /// </returns>
         ArchivedFile? SelectFileFromArchive(IArchive archive);
 
-        ArchivedFile UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries);
+        ArchivedFile? UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries);
     }
 }

@@ -42,6 +42,9 @@ namespace Reko.Environments.C64
 
         public RekoUri Uri { get; }
 
+        public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
+            => visitor.VisitArchive(this, context);
+
         public List<ArchiveDirectoryEntry> Load(Stream stm)
         {
             throw new NotImplementedException();
