@@ -67,11 +67,13 @@ namespace Reko.UnitTests.Gui.Forms
             program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute));
-
             program.SegmentMap.AddOverlappingSegment("0C10", mem, Address.SegPtr(0x0C10, 0), AccessMode.ReadWrite);
             program.SegmentMap.AddOverlappingSegment("0C20", mem, Address.SegPtr(0x0C20, 0), AccessMode.ReadWrite);
             mapSegment1 = program.SegmentMap.Segments.Values[0];
             mapSegment2 = program.SegmentMap.Segments.Values[1];
+
+            var project = new Project();
+            project.AddProgram(UriTools.UriFromFilePath("/home/bob/test.exe"), program);
 
             decSvc = new DecompilerService();
 
@@ -83,11 +85,12 @@ namespace Reko.UnitTests.Gui.Forms
             uiSvc = AddService<IDecompilerShellUiService>();
             memSvc = AddService<ILowLevelViewService>();
 
+            //$REVIEW: probably no need for loader anymore?
             var ldr = new Mock<ILoader>();
             ldr.Setup(l => l.LoadImageBytes(
                 It.IsNotNull<RekoUri>(),
                 0)).Returns(new byte[400]);
-            ldr.Setup(l => l.LoadImage(
+            ldr.Setup(l => l.LoadBinaryImage(
                 It.IsNotNull<RekoUri>(),
                 It.IsNotNull<byte[]>(),
                 null,
@@ -96,8 +99,7 @@ namespace Reko.UnitTests.Gui.Forms
                 {
                     program.ToString();
                 });
-            decSvc.Decompiler = new Decompiler(ldr.Object, sc);
-            decSvc.Decompiler.Load(new RekoUri("file:test.exe"));
+            decSvc.Decompiler = new Decompiler(project, sc);
 
             interactor = new ScannedPageInteractor(sc);
         }

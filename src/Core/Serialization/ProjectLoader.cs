@@ -134,7 +134,9 @@ namespace Reko.Core.Serialization
                 if (ser.CanDeserialize(rdr))
                 {
                     var deser = new Deserializer(this, projectUri);
-                    return ((SerializedProject)ser.Deserialize(rdr)).Accept(deser);
+                    var project = ((SerializedProject)ser.Deserialize(rdr)).Accept(deser);
+                    project.Uri = projectUri;
+                    return project;
                 }
             }
             return null;
@@ -277,7 +279,7 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                program = (Program?)loader.LoadImage(binUri, bytes, sUser.Loader, address)
+                program = (Program?)loader.LoadBinaryImage(binUri, bytes, sUser.Loader, address)
                     ?? new Program();   // A previous save of the project was able to read the file, 
                                         // but now we can't...
             }

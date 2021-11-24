@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Gui
             var host = new Mock<IDecompiledFileService>();
             sc.AddService<IDecompiledFileService>(host.Object);
 
-            var d = new Decompiler(loader.Object, sc);
+            var d = new Decompiler(new Project(), sc);
             bool decompilerChangedEventFired = true;
             svc.DecompilerChanged += delegate(object o, EventArgs e)
             {
@@ -89,15 +89,21 @@ namespace Reko.UnitTests.Gui
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var program = new Program(imageMap, arch.Object, platform.Object);
+            var project = new Project
+            {
+                Uri = UriTools.UriFromFilePath("foo/bar/baz.project")
+            };
+            project.AddProgram(fileUri, program);
             sc.AddService<IDecompiledFileService>(host.Object);
+            //$REVIEW: we can probably remove the code below, it never is called
+            // anymore.
             platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
             platform.Setup(p => p.Architecture).Returns(arch.Object);
             loader.Setup(l => l.LoadImageBytes(fileUri, 0)).Returns(bytes);
-            loader.Setup(l => l.LoadImage(fileUri, bytes, null, null)).Returns(program);
-            var dec = new Decompiler(loader.Object, sc);
+            loader.Setup(l => l.LoadBinaryImage(fileUri, bytes, null, null)).Returns(program);
 
+            var dec = new Decompiler(project, sc);
             svc.Decompiler = dec;
-            svc.Decompiler.Load(fileUri);
 
             Assert.IsNotNull(svc.Decompiler.Project);
             Assert.AreEqual("baz.exe", svc.ProjectName, "Should have project name available.");

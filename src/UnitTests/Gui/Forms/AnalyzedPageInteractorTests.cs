@@ -54,6 +54,9 @@ namespace Reko.UnitTests.Gui.Forms
         [SetUp]
         public void Setup()
         {
+            //$REVIEW: we can probably remove the code below, it never is called
+            // anymore.
+
             form = new Mock<IMainForm>();
             sc = new ServiceContainer();
             uiSvc = AddService<IDecompilerShellUiService>();
@@ -80,20 +83,24 @@ namespace Reko.UnitTests.Gui.Forms
                 Architecture = arch,
                 Platform = platform.Object,
             };
+            var project = new Project
+            {
+                Uri = UriTools.UriFromFilePath("/home/bob/reko.project"),
+            };
+            project.AddProgram(UriTools.UriFromFilePath("/home/bob/test.exe"), program);
             var ldr = new Mock<ILoader>();
-            ldr.Setup(l => l.LoadImage(
+            ldr.Setup(l => l.LoadBinaryImage(   //$REVIEW: can this be removed?
                 It.IsAny<RekoUri>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(program);
-            ldr.Setup(l => l.LoadImageBytes(
+            ldr.Setup(l => l.LoadImageBytes(    //$REVIEW: can this be removed?
                 It.IsAny<RekoUri>(),
                 It.IsAny<int>())).Returns(bytes);
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             this.decSvc = new DecompilerService();
-            decSvc.Decompiler = new Decompiler(ldr.Object, sc);
-            decSvc.Decompiler.Load(new RekoUri("file:test.exe"));
+            decSvc.Decompiler = new Decompiler(project, sc);
             this.program = this.decSvc.Decompiler.Project.Programs.First();
             sc.AddService<IDecompilerService>(decSvc);
             sc.AddService<IWorkerDialogService>(new FakeWorkerDialogService());

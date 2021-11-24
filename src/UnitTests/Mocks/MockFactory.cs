@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Mocks
                 new ImageSegment(".text", mem, AccessMode.ReadExecute));
             program.ImageMap = program.SegmentMap.CreateImageMap();
             mockLoader.Setup(
-                l => l.LoadImage(It.IsAny<RekoUri>(), It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<Address>())
+                l => l.LoadBinaryImage(It.IsAny<RekoUri>(), It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<Address>())
             ).Returns(program);
 
             mockLoader.Setup(

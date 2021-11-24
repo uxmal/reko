@@ -40,7 +40,7 @@ namespace Reko.CmdLine
     {
         private readonly IServiceProvider services;
         private readonly ILoader ldr;
-        private readonly IDecompiler decompiler;
+        private readonly IDecompilerService dcSvc;
         private readonly IConfigurationService config;
         private readonly CmdLineListener listener;
         private Timer timer;
@@ -65,21 +65,19 @@ namespace Reko.CmdLine
             services.AddService<ITestGenerationService>(new TestGenerationService(services));
             services.AddService<IOutputService>(new CmdOutputService());
             var ldr = new Loader(services);
-            var decompiler = new Decompiler(ldr, services);
-            dcSvc.Decompiler = decompiler;
-            var driver = new CmdLineDriver(services, ldr, decompiler, listener);
+            var driver = new CmdLineDriver(services, ldr, dcSvc, listener);
             driver.Execute(args);
         }
 
         public CmdLineDriver(
             IServiceProvider services,
             ILoader ldr,
-            IDecompiler decompiler,
+            IDecompilerService dcSvc,
             CmdLineListener listener)
         {
             this.services = services;
             this.ldr = ldr;
-            this.decompiler = decompiler;
+            this.dcSvc = dcSvc;
             this.listener = listener;
             this.config = services.RequireService<IConfigurationService>();
         }
@@ -158,15 +156,20 @@ namespace Reko.CmdLine
 
         private void Decompile(Dictionary<string, object> pArgs)
         {
-            pArgs.TryGetValue("--loader", out object loader);
+            pArgs.TryGetValue("--loader", out object imgLoader);
             var addrLoad = ParseAddress(pArgs, "--base");
             try
             {
                 var fileName = (string) pArgs["filename"];
                 var filePath = Path.GetFullPath(fileName);
                 var imageUri = UriTools.UriFromFilePath(filePath);
-                if (!decompiler.Load(imageUri, (string) loader, addrLoad))
+                if (ldr.Load(imageUri, (string) imgLoader, addrLoad) is not Project project)
+                {
+                    this.listener.Error("Cannot decompile {0}", fileName);
                     return;
+                }
+                var decompiler = new Decompiler(project, services);
+                dcSvc.Decompiler = decompiler;
 
                 var program = decompiler.Project.Programs[0];
                 program.User.ExtractResources = ShouldExtractResources(program, pArgs);
@@ -274,6 +277,12 @@ namespace Reko.CmdLine
                     EntryPoint = new EntryPointDefinition { Address = (string) oAddrEntry }
                 };
                 var program = LoadProgram(pArgs, loadDetails);
+                var project = new Project();
+                project.AddProgram(program.Uri, program);
+                var decompiler = new Decompiler(project, services);
+                dcSvc.Decompiler = decompiler;
+
+
                 var state = CreateInitialState(arch, program.SegmentMap, pArgs);
                 if (pArgs.TryGetValue("heuristics", out object oHeur))
                 {
@@ -298,17 +307,21 @@ namespace Reko.CmdLine
 
         private Program LoadProgram(Dictionary<string, object> pArgs, LoadDetails loadDetails)
         {
+            listener.ShowStatus("Loading raw bytes.");
+            Program program;
             if (pArgs.ContainsKey("--data"))
             {
                 var hexBytes = (string) pArgs["--data"];
                 var image = BytePattern.FromHexBytes(hexBytes);
-                return decompiler.LoadRawImage(image, loadDetails);
+                program = ldr.LoadRawImage(image, loadDetails);
             }
             else
             {
                 var uri = UriTools.UriFromFilePath((string) pArgs["filename"]);
-                return decompiler.LoadRawImage(uri, loadDetails);
+                program = ldr.LoadRawImage(uri, loadDetails);
             }
+            listener.ShowStatus("Raw bytes loaded.");
+            return program;
         }
 
         private ProcessorState CreateInitialState(IProcessorArchitecture arch, SegmentMap map, Dictionary<string, object> args)

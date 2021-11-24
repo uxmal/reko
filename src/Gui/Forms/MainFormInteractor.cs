@@ -126,11 +126,6 @@ namespace Reko.Gui.Forms
             pageFinal = new FinalPageInteractor(sc);
         }
 
-        public virtual IDecompiler CreateDecompiler(ILoader ldr)
-        {
-            return new Decompiler(ldr, sc);
-        }
-
         private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc)
         {
             config = svcFactory.CreateDecompilerConfiguration();
@@ -311,7 +306,7 @@ namespace Reko.Gui.Forms
                 Services,
                 loader,
                 this.decompilerSvc.Decompiler.Project,
-                this.sc.RequireService<DecompilerEventListener>());
+                Services.RequireService<DecompilerEventListener>());
             var metadataUri = UriTools.UriFromFilePath(fileName);
             try
             {

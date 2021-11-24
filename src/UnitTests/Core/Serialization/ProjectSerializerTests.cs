@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Core.Serialization
                 It.IsAny<RekoUri>(),
                 It.IsAny<int>())).
                 Returns(bytes);
-            loader.Setup(l => l.LoadImage(
+            loader.Setup(l => l.LoadBinaryImage(
                 It.IsAny<RekoUri>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
@@ -219,7 +219,7 @@ namespace Reko.UnitTests.Core.Serialization
                 It.IsAny<RekoUri>(),
                 It.IsAny<int>())).
                 Returns(bytes);
-            loader.Setup(l => l.LoadImage(
+            loader.Setup(l => l.LoadBinaryImage(
                 It.IsAny<RekoUri>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),

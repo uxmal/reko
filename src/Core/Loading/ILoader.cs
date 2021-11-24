@@ -37,6 +37,18 @@ namespace Reko.Core.Loading
         string? DefaultToFormat { get; set; }
 
         /// <summary>
+        /// Loads the file specified by <paramref name="imageUri"/>. If it is a Reko project
+        /// file, loads that. If not, tries to match the file contents to one of the known
+        /// file formats, or uses an explicity provided <paramref name="loader"/>.
+        /// </summary>
+        /// <param name="imageUri"></param>
+        /// <param name="loader"></param>
+        /// <param name="addrLoad"></param>
+        /// <returns>Either a <see cref="ILoadedImage"/> instance, or null if the file format
+        /// wasn't recognized.</returns>
+        ILoadedImage? Load(RekoUri imageUri, string? loader = null, Address? addrLoad = null);
+
+        /// <summary>
         /// Opens the specified file and reads the contents of the file,
         /// starting at file offset <paramref name="offset"/>. No interpretation
         /// of the file data is done.
@@ -60,7 +72,7 @@ namespace Reko.Core.Loading
         /// Either a successfully loaded <see cref="ILoadedImage"/>, or null if 
         /// an appropriate image loader could not be determined or loaded.
         /// </returns>
-        ILoadedImage? LoadImage(RekoUri absoluteUri, byte[] bytes, string? loader, Address? loadAddress);
+        ILoadedImage? LoadBinaryImage(RekoUri absoluteUri, byte[] bytes, string? loader, Address? loadAddress);
 
         /// <summary>
         /// Given a sequence of raw bytes, loads it into memory and applies the 
@@ -74,6 +86,11 @@ namespace Reko.Core.Loading
         /// <returns>A <see cref="Reko.Core.Program"/>.
         /// </returns>
         Program LoadRawImage(RekoUri absoluteUri, byte[] image, Address? loadAddress, LoadDetails details);
+
+
+        Program LoadRawImage(RekoUri imageUri, LoadDetails raw);
+        Program LoadRawImage(byte[] bytes, LoadDetails raw);
+
 
         Program AssembleExecutable(RekoUri absoluteUri, IAssembler asm, IPlatform platform, Address loadAddress);
         Program AssembleExecutable(RekoUri absoluteUri, byte[] bytes, IAssembler asm, IPlatform platform, Address loadAddress);
@@ -108,6 +125,8 @@ namespace Reko.Core.Loading
     {
         /// <summary>
         /// Name of the loader to use. Loader names are found in the reko.config file.
+        /// In addition, specifying a fully-qualified class name makes it possible to load
+        /// custom file formats.
         /// </summary>
         public string? LoaderName;
 

@@ -24,6 +24,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Scripts;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace Reko.Loading
 {
     /// <summary>
     /// Class that provides services for loading the "code", in whatever format it is in,
-    /// into a program.
+    /// into a Reko <see cref="Project" />.
     /// </summary>
     public class Loader : ILoader
     {
@@ -54,6 +55,7 @@ namespace Reko.Loading
         }
 
         public string? DefaultToFormat { get; set; }
+
         public IServiceProvider Services { get; private set; }
 
         public Program AssembleExecutable(RekoUri asmFileUri, IAssembler asm, IPlatform platform, Address addrLoad)
@@ -83,8 +85,43 @@ namespace Reko.Loading
         }
 
         /// <summary>
-        /// Loads the image into memory, unpacking it if necessary. Then, relocate the image.
-        /// Relocation gives us a chance to determine the addresses of interesting items.
+        /// Loads (or assembles) a Reko decompiler project. If a binary file is
+        /// specified instead, we create a simple project for the file. If an archive
+        /// is encountered, return that.
+        /// </summary>
+        /// <param name="absoluteUri">The URI of the image to load.</param>
+        /// <param name="loaderName">Optional .NET class name of a custom
+        /// image loader</param>
+        /// <param name="addrLoad">Optional address at which to load the image.
+        /// </param>
+        /// <returns>An instance of <see cref="ILoadedImage"/> if an image could be loaded, 
+        /// or null otherwise.</returns>
+        public ILoadedImage? Load(RekoUri absoluteUri, string? loaderName = null, Address? addrLoad = null)
+        {
+            byte[] image = LoadImageBytes(absoluteUri, 0);
+            var projectLoader = new ProjectLoader(this.Services, this, Services.RequireService<DecompilerEventListener>() );
+            projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
+            var project = projectLoader.LoadProject(absoluteUri, image);
+            if (project is null)
+            {
+                switch (LoadBinaryImage(absoluteUri, image, loaderName, addrLoad))
+                {
+                case Program program:
+                    project = new Project();
+                    project.AddProgram(absoluteUri, program);
+                    project.LoadedMetadata = program.Platform.CreateMetadata();
+                    program.EnvironmentMetadata = project.LoadedMetadata;
+                    break;
+                case IArchive archive:
+                    return archive;
+                }
+            }
+            project?.FireScriptEvent(ScriptEvent.OnProgramLoaded);
+            return project;
+        }
+
+        /// <summary>
+        /// Loads a binary image into memory, if it has a recognized file format.
         /// </summary>
         /// <param name="imageUri">The URI of the loaded image.</param>
         /// <param name="image">The raw bytes fetched from <paramref name="imageUri"/>.</param>
@@ -93,7 +130,7 @@ namespace Reko.Loading
         /// <returns>A <see cref="ILoadedImage"/> if the file format is recognized, or null 
         /// if the file cannot be recognized. Callers will have to handle the different
         /// possible implementations of the interface.</returns>
-        public ILoadedImage? LoadImage(RekoUri imageUri, byte[] image, string? loader, Address? addrLoad)
+        public ILoadedImage? LoadBinaryImage(RekoUri imageUri, byte[] image, string? loader, Address? addrLoad)
         {
             //$TODO: loop through fragments.
             ImageLoader? imgLoader;
@@ -158,6 +195,41 @@ namespace Reko.Loading
             program.User.OutputFilePolicy = Program.SegmentFilePolicy;
             return program;
         }
+
+        /// <summary>
+        /// Loads a program from a file into memory using the additional information in 
+        /// <paramref name="raw"/>. Use this to open files with insufficient or
+        /// no metadata.
+        /// </summary>
+        /// <param name="fileName">Name of the file to be loaded.</param>
+        /// <param name="raw">Extra metadata supllied by the user.</param>
+        public Program LoadRawImage(RekoUri uri, LoadDetails raw)
+        {
+            raw.ArchitectureOptions ??= new Dictionary<string, object>();
+            byte[] image = this.LoadImageBytes(uri, 0);
+            var program = this.LoadRawImage(uri, image, null, raw);
+            var project = new Project();
+            project.AddProgram(uri, program);
+            return program;
+        }
+
+        /// <summary>
+        /// Loads a program into memory using the additional information in 
+        /// <paramref name="raw"/>. Use this to decompile raw blobs of data.
+        /// </summary>
+        /// <param name="fileName">Name of the file to be loaded.</param>
+        /// <param name="raw">Extra metadata supllied by the user.</param>
+        public Program LoadRawImage(byte[] image, LoadDetails raw)
+        {
+            raw.ArchitectureOptions ??= new Dictionary<string, object>();
+            var inventedUri = new RekoUri("file:image");
+            var program = this.LoadRawImage(inventedUri, image, null, raw);
+            var project = new Project();
+            project.AddProgram(inventedUri, program);
+            return program;
+        }
+
+
 
         /// <summary>
         /// Loads a <see cref="Program"/> from a flat image where all the metadata has been 
@@ -483,6 +555,37 @@ namespace Reko.Loading
                 program.InterceptedCalls.Add(item.Key, item.Value);
             }
         }
+
+        public void RunScriptOnProgramImage(Program program, Script_v2? script)
+        {
+            if (script == null || !script.Enabled || script.Script == null)
+                return;
+            var eventListener = Services.RequireService<DecompilerEventListener>();
+            IScriptInterpreter interpreter;
+            try
+            {
+                //$TODO: should be in the config file, yeah.
+                var svc = Services.RequireService<IPluginLoaderService>();
+                var type = svc.GetType("Reko.ImageLoaders.OdbgScript.OllyLang,Reko.ImageLoaders.OdbgScript");
+                interpreter = (IScriptInterpreter) Activator.CreateInstance(type, Services);
+            }
+            catch (Exception ex)
+            {
+                eventListener.Error(ex, "Unable to load OllyLang script interpreter.");
+                return;
+            }
+
+            try
+            {
+                interpreter.LoadFromString(script.Script, program, Environment.CurrentDirectory);
+                interpreter.Run();
+            }
+            catch (Exception ex)
+            {
+                eventListener.Error(ex, "An error occurred while running the script.");
+            }
+        }
+
     }
 }
  

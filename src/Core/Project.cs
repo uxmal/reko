@@ -19,21 +19,15 @@
 #endregion
 
 using Reko.Core.Lib;
+using Reko.Core.Loading;
 using Reko.Core.Scripts;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core
 {
     /// <summary>
     /// A Reko decompiler project.
     /// </summary>
-    public class Project 
+    public class Project : ILoadedImage
     {
         public Project()
         {
@@ -41,7 +35,13 @@ namespace Reko.Core
             MetadataFiles = new ObservableRangeCollection<MetadataFile>();
             ScriptFiles = new ConcurrentObservableCollection<ScriptFile>();
             LoadedMetadata = new TypeLibrary();
+            Uri = default!;
         }
+
+        /// <summary>
+        /// The URI from which this project was loaded.
+        /// </summary>
+        public RekoUri Uri { get; set; }
 
         /// <summary>
         /// A list of binaries that are to be decompiled.
@@ -64,6 +64,14 @@ namespace Reko.Core
         /// files.
         /// </summary>
         public TypeLibrary LoadedMetadata { get; set; }
+
+
+        public void AddProgram(RekoUri absoluteUri, Program program)
+        {
+            program.Uri = absoluteUri;
+            program.EnsureDirectoryNames(absoluteUri);
+            this.Programs.Add(program);
+        }
 
         /// <summary>
         /// Call event handlers defined at user-defined scripts.

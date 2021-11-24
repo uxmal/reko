@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Core.Serialization
             ldr.Setup(l => l.LoadImageBytes(
                 It.IsAny<RekoUri>(),
                 It.IsAny<int>())).Returns(new byte[100]);
-            ldr.Setup(l => l.LoadImage(
+            ldr.Setup(l => l.LoadBinaryImage(
                 It.IsAny<RekoUri>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
@@ -320,7 +320,7 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestArch();
             Given_TestOS();
             var ldr = new Mock<ILoader>();
-            ldr.Setup(l => l.LoadImage(
+            ldr.Setup(l => l.LoadBinaryImage(
                 It.IsAny<RekoUri>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
@@ -352,7 +352,7 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestArch();
             Given_TestOS();
             var ldr = new Mock<ILoader>();
-            ldr.Setup(l => l.LoadImage(
+            ldr.Setup(l => l.LoadBinaryImage(
                 It.IsAny<RekoUri>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),

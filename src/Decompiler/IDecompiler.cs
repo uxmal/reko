@@ -41,11 +41,6 @@ namespace Reko
         /// </summary>
         Project? Project { get; }
 
-        //$TODO: move to ILoader
-        bool Load(RekoUri imageUri, string? loader = null, Address? addLoad = null);
-        Program LoadRawImage(RekoUri imageUri, LoadDetails raw);
-        Program LoadRawImage(byte[] bytes, LoadDetails raw);
-
         void ScanPrograms();
         ProcedureBase ScanProcedure(ProgramAddress paddr, IProcessorArchitecture arch);
         void AnalyzeDataFlow();
@@ -53,8 +48,5 @@ namespace Reko
         void StructureProgram();
         void WriteDecompilerProducts();
         void ExtractResources();
-
-        void Assemble(RekoUri imageUri, IAssembler asm, IPlatform platform);
     }
-
 }

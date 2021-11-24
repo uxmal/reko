@@ -44,14 +44,13 @@ namespace Reko
 	public class Decompiler : IDecompiler
 	{
 		private readonly IDecompiledFileService host;
-		private readonly ILoader loader;
 		private IScanner? scanner;
         private readonly DecompilerEventListener eventListener;
         private readonly IServiceProvider services;
 
-        public Decompiler(ILoader ldr, IServiceProvider services)
+        public Decompiler(Project project, IServiceProvider services)
         {
-            this.loader = ldr ?? throw new ArgumentNullException("ldr");
+            this.Project = project;
             this.services = services ?? throw new ArgumentNullException("services");
             this.host = services.RequireService<IDecompiledFileService>();
             this.eventListener = services.RequireService<DecompilerEventListener>();
@@ -68,7 +67,6 @@ namespace Reko
         {
             try
             {
-                Load(imageUri, loaderName);
                 ExtractResources();
                 ScanPrograms();
                 AnalyzeDataFlow();
@@ -174,40 +172,6 @@ namespace Reko
         }
 
         /// <summary>
-        /// Loads (or assembles) the decompiler project. If a binary file is
-        /// specified instead, we create a simple project for the file.
-        /// </summary>
-        /// <param name="absoluteUri">The URI of the image to load.</param>
-        /// <param name="loaderName">Optional .NET class name of a custom
-        /// image loader</param>
-        /// <param name="addrLoad">Optional address at which to load the image.
-        /// </param>
-        /// <returns>True if the file could be loaded.</returns>
-        public bool Load(RekoUri absoluteUri, string? loaderName = null, Address? addrLoad = null)
-        {
-            eventListener.ShowStatus("Loading source program.");
-            byte[] image = loader.LoadImageBytes(absoluteUri, 0);
-            var projectLoader = new ProjectLoader(this.services, loader, eventListener);
-            projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
-            this.Project = projectLoader.LoadProject(absoluteUri, image);
-            if (Project is null)
-            {
-                //$TODO: Handle archives.
-                var program = (Program?)loader.LoadImage(absoluteUri, image, loaderName, addrLoad);
-                if (program == null)
-                    return false;
-                this.Project = AddProgramToProject(absoluteUri, program);
-                this.Project.LoadedMetadata = program.Platform.CreateMetadata();
-                program.EnvironmentMetadata = this.Project.LoadedMetadata;
-            }
-            BuildImageMaps();
-            WriteEntryPoints();
-            eventListener.ShowStatus("Source program loaded.");
-            Project.FireScriptEvent(ScriptEvent.OnProgramLoaded);
-            return true;
-        }
-
-        /// <summary>
         /// Build image maps for each program in preparation of the scanning
         /// phase.
         /// </summary>
@@ -221,80 +185,13 @@ namespace Reko
             }
         }
 
-        public void RunScriptOnProgramImage(Program program, Script_v2? script)
-        {
-            if (script == null || !script.Enabled || script.Script == null)
-                return;
-            IScriptInterpreter interpreter;
-            try
-            {
-                //$TODO: should be in the config file, yeah.
-                var svc = services.RequireService<IPluginLoaderService>();
-                var type = svc.GetType("Reko.ImageLoaders.OdbgScript.OllyLang,Reko.ImageLoaders.OdbgScript");
-                interpreter = (IScriptInterpreter)Activator.CreateInstance(type, services);
-            }
-            catch (Exception ex)
-            {
-                eventListener.Error(ex, "Unable to load OllyLang script interpreter.");
-                return;
-            }
-
-            try
-            {
-                interpreter.LoadFromString(script.Script, program, Environment.CurrentDirectory);
-                interpreter.Run();
-            }
-            catch (Exception ex)
-            {
-                eventListener.Error(ex, "An error occurred while running the script.");
-            }
-        }
 
         public void Assemble(RekoUri fileUri, IAssembler asm, IPlatform platform)
         {
-            eventListener.ShowStatus("Assembling program.");
-            var program = loader.AssembleExecutable(fileUri, asm, platform, null!);
-            Project = AddProgramToProject(fileUri, program);
-            WriteEntryPoints(program);
-            eventListener.ShowStatus("Assembled program.");
         }
 
-        /// <summary>
-        /// Loads a program from a file into memory using the additional information in 
-        /// <paramref name="raw"/>. Use this to open files with insufficient or
-        /// no metadata.
-        /// </summary>
-        /// <param name="fileName">Name of the file to be loaded.</param>
-        /// <param name="raw">Extra metadata supllied by the user.</param>
-        public Program LoadRawImage(RekoUri uri, LoadDetails raw)
-        {
-            eventListener.ShowStatus("Loading raw bytes.");
-            raw.ArchitectureOptions ??= new Dictionary<string, object>();
-            byte[] image = loader.LoadImageBytes(uri, 0);
-            var program = loader.LoadRawImage(uri, image, null, raw);
-            Project = AddProgramToProject(uri, program);
-            WriteEntryPoints(program);
-            eventListener.ShowStatus("Raw bytes loaded.");
-            return program;
-        }
 
-        /// <summary>
-        /// Loads a program into memory using the additional information in 
-        /// <paramref name="raw"/>. Use this to decompile raw blobs of data.
-        /// </summary>
-        /// <param name="fileName">Name of the file to be loaded.</param>
-        /// <param name="raw">Extra metadata supllied by the user.</param>
-        public Program LoadRawImage(byte[] image, LoadDetails raw)
-        {
-            eventListener.ShowStatus("Loading raw bytes.");
-            raw.ArchitectureOptions ??= new Dictionary<string, object>();
-            var inventedUri = new RekoUri("file:image");
-            var program = loader.LoadRawImage(inventedUri, image, null, raw);
-            Project = AddProgramToProject(inventedUri, program);
-            eventListener.ShowStatus("Raw bytes loaded.");
-            return program;
-        }
-
+        [Obsolete("", true)]
         protected Project AddProgramToProject(RekoUri absoluteUri, Program program)
         {
             if (this.project == null)
@@ -545,6 +442,7 @@ namespace Reko
 		{
 			if (Project is null || Project.Programs.Count == 0)
 				throw new InvalidOperationException("Programs must be loaded first.");
+            BuildImageMaps();
             Project.FireScriptEvent(ScriptEvent.OnProgramDecompiling);
             foreach (Program program in Project.Programs)
             {
@@ -574,6 +472,7 @@ namespace Reko
             }
         }
 
+        //$REVIEW: doesn't seem to be used anywhere?
         public IDictionary<Address, FunctionType> LoadCallSignatures(
             Program program,
             ICollection<SerializedCall_v1> userCalls)

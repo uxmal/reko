@@ -394,7 +394,7 @@ namespace Reko.UnitTests.Core.Serialization
             loader.Setup(l => l.LoadImageBytes(
                 It.Is<RekoUri>(s => s.EndsWith(exeName)),
                 It.IsAny<int>())).Returns(bytes);
-            loader.Setup(l => l.LoadImage(
+            loader.Setup(l => l.LoadBinaryImage(
                 It.Is<RekoUri>(s => s.EndsWith(exeName)),
                 It.IsNotNull<byte[]>(),
                 null,
@@ -417,7 +417,7 @@ namespace Reko.UnitTests.Core.Serialization
             loader.Setup(l => l.LoadImageBytes(
                 It.Is<RekoUri>(s => s.EndsWith(exeName)),
                 It.IsAny<int>())).Returns(bytes);
-            loader.Setup(l => l.LoadImage(
+            loader.Setup(l => l.LoadBinaryImage(
                 It.Is<RekoUri>(s => s.EndsWith(exeName)),
                 It.IsNotNull<byte[]>(),
                 null,
@@ -544,7 +544,7 @@ namespace Reko.UnitTests.Core.Serialization
             var loader = new Mock<ILoader>();
             loader.Setup(l => l.LoadImageBytes(It.IsAny<RekoUri>(), It.IsAny<int>()))
                 .Returns(new byte[10]);
-            loader.Setup(l => l.LoadImage(
+            loader.Setup(l => l.LoadBinaryImage(
                 It.IsAny<RekoUri>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
@@ -554,7 +554,7 @@ namespace Reko.UnitTests.Core.Serialization
                     Platform = this.platform.Object
                 });
 
-            var ploader = new ProjectLoader(sc, loader.Object, listener.Object);
+            var ploader = new ProjectLoader(sc, loader.Object, new FakeDecompilerEventListener());
             var project = ploader.LoadProject(UriTools.UriFromFilePath("c:\\tmp\\foo\\bar.proj"), sProject);
             Assert.IsTrue(project.Programs[0].User.Heuristics.Contains("HeuristicScanning"));
             Assert.AreEqual("windows-1251", project.Programs[0].User.TextEncoding.WebName);
