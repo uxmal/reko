@@ -25,7 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace Reko.Core
+namespace Reko.Core.Diagnostics
 {
     public static class DebugEx
     {

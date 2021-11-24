@@ -29,6 +29,7 @@
 
 using Reko.Arch.MilStd1750;
 using Reko.Core;
+using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Memory;

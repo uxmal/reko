@@ -33,6 +33,7 @@ using System.Linq;
 using System.Text;
 using Reko.ImageLoaders.MzExe.Ne;
 using Reko.Core.Loading;
+using Reko.Core.Diagnostics;
 
 namespace Reko.ImageLoaders.MzExe
 {

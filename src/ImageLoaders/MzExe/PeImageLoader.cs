@@ -34,6 +34,7 @@ using Reko.Core.Serialization;
 using Reko.ImageLoaders.MzExe.Pe;
 using Reko.Core.Memory;
 using Reko.Core.Loading;
+using Reko.Core.Diagnostics;
 
 namespace Reko.ImageLoaders.MzExe
 {

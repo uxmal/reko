@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Diagnostics;
 using Reko.Core.Expressions;
 using System.Collections.Generic;
 using System.Diagnostics;

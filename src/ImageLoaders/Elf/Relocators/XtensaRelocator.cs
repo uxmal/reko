@@ -21,6 +21,7 @@
 using System;
 using Reko.Core;
 using System.Collections.Generic;
+using Reko.Core.Diagnostics;
 
 namespace Reko.ImageLoaders.Elf.Relocators
 {

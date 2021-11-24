@@ -21,6 +21,7 @@
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Diagnostics;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
