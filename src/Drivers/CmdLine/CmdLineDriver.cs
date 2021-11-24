@@ -224,7 +224,7 @@ namespace Reko.CmdLine
         }
 
         /// <summary>
-        /// Determine whether to overrid the extract resources flag in the userdata.
+        /// Determine whether a command line directive overrides the extract resources flag in the userdata.
         /// </summary>
         private static bool ShouldExtractResources(Program program, Dictionary<string, object> pArgs)
         {
