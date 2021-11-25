@@ -102,12 +102,15 @@ namespace Reko.UserInterfaces.WindowsForms
         }
 
 
-        public IOpenAsDialog CreateOpenAsDialog()
+        public IOpenAsDialog CreateOpenAsDialog(string initialFilename)
         {
-            return new OpenAsDialog
+            var dlg = new OpenAsDialog
             {
                 Services = services,
+                ArchitectureOptions = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase)
             };
+            dlg.FileName.Text = initialFilename;
+            return dlg;
         }
 
         public IProcedureDialog CreateProcedureDialog(Program program, Core.UserProcedure proc)

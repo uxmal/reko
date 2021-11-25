@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Assemblers;
+using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
@@ -109,6 +110,7 @@ namespace Reko.Gui.Forms
         {
             var ldr = Services.RequireService<ILoader>();
             var svc = Services.RequireService<IWorkerDialogService>();
+            var uiSvc = Services.RequireService<IDecompilerShellUiService>();
             ILoadedImage loadedImage = null;
             var imageUri = UriTools.UriFromFilePath(file);
             bool exceptionThrown = !svc.StartBackgroundWork("Opening file", () =>
@@ -116,30 +118,36 @@ namespace Reko.Gui.Forms
                 var eventListener = Services.RequireService<DecompilerEventListener>();
                 eventListener.ShowStatus("Loading file.");
                 loadedImage = ldr.Load(imageUri);
-                eventListener.ShowStatus("Source file.");
+                eventListener.ShowStatus("Loaded file.");
             });
             if (exceptionThrown)
             {
                 // We've already reported the exception, so we should stop in our tracks.
-                //$REFACTOR: the logic for opening binaries is convoluted and needs 
-                // refactoring. See GitHub #1051.
-                //$BUG: we're lying here, we should be catching an Exception at this level.
-                // The 'true' will prevent the OpenAs dialog from opening, but it will
-                // put the shell in an incorrect state.
+
                 return true;
             }
             if (loadedImage is IArchive archive)
             {
                 loadedImage = LoadFromArchive(archive, ldr);
             }
+            if (loadedImage is Blob blob)
+            {
+                var dlgFactory = Services.RequireService<IDialogFactory>();
+                using IOpenAsDialog dlg = dlgFactory.CreateOpenAsDialog(file);
+                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    OpenBinaryAs(file, dlg.GetLoadDetails());
+                    return true;
+                }
+            }
             if (loadedImage is not Project project)
             {
-                //
                 return false;
             }
 
             this.Decompiler = CreateDecompiler(project);
             Decompiler.ExtractResources();
+
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(project);
             browserSvc.Show();
@@ -151,7 +159,7 @@ namespace Reko.Gui.Forms
         {
             var ldr = Services.RequireService<ILoader>();
             IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
-            svc.StartBackgroundWork("Loading program", delegate()
+            if (!svc.StartBackgroundWork("Loading program", delegate ()
             {
                 var eventListener = Services.RequireService<DecompilerEventListener>();
                 eventListener.ShowStatus("Loading source program.");
@@ -162,7 +170,8 @@ namespace Reko.Gui.Forms
                 this.Decompiler = CreateDecompiler(project);
                 Decompiler.ExtractResources();
                 eventListener.ShowStatus("Source program loaded.");
-            });
+            }))
+                return false;
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             var procListSvc = Services.RequireService<IProcedureListService>();
             if (Decompiler.Project != null)
@@ -180,7 +189,7 @@ namespace Reko.Gui.Forms
             return false;   // We never open projects this way.
         }
 
-        private Project? LoadFromArchive(IArchive archive, ILoader loader)
+        private Project LoadFromArchive(IArchive archive, ILoader loader)
         {
             var abSvc = Services.RequireService<IArchiveBrowserService>();
             if (abSvc.SelectFileFromArchive(archive) is not ArchivedFile archiveFile)

@@ -244,36 +244,6 @@ namespace Reko.Gui.Forms
             get { return form; }
         }
 
-        /// <summary>
-        /// Master function for opening a new project.
-        /// </summary>
-        /// <param name="file"></param>
-        /// <param name="openAction"></param>
-        public void OpenBinary(string file, Func<string,bool> openAction, Func<string, bool> onFailAction)
-        {
-            try
-            {
-                CloseProject();
-                SwitchInteractor(InitialPageInteractor);
-                if (openAction(file) || onFailAction(file))
-                {
-                    if (file.EndsWith(Project_v5.FileExtension))
-                    {
-                        ProjectFileName = file;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.Print("Caught exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
-                uiSvc.ShowError(ex, "Couldn't open file '{0}'. {1}", file, ex.Message);
-            }
-            finally
-            {
-                Services.RequireService<IStatusBarService>().SetText("");
-            }
-        }
-
         public void OpenBinaryWithPrompt()
         {
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
@@ -281,10 +251,9 @@ namespace Reko.Gui.Forms
             if (fileName != null)
             {
                 RememberFilenameInMru(fileName);
-                uiSvc.WithWaitCursor(() => OpenBinary(
-                    fileName, 
-                    f => pageInitial.OpenBinary(f),
-                    f => OpenBinaryAs(f)));
+                CloseProject();
+                SwitchInteractor(InitialPageInteractor);
+                pageInitial.OpenBinary(fileName);
             }
         }
 
@@ -407,7 +376,9 @@ namespace Reko.Gui.Forms
 
                 var arch = this.config.GetArchitecture(dlg.SelectedArchitectureName);
                 var asm = arch.CreateAssembler(null);
-                OpenBinary(dlg.FileName.Text, (f) => pageInitial.Assemble(f, asm, null), f => false);
+                CloseProject();
+                SwitchInteractor(InitialPageInteractor);
+                InitialPageInteractor.Assemble(dlg.FileName.Text, asm, null);
                 RememberFilenameInMru(dlg.FileName.Text);
             }
             catch (Exception e)
@@ -420,53 +391,16 @@ namespace Reko.Gui.Forms
         public bool OpenBinaryAs(string initialFilename)
         {
             IOpenAsDialog dlg = null;
-            IProcessorArchitecture arch = null;
             try
             {
-                dlg = dlgFactory.CreateOpenAsDialog();
-                dlg.FileName.Text = initialFilename;
-                dlg.Services = sc;
-                dlg.ArchitectureOptions = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+                dlg = dlgFactory.CreateOpenAsDialog(initialFilename);
                 if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return false;
 
-                var rawFileOption = (ListOption)dlg.RawFileTypes.SelectedValue;
-                string archName = null;
-                string envName = null;
-                string sAddr = null;
-                string loader = null;
-                EntryPointDefinition entry = null;
-                if (rawFileOption != null && rawFileOption.Value != null)
-                {
-                    var raw = (RawFileDefinition)rawFileOption.Value;
-                    loader = raw.Loader;
-                    archName = raw.Architecture;
-                    envName = raw.Environment;
-                    sAddr = raw.BaseAddress;
-                    entry = raw.EntryPoint;
-                }
-                ArchitectureDefinition archOption = dlg.GetSelectedArchitecture();
-                PlatformDefinition envOption = dlg.GetSelectedEnvironment();
-                archName = archName ?? archOption?.Name;
-                envName = envName ?? envOption?.Name;
-                sAddr = sAddr ?? dlg.AddressTextBox.Text.Trim();
-                arch = config.GetArchitecture(archName);
-                if (arch == null)
-                    throw new InvalidOperationException(string.Format("Unable to load {0} architecture.", archName));
-                arch.LoadUserOptions(dlg.ArchitectureOptions);
-                if (!arch.TryParseAddress(sAddr, out var addrBase))
-                    throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
-                var details = new LoadDetails
-                {
-                    LoaderName = loader,
-                    ArchitectureName = archName,
-                    ArchitectureOptions = dlg.ArchitectureOptions,
-                    PlatformName = envName,
-                    LoadAddress = sAddr,
-                    EntryPoint = entry,
-                };
-
-                OpenBinary(dlg.FileName.Text, (f) => pageInitial.OpenBinaryAs(f, details), f => false);
+                LoadDetails details = dlg.GetLoadDetails();
+                CloseProject();
+                SwitchInteractor(InitialPageInteractor);
+                pageInitial.OpenBinaryAs(dlg.FileName.Text, details);
             }
             catch (Exception ex)
             {
@@ -1057,8 +991,12 @@ namespace Reko.Gui.Forms
             if (0 <= iMru && iMru < mru.Items.Count)
             {
                 string file = mru.Items[iMru];
-                OpenBinary(file, pageInitial.OpenBinary, OpenBinaryAs);
-                RememberFilenameInMru(file);
+                CloseProject();
+                SwitchInteractor(InitialPageInteractor);
+                if (pageInitial.OpenBinary(file))
+                {
+                    RememberFilenameInMru(file);
+                }
                 return true;
             }
             return false;
