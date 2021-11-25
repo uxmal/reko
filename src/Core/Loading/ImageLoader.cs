@@ -26,12 +26,11 @@ namespace Reko.Core.Loading
 {
 	/// <summary>
 	/// Abstract base class for image loaders. These examine a raw image, and 
-    /// generate a Program after carrying out relocations, resolving external
-    /// symbols etc.
+    /// generate an <see cref="ILoadedImage"/>.
 	/// </summary>
 	public abstract class ImageLoader
 	{
-        public ImageLoader(IServiceProvider services, Reko.Core.RekoUri imageUri, byte[] imgRaw)
+        public ImageLoader(IServiceProvider services, RekoUri imageUri, byte[] imgRaw)
         {
             this.Services = services;
             this.ImageUri = imageUri;

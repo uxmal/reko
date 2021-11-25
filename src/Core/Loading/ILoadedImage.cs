@@ -54,5 +54,6 @@ namespace Reko.Core.Loading
         T VisitProgram(Program program, C context);
         T VisitProject(Project project, C context);
         T VisitArchive(IArchive archive, C context);
+        T VisitBlob(Blob blob, C context);
     }
 }

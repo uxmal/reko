@@ -69,10 +69,10 @@ namespace Reko.Core.Loading
         /// <param name="loadAddress">Address at which to load the binary. This may be null,
         /// in which case the default address of the image loader will be used.</param>
         /// <returns>
-        /// Either a successfully loaded <see cref="ILoadedImage"/>, or null if 
-        /// an appropriate image loader could not be determined or loaded.
+        /// Either a successfully loaded <see cref="ILoadedImage"/>, or a <see cref="Blob"/>
+        /// if an appropriate image loader could not be determined or loaded.
         /// </returns>
-        ILoadedImage? LoadBinaryImage(RekoUri absoluteUri, byte[] bytes, string? loader, Address? loadAddress);
+        ILoadedImage LoadBinaryImage(RekoUri absoluteUri, byte[] bytes, string? loader, Address? loadAddress);
 
         /// <summary>
         /// Given a sequence of raw bytes, loads it into memory and applies the 

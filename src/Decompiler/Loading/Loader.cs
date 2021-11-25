@@ -96,28 +96,26 @@ namespace Reko.Loading
         /// </param>
         /// <returns>An instance of <see cref="ILoadedImage"/> if an image could be loaded, 
         /// or null otherwise.</returns>
-        public ILoadedImage? Load(RekoUri absoluteUri, string? loaderName = null, Address? addrLoad = null)
+        public ILoadedImage Load(RekoUri absoluteUri, string? loaderName = null, Address? addrLoad = null)
         {
             byte[] image = LoadImageBytes(absoluteUri, 0);
-            var projectLoader = new ProjectLoader(this.Services, this, Services.RequireService<DecompilerEventListener>() );
+            var projectLoader = new ProjectLoader(this.Services, this, Services.RequireService<DecompilerEventListener>());
             projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
             var project = projectLoader.LoadProject(absoluteUri, image);
-            if (project is null)
+            if (project is not null)
+                return project;
+
+            var binaryImage = LoadBinaryImage(absoluteUri, image, loaderName, addrLoad);
+            if (binaryImage is Program program)
             {
-                switch (LoadBinaryImage(absoluteUri, image, loaderName, addrLoad))
-                {
-                case Program program:
-                    project = new Project();
-                    project.AddProgram(absoluteUri, program);
-                    project.LoadedMetadata = program.Platform.CreateMetadata();
-                    program.EnvironmentMetadata = project.LoadedMetadata;
-                    break;
-                case IArchive archive:
-                    return archive;
-                }
+                project = new Project();
+                project.AddProgram(absoluteUri, program);
+                project.LoadedMetadata = program.Platform.CreateMetadata();
+                program.EnvironmentMetadata = project.LoadedMetadata;
+                project.FireScriptEvent(ScriptEvent.OnProgramLoaded);
+                return project;
             }
-            project?.FireScriptEvent(ScriptEvent.OnProgramLoaded);
-            return project;
+            return binaryImage;
         }
 
         /// <summary>
@@ -127,12 +125,10 @@ namespace Reko.Loading
         /// <param name="image">The raw bytes fetched from <paramref name="imageUri"/>.</param>
         /// <param name="loader">.NET Class name of a custom loader (may be null)</param>
         /// <param name="addrLoad">Address into which to load the file.</param>
-        /// <returns>A <see cref="ILoadedImage"/> if the file format is recognized, or null 
-        /// if the file cannot be recognized. Callers will have to handle the different
-        /// possible implementations of the interface.</returns>
-        public ILoadedImage? LoadBinaryImage(RekoUri imageUri, byte[] image, string? loader, Address? addrLoad)
+        /// <returns>A <see cref="ILoadedImage"/> if the file format is recognized, or 
+        /// an instance of <see cref="Blob"/> if the file cannot be recognized.</returns>
+        public ILoadedImage LoadBinaryImage(RekoUri imageUri, byte[] image, string? loader, Address? addrLoad)
         {
-            //$TODO: loop through fragments.
             ImageLoader? imgLoader;
             if (!string.IsNullOrEmpty(loader))
             {
@@ -146,8 +142,8 @@ namespace Reko.Loading
                     imgLoader = CreateDefaultImageLoader(imageUri, image);
                 }
             }
-            if (imgLoader == null)
-                return null;
+            if (imgLoader is null)
+                return new Blob(image);
 
             if (addrLoad is null)
             {

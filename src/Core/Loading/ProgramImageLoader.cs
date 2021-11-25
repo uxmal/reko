@@ -26,9 +26,8 @@ namespace Reko.Core.Loading
 {
     /// <summary>
     /// Abstract base class for image loaders that load <see cref="Program"/>s.
-    /// These examine a raw image, and 
-    /// generate a Program after carrying out relocations, resolving external
-    /// symbols etc.
+    /// These examine a raw image, and generate a Program after carrying out
+    /// relocations, resolving external symbols etc.
     /// </summary>
     public abstract class ProgramImageLoader : ImageLoader
     {
