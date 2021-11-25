@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Loading
             Assert.IsTrue(ldr.ImageHasMagicNumber(new byte[] { 0x47, 0x11 }, "4711", 0));
         }
 
-        [Test(Description="Unless otherwise specified, fail loading unknown file formats.")]
+        [Test(Description="Unless otherwise specified, loading unknown file formats returns a Blob.")]
         public void Ldr_UnknownImageType()
         {
             cfgSvc.Setup(d => d.GetImageLoaders()).Returns(new List<LoaderDefinition>());
@@ -71,9 +71,9 @@ namespace Reko.UnitTests.Loading
             var testImage = new byte[] { 42, 42, 42, 42, };
             var ldr = new Mock<Loader>(sc);
 
-            Program program = (Program) ldr.Object.LoadBinaryImage(new RekoUri(""), testImage, null, null);
+            Blob blob = (Blob) ldr.Object.LoadBinaryImage(new RekoUri(""), testImage, null, null);
 
-            Assert.IsNull(program);
+            Assert.IsNotNull(blob);
         }
 
         [Test(Description = "Use default settings when loading unknown file formats.")]

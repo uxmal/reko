@@ -331,7 +331,9 @@ namespace Reko.UnitTests.Core.Serialization
 
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
             var project = prld.LoadProject(UriTools.UriFromFilePath("c:\\users\\bob\\projects\\foo.project"), sProject);
-            Assert.AreEqual("file:///c:/users/bob/projects/foo.exe", project.Programs[0].Uri.ExtractString());
+            var programUri = project.Programs[0].Uri.ExtractString();
+            Assert.IsTrue(programUri.StartsWith("file:///"));
+            Assert.IsTrue(programUri.EndsWith("/bob/projects/foo.exe"));
         }
 
         [Test]
