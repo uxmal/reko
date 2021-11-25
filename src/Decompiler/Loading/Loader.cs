@@ -412,10 +412,8 @@ namespace Reko.Loading
         /// <returns>An array of bytes with the file contents at the specified offset.</returns>
         public virtual byte[] LoadImageBytes(RekoUri imageUri, int offset)
         {
-            var fragments = UriTools.ParseUriIntoFragments(imageUri.ExtractString());
             // The initial fragment is always a file system location.
-
-            //$TODO: loop through the fragments of imageUri.
+            var fragments = UriTools.ParseUriIntoFragments(imageUri.ExtractString());
             var fsSvc = Services.RequireService<IFileSystemService>();
             var imageFile = imageUri.ToString();
             return fsSvc.ReadAllBytes(fragments[0]);

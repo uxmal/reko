@@ -20,9 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Assemblers;
-using Reko.Core.Configuration;
 using Reko.Core.Loading;
-using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Gui.Services;
 using System;
@@ -36,7 +34,7 @@ namespace Reko.Gui.Forms
     {
         bool OpenBinary(string file);
         bool OpenBinaryAs(string file, LoadDetails details);
-        bool Assemble(string file, IAssembler asm, IPlatform platform );
+        bool Assemble(string file, IAssembler asm, IPlatform platform);
     }
 
     /// <summary>
@@ -104,8 +102,7 @@ namespace Reko.Gui.Forms
         /// <summary>
         /// Open the specified file.
         /// </summary>
-        /// <param name="file"></param>
-        /// <returns>True if the opened file was opened successfully.</returns>
+        /// <param name="file">The file system path to the file.</param>
         public bool OpenBinary(string file)
         {
             var ldr = Services.RequireService<ILoader>();
@@ -123,8 +120,7 @@ namespace Reko.Gui.Forms
             if (exceptionThrown)
             {
                 // We've already reported the exception, so we should stop in our tracks.
-
-                return true;
+                return false;
             }
             if (loadedImage is IArchive archive)
             {
@@ -136,8 +132,7 @@ namespace Reko.Gui.Forms
                 using IOpenAsDialog dlg = dlgFactory.CreateOpenAsDialog(file);
                 if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
                 {
-                    OpenBinaryAs(file, dlg.GetLoadDetails());
-                    return true;
+                    return OpenBinaryAs(file, dlg.GetLoadDetails());
                 }
             }
             if (loadedImage is not Project project)
@@ -147,7 +142,6 @@ namespace Reko.Gui.Forms
 
             this.Decompiler = CreateDecompiler(project);
             Decompiler.ExtractResources();
-
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(project);
             browserSvc.Show();
@@ -174,19 +168,20 @@ namespace Reko.Gui.Forms
                 return false;
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             var procListSvc = Services.RequireService<IProcedureListService>();
-            if (Decompiler.Project != null)
+            if (Decompiler.Project is not null)
             {
                 browserSvc.Load(Decompiler.Project);
                 browserSvc.Show();
                 procListSvc.Clear();
                 ShowLowLevelWindow();
+                return true;
             }
             else
             {
                 browserSvc.Clear();
                 procListSvc.Clear();
+                return false;
             }
-            return false;   // We never open projects this way.
         }
 
         private Project LoadFromArchive(IArchive archive, ILoader loader)
@@ -235,13 +230,13 @@ namespace Reko.Gui.Forms
                 this.Decompiler.ExtractResources();
                 eventListener.ShowStatus("Assembled program.");
             });
-            if (Decompiler.Project == null)
+            if (Decompiler.Project is null)
                 return false;
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);
             browserSvc.Show();
             ShowLowLevelWindow();
-            return false;
+            return true;
         }
 
         private bool NeedsScanning()

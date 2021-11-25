@@ -406,7 +406,7 @@ namespace Reko.Gui.Forms
             {
                 uiSvc.ShowError(
                     ex,
-                    string.Format("An error occurred when opening the binary file {0}.", dlg.FileName.Text));
+                    string.Format("An error occurred when opening the file {0}.", dlg.FileName.Text));
             }
             return true;
         }
@@ -987,17 +987,27 @@ namespace Reko.Gui.Forms
 
         private bool ExecuteMruFile(int cmdId)
         {
-            int iMru = cmdId - CmdIds.FileMru;
-            if (0 <= iMru && iMru < mru.Items.Count)
-            {
+                int iMru = cmdId - CmdIds.FileMru;
+                if (0 <= iMru && iMru < mru.Items.Count)
+                {
                 string file = mru.Items[iMru];
+
                 CloseProject();
                 SwitchInteractor(InitialPageInteractor);
-                if (pageInitial.OpenBinary(file))
+                try
                 {
-                    RememberFilenameInMru(file);
+                    if (pageInitial.OpenBinary(file))
+                    {
+                        RememberFilenameInMru(file);
+                    }
+                    return true;
                 }
-                return true;
+                catch (Exception ex)
+                {
+                    uiSvc.ShowError(
+                        ex,
+                        $"An error occurred when opening the file {file}.");
+                }
             }
             return false;
         }
