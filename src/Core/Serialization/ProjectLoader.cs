@@ -279,8 +279,16 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                program = (Program?)loader.LoadBinaryImage(binUri, bytes, sUser.Loader, address)
-                    ?? new Program();   // A previous save of the project was able to read the file, 
+                var image = loader.LoadBinaryImage(binUri, bytes, sUser.Loader, address);
+                switch (image)
+                {
+                case Program p:
+                    return p;
+                case IArchive arch:
+                    return LoadFromArchive(binUri, arch)
+                        ?? new Program();
+                }
+                return new Program();   // A previous save of the project was able to read the file, 
                                         // but now we can't...
             }
             return program;
@@ -325,6 +333,28 @@ namespace Reko.Core.Serialization
             program.User.LoadAddress = address;
             ProgramLoaded?.Fire(this, new ProgramEventArgs(program));
             return program;
+        }
+
+        private Program? LoadFromArchive(RekoUri uri, IArchive archive)
+        {
+            var fragments = UriTools.ParseUriIntoFragments(uri);
+            if (fragments.Length <= 1)
+                return null;
+
+            //$TODO: nested fragments.
+            if (archive[fragments[1]] is not ArchivedFile archiveFile)
+                return null;
+            switch (archiveFile.LoadImage(Services, null))
+            {
+            case Program program:
+                Debug.Assert(program.Uri is not null);
+                return program;
+            case null:
+                return null;
+            default:
+                throw new NotImplementedException();
+            }
+
         }
 
         private Address? LoadAddress(UserData_v4 user, IProcessorArchitecture arch)

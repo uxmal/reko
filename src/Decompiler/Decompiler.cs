@@ -54,6 +54,7 @@ namespace Reko
             this.services = services ?? throw new ArgumentNullException("services");
             this.host = services.RequireService<IDecompiledFileService>();
             this.eventListener = services.RequireService<DecompilerEventListener>();
+            BuildImageMaps();
         }
 
         public Project? Project { get { return project; } set { project = value; ProjectChanged?.Fire(this); } }
@@ -442,7 +443,6 @@ namespace Reko
 		{
 			if (Project is null || Project.Programs.Count == 0)
 				throw new InvalidOperationException("Programs must be loaded first.");
-            BuildImageMaps();
             Project.FireScriptEvent(ScriptEvent.OnProgramDecompiling);
             foreach (Program program in Project.Programs)
             {

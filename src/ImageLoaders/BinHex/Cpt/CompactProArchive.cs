@@ -88,7 +88,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
 
         private ArchiveDirectoryEntry? GetEntry(string path)
         {
-            var components = path.Split();
+            var components = path.Split('/');
             if (components.Length == 0)
                 return null;
             var component = components[0];
@@ -544,7 +544,8 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                     var program = new Program(segmentMap, Archive.Architecture, Archive.Platform);
                     BinHexImageLoader.Relocate(program, addrLoad, bmem, rsrcFork);
                     program.Name = this.Parent!.Name;
-                    program.Uri = UriTools.AppendPathAsFragment(Archive.Uri, Name);
+                    //$REVIEW: this could be done by the caller?
+                    program.Uri = UriTools.AppendPathAsFragment(Archive.Uri, Archive.GetRootPath(this));
                     return program;
                 }
             }

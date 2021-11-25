@@ -96,19 +96,6 @@ namespace Reko.Environments.BbcMicro
 
         }
 
-        public override Address PreferredBaseAddress
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         public override ILoadedImage Load(Address? addrLoad)
         {
             LoadDirectory();

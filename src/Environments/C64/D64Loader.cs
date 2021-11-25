@@ -88,16 +88,14 @@ namespace Reko.Environments.C64
             0x25600,0x26700,0x27800,0x28900,0x29A00,  0x2AB00,0x2BC00,0x2CD00,0x2DE00,0x2EF00,
         };
 
+        public static readonly Address PreferredBaseAddress = Address.Ptr16(2048);
+
+
         public D64Loader(IServiceProvider services, RekoUri imageUri, byte[] rawImage)
             : base(services, imageUri, rawImage)
         {
         }
 
-        public override Address PreferredBaseAddress
-        {
-            get { return Address.Ptr16(2048); }
-            set { throw new NotImplementedException(); }
-        }
 
         /*
         public class C64ImageHeader : ImageHeader

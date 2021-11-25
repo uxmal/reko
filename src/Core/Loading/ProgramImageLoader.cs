@@ -36,6 +36,11 @@ namespace Reko.Core.Loading
         {
         }
 
+        /// <summary>
+        /// If nothing else is specified, this is the address at which the image will be loaded.
+        /// </summary>
+        public abstract Address PreferredBaseAddress { get; set; }
+
         public override ILoadedImage Load(Address? addrLoad)
         {
             return LoadProgram(addrLoad);

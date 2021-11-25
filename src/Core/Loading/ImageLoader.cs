@@ -40,11 +40,6 @@ namespace Reko.Core.Loading
         public IServiceProvider Services { get; private set; }
 
         /// <summary>
-        /// If nothing else is specified, this is the address at which the image will be loaded.
-        /// </summary>
-        public abstract Address PreferredBaseAddress { get; set; }
-
-        /// <summary>
         /// Optional loader-specific argument specified in app.config.
         /// </summary>
         public string? Argument { get; set; }

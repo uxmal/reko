@@ -35,16 +35,13 @@ namespace Reko.Environments.C64
     // https://ist.uwaterloo.ca/~schepers/formats/T64.TXT
     public class T64Loader : ImageLoader
     {
+        private static readonly Address PreferredBaseAddress = Address.Ptr16(2048);
+
         public T64Loader(IServiceProvider services, RekoUri imageUri, byte[] bytes)
             : base(services, imageUri, bytes)
         {
         }
 
-        public override Address PreferredBaseAddress
-        {
-            get { return Address.Ptr16(2048); }
-            set { throw new NotImplementedException(); }
-        }
 
         public override ILoadedImage Load(Address? addrLoad)
         {

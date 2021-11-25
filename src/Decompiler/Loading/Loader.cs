@@ -145,15 +145,15 @@ namespace Reko.Loading
             if (imgLoader is null)
                 return new Blob(image);
 
-            if (addrLoad is null)
+            if (addrLoad is null && imgLoader is ProgramImageLoader ploader)
             {
-                addrLoad = imgLoader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
+                addrLoad = ploader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
             }
 
             var loadedImage = imgLoader.Load(addrLoad);
             if (loadedImage is Program program)
             {
-                return PostProcessProgram(imageUri, addrLoad, imgLoader, program);
+                return PostProcessProgram(imageUri, addrLoad!, imgLoader, program);
             }
             return loadedImage;
         }

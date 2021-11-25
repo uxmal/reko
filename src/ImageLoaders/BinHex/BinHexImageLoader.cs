@@ -33,6 +33,8 @@ namespace Reko.ImageLoaders.BinHex
 {
     public class BinHexImageLoader : ImageLoader
     {
+        private static readonly Address PreferredBaseAddress = Address.Ptr32(0x00100000);
+
         public BinHexImageLoader(IServiceProvider services, RekoUri absoluteUri, byte [] imgRaw) 
             : base(services, absoluteUri, imgRaw)
         {
@@ -87,12 +89,6 @@ namespace Reko.ImageLoaders.BinHex
             }
             ReadUInt16BE(stm);      // CRC
             return fork;
-        }
-
-        public override Address PreferredBaseAddress
-        {
-            get { return Address.Ptr32(0x00100000); }
-            set { throw new NotImplementedException(); }
         }
 
         public static void Relocate(Program program, Address addrLoad, ByteMemoryArea bmem, ResourceFork rsrcFork)

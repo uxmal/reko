@@ -249,6 +249,47 @@ namespace Reko.UnitTests.Loading
 
             Assert.AreEqual(1, program.EntryPoints.Count);
             Assert.AreEqual(SymbolType.Procedure, program.EntryPoints[Address.Ptr32(0x00123500)].Type);
-	    }
+        }
+
+        class FakeArchiveLoader : ImageLoader
+        {
+            public FakeArchiveLoader(IServiceProvider services, RekoUri uri, byte[] bytes) :
+                base(services, uri, bytes)
+            {
+            }
+
+            public override ILoadedImage Load(Address addrLoad)
+            {
+                var blob = new Blob(new byte[234]);
+                var archiveFile = new Mock<ArchivedFile>();
+                archiveFile.Setup(a => a.LoadImage(
+                    It.IsAny<IServiceProvider>(),
+                    null))
+                    .Returns(blob);
+                var archive = new Mock<IArchive>();
+                return archive.Object;
+            }
+        }
+
+        [Test]
+        public void Ldr_LoadArchivedBlob()
+        {
+            var ldrDef = new LoaderDefinition
+            {
+                Extension = ".arch",
+                TypeName = typeof(FakeArchiveLoader).FullName,
+            };
+            cfgSvc.Setup(c => c.GetImageLoaders())
+                .Returns(new List<LoaderDefinition> { ldrDef });
+
+            var fsSvc = new Mock<IFileSystemService>();
+            sc.AddService(fsSvc.Object);
+
+            var ldr = new Loader(sc);
+            var image = ldr.Load(new RekoUri("file:archive.arch#inside/path"));
+
+            Assert.IsNotNull(image);
+            Assert.IsAssignableFrom<Blob>(image);
+        }
     }
 }
