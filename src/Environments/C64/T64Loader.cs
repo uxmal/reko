@@ -103,12 +103,26 @@ namespace Reko.Environments.C64
 
         }
 
+
         public class T64Archive : IArchive
         {
             public T64Archive(RekoUri archiveUri, List<ArchiveDirectoryEntry> entries)
             {
                 this.Uri = archiveUri;
                 this.RootEntries = entries;
+            }
+
+            /// <summary>
+            /// Retrieve the file whose name is <paramref name="path"/>.
+            /// </summary>
+            /// <remarks>
+            /// T64 tape images have no tree structure, so the path has to be the actual
+            /// file name.</remarks>
+            /// <param name="path">Name of the file.</param>
+            /// <returns></returns>
+            public ArchiveDirectoryEntry? this[string path]
+            {
+                get => RootEntries.Where(e => e.Name == path).FirstOrDefault();
             }
 
             public RekoUri Uri { get; }
@@ -118,7 +132,7 @@ namespace Reko.Environments.C64
             public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
                 => visitor.VisitArchive(this, context);
 
-            public string GetRootPath(ArchiveDirectoryEntry entry)
+            public string GetRootPath(ArchiveDirectoryEntry? entry)
             {
                 if (entry is null)
                     return "";

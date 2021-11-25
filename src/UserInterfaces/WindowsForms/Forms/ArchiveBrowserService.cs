@@ -108,7 +108,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                     ArchivedFolder folder = entry as ArchivedFolder;
                     if (folder != null)
                     {
-                        Populate(folder.Items, node.Nodes);
+                        Populate(folder.Entries, node.Nodes);
                     }
                     treeNodeCollection.Add(node);
                 }

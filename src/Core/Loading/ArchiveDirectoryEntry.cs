@@ -48,6 +48,6 @@ namespace Reko.Core.Loading
 
     public interface ArchivedFolder : ArchiveDirectoryEntry
     {
-        ICollection<ArchiveDirectoryEntry> Items { get; }
+        ICollection<ArchiveDirectoryEntry> Entries { get; }
     }
 }

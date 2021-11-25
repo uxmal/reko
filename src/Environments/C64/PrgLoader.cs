@@ -69,6 +69,7 @@ namespace Reko.Environments.C64
             var sym = ImageSymbol.Procedure(arch, addrBasic, state: arch.CreateProcessorState());
             program.EntryPoints.Add(sym.Address, sym);
             AddLineNumberSymbols(lines, program);
+            program.Uri = this.ImageUri;
             return program;
         }
 

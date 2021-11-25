@@ -23,6 +23,7 @@ using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Environments.C64
@@ -36,6 +37,19 @@ namespace Reko.Environments.C64
             this.services = services;
             this.Uri = archiveUri;
             this.RootEntries = entries;
+        }
+
+        /// <summary>
+        /// Retrieve the file whose name is <paramref name="path"/>.
+        /// </summary>
+        /// <remarks>
+        /// C64 disks have no tree structure, so the path has to be the actual
+        /// file name.</remarks>
+        /// <param name="path">Name of the file.</param>
+        /// <returns></returns>
+        public ArchiveDirectoryEntry? this[string path]
+        {
+            get => RootEntries.Where(e => e.Name == path).FirstOrDefault();
         }
 
         public List<ArchiveDirectoryEntry> RootEntries { get; }
@@ -55,11 +69,6 @@ namespace Reko.Environments.C64
                     entry.GetType().FullName,
                     nameof(D64Archive)));
             return file.Name;
-        }
-
-        public List<ArchiveDirectoryEntry> Load(Stream stm)
-        {
-            throw new NotImplementedException();
         }
     }
 }
