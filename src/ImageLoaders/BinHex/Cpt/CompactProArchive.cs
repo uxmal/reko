@@ -543,6 +543,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                     var segmentMap = new SegmentMap(addrLoad);
                     var program = new Program(segmentMap, Archive.Architecture, Archive.Platform);
                     BinHexImageLoader.Relocate(program, addrLoad, bmem, rsrcFork);
+                    program.Name = this.Parent!.Name;
                     program.Uri = UriTools.AppendPathAsFragment(Archive.Uri, Name);
                     return program;
                 }

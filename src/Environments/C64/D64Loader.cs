@@ -20,14 +20,11 @@
 
 using Reko.Arch.Mos6502;
 using Reko.Core;
-using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
-using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace Reko.Environments.C64
@@ -90,12 +87,10 @@ namespace Reko.Environments.C64
             0x19E00,0x1B100,0x1C400,0x1D700,0x1EA00,  0x1FC00,0x20E00,0x22000,0x23200,0x24400,
             0x25600,0x26700,0x27800,0x28900,0x29A00,  0x2AB00,0x2BC00,0x2CD00,0x2DE00,0x2EF00,
         };
-        private Program program;
 
         public D64Loader(IServiceProvider services, RekoUri imageUri, byte[] rawImage)
             : base(services, imageUri, rawImage)
         {
-            this.program = null!;
         }
 
         public override Address PreferredBaseAddress
@@ -229,15 +224,12 @@ namespace Reko.Environments.C64
             public ILoadedImage? LoadImage(IServiceProvider Services, Address? addrPreferred)
             {
                 byte[] imageBytes = this.GetBytes();
-                switch (this.FileType & FileType.FileTypeMask)
+                return (this.FileType & FileType.FileTypeMask) switch
                 {
-                case FileType.PRG:
-                    return LoadPrg(Services, imageBytes);
-                case FileType.SEQ:
-                    return LoadSeq(Services, addrPreferred ?? Address.Ptr16(0x0800), imageBytes);
-                default:
-                    throw new NotImplementedException();
-                }
+                    FileType.PRG => LoadPrg(Services, imageBytes),
+                    FileType.SEQ => LoadSeq(Services, addrPreferred ?? Address.Ptr16(0x0800), imageBytes),
+                    _ => throw new NotImplementedException(),
+                };
             }
 
             /// <summary>
@@ -249,21 +241,29 @@ namespace Reko.Environments.C64
             {
                 var prgUri = UriTools.AppendPathAsFragment(archive.Uri, this.Name);
                 var prgLoader = new PrgLoader(services, prgUri, imageBytes);
-                return prgLoader.LoadProgram(null);
+                var program = prgLoader.LoadProgram(null);
+                program.Name = this.Name;
+                program.Uri = prgUri;
+                return program;
             }
 
-            public static Program LoadSeq(IServiceProvider services, Address addrPreferred, byte[] imageBytes)
+            public Program LoadSeq(IServiceProvider services, Address addrPreferred, byte[] imageBytes)
             {
+                var seqUri = UriTools.AppendPathAsFragment(archive.Uri, this.Name);
                 var mem = new ByteMemoryArea(addrPreferred, imageBytes);
                 var arch = new Mos6502Architecture(services, "mos6502", new Dictionary<string, object>());
-                return new Program(
+                var program = new Program(
                     new SegmentMap(
                         mem.BaseAddress,
                         new ImageSegment("c64", mem, AccessMode.ReadWriteExecute)),
                     arch,
-                    new DefaultPlatform(services, arch));
+                    new DefaultPlatform(services, arch))
+                {
+                    Name = this.Name,
+                    Uri = seqUri,
+                };
+                return program;
             }
-
         }
 
         public static int SectorOffset(byte track, byte sector)
