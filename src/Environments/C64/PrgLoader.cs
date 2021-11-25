@@ -45,12 +45,6 @@ namespace Reko.Environments.C64
 
         public override Program LoadProgram(Address? addrLoad)
         {
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-            return base.LoadProgram(addrLoad!, null!, null!);
-        }
-
-        public override Program LoadProgram(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
-        {
             var stm = new MemoryStream();
             ushort preferredAddress = ByteMemoryArea.ReadLeUInt16(RawImage, 0);
             ushort alignedAddress = (ushort) (preferredAddress & ~0xF);
@@ -65,8 +59,8 @@ namespace Reko.Environments.C64
             var rdr = new C64BasicReader(image, 0x0801);
             var lines = rdr.ToSortedList(line => line.LineNumber, line => line);
             var cfgSvc = Services.RequireService<IConfigurationService>();
-            arch = new C64Basic(Services, lines);
-            platform = cfgSvc.GetEnvironment("c64").Load(Services, arch);
+            var arch = new C64Basic(Services, lines);
+            var platform = cfgSvc.GetEnvironment("c64").Load(Services, arch);
             var arch6502 = cfgSvc.GetArchitecture("m6502")!;
             SegmentMap segMap = CreateSegmentMap(platform, image, lines);
             var program = new Program(segMap, arch, platform);

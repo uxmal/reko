@@ -64,6 +64,36 @@ namespace Reko.ImageLoaders.BinHex.Cpt
         public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
             => visitor.VisitArchive(this, context);
 
+        public string GetRootPath(ArchiveDirectoryEntry? entry)
+        {
+            var components = new List<string>();
+            while (entry is not null)
+            {
+                switch (entry)
+                {
+                case MacFileEntry.ForkEntry leaf:
+                    components.Add(leaf.Name);
+                    entry = leaf.Parent;
+                    break;
+                case MacFileEntry file:
+                    components.Add(file.Name);
+                    entry = file.Parent;
+                    break;
+                case MacFolderEntry folder:
+                    components.Add(folder.Name);
+                    entry = folder.Parent;
+                    break;
+                default:
+                    throw new ArgumentException(string.Format(
+                        "Invalid entry type {0} for {1}.",
+                        entry.GetType().FullName,
+                        nameof(CompactProArchive)));
+                }
+            }
+            components.Reverse();
+            return string.Join("/", components);
+        }
+
         private uint zip_updcrc(uint crc, byte[] buf, int offset, int length)
         {
             return crc;
@@ -457,7 +487,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
 
             public MacFolderEntry? Parent { get; }
 
-            private class ForkEntry : ArchivedFile
+            internal class ForkEntry : ArchivedFile
             {
                 private CompactProArchive archive;
                 private uint offsetCompressed;

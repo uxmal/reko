@@ -117,6 +117,18 @@ namespace Reko.Environments.C64
 
             public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
                 => visitor.VisitArchive(this, context);
+
+            public string GetRootPath(ArchiveDirectoryEntry entry)
+            {
+                if (entry is null)
+                    return "";
+                if (entry is not T64FileEntry file)
+                    throw new ArgumentException(string.Format(
+                        "Invalid entry type {0} for {1}.",
+                        entry.GetType().FullName,
+                        nameof(T64Archive)));
+                return file.Name;
+            }
         }
 
         /*  

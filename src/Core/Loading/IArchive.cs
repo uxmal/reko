@@ -30,5 +30,15 @@ namespace Reko.Core.Loading
     public interface IArchive : ILoadedImage
     {
         List<ArchiveDirectoryEntry> RootEntries { get; }
+
+        /// <summary>
+        /// Given an <see cref="ArchiveDirectoryEntry"/> returns the path
+        /// from the root of the archive to that entry.
+        /// </summary>
+        /// <param name="entry">The entry we wish to find the root for. A null entry
+        /// results in the empty string.</param>
+        /// <returns>The path to that entry as a string.</returns>
+        /// <exception cref="InvalidOperationException" />
+        string GetRootPath(ArchiveDirectoryEntry? entry);
     }
 }
