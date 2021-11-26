@@ -121,7 +121,7 @@ namespace Reko.UnitTests.Arch.X86
                     null,
                     new Loader(sc),
                     new FakeDecompilerEventListener())
-                .LoadProject(UriTools.UriFromFilePath(absFile), stm);
+                .LoadProject(ImageLocation.FromUri(absFile), stm);
             }
             else
             {

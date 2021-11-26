@@ -109,7 +109,7 @@ namespace Reko.Gui.Forms
             var svc = Services.RequireService<IWorkerDialogService>();
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
             ILoadedImage loadedImage = null;
-            var imageUri = UriTools.UriFromFilePath(file);
+            var imageUri = ImageLocation.FromUri(file);
             bool exceptionThrown = !svc.StartBackgroundWork("Opening file", () =>
             {
                 var eventListener = Services.RequireService<DecompilerEventListener>();
@@ -157,7 +157,7 @@ namespace Reko.Gui.Forms
             {
                 var eventListener = Services.RequireService<DecompilerEventListener>();
                 eventListener.ShowStatus("Loading source program.");
-                var imageUri = UriTools.UriFromFilePath(file);
+                var imageUri = ImageLocation.FromUri(file);
                 Program program = ldr.LoadRawImage(imageUri, details);
                 var project = new Project();
                 project.AddProgram(imageUri, program);
@@ -222,7 +222,7 @@ namespace Reko.Gui.Forms
             {
                 var eventListener = Services.RequireService<DecompilerEventListener>();
                 eventListener.ShowStatus("Assembling program.");
-                var asmFileUri = UriTools.UriFromFilePath(file);
+                var asmFileUri = ImageLocation.FromUri(file);
                 var program = ldr.AssembleExecutable(asmFileUri, asm, platform, null!);
                 var project = new Project();
                 project.AddProgram(asmFileUri, program);

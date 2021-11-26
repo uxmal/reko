@@ -91,7 +91,7 @@ namespace Reko.Environments.BbcMicro
 {
     public class DiscFilingSystem : ImageLoader
     {
-        public DiscFilingSystem(IServiceProvider services, RekoUri imageUri, byte[] rawBytes) : base(services, imageUri, rawBytes)
+        public DiscFilingSystem(IServiceProvider services, ImageLocation imageUri, byte[] rawBytes) : base(services, imageUri, rawBytes)
         {
 
         }

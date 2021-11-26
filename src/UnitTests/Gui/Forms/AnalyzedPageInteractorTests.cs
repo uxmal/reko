@@ -85,17 +85,17 @@ namespace Reko.UnitTests.Gui.Forms
             };
             var project = new Project
             {
-                Uri = UriTools.UriFromFilePath("/home/bob/reko.project"),
+                Uri = ImageLocation.FromUri("/home/bob/reko.project"),
             };
-            project.AddProgram(UriTools.UriFromFilePath("/home/bob/test.exe"), program);
+            project.AddProgram(ImageLocation.FromUri("/home/bob/test.exe"), program);
             var ldr = new Mock<ILoader>();
             ldr.Setup(l => l.LoadBinaryImage(   //$REVIEW: can this be removed?
-                It.IsAny<RekoUri>(),
+                It.IsAny<ImageLocation>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(program);
             ldr.Setup(l => l.LoadImageBytes(    //$REVIEW: can this be removed?
-                It.IsAny<RekoUri>(),
+                It.IsAny<ImageLocation>(),
                 It.IsAny<int>())).Returns(bytes);
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());

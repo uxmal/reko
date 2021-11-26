@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Scanning
             var ldr = new Loader(sc);
             var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             Program program = ldr.AssembleExecutable(
-                 UriTools.UriFromFilePath(FileUnitTester.MapTestPath(sourceFile)),
+                 ImageLocation.FromUri(FileUnitTester.MapTestPath(sourceFile)),
                  new X86TextAssembler(arch),
                  new DefaultPlatform(sc, arch),
                 addr);

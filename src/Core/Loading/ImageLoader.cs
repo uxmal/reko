@@ -30,10 +30,10 @@ namespace Reko.Core.Loading
 	/// </summary>
 	public abstract class ImageLoader
 	{
-        public ImageLoader(IServiceProvider services, RekoUri imageUri, byte[] imgRaw)
+        public ImageLoader(IServiceProvider services, ImageLocation imageLocation, byte[] imgRaw)
         {
             this.Services = services;
-            this.ImageUri = imageUri;
+            this.ImageLocation = imageLocation;
             this.RawImage = imgRaw;
         }
 
@@ -52,7 +52,7 @@ namespace Reko.Core.Loading
         /// <summary>
         /// The URI from which the image was loaded from.
         /// </summary>
-        public RekoUri ImageUri { get; }
+        public ImageLocation ImageLocation { get; }
 
         /// <summary>
         /// Loads the header of the executable, so that its contents can be summarized. 

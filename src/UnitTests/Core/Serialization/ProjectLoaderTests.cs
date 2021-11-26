@@ -117,10 +117,10 @@ namespace Reko.UnitTests.Core.Serialization
         private void Given_Binary(Mock<ILoader> ldr, IPlatform platform)
         {
             ldr.Setup(l => l.LoadImageBytes(
-                It.IsAny<RekoUri>(),
+                It.IsAny<ImageLocation>(),
                 It.IsAny<int>())).Returns(new byte[100]);
             ldr.Setup(l => l.LoadBinaryImage(
-                It.IsAny<RekoUri>(),
+                It.IsAny<ImageLocation>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(new Program {
@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Core.Serialization
 
         private void Given_Script(Mock<ILoader> ldr, string fileName)
         {
-            var scriptUri = UriTools.UriFromFilePath(fileName);
+            var scriptUri = ImageLocation.FromUri(fileName);
             var scriptFile = new Mock<ScriptFile>(
                 null, scriptUri, new byte[100]);
             ldr.Setup(l => l.LoadScript(scriptUri))
@@ -217,7 +217,7 @@ namespace Reko.UnitTests.Core.Serialization
             Expect_LoadOptions();
 
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            prld.LoadProject(new RekoUri("file:/foo/bar"), new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
+            prld.LoadProject(ImageLocation.FromUri("file:/foo/bar"), new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
 
             Assert.AreEqual(2, loadedOptions.Count);
             Assert.AreEqual("Bob", loadedOptions["Name"]);
@@ -261,7 +261,7 @@ namespace Reko.UnitTests.Core.Serialization
             Expect_LoadOptions();
 
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            prld.LoadProject(new RekoUri("/ff/b/foo.proj"), new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
+            prld.LoadProject(ImageLocation.FromUri("/ff/b/foo.proj"), new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
 
             var list = (IList)loadedOptions["Names"];
             Assert.AreEqual(3, list.Count);
@@ -296,7 +296,7 @@ namespace Reko.UnitTests.Core.Serialization
             Expect_LoadOptions();
 
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            prld.LoadProject(new RekoUri("c:\\foo\\bar.proj"), new MemoryStream(Encoding.UTF8.GetBytes(sproject)));
+            prld.LoadProject(ImageLocation.FromUri("c:\\foo\\bar.proj"), new MemoryStream(Encoding.UTF8.GetBytes(sproject)));
 
             var list = (IDictionary)loadedOptions["Names"];
             Assert.AreEqual(3, list.Count);
@@ -321,19 +321,19 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestOS();
             var ldr = new Mock<ILoader>();
             ldr.Setup(l => l.LoadBinaryImage(
-                It.IsAny<RekoUri>(),
+                It.IsAny<ImageLocation>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(new Program());
             ldr.Setup(l => l.LoadImageBytes(
-                It.IsAny<RekoUri>(), 
+                It.IsAny<ImageLocation>(), 
                 It.IsAny<int>())).Returns(new byte[1000]);
 
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            var project = prld.LoadProject(UriTools.UriFromFilePath("c:\\users\\bob\\projects\\foo.project"), sProject);
-            var programUri = project.Programs[0].Uri.ExtractString();
-            Assert.IsTrue(programUri.StartsWith("file:///"));
-            Assert.IsTrue(programUri.EndsWith("/bob/projects/foo.exe"));
+            var project = prld.LoadProject(ImageLocation.FromUri(OsPath.Absolute("users","bob","projects","foo.project")), sProject);
+
+            var programUri = project.Programs[0].Uri;
+            Assert.AreEqual(OsPath.Absolute("users","bob","projects","foo.exe"), programUri.FilesystemPath);
         }
 
         [Test]
@@ -355,18 +355,18 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestOS();
             var ldr = new Mock<ILoader>();
             ldr.Setup(l => l.LoadBinaryImage(
-                It.IsAny<RekoUri>(),
+                It.IsAny<ImageLocation>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(new Program());
             ldr.Setup(l => l.LoadImageBytes(
-                It.IsAny<RekoUri>(),
+                It.IsAny<ImageLocation>(),
                 It.IsAny<int>())).Returns(new byte[1000]);
 
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
             var projectPath = OsPath.Absolute("users", "bob", "projects", "foo.project");
-            var project = prld.LoadProject(UriTools.UriFromFilePath(projectPath), sProject);
-            Assert.AreEqual("file:///c:/users/bob/projects/foo.exe", project.Programs[0].Uri.ExtractString());
+            var project = prld.LoadProject(ImageLocation.FromUri(projectPath), sProject);
+            Assert.AreEqual(OsPath.Absolute("users", "bob", "projects", "foo.exe"), project.Programs[0].Uri.FilesystemPath);
         }
 
 
@@ -416,7 +416,7 @@ namespace Reko.UnitTests.Core.Serialization
                 out addr))
                 .Returns(true);
             mockFactory.CreateLoadMetadataStub(
-                UriTools.UriFromFilePath(OsPath.Absolute("meta1.xml")),
+                ImageLocation.FromUri(OsPath.Absolute("meta1.xml")),
                 this.platform.Object,
                 new TypeLibrary(
                     false,
@@ -427,7 +427,7 @@ namespace Reko.UnitTests.Core.Serialization
                 )
             );
             mockFactory.CreateLoadMetadataStub(
-                UriTools.UriFromFilePath(OsPath.Absolute("meta2.xml")),
+                ImageLocation.FromUri(OsPath.Absolute("meta2.xml")),
                 this.platform.Object,
                 new TypeLibrary(
                     false,
@@ -440,7 +440,7 @@ namespace Reko.UnitTests.Core.Serialization
 
             var prld = new ProjectLoader(sc, ldr, listener.Object);
             var projectPath = OsPath.Absolute("foo.project");
-            var project = prld.LoadProject(UriTools.UriFromFilePath(projectPath), sProject);
+            var project = prld.LoadProject(ImageLocation.FromUri(projectPath), sProject);
             Assert.AreEqual(2, project.Programs[0].EnvironmentMetadata.Types.Count);
             Assert.AreEqual(
                 "word16",
@@ -475,10 +475,10 @@ namespace Reko.UnitTests.Core.Serialization
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
             var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
             var project = prld.LoadProject(
-                UriTools.UriFromFilePath(AbsolutePathEndingWith("dir", "script.proj")), stream);
+                ImageLocation.FromUri(AbsolutePathEndingWith("dir", "script.proj")), stream);
 
             Assert.AreEqual(
-                UriTools.UriFromFilePath(AbsolutePathEndingWith("dir", "fake.script")),
+                ImageLocation.FromUri(AbsolutePathEndingWith("dir", "fake.script")),
                 project.ScriptFiles.Single().Uri);
         }
 
@@ -501,11 +501,11 @@ namespace Reko.UnitTests.Core.Serialization
 
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
             var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
-            var project = prld.LoadProject(new RekoUri("file:///c:/dir/script.proj"), stream);
+            var project = prld.LoadProject(ImageLocation.FromUri("file:///c:/dir/script.proj"), stream);
 
             Assert.AreEqual(
-                "file:///c:/dir/fake.script",
-                project.ScriptFiles.Single().Uri.ExtractString());
+                OsPath.Absolute("dir","fake.script"),
+                project.ScriptFiles.Single().Uri.FilesystemPath);
         }
 
         [Test]
@@ -550,7 +550,7 @@ namespace Reko.UnitTests.Core.Serialization
 
             var prld = new ProjectLoader(sc, ldr, listener.Object);
             var project = prld.LoadProject(
-                UriTools.UriFromFilePath(@"c:\foo\global_user.proj"),
+                ImageLocation.FromUri(@"c:\foo\global_user.proj"),
                 sproject);
 
             Assert.AreEqual(1, project.Programs.Count);
@@ -598,7 +598,7 @@ namespace Reko.UnitTests.Core.Serialization
 
             var prld = new ProjectLoader(sc, ldr, listener.Object);
             var project = prld.LoadProject(
-                UriTools.UriFromFilePath(@"c:\foo\annot.proj"),
+                ImageLocation.FromUri(@"c:\foo\annot.proj"),
                 sproject);
 
             Assert.AreEqual(1, project.Programs.Count);
@@ -648,7 +648,7 @@ namespace Reko.UnitTests.Core.Serialization
                 .Verifiable();
 
             var prld = new ProjectLoader(sc, ldr, listener.Object);
-            prld.LoadProject(UriTools.UriFromFilePath("foo.dcproject"), sProject);
+            prld.LoadProject(ImageLocation.FromUri("foo.dcproject"), sProject);
 
             listener.Verify();
         }
@@ -675,7 +675,7 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestArch();
             Given_TestOS();
             var prld = new ProjectLoader(sc, ldr, listener.Object);
-            var project = prld.LoadProject(UriTools.UriFromFilePath("foo.dcproject"), sProject);
+            var project = prld.LoadProject(ImageLocation.FromUri("foo.dcproject"), sProject);
 
             Assert.IsTrue(project.Programs[0].User.ExtractResources);
         }
@@ -720,7 +720,7 @@ namespace Reko.UnitTests.Core.Serialization
             platform.Setup(p => p.TryParseAddress("00200000", out addr)).Returns(true);
 
             var prld = new ProjectLoader(sc, ldr, listener.Object);
-            var prj = prld.LoadProject(UriTools.UriFromFilePath("foo.dcproject"), sProject);
+            var prj = prld.LoadProject(ImageLocation.FromUri("foo.dcproject"), sProject);
 
             var u = prj.Programs[0].User;
             Assert.AreEqual(2, u.Segments.Count);
@@ -772,7 +772,7 @@ namespace Reko.UnitTests.Core.Serialization
             platform.Setup(p => p.TryParseAddress("00123400", out addr)).Returns(true);
 
             var prld = new ProjectLoader(sc, ldr, listener.Object);
-            var prj = prld.LoadProject(UriTools.UriFromFilePath("/foo/foo.dcproject"), sProject);
+            var prj = prld.LoadProject(ImageLocation.FromUri("/foo/foo.dcproject"), sProject);
 
             var u = prj.Programs[0].User;
             var placement = u.ProcedureSourceFiles[addr];

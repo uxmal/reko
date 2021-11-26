@@ -32,7 +32,7 @@ namespace Reko.Arch.Cray
     {
         private ulong a_entry;
 
-        public UnicosLoader(IServiceProvider services, RekoUri imageUri, byte[] rawImage)
+        public UnicosLoader(IServiceProvider services, ImageLocation imageUri, byte[] rawImage)
             : base(services, imageUri, rawImage)
         {
 

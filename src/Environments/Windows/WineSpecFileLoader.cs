@@ -44,7 +44,7 @@ namespace Reko.Environments.Windows
         private IPlatform platform;
         private string moduleName;
 
-        public WineSpecFileLoader(IServiceProvider services, RekoUri imageUri, byte[] bytes)
+        public WineSpecFileLoader(IServiceProvider services, ImageLocation imageUri, byte[] bytes)
             : base(services, imageUri, bytes)
         {
             var rdr = new StreamReader(new MemoryStream(bytes));
@@ -250,13 +250,10 @@ namespace Reko.Environments.Windows
             return true;
         }
 
-        private string DefaultModuleName(RekoUri fileUri)
+        private string DefaultModuleName(ImageLocation fileUri)
         {
-            var lastFragment = UriTools.ParseLastFragment(fileUri);
-            int lastSlash = lastFragment.LastIndexOf('/');
-            if (lastSlash > 0)
-                lastFragment = lastFragment[lastSlash..];
-			string libName = Path.GetFileNameWithoutExtension(lastFragment).ToUpper();
+            var filename = fileUri.GetFilename();
+			string libName = Path.GetFileNameWithoutExtension(filename).ToUpper();
 
 			if (Path.GetExtension(libName).Length > 0) {
 				return libName;

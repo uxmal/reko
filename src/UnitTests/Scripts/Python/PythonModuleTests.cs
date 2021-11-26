@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Scripts.Python
         private PythonModule EvaluateScript(string fileName, string script)
         {
             var bytes = Encoding.Default.GetBytes(script);
-            var imageUri = UriTools.UriFromFilePath(fileName);
+            var imageUri = ImageLocation.FromUri(fileName);
             return new PythonModule(services, imageUri, bytes);
         }
 

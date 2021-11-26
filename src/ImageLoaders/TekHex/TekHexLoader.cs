@@ -49,7 +49,7 @@ namespace Reko.ImageLoaders.TekHex
         private uint uAddrLast;
         private List<byte>? abCur;
 
-        public TekHexLoader(IServiceProvider services, RekoUri imageUri, byte[] rawImage)
+        public TekHexLoader(IServiceProvider services, ImageLocation imageUri, byte[] rawImage)
             : base(services, imageUri, rawImage)
         {
             this.sections = new List<Section>();

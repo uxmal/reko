@@ -188,7 +188,7 @@ namespace Reko.ImageLoaders.OdbgScript
         public virtual string TE_GetTargetPath()
         {
             //$REVIEW: this may not be what was intended.
-            return UriTools.FilePathFromUri(loader.ImageUri);
+            return loader.ImageLocation.FilesystemPath;
         }
 
         public virtual ulong TE_GetProcessId()

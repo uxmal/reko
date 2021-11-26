@@ -62,6 +62,7 @@ namespace Reko.UnitTests
         {
             var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             Program program = new Program { 
+                SegmentMap = new SegmentMap(Address.SegPtr(0xC00, 0)),
                 Architecture = arch,
                 Platform = new MsdosPlatform(sc, arch)
             };

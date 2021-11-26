@@ -32,7 +32,7 @@ namespace Reko.Core
     /// </summary>
     public abstract class MetadataLoader
     {
-        public MetadataLoader(IServiceProvider services, RekoUri imageUri, byte[] bytes)
+        public MetadataLoader(IServiceProvider services, ImageLocation imageUri, byte[] bytes)
         {
             this.Services = services;
             this.ImageUri = imageUri;
@@ -40,7 +40,7 @@ namespace Reko.Core
 
         public IServiceProvider Services { get; }
 
-        public RekoUri ImageUri { get; }
+        public ImageLocation ImageUri { get; }
 
         /// <summary>
         /// Loads metadata from the file specified in the constructor.
@@ -59,7 +59,7 @@ namespace Reko.Core
     public class NullMetadataLoader : MetadataLoader
     {
         public NullMetadataLoader()
-            : base(new ServiceContainer(), UriTools.UriFromFilePath(""), new byte[0])
+            : base(new ServiceContainer(), ImageLocation.FromUri(""), new byte[0])
         {
         }
 

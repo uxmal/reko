@@ -41,7 +41,7 @@ namespace Reko.ImageLoaders.Coff
         private ImageSegment? loaderSection;
         AuxFileHeader? aux = null;
 
-        public XCoff32Loader(IServiceProvider services, RekoUri imageUri, byte[] rawImage) :
+        public XCoff32Loader(IServiceProvider services, ImageLocation imageUri, byte[] rawImage) :
             base(services, imageUri, rawImage)
         {
             this.PreferredBaseAddress = Address.Ptr32(0x0010_0000);

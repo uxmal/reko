@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Gui
             arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.MemoryGranularity).Returns(8);
             var platform = new Mock<IPlatform>();
-            var fileUri = UriTools.UriFromFilePath(OsPath.Relative("foo", "bar", "baz.exe"));
+            var fileUri = ImageLocation.FromUri(OsPath.Relative("foo", "bar", "baz.exe"));
             var bytes = new byte[100];
             var mem = new ByteMemoryArea(Address.Ptr32(0x1000), bytes);
             var imageMap = new SegmentMap(
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Gui
             var program = new Program(imageMap, arch.Object, platform.Object);
             var project = new Project
             {
-                Uri = UriTools.UriFromFilePath("foo/bar/baz.project")
+                Uri = ImageLocation.FromUri("foo/bar/baz.project")
             };
             project.AddProgram(fileUri, program);
             sc.AddService<IDecompiledFileService>(host.Object);

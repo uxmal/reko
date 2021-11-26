@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Gui.Forms
             mapSegment2 = program.SegmentMap.Segments.Values[1];
 
             var project = new Project();
-            project.AddProgram(UriTools.UriFromFilePath("/home/bob/test.exe"), program);
+            project.AddProgram(ImageLocation.FromUri("/home/bob/test.exe"), program);
 
             decSvc = new DecompilerService();
 
@@ -88,10 +88,10 @@ namespace Reko.UnitTests.Gui.Forms
             //$REVIEW: probably no need for loader anymore?
             var ldr = new Mock<ILoader>();
             ldr.Setup(l => l.LoadImageBytes(
-                It.IsNotNull<RekoUri>(),
+                It.IsNotNull<ImageLocation>(),
                 0)).Returns(new byte[400]);
             ldr.Setup(l => l.LoadBinaryImage(
-                It.IsNotNull<RekoUri>(),
+                It.IsNotNull<ImageLocation>(),
                 It.IsNotNull<byte[]>(),
                 null,
                 It.IsAny<Address>())).Returns(program)

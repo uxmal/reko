@@ -36,7 +36,7 @@ namespace Reko.Environments.NeoGeo
         private const uint RomLoadAddress = 0x00200000;
         private Address entryPoint;
 
-        public PocketRomLoader(IServiceProvider services, RekoUri imageUri, byte[] imgRaw)
+        public PocketRomLoader(IServiceProvider services, ImageLocation imageUri, byte[] imgRaw)
             : base(services, imageUri, imgRaw)
         {
             PreferredBaseAddress = Address.Ptr32(0x00000000);

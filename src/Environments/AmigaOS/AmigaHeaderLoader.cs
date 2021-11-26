@@ -37,7 +37,7 @@ namespace Reko.Environments.AmigaOS
     {
         private byte[] bytes;
 
-        public AmigaHeaderLoader(IServiceProvider services, RekoUri imageUri, byte[] bytes)
+        public AmigaHeaderLoader(IServiceProvider services, ImageLocation imageUri, byte[] bytes)
             : base(services, imageUri, bytes)
         {
             this.bytes = bytes;

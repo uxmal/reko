@@ -32,7 +32,7 @@ namespace Reko.ImageLoaders.Coff.eCoff
 
     public class LeLoader : ProgramImageLoader
     {
-        public LeLoader(IServiceProvider services, RekoUri imageUri, byte[] rawImage)
+        public LeLoader(IServiceProvider services, ImageLocation imageUri, byte[] rawImage)
             : base(services, imageUri, rawImage)
         {
             this.PreferredBaseAddress = Address.Ptr32(0x0010_0000);

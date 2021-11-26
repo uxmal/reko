@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Loading
             var testImage = new byte[] { 42, 42, 42, 42, };
             var ldr = new Mock<Loader>(sc);
 
-            Blob blob = (Blob) ldr.Object.LoadBinaryImage(new RekoUri(""), testImage, null, null);
+            Blob blob = (Blob) ldr.Object.LoadBinaryImage(ImageLocation.FromUri(""), testImage, null, null);
 
             Assert.IsNotNull(blob);
         }
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Loading
             var ldr = new Mock<Loader>(sc);
 
             ldr.Object.DefaultToFormat = "ms-dos-com";
-            Program program = (Program) ldr.Object.LoadBinaryImage(new RekoUri(""), testImage, null, null);
+            Program program = (Program) ldr.Object.LoadBinaryImage(ImageLocation.FromUri(""), testImage, null, null);
 
             Assert.IsNull(eventListener.LastDiagnostic);
             Assert.AreEqual("0C00:0100", program.ImageMap.BaseAddress.ToString());
@@ -138,9 +138,9 @@ namespace Reko.UnitTests.Loading
             Given_Image();
 
             var ldr = new Mock<Loader>(sc);
-            ldr.Setup(l => l.LoadImageBytes(new RekoUri(""), 0)).Returns(testImage);
+            ldr.Setup(l => l.LoadImageBytes(ImageLocation.FromUri(""), 0)).Returns(testImage);
 
-            var imgLoader = ldr.Object.FindImageLoader<ImageLoader>(new RekoUri(""), testImage);
+            var imgLoader = ldr.Object.FindImageLoader<ImageLoader>(ImageLocation.FromUri(""), testImage);
 
             Assert.IsInstanceOf<TestImageLoader>(imgLoader);
         }
@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Loading
 
         private class FakeImageLoader  : ProgramImageLoader
         {
-            public FakeImageLoader(IServiceProvider services, RekoUri imageUri, byte[]imgRaw) :
+            public FakeImageLoader(IServiceProvider services, ImageLocation imageUri, byte[]imgRaw) :
                 base(services, imageUri, imgRaw)
             {
 
@@ -189,13 +189,13 @@ namespace Reko.UnitTests.Loading
             var ldr = new Mock<Loader>(sc);
 
             ldr.Object.DefaultToFormat = "ms-dos-com";
-            var imgLoader = ldr.Object.CreateDefaultImageLoader(new RekoUri("file:foo.com"), new byte[30]);
+            var imgLoader = ldr.Object.CreateDefaultImageLoader(ImageLocation.FromUri("file:foo.com"), new byte[30]);
             var program = imgLoader.Load(null);
         }
 
         public class TestImageLoader : ProgramImageLoader
         {
-            public TestImageLoader(IServiceProvider services, RekoUri imageUri, byte[] imgRaw) : base(services, imageUri, imgRaw)
+            public TestImageLoader(IServiceProvider services, ImageLocation imageUri, byte[] imgRaw) : base(services, imageUri, imgRaw)
             {
             }
 
@@ -240,7 +240,7 @@ namespace Reko.UnitTests.Loading
                 .Returns(true);
 
             var ldr = new Loader(sc);
-            var program = ldr.LoadRawImage(new RekoUri("file:foo.bin"), new byte[0], Address.Ptr32(0x00123400), new LoadDetails
+            var program = ldr.LoadRawImage(ImageLocation.FromUri("file:foo.bin"), new byte[0], Address.Ptr32(0x00123400), new LoadDetails
             {
                 ArchitectureName = "mmix",
                 EntryPoint = new EntryPointDefinition {  Address = "00123500" },
@@ -253,7 +253,7 @@ namespace Reko.UnitTests.Loading
 
         class FakeArchiveLoader : ImageLoader
         {
-            public FakeArchiveLoader(IServiceProvider services, RekoUri uri, byte[] bytes) :
+            public FakeArchiveLoader(IServiceProvider services, ImageLocation uri, byte[] bytes) :
                 base(services, uri, bytes)
             {
             }
@@ -286,7 +286,7 @@ namespace Reko.UnitTests.Loading
             sc.AddService(fsSvc.Object);
 
             var ldr = new Loader(sc);
-            var image = ldr.Load(new RekoUri("file:archive.arch#inside/path"));
+            var image = ldr.Load(ImageLocation.FromUri("file:archive.arch#inside/path"));
 
             Assert.IsNotNull(image);
             Assert.IsAssignableFrom<Blob>(image);

@@ -36,7 +36,7 @@ namespace Reko.Core.Loading
             this.Uri = default!;
         }
 
-        public RekoUri Uri { get; set; }
+        public ImageLocation Uri { get; set; }
 
         public byte[] Image { get; }
 

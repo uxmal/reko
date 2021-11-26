@@ -30,28 +30,14 @@ namespace Reko.Core
     /// <summary>
     /// Utility class for maniupulating Reko-style URLs
     /// </summary>
+    [Obsolete("", true)]
     public static class UriTools
     {
         private const string FileScheme = "file:";
 
-        /// <summary>
-        /// Returns a file system path from a 'file:' URI, stripping off
-        /// any fragments introduced with '#'.
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <returns></returns>
-        public static string FilePathFromUri(RekoUri uri)
-        {
-            var sUri = uri.ExtractString();
-            if (!sUri.StartsWith(FileScheme))
-                return sUri;
-            int iStartFilename = FindFilenameStart(sUri);
-            int iHash = sUri.IndexOf('#', iStartFilename);
-            string filename = (iHash < 0)
-                ? sUri.Substring(iStartFilename)
-                : sUri.Substring(iStartFilename, iHash - iStartFilename);
-            return WebUtility.UrlDecode(filename);
-        }
+        [Obsolete]
+        public static string FilePathFromUri(ImageLocation uri)
+            => uri.FilesystemPath;
 
         private static int FindFilenameStart(string uri)
         {
@@ -78,24 +64,14 @@ namespace Reko.Core
             return 5;
         }
 
-        internal static RekoUri? Combine(RekoUri absoluteUri, string relativeUri)
-        {
-            if (relativeUri.StartsWith(FileScheme))
-                relativeUri = relativeUri.Substring(FileScheme.Length);
-            var sb = new StringBuilder(absoluteUri.ExtractString());
-            if (sb[^1] != '/')
-                sb.Append('/');
-            sb.Append(relativeUri);
-            return new RekoUri(sb.ToString());
-        }
-
-        public static RekoUri UriFromFilePath(string filename)
+        [Obsolete]
+        public static ImageLocation UriFromFilePath(string filename)
         {
             if (filename.StartsWith(FileScheme))
             {
                 Debug.Print("{0}.{1}: {2} already is a URI.", 
                     nameof(UriTools), nameof(UriFromFilePath), filename);
-                return new RekoUri(filename);
+                return new ImageLocation(filename);
             }
             var sb = new StringBuilder(FileScheme);
             string[] segments;
@@ -127,45 +103,7 @@ namespace Reko.Core
                 sep = "/";
                 sb.Append(WebUtility.UrlEncode(seg));
             }
-            return new RekoUri(sb.ToString()); //$DEBUG
-        }
-
-        public static string? MakeRelativeUri(RekoUri fromUri, RekoUri toUri)
-        {
-            var fromPath = fromUri?.ExtractString();
-            var toPath = toUri?.ExtractString();
-            if (fromPath is null || toPath is null)
-                return null;
-            Debug.Assert(fromPath.StartsWith(FileScheme));
-            Debug.Assert(toPath.StartsWith(FileScheme));
-
-            int iLastDir = -1;
-            int i;
-            for (i = 0; i < fromPath.Length && i < toPath.Length; ++i)
-            {
-                if (fromPath[i] != toPath[i])
-                    break;
-                if (fromPath[i] == '/')
-                    iLastDir = i + 1;
-            }
-            var sb = new StringBuilder(FileScheme);
-            if (iLastDir <= 1)
-                return toPath;
-            for (i = iLastDir; i < fromPath.Length; ++i)
-            {
-                if (fromPath[i] == '/')
-                {
-                    sb.Append("../");
-                }
-            }
-            sb.Append(toPath.Substring(iLastDir));
-            return sb.ToString();
-        }
-
-        public static bool UriHasFragments(RekoUri uri)
-        {
-            var sUri = uri.ExtractString();
-            return sUri.Contains('#');
+            return new ImageLocation(sb.ToString()); //$DEBUG
         }
 
         /// <summary>
@@ -175,18 +113,20 @@ namespace Reko.Core
         /// <param name="uri">file: uri, optionally containing fragments separated by '#'.</param>
         /// <returns>An array of strings, always of at least size 1.
         /// </returns>
+        [Obsolete]
         public static string[] ParseUriIntoFragments(string uri)
         {
             if (string.IsNullOrEmpty(uri))
                 throw new ArgumentException(nameof(uri));
             if (!uri.StartsWith(FileScheme))
                 return new[] { uri };
-            return ParseUriIntoFragments(new RekoUri(uri));
+            return ParseUriIntoFragments(new ImageLocation(uri));
         }
 
-        public static string[] ParseUriIntoFragments(RekoUri urix)
+        [Obsolete("", true)]
+        public static string[] ParseUriIntoFragments(ImageLocation urix)
         {
-            var uri = urix.ExtractString();
+            var uri = urix.FilesystemPath;
             // The first fragment needs its 'file:' prefix removed.
             var fragments = new List<string>();
             var filename = FilePathFromUri(urix);
@@ -206,9 +146,10 @@ namespace Reko.Core
             return fragments.ToArray();
         }
 
-        public static string ParseLastFragment(RekoUri urix)
+        [Obsolete("", true)]
+        public static string ParseLastFragment(ImageLocation urix)
         {
-            var uri = urix.ExtractString();
+            var uri = urix.FilesystemPath;
             // Strip any 'file': scheme 
             int iStart = 0;
             if (uri.StartsWith(FileScheme))
@@ -233,10 +174,11 @@ namespace Reko.Core
         /// <param name="baseUri">Base URI to append the fragment to.</param>
         /// <param name="path">File path to append.</param>
         /// <returns>A new URI.</returns>
-        public static RekoUri AppendPathAsFragment(RekoUri baseUri, string path)
+        [Obsolete("", true)]
+        public static ImageLocation AppendPathAsFragment(ImageLocation baseUri, string path)
         {
-            var newUri = String.Concat(baseUri.ExtractString(), "#", WebUtility.UrlDecode(path));
-            return new RekoUri(newUri);
+            var newUri = String.Concat(baseUri.FilesystemPath, "#", WebUtility.UrlDecode(path));
+            return new ImageLocation(newUri);
         }
     }
 }

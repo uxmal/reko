@@ -183,8 +183,7 @@ namespace Reko
 
         public static string GenerateDerivedFilename(Program program, string newExtension)
         {
-            var fragment = UriTools.ParseLastFragment(program.Uri);
-            return Path.ChangeExtension(Path.GetFileName(fragment), newExtension);
+            return Path.ChangeExtension(program.Uri.GetFilename(), newExtension);
         }
     }
 }

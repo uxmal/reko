@@ -89,7 +89,7 @@ namespace Reko.ImageLoaders.Dol
     {
 		private DolHeader hdr;
 
-		public DolLoader(IServiceProvider services, RekoUri imageUri, byte[] imgRaw) : base(services, imageUri, imgRaw) {
+		public DolLoader(IServiceProvider services, ImageLocation imageUri, byte[] imgRaw) : base(services, imageUri, imgRaw) {
             this.hdr = null!;
 		}
 

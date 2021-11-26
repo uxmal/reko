@@ -37,7 +37,7 @@ namespace Reko.Environments.C64
     {
         private static readonly Address PreferredBaseAddress = Address.Ptr16(2048);
 
-        public T64Loader(IServiceProvider services, RekoUri imageUri, byte[] bytes)
+        public T64Loader(IServiceProvider services, ImageLocation imageUri, byte[] bytes)
             : base(services, imageUri, bytes)
         {
         }
@@ -79,7 +79,7 @@ namespace Reko.Environments.C64
                     entries.Add(entry);
                 }
             }
-            return new T64Archive(base.ImageUri, entries);
+            return new T64Archive(base.ImageLocation, entries);
         }
 
         private T64FileEntry ReadDirectoryEntry(ImageReader rdr)
@@ -103,7 +103,7 @@ namespace Reko.Environments.C64
 
         public class T64Archive : IArchive
         {
-            public T64Archive(RekoUri archiveUri, List<ArchiveDirectoryEntry> entries)
+            public T64Archive(ImageLocation archiveUri, List<ArchiveDirectoryEntry> entries)
             {
                 this.Uri = archiveUri;
                 this.RootEntries = entries;
@@ -122,7 +122,7 @@ namespace Reko.Environments.C64
                 get => RootEntries.Where(e => e.Name == path).FirstOrDefault();
             }
 
-            public RekoUri Uri { get; }
+            public ImageLocation Uri { get; }
 
             public List<ArchiveDirectoryEntry> RootEntries { get; }
 

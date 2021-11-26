@@ -364,7 +364,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         [Test]
         public void EIL_Load()
         {
-            var el = new ElfImageLoader(sc, new RekoUri("file:foo"), rawImg);
+            var el = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), rawImg);
             el.LoadElfIdentification();
             var lr = el.LoadProgram(Address.Ptr32(0));
             Assert.AreSame(arch.Object, lr.Architecture);
@@ -373,7 +373,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         [Test]
         public void EIL_LoadStringTable()
         {
-            var eil = new ElfImageLoader(sc, new RekoUri("file:foo"), rawImg);
+            var eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), rawImg);
             eil.LoadElfIdentification();
             var el = (ElfLoader32)eil.CreateLoader();
             el.Sections.AddRange(el.LoadSectionHeaders());
@@ -382,7 +382,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         [Test]
         public void EIL_LoadSections()
         {
-            var eil = new ElfImageLoader(sc, new RekoUri("file:foo"), rawImg);
+            var eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), rawImg);
             eil.LoadElfIdentification();
             var el = (ElfLoader32)eil.CreateLoader();
             el.Sections.AddRange(el.LoadSectionHeaders());
@@ -420,7 +420,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         [Test]
         public void EIL_LoadProgramHeaders()
         {
-            var eil = new ElfImageLoader(sc, new RekoUri("file:foo"), rawImg);
+            var eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), rawImg);
             eil.LoadElfIdentification();
             var el = (ElfLoader32)eil.CreateLoader();
             el.LoadSegments();
@@ -440,7 +440,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
                 .Returns(platform)
                 .Verifiable();
             
-            var eil = new ElfImageLoader(sc, new RekoUri("file:foo"), rawImg);
+            var eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo"), rawImg);
             eil.LoadElfIdentification();
             var el = eil.CreateLoader();
             el.LoadPlatform(0x66, arch.Object);        // ELFOSABI_CELL_LV2;

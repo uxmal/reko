@@ -73,7 +73,7 @@ namespace Reko.Services
                 var projectUri = decompiler.Project.Programs[0].Uri;
                 if (projectUri is null)
                     return "";
-                return Path.GetFileName(UriTools.FilePathFromUri(projectUri));
+                return projectUri.GetFilename();
             }
         }
 

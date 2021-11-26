@@ -91,7 +91,7 @@ namespace Reko.Environments.C64
         public static readonly Address PreferredBaseAddress = Address.Ptr16(2048);
 
 
-        public D64Loader(IServiceProvider services, RekoUri imageUri, byte[] rawImage)
+        public D64Loader(IServiceProvider services, ImageLocation imageUri, byte[] rawImage)
             : base(services, imageUri, rawImage)
         {
         }
@@ -122,7 +122,7 @@ namespace Reko.Environments.C64
             var entries = new List<ArchiveDirectoryEntry>();
             var rdr = new ByteImageReader(RawImage, (uint)SectorOffset(18, 0));
             byte track = rdr.ReadByte();
-            var archive = new D64Archive(Services, ImageUri, entries);
+            var archive = new D64Archive(Services, ImageLocation, entries);
             if (track != 0)
             {
                 byte sector = rdr.ReadByte();
@@ -237,17 +237,15 @@ namespace Reko.Environments.C64
             /// <returns></returns>
             private Program LoadPrg(IServiceProvider services, byte[] imageBytes)
             {
-                var prgUri = UriTools.AppendPathAsFragment(archive.Uri, this.Name);
+                var prgUri = archive.Uri.AppendFragment(this.Name);
                 var prgLoader = new PrgLoader(services, prgUri, imageBytes);
                 var program = prgLoader.LoadProgram(null);
                 program.Name = this.Name;
-                program.Uri = prgUri;
                 return program;
             }
 
             public Program LoadSeq(IServiceProvider services, Address addrPreferred, byte[] imageBytes)
             {
-                var seqUri = UriTools.AppendPathAsFragment(archive.Uri, this.Name);
                 var mem = new ByteMemoryArea(addrPreferred, imageBytes);
                 var arch = new Mos6502Architecture(services, "mos6502", new Dictionary<string, object>());
                 var program = new Program(
@@ -258,7 +256,6 @@ namespace Reko.Environments.C64
                     new DefaultPlatform(services, arch))
                 {
                     Name = this.Name,
-                    Uri = seqUri,
                 };
                 return program;
             }

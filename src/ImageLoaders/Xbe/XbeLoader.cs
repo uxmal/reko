@@ -157,7 +157,7 @@ namespace Reko.ImageLoaders.Xbe
         private const int XBE_MAX_THUNK = 378;
 
 
-        public XbeLoader(IServiceProvider services, RekoUri imageUri, byte[] rawImage)
+        public XbeLoader(IServiceProvider services, ImageLocation imageUri, byte[] rawImage)
             : base(services, imageUri, rawImage)
         {
             rdr = new LeImageReader(rawImage);

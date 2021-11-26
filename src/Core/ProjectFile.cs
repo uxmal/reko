@@ -35,7 +35,7 @@ namespace Reko.Core
         /// The URI of an image used by the project. This URI is expected to be relative to the 
         /// directory containing the project file itself
         /// </summary>
-        public RekoUri? Uri { get; set; }
+        public ImageLocation? Uri { get; set; }
 
         public abstract T Accept<T>(IProjectFileVisitor<T> visitor);
     }

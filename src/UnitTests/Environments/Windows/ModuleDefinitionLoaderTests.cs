@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Environments.Windows
 
         private void CreateDefFileLoader(string absPath, string contents)
         {
-            var uri = UriTools.UriFromFilePath(absPath);
+            var uri = ImageLocation.FromUri(absPath);
             var sc = new ServiceContainer();
             this.platform = new Win32Platform(sc, new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>()));
             dfl = new ModuleDefinitionLoader(sc, uri, Encoding.ASCII.GetBytes(contents));

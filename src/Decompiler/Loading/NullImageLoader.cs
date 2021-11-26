@@ -36,7 +36,7 @@ namespace Reko.Loading
         private Address baseAddr;
         private readonly byte[] imageBytes;
 
-        public NullImageLoader(IServiceProvider services, RekoUri imageUri, byte[] image) : base(services, imageUri, image)
+        public NullImageLoader(IServiceProvider services, ImageLocation imageUri, byte[] image) : base(services, imageUri, image)
         {
             this.imageBytes = image;
             this.baseAddr = Address.Ptr32(0);

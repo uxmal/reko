@@ -64,7 +64,7 @@ namespace Reko.ImageLoaders.MzExe
                                                         // EXE format header is located. This field is only valid
                                                         // if the e_lfaRelocations field >= 0x40
 
-        public ExeImageLoader(IServiceProvider services, RekoUri imageUri, byte [] image) : base(services, imageUri, image)
+        public ExeImageLoader(IServiceProvider services, ImageLocation imageUri, byte [] image) : base(services, imageUri, image)
 		{
             this.services = services;
             ReadCommonExeFields();	
@@ -137,19 +137,19 @@ namespace Reko.ImageLoaders.MzExe
                 // It seems this file could have a new header.
                 if (IsPortableExecutable(e_lfanew.Value))
                 {
-                    var peLdr = new PeImageLoader(services, ImageUri, base.RawImage, e_lfanew.Value);
+                    var peLdr = new PeImageLoader(services, ImageLocation, base.RawImage, e_lfanew.Value);
                     uint peEntryPointOffset = peLdr.ReadEntryPointRva();
                     return loaderSvc.FindUnpackerBySignature(peLdr, peEntryPointOffset);
                 }
                 else if (IsNewExecutable(e_lfanew.Value))
                 {
                     // http://support.microsoft.com/kb/65122
-                    var neLdr = new NeImageLoader(services, ImageUri, base.RawImage, e_lfanew.Value);
+                    var neLdr = new NeImageLoader(services, ImageLocation, base.RawImage, e_lfanew.Value);
                     return neLdr;
                 }
                 else if (IsLinearExecutable(e_lfanew.Value))
                 {
-                    var leLdr = new LeImageLoader(services, ImageUri, base.RawImage, e_lfanew.Value);
+                    var leLdr = new LeImageLoader(services, ImageLocation, base.RawImage, e_lfanew.Value);
                     return leLdr;
                 }
             }
@@ -158,7 +158,7 @@ namespace Reko.ImageLoaders.MzExe
             var fileDataSize = this.FileDataSize;
             if (IsPharlapExtenderPresent(fileDataSize))
             {
-                var pharlapExtender = new PharLapExtender(services, ImageUri, base.RawImage, fileDataSize);
+                var pharlapExtender = new PharLapExtender(services, ImageLocation, base.RawImage, fileDataSize);
                 return pharlapExtender;
             }
 

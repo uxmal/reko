@@ -31,12 +31,12 @@ namespace Reko.Core.Scripts
     [Designer("Reko.Gui.Design.ScriptFileDesigner,Reko.Gui")]
     public abstract class ScriptFile
     {
-        public ScriptFile(IServiceProvider services, RekoUri scriptUri, byte[] bytes)
+        public ScriptFile(IServiceProvider services, ImageLocation scriptUri, byte[] bytes)
         {
             this.Uri = scriptUri;
         }
 
-        public RekoUri Uri { get; }
+        public ImageLocation Uri { get; }
 
         /// <summary>
         /// Evaluate script. Reset event handlers.

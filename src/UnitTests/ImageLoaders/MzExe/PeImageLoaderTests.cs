@@ -307,7 +307,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
 
         private void Given_PeLoader()
         {
-            peldr = new PeImageLoader(sc, new RekoUri("file:test.exe"), fileImage, RvaPeHdr);
+            peldr = new PeImageLoader(sc, ImageLocation.FromUri("file:test.exe"), fileImage, RvaPeHdr);
         }
 
         private int Given_ImportDescriptor32(

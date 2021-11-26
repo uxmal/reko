@@ -29,7 +29,7 @@ namespace Reko.Environments.Snes
         public const int FORMAT_SMALLFIRST = 0;
         public const int FORMAT_BIGFIRST = 1;
 
-        public SnesParser(IServiceProvider services, RekoUri imageUri, byte[] imgRaw) : base(services, imageUri, imgRaw)
+        public SnesParser(IServiceProvider services, ImageLocation imageUri, byte[] imgRaw) : base(services, imageUri, imgRaw)
         {
         }
 

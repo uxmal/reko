@@ -37,7 +37,7 @@ namespace Reko.ImageLoaders.Pef
     {
         private PefContainer? container;
 
-        public PefLoader(IServiceProvider services, RekoUri imageUri, byte[]rawImage) :
+        public PefLoader(IServiceProvider services, ImageLocation imageUri, byte[]rawImage) :
             base(services, imageUri, rawImage)
         {
         }

@@ -47,7 +47,7 @@ namespace Reko.Core.Serialization
         /// <param name="projectUri">The URI of the project file.</param>
         /// <param name="project">A <see cref="Project"/> instance.</param>
         /// <returns></returns>
-        public Project_v5 Serialize(RekoUri projectUri, Project project)
+        public Project_v5 Serialize(ImageLocation projectUri, Project project)
         {
             var inputFiles = project.Programs.Select(
                 p => VisitProgram(projectUri, p)).ToList();
@@ -67,9 +67,9 @@ namespace Reko.Core.Serialization
             return sp;
         }
 
-        public DecompilerInput_v5 VisitProgram(RekoUri projectUri, Program program)
+        public DecompilerInput_v5 VisitProgram(ImageLocation projectUri, Program program)
         {
-            var projectPath = UriTools.FilePathFromUri(projectUri);
+            var projectPath = projectUri.FilesystemPath;
             return new DecompilerInput_v5
             {
                 Uri = ConvertToProjectRelativeUri(projectUri, program.Uri),
@@ -312,7 +312,7 @@ namespace Reko.Core.Serialization
             throw new NotSupportedException(value.GetType().Name);
         }
 
-        public MetadataFile_v3 VisitMetadataFile(RekoUri projectUri, MetadataFile metadata)
+        public MetadataFile_v3 VisitMetadataFile(ImageLocation projectUri, MetadataFile metadata)
         {
             return new MetadataFile_v3
             {
@@ -321,7 +321,7 @@ namespace Reko.Core.Serialization
             };
         }
 
-        private ScriptFile_v5 VisitScriptFile(RekoUri projectUri, ScriptFile script)
+        private ScriptFile_v5 VisitScriptFile(ImageLocation projectUri, ScriptFile script)
         {
             return new ScriptFile_v5
             {

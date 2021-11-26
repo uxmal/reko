@@ -108,11 +108,11 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var bytes = new byte[100];
             loader.Setup(l => l.LoadImageBytes(
-                It.IsAny<RekoUri>(),
+                It.IsAny<ImageLocation>(),
                 It.IsAny<int>())).
                 Returns(bytes);
             loader.Setup(l => l.LoadBinaryImage(
-                It.IsAny<RekoUri>(),
+                It.IsAny<ImageLocation>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(
@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             };
             var ps = new ProjectLoader(sc, loader.Object, listener.Object);
-            var p = ps.LoadProject(UriTools.UriFromFilePath("c:\\tmp\\fproj.proj"), sp);
+            var p = ps.LoadProject(ImageLocation.FromUri("c:\\tmp\\fproj.proj"), sp);
             Assert.AreEqual(1, p.Programs.Count);
             var inputFile0 = p.Programs[0]; 
             Assert.AreEqual(1, inputFile0.User.Procedures.Count);
@@ -216,15 +216,15 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var bytes = new byte[100];
             loader.Setup(l => l.LoadImageBytes(
-                It.IsAny<RekoUri>(),
+                It.IsAny<ImageLocation>(),
                 It.IsAny<int>())).
                 Returns(bytes);
             loader.Setup(l => l.LoadBinaryImage(
-                It.IsAny<RekoUri>(),
+                It.IsAny<ImageLocation>(),
                 It.IsAny<byte[]>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(
-                    new Func<RekoUri, byte[], string, Address, Program>(
+                    new Func<ImageLocation, byte[], string, Address, Program>(
                         (u, b, s, a) => new Program { Architecture = arch.Object }));
             Given_Architecture();
             Given_TestOS_Platform();
@@ -311,12 +311,12 @@ namespace Reko.UnitTests.Core.Serialization
                     },
                     new DecompilerInput_v5
                     {
-                        Uri = "file:foo/i+am+positive%2b.exe",
+                        Uri = OsPath.Relative("foo", "i am positive+.exe")
                     }
                 }
             };
             var ps = new ProjectLoader(sc, loader.Object, listener.Object);
-            var p = ps.LoadProject(UriTools.UriFromFilePath("c:\\tmp\\fproj.proj"), sp);
+            var p = ps.LoadProject(ImageLocation.FromUri(OsPath.Absolute("tmp","fproj.proj")), sp);
 
             Assert.AreEqual(2, p.Programs.Count);
             var inputFile0 = p.Programs[0];
@@ -339,7 +339,7 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual("errorExit", blockLabel);
             Assert.AreEqual(Program.SegmentFilePolicy, inputFile0.User.OutputFilePolicy);
 
-            Assert.AreEqual("file:///c:/tmp/foo/i+am+positive%2b.exe", inputFile1.Uri.ExtractString());
+            Assert.AreEqual(OsPath.Absolute("tmp","foo","i am positive+.exe"), inputFile1.Uri.FilesystemPath);
         }
 
         [Test]

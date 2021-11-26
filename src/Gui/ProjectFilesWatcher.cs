@@ -35,7 +35,7 @@ using System.Timers;
 
 namespace Reko.Gui
 {
-    using FileWatchersMap = ConcurrentDictionary<RekoUri, FileSystemWatcher>;
+    using FileWatchersMap = ConcurrentDictionary<ImageLocation, FileSystemWatcher>;
 
     /// <summary>
     /// Watch project files, reload them if they were changed.
@@ -104,9 +104,9 @@ namespace Reko.Gui
         {
             foreach (ScriptFile script in newScripts)
             {
-                if (UriTools.UriHasFragments(script.Uri))
-                    continue;
-                var fullPath = UriTools.FilePathFromUri(script.Uri);
+                if (script.Uri.HasFragments)
+                    continue;   // Can't watch inside archives...
+                var fullPath = script.Uri.FilesystemPath;
                 var directoryName = Path.GetDirectoryName(fullPath);
                 var fileName = Path.GetFileName(fullPath);
                 
@@ -181,7 +181,7 @@ namespace Reko.Gui
                 return;
             var fullPath = Path.GetFullPath(fileName);
             var scriptFile = project.ScriptFiles.
-                Where(s => Path.GetFullPath(s.Uri.ExtractString()) == fullPath).
+                Where(s => Path.GetFullPath(s.Uri.FilesystemPath) == fullPath).
                 FirstOrDefault();
             if (scriptFile is not null)
             {

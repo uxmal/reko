@@ -81,13 +81,13 @@ namespace Reko.Gui.Design
             TreeNode!.Text = program.Name;
             TreeNode.ImageName = "Binary.ico";
             var sb = new StringBuilder();
-            if (program.Uri is null || string.IsNullOrEmpty(program.Uri.ExtractString()))
+            if (program.Uri is null || string.IsNullOrEmpty(program.Uri.FilesystemPath))
             {
                 sb.Append("No file name");
             }
             else
             {
-                var fragment = UriTools.ParseLastFragment(program.Uri);
+                var fragment = program.Uri.GetFilename();
                 sb.Append(fragment);
             }
             if (program.NeedsScanning)

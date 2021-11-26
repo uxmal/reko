@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Loading
         public class TestImageLoader : ProgramImageLoader
         {
             public TestImageLoader(ImageLoader loader)
-                : base(loader.Services, loader.ImageUri, loader.RawImage)
+                : base(loader.Services, loader.ImageLocation, loader.RawImage)
             {
             }
 
@@ -110,8 +110,8 @@ namespace Reko.UnitTests.Loading
             });
             var loader = upSvc.FindUnpackerBySignature(
                 new NullImageLoader(
-                    sc, 
-                    new("file:foo.exe"),
+                    sc,
+                    ImageLocation.FromUri("file:foo.exe"),
                     image), 4);
             Assert.IsInstanceOf<TestImageLoader>(loader);
         }
@@ -151,7 +151,7 @@ namespace Reko.UnitTests.Loading
             upsvc.FindUnpackerBySignature(
                 new NullImageLoader(
                     sc,
-                    UriTools.UriFromFilePath("foo.exe"),
+                    ImageLocation.FromUri("foo.exe"),
                     new byte[0x1000]),
                 0x0100);
         }
@@ -167,7 +167,7 @@ namespace Reko.UnitTests.Loading
 
             var upsvc = new UnpackingService(sc);
             upsvc.FindUnpackerBySignature(
-                new NullImageLoader(sc, new RekoUri("file:foo.exe"), new byte[0x4]),
+                new NullImageLoader(sc, ImageLocation.FromUri("file:foo.exe"), new byte[0x4]),
                 0);
             Assert.AreEqual(new byte[] {
                 0x5B, 0x24, 0x6C, 0x23, 0x69, 0x04,

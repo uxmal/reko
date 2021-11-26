@@ -42,7 +42,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
 
         const int BYTEMASK = 0xFF;
 
-        public CompactProArchive(RekoUri uri, IProcessorArchitecture arch, MacOSClassic platform)
+        public CompactProArchive(ImageLocation uri, IProcessorArchitecture arch, MacOSClassic platform)
         {
             this.Uri = uri;
             this.Architecture = arch;
@@ -62,7 +62,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
         /// <summary>
         /// The absolute path to the location of this archive.
         /// </summary>
-        public RekoUri Uri { get; }
+        public ImageLocation Uri { get; }
 
         public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
             => visitor.VisitArchive(this, context);
@@ -496,7 +496,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                 this.Entries = new ForkFolder(archive, this, hdr);
             }
 
-            public RekoUri Uri => UriTools.UriFromFilePath(Name);
+            public ImageLocation Uri => ImageLocation.FromUri(Name);
 
             public override ICollection<ArchiveDirectoryEntry> Entries { get; }
 
@@ -523,7 +523,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                     this.type = type;
                 }
 
-                public RekoUri Uri => UriTools.UriFromFilePath(Name);
+                public ImageLocation Uri => ImageLocation.FromUri(Name);
 
                 public uint Size => lengthUncompressed;
 
@@ -544,8 +544,6 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                     var program = new Program(segmentMap, Archive.Architecture, Archive.Platform);
                     BinHexImageLoader.Relocate(program, addrLoad, bmem, rsrcFork);
                     program.Name = this.Parent!.Name;
-                    //$REVIEW: this could be done by the caller?
-                    program.Uri = UriTools.AppendPathAsFragment(Archive.Uri, Archive.GetRootPath(this));
                     return program;
                 }
             }

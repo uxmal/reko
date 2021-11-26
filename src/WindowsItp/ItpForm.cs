@@ -176,9 +176,9 @@ namespace Reko.WindowsItp
             var size = fs.Length;
             var abImage = new byte[size];
             fs.Read(abImage, 0, (int)size);
-            var exe = new ExeImageLoader(sc, new RekoUri("file:foolexe"), abImage);
+            var exe = new ExeImageLoader(sc, ImageLocation.FromUri("file:fool.exe"), abImage);
             var lfanew = exe.LoadLfaToNewHeader();
-            var peLdr = new PeImageLoader(sc, new RekoUri("file:foo.exe"), abImage, lfanew.Value);
+            var peLdr = new PeImageLoader(sc, ImageLocation.FromUri("file:foo.exe"), abImage, lfanew.Value);
             var addr = peLdr.PreferredBaseAddress;
             var program = peLdr.LoadProgram(addr);
             var rr = peLdr.Relocate(program, addr);
@@ -200,7 +200,7 @@ namespace Reko.WindowsItp
             fs.Read(abImage, 0, abImage.Length);
             var ldr = new OdbgScriptLoader(
                 new Reko.Loading.NullImageLoader(
-                    sc, new RekoUri("foo.exe"), abImage));
+                    sc, ImageLocation.FromUri("foo.exe"), abImage));
             ldr.Argument = @"D:\dev\jkl\dec\halsten\decompiler_paq\upx\upx_ultimate.txt";
             var addr = ldr.PreferredBaseAddress;
             var program = ldr.LoadProgram(addr);

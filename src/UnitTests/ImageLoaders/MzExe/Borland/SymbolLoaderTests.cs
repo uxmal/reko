@@ -134,7 +134,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe.Borland
 
         private void Given_ExeLoader()
         {
-            this.exeLoader = new ExeImageLoader(null, new RekoUri("file:FOO.EXE"), writer.ToArray());
+            this.exeLoader = new ExeImageLoader(null, ImageLocation.FromUri("file:FOO.EXE"), writer.ToArray());
             this.exeLoader.ReadCommonExeFields();
         }
 

@@ -38,7 +38,7 @@ namespace Reko.Environments.MacOS.Classic
         private ByteMemoryArea mem;
         private SegmentMap segmentMap;
 
-        public AppleDoubleLoader(IServiceProvider services, RekoUri imageUri, byte[] rawImage)
+        public AppleDoubleLoader(IServiceProvider services, ImageLocation imageUri, byte[] rawImage)
             : base(services, imageUri, rawImage)
         {
             rsrcFork = null!;

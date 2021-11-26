@@ -276,7 +276,7 @@ namespace Reko.Gui.Forms
                 loader,
                 this.decompilerSvc.Decompiler.Project,
                 Services.RequireService<DecompilerEventListener>());
-            var metadataUri = UriTools.UriFromFilePath(fileName);
+            var metadataUri = ImageLocation.FromUri(fileName);
             try
             {
                 var metadata = projectLoader.LoadMetadataFile(metadataUri);
@@ -346,8 +346,8 @@ namespace Reko.Gui.Forms
         {
             try
             {
-                var scriptUri = UriTools.UriFromFilePath(fileName);
-                var script = loader.LoadScript(scriptUri);
+                var scriptLocation = ImageLocation.FromUri(fileName);
+                var script = loader.LoadScript(scriptLocation);
                 if (script is null)
                     return;
                 var project = decompilerSvc.Decompiler.Project;
@@ -746,10 +746,9 @@ namespace Reko.Gui.Forms
                 return true;
             if (string.IsNullOrEmpty(this.ProjectFileName))
             {
-                var fragment = UriTools.ParseLastFragment(
-                    decompilerSvc.Decompiler.Project.Programs[0].Uri);
+                var filename = decompilerSvc.Decompiler.Project.Programs[0].Uri.FilesystemPath;
                 string newName = uiSvc.ShowSaveFileDialog(
-                    Path.ChangeExtension(fragment, Project_v5.FileExtension));
+                    Path.ChangeExtension(filename, Project_v5.FileExtension));
                 if (newName == null)
                     return false;
                 ProjectFileName = newName;
@@ -758,8 +757,8 @@ namespace Reko.Gui.Forms
 
             var fsSvc = Services.RequireService<IFileSystemService>();
             var saver = new ProjectSaver(sc);
-            var projectUri = UriTools.UriFromFilePath(ProjectFileName);
-            var sProject = saver.Serialize(projectUri, decompilerSvc.Decompiler.Project);
+            var projectLocation = ImageLocation.FromUri(ProjectFileName);
+            var sProject = saver.Serialize(projectLocation, decompilerSvc.Decompiler.Project);
 
             using (var xw = fsSvc.CreateXmlWriter(ProjectFileName))
             {

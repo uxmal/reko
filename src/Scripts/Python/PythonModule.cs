@@ -43,12 +43,12 @@ namespace Reko.Scripts.Python
         private readonly IFileSystemService fsSvc;
         private RekoEventsAPI eventsAPI;
 
-        public PythonModule(IServiceProvider services, RekoUri imageUri, byte[] bytes)
-            : base(services, imageUri, bytes)
+        public PythonModule(IServiceProvider services, ImageLocation scriptLocation, byte[] bytes)
+            : base(services, scriptLocation, bytes)
         {
-            if (UriTools.UriHasFragments(imageUri))
+            if (scriptLocation.HasFragments)
                 throw new NotSupportedException("Loading scripts inside archives is not supported yet.");
-            var filename = UriTools.FilePathFromUri(imageUri);
+            var filename = scriptLocation.FilesystemPath;
             this.eventListener = services.RequireService<DecompilerEventListener>();
             this.cfgSvc = services.RequireService<IConfigurationService>();
             this.fsSvc = services.RequireService<IFileSystemService>();
@@ -63,7 +63,7 @@ namespace Reko.Scripts.Python
 
         public override void Evaluate(string script)
         {
-            var filename = UriTools.FilePathFromUri(this.Uri);
+            var filename = this.Uri.FilesystemPath;
             this.eventsAPI = Evaluate(
                 outputWriter, eventListener, cfgSvc, fsSvc, script, filename);
         }
@@ -83,7 +83,7 @@ namespace Reko.Scripts.Python
             catch (Exception ex)
             {
                 var scriptError = CreateError(
-                    Uri.ExtractString(),
+                    Uri.FilesystemPath,
                     ex,
                     "An error occurred while running the Python script.",
                     engine);

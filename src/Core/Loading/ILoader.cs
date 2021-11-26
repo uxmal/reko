@@ -46,7 +46,7 @@ namespace Reko.Core.Loading
         /// <param name="addrLoad"></param>
         /// <returns>Either a <see cref="ILoadedImage"/> instance, or null if the file format
         /// wasn't recognized.</returns>
-        ILoadedImage? Load(RekoUri imageUri, string? loader = null, Address? addrLoad = null);
+        ILoadedImage? Load(ImageLocation imageUri, string? loader = null, Address? addrLoad = null);
 
         /// <summary>
         /// Opens the specified file and reads the contents of the file,
@@ -56,7 +56,7 @@ namespace Reko.Core.Loading
         /// <param name="absoluteUri">The URI from which to read the image data.</param>
         /// <param name="offset">Offset at which to start reading.</param>
         /// <returns>An array of bytes containing the file data.</returns>
-        byte[] LoadImageBytes(RekoUri absoluteUri, int offset);
+        byte[] LoadImageBytes(ImageLocation absoluteUri, int offset);
 
         /// <summary>
         /// Given a executable file image in <param name="bytes">, determines which file 
@@ -72,7 +72,7 @@ namespace Reko.Core.Loading
         /// Either a successfully loaded <see cref="ILoadedImage"/>, or a <see cref="Blob"/>
         /// if an appropriate image loader could not be determined or loaded.
         /// </returns>
-        ILoadedImage LoadBinaryImage(RekoUri absoluteUri, byte[] bytes, string? loader, Address? loadAddress);
+        ILoadedImage LoadBinaryImage(ImageLocation absoluteUri, byte[] bytes, string? loader, Address? loadAddress);
 
         /// <summary>
         /// Given a sequence of raw bytes, loads it into memory and applies the 
@@ -85,15 +85,15 @@ namespace Reko.Core.Loading
         /// <param name="details">Details about the contents of the file.</param>
         /// <returns>A <see cref="Reko.Core.Program"/>.
         /// </returns>
-        Program LoadRawImage(RekoUri absoluteUri, byte[] image, Address? loadAddress, LoadDetails details);
+        Program LoadRawImage(ImageLocation absoluteUri, byte[] image, Address? loadAddress, LoadDetails details);
 
 
-        Program LoadRawImage(RekoUri imageUri, LoadDetails raw);
+        Program LoadRawImage(ImageLocation imageUri, LoadDetails raw);
         Program LoadRawImage(byte[] bytes, LoadDetails raw);
 
 
-        Program AssembleExecutable(RekoUri absoluteUri, IAssembler asm, IPlatform platform, Address loadAddress);
-        Program AssembleExecutable(RekoUri absoluteUri, byte[] bytes, IAssembler asm, IPlatform platform, Address loadAddress);
+        Program AssembleExecutable(ImageLocation absoluteUri, IAssembler asm, IPlatform platform, Address loadAddress);
+        Program AssembleExecutable(ImageLocation absoluteUri, byte[] bytes, IAssembler asm, IPlatform platform, Address loadAddress);
 
         /// <summary>
         /// Loads a file containing symbolic, type, or other metadata into a <see cref="Reko.Core.TypeLibrary>"/>.
@@ -104,7 +104,7 @@ namespace Reko.Core.Loading
         /// <returns>The updated <paramref name="typeLib"/> or null if no appropriate loader for the
         /// metadata could be found.
         /// </returns>
-        TypeLibrary? LoadMetadata(RekoUri matadataUri, IPlatform platform, TypeLibrary typeLib);
+        TypeLibrary? LoadMetadata(ImageLocation matadataUri, IPlatform platform, TypeLibrary typeLib);
 
         /// <summary>
         /// Loads a file containing script.
@@ -114,7 +114,7 @@ namespace Reko.Core.Loading
         /// Evaluated script file or null if no appropriate loader for the
         /// script format could be found.
         /// </returns>
-        ScriptFile? LoadScript(RekoUri fileName);
+        ScriptFile? LoadScript(ImageLocation fileName);
     }
 
     /// <summary>

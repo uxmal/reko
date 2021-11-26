@@ -117,7 +117,7 @@ namespace Reko.UnitTests.ImageLoaders.Omf
             Given_Omf(MODEND, 0x02, B(0), B(42), Align(0x10));
             Given_Omf(LibraryEnd, 0x0, Align(0x10));
 
-            var omf = new OmfLoader(platform.Services, new RekoUri("file:foo.lib"), writer.ToArray());
+            var omf = new OmfLoader(platform.Services, ImageLocation.FromUri("file:foo.lib"), writer.ToArray());
             var typelib = omf.Load(platform, new TypeLibrary());
             var module = typelib.Modules["ANSICALL"];
             var svc = module.ServicesByOrdinal[1];

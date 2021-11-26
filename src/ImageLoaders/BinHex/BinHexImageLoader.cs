@@ -35,7 +35,7 @@ namespace Reko.ImageLoaders.BinHex
     {
         private static readonly Address PreferredBaseAddress = Address.Ptr32(0x00100000);
 
-        public BinHexImageLoader(IServiceProvider services, RekoUri absoluteUri, byte [] imgRaw) 
+        public BinHexImageLoader(IServiceProvider services, ImageLocation absoluteUri, byte [] imgRaw) 
             : base(services, absoluteUri, imgRaw)
         {
         }
@@ -54,7 +54,7 @@ namespace Reko.ImageLoaders.BinHex
             var platform = (MacOSClassic) cfgSvc.GetEnvironment("macOs").Load(Services, arch);
             if (hdr.FileType == "PACT")
             {
-                Cpt.CompactProArchive archive = new Cpt.CompactProArchive(base.ImageUri, arch, platform);
+                Cpt.CompactProArchive archive = new Cpt.CompactProArchive(base.ImageLocation, arch, platform);
                 archive.Load(new MemoryStream(dataBytes));
                 return archive;
             }

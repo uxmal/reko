@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Environments.RT11
         private void Given_LdaFile(params byte [] bytes)
         {
             var services = new ServiceContainer();
-            this.ldaLdr = new LdaFileLoader(services, new RekoUri("file:foo.lda"), bytes);
+            this.ldaLdr = new LdaFileLoader(services, ImageLocation.FromUri("file:foo.lda"), bytes);
         }
 
         [Test]

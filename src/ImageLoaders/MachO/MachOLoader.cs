@@ -54,7 +54,7 @@ namespace Reko.ImageLoaders.MachO
         internal List<ImageSymbol> entryPoints;
         internal Program? program;
 
-        public MachOLoader(IServiceProvider services, RekoUri imageUri, byte[] rawImg)
+        public MachOLoader(IServiceProvider services, ImageLocation imageUri, byte[] rawImg)
             : base(services, imageUri, rawImg)
         {
             this.sections = new List<MachOSection>();

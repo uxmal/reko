@@ -29,57 +29,59 @@ using System.Threading.Tasks;
 namespace Reko.UnitTests.Core
 {
     [TestFixture]
+    [Obsolete]
+    [Ignore("Obsolete")]
     public class UriToolsTests
     {
         [Test]
         public void Ut_FilenameFromUri_NoFilePrefix()
         {
-            Assert.AreEqual("hash#file.exe", UriTools.FilePathFromUri(new RekoUri("hash#file.exe")));
-            Assert.AreEqual("c:\\hash%20file.exe", UriTools.FilePathFromUri(new RekoUri("c:\\hash%20file.exe")));
+            Assert.AreEqual("hash#file.exe", UriTools.FilePathFromUri(ImageLocation.FromUri("hash#file.exe")));
+            Assert.AreEqual("c:\\hash%20file.exe", UriTools.FilePathFromUri(ImageLocation.FromUri("c:\\hash%20file.exe")));
         }
 
         [Test]
         public void Ut_FilenameFromUri_FilePrefix_NoHash()
         {
-            Assert.AreEqual("hash#file.exe", UriTools.FilePathFromUri(new RekoUri("file:hash%23file.exe")));
-            Assert.AreEqual("/home/user/Bob's file.exe", UriTools.FilePathFromUri(new RekoUri("file:///home/user/Bob%27s%20file.exe")));
+            Assert.AreEqual("hash#file.exe", UriTools.FilePathFromUri(ImageLocation.FromUri("file:hash%23file.exe")));
+            Assert.AreEqual("/home/user/Bob's file.exe", UriTools.FilePathFromUri(ImageLocation.FromUri("file:///home/user/Bob%27s%20file.exe")));
         }
 
         [Test]
         public void Ut_FilenameFromUri_FilePrefix_ShortName()
         {
-            Assert.AreEqual("h", UriTools.FilePathFromUri(new RekoUri("file:h")));
+            Assert.AreEqual("h", UriTools.FilePathFromUri(ImageLocation.FromUri("file:h")));
         }
 
         [Test]
         public void Ut_FilenameFromUri_FilePrefix_Hash()
         {
-            Assert.AreEqual("a hash#file.exe", UriTools.FilePathFromUri(new RekoUri("file:a+hash%23file.exe#archive/path")));
-            Assert.AreEqual("/home/user/Bob's file.exe", UriTools.FilePathFromUri(new RekoUri("file:///home/user/Bob%27s%20file.exe#archive/path")));
+            Assert.AreEqual("a hash#file.exe", UriTools.FilePathFromUri(ImageLocation.FromUri("file:a+hash%23file.exe#archive/path")));
+            Assert.AreEqual("/home/user/Bob's file.exe", UriTools.FilePathFromUri(ImageLocation.FromUri("file:///home/user/Bob%27s%20file.exe#archive/path")));
         }
 
         [Test]
         public void Ut_UriFromFilename_UnixPath_Relative()
         {
-            Assert.AreEqual("file:local+path/with%23hash.so", UriTools.UriFromFilePath("local path/with#hash.so").ExtractString());
+            Assert.AreEqual("file:local+path/with%23hash.so", UriTools.UriFromFilePath("local path/with#hash.so").FilesystemPath);
         }
 
         [Test]
         public void Ut_UriFromFilename_UnixPath_Absolute()
         {
-            Assert.AreEqual("file:///abs+path/with%23hash.so", UriTools.UriFromFilePath("/abs path/with#hash.so").ExtractString());
+            Assert.AreEqual("file:///abs+path/with%23hash.so", UriTools.UriFromFilePath("/abs path/with#hash.so").FilesystemPath);
         }
 
         [Test]
         public void Ut_UriFromFilename_WindowsPath_Relative()
         {
-            Assert.AreEqual("file:local+path/with%23hash.so", UriTools.UriFromFilePath("local path\\with#hash.so").ExtractString());
+            Assert.AreEqual("file:local+path/with%23hash.so", UriTools.UriFromFilePath("local path\\with#hash.so").FilesystemPath);
         }
 
         [Test]
         public void Ut_UriFromFilename_WindowsPath_Absolute()
         {
-            Assert.AreEqual("file:///c:/abs+path/with%23hash.dll", UriTools.UriFromFilePath("c:\\abs path\\with#hash.dll").ExtractString());
+            Assert.AreEqual("file:///c:/abs+path/with%23hash.dll", UriTools.UriFromFilePath("c:\\abs path\\with#hash.dll").FilesystemPath);
         }
 
         [Test]

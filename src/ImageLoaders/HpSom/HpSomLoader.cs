@@ -43,7 +43,7 @@ namespace Reko.ImageLoaders.HpSom
         private List<ImageSymbol> pltEntries;
         private SortedList<Address, ImageSymbol> symbols;
 
-        public HpSomLoader(IServiceProvider services, RekoUri imageUri, byte[] imgRaw) :
+        public HpSomLoader(IServiceProvider services, ImageLocation imageUri, byte[] imgRaw) :
             base(services, imageUri, imgRaw)
         {
             PreferredBaseAddress = Address.Ptr32(0x00100000);

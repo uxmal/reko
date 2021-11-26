@@ -99,9 +99,10 @@ namespace Reko.UnitTests.Core.Serialization
         public void Prp_ToAbsoluteUri_Posix()
         {
             var s = ProjectPersister.ConvertToAbsoluteUri(
-                new RekoUri("file:///home/sue/test.dcproj"),
-                "file:archive.tar#dir/binary.so");
-            Assert.AreEqual("file:///home/sue/archive.tar#dir/binary.so", s.ExtractString());
+                ImageLocation.FromUri("file:home/sue/test.dcproj"),
+                "archive:archive.tar#dir/binary.so");
+            Assert.IsTrue(s.FilesystemPath.EndsWith(OsPath.Relative("home", "sue", "archive.tar")));
+            Assert.AreEqual("dir/binary.so", s.Fragments[0]);
         }
     }
 }

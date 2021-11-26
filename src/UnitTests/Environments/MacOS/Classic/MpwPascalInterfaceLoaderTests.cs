@@ -68,7 +68,7 @@ EventRecord = RECORD
 END; 
 FUNCTION GetNextEvent(eventMask: INTEGER;VAR theEvent: EventRecord): BOOLEAN; INLINE $A970;
 END.");
-            var mpwl = new MpwPascalInterfaceLoader(sc, new RekoUri("file:foo.pas"), bytes);
+            var mpwl = new MpwPascalInterfaceLoader(sc, ImageLocation.FromUri("file:foo.pas"), bytes);
             var tlibNew = mpwl.Load(platform, tlib);
 
             var svc = tlibNew.Modules.Values.First().ServicesByVector[0xA970].First(s => s.SyscallInfo.Matches(0xA970, null));
@@ -84,7 +84,7 @@ TYPE ResType = PACKED ARRAY[1..4] OF CHAR;
 FUNCTION GetResource(theType: ResType;theID: INTEGER): Handle;
     INLINE $A9A0;
 END.");
-            var mpwl = new MpwPascalInterfaceLoader(sc, new RekoUri("file:foo.pas"), image);
+            var mpwl = new MpwPascalInterfaceLoader(sc, ImageLocation.FromUri("file:foo.pas"), image);
             var tlibNew = mpwl.Load(platform, tlib);
 
             var svc = tlibNew.Modules.Values.First().ServicesByVector[0xA9A0].First(s => s.SyscallInfo.Matches(0xA9A0, null));

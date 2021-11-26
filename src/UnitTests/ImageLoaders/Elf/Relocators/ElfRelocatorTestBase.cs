@@ -55,7 +55,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf.Relocators
             this.program.Architecture = GetArchitecture();
             this.symbols = new Dictionary<int, ElfSymbol>();
             var services = new ServiceContainer();
-            var elfImgLoader = new ElfImageLoader(services, new RekoUri("file:foo.elf"), new byte[0]);
+            var elfImgLoader = new ElfImageLoader(services, ImageLocation.FromUri("file:foo.elf"), new byte[0]);
             this.loader = CreateLoader();
             loader.Sections.Add(new ElfSection { Name = "" });   // section 0
         }

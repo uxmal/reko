@@ -162,7 +162,7 @@ namespace Reko.CmdLine
             {
                 var fileName = (string) pArgs["filename"];
                 var filePath = Path.GetFullPath(fileName);
-                var imageUri = UriTools.UriFromFilePath(filePath);
+                var imageUri = ImageLocation.FromUri(filePath);
                 if (ldr.Load(imageUri, (string) imgLoader, addrLoad) is not Project project)
                 {
                     this.listener.Error("Cannot decompile {0}", fileName);
@@ -182,7 +182,7 @@ namespace Reko.CmdLine
                 {
                     decompiler.Project.MetadataFiles.Add(new MetadataFile
                     {
-                        Uri = UriTools.UriFromFilePath((string) oMetadata)
+                        Uri = ImageLocation.FromUri((string) oMetadata)
                     });
                 }
                 if (pArgs.ContainsKey("dasm-address"))
@@ -316,7 +316,7 @@ namespace Reko.CmdLine
             }
             else
             {
-                var uri = UriTools.UriFromFilePath((string) pArgs["filename"]);
+                var uri = ImageLocation.FromUri((string) pArgs["filename"]);
                 program = ldr.LoadRawImage(uri, loadDetails);
             }
             listener.ShowStatus("Raw bytes loaded.");

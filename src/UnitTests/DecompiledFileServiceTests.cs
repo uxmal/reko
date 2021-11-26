@@ -53,7 +53,7 @@ namespace Reko.UnitTests
                 new SegmentMap(Address.Ptr32(0x00100000)),
                 arch.Object,
                 new DefaultPlatform(new ServiceContainer(), arch.Object));
-            program.Uri = new RekoUri("file:bar/foo.exe");
+            program.Uri = ImageLocation.FromUri("file:bar/foo.exe");
             program.Name = "foo.exe";
             program.SourceDirectory = "bar";
 

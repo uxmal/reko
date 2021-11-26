@@ -44,7 +44,7 @@ namespace Reko.Core.Loading
         /// - An executable file test.exe inside two nested archives:
         ///     file:///home/username/outer.tar#archives/inner.tar#test.exe
         /// </remarks>
-        RekoUri Uri { get; }
+        ImageLocation Uri { get; }
 
         T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context);
     }

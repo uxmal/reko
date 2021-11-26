@@ -32,7 +32,7 @@ namespace Reko.ImageLoaders.Srec
 {
     public class SrecLoader : ProgramImageLoader
     {
-        public SrecLoader(IServiceProvider services, RekoUri imageUri, byte[] rawBytes) 
+        public SrecLoader(IServiceProvider services, ImageLocation imageUri, byte[] rawBytes) 
             : base(services, imageUri, rawBytes)
         {
         }

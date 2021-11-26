@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Structure
             var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
 
             program = ldr.AssembleExecutable(
-                UriTools.UriFromFilePath(FileUnitTester.MapTestPath(sourceFilename)),
+                ImageLocation.FromUri(FileUnitTester.MapTestPath(sourceFilename)),
                 new X86TextAssembler(arch),
                 new MsdosPlatform(sc, arch),
                 addrBase);
@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Structure
             var ldr = new Loader(sc);
             var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             program = ldr.AssembleExecutable(
-                UriTools.UriFromFilePath(FileUnitTester.MapTestPath(sourceFilename)),
+                ImageLocation.FromUri(FileUnitTester.MapTestPath(sourceFilename)),
                 new X86TextAssembler(arch),
                 new DefaultPlatform(sc, arch),
                 addrBase);

@@ -53,17 +53,13 @@ namespace Reko.Core.Serialization
             return Path.GetFullPath(combined);
         }
 
-        public static RekoUri? ConvertToAbsoluteUri(
-            RekoUri projectUri, string? projectRelativeUri)
+        public static ImageLocation? ConvertToAbsoluteUri(
+            ImageLocation projectUri, string? projectRelativeUri)
         {
             if (projectUri is null || projectRelativeUri is null)
                 return null;
-            var projectDir = projectUri.ExtractString();
-            int i = projectDir.LastIndexOf('/');
-            if (i < 0)
-                return null;    // invalid uri
-            projectDir = projectDir.Remove(i);
-            return UriTools.Combine(new RekoUri(projectDir), projectRelativeUri);
+            var projectDir = Path.GetDirectoryName(projectUri.FilesystemPath);
+            return new ImageLocation(projectDir).Combine(projectRelativeUri);
         }
 
         /// <summary>
@@ -80,11 +76,11 @@ namespace Reko.Core.Serialization
             return fsSvc.MakeRelativePath(projectAbsPath, absPath);
         }
 
-        public string? ConvertToProjectRelativeUri(RekoUri projectUri, RekoUri absoluteUri)
+        public string? ConvertToProjectRelativeUri(ImageLocation projectUri, ImageLocation? absoluteUri)
         {
-            if (string.IsNullOrEmpty(projectUri.ExtractString()))
-                return absoluteUri.ExtractString()!;
-            return UriTools.MakeRelativeUri(projectUri, absoluteUri);
+            if (absoluteUri is null)
+                return null;
+            return projectUri.MakeRelativeUri(absoluteUri);
         }
     }
 }
