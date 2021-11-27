@@ -97,7 +97,35 @@ namespace Reko.UnitTests.Typing
             tv.OriginalDataType = PrimitiveType.SegmentSelector;
         }
 
-		[Test]
+        private Constant Given_Constant(int n)
+        {
+            var c = Constant.Word32(n);
+            store.EnsureExpressionTypeVariable(factory, 0, c);
+            return c;
+        }
+
+        private void Given_DataType(Constant c, DataType dt)
+        {
+            c.TypeVariable.DataType = dt;
+            c.TypeVariable.OriginalDataType = dt;
+        }
+
+        private Expression RewritePointer(Address addr)
+        {
+            return tcr.Rewrite(addr, null, false);
+        }
+
+        private Expression RewritePointer(Constant c)
+        {
+            return tcr.Rewrite(c, null, false);
+        }
+
+        private Expression RewriteDereferenced(Constant c)
+        {
+            return tcr.Rewrite(c, null, true);
+        }
+
+        [Test]
 		public void Tcr_RewriteWord32()
 		{
             Given_TypedConstantRewriter();
@@ -105,7 +133,7 @@ namespace Reko.UnitTests.Typing
 			store.EnsureExpressionTypeVariable(factory, 0, c);
 			c.TypeVariable.DataType = PrimitiveType.Word32;
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-			Expression e = tcr.Rewrite(c, null, false);
+			Expression e = RewritePointer(c);
 			Assert.AreEqual("0x131230<32>" , e.ToString());
 		}
 
@@ -117,7 +145,7 @@ namespace Reko.UnitTests.Typing
 			store.EnsureExpressionTypeVariable(factory, 0, c);
 			c.TypeVariable.DataType = PrimitiveType.Real32;
 			c.TypeVariable.OriginalDataType = c.DataType;
-			Expression e = tcr.Rewrite(c, null, false);
+			Expression e = RewritePointer(c);
 			Assert.AreEqual("1.0F", e.ToString());
 		}
 
@@ -129,7 +157,7 @@ namespace Reko.UnitTests.Typing
 			store.EnsureExpressionTypeVariable(factory, 0, c);
 			c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-			Expression e = tcr.Rewrite(c, null, false);
+			Expression e = RewritePointer(c);
 			Assert.AreEqual("&g_dw100000", e.ToString());
 		}
 
@@ -141,7 +169,7 @@ namespace Reko.UnitTests.Typing
             store.EnsureExpressionTypeVariable(factory, 0, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-            Expression e = tcr.Rewrite(c, null, false);
+            Expression e = RewritePointer(c);
             Assert.AreEqual("00000000", e.ToString());
         }
 
@@ -153,7 +181,7 @@ namespace Reko.UnitTests.Typing
             store.EnsureExpressionTypeVariable(factory, 0, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-            Expression e = tcr.Rewrite(c, null, false);
+            Expression e = RewritePointer(c);
             Assert.AreEqual("(word32 *) 0xFFFFFFFF<32>", e.ToString());
         }
 
@@ -174,7 +202,7 @@ namespace Reko.UnitTests.Typing
             store.EnsureExpressionTypeVariable(factory, 0, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-            var e = tcr.Rewrite(c, null, false);
+            var e = RewritePointer(c);
             Assert.AreEqual("&g_t100100.r0004", e.ToString());
         }
 
@@ -195,7 +223,7 @@ namespace Reko.UnitTests.Typing
             store.EnsureExpressionTypeVariable(factory, 0, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 32);
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
-            var e = tcr.Rewrite(c, null, true);
+            var e = RewriteDereferenced(c);
             Assert.AreEqual("g_t100100.dw0000", e.ToString());
         }
 
@@ -203,6 +231,20 @@ namespace Reko.UnitTests.Typing
         {
             var w = new LeImageWriter(bmem.Bytes, addr - (uint)bmem.BaseAddress.ToLinear());
             w.WriteString(str, Encoding.ASCII);
+        }
+
+        private void Given_UInt64(ulong bits, uint addr)
+        {
+            var w = new LeImageWriter(
+                bmem.Bytes, addr - (uint) bmem.BaseAddress.ToLinear());
+            w.WriteLeUInt64(bits);
+        }
+
+        private void Given_UInt32(uint bits, uint addr)
+        {
+            var w = new LeImageWriter(
+                bmem.Bytes, addr - (uint) bmem.BaseAddress.ToLinear());
+            w.WriteLeUInt32(bits);
         }
 
         private void Given_Readonly_Segment()
@@ -213,7 +255,7 @@ namespace Reko.UnitTests.Typing
             }
         }
 
-        private void Given_Writeable_Segment(string segName, uint address, uint size)
+        private void Given_Writeable_Segment()
         {
             foreach (var seg in program.SegmentMap.Segments.Values)
             {
@@ -236,7 +278,7 @@ namespace Reko.UnitTests.Typing
             var charPtr = new Pointer(PrimitiveType.Char, 32);
             c.TypeVariable.DataType = charPtr;
             c.TypeVariable.OriginalDataType = charPtr;
-            var e = tcr.Rewrite(c, null, false);
+            var e = RewritePointer(c);
             Assert.AreEqual("Hello", e.ToString());
             Assert.AreEqual(
                 "(struct (100000 (str char) str100000))",
@@ -258,7 +300,7 @@ namespace Reko.UnitTests.Typing
             var arrayCharPtr = new Pointer(new ArrayType(PrimitiveType.Char, 32), 6);
             c.TypeVariable.DataType = arrayCharPtr;
             c.TypeVariable.OriginalDataType = arrayCharPtr;
-            var e = tcr.Rewrite(c, null, false);
+            var e = RewritePointer(c);
             Assert.AreEqual("Hello", e.ToString());
             Assert.AreEqual(
                 "(struct (100000 (str char) str100000))",
@@ -271,13 +313,13 @@ namespace Reko.UnitTests.Typing
         {
             Given_TypedConstantRewriter();
             Given_String("Hello", 0x00100000);
-            Given_Writeable_Segment(".rdata", 0x00100000, 0x20);
+            Given_Writeable_Segment();
             var c = Constant.Word32(0x00100000);
             store.EnsureExpressionTypeVariable(factory, 0, c);
             var charPtr = new Pointer(PrimitiveType.Char, 32);
             c.TypeVariable.DataType = charPtr;
             c.TypeVariable.OriginalDataType = charPtr;
-            var e = tcr.Rewrite(c, null, false);
+            var e = RewritePointer(c);
             Assert.AreEqual("&g_dw100000", e.ToString());
         }
 
@@ -292,7 +334,7 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Real32, 32);
             c.TypeVariable.OriginalDataType = new Pointer(PrimitiveType.Real32, 32);
 
-            var e = tcr.Rewrite(c, null, false);
+            var e = RewritePointer(c);
             Assert.AreEqual("&g_r100040", e.ToString());
         }
 
@@ -307,7 +349,7 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Char, 32);
             c.TypeVariable.OriginalDataType = new Pointer(PrimitiveType.Char, 32);
 
-            var e = tcr.Rewrite(c, null, false);
+            var e = RewritePointer(c);
             Assert.AreEqual("&seg0C00->b0124", e.ToString());
         }
 
@@ -321,8 +363,64 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.DataType = PrimitiveType.SegPtr32;
             c.TypeVariable.OriginalDataType = PrimitiveType.SegPtr32;
 
-            var e = tcr.Rewrite(c, null, false);
+            var e = RewritePointer(c);
             Assert.AreEqual("&seg0C00->t0200", e.ToString());
+        }
+
+        [Test(Description = "Don't rewrite pointer to double constant at read-only memory")]
+        public void Tcr_Real64_ReadOnly_Pointer()
+        {
+            Given_TypedConstantRewriter();
+            Given_UInt64(0x4029800000000000, 0x00100000); // 12.75
+            Given_Readonly_Segment();
+            var c = Given_Constant(0x00100000);
+            Given_DataType(c, new Pointer(PrimitiveType.Real64, 32));
+
+            var e = RewritePointer(c);
+
+            Assert.AreEqual("&g_dw100000", e.ToString());
+        }
+
+        [Test(Description = "Rewrite double constant at read-only memory")]
+        public void Tcr_Real64_ReadOnly_Dereferenced()
+        {
+            Given_TypedConstantRewriter();
+            Given_UInt64(0x4029800000000000, 0x00100000); // 12.75
+            Given_Readonly_Segment();
+            var c = Given_Constant(0x00100000);
+            Given_DataType(c, new Pointer(PrimitiveType.Real64, 32));
+
+            var e = RewriteDereferenced(c);
+
+            Assert.AreEqual("12.75", e.ToString());
+        }
+
+        [Test(Description = "Don't rewrite double constant at writeable memory")]
+        public void Tcr_Real64_Writeable_Dereferenced()
+        {
+            Given_TypedConstantRewriter();
+            Given_UInt64(0x4029800000000000, 0x00100000); // 12.75
+            Given_Writeable_Segment();
+            var c = Given_Constant(0x00100000);
+            Given_DataType(c, new Pointer(PrimitiveType.Real64, 32));
+
+            var e = RewriteDereferenced(c);
+
+            Assert.AreEqual("g_dw100000", e.ToString());
+        }
+
+        [Test(Description = "Rewrite float constant at read-only memory")]
+        public void Tcr_Real32_ReadOnly_Dereferenced()
+        {
+            Given_TypedConstantRewriter();
+            Given_UInt32(0x414C0000, 0x00100000); // 12.75
+            Given_Readonly_Segment();
+            var c = Given_Constant(0x00100000);
+            Given_DataType(c, new Pointer(PrimitiveType.Real32, 32));
+
+            var e = RewriteDereferenced(c);
+
+            Assert.AreEqual("12.75F", e.ToString());
         }
     }
 }
