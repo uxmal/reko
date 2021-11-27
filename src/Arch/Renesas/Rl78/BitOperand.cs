@@ -21,21 +21,19 @@
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Reko.Arch.Rl78
+namespace Reko.Arch.Renesas.Rl78
 {
-    public class RegisterBankOperand : AbstractMachineOperand
+    public class BitOperand : AbstractMachineOperand
     {
-        public RegisterBankOperand(int bankNo) : base(PrimitiveType.Byte)
+        public BitOperand(MachineOperand op, int bitPos) : base(PrimitiveType.Bool)
         {
-            this.Bank = bankNo;
+            this.Operand = op;
+            this.BitPosition = bitPos;
         }
 
-        public int Bank { get; }
+        public MachineOperand Operand { get; }
+        public int BitPosition { get; }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {

@@ -24,7 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reko.Arch.Rl78
+namespace Reko.Arch.Renesas.Rl78
 {
     public enum Mnemonic
     {

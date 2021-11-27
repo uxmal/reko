@@ -30,7 +30,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-namespace Reko.Arch.Rl78
+namespace Reko.Arch.Renesas.Rl78
 {
     public class Rl78Architecture : ProcessorArchitecture
     {

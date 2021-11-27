@@ -31,7 +31,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Reko.Arch.Rl78
+namespace Reko.Arch.Renesas.Rl78
 {
     public class Rl78Rewriter : IEnumerable<RtlInstructionCluster>
     {

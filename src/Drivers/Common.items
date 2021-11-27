@@ -59,8 +59,8 @@ by the PreBuild.targets file.
     <ProjectReference Include="$(SolutionDir)Arch\Pdp\Pdp.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\PowerPC\PowerPC.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Qualcomm\Qualcomm.csproj" />
+    <ProjectReference Include="$(SolutionDir)Arch\Renesas\Renesas.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\RiscV\RiscV.csproj" />
-    <ProjectReference Include="$(SolutionDir)Arch\Rl78\Rl78.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Sanyo\Sanyo.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\Sparc\Sparc.csproj" />
     <ProjectReference Include="$(SolutionDir)Arch\SuperH\SuperH.csproj" />
@@ -177,8 +177,8 @@ by the PreBuild.targets file.
     <Architectures Include="$(SolutionDir)Arch\Pdp\bin\$(StandardOutputDir)\Reko.Arch.Pdp.*" />
     <Architectures Include="$(SolutionDir)Arch\PowerPC\bin\$(StandardOutputDir)\Reko.Arch.PowerPC.*" />
     <Architectures Include="$(SolutionDir)Arch\Qualcomm\bin\$(StandardOutputDir)\Reko.Arch.Qualcomm.*" />
+    <Architectures Include="$(SolutionDir)Arch\Renesas\bin\$(StandardOutputDir)\Reko.Arch.Renesas.*" />
     <Architectures Include="$(SolutionDir)Arch\RiscV\bin\$(StandardOutputDir)\Reko.Arch.RiscV.*" />
-    <Architectures Include="$(SolutionDir)Arch\Rl78\bin\$(StandardOutputDir)\Reko.Arch.Rl78.*" />
     <Architectures Include="$(SolutionDir)Arch\Sanyo\bin\$(StandardOutputDir)\Reko.Arch.Sanyo.*" />
     <Architectures Include="$(SolutionDir)Arch\Sparc\bin\$(StandardOutputDir)\Reko.Arch.Sparc.*" />
     <Architectures Include="$(SolutionDir)Arch\SuperH\bin\$(StandardOutputDir)\Reko.Arch.SuperH.*" />

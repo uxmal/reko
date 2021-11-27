@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Reko.Arch.Rl78
+namespace Reko.Arch.Renesas.Rl78
 {
     using Decoder = Decoder<Rl78Disassembler, Mnemonic, Rl78Instruction>;
 

@@ -1016,6 +1016,25 @@ namespace Reko.Core
         public abstract bool TryParseAddress(string? txtAddr, [MaybeNullWhen(false)] out Address addr);
 
         /// <summary>
+        /// Utility method used by derived classes to se the architecture 
+        /// endianness.
+        /// </summary>
+        /// <param name="sValue">String value encoding the desired endianness.</param>
+        protected void SetEndianness(string sValue)
+        {
+            if (sValue is null || sValue.Length < 1)
+                return;
+            this.Endianness = sValue[0] switch
+            {
+                'b' => EndianServices.Big,
+                'B' => EndianServices.Big,
+                'l' => EndianServices.Little,
+                'L' => EndianServices.Little,
+                _ => throw new ArgumentException(nameof(sValue))
+            };
+        }
+
+        /// <summary>
         /// Reads an integer option from the Options dictionary.
         /// </summary>
         /// <param name="name">Name of the option.</param>

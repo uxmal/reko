@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2025 John Källén.
+ * Copyright (C) 1999-2021 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,26 +18,32 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
-using System;
 
-namespace Reko.Arch.Rl78
+namespace Reko.Arch.Renesas.Rx;
+
+public class MemoryOperand : AbstractMachineOperand
 {
-    public class BitOperand : AbstractMachineOperand
+    public MemoryOperand(PrimitiveType dt, RegisterStorage reg, int offset) : base(dt)
     {
-        public BitOperand(MachineOperand op, int bitPos) : base(PrimitiveType.Bool)
+        this.Base = reg;
+        this.Offset = offset;
+    }
+
+    public RegisterStorage? Base { get; set; }
+    public int Offset { get; set; }
+
+    protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+    {
+        if (Offset != 0)
         {
-            this.Operand = op;
-            this.BitPosition = bitPos;
+            renderer.WriteString($"{Offset}[{Base}]");
         }
-
-        public MachineOperand Operand { get; }
-        public int BitPosition { get; }
-
-        protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
+        else
         {
-            throw new NotImplementedException();
+            renderer.WriteString($"[{Base}]");
         }
     }
 }

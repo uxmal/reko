@@ -18,23 +18,24 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Reko.Arch.Rl78
+namespace Reko.Arch.Renesas.Rl78
 {
-    public class MemoryOperand : AbstractMachineOperand
+    public class RegisterBankOperand : AbstractMachineOperand
     {
-        public MemoryOperand(PrimitiveType dt) : base(dt)
+        public RegisterBankOperand(int bankNo) : base(PrimitiveType.Byte)
         {
+            this.Bank = bankNo;
         }
 
-        public RegisterStorage? Base { get; set; }
-
-        public int Offset { get; set; }
-        public RegisterStorage? Index { get; set; }
+        public int Bank { get; }
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
