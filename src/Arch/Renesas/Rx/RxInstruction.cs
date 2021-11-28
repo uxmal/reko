@@ -22,6 +22,8 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
+using System.Diagnostics;
+using System.Text;
 
 namespace Reko.Arch.Renesas.Rx
 {
@@ -37,8 +39,31 @@ namespace Reko.Arch.Renesas.Rx
 
         protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
         {
-            renderer.WriteMnemonic(MnemonicAsString);
+            RenderMnemonic(renderer);
             RenderOperands(renderer, options);
+        }
+
+        private void RenderMnemonic(MachineInstructionRenderer renderer)
+        {
+            var sb = new StringBuilder(MnemonicAsString);
+            if (DataType is not null)
+            {
+                sb.Append('.');
+                string s;
+                switch (DataType.BitSize)
+                {
+                case 3: s = "s"; break;
+                case 32: s = "l"; break;
+                case 16:
+                    s = DataType.Domain == Domain.SignedInt ? "w" : "uw";
+                    break;
+                default:
+                    s = DataType.Domain == Domain.SignedInt ? "b" : "ub";
+                    break;
+                }
+                sb.Append(s);
+            }
+            renderer.WriteMnemonic(sb.ToString());
         }
 
         protected override void RenderOperand(MachineOperand operand, MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
@@ -46,7 +71,29 @@ namespace Reko.Arch.Renesas.Rx
             switch (operand)
             {
             case Constant imm:
-                var sImm = imm.ToInt32().ToString("X");
+                string sImm;
+                if (imm.DataType.Domain == Domain.SignedInt)
+                {
+                    int i = imm.ToInt32();
+                    if (i < 0)
+                    {
+                        sImm = $"-{-i:X}";
+                    }
+                    else
+                    {
+                        sImm = i.ToString("X");
+                    }
+                }
+                else if (imm.DataType.Domain == Domain.Real)
+                {
+                    sImm = imm.ToFloat().ToString();
+                    renderer.WriteFormat("#{0}", sImm);
+                    return;
+                }
+                else
+                {
+                    sImm = imm.ToUInt32().ToString("X");
+                }
                 renderer.WriteString(char.IsLetter(sImm[0]) ? "#0" : "#");
                 renderer.WriteString(sImm);
                 renderer.WriteChar('h');

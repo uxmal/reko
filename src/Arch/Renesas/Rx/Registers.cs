@@ -46,6 +46,12 @@ namespace Reko.Arch.Renesas.Rx
         public static RegisterStorage EXTB { get; }
 
         public static FlagGroupStorage C { get; }
+        public static FlagGroupStorage Z { get; }
+        public static FlagGroupStorage S { get; }
+        public static FlagGroupStorage O { get; }
+        public static FlagGroupStorage I { get; }
+        public static FlagGroupStorage U { get; }
+
 
         static Registers()
         {
@@ -53,8 +59,8 @@ namespace Reko.Arch.Renesas.Rx
             GpRegisters = factory.RangeOfReg(16, n => n == 0 ? "sp" : $"r{n}", PrimitiveType.Word32);
             sp = GpRegisters[0];
 
-            ACC0 = factory.Reg("ACC0", PrimitiveType.CreateWord(72));
-            ACC1 = factory.Reg("ACC1", PrimitiveType.CreateWord(72));
+            ACC0 = factory.Reg("a0", PrimitiveType.CreateWord(72));
+            ACC1 = factory.Reg("a1", PrimitiveType.CreateWord(72));
 
             factory = new StorageFactory(StorageDomain.SystemRegister);
             ISP = factory.Reg32("ISP");     // Interrupt stack pointer
@@ -68,15 +74,23 @@ namespace Reko.Arch.Renesas.Rx
             FPSW = factory.Reg32("FPSW");   // Floating-point status word
             EXTB = factory.Reg32("EXTB");   // Exception table register
 
-            C = new FlagGroupStorage(PSW, (uint) FlagM.CF, "C");
+            C = new FlagGroupStorage(PSW, (uint) FlagM.CF, "c");
+            Z = new FlagGroupStorage(PSW, (uint) FlagM.ZF, "z");
+            S = new FlagGroupStorage(PSW, (uint) FlagM.SF, "s");
+            O = new FlagGroupStorage(PSW, (uint) FlagM.OF, "o");
+            I = new FlagGroupStorage(PSW, (uint) FlagM.IF, "i");
+            U = new FlagGroupStorage(PSW, (uint) FlagM.UF, "u");
         }
     }
 
+    [Flags]
     public enum FlagM
     {
         CF = 1,
         ZF = 2,
         SF = 4,
         OF = 8,
+        IF = 1 << 16,
+        UF = 1 << 17,
     }
 }

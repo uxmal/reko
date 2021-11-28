@@ -21,6 +21,8 @@
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using System;
+using System.Diagnostics;
 
 namespace Reko.Arch.Renesas.Rx;
 
@@ -32,18 +34,61 @@ public class MemoryOperand : AbstractMachineOperand
         this.Offset = offset;
     }
 
+    public MemoryOperand(PrimitiveType dt, RegisterStorage @base, RegisterStorage index) : base(dt)
+    {
+        this.Base = @base;
+        this.Index = index;
+        this.AutoIncrement = AutoIncrement.None;
+    }
+
+    private MemoryOperand(PrimitiveType dt, RegisterStorage reg, AutoIncrement inc) : base(dt)
+    {
+        this.Base = reg;
+        this.AutoIncrement = inc;
+    }
+
     public RegisterStorage? Base { get; set; }
     public int Offset { get; set; }
+    public RegisterStorage? Index { get; set; }
+    public AutoIncrement AutoIncrement { get; set; }
+
+    public static MachineOperand PostIncrement(PrimitiveType dataWidth, RegisterStorage reg)
+    {
+        return new MemoryOperand(dataWidth, reg, AutoIncrement.PostIncrement);
+    }
+
+    public static MachineOperand PreDecrement(PrimitiveType dataWidth, RegisterStorage reg)
+    {
+        return new MemoryOperand(dataWidth, reg, AutoIncrement.PreDecrement);
+    }
 
     protected override void DoRender(MachineInstructionRenderer renderer, MachineInstructionRendererOptions options)
     {
-        if (Offset != 0)
+        Debug.Assert(Base is not null);
+        switch (this.AutoIncrement)
         {
-            renderer.WriteString($"{Offset}[{Base}]");
-        }
-        else
-        {
-            renderer.WriteString($"[{Base}]");
+        case AutoIncrement.None:
+            if (Index is not null)
+            {
+                renderer.WriteString($"[{Index.Name},{Base.Name}]");
+            }
+            else if (Offset != 0)
+            {
+                renderer.WriteString($"{Offset}[{Base.Name}]");
+            }
+            else
+            {
+                renderer.WriteString($"[{Base.Name}]");
+            }
+            break;
+        case AutoIncrement.PreDecrement:
+            renderer.WriteString($"[-{Base.Name}]");
+            break;
+        case AutoIncrement.PostIncrement:
+            renderer.WriteString($"[{Base.Name}+]");
+            break;
+        default:
+            throw new InvalidOperationException("Impossible auto increment mode");
         }
     }
 }
