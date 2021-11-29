@@ -318,9 +318,9 @@ namespace Reko.CmdLine
             }
             else
             {
-                var uri = ImageLocation.FromUri((string) pArgs["filename"]);
-                program = ldr.LoadRawImage(uri, loadDetails);
-                program.Location = uri;
+                var location = ImageLocation.FromUri((string) pArgs["filename"]);
+                program = ldr.LoadRawImage(location, loadDetails);
+                program.Location = location;
             }
             listener.ShowStatus("Raw bytes loaded.");
             return program;

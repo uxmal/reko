@@ -698,9 +698,9 @@ namespace Reko.Core.Serialization
         {
             //$BUG: what if both sMetaData.Uri and sMetata.Filename are null?
             ImageLocation metadataUri;
-            if (!string.IsNullOrEmpty(sMetadata.Uri))
+            if (!string.IsNullOrEmpty(sMetadata.Location))
             {
-                metadataUri = ConvertToAbsoluteLocation(projectLocation, sMetadata.Uri)!;
+                metadataUri = ConvertToAbsoluteLocation(projectLocation, sMetadata.Location)!;
             }
             else
             {
@@ -739,20 +739,20 @@ namespace Reko.Core.Serialization
 
         public ScriptFile? VisitScriptFile(ImageLocation projectLocation, ScriptFile_v5 sScript)
         {
-            ImageLocation scriptUri;
-            if (!string.IsNullOrEmpty(sScript.Uri))
+            ImageLocation scriptLocation;
+            if (!string.IsNullOrEmpty(sScript.Location))
             {
-                scriptUri = ConvertToAbsoluteLocation(projectLocation, sScript.Uri)!;
+                scriptLocation = ConvertToAbsoluteLocation(projectLocation, sScript.Location)!;
             }
             else if (!string.IsNullOrEmpty(sScript.Filename))
             {
                 // No URI present, this is an older project file.
                 var scriptAbsPath = ConvertToAbsolutePath(projectLocation.FilesystemPath, sScript.Filename);
-                scriptUri = ImageLocation.FromUri(scriptAbsPath!);
+                scriptLocation = ImageLocation.FromUri(scriptAbsPath!);
             }
             else 
                 return null;
-            return loader.LoadScript(scriptUri);
+            return loader.LoadScript(scriptLocation);
         }
 
         public Program VisitAssemblerFile(AssemblerFile_v3 sAsmFile)

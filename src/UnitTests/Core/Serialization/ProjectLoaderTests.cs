@@ -390,7 +390,7 @@ namespace Reko.UnitTests.Core.Serialization
                 },
                 MetadataFiles = {
                     new MetadataFile_v3 {
-                        Uri = "file:meta1.xml",
+                        Location = "file:meta1.xml",
                     },
                     new MetadataFile_v3 {
                         Filename = "meta2.xml",
@@ -491,7 +491,7 @@ namespace Reko.UnitTests.Core.Serialization
   <arch>testArch</arch>
   <platform>testOS</platform>
   <script>
-    <uri>file:fake.script</uri>
+    <location>file:fake.script</location>
   </script>
 </project>";
             var ldr = new Mock<ILoader>();
@@ -501,7 +501,7 @@ namespace Reko.UnitTests.Core.Serialization
 
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
             var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
-            var project = prld.LoadProject(ImageLocation.FromUri("file:///c:/dir/script.proj"), stream);
+            var project = prld.LoadProject(ImageLocation.FromUri(OsPath.Absolute("dir","script.proj")), stream);
 
             Assert.AreEqual(
                 OsPath.Absolute("dir","fake.script"),

@@ -319,7 +319,7 @@ namespace Reko.UnitTests.Core.Serialization
             var expected = @"<?xml version=""1.0"" encoding=""utf-16""?>
 <project xmlns=""http://schemata.jklnet.org/Reko/v5"">
   <script>
-    <uri>script.fake</uri>
+    <location>script.fake</location>
   </script>
 </project>";
             if (sw.ToString() != expected)
@@ -450,23 +450,23 @@ namespace Reko.UnitTests.Core.Serialization
                     {
                         Architecture = arch.Object,
                         Platform = platform.Object,
-                        Location = ImageLocation.FromUri("file:///c:/test/foo.exe"),
+                        Location = ImageLocation.FromUri(OsPath.Absolute("test","foo.exe")),
                     }
                 },
                 MetadataFiles =
                 {
                     new MetadataFile
                     {
-                        Location = ImageLocation.FromUri("file:///c:/test/foo.def"),
+                        Location = ImageLocation.FromUri(OsPath.Absolute("test","foo.def")),
                         ModuleName = "foo.def",
                     }
                 }
             };
 
             var ps = new ProjectSaver(sc);
-            var sProject = ps.Serialize(ImageLocation.FromUri("c:\\test\\foo.project"), project);
+            var sProject = ps.Serialize(ImageLocation.FromUri(OsPath.Absolute("test","foo.project")), project);
             Assert.AreEqual(1, sProject.MetadataFiles.Count);
-            Assert.AreEqual("foo.def", sProject.MetadataFiles[0].Uri);
+            Assert.AreEqual("foo.def", sProject.MetadataFiles[0].Location);
             Assert.AreEqual("foo.def", sProject.MetadataFiles[0].ModuleName);
         }
 

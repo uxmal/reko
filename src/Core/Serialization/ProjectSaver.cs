@@ -316,7 +316,7 @@ namespace Reko.Core.Serialization
         {
             return new MetadataFile_v3
             {
-                Uri = ConvertToProjectRelativeUri(projectLocation, metadata.Location!),
+                Location = ConvertToProjectRelativeUri(projectLocation, metadata.Location!),
                 ModuleName = metadata.ModuleName,
             };
         }
@@ -325,7 +325,7 @@ namespace Reko.Core.Serialization
         {
             return new ScriptFile_v5
             {
-                Uri = ConvertToProjectRelativeUri(projectLocation, script.Location!),
+                Location = ConvertToProjectRelativeUri(projectLocation, script.Location!),
             };
         }
     }
