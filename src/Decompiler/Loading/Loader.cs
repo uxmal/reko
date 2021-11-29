@@ -95,8 +95,11 @@ namespace Reko.Loading
         /// image loader</param>
         /// <param name="addrLoad">Optional address at which to load the image.
         /// </param>
-        /// <returns>An instance of <see cref="ILoadedImage"/> if an image could be loaded, 
-        /// or null otherwise.</returns>
+        /// <returns>
+        /// An <see cref="ILoadedImage"/> instance. In particular, if the
+        /// file format wasn't recognized an instance of <see cref="Blob"/> is
+        /// returned.
+        /// </returns>
         public ILoadedImage Load(ImageLocation imageLocation, string? loaderName = null, Address? addrLoad = null)
         {
             byte[] image = LoadImageBytes(imageLocation, 0);

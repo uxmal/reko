@@ -222,10 +222,10 @@ namespace Reko.Gui.Forms
             {
                 var eventListener = Services.RequireService<DecompilerEventListener>();
                 eventListener.ShowStatus("Assembling program.");
-                var asmFileUri = ImageLocation.FromUri(file);
-                var program = ldr.AssembleExecutable(asmFileUri, asm, platform, null!);
+                var asmFileLocation = ImageLocation.FromUri(file);
+                var program = ldr.AssembleExecutable(asmFileLocation, asm, platform, null!);
                 var project = new Project();
-                project.AddProgram(asmFileUri, program);
+                project.AddProgram(asmFileLocation, program);
                 this.Decompiler = CreateDecompiler(project);
                 this.Decompiler.ExtractResources();
                 eventListener.ShowStatus("Assembled program.");

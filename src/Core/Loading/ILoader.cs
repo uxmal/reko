@@ -44,19 +44,25 @@ namespace Reko.Core.Loading
         /// <param name="imageLocation"></param>
         /// <param name="loader"></param>
         /// <param name="addrLoad"></param>
-        /// <returns>Either a <see cref="ILoadedImage"/> instance, or null if the file format
-        /// wasn't recognized.</returns>
-        ILoadedImage? Load(ImageLocation imageLocation, string? loader = null, Address? addrLoad = null);
+        /// <returns>
+        /// An <see cref="ILoadedImage"/> instance. In particular, if the
+        /// file format wasn't recognized an instance of <see cref="Blob"/> is
+        /// returned.
+        /// </returns>
+        ILoadedImage Load(ImageLocation imageLocation, string? loader = null, Address? addrLoad = null);
 
         /// <summary>
         /// Opens the specified file and reads the contents of the file,
         /// starting at file offset <paramref name="offset"/>. No interpretation
         /// of the file data is done.
         /// </summary>
-        /// <param name="imageLocation">The location from which to read the image data.</param>
+        /// <param name="filename">The file system path of the file from which 
+        /// to read the image data.</param>
         /// <param name="offset">Offset at which to start reading.</param>
         /// <returns>An array of bytes containing the file data.</returns>
-        byte[] LoadImageBytes(ImageLocation imageLocation, int offset);
+        //$TODO: Change the output to Stream; the image could be so large it doesn't
+        // fit in main memory.
+        byte[] LoadImageBytes(ImageLocation filename, int offset);
 
         /// <summary>
         /// Given a executable file image in <param name="bytes">, determines which file 
@@ -64,7 +70,6 @@ namespace Reko.Core.Loading
         /// </summary>
         /// <param name="imageLocation">The <see cref="ImageLocation"/> from where the 
         /// image was loaded.</param>
-        /// <param name="bytes">The contents of the executable file.</param>
         /// <param name="loader">The (optional) name of a specific loader. Providing a
         /// non-zero loader will override the file format determination process.</param>
         /// <param name="loadAddress">Address at which to load the binary. This may be null,
@@ -130,6 +135,11 @@ namespace Reko.Core.Loading
         /// custom file formats.
         /// </summary>
         public string? LoaderName;
+
+        /// <summary>
+        /// Number of zero bytes to prepend to the image before reading it.
+        /// </summary>
+        public long Offset;
 
         /// <summary>
         /// Name of the processor architecture to use. Architecture names are found 

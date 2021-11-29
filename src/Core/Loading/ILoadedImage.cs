@@ -25,7 +25,6 @@ namespace Reko.Core.Loading
 {
     /// <summary>
     /// This interface is exposed by loaded objects whose format Reko has discovered.
-    /// 
     /// </summary>
     public interface ILoadedImage
     {
@@ -33,16 +32,17 @@ namespace Reko.Core.Loading
         /// The (absolute) file location from which this object was loaded.
         /// </summary>
         /// <remarks>
-        /// Reko abuses the 'file:' schema to model file paths within (possibly nested) archives.
-        /// This is accomplished by using the '#' character to separate path segments within the respective 
+        /// Reko introduces the 'archive:' schema to model file paths within
+        /// (possibly nested) archives. This is accomplished by using the '#'
+        /// character to separate path segments within the respective
         /// archives.
         /// The syntax is as follows:
         /// - A simple executable file test.dll in the folder c:\myprograms:
-        ///     file:///c:/myprograms/test.dll
+        ///     archive:///c:/myprograms/test.dll
         /// - An executable file test.so inside a TAR archive:
-        ///     file:///home/username/archive.tar#lib/test.so
+        ///     archive:///home/username/archive.tar#lib/test.so
         /// - An executable file test.exe inside two nested archives:
-        ///     file:///home/username/outer.tar#archives/inner.tar#test.exe
+        ///     archive:///home/username/outer.tar#archives/inner.tar#test.exe
         /// </remarks>
         ImageLocation Location { get; }
 
