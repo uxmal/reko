@@ -5,8 +5,6 @@
 8000017A: warning: Call target address 00000000 is invalid.
 8000019A: warning: Call target address 00000000 is invalid.
 800000DC: warning: Call target address 00000000 is invalid.
-8000018A: warning: Procedure frame_dummy previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-800001A0: warning: Procedure frame_dummy previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 80002714: warning: Expected sizes of arrays to have been determined by now
 80002714: warning: Expected sizes of arrays to have been determined by now
 
@@ -58,16 +56,12 @@ Relocations
 === Elf\x86-64\ais3_crackme\ais3_crackme
 0000000000400440: warning: Unable to resolve imported reference __gmon_start__.
 000000000040050D: warning: Call target address 0000000000000000 is invalid.
-0000000000400510: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000000000400518: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000600DF8: warning: Expected sizes of arrays to have been determined by now
 0000000000601020: warning: Expected sizes of arrays to have been determined by now
 0000000000600DF8: warning: Expected sizes of arrays to have been determined by now
 0000000000601020: warning: Expected sizes of arrays to have been determined by now
 
 === Hunk-m68k\BENCHFN
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000288D: warning: Expected sizes of arrays to have been determined by now
 00003EAC: warning: Expected sizes of arrays to have been determined by now
 0000288D: warning: Expected sizes of arrays to have been determined by now
@@ -75,23 +69,7 @@ Relocations
 
 *** MZ-x86\BENCHFN
 Borland v2 detected
-0800:1764: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:17AB: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:1788: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:1785: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:17E6: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:1895: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:196C: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:188F: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:1A03: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:1892: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:1A60: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:1A81: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
-0800:1969: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:1905: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:1ADD: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:1AE3: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:1AE8: warning: Procedure __scanner previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:0BA1: error: An error occurred while processing the statement word16 di_45 = si_102 - (fp - 0x84<16>).
     Not handling mp16 and mp16 yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 409
@@ -112,16 +90,12 @@ l0800_113C: warning: Non-integral switch expression
 l0800_17AE: warning: Non-integral switch expression
 
 === Hunk-m68k\BENCHLNG
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 000028C5: warning: Expected sizes of arrays to have been determined by now
 00003E5C: warning: Expected sizes of arrays to have been determined by now
 000028C5: warning: Expected sizes of arrays to have been determined by now
 00003E5C: warning: Expected sizes of arrays to have been determined by now
 
 === Hunk-m68k\BENCHMUL
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00002B15: warning: Expected sizes of arrays to have been determined by now
 00004134: warning: Expected sizes of arrays to have been determined by now
 00002B15: warning: Expected sizes of arrays to have been determined by now
@@ -152,8 +126,6 @@ l0800_17AE: warning: Non-integral switch expression
 00013974: warning: Expected sizes of arrays to have been determined by now
 
 === Hunk-m68k\BYTEOPS
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00002BC4: warning: Expected sizes of arrays to have been determined by now
 00002BC4: warning: Expected sizes of arrays to have been determined by now
 
@@ -161,14 +133,6 @@ l0800_17AE: warning: Non-integral switch expression
 020A: warning: Call target address 172D is invalid.
 0224: warning: Call target address 177D is invalid.
 0105: warning: Call target address 1729 is invalid.
-08DA: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-08FD: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0904: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0916: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-091F: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-08F3: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-08FC: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-08E9: warning: Procedure fn082F previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 
 === regressions\reko-367\code
 
@@ -191,8 +155,8 @@ Error: An error occurred during decompilation.
    at Reko.Scanning.ShingledScanner.ScanRange(IProcessorArchitecture arch, MemoryArea mem, Address addrStart, UInt32 cbAlloc, UInt64 workToDo) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ShingledScanner.cs:line 201
    at Reko.Scanning.ScannerInLinq.ScanInstructions(ScanResults sr) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 130
    at Reko.Scanning.ScannerInLinq.ScanImage(ScanResults sr) in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\ScannerInLinq.cs:line 65
-   at Reko.Scanning.Scanner.ShingleScanProcedures() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1087
-   at Reko.Scanning.Scanner.ScanImage() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 798
+   at Reko.Scanning.Scanner.ShingleScanProcedures() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 1092
+   at Reko.Scanning.Scanner.ScanImage() in d:\dev\uxmal\reko\master\src\Decompiler\Scanning\Scanner.cs:line 803
    at Reko.Decompiler.ScanProgram(Program program) in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 462
    at Reko.Decompiler.ScanPrograms() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 449
    at Reko.CmdLine.CmdLineDriver.Decompile(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 211
@@ -201,7 +165,7 @@ Error: An error occurred during decompilation.
 
 === scripting\Exceptions
 IronPython 3.4.0
-Evaluating d:/dev/uxmal/reko/master/subjects/scripting/exceptions.py
+Evaluating d:\dev\uxmal\reko\master\subjects\scripting\exceptions.py
 
 === PE\x86\ExeDll\Executable
 Signature of 'Microsoft Visual C++ 8' detected.
@@ -256,25 +220,6 @@ Warning: Checksum error in line 5.
 Warning: Checksum error in line 6.
 Warning: Checksum error in line 7.
 Warning: Checksum error in line 8.
-011A: warning: Procedure fn0100 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-041A: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-045C: warning: Procedure fn043E previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0412: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0416: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0412: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-03E2: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-03FD: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0406: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0402: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0404: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0405: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0404: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0397: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-03F5: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-03F1: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-03F0: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0381: warning: Procedure fn037C previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-03BE: warning: Procedure fn03A0 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
 0579: error: Failed to write global variable g_r0579.
     Reading data type real48 not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 246
@@ -483,15 +428,12 @@ Warning: Checksum error in line 8.
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(Address address, DataType dataType, String name) in d:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 146
 
 === Hunk-m68k\FIBO
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 000028B1: warning: Expected sizes of arrays to have been determined by now
 00003ED0: warning: Expected sizes of arrays to have been determined by now
 000028B1: warning: Expected sizes of arrays to have been determined by now
 00003ED0: warning: Expected sizes of arrays to have been determined by now
 
 === regressions\snowman-82\flags
-0000000000000FA6: warning: Procedure foo previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 
 === regressions\snowman-83\flags3
 
@@ -611,11 +553,6 @@ Warning: Recursion too deep in PtrPrimitiveReplacer
 Signature of 'Microsoft Visual C++ 8' detected.
 
 === Elf\x86-64\ls\ls
-000000000040E941: warning: Procedure fn000000000040E930 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-000000000041182F: warning: Procedure fn0000000000411820 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-000000000040D69A: warning: Procedure fn000000000040D690 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000000000406A75: warning: Procedure fn0000000000406A30 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-000000000040D43E: warning: Procedure fn000000000040D420 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 000000000040216C: warning: Unable to resolve imported reference __gmon_start__.
 0000000000402178: warning: Unable to resolve imported reference __gmon_start__.
 00000000004025B0: warning: Unable to resolve imported reference __gmon_start__.
@@ -692,12 +629,7 @@ l00009F1C: warning: Non-integral switch expression
 0000C2E0: warning: Expected sizes of arrays to have been determined by now
 
 === PDP-11\lunar
-168A: warning: Procedure fn1674 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
-0AFE: warning: Procedure fn0B06 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
-0AF2: warning: Procedure fn0A94 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0896: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
-0790: warning: Procedure fn0856 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
-078C: warning: Procedure fn053A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 1780: warning: PDP-11 instruction spl is not supported yet.
 294A: warning: PDP-11 instruction spl is not supported yet.
 2D98: warning: PDP-11 instruction spl is not supported yet.
@@ -732,12 +664,8 @@ fn0B06: warning: Structure analysis stopped making progress, quitting. Please re
 === regressions\reko-121\m68k_jump
 
 === Hunk-m68k\MATRIXMU
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 
 === Hunk-m68k\MAX
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00002BED: warning: Expected sizes of arrays to have been determined by now
 00003DCC: warning: Expected sizes of arrays to have been determined by now
 00002BED: warning: Expected sizes of arrays to have been determined by now
@@ -755,13 +683,13 @@ fn0000EE14: error: An internal error occurred while building the expressions of 
     The given key 'l0000EE2C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 397
 fn0000CE88: error: An internal error occurred while building the expressions of fn0000CE88
     The given key 'l0000CEAC' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 397
 l0000CEAC: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 fn0000CE88: error: An error occurred while rewriting procedure to high-level language.
@@ -769,16 +697,16 @@ fn0000CE88: error: An error occurred while rewriting procedure to high-level lan
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
    at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 143
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 530
 fn0000EE14: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0000EE2C' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
    at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
-   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 143
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 530
 00000007: warning: Expected sizes of arrays to have been determined by now
 0000000D: warning: Expected sizes of arrays to have been determined by now
@@ -835,18 +763,18 @@ fn0000EE14: error: An error occurred while rewriting procedure to high-level lan
 Error: An error occurred during decompilation.
     Missing PIC model user options.
        at Reko.Arch.MicrochipPIC.Common.PICArchitecture.LoadUserOptions(Dictionary`2 options) in d:\dev\uxmal\reko\master\src\Arch\Microchip\Common\PICArchitecture.cs:line 275
-   at Reko.Loading.Loader.LoadRawImage(RekoUri imageUri, Byte[] image, Address addrLoad, LoadDetails details) in d:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 250
-   at Reko.Loading.Loader.LoadRawImage(RekoUri uri, LoadDetails raw) in d:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 210
-   at Reko.CmdLine.CmdLineDriver.LoadProgram(Dictionary`2 pArgs, LoadDetails loadDetails) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 321
+   at Reko.Loading.Loader.LoadRawImage(ImageLocation imageUri, Byte[] image, Address addrLoad, LoadDetails details) in d:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 245
+   at Reko.Loading.Loader.LoadRawImage(ImageLocation uri, LoadDetails raw) in d:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 211
+   at Reko.CmdLine.CmdLineDriver.LoadProgram(Dictionary`2 pArgs, LoadDetails loadDetails) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 322
    at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 279
 
 *** Microchip\C18\PIC18\PIC18Legacy
 Error: An error occurred during decompilation.
     Missing PIC model user options.
        at Reko.Arch.MicrochipPIC.Common.PICArchitecture.LoadUserOptions(Dictionary`2 options) in d:\dev\uxmal\reko\master\src\Arch\Microchip\Common\PICArchitecture.cs:line 275
-   at Reko.Loading.Loader.LoadRawImage(RekoUri imageUri, Byte[] image, Address addrLoad, LoadDetails details) in d:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 250
-   at Reko.Loading.Loader.LoadRawImage(RekoUri uri, LoadDetails raw) in d:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 210
-   at Reko.CmdLine.CmdLineDriver.LoadProgram(Dictionary`2 pArgs, LoadDetails loadDetails) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 321
+   at Reko.Loading.Loader.LoadRawImage(ImageLocation imageUri, Byte[] image, Address addrLoad, LoadDetails details) in d:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 245
+   at Reko.Loading.Loader.LoadRawImage(ImageLocation uri, LoadDetails raw) in d:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 211
+   at Reko.CmdLine.CmdLineDriver.LoadProgram(Dictionary`2 pArgs, LoadDetails loadDetails) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 322
    at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 279
 
 *** Elf\nanoMips\ping\ping
@@ -966,8 +894,6 @@ l0040478C: warning: Non-integral switch expression
 0000000000400DBE: warning: Call target address 0000000000000000 is invalid.
 0000000000400AEC: warning: Unable to resolve imported reference __gmon_start__.
 0000000000400CC0: warning: Unable to resolve imported reference __gmon_start__.
-0000000000400DAB: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000000000400DC1: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000400B30: warning: Unable to resolve imported reference png_get_bit_depth.
 0000000000400B50: warning: Unable to resolve imported reference png_error.
 0000000000400B60: warning: Unable to resolve imported reference png_start_read_image.
@@ -995,44 +921,16 @@ l0000000000400F4C: warning: Non-integral switch expression
 
 *** regressions\reko-90\PP
 Borland C v3 runtime detected
-0800:9016: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:9067: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:9042: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:903F: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:9075: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:906C: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:906C: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:906C: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:9127: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:920B: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:9121: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:9124: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:9313: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9337: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
-0800:9398: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:939E: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:93A3: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:92AE: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:9208: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:919E: warning: Procedure fn0800_8F97 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:8BC8: warning: Procedure fn0800_8BC2 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0800:9F8F: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 1483:1DB0: warning: x86 instruction 'phsubsw' is not supported yet.
 1483:0D6F: warning: Call target address 1483:8A82 is invalid.
-1483:0DCF: warning: Procedure fn1483_0D3F previously had a return address of 0 bytes on the stack, but now seems to have a return address of 4 bytes on the stack.
 1483:0DFC: warning: Call target address 1483:E62A is invalid.
-1483:0E06: warning: Procedure fn1483_0D3F previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
+1483:0E06: warning: Procedure fn1483_0D3F previously had a return address of 4 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
 1483:0E06: warning: Multiple different values of stack delta in procedure fn1483_0D3F when processing RET instruction; was -9582 previously.
-1483:0E76: warning: Procedure fn1483_0D3F previously had a return address of 0 bytes on the stack, but now seems to have a return address of 4 bytes on the stack.
 1483:0E76: warning: Multiple different values of stack delta in procedure fn1483_0D3F when processing RET instruction; was -9582 previously.
 1483:0EFF: warning: Call target address 3024:8E10 is invalid.
-1483:0D2B: warning: Procedure fn1483_0CFA previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
 1483:0CA6: warning: Call target address 1483:FD4E is invalid.
 1483:0CD2: warning: Call target address 1483:4FE0 is invalid.
-1483:0CE6: warning: Procedure fn1483_0C91 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
-1483:0C5C: warning: Procedure fn1483_0C55 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
 1483:0CA6: warning: Call target address 1483:FD4E is invalid.
 fn0800_8F97: error: An internal error occurred while building the expressions of fn0800_8F97
     Dominator graph calculation timed out.
@@ -1056,7 +954,7 @@ l0800_8FD8: warning: Phi functions will be ignored by type analysis. This may be
 
 === scripting\pyFuncNames
 IronPython 3.4.0
-Evaluating d:/dev/uxmal/reko/master/subjects/scripting/py_func_names.py
+Evaluating d:\dev\uxmal\reko\master\subjects\scripting\py_func_names.py
 
 === PE\x86\pySample\pySample
 100013D8: warning: Call target address 00000000 is invalid.
@@ -1105,7 +1003,6 @@ Evaluating d:/dev/uxmal/reko/master/subjects/scripting/py_func_names.py
 
 === Elf\x86-64\retpoline\retpoline
 000000000040042C: warning: Unable to resolve imported reference __gmon_start__.
-0000000000400555: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000600E10: warning: Expected sizes of arrays to have been determined by now
 0000000000600E10: warning: Expected sizes of arrays to have been determined by now
 
@@ -1162,13 +1059,12 @@ Signature of 'Borland C++ for Win32 1999' detected.
 004012E4: warning: Unable to guess parameters of CC3260.DLL!__wargv_default_expand.
 0040128A: warning: Unable to guess parameters of CC3260.DLL!___CRTL_TLS_GetValue.
 0040127E: warning: Unable to guess parameters of CC3260.DLL!___CRTL_TLS_ExitThread.
-00401071: warning: Procedure _GetExceptDLLinfo previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 
 === wasm\sample
 
 === scripting\segmented
 IronPython 3.4.0
-Evaluating d:/dev/uxmal/reko/master/subjects/scripting/segmented.py
+Evaluating d:\dev\uxmal\reko\master\subjects\scripting\segmented.py
 
 === PE\x86\pySample\shingledPySample
 100013D8: warning: Call target address 00000000 is invalid.
@@ -1197,7 +1093,6 @@ Evaluating d:/dev/uxmal/reko/master/subjects/scripting/segmented.py
 00000000000006B8: warning: Unable to resolve imported reference _ITM_registerTMCloneTable.
 00000000000006E9: warning: Unable to resolve imported reference __cxa_finalize.
 0000000000000610: warning: Unable to resolve imported reference __cxa_finalize.
-0000000000000725: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000000600: warning: Unable to resolve imported reference posix_memalign.
 0000000000000610: warning: Unable to resolve imported reference __cxa_finalize.
 0000000000200DE8: warning: Expected sizes of arrays to have been determined by now
@@ -1214,11 +1109,6 @@ Evaluating d:/dev/uxmal/reko/master/subjects/scripting/segmented.py
 4D58: warning: PDP-11 instruction spl is not supported yet.
 53EA: warning: PDP-11 instruction spl is not supported yet.
 46BE: warning: Unable to determine size of call or jump table; there may be more than 2 entries.
-1924: warning: Procedure fn1900 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-1930: warning: Procedure fn1900 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-192E: warning: Procedure fn1900 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-190E: warning: Procedure fn1900 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-136E: warning: Procedure fn1370 previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
 0D22: error: An error occurred while processing the statement word16 r1_53 = (fp - 6<16> << 1<i16>) + (fp - 6<16>).
     Not handling ptr16 and (union (cui16 u1) (ptr16 u0)) yet.
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 403
@@ -1272,7 +1162,7 @@ safe_read: error: An error occurred while rewriting procedure to high-level lang
    at Reko.Core.Block.get_ThenBlock() in d:\dev\uxmal\reko\master\src\Core\Block.cs:line 91
    at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
    at Reko.Structure.CompoundConditionCoalescer.Transform() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 78
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 79
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 530
 00017540: warning: Expected sizes of arrays to have been determined by now
 0002B411: warning: Expected sizes of arrays to have been determined by now
@@ -1280,12 +1170,6 @@ safe_read: error: An error occurred while rewriting procedure to high-level lang
 0002B411: warning: Expected sizes of arrays to have been determined by now
 
 === PDP-11\spcinv
-0620: warning: Procedure fn05D4 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-067A: warning: Procedure fn064A previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
-05B4: warning: Procedure fn04A0 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-078A: warning: Procedure fn06D6 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-077A: warning: Procedure fn06D6 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0838: warning: Procedure fn07A6 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 02CC: warning: Expected sizes of arrays to have been determined by now
 0DC4: warning: Expected sizes of arrays to have been determined by now
 0DE0: warning: Expected sizes of arrays to have been determined by now
@@ -1318,8 +1202,6 @@ safe_read: error: An error occurred while rewriting procedure to high-level lang
 0F2A: warning: Expected sizes of arrays to have been determined by now
 
 === Hunk-m68k\STRLEN
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 
 === Elf\ARM64\arm64_elf\subject
 0000000000000DF0: warning: Unable to resolve imported reference __cxa_finalize.
@@ -1346,8 +1228,6 @@ l000084F0_1: warning: Non-integral switch expression
 000000000040051D: warning: Call target address 0000000000000000 is invalid.
 00000000004003E4: warning: Unable to resolve imported reference __gmon_start__.
 00000000004003F0: warning: Unable to resolve imported reference __gmon_start__.
-0000000000400520: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000000000400528: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000400430: warning: Unable to resolve imported reference __gmon_start__.
 0000000000600E10: warning: Expected sizes of arrays to have been determined by now
 0000000000600E10: warning: Expected sizes of arrays to have been determined by now
@@ -1365,31 +1245,14 @@ test.exe: warning: Win32 MIPS main procedure finder not supported.
 000114B8: warning: Call target address 00000000 is invalid.
 
 === Hunk-m68k\TESTLONG
-000011CE: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00002815: warning: Expected sizes of arrays to have been determined by now
 00003DAC: warning: Expected sizes of arrays to have been determined by now
 00002815: warning: Expected sizes of arrays to have been determined by now
 00003DAC: warning: Expected sizes of arrays to have been determined by now
 
 === TLCS\90\TLCS-90
-034E: warning: Procedure fn034E previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0E2F: warning: Procedure fn0C1D previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
-060B: warning: Procedure fn04EE previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 
 *** Raw\1750A\trigtst
-000003C8: warning: Procedure fn032A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000040A: warning: Procedure fn03EC previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000036C: warning: Procedure fn034E previously had a return address of 0 bytes on the stack, but now seems to have a return address of 2 bytes on the stack.
-000003C0: warning: Procedure fn032A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-000003C4: warning: Procedure fn032A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-000003C0: warning: Procedure fn032A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-000003B0: warning: Procedure fn032A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-000003B3: warning: Procedure fn032A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-000003B2: warning: Procedure fn032A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-000003AB: warning: Procedure fn032A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-000003B2: warning: Procedure fn032A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-000003B1: warning: Procedure fn032A previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0007: error: Failed to write global variable g_t0007.
     Reading data type byte not implemented yet.
        at Reko.Core.Memory.Word16ImageReader.TryReadBe(DataType dataType, Constant& value) in d:\dev\uxmal\reko\master\src\Core\Memory\Word16ImageReader.cs:line 246
@@ -2298,16 +2161,16 @@ fn0000802E: error: An error occurred while rewriting procedure to high-level lan
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
    at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
-   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 143
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 530
 fn00009746: error: An error occurred while rewriting procedure to high-level language.
     The given key 'l0000985B' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
    at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
-   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 143
-   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 80
+   at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
+   at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 530
 fn000125CA: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 
@@ -2333,8 +2196,6 @@ varargs_test.exe: warning: Win32 X86-64 main procedure finder not implemented ye
 0000000140001E70: warning: Unable to resolve imported reference api-ms-win-crt-runtime-l1-1-0.dll!terminate.
 0000000140001E6A: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_crt_atexit.
 0000000140001E64: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_register_onexit_function.
-00000001400011CC: warning: Procedure fn00000001400011B0 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-0000000140001441: warning: Procedure Win32CrtStartup previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000140001DF2: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_set_app_type.
 0000000140001DFE: warning: Unable to guess parameters of api-ms-win-crt-runtime-l1-1-0.dll!_configure_narrow_argv.
 0000000140001E4C: warning: Unable to guess parameters of api-ms-win-crt-locale-l1-1-0.dll!_configthreadlocale.
@@ -2362,4 +2223,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 79 binaries in 58.15 seconds.
+Decompiled 79 binaries in 55.96 seconds.

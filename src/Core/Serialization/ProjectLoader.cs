@@ -202,6 +202,8 @@ namespace Reko.Core.Serialization
             project.MetadataFiles.AddRange(typelibs);
             project.ScriptFiles.AddRange(scripts);
             project.Programs.AddRange(programs);
+
+            this.project.FireScriptEvent(ScriptEvent.OnProgramLoaded);
             return this.project;
         }
 
@@ -352,7 +354,6 @@ namespace Reko.Core.Serialization
             default:
                 throw new NotImplementedException();
             }
-
         }
 
         private Address? LoadAddress(UserData_v4 user, IProcessorArchitecture arch)

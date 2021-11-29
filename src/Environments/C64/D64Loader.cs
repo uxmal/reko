@@ -241,11 +241,13 @@ namespace Reko.Environments.C64
                 var prgLoader = new PrgLoader(services, prgUri, imageBytes);
                 var program = prgLoader.LoadProgram(null);
                 program.Name = this.Name;
+                program.Uri = prgUri;
                 return program;
             }
 
             public Program LoadSeq(IServiceProvider services, Address addrPreferred, byte[] imageBytes)
             {
+                var seqUri = archive.Uri.AppendFragment(this.Name);
                 var mem = new ByteMemoryArea(addrPreferred, imageBytes);
                 var arch = new Mos6502Architecture(services, "mos6502", new Dictionary<string, object>());
                 var program = new Program(
@@ -256,6 +258,7 @@ namespace Reko.Environments.C64
                     new DefaultPlatform(services, arch))
                 {
                     Name = this.Name,
+                    Uri = archive.Uri.AppendFragment(this.Name)
                 };
                 return program;
             }

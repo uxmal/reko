@@ -68,6 +68,7 @@ namespace Reko.Loading
         {
             var program = asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
             program.Name = asmFileLocation.GetFilename();
+            program.Uri = asmFileLocation;
             program.Platform = platform;
             foreach (var sym in asm.ImageSymbols)
             {
@@ -103,7 +104,10 @@ namespace Reko.Loading
             projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
             var project = projectLoader.LoadProject(imageLocation, image);
             if (project is not null)
+            {
+                project.FireScriptEvent(ScriptEvent.OnProgramLoaded);
                 return project;
+            }
 
             var binaryImage = LoadBinaryImage(imageLocation, image, loaderName, addrLoad);
             if (binaryImage is Program program)
@@ -158,7 +162,7 @@ namespace Reko.Loading
             return loadedImage;
         }
 
-        private Program PostProcessProgram(ImageLocation imageUri, Address addrLoad, ImageLoader imgLoader, Program program)
+        private Program PostProcessProgram(ImageLocation imageLocation, Address addrLoad, ImageLoader imgLoader, Program program)
         {
             // Sanity check of the 'Needs' properties.
             if (program.NeedsScanning && !program.NeedsSsaTransform)
@@ -167,7 +171,8 @@ namespace Reko.Loading
                     $"Image loader {imgLoader.GetType().FullName} has set the program.NeedsScanning " +
                     "and program.NeedsSsaTransform to inconsistent values.");
 
-            program.Name = imageUri.GetFilename();
+            program.Name = imageLocation.GetFilename();
+            program.Uri = imageLocation;
             if (program.NeedsScanning)
             {
                 if (imgLoader is ProgramImageLoader piLoader)
@@ -204,8 +209,6 @@ namespace Reko.Loading
             raw.ArchitectureOptions ??= new Dictionary<string, object>();
             byte[] image = this.LoadImageBytes(uri, 0);
             var program = this.LoadRawImage(uri, image, null, raw);
-            var project = new Project();
-            project.AddProgram(uri, program);
             return program;
         }
 
@@ -220,12 +223,8 @@ namespace Reko.Loading
             raw.ArchitectureOptions ??= new Dictionary<string, object>();
             var inventedUri = ImageLocation.FromUri("file:image");
             var program = this.LoadRawImage(inventedUri, image, null, raw);
-            var project = new Project();
-            project.AddProgram(inventedUri, program);
             return program;
         }
-
-
 
         /// <summary>
         /// Loads a <see cref="Program"/> from a flat image where all the metadata has been 
@@ -269,11 +268,12 @@ namespace Reko.Loading
 
             var imgLoader = CreateCustomImageLoader(Services, details.LoaderName, imageUri, image);
             var program = imgLoader.LoadProgram(addrLoad, arch, platform);
-            if (details.EntryPoint != null && arch.TryParseAddress(details.EntryPoint.Address, out Address addrEp))
+            if (details.EntryPoint is not null && arch.TryParseAddress(details.EntryPoint.Address, out Address addrEp))
             {
                 program.EntryPoints.Add(addrEp, ImageSymbol.Procedure(arch, addrEp));
             }
             program.Name = imageUri.GetFilename();
+            program.Uri = imageUri;
             program.User.Processor = arch.Name;
             program.User.Environment = platform.Name;
             program.User.Loader = details.LoaderName;

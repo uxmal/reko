@@ -279,6 +279,8 @@ namespace Reko.CmdLine
                 var program = LoadProgram(pArgs, loadDetails);
                 var project = new Project();
                 project.AddProgram(program.Uri, program);
+
+
                 var decompiler = new Decompiler(project, services);
                 dcSvc.Decompiler = decompiler;
 
@@ -318,6 +320,7 @@ namespace Reko.CmdLine
             {
                 var uri = ImageLocation.FromUri((string) pArgs["filename"]);
                 program = ldr.LoadRawImage(uri, loadDetails);
+                program.Uri = uri;
             }
             listener.ShowStatus("Raw bytes loaded.");
             return program;

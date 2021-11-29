@@ -39,6 +39,10 @@ void initpySample()
 	//         Address: 0x10001140
 	//         File: None
 	//         Decompile: True
+	//     empty_procedure_loaded:
+	//         Address: 0x10001196
+	//         File: None
+	//         Decompile: True
 	//     DllMain:
 	//         Address: 0x1000149E
 	//         File: None
