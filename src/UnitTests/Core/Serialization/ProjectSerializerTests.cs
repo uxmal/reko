@@ -311,7 +311,7 @@ namespace Reko.UnitTests.Core.Serialization
                     },
                     new DecompilerInput_v5
                     {
-                        Uri = OsPath.Relative("foo", "i am positive+.exe")
+                        Location = OsPath.Relative("foo", "i am positive+.exe")
                     }
                 }
             };
@@ -339,7 +339,7 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual("errorExit", blockLabel);
             Assert.AreEqual(Program.SegmentFilePolicy, inputFile0.User.OutputFilePolicy);
 
-            Assert.AreEqual(OsPath.Absolute("tmp","foo","i am positive+.exe"), inputFile1.Uri.FilesystemPath);
+            Assert.AreEqual(OsPath.Absolute("tmp","foo","i am positive+.exe"), inputFile1.Location.FilesystemPath);
         }
 
         [Test]

@@ -79,10 +79,10 @@ namespace Reko.Core.Serialization
             User = new UserData_v4();
         }
 
-        [XmlElement("uri")]
-        public string? Uri;
+        [XmlElement("location")]
+        public string? Location;
 
-        // Kept for backwards compatibility only, use Uri field wherever possible.
+        // Kept for backwards compatibility only, use Location field wherever possible.
         [XmlElement("filename")]
         public string? Filename;
 

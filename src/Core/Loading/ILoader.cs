@@ -37,84 +37,85 @@ namespace Reko.Core.Loading
         string? DefaultToFormat { get; set; }
 
         /// <summary>
-        /// Loads the file specified by <paramref name="imageUri"/>. If it is a Reko project
+        /// Loads the file specified by <paramref name="imageLocation"/>. If it is a Reko project
         /// file, loads that. If not, tries to match the file contents to one of the known
         /// file formats, or uses an explicity provided <paramref name="loader"/>.
         /// </summary>
-        /// <param name="imageUri"></param>
+        /// <param name="imageLocation"></param>
         /// <param name="loader"></param>
         /// <param name="addrLoad"></param>
         /// <returns>Either a <see cref="ILoadedImage"/> instance, or null if the file format
         /// wasn't recognized.</returns>
-        ILoadedImage? Load(ImageLocation imageUri, string? loader = null, Address? addrLoad = null);
+        ILoadedImage? Load(ImageLocation imageLocation, string? loader = null, Address? addrLoad = null);
 
         /// <summary>
         /// Opens the specified file and reads the contents of the file,
         /// starting at file offset <paramref name="offset"/>. No interpretation
         /// of the file data is done.
         /// </summary>
-        /// <param name="absoluteUri">The URI from which to read the image data.</param>
+        /// <param name="imageLocation">The location from which to read the image data.</param>
         /// <param name="offset">Offset at which to start reading.</param>
         /// <returns>An array of bytes containing the file data.</returns>
-        byte[] LoadImageBytes(ImageLocation absoluteUri, int offset);
+        byte[] LoadImageBytes(ImageLocation imageLocation, int offset);
 
         /// <summary>
         /// Given a executable file image in <param name="bytes">, determines which file 
         /// format the file has and delegates loading to a specific image loader.
         /// </summary>
-        /// <param name="absoluteUri">The URI from where the image was loaded.</param>
+        /// <param name="imageLocation">The <see cref="ImageLocation"/> from where the 
+        /// image was loaded.</param>
         /// <param name="bytes">The contents of the executable file.</param>
-        /// <param name="loader">The (optional) name of a specific loader. Providing a non-zero loader will
-        /// override the file format determination process.</param>
+        /// <param name="loader">The (optional) name of a specific loader. Providing a
+        /// non-zero loader will override the file format determination process.</param>
         /// <param name="loadAddress">Address at which to load the binary. This may be null,
         /// in which case the default address of the image loader will be used.</param>
         /// <returns>
         /// Either a successfully loaded <see cref="ILoadedImage"/>, or a <see cref="Blob"/>
         /// if an appropriate image loader could not be determined or loaded.
         /// </returns>
-        ILoadedImage LoadBinaryImage(ImageLocation absoluteUri, byte[] bytes, string? loader, Address? loadAddress);
+        ILoadedImage LoadBinaryImage(ImageLocation imageLocation, byte[] bytes, string? loader, Address? loadAddress);
 
         /// <summary>
         /// Given a sequence of raw bytes, loads it into memory and applies the 
         /// <paramref name="details"/> to it. Use this method if the binary has no known file
         /// format.
         /// </summary>
-        /// <param name="absoluteUri">The URI from where the image was loaded.</param>
+        /// <param name="imageLocation">The location from where the image was loaded.</param>
         /// <param name="image">The raw contents of the file.</param>
         /// <param name="loadAddress">The address at which the raw contents are to be loaded.</param>
         /// <param name="details">Details about the contents of the file.</param>
         /// <returns>A <see cref="Reko.Core.Program"/>.
         /// </returns>
-        Program LoadRawImage(ImageLocation absoluteUri, byte[] image, Address? loadAddress, LoadDetails details);
+        Program LoadRawImage(ImageLocation imageLocation, byte[] image, Address? loadAddress, LoadDetails details);
 
+        Program LoadRawImage(ImageLocation imageLocation, LoadDetails raw);
 
-        Program LoadRawImage(ImageLocation imageUri, LoadDetails raw);
+        //$TODO: deprecate this method.
         Program LoadRawImage(byte[] bytes, LoadDetails raw);
 
-
-        Program AssembleExecutable(ImageLocation absoluteUri, IAssembler asm, IPlatform platform, Address loadAddress);
-        Program AssembleExecutable(ImageLocation absoluteUri, byte[] bytes, IAssembler asm, IPlatform platform, Address loadAddress);
+        Program AssembleExecutable(ImageLocation asmfileLocation, IAssembler asm, IPlatform platform, Address loadAddress);
+        Program AssembleExecutable(ImageLocation asmfileLocation, byte[] bytes, IAssembler asm, IPlatform platform, Address loadAddress);
 
         /// <summary>
         /// Loads a file containing symbolic, type, or other metadata into a <see cref="Reko.Core.TypeLibrary>"/>.
         /// </summary>
-        /// <param name="matadataUri">The URI of the metadata information.</param>
+        /// <param name="metadataLocation">The location of the metadata information.</param>
         /// <param name="platform">The operating environment for the file.</param>
         /// <param name="typeLib">A type library into which the metadata will be added.</param>
         /// <returns>The updated <paramref name="typeLib"/> or null if no appropriate loader for the
         /// metadata could be found.
         /// </returns>
-        TypeLibrary? LoadMetadata(ImageLocation matadataUri, IPlatform platform, TypeLibrary typeLib);
+        TypeLibrary? LoadMetadata(ImageLocation metadataLocation, IPlatform platform, TypeLibrary typeLib);
 
         /// <summary>
         /// Loads a file containing script.
         /// </summary>
-        /// <param name="fileName">The name of the file.</param>
+        /// <param name="scriptLocation">The location of the script.</param>
         /// <returns>
         /// Evaluated script file or null if no appropriate loader for the
         /// script format could be found.
         /// </returns>
-        ScriptFile? LoadScript(ImageLocation fileName);
+        ScriptFile? LoadScript(ImageLocation scriptLocation);
     }
 
     /// <summary>

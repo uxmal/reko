@@ -332,7 +332,7 @@ namespace Reko.UnitTests.Core.Serialization
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
             var project = prld.LoadProject(ImageLocation.FromUri(OsPath.Absolute("users","bob","projects","foo.project")), sProject);
 
-            var programUri = project.Programs[0].Uri;
+            var programUri = project.Programs[0].Location;
             Assert.AreEqual(OsPath.Absolute("users","bob","projects","foo.exe"), programUri.FilesystemPath);
         }
 
@@ -347,7 +347,7 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                     new DecompilerInput_v5
                     {
-                        Uri = "file:foo.exe",
+                        Location = "file:foo.exe",
                     },
                 }
             };
@@ -366,7 +366,7 @@ namespace Reko.UnitTests.Core.Serialization
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
             var projectPath = OsPath.Absolute("users", "bob", "projects", "foo.project");
             var project = prld.LoadProject(ImageLocation.FromUri(projectPath), sProject);
-            Assert.AreEqual(OsPath.Absolute("users", "bob", "projects", "foo.exe"), project.Programs[0].Uri.FilesystemPath);
+            Assert.AreEqual(OsPath.Absolute("users", "bob", "projects", "foo.exe"), project.Programs[0].Location.FilesystemPath);
         }
 
 
@@ -479,7 +479,7 @@ namespace Reko.UnitTests.Core.Serialization
 
             Assert.AreEqual(
                 ImageLocation.FromUri(AbsolutePathEndingWith("dir", "fake.script")),
-                project.ScriptFiles.Single().Uri);
+                project.ScriptFiles.Single().Location);
         }
 
         [Test]
@@ -505,7 +505,7 @@ namespace Reko.UnitTests.Core.Serialization
 
             Assert.AreEqual(
                 OsPath.Absolute("dir","fake.script"),
-                project.ScriptFiles.Single().Uri.FilesystemPath);
+                project.ScriptFiles.Single().Location.FilesystemPath);
         }
 
         [Test]

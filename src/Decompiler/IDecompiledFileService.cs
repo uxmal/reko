@@ -183,7 +183,7 @@ namespace Reko
 
         public static string GenerateDerivedFilename(Program program, string newExtension)
         {
-            return Path.ChangeExtension(program.Uri.GetFilename(), newExtension);
+            return Path.ChangeExtension(program.Location.GetFilename(), newExtension);
         }
     }
 }

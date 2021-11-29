@@ -161,7 +161,7 @@ namespace Reko.UnitTests.Gui.Forms
         {
             var archive = new Mock<IArchive>();
             var archiveFile = new Mock<ArchivedFile>();
-            program.Uri = ImageLocation.FromUri("file:test.archive#dir/test.exe");
+            program.Location = ImageLocation.FromUri("file:test.archive#dir/test.exe");
 
             loader.Setup(l => l.Load(ImageLocation.FromUri("file:test.archive"), null, null))
                 .Returns(archive.Object);

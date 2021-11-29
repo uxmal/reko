@@ -63,7 +63,7 @@ namespace Reko.Scripts.Python
 
         public override void Evaluate(string script)
         {
-            var filename = this.Uri.FilesystemPath;
+            var filename = this.Location.FilesystemPath;
             this.eventsAPI = Evaluate(
                 outputWriter, eventListener, cfgSvc, fsSvc, script, filename);
         }
@@ -83,7 +83,7 @@ namespace Reko.Scripts.Python
             catch (Exception ex)
             {
                 var scriptError = CreateError(
-                    Uri.FilesystemPath,
+                    Location.FilesystemPath,
                     ex,
                     "An error occurred while running the Python script.",
                     engine);

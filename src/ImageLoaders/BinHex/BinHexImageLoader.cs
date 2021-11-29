@@ -35,8 +35,8 @@ namespace Reko.ImageLoaders.BinHex
     {
         private static readonly Address PreferredBaseAddress = Address.Ptr32(0x00100000);
 
-        public BinHexImageLoader(IServiceProvider services, ImageLocation absoluteUri, byte [] imgRaw) 
-            : base(services, absoluteUri, imgRaw)
+        public BinHexImageLoader(IServiceProvider services, ImageLocation imageLocation, byte [] imgRaw) 
+            : base(services, imageLocation, imgRaw)
         {
         }
 

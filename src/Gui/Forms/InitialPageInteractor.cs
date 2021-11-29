@@ -193,8 +193,8 @@ namespace Reko.Gui.Forms
             {
             case Program program:
                 var project = new Project();
-                Debug.Assert(program.Uri is not null);
-                project.AddProgram(program.Uri, program);
+                Debug.Assert(program.Location is not null);
+                project.AddProgram(program.Location, program);
                 return project;
             case null:
                 return null;

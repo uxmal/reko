@@ -32,15 +32,15 @@ namespace Reko.Core
     /// </summary>
     public abstract class MetadataLoader
     {
-        public MetadataLoader(IServiceProvider services, ImageLocation imageUri, byte[] bytes)
+        public MetadataLoader(IServiceProvider services, ImageLocation imagelocation, byte[] bytes)
         {
             this.Services = services;
-            this.ImageUri = imageUri;
+            this.Location = imagelocation;
         }
 
         public IServiceProvider Services { get; }
 
-        public ImageLocation ImageUri { get; }
+        public ImageLocation Location { get; }
 
         /// <summary>
         /// Loads metadata from the file specified in the constructor.

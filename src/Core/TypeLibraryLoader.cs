@@ -28,7 +28,8 @@ namespace Reko.Core
     {
         private Stream stream;
 
-        public TypeLibraryLoader(IServiceProvider services, ImageLocation imageUri, byte[]  bytes) : base(services, imageUri, bytes)
+        public TypeLibraryLoader(IServiceProvider services, ImageLocation imageLocation, byte[]  bytes) 
+            : base(services, imageLocation, bytes)
         {
             this.stream = new MemoryStream(bytes);
         }

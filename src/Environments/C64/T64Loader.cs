@@ -105,7 +105,7 @@ namespace Reko.Environments.C64
         {
             public T64Archive(ImageLocation archiveUri, List<ArchiveDirectoryEntry> entries)
             {
-                this.Uri = archiveUri;
+                this.Location = archiveUri;
                 this.RootEntries = entries;
             }
 
@@ -122,7 +122,7 @@ namespace Reko.Environments.C64
                 get => RootEntries.Where(e => e.Name == path).FirstOrDefault();
             }
 
-            public ImageLocation Uri { get; }
+            public ImageLocation Location { get; }
 
             public List<ArchiveDirectoryEntry> RootEntries { get; }
 

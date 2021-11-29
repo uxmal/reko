@@ -42,9 +42,9 @@ namespace Reko.ImageLoaders.BinHex.Cpt
 
         const int BYTEMASK = 0xFF;
 
-        public CompactProArchive(ImageLocation uri, IProcessorArchitecture arch, MacOSClassic platform)
+        public CompactProArchive(ImageLocation archiveLocation, IProcessorArchitecture arch, MacOSClassic platform)
         {
-            this.Uri = uri;
+            this.Location = archiveLocation;
             this.Architecture = arch;
             this.Platform = platform;
             this.RootEntries = new List<ArchiveDirectoryEntry>();
@@ -62,7 +62,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
         /// <summary>
         /// The absolute path to the location of this archive.
         /// </summary>
-        public ImageLocation Uri { get; }
+        public ImageLocation Location { get; }
 
         public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
             => visitor.VisitArchive(this, context);
@@ -496,7 +496,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                 this.Entries = new ForkFolder(archive, this, hdr);
             }
 
-            public ImageLocation Uri => ImageLocation.FromUri(Name);
+            public ImageLocation Location => ImageLocation.FromUri(Name);
 
             public override ICollection<ArchiveDirectoryEntry> Entries { get; }
 
@@ -523,7 +523,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                     this.type = type;
                 }
 
-                public ImageLocation Uri => ImageLocation.FromUri(Name);
+                public ImageLocation Location => ImageLocation.FromUri(Name);
 
                 public uint Size => lengthUncompressed;
 
@@ -546,7 +546,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                     // The name is always 'rsrc', so go to the parent to fetch the "actual"
                     // file name.
                     program.Name = this.Parent!.Name;
-                    program.Uri = this.Uri;
+                    program.Location = this.Location;
                     return program;
                 }
             }

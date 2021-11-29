@@ -301,8 +301,7 @@ namespace Reko.Core
         /// <summary>
         /// The location from which this Program was loaded.
         /// </summary>
-        //[Obsolete("Rename this to 'Location'")]
-        public ImageLocation Uri { get; set; }
+        public ImageLocation Location { get; set; }
 
         /// <summary>
         /// All the image locations that the loader was aware of.
@@ -389,10 +388,10 @@ namespace Reko.Core
         /// absolute file names for each of the output directories.
         /// </summary>
         /// <param name="absFileName">Absolute URI of the binary being decompiled.</param>
-        public void EnsureDirectoryNames(ImageLocation absUri)
+        public void EnsureDirectoryNames(ImageLocation imageLocation)
         {
             //$TODO how to handle nested archives? 
-            var absFileName = absUri.FilesystemPath;
+            var absFileName = imageLocation.FilesystemPath;
             var dir = Path.GetDirectoryName(absFileName) ?? "";
             var filename = Path.GetFileName(absFileName);
             var outputDir = Path.Combine(dir, Path.ChangeExtension(filename, ".reko"));

@@ -450,14 +450,14 @@ namespace Reko.UnitTests.Core.Serialization
                     {
                         Architecture = arch.Object,
                         Platform = platform.Object,
-                        Uri = ImageLocation.FromUri("file:///c:/test/foo.exe"),
+                        Location = ImageLocation.FromUri("file:///c:/test/foo.exe"),
                     }
                 },
                 MetadataFiles =
                 {
                     new MetadataFile
                     {
-                        Uri = ImageLocation.FromUri("file:///c:/test/foo.def"),
+                        Location = ImageLocation.FromUri("file:///c:/test/foo.def"),
                         ModuleName = "foo.def",
                     }
                 }
@@ -498,7 +498,7 @@ namespace Reko.UnitTests.Core.Serialization
             var ploader = new ProjectLoader(sc, loader.Object, listener.Object);
             var project = ploader.LoadProject(ImageLocation.FromUri("c:\\bar\\bar.dcproj"), sProject);
             Assert.AreEqual(1, project.MetadataFiles.Count);
-            Assert.IsTrue(project.MetadataFiles[0].Uri.EndsWith("foo.def"));
+            Assert.IsTrue(project.MetadataFiles[0].Location.EndsWith("foo.def"));
         }
 
         [Test]

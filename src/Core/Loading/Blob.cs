@@ -33,10 +33,10 @@ namespace Reko.Core.Loading
         public Blob(byte[] image)
         {
             this.Image = image;
-            this.Uri = default!;
+            this.Location = default!;
         }
 
-        public ImageLocation Uri { get; set; }
+        public ImageLocation Location { get; set; }
 
         public byte[] Image { get; }
 

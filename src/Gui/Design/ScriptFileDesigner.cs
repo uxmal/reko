@@ -42,13 +42,13 @@ namespace Reko.Gui.Design
         public override void DoDefaultAction()
         {
             var editorSvc = Services!.RequireService<ITextFileEditorService>();
-            editorSvc.DisplayFile(scriptFile.Uri.FilesystemPath);
+            editorSvc.DisplayFile(scriptFile.Location.FilesystemPath);
         }
 
         public void SetTreeNodeProperties(ScriptFile scriptFile)
         {
-            TreeNode!.Text = Path.GetFileName(scriptFile.Uri.FilesystemPath);
-            var ext = Path.GetExtension(scriptFile.Uri.FilesystemPath).ToLower();
+            TreeNode!.Text = Path.GetFileName(scriptFile.Location.FilesystemPath);
+            var ext = Path.GetExtension(scriptFile.Location.FilesystemPath).ToLower();
             TreeNode.ImageName = $"Script{ext}.ico";
         }
     }

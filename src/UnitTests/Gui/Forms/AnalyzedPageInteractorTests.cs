@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Gui.Forms
             };
             var project = new Project
             {
-                Uri = ImageLocation.FromUri("/home/bob/reko.project"),
+                Location = ImageLocation.FromUri("/home/bob/reko.project"),
             };
             project.AddProgram(ImageLocation.FromUri("/home/bob/test.exe"), program);
             var ldr = new Mock<ILoader>();

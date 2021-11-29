@@ -31,8 +31,8 @@ namespace Reko.ImageLoaders.Coff
 {
     public class CoffLoader : ProgramImageLoader
     {
-        public CoffLoader(IServiceProvider services, ImageLocation imageUri, byte[] rawBytes)
-            : base(services, imageUri, rawBytes)
+        public CoffLoader(IServiceProvider services, ImageLocation imageLocation, byte[] rawBytes)
+            : base(services, imageLocation, rawBytes)
         {
             this.header = LoadHeader();
         }

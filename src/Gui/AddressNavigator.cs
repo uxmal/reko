@@ -59,7 +59,7 @@ namespace Reko.Gui
 
         public override string ToString()
         {
-            return string.Format("{0}!{1}", Program.Uri, Address);
+            return string.Format("{0}!{1}", Program.Location, Address);
         }
     }
 }

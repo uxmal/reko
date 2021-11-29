@@ -126,8 +126,8 @@ namespace Reko.ImageLoaders.MzExe
         private NE_TARGETOS bTargetOs;
         private ushort cResourceTableEntries;
 
-        public NeImageLoader(IServiceProvider services, ImageLocation imageUri, byte[] rawBytes, uint e_lfanew)
-            : base(services, imageUri, rawBytes)
+        public NeImageLoader(IServiceProvider services, ImageLocation imageLocation, byte[] rawBytes, uint e_lfanew)
+            : base(services, imageLocation, rawBytes)
         {
             this.listener = Services.RequireService<DecompilerEventListener>();
             this.lfaNew = e_lfanew;

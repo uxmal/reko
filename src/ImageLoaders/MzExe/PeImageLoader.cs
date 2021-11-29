@@ -113,7 +113,8 @@ namespace Reko.ImageLoaders.MzExe
         private Relocator relocator;
 
 #nullable disable
-        public PeImageLoader(IServiceProvider services, ImageLocation imageUri, byte [] img, uint peOffset) : base(services, imageUri, img)
+        public PeImageLoader(IServiceProvider services, ImageLocation imageLocation, byte [] img, uint peOffset) 
+            : base(services, imageLocation, img)
 		{
             EndianImageReader rdr = new LeImageReader(RawImage, peOffset);
 			if (rdr.ReadByte() != 'P' ||

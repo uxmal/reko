@@ -182,7 +182,7 @@ namespace Reko.CmdLine
                 {
                     decompiler.Project.MetadataFiles.Add(new MetadataFile
                     {
-                        Uri = ImageLocation.FromUri((string) oMetadata)
+                        Location = ImageLocation.FromUri((string) oMetadata)
                     });
                 }
                 if (pArgs.ContainsKey("dasm-address"))
@@ -278,7 +278,7 @@ namespace Reko.CmdLine
                 };
                 var program = LoadProgram(pArgs, loadDetails);
                 var project = new Project();
-                project.AddProgram(program.Uri, program);
+                project.AddProgram(program.Location, program);
 
 
                 var decompiler = new Decompiler(project, services);
@@ -320,7 +320,7 @@ namespace Reko.CmdLine
             {
                 var uri = ImageLocation.FromUri((string) pArgs["filename"]);
                 program = ldr.LoadRawImage(uri, loadDetails);
-                program.Uri = uri;
+                program.Location = uri;
             }
             listener.ShowStatus("Raw bytes loaded.");
             return program;

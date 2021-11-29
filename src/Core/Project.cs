@@ -35,13 +35,13 @@ namespace Reko.Core
             MetadataFiles = new ObservableRangeCollection<MetadataFile>();
             ScriptFiles = new ConcurrentObservableCollection<ScriptFile>();
             LoadedMetadata = new TypeLibrary();
-            Uri = default!;
+            Location = default!;
         }
 
         /// <summary>
         /// The URI from which this project was loaded.
         /// </summary>
-        public ImageLocation Uri { get; set; }
+        public ImageLocation Location { get; set; }
 
         /// <summary>
         /// A list of binaries that are to be decompiled.
@@ -68,10 +68,10 @@ namespace Reko.Core
         public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
             => visitor.VisitProject(this, context);
 
-        public void AddProgram(ImageLocation absoluteUri, Program program)
+        public void AddProgram(ImageLocation programLocation, Program program)
         {
-            program.Uri = absoluteUri;
-            program.EnsureDirectoryNames(absoluteUri);
+            program.Location = programLocation;
+            program.EnsureDirectoryNames(programLocation);
             this.Programs.Add(program);
         }
 

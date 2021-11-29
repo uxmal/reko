@@ -54,8 +54,8 @@ namespace Reko.ImageLoaders.MachO
         internal List<ImageSymbol> entryPoints;
         internal Program? program;
 
-        public MachOLoader(IServiceProvider services, ImageLocation imageUri, byte[] rawImg)
-            : base(services, imageUri, rawImg)
+        public MachOLoader(IServiceProvider services, ImageLocation imageLocation, byte[] rawImg)
+            : base(services, imageLocation, rawImg)
         {
             this.sections = new List<MachOSection>();
             this.sectionsByName = new Dictionary<string, MachOSection>();
@@ -64,7 +64,6 @@ namespace Reko.ImageLoaders.MachO
             this.machoSymbols = new List<MachOSymbol>();
             this.entryPoints = new List<ImageSymbol>();
         }
-
 
         public override Address PreferredBaseAddress
         {

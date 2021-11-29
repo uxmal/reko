@@ -70,7 +70,7 @@ namespace Reko.Services
                     return "";
                 if (decompiler.Project.Programs.Count == 0)
                     return "";
-                var projectUri = decompiler.Project.Programs[0].Uri;
+                var projectUri = decompiler.Project.Programs[0].Location;
                 if (projectUri is null)
                     return "";
                 return projectUri.GetFilename();

@@ -32,10 +32,9 @@ namespace Reko.Core
     {
         //$TODO: add a ctor with the filename.
         /// <summary>
-        /// The URI of an image used by the project. This URI is expected to be relative to the 
-        /// directory containing the project file itself
+        /// The <see cref="ImageLocation"/> of an image used by the project.
         /// </summary>
-        public ImageLocation? Uri { get; set; }
+        public ImageLocation? Location { get; set; }
 
         public abstract T Accept<T>(IProjectFileVisitor<T> visitor);
     }

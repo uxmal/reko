@@ -746,7 +746,7 @@ namespace Reko.Gui.Forms
                 return true;
             if (string.IsNullOrEmpty(this.ProjectFileName))
             {
-                var filename = decompilerSvc.Decompiler.Project.Programs[0].Uri.FilesystemPath;
+                var filename = decompilerSvc.Decompiler.Project.Programs[0].Location.FilesystemPath;
                 string newName = uiSvc.ShowSaveFileDialog(
                     Path.ChangeExtension(filename, Project_v5.FileExtension));
                 if (newName == null)

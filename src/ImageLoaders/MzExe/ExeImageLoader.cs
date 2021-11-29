@@ -64,7 +64,8 @@ namespace Reko.ImageLoaders.MzExe
                                                         // EXE format header is located. This field is only valid
                                                         // if the e_lfaRelocations field >= 0x40
 
-        public ExeImageLoader(IServiceProvider services, ImageLocation imageUri, byte [] image) : base(services, imageUri, image)
+        public ExeImageLoader(IServiceProvider services, ImageLocation imageLocation, byte [] image) 
+            : base(services, imageLocation, image)
 		{
             this.services = services;
             ReadCommonExeFields();	

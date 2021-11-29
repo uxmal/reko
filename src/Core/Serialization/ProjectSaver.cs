@@ -44,17 +44,17 @@ namespace Reko.Core.Serialization
         /// <summary>
         /// Given a <see cref="Project"/> serializes it into a <see cref="Project_v5"/>. 
         /// </summary>
-        /// <param name="projectUri">The URI of the project file.</param>
+        /// <param name="projectLocation">The URI of the project file.</param>
         /// <param name="project">A <see cref="Project"/> instance.</param>
         /// <returns></returns>
-        public Project_v5 Serialize(ImageLocation projectUri, Project project)
+        public Project_v5 Serialize(ImageLocation projectLocation, Project project)
         {
             var inputFiles = project.Programs.Select(
-                p => VisitProgram(projectUri, p)).ToList();
+                p => VisitProgram(projectLocation, p)).ToList();
             var metadataFiles = project.MetadataFiles.Select(
-                m => VisitMetadataFile(projectUri, m)).ToList();
+                m => VisitMetadataFile(projectLocation, m)).ToList();
             var scriptFiles = project.ScriptFiles.Select(
-                s => VisitScriptFile(projectUri, s)).ToList();
+                s => VisitScriptFile(projectLocation, s)).ToList();
             var sp = new Project_v5
             {
                 // ".Single()" because there can be only one Architecture and Platform, realistically.
@@ -67,12 +67,12 @@ namespace Reko.Core.Serialization
             return sp;
         }
 
-        public DecompilerInput_v5 VisitProgram(ImageLocation projectUri, Program program)
+        public DecompilerInput_v5 VisitProgram(ImageLocation projectLocation, Program program)
         {
-            var projectPath = projectUri.FilesystemPath;
+            var projectPath = projectLocation.FilesystemPath;
             return new DecompilerInput_v5
             {
-                Uri = ConvertToProjectRelativeUri(projectUri, program.Uri),
+                Location = ConvertToProjectRelativeUri(projectLocation, program.Location),
                 User = new UserData_v4
                 {
                     Loader = program.User.Loader,
@@ -312,20 +312,20 @@ namespace Reko.Core.Serialization
             throw new NotSupportedException(value.GetType().Name);
         }
 
-        public MetadataFile_v3 VisitMetadataFile(ImageLocation projectUri, MetadataFile metadata)
+        public MetadataFile_v3 VisitMetadataFile(ImageLocation projectLocation, MetadataFile metadata)
         {
             return new MetadataFile_v3
             {
-                Uri = ConvertToProjectRelativeUri(projectUri, metadata.Uri!),
+                Uri = ConvertToProjectRelativeUri(projectLocation, metadata.Location!),
                 ModuleName = metadata.ModuleName,
             };
         }
 
-        private ScriptFile_v5 VisitScriptFile(ImageLocation projectUri, ScriptFile script)
+        private ScriptFile_v5 VisitScriptFile(ImageLocation projectLocation, ScriptFile script)
         {
             return new ScriptFile_v5
             {
-                Uri = ConvertToProjectRelativeUri(projectUri, script.Uri!),
+                Uri = ConvertToProjectRelativeUri(projectLocation, script.Location!),
             };
         }
     }

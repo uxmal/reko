@@ -42,6 +42,9 @@ namespace Reko.Core
     {
         private const string ArchiveScheme = "archive:";
         private const string FileScheme = "file:";
+        // Regrettably, the .NET 5.0 jitter isn't smart enough to optimize "file:".Length to 5.
+        private const int ArchiveSchemeLength = 8;
+        private const int FileSchemeLength = 5;
 
         /// <summary>
         /// Constructs an <see cref="ImageLocation"/> from a file system
@@ -78,10 +81,10 @@ namespace Reko.Core
             }
             else if (uri.StartsWith(ArchiveScheme))
             {
-                int i = uri.IndexOf('#', 8); // Skip the 'archive:' prefix.
+                int i = uri.IndexOf('#', ArchiveSchemeLength); // Skip the 'archive:' prefix.
                 if (i < 0)
-                    return new ImageLocation(WebUtility.UrlDecode(uri.Substring(8)));
-                var fsPath = WebUtility.UrlDecode(uri.Substring(8, i - 8));
+                    return new ImageLocation(WebUtility.UrlDecode(uri.Substring(ArchiveSchemeLength)));
+                var fsPath = WebUtility.UrlDecode(uri.Substring(8, i - ArchiveSchemeLength));
                 var fragments = uri.Substring(i + 1)
                     .Split('#')
                     .Select(f => WebUtility.UrlDecode(f))
@@ -116,6 +119,11 @@ namespace Reko.Core
 
         public int CompareTo(ImageLocation that) => throw new NotImplementedException();
 
+        /// <summary>
+        /// Determines whether this <see cref="ImageLocation"/> ends with the given string.
+        /// </summary>
+        /// <param name="s">The string to compare to the substring at the end of this instance.</param>
+        /// <returns>True if there was a match, false if not.</returns>
         public bool EndsWith(string s)
         {
             var str = this.HasFragments
@@ -124,6 +132,12 @@ namespace Reko.Core
             return str.EndsWith(s);
         }
 
+        /// <summary>
+        /// Determines whether this <see cref="ImageLocation"/> ends with the given string.
+        /// </summary>
+        /// <param name="s">The string to compare to the substring at the end of this instance.</param>
+        /// <param name="c">String comparison to use.</param>
+        /// <returns>True if there was a match, false if not.</returns>
         public bool EndsWith(string s, StringComparison c)
         {
             var str = this.HasFragments
@@ -132,8 +146,15 @@ namespace Reko.Core
             return str.EndsWith(s, c);
         }
 
-        public override bool Equals(object obj)
+        /// <summary>
+        /// Compares this <see cref="ImageLocation"/> with another object for equality.
+        /// </summary>
+        /// <param name="obj">Object with which to test equality.</param>
+        /// <returns>True if the objects are equal.</returns>
+        public override bool Equals(object? obj)
         {
+            if (ReferenceEquals(this, obj))
+                return true;
             if (obj is not ImageLocation that)
                 return false;
             if (this.FilesystemPath != that.FilesystemPath)
@@ -148,6 +169,10 @@ namespace Reko.Core
             return true;
         }
 
+        /// <summary>
+        /// Computes a hash code for this <see cref="ImageLocation"/>.
+        /// </summary>
+        /// <returns>A signed integer hash code.</returns>
         public override int GetHashCode()
         {
             int h = Fragments.Length;
@@ -180,9 +205,13 @@ namespace Reko.Core
                 }
             }
             // Skip the 'file:' scheme.
-            return 5;
+            return FileSchemeLength;
         }
 
+        /// <summary>
+        /// Returns just a file name and extension for this <see cref="ImageLocation"/>.
+        /// </summary>
+        /// <returns></returns>
         public string GetFilename()
         {
             var str = this.HasFragments

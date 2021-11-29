@@ -53,12 +53,12 @@ namespace Reko.Core.Serialization
             return Path.GetFullPath(combined);
         }
 
-        public static ImageLocation? ConvertToAbsoluteUri(
-            ImageLocation projectUri, string? projectRelativeUri)
+        public static ImageLocation? ConvertToAbsoluteLocation(
+            ImageLocation projectLocation, string? projectRelativeUri)
         {
-            if (projectUri is null || projectRelativeUri is null)
+            if (projectLocation is null || projectRelativeUri is null)
                 return null;
-            var projectDir = Path.GetDirectoryName(projectUri.FilesystemPath);
+            var projectDir = Path.GetDirectoryName(projectLocation.FilesystemPath);
             return new ImageLocation(projectDir).Combine(projectRelativeUri);
         }
 

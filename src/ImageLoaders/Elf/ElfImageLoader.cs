@@ -64,8 +64,8 @@ namespace Reko.ImageLoaders.Elf
 
         protected ElfLoader? innerLoader;
 
-        public ElfImageLoader(IServiceProvider services, ImageLocation imageUri, byte[] rawBytes)
-            : base(services, imageUri, rawBytes)
+        public ElfImageLoader(IServiceProvider services, ImageLocation imageLocation, byte[] rawBytes)
+            : base(services, imageLocation, rawBytes)
         {
             this.addrPreferred = Address.Ptr32(0);
         }

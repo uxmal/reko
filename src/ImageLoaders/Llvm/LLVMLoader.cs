@@ -31,7 +31,8 @@ namespace Reko.ImageLoaders.LLVM
 {
     public class LLVMLoader : ProgramImageLoader
     {
-        public LLVMLoader(IServiceProvider services, ImageLocation imageUri, byte[] imgRaw) : base(services, imageUri, imgRaw)
+        public LLVMLoader(IServiceProvider services, ImageLocation imageLocation, byte[] imgRaw)
+            : base(services, imageLocation, imgRaw)
         {
         }
 

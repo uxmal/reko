@@ -56,13 +56,13 @@ namespace Reko.Environments.Windows
 
         public override TypeLibrary Load(IPlatform platform, TypeLibrary dstLib)
         {
-            return Load(platform, DefaultModuleName(base.ImageUri), dstLib);
+            return Load(platform, DefaultModuleName(base.Location), dstLib);
         }
 
         public override TypeLibrary Load(IPlatform platform, string? module, TypeLibrary dstLib)
         {
             this.platform = platform;
-            module = module ?? DefaultModuleName(base.ImageUri);
+            module = module ?? DefaultModuleName(base.Location);
             this.tlLoader = new TypeLibraryDeserializer(platform, true, dstLib);
             this.moduleName = module;
             tlLoader.SetModuleName(module);

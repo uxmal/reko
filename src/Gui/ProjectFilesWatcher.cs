@@ -104,14 +104,14 @@ namespace Reko.Gui
         {
             foreach (ScriptFile script in newScripts)
             {
-                if (script.Uri.HasFragments)
+                if (script.Location.HasFragments)
                     continue;   // Can't watch inside archives...
-                var fullPath = script.Uri.FilesystemPath;
+                var fullPath = script.Location.FilesystemPath;
                 var directoryName = Path.GetDirectoryName(fullPath);
                 var fileName = Path.GetFileName(fullPath);
                 
                 var watcher = new FileSystemWatcher(directoryName, fileName);
-                if (scriptWatchers.TryAdd(script.Uri, watcher))
+                if (scriptWatchers.TryAdd(script.Location, watcher))
                 {
                     watcher.NotifyFilter = NotifyFilters.LastWrite;
                     watcher.Changed += OnScriptFileChanged;
@@ -128,7 +128,7 @@ namespace Reko.Gui
         {
             foreach (ScriptFile script in oldScripts)
             {
-                if (scriptWatchers.TryRemove(script.Uri, out var watcher))
+                if (scriptWatchers.TryRemove(script.Location, out var watcher))
                 {
                     watcher.Changed -= OnScriptFileChanged;
                     watcher.EnableRaisingEvents = false;
@@ -139,7 +139,7 @@ namespace Reko.Gui
 
         private void ReloadScript(ScriptFile scriptFile)
         {
-            var scriptUri = scriptFile.Uri;
+            var scriptUri = scriptFile.Location;
             try
             {
                 var bytes = loader.LoadImageBytes(scriptUri, 0);
@@ -181,7 +181,7 @@ namespace Reko.Gui
                 return;
             var fullPath = Path.GetFullPath(fileName);
             var scriptFile = project.ScriptFiles.
-                Where(s => Path.GetFullPath(s.Uri.FilesystemPath) == fullPath).
+                Where(s => Path.GetFullPath(s.Location.FilesystemPath) == fullPath).
                 FirstOrDefault();
             if (scriptFile is not null)
             {

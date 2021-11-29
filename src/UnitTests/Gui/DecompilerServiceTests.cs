@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Gui
             var program = new Program(imageMap, arch.Object, platform.Object);
             var project = new Project
             {
-                Uri = ImageLocation.FromUri("foo/bar/baz.project")
+                Location = ImageLocation.FromUri("foo/bar/baz.project")
             };
             project.AddProgram(fileUri, program);
             sc.AddService<IDecompiledFileService>(host.Object);

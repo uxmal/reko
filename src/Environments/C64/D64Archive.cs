@@ -35,7 +35,7 @@ namespace Reko.Environments.C64
         public D64Archive(IServiceProvider services, ImageLocation archiveUri, List<ArchiveDirectoryEntry> entries)
         {
             this.services = services;
-            this.Uri = archiveUri;
+            this.Location = archiveUri;
             this.RootEntries = entries;
         }
 
@@ -54,7 +54,7 @@ namespace Reko.Environments.C64
 
         public List<ArchiveDirectoryEntry> RootEntries { get; }
 
-        public ImageLocation Uri { get; }
+        public ImageLocation Location { get; }
 
         public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
             => visitor.VisitArchive(this, context);
