@@ -1,20 +1,26 @@
-// yyerror
-// Return size: 0
-define yyerror
-yyerror_entry:
-	r11 = fp
-	// succ:  l400000000002FF80
-l400000000002FF80:
+void yyerror()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 yyerror_exit:
+yyerror_entry:
+l400000000002FF80:
 
 
-// yyparse
-// Return size: 0
-define yyparse
-yyparse_entry:
-	r11 = fp
-	// succ:  l4000000000037B00
-l4000000000037B00:
+void yyparse()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 yyparse_exit:
+yyparse_entry:
+l4000000000037B00:
 
 

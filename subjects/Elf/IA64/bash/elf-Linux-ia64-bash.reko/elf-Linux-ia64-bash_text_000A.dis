@@ -1,690 +1,897 @@
-// array_to_word_list
-// Return size: 0
-define array_to_word_list
-array_to_word_list_entry:
-	r11 = fp
-	// succ:  l40000000000BC580
-l40000000000BC580:
+void array_to_word_list()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 array_to_word_list_exit:
+array_to_word_list_entry:
+l40000000000BC580:
 
 
-// array_keys_to_word_list
-// Return size: 0
-define array_keys_to_word_list
-array_keys_to_word_list_entry:
-	r11 = fp
-	// succ:  l40000000000BC700
-l40000000000BC700:
+void array_keys_to_word_list()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 array_keys_to_word_list_exit:
+array_keys_to_word_list_entry:
+l40000000000BC700:
 
 
-// array_assign_list
-// Return size: 0
-define array_assign_list
-array_assign_list_entry:
-	r11 = fp
-	// succ:  l40000000000BC8C0
-l40000000000BC8C0:
+void array_assign_list()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 array_assign_list_exit:
+array_assign_list_entry:
+l40000000000BC8C0:
 
 
-// array_from_word_list
-// Return size: 0
-define array_from_word_list
-array_from_word_list_entry:
-	r11 = fp
-	// succ:  l40000000000BC980
-l40000000000BC980:
+void array_from_word_list()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 array_from_word_list_exit:
+array_from_word_list_entry:
+l40000000000BC980:
 
 
-// array_to_argv
-// Return size: 0
-define array_to_argv
-array_to_argv_entry:
-	r11 = fp
-	// succ:  l40000000000BCA00
-l40000000000BCA00:
+void array_to_argv()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 array_to_argv_exit:
+array_to_argv_entry:
+l40000000000BCA00:
 
 
-// array_to_assign
-// Return size: 0
-define array_to_assign
-array_to_assign_entry:
-	r11 = fp
-	// succ:  l40000000000BCBC0
-l40000000000BCBC0:
+void array_to_assign()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 array_to_assign_exit:
+array_to_assign_entry:
+l40000000000BCBC0:
 
 
-// array_to_string
-// Return size: 0
-define array_to_string
-array_to_string_entry:
-	r11 = fp
-	// succ:  l40000000000BD400
-l40000000000BD400:
+void array_to_string()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 array_to_string_exit:
+array_to_string_entry:
+l40000000000BD400:
 
 
-// array_modcase
-// Return size: 0
-define array_modcase
-array_modcase_entry:
-	r11 = fp
-	// succ:  l40000000000BD780
-l40000000000BD780:
+void array_modcase()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 array_modcase_exit:
+array_modcase_entry:
+l40000000000BD780:
 
 
-// array_patsub
-// Return size: 0
-define array_patsub
-array_patsub_entry:
-	r11 = fp
-	// succ:  l40000000000BDBC0
-l40000000000BDBC0:
+void array_patsub()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 array_patsub_exit:
+array_patsub_entry:
+l40000000000BDBC0:
 
 
-// array_subrange
-// Return size: 0
-define array_subrange
-array_subrange_entry:
-	r11 = fp
-	// succ:  l40000000000BE000
-l40000000000BE000:
+void array_subrange()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 array_subrange_exit:
+array_subrange_entry:
+l40000000000BE000:
 
 
-// convert_var_to_array
-// Return size: 0
-define convert_var_to_array
-convert_var_to_array_entry:
-	r11 = fp
-	// succ:  l40000000000BE8C0
-l40000000000BE8C0:
+void convert_var_to_array()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 convert_var_to_array_exit:
+convert_var_to_array_entry:
+l40000000000BE8C0:
 
 
-// convert_var_to_assoc
-// Return size: 0
-define convert_var_to_assoc
-convert_var_to_assoc_entry:
-	r11 = fp
-	// succ:  l40000000000BEA40
-l40000000000BEA40:
+void convert_var_to_assoc()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 convert_var_to_assoc_exit:
+convert_var_to_assoc_entry:
+l40000000000BEA40:
 
 
-// bind_array_variable
-// Return size: 0
-define bind_array_variable
-bind_array_variable_entry:
-	r11 = fp
-	// succ:  l40000000000BEC00
-l40000000000BEC00:
+void bind_array_variable()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bind_array_variable_exit:
+bind_array_variable_entry:
+l40000000000BEC00:
 
 
-// bind_array_element
-// Return size: 0
-define bind_array_element
-bind_array_element_entry:
-	r11 = fp
-	// succ:  l40000000000BEE00
-l40000000000BEE00:
+void bind_array_element()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bind_array_element_exit:
+bind_array_element_entry:
+l40000000000BEE00:
 
 
-// bind_assoc_variable
-// Return size: 0
-define bind_assoc_variable
-bind_assoc_variable_entry:
-	r11 = fp
-	// succ:  l40000000000BEE40
-l40000000000BEE40:
+void bind_assoc_variable()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bind_assoc_variable_exit:
+bind_assoc_variable_entry:
+l40000000000BEE40:
 
 
-// find_or_make_array_variable
-// Return size: 0
-define find_or_make_array_variable
-find_or_make_array_variable_entry:
-	r11 = fp
-	// succ:  l40000000000BEF40
-l40000000000BEF40:
+void find_or_make_array_variable()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 find_or_make_array_variable_exit:
+find_or_make_array_variable_entry:
+l40000000000BEF40:
 
 
-// assign_array_var_from_word_list
-// Return size: 0
-define assign_array_var_from_word_list
-assign_array_var_from_word_list_entry:
-	r11 = fp
-	// succ:  l40000000000BF180
-l40000000000BF180:
+void assign_array_var_from_word_list()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assign_array_var_from_word_list_exit:
+assign_array_var_from_word_list_entry:
+l40000000000BF180:
 
 
-// expand_compound_array_assignment
-// Return size: 0
-define expand_compound_array_assignment
-expand_compound_array_assignment_entry:
-	r11 = fp
-	// succ:  l40000000000BF300
-l40000000000BF300:
+void expand_compound_array_assignment()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 expand_compound_array_assignment_exit:
+expand_compound_array_assignment_entry:
+l40000000000BF300:
 
 
-// print_array_assignment
-// Return size: 0
-define print_array_assignment
-print_array_assignment_entry:
-	r11 = fp
-	// succ:  l40000000000BFAC0
-l40000000000BFAC0:
+void print_array_assignment()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 print_array_assignment_exit:
+print_array_assignment_entry:
+l40000000000BFAC0:
 
 
-// print_assoc_assignment
-// Return size: 0
-define print_assoc_assignment
-print_assoc_assignment_entry:
-	r11 = fp
-	// succ:  l40000000000BFBC0
-l40000000000BFBC0:
+void print_assoc_assignment()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 print_assoc_assignment_exit:
+print_assoc_assignment_entry:
+l40000000000BFBC0:
 
 
-// valid_array_reference
-// Return size: 0
-define valid_array_reference
-valid_array_reference_entry:
-	r11 = fp
-	// succ:  l40000000000BFCC0
-l40000000000BFCC0:
+void valid_array_reference()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 valid_array_reference_exit:
+valid_array_reference_entry:
+l40000000000BFCC0:
 
 
-// array_expand_index
-// Return size: 0
-define array_expand_index
-array_expand_index_entry:
-	r11 = fp
-	// succ:  l40000000000BFEC0
-l40000000000BFEC0:
+void array_expand_index()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 array_expand_index_exit:
+array_expand_index_entry:
+l40000000000BFEC0:
 
 
-// unbind_array_element
-// Return size: 0
-define unbind_array_element
-unbind_array_element_entry:
-	r11 = fp
-	// succ:  l40000000000C0080
-l40000000000C0080:
+void unbind_array_element()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 unbind_array_element_exit:
+unbind_array_element_entry:
+l40000000000C0080:
 
 
-// assign_compound_array_list
-// Return size: 0
-define assign_compound_array_list
-assign_compound_array_list_entry:
-	r11 = fp
-	// succ:  l40000000000C0400
-l40000000000C0400:
+void assign_compound_array_list()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assign_compound_array_list_exit:
+assign_compound_array_list_entry:
+l40000000000C0400:
 
 
-// assign_array_var_from_string
-// Return size: 0
-define assign_array_var_from_string
-assign_array_var_from_string_entry:
-	r11 = fp
-	// succ:  l40000000000C0CC0
-l40000000000C0CC0:
+void assign_array_var_from_string()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assign_array_var_from_string_exit:
+assign_array_var_from_string_entry:
+l40000000000C0CC0:
 
 
-// assign_array_from_string
-// Return size: 0
-define assign_array_from_string
-assign_array_from_string_entry:
-	r11 = fp
-	// succ:  l40000000000C0D80
-l40000000000C0D80:
+void assign_array_from_string()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assign_array_from_string_exit:
+assign_array_from_string_entry:
+l40000000000C0D80:
 
 
-// array_variable_name
-// Return size: 0
-define array_variable_name
-array_variable_name_entry:
-	r11 = fp
-	// succ:  l40000000000C0E40
-l40000000000C0E40:
+void array_variable_name()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 array_variable_name_exit:
+array_variable_name_entry:
+l40000000000C0E40:
 
 
-// assign_array_element
-// Return size: 0
-define assign_array_element
-assign_array_element_entry:
-	r11 = fp
-	// succ:  l40000000000C1040
-l40000000000C1040:
+void assign_array_element()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assign_array_element_exit:
+assign_array_element_entry:
+l40000000000C1040:
 
 
-// array_variable_part
-// Return size: 0
-define array_variable_part
-array_variable_part_entry:
-	r11 = fp
-	// succ:  l40000000000C13C0
-l40000000000C13C0:
+void array_variable_part()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 array_variable_part_exit:
+array_variable_part_entry:
+l40000000000C13C0:
 
 
-// array_value
-// Return size: 0
-define array_value
-array_value_entry:
-	r11 = fp
-	// succ:  l40000000000C1D80
-l40000000000C1D80:
+void array_value()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 array_value_exit:
+array_value_entry:
+l40000000000C1D80:
 
 
-// get_array_value
-// Return size: 0
-define get_array_value
-get_array_value_entry:
-	r11 = fp
-	// succ:  l40000000000C1DC0
-l40000000000C1DC0:
+void get_array_value()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 get_array_value_exit:
+get_array_value_entry:
+l40000000000C1DC0:
 
 
-// array_keys
-// Return size: 0
-define array_keys
-array_keys_entry:
-	r11 = fp
-	// succ:  l40000000000C1E40
-l40000000000C1E40:
+void array_keys()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 array_keys_exit:
+array_keys_entry:
+l40000000000C1E40:
 
 
-// assoc_dispose
-// Return size: 0
-define assoc_dispose
-assoc_dispose_entry:
-	r11 = fp
-	// succ:  l40000000000C2380
-l40000000000C2380:
+void assoc_dispose()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_dispose_exit:
+assoc_dispose_entry:
+l40000000000C2380:
 
 
-// assoc_flush
-// Return size: 0
-define assoc_flush
-assoc_flush_entry:
-	r11 = fp
-	// succ:  l40000000000C2400
-l40000000000C2400:
+void assoc_flush()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_flush_exit:
+assoc_flush_entry:
+l40000000000C2400:
 
 
-// assoc_insert
-// Return size: 0
-define assoc_insert
-assoc_insert_entry:
-	r11 = fp
-	// succ:  l40000000000C2480
-l40000000000C2480:
+void assoc_insert()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_insert_exit:
+assoc_insert_entry:
+l40000000000C2480:
 
 
-// assoc_remove
-// Return size: 0
-define assoc_remove
-assoc_remove_entry:
-	r11 = fp
-	// succ:  l40000000000C2600
-l40000000000C2600:
+void assoc_remove()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_remove_exit:
+assoc_remove_entry:
+l40000000000C2600:
 
 
-// assoc_reference
-// Return size: 0
-define assoc_reference
-assoc_reference_entry:
-	r11 = fp
-	// succ:  l40000000000C2700
-l40000000000C2700:
+void assoc_reference()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_reference_exit:
+assoc_reference_entry:
+l40000000000C2700:
 
 
-// assoc_quote
-// Return size: 0
-define assoc_quote
-assoc_quote_entry:
-	r11 = fp
-	// succ:  l40000000000C27C0
-l40000000000C27C0:
+void assoc_quote()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_quote_exit:
+assoc_quote_entry:
+l40000000000C27C0:
 
 
-// assoc_quote_escapes
-// Return size: 0
-define assoc_quote_escapes
-assoc_quote_escapes_entry:
-	r11 = fp
-	// succ:  l40000000000C2940
-l40000000000C2940:
+void assoc_quote_escapes()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_quote_escapes_exit:
+assoc_quote_escapes_entry:
+l40000000000C2940:
 
 
-// assoc_dequote
-// Return size: 0
-define assoc_dequote
-assoc_dequote_entry:
-	r11 = fp
-	// succ:  l40000000000C2AC0
-l40000000000C2AC0:
+void assoc_dequote()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_dequote_exit:
+assoc_dequote_entry:
+l40000000000C2AC0:
 
 
-// assoc_dequote_escapes
-// Return size: 0
-define assoc_dequote_escapes
-assoc_dequote_escapes_entry:
-	r11 = fp
-	// succ:  l40000000000C2C40
-l40000000000C2C40:
+void assoc_dequote_escapes()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_dequote_escapes_exit:
+assoc_dequote_escapes_entry:
+l40000000000C2C40:
 
 
-// assoc_remove_quoted_nulls
-// Return size: 0
-define assoc_remove_quoted_nulls
-assoc_remove_quoted_nulls_entry:
-	r11 = fp
-	// succ:  l40000000000C2DC0
-l40000000000C2DC0:
+void assoc_remove_quoted_nulls()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_remove_quoted_nulls_exit:
+assoc_remove_quoted_nulls_entry:
+l40000000000C2DC0:
 
 
-// assoc_to_assign
-// Return size: 0
-define assoc_to_assign
-assoc_to_assign_entry:
-	r11 = fp
-	// succ:  l40000000000C2F40
-l40000000000C2F40:
+void assoc_to_assign()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_to_assign_exit:
+assoc_to_assign_entry:
+l40000000000C2F40:
 
 
-// assoc_to_word_list
-// Return size: 0
-define assoc_to_word_list
-assoc_to_word_list_entry:
-	r11 = fp
-	// succ:  l40000000000C3800
-l40000000000C3800:
+void assoc_to_word_list()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_to_word_list_exit:
+assoc_to_word_list_entry:
+l40000000000C3800:
 
 
-// assoc_subrange
-// Return size: 0
-define assoc_subrange
-assoc_subrange_entry:
-	r11 = fp
-	// succ:  l40000000000C3840
-l40000000000C3840:
+void assoc_subrange()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_subrange_exit:
+assoc_subrange_entry:
+l40000000000C3840:
 
 
-// assoc_keys_to_word_list
-// Return size: 0
-define assoc_keys_to_word_list
-assoc_keys_to_word_list_entry:
-	r11 = fp
-	// succ:  l40000000000C3A80
-l40000000000C3A80:
+void assoc_keys_to_word_list()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_keys_to_word_list_exit:
+assoc_keys_to_word_list_entry:
+l40000000000C3A80:
 
 
-// assoc_to_string
-// Return size: 0
-define assoc_to_string
-assoc_to_string_entry:
-	r11 = fp
-	// succ:  l40000000000C3AC0
-l40000000000C3AC0:
+void assoc_to_string()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_to_string_exit:
+assoc_to_string_entry:
+l40000000000C3AC0:
 
 
-// assoc_modcase
-// Return size: 0
-define assoc_modcase
-assoc_modcase_entry:
-	r11 = fp
-	// succ:  l40000000000C3E00
-l40000000000C3E00:
+void assoc_modcase()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_modcase_exit:
+assoc_modcase_entry:
+l40000000000C3E00:
 
 
-// assoc_patsub
-// Return size: 0
-define assoc_patsub
-assoc_patsub_entry:
-	r11 = fp
-	// succ:  l40000000000C4240
-l40000000000C4240:
+void assoc_patsub()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 assoc_patsub_exit:
+assoc_patsub_entry:
+l40000000000C4240:
 
 
-// brace_expand
-// Return size: 0
-define brace_expand
-brace_expand_entry:
-	r11 = fp
-	// succ:  l40000000000C5380
-l40000000000C5380:
+void brace_expand()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 brace_expand_exit:
+brace_expand_entry:
+l40000000000C5380:
 
 
-// bash_brace_completion
-// Return size: 0
-define bash_brace_completion
-bash_brace_completion_entry:
-	r11 = fp
-	// succ:  l40000000000C7380
-l40000000000C7380:
+void bash_brace_completion()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bash_brace_completion_exit:
+bash_brace_completion_entry:
+l40000000000C7380:
 
 
-// bash_initialize_history
-// Return size: 0
-define bash_initialize_history
-bash_initialize_history_entry:
-	r11 = fp
-	// succ:  l40000000000C78C0
-l40000000000C78C0:
+void bash_initialize_history()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bash_initialize_history_exit:
+bash_initialize_history_entry:
+l40000000000C78C0:
 
 
-// bash_history_reinit
-// Return size: 0
-define bash_history_reinit
-bash_history_reinit_entry:
-	r11 = fp
-	// succ:  l40000000000C7980
-l40000000000C7980:
+void bash_history_reinit()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bash_history_reinit_exit:
+bash_history_reinit_entry:
+l40000000000C7980:
 
 
-// bash_history_disable
-// Return size: 0
-define bash_history_disable
-bash_history_disable_entry:
-	r11 = fp
-	// succ:  l40000000000C7A00
-l40000000000C7A00:
+void bash_history_disable()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bash_history_disable_exit:
+bash_history_disable_entry:
+l40000000000C7A00:
 
 
-// bash_history_enable
-// Return size: 0
-define bash_history_enable
-bash_history_enable_entry:
-	r11 = fp
-	// succ:  l40000000000C7A40
-l40000000000C7A40:
+void bash_history_enable()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bash_history_enable_exit:
+bash_history_enable_entry:
+l40000000000C7A40:
 
 
-// load_history
-// Return size: 0
-define load_history
-load_history_entry:
-	r11 = fp
-	// succ:  l40000000000C7B00
-l40000000000C7B00:
+void load_history()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 load_history_exit:
+load_history_entry:
+l40000000000C7B00:
 
 
-// bash_clear_history
-// Return size: 0
-define bash_clear_history
-bash_clear_history_entry:
-	r11 = fp
-	// succ:  l40000000000C7D00
-l40000000000C7D00:
+void bash_clear_history()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bash_clear_history_exit:
+bash_clear_history_entry:
+l40000000000C7D00:
 
 
-// bash_delete_histent
-// Return size: 0
-define bash_delete_histent
-bash_delete_histent_entry:
-	r11 = fp
-	// succ:  l40000000000C7D80
-l40000000000C7D80:
+void bash_delete_histent()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bash_delete_histent_exit:
+bash_delete_histent_entry:
+l40000000000C7D80:
 
 
-// bash_delete_last_history
-// Return size: 0
-define bash_delete_last_history
-bash_delete_last_history_entry:
-	r11 = fp
-	// succ:  l40000000000C7E40
-l40000000000C7E40:
+void bash_delete_last_history()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bash_delete_last_history_exit:
+bash_delete_last_history_entry:
+l40000000000C7E40:
 
 
-// maybe_append_history
-// Return size: 0
-define maybe_append_history
-maybe_append_history_entry:
-	r11 = fp
-	// succ:  l40000000000C8000
-l40000000000C8000:
+void maybe_append_history()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 maybe_append_history_exit:
+maybe_append_history_entry:
+l40000000000C8000:
 
 
-// maybe_save_shell_history
-// Return size: 0
-define maybe_save_shell_history
-maybe_save_shell_history_entry:
-	r11 = fp
-	// succ:  l40000000000C82C0
-l40000000000C82C0:
+void maybe_save_shell_history()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 maybe_save_shell_history_exit:
+maybe_save_shell_history_entry:
+l40000000000C82C0:
 
 
-// bash_add_history
-// Return size: 0
-define bash_add_history
-bash_add_history_entry:
-	r11 = fp
-	// succ:  l40000000000C85C0
-l40000000000C85C0:
+void bash_add_history()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bash_add_history_exit:
+bash_add_history_entry:
+l40000000000C85C0:
 
 
-// check_add_history
-// Return size: 0
-define check_add_history
-check_add_history_entry:
-	r11 = fp
-	// succ:  l40000000000C8A80
-l40000000000C8A80:
+void check_add_history()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 check_add_history_exit:
+check_add_history_entry:
+l40000000000C8A80:
 
 
-// maybe_add_history
-// Return size: 0
-define maybe_add_history
-maybe_add_history_entry:
-	r11 = fp
-	// succ:  l40000000000C9180
-l40000000000C9180:
+void maybe_add_history()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 maybe_add_history_exit:
+maybe_add_history_entry:
+l40000000000C9180:
 
 
-// pre_process_line
-// Return size: 0
-define pre_process_line
-pre_process_line_entry:
-	r11 = fp
-	// succ:  l40000000000C93C0
-l40000000000C93C0:
+void pre_process_line()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 pre_process_line_exit:
+pre_process_line_entry:
+l40000000000C93C0:
 
 
-// history_number
-// Return size: 0
-define history_number
-history_number_entry:
-	r11 = fp
-	// succ:  l40000000000C99C0
-l40000000000C99C0:
+void history_number()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 history_number_exit:
+history_number_entry:
+l40000000000C99C0:
 
 
-// setup_history_ignore
-// Return size: 0
-define setup_history_ignore
-setup_history_ignore_entry:
-	r11 = fp
-	// succ:  l40000000000C9A80
-l40000000000C9A80:
+void setup_history_ignore()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 setup_history_ignore_exit:
+setup_history_ignore_entry:
+l40000000000C9A80:
 
 
-// last_history_line
-// Return size: 0
-define last_history_line
-last_history_line_entry:
-	r11 = fp
-	// succ:  l40000000000C9B00
-l40000000000C9B00:
+void last_history_line()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 last_history_line_exit:
+last_history_line_entry:
+l40000000000C9B00:
 
 
-// command_word_completion_function
-// Return size: 0
-define command_word_completion_function
-command_word_completion_function_entry:
-	r11 = fp
-	// succ:  l40000000000CC2C0
-l40000000000CC2C0:
+void command_word_completion_function()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 command_word_completion_function_exit:
+command_word_completion_function_entry:
+l40000000000CC2C0:
 
 

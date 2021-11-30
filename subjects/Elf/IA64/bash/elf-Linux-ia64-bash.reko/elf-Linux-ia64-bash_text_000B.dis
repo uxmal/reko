@@ -1,370 +1,481 @@
-// posix_readline_initialize
-// Return size: 0
-define posix_readline_initialize
-posix_readline_initialize_entry:
-	r11 = fp
-	// succ:  l40000000000D4F40
-l40000000000D4F40:
+void posix_readline_initialize()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 posix_readline_initialize_exit:
+posix_readline_initialize_entry:
+l40000000000D4F40:
 
 
-// reset_completer_word_break_chars
-// Return size: 0
-define reset_completer_word_break_chars
-reset_completer_word_break_chars_entry:
-	r11 = fp
-	// succ:  l40000000000D5040
-l40000000000D5040:
+void reset_completer_word_break_chars()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 reset_completer_word_break_chars_exit:
+reset_completer_word_break_chars_entry:
+l40000000000D5040:
 
 
-// enable_hostname_completion
-// Return size: 0
-define enable_hostname_completion
-enable_hostname_completion_entry:
-	r11 = fp
-	// succ:  l40000000000D5240
-l40000000000D5240:
+void enable_hostname_completion()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 enable_hostname_completion_exit:
+enable_hostname_completion_entry:
+l40000000000D5240:
 
 
-// initialize_readline
-// Return size: 0
-define initialize_readline
-initialize_readline_entry:
-	r11 = fp
-	// succ:  l40000000000D56C0
-l40000000000D56C0:
+void initialize_readline()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 initialize_readline_exit:
+initialize_readline_entry:
+l40000000000D56C0:
 
 
-// bashline_reinitialize
-// Return size: 0
-define bashline_reinitialize
-bashline_reinitialize_entry:
-	r11 = fp
-	// succ:  l40000000000D6A80
-l40000000000D6A80:
+void bashline_reinitialize()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bashline_reinitialize_exit:
+bashline_reinitialize_entry:
+l40000000000D6A80:
 
 
-// bashline_reset
-// Return size: 0
-define bashline_reset
-bashline_reset_entry:
-	r11 = fp
-	// succ:  l40000000000D6AC0
-l40000000000D6AC0:
+void bashline_reset()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bashline_reset_exit:
+bashline_reset_entry:
+l40000000000D6AC0:
 
 
-// bash_re_edit
-// Return size: 0
-define bash_re_edit
-bash_re_edit_entry:
-	r11 = fp
-	// succ:  l40000000000D6C00
-l40000000000D6C00:
+void bash_re_edit()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bash_re_edit_exit:
+bash_re_edit_entry:
+l40000000000D6C00:
 
 
-// get_hostname_list
-// Return size: 0
-define get_hostname_list
-get_hostname_list_entry:
-	r11 = fp
-	// succ:  l40000000000D6D40
-l40000000000D6D40:
+void get_hostname_list()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 get_hostname_list_exit:
+get_hostname_list_entry:
+l40000000000D6D40:
 
 
-// clear_hostname_list
-// Return size: 0
-define clear_hostname_list
-clear_hostname_list_entry:
-	r11 = fp
-	// succ:  l40000000000D6E00
-l40000000000D6E00:
+void clear_hostname_list()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 clear_hostname_list_exit:
+clear_hostname_list_entry:
+l40000000000D6E00:
 
 
-// bash_default_completion
-// Return size: 0
-define bash_default_completion
-bash_default_completion_entry:
-	r11 = fp
-	// succ:  l40000000000D6F00
-l40000000000D6F00:
+void bash_default_completion()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bash_default_completion_exit:
+bash_default_completion_entry:
+l40000000000D6F00:
 
 
-// bash_servicename_completion_function
-// Return size: 0
-define bash_servicename_completion_function
-bash_servicename_completion_function_entry:
-	r11 = fp
-	// succ:  l40000000000D8280
-l40000000000D8280:
+void bash_servicename_completion_function()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bash_servicename_completion_function_exit:
+bash_servicename_completion_function_entry:
+l40000000000D8280:
 
 
-// bash_groupname_completion_function
-// Return size: 0
-define bash_groupname_completion_function
-bash_groupname_completion_function_entry:
-	r11 = fp
-	// succ:  l40000000000D8640
-l40000000000D8640:
+void bash_groupname_completion_function()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bash_groupname_completion_function_exit:
+bash_groupname_completion_function_entry:
+l40000000000D8640:
 
 
-// set_directory_hook
-// Return size: 0
-define set_directory_hook
-set_directory_hook_entry:
-	r11 = fp
-	// succ:  l40000000000D88C0
-l40000000000D88C0:
+void set_directory_hook()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 set_directory_hook_exit:
+set_directory_hook_entry:
+l40000000000D88C0:
 
 
-// bind_keyseq_to_unix_command
-// Return size: 0
-define bind_keyseq_to_unix_command
-bind_keyseq_to_unix_command_entry:
-	r11 = fp
-	// succ:  l40000000000D8940
-l40000000000D8940:
+void bind_keyseq_to_unix_command()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bind_keyseq_to_unix_command_exit:
+bind_keyseq_to_unix_command_entry:
+l40000000000D8940:
 
 
-// bash_directory_completion_matches
-// Return size: 0
-define bash_directory_completion_matches
-bash_directory_completion_matches_entry:
-	r11 = fp
-	// succ:  l40000000000D8C40
-l40000000000D8C40:
+void bash_directory_completion_matches()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bash_directory_completion_matches_exit:
+bash_directory_completion_matches_entry:
+l40000000000D8C40:
 
 
-// bash_dequote_text
-// Return size: 0
-define bash_dequote_text
-bash_dequote_text_entry:
-	r11 = fp
-	// succ:  l40000000000D8D80
-l40000000000D8D80:
+void bash_dequote_text()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 bash_dequote_text_exit:
+bash_dequote_text_entry:
+l40000000000D8D80:
 
 
-// list_reverse
-// Return size: 0
-define list_reverse
-list_reverse_entry:
-	r11 = fp
-	// succ:  l40000000000D8E00
-l40000000000D8E00:
+void list_reverse()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 list_reverse_exit:
+list_reverse_entry:
+l40000000000D8E00:
 
 
-// list_length
-// Return size: 0
-define list_length
-list_length_entry:
-	r11 = fp
-	// succ:  l40000000000D8EC0
-l40000000000D8EC0:
+void list_length()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 list_length_exit:
+list_length_entry:
+l40000000000D8EC0:
 
 
-// list_append
-// Return size: 0
-define list_append
-list_append_entry:
-	r11 = fp
-	// succ:  l40000000000D8F40
-l40000000000D8F40:
+void list_append()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 list_append_exit:
+list_append_entry:
+l40000000000D8F40:
 
 
-// find_string_in_alist
-// Return size: 0
-define find_string_in_alist
-find_string_in_alist_entry:
-	r11 = fp
-	// succ:  l40000000000D8FC0
-l40000000000D8FC0:
+void find_string_in_alist()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 find_string_in_alist_exit:
+find_string_in_alist_entry:
+l40000000000D8FC0:
 
 
-// find_token_in_alist
-// Return size: 0
-define find_token_in_alist
-find_token_in_alist_entry:
-	r11 = fp
-	// succ:  l40000000000D9140
-l40000000000D9140:
+void find_token_in_alist()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 find_token_in_alist_exit:
+find_token_in_alist_entry:
+l40000000000D9140:
 
 
-// find_index_in_alist
-// Return size: 0
-define find_index_in_alist
-find_index_in_alist_entry:
-	r11 = fp
-	// succ:  l40000000000D9280
-l40000000000D9280:
+void find_index_in_alist()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 find_index_in_alist_exit:
+find_index_in_alist_entry:
+l40000000000D9280:
 
 
-// substring
-// Return size: 0
-define substring
-substring_entry:
-	r11 = fp
-	// succ:  l40000000000D9400
-l40000000000D9400:
+void substring()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 substring_exit:
+substring_entry:
+l40000000000D9400:
 
 
-// strsub
-// Return size: 0
-define strsub
-strsub_entry:
-	r11 = fp
-	// succ:  l40000000000D94C0
-l40000000000D94C0:
+void strsub()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 strsub_exit:
+strsub_entry:
+l40000000000D94C0:
 
 
-// strcreplace
-// Return size: 0
-define strcreplace
-strcreplace_entry:
-	r11 = fp
-	// succ:  l40000000000D9880
-l40000000000D9880:
+void strcreplace()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 strcreplace_exit:
+strcreplace_entry:
+l40000000000D9880:
 
 
-// strip_trailing
-// Return size: 0
-define strip_trailing
-strip_trailing_entry:
-	r11 = fp
-	// succ:  l40000000000D9D80
-l40000000000D9D80:
+void strip_trailing()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 strip_trailing_exit:
+strip_trailing_entry:
+l40000000000D9D80:
 
 
-// xbcopy
-// Return size: 0
-define xbcopy
-xbcopy_entry:
-	r11 = fp
-	// succ:  l40000000000D9E80
-l40000000000D9E80:
+void xbcopy()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 xbcopy_exit:
+xbcopy_entry:
+l40000000000D9E80:
 
 
-// set_default_locale
-// Return size: 0
-define set_default_locale
-set_default_locale_entry:
-	r11 = fp
-	// succ:  l40000000000DA140
-l40000000000DA140:
+void set_default_locale()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 set_default_locale_exit:
+set_default_locale_entry:
+l40000000000DA140:
 
 
-// set_default_locale_vars
-// Return size: 0
-define set_default_locale_vars
-set_default_locale_vars_entry:
-	r11 = fp
-	// succ:  l40000000000DA240
-l40000000000DA240:
+void set_default_locale_vars()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 set_default_locale_vars_exit:
+set_default_locale_vars_entry:
+l40000000000DA240:
 
 
-// get_locale_var
-// Return size: 0
-define get_locale_var
-get_locale_var_entry:
-	r11 = fp
-	// succ:  l40000000000DA840
-l40000000000DA840:
+void get_locale_var()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 get_locale_var_exit:
+get_locale_var_entry:
+l40000000000DA840:
 
 
-// set_lang
-// Return size: 0
-define set_lang
-set_lang_entry:
-	r11 = fp
-	// succ:  l40000000000DABC0
-l40000000000DABC0:
+void set_lang()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 set_lang_exit:
+set_lang_entry:
+l40000000000DABC0:
 
 
-// set_locale_var
-// Return size: 0
-define set_locale_var
-set_locale_var_entry:
-	r11 = fp
-	// succ:  l40000000000DAD40
-l40000000000DAD40:
+void set_locale_var()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 set_locale_var_exit:
+set_locale_var_entry:
+l40000000000DAD40:
 
 
-// set_default_lang
-// Return size: 0
-define set_default_lang
-set_default_lang_entry:
-	r11 = fp
-	// succ:  l40000000000DB800
-l40000000000DB800:
+void set_default_lang()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 set_default_lang_exit:
+set_default_lang_entry:
+l40000000000DB800:
 
 
-// localetrans
-// Return size: 0
-define localetrans
-localetrans_entry:
-	r11 = fp
-	// succ:  l40000000000DB8C0
-l40000000000DB8C0:
+void localetrans()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 localetrans_exit:
+localetrans_entry:
+l40000000000DB8C0:
 
 
-// mk_msgstr
-// Return size: 0
-define mk_msgstr
-mk_msgstr_entry:
-	r11 = fp
-	// succ:  l40000000000DBC80
-l40000000000DBC80:
+void mk_msgstr()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 mk_msgstr_exit:
+mk_msgstr_entry:
+l40000000000DBC80:
 
 
-// localeexpand
-// Return size: 0
-define localeexpand
-localeexpand_entry:
-	r11 = fp
-	// succ:  l40000000000DBF80
-l40000000000DBF80:
+void localeexpand()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 localeexpand_exit:
+localeexpand_entry:
+l40000000000DBF80:
 
 
-// file_status
-// Return size: 0
-define file_status
-file_status_entry:
-	r11 = fp
-	// succ:  l40000000000DC400
-l40000000000DC400:
+void file_status()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 file_status_exit:
+file_status_entry:
+l40000000000DC400:
 
 
