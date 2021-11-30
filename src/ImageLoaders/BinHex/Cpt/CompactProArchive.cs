@@ -523,7 +523,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                     this.type = type;
                 }
 
-                public ImageLocation Location => ImageLocation.FromUri(Name);
+                public ImageLocation Location => Archive.Location.AppendFragment(Archive.GetRootPath(this));
 
                 public uint Size => lengthUncompressed;
 
