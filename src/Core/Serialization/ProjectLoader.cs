@@ -202,8 +202,6 @@ namespace Reko.Core.Serialization
             project.MetadataFiles.AddRange(typelibs);
             project.ScriptFiles.AddRange(scripts);
             project.Programs.AddRange(programs);
-
-            this.project.FireScriptEvent(ScriptEvent.OnProgramLoaded);
             return this.project;
         }
 

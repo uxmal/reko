@@ -119,7 +119,6 @@ namespace Reko.Loading
                 project.AddProgram(imageLocation, program);
                 project.LoadedMetadata = program.Platform.CreateMetadata();
                 program.EnvironmentMetadata = project.LoadedMetadata;
-                project.FireScriptEvent(ScriptEvent.OnProgramLoaded);
                 return project;
             }
             return binaryImage;
@@ -387,7 +386,8 @@ namespace Reko.Loading
         /// Loads a metadata file into a type library.
         /// </summary>
         /// <param name="fileName"></param>
-        /// <returns>a TypeLibrary instance, or null if the format of the file wasn't recognized.</returns>
+        /// <returns>A <see cref="TypeLibrary" /> instance, or null if the format of the file
+        /// wasn't recognized.</returns>
         public TypeLibrary? LoadMetadata(ImageLocation metadataLocation, IPlatform platform, TypeLibrary typeLib)
         {
             var rawBytes = LoadImageBytes(metadataLocation, 0);
