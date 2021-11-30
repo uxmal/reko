@@ -142,7 +142,7 @@ namespace Reko.Gui
             var scriptUri = scriptFile.Location;
             try
             {
-                var bytes = loader.LoadImageBytes(scriptUri, 0);
+                var bytes = loader.LoadImageBytes(scriptUri);
                 var stream = new MemoryStream(bytes);
                 using var rdr = new StreamReader(stream);
                 scriptFile.Evaluate(rdr.ReadToEnd());

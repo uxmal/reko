@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Mocks
             ).Returns(program);
 
             mockLoader.Setup(
-                l => l.LoadImageBytes(It.IsAny<ImageLocation>(), It.IsAny<int>())
+                l => l.LoadImageBytes(It.IsAny<ImageLocation>())
             ).Returns(new byte[1000]);
 
             return this.mockLoader.Object;

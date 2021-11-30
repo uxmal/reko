@@ -88,8 +88,7 @@ namespace Reko.UnitTests.Gui.Forms
             //$REVIEW: probably no need for loader anymore?
             var ldr = new Mock<ILoader>();
             ldr.Setup(l => l.LoadImageBytes(
-                It.IsNotNull<ImageLocation>(),
-                0)).Returns(new byte[400]);
+                It.IsNotNull<ImageLocation>())).Returns(new byte[400]);
             ldr.Setup(l => l.LoadBinaryImage(
                 It.IsNotNull<ImageLocation>(),
                 It.IsNotNull<byte[]>(),

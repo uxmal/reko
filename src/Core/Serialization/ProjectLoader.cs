@@ -253,7 +253,7 @@ namespace Reko.Core.Serialization
                 // Only legacy project files use sInput.Filename.
                 binLocation = ConvertToAbsoluteLocation(projectLocation, sInput.Filename)!;
             }
-            var bytes = loader.LoadImageBytes(binLocation, 0);
+            var bytes = loader.LoadImageBytes(binLocation);
             var sUser = sInput.User ?? new UserData_v4
             {
                 ExtractResources = true,

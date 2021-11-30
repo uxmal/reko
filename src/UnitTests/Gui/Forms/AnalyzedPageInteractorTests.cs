@@ -95,8 +95,7 @@ namespace Reko.UnitTests.Gui.Forms
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(program);
             ldr.Setup(l => l.LoadImageBytes(    //$REVIEW: can this be removed?
-                It.IsAny<ImageLocation>(),
-                It.IsAny<int>())).Returns(bytes);
+                It.IsAny<ImageLocation>())).Returns(bytes);
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             this.decSvc = new DecompilerService();

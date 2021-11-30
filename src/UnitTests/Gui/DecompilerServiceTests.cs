@@ -99,7 +99,7 @@ namespace Reko.UnitTests.Gui
             // anymore.
             platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
             platform.Setup(p => p.Architecture).Returns(arch.Object);
-            loader.Setup(l => l.LoadImageBytes(fileUri, 0)).Returns(bytes);
+            loader.Setup(l => l.LoadImageBytes(fileUri)).Returns(bytes);
             loader.Setup(l => l.LoadBinaryImage(fileUri, bytes, null, null)).Returns(program);
 
             var dec = new Decompiler(project, sc);

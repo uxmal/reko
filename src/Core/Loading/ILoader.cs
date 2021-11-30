@@ -58,11 +58,10 @@ namespace Reko.Core.Loading
         /// </summary>
         /// <param name="filename">The file system path of the file from which 
         /// to read the image data.</param>
-        /// <param name="offset">Offset at which to start reading.</param>
         /// <returns>An array of bytes containing the file data.</returns>
         //$TODO: Change the output to Stream; the image could be so large it doesn't
         // fit in main memory.
-        byte[] LoadImageBytes(ImageLocation filename, int offset);
+        byte[] LoadImageBytes(ImageLocation filename);
 
         /// <summary>
         /// Given a executable file image in <param name="bytes">, determines which file 

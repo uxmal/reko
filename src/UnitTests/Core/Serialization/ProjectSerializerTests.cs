@@ -108,8 +108,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var bytes = new byte[100];
             loader.Setup(l => l.LoadImageBytes(
-                It.IsAny<ImageLocation>(),
-                It.IsAny<int>())).
+                It.IsAny<ImageLocation>())).
                 Returns(bytes);
             loader.Setup(l => l.LoadBinaryImage(
                 It.IsAny<ImageLocation>(),
@@ -216,8 +215,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var bytes = new byte[100];
             loader.Setup(l => l.LoadImageBytes(
-                It.IsAny<ImageLocation>(),
-                It.IsAny<int>())).
+                It.IsAny<ImageLocation>())).
                 Returns(bytes);
             loader.Setup(l => l.LoadBinaryImage(
                 It.IsAny<ImageLocation>(),
