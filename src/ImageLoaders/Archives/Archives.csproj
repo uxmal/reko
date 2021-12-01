@@ -12,8 +12,4 @@
     <ProjectReference Include="..\..\Core\Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Tar\" />
-  </ItemGroup>
-
 </Project>

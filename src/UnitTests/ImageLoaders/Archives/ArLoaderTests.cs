@@ -45,7 +45,7 @@ namespace Reko.UnitTests.ImageLoaders.Archives
         [Test]
         public void ArLdr_LoadHeader()
         {
-            var arldr = new ArLoader(sc, "foo.a", Encoding.ASCII.GetBytes("<!arch>\n"));
+            var arldr = new ArLoader(sc, "foo.a", Encoding.ASCII.GetBytes("!<arch>\n"));
             var rdr = new ByteImageReader(arldr.RawImage);
             arldr.ReadHeader(rdr);
         }
