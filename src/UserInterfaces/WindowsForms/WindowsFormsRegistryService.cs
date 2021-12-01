@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  .
@@ -21,10 +21,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Text;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
+    [SupportedOSPlatform("windows")]
     public class WindowsFormsRegistryService : IRegistryService
     {
         private RegistryKey hkcu;
