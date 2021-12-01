@@ -89,6 +89,7 @@ by the PreBuild.targets file.
     <ProjectReference Include="$(SolutionDir)Environments\Windows\Windows.csproj" />
     <ProjectReference Include="$(SolutionDir)Environments\Xbox\Xbox.csproj" />
     <ProjectReference Include="$(SolutionDir)Environments\ZX81\ZX81.csproj" />
+    <ProjectReference Include="$(SolutionDir)ImageLoaders\Archives\Archives.csproj" />
     <ProjectReference Include="$(SolutionDir)ImageLoaders\BinHex\BinHex.csproj" />
     <ProjectReference Include="$(SolutionDir)ImageLoaders\Coff\Coff.csproj" />
     <ProjectReference Include="$(SolutionDir)ImageLoaders\Dol\Dol.csproj" />
@@ -294,6 +295,7 @@ by the PreBuild.targets file.
 
     <OdbgScripts Include="$(SolutionDir)ImageLoaders\OdbgScript\*.osc" />
 
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Archives\bin\$(StandardOutputDir)\Reko.ImageLoaders.Archives.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\BinHex\bin\$(StandardOutputDir)\Reko.ImageLoaders.BinHex.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Dol\bin\$(StandardOutputDir)\Reko.ImageLoaders.Dol.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\bin\$(StandardOutputDir)\Reko.ImageLoaders.Elf.*" />

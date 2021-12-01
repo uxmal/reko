@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(ProjectDir)..\Common.items" />
   <PropertyGroup>
@@ -33,7 +33,6 @@
     <Environments Include="$(SolutionDir)Environments\AmigaOS.Design\bin\$(Configuration)\Reko.Environments.AmigaOS.Design.*" />
     <Environments Include="$(SolutionDir)Environments\Msdos.Design\bin\$(Configuration)\Reko.Environments.Msdos.Design.*" />
   </ItemGroup>
-
 
   <Import Project="$(ProjectDir)..\PreBuild.targets" />
 </Project>
