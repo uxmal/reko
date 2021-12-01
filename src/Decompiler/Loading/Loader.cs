@@ -87,8 +87,7 @@ namespace Reko.Loading
 
         /// <summary>
         /// Loads (or assembles) a Reko decompiler project. If a binary file is
-        /// specified instead, we create a simple project for the file. If an archive
-        /// is encountered, return that.
+        /// specified instead, we create a simple project for the file.
         /// </summary>
         /// <param name="imageLocation">The location of the image to load.</param>
         /// <param name="loaderName">Optional .NET class name of a custom
@@ -113,13 +112,19 @@ namespace Reko.Loading
             }
 
             var binaryImage = LoadBinaryImage(imageLocation, image, loaderName, addrLoad);
+            foreach (var fragment in imageLocation.Fragments)
+            {
+                if (binaryImage is not IArchive archive)
+                    throw new InvalidOperationException($"Image '{imageLocation}' expects an archive or file container, but none was loaded.");
+                var item = archive[fragment];
+                if (item is not ArchivedFile file)
+                    throw new InvalidOperationException($"Fragment '{fragment}' does not refer to a file.");
+                binaryImage = file.LoadImage(Services, addrLoad);
+            }
+
             if (binaryImage is Program program)
             {
-                project = new Project();
-                project.AddProgram(imageLocation, program);
-                project.LoadedMetadata = program.Platform.CreateMetadata();
-                program.EnvironmentMetadata = project.LoadedMetadata;
-                return project;
+                return Project.FromSingleProgram(program);
             }
             return binaryImage;
         }
@@ -148,6 +153,7 @@ namespace Reko.Loading
                     imgLoader = CreateDefaultImageLoader(imageLocation, image);
                 }
             }
+
             if (imgLoader is null)
                 return new Blob(image);
 

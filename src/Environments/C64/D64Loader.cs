@@ -219,7 +219,7 @@ namespace Reko.Environments.C64
                 return stm.ToArray();
             }
 
-            public ILoadedImage? LoadImage(IServiceProvider Services, Address? addrPreferred)
+            public ILoadedImage LoadImage(IServiceProvider Services, Address? addrPreferred)
             {
                 byte[] imageBytes = this.GetBytes();
                 return (this.FileType & FileType.FileTypeMask) switch

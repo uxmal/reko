@@ -38,6 +38,16 @@ namespace Reko.Core
             Location = default!;
         }
 
+        public static Project FromSingleProgram(Program program)
+        {
+            var project = new Project();
+            project.AddProgram(program.Location, program);
+            project.LoadedMetadata = program.Platform.CreateMetadata();
+            program.EnvironmentMetadata = project.LoadedMetadata;
+            program.User.ExtractResources = true;
+            return project;
+        }
+
         /// <summary>
         /// The URI from which this project was loaded.
         /// </summary>

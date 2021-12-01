@@ -159,8 +159,7 @@ namespace Reko.Gui.Forms
                 eventListener.ShowStatus("Loading source program.");
                 var imageUri = ImageLocation.FromUri(file);
                 Program program = ldr.LoadRawImage(imageUri, details);
-                var project = new Project();
-                project.AddProgram(imageUri, program);
+                var project = Project.FromSingleProgram(program);
                 this.Decompiler = CreateDecompiler(project);
                 Decompiler.ExtractResources();
                 eventListener.ShowStatus("Source program loaded.");
@@ -192,10 +191,8 @@ namespace Reko.Gui.Forms
             switch (archiveFile.LoadImage(Services, null))
             {
             case Program program:
-                var project = new Project();
                 Debug.Assert(program.Location is not null);
-                project.AddProgram(program.Location, program);
-                return project;
+                return Project.FromSingleProgram(program);
             case null:
                 return null;
             default:
@@ -224,8 +221,7 @@ namespace Reko.Gui.Forms
                 eventListener.ShowStatus("Assembling program.");
                 var asmFileLocation = ImageLocation.FromUri(file);
                 var program = ldr.AssembleExecutable(asmFileLocation, asm, platform, null!);
-                var project = new Project();
-                project.AddProgram(asmFileLocation, program);
+                var project = Project.FromSingleProgram(program);
                 this.Decompiler = CreateDecompiler(project);
                 this.Decompiler.ExtractResources();
                 eventListener.ShowStatus("Assembled program.");

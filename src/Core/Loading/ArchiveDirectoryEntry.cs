@@ -42,8 +42,8 @@ namespace Reko.Core.Loading
         /// <param name="services">Provides access to services the loader may need.</param>
         /// <param name="addrPreferred">Optional preferred loading address.</param>
         /// <returns>An <see cref="ILoadedImage"/> if the image was loadable, otherwise
-        /// null.</returns>
-        ILoadedImage? LoadImage(IServiceProvider services, Address? addrPreferred);
+        /// a <see cref="Blob" />.</returns>
+        ILoadedImage LoadImage(IServiceProvider services, Address? addrPreferred);
     }
 
     public interface ArchivedFolder : ArchiveDirectoryEntry

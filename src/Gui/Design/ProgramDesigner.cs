@@ -87,8 +87,7 @@ namespace Reko.Gui.Design
             }
             else
             {
-                var fragment = program.Location.GetFilename();
-                sb.Append(fragment);
+                sb.Append(program.Location);
             }
             if (program.NeedsScanning)
             {

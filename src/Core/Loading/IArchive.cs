@@ -28,8 +28,12 @@ using System.Text;
 namespace Reko.Core.Loading
 {
     /// <summary>
-    /// Models 
+    /// Models a file archive or container; that is, a file whose contents are other files.
     /// </summary>
+    /// <remarks>
+    /// Examples of archives are floppy disk images, optical storage .iso files, AR and TAR files,
+    /// and ZIP files.
+    /// </remarks>
     public interface IArchive : ILoadedImage
     {
         /// <summary>

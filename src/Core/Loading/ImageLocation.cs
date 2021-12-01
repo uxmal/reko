@@ -209,6 +209,18 @@ namespace Reko.Core
         }
 
         /// <summary>
+        /// Returns just the file extension (including any '.') of this <see cref="ImageLocation"/>.
+        /// </summary>
+        /// <returns></returns>
+        public string GetExtension()
+        {
+            var str = this.HasFragments
+                ? Fragments[^1]
+                : FilesystemPath;
+            return Path.GetExtension(str);
+        }
+
+        /// <summary>
         /// Returns just a file name and extension for this <see cref="ImageLocation"/>.
         /// </summary>
         /// <returns></returns>
@@ -219,6 +231,8 @@ namespace Reko.Core
                 : FilesystemPath;
             return Path.GetFileName(str);
         }
+
+
 
         public string MakeRelativeUri(ImageLocation imageLocation)
         {

@@ -277,9 +277,7 @@ namespace Reko.CmdLine
                     EntryPoint = new EntryPointDefinition { Address = (string) oAddrEntry }
                 };
                 var program = LoadProgram(pArgs, loadDetails);
-                var project = new Project();
-                project.AddProgram(program.Location, program);
-
+                var project = Project.FromSingleProgram(program);
                 var decompiler = new Decompiler(project, services);
                 dcSvc.Decompiler = decompiler;
 

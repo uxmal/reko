@@ -253,7 +253,6 @@ namespace Reko.Core.Serialization
                 // Only legacy project files use sInput.Filename.
                 binLocation = ConvertToAbsoluteLocation(projectLocation, sInput.Filename)!;
             }
-            var bytes = loader.LoadImageBytes(binLocation);
             var sUser = sInput.User ?? new UserData_v4
             {
                 ExtractResources = true,
@@ -268,6 +267,7 @@ namespace Reko.Core.Serialization
                 // use the LoadRawImage path.
                 var archName = sUser.Processor?.Name;
                 var platform = sUser.PlatformOptions?.Name;
+                var bytes = loader.LoadImageBytes(binLocation);
                 program = loader.LoadRawImage(binLocation, bytes, address, new LoadDetails
                 {
                     LoaderName = sUser.Loader,
@@ -279,17 +279,11 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                var image = loader.LoadBinaryImage(binLocation, bytes, sUser.Loader, address);
-                switch (image)
-                {
-                case Program p:
+                if (loader.Load(binLocation, null, address) is Program p)
                     return p;
-                case IArchive arch:
-                    return LoadFromArchive(binLocation, arch)
-                        ?? new Program();
-                }
                 return new Program();   // A previous save of the project was able to read the file, 
                                         // but now we can't...
+                                        //$REVIEW: this probably should throw an exception?
             }
             return program;
         }
@@ -331,29 +325,6 @@ namespace Reko.Core.Serialization
             program.User.LoadAddress = address;
             ProgramLoaded?.Fire(this, new ProgramEventArgs(program));
             return program;
-        }
-
-        //$REVIEW: common code with Loader?
-        private Program? LoadFromArchive(ImageLocation location, IArchive archive)
-        {
-            if (location.Fragments.Length < 1)
-                return null;
-
-            //$TODO: nested fragments.
-            if (archive[location.Fragments[0]] is not ArchivedFile archiveFile)
-                return null;
-            switch (archiveFile.LoadImage(Services, null))
-            {
-            case Program program:
-                program.Location = location;
-                Debug.Assert(program.Location is not null);
-                return program;
-            //$TODO: Archive and Blob.
-            case null:
-                return null;
-            default:
-                throw new NotImplementedException();
-            }
         }
 
         private Address? LoadAddress(UserData_v4 user, IProcessorArchitecture arch)

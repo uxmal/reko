@@ -47,8 +47,8 @@ namespace Reko.Gui.Design
 
         public void SetTreeNodeProperties(ScriptFile scriptFile)
         {
-            TreeNode!.Text = Path.GetFileName(scriptFile.Location.FilesystemPath);
-            var ext = Path.GetExtension(scriptFile.Location.FilesystemPath).ToLower();
+            TreeNode!.Text = scriptFile.Location.GetFilename();
+            var ext = scriptFile.Location.GetExtension().ToLower();
             TreeNode.ImageName = $"Script{ext}.ico";
         }
     }

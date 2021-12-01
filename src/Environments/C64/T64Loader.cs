@@ -214,7 +214,7 @@ directory.
                 return bytes;
             }
 
-            public ILoadedImage? LoadImage(IServiceProvider services, Address? addrPreferred)
+            public ILoadedImage LoadImage(IServiceProvider services, Address? addrPreferred)
             {
                 switch (this.FileType)
                 {
