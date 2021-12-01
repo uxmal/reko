@@ -55,17 +55,17 @@ namespace Reko.Core.Memory
             this.bytes = mem.Bytes;
         }
 
-        protected ByteImageReader(ByteMemoryArea img, Address addrBegin, Address addrEnd)
+        protected ByteImageReader(ByteMemoryArea mem, Address addrBegin, Address addrEnd)
         {
-            this.mem = img ?? throw new ArgumentNullException(nameof(img));
+            this.mem = mem ?? throw new ArgumentNullException(nameof(mem));
             this.addrStart = addrBegin ?? throw new ArgumentNullException(nameof(addrBegin));
             if (addrEnd is null)
                 throw new ArgumentNullException(nameof(addrEnd));
-            this.offStart = addrBegin - img.BaseAddress;
+            this.offStart = addrBegin - mem.BaseAddress;
             // Prevent walking off the end of the bytes.
-            this.offEnd = Math.Min(addrEnd - img.BaseAddress, img.Bytes.Length);
+            this.offEnd = Math.Min(addrEnd - mem.BaseAddress, mem.Bytes.Length);
             this.off = this.offStart;
-            this.bytes = img.Bytes;
+            this.bytes = mem.Bytes;
         }
 
         protected ByteImageReader(ByteMemoryArea mem, long off)
@@ -106,7 +106,17 @@ namespace Reko.Core.Memory
         public bool IsValid { get { return IsValidOffset(Offset); } }
         public bool IsValidOffset(long offset) { return 0 <= offset && offset < offEnd; }
 
-        public BinaryReader CreateBinaryReader()
+        public ByteImageReader Clone()
+        {
+            var that = new ByteImageReader(this.bytes, this.off);
+            that.mem = this.mem;
+            that.offStart = this.offStart;
+            that.offEnd = this.offEnd;
+            that.addrStart = this.addrStart;
+            return that;
+        }
+    
+    public BinaryReader CreateBinaryReader()
         {
             return new BinaryReader(new MemoryStream(Bytes));
         }
