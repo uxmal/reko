@@ -24,19 +24,19 @@ using System.Text;
 namespace Reko.Core.Loading
 {
     /// <summary>
-    /// A blob is simply a sequence of bytes, of which nothing is know.
+    /// A blob is simply a sequence of bytes, of which nothing is known.
     /// To further process this, information needs to be gathered from 
     /// the user.
     /// </summary>
     public class Blob : ILoadedImage
     {
-        public Blob(byte[] image)
+        public Blob(ImageLocation location, byte[] image)
         {
             this.Image = image;
-            this.Location = default!;
+            this.Location = location;
         }
 
-        public ImageLocation Location { get; set; }
+        public ImageLocation Location { get;  }
 
         public byte[] Image { get; }
 

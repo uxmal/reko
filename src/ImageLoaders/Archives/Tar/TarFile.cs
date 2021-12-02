@@ -52,26 +52,28 @@ namespace Reko.ImageLoaders.Archives.Tar
 
     public class TarFile : ArchivedFile
     {
+        private IArchive archive;
         private readonly ByteImageReader rdr;
         private readonly long offset;
 
-        private TarFile(ByteImageReader rdr, ArchiveDirectoryEntry? parent)
+        private TarFile(IArchive archive, ArchiveDirectoryEntry? parent, ByteImageReader rdr)
         {
+            this.archive = archive;
+            this.Parent = parent;
             this.rdr = rdr;
             this.offset = rdr.Offset;
             this.Name = default!;
             this.Filename = default!;
-            this.Parent = parent;
         }
 
-        public static TarFile Load(ArchiveDirectoryEntry? parent, in tar_header tarHdr, in ustar_header? ustarHdr, ByteImageReader rdr)
+        public static TarFile Load(IArchive archive, ArchiveDirectoryEntry? parent, string name, in tar_header tarHdr, in ustar_header? ustarHdr, ByteImageReader rdr)
         {
             var filename = GetString(tarHdr.filename);
             var length = GetOctal(tarHdr.octFileSize);
-            return new TarFile(rdr, parent)
+            return new TarFile(archive, parent, rdr)
             {
                 Filename = filename,
-                Name = Path.GetFileName(filename),
+                Name = name,
                 Length = length
             };
         }
@@ -89,7 +91,9 @@ namespace Reko.ImageLoaders.Archives.Tar
 
         public ILoadedImage LoadImage(IServiceProvider services, Address? addrLoad)
         {
-            return new Blob(GetBytes());
+            var path = archive.GetRootPath(this);
+            var imageLocation = archive.Location.AppendFragment(path);
+            return new Blob(imageLocation, GetBytes());
         }
 
         private static long GetOctal(byte[] aOctalString)

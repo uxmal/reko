@@ -260,7 +260,7 @@ namespace Reko.UnitTests.Loading
 
             public override ILoadedImage Load(Address addrLoad)
             {
-                var blob = new Blob(new byte[234]);
+                var blob = new Blob(base.ImageLocation, new byte[234]);
                 var archiveFile = new Mock<ArchivedFile>();
                 archiveFile.Setup(a => a.LoadImage(
                     It.IsAny<IServiceProvider>(),

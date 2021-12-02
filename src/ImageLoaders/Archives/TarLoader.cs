@@ -55,9 +55,10 @@ namespace Reko.ImageLoaders.Archives
                 if (PeekString(rdr, "ustar"))
                 {
                     var ustarHeader = rdr.ReadStruct<ustar_header>();
-                    var filename = TarFile.GetString(tarHeader.filename);
-                    var file = archive.AddFile(filename, p => TarFile.Load(p, tarHeader, ustarHeader, rdr));
                     Align(rdr, TarBlockSize);
+
+                    var filename = TarFile.GetString(tarHeader.filename);
+                    var file = archive.AddFile(filename, (a, p, n) => TarFile.Load(a, p, n, tarHeader, ustarHeader, rdr));
                     
                     rdr.Offset += file.Length;
                     Align(rdr, TarBlockSize);

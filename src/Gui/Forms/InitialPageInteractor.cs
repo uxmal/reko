@@ -28,6 +28,8 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 
+#nullable enable
+
 namespace Reko.Gui.Forms
 {
     public interface InitialPageInteractor : IPhasePageInteractor
@@ -107,8 +109,7 @@ namespace Reko.Gui.Forms
         {
             var ldr = Services.RequireService<ILoader>();
             var svc = Services.RequireService<IWorkerDialogService>();
-            var uiSvc = Services.RequireService<IDecompilerShellUiService>();
-            ILoadedImage loadedImage = null;
+            ILoadedImage? loadedImage = null;
             var imageUri = ImageLocation.FromUri(file);
             bool exceptionThrown = !svc.StartBackgroundWork("Opening file", () =>
             {
@@ -131,18 +132,12 @@ namespace Reko.Gui.Forms
                 loadedImage = LoadFromArchive(archive, ldr);
                 break;
             case Blob blob:
-                var dlgFactory = Services.RequireService<IDialogFactory>();
-                using (IOpenAsDialog dlg = dlgFactory.CreateOpenAsDialog(file))
-                {
-                    if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
-                    {
-                        return OpenBinaryAs(file, dlg.GetLoadDetails());
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
+                var details = ShowOpenBinaryAsDialog(file);
+                if (details is null)
+                    return false;
+                var rawProgram = ldr.LoadRawImage(blob.Location, blob.Image, null, details);
+                loadedImage = Project.FromSingleProgram(rawProgram);
+                break;
             }
             if (loadedImage is not Project project)
             {
@@ -152,10 +147,29 @@ namespace Reko.Gui.Forms
             this.Decompiler = CreateDecompiler(project);
             Decompiler.ExtractResources();
             var browserSvc = Services.RequireService<IProjectBrowserService>();
+            var procListSvc = Services.RequireService<IProcedureListService>();
             browserSvc.Load(project);
             browserSvc.Show();
+            procListSvc.Clear();
             ShowLowLevelWindow();
             return true;
+        }
+
+        private LoadDetails? ShowOpenBinaryAsDialog(string file)
+        {
+            var uiSvc = Services.RequireService<IDecompilerShellUiService>();
+            var dlgFactory = Services.RequireService<IDialogFactory>();
+            using (IOpenAsDialog dlg = dlgFactory.CreateOpenAsDialog(file))
+            {
+                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    return dlg.GetLoadDetails();
+                }
+                else
+                {
+                    return null;
+                }
+            }
         }
 
         public bool OpenBinaryAs(string file, LoadDetails details)
@@ -192,21 +206,38 @@ namespace Reko.Gui.Forms
             }
         }
 
-        private Project LoadFromArchive(IArchive archive, ILoader loader)
+        private Project? LoadFromArchive(IArchive archive, ILoader loader)
         {
             var abSvc = Services.RequireService<IArchiveBrowserService>();
-            if (abSvc.SelectFileFromArchive(archive) is not ArchivedFile archiveFile)
-                return null;
-            switch (archiveFile.LoadImage(Services, null))
+            while (abSvc.SelectFileFromArchive(archive) is ArchivedFile archiveFile)
             {
-            case Program program:
-                Debug.Assert(program.Location is not null);
-                return Project.FromSingleProgram(program);
-            case null:
-                return null;
-            default:
-                throw new NotImplementedException();
+                var image = archiveFile.LoadImage(Services, null);
+                if (image is Blob blob)
+                {
+                    // The archive itself doesn't know the format of the blob,
+                    // perhaps Reko does.
+                    image = loader.LoadBinaryImage(blob.Location, blob.Image, null, null);
+                }
+                switch (image)
+                {
+                case Program program:
+                    Debug.Assert(program.Location is not null);
+                    return Project.FromSingleProgram(program);
+                case Blob blob2:
+                    //$TODO: make 'filename' textbox readonly when there are fragments in path.
+                    var loadDetails = ShowOpenBinaryAsDialog(blob2.Location.FilesystemPath);
+                    if (loadDetails is null)
+                        return null;
+                    var rawProgram = loader.LoadRawImage(blob2.Location, loadDetails);
+                    return Project.FromSingleProgram(rawProgram);
+                case IArchive nestedArchive:
+                    archive = nestedArchive;
+                    break;
+                default:
+                    throw new NotImplementedException();
+                }
             }
+            return null;
         }
 
         private void ShowLowLevelWindow()

@@ -72,7 +72,7 @@ namespace Reko.Core.Loading
 
         public virtual ArchivedFile AddFile(
             string path, 
-            Func<ArchiveDirectoryEntry?, ArchivedFile> fileCreator)
+            Func<IArchive, ArchiveDirectoryEntry?, string, ArchivedFile> fileCreator)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException(nameof(path));
@@ -95,7 +95,7 @@ namespace Reko.Core.Loading
                 curDir = nextDir.entries;
             }
             var filename = pathSegments[^1];
-            var file = fileCreator(parentDir);
+            var file = fileCreator(this, parentDir, filename);
             if (!curDir.TryAdd(filename, file))
                 throw new InvalidOperationException($"The path {path} already exists.");
             return file;

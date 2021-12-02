@@ -29,19 +29,21 @@ namespace Reko.ImageLoaders.Archives.Ar
 {
     public class ArFile : ArchivedFile
     {
-        private ArFileHeader fileHeader;
-        private ByteImageReader rdr;
-        private long fileDataStart;
+        private readonly IArchive archive;
+        private readonly ByteImageReader rdr;
+        private readonly long fileDataStart;
 
         public ArFile(
+            IArchive archive,
             ArchiveDirectoryEntry? parent,
-            ArFileHeader fileHeader,
+            string name,
             ByteImageReader rdr,
             long fileDataStart, 
             long filesize)
         {
+            this.archive = archive;
             this.Parent = parent;
-            this.fileHeader = fileHeader;
+            this.Name = name;
             this.rdr = rdr;
             this.fileDataStart = fileDataStart;
             this.Length = filesize;
@@ -49,7 +51,7 @@ namespace Reko.ImageLoaders.Archives.Ar
 
         public long Length { get; }
 
-        public string Name => throw new NotImplementedException();
+        public string Name { get; }
 
         public ArchiveDirectoryEntry? Parent { get; }
 
@@ -61,7 +63,9 @@ namespace Reko.ImageLoaders.Archives.Ar
 
         public ILoadedImage LoadImage(IServiceProvider services, Address? addr)
         {
-            return new Blob(GetBytes());
+            var path = archive.GetRootPath(this);
+            var imageLocation = archive.Location.AppendFragment(path);
+            return new Blob(imageLocation, GetBytes());
         }
     }
 }

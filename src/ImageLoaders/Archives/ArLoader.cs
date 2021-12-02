@@ -108,8 +108,8 @@ namespace Reko.ImageLoaders.Archives
                 name = name.TrimEnd(charsToTrim);
             }
 
+            archive.AddFile(name, (a, p, name) => new ArFile(a, p, name, rdr, rdr.Offset, dataSize));
             rdr.Offset += dataSize;
-            archive.AddFile(name, p => new ArFile(p, fileHeader, rdr, rdr.Offset, dataSize));
             AlignReader(rdr);
         }
 

@@ -101,7 +101,8 @@ namespace Reko.Loading
         /// </returns>
         public ILoadedImage Load(ImageLocation imageLocation, string? loaderName = null, Address? addrLoad = null)
         {
-            byte[] image = LoadImageBytes(imageLocation);
+            var fsLocation = ImageLocation.FromUri(imageLocation.FilesystemPath);
+            byte[] image = LoadImageBytes(fsLocation);
             var projectLoader = new ProjectLoader(this.Services, this, Services.RequireService<DecompilerEventListener>());
             projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
             var project = projectLoader.LoadProject(imageLocation, image);
@@ -111,7 +112,7 @@ namespace Reko.Loading
                 return project;
             }
 
-            var binaryImage = LoadBinaryImage(imageLocation, image, loaderName, addrLoad);
+            var binaryImage = LoadBinaryImage(fsLocation, image, loaderName, addrLoad);
             foreach (var fragment in imageLocation.Fragments)
             {
                 if (binaryImage is not IArchive archive)
@@ -120,6 +121,11 @@ namespace Reko.Loading
                 if (item is not ArchivedFile file)
                     throw new InvalidOperationException($"Fragment '{fragment}' does not refer to an archived file.");
                 binaryImage = file.LoadImage(Services, addrLoad);
+                if (binaryImage is Blob blob)
+                {
+                    // Archive doesn't know this format, perhaps Reko does.
+                    binaryImage = LoadBinaryImage(blob.Location, blob.Image, loaderName, addrLoad);
+                }
             }
             return binaryImage;
         }
@@ -135,6 +141,7 @@ namespace Reko.Loading
         /// an instance of <see cref="Blob"/> if the file cannot be recognized.</returns>
         public ILoadedImage LoadBinaryImage(ImageLocation imageLocation, byte[] image, string? loader, Address? addrLoad)
         {
+            // Try to find a loader that knows how to deal with this format.
             ImageLoader? imgLoader;
             if (!string.IsNullOrEmpty(loader))
             {
@@ -150,8 +157,10 @@ namespace Reko.Loading
             }
 
             if (imgLoader is null)
-                return new Blob(image);
-
+            {
+                // Reko doesn't know this file format.
+                return new Blob(imageLocation, image);
+            }
             if (addrLoad is null && imgLoader is ProgramImageLoader ploader)
             {
                 addrLoad = ploader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.

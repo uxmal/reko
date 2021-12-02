@@ -1,0 +1,202 @@
+void _start(word64 rdx, word32 dwArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rdx:[0..63] Stack +0000:[0..31]
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
+_start_exit:
+_start_entry:
+l0000000000001080:
+	__align(fp + 8<i64>)
+	__libc_start_main(0x00000000000011E0<p64>, SLICE(qwArg00, int32, 0), fp + 8<i64>, 0x0000000000001280<p64>, 0x00000000000012E0<p64>, rdx, fp)
+	__hlt()
+
+
+void deregister_tm_clones()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      __do_global_dtors_aux
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO rax rdi Top
+// Preserved: rsp
+deregister_tm_clones_entry:
+l00000000000010B0:
+	branch 0x0000000000004048<p64> == 0x0000000000004048<p64> l00000000000010D8
+l00000000000010C3:
+	branch _ITM_deregisterTMCloneTable == 0<64> l00000000000010D8
+l00000000000010D8:
+	return
+l00000000000010CF:
+	call _ITM_deregisterTMCloneTable (retsize: 0;)
+	return
+deregister_tm_clones_exit:
+
+
+void register_tm_clones()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      frame_dummy
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO rax rdi rsi Top
+// Preserved: rsp
+register_tm_clones_entry:
+l00000000000010E0:
+	word64 rsi_6 = 0x0000000000004048<p64> - 0x0000000000004048<p64>
+	branch (rsi_6 >>u 0x3F<64>) + (rsi_6 >> 3<64>) >> 1<64> == 0<64> l0000000000001118
+l0000000000001104:
+	branch _ITM_registerTMCloneTable == 0<64> l0000000000001118
+l0000000000001118:
+	return
+l0000000000001110:
+	call _ITM_registerTMCloneTable (retsize: 0;)
+	return
+register_tm_clones_exit:
+
+
+void __do_global_dtors_aux()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO rax rdi Top
+// Preserved: rbp rsp
+__do_global_dtors_aux_entry:
+l0000000000001120:
+	branch Mem0[0x0000000000004048<p64>:byte] != 0<8> l0000000000001158
+l0000000000001158:
+	return
+l000000000000112D:
+	branch __cxa_finalize == 0<64> l0000000000001147
+l000000000000113B:
+	word64 rax_27
+	call __cxa_finalize (retsize: 8;)
+		uses: rax:rax_27,rdi:Mem9[0x0000000000004040<p64>:word64]
+		defs: rax:rax_27
+l0000000000001147:
+	deregister_tm_clones()
+	Mem22[0x0000000000004048<p64>:byte] = 1<8>
+	return
+__do_global_dtors_aux_exit:
+
+
+void frame_dummy()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      __libc_csu_init
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO rax rdi rsi Top
+// Preserved: rsp
+frame_dummy_entry:
+l0000000000001160:
+l0000000000001160_thunk_register_tm_clones:
+	register_tm_clones()
+	return
+frame_dummy_exit:
+
+
+word128 Q_rsqrt(word128 xmm0, word32 dwArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      main
+// MayUse:  Stack +0000:[0..31] xmm0:[0..31]
+// LiveOut: xmm0
+// Trashed: SCZO rax rdx Top xmm0 xmm1 xmm2
+// Preserved: rsp
+Q_rsqrt_entry:
+l0000000000001169:
+	word128 xmm2_16 = CONVERT(0x5F3759DF<32> - SLICE(SEQ(dwArg00, SLICE(xmm0, real32, 0)) >> 1<64>, word32, 0), word32, word128)
+	word128 xmm1_26 = CONVERT(Mem5[0x0000000000002078<p64>:real32], real32, uint128)
+	return SEQ(SLICE(xmm1_26, word96, 32), (SLICE(xmm1_26, real32, 0) - ((SLICE(xmm0, real32, 0) * Mem5[0x0000000000002074<p64>:real32]) * SLICE(xmm2_16, real32, 0)) * SLICE(xmm2_16, real32, 0)) * SLICE(xmm2_16, real32, 0))
+Q_rsqrt_exit:
+
+
+word128 lib_rsqrt(word128 xmm0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// Called from:
+//      main
+// MayUse:  xmm0:[0..127]
+// LiveOut: xmm0
+// Trashed: SCZOP Top xmm0 xmm1
+// Preserved: rsp
+lib_rsqrt_entry:
+l00000000000011A6:
+	branch SLICE(xmm0, real32, 0) <u 0.0F l00000000000011C3
+l00000000000011C3:
+	call sqrtf (retsize: 8;)
+	word128 xmm1_14 = CONVERT(Mem0[0x000000000000207C<p64>:real32], real32, uint128)
+	return SEQ(SLICE(xmm1_14, word96, 32), SLICE(xmm1_14, real32, 0) / SLICE(xmm0, real32, 0))
+l00000000000011AF:
+	real32 v9_21 = __fsqrt(xmm0)
+	word128 xmm1_23 = CONVERT(Mem0[0x000000000000207C<p64>:real32], real32, uint128)
+	return SEQ(SLICE(xmm1_23, word96, 32), SLICE(xmm1_23, real32, 0) / v9_21)
+lib_rsqrt_exit:
+
+
+void main(word64 rsi, word128 xmm0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rsi:[0..63] xmm0:[0..127]
+// LiveOut:
+// Trashed: SCZOP rax rdi rdx rsi Top xmm0 xmm1 xmm2
+// Preserved: rbx rsp
+main_entry:
+l00000000000011E0:
+	printf(0x0000000000002008<p64>, Mem6[rsi + 8<64>:word64])
+	call strtof (retsize: 8;)
+		uses: rax:CONVERT(puts(0x0000000000002030<p64>), int32, uint64),rdi:Mem6[rsi + 0x10<64>:word64],rsi:0<u64>,Stack +0000:dwLoc20
+	real32 rLoc0C_71 = SLICE(Q_rsqrt(xmm0, dwLoc20), real32, 0)
+	real32 rLoc10_72 = SLICE(lib_rsqrt(CONVERT(SLICE(xmm0, real32, 0), real32, uint128)), real32, 0)
+	printf(0x0000000000002051<p64>, SLICE(CONVERT(CONVERT(rLoc0C_71, real32, real64), real64, uint128), real64, 0))
+	printf(0x0000000000002062<p64>, SLICE(CONVERT(CONVERT(rLoc10_72, real32, real64), real64, uint128), real64, 0))
+	return
+main_exit:
+
+
+void __libc_csu_init(word64 rdx, word64 rsi, word32 edi)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  rdi:[0..31] rdx:[0..63] rsi:[0..63]
+// LiveOut:
+// Trashed: SCZO rax rdi rdx rsi Top
+// Preserved: r12 r13 r14 r15 rbp rbx rsp
+__libc_csu_init_entry:
+	word32 edi = SLICE(rdi, word32, 0)
+l0000000000001280:
+	_init()
+	word64 rbp_31 = 0x0000000000003DE0<p64> - 0x0000000000003DD8<p64>
+	branch rbp_31 >> 3<64> == 0<64> l00000000000012CE
+l00000000000012B3:
+	word64 rbx_43 = 0<u64>
+l00000000000012B8:
+	call Mem30[0x0000000000003DD8<p64> + rbx_43 * 8<64>:word64] (retsize: 8;)
+		uses: rdi:CONVERT(edi, word32, uint64),rdx:rdx,rsi:rsi
+	rbx_43 = rbx_43 + 1<64>
+	branch rbp_31 >> 3<64> != rbx_43 l00000000000012B8
+l00000000000012CE:
+	return
+__libc_csu_init_exit:
+
+
+void __libc_csu_fini()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: Top
+// Preserved: rsp
+__libc_csu_fini_entry:
+l00000000000012E0:
+	return
+__libc_csu_fini_exit:
+
+
