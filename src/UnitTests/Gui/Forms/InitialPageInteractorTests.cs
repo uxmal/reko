@@ -89,7 +89,7 @@ namespace Reko.UnitTests.Gui.Forms
             sc.AddService<IDecompiledFileService>(host.Object);
             sc.AddService<IFileSystemService>(fsSvc.Object);
             sc.AddService<IArchiveBrowserService>(abSvc.Object);
-
+            sc.AddService<IProcedureListService>(new Mock<IProcedureListService>().Object);
             i = new TestInitialPageInteractor(sc, dec.Object);
 		}
 

@@ -116,8 +116,8 @@ namespace Reko.UnitTests.Core.Serialization
 
         private void Given_Binary(Mock<ILoader> ldr, IPlatform platform)
         {
-            ldr.Setup(l => l.LoadImageBytes(
-                It.IsAny<ImageLocation>())).Returns(new byte[100]);
+            ldr.Setup(l => l.LoadFileBytes(
+                It.IsAny<string>())).Returns(new byte[100]);
             ldr.Setup(l => l.Load(
                 It.IsAny<ImageLocation>(),
                 null,
@@ -323,8 +323,8 @@ namespace Reko.UnitTests.Core.Serialization
                 It.IsAny<ImageLocation>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(new Program());
-            ldr.Setup(l => l.LoadImageBytes(
-                It.IsAny<ImageLocation>())).Returns(new byte[1000]);
+            ldr.Setup(l => l.LoadFileBytes(
+                It.IsAny<string>())).Returns(new byte[1000]);
 
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
             var project = prld.LoadProject(ImageLocation.FromUri(OsPath.Absolute("users","bob","projects","foo.project")), sProject);
@@ -355,8 +355,8 @@ namespace Reko.UnitTests.Core.Serialization
                 It.IsAny<ImageLocation>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(new Program());
-            ldr.Setup(l => l.LoadImageBytes(
-                It.IsAny<ImageLocation>())).Returns(new byte[1000]);
+            ldr.Setup(l => l.LoadFileBytes(
+                It.IsAny<string>())).Returns(new byte[1000]);
 
             var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
             var projectPath = OsPath.Absolute("users", "bob", "projects", "foo.project");

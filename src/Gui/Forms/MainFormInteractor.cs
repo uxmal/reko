@@ -65,7 +65,6 @@ namespace Reko.Gui.Forms
         private IFinalPageInteractor pageFinal;
 
         private MruList mru;
-        private string projectFileName;
         private IServiceContainer sc;
         private ProjectFilesWatcher projectFilesWatcher;
         private IConfigurationService config;
@@ -428,7 +427,6 @@ namespace Reko.Gui.Forms
             sc.RequireService<IStackTraceService>().Clear();
             diagnosticsSvc.ClearDiagnostics();
             decompilerSvc.Decompiler = null;
-            this.ProjectFileName = null;
         }
 
         private void CloseAllDocumentWindows()
@@ -559,11 +557,7 @@ namespace Reko.Gui.Forms
             }
         }
 
-        public string ProjectFileName
-        {
-            get { return projectFileName; }
-            set { projectFileName = value; }
-        }
+        public string ProjectFileName => decompilerSvc?.Decompiler?.Project?.Location.FilesystemPath;
 
         public void EditFind()
         {
@@ -751,7 +745,6 @@ namespace Reko.Gui.Forms
                     Path.ChangeExtension(filename, Project_v5.FileExtension));
                 if (newName == null)
                     return false;
-                ProjectFileName = newName;
                 RememberFilenameInMru(newName);
             }
 

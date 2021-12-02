@@ -61,7 +61,7 @@ namespace Reko.Core.Loading
         /// <returns>An array of bytes containing the file data.</returns>
         //$TODO: Change the output to Stream; the image could be so large it doesn't
         // fit in main memory.
-        byte[] LoadImageBytes(ImageLocation filename);
+        byte[] LoadFileBytes(string filename);
 
         /// <summary>
         /// Given a executable file image in <param name="bytes">, determines which file 

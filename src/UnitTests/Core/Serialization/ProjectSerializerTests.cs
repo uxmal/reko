@@ -107,8 +107,8 @@ namespace Reko.UnitTests.Core.Serialization
         public void Ps_Load_v4()
         {
             var bytes = new byte[100];
-            loader.Setup(l => l.LoadImageBytes(
-                It.IsAny<ImageLocation>())).
+            loader.Setup(l => l.LoadFileBytes(
+                It.IsAny<string>())).
                 Returns(bytes);
             loader.Setup(l => l.Load(
                 It.IsAny<ImageLocation>(),
@@ -213,8 +213,8 @@ namespace Reko.UnitTests.Core.Serialization
         public void Ps_Load_v5()
         {
             var bytes = new byte[100];
-            loader.Setup(l => l.LoadImageBytes(
-                It.IsAny<ImageLocation>())).
+            loader.Setup(l => l.LoadFileBytes(
+                It.IsAny<string>())).
                 Returns(bytes);
             loader.Setup(l => l.Load(
                 It.IsAny<ImageLocation>(),

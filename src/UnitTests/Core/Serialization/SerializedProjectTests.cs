@@ -391,8 +391,8 @@ namespace Reko.UnitTests.Core.Serialization
                         new ByteMemoryArea(address, bytes),
                         AccessMode.ReadWriteExecute))
             };
-            loader.Setup(l => l.LoadImageBytes(
-                It.Is<ImageLocation>(s => s.EndsWith(exeName)))).Returns(bytes);
+            loader.Setup(l => l.LoadFileBytes(
+                It.Is<string>(s => s.EndsWith(exeName)))).Returns(bytes);
             loader.Setup(l => l.Load(
                 It.Is<ImageLocation>(s => s.EndsWith(exeName)),
                 null,
@@ -412,8 +412,8 @@ namespace Reko.UnitTests.Core.Serialization
                 SegmentMap = segmentMap,
                 ImageMap = segmentMap.CreateImageMap()
             };
-            loader.Setup(l => l.LoadImageBytes(
-                It.Is<ImageLocation>(s => s.EndsWith(exeName)))).Returns(bytes);
+            loader.Setup(l => l.LoadFileBytes(
+                It.Is<string>(s => s.EndsWith(exeName)))).Returns(bytes);
             loader.Setup(l => l.Load(
                 It.Is<ImageLocation>(s => s.EndsWith(exeName)),
                 null,
@@ -538,7 +538,7 @@ namespace Reko.UnitTests.Core.Serialization
             Expect_TryGetRegister(arch, "eax", new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
             Expect_TryGetRegister(arch, "ecx", new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32));
             var loader = new Mock<ILoader>();
-            loader.Setup(l => l.LoadImageBytes(It.IsAny<ImageLocation>()))
+            loader.Setup(l => l.LoadFileBytes(It.IsAny<string>()))
                 .Returns(new byte[10]);
             loader.Setup(l => l.LoadBinaryImage(
                 It.IsAny<ImageLocation>(),

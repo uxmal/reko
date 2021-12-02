@@ -138,7 +138,7 @@ namespace Reko.UnitTests.Loading
             Given_Image();
 
             var ldr = new Mock<Loader>(sc);
-            ldr.Setup(l => l.LoadImageBytes(ImageLocation.FromUri(""))).Returns(testImage);
+            ldr.Setup(l => l.LoadFileBytes("")).Returns(testImage);
 
             var imgLoader = ldr.Object.FindImageLoader<ImageLoader>(ImageLocation.FromUri(""), testImage);
 

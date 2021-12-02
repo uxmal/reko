@@ -60,7 +60,7 @@ namespace Reko.Loading
 
         public Program AssembleExecutable(ImageLocation asmFileLocation, IAssembler asm, IPlatform platform, Address addrLoad)
         {
-            var bytes = LoadImageBytes(asmFileLocation);
+            var bytes = LoadFileBytes(asmFileLocation.FilesystemPath);
             return AssembleExecutable(asmFileLocation, bytes, asm, platform, addrLoad);
         }
 
@@ -101,8 +101,7 @@ namespace Reko.Loading
         /// </returns>
         public ILoadedImage Load(ImageLocation imageLocation, string? loaderName = null, Address? addrLoad = null)
         {
-            var fsLocation = ImageLocation.FromUri(imageLocation.FilesystemPath);
-            byte[] image = LoadImageBytes(fsLocation);
+            byte[] image = LoadFileBytes(imageLocation.FilesystemPath);
             var projectLoader = new ProjectLoader(this.Services, this, Services.RequireService<DecompilerEventListener>());
             projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
             var project = projectLoader.LoadProject(imageLocation, image);
@@ -112,6 +111,7 @@ namespace Reko.Loading
                 return project;
             }
 
+            var fsLocation = ImageLocation.FromUri(imageLocation.FilesystemPath);
             var binaryImage = LoadBinaryImage(fsLocation, image, loaderName, addrLoad);
             foreach (var fragment in imageLocation.Fragments)
             {
@@ -219,7 +219,7 @@ namespace Reko.Loading
         public Program LoadRawImage(ImageLocation location, LoadDetails raw)
         {
             raw.ArchitectureOptions ??= new Dictionary<string, object>();
-            byte[] image = this.LoadImageBytes(location);
+            byte[] image = this.LoadFileBytes(location.FilesystemPath);
             var program = this.LoadRawImage(location, image, null, raw);
             return program;
         }
@@ -400,7 +400,7 @@ namespace Reko.Loading
         /// wasn't recognized.</returns>
         public TypeLibrary? LoadMetadata(ImageLocation metadataLocation, IPlatform platform, TypeLibrary typeLib)
         {
-            var rawBytes = LoadImageBytes(metadataLocation);
+            var rawBytes = LoadFileBytes(metadataLocation.FilesystemPath);
             var mdLoader = FindImageLoader<MetadataLoader>(metadataLocation, rawBytes);
             if (mdLoader is null)
                 return null;
@@ -410,22 +410,20 @@ namespace Reko.Loading
 
         public ScriptFile? LoadScript(ImageLocation scriptLocation)
         {
-            var rawBytes = LoadImageBytes(scriptLocation);
+            var rawBytes = LoadFileBytes(scriptLocation.FilesystemPath);
             return FindImageLoader<ScriptFile>(scriptLocation, rawBytes);
         }
 
         /// <summary>
         /// Loads the contents of a file with the specified filename into an array 
-        /// of bytes, optionally at the offset <paramref>offset</paramref>. No interpretation
-        /// of those bytes is done.
+        /// of bytes. No interpretation of those bytes is done.
         /// </summary>
-        /// <param name="imageLocation">Location of the image whose bytes are to be loaded.</param>
+        /// <param name="imageLocation">File system path to the image whose bytes are to be loaded.</param>
         /// <returns>An array of bytes with the file contents.</returns>
-        public virtual byte[] LoadImageBytes(ImageLocation imageLocation)
+        public virtual byte[] LoadFileBytes(string filepath)
         {
-            // The initial fragment is always a file system location.
             var fsSvc = Services.RequireService<IFileSystemService>();
-            return fsSvc.ReadAllBytes(imageLocation.FilesystemPath);
+            return fsSvc.ReadAllBytes(filepath);
         }
 
         /// <summary>
