@@ -118,14 +118,14 @@ namespace Reko.UnitTests.Core.Serialization
         {
             ldr.Setup(l => l.LoadImageBytes(
                 It.IsAny<ImageLocation>())).Returns(new byte[100]);
-            ldr.Setup(l => l.LoadBinaryImage(
+            ldr.Setup(l => l.Load(
                 It.IsAny<ImageLocation>(),
-                It.IsAny<byte[]>(),
-                It.IsAny<string>(),
-                It.IsAny<Address>())).Returns(new Program {
-                    Platform = platform,
-                    Architecture = arch.Object
-                });
+                null,
+                null)).Returns(new Func<ImageLocation, string, Address, ILoadedImage>(
+                    (i, l, a) => new Program { 
+                        Architecture = arch.Object,
+                        Platform = platform,
+                    }));
         }
 
         private void Given_Script(Mock<ILoader> ldr, string fileName)
@@ -319,9 +319,8 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestArch();
             Given_TestOS();
             var ldr = new Mock<ILoader>();
-            ldr.Setup(l => l.LoadBinaryImage(
+            ldr.Setup(l => l.Load(
                 It.IsAny<ImageLocation>(),
-                It.IsAny<byte[]>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(new Program());
             ldr.Setup(l => l.LoadImageBytes(
@@ -352,9 +351,8 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestArch();
             Given_TestOS();
             var ldr = new Mock<ILoader>();
-            ldr.Setup(l => l.LoadBinaryImage(
+            ldr.Setup(l => l.Load(
                 It.IsAny<ImageLocation>(),
-                It.IsAny<byte[]>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(new Program());
             ldr.Setup(l => l.LoadImageBytes(

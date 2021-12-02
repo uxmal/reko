@@ -76,7 +76,6 @@ namespace Reko.UnitTests.Gui
         public void DecSvc_DecompilerProjectName()
         {
             IDecompilerService svc = new DecompilerService();
-            var loader = new Mock<ILoader>();
             var host = new Mock<IDecompiledFileService>();
             var arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");
@@ -99,8 +98,6 @@ namespace Reko.UnitTests.Gui
             // anymore.
             platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
             platform.Setup(p => p.Architecture).Returns(arch.Object);
-            loader.Setup(l => l.LoadImageBytes(fileUri)).Returns(bytes);
-            loader.Setup(l => l.LoadBinaryImage(fileUri, bytes, null, null)).Returns(program);
 
             var dec = new Decompiler(project, sc);
             svc.Decompiler = dec;

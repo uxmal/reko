@@ -78,6 +78,7 @@ namespace Reko.Core.Loading
         /// Either a successfully loaded <see cref="ILoadedImage"/>, or a <see cref="Blob"/>
         /// if an appropriate image loader could not be determined or loaded.
         /// </returns>
+        //$REVIEW: this method may no longer need to be exposed on this interface.
         ILoadedImage LoadBinaryImage(ImageLocation imageLocation, byte[] bytes, string? loader, Address? loadAddress);
 
         /// <summary>

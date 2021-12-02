@@ -85,19 +85,6 @@ namespace Reko.UnitTests.Gui.Forms
             uiSvc = AddService<IDecompilerShellUiService>();
             memSvc = AddService<ILowLevelViewService>();
 
-            //$REVIEW: probably no need for loader anymore?
-            var ldr = new Mock<ILoader>();
-            ldr.Setup(l => l.LoadImageBytes(
-                It.IsNotNull<ImageLocation>())).Returns(new byte[400]);
-            ldr.Setup(l => l.LoadBinaryImage(
-                It.IsNotNull<ImageLocation>(),
-                It.IsNotNull<byte[]>(),
-                null,
-                It.IsAny<Address>())).Returns(program)
-                .Callback(() =>
-                {
-                    program.ToString();
-                });
             decSvc.Decompiler = new Decompiler(project, sc);
 
             interactor = new ScannedPageInteractor(sc);

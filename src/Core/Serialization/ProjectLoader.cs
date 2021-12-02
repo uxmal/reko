@@ -279,11 +279,13 @@ namespace Reko.Core.Serialization
             }
             else
             {
-                if (loader.Load(binLocation, null, address) is Program p)
-                    return p;
-                return new Program();   // A previous save of the project was able to read the file, 
-                                        // but now we can't...
-                                        //$REVIEW: this probably should throw an exception?
+                if (loader.Load(binLocation, null, address) is not Program p)
+                {
+                    // A previous save of the project was able to read the file, 
+                    // but now we can't...
+                    throw new InvalidOperationException($"Previously saved location {binLocation} doesn't lead to a decompileable file image.");
+                }
+                return p;
             }
             return program;
         }
@@ -350,7 +352,7 @@ namespace Reko.Core.Serialization
             if (sUser.Processor != null)
             {
                 user.Processor = sUser.Processor.Name;
-                if (program.Architecture == null && !string.IsNullOrEmpty(user.Processor))
+                if (program.Architecture is null && !string.IsNullOrEmpty(user.Processor))
                 {
                     program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(user.Processor!)!;
                 }

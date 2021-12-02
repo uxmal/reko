@@ -393,9 +393,8 @@ namespace Reko.UnitTests.Core.Serialization
             };
             loader.Setup(l => l.LoadImageBytes(
                 It.Is<ImageLocation>(s => s.EndsWith(exeName)))).Returns(bytes);
-            loader.Setup(l => l.LoadBinaryImage(
+            loader.Setup(l => l.Load(
                 It.Is<ImageLocation>(s => s.EndsWith(exeName)),
-                It.IsNotNull<byte[]>(),
                 null,
                 null)).Returns(program);
         }
@@ -415,9 +414,8 @@ namespace Reko.UnitTests.Core.Serialization
             };
             loader.Setup(l => l.LoadImageBytes(
                 It.Is<ImageLocation>(s => s.EndsWith(exeName)))).Returns(bytes);
-            loader.Setup(l => l.LoadBinaryImage(
+            loader.Setup(l => l.Load(
                 It.Is<ImageLocation>(s => s.EndsWith(exeName)),
-                It.IsNotNull<byte[]>(),
                 null,
                 null)).Returns(program);
         }
