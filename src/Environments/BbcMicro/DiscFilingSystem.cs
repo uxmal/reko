@@ -157,5 +157,7 @@ namespace Reko.Environments.BbcMicro
         public Address ExecAddress { get; set; }
         public uint Length { get; set; }
         public string Name { get; set; }
+
+        public ArchiveDirectoryEntry? Parent => null;
     }
 }

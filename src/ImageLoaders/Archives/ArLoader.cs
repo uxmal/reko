@@ -34,20 +34,17 @@ namespace Reko.ImageLoaders.Archives
         private const string HeaderSignature = "!<arch>\n";
         private Dictionary<string, uint> symbols;
 
-        public ArLoader(IServiceProvider services, string filename, byte[] imgRaw)
-            : base(services, filename, imgRaw)
+        public ArLoader(IServiceProvider services, ImageLocation location, byte[] imgRaw)
+            : base(services, location, imgRaw)
         {
-            PreferredBaseAddress = default!;
             symbols = new Dictionary<string, uint>();
         }
-
-        public override Address PreferredBaseAddress { get; set; }
 
         public override ILoadedImage Load(Address? addrLoad)
         {
             var rdr = new ByteImageReader(RawImage);
             ReadHeader(rdr);
-            var archive = new ArArchive();
+            var archive = new ArArchive(this.ImageLocation);
             ReadFiles(rdr, archive);
             return archive;
         }
@@ -111,10 +108,8 @@ namespace Reko.ImageLoaders.Archives
                 name = name.TrimEnd(charsToTrim);
             }
 
-            var arFile = new ArFile(fileHeader, rdr, rdr.Offset, dataSize);
             rdr.Offset += dataSize;
-            archive.AddFile(name, arFile);
-
+            archive.AddFile(name, p => new ArFile(p, fileHeader, rdr, rdr.Offset, dataSize));
             AlignReader(rdr);
         }
 

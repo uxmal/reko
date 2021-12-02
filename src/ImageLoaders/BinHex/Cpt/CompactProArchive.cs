@@ -75,7 +75,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
             while (cptEntry is not null)
             {
                 components.Add(cptEntry.Name);
-                cptEntry = cptEntry.Parent!;
+                cptEntry = (cptEntry.Parent as CptEntry)!;
             }
             components.Reverse();
             return string.Join("/", components);
@@ -479,7 +479,7 @@ namespace Reko.ImageLoaders.BinHex.Cpt
             }
 
             public CompactProArchive Archive { get; }
-            public CptEntry? Parent { get; }
+            public ArchiveDirectoryEntry? Parent { get; }
             public string Name { get; }
             public abstract ICollection<ArchiveDirectoryEntry> Entries { get; }
         }
@@ -526,6 +526,8 @@ namespace Reko.ImageLoaders.BinHex.Cpt
                 public ImageLocation Location => Archive.Location.AppendFragment(Archive.GetRootPath(this));
 
                 public uint Size => lengthUncompressed;
+
+                public long Length => lengthUncompressed;
 
                 public override ICollection<ArchiveDirectoryEntry> Entries => Array.Empty<ArchiveDirectoryEntry>();
 

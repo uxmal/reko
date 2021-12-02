@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using System;
@@ -31,27 +32,36 @@ namespace Reko.ImageLoaders.Archives.Ar
         private ArFileHeader fileHeader;
         private ByteImageReader rdr;
         private long fileDataStart;
-        private int fileSize;
 
-        public ArFile(ArFileHeader fileHeader, ByteImageReader rdr, long fileDataStart, int filesize)
+        public ArFile(
+            ArchiveDirectoryEntry? parent,
+            ArFileHeader fileHeader,
+            ByteImageReader rdr,
+            long fileDataStart, 
+            long filesize)
         {
+            this.Parent = parent;
             this.fileHeader = fileHeader;
             this.rdr = rdr;
             this.fileDataStart = fileDataStart;
-            this.fileSize = filesize;
+            this.Length = filesize;
         }
 
+        public long Length { get; }
+
         public string Name => throw new NotImplementedException();
+
+        public ArchiveDirectoryEntry? Parent { get; }
 
         public byte[] GetBytes()
         {
             rdr.Offset = fileDataStart;
-            return rdr.ReadBytes(fileSize);
+            return rdr.ReadBytes((int)Length);
         }
 
-        internal void AddFile(string sTrimmedFileId)
+        public ILoadedImage LoadImage(IServiceProvider services, Address? addr)
         {
-            throw new NotImplementedException();
+            return new Blob(GetBytes());
         }
     }
 }

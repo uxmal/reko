@@ -203,9 +203,13 @@ directory.
                 this.bytes = bytes;
             }
 
+            public long Length => bytes.LongLength;
+
             public string Name { get; }
             public FileType FileType { get; }
             public ushort LoadAddress { get; }
+
+            public ArchiveDirectoryEntry? Parent => null;
 
             private readonly byte[] bytes;
 

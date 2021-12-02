@@ -198,6 +198,10 @@ namespace Reko.Environments.C64
 
             public FileType FileType { get; private set; }
 
+            public long Length => throw new NotImplementedException();
+
+            public ArchiveDirectoryEntry? Parent => null;
+
             public byte[] GetBytes()
             {
                 byte[] data;

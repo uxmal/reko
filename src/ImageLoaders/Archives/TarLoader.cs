@@ -36,17 +36,16 @@ namespace Reko.ImageLoaders.Archives
     {
         private const int TarBlockSize = 512;
 
-        public TarLoader(IServiceProvider services, string filename, byte[]imgRaw)
-            : base(services, filename, imgRaw)
+        public TarLoader(IServiceProvider services, ImageLocation location, byte[]imgRaw)
+            : base(services, location, imgRaw)
         {
         }
 
-        public override Address PreferredBaseAddress { get => null!; set => throw new NotImplementedException(); }
 
         public override ILoadedImage Load(Address? addrLoad)
         {
             var rdr = new ByteImageReader(base.RawImage);
-            var archive = new TarArchive();
+            var archive = new TarArchive(this.ImageLocation);
 
             for (; ; )
             {
@@ -56,8 +55,8 @@ namespace Reko.ImageLoaders.Archives
                 if (PeekString(rdr, "ustar"))
                 {
                     var ustarHeader = rdr.ReadStruct<ustar_header>();
-                    var file = TarFile.Load(tarHeader, ustarHeader, rdr);
-                    archive.AddFile(file.Filename, file);
+                    var filename = TarFile.GetString(tarHeader.filename);
+                    var file = archive.AddFile(filename, p => TarFile.Load(p, tarHeader, ustarHeader, rdr));
                     Align(rdr, TarBlockSize);
                     
                     rdr.Offset += file.Length;

@@ -1,3 +1,4 @@
+using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using System;
@@ -54,24 +55,20 @@ namespace Reko.ImageLoaders.Archives.Tar
         private readonly ByteImageReader rdr;
         private readonly long offset;
 
-        public string Filename { get; private set; }
-        public long Length { get; private set; }
-
-        public string Name { get; private set; }
-
-        private TarFile(ByteImageReader rdr)
+        private TarFile(ByteImageReader rdr, ArchiveDirectoryEntry? parent)
         {
             this.rdr = rdr;
             this.offset = rdr.Offset;
             this.Name = default!;
             this.Filename = default!;
+            this.Parent = parent;
         }
 
-        public static TarFile Load(in tar_header tarHdr, in ustar_header? ustarHdr, ByteImageReader rdr)
+        public static TarFile Load(ArchiveDirectoryEntry? parent, in tar_header tarHdr, in ustar_header? ustarHdr, ByteImageReader rdr)
         {
             var filename = GetString(tarHdr.filename);
             var length = GetOctal(tarHdr.octFileSize);
-            return new TarFile(rdr)
+            return new TarFile(rdr, parent)
             {
                 Filename = filename,
                 Name = Path.GetFileName(filename),
@@ -79,10 +76,20 @@ namespace Reko.ImageLoaders.Archives.Tar
             };
         }
 
+        public string Filename { get; private set; }
+        public long Length { get; private set; }
+        public string Name { get; private set; }
+        public ArchiveDirectoryEntry? Parent { get; }
+
         public byte[] GetBytes()
         {
             this.rdr.Offset = this.offset;
             return rdr.ReadBytes((int)Length);
+        }
+
+        public ILoadedImage LoadImage(IServiceProvider services, Address? addrLoad)
+        {
+            return new Blob(GetBytes());
         }
 
         private static long GetOctal(byte[] aOctalString)
@@ -99,7 +106,7 @@ namespace Reko.ImageLoaders.Archives.Tar
             }
             return result;
         }
-        private static string GetString(byte[] aString)
+        public static string GetString(byte[] aString)
         {
             int i = Array.IndexOf(aString, (byte) 0);
             var encoding = Encoding.UTF8;

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,9 @@ namespace Reko.ImageLoaders.Archives.Ar
 {
     public class ArArchive : AbstractHierarchicalArchive
     {
-        public ArArchive() : base('/') { }
+        public ArArchive(ImageLocation archLocation)
+            : base(archLocation, '/', StringComparer.InvariantCulture)
+        { 
+        }
     }
 }

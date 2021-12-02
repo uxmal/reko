@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Loading;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,9 @@ namespace Reko.ImageLoaders.Archives.Tar
 {
     public class TarArchive : AbstractHierarchicalArchive
     {
-        public TarArchive() : base('/') { }
+        public TarArchive(ImageLocation location) 
+            : base(location, '/', StringComparer.InvariantCulture)
+        {
+        }
     }
 }

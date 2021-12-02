@@ -30,10 +30,17 @@ namespace Reko.Core.Loading
         /// Name of this directory entry.
         /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// Parent of this entry, or null if there is no parent.
+        /// </summary>
+        ArchiveDirectoryEntry? Parent { get; }
     }
 
     public interface ArchivedFile : ArchiveDirectoryEntry
     {
+        long Length { get; }
+
         byte[] GetBytes();
 
         /// <summary>

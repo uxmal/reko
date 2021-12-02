@@ -31,26 +31,60 @@ namespace Reko.Core.Loading
     public abstract class AbstractHierarchicalArchive : IArchive
     {
         private readonly char pathSeparator;
+        private readonly IComparer<string> filenameComparer;
         private readonly Dictionary<string, ArchiveDirectoryEntry> root;
 
-        public AbstractHierarchicalArchive(char pathSeparator)
+        public AbstractHierarchicalArchive(ImageLocation location, char pathSeparator, IComparer<string> comparer)
         {
+            this.Location = location;
             this.pathSeparator = pathSeparator;
+            this.filenameComparer = comparer;
             this.root = new Dictionary<string, ArchiveDirectoryEntry>();
         }
 
-        public virtual void AddFile(string path, ArchivedFile file)
+        public ArchiveDirectoryEntry? this[string path] => GetEntry(path);
+
+        public ImageLocation Location { get; }
+
+        public List<ArchiveDirectoryEntry> RootEntries
+            => root.Values
+                .OrderBy(e => e.Name, this.filenameComparer)
+                .ToList();
+
+        public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
+            => visitor.VisitArchive(this, context);
+
+        private ArchiveDirectoryEntry? GetEntry(string path)
+        {
+            var components = path.Split(pathSeparator);
+            if (components.Length == 0)
+                return null;
+            var curDir = this.root;
+            ArchiveDirectoryEntry? entry = null;
+            foreach (var component in components)
+            {
+                if (curDir is null || !curDir.TryGetValue(component, out entry))
+                    return null;
+                curDir = (entry as ArchiveDictionary)?.entries;
+            }
+            return entry;
+        }
+
+        public virtual ArchivedFile AddFile(
+            string path, 
+            Func<ArchiveDirectoryEntry?, ArchivedFile> fileCreator)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException(nameof(path));
             var pathSegments = path.Split(pathSeparator);
             var curDir = this.root;
+            ArchivedFolder? parentDir = null;
             for (int i = 0; i < pathSegments.Length - 1; ++i)
             {
                 string pathSegment = pathSegments[i];
                 if (!curDir.TryGetValue(pathSegment, out var entry))
                 {
-                    entry = new ArchiveDictionary(pathSegment);
+                    entry = parentDir = new ArchiveDictionary(this, pathSegment, parentDir);;
                     curDir.Add(pathSegment, entry);
                 }
                 if (entry is not ArchiveDictionary nextDir)
@@ -61,23 +95,47 @@ namespace Reko.Core.Loading
                 curDir = nextDir.entries;
             }
             var filename = pathSegments[^1];
+            var file = fileCreator(parentDir);
             if (!curDir.TryAdd(filename, file))
                 throw new InvalidOperationException($"The path {path} already exists.");
+            return file;
+        }
+
+        public virtual string GetRootPath(ArchiveDirectoryEntry? entry)
+        {
+            if (entry is null)
+                return "";
+            var components = new List<string>();
+            while (entry is not null)
+            {
+                components.Add(entry.Name);
+                entry = entry.Parent;
+            }
+            components.Reverse();
+            return string.Join(pathSeparator, components);
         }
 
         public class ArchiveDictionary : ArchivedFolder
         {
+            private readonly AbstractHierarchicalArchive archive;
             internal readonly Dictionary<string, ArchiveDirectoryEntry> entries;
 
-            public ArchiveDictionary(string name)
+            public ArchiveDictionary(AbstractHierarchicalArchive archive, string name, ArchivedFolder? parent)
             {
+                this.archive = archive;
                 this.Name = name;
+                this.Parent = parent;
                 this.entries = new Dictionary<string, ArchiveDirectoryEntry>();
             }
 
-            public ICollection<ArchiveDirectoryEntry> Items => entries.Values;
+            public ICollection<ArchiveDirectoryEntry> Entries
+                => entries.Values
+                    .OrderBy(e => e.Name, archive.filenameComparer)
+                    .ToList();
 
             public string Name { get; }
+
+            public ArchiveDirectoryEntry? Parent { get; }
 
             public void AddEntry(string name, ArchiveDirectoryEntry entry)
             {
