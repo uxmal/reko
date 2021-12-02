@@ -285,7 +285,7 @@ namespace Reko.Core.Serialization
                     // but now we can't...
                     throw new InvalidOperationException($"Previously saved location {binLocation} doesn't lead to a decompileable file image.");
                 }
-                return p;
+                program = p;
             }
             return program;
         }

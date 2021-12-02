@@ -122,17 +122,26 @@ namespace Reko.Gui.Forms
                 // We've already reported the exception, so we should stop in our tracks.
                 return false;
             }
-            if (loadedImage is IArchive archive)
+            switch (loadedImage)
             {
+            case Program program:
+                loadedImage = Project.FromSingleProgram(program);
+                break;
+            case IArchive archive:
                 loadedImage = LoadFromArchive(archive, ldr);
-            }
-            if (loadedImage is Blob blob)
-            {
+                break;
+            case Blob blob:
                 var dlgFactory = Services.RequireService<IDialogFactory>();
-                using IOpenAsDialog dlg = dlgFactory.CreateOpenAsDialog(file);
-                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                using (IOpenAsDialog dlg = dlgFactory.CreateOpenAsDialog(file))
                 {
-                    return OpenBinaryAs(file, dlg.GetLoadDetails());
+                    if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                    {
+                        return OpenBinaryAs(file, dlg.GetLoadDetails());
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
             if (loadedImage is not Project project)

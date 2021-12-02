@@ -118,13 +118,8 @@ namespace Reko.Loading
                     throw new InvalidOperationException($"Image '{imageLocation}' expects an archive or file container, but none was loaded.");
                 var item = archive[fragment];
                 if (item is not ArchivedFile file)
-                    throw new InvalidOperationException($"Fragment '{fragment}' does not refer to a file.");
+                    throw new InvalidOperationException($"Fragment '{fragment}' does not refer to an archived file.");
                 binaryImage = file.LoadImage(Services, addrLoad);
-            }
-
-            if (binaryImage is Program program)
-            {
-                return Project.FromSingleProgram(program);
             }
             return binaryImage;
         }

@@ -163,9 +163,18 @@ namespace Reko.CmdLine
                 var fileName = (string) pArgs["filename"];
                 var filePath = Path.GetFullPath(fileName);
                 var imageLocation = ImageLocation.FromUri(filePath);
-                if (ldr.Load(imageLocation, (string) imgLoader, addrLoad) is not Project project)
+                var loadedImage = ldr.Load(imageLocation, (string) imgLoader, addrLoad);
+                Project project;
+                switch (loadedImage)
                 {
-                    this.listener.Error("Cannot decompile {0}", fileName);
+                case Program loadedProgram:
+                    project = Project.FromSingleProgram(loadedProgram);
+                    break;
+                case Project loadedProject:
+                    project = loadedProject;
+                    break;
+                default:
+                    this.listener.Error("Cannot decompile {0}.", fileName);
                     return;
                 }
                 var decompiler = new Decompiler(project, services);
