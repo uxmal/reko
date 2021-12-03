@@ -1343,12 +1343,12 @@ namespace Reko.Core.Expressions
         /// <param name="value">The value being sliced</param>
         /// <param name="bitOffset">Slice offset from least significant bit.</param>
         /// <returns>A bit-slice expression.</returns>
-        public Slice Slice(DataType dataType, Expression value, int bitOffset)
+        public Slice Slice(DataType dataType, Expression value, int bitOffset = 0)
         {
             return new Slice(dataType, value, bitOffset);
         }
 
-        public Slice Slice(Expression value, DataType dataType, int bitOffset)
+        public Slice Slice(Expression value, DataType dataType, int bitOffset = 0)
         {
             return new Slice(dataType, value, bitOffset);
         }
