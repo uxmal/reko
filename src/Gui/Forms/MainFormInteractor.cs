@@ -83,6 +83,8 @@ namespace Reko.Gui.Forms
 
         public IServiceProvider Services { get { return sc; } }
 
+        public string ProjectFileName { get; set; }
+
         public void Attach(IMainForm mainForm)
         {
             this.form = mainForm;
@@ -247,12 +249,17 @@ namespace Reko.Gui.Forms
         {
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
             var fileName = uiSvc.ShowOpenFileDialog(null);
-            if (fileName != null)
+            if (fileName is not null)
             {
                 RememberFilenameInMru(fileName);
                 CloseProject();
                 SwitchInteractor(InitialPageInteractor);
-                pageInitial.OpenBinary(fileName);
+                if (!pageInitial.OpenBinary(fileName))
+                    return;
+                if (fileName.EndsWith(Project_v5.FileExtension))
+                {
+                    ProjectFileName = fileName;
+                }
             }
         }
 
@@ -268,7 +275,7 @@ namespace Reko.Gui.Forms
         public void AddMetadataFile()
         {
             var fileName = uiSvc.ShowOpenFileDialog(null);
-            if (fileName == null)
+            if (fileName is null)
                 return;
             var projectLoader = new ProjectLoader(
                 Services,
@@ -373,12 +380,17 @@ namespace Reko.Gui.Forms
                 if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return true;
 
+                string fileName = dlg.FileName.Text;
                 var arch = this.config.GetArchitecture(dlg.SelectedArchitectureName);
                 var asm = arch.CreateAssembler(null);
                 CloseProject();
                 SwitchInteractor(InitialPageInteractor);
-                InitialPageInteractor.Assemble(dlg.FileName.Text, asm, null);
-                RememberFilenameInMru(dlg.FileName.Text);
+                InitialPageInteractor.Assemble(fileName, asm, null);
+                RememberFilenameInMru(fileName);
+                if (fileName.EndsWith(Project_v5.FileExtension))
+                {
+                    ProjectFileName = fileName;
+                }
             }
             catch (Exception e)
             {
@@ -395,11 +407,15 @@ namespace Reko.Gui.Forms
                 dlg = dlgFactory.CreateOpenAsDialog(initialFilename);
                 if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return false;
-
+                string fileName = dlg.FileName.Text;
                 LoadDetails details = dlg.GetLoadDetails();
                 CloseProject();
                 SwitchInteractor(InitialPageInteractor);
-                pageInitial.OpenBinaryAs(dlg.FileName.Text, details);
+                pageInitial.OpenBinaryAs(fileName, details);
+                if (fileName.EndsWith(Project_v5.FileExtension))
+                {
+                    ProjectFileName = fileName;
+                }
             }
             catch (Exception ex)
             {
@@ -427,6 +443,7 @@ namespace Reko.Gui.Forms
             sc.RequireService<IStackTraceService>().Clear();
             diagnosticsSvc.ClearDiagnostics();
             decompilerSvc.Decompiler = null;
+            this.ProjectFileName = null;
         }
 
         private void CloseAllDocumentWindows()
@@ -556,8 +573,6 @@ namespace Reko.Gui.Forms
                 uiSvc.ShowModalDialog(dlg);
             }
         }
-
-        public string ProjectFileName => decompilerSvc?.Decompiler?.Project?.Location.FilesystemPath;
 
         public void EditFind()
         {
@@ -746,6 +761,7 @@ namespace Reko.Gui.Forms
                 if (newName == null)
                     return false;
                 RememberFilenameInMru(newName);
+                ProjectFileName = newName;
             }
 
             var fsSvc = Services.RequireService<IFileSystemService>();
@@ -979,9 +995,9 @@ namespace Reko.Gui.Forms
 
         private bool ExecuteMruFile(int cmdId)
         {
-                int iMru = cmdId - CmdIds.FileMru;
-                if (0 <= iMru && iMru < mru.Items.Count)
-                {
+            int iMru = cmdId - CmdIds.FileMru;
+            if (0 <= iMru && iMru < mru.Items.Count)
+            {
                 string file = mru.Items[iMru];
 
                 CloseProject();
@@ -991,6 +1007,10 @@ namespace Reko.Gui.Forms
                     if (pageInitial.OpenBinary(file))
                     {
                         RememberFilenameInMru(file);
+                        if (file.EndsWith(Project_v5.FileExtension))
+                        {
+                            ProjectFileName = file;
+                        }
                     }
                     return true;
                 }

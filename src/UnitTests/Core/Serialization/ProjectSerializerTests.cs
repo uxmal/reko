@@ -191,8 +191,10 @@ namespace Reko.UnitTests.Core.Serialization
                     }
                 }
             };
-            var ps = new ProjectLoader(sc, loader.Object, listener.Object);
-            var p = ps.LoadProject(ImageLocation.FromUri("c:\\tmp\\fproj.proj"), sp);
+            var location = ImageLocation.FromUri("c:\\tmp\\fproj.proj");
+            var ps = new ProjectLoader(sc, loader.Object, location, listener.Object);
+            var p = ps.LoadProject(sp);
+
             Assert.AreEqual(1, p.Programs.Count);
             var inputFile0 = p.Programs[0]; 
             Assert.AreEqual(1, inputFile0.User.Procedures.Count);
@@ -310,8 +312,9 @@ namespace Reko.UnitTests.Core.Serialization
                     }
                 }
             };
-            var ps = new ProjectLoader(sc, loader.Object, listener.Object);
-            var p = ps.LoadProject(ImageLocation.FromUri(OsPath.Absolute("tmp","fproj.proj")), sp);
+            var location = ImageLocation.FromUri(OsPath.Absolute("tmp", "fproj.proj"));
+            var ps = new ProjectLoader(sc, loader.Object, location, listener.Object);
+            var p = ps.LoadProject(sp);
 
             Assert.AreEqual(2, p.Programs.Count);
             var inputFile0 = p.Programs[0];

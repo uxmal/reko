@@ -245,10 +245,10 @@ namespace Reko.UnitTests.Analysis
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var loader = new Loader(sc);
+            var location = ImageLocation.FromUri(FileUnitTester.MapTestPath(configFile));
             var project = string.IsNullOrEmpty(configFile)
                 ? new Project()
-                : new ProjectLoader(sc, loader, eventListener).LoadProject(
-                    ImageLocation.FromUri(FileUnitTester.MapTestPath(configFile)));
+                : new ProjectLoader(sc, loader, location, eventListener).LoadProject();
             var scan = new Scanner(
                 program,
                 project.LoadedMetadata,

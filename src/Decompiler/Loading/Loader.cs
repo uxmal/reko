@@ -102,9 +102,11 @@ namespace Reko.Loading
         public ILoadedImage Load(ImageLocation imageLocation, string? loaderName = null, Address? addrLoad = null)
         {
             byte[] image = LoadFileBytes(imageLocation.FilesystemPath);
-            var projectLoader = new ProjectLoader(this.Services, this, Services.RequireService<DecompilerEventListener>());
+
+            var project = new Project(imageLocation);
+            var projectLoader = new ProjectLoader(this.Services, this, project, Services.RequireService<DecompilerEventListener>());
             projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
-            var project = projectLoader.LoadProject(imageLocation, image);
+            project = projectLoader.LoadProject(image);
             if (project is not null)
             {
                 project.FireScriptEvent(ScriptEvent.OnProgramLoaded);
@@ -218,7 +220,6 @@ namespace Reko.Loading
         /// <param name="raw">Extra metadata supllied by the user.</param>
         public Program LoadRawImage(ImageLocation location, LoadDetails raw)
         {
-            raw.ArchitectureOptions ??= new Dictionary<string, object>();
             byte[] image = this.LoadFileBytes(location.FilesystemPath);
             var program = this.LoadRawImage(location, image, null, raw);
             return program;
@@ -232,7 +233,6 @@ namespace Reko.Loading
         /// <param name="raw">Extra metadata supllied by the user.</param>
         public Program LoadRawImage(byte[] image, LoadDetails raw)
         {
-            raw.ArchitectureOptions ??= new Dictionary<string, object>();
             var inventedLocation = ImageLocation.FromUri("file:image");
             var program = this.LoadRawImage(inventedLocation, image, null, raw);
             return program;
@@ -251,7 +251,7 @@ namespace Reko.Loading
         {
             if (details.ArchitectureName is null)
                 throw new ApplicationException($"No processor architecture was specified.");
-            var arch = cfgSvc.GetArchitecture(details.ArchitectureName);
+            var arch = cfgSvc.GetArchitecture(details.ArchitectureName, details.ArchitectureOptions);
             if (arch is null)
                 throw new ApplicationException($"Unknown processor architecture '{details.ArchitectureName}");
             arch.LoadUserOptions(details.ArchitectureOptions);
@@ -268,6 +268,17 @@ namespace Reko.Loading
                         "Unable to determine base address for executable. A default address should have been present in the reko.config file.");
                 }
             }
+
+            if (imageLocation.HasFragments)
+            {
+                // This raw file is inside an archive. We need to extract it first.
+                var newImage = ExtractRawFileFromArchives(imageLocation, image, addrLoad);
+                if (newImage is null)
+                    throw new ApplicationException(
+                        $"Unable to extract archived file {imageLocation}.");
+                image = newImage;
+            }
+
             if (addrLoad.DataType.BitSize == 16 && image.Length > 65535)
             {
                 //$HACK: this works around issues when a large ROM image is read
@@ -296,6 +307,30 @@ namespace Reko.Loading
             program.ImageMap = program.SegmentMap.CreateImageMap();
 
             return program;
+        }
+
+        private byte[]? ExtractRawFileFromArchives(ImageLocation imageLocation, byte[] image, Address? addrLoad)
+        {
+            var fsLocation = ImageLocation.FromUri(imageLocation.FilesystemPath);
+            var binaryImage = LoadBinaryImage(fsLocation, image, null, addrLoad);
+            for (int i = 0; i < imageLocation.Fragments.Length; ++i)
+            {
+                var fragment = imageLocation.Fragments[i];
+                if (binaryImage is not IArchive archive)
+                    throw new InvalidOperationException($"Image '{imageLocation}' expects an archive or file container, but none was loaded.");
+                var item = archive[fragment];
+                if (item is not ArchivedFile file)
+                    throw new InvalidOperationException($"Fragment '{fragment}' does not refer to an archived file.");
+                binaryImage = file.LoadImage(Services, addrLoad);
+                if (binaryImage is Blob blob)
+                {
+                    if (i == imageLocation.Fragments.Length - 1)
+                        return blob.Image;
+                    // Archive doesn't know this format, perhaps Reko does.
+                    binaryImage = LoadBinaryImage(blob.Location, blob.Image, null, addrLoad);
+                }
+            }
+            return image;
         }
 
         public ImageLoader? CreateDefaultImageLoader(ImageLocation imageLocation, byte[] image)

@@ -228,7 +228,7 @@ namespace Reko.Gui.Forms
                     var loadDetails = ShowOpenBinaryAsDialog(blob2.Location.FilesystemPath);
                     if (loadDetails is null)
                         return null;
-                    var rawProgram = loader.LoadRawImage(blob2.Location, loadDetails);
+                    var rawProgram = loader.LoadRawImage(blob2.Location, blob2.Image, null, loadDetails);
                     return Project.FromSingleProgram(rawProgram);
                 case IArchive nestedArchive:
                     archive = nestedArchive;

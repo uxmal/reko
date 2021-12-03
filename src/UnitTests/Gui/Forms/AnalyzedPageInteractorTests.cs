@@ -83,10 +83,7 @@ namespace Reko.UnitTests.Gui.Forms
                 Architecture = arch,
                 Platform = platform.Object,
             };
-            var project = new Project
-            {
-                Location = ImageLocation.FromUri("/home/bob/reko.project"),
-            };
+            var project = new Project(ImageLocation.FromUri("/home/bob/reko.project"));
             project.AddProgram(ImageLocation.FromUri("/home/bob/test.exe"), program);
 
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());

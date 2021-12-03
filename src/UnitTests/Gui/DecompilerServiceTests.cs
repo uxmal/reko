@@ -88,10 +88,7 @@ namespace Reko.UnitTests.Gui
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var program = new Program(imageMap, arch.Object, platform.Object);
-            var project = new Project
-            {
-                Location = ImageLocation.FromUri("foo/bar/baz.project")
-            };
+            var project = new Project(ImageLocation.FromUri("foo/bar/baz.project"));
             project.AddProgram(fileUri, program);
             sc.AddService<IDecompiledFileService>(host.Object);
             //$REVIEW: we can probably remove the code below, it never is called

@@ -368,8 +368,10 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             };
 
-            var ps = new ProjectLoader(sc, loader.Object, listener.Object);
-            var project = ps.LoadProject(ImageLocation.FromUri("/var/project.dcproj"), sProject);
+            var location = ImageLocation.FromUri("/var/project.dcproj");
+            var ps = new ProjectLoader(sc, loader.Object, location, listener.Object);
+            var project = ps.LoadProject(sProject);
+
             Assert.AreEqual(2, project.Programs.Count);
             var input0 = project.Programs[0];
             Assert.AreEqual(1, input0.User.Globals.Count);
@@ -491,8 +493,10 @@ namespace Reko.UnitTests.Core.Serialization
                 It.IsAny<TypeLibrary>()))
                 .Returns(typelib);
 
-            var ploader = new ProjectLoader(sc, loader.Object, listener.Object);
-            var project = ploader.LoadProject(ImageLocation.FromUri("c:\\bar\\bar.dcproj"), sProject);
+            var location = ImageLocation.FromUri("c:\\bar\\bar.dcproj");
+            var ploader = new ProjectLoader(sc, loader.Object, location, listener.Object);
+            var project = ploader.LoadProject(sProject);
+
             Assert.AreEqual(1, project.MetadataFiles.Count);
             Assert.IsTrue(project.MetadataFiles[0].Location.EndsWith("foo.def"));
         }
@@ -550,8 +554,9 @@ namespace Reko.UnitTests.Core.Serialization
                     Platform = this.platform.Object
                 });
 
-            var ploader = new ProjectLoader(sc, loader.Object, new FakeDecompilerEventListener());
-            var project = ploader.LoadProject(ImageLocation.FromUri("c:\\tmp\\foo\\bar.proj"), sProject);
+            var location = ImageLocation.FromUri("c:\\tmp\\foo\\bar.proj");
+            var ploader = new ProjectLoader(sc, loader.Object, location, new FakeDecompilerEventListener());
+            var project = ploader.LoadProject(sProject);
             Assert.IsTrue(project.Programs[0].User.Heuristics.Contains("HeuristicScanning"));
             Assert.AreEqual("windows-1251", project.Programs[0].User.TextEncoding.WebName);
             Assert.AreEqual(1, project.Programs[0].User.RegisterValues.Count);

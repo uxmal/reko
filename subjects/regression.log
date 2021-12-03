@@ -483,6 +483,10 @@ hello_ppc.exe: warning: Win32 PowerPC main procedure finder not supported.
 0000000000003DD8: warning: Expected sizes of arrays to have been determined by now
 0000000000003DD8: warning: Expected sizes of arrays to have been determined by now
 
+*** Archives\TarRaw\hello
+Warning: Checksum error in line 1.
+Warning: Checksum error in line 1.
+
 *** Raw\1750A\hello
 Warning: Checksum error in line 1.
 Warning: Checksum error in line 1.
@@ -770,22 +774,10 @@ fn0000EE14: error: An error occurred while rewriting procedure to high-level lan
 00200ABD: warning: Expected sizes of arrays to have been determined by now
 
 *** Microchip\C18\PIC18Extd\PIC18EggExtd
-Error: An error occurred during decompilation.
-    Missing PIC model user options.
-       at Reko.Arch.MicrochipPIC.Common.PICArchitecture.LoadUserOptions(Dictionary`2 options) in d:\dev\uxmal\reko\master\src\Arch\Microchip\Common\PICArchitecture.cs:line 275
-   at Reko.Loading.Loader.LoadRawImage(ImageLocation imageLocation, Byte[] image, Address addrLoad, LoadDetails details) in d:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 257
-   at Reko.Loading.Loader.LoadRawImage(ImageLocation location, LoadDetails raw) in d:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 223
-   at Reko.CmdLine.CmdLineDriver.LoadProgram(Dictionary`2 pArgs, LoadDetails loadDetails) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 328
-   at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 288
+00013A: error: PIC Hardware stack underflow.
 
 *** Microchip\C18\PIC18\PIC18Legacy
-Error: An error occurred during decompilation.
-    Missing PIC model user options.
-       at Reko.Arch.MicrochipPIC.Common.PICArchitecture.LoadUserOptions(Dictionary`2 options) in d:\dev\uxmal\reko\master\src\Arch\Microchip\Common\PICArchitecture.cs:line 275
-   at Reko.Loading.Loader.LoadRawImage(ImageLocation imageLocation, Byte[] image, Address addrLoad, LoadDetails details) in d:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 257
-   at Reko.Loading.Loader.LoadRawImage(ImageLocation location, LoadDetails raw) in d:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 223
-   at Reko.CmdLine.CmdLineDriver.LoadProgram(Dictionary`2 pArgs, LoadDetails loadDetails) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 328
-   at Reko.CmdLine.CmdLineDriver.DecompileRawImage(Dictionary`2 pArgs) in d:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineDriver.cs:line 288
+00013A: error: PIC Hardware stack underflow.
 
 *** Elf\nanoMips\ping\ping
 004008F8: warning: Call target address 00000000 is invalid.
@@ -795,7 +787,7 @@ __isoc99_vfscanf: error: An internal error occurred while building the expressio
     Dominator graph calculation timed out.
        at Reko.Core.Lib.DominatorGraph`1.Intersect(Dictionary`2 postdoms, T b1, T b2) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 233
    at Reko.Core.Lib.DominatorGraph`1.Build(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 161
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 43
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in d:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 397
 l0040D4D6: warning: Phi functions will be ignored by type analysis. This may be caused by a failure in a previous stage of the decompilation.
 Warning: Recursion too deep in PtrPrimitiveReplacer
@@ -2170,7 +2162,7 @@ fn0000802E: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l00008318' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 535
@@ -2178,7 +2170,7 @@ fn00009746: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l0000985B' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 535
@@ -2233,4 +2225,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 80 binaries in 61.78 seconds.
+Decompiled 81 binaries in 73.47 seconds.

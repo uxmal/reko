@@ -120,8 +120,9 @@ namespace Reko.UnitTests.Arch.X86
                 project = new ProjectLoader(
                     null,
                     new Loader(sc),
+                    ImageLocation.FromUri(absFile),
                     new FakeDecompilerEventListener())
-                .LoadProject(ImageLocation.FromUri(absFile), stm);
+                .LoadProject(stm);
             }
             else
             {
