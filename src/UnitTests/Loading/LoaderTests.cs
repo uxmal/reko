@@ -221,7 +221,7 @@ namespace Reko.UnitTests.Loading
         {
             var arch = new Mock<IProcessorArchitecture>();
             var openv = new Mock<PlatformDefinition>();
-            cfgSvc.Setup(s => s.GetArchitecture("mmix")).Returns(arch.Object);
+            cfgSvc.Setup(s => s.GetArchitecture("mmix", It.IsAny<Dictionary<string,object>>())).Returns(arch.Object);
             cfgSvc.Setup(s => s.GetEnvironment(It.IsAny<string>())).Returns(openv.Object);
             cfgSvc.Setup(s => s.GetImageLoader("zlorgo")).Returns(new LoaderDefinition {
                 TypeName = $"{typeof(NullImageLoader).FullName},{typeof(NullImageLoader).Assembly.FullName}",
