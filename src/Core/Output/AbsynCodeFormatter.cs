@@ -67,6 +67,10 @@ namespace Reko.Core.Output
 
         private string UnsignedRepresentation(Constant u)
         {
+            if (u is BigConstant bc)
+            {
+                return bc.Value.ToString("X");
+            }
             ulong m;
             var b = u.DataType.BitSize;
             if (b == 0x40)

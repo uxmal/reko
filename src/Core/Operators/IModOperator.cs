@@ -19,7 +19,9 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
+using System.Numerics;
 
 namespace Reko.Core.Operators
 {
@@ -31,7 +33,9 @@ namespace Reko.Core.Operators
                 return InvalidConstant.Create(c2.DataType);
             if (c2.IsIntegerZero)
                 return InvalidConstant.Create(c1.DataType);
-            return BuildConstant(c1.DataType, c2.DataType, c1.ToInt32() % c2.ToInt32());
+            if (c1 is BigConstant bc1)
+                return BuildConstant(c1.DataType, c2.DataType, bc1.Value % c2.ToBigInteger());
+            return BuildConstant(c1.DataType, c2.DataType, c1.ToInt64() % c2.ToInt64());
 		}
 
         public override string AsCompound()
@@ -43,5 +47,13 @@ namespace Reko.Core.Operators
 		{
 			return " % ";
 		}
+
+        public Constant BuildConstant(DataType dtN, DataType dtD, BigInteger rem)
+        {
+            if (dtD.BitSize > 64)
+                return new BigConstant(dtD, rem);
+            else
+                return Constant.Create(dtD, (ulong)rem);
+        }
 	}
 }

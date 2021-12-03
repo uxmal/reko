@@ -950,15 +950,29 @@ namespace Reko.Core.Output
                     return (string.Format(format, string.Format("\\{0}", ch)), "");
                 return (format, "");
             case Domain.UnsignedInt:
-                if (!(value is ulong n))
-                    n = Convert.ToUInt64(value);
-                if (n > 9)
+                if (value is BigInteger ubig)
                 {
-                    format = "0x{0:X}";
+                    if (ubig > 9)
+                    {
+                        format = "0x{0:X}";
+                    }
+                    else
+                    {
+                        format = "{0}";
+                    }
                 }
                 else
                 {
-                    format = "{0}";
+                    if (value is not ulong n)
+                        n = Convert.ToUInt64(value);
+                    if (n > 9)
+                    {
+                        format = "0x{0:X}";
+                    }
+                    else
+                    {
+                        format = "{0}";
+                    }
                 }
                 return (format, "<u{0}>");
             case Domain.Pointer:
@@ -967,9 +981,9 @@ namespace Reko.Core.Output
             case Domain.SegPointer:
                 return ("{0:X}", "p{0}");
             default:
-                if (value is BigInteger big)
+                if (value is BigInteger sbig)
                 {
-                    if (big > 9)
+                    if (sbig > 9)
                     {
                         format = "0x{0:X}";
                     }
