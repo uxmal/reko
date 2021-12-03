@@ -2337,7 +2337,7 @@ Eq_n fn0000000000405ED0(word32 edi, struct Eq_n * fs)
 		if (rbp_n > rcx_n)
 		{
 			Eq_n rsi_n = g_t61B028;
-			word64 rcx_n = (word64) ((word64) (rcx_n * 0x08) + 8);
+			ui64 rcx_n = rcx_n * 0x08 + 8;
 			struct Eq_n * rdx_n = (word64) rsi_n + rcx_n * 0x18 + 0x10;
 			struct Eq_n * rsi_n = (word64) rsi_n + rbp_n * 0x18;
 			do
