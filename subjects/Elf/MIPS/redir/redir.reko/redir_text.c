@@ -1088,7 +1088,7 @@ void client_parse_request(Eq_n r4, word32 ra)
 					else
 						*((word32) r4 + 6036) = 3;
 				}
-				else if ((word32) true == 0x00 && strncasecmp(&g_t409FF4, fp + -0x0810, 0x0A) == 0x00)
+				else if (false && strncasecmp(&g_t409FF4, fp + -0x0810, 0x0A) == 0x00)
 					request_get_content_length(dwLoc20_n, fp + -0x0810, ra);
 			}
 		}
@@ -1104,7 +1104,7 @@ void client_parse_request(Eq_n r4, word32 ra)
 				*((word32) r4 + 6036) = 0x00;
 				return;
 			}
-			if ((word32) true == 0x00 && strncasecmp(fp + -0x0810, "host: ", 6) == 0x00)
+			if (false && strncasecmp(fp + -0x0810, "host: ", 6) == 0x00)
 			{
 				if (dwLoc20_n == 0x00)
 				{
@@ -1128,7 +1128,7 @@ void client_parse_request(Eq_n r4, word32 ra)
 					*((word32) r4 + 6036) = 2;
 				}
 			}
-			else if ((word32) true == 0x00 && strncasecmp(&g_t409FE0, fp + -0x0810, 0x0A) == 0x00)
+			else if (false && strncasecmp(&g_t409FE0, fp + -0x0810, 0x0A) == 0x00)
 			{
 				request_get_content_length(dwLoc20_n, fp + -0x0810, ra);
 				request_save_line(dwLoc20_n, fp + -0x0810, 0x00, ra);
@@ -3174,7 +3174,6 @@ l00408934:
 		if ((word32) (r10_n < r16_n) != 0x00)
 		{
 l00408978:
-			dwLoc30_n += (word32) false;
 			dwLoc2C_n = 1;
 			goto l00408998;
 		}

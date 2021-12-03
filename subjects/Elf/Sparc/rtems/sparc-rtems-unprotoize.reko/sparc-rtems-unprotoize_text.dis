@@ -2387,12 +2387,12 @@ l00013744:
 	word32 o2_43 = Mem32[0x28220<32>:word32]
 l00013750:
 	word32 o2_49 = o2_43 + 1<32>
-	bool C_52 = SLICE(cond(o2_49 - Mem46[0x281D0<32>:word32]), bool, 0)
+	word32 o0_53 = CONVERT(SLICE(cond(o2_49 - Mem46[0x281D0<32>:word32]), bool, 0), bool, word32)
 	Mem55[0x28220<32>:word32] = o2_49
 	word32 i1_154
 	word32 i2_155
 	word32 i6_156
-	i0_5 = check_source(C_52, 0<32>, out i1_154, out i2_155, out i6_156)
+	i0_5 = check_source(o0_53, 0<32>, out i1_154, out i2_155, out i6_156)
 	branch CONVERT(Mem55[Mem55[0x28220<32>:word32]:int8], int8, int32) != 0xA<32> l0001377C_ds_t
 l0001377C_ds_t:
 	o2_43 = Mem55[0x28220<32>:word32]
@@ -2436,7 +2436,7 @@ l000137D8:
 	word32 i1_94
 	word32 i2_95
 	word32 i6_96
-	i0_20 = check_source(SLICE(cond(i0_20 + 1<32> - o0_32), bool, 0), 0<32>, out i1_94, out i2_95, out i6_96)
+	i0_20 = check_source(CONVERT(SLICE(cond(i0_20 + 1<32> - o0_32), bool, 0), bool, word32), 0<32>, out i1_94, out i2_95, out i6_96)
 	branch (CONVERT(Mem0[CONVERT(Mem0[i0_20:byte], byte, ui32) + 0x2B411<32>:byte], byte, ui32) & 8<32>) != 0<32> l000137FC_ds_t
 l000137FC_ds_t:
 	o0_32 = Mem0[0x281D0<32>:word32]
@@ -2554,7 +2554,7 @@ word32 other_variable_style_function(word32 o0, ptr32 & i1Out, ptr32 & i6Out)
 // Preserved: o1 o2 o3 o4 o5 o7 sp
 other_variable_style_function_entry:
 l000138F0:
-	word32 o0_37 = SLICE(cond(0<32> - substr(o0, 0x17468<32>)), bool, 0)
+	word32 o0_37 = CONVERT(SLICE(cond(0<32> - substr(o0, 0x17468<32>)), bool, 0), bool, word32)
 	i1Out = o1
 	i6Out = fp
 	return o0_37
@@ -2624,7 +2624,7 @@ l00013BAC:
 	word32 i1_57
 	word32 i6_631
 	word32 i2_240
-	check_source(SLICE(cond(o0_42 - l1_20), bool, 0), 0<32>, out i1_57, out i2_240, out i6_631)
+	check_source(CONVERT(SLICE(cond(o0_42 - l1_20), bool, 0), bool, word32), 0<32>, out i1_57, out i2_240, out i6_631)
 	branch l0_21 != 0<32> l00013BC4_ds_t
 l00013BC4_ds_t:
 	o0_24 = CONVERT(Mem0[l1_20:int8], int8, int32)
@@ -2645,7 +2645,7 @@ l00013BD4:
 	word32 i6_634
 	word32 i1_632
 	word32 i2_633
-	check_source(SLICE(cond(Mem0[0x281E0<32>:word32] - (l1_81 + 0xFFFFFFFF<32>)), bool, 0), 0<32>, out i1_632, out i2_633, out i6_634)
+	check_source(CONVERT(SLICE(cond(Mem0[0x281E0<32>:word32] - (l1_81 + 0xFFFFFFFF<32>)), bool, 0), bool, word32), 0<32>, out i1_632, out i2_633, out i6_634)
 	word32 l0_113 = l1_81 + 0xFFFFFFFF<32>
 	branch (CONVERT(Mem0[CONVERT(Mem0[l1_81 + -1<i32>:byte], byte, ui32) + 0x2B411<32>:byte], byte, ui32) & 8<32>) == 0<32> l00013C04_ds_t
 l00013C04_ds_t:
@@ -2657,7 +2657,7 @@ l00013C10:
 	word32 i1_644
 	word32 i2_645
 	word32 i6_646
-	check_source(SLICE(cond(o0_112 - l0_113), bool, 0), 0<32>, out i1_644, out i2_645, out i6_646)
+	check_source(CONVERT(SLICE(cond(o0_112 - l0_113), bool, 0), bool, word32), 0<32>, out i1_644, out i2_645, out i6_646)
 	branch (CONVERT(Mem0[CONVERT(Mem0[l0_113:byte], byte, ui32) + 0x2B411<32>:byte], byte, ui32) & 8<32>) != 0<32> l00013C34_ds_t
 l00013C34_ds_t:
 	o0_112 = Mem0[0x281E0<32>:word32]
@@ -2672,7 +2672,7 @@ l00013C3C:
 	word32 i6_640
 	word32 i2_639
 	word32 i1_638
-	check_source(SLICE(cond(Mem0[0x281E0<32>:word32] - l0_168), bool, 0), 0<32>, out i1_638, out i2_639, out i6_640)
+	check_source(CONVERT(SLICE(cond(Mem0[0x281E0<32>:word32] - l0_168), bool, 0), bool, word32), 0<32>, out i1_638, out i2_639, out i6_640)
 	word32 i2_642
 	word32 i1_641
 	word32 i6_643
@@ -2699,7 +2699,7 @@ l00013CD8:
 	l0_275 = l0_275 + 0xFFFFFFFF<32>
 	word32 i1_647
 	word32 i6_648
-	check_source(SLICE(cond(o0_284 - l0_275), bool, 0), 0<32>, out i1_647, out i2_240, out i6_648)
+	check_source(CONVERT(SLICE(cond(o0_284 - l0_275), bool, 0), bool, word32), 0<32>, out i1_647, out i2_240, out i6_648)
 	branch (CONVERT(Mem0[CONVERT(Mem0[l0_275:byte], byte, ui32) + 0x2B411<32>:byte], byte, ui32) & 8<32>) != 0<32> l00013CFC_ds_t
 l00013CFC_ds_t:
 	o0_284 = Mem0[l2_22 + 480<i32>:word32]
@@ -2714,7 +2714,7 @@ l00013D30_ds_t:
 l00013D0C:
 	word32 i1_649
 	word32 i6_650
-	check_source(SLICE(cond(o0_334 - l3_317), bool, 0), 0<32>, out i1_649, out i2_240, out i6_650)
+	check_source(CONVERT(SLICE(cond(o0_334 - l3_317), bool, 0), bool, word32), 0<32>, out i1_649, out i2_240, out i6_650)
 	l3_317 = l3_317 + 0xFFFFFFFF<32>
 l00013D34:
 	word32 l3_354 = l3_317 + 1<32>
@@ -2812,7 +2812,7 @@ l00013E8C:
 	word32 i2_188
 	word32 i1_187
 	word32 i6_189
-	i0_112 = check_source(SLICE(cond(Mem0[0x281E0<32>:word32] - (i0_112 + 0xFFFFFFFF<32>)), bool, 0), 0<32>, out i1_187, out i2_188, out i6_189)
+	i0_112 = check_source(CONVERT(SLICE(cond(Mem0[0x281E0<32>:word32] - (i0_112 + 0xFFFFFFFF<32>)), bool, 0), bool, word32), 0<32>, out i1_187, out i2_188, out i6_189)
 	o0_107 = CONVERT(Mem0[i0_112:int8], int8, int32)
 l00013E50_ds_f:
 l00013E54:
@@ -2821,7 +2821,7 @@ l00013E5C:
 	word32 i2_191
 	word32 i6_192
 	word32 i1_190
-	i0_112 = check_source(SLICE(cond(o0_105 - (i0_112 + 0xFFFFFFFF<32>)), bool, 0), 0<32>, out i1_190, out i2_191, out i6_192)
+	i0_112 = check_source(CONVERT(SLICE(cond(o0_105 - (i0_112 + 0xFFFFFFFF<32>)), bool, 0), bool, word32), 0<32>, out i1_190, out i2_191, out i6_192)
 	branch (CONVERT(Mem0[CONVERT(Mem0[i0_112:byte], byte, ui32) + 0x2B411<32>:byte], byte, ui32) & 8<32>) != 0<32> l00013E80_ds_t
 l00013E80_ds_t:
 	o0_105 = Mem0[0x281E0<32>:word32]
@@ -3013,7 +3013,7 @@ l000145F4:
 	l0_55 = l0_55 + 1<32>
 	word32 i2_603
 	word32 i1_602
-	check_source(SLICE(cond(l0_55 - o0_59), bool, 0), Mem47[i6_121 + -20<i32>:word32], out i1_602, out i2_603, out i6_121)
+	check_source(CONVERT(SLICE(cond(l0_55 - o0_59), bool, 0), bool, word32), Mem47[i6_121 + -20<i32>:word32], out i1_602, out i2_603, out i6_121)
 	branch (CONVERT(Mem47[CONVERT(Mem47[l0_55:byte], byte, ui32) + 0x2B411<32>:byte], byte, ui32) & 8<32>) != 0<32> l00014618_ds_t
 l00014618_ds_t:
 	o0_59 = Mem47[i6_121 + -20<i32>:word32]

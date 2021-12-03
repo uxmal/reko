@@ -350,6 +350,14 @@ namespace Reko.Evaluation
                 // (+ X 0) ==> X
                 if (cRight.IsIntegerZero && IsAddOrSub(binExp.Operator))
                 {
+                    //$HACK: we neglected to zero-extend Carry flags in adc/sbc
+                    // type instructions, and here it bites us. Work around by
+                    // zero-extending now. The real fix is to zero-extend carry flags 
+                    // properly.
+                    if (cRight.DataType.BitSize > left.DataType.BitSize)
+                    {
+                        return (m.Convert(left, left.DataType, cRight.DataType), true);
+                    }
                     return (left, true);
                 }
                 if (binExp.Operator == Operator.Or)
@@ -676,7 +684,7 @@ namespace Reko.Evaluation
         public virtual (Expression, bool) VisitConversion(Conversion conversion)
         {
             var (exp, changed) = conversion.Expression.Accept(this);
-            if (!(exp is InvalidConstant))
+            if (exp is not InvalidConstant)
             {
                 var ptCvt = conversion.DataType.ResolveAs<PrimitiveType>();
                 var ptSrc = conversion.SourceDataType.ResolveAs<PrimitiveType>();
@@ -707,24 +715,25 @@ namespace Reko.Evaluation
                         }
                         else if ((ptSrc.Domain & Domain.Integer) != 0)
                         {
-                            if (ptSrc != null)
+                            if (ptSrc.Domain == Domain.SignedInt)
                             {
-                                if (ptSrc.Domain == Domain.SignedInt)
-                                {
-                                    return (Constant.Create(ptCvt, c.ToInt64()), true);
-                                }
-                                else if (ptSrc.Domain.HasFlag(Domain.SignedInt))
-                                {
-                                    return (Constant.Create(ptCvt, c.ToUInt64()), true);
-                                }
+                                return (Constant.Create(ptCvt, c.ToInt64()), true);
                             }
+                            else if (ptSrc.Domain.HasFlag(Domain.SignedInt))
+                            {
+                                return (Constant.Create(ptCvt, c.ToUInt64()), true);
+                            }
+                        } 
+                        else if (ptSrc.Domain == Domain.Boolean)
+                        {
+                            return (Constant.Create(ptCvt, c.ToUInt64()), true);
                         }
                     }
                 }
                 if (exp is Identifier id && 
                     ctx.GetDefiningExpression(id) is MkSequence seq)
                 {
-                    // If we are casting a SEQ, and the corresponding element is >= 
+                    // If we are converting a SEQ, and the corresponding element is >= 
                     // the size of the cast, then use deposited part directly.
                     var lsbElem = seq.Expressions[seq.Expressions.Length - 1];
                     int sizeDiff = lsbElem.DataType.Size - conversion.DataType.Size;

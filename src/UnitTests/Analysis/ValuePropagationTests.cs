@@ -1490,5 +1490,26 @@ SsaProcedureBuilder_exit:
 
             AssertLastStatement("v2 = 12.0");
         }
+
+        [Test]
+        public void VpSetCarryFlagBeforeAdc()
+        {
+            var v1 = m.Reg64("v1");
+            var v1b = m.Reg8("v1b");
+            var v1h = m.Temp(PrimitiveType.CreateWord(56), "v1h");
+            var v2b = m.Reg8("v2b");
+            var flags = new RegisterStorage("flags", 42, 0, PrimitiveType.Word32);
+            var C = m.Flags("S", new FlagGroupStorage(flags, 1, "S", PrimitiveType.Bool));
+
+            m.Assign(v1, m.Word64(0x57DF836069B622E7));
+            m.Alias(v1b, m.Slice(v1, PrimitiveType.Byte));
+            m.Alias(v1h, m.Slice(v1, v1h.DataType, 8));
+            m.Assign(C, true);
+            m.Assign(v2b, m.IAdd(m.IAdd(v1b, m.Byte(0x19)), C));
+
+            RunValuePropagator();
+
+            AssertLastStatement("v2b = 1<8>");
+        }
     }
 }

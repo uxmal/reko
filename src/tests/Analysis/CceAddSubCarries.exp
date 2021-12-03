@@ -27,8 +27,9 @@ l0C00_0000:
 	Mem25[ds:0x218<16>:word16] = ax_23
 	Mem29[ds:0x21A<16>:word16] = dx_27
 	cl_33 = Mem29[ds:0x220<16>:byte]
+	ax_36 = CONVERT(cl_33 <u 0x30<8>, bool, word16)
 	cl_38 = Mem29[ds:0x221<16>:byte]
-	ax_42 = (cl_33 <u 0x30<8>) *16 2<16> + (cl_38 >=u 0x3A<8>)
+	ax_42 = ax_36 * 2<16> + (cl_38 >=u 0x3A<8>)
 	Mem44[ds:0x222<16>:word16] = ax_42
 	return
 	// succ:  fn0C00_0000_exit
