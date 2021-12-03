@@ -4885,23 +4885,20 @@ l000000000040ADB0:
 	branch rax_6 == 0x415EE0<64> l000000000040AE30
 l000000000040AE30:
 l000000000040ADBB:
-	word128 xmm0_11 = CONVERT(Mem0[rax_6 + 8<64>:real32], real32, uint128)
-	branch SLICE(xmm0_11, real32, 0) <=u Mem0[0x0000000000415EF4<p64>:real32] l000000000040AE20
+	branch Mem0[rax_6 + 8<64>:real32] <=u Mem0[0x0000000000415EF4<p64>:real32] l000000000040AE20
 l000000000040ADC9:
-	branch SLICE(CONVERT(Mem0[0x0000000000415EF8<p64>:real32], real32, uint128), real32, 0) <=u SLICE(xmm0_11, real32, 0) l000000000040AE20
+	branch Mem0[0x0000000000415EF8<p64>:real32] <=u Mem0[rax_6 + 8<64>:real32] l000000000040AE20
 l000000000040ADD6:
-	branch SLICE(CONVERT(Mem0[rax_6 + 0xC<64>:real32], real32, uint128), real32, 0) <=u Mem0[0x0000000000415EFC<p64>:real32] l000000000040AE20
+	branch Mem0[rax_6 + 0xC<64>:real32] <=u Mem0[0x0000000000415EFC<p64>:real32] l000000000040AE20
 l000000000040ADE4:
-	word128 xmm1_26 = CONVERT(Mem0[rax_6:real32], real32, uint128)
-	branch SLICE(xmm1_26, real32, 0) <u Mem0[0x0000000000415F00<p64>:real32] l000000000040AE20
+	branch Mem0[rax_6:real32] <u Mem0[0x0000000000415F00<p64>:real32] l000000000040AE20
 l000000000040ADF1:
-	real32 v14_31 = SLICE(xmm1_26, real32, 0) + Mem0[0x0000000000415EF4<p64>:real32]
-	word128 xmm2_34 = CONVERT(Mem0[rax_6 + 4<64>:real32], real32, uint128)
-	branch SLICE(xmm2_34, real32, 0) <=u v14_31 l000000000040AE20
+	real32 v14_31 = Mem0[rax_6:real32] + Mem0[0x0000000000415EF4<p64>:real32]
+	branch Mem0[rax_6 + 4<64>:real32] <=u v14_31 l000000000040AE20
 l000000000040AE03:
-	branch SLICE(CONVERT(Mem0[0x0000000000415F04<p64>:real32], real32, uint128), real32, 0) <u SLICE(xmm2_34, real32, 0) l000000000040AE20
+	branch Mem0[0x0000000000415F04<p64>:real32] <u Mem0[rax_6 + 4<64>:real32] l000000000040AE20
 l000000000040AE10:
-	branch SLICE(xmm0_11, real32, 0) >u v14_31 l000000000040AE35
+	branch Mem0[rax_6 + 8<64>:real32] >u v14_31 l000000000040AE35
 l000000000040AE35:
 	return 1<8>
 l000000000040AE1A:
@@ -5046,7 +5043,6 @@ l000000000040B45B:
 	Mem71[rax_50 + 0x28<64>:word64] = rbp_32
 	branch fn000000000040ADB0(rax_50 + 0x28<64>) == 0<8> l000000000040B548
 l000000000040B46C:
-	word128 xmm1_88 = CONVERT(Mem71[rbp_32 + 8<64>:real32], real32, uint128)
 	branch Mem71[rbp_32 + 0x10<64>:byte] != 0<8> l000000000040B4C0
 l000000000040B477:
 	word128 xmm0_108
@@ -5059,7 +5055,7 @@ l000000000040B578:
 l000000000040B480:
 	xmm0_108 = SEQ(SLICE(xmm0_74, word96, 32), CONVERT(rdi, word64, real32))
 l000000000040B485:
-	real32 v26_113 = SLICE(xmm0_108, real32, 0) / SLICE(xmm1_88, real32, 0)
+	real32 v26_113 = SLICE(xmm0_108, real32, 0) / Mem71[rbp_32 + 8<64>:real32]
 	branch v26_113 >=u Mem71[0x0000000000415F08<p64>:real32] l000000000040B540
 l000000000040B496:
 	branch v26_113 <u Mem71[0x0000000000415F0C<p64>:real32] l000000000040B568
@@ -5184,7 +5180,6 @@ fn000000000040B710_entry:
 	word32 esi_25 = SLICE(rsi, word32, 0)
 l000000000040B710:
 	word64 rbp_16 = Mem12[rdi + 0x28<64>:word64]
-	word128 xmm1_18 = CONVERT(Mem12[rbp_16 + 8<64>:real32], real32, uint128)
 	branch Mem12[rbp_16 + 0x10<64>:byte] != 0<8> l000000000040B770
 l000000000040B72A:
 	word128 xmm0_37
@@ -5197,7 +5192,7 @@ l000000000040B733:
 	xmm0_37 = SEQ(SLICE(xmm0, word96, 32), CONVERT(rsi, word64, real32))
 l000000000040B738:
 	word32 rsi_32_32_60 = SLICE(rsi, word32, 32)
-	real32 v16_42 = SLICE(xmm0_37, real32, 0) / SLICE(xmm1_18, real32, 0)
+	real32 v16_42 = SLICE(xmm0_37, real32, 0) / Mem12[rbp_16 + 8<64>:real32]
 	branch v16_42 >=u Mem12[0x0000000000415F08<p64>:real32] l000000000040B870
 l000000000040B749:
 	branch v16_42 <u Mem12[0x0000000000415F0C<p64>:real32] l000000000040B880
@@ -5289,9 +5284,8 @@ l000000000040B9C8:
 	word128 xmm0_129
 	fn000000000040ADB0(rdi + 0x28<64>)
 	word64 rax_111 = Mem14[rdi + 0x10<64>:word64]
-	word64 rdx_112 = Mem14[rdi + 0x28<64>:word64]
 	word32 eax_118 = SLICE(rax_111, word32, 0)
-	word128 xmm2_115 = CONVERT(Mem14[rdx_112 + 8<64>:real32], real32, uint128)
+	word64 rdx_112 = Mem14[rdi + 0x28<64>:word64]
 	branch rax_111 < 0<64> l000000000040BAE7
 l000000000040BAE7:
 	real32 v51_125 = CONVERT(rax_111 >>u 1<64> | CONVERT(eax_118 & 1<32>, word32, uint64), word64, real32)
@@ -5309,14 +5303,14 @@ l000000000040BB01:
 l000000000040B9F9:
 	xmm1_151 = SEQ(SLICE(xmm1_103, word96, 32), CONVERT(rax_134, word64, real32))
 l000000000040B9FE:
-	branch SLICE(xmm1_151, real32, 0) <=u SLICE(xmm2_115, real32, 0) * SLICE(xmm0_129, real32, 0) l000000000040B96A
+	branch SLICE(xmm1_151, real32, 0) <=u Mem14[rdx_112 + 8<64>:real32] * SLICE(xmm0_129, real32, 0) l000000000040B96A
 l000000000040BA0E:
 	real32 v40_171 = SLICE(xmm0_129, real32, 0) * Mem14[rdx_112 + 0xC<64>:real32]
 	word96 v41_172 = SLICE(xmm0_129, word96, 32)
 	word128 xmm0_173 = SEQ(v41_172, v40_171)
 	branch Mem14[rdx_112 + 0x10<64>:byte] != 0<8> l000000000040BA1D
 l000000000040BA19:
-	xmm0_173 = SEQ(v41_172, v40_171 * SLICE(xmm2_115, real32, 0))
+	xmm0_173 = SEQ(v41_172, v40_171 * Mem14[rdx_112 + 8<64>:real32])
 l000000000040BA1D:
 	branch SLICE(xmm0_173, real32, 0) >=u Mem14[0x0000000000415F08<p64>:real32] l000000000040BB2E
 l000000000040BA2A:
@@ -5462,7 +5456,7 @@ l000000000040BD49:
 l000000000040BC44:
 	xmm1_155 = SEQ(SLICE(xmm1_108, word96, 32), CONVERT(rdx_138, word64, real32))
 l000000000040BC49:
-	branch SLICE(CONVERT(Mem50[rax_117:real32], real32, uint128), real32, 0) * SLICE(xmm0_133, real32, 0) <=u SLICE(xmm1_155, real32, 0) l000000000040BC09
+	branch Mem50[rax_117:real32] * SLICE(xmm0_133, real32, 0) <=u SLICE(xmm1_155, real32, 0) l000000000040BC09
 l000000000040BC56:
 	real32 v35_173 = SLICE(xmm0_133, real32, 0) * Mem50[rax_117 + 4<64>:real32]
 	word96 v36_174 = SLICE(xmm0_133, word96, 32)

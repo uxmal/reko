@@ -746,5 +746,14 @@ namespace Reko.UnitTests.Evaluation
             var (result, _) = expr.Accept(simplifier);
             Assert.AreEqual("SLICE(foo_1, int16, 0)", result.ToString());
         }
+
+        [Test]
+        public void Exs_Seq_ZeroExtend_Real()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Seq(m.Word64(0), Constant.Real64(1e120));
+            var (result, _) = expr.Accept(simplifier);
+            Assert.AreEqual("SEQ(0<64>, 1e+120)", result.ToString());
+        }
     }
 }

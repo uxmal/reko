@@ -266,9 +266,9 @@ namespace Reko.Evaluation
         public virtual (Expression, bool) VisitBinaryExpression(BinaryExpression binExp)
         {
             // BinaryExpressions are the most common and occur in clusters that sometimes
-            // are so deep that attempting to simplify using recursion. The code below
-            // traverses a tree of BinaryExpressions iteratively, using an explicit stack
-            // to keep track of intermediate results.
+            // are so deep that attempting to simplify using recursion will cause a stack
+            // overflow. The code below traverses a tree of BinaryExpressions iteratively
+            // using an explicit stack to keep track of intermediate results.
             var stack = new Stack<(BinaryExpression, (Expression,bool)[])>();
             stack.Push((binExp, new (Expression,bool)[2]));
             (Expression, bool) result = default!;
@@ -933,7 +933,7 @@ namespace Reko.Evaluation
                         t = PrimitiveType.Create(Domain.Pointer, tHead.BitSize + tTail.BitSize);
                         return (ctx.MakeSegmentedAddress(c1, c2), true);
                     }
-                    else
+                    else if (tTail.Domain != Domain.Real)
                     {
                         t = PrimitiveType.Create(tHead.Domain, tHead.BitSize + tTail.BitSize);
                         return (Constant.Create(t, (c1.ToUInt64() << tTail.BitSize) | c2.ToUInt64()), true);
@@ -951,7 +951,7 @@ namespace Reko.Evaluation
                 }
                 return (Constant.Create(seq.DataType, value), true);
             }
-            if (newSeq.Take(newSeq.Length - 1).All(e => e.IsZero))
+            if (!newSeq[^1].DataType.IsReal && newSeq.Take(newSeq.Length - 1).All(e => e.IsZero))
             {
                 var tail = newSeq.Last();
                 // leading zeros imply a conversion to unsigned.
