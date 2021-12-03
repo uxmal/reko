@@ -330,7 +330,7 @@ namespace Reko.Loading
                     binaryImage = LoadBinaryImage(blob.Location, blob.Image, null, addrLoad);
                 }
             }
-            return image;
+            throw new InvalidOperationException($"Image '{imageLocation}' doesn't correspond to a loadable image.");
         }
 
         public ImageLoader? CreateDefaultImageLoader(ImageLocation imageLocation, byte[] image)
