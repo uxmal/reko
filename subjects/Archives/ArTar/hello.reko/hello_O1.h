@@ -476,7 +476,7 @@ T_98: (in Mem5[0x0000000000002074<p64>:real32] @ 000011A5 : real32)
   Class: Eq_98
   DataType: real32
   OrigDataType: real32
-T_99: (in (real32) xmm0 * g_r2074 @ 00000000 : real32)
+T_99: (in (real32) xmm0 * 0.5F @ 00000000 : real32)
   Class: Eq_99
   DataType: real32
   OrigDataType: real32
@@ -484,7 +484,7 @@ T_100: (in SLICE(xmm2_16, real32, 0) @ 000011A5 : real32)
   Class: Eq_100
   DataType: real32
   OrigDataType: real32
-T_101: (in (real32) xmm0 * g_r2074 * (real32) xmm2_16 @ 00000000 : real32)
+T_101: (in (real32) xmm0 * 0.5F * (real32) xmm2_16 @ 00000000 : real32)
   Class: Eq_101
   DataType: real32
   OrigDataType: real32
@@ -492,11 +492,11 @@ T_102: (in SLICE(xmm2_16, real32, 0) @ 000011A5 : real32)
   Class: Eq_102
   DataType: real32
   OrigDataType: real32
-T_103: (in (real32) xmm0 * g_r2074 * (real32) xmm2_16 * (real32) xmm2_16 @ 00000000 : real32)
+T_103: (in (real32) xmm0 * 0.5F * (real32) xmm2_16 * (real32) xmm2_16 @ 00000000 : real32)
   Class: Eq_103
   DataType: real32
   OrigDataType: real32
-T_104: (in (real32) xmm1_26 - (((real32) xmm0 * g_r2074) * (real32) xmm2_16) * (real32) xmm2_16 @ 00000000 : real32)
+T_104: (in (real32) xmm1_26 - (((real32) xmm0 * 0.5F) * (real32) xmm2_16) * (real32) xmm2_16 @ 00000000 : real32)
   Class: Eq_104
   DataType: real32
   OrigDataType: real32
@@ -504,7 +504,7 @@ T_105: (in SLICE(xmm2_16, real32, 0) @ 000011A5 : real32)
   Class: Eq_105
   DataType: real32
   OrigDataType: real32
-T_106: (in ((real32) xmm1_26 - (((real32) xmm0 * g_r2074) * (real32) xmm2_16) * (real32) xmm2_16) * (real32) xmm2_16 @ 00000000 : real32)
+T_106: (in ((real32) xmm1_26 - (((real32) xmm0 * 0.5F) * (real32) xmm2_16) * (real32) xmm2_16) * (real32) xmm2_16 @ 00000000 : real32)
   Class: Eq_106
   DataType: real32
   OrigDataType: real32

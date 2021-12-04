@@ -25,6 +25,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Reko.Typing
@@ -293,6 +294,13 @@ namespace Reko.Typing
                     PromoteToCString(c, charType);
                     return ReadNullTerminatedString(c, charType);
                 }
+                if (
+                    dereferenced &&
+                    TryReadReal(c, dt, out var cReal) &&
+                    IsPtrToReadonlySection(c))
+                {
+                    return cReal;
+                }
                 e = RewriteGlobalFieldAccess(dt, c.ToInt32());
             }
 			return e;
@@ -350,6 +358,28 @@ namespace Reko.Typing
                 field.DataType = dt;
             }
             return dt;
+        }
+
+        private bool TryReadReal(
+            Constant cAddr,
+            DataType dt,
+            [NotNullWhen(true)] out Constant? cReal)
+        {
+            cReal = null;
+            var pt = dt.ResolveAs<PrimitiveType>();
+            if (pt is null)
+                return false;
+            if (pt.Domain != Domain.Real)
+                return false;
+            // $BUGBUG: ImageReader throws NotImplementedException when
+            // reading of 48-bit real at subjects/Raw/1750A/fff and
+            // subjects/Raw/1750A/trigtst
+            if (pt.BitSize != 32 && pt.BitSize != 64)
+                return false;
+            var rdr = program.CreateImageReader(
+                program.Architecture,
+                platform.MakeAddressFromConstant(cAddr, false));
+            return rdr.TryRead(pt, out cReal);
         }
 
         private bool IsInsideField(int offset, StructureField field)

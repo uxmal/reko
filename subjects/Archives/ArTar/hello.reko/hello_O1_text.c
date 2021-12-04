@@ -61,8 +61,8 @@ void frame_dummy()
 word128 Q_rsqrt(word128 xmm0, int32 dwArg00)
 {
 	word128 xmm2_n = (word128) (0x5F3759DF - (word32) (SEQ(dwArg00, (real32) xmm0) >> 0x01));
-	uint128 xmm1_n = (uint128) g_r2078;
-	return SEQ(SLICE(xmm1_n, word96, 32), ((real32) xmm1_n - (((real32) xmm0 * g_r2074) * (real32) xmm2_n) * (real32) xmm2_n) * (real32) xmm2_n);
+	uint128 xmm1_n = (uint128) 1.5F;
+	return SEQ(SLICE(xmm1_n, word96, 32), ((real32) xmm1_n - (((real32) xmm0 * 0.5F) * (real32) xmm2_n) * (real32) xmm2_n) * (real32) xmm2_n);
 }
 
 // 00000000000011A6: Register uint128 lib_rsqrt(Register uint128 xmm0)
@@ -73,13 +73,13 @@ uint128 lib_rsqrt(uint128 xmm0)
 	if ((real32) xmm0 < 0.0F)
 	{
 		sqrtf();
-		uint128 xmm1_n = (uint128) g_r207C;
+		uint128 xmm1_n = (uint128) 1.0F;
 		return SEQ(SLICE(xmm1_n, word96, 32), (real32) xmm1_n / (real32) xmm0);
 	}
 	else
 	{
 		real32 v9_n = __fsqrt(xmm0);
-		uint128 xmm1_n = (uint128) g_r207C;
+		uint128 xmm1_n = (uint128) 1.0F;
 		return SEQ(SLICE(xmm1_n, word96, 32), (real32) xmm1_n / v9_n);
 	}
 }

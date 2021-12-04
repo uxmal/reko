@@ -4773,7 +4773,7 @@ Eq_11143: size_t
 	T_11143 (in r11_70 + 2<64> @ 0040BFC9 : word64)
 Eq_11159: (union "Eq_11159" (real64 u0) (up64 u1))
 	T_11159 (in rLoc1_1790 @ 0040BFF5 : Eq_11159)
-	T_11163 (in rLoc2_1719 * (real64) g_r415F84 @ 00000000 : real64)
+	T_11163 (in rLoc2_1719 * (real64) 10.0F @ 00000000 : real64)
 	T_11281 (in CONVERT(Mem961[0x0000000000415F90<p64>:real80], real80, real64) @ 0040C009 : real64)
 	T_11284 (in rLoc1_1798 @ 0040C00F : Eq_11159)
 	T_11285 (in rLoc2_1792 @ 0040C00F : Eq_11159)
@@ -44217,7 +44217,7 @@ T_9698: (in SLICE(xmm0_11, real32, 0) @ 0040ADD4 : real32)
   Class: Eq_9697
   DataType: Eq_9697
   OrigDataType: (union (real32 u0) (up32 u1))
-T_9699: (in (real32) (uint128) g_r415EF8 <= (real32) xmm0_11 @ 00000000 : bool)
+T_9699: (in (real32) (uint128) 0.9F <= (real32) xmm0_11 @ 00000000 : bool)
   Class: Eq_9699
   DataType: bool
   OrigDataType: bool
@@ -44357,7 +44357,7 @@ T_9733: (in SLICE(xmm2_34, real32, 0) @ 0040AE0E : real32)
   Class: Eq_9732
   DataType: Eq_9732
   OrigDataType: (union (real32 u0) (up32 u1))
-T_9734: (in (real32) (uint128) g_r415F04 < (real32) xmm2_34 @ 00000000 : bool)
+T_9734: (in (real32) (uint128) 1.0F < (real32) xmm2_34 @ 00000000 : bool)
   Class: Eq_9734
   DataType: bool
   OrigDataType: bool
@@ -50073,7 +50073,7 @@ T_11162: (in CONVERT(Mem961[0x0000000000415F84<p64>:real32], real32, real64) @ 0
   Class: Eq_11162
   DataType: real64
   OrigDataType: real64
-T_11163: (in rLoc2_1719 * (real64) g_r415F84 @ 00000000 : real64)
+T_11163: (in rLoc2_1719 * (real64) 10.0F @ 00000000 : real64)
   Class: Eq_11159
   DataType: Eq_11159
   OrigDataType: real64

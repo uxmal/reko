@@ -4711,14 +4711,14 @@ byte fn000000000040ADB0(word64 * rdi)
 	if (rax_n == &g_t415EE0)
 		return 0x01;
 	uint128 xmm0_n = (uint128) rax_n->r0008;
-	if ((real32) xmm0_n > g_t415EF4 && ((real32) ((uint128) g_r415EF8) > (real32) xmm0_n && (real32) ((uint128) rax_n->r000C) > g_t415EFC))
+	if ((real32) xmm0_n > g_t415EF4 && ((real32) ((uint128) 0.9F) > (real32) xmm0_n && (real32) ((uint128) rax_n->r000C) > g_t415EFC))
 	{
 		uint128 xmm1_n = (uint128) rax_n->r0000;
 		if ((real32) xmm1_n >= g_t415F00)
 		{
 			Eq_n v14_n = (real32) xmm1_n + g_t415EF4;
 			uint128 xmm2_n = (uint128) rax_n->r0004;
-			if ((real32) xmm2_n > v14_n && ((real32) ((uint128) g_r415F04) >= (real32) xmm2_n && (real32) xmm0_n > v14_n))
+			if ((real32) xmm2_n > v14_n && ((real32) ((uint128) 1.0F) >= (real32) xmm2_n && (real32) xmm0_n > v14_n))
 				return 0x01;
 		}
 	}
@@ -5625,7 +5625,7 @@ l000000000040BE7D:
 		r14_n = r11_n + 0x01;
 		if (rax_n >u (r11_n + 0x02) + CONVERT(CONVERT((edx & 0x20) == 0x00, bool, int8), int8, uint64) || (bLocC8_n & 0x08) != 0x00 && Mem961[(rsi - 0x01) + rax_n:byte] == 0x30)
 		{
-			Eq_n rLoc1_n = rLoc2_n * (real64) g_r415F84;
+			Eq_n rLoc1_n = rLoc2_n * (real64) 10.0F;
 			if ((edx & 0x03) != 0x01 && (real64) g_r415F90 > rLoc1_n)
 			{
 				Eq_n rax_n;
