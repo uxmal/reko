@@ -38,11 +38,10 @@ namespace Reko.ImageLoaders.VmsExe
     // http://fossies.org/linux/freevms/sys/src/sysimgact.c
     public class VmsExeLoader : ProgramImageLoader
     {
-        public VmsExeLoader(IServiceProvider services, string filename, byte[] imgRaw)
-            : base(services, filename, imgRaw)
+        public VmsExeLoader(IServiceProvider services, ImageLocation imageLocation, byte[] imgRaw)
+            : base(services, imageLocation, imgRaw)
         {
             this.PreferredBaseAddress = Address.Ptr32(0x1000);      //$REVIEW: what should this really be?
-
         }
 
         public override Address PreferredBaseAddress { get; set; }

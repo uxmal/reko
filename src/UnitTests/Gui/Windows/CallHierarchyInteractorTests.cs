@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

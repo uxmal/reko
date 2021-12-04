@@ -24,6 +24,7 @@ using Reko.Core.Configuration;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Scripts;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace Reko.Loading
 {
     /// <summary>
     /// Class that provides services for loading the "code", in whatever format it is in,
-    /// into a program.
+    /// into a Reko <see cref="Project" />.
     /// </summary>
     public class Loader : ILoader
     {
@@ -54,18 +55,20 @@ namespace Reko.Loading
         }
 
         public string? DefaultToFormat { get; set; }
+
         public IServiceProvider Services { get; private set; }
 
-        public Program AssembleExecutable(string fileName, IAssembler asm, IPlatform platform, Address addrLoad)
+        public Program AssembleExecutable(ImageLocation asmFileLocation, IAssembler asm, IPlatform platform, Address addrLoad)
         {
-            var bytes = LoadImageBytes(fileName, 0);
-            return AssembleExecutable(fileName, bytes, asm, platform, addrLoad);
+            var bytes = LoadFileBytes(asmFileLocation.FilesystemPath);
+            return AssembleExecutable(asmFileLocation, bytes, asm, platform, addrLoad);
         }
 
-        public Program AssembleExecutable(string fileName, byte[] image, IAssembler asm, IPlatform platform, Address addrLoad)
+        public Program AssembleExecutable(ImageLocation asmFileLocation, byte[] image, IAssembler asm, IPlatform platform, Address addrLoad)
         {
             var program = asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
-            program.Name = Path.GetFileName(fileName);
+            program.Name = asmFileLocation.GetFilename();
+            program.Location = asmFileLocation;
             program.Platform = platform;
             foreach (var sym in asm.ImageSymbols)
             {
@@ -83,47 +86,97 @@ namespace Reko.Loading
         }
 
         /// <summary>
-        /// Loads the image into memory, unpacking it if necessary. Then, relocate the image.
-        /// Relocation gives us a chance to determine the addresses of interesting items.
+        /// Loads (or assembles) a Reko decompiler project. If a binary file is
+        /// specified instead, we create a simple project for the file.
         /// </summary>
-        /// <param name="rawBytes">Image of the executable file.</param>
+        /// <param name="imageLocation">The location of the image to load.</param>
+        /// <param name="loaderName">Optional .NET class name of a custom
+        /// image loader</param>
+        /// <param name="addrLoad">Optional address at which to load the image.
+        /// </param>
+        /// <returns>
+        /// An <see cref="ILoadedImage"/> instance. In particular, if the
+        /// file format wasn't recognized an instance of <see cref="Blob"/> is
+        /// returned.
+        /// </returns>
+        public ILoadedImage Load(ImageLocation imageLocation, string? loaderName = null, Address? addrLoad = null)
+        {
+            byte[] image = LoadFileBytes(imageLocation.FilesystemPath);
+
+            var project = new Project(imageLocation);
+            var projectLoader = new ProjectLoader(this.Services, this, project, Services.RequireService<DecompilerEventListener>());
+            projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
+            project = projectLoader.LoadProject(image);
+            if (project is not null)
+            {
+                project.FireScriptEvent(ScriptEvent.OnProgramLoaded);
+                return project;
+            }
+
+            var fsLocation = ImageLocation.FromUri(imageLocation.FilesystemPath);
+            var binaryImage = LoadBinaryImage(fsLocation, image, loaderName, addrLoad);
+            foreach (var fragment in imageLocation.Fragments)
+            {
+                if (binaryImage is not IArchive archive)
+                    throw new InvalidOperationException($"Image '{imageLocation}' expects an archive or file container, but none was loaded.");
+                var item = archive[fragment];
+                if (item is not ArchivedFile file)
+                    throw new InvalidOperationException($"Fragment '{fragment}' does not refer to an archived file.");
+                binaryImage = file.LoadImage(Services, addrLoad);
+                if (binaryImage is Blob blob)
+                {
+                    // Archive doesn't know this format, perhaps Reko does.
+                    binaryImage = LoadBinaryImage(blob.Location, blob.Image, loaderName, addrLoad);
+                }
+            }
+            return binaryImage;
+        }
+
+        /// <summary>
+        /// Loads a binary image into memory, if it has a recognized file format.
+        /// </summary>
+        /// <param name="imageLocation">The location of the loaded image.</param>
+        /// <param name="image">The raw bytes fetched from <paramref name="imageLocation"/>.</param>
         /// <param name="loader">.NET Class name of a custom loader (may be null)</param>
         /// <param name="addrLoad">Address into which to load the file.</param>
-        /// <returns>A <see cref="ILoadedImage"/> if the file format is recognized, or null 
-        /// if the file cannot be recognized. Callers will have to handle the different
-        /// possible implementations of the interface.</returns>
-        public ILoadedImage? LoadImage(string filename, byte[] image, string? loader, Address? addrLoad)
+        /// <returns>A <see cref="ILoadedImage"/> if the file format is recognized, or 
+        /// an instance of <see cref="Blob"/> if the file cannot be recognized.</returns>
+        public ILoadedImage LoadBinaryImage(ImageLocation imageLocation, byte[] image, string? loader, Address? addrLoad)
         {
+            // Try to find a loader that knows how to deal with this format.
             ImageLoader? imgLoader;
             if (!string.IsNullOrEmpty(loader))
             {
-                imgLoader = CreateCustomImageLoader(Services, loader, filename, image);
+                imgLoader = CreateCustomImageLoader(Services, loader, imageLocation, image);
             }
             else
             {
-                imgLoader = FindImageLoader<ImageLoader>(filename, image);
-                if (imgLoader == null)
+                imgLoader = FindImageLoader<ImageLoader>(imageLocation, image);
+                if (imgLoader is null)
                 {
-                    imgLoader = CreateDefaultImageLoader(filename, image);
+                    imgLoader = CreateDefaultImageLoader(imageLocation, image);
                 }
             }
-            if (imgLoader == null)
-                return null;
 
-            if (addrLoad is null)
+            if (imgLoader is null)
             {
-                addrLoad = imgLoader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
+                // Reko doesn't know this file format.
+                return new Blob(imageLocation, image);
+            }
+            if (addrLoad is null && imgLoader is ProgramImageLoader ploader)
+            {
+                addrLoad = ploader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
             }
 
             var loadedImage = imgLoader.Load(addrLoad);
             if (loadedImage is Program program)
             {
-                return PostProcessProgram(filename, addrLoad, imgLoader, program);
+                return PostProcessProgram(imageLocation, addrLoad!, imgLoader, program);
             }
             return loadedImage;
         }
 
-        private Program PostProcessProgram(string filename, Address addrLoad, ImageLoader imgLoader, Program program)
+        private Program PostProcessProgram(ImageLocation imageLocation, Address addrLoad, ImageLoader imgLoader, Program program)
         {
             // Sanity check of the 'Needs' properties.
             if (program.NeedsScanning && !program.NeedsSsaTransform)
@@ -132,17 +185,21 @@ namespace Reko.Loading
                     $"Image loader {imgLoader.GetType().FullName} has set the program.NeedsScanning " +
                     "and program.NeedsSsaTransform to inconsistent values.");
 
-            program.Name = Path.GetFileName(filename);
+            program.Name = imageLocation.GetFilename();
+            program.Location = imageLocation;
             if (program.NeedsScanning)
             {
-                var relocations = ((ProgramImageLoader) imgLoader).Relocate(program, addrLoad);
-                foreach (var sym in relocations.Symbols.Values)
+                if (imgLoader is ProgramImageLoader piLoader)
                 {
-                    program.ImageSymbols[sym.Address!] = sym;
-                }
-                foreach (var ep in relocations.EntryPoints)
-                {
-                    program.EntryPoints[ep.Address!] = ep;
+                    var relocations = piLoader.Relocate(program, addrLoad);
+                    foreach (var sym in relocations.Symbols.Values)
+                    {
+                        program.ImageSymbols[sym.Address!] = sym;
+                    }
+                    foreach (var ep in relocations.EntryPoints)
+                    {
+                        program.EntryPoints[ep.Address!] = ep;
+                    }
                 }
                 if (program.Architecture != null)
                 {
@@ -155,19 +212,46 @@ namespace Reko.Loading
         }
 
         /// <summary>
-        /// Loads a Program from a flat image where all the metadata has been 
+        /// Loads a program from a file into memory using the additional information in 
+        /// <paramref name="raw"/>. Use this to open files with insufficient or
+        /// no metadata.
+        /// </summary>
+        /// <param name="fileName">Name of the file to be loaded.</param>
+        /// <param name="raw">Extra metadata supllied by the user.</param>
+        public Program LoadRawImage(ImageLocation location, LoadDetails raw)
+        {
+            byte[] image = this.LoadFileBytes(location.FilesystemPath);
+            var program = this.LoadRawImage(location, image, null, raw);
+            return program;
+        }
+
+        /// <summary>
+        /// Loads a program into memory using the additional information in 
+        /// <paramref name="raw"/>. Use this to decompile raw blobs of data.
+        /// </summary>
+        /// <param name="fileName">Name of the file to be loaded.</param>
+        /// <param name="raw">Extra metadata supllied by the user.</param>
+        public Program LoadRawImage(byte[] image, LoadDetails raw)
+        {
+            var inventedLocation = ImageLocation.FromUri("file:image");
+            var program = this.LoadRawImage(inventedLocation, image, null, raw);
+            return program;
+        }
+
+        /// <summary>
+        /// Loads a <see cref="Program"/> from a flat image where all the metadata has been 
         /// supplied by the user in <paramref name="details"/>.
         /// </summary>
-        /// <param name="filename"></param>
+        /// <param name="imageLocation">The location of the loaded image</param>
         /// <param name="image"></param>
         /// <param name="addrLoad"></param>
         /// <param name="details"></param>
         /// <returns></returns>
-        public Program LoadRawImage(string filename, byte[] image, Address? addrLoad, LoadDetails details)
+        public Program LoadRawImage(ImageLocation imageLocation, byte[] image, Address? addrLoad, LoadDetails details)
         {
             if (details.ArchitectureName is null)
                 throw new ApplicationException($"No processor architecture was specified.");
-            var arch = cfgSvc.GetArchitecture(details.ArchitectureName);
+            var arch = cfgSvc.GetArchitecture(details.ArchitectureName, details.ArchitectureOptions);
             if (arch is null)
                 throw new ApplicationException($"Unknown processor architecture '{details.ArchitectureName}");
             arch.LoadUserOptions(details.ArchitectureOptions);
@@ -184,6 +268,17 @@ namespace Reko.Loading
                         "Unable to determine base address for executable. A default address should have been present in the reko.config file.");
                 }
             }
+
+            if (imageLocation.HasFragments)
+            {
+                // This raw file is inside an archive. We need to extract it first.
+                var newImage = ExtractRawFileFromArchives(imageLocation, image, addrLoad);
+                if (newImage is null)
+                    throw new ApplicationException(
+                        $"Unable to extract archived file {imageLocation}.");
+                image = newImage;
+            }
+
             if (addrLoad.DataType.BitSize == 16 && image.Length > 65535)
             {
                 //$HACK: this works around issues when a large ROM image is read
@@ -194,13 +289,14 @@ namespace Reko.Loading
                 image = newImage;
             }
 
-            var imgLoader = CreateCustomImageLoader(Services, details.LoaderName, filename, image);
+            var imgLoader = CreateCustomImageLoader(Services, details.LoaderName, imageLocation, image);
             var program = imgLoader.LoadProgram(addrLoad, arch, platform);
-            if (details.EntryPoint != null && arch.TryParseAddress(details.EntryPoint.Address, out Address addrEp))
+            if (details.EntryPoint is not null && arch.TryParseAddress(details.EntryPoint.Address, out Address addrEp))
             {
                 program.EntryPoints.Add(addrEp, ImageSymbol.Procedure(arch, addrEp));
             }
-            program.Name = Path.GetFileName(filename);
+            program.Name = imageLocation.GetFilename();
+            program.Location = imageLocation;
             program.User.Processor = arch.Name;
             program.User.Environment = platform.Name;
             program.User.Loader = details.LoaderName;
@@ -213,23 +309,46 @@ namespace Reko.Loading
             return program;
         }
 
-        public ImageLoader? CreateDefaultImageLoader(string filename, byte[] image)
+        private byte[]? ExtractRawFileFromArchives(ImageLocation imageLocation, byte[] image, Address? addrLoad)
         {
+            var fsLocation = ImageLocation.FromUri(imageLocation.FilesystemPath);
+            var binaryImage = LoadBinaryImage(fsLocation, image, null, addrLoad);
+            for (int i = 0; i < imageLocation.Fragments.Length; ++i)
+            {
+                var fragment = imageLocation.Fragments[i];
+                if (binaryImage is not IArchive archive)
+                    throw new InvalidOperationException($"Image '{imageLocation}' expects an archive or file container, but none was loaded.");
+                var item = archive[fragment];
+                if (item is not ArchivedFile file)
+                    throw new InvalidOperationException($"Fragment '{fragment}' does not refer to an archived file.");
+                if (i == imageLocation.Fragments.Length - 1)
+                    return file.GetBytes();
+                binaryImage = file.LoadImage(Services, addrLoad);
+                if (binaryImage is Blob blob)
+                {
+                    // Archive doesn't know this format, perhaps Reko does.
+                    binaryImage = LoadBinaryImage(blob.Location, blob.Image, null, addrLoad);
+                }
+            }
+            throw new InvalidOperationException($"Image '{imageLocation}' doesn't correspond to a loadable image.");
+        }
 
+        public ImageLoader? CreateDefaultImageLoader(ImageLocation imageLocation, byte[] image)
+        {
             var rawFile = DefaultToFormat is null
                 ? null 
                 : cfgSvc.GetRawFile(DefaultToFormat);
-            if (rawFile == null)
+            if (rawFile is null)
             {
                 this.Services.RequireService<DecompilerEventListener>().Warn(
-                    new NullCodeLocation(filename),
+                    new NullCodeLocation(imageLocation.FilesystemPath),
                     "The format of the file is unknown.");
                 return null;
             }
-            return CreateRawImageLoader(filename, image, rawFile);
+            return CreateRawImageLoader(imageLocation, image, rawFile);
         }
 
-        private ImageLoader? CreateRawImageLoader(string filename, byte[] image, RawFileDefinition rawFile)
+        private ImageLoader? CreateRawImageLoader(ImageLocation imageLocation, byte[] image, RawFileDefinition rawFile)
         {
             if (rawFile.Architecture == null)
                 return null;
@@ -257,7 +376,7 @@ namespace Reko.Loading
             {
                 entryAddr = GetRawBinaryEntryAddress(rawFile, image, arch, baseAddr);
             }
-            var imgLoader = new NullImageLoader(Services, filename, image)
+            var imgLoader = new NullImageLoader(Services, imageLocation, image)
             {
                 Architecture = arch,
                 Platform = platform,
@@ -312,44 +431,45 @@ namespace Reko.Loading
         /// Loads a metadata file into a type library.
         /// </summary>
         /// <param name="fileName"></param>
-        /// <returns>a TypeLibrary instance, or null if the format of the file wasn't recognized.</returns>
-        public TypeLibrary? LoadMetadata(string fileName, IPlatform platform, TypeLibrary typeLib)
+        /// <returns>A <see cref="TypeLibrary" /> instance, or null if the format of the file
+        /// wasn't recognized.</returns>
+        public TypeLibrary? LoadMetadata(ImageLocation metadataLocation, IPlatform platform, TypeLibrary typeLib)
         {
-            var rawBytes = LoadImageBytes(fileName, 0);
-            var mdLoader = FindImageLoader<MetadataLoader>(fileName, rawBytes);
+            var rawBytes = LoadFileBytes(metadataLocation.FilesystemPath);
+            var mdLoader = FindImageLoader<MetadataLoader>(metadataLocation, rawBytes);
             if (mdLoader is null)
                 return null;
             var result = mdLoader.Load(platform, typeLib);
             return result;
         }
 
-        public ScriptFile? LoadScript(string fileName)
+        public ScriptFile? LoadScript(ImageLocation scriptLocation)
         {
-            var rawBytes = LoadImageBytes(fileName, 0);
-            return FindImageLoader<ScriptFile>(fileName, rawBytes);
+            var rawBytes = LoadFileBytes(scriptLocation.FilesystemPath);
+            return FindImageLoader<ScriptFile>(scriptLocation, rawBytes);
         }
 
         /// <summary>
         /// Loads the contents of a file with the specified filename into an array 
-        /// of bytes, optionally at the offset <paramref>offset</paramref>. No interpretation
-        /// of those bytes is done.
+        /// of bytes. No interpretation of those bytes is done.
         /// </summary>
-        /// <param name="fileName">File to open.</param>
-        /// <param name="offset">The offset into the array into which the file will be loaded.</param>
-        /// <returns>An array of bytes with the file contents at the specified offset.</returns>
-        public virtual byte[] LoadImageBytes(string fileName, int offset)
+        /// <param name="imageLocation">File system path to the image whose bytes are to be loaded.</param>
+        /// <returns>An array of bytes with the file contents.</returns>
+        public virtual byte[] LoadFileBytes(string filepath)
         {
             var fsSvc = Services.RequireService<IFileSystemService>();
-            return fsSvc.ReadAllBytes(fileName);
+            return fsSvc.ReadAllBytes(filepath);
         }
 
         /// <summary>
         /// Locates an image loader from the Decompiler configuration file, based on the magic
         /// number in the begining of the program image.
         /// </summary>
-        /// <param name="rawBytes"></param>
+        /// <param name="imageLocation">The location from which the <paramref name="rawBytes"/> were 
+        /// loaded.</param>
+        /// <param name="rawBytes">Bytes used to find a suitable <see cref="ImageLoader"/>.</param>
         /// <returns>An appropriate image loader if one can be found, otherwise null.
-        public T? FindImageLoader<T>(string filename, byte[] rawBytes)
+        public T? FindImageLoader<T>(ImageLocation imageLocation, byte[] rawBytes)
             where T : class
         {
             foreach (LoaderDefinition e in cfgSvc.GetImageLoaders())
@@ -360,9 +480,9 @@ namespace Reko.Loading
                     ImageHasMagicNumber(rawBytes, e.MagicNumber!, e.Offset)
                     ||
                     (!string.IsNullOrEmpty(e.Extension) &&
-                        filename.EndsWith(e.Extension, StringComparison.InvariantCultureIgnoreCase)))
+                        imageLocation.EndsWith(e.Extension, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    return CreateImageLoader<T>(Services, e.TypeName, filename, rawBytes);
+                    return CreateImageLoader<T>(Services, e.TypeName, imageLocation, rawBytes);
                 }
             }
             return default;
@@ -401,13 +521,17 @@ namespace Reko.Loading
         /// <summary>
         /// Create an <see cref="ImageLoader"/> using the provided parameters.
         /// </summary>
-        public static T CreateImageLoader<T>(IServiceProvider services, string typeName, string filename, byte[] bytes)
+        public static T CreateImageLoader<T>(
+            IServiceProvider services,
+            string typeName,
+            ImageLocation imageLocation,
+            byte[] bytes)
         {
             var svc = services.RequireService<IPluginLoaderService>();
             var t = svc.GetType(typeName);
             if (t == null)
                 throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
-            return (T) Activator.CreateInstance(t, services, filename, bytes);
+            return (T) Activator.CreateInstance(t, services, imageLocation, bytes);
         }
 
         /// <summary>
@@ -431,26 +555,26 @@ namespace Reko.Loading
         /// <param name="filename"></param>
         /// <param name="bytes"></param>
         /// <returns></returns>
-        public static ProgramImageLoader CreateCustomImageLoader(IServiceProvider services, string? loader, string filename, byte[] bytes)
+        public static ProgramImageLoader CreateCustomImageLoader(IServiceProvider services, string? loader, ImageLocation imageLocation, byte[] bytes)
         {
             if (string.IsNullOrEmpty(loader))
             {
-                return new NullImageLoader(services, filename, bytes);
+                return new NullImageLoader(services, imageLocation, bytes);
             }
 
             var cfgSvc = services.RequireService<IConfigurationService>();
             var ldrCfg = cfgSvc.GetImageLoader(loader!);
             if (ldrCfg != null && ldrCfg.TypeName != null)
             {
-                return CreateImageLoader<ProgramImageLoader>(services, ldrCfg.TypeName, filename, bytes);
+                return CreateImageLoader<ProgramImageLoader>(services, ldrCfg.TypeName, imageLocation, bytes);
             }
 
             //$TODO: detect file extensions and load appropriate interpreter.
             var ass = Assembly.LoadFrom(loader);
             var t = ass.GetTypes().SingleOrDefault(tt => typeof(ImageLoader).IsAssignableFrom(tt));
-            if (t == null)
+            if (t is null)
                 throw new ApplicationException(string.Format("Unable to find image loader in {0}.", loader));
-            return (ProgramImageLoader) Activator.CreateInstance(t, services, filename, bytes);
+            return (ProgramImageLoader) Activator.CreateInstance(t, services, imageLocation, bytes);
         }
 
         protected void CopyImportReferences(Dictionary<Address, ImportReference> importReference, Program program)
@@ -471,6 +595,37 @@ namespace Reko.Loading
                 program.InterceptedCalls.Add(item.Key, item.Value);
             }
         }
+
+        public void RunScriptOnProgramImage(Program program, Script_v2? script)
+        {
+            if (script == null || !script.Enabled || script.Script == null)
+                return;
+            var eventListener = Services.RequireService<DecompilerEventListener>();
+            IScriptInterpreter interpreter;
+            try
+            {
+                //$TODO: should be in the config file, yeah.
+                var svc = Services.RequireService<IPluginLoaderService>();
+                var type = svc.GetType("Reko.ImageLoaders.OdbgScript.OllyLang,Reko.ImageLoaders.OdbgScript");
+                interpreter = (IScriptInterpreter) Activator.CreateInstance(type, Services);
+            }
+            catch (Exception ex)
+            {
+                eventListener.Error(ex, "Unable to load OllyLang script interpreter.");
+                return;
+            }
+
+            try
+            {
+                interpreter.LoadFromString(script.Script, program, Environment.CurrentDirectory);
+                interpreter.Run();
+            }
+            catch (Exception ex)
+            {
+                eventListener.Error(ex, "An error occurred while running the script.");
+            }
+        }
+
     }
 }
  

@@ -35,6 +35,10 @@ namespace Reko.Core.Serialization
 
     public class MetadataFile_v3
     {
+        [XmlElement("location")]
+        public string? Location;
+
+        // Kept for backwards compatibility only, use Location field wherever possible.
         [XmlElement("filename")]
         public string? Filename;
 

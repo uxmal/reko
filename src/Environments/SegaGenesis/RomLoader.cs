@@ -33,8 +33,8 @@ namespace Reko.Environments.SegaGenesis
 {
     public class RomLoader : ProgramImageLoader
     {
-        public RomLoader(IServiceProvider services, string filename, byte[] imgRaw)
-            : base(services, filename, imgRaw)
+        public RomLoader(IServiceProvider services, ImageLocation imageUri, byte[] imgRaw)
+            : base(services, imageUri, imgRaw)
         {
             PreferredBaseAddress = Address.Ptr32(0);
         }

@@ -45,7 +45,7 @@ namespace Reko.ImageLoaders.OdbgScript
         private rulong OldIP;
 
         public OdbgScriptLoader(ProgramImageLoader imageLoader) 
-            : base(imageLoader.Services, imageLoader.Filename, imageLoader.RawImage)
+            : base(imageLoader.Services, imageLoader.ImageLocation, imageLoader.RawImage)
         {
             this.originalImageLoader = imageLoader;
             this.Architecture = null!;

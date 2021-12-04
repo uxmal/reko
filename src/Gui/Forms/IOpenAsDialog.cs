@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
@@ -48,5 +49,6 @@ namespace Reko.Gui.Forms
         ModelDefinition GetSelectedArchitectureModel();
         PlatformDefinition GetSelectedEnvironment();
         void SetPropertyGrid(Dictionary<string, object> architectureOptions, List<PropertyOption> options);
+        LoadDetails GetLoadDetails();
     }
 }

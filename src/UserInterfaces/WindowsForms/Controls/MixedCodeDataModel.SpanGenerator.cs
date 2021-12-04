@@ -21,16 +21,15 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
-using Reko.Gui;
+using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {
-   public partial class MixedCodeDataModel
+    public partial class MixedCodeDataModel
    {
         private bool TryReadComment(out LineSpan line)
         {

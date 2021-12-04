@@ -37,9 +37,10 @@ namespace Reko.UnitTests
         private MemoryStream memStm;
         private Program results;
 
-        public DchexLoader(string filename, IServiceProvider services, byte[] imgRaw) :
-            base(services, filename, imgRaw)
+        public DchexLoader(IServiceProvider services, ImageLocation imageUri, byte[] imgRaw) :
+            base(services, imageUri, imgRaw)
         {
+            var filename = imageUri.FilesystemPath;
             using (TextReader rdr = new StreamReader(filename))
             {
                 LoadFromFile(rdr);

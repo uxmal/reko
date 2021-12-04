@@ -299,9 +299,9 @@ namespace Reko.Core
         public SortedList<Address, ImageSymbol> EntryPoints { get; set; }
 
         /// <summary>
-        /// Absolute path of the file from which this Program was loaded.
+        /// The location from which this Program was loaded.
         /// </summary>
-        public string Filename { get; set; }
+        public ImageLocation Location { get; set; }
 
         /// <summary>
         /// All the image locations that the loader was aware of.
@@ -380,13 +380,18 @@ namespace Reko.Core
         /// </summary>
         public string ResourcesDirectory { get; set; }
 
+        public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
+            => visitor.VisitProgram(this, context);
+
         /// <summary>
         /// Given the absolute file name of a binary being decompiled, make sure that 
         /// absolute file names for each of the output directories.
         /// </summary>
-        /// <param name="absFileName">Absolute file name of the binary being decompiled.</param>
-        public void EnsureDirectoryNames(string absFileName)
+        /// <param name="absFileName">Absolute URI of the binary being decompiled.</param>
+        public void EnsureDirectoryNames(ImageLocation imageLocation)
         {
+            //$TODO how to handle nested archives? 
+            var absFileName = imageLocation.FilesystemPath;
             var dir = Path.GetDirectoryName(absFileName) ?? "";
             var filename = Path.GetFileName(absFileName);
             var outputDir = Path.Combine(dir, Path.ChangeExtension(filename, ".reko"));

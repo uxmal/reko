@@ -49,7 +49,7 @@ namespace Reko.ImageLoaders.MzExe
 		// Code inspired by unlzexe utility (unlzexe ver 0.8 (PC-VAN UTJ44266 Kou )
 
 		public LzExeUnpacker(MsdosImageLoader loader)
-            : base(loader.Services, loader.Filename, loader.RawImage)
+            : base(loader.Services, loader.ImageLocation, loader.RawImage)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             this.arch = cfgSvc.GetArchitecture("x86-real-16")!;

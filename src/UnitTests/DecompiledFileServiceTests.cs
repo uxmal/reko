@@ -53,7 +53,7 @@ namespace Reko.UnitTests
                 new SegmentMap(Address.Ptr32(0x00100000)),
                 arch.Object,
                 new DefaultPlatform(new ServiceContainer(), arch.Object));
-            program.Filename = Path.Combine("bar", "foo.exe");
+            program.Location = ImageLocation.FromUri("file:bar/foo.exe");
             program.Name = "foo.exe";
             program.SourceDirectory = "bar";
 
@@ -62,7 +62,6 @@ namespace Reko.UnitTests
             this.dfSvc = new DecompiledFileService(fsSvc.Object, new FakeDecompilerEventListener());
 
             this.proc1 = Procedure.Create(arch.Object, Address.Ptr32(0x00123400), new Frame(PrimitiveType.Ptr32));
-
         }
 
         private void Expect_FileCreated(params string [] expectedPathComponents)

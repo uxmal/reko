@@ -21,6 +21,7 @@
 #nullable enable
 
 using Reko.Core;
+using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -58,7 +59,7 @@ namespace Reko.Gui
 
         public override string ToString()
         {
-            return string.Format("{0}!{1}", Program.Filename, Address);
+            return string.Format("{0}!{1}", Program.Location, Address);
         }
     }
 }

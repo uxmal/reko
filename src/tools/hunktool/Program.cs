@@ -130,7 +130,7 @@ Options:
                 var hunkBytes = File.ReadAllBytes(scan_file);
                 var sc = new ServiceContainer();
                 sc.AddService<IConfigurationService>(new StubConfigurationService());
-                var loader = new HunkLoader(sc, scan_file, hunkBytes);
+                var loader = new HunkLoader(sc, ImageLocation.FromUri(scan_file), hunkBytes);
                 Address addr = null;
                 if (args["--base-address"] == null ||
                     !Address.TryParse32((string)args["--base-address"].Value, out addr))

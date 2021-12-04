@@ -31,10 +31,8 @@ namespace Reko.ImageLoaders.Coff
 {
     public class CoffLoader : ProgramImageLoader
     {
-        private IProcessorArchitecture? arch;
-
-        public CoffLoader(IServiceProvider services, string filename, byte[] rawBytes)
-            : base(services, filename, rawBytes)
+        public CoffLoader(IServiceProvider services, ImageLocation imageLocation, byte[] rawBytes)
+            : base(services, imageLocation, rawBytes)
         {
             this.header = LoadHeader();
         }
@@ -55,9 +53,10 @@ namespace Reko.ImageLoaders.Coff
             var rdr = new LeImageReader(RawImage, 0);
             var magic = rdr.ReadLeUInt16();
             var cfgSvc = Services.RequireService<IConfigurationService>();
+            IProcessorArchitecture arch;
             switch (magic)
             {
-            case 0x014C: arch = cfgSvc.GetArchitecture("x86-real-16"); break;
+            case 0x014C: arch = cfgSvc.GetArchitecture("x86-real-16")!; break;
             default: throw new NotSupportedException();
             }
             return new FileHeader

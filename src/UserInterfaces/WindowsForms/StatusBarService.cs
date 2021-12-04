@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -21,6 +21,7 @@
 using System;
 using System.Windows.Forms;
 using Reko.Gui;
+using Reko.Gui.Services;
 
 namespace Reko.UserInterfaces.WindowsForms
 {

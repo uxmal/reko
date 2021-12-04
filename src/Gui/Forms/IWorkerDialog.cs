@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
 * Copyright (C) 1999-2021 John Källén.
 *
@@ -34,7 +34,7 @@ namespace Reko.Gui.Forms
 
         BackgroundWorker Worker { get; }
         IButton CancellationButton { get; }
-        DialogResult DialogResult { get; set; }
+        Services.DialogResult DialogResult { get; set; }
         IProgressBar ProgressBar { get; }
         ILabel Caption { get; }
         ILabel Detail { get; }

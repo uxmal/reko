@@ -82,7 +82,7 @@ namespace Reko.Core.Memory
 		public abstract EndianImageReader CreateNew(byte[] bytes, long offset);
 		public abstract EndianImageReader CreateNew(MemoryArea image, Address addr);
 
-		public virtual EndianImageReader Clone()
+		public new virtual EndianImageReader Clone()
 		{
 			EndianImageReader rdr;
 			if (mem != null)

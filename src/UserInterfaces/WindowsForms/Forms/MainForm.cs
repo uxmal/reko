@@ -29,6 +29,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Keys = System.Windows.Forms.Keys;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
+using Reko.Gui.Services;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
 {
@@ -237,14 +238,14 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
 
         public Panel OutputWindowPanel => this.outputWindowPanel;
 
-        public Gui.DialogResult ShowDialog(CommonDialog dialog)
+        public Gui.Services.DialogResult ShowDialog(CommonDialog dialog)
         {
-            return (Gui.DialogResult)dialog.ShowDialog(this);
+            return (Gui.Services.DialogResult)dialog.ShowDialog(this);
         }
 
-        public Gui.DialogResult ShowMessageBox(string message, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
+        public Gui.Services.DialogResult ShowMessageBox(string message, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
         {
-            return (Gui.DialogResult)MessageBox.Show(this, message, caption, buttons, icon);
+            return (Gui.Services.DialogResult)MessageBox.Show(this, message, caption, buttons, icon);
         }
 
         public void UpdateToolbarState()

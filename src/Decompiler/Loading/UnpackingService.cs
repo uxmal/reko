@@ -48,8 +48,8 @@ namespace Reko.Loading
             this.Services = services;
         }
 
-        public IServiceProvider Services { get; private set; }
-        public List<ImageSignature> Signatures { get; private set; }
+        public IServiceProvider Services { get; }
+        public List<ImageSignature> Signatures { get; }
 
         /// <summary>
         /// Attempt to load as many signature files as possible.

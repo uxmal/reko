@@ -21,6 +21,7 @@
 #nullable enable
 
 using Reko.Core;
+using Reko.Gui.Services;
 
 namespace Reko.Gui.Design
 {

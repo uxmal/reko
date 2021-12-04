@@ -22,15 +22,11 @@
 
 using Reko.Core;
 using Reko.Gui.Controls;
+using Reko.Gui.Services;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Reko.Gui
 {

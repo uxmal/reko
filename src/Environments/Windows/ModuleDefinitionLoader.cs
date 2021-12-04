@@ -38,14 +38,14 @@ namespace Reko.Environments.Windows
         private static readonly TraceSwitch trace = new TraceSwitch(nameof(ModuleDefinitionLoader), "Traces for ModuleDefinitionLoader") { Level = TraceLevel.Warning };
 
         private readonly Lexer lexer;
-        private readonly string filename;
+        private readonly ImageLocation fileUri;
         private Token? bufferedTok;
         private IPlatform? platform;
         private string? moduleName;
 
-        public ModuleDefinitionLoader(IServiceProvider services, string filename, byte[]  bytes) : base(services, filename, bytes)
+        public ModuleDefinitionLoader(IServiceProvider services, ImageLocation imageUri, byte[]  bytes) : base(services, imageUri, bytes)
         {
-            this.filename = filename;
+            this.fileUri = imageUri;
             var rdr = new StreamReader(new MemoryStream(bytes));
             this.lexer = new Lexer(rdr);
             this.bufferedTok = null;
@@ -55,7 +55,7 @@ namespace Reko.Environments.Windows
         {
             this.platform = platform;
             var loader = new TypeLibraryDeserializer(platform, true, dstLib);
-            this.moduleName = DefaultModuleName(filename);
+            this.moduleName = DefaultModuleName(fileUri.FilesystemPath);
             loader.SetModuleName(moduleName);
             for (;;)
             {

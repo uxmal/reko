@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.ComponentModel.Design;
@@ -52,7 +53,7 @@ namespace Reko.UnitTests.Gui
             var host = new Mock<IDecompiledFileService>();
             sc.AddService<IDecompiledFileService>(host.Object);
 
-            var d = new Decompiler(loader.Object, sc);
+            var d = new Decompiler(new Project(), sc);
             bool decompilerChangedEventFired = true;
             svc.DecompilerChanged += delegate(object o, EventArgs e)
             {
@@ -75,31 +76,31 @@ namespace Reko.UnitTests.Gui
         public void DecSvc_DecompilerProjectName()
         {
             IDecompilerService svc = new DecompilerService();
-            var loader = new Mock<ILoader>();
             var host = new Mock<IDecompiledFileService>();
             var arch = new Mock<IProcessorArchitecture>();
             arch.Setup(a => a.Name).Returns("FakeArch");
             arch.Setup(a => a.MemoryGranularity).Returns(8);
             var platform = new Mock<IPlatform>();
-            var fileName = OsPath.Relative("foo", "bar", "baz.exe");
+            var fileUri = ImageLocation.FromUri(OsPath.Relative("foo", "bar", "baz.exe"));
             var bytes = new byte[100];
             var mem = new ByteMemoryArea(Address.Ptr32(0x1000), bytes);
             var imageMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var program = new Program(imageMap, arch.Object, platform.Object);
+            var project = new Project(ImageLocation.FromUri("foo/bar/baz.project"));
+            project.AddProgram(fileUri, program);
             sc.AddService<IDecompiledFileService>(host.Object);
+            //$REVIEW: we can probably remove the code below, it never is called
+            // anymore.
             platform.Setup(p => p.CreateMetadata()).Returns(new TypeLibrary());
             platform.Setup(p => p.Architecture).Returns(arch.Object);
-            loader.Setup(l => l.LoadImageBytes(fileName, 0)).Returns(bytes);
-            loader.Setup(l => l.LoadImage(fileName, bytes, null, null)).Returns(program);
-            var dec = new Decompiler(loader.Object, sc);
 
+            var dec = new Decompiler(project, sc);
             svc.Decompiler = dec;
-            svc.Decompiler.Load(fileName);
 
             Assert.IsNotNull(svc.Decompiler.Project);
-            Assert.AreEqual("baz.exe",  svc.ProjectName, "Should have project name available.");
+            Assert.AreEqual("baz.exe", svc.ProjectName, "Should have project name available.");
         }
     }
 }

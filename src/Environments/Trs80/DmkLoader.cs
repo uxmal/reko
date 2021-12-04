@@ -41,8 +41,8 @@ namespace Reko.Environments.Trs80
         private bool m_singleDensityOnly;
         private bool m_mixedDensity;
 
-        public DmkLoader(IServiceProvider services, string filename, byte[] rawBytes)
-            : base(services, filename, rawBytes)
+        public DmkLoader(IServiceProvider services, ImageLocation imageUri, byte[] rawBytes)
+            : base(services, imageUri, rawBytes)
         {
         }
 

@@ -36,7 +36,7 @@ namespace Reko.UnitTests.ImageLoaders.WebAssembly
 
         void Create_Loader(params byte[] bytes)
         {
-            ldr = new WasmLoader(null, "foo.wasm", bytes);
+            ldr = new WasmLoader(null, ImageLocation.FromUri("file:foo.wasm"), bytes);
         }
 
         [Test]

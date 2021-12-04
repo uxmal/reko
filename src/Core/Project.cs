@@ -19,51 +19,86 @@
 #endregion
 
 using Reko.Core.Lib;
+using Reko.Core.Loading;
 using Reko.Core.Scripts;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Reko.Core
 {
     /// <summary>
     /// A Reko decompiler project.
     /// </summary>
-    public class Project 
+    public class Project : ILoadedImage
     {
-        public Project()
+        public Project(ImageLocation location)
         {
             Programs = new ObservableRangeCollection<Program>();
             MetadataFiles = new ObservableRangeCollection<MetadataFile>();
             ScriptFiles = new ConcurrentObservableCollection<ScriptFile>();
             LoadedMetadata = new TypeLibrary();
+            Location = location;
         }
+
+        /// <summary>
+        /// This constructor is used by unit tests only, when an image location
+        /// is not relevant.
+        /// </summary>
+        public Project() : this(default!)
+        {
+        }
+
+        public static Project FromSingleProgram(Program program)
+        {
+            Debug.Assert(program.Location is not null, "Program is missing a location.");
+            var projectFileName = Path.ChangeExtension(
+                program.Location.FilesystemPath,
+                Serialization.Project_v5.FileExtension);
+            var project = new Project(ImageLocation.FromUri(projectFileName));
+            project.AddProgram(program.Location, program);
+            project.LoadedMetadata = program.Platform.CreateMetadata();
+            program.EnvironmentMetadata = project.LoadedMetadata;
+            program.User.ExtractResources = true;
+            return project;
+        }
+
+        /// <summary>
+        /// The URI from which this project was loaded.
+        /// </summary>
+        public ImageLocation Location { get; }
 
         /// <summary>
         /// A list of binaries that are to be decompiled.
         /// </summary>
-        public ObservableRangeCollection<Program> Programs { get; private set; }
+        public ObservableRangeCollection<Program> Programs { get; }
+
         /// <summary>
         /// A list of user-provided metadata files that aid in the process
         /// of decompilation.
         /// </summary>
-        public ObservableRangeCollection<MetadataFile> MetadataFiles { get; private set; }
+        public ObservableRangeCollection<MetadataFile> MetadataFiles { get; }
 
         /// <summary>
         /// A list of user-provided script files that can customize the process
         /// of decompilation.
         /// </summary>
-        public readonly ConcurrentObservableCollection<ScriptFile> ScriptFiles;
+        public ConcurrentObservableCollection<ScriptFile> ScriptFiles { get; }
 
         /// <summary>
         /// All the metadata collected from both platforms and user-provided metadata
         /// files.
         /// </summary>
         public TypeLibrary LoadedMetadata { get; set; }
+
+        public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
+            => visitor.VisitProject(this, context);
+
+        public void AddProgram(ImageLocation programLocation, Program program)
+        {
+            program.Location = programLocation;
+            program.EnsureDirectoryNames(programLocation);
+            this.Programs.Add(program);
+        }
 
         /// <summary>
         /// Call event handlers defined at user-defined scripts.

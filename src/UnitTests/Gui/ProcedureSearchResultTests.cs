@@ -18,17 +18,17 @@
  */
 #endregion
 
+using Moq;
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.Gui;
-using NUnit.Framework;
-using Moq;
+using Reko.Gui.Services;
+using Reko.Services;
+using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Text;
-using Reko.UnitTests.Mocks;
-using Reko.Core.Services;
 
 namespace Reko.UnitTests.Gui
 {

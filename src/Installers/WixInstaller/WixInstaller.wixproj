@@ -617,6 +617,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\Archives\Archives.csproj">
+      <Name>Ar</Name>
+      <Project>{30aaffbf-48dc-4c9e-8e31-f44edf5b9038}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\ImageLoaders\BinHex\BinHex.csproj">
       <Name>BinHex</Name>
       <Project>{3f73b4eb-4ee6-45df-aa07-06ecdefa5bd9}</Project>

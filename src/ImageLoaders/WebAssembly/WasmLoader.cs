@@ -41,7 +41,8 @@ namespace Reko.ImageLoaders.WebAssembly
             "global",
         };
 
-        public WasmLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
+        public WasmLoader(IServiceProvider services, ImageLocation imageLocation, byte[] imgRaw)
+            : base(services, imageLocation, imgRaw)
         {
             PreferredBaseAddress = Address.Ptr32(0);
         }

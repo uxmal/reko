@@ -26,18 +26,22 @@ namespace Reko.Core.Loading
 {
     /// <summary>
     /// Abstract base class for image loaders that load <see cref="Program"/>s.
-    /// These examine a raw image, and 
-    /// generate a Program after carrying out relocations, resolving external
-    /// symbols etc.
+    /// These examine a raw image, and generate a Program after carrying out
+    /// relocations, resolving external symbols etc.
     /// </summary>
     public abstract class ProgramImageLoader : ImageLoader
     {
-        public ProgramImageLoader(IServiceProvider services, string filename, byte[] imgRaw) 
-            : base(services, filename, imgRaw)
+        public ProgramImageLoader(IServiceProvider services, ImageLocation imageLocation, byte[] imgRaw) 
+            : base(services, imageLocation, imgRaw)
         {
         }
 
-        public sealed override ILoadedImage Load(Address? addrLoad)
+        /// <summary>
+        /// If nothing else is specified, this is the address at which the image will be loaded.
+        /// </summary>
+        public abstract Address PreferredBaseAddress { get; set; }
+
+        public override ILoadedImage Load(Address? addrLoad)
         {
             return LoadProgram(addrLoad);
         }

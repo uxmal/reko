@@ -94,6 +94,16 @@ namespace Reko.UnitTests.Core.Serialization
                 OsPath.Relative("..", "reko", "foo.c"));
             Assert.AreEqual(OsPath.Absolute("Users", "reko", "foo.c"), s);
         }
+
+        [Test]
+        public void Prp_ToAbsoluteUri_Posix()
+        {
+            var s = ProjectPersister.ConvertToAbsoluteLocation(
+                ImageLocation.FromUri("file:home/sue/test.dcproj"),
+                "archive:archive.tar#dir/binary.so");
+            Assert.IsTrue(s.FilesystemPath.EndsWith(OsPath.Relative("home", "sue", "archive.tar")));
+            Assert.AreEqual("dir/binary.so", s.Fragments[0]);
+        }
     }
 }
 

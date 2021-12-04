@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -19,12 +19,8 @@
 #endregion
 
 using Reko.Core;
-using Reko.Gui;
 using Reko.Gui.Design;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Reko.Gui.Services;
 
 namespace Reko.Environments.Msdos.Design
 {

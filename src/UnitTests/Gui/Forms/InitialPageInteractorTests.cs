@@ -26,6 +26,8 @@ using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.ComponentModel.Design;
@@ -46,6 +48,7 @@ namespace Reko.UnitTests.Gui.Forms
         private Mock<IDecompiledFileService> host;
         private Mock<ILowLevelViewService> memSvc;
         private Mock<IFileSystemService> fsSvc;
+        private Mock<IArchiveBrowserService> abSvc;
         private Program program;
         private Project project;
 
@@ -61,6 +64,8 @@ namespace Reko.UnitTests.Gui.Forms
             host = new Mock<IDecompiledFileService>();
             memSvc = new Mock<ILowLevelViewService>();
             fsSvc = new Mock<IFileSystemService>();
+            abSvc = new Mock<IArchiveBrowserService>();
+
             var mem = new ByteMemoryArea(Address.Ptr32(0x10000), new byte[1000]);
             var imageMap = new SegmentMap(
                 mem.BaseAddress,
@@ -83,7 +88,8 @@ namespace Reko.UnitTests.Gui.Forms
             sc.AddService<ILoader>(loader.Object);
             sc.AddService<IDecompiledFileService>(host.Object);
             sc.AddService<IFileSystemService>(fsSvc.Object);
-
+            sc.AddService<IArchiveBrowserService>(abSvc.Object);
+            sc.AddService<IProcedureListService>(new Mock<IProcedureListService>().Object);
             i = new TestInitialPageInteractor(sc, dec.Object);
 		}
 
@@ -98,12 +104,13 @@ namespace Reko.UnitTests.Gui.Forms
         {
             Assert.IsFalse(i.CanAdvance);
 
-            dec.Setup(d => d.Load("floxe.exe", null, null)).Returns(false);
+            loader.Setup(l => l.Load(ImageLocation.FromUri("file:floxe.exe"), null, null)).Returns(project);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
             memSvc.Setup(m => m.ViewImage(program));
 
             i.OpenBinary("floxe.exe");
+
             Assert.IsTrue(i.CanAdvance, "Page should be ready to advance");
         }
 
@@ -115,7 +122,7 @@ namespace Reko.UnitTests.Gui.Forms
 
             Assert.IsFalse(i.CanAdvance, "Page should not be ready to advance");
 
-            dec.Setup(d => d.Load("floxe.exe", null, null)).Returns(false);
+            loader.Setup(l => l.Load(ImageLocation.FromUri("file:floxe.exe"), null, null)).Returns(project);
             memSvc.Setup(m => m.ViewImage(program));
 
             i.OpenBinary("floxe.exe");
@@ -126,7 +133,7 @@ namespace Reko.UnitTests.Gui.Forms
         [Test]
         public void Ipi_OpenBinary_ShouldShowMemoryWindow()
         {
-            dec.Setup(d => d.Load("floxe.exe", null, null)).Returns(true);
+            loader.Setup(l => l.Load(ImageLocation.FromUri("file:floxe.exe"), null, null)).Returns(project);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(d => d.Load(project));
             memSvc.Setup(s => s.ViewImage(program)).Verifiable();
@@ -139,7 +146,7 @@ namespace Reko.UnitTests.Gui.Forms
         [Test]
         public void Ipi_OpenBinary_ShouldBrowseProject()
         {
-            dec.Setup(d => d.Load("foo.exe", null, null)).Returns(true);
+            loader.Setup(l => l.Load(ImageLocation.FromUri("file:foo.exe"), null, null)).Returns(project);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project)).Verifiable();
             memSvc.Setup(m => m.ViewImage(program));
@@ -150,14 +157,37 @@ namespace Reko.UnitTests.Gui.Forms
         }
 
         [Test]
+        public void Ipi_OpenBinary_ShouldOpenArchiveDialog()
+        {
+            var archive = new Mock<IArchive>();
+            var archiveFile = new Mock<ArchivedFile>();
+            program.Location = ImageLocation.FromUri("file:test.archive#dir/test.exe");
+
+            loader.Setup(l => l.Load(ImageLocation.FromUri("file:test.archive"), null, null))
+                .Returns(archive.Object);
+            archiveFile.Setup(l => l.LoadImage(sc, null))
+                .Returns(program)
+                .Verifiable();
+            abSvc.Setup(a => a.SelectFileFromArchive(archive.Object))
+                .Returns(archiveFile.Object)
+                .Verifiable();
+
+            i.OpenBinary("test.archive");
+
+            archiveFile.VerifyAll();
+            abSvc.VerifyAll();
+        }
+
+        [Test]
         public void Ipi_LeavePage()
         {
-            dec.Setup(d => d.Load("foo.exe", null, null)).Returns(false);
+            loader.Setup(l => l.Load(ImageLocation.FromUri("file:foo.exe"), null, null)).Returns(project);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
             memSvc.Setup(m => m.ViewImage(program));
 
             i.OpenBinary("foo.exe");
+
             Assert.IsTrue(i.LeavePage());
         }
 
@@ -165,7 +195,7 @@ namespace Reko.UnitTests.Gui.Forms
         public void Ipi_NextPhaseButton_ScanningNotNeeded()
         {
             program.NeedsScanning = false;
-            dec.Setup(d => d.Load("foo.exe", null, null)).Returns(false);
+            loader.Setup(l => l.Load(ImageLocation.FromUri("file:foo.exe"), null, null)).Returns(project);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
 
@@ -181,7 +211,7 @@ namespace Reko.UnitTests.Gui.Forms
         public void Ipi_FinishDecompilationButton()
         {
             program.NeedsScanning = false;
-            dec.Setup(d => d.Load("foo.exe", null, null)).Returns(false);
+            loader.Setup(l => l.Load(ImageLocation.FromUri("file:foo.exe"), null, null)).Returns(project);
             dec.Setup(d => d.Project).Returns(project);
             browserSvc.Setup(b => b.Load(project));
             var status = new CommandStatus();
@@ -206,7 +236,7 @@ namespace Reko.UnitTests.Gui.Forms
                 this.decompiler = decompiler;
             }
 
-            protected override IDecompiler CreateDecompiler(ILoader ldr)
+            protected override IDecompiler CreateDecompiler(Project project)
             {
                 return decompiler;
             }

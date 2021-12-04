@@ -20,9 +20,9 @@
 
 using Reko.Core;
 using Reko.Core.Services;
-using Reko.Gui;
+using Reko.Gui.Services;
+using Reko.Services;
 using System;
-using System.ComponentModel;
 using System.ComponentModel.Design;
 
 namespace Reko.Gui.Forms

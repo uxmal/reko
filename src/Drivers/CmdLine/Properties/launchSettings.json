@@ -10,8 +10,8 @@
   "profiles": {
     "CmdLine": {
       "commandName": "Project",
-      "commandLineArgs": "fft.dcproject",
-      "workingDirectory": "D:\\dev\\uxmal\\reko\\master\\subjects\\Raw\\1750A"
+      "commandLineArgs": "decompile.exe --heuristic shingle  --arch tlcs-90 --base 0000 --entry 0000 TLCS-90.corpus",
+      "workingDirectory": "D:\\dev\\uxmal\\reko\\master\\subjects\\TLCS\\90"
     }
   }
 }

@@ -77,6 +77,12 @@ namespace Reko.UnitTests.Core.Serialization
             }
         }
 
+        private static bool IsPathEndingWith(string path, string sExpected)
+        {
+            path = path.Replace('\\', '/');
+            return path.EndsWith(sExpected);
+        }
+
         private void Given_TestArch()
         {
             this.arch = new Mock<IProcessorArchitecture>();
@@ -110,24 +116,24 @@ namespace Reko.UnitTests.Core.Serialization
 
         private void Given_Binary(Mock<ILoader> ldr, IPlatform platform)
         {
-            ldr.Setup(l => l.LoadImageBytes(
-                It.IsAny<string>(),
-                It.IsAny<int>())).Returns(new byte[100]);
-            ldr.Setup(l => l.LoadImage(
-                It.IsAny<string>(),
-                It.IsAny<byte[]>(),
-                It.IsAny<string>(),
-                It.IsAny<Address>())).Returns(new Program {
-                    Platform = platform,
-                    Architecture = arch.Object
-                });
+            ldr.Setup(l => l.LoadFileBytes(
+                It.IsAny<string>())).Returns(new byte[100]);
+            ldr.Setup(l => l.Load(
+                It.IsAny<ImageLocation>(),
+                null,
+                null)).Returns(new Func<ImageLocation, string, Address, ILoadedImage>(
+                    (i, l, a) => new Program { 
+                        Architecture = arch.Object,
+                        Platform = platform,
+                    }));
         }
 
         private void Given_Script(Mock<ILoader> ldr, string fileName)
         {
+            var scriptUri = ImageLocation.FromUri(fileName);
             var scriptFile = new Mock<ScriptFile>(
-                null, fileName, new byte[100]);
-            ldr.Setup(l => l.LoadScript(fileName))
+                null, scriptUri, new byte[100]);
+            ldr.Setup(l => l.LoadScript(scriptUri))
                 .Returns(scriptFile.Object);
         }
 
@@ -209,8 +215,8 @@ namespace Reko.UnitTests.Core.Serialization
             Given_Binary(ldr, platform.Object);
             Expect_LoadOptions();
 
-            var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            prld.LoadProject("/foo/bar", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
+            var prld = new ProjectLoader(sc, ldr.Object, ImageLocation.FromUri("file:/foo/bar"), listener.Object);
+            prld.LoadProject(new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
 
             Assert.AreEqual(2, loadedOptions.Count);
             Assert.AreEqual("Bob", loadedOptions["Name"]);
@@ -253,8 +259,8 @@ namespace Reko.UnitTests.Core.Serialization
             Given_Binary(ldr, platform.Object);
             Expect_LoadOptions();
 
-            var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            prld.LoadProject("/ff/b/foo.proj", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
+            var prld = new ProjectLoader(sc, ldr.Object, ImageLocation.FromUri("/ff/b/foo.proj"), listener.Object);
+            prld.LoadProject(new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
 
             var list = (IList)loadedOptions["Names"];
             Assert.AreEqual(3, list.Count);
@@ -288,15 +294,15 @@ namespace Reko.UnitTests.Core.Serialization
             Given_Binary(ldr, platform.Object);
             Expect_LoadOptions();
 
-            var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            prld.LoadProject("c:\\foo\\bar.proj", new MemoryStream(Encoding.UTF8.GetBytes(sproject)));
+            var prld = new ProjectLoader(sc, ldr.Object, ImageLocation.FromUri("c:\\foo\\bar.proj"), listener.Object);
+            prld.LoadProject(new MemoryStream(Encoding.UTF8.GetBytes(sproject)));
 
             var list = (IDictionary)loadedOptions["Names"];
             Assert.AreEqual(3, list.Count);
         }
 
         [Test]
-        public void Prld_MakePathsAbsolute()
+        public void Prld_MakePathsAbsolute_From_Filename()
         {
             var sProject = new Project_v4
             {
@@ -307,25 +313,59 @@ namespace Reko.UnitTests.Core.Serialization
                     new DecompilerInput_v4
                     {
                         Filename = "foo.exe",
-                    }
+                    },
                 }
             };
             Given_TestArch();
             Given_TestOS();
             var ldr = new Mock<ILoader>();
-            ldr.Setup(l => l.LoadImage(
-                It.IsAny<string>(),
-                It.IsAny<byte[]>(),
+            ldr.Setup(l => l.Load(
+                It.IsAny<ImageLocation>(),
                 It.IsAny<string>(),
                 It.IsAny<Address>())).Returns(new Program());
-            ldr.Setup(l => l.LoadImageBytes(
-                It.IsAny<string>(), 
-                It.IsAny<int>())).Returns(new byte[1000]);
+            ldr.Setup(l => l.LoadFileBytes(
+                It.IsAny<string>())).Returns(new byte[1000]);
 
-            var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
-            var project = prld.LoadProject(OsPath.Absolute("users", "bob", "projects", "foo.project"), sProject);
-            Assert.AreEqual(OsPath.Absolute("users", "bob", "projects", "foo.exe"), project.Programs[0].Filename);
+            var location = ImageLocation.FromUri(OsPath.Absolute("users", "bob", "projects", "foo.project"));
+            var prld = new ProjectLoader(sc, ldr.Object, location, listener.Object);
+            var project = prld.LoadProject(sProject);
+
+            var programUri = project.Programs[0].Location;
+            Assert.AreEqual(OsPath.Absolute("users","bob","projects","foo.exe"), programUri.FilesystemPath);
         }
+
+        [Test]
+        public void Prld_MakePathsAbsolute_From_Uri()
+        {
+            var sProject = new Project_v5
+            {
+                ArchitectureName = "testArch",
+                PlatformName = "testOS",
+                InputFiles =
+                {
+                    new DecompilerInput_v5
+                    {
+                        Location = "file:foo.exe",
+                    },
+                }
+            };
+            Given_TestArch();
+            Given_TestOS();
+            var ldr = new Mock<ILoader>();
+            ldr.Setup(l => l.Load(
+                It.IsAny<ImageLocation>(),
+                It.IsAny<string>(),
+                It.IsAny<Address>())).Returns(new Program());
+            ldr.Setup(l => l.LoadFileBytes(
+                It.IsAny<string>())).Returns(new byte[1000]);
+
+            var projectPath = OsPath.Absolute("users", "bob", "projects", "foo.project");
+            var location = ImageLocation.FromUri(projectPath);
+            var prld = new ProjectLoader(sc, ldr.Object, location, listener.Object);
+            var project = prld.LoadProject(sProject);
+            Assert.AreEqual(OsPath.Absolute("users", "bob", "projects", "foo.exe"), project.Programs[0].Location.FilesystemPath);
+        }
+
 
         [Test]
         public void Prld_LoadUserDefinedMetadata()
@@ -347,7 +387,7 @@ namespace Reko.UnitTests.Core.Serialization
                 },
                 MetadataFiles = {
                     new MetadataFile_v3 {
-                        Filename = "meta1.xml",
+                        Location = "file:meta1.xml",
                     },
                     new MetadataFile_v3 {
                         Filename = "meta2.xml",
@@ -373,7 +413,7 @@ namespace Reko.UnitTests.Core.Serialization
                 out addr))
                 .Returns(true);
             mockFactory.CreateLoadMetadataStub(
-                OsPath.Absolute("meta1.xml"),
+                ImageLocation.FromUri(OsPath.Absolute("meta1.xml")),
                 this.platform.Object,
                 new TypeLibrary(
                     false,
@@ -384,7 +424,7 @@ namespace Reko.UnitTests.Core.Serialization
                 )
             );
             mockFactory.CreateLoadMetadataStub(
-                OsPath.Absolute("meta2.xml"),
+                ImageLocation.FromUri(OsPath.Absolute("meta2.xml")),
                 this.platform.Object,
                 new TypeLibrary(
                     false,
@@ -395,8 +435,10 @@ namespace Reko.UnitTests.Core.Serialization
                 )
             );
 
-            var prld = new ProjectLoader(sc, ldr, listener.Object);
-            var project = prld.LoadProject(OsPath.Absolute("foo.project"), sProject);
+            var projectPath = OsPath.Absolute("foo.project");
+            var location = ImageLocation.FromUri(projectPath);
+            var prld = new ProjectLoader(sc, ldr, location, listener.Object);
+            var project = prld.LoadProject(sProject);
             Assert.AreEqual(2, project.Programs[0].EnvironmentMetadata.Types.Count);
             Assert.AreEqual(
                 "word16",
@@ -412,7 +454,7 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
-        public void Prld_LoadScripts()
+        public void Prld_LoadScripts_OldFormat()
         {
             var xml =
 @"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -428,14 +470,41 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestOS();
             Given_Script(ldr, AbsolutePathEndingWith("dir", "fake.script"));
 
-            var prld = new ProjectLoader(sc, ldr.Object, listener.Object);
+            var location = ImageLocation.FromUri(AbsolutePathEndingWith("dir", "script.proj"));
+            var prld = new ProjectLoader(sc, ldr.Object, location, listener.Object);
             var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
-            var project = prld.LoadProject(
-                AbsolutePathEndingWith("dir", "script.proj"), stream);
+            var project = prld.LoadProject(stream);
 
             Assert.AreEqual(
-                AbsolutePathEndingWith("dir", "fake.script"),
-                project.ScriptFiles.Single().Filename);
+                ImageLocation.FromUri(AbsolutePathEndingWith("dir", "fake.script")),
+                project.ScriptFiles.Single().Location);
+        }
+
+        [Test]
+        public void Prld_LoadScripts()
+        {
+            var xml =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<project xmlns=""http://schemata.jklnet.org/Reko/v5"">
+  <arch>testArch</arch>
+  <platform>testOS</platform>
+  <script>
+    <location>file:fake.script</location>
+  </script>
+</project>";
+            var ldr = new Mock<ILoader>();
+            Given_TestArch();
+            Given_TestOS();
+            Given_Script(ldr, AbsolutePathEndingWith("dir", "fake.script"));
+
+            var location = ImageLocation.FromUri(OsPath.Absolute("dir", "script.proj"));
+            var prld = new ProjectLoader(sc, ldr.Object, location, listener.Object);
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes(xml));
+            var project = prld.LoadProject(stream);
+
+            Assert.AreEqual(
+                OsPath.Absolute("dir","fake.script"),
+                project.ScriptFiles.Single().Location.FilesystemPath);
         }
 
         [Test]
@@ -477,11 +546,10 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             };
             var ldr = mockFactory.CreateLoader();
-
-            var prld = new ProjectLoader(sc, ldr, listener.Object);
-            var project = prld.LoadProject(
-                @"c:\foo\global_user.proj",
-                sproject);
+            var location = ImageLocation.FromUri(@"c:\foo\global_user.proj");
+            var prld = new ProjectLoader(sc, ldr, location, listener.Object);
+            
+            var project = prld.LoadProject(sproject);
 
             Assert.AreEqual(1, project.Programs.Count);
             Assert.AreEqual(1, project.Programs[0].User.Globals.Count);
@@ -526,9 +594,9 @@ namespace Reko.UnitTests.Core.Serialization
                 out addr))
                 .Returns(true);
 
-            var prld = new ProjectLoader(sc, ldr, listener.Object);
+            var location = ImageLocation.FromUri(@"c:\foo\annot.proj");
+            var prld = new ProjectLoader(sc, ldr, location, listener.Object);
             var project = prld.LoadProject(
-                @"c:\foo\annot.proj",
                 sproject);
 
             Assert.AreEqual(1, project.Programs.Count);
@@ -577,8 +645,9 @@ namespace Reko.UnitTests.Core.Serialization
                 It.IsAny<object[]>()))
                 .Verifiable();
 
-            var prld = new ProjectLoader(sc, ldr, listener.Object);
-            prld.LoadProject("foo.dcproject", sProject);
+            var location = ImageLocation.FromUri("foo.dcproject");
+            var prld = new ProjectLoader(sc, ldr, location, listener.Object);
+            prld.LoadProject(sProject);
 
             listener.Verify();
         }
@@ -604,8 +673,9 @@ namespace Reko.UnitTests.Core.Serialization
             var ldr = mockFactory.CreateLoader();
             Given_TestArch();
             Given_TestOS();
-            var prld = new ProjectLoader(sc, ldr, listener.Object);
-            var project = prld.LoadProject("foo.dcproject", sProject);
+            var location = ImageLocation.FromUri("foo.dcproject");
+            var prld = new ProjectLoader(sc, ldr, location, listener.Object);
+            var project = prld.LoadProject(sProject);
 
             Assert.IsTrue(project.Programs[0].User.ExtractResources);
         }
@@ -649,8 +719,9 @@ namespace Reko.UnitTests.Core.Serialization
             addr = Address.Ptr32(0x00200000);
             platform.Setup(p => p.TryParseAddress("00200000", out addr)).Returns(true);
 
-            var prld = new ProjectLoader(sc, ldr, listener.Object);
-            var prj = prld.LoadProject("foo.dcproject", sProject);
+            var location = ImageLocation.FromUri("foo.dcproject");
+            var prld = new ProjectLoader(sc, ldr, location, listener.Object);
+            var prj = prld.LoadProject(sProject);
 
             var u = prj.Programs[0].User;
             Assert.AreEqual(2, u.Segments.Count);
@@ -692,7 +763,7 @@ namespace Reko.UnitTests.Core.Serialization
                                 }
                             }
                         }
-                    }
+                    },
                 }
             };
             var ldr = mockFactory.CreateLoader();
@@ -701,12 +772,13 @@ namespace Reko.UnitTests.Core.Serialization
             Address addr = Address.Ptr32(0x00123400);
             platform.Setup(p => p.TryParseAddress("00123400", out addr)).Returns(true);
 
-            var prld = new ProjectLoader(sc, ldr, listener.Object);
-            var prj = prld.LoadProject(this.AbsolutePathEndingWith("foo","foo.dcproject"), sProject);
+            var location = ImageLocation.FromUri("/foo/foo.dcproject");
+            var prld = new ProjectLoader(sc, ldr, location, listener.Object);
+            var prj = prld.LoadProject(sProject);
 
             var u = prj.Programs[0].User;
             var placement = u.ProcedureSourceFiles[addr];
-            Assert.AreEqual(this.AbsolutePathEndingWith("foo","src","bar.c"), placement);
+            Assert.IsTrue(IsPathEndingWith(placement, "foo/src/bar.c"));
         }
     }
 }

@@ -110,7 +110,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                 Given_BundleEntry(3, 0x114B));
             Given_Bundle(0, 0);
 
-            var neldr = new NeImageLoader(services, "FOO.DLL", bytes, 0);
+            var neldr = new NeImageLoader(services, ImageLocation.FromUri("FOO.DLL"), bytes, 0);
             var syms = neldr.LoadEntryPoints(
                 0,
                 segs,
@@ -145,7 +145,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                 Given_BundleEntry(3, 0x3B));
             Given_Bundle(0, 0);
 
-            var neldr = new NeImageLoader(services, "FOO.DLL", bytes, 0);
+            var neldr = new NeImageLoader(services, ImageLocation.FromUri("FOO.DLL"), bytes, 0);
             var syms = neldr.LoadEntryPoints(
                 0,
                 segs,
@@ -184,7 +184,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                 Given_BundleEntry(3, 3, 0x3B));
             Given_Bundle(0, 0);
 
-            var neldr = new NeImageLoader(services, "FOO.DLL", bytes, 0);
+            var neldr = new NeImageLoader(services, ImageLocation.FromUri("FOO.DLL"), bytes, 0);
             var syms = neldr.LoadEntryPoints(
                 0,
                 segs,
@@ -222,7 +222,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
                 Given_BundleEntry(3, 0x4B),
                 Given_BundleEntry(3, 0x3B));
             Given_Bundle(0, 0);
-            var neldr = new NeImageLoader(services, "FOO.DLL", bytes, 0);
+            var neldr = new NeImageLoader(services, ImageLocation.FromUri("FOO.DLL"), bytes, 0);
             var syms = neldr.LoadEntryPoints(
                 0,
                 segs,

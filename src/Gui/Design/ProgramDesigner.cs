@@ -22,6 +22,7 @@
 
 using Reko.Core;
 using Reko.Core.Services;
+using Reko.Gui.Services;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -80,7 +81,14 @@ namespace Reko.Gui.Design
             TreeNode!.Text = program.Name;
             TreeNode.ImageName = "Binary.ico";
             var sb = new StringBuilder();
-            sb.Append(program.Filename ?? "(No file name)");
+            if (program.Location is null || string.IsNullOrEmpty(program.Location.FilesystemPath))
+            {
+                sb.Append("No file name");
+            }
+            else
+            {
+                sb.Append(program.Location);
+            }
             if (program.NeedsScanning)
             {
                 sb.AppendLine();

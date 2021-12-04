@@ -20,7 +20,9 @@
 
 using Reko.Core.Services;
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Text;
 
 namespace Reko.Core.Serialization
 {
@@ -42,13 +44,22 @@ namespace Reko.Core.Serialization
         public static string? ConvertToAbsolutePath(
             string projectAbsPath, string? projectRelative)
         {
-            if (projectRelative == null)
+            if (projectRelative is null)
                 return null;
             var dir = Path.GetDirectoryName(projectAbsPath);
             if (string.IsNullOrEmpty(projectRelative))
                 return dir;
             var combined = Path.Combine(dir, projectRelative);
             return Path.GetFullPath(combined);
+        }
+
+        public static ImageLocation? ConvertToAbsoluteLocation(
+            ImageLocation projectLocation, string? projectRelativeUri)
+        {
+            if (projectLocation is null || projectRelativeUri is null)
+                return null;
+            var projectDir = Path.GetDirectoryName(projectLocation.FilesystemPath);
+            return new ImageLocation(projectDir).Combine(projectRelativeUri);
         }
 
         /// <summary>
@@ -63,6 +74,13 @@ namespace Reko.Core.Serialization
                 return absPath;
             var fsSvc = Services.RequireService<IFileSystemService>();
             return fsSvc.MakeRelativePath(projectAbsPath, absPath);
+        }
+
+        public string? ConvertToProjectRelativeUri(ImageLocation projectUri, ImageLocation? absoluteUri)
+        {
+            if (absoluteUri is null)
+                return null;
+            return projectUri.MakeRelativeUri(absoluteUri);
         }
     }
 }

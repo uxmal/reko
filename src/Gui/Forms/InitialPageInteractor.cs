@@ -21,9 +21,14 @@
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Loading;
+using Reko.Core.Services;
+using Reko.Gui.Services;
 using System;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Linq;
+
+#nullable enable
 
 namespace Reko.Gui.Forms
 {
@@ -31,7 +36,7 @@ namespace Reko.Gui.Forms
     {
         bool OpenBinary(string file);
         bool OpenBinaryAs(string file, LoadDetails details);
-        bool Assemble(string file, IAssembler asm, IPlatform platform );
+        bool Assemble(string file, IAssembler asm, IPlatform platform);
     }
 
     /// <summary>
@@ -43,9 +48,9 @@ namespace Reko.Gui.Forms
         {
         }
 
-        protected virtual IDecompiler CreateDecompiler(ILoader ldr)
+        protected virtual IDecompiler CreateDecompiler(Project project)
         {
-            return new Decompiler(ldr, Services);
+            return new Decompiler(project, Services);
         }
 
         public override bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
@@ -99,70 +104,146 @@ namespace Reko.Gui.Forms
         /// <summary>
         /// Open the specified file.
         /// </summary>
-        /// <param name="file"></param>
-        /// <returns>True if the opened file was opened successfully.</returns>
+        /// <param name="file">The file system path to the file.</param>
         public bool OpenBinary(string file)
         {
             var ldr = Services.RequireService<ILoader>();
-            this.Decompiler = CreateDecompiler(ldr);
             var svc = Services.RequireService<IWorkerDialogService>();
-            bool successfullyLoaded = false;
-            bool exceptionThrown = !svc.StartBackgroundWork("Loading program", () =>
+            ILoadedImage? loadedImage = null;
+            var imageUri = ImageLocation.FromUri(file);
+            bool exceptionThrown = !svc.StartBackgroundWork("Opening file", () =>
             {
-                successfullyLoaded = Decompiler.Load(file);
+                var eventListener = Services.RequireService<DecompilerEventListener>();
+                eventListener.ShowStatus("Loading file.");
+                loadedImage = ldr.Load(imageUri);
+                eventListener.ShowStatus("Loaded file.");
             });
             if (exceptionThrown)
             {
                 // We've already reported the exception, so we should stop in our tracks.
-                //$REFACTOR: the logic for opening binaries is convoluted and needs 
-                // refactoring. See GitHub #1051.
-                //$BUG: we're lying here, we should be catching an Exception at this level.
-                // The 'true' will prevent the OpenAs dialog from opening, but it will
-                // put the shell in an incorrect state.
-                return true;
+                return false;
             }
-            if (!successfullyLoaded)
+            switch (loadedImage)
+            {
+            case Program program:
+                loadedImage = Project.FromSingleProgram(program);
+                break;
+            case IArchive archive:
+                loadedImage = LoadFromArchive(archive, ldr);
+                break;
+            case Blob blob:
+                var details = ShowOpenBinaryAsDialog(file);
+                if (details is null)
+                    return false;
+                var rawProgram = ldr.LoadRawImage(blob.Location, blob.Image, null, details);
+                loadedImage = Project.FromSingleProgram(rawProgram);
+                break;
+            }
+            if (loadedImage is not Project project)
             {
                 return false;
             }
-            Decompiler.ExtractResources();
 
+            this.Decompiler = CreateDecompiler(project);
+            Decompiler.ExtractResources();
             var browserSvc = Services.RequireService<IProjectBrowserService>();
-            browserSvc.Load(Decompiler.Project);
+            var procListSvc = Services.RequireService<IProcedureListService>();
+            browserSvc.Load(project);
             browserSvc.Show();
+            procListSvc.Clear();
             ShowLowLevelWindow();
             return true;
+        }
+
+        private LoadDetails? ShowOpenBinaryAsDialog(string file)
+        {
+            var uiSvc = Services.RequireService<IDecompilerShellUiService>();
+            var dlgFactory = Services.RequireService<IDialogFactory>();
+            using (IOpenAsDialog dlg = dlgFactory.CreateOpenAsDialog(file))
+            {
+                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    return dlg.GetLoadDetails();
+                }
+                else
+                {
+                    return null;
+                }
+            }
         }
 
         public bool OpenBinaryAs(string file, LoadDetails details)
         {
             var ldr = Services.RequireService<ILoader>();
-            this.Decompiler = CreateDecompiler(ldr);
             IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
-            svc.StartBackgroundWork("Loading program", delegate()
+            if (!svc.StartBackgroundWork("Loading program", delegate ()
             {
-                Program program = Decompiler.LoadRawImage(file, details);
+                var eventListener = Services.RequireService<DecompilerEventListener>();
+                eventListener.ShowStatus("Loading source program.");
+                var imageUri = ImageLocation.FromUri(file);
+                Program program = ldr.LoadRawImage(imageUri, details);
+                var project = Project.FromSingleProgram(program);
+                this.Decompiler = CreateDecompiler(project);
                 Decompiler.ExtractResources();
-            });
+                eventListener.ShowStatus("Source program loaded.");
+            }))
+                return false;
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             var procListSvc = Services.RequireService<IProcedureListService>();
-            if (Decompiler.Project != null)
+            if (Decompiler.Project is not null)
             {
                 browserSvc.Load(Decompiler.Project);
                 browserSvc.Show();
                 procListSvc.Clear();
                 ShowLowLevelWindow();
+                return true;
             }
             else
             {
                 browserSvc.Clear();
                 procListSvc.Clear();
+                return false;
             }
-            return false;   // We never open projects this way.
+        }
+
+        private Project? LoadFromArchive(IArchive archive, ILoader loader)
+        {
+            var abSvc = Services.RequireService<IArchiveBrowserService>();
+            while (abSvc.SelectFileFromArchive(archive) is ArchivedFile archiveFile)
+            {
+                var image = archiveFile.LoadImage(Services, null);
+                if (image is Blob blob)
+                {
+                    // The archive itself doesn't know the format of the blob,
+                    // perhaps Reko does.
+                    image = loader.LoadBinaryImage(blob.Location, blob.Image, null, null);
+                }
+                switch (image)
+                {
+                case Program program:
+                    Debug.Assert(program.Location is not null);
+                    return Project.FromSingleProgram(program);
+                case Blob blob2:
+                    //$TODO: make 'filename' textbox readonly when there are fragments in path.
+                    var loadDetails = ShowOpenBinaryAsDialog(blob2.Location.FilesystemPath);
+                    if (loadDetails is null)
+                        return null;
+                    var rawProgram = loader.LoadRawImage(blob2.Location, blob2.Image, null, loadDetails);
+                    return Project.FromSingleProgram(rawProgram);
+                case IArchive nestedArchive:
+                    archive = nestedArchive;
+                    break;
+                default:
+                    throw new NotImplementedException();
+                }
+            }
+            return null;
         }
 
         private void ShowLowLevelWindow()
         {
+            if (Decompiler.Project is null)
+                return;
             if (Decompiler.Project.Programs.Any(p => p.NeedsScanning))
             {
                 var memSvc = Services.RequireService<ILowLevelViewService>();
@@ -173,19 +254,25 @@ namespace Reko.Gui.Forms
         public bool Assemble(string file, IAssembler asm, IPlatform platform)
         {
             var ldr = Services.RequireService<ILoader>();
-            this.Decompiler = CreateDecompiler(ldr);
             var svc = Services.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {
-                Decompiler.Assemble(file, asm, platform);
+                var eventListener = Services.RequireService<DecompilerEventListener>();
+                eventListener.ShowStatus("Assembling program.");
+                var asmFileLocation = ImageLocation.FromUri(file);
+                var program = ldr.AssembleExecutable(asmFileLocation, asm, platform, null!);
+                var project = Project.FromSingleProgram(program);
+                this.Decompiler = CreateDecompiler(project);
+                this.Decompiler.ExtractResources();
+                eventListener.ShowStatus("Assembled program.");
             });
-            if (Decompiler.Project == null)
+            if (Decompiler.Project is null)
                 return false;
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);
             browserSvc.Show();
             ShowLowLevelWindow();
-            return false;
+            return true;
         }
 
         private bool NeedsScanning()

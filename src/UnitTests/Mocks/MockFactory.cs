@@ -111,27 +111,34 @@ namespace Reko.UnitTests.Mocks
                 mem.BaseAddress,
                 new ImageSegment(".text", mem, AccessMode.ReadExecute));
             program.ImageMap = program.SegmentMap.CreateImageMap();
+
             mockLoader.Setup(
-                l => l.LoadImage(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<Address>())
+                l => l.Load(It.IsAny<ImageLocation>(), It.IsAny<string>(), It.IsAny<Address>())
+            ).Returns(program);
+
+            //$REVIEW: the below is redundant; the method is never called outside of 
+            // the Loader class.
+            mockLoader.Setup(
+                l => l.LoadBinaryImage(It.IsAny<ImageLocation>(), It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<Address>())
             ).Returns(program);
 
             mockLoader.Setup(
-                l => l.LoadImageBytes(It.IsAny<string>(), It.IsAny<int>())
+                l => l.LoadFileBytes(It.IsAny<string>())
             ).Returns(new byte[1000]);
 
             return this.mockLoader.Object;
         }
 
         public void CreateLoadMetadataStub(
-            string metafileName, 
+            ImageLocation metafileUri, 
             IPlatform platform,
             TypeLibrary loaderMetadata)
         {
             mockLoader.Setup(l => l.LoadMetadata(
-                metafileName,
+                metafileUri,
                 platform,
                 It.IsNotNull<TypeLibrary>()
-            )).Returns((string f, IPlatform p, TypeLibrary tl) =>
+            )).Returns((ImageLocation uri, IPlatform p, TypeLibrary tl) =>
                 {
                     foreach (var module in loaderMetadata.Modules)
                         tl.Modules.Add(module);
@@ -185,8 +192,7 @@ namespace Reko.UnitTests.Mocks
             var loader = CreateLoader();
 
             var metafileName = moduleName + ".xml";
-
-            CreateLoadMetadataStub(metafileName, mockPlatform.Object, loaderMetadata);
+            CreateLoadMetadataStub(ImageLocation.FromUri(metafileName), mockPlatform.Object, loaderMetadata);
         }
     }
 }

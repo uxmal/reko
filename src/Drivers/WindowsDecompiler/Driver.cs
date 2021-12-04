@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Services;
 using Reko.Gui;
+using Reko.Gui.Services;
 using Reko.UserInterfaces.WindowsForms;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
@@ -28,7 +29,7 @@ using System.ComponentModel.Design;
 
 namespace Reko.WindowsDecompiler
 {
-	public class Driver
+    public class Driver
     {
         [STAThread]
         public static void Main(string[] args)

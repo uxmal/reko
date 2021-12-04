@@ -36,8 +36,8 @@ namespace Reko.Environments.MorphOS
     {
         private ElfImageLoader elfLdr;
 
-        public MorphosElfImageLoader(IServiceProvider services, string filename, byte[] rawBytes) 
-            : base(services, filename, rawBytes)
+        public MorphosElfImageLoader(IServiceProvider services, ImageLocation imageUri, byte[] rawBytes) 
+            : base(services, imageUri, rawBytes)
         {
             this.elfLdr = null!;
         }
@@ -62,7 +62,7 @@ namespace Reko.Environments.MorphOS
             var embeddedElfImage = new byte[this.RawImage.Length - hdr.ElfOffset];
             //$PERF: this is a prime candidate for Span<T>
             Array.Copy(this.RawImage, hdr.ElfOffset, embeddedElfImage, 0, embeddedElfImage.Length);
-            this.elfLdr = new ElfImageLoader(this.Services, this.Filename, embeddedElfImage);
+            this.elfLdr = new ElfImageLoader(this.Services, this.ImageLocation, embeddedElfImage);
             var program = elfLdr.LoadProgram(addrLoad);
             return program;
         }

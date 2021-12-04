@@ -91,22 +91,9 @@ namespace Reko.Environments.BbcMicro
 {
     public class DiscFilingSystem : ImageLoader
     {
-        public DiscFilingSystem(IServiceProvider services, string filename, byte[] rawBytes) : base(services, filename, rawBytes)
+        public DiscFilingSystem(IServiceProvider services, ImageLocation imageUri, byte[] rawBytes) : base(services, imageUri, rawBytes)
         {
 
-        }
-
-        public override Address PreferredBaseAddress
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
         }
 
         public override ILoadedImage Load(Address? addrLoad)
@@ -170,5 +157,7 @@ namespace Reko.Environments.BbcMicro
         public Address ExecAddress { get; set; }
         public uint Length { get; set; }
         public string Name { get; set; }
+
+        public ArchiveDirectoryEntry? Parent => null;
     }
 }

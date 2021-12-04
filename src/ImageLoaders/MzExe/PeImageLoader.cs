@@ -113,7 +113,8 @@ namespace Reko.ImageLoaders.MzExe
         private Relocator relocator;
 
 #nullable disable
-        public PeImageLoader(IServiceProvider services, string filename, byte [] img, uint peOffset) : base(services, filename, img)
+        public PeImageLoader(IServiceProvider services, ImageLocation imageLocation, byte [] img, uint peOffset) 
+            : base(services, imageLocation, img)
 		{
             EndianImageReader rdr = new LeImageReader(RawImage, peOffset);
 			if (rdr.ReadByte() != 'P' ||
@@ -1092,7 +1093,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             {
             default: 
                 Services.RequireService<DecompilerEventListener>()
-                    .Warn(new NullCodeLocation(Filename), "Exception table reading not supported for machine #{0}.", machine);
+                    .Warn(new NullCodeLocation(ImageLocation.FilesystemPath), "Exception table reading not supported for machine #{0}.", machine);
                 break;
             case MACHINE_x86_64:
                 while (rdr.Offset < rvaTableEnd)

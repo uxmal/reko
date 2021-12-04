@@ -54,7 +54,7 @@ namespace Reko.Core.Types
         public virtual bool IsIntegral { get { return false; } }
         public virtual bool IsReal => false;
 
-        public virtual string Name { get { return name!; }  set { name = value; } }
+        public virtual string Name { get { return name!; } set { name = value; } }
         public Qualifier Qualifier { get; set; }
 
         /// <summary>
@@ -114,11 +114,14 @@ namespace Reko.Core.Types
             return dt as T;
         }
 
+        /// <summary>
+        /// This property is true if the type refers to a datum solely defined by its size.
+        /// </summary>
         public virtual bool IsWord => false;
 
         protected void ThrowBadSize()
 		{
-			throw new InvalidOperationException(string.Format("Can't set size of {0}.", GetType().Name));
+			throw new InvalidOperationException($"Can't set size of {GetType().Name}.");
 		}
 
 		public sealed override string ToString()

@@ -45,10 +45,11 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_BeArchitecture();
         }
 
+
         private void Given_Linker(bool big_endian)
         {
             BuildObjectFile32(big_endian);
-            var eil = new ElfImageLoader(sc, "foo.o", rawBytes);
+            var eil = new ElfImageLoader(sc, ImageLocation.FromUri("file:foo.o"), rawBytes);
             eil.LoadElfIdentification();
             var rdr = big_endian
                 ? new BeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET)

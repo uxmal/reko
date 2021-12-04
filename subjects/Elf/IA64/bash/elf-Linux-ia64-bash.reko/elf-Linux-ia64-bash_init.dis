@@ -1,10 +1,13 @@
-// _init
-// Return size: 0
-define _init
-_init_entry:
-	r11 = fp
-	// succ:  l4000000000019230
-l4000000000019230:
+void _init()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 _init_exit:
+_init_entry:
+l4000000000019230:
 
 

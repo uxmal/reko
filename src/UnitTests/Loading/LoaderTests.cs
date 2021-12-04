@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Loading
             Assert.IsTrue(ldr.ImageHasMagicNumber(new byte[] { 0x47, 0x11 }, "4711", 0));
         }
 
-        [Test(Description="Unless otherwise specified, fail loading unknown file formats.")]
+        [Test(Description="Unless otherwise specified, loading unknown file formats returns a Blob.")]
         public void Ldr_UnknownImageType()
         {
             cfgSvc.Setup(d => d.GetImageLoaders()).Returns(new List<LoaderDefinition>());
@@ -71,9 +71,9 @@ namespace Reko.UnitTests.Loading
             var testImage = new byte[] { 42, 42, 42, 42, };
             var ldr = new Mock<Loader>(sc);
 
-            Program program = (Program) ldr.Object.LoadImage("", testImage, null, null);
+            Blob blob = (Blob) ldr.Object.LoadBinaryImage(ImageLocation.FromUri(""), testImage, null, null);
 
-            Assert.IsNull(program);
+            Assert.IsNotNull(blob);
         }
 
         [Test(Description = "Use default settings when loading unknown file formats.")]
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Loading
             var ldr = new Mock<Loader>(sc);
 
             ldr.Object.DefaultToFormat = "ms-dos-com";
-            Program program = (Program) ldr.Object.LoadImage("", testImage, null, null);
+            Program program = (Program) ldr.Object.LoadBinaryImage(ImageLocation.FromUri(""), testImage, null, null);
 
             Assert.IsNull(eventListener.LastDiagnostic);
             Assert.AreEqual("0C00:0100", program.ImageMap.BaseAddress.ToString());
@@ -138,9 +138,9 @@ namespace Reko.UnitTests.Loading
             Given_Image();
 
             var ldr = new Mock<Loader>(sc);
-            ldr.Setup(l => l.LoadImageBytes("", 0)).Returns(testImage);
+            ldr.Setup(l => l.LoadFileBytes("")).Returns(testImage);
 
-            var imgLoader = ldr.Object.FindImageLoader<ImageLoader>("", testImage);
+            var imgLoader = ldr.Object.FindImageLoader<ImageLoader>(ImageLocation.FromUri(""), testImage);
 
             Assert.IsInstanceOf<TestImageLoader>(imgLoader);
         }
@@ -152,8 +152,8 @@ namespace Reko.UnitTests.Loading
 
         private class FakeImageLoader  : ProgramImageLoader
         {
-            public FakeImageLoader(IServiceProvider services, string filename, byte[]imgRaw) :
-                base(services, filename, imgRaw)
+            public FakeImageLoader(IServiceProvider services, ImageLocation imageUri, byte[]imgRaw) :
+                base(services, imageUri, imgRaw)
             {
 
             }
@@ -189,13 +189,13 @@ namespace Reko.UnitTests.Loading
             var ldr = new Mock<Loader>(sc);
 
             ldr.Object.DefaultToFormat = "ms-dos-com";
-            var imgLoader = ldr.Object.CreateDefaultImageLoader("foo.com", new byte[30]);
+            var imgLoader = ldr.Object.CreateDefaultImageLoader(ImageLocation.FromUri("file:foo.com"), new byte[30]);
             var program = imgLoader.Load(null);
         }
 
         public class TestImageLoader : ProgramImageLoader
         {
-            public TestImageLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw)
+            public TestImageLoader(IServiceProvider services, ImageLocation imageUri, byte[] imgRaw) : base(services, imageUri, imgRaw)
             {
             }
 
@@ -221,7 +221,7 @@ namespace Reko.UnitTests.Loading
         {
             var arch = new Mock<IProcessorArchitecture>();
             var openv = new Mock<PlatformDefinition>();
-            cfgSvc.Setup(s => s.GetArchitecture("mmix")).Returns(arch.Object);
+            cfgSvc.Setup(s => s.GetArchitecture("mmix", It.IsAny<Dictionary<string,object>>())).Returns(arch.Object);
             cfgSvc.Setup(s => s.GetEnvironment(It.IsAny<string>())).Returns(openv.Object);
             cfgSvc.Setup(s => s.GetImageLoader("zlorgo")).Returns(new LoaderDefinition {
                 TypeName = $"{typeof(NullImageLoader).FullName},{typeof(NullImageLoader).Assembly.FullName}",
@@ -240,7 +240,7 @@ namespace Reko.UnitTests.Loading
                 .Returns(true);
 
             var ldr = new Loader(sc);
-            var program = ldr.LoadRawImage("foo.bin", new byte[0], Address.Ptr32(0x00123400), new LoadDetails
+            var program = ldr.LoadRawImage(ImageLocation.FromUri("file:foo.bin"), new byte[0], Address.Ptr32(0x00123400), new LoadDetails
             {
                 ArchitectureName = "mmix",
                 EntryPoint = new EntryPointDefinition {  Address = "00123500" },
@@ -249,6 +249,47 @@ namespace Reko.UnitTests.Loading
 
             Assert.AreEqual(1, program.EntryPoints.Count);
             Assert.AreEqual(SymbolType.Procedure, program.EntryPoints[Address.Ptr32(0x00123500)].Type);
-	}
-	}
+        }
+
+        class FakeArchiveLoader : ImageLoader
+        {
+            public FakeArchiveLoader(IServiceProvider services, ImageLocation uri, byte[] bytes) :
+                base(services, uri, bytes)
+            {
+            }
+
+            public override ILoadedImage Load(Address addrLoad)
+            {
+                var blob = new Blob(base.ImageLocation, new byte[234]);
+                var archiveFile = new Mock<ArchivedFile>();
+                archiveFile.Setup(a => a.LoadImage(
+                    It.IsAny<IServiceProvider>(),
+                    null))
+                    .Returns(blob);
+                var archive = new Mock<IArchive>();
+                return archive.Object;
+            }
+        }
+
+        [Test]
+        public void Ldr_LoadArchivedBlob()
+        {
+            var ldrDef = new LoaderDefinition
+            {
+                Extension = ".arch",
+                TypeName = typeof(FakeArchiveLoader).FullName,
+            };
+            cfgSvc.Setup(c => c.GetImageLoaders())
+                .Returns(new List<LoaderDefinition> { ldrDef });
+
+            var fsSvc = new Mock<IFileSystemService>();
+            sc.AddService(fsSvc.Object);
+
+            var ldr = new Loader(sc);
+            var image = ldr.Load(ImageLocation.FromUri("file:archive.arch#inside/path"));
+
+            Assert.IsNotNull(image);
+            Assert.IsAssignableFrom<Blob>(image);
+        }
+    }
 }

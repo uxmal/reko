@@ -79,6 +79,10 @@ namespace Reko.Core.Serialization
             User = new UserData_v4();
         }
 
+        [XmlElement("location")]
+        public string? Location;
+
+        // Kept for backwards compatibility only, use Location field wherever possible.
         [XmlElement("filename")]
         public string? Filename;
 
@@ -103,6 +107,10 @@ namespace Reko.Core.Serialization
 
     public class ScriptFile_v5
     {
+        [XmlElement("location")]
+        public string? Location;
+
+        // Kept for backwards compatibility only, use Location field wherever possible.
         [XmlElement("filename")]
         public string? Filename;
     }

@@ -41,7 +41,7 @@ namespace Reko.Gui.Design
 
         public void SetTreeNodeProperties(MetadataFile mf)
         {
-            TreeNode!.Text = Path.GetFileName(mf.Filename);
+            TreeNode!.Text = mf.Location!.GetFilename();
             TreeNode.ImageName = "typelib.ico";
         }
     }

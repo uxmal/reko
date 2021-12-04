@@ -41,8 +41,8 @@ namespace Reko.ImageLoaders.MzExe
         private Program program;
         private SegmentMap segmentMap;
 
-        public PharLapExtender(IServiceProvider services, string filename, byte[] rawImage, uint headerOffset) 
-            : base(services, filename, rawImage)
+        public PharLapExtender(IServiceProvider services, ImageLocation imageLocation, byte[] rawImage, uint headerOffset) 
+            : base(services, imageLocation, rawImage)
         {
             this.FileHeaderOffset = headerOffset;
             this.arch = null!;

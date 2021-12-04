@@ -33,8 +33,8 @@ namespace Reko.Environments.Gameboy
     /// </summary>
     public class Loader : ProgramImageLoader
     {
-        public Loader(IServiceProvider services, string filename, byte[] imgRaw) 
-            : base(services, filename, imgRaw)
+        public Loader(IServiceProvider services, ImageLocation imageUri, byte[] imgRaw) 
+            : base(services, imageUri, imgRaw)
         {
         }
 

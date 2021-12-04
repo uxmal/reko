@@ -24,6 +24,7 @@ using Reko.Arch.X86;
 using Reko.Arch.X86.Assembler;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Environments.Msdos;
 using Reko.Loading;
@@ -58,7 +59,7 @@ namespace Reko.UnitTests.Structure
             var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
 
             program = ldr.AssembleExecutable(
-                FileUnitTester.MapTestPath(sourceFilename),
+                ImageLocation.FromUri(FileUnitTester.MapTestPath(sourceFilename)),
                 new X86TextAssembler(arch),
                 new MsdosPlatform(sc, arch),
                 addrBase);
@@ -74,7 +75,7 @@ namespace Reko.UnitTests.Structure
             var ldr = new Loader(sc);
             var arch = new X86ArchitectureFlat32(sc, "x86-protected-32", new Dictionary<string, object>());
             program = ldr.AssembleExecutable(
-                FileUnitTester.MapTestPath(sourceFilename),
+                ImageLocation.FromUri(FileUnitTester.MapTestPath(sourceFilename)),
                 new X86TextAssembler(arch),
                 new DefaultPlatform(sc, arch),
                 addrBase);

@@ -27,6 +27,8 @@ using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -65,11 +67,13 @@ namespace Reko.UnitTests.Gui.Forms
             program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute));
-
             program.SegmentMap.AddOverlappingSegment("0C10", mem, Address.SegPtr(0x0C10, 0), AccessMode.ReadWrite);
             program.SegmentMap.AddOverlappingSegment("0C20", mem, Address.SegPtr(0x0C20, 0), AccessMode.ReadWrite);
             mapSegment1 = program.SegmentMap.Segments.Values[0];
             mapSegment2 = program.SegmentMap.Segments.Values[1];
+
+            var project = new Project();
+            project.AddProgram(ImageLocation.FromUri("/home/bob/test.exe"), program);
 
             decSvc = new DecompilerService();
 
@@ -81,19 +85,7 @@ namespace Reko.UnitTests.Gui.Forms
             uiSvc = AddService<IDecompilerShellUiService>();
             memSvc = AddService<ILowLevelViewService>();
 
-            var ldr = new Mock<ILoader>();
-            ldr.Setup(l => l.LoadImageBytes("test.exe", 0)).Returns(new byte[400]);
-            ldr.Setup(l => l.LoadImage(
-                It.IsNotNull<string>(),
-                It.IsNotNull<byte[]>(),
-                null,
-                It.IsAny<Address>())).Returns(program)
-                .Callback(() =>
-                {
-                    program.ToString();
-                });
-            decSvc.Decompiler = new Decompiler(ldr.Object, sc);
-            decSvc.Decompiler.Load("test.exe");
+            decSvc.Decompiler = new Decompiler(project, sc);
 
             interactor = new ScannedPageInteractor(sc);
         }

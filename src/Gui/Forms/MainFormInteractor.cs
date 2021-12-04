@@ -25,7 +25,9 @@ using Reko.Core.Memory;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Gui.Services;
 using Reko.Scanning;
+using Reko.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -63,7 +65,6 @@ namespace Reko.Gui.Forms
         private IFinalPageInteractor pageFinal;
 
         private MruList mru;
-        private string projectFileName;
         private IServiceContainer sc;
         private ProjectFilesWatcher projectFilesWatcher;
         private IConfigurationService config;
@@ -81,6 +82,8 @@ namespace Reko.Gui.Forms
         }
 
         public IServiceProvider Services { get { return sc; } }
+
+        public string ProjectFileName { get; set; }
 
         public void Attach(IMainForm mainForm)
         {
@@ -122,11 +125,6 @@ namespace Reko.Gui.Forms
             pageScanned = svcFactory.CreateScannedPageInteractor();
             pageAnalyzed = new AnalyzedPageInteractorImpl(sc);
             pageFinal = new FinalPageInteractor(sc);
-        }
-
-        public virtual IDecompiler CreateDecompiler(ILoader ldr)
-        {
-            return new Decompiler(ldr, sc);
         }
 
         private void CreateServices(IServiceFactory svcFactory, IServiceContainer sc)
@@ -247,47 +245,21 @@ namespace Reko.Gui.Forms
             get { return form; }
         }
 
-        /// <summary>
-        /// Master function for opening a new project.
-        /// </summary>
-        /// <param name="file"></param>
-        /// <param name="openAction"></param>
-        public void OpenBinary(string file, Func<string,bool> openAction, Func<string, bool> onFailAction)
-        {
-            try
-            {
-                CloseProject();
-                SwitchInteractor(InitialPageInteractor);
-                if (openAction(file) || onFailAction(file))
-                {
-                    if (file.EndsWith(Project_v5.FileExtension))
-                    {
-                        ProjectFileName = file;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.Print("Caught exception: {0}\r\n{1}", ex.Message, ex.StackTrace);
-                uiSvc.ShowError(ex, "Couldn't open file '{0}'. {1}", file, ex.Message);
-            }
-            finally
-            {
-                Services.RequireService<IStatusBarService>().SetText("");
-            }
-        }
-
         public void OpenBinaryWithPrompt()
         {
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
             var fileName = uiSvc.ShowOpenFileDialog(null);
-            if (fileName != null)
+            if (fileName is not null)
             {
                 RememberFilenameInMru(fileName);
-                uiSvc.WithWaitCursor(() => OpenBinary(
-                    fileName, 
-                    f => pageInitial.OpenBinary(f),
-                    f => OpenBinaryAs(f)));
+                CloseProject();
+                SwitchInteractor(InitialPageInteractor);
+                if (!pageInitial.OpenBinary(fileName))
+                    return;
+                if (fileName.EndsWith(Project_v5.FileExtension))
+                {
+                    ProjectFileName = fileName;
+                }
             }
         }
 
@@ -303,17 +275,17 @@ namespace Reko.Gui.Forms
         public void AddMetadataFile()
         {
             var fileName = uiSvc.ShowOpenFileDialog(null);
-            if (fileName == null)
+            if (fileName is null)
                 return;
             var projectLoader = new ProjectLoader(
                 Services,
                 loader,
                 this.decompilerSvc.Decompiler.Project,
-                this.sc.RequireService<DecompilerEventListener>());
-
+                Services.RequireService<DecompilerEventListener>());
+            var metadataUri = ImageLocation.FromUri(fileName);
             try
             {
-                var metadata = projectLoader.LoadMetadataFile(fileName);
+                var metadata = projectLoader.LoadMetadataFile(metadataUri);
                 decompilerSvc.Decompiler.Project.MetadataFiles.Add(metadata);
                 RememberFilenameInMru(fileName);
             }
@@ -380,7 +352,8 @@ namespace Reko.Gui.Forms
         {
             try
             {
-                var script = loader.LoadScript(fileName);
+                var scriptLocation = ImageLocation.FromUri(fileName);
+                var script = loader.LoadScript(scriptLocation);
                 if (script is null)
                     return;
                 var project = decompilerSvc.Decompiler.Project;
@@ -407,10 +380,17 @@ namespace Reko.Gui.Forms
                 if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return true;
 
+                string fileName = dlg.FileName.Text;
                 var arch = this.config.GetArchitecture(dlg.SelectedArchitectureName);
                 var asm = arch.CreateAssembler(null);
-                OpenBinary(dlg.FileName.Text, (f) => pageInitial.Assemble(f, asm, null), f => false);
-                RememberFilenameInMru(dlg.FileName.Text);
+                CloseProject();
+                SwitchInteractor(InitialPageInteractor);
+                InitialPageInteractor.Assemble(fileName, asm, null);
+                RememberFilenameInMru(fileName);
+                if (fileName.EndsWith(Project_v5.FileExtension))
+                {
+                    ProjectFileName = fileName;
+                }
             }
             catch (Exception e)
             {
@@ -422,59 +402,26 @@ namespace Reko.Gui.Forms
         public bool OpenBinaryAs(string initialFilename)
         {
             IOpenAsDialog dlg = null;
-            IProcessorArchitecture arch = null;
             try
             {
-                dlg = dlgFactory.CreateOpenAsDialog();
-                dlg.FileName.Text = initialFilename;
-                dlg.Services = sc;
-                dlg.ArchitectureOptions = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+                dlg = dlgFactory.CreateOpenAsDialog(initialFilename);
                 if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return false;
-
-                var rawFileOption = (ListOption)dlg.RawFileTypes.SelectedValue;
-                string archName = null;
-                string envName = null;
-                string sAddr = null;
-                string loader = null;
-                EntryPointDefinition entry = null;
-                if (rawFileOption != null && rawFileOption.Value != null)
+                string fileName = dlg.FileName.Text;
+                LoadDetails details = dlg.GetLoadDetails();
+                CloseProject();
+                SwitchInteractor(InitialPageInteractor);
+                pageInitial.OpenBinaryAs(fileName, details);
+                if (fileName.EndsWith(Project_v5.FileExtension))
                 {
-                    var raw = (RawFileDefinition)rawFileOption.Value;
-                    loader = raw.Loader;
-                    archName = raw.Architecture;
-                    envName = raw.Environment;
-                    sAddr = raw.BaseAddress;
-                    entry = raw.EntryPoint;
+                    ProjectFileName = fileName;
                 }
-                ArchitectureDefinition archOption = dlg.GetSelectedArchitecture();
-                PlatformDefinition envOption = dlg.GetSelectedEnvironment();
-                archName = archName ?? archOption?.Name;
-                envName = envName ?? envOption?.Name;
-                sAddr = sAddr ?? dlg.AddressTextBox.Text.Trim();
-                arch = config.GetArchitecture(archName);
-                if (arch == null)
-                    throw new InvalidOperationException(string.Format("Unable to load {0} architecture.", archName));
-                arch.LoadUserOptions(dlg.ArchitectureOptions);
-                if (!arch.TryParseAddress(sAddr, out var addrBase))
-                    throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
-                var details = new LoadDetails
-                {
-                    LoaderName = loader,
-                    ArchitectureName = archName,
-                    ArchitectureOptions = dlg.ArchitectureOptions,
-                    PlatformName = envName,
-                    LoadAddress = sAddr,
-                    EntryPoint = entry,
-                };
-
-                OpenBinary(dlg.FileName.Text, (f) => pageInitial.OpenBinaryAs(f, details), f => false);
             }
             catch (Exception ex)
             {
                 uiSvc.ShowError(
                     ex,
-                    string.Format("An error occurred when opening the binary file {0}.", dlg.FileName.Text));
+                    string.Format("An error occurred when opening the file {0}.", dlg.FileName.Text));
             }
             return true;
         }
@@ -625,12 +572,6 @@ namespace Reko.Gui.Forms
             {
                 uiSvc.ShowModalDialog(dlg);
             }
-        }
-
-        public string ProjectFileName
-        {
-            get { return projectFileName; }
-            set { projectFileName = value; }
         }
 
         public void EditFind()
@@ -814,19 +755,19 @@ namespace Reko.Gui.Forms
                 return true;
             if (string.IsNullOrEmpty(this.ProjectFileName))
             {
+                var filename = decompilerSvc.Decompiler.Project.Programs[0].Location.FilesystemPath;
                 string newName = uiSvc.ShowSaveFileDialog(
-                    Path.ChangeExtension(
-                        decompilerSvc.Decompiler.Project.Programs[0].Filename,
-                        Project_v5.FileExtension));
+                    Path.ChangeExtension(filename, Project_v5.FileExtension));
                 if (newName == null)
                     return false;
-                ProjectFileName = newName;
                 RememberFilenameInMru(newName);
+                ProjectFileName = newName;
             }
 
             var fsSvc = Services.RequireService<IFileSystemService>();
             var saver = new ProjectSaver(sc);
-            var sProject = saver.Serialize(ProjectFileName, decompilerSvc.Decompiler.Project);
+            var projectLocation = ImageLocation.FromUri(ProjectFileName);
+            var sProject = saver.Serialize(projectLocation, decompilerSvc.Decompiler.Project);
 
             using (var xw = fsSvc.CreateXmlWriter(ProjectFileName))
             {
@@ -1058,9 +999,27 @@ namespace Reko.Gui.Forms
             if (0 <= iMru && iMru < mru.Items.Count)
             {
                 string file = mru.Items[iMru];
-                OpenBinary(file, pageInitial.OpenBinary, OpenBinaryAs);
-                RememberFilenameInMru(file);
-                return true;
+
+                CloseProject();
+                SwitchInteractor(InitialPageInteractor);
+                try
+                {
+                    if (pageInitial.OpenBinary(file))
+                    {
+                        RememberFilenameInMru(file);
+                        if (file.EndsWith(Project_v5.FileExtension))
+                        {
+                            ProjectFileName = file;
+                        }
+                    }
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    uiSvc.ShowError(
+                        ex,
+                        $"An error occurred when opening the file {file}.");
+                }
             }
             return false;
         }

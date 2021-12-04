@@ -20,8 +20,8 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
-using Reko.Gui;
 using Reko.Gui.Controls;
+using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -46,7 +46,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             this.configSvc = configSvc;
             this.settingsSvc = settingsSvc;
-            this.Styles = new Dictionary<string, Gui.UiStyle>();
+            this.Styles = new Dictionary<string, Gui.Services.UiStyle>();
             this.SettingNames = new StyleSettingNames[] {
                 new StyleSettingNames
                 {
@@ -129,7 +129,7 @@ namespace Reko.UserInterfaces.WindowsForms
             internal string FontName;
         }
 
-        public IDictionary<string, Gui.UiStyle> Styles { get; private set; }
+        public IDictionary<string, Gui.Services.UiStyle> Styles { get; private set; }
 
         public Font MemoryStyle { get; set; }
 
@@ -154,7 +154,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 float.TryParse(dStyle.PaddingLeft, out float padLeft);
                 float.TryParse(dStyle.PaddingBottom, out float padBottom);
                 float.TryParse(dStyle.PaddingRight, out float padRight);
-                AddStyle(new Gui.UiStyle
+                AddStyle(new UiStyle
                 {
                     Name = dStyle.Name,
                     Foreground = GetBrush(dStyle.ForeColor),
@@ -203,7 +203,7 @@ namespace Reko.UserInterfaces.WindowsForms
             float.TryParse(defStyle.PaddingLeft, out float padLeft);
             float.TryParse(defStyle.PaddingBottom, out float padBottom);
             float.TryParse(defStyle.PaddingRight, out float padRight);
-            var uiStyle = new Gui.UiStyle
+            var uiStyle = new UiStyle
             {
                 Name = snames.Name,
                 Foreground = GetBrush((string) settingsSvc.Get(snames.ForeColor, defStyle.ForeColor)),
@@ -259,7 +259,7 @@ namespace Reko.UserInterfaces.WindowsForms
             return string.Format(CultureInfo.InvariantCulture, "#{0:X6}", ((SolidBrush)brush).Color.ToArgb() & 0xFFFFFF);
         }
 
-        private void AddStyle(Gui.UiStyle s)
+        private void AddStyle(UiStyle s)
         {
             Styles[s.Name] = s;
         }
@@ -348,7 +348,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public void UpdateControlStyle(string list, object oCtrl)
         {
             if (!(oCtrl is Control ctrl)) throw new ArgumentNullException(nameof(oCtrl));
-            if (Styles.TryGetValue(UiStyles.List, out Gui.UiStyle style))
+            if (Styles.TryGetValue(UiStyles.List, out UiStyle style))
             {
                 if (style.Background != null)
                 {
@@ -364,7 +364,7 @@ namespace Reko.UserInterfaces.WindowsForms
         public void UpdateControlStyle(string list, IControl ctrl)
         {
             if (ctrl == null) throw new ArgumentNullException("ctrl");
-            Gui.UiStyle style;
+            UiStyle style;
             if (Styles.TryGetValue(UiStyles.List, out style))
             {
                 if (style.Background != null)

@@ -27,8 +27,9 @@ using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Gui;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
+using Reko.Services;
 using Reko.UnitTests.Mocks;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -53,6 +54,9 @@ namespace Reko.UnitTests.Gui.Forms
         [SetUp]
         public void Setup()
         {
+            //$REVIEW: we can probably remove the code below, it never is called
+            // anymore.
+
             form = new Mock<IMainForm>();
             sc = new ServiceContainer();
             uiSvc = AddService<IDecompilerShellUiService>();
@@ -79,20 +83,13 @@ namespace Reko.UnitTests.Gui.Forms
                 Architecture = arch,
                 Platform = platform.Object,
             };
-            var ldr = new Mock<ILoader>();
-            ldr.Setup(l => l.LoadImage(
-                It.IsAny<string>(),
-                It.IsAny<byte[]>(),
-                It.IsAny<string>(),
-                It.IsAny<Address>())).Returns(program);
-            ldr.Setup(l => l.LoadImageBytes(
-                It.IsAny<string>(),
-                It.IsAny<int>())).Returns(bytes);
+            var project = new Project(ImageLocation.FromUri("/home/bob/reko.project"));
+            project.AddProgram(ImageLocation.FromUri("/home/bob/test.exe"), program);
+
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IDecompiledFileService>(new FakeDecompiledFileService());
             this.decSvc = new DecompilerService();
-            decSvc.Decompiler = new Decompiler(ldr.Object, sc);
-            decSvc.Decompiler.Load("test.exe");
+            decSvc.Decompiler = new Decompiler(project, sc);
             this.program = this.decSvc.Decompiler.Project.Programs.First();
             sc.AddService<IDecompilerService>(decSvc);
             sc.AddService<IWorkerDialogService>(new FakeWorkerDialogService());

@@ -22,6 +22,7 @@
 
 using Reko.Core;
 using Reko.Core.Scripts;
+using Reko.Gui.Services;
 using System;
 using System.IO;
 
@@ -41,13 +42,13 @@ namespace Reko.Gui.Design
         public override void DoDefaultAction()
         {
             var editorSvc = Services!.RequireService<ITextFileEditorService>();
-            editorSvc.DisplayFile(scriptFile.Filename);
+            editorSvc.DisplayFile(scriptFile.Location.FilesystemPath);
         }
 
         public void SetTreeNodeProperties(ScriptFile scriptFile)
         {
-            TreeNode!.Text = Path.GetFileName(scriptFile.Filename);
-            var ext = Path.GetExtension(scriptFile.Filename).ToLower();
+            TreeNode!.Text = scriptFile.Location.GetFilename();
+            var ext = scriptFile.Location.GetExtension().ToLower();
             TreeNode.ImageName = $"Script{ext}.ico";
         }
     }

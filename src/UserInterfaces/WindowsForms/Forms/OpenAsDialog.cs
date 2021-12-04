@@ -18,17 +18,14 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Loading;
 using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Forms
@@ -92,6 +89,47 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
                 PropertyGrid.SelectedObject = null;
             }
+        }
+
+        public LoadDetails GetLoadDetails()
+        {
+            var config = Services.RequireService<IConfigurationService>();
+            var rawFileOption = (ListOption) this.RawFileTypes.SelectedValue;
+            string archName = null;
+            string envName = null;
+            string sAddr = null;
+            string loader = null;
+            EntryPointDefinition entry = null;
+            if (rawFileOption != null && rawFileOption.Value != null)
+            {
+                var raw = (RawFileDefinition) rawFileOption.Value;
+                loader = raw.Loader;
+                archName = raw.Architecture;
+                envName = raw.Environment;
+                sAddr = raw.BaseAddress;
+                entry = raw.EntryPoint;
+            }
+            ArchitectureDefinition archOption = this.GetSelectedArchitecture();
+            PlatformDefinition envOption = this.GetSelectedEnvironment();
+            archName = archName ?? archOption?.Name;
+            envName = envName ?? envOption?.Name;
+            sAddr = sAddr ?? this.AddressTextBox.Text.Trim();
+
+            var arch = config.GetArchitecture(archName);
+            if (arch is null)
+                throw new InvalidOperationException($"Unable to load {archName} architecture.");
+            arch.LoadUserOptions(this.ArchitectureOptions);
+            if (!arch.TryParseAddress(sAddr, out var addrBase))
+                throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
+            return new LoadDetails
+            {
+                LoaderName = loader,
+                ArchitectureName = archName,
+                ArchitectureOptions = this.ArchitectureOptions,
+                PlatformName = envName,
+                LoadAddress = sAddr,
+                EntryPoint = entry,
+            };
         }
     }
 }

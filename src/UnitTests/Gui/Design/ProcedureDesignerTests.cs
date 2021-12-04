@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Design;
+using Reko.Gui.Services;
 using Reko.UnitTests.Mocks;
 using System;
 using System.ComponentModel.Design;

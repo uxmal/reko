@@ -32,9 +32,9 @@ namespace Reko.Core
     {
         //$TODO: add a ctor with the filename.
         /// <summary>
-        /// The file name of the file to be decompiled.
+        /// The <see cref="ImageLocation"/> of an image used by the project.
         /// </summary>
-        public string? Filename { get; set; }
+        public ImageLocation? Location { get; set; }
 
         public abstract T Accept<T>(IProjectFileVisitor<T> visitor);
     }

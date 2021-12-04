@@ -20,23 +20,19 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
-using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
 using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.Environments.Windows;
-using Reko.Gui;
-using Reko.Gui.Visualizers;
+using Reko.Gui.Services;
 using Reko.ImageLoaders.MzExe;
 using Reko.ImageLoaders.OdbgScript;
 using Reko.UserInterfaces.WindowsForms;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -180,9 +176,9 @@ namespace Reko.WindowsItp
             var size = fs.Length;
             var abImage = new byte[size];
             fs.Read(abImage, 0, (int)size);
-            var exe = new ExeImageLoader(sc, "foolexe", abImage);
+            var exe = new ExeImageLoader(sc, ImageLocation.FromUri("file:fool.exe"), abImage);
             var lfanew = exe.LoadLfaToNewHeader();
-            var peLdr = new PeImageLoader(sc, "foo.exe", abImage, lfanew.Value);
+            var peLdr = new PeImageLoader(sc, ImageLocation.FromUri("file:foo.exe"), abImage, lfanew.Value);
             var addr = peLdr.PreferredBaseAddress;
             var program = peLdr.LoadProgram(addr);
             var rr = peLdr.Relocate(program, addr);
@@ -202,7 +198,9 @@ namespace Reko.WindowsItp
             var size = fs.Length;
             var abImage = new byte[size];
             fs.Read(abImage, 0, abImage.Length);
-            var ldr = new OdbgScriptLoader(new Reko.Loading.NullImageLoader(sc, "foo.exe", abImage));
+            var ldr = new OdbgScriptLoader(
+                new Reko.Loading.NullImageLoader(
+                    sc, ImageLocation.FromUri("foo.exe"), abImage));
             ldr.Argument = @"D:\dev\jkl\dec\halsten\decompiler_paq\upx\upx_ultimate.txt";
             var addr = ldr.PreferredBaseAddress;
             var program = ldr.LoadProgram(addr);

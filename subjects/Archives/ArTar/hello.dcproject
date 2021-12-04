@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v5">
+  <arch>x86-protected-64</arch>
+  <platform>elf-neutral</platform>
+  <input>
+    <location>archive:hello.tar#hello.ar#hello_O1</location>
+    <asmDir>hello.reko</asmDir>
+    <srcDir>hello.reko</srcDir>
+    <includeDir>hello.reko</includeDir>
+    <resources>hello.reko\resources</resources>
+    <user>
+      <processor />
+      <registerValues />
+      <outputFilePolicy>Segment</outputFilePolicy>
+    </user>
+  </input>
+</project>

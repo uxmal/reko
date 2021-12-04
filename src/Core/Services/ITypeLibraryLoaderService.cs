@@ -65,7 +65,8 @@ namespace Reko.Core.Services
                     return libDst;
 
                 byte[] bytes = fsSvc.ReadAllBytes(libFileName);
-                MetadataLoader? loader = CreateLoader(tlElement, libFileName, bytes);
+                var libraryLocation = ImageLocation.FromUri(libFileName);
+                MetadataLoader? loader = CreateLoader(tlElement, libraryLocation, bytes);
                 if (loader == null)
                     return libDst;
                 var lib = loader.Load(platform, tlElement.Module, libDst);
@@ -78,7 +79,7 @@ namespace Reko.Core.Services
             }
         }
 
-        public MetadataLoader? CreateLoader(TypeLibraryDefinition tlElement, string filename, byte[] bytes)
+        public MetadataLoader? CreateLoader(TypeLibraryDefinition tlElement, ImageLocation imageUri, byte[] bytes)
         {
             Type? loaderType = null;
             if (string.IsNullOrEmpty(tlElement.Loader))
@@ -104,7 +105,7 @@ namespace Reko.Core.Services
                     return null;
                 }
             }
-            return (MetadataLoader)Activator.CreateInstance(loaderType, services, filename, bytes);
+            return (MetadataLoader)Activator.CreateInstance(loaderType, services, imageUri, bytes);
         }
 
         public CharacteristicsLibrary LoadCharacteristics(string name)

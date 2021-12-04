@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Linq;
+using Reko.Core;
 
 namespace Reko.UnitTests.ImageLoaders.BinHex
 {
@@ -51,7 +52,7 @@ namespace Reko.UnitTests.ImageLoaders.BinHex
             enc.Encode(0x00);
             enc.Flush();
 
-            var loader = new BinHexImageLoader(null, "foo.bar", null);
+            var loader = new BinHexImageLoader(null, ImageLocation.FromUri("file:foo.bar"), null);
             var header = CreateDecoder(file).GetBytes().ToArray();
             var hdr = loader.LoadBinHexHeader(header.AsEnumerable<byte>().GetEnumerator());
             Assert.AreEqual("foo.bar", hdr.FileName);

@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;

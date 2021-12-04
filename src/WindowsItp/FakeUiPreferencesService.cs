@@ -1,9 +1,8 @@
 using Reko.Core;
-using Reko.Gui;
+using Reko.Gui.Controls;
+using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
-using Reko.Gui.Controls;
 
 namespace Reko.WindowsItp
 {
@@ -13,10 +12,10 @@ namespace Reko.WindowsItp
 
         public FakeUiPreferencesService()
         {
-            this.Styles = new Dictionary<string, Gui.UiStyle>();
+            this.Styles = new Dictionary<string, UiStyle>();
         }
 
-        public IDictionary<string, Gui.UiStyle> Styles { get; private set; }
+        public IDictionary<string, UiStyle> Styles { get; private set; }
 
         public System.Drawing.Font DisassemblerFont
         {

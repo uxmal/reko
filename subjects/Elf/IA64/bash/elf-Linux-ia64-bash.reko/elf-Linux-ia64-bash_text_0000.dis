@@ -1,340 +1,442 @@
-// main
-// Return size: 0
-define main
-main_entry:
-	r11 = fp
-	// succ:  l400000000001C940
-l400000000001C940:
+void main()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 main_exit:
+main_entry:
+l400000000001C940:
 
 
-// _start
-// Return size: 0
-define _start
-_start_entry:
-	r11 = fp
-	// succ:  l40000000000210C0
-l40000000000210C0:
+void _start()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 _start_exit:
+_start_entry:
+l40000000000210C0:
 
 
-// exit_shell
-// Return size: 0
-define exit_shell
-exit_shell_entry:
-	r11 = fp
-	// succ:  l4000000000022300
-l4000000000022300:
+void exit_shell()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 exit_shell_exit:
+exit_shell_entry:
+l4000000000022300:
 
 
-// sh_exit
-// Return size: 0
-define sh_exit
-sh_exit_entry:
-	r11 = fp
-	// succ:  l4000000000022580
-l4000000000022580:
+void sh_exit()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 sh_exit_exit:
+sh_exit_entry:
+l4000000000022580:
 
 
-// shell_is_restricted
-// Return size: 0
-define shell_is_restricted
-shell_is_restricted_entry:
-	r11 = fp
-	// succ:  l40000000000225C0
-l40000000000225C0:
+void shell_is_restricted()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 shell_is_restricted_exit:
+shell_is_restricted_entry:
+l40000000000225C0:
 
 
-// maybe_make_restricted
-// Return size: 0
-define maybe_make_restricted
-maybe_make_restricted_entry:
-	r11 = fp
-	// succ:  l4000000000022700
-l4000000000022700:
+void maybe_make_restricted()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 maybe_make_restricted_exit:
+maybe_make_restricted_entry:
+l4000000000022700:
 
 
-// disable_priv_mode
-// Return size: 0
-define disable_priv_mode
-disable_priv_mode_entry:
-	r11 = fp
-	// succ:  l40000000000228C0
-l40000000000228C0:
+void disable_priv_mode()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 disable_priv_mode_exit:
+disable_priv_mode_entry:
+l40000000000228C0:
 
 
-// unbind_args
-// Return size: 0
-define unbind_args
-unbind_args_entry:
-	r11 = fp
-	// succ:  l4000000000022980
-l4000000000022980:
+void unbind_args()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 unbind_args_exit:
+unbind_args_entry:
+l4000000000022980:
 
 
-// unset_bash_input
-// Return size: 0
-define unset_bash_input
-unset_bash_input_entry:
-	r11 = fp
-	// succ:  l4000000000022A00
-l4000000000022A00:
+void unset_bash_input()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 unset_bash_input_exit:
+unset_bash_input_entry:
+l4000000000022A00:
 
 
-// get_current_user_info
-// Return size: 0
-define get_current_user_info
-get_current_user_info_entry:
-	r11 = fp
-	// succ:  l4000000000022B40
-l4000000000022B40:
+void get_current_user_info()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 get_current_user_info_exit:
+get_current_user_info_entry:
+l4000000000022B40:
 
 
-// parse_command
-// Return size: 0
-define parse_command
-parse_command_entry:
-	r11 = fp
-	// succ:  l4000000000023540
-l4000000000023540:
+void parse_command()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 parse_command_exit:
+parse_command_entry:
+l4000000000023540:
 
 
-// read_command
-// Return size: 0
-define read_command
-read_command_entry:
-	r11 = fp
-	// succ:  l4000000000023880
-l4000000000023880:
+void read_command()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 read_command_exit:
+read_command_entry:
+l4000000000023880:
 
 
-// reader_loop
-// Return size: 0
-define reader_loop
-reader_loop_entry:
-	r11 = fp
-	// succ:  l4000000000023BC0
-l4000000000023BC0:
+void reader_loop()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 reader_loop_exit:
+reader_loop_entry:
+l4000000000023BC0:
 
 
-// return_EOF
-// Return size: 0
-define return_EOF
-return_EOF_entry:
-	r11 = fp
-	// succ:  l4000000000025C40
-l4000000000025C40:
+void return_EOF()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 return_EOF_exit:
+return_EOF_entry:
+l4000000000025C40:
 
 
-// initialize_bash_input
-// Return size: 0
-define initialize_bash_input
-initialize_bash_input_entry:
-	r11 = fp
-	// succ:  l4000000000025C80
-l4000000000025C80:
+void initialize_bash_input()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 initialize_bash_input_exit:
+initialize_bash_input_entry:
+l4000000000025C80:
 
 
-// init_yy_io
-// Return size: 0
-define init_yy_io
-init_yy_io_entry:
-	r11 = fp
-	// succ:  l4000000000025D40
-l4000000000025D40:
+void init_yy_io()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 init_yy_io_exit:
+init_yy_io_entry:
+l4000000000025D40:
 
 
-// yy_input_name
-// Return size: 0
-define yy_input_name
-yy_input_name_entry:
-	r11 = fp
-	// succ:  l4000000000025E80
-l4000000000025E80:
+void yy_input_name()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 yy_input_name_exit:
+yy_input_name_entry:
+l4000000000025E80:
 
 
-// with_input_from_stdin
-// Return size: 0
-define with_input_from_stdin
-with_input_from_stdin_entry:
-	r11 = fp
-	// succ:  l4000000000025F00
-l4000000000025F00:
+void with_input_from_stdin()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 with_input_from_stdin_exit:
+with_input_from_stdin_entry:
+l4000000000025F00:
 
 
-// with_input_from_string
-// Return size: 0
-define with_input_from_string
-with_input_from_string_entry:
-	r11 = fp
-	// succ:  l4000000000026040
-l4000000000026040:
+void with_input_from_string()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 with_input_from_string_exit:
+with_input_from_string_entry:
+l4000000000026040:
 
 
-// with_input_from_stream
-// Return size: 0
-define with_input_from_stream
-with_input_from_stream_entry:
-	r11 = fp
-	// succ:  l40000000000260C0
-l40000000000260C0:
+void with_input_from_stream()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 with_input_from_stream_exit:
+with_input_from_stream_entry:
+l40000000000260C0:
 
 
-// push_stream
-// Return size: 0
-define push_stream
-push_stream_entry:
-	r11 = fp
-	// succ:  l4000000000026140
-l4000000000026140:
+void push_stream()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 push_stream_exit:
+push_stream_entry:
+l4000000000026140:
 
 
-// pop_stream
-// Return size: 0
-define pop_stream
-pop_stream_entry:
-	r11 = fp
-	// succ:  l4000000000026300
-l4000000000026300:
+void pop_stream()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 pop_stream_exit:
+pop_stream_entry:
+l4000000000026300:
 
 
-// stream_on_stack
-// Return size: 0
-define stream_on_stack
-stream_on_stack_entry:
-	r11 = fp
-	// succ:  l4000000000026580
-l4000000000026580:
+void stream_on_stack()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 stream_on_stack_exit:
+stream_on_stack_entry:
+l4000000000026580:
 
 
-// save_token_state
-// Return size: 0
-define save_token_state
-save_token_state_entry:
-	r11 = fp
-	// succ:  l4000000000026600
-l4000000000026600:
+void save_token_state()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 save_token_state_exit:
+save_token_state_entry:
+l4000000000026600:
 
 
-// restore_token_state
-// Return size: 0
-define restore_token_state
-restore_token_state_entry:
-	r11 = fp
-	// succ:  l40000000000266C0
-l40000000000266C0:
+void restore_token_state()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 restore_token_state_exit:
+restore_token_state_entry:
+l40000000000266C0:
 
 
-// free_pushed_string_input
-// Return size: 0
-define free_pushed_string_input
-free_pushed_string_input_entry:
-	r11 = fp
-	// succ:  l4000000000026780
-l4000000000026780:
+void free_pushed_string_input()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 free_pushed_string_input_exit:
+free_pushed_string_input_entry:
+l4000000000026780:
 
 
-// gather_here_documents
-// Return size: 0
-define gather_here_documents
-gather_here_documents_entry:
-	r11 = fp
-	// succ:  l40000000000267C0
-l40000000000267C0:
+void gather_here_documents()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 gather_here_documents_exit:
+gather_here_documents_entry:
+l40000000000267C0:
 
 
-// reset_parser
-// Return size: 0
-define reset_parser
-reset_parser_entry:
-	r11 = fp
-	// succ:  l4000000000026900
-l4000000000026900:
+void reset_parser()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 reset_parser_exit:
+reset_parser_entry:
+l4000000000026900:
 
 
-// find_reserved_word
-// Return size: 0
-define find_reserved_word
-find_reserved_word_entry:
-	r11 = fp
-	// succ:  l4000000000026B00
-l4000000000026B00:
+void find_reserved_word()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 find_reserved_word_exit:
+find_reserved_word_entry:
+l4000000000026B00:
 
 
-// history_delimiting_chars
-// Return size: 0
-define history_delimiting_chars
-history_delimiting_chars_entry:
-	r11 = fp
-	// succ:  l4000000000026C40
-l4000000000026C40:
+void history_delimiting_chars()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 history_delimiting_chars_exit:
+history_delimiting_chars_entry:
+l4000000000026C40:
 
 
-// get_current_prompt_level
-// Return size: 0
-define get_current_prompt_level
-get_current_prompt_level_entry:
-	r11 = fp
-	// succ:  l40000000000271C0
-l40000000000271C0:
+void get_current_prompt_level()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 get_current_prompt_level_exit:
+get_current_prompt_level_entry:
+l40000000000271C0:
 
 
-// set_current_prompt_level
-// Return size: 0
-define set_current_prompt_level
-set_current_prompt_level_entry:
-	r11 = fp
-	// succ:  l4000000000027240
-l4000000000027240:
+void set_current_prompt_level()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 set_current_prompt_level_exit:
+set_current_prompt_level_entry:
+l4000000000027240:
 
 
-// decode_prompt_string
-// Return size: 0
-define decode_prompt_string
-decode_prompt_string_entry:
-	r11 = fp
-	// succ:  l40000000000272C0
-l40000000000272C0:
+void decode_prompt_string()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 decode_prompt_string_exit:
+decode_prompt_string_entry:
+l40000000000272C0:
 
 
-// read_secondary_line
-// Return size: 0
-define read_secondary_line
-read_secondary_line_entry:
-	r11 = fp
-	// succ:  l400000000002A540
-l400000000002A540:
+void read_secondary_line()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved:
+// Terminates process
 read_secondary_line_exit:
+read_secondary_line_entry:
+l400000000002A540:
 
 

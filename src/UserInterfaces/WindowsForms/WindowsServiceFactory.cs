@@ -27,7 +27,9 @@ using Reko.Core.Services;
 using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
 using Reko.Loading;
+using Reko.Services;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
@@ -41,8 +43,8 @@ namespace Reko.UserInterfaces.WindowsForms
     /// </summary>
     public class WindowsServiceFactory : IServiceFactory
     {
-        private IServiceProvider services;
-        private MainForm mainForm;
+        private readonly IServiceProvider services;
+        private readonly MainForm mainForm;
 
         public WindowsServiceFactory(IServiceProvider services, MainForm mainForm)
         {

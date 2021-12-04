@@ -26,24 +26,18 @@ namespace Reko.Core.Loading
 {
 	/// <summary>
 	/// Abstract base class for image loaders. These examine a raw image, and 
-    /// generate a Program after carrying out relocations, resolving external
-    /// symbols etc.
+    /// generate an <see cref="ILoadedImage"/>.
 	/// </summary>
 	public abstract class ImageLoader
 	{
-        public ImageLoader(IServiceProvider services, string filename, byte[] imgRaw)
+        public ImageLoader(IServiceProvider services, ImageLocation imageLocation, byte[] imgRaw)
         {
             this.Services = services;
-            this.Filename = filename;
+            this.ImageLocation = imageLocation;
             this.RawImage = imgRaw;
         }
 
         public IServiceProvider Services { get; private set; }
-
-        /// <summary>
-        /// If nothing else is specified, this is the address at which the image will be loaded.
-        /// </summary>
-        public abstract Address PreferredBaseAddress { get; set; }
 
         /// <summary>
         /// Optional loader-specific argument specified in app.config.
@@ -53,12 +47,12 @@ namespace Reko.Core.Loading
         /// <summary>
         /// The image as it appears on the storage medium before being loaded.
         /// </summary>
-        public byte[] RawImage { get; private set; }
+        public byte[] RawImage { get; }
 
         /// <summary>
-        /// The name of the file the image was loaded from.
+        /// The URI from which the image was loaded from.
         /// </summary>
-        public string Filename { get; private set; }
+        public ImageLocation ImageLocation { get; }
 
         /// <summary>
         /// Loads the header of the executable, so that its contents can be summarized. 

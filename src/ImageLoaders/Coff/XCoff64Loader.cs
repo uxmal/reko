@@ -31,8 +31,8 @@ namespace Reko.ImageLoaders.Coff
 {
     public class XCoff64Loader : ProgramImageLoader
     {
-        public XCoff64Loader(IServiceProvider services, string filename, byte[]rawImage) :
-            base(services, filename, rawImage)
+        public XCoff64Loader(IServiceProvider services, ImageLocation imageUri, byte[]rawImage) :
+            base(services, imageUri, rawImage)
         {
             this.PreferredBaseAddress = Address.Ptr64(0x0010_0000);
         }

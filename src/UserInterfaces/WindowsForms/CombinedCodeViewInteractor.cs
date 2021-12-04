@@ -18,16 +18,15 @@
  */
 #endregion
 
-using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Drawing;
 using Microsoft.Msagl.GraphViewerGdi;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Output;
-using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
@@ -414,7 +413,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
             using (ITextEncodingDialog dlg = dlgFactory.CreateTextEncodingDialog())
             {
-                if (uiSvc.ShowModalDialog(dlg) == Gui.DialogResult.OK)
+                if (uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
                 {
                     var enc = dlg.GetSelectedTextEncoding();
                     program.User.TextEncoding = enc;
@@ -504,11 +503,11 @@ namespace Reko.UserInterfaces.WindowsForms
             Block block = GetSelectedBlock();
             if (block == null)
                 return;
-            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            IDecompilerShellUiService uiSvc = services.RequireService<IDecompilerShellUiService>();
             var dlgSvc = services.RequireService<IDialogFactory>();
             using (var dlg = dlgSvc.CreateBlockNameDialog(block.Procedure, block))
             { 
-                if (uiSvc.ShowModalDialog(dlg) == Gui.DialogResult.OK)
+                if (uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
                 {
                     block.UserLabel = dlg.BlockName.Text;
                     program.User.BlockLabels[block.Id] = block.UserLabel;

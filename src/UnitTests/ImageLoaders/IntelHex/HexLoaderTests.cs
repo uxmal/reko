@@ -121,7 +121,7 @@ namespace Reko.UnitTests.ImageLoaders.IntelHex
 :100130003F0156702B5E712B722B732146013421C7
 :00000001FF
 ";
-            var hex = new HexLoader(sc, "foo.text", Encoding.ASCII.GetBytes(data));
+            var hex = new HexLoader(sc, ImageLocation.FromUri("file:foo.text"), Encoding.ASCII.GetBytes(data));
             var arch = new FakeArchitecture(sc);
             var program = hex.LoadProgram(Address.Ptr32(0x00), arch, new DefaultPlatform(sc, arch));
             Assert.AreEqual(1, program.SegmentMap.Segments.Count);
@@ -141,7 +141,7 @@ namespace Reko.UnitTests.ImageLoaders.IntelHex
 :100130003F0156702B5E712B722B732146013421C7
 :00000001FF
 ";
-            var hex = new HexLoader(sc, "foo.text", Encoding.ASCII.GetBytes(data));
+            var hex = new HexLoader(sc, ImageLocation.FromUri("file:foo.text"), Encoding.ASCII.GetBytes(data));
             var arch = new FakeArchitecture(sc);
             var program = hex.LoadProgram(Address.Ptr32(0x00), arch, new DefaultPlatform(sc, arch));
             Assert.AreEqual(1, program.SegmentMap.Segments.Count, "Wrong number of segments");
@@ -190,7 +190,7 @@ namespace Reko.UnitTests.ImageLoaders.IntelHex
 :10007000F550056E0900F550066E015013E0D95099
 :00000001FF
 ";
-            var hex = new HexLoader(sc, "foo.text", Encoding.ASCII.GetBytes(data));
+            var hex = new HexLoader(sc, ImageLocation.FromUri("foo.text"), Encoding.ASCII.GetBytes(data));
             var arch = new FakeArchitecture(sc);
             var program = hex.LoadProgram(Address.Ptr32(0x00), arch, new DefaultPlatform(sc, arch));
             Assert.AreEqual(5, program.SegmentMap.Segments.Count, "Wrong number of segments");

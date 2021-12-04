@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Environments.BbcMicro
             Given_FileData(2, Enumerable.Range(0, 0x42).Select(i => (byte) i).ToArray());
             Given_FileData(2, Enumerable.Range(0, 0x13).Select(i => (byte) i).ToArray());
 
-            var dfsLoader = new DiscFilingSystem(sc, "foo.sdd", this.image);
+            var dfsLoader = new DiscFilingSystem(sc, ImageLocation.FromUri("file:foo.sdd"), this.image);
             var items = dfsLoader.LoadDirectory();
             Assert.AreEqual(2, items.Length);
         }

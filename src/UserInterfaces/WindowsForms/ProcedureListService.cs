@@ -18,14 +18,14 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Reko.Core;
 
 namespace Reko.Gui
 {

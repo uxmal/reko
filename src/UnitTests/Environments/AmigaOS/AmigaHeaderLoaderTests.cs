@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             var sc = new ServiceContainer();
             var arch = new M68kArchitecture(sc, "m68k", new Dictionary<string, object>());
             var platform = new AmigaOSPlatform(sc, arch);
-            var ahl = new AmigaHeaderLoader(sc, "", Encoding.UTF8.GetBytes(
+            var ahl = new AmigaHeaderLoader(sc, ImageLocation.FromUri("file:x"), Encoding.UTF8.GetBytes(
                 "[[reko::amiga_function_vector(ExecLibrary, -432)]] [[reko::returns(register,\"A0\")]] " +
                 "void * FlobDevice([[reko::arg(register, \"A1\")]] struct Device * device);"));
             ahl.Load(platform, new TypeLibrary());
@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             var sc = new ServiceContainer();
             var arch = new M68kArchitecture(sc, "m68k", new Dictionary<string, object>());
             var platform = new AmigaOSPlatform(sc, arch);
-            var ahl = new AmigaHeaderLoader(sc, "", Encoding.UTF8.GetBytes(
+            var ahl = new AmigaHeaderLoader(sc, ImageLocation.FromUri("file:test"), Encoding.UTF8.GetBytes(
                 "[[reko::amiga_function_vector(ExecLibrary, -432)]]  " +
                 "void  FrabDevice([[reko::arg(register, \"A1\")]] struct Device * device);"));
             var Q = ahl.Load(platform, new TypeLibrary());

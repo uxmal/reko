@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Core.Services;
 using Reko.Gui;
+using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -38,6 +39,11 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             this.services = sp;
         }
 
+        public ArchivedFile SelectFileFromArchive(IArchive archive)
+        {
+            return UserSelectFileFromArchive(archive.RootEntries);
+        }
+
         public ArchivedFile UserSelectFileFromArchive(ICollection<ArchiveDirectoryEntry> archiveEntries)
         {
             var dlgFactory = services.GetService<IDialogFactory>();
@@ -49,7 +55,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             using (var dlg = dlgFactory.CreateArchiveBrowserDialog())
             {
                 dlg.ArchiveEntries = archiveEntries;
-                if (uiSvc.ShowModalDialog(dlg) == Gui.DialogResult.OK)
+                if (uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
                     return dlg.GetSelectedFile();
                 else
                     return null;
@@ -82,7 +88,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
             {
                 if (dlg.SelectedArchiveEntry != null)
                 {
-                    dlg.DialogResult = (System.Windows.Forms.DialogResult) Gui.DialogResult.OK;
+                    dlg.DialogResult = (System.Windows.Forms.DialogResult) Gui.Services.DialogResult.OK;
                     dlg.Close();
                 }
             }
@@ -102,7 +108,7 @@ namespace Reko.UserInterfaces.WindowsForms.Forms
                     ArchivedFolder folder = entry as ArchivedFolder;
                     if (folder != null)
                     {
-                        Populate(folder.Items, node.Nodes);
+                        Populate(folder.Entries, node.Nodes);
                     }
                     treeNodeCollection.Add(node);
                 }

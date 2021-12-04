@@ -67,7 +67,7 @@ namespace Reko.UnitTests.ImageLoaders.MachO
 
         private void When_CreateLoader()
         {
-            ldr = new MachOLoader(sc, "foo.o", writer.Bytes);
+            ldr = new MachOLoader(sc, ImageLocation.FromUri("file:foo.o"), writer.Bytes);
         }
 
         [Test]

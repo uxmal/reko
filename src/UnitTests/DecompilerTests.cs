@@ -37,7 +37,6 @@ namespace Reko.UnitTests
     [TestFixture]
     public class DecompilerTests
     {
-        private Mock<ILoader>loader;
         Decompiler decompiler;
         private ServiceContainer sc;
         private Mock<IFileSystemService> fsSvc;
@@ -50,27 +49,30 @@ namespace Reko.UnitTests
             var tlSvc = new Mock<ITypeLibraryLoaderService>();
             var host = new FakeDecompiledFileService();
             sc = new ServiceContainer();
-            loader = new Mock<ILoader>();
             sc.AddService<DecompilerEventListener>(new FakeDecompilerEventListener());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<IDecompiledFileService>(host);
             sc.AddService<IConfigurationService>((IConfigurationService)cfgSvc.Object);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc.Object);
-            decompiler = new Decompiler(loader.Object, sc);
         }
 
+        //$REVIEW: is this even used?
         [Test]
         public void Dec_LoadCallSignatures()
         {
             var arch = new X86ArchitectureReal(sc, "x86-real-16", new Dictionary<string, object>());
             Program program = new Program { 
+                SegmentMap = new SegmentMap(Address.SegPtr(0xC00, 0)),
                 Architecture = arch,
                 Platform = new MsdosPlatform(sc, arch)
             };
-            decompiler.Project = new Project
-            {
-                Programs = { program },
-            };
+
+            decompiler = new Decompiler(new Project
+                {
+                    Programs = { program },
+                },
+                sc);
+
             SerializedSignature sig = new SerializedSignature();
             sig.Arguments = new Argument_v1[] {
 			    new Argument_v1 {

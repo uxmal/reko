@@ -40,7 +40,8 @@ namespace Reko.ImageLoaders.Omf
 
         private byte[] rawImage;
 
-        public OmfLoader(IServiceProvider services, string filename, byte[] rawImage) : base(services, filename, rawImage)
+        public OmfLoader(IServiceProvider services, ImageLocation imageLocation, byte[] rawImage)
+            : base(services, imageLocation, rawImage)
         {
             this.rawImage = rawImage;
         }

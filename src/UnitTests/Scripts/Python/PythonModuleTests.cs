@@ -22,6 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Scripts.Python;
 using Reko.UnitTests.Mocks;
@@ -76,7 +77,8 @@ namespace Reko.UnitTests.Scripts.Python
         private PythonModule EvaluateScript(string fileName, string script)
         {
             var bytes = Encoding.Default.GetBytes(script);
-            return new PythonModule(services, fileName, bytes);
+            var imageUri = ImageLocation.FromUri(fileName);
+            return new PythonModule(services, imageUri, bytes);
         }
 
         private string ReplacePythonVersion(string s)

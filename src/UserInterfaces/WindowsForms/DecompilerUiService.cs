@@ -27,6 +27,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
 using System.IO;
+using DialogResult = Reko.Gui.Services.DialogResult;
 
 namespace Reko.UserInterfaces.WindowsForms
 {
@@ -50,22 +51,22 @@ namespace Reko.UserInterfaces.WindowsForms
 
         public bool Prompt(string prompt)
         {
-            Gui.DialogResult dlgr = Gui.DialogResult.No;
+            DialogResult dlgr = DialogResult.No;
             form.Invoke(new Action(
-                () => { dlgr = (Gui.DialogResult)MessageBox.Show(prompt, "Reko Decompiler", MessageBoxButtons.YesNo, MessageBoxIcon.Question); }));
-            return dlgr == Gui.DialogResult.Yes;
+                () => { dlgr = (DialogResult)MessageBox.Show(prompt, "Reko Decompiler", MessageBoxButtons.YesNo, MessageBoxIcon.Question); }));
+            return dlgr == DialogResult.Yes;
         }
 
-        private Gui.DialogResult ShowModalDialog(Form dlg)
+        private Gui.Services.DialogResult ShowModalDialog(Form dlg)
         {
-            return (Gui.DialogResult)
-                form.Invoke(new Func<Gui.DialogResult>(delegate()
+            return (Gui.Services.DialogResult)
+                form.Invoke(new Func<DialogResult>(delegate()
                 {
-                    return (Gui.DialogResult)dlg.ShowDialog(form);
+                    return (DialogResult)dlg.ShowDialog(form);
                 }));
         }
 
-        public virtual Gui.DialogResult ShowModalDialog(IDialog dlg)
+        public virtual Gui.Services.DialogResult ShowModalDialog(IDialog dlg)
         {
             return ShowModalDialog((Form)dlg);
         }
@@ -74,7 +75,7 @@ namespace Reko.UserInterfaces.WindowsForms
         {
             if (string.IsNullOrEmpty(fileName))
                 ofd.FileName = fileName;
-            if ((Gui.DialogResult)ofd.ShowDialog(form) == Gui.DialogResult.OK)
+            if ((DialogResult)ofd.ShowDialog(form) == DialogResult.OK)
             {
                 return ofd.FileName;
             }
@@ -89,7 +90,7 @@ namespace Reko.UserInterfaces.WindowsForms
                 sfd.FileName = Path.GetFileName(fileName);
                 sfd.InitialDirectory = Path.GetDirectoryName(fileName);
             }
-            if ((Gui.DialogResult)sfd.ShowDialog(form) == Gui.DialogResult.OK)
+            if ((DialogResult)sfd.ShowDialog(form) == DialogResult.OK)
             {
                 return sfd.FileName;
             }

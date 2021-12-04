@@ -66,7 +66,7 @@ namespace Reko.Core.Types
             if (pt is null)
                 return null;
             if (pt.Domain == Domain.SignedInt)
-                return (int) offset.ToInt32();
+                return offset.ToInt32();
             else if (pt.Domain == Domain.Real)
                 return null;
             else
@@ -195,13 +195,13 @@ namespace Reko.Core.Types
         {
             if (innerList.Count >= BinarySearchLimit)
             {
-            foreach (StructureField f in innerList)
-            {
-                if (f.Offset == offset)
-                    return f;
+                foreach (StructureField f in innerList)
+                {
+                    if (f.Offset == offset)
+                        return f;
+                }
+                return null;
             }
-            return null;
-        }
             else
             {
                 int iMin = 0;

@@ -35,78 +35,21 @@ namespace Reko.Environments.C64
     // https://ist.uwaterloo.ca/~schepers/formats/T64.TXT
     public class T64Loader : ImageLoader
     {
-        private Program program;
+        private static readonly Address PreferredBaseAddress = Address.Ptr16(2048);
 
-        public T64Loader(IServiceProvider services, string filename, byte[] bytes)
-            : base(services, filename, bytes)
+        public T64Loader(IServiceProvider services, ImageLocation imageUri, byte[] bytes)
+            : base(services, imageUri, bytes)
         {
-            this.program = null!;
         }
 
-        public override Address PreferredBaseAddress
-        {
-            get { return Address.Ptr16(2048); }
-            set { throw new NotImplementedException(); }
-        }
 
         public override ILoadedImage Load(Address? addrLoad)
         {
             addrLoad ??= PreferredBaseAddress;
-            List<ArchiveDirectoryEntry> entries = LoadTapeDirectory();
-            IArchiveBrowserService abSvc = Services.GetService<IArchiveBrowserService>();
-            if (abSvc != null)
-            {
-                if (abSvc.UserSelectFileFromArchive(entries) is T64FileEntry selectedFile)
-                {
-                    this.program = LoadImage(addrLoad, selectedFile);
-                    return program;
-                }
-            }
-            var arch = new Mos6502Architecture(Services, "mos6502", new Dictionary<string, object>());
-            var mem = new ByteMemoryArea(Address.Ptr16(0), RawImage);
-            var segmentMap = new SegmentMap(mem.BaseAddress);
-            segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
-            return new Program
-            {
-                SegmentMap = segmentMap,
-                Architecture = arch,
-                Platform = new DefaultPlatform(Services, arch)
-            };
+            return LoadTapeDirectory();
         }
 
-        private Program LoadImage(Address addrLoad, T64FileEntry selectedFile)
-        {
-            switch (selectedFile.FileType)
-            {
-            default:
-                throw new NotImplementedException();
-            case FileType.PRG:
-                return LoadPrg(selectedFile);
-            }
-        }
-
-        private Program LoadPrg(T64FileEntry selectedFile)
-        {
-            var image = new ByteMemoryArea(
-                Address.Ptr16(selectedFile.LoadAddress),
-                selectedFile.GetBytes());
-            var rdr = new C64BasicReader(image, 0x0801);
-            var lines = rdr.ToSortedList(line => (ushort) line.LineNumber, line => line);
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-            var arch6502 = cfgSvc.GetArchitecture("m6502")!;
-            var arch = new C64Basic(Services, lines);
-            var platform = cfgSvc.GetEnvironment("c64").Load(Services, arch);
-            var segMap = platform.CreateAbsoluteMemoryMap()!;
-            segMap.AddSegment(image, "code", AccessMode.ReadWriteExecute);
-            var program = new Program(segMap, arch, platform);
-            program.Architectures.Add(arch6502.Name, arch6502);
-            var addrBasic = Address.Ptr16(lines.Keys[0]);
-            var sym = ImageSymbol.Procedure(arch, addrBasic, state: arch.CreateProcessorState());
-            program.EntryPoints.Add(sym.Address, sym);
-            return program;
-        }
-
-        private List<ArchiveDirectoryEntry> LoadTapeDirectory()
+        private IArchive LoadTapeDirectory()
         {
             var rdr = new ByteImageReader(RawImage);
             var sig = Encoding.ASCII.GetString(rdr.ReadBytes(0x20));
@@ -136,7 +79,7 @@ namespace Reko.Environments.C64
                     entries.Add(entry);
                 }
             }
-            return entries;
+            return new T64Archive(base.ImageLocation, entries);
         }
 
         private T64FileEntry ReadDirectoryEntry(ImageReader rdr)
@@ -157,31 +100,70 @@ namespace Reko.Environments.C64
 
         }
 
-        public class T64Header
+
+        public class T64Archive : IArchive
         {
-            /*  
-             The first 32 bytes ($000000-00001F) represent the signature of the  file,
+            public T64Archive(ImageLocation archiveUri, List<ArchiveDirectoryEntry> entries)
+            {
+                this.Location = archiveUri;
+                this.RootEntries = entries;
+            }
+
+            /// <summary>
+            /// Retrieve the file whose name is <paramref name="path"/>.
+            /// </summary>
+            /// <remarks>
+            /// T64 tape images have no tree structure, so the path has to be the actual
+            /// file name.</remarks>
+            /// <param name="path">Name of the file.</param>
+            /// <returns></returns>
+            public ArchiveDirectoryEntry? this[string path]
+            {
+                get => RootEntries.Where(e => e.Name == path).FirstOrDefault();
+            }
+
+            public ImageLocation Location { get; }
+
+            public List<ArchiveDirectoryEntry> RootEntries { get; }
+
+            public T Accept<T, C>(ILoadedImageVisitor<T, C> visitor, C context)
+                => visitor.VisitArchive(this, context);
+
+            public string GetRootPath(ArchiveDirectoryEntry? entry)
+            {
+                if (entry is null)
+                    return "";
+                if (entry is not T64FileEntry file)
+                    throw new ArgumentException(string.Format(
+                        "Invalid entry type {0} for {1}.",
+                        entry.GetType().FullName,
+                        nameof(T64Archive)));
+                return file.Name;
+            }
+        }
+
+        /*  
+         The first 32 bytes ($000000-00001F) represent the signature of the  file,
 telling us it is a tape container for C64S. Note that it is padded with $00
 to make the signature 32 bytes long.
 
-  It is important that the string "C64" be at the  beginning  of  the  file
+It is important that the string "C64" be at the  beginning  of  the  file
 because it is the string which is common enough to be used to identify  the
 file type. There are several variations of  this  string  like  "C64S  tape
 file" or "C64 tape image file". The string is stored in ASCII.
 */
-          //  The next 32 bytes contain all the info about the directory  size,  number
-          //of used entries, tape container name, tape version#, etc.
+        //  The next 32 bytes contain all the info about the directory  size,  number
+        //of used entries, tape container name, tape version#, etc.
 
 
-//Bytes:$20-21: Tape version number of either $0100 or $0101. I am  not sure
-//              what differences exist between versions.
-//       22-23: Maximum number  of entries  in the directory, stored  in
-//              low/high byte order (in this case $0190 = 400 total)
-//       24-25: Total number of used entries, once again  in  low/high byte.
-//              Used = $0005 = 5 entries.
-//       26-27: Not used
-//       28-3F: Tape container name, 24 characters, padded with $20 (space)
-        }
+        //Bytes:$20-21: Tape version number of either $0100 or $0101. I am  not sure
+        //              what differences exist between versions.
+        //       22-23: Maximum number  of entries  in the directory, stored  in
+        //              low/high byte order (in this case $0190 = 400 total)
+        //       24-25: Total number of used entries, once again  in  low/high byte.
+        //              Used = $0005 = 5 entries.
+        //       26-27: Not used
+        //       28-3F: Tape container name, 24 characters, padded with $20 (space)
 
         /*Bytes   $40: C64s filetype
                   0 = free (usually)
@@ -221,9 +203,13 @@ directory.
                 this.bytes = bytes;
             }
 
+            public long Length => bytes.LongLength;
+
             public string Name { get; }
             public FileType FileType { get; }
             public ushort LoadAddress { get; }
+
+            public ArchiveDirectoryEntry? Parent => null;
 
             private readonly byte[] bytes;
 
@@ -232,6 +218,37 @@ directory.
                 return bytes;
             }
 
+            public ILoadedImage LoadImage(IServiceProvider services, Address? addrPreferred)
+            {
+                switch (this.FileType)
+                {
+                default:
+                    throw new NotImplementedException();
+                case FileType.PRG:
+                    return LoadPrg(services);
+                }
+            }
+
+            private Program LoadPrg(IServiceProvider services)
+            {
+                var image = new ByteMemoryArea(
+                    Address.Ptr16(this.LoadAddress),
+                    this.GetBytes());
+                var rdr = new C64BasicReader(image, 0x0801);
+                var lines = rdr.ToSortedList(line => (ushort) line.LineNumber, line => line);
+                var cfgSvc = services.RequireService<IConfigurationService>();
+                var arch6502 = cfgSvc.GetArchitecture("m6502")!;
+                var arch = new C64Basic(services, lines);
+                var platform = cfgSvc.GetEnvironment("c64").Load(services, arch);
+                var segMap = platform.CreateAbsoluteMemoryMap()!;
+                segMap.AddSegment(image, "code", AccessMode.ReadWriteExecute);
+                var program = new Program(segMap, arch, platform);
+                program.Architectures.Add(arch6502.Name, arch6502);
+                var addrBasic = Address.Ptr16(lines.Keys[0]);
+                var sym = ImageSymbol.Procedure(arch, addrBasic, state: arch.CreateProcessorState());
+                program.EntryPoints.Add(sym.Address, sym);
+                return program;
+            }
         }
     }
 }

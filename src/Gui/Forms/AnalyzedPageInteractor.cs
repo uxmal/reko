@@ -1,6 +1,6 @@
 #region License
 /* 
-* Copyright (C) 1999-2021 John Källén.
+* Copyright (C) 1999-2021 John KÃ¤llÃ©n.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,15 +18,11 @@
 */
 #endregion
 
-using Reko.Analysis;
 using Reko.Core;
-using Reko.Core.Serialization;
-using Reko.Gui;
+using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.Design;
-using System.IO;
 
 namespace Reko.Gui.Forms
 {

@@ -23,6 +23,7 @@ using Microsoft.Msagl.GraphViewerGdi;
 using Reko.Core;
 using Reko.Gui;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
 using Reko.UserInterfaces.WindowsForms.Controls;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
@@ -278,7 +279,7 @@ namespace Reko.UserInterfaces.WindowsForms
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
             using (ITextEncodingDialog dlg = dlgFactory.CreateTextEncodingDialog())
             {
-                if (uiSvc.ShowModalDialog(dlg) == Gui.DialogResult.OK)
+                if (uiSvc.ShowModalDialog(dlg) == Gui.Services.DialogResult.OK)
                 {
                     var enc = dlg.GetSelectedTextEncoding();
                     program.User.TextEncoding = enc;

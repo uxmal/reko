@@ -141,8 +141,8 @@ namespace Reko.ImageLoaders.IntelHex
 
         #region Constructors
 
-        public HexLoader(IServiceProvider services, string filename, byte[] imgRaw)
-            : base(services, filename, imgRaw)
+        public HexLoader(IServiceProvider services, ImageLocation imageLocation, byte[] imgRaw)
+            : base(services, imageLocation, imgRaw)
         {
             listener = null!;
         }

@@ -18,13 +18,11 @@
  */
 #endregion
 
-using Reko.Core.Assemblers;
-using Reko.Core.Configuration;
-using Reko.Gui;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Gui.Services;
+using System;
+using System.Collections.Generic;
 
 namespace Reko.WindowsItp
 {

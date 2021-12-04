@@ -55,7 +55,7 @@ namespace Reko.ImageLoaders.MzExe
         private ByteMemoryArea imgU;
 
         public ExePackLoader(MsdosImageLoader loader)
-            : base(loader.Services, loader.Filename, loader.RawImage)
+            : base(loader.Services, loader.ImageLocation, loader.RawImage)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             arch = cfgSvc.GetArchitecture("x86-real-16")!;

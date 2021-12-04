@@ -44,17 +44,17 @@ namespace Reko
 	public class Decompiler : IDecompiler
 	{
 		private readonly IDecompiledFileService host;
-		private readonly ILoader loader;
 		private IScanner? scanner;
         private readonly DecompilerEventListener eventListener;
         private readonly IServiceProvider services;
 
-        public Decompiler(ILoader ldr, IServiceProvider services)
+        public Decompiler(Project project, IServiceProvider services)
         {
-            this.loader = ldr ?? throw new ArgumentNullException("ldr");
+            this.Project = project;
             this.services = services ?? throw new ArgumentNullException("services");
             this.host = services.RequireService<IDecompiledFileService>();
             this.eventListener = services.RequireService<DecompilerEventListener>();
+            BuildImageMaps();
         }
 
         public Project? Project { get { return project; } set { project = value; ProjectChanged?.Fire(this); } }
@@ -62,13 +62,12 @@ namespace Reko
         private Project? project;
 
         /// <summary>
-        /// Main entry point of the decompiler. Loads, decompiles, and outputs the results.
+        /// Main entry point of the decompiler. Decompiles, and outputs the results.
         /// </summary>
-        public void Decompile(string filename, string? loaderName = null)
+        public void Decompile()
         {
             try
             {
-                Load(filename, loaderName);
                 ExtractResources();
                 ScanPrograms();
                 AnalyzeDataFlow();
@@ -79,7 +78,7 @@ namespace Reko
             catch (Exception ex)
             {
                 eventListener.Error(
-                    new NullCodeLocation(filename),
+                    new NullCodeLocation(""),
                     ex,
                     "An internal error occurred while decompiling.");
             }
@@ -100,19 +99,30 @@ namespace Reko
             var eventListener = services.RequireService<DecompilerEventListener>();
             foreach (var program in project.Programs)
             {
-                if (eventListener.IsCanceled())
-                    return;
-                var ir = new DynamicLinker(project, program, eventListener);
-                var dfa = new DataFlowAnalysis(program, ir, services);
-                dfa.ClearTestFiles();
-                if (program.NeedsSsaTransform)
+                try
                 {
-                    eventListener.ShowStatus("Performing interprocedural analysis.");
-                    dfa.UntangleProcedures();
+                    if (eventListener.IsCanceled())
+                        return;
+                    var ir = new DynamicLinker(project, program, eventListener);
+                    var dfa = new DataFlowAnalysis(program, ir, services);
+                    dfa.ClearTestFiles();
+                    if (program.NeedsSsaTransform)
+                    {
+                        eventListener.ShowStatus("Performing interprocedural analysis.");
+                        dfa.UntangleProcedures();
+                    }
+                    eventListener.ShowStatus("Building complex expressions.");
+                    dfa.BuildExpressionTrees();
+                    host.WriteIntermediateCode(program, (name, procs, writer) => { EmitProgram(program, procs, dfa, name, writer); });
                 }
-                eventListener.ShowStatus("Building complex expressions.");
-                dfa.BuildExpressionTrees();
-                host.WriteIntermediateCode(program, (name, procs, writer) => { EmitProgram(program, procs, dfa, name, writer); });
+                catch (Exception ex)
+                {
+                    eventListener.Error(
+                        new NullCodeLocation(program.Location.FilesystemPath),
+                        ex,
+                        "An internal error occurred while analyzing {0}.",
+                        program.Location);
+                }
             }
             eventListener.ShowStatus("Interprocedural analysis complete.");
         }
@@ -132,13 +142,13 @@ namespace Reko
             } 
             catch (Exception ex)
             {
-                eventListener.Error(ex, "An error occurred while write assembly language output.");
+                eventListener.Error(ex, "An error occurred while writing assembly language output.");
             }
         }
 
         private void EmitProgram(Program program, IEnumerable<object> objects, DataFlowAnalysis? dfa, string filename, TextWriter output)
         {
-            if (output == null)
+            if (output is null)
                 return;
             foreach (object o in objects)
             {
@@ -148,10 +158,10 @@ namespace Reko
                     {
                         ProcedureFlow flow = dfa.ProgramDataFlow[proc];
                         TextFormatter f = new TextFormatter(output);
-                        if (flow.Signature != null)
-                            flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
-                        else
-                            proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
+                        var signature = (flow.Signature is not null)
+                            ? flow.Signature
+                            : proc.Signature;
+                        signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
                         output.WriteLine();
                         WriteProcedureCallers(program, proc, output);
                         flow.Emit(proc.Architecture, output);
@@ -174,40 +184,6 @@ namespace Reko
         }
 
         /// <summary>
-        /// Loads (or assembles) the decompiler project. If a binary file is
-        /// specified instead, we create a simple project for the file.
-        /// </summary>
-        /// <param name="fileName">The filename to load.</param>
-        /// <param name="loaderName">Optional .NET class name of a custom
-        /// image loader</param>
-        /// <param name="addrLoad">Optional address at which to load the image.
-        /// </param>
-        /// <returns>True if the file could be loaded.</returns>
-        public bool Load(string fileName, string? loaderName = null, Address? addrLoad = null)
-        {
-            eventListener.ShowStatus("Loading source program.");
-            byte[] image = loader.LoadImageBytes(fileName, 0);
-            var projectLoader = new ProjectLoader(this.services, loader, eventListener);
-            projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
-            this.Project = projectLoader.LoadProject(fileName, image);
-            if (Project is null)
-            {
-                //$TODO: Handle archives.
-                var program = (Program?)loader.LoadImage(fileName, image, loaderName, addrLoad);
-                if (program == null)
-                    return false;
-                this.Project = AddProgramToProject(fileName, program);
-                this.Project.LoadedMetadata = program.Platform.CreateMetadata();
-                program.EnvironmentMetadata = this.Project.LoadedMetadata;
-            }
-            BuildImageMaps();
-            WriteEntryPoints();
-            eventListener.ShowStatus("Source program loaded.");
-            Project.FireScriptEvent(ScriptEvent.OnProgramLoaded);
-            return true;
-        }
-
-        /// <summary>
         /// Build image maps for each program in preparation of the scanning
         /// phase.
         /// </summary>
@@ -219,93 +195,6 @@ namespace Reko
             {
                 program.BuildImageMap();
             }
-        }
-
-        public void RunScriptOnProgramImage(Program program, Script_v2? script)
-        {
-            if (script == null || !script.Enabled || script.Script == null)
-                return;
-            IScriptInterpreter interpreter;
-            try
-            {
-                //$TODO: should be in the config file, yeah.
-                var svc = services.RequireService<IPluginLoaderService>();
-                var type = svc.GetType("Reko.ImageLoaders.OdbgScript.OllyLang,Reko.ImageLoaders.OdbgScript");
-                interpreter = (IScriptInterpreter)Activator.CreateInstance(type, services);
-            }
-            catch (Exception ex)
-            {
-                eventListener.Error(ex, "Unable to load OllyLang script interpreter.");
-                return;
-            }
-
-            try
-            {
-                interpreter.LoadFromString(script.Script, program, Environment.CurrentDirectory);
-                interpreter.Run();
-            }
-            catch (Exception ex)
-            {
-                eventListener.Error(ex, "An error occurred while running the script.");
-            }
-        }
-
-        public void Assemble(string fileName, IAssembler asm, IPlatform platform)
-        {
-            eventListener.ShowStatus("Assembling program.");
-            var program = loader.AssembleExecutable(fileName, asm, platform, null!);
-            Project = AddProgramToProject(fileName, program);
-            WriteEntryPoints(program);
-            eventListener.ShowStatus("Assembled program.");
-        }
-
-        /// <summary>
-        /// Loads a program from a file into memory using the additional information in 
-        /// <paramref name="raw"/>. Use this to open files with insufficient or
-        /// no metadata.
-        /// </summary>
-        /// <param name="fileName">Name of the file to be loaded.</param>
-        /// <param name="raw">Extra metadata supllied by the user.</param>
-        public Program LoadRawImage(string fileName, LoadDetails raw)
-        {
-            eventListener.ShowStatus("Loading raw bytes.");
-            raw.ArchitectureOptions ??= new Dictionary<string, object>();
-            byte[] image = loader.LoadImageBytes(fileName, 0);
-            var program = loader.LoadRawImage(fileName, image, null, raw);
-            Project = AddProgramToProject(fileName, program);
-            WriteEntryPoints(program);
-            eventListener.ShowStatus("Raw bytes loaded.");
-            return program;
-        }
-
-        /// <summary>
-        /// Loads a program into memory using the additional information in 
-        /// <paramref name="raw"/>. Use this to decompile raw blobs of data.
-        /// </summary>
-        /// <param name="fileName">Name of the file to be loaded.</param>
-        /// <param name="raw">Extra metadata supllied by the user.</param>
-        public Program LoadRawImage(byte[] image, LoadDetails raw)
-        {
-            eventListener.ShowStatus("Loading raw bytes.");
-            raw.ArchitectureOptions ??= new Dictionary<string, object>();
-            var program = loader.LoadRawImage("image", image, null, raw);
-            Project = AddProgramToProject("image", program);
-            eventListener.ShowStatus("Raw bytes loaded.");
-            return program;
-        }
-
-        protected Project AddProgramToProject(string fileNameWithPath, Program program)
-        {
-            if (this.project == null)
-            {
-                this.project = new Project();
-            }
-            program.Filename = fileNameWithPath;
-            program.EnsureDirectoryNames(fileNameWithPath);
-            program.User.ExtractResources = true;
-
-            project.Programs.Add(program);
-            return project;
         }
 
         public void ExtractResources()
@@ -404,8 +293,12 @@ namespace Reko
                 }
                 catch (Exception ex)
                 {
-                    eventListener.Error(ex, "Error when reconstructing types.");
-                } 
+                    eventListener.Error(
+                        new NullCodeLocation(program.Location.FilesystemPath),
+                        ex,
+                        "An internal error occurred while reconstructing data types in {0}.",
+                        program.Location);
+                }
                 finally
                 {
                     host.WriteTypes(program, analyzer.WriteTypes);
@@ -417,7 +310,7 @@ namespace Reko
         {
             WriteHeaderComment(filename, program, w);
             //$REFACTOR: common code -- hardwired ".h"
-            var headerfile = Path.ChangeExtension(Path.GetFileName(program.Filename), ".h");
+            var headerfile = DecompiledFileService.GenerateDerivedFilename(program, ".h");
             w.WriteLine("#include \"{0}\"", headerfile);
             w.WriteLine();
             var fmt = new AbsynCodeFormatter(new TextFormatter(w));
@@ -484,7 +377,7 @@ namespace Reko
 
         public void WriteGlobals(Program program, string filename, TextWriter w)
         {
-            var headerfile = Path.ChangeExtension(Path.GetFileName(program.Filename), ".h");
+            var headerfile = DecompiledFileService.GenerateDerivedFilename(program, ".h");
             WriteHeaderComment(filename, program, w);
             w.WriteLine("#include \"{0}\"", headerfile);
             w.WriteLine();
@@ -547,7 +440,18 @@ namespace Reko
             Project.FireScriptEvent(ScriptEvent.OnProgramDecompiling);
             foreach (Program program in Project.Programs)
             {
-                ScanProgram(program);
+                try
+                {
+                    ScanProgram(program);
+                } 
+                catch (Exception ex)
+                {
+                    eventListener.Error(
+                        new NullCodeLocation(program.Location.FilesystemPath),
+                        ex,
+                        "An internal error occurred while scanning {0}.",
+                        program.Location);
+                }
             }
             Project.FireScriptEvent(ScriptEvent.OnProgramScanned);
         }
@@ -573,6 +477,7 @@ namespace Reko
             }
         }
 
+        //$REVIEW: doesn't seem to be used anywhere?
         public IDictionary<Address, FunctionType> LoadCallSignatures(
             Program program,
             ICollection<SerializedCall_v1> userCalls)
@@ -668,14 +573,14 @@ namespace Reko
         {
             if (program.Platform == null)
                 return;
-            var irPath = Path.Combine(program.SourceDirectory, Path.GetFileNameWithoutExtension(program.Filename));
+            var irPath = Path.Combine(program.SourceDirectory, Path.GetFileNameWithoutExtension(program.Location.FilesystemPath));
             program.Platform.WriteMetadata(program, irPath);
         }
 
 		public void WriteHeaderComment(string filename, Program program, TextWriter w)
 		{
 			w.WriteLine("// {0}", filename);
-			w.WriteLine("// Generated by decompiling {0}", Path.GetFileName(program.Filename));
+			w.WriteLine("// Generated by decompiling {0}", program.Location.GetFilename());
 			w.WriteLine("// using Reko decompiler version {0}.", AssemblyMetadata.AssemblyFileVersion);
 			w.WriteLine();
 		}
@@ -691,7 +596,7 @@ namespace Reko
         /// </remarks>
         public void WriteSccs(Program program)
         {
-            var filename = Path.ChangeExtension(Path.GetFileName(program.Filename), "sccs");
+            var filename = Path.ChangeExtension(program.Location.GetFilename(), "sccs");
             var globalsPath = Path.Combine(program.SourceDirectory, filename);
             using (TextWriter output = host.CreateTextWriter(globalsPath))
             {

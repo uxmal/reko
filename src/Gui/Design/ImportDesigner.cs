@@ -21,6 +21,7 @@
 #nullable enable
 
 using Reko.Core;
+using Reko.Gui.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;

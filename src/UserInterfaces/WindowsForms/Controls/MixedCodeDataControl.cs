@@ -19,15 +19,8 @@
 #endregion
 
 using Reko.Core;
-using Reko.Core.Services;
-using Reko.Gui;
+using Reko.Gui.Services;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
 namespace Reko.UserInterfaces.WindowsForms.Controls
 {

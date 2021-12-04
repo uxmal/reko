@@ -21,8 +21,8 @@
 #nullable enable
 
 using Reko.Core;
-using Reko.Core.Serialization;
 using Reko.Gui.Forms;
+using Reko.Gui.Services;
 using System;
 
 namespace Reko.Gui.Commands

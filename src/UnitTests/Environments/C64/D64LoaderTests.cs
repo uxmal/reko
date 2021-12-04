@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core;
 using Reko.Core.Loading;
 using Reko.Environments.C64;
 using System;
@@ -80,9 +81,9 @@ namespace Reko.UnitTests.Environments.C64
                 "CBM.COM",
                 0, 0,
                 new Dictionary<int, byte[]>());
-            var loader = new D64Loader(sc, "CBM.COM", image);
-            var items = loader.LoadDiskDirectory();
-            Assert.AreEqual(0, items.Count);
+            var loader = new D64Loader(sc, ImageLocation.FromUri("file:CBM.COM"), image);
+            var archive = loader.LoadDiskDirectory();
+            Assert.AreEqual(0, archive.RootEntries.Count);
         }
 
         private int SectorRef(byte track, byte sector)
@@ -163,11 +164,11 @@ namespace Reko.UnitTests.Environments.C64
                             Encoding.ASCII.GetBytes("Hello world"))
                     }
                 });
-            var loader = new D64Loader(sc, "CBM.COM", image);
-            var items = loader.LoadDiskDirectory();
+            var loader = new D64Loader(sc, ImageLocation.FromUri("file:CBM.COM"), image);
+            var archive = loader.LoadDiskDirectory();
 
-            Assert.AreEqual(1, items.Count);
-            var file = (ArchivedFile) items[0];
+            Assert.AreEqual(1, archive.RootEntries.Count);
+            var file = (ArchivedFile) archive.RootEntries[0];
             Assert.AreEqual("Hello world", Encoding.ASCII.GetString(file.GetBytes()));
         }
     }
