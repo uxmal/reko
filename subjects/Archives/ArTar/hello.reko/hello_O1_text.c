@@ -61,38 +61,32 @@ void frame_dummy()
 word128 Q_rsqrt(word128 xmm0, int32 dwArg00)
 {
 	word128 xmm2_n = (word128) (0x5F3759DF - (word32) (SEQ(dwArg00, (real32) xmm0) >> 0x01));
-	uint128 xmm1_n = (uint128) g_r2078;
-	return SEQ(SLICE(xmm1_n, word96, 32), ((real32) xmm1_n - (((real32) xmm0 * g_r2074) * (real32) xmm2_n) * (real32) xmm2_n) * (real32) xmm2_n);
+	return SEQ(0, (g_r2078 - (((real32) xmm0 * g_r2074) * (real32) xmm2_n) * (real32) xmm2_n) * (real32) xmm2_n);
 }
 
-// 00000000000011A6: Register uint128 lib_rsqrt(Register uint128 xmm0)
+// 00000000000011A6: Register word128 lib_rsqrt(Register word128 xmm0)
 // Called from:
 //      main
-uint128 lib_rsqrt(uint128 xmm0)
+word128 lib_rsqrt(word128 xmm0)
 {
-	if ((real32) xmm0 < 0.0F)
-	{
-		sqrtf();
-		uint128 xmm1_n = (uint128) g_r207C;
-		return SEQ(SLICE(xmm1_n, word96, 32), (real32) xmm1_n / (real32) xmm0);
-	}
-	else
-	{
-		real32 v9_n = __fsqrt(xmm0);
-		uint128 xmm1_n = (uint128) g_r207C;
-		return SEQ(SLICE(xmm1_n, word96, 32), (real32) xmm1_n / v9_n);
-	}
+	if ((real32) xmm0 >= 0.0F)
+		return SEQ(0, g_r207C / __fsqrt(xmm0));
+	sqrtf((real32) xmm0);
+	return SEQ(0, g_r207C / sqrtf((real32) xmm0));
 }
 
-// 00000000000011E0: void main(Register (ptr64 Eq_n) rsi, Register word128 xmm0)
-void main(struct Eq_n * rsi, word128 xmm0)
+// 00000000000011E0: void main(Register (ptr64 Eq_n) rsi)
+void main(struct Eq_n * rsi)
 {
 	printf("Hello %s, I'm inside an archive.\n", rsi->ptr0008);
-	strtof();
-	real32 rLoc0C_n = (real32) Q_rsqrt(xmm0, dwLoc20);
-	real32 rLoc10_n = (real32) lib_rsqrt((uint128) (real32) xmm0);
-	printf("    Quick:   %g\n", (real64) (uint128) (real64) rLoc0C_n);
-	printf("    Library: %g\n", (real64) (uint128) (real64) rLoc10_n);
+	puts("Inverse square root computation.");
+	char * rdi_n = rsi->ptr0010;
+	word128 xmm0_n = SEQ(0, strtof(rdi_n, null));
+	real32 rLoc10_n = strtof(rdi_n, null);
+	real32 rLoc0C_n = (real32) Q_rsqrt(xmm0_n, dwLoc20);
+	real32 rLoc10_n = (real32) lib_rsqrt(SEQ(0, rLoc10_n));
+	printf("    Quick:   %g\n", (real64) rLoc0C_n);
+	printf("    Library: %g\n", (real64) rLoc10_n);
 }
 
 // 0000000000001280: void __libc_csu_init(Register word64 rdx, Register word64 rsi, Register word32 edi)

@@ -31,13 +31,15 @@ namespace Reko.Environments.SysV.ArchSpecific
 {
     public class M68kCallingConvention : CallingConvention
     {
-        private IProcessorArchitecture arch;
-        private RegisterStorage d0;
+        private readonly IProcessorArchitecture arch;
+        private readonly RegisterStorage d0;
+        private readonly RegisterStorage fp0;
 
         public M68kCallingConvention(IProcessorArchitecture arch)
         {
             this.arch = arch;
             this.d0 = arch.GetRegister("d0")!;
+            this.fp0 = arch.GetRegister("fp0")!;
         }
 
         public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
@@ -45,7 +47,9 @@ namespace Reko.Environments.SysV.ArchSpecific
             ccr.LowLevelDetails(4, 4);
             if (dtRet != null)
             {
-                if (dtRet.BitSize > 32)
+                if (dtRet is PrimitiveType pt && pt.Domain == Domain.Real)
+                    ccr.RegReturn(fp0);
+                if (dtRet.BitSize > 64)
                     throw new NotImplementedException();
                 ccr.RegReturn(d0);
             }

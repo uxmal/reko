@@ -47,12 +47,17 @@ namespace Reko.UnitTests.Arch.RiscV
         [SetUp]
         public void Setup()
         {
+            Given_ArchWithFloatAbi(64);
+        }
+
+        private void Given_ArchWithFloatAbi(int floatAbi)
+        { 
             this.arch = new RiscVArchitecture(
                 new ServiceContainer(),
                 "riscV",
                 new Dictionary<string, object>
                 {
-                    { "FloatAbi", 64 }
+                    { "FloatAbi", floatAbi }
                 });
             this.cc = new RiscVCallingConvention(arch);
             this.ccr = new CallingConventionEmitter();
@@ -104,5 +109,14 @@ namespace Reko.UnitTests.Arch.RiscV
                 "Stk: 0 void (fa0, a1, fa2, a3, fa4, a5, fa6, a7, Stack +0000, Stack +0008)",
                 ccr.ToString());
         }
+
+        [Test]
+        public void RiscVCc_RealArgsReturn_NoFpuSupport()
+        {
+            Given_ArchWithFloatAbi(0);  // No FPU support.
+            cc.Generate(ccr, r64, null, new List<DataType> { r64 });
+            Assert.AreEqual("Stk: 0 a0 (a0)", ccr.ToString());
+        }
+
     }
 }

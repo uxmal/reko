@@ -114,8 +114,7 @@ word128 Q_rsqrt(word128 xmm0, word32 dwArg00)
 Q_rsqrt_entry:
 l0000000000001169:
 	word128 xmm2_16 = CONVERT(0x5F3759DF<32> - SLICE(SEQ(dwArg00, SLICE(xmm0, real32, 0)) >> 1<64>, word32, 0), word32, word128)
-	word128 xmm1_26 = CONVERT(Mem5[0x0000000000002078<p64>:real32], real32, uint128)
-	return SEQ(SLICE(xmm1_26, word96, 32), (SLICE(xmm1_26, real32, 0) - ((SLICE(xmm0, real32, 0) * Mem5[0x0000000000002074<p64>:real32]) * SLICE(xmm2_16, real32, 0)) * SLICE(xmm2_16, real32, 0)) * SLICE(xmm2_16, real32, 0))
+	return SEQ(0<96>, (Mem5[0x0000000000002078<p64>:real32] - ((SLICE(xmm0, real32, 0) * Mem5[0x0000000000002074<p64>:real32]) * SLICE(xmm2_16, real32, 0)) * SLICE(xmm2_16, real32, 0)) * SLICE(xmm2_16, real32, 0))
 Q_rsqrt_exit:
 
 
@@ -132,32 +131,31 @@ lib_rsqrt_entry:
 l00000000000011A6:
 	branch SLICE(xmm0, real32, 0) <u 0.0F l00000000000011C3
 l00000000000011C3:
-	call sqrtf (retsize: 8;)
-	word128 xmm1_14 = CONVERT(Mem0[0x000000000000207C<p64>:real32], real32, uint128)
-	return SEQ(SLICE(xmm1_14, word96, 32), SLICE(xmm1_14, real32, 0) / SLICE(xmm0, real32, 0))
+	sqrtf(SLICE(xmm0, real32, 0))
+	return SEQ(0<96>, Mem0[0x000000000000207C<p64>:real32] / sqrtf(SLICE(xmm0, real32, 0)))
 l00000000000011AF:
-	real32 v9_21 = __fsqrt(xmm0)
-	word128 xmm1_23 = CONVERT(Mem0[0x000000000000207C<p64>:real32], real32, uint128)
-	return SEQ(SLICE(xmm1_23, word96, 32), SLICE(xmm1_23, real32, 0) / v9_21)
+	return SEQ(0<96>, Mem0[0x000000000000207C<p64>:real32] / __fsqrt(xmm0))
 lib_rsqrt_exit:
 
 
-void main(word64 rsi, word128 xmm0)
+void main(word64 rsi)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse:  rsi:[0..63] xmm0:[0..127]
+// MayUse:  rsi:[0..63]
 // LiveOut:
 // Trashed: SCZOP rax rdi rdx rsi Top xmm0 xmm1 xmm2
 // Preserved: rbx rsp
 main_entry:
 l00000000000011E0:
 	printf(0x0000000000002008<p64>, Mem6[rsi + 8<64>:word64])
-	call strtof (retsize: 8;)
-		uses: rax:CONVERT(puts(0x0000000000002030<p64>), int32, uint64),rdi:Mem6[rsi + 0x10<64>:word64],rsi:0<u64>,Stack +0000:dwLoc20
-	real32 rLoc0C_71 = SLICE(Q_rsqrt(xmm0, dwLoc20), real32, 0)
-	real32 rLoc10_72 = SLICE(lib_rsqrt(CONVERT(SLICE(xmm0, real32, 0), real32, uint128)), real32, 0)
-	printf(0x0000000000002051<p64>, SLICE(CONVERT(CONVERT(rLoc0C_71, real32, real64), real64, uint128), real64, 0))
-	printf(0x0000000000002062<p64>, SLICE(CONVERT(CONVERT(rLoc10_72, real32, real64), real64, uint128), real64, 0))
+	puts(0x0000000000002030<p64>)
+	word64 rdi_18 = Mem6[rsi + 0x10<64>:word64]
+	word128 xmm0_21 = SEQ(0<96>, strtof(rdi_18, 0<u64>))
+	real32 rLoc10_61 = strtof(rdi_18, 0<u64>)
+	real32 rLoc0C_63 = SLICE(Q_rsqrt(xmm0_21, dwLoc20), real32, 0)
+	real32 rLoc10_64 = SLICE(lib_rsqrt(SEQ(0<96>, rLoc10_61)), real32, 0)
+	printf(0x0000000000002051<p64>, CONVERT(rLoc0C_63, real32, real64))
+	printf(0x0000000000002062<p64>, CONVERT(rLoc10_64, real32, real64))
 	return
 main_exit:
 
