@@ -321,11 +321,11 @@ namespace Reko.Loading
                 var item = archive[fragment];
                 if (item is not ArchivedFile file)
                     throw new InvalidOperationException($"Fragment '{fragment}' does not refer to an archived file.");
+                if (i == imageLocation.Fragments.Length - 1)
+                    return file.GetBytes();
                 binaryImage = file.LoadImage(Services, addrLoad);
                 if (binaryImage is Blob blob)
                 {
-                    if (i == imageLocation.Fragments.Length - 1)
-                        return blob.Image;
                     // Archive doesn't know this format, perhaps Reko does.
                     binaryImage = LoadBinaryImage(blob.Location, blob.Image, null, addrLoad);
                 }
