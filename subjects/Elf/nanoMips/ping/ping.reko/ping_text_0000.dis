@@ -26765,7 +26765,7 @@ l0040E36E:
 l0040E358:
 	Mem92[r2_140:byte] = 0xFE<8>
 	r3Out = r3
-	r4Out = CONVERT(true, bool, word32)
+	r4Out = 1<32>
 	r6Out = r6
 	r8Out = 254<i32>
 	r9Out = r9_14

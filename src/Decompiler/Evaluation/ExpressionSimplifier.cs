@@ -266,9 +266,9 @@ namespace Reko.Evaluation
         public virtual (Expression, bool) VisitBinaryExpression(BinaryExpression binExp)
         {
             // BinaryExpressions are the most common and occur in clusters that sometimes
-            // are so deep that attempting to simplify using recursion. The code below
-            // traverses a tree of BinaryExpressions iteratively, using an explicit stack
-            // to keep track of intermediate results.
+            // are so deep that attempting to simplify using recursion will cause a stack
+            // overflow. The code below traverses a tree of BinaryExpressions iteratively
+            // using an explicit stack to keep track of intermediate results.
             var stack = new Stack<(BinaryExpression, (Expression,bool)[])>();
             stack.Push((binExp, new (Expression,bool)[2]));
             (Expression, bool) result = default!;
@@ -350,6 +350,14 @@ namespace Reko.Evaluation
                 // (+ X 0) ==> X
                 if (cRight.IsIntegerZero && IsAddOrSub(binExp.Operator))
                 {
+                    //$HACK: we neglected to zero-extend Carry flags in adc/sbc
+                    // type instructions, and here it bites us. Work around by
+                    // zero-extending now. The real fix is to zero-extend carry flags 
+                    // properly.
+                    if (cRight.DataType.BitSize > left.DataType.BitSize)
+                    {
+                        return (m.Convert(left, left.DataType, cRight.DataType), true);
+                    }
                     return (left, true);
                 }
                 if (binExp.Operator == Operator.Or)
@@ -676,7 +684,7 @@ namespace Reko.Evaluation
         public virtual (Expression, bool) VisitConversion(Conversion conversion)
         {
             var (exp, changed) = conversion.Expression.Accept(this);
-            if (!(exp is InvalidConstant))
+            if (exp is not InvalidConstant)
             {
                 var ptCvt = conversion.DataType.ResolveAs<PrimitiveType>();
                 var ptSrc = conversion.SourceDataType.ResolveAs<PrimitiveType>();
@@ -707,24 +715,25 @@ namespace Reko.Evaluation
                         }
                         else if ((ptSrc.Domain & Domain.Integer) != 0)
                         {
-                            if (ptSrc != null)
+                            if (ptSrc.Domain == Domain.SignedInt)
                             {
-                                if (ptSrc.Domain == Domain.SignedInt)
-                                {
-                                    return (Constant.Create(ptCvt, c.ToInt64()), true);
-                                }
-                                else if (ptSrc.Domain.HasFlag(Domain.SignedInt))
-                                {
-                                    return (Constant.Create(ptCvt, c.ToUInt64()), true);
-                                }
+                                return (Constant.Create(ptCvt, c.ToInt64()), true);
                             }
+                            else if (ptSrc.Domain.HasFlag(Domain.SignedInt))
+                            {
+                                return (Constant.Create(ptCvt, c.ToUInt64()), true);
+                            }
+                        } 
+                        else if (ptSrc.Domain == Domain.Boolean)
+                        {
+                            return (Constant.Create(ptCvt, c.ToUInt64()), true);
                         }
                     }
                 }
                 if (exp is Identifier id && 
                     ctx.GetDefiningExpression(id) is MkSequence seq)
                 {
-                    // If we are casting a SEQ, and the corresponding element is >= 
+                    // If we are converting a SEQ, and the corresponding element is >= 
                     // the size of the cast, then use deposited part directly.
                     var lsbElem = seq.Expressions[seq.Expressions.Length - 1];
                     int sizeDiff = lsbElem.DataType.Size - conversion.DataType.Size;
@@ -933,7 +942,7 @@ namespace Reko.Evaluation
                         t = PrimitiveType.Create(Domain.Pointer, tHead.BitSize + tTail.BitSize);
                         return (ctx.MakeSegmentedAddress(c1, c2), true);
                     }
-                    else
+                    else if (tTail.Domain != Domain.Real)
                     {
                         t = PrimitiveType.Create(tHead.Domain, tHead.BitSize + tTail.BitSize);
                         return (Constant.Create(t, (c1.ToUInt64() << tTail.BitSize) | c2.ToUInt64()), true);
@@ -951,7 +960,7 @@ namespace Reko.Evaluation
                 }
                 return (Constant.Create(seq.DataType, value), true);
             }
-            if (newSeq.Take(newSeq.Length - 1).All(e => e.IsZero))
+            if (!newSeq[^1].DataType.IsReal && newSeq.Take(newSeq.Length - 1).All(e => e.IsZero))
             {
                 var tail = newSeq.Last();
                 // leading zeros imply a conversion to unsigned.

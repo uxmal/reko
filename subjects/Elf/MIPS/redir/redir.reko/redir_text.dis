@@ -1869,11 +1869,11 @@ l00402370:
 l00402604:
 	branch dwLoc1C_533 == 0<32> l00402660
 l00402660:
-	branch CONVERT(true, bool, word32) != 0<32> l004027F8
+	branch true l004027F8
 l00402674:
 	branch strncasecmp(fp + -2064<i32>, 0x409FBC<32>, 6<i32>) != 0<32> l004027F8
 l004027F8:
-	branch CONVERT(true, bool, word32) != 0<32> l00402894
+	branch true l00402894
 l0040280C:
 	branch strncasecmp(0x409FE0<32>, fp + -2064<i32>, 10<i32>) != 0<32> l00402894
 l00402894:
@@ -1918,7 +1918,7 @@ l004028C4:
 	dwLoc28_523 = add_to_request(r4, dwLoc28_523, fp + -2064<i32>, 0<32>, ra, out r5_680, out r6_681, out r7_682)
 	branch dwLoc1C_533 == 0<32> l00402950
 l00402950:
-	branch CONVERT(true, bool, word32) != 0<32> l00402A34
+	branch true l00402A34
 l00402964:
 	branch strncasecmp(0x409FF4<32>, fp + -2064<i32>, 10<i32>) != 0<32> l00402A34
 l00402998:
@@ -4800,7 +4800,6 @@ l0040896C_ds_f:
 l00408970:
 	branch r2_192 == 0<32> l00408998
 l00408978:
-	dwLoc30_660 = dwLoc30_660 + CONVERT(false, bool, word32)
 	dwLoc2C_667 = 1<i32>
 l00408998:
 	word32 r7_256

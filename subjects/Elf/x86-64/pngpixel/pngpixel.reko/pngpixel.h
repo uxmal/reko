@@ -967,10 +967,10 @@ T_199: (in signature of png_error @ 00000000 : void)
   Class: Eq_199
   DataType: Eq_199
   OrigDataType: 
-T_200: (in 0x401958<32> @ 00400F56 : word32)
+T_200: (in 0x401958<64> @ 00400F56 : word64)
   Class: Eq_200
-  DataType: (ptr32 (arr Eq_688))
-  OrigDataType: (ptr32 (struct (0 (arr T_688) a0000)))
+  DataType: (ptr64 (arr Eq_688))
+  OrigDataType: (ptr64 (struct (0 (arr T_688) a0000)))
 T_201: (in CONVERT(eax_67, word32, uint64) @ 00400F56 : uint64)
   Class: Eq_201
   DataType: uint64
@@ -983,7 +983,7 @@ T_203: (in (uint64) eax_67 * 8<64> @ 00000000 : uint64)
   Class: Eq_203
   DataType: ui64
   OrigDataType: ui64
-T_204: (in 0x401958<32>[CONVERT(eax_67, word32, uint64) * 8<64>] @ 00400F56 : word32)
+T_204: (in 0x401958<64>[CONVERT(eax_67, word32, uint64) * 8<64>] @ 00400F56 : word32)
   Class: Eq_204
   DataType: word32
   OrigDataType: word32

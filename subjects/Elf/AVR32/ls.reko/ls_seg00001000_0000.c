@@ -9123,8 +9123,8 @@ l000097C2:
 							word32 r8_n;
 							if (sp_n->dw0024 == 0x01)
 							{
-								Eq_n r10_n = (bool) r4_n.u0 + (sp_n->t002C & 0x01);
-								r8_n = (word32) ((word32) (((bool) cond(r10_n) | r10_n) != 0x00) + r3_n > 0x05);
+								ui32 r10_n = (bool) r4_n.u0 + (sp_n->t002C & 0x01);
+								r8_n = (word32) ((word32) (((word32) (bool) cond(r10_n) | r10_n) != 0x00) + r3_n > 0x05);
 							}
 							else
 							{
@@ -11956,7 +11956,7 @@ l0000B400:
 									else if (true)
 										r8_n = 0x01;
 									else
-										r8_n = (word32) false;
+										r8_n = 0x00;
 									r11_n = (int32) *((word32) sp_n + 0x0044);
 									fn0000A9CC(r11_n, r2_n + 0x016D + r8_n);
 									r12_n = ~0x00;
@@ -11969,7 +11969,7 @@ l0000B400:
 									else if (true)
 										r8_n = 0x01;
 									else
-										r8_n = (word32) false;
+										r8_n = 0x00;
 									r11_n = (int32) *((word32) sp_n + 0x0044);
 									r12_n = r2_n - 0x016D - r8_n;
 									fn0000A9CC(r11_n, r12_n);

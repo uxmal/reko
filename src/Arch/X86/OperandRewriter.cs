@@ -191,7 +191,18 @@ namespace Reko.Arch.X86
                 }
                 else
                 {
-                    expr = mem.Offset;
+                    // expr is null, so there was no base register. But was there 
+                    // an index register? If so extend the offset to the samesize.
+                    if (mem.Index != RegisterStorage.None && (int)mem.Index.BitSize != mem.Offset.DataType.BitSize)
+                    {
+                        var dt = PrimitiveType.Create(Domain.SignedInt, (int)mem.Index.BitSize);
+                        expr = Constant.Create(dt, mem.Offset.ToInt64());
+                    }
+                    else
+                    {
+                        // There was no base or index.
+                        expr = mem.Offset;
+                    }
                 }
             }
 

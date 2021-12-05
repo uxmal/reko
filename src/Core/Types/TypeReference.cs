@@ -44,6 +44,7 @@ namespace Reko.Core.Types
         public override bool IsComplex => Referent.IsComplex;
         public override bool IsIntegral => Referent.IsIntegral;
         public override bool IsPointer => Referent.IsPointer;
+        public override bool IsReal => Referent.IsReal;
 
         public DataType Referent { get; set; }
 

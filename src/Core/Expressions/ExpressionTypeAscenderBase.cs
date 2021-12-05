@@ -190,6 +190,8 @@ namespace Reko.Core.Expressions
         /// <returns>A (ptr field-type) if it was a ptr-to-struct, else null.</returns>
         private Pointer? GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right)
         {
+            if (right is BigConstant)
+                return null;
             if (right is Constant cOffset)
             {
                 if (dtRight is PrimitiveType ptRight && ptRight.Domain != Domain.Pointer)

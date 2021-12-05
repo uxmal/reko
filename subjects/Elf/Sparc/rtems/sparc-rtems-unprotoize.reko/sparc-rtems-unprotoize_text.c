@@ -258,10 +258,10 @@ Eq_n dupnstr(Eq_n o0, struct Eq_n * o1, union Eq_n & l0Out, struct Eq_n & i0Out,
 	return o1->a0001;
 }
 
-// 000117CC: Register Eq_n substr(Register Eq_n o0, Register (ptr32 int8) o1)
+// 000117CC: Register (ptr32 int8) substr(Register (ptr32 int8) o0, Register (ptr32 int8) o1)
 // Called from:
 //      other_variable_style_function
-Eq_n substr(Eq_n o0, int8 * o1)
+int8 * substr(int8 * o0, int8 * o1)
 {
 	int32 g2_n = (int32) *o0;
 	if (g2_n != 0x00)
@@ -270,22 +270,22 @@ Eq_n substr(Eq_n o0, int8 * o1)
 		int32 g3_n = (int32) *o1;
 		if (g3_n == 0x00)
 			return o0;
-		Eq_n o2_n = o0;
+		int8 * o2_n = o0;
 		while ((int32) *o2_n - g3_n == 0x00)
 		{
 			++o3_n;
 			g3_n = (int32) *o3_n;
 			if (g3_n == 0x00)
 			{
-				o0.u0 = (bool) o0.u0 + 1;
+				++o0;
 				return o0;
 			}
-			o2_n = (word32) o2_n + 1;
+			++o2_n;
 		}
 	}
 	else
 	{
-		o0.u0 = 0x00;
+		o0 = null;
 		return o0;
 	}
 }
@@ -1879,7 +1879,7 @@ void declare_source_confusing(Eq_n o0)
 	longjmp((jmp_buf) 0x0002B240, 0x01);
 }
 
-// 000136E0: Register Eq_n check_source(Register Eq_n o0, Register Eq_n o1, Register out Eq_n i1Out, Register out (ptr32 Eq_n) i2Out, Register out (ptr32 Eq_n) i6Out)
+// 000136E0: Register word32 check_source(Register word32 o0, Register Eq_n o1, Register out Eq_n i1Out, Register out (ptr32 Eq_n) i2Out, Register out (ptr32 Eq_n) i6Out)
 // Called from:
 //      seek_to_line
 //      forward_to_next_token_char
@@ -1887,7 +1887,7 @@ void declare_source_confusing(Eq_n o0)
 //      find_rightmost_formals_list
 //      careful_find_l_paren
 //      scan_for_missed_items
-Eq_n check_source(Eq_n o0, Eq_n o1, union Eq_n & i1Out, struct Eq_n & i2Out, struct Eq_n & i6Out)
+word32 check_source(word32 o0, Eq_n o1, union Eq_n & i1Out, struct Eq_n & i2Out, struct Eq_n & i6Out)
 {
 	if (o0 != 0x00)
 	{
@@ -1919,12 +1919,12 @@ void seek_to_line(Eq_n o0)
 					while (true)
 					{
 						int8 * o2_n = o2_n + 1;
-						Eq_n C_n = (bool) cond(o2_n - g_dw281D0);
+						word32 o0_n = (word32) (bool) cond(o2_n - g_dw281D0);
 						g_ptr28220 = o2_n;
 						word32 i1_n;
 						word32 i2_n;
 						word32 i6_n;
-						i0_n = check_source(C_n, 0x00, out i1_n, out i2_n, out i6_n);
+						i0_n = check_source(o0_n, 0x00, out i1_n, out i2_n, out i6_n);
 						if ((int32) *g_ptr28220 == 0x0A)
 							break;
 						o2_n = g_ptr28220;
@@ -1961,7 +1961,7 @@ Eq_n forward_to_next_token_char(Eq_n o0)
 			word32 i1_n;
 			word32 i2_n;
 			word32 i6_n;
-			i0_n = check_source((bool) cond((word32) i0_n + 1 - o0_n), 0x00, out i1_n, out i2_n, out i6_n);
+			i0_n = check_source((word32) (bool) cond((word32) i0_n + 1 - o0_n), 0x00, out i1_n, out i2_n, out i6_n);
 			if (((ui32) g_a2B411[(ui32) *i0_n] & 0x08) == 0x00)
 				break;
 			o0_n = g_dw281D0;
@@ -2040,12 +2040,12 @@ word32 output_up_to(Eq_n o0, ptr32 & l2Out, union Eq_n & i0Out, ptr32 & i1Out, p
 	return l1;
 }
 
-// 000138F0: Register Eq_n other_variable_style_function(Register Eq_n o0, Register out ptr32 i1Out, Register out ptr32 i6Out)
+// 000138F0: Register (ptr32 int8) other_variable_style_function(Register (ptr32 int8) o0, Register out ptr32 i1Out, Register out ptr32 i6Out)
 // Called from:
 //      edit_fn_definition
-Eq_n other_variable_style_function(Eq_n o0, ptr32 & i1Out, ptr32 & i6Out)
+int8 * other_variable_style_function(int8 * o0, ptr32 & i1Out, ptr32 & i6Out)
 {
-	Eq_n o0_n = (bool) cond(0x00 - substr(o0, &g_b17468));
+	int8 * o0_n = (word32) (bool) cond(0x00 - substr(o0, &g_b17468));
 	i1Out = o1;
 	i6Out = fp;
 	return o0_n;
@@ -2096,7 +2096,7 @@ l00013BAC:
 	word32 i1_n;
 	word32 i6_n;
 	struct Eq_n * i2_n;
-	check_source((bool) cond(o0_n - l1_n), 0x00, out i1_n, out i2_n, out i6_n);
+	check_source((word32) (bool) cond(o0_n - l1_n), 0x00, out i1_n, out i2_n, out i6_n);
 	if (l0_n == 0x00)
 	{
 		ptr32 i1_n;
@@ -2110,7 +2110,7 @@ l00013BAC:
 			word32 i6_n;
 			word32 i1_n;
 			word32 i2_n;
-			check_source((bool) cond(g_dw281E0 - &l1_n->bFFFFFFFF), 0x00, out i1_n, out i2_n, out i6_n);
+			check_source((word32) (bool) cond(g_dw281E0 - &l1_n->bFFFFFFFF), 0x00, out i1_n, out i2_n, out i6_n);
 			Eq_n l0_n = &l1_n->bFFFFFFFF;
 			if (((ui32) g_a2B411[(ui32) l1_n->bFFFFFFFF] & 0x08) != 0x00)
 			{
@@ -2121,7 +2121,7 @@ l00013BAC:
 					word32 i1_n;
 					word32 i2_n;
 					word32 i6_n;
-					check_source((bool) cond(o0_n - l0_n), 0x00, out i1_n, out i2_n, out i6_n);
+					check_source((word32) (bool) cond(o0_n - l0_n), 0x00, out i1_n, out i2_n, out i6_n);
 					if (((ui32) g_a2B411[(ui32) *l0_n] & 0x08) == 0x00)
 						break;
 					o0_n = g_dw281E0;
@@ -2138,7 +2138,7 @@ l00013BAC:
 			word32 i6_n;
 			word32 i2_n;
 			word32 i1_n;
-			check_source((bool) cond(g_dw281E0 - l0_n), 0x00, out i1_n, out i2_n, out i6_n);
+			check_source((word32) (bool) cond(g_dw281E0 - l0_n), 0x00, out i1_n, out i2_n, out i6_n);
 			word32 i2_n;
 			word32 i1_n;
 			word32 i6_n;
@@ -2169,7 +2169,7 @@ l00013BAC:
 					l0_n += -1;
 					word32 i1_n;
 					word32 i6_n;
-					check_source((bool) cond(o0_n - l0_n), 0x00, out i1_n, out i2_n, out i6_n);
+					check_source((word32) (bool) cond(o0_n - l0_n), 0x00, out i1_n, out i2_n, out i6_n);
 					if (((ui32) g_a2B411[(ui32) *l0_n] & 0x08) == 0x00)
 						break;
 					o0_n = (ui32) *((word32) l2_n + 480);
@@ -2184,7 +2184,7 @@ l00013BAC:
 				ui32 o0_n = *((word32) l2_n + 480);
 				word32 i1_n;
 				word32 i6_n;
-				check_source((bool) cond(o0_n - l3_n), 0x00, out i1_n, out i2_n, out i6_n);
+				check_source((word32) (bool) cond(o0_n - l3_n), 0x00, out i1_n, out i2_n, out i6_n);
 				l3_n += -1;
 			}
 			Eq_n l3_n = l3_n + 1;
@@ -2274,7 +2274,7 @@ word32 find_rightmost_formals_list(int8 * o0)
 					word32 i2_n;
 					word32 i6_n;
 					word32 i1_n;
-					i0_n = check_source(SLICE(cond(o0_n - (i0_n + ~0x00)), bool, 0), 0x00, out i1_n, out i2_n, out i6_n);
+					i0_n = check_source(CONVERT(SLICE(cond(o0_n - (i0_n + ~0x00)), bool, 0), bool, word32), 0x00, out i1_n, out i2_n, out i6_n);
 					if (((ui32) g_a2B411[(ui32) *i0_n] & 0x08) == 0x00)
 						break;
 					o0_n = g_dw281E0;
@@ -2286,7 +2286,7 @@ word32 find_rightmost_formals_list(int8 * o0)
 				word32 i2_n;
 				word32 i1_n;
 				word32 i6_n;
-				i0_n = check_source(SLICE(cond(Mem0[0x000281E0:word32] - (i0_n + ~0x00)), bool, 0), 0x00, out i1_n, out i2_n, out i6_n);
+				i0_n = check_source(CONVERT(SLICE(cond(Mem0[0x000281E0:word32] - (i0_n + ~0x00)), bool, 0), bool, word32), 0x00, out i1_n, out i2_n, out i6_n);
 				o0_n = (int32) *i0_n;
 			}
 			if (o0_n == 0x29)
@@ -2323,7 +2323,7 @@ void edit_fn_definition(int8 * o1)
 	{
 		Eq_n i1_n;
 		struct Eq_n * i6_n;
-		if (other_variable_style_function(find_rightmost_formals_list(o1)->ptr0044->t000C, out i1_n, out i6_n) != 0x00)
+		if (other_variable_style_function(find_rightmost_formals_list(o1)->ptr0044->ptr000C, out i1_n, out i6_n) != 0x00)
 		{
 			if (quiet_flag != 0x00)
 			{
@@ -2434,7 +2434,7 @@ l000145B4:
 				l0_n = (word32) l0_n + 1;
 				word32 i2_n;
 				word32 i1_n;
-				check_source((bool) cond(l0_n - o0_n), i6_n->tFFFFFFEC, out i1_n, out i2_n, out i6_n);
+				check_source((word32) (bool) cond(l0_n - o0_n), i6_n->tFFFFFFEC, out i1_n, out i2_n, out i6_n);
 				if (((ui32) g_a2B411[(ui32) *l0_n] & 0x08) == 0x00)
 					break;
 				o0_n = i6_n->tFFFFFFEC;

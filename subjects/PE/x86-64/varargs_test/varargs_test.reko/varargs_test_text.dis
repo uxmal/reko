@@ -510,9 +510,9 @@ l0000000140001698:
 	word64 rax_60 = CONVERT(SLICE(rdx_49, word32, 0) & 0x3F<32>, word32, uint64)
 	r8_102 = __ror(0xFFFFFFFFFFFFFFFF<64>, 0x40<8> - SLICE(SLICE(rax_60, word32, 0), byte, 0)) ^ rdx_49
 	Mem78[0x00000001400035C0<p64>:word128] = SEQ(r8_102, r8_102)
-	Mem83[0x00000001400035D0<p64>:real64] = SLICE(CONVERT(r8_102, word64, uint128), real64, 0)
+	Mem83[0x00000001400035D0<p64>:real64] = r8_102
 	Mem85[0x00000001400035D8<p64>:word128] = SEQ(r8_102, r8_102)
-	Mem86[0x00000001400035E8<p64>:real64] = SLICE(CONVERT(r8_102, word64, uint128), real64, 0)
+	Mem86[0x00000001400035E8<p64>:real64] = r8_102
 	rax_148 = SEQ(SLICE(rax_60, word56, 8), 1<8>) (alias)
 l0000000140001671:
 	word64 rax_89

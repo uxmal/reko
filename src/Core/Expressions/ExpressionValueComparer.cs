@@ -163,7 +163,18 @@ namespace Reko.Core.Expressions
                             return false;
                         }
                     }
-                    return object.Equals(a.ToUInt64(), b.ToUInt64());
+                    if (a is BigConstant ba)
+                    {
+                        return ba.Value == b.ToBigInteger();
+                    }
+                    else if (b is BigConstant bb)
+                    {
+                        return a.ToBigInteger() == bb.ToBigInteger();
+                    }
+                    else
+                    {
+                        return object.Equals(a.ToUInt64(), b.ToUInt64());
+                    }
                 },
                 obj =>
                 {

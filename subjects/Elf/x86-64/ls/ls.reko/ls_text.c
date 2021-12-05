@@ -2337,7 +2337,7 @@ Eq_n fn0000000000405ED0(word32 edi, struct Eq_n * fs)
 		if (rbp_n > rcx_n)
 		{
 			Eq_n rsi_n = g_t61B028;
-			word64 rcx_n = (word64) ((word64) (rcx_n * 0x08) + 8);
+			ui64 rcx_n = rcx_n * 0x08 + 8;
 			struct Eq_n * rdx_n = (word64) rsi_n + rcx_n * 0x18 + 0x10;
 			struct Eq_n * rsi_n = (word64) rsi_n + rbp_n * 0x18;
 			do
@@ -4710,17 +4710,11 @@ byte fn000000000040ADB0(word64 * rdi)
 	struct Eq_n * rax_n = *rdi;
 	if (rax_n == &g_t415EE0)
 		return 0x01;
-	uint128 xmm0_n = (uint128) rax_n->r0008;
-	if ((real32) xmm0_n > g_t415EF4 && ((real32) ((uint128) 0.9F) > (real32) xmm0_n && (real32) ((uint128) rax_n->r000C) > g_t415EFC))
+	if (rax_n->t0008 > g_t415EF4 && (g_t415EF8 > rax_n->t0008 && (rax_n->t000C > g_t415EFC && rax_n->t0000 >= g_t415F00)))
 	{
-		uint128 xmm1_n = (uint128) rax_n->r0000;
-		if ((real32) xmm1_n >= g_t415F00)
-		{
-			Eq_n v14_n = (real32) xmm1_n + g_t415EF4;
-			uint128 xmm2_n = (uint128) rax_n->r0004;
-			if ((real32) xmm2_n > v14_n && ((real32) ((uint128) 1.0F) >= (real32) xmm2_n && (real32) xmm0_n > v14_n))
-				return 0x01;
-		}
+		Eq_n v14_n = rax_n->t0000 + g_t415EF4;
+		if (rax_n->t0004 > v14_n && (g_t415F04 >= rax_n->t0004 && rax_n->t0008 > v14_n))
+			return 0x01;
 	}
 	*rdi = &g_t415EE0;
 	return 0x00;
@@ -4851,7 +4845,6 @@ l000000000040B548:
 		free(rax_n);
 		return 0x00;
 	}
-	uint128 xmm1_n = (uint128) rbp_n->r0008;
 	if (rbp_n->b0010 == 0x00)
 	{
 		word128 xmm0_n;
@@ -4864,7 +4857,7 @@ l000000000040B548:
 			r15_32_32_n = SLICE(r15_n, word32, 32);
 			xmm0_n = SEQ(SLICE(xmm0_n, word96, 32), v35_n + v35_n);
 		}
-		Eq_n v26_n = (real32) xmm0_n / (real32) xmm1_n;
+		Eq_n v26_n = (real32) xmm0_n / rbp_n->r0008;
 		if (v26_n >= g_t415F08)
 		{
 l000000000040B540:
@@ -4980,7 +4973,6 @@ word32 fn000000000040B710(Eq_n rsi, Eq_n rdi)
 {
 	ui32 esi_n = (word32) rsi;
 	struct Eq_n * rbp_n = *((word64) rdi + 40);
-	uint128 xmm1_n = (uint128) rbp_n->r0008;
 	if (rbp_n->b0010 == 0x00)
 	{
 		word128 xmm0_n;
@@ -4993,7 +4985,7 @@ word32 fn000000000040B710(Eq_n rsi, Eq_n rdi)
 			xmm0_n = SEQ(SLICE(xmm0, word96, 32), v30_n + v30_n);
 		}
 		word32 rsi_32_32_n = SLICE(rsi, word32, 32);
-		Eq_n v16_n = (real32) xmm0_n / (real32) xmm1_n;
+		Eq_n v16_n = (real32) xmm0_n / rbp_n->r0008;
 		if (v16_n >= g_t415F08)
 			return 0x00;
 		if (v16_n >= g_t415F0C)
@@ -5109,9 +5101,8 @@ l000000000040BB2E:
 		word128 xmm0_n;
 		fn000000000040ADB0((word64) rdi + 40);
 		Eq_n rax_n = *((word64) rdi + 16);
-		struct Eq_n * rdx_n = *((word64) rdi + 40);
 		ui32 eax_n = (word32) rax_n;
-		uint128 xmm2_n = (uint128) rdx_n->r0008;
+		struct Eq_n * rdx_n = *((word64) rdi + 40);
 		if (rax_n >= 0x00)
 			xmm0_n = SEQ(SLICE(xmm0_n, word96, 32), (real32) rax_n);
 		else
@@ -5129,13 +5120,13 @@ l000000000040BB2E:
 			real32 v46_n = (real32) (rax_n >> 0x01 | (uint64) (eax_n & 0x01));
 			xmm1_n = SEQ(SLICE(xmm1_n, word96, 32), v46_n + v46_n);
 		}
-		if ((real32) xmm1_n <= (real32) xmm2_n * (real32) xmm0_n)
+		if ((real32) xmm1_n <= rdx_n->r0008 * (real32) xmm0_n)
 			goto l000000000040B96A;
 		real32 v40_n = (real32) xmm0_n * rdx_n->r000C;
 		word96 v41_n = SLICE(xmm0_n, word96, 32);
 		word128 xmm0_n = SEQ(v41_n, v40_n);
 		if (rdx_n->b0010 == 0x00)
-			xmm0_n = SEQ(v41_n, v40_n * (real32) xmm2_n);
+			xmm0_n = SEQ(v41_n, v40_n * rdx_n->r0008);
 		if ((real32) xmm0_n >= g_t415F08)
 			goto l000000000040BB2E;
 		Eq_n rsi_n;
@@ -5234,7 +5225,7 @@ uint64 fn000000000040BB90(Eq_n rsi, Eq_n rdi)
 			real32 v46_n = (real32) (rdx_n >> 0x01 | (uint64) (edx_n & 0x01));
 			xmm1_n = SEQ(SLICE(xmm1_n, word96, 32), v46_n + v46_n);
 		}
-		if ((real32) (uint128) rax_n->r0000 * (real32) xmm0_n <= (real32) xmm1_n)
+		if (rax_n->r0000 * (real32) xmm0_n <= (real32) xmm1_n)
 			return rax_n;
 		real32 v35_n = (real32) xmm0_n * rax_n->r0004;
 		word96 v36_n = SLICE(xmm0_n, word96, 32);

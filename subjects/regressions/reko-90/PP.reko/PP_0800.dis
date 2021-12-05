@@ -9909,7 +9909,7 @@ l0800_60DB:
 	Mem693[ss:sp_680 - 8<i16>:word16] = Mem690[ss:bp_1036 - 0xC<16>:word16]
 	fn0800_B95E(ds_563, Mem693[ss:sp_680 - 8<i16>:word16], Mem693[ss:sp_680 - 6<i16>:word16], Mem693[ss:sp_680 - 4<i16>:word16], Mem693[ss:sp_680 - 2<i16>:word16], Mem693[ss:sp_680:word16])
 	word16 di_707 = Mem693[ss:bp_1036 - 0xC<16>:word16]
-	Mem714[ss:bp_1036 - 0x38<16>:word16] = -false
+	Mem714[ss:bp_1036 - 0x38<16>:word16] = -0<16>
 	word16 sp_705 = sp_680 + 2<16>
 	word16 si_2157 = 0<16>
 l0800_620C:
@@ -10009,7 +10009,7 @@ l0800_61B9:
 	fn0800_4047(ds_801, Mem941[ss:sp_790 - 2<16>:byte], Mem941[ss:sp_790:segptr32], out cx_2519, out dx_2520, out bx_2521, out di_707, out ds_563)
 	Mem956[ss:sp_790 + 2<16>:word16] = 1<16>
 	word16 ax_957 = Mem956[ss:bp_1036 - 0x22<16>:word16]
-	Mem965[ss:sp_790:word16] = SLICE(cond(ax_957 + 2<16>), bool, 1)
+	Mem965[ss:sp_790:word16] = CONVERT(SLICE(cond(ax_957 + 2<16>), bool, 1), bool, word16)
 	Mem967[ss:sp_790 - 2<16>:word16] = ax_957 + 2<16>
 	Mem970[ss:sp_790 - 4<16>:word16] = Mem967[ds_563:0x29E1<16>:word16]
 	Mem973[ss:sp_790 - 6<16>:word16] = Mem970[ds_563:0x29DF<16>:word16]
@@ -13055,6 +13055,7 @@ l0800_86D4:
 	C_332 = SLICE(cond(al_324), bool, 1) (alias)
 l0800_870E:
 	al_115 = al_324 * 2<8>
+	byte bh_346 = CONVERT(C_332, bool, byte)
 	bool v51_585 = al_115 <u 0<8>
 	branch al_115 == 0<8> l0800_86DA
 l0800_86DA:
@@ -13074,7 +13075,7 @@ l0800_8788:
 	al_371 = al_362
 l0800_878B:
 	al_115 = al_371 * 2<8>
-	bh_167 = C_332 *8 2<8> + (al_362 <u 0<8>) | 4<8>
+	bh_167 = bh_346 * 2<8> + (al_362 <u 0<8>) | 4<8>
 	bool v54_588 = al_115 <u 0<8>
 	branch al_115 == 0<8> l0800_87AF
 l0800_87AF:
@@ -13086,10 +13087,10 @@ l0800_8797:
 	branch v54_588 l0800_8728
 l0800_8799:
 l0800_8716:
-	bh_167 = C_332
-	branch C_332 != false l0800_8728
+	bh_167 = bh_346
+	branch bh_346 != 0<8> l0800_8728
 l0800_871D:
-	bh_167 = C_332 + 1<8>
+	bh_167 = bh_346 + 1<8>
 l0800_8722:
 	byte al_401 = al_115 * 2<8>
 	al_115 = al_401

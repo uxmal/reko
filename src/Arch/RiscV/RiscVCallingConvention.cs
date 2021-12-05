@@ -77,9 +77,10 @@ namespace Reko.Arch.RiscV
      */
     public class RiscVCallingConvention : CallingConvention
     {
-        private IProcessorArchitecture arch;
-        private RegisterStorage[] iregs;
-        private RegisterStorage[] fregs;
+        private readonly IProcessorArchitecture arch;
+        private readonly RegisterStorage[] iregs;
+        private readonly RegisterStorage[] fregs;
+        private int floatAbi;
 
         public RiscVCallingConvention(IProcessorArchitecture arch)
         {
@@ -90,6 +91,11 @@ namespace Reko.Arch.RiscV
             this.fregs = new[] { "fa0", "fa1", "fa2", "fa3", "fa4", "fa5", "fa6", "fa7" }
                 .Select(r => arch.GetRegister(r)!)
                 .ToArray();
+            if (((ProcessorArchitecture)arch).Options.TryGetValue("FloatAbi", out var oFloatAbi) &&
+                oFloatAbi is int floatAbi)
+            {
+                this.floatAbi = floatAbi;
+            }
         }
 
         public void Generate(ICallingConventionEmitter ccr, DataType? dtRet, DataType? dtThis, List<DataType> dtParams)
@@ -97,7 +103,8 @@ namespace Reko.Arch.RiscV
             ccr.LowLevelDetails(arch.WordWidth.Size, 0);
             if (dtRet != null)
             {
-                if (dtRet is PrimitiveType pt && pt.Domain == Domain.Real)
+                var pt = dtRet.ResolveAs<PrimitiveType>();
+                if (pt is not null && pt.Domain == Domain.Real && this.floatAbi > 0)
                 {
                     //$TODO floats > 64 bits
                     ccr.RegReturn(fregs[0]);
@@ -114,15 +121,15 @@ namespace Reko.Arch.RiscV
                     }
                     else
                         //$TODO: return values > 128 bits.
-                        throw new NotImplementedException();
+                        throw new NotImplementedException("Return values > 128 bits not supported yet.");
                 }
             }
             int ir = 0;
             for (int i = 0; i < dtParams.Count; ++i)
             {
                 var dtParam = dtParams[i];
-                var pt = dtParam as PrimitiveType;
-                if (pt != null && pt.Domain == Domain.Real)
+                var pt = dtParam .ResolveAs<PrimitiveType>();
+                if (pt != null && pt.Domain == Domain.Real && floatAbi > 0)
                 {
                     if (ir >= fregs.Length)
                     {

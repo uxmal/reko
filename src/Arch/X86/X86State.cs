@@ -30,6 +30,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace Reko.Arch.X86
 {
@@ -39,10 +40,14 @@ namespace Reko.Arch.X86
 	public class X86State : ProcessorState
 	{
 		private ulong [] regs;              // register values
+        private BigInteger[] xmmregs;       // XMM register values
 		private ulong [] valid;             // masks out only valid bits
         private uint flags;
         private uint validFlags;
         private IntelArchitecture arch;
+
+        private static readonly int ymm = Registers.ymm0.Number;
+        
 
         private const int StackItemSize = 2;
 
@@ -50,13 +55,15 @@ namespace Reko.Arch.X86
 		{
             this.arch = arch;
 			this.regs = new ulong[(int)Registers.Max];
-			this.valid = new ulong[(int)Registers.Max];
+            this.xmmregs = new BigInteger[16];
+            this.valid = new ulong[(int)Registers.Max];
 		}
 
 		public X86State(X86State st) : base(st)
 		{
             arch = st.arch;
             regs = (ulong[])st.regs.Clone();
+            xmmregs = (BigInteger[]) st.xmmregs.Clone();
 			valid = (ulong []) st.valid.Clone();
 		}
 
@@ -98,8 +105,17 @@ namespace Reko.Arch.X86
         {
             if (IsValid(reg))
             {
-                var val = (regs[reg.Number] & reg.BitMask) >> (int) reg.BitAddress;
-                return Constant.Create(reg.DataType, val);
+                var y = reg.Number - ymm;
+                if (0 <= y && y < 16)
+                {
+                    var val = (xmmregs[y] & reg.BitMask) >> (int) reg.BitAddress;
+                    return new BigConstant(reg.DataType, val);
+                }
+                else
+                {
+                    var val = (regs[reg.Number] & reg.BitMask) >> (int) reg.BitAddress;
+                    return Constant.Create(reg.DataType, val);
+                }
             }
             else
                 return InvalidConstant.Create(reg.DataType);
@@ -114,7 +130,15 @@ namespace Reko.Arch.X86
 			else
 			{
                 valid[reg.Number] |= reg.BitMask;
-                regs[reg.Number] = (regs[reg.Number] & ~reg.BitMask) | (c.ToUInt64() << (int)reg.BitAddress);
+                var y = reg.Number - ymm;
+                if (0 <= y && y < 16)
+                {
+                    xmmregs[y] = (regs[y] & ~reg.BitMask) | (c.ToBigInteger() << (int) reg.BitAddress);
+                }
+                else
+                {
+                    regs[reg.Number] = (regs[reg.Number] & ~reg.BitMask) | (c.ToUInt64() << (int) reg.BitAddress);
+                }
 			}
 		}
 

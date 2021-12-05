@@ -23740,7 +23740,7 @@ l0040E3FE:
 		{
 			*r2_n = ~0x01;
 			r3Out = r3;
-			r4Out = (word32) true;
+			r4Out = 0x01;
 			r6Out = r6;
 			r8Out.u0 = 0x00FE;
 			r9Out = r9_n;

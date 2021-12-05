@@ -4552,8 +4552,30 @@ namespace Reko.UnitTests.Arch.X86
             Run64bitTest("8D 4C 09 01");    // lea ecx,[rcx + rcx + 1]
             AssertCode(
                 "0|L--|0000000140000000(4): 2 instructions",
-                "1|L--|ecx = SLICE(rcx + 1<64> + rcx, word32, 0)");
+                "1|L--|ecx = SLICE(rcx + 1<64> + rcx, word32, 0)",
+                "2|L--|rcx = CONVERT(ecx, word32, uint64)");
         }
+
+        [Test]
+        public void X86rw_lea_ptr64_into_32_bitreg_2()
+        {
+            Run64bitTest("8D 14 BD 00 00 00 00");
+            AssertCode(
+                "0|L--|0000000140000000(7): 2 instructions",
+                "1|L--|edx = SLICE(0<i64> + rdi * 4<64>, word32, 0)",
+                "2|L--|rdx = CONVERT(edx, word32, uint64)");
+        }
+
+        [Test]
+        public void X86rw_lea_ptr64_into_32_bitreg_negative_offset()
+        {
+            Run64bitTest("8D 14 7D F8 FF FF FF ");
+            AssertCode(
+                "0|L--|0000000140000000(7): 2 instructions",
+                "1|L--|edx = SLICE(-8<i64> + rdi * 2<64>, word32, 0)",
+                "2|L--|rdx = CONVERT(edx, word32, uint64)");
+        }
+
 
         [Test]
         public void X86Rw_fdiv_mem()

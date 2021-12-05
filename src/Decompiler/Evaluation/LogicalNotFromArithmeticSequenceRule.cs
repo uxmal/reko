@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
+using System.Numerics;
 
 namespace Reko.Evaluation
 {
@@ -49,16 +50,18 @@ namespace Reko.Evaluation
             if (binExp.Operator != Operator.IAdd)
                 return false;
 
-            if (!(binExp.Right is Constant rightConstant) || rightConstant.ToInt64() != 1)
+            if (binExp.Right is BigConstant bigR && bigR.Value != BigInteger.One)
+                return false;
+            if (binExp.Right is not Constant rightConstant || rightConstant.ToInt64() != 1)
                 return false;
 
-            if (!(binExp.Left is BinaryExpression leftExpression) || leftExpression.Operator != Operator.ISub)
+            if (binExp.Left is not BinaryExpression leftExpression || leftExpression.Operator != Operator.ISub)
                 return false;
 
             if (!leftExpression.Left.IsZero)
                 return false;
 
-            if (!(leftExpression.Right is BinaryExpression middleExpression) || middleExpression.Operator != Operator.Eq)
+            if (leftExpression.Right is not BinaryExpression middleExpression || middleExpression.Operator != Operator.Eq)
                 return false;
 
             if (!middleExpression.Right.IsZero)

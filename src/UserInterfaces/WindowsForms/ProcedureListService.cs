@@ -23,6 +23,7 @@ using Reko.Gui.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -195,10 +196,10 @@ namespace Reko.Gui
 
         private void EditProcedureSignature()
         {
+            Debug.Assert(listProcedures.SelectedItems.Count == 1, "QueryStatus should be ensuring this");
             var item = listProcedures.SelectedItems[0];
-            if (item.Tag != null)
+            if (item.Tag is ProgramProcedure pp)
             {
-                var pp = (ProgramProcedure) item.Tag;
                 services.RequireService<ICommandFactory>().EditSignature(pp.Program, pp.Procedure, pp.Procedure.EntryAddress).Do();
                 UpdateItem(item);
             }
@@ -206,16 +207,17 @@ namespace Reko.Gui
 
         private void GotoProcedureAddress()
         {
+            Debug.Assert(listProcedures.SelectedItems.Count == 1, "QueryStatus should be ensuring this");
             var item = listProcedures.SelectedItems[0];
-            if (item.Tag != null)
+            if (item.Tag is ProgramProcedure pp)
             {
-                var pp = (ProgramProcedure) item.Tag;
                 services.RequireService<ILowLevelViewService>().ShowMemoryAtAddress(pp.Program, pp.Procedure.EntryAddress);
             }
         }
 
         private void ShowProcedureCallHierarchy()
         {
+            Debug.Assert(listProcedures.SelectedItems.Count == 1, "QueryStatus should be ensuring this");
             var item = listProcedures.SelectedItems[0];
             if (item.Tag != null)
             {
@@ -302,9 +304,8 @@ namespace Reko.Gui
         private void ListProcedures_DoubleClick(object sender, EventArgs e)
         {
             var item = listProcedures.FocusedItem;
-            if (item == null || !item.Selected || item.Tag == null)
+            if (item == null || !item.Selected || item.Tag is not ProgramProcedure pp)
                 return;
-            var pp = (ProgramProcedure) item.Tag;
             services.RequireService<ICodeViewerService>().DisplayProcedure(pp.Program, pp.Procedure, pp.Program.NeedsScanning);
         }
 

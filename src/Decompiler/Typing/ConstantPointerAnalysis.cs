@@ -118,7 +118,7 @@ namespace Reko.Typing
 
 		public override void VisitConstant(Constant c)
 		{
-            if (!c.IsValid)
+            if (!c.IsValid || c is BigConstant)
                 return;
 			DataType dt = c.TypeVariable!.DataType;
             int? offset = StructureField.ToOffset(c);
