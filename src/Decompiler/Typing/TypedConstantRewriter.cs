@@ -373,7 +373,9 @@ namespace Reko.Typing
                 return false;
             // $BUGBUG: ImageReader throws NotImplementedException when
             // reading of 48-bit real at subjects/Raw/1750A/fff and
-            // subjects/Raw/1750A/trigtst
+            // subjects/Raw/1750A/trigtst.
+            // Not all floating point is IEEE 754. See
+            // https://github.com/uxmal/reko/issues/1100 for details.
             if (pt.BitSize != 32 && pt.BitSize != 64)
                 return false;
             var rdr = program.CreateImageReader(
