@@ -110,21 +110,21 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.OriginalDataType = dt;
         }
 
-        private void Given_String(string str, uint addr)
+        private void Given_String_At(string str, uint addr)
         {
             var w = new LeImageWriter(
                 bmem.Bytes, addr - (uint) bmem.BaseAddress.ToLinear());
             w.WriteString(str, Encoding.ASCII);
         }
 
-        private void Given_UInt64(ulong bits, uint addr)
+        private void Given_UInt64_At(ulong bits, uint addr)
         {
             var w = new LeImageWriter(
                 bmem.Bytes, addr - (uint) bmem.BaseAddress.ToLinear());
             w.WriteLeUInt64(bits);
         }
 
-        private void Given_UInt32(uint bits, uint addr)
+        private void Given_UInt32_At(uint bits, uint addr)
         {
             var w = new LeImageWriter(
                 bmem.Bytes, addr - (uint) bmem.BaseAddress.ToLinear());
@@ -272,7 +272,7 @@ namespace Reko.UnitTests.Typing
             // 1, others have length prefixed strings (looking at you, Turbo Pascal and
             // MacOS classic).
             Given_TypedConstantRewriter();
-            Given_String("Hello", 0x00100000);
+            Given_String_At("Hello", 0x00100000);
             Given_Readonly_Segment();
             var c = Constant.Word32(0x00100000);
             store.EnsureExpressionTypeVariable(factory, 0, c);
@@ -294,7 +294,7 @@ namespace Reko.UnitTests.Typing
             // 1, others have length prefixed strings (looking at you, Turbo Pascal and
             // MacOS classic).
             Given_TypedConstantRewriter();
-            Given_String("Hello", 0x00100000);
+            Given_String_At("Hello", 0x00100000);
             Given_Readonly_Segment();
             var c = Constant.Word32(0x00100000);
             store.EnsureExpressionTypeVariable(factory, 0, c);
@@ -313,7 +313,7 @@ namespace Reko.UnitTests.Typing
         public void Tcr_Writable_Char_Pointer_YieldsCharacterReference()
         {
             Given_TypedConstantRewriter();
-            Given_String("Hello", 0x00100000);
+            Given_String_At("Hello", 0x00100000);
             Given_Writeable_Segment();
             var c = Constant.Word32(0x00100000);
             store.EnsureExpressionTypeVariable(factory, 0, c);
@@ -372,7 +372,7 @@ namespace Reko.UnitTests.Typing
         public void Tcr_Real64_ReadOnly_Pointer()
         {
             Given_TypedConstantRewriter();
-            Given_UInt64(0x4029800000000000, 0x00100000); // 12.75
+            Given_UInt64_At(0x4029800000000000, 0x00100000); // 12.75
             Given_Readonly_Segment();
             var c = Given_Constant(0x00100000);
             Given_DataType(c, new Pointer(PrimitiveType.Real64, 32));
@@ -386,7 +386,7 @@ namespace Reko.UnitTests.Typing
         public void Tcr_Real64_ReadOnly_Dereferenced()
         {
             Given_TypedConstantRewriter();
-            Given_UInt64(0x4029800000000000, 0x00100000); // 12.75
+            Given_UInt64_At(0x4029800000000000, 0x00100000); // 12.75
             Given_Readonly_Segment();
             var c = Given_Constant(0x00100000);
             Given_DataType(c, new Pointer(PrimitiveType.Real64, 32));
@@ -400,7 +400,7 @@ namespace Reko.UnitTests.Typing
         public void Tcr_Real64_Writeable_Dereferenced()
         {
             Given_TypedConstantRewriter();
-            Given_UInt64(0x4029800000000000, 0x00100000); // 12.75
+            Given_UInt64_At(0x4029800000000000, 0x00100000); // 12.75
             Given_Writeable_Segment();
             var c = Given_Constant(0x00100000);
             Given_DataType(c, new Pointer(PrimitiveType.Real64, 32));
@@ -414,7 +414,7 @@ namespace Reko.UnitTests.Typing
         public void Tcr_Real32_ReadOnly_Dereferenced()
         {
             Given_TypedConstantRewriter();
-            Given_UInt32(0x414C0000, 0x00100000); // 12.75
+            Given_UInt32_At(0x414C0000, 0x00100000); // 12.75
             Given_Readonly_Segment();
             var c = Given_Constant(0x00100000);
             Given_DataType(c, new Pointer(PrimitiveType.Real32, 32));
