@@ -110,6 +110,43 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.OriginalDataType = dt;
         }
 
+        private void Given_String(string str, uint addr)
+        {
+            var w = new LeImageWriter(
+                bmem.Bytes, addr - (uint) bmem.BaseAddress.ToLinear());
+            w.WriteString(str, Encoding.ASCII);
+        }
+
+        private void Given_UInt64(ulong bits, uint addr)
+        {
+            var w = new LeImageWriter(
+                bmem.Bytes, addr - (uint) bmem.BaseAddress.ToLinear());
+            w.WriteLeUInt64(bits);
+        }
+
+        private void Given_UInt32(uint bits, uint addr)
+        {
+            var w = new LeImageWriter(
+                bmem.Bytes, addr - (uint) bmem.BaseAddress.ToLinear());
+            w.WriteLeUInt32(bits);
+        }
+
+        private void Given_Readonly_Segment()
+        {
+            foreach (var seg in program.SegmentMap.Segments.Values)
+            {
+                seg.Access = AccessMode.Read;
+            }
+        }
+
+        private void Given_Writeable_Segment()
+        {
+            foreach (var seg in program.SegmentMap.Segments.Values)
+            {
+                seg.Access = AccessMode.ReadWrite;
+            }
+        }
+
         private Expression RewritePointer(Address addr)
         {
             return tcr.Rewrite(addr, null, false);
@@ -225,42 +262,6 @@ namespace Reko.UnitTests.Typing
             c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
             var e = RewriteDereferenced(c);
             Assert.AreEqual("g_t100100.dw0000", e.ToString());
-        }
-
-        private void Given_String(string str, uint addr)
-        {
-            var w = new LeImageWriter(bmem.Bytes, addr - (uint)bmem.BaseAddress.ToLinear());
-            w.WriteString(str, Encoding.ASCII);
-        }
-
-        private void Given_UInt64(ulong bits, uint addr)
-        {
-            var w = new LeImageWriter(
-                bmem.Bytes, addr - (uint) bmem.BaseAddress.ToLinear());
-            w.WriteLeUInt64(bits);
-        }
-
-        private void Given_UInt32(uint bits, uint addr)
-        {
-            var w = new LeImageWriter(
-                bmem.Bytes, addr - (uint) bmem.BaseAddress.ToLinear());
-            w.WriteLeUInt32(bits);
-        }
-
-        private void Given_Readonly_Segment()
-        {
-            foreach (var seg in program.SegmentMap.Segments.Values)
-            {
-                seg.Access = AccessMode.Read;
-            }
-        }
-
-        private void Given_Writeable_Segment()
-        {
-            foreach (var seg in program.SegmentMap.Segments.Values)
-            {
-                seg.Access = AccessMode.ReadWrite;
-            }
         }
 
         [Test(Description ="If we have a char * to read-only memory, treat it as a C string")]
