@@ -5616,7 +5616,7 @@ l000000000040BE7D:
 		r14_n = r11_n + 0x01;
 		if (rax_n >u (r11_n + 0x02) + CONVERT(CONVERT((edx & 0x20) == 0x00, bool, int8), int8, uint64) || (bLocC8_n & 0x08) != 0x00 && Mem961[(rsi - 0x01) + rax_n:byte] == 0x30)
 		{
-			Eq_n rLoc1_n = rLoc2_n * (real64) g_r415F84;
+			Eq_n rLoc1_n = rLoc2_n * (real64) 10.0F;
 			if ((edx & 0x03) != 0x01 && (real64) g_r415F90 > rLoc1_n)
 			{
 				Eq_n rax_n;

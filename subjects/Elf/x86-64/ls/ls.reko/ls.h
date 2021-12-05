@@ -4773,7 +4773,7 @@ Eq_11122: size_t
 	T_11122 (in r11_70 + 2<64> @ 0040BFC9 : word64)
 Eq_11138: (union "Eq_11138" (real64 u0) (up64 u1))
 	T_11138 (in rLoc1_1790 @ 0040BFF5 : Eq_11138)
-	T_11142 (in rLoc2_1719 * (real64) g_r415F84 @ 00000000 : real64)
+	T_11142 (in rLoc2_1719 * (real64) 10.0F @ 00000000 : real64)
 	T_11260 (in CONVERT(Mem961[0x0000000000415F90<p64>:real80], real80, real64) @ 0040C009 : real64)
 	T_11263 (in rLoc1_1798 @ 0040C00F : Eq_11138)
 	T_11264 (in rLoc2_1792 @ 0040C00F : Eq_11138)
@@ -49989,7 +49989,7 @@ T_11141: (in CONVERT(Mem961[0x0000000000415F84<p64>:real32], real32, real64) @ 0
   Class: Eq_11141
   DataType: real64
   OrigDataType: real64
-T_11142: (in rLoc2_1719 * (real64) g_r415F84 @ 00000000 : real64)
+T_11142: (in rLoc2_1719 * (real64) 10.0F @ 00000000 : real64)
   Class: Eq_11138
   DataType: Eq_11138
   OrigDataType: real64

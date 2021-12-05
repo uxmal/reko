@@ -350,7 +350,7 @@ T_40: (in Mem10[0x004020F0<p32>:real32] @ 00401079 : real32)
   Class: Eq_10
   DataType: real32
   OrigDataType: real32
-T_41: (in test1("1", 2<32>, "3", g_r4020F0) @ 00401079 : void)
+T_41: (in test1("1", 2<32>, "3", 4.123F) @ 00401079 : void)
   Class: Eq_18
   DataType: void
   OrigDataType: void
@@ -386,7 +386,7 @@ T_49: (in Mem25[0x004020EC<p32>:real32] @ 0040109D : real32)
   Class: Eq_10
   DataType: real32
   OrigDataType: real32
-T_50: (in test1("5", 6<32>, "7", g_r4020EC) @ 0040109D : void)
+T_50: (in test1("5", 6<32>, "7", 8.567F) @ 0040109D : void)
   Class: Eq_18
   DataType: void
   OrigDataType: void
@@ -526,7 +526,7 @@ T_84: (in Mem9[0x004020F4<p32>:real32] @ 00401113 : real32)
   Class: Eq_84
   DataType: real32
   OrigDataType: real32
-T_85: (in gbl_c->vtbl->method04(gbl_c, 0x3E7<32>, g_r4020F4) @ 00401113 : void)
+T_85: (in gbl_c->vtbl->method04(gbl_c, 0x3E7<32>, 1000.1F) @ 00401113 : void)
   Class: Eq_85
   DataType: void
   OrigDataType: void
@@ -774,7 +774,7 @@ T_146: (in Mem15[0x00402100<p32>:real64] @ 004011DB : real64)
   Class: Eq_132
   DataType: real64
   OrigDataType: real64
-T_147: (in g_r402100 == rArg04 @ 00000000 : bool)
+T_147: (in 123.0 == rArg04 @ 00000000 : bool)
   Class: Eq_147
   DataType: bool
   OrigDataType: bool
@@ -814,7 +814,7 @@ T_156: (in Mem15[0x004020F8<p32>:real64] @ 004011EB : real64)
   Class: Eq_132
   DataType: real64
   OrigDataType: real64
-T_157: (in g_r4020F8 <= rArg04 @ 00000000 : bool)
+T_157: (in 321.0 <= rArg04 @ 00000000 : bool)
   Class: Eq_157
   DataType: bool
   OrigDataType: bool

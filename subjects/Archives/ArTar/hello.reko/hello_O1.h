@@ -473,7 +473,7 @@ T_95: (in Mem5[0x0000000000002074<p64>:real32] @ 000011A5 : real32)
   Class: Eq_95
   DataType: real32
   OrigDataType: real32
-T_96: (in (real32) xmm0 * g_r2074 @ 00000000 : real32)
+T_96: (in (real32) xmm0 * 0.5F @ 00000000 : real32)
   Class: Eq_96
   DataType: real32
   OrigDataType: real32
@@ -481,7 +481,7 @@ T_97: (in SLICE(xmm2_16, real32, 0) @ 000011A5 : real32)
   Class: Eq_97
   DataType: real32
   OrigDataType: real32
-T_98: (in (real32) xmm0 * g_r2074 * (real32) xmm2_16 @ 00000000 : real32)
+T_98: (in (real32) xmm0 * 0.5F * (real32) xmm2_16 @ 00000000 : real32)
   Class: Eq_98
   DataType: real32
   OrigDataType: real32
@@ -489,11 +489,11 @@ T_99: (in SLICE(xmm2_16, real32, 0) @ 000011A5 : real32)
   Class: Eq_99
   DataType: real32
   OrigDataType: real32
-T_100: (in (real32) xmm0 * g_r2074 * (real32) xmm2_16 * (real32) xmm2_16 @ 00000000 : real32)
+T_100: (in (real32) xmm0 * 0.5F * (real32) xmm2_16 * (real32) xmm2_16 @ 00000000 : real32)
   Class: Eq_100
   DataType: real32
   OrigDataType: real32
-T_101: (in g_r2078 - (((real32) xmm0 * g_r2074) * (real32) xmm2_16) * (real32) xmm2_16 @ 00000000 : real32)
+T_101: (in 1.5F - (((real32) xmm0 * 0.5F) * (real32) xmm2_16) * (real32) xmm2_16 @ 00000000 : real32)
   Class: Eq_101
   DataType: real32
   OrigDataType: real32
@@ -501,7 +501,7 @@ T_102: (in SLICE(xmm2_16, real32, 0) @ 000011A5 : real32)
   Class: Eq_102
   DataType: real32
   OrigDataType: real32
-T_103: (in (g_r2078 - (((real32) xmm0 * g_r2074) * (real32) xmm2_16) * (real32) xmm2_16) * (real32) xmm2_16 @ 00000000 : real32)
+T_103: (in (1.5F - (((real32) xmm0 * 0.5F) * (real32) xmm2_16) * (real32) xmm2_16) * (real32) xmm2_16 @ 00000000 : real32)
   Class: Eq_103
   DataType: real32
   OrigDataType: real32
@@ -565,7 +565,7 @@ T_118: (in sqrtf((real32) xmm0) @ 000011DF : real32)
   Class: Eq_113
   DataType: real32
   OrigDataType: real32
-T_119: (in g_r207C / sqrtf((real32) xmm0) @ 00000000 : real32)
+T_119: (in 1.0F / sqrtf((real32) xmm0) @ 00000000 : real32)
   Class: Eq_119
   DataType: real32
   OrigDataType: real32
@@ -601,7 +601,7 @@ T_127: (in __fsqrt(xmm0) @ 000011C2 : real32)
   Class: Eq_127
   DataType: real32
   OrigDataType: real32
-T_128: (in g_r207C / __fsqrt(xmm0) @ 00000000 : real32)
+T_128: (in 1.0F / __fsqrt(xmm0) @ 00000000 : real32)
   Class: Eq_128
   DataType: real32
   OrigDataType: real32

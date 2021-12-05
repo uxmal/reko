@@ -23,9 +23,9 @@ void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
 // 00401060: void test2(Stack word32 dwArg04)
 void test2(word32 dwArg04)
 {
-	test1("1", 0x02, "3", g_r4020F0);
+	test1("1", 0x02, "3", 4.123F);
 	if (dwArg04 == 0x00)
-		test1("5", 0x06, "7", g_r4020EC);
+		test1("5", 0x06, "7", 8.567F);
 }
 
 // 004010B0: void indirect_call_test3(Stack (ptr32 Eq_n) c)
@@ -43,7 +43,7 @@ void test4()
 // 004010F0: void test5()
 void test5()
 {
-	gbl_c->vtbl->method04(gbl_c, 999, g_r4020F4);
+	gbl_c->vtbl->method04(gbl_c, 999, 1000.1F);
 }
 
 // 00401120: void test6(Stack Eq_n c, Stack int32 a, Stack int32 b)
@@ -68,7 +68,7 @@ void test7(real64 rArg04)
 void nested_if_blocks_test8(real64 rArg04)
 {
 	gbl_thiscall->vtbl->modify_double(gbl_thiscall, ~0x00, rArg04);
-	if (g_r402100 != rArg04 && g_r4020F8 > rArg04)
+	if (123.0 != rArg04 && 321.0 > rArg04)
 		gbl_thiscall->vtbl->set_double(gbl_thiscall, rArg04);
 	test6(gbl_c, 0x06, 0x07);
 }

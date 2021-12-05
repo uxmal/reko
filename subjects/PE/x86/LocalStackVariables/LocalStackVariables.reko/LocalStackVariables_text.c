@@ -14,11 +14,11 @@ int32 main(int32 argc, char ** argv)
 	// res = GetMin(&s1, &s2)
 	// s1.i = 100
 	// res->i = 5
-	real64 rLoc1_n = g_r4020F8;
+	real64 rLoc1_n = 11.0;
 	struct Eq_n * eax_n = GetMin(fp - 44, fp - 0x1C);
 	eax_n->dw0000 = 0x05;
 	// res->d = 5.0
-	eax_n->r0008 = g_r4020F0;
+	eax_n->r0008 = 5.0;
 	// printf("%d %f %d %f\n", s1.i, s1.d, s2.i, s2.d)
 	printf("%d %f %d %f\n", 100, 1.0, 0x0A, rLoc1_n);
 	// gbl_s = &s2
@@ -26,10 +26,10 @@ int32 main(int32 argc, char ** argv)
 	// s2.i = 2
 	// s2.d = 2.0
 	// gbl_s->i = 3
-	real64 rLoc1_n = g_r4020E8;
+	real64 rLoc1_n = 2.0;
 	g_ptr403018->dw0000 = 0x03;
 	// gbl_s->d = 3.0
-	g_ptr403018->r0008 = g_r4020E0;
+	g_ptr403018->r0008 = 3.0;
 	// printf("%d %f\n", s2.i, s2.d)
 	printf("%d %f\n", 0x02, rLoc1_n);
 	return 0x00;
