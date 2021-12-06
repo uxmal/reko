@@ -312,6 +312,14 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCRw_stwcix()
+        {
+            AssertCode(0x7D722F2A,  // stwcix
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|__stwcix(,)");
+        }
+
+        [Test]
         public void PPCRw_stwx_64()
         {
             Given_PowerPcBe64();
@@ -1768,6 +1776,14 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0xFC0A682E,   // fsel	f0,f10,f0,f13
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|f0 = f10 >= 0.0 ? f0 : f13");
+        }
+
+        [Test]
+        public void PPCRw_mtvsrws()
+        {
+            AssertCode(0x7D652327, // mtvsrws v11,r5
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|v11 = __mtvsrws(r5)");
         }
 
         [Test]

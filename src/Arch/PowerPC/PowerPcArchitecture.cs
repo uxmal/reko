@@ -41,23 +41,23 @@ namespace Reko.Arch.PowerPC
         public const int CcFieldMin = 0x40;
         public const int CcFieldMax = 0x48;
 
-        private ReadOnlyCollection<RegisterStorage> regs;
-        private ReadOnlyCollection<RegisterStorage> fpregs;
-        private ReadOnlyCollection<RegisterStorage> vregs;
-        private ReadOnlyCollection<RegisterStorage> cregs;
-        private Dictionary<int, RegisterStorage> spregs;
-        private Dictionary<uint, FlagGroupStorage> ccFlagGroups;
-        private Dictionary<string, FlagGroupStorage> ccFlagGroupsByName;
+        private readonly ReadOnlyCollection<RegisterStorage> regs;
+        private readonly ReadOnlyCollection<RegisterStorage> fpregs;
+        private readonly ReadOnlyCollection<RegisterStorage> vregs;
+        private readonly ReadOnlyCollection<RegisterStorage> cregs;
+        private readonly Dictionary<int, RegisterStorage> spregs;
+        private readonly Dictionary<uint, FlagGroupStorage> ccFlagGroups;
+        private readonly Dictionary<string, FlagGroupStorage> ccFlagGroupsByName;
         private Decoder[]? primaryDecoders;
 
-        public RegisterStorage lr { get; private set; }
-        public RegisterStorage ctr { get; private set; }
-        public RegisterStorage xer { get; private set; }
-        public RegisterStorage fpscr { get; private set; }
-        public RegisterStorage cr { get; private set; }
+        public RegisterStorage lr { get; }
+        public RegisterStorage ctr { get; }
+        public RegisterStorage xer { get; }
+        public RegisterStorage fpscr { get; }
+        public RegisterStorage cr { get; }
 
 
-        public RegisterStorage acc { get; private set; }
+        public RegisterStorage acc { get; }
 
         /// <summary>
         /// Creates an instance of PowerPcArchitecture.

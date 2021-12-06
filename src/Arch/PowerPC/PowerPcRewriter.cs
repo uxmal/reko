@@ -267,6 +267,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.mtmsrd: RewriteMtmsr(PrimitiveType.Word64); break;
                 case Mnemonic.mtspr: RewriteMtspr(); break;
                 case Mnemonic.mtlr: RewriteMtlr(); break;
+                case Mnemonic.mtvsrws: RewriteMtvsrws(); break;
                 case Mnemonic.mulhw: RewriteMulhw(); break;
                 case Mnemonic.mulhwu: RewriteMulhwu(); break;
                 case Mnemonic.mulhhwu: RewriteMulhhwu(); break;

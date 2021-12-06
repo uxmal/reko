@@ -1460,8 +1460,7 @@ namespace Reko.UnitTests.Arch.Arm
         [Test]
         public void AArch64Dis_sqrdmulh_scalar_elem()
         {
-            AssertCode("@@@", "CBD37A1F");
-            AssertCode("@@@", "CBD37A5F");
+            AssertCode("sqrdmulh\th11,h30,v10.h[3]", "CBD37A5F");
         }
 
         [Test]
@@ -1527,8 +1526,6 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("sqshrn\tv17.8b,v31.8h,#5", "F1970B0F");
             AssertCode("sqshrn2\tv17.16b,v31.8h,#5", "F1970B4F");
         }
-
-  
 
         [Test]
         public void AArch64Dis_sqsub()
@@ -1826,6 +1823,7 @@ namespace Reko.UnitTests.Arch.Arm
         {
             AssertCode("uzp2\tv1.2s,v11.2s,v13.2s", "61598D0E");
             AssertCode("uzp2\tv1.4s,v11.4s,v13.4s", "61598D4E");
+            AssertCode("uzp2\tv17.8h,v30.8h,v12.8h", "D15B4C4E");
         }
 
         [Test]
@@ -1892,6 +1890,12 @@ namespace Reko.UnitTests.Arch.Arm
         {
             AssertCode("ucvtf\tv13.2s,v12.2s", "8DD9212E");
             AssertCode("ucvtf\tv13.4s,v12.4s", "8DD9216E");
+        }
+
+        [Test]
+        public void AArch64Dis_ucvtf_vector_fixed()
+        {
+            AssertCode("ucvtf\tv10.2d,v10.2d,#&13", "4AE56D6F");
         }
 
         [Test]
@@ -2283,7 +2287,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x1FD61F00);
             Expect_Code("fmadd\th0,h24,h22,h7");
         }
-        
+
         [Test]
         public void AArch64Dis_pmul()
         {
@@ -2599,8 +2603,8 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x1F74DDE8);
             Expect_Code("fnmsub\td8,d15,d20,d23");
+            AssertCode("fnmsub\td11,d30,d26,d20", "CBD37A1F");
         }
-
 
         [Test]
         public void AArch64Dis_crc32x()
@@ -2732,6 +2736,12 @@ namespace Reko.UnitTests.Arch.Arm
         {
             Given_Instruction(0x485FFC62);
             Expect_Code("ldaxrh\tw2,[x3]");
+        }
+
+        [Test]
+        public void AArch64Dis_scvtf_vector_fixed()
+        {
+            AssertCode("scvtf\tv0.2d,v30.2d,#&22", "C0E75E4F");
         }
 
         [Test]
@@ -2899,20 +2909,6 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("zip2\tv10.8b,v30.8b,v11.8b", "CA7B0B0E");
             AssertCode("zip2\tv10.16b,v30.16b,v11.16b", "CA7B0B4E");
         }
-
-        [Test]
-        public void AArch64Dis_zz_D15B4C4E()
-        {
-            AssertCode("@@@", "D15B4C4E");
-        }
-
-
-        [Test]
-        public void AArch64Dis_zz_CDDB796E()
-        {
-            AssertCode("@@@", "CDDB796E");
-        }
-
 
         /*
          * //$BORED: amuse yourself by making these tests pass.

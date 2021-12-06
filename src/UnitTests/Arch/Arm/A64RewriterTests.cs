@@ -20,16 +20,10 @@
 
 using NUnit.Framework;
 using Reko.Arch.Arm;
-using Reko.Arch.Arm.AArch64;
 using Reko.Core;
 using Reko.Core.Memory;
-using Reko.Core.Rtl;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reko.UnitTests.Arch.Arm
 {
@@ -1649,15 +1643,6 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // fcvtzs	w12,d0
                 "0|L--|0000000000100000(4): 1 instructions",
                 "1|L--|w12 = CONVERT(trunc(d0), real64, int32)");
-        }
-
-        [Test]
-        public void AArch64Rw_ucvtf_real32_int32()
-        {
-            Given_Instruction(0x1E230101);
-            AssertCode(     // ucvtf\ts1,w8
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|s1 = CONVERT(w8, uint32, real32)");
         }
 
         [Test]
@@ -3762,8 +3747,27 @@ namespace Reko.UnitTests.Arch.Arm
             Given_HexString("EBDB792E");
             AssertCode(     // ucvtf	v11.4h,v31.4h
                 "0|L--|0000000000100000(4): 2 instructions",
-                "1|L--|v2 = d31",
-                "2|L--|d11 = __ucvtf_u16(v2)");
+                "1|L--|v4 = d31",
+                "2|L--|d11 = __ucvtf_u16(v4)");
+        }
+
+        [Test]
+        public void AArch64Rw_ucvtf_real32_int32()
+        {
+            Given_Instruction(0x1E230101);
+            AssertCode(     // ucvtf\ts1,w8
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|s1 = CONVERT(w8, uint32, real32)");
+        }
+
+        [Test]
+        public void AArch64Rw_ucvtf_vector_fixed()
+        {
+            Given_HexString("4AE56D6F");
+            AssertCode( // ucvtf\tv10.2d,v10.2d,#&13
+                "0|L--|0000000000100000(4): 2 instructions",
+                "1|L--|v3 = q10",
+                "2|L--|q10 = __ucvtf_fixed(v3, 19<i32>)");
         }
 
         [Test]

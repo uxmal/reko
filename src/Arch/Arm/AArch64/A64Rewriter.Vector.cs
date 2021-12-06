@@ -395,7 +395,7 @@ namespace Reko.Arch.Arm.AArch64
             RewriteSimdExpand("__movi_{0}");
         }
 
-        private void RewriteScvtf()
+        private void RewriteIcvtf(string sSign, Domain intDomain)
         {
             var src = RewriteOp(1);
             var dst = RewriteOp(0);
@@ -405,22 +405,27 @@ namespace Reko.Arch.Arm.AArch64
             if (instr.Operands.Length == 3)
             {
                 // fixed point conversion.
+                var dtSrc = MakeOperandType(instr.Operands[1], intDomain);
+                var dtDst = MakeOperandType(instr.Operands[0], Domain.Real);
+                var tmpSrc = binder.CreateTemporary(dtSrc);
+                var dtElem = ElementDataType(dtSrc) ?? ElementDataType(dtDst) ?? PrimitiveType.Byte;
                 var fprec = RewriteOp(instr.Operands[2]);
-                m.Assign(dst, host.Intrinsic("__scvtf_fixed", true, realType, src, fprec));
+                m.Assign(tmpSrc, src);
+                m.Assign(dst, host.Intrinsic($"__{sSign}cvtf_fixed", true, realType, tmpSrc, fprec));
             }
-            else if (src is Identifier idSrc && Registers.IsIntegerRegister((RegisterStorage)idSrc.Storage))
+            else if (src is Identifier idSrc && Registers.IsIntegerRegister((RegisterStorage) idSrc.Storage))
             {
-                var intType = PrimitiveType.Create(Domain.SignedInt, srcBitSize);
+                var intType = PrimitiveType.Create(intDomain, srcBitSize);
                 m.Assign(dst, m.Convert(src, intType, realType));
             }
-            else if (instr.VectorData == VectorData.Invalid)
+            else if (instr.Operands[0] is VectorRegisterOperand vrop)
             {
-                var intType = PrimitiveType.Create(Domain.SignedInt, srcBitSize);
-                m.Assign(dst, m.Convert(src, intType, realType));
+                RewriteSimdUnary($"__{sSign}cvtf_{{0}}", intDomain);
             }
             else
             {
-                RewriteSimdUnary("__scvtf_{0}", Domain.SignedInt);
+                var intType = PrimitiveType.Create(intDomain, srcBitSize);
+                m.Assign(dst, m.Convert(src, intType, realType));
             }
         }
 

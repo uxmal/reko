@@ -877,7 +877,7 @@ namespace Reko.Arch.PowerPC
                     (0b01010, new SprDecoder(false)),                   // P1 O mfspr Move From SPR
                     (0b01011, new XfxDecoder(Mnemonic.mftb, r1, X3)),   // PPC mftb Move From Time Base   //$TODO don't need special decoder for SPR field
                     (0b01101, Nyi("mtvsrdd")),                          // v3.0 mtvsrdd Move To VSR Double Dword
-                    (0b01100, Nyi("mtvsrws")),                          // v3.0 mtvsrws Move To VSR Word & Splat
+                    (0b01100, Instr(Mnemonic.mtvsrws, v1, r2)),         // v3.0 mtvsrws Move To VSR Word & Splat
                     (0b01110, new SprDecoder(true)),                    // P1 O mtspr Move To SPR
                     (0b10111, Nyi("darn")),                             // v3.0 darn Deliver A Random Number
                     (0b11010, Nyi("slbmfev")),                          // v2.00 P slbmfev SLB Move From Entry VSID
@@ -908,7 +908,7 @@ namespace Reko.Arch.PowerPC
                     (0b11001, Nyi("lhzcix")),                           // v2.05 H lhzcix Load Hword & Zero Caching Inhibited Indexed
                     (0b11010, Nyi("lbzcix")),                           // v2.05 H lbzcix Load Byte & Zero Caching Inhibited Indexed
                     (0b11011, Nyi("ldcix")),                            // v2.05 H ldcix Load Dword Caching Inhibited Indexed
-                    (0b11100, Nyi("stwcix")),                           // v2.05 H stwcix Store Word Caching Inhibited Indexed
+                    (0b11100, Instr(Mnemonic.stwcix, r1, r2, r3)),      // v2.05 H stwcix Store Word Caching Inhibited Indexed
                     (0b11101, Nyi("sthcix")),                           // v2.05 H sthcix Store Hword Caching Inhibited Indexed
                     (0b11110, Nyi("stbcix")),                           // v2.05 H stbcix Store Byte Caching Inhibited Indexed
                     (0b11111, Nyi("stdcix"))),                          // v2.05 H stdcix Store Dword Caching Inhibited Indexed

@@ -239,21 +239,5 @@ namespace Reko.Arch.Arm.AArch64
             var fn = src.DataType.BitSize == 32 ? "sqrtf" : "sqrt";
             m.Assign(dst, host.Intrinsic(fn, false, src.DataType, src));
         }
-
-        private void RewriteIcvt(string simdFormat, Domain domain)
-        {
-            if (instr.Operands[0] is VectorRegisterOperand)
-            {
-                RewriteSimdUnary(simdFormat, domain);
-            }
-            else
-            {
-                var dst = RewriteOp(instr.Operands[0]);
-                var src = RewriteOp(instr.Operands[1]);
-                var dtSrc = MakeInteger(domain, src.DataType);
-                var dtDst = MakeReal(dst.DataType);
-                m.Assign(dst, m.Convert(src, dtSrc, dtDst));
-            }
-        }
     }
 }

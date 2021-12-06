@@ -456,6 +456,13 @@ namespace Reko.Arch.PowerPC
             m.Assign(opD, host.Intrinsic("__lvrx", false, opD.DataType, opS, opI));
         }
 
+        private void RewriteMtvsrws()
+        {
+            var opS = RewriteOperand(1);
+            var opD = RewriteOperand(0);
+            m.Assign(opD, host.Intrinsic("__mtvsrws", false, opD.DataType, opS));
+        }
+
         // Very specific to XBOX 360
 
         private void RewriteVupkd3d()

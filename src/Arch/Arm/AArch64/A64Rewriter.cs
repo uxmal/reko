@@ -239,7 +239,7 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.sbcs: RewriteAdcSbc(m.ISub, NZCV); break;
                     case Mnemonic.sbfiz: RewriteSbfiz(); break;
                     case Mnemonic.sbfm: RewriteUSbfm("__sbfm"); break;
-                    case Mnemonic.scvtf: RewriteScvtf(); break;
+                    case Mnemonic.scvtf: RewriteIcvtf("s", Domain.SignedInt); break;
                     case Mnemonic.sdiv: RewriteBinary(m.SDiv); break;
                     case Mnemonic.shadd: RewriteSimdBinary("__shadd_{0}", Domain.SignedInt); break;
                     case Mnemonic.shl: RewriteSimdBinary("__shl_{0}", Domain.None); break;
@@ -352,7 +352,7 @@ namespace Reko.Arch.Arm.AArch64
                     case Mnemonic.uaddw: RewriteUaddw(); break;
                     case Mnemonic.uaddw2: RewriteSimdBinary("__uaddw_{0}", Domain.UnsignedInt); break;
                     case Mnemonic.ubfm: RewriteUSbfm("__ubfm"); break;
-                    case Mnemonic.ucvtf: RewriteIcvt("__ucvtf_{0}", Domain.UnsignedInt); break;
+                    case Mnemonic.ucvtf: RewriteIcvtf("u", Domain.UnsignedInt); break;
                     case Mnemonic.udiv: RewriteBinary(m.UDiv); break;
                     case Mnemonic.uhadd: RewriteSimdBinary("__uhadd_{0}", Domain.UnsignedInt); break;
                     case Mnemonic.uhsub: RewriteSimdBinary("__uhsub_{0}", Domain.UnsignedInt); break;

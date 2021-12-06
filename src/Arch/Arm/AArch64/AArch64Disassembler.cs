@@ -4175,7 +4175,7 @@ namespace Reko.Arch.Arm.AArch64
                                 Mask(30, 1, "  sshll",
                                     Instr(Mnemonic.sshll, q1, Vrc(0,19,4,arrHSD_), q30, Vrc(5,19,4,arrBHS_), UqshlShift),
                                     Instr(Mnemonic.sshll2, q1, Vrc(0, 19,4,arrHSD_), q30, Vrc(5, 19, 4, arrBHS_), UqshlShift)))),
-                            (0b11100, Instr(Mnemonic.scvtf, q30, Vrc(0,19,4, arrBHS_), Vrc(5,19,4, arr_HSD), fbits)),
+                            (0b11100, Instr(Mnemonic.scvtf, q30, Vrc(0,19,4, arr_HSD), Vrc(5,19,4, arr_HSD), fbits)),
                             (0b11111, Instr(Mnemonic.fcvts, x("(vector, fixed-point)")))
                                 ),
                         Sparse(11, 5, "  U=1",
@@ -4208,7 +4208,7 @@ namespace Reko.Arch.Arm.AArch64
                                 Mask(30, 1,       // U=1 Q
                                     Instr(Mnemonic.ushll, q1, Vrc(0, 19, 4, arrShrnHSD), q30, Vrc(5, 19, 4, arrBHS_), UqshlShift),
                                     Instr(Mnemonic.ushll2, q1, Vrc(0, 19, 4, arrShrnHSD), q30, Vrc(5, 19, 4, arrBHS_), UqshlShift)))),
-                            (0b11100, Instr(Mnemonic.ucvtf, q30, Vrc(0,19,4, arrBHS_), Vrc(5,19,4, arr_HSD), fbits)),
+                            (0b11100, Instr(Mnemonic.ucvtf, q30, Vrc(0,19,4, arr_HSD), Vrc(5,19,4, arr_HSD), fbits)),
                             (0b11111, Instr(Mnemonic.fcvtzu, x("(vector, fixed-point")))
                             )));
             }

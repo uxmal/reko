@@ -219,6 +219,12 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
+        public void PPCDis_stwcix()
+        {
+            AssertCode("stwcix\tr11,r18,r5", "7D722F2A");
+        }
+
+        [Test]
         public void PPCDis_stwu()
         {
             var instr = DisassembleWord(0x943F0005);
@@ -547,6 +553,12 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCDis_mtctr()
         {
             AssertCode(0x7d0903a6, "mtctr\tr8");
+        }
+
+        [Test]
+        public void PPCDis_mtvsrws()
+        {
+            AssertCode("mtvsrws\tv11,r5", "7D652327");
         }
 
         [Test]
