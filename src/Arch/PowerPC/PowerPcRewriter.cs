@@ -360,6 +360,7 @@ namespace Reko.Arch.PowerPC
                 case Mnemonic.stw: RewriteSt(PrimitiveType.Word32); break;
                 case Mnemonic.stwbrx: RewriteStwbrx(); break;
                 case Mnemonic.stwcx: RewriteStcx("__stwcx", PrimitiveType.Word32); break;
+                case Mnemonic.stwcix: RewriteStwcix(PrimitiveType.Word32); break;
                 case Mnemonic.stwu: RewriteStu(PrimitiveType.Word32); break;
                 case Mnemonic.stwux: RewriteStux(PrimitiveType.Word32); break;
                 case Mnemonic.stwx: RewriteStx(PrimitiveType.Word32); break;

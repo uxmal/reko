@@ -48,7 +48,7 @@ Relocations
 *** Elf\Msp430\a
 Error: Unable to load metadata file libc.so.xml.
     An error occurred when loading the signature of procedure sqrt.
-       at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 157
+       at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 155
    at Reko.Core.TypeLibraryDeserializer.LoadProcedures(SerializedLibrary serializedLibrary) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 107
    at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 61
    at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 42
@@ -56,7 +56,7 @@ Error: Unable to load metadata file libc.so.xml.
    at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in d:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 72
        at Reko.Environments.SysV.ArchSpecific.Msp430CallingConvention.Generate(ICallingConventionEmitter ccr, DataType dtRet, DataType dtThis, List`1 dtParams) in d:\dev\uxmal\reko\master\src\Environments\SysV\ArchSpecific\Msp430CallingConvention.cs:line 712
    at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in d:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 175
-   at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 129
+   at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 127
 0200: warning: Expected sizes of arrays to have been determined by now
 021C: warning: Expected sizes of arrays to have been determined by now
 0226: warning: Expected sizes of arrays to have been determined by now
@@ -453,26 +453,26 @@ hello_m68k.exe: warning: Win32 M68k main procedure finder not supported.
 Error: Unable to load metadata file windows32.xml.
     Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
        at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in d:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 92
-   at Reko.Core.TypeLibraryDeserializer.VisitSignature(SerializedSignature sSig) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 341
+   at Reko.Core.TypeLibraryDeserializer.VisitSignature(SerializedSignature sSig) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 339
    at Reko.Core.Serialization.SerializedSignature.Accept[T](ISerializedTypeVisitor`1 visitor) in d:\dev\uxmal\reko\master\src\Core\Serialization\SerializedSignature.cs:line 79
-   at Reko.Core.TypeLibraryDeserializer.VisitTypedef(SerializedTypedef typedef) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 382
+   at Reko.Core.TypeLibraryDeserializer.VisitTypedef(SerializedTypedef typedef) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 380
    at Reko.Core.Serialization.SerializedTypedef.Accept[T](ISerializedTypeVisitor`1 visitor) in d:\dev\uxmal\reko\master\src\Core\Serialization\SerializedTypedef.cs:line 42
-   at Reko.Core.TypeLibraryDeserializer.LoadType(SerializedType sType) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 214
-   at Reko.Core.TypeLibraryDeserializer.LoadTypes(SerializedLibrary serializedLibrary) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 205
+   at Reko.Core.TypeLibraryDeserializer.LoadType(SerializedType sType) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 212
+   at Reko.Core.TypeLibraryDeserializer.LoadTypes(SerializedLibrary serializedLibrary) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 203
    at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 60
    at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 42
    at Reko.Core.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\MetadataLoader.cs:line 55
    at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in d:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 72
 Error: Unable to load metadata file wsock32.xml.
     An error occurred when loading the signature of procedure __WSAFDIsSet.
-       at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 157
+       at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 155
    at Reko.Core.TypeLibraryDeserializer.LoadProcedures(SerializedLibrary serializedLibrary) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 107
    at Reko.Core.TypeLibraryDeserializer.Load(SerializedLibrary sLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 61
    at Reko.Core.TypeLibraryLoader.Load(IPlatform platform, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryLoader.cs:line 42
    at Reko.Core.MetadataLoader.Load(IPlatform platform, String moduleName, TypeLibrary dstLib) in d:\dev\uxmal\reko\master\src\Core\MetadataLoader.cs:line 55
    at Reko.Core.Services.TypeLibraryLoaderServiceImpl.LoadMetadataIntoLibrary(IPlatform platform, TypeLibraryDefinition tlElement, TypeLibrary libDst) in d:\dev\uxmal\reko\master\src\Core\Services\ITypeLibraryLoaderService.cs:line 72
        at Reko.Core.Serialization.ProcedureSerializer.Deserialize(SerializedSignature ss, Frame frame) in d:\dev\uxmal\reko\master\src\Core\Serialization\ProcedureSerializer.cs:line 92
-   at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 129
+   at Reko.Core.TypeLibraryDeserializer.LoadProcedure(Procedure_v1 sp) in d:\dev\uxmal\reko\master\src\Core\TypeLibraryDeserializer.cs:line 127
 Signature of 'Microsoft Visual C++ vx.x DLL' detected.
 hello_m68k.exe: warning: Win32 M68k main procedure finder not supported.
 00001758: warning: Expected sizes of arrays to have been determined by now
@@ -1161,9 +1161,7 @@ Evaluating d:\dev\uxmal\reko\master\subjects\scripting\segmented.py
     Specified argument was out of the range of valid values. (Parameter 'bitSize')
        at Reko.Core.Types.PrimitiveType.CreateWord(Int32 bitSize) in d:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 159
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 130
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in d:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 97
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in d:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 226
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in d:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in d:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 75
@@ -2171,7 +2169,7 @@ fn0000802E: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l00008318' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 535
@@ -2179,7 +2177,7 @@ fn00009746: error: An error occurred while rewriting procedure to high-level lan
     The given key 'l0000985B' was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Core.Lib.DominatorGraph`1.BuildDominanceFrontiers(DirectedGraph`1 graph, Dictionary`2 idoms) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 192
-   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 45
+   at Reko.Core.Lib.DominatorGraph`1..ctor(DirectedGraph`1 graph, T entryNode) in d:\dev\uxmal\reko\master\src\Core\Lib\DominatorGraph.cs:line 46
    at Reko.Structure.StructureAnalysis.Execute() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
    at Reko.Structure.StructureAnalysis.Structure() in d:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 81
    at Reko.Decompiler.StructureProgram() in d:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 535
@@ -2234,4 +2232,4 @@ Signature of 'Microsoft Visual C++ 8' detected.
 0040120B: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 004011A5: warning: Unable to determine the upper bound of an indirect call or jump; there may be more than 2 entries.
 
-Decompiled 81 binaries in 64.69 seconds.
+Decompiled 81 binaries in 65.26 seconds.

@@ -315,8 +315,8 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCRw_stwcix()
         {
             AssertCode(0x7D722F2A,  // stwcix
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|__stwcix(,)");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__stwcix(Mem0[r18 + r5:word32], r11)");
         }
 
         [Test]

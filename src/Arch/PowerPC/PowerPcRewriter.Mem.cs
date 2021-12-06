@@ -436,6 +436,17 @@ namespace Reko.Arch.PowerPC
                     MaybeNarrow(dataType, s)));
         }
 
+        private void RewriteStwcix(PrimitiveType dataType)
+        {
+            var s = RewriteOperand(instr.Operands[0]);
+            var a = RewriteOperand(instr.Operands[1], true);
+            var b = RewriteOperand(instr.Operands[2]);
+            var ea = (a.IsZero)
+                ? b
+                : m.IAdd(a, b);
+            m.SideEffect(host.Intrinsic("__stwcix", true, VoidType.Instance, m.Mem(dataType, ea), MaybeNarrow(dataType, s)));
+        }
+
         private void RewriteStx(PrimitiveType dataType)
         {
             var s = RewriteOperand(instr.Operands[0]);
