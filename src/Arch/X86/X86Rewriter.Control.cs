@@ -86,14 +86,15 @@ namespace Reko.Arch.X86
         private void RewriteCall(MachineOperand callTarget, DataType opsize)
         {
             Address? addr = OperandAsCodeAddress(callTarget);
-            if (addr != null)
+            if (addr is not null)
             {
                 if (addr.ToLinear() == (dasm.Current.Address + dasm.Current.Length).ToLinear())
                 {
                     // Calling the following address. Is the call followed by a 
                     // pop?
                     var next = dasm.Peek(1);
-                    if (next.Mnemonic == Mnemonic.pop && 
+                    if (next is not null &&
+                        next.Mnemonic == Mnemonic.pop && 
                         next.Operands.Length > 0 &&
                         next.Operands[0] is RegisterOperand reg)
                     {

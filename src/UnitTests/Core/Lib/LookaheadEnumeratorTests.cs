@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /* 
  * Copyright (C) 1999-2021 John Källén.
  *
@@ -81,18 +81,12 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void Peek2ShouldThrow()
+        public void Peek2ShouldReturnNull()
         {
             var e = new LookaheadEnumerator<char>("ab".GetEnumerator());
             e.MoveNext();
-            try
-            {
-                e.Peek(2);
-                Assert.Fail();
-            }
-            catch (InvalidOperationException)
-            {
-            }
+            var nonExistent = e.Peek(2);
+            Assert.IsNull(nonExistent);
         }
 
         [Test]

@@ -863,6 +863,7 @@ namespace Reko.Arch.X86
 
         private void RewriteMovzx()
         {
+            Debug.Print(" *** {0}: {1}", instrCur.Address, instrCur);
             var src = SrcOp(1);
             EmitCopy(
                 instrCur.Operands[0],
@@ -876,8 +877,10 @@ namespace Reko.Arch.X86
             if (instrCur.Operands[0] is RegisterOperand reg && reg.Register == Registers.cs)
             {
                 // Is it a 'push cs;call near XXXX' sequence that simulates a far call?
-                if (dasm.Peek(1).Mnemonic == Mnemonic.call &&
-                    dasm.Peek(1).Operands[0].Width.BitSize == 16)
+                X86Instruction? p1 = dasm.Peek(1);
+                if (p1 is not null &&
+                    p1.Mnemonic == Mnemonic.call &&
+                    p1.Operands[0].Width.BitSize == 16)
                 {
                     dasm.MoveNext();
                     MachineOperand targetOperand = dasm.Current.Operands[0];
@@ -896,13 +899,15 @@ namespace Reko.Arch.X86
                     return;
                 }
 
-                if (
-                    dasm.Peek(1).Mnemonic == Mnemonic.push && (dasm.Peek(1).Operands[0] is ImmediateOperand) &&
-                    dasm.Peek(2).Mnemonic == Mnemonic.push && (dasm.Peek(2).Operands[0] is ImmediateOperand) &&
-                    dasm.Peek(3).Mnemonic == Mnemonic.jmp && (dasm.Peek(3).Operands[0] is AddressOperand))
+                X86Instruction? p2 = dasm.Peek(2);
+                X86Instruction? p3 = dasm.Peek(3);
+                if (p1 is not null && p2 is not null && p3 is not null &&
+                    (p1.Mnemonic == Mnemonic.push && (p1.Operands[0] is ImmediateOperand)) &&
+                    (p2.Mnemonic == Mnemonic.push && (p2.Operands[0] is ImmediateOperand)) &&
+                    (p3.Mnemonic == Mnemonic.jmp && (p3.Operands[0] is AddressOperand)))
                 {
                     // That's actually a far call, but the callee thinks its a near call.
-                    RewriteCall(dasm.Peek(3).Operands[0], instrCur.Operands[0].Width);
+                    RewriteCall(p3.Operands[0], instrCur.Operands[0].Width);
                     dasm.MoveNext();
                     dasm.MoveNext();
                     dasm.MoveNext();

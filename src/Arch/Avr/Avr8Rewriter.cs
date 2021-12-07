@@ -379,13 +379,18 @@ namespace Reko.Arch.Avr
 
         private void SkipIf(Func<Expression, Expression,Expression> cond)
         {
-            iclass = InstrClass.ConditionalTransfer;
             //$BUG: may boom if there is no next instruction.
             var nextInstr = dasm.Peek(1);
+            if (nextInstr is null)
+            {
+                m.Invalid();
+                iclass = InstrClass.Invalid;
+                return;
+            }
             var left = RewriteOp(0);
             var right = RewriteOp(1);
+            iclass = InstrClass.ConditionalTransfer;
             m.Branch(cond(left,right), nextInstr.Address + nextInstr.Length, iclass);
-
         }
 
         private Expression Sbrc(Expression a, Expression b)

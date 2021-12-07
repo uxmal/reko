@@ -48,7 +48,7 @@ namespace Reko.Core.Lib
 
         #region IEnumerator<T> Members
 
-        public T Current => Peek(0);
+        public T Current => Peek(0) ?? throw new InvalidOperationException();
 
         public void Dispose()
         {
@@ -81,7 +81,7 @@ namespace Reko.Core.Lib
 
         #endregion
 
-        public T Peek(int ahead)
+        public T? Peek(int ahead)
         {
             int itemsInBuffer = peeked.Count - iCur;
             Debug.Assert(itemsInBuffer >= 0);
@@ -97,7 +97,8 @@ namespace Reko.Core.Lib
                 peeked.Add(e.Current);
             for (int i = 0; i < ahead; ++i)
             {
-                e.MoveNext();
+                if (!e.MoveNext())
+                    return default;
                 peeked.Add(e.Current);
             }
             return peeked[ahead];

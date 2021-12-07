@@ -1565,6 +1565,15 @@ namespace Reko.UnitTests.Arch.X86
                "1|L--|xmm0 = SEQ(SLICE(xmm0, word96, 32), SLICE(xmm3, real32, 0))");
         }
 
+        [Test]
+        public void X86Rw_movzx()
+        {
+            Run32bitTest("0F B7 C0");   // movzx eax, ax
+            AssertCode(
+               "0|L--|10000000(3): 1 instructions",
+               "1|L--|eax = CONVERT(ax, word16, word32)");
+        }
+
         [Test(Description = "Regression reported by @mewmew")]
         public void X86rw_regression1()
         {

@@ -421,6 +421,8 @@ namespace Reko.Arch.X86
             for (int i = 1; i < 4; ++i)
             {
                 var nextInstr = dasm.Peek(i);
+                if (nextInstr is null)
+                    return false;
                 switch (nextInstr.Mnemonic)
                 {
                 case Mnemonic.sahf:
@@ -443,13 +445,13 @@ namespace Reko.Arch.X86
                             mask >>= 8;
                         else if (acc.Register != Registers.ah)
                             return false;
-                        dasm.Skip(i);       // over the 'and'
-                        if (!dasm.MoveNext())
+                        nextInstr = dasm.Peek(i+1);       // peek at the instruction past the 'and'
+                        if (nextInstr is null)
                             return false;
-                        nextInstr = dasm.Current;
                         var nextOp = nextInstr.Mnemonic;
                         if (nextOp != Mnemonic.cmp && nextOp != Mnemonic.xor)
                             return false;
+                        dasm.Skip(i);
                         acc = nextInstr.Operands[0] as RegisterOperand;
                         imm = nextInstr.Operands[1] as ImmediateOperand;
                         if (imm == null || acc == null)
