@@ -59,6 +59,10 @@ namespace Reko.Arch.Arm.AArch64
             m.Assign(dst, addr);
         }
 
+        /// <summary>
+        /// Rewrites an instruction where the mnemonic is the same for different
+        /// operand types.
+        /// </summary>
         private void RewriteMaybeSimdBinary(
             Func<Expression, Expression, Expression> fn,
             string simdFormat, 

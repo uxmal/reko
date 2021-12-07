@@ -467,8 +467,12 @@ namespace Reko.Arch.Arm.AArch64
                 }
                 if (vectorOp.Index >= 0)
                 {
+                    // Treat the entire contents of the register as an array.
+                    //$BUG Indexing is done little-endian on the CPU, but must be
+                    // converted to big-endian to conform with the semantics of of Reko's ArrayAccess.
                     var eType = PrimitiveType.CreateWord(Bitsize(vectorOp.ElementType));
-                    return m.ARef(eType, vreg, Constant.Int32(vectorOp.Index));
+                    int index = vectorOp.Index;
+                    return m.ARef(eType, vreg, Constant.Int32(index));
                 }
                 else
                 {

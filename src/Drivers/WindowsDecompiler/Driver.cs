@@ -26,12 +26,14 @@ using Reko.UserInterfaces.WindowsForms;
 using Reko.UserInterfaces.WindowsForms.Forms;
 using System;
 using System.ComponentModel.Design;
+using System.Runtime.Versioning;
 
 namespace Reko.WindowsDecompiler
 {
     public class Driver
     {
         [STAThread]
+        [SupportedOSPlatform("windows")]
         public static void Main(string[] args)
         {
             var services = new ServiceContainer();
