@@ -19,8 +19,10 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Types;
 using System;
+using System.Numerics;
 
 namespace Reko.Core.Operators
 {
@@ -50,6 +52,15 @@ namespace Reko.Core.Operators
             PrimitiveType p2 = t2.ResolveAs<PrimitiveType>()!;
             int bitSize = Math.Max(p1.BitSize, p2.BitSize);
             return ConstantReal.Create(PrimitiveType.Create(p1.Domain & p2.Domain, bitSize), val);
+        }
+
+        public Constant BuildConstant(DataType t1, DataType t2, BigInteger value)
+        {
+            PrimitiveType p1 = t1.ResolveAs<PrimitiveType>()!;
+            PrimitiveType p2 = t2.ResolveAs<PrimitiveType>()!;
+            int bitSize = Math.Max(p1.BitSize, p2.BitSize);
+            var dtResult = PrimitiveType.Create(p1.Domain | p2.Domain, bitSize);
+            return Constant.Create(dtResult, value);
         }
     }
 }

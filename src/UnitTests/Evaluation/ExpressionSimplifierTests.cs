@@ -766,5 +766,26 @@ namespace Reko.UnitTests.Evaluation
             Assert.AreEqual("1<32>", result.ToString());
             Assert.IsTrue(changed);
         }
+
+        [Test]
+        public void Exs_ArrayAccess_ConstantIndex()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.ARef(PrimitiveType.Word16, Constant.Word32(0x12345678), Constant.Int32(1));
+            var (result, changed) = expr.Accept(simplifier);
+            Assert.AreEqual("0x1234<16>", result.ToString());
+            Assert.IsTrue(changed);
+        }
+
+        [Test]
+        public void Exs_ArrayAccess_ConstantIndex_Sequence()
+        {
+            Given_ExpressionSimplifier();
+            var seq = m.Seq(this.foo, Constant.Word32(0x12345678));
+            var expr = m.ARef(PrimitiveType.Word16, seq, Constant.Int32(1));
+            var (result, changed) = expr.Accept(simplifier);
+            Assert.AreEqual("0x1234<16>", result.ToString());
+            Assert.IsTrue(changed);
+        }
     }
 }

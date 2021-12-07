@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 
 namespace Reko.Core.Lib
@@ -92,8 +93,14 @@ namespace Reko.Core.Lib
             return ((1ul << bitsize) - 1) << lsb;
         }
 
+        public static BigInteger Mask(int maskWidth)
+        {
+            return (BigInteger.One << maskWidth) - BigInteger.One;
+        }
+
         public static int BitCount(ulong u)
         {
+            //$TODO: when porting to .NET 5.0, use BitOperations.PopCount()
             u -= ((u >> 1) & 0x5555555555555555UL);
             u = (u & 0x3333333333333333UL) + ((u >> 2) & 0x3333333333333333UL);
             u = (u & 0x0F0F0F0F0F0F0F0FUL) + ((u >> 4) & 0x0F0F0F0F0F0F0F0FUL);

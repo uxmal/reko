@@ -148,6 +148,17 @@ namespace Reko.Core.Expressions
             throw new NotSupportedException($"Constants of type {dt} are not supported.");
         }
 
+        public static Constant Create(DataType dt, BigInteger value)
+        {
+            if (dt.BitSize > 64)
+                return new BigConstant(dt, value);
+            else
+            {
+                var uValue = value & Bits.Mask(dt.BitSize);
+                return Create(dt, (ulong) uValue);
+            }
+        }
+
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitConstant(this, context);

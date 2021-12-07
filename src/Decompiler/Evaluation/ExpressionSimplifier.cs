@@ -18,22 +18,19 @@
  */
 #endregion
 
-using Reko.Evaluation;
 using Reko.Core;
-using Reko.Analysis;
+using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Reko.Core.Services;
 using System.Diagnostics;
-using System.Xml.Schema;
-using Reko.Core.Code;
-using Reko.Scanning;
+using System.Linq;
 
-namespace Reko.Evaluation 
+namespace Reko.Evaluation
 {
     /// <summary>
     /// Partially evaluates expressions, using an <see cref="EvaluationContext"/> to obtain the values
@@ -72,7 +69,6 @@ namespace Reko.Evaluation
         private readonly DistributedSliceRule distributedSlice;
         private readonly MkSeqFromSlices_Rule mkSeqFromSlicesRule;
         private readonly ComparisonConstOnLeft constOnLeft;
-        private readonly SliceSequence sliceSeq;
         private readonly SliceConvert sliceConvert;
         private readonly LogicalNotFollowedByNegRule logicalNotFollowedByNeg;
         private readonly LogicalNotFromArithmeticSequenceRule logicalNotFromBorrow;
@@ -111,7 +107,6 @@ namespace Reko.Evaluation
             this.distributedSlice = new DistributedSliceRule();
             this.mkSeqFromSlicesRule = new MkSeqFromSlices_Rule(ctx);
             this.constOnLeft = new ComparisonConstOnLeft();
-            this.sliceSeq = new SliceSequence(ctx);
             this.sliceConvert = new SliceConvert();
             this.logicalNotFollowedByNeg = new LogicalNotFollowedByNegRule();
             this.logicalNotFromBorrow = new LogicalNotFromArithmeticSequenceRule();
@@ -251,17 +246,40 @@ namespace Reko.Evaluation
 
         public virtual (Expression, bool) VisitArrayAccess(ArrayAccess acc)
         {
+            Expression result = acc;
             var (a, aChanged) = acc.Array.Accept(this);
             var (i, iChanged) = acc.Index.Accept(this);
-            if (aChanged || iChanged)
+            bool changed = aChanged | iChanged;
+            if (changed)
             {
-                return (new ArrayAccess(acc.DataType, a, i), true);
+                acc = m.ARef(acc.DataType, a, i);
+                result = acc;
             }
-            else
+
+            if (i is Constant cIndex)
             {
-                return (acc, false);
+                var bitPosition = cIndex.ToInt32() * acc.DataType.BitSize;
+                if (IsSequence(ctx, a, out var seq))
+                {
+                    var eNew = SliceExpression(seq, acc.DataType, bitPosition);
+                    if (eNew is not null)
+                    {
+                        ctx.RemoveExpressionUse(a);
+                        ctx.UseExpression(eNew);
+                        (eNew, _) = eNew.Accept(this);
+                        return (eNew, true);
+                    }
+                }
+                if (a is Constant cArray)
+                {
+                    var cValue = (cArray.ToBigInteger() >> bitPosition) & Bits.Mask(acc.DataType.BitSize);
+                    result = Constant.Create(acc.DataType, cValue);
+                    changed = true;
+                }
             }
+            return (result, changed);
         }
+
 
         public virtual (Expression, bool) VisitBinaryExpression(BinaryExpression binExp)
         {
@@ -1279,24 +1297,30 @@ namespace Reko.Evaluation
             {
                 return (sliceShift.Transform(), true);
             }
-            if (sliceSeq.Match(slice))
+            if (IsSequence(ctx, slice.Expression, out var seq))
             {
-                return (sliceSeq.Transform(), true);
+                var eNew = SliceExpression(seq, slice.DataType, slice.Offset);
+                if (eNew is not null)
+                {
+                    ctx.RemoveExpressionUse(slice);
+                    ctx.UseExpression(eNew);
+                    return (eNew, true);
+                }
             }
             if (sliceConvert.Match(slice))
             {
                 return (sliceConvert.Transform(), true);
             }
             if (e is Identifier id &&
-                ctx.GetDefiningExpression(id) is MkSequence seq)
+                ctx.GetDefiningExpression(id) is MkSequence seq2)
             {
-                // If we are casting a SEQ, and the corresponding element is >= 
+                // If we are slicing a SEQ, and the corresponding element is >= 
                 // the size of the cast, then use deposited part directly.
-                var lsbElem = seq.Expressions[seq.Expressions.Length - 1];
+                var lsbElem = seq2.Expressions[seq2.Expressions.Length - 1];
                 int sizeDiff = lsbElem.DataType.Size - slice.DataType.Size;
                 if (sizeDiff >= 0)
                 {
-                    foreach (var elem in seq.Expressions)
+                    foreach (var elem in seq2.Expressions)
                     {
                         ctx.RemoveExpressionUse(elem);
                     }
@@ -1361,6 +1385,42 @@ namespace Reko.Evaluation
             }
 
             return (unary, changed);
+        }
+
+        public static bool IsSequence(EvaluationContext ctx, Expression e, out MkSequence sequence)
+        {
+            MkSequence? s;
+            if (e is Identifier id)
+            {
+                s = ctx.GetDefiningExpression(id) as MkSequence;
+            }
+            else
+            {
+                s = e as MkSequence;
+            }
+            sequence = s!;
+            return s != null;
+        }
+
+        public static Expression? SliceExpression(MkSequence seq, DataType dtSlice, int sliceOffset)
+        {
+            var bitsUsed = dtSlice.BitSize;
+            int bitoffset = 0;
+            for (int i = seq.Expressions.Length - 1; i >= 0; --i)
+            {
+                var elem = seq.Expressions[i];
+                var bitsElem = elem.DataType.BitSize;
+                var offset = sliceOffset - bitoffset;
+                if (0 <= offset && offset + bitsUsed <= bitsElem)
+                {
+                    var eNew = offset == 0 && bitsUsed == bitsElem
+                        ? elem
+                        : new Slice(dtSlice, elem, offset);
+                    return eNew;
+                }
+                bitoffset += bitsElem;
+            }
+            return null;
         }
     }
 }

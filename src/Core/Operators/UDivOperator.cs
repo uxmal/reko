@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Types;
 using System;
 using System.Numerics;
@@ -36,38 +37,27 @@ namespace Reko.Core.Operators
             if (c1 is BigConstant bc1)
             {
                 // Force operands to be unsigned.
-                var left = Mask(bc1.Value, c1.DataType.BitSize);
-                var right = Mask(c2.ToBigInteger(), c2.DataType.BitSize);
+                var left = bc1.Value & Bits.Mask(c1.DataType.BitSize);
+                var right = c2.ToBigInteger() & Bits.Mask(c2.DataType.BitSize);
                 return BuildConstant(bc1.DataType, c2.DataType, left / right);
             }
             return BuildConstant(c1.DataType, c2.DataType, (long) (c1.ToUInt64() / c2.ToUInt64()));
 		}
 
-        private static BigInteger Mask(BigInteger value, int maskWidth)
-        {
-            var mask = (BigInteger.One << maskWidth) - BigInteger.One;
-            return value & mask;
-        }
-
         public override string AsCompound()
         {
             return " /= ";
         }
+
         public override string ToString()
 		{
 			return " /u ";
 		}
 
-        public Constant BuildConstant(DataType dtN, DataType dtD, BigInteger value)
+        public new Constant BuildConstant(DataType dtN, DataType dtD, BigInteger value)
         {
             var dtResult = PrimitiveType.Create(Domain.UnsignedInt, Math.Min(dtN.BitSize, dtD.BitSize));
-            if (dtResult.BitSize > 64)
-                return new BigConstant(dtResult, value);
-            else
-            {
-                var uValue = Mask(value, dtResult.BitSize);
-                return Constant.Create(dtResult, (ulong)uValue);
-            }
+            return Constant.Create(dtResult, value);
         }
 	}
 }

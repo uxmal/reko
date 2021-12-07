@@ -21,6 +21,7 @@
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
+using System.Numerics;
 
 namespace Reko.Core.Operators
 {
@@ -43,7 +44,14 @@ namespace Reko.Core.Operators
                 var dt = PrimitiveType.Create(Domain.Pointer, c2.DataType.BitSize);
                 return Constant.Create(dt, c1.ToUInt64() - c2.ToUInt64());
             }
-            return BuildConstant(c1.DataType, c2.DataType, c1.ToInt64() - c2.ToInt64());
+            else if (c2.DataType.BitSize <= 64 && c2.DataType.BitSize <= 64)
+            {
+                return BuildConstant(c1.DataType, c2.DataType, c1.ToInt64() - c2.ToInt64());
+            }
+            else
+            {
+                return BuildConstant(c1.DataType, c2.DataType, c1.ToBigInteger() - c2.ToBigInteger());
+            }
 		}
 
         public override string AsCompound()
@@ -55,7 +63,7 @@ namespace Reko.Core.Operators
 		{
 			return " - ";
 		}
-	}
+    }
 
     /// <summary>
     /// Unsigned integer subtraction. Used to model the PowerPC cmpl instruction,

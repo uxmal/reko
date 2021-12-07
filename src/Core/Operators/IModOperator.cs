@@ -34,7 +34,7 @@ namespace Reko.Core.Operators
             if (c2.IsIntegerZero)
                 return InvalidConstant.Create(c1.DataType);
             if (c1 is BigConstant bc1)
-                return BuildConstant(c1.DataType, c2.DataType, bc1.Value % c2.ToBigInteger());
+                return Constant.Create(c2.DataType, bc1.Value % c2.ToBigInteger());
             return BuildConstant(c1.DataType, c2.DataType, c1.ToInt64() % c2.ToInt64());
 		}
 
@@ -47,13 +47,5 @@ namespace Reko.Core.Operators
 		{
 			return " % ";
 		}
-
-        public Constant BuildConstant(DataType dtN, DataType dtD, BigInteger rem)
-        {
-            if (dtD.BitSize > 64)
-                return new BigConstant(dtD, rem);
-            else
-                return Constant.Create(dtD, (ulong)rem);
-        }
 	}
 }
