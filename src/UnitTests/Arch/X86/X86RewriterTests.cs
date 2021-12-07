@@ -1486,13 +1486,24 @@ namespace Reko.UnitTests.Arch.X86
         }
 
         [Test]
+        public void X86rw_fyl2x()
+        {
+            Run16bitTest(0xd9, 0xf1);
+            AssertCode(
+                "0|L--|0C00:0000(2): 3 instructions",
+                "1|L--|ST[Top + 1<i8>:real64] = ST[Top + 1<i8>:real64] * lg2(ST[Top:real64])",
+                "2|L--|FPUF = cond(ST[Top + 1<i8>:real64])",
+                "3|L--|Top = Top + 1<i8>");
+        }
+        [Test]
         public void X86rw_fyl2xp1()
         {
             Run16bitTest(0xD9, 0xF9);
             AssertCode(
                 "0|L--|0C00:0000(2): 3 instructions",
                 "1|L--|ST[Top + 1<i8>:real64] = ST[Top + 1<i8>:real64] * lg2(ST[Top:real64] + 1.0)",
-                "2|L--|FPUF = cond(ST[Top + 1<i8>:real64])");
+                "2|L--|FPUF = cond(ST[Top + 1<i8>:real64])",
+                "3|L--|Top = Top + 1<i8>");
         }
 
         [Test]

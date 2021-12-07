@@ -718,7 +718,10 @@ namespace Reko.Arch.X86
             var op2 = FpuRegister(1);
             m.Assign(op2, 
                 m.FMul(op2, 
-                      host.Intrinsic("lg2", true, PrimitiveType.Real64, op2)));
+                      host.Intrinsic("lg2", true, PrimitiveType.Real64, op1)));
+            m.Assign(
+                orw.AluRegister(Registers.FPUF),
+                m.Cond(op2));
             ShrinkFpuStack(1);
         }
 
