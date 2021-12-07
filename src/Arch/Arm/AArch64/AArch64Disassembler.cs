@@ -3405,7 +3405,7 @@ namespace Reko.Arch.Arm.AArch64
                         Sparse(16, 5,  "  type=01",
                             Nyi("ConversionBetweenFpAndInt sf:S=0b10 type=01"),
                             (0b00_010, Instr(Mnemonic.scvtf, D_0, X_5)),
-                            (0b00_110, Instr(Mnemonic.fmov, X_5, D_0)),
+                            (0b00_110, Instr(Mnemonic.fmov, X_0, D_5)),
                             (0b00_111, Instr(Mnemonic.fmov, D_0,X_5)),
                             (0b11_000, Instr(Mnemonic.fcvtzs, W_5, D_0))
                             ),
@@ -4368,7 +4368,7 @@ namespace Reko.Arch.Arm.AArch64
                 var sShifts = new int[] { 8, 16, 32, 64 };
                 AdvancedSimd2RegMisc = Mask(29, 1, "  Advanced SIMD two-register miscellaneous",
                     Mask(12, 5,
-                        Instr(Mnemonic.rev64, q30, Vr(0,5, BHS_), Vr(5, 5, BHS_)),
+                        Instr(Mnemonic.rev64, q30, Vr(0,5,BHS_), Vr(5, 5, BHS_)),
                         Instr(Mnemonic.rev16, q30, Vr(0,5,B___), Vr(5,5,B___)),
                         Instr(Mnemonic.saddlp, q30, Vr(0,5,HSD_), Vr(5,5,BHS_)),
                         Instr(Mnemonic.suqadd, q30, Vr(0,5, BHSD), Vr(5, 5, BHSD)),

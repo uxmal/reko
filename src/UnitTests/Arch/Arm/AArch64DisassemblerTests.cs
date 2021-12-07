@@ -2031,6 +2031,11 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode("fmov\tx8,d8", "0801669E");
         }
 
+        [Test]
+        public void AArch64Rw_fmov_vector_reg_to_gp_reg()
+        {
+            AssertCode("fmov\tx1,d30", "C103669E");
+        }
 
         [Test]
         public void AArch64Dis_urecpe()
