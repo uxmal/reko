@@ -1495,6 +1495,7 @@ namespace Reko.UnitTests.Arch.X86
                 "2|L--|FPUF = cond(ST[Top + 1<i8>:real64])",
                 "3|L--|Top = Top + 1<i8>");
         }
+
         [Test]
         public void X86rw_fyl2xp1()
         {

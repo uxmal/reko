@@ -225,7 +225,7 @@ namespace Reko.Scanning
             return null;
         }
 
-        public Address MakeAddressFromConstant(Constant c)
+        public Address? MakeAddressFromConstant(Constant c)
         {
             return program.Platform.MakeAddressFromConstant(c, true);
         }
@@ -237,10 +237,9 @@ namespace Reko.Scanning
 
         public bool IsFallthrough(Instruction instr, Block block)
         {
-            var bra = instr as Branch;
-            if (bra == null)
-                return false;
-            return bra.Target != block;
+            if (instr is Branch bra)
+                return bra.Target != block;
+            return false;
         }
 
         public RegisterStorage IndexRegister

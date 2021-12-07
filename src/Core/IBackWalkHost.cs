@@ -37,7 +37,7 @@ namespace Reko.Core
 		AddressRange? GetSinglePredecessorAddressRange(Address block);
         int BlockInstructionCount(TBlock rtlBlock);
         Address? GetBlockStartAddress(Address addr);
-        Address MakeAddressFromConstant(Constant c);
+        Address? MakeAddressFromConstant(Constant c);
         Address MakeSegmentedAddress(Constant selector, Constant offset);
 
         TBlock GetSinglePredecessor(TBlock block);

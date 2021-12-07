@@ -22,7 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Emulation;
-using Reko.Core.Lib;
+using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -217,6 +217,11 @@ namespace Reko.Environments.Msdos
                 .Cast<SerializedService>()
                 .Select(s => s.Build(this, Metadata))
                 .ToArray();
+        }
+
+        public override Address? MakeAddressFromConstant(Constant c, bool codeAlign)
+        {
+            return null;
         }
 
         public override string DefaultCallingConvention

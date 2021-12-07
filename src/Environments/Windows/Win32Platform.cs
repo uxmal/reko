@@ -35,7 +35,7 @@ namespace Reko.Environments.Windows
 {
     public class Win32Platform : Platform
 	{
-        private Dictionary<int, SystemService> services;
+        private readonly Dictionary<int, SystemService> services;
 
         //$TODO: http://www.delorie.com/djgpp/doc/rbinter/ix/29.html int 29 for console apps!
         //$TODO: http://msdn.microsoft.com/en-us/data/dn774154(v=vs.99).aspx
@@ -240,25 +240,27 @@ namespace Reko.Environments.Windows
         public override ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> rdr, IRewriterHost host)
         {
             var instr = rdr.FirstOrDefault();
-            if (instr == null)
+            if (instr is null)
                 return null;
-            if (!(instr is RtlGoto jump))
+            if (instr is not RtlGoto jump)
                 return null;
             if (jump.Target is ProcedureConstant pc)
                 return pc.Procedure;
-            if (!(jump.Target is MemoryAccess access))
+            if (jump.Target is not MemoryAccess access)
                 return null;
             var addrTarget = access.EffectiveAddress as Address;
-            if (addrTarget == null)
+            if (addrTarget is null)
             {
-                if (!(access.EffectiveAddress is Constant wAddr))
+                if (access.EffectiveAddress is not Constant wAddr)
                 {
                     return null;
                 }
                 addrTarget = MakeAddressFromConstant(wAddr, true);
+                if (addrTarget is null)
+                    return null;
             }
             ProcedureBase? proc = host.GetImportedProcedure(this.Architecture, addrTarget,  addrInstr);
-            if (proc != null)
+            if (proc is not null)
                 return proc;
             return host.GetInterceptedCall(this.Architecture, addrTarget);
         }

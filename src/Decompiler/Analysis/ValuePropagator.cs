@@ -260,7 +260,7 @@ namespace Reko.Analysis
             {
                 var stm = evalCtx.Statement!;
                 var pc = dynamicLinker.ResolveToImportedValue(stm, c);
-                if (pc != null)
+                if (pc is not null)
                 {
                     Debug.Print("Const: {0} was replaced with ", c, pc);
                     return (pc, true);

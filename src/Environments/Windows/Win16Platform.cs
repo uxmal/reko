@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Emulation;
+using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
@@ -155,6 +156,11 @@ SP	top of stack
                     return new ExternalProcedure(svc.Name!, svc.Signature!);
                 }
             }
+            return null;
+        }
+
+        public override Address? MakeAddressFromConstant(Constant c, bool codeAlign)
+        {
             return null;
         }
 

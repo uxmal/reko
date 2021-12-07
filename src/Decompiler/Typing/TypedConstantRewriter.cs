@@ -272,10 +272,11 @@ namespace Reko.Typing
                 }
 
                 var addr = program.Platform.MakeAddressFromConstant(c, false);
+                
                 // An invalid pointer -- often used as sentinels in code.
-                if (!program.SegmentMap.IsValidAddress(addr))
+                if (addr is null || !program.SegmentMap.IsValidAddress(addr))
                 {
-                    //$TODO: probably should use a reinterpret_cast here.
+                    //$TODO: probably should emit a reinterpret_cast here.
                     e = new Cast(ptr, c)
                     {
                         TypeVariable = c.TypeVariable
@@ -289,15 +290,15 @@ namespace Reko.Typing
                 
                 var dt = ptr.Pointee.ResolveAs<DataType>()!;
                 var charType = MaybeCharType(dt);
-                if (charType != null && IsPtrToReadonlySection(c))
+                if (charType != null && IsPtrToReadonlySection(addr))
                 {
                     PromoteToCString(c, charType);
-                    return ReadNullTerminatedString(c, charType);
+                    var rdr = program.CreateImageReader(program.Architecture, addr);
+                    return rdr.ReadCString(charType, program.TextEncoding);
                 }
-                if (
-                    dereferenced &&
-                    TryReadReal(c, dt, out var cReal) &&
-                    IsPtrToReadonlySection(c))
+                if (dereferenced &&
+                    TryReadReal(addr, dt, out var cReal) &&
+                    IsPtrToReadonlySection(addr))
                 {
                     return cReal;
                 }
@@ -311,13 +312,13 @@ namespace Reko.Typing
         /// </summary>
         private PrimitiveType? MaybeCharType(DataType dt)
         {
-            var pr = dt as PrimitiveType;
-            if (pr == null)
+            var pr = dt.ResolveAs<PrimitiveType>();
+            if (pr is null)
             {
-                if (!(dt is ArrayType at))
+                if (dt is not ArrayType at)
                     return null;
-                pr = at.ElementType as PrimitiveType;
-                if (pr == null)
+                pr = at.ElementType.ResolveAs<PrimitiveType>();
+                if (pr is null)
                     return null;
             }
             if (pr.Domain != Domain.Character)
@@ -330,20 +331,11 @@ namespace Reko.Typing
             throw new NotImplementedException();
         }
 
-        private bool IsPtrToReadonlySection(Constant c)
+        private bool IsPtrToReadonlySection(Address addr)
         {
-            Address addr = platform.MakeAddressFromConstant(c, false);
-            if (addr == null!)
-                return false;
             if (!program.SegmentMap.TryFindSegment(addr, out ImageSegment seg))
                 return false;
             return (seg.Access & AccessMode.ReadWrite) == AccessMode.Read;
-        }
-
-        private Expression ReadNullTerminatedString(Constant c, DataType dt)
-        {
-            var rdr = program.CreateImageReader(program.Architecture, platform.MakeAddressFromConstant(c, false));
-            return rdr.ReadCString(dt, program.TextEncoding);
         }
 
         DataType PromoteToCString(Constant c, DataType charType)
@@ -361,7 +353,7 @@ namespace Reko.Typing
         }
 
         private bool TryReadReal(
-            Constant cAddr,
+            Address addr,
             DataType dt,
             [NotNullWhen(true)] out Constant? cReal)
         {
@@ -378,9 +370,7 @@ namespace Reko.Typing
             // https://github.com/uxmal/reko/issues/1100 for details.
             if (pt.BitSize != 32 && pt.BitSize != 64)
                 return false;
-            var rdr = program.CreateImageReader(
-                program.Architecture,
-                platform.MakeAddressFromConstant(cAddr, false));
+            var rdr = program.CreateImageReader(program.Architecture, addr);
             return rdr.TryRead(pt, out cReal);
         }
 

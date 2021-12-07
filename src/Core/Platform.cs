@@ -182,7 +182,16 @@ namespace Reko.Core
         Expression? ResolveImportByName(string? moduleName, string globalName);
         Expression? ResolveImportByOrdinal(string moduleName, int ordinal);
         ProcedureCharacteristics? LookupCharacteristicsByName(string procName);
-        Address MakeAddressFromConstant(Constant c, bool codeAlign);
+        /// <summary>
+        /// Given a constant <pararef name="c" /> attempt to make a corresponding <see cref="Address"/>.
+        /// </summary>
+        /// <param name="c">The <see cref="Constant"/> to convert.</param>
+        /// <param name="codeAlign">If true, ensures that the resulting <see cref="Address"/> is correctly
+        /// aligned for code addresses.</param>
+        /// <returns>An <see cref="Address"/> if the platform support the conversion, or null if not.
+        /// </returns>
+        Address? MakeAddressFromConstant(Constant c, bool codeAlign);
+
         Address MakeAddressFromLinear(ulong uAddr, bool codeAlign);
 
         /// <summary>
@@ -472,7 +481,7 @@ namespace Reko.Core
             return null;
         }
 
-        public virtual Address MakeAddressFromConstant(Constant c, bool codeAlign)
+        public virtual Address? MakeAddressFromConstant(Constant c, bool codeAlign)
         {
             return Architecture.MakeAddressFromConstant(c, codeAlign);
         }

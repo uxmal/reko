@@ -150,23 +150,27 @@ namespace Reko.Environments.Windows
             var instr = rw.FirstOrDefault();
             if (instr == null)
                 return null;
-            if (!(instr is RtlGoto jump))
+            if (instr is not RtlGoto jump)
                 return null;
             if (jump.Target is ProcedureConstant pc)
                 return pc.Procedure;
-            if (!(jump.Target is MemoryAccess access))
+            if (jump.Target is not MemoryAccess access)
                 return null;
+
+            //$REFACTOR: the following code is identical to Win32MipsPlatform / Win32Platform
             var addrTarget = access.EffectiveAddress as Address;
-            if (addrTarget == null)
+            if (addrTarget is null)
             {
-                if (!(access.EffectiveAddress is Constant wAddr))
+                if (access.EffectiveAddress is not Constant wAddr)
                 {
                     return null;
                 }
                 addrTarget = MakeAddressFromConstant(wAddr, false);
+                if (addrTarget is null)
+                    return null;
             }
             ProcedureBase? proc = host.GetImportedProcedure(this.Architecture, addrTarget, addrInstr);
-            if (proc != null)
+            if (proc is not null)
                 return proc;
             return host.GetInterceptedCall(this.Architecture, addrTarget);
         }
