@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Core.Lib
         [Test]
         public void Peek2ShouldReturnNull()
         {
-            var e = new LookaheadEnumerator<char>("ab".GetEnumerator());
+            var e = new LookaheadEnumerator<string>(new List<string> { "ab", "bc" }.GetEnumerator());
             e.MoveNext();
             var nonExistent = e.Peek(2);
             Assert.IsNull(nonExistent);
