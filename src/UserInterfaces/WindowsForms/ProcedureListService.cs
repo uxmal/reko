@@ -130,7 +130,7 @@ namespace Reko.Gui
             int cItems = listProcedures.SelectedItems.Count;
             var singleItemSelected = cItems == 1;
             ProgramProcedure pp = default;
-            if (singleItemSelected)
+            if (singleItemSelected && listProcedures.SelectedItems[0].Tag is not null)
             {
                 pp = (ProgramProcedure) listProcedures.SelectedItems[0].Tag;
             }
