@@ -7,11 +7,7 @@ linux_x64_task:
   container:
     cpu: 8
     memory: 4G
-    image: mcr.microsoft.com/dotnet/sdk:5.0
-
-  install_script:
-    - apt-get update -qq
-    - apt-get install -y build-essential gcc g++ cmake libcapstone-dev pkg-config p7zip-full
+    dockerfile: .ci/linux/Dockerfile
 
   prepare_script:
     - dotnet nuget locals all --clear
