@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         public void PaRiscDis_ldil()
         {
             AssertCode("ldil\tL%00003000,r31", "23E12000");
-            AssertCode("ldil\tL%-5595800,r1", "20355555");
+            AssertCode("ldil\tL%-55595800,r1", "20355555");
         }
 
         [Test]
