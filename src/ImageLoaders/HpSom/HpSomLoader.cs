@@ -36,28 +36,23 @@ namespace Reko.ImageLoaders.HpSom
     // http://webcache.googleusercontent.com/search?q=cache:xSnpsogDtIkJ:nixdoc.net/man-pages/HP-UX/man4/a.out.4.html+&cd=1&hl=en&ct=clnk&gl=se
     public class HpSomLoader : ProgramImageLoader
     {
-        private static TraceSwitch trace = new TraceSwitch(nameof(HpSomLoader), "Trace HP SOM loader")
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(HpSomLoader), "Trace HP SOM loader")
         {
             Level = TraceLevel.Verbose
         };
-        private List<ImageSymbol> pltEntries;
-        private SortedList<Address, ImageSymbol> symbols;
 
         public HpSomLoader(IServiceProvider services, ImageLocation imageLocation, byte[] imgRaw) :
             base(services, imageLocation, imgRaw)
         {
             PreferredBaseAddress = Address.Ptr32(0x00100000);
-            pltEntries = null!;
-            symbols = default!;
         }
 
         public override Address PreferredBaseAddress { get; set; }
 
         public override Program LoadProgram(Address? addrLoad)
         {
-
             var somHeader = MakeReader(0).ReadStruct<SOM_Header>();
-
+            DumpSomHeader(somHeader);
             if (somHeader.aux_header_location == 0)
                 throw new BadImageFormatException();
 
@@ -65,10 +60,10 @@ namespace Reko.ImageLoaders.HpSom
             var arch = MakeArchitecture(somHeader, cfgSvc);
             var platform = cfgSvc.GetEnvironment("hpux").Load(Services, arch);
 
-            this.symbols = ReadSymbols(arch, somHeader.symbol_location, somHeader.symbol_total, somHeader.symbol_strings_location);
+            var symbols = ReadSymbols(arch, somHeader.symbol_location, somHeader.symbol_total, somHeader.symbol_strings_location);
             var spaces = ReadSpaces(somHeader.space_location, somHeader.space_total, somHeader.space_strings_location);
             var subspaces = ReadSubspaces(somHeader.subspace_location, somHeader.subspace_total, somHeader.space_strings_location);
-
+            var segmentMap = MakeSegmentMapFromSubspaces(spaces, subspaces);
 
             var rdr = MakeReader(somHeader.aux_header_location);
             var aux = rdr.ReadStruct<aux_id>();
@@ -76,14 +71,107 @@ namespace Reko.ImageLoaders.HpSom
             switch (aux.type)
             {
             case aux_id_type.exec_aux_header:
-                var program = LoadExecSegments(somHeader, arch, platform, rdr);
+                var program = LoadExecSegments(segmentMap, arch, platform, rdr, symbols);
                 return program;
             default:
                 throw new BadImageFormatException();
             }
         }
 
-        private IProcessorArchitecture MakeArchitecture(in SOM_Header somHeader, IConfigurationService cfgSvc)
+        private SegmentMap? MakeSegmentMapFromSubspaces(List<(string?, SpaceDictionaryRecord)> spaces, List<(string?, SubspaceDictionaryRecord subspace)> subspaces)
+        {
+            var imgSegments = new List<ImageSegment>();
+            var memAreas = new List<MemoryArea>();      // indexed by space.
+            var spaceRanges = from ss in subspaces
+                    group new
+                    {
+                        space = ss.subspace.space_index,
+                        uAddrMin = ss.subspace.subspace_start,
+                        uAddrMax = ss.subspace.subspace_start + ss.subspace.subspace_length
+                    } by ss.subspace.space_index into g
+                    select (
+                        iSpace: g.Key,
+                        min: g.Min(gg => gg.uAddrMin),
+                        max: g.Max(gg => gg.uAddrMax));
+            foreach (var spaceRange in spaceRanges)
+            {
+                var mem = new ByteMemoryArea(
+                    Address.Ptr32(spaceRange.min), 
+                    new byte[spaceRange.max - spaceRange.min]);
+                var (sSpace, space) = spaces[spaceRange.iSpace];
+                for (uint i = 0; i < space.subspace_quantity; ++i)
+                {
+                    var (sSubspace, subspace) = subspaces[space.subspace_index + (int)i];
+                    var access = AccessFromSpace(subspace);
+                    var imgSegment = new ImageSegment(
+                        sSubspace ?? "(no name)", 
+                        Address.Ptr32(subspace.subspace_start),
+                        mem,
+                        access);
+                    Array.Copy(
+                        RawImage,
+                        subspace.file_loc_init_value,
+                        mem.Bytes,
+                        subspace.subspace_start - spaceRange.min,
+                        subspace.initialization_length);
+                    imgSegments.Add(imgSegment);
+                }
+            }
+            return new SegmentMap(imgSegments.ToArray());
+        }
+
+        private AccessMode AccessFromSpace(SubspaceDictionaryRecord space)
+        {
+            // Table 11 in PA Runtime document.
+            var accessControlBits = space.attributes >> 29;
+            return accessControlBits switch
+            {
+                0 => AccessMode.Read,
+                1 => AccessMode.ReadWrite,
+                2 => AccessMode.ReadExecute,
+                _ => AccessMode.Read,
+            };
+        }
+
+        [Conditional("DEBUG")]
+        private void DumpSomHeader(SOM_Header somHeader)
+        {
+            Debug.Print("system_id:                     {0:X4}", somHeader.system_id); // ushort
+            Debug.Print("a_magic:                       {0:X4}", somHeader.a_magic); // ushort
+            Debug.Print("version_id:                {0:X8}", somHeader.version_id); // uint
+            Debug.Print("file_time:                 {0:X8}", somHeader.file_time); // sys_clock
+            Debug.Print("entry_space:               {0:X8}", somHeader.entry_space); // uint
+            Debug.Print("entry_subspace:            {0:X8}", somHeader.entry_subspace); // uint
+            Debug.Print("entry_offset:              {0:X8}", somHeader.entry_offset); // uint
+            Debug.Print("aux_header_location:       {0:X8}", somHeader.aux_header_location); // uint
+            Debug.Print("aux_header_size:           {0:X8}", somHeader.aux_header_size); // uint
+            Debug.Print("som_length:                {0:X8}", somHeader.som_length); // uint
+            Debug.Print("presumed_dp:               {0:X8}", somHeader.presumed_dp); // uint
+            Debug.Print("space_location:            {0:X8}", somHeader.space_location); // uint
+            Debug.Print("space_total:               {0:X8}", somHeader.space_total); // uint
+            Debug.Print("subspace_location:         {0:X8}", somHeader.subspace_location); // uint
+            Debug.Print("subspace_total:            {0:X8}", somHeader.subspace_total); // uint
+            Debug.Print("loader_fixup_location:     {0:X8}", somHeader.loader_fixup_location); // uint
+            Debug.Print("loader_fixup_total:        {0:X8}", somHeader.loader_fixup_total); // uint
+            Debug.Print("space_strings_location:    {0:X8}", somHeader.space_strings_location); // uint
+            Debug.Print("space_strings_size:        {0:X8}", somHeader.space_strings_size); // uint
+            Debug.Print("init_array_location:       {0:X8}", somHeader.init_array_location); // uint
+            Debug.Print("init_array_total:          {0:X8}", somHeader.init_array_total); // uint
+            Debug.Print("compiler_location:         {0:X8}", somHeader.compiler_location); // uint
+            Debug.Print("compiler_total:            {0:X8}", somHeader.compiler_total); // uint
+            Debug.Print("symbol_location:           {0:X8}", somHeader.symbol_location); // uint
+            Debug.Print("symbol_total:              {0:X8}", somHeader.symbol_total); // uint
+            Debug.Print("fixup_request_location:    {0:X8}", somHeader.fixup_request_location); // uint
+            Debug.Print("fixup_request_total:       {0:X8}", somHeader.fixup_request_total); // uint
+            Debug.Print("symbol_strings_location:   {0:X8}", somHeader.symbol_strings_location); // uint
+            Debug.Print("symbol_strings_size:       {0:X8}", somHeader.symbol_strings_size); // uint
+            Debug.Print("unloadable_sp_location:    {0:X8}", somHeader.unloadable_sp_location); // uint
+            Debug.Print("unloadable_sp_size:        {0:X8}", somHeader.unloadable_sp_size); // uint
+            Debug.Print("checksum:                  {0:X8}", somHeader.checksum); // uint
+        }
+
+
+    private IProcessorArchitecture MakeArchitecture(in SOM_Header somHeader, IConfigurationService cfgSvc)
         {
             var archOptions = this.MakeArchitectureOptions(somHeader);
             var arch = cfgSvc.GetArchitecture("paRisc", archOptions)!;
@@ -112,10 +200,10 @@ namespace Reko.ImageLoaders.HpSom
         {
             return new RelocationResults(
                 new List<ImageSymbol>(),
-                symbols);
+                new SortedList<Address, ImageSymbol>());
         }
 
-        private object? ReadDynamicLibraryInfo(
+        private (List<ImageSymbol>, List<ImageSymbol>) ReadDynamicLibraryInfo(
             SOM_Exec_aux_hdr exeAuxHdr,
             IProcessorArchitecture arch)
         {
@@ -123,9 +211,9 @@ namespace Reko.ImageLoaders.HpSom
             var dlHeader = MakeReader(exeAuxHdr.exec_tfile).ReadStruct<DlHeader>();
             uint uStrTable = exeAuxHdr.exec_tfile + dlHeader.string_table_loc;
             var imports = ReadImports(exeAuxHdr.exec_tfile + dlHeader.import_list_loc, dlHeader.import_list_count, uStrTable);
-            var dltEntries = ReadDltEntries(dlHeader, exeAuxHdr.exec_dfile, imports);
-            this.pltEntries = ReadPltEntries(dlHeader, exeAuxHdr, imports, arch);
-            return null;
+            var dltEntries = ReadDltEntries(dlHeader, exeAuxHdr.exec_dfile, imports, arch);
+            var pltEntries = ReadPltEntries(dlHeader, exeAuxHdr, imports, arch);
+            return (dltEntries, pltEntries);
         }
 
         private List<ImageSymbol> ReadPltEntries(DlHeader dlhdr, SOM_Exec_aux_hdr exeAuxHdr, List<string> names, IProcessorArchitecture arch)
@@ -147,19 +235,25 @@ namespace Reko.ImageLoaders.HpSom
                 trace.Verbose("  {0}: {1}", pltEntry.Address, pltEntry.Name!);
                 trace.Verbose("  {0}: {1}", pltGotEntry.Address, pltGotEntry.Name!);
                 trace.Verbose("    {0:X8}", m);
+                dlts.Add(pltEntry);
+                dlts.Add(pltGotEntry);
             }
             return dlts;
         }
 
-        private object ReadDltEntries(DlHeader dlhdr, uint uData, List<string> names)
+        private List<ImageSymbol> ReadDltEntries(
+            DlHeader dlhdr, 
+            uint uData, 
+            List<string> names, 
+            IProcessorArchitecture arch)
         {
             var rdr = MakeReader(uData + dlhdr.dlt_loc);
-            var dlts = new List<(string, uint)>();
+            var dlts = new List<ImageSymbol>();
             for (int i = 0; i < dlhdr.dlt_count; ++i)
             {
                 var addr = Address.Ptr32((uint) rdr.Offset);
                 uint n = rdr.ReadUInt32();
-                dlts.Add((names[i], n));
+                dlts.Add(ImageSymbol.DataObject(arch, addr, names[i]));
             }
             return dlts;
         }
@@ -181,6 +275,7 @@ namespace Reko.ImageLoaders.HpSom
 
         private List<(string?, SpaceDictionaryRecord)> ReadSpaces(uint space_location, uint count, uint uStrings)
         {
+            trace.Verbose("== Spaces =========");
             var spaces = new List<(string?, SpaceDictionaryRecord)>();
             var rdr = new StructureReader<SpaceDictionaryRecord>(MakeReader(space_location));
             for (; count > 0; --count)
@@ -188,12 +283,38 @@ namespace Reko.ImageLoaders.HpSom
                 var space = rdr.Read();
                 var name = ReadString(space.name, uStrings);
                 spaces.Add((name, space));
+                DumpSpace(name, space);
             }
             return spaces;
         }
 
+        [Conditional("DEBUG")]
+        private void DumpSpace(string? name, SpaceDictionaryRecord space)
+        {
+            trace.Verbose("  {0}", name ?? "<none>");
+            trace.Verbose("    name:       {0:X8}", space.name); // uint::name
+            trace.Verbose("    attributes:              {0:X8}", space.attributes);
+            //unsigned int is_loadable : 1; /* space is loadable */
+            //unsigned int is_defined : 1; /* space is defined within file */
+            //unsigned int is_private : 1; /* space is not sharable */
+            //unsigned int has_intermediate_code: 1; /* contain intermediate code */
+            //unsigned int is_tspecific : 1; /* is thread specific */
+            //unsigned int reserved : 11; /* reserved for future expansion */
+            //unsigned int sort_key : 8; /* sort key for space */
+            //unsigned int reserved2 : 8; /* reserved for future expansion */
+            trace.Verbose("    space_number:            {0,8}", space.space_number); 
+            trace.Verbose("    subspace_index:          {0,8}", space.subspace_index);
+            trace.Verbose("    subspace_quantity:       {0:X8}", space.subspace_quantity);
+            trace.Verbose("    loader_fix_index:        {0,8}", space.loader_fix_index); 
+            trace.Verbose("    loader_fix_quantity:     {0:X8}", space.loader_fix_quantity); 
+            trace.Verbose("    init_pointer_index:      {0,8}", space.init_pointer_index); 
+            trace.Verbose("    init_pointer_quantity:   {0:X8}", space.init_pointer_quantity); 
+        }
+
         private List<(string?, SubspaceDictionaryRecord)> ReadSubspaces(uint subspace_location, uint count, uint uStrings)
         {
+            trace.Verbose("== Subspaces =========");
+
             var subspaces = new List<(string?, SubspaceDictionaryRecord)>();
             var rdr = new StructureReader<SubspaceDictionaryRecord>(MakeReader(subspace_location));
             for (; count > 0; --count)
@@ -202,8 +323,25 @@ namespace Reko.ImageLoaders.HpSom
                 var name = ReadString(subspace.name, uStrings);
                 var access = subspace.attributes >> 25;
                 subspaces.Add((name, subspace));
+                DumpSubspace(name, subspace);
             }
             return subspaces;
+        }
+
+        [Conditional("DEBUG")]
+        private void DumpSubspace(string? name, SubspaceDictionaryRecord space)
+        {
+            trace.Verbose("  {0}", name ?? "<none>");
+            trace.Verbose("    space_index:             {0,8}", space.space_index);
+            trace.Verbose("    attributes:              {0:X8}", space.attributes);
+            trace.Verbose("    file_loc_init_value:     {0:X8}", space.file_loc_init_value);
+            trace.Verbose("    initialization_length:   {0:X8}", space.initialization_length);
+            trace.Verbose("    subspace_start:          {0:X8}", space.subspace_start);
+            trace.Verbose("    subspace_length:         {0:X8}", space.subspace_length);
+            trace.Verbose("    alignment:               {0:X8}", space.alignment);
+            trace.Verbose("    name:                    {0:X8}", space.name);
+            trace.Verbose("    fixup_request_index:     {0,8}", space.fixup_request_index);
+            trace.Verbose("    fixup_request_quantity:  {0:X8}", space.fixup_request_quantity);
         }
 
         private SortedList<Address,ImageSymbol> ReadSymbols(IProcessorArchitecture arch, uint sym_location, uint sym_count, uint uStrings)
@@ -273,11 +411,17 @@ namespace Reko.ImageLoaders.HpSom
             return new BeImageReader(RawImage, uFileOffset);
         }
 
-        private Program LoadExecSegments(in SOM_Header somHeader, IProcessorArchitecture arch, IPlatform platform, BeImageReader rdr)
+        private Program LoadExecSegments(
+            SegmentMap? subspaces,
+            IProcessorArchitecture arch,
+            IPlatform platform,
+            BeImageReader rdr,
+            IDictionary<Address, ImageSymbol> symbols)
         {
             var segments = new List<ImageSegment>();
             var execAux = rdr.ReadStruct<SOM_Exec_aux_hdr>();
-            var dlHeaderRdr = ReadDynamicLibraryInfo(execAux, arch);
+            DumpExecAuxHeader(execAux);
+            var (dltEntries, pltEntries) = ReadDynamicLibraryInfo(execAux, arch);
 
             var textBytes = new byte[execAux.exec_tsize];
             var textAddr = Address.Ptr32(execAux.exec_tmem);
@@ -288,20 +432,50 @@ namespace Reko.ImageLoaders.HpSom
                 AccessMode.ReadExecute);
             segments.Add(textSeg);
 
-            var dataBytes = new byte[execAux.exec_dsize];
-            var dataAddr = Address.Ptr32(execAux.exec_tmem);
-            Array.Copy(RawImage, (int) execAux.exec_dfile, dataBytes, 0, dataBytes.Length);
-            var dataSeg = new ImageSegment(
-                ".data",
-                new ByteMemoryArea(dataAddr, dataBytes),
-                AccessMode.ReadWrite);
-            segments.Add(dataSeg);
-
-            var segmap = new SegmentMap(
-                segments.Min(s => s.Address),
-                segments.ToArray());
-            return new Program(segmap, arch, platform);
+            if (subspaces is null)
+            {
+                var dataBytes = new byte[execAux.exec_dsize];
+                var dataAddr = Address.Ptr32(execAux.exec_tmem);
+                Array.Copy(RawImage, (int) execAux.exec_dfile, dataBytes, 0, dataBytes.Length);
+                var dataSeg = new ImageSegment(
+                    ".data",
+                    new ByteMemoryArea(dataAddr, dataBytes),
+                    AccessMode.ReadWrite);
+                segments.Add(dataSeg);
+                subspaces = new SegmentMap(segments.ToArray());
+            }
+            var program = new Program(subspaces, arch, platform);
+            var addr = Address.Ptr32(execAux.exec_entry);
+            program.EntryPoints.Add(addr, ImageSymbol.Procedure(arch, addr, "_start"));
+            foreach (var sym in symbols.Values)
+            {
+                program.ImageSymbols[sym.Address] = sym;
+            }
+            foreach (var dlt in dltEntries)
+            {
+                program.ImageSymbols[dlt.Address] = dlt;
+            }
+            foreach (var plt in pltEntries)
+            {
+                program.ImageSymbols[plt.Address] = plt;
+            }
+            return program;
         }
 
+        [Conditional("DEBUG")]
+        private void DumpExecAuxHeader(SOM_Exec_aux_hdr execAux)
+        {
+            Debug.Print("== Exec_aux_hdr");
+            Debug.Print("exec_tsize:    {0:X8}", execAux.exec_tsize);
+            Debug.Print("exec_tmem:     {0:X8}", execAux.exec_tmem);
+            Debug.Print("exec_tfile:    {0:X8}", execAux.exec_tfile);
+            Debug.Print("exec_dsize:    {0:X8}", execAux.exec_dsize);
+            Debug.Print("exec_dmem:     {0:X8}", execAux.exec_dmem);
+            Debug.Print("exec_dfile:    {0:X8}", execAux.exec_dfile);
+            Debug.Print("exec_bsize:    {0:X8}", execAux.exec_bsize);
+            Debug.Print("exec_entry:    {0:X8}", execAux.exec_entry);
+            Debug.Print("exec_flags:    {0:X8}", execAux.exec_flags);
+            Debug.Print("exec_bfill:    {0:X8}", execAux.exec_bfill);
+        }
     }
 }
