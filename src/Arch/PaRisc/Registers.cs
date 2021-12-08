@@ -45,6 +45,7 @@ namespace Reko.Arch.PaRisc
 
         public static readonly FlagGroupStorage CF;
         public Dictionary<StorageDomain, RegisterStorage> RegistersByStorageDomain { get; }
+        public Dictionary<string, RegisterStorage> RegistersByName { get; }
 
         public Registers(PrimitiveType gpRegSize)
         {
@@ -62,6 +63,10 @@ namespace Reko.Arch.PaRisc
             FpRegs32 = FpLefts.Concat(FpRights).ToArray();
             RegistersByStorageDomain =
                 GpRegs.ToDictionary(r => r.Domain);
+            RegistersByName = GpRegs.Concat(FpRegs)
+                .Concat(FpLefts)
+                .Concat(FpRights)
+                .ToDictionary(r => r.Name);
         }
 
         static Registers()

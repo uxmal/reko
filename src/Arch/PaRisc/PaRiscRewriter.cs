@@ -18,13 +18,6 @@
  */
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
@@ -32,6 +25,9 @@ using Reko.Core.Memory;
 using Reko.Core.Rtl;
 using Reko.Core.Services;
 using Reko.Core.Types;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Reko.Arch.PaRisc
 {
@@ -199,9 +195,9 @@ namespace Reko.Arch.PaRisc
             return true;
         }
 
-        private Expression RewriteOp(MachineOperand op)
+        private Expression RewriteOp(int iOp)
         {
-            switch (op)
+            switch (instr.Operands[iOp])
             {
             case RegisterOperand r:
                 if (r.Register == arch.Registers.GpRegs[0])
@@ -243,7 +239,7 @@ namespace Reko.Arch.PaRisc
                 }
                 return m.Mem(mem.Width, ea);
             }
-            throw new NotImplementedException($"Unimplemented PA-RISC operand type {op.GetType()}.");
+            throw new NotImplementedException($"Unimplemented PA-RISC operand type {instr.Operands[iOp].GetType()}.");
         }
 
         private Expression RewriteCondition(Expression left, Expression right)

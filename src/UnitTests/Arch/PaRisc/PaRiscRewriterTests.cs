@@ -309,10 +309,10 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscRw_ldil()
         {
-            Given_HexString("23E12000");  // ldil\t00012000,r31
+            Given_HexString("23E12000");  // ldil\tL%3000,r31
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r31 = 0x9000000<64>");
+                "1|L--|r31 = 12288<i32>");
         }
 
         [Test]

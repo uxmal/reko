@@ -84,8 +84,6 @@ namespace Reko.Arch.X86
             {
                 instrCur = dasm.Current;
                 var addr = instrCur.Address;
-                if (addr.ToLinear() == 0x0804B34C)
-                    _ = addr.ToString();    //$DEBUG
                 this.iclass = instrCur.InstructionClass;
                 orw = arch.ProcessorMode.CreateOperandRewriter(arch, m, binder, host);
                 switch (instrCur.Mnemonic)

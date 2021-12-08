@@ -34,9 +34,9 @@ namespace Reko.Arch.PaRisc
     {
         private void RewriteAdd(bool setCarry)
         {
-            var src1 = RewriteOp(instr.Operands[0]);
-            var src2 = RewriteOp(instr.Operands[1]);
-            var dst = RewriteOp(instr.Operands[2]);
+            var src1 = RewriteOp(0);
+            var src2 = RewriteOp(1);
+            var dst = RewriteOp(2);
             m.Assign(dst, m.IAdd(src1, src2));
             if (setCarry)
             {
@@ -48,9 +48,9 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteAdd_c()
         {
-            var src1 = RewriteOp(instr.Operands[0]);
-            var src2 = RewriteOp(instr.Operands[1]);
-            var dst = RewriteOp(instr.Operands[2]);
+            var src1 = RewriteOp(0);
+            var src2 = RewriteOp(1);
+            var dst = RewriteOp(2);
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
             var c = binder.EnsureFlagGroup(Registers.CF);
@@ -64,9 +64,9 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteAddi(bool trapIfCondition)
         {
-            var src1 = RewriteOp(instr.Operands[1]);
-            var src2 = RewriteOp(instr.Operands[0]);
-            var dst = RewriteOp(instr.Operands[2]);
+            var src1 = RewriteOp(1);
+            var src2 = RewriteOp(0);
+            var dst = RewriteOp(2);
             m.Assign(dst, m.IAdd(src1, src2));
             if (trapIfCondition)
             {
@@ -93,9 +93,9 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteLogical(Func<Expression,Expression,Expression> fn)
         {
-            var src1 = RewriteOp(instr.Operands[0]);
-            var src2 = RewriteOp(instr.Operands[1]);
-            var dst = RewriteOp(instr.Operands[2]);
+            var src1 = RewriteOp(0);
+            var src2 = RewriteOp(1);
+            var dst = RewriteOp(2);
             m.Assign(dst, fn(src1, src2));
             MaybeAnnulNextInstruction(iclass, dst);
         }
@@ -103,9 +103,9 @@ namespace Reko.Arch.PaRisc
         private void RewriteDepwi()
         {
             var imm = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
-            var pos = RewriteOp(instr.Operands[1]);
+            var pos = RewriteOp(1);
             var len = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
-            var dst = RewriteOp(instr.Operands[3]);
+            var dst = RewriteOp(3);
                  
             if (pos is Constant cpos)
             {
@@ -128,15 +128,15 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteDs()
         {
-            var src1 = RewriteOp(instr.Operands[0]);
-            var src2 = RewriteOp(instr.Operands[1]);
-            var dst = binder.EnsureIdentifier(((RegisterOperand) instr.Operands[2]).Register);
+            var src1 = RewriteOp(0);
+            var src2 = RewriteOp(1);
+            var dst = binder.EnsureIdentifier(((RegisterOperand)instr.Operands[2]).Register);
             m.Assign(dst, host.Intrinsic("__division_step", false, dst.DataType, src1, src2));
         }
 
         private void RewriteExtrw()
         {
-            var src = RewriteOp(instr.Operands[0]);
+            var src = RewriteOp(0);
             var bePos = ((ImmediateOperand) instr.Operands[1]).Value.ToInt32();
             var len = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
             var dtSlice = PrimitiveType.CreateWord(len);
@@ -148,7 +148,7 @@ namespace Reko.Arch.PaRisc
                 m.Invalid();
                 return;
             }
-            var dst = RewriteOp(instr.Operands[3]);
+            var dst = RewriteOp(3);
             var dt = (instr.Sign == SignExtension.s)
                 ? PrimitiveType.Int32
                 : PrimitiveType.UInt32;
@@ -157,8 +157,8 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteLd(PrimitiveType size)
         {
-            var src = RewriteOp(instr.Operands[0]);
-            var dst = RewriteOp(instr.Operands[1]);
+            var src = RewriteOp(0);
+            var dst = RewriteOp(1);
             if (src.DataType.BitSize < dst.DataType.BitSize)
             {
                 src = m.Convert(src, size, PrimitiveType.Create(Domain.UnsignedInt, dst.DataType.BitSize));
@@ -168,30 +168,29 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteLdil()
         {
-            long n = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
-            var src = Constant.Create(arch.WordWidth, n << 11);
-            var dst = RewriteOp(instr.Operands[1]);
+            var src = RewriteOp(0);
+            var dst = RewriteOp(1);
             m.Assign(dst, src);
         }
 
         private void RewriteLdo()
         {
-            var src = (MemoryAccess) RewriteOp(instr.Operands[0]);
-            var dst = RewriteOp(instr.Operands[1]);
+            var src = (MemoryAccess) RewriteOp(0);
+            var dst = RewriteOp(1);
             m.Assign(dst, src.EffectiveAddress);
         }
 
         private void RewriteLdsid()
         {
-            var src = RewriteOp(instr.Operands[0]);
-            var dst = RewriteOp(instr.Operands[1]);
+            var src = RewriteOp(0);
+            var dst = RewriteOp(1);
             m.Assign(dst, src);
         }
 
         private void RewriteOr()
         {
-            var src1 = RewriteOp(instr.Operands[0]);
-            var src2 = RewriteOp(instr.Operands[1]);
+            var src1 = RewriteOp(0);
+            var src2 = RewriteOp(1);
             var rDst = ((RegisterOperand) instr.Operands[2]).Register;
             if (rDst == arch.Registers.GpRegs[0])
             {
@@ -207,12 +206,12 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteShladd()
         {
-            var addend= RewriteOp(instr.Operands[0]);
+            var addend= RewriteOp(0);
             var sh = Constant.Int32(((ImmediateOperand) instr.Operands[1]).Value.ToInt32());
             Expression e = m.Shl(addend, sh);
-            var src = RewriteOp(instr.Operands[2]);
+            var src = RewriteOp(2);
             e = m.IAdd(src, e);
-            var dst = RewriteOp(instr.Operands[3]);
+            var dst = RewriteOp(3);
             m.Assign(dst, e);
             MaybeSkipNextInstruction(iclass, false, e, null);
         }
@@ -223,16 +222,16 @@ namespace Reko.Arch.PaRisc
             var rLo = ((RegisterOperand) instr.Operands[1]).Register;
             var regp = binder.EnsureSequence(dtSeq, rHi, rLo);
             m.Assign(regp, m.Seq(binder.EnsureRegister(rHi), binder.EnsureRegister(rLo)));
-            var shamt = RewriteOp(instr.Operands[2]);
-            var dst = RewriteOp(instr.Operands[3]);
+            var shamt = RewriteOp(2);
+            var dst = RewriteOp(3);
             m.Assign(dst, m.Slice(dt, m.Shr(regp, shamt), 0));
             MaybeSkipNextInstruction(InstrClass.ConditionalTransfer, false, dst);
         }
 
         private void RewriteSt(PrimitiveType size)
         {
-            var dst = RewriteOp(instr.Operands[1]);
-            var src = RewriteOp(instr.Operands[0]);
+            var dst = RewriteOp(1);
+            var src = RewriteOp(0);
             if (src is Constant cSrc)
             {
                 src = Constant.Create(dst.DataType, cSrc.ToInt64());
@@ -246,18 +245,18 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteSub()
         {
-            var src1 = RewriteOp(instr.Operands[0]);
-            var src2 = RewriteOp(instr.Operands[1]);
-            var dst = RewriteOp(instr.Operands[2]);
+            var src1 = RewriteOp(0);
+            var src2 = RewriteOp(1);
+            var dst = RewriteOp(2);
             m.Assign(dst, m.ISub(src1, src2));
             MaybeSkipNextInstruction(iclass, false, dst, null);
         }
 
         private void RewriteSub_b()
         {
-            var src1 = RewriteOp(instr.Operands[0]);
-            var src2 = RewriteOp(instr.Operands[1]);
-            var dst = RewriteOp(instr.Operands[2]);
+            var src1 = RewriteOp(0);
+            var src2 = RewriteOp(1);
+            var dst = RewriteOp(2);
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
             var c = binder.EnsureFlagGroup(Registers.CF);
@@ -270,9 +269,9 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteSubi()
         {
-            var src1 = RewriteOp(instr.Operands[1]);
-            var src2 = RewriteOp(instr.Operands[0]);
-            var dst = RewriteOp(instr.Operands[2]);
+            var src1 = RewriteOp(1);
+            var src2 = RewriteOp(0);
+            var dst = RewriteOp(2);
             m.Assign(dst, m.ISub(src1, src2));
             MaybeSkipNextInstruction(iclass, false, dst, null);
         }

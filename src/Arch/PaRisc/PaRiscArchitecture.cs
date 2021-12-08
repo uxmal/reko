@@ -191,7 +191,7 @@ namespace Reko.Arch.PaRisc
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.RegistersByName.TryGetValue(name, out reg);
         }
 
         public override bool TryParseAddress(string? txtAddr, out Address addr)

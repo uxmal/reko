@@ -2839,18 +2839,5 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|v9 = v19 | ~v17");
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

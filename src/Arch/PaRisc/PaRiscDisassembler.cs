@@ -146,7 +146,7 @@ namespace Reko.Arch.PaRisc
         }
 
         /// <summary>
-        /// Tests if the bit at big-endian position <paramref name="bitPos"/> of the word 
+        /// Tests if the bit at big-endian position <paramref name="bitPos"/> of the 32-bit word 
         /// <paramref name="u"/> is set.
         /// </summary>
         private static bool BeBitSet(uint u, int bitPos)
@@ -1741,7 +1741,7 @@ namespace Reko.Arch.PaRisc
                 Instr(Mnemonic.fmpyadd, fpFmt1, fmo6,fmo11,fmo27,fmo21,fmo16),
                 invalid,
 
-                Instr(Mnemonic.ldil, u(11, 21, PrimitiveType.Word32), r6),
+                Instr(Mnemonic.ldil, Left(BeFields((11, 21)), assemble_21, 11), r6),
                 coprW,
                 Instr(Mnemonic.addil, Left(BeFields((11,21)), assemble_21, 11), r6,gpreg(1)),
                 coprDW,

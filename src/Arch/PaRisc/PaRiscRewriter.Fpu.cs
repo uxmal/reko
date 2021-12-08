@@ -32,8 +32,8 @@ namespace Reko.Arch.PaRisc
     {
         private void RewriteFcpy()
         {
-            var src = RewriteOp(instr.Operands[0]);
-            var dst = RewriteOp(instr.Operands[1]);
+            var src = RewriteOp(0);
+            var dst = RewriteOp(1);
             m.Assign(dst, src);
         }
 
@@ -44,24 +44,24 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteFld(PrimitiveType dt)
         {
-            var src = RewriteOp(instr.Operands[0]);
-            var dst = RewriteOp(instr.Operands[1]);
+            var src = RewriteOp(0);
+            var dst = RewriteOp(1);
             ((MemoryAccess) src).DataType = dt;
             m.Assign(dst, src);
         }
 
         private void RewriteFpArithmetic(Func<Expression, Expression, Expression> fn)
         {
-            var src1 = RewriteOp(instr.Operands[0]);
-            var src2 = RewriteOp(instr.Operands[1]);
-            var dst = RewriteOp(instr.Operands[2]);
+            var src1 = RewriteOp(0);
+            var src2 = RewriteOp(1);
+            var dst = RewriteOp(2);
             m.Assign(dst, fn(src1, src2));
         }
 
         private void RewriteFst(PrimitiveType dt)
         {
-            var src = RewriteOp(instr.Operands[0]);
-            var dst = RewriteOp(instr.Operands[1]);
+            var src = RewriteOp(0);
+            var dst = RewriteOp(1);
             ((MemoryAccess) dst).DataType = dt;
             m.Assign(dst, src);
         }

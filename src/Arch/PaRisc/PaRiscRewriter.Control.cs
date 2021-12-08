@@ -34,7 +34,7 @@ namespace Reko.Arch.PaRisc
     {
         private void RewriteAddb()
         {
-            var reg = RewriteOp(instr.Operands[1]);
+            var reg = RewriteOp(1);
             if (instr.Operands[0] is ImmediateOperand imm)
             {
                 m.Assign(reg, m.IAddS(reg, imm.Value.ToInt32()));
@@ -49,7 +49,7 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteBb()
         {
-            var reg = RewriteOp(instr.Operands[0]);
+            var reg = RewriteOp(0);
             Expression bitNumber;
             if (instr.Operands[1] is ImmediateOperand imm)
             {
@@ -57,7 +57,7 @@ namespace Reko.Arch.PaRisc
             }
             else
             {
-                bitNumber = RewriteOp(instr.Operands[1]);
+                bitNumber = RewriteOp(1);
             }
             var test = host.Intrinsic("__is_bit_set", false, PrimitiveType.Bool, reg, bitNumber);
             MaybeBranchAndAnnul(2, RewriteBbCondition, test);
@@ -77,7 +77,7 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteBranch()
         {
-            var dest = RewriteOp(instr.Operands[0]);
+            var dest = RewriteOp(0);
             var linkReg = ((RegisterOperand) instr.Operands[1]).Register;
             if (linkReg == arch.Registers.GpRegs[0])
             {
@@ -166,15 +166,15 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteCmpb(int iLeft, int iRight)
         {
-            var left = RewriteOp(instr.Operands[iLeft]);
-            var right = RewriteOp(instr.Operands[iRight]);
+            var left = RewriteOp(iLeft);
+            var right = RewriteOp(iRight);
             MaybeBranchAndAnnul(2, RewriteCondition, left, right);
         }
 
         private void RewriteCmpclr(int iLeft, int iRight)
         {
-            var left = RewriteOp(instr.Operands[iLeft]);
-            var right = RewriteOp(instr.Operands[iRight]);
+            var left = RewriteOp(iLeft);
+            var right = RewriteOp(iRight);
             var tmpLeft = binder.CreateTemporary(left.DataType);
             var tmpRight = binder.CreateTemporary(right.DataType);
             m.Assign(tmpLeft, left);
@@ -223,8 +223,8 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteMovb()
         {
-            var src = RewriteOp(instr.Operands[0]);
-            var dst = RewriteOp(instr.Operands[1]);
+            var src = RewriteOp(0);
+            var dst = RewriteOp(1);
             m.Assign(dst, src);
             MaybeBranchAndAnnul(2, RewriteCondition, src);
         }

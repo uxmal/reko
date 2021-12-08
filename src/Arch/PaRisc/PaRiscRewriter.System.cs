@@ -33,13 +33,13 @@ namespace Reko.Arch.PaRisc
     {
         private void RewriteDiag()
         {
-            var src = RewriteOp(instr.Operands[0]);
+            var src = RewriteOp(0);
             m.SideEffect(host.Intrinsic("__diag", true, VoidType.Instance, src));
         }
 
         private void RewriteMfctl()
         {
-            var src = RewriteOp(instr.Operands[0]);
+            var src = RewriteOp(0);
             var rDst = ((RegisterOperand) instr.Operands[1]).Register;
             var n = rDst.Number - Registers.ControlRegisters[0].Number;
             if (1 <= n && n <= 7)
@@ -56,7 +56,7 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteMtctl()
         {
-            var src = RewriteOp(instr.Operands[0]);
+            var src = RewriteOp(0);
             var rDst = ((RegisterOperand) instr.Operands[1]).Register;
             var n = rDst.Number - Registers.ControlRegisters[0].Number;
             if (1 <= n && n <= 7)
@@ -73,14 +73,14 @@ namespace Reko.Arch.PaRisc
 
         private void RewriteMtsm()
         {
-            var src = RewriteOp(instr.Operands[0]);
+            var src = RewriteOp(0);
             m.SideEffect(host.Intrinsic("__mtsm", true, VoidType.Instance, src));
         }
 
         private void RewriteMtsp()
         {
-            var src = RewriteOp(instr.Operands[0]);
-            var dst = RewriteOp(instr.Operands[1]);
+            var src = RewriteOp(0);
+            var dst = RewriteOp(1);
             m.Assign(dst, src);
         }
     }
