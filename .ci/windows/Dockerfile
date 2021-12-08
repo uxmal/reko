@@ -1,6 +1,6 @@
 # escape=`
 
-FROM cirrusci/windowsservercore:cmake
+FROM cirrusci/windowsservercore:cmake-2021.12.07
 
 RUN powershell -Command "`
     choco install -y dotnet-5.0-sdk; `
