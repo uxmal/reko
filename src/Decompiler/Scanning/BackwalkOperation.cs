@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2021 John Källén.
+ * Copyright (C) 1999-2021 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 using Reko.Core.Expressions;
 using System;
 
-namespace Reko.Core
+namespace Reko.Scanning
 {
 	public class BackwalkOperation
 	{

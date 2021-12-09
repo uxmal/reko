@@ -18,13 +18,10 @@
  */
 #endregion
 
-using Reko.Core.Memory;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
-namespace Reko.Core
+namespace Reko.Core.Memory
 {
     /// <summary>
     /// This class is used to write bytes to arrays of bytes. Its two

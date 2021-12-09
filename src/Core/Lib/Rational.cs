@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core
+namespace Reko.Core.Lib
 {
     /// <summary>
     /// Simplistic implementation of rational numbers.
