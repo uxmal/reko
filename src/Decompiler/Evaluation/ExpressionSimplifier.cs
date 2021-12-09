@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 
 namespace Reko.Evaluation
 {
@@ -969,15 +970,15 @@ namespace Reko.Evaluation
             }
             else if (newSeq.All(e => e is Constant))
             {
-                //$TODO: > 64 bit values?
-                ulong value = 0;
+                BigInteger value = BigInteger.Zero;
                 for (int i = 0; i < newSeq.Length; ++i)
                 {
                     var c = (Constant) newSeq[i];
-                    value = (value << c.DataType.BitSize) | c.ToUInt64();
+                    value = (value << c.DataType.BitSize) | c.ToBigInteger();
                 }
                 return (Constant.Create(seq.DataType, value), true);
             }
+            
             if (!newSeq[^1].DataType.IsReal && newSeq.Take(newSeq.Length - 1).All(e => e.IsZero))
             {
                 var tail = newSeq.Last();
@@ -988,11 +989,44 @@ namespace Reko.Evaluation
                     PrimitiveType.Create(Domain.UnsignedInt, seq.DataType.BitSize)),
                     true);
             }
+            var neg = SignExtendedNegation(seq);
+            if (neg != null)
+                return (neg, true);
             var mem = FuseAdjacentMemoryAccesses(seq.DataType, newSeq);
             if (mem != null)
                 return (mem, true);
             //$TODO: fix changed here.
             return FuseAdjacentSlices(seq.DataType, newSeq);
+        }
+
+        /// <summary>
+        /// The expression SEQ(-0<16> - (x != 0<16>), -x) appears a lot in
+        /// 16-bit x86 binaries. It amounts to a negation followed by a 
+        /// sign extension.
+        /// </summary>
+        private Expression? SignExtendedNegation(MkSequence seq)
+        {
+            if (seq.Expressions.Length < 2)
+                return null;
+            var eLast = seq.Expressions[^1];
+            if (eLast is UnaryExpression un && un.Operator == Operator.Neg)
+            {
+                var eFirst = seq.Expressions[^2];
+                var negated = un.Expression;
+                if (eFirst is BinaryExpression bin && 
+                    bin.Operator == Operator.ISub &&
+                    (bin.Left.IsZero ||
+                     bin.Left is UnaryExpression un2 && un2.Operator == Operator.Neg && un2.Expression.IsZero) &&
+                    bin.Right is BinaryExpression binRight &&
+                    binRight.Left == negated &&
+                    binRight.Right.IsZero)
+                {
+                    var bitsize = eFirst.DataType.BitSize + eLast.DataType.BitSize;
+                    var signedInt = PrimitiveType.Create(Domain.SignedInt, bitsize);
+                    return m.Convert(eLast, eLast.DataType, signedInt);
+                }
+            }
+            return null;
         }
 
         private Expression? FuseAdjacentMemoryAccesses(DataType dt, Expression[] elems)

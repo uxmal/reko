@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.Core.Services;
 using Reko.ImageLoaders.MzExe;
 using Reko.UnitTests.Mocks;

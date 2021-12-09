@@ -787,5 +787,33 @@ namespace Reko.UnitTests.Evaluation
             Assert.AreEqual("0x1234<16>", result.ToString());
             Assert.IsTrue(changed);
         }
+
+        [Test]
+        public void Exs_sign_extended_negation()
+        {
+            // This pattern is common in x86 16-bit programs.
+            Given_ExpressionSimplifier();
+            var ne0 = m.Ne0(this.foo);
+            var expr = m.Seq(
+                m.ISub(m.Neg(m.Word32(0)), ne0),
+                m.Neg(foo));
+            var (result, changed) = expr.Accept(simplifier);
+            Assert.AreEqual("CONVERT(-foo_1, word32, int64)", result.ToString());
+            Assert.IsTrue(changed);
+        }
+
+        [Test]
+        public void Exs_long_sequence_of_constants()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Seq(
+                m.Word16(0x1234), m.Word16(0x5678),
+                m.Word16(0x1234), m.Word16(0x0001),
+                m.Word16(0x1234), m.Word16(0x5678),
+                m.Word16(0x1234), m.Word16(0x0002));
+            var (result, changed) = expr.Accept(simplifier);
+            Assert.AreEqual("0x12345678123400011234567812340002<128>", result.ToString());
+            Assert.IsTrue(changed);
+        }
     }
 }

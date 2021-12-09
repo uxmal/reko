@@ -606,10 +606,10 @@ ci16 fn0800-065B(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02)
 	return ax_n;
 }
 
-// 0800:06A2: void _fseek(Register (ptr16 Eq_n) ds, Stack (memptr (ptr16 Eq_n) Eq_n) wArg02, Stack ui32 dwArg04, Stack word16 wArg08)
+// 0800:06A2: void _fseek(Register (ptr16 Eq_n) ds, Stack (memptr (ptr16 Eq_n) Eq_n) wArg02, Stack int32 dwArg04, Stack word16 wArg08)
 // Called from:
 //      _setvbuf
-void _fseek(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02, ui32 dwArg04, word16 wArg08)
+void _fseek(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02, int32 dwArg04, word16 wArg08)
 {
 	if (_fflush(ds, wArg02) == 0x00)
 	{
@@ -803,7 +803,7 @@ Eq_n _read(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, cu16 wArg06)
 				if (al_n == 0x1A)
 				{
 					word16 dx_n;
-					_lseek(ds, wArg02, SEQ(0x00 - (cx_n != 0x00), -cx_n), 0x02, out dx_n);
+					_lseek(ds, wArg02, (int32) -cx_n, 0x02, out dx_n);
 					ds->a0482[wArg02] |= 0x0200;
 					goto l0800_nAA7;
 				}
@@ -936,13 +936,13 @@ Eq_n __write(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, Eq_n wArg06)
 	return ax_n;
 }
 
-// 0800:0C28: Register Eq_n _lseek(Register (ptr16 Eq_n) ds, Stack int16 wArg02, Stack ui32 dwArg04, Stack byte bArg08, Register out ptr16 dxOut)
+// 0800:0C28: Register Eq_n _lseek(Register (ptr16 Eq_n) ds, Stack int16 wArg02, Stack int32 dwArg04, Stack byte bArg08, Register out ptr16 dxOut)
 // Called from:
 //      _fseek
 //      _read
 //      __write
 //      _tell
-Eq_n _lseek(struct Eq_n * ds, int16 wArg02, ui32 dwArg04, byte bArg08, ptr16 & dxOut)
+Eq_n _lseek(struct Eq_n * ds, int16 wArg02, int32 dwArg04, byte bArg08, ptr16 & dxOut)
 {
 	ptr16 wArg04 = (word16) dwArg04;
 	ds->a0482[wArg02] &= ~0x0200;

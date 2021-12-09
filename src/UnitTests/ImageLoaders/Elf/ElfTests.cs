@@ -21,6 +21,7 @@
 using Moq;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Memory;
 using Reko.ImageLoaders.Elf;
 using System;
 using System.Collections.Generic;

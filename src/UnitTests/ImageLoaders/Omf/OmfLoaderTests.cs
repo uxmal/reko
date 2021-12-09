@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Memory;
 using Reko.ImageLoaders.Omf;
 using System;
 using System.Collections.Generic;

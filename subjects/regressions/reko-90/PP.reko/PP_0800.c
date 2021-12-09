@@ -3173,7 +3173,7 @@ void fn0800-2201(Eq_n ds, Eq_n ptrArg02)
 	Eq_n es_bx_n = *((word32) ds + 11857);
 	*((word32) es_bx_n + 4) = (byte) (ax_n - dx_n >> 0x08);
 	*((word32) es_bx_n + 5) = (byte) (ax_n - dx_n);
-	fn0800-2688(ds, SEQ(-0x00 - (dx_n != 0x00), -dx_n), 0x00, 0x00);
+	fn0800-2688(ds, (int32) -dx_n, 0x00, 0x00);
 	Eq_n dx_n = *((word32) ds + 17838);
 	if (*((word32) ds + 0x000045B0) != wArg04_n || dx_n != wArg02_n)
 	{
@@ -3253,7 +3253,7 @@ void fn0800-22FE(Eq_n ds, Eq_n ptrArg02)
 	Eq_n es_bx_n = *((word32) ds + 11857);
 	*((word32) es_bx_n + 4) = (byte) (ax_n - di_n >> 0x08);
 	*((word32) es_bx_n + 5) = bLoc08_n - (byte) di_n;
-	fn0800-2688(ds, SEQ(-0x00 - (di_n != 0x00), -di_n), 0x00, 0x00);
+	fn0800-2688(ds, (int32) -di_n, 0x00, 0x00);
 	*((word32) ds + 0x000045AC) = wArg04_n;
 	word16 dx_n = wArg02_n + di_n;
 	*((word32) ds + 0x000045AA) = dx_n;
@@ -17037,7 +17037,7 @@ Eq_n fn0800_B97F(Eq_n ds, Eq_n wArg02, Eq_n ptrArg04, Eq_n wArg08, ptr16 & dxOut
 				if (al_n == 0x1A)
 				{
 					word16 cx_n;
-					fn0800-8E29(ds, wArg02, SEQ(0x00 - (cx_n != 0x00), -cx_n), 0x01, out cx_n, out dx);
+					fn0800-8E29(ds, wArg02, (int32) -cx_n, 0x01, out cx_n, out dx);
 					SEQ(ds, 0x24EA)[wArg02 *16 0x02] |= 0x0200;
 					goto l0800_BA41;
 				}

@@ -3453,7 +3453,7 @@ l0800_2201:
 	ptr32 es_bx_88 = Mem72[ds:0x2E51<16>:segptr32]
 	Mem92[es_bx_88 + 4<16>:byte] = SLICE(ax_25 - dx_45 >>u 8<8>, byte, 0)
 	Mem95[es_bx_88 + 5<16>:byte] = SLICE(ax_25 - dx_45, byte, 0)
-	fn0800_2688(ds, SEQ(-0<16> - (dx_45 != 0<16>), -dx_45), 0<16>, 0<16>)
+	fn0800_2688(ds, CONVERT(-dx_45, word16, int32), 0<16>, 0<16>)
 	word16 dx_123 = Mem111[ds:0x45AE<16>:word16]
 	branch Mem111[ds:0x45B0<16>:word16] != wArg04_240 l0800_22EA
 l0800_22B7:
@@ -3545,7 +3545,7 @@ l0800_2349:
 	ptr32 es_bx_142 = Mem121[ds:0x2E51<16>:segptr32]
 	Mem146[es_bx_142 + 4<16>:byte] = SLICE(ax_25 - di_89 >>u 8<8>, byte, 0)
 	Mem149[es_bx_142 + 5<16>:byte] = bLoc08_255 - SLICE(di_89, byte, 0)
-	fn0800_2688(ds, SEQ(-0<16> - (di_89 != 0<16>), -di_89), 0<16>, 0<16>)
+	fn0800_2688(ds, CONVERT(-di_89, word16, int32), 0<16>, 0<16>)
 	Mem179[ds:0x45AC<16>:word16] = wArg04_243
 	word16 dx_178 = wArg02_229 + di_89
 	Mem180[ds:0x45AA<16>:word16] = dx_178
@@ -19333,7 +19333,7 @@ l0800_B9ED:
 	branch al_73 == 0x1A<8> l0800_BA21
 l0800_BA21:
 	word16 cx_347
-	fn0800_8E29(ds, wArg02, SEQ(0<16> - (cx_117 != 0<16>), -cx_117), 1<8>, out cx_347, out dx)
+	fn0800_8E29(ds, wArg02, CONVERT(-cx_117, word16, int32), 1<8>, out cx_347, out dx)
 	Mem110[ds:(wArg02 << 1<16>) + 0x24EA<16>:word16] = Mem97[ds:(wArg02 << 1<16>) + 0x24EA<16>:word16] | 0x200<16>
 l0800_B9F3:
 	branch al_73 == 0xD<8> l0800_B9FC

@@ -24,6 +24,7 @@ using Reko.Core.Operators;
 using Reko.Core.Code;
 using Reko.Core;
 using System.Linq;
+using Reko.Core.Lib;
 
 namespace Reko.Analysis
 {
