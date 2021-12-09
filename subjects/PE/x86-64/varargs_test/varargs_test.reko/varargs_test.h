@@ -378,7 +378,7 @@ Eq_905: (fn Eq_415 ())
 	T_905 (in IsDebuggerPresent @ 140001A7F : ptr64)
 	T_906 (in signature of IsDebuggerPresent @ 00000000 : void)
 Eq_930: (union "Eq_930" (bool u0) (word32 u1))
-	T_930 (in bl_85 == 0<8> @ 00000000 : byte)
+	T_930 (in bl_85 != 0<8> @ 00000000 : bool)
 Eq_941: HMODULE
 	T_941 (in rax_6 @ 140001AC6 : Eq_941)
 	T_946 (in GetModuleHandleW(null) @ 140001AC6 : HMODULE)
@@ -4160,15 +4160,15 @@ T_929: (in 0<8> @ 140001AA0 : byte)
   Class: Eq_904
   DataType: int8
   OrigDataType: byte
-T_930: (in bl_85 == 0<8> @ 00000000 : byte)
+T_930: (in bl_85 != 0<8> @ 00000000 : bool)
   Class: Eq_930
   DataType: Eq_930
   OrigDataType: (union (bool u0) (word32 u1))
-T_931: (in 0<32> - (bl_85 == 0<8>) @ 00000000 : word32)
+T_931: (in 0<32> - (bl_85 != 0<8>) @ 00000000 : word32)
   Class: Eq_931
   DataType: word32
   OrigDataType: word32
-T_932: (in CONVERT(0<32> - (bl_85 == 0<8>), word32, uint64) @ 140001AA0 : uint64)
+T_932: (in CONVERT(0<32> - (bl_85 != 0<8>), word32, uint64) @ 140001AA0 : uint64)
   Class: Eq_863
   DataType: uint64
   OrigDataType: uint64

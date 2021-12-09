@@ -39709,7 +39709,7 @@ T_8571: (in acl_extended_file(rdi) @ 00409CD3 : int32)
   Class: Eq_8567
   DataType: int32
   OrigDataType: int32
-T_8572: (in rax_47 @ 00409CD8 : uint64)
+T_8572: (in rax_48 @ 00409CD8 : uint64)
   Class: Eq_8572
   DataType: uint64
   OrigDataType: uint64
@@ -39757,7 +39757,7 @@ T_8583: (in eax_28 == 0x5F<32> @ 00000000 : bool)
   Class: Eq_8583
   DataType: bool
   OrigDataType: bool
-T_8584: (in SLICE(rax_47, word32, 0) @ 00409CE0 : word32)
+T_8584: (in SLICE(rax_48, word32, 0) @ 00409CE0 : word32)
   Class: Eq_8553
   DataType: word32
   OrigDataType: word32

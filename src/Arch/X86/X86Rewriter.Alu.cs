@@ -971,7 +971,19 @@ namespace Reko.Arch.X86
 
         private void RewriteNeg()
         {
-            RewriteUnaryOperator(m.Neg, instrCur.Operands[0], instrCur.Operands[0], CopyFlags.EmitCc|CopyFlags.SetCfIf0);
+            var src = SrcOp(0);
+            if (src is Identifier idSrc)
+            {
+                m.Assign(binder.EnsureFlagGroup(Registers.C), m.Ne0(idSrc));
+            }
+            else
+            {
+                var tmp = binder.CreateTemporary(src.DataType);
+                m.Assign(tmp, src);
+                m.Assign(binder.EnsureFlagGroup(Registers.C), m.Ne0(tmp));
+                src = tmp;
+            }
+            EmitCopy(instrCur.Operands[0], m.Neg(src), CopyFlags.EmitCc);
         }
 
         private void RewriteNot()

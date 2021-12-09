@@ -802,9 +802,8 @@ Eq_n _read(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, cu16 wArg06)
 				si_n = (word16) si_n + 1;
 				if (al_n == 0x1A)
 				{
-					cup16 cx_n = -cx_n;
 					word16 dx_n;
-					_lseek(ds, wArg02, SEQ(0x00 - (cx_n == 0x00), cx_n), 0x02, out dx_n);
+					_lseek(ds, wArg02, SEQ(0x00 - (cx_n != 0x00), -cx_n), 0x02, out dx_n);
 					ds->a0482[wArg02] |= 0x0200;
 					goto l0800_nAA7;
 				}
@@ -977,9 +976,9 @@ l0800_nCC1:
 	if (wArg0C < 0x00 && bArg04 != 0x00)
 	{
 		ds->*wArg08 = 0x2D;
-		ax_n = -wArg0A;
 		di_n = wArg08 + 1;
-		cx_n = -wArg0C - (ax_n == 0x00);
+		ax_n = -wArg0A;
+		cx_n = -wArg0C - (wArg0A != 0x00);
 	}
 	byte Eq_n::* si_n = fp - 0x24;
 	if (cx_n != 0x00)
@@ -2633,7 +2632,7 @@ l0800_nD0F:
 							if (bLoc07_n != 0x00)
 							{
 								ax_n = -si_n;
-								dx_n = -di_n - (ax_n == 0x00);
+								dx_n = -di_n - (si_n != 0x00);
 							}
 							goto l0800_nD1F;
 						}

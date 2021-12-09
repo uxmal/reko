@@ -464,12 +464,12 @@ namespace Reko.UnitTests.Evaluation
         public void Exs_ReduceArithmeticSequenceToLogicalNot()
         {
             Given_ExpressionSimplifier();
-            var expr  = m.IAdd(m.ISub(m.Word32(0), m.Eq0(m.Neg(foo))), m.Word32(1));
-            Assert.AreEqual("0<32> - (-foo_1 == 0<32>) + 1<32>", expr.ToString());
+            var expr  = m.IAdd(m.ISub(m.Word32(0), m.Ne0(m.Neg(foo))), m.Word32(1));
+            Assert.AreEqual("0<32> - (-foo_1 != 0<32>) + 1<32>", expr.ToString());
             Assert.AreEqual("!foo_1", expr.Accept(simplifier).Item1.ToString());
 
-            expr = m.IAdd(m.ISub(m.Word32(0), m.Eq0(foo)), m.Word32(1));
-            Assert.AreEqual("0<32> - (foo_1 == 0<32>) + 1<32>", expr.ToString());
+            expr = m.IAdd(m.ISub(m.Word32(0), m.Ne0(foo)), m.Word32(1));
+            Assert.AreEqual("0<32> - (foo_1 != 0<32>) + 1<32>", expr.ToString());
             Assert.AreEqual("!foo_1", expr.Accept(simplifier).Item1.ToString());
         }
 

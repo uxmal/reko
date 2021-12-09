@@ -527,15 +527,30 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void X86rw_Neg()
         {
+            // Intel manual states that the C flag is set 
+            // to 0 if the _source_ operand is 0.
             Run16bitTest(m =>
             {
                 m.Neg(m.ecx);
             });
             AssertCode(
                 "0|L--|0C00:0000(3): 3 instructions",
-                "1|L--|ecx = -ecx",
-                "2|L--|SCZO = cond(ecx)",
-                "3|L--|C = ecx == 0<32>");
+                "1|L--|C = ecx != 0<32>",
+                "2|L--|ecx = -ecx",
+                "3|L--|SZO = cond(ecx)");
+        }
+
+        [Test] 
+        public void X86rw_Neg_mem()
+        {
+            Run32bitTest("F719");   // neg dword ptr [ecx]
+            AssertCode(
+                "0|L--|10000000(2): 5 instructions",
+                "1|L--|v3 = Mem0[ecx:word32]",
+                "2|L--|C = v3 != 0<32>",
+                "3|L--|v5 = -v3",
+                "4|L--|Mem0[ecx:word32] = v5",
+                "5|L--|SZO = cond(v5)");
         }
 
         [Test]

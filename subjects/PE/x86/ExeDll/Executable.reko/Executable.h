@@ -337,7 +337,7 @@ Eq_640: (fn (ptr32 Eq_639) ((ptr32 Eq_424), uint32, (ptr32 Eq_423)))
 Eq_643: (union "Eq_643" (ui32 u0) (ptr32 u1))
 	T_643 (in 0x00400000<p32> @ 0040158D : ptr32)
 Eq_714: (union "Eq_714" (bool u0) (word32 u1))
-	T_714 (in eax_23 == 0<32> @ 00000000 : word32)
+	T_714 (in eax_23 != 0<32> @ 00000000 : bool)
 Eq_719: (fn word32 (ui32))
 	T_719 (in fn00401613 @ 00401654 : ptr32)
 	T_720 (in signature of fn00401613 @ 00401613 : void)
@@ -389,12 +389,12 @@ Eq_869: (fn Eq_422 ())
 	T_869 (in IsDebuggerPresent @ 00401861 : ptr32)
 	T_870 (in signature of IsDebuggerPresent @ 00000000 : void)
 Eq_873: (union "Eq_873" (bool u0) (byte u1))
-	T_873 (in IsDebuggerPresent() == 1<32> @ 00000000 : bool)
+	T_873 (in IsDebuggerPresent() != 1<32> @ 00000000 : bool)
 Eq_884: (fn void (word32))
 	T_884 (in __fastfail @ 0040178D : ptr32)
 	T_885 (in signature of __fastfail @ 00000000 : void)
 Eq_895: (union "Eq_895" (bool u0) (ui32 u1))
-	T_895 (in (word32) (bl_90 + 1<8>) == 0<32> @ 00000000 : word32)
+	T_895 (in (word32) (bl_90 + 1<8>) != 0<32> @ 00000000 : bool)
 Eq_901: HMODULE
 	T_901 (in eax_6 @ 00401891 : Eq_901)
 	T_906 (in GetModuleHandleW(null) @ 00401891 : HMODULE)
@@ -3285,19 +3285,19 @@ T_713: (in 0<32> @ 0040164D : word32)
   Class: Eq_694
   DataType: word32
   OrigDataType: word32
-T_714: (in eax_23 == 0<32> @ 00000000 : word32)
+T_714: (in eax_23 != 0<32> @ 00000000 : bool)
   Class: Eq_714
   DataType: Eq_714
   OrigDataType: (union (bool u0) (word32 u1))
-T_715: (in 0<32> - (eax_23 == 0<32>) @ 00000000 : word32)
+T_715: (in 0<32> - (eax_23 != 0<32>) @ 00000000 : word32)
   Class: Eq_715
   DataType: word32
   OrigDataType: word32
-T_716: (in ~(0<32> - (eax_23 == 0<32>)) @ 0040164D : word32)
+T_716: (in ~(0<32> - (eax_23 != 0<32>)) @ 0040164D : word32)
   Class: Eq_716
   DataType: ui32
   OrigDataType: ui32
-T_717: (in ~(0<32> - (eax_23 == 0<32>)) & dwArg04 @ 00000000 : word32)
+T_717: (in ~(0<32> - (eax_23 != 0<32>)) & dwArg04 @ 00000000 : word32)
   Class: Eq_692
   DataType: ui32
   OrigDataType: ui32
@@ -3921,11 +3921,11 @@ T_872: (in 1<32> @ 00401861 : word32)
   Class: Eq_422
   DataType: Eq_422
   OrigDataType: word32
-T_873: (in IsDebuggerPresent() == 1<32> @ 00000000 : bool)
+T_873: (in IsDebuggerPresent() != 1<32> @ 00000000 : bool)
   Class: Eq_873
   DataType: Eq_873
   OrigDataType: (union (bool u0) (byte u1))
-T_874: (in 0<8> - (IsDebuggerPresent() == 1<32>) @ 00000000 : byte)
+T_874: (in 0<8> - (IsDebuggerPresent() != 1<32>) @ 00000000 : byte)
   Class: Eq_867
   DataType: byte
   OrigDataType: byte
@@ -4009,15 +4009,15 @@ T_894: (in 0<32> @ 00401883 : word32)
   Class: Eq_893
   DataType: word32
   OrigDataType: word32
-T_895: (in (word32) (bl_90 + 1<8>) == 0<32> @ 00000000 : word32)
+T_895: (in (word32) (bl_90 + 1<8>) != 0<32> @ 00000000 : bool)
   Class: Eq_895
   DataType: Eq_895
   OrigDataType: (union (bool u0) (ui32 u1))
-T_896: (in 0<32> - ((word32) (bl_90 + 1<8>) == 0<32>) @ 00000000 : word32)
+T_896: (in 0<32> - ((word32) (bl_90 + 1<8>) != 0<32>) @ 00000000 : word32)
   Class: Eq_896
   DataType: ui32
   OrigDataType: ui32
-T_897: (in g_dw403368 & 0<32> - ((word32) (bl_90 + 1<8>) == 0<32>) @ 00000000 : word32)
+T_897: (in g_dw403368 & 0<32> - ((word32) (bl_90 + 1<8>) != 0<32>) @ 00000000 : word32)
   Class: Eq_847
   DataType: ui32
   OrigDataType: ui32

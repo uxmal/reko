@@ -4050,7 +4050,7 @@ l0000000000409D10:
 	return 0<32>
 l0000000000409CCF:
 	word32 eax_21 = acl_extended_file(rdi)
-	word64 rax_47 = SEQ(rax_32_32_63, eax_21)
+	word64 rax_48 = SEQ(rax_32_32_63, eax_21)
 	branch eax_21 < 0<32> l0000000000409CE8
 l0000000000409CE8:
 	word32 eax_28 = Mem0[__errno_location():word32]
@@ -4062,9 +4062,9 @@ l0000000000409CF9:
 l0000000000409D18:
 	return 0<32>
 l0000000000409CFE:
-	rax_47 = CONVERT(-SLICE(CONVERT(eax_28 != 0x10<32>, bool, uint64), word32, 0), word32, uint64)
+	rax_48 = CONVERT(-SLICE(CONVERT(eax_28 != 0x10<32>, bool, uint64), word32, 0), word32, uint64)
 l0000000000409CDC:
-	return SLICE(rax_47, word32, 0)
+	return SLICE(rax_48, word32, 0)
 fn0000000000409CC0_exit:
 
 

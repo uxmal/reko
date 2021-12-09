@@ -358,10 +358,10 @@ void fn0040176D(word32 dwArg04)
 		g_dw403368 = 0x00;
 		memset(fp - 808, 0x00, 0x02CC);
 		memset(fp - 0x5C, 0x00, 0x50);
-		byte bl_n = 0x00 - (IsDebuggerPresent() == 0x01);
+		byte bl_n = 0x00 - (IsDebuggerPresent() != 0x01);
 		SetUnhandledExceptionFilter(null);
 		if (UnhandledExceptionFilter(fp - 0x0C) == 0x00)
-			g_dw403368 &= 0x00 - ((word32) (bl_n + 0x01) == 0x00);
+			g_dw403368 &= 0x00 - ((word32) (bl_n + 0x01) != 0x00);
 	}
 	else
 		__fastfail(dwArg04);

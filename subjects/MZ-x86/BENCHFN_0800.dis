@@ -1086,9 +1086,8 @@ l0800_0A55:
 	si_57 = si_57 + 1<i16>
 	branch al_68 == 0x1A<8> l0800_0A87
 l0800_0A87:
-	word16 cx_81 = -cx_112
 	word16 dx_304
-	_lseek(ds, wArg02, SEQ(0<16> - (cx_81 == 0<16>), cx_81), 2<8>, out dx_304)
+	_lseek(ds, wArg02, SEQ(0<16> - (cx_112 != 0<16>), -cx_112), 2<8>, out dx_304)
 	Mem105[ds:(wArg02 << 1<16>) + 0x482<16>:word16] = Mem92[ds:(wArg02 << 1<16>) + 0x482<16>:word16] | 0x200<16>
 l0800_0A5A:
 	branch al_68 == 0xD<8> l0800_0A63
@@ -1299,9 +1298,9 @@ l0800_0C78:
 	branch bArg04 == 0<8> l0800_0C89
 l0800_0C7E:
 	Mem39[ds:wArg08:byte] = 0x2D<8>
-	ax_31 = -wArg0A
 	di_125 = wArg08 + 1<16>
-	cx_33 = -wArg0C - (ax_31 == 0<16>)
+	ax_31 = -wArg0A
+	cx_33 = -wArg0C - (wArg0A != 0<16>)
 l0800_0C89:
 	word16 si_107 = fp - 0x24<16>
 	branch cx_33 == 0<16> l0800_0C9D
@@ -3307,7 +3306,7 @@ l0800_1D0F:
 	branch bLoc07_535 == 0<8> l0800_1D1F
 l0800_1D18:
 	ax_473 = -si_123
-	dx_386 = -di_125 - (ax_473 == 0<16>)
+	dx_386 = -di_125 - (si_123 != 0<16>)
 l0800_1D1F:
 	Mem509[ds:wArg0C:word16] = Mem489[ds:wArg0C:word16] + wLoc06_536
 	Mem513[ds:wArg0E:word16] = wLoc04_559

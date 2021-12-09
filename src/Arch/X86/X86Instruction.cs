@@ -114,12 +114,12 @@ namespace Reko.Arch.X86
 			case Mnemonic.idiv:
 			case Mnemonic.imul:
 			case Mnemonic.mul:
-			case Mnemonic.neg:
 			case Mnemonic.scas:
 			case Mnemonic.scasb:
                 return Registers.SCZO;
 			case Mnemonic.dec:
 			case Mnemonic.inc:
+			case Mnemonic.neg:
                 return Registers.SZO;
 			case Mnemonic.rcl:
 			case Mnemonic.rcr:

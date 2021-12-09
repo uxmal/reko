@@ -18,9 +18,9 @@ cl:cl
 Mem8: orig: Mem0
     def:  Mem8[ds:0x7964<16>:byte] = cl
 eax_9: orig: eax
-eax_10: orig: eax
-SCZO_11: orig: SCZO
-C_12: orig: C
+C_10: orig: C
+eax_11: orig: eax
+SZO_12: orig: SZO
 si:si
     def:  def si
     uses: Mem14[ds:si + 0xC8<16>:word32] = -edx

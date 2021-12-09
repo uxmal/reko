@@ -884,7 +884,7 @@ l0000000140001A1A:
 	word64 rax_142 = SEQ(rax_32_32_143, eax_91)
 	branch eax_91 != 0<32> l0000000140001AA8
 l0000000140001A9E:
-	rax_142 = CONVERT(0<32> - (bl_85 == 0<8>), word32, uint64)
+	rax_142 = CONVERT(0<32> - (bl_85 != 0<8>), word32, uint64)
 	Mem101[0x0000000140003610<p64>:word32] = Mem86[0x0000000140003610<p64>:word32] & SLICE(rax_142, word32, 0)
 l0000000140001AA8:
 	rcxOut = fp - 0x588<64>

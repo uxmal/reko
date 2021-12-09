@@ -489,11 +489,11 @@ l00401788:
 	Mem30[0x00403368<p32>:word32] = 0<32>
 	memset(fp - 0x328<32>, 0<32>, 0x2CC<32>)
 	memset(fp - 0x5C<32>, 0<32>, 0x50<32>)
-	byte bl_90 = 0<8> - (IsDebuggerPresent() == 1<32>)
+	byte bl_90 = 0<8> - (IsDebuggerPresent() != 1<32>)
 	SetUnhandledExceptionFilter(0<32>)
 	branch UnhandledExceptionFilter(fp - 0xC<32>) != 0<32> l00401882
 l00401875:
-	Mem108[0x00403368<p32>:word32] = Mem97[0x00403368<p32>:word32] & 0<32> - (CONVERT(bl_90 + 1<8>, byte, word32) == 0<32>)
+	Mem108[0x00403368<p32>:word32] = Mem97[0x00403368<p32>:word32] & 0<32> - (CONVERT(bl_90 + 1<8>, byte, word32) != 0<32>)
 l00401882:
 	return
 fn0040176D_exit:

@@ -37,7 +37,7 @@ namespace Reko.Evaluation
     /// inc ax
     ///
     /// Example result:
-    /// turn func(0x00 - (-MyVariable == 0x00) + 0x01) into func(!MyVariable)
+    /// turn func(0x00 - (-MyVariable != 0x00) + 0x01) into func(!MyVariable)
     /// (With the help of UnaryNegEqZeroRule)
     /// </summary>
     public class LogicalNotFromArithmeticSequenceRule
@@ -61,13 +61,15 @@ namespace Reko.Evaluation
             if (!leftExpression.Left.IsZero)
                 return false;
 
-            if (leftExpression.Right is not BinaryExpression middleExpression || middleExpression.Operator != Operator.Eq)
+            if (leftExpression.Right is not BinaryExpression middleExpression || middleExpression.Operator != Operator.Ne)
                 return false;
 
             if (!middleExpression.Right.IsZero)
                 return false;
 
             expression = middleExpression.Left;
+            if (expression is UnaryExpression un && un.Operator == Operator.Neg)
+                expression = un.Expression;
 
             dataType = binExp.DataType;
 

@@ -604,7 +604,7 @@ uint64 fn0000000140001974(word32 ecx, word64 qwArg00, word64 qwArg10, ptr64 & rc
 		uint64 rax_n = SEQ(rax_32_32_n, eax_n);
 		if (eax_n == 0x00)
 		{
-			rax_n = (uint64) (0x00 - (bl_n == 0x00));
+			rax_n = (uint64) (0x00 - (bl_n != 0x00));
 			g_dw40003610 &= (word32) rax_n;
 		}
 		rcxOut = fp - 0x0588;

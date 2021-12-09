@@ -664,7 +664,6 @@ namespace Reko.Arch.X86
         public enum CopyFlags
         {
             EmitCc = 1,
-            SetCfIf0 = 2,
         }
 
         /// <summary>
@@ -703,10 +702,6 @@ namespace Reko.Arch.X86
             if ((flags & CopyFlags.EmitCc) != 0)
             {
                 EmitCcInstr(dst, X86Instruction.DefCc(instrCur.Mnemonic));
-            }
-            if ((flags & CopyFlags.SetCfIf0) != 0)
-            {
-                m.Assign(binder.EnsureFlagGroup(Registers.C), m.Eq0(dst));
             }
         }
 

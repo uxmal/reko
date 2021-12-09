@@ -290,7 +290,7 @@ Eq_717: (fn Eq_651 ())
 	T_717 (in IsDebuggerPresent @ 0040185A : ptr32)
 	T_718 (in signature of IsDebuggerPresent @ 00000000 : void)
 Eq_721: (union "Eq_721" (bool u0) (byte u1))
-	T_721 (in IsDebuggerPresent() == 1<32> @ 00000000 : bool)
+	T_721 (in IsDebuggerPresent() != 1<32> @ 00000000 : bool)
 Eq_723: (fn Eq_725 (Eq_725))
 	T_723 (in SetUnhandledExceptionFilter @ 00401861 : ptr32)
 	T_724 (in signature of SetUnhandledExceptionFilter @ 00000000 : void)
@@ -311,7 +311,7 @@ Eq_736: (fn void (word32))
 	T_736 (in __fastfail @ 00401786 : ptr32)
 	T_737 (in signature of __fastfail @ 00000000 : void)
 Eq_747: (union "Eq_747" (bool u0) (ui32 u1))
-	T_747 (in (word32) (bl_90 + 1<8>) == 0<32> @ 00000000 : word32)
+	T_747 (in (word32) (bl_90 + 1<8>) != 0<32> @ 00000000 : bool)
 Eq_753: HMODULE
 	T_753 (in eax_6 @ 0040188D : Eq_753)
 	T_758 (in GetModuleHandleW(null) @ 0040188D : HMODULE)
@@ -3230,11 +3230,11 @@ T_720: (in 1<32> @ 0040185A : word32)
   Class: Eq_651
   DataType: Eq_651
   OrigDataType: word32
-T_721: (in IsDebuggerPresent() == 1<32> @ 00000000 : bool)
+T_721: (in IsDebuggerPresent() != 1<32> @ 00000000 : bool)
   Class: Eq_721
   DataType: Eq_721
   OrigDataType: (union (bool u0) (byte u1))
-T_722: (in 0<8> - (IsDebuggerPresent() == 1<32>) @ 00000000 : byte)
+T_722: (in 0<8> - (IsDebuggerPresent() != 1<32>) @ 00000000 : byte)
   Class: Eq_715
   DataType: byte
   OrigDataType: byte
@@ -3334,15 +3334,15 @@ T_746: (in 0<32> @ 0040187C : word32)
   Class: Eq_745
   DataType: word32
   OrigDataType: word32
-T_747: (in (word32) (bl_90 + 1<8>) == 0<32> @ 00000000 : word32)
+T_747: (in (word32) (bl_90 + 1<8>) != 0<32> @ 00000000 : bool)
   Class: Eq_747
   DataType: Eq_747
   OrigDataType: (union (bool u0) (ui32 u1))
-T_748: (in 0<32> - ((word32) (bl_90 + 1<8>) == 0<32>) @ 00000000 : word32)
+T_748: (in 0<32> - ((word32) (bl_90 + 1<8>) != 0<32>) @ 00000000 : word32)
   Class: Eq_748
   DataType: ui32
   OrigDataType: ui32
-T_749: (in g_dw403368 & 0<32> - ((word32) (bl_90 + 1<8>) == 0<32>) @ 00000000 : word32)
+T_749: (in g_dw403368 & 0<32> - ((word32) (bl_90 + 1<8>) != 0<32>) @ 00000000 : word32)
   Class: Eq_695
   DataType: ui32
   OrigDataType: ui32
