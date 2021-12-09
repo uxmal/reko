@@ -113,7 +113,7 @@ namespace Reko.Analysis
 			return defined[stm];
 		}
 
-		public bool IsDefinedAtStatement(SsaIdentifier v, Statement stm)
+		public bool IsDefinedAtStatement(SsaIdentifier v, Statement? stm)
 		{
 			return (v.DefStatement == stm);
 		}
@@ -170,7 +170,7 @@ namespace Reko.Analysis
 			if (!visited.Contains(b))
 			{
 				visited.Add(b);
-				Statement s = b.Statements.Last!;
+                var s = (b.Statements.Count > 0) ? b.Statements[^1] : null;
 				if (!IsDefinedAtStatement(v, s))
 					LiveInAtStatement(b, b.Statements.Count - 1, v);
 			}

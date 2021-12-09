@@ -584,7 +584,7 @@ namespace Reko.Scanning
                 EmitCall(pcCallee, sig, chr, site);
                 if (callee is Procedure pCallee)
                 {
-                    program.CallGraph.AddEdge(blockCur!.Statements.Last!, pCallee);
+                    program.CallGraph.AddEdge(blockCur!.Statements[^1], pCallee);
                 }
                 return OnAfterCall(sig, chr);
             }
@@ -1071,7 +1071,7 @@ namespace Reko.Scanning
                 var pbase = scanner.ScanProcedure(blockCur!.Procedure.Architecture, addr, null, st);
                 if (pbase is Procedure pcallee)
                 {
-                    program.CallGraph.AddEdge(blockCur.Statements.Last!, pcallee);
+                    program.CallGraph.AddEdge(blockCur.Statements[^1], pcallee);
                 }
             }
         }

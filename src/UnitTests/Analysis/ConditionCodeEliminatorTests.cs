@@ -341,10 +341,10 @@ done:
             Identifier y = FlagGroup("y");  // is a condition code.
 
             m.Assign(z, new ConditionOf(r));
-            ssaIds[z].DefStatement = m.Block.Statements.Last;
+            ssaIds[z].DefStatement = m.Block.Statements[^1];
             m.Assign(y, z);
-            ssaIds[y].DefStatement = m.Block.Statements.Last;
-			ssaIds[z].Uses.Add(m.Block.Statements.Last);
+            ssaIds[y].DefStatement = m.Block.Statements[^1];
+			ssaIds[z].Uses.Add(m.Block.Statements[^1]);
 			var stmBr = m.BranchIf(m.Test(ConditionCode.EQ, y), "foo");
             ssaIds[y].Uses.Add(stmBr);
 
@@ -579,7 +579,7 @@ ProcedureBuilder_exit:
             Given_ConditionCodeEliminator();
             cce.Transform();
 
-            Assert.AreEqual("branch r1 <=u 0<32> yay", block.Statements.Last.Instruction.ToString());
+            Assert.AreEqual("branch r1 <=u 0<32> yay", block.Statements[^1].Instruction.ToString());
         }
 
         [Test]

@@ -125,12 +125,12 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    inb.Statements.Add(
+                    var stmLast = inb.Statements.Add(
                         inb.Address.ToLinear(),
                         new CallInstruction(
                             new ProcedureConstant(Program.Platform.PointerType, ProcNew),
                             new CallSite(0, 0)));
-                    Program.CallGraph.AddEdge(inb.Statements.Last!, ProcNew);
+                    Program.CallGraph.AddEdge(stmLast, ProcNew);
                     inb.Statements.Add(inb.Address.ToLinear(), new ReturnInstruction());
                     inb.Procedure.ControlGraph.AddEdge(inb, inb.Procedure.ExitBlock);
                 }
@@ -145,9 +145,10 @@ namespace Reko.Scanning
         {
             if (inboundBlock.Statements.Count == 0)
                 return Program.Platform.MakeAddressFromLinear(0, true);
+            var stmLast = inboundBlock.Statements[^1];
             return inboundBlock.Address != null
-                ? inboundBlock.Address + (inboundBlock.Statements.Last!.LinearAddress - inboundBlock.Statements[0].LinearAddress)
-                : Program.Platform.MakeAddressFromLinear(inboundBlock.Statements.Last!.LinearAddress, true);
+                ? inboundBlock.Address + (stmLast.LinearAddress - inboundBlock.Statements[0].LinearAddress)
+                : Program.Platform.MakeAddressFromLinear(stmLast.LinearAddress, true);
         }
 
         public void FixOutboundEdges(Block block)

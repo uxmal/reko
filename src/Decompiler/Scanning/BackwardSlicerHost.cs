@@ -80,7 +80,9 @@ namespace Reko.Scanning
         public IEnumerable<RtlInstruction?> GetBlockInstructions(RtlBlock rtlBlock)
         {
             var block = invCache[rtlBlock];
-            var last = block.Statements.Last;
+            if (block.Statements.Count < 1)
+                yield break;
+            var last = block.Statements[^1];
             if (last != null && last.Instruction is SwitchInstruction)
             {
                 //$TODO: this a workaround; when we run this class on 

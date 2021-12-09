@@ -108,9 +108,9 @@ namespace Reko.UnitTests.Mocks
             Block b = EnsureBlock(null);
             branchBlock = BlockOf(label);
 
-            Emit(new Branch(expr, branchBlock));
+            var stm = Emit(new Branch(expr, branchBlock));
             TerminateBlock();
-            return b.Statements.Last;
+            return stm;
         }
 
         protected virtual void BuildBody()
@@ -212,9 +212,9 @@ namespace Reko.UnitTests.Mocks
         public override Statement Emit(Instruction instr)
         {
             EnsureBlock(null);
-            Block.Statements.Add(LinearAddress , instr);
+            var stm = Block.Statements.Add(LinearAddress , instr);
             LinearAddress += (uint)InstructionSize;
-            return Block.Statements.Last;
+            return stm;
         }
 
         public Identifier Flags(string s)

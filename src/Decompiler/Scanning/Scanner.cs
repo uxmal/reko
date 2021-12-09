@@ -427,7 +427,7 @@ namespace Reko.Scanning
         {
             if (block.Statements.Count == 0)
                 return false;
-            return block.Statements.Last!.Instruction is ReturnInstruction;
+            return block.Statements[^1].Instruction is ReturnInstruction;
         }
 
         private Block? CloneBlockIntoOtherProcedure(Block block, Procedure proc)
@@ -464,12 +464,12 @@ namespace Reko.Scanning
                 callRetThunkBlock.UserLabel = userLabel;
 
             var linFrom = addrFrom.ToLinear();
-            callRetThunkBlock.Statements.Add(
+            var stmLast = callRetThunkBlock.Statements.Add(
                 linFrom,
                 new CallInstruction(
                     new ProcedureConstant(Program.Platform.PointerType, procNew),
                     new CallSite(0, 0)));
-            Program.CallGraph.AddEdge(callRetThunkBlock.Statements.Last!, procNew);
+            Program.CallGraph.AddEdge(stmLast, procNew);
 
             callRetThunkBlock.Statements.Add(linFrom, new ReturnInstruction());
             procOld.ControlGraph.AddEdge(callRetThunkBlock, procOld.ExitBlock);
@@ -494,9 +494,10 @@ namespace Reko.Scanning
             {
                 if (block.Statements.Count == 0)
                     return false;
-                if (block.Statements.Last!.Instruction is ReturnInstruction)
+                var stmLast = block.Statements[^1];
+                if (stmLast.Instruction is ReturnInstruction)
                     return true;
-                if (!(block.Statements.Last!.Instruction is Assignment))
+                if (stmLast.Instruction is not Assignment)
                     return false;
                 if (block.Succ.Count == 0)
                     return false;
@@ -770,7 +771,7 @@ namespace Reko.Scanning
             var linAddr = addr.ToLinear();
             var stmsToMove = blockToSplit.Statements.FindAll(s => s.LinearAddress >= linAddr).ToArray();
 
-            if (blockToSplit.Statements.Count > 0 && blockToSplit.Statements.Last!.LinearAddress >= linAddr)
+            if (blockToSplit.Statements.Count > 0 && blockToSplit.Statements[^1].LinearAddress >= linAddr)
             {
                 graph.AddEdge(blockToSplit, blockNew);
                 blockToSplit.Statements.RemoveAll(s => s.LinearAddress >= linAddr);
@@ -979,8 +980,8 @@ namespace Reko.Scanning
         {
             if (block.Statements.Count == 0)
                 return;
-            if (block.Statements.Last!.Instruction is GotoInstruction)
-                block.Statements.Remove(block.Statements.Last);
+            if (block.Statements[^1].Instruction is GotoInstruction)
+                block.Statements.RemoveAt(block.Statements.Count-1);
         }
 
         /// <summary>

@@ -423,7 +423,7 @@ namespace Reko.UnitTests.Scanning
 
             scanner.Verify();
             Assert.AreEqual(1, block.Statements.Count);
-            Assert.AreEqual("esp = esp - 0x400<32>", block.Statements.Last.ToString());
+            Assert.AreEqual("esp = esp - 0x400<32>", block.Statements[^1].ToString());
         }
 
         [Test]
@@ -452,7 +452,7 @@ namespace Reko.UnitTests.Scanning
 
             scanner.Verify();
             Assert.AreEqual(1, block.Statements.Count);
-            Assert.AreEqual("esp = alloca(eax)", block.Statements.Last.ToString());
+            Assert.AreEqual("esp = alloca(eax)", block.Statements[^1].ToString());
         }
 
         [Test]

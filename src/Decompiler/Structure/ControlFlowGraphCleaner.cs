@@ -59,7 +59,7 @@ namespace Reko.Structure
 				return false;
 			if (block.Statements.Count < 1)
 				return false;
-			return block.Statements.Last!.Instruction is Branch;
+			return block.Statements[^1].Instruction is Branch;
 		}
 
 		public bool EndsInJump(Block block)
@@ -68,14 +68,14 @@ namespace Reko.Structure
                 return false;
             if (block.Statements.Count < 1)
                 return true;
-            return !(block.Statements.Last!.Instruction is SwitchInstruction);
+            return !(block.Statements[^1].Instruction is SwitchInstruction);
 		}
 
 		private void ReplaceBranchWithJump(Block block)
 		{
             Debug.Assert(block.Statements.Count >= 1);
-            Debug.Assert(block.Statements.Last!.Instruction is Branch);
-            var branch = block.Statements.Last;
+            Debug.Assert(block.Statements[^1].Instruction is Branch);
+            var branch = block.Statements[^1];
             var condition = ((Branch)branch.Instruction).Condition;
             block.Statements.Remove(branch);
             if (CriticalInstruction.IsCritical(condition))
@@ -85,15 +85,6 @@ namespace Reko.Structure
             }
             proc.ControlGraph.RemoveEdge(block, block.Succ[0]);
 			dirty = true;
-		}
-
-		private void ReplaceJumpWithBranch(Block b1, Block b2)
-		{
-            Branch br = (Branch) b2.Statements.Last!.Instruction;
-            proc.ControlGraph.RemoveEdge(b1, b2);
-			b1.Statements.Add(b2.Statements.Last.LinearAddress, new Branch(br.Condition, b2.Succ[1]));
-            proc.ControlGraph.AddEdge(b1, b2.Succ[0]);
-            proc.ControlGraph.AddEdge(b1, b2.Succ[1]);
 		}
 
 		public void Transform()

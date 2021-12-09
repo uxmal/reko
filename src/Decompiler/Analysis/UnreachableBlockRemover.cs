@@ -79,7 +79,9 @@ namespace Reko.Analysis
 
         private bool HasConstantBranch(Block block)
         {
-            var stmLast = block.Statements.Last;
+            if (block.Statements.Count < 1)
+                return false;
+            var stmLast = block.Statements[^1];
             if (stmLast != null && stmLast.Instruction is Branch branch)
             {
                 return branch.Condition is Constant;
@@ -89,7 +91,7 @@ namespace Reko.Analysis
 
         private Block UnreachableBlock(Block block)
         {
-            var c = (Constant) ((Branch) block.Statements.Last!.Instruction).Condition;
+            var c = (Constant) ((Branch) block.Statements[^1].Instruction).Condition;
             if (c.IsZero)
                 return block.ThenBlock;
             else
@@ -114,7 +116,7 @@ namespace Reko.Analysis
         {
             foreach (var block in constBranchBlocks)
             {
-                var c = (Constant) ((Branch) block.Statements.Last!.Instruction).Condition;
+                var c = (Constant) ((Branch) block.Statements[^1].Instruction).Condition;
                 if (c.IsZero)
                 {
                     cfg.RemoveEdge(block, block.ThenBlock);
@@ -124,7 +126,7 @@ namespace Reko.Analysis
                     cfg.RemoveEdge(block, block.ElseBlock);
                 }
                 // Remove the branch statement at the end of the block.
-                Debug.Assert(block.Statements.Last.Instruction is Branch);
+                Debug.Assert(block.Statements[^1].Instruction is Branch);
                 block.Statements.RemoveAt(block.Statements.Count - 1);
             }
         }

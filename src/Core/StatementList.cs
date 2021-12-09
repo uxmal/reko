@@ -46,14 +46,5 @@ namespace Reko.Core
             base.Insert(position, stm);
             return stm;
         }
-
-		public Statement? Last
-		{
-			get 
-			{ 
-				int i = Count - 1;
-				return i >= 0 ? this[i] : null;
-			}
-		}
 	}
 }

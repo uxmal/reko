@@ -57,7 +57,7 @@ namespace Reko.Structure
 				foreach (var block in new DfsIterator<Block>(proc.ControlGraph).PostOrder())
 				{
 					if (block.Statements.Count > 0 && 
-						block.Statements.Last!.Instruction is Branch)
+						block.Statements[^1].Instruction is Branch)
 					{
 						fChanged |= MaybeCoalesce(block);
 					}
@@ -72,8 +72,8 @@ namespace Reko.Structure
 			bool fInvertFirst, 
 			bool fInvertSecond)
 		{
-			Branch brFirst = (Branch) blockFirst.Statements.Last!.Instruction;
-			Branch brSecond = (Branch) blockSecond.Statements.Last!.Instruction;
+			Branch brFirst = (Branch) blockFirst.Statements[^1].Instruction;
+			Branch brSecond = (Branch) blockSecond.Statements[^1].Instruction;
 			if (fInvertFirst)
 			{
 				brFirst.Condition = brFirst.Condition.Invert();
@@ -170,7 +170,7 @@ namespace Reko.Structure
 				return false;
 			if (block.Pred.Count != 1)
 				return false;
-			return (block.Statements.Last!.Instruction is Branch);
+			return (block.Statements[^1].Instruction is Branch);
 		}
 
 		/// <summary>

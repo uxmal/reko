@@ -59,8 +59,7 @@ namespace Reko.ImageLoaders.LLVM
         public override Statement Emit(IrInstruction instr)
         {
             EnsureBlock(null);
-            block!.Statements.Add(linearAddress++, instr);
-            return block.Statements.Last!;
+            return block!.Statements.Add(linearAddress++, instr);
         }
 
         public override void Return()

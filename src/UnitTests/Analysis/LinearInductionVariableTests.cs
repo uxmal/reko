@@ -263,7 +263,7 @@ namespace Reko.UnitTests.Analysis
 
 			liv.Context.DeltaValue = m.Word32(1);
             m.Assign(id4, m.IAdd(id3, liv.Context.DeltaValue));
-            liv.Context.DeltaStatement = m.Block.Statements.Last;
+            liv.Context.DeltaStatement = m.Block.Statements[^1];
 			ssa.Identifiers[id3].Uses.Add(liv.Context.DeltaStatement);
 
 			LinearInductionVariable iv = liv.CreateInductionVariable();
