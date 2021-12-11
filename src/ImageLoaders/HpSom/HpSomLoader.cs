@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Diagnostics;
+using Reko.Core.Expressions;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using Reko.Core.Types;
@@ -60,7 +61,7 @@ namespace Reko.ImageLoaders.HpSom
             var arch = MakeArchitecture(somHeader, cfgSvc);
             var platform = cfgSvc.GetEnvironment("hpux").Load(Services, arch);
 
-            var symbols = ReadSymbols(arch, somHeader.symbol_location, somHeader.symbol_total, somHeader.symbol_strings_location);
+            var (symbols, addrGlobal) = ReadSymbols(arch, somHeader.symbol_location, somHeader.symbol_total, somHeader.symbol_strings_location);
             var spaces = ReadSpaces(somHeader.space_location, somHeader.space_total, somHeader.space_strings_location);
             var subspaces = ReadSubspaces(somHeader.subspace_location, somHeader.subspace_total, somHeader.space_strings_location);
             var segmentMap = MakeSegmentMapFromSubspaces(spaces, subspaces);
@@ -72,6 +73,8 @@ namespace Reko.ImageLoaders.HpSom
             {
             case aux_id_type.exec_aux_header:
                 var program = LoadExecSegments(segmentMap, arch, platform, rdr, symbols);
+                program.GlobalRegister = arch.GetRegister("r27") ?? throw new InvalidOperationException("Unable to load r27.");
+                program.GlobalRegisterValue = addrGlobal;
                 return program;
             default:
                 throw new BadImageFormatException();
@@ -344,12 +347,13 @@ namespace Reko.ImageLoaders.HpSom
             trace.Verbose("    fixup_request_quantity:  {0:X8}", space.fixup_request_quantity);
         }
 
-        private SortedList<Address,ImageSymbol> ReadSymbols(IProcessorArchitecture arch, uint sym_location, uint sym_count, uint uStrings)
+        private (SortedList<Address,ImageSymbol>, Constant?) ReadSymbols(IProcessorArchitecture arch, uint sym_location, uint sym_count, uint uStrings)
         {
             trace.Inform("HpSom: reading symbols from {0:X8}, string table {1:X8}", sym_location, uStrings);
             var symbols = new Dictionary<string, symbol_dictionary_record>();
             var imageSymbols = new SortedList<Address, ImageSymbol>();
             var rdr = new StructureReader<symbol_dictionary_record>(MakeReader(sym_location));
+            Constant? addrGlobal = null;
             for (uint i = 0; i < sym_count; ++i)
             {
                 var symbol = rdr.Read();
@@ -359,7 +363,11 @@ namespace Reko.ImageLoaders.HpSom
                 // Ignore symbols starting with '$' but don't ignore symbols starting
                 // with '$$'
                 if (name.Length >= 2 && name[0] == '$' && name[1] != '$')
+                {
+                    if (string.Compare(name, "$global$", StringComparison.InvariantCultureIgnoreCase) == 0)
+                        addrGlobal = Constant.Create(arch.PointerType, (ulong)symbol.symbol_value);
                     continue;
+                }
                 // For some reason, the bottom two bits are sometimes set for code addresses.
                 if (symbol.type == SymbolType.CODE)
                     symbol.symbol_value &= ~3;
@@ -394,7 +402,7 @@ namespace Reko.ImageLoaders.HpSom
                     break;
                 }
             }
-            return imageSymbols;
+            return (imageSymbols, addrGlobal);
         }
 
         private string? ReadString(uint uIndex, uint uStringsOffset)

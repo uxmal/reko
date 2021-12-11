@@ -27,22 +27,21 @@ namespace Reko.Environments.Hpux
 {
     public class HpuxPlatform : Platform
     {
+        private readonly RegisterStorage r27;
+
         public HpuxPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "hpux")
         {
+            this.r27 = Architecture.GetRegister("r27") ?? throw new InvalidOperationException("Expected architecture to have r27.");
         }
 
-        public override string DefaultCallingConvention
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override string DefaultCallingConvention => "";
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             return new HashSet<RegisterStorage>
             {
+                Architecture.StackRegister,
+                r27,
             };
         }
 

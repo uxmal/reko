@@ -160,7 +160,9 @@ namespace Reko.Core
         /// Injects any platform specific instructions to the beginning 
         /// of a procedure.
         /// </summary>
-        /// <param name="emitter"></param>
+        /// <param name="proc"><see cref="Procedure"/> into which instructions will be injected.</param>
+        /// <param name="addr">The <see cref="Address"/> address of the procedure.</param>
+        /// <param name="emitter">A <see cref="CodeEmitter"/> that can be used to generate IR code.</param>
         void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter);
 
         void LoadUserOptions(Dictionary<string, object> options);

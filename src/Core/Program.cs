@@ -164,7 +164,31 @@ namespace Reko.Core
             }
         }
 
+        /// <summary>
+        /// The global variables of the program, represented as fields.
+        /// </summary>
         public StructureType GlobalFields { get; private set; }
+
+
+        /// <summary>
+        /// If applicable, this property contains the ABI-defined
+        /// global register, represented as a <see cref="RegisterStorage"/>.
+        /// </summary>
+        /// <remarks>
+        /// For example, in the MIPS ABI, r28 is used as the global register. On
+        /// PA-RISC, the r27 performs the same role.
+        /// </remarks>
+        public RegisterStorage? GlobalRegister { get; set; }
+
+        /// <summary>
+        /// If applicable, this property contains the value of the ABI-defined
+        /// global register.
+        /// </summary>
+        /// <remarks>
+        /// For example, in the MIPS ABI, r28 is used as the global register. On
+        /// PA-RISC, the r27 performs the same role.
+        /// </remarks>
+        public Constant? GlobalRegisterValue { get; set; }
 
         /// <summary>
         /// Default encoding to use when interpreting sequences of bytes as text.
