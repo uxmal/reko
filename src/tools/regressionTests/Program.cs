@@ -97,11 +97,6 @@ namespace Reko.Tools.regressionTests
 
         private string DetermineDecompilerPath()
         {
-            string platform = this.platform;
-            if(platform == "arm64"){
-                platform = "ARM64";
-            }
-
             string reko_cmdline_dir = Path.GetFullPath(Path.Combine(reko_src, "Drivers", "CmdLine"));
             string exeFileName = DecompilerExecutableName;
             if(File.Exists(exeFileName + ".exe"))
@@ -114,7 +109,7 @@ namespace Reko.Tools.regressionTests
             }
             var s = Path.Combine(
                 reko_cmdline_dir, "bin",
-                platform, this.configuration, this.framework,
+                this.platform, this.configuration, this.framework,
                 exeFileName);
             return s;
         }
