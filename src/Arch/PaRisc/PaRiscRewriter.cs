@@ -81,8 +81,8 @@ namespace Reko.Arch.PaRisc
                 case Mnemonic.andcm: RewriteLogical((a, b) => m.And(a, m.Comp(b))); break;
                 case Mnemonic.bb: RewriteBb(); break;
                 case Mnemonic.b_l: RewriteBranch(); break;
-                case Mnemonic.be: RewriteBe(); break;
-                case Mnemonic.be_l: RewriteBe(); break;
+                case Mnemonic.be: RewriteBe(false); break;
+                case Mnemonic.be_l: RewriteBe(true); break;
                 case Mnemonic.bv: RewriteBv(); break;
                 case Mnemonic.cmpb: RewriteCmpb(0, 1); break;
                 case Mnemonic.cmpclr: RewriteCmpclr(0, 1); break;

@@ -257,6 +257,28 @@ namespace Reko.UnitTests.Arch.PaRisc
         }
 
         [Test]
+        public void PaRiscRw_be_l()
+        {
+            Given_HexString("E4C00000");  // be,l\t0(sr0,r22)
+            AssertCode(
+                "0|TD-|00100000(4): 1 instructions",
+                "1|TD-|call r6 + 0<i64> (0)");
+        }
+
+        [Test]
+        public void PaRiscRw_be_l_n()
+        {
+            // Nullifying is implemented by injecting a jump
+            // that skips the nullified instruction.
+            // We don't have to make a delay slot in this case.
+            Given_HexString("E4C00002");  // be,l\t0(sr0,r22)
+            AssertCode(
+                "0|T--|00100000(4): 2 instructions",
+                "1|T--|call r6 + 0<i64> (0)",
+                "2|T--|goto 00100008");
+        }
+
+        [Test]
         public void PaRiscRw_cmpclr()
         {
             Given_HexString("081A5880");

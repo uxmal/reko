@@ -102,9 +102,12 @@ namespace Reko.Arch.PaRisc
                 return null;
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
-            throw new NotImplementedException();
+            if (Registers.RegistersByName.TryGetValue(name, out var reg))
+                return reg;
+            else
+                return null;
         }
 
         public override RegisterStorage[] GetRegisters()

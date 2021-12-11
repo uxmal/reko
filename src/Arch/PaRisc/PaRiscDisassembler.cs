@@ -978,7 +978,11 @@ namespace Reko.Arch.PaRisc
         /// <summary>
         /// Register indirect, with offset in multiple fields, shifted by the element size
         /// </summary>
-        private static Mutator<PaRiscDisassembler> Msh(PrimitiveType dt, Bitfield[] fields, int baseRegPos, int spacePos)
+        private static Mutator<PaRiscDisassembler> Msh(
+            PrimitiveType dt, 
+            Bitfield[] fields,
+            int baseRegPos, 
+            int spacePos)
         {
             var baseRegField = BeField(baseRegPos, 5);
             var spaceRegField = BeField(spacePos, 2);
@@ -988,6 +992,30 @@ namespace Reko.Arch.PaRisc
                 var iBaseReg = baseRegField.Read(u);
                 var iSpaceReg = spaceRegField.Read(u);
                 d.ops.Add(MemoryOperand.Indirect(dt, disp, d.regs.GpRegs[iBaseReg], Registers.SpaceRegs[iSpaceReg]));
+                return true;
+            };
+        }
+
+        /// <summary>
+        /// Register indirect, with offset in multiple fields, permuted, shifted by the element size
+        /// </summary>
+        private static Mutator<PaRiscDisassembler> Mpsh(
+            PrimitiveType dt,
+            Bitfield[] fields,
+            Func<uint, Bitfield[], uint> permutator,
+            int baseRegPos,
+            int spacePos)
+        {
+            var baseRegField = BeField(baseRegPos, 5);
+            var spaceRegField = BeField(spacePos, 3);
+            var fieldTotalWidth = fields.Sum(f => f.Length);
+            return (u, d) =>
+            {
+                var disp = permutator(u, fields);
+                var sDisp = (int)Bits.SignExtend(disp, fieldTotalWidth) * dt.Size;
+                var iBaseReg = baseRegField.Read(u);
+                var iSpaceReg = spaceRegField.Read(u);
+                d.ops.Add(MemoryOperand.Indirect(dt, sDisp, d.regs.GpRegs[iBaseReg], Registers.SpaceRegs[iSpaceReg]));
                 return true;
             };
         }
@@ -1269,14 +1297,14 @@ namespace Reko.Arch.PaRisc
 
         private static uint assemble_17(uint u, Bitfield[] fields)
         {
+            // return(cat(z,x,y{10},y{0..9}))
             var x = fields[0].Read(u);
             var y = fields[1].Read(u);
             var z = fields[2].Read(u);
-            var p = z;
+            uint p = z;
             p = (p << fields[0].Length) | x;
-            p = (p << fields[1].Length)
-                | ((y << 10) & 0b1_00000_00000)
-                | ((y >> 1)  & 0b0_11111_11111);
+            p = (p << 1) | (y & 1);
+            p = (p << 10) | (y >> 1);
             return p;
         }
 
@@ -1812,8 +1840,8 @@ namespace Reko.Arch.PaRisc
                 invalid,
                 invalid,
 
-                Instr(Mnemonic.be,  TD, Msh(PrimitiveType.Ptr32, BeFields((11,5),(19,11),(31,1)),6,16),Annul(30)),
-                Instr(Mnemonic.be_l,TD, Msh(PrimitiveType.Ptr32, BeFields((11,5),(19,11),(31,1)),6,16),Annul(30)),
+                Instr(Mnemonic.be,  TD, Mpsh(PrimitiveType.Ptr32, BeFields((11,5),(19,11),(31,1)), assemble_17, 6, 16), Annul(30)),
+                Instr(Mnemonic.be_l,TD | InstrClass.Call, Mpsh(PrimitiveType.Ptr32, BeFields((11,5),(19,11),(31,1)), assemble_17, 6, 16), Annul(30)),
                 branch,
                 invalid,
 

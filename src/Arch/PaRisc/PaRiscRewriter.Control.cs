@@ -104,14 +104,28 @@ namespace Reko.Arch.PaRisc
             m.SideEffect(host.Intrinsic("__break", false, VoidType.Instance));
         }
 
-        private void RewriteBe()
+        private void RewriteBe(bool link)
         {
+            // Nullifying is implemented by injecting a jump
+            // that skips the nullified instruction.
+            // We don't have to make a delay slot in this case.
             if (instr.Annul)
-                iclass |= InstrClass.Annul;
+                iclass &= ~InstrClass.Delay;
             var dst = (MemoryOperand) instr.Operands[0];
             Expression ea = binder.EnsureRegister(dst.Base);
             ea = m.IAddS(ea, dst.Offset);
-            m.GotoD(ea);
+            if (link)
+            {
+                m.Call(ea, 0, iclass);
+                if (!iclass.HasFlag(InstrClass.Delay))
+                {
+                    m.Goto(instr.Address + 8);  // Skip/nullify the next instruction.
+                }
+            }
+            else
+            {
+                m.Goto(ea, iclass);
+            }
         }
 
         private void RewriteBv()

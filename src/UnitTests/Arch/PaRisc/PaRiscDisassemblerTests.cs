@@ -233,7 +233,19 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_be()
         {
-            AssertCode("be\t0(r22)", "E2C00000");
+            AssertCode("be,l\t0(r0)",       "E4000000");
+            AssertCode("be,l\t-262144(r0)", "E4000001");
+            AssertCode("be,l\t4(r0)",       "E4000008");
+            AssertCode("be,l\t8(r0)",       "E4000010");
+            AssertCode("be,l\t2044(r0)",    "E4000FF8");
+            AssertCode("be,l\t4092(r0)",    "E4001FF8");
+            AssertCode("be,l\t8188(r0)",    "E4001FFC");
+            AssertCode("be,l\t16380(r0)",   "E4011FFC");
+            AssertCode("be,l\t32764(r0)",   "E4031FFC");
+            AssertCode("be,l\t65532(r0)",   "E4071FFC");
+            AssertCode("be,l\t131068(r0)",  "E40F1FFC");
+            AssertCode("be,l\t262140(r0)",  "E41F1FFC");
+            AssertCode("be,l\t-4(r0)",      "E41F1FFD");
         }
 
         [Test]
