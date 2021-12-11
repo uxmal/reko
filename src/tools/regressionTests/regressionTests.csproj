@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items"/>
+  <Import Project="$(ProjectDir)../../Drivers/CommonBuildProperties.items" />
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>

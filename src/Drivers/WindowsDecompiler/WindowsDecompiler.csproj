@@ -12,7 +12,7 @@
     <OutputType>WinExe</OutputType>
     <UseWindowsForms>true</UseWindowsForms>
     <StartupObject>Reko.WindowsDecompiler.Driver</StartupObject>
-    <Platforms>x86;x64</Platforms>
+    <Platforms>x86;x64;ARM64</Platforms>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 

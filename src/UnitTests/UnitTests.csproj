@@ -9,7 +9,7 @@
     <RootNamespace>Reko.UnitTests</RootNamespace>
     <AssemblyName>Reko.UnitTests</AssemblyName>
     <SolutionDir>$(ProjectDir)..\</SolutionDir>
-    <Platforms>x86;x64</Platforms>
+    <Platforms>x86;x64;ARM64</Platforms>
     <IsTestProject>true</IsTestProject>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>

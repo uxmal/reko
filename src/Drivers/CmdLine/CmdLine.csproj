@@ -11,7 +11,7 @@
     <StartupObject />
     <RootNamespace>Reko.CmdLine</RootNamespace>
     <AssemblyName>decompile</AssemblyName>
-    <Platforms>x86;x64</Platforms>
+    <Platforms>x86;x64;ARM64</Platforms>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 

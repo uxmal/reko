@@ -6,7 +6,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>Reko.Decompiler.Runtime</RootNamespace>
     <AssemblyName>Reko.Decompiler.Runtime</AssemblyName>
-    <Platforms>x86;x64</Platforms>
+    <Platforms>x86;x64;ARM64</Platforms>
     <Configurations>Debug;Release</Configurations>
     <NuspecFile>$(MSBuildThisFileDirectory)/bin/Runtime-$(Platform)-$(Configuration).nuspec</NuspecFile>
   </PropertyGroup>

@@ -19,7 +19,17 @@
     <DefineConstants>TRACE;PLATFORM_UNIX</DefineConstants>
     <Optimize>true</Optimize>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UnixRelease|ARM64'">
+    <OutputPath>bin\UnixRelease\</OutputPath>
+    <DefineConstants>TRACE;PLATFORM_UNIX</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnixDebug|AnyCPU'">
+    <OutputPath>bin\UnixDebug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;PLATFORM_UNIX</DefineConstants>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UnixDebug|ARM64'">
     <OutputPath>bin\UnixDebug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;PLATFORM_UNIX</DefineConstants>
     <Optimize>false</Optimize>
