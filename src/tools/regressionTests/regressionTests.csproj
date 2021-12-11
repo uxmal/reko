@@ -7,7 +7,6 @@
     <nullable>enable</nullable>
     <AssemblyName>regressionTests</AssemblyName>
     <RootNamespace>Reko.Tools.regressionTests</RootNamespace>
-    <Platforms>AnyCPU;ARM64</Platforms>
   </PropertyGroup>
 
 </Project>

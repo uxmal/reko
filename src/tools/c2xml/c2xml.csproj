@@ -12,7 +12,6 @@
     <RootNamespace>Reko.Tools.C2Xml</RootNamespace>
     <AssemblyName>c2xml</AssemblyName>
     <Configurations>Debug;Release</Configurations>
-    <Platforms>AnyCPU;ARM64</Platforms>
   </PropertyGroup>
 
   <PropertyGroup>

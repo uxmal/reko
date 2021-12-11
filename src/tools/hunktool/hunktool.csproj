@@ -9,7 +9,6 @@
     <RootNamespace>Reko.HunkTool</RootNamespace>
     <AssemblyName>hunktool</AssemblyName>
     <Configurations>Debug;Release</Configurations>
-    <Platforms>AnyCPU;ARM64</Platforms>
   </PropertyGroup>
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

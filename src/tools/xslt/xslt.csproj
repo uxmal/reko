@@ -10,6 +10,5 @@
     <RootNamespace>Reko.Tools.Xslt</RootNamespace>
     <AssemblyName>xslt</AssemblyName>
     <Configurations>Debug;Release</Configurations>
-    <Platforms>AnyCPU;ARM64</Platforms>
   </PropertyGroup>
 </Project>
