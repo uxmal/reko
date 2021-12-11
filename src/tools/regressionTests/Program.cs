@@ -99,7 +99,7 @@ namespace Reko.Tools.regressionTests
         {
             string reko_cmdline_dir = Path.GetFullPath(Path.Combine(reko_src, "Drivers", "CmdLine"));
             string exeFileName = DecompilerExecutableName;
-            if(File.Exists(exeFileName + ".exe"))
+            if (File.Exists(exeFileName + ".exe"))
             {
                 exeFileName += ".exe";
             }
@@ -225,7 +225,7 @@ namespace Reko.Tools.regressionTests
 
         private static (string, string) GetPlatformInvocationCmdLine(string exeName, string argsString)
         {
-            if(Path.GetExtension(exeName) == ".dll")
+            if (Path.GetExtension(exeName) == ".dll")
             {
                 return ("dotnet", $"{exeName} {argsString}");
             }
