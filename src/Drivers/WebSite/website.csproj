@@ -6,6 +6,7 @@
     <RootNamespace>Reko.WebSite</RootNamespace>
     <AssemblyName>Reko.WebSite</AssemblyName>
     <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU;ARM64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
