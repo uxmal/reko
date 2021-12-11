@@ -340,10 +340,10 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscRw_ble()
         {
-            Given_HexString("E7E02EF0");  // ble\t7648(sr0,r31)
+            Given_HexString("E7E02EF0");  // ble\t1912(sr0,r31)
             AssertCode(
                 "0|TD-|00100000(4): 1 instructions",
-                "1|TD-|goto r31 + 7648<i64>");
+                "1|TD-|call r31 + 1912<i64> (0)");
         }
 
         [Test]

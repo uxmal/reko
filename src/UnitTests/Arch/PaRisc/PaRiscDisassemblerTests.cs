@@ -264,7 +264,7 @@ namespace Reko.UnitTests.Arch.PaRisc
         [Test]
         public void PaRiscDis_ble()
         {
-            AssertCode("be,l\t7648(r31)", "E7E02EF0");
+            AssertCode("be,l\t1912(sr4,r31)", "E7E02EF0");
         }
 
         [Test]

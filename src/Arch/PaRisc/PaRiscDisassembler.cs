@@ -1014,7 +1014,7 @@ namespace Reko.Arch.PaRisc
                 var disp = permutator(u, fields);
                 var sDisp = (int)Bits.SignExtend(disp, fieldTotalWidth) * dt.Size;
                 var iBaseReg = baseRegField.Read(u);
-                var iSpaceReg = spaceRegField.Read(u);
+                var iSpaceReg = assemble_3(u, spaceRegField);
                 d.ops.Add(MemoryOperand.Indirect(dt, sDisp, d.regs.GpRegs[iBaseReg], Registers.SpaceRegs[iSpaceReg]));
                 return true;
             };
@@ -1234,6 +1234,12 @@ namespace Reko.Arch.PaRisc
 
         private static bool Eq0(uint u) => u == 0;
         private static bool IsFpuProcessor(uint u) => (u & ~1) == 0;
+
+        private static uint assemble_3(uint u, Bitfield field)
+        {
+            var x = field.Read(u);
+            return ((x & 1) << 2) | ((x >> 1) & 3);
+        }
 
         // Assembles a 6-bit extract/deposit length specifier:
         private static uint assemble_6(uint u, Bitfield[] fields)
