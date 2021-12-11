@@ -1022,7 +1022,7 @@ Eq_1240: (fn Eq_1254 ((ptr16 Eq_352), int16, Eq_656, cu16))
 	T_1516 (in __read @ 00008A72 : segptr32)
 Eq_1247: (struct "Eq_1247" (0 ci16 w0000) (2 cui16 w0002) (4 byte b0004) (6 cu16 w0006) (A Eq_656 t000A))
 	T_1247 (in wArg02 + 4<16> @ 000088A1 : word16)
-Eq_1254: (union "Eq_1254" (cup16 u0) ((memptr (ptr16 Eq_352) byte) u1))
+Eq_1254: (union "Eq_1254" (uint16 u0) ((memptr (ptr16 Eq_352) byte) u1))
 	T_1254 (in __read(ds, (int16) (ds->*wArg02).b0004, fp - 3<16>, 1<16>) @ 000088A1 : word16)
 	T_1255 (in 1<16> @ 000088A1 : word16)
 	T_1441 (in ax @ 000089C9 : Eq_1254)
@@ -7229,7 +7229,7 @@ T_1254: (in __read(ds, (int16) (ds->*wArg02).b0004, fp - 3<16>, 1<16>) @ 000088A
   OrigDataType: word16
 T_1255: (in 1<16> @ 000088A1 : word16)
   Class: Eq_1254
-  DataType: cup16
+  DataType: uint16
   OrigDataType: word16
 T_1256: (in __read(ds, (int16) (ds->*wArg02).b0004, fp - 3<16>, 1<16>) == 1<16> @ 00000000 : bool)
   Class: Eq_1256
@@ -7978,7 +7978,7 @@ T_1441: (in ax @ 000089C9 : Eq_1254)
 T_1442: (in ax_153 @ 000089F7 : Eq_1254)
   Class: Eq_1254
   DataType: Eq_1254
-  OrigDataType: cup16
+  OrigDataType: uint16
 T_1443: (in 1<16> @ 00008A06 : word16)
   Class: Eq_653
   DataType: cu16
@@ -7989,7 +7989,7 @@ T_1444: (in wArg06 < 1<16> @ 00000000 : bool)
   OrigDataType: bool
 T_1445: (in 0<16> @ 00008A15 : word16)
   Class: Eq_1254
-  DataType: cup16
+  DataType: uint16
   OrigDataType: word16
 T_1446: (in 0x482<16> @ 00008A13 : word16)
   Class: Eq_1446
@@ -8041,7 +8041,7 @@ T_1457: (in __read(ds, wArg02, wArg04, wArg06) @ 00008A23 : word16)
   OrigDataType: word16
 T_1458: (in 1<16> @ 00008A33 : word16)
   Class: Eq_1254
-  DataType: cup16
+  DataType: uint16
   OrigDataType: cup16
 T_1459: (in ax_40 < 1<16> @ 00000000 : bool)
   Class: Eq_1459
@@ -8086,7 +8086,7 @@ T_1468: (in (ds->a0482[wArg02] & 0x8000<16>) == 0<16> @ 00000000 : bool)
 T_1469: (in cx_112 @ 00008A48 : Eq_1254)
   Class: Eq_1254
   DataType: Eq_1254
-  OrigDataType: cup16
+  OrigDataType: uint16
 T_1470: (in si_57 @ 00008A4B : Eq_656)
   Class: Eq_656
   DataType: Eq_656
@@ -8103,11 +8103,11 @@ T_1473: (in _lseek @ 00008A95 : segptr32)
   Class: Eq_1009
   DataType: (ptr32 Eq_1009)
   OrigDataType: (ptr32 (fn T_1478 (T_1082, T_1083, T_1475, T_1476, T_1477)))
-T_1474: (in -cx_112 @ 00008A95 : word16)
+T_1474: (in CONVERT(cx_112, uint16, int32) @ 00008A95 : int32)
   Class: Eq_1474
-  DataType: cup16
-  OrigDataType: cup16
-T_1475: (in CONVERT(-cx_112, word16, int32) @ 00008A95 : int32)
+  DataType: int32
+  OrigDataType: int32
+T_1475: (in -(int32) cx_112 @ 00008A95 : int32)
   Class: Eq_978
   DataType: int32
   OrigDataType: int32
@@ -8119,7 +8119,7 @@ T_1477: (in out dx_304 @ 00008A95 : mp16)
   Class: Eq_1015
   DataType: ptr16
   OrigDataType: ptr16
-T_1478: (in _lseek(ds, wArg02, (int32) -cx_112, 2<8>, out dx_304) @ 00008A95 : word16)
+T_1478: (in _lseek(ds, wArg02, -(int32) cx_112, 2<8>, out dx_304) @ 00008A95 : word16)
   Class: Eq_1008
   DataType: word16
   OrigDataType: word16
@@ -8185,15 +8185,15 @@ T_1493: (in al_68 == 0xD<8> @ 00000000 : bool)
   OrigDataType: bool
 T_1494: (in 1<16> @ 00008A63 : word16)
   Class: Eq_1494
-  DataType: cup16
-  OrigDataType: cup16
+  DataType: uint16
+  OrigDataType: uint16
 T_1495: (in cx_112 - 1<16> @ 00000000 : word16)
   Class: Eq_1254
   DataType: Eq_1254
-  OrigDataType: cup16
+  OrigDataType: uint16
 T_1496: (in 0<16> @ 00008A63 : word16)
   Class: Eq_1254
-  DataType: cup16
+  DataType: uint16
   OrigDataType: word16
 T_1497: (in cx_112 != 0<16> @ 00000000 : bool)
   Class: Eq_1497
@@ -8221,15 +8221,15 @@ T_1502: (in di_140 + 1<i16> @ 00008A5E : word16)
   OrigDataType: (memptr T_1082 (struct 0001 (0 byte b0000)))
 T_1503: (in 1<16> @ 00008A5F : word16)
   Class: Eq_1503
-  DataType: cup16
-  OrigDataType: cup16
+  DataType: uint16
+  OrigDataType: uint16
 T_1504: (in cx_112 - 1<16> @ 00000000 : word16)
   Class: Eq_1254
   DataType: Eq_1254
-  OrigDataType: cup16
+  OrigDataType: uint16
 T_1505: (in 0<16> @ 00008A5F : word16)
   Class: Eq_1254
-  DataType: cup16
+  DataType: uint16
   OrigDataType: word16
 T_1506: (in cx_112 != 0<16> @ 00000000 : bool)
   Class: Eq_1506
@@ -21585,7 +21585,7 @@ typedef struct Eq_1247 {
 } Eq_1247;
 
 typedef union Eq_1254 {
-	cup16 u0;
+	uint16 u0;
 	byte Eq_352::* u1;
 } Eq_1254;
 

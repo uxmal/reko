@@ -1087,7 +1087,7 @@ l0800_0A55:
 	branch al_68 == 0x1A<8> l0800_0A87
 l0800_0A87:
 	word16 dx_304
-	_lseek(ds, wArg02, CONVERT(-cx_112, word16, int32), 2<8>, out dx_304)
+	_lseek(ds, wArg02, -CONVERT(cx_112, uint16, int32), 2<8>, out dx_304)
 	Mem105[ds:(wArg02 << 1<16>) + 0x482<16>:word16] = Mem92[ds:(wArg02 << 1<16>) + 0x482<16>:word16] | 0x200<16>
 l0800_0A5A:
 	branch al_68 == 0xD<8> l0800_0A63

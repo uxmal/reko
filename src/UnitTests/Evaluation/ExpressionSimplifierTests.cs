@@ -798,7 +798,7 @@ namespace Reko.UnitTests.Evaluation
                 m.ISub(m.Neg(m.Word32(0)), ne0),
                 m.Neg(foo));
             var (result, changed) = expr.Accept(simplifier);
-            Assert.AreEqual("CONVERT(-foo_1, word32, int64)", result.ToString());
+            Assert.AreEqual("-CONVERT(foo_1, uint32, int64)", result.ToString());
             Assert.IsTrue(changed);
         }
 
