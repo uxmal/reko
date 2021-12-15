@@ -80,7 +80,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
             engine = new OllyLangInterpreter(null, arch.Object)
             {
                 Host = host.Object,
-                Debugger = new Debugger(emu.Object),
+                Debugger = new Debugger(arch.Object, emu.Object),
             };
         }
 

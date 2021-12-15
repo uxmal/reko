@@ -96,8 +96,8 @@ namespace Reko.Environments.C64
 
             var bytes = new byte[uAddrEnd - uAddrStart];
             Array.Copy(RawImage, fileOffset, bytes, 0, bytes.Length);
-            return new T64FileEntry(name, (FileType) (fileType & 7), uAddrStart, bytes);
-
+            var imgLocation = this.ImageLocation.AppendFragment(name);
+            return new T64FileEntry(imgLocation, name, (FileType) (fileType & 7), uAddrStart, bytes);
         }
 
 
@@ -195,8 +195,9 @@ directory.
 */
         public class T64FileEntry : ArchivedFile
         {
-            public T64FileEntry(string name, FileType fileType, ushort uAddrLoad, byte[] bytes)
+            public T64FileEntry(ImageLocation location, string name, FileType fileType, ushort uAddrLoad, byte[] bytes)
             {
+                this.ImageLocation = location;
                 this.Name = name;
                 this.FileType = fileType;
                 this.LoadAddress = uAddrLoad;
@@ -207,6 +208,7 @@ directory.
 
             public string Name { get; }
             public FileType FileType { get; }
+            public ImageLocation ImageLocation { get; }
             public ushort LoadAddress { get; }
 
             public ArchiveDirectoryEntry? Parent => null;
@@ -243,6 +245,8 @@ directory.
                 var segMap = platform.CreateAbsoluteMemoryMap()!;
                 segMap.AddSegment(image, "code", AccessMode.ReadWriteExecute);
                 var program = new Program(segMap, arch, platform);
+                program.Location = ImageLocation;
+
                 program.Architectures.Add(arch6502.Name, arch6502);
                 var addrBasic = Address.Ptr16(lines.Keys[0]);
                 var sym = ImageSymbol.Procedure(arch, addrBasic, state: arch.CreateProcessorState());

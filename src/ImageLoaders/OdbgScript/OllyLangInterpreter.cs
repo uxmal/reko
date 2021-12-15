@@ -99,6 +99,15 @@ namespace Reko.ImageLoaders.OdbgScript
         //private bool back_to_debugloop;
         private string errorstr;
 
+        public OllyLangInterpreter(IServiceProvider services, Program program, IProcessorArchitecture arch)
+            : this(services, arch)
+        {
+            var envEmu = program.Platform.CreateEmulator(program.SegmentMap, program.ImportReferences);
+            var emu = arch.CreateEmulator(program.SegmentMap, envEmu);
+            this.Host = new OdbgScriptHost(null!, program);
+            this.Debugger = new Debugger(arch, emu);
+        }
+
         public OllyLangInterpreter(IServiceProvider services, IProcessorArchitecture arch)
         {
             this.services = services;
@@ -793,6 +802,15 @@ namespace Reko.ImageLoaders.OdbgScript
         }
 
         public void Run()
+        {
+            this.Reset();
+            this.debuggee_running = false;
+            this.InitGlobalVariables();
+            script_running = true;
+            Step();
+        }
+
+        public void RunInner()
         {
             script_running = true;
             Step();
@@ -1815,11 +1833,8 @@ namespace Reko.ImageLoaders.OdbgScript
                 }
                 else if (run_till_return)
                 {
-                    //$TODO: bleh. To remove this hard-coded dependence of X86,
-                    // we need to implement a new InstrClass type, Return.
-                    var instr = (X86Instruction?) Host.Disassemble(Debugger.InstructionPointer);
-                    if (instr != null && (instr.Mnemonic == Arch.X86.Mnemonic.ret ||
-                                          instr.Mnemonic == Arch.X86.Mnemonic.retf))
+                    var instr = Host.Disassemble(Debugger.InstructionPointer);
+                    if (instr != null && (instr.InstructionClass.HasFlag(InstrClass.Return)))
                     {
                         run_till_return = false;
                         stepcount = 0;

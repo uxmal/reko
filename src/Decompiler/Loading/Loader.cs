@@ -606,8 +606,9 @@ namespace Reko.Loading
             {
                 //$TODO: should be in the config file, yeah.
                 var svc = Services.RequireService<IPluginLoaderService>();
-                var type = svc.GetType("Reko.ImageLoaders.OdbgScript.OllyLang,Reko.ImageLoaders.OdbgScript");
-                interpreter = (IScriptInterpreter) Activator.CreateInstance(type, Services);
+                var type = svc.GetType("Reko.ImageLoaders.OdbgScript.OllyLangInterpreter,Reko.ImageLoaders.OdbgScript");
+                var arch = GetArchForDebuggerScript(program, script);
+                interpreter = (IScriptInterpreter) Activator.CreateInstance(type, Services, program, arch);
             }
             catch (Exception ex)
             {
@@ -626,6 +627,19 @@ namespace Reko.Loading
             }
         }
 
+        private IProcessorArchitecture? GetArchForDebuggerScript(Program program, Script_v2 script)
+        {
+            if (!string.IsNullOrEmpty(script.ArchitectureId))
+            {
+                if (program.Architectures.TryGetValue(script.ArchitectureId, out var arch))
+                    return arch;
+                arch = cfgSvc.GetArchitecture(script.ArchitectureId);
+                if (arch is not null)
+                    return arch;
+                throw new ApplicationException($"Unable to load architecture '{script.ArchitectureId}' for debugger script.");
+            }
+            return program.Architecture;
+        }
     }
 }
  

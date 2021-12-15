@@ -1,5 +1,6 @@
 using Reko.Core;
 using Reko.Core.Emulation;
+using Reko.Core.Expressions;
 using System;
 
 namespace Reko.ImageLoaders.OdbgScript
@@ -8,10 +9,12 @@ namespace Reko.ImageLoaders.OdbgScript
 
     public class Debugger
     {
+        private IProcessorArchitecture arch;
         private IProcessorEmulator emu;
 
-        public Debugger(IProcessorEmulator emu)
+        public Debugger( IProcessorArchitecture arch, IProcessorEmulator emu)
         {
+            this.arch = arch;
             this.emu = emu;
         }
 
@@ -75,8 +78,15 @@ namespace Reko.ImageLoaders.OdbgScript
             emu.DeleteBreakpoint(addr.ToLinear());
         }
 
-        public bool SetContextData(eContextData p1, rulong p2)
+        public bool SetContextData(eContextData reg, rulong p2)
         {
+            switch (reg)
+            {
+            case eContextData.UE_EIP:
+                var cAddr = Constant.Create(arch.PointerType, p2);
+                emu.InstructionPointer = arch.MakeAddressFromConstant(cAddr, true);
+                return true;
+            }
             throw new NotImplementedException();
         }
 

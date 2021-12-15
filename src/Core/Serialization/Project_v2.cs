@@ -35,6 +35,9 @@ namespace Reko.Core.Serialization
         [XmlAttribute]
         public string? Interpreter;
 
+        [XmlAttribute("arch")]
+        public string? ArchitectureId;
+
         [XmlText]
         public string? Script;
     }

@@ -81,7 +81,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
             var envEmu = program.Platform.CreateEmulator(program.SegmentMap, program.ImportReferences);
             var emu = program.Architecture.CreateEmulator(program.SegmentMap, envEmu);
-            this.debugger = new Debugger(emu);
+            this.debugger = new Debugger(program.Architecture, emu);
             this.scriptInterpreter = new OllyLangInterpreter(Services, program.Architecture);
             this.scriptInterpreter.Host = new OdbgScriptHost(this, program);
             this.scriptInterpreter.Debugger = this.debugger;
@@ -221,7 +221,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public bool ScripterResume()
         {
-            scriptInterpreter.Run();
+            scriptInterpreter.RunInner();
             return true;
         }
 

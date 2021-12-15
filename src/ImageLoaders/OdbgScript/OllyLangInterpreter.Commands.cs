@@ -2979,7 +2979,10 @@ string filename;
                 }
 
                 // Check destination
-                if (args[0] is Identifier id && IsVariable(id.Name))
+                switch (args[0])
+                {
+                case Identifier id:
+                if (IsVariable(id.Name))
                 {
                     Var v;
                     if (maxsize > sizeof(rulong) && args[1] is MemoryAccess mem) // byte string
@@ -3024,7 +3027,7 @@ string filename;
                     return true;
                 }
                 //$REFACTOR: another Identifier.
-                else if (args[0] is Identifier idReg && TryFindRegister(idReg.Name, out register_t reg))
+                else if (TryFindRegister(id.Name, out register_t reg))
                 {
                     // Dest is register
                     if (GetRulong(args[1], out dw))
@@ -3034,7 +3037,6 @@ string filename;
                         dw = Helper.resize(dw, Math.Min((int) maxsize, reg.size));
                         if (reg.size < sizeof(rulong))
                         {
-                            //rulong oldval, newval;
                             rulong oldval = Debugger.GetContextData(reg.id);
                             oldval &= ~Bits.Mask(reg.offset * 8, reg.size * 8);
                             var newval = Helper.resize(dw, reg.size) << (reg.offset * 8);
@@ -3043,8 +3045,8 @@ string filename;
                         return Debugger.SetContextData(reg.id, dw);
                     }
                 }
-                //$REFACTOR: all these dudes are using an Identifier
-                else if (args[0] is Identifier idFlag && IsFlag(idFlag.Name))
+                //$BUG: hard-wired to x86
+                else if (IsFlag(id.Name))
                 {
                     if (GetBool(args[1], out bool flagval))
                     {
@@ -3052,7 +3054,7 @@ string filename;
                         {
                             dw = Debugger.GetContextData(eContextData.UE_EFLAGS)
                         };
-                        switch (idFlag.Name[1])
+                        switch (id.Name[1])
                         {
                         case 'a': flags.bits.AF = flagval; break;
                         case 'c': flags.bits.CF = flagval; break;
@@ -3066,7 +3068,7 @@ string filename;
                         return Debugger.SetContextData(eContextData.UE_EFLAGS, flags.dw);
                     }
                 }
-                else if (args[0] is Identifier idFloat && IsFloatRegister(idFloat.Name))
+                else if (IsFloatRegister(id.Name))
                 {
                     if (GetFloat(args[1], out flt))
                     {
@@ -3089,8 +3091,8 @@ string filename;
 #endif
                     }
                 }
-                else if (args[0] is MemoryAccess memDst)
-                {
+                break;
+                case MemoryAccess memDst:
                     if (GetAddress(memDst.EffectiveAddress, out Address target))
                     {
                         if (maxsize > sizeof(rulong) && args[1] is MemoryAccess memSrc)
@@ -3130,6 +3132,7 @@ string filename;
                             return Host.WriteMemory(target, flt);
                         }
                     }
+                    break;
                 }
             }
             return false;
