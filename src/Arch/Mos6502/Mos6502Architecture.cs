@@ -105,9 +105,11 @@ namespace Reko.Arch.Mos6502
             return Registers.All[(int) domain];
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
-            throw new NotImplementedException();
+            return Registers.RegistersByName.TryGetValue(name, out var reg)
+                ? reg
+                : null;
         }
 
         public override RegisterStorage[] GetRegisters()
@@ -117,7 +119,7 @@ namespace Reko.Arch.Mos6502
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.RegistersByName.TryGetValue(name, out reg);
         }
 
         public override IEnumerable<FlagGroupStorage> GetSubFlags(FlagGroupStorage flags)
@@ -213,6 +215,8 @@ namespace Reko.Arch.Mos6502
 
         internal static RegisterStorage[] All;
 
+        public static Dictionary<string, RegisterStorage> RegistersByName { get; }
+
         internal static FlagGroupStorage[] Flags;
 
         public static RegisterStorage GetRegister(int reg)
@@ -238,6 +242,9 @@ namespace Reko.Arch.Mos6502
                 Z,
                 C,
             };
+            RegistersByName = new[] {
+                a, x, y, s, pc, p,
+                }.ToDictionary(a => a.Name);
         }
     }
 }

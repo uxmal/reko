@@ -394,14 +394,17 @@ Instr(InstrClass.ConditionalTransfer, Mnemonic.bvs, j),
     Instr(Mnemonic.adc, Iy),
     invalid,
     invalid,
+
     invalid,
     Instr(Mnemonic.adc, zx),
     Instr(Mnemonic.ror, zx),
     invalid,
+
     Instr(Mnemonic.sei),
     Instr(Mnemonic.adc, Ay),
     invalid,
     invalid,
+
     invalid,
     Instr(Mnemonic.adc, Ax),
     Instr(Mnemonic.ror, Ax),

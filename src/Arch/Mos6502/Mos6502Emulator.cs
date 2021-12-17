@@ -38,7 +38,7 @@ namespace Reko.Arch.Mos6502
         public const byte Vmask = 0x40;
         public const byte Nmask = 0x80;
 
-        private static readonly TraceSwitch trace = new TraceSwitch(nameof(Mos6502Emulator), "Trace execution of 6502 Emulator") { Level = TraceLevel.Verbose };
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(Mos6502Emulator), "Trace execution of 6502 Emulator") { Level = TraceLevel.Error };
 
         private static readonly RegisterStorage[] dumpRegs = new[]
         {
@@ -58,6 +58,7 @@ namespace Reko.Arch.Mos6502
             this.map = segmentMap;
             this.envEmulator = envEmulator;
             this.regs = new ushort[12];
+            this.regs[Registers.s.Number] = 0xFF;
         }
 
         public override MachineInstruction CurrentInstruction => dasm!.Current;
@@ -86,15 +87,26 @@ namespace Reko.Arch.Mos6502
 
         protected override void Run()
         {
-            while (IsRunning && dasm!.MoveNext())
+            while (IsRunning)
             {
-                TraceCurrentInstruction();
-                var pc = dasm.Current.Address;
-                UpdatePc(pc);
-                ulong linPc = pc.ToLinear();
-                if (!TestForBreakpoint(linPc))
+                Instruction? instr = null;
+                while (IsRunning && dasm!.MoveNext())
+                {
+                    TraceCurrentInstruction();
+                    instr = dasm.Current;
+                    var pc = instr.Address;
+                    UpdatePc(pc);
+                    ulong linPc = pc.ToLinear();
+                    if (!TestForBreakpoint(linPc))
+                        break;
+                    Execute(instr);
+                }
+                if (instr is null)
                     break;
-                Execute(dasm.Current);
+                var addr = instr.Address + instr.Length;
+                if (!map.TryFindSegment(addr, out _))
+                    return;
+                this.InstructionPointer = addr;
             }
         } 
 
@@ -107,6 +119,13 @@ namespace Reko.Arch.Mos6502
         {
             var v = (ushort) value;
             this.regs[reg.Number] = v;
+            if (reg == Registers.pc)
+            {
+                if (!map.TryFindSegment(value, out ImageSegment segment))
+                    throw new AccessViolationException();
+                var rdr = arch.CreateImageReader(segment.MemoryArea, Address.Ptr16(v));
+                dasm = new Disassembler(arch, rdr).GetEnumerator();
+            }
             return v;
         }
 
@@ -127,27 +146,146 @@ namespace Reko.Arch.Mos6502
 
         private void Execute(Instruction instr)
         {
+            byte b;
+            ushort C;
             switch (instr.Mnemonic)
             {
             default:
                 throw new NotImplementedException($"Instruction emulation for {instr} not implemented yet.");
+            case Mnemonic.adc:
+                Adc(instr.Operands[0]);
+                return;
+            case Mnemonic.asl:
+                b = (byte) Read(instr.Operands[0]);
+                C = ((b & 0x80) != 0) ? Cmask : (ushort)0;
+                Write(instr.Operands[0], (byte)(b << 1));
+                regs[Registers.p.Number] |= C;
+                NZ(b);
+                return;
+            case Mnemonic.bcc: if ((regs[Registers.p.Number] & Cmask) == 0) Jump(instr.Operands[0]); return;
+            case Mnemonic.beq: if ((regs[Registers.p.Number] & Zmask) != 0) Jump(instr.Operands[0]); return;
             case Mnemonic.bne: if ((regs[Registers.p.Number] & Zmask) == 0) Jump(instr.Operands[0]); return;
+            case Mnemonic.cpy: Cmp(Registers.y, instr.Operands[0]);return;
+            case Mnemonic.dec:
+                b = (byte) (Read(instr.Operands[0]) - 1);
+                Write(instr.Operands[0], b);
+                NZ(b);
+                return;
             case Mnemonic.dex: NZ(regs[Registers.x.Number] = (byte)(ReadRegister(Registers.x)-1)); return;
             case Mnemonic.dey: NZ(regs[Registers.y.Number] = (byte)(ReadRegister(Registers.y)-1)); return;
+            case Mnemonic.inc:
+                b = (byte) (Read(instr.Operands[0]) + 1);
+                Write(instr.Operands[0], b);
+                NZ(b);
+                return;
             case Mnemonic.inx: NZ(regs[Registers.x.Number] = (byte)(ReadRegister(Registers.x)+1)); return;
             case Mnemonic.iny: NZ(regs[Registers.y.Number] = (byte)(ReadRegister(Registers.y)+1)); return;
             case Mnemonic.jmp: Jump(instr.Operands[0]); return;
+            case Mnemonic.jsr: Jsr(instr.Operands[0]); return;
             case Mnemonic.lda: NZ(regs[Registers.a.Number] = Read(instr.Operands[0])); return;
             case Mnemonic.ldx: NZ(regs[Registers.x.Number] = Read(instr.Operands[0])); return;
             case Mnemonic.ldy: NZ(regs[Registers.y.Number] = Read(instr.Operands[0])); return;
             case Mnemonic.nop: return;
+            case Mnemonic.pha: Push((byte)regs[Registers.a.Number]); return;
+            case Mnemonic.pla: Pop(Registers.a); break;
+            case Mnemonic.rol:
+                b = (byte) Read(instr.Operands[0]);
+                C = ((b & 0x80) != 0) ? Cmask : (ushort) 0;
+                Write(instr.Operands[0], (byte) ((b << 1)|C));
+                regs[Registers.p.Number] |= C;
+                NZ(b);
+                return;
+            case Mnemonic.rts: Rts(); return;
+            case Mnemonic.sec: regs[Registers.p.Number] |= Cmask; return;
+            case Mnemonic.sei: regs[Registers.p.Number] |= Imask; return;
             case Mnemonic.sta: Write(instr.Operands[0], regs[Registers.a.Number]); return;
+            case Mnemonic.stx: Write(instr.Operands[0], regs[Registers.x.Number]); return;
+            case Mnemonic.sty: Write(instr.Operands[0], regs[Registers.y.Number]); return;
+            case Mnemonic.tax: TransferNZ(Registers.a, Registers.x); return;
+            case Mnemonic.tay: TransferNZ(Registers.a, Registers.y); return;
+            case Mnemonic.txa: TransferNZ(Registers.x, Registers.a); return;
+            case Mnemonic.tya: TransferNZ(Registers.y, Registers.a); return;
             }
         }
 
-        protected void Jump(MachineOperand op)
+        private void Adc(MachineOperand op)
+        {
+            var a = (byte) regs[Registers.a.Number];
+            var v = (byte) Read(op);
+            var s = (byte) (a + v);
+            regs[Registers.a.Number] = s;
+            NZ(s);
+            var p = (byte) regs[Registers.p.Number];
+            p &= unchecked((byte) ~(Cmask|Vmask));
+            p |= (byte) (s < a ? Cmask : 0);
+            p |= (byte) (((a ^ s) & (a ^ s) & 0x80) != 0 ? Vmask : 0);
+            regs[Registers.p.Number] = p;
+        }
+
+        private void Cmp(RegisterStorage reg, MachineOperand op)
+        {
+            var a = (byte)regs[reg.Number];
+            var b = Read(op);
+            var r = (byte)(a - b);
+            
+            NZ(b);
+            var p = (byte) regs[Registers.p.Number];
+            p &= unchecked((byte)~Cmask);
+            p |= (byte)(r > a ? Cmask : 0);
+            regs[Registers.p.Number] = p;
+        }
+
+        private void Jump(MachineOperand op)
         {
             InstructionPointer = Address.Ptr16(((Operand) op).Offset!.ToUInt16());
+        }
+
+        private void Jsr(MachineOperand op)
+        {
+            var pcNext = this.InstructionPointer.ToUInt16() + 2;
+            Push((byte) (pcNext >> 8));
+            Push((byte) pcNext);
+            InstructionPointer = Address.Ptr16(((Operand) op).Offset!.ToUInt16());
+        }
+
+        private void Rts()
+        {
+            var lsb = Pop();
+            var msb = Pop();
+            var pcNext = (ushort) (((msb << 8) | lsb) + 1);
+            InstructionPointer = Address.Ptr16(pcNext);
+        }
+
+        private byte Pop()
+        {
+            var s = this.regs[Registers.s.Number] + 1;
+            this.regs[Registers.s.Number] = (byte) s;
+            var sp = 0x100u | (byte)s;
+            if (!TryReadByte(sp, out byte b))
+                throw new AccessViolationException();
+            return b;
+        }
+
+        private void Pop(RegisterStorage reg)
+        {
+            var b = Pop();
+            regs[reg.Number] = b;
+            NZ(b);
+        }
+
+        private void Push(byte value)
+        {
+            var s = this.regs[Registers.s.Number];
+            var sp = 0x100u | s;
+            WriteByte(sp, value);
+            this.regs[Registers.s.Number] = (byte) (s - 1);
+        }
+
+        private void TransferNZ(RegisterStorage src, RegisterStorage dst)
+        {
+            var v = this.regs[src.Number];
+            regs[dst.Number] = v;
+            NZ(v);
         }
 
         private ushort Read(MachineOperand mop)
@@ -158,14 +296,24 @@ namespace Reko.Arch.Mos6502
             {
             default:
                 throw new NotImplementedException($"Addressing mode {op.Mode} not implemented yet.");
+            case AddressMode.Accumulator:
+                return regs[Registers.a.Number];
             case AddressMode.Immediate:
                 return op.Offset!.ToUInt16();
             case AddressMode.ZeroPage:
                 ea = op.Offset!.ToByte();
                 break;
+            case AddressMode.Absolute:
+                ea = op.Offset!.ToUInt16();
+                break;
+            case AddressMode.AbsoluteX:
             case AddressMode.AbsoluteY:
                 // Treat y as unsigned.
-                ea = (ushort) (regs[Registers.y.Number] + op.Offset!.ToUInt16());
+                ea = (ushort) (regs[op.Register!.Number] + op.Offset!.ToUInt16());
+                break;
+            case AddressMode.IndirectIndexed:
+                ea = ReadLeUInt16(op.Offset!.ToUInt16());
+                ea += regs[op.Register!.Number];
                 break;
             }
             return ReadMemory(op, ea);
@@ -179,6 +327,9 @@ namespace Reko.Arch.Mos6502
             {
             default:
                 throw new NotImplementedException($"Addressing mode {op.Mode} not implemented yet.");
+            case AddressMode.Accumulator:
+                regs[Registers.a.Number] = (byte) value;
+                return;
             case AddressMode.ZeroPage:
                 ea = op.Offset!.ToByte();
                 break;
@@ -186,9 +337,13 @@ namespace Reko.Arch.Mos6502
             case AddressMode.ZeroPageY:
                 ea = (ushort)(regs[op.Register!.Number] + op.Offset!.ToByte());
                 break;
+            case AddressMode.Absolute:
+                ea = op.Offset!.ToUInt16();
+                break;
+            case AddressMode.AbsoluteX:
             case AddressMode.AbsoluteY:
-                // Treat y as unsigned.
-                ea = (ushort) (regs[Registers.y.Number] + op.Offset!.ToUInt16());
+                // Treat x or y as unsigned.
+                ea = (ushort) (regs[op.Register!.Number] + op.Offset!.ToUInt16());
                 break;
             }
             WriteMemory(op, ea, value);

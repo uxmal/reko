@@ -233,9 +233,12 @@ directory.
 
             private Program LoadPrg(IServiceProvider services)
             {
-                var image = new ByteMemoryArea(
-                    Address.Ptr16(this.LoadAddress),
-                    this.GetBytes());
+                // Many of these programs use all of the 
+                // C64 memory, so be generous.
+                var image = new ByteMemoryArea(Address.Ptr16(0x800), new byte[0xF800 - 0x800]);
+                var src = this.GetBytes();
+                Array.Copy(src, 0, image.Bytes, (int) (this.LoadAddress - (ushort)image.BaseAddress.ToLinear()), src.Length);
+
                 var rdr = new C64BasicReader(image, 0x0801);
                 var lines = rdr.ToSortedList(line => (ushort) line.LineNumber, line => line);
                 var cfgSvc = services.RequireService<IConfigurationService>();

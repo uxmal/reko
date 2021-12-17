@@ -50,7 +50,7 @@ namespace Reko.Arch.Mos6502
             this.arch = arch;
             this.addrBase = addrBase;
             this.symbols = symbols;
-            this.m = new Core.Assemblers.Emitter();
+            this.m = new Emitter();
             this.symtab = new SymbolTable();
         }
 
@@ -110,6 +110,12 @@ namespace Reko.Arch.Mos6502
                 m.EmitByte(ops.AbsY);
                 m.EmitLeUInt16(op.Offset!.ToUInt16());
                 return;
+            case AddressMode.IndirectIndexed:
+                if (ops.IndY == 0)
+                    break;
+                m.EmitByte(ops.IndY);
+                m.EmitByte(op.Offset!.ToByte());
+                return;
             }
             throw new NotSupportedException($"Instruction {mnemonic} does not support address mode {op.Mode}.");
         }
@@ -136,10 +142,32 @@ namespace Reko.Arch.Mos6502
             }
         }
 
+        public void Adc(ParsedOperand op)
+        {
+            EmitOpcodeOperand(Mnemonic.adc, op.Operand);
+        }
+
+        public void Asl(RegisterStorage reg)
+        {
+            if (reg != Registers.a)
+                throw new ArgumentException("Must specify A register.");
+            m.EmitByte(0x0A);
+        }
+
+        public void Asl(ParsedOperand op)
+        {
+            EmitOpcodeOperand(Mnemonic.asl, op.Operand);
+        }
+
         public void Bne(string target)
         {
             m.EmitByte(0xD0);
             EmitRelativeTarget(target, PrimitiveType.Byte);
+        }
+
+        public void Cpy(ParsedOperand op)
+        {
+            EmitOpcodeOperand(Mnemonic.cpy, op.Operand);
         }
 
         public void Dex()
@@ -150,6 +178,11 @@ namespace Reko.Arch.Mos6502
         public void Dey()
         {
             m.EmitByte(0x88);
+        }
+
+        public void Inc(ParsedOperand op)
+        {
+            EmitOpcodeOperand(Mnemonic.inc, op.Operand);
         }
 
         public void Inx()
@@ -166,6 +199,14 @@ namespace Reko.Arch.Mos6502
         {
             m.EmitByte(0x4C);
             m.EmitLeUInt16(addrBase.ToUInt16());  // 6502 jmps are absolute.
+            var sym = symtab.CreateSymbol(target);
+            sym.ReferToLe(m.Position - 2, PrimitiveType.Word16, m);
+        }
+
+        public void Jsr(string target)
+        {
+            m.EmitByte(0x20);
+            m.EmitLeUInt16(addrBase.ToUInt16());
             var sym = symtab.CreateSymbol(target);
             sym.ReferToLe(m.Position - 2, PrimitiveType.Word16, m);
         }
@@ -190,6 +231,28 @@ namespace Reko.Arch.Mos6502
             EmitOpcodeOperand(Mnemonic.ldy, op.Operand);
         }
 
+        public void Rol(RegisterStorage reg)
+        {
+            if (reg != Registers.a)
+                throw new ArgumentException("Must specify A register.");
+            m.EmitByte(0x2A);
+        }
+
+        public void Rol(ParsedOperand op)
+        {
+            EmitOpcodeOperand(Mnemonic.rol, op.Operand);
+        }
+
+        public void Rts()
+        {
+            m.EmitByte(0x60);
+        }
+
+        public void Sei()
+        {
+            m.EmitByte(0x78);
+        }
+
         public void Sta(ParsedOperand op)
         {
             EmitOpcodeOperand(Mnemonic.sta, op.Operand);
@@ -204,6 +267,21 @@ namespace Reko.Arch.Mos6502
                     Offset = Constant.Byte(v)
                 },
                 null);
+        }
+
+        /// <summary>
+        /// Generate indirect y address operand.
+        /// </summary>
+        public ParsedOperand iy(byte ea)
+        {
+            return new ParsedOperand(
+                new Operand(PrimitiveType.Byte)
+                {
+                    Mode = AddressMode.IndirectIndexed,
+                    Offset = Constant.Byte(ea),
+                    Register = Registers.y
+                },
+                null); ;
         }
 
         /// <summary>
@@ -330,6 +408,41 @@ namespace Reko.Arch.Mos6502
         {
             instrOpcodes = new Dictionary<Mnemonic, InstrOpcodes>
             {
+                { Mnemonic.adc, new InstrOpcodes {
+                    Imm = 0x69,
+                    Zp = 0x65,
+                    ZpX = 0x75,
+                    Abs = 0x6D,
+                    AbsX  = 0x7D,
+                    AbsY = 0x79,
+                    IndX = 0x61,
+                    IndY = 0x71,
+                } },
+                { Mnemonic.asl, new InstrOpcodes
+                {
+                    Zp    = 0x06,
+                    ZpX   = 0x16,
+                    Abs   = 0x0E,
+                    AbsX  = 0x1E,
+                } },
+                { Mnemonic.cpx, new InstrOpcodes
+                {
+                    Imm = 0xE0,
+                    Zp = 0xE4,
+                    Abs = 0xEC,
+                }},
+                { Mnemonic.cpy, new InstrOpcodes
+                {
+                    Imm = 0xC0,
+                    Zp = 0xC4,
+                    Abs = 0xCC,
+                }},
+                { Mnemonic.inc, new InstrOpcodes{
+                    Zp = 0xE6,
+                    ZpX = 0xF6,
+                    Abs = 0xEE,
+                    AbsX = 0xFE,
+                } },
                 { Mnemonic.lda, new InstrOpcodes {
                     Imm = 0xA9,
                     Zp = 0xA5,
@@ -353,6 +466,13 @@ namespace Reko.Arch.Mos6502
                     ZpX = 0xB4,
                     Abs = 0xAC,
                     AbsX = 0xBC,
+                } },
+                { Mnemonic.rol, new InstrOpcodes
+                {
+                    Zp    = 0x26,
+                    ZpX   = 0x36,
+                    Abs   = 0x2E,
+                    AbsX  = 0x3E,
                 } },
                 { Mnemonic.sta, new InstrOpcodes {
                     Zp = 0x85,

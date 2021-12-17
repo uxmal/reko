@@ -421,6 +421,9 @@
 
   </segment>
 
+    <segment name="Vic_II" addr="D000" size="0400">
+        
+    </segment>
   <segment name="kernal_ROM" addr="E000" size="2000">
     <procedure name="CLALL">   <address>FFE7</address><decompile>false</decompile></procedure> <!--Clear file table -->
   </segment>

@@ -54,6 +54,10 @@ namespace Reko.UnitTests.Arch.Mos6502
                 new ByteMemoryArea(Address.Ptr16(0), new byte[256]),
                 "ZeroPage",
                 AccessMode.ReadWriteExecute);
+            program.SegmentMap.AddSegment(
+                new ByteMemoryArea(Address.Ptr16(0x100), new byte[0x200]),
+                "Low memory",
+                AccessMode.ReadWriteExecute);
 
             var envEmu = new DefaultPlatformEmulator();
 
@@ -61,6 +65,88 @@ namespace Reko.UnitTests.Arch.Mos6502
             emu.InstructionPointer = program.ImageMap.BaseAddress;
             emu.WriteRegister(Registers.s, 0xFF);
             emu.ExceptionRaised += (sender, e) => { throw e.Exception; };
+        }
+
+        [Test]
+        public void Emu6502_asl_adc_overflow()
+        {
+            Given_Code(m =>
+            {
+                m.Adc(m.i8(0x1));
+            });
+            emu.WriteRegister(Registers.a, 0x7F);
+            emu.WriteRegister(Registers.p, 0);
+
+            emu.Start();
+
+            Assert.AreEqual(0x80, emu.ReadRegister(Registers.a));
+            Assert.AreEqual(0xC0, emu.ReadRegister(Registers.p));
+        }
+
+
+        [Test]
+        public void Emu6502_asl_acc()
+        {
+            Given_Code(m =>
+            {
+                m.Asl(Registers.a);
+            });
+            emu.WriteRegister(Registers.a, 0xAA);
+            emu.WriteRegister(Registers.p, 0);
+
+            emu.Start();
+
+            Assert.AreEqual(0x54, emu.ReadRegister(Registers.a));
+            Assert.AreEqual(0x81, emu.ReadRegister(Registers.p));
+        }
+
+        [Test]
+        public void Emu6502_asl_zp()
+        {
+            Given_Code(m =>
+            {
+                m.Asl(m.zp(0xF0));
+            });
+            emu.WriteByte(0xF0, 0xAA);
+            emu.WriteRegister(Registers.p, 0);
+
+            emu.Start();
+
+            emu.TryReadByte(0xF0, out var b);
+            Assert.AreEqual(0x54, b);
+            Assert.AreEqual(0x81, emu.ReadRegister(Registers.p));
+        }
+
+        [Test]
+        public void Emu6502_cpy()
+        {
+            Given_Code(m =>
+            {
+                m.Cpy(m.i8(0xF0));
+            });
+            emu.WriteByte(0xF0, 0xAA);
+            emu.WriteRegister(Registers.y, 0);
+
+            emu.Start();
+
+            Assert.AreEqual(0x81, emu.ReadRegister(Registers.p));
+        }
+
+        [Test]
+        public void Emu6502_inc_zp()
+        {
+            Given_Code(m =>
+            {
+                m.Inc(m.zp(4));
+            });
+            emu.WriteByte(0x04, 0x42);
+            emu.WriteRegister(Registers.p, 0xFF);
+
+            emu.Start();
+
+            emu.TryReadByte(0x04, out byte b);
+            Assert.AreEqual(0x43, b);
+            Assert.AreEqual(0x7D, emu.ReadRegister(Registers.p));
         }
 
         [Test]
@@ -89,6 +175,22 @@ namespace Reko.UnitTests.Arch.Mos6502
             emu.Start();
 
             Assert.AreEqual(0x42, emu.ReadRegister(Registers.a));
+        }
+
+        [Test]
+        public void Emu6502_lda_ind_y()
+        {
+            Given_Code(m =>
+            {
+                m.Lda(m.iy(0x42));
+            });
+            emu.WriteLeUInt16(0x42, 0x0034);
+            emu.WriteLeUInt16(0x35, 0x11);
+            emu.WriteRegister(Registers.y, 1);
+            
+            emu.Start();
+
+            Assert.AreEqual(0x11, emu.ReadRegister(Registers.a));
         }
 
         [Test]
@@ -182,6 +284,79 @@ namespace Reko.UnitTests.Arch.Mos6502
             Assert.AreEqual(0, emu.ReadRegister(Registers.p));
         }
 
+        [Test]
+        public void Emu6502_jsr()
+        {
+            Given_Code(m =>
+            {
+                m.Ldx(m.i8(1));
+                m.Jsr("subroutine");
+                m.Ldx(m.i8(2));
+                m.Jmp("done");
+                m.Label("subroutine");
+                m.Ldx(m.i8(3));
+                m.Label("done");
+                m.Nop();
+            });
+            emu.Start();
+
+            Assert.AreEqual(0xFD, emu.ReadRegister(Registers.s));
+            Assert.AreEqual(3, emu.ReadRegister(Registers.x));
+            Assert.AreEqual(0x0804, emu.ReadLeUInt16(0x1FE));
+        }
+
+        [Test]
+        public void Emu6502_rol()
+        {
+            Given_Code(m =>
+            {
+                m.Rol(m.zp(0x42));
+            });
+            emu.WriteByte(0x42, 0xAA);
+            emu.WriteRegister(Registers.p, 1);
+
+            emu.Start();
+
+            emu.TryReadByte(0x42, out byte b);
+            Assert.AreEqual(0x55, b);
+            Assert.AreEqual(0x81, emu.ReadRegister(Registers.p));
+        }
+
+        [Test]
+        public void Emu6502_rts()
+        {
+            Given_Code(m =>
+            {
+                m.Ldx(m.i8(1));
+                m.Jsr("subroutine");
+                m.Ldx(m.i8(3));
+                m.Jmp("done");
+
+                m.Label("subroutine");
+                m.Ldx(m.i8(2));
+                m.Rts();
+
+                m.Label("done");
+                m.Nop();
+            });
+
+            emu.Start();
+
+            Assert.AreEqual(0x03, emu.ReadRegister(Registers.x));
+        }
+
+        [Test]
+        public void Emu6502_sei()
+        {
+            Given_Code(m =>
+            {
+                m.Sei();
+            });
+
+            emu.Start();
+
+            Assert.AreEqual(0x04, emu.ReadRegister(Registers.p));
+        }
     }
     /* ﻿
     0818 
