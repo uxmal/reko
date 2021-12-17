@@ -109,10 +109,10 @@ namespace Reko.Arch.SuperH
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
             var regField = typeof(Registers).GetField(name, BindingFlags.IgnoreCase | BindingFlags.Static | BindingFlags.Public);
-            return (RegisterStorage)regField.GetValue(null);
+            return (RegisterStorage?)regField.GetValue(null);
         }
 
         public override RegisterStorage? GetRegister(StorageDomain domain, BitRange range)

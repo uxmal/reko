@@ -223,11 +223,11 @@ namespace Reko.Arch.X86
 			return GetFlagGroup(Registers.eflags, (uint) grf);
 		}
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
 		{
 			var r = Registers.GetRegister(name);
-			if (r == RegisterStorage.None)
-				throw new ArgumentException(string.Format("'{0}' is not a register name.", name));
+            if (r == RegisterStorage.None)
+                return null;
 			return r;
 		}
 

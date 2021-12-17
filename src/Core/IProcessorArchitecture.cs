@@ -218,8 +218,12 @@ namespace Reko.Core
         int? GetMnemonicNumber(string sMnemonic);
         
         /// <summary>
-        /// Returns register whose name is 'name'
+        /// Returns register whose name is <paramref name="name"/>.
         /// </summary>
+        /// <param name="name">The name of the register</param>
+        /// <returns>A <see cref="RegisterStorage"/> representing the register,
+        /// or null if no such register exists.
+        /// </returns>
         RegisterStorage? GetRegister(string name);
 
         /// <summary>

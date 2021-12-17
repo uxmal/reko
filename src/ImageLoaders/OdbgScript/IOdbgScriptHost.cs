@@ -49,9 +49,9 @@ namespace Reko.ImageLoaders.OdbgScript
         bool TE_GetModules(List<MODULEENTRY32> Modules);
         object TE_GetProcessHandle();
         ulong TE_GetProcessId();
-        string TE_GetTargetDirectory();
-        string TE_GetTargetPath();
-        string TE_GetOutputPath();
+        string? TE_GetTargetDirectory();
+        string? TE_GetTargetPath();
+        string? TE_GetOutputPath();
         int LengthDisassemble(byte[] membuf, int i);
         int LengthDisassembleBackEx(Address addr);
         uint LengthDisassembleEx(Address addr);

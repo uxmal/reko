@@ -334,7 +334,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
             var fsrnum = instrCurr.Operands[0] as PICOperandFSRNum ?? throw new InvalidOperationException($"Invalid FSR number operand: {instrCurr.Operands[0]}");
             var imm = instrCurr.Operands[1] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[1]}");
-            var fsrreg = binder.EnsureRegister(PICRegisters.GetRegister($"FSR{fsrnum.FSRNum}"));
+            var fsrreg = binder.EnsureRegister(PICRegisters.GetRegister($"FSR{fsrnum.FSRNum}")!);
             m.Assign(fsrreg, m.IAdd(fsrreg, imm.ImmediateValue));
         }
 
@@ -725,7 +725,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
             var fsrnum = instrCurr.Operands[0] as PICOperandFSRNum ?? throw new InvalidOperationException($"Invalid FSR register number operand: {instrCurr.Operands[0]}");
             var k = instrCurr.Operands[1] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[1]}");
-            var fsrreg = binder.EnsureRegister(PICRegisters.GetRegister($"FSR{fsrnum.FSRNum}"));
+            var fsrreg = binder.EnsureRegister(PICRegisters.GetRegister($"FSR{fsrnum.FSRNum}")!);
             m.Assign(fsrreg, k.ImmediateValue);
         }
 
@@ -1061,7 +1061,7 @@ namespace Reko.Arch.MicrochipPIC.PIC18
         {
             var fsrnum = instrCurr.Operands[0] as PICOperandFSRNum ?? throw new InvalidOperationException($"Invalid FSR number operand: {instrCurr.Operands[0]}");
             var imm = instrCurr.Operands[1] as PICOperandImmediate ?? throw new InvalidOperationException($"Invalid immediate operand: {instrCurr.Operands[1]}");
-            var fsrreg = binder.EnsureRegister(PICRegisters.GetRegister($"FSR{fsrnum.FSRNum}"));
+            var fsrreg = binder.EnsureRegister(PICRegisters.GetRegister($"FSR{fsrnum.FSRNum}")!);
             m.Assign(fsrreg, m.ISub(fsrreg, imm.ImmediateValue));
         }
 

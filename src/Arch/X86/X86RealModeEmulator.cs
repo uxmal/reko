@@ -170,7 +170,7 @@ namespace Reko.Arch.X86
 
         private string DumpReg(string regName)
         {
-            var regValue = this.ReadRegister(arch.GetRegister(regName.ToLower()));
+            var regValue = this.ReadRegister(arch.GetRegister(regName.ToLower())!);
             return $"{regName}={regValue:X4}";
         }
 

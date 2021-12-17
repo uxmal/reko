@@ -90,7 +90,7 @@ namespace Reko.Arch.Z80
             return (int)result;
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
             return Registers.GetRegister(name);
         }
@@ -290,9 +290,9 @@ namespace Reko.Arch.Z80
             return All[r];
         }
 
-        internal static RegisterStorage GetRegister(string name)
+        internal static RegisterStorage? GetRegister(string name)
         {
-            return regsByName[name];
+            return regsByName.TryGetValue(name, out var reg) ? reg : null;
         }
 
         internal static RegisterStorage? GetRegister(StorageDomain domain, ulong mask)

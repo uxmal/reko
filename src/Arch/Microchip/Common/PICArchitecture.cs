@@ -198,11 +198,9 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         /// <param name="regName">Name of the register.</param>
         /// <returns>
-        /// The register.
+        /// The register or null if there is no such register.
         /// </returns>
-        /// <exception cref="ArgumentException">Thrown when one or more arguments have unsupported or
-        ///                                     illegal values.</exception>
-        public override RegisterStorage GetRegister(string regName)
+        public override RegisterStorage? GetRegister(string regName)
             => PICRegisters.GetRegister(regName);
 
         /// <summary>

@@ -89,9 +89,9 @@ namespace Reko.Arch.CompactRisc
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
-            throw new NotImplementedException();
+            return Registers.ByName.TryGetValue(name, out var reg) ? reg : null;
         }
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)

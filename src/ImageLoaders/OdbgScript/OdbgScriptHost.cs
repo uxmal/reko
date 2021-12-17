@@ -181,10 +181,10 @@ namespace Reko.ImageLoaders.OdbgScript
             throw new NotImplementedException();
         }
 
-        public virtual string TE_GetTargetPath()
+        public virtual string? TE_GetTargetPath()
         {
             //$REVIEW: this may not be what was intended.
-            return loader.ImageLocation.FilesystemPath;
+            return loader?.ImageLocation.FilesystemPath;
         }
 
         public virtual ulong TE_GetProcessId()

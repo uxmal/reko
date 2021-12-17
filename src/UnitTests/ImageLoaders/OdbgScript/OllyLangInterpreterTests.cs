@@ -58,7 +58,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
             Given_Engine();
             Given_Script("var foo\r\n");
 
-            engine.Run();
+            engine.RunInner();
 
             Assert.IsTrue(engine.variables.ContainsKey("foo"));
         }
@@ -132,7 +132,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
             Given_Image(0x001000, new byte[] { 0, 0, 0, 0, 0, 1, 2, 3 });
             Given_Script("find 001000, #01#\r\n");
 
-            engine.Run();
+            engine.RunInner();
 
             Assert.AreEqual(0x1000 + 5, engine.variables["$RESULT"].ToUInt64());
         }
@@ -161,7 +161,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
                 "done:\r\n"
                 );
 
-            engine.Run();
+            engine.RunInner();
 
             Assert.AreEqual("***---#", Encoding.ASCII.GetString(mem.Bytes));
         }
@@ -190,7 +190,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
 
             Given_Engine();
             Given_Script("bp 00123400");
-            engine.Run();
+            engine.RunInner();
 
             emu.Verify();
         }
@@ -210,7 +210,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
 
             Given_Engine();
             Given_Script("bp 0800:0010");
-            engine.Run();
+            engine.RunInner();
 
             emu.Verify();
         }
@@ -232,7 +232,8 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
 
             Given_MakeSegmentedAddress();
 
-            engine.Run();
+            engine.RunInner();
+
             Assert.AreEqual("0800:0802", engine.variables["q"].Address.ToString());
         }
 
@@ -260,7 +261,7 @@ namespace Reko.UnitTests.ImageLoaders.OdbgScript
 mov foo,3
 add foo,4
 ");
-            engine.Run();
+            engine.RunInner();
             Assert.AreEqual(7, engine.variables["foo"].ToUInt64());
         }
 
@@ -282,7 +283,7 @@ mov selector,[es:di],2
             emu.Setup(e => e.ReadRegister(
                 It.Is<RegisterStorage>(r => r.Name == "di"))).Returns(0x0002);
 
-            engine.Run();
+            engine.RunInner();
 
             Assert.AreEqual(0x0123, engine.variables["selector"].ToUInt64());
         }

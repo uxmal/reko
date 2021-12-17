@@ -50,7 +50,7 @@ namespace Reko.Arch.MicrochipPIC.PIC16
         {
             base.SetCoreRegisters();
 
-            INTCON = GetRegister("INTCON");
+            INTCON = GetRegister("INTCON")!;
             GIE = GetBitField("GIE");
         }
 

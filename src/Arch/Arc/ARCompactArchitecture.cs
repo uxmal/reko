@@ -98,9 +98,9 @@ namespace Reko.Arch.Arc
             return Registers.ByStorageDomain[domain];
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
-            throw new NotImplementedException();
+            return Registers.ByName.TryGetValue(name, out var reg) ? reg : null;
         }
 
         public override RegisterStorage[] GetRegisters()

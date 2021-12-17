@@ -133,11 +133,11 @@ namespace Reko.ImageLoaders.OdbgScript
         /// <summary>
         /// Masks off the high part of the given value.
         /// </summary>
-        public static rulong resize(rulong dw, int size)
+        public static rulong resize(rulong dw, int byteSize)
         {
-            if (0 <= size && size < sizeof(ulong))
+            if (0 <= byteSize && byteSize < sizeof(ulong))
             {
-                dw &= Bits.Mask(0, size * 8);
+                dw &= Bits.Mask(0, 8*byteSize);
             }
             return dw;
         }

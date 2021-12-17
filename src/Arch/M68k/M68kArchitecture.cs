@@ -95,11 +95,11 @@ namespace Reko.Arch.M68k
             return Registers.GetRegister(domain - StorageDomain.Register);
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
             var r = Registers.GetRegister(name);
             if (r == RegisterStorage.None)
-                throw new ArgumentException(string.Format("'{0}' is not a register name.", name));
+                return null;
             return r;
         }
 

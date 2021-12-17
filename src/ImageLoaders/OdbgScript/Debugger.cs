@@ -34,6 +34,11 @@ namespace Reko.ImageLoaders.OdbgScript
             this.emu.SetBreakpoint(addr.ToLinear(), callback);
         }
 
+        public rulong GetContextData(RegisterStorage register)
+        {
+            return emu.ReadRegister(register);
+        }
+
         public rulong GetContextData(eContextData eContextData)
         {
             switch (eContextData)
@@ -78,12 +83,18 @@ namespace Reko.ImageLoaders.OdbgScript
             emu.DeleteBreakpoint(addr.ToLinear());
         }
 
-        public bool SetContextData(eContextData reg, rulong p2)
+        public bool SetContextData(RegisterStorage reg, rulong value)
+        {
+            emu.WriteRegister(reg, value);
+            return true;
+        }
+
+        public bool SetContextData(eContextData reg, rulong value)
         {
             switch (reg)
             {
             case eContextData.UE_EIP:
-                var cAddr = Constant.Create(arch.PointerType, p2);
+                var cAddr = Constant.Create(arch.PointerType, value);
                 emu.InstructionPointer = arch.MakeAddressFromConstant(cAddr, true);
                 return true;
             }

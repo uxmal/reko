@@ -420,8 +420,8 @@ namespace Reko.Arch.Z80
             foreach (var r in new[] { "bc", "de", "hl" })
             {
                 var t = binder.CreateTemporary(PrimitiveType.Word16);
-                var reg = binder.EnsureRegister(arch.GetRegister(r));
-                var reg_ = binder.EnsureRegister(arch.GetRegister(r + "'"));
+                var reg = binder.EnsureRegister(arch.GetRegister(r)!);
+                var reg_ = binder.EnsureRegister(arch.GetRegister(r + "'")!);
                 m.Assign(t, reg);
                 m.Assign(reg, reg_);
                 m.Assign(reg_, t);

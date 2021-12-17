@@ -301,14 +301,13 @@ namespace Reko.Arch.MicrochipPIC.Common
         /// </summary>
         /// <param name="regName">The name of the register as a string.</param>
         /// <returns>
-        /// The PIC register instance.
+        /// The PIC register instance, or null if no such register exists.
         /// </returns>
-        /// <exception cref="InvalidOperationException">Thrown if this register does not exist.</exception>
-        public static PICRegisterStorage GetRegister(string regName)
+        public static PICRegisterStorage? GetRegister(string regName)
         {
             if (TryGetRegister(regName, out var reg))
                 return reg;
-            throw new ArgumentException("Unknown PIC register.", regName);
+            return null;
         }
 
         /// <summary>

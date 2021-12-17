@@ -699,8 +699,8 @@ rulong hwnd;
 
                 if (size > 0)
                 {
-                    v1.resize((int) size);
-                    v2.resize((int) size);
+                    v1.resize(8 * (int) size);
+                    v2.resize(8 * (int) size);
                 }
 
                 int res = v1.Compare(v2); //Error if -2 (type mismatch)
@@ -2384,11 +2384,11 @@ string str;
             }
             else if (str == "EXEFILENAME") // Full path of the debugged file/dll
             {
-                variables["$RESULT"] = Var.Create(Host.TE_GetTargetPath());
+                variables["$RESULT"] = Var.Create(Host.TE_GetTargetPath() ?? "");
             }
             else if (str == "CURRENTDIR") // Current directory for debugged process (with trailing '\')
             {
-                variables["$RESULT"] = Var.Create(Host.TE_GetTargetDirectory());
+                variables["$RESULT"] = Var.Create(Host.TE_GetTargetDirectory() ?? "");
             }
             else if (str == "SYSTEMDIR") // Windows system directory (with trailing '\')
             {
@@ -3003,7 +3003,7 @@ string filename;
                     {
                         // DW to DW/FLT var
                         if (maxsize == 0)
-                            maxsize = sizeof(rulong);
+                            maxsize = 8;
                         dw = Helper.resize(dw, (int) maxsize);
                         v = Var.Create(dw);
                         v.size = (int) maxsize;
@@ -3027,22 +3027,15 @@ string filename;
                     return true;
                 }
                 //$REFACTOR: another Identifier.
-                else if (TryFindRegister(id.Name, out register_t reg))
+                else if (arch.TryGetRegister(id.Name, out var reg))
                 {
                     // Dest is register
                     if (GetRulong(args[1], out dw))
                     {
                         if (maxsize == 0)
-                            maxsize = reg.size;
-                        dw = Helper.resize(dw, Math.Min((int) maxsize, reg.size));
-                        if (reg.size < sizeof(rulong))
-                        {
-                            rulong oldval = Debugger.GetContextData(reg.id);
-                            oldval &= ~Bits.Mask(reg.offset * 8, reg.size * 8);
-                            var newval = Helper.resize(dw, reg.size) << (reg.offset * 8);
-                            dw = oldval | newval;
-                        }
-                        return Debugger.SetContextData(reg.id, dw);
+                            maxsize = (uint)reg.DataType.Size;
+                        dw = Helper.resize(dw, Math.Min((int) maxsize, (int)reg.DataType.Size));
+                        return Debugger.SetContextData(reg, dw);
                     }
                 }
                 //$BUG: hard-wired to x86

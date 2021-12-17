@@ -180,9 +180,9 @@ namespace Reko.Arch.Mips
             return GeneralRegs[i];
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
-            return mpNameToReg[name];
+            return mpNameToReg.TryGetValue(name, out var reg) ? reg : null;
         }
 
         public override RegisterStorage[] GetRegisters()

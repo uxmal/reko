@@ -95,9 +95,9 @@ namespace Reko.Arch.OpenRISC
             throw new NotImplementedException();
         }
 
-        public override RegisterStorage GetRegister(string name)
+        public override RegisterStorage? GetRegister(string name)
         {
-            throw new NotImplementedException();
+            return Registers.RegisterByName.TryGetValue(name, out var reg) ? reg : null;
         }
 
         public override RegisterStorage GetRegister(StorageDomain domain, BitRange range)
