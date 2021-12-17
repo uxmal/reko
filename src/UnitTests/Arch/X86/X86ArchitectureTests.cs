@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void IaFailGetRegisterFromString()
         {
-            Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
+            Assert.IsNull(arch.GetRegister("invalidregistername"));
         }
 
 		[Test]
@@ -144,7 +144,7 @@ namespace Reko.UnitTests.Arch.X86
         [Test]
         public void IaGetInvalidRegisterFromName()
         {
-            Assert.Throws<ArgumentException>(() => arch.GetRegister("NonExistingRegisterName"));
+            Assert.IsNull(arch.GetRegister("NonExistingRegisterName"));
         }
 
         private EndianImageReader CreateImageReader(params byte[] bytes)

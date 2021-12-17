@@ -203,22 +203,21 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
         {
             var arch = GetArch(PIC18LegacyName);
             PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
-            Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
+            Assert.IsNull(arch.GetRegister("invalidregistername"));
             PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
-            Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
+            Assert.IsNull(arch.GetRegister("invalidregistername"));
 
             arch = GetArch(PIC18EggName);
             PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
-            Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
+            Assert.IsNull(arch.GetRegister("invalidregistername"));
             PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
-            Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
+            Assert.IsNull(arch.GetRegister("invalidregistername"));
 
             arch = GetArch(PIC18EnhancedName);
             PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
-            Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
+            Assert.IsNull(arch.GetRegister("invalidregistername"));
             PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
-            Assert.Throws<ArgumentException>(() => arch.GetRegister("invalidregistername"));
-
+            Assert.IsNull(arch.GetRegister("invalidregistername"));
         }
 
         [Test]

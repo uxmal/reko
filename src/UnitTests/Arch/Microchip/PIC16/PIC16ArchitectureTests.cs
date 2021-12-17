@@ -148,14 +148,13 @@ namespace Reko.UnitTests.Arch.Microchip.PIC16
         public void PIC16arch_FailGetRegisterFromNameTests()
         {
             PICProcessorModel.GetModel(PIC16BasicName).CreateRegisters();
-            Assert.Throws<ArgumentException>(() => PICRegisters.GetRegister("invalidregistername"));
+            Assert.IsNull(PICRegisters.GetRegister("invalidregistername"));
 
             PICProcessorModel.GetModel(PIC16EnhancedName).CreateRegisters();
-            Assert.Throws<ArgumentException>(() => PICRegisters.GetRegister("invalidregistername"));
+            Assert.IsNull(PICRegisters.GetRegister("invalidregistername"));
 
             PICProcessorModel.GetModel(PIC16FullFeaturedName).CreateRegisters();
-            Assert.Throws<ArgumentException>(() => PICRegisters.GetRegister("invalidregistername"));
-
+            Assert.IsNull(PICRegisters.GetRegister("invalidregistername"));
         }
 
         [Test]
