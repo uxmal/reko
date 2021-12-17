@@ -1001,8 +1001,8 @@ namespace Reko.Evaluation
 
         /// <summary>
         /// The expression SEQ(-0<16> - (x != 0<16>), -x) appears a lot in
-        /// 16-bit x86 binaries. It amounts to a negation of an unsigned 
-        /// integer (like size_t) followed by a sign extension.
+        /// 16-bit x86 binaries. It amounts to a zero extension of an unsigned 
+        /// integer (like size_t) followed by a negation.
         /// </summary>
         private Expression? SignExtendedNegation(MkSequence seq)
         {
