@@ -40,7 +40,7 @@ namespace Reko.Arch.H8
         {
             this.CarryFlagMask = (uint) FlagM.CF;
             this.Endianness = EndianServices.Big;
-            this.FramePointerType = PrimitiveType.Ptr16;
+            this.FramePointerType = PrimitiveType.Ptr32;
             this.InstructionBitSize = 16;
             this.PointerType = PrimitiveType.Ptr16;
             this.StackRegister = Registers.GpRegisters[7];
