@@ -10,7 +10,7 @@ eax:eax
     def:  def eax
     uses: C_5 = eax != 0<32>
           eax_6 = -eax
-          eax_8 = 0<32> - (eax != 0<32>)
+          eax_8 = 0<32> - CONVERT(eax != 0<32>, bool, word32)
 C_5: orig: C
     def:  C_5 = eax != 0<32>
 eax_6: orig: eax
@@ -19,7 +19,7 @@ eax_6: orig: eax
 SZO_7: orig: SZO
     def:  SZO_7 = cond(eax_6)
 eax_8: orig: eax
-    def:  eax_8 = 0<32> - (eax != 0<32>)
+    def:  eax_8 = 0<32> - CONVERT(eax != 0<32>, bool, word32)
     uses: SCZO_9 = cond(eax_8)
           Mem11[ds:0x300<16>:word32] = eax_8
 SCZO_9: orig: SCZO
@@ -61,7 +61,7 @@ v10_17: orig: v10
     def:  v10_17 = Mem15[ds:0x200<16>:word16]
     uses: C_18 = v10_17 != 0<16>
           v11_19 = -v10_17
-          ecx_22 = 0<32> - (v10_17 != 0<16>)
+          ecx_22 = 0<32> - CONVERT(v10_17 != 0<16>, bool, word32)
 C_18: orig: C
     def:  C_18 = v10_17 != 0<16>
 v11_19: orig: v11
@@ -73,7 +73,7 @@ Mem20: orig: Mem0
 SZO_21: orig: SZO
     def:  SZO_21 = cond(v11_19)
 ecx_22: orig: ecx
-    def:  ecx_22 = 0<32> - (v10_17 != 0<16>)
+    def:  ecx_22 = 0<32> - CONVERT(v10_17 != 0<16>, bool, word32)
     uses: SCZO_23 = cond(ecx_22)
           Mem24[ds:0x308<16>:word32] = ecx_22
 SCZO_23: orig: SCZO
@@ -120,7 +120,7 @@ eax_37: orig: eax
     def:  eax_37 = Mem36[ds:0x310<16>:word32]
     uses: C_38 = eax_37 != 0<32>
           eax_39 = -eax_37
-          eax_41 = 0<32> - (eax_37 != 0<32>)
+          eax_41 = 0<32> - CONVERT(eax_37 != 0<32>, bool, word32)
 C_38: orig: C
     def:  C_38 = eax_37 != 0<32>
 eax_39: orig: eax
@@ -129,7 +129,7 @@ eax_39: orig: eax
 SZO_40: orig: SZO
     def:  SZO_40 = cond(eax_39)
 eax_41: orig: eax
-    def:  eax_41 = 0<32> - (eax_37 != 0<32>)
+    def:  eax_41 = 0<32> - CONVERT(eax_37 != 0<32>, bool, word32)
     uses: SCZO_42 = cond(eax_41)
           eax_43 = eax_41 + 1<32>
 SCZO_42: orig: SCZO
@@ -157,7 +157,7 @@ l0C00_0000:
 	C_5 = eax != 0<32>
 	eax_6 = -eax
 	SZO_7 = cond(eax_6)
-	eax_8 = 0<32> - (eax != 0<32>)
+	eax_8 = 0<32> - CONVERT(eax != 0<32>, bool, word32)
 	SCZO_9 = cond(eax_8)
 	Mem11[ds:0x300<16>:word32] = eax_8
 	v8_12 = Mem11[ds:0x202<16>:word16]
@@ -170,7 +170,7 @@ l0C00_0000:
 	v11_19 = -v10_17
 	Mem20[ds:0x200<16>:word16] = v11_19
 	SZO_21 = cond(v11_19)
-	ecx_22 = 0<32> - (v10_17 != 0<16>)
+	ecx_22 = 0<32> - CONVERT(v10_17 != 0<16>, bool, word32)
 	SCZO_23 = cond(ecx_22)
 	Mem24[ds:0x308<16>:word32] = ecx_22
 	bx_26 = ~bx
@@ -188,7 +188,7 @@ l0C00_0000:
 	C_38 = eax_37 != 0<32>
 	eax_39 = -eax_37
 	SZO_40 = cond(eax_39)
-	eax_41 = 0<32> - (eax_37 != 0<32>)
+	eax_41 = 0<32> - CONVERT(eax_37 != 0<32>, bool, word32)
 	SCZO_42 = cond(eax_41)
 	eax_43 = eax_41 + 1<32>
 	SZO_44 = cond(eax_43)
@@ -208,7 +208,7 @@ eax:eax
     def:  def eax
     uses: C_5 = eax != 0<32>
           eax_6 = -eax
-          eax_8 = 0<32> - (eax != 0<32>)
+          eax_8 = 0<32> - CONVERT(eax != 0<32>, bool, word32)
 C_5: orig: C
     def:  C_5 = eax != 0<32>
 eax_6: orig: eax
@@ -217,7 +217,7 @@ eax_6: orig: eax
 SZO_7: orig: SZO
     def:  SZO_7 = cond(eax_6)
 eax_8: orig: eax
-    def:  eax_8 = 0<32> - (eax != 0<32>)
+    def:  eax_8 = 0<32> - CONVERT(eax != 0<32>, bool, word32)
     uses: SCZO_9 = cond(eax_8)
           Mem11[ds:0x300<16>:word32] = eax_8
 SCZO_9: orig: SCZO
@@ -259,7 +259,7 @@ v10_17: orig: v10
     def:  v10_17 = Mem15[ds:0x200<16>:word16]
     uses: C_18 = v10_17 != 0<16>
           v11_19 = -v10_17
-          ecx_22 = 0<32> - (v10_17 != 0<16>)
+          ecx_22 = 0<32> - CONVERT(v10_17 != 0<16>, bool, word32)
 C_18: orig: C
     def:  C_18 = v10_17 != 0<16>
 v11_19: orig: v11
@@ -271,7 +271,7 @@ Mem20: orig: Mem0
 SZO_21: orig: SZO
     def:  SZO_21 = cond(v11_19)
 ecx_22: orig: ecx
-    def:  ecx_22 = 0<32> - (v10_17 != 0<16>)
+    def:  ecx_22 = 0<32> - CONVERT(v10_17 != 0<16>, bool, word32)
     uses: SCZO_23 = cond(ecx_22)
           Mem24[ds:0x308<16>:word32] = ecx_22
 SCZO_23: orig: SCZO
@@ -318,7 +318,7 @@ eax_37: orig: eax
     def:  eax_37 = Mem36[ds:0x310<16>:word32]
     uses: C_38 = eax_37 != 0<32>
           eax_39 = -eax_37
-          eax_41 = 0<32> - (eax_37 != 0<32>)
+          eax_41 = 0<32> - CONVERT(eax_37 != 0<32>, bool, word32)
 C_38: orig: C
     def:  C_38 = eax_37 != 0<32>
 eax_39: orig: eax
@@ -327,7 +327,7 @@ eax_39: orig: eax
 SZO_40: orig: SZO
     def:  SZO_40 = cond(eax_39)
 eax_41: orig: eax
-    def:  eax_41 = 0<32> - (eax_37 != 0<32>)
+    def:  eax_41 = 0<32> - CONVERT(eax_37 != 0<32>, bool, word32)
     uses: SCZO_42 = cond(eax_41)
           eax_43 = eax_41 + 1<32>
           SZO_44 = cond(eax_41 + 1<32>)
@@ -355,7 +355,7 @@ l0C00_0000:
 	C_5 = eax != 0<32>
 	eax_6 = -eax
 	SZO_7 = cond(eax_6)
-	eax_8 = 0<32> - (eax != 0<32>)
+	eax_8 = 0<32> - CONVERT(eax != 0<32>, bool, word32)
 	SCZO_9 = cond(eax_8)
 	Mem11[ds:0x300<16>:word32] = eax_8
 	v8_12 = Mem11[ds:0x202<16>:word16]
@@ -368,7 +368,7 @@ l0C00_0000:
 	v11_19 = -v10_17
 	Mem20[ds:0x200<16>:word16] = v11_19
 	SZO_21 = cond(v11_19)
-	ecx_22 = 0<32> - (v10_17 != 0<16>)
+	ecx_22 = 0<32> - CONVERT(v10_17 != 0<16>, bool, word32)
 	SCZO_23 = cond(ecx_22)
 	Mem24[ds:0x308<16>:word32] = ecx_22
 	bx_26 = ~bx
@@ -386,7 +386,7 @@ l0C00_0000:
 	C_38 = eax_37 != 0<32>
 	eax_39 = -eax_37
 	SZO_40 = cond(eax_39)
-	eax_41 = 0<32> - (eax_37 != 0<32>)
+	eax_41 = 0<32> - CONVERT(eax_37 != 0<32>, bool, word32)
 	SCZO_42 = cond(eax_41)
 	eax_43 = eax_41 + 1<32>
 	SZO_44 = cond(eax_41 + 1<32>)
