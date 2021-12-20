@@ -2229,12 +2229,12 @@ void xEventGroupCreate(ptr32 cpsr)
 //      MPU_xEventGroupWaitBits
 void xEventGroupWaitBits(ui32 * r0, ui32 r1, word32 r2, word32 r3, ptr32 cpsr, up32 dwArg00)
 {
-	Eq_n C_n = vTaskSuspendAll();
+	bool C_n = vTaskSuspendAll();
 	ui32 r5_n = r1;
 	ui32 r4_n = *r0;
 	if (r3 == 0x00)
 	{
-		r4_n = (word32) C_n + (r4_n + r1);
+		r4_n = r4_n + r1 + (word32) C_n;
 		if (r4_n != 0x00)
 		{
 l000017DC:
@@ -2265,7 +2265,7 @@ l000017E8:
 	ui32 r4_n = *r0;
 	if (r3 == 0x00)
 	{
-		r5_n = r1 + r4_n + C_n;
+		r5_n = r1 + r4_n + (word32) C_n;
 		if (r5_n == 0x00)
 			goto l0000185C;
 	}
@@ -2310,7 +2310,7 @@ void xEventGroupSetBits(struct Eq_n * r0, ui32 r1, ptr32 cpsr)
 			ui32 r2_n = r3_n & ~0xFF000000;
 			if ((r3_n & 0x04000000) == 0x00)
 			{
-				r2_n = r2_n + r1_n + ((r3_n & 0x04000000) < 0x00);
+				r2_n = r2_n + r1_n + (word32) ((r3_n & 0x04000000) < 0x00);
 				if (r2_n != 0x00)
 				{
 l000018B2:

@@ -740,7 +740,7 @@ void vParTestToggleLED(up32 r0, ptr32 cpsr)
 	{
 		byte * r3_n = g_ptr866C;
 		ui32 r0_n = 0x01 << r0;
-		uint32 r2_n = (uint32) (byte) r0_n + (word32) (*r3_n) + (r0 < 0x07);
+		uint32 r2_n = (uint32) (byte) r0_n + (word32) (*r3_n) + (word32) (r0 < 0x07);
 		if (r2_n == 0x00)
 			*r3_n = (byte) r2_n | *r3_n;
 		else
@@ -1565,7 +1565,7 @@ void GPIODirModeGet(struct Eq_n * r0, word32 r1)
 {
 	uint32 r1_n = (uint32) (0x01 << (byte) r1);
 	word32 r2_n = r0->dw0420;
-	up32 r4_n = (bool) C + (r0->dw0400 + r1_n);
+	up32 r4_n = r0->dw0400 + r1_n + (word32) C;
 }
 
 // 0000915C: void GPIOIntTypeSet(Register (ptr32 Eq_n) r0, Register ui32 r1, Register ui32 r2)
@@ -1590,9 +1590,9 @@ void GPIOIntTypeGet(struct Eq_n * r0, word32 r1)
 {
 	uint32 r1_n = (uint32) (0x01 << (byte) r1);
 	word32 r3_n = r0->dw0404;
-	up32 r2_n = (bool) C + (r0->dw0408 + r1_n);
+	up32 r2_n = r0->dw0408 + r1_n + (word32) C;
 	word32 r0_n = r0->dw040C;
-	up32 r3_n = (bool) (r2_n < 0x00) + (r3_n + r1_n);
+	up32 r3_n = r3_n + r1_n + (word32) (r2_n < 0x00);
 }
 
 // 000091C8: void GPIOPadConfigSet(Register (ptr32 Eq_n) r0, Register ui32 r1, Register ui32 r2, Register ui32 r3)
@@ -1643,11 +1643,11 @@ void GPIOPadConfigGet(struct Eq_n * r0, word32 r1, word32 * r2, word32 * r3)
 {
 	uint32 r1_n = (uint32) (0x01 << (byte) r1);
 	word32 r4_n = r0->dw0504;
-	up32 r5_n = (bool) C + (r0->dw0500 + r1_n);
+	up32 r5_n = r0->dw0500 + r1_n + (word32) C;
 	word32 r5_n = r0->dw0508;
-	up32 r4_n = (bool) (r5_n < 0x00) + (r4_n + r1_n);
+	up32 r4_n = r4_n + r1_n + (word32) (r5_n < 0x00);
 	word32 r4_n = r0->dw0518;
-	up32 r5_n = (bool) (r4_n < 0x00) + (r5_n + r1_n);
+	up32 r5_n = r5_n + r1_n + (word32) (r4_n < 0x00);
 	*r2 = 0x00;
 	word32 r5_n = 0x00;
 	word32 r4_n = r0->dw0510;
@@ -1658,8 +1658,8 @@ void GPIOPadConfigGet(struct Eq_n * r0, word32 r1, word32 * r2, word32 * r3)
 	word32 r2_n = r0->dw051C;
 	if (r1_n == 0x00)
 		r5_n = 0x00;
-	uint32 r1_n = r1_n + r4_n + (r1_n < 0x00);
-	uint32 r1_n = r1_n + r6_n + (r1_n < 0x00);
+	uint32 r1_n = r1_n + r4_n + (word32) (r1_n < 0x00);
+	uint32 r1_n = r1_n + r6_n + (word32) (r1_n < 0x00);
 	*r3 = r5_n;
 }
 
@@ -2429,14 +2429,14 @@ void SysCtlFlashSizeGet()
 // 00009B0C: void SysCtlPinPresent(Register word32 r0)
 void SysCtlPinPresent(word32 r0)
 {
-	(bool) C + (*g_ptr9B1C + r0) == 0x00;
+	*g_ptr9B1C + r0 + (word32) C == 0x00;
 }
 
 word32 * g_ptr9B1C = &g_dw400FE018; // 00009B1C
 // 00009B20: void SysCtlPeripheralPresent(Register uint32 r0)
 void SysCtlPeripheralPresent(uint32 r0)
 {
-	(r0 & ~0xF0000000) + *g_ptr9B38[r0 >> 28] + (r0 >> 28 < 0x00) == 0x00;
+	(r0 & ~0xF0000000) + *g_ptr9B38[r0 >> 28] + (word32) (r0 >> 28 < 0x00) == 0x00;
 }
 
 word32 * (* g_ptr9B38)[] = &g_aA554; // 00009B38

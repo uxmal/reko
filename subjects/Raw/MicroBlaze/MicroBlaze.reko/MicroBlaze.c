@@ -17617,7 +17617,7 @@ void fn00017F88(uint32 r5, ui32 r6)
 		do
 		{
 			r5 *= 0x02;
-			r30_n = r30_n * 0x02 + (r5 < 0x00);
+			r30_n = r30_n * 0x02 + (word32) (r5 < 0x00);
 			ui32 r31_n = r30_n - r6;
 			if (Test(GE,r31_n))
 				r30_n = r31_n;
@@ -17674,7 +17674,7 @@ Eq_n fn00018030(Eq_n r5, ui32 r6)
 			do
 			{
 				r5 *= 0x02;
-				r3_n = r3_n * 0x02 + (r5 < 0x00);
+				r3_n = r3_n * 0x02 + (word32) (r5 < 0x00);
 				Eq_n r31_n = r3_n - r6;
 				if (Test(GE,r31_n))
 					r3_n = r31_n;
@@ -25600,7 +25600,7 @@ ui32 fn0002E7D0(uint32 r5, ui32 r6)
 		while (true)
 		{
 			r5 *= 0x02;
-			r30_n = r30_n * 0x02 + (r5 < 0x00);
+			r30_n = r30_n * 0x02 + (word32) (r5 < 0x00);
 			ui32 r31_n = r30_n - r6;
 			if (Test(GE,r31_n))
 			{
@@ -25654,7 +25654,7 @@ ui32 fn0002E86C(uint32 r5, ui32 r6)
 		do
 		{
 			r5_n *= 0x02;
-			r3_n = r3_n * 0x02 + (r5_n < 0x00);
+			r3_n = r3_n * 0x02 + (word32) (r5_n < 0x00);
 			ui32 r31_n = r3_n - r6;
 			if (Test(GE,r31_n))
 				r3_n = r31_n;
@@ -25766,7 +25766,7 @@ ui32 fn0002E960(uint32 r5, ui32 r6)
 				while (true)
 				{
 					r5 *= 0x02;
-					r30_n = r30_n * 0x02 + (r5 < 0x00);
+					r30_n = r30_n * 0x02 + (word32) (r5 < 0x00);
 					ui32 r31_n = r30_n - r6;
 					if (Test(GE,r31_n))
 					{
@@ -25816,7 +25816,7 @@ void fn0002EA08(uint32 r5, ui32 r6)
 		do
 		{
 			r5 *= 0x02;
-			r3_n = r3_n * 0x02 + (r5 < 0x00);
+			r3_n = r3_n * 0x02 + (word32) (r5 < 0x00);
 			ui32 r31_n = r3_n - r6;
 			if (Test(GE,r31_n))
 				r3_n = r31_n;

@@ -341,7 +341,14 @@ namespace Reko.Analysis
             var oldSid = ssaIds[(Identifier)u];
             u = UseGrfConditionally(sidGrf, ConditionCode.ULT, false);
             if (c != null)
+            {
                 binUse.Right = new Conversion(u, u.DataType, c.DataType);
+            }
+            else if (binUse.Left.DataType.BitSize > u.DataType.BitSize)
+            {
+                var conv = new Conversion(u, u.DataType, PrimitiveType.CreateWord(binUse.Left.DataType.BitSize));
+                binUse.Right = conv;
+            }
             else
                 binUse.Right = u;
             oldSid.Uses.Remove(useStm!);
@@ -373,12 +380,12 @@ namespace Reko.Analysis
             var sidCarry = defStatements.First();
             if (sidCarry.Uses.Count != 1)
                 return assRolc;
-            if (!(sidCarry.DefExpression is ConditionOf cond))
+            if (sidCarry.DefExpression is not ConditionOf cond)
                 return assRolc;
-            if (!(cond.Expression is Identifier condId))
+            if (cond.Expression is not Identifier condId)
                 return assRolc;
             var sidOrigLo = ssaIds[condId];
-            if (!(sidOrigLo.DefExpression is BinaryExpression shift) || shift.Operator != Operator.Shl)
+            if (sidOrigLo.DefExpression is not BinaryExpression shift || shift.Operator != Operator.Shl)
                 return assRolc;
 
             var expShlSrc = shift.Left;

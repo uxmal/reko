@@ -286,7 +286,7 @@ l04BC:
 	fn114A(Mem49[0x006E<p16>:word16], r1_50, out r2_61, out r3_62)
 	word16 r3_68 = r3_62 + Mem49[0x0056<p16>:word16]
 	word16 r3_74
-	word16 r2_73 = fn126C(0x258<16>, r2_61 + (r3_68 <u 0<16>), r3_68, out r3_74)
+	word16 r2_73 = fn126C(0x258<16>, r2_61 + CONVERT(r3_68 <u 0<16>, bool, word16), r3_68, out r3_74)
 	branch r3_42 > 0<16> l04D8
 l04D6:
 	r3_74 = -r3_74
@@ -319,7 +319,7 @@ l0514:
 	fn114A(Mem143[0x006E<p16>:word16], r1_144, out r2_155, out r3_156)
 	word16 r3_162 = r3_156 + Mem143[0x005A<p16>:word16]
 	word16 r3_168
-	word16 r2_167 = fn126C(0x258<16>, r2_155 + (r3_162 <u 0<16>), r3_162, out r3_168)
+	word16 r2_167 = fn126C(0x258<16>, r2_155 + CONVERT(r3_162 <u 0<16>, bool, word16), r3_162, out r3_168)
 	branch r3_135 > 0<16> l0530
 l052E:
 	r3_168 = -r3_168
@@ -357,7 +357,7 @@ l0552:
 	fn114A(r0_7, r1_12, out r2_16, out r3_17)
 	word16 r3_24 = r3_17 + Mem5[0x0048<p16>:word16]
 	word16 r3_30
-	word16 r2_29 = fn126C(0x3C<16>, r2_16 + (r3_24 <u 0<16>), r3_24, out r3_30)
+	word16 r2_29 = fn126C(0x3C<16>, r2_16 + CONVERT(r3_24 <u 0<16>, bool, word16), r3_24, out r3_30)
 	branch r5_4 > 0<16> l056A
 l0568:
 	r3_30 = -r3_30
@@ -1313,7 +1313,7 @@ l1162:
 	branch (r2_24 & 0x8000<16>) != 0<16> l11A8
 l11A8:
 	word16 r3_43 = r3_106 + r1
-	r2_r3_490 = SEQ(r2_33 + (r3_43 <u 0<16>), r3_43) (alias)
+	r2_r3_490 = SEQ(r2_33 + CONVERT(r3_43 <u 0<16>, bool, word16), r3_43) (alias)
 l11AC:
 	r2_r3_488 = r2_r3_490 << 1<8>
 	r3_106 = SLICE(r2_r3_488, word16, 0)
@@ -1325,7 +1325,7 @@ l1166:
 	branch (r2_33 & 0x8000<16>) != 0<16> l11B2
 l11B2:
 	word16 r3_65 = r3_106 + r1
-	r2_r3_488 = SEQ(r2_55 + (r3_65 <u 0<16>), r3_65) (alias)
+	r2_r3_488 = SEQ(r2_55 + CONVERT(r3_65 <u 0<16>, bool, word16), r3_65) (alias)
 l11B6:
 	r2_r3_486 = r2_r3_488 << 1<8>
 	r3_106 = SLICE(r2_r3_486, word16, 0)
@@ -1337,7 +1337,7 @@ l116A:
 	branch (r2_55 & 0x8000<16>) != 0<16> l11BC
 l11BC:
 	word16 r3_87 = r3_106 + r1
-	r2_r3_486 = SEQ(r2_77 + (r3_87 <u 0<16>), r3_87) (alias)
+	r2_r3_486 = SEQ(r2_77 + CONVERT(r3_87 <u 0<16>, bool, word16), r3_87) (alias)
 l11C0:
 	r2_r3_484 = r2_r3_486 << 1<8>
 	r3_106 = SLICE(r2_r3_484, word16, 0)
@@ -1349,7 +1349,7 @@ l116E:
 	branch (r2_77 & 0x8000<16>) != 0<16> l11C6
 l11C6:
 	word16 r3_109 = r3_106 + r1
-	r2_r3_484 = SEQ(r2_103 + (r3_109 <u 0<16>), r3_109) (alias)
+	r2_r3_484 = SEQ(r2_103 + CONVERT(r3_109 <u 0<16>, bool, word16), r3_109) (alias)
 l11CA:
 	r2_r3_482 = r2_r3_484 << 1<8>
 	r3_106 = SLICE(r2_r3_482, word16, 0)
@@ -1361,7 +1361,7 @@ l1172:
 	branch (r2_103 & 0x8000<16>) != 0<16> l11D0
 l11D0:
 	word16 r3_131 = r3_106 + r1
-	r2_r3_482 = SEQ(r2_121 + (r3_131 <u 0<16>), r3_131) (alias)
+	r2_r3_482 = SEQ(r2_121 + CONVERT(r3_131 <u 0<16>, bool, word16), r3_131) (alias)
 l11D4:
 	r2_r3_480 = r2_r3_482 << 1<8>
 	r3_106 = SLICE(r2_r3_480, word16, 0)
@@ -1373,7 +1373,7 @@ l1176:
 	branch (r2_121 & 0x8000<16>) != 0<16> l11DA
 l11DA:
 	word16 r3_153 = r3_106 + r1
-	r2_r3_480 = SEQ(r2_143 + (r3_153 <u 0<16>), r3_153) (alias)
+	r2_r3_480 = SEQ(r2_143 + CONVERT(r3_153 <u 0<16>, bool, word16), r3_153) (alias)
 l11DE:
 	r2_r3_478 = r2_r3_480 << 1<8>
 	r3_106 = SLICE(r2_r3_478, word16, 0)
@@ -1385,7 +1385,7 @@ l117A:
 	branch (r2_143 & 0x8000<16>) != 0<16> l11E4
 l11E4:
 	word16 r3_175 = r3_106 + r1
-	r2_r3_478 = SEQ(r2_165 + (r3_175 <u 0<16>), r3_175) (alias)
+	r2_r3_478 = SEQ(r2_165 + CONVERT(r3_175 <u 0<16>, bool, word16), r3_175) (alias)
 l11E8:
 	r2_r3_476 = r2_r3_478 << 1<8>
 	r3_106 = SLICE(r2_r3_476, word16, 0)
@@ -1397,7 +1397,7 @@ l117E:
 	branch (r2_165 & 0x8000<16>) != 0<16> l11EE
 l11EE:
 	word16 r3_197 = r3_106 + r1
-	r2_r3_476 = SEQ(r2_187 + (r3_197 <u 0<16>), r3_197) (alias)
+	r2_r3_476 = SEQ(r2_187 + CONVERT(r3_197 <u 0<16>, bool, word16), r3_197) (alias)
 l11F2:
 	r2_r3_474 = r2_r3_476 << 1<8>
 	r3_106 = SLICE(r2_r3_474, word16, 0)
@@ -1409,7 +1409,7 @@ l1182:
 	branch (r2_187 & 0x8000<16>) != 0<16> l11F8
 l11F8:
 	word16 r3_219 = r3_106 + r1
-	r2_r3_474 = SEQ(r2_209 + (r3_219 <u 0<16>), r3_219) (alias)
+	r2_r3_474 = SEQ(r2_209 + CONVERT(r3_219 <u 0<16>, bool, word16), r3_219) (alias)
 l11FC:
 	r2_r3_472 = r2_r3_474 << 1<8>
 	r3_106 = SLICE(r2_r3_472, word16, 0)
@@ -1421,7 +1421,7 @@ l1186:
 	branch (r2_209 & 0x8000<16>) != 0<16> l1202
 l1202:
 	word16 r3_241 = r3_106 + r1
-	r2_r3_472 = SEQ(r2_231 + (r3_241 <u 0<16>), r3_241) (alias)
+	r2_r3_472 = SEQ(r2_231 + CONVERT(r3_241 <u 0<16>, bool, word16), r3_241) (alias)
 l1206:
 	r2_r3_470 = r2_r3_472 << 1<8>
 	r3_106 = SLICE(r2_r3_470, word16, 0)
@@ -1433,7 +1433,7 @@ l118A:
 	branch (r2_231 & 0x8000<16>) != 0<16> l120C
 l120C:
 	word16 r3_263 = r3_106 + r1
-	r2_r3_470 = SEQ(r2_253 + (r3_263 <u 0<16>), r3_263) (alias)
+	r2_r3_470 = SEQ(r2_253 + CONVERT(r3_263 <u 0<16>, bool, word16), r3_263) (alias)
 l1210:
 	r2_r3_468 = r2_r3_470 << 1<8>
 	r3_106 = SLICE(r2_r3_468, word16, 0)
@@ -1445,7 +1445,7 @@ l118E:
 	branch (r2_253 & 0x8000<16>) != 0<16> l1216
 l1216:
 	word16 r3_285 = r3_106 + r1
-	r2_r3_468 = SEQ(r2_275 + (r3_285 <u 0<16>), r3_285) (alias)
+	r2_r3_468 = SEQ(r2_275 + CONVERT(r3_285 <u 0<16>, bool, word16), r3_285) (alias)
 l121A:
 	r2_r3_466 = r2_r3_468 << 1<8>
 	r3_106 = SLICE(r2_r3_466, word16, 0)
@@ -1457,7 +1457,7 @@ l1192:
 	branch (r2_275 & 0x8000<16>) != 0<16> l1220
 l1220:
 	word16 r3_307 = r3_106 + r1
-	r2_r3_466 = SEQ(r2_297 + (r3_307 <u 0<16>), r3_307) (alias)
+	r2_r3_466 = SEQ(r2_297 + CONVERT(r3_307 <u 0<16>, bool, word16), r3_307) (alias)
 l1224:
 	r2_r3_464 = r2_r3_466 << 1<8>
 	r3_106 = SLICE(r2_r3_464, word16, 0)
@@ -1468,7 +1468,7 @@ l1196:
 	branch (r2_297 & 0x8000<16>) != 0<16> l122A
 l122A:
 	word16 r3_329 = r3_106 + r1
-	r2_r3_464 = SEQ(r2_319 + (r3_329 <u 0<16>), r3_329) (alias)
+	r2_r3_464 = SEQ(r2_319 + CONVERT(r3_329 <u 0<16>, bool, word16), r3_329) (alias)
 l122E:
 	ui32 v89_399 = r2_r3_464 << 1<8>
 	word16 r2_338 = SLICE(r2_r3_464, word16, 16)
@@ -1478,7 +1478,7 @@ l122E:
 	branch (r2_338 & 0x8000<16>) != 0<16> l1238
 l1234:
 	r3_336 = r3_336 + r1
-	r2_341 = r2_341 + (r3_336 <u 0<16>)
+	r2_341 = r2_341 + CONVERT(r3_336 <u 0<16>, bool, word16)
 	C_342 = SLICE(cond(r2_341), bool, 0) (alias)
 l1238:
 	r2Out = r2_341
@@ -1518,7 +1518,7 @@ l123E:
 l1252:
 	word16 r2_28
 	word16 r3_29
-	r2Out = -(r2_28 + fn114A(r0, r1, out r2_28, out r3_29))
+	r2Out = -(r2_28 + CONVERT(fn114A(r0, r1, out r2_28, out r3_29), bool, word16))
 	r3Out = -r3_29
 	return r0
 l1244:

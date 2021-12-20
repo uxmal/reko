@@ -212,7 +212,7 @@ namespace Reko.UnitTests.Arch.Microchip.PIC18
             Assert.IsNull(arch.GetRegister("invalidregistername"));
             PICMemoryDescriptor.ExecMode = PICExecMode.Extended;
             Assert.IsNull(arch.GetRegister("invalidregistername"));
-
+             
             arch = GetArch(PIC18EnhancedName);
             PICMemoryDescriptor.ExecMode = PICExecMode.Traditional;
             Assert.IsNull(arch.GetRegister("invalidregistername"));

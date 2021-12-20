@@ -122,7 +122,7 @@ Eq_n msp430_compute_modulator_bits(Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15)
 	Eq_n r12_n = fn00005B04(r14, r15, r12, r13);
 	word20 r15_n;
 	Eq_n r8_n = fn00005ADC(r14, r15, r12_n, 0x00, out r15_n) - r12;
-	Eq_n r9_n = r15_n - r13 - (r8_n < 0x00);
+	Eq_n r9_n = r15_n - r13 - (word20) (r8_n < 0x00);
 	if (v16_n != null)
 		*v16_n = (union Eq_n *) r12_n;
 	Eq_n r7_n = 0x00;
@@ -133,11 +133,11 @@ Eq_n msp430_compute_modulator_bits(Eq_n r12, Eq_n r13, Eq_n r14, Eq_n r15)
 	{
 		r10_n += r8_n;
 		uint20 r14_n = (r14 ^ ~0x00) + 0x01;
-		r11_n = r11_n + r9_n + (r10_n <u 0x00);
-		if (r11_n *20 0x02 + (r10_n *20 0x02 < 0x00) - ((r15 ^ ~0x00) + (r14_n < 0x00)) - (r10_n *20 0x02 - r14_n < 0x00) < 0x00)
+		r11_n = r11_n + r9_n + CONVERT(r10_n <u 0x00, bool, word20);
+		if (r11_n *20 0x02 + (word20) (r10_n *20 0x02 < 0x00) - ((r15 ^ ~0x00) + (word20) (r14_n < 0x00)) - (word20) (r10_n *20 0x02 - r14_n < 0x00) < 0x00)
 		{
 			r10_n += r14;
-			r11_n = r11_n + r15 + (r10_n <u 0x00);
+			r11_n = r11_n + r15 + CONVERT(r10_n <u 0x00, bool, word20);
 			Eq_n r15_n = 0x01;
 			Eq_n r14_n = r6_n;
 			if (r6_n != 0x00)
@@ -1715,13 +1715,13 @@ l57AE:
 						Eq_n v135_n = *r5_n;
 						r5_n += 0x02;
 						wLoc1C_n = v135_n;
-						wLoc1A_n = ~(0x00 - (v135_n *16 0x02 < 0x00));
+						wLoc1A_n = ~(0x00 - (word16) (v135_n *16 0x02 < 0x00));
 					}
 					if (wLoc1A_n < 0x00)
 					{
 						Eq_n v131_n = ~wLoc1C_n;
 						wLoc1C_n = (word24) v131_n + 1;
-						wLoc1A_n = ~wLoc1A_n + (v131_n <u 0x01);
+						wLoc1A_n = (word16) ~wLoc1A_n + (word16) (v131_n < 0x01);
 						bLoc24_n.u2 = 0x2D;
 					}
 					bLoc18_n.u1 = 0x0A;
@@ -1794,7 +1794,7 @@ l564A:
 						do
 						{
 							byte bLoc16_n = 0x00;
-							if (wLoc1A_n - (wLoc1C_n - wLoc14_n < 0x00) < 0x00)
+							if (wLoc1A_n - (word20) (wLoc1C_n - wLoc14_n < 0x00) < 0x00)
 								bLoc16_n = 0x01;
 							Eq_n r4_n;
 							Eq_n r14_n;
@@ -2172,13 +2172,13 @@ Eq_n fn00005B04(Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13)
 	if ((r13 & 0x8000) != 0x00)
 	{
 		r12 = (r12 ^ ~0x00) + 0x01;
-		r13 = (r13 ^ ~0x00) + (r12 < 0x00);
+		r13 = (r13 ^ ~0x00) + (word20) (r12 < 0x00);
 		r8_n |= 0x04;
 	}
 	if ((r11 & 0x8000) != 0x00)
 	{
 		r10 = (r10 ^ ~0x00) + 0x01;
-		r11 = (r11 ^ ~0x00) + (r10 < 0x00);
+		r11 = (r11 ^ ~0x00) + (word20) (r10 < 0x00);
 		r8_n |= 0x08;
 	}
 	Eq_n r8_n;
@@ -2206,19 +2206,19 @@ bool fn00005B4E(Eq_n r8, Eq_n r10, Eq_n r11, Eq_n r12, Eq_n r13, union Eq_n & r8
 	while (true)
 	{
 		r12 *= 0x02;
-		r13 = r13 *20 0x02 + (r12 < 0x00);
+		r13 = r13 *20 0x02 + (word20) (r12 < 0x00);
 		--r9_n;
-		Eq_n r8_n = r8 *20 0x02 + (r13 < 0x00);
+		Eq_n r8_n = r8 *20 0x02 + (word20) (r13 < 0x00);
 		bool C_n = (bool) cond(r9_n);
 		if (r9_n == 0x00)
 			break;
 		r8 = __rcr(r8_n, 0x01, C_n);
-		r14_n = r14_n *20 0x02 + (r8 < 0x00);
-		r15_n = r15_n *20 0x02 + (r14_n < 0x00);
+		r14_n = r14_n *20 0x02 + (word20) (r8 < 0x00);
+		r15_n = r15_n *20 0x02 + (word20) (r14_n < 0x00);
 		if (r15_n < r11 && (r15_n != r11 || r14_n < r10))
 		{
 			r14_n -= r10;
-			r15_n = r15_n - r11 - (r14_n < 0x00);
+			r15_n = r15_n - r11 - (word20) (r14_n < 0x00);
 		}
 	}
 	r8Out = r8_n;

@@ -6,7 +6,7 @@
 
 Eq_n g_t8000 = // 00008000
 	{
-		true
+		~0x45
 	};
 // 0800:0121: void __exit()
 // Called from:
@@ -26,7 +26,7 @@ void __exit()
 	do
 	{
 		al_n += ds_n->*si_n;
-		ah_n = (bool) (al_n < 0x00) + ah_n;
+		ah_n += (byte) (al_n < 0x00);
 		++si_n;
 		--cx_n;
 		word16 ax_n = SEQ(ah_n, al_n);
@@ -175,7 +175,7 @@ void _main(Eq_n cx, Eq_n dx, Eq_n bx, struct Eq_n * es, Eq_n ds)
 		_f0();
 		cup16 v14_n = (ss->*bp_n).wFFFFFFF8 + 0x01;
 		(ss->*bp_n).wFFFFFFF8 = v14_n;
-		Mem92[ss:bp_n + -6:word16] = Mem88[ss:bp_n + -6:word16] + (v14_n <u 0x00);
+		(ss->*bp_n).tFFFFFFFA = (word16) (ss->*bp_n).tFFFFFFFA + (word16) (v14_n < 0x00);
 	}
 	(ss->*sp_n).t0002.u0 = 0x01CE;
 	_printf(cx_n, dx_n, bx_n, ds, (ss->*sp_n).t0002);
@@ -556,7 +556,7 @@ Eq_n ___sbrk(struct Eq_n * ds, Eq_n wArg02, word16 wArg04)
 {
 	Eq_n ax_n;
 	word16 ax_n = wArg02 + Mem7[ds:0x9E:word16];
-	if ((bool) (ax_n < 0x0100) + ((bool) (ax_n < 0x00) + wArg04) == 0x00 && (word16) ax_n.u0 + 0x0100 < fp - 2)
+	if (wArg04 + (word16) (ax_n < 0x00) + (word16) (ax_n < 0x0100) == 0x00 && (word16) ax_n.u0 + 0x0100 < fp - 2)
 	{
 		Eq_n v13_n = ds->t009E;
 		ds->t009E = ax_n;
@@ -606,10 +606,10 @@ ci16 fn0800-065B(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02)
 	return ax_n;
 }
 
-// 0800:06A2: void _fseek(Register (ptr16 Eq_n) ds, Stack (memptr (ptr16 Eq_n) Eq_n) wArg02, Stack int32 dwArg04, Stack word16 wArg08)
+// 0800:06A2: void _fseek(Register (ptr16 Eq_n) ds, Stack (memptr (ptr16 Eq_n) Eq_n) wArg02, Stack ui32 dwArg04, Stack word16 wArg08)
 // Called from:
 //      _setvbuf
-void _fseek(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02, int32 dwArg04, word16 wArg08)
+void _fseek(struct Eq_n * ds, struct Eq_n Eq_n::* wArg02, ui32 dwArg04, word16 wArg08)
 {
 	if (_fflush(ds, wArg02) == 0x00)
 	{
@@ -803,7 +803,7 @@ Eq_n _read(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, cu16 wArg06)
 				if (al_n == 0x1A)
 				{
 					word16 dx_n;
-					_lseek(ds, wArg02, -(int32) cx_n, 0x02, out dx_n);
+					_lseek(ds, wArg02, SEQ(0x00 - (word16) (cx_n != 0x00), -cx_n), 0x02, out dx_n);
 					ds->a0482[wArg02] |= 0x0200;
 					goto l0800_nAA7;
 				}
@@ -936,13 +936,13 @@ Eq_n __write(struct Eq_n * ds, int16 wArg02, Eq_n wArg04, Eq_n wArg06)
 	return ax_n;
 }
 
-// 0800:0C28: Register Eq_n _lseek(Register (ptr16 Eq_n) ds, Stack int16 wArg02, Stack int32 dwArg04, Stack byte bArg08, Register out ptr16 dxOut)
+// 0800:0C28: Register Eq_n _lseek(Register (ptr16 Eq_n) ds, Stack int16 wArg02, Stack ui32 dwArg04, Stack byte bArg08, Register out ptr16 dxOut)
 // Called from:
 //      _fseek
 //      _read
 //      __write
 //      _tell
-Eq_n _lseek(struct Eq_n * ds, int16 wArg02, int32 dwArg04, byte bArg08, ptr16 & dxOut)
+Eq_n _lseek(struct Eq_n * ds, int16 wArg02, ui32 dwArg04, byte bArg08, ptr16 & dxOut)
 {
 	ptr16 wArg04 = (word16) dwArg04;
 	ds->a0482[wArg02] &= ~0x0200;
@@ -1005,7 +1005,7 @@ l0800_nCA4:
 				if (al_n < 0x0A)
 					al_n = al_n + 0x30;
 				else
-					al_n = (byte) ((word16) bArg02 + (al_n - 0x0A));
+					al_n = (byte) bArg02.u0 + (al_n - 0x0A);
 				ds->*di_n = al_n;
 				++di_n;
 				--cx_n;
@@ -1510,7 +1510,7 @@ l0800_n:
 							--di_n;
 							es_n->*di_n = bLoc8F_n;
 							Eq_n v40_n = wLoc8E_n - 0x01;
-							wLoc8E_n = v40_n + (v40_n <u 0x00);
+							wLoc8E_n = (word16) v40_n + (word16) (v40_n < 0x00);
 						}
 						cx_n = fn0800-108C(di_n, es_n);
 						es_di_n = &(es_n->*di_n);
@@ -2353,7 +2353,7 @@ word16 fn0800-196F(struct Eq_n * ss_bp, Eq_n ds, ptr16 & bpOut)
 ptr16 fn0800-1AEB(struct Eq_n * ss_bp)
 {
 	SEQ(0x0800, ss_bp->ptr0006)();
-	ss_bp->wFFFFFFD8 -= ss_bp->wFFFFFFD8 < 0x01;
+	ss_bp->wFFFFFFD8 -= (word16) (ss_bp->wFFFFFFD8 < 0x01);
 	return fn0800-1AFF(ss_bp);
 }
 
@@ -2632,7 +2632,7 @@ l0800_nD0F:
 							if (bLoc07_n != 0x00)
 							{
 								ax_n = -si_n;
-								dx_n = -di_n - (si_n != 0x00);
+								dx_n = -di_n - (word16) (si_n != 0x00);
 							}
 							goto l0800_nD1F;
 						}
@@ -2662,7 +2662,7 @@ l0800_nD0F:
 								Eq_n ax_n = SLICE(ax_si_n, word16, 16);
 								si_n = (word16) ax_si_n;
 								di_n = ax_n;
-							} while ((bool) (ax_n < 0x00) + (SLICE(dx_ax_n, byte, 16) + SLICE(dx_ax_n, byte, 24)) == 0x00);
+							} while (SLICE(dx_ax_n, byte, 16) + SLICE(dx_ax_n, byte, 24) + (byte) (ax_n < 0x00) == 0x00);
 							byte al_n = bLoc07_n + ~0x00;
 							bool C_n = SLICE(cond(al_n), bool, 1);
 							dx_n = SLICE(cond(C_n + ~0x00), bool, 1) + 0x7FFF;

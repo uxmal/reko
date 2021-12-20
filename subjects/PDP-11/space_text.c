@@ -719,7 +719,7 @@ l06B2:
 	uint16 r2_n = r2_n << 1;
 	if (r2_n == 0x00)
 		goto l06B2;
-	word16 r5_n = r5_n + (r2_n <u 0x00);
+	cui16 r5_n = (word16) r5_n + (word16) (r2_n < 0x00);
 	wchar_t r4_n = SEQ(SLICE(r0_n, byte, 8), 0x00) + r2_n;
 	if (r4_n < 0x00)
 	{
@@ -766,7 +766,7 @@ l06B0:
 		if ((r0_n & 0x8000) == 0x00)
 		{
 			r3_n += r5_n;
-			r2_n = (word16) r4_n + ((word16) r2_n + (r3_n < 0x00));
+			r2_n = (word16) r4_n + ((word16) r2_n + (word16) (r3_n < 0x00));
 		}
 	}
 	Eq_n r0_n = __rcl(r0_n, 1, C_n);
@@ -774,7 +774,7 @@ l06B0:
 	{
 l0700:
 		r3_n += r5_n;
-		r2_n = (word16) r4_n + ((word16) r2_n + (r3_n < 0x00));
+		r2_n = (word16) r4_n + ((word16) r2_n + (word16) (r3_n < 0x00));
 	}
 	do
 	{
@@ -791,7 +791,7 @@ l0700:
 	{
 l0724:
 		r3_n = __swab(SEQ(SLICE(__rcl(r3_n, 1, C_n), byte, 8), 0x00) | r2_n) + __rcl(r1_n, 1, (r3_n & 0x80) != 0x00);
-		r2_n = __swab(SEQ(SLICE(r2_n, byte, 8), 0x00)) + r4_n + (r3_n <u 0x00);
+		r2_n = __swab(SEQ(SLICE(r2_n, byte, 8), 0x00)) + r4_n + CONVERT(r3_n <u 0x00, bool, word16);
 l0738:
 		r4_n->ptr002A();
 		return;
@@ -843,7 +843,7 @@ void fn0754(<anonymous> * wArg00, Eq_n wArg02, Eq_n wArg04, cui16 wArg06, word16
 	{
 		word16 r2_n = SEQ(SLICE(wArg06 << 1, byte, 8), 0x00);
 		word16 r0_n = SEQ(SLICE(wArg02 << 1, byte, 8), 0x00);
-		wArg02 = v23_n + (wArg06 << 1 <u 0x00);
+		wArg02 = (word16) v23_n + (word16) (wArg06 << 1 < 0x00);
 		uint16 r4_n = wArg06 << 1 & ~r2_n;
 		uint16 r5_n = wArg02 << 1 & ~r0_n;
 		wchar_t r2_n = r2_n - r0_n;
@@ -866,7 +866,7 @@ l078E:
 l07AC:
 				cup16 r3_n = wArg08 - wArg04;
 				r0_n.u0 = 0x0202;
-				r4_r3_n = SEQ(r4_n - (r3_n < 0x00) - r5_n, r3_n);
+				r4_r3_n = SEQ(r4_n - (word16) (r3_n < 0x00) - r5_n, r3_n);
 				goto l07B6;
 			}
 			else
@@ -927,7 +927,7 @@ l07B6:
 l07C6:
 					cup16 r3_n = r3_n - wArg04;
 					C_n = true;
-					r4_r3_n = SEQ(r4_n - (r3_n < 0x00) - r5_n, r3_n);
+					r4_r3_n = SEQ(r4_n - (word16) (r3_n < 0x00) - r5_n, r3_n);
 l07CE:
 					r0_n = __rcl(r0_n, 1, C_n);
 					r4_r3_n = r4_r3_n;
@@ -1146,7 +1146,7 @@ void fn0B02(struct Eq_n * r3, <anonymous> ** r4, uint16 wArg00, word16 wArg02, w
 {
 	cu8 bArg05 = SLICE(wArg04, byte, 8);
 	cu8 bArg04 = (byte) wArg04;
-	word16 v6_n = (bool) (bArg05 - bArg04 < 0x00) + wArg00;
+	word16 v6_n = wArg00 + (word16) (bArg05 - bArg04 < 0x00);
 	r3->w00A4 = v6_n;
 	if (r3->b0074 == 0x00)
 	{
@@ -1193,7 +1193,7 @@ void fn0B60(struct Eq_n * r0, word16 * r3, word16 wArg00, struct Eq_n * wArg02, 
 	}
 	word16 * sp_n;
 	<anonymous> ** sp_n;
-	r3_n->w00A4 = (word16) ((bool) (bArg01 - bArg00 < 0x00) + wLoc04_n);
+	r3_n->w00A4 = wLoc04_n + (word16) (bArg01 - bArg00 < 0x00);
 	if (r3_n->b0074 != 0x00)
 	{
 		r3_n->w0052 = wArg00;
@@ -1591,7 +1591,7 @@ void fn0F48(struct Eq_n * r5)
 		{
 			word16 r0_n = __rcl(r0_n, 1, (bool) cond(r1_n << 1)) + Mem0[v13_n + 0x00:word16];
 			uint16 r1_n = (r1_n << 1) + *v15_n;
-			ci16 r0_n = (bool) (r1_n < 0x00) + r0_n + *v15_n;
+			ci16 r0_n = r0_n + (word16) (r1_n < 0x00) + *v15_n;
 			r0_r1_n = SEQ(r0_n, r1_n);
 			if (r0_n <= 0x00)
 				r0_r1_n = SEQ(r0_n + 0x8000, r1_n);
@@ -2380,7 +2380,7 @@ void fn172C(struct Eq_n * r0, word16 r2)
 		else
 		{
 			r1_n += r2_n;
-			r4_n = r4_n + (r1_n <u 0x00) + r5_n;
+			r4_n = (word16) r4_n + (word16) (r1_n < 0x00) + r5_n;
 		}
 		r5_r2_n <<= 0x01;
 	}
