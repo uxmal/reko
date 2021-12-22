@@ -628,7 +628,7 @@ void * fn00000000000164D0(void * a0, Eq_n a1)
 	{
 		uint64 a0_n = (uint64) read((int32) a0_n, a0, (size_t) (word64) (word32) a1);
 		a0_n = (uint64) close((int32) a0_n);
-		a0_n = (int64) (0x00 - (word32) ((word64) ((int64) ((word32) (a0_n - a1)) != 0x00)));
+		a0_n = (int64) (0x00 - (word32) ((int64) ((word32) (a0_n - a1)) != 0x00));
 	}
 	else
 		a0_n = (void *) -1;

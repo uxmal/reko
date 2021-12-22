@@ -128,7 +128,7 @@ struct Eq_n * fn00001C40(struct Eq_n * a5, byte bArg04, struct Eq_n * dwArg08, u
 	{
 		*dwArg08->ptr0000 = bArg07_n;
 		byte * a0_n = dwArg08->ptr0000;
-		d0_n = (int32) (int16) (uint32) *a0_n;
+		d0_n = (int32) (int16) *a0_n;
 		dwArg08->ptr0000 = a0_n + 1;
 	}
 	else

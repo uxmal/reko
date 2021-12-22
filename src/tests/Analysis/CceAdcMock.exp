@@ -7,7 +7,7 @@ AdcMock_entry:
 	// succ:  l1
 l1:
 	r0_2 = Mem0[0x1001000<32>:word32]
-	r0_7 = r0_2 * 2<32> + (r1 <u 2<i32>)
+	r0_7 = r0_2 * 2<32> + CONVERT(r1 <u 2<i32>, bool, word32)
 	Mem8[0x1001004<32>:word32] = r0_7
 	return
 	// succ:  AdcMock_exit

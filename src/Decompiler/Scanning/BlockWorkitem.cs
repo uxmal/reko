@@ -723,7 +723,7 @@ namespace Reko.Scanning
                         stackReg.DataType,
                         stackReg,
                         Constant.Create(
-                            PrimitiveType.CreateWord(sizeOfRetAddrOnStack * DataType.BitsPerByte),
+                            PrimitiveType.Create(Domain.SignedInt, stackReg.DataType.BitSize),
                             sizeOfRetAddrOnStack));
                 (newVal, _) = newVal.Accept(eval);
                 SetValue(stackReg, newVal);

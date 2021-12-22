@@ -74,8 +74,8 @@ word32 verify(byte rdi[])
 		uint64 rax_n;
 		if (rdi[(int64) dwLoc0C_n] == 0x00)
 			break;
-		byte al_n = (byte) (dwLoc0C_n ^ (word32) ((uint64) rdi[(int64) dwLoc0C_n]));
-		if (g_a601020[(int64) dwLoc0C_n] != ((byte) ((word32) ((uint64) al_n) >> 0x08 - (((byte) dwLoc0C_n ^ 0x09) & 0x03)) | (byte) ((word32) ((uint64) al_n)) << (((byte) dwLoc0C_n ^ 0x09) & 0x03)) + 0x08)
+		ui8 al_n = (byte) dwLoc0C_n ^ rdi[(int64) dwLoc0C_n];
+		if (g_a601020[(int64) dwLoc0C_n] != ((byte) ((word32) al_n >> 0x08 - (((byte) dwLoc0C_n ^ 0x09) & 0x03)) | al_n << (((byte) dwLoc0C_n ^ 0x09) & 0x03)) + 0x08)
 		{
 			rax_n = 0x00;
 			return (word32) rax_n;

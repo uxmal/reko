@@ -328,7 +328,7 @@ void fn0488()
 	fn114A(g_t006E, r1_n, out r2_n, out r3_n);
 	wchar_t r3_n = r3_n + g_w0056;
 	word16 r3_n;
-	wchar_t r2_n = fn126C(600, (bool) (r3_n < 0x00) + r2_n, r3_n, out r3_n);
+	wchar_t r2_n = fn126C(600, r2_n + (word16) (r3_n < 0x00), r3_n, out r3_n);
 	if (r3_n <= 0x00)
 		r3_n = -r3_n;
 	g_w005C += r3_n;
@@ -353,7 +353,7 @@ void fn0488()
 	fn114A(g_t006E, r1_n, out r2_n, out r3_n);
 	wchar_t r3_n = r3_n + g_w005A;
 	word16 r3_n;
-	wchar_t r2_n = fn126C(600, (bool) (r3_n < 0x00) + r2_n, r3_n, out r3_n);
+	wchar_t r2_n = fn126C(600, r2_n + (word16) (r3_n < 0x00), r3_n, out r3_n);
 	if (r3_n <= 0x00)
 		r3_n = -r3_n;
 	g_w005E += r3_n;
@@ -377,7 +377,7 @@ void fn053A()
 	fn114A(r0_n, r1_n, out r2_n, out r3_n);
 	wchar_t r3_n = r3_n + g_w0048;
 	word16 r3_n;
-	wchar_t r2_n = fn126C(0x3C, (bool) (r3_n < 0x00) + r2_n, r3_n, out r3_n);
+	wchar_t r2_n = fn126C(0x3C, r2_n + (word16) (r3_n < 0x00), r3_n, out r3_n);
 	if (r5_n <= 0x00)
 		r3_n = -r3_n;
 	g_w0046 += r3_n;
@@ -1213,7 +1213,7 @@ l119E:
 			goto l11AC;
 	}
 	word16 r3_n = r3_n + r1;
-	r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
+	r2_r3_n = SEQ((word16) r2_n + (word16) (r3_n < 0x00), r3_n);
 l11AC:
 	r2_r3_n = r2_r3_n << 0x01;
 	r3_n = (word16) r2_r3_n;
@@ -1301,7 +1301,7 @@ l122E:
 														if ((r2_n & 0x8000) == 0x00)
 														{
 															r3_n += r1;
-															r2_n += r3_n <u 0x00;
+															r2_n = (word16) r2_n + (word16) (r3_n < 0x00);
 															C_n = (bool) cond(r2_n);
 														}
 														r2Out = r2_n;
@@ -1310,67 +1310,67 @@ l122E:
 													}
 l122A:
 													word16 r3_n = r3_n + r1;
-													r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
+													r2_r3_n = SEQ((word16) r2_n + (word16) (r3_n < 0x00), r3_n);
 													goto l122E;
 												}
 l1220:
 												word16 r3_n = r3_n + r1;
-												r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
+												r2_r3_n = SEQ((word16) r2_n + (word16) (r3_n < 0x00), r3_n);
 												goto l1224;
 											}
 l1216:
 											word16 r3_n = r3_n + r1;
-											r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
+											r2_r3_n = SEQ((word16) r2_n + (word16) (r3_n < 0x00), r3_n);
 											goto l121A;
 										}
 l120C:
 										word16 r3_n = r3_n + r1;
-										r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
+										r2_r3_n = SEQ((word16) r2_n + (word16) (r3_n < 0x00), r3_n);
 										goto l1210;
 									}
 l1202:
 									word16 r3_n = r3_n + r1;
-									r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
+									r2_r3_n = SEQ((word16) r2_n + (word16) (r3_n < 0x00), r3_n);
 									goto l1206;
 								}
 l11F8:
 								word16 r3_n = r3_n + r1;
-								r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
+								r2_r3_n = SEQ((word16) r2_n + (word16) (r3_n < 0x00), r3_n);
 								goto l11FC;
 							}
 l11EE:
 							word16 r3_n = r3_n + r1;
-							r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
+							r2_r3_n = SEQ((word16) r2_n + (word16) (r3_n < 0x00), r3_n);
 							goto l11F2;
 						}
 l11E4:
 						word16 r3_n = r3_n + r1;
-						r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
+						r2_r3_n = SEQ((word16) r2_n + (word16) (r3_n < 0x00), r3_n);
 						goto l11E8;
 					}
 l11DA:
 					word16 r3_n = r3_n + r1;
-					r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
+					r2_r3_n = SEQ((word16) r2_n + (word16) (r3_n < 0x00), r3_n);
 					goto l11DE;
 				}
 l11D0:
 				word16 r3_n = r3_n + r1;
-				r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
+				r2_r3_n = SEQ((word16) r2_n + (word16) (r3_n < 0x00), r3_n);
 				goto l11D4;
 			}
 l11C6:
 			word16 r3_n = r3_n + r1;
-			r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
+			r2_r3_n = SEQ((word16) r2_n + (word16) (r3_n < 0x00), r3_n);
 			goto l11CA;
 		}
 l11BC:
 		word16 r3_n = r3_n + r1;
-		r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
+		r2_r3_n = SEQ((word16) r2_n + (word16) (r3_n < 0x00), r3_n);
 		goto l11C0;
 	}
 l11B2:
 	word16 r3_n = r3_n + r1;
-	r2_r3_n = SEQ(r2_n + (r3_n <u 0x00), r3_n);
+	r2_r3_n = SEQ((word16) r2_n + (word16) (r3_n < 0x00), r3_n);
 	goto l11B6;
 }
 
@@ -1403,7 +1403,7 @@ l1246:
 	}
 	word16 r2_n;
 	word16 r3_n;
-	r2Out = -((bool) fn114A(r0, r1, out r2_n, out r3_n) + r2_n);
+	r2Out = -(r2_n + (word16) fn114A(r0, r1, out r2_n, out r3_n));
 	r3Out = -r3_n;
 	return r0;
 }

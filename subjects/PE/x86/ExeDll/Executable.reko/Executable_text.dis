@@ -483,7 +483,7 @@ l00401630:
 		uses: Stack +0010:dwArg04
 		defs: eax:eax_30
 l00401642:
-	return ~(0<32> - (eax_23 != 0<32>)) & dwArg04
+	return ~(0<32> - CONVERT(eax_23 != 0<32>, bool, word32)) & dwArg04
 fn00401613_exit:
 
 

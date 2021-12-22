@@ -46,6 +46,22 @@ namespace Reko.Evaluation
                         : new Slice(slice.DataType, conv.Expression, 0);
                     return true;
                 }
+                if (CanSliceConversion(slice, conv))
+                {
+                    this.result = new Conversion(
+                        conv.Expression, conv.SourceDataType, slice.DataType);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static bool CanSliceConversion(Slice slice, Conversion conv)
+        {
+            if (IsSliceable(slice.DataType) &&
+                IsSliceable(conv.DataType))
+            {
+                return true;
             }
             return false;
         }

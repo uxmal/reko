@@ -138,8 +138,8 @@ l00000000004005A1:
 	word64 rax_117
 	branch Mem12[rdi + CONVERT(dwLoc0C_130, word32, int64):byte] != 0<8> l0000000000400531
 l0000000000400531:
-	byte al_42 = SLICE(dwLoc0C_130 ^ SLICE(CONVERT(Mem12[rdi + CONVERT(dwLoc0C_130, word32, int64):byte], byte, uint64), word32, 0), byte, 0)
-	branch Mem103[CONVERT(dwLoc0C_130, word32, int64) + 0x601020<64>:byte] == (SLICE(SLICE(CONVERT(al_42, byte, uint64), word32, 0) >> 8<8> - ((SLICE(dwLoc0C_130, byte, 0) ^ 9<8>) & 3<8>), byte, 0) | SLICE(SLICE(CONVERT(al_42, byte, uint64), word32, 0), byte, 0) << ((SLICE(dwLoc0C_130, byte, 0) ^ 9<8>) & 3<8>)) + 8<8> l000000000040059D
+	byte al_42 = SLICE(dwLoc0C_130, byte, 0) ^ Mem12[rdi + CONVERT(dwLoc0C_130, word32, int64):byte]
+	branch Mem103[CONVERT(dwLoc0C_130, word32, int64) + 0x601020<64>:byte] == (SLICE(CONVERT(al_42, byte, word32) >> 8<8> - ((SLICE(dwLoc0C_130, byte, 0) ^ 9<8>) & 3<8>), byte, 0) | al_42 << ((SLICE(dwLoc0C_130, byte, 0) ^ 9<8>) & 3<8>)) + 8<8> l000000000040059D
 l000000000040059D:
 	dwLoc0C_130 = dwLoc0C_130 + 1<32>
 l0000000000400596:

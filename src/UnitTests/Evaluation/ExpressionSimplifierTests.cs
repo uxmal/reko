@@ -473,6 +473,24 @@ namespace Reko.UnitTests.Evaluation
             Assert.AreEqual("!foo_1", expr.Accept(simplifier).Item1.ToString());
         }
 
+        [Test(Description = "Logical Not Sequence with explicit conversion from boolean to word")]
+        public void Exs_ReduceArithmeticConversionToLogicalNot()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.IAdd(
+                m.ISub(
+                    m.Word32(0),
+                    m.Convert(
+                        m.Ne0(foo),
+                        PrimitiveType.Bool,
+                        PrimitiveType.Word32)),
+                m.Word32(1));
+
+            var result = expr.Accept(simplifier).Item1;
+
+            Assert.AreEqual("!foo_1", result.ToString());
+        }
+
         [Test]
         public void Exs_ZeroExtension()
         {
@@ -813,6 +831,20 @@ namespace Reko.UnitTests.Evaluation
                 m.Word16(0x1234), m.Word16(0x0002));
             var (result, changed) = expr.Accept(simplifier);
             Assert.AreEqual("0x12345678123400011234567812340002<128>", result.ToString());
+            Assert.IsTrue(changed);
+        }
+
+        [Test]
+        public void Exs_SliceTargetConvertType()
+        {
+            Given_ExpressionSimplifier();
+            var conv = m.Convert(
+                m.Eq(foo, m.Word32(1)),
+                PrimitiveType.Bool, PrimitiveType.Word32);
+            var expr = m.Slice(conv, PrimitiveType.Byte);
+            var (result, changed) = expr.Accept(simplifier);
+            Assert.AreEqual(
+                "CONVERT(foo_1 == 1<32>, bool, byte)", result.ToString());
             Assert.IsTrue(changed);
         }
     }

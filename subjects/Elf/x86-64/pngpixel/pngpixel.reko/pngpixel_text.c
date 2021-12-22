@@ -87,19 +87,19 @@ l0000000000400EC1:
 		case 0x0F:
 			goto l0000000000400EC1;
 		case 0x01:
-			rax_n = (uint64) ((word32) (uint64) v16_n->b0000 >> 0x07 - ((byte) eax_n & 0x07) & 0x01);
+			rax_n = (uint64) ((word32) v16_n->b0000 >> 0x07 - ((byte) eax_n & 0x07) & 0x01);
 			break;
 		case 0x02:
-			rax_n = (uint64) ((word32) (uint64) v16_n->b0000 >> 0x06 - ((byte) eax_n & 0x07) & 0x03);
+			rax_n = (uint64) ((word32) v16_n->b0000 >> 0x06 - ((byte) eax_n & 0x07) & 0x03);
 			break;
 		case 0x04:
-			rax_n = (uint64) ((word32) (uint64) v16_n->b0000 >> 0x04 - ((byte) eax_n & 0x07) & 0x0F);
+			rax_n = (uint64) ((word32) v16_n->b0000 >> 0x04 - ((byte) eax_n & 0x07) & 0x0F);
 			break;
 		case 0x08:
 			rax_n = (uint64) v16_n->b0000;
 			break;
 		case 0x10:
-			rax_n = (uint64) ((word32) (uint64) v16_n->b0001 + ((word32) ((uint64) v16_n->b0000) << 0x08));
+			rax_n = (uint64) ((word32) v16_n->b0001 + ((word32) v16_n->b0000 << 0x08));
 			break;
 		}
 		return (word32) rax_n;
@@ -115,13 +115,13 @@ void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 	word64 rcx_n;
 	word64 rax_n;
 	png_get_bit_depth();
-	Eq_n eax_n = (word32) (uint64) (byte) rax_n;
+	Eq_n eax_n = (word32) (byte) rax_n;
 	word64 rdx_n;
 	word64 rcx_n;
 	word64 rax_n;
 	png_get_color_type();
 	word32 ecx_n = (word32) rcx_n;
-	up32 eax_n = (word32) (uint64) (byte) rax_n;
+	up32 eax_n = (word32) (byte) rax_n;
 	if (eax_n <= 0x06)
 	{
 		switch (g_a401958[(uint64) eax_n])
@@ -147,13 +147,13 @@ void print_pixel(uint32 ecx, word64 rdx, word64 rsi, word64 rdi, struct Eq_n * f
 				{
 					int32 esi_n;
 					if (eax_n < 0x00)
-						esi_n = (word32) (uint64) null[(uint64) eax_n];
+						esi_n = (word32) null[(uint64) eax_n];
 					else
 						esi_n = 0xFF;
-					printf("INDEXED %u = %d %d %d %d\n", eax_n, (int32) (uint64) null[(uint64) eax_n].b0000, (int32) (uint64) ((Eq_n[]) 0x01)[(uint64) eax_n].b0000, (word32) (uint64) ((Eq_n[]) 0x02)[(uint64) eax_n].b0000, esi_n);
+					printf("INDEXED %u = %d %d %d %d\n", eax_n, (int32) null[(uint64) eax_n].b0000, (int32) ((Eq_n[]) 0x01)[(uint64) eax_n].b0000, (int32) ((Eq_n[]) 0x02)[(uint64) eax_n].b0000, esi_n);
 				}
 				else
-					printf("INDEXED %u = %d %d %d\n", eax_n, (int32) (uint64) null[(uint64) eax_n].b0000, (int32) (uint64) ((Eq_n[]) 0x01)[(uint64) eax_n].b0000, (word32) (uint64) ((Eq_n[]) 0x02)[(uint64) eax_n]);
+					printf("INDEXED %u = %d %d %d\n", eax_n, (int32) null[(uint64) eax_n].b0000, (int32) ((Eq_n[]) 0x01)[(uint64) eax_n].b0000, (int32) ((Eq_n[]) 0x02)[(uint64) eax_n]);
 			}
 			else
 				printf("INDEXED %u = invalid index\n", eax_n);
@@ -268,7 +268,7 @@ void main(struct Eq_n * rsi, word32 edi, struct Eq_n * fs)
 						goto l000000000040166F;
 					int32 eax_n;
 					dwLoc60_n = (dwLoc68_n & 0x01) << 0x03 - (byte) (dwLoc68_n + 0x01 >> 0x01) & 0x07;
-					dwLoc64_n = (word32) (uint64) ((dwLoc68_n & 0x01) == 0x00) << 0x03 - (byte) (dwLoc68_n >> 0x01) & 0x07;
+					dwLoc64_n = (word32) ((dwLoc68_n & 0x01) == 0x00) << 0x03 - (byte) (dwLoc68_n >> 0x01) & 0x07;
 					dwLoc58_n = 0x01 << (byte) (0x07 - dwLoc68_n >> 0x01);
 					if (dwLoc68_n > 0x02)
 						eax_n = 0x08 >> (byte) (dwLoc68_n - 0x01 >> 0x01);

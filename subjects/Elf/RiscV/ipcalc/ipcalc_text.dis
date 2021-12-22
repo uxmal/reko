@@ -725,7 +725,7 @@ l0000000000016544:
 l0000000000016500:
 	word64 a0_25 = CONVERT(read(SLICE(a0_19, int32, 0), a0, SLICE(CONVERT(SLICE(a1, word32, 0), word32, word64), size_t, 0)), ssize_t, uint64)
 	a0_28 = CONVERT(close(SLICE(a0_19, int32, 0)), int32, uint64)
-	a0_20 = CONVERT(0<32> - SLICE(CONVERT(CONVERT(SLICE(a0_25 - a1, word32, 0), word32, int64) != 0<64>, bool, word64), word32, 0), word32, int64)
+	a0_20 = CONVERT(0<32> - CONVERT(CONVERT(SLICE(a0_25 - a1, word32, 0), word32, int64) != 0<64>, bool, word32), word32, int64)
 l000000000001652C:
 	return a0_20
 fn00000000000164D0_exit:

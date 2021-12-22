@@ -28,7 +28,7 @@ using System.Numerics;
 namespace Reko.Evaluation
 {
     /// <summary>
-    /// Rule that matches (0 - (EXPRESSION == 0) + 1) and generates (!EXPRESSION).
+    /// Rule that matches (0 - (EXPRESSION != 0) + 1) and generates (!EXPRESSION).
     /// This is a solution for a very specific sequence of instructions.
     /// 
     /// Example x86 assembler:
@@ -60,10 +60,9 @@ namespace Reko.Evaluation
 
             if (!leftExpression.Left.IsZero)
                 return false;
-
-            if (leftExpression.Right is not BinaryExpression middleExpression || middleExpression.Operator != Operator.Ne)
+            var middleExpression = ExtractComparison(leftExpression.Right);
+            if (middleExpression is null)
                 return false;
-
             if (!middleExpression.Right.IsZero)
                 return false;
 
@@ -79,6 +78,25 @@ namespace Reko.Evaluation
         public Expression Transform()
         {
             return new UnaryExpression(Operator.Not, dataType!, expression!);
+        }
+
+        private static BinaryExpression? ExtractComparison(Expression e)
+        {
+            var bin = e as BinaryExpression;
+            if (bin is null)
+            {
+                if (e is not Conversion conv)
+                    return null;
+                // Accept only conversion to word or integer
+                if (!conv.DataType.IsIntegral && !conv.DataType.IsWord)
+                    return null;
+                bin = conv.Expression as BinaryExpression;
+                if (bin is null)
+                    return null;
+            }
+            if (bin.Operator != Operator.Ne)
+                return null;
+            return bin;
         }
     }
 }

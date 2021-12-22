@@ -360,7 +360,7 @@ ui32 fn00401613(ui32 dwArg04)
 		crt_atexit();
 	else
 		register_onexit_function();
-	return ~(0x00 - (eax_n != 0x00)) & dwArg04;
+	return ~(0x00 - (word32) (eax_n != 0x00)) & dwArg04;
 }
 
 // 0040164E: void fn0040164E(Stack ui32 dwArg04)
