@@ -1622,7 +1622,7 @@ l000038F4:
 l000035C2:
 						r10_n = r6_n->ptr0008;
 						*((word32) r4_n + 0x0078) = r8_n;
-						*((word32) r10_n + 28) = (byte) (word32) (((word32) (r8_n != 0x00) | (word32) (*((word32) r10_n + 28))) != 0x00);
+						*((word32) r10_n + 28) = (byte) (((word32) (r8_n != 0x00) | (word32) (*((word32) r10_n + 28))) != 0x00);
 						if (r1_n != 0x00)
 						{
 							word32 lr_n;
@@ -2607,7 +2607,7 @@ l0000450A:
 					{
 						r10_n->dw0000 = (word32) r9_n + (r10_n->dw0000 - r11_n);
 						r7_n[r9_n] = r9_n;
-						r10_n->bFFFFFFFC = (byte) (word32) (r10_n->dw0000 < r2);
+						r10_n->bFFFFFFFC = (byte) (r10_n->dw0000 < r2);
 					}
 				}
 				r12_n = (word32) r12_n + 1;

@@ -121,15 +121,15 @@ l0000000000400E2D:
 	word64 rax_107
 	switch (ecx) { l0000000000400EC1 l0000000000400E3A l0000000000400E5A l0000000000400EC1 l0000000000400E77 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400E94 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EC1 l0000000000400EA0 }
 l0000000000400EA0:
-	rax_107 = CONVERT(SLICE(CONVERT(Mem70[v16_67 + 1<64>:byte], byte, uint64), word32, 0) + (SLICE(CONVERT(Mem70[v16_67:byte], byte, uint64), word32, 0) << 8<32>), word32, uint64)
+	rax_107 = CONVERT(CONVERT(Mem70[v16_67 + 1<64>:byte], byte, word32) + (CONVERT(Mem70[v16_67:byte], byte, word32) << 8<32>), word32, uint64)
 l0000000000400E94:
 	rax_107 = CONVERT(Mem70[v16_67:byte], byte, uint64)
 l0000000000400E77:
-	rax_107 = CONVERT(SLICE(CONVERT(Mem70[v16_67:byte], byte, uint64), word32, 0) >> 4<8> - (SLICE(eax_52, byte, 0) & 7<8>) & 0xF<32>, word32, uint64)
+	rax_107 = CONVERT(CONVERT(Mem70[v16_67:byte], byte, word32) >> 4<8> - (SLICE(eax_52, byte, 0) & 7<8>) & 0xF<32>, word32, uint64)
 l0000000000400E5A:
-	rax_107 = CONVERT(SLICE(CONVERT(Mem70[v16_67:byte], byte, uint64), word32, 0) >> 6<8> - (SLICE(eax_52, byte, 0) & 7<8>) & 3<32>, word32, uint64)
+	rax_107 = CONVERT(CONVERT(Mem70[v16_67:byte], byte, word32) >> 6<8> - (SLICE(eax_52, byte, 0) & 7<8>) & 3<32>, word32, uint64)
 l0000000000400E3A:
-	rax_107 = CONVERT(SLICE(CONVERT(Mem70[v16_67:byte], byte, uint64), word32, 0) >> 7<8> - (SLICE(eax_52, byte, 0) & 7<8>) & 1<32>, word32, uint64)
+	rax_107 = CONVERT(CONVERT(Mem70[v16_67:byte], byte, word32) >> 7<8> - (SLICE(eax_52, byte, 0) & 7<8>) & 1<32>, word32, uint64)
 l0000000000400EE7:
 	return SLICE(rax_107, word32, 0)
 component_exit:
@@ -155,7 +155,7 @@ l0000000000400EE9:
 	call png_get_bit_depth (retsize: 8;)
 		uses: ecx:ecx,rax:rdi,rdi:rdi,rdx:rsi,rsi:rsi,Stack +000C:ecx,Stack +0010:rdx,Stack +0018:rsi,Stack +0020:rdi,Stack +0050:rax_27
 		defs: rax:rax_42,rcx:rcx_41
-	word32 eax_49 = SLICE(CONVERT(SLICE(rax_42, byte, 0), byte, uint64), word32, 0)
+	word32 eax_49 = CONVERT(SLICE(rax_42, byte, 0), byte, word32)
 	word64 rdx_58
 	word64 rcx_59
 	word64 rax_60
@@ -163,7 +163,7 @@ l0000000000400EE9:
 		uses: ecx:SLICE(rcx_41, word32, 0),rax:rdi,rdi:rdi,rdx:rsi,rsi:rsi,Stack +0038:eax_49
 		defs: rax:rax_60,rcx:rcx_59,rdx:rdx_58
 	word32 ecx_579 = SLICE(rcx_59, word32, 0)
-	word32 eax_67 = SLICE(CONVERT(SLICE(rax_60, byte, 0), byte, uint64), word32, 0)
+	word32 eax_67 = CONVERT(SLICE(rax_60, byte, 0), byte, word32)
 	branch eax_67 >u 6<32> l00000000004012C9
 l0000000000400F4C:
 	switch (Mem50[CONVERT(eax_67, word32, uint64) * 8<64> + 0x401958<64>:word32]) { l0000000000400F58 l00000000004012C9 l0000000000401155 l0000000000400F8D l00000000004011D2 l00000000004012C9 l000000000040122A }
@@ -195,16 +195,16 @@ l0000000000401031:
 l000000000040103C:
 	branch true l00000000004010D1
 l00000000004010D1:
-	printf(0x4018D3<u64>, eax_275, SLICE(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, uint64), int32, 0), SLICE(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<64>:byte], byte, uint64), int32, 0), SLICE(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<64>:byte], byte, uint64), word32, 0))
+	printf(0x4018D3<u64>, eax_275, CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<64>:byte], byte, int32))
 l0000000000401049:
 	word32 esi_463
 	branch eax_275 >=u 0<32> l0000000000401063
 l0000000000401063:
 	esi_463 = 0xFF<32> (alias)
 l0000000000401051:
-	esi_463 = SLICE(CONVERT(Mem321[CONVERT(eax_275, word32, uint64):byte], byte, uint64), word32, 0) (alias)
+	esi_463 = CONVERT(Mem321[CONVERT(eax_275, word32, uint64):byte], byte, word32) (alias)
 l0000000000401068:
-	printf(0x4018B9<u64>, eax_275, SLICE(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, uint64), int32, 0), SLICE(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<64>:byte], byte, uint64), int32, 0), SLICE(CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<64>:byte], byte, uint64), word32, 0), esi_463)
+	printf(0x4018B9<u64>, eax_275, CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 1<64>:byte], byte, int32), CONVERT(Mem321[CONVERT(eax_275, word32, uint64) * 3<64> + 2<64>:byte], byte, int32), esi_463)
 l0000000000401150:
 l0000000000401155:
 	printf(0x401906<u64>, component(eax_49, 0<32>, ecx, rdx, 3<32>), component(eax_49, 1<32>, ecx, rdx, 3<32>), component(eax_49, 2<32>, ecx, rdx, 3<32>))
@@ -353,7 +353,7 @@ l000000000040166E:
 l0000000000401544:
 	word32 eax_520
 	dwLoc60_731 = (dwLoc68_727 & 1<32>) << 3<8> - SLICE(dwLoc68_727 + 1<32> >> 1<32>, byte, 0) & 7<32>
-	dwLoc64_732 = SLICE(CONVERT((dwLoc68_727 & 1<32>) == 0<32>, bool, uint64), word32, 0) << 3<8> - SLICE(dwLoc68_727 >> 1<32>, byte, 0) & 7<32>
+	dwLoc64_732 = CONVERT((dwLoc68_727 & 1<32>) == 0<32>, bool, word32) << 3<8> - SLICE(dwLoc68_727 >> 1<32>, byte, 0) & 7<32>
 	dwLoc58_733 = 1<32> << SLICE(7<32> - dwLoc68_727 >> 1<32>, byte, 0)
 	branch dwLoc68_727 <= 2<32> l00000000004015C4
 l00000000004015C4:

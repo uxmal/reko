@@ -164,7 +164,7 @@ l00001C60:
 l00001C4E:
 	Mem40[Mem10[dwArg08:word32]:byte] = bArg07_74
 	word32 a0_41 = Mem40[dwArg08:word32]
-	d0_20 = CONVERT(SLICE(CONVERT(Mem40[a0_41:byte], byte, uint32), int16, 0), int16, int32)
+	d0_20 = CONVERT(CONVERT(Mem40[a0_41:byte], byte, int16), int16, int32)
 	Mem48[dwArg08:word32] = a0_41 + 1<i32>
 l00001C6C:
 	word32 a0_56 = Mem55[a6_26 + 16<i32>:word32]

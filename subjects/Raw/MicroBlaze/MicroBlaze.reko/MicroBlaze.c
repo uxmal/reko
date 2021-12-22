@@ -23962,7 +23962,7 @@ l000276EC:
 						r21_n = r22_n->dw0004;
 					}
 					++r24_n;
-					r24_n->wFFFFFFFE = (word16) (word32) *r19_n;
+					r24_n->wFFFFFFFE = (word16) *r19_n;
 					r21_n += ~0x00;
 					if (Test(EQ,r26_n ^ r24_n))
 						break;

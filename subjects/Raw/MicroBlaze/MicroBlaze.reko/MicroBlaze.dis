@@ -27816,7 +27816,7 @@ l0002771C:
 	r21_141 = Mem554[r22_110 + 4<i32>:word32]
 l00027724:
 	r24_547 = r24_547 + 2<32>
-	Mem608[r24_547 - 2<i32>:word16] = SLICE(CONVERT(Mem554[r19_545:byte], byte, word32), word16, 0)
+	Mem608[r24_547 - 2<i32>:word16] = CONVERT(Mem554[r19_545:byte], byte, word16)
 	r21_141 = r21_141 + 0xFFFFFFFF<32>
 	branch Test(NE,r26_548 ^ r24_547) l0002773C_ds_t
 l0002773C_ds_t:

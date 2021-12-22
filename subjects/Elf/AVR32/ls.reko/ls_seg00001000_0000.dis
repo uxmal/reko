@@ -1943,7 +1943,7 @@ l000035BA:
 l000035C2:
 	r10_1095 = Mem652[r6_1023 + 8<i32>:word32]
 	Mem705[r4_1004 + 120<i32>:word32] = r8_693
-	Mem714[r10_1095 + 28<i32>:byte] = SLICE(CONVERT((CONVERT(r8_693 != 0<32>, bool, word32) | CONVERT(Mem705[r10_1095 + 28<i32>:byte], byte, word32)) != 0<32>, bool, word32), byte, 0)
+	Mem714[r10_1095 + 28<i32>:byte] = CONVERT((CONVERT(r8_693 != 0<32>, bool, word32) | CONVERT(Mem705[r10_1095 + 28<i32>:byte], byte, word32)) != 0<32>, bool, byte)
 	branch r1_130 == 0<32> l000035F2
 l000035DC:
 	word32 lr_726
@@ -3160,7 +3160,7 @@ l00004594:
 l000045A0:
 	Mem307[r10_248:word32] = Mem256[r10_248:word32] - r11_163 + r9_299
 	Mem308[r7_276 + (r9_262 << 2<32>):word32] = r9_299
-	Mem317[r10_248 + -4<i32>:byte] = SLICE(CONVERT(Mem308[r10_248:word32] <u r2, bool, word32), byte, 0)
+	Mem317[r10_248 + -4<i32>:byte] = CONVERT(Mem308[r10_248:word32] <u r2, bool, byte)
 l000045B6:
 	r12_250 = r12_250 + 1<32>
 	r10_248 = r10_248 + 0xC<32>

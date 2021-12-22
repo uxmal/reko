@@ -819,7 +819,7 @@ word32 fn0000000140001958()
 // Preserved: rsp
 fn0000000140001958_entry:
 l0000000140001958:
-	return SLICE(CONVERT(CONVERT(Mem0[0x0000000140003014<p64>:word32] == 0<32>, bool, int8), int8, uint64), word32, 0)
+	return CONVERT(Mem0[0x0000000140003014<p64>:word32] == 0<32>, bool, word32)
 fn0000000140001958_exit:
 
 
@@ -1158,7 +1158,7 @@ word32 fn0000000140001DC4()
 // Preserved: rsp
 fn0000000140001DC4_entry:
 l0000000140001DC4:
-	return SLICE(CONVERT(CONVERT(Mem0[0x0000000140003030<p64>:word32] != 0<32>, bool, int8), int8, uint64), word32, 0)
+	return CONVERT(Mem0[0x0000000140003030<p64>:word32] != 0<32>, bool, word32)
 fn0000000140001DC4_exit:
 
 
@@ -1213,7 +1213,7 @@ l0000000140001EC7:
 	word64 rcx_42 = CONVERT(Mem5[Mem5[rdx + 0x10<64>:word64] + 8<64>:word32], word32, uint64) + Mem5[rdx + 8<64>:word64]
 	branch (Mem5[rcx_42 + 3<64>:byte] & 0xF<8>) == 0<8> l0000000140001EE9
 l0000000140001EDF:
-	r9_15 = rcx + CONVERT(SLICE(CONVERT(Mem5[rcx_42 + 3<64>:byte], byte, uint64), word32, 0) & 0xFFFFFFF0<32>, word32, uint64)
+	r9_15 = rcx + CONVERT(CONVERT(Mem5[rcx_42 + 3<64>:byte], byte, word32) & 0xFFFFFFF0<32>, word32, uint64)
 l0000000140001EE9:
 	word64 r9_56 = r9_15 ^ rdx_37
 l0000000140001EF0_thunk_fn00000001400011B0:

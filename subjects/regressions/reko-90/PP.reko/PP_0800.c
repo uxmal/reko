@@ -12391,7 +12391,7 @@ Eq_n fn0800-8CCB(Eq_n ax, ci16 cx, Eq_n dx, Eq_n bx, union Eq_n & chOut, ptr16 &
 	else
 	{
 		cup16 bx_n = ~bx;
-		byte cl_n = (byte) (~cx + (word16) (bx_n < 0x01));
+		byte cl_n = (byte) ~cx + (byte) (bx_n < 0x01);
 		cu16 ax_n = ax - (bx_n + 0x01);
 		byte al_n = (byte) ax_n;
 		if (ax_n < 0x00)

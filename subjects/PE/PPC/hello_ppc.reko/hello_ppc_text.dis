@@ -344,7 +344,7 @@ l00400E2C:
 	word32 r6_50 = Mem49[r4:word32]
 	word32 r7_51 = CONVERT(Mem49[r6_50:byte], byte, word32)
 	Mem53[r4:word32] = r6_50 + 1<32>
-	r11_46 = CONVERT(SLICE(CONVERT(SLICE(r7_51, int8, 0), int8, int32), int16, 0) & 255<i16>, int16, int32)
+	r11_46 = CONVERT(CONVERT(SLICE(r7_51, int8, 0), int8, int16) & 255<i16>, int16, int32)
 l00400E68:
 	branch r11_46 != 0xFFFFFFFF<32> l00400E7C
 l00400E7C:

@@ -1314,7 +1314,7 @@ l00012648:
 			word32 o2_n;
 			word32 i1_n;
 			struct Eq_n * i0_n = check_aux_info(o2_n, out i1_n);
-			l2_n->b0020 = 0x01 - (byte) ((word32) (((int32) i0_n->b0000 ^ 0x4E) > 0x00));
+			l2_n->b0020 = 0x01 - (byte) (((int32) i0_n->b0000 ^ 0x4E) > 0x00);
 			int32 o0_n = (int32) i0_n[1];
 			if (o0_n != 0x43)
 			{

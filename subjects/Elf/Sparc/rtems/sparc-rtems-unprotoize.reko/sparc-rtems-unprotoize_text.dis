@@ -1662,7 +1662,7 @@ l00012648:
 	word32 o2_252
 	word32 i1_1131
 	word32 i0_223 = check_aux_info(o2_215, out i1_1131)
-	Mem245[l2_171 + 32<i32>:byte] = 1<8> - SLICE(CONVERT((CONVERT(Mem206[i0_223:int8], int8, int32) ^ 0x4E<32>) >u 0<32>, bool, word32), byte, 0)
+	Mem245[l2_171 + 32<i32>:byte] = 1<8> - CONVERT((CONVERT(Mem206[i0_223:int8], int8, int32) ^ 0x4E<32>) >u 0<32>, bool, byte)
 	word32 o0_247 = CONVERT(Mem245[i0_223 + 1<32>:int8], int8, int32)
 	branch o0_247 == 0x43<32> l00012674_ds_t
 l00012674_ds_t:

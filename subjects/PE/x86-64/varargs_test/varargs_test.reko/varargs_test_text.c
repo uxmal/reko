@@ -565,7 +565,7 @@ void fn000000014000193C()
 //      fn00000001400011D4
 word32 fn0000000140001958()
 {
-	return (word32) (uint64) (int8) (g_dw40003014 == 0x00);
+	return (word32) (g_dw40003014 == 0x00);
 }
 
 // 0000000140001964: void fn0000000140001964()
@@ -787,7 +787,7 @@ l0000000140001CE9:
 //      fn00000001400017B4
 word32 fn0000000140001DC4()
 {
-	return (word32) (uint64) (int8) (g_dw40003030 != 0x00);
+	return (word32) (g_dw40003030 != 0x00);
 }
 
 // 0000000140001DD0: void fn0000000140001DD0()
@@ -816,7 +816,7 @@ void fn0000000140001E9C(Eq_n rcx, struct Eq_n * rdx, struct Eq_n * r8, word64 qw
 	word64 rdx_n = *((word64) r10_n + (int64) r11d_n);
 	struct Eq_n * rcx_n = (uint64) rdx->ptr0010->dw0008 + rdx->qw0008;
 	if ((rcx_n->b0003 & 0x0F) != 0x00)
-		r9_n = (word64) rcx + (uint64) ((word32) ((uint64) rcx_n->b0003) & ~0x0F);
+		r9_n = (word64) rcx + (uint64) ((word32) rcx_n->b0003 & ~0x0F);
 	ui64 r9_n = r9_n ^ rdx_n;
 	fn00000001400011B0(r9_n, qwArg00);
 }

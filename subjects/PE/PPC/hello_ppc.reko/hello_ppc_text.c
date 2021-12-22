@@ -285,7 +285,7 @@ union Eq_n * fn00400E04(union Eq_n * r2, Eq_n r3, Eq_n r4, Eq_n r5, ptr32 r25, p
 		Eq_n r6_n = *r4;
 		word32 r7_n = (word32) *r6_n;
 		*r4 = (word64) r6_n + 1;
-		r11_n = (int32) ((int16) (int32) (int8) r7_n & 0x00FF);
+		r11_n = (int32) ((int16) (int8) r7_n & 0x00FF);
 	}
 	else
 	{

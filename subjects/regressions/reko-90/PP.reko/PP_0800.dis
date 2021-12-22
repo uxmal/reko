@@ -13892,7 +13892,7 @@ l0800_8CE6:
 	return SEQ(SLICE(ax_20 >>u 4<8>, byte, 8), al_36) & 0xF<16>
 l0800_8CD2:
 	word16 bx_53 = ~bx
-	byte cl_66 = SLICE(~cx + CONVERT(bx_53 <u 1<16>, bool, word16), byte, 0)
+	byte cl_66 = SLICE(~cx, byte, 0) + CONVERT(bx_53 <u 1<16>, bool, byte)
 l0800_8D0D:
 	word16 ax_60 = ax - (bx_53 + 1<16>)
 	byte al_75 = SLICE(ax_60, byte, 0)
