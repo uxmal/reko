@@ -473,6 +473,24 @@ namespace Reko.UnitTests.Evaluation
             Assert.AreEqual("!foo_1", expr.Accept(simplifier).Item1.ToString());
         }
 
+        [Test(Description = "Logical Not Sequence with explicit conversion from boolean to word")]
+        public void Exs_ReduceArithmeticConversionToLogicalNot()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.IAdd(
+                m.ISub(
+                    m.Word32(0),
+                    m.Convert(
+                        m.Ne0(foo),
+                        PrimitiveType.Bool,
+                        PrimitiveType.Word32)),
+                m.Word32(1));
+
+            var result = expr.Accept(simplifier).Item1;
+
+            Assert.AreEqual("!foo_1", result.ToString());
+        }
+
         [Test]
         public void Exs_ZeroExtension()
         {
