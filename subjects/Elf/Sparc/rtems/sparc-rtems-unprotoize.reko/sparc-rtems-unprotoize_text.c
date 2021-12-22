@@ -1876,7 +1876,7 @@ void declare_source_confusing(Eq_n o0)
 			notice(l0_n, out i1_n, out i2_n, out i6_n);
 		}
 	}
-	longjmp((jmp_buf) 0x0002B240, 0x01);
+	longjmp(&g_t2B240, 0x01);
 }
 
 // 000136E0: Register word32 check_source(Register word32 o0, Register Eq_n o1, Register out Eq_n i1Out, Register out (ptr32 Eq_n) i2Out, Register out (ptr32 Eq_n) i6Out)
@@ -2056,7 +2056,7 @@ void edit_fn_declaration(struct Eq_n * o0)
 {
 	o0_n = (uint32) strlen(o0->ptr0010->t0004);
 	save_pointers();
-	if (setjmp((jmp_buf) 0x0002B240) != 0x00)
+	if (setjmp(&g_t2B240) != 0x00)
 	{
 		restore_pointers();
 		word32 i1_n;
@@ -2306,7 +2306,7 @@ word32 find_rightmost_formals_list(int8 * o0)
 void edit_fn_definition(int8 * o1)
 {
 	save_pointers();
-	if (setjmp((jmp_buf) 0x0002B240) != 0x00)
+	if (setjmp(&g_t2B240) != 0x00)
 	{
 		restore_pointers();
 		Eq_n i1_n;
@@ -2447,7 +2447,7 @@ l000145B4:
 		if (((ui32) o2_n->b2B411 & 0x03) != 0x00 || o2_n == (struct Eq_n *) 0x7B)
 		{
 			i6_n->tFFFFFFE8 = identify_lineno(l0_n);
-			if (setjmp((jmp_buf) 0x0002B240) != 0x00)
+			if (setjmp(&g_t2B240) != 0x00)
 				goto l00014854;
 			struct Eq_n * l1_n = &g_t28000;
 			do

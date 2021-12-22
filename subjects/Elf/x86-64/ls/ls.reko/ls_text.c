@@ -1732,7 +1732,7 @@ void fn0000000000404E80()
 	Eq_n rsi_n;
 	Eq_n rdi_n;
 	word32 ecx_n;
-	int32 eax_n = _setjmp((jmp_buf) 6399616);
+	int32 eax_n = _setjmp(&g_t61A680);
 	if (eax_n != 0x00)
 	{
 		word32 r8d_n = g_dw61B148;

@@ -87,10 +87,11 @@ namespace Reko.Analysis
                 // phase. Once #726 is addressed, there should be no need for this
                 // code.
                 bloxx.Push(bs.Block);
-                if (this.bloxx.Count> 1000)
+                if (this.bloxx.Count > 1000)
                 {
                     var proc = bs.Block.Procedure;
                     proc.Dump(true);
+                    Debug.Print("SSATransform: Blocks in the call stack:");
                     foreach (var block in bloxx)
                     {
                         Debug.Print("  {0}", block.DisplayName);
