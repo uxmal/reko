@@ -1570,7 +1570,7 @@ l0000000000404EE0:
 	word64 rsi_133
 	word64 rdi_129
 	word32 ecx_100
-	word32 eax_109 = _setjmp(SLICE(0x61A680<u64>, jmp_buf, 0))
+	word32 eax_109 = _setjmp(0x61A680<u64>)
 	branch eax_109 == 0<32> l0000000000404F40
 l0000000000404F40:
 	ecx_100 = Mem50[0x000000000061B148<p64>:word32] (alias)

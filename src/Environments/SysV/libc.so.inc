@@ -32,7 +32,6 @@ typedef int pid_t;
 typedef int socklen_t;
 typedef int acl_entry_t;
 typedef void * DIR;
-typedef void * jmp_buf;
 typedef int acl_t;
 typedef int acl_tag_t;
 typedef void * mbstate_t;			// incorrect?
@@ -42,7 +41,9 @@ struct sigaction
 {
 };
 typedef struct sigset_t sigset_t;
-typedef struct jmp_buf jmp_buf;
+typedef struct jmp_buf {
+    size_t reg0;    // This needs to be supported for N archs. Oh myy.
+} *jmp_buf;
 typedef struct _acl * acl_t;
 typedef unsigned int acl_tag_t;
 struct acl_entry 
