@@ -815,5 +815,19 @@ namespace Reko.UnitTests.Evaluation
             Assert.AreEqual("0x12345678123400011234567812340002<128>", result.ToString());
             Assert.IsTrue(changed);
         }
+
+        [Test]
+        public void Exs_SliceTargetConvertType()
+        {
+            Given_ExpressionSimplifier();
+            var conv = m.Convert(
+                m.Eq(foo, m.Word32(1)),
+                PrimitiveType.Bool, PrimitiveType.Word32);
+            var expr = m.Slice(conv, PrimitiveType.Byte);
+            var (result, changed) = expr.Accept(simplifier);
+            Assert.AreEqual(
+                "CONVERT(foo_1 == 1<32>, bool, byte)", result.ToString());
+            Assert.IsTrue(changed);
+        }
     }
 }
