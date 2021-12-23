@@ -349,7 +349,7 @@ namespace Reko.Arch.zSeries
         {
             var src = Reg(1);
             var tmp = binder.CreateTemporary(PrimitiveType.Word32);
-            m.Assign(tmp, m.Convert(src, src.DataType, tmp.DataType));
+            m.Assign(tmp, m.Slice(src, tmp.DataType, 0));
             var dst = Reg(0);
             m.Assign(dst, m.Convert(tmp, tmp.DataType, PrimitiveType.Int64));
         }

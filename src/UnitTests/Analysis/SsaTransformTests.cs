@@ -280,7 +280,7 @@ namespace Reko.UnitTests.Analysis
                 dynamicLinker.Object,
                 programFlow);
             sst.Transform();
-            sst.SsaState.Validate(s => Assert.Fail(s));
+            sst.SsaState.Validate(s => { sst.SsaState.Dump(true); Assert.Fail(s); });
         }
 
         private void When_RenameFrameAccesses()
@@ -4718,6 +4718,34 @@ SsaSequenceAliasing_exit:
             });
 
             When_RunSsaTransform();
+            AssertProcedureCode(sExp);
+        }
+
+        [Test]
+        public void SsaOutArguments_Mem()
+        {
+            var sExp =
+            #region Expected
+@"SsaOutArguments_Mem_entry:
+	def r2
+	def Mem0
+l1:
+	r1_3 = _test(Mem0[r2:word32], out Mem0[r2:word32])
+SsaOutArguments_Mem_exit:
+";
+            #endregion
+
+            Given_Procedure(nameof(SsaOutArguments_Mem), m =>
+            {
+                var r1 = m.Reg32("r1");
+                var r2 = m.Reg32("r2");
+                var intrinsic = new IntrinsicProcedure("_test", true, r1.DataType, 2);
+                var arg = m.Mem32(r2);
+                m.Assign(r1, m.Fn(intrinsic, arg, m.Out(arg.DataType, arg)));
+            });
+
+            When_RunSsaTransform();
+
             AssertProcedureCode(sExp);
         }
     }

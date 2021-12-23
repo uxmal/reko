@@ -491,9 +491,14 @@ namespace Reko.Evaluation
                 {
                     var c = Operator.IMul.ApplyConstants(cLeftRight, cRight);
                     if (c.IsIntegerZero)
+                    {
+                        ctx.RemoveExpressionUse(binLeft);
                         return (c, true);
+                    }
                     else
+                    {
                         return (new BinaryExpression(binExp.Operator, binExp.DataType, binLeft.Left, c), true);
+                    }
                 }
             }
 
@@ -989,8 +994,12 @@ namespace Reko.Evaluation
                     PrimitiveType.Create(Domain.UnsignedInt, seq.DataType.BitSize)),
                     true);
             }
+            var mul = FuseSequenceOfSlicedMultiplications(newSeq);
+            if (mul is not null)
+                return (mul, true);
+
             var neg = SignExtendedNegation(seq);
-            if (neg != null)
+            if (neg is not null)
                 return (neg, true);
             var mem = FuseAdjacentMemoryAccesses(seq.DataType, newSeq);
             if (mem != null)
@@ -1161,6 +1170,33 @@ namespace Reko.Evaluation
             }
             return null;
         }
+
+        private Expression? FuseSequenceOfSlicedMultiplications(Expression[] seq)
+        {
+            BinaryExpression? mul = null;
+            for (int i = seq.Length -1; i >= 0; --i)
+            {
+                if (seq[i] is Slice slice && 
+                    slice.Expression is BinaryExpression bin && 
+                    bin.Operator is IMulOperator)
+                {
+                    if (mul is null)
+                        mul = bin;
+                    else if (!cmp.Equals(mul.Left, bin.Left) ||
+                            !cmp.Equals(mul.Right, bin.Right))
+                        return null;
+                    else
+                        mul = bin;
+                }
+            }
+            if (mul is null)
+                return null;
+            foreach (var e in seq)
+                ctx.RemoveExpressionUse(e);
+            ctx.UseExpression(mul);
+            return mul;
+        }
+
 
         private Slice? AsSlice(Expression? e)
         {
@@ -1351,7 +1387,7 @@ namespace Reko.Evaluation
                 // If we are slicing a SEQ, and the corresponding element is >= 
                 // the size of the cast, then use deposited part directly.
                 var lsbElem = seq2.Expressions[seq2.Expressions.Length - 1];
-                int sizeDiff = lsbElem.DataType.Size - slice.DataType.Size;
+                int sizeDiff = lsbElem.DataType.BitSize - slice.DataType.BitSize;
                 if (sizeDiff >= 0)
                 {
                     foreach (var elem in seq2.Expressions)
