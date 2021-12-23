@@ -956,11 +956,11 @@ l1:
 	ax_3 = ax_1 + Mem12[fp + 2<32>:word16]
 	SCZO_4 = cond(ax_3)
 	C_5 = SLICE(SCZO_4, bool, 1) (alias)
-	dx_6 = dx_2 + (ax_3 <u 0<16>)
+	dx_6 = dx_2 + CONVERT(ax_3 <u 0<16>, bool, word16)
 	ax_7 = ax_3 + Mem13[fp + 6<32>:word16]
 	SCZO_8 = cond(ax_7)
 	C_9 = SLICE(SCZO_8, bool, 1)
-	dx_10 = dx_6 + Mem14[fp + 8<32>:word16] + (ax_7 <u 0<16>)
+	dx_10 = dx_6 + Mem14[fp + 8<32>:word16] + CONVERT(ax_7 <u 0<16>, bool, word16)
 	SCZO_11 = cond(dx_10)
 	return
 	// succ:  SsaProcedureBuilder_exit
