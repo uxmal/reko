@@ -313,11 +313,16 @@ void fn00001354(int32 d2, int32 dwArg04, struct Eq_n * dwArg08)
 //      fn00001354
 word32 fn00001390(int32 d2)
 {
-	word32 * d4_n = __swap((word32 *) 113);
-	__swap(SEQ(SLICE(d4_n *32 0x90, word16, 16), (word16) d4_n * 0x90 + (word16) __swap((word32 *) 0x90) * 113));
-	word32 * d2_n = SEQ(SLICE(SLICE(d2, word31, 1), word24, 7), 0x90);
-	fn00002A88(d2_n, (uint32) (byte) fn00002AC8(d2_n, (word32 *) 0x90, (word32 *) 0x90), (word32 *) 0x90);
-	return fn0000143C(0x00, &g_b142C);
+	word31 v8_n = SLICE(d2, word31, 1);
+	uip32 d2_n = SEQ(v8_n, true);
+	byte v11_n = (byte) d2_n + ~0x70;
+	word32 * d0_n = (uint32) ((byte) d2_n - v11_n);
+	uint32 d1_n = (uint32) v11_n;
+	d4_n = __swap(d0_n) *32 (word16) d1_n;
+	byte v32_n = (byte) (d0_n *32 (word16) d1_n);
+	word32 * d2_n = SEQ(SLICE(v8_n, word24, 7), v32_n);
+	fn00002A88(d2_n, (uint32) (byte) fn00002AC8(d2_n, (uint32) v11_n, (uint32) v32_n), (uint32) v32_n);
+	return fn0000143C((uint32) (v32_n << 0x05), &g_b142C);
 }
 
 byte g_b142C = 0x61; // 0000142C
@@ -1456,11 +1461,12 @@ l00002516:
 				if (v40_n != 0x00)
 				{
 					uipr32 d7_n = SEQ(v80_n, v40_n - 0x01);
+					uint64 d5_d6_n = &(d5_n->*d6_n);
 					do
 					{
-						d5_n >>= 0x01;
+						d5_d6_n >>= 0x01;
 						word16 v84_n = (word16) d7_n;
-						d6_n = __rcr(d6_n, 0x01, SLICE(cond(d5_n), bool, 4));
+						d6_n = (word32) d5_d6_n;
 						d7_n = SEQ(SLICE(d7_n, word16, 16), v84_n - 1);
 					} while (v84_n != 0x00);
 				}

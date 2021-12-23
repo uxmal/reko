@@ -1501,11 +1501,12 @@ l0000254E:
 				if (v40_n != 0x00)
 				{
 					uipr32 d7_n = SEQ(v80_n, v40_n - 0x01);
+					uint64 d5_d6_n = SEQ(d5_n, d6_n);
 					do
 					{
-						d5_n >>= 0x01;
+						d5_d6_n >>= 0x01;
 						word16 v84_n = (word16) d7_n;
-						d6_n = __rcr(d6_n, 0x01, SLICE(cond(d5_n), bool, 4));
+						d6_n = (word32) d5_d6_n;
 						d7_n = SEQ(SLICE(d7_n, word16, 16), v84_n - 1);
 					} while (v84_n != 0x00);
 				}

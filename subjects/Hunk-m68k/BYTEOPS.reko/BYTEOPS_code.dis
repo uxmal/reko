@@ -375,17 +375,22 @@ word32 fn00001390(word32 d2)
 
 // Called from:
 //      fn00001354
-// MayUse:  d2:[8..31]
+// MayUse:  d2:[1..31]
 // LiveOut: d0
 // Trashed: CVZNX a0 a1 d0 d1
 // Preserved: a7 d2 d3 d4 d5
 fn00001390_entry:
 l00001390:
-	word32 d4_35 = __swap(0x71<u32>)
-	__swap(SEQ(SLICE(d4_35 *u32 0x90<16>, word16, 16), SLICE(d4_35, word16, 0) *u 0x90<16> + SLICE(__swap(0x90<u32>), word16, 0) *u 0x71<16>))
-	word32 d2_50 = SEQ(SLICE(SLICE(d2, word31, 1), word24, 7), 0x90<8>)
-	fn00002A88(d2_50, CONVERT(SLICE(fn00002AC8(d2_50, 0x90<u32>, 0x90<u32>), byte, 0), byte, uint32), 0x90<u32>)
-	return fn0000143C(0<u32>, 0x0000142C<p32>)
+	word31 v8_15 = SLICE(d2, word31, 1)
+	word32 d2_16 = SEQ(v8_15, true)
+	byte v11_19 = SLICE(d2_16, byte, 0) + 0x8F<8>
+	word32 d0_28 = CONVERT(SLICE(d2_16, byte, 0) - v11_19, byte, uint32)
+	word32 d1_32 = CONVERT(v11_19, byte, uint32)
+	d4_37 = __swap(d0_28) *u32 SLICE(d1_32, word16, 0)
+	byte v32_48 = SLICE(d0_28 *u32 SLICE(d1_32, word16, 0), byte, 0)
+	word32 d2_50 = SEQ(SLICE(v8_15, word24, 7), v32_48)
+	fn00002A88(d2_50, CONVERT(SLICE(fn00002AC8(d2_50, CONVERT(v11_19, byte, uint32), CONVERT(v32_48, byte, uint32)), byte, 0), byte, uint32), CONVERT(v32_48, byte, uint32))
+	return fn0000143C(CONVERT(v32_48 << 5<8>, byte, uint32), 0x0000142C<p32>)
 fn00001390_exit:
 
 
@@ -1536,7 +1541,7 @@ l00002524:
 	word32 d2_22 = __swap(d2)
 	branch SLICE(d2_22, word16, 0) != 0<16> l0000254C
 l0000254C:
-	byte bLoc26_362 = 0<8>
+	byte bLoc26_365 = 0<8>
 	word32 d0_44 = 0<i32>
 	branch d2 < 0<32> l00002568
 l0000255E:
@@ -1560,7 +1565,7 @@ l00002586:
 	word32 d6_98 = __swap(SEQ(SLICE(d6_17, word16, 16), 0<16>))
 l0000258C:
 	word32 d4_113 = __swap(d5_19 - __swap(d7_13) *u32 SLICE(d1_104, word16, 0))
-	word16 wLoc22_442 = SLICE(dwLoc24, word16, 0)
+	word16 wLoc22_445 = SLICE(dwLoc24, word16, 0)
 	word32 d2_106 = d1_104 *u32 SLICE(d7_13, word16, 0)
 	word32 d4_121 = SEQ(SLICE(d4_113, word16, 16), SLICE(d6_98, word16, 0))
 	branch SLICE(d4_113, word16, 0) != 0<16> l000025AC
@@ -1584,7 +1589,7 @@ l000025EE:
 	d1_104 = d1_104 - 1<32>
 	d5_181 = d5_181 + CONVERT(d6_178 <u 0<32>, bool, word32) + __swap(SEQ(SLICE(d7_13, word16, 16), 0<16>))
 l00002604:
-	branch bLoc26_362 != 0<8> l00002620
+	branch bLoc26_365 != 0<8> l00002620
 l00002620:
 	word32 d6_220 = __swap(SEQ(SLICE(d6_178, word16, 16), SLICE(d5_181, word16, 0)))
 	d0 = SEQ(SLICE(dwLoc24, word16, 16), SLICE(d1_104, word16, 0))
@@ -1593,10 +1598,11 @@ l00002620:
 	branch v40_64 == 0<16> l0000263A
 l00002630:
 	word32 d7_230 = SEQ(v80_224, v40_64 - 1<16>)
+	word64 d5_d6_506 = SEQ(d5_221, d6_220)
 l00002632:
-	d5_221 = d5_221 >>u 1<32>
+	d5_d6_506 = d5_d6_506 >>u 1<8>
 	word16 v84_241 = SLICE(d7_230, word16, 0)
-	d6_220 = __rcr(d6_220, 1<32>, SLICE(cond(d5_221), bool, 4))
+	d6_220 = SLICE(d5_d6_506, word32, 0)
 	d7_230 = SEQ(SLICE(d7_230, word16, 16), v84_241 - 1<i16>)
 	branch v84_241 != 0<16> l00002632
 l0000263A:
@@ -1607,8 +1613,8 @@ l0000260A:
 	word32 d6_267 = __swap(d6_178)
 	d5_19 = SEQ(SLICE(d5_266, word16, 16), SLICE(d6_267, word16, 0))
 	d6_17 = SEQ(SLICE(d6_267, word16, 16), 0<16>)
-	bLoc26_362 = true
-	dwLoc24 = SEQ(SLICE(d1_104, word16, 0), wLoc22_442) (alias)
+	bLoc26_365 = true
+	dwLoc24 = SEQ(SLICE(d1_104, word16, 0), wLoc22_445) (alias)
 l000025A8:
 	d1_104 = d1_104 - 1<32>
 l0000252A:

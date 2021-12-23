@@ -281,9 +281,9 @@ void fn1483-0D3F(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx, ui1
 		fn1483-0CFA(ds_di, ss_bp, al_n, ah_n, cx, dx, bl, bh, si, fs, ax, wArg02, wArg0C, out es_n);
 		return;
 	}
+	struct Eq_n Eq_n::* bx_n = SEQ(bh, 0xB4);
 	ui24 ax_ch_n = SEQ(ax_n, ch_n) - SEQ(64616, Mem7[ds:(bx_n + 0x02) + si:byte]);
 	word16 ax_n = SLICE(ax_ch_n, word16, 8);
-	struct Eq_n Eq_n::* bx_n = SEQ(bh, 0xB4);
 	byte ch_n = (byte) ax_ch_n;
 	ui16 ax_n = SEQ(ah_n, al_n + ch_n);
 	byte ah_n = SLICE(ax_n, byte, 8);
@@ -343,6 +343,7 @@ void fn1483-0D3F(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx, ui1
 	word16 bx_n = bx_n + Mem163[ds:bx_n + v32_n:word16];
 	byte ah_n = SLICE(ax_n, byte, 8);
 	byte al_n = al_n + 0x2A + ch_n;
+	uint8 dl_n = (byte) dx_n;
 	real64 rLoc1_n = rRet0;
 	Eq_n si_n = v32_n;
 	byte bl_n = (byte) bx_n;
@@ -351,7 +352,7 @@ void fn1483-0D3F(struct Eq_n * ds_di, struct Eq_n * ss_bp, Eq_n ax, Eq_n cx, ui1
 	struct Eq_n Eq_n::* sp_n = sp_n - 16;
 	Eq_n ax_n = SEQ(ah_n, al_n);
 	byte cl_n = (byte) cx_n - 0x01;
-	word16 dx_n = SEQ(dh_n - SLICE(bx_n, byte, 8) - (byte) (al_n < 0x2A), (byte) dx_n);
+	word16 dx_n = SEQ(dh_n - SLICE(bx_n, byte, 8) - (byte) (al_n < 0x2A), dl_n);
 	byte ch_n = SLICE(cx_n - 0x01, byte, 8);
 	if (!(sp_n - 18) || cx_n == 0x01)
 	{
@@ -687,14 +688,13 @@ Eq_n fn1483-1BB9(Eq_n ax, ui16 cx, mp16 dx, Eq_n bx, Eq_n bp, Eq_n si, Eq_n di, 
 				return ax_n - 34302;
 			}
 			(ss->*sp_n).tFFFFFFFE.u0 = 25445;
-			int16 sp_n = (&(ds->*bx.u0).b2CF2)[17784] *s16 0x46;
-			di = *((word16) si + (&(ds->*bx.u0).b2CF2)[17784] *16 0x46);
-			si = *((char *) &ss->a0002->t0000 + (&(ds->*bx.u0).b2CF2)[17784] *16 0x46);
+			di = *((char *) &ss->a0000->t0000 + (&(ds->*bx.u0).b2CF2)[17784] *16 0x46);
+			si = (&ss->t0002)[(&(ds->*bx.u0).b2CF2)[17784]];
 			bx = (&ss->t0008)[(&(ds->*bx.u0).b2CF2)[17784]];
 			dh_n = (byte) (&ss->t000B)[ds->*((word16) bx + 29290)];
 			cl_n = (byte) (&ss->t000C)[ds->*((word16) bx + 29290)];
 			al_n = (byte) (&ss->t000E)[ds->*((word16) bx + 29290)];
-			sp_n = sp_n + 0x10;
+			sp_n = ds->*((word16) bx + 29290) *s 0x46 + 0x10;
 		}
 		bp = ds->*((word16) si + 101) *s 14948;
 		*((word16) si + ds->*((word16) si + 101) * 14948) &= al_n;
