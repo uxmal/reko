@@ -751,13 +751,13 @@ l06B0:
 	Eq_n r2_n = r2_n >> 1;
 	Eq_n r0_n = SEQ(SLICE(__swab(r0_n), byte, 8), 0x00) | r1_n;
 	Eq_n r1_n = SEQ(SLICE(r1_n, byte, 8), 0x00);
-	Eq_n r4_n = r2_n >> 1;
-	Eq_n r5_n = r3_n;
+	uint32 r4_r5_n = SEQ(r2_n >> 1, r3_n);
 	while (true)
 	{
-		r4_n >>= 1;
+		r4_r5_n >>= 0x01;
 		r1_n <<= 1;
-		r5_n = __rcr(r5_n, 1, (bool) cond(r4_n));
+		word16 r4_n = SLICE(r4_r5_n, word16, 16);
+		word16 r5_n = (word16) r4_r5_n;
 		bool C_n = (bool) cond(r1_n);
 		if (r1_n == 0x00)
 			break;
@@ -765,22 +765,21 @@ l06B0:
 		r0_n = r0_n;
 		if ((r0_n & 0x8000) == 0x00)
 		{
-			r3_n += r5_n;
-			r2_n = (word16) r4_n + ((word16) r2_n + (word16) (r3_n < 0x00));
+			r3_n = (word16) r3_n + r5_n;
+			r2_n = (word16) r2_n + (word16) (r3_n < 0x00) + r4_n;
 		}
 	}
 	Eq_n r0_n = __rcl(r0_n, 1, C_n);
 	if ((r0_n & 0x8000) == 0x00)
 	{
 l0700:
-		r3_n += r5_n;
-		r2_n = (word16) r4_n + ((word16) r2_n + (word16) (r3_n < 0x00));
+		r3_n = (word16) r3_n + (word16) r4_r5_n;
+		r2_n = (word16) r2_n + (word16) (r3_n < 0x00) + SLICE(r4_r5_n, word16, 16);
 	}
 	do
 	{
-		r4_n >>= 1;
 		wArg04 = r4_n;
-		r5_n = __rcr(r5_n, 1, (bool) cond(r4_n));
+		r4_r5_n >>= 0x01;
 		r0_n <<= 1;
 		if (r0_n < 0x00)
 			goto l0700;

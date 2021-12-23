@@ -254,19 +254,19 @@ l0670:
 	Mem9[r4_4 + 0x2A<16>:word16] = wArg00
 	word16 r2_18 = wArg06
 	word16 r3_19 = wArg08
-	word32 r0_r1_309 = SEQ(wArg02, wArg04)
+	word32 r0_r1_315 = SEQ(wArg02, wArg04)
 	branch wArg08 != 0<16> l068E
 l0684:
 	r3_19 = wArg04
 	r2_18 = wArg02
-	r0_r1_309 = SEQ(wArg06, wArg08) (alias)
+	r0_r1_315 = SEQ(wArg06, wArg08) (alias)
 l068E:
 	word16 r2_202
 	word16 r3_199
-	ui32 v46_249 = r0_r1_309 << 1<8>
+	ui32 v46_249 = r0_r1_315 << 1<8>
 	word16 r1_38 = SLICE(v46_249, word16, 0)
 	word16 r0_43 = SLICE(v46_249, word16, 16)
-	word16 r5_46 = __rcl(r5, 1<i16>, (SLICE(r0_r1_309, word16, 16) & 0x8000<16>) != 0<16>)
+	word16 r5_46 = __rcl(r5, 1<i16>, (SLICE(r0_r1_315, word16, 16) & 0x8000<16>) != 0<16>)
 	branch r0_43 == 0<16> l06B2
 l069C:
 	word16 r2_53 = r2_18 << 1<i16>
@@ -293,24 +293,23 @@ l06BE:
 	word16 r2_131 = r2_90 >>u 1<i16>
 	word16 r0_103 = SEQ(SLICE(__swab(r0_43), byte, 8), 0<8>) | r1_99
 	word16 r1_104 = SEQ(SLICE(r1_99, byte, 8), 0<8>)
-	word16 r4_106 = r2_90 >>u 1<i16>
-	word16 r5_107 = r3_127
+	word32 r4_r5_318 = SEQ(r2_90 >>u 1<i16>, r3_127)
 l06E8:
-	r4_106 = r4_106 >> 1<i16>
+	r4_r5_318 = r4_r5_318 >>u 1<8>
 	r1_104 = r1_104 << 1<i16>
-	r5_107 = __rcr(r5_107, 1<i16>, SLICE(cond(r4_106), bool, 0))
+	word16 r4_111 = SLICE(r4_r5_318, word16, 16)
+	word16 r5_116 = SLICE(r4_r5_318, word16, 0)
 	bool C_123 = SLICE(cond(r1_104), bool, 0)
 	branch r1_104 == 0<16> l06FC
 l06FC:
-	word16 r0_124 = __rcl(r0_312, 1<i16>, C_123)
-	branch (r0_312 & 0x8000<16>) != 0<16> l0706
+	word16 r0_124 = __rcl(r0_323, 1<i16>, C_123)
+	branch (r0_323 & 0x8000<16>) != 0<16> l0706
 l0700:
-	r3_127 = r3_127 + r5_107
-	r2_131 = r2_131 + CONVERT(r3_127 <u 0<16>, bool, word16) + r4_106
+	r3_127 = r3_127 + SLICE(r4_r5_318, word16, 0)
+	r2_131 = r2_131 + CONVERT(r3_127 <u 0<16>, bool, word16) + SLICE(r4_r5_318, word16, 16)
 l0706:
-	r4_106 = r4_106 >> 1<i16>
 	wArg04 = r4_77 (alias)
-	r5_107 = __rcr(r5_107, 1<i16>, SLICE(cond(r4_106), bool, 0))
+	r4_r5_318 = r4_r5_318 >>u 1<8>
 	r0_124 = r0_124 << 1<i16>
 	branch r0_124 <u 0<16> l0700
 l070E:
@@ -332,12 +331,12 @@ l0724:
 	r3_199 = __swab(SEQ(SLICE(__rcl(r3_127, 1<i16>, C_163), byte, 8), 0<8>) | r2_131) + __rcl(r1_104, 1<i16>, (r3_127 & 0x80<16>) != 0<16>)
 	r2_202 = __swab(SEQ(SLICE(r2_131, byte, 8), 0<8>)) + r4_157 + CONVERT(r3_199 <u 0<16>, bool, word16)
 l06F0:
-	r0_103 = __rcl(r0_312, 1<i16>, C_123)
-	r0_312 = r0_103
-	branch (r0_312 & 0x8000<16>) != 0<16> l06E8
+	r0_103 = __rcl(r0_323, 1<i16>, C_123)
+	r0_323 = r0_103
+	branch (r0_323 & 0x8000<16>) != 0<16> l06E8
 l06F4:
-	r3_127 = r3_127 + r5_107
-	r2_131 = r2_131 + CONVERT(r3_127 <u 0<16>, bool, word16) + r4_106
+	r3_127 = r3_127 + r5_116
+	r2_131 = r2_131 + CONVERT(r3_127 <u 0<16>, bool, word16) + r4_111
 l06AA:
 	__syscall(0x898A<16>)
 l06B2:
@@ -345,7 +344,7 @@ l06B2:
 	r3_199 = 0<16>
 l0738:
 	call Mem239[r4_4 + 0x2A<16>:word16] (retsize: 0;)
-		uses: Stack +0000:r2_238,Stack +0002:r3_235,Stack +FFFFFFFA:wArg00,Stack +FFFFFFFC:wArg02,Stack +FFFFFFFE:wArg04_297
+		uses: Stack +0000:r2_238,Stack +0002:r3_235,Stack +FFFFFFFA:wArg00,Stack +FFFFFFFC:wArg02,Stack +FFFFFFFE:wArg04_303
 	return
 fn0670_exit:
 

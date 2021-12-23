@@ -353,9 +353,9 @@ l1483_0D40_thunk_fn1483_0CFA:
 	fn1483_0CFA(ds_di, ss_bp, al_17, ah_19, cx, dx, bl, bh, si, fs, ax, wArg02, wArg0C, out es_28)
 	return
 l1483_0D42:
+	word16 bx_37 = SEQ(bh, 0xB4<8>)
 	ui24 ax_ch_503 = SEQ(ax_40, ch_34) - SEQ(0xFC68<16>, Mem7[ds:(bx_37 + 2<16>) + si:byte])
 	word16 ax_42 = SLICE(ax_ch_503, word16, 8)
-	word16 bx_37 = SEQ(bh, 0xB4<8>)
 	byte ch_38 = SLICE(ax_ch_503, byte, 0)
 	word16 ax_40 = SEQ(ah_19, al_17 + ch_34)
 	byte ah_68 = SLICE(ax_42, byte, 8)
@@ -419,6 +419,7 @@ l1483_0D69:
 	word16 bx_170 = bx_135 + Mem163[ds:bx_135 + v32_158:word16]
 	byte ah_362 = SLICE(ax_157, byte, 8)
 	byte al_171 = al_164 + 0x2A<8> + ch_149
+	byte dl_483 = SLICE(dx_114, byte, 0)
 	real64 rLoc1_647 = rRet0
 	word16 si_160 = v32_158
 	byte bl_176 = SLICE(bx_170, byte, 0)
@@ -427,7 +428,7 @@ l1483_0D69:
 	word16 sp_173 = sp_110 - 16<i16>
 	word16 ax_224 = SEQ(ah_362, al_171)
 	byte cl_452 = SLICE(cx_112, byte, 0) - 1<8>
-	word16 dx_484 = SEQ(dh_137 - SLICE(bx_135, byte, 8) - CONVERT(al_164 <u 0x2A<8>, bool, byte), SLICE(dx_114, byte, 0))
+	word16 dx_484 = SEQ(dh_137 - SLICE(bx_135, byte, 8) - CONVERT(al_164 <u 0x2A<8>, bool, byte), dl_483)
 	byte ch_487 = SLICE(cx_112 - 1<16>, byte, 8)
 	branch sp_110 - 18<i16> && cx_112 != 1<16> l1483_0D99
 l1483_0D99:
@@ -800,14 +801,13 @@ l1483_1BE8:
 fn1483_1BB9_exit:
 l1483_1B75:
 	Mem148[ss:sp_116 - 2<i16>:word16] = 0x6365<16>
-	word16 sp_149 = Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16>
-	di = Mem148[ss:Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16> + si:word16]
+	di = Mem148[ss:Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16>:word16]
 	si = Mem148[ss:Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16> + 2<16>:word16]
 	bx = Mem148[ss:Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16> + 8<16>:word16]
 	dh_177 = Mem148[ss:Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16> + 0xB<16>:byte] (alias)
 	cl_185 = Mem148[ss:Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16> + 0xC<16>:byte] (alias)
 	al_109 = Mem148[ss:Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16> + 0xE<16>:byte] (alias)
-	sp_115 = sp_149 + 0x10<16>
+	sp_115 = Mem148[ds:bx + 0x726A<16>:word16] *s 0x46<16> + 0x10<16>
 l1483_1B7F:
 	bp = Mem168[ds:si + 0x65<16>:word16] *s 0x3A64<16>
 	Mem174[ss:Mem168[ds:si + 0x65<16>:word16] *s 0x3A64<16> + si:byte] = Mem168[ss:Mem168[ds:si + 0x65<16>:word16] *s 0x3A64<16> + si:byte] & al_109
