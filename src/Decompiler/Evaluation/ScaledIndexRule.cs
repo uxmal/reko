@@ -42,6 +42,13 @@ namespace Reko.Evaluation
 
         public bool Match(Expression ea)
         {
+            //$REFACTOR: this is mutable shared state. Rewrite this to
+            // use the (Expression newExpr, bool changed) pattern used
+            // elsewhere in ExpressionSimplifier. 
+            this.binEaLeft = null;
+            this.binEaRight = null;
+            this.idEa = null;
+
             if (ea is BinaryExpression bin)
             {
                 if (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub)
