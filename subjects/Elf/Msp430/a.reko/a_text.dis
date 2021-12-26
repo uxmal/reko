@@ -2311,17 +2311,17 @@ l5620:
 l5628:
 	bLoc1E_1006 = bLoc1E_1006 & 0xFFDF<16>
 l562E:
-	word16 wLoc20_1112
-	byte bLoc20_1132 = SLICE(fp, byte, 0) - 0x24<8>
+	word16 wLoc20_1076 = fp - 0x24<32>
+	byte bLoc20_1132 = SLICE(CONVERT(fp, word16, uipr32), byte, 0) - 0x24<8>
 	byte bLoc1F_1243 = SLICE(fp - 0x24<32>, byte, 8)
 	branch wLoc1C_1004 != 0<16> l564A
 l563E:
+	wLoc20_1076 = SLICE(CONVERT(fp, word16, uipr32), word16, 0) - 0x24<16> (alias)
 	branch wLoc1A_1005 != 0<16> l564A
 l5644:
-	wLoc20_1112 = SEQ(bLoc1F_1243, bLoc20_1132) (alias)
+	wLoc20_1076 = SEQ(bLoc1F_1243, bLoc20_1132) (alias)
 	branch r11_278 == 0<8> l56C6
 l564A:
-	wLoc20_1112 = fp - 0x24<32>
 	word16 wLoc14_1661 = CONVERT(bLoc18_1036, byte, uint16)
 l5658:
 	byte bLoc16_1100 = 0<8>
@@ -2345,8 +2345,8 @@ l56F8:
 l568E:
 	r4_435 = r14_424 + 0x30<16>
 l5692:
-	wLoc20_1112 = wLoc20_1797 + 0xFFFF<16>
-	Mem454[wLoc20_1112:byte] = r4_435
+	wLoc20_1076 = wLoc20_1797 + 0xFFFF<16>
+	Mem454[wLoc20_1076:byte] = r4_435
 	word20 r12_464
 	word20 r13_465
 	word20 r14_1795
@@ -2354,7 +2354,7 @@ l5692:
 	fn00005B4E(r8_426, wLoc14_1661, 0<16>, wLoc1C_1004, wLoc1A_1005, out r8, out r12_464, out r13_465, out r14_1795, out r15_1796)
 	wLoc1C_1004 = r12_464
 	wLoc1A_1005 = r13_465
-	wLoc20_1797 = wLoc20_1112
+	wLoc20_1797 = wLoc20_1076
 	branch bLoc16_1100 != 0<8> l5658
 l56C0:
 	branch bLoc18_1036 == 8<8> l56D2
@@ -2364,10 +2364,10 @@ l56D8:
 	branch r4_435 == 0x30<16> l56C6
 l56DE:
 	Mem496[wLoc20_1797 + 0xFFFE<16>:byte] = 0x30<16>
-	wLoc20_1112 = SEQ(SLICE(wLoc20_1797 + 0xFFFE<16>, byte, 8), SLICE(wLoc20_1797, byte, 0) + 0xFE<8>) (alias)
+	wLoc20_1076 = SEQ(SLICE(wLoc20_1797 + 0xFFFE<16>, byte, 8), SLICE(wLoc20_1797, byte, 0) + 0xFE<8>) (alias)
 l56C6:
-	r9_296 = fp - 0x4C<32> - SLICE(wLoc20_1112, byte, 0) + 0x28<16>
-	wLoc20_1241 = wLoc20_1112 (alias)
+	r9_296 = fp - 0x4C<32> - SLICE(wLoc20_1076, byte, 0) + 0x28<16>
+	wLoc20_1241 = wLoc20_1076 (alias)
 l54E6:
 	branch r7_257 != 0<20> l54EE
 l54EE:
