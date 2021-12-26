@@ -995,8 +995,10 @@ namespace Reko.Evaluation
             var mem = FuseAdjacentMemoryAccesses(seq.DataType, newSeq);
             if (mem != null)
                 return (mem, true);
-            //$TODO: fix changed here.
-            return FuseAdjacentSlices(seq.DataType, newSeq);
+            var slices = FuseAdjacentSlices(seq.DataType, newSeq);
+            if (slices != null)
+                return (slices, true);
+            return (new MkSequence(seq.DataType, newSeq), changed);
         }
 
         /// <summary>
@@ -1122,7 +1124,7 @@ namespace Reko.Evaluation
             return (access, seg, eaStripped, offset);
         }
 
-        private (Expression, bool) FuseAdjacentSlices(DataType dataType, Expression[] elems)
+        private Expression? FuseAdjacentSlices(DataType dataType, Expression[] elems)
         {
             var fused = new List<Expression> { AsSlice(elems[0]) ?? elems[0] };
             bool changed = false;
@@ -1153,14 +1155,11 @@ namespace Reko.Evaluation
                 foreach (var f in fused)
                     ctx.UseExpression(f);
                 if (fused.Count == 1)
-                    return (fused[0], true);
+                    return fused[0];
                 else
-                    return (new MkSequence(dataType, fused.ToArray()), true);
+                    return new MkSequence(dataType, fused.ToArray());
             }
-            else
-            {
-                return (new MkSequence(dataType, elems), false);
-            }
+            return null;
         }
 
         private Slice? AsSlice(Expression? e)

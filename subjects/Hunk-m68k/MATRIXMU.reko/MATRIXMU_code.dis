@@ -397,7 +397,7 @@ l000013B2:
 	word32 d0_81 = Mem80[dwArg04 + (d4_141 << 4<32>) + (d2_136 << 2<32>):word32]
 	word32 d1_82 = Mem80[a1_79:word32]
 	word32 d5_87 = __swap(d0_81) *u32 SLICE(d1_82, word16, 0)
-	word32 d0_96 = d0_81 *u32 SLICE(d1_82, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d5_87, word16, 16), SLICE(d5_87 + __swap(d1_82) *u32 SLICE(d0_81, word16, 0), word16, 0))), word16, 16), 0<16>)
+	word32 d0_96 = d0_81 *u32 SLICE(d1_82, word16, 0) + SEQ(SLICE(__swap(SEQ(SLICE(d5_87, word16, 16), SLICE(d5_87, word16, 0) + SLICE(__swap(d1_82), word16, 0) *u SLICE(d0_81, word16, 0))), word16, 16), 0<16>)
 	word32 d5_102 = __swap(20<i32>) *u32 SLICE(d4_141, word16, 0)
 	word32 d0_116 = d0_96 + Mem80[(dwArg0C + (SLICE(d4_141, word16, 0) *u32 20<i32> + SEQ(SLICE(__swap(SEQ(SLICE(d5_102, word16, 16), SLICE(d5_102, word16, 0) + SLICE(__swap(d4_141), word16, 0) *u 0x14<16>)), word16, 16), 0<16>))) + (d3_138 << 2<32>):word32]
 	word32 d5_122 = __swap(20<i32>) *u32 SLICE(d4_141, word16, 0)

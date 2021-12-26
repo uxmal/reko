@@ -2765,9 +2765,9 @@ uint32 fn00003C60(Eq_n d4, Eq_n dwArg04, Eq_n dwArg08, Eq_n dwArg0C, Eq_n dwArg1
 		d1_n += 0x00010000;
 	Eq_n d2_n = __swap(d2_n);
 	uint32 d3_n = __swap(dwArg0C) *32 (word16) dwArg08;
-	Eq_n d3_n = __swap(SEQ(SLICE(d3_n, word16, 16), (word16) (d3_n + __swap(dwArg08) *32 (word16) dwArg0C)));
+	Eq_n d3_n = __swap(SEQ(SLICE(d3_n, word16, 16), (word16) d3_n + (word16) __swap(dwArg08) * (word16) dwArg0C));
 	uint32 d3_n = __swap(dwArg04) *32 (word16) dwArg10;
-	Eq_n d3_n = __swap(SEQ(SLICE(d3_n, word16, 16), (word16) (d3_n + __swap(dwArg10) *32 (word16) dwArg04)));
+	Eq_n d3_n = __swap(SEQ(SLICE(d3_n, word16, 16), (word16) d3_n + (word16) __swap(dwArg10) * (word16) dwArg04));
 	d1Out = SEQ(SLICE(d2_n, word16, 16), (word16) d4_n);
 	return (uint32) (word16) d2_n + d1_n + (dwArg0C *32 (word16) dwArg08 + SEQ(SLICE(d3_n, word16, 16), (word16) d3_n ^ (word16) d3_n)) + (dwArg04 *32 (word16) dwArg10 + SEQ(SLICE(d3_n, word16, 16), (word16) d3_n ^ (word16) d3_n));
 }

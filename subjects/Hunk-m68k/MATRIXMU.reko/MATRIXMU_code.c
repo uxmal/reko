@@ -322,7 +322,7 @@ int32 fn00001390(ptr32 dwArg04, ptr32 dwArg08, ptr32 dwArg0C)
 				Eq_n d0_n = (dwArg04 + (d4_n << 0x04))[d2_n];
 				Eq_n d1_n = *a1_n;
 				uint32 d5_n = __swap(d0_n) *32 (word16) d1_n;
-				uint32 d0_n = d0_n *32 (word16) d1_n + SEQ(SLICE(__swap(SEQ(SLICE(d5_n, word16, 16), (word16) (d5_n + __swap(d1_n) *32 (word16) d0_n))), word16, 16), 0x00);
+				uint32 d0_n = d0_n *32 (word16) d1_n + SEQ(SLICE(__swap(SEQ(SLICE(d5_n, word16, 16), (word16) d5_n + (word16) __swap(d1_n) * (word16) d0_n)), word16, 16), 0x00);
 				uint32 d5_n = __swap(20) *32 (word16) d4_n;
 				word32 d0_n = d0_n + (dwArg0C + (SLICE(d4_n, word16, 0) *u32 20 + SEQ(SLICE(__swap(SEQ(SLICE(d5_n, word16, 16), (word16) d5_n + (word16) __swap(d4_n) * 0x14)), word16, 16), 0x00)))[d3_n * 0x04];
 				uint32 d5_n = __swap(20) *32 (word16) d4_n;
