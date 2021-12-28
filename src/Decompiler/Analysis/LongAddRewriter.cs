@@ -294,12 +294,8 @@ namespace Reko.Analysis
                 var hiInstr = FindUsingInstruction(block, cond.FlagGroup, loInstr);
                 if (hiInstr is null)
                     continue;
-                if (hiInstr.Statement?.ToString() == "ah_29 = ah_27 + C_28")
-                    _ = hiInstr.ToString();//$DEBUG
-                ssa.Validate(s => { });
                 trace.Verbose("Larw: {0}: found add/sub pair {1} / {2}", block.DisplayName, loInstr.Statement!, hiInstr.Statement!);
                 CreateLongInstruction(loInstr, hiInstr);
-                ssa.Validate(s => { Console.WriteLine("Larw: {0}", s); });
             }
         }
 
