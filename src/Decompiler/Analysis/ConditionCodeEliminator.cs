@@ -452,30 +452,33 @@ namespace Reko.Analysis
             var sidsToKill = new HashSet<SsaIdentifier> { sidCarry };
             while (sidCarry.DefExpression is Slice slice)
             {
-                if (!(slice.Expression is Identifier idSliced))
+                if (slice.Expression is not Identifier idSliced)
                 {
                     return a;
                 }
                 sidCarry = ssaIds[idSliced];
-                sidsToKill.Add(sidCarry);
+                if (sidCarry.Uses.Count < 2)
+                {
+                    sidsToKill.Add(sidCarry);
+                }
             }
-            if (!(sidCarry.DefExpression is ConditionOf cond))
+            if (sidCarry.DefExpression is not ConditionOf cond)
             {
-                if (!(sidCarry.DefExpression is Identifier idTmp))
+                if (sidCarry.DefExpression is not Identifier idTmp)
                     return a;
                 var sidT = ssaIds[idTmp];
-                if (!(sidT.DefExpression is ConditionOf cond2))
+                if (sidT.DefExpression is not ConditionOf cond2)
                     return a;
                 cond = cond2;
             }
-            if (!(cond.Expression is Identifier condId))
+            if (cond.Expression is not Identifier condId)
                 return a;
             var sidOrigHi = ssaIds[condId];
             if (sidOrigHi.DefExpression is Slice slice2)
             {
                 sidOrigHi = ssaIds[(Identifier) slice2.Expression];
             }
-            if (!(sidOrigHi.DefExpression is BinaryExpression shift))
+            if (sidOrigHi.DefExpression is not BinaryExpression shift)
                 return a;
             Domain domain;
             if (shift.Operator == Operator.Shr)
