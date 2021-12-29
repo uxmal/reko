@@ -1001,24 +1001,7 @@ SsaProcedureBuilder_exit:
                 m.Assign(SCZO_11, m.Cond(dx_10));
                 m.Return();
             });
-            var q = @"
-	// succ:  l0800_CD67
-l0800_CD67:
-	cx_45 = PHI((cx_36, l0800_CD56), (cx_46, l0800_CD67))
-	ax_40 = PHI((ax_30, l0800_CD56), (ax_43, l0800_CD67))
-	dx_37 = PHI((dx_33, l0800_CD56), (dx_38, l0800_CD67))
-	dx_38 = dx_37 >>u 1<16>
-	SCZO_39 = cond(dx_38)
-	C_42 = SLICE(SCZO_39, bool, 1) (alias)
-	v12_41 = (ax_40 & 2<16>) != 0<16>
-	ax_43 = __rcr(ax_40, 1<8>, C_42)
-	C_44 = v12_41
-	cx_46 = cx_45 - 1<16>
-	branch cx_46 != 0<16> l0800_CD67
-	// succ:  l0800_CD6D l0800_CD67
-";
         }
-
 
         [Test]
         public void CceLongShiftInLoop()
