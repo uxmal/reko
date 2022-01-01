@@ -1,8 +1,8 @@
 ﻿#region License
 /* 
- * Copyright (C) 2017-2021 Christian Hostelet.
+ * Copyright (C) 2017-2022 Christian Hostelet.
  * inspired by work from:
- * Copyright (C) 1999-2021 John Källén.
+ * Copyright (C) 1999-2022 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
