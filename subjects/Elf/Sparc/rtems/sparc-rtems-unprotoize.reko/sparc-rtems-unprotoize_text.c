@@ -2815,22 +2815,22 @@ void _obstack_begin(struct Eq_n * o0, word32 o1, word32 o2, <anonymous> * o3, wo
 	word32 o2_n;
 	struct Eq_n * i0_n;
 	struct Eq_n * i1_n;
-	int32 o1_n = o0->dw0028 & ~0x80000000;
+	ui32 o0_n = o0->dw0028;
 	o0->dw0020 = o4;
 	word32 o2_n = i2_n + ~0x00;
 	o0->dw0018 = o2_n;
 	o0->ptr001C = o3;
 	o0->dw0000 = i1_n;
-	if (o1_n < 0x00)
+	if ((o0_n & 0x7FFFFFFF) < 0x00)
 	{
-		o0->dw0028 = o1_n;
+		o0->dw0028 = o0_n & 0x7FFFFFFF;
 		struct Eq_n * o0_n;
 		o3();
 		i1_n = o0_n;
 	}
 	else
 	{
-		o0->dw0028 = o1_n;
+		o0->dw0028 = o0_n & 0x7FFFFFFF;
 		struct Eq_n * o0_n;
 		o3();
 		i1_n = o0_n;

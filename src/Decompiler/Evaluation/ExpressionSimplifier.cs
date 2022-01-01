@@ -1486,6 +1486,11 @@ namespace Reko.Evaluation
                 return (logicalNotFollowedByNeg.Transform(), true);
             }
 
+            if (unary.Expression is Constant c && c.IsValid && unary.Operator != Operator.AddrOf)
+            {
+                var c2 = unary.Operator.ApplyConstant(c);
+                return (c2, true);
+            }
             return (unary, changed);
         }
 

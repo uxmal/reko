@@ -43,9 +43,9 @@ Eq_171: (union "Eq_171" (byte u0) ((ptr32 code) u1))
 	T_171 (in Mem156[0x7000<32>:word32] @ 002001AF : word32)
 	T_236 (in Mem284[0x7000<32>:word32] @ 00200261 : word32)
 	T_299 (in Mem408[0x7000<32>:word32] @ 00200315 : word32)
-	T_482
-	T_484
-	T_486
+	T_481
+	T_483
+	T_485
 Eq_174: (fn bool (word32))
 	T_174 (in fn00200532 @ 002001BA : ptr32)
 	T_175 (in signature of fn00200532 @ 00200532 : void)
@@ -1940,84 +1940,80 @@ T_468: (in Mem0[0x00006F83<p32>:byte] @ 00200613 : byte)
   Class: Eq_468
   DataType: byte
   OrigDataType: byte
-T_469: (in 8<8> @ 00200613 : byte)
+T_469: (in 0xF7<8> @ 00200613 : byte)
   Class: Eq_469
   DataType: byte
   OrigDataType: byte
-T_470: (in ~8<8> @ 00200613 : byte)
-  Class: Eq_470
-  DataType: byte
-  OrigDataType: byte
-T_471: (in *(byte *) 0x6F83<u32> & ~8<8> @ 00000000 : byte)
+T_470: (in *(byte *) 0x6F83<u32> & 0xF7<8> @ 00000000 : byte)
   Class: Eq_468
   DataType: byte
   OrigDataType: byte
-T_472: (in Mem9[0x00006F83<p32>:byte] @ 00200613 : byte)
+T_471: (in Mem9[0x00006F83<p32>:byte] @ 00200613 : byte)
   Class: Eq_468
   DataType: byte
   OrigDataType: byte
-T_473: (in 0<8> @ 00200617 : byte)
+T_472: (in 0<8> @ 00200617 : byte)
+  Class: Eq_472
+  DataType: byte
+  OrigDataType: byte
+T_473: (in 00006DA0 @ 00200617 : ptr32)
   Class: Eq_473
-  DataType: byte
-  OrigDataType: byte
-T_474: (in 00006DA0 @ 00200617 : ptr32)
-  Class: Eq_474
   DataType: (ptr32 byte)
-  OrigDataType: (ptr32 (struct (0 T_475 t0000)))
-T_475: (in Mem11[0x00006DA0<p32>:byte] @ 00200617 : byte)
-  Class: Eq_473
+  OrigDataType: (ptr32 (struct (0 T_474 t0000)))
+T_474: (in Mem11[0x00006DA0<p32>:byte] @ 00200617 : byte)
+  Class: Eq_472
   DataType: byte
   OrigDataType: byte
+T_475:
+  Class: Eq_475
+  DataType: word16
+  OrigDataType: (struct 0002 (0 T_49 t0000))
 T_476:
   Class: Eq_476
   DataType: word16
-  OrigDataType: (struct 0002 (0 T_49 t0000))
+  OrigDataType: (struct 0002 (0 T_64 t0000))
 T_477:
   Class: Eq_477
   DataType: word16
-  OrigDataType: (struct 0002 (0 T_64 t0000))
+  OrigDataType: (struct 0002 (0 T_67 t0000))
 T_478:
   Class: Eq_478
   DataType: word16
-  OrigDataType: (struct 0002 (0 T_67 t0000))
+  OrigDataType: (struct 0002 (0 T_92 t0000))
 T_479:
   Class: Eq_479
   DataType: word16
-  OrigDataType: (struct 0002 (0 T_92 t0000))
+  OrigDataType: (struct 0002 (0 T_95 t0000))
 T_480:
   Class: Eq_480
-  DataType: word16
-  OrigDataType: (struct 0002 (0 T_95 t0000))
-T_481:
-  Class: Eq_481
   DataType: byte
   OrigDataType: (struct 0001 (0 T_153 t0000))
-T_482:
+T_481:
   Class: Eq_171
   DataType: Eq_171
   OrigDataType: (struct 0001 (0 T_156 t0000))
-T_483:
-  Class: Eq_483
+T_482:
+  Class: Eq_482
   DataType: byte
   OrigDataType: (struct 0001 (0 T_220 t0000))
-T_484:
+T_483:
   Class: Eq_171
   DataType: Eq_171
   OrigDataType: (struct 0001 (0 T_223 t0000))
-T_485:
-  Class: Eq_485
+T_484:
+  Class: Eq_484
   DataType: byte
   OrigDataType: (struct 0001 (0 T_283 t0000))
-T_486:
+T_485:
   Class: Eq_171
   DataType: Eq_171
   OrigDataType: (struct 0001 (0 T_286 t0000))
-T_487:
-  Class: Eq_487
+T_486:
+  Class: Eq_486
   DataType: byte
   OrigDataType: (struct 0001 (0 T_421 t0000))
-T_488:
-  Class: Eq_488
+T_487:
+  Class: Eq_487
   DataType: byte
   OrigDataType: (struct 0001 (0 T_435 t0000))
 */

@@ -29,6 +29,7 @@ using Reko.Core.Types;
 using Reko.Evaluation;
 using Reko.UnitTests.Mocks;
 using System;
+using System.Numerics;
 
 namespace Reko.UnitTests.Evaluation
 {
@@ -67,7 +68,7 @@ namespace Reko.UnitTests.Evaluation
             arch.Setup(a => a.MakeSegmentedAddress(
                 It.IsNotNull<Constant>(),
                 It.IsNotNull<Constant>()))
-                .Returns(new Func<Constant,Constant, Address>((seg, off) => Address.SegPtr(seg.ToUInt16(), off.ToUInt16())));
+                .Returns(new Func<Constant, Constant, Address>((seg, off) => Address.SegPtr(seg.ToUInt16(), off.ToUInt16())));
         }
 
         private void Given_ExpressionSimplifier()
@@ -113,14 +114,14 @@ namespace Reko.UnitTests.Evaluation
                 Constant.Word32(1), Constant.Word32(2));
             var (c, _) = expr.Accept(simplifier);
 
-            Assert.AreEqual(3, ((Constant)c).ToInt32());
+            Assert.AreEqual(3, ((Constant) c).ToInt32());
         }
 
         [Test]
         public void Exs_OrWithSelf()
         {
             Given_ExpressionSimplifier();
-            var expr  = new BinaryExpression(Operator.Or, foo.DataType, foo, foo);
+            var expr = new BinaryExpression(Operator.Or, foo.DataType, foo, foo);
             var (result, _) = expr.Accept(simplifier);
             Assert.AreSame(foo, result);
         }
@@ -147,9 +148,9 @@ namespace Reko.UnitTests.Evaluation
         {
             Given_ExpressionSimplifier();
             arch.Setup(a => a.ReinterpretAsFloat(It.IsAny<Constant>()))
-                .Returns(new Func<Constant,Constant>(c =>
-                    Constant.FloatFromBitpattern(c.ToInt32())));
-            var expr  = m.FLt(foo, Constant.Word32(0xC0B00000));
+                .Returns(new Func<Constant, Constant>(c =>
+                     Constant.FloatFromBitpattern(c.ToInt32())));
+            var expr = m.FLt(foo, Constant.Word32(0xC0B00000));
             var (result, _) = expr.Accept(simplifier);
             Assert.AreEqual("foo_1 < -5.5F", result.ToString());
         }
@@ -240,7 +241,7 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var (expr, _) = m.Conditional(
                 PrimitiveType.Word32,
-                Constant.False(), 
+                Constant.False(),
                 Constant.Word32(1),
                 Constant.Word32(0)).Accept(simplifier);
             Assert.AreEqual("0<32>", expr.ToString());
@@ -315,7 +316,7 @@ namespace Reko.UnitTests.Evaluation
         public void Exs_Rolc_To_Shl()
         {
             Given_ExpressionSimplifier();
-            var (expr, _)  = m.Fn(rolc_8, foo, m.Byte(1), Constant.False()).Accept(simplifier);
+            var (expr, _) = m.Fn(rolc_8, foo, m.Byte(1), Constant.False()).Accept(simplifier);
             Assert.AreEqual("foo_1 << 1<8>", expr.ToString());
         }
 
@@ -339,7 +340,7 @@ namespace Reko.UnitTests.Evaluation
         public void Exs_SeqOfSlices_Adjacent()
         {
             Given_ExpressionSimplifier();
-            var (expr, _)  = m.Seq(m.Slice(foo, 8, 24), m.Slice(foo, 0, 8)).Accept(simplifier);
+            var (expr, _) = m.Seq(m.Slice(foo, 8, 24), m.Slice(foo, 0, 8)).Accept(simplifier);
             Assert.AreEqual("foo_1", expr.ToString());
         }
 
@@ -361,8 +362,8 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var ds = m.Temp(PrimitiveType.SegmentSelector, "ds");
             ssaIds.Add(ds, null, null, false);
-            var (expr, _)  = m.Slice(
-                PrimitiveType.Word16, 
+            var (expr, _) = m.Slice(
+                PrimitiveType.Word16,
                 m.SegMem(PrimitiveType.SegPtr32, ds, m.Word16(0x1234)),
                 0).Accept(simplifier);
             Assert.AreEqual("Mem0[ds:0x1234<16> + 0<16>:word16]", expr.ToString());
@@ -424,7 +425,7 @@ namespace Reko.UnitTests.Evaluation
             var off = m.Word16(0x5678);
             var exp = m.SegMem16(seg, off);
 
-            var (result, _) =  exp.Accept(simplifier);
+            var (result, _) = exp.Accept(simplifier);
 
             var addr = ((MemoryAccess) result).EffectiveAddress as Address;
             Assert.IsNotNull(addr);
@@ -471,7 +472,7 @@ namespace Reko.UnitTests.Evaluation
         public void Exs_ReduceArithmeticSequenceToLogicalNot()
         {
             Given_ExpressionSimplifier();
-            var expr  = m.IAdd(m.ISub(m.Word32(0), m.Ne0(m.Neg(foo))), m.Word32(1));
+            var expr = m.IAdd(m.ISub(m.Word32(0), m.Ne0(m.Neg(foo))), m.Word32(1));
             Assert.AreEqual("0<32> - (-foo_1 != 0<32>) + 1<32>", expr.ToString());
             Assert.AreEqual("!foo_1", expr.Accept(simplifier).Item1.ToString());
 
@@ -523,7 +524,7 @@ namespace Reko.UnitTests.Evaluation
         public void Exs_ZeroExtension()
         {
             Given_ExpressionSimplifier();
-            var (expr, _)  = m.Convert(m.Word32(0x42), PrimitiveType.Word32, PrimitiveType.UInt64).Accept(simplifier);
+            var (expr, _) = m.Convert(m.Word32(0x42), PrimitiveType.Word32, PrimitiveType.UInt64).Accept(simplifier);
             Assert.AreEqual("0x42<u64>", expr.ToString());
         }
 
@@ -531,7 +532,7 @@ namespace Reko.UnitTests.Evaluation
         public void Exs_SignExtension()
         {
             Given_ExpressionSimplifier();
-            var (expr, _)  = m.Convert(m.Word16(0xFFFF), PrimitiveType.Int16, PrimitiveType.Int32).Accept(simplifier);
+            var (expr, _) = m.Convert(m.Word16(0xFFFF), PrimitiveType.Int16, PrimitiveType.Int32).Accept(simplifier);
             Assert.AreEqual("-1<i32>", expr.ToString());
         }
 
@@ -549,7 +550,7 @@ namespace Reko.UnitTests.Evaluation
         {
             Given_ExpressionSimplifier();
             var tmp = Given_Tmp("tmp", m.Mem64(m.Word32(0x00123400)));
-            var (expr, _)  = m.Or(tmp, Constant.Word64(0xFFFF_FFFF_FFFF_FFFF)).Accept(simplifier);
+            var (expr, _) = m.Or(tmp, Constant.Word64(0xFFFF_FFFF_FFFF_FFFF)).Accept(simplifier);
             Assert.AreEqual("0xFFFFFFFFFFFFFFFF<64>", expr.ToString());
         }
 
@@ -558,7 +559,7 @@ namespace Reko.UnitTests.Evaluation
         {
             Given_ExpressionSimplifier();
             var tmp = Given_Tmp("tmp", m.Mem16(m.Word32(0x00123400)));
-            var (expr, _)  = m.Xor(tmp, Constant.Word16(0xFFFF)).Accept(simplifier);
+            var (expr, _) = m.Xor(tmp, Constant.Word16(0xFFFF)).Accept(simplifier);
             Assert.AreEqual("~tmp_2", expr.ToString());
         }
 
@@ -585,7 +586,7 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var mul = m.UMul(m.Word32(0xAAAA_AAAA), m.Word32(0xBBBB_BBBB));
             mul.DataType = PrimitiveType.UInt64;
-            var (expr, _)  = m.Slice(PrimitiveType.Word32, mul, 32).Accept(simplifier);
+            var (expr, _) = m.Slice(PrimitiveType.Word32, mul, 32).Accept(simplifier);
             Assert.AreEqual("@@@", expr.ToString());
         }
 
@@ -607,7 +608,7 @@ namespace Reko.UnitTests.Evaluation
         {
             Given_BigEndianArchitecture();
             Given_ExpressionSimplifier();
-            var (expr, _)  = m.Seq(
+            var (expr, _) = m.Seq(
                 m.Mem(PrimitiveType.Word32, m.Word32(0x00123400)),
                 m.Mem(PrimitiveType.Word32, m.Word32(0x00123404))).Accept(simplifier);
             expr.DataType = PrimitiveType.Real64;
@@ -619,7 +620,7 @@ namespace Reko.UnitTests.Evaluation
         {
             Given_BigEndianArchitecture();
             Given_ExpressionSimplifier();
-            var (expr, _)  = m.Seq(
+            var (expr, _) = m.Seq(
                 m.Mem(PrimitiveType.Word32, foo),
                 m.Mem(PrimitiveType.Word32, m.IAddS(foo, 4))).Accept(simplifier);
             expr.DataType = PrimitiveType.Real64;
@@ -678,7 +679,7 @@ namespace Reko.UnitTests.Evaluation
             var t1 = Given_Tmp("t1", m.Mem32(m.Word32(0x123400)));
             var t2 = Given_Tmp("t2", m.Shr(t1, 4));
             ssaIds[foo].Uses.Add(ssaIds[t1].DefStatement);
-            var (expr, _)  = m.Shl(t2, 4).Accept(simplifier);
+            var (expr, _) = m.Shl(t2, 4).Accept(simplifier);
             Assert.AreEqual("__align(t1_2, 16<i32>)", expr.ToString());
         }
 
@@ -689,7 +690,7 @@ namespace Reko.UnitTests.Evaluation
             var t1 = Given_Tmp("t1", m.Mem32(m.Word32(0x123400)));
             var t2 = Given_Tmp("t2", m.IMul(t1, 4));
             ssaIds[foo].Uses.Add(ssaIds[t1].DefStatement);
-            var (expr, _)  = m.Mem32(m.IAdd(t2, 24)).Accept(simplifier);
+            var (expr, _) = m.Mem32(m.IAdd(t2, 24)).Accept(simplifier);
             Assert.AreEqual("Mem0[t1_2 * 4<32> + 0x18<32>:word32]", expr.ToString());
         }
 
@@ -700,7 +701,7 @@ namespace Reko.UnitTests.Evaluation
             var t1 = Given_Tmp("t1", m.Mem32(m.Word32(0x123400)));
             var t2 = Given_Tmp("t2", m.Shl(t1, 3));
             ssaIds[foo].Uses.Add(ssaIds[t1].DefStatement);
-            var (expr, _)  = m.Mem32(m.IAdd(Constant.Word32(0x00123456), t2)).Accept(simplifier);
+            var (expr, _) = m.Mem32(m.IAdd(Constant.Word32(0x00123456), t2)).Accept(simplifier);
             Assert.AreEqual("Mem0[(t1_2 << 3<8>) + 0x123456<32>:word32]", expr.ToString());
         }
 
@@ -901,6 +902,27 @@ namespace Reko.UnitTests.Evaluation
                 m.SMul(foo, m.Word32(0xF000)));
             var (result, changed) = expr.Accept(simplifier);
             Assert.AreEqual("foo_1 *s64 0xF000<32>", result.ToString());
+            Assert.IsTrue(changed);
+        }
+
+        [Test]
+        public void Exs_Github_1121()
+        {
+            Given_ExpressionSimplifier();
+            var exp = m.IAdd(m.Neg(m.Word64(2)), m.Word64(2));
+            var (result, changed) = exp.Accept(simplifier);
+            Assert.AreEqual("0<64>", result.ToString());
+            Assert.IsTrue(changed);
+        }
+
+        [Test]
+        public void Exs_Negate_BigInteger()
+        {
+            Given_ExpressionSimplifier();
+            var big = new BigConstant(PrimitiveType.Word128, new BigInteger(new byte[] { 0, 11, 22, 33, 44, 55, 66, 77, 88, 99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF }));
+            var exp = m.IAdd(m.Neg(big), big);
+            var (result, changed) = exp.Accept(simplifier);
+            Assert.AreEqual("0<128>", result.ToString());
             Assert.IsTrue(changed);
         }
     }

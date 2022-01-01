@@ -369,7 +369,7 @@ bool xQueueCRSend(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, ptr32 cpsr, union
 		{
 			bool Z_n = vCoRoutineAddToDelayedList(r2, (word32) r0 + 16);
 			__msr(cpsr, 0x00);
-			r0Out = ~0x03;
+			r0Out.u0 = ~0x03;
 			return Z_n;
 		}
 		else
@@ -401,7 +401,7 @@ bool xQueueCRSend(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r7, Eq_n lr, ptr32 cpsr, union
 			Z_n = SLICE(cond(r0_n), bool, 2);
 			if (r0_n != 0x00)
 			{
-				r0_n = ~0x04;
+				r0_n.u0 = ~0x04;
 				goto l000083AA;
 			}
 		}
@@ -434,7 +434,7 @@ bool xQueueCRReceive(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r6, Eq_n r7, Eq_n lr, ptr32
 		{
 			bool Z_n = vCoRoutineAddToDelayedList(r2, (word32) r0 + 36);
 			__msr(cpsr, r5_n);
-			r0Out = ~0x03;
+			r0Out.u0 = ~0x03;
 			r6Out = r6;
 			r7Out = r7;
 			lrOut = lr;
@@ -480,7 +480,7 @@ bool xQueueCRReceive(Eq_n r0, Eq_n r1, Eq_n r2, Eq_n r6, Eq_n r7, Eq_n lr, ptr32
 			Z = SLICE(cond(r0_n), bool, 2);
 			if (r0_n != 0x00)
 			{
-				r0_n = ~0x04;
+				r0_n.u0 = ~0x04;
 l00008440:
 				__msr(cpsr, 0x00);
 				r0Out = r0_n;
@@ -2436,7 +2436,7 @@ word32 * g_ptr9B1C = &g_dw400FE018; // 00009B1C
 // 00009B20: void SysCtlPeripheralPresent(Register uint32 r0)
 void SysCtlPeripheralPresent(uint32 r0)
 {
-	(r0 & ~0xF0000000) + *g_ptr9B38[r0 >> 28] + (word32) (r0 >> 28 < 0x00) == 0x00;
+	(r0 & 0x0FFFFFFF) + *g_ptr9B38[r0 >> 28] + (word32) (r0 >> 28 < 0x00) == 0x00;
 }
 
 word32 * (* g_ptr9B38)[] = &g_aA554; // 00009B38
@@ -2444,7 +2444,7 @@ word32 * (* g_ptr9B38)[] = &g_aA554; // 00009B38
 void SysCtlPeripheralReset(uint32 r0)
 {
 	ui32 * r2_n = (g_ptr9B78 + ((r0 >> 28) << 0x02))->ptr0010;
-	*r2_n = r0 & ~0xF0000000 | *r2_n;
+	*r2_n = r0 & 0x0FFFFFFF | *r2_n;
 	up32 dwLoc0C_n = 0x00;
 	if (false)
 	{
@@ -2463,7 +2463,7 @@ ptr32 g_ptr9B78 = 42324; // 00009B78
 void SysCtlPeripheralEnable(uint32 r0)
 {
 	ui32 * r3_n = (g_ptr9B94 + ((r0 >> 28) << 0x02))->ptr001C;
-	*r3_n = r0 & ~0xF0000000 | *r3_n;
+	*r3_n = r0 & 0x0FFFFFFF | *r3_n;
 }
 
 ptr32 g_ptr9B94 = 42324; // 00009B94
@@ -2471,7 +2471,7 @@ ptr32 g_ptr9B94 = 42324; // 00009B94
 void SysCtlPeripheralDisable(uint32 r0)
 {
 	ui32 * r2_n = (g_ptr9BB0 + ((r0 >> 28) << 0x02))->ptr001C;
-	*r2_n &= ~(r0 & ~0xF0000000);
+	*r2_n &= ~(r0 & 0x0FFFFFFF);
 }
 
 ptr32 g_ptr9BB0 = 42324; // 00009BB0
@@ -2479,7 +2479,7 @@ ptr32 g_ptr9BB0 = 42324; // 00009BB0
 void SysCtlPeripheralSleepEnable(uint32 r0)
 {
 	ui32 * r3_n = (g_ptr9BCC + ((r0 >> 28) << 0x02))->ptr0028;
-	*r3_n = r0 & ~0xF0000000 | *r3_n;
+	*r3_n = r0 & 0x0FFFFFFF | *r3_n;
 }
 
 ptr32 g_ptr9BCC = 42324; // 00009BCC
@@ -2487,7 +2487,7 @@ ptr32 g_ptr9BCC = 42324; // 00009BCC
 void SysCtlPeripheralSleepDisable(uint32 r0)
 {
 	ui32 * r2_n = (g_ptr9BE8 + ((r0 >> 28) << 0x02))->ptr0028;
-	*r2_n &= ~(r0 & ~0xF0000000);
+	*r2_n &= ~(r0 & 0x0FFFFFFF);
 }
 
 ptr32 g_ptr9BE8 = 42324; // 00009BE8
@@ -2495,7 +2495,7 @@ ptr32 g_ptr9BE8 = 42324; // 00009BE8
 void SysCtlPeripheralDeepSleepEnable(uint32 r0)
 {
 	ui32 * r3_n = (g_ptr9C04 + ((r0 >> 28) << 0x02))->ptr0034;
-	*r3_n = r0 & ~0xF0000000 | *r3_n;
+	*r3_n = r0 & 0x0FFFFFFF | *r3_n;
 }
 
 ptr32 g_ptr9C04 = 42324; // 00009C04
@@ -2503,7 +2503,7 @@ ptr32 g_ptr9C04 = 42324; // 00009C04
 void SysCtlPeripheralDeepSleepDisable(uint32 r0)
 {
 	ui32 * r2_n = (g_ptr9C20 + ((r0 >> 28) << 0x02))->ptr0034;
-	*r2_n &= ~(r0 & ~0xF0000000);
+	*r2_n &= ~(r0 & 0x0FFFFFFF);
 }
 
 ptr32 g_ptr9C20 = 42324; // 00009C20

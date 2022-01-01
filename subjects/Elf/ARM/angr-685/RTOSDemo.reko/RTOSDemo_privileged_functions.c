@@ -714,17 +714,17 @@ void xQueueCreateMutex(Eq_n lr, ptr32 cpsr)
 //      xTaskCreateRestricted
 void prvInitialiseNewTask(ui32 r0, word32 r1, ui32 r2, word32 r3, int32 dwArg00, struct Eq_n ** dwArg04, struct Eq_n * dwArg08, struct Eq_n * dwArg0C)
 {
+	ui32 r5_n = dwArg08->ptr0050 + (r2 + 0x3FFFFFFF << 0x02) / 0x0066;
 	byte * r3_n = r1 - 0x01 + 1;
-	struct Eq_n * r5_n = dwArg08->ptr0050 + (r2 + 0x3FFFFFFF << 0x02) / 0x0066 & ~0x07;
 	byte * r0_n = (char *) &dwArg08->ptr0050 + 4;
-	uint32 r2_n = dwArg00 & ~0x80000000;
+	uint32 r2_n = dwArg00 & 0x7FFFFFFF;
 	do
 	{
 		*r0_n = *r3_n;
 		++r3_n;
 		++r0_n;
 	} while ((word32) *r3_n != 0x00 && r3_n != r1 + 0x02);
-	if (r2_n >= 0x01)
+	if ((dwArg00 & 0x7FFFFFFF) >= 0x01)
 		r2_n = 0x01;
 	dwArg08->dw004C = r2_n;
 	dwArg08->dw0058 = r2_n;
@@ -739,7 +739,7 @@ void prvInitialiseNewTask(ui32 r0, word32 r1, ui32 r2, word32 r3, int32 dwArg00,
 	vPortStoreTaskMPUSettings(&dwArg08->dw0004, dwArg0C, r2_n, r2);
 	dwArg08->dw0060 = 0x00;
 	dwArg08->b0064 = 0x00;
-	dwArg08->ptr0000 = pxPortInitialiseStack(r5_n, r0, r3, dwArg00 >> 0x1F);
+	dwArg08->ptr0000 = pxPortInitialiseStack(r5_n & ~0x07, r0, r3, dwArg00 >> 0x1F);
 	if (dwArg04 != null)
 		*dwArg04 = (struct Eq_n **) dwArg08;
 }
@@ -2307,10 +2307,10 @@ void xEventGroupSetBits(struct Eq_n * r0, ui32 r1, ptr32 cpsr)
 		{
 			ui32 r3_n = r0_n->dw0000;
 			struct Eq_n * r4_n = r0_n->ptr0004;
-			ui32 r2_n = r3_n & ~0xFF000000;
+			ui32 r2_n = r3_n & 0x00FFFFFF;
 			if ((r3_n & 0x04000000) == 0x00)
 			{
-				r2_n = r2_n + r1_n + (word32) ((r3_n & 0x04000000) < 0x00);
+				r2_n = (r3_n & 0x00FFFFFF) + r1_n + (word32) ((r3_n & 0x04000000) < 0x00);
 				if (r2_n != 0x00)
 				{
 l000018B2:
@@ -2324,7 +2324,7 @@ l000018B2:
 					continue;
 				break;
 			}
-			if ((r2_n & ~r1_n) == 0x00)
+			if ((r3_n & 0x00FFFFFF & ~r1_n) == 0x00)
 				goto l000018B2;
 			r0_n = r4_n;
 		} while (&r0->dw0000 + 3 != r4_n);

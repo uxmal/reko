@@ -44,7 +44,7 @@ namespace Reko.Core.Operators
                 var dt = PrimitiveType.Create(Domain.Pointer, c2.DataType.BitSize);
                 return Constant.Create(dt, c1.ToUInt64() - c2.ToUInt64());
             }
-            else if (c2.DataType.BitSize <= 64 && c2.DataType.BitSize <= 64)
+            else if (c1.DataType.BitSize <= 64 && c2.DataType.BitSize <= 64)
             {
                 return BuildConstant(c1.DataType, c2.DataType, c1.ToInt64() - c2.ToInt64());
             }

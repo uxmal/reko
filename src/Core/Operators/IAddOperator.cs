@@ -55,10 +55,15 @@ namespace Reko.Core.Operators
                     (p1.Domain | p2.Domain) != Domain.Integer)
                     throw new ArgumentException(string.Format("Can't add types of disjoint domains {0} and {1}", c1.DataType, c2.DataType));
             }
-            return BuildConstant(c1.DataType, c2.DataType, c1.ToInt64() + c2.ToInt64());
-		}
-
-
+            if (c2.DataType.BitSize <= 64 && c2.DataType.BitSize <= 64)
+            {
+                return BuildConstant(c1.DataType, c2.DataType, c1.ToInt64() + c2.ToInt64());
+            }
+            else
+            {
+                return BuildConstant(c1.DataType, c2.DataType, c1.ToBigInteger() + c2.ToBigInteger());
+            }
+        }
 
         public override string AsCompound()
         {

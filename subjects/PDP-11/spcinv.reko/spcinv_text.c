@@ -562,7 +562,7 @@ byte * fn06D6(byte * r4, Eq_n r5, struct Eq_n * pc)
 			else
 			{
 				r0_n = fn0AB6(r0_n, r4, r5, out r4, out r5);
-				r2_n[0x0EEC] = (struct Eq_n) (r2_n[0x0EEC] & ~0x80);
+				r2_n[0x0EEC] = (struct Eq_n) (r2_n[0x0EEC] & 0x7F);
 			}
 			r2_n[0x0EE9] = (struct Eq_n) ((byte) r2_n[0x0EE9] + 1);
 			Eq_n r0_n = (word32) r0_n + 1;

@@ -314,7 +314,7 @@ fn0020060C_entry:
 l0020060C:
 	branch Mem0[0x00006F91<p32>:byte] != 0<8> l0020061C
 l00200613:
-	Mem9[0x00006F83<p32>:byte] = Mem0[0x00006F83<p32>:byte] & ~8<8>
+	Mem9[0x00006F83<p32>:byte] = Mem0[0x00006F83<p32>:byte] & 0xF7<8>
 	Mem11[0x00006DA0<p32>:byte] = 0<8>
 l0020061C:
 	return

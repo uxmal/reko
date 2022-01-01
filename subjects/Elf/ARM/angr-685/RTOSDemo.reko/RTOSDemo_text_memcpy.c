@@ -65,10 +65,10 @@ l0000A63C:
 				*((word32) r5_n + r3_n) = *((word32) r1 + r3_n);
 				r3_n += 0x04;
 			} while (r3_n != r4_n << 2);
-			union Eq_n * r6_n = r6_n & ~0x03;
+			union Eq_n * r3_n = (r6_n & ~0x03) + 0x04;
 			r2 &= 0x03;
-			r1 += r6_n + 0x04;
-			r5_n += r6_n + 0x04;
+			r1 += r3_n;
+			r5_n += r3_n;
 		}
 		else
 			r2 &= 0x0F;

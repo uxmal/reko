@@ -57,7 +57,6 @@ namespace Reko.Core.Expressions
             return new BigConstant(dt, result);
         }
 
-
         public override bool IsMaxUnsigned => false;    //$TODO: consider implementing this.
 
         public override bool IsIntegerZero => this.Value.IsZero;
@@ -110,7 +109,10 @@ namespace Reko.Core.Expressions
             return Value;
         }
 
-
+        public override Constant Negate()
+        {
+            return new BigConstant(this.DataType, -this.Value);
+        }
 
         public override byte ToByte() => (byte) Value;
 

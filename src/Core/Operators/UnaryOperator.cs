@@ -32,14 +32,15 @@ namespace Reko.Core.Operators
 	{
 		public override Constant ApplyConstant(Constant c)
 		{
-			throw new NotImplementedException();
+            return c.IsZero
+                ? Constant.Create(c.DataType, 1)
+                : Constant.Create(c.DataType, 0);
 		}
 
 		public override string ToString()
 		{
 			return "!";
 		}
-
 	}
 
 	public class NegateOperator : UnaryOperator
@@ -53,7 +54,6 @@ namespace Reko.Core.Operators
 		{
 			return "-";
 		}
-
 	}
 
 	public class ComplementOperator : UnaryOperator
@@ -67,7 +67,6 @@ namespace Reko.Core.Operators
 		{
 			return "~";
 		}
-
 	}
 
 	public class AddressOfOperator : UnaryOperator

@@ -557,7 +557,7 @@ l06F6:
 	branch Mem15[r2_172 + 0xEEC<16>:byte] < 0<8> l0710
 l0710:
 	r0_50 = fn0AB6(r0_30, r4, r5, out r4, out r5)
-	Mem58[r2_172 + 0xEEC<16>:byte] = Mem43[r2_172 + 0xEEC<16>:byte] & ~0x80<8>
+	Mem58[r2_172 + 0xEEC<16>:byte] = Mem43[r2_172 + 0xEEC<16>:byte] & 0x7F<8>
 l0700:
 	word16 r4_67
 	r0_50 = fn0AB6(r0_30, r4, r5, out r4_67, out r5)
