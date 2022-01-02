@@ -235,10 +235,5 @@ namespace Reko.ImageLoaders.Coff
             }
             return syms;
         }
-
-        private object ReadSymbol(EndianImageReader rdr)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
