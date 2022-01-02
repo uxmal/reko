@@ -529,7 +529,7 @@ namespace Reko.Loading
         {
             var svc = services.RequireService<IPluginLoaderService>();
             var t = svc.GetType(typeName);
-            if (t == null)
+            if (t is null)
                 throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
             return (T) Activator.CreateInstance(t, services, imageLocation, bytes);
         }

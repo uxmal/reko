@@ -20,10 +20,12 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Diagnostics;
 using Reko.Core.Loading;
 using Reko.Core.Memory;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -31,24 +33,127 @@ namespace Reko.ImageLoaders.Coff
 {
     public class CoffLoader : ProgramImageLoader
     {
+        private static readonly TraceSwitch trace = new TraceSwitch(nameof(CoffLoader), "Trace loading of COFF files")
+        {
+            Level = TraceLevel.Verbose
+        };
+
+        private const ushort IMAGE_FILE_RELOCS_STRIPPED = 0x0001;
+        private const ushort IMAGE_FILE_EXECUTABLE_IMAGE = 0x0002;
+        private const ushort IMAGE_FILE_LINE_NUMS_STRIPPED = 0x0004;
+        private const ushort IMAGE_FILE_LOCAL_SYMS_STRIPPED = 0x0008;
+        private const ushort IMAGE_FILE_AGGRESSIVE_WS_TRIM = 0x0010;
+        private const ushort IMAGE_FILE_LARGE_ADDRESS_AWARE = 0x0020;
+        private const ushort IMAGE_FILE_BYTES_REVERSED_LO = 0x0080;
+        // Little endian: the least significant bit (LSB) precedes the most
+        // significant bit (MSB) in memory. This flag is deprecated and should be zero.
+        private const ushort IMAGE_FILE_32BIT_MACHINE = 0x0100;
+        private const ushort IMAGE_FILE_DEBUG_STRIPPED = 0x0200;
+        private const ushort IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP = 0x0400;
+        private const ushort IMAGE_FILE_NET_RUN_FROM_SWAP = 0x0800;
+        private const ushort IMAGE_FILE_SYSTEM = 0x1000;
+        private const ushort IMAGE_FILE_DLL = 0x2000;
+        private const ushort IMAGE_FILE_UP_SYSTEM_ONLY = 0x4000;
+        //The file should be run only on a uniprocessor machine.
+        private const ushort IMAGE_FILE_BYTES_REVERSED_HI = 0x8000;
+
+        private IProcessorArchitecture arch;
+        private Address addrPreferred;
+        private FileHeader header;
+        private List<(string, CoffSectionHeader)> coffSections;
+
+
         public CoffLoader(IServiceProvider services, ImageLocation imageLocation, byte[] rawBytes)
             : base(services, imageLocation, rawBytes)
         {
-            this.header = LoadHeader();
+            (this.arch, this.header, coffSections) = LoadHeader();
+            addrPreferred = default!;
         }
 
         public override Address PreferredBaseAddress
         {
-            get { throw new NotImplementedException(); }
+            get { return this.addrPreferred; }
             set { throw new NotImplementedException(); }
         }
 
         public override Program LoadProgram(Address? addrLoad)
         {
+            if ((header.f_flags & IMAGE_FILE_EXECUTABLE_IMAGE) == 0)
+            {
+                return LinkObjectFile();
+            }
             throw new NotImplementedException();
         }
 
-        private FileHeader LoadHeader()
+        private Program LinkObjectFile()
+        {
+            var segs = ComputeSegmentLayout(this.coffSections);
+            var segmentMap = LinkSegments(segs, this.coffSections);
+            return new Program(segmentMap, arch, new DefaultPlatform(Services, arch));
+        }
+
+        private SegmentMap LinkSegments(List<ImageSegment> segs, List<(string, CoffSectionHeader)> coffSections)
+        {
+            return new SegmentMap(segs.ToArray());
+        }
+
+        private List<ImageSegment> ComputeSegmentLayout(List<(string, CoffSectionHeader)> coffSections)
+        {
+            var addr = Address.Ptr32(0x4000);
+            var imgSegments = new List<ImageSegment>();
+            foreach (var (n, hdr) in coffSections)
+            {
+                addr = Align(addr, hdr.Characteristics);
+                var mem = new ByteMemoryArea(addr, new byte[hdr.SizeOfRawData]);
+                if (!hdr.Characteristics.HasFlag(CoffSectionCharacteristics.IMAGE_SCN_CNT_UNINITIALIZED_DATA))
+                {
+                    Array.Copy(RawImage, hdr.PointerToRawData, mem.Bytes, 0, mem.Bytes.Length);
+                }
+                var seg = new ImageSegment(n, mem, AccessFromSegmentHeader(hdr));
+                imgSegments.Add(seg);
+                addr = addr + mem.Bytes.Length;
+            }
+            return imgSegments;
+        }
+
+        private Address Align(Address address, CoffSectionCharacteristics characteristics)
+        {
+            int alignment;
+            switch (characteristics & CoffSectionCharacteristics.IMAGE_SCN_ALIGN_MASK)
+            {
+            default: throw new BadImageFormatException();
+            case CoffSectionCharacteristics.IMAGE_SCN_ALIGN_1BYTES: return address;
+
+            case CoffSectionCharacteristics.IMAGE_SCN_ALIGN_2BYTES: alignment = 2; break;
+            case CoffSectionCharacteristics.IMAGE_SCN_ALIGN_4BYTES: alignment = 4; break;
+            case CoffSectionCharacteristics.IMAGE_SCN_ALIGN_8BYTES: alignment = 8; break;
+            case CoffSectionCharacteristics.IMAGE_SCN_ALIGN_16BYTES: alignment = 0x10; break;
+            case CoffSectionCharacteristics.IMAGE_SCN_ALIGN_32BYTES: alignment = 0x20; break;
+            case CoffSectionCharacteristics.IMAGE_SCN_ALIGN_64BYTES: alignment = 0x40; break;
+            case CoffSectionCharacteristics.IMAGE_SCN_ALIGN_128BYTES: alignment = 0x80; break;
+            case CoffSectionCharacteristics.IMAGE_SCN_ALIGN_256BYTES: alignment = 0x100; break;
+            case CoffSectionCharacteristics.IMAGE_SCN_ALIGN_512BYTES: alignment = 0x200; break;
+            case CoffSectionCharacteristics.IMAGE_SCN_ALIGN_1024BYTES: alignment = 0x400; break;
+            case CoffSectionCharacteristics.IMAGE_SCN_ALIGN_2048BYTES: alignment = 0x800; break;
+            case CoffSectionCharacteristics.IMAGE_SCN_ALIGN_4096BYTES: alignment = 0x1000; break;
+            case CoffSectionCharacteristics.IMAGE_SCN_ALIGN_8192BYTES: alignment = 0x2000; break;
+            }
+            return address.Align(alignment);
+        }
+
+        private AccessMode AccessFromSegmentHeader(in CoffSectionHeader hdr)
+        {
+            AccessMode mode = 0;
+            if (hdr.Characteristics.HasFlag(CoffSectionCharacteristics.IMAGE_SCN_MEM_READ))
+                mode |= AccessMode.Read;
+            if (hdr.Characteristics.HasFlag(CoffSectionCharacteristics.IMAGE_SCN_MEM_WRITE))
+                mode |= AccessMode.Write;
+            if (hdr.Characteristics.HasFlag(CoffSectionCharacteristics.IMAGE_SCN_MEM_EXECUTE))
+                mode |= AccessMode.Execute;
+            return mode;
+        }
+
+        private (IProcessorArchitecture, FileHeader, List<(string, CoffSectionHeader)>) LoadHeader()
         {
             var rdr = new LeImageReader(RawImage, 0);
             var magic = rdr.ReadLeUInt16();
@@ -57,9 +162,10 @@ namespace Reko.ImageLoaders.Coff
             switch (magic)
             {
             case 0x014C: arch = cfgSvc.GetArchitecture("x86-real-16")!; break;
-            default: throw new NotSupportedException();
+            case 0x8664: arch = cfgSvc.GetArchitecture("x86-protected-64")!; break;
+            default: throw new NotSupportedException($"COFF loader for architecture {magic:X4} not supported yet.");
             }
-            return new FileHeader
+            var fileHeader= new FileHeader
             {
                 f_magic = magic,
                 f_nscns = rdr.ReadUInt16(),
@@ -69,13 +175,70 @@ namespace Reko.ImageLoaders.Coff
                 f_opthdr = rdr.ReadUInt16(),
                 f_flags = rdr.ReadUInt16(),
             };
+            // Section header follow immediately after the file header.
+            var coffSections = new List<(string,CoffSectionHeader)>();
+            for (int i = 0; i < fileHeader.f_nscns; ++i)
+            {
+                var hdr = rdr.ReadStruct<CoffSectionHeader>();
+                string name;
+                unsafe
+                {
+                    name = Encoding.ASCII.GetString(hdr.Name, 8).TrimEnd('\0');
+                }
+                coffSections.Add((name,hdr));
+            }
+            return (arch, fileHeader, coffSections);
         }
+
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            throw new NotImplementedException();
+            var syms = ReadSymbols();
+            return new RelocationResults(
+                new List<ImageSymbol>(),
+                new SortedList<Address, ImageSymbol>());
         }
 
-        public FileHeader header { get; set; }
+        private List<CoffSymbol> ReadSymbols()
+        {
+            var syms = new List<CoffSymbol>();
+            if (header.f_nsyms == 0)
+                return syms;
+            var rdr = new ByteImageReader(RawImage, this.header.f_symptr);
+            for (int i = 0; i < header.f_nsyms; ++i)
+            {
+                syms.Add(rdr.ReadStruct<CoffSymbol>());
+            }
+            // rdr is now positioned at the start of the string table. 
+            long strtabOffset = rdr.Offset;
+            // Generate symbol names.
+            trace.Verbose($"{"COFF symbols",-18} {"sec",-3} {"value",-8} {"type",-4}");
+            for (int i = 0; i < syms.Count; ++i)
+            {
+                var sym = syms[i];
+                string name;
+                if (sym.e_zeroes != 0) unsafe
+                {
+                    name = Encoding.ASCII.GetString(sym.e_name, 8).TrimEnd('\0');
+                }
+                else
+                {
+                    var ab = new List<byte>();
+                    rdr.Offset = strtabOffset + sym.e_offset;
+                    while (rdr.TryReadByte(out byte b) && b != 0)
+                    {
+                        ab.Add(b);
+                    }
+                    name = Encoding.ASCII.GetString(ab.ToArray());
+                }
+                trace.Verbose($"  {name,-16} {sym.e_scnum,3} {sym.e_value:X8} {sym.e_type:X4}");
+            }
+            return syms;
+        }
+
+        private object ReadSymbol(EndianImageReader rdr)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
