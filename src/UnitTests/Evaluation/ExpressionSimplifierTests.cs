@@ -98,6 +98,13 @@ namespace Reko.UnitTests.Evaluation
             return ssaIds.Add(tmp, new Statement(0, new Assignment(tmp, defExpr), null), defExpr, false).Identifier;
         }
 
+        private void AssertChanged(string expected, (Expression, bool) result)
+        {
+            var (e, changed) = result;
+            Assert.AreEqual(expected, e.ToString());
+            Assert.IsTrue(changed, "Expression should be changed");
+        }
+
         [Test]
         public void Exs_Constants()
         {
@@ -780,9 +787,10 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var t = Constant.True();
             var expr = m.Convert(t, t.DataType, PrimitiveType.Word32);
-            var (result, changed) = expr.Accept(simplifier);
-            Assert.AreEqual("1<32>", result.ToString());
-            Assert.IsTrue(changed);
+
+            var result = expr.Accept(simplifier);
+
+            AssertChanged("1<32>", result);
         }
 
         [Test]
@@ -790,9 +798,10 @@ namespace Reko.UnitTests.Evaluation
         {
             Given_ExpressionSimplifier();
             var expr = m.ARef(PrimitiveType.Word16, Constant.Word32(0x12345678), Constant.Int32(1));
-            var (result, changed) = expr.Accept(simplifier);
-            Assert.AreEqual("0x1234<16>", result.ToString());
-            Assert.IsTrue(changed);
+
+            var result = expr.Accept(simplifier);
+
+            AssertChanged("0x1234<16>", result);
         }
 
         [Test]
@@ -801,9 +810,10 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var seq = m.Seq(this.foo, Constant.Word32(0x12345678));
             var expr = m.ARef(PrimitiveType.Word16, seq, Constant.Int32(1));
-            var (result, changed) = expr.Accept(simplifier);
-            Assert.AreEqual("0x1234<16>", result.ToString());
-            Assert.IsTrue(changed);
+
+            var result = expr.Accept(simplifier);
+
+            AssertChanged("0x1234<16>", result);
         }
 
         [Test]
@@ -815,9 +825,10 @@ namespace Reko.UnitTests.Evaluation
             var expr = m.Seq(
                 m.ISub(m.Neg(m.Word32(0)), ne0),
                 m.Neg(foo));
-            var (result, changed) = expr.Accept(simplifier);
-            Assert.AreEqual("-CONVERT(foo_1, uint32, int64)", result.ToString());
-            Assert.IsTrue(changed);
+
+            var result = expr.Accept(simplifier);
+
+            AssertChanged("-CONVERT(foo_1, uint32, int64)", result);
         }
 
         [Test]
@@ -829,9 +840,10 @@ namespace Reko.UnitTests.Evaluation
                 m.Word16(0x1234), m.Word16(0x0001),
                 m.Word16(0x1234), m.Word16(0x5678),
                 m.Word16(0x1234), m.Word16(0x0002));
-            var (result, changed) = expr.Accept(simplifier);
-            Assert.AreEqual("0x12345678123400011234567812340002<128>", result.ToString());
-            Assert.IsTrue(changed);
+
+            var result = expr.Accept(simplifier);
+
+            AssertChanged("0x12345678123400011234567812340002<128>", result);
         }
 
         [Test]
@@ -842,10 +854,21 @@ namespace Reko.UnitTests.Evaluation
                 m.Eq(foo, m.Word32(1)),
                 PrimitiveType.Bool, PrimitiveType.Word32);
             var expr = m.Slice(conv, PrimitiveType.Byte);
-            var (result, changed) = expr.Accept(simplifier);
-            Assert.AreEqual(
-                "CONVERT(foo_1 == 1<32>, bool, byte)", result.ToString());
-            Assert.IsTrue(changed);
+
+            var result = expr.Accept(simplifier);
+
+            AssertChanged("CONVERT(foo_1 == 1<32>, bool, byte)", result);
+        }
+
+        [Test]
+        public void Exs_SequenceElement()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Seq(foo, m.IAdd(m.IAdd(foo, 1), 2));
+
+            var result = expr.Accept(simplifier);
+
+            AssertChanged("SEQ(foo_1, foo_1 + 3<32>)", result);
         }
     }
 }

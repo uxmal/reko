@@ -538,7 +538,7 @@ word16 fn000003C1(word32 gp12_gp13, word32 gp7_gp8, word16 gp5, word16 gp9, word
 // Preserved: gp15
 fn000003C1_entry:
 l000003C1:
-	Mem8[gp11:word16] = SEQ(SLICE(gp5, byte, 0), Mem0[gp11 + 0<16>:byte])
+	Mem8[gp11:word16] = SEQ(SLICE(gp5, byte, 0), Mem0[gp11:byte])
 l000003C4_thunk_fn000003C5:
 	word16 gp2_24
 	word16 gp1_25
@@ -577,7 +577,7 @@ l000003C8_thunk_fn00000418:
 l000003C9:
 	branch Test(NE,(gp9 + 1<16> & 0x8000<u16>) == 0<16>) l000003D0
 l000003D0:
-	Mem39[gp11:word16] = SEQ(SLICE(gp10, byte, 0), Mem8[gp11 + 0<16>:byte])
+	Mem39[gp11:word16] = SEQ(SLICE(gp10, byte, 0), Mem8[gp11:byte])
 l000003CD:
 	Mem42[gp11:word16] = SEQ(Mem8[gp11 + 1<16>:byte], SLICE(gp10, byte, 0))
 l000003D2:
