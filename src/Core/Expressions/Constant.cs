@@ -179,12 +179,28 @@ namespace Reko.Core.Expressions
             return new ConstantByte(PrimitiveType.Byte, c);
         }
 
-		public static Constant RealFromBitpattern(PrimitiveType dt, long bits)
+        /// <summary>
+        /// Given a raw bitpattern <paramref name="bits"/>, reinterpret
+        /// it as an IEEE floating point number.
+        /// //$REVIEW: this needs to handle non-IEEE floating point bit 
+        /// patterns. It's likely it will have to be moved to IPlatform.
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="bits"></param>
+        /// <returns></returns>
+		public static Constant RealFromBitpattern(PrimitiveType dt, Constant bits)
 		{
+            if (dt == PrimitiveType.Real80)
+            {
+                var rawBits = bits.ToBigInteger();
+                var exponent = (int) (rawBits >> 64);
+                var mantissa = rawBits & ((BigInteger.One << 64) - BigInteger.One);
+                return ConstantReal.Real80(new Float80((ushort) exponent, (ulong) mantissa));
+            }
 			if (dt == PrimitiveType.Real32)
-				return FloatFromBitpattern(bits);
+				return FloatFromBitpattern(bits.ToInt64());
 			else if (dt == PrimitiveType.Real64)
-				return DoubleFromBitpattern(bits);
+				return DoubleFromBitpattern(bits.ToInt64());
 			else
 				throw new ArgumentException(string.Format("Data type {0} is not a floating point type.", dt));
 		}

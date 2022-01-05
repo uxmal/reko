@@ -71,7 +71,8 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void ConFloatFromBits()
 		{
-			Constant c = Constant.RealFromBitpattern(PrimitiveType.Real32, 0x3FC00000);
+            Constant raw = Constant.Word32(0x3FC00000);
+			Constant c = Constant.RealFromBitpattern(PrimitiveType.Real32, raw);
 			Assert.AreEqual(1.5F, c.ToFloat());
 		}
 

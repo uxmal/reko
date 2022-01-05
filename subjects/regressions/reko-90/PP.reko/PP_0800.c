@@ -6617,10 +6617,10 @@ void fn0800-43D4(Eq_n wArg02, Eq_n psegArg04, Eq_n wArg06)
 	}
 }
 
-// 0800:441C: void fn0800-441C(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg06)
+// 0800:441C: void fn0800-441C(Register Eq_n ds, Stack segptr32 ptrArg02, Stack Eq_n wArg06)
 // Called from:
 //      fn0800-7A02
-void fn0800-441C(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06)
+void fn0800-441C(Eq_n ds, segptr32 ptrArg02, Eq_n wArg06)
 {
 	struct Eq_n Eq_n::* wArg02 = (word16) ptrArg02;
 	struct Eq_n * psegArg04 = SLICE(ptrArg02, selector, 16);
@@ -11334,10 +11334,10 @@ byte fn0800-8359(Eq_n ds, struct Eq_n & dsOut)
 	return al_n;
 }
 
-// 0800:83A1: void fn0800-83A1(Register Eq_n ds, Stack Eq_n ptrArg02, Stack Eq_n wArg06)
+// 0800:83A1: void fn0800-83A1(Register Eq_n ds, Stack segptr32 ptrArg02, Stack Eq_n wArg06)
 // Called from:
 //      fn0800-7A02
-void fn0800-83A1(Eq_n ds, Eq_n ptrArg02, Eq_n wArg06)
+void fn0800-83A1(Eq_n ds, segptr32 ptrArg02, Eq_n wArg06)
 {
 	struct Eq_n * psegArg04_n = SLICE(ptrArg02, selector, 16);
 	Eq_n di_n = wArg06;
@@ -17515,7 +17515,7 @@ word16 fn0800_C04F(Eq_n ds, struct Eq_n * ptrArg02, struct Eq_n * ptrArg06, ptr1
 	ci16 si_n = ptrArg02->w0000;
 	Eq_n dx_n = *((word32) ds + 9954);
 	int32 dx_ax_n = (int32) (si_n + 63556 >> 0x02);
-	ui16 ax_n = *((word32) ds + 9956) + 4814 + (word16) (dx_n < 0xA600);
+	word16 ax_n = *((word32) ds + 9956) + 4814 + (word16) (dx_n < 0xA600);
 	byte ch_n;
 	word16 dx_n;
 	fn0800-8F18(0x1F80, SLICE(dx_ax_n, word16, 16), 0x0786, (word16) dx_ax_n, out ch_n, out dx_n);

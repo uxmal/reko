@@ -472,7 +472,7 @@ namespace Reko.Typing
 		{
 			if (pt.Domain == Domain.Real && (pOrig!.Domain & Domain.Integer) != 0)
 			{
-				return(Constant.RealFromBitpattern(pt, c!.ToInt64()));
+				return Constant.RealFromBitpattern(pt, c!);
 			}
 			else
 			{

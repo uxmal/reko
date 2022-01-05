@@ -80,7 +80,7 @@ namespace Reko.Evaluation
                 {
                     // Raw bitvector assigned to an real-valued register. We need to interpret the bitvector
                     // as a floating-point constant.
-                    cNew = Constant.RealFromBitpattern(pt, cSrc.ToInt64());
+                    cNew = Constant.RealFromBitpattern(pt, cSrc);
                 }
                 cNew.DataType = dt!;
                 return cNew;

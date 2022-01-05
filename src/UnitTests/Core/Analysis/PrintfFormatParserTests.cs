@@ -51,6 +51,7 @@ namespace Reko.UnitTests.Core.Analysis
             platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Int)).Returns(32);
             platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Long)).Returns(32);
             platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.Double)).Returns(64);
+            platform.Setup(p => p.GetBitSizeFromCBasicType(CBasicType.LongDouble)).Returns(80);
             platform.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
             this.program = new Program { Platform = platform.Object };
         }
@@ -174,7 +175,7 @@ namespace Reko.UnitTests.Core.Analysis
         {
             ParseChar32("%Lg");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("real128", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("real80", parser.ArgumentTypes[0].ToString());
         }
     }
 }

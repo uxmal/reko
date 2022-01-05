@@ -808,7 +808,7 @@ namespace Reko.Evaluation
         {
             var bitSize = Math.Min(rawBits.DataType.BitSize, 64);
             var dtImm = PrimitiveType.Create(Domain.Real, bitSize);
-            var cImm = Constant.RealFromBitpattern(dtImm, rawBits.ToInt64());
+            var cImm = Constant.RealFromBitpattern(dtImm, rawBits);
             cImm = ConstantReal.Create(dtImm, cImm.ToReal64());
             if (cImm.DataType.BitSize == ptCast.BitSize)
             {

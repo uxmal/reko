@@ -40,6 +40,7 @@ namespace Reko.Libraries.Libc
         protected readonly int intSize;
         protected readonly int longSize;
         protected readonly int doubleSize;
+        protected readonly int longDoubleSize;
         protected readonly int pointerSize;
         protected readonly int wordSize;
         private readonly IServiceProvider services;
@@ -59,6 +60,7 @@ namespace Reko.Libraries.Libc
             this.intSize = platform.GetBitSizeFromCBasicType(CBasicType.Int);
             this.longSize = platform.GetBitSizeFromCBasicType(CBasicType.Long);
             this.doubleSize = platform.GetBitSizeFromCBasicType(CBasicType.Double);
+            this.longDoubleSize = platform.GetBitSizeFromCBasicType(CBasicType.LongDouble);
             this.wordSize = platform.Architecture.WordWidth.BitSize;
             this.pointerSize = platform.PointerType.BitSize;
             this.services = services;
@@ -163,7 +165,8 @@ namespace Reko.Libraries.Libc
                 switch (size)
                 {
                 case PrintfSize.LongLong:
-                    bitSize = 128; break;
+                    bitSize = this.longDoubleSize;
+                    break;
                 default:
                     // floats are promoted to doubles.
                     bitSize = this.doubleSize;

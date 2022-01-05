@@ -866,7 +866,7 @@ namespace Reko.Analysis
                 else
                 {
                      var seq = outer.arch.Endianness.MakeSequence(
-                        this.id.DataType, 
+                        PrimitiveType.CreateWord(this.id.DataType.BitSize), 
                         sequence.Select(e => (Expression) MakeSequenceElement(e).Identifier)
                                 .ToArray());
                     var assSeq = new AliasAssignment(id, seq);

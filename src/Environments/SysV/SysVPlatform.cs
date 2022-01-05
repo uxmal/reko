@@ -74,6 +74,7 @@ namespace Reko.Environments.SysV
 
         public override int GetBitSizeFromCBasicType(CBasicType cb)
         {
+            //$REVIEW: it seems this sort of data should be in the reko.config file.
             switch (cb)
             {
             case CBasicType.Bool: return 8;
@@ -85,7 +86,12 @@ namespace Reko.Environments.SysV
             case CBasicType.LongLong: return 64;
             case CBasicType.Float: return 32;
             case CBasicType.Double: return 64;
-            case CBasicType.LongDouble: return 64;
+            case CBasicType.LongDouble:
+                if (Architecture is Reko.Arch.X86.IntelArchitecture &&
+                    Architecture.WordWidth.BitSize == 32)
+                    return 80;
+                else
+                    return 64;      //$REVIEW: should this be 128?
             case CBasicType.Int64: return 64;
             default: throw new NotImplementedException(string.Format("C basic type {0} not supported.", cb));
             }

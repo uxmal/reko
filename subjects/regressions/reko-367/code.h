@@ -107,10 +107,10 @@ T_19: (in SLICE(fp0_11, word32, 64) @ 80000150 : word32)
   Class: Eq_19
   DataType: word32
   OrigDataType: word32
-T_20: (in SEQ(SLICE(fp0_11, word32, 0), SLICE(fp0_11, word32, 32), SLICE(fp0_11, word32, 64)) @ 80000150 : real96)
+T_20: (in SEQ(SLICE(fp0_11, word32, 0), SLICE(fp0_11, word32, 32), SLICE(fp0_11, word32, 64)) @ 80000150 : word96)
   Class: Eq_13
   DataType: real96
-  OrigDataType: real96
+  OrigDataType: word96
 T_21: (in CONVERT(dwLoc14_53, word32, real96) @ 80000156 : real96)
   Class: Eq_6
   DataType: real96
@@ -183,10 +183,10 @@ T_38: (in SLICE(fp0_11, word32, 64) @ 800001AE : word32)
   Class: Eq_38
   DataType: word32
   OrigDataType: word32
-T_39: (in SEQ(SLICE(fp0_11, word32, 0), SLICE(fp0_11, word32, 32), SLICE(fp0_11, word32, 64)) @ 800001AE : real96)
+T_39: (in SEQ(SLICE(fp0_11, word32, 0), SLICE(fp0_11, word32, 32), SLICE(fp0_11, word32, 64)) @ 800001AE : word96)
   Class: Eq_30
   DataType: real96
-  OrigDataType: real96
+  OrigDataType: word96
 T_40: (in CONVERT(dwLoc14_52, word32, real96) @ 800001B4 : real96)
   Class: Eq_6
   DataType: real96
@@ -307,10 +307,10 @@ T_69: (in SLICE(fp1_83, word32, 64) @ 8000021E : word32)
   Class: Eq_69
   DataType: word32
   OrigDataType: word32
-T_70: (in SEQ(SLICE(fp1_83, word32, 0), SLICE(fp1_83, word32, 32), SLICE(fp1_83, word32, 64)) @ 8000021E : real96)
+T_70: (in SEQ(SLICE(fp1_83, word32, 0), SLICE(fp1_83, word32, 32), SLICE(fp1_83, word32, 64)) @ 8000021E : word96)
   Class: Eq_62
   DataType: real96
-  OrigDataType: real96
+  OrigDataType: word96
 T_71: (in 100<i32> @ 80000222 : int32)
   Class: Eq_47
   DataType: int32
@@ -431,10 +431,10 @@ T_100: (in SLICE(fp0_14, word32, 64) @ 800002DC : word32)
   Class: Eq_100
   DataType: word32
   OrigDataType: word32
-T_101: (in SEQ(SLICE(fp0_14, word32, 0), SLICE(fp0_14, word32, 32), SLICE(fp0_14, word32, 64)) @ 800002DC : real96)
+T_101: (in SEQ(SLICE(fp0_14, word32, 0), SLICE(fp0_14, word32, 32), SLICE(fp0_14, word32, 64)) @ 800002DC : word96)
   Class: Eq_93
   DataType: real96
-  OrigDataType: real96
+  OrigDataType: word96
 T_102: (in 100<i32> @ 800002E0 : int32)
   Class: Eq_81
   DataType: int32
