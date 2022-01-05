@@ -36,11 +36,6 @@ namespace Reko.Environments.MacOS.OSX
             get { return ""; }
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-            return new HashSet<RegisterStorage>();
-        }
-
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             throw new NotImplementedException();

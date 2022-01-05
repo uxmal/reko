@@ -50,12 +50,6 @@ namespace Reko.Environments.Ps3
 
         public override PrimitiveType PointerType { get { return PrimitiveType.Ptr32; } }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-            //$TODO: find out what registers are always preserved
-            return new HashSet<RegisterStorage>();
-        }
-
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             //$TODO: find out what registers are always trashed

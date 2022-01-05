@@ -48,12 +48,9 @@ namespace Reko.Environments.C64
             return new C64Emulator(segmentMap, importReferences);
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
-            return new HashSet<RegisterStorage>
-            {
-                Registers.s
-            };
+            return reg == Registers.s;
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

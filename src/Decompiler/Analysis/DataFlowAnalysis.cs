@@ -260,7 +260,7 @@ namespace Reko.Analysis
                     return;
             }
             var trashedRegisters = program.Platform.CreateTrashedRegisters();
-            var implicitRegs = program.Platform.CreateImplicitArgumentRegisters();
+            var platform = program.Platform;
             foreach (var use in ci.Uses.ToList())
             {
                 if (IsPreservedRegister(trashedRegisters, use.Storage) ||
@@ -268,7 +268,8 @@ namespace Reko.Analysis
                         ssa,
                         trashedRegisters,
                         use) ||
-                    implicitRegs.Contains(use.Storage))
+                    (use.Storage is RegisterStorage reg &&
+                     platform.IsImplicitArgumentRegister(reg)))
                 {
                     ci.Uses.Remove(use);
                     ssa.RemoveUses(stm, use.Expression);

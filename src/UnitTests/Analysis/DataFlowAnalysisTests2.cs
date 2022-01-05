@@ -245,8 +245,8 @@ test_exit:
             var program = pb.BuildProgram();
             var platform = new Mock<IPlatform>();
             platform.Setup(p => p.Architecture).Returns(arch);
-            platform.Setup(p => p.CreateImplicitArgumentRegisters()).Returns(
-                new HashSet<RegisterStorage>());
+            platform.Setup(p => p.IsImplicitArgumentRegister(It.IsAny<RegisterStorage>()))
+                .Returns(false);
             platform.Setup(p => p.DefaultCallingConvention).Returns("__cdecl");
             platform.Setup(p => p.GetCallingConvention(null))
                 .Returns(new X86CallingConvention(4, 4, 4, true, false));

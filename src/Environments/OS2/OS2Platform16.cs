@@ -30,6 +30,13 @@ namespace Reko.Environments.OS2
                  Vector = 3,
             }
         };
+        private static readonly HashSet<RegisterStorage> implicitRegs = new HashSet<RegisterStorage>
+        {
+            Registers.cs,
+            Registers.ss,
+            Registers.sp,
+            Registers.Top,
+        };
 
         public OS2Platform16(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "os2-16")
         {
@@ -45,14 +52,9 @@ namespace Reko.Environments.OS2
             return parser;
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
-            return new HashSet<RegisterStorage>
-            {
-                Registers.cs,
-                Registers.ss,
-                Registers.sp,
-            };
+            return implicitRegs.Contains(reg);
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

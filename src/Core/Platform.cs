@@ -59,7 +59,7 @@ namespace Reko.Core
         PrimitiveType PointerType { get; }
 
         Address AdjustProcedureAddress(Address addrCode);
-        HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
+
         HashSet<RegisterStorage> CreateTrashedRegisters();
 
         IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
@@ -164,6 +164,17 @@ namespace Reko.Core
         /// <param name="addr">The <see cref="Address"/> address of the procedure.</param>
         /// <param name="emitter">A <see cref="CodeEmitter"/> that can be used to generate IR code.</param>
         void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter);
+
+        /// <summary>
+        /// Determines whether a register is never used
+        /// as arguments to a procedure. 
+        /// </summary>
+        /// <remarks>
+        /// Typically, the stack pointer register is such a register.
+        /// Some architectures or ABIs define global registers that are preserved 
+        /// across calls; these should also be present in this set.
+        /// </remarks>
+        bool IsImplicitArgumentRegister(RegisterStorage reg);
 
         void LoadUserOptions(Dictionary<string, object> options);
         
@@ -291,23 +302,6 @@ namespace Reko.Core
         public virtual IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)
         {
             throw new NotImplementedException("Emulation has not been implemented for this platform yet.");
-        }
-
-        /// <summary>
-        /// Creates a set that represents those registers that are never used
-        /// as arguments to a procedure. 
-        /// </summary>
-        /// <remarks>
-        /// Typically, the stack pointer register is one of these registers.
-        /// Some architectures define global registers that are preserved 
-        /// across calls; these should also be present in this set.
-        /// </remarks>
-        public virtual HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-            return new HashSet<RegisterStorage>()
-            {
-                Architecture.StackRegister,
-            };
         }
 
         /// <summary>
@@ -481,6 +475,20 @@ namespace Reko.Core
         public virtual ProcedureBase? GetTrampolineDestination(Address addrInstr, IEnumerable<RtlInstruction> instrs, IRewriterHost host)
         {
             return null;
+        }
+
+        /// <summary>
+        /// Determines whether a register is never used
+        /// as arguments to a procedure. 
+        /// </summary>
+        /// <remarks>
+        /// Typically, the stack pointer register is such a register.
+        /// Some architectures or ABIs define global registers that are preserved 
+        /// across calls; these should also be present in this set.
+        /// </remarks>
+        public virtual bool IsImplicitArgumentRegister(RegisterStorage reg)
+        {
+            return reg == Architecture.StackRegister;
         }
 
         public virtual Address? MakeAddressFromConstant(Constant c, bool codeAlign)

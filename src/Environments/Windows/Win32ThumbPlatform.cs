@@ -35,6 +35,7 @@ namespace Reko.Environments.Windows
     public class Win32ThumbPlatform : Platform
     {
         private Dictionary<int, SystemService> systemServices;
+        private readonly HashSet<RegisterStorage> implicitRegs;
 
         public Win32ThumbPlatform(IServiceProvider services, IProcessorArchitecture arch) : 
             base(services, arch, "winArm")
@@ -111,6 +112,9 @@ namespace Reko.Environments.Windows
                     }
                 }
             };
+            this.implicitRegs = new[] { "r11", "sp", "lr", "pc" }
+                .Select(r => Architecture.GetRegister(r)!)
+                .ToHashSet();
         }
 
         public override string DefaultCallingConvention
@@ -131,10 +135,9 @@ namespace Reko.Environments.Windows
             return parser;
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
-            return new[] { "r11", "sp", "lr", "pc" }
-                .Select(r => Architecture.GetRegister(r)!).ToHashSet();
+            return implicitRegs.Contains(reg);
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

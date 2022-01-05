@@ -32,14 +32,19 @@ namespace Reko.Environments.Windows
 {
     public class WinAArch64Platform : Platform
     {
-        private RegisterStorage framePointer;
-        private RegisterStorage linkRegister;
+        private readonly HashSet<RegisterStorage> implicitRegs;
 
         public WinAArch64Platform(IServiceProvider services, IProcessorArchitecture arch) :
             base(services, arch, "winArm64")
         {
-            this.framePointer = arch.GetRegister("x29")!;
-            this.linkRegister = arch.GetRegister("x30")!;
+
+            var framePointer = arch.GetRegister("x29")!;
+            var linkRegister = arch.GetRegister("x30")!;
+
+            implicitRegs = new HashSet<RegisterStorage>
+            {
+                framePointer, linkRegister
+            };
         }
 
         public override string DefaultCallingConvention => "";
@@ -53,12 +58,9 @@ namespace Reko.Environments.Windows
         }
 
         // https://docs.microsoft.com/en-us/cpp/build/arm64-windows-abi-conventions?view=vs-2020
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
-            return new HashSet<RegisterStorage>
-            {
-                framePointer, linkRegister
-            };
+            return implicitRegs.Contains(reg);
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

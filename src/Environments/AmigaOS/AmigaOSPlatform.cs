@@ -114,9 +114,9 @@ namespace Reko.Environments.AmigaOS
             return new M68kCallingConvention((M68kArchitecture) this.Architecture);
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
-            return new HashSet<RegisterStorage> { Registers.a7 };
+            return reg == Registers.a7;
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

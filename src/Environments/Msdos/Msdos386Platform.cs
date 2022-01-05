@@ -36,6 +36,15 @@ namespace Reko.Environments.Msdos
     /// </summary>
     public class Msdos386Platform : Platform
     {
+        private readonly HashSet<RegisterStorage> implicitRegs = new HashSet<RegisterStorage>
+        {
+            Registers.cs,
+            Registers.ss,
+            Registers.sp,
+            Registers.esp,
+            Registers.Top,
+        };
+
         private SystemService[] interruptServices;
 
         public Msdos386Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "ms-dos-386")
@@ -45,16 +54,9 @@ namespace Reko.Environments.Msdos
 
         public override string DefaultCallingConvention => "cdecl";
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
-            return new HashSet<RegisterStorage>
-            {
-                Registers.cs,
-                Registers.ss,
-                Registers.sp,
-                Registers.esp,
-                Registers.Top,
-            };
+            return implicitRegs.Contains(reg);
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

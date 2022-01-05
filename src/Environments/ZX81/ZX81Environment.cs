@@ -42,11 +42,6 @@ namespace Reko.Environments.ZX81
             encoding = new ZX81Encoding();
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-            return new HashSet<RegisterStorage> { Registers.sp };
-        }
-
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             // A wild guess, but it's better than nothing. 

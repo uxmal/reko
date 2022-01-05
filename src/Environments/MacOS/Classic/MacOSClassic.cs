@@ -45,9 +45,9 @@ namespace Reko.Environments.MacOS.Classic
             A5World = null!;
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
-            return new HashSet<RegisterStorage> { Registers.a5, Registers.a7 };
+            return reg.Number == Registers.a7.Number || reg.Number == Registers.a5.Number;
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

@@ -69,7 +69,6 @@ void fn00200089()
 		++xde_n;
 	}
 	fn002004F2(a_n);
-	word32 xsp_n;
 	word32 xhl_n;
 	(*(union Eq_n *) 0x7000)();
 	word16 xhl_16_16_n = SLICE(xhl_n, word16, 16);
@@ -92,7 +91,6 @@ void fn00200089()
 		++xde_n;
 	}
 	fn002004F2(a_n);
-	word32 xsp_n;
 	word32 xhl_n;
 	(*(union Eq_n *) 0x7000)();
 	word16 xhl_16_16_n = SLICE(xhl_n, word16, 16);

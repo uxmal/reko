@@ -43,11 +43,6 @@ namespace Reko.Environments.AtariTOS
             get { return ""; }
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-            throw new NotImplementedException();
-        }
-
         public override CallingConvention GetCallingConvention(string? ccName)
         {
             if (ccName == "TOSCall")

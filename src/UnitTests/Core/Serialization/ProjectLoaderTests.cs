@@ -158,11 +158,6 @@ namespace Reko.UnitTests.Core.Serialization
                 }
             }
 
-            public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-            {
-                throw new NotImplementedException();
-            }
-
             public override HashSet<RegisterStorage> CreateTrashedRegisters()
             {
                 throw new NotImplementedException();
