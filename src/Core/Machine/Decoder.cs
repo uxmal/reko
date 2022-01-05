@@ -69,7 +69,7 @@ namespace Reko.Core.Machine
     {
         public static readonly TraceSwitch trace = new TraceSwitch(nameof(Decoder), "Trace the progress of machine code decoders")
         {
-            Level = TraceLevel.Verbose
+            Level = TraceLevel.Warning
         };
 
         [Conditional("DEBUG")]

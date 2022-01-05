@@ -1386,7 +1386,7 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // Nyi
                 "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|v2 = q1",
-                "2|L--|q11 = __ext_i8(v2, q30)");
+                "2|L--|q0 = __ext_i8(v2, q31)");
         }
 
         [Test]
