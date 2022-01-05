@@ -104,19 +104,22 @@ namespace Reko.ImageLoaders.HpSom
                 var (sSpace, space) = spaces[spaceRange.iSpace];
                 for (uint i = 0; i < space.subspace_quantity; ++i)
                 {
-                    var (sSubspace, subspace) = subspaces[space.subspace_index + (int)i];
+                    var (sSubspace, subspace) = subspaces[space.subspace_index + (int) i];
                     var access = AccessFromSpace(subspace);
                     var imgSegment = new ImageSegment(
-                        sSubspace ?? "(no name)", 
+                        sSubspace ?? "(no name)",
                         Address.Ptr32(subspace.subspace_start),
                         mem,
                         access);
+                    var cbToCopy = Math.Min(
+                        subspace.initialization_length,
+                        RawImage.Length - subspace.file_loc_init_value);
                     Array.Copy(
                         RawImage,
                         subspace.file_loc_init_value,
                         mem.Bytes,
                         subspace.subspace_start - spaceRange.min,
-                        subspace.initialization_length);
+                        cbToCopy);
                     imgSegments.Add(imgSegment);
                 }
             }
