@@ -1151,5 +1151,23 @@ namespace Reko.UnitTests.Arch.PaRisc
         {
             AssertCode("shrpd,*<>\tr9,r5,00000034,r19", "D0A9A573");
         }
+
+        [Test]
+        public void PaRiscDis_mfsp()
+        {
+            AssertCode("mfsp\tsr0,r4", "000004A4");
+        }
+
+        [Test]
+        public void PaRiscDis_blr()
+        {
+            AssertCode("blr\tr1,r0", "E8014000");
+        }
+
+        [Test]
+        public void PaRiscDis_fcnv()
+        {
+            AssertCode("fcnv,w,dbl\tfr9L,fr10R", "3920A28A");
+        }
     }
 }

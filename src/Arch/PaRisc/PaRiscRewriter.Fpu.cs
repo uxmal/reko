@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
@@ -40,6 +41,29 @@ namespace Reko.Arch.PaRisc
         private void RewriteFid()
         {
             m.SideEffect(host.Intrinsic("__fid", true, VoidType.Instance));
+        }
+
+        private void RewriteFcnv()
+        {
+
+        }
+
+        private void RewriteFcnvxf()
+        {
+            var src = RewriteOp(0);
+            if (instr.FpFmt == FpFormat.w)
+            {
+                var t = binder.CreateTemporary(PrimitiveType.Int32);
+                if (instr.FpFmtDst == FpFormat.dbl)
+                {
+                    m.Assign(t, m.Slice(src, t.DataType, 0));
+                    m.Assign(RewriteOp(1), m.Convert(t, t.DataType, PrimitiveType.Real64));
+                    return;
+                }
+            }
+            EmitUnitTest();
+            iclass = InstrClass.Invalid;
+            m.Invalid();
         }
 
         private void RewriteFld(PrimitiveType dt)

@@ -130,6 +130,23 @@ namespace Reko.Arch.X86
             m.SideEffect(host.Intrinsic("__mfence", true, VoidType.Instance));
         }
 
+        private void RewriteMovdq()
+        {
+            var src = SrcOp(1);
+            var opDst = instrCur.Operands[0];
+            int dbitSize = opDst.Width.BitSize - src.DataType.BitSize;
+            if (dbitSize > 0)
+            {
+                // Zero-extend.
+                src = m.Convert(src, src.DataType, opDst.Width);
+            }
+            else if (dbitSize < 0)
+            {
+                src = m.Slice(src, opDst.Width, 0);
+            }
+            EmitCopy(opDst, src, 0);
+        }
+
         public void RewritePause()
         {
             m.SideEffect(host.Intrinsic("__pause", true, VoidType.Instance));
@@ -138,6 +155,17 @@ namespace Reko.Arch.X86
         public void RewritePrefetch(string name)
         {
             m.SideEffect(host.Intrinsic(name, true, VoidType.Instance, SrcOp(0)));
+        }
+
+        private void RewriteRdrand()
+        {
+            var arg = SrcOp(0);
+            var ret = binder.EnsureFlagGroup(Registers.C);
+            m.Assign(ret, m.Fn(rdrandIntrinsic, m.Out(arg.DataType, arg)));
+            m.Assign(binder.EnsureFlagGroup(Registers.S), 0);
+            m.Assign(binder.EnsureFlagGroup(Registers.Z), 0);
+            m.Assign(binder.EnsureFlagGroup(Registers.O), 0);
+            m.Assign(binder.EnsureFlagGroup(Registers.P), 0);
         }
 
         private void RewriteSmsw()

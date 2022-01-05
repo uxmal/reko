@@ -39,7 +39,9 @@ namespace Reko.Arch.PaRisc
         private readonly IStorageBinder binder;
         private readonly IRewriterHost host;
         private readonly IEnumerator<PaRiscInstruction> dasm;
-        private RtlEmitter m;
+        private readonly RtlEmitter m;
+        private readonly List<RtlInstruction> instrs;
+        private static readonly IntrinsicProcedure depwIntrinsic;
         private PaRiscInstruction instr;
         private InstrClass iclass;
 
@@ -51,8 +53,9 @@ namespace Reko.Arch.PaRisc
             this.binder = binder;
             this.host = host;
             this.dasm = new PaRiscDisassembler(arch, rdr).GetEnumerator();
+            this.instrs = new List<RtlInstruction>();
+            this.m = new RtlEmitter(instrs);
             this.instr = null!;
-            this.m = null!;
         }
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
@@ -61,8 +64,6 @@ namespace Reko.Arch.PaRisc
             {
                 this.instr = dasm.Current;
                 this.iclass = instr.InstructionClass;
-                var instrs = new List<RtlInstruction>();
-                m = new RtlEmitter(instrs);
                 switch (instr.Mnemonic)
                 {
                 default:
@@ -89,11 +90,14 @@ namespace Reko.Arch.PaRisc
                 case Mnemonic.cmpib: RewriteCmpb(1, 0); break;
                 case Mnemonic.cmpiclr: RewriteCmpclr(1, 0); break;
                 case Mnemonic.@break: RewriteBreak(); break;
+                case Mnemonic.depw: RewriteDepw(); break;
                 case Mnemonic.depwi: RewriteDepwi(); break;
                 case Mnemonic.diag: RewriteDiag(); break;
                 case Mnemonic.ds: RewriteDs(); break;
                 case Mnemonic.extrw: RewriteExtrw(); break;
                 case Mnemonic.fadd: RewriteFpArithmetic(m.FAdd); break;
+                case Mnemonic.fcnv: RewriteFcnv(); break;
+                case Mnemonic.fcnvxf: RewriteFcnvxf(); break;
                 case Mnemonic.fcpy: RewriteFcpy(); break;
                 case Mnemonic.fid: RewriteFid(); break;
                 case Mnemonic.fldd: RewriteFld(PrimitiveType.Real64); break;
@@ -130,8 +134,10 @@ namespace Reko.Arch.PaRisc
                 case Mnemonic.sub: RewriteSub(); break;
                 case Mnemonic.sub_b: RewriteSub_b(); break;
                 case Mnemonic.subi: RewriteSubi(); break;
+                case Mnemonic.xor: RewriteLogical(m.Xor); break;
                 }
                 yield return m.MakeCluster(instr.Address, instr.Length, iclass);
+                instrs.Clear();
             }
         }
 
@@ -309,7 +315,15 @@ namespace Reko.Arch.PaRisc
                 throw new NotImplementedException(instr.Condition.ToString());
             }
             return e;
+        }
 
+        static PaRiscRewriter()
+        {
+            depwIntrinsic = new IntrinsicBuilder("__depw", false)
+                .Param(PrimitiveType.Word64)
+                .Param(PrimitiveType.Int32)
+                .Param(PrimitiveType.Int32)
+                .Returns(PrimitiveType.Word32);
         }
     }
 }

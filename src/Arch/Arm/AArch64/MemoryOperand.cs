@@ -67,6 +67,10 @@ namespace Reko.Arch.Arm.AArch64
             }
             else if (Index != null)
             {
+                if (PostIndex)
+                {
+                    renderer.WriteChar(']');
+                }
                 renderer.WriteChar(',');
                 renderer.WriteString(Index.Name);
                 if (IndexExtend != Mnemonic.Invalid && (IndexExtend != Mnemonic.lsl || IndexShift != 0))

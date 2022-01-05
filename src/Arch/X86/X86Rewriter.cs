@@ -389,7 +389,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.vmread: RewriteVmread(); break;
                 case Mnemonic.vmwrite: RewriteVmwrite(); break;
                 case Mnemonic.movbe: RewriteMovbe(); break;
-                case Mnemonic.movd: RewriteMovzx(); break;
+                case Mnemonic.movd: case Mnemonic.vmovd: RewriteMovdq(); break;
                 case Mnemonic.movdqa:
                 case Mnemonic.vmovdqa:
                 case Mnemonic.movdqu:
@@ -405,7 +405,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.movnti: RewriteMov(); break;
                 case Mnemonic.movntps: RewriteMov(); break;
                 case Mnemonic.movntq: RewriteMov(); break;
-                case Mnemonic.movq: RewriteMov(); break;
+                case Mnemonic.movq: case Mnemonic.vmovq: RewriteMovdq(); break;
                 case Mnemonic.movs: RewriteStringInstruction(); break;
                 case Mnemonic.movsb: RewriteStringInstruction(); break;
                 case Mnemonic.movsd:
@@ -414,7 +414,8 @@ namespace Reko.Arch.X86
                 case Mnemonic.vmovss: RewriteMovssd(PrimitiveType.Real32); break;
                 case Mnemonic.movsx: RewriteMovsx(); break;
                 case Mnemonic.movsxd: RewriteMovsx(); break;
-                case Mnemonic.movups: RewriteMov(); break;
+                    //$REVIEW: these are unaligned moves, do we want an intrinsic for them?
+                case Mnemonic.movups: case Mnemonic.vmovups: RewriteMov(); break;
                 case Mnemonic.movupd: RewriteMov(); break;
                 case Mnemonic.movzx: RewriteMovzx(); break;
                 case Mnemonic.mul: RewriteMultiply(m.UMul, Domain.UnsignedInt); break;
@@ -469,7 +470,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.vpmaddubsw: RewritePmaddUbSw(true, "__pmaddubsw"); break;
                 case Mnemonic.pmaddwd: RewritePackedBinop(false, "__pmaddwd", PrimitiveType.Word16, new ArrayType(PrimitiveType.Word32, 0)); break;
                 case Mnemonic.pmaxsw: RewritePackedBinop(false, "__pmaxsw", PrimitiveType.Int16); break;
-                case Mnemonic.pmaxub: RewritePackedBinop(false, "__pmaxub", PrimitiveType.UInt8); break;
+                case Mnemonic.pmaxub: case Mnemonic.vpmaxub: RewritePackedBinop(false, "__pmaxub", PrimitiveType.UInt8); break;
                 case Mnemonic.pminsw: RewritePackedBinop(false, "__pminsw", PrimitiveType.Int16); break;
                 case Mnemonic.pminub: RewritePackedBinop(false, "__pminub", PrimitiveType.UInt8); break;
                 case Mnemonic.pmovmskb: RewriteMovmsk(false, "__pmovmskb", PrimitiveType.Byte); break;
@@ -541,6 +542,7 @@ namespace Reko.Arch.X86
                 case Mnemonic.rorx: RewriteRorx(); break;
                 case Mnemonic.rdmsr: RewriteRdmsr(); break;
                 case Mnemonic.rdpmc: RewriteRdpmc(); break;
+                case Mnemonic.rdrand: RewriteRdrand(); break;
                 case Mnemonic.rdtsc: RewriteRdtsc(); break;
                 case Mnemonic.ret: RewriteRet(); break;
                 case Mnemonic.retf: RewriteRet(); break;
@@ -760,5 +762,15 @@ namespace Reko.Arch.X86
             var testGenSvc = arch.Services.GetService<ITestGenerationService>();
             testGenSvc?.ReportMissingRewriter("X86Rw", instrCur, instrCur.Mnemonic.ToString(), rdr, "");
         }
+
+        static X86Rewriter()
+        {
+            var ib =
+            rdrandIntrinsic = new IntrinsicBuilder("__rdrand", false)
+                .Param(PrimitiveType.Word32)
+                .Returns(PrimitiveType.Bool);
+        }
+
+        private static readonly IntrinsicProcedure rdrandIntrinsic;
     }
 }

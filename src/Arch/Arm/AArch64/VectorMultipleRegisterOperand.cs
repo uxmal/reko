@@ -45,7 +45,7 @@ namespace Reko.Arch.Arm.AArch64
         public VectorData ElementType { get; set; }
 
         public int Repeat { get; set; }
-        public int Index { get; internal set; }
+        public int Index { get; set; }
 
         public IEnumerable<RegisterStorage> GetRegisters()
         {

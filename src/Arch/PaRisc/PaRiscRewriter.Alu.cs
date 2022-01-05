@@ -100,6 +100,34 @@ namespace Reko.Arch.PaRisc
             MaybeAnnulNextInstruction(iclass, dst);
         }
 
+        private void RewriteDepw()
+        {
+            var src = RewriteOp(0);
+            var pos = RewriteOp(1);
+            var len = ((ImmediateOperand) instr.Operands[2]).Value.ToInt32();
+            var dt = PrimitiveType.CreateWord(len);
+            var ins = binder.CreateTemporary(dt);
+            m.Assign(ins, m.Slice(src, dt, 0));
+            var dst = binder.CreateTemporary(PrimitiveType.Word32);
+            var d = RewriteOp(3);
+
+            if (pos is Constant cpos)
+            {
+                var lePos = 31 - cpos.ToInt32();
+                if (instr.Zero)
+                {
+                    m.Assign(d, Constant.Zero(dst.DataType));
+                }
+                m.Assign(d, m.Dpb(d, dst, lePos));
+            }
+            else
+            {
+                m.Assign(dst, m.Fn(depwIntrinsic, ins, pos));
+                m.Assign(d, m.Dpb(d, dst, 0));
+            }
+            MaybeSkipNextInstruction(instr.InstructionClass, false, dst);
+        }
+
         private void RewriteDepwi()
         {
             var imm = ((ImmediateOperand) instr.Operands[0]).Value.ToInt32();
@@ -123,7 +151,6 @@ namespace Reko.Arch.PaRisc
                 return;
             }
             throw new NotImplementedException("depwi sar not implemented yet.");
-
         }
 
         private void RewriteDs()

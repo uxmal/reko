@@ -127,6 +127,16 @@ namespace Reko.UnitTests.Arch.PaRisc
                 "2|TD-|if (Test(OV,r6 - 0<64>)) branch 000FF7F0");
         }
 
+        [Test]
+        public void PaRiscRw_addib_64()
+        {
+            Given_HexString("AFC1CFD5");  // addib\t*>=-00000010,r30,00101FB4
+            AssertCode(
+                "0|TD-|00100000(4): 2 instructions",
+                "1|L--|r30 = r30 + -16<i64>",
+                "2|TD-|if (r30 >= 0<64>) branch 000FF7F0");
+        }
+
         // memMgmt
         [Test]
         [Ignore("Format is complex; try simpler ones first")]
@@ -347,15 +357,6 @@ namespace Reko.UnitTests.Arch.PaRisc
         }
 
         [Test]
-        public void PaRiscRw_ldo_copy()
-        {
-            Given_HexString("37E20000");  // ldo\t0(r31),r2
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r2 = r31");
-        }
-
-        [Test]
         public void PaRiscRw_cmpb_ult()
         {
             Given_HexString("83C78EEC");
@@ -365,13 +366,23 @@ namespace Reko.UnitTests.Arch.PaRisc
         }
 
         [Test]
-        public void PaRiscRw_addib_64()
+        public void PaRiscRw_depw()
         {
-            Given_HexString("AFC1CFD5");  // addib\t*>=-00000010,r30,00101FB4
+            Given_HexString("D4390838");
+            AssertCode(     // depw,z	r25,1E,00000008,r1
+                "0|L--|00100000(4): 3 instructions",
+                "1|L--|v3 = SLICE(r25, byte, 0)",
+                "2|L--|r1 = 0<32>",
+                "3|L--|r1 = SEQ(SLICE(r1, word31, 33), v4, SLICE(r1, bool, 0))");
+        }
+
+        [Test]
+        public void PaRiscRw_ldo_copy()
+        {
+            Given_HexString("37E20000");  // ldo\t0(r31),r2
             AssertCode(
-                "0|TD-|00100000(4): 2 instructions",
-                "1|L--|r30 = r30 + -16<i64>",
-                "2|TD-|if (r30 >= 0<64>) branch 000FF7F0");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = r31");
         }
 
         [Test]
@@ -417,6 +428,16 @@ namespace Reko.UnitTests.Arch.PaRisc
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|fr1L = fr0L + fr22L");
+        }
+
+        [Test]
+        public void PaRiscRw_fcnvxf()
+        {
+            Given_HexString("3080A204");
+            AssertCode(     // fcnvxf,w,dbl	fr4,fr4
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v3 = SLICE(fr4, int32, 0)",
+                "2|L--|fr4 = CONVERT(v3, int32, real64)");
         }
 
         [Test]
@@ -850,6 +871,15 @@ namespace Reko.UnitTests.Arch.PaRisc
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|Mem0[r25 + 9<i64>:byte] = 0<8>");
+        }
+
+        [Test]
+        public void PaRiscRw_xor()
+        {
+            Given_HexString("0B3A029A");
+            AssertCode(     // xor	r26,r25,r26
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r26 = r26 ^ r25");
         }
 
 #if NYI

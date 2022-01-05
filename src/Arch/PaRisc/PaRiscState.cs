@@ -32,7 +32,7 @@ namespace Reko.Arch.PaRisc
 {
     public class PaRiscState : ProcessorState
     {
-        private PaRiscArchitecture arch;
+        private readonly PaRiscArchitecture arch;
 
         public PaRiscState(PaRiscArchitecture arch)
         {
