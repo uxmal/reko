@@ -150,6 +150,13 @@ namespace Reko.Environments.SysV
             }
         }
 
+        public override bool IsImplicitArgumentRegister(RegisterStorage reg)
+        {
+            if (base.IsImplicitArgumentRegister(reg))
+                return true;
+            return reg.IsSystemRegister;
+        }
+
         private RegisterStorage[] LoadTrashedRegisters()
         {
             if (Services != null)
