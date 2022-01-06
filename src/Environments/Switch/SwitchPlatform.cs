@@ -36,11 +36,6 @@ namespace Reko.Environments.Switch
 
         public override string DefaultCallingConvention => "";
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-            //$TODO: find out what registers are always preserved
-            return new HashSet<RegisterStorage>();
-        }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {

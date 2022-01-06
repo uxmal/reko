@@ -36,11 +36,6 @@ namespace Reko.Environments.Trs80
         // http://fjkraan.home.xs4all.nl/comp/trs80-4p/dmkeilImages/trstech.htm
         public override string DefaultCallingConvention => "";
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-            return new HashSet<RegisterStorage> { Registers.sp };
-        }
-
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             // A wild guess, but it's better than nothing. 

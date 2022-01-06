@@ -252,7 +252,7 @@ namespace Reko.Analysis
             SsaState ssa,
             Statement stm)
         {
-            if (!(stm.Instruction is CallInstruction ci))
+            if (stm.Instruction is not CallInstruction ci)
                 return;
             if (ci.Callee is ProcedureConstant pc)
             {
@@ -260,7 +260,7 @@ namespace Reko.Analysis
                     return;
             }
             var trashedRegisters = program.Platform.CreateTrashedRegisters();
-            var implicitRegs = program.Platform.CreateImplicitArgumentRegisters();
+            var platform = program.Platform;
             foreach (var use in ci.Uses.ToList())
             {
                 if (IsPreservedRegister(trashedRegisters, use.Storage) ||
@@ -268,7 +268,8 @@ namespace Reko.Analysis
                         ssa,
                         trashedRegisters,
                         use) ||
-                    implicitRegs.Contains(use.Storage))
+                    (use.Storage is RegisterStorage reg &&
+                     platform.IsImplicitArgumentRegister(reg)))
                 {
                     ci.Uses.Remove(use);
                     ssa.RemoveUses(stm, use.Expression);
@@ -281,9 +282,9 @@ namespace Reko.Analysis
             HashSet<RegisterStorage> trashedRegisters,
             CallBinding use)
         {
-            if (!(use.Storage is StackStorage))
+            if (use.Storage is not StackStorage)
                 return false;
-            if (!(use.Expression is Identifier id))
+            if (use.Expression is not Identifier id)
                 return false;
             if (!(ssa.Identifiers[id].IsOriginal))
                 return false;
@@ -347,7 +348,7 @@ namespace Reko.Analysis
 
                 // We have a call statement that calls `proc`. Make sure 
                 // that only arguments present in the procedure flow are present.
-                if (!(stm.Instruction is CallInstruction call))
+                if (stm.Instruction is not CallInstruction call)
                     continue;
                 var filteredUses = ProcedureFlow.IntersectCallBindingsWithUses(call.Uses, flow.BitsUsed)
                     .ToArray();
@@ -457,8 +458,7 @@ namespace Reko.Analysis
                 // which case the the SSA treats the call as a "hell node".
                 var sst = new SsaTransform(program, proc, sccProcs!, dynamicLinker, this.ProgramDataFlow);
                 var ssa = sst.Transform();
-                DumpWatchedProcedure("ssa", "After SSA", ssa.Procedure);
-
+                DumpWatchedProcedure("ssa", "After SSA", ssa);
                 // Merge unaligned memory accesses.
                 var fuser = new UnalignedMemoryAccessFuser(ssa);
                 fuser.Transform();
@@ -470,18 +470,18 @@ namespace Reko.Analysis
                 // sites.
                 var vp = new ValuePropagator(program.SegmentMap, ssa, program.CallGraph, dynamicLinker, eventListener);
                 vp.Transform();
-                DumpWatchedProcedure("vp", "After first VP", ssa.Procedure);
+                DumpWatchedProcedure("vp", "After first VP", ssa);
 
                 // Fuse additions and subtractions that are linked by the carry flag.
                 var larw = new LongAddRewriter(ssa, eventListener);
                 larw.Transform();
+                DumpWatchedProcedure("larw", "After long add rewriter", ssa);
 
                 // Propagate condition codes and registers. 
                 var cce = new ConditionCodeEliminator(program, ssa, eventListener);
                 cce.Transform();
-
                 vp.Transform();
-                DumpWatchedProcedure("cce", "After CCE", ssa.Procedure);
+                DumpWatchedProcedure("cce", "After CCE", ssa);
 
                 // Now compute SSA for the stack-based variables as well. That is:
                 // mem[fp - 30] becomes wLoc30, while 
@@ -489,7 +489,7 @@ namespace Reko.Analysis
                 // This allows us to compute the dataflow of this procedure.
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
-                DumpWatchedProcedure("ssaframe", "After SSA frame accesses", ssa.Procedure);
+                DumpWatchedProcedure("ssaframe", "After SSA frame accesses", ssa);
 
                 var icrw = new IndirectCallRewriter(program, ssa, eventListener);
                 while (!eventListener.IsCanceled() && icrw.Rewrite())
@@ -501,7 +501,7 @@ namespace Reko.Analysis
 
                 var fpuGuesser = new FpuStackReturnGuesser(ssa, eventListener);
                 fpuGuesser.Transform();
-                DumpWatchedProcedure("fpug", "After FPU stack guesser", ssa.Procedure);
+                DumpWatchedProcedure("fpug", "After FPU stack guesser", ssa);
 
                 // By placing use statements in the exit block, we will collect
                 // reaching definitions in the use statements.
@@ -511,11 +511,11 @@ namespace Reko.Analysis
                 // Backpropagate stack pointer from procedure return.
                 var spBackpropagator = new StackPointerBackpropagator(ssa, eventListener);
                 spBackpropagator.BackpropagateStackPointer();
-                DumpWatchedProcedure("spbp", "After SP BP", ssa.Procedure);
+                DumpWatchedProcedure("spbp", "After SP BP", ssa);
 
                 // Propagate those newly created stack-based identifiers.
                 vp.Transform();
-                DumpWatchedProcedure("vp2", "After VP2", ssa.Procedure);
+                DumpWatchedProcedure("vp2", "After VP2", ssa);
 
                 return sst;
             }
@@ -553,8 +553,25 @@ namespace Reko.Analysis
         {
             foreach (var sst in ssts)
             {
-                DumpWatchedProcedure(phase, caption, sst.SsaState.Procedure);
+                DumpWatchedProcedure(phase, caption, sst.SsaState);
             }
+        }
+
+        [Conditional("DEBUG")]
+        public void DumpWatchedProcedure(string phase, string caption, SsaState ssa)
+        {
+            
+            DumpWatchedProcedure(phase, caption, ssa.Procedure);
+#if FIND_BUGS
+// This is currently disabled because of hard-to-fix problems with the UnalignedMemoryAccessFuser
+            ssa.Validate(s =>
+            {
+                Console.WriteLine("== SSA validation failure; {0} {1}", caption, ssa.Procedure.Name,  s);
+                Console.WriteLine("    {0}", s);
+                ssa.Write(Console.Out);
+                ssa.Procedure.Write(false, Console.Out);
+            });
+#endif
         }
 
         [Conditional("DEBUG")]

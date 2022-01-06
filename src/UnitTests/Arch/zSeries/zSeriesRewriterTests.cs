@@ -1993,7 +1993,7 @@ namespace Reko.UnitTests.Arch.zSeries
             Given_HexString("B9140011");
             AssertCode(     // lgfr	r1,r1
                 "0|L--|00100000(4): 2 instructions",
-                "1|L--|v3 = CONVERT(r1, word64, word32)",
+                "1|L--|v3 = SLICE(r1, word32, 0)",
                 "2|L--|r1 = CONVERT(v3, word32, int64)");
         }
 

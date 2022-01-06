@@ -158,8 +158,8 @@ namespace Reko.Core
         FpuStack = 4098,
         Global = 8191,          // Global variable within a memory space
         SystemRegister = 8192,  // Space for system / control registers
-        Stack = 32768,
-        Temporary = 65536,
+        Stack = (1 << 30),
+        Temporary = (1 << 31),
     }
 
     /// <summary>
@@ -487,6 +487,16 @@ namespace Reko.Core
             else
             {
                 BitMask = ((1ul << bitSize) - 1) << (int)bitAddress;
+            }
+        }
+
+        public bool IsSystemRegister
+        {
+            get
+            {
+                return
+                    StorageDomain.SystemRegister <= this.Domain &&
+                    this.Domain < StorageDomain.Stack;
             }
         }
 

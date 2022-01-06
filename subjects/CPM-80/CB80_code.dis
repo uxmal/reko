@@ -60,7 +60,7 @@ bool fn03BB(byte c, ptr16 & aOut)
 fn03BB_entry:
 l03BB:
 	Mem5[0x1657<16>:byte] = c
-	byte a_13 = 0<8> - CONVERT(Mem5[0x1657<16>:byte] >u 0x7B<8> || Mem5[0x1657<16>:byte] <u 0x61<8>, bool, byte)
+	byte a_13 = SLICE(0x1A<16> - CONVERT(Mem5[0x1657<16>:byte] - 0x61<8>, byte, uint16), byte, 8)
 	aOut = ~a_13
 	return SLICE(cond(a_13), bool, 0)
 fn03BB_exit:
@@ -78,7 +78,7 @@ word16 fn03CB(byte c)
 fn03CB_entry:
 l03CB:
 	Mem5[0x1658<16>:byte] = c
-	byte a_15 = ~(0<8> - CONVERT(Mem5[0x1658<16>:byte] >u 0x5A<8> || Mem5[0x1658<16>:byte] <u 0x41<8>, bool, byte))
+	byte a_15 = ~SLICE(0x19<16> - CONVERT(Mem5[0x1658<16>:byte] - 0x41<8>, byte, uint16), byte, 8)
 	byte a_23
 	fn03BB(Mem19[0x1658<16>:byte], out a_23)
 	return SEQ(a_23 | a_15, f)
@@ -891,7 +891,7 @@ l09BD:
 	Mem59[sp_31 - 2<16>:word16] = af_50
 	f = SLICE(af_50, byte, 0) (alias)
 	Mem74[sp_31 - 2<16>:word16] = SEQ(0<8> - CONVERT(Mem59[hl_57:byte] <u 0x41<8>, bool, byte) | Mem59[sp_31 + 3<16>:byte], f)
-	byte a_86 = 0<8> - CONVERT(Mem74[0x1696<16>:byte] >u 2<8>, bool, byte) & Mem74[sp_31 + 3<16>:byte]
+	byte a_86 = SLICE(2<16> - CONVERT(Mem74[0x1696<16>:byte], byte, uint16), byte, 8) & Mem74[sp_31 + 3<16>:byte]
 	bool C_90 = cond(a_86 >>u 1<8>)
 	branch a_86 >>u 1<8> >=u 0<8> l0A06
 l0A06:
@@ -910,14 +910,14 @@ l0A09:
 l0A11:
 	Mem111[0x1697<16>:byte] = 0<8>
 l0A16:
-	Mem125[sp_31 - 2<16>:word16] = SEQ(~(0<8> - CONVERT(Mem114[0x1697<16>:byte] >u 7<8>, bool, byte)), f)
+	Mem125[sp_31 - 2<16>:word16] = SEQ(~SLICE(7<16> - CONVERT(Mem114[0x1697<16>:byte], byte, uint16), byte, 8), f)
 	word16 af_126 = fn0B74()
 	f = SLICE(af_126, byte, 0) (alias)
 	branch (SLICE(af_126, byte, 8) & Mem125[sp_31 + 3<16>:byte]) >>u 1<8> >=u 0<8> l0A53
 l0A53:
 	byte b_288
 	word16 hl_155 = Mem125[0x1692<16>:word16] + CONVERT(Mem125[0x1697<16>:byte], byte, uint16)
-	Mem159[sp_31 - 2<16>:word16] = SEQ(0<8> - CONVERT(Mem125[0x1696<16>:byte] >u 1<8>, bool, byte), f)
+	Mem159[sp_31 - 2<16>:word16] = SEQ(SLICE(1<16> - CONVERT(Mem125[0x1696<16>:byte], byte, uint16), byte, 8), f)
 	branch (0<8> - CONVERT(Mem159[hl_155:byte] <u 0x2F<8>, bool, byte) & Mem159[sp_31 + 3<16>:byte]) >>u 1<8> >=u 0<8> l0AA3
 l0AA3:
 	word16 hl_189 = Mem159[0x1692<16>:word16] + CONVERT(Mem159[0x1697<16>:byte], byte, uint16)
@@ -997,13 +997,13 @@ l0A29:
 	Mem415[sp_31 - 2<16>:word16] = Mem125[0x1692<16>:word16] + CONVERT(Mem125[0x1697<16>:byte], byte, uint16)
 	byte a_428 = Mem415[Mem415[sp_31 - 2<16>:word16]:byte]
 	Mem429[Mem415[0x168B<16>:word16] + (CONVERT(Mem415[0x1697<16>:byte], byte, uint16) + 1<16>):byte] = a_428
-	bool C_468 = SLICE(cond(a_428 - 0x2A<8>), bool, 0)
+	bool C_471 = SLICE(cond(a_428 - 0x2A<8>), bool, 0)
 	branch a_428 != 0x2A<8> l0A4D
 l0A4D:
 	fn0B91()
 l0A4A:
 	afOut = CONVERT(f, byte, uint16)
-	return C_468
+	return C_471
 l09F3:
 	afOut = CONVERT(f, byte, uint16)
 	return C_100
@@ -1069,14 +1069,14 @@ l0C1A:
 	Mem84[hl_73 - 4<16>:word16] = 0x1642<16>
 	byte f_147 = fn082F(f, 0<8>, 0x5C<8>, 0x10<8>, Mem84[hl_73 - 4<16>:word16], Mem84[hl_73 - 2<16>:word16])
 	Mem101[hl_73 - 6<16>:word16] = 0x5C<16>
-	byte l_244
-	fn1326(7<8>, fn1346(0x108<16>, 0x103<16>), out l_244)
-	word16 hl_243 = <invalid>
+	byte l_245
+	fn1326(7<8>, fn1346(0x108<16>, 0x103<16>), out l_245)
+	word16 hl_244 = <invalid>
 	word16 hl_125 = Mem101[0x108<16>:word16]
-	fn040D(SLICE(hl_125, byte, 8), SLICE(hl_125, byte, 0), SLICE(hl_243, byte, 0), Mem101[hl_73 - 6<16>:word16])
+	fn040D(SLICE(hl_125, byte, 8), SLICE(hl_125, byte, 0), SLICE(hl_244, byte, 0), Mem101[hl_73 - 6<16>:word16])
 	word16 sp_135 = <invalid>
 	Mem149[sp_135 - 2<16>:word16] = SEQ(0<8> - CONVERT(Mem101[0x138A<16>:byte] <u 1<8>, bool, byte), f_147)
-	branch (0<8> - CONVERT(Mem149[0x138A<16>:byte] >u 3<8>, bool, byte) | Mem149[sp_135 + 3<16>:byte]) >>u 1<8> >=u 0<8> l0C71
+	branch (SLICE(3<16> - CONVERT(Mem149[0x138A<16>:byte], byte, uint16), byte, 8) | Mem149[sp_135 + 3<16>:byte]) >>u 1<8> >=u 0<8> l0C71
 l0C68:
 	fn075C(0<8>, 1<8>, 0<8>, 0<8>)
 l0C71:
@@ -1539,7 +1539,7 @@ l12F4:
 l12E9:
 	Mem34[0x16AB<16>:byte] = fn045B() + 0x1F<8>
 l12F7:
-	branch (0<8> - CONVERT(Mem51[0x16AB<16>:byte] >u 0x10<8>, bool, byte) | 0<8> - CONVERT(fn045B() <u 0x2A<8>, bool, byte)) >>u 1<8> >=u 0<8> l1311
+	branch (SLICE(0x10<16> - CONVERT(Mem51[0x16AB<16>:byte], byte, uint16), byte, 8) | 0<8> - CONVERT(fn045B() <u 0x2A<8>, bool, byte)) >>u 1<8> >=u 0<8> l1311
 l130E:
 	fn1229()
 l1311:
@@ -1573,10 +1573,10 @@ byte fn1326(byte c, word16 hl, ptr16 & lOut)
 fn1326_entry:
 	word16 hl_28 = hl
 l1326:
-	uint16 v13_24 = hl_28 >>u 1<8>
-	byte l_14 = SLICE(v13_24, byte, 0)
+	uint16 v13 = hl_28 >>u 1<8>
+	byte l_14 = SLICE(v13, byte, 0)
 	c = c - 1<8>
-	hl_28 = v13_24 (alias)
+	hl_28 = v13 (alias)
 	branch c != 0<8> l1326
 l1331:
 	lOut = l_14
@@ -1662,10 +1662,9 @@ byte fn1353(byte a, word16 de, ptr16 & lOut)
 // Preserved: sp
 fn1353_entry:
 l1353:
-	byte a_9 = Mem0[de:byte] - a
-	byte a_15 = Mem0[de + 1<16>:byte] - CONVERT(a_9 <u 0<8>, bool, byte)
-	lOut = a_9
-	return a_15
+	ui16 a_a_19 = Mem0[de:ui16] - CONVERT(a, byte, uint16)
+	lOut = SLICE(a_a_19, byte, 0)
+	return SLICE(a_a_19, byte, 8)
 fn1353_exit:
 
 

@@ -90,10 +90,11 @@ namespace Reko.ImageLoaders.LLVM
             throw new NotImplementedException();
         }
 
-        public HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        public bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return false;
         }
+
 
         public TypeLibrary CreateMetadata()
         {

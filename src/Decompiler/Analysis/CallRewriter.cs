@@ -114,7 +114,6 @@ namespace Reko.Analysis
         {
             var allLiveOut = flow.BitsLiveOut;
 			var sb = new SignatureBuilder(frame, platform.Architecture);
-            var implicitRegs = platform.CreateImplicitArgumentRegisters();
 
             var liveOutFlagGroups = flow.grfLiveOut.Select(de => platform.Architecture.GetFlagGroup(de.Key, de.Value)!);
             AddModifiedFlags(frame, liveOutFlagGroups, sb);
@@ -131,7 +130,7 @@ namespace Reko.Analysis
                 .Select(de => (Key: de.Key as RegisterStorage, de.Value))
                 .Where(b =>
                 {
-                    return b.Key is RegisterStorage reg && !implicitRegs.Contains(reg);
+                    return b.Key is RegisterStorage reg && !platform.IsImplicitArgumentRegister(reg);
                 })
                 .Select(MakeRegisterParameter)
                 .ToDictionary(de => de.Item1, de => de.Item2);
@@ -165,8 +164,8 @@ namespace Reko.Analysis
                 .Select(de => (Key:de.Key as RegisterStorage, de.Value))
                 .Where(de =>
                 {
-                    return de.Key != null 
-                        && !implicitRegs.Contains(de.Key);
+                    return de.Key is not null 
+                        && !platform.IsImplicitArgumentRegister(de.Key);
                 })
                 .Select(MakeRegisterParameter)
                 .ToDictionary(de => de.Item1, de => de.Item2);
@@ -217,8 +216,6 @@ namespace Reko.Analysis
         /// <returns></returns>
         public FunctionType MakeSignature(SsaState ssa, IEnumerable<CallBinding> uses, IEnumerable<CallBinding> definitions)
         {
-            var implicitRegs = platform.CreateImplicitArgumentRegisters();
-
             var arch = ssa.Procedure.Architecture;
             var frame = arch.CreateFrame();
             var sb = new SignatureBuilder(frame, arch);
@@ -233,7 +230,7 @@ namespace Reko.Analysis
 
             //$TODO: sort these by some ABI order?
             var regs = uses.Select(u => u.Storage as RegisterStorage)
-                .Where(r => r != null && !implicitRegs.Contains(r))
+                .Where(r => r is not null && !platform.IsImplicitArgumentRegister(r))
                 .OrderBy(r => r!.Number);
             foreach (var reg in regs)
             {
@@ -251,7 +248,7 @@ namespace Reko.Analysis
 
             var outs = definitions.Select(d => d.Storage)
                 .OfType<RegisterStorage>()
-                .Where(r => !implicitRegs.Contains(r))
+                .Where(r => !platform.IsImplicitArgumentRegister(r))
                 .OrderBy(r => r.Number);
             foreach (var o in outs)
             {

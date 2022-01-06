@@ -82,13 +82,11 @@ namespace Reko.Environments.Windows
             return parser;
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
-            return new HashSet<RegisterStorage>
-            {
-                Registers.rsp,
-                Registers.Top,
-            };
+            return 
+                reg.Number == Registers.rsp.Number ||
+                reg.Number == Registers.Top.Number;
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

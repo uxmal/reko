@@ -891,5 +891,17 @@ namespace Reko.UnitTests.Evaluation
 
             AssertChanged("SEQ(foo_1, foo_1 + 3<32>)", result);
         }
+
+        [Test]
+        public void Exs_Seq_of_sliced_multiplications()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Seq(
+                m.Slice(m.SMul(PrimitiveType.Int64, foo, m.Word32(0xF000)), PrimitiveType.Word32, 32),
+                m.SMul(foo, m.Word32(0xF000)));
+            var (result, changed) = expr.Accept(simplifier);
+            Assert.AreEqual("foo_1 *s64 0xF000<32>", result.ToString());
+            Assert.IsTrue(changed);
+        }
     }
 }

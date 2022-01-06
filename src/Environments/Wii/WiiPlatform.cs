@@ -33,12 +33,6 @@ namespace Reko.Environments.Wii
 
 		public override string DefaultCallingConvention { get { return ""; } }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-			//$TODO: find out what registers are always preserved
-			return new HashSet<RegisterStorage>();
-		}
-
         public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();

@@ -33,6 +33,11 @@ namespace Reko.Environments.Windows
 {
     public class Win16Platform : Platform
     {
+        private static HashSet<RegisterStorage> implicitRegs = new HashSet<RegisterStorage>
+        {
+            Registers.ss, Registers.ds, Registers.sp, Registers.Top,
+        };
+
         public Win16Platform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "win16")
         {
@@ -70,12 +75,9 @@ SP	top of stack
             throw new NotImplementedException();
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
-            return new HashSet<RegisterStorage>
-            {
-                Registers.ss, Registers.ds, Registers.sp, Registers.Top,
-            };
+            return implicitRegs.Contains(reg);
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

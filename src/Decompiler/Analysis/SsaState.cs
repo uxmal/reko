@@ -98,7 +98,7 @@ namespace Reko.Analysis
         /// <summary>
         /// If there is no defined SSA identifier for <paramref name="id"/>
         /// identifier, then create DefInstruction in the <paramref name="b"/>
-        /// block. Return existing SSA identifier otherwise
+        /// block. Return existing SSA identifier otherwise.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="b"></param>
@@ -360,14 +360,14 @@ namespace Reko.Analysis
 		}
 
         /// <summary>
-        /// Remove all uses <paramref name="e"/> expression makes
-        /// at <paramref name="stm"/> statement.
+        /// Visits an expression <paramref name="e"/> and removes uses
+        /// from the give statement <paramref name="stmUsing"/>.
         /// </summary>
-        /// <param name="stm">Statement</param>
-        /// <param name="e">Statement</param>
-        public void RemoveUses(Statement stm, Expression e)
+        /// <param name="stmUsing">Statement no longer using the expression.</param>
+        /// <param name="e">Expression becoming unused.</param>
+        public void RemoveUses(Statement stmUsing, Expression e)
         {
-            var xu = new ExpressionUseRemover(stm, Identifiers);
+            var xu = new ExpressionUseRemover(stmUsing, Identifiers);
             e.Accept(xu);
         }
 
@@ -379,6 +379,12 @@ namespace Reko.Analysis
         {
             var iua = new InstructionUseAdder(stm, Identifiers);
             stm.Instruction.Accept(iua);
+        }
+
+        public void AddUses(Statement stmUsing, Expression e)
+        {
+            var iua = new InstructionUseAdder(stmUsing, Identifiers);
+            e.Accept(iua);
         }
 
         /// <summary>

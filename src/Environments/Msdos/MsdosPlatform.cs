@@ -41,12 +41,21 @@ namespace Reko.Environments.Msdos
     [Designer("Reko.Environments.Msdos.Design.MsdosPlatformDesigner,Reko.Environments.Msdos.Design")]
     public partial class MsdosPlatform : Platform
 	{
-		private SystemService [] realModeServices; 
+		private SystemService [] realModeServices;
+        private readonly HashSet<RegisterStorage> implicitRegs;
 
-		public MsdosPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "ms-dos")
+        public MsdosPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "ms-dos")
 		{
             this.realModeServices = null!;
-		}
+            implicitRegs = new HashSet<RegisterStorage>
+            {
+                Registers.cs,
+                Registers.ss,
+                Registers.sp,
+                Registers.esp,
+                Registers.Top,
+            };
+        }
 
         public override CParser CreateCParser(TextReader rdr, ParserState? state)
         {
@@ -56,16 +65,9 @@ namespace Reko.Environments.Msdos
             return parser;
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
-            return new HashSet<RegisterStorage>
-            {
-                Registers.cs,
-                Registers.ss,
-                Registers.sp,
-                Registers.esp,
-                Registers.Top,
-            };
+            return implicitRegs.Contains(reg);
         }
 
         public override IPlatformEmulator CreateEmulator(SegmentMap segmentMap, Dictionary<Address, ImportReference> importReferences)

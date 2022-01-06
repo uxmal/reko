@@ -67,7 +67,7 @@ namespace Reko.Analysis
         private Statement? useStm;
 
         public ConditionCodeEliminator(Program program, SsaState ssa, DecompilerEventListener listener)
-        {
+		{
             this.ssa = ssa;
             this.mutator = new SsaMutator(ssa);
 			this.ssaIds = ssa.Identifiers;
@@ -158,6 +158,9 @@ namespace Reko.Analysis
         /// <param name="sid">The SSA identifier whose use-closure we're calculating</param>
         /// <param name="uses">Uses we've seen so far.</param>
         /// <param name="aliases">Aliases of sid we've seen so far.</param>
+        /// <returns>
+        /// A set of all statements which directly or indirectly use the variable <paramref name="sid"/>.
+        /// /returns>
         public HashSet<Statement> ClosureOfUsingStatements(
             SsaIdentifier sid,
             HashSet<Statement> uses,
@@ -221,7 +224,7 @@ namespace Reko.Analysis
                 BinaryExpression bin when bin.Operator == Operator.Or => bin.Left == grf || bin.Right == grf,
                 _ => false,
             };
-        }
+            }
 
 		private BinaryExpression CmpExpressionToZero(Expression e)
 		{
@@ -265,7 +268,7 @@ namespace Reko.Analysis
                 return InsertNewPhi(sid, cc, phi);
             default:
 			throw new NotImplementedException("NYI: e: " + e.ToString());
-		    }
+		}
 		}
 
         private Identifier InsertNewPhi(SsaIdentifier sidDef, ConditionCode cc, PhiFunction phi)
@@ -303,11 +306,13 @@ namespace Reko.Analysis
             return sidNew.Identifier;
         }
 
-        public override Instruction TransformAssignment(Assignment a)
+		public override Instruction TransformAssignment(Assignment a)
         {
             a.Src = a.Src.Accept(this);
             if (a.Src is BinaryExpression binUse && IsAddOrSub(binUse.Operator))
+            {
                 return TransformAddOrSub(a, binUse);
+            }
             if (a.Src is Application app && app.Procedure is ProcedureConstant pc)
             {
                 if (pc.Procedure is IntrinsicProcedure pseudo)
@@ -328,10 +333,10 @@ namespace Reko.Analysis
         private Instruction TransformAddOrSub(Assignment a, BinaryExpression binUse)
         {
             Expression u = binUse.Right;
-            Cast? c = null;
+            Slice? c = null;
             if (u != sidGrf!.Identifier && !this.aliases.Contains(u))
             {
-                c = binUse.Right as Cast;
+                c = binUse.Right as Slice;
                 if (c != null)
                     u = c.Expression;
             }
@@ -435,48 +440,79 @@ namespace Reko.Analysis
         // *.  tmp_3 = (tmp1:tmp2) >> 1
         // 1'. a_2 = slice(tmp3,16)
         // 2'. b_2 = slice(tmp3,0)
-        // 4.  flags_3 = cond(b_2)
+        // 4.  flags_3 = cond(tmp_3)
 
         private Instruction TransformRorC(Application rorc, Assignment a)
         {
             var sidOrigLo = ssaIds[a.Dst];
+
+            // Go 'backwards' through aliasing slices until instruction
+            // defining the carry flag is found.
             var sidCarry = ssaIds[(Identifier)rorc.Arguments[2]];
-            if (!(sidCarry.DefExpression is ConditionOf cond))
+            var sidsToKill = new HashSet<SsaIdentifier> { sidCarry };
+            while (sidCarry.DefExpression is Slice slice)
             {
-                if (!(sidCarry.DefExpression is Identifier idTmp))
+                if (slice.Expression is not Identifier idSliced)
+                {
+                    return a;
+                }
+                sidCarry = ssaIds[idSliced];
+                if (sidCarry.Uses.Count < 2)
+                {
+                    sidsToKill.Add(sidCarry);
+                }
+            }
+            if (sidCarry.DefExpression is not ConditionOf cond)
+            {
+                if (sidCarry.DefExpression is not Identifier idTmp)
                     return a;
                 var sidT = ssaIds[idTmp];
-                if (!(sidT.DefExpression is ConditionOf cond2))
+                if (sidT.DefExpression is not ConditionOf cond2)
                     return a;
                 cond = cond2;
             }
-            if (!(cond.Expression is Identifier condId))
+            if (cond.Expression is not Identifier condId)
                 return a;
             var sidOrigHi = ssaIds[condId];
-            if (!(sidOrigHi.DefExpression is BinaryExpression shift &&
-                  shift.Operator == Operator.Shr))
+            if (sidOrigHi.DefExpression is Slice slice2)
+            {
+                sidOrigHi = ssaIds[(Identifier) slice2.Expression];
+            }
+            if (sidOrigHi.DefExpression is not BinaryExpression shift)
+                return a;
+            Domain domain;
+            if (shift.Operator == Operator.Shr)
+                domain = Domain.UnsignedInt;
+            else if (shift.Operator == Operator.Sar)
+                domain = Domain.SignedInt;
+            else 
                 return a;
 
             var block = sidOrigLo.DefStatement!.Block;
             var expShrSrc = shift.Left;
             var expRorSrc = rorc.Arguments[0];
 
-            var stmGrf = sidGrf!.DefStatement;
-            block.Statements.Remove(stmGrf!);
+            foreach (var sid in sidsToKill)
+            {
+                ssa.DeleteStatement(sid.DefStatement!);
+                ssa.Identifiers.Remove(sid);
+            }
 
             var tmpHi = ssa.Procedure.Frame.CreateTemporary(expShrSrc.DataType);
             var sidTmpHi = ssaIds.Add(tmpHi, sidOrigHi.DefStatement, expShrSrc, false);
             sidOrigHi.DefStatement!.Instruction = new Assignment(sidTmpHi.Identifier, expShrSrc);
+            sidOrigHi.DefExpression = expShrSrc;
 
-            var tmpLo = ssa.Procedure.Frame.CreateTemporary(rorc.Arguments[0].DataType);
-            var sidTmpLo = ssaIds.Add(tmpLo, sidOrigLo.DefStatement, rorc.Arguments[0], false);
-            sidOrigLo.DefStatement.Instruction = new Assignment(sidTmpLo.Identifier, rorc.Arguments[0]);
+            var tmpLo = ssa.Procedure.Frame.CreateTemporary(expRorSrc.DataType);
+            var sidTmpLo = ssaIds.Add(tmpLo, sidOrigLo.DefStatement, expRorSrc, false);
+            sidOrigLo.DefStatement.Instruction = new Assignment(sidTmpLo.Identifier, expRorSrc);
+            sidOrigLo.DefExpression = expRorSrc;
 
             var iRorc = block.Statements.IndexOf(sidOrigLo.DefStatement);
-            var dt = PrimitiveType.Create(Domain.UnsignedInt, expShrSrc.DataType.BitSize + expRorSrc.DataType.BitSize);
+            var dt = PrimitiveType.Create(domain, expShrSrc.DataType.BitSize + expRorSrc.DataType.BitSize);
             var tmp = ssa.Procedure.Frame.CreateTemporary(dt);
             var expMkLongword = m.Shr(m.Seq(sidTmpHi.Identifier, sidTmpLo.Identifier), 1);
-            var sidTmp = ssaIds.Add(tmp, sidGrf.DefStatement, expMkLongword, false);
+            var sidTmp = ssaIds.Add(tmp, sidGrf!.DefStatement!, expMkLongword, false);
             var stmTmp = block.Statements.Insert(iRorc + 1, sidOrigLo.DefStatement.LinearAddress,
                 new Assignment(sidTmp.Identifier, expMkLongword));
             sidTmp.DefStatement = stmTmp;
@@ -509,7 +545,7 @@ namespace Reko.Analysis
                 new Assignment(sidOrigLo.Identifier, expNewLo));
             sidTmp.Uses.Add(stmNewLo);
             sidOrigLo.DefStatement = stmNewLo;
-            sidOrigLo.DefStatement = stmNewLo;
+            sidOrigLo.DefExpression = expNewLo;
 
             sidGrf.DefExpression = null;
             sidGrf.DefStatement = null;

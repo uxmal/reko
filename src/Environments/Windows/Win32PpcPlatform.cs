@@ -57,13 +57,6 @@ namespace Reko.Environments.Windows
             return parser;
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-            return new HashSet<RegisterStorage>
-            {
-            };
-        }
-
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             return new HashSet<RegisterStorage>();

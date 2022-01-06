@@ -35,6 +35,17 @@ namespace Reko.Environments.Windows
 {
     public class Win32Platform : Platform
 	{
+        private static readonly HashSet<RegisterStorage> implicitRegs = new HashSet<RegisterStorage>()
+        {
+                Registers.cs,
+                Registers.ss,
+                Registers.sp,
+                Registers.esp,
+                Registers.fs,
+                Registers.gs,
+                Registers.Top,
+        };
+
         private readonly Dictionary<int, SystemService> services;
 
         //$TODO: http://www.delorie.com/djgpp/doc/rbinter/ix/29.html int 29 for console apps!
@@ -96,19 +107,9 @@ namespace Reko.Environments.Windows
             return new Win32Emulator(segmentMap, this, importReferences);
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
-            var bitset = new HashSet<RegisterStorage>()
-            {
-                 Registers.cs,
-                 Registers.ss,
-                 Registers.sp,
-                 Registers.esp,
-                 Registers.fs,
-                 Registers.gs,
-                 Registers.Top,
-            };
-            return bitset;
+            return implicitRegs.Contains(reg);
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

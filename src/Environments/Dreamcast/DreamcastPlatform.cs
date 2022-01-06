@@ -42,11 +42,6 @@ namespace Reko.Environments.Dreamcast
             }
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-            throw new NotImplementedException();
-        }
-
         public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();

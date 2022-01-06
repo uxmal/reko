@@ -85,6 +85,9 @@ namespace Reko.Analysis
 
         public override void VisitOutArgument(OutArgument outArg)
         {
+            if (outArg.Expression is Identifier)
+                return;
+            outArg.Expression.Accept(this);
         }
 
         #endregion

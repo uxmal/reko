@@ -93,6 +93,34 @@ namespace Reko.UnitTests.Analysis
             return ssaIds.Add(id, null, null, false).Identifier;
         }
 
+        private Expression RorC(Expression expr, Expression count, Expression carry)
+        {
+            return m.Fn(
+                new IntrinsicProcedure(IntrinsicProcedure.RorC, true, expr.DataType, 2),
+                expr, count, carry);
+        }
+
+        private void RunSsaTest(string sExpected, Action<SsaProcedureBuilder> generateCode)
+        {
+            var ssapb = new SsaProcedureBuilder();
+            generateCode(ssapb);
+            var program = new Program
+            {
+                Platform = platform,
+            };
+            var cce = new ConditionCodeEliminator(program, ssapb.Ssa, new FakeDecompilerEventListener());
+            cce.Transform();
+            var writer = new StringWriter();
+            ssapb.Ssa.Procedure.WriteBody(true, writer);
+            var sActual = writer.ToString();
+            if (sActual != sExpected)
+            {
+                Console.WriteLine(sActual);
+                Assert.AreEqual(sExpected, sActual);
+            }
+            ssapb.Ssa.Validate(s => { ssapb.Ssa.Dump(true); Assert.Fail(s); });
+        }
+
         protected override void RunTest(Program program, TextWriter writer)
         {
             var dynamicLinker = new Mock<IDynamicLinker>().Object;
@@ -648,9 +676,9 @@ m1Loop:
 	l_11 = PHI((l, l1), (l_15, m1Loop))
 	h_3 = PHI((h, l1), (h_10, m1Loop))
 	h_10 = a_8
-	v13_27 = SEQ(h_3, l_11) >>u 1<8>
-	a_8 = SLICE(v13_27, byte, 8)
-	a_13 = SLICE(v13_27, byte, 0)
+	v13 = SEQ(h_3, l_11) >>u 1<8>
+	a_8 = SLICE(v13, byte, 8)
+	a_13 = SLICE(v13, byte, 0)
 	l_15 = a_13
 	c_17 = c_16 - 1<8>
 	branch c_17 != 0<8> m1Loop
@@ -710,7 +738,6 @@ ProcedureBuilder_exit:
                 m.Return(r0);
             });
         }
-
 
         [Test]
         [Category(Categories.UnitTests)]
@@ -804,7 +831,8 @@ ProcedureBuilder_exit:
 
 ";
             #endregion
-            RunStringTest(sExp, m => {
+            RunStringTest(sExp, m =>
+            {
                 var RolC = new ProcedureConstant(PrimitiveType.Ptr32, new IntrinsicProcedure(
                     IntrinsicProcedure.RolC, false, PrimitiveType.Word16, 3));
                 var r1 = m.Reg16("r1", 1);
@@ -813,13 +841,164 @@ ProcedureBuilder_exit:
                 var C = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 1, "C", PrimitiveType.Bool));
                 var NZVC = m.Frame.EnsureFlagGroup(new FlagGroupStorage(psw, 0xF, "NZVC", PrimitiveType.Word16));
                 var tmp = m.Frame.CreateTemporary("tmp", PrimitiveType.Word16);
-                m.Assign(r1, m.Shl(r1 , m.Int16(1)));
+                m.Assign(r1, m.Shl(r1, m.Int16(1)));
                 m.Assign(NZVC, m.Cond(r1));
                 m.Assign(tmp, r0);
                 m.Assign(r0, m.Fn(RolC, r0, m.Int16(1), C));
                 m.Assign(C, m.Ne0(m.And(tmp, m.Word16(0x8000))));
                 m.MStore(m.Word16(0x1234), r0);
                 m.MStore(m.Word16(0x1236), r1);
+                m.Return();
+            });
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void CceRorcViaAliases()
+        {
+            var sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+	def h
+	def l
+	def b
+	def c
+	// succ:  l1
+l1:
+	v9_16 = h
+	v10_17 = l
+	v12_19 = SEQ(v9_16, v10_17)
+	h_1 = SLICE(v11, byte, 8)
+	l_1 = SLICE(v11, byte, 0)
+	v13_20 = b
+	v15_22 = SEQ(v12_19, v13_20)
+	v11 = SLICE(v14, word16, 8)
+	b = SLICE(v14, byte, 0)
+	v16_23 = c
+	v17 = SEQ(v15_22, v16_23) >>u 1<8>
+	v14 = SLICE(v17, word24, 8)
+	c_1 = SLICE(v17, byte, 0)
+	SZC_4 = cond(c_1)
+	return
+	// succ:  SsaProcedureBuilder_exit
+SsaProcedureBuilder_exit:
+";
+            #endregion
+            RunSsaTest(sExp, m =>
+            {
+                var h = m.Reg8("h");
+                var h_1 = m.Reg8("h_1", 1);
+                var l = m.Reg8("l", 2);
+                var l_1 = m.Reg8("l_1", 2);
+                var b = m.Reg8("b", 3);
+                var b_1 = m.Reg8("b", 3);
+                var c = m.Reg8("c", 4);
+                var c_1 = m.Reg8("c_1", 4);
+                var flags = new RegisterStorage("flags", 42, 0, PrimitiveType.Word32);
+                var szc = new FlagGroupStorage(flags, 7, "SZC", PrimitiveType.Byte);
+                var cy = new FlagGroupStorage(flags, 1, "C", PrimitiveType.Bool);
+                var SZC_1 = m.Flags("SZC_1", szc);
+                var SZC_2 = m.Flags("SZC_2", szc);
+                var SZC_3 = m.Flags("SZC_3", szc);
+                var SZC_4 = m.Flags("SZC_4", szc);
+                var C_1 = m.Flags("C_1", cy);
+                var C_2 = m.Flags("C_2", cy);
+                var C_3 = m.Flags("C_3", cy);
+                var Bool = PrimitiveType.Bool;
+
+                m.AddDefToEntryBlock(h);
+                m.AddDefToEntryBlock(l);
+                m.AddDefToEntryBlock(b);
+                m.AddDefToEntryBlock(c);
+
+                m.Assign(h_1, m.Shr(h, 1));
+                m.Assign(SZC_1, m.Cond(h_1));
+                m.Alias(C_1, m.Slice(Bool, SZC_1, 0));
+
+                m.Assign(l_1, RorC(l, m.Byte(1), C_1));
+                m.Assign(SZC_2, m.Cond(l_1));
+                m.Alias(C_2, m.Slice(Bool, SZC_2, 0));
+
+                m.Assign(b_1, RorC(b, m.Byte(1), C_2));
+                m.Assign(SZC_3, m.Cond(b_1));
+                m.Alias(C_3, m.Slice(Bool, SZC_3, 0));
+
+                m.Assign(c_1, RorC(c, m.Byte(1), C_3));
+                m.Assign(SZC_4, m.Cond(c_1));
+
+                m.Return();
+
+                //h_4 = h_3 >>u 1
+                //SZXC_5 = cond(h_4)
+                //C_7 = SLICE(SZXC_5, bool, 0) (alias)
+                //l_8 = __rcr(l_6, 0x01, C_7)
+                //SZXC_9 = cond(l_8)
+                //C_11 = SLICE(SZXC_9, bool, 0) (alias)
+                //b_12 = __rcr(b_10, 0x01, C_11)
+                //SZXC_13 = cond(b_12)
+                //C_15 = SLICE(SZXC_13, bool, 0) (alias)
+                //c_16 = __rcr(c_14, 0x01, C_15)
+                //SZXC_17 = cond(c_16)
+            });
+        }
+
+        [Test]
+        public void CceAdd16to32()
+        {
+            var sExp =
+            #region Expected
+@"SsaProcedureBuilder_entry:
+	def fp
+	def ax_1
+	def dx_2
+	// succ:  l1
+l1:
+	ax_3 = ax_1 + Mem12[fp + 2<32>:word16]
+	SCZO_4 = cond(ax_3)
+	C_5 = SLICE(SCZO_4, bool, 1) (alias)
+	dx_6 = dx_2 + CONVERT(ax_3 <u 0<16>, bool, word16)
+	ax_7 = ax_3 + Mem13[fp + 6<32>:word16]
+	SCZO_8 = cond(ax_7)
+	C_9 = SLICE(SCZO_8, bool, 1)
+	dx_10 = dx_6 + Mem14[fp + 8<32>:word16] + CONVERT(ax_7 <u 0<16>, bool, word16)
+	SCZO_11 = cond(dx_10)
+	return
+	// succ:  SsaProcedureBuilder_exit
+SsaProcedureBuilder_exit:
+";
+            #endregion
+
+            RunSsaTest(sExp, m =>
+            {
+                var flags = new RegisterStorage("flags", 42, 0, PrimitiveType.Word32);
+                var sczo = new FlagGroupStorage(flags, 0xF, "SZCO", PrimitiveType.Byte);
+                var cy = new FlagGroupStorage(flags, 1, "C", PrimitiveType.Bool);
+                var fp = m.FramePointer();
+                var ax_1 = m.Reg16("ax_1");
+                var dx_2 = m.Reg16("dx_2");
+                var ax_3 = m.Reg16("ax_3");
+                var SCZO_4 = m.Flags("SCZO_4", sczo);
+                var C_5 = m.Flags("C_5", cy);
+                var dx_6 = m.Reg16("dx_6");
+                var ax_7 = m.Reg16("ax_7");
+                var SCZO_8 = m.Flags("SCZO_8", sczo);
+                var C_9 = m.Flags("C_9", cy);
+                var dx_10 = m.Reg16("dx_10");
+                var SCZO_11 = m.Flags("SCZO_11", sczo);
+
+                m.AddDefToEntryBlock(fp);
+                m.AddDefToEntryBlock(ax_1);
+                m.AddDefToEntryBlock(dx_2);
+                m.Assign(ax_3, m.IAdd(ax_1, m.Mem16(m.IAdd(fp, 2))));
+                m.Assign(SCZO_4, m.Cond(ax_3));
+                m.Alias(C_5, m.Slice(PrimitiveType.Bool, SCZO_4, 1));
+                m.Assign(dx_6, m.IAdd(dx_2, C_5));
+
+                m.Assign(ax_7, m.IAdd(ax_3, m.Mem16(m.IAdd(fp, 6))));
+                m.Assign(SCZO_8, m.Cond(ax_7));
+                m.Assign(C_9, m.Slice(PrimitiveType.Bool, SCZO_8, 1));
+                m.Assign(dx_10, m.IAdd(m.IAdd(dx_6, m.Mem16(m.IAdd(fp, 8))), C_9));
+                m.Assign(SCZO_11, m.Cond(dx_10));
                 m.Return();
             });
         }
@@ -900,6 +1079,5 @@ ProcedureBuilder_exit:
                 m.Use(SCZO);
             });
         }
-
     }
 }

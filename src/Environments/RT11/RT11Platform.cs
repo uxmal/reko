@@ -45,13 +45,6 @@ namespace Reko.Environments.RT11
             get { return "";  }
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-            return new HashSet<RegisterStorage> {
-                Registers.sp
-            };
-        }
-
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             return new HashSet<RegisterStorage> {

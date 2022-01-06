@@ -350,7 +350,6 @@ namespace Reko.UnitTests.Analysis
             AssertRunOutput(program, RunTest, sExp);
         }
 
-
         protected void RunStringTest(string sExp, ProcedureBuilder pb)
         {
             var program = BuildProgram(pb);
@@ -465,8 +464,8 @@ namespace Reko.UnitTests.Analysis
                 .Returns((ProcedureBase)null);
 
             platformMock.Setup(p => p.PointerType).Returns(PrimitiveType.Ptr32);
-            platformMock.Setup(p => p.CreateImplicitArgumentRegisters()).Returns(
-                new HashSet<RegisterStorage>());
+            platformMock.Setup(p => p.IsImplicitArgumentRegister(It.IsAny<RegisterStorage>()))
+                .Returns(false);
             platformMock.Setup(p => p.MakeAddressFromLinear(It.IsAny<ulong>(), It.IsAny<bool>()))
                 .Returns((ulong ul, bool b) => Address.Ptr32((uint) ul));
             platformMock.Setup(p => p.CreateTrashedRegisters())

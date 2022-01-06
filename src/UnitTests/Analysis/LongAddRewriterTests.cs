@@ -419,5 +419,94 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(dx, m.IAdd(m.IAdd(dx, m.Mem16(m.Ptr16(0x0222))), this.CF));
             });
         }
+
+        [Test]
+        public void Larw_Multiply_Accumulate()
+        {
+            var sExp =
+@"l1:
+	eax_2 = CONVERT(Mem0[0x5418<32>:word16], word16, int32)
+	edx_3 = 0xF000<32>
+	edx_eax_4 = edx_3 *s64 eax_2
+	eax_5 = SLICE(edx_eax_4, word32, 0) (alias)
+	edx_9 = SLICE(edx_eax_4, word32, 32) (alias)
+	edx_eax_17 = SEQ(edx_9, eax_5)
+	tmp2_tmp1_18 = Mem0[0x6FF0<32>:ui64] - edx_eax_17
+	tmp1_6 = SLICE(tmp2_tmp1_18, word32, 0) (alias)
+	tmp2_11 = SLICE(tmp2_tmp1_18, word32, 32) (alias)
+	Mem7[0x6FF0<32>:word32] = tmp1_6
+	SCZ_8 = cond(tmp1_6)
+	C_10 = SLICE(SCZ_8, bool, 2) (alias)
+	Mem12[0x6FF4<32>:word32] = tmp2_11
+	SCZ_13 = cond(tmp2_11)
+	C_14 = SLICE(SCZ_13, bool, 2) (alias)
+	S_15 = SLICE(SCZ_13, bool, 0) (alias)
+	Z_16 = SLICE(SCZ_13, bool, 1) (alias)
+	return
+";
+            RunTest(sExp, m =>
+            {
+                var eax = m.Reg32("eax", 0);
+                var edx = m.Reg32("edx", 2);
+                var edx_eax = m.Frame.EnsureSequence(PrimitiveType.Word64, edx.Storage, eax.Storage);
+                var tmp1 = m.Temp(PrimitiveType.Word32, "tmp1");
+                var tmp2 = m.Temp(PrimitiveType.Word32, "tmp2");
+                m.Assign(eax, m.Convert(m.Mem16(m.Word32(0x5418)), PrimitiveType.Word16, PrimitiveType.Int32));
+                m.Assign(edx, m.Word32(0xF000));
+                m.Assign(edx_eax, m.SMul(PrimitiveType.Int64, edx, eax));
+                m.Assign(tmp1, m.ISub(m.Mem32(m.Word32(0x6FF0)), eax));
+                m.MStore(m.Word32(0x6FF0), tmp1);
+                m.Assign(this.SCZ, m.Cond(tmp1));
+                m.Assign(tmp2, m.ISub(m.ISub(m.Mem32(m.Word32(0x6FF4)), edx), this.CF));
+                m.MStore(m.Word32(0x6FF4), tmp2);
+                m.Assign(this.SCZ, m.Cond(tmp2));
+                block = m.Block;
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void Larw_Add16to32()
+        {
+            var sExp =
+            #region Expected
+@"l1:
+	dx_ax_17 = SEQ(dx, ax)
+	dx_ax_18 = dx_ax_17 + SEQ(0<16>, Mem0[bx + 2<16>:word16])
+	ax_4 = SLICE(dx_ax_18, word16, 0) (alias)
+	dx_8 = SLICE(dx_ax_18, word16, 16) (alias)
+	SCZ_5 = cond(ax_4)
+	C_7 = SLICE(SCZ_5, bool, 2) (alias)
+	dx_ax_19 = SEQ(dx_8, ax_4)
+	dx_ax_20 = dx_ax_19 + Mem0[bx + 6<16>:ui32]
+	ax_9 = SLICE(dx_ax_20, word16, 0) (alias)
+	dx_12 = SLICE(dx_ax_20, word16, 16) (alias)
+	SCZ_10 = cond(ax_9)
+	C_11 = SLICE(SCZ_10, bool, 2) (alias)
+	SCZ_13 = cond(dx_12)
+	C_14 = SLICE(SCZ_13, bool, 2) (alias)
+	S_15 = SLICE(SCZ_13, bool, 0) (alias)
+	Z_16 = SLICE(SCZ_13, bool, 1) (alias)
+	return
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 2))));
+                m.Assign(SCZ, m.Cond(ax));
+                //m.Alias(CF, m.Slice(PrimitiveType.Bool, SCZ, 1));
+                m.Assign(dx, m.IAdd(dx, CF));
+
+                m.Assign(ax, m.IAdd(ax, m.Mem16(m.IAdd(bx, 6))));
+                m.Assign(SCZ, m.Cond(ax));
+                //m.Alias(CF, m.Slice(PrimitiveType.Bool, SCZO, 1));
+                m.Assign(dx, m.IAdd(m.IAdd(dx, m.Mem16(m.IAdd(bx, 8))), CF));
+                m.Assign(SCZ, m.Cond(dx));
+                this.block = m.Block;
+                m.Return();
+            });
+            ssa.Validate(s => Assert.Fail(s));
+        }
     }
 }

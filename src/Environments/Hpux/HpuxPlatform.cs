@@ -36,13 +36,11 @@ namespace Reko.Environments.Hpux
 
         public override string DefaultCallingConvention => "";
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+
+        public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
-            return new HashSet<RegisterStorage>
-            {
-                Architecture.StackRegister,
-                r27,
-            };
+            return reg.Number == Architecture.StackRegister.Number ||
+                reg.Number == r27.Number;
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

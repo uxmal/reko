@@ -40,9 +40,17 @@ namespace Reko.Environments.Windows
     // https://msdn.microsoft.com/en-us/library/ms881468.aspx
     public class Win32MipsPlatform : Platform
     {
+        private readonly HashSet<RegisterStorage> implicitRegs;
+
         public Win32MipsPlatform(IServiceProvider services, IProcessorArchitecture arch) : 
             base(services, arch, "winMips")
         {
+            var gp = arch.GetRegister("r28")!;
+            var sp = arch.GetRegister("sp")!;
+            implicitRegs = new HashSet<RegisterStorage>
+            {
+                gp, sp
+            };
         }
 
         public override string DefaultCallingConvention
@@ -58,15 +66,9 @@ namespace Reko.Environments.Windows
             return parser;
         }
 
-
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        public override bool IsImplicitArgumentRegister(RegisterStorage reg)
         {
-            var gp = Architecture.GetRegister("r28")!;
-            var sp = Architecture.GetRegister("sp")!;
-            return new HashSet<RegisterStorage>
-            {
-                gp, sp
-            };
+            return implicitRegs.Contains(reg);
         }
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()

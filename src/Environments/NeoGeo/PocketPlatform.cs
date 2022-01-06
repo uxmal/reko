@@ -38,11 +38,6 @@ namespace Reko.Environments.NeoGeo
             get { return ""; }
         }
 
-        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
-        {
-            return new HashSet<RegisterStorage>();
-        }
-
         public override CallingConvention GetCallingConvention(string? ccName)
         {
             throw new NotImplementedException();
