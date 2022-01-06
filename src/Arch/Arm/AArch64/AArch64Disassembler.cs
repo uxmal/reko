@@ -2921,19 +2921,19 @@ namespace Reko.Arch.Arm.AArch64
 
             var MoveWideImmediate = Mask(29, 3,
                 Mask(22, 1,
-                    Instr(Mnemonic.movn, W_0,U(5,16,w32),sh(21,2)),
+                    Instr(Mnemonic.movn, W_0,U(5,16,w16),sh(21,2)),
                     invalid),
                 invalid,
                 Mask(22, 1,
-                    Instr(Mnemonic.movz, W_0,U(5,16,w32),sh(21,2)),
+                    Instr(Mnemonic.movz, W_0,U(5,16,w16),sh(21,2)),
                     invalid),
                 Mask(22, 1,
-                    Instr(Mnemonic.movk, W_0,U(5,16,w32),sh(21,2)),
+                    Instr(Mnemonic.movk, W_0,U(5,16,w16),sh(21,2)),
                     invalid),
 
-                Instr(Mnemonic.movn, X_0,U(5,16,w64),sh(21,2)),
+                Instr(Mnemonic.movn, X_0,U(5,16,w16),sh(21,2)),
                 invalid,
-                Instr(Mnemonic.movz, X_0,U(5,16,w64),sh(21,2)),
+                Instr(Mnemonic.movz, X_0,U(5,16,w16),sh(21,2)),
                 Instr(Mnemonic.movk, X_0,U(5,16,w16),sh(21,2)));
 
 

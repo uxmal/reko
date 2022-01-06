@@ -458,17 +458,10 @@ namespace Reko.Arch.Arm.AArch64
 
         private void RewriteMovn()
         {
-            var src = RewriteOp(instr.Operands[1]);
-            var dst = RewriteOp(instr.Operands[0]);
-            if (src is Constant c)
-            {
-                src = c.Complement();
-            }
-            else
-            {
-                src = m.Comp(src);
-            }
-            m.Assign(dst, src);
+            var src = ((ImmediateOperand) instr.Operands[1]).Value.ToUInt64();
+            var dst = (Identifier) RewriteOp(instr.Operands[0]);
+            var shift = ((ImmediateOperand) instr.ShiftAmount!).Value.ToInt32();
+            m.Assign(dst, Constant.Create(dst.DataType, ~(src << shift)));
         }
 
         private void RewriteMovz()
