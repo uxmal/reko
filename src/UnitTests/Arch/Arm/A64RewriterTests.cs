@@ -83,6 +83,24 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_add_reg()
+        {
+            Given_Instruction(0x8B130280);
+            AssertCode(     // add\tx0,x20,x19
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x0 = x20 + x19");
+        }
+
+        [Test]
+        public void AArch64Rw_add_reg_with_shift()
+        {
+            Given_Instruction(0x8B130A80);
+            AssertCode( // add\tx0,x20,x19,lsl #2
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x0 = x20 + (x19 << 2<i32>)");
+        }
+
+        [Test]
         public void AArch64Rw_add_Wn_imm()
         {
             Given_Instruction("000 10001 01 011111111111 10001 10011");
@@ -462,6 +480,62 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_ldr()
+        {
+            Given_Instruction(0xF9400000);
+            AssertCode(     // ldr\tx0,[x0]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x0 = Mem0[x0:word64]");
+        }
+
+        [Test]
+        public void AArch64Rw_ldr_UnsignedOffset()
+        {
+            Given_Instruction(0xF947E442);
+            AssertCode(     // ldr\tx2,[x2,#&FC8]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|x2 = Mem0[x2 + 4040<i64>:word64]");
+        }
+
+        [Test]
+        public void AArch64Rw_ldr_r64_off()
+        {
+            Given_Instruction(0xFD45E540);
+            AssertCode(     // ldr\td0,[x10,#&BC8]
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|d0 = Mem0[x10 + 3016<i64>:word64]");
+        }
+
+        [Test]
+        public void AArch64Rw_ldr_extended_register_mode()
+        {
+            Given_HexString("205860B8");
+            AssertCode( // ldr	w0, [x1,w0,uxtw #2]
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|w0 = Mem0[x1 + (CONVERT(w0, uint32, uint64) << 2<8>):word32]");
+        }
+
+        [Test]
+        public void AArch64Rw_ldrb()
+        {
+            Given_Instruction(0x39402260);
+            AssertCode(     // ldrb\tw0,[x19,#&8]
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = Mem0[x19 + 8<i64>:byte]",
+                "2|L--|w0 = CONVERT(v4, byte, word32)");
+        }
+
+        [Test]
+        public void AArch64Rw_ldrsw()
+        {
+            Given_Instruction(0xB9800033);
+            AssertCode(     // ldrsw\tx19,[x1]
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|v4 = Mem0[x1:int32]",
+                "2|L--|x19 = CONVERT(v4, int32, int64)");
+        }
+
+        [Test]
         public void AArch64Rw_ldxr()
         {
             Given_HexString("000E5BC8");
@@ -514,15 +588,13 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_ldr_UnsignedOffset()
+        public void AArch64Rw_mov_reg32()
         {
-            Given_Instruction(0xF947E442);
-            AssertCode(     // ldr\tx2,[x2,#&FC8]
+            Given_Instruction(0x2A0003F5);
+            AssertCode(     // mov\tw21,w0
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|x2 = Mem0[x2 + 4040<i64>:word64]");
+                "1|L--|w21 = w0");
         }
-
-
 
         [Test]
         public void AArch64Rw_mov_reg64()
@@ -531,17 +603,6 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // mov\tx20,x1
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|x20 = x1");
-        }
-
-
-
-        [Test]
-        public void AArch64Rw_mov_reg32()
-        {
-            Given_Instruction(0x2A0003F5);
-            AssertCode(     // mov\tw21,w0
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|w21 = w0");
         }
 
         [Test]
@@ -570,34 +631,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|0000000000100000(4): 2 instructions",
                 "1|L--|v2 = d30",
                 "2|L--|d11 = __neg_i8(v2)");
-        }
-
-        [Test]
-        public void AArch64Rw_ldrsw()
-        {
-            Given_Instruction(0xB9800033);
-            AssertCode(     // ldrsw\tx19,[x1]
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[x1:int32]",
-                "2|L--|x19 = CONVERT(v4, int32, int64)");
-        }
-
-        [Test]
-        public void AArch64Rw_add_reg()
-        {
-            Given_Instruction(0x8B130280);
-            AssertCode(     // add\tx0,x20,x19
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|x0 = x20 + x19");
-        }
-
-        [Test]
-        public void AArch64Rw_add_reg_with_shift()
-        {
-            Given_Instruction(0x8B130A80);
-            AssertCode( // add\tx0,x20,x19,lsl #2
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|x0 = x20 + (x19 << 2<i32>)");
         }
 
         [Test]
@@ -727,15 +760,6 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
-        public void AArch64Rw_ldr()
-        {
-            Given_Instruction(0xF9400000);
-            AssertCode(     // ldr\tx0,[x0]
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|x0 = Mem0[x0:word64]");
-        }
-
-        [Test]
         public void AArch64Rw_subs()
         {
             Given_Instruction(0xEB13001F);
@@ -762,17 +786,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "0|L--|00100000(4): 2 instructions",
                 "1|T--|if (Test(LT,NV)) branch 00100004",
                 "2|L--|w24 = w8 + 1<32>");
-        }
-
-
-        [Test]
-        public void AArch64Rw_ldrb()
-        {
-            Given_Instruction(0x39402260);
-            AssertCode(     // ldrb\tw0,[x19,#&8]
-                "0|L--|00100000(4): 2 instructions",
-                "1|L--|v4 = Mem0[x19 + 8<i64>:byte]",
-                "2|L--|w0 = CONVERT(v4, byte, word32)");
         }
 
         [Test]
@@ -826,7 +839,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0xF8737AA3);
             AssertCode(     // ldr\tx3,[x21,x19,lsl,#3]
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|x3 = Mem0[x21 + x19 * 8<i64>:word64]");
+                "1|L--|x3 = Mem0[x21 + (x19 << 3<8>):word64]");
         }
 
         [Test]
@@ -1166,7 +1179,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x8B33D2D3);
             AssertCode(     // add\tx19,x22,w19,sxtw #4
                  "0|L--|00100000(4): 1 instructions",
-                 "1|L--|x19 = x22 + CONVERT(w19, int32, int64)");
+                 "1|L--|x19 = x22 + (CONVERT(w19, int32, int64) << 4<i32>)");
         }
 
         [Test]
@@ -1236,7 +1249,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x787B7B20);
             AssertCode(     // ldrh\tw0,[x25,x27,lsl #1]
                  "0|L--|00100000(4): 2 instructions",
-                 "1|L--|v5 = Mem0[x25 + x27 * 2<i64>:word16]",
+                 "1|L--|v5 = Mem0[x25 + (x27 << 1<8>):word16]",
                  "2|L--|w0 = CONVERT(v5, word16, word32)");
         }
 
@@ -1246,7 +1259,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0x7876D800);
             AssertCode(     // ldrh\tw0,[x0,w22,sxtw #1]
                  "0|L--|00100000(4): 2 instructions",
-                 "1|L--|v5 = Mem0[x0 + CONVERT(w22, int32, int64):word16]",
+                 "1|L--|v5 = Mem0[x0 + (CONVERT(w22, int32, int64) << 1<8>):word16]",
                  "2|L--|w0 = CONVERT(v5, word16, word32)");
         }
 
@@ -1422,7 +1435,7 @@ namespace Reko.UnitTests.Arch.Arm
             Given_Instruction(0xCB214F18);
             AssertCode(     // sub\tx24,x24,w1,uxtw #3
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|x24 = x24 - CONVERT(w1, word32, uint64)");
+                "1|L--|x24 = x24 - (CONVERT(w1, word32, uint64) << 3<i32>)");
         }
 
         [Test]
@@ -1501,15 +1514,6 @@ namespace Reko.UnitTests.Arch.Arm
                 "2|L--|Mem0[sp:word64] = d15",
                 "3|L--|sp = sp + 8<i64>",
                 "4|L--|Mem0[sp:word64] = d14");
-        }
-
-        [Test]
-        public void AArch64Rw_ldr_r64_off()
-        {
-            Given_Instruction(0xFD45E540);
-            AssertCode(     // ldr\td0,[x10,#&BC8]
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|d0 = Mem0[x10 + 3016<i64>:word64]");
         }
 
         [Test]
@@ -1606,6 +1610,15 @@ namespace Reko.UnitTests.Arch.Arm
             AssertCode(     // add\tw15,w15,w0,sxth #0
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|w15 = w15 + CONVERT(SLICE(w0, int16, 0), int16, int32)");
+        }
+
+        [Test]
+        public void AArch64Rw_add_shifted_extension()
+        {
+            Given_HexString("20C8208B");
+            AssertCode(     // add\tx0,x1,x0, sxtw #2
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|x0 = x1 + (CONVERT(w0, int32, int64) << 2<i32>)");
         }
 
         [Test]

@@ -141,6 +141,13 @@ namespace Reko.Arch.Arm.AArch64
                 !(instr.ShiftAmount is ImmediateOperand imm) ||
                 !imm.Value.IsIntegerZero))
             {
+                Expression MaybeShift(Expression e, Expression amt)
+                {
+                    if (amt is Constant c && c.ToInt32() > 0)
+                        return m.Shl(e, amt);
+                    else
+                        return e;
+                }
                 var amt = RewriteOp(instr.ShiftAmount!);
                 switch (instr.ShiftCode)
                 {
@@ -148,12 +155,12 @@ namespace Reko.Arch.Arm.AArch64
                 case Mnemonic.lsl: right = m.Shl(right, amt); break;
                 case Mnemonic.lsr: right = m.Shr(right, amt); break;
                 case Mnemonic.ror: right = host.Intrinsic(IntrinsicProcedure.Ror, false, right.DataType, right, amt); break;
-                case Mnemonic.sxtb: right = SignExtend(toBitSize, PrimitiveType.SByte, right); break;
-                case Mnemonic.sxth: right = SignExtend(toBitSize, PrimitiveType.Int16, right); break;
-                case Mnemonic.sxtw: right = SignExtend(toBitSize, PrimitiveType.Int32, right); break;
-                case Mnemonic.uxtb: right = ZeroExtend(toBitSize, PrimitiveType.Byte, right); break;
-                case Mnemonic.uxth: right = ZeroExtend(toBitSize, PrimitiveType.Word16, right); break;
-                case Mnemonic.uxtw: right = ZeroExtend(toBitSize, PrimitiveType.Word32, right); break;
+                case Mnemonic.sxtb: right = MaybeShift(SignExtend(toBitSize, PrimitiveType.SByte, right), amt); break;
+                case Mnemonic.sxth: right = MaybeShift(SignExtend(toBitSize, PrimitiveType.Int16, right), amt); break;
+                case Mnemonic.sxtw: right = MaybeShift(SignExtend(toBitSize, PrimitiveType.Int32, right), amt); break;
+                case Mnemonic.uxtb: right = MaybeShift(ZeroExtend(toBitSize, PrimitiveType.Byte, right), amt); break;
+                case Mnemonic.uxth: right = MaybeShift(ZeroExtend(toBitSize, PrimitiveType.Word16, right), amt); break;
+                case Mnemonic.uxtw: right = MaybeShift(ZeroExtend(toBitSize, PrimitiveType.Word32, right), amt); break;
                 default:
                     EmitUnitTest();
                     break;
@@ -372,7 +379,7 @@ namespace Reko.Arch.Arm.AArch64
                     ea = baseReg;
                 }
             }
-            if (dt == null)
+            if (dt is null)
             {
                 m.Assign(dst, m.Mem(dtDst, ea));
             }
@@ -525,21 +532,16 @@ namespace Reko.Arch.Arm.AArch64
 
         private Expression? RewriteEffectiveAddressOffset(MemoryOperand mem)
         { 
-            if (mem.Offset != null && !mem.Offset.IsIntegerZero)
+            if (mem.Offset is not null && !mem.Offset.IsIntegerZero)
             {
                 return Constant.Int(mem.Base!.DataType, mem.Offset.ToInt32());
             }
-            else if (mem.Index != null)
+            else if (mem.Index is not null)
             {
                 Expression idx = binder.EnsureRegister(mem.Index);
                 switch (mem.IndexExtend)
                 {
                 case Mnemonic.lsl:
-                    if (mem.IndexShift != 0)
-                    {
-                        var dtInt = PrimitiveType.Create(Domain.SignedInt, idx.DataType.BitSize);
-                        idx = m.IMul(idx, Constant.Create(dtInt, 1 << mem.IndexShift));
-                    }
                     break;
                 case Mnemonic.sxtb:
                     idx = SignExtend(64, PrimitiveType.SByte, idx);
@@ -561,13 +563,13 @@ namespace Reko.Arch.Arm.AArch64
                     break;
                 case Mnemonic.sxtx:
                 case Mnemonic.uxtx:
-                    if (mem.IndexShift != 0)
-                    {
-                        idx = m.Shl(idx, mem.IndexShift);
-                    }
                     break;
                 default:
                     throw new NotImplementedException($"Register extension {mem.IndexExtend} not implemented yet.");
+                }
+                if (mem.IndexShift != 0)
+                {
+                    idx = m.Shl(idx, mem.IndexShift);
                 }
                 return idx;
             }
