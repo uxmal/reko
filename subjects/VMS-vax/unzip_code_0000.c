@@ -3431,7 +3431,7 @@ word32 fn0000DC76(struct Eq_n * ap, struct Eq_n * fp, ptr32 & apOut, ptr32 & fpO
 uint32 fn0000E25A(struct Eq_n * ap, struct Eq_n * fp, struct Eq_n & apOut, ptr32 & fpOut)
 {
 	struct Eq_n * r2_n = ap->ptr0004;
-	uint32 r0_n = (uint32) ((word16) r2_n->b0001 << (word16) 8 | (word16) r2_n->b0000);
+	uint32 r0_n = (uint32) ((word16) r2_n->b0001 << 0x08 | (word16) r2_n->b0000);
 	ptr32 fp_n = fp->ptr000C;
 	apOut = fp->ptr0008;
 	fpOut = fp_n;

@@ -1777,11 +1777,14 @@ l5620:
 					bLoc17_n = r11_n;
 					if (r11_n >= 0x00)
 						bLoc1E_n &= ~0x20;
-					Eq_n wLoc20_n;
-					byte bLoc20_n = (byte) fp - 0x24;
+					Eq_n wLoc20_n = fp - 0x24;
+					byte bLoc20_n = (byte) (uipr32) fp - 0x24;
 					byte bLoc1F_n = SLICE(fp - 0x24, byte, 8);
-					if (wLoc1C_n == 0x00 && wLoc1A_n == 0x00)
+					if (wLoc1C_n == 0x00)
 					{
+						wLoc20_n = (word16) (uipr32) fp - 0x24;
+						if (wLoc1A_n != 0x00)
+							goto l564A;
 						wLoc20_n = SEQ(bLoc1F_n, bLoc20_n);
 						if (r11_n != 0x00)
 							goto l564A;
@@ -1789,7 +1792,6 @@ l5620:
 					else
 					{
 l564A:
-						wLoc20_n = fp - 0x24;
 						Eq_n wLoc14_n = (uint16) bLoc18_n;
 						do
 						{

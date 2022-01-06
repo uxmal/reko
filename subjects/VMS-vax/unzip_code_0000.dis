@@ -4450,7 +4450,7 @@ word32 fn0000E25A(word32 ap, word32 fp, ptr32 & apOut, ptr32 & fpOut)
 fn0000E25A_entry:
 l0000E25A:
 	word32 r2_6 = Mem0[ap + 4<i32>:word32]
-	word32 r0_13 = CONVERT(CONVERT(Mem0[r2_6 + 1<i32>:byte], byte, word16) << SLICE(8<i8>, word16, 0) | CONVERT(Mem0[r2_6:byte], byte, word16), word16, uint32)
+	word32 r0_13 = CONVERT(CONVERT(Mem0[r2_6 + 1<i32>:byte], byte, word16) << 8<16> | CONVERT(Mem0[r2_6:byte], byte, word16), word16, uint32)
 	word32 fp_19 = Mem0[fp + 0xC<32>:word32]
 	apOut = Mem0[fp + 8<32>:word32]
 	fpOut = fp_19

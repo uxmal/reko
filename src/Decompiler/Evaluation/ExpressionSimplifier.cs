@@ -28,6 +28,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
 
@@ -1361,6 +1362,12 @@ namespace Reko.Evaluation
             {
                 if (CanBeSliced(slice, bin))
                 {
+                    //$HACK: work around by zero-extending now. The real fix
+                    // is to zero-extend carry flags properly.
+                    if (TryExtendOperand(bin, out var extBin))
+                    {
+                        bin = extBin;
+                    }
                     var left = m.Slice(bin.Left, slice.DataType, slice.Offset).Accept(this);
                     var right = m.Slice(bin.Right, slice.DataType, slice.Offset).Accept(this);
                     if (left.Item2 | right.Item2)
@@ -1516,6 +1523,38 @@ namespace Reko.Evaluation
                 bitoffset += bitsElem;
             }
             return null;
+        }
+
+        private bool TryExtendOperand(
+            BinaryExpression bin,
+            [NotNullWhen(true)] out BinaryExpression? extBin)
+        {
+            if (bin.Left.DataType.BitSize > bin.Right.DataType.BitSize)
+            {
+                extBin = new BinaryExpression(
+                    bin.Operator,
+                    bin.DataType,
+                    bin.Left,
+                    m.Convert(
+                        bin.Right,
+                        bin.Right.DataType,
+                        bin.Left.DataType));
+                return true;
+            }
+            if (bin.Left.DataType.BitSize < bin.Right.DataType.BitSize)
+            {
+                extBin = new BinaryExpression(
+                    bin.Operator,
+                    bin.DataType,
+                    m.Convert(
+                        bin.Left,
+                        bin.Left.DataType,
+                        bin.Right.DataType),
+                    bin.Right);
+                return true;
+            }
+            extBin = null;
+            return false;
         }
     }
 }

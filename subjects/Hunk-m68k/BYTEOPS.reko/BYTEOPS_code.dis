@@ -387,7 +387,7 @@ l00001390:
 	word32 d0_28 = CONVERT(SLICE(d2_16, byte, 0) - v11_19, byte, uint32)
 	word32 d1_32 = CONVERT(v11_19, byte, uint32)
 	d4_37 = __swap(d0_28) *u32 SLICE(d1_32, word16, 0)
-	byte v32_48 = SLICE(d0_28 *u32 SLICE(d1_32, word16, 0), byte, 0)
+	byte v32_48 = SLICE(d0_28, byte, 0) *u SLICE(SLICE(d1_32, word16, 0), byte, 0)
 	word32 d2_50 = SEQ(SLICE(v8_15, word24, 7), v32_48)
 	fn00002A88(d2_50, CONVERT(SLICE(fn00002AC8(d2_50, CONVERT(v11_19, byte, uint32), CONVERT(v32_48, byte, uint32)), byte, 0), byte, uint32), CONVERT(v32_48, byte, uint32))
 	return fn0000143C(CONVERT(v32_48 << 5<8>, byte, uint32), 0x0000142C<p32>)
