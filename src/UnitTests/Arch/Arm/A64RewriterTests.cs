@@ -1297,6 +1297,15 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Rw_orr_zero()
+        {
+            Given_HexString("E0077EB2");
+            AssertCode(     // orr	x0,xzr,#&C
+                "0|L--|0000000000100000(4): 1 instructions",
+                "1|L--|x0 = 0<64> | 0xC<64>");
+        }
+
+        [Test]
         public void AArch64Rw_orn()
         {
             Given_Instruction(0x2A2200F8);

@@ -154,31 +154,65 @@ namespace Reko.Arch.Arm.AArch64
         /// integer value it represents with regSize bits.
         private ulong? DecodeLogicalImmediate(uint val, int bitSize)
         {
+            static int HighestSetBit(uint u)
+            {
+               return 31 - (int)Bits.CountLeadingZeros(32, u);
+            }
+
+  
             // Extract the N, imms, and immr fields.
             uint N = (val >> 12) & 1;
             uint immr = (val >> 6) & 0x3f;
             uint imms = val & 0x3f;
 
-            if (bitSize != 64 && N == 1)
+            // Compute log2 of element size
+            // 2^len must be in range [2, M]
+            int len = HighestSetBit((N << 6)|(~imms & 0x3F));
+            if (len < 1)
                 return null;
-            int len = 6 - Bits.CountLeadingZeros(7, (N << 6) | (~imms & 0x3f));
-            if (len < 0)
-                return null;
-            int size = 1 << len;
-            int R = (int) (immr & (size - 1));
-            int S = (int) (imms & (size - 1));
-            if (S == size - 1)
-                return null;
-            ulong pattern = (1UL << (S + 1)) -1;
-            pattern = Bits.RotateR(size, pattern, R);
 
-            // Replicate the pattern to fill the regSize.
-            while (size != bitSize)
+            // Determine S, R and S - R parameters
+            uint levels = (uint)Bits.Mask(0, len);
+
+            // For logical immediates an all-ones value of S is reserved
+            // since it would generate a useless all-ones result (many times)
+            if ((imms & levels) == levels)
+                return null;
+
+            uint S = (imms & levels);
+            uint R = (immr & levels);
+
+            int esize = 1 << len;
+            uint welem = (uint)Bits.Mask(0, (int)S + 1);
+
+            var wmask = ReplicatePattern(Bits.RotateR(esize, welem, (int) R), esize);
+            return wmask;
+        }
+
+        private static ulong ReplicatePattern(ulong pattern, int length)
+        {
+            ulong result = pattern & Bits.Mask(0, length);
+            if (length <= 2)
             {
-                pattern |= pattern << size;
-                size *= 2;
+                result |= result << 2;
             }
-            return pattern;
+            if (length <= 4)
+            {
+                result |= result << 4;
+            }
+            if (length <= 8)
+            {
+                result |= result << 8;
+            }
+            if (length <= 16)
+            {
+                result |= result << 16;
+            }
+            if (length <= 32)
+            {
+                result |= result << 32;
+            }
+            return result;
         }
 
         private static ulong DecodeSimdImmediate(uint op, uint cmode, uint w8)

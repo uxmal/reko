@@ -90,7 +90,10 @@ namespace Reko.Core.Lib
 
         public static ulong Mask(int lsb, int bitsize)
         {
-            return ((1ul << bitsize) - 1) << lsb;
+            ulong mask = (bitsize == 0x40)
+                ? ~0ul
+                : ((1ul << bitsize) - 1);
+            return mask << lsb;
         }
 
         public static BigInteger Mask(int maskWidth)
@@ -146,7 +149,7 @@ namespace Reko.Core.Lib
         /// </summary>
         public static ulong RotateR(int wordSize, ulong u, int s)
         {
-            var mask = (1ul << wordSize) - 1;
+            var mask = Bits.Mask(0, wordSize);
             u &= mask;
             u = (u << (wordSize - s)) | (u >> s);
             return u & mask;

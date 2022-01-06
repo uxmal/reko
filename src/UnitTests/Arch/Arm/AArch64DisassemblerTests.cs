@@ -1196,6 +1196,12 @@ namespace Reko.UnitTests.Arch.Arm
         }
 
         [Test]
+        public void AArch64Dis_orr()
+        {
+            AssertCode("orr\tx0,x31,#&C", "E0077EB2");
+        }
+
+        [Test]
         public void AArch64Dis_orr_vector_imm32()
         {
             AssertCode("orr\tv11.4s,#&D50000,lsl #&10", "AB56064F");
